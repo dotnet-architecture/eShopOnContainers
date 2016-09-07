@@ -1,0 +1,83 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{932D8224-11F6-4D07-B109-DA28AD288A63}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3AF739CD-81D8-428D-A08A-0A58372DEBF6}"
+	ProjectSection(SolutionItems) = preProject
+		global.json = global.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Microservices", "Microservices", "{91CF7717-08AB-4E65-B10E-0B426F01E2E8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web Apps", "Web Apps", "{E279BF0F-7F66-4F3A-A3AB-2CDA66C1CD04}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mobile Apps", "Mobile Apps", "{F61357CE-1CC2-410E-8776-B16EEBC98EB8}"
+	ProjectSection(SolutionItems) = preProject
+		src\Mobile\Xamarin projects when created.txt = src\Mobile\Xamarin projects when created.txt
+	EndProjectSection
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Microsoft.Containerized-eShop.WebMVC", "src\Web\Microsoft.Containerized-eShop.WebMVC\Microsoft.Containerized-eShop.WebMVC.xproj", "{1D40C583-ABF0-400B-8C63-2C3669268C8B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Catalog", "Catalog", "{326A7FB3-5295-468C-A4FE-67DCB823E1E5}"
+	ProjectSection(SolutionItems) = preProject
+		src\Microservices\Catalog\Additional related projects-images like DataSources or related microservices.txt = src\Microservices\Catalog\Additional related projects-images like DataSources or related microservices.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Basket", "Basket", "{BF3EF4F3-E4F5-41DA-9D2D-57223687D1A8}"
+	ProjectSection(SolutionItems) = preProject
+		src\Microservices\Basket\Additional related projects-images like Redis Cache.txt = src\Microservices\Basket\Additional related projects-images like Redis Cache.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Ordering", "Ordering", "{0BD0DB92-2D98-44D9-9AC0-C59186D59B0B}"
+	ProjectSection(SolutionItems) = preProject
+		src\Microservices\Ordering\Additional projects-images like DataSources or Related microservices.txt = src\Microservices\Ordering\Additional projects-images like DataSources or Related microservices.txt
+	EndProjectSection
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Microsoft.Containerized-eShop.BasketAPI", "src\Microservices\Basket\Microsoft.Containerized-eShop.BasketAPI\Microsoft.Containerized-eShop.BasketAPI.xproj", "{F6A031AF-D7AE-47C1-AB53-1456A528280C}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Microsoft.Containerized-eShop.OrderingAPI", "src\Microservices\Ordering\Microsoft.Containerized-eShop.OrderingAPI\Microsoft.Containerized-eShop.OrderingAPI.xproj", "{941B2DBA-8827-447E-AC82-7BEB118A968B}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Microsoft.Containerized-eShop.CatalogAPI", "src\Microservices\Catalog\Microsoft.Containerized-eShop.CatalogAPI\Microsoft.Containerized-eShop.CatalogAPI.xproj", "{2D26AFB4-0ECB-4009-98D6-CAB5825E62A8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1D40C583-ABF0-400B-8C63-2C3669268C8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D40C583-ABF0-400B-8C63-2C3669268C8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D40C583-ABF0-400B-8C63-2C3669268C8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D40C583-ABF0-400B-8C63-2C3669268C8B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6A031AF-D7AE-47C1-AB53-1456A528280C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6A031AF-D7AE-47C1-AB53-1456A528280C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6A031AF-D7AE-47C1-AB53-1456A528280C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6A031AF-D7AE-47C1-AB53-1456A528280C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{941B2DBA-8827-447E-AC82-7BEB118A968B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{941B2DBA-8827-447E-AC82-7BEB118A968B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{941B2DBA-8827-447E-AC82-7BEB118A968B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{941B2DBA-8827-447E-AC82-7BEB118A968B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D26AFB4-0ECB-4009-98D6-CAB5825E62A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D26AFB4-0ECB-4009-98D6-CAB5825E62A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D26AFB4-0ECB-4009-98D6-CAB5825E62A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D26AFB4-0ECB-4009-98D6-CAB5825E62A8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{91CF7717-08AB-4E65-B10E-0B426F01E2E8} = {932D8224-11F6-4D07-B109-DA28AD288A63}
+		{E279BF0F-7F66-4F3A-A3AB-2CDA66C1CD04} = {932D8224-11F6-4D07-B109-DA28AD288A63}
+		{F61357CE-1CC2-410E-8776-B16EEBC98EB8} = {932D8224-11F6-4D07-B109-DA28AD288A63}
+		{1D40C583-ABF0-400B-8C63-2C3669268C8B} = {E279BF0F-7F66-4F3A-A3AB-2CDA66C1CD04}
+		{326A7FB3-5295-468C-A4FE-67DCB823E1E5} = {91CF7717-08AB-4E65-B10E-0B426F01E2E8}
+		{BF3EF4F3-E4F5-41DA-9D2D-57223687D1A8} = {91CF7717-08AB-4E65-B10E-0B426F01E2E8}
+		{0BD0DB92-2D98-44D9-9AC0-C59186D59B0B} = {91CF7717-08AB-4E65-B10E-0B426F01E2E8}
+		{F6A031AF-D7AE-47C1-AB53-1456A528280C} = {BF3EF4F3-E4F5-41DA-9D2D-57223687D1A8}
+		{941B2DBA-8827-447E-AC82-7BEB118A968B} = {0BD0DB92-2D98-44D9-9AC0-C59186D59B0B}
+		{2D26AFB4-0ECB-4009-98D6-CAB5825E62A8} = {326A7FB3-5295-468C-A4FE-67DCB823E1E5}
+	EndGlobalSection
+EndGlobal
