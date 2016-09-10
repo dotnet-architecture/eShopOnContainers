@@ -2,7 +2,7 @@
 using System.Runtime.Serialization;
 
 
-namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.Order
+namespace Microsoft.eShopOnContainers.Services.Ordering.API.DTO
 {
     [DataContract]
     public sealed class OrderItemDTO
@@ -20,7 +20,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
 
         public override string ToString()
         {
-            return String.Format("ID: {0}, Quantity: {1}, Fulfillment Remaing: {2}", this.ItemId, this.Quantity, this.FulfillmentRemaining);
+            return String.Format("ID: {0}, Quantity: {1}, Fulfillment Remaing: {2}", this.Id, this.Quantity, this.FulfillmentRemaining);
         }
     }
 }

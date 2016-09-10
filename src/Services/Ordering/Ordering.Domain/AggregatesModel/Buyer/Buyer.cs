@@ -7,7 +7,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel
         {
             public Buyer(Guid buyerId, string name, string lastName, string email, Address address, string phoneNumber)
             {
-                this.BuyerId = buyerId;
+                this.Id = buyerId;
                 this.Name = name;
                 this.LastName = lastName;
                 this.Email = email;
@@ -15,13 +15,6 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel
                 this.PhoneNumber = phoneNumber;
             }
 
-            protected Buyer() { } // infrastructure
-
-            public virtual Guid BuyerId
-            {
-                get;
-                private set;
-            }
 
             public virtual string Name
             {

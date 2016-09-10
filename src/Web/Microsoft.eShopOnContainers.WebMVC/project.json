@@ -1,4 +1,4 @@
-﻿{
+{
   "userSecretsId": "aspnet-Microsoft.eShopOnContainers.WebMVC-946ae052-8305-4a99-965b-ec8636ddbae3",
 
   "dependencies": {
@@ -21,10 +21,6 @@
     "Microsoft.EntityFrameworkCore.SqlServer": "1.0.0",
     "Microsoft.EntityFrameworkCore.SqlServer.Design": {
       "version": "1.0.0",
-      "type": "build"
-    },
-    "Microsoft.EntityFrameworkCore.Tools": {
-      "version": "1.0.0-preview2-final",
       "type": "build"
     },
     "Microsoft.Extensions.Configuration.EnvironmentVariables": "1.0.0",

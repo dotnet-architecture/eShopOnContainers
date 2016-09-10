@@ -14,6 +14,11 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.SeedWork
     public class ValueObject<TValueObject> : IEquatable<TValueObject>
         where TValueObject : ValueObject<TValueObject>
     {
+        //A ValueObject doesn't have Identity, but we just need an Id/key so EF knows how to persist
+        //becuase in EF Core it still doesn't support ValueObjects or ComplexTypes
+        //This should be changed when EF Core supports any of those. 
+        // https://github.com/aspnet/EntityFramework/issues/246
+        public virtual Guid Id { get; protected set; }
 
         //IEquatable and Override Equals operators
 

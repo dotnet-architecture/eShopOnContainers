@@ -8,6 +8,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
+using Microsoft.eShopOnContainers.Services.Ordering.API.UnitOfWork;
+using Microsoft.EntityFrameworkCore;
+
 namespace Microsoft.eShopOnContainers.Services.Ordering.API
 {
     public class Startup
@@ -24,11 +27,16 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API
 
         public IConfigurationRoot Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        // This method gets called by the runtime. 
+        // Use this method to add services to the IoC container.
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
             services.AddMvc();
+
+            //Add EF Core Context (UnitOfWork)
+            var connection = @"Server=(localdb)\mssqllocaldb;Database=Microsoft.eShopOnContainers.Services.OrderingDb;Trusted_Connection=True;";
+            services.AddDbContext<OrderingContext>(options => options.UseSqlServer(connection));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

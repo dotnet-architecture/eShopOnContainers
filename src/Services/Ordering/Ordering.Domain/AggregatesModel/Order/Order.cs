@@ -22,56 +22,37 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel
             this.OrderDate = orderDate;
         }
 
-        protected Order() { } // Infrastructure. EF might need a plain constructor. Do not use.
+        //Infrastructure requisite - Parameterless constructor needed by EF
+        Order() { }
 
         //Order ID comes derived from the Entity base class
 
-        List<OrderItem> _orderItems;
-        public virtual List<OrderItem> orderItems
-        {
-            get
-            {
-                if (_orderItems == null)
-                    _orderItems = new List<OrderItem>();
+        //List<OrderItem> _orderItems;
+        //public virtual List<OrderItem> orderItems
+        //{
+        //    get
+        //    {
+        //        if (_orderItems == null)
+        //            _orderItems = new List<OrderItem>();
 
-                return _orderItems;
-            }
-            
-            private set
-            {
-                _orderItems = value;
-            }
-        }
+        //        return _orderItems;
+        //    }
 
-        public virtual Guid BuyerId
-        {
-            get;
-            private set;
-        }
+        //    private set
+        //    {
+        //        _orderItems = value;
+        //    }
+        //}
 
-        public virtual Address ShippingAddress
-        {
-            get;
-            private set;
-        }
+        public virtual Guid BuyerId { get; private set; }
 
-        public virtual Address BillingAddress
-        {
-            get;
-            private set;
-        }
+        public virtual Address ShippingAddress { get; private set; }
+        
+        public virtual Address BillingAddress { get; private set; }
 
-        public virtual DateTime OrderDate
-        {
-            get;
-            private set;
-        }
+        public virtual DateTime OrderDate { get; private set; }
 
-        public virtual OrderStatus Status
-        {
-            get;
-            set;
-        }
+        public virtual OrderStatus Status { get; private set; }
 
     }
 }
