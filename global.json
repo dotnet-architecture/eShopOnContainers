@@ -1,7 +1,8 @@
 {
   "projects": [
     "src",
-    "test"
+    "test",
+    "src/Services/Ordering"
   ],
 
   "sdk": {

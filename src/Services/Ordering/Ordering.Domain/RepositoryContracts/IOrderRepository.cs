@@ -10,8 +10,9 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.RepositoryContrac
 {
     public interface IOrderRepository : IRepository<Order>
     {
-        Order Get(int associatedConferenceId);
+        //TBD - To define Specific Actions Not In Base Repo
 
-        void ModifyOrder(Order seatOrder);
+        Task<int> Remove(Guid id);
     }
+
 }

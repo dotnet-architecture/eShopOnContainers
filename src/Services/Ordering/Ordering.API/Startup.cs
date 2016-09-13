@@ -8,8 +8,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-using Microsoft.eShopOnContainers.Services.Ordering.API.UnitOfWork;
+using Microsoft.eShopOnContainers.Services.Ordering.SqlData.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.eShopOnContainers.Services.Ordering.Domain.RepositoryContracts;
+using Microsoft.eShopOnContainers.Services.Ordering.SqlData.Repositories;
+using Microsoft.eShopOnContainers.Services.Ordering.SqlData.Queries;
 
 namespace Microsoft.eShopOnContainers.Services.Ordering.API
 {
@@ -36,7 +39,11 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API
 
             //Add EF Core Context (UnitOfWork)
             var connection = @"Server=(localdb)\mssqllocaldb;Database=Microsoft.eShopOnContainers.Services.OrderingDb;Trusted_Connection=True;";
-            services.AddDbContext<OrderingContext>(options => options.UseSqlServer(connection));
+            services.AddDbContext<OrderingDbContext>(options => options.UseSqlServer(connection));
+
+            services.AddTransient<IOrderRepository, OrderRepository>();
+            services.AddTransient<OrderingQueries, OrderingQueries>();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

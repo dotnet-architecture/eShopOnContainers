@@ -3,11 +3,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Microsoft.eShopOnContainers.Services.Ordering.API.UnitOfWork;
+using Microsoft.eShopOnContainers.Services.Ordering.SqlData.UnitOfWork;
 
 namespace Ordering.API.Migrations
 {
-    [DbContext(typeof(OrderingContext))]
+    [DbContext(typeof(OrderingDbContext))]
     [Migration("20160909202620_MyFirstMigration")]
     partial class MyFirstMigration
     {

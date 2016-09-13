@@ -3,9 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel;
+using Microsoft.eShopOnContainers.Services.Ordering.Domain.SeedWork;
+
 namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.RepositoryContracts
 {
-    interface IBuyerRepository
+    public interface IBuyerRepository : IRepository<Order>
     {
+        //TBD - To define Specific Actions Not In Base Repo
     }
 }
