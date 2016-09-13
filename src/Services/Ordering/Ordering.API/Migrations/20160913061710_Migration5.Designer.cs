@@ -8,9 +8,10 @@ using Microsoft.eShopOnContainers.Services.Ordering.SqlData.UnitOfWork;
 namespace Ordering.API.Migrations
 {
     [DbContext(typeof(OrderingDbContext))]
-    partial class OrderingContextModelSnapshot : ModelSnapshot
+    [Migration("20160913061710_Migration5")]
+    partial class Migration5
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.0-rtm-21431")

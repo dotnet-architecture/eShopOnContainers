@@ -27,5 +27,21 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.SqlData.UnitOfWork
             }
 
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            // Add your customizations after calling base.OnModelCreating(builder);
+
+            //Sequence to be used as part of the OrderNumber
+            modelBuilder.HasSequence<int>("OrderSequences", schema: "shared")
+                        .StartsAt(1001)
+                        .IncrementsBy(1);
+
+            modelBuilder.Entity<Order>()
+                .Property(o => o.SequenceNumber)
+                .HasDefaultValueSql("NEXT VALUE FOR shared.OrderSequences");
+
+        }
     }
 }

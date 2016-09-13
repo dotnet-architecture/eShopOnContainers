@@ -15,19 +15,16 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Controllers
     [Route("api/[controller]")]
     public class OrderingController : Controller
     {
-        private OrderingDbContext _context;
         private IOrderRepository _orderRepository;
         private OrderingQueries _queries;
 
         public OrderingController(IOrderRepository orderRepository,
-                                  OrderingQueries orderingQueries,
-                                  OrderingDbContext context)
+                                  OrderingQueries orderingQueries
+                                 )
         {
             //Injected objects from the IoC container
             _orderRepository = orderRepository;
             _queries = orderingQueries;
-
-            _context = context;
         }
 
 
@@ -42,28 +39,9 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Controllers
         
         // GET api/ordering/orders/xxxGUIDxxxx
         [HttpGet("orders/{orderId:Guid}")]
-        public async Task<IActionResult> GetOrderByGuid(Guid orderId)
+        public async Task<IActionResult> GetOrderById(Guid orderId)
         {
-            //var order = await _orderRepository.Get(orderId);
-
-            var order = await _context.Orders
-                                        .Include(o => o.ShippingAddress)
-                                        .Include(o => o.BillingAddress)
-                                        .Where(o => o.Id == orderId)
-                                        .SingleOrDefaultAsync<Order>();
-
-            // Dynamically generated a Response-Model that includes only the fields you need in the response. 
-            // This keeps the JSON response minimal.
-            // Could also use var
-            dynamic response = new
-            {
-                id = order.Id,
-                orderDate = order.OrderDate,
-                shippingAddress = order.ShippingAddress,
-                billingAddress = order.BillingAddress,
-                //items = order.Items.Select(i => i.Content)
-            };
-
+            dynamic response = await _queries.GetOrderById(orderId);
             return Ok(response);
         }
 

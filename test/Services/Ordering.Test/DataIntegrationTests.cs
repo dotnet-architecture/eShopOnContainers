@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Xunit;
 using Microsoft.eShopOnContainers.Services.Ordering.SqlData.UnitOfWork;
 using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel;
+using Microsoft.eShopOnContainers.Services.Ordering.Domain.RepositoryContracts;
+using Microsoft.eShopOnContainers.Services.Ordering.SqlData.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -15,49 +17,21 @@ namespace DataIntegrationTests
     // http://ef.readthedocs.io/en/latest/miscellaneous/testing.html 
     public class Tests
     {
-        private static DbContextOptions<OrderingDbContext> CreateNewContextOptionsForInMemoryDB()
-        {
-            // Create a fresh service provider, and therefore a fresh 
-            // InMemory database instance.
-            var serviceProvider = new ServiceCollection()
-                .AddEntityFrameworkInMemoryDatabase()
-                .BuildServiceProvider();
-
-            // Create a new options instance telling the context to use an
-            // InMemory database and the new service provider.
-            var builder = new DbContextOptionsBuilder<OrderingDbContext>();
-            builder.UseInMemoryDatabase()
-                   .UseInternalServiceProvider(serviceProvider);
-
-            return builder.Options;
-        }
-
-        private static DbContextOptions<OrderingDbContext> CreateNewContextOptionsForSqlDB()
-        {
-            // Create a new options instance telling the context to use a Sql database 
-            var builder = new DbContextOptionsBuilder<OrderingDbContext>();
-
-            //SQL LOCALDB
-            builder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=Microsoft.eShopOnContainers.Services.OrderingDb;Trusted_Connection=True;");
-
-            return builder.Options;
-        }
-
         [Fact]
-        public void Add_orders_to_database()
+        public void Add_order_to_data_model()
         {
             // All contexts that share the same service provider will share the same database
 
             //Using InMemory DB
-            var options = CreateNewContextOptionsForInMemoryDB();
+            //var options = DbContextUtil.CreateNewContextOptionsForInMemoryDB();
 
             //Using Sql LocalDB
-            //var options = CreateNewContextOptionsForSqlDB();
-            
+            var options = DbContextUtil.CreateNewContextOptionsForSqlDB();
 
             // Run the test against one instance of the context
             using (var context = new OrderingDbContext(options))
             {
+                IOrderRepository orderRepository = new OrderRepository(context);
 
                 //Create generic Address ValueObject
                 Address sampleAddress = new Address("15703 NE 61st Ct.",
@@ -72,10 +46,20 @@ namespace DataIntegrationTests
                                                     );
                 //Create sample Orders
                 Order order1 = new Order(Guid.NewGuid(), sampleAddress, sampleAddress);
-                context.Orders.Add(order1);
-                context.SaveChanges();
 
-                Assert.True(true);
+                //Add a few OrderItems
+                order1.AddNewOrderItem(Guid.NewGuid(), 2, 25, 30);
+                order1.AddNewOrderItem(Guid.NewGuid(), 1, 58, 0);
+                order1.AddNewOrderItem(Guid.NewGuid(), 1, 60, 0);
+                order1.AddNewOrderItem(Guid.NewGuid(), 3, 12, 0);
+                order1.AddNewOrderItem(Guid.NewGuid(), 5, 3, 0);
+
+                orderRepository.Add(order1);
+
+                //With no Async Repository
+                //context.Orders.Add(order1);
+                //context.SaveChanges();
+
             }
 
             //// Use a separate instance of the context to verify correct data was saved to database
@@ -87,7 +71,7 @@ namespace DataIntegrationTests
                                         .ToList();
                                         //Could be using .Load() if you don't want to create a List
 
-                //SAMPLE
+                //OTHER SAMPLE
                 //var company = context.Companies
                 //                         .Include(co => co.Employees).ThenInclude(emp => emp.Employee_Car)
                 //                         .Include(co => co.Employees).ThenInclude(emp => emp.Employee_Country)

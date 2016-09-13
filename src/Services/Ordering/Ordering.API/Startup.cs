@@ -39,7 +39,12 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API
 
             //Add EF Core Context (UnitOfWork)
             var connection = @"Server=(localdb)\mssqllocaldb;Database=Microsoft.eShopOnContainers.Services.OrderingDb;Trusted_Connection=True;";
-            services.AddDbContext<OrderingDbContext>(options => options.UseSqlServer(connection));
+            services.AddDbContext<OrderingDbContext>(options => options.UseSqlServer(connection)
+                                                                       .UseSqlServer(connection, b => b.MigrationsAssembly("Ordering.API"))
+                                                    //(CDLTLL) MigrationsAssembly will be Ordering.SqlData, but when supported
+                                                    //Standard Library 1.6 by "Microsoft.EntityFrameworkCore.Tools"
+                                                    //Version "1.0.0-preview2-final" just supports .NET Core 
+                                                    );
 
             services.AddTransient<IOrderRepository, OrderRepository>();
             services.AddTransient<OrderingQueries, OrderingQueries>();

@@ -20,6 +20,8 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel
             this.ShippingAddress = shippingAddress;
             this.BillingAddress = billingAddress;
             this.OrderDate = orderDate;
+
+            this.Status = OrderStatus.New;
         }
 
         //Infrastructure requisite - Parameterless constructor needed by EF
@@ -27,22 +29,32 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel
 
         //Order ID comes derived from the Entity base class
 
-        //List<OrderItem> _orderItems;
-        //public virtual List<OrderItem> orderItems
-        //{
-        //    get
-        //    {
-        //        if (_orderItems == null)
-        //            _orderItems = new List<OrderItem>();
+        List<OrderItem> _orderItems;
+        public virtual List<OrderItem> OrderItems
+        {
+            get
+            {
+                if (_orderItems == null)
+                    _orderItems = new List<OrderItem>();
 
-        //        return _orderItems;
-        //    }
+                return _orderItems;
+            }
 
-        //    private set
-        //    {
-        //        _orderItems = value;
-        //    }
-        //}
+            private set
+            {
+                _orderItems = value;
+            }
+        }
+
+        public string OrderNumber
+        {
+            get
+            {
+                return string.Format("{0}/{1}-{2}", OrderDate.Year, OrderDate.Month, SequenceNumber);
+            }
+        }
+
+        public int SequenceNumber { get; set; }
 
         public virtual Guid BuyerId { get; private set; }
 
@@ -54,5 +66,47 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel
 
         public virtual OrderStatus Status { get; private set; }
 
+        ////////////////////////////////////////////////////////////////////////////////////////
+        //Domain Rules and Logic in Order Aggregate-Root (Sample of a "NO ANEMIC DOMAIN MODEL" )
+        ////////////////////////////////////////////////////////////////////////////////////////
+
+        public OrderItem AddNewOrderItem(Guid productId, int quantity, decimal unitPrice, decimal discount)
+        {
+            //check preconditions
+            if (productId == Guid.Empty)
+                throw new ArgumentNullException("productId");
+
+            if (quantity <= 0)
+            {
+                throw new ArgumentException("The quantity of Product in an Order cannot be equal or less than cero");
+            }
+
+            //check discount values
+            if (discount < 0)
+                discount = 0;
+
+            if (discount > 100)
+                discount = 100;
+
+            //create new order line
+            var newOrderItem = new OrderItem()
+            {
+                OrderId = this.Id,
+                ProductId = productId,
+                Quantity = quantity,
+                FulfillmentRemaining = quantity,
+                Discount = discount,
+                UnitPrice = unitPrice
+            };
+
+            //set identity
+            newOrderItem.GenerateNewIdentity();
+
+            //add order item
+            this.OrderItems.Add(newOrderItem);
+
+            //return added orderline
+            return newOrderItem;
+        }
     }
 }
