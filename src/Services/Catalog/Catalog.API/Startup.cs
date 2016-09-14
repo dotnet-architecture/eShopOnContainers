@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.eShopOnContainers.Services.Catalog.API.Model;
+using Microsoft.EntityFrameworkCore;
 
 namespace Microsoft.eShopOnContainers.Services.Catalog.API
 {
@@ -16,8 +18,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+                .AddJsonFile("settings.json")
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
         }
@@ -27,8 +28,13 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<CatalogContext>(c => {
+                c.UseNpgsql(Configuration["ConnectionString"]);
+            });
+
             // Add framework services.
-            services.AddMvc();
+            services.AddMvcCore()
+                    .AddJsonFormatters();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,0 +1,9 @@
+version: '2'
+
+services:
+  microsoft.eshoponcontainers.webmvc:
+    labels:
+      - "com.microsoft.visualstudio.targetoperatingsystem=linux"
+    volumes:
+      - ~/clrdbg:/clrdbg:ro
+    entrypoint: tail -f /dev/null

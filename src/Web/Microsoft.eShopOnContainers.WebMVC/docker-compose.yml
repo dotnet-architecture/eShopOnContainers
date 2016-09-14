@@ -1,0 +1,10 @@
+version: '2'
+
+services:
+  microsoft.eshoponcontainers.webmvc:
+    image: user/microsoft.eshoponcontainers.webmvc${TAG}
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "80"
