@@ -8,3 +8,5 @@ services:
       dockerfile: Dockerfile
     ports:
       - "80:80"
+    extra_hosts:
+      - "CESARDLBOOKVHD:10.0.75.1"

@@ -12,3 +12,5 @@ services:
       - "80:80"
     volumes:
       - .:/app
+    extra_hosts:
+      - "CESARDLBOOKVHD:10.0.75.1"

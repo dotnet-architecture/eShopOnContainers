@@ -58,26 +58,29 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Controllers
 
         // POST api/ordering/orders/create
         [HttpPut("orders/create")]
-        public async Task<int> Post([FromBody]Order order)
+        public async Task<IActionResult> Post([FromBody]Order order)
         {
             _orderRepository.Add(order);
-            return await _orderRepository.UnitOfWork.CommitAsync();
+            int numChanges = await _orderRepository.UnitOfWork.CommitAsync();
+            return Ok(numChanges);
         }
 
         // PUT api/ordering/orders/xxxOrderGUIDxxxx/update
         [HttpPut("orders/{orderId:Guid}/update")]
-        public async Task<int> UpdateOrder(Guid orderID, [FromBody] Order orderToUpdate)
+        public async Task<IActionResult> UpdateOrder(Guid orderID, [FromBody] Order orderToUpdate)
         {
             _orderRepository.Update(orderToUpdate);
-            return await _orderRepository.UnitOfWork.CommitAsync();
+            int numChanges = await _orderRepository.UnitOfWork.CommitAsync();
+            return Ok(numChanges);
         }
 
         // DELETE api/ordering/orders/xxxOrderGUIDxxxx
         [HttpDelete("orders/{orderId:Guid}/remove")]
-        public async Task<int> Remove(Guid id)
+        public async Task<IActionResult> Remove(Guid id)
         {
             await _orderRepository.Remove(id);
-            return await _orderRepository.UnitOfWork.CommitAsync();
+            int numChanges = await _orderRepository.UnitOfWork.CommitAsync();
+            return Ok(numChanges);
         }
 
 
