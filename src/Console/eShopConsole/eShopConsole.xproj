@@ -6,8 +6,8 @@
   </PropertyGroup>
   <Import Project="$(VSToolsPath)\DotNet\Microsoft.DotNet.Props" Condition="'$(VSToolsPath)' != ''" />
   <PropertyGroup Label="Globals">
-    <ProjectGuid>231226ce-690b-4979-8870-9a79d80928e2</ProjectGuid>
-    <RootNamespace>Microsoft.eShopOnContainers.Services.Ordering.API</RootNamespace>
+    <ProjectGuid>c10c7b69-ce4f-4167-928e-33b7fa1dffc7</ProjectGuid>
+    <RootNamespace>eShopConsole</RootNamespace>
     <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'=='' ">.\obj</BaseIntermediateOutputPath>
     <OutputPath Condition="'$(OutputPath)'=='' ">.\bin\</OutputPath>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
@@ -18,5 +18,5 @@
   </PropertyGroup>
   <Import Project="Properties\Docker.props" />
   <Import Project="Properties\Docker.targets" />
-  <Import Project="$(VSToolsPath)\DotNet.Web\Microsoft.DotNet.Web.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(VSToolsPath)\DotNet\Microsoft.DotNet.targets" Condition="'$(VSToolsPath)' != ''" />
 </Project>

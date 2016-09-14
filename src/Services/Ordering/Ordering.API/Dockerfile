@@ -6,27 +6,25 @@
 # Set the Working Directory
 WORKDIR /app
 
-# Configure the listening port to 88
-ENV ASPNETCORE_URLS http://*:88
+# Configure the listening port to 80
+ENV ASPNETCORE_URLS http://*:80
 
 # Open port exposed by Docker
-EXPOSE 88/tcp
+EXPOSE 80/tcp
 
 # Copy the app
 COPY . /app
 
 #################
-
 # Restore NuGet packages
-RUN ["dotnet", "restore"]
+#RUN ["dotnet", "restore"]
 
 # Build the .NET Core app
-RUN ["dotnet", "build"]
+#RUN ["dotnet", "build"]
 
 # Entrypoint
-ENTRYPOINT ["dotnet", "run"]
-
+#ENTRYPOINT ["dotnet", "run"]
 #################
 
 # Entry point through the copied assembly 
-#ENTRYPOINT dotnet Ordering.API.dll
+ENTRYPOINT dotnet Ordering.API.dll

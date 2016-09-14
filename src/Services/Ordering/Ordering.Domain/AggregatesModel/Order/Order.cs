@@ -7,7 +7,7 @@ using Microsoft.eShopOnContainers.Services.Ordering.Domain.SeedWork;
 
 namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel
 {
-    public class Order : AggregateRoot
+    public class Order : Entity, IAggregateRoot
     {
         public Order(Guid buyerId, Address shippingAddress, Address billingAddress)
               : this(buyerId, shippingAddress, billingAddress, DateTime.UtcNow)

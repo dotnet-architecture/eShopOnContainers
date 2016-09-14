@@ -7,10 +7,17 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.eShopOnContainers.Services.Ordering.SqlData.UnitOfWork;
 using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel;
+using Microsoft.eShopOnContainers.Services.Ordering.SqlData.Queries;
 
 namespace Microsoft.eShopOnContainers.Services.Ordering.SqlData.Queries
 {
-    public class OrderingQueries
+    //In this case, for the Application queries, we're using the same EF Context but another good approach
+    //is also to simply use SQL sentences for the queries with any Micro-ORM (like Dapper) or even just ADO.NET
+    //
+    //The point is that Queries are IDEMPOTENT and don't need to commit to DDD Domain restrictions 
+    //so could be implemented in a completely orthogonal way in regards the Domain Layer (à la CQRS)
+
+    public class OrderingQueries : IOrderdingQueries
     {
         private OrderingDbContext _dbContext;
 

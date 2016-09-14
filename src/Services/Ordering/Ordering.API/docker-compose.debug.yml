@@ -1,0 +1,14 @@
+version: '2'
+
+services:
+  microsoft.eshoponcontainers.services.ordering.api:
+    image: username/microsoft.eshoponcontainers.services.ordering.api:Debug
+    build:
+      context: .
+      dockerfile: Dockerfile.debug
+    environment:
+      - REMOTE_DEBUGGING=${REMOTE_DEBUGGING}
+    ports:
+      - "80:80"
+    volumes:
+      - .:/app

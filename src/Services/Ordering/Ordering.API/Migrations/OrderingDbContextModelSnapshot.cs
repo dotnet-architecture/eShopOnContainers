@@ -8,7 +8,7 @@ using Microsoft.eShopOnContainers.Services.Ordering.SqlData.UnitOfWork;
 namespace Ordering.API.Migrations
 {
     [DbContext(typeof(OrderingDbContext))]
-    partial class OrderingContextModelSnapshot : ModelSnapshot
+    partial class OrderingDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {

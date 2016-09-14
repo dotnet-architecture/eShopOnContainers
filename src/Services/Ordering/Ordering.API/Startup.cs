@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 
 using Microsoft.eShopOnContainers.Services.Ordering.SqlData.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.eShopOnContainers.Services.Ordering.Domain.RepositoryContracts;
+using Microsoft.eShopOnContainers.Services.Ordering.Domain.Contracts;
 using Microsoft.eShopOnContainers.Services.Ordering.SqlData.Repositories;
 using Microsoft.eShopOnContainers.Services.Ordering.SqlData.Queries;
 
@@ -38,17 +38,27 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API
             services.AddMvc();
 
             //Add EF Core Context (UnitOfWork)
-            var connection = @"Server=(localdb)\mssqllocaldb;Database=Microsoft.eShopOnContainers.Services.OrderingDb;Trusted_Connection=True;";
-            services.AddDbContext<OrderingDbContext>(options => options.UseSqlServer(connection)
-                                                                       .UseSqlServer(connection, b => b.MigrationsAssembly("Ordering.API"))
+            //SQL LocalDB 
+            // var connString = @"Server=(localdb)\mssqllocaldb;Database=Microsoft.eShopOnContainers.Services.OrderingDb;Trusted_Connection=True;";
+
+            //SQL SERVER on-premises
+            //(Integrated Security)
+            //var connString = @"Server=CESARDLBOOKVHD;Database=Microsoft.eShopOnContainers.Services.OrderingDb;Trusted_Connection=True;";
+
+            //(SQL Server Authentication)
+            var connString = @"Server=CESARDLBOOKVHD;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word;";
+            
+            //(TBD) connString = config.GetConnectionString("SqlStandardAuthentication.OrderingDb");
+
+            services.AddDbContext<OrderingDbContext>(options => options.UseSqlServer(connString)
+                                                                       .UseSqlServer(connString, b => b.MigrationsAssembly("Ordering.API"))
                                                     //(CDLTLL) MigrationsAssembly will be Ordering.SqlData, but when supported
                                                     //Standard Library 1.6 by "Microsoft.EntityFrameworkCore.Tools"
                                                     //Version "1.0.0-preview2-final" just supports .NET Core 
                                                     );
 
             services.AddTransient<IOrderRepository, OrderRepository>();
-            services.AddTransient<OrderingQueries, OrderingQueries>();
-            
+            services.AddTransient<IOrderdingQueries, OrderingQueries>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -57,6 +67,9 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
+            //if (env.IsDevelopment())
+                app.UseDeveloperExceptionPage();
+            
             app.UseMvc();
         }
     }

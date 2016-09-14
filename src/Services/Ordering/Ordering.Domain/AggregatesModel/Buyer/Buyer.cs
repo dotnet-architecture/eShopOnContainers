@@ -3,7 +3,7 @@ using Microsoft.eShopOnContainers.Services.Ordering.Domain.SeedWork;
 
 namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel
 {
-        public class Buyer : AggregateRoot
+        public class Buyer : Entity, IAggregateRoot
         {
             public Buyer(Guid buyerId, string name, string lastName, string email, Address address, string phoneNumber)
             {

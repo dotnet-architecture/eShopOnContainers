@@ -1,0 +1,5 @@
+# Docker support files
+docker-compose.yml
+docker-compose.debug.yml
+Dockerfile
+Dockerfile.debug

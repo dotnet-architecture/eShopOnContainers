@@ -1,20 +1,16 @@
 ﻿using System;
 using System.Linq;
-using Xunit;
 using Microsoft.eShopOnContainers.Services.Ordering.SqlData.UnitOfWork;
 using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel;
 using Microsoft.eShopOnContainers.Services.Ordering.Domain.Contracts;
 using Microsoft.eShopOnContainers.Services.Ordering.SqlData.Repositories;
 using Microsoft.EntityFrameworkCore;
 
-namespace DataIntegrationTests
+namespace eShopConsole
 {
-    //Basic documentation for Testing EF Core classes
-    // http://ef.readthedocs.io/en/latest/miscellaneous/testing.html 
-    public class Tests
+    public class Program
     {
-        [Fact]
-        public async void Add_order_to_data_model()
+        public static void Main(string[] args)
         {
             // All contexts that share the same service provider will share the same database
 
@@ -51,7 +47,7 @@ namespace DataIntegrationTests
                 order1.AddNewOrderItem(Guid.NewGuid(), 5, 3, 0);
 
                 orderRepository.Add(order1);
-                int numChanges = await orderRepository.UnitOfWork.CommitAsync();
+                orderRepository.UnitOfWork.CommitAsync();
 
                 //With no Async Repository
                 //context.Orders.Add(order1);
@@ -78,9 +74,8 @@ namespace DataIntegrationTests
                 //Assert.Equal(1, context.Orders.Count());
 
                 string cityName = orders.First<Order>().ShippingAddress.City;
-                Assert.Equal("Redmond", cityName);
+                Console.WriteLine(cityName);
             }
         }
-
     }
 }

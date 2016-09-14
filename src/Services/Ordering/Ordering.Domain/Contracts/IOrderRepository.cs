@@ -6,13 +6,15 @@ using System.Threading.Tasks;
 using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel;
 using Microsoft.eShopOnContainers.Services.Ordering.Domain.SeedWork;
 
-namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.RepositoryContracts
+
+namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.Contracts
 {
-    public interface IOrderRepository : IRepository<Order>
+    public interface IOrderRepository : IRepository
     {
-        //TBD - To define Specific Actions Not In Base Repo
-
-        Task<int> Remove(Guid id);
+        void Add(Order order);
+        void Update(Order order);
+        Task Remove(Guid id);
+        Task<Order> FindAsync(Guid id);
     }
-
 }
+

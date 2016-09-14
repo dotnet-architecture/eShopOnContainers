@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.eShopOnContainers.Services.Ordering.SqlData.UnitOfWork;
 using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.eShopOnContainers.Services.Ordering.Domain.RepositoryContracts;
+using Microsoft.eShopOnContainers.Services.Ordering.Domain.Contracts;
 using Microsoft.eShopOnContainers.Services.Ordering.SqlData.Queries;
 
 namespace Microsoft.eShopOnContainers.Services.Ordering.API.Controllers
@@ -16,15 +16,19 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Controllers
     public class OrderingController : Controller
     {
         private IOrderRepository _orderRepository;
-        private OrderingQueries _queries;
+        private IOrderdingQueries _queries;
+
+        //private OrderingDbContext _context;
 
         public OrderingController(IOrderRepository orderRepository,
-                                  OrderingQueries orderingQueries
+                                  IOrderdingQueries orderingQueries //,
+                                  //OrderingDbContext context
                                  )
         {
             //Injected objects from the IoC container
             _orderRepository = orderRepository;
             _queries = orderingQueries;
+            //_context = context;
         }
 
 
@@ -45,6 +49,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Controllers
             return Ok(response);
         }
 
+        //(CDLTLL) - Using parameters
         //Alternate method if using several parameters instead of part of the URL
         // GET api/ordering/orders/?orderId=xxxGUIDxxx&otherParam=value
         //[HttpGet("orders")]
@@ -55,34 +60,63 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Controllers
         [HttpPut("orders/create")]
         public async Task<int> Post([FromBody]Order order)
         {
-            return await _orderRepository.Add(order);
-
-            //_context.Orders.Add(order);
-            //return await _context.SaveChangesAsync();
+            _orderRepository.Add(order);
+            return await _orderRepository.UnitOfWork.CommitAsync();
         }
 
         // PUT api/ordering/orders/xxxOrderGUIDxxxx/update
         [HttpPut("orders/{orderId:Guid}/update")]
         public async Task<int> UpdateOrder(Guid orderID, [FromBody] Order orderToUpdate)
         {
-            return await _orderRepository.Add(orderToUpdate);
-
-            //_context.Orders.Update(orderToUpdate);
-            //return await _context.SaveChangesAsync();
+            _orderRepository.Update(orderToUpdate);
+            return await _orderRepository.UnitOfWork.CommitAsync();
         }
 
         // DELETE api/ordering/orders/xxxOrderGUIDxxxx
-        [HttpDelete("orders/{orderId:Guid}/delete")]
-        public async Task<int> Delete(Guid id)
+        [HttpDelete("orders/{orderId:Guid}/remove")]
+        public async Task<int> Remove(Guid id)
         {
-            return await _orderRepository.Remove(id);
+            await _orderRepository.Remove(id);
+            return await _orderRepository.UnitOfWork.CommitAsync();
+        }
 
-            //Order orderToDelete = _context.Orders
-            //                                     .Where(o => o.Id == id)
-            //                                     .SingleOrDefault();
 
-            //_context.Orders.Remove(orderToDelete);
-            //return await _context.SaveChangesAsync();
+        // GET api/ordering/orders/add_test_data_and_get_all
+        [HttpGet("orders/add_test_data_and_get_all")]
+        public async Task<IActionResult> AddTestDataAndGetAllOrders()
+        {
+            //TEST ADDING ORDERS *********************************
+            //Create generic Address ValueObject
+            Address sampleAddress = new Address("15703 NE 61st Ct.",
+                                                "Redmond",
+                                                "Washington",
+                                                "WA",
+                                                "United States",
+                                                "US",
+                                                "98052",
+                                                47.661492,
+                                                -122.131309
+                                                );
+            //Create sample Orders
+            Order order1 = new Order(Guid.NewGuid(), sampleAddress, sampleAddress);
+
+            //Add a few OrderItems
+            order1.AddNewOrderItem(Guid.NewGuid(), 2, 25, 30);
+            order1.AddNewOrderItem(Guid.NewGuid(), 1, 58, 0);
+            order1.AddNewOrderItem(Guid.NewGuid(), 1, 60, 0);
+            order1.AddNewOrderItem(Guid.NewGuid(), 3, 12, 0);
+            order1.AddNewOrderItem(Guid.NewGuid(), 5, 3, 0);
+
+            _orderRepository.Add(order1);
+            int numRecs = await _orderRepository.UnitOfWork.CommitAsync();
+
+            //_context.Orders.Add(order1);
+            //_context.SaveChanges();
+
+            //*****************************************************
+
+            dynamic response = await _queries.GetAllOrdersIncludingValueObjectsAndChildEntities();
+            return Ok(response);
         }
 
     }

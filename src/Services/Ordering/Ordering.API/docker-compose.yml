@@ -1,0 +1,10 @@
+version: '2'
+
+services:
+  microsoft.eshoponcontainers.services.ordering.api:
+    image: username/microsoft.eshoponcontainers.services.ordering.api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"

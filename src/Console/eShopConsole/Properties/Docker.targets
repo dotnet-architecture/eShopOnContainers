@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <NoDockerCache>False</NoDockerCache>
+  </PropertyGroup>
+
+  <!-- These properties coordinate the targets used for calling docker commands -->
+  <PropertyGroup>
+    <DockerBuildDependsOn>
+      SetDockerProps;
+      CoreDockerBuild;
+    </DockerBuildDependsOn>
+    <DockerCleanDependsOn>
+      SetDockerProps;
+      CoreDockerClean;
+    </DockerCleanDependsOn>
+    <DockerBeforeRebuildDependsOn>
+      SetDockerProps;
+      CoreDockerBeforeRebuild;
+    </DockerBeforeRebuildDependsOn>
+  </PropertyGroup>
+
+  <!-- This target dynamically sets the DockerBuild property based on the ActiveDebugProfile so that docker commands will only be invoked when targeting docker -->
+  <Target Name="SetDockerProps">
+    <PropertyGroup>
+      <DockerBuild Condition=" '$(DockerBuild)'=='' And ('$(ActiveDebugProfile)' == 'Docker' Or '$(ActiveDebugProfile)' == '')">True</DockerBuild>
+    </PropertyGroup>
+  </Target>
+
+  <!-- This target takes care of reporting failures from calling the powershell script in CoreDockerBuild -->
+  <Target Name="CoreDockerBuildFailed">
+    <Error File="$(MSBuildProjectDirectory)\DockerTask.ps1" Text="Error Running: $(DockerBuildCommand). See the output window for details."></Error>
+  </Target>
+
+  <!-- These targets take care of buiding the docker image as part of the project's build -->
+  <Target Name="DockerBuild" AfterTargets="Build" DependsOnTargets="$(DockerBuildDependsOn)" />
+  <Target Name="CoreDockerBuild" Condition="'$(DockerBuild)'=='True'">
+    <PropertyGroup>
+      <DockerBuildCommand>powershell -NonInteractive -ExecutionPolicy RemoteSigned .\DockerTask.ps1 -Build -Environment $(Configuration) -Machine '$(DockerMachineName)' -ClrDebugVersion VS2015U2</DockerBuildCommand>
+      <DockerBuildCommand Condition="'$(NoDockerCache)'=='True'">$(DockerBuildCommand) -NoCache</DockerBuildCommand>
+    </PropertyGroup>
+    <Message Importance="high" Text="$(DockerBuildCommand)" />
+    <Exec
+      WorkingDirectory="$(MSBuildProjectDirectory)"
+      Command="$(DockerBuildCommand)" />
+    <OnError ExecuteTargets="CoreDockerBuildFailed"/>
+  </Target>
+
+  <!-- This target takes care of reporting failures from calling the powershell script in CoreDockerClean -->
+  <Target Name="CoreDockerCleanFailed">
+    <Error File="$(MSBuildProjectDirectory)\DockerTask.ps1" Text="Error Running: $(DockerCleanCommand). See the output window for details."></Error>
+  </Target>
+
+  <!-- These targets take care of buiding the docker image as part of the project's clean -->
+  <Target Name="DockerClean" AfterTargets="Clean" DependsOnTargets="$(DockerCleanDependsOn)" />
+  <Target Name="CoreDockerClean" Condition="'$(DockerBuild)'=='True'">
+    <PropertyGroup>
+      <DockerCleanCommand>powershell -NonInteractive -ExecutionPolicy RemoteSigned .\DockerTask.ps1 -Clean -Environment $(Configuration) -Machine '$(DockerMachineName)'</DockerCleanCommand>
+    </PropertyGroup>
+    <Message Importance="high" Text="$(DockerCleanCommand)" />
+    <Exec
+      WorkingDirectory="$(MSBuildProjectDirectory)"
+      Command="$(DockerCleanCommand)" />
+    <OnError ExecuteTargets="CoreDockerCleanFailed"/>
+  </Target>
+
+  <!-- These targets take care of buiding the docker image as part of the project's rebuild -->
+  <Target Name="DockerBeforeRebuild" BeforeTargets="BeforeRebuild" DependsOnTargets="$(DockerBeforeRebuildDependsOn)" />
+  <Target Name="CoreDockerBeforeRebuild" Condition="'$(DockerBuild)'=='True'">
+    <!-- DockerBuild will be called later, just need to change it to not used the cached images -->
+    <PropertyGroup>
+      <NoDockerCache>True</NoDockerCache>
+    </PropertyGroup>
+  </Target>
+</Project>

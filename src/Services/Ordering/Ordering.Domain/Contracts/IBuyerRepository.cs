@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel;
 using Microsoft.eShopOnContainers.Services.Ordering.Domain.SeedWork;
 
-namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.RepositoryContracts
+namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.Contracts
 {
-    public interface IBuyerRepository : IRepository<Order>
+    public interface IBuyerRepository : IRepository
     {
         //TBD - To define Specific Actions Not In Base Repo
     }

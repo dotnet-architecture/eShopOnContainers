@@ -1,0 +1,24 @@
+FROM microsoft/dotnet:1.0.0-preview2-sdk
+
+ENV NUGET_XMLDOC_MODE skip
+
+# Install debugging components
+ARG CLRDBG_VERSION=VS2015U2
+WORKDIR /clrdbg
+RUN curl -SL https://raw.githubusercontent.com/Microsoft/MIEngine/getclrdbg-release/scripts/GetClrDbg.sh --output GetClrDbg.sh \
+    && chmod 700 GetClrDbg.sh \
+    && ./GetClrDbg.sh $CLRDBG_VERSION \
+    && rm GetClrDbg.sh
+
+# Set the Working Directory
+WORKDIR /app
+
+# Configure the listening port to 80
+ENV ASPNETCORE_URLS http://*:80
+EXPOSE 80
+
+# Copy the app
+COPY . /app
+
+# If we are launching through a remote debugger wait for it, otherwise start the app
+ENTRYPOINT ["/bin/bash", "-c", "if [ \"$REMOTE_DEBUGGING\" -eq 0 ]; then dotnet Ordering.API.dll; else sleep infinity; fi"]

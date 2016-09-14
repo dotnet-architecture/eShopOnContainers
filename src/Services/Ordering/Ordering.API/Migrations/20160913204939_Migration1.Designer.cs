@@ -8,8 +8,8 @@ using Microsoft.eShopOnContainers.Services.Ordering.SqlData.UnitOfWork;
 namespace Ordering.API.Migrations
 {
     [DbContext(typeof(OrderingDbContext))]
-    [Migration("20160913052800_Migration4")]
-    partial class Migration4
+    [Migration("20160913204939_Migration1")]
+    partial class Migration1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -74,6 +74,30 @@ namespace Ordering.API.Migrations
                     b.ToTable("Orders");
                 });
 
+            modelBuilder.Entity("Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<decimal>("Discount");
+
+                    b.Property<int>("FulfillmentRemaining");
+
+                    b.Property<Guid>("OrderId");
+
+                    b.Property<Guid>("ProductId");
+
+                    b.Property<int>("Quantity");
+
+                    b.Property<decimal>("UnitPrice");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("OrderItem");
+                });
+
             modelBuilder.Entity("Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.Order", b =>
                 {
                     b.HasOne("Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.Address", "BillingAddress")
@@ -83,6 +107,14 @@ namespace Ordering.API.Migrations
                     b.HasOne("Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.Address", "ShippingAddress")
                         .WithMany()
                         .HasForeignKey("ShippingAddressId");
+                });
+
+            modelBuilder.Entity("Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderItem", b =>
+                {
+                    b.HasOne("Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.Order")
+                        .WithMany("OrderItems")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
         }
     }

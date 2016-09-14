@@ -3,37 +3,48 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using Microsoft.eShopOnContainers.Services.Ordering.SqlData.SeedWork;
 using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel;
-using Microsoft.eShopOnContainers.Services.Ordering.Domain.RepositoryContracts;
+using Microsoft.eShopOnContainers.Services.Ordering.Domain.Contracts;
 using Microsoft.eShopOnContainers.Services.Ordering.SqlData.UnitOfWork;
+using Microsoft.eShopOnContainers.Services.Ordering.Domain.SeedWork;
+using Microsoft.EntityFrameworkCore;
 
 namespace Microsoft.eShopOnContainers.Services.Ordering.SqlData.Repositories
 {
     //1:1 relationship between Repository and Aggregate (i.e. OrderRepository and Order)
-    public class OrderRepository
-    : Repository<Order>, IOrderRepository
+    public class OrderRepository : IOrderRepository
     {
-        public OrderRepository(OrderingDbContext unitOfWork)
-            : base(unitOfWork) { }
+        private readonly OrderingDbContext _context;
 
-        //TBD - To define Specific Actions Not In Base Repository class
+        public IUnitOfWork UnitOfWork => _context;
 
-        public async Task<int> Remove(Guid orderId)
+        public OrderRepository(OrderingDbContext orderingDbContext)
         {
-            if (orderId == null)
-                return 0;
+            _context = orderingDbContext;
+        }
 
-            Order orderToDelete = await this.Get(orderId);
+        public void Add(Order order)
+        {
+            _context.Orders.Add(order);
+        }
 
+        public void Update(Order order)
+        {
+            _context.Orders.Update(order);
+        }
 
-            //attach item if not exist
-            _unitOfWork.Attach(orderToDelete);
+        public async Task Remove(Guid orderId)
+        {
+            var orderToRemove = await _context.Orders.Where(o => o.Id == orderId).SingleOrDefaultAsync();
+            _context.Orders.Remove(orderToRemove);
+        }
 
-            //set as "removed"
-            _unitOfWork.Remove(orderToDelete);
-
-            return await _unitOfWork.SaveChangesAsync();
+        public async Task<Order> FindAsync(Guid id)
+        {
+            if (id != Guid.Empty)
+                return await _context.Set<Order>().FirstOrDefaultAsync(o => o.Id == id);
+            else
+                return null;
         }
     }
 

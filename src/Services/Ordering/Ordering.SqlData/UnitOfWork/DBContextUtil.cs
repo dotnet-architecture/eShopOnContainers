@@ -26,13 +26,23 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.SqlData.UnitOfWork
             return builder.Options;
         }
 
-        public static DbContextOptions<OrderingDbContext> CreateNewContextOptionsForSqlDB()
+        public static DbContextOptions<OrderingDbContext> CreateNewContextOptionsForSqlDb()
         {
             // Create a new options instance telling the context to use a Sql database 
             var builder = new DbContextOptionsBuilder<OrderingDbContext>();
 
+            //SQL LocalDB 
+            //var connString = @"Server=(localdb)\mssqllocaldb;Database=Microsoft.eShopOnContainers.Services.OrderingDb;Trusted_Connection=True;";
+
+            //SQL SERVER on-premises
+
+            //(Integrated Security) var connString = @"Server=CESARDLBOOKVHD;Database=Microsoft.eShopOnContainers.Services.OrderingDb;Trusted_Connection=True;";
+
+            //(SQL Server Authentication)
+            var connString = @"Server=CESARDLBOOKVHD;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word;";
+
             //SQL LOCALDB
-            builder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=Microsoft.eShopOnContainers.Services.OrderingDb;Trusted_Connection=True;");
+            builder.UseSqlServer(connString);
 
             return builder.Options;
         }
