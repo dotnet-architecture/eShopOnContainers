@@ -9,6 +9,7 @@ services:
       - "80:80"
     depends_on:
       - catalog.api
+
   catalog.api:
     image: eshop/catalog.api
     environment:
@@ -17,5 +18,17 @@ services:
       - "80"
     depends_on:
       - catalogdata
+
   catalogdata:
     image: glennc/eshopdata
+
+  ordering.api:
+    image: eshop/ordering.api
+    environment:
+      - ConnectionString=TBD
+    expose:
+      - "80"
+    ports:
+      - "81:80"
+    extra_hosts:
+      - "CESARDLBOOKVHD:10.0.75.1"

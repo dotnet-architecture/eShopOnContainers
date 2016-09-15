@@ -1,12 +1,11 @@
 version: '2'
 
 services:
-  microsoft.eshoponcontainers.services.ordering.api:
-    image: username/microsoft.eshoponcontainers.services.ordering.api
-    build:
-      context: .
-      dockerfile: Dockerfile
+  ordering.api:
+    image: eshop/ordering.api
+    environment:
+      - ConnectionString=TBD
     ports:
-      - "80:80"
+      - "81:80"
     extra_hosts:
       - "CESARDLBOOKVHD:10.0.75.1"

@@ -1,30 +1,30 @@
-﻿FROM microsoft/dotnet:1.0.0-preview2-sdk
+﻿FROM microsoft/aspnetcore
+# Other .NET images
+# FROM microsoft/dotnet:1.0.0-preview2-sdk
+# FROM microsoft/dotnet:1.0.0-core
 
-#Lighter image if copying the compiled app and entrypoint as ENTRYPOINT dotnet Ordering.API.dll
-#FROM microsoft/dotnet:1.0.0-core
-
-# Set the Working Directory
 WORKDIR /app
+EXPOSE 80
 
 # Configure the listening port to 80
-ENV ASPNETCORE_URLS http://*:80
+# ENV ASPNETCORE_URLS http://*:80
 
-# Open port exposed by Docker
-EXPOSE 80/tcp
+ADD . /app
+# COPY . /app
 
-# Copy the app
-COPY . /app
+# Entry point through the copied assembly 
+ENTRYPOINT dotnet Ordering.API.dll
 
 #################
+# Entry point running the SDK --> Requires heavy Docker .NET image, not for production
 # Restore NuGet packages
 #RUN ["dotnet", "restore"]
-
 # Build the .NET Core app
 #RUN ["dotnet", "build"]
-
 # Entrypoint
 #ENTRYPOINT ["dotnet", "run"]
 #################
 
-# Entry point through the copied assembly 
-ENTRYPOINT dotnet Ordering.API.dll
+
+
+
