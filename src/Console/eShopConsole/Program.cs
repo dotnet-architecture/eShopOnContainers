@@ -62,19 +62,9 @@ namespace eShopConsole
                                         .Include(o => o.ShippingAddress)
                                         .Include(o => o.BillingAddress)
                                         .ToList();
-                //Could be using .Load() if you don't want to create a List
-
-                //OTHER SAMPLE
-                //var company = context.Companies
-                //                         .Include(co => co.Employees).ThenInclude(emp => emp.Employee_Car)
-                //                         .Include(co => co.Employees).ThenInclude(emp => emp.Employee_Country)
-                //                         .FirstOrDefault(co => co.companyID == companyID);
-
-                //Assert when running test with a clean In-Memory DB
-                //Assert.Equal(1, context.Orders.Count());
 
                 string cityName = orders.First<Order>().ShippingAddress.City;
-                Console.WriteLine(cityName);
+                Console.WriteLine("City name retreived from SQL Server: "+cityName);
             }
         }
     }

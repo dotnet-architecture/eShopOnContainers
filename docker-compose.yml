@@ -26,8 +26,6 @@ services:
     image: eshop/ordering.api
     environment:
       - ConnectionString=TBD
-    expose:
-      - "80"
     ports:
       - "81:80"
     extra_hosts:

@@ -17,6 +17,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseIISIntegration()
                 .UseStartup<Startup>()
+                //.UseUrls("http://localhost:5555")  //Just for KESTREL
                 .Build();
 
             host.Run();

@@ -2,6 +2,8 @@
 # Other .NET images
 # FROM microsoft/dotnet:1.0.0-preview2-sdk
 # FROM microsoft/dotnet:1.0.0-core
+# FROM microsoft/aspnetcore
+# FROM microsoft/dotnet:1.0.0-preview2-windowsservercore-sdk
 
 WORKDIR /app
 EXPOSE 80
