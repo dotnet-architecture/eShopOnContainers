@@ -30,3 +30,10 @@ services:
       - "81:80"
     extra_hosts:
       - "CESARDLBOOKVHD:10.0.75.1"
+    depends_on:
+      - ordering.data
+
+  ordering.data:
+    image: eshop/ordering.data.sqlserver.linux
+    ports:
+      - "1433:1433"
