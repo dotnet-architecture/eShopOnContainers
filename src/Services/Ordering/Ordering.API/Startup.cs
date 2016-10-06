@@ -46,9 +46,9 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API
             //var connString = @"Server=CESARDLBOOKVHD;Database=Microsoft.eShopOnContainers.Services.OrderingDb;Trusted_Connection=True;";
 
             //(SQL Server Authentication)
-            var connString = @"Server=10.0.75.1;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word;";
-            
-            //(TBD) connString = config.GetConnectionString("SqlStandardAuthentication.OrderingDb");
+            //var connString = @"Server=10.0.75.1;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word;";
+
+            var connString = Configuration["ConnectionString"];
 
             services.AddDbContext<OrderingDbContext>(options => options.UseSqlServer(connString)
                                                                        .UseSqlServer(connString, b => b.MigrationsAssembly("Ordering.API"))

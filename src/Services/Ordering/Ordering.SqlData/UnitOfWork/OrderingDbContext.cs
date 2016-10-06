@@ -16,6 +16,8 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.SqlData.UnitOfWork
 
         public DbSet<Order> Orders { get; set; }
 
+        //(CDLTLL) Probably delete, not using it for now
+        /*
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             //If running from ASP.NET Core, config is done at StartUp.cs --> ConfigureServices() outside 
@@ -39,6 +41,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.SqlData.UnitOfWork
             }
 
         }
+        */
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

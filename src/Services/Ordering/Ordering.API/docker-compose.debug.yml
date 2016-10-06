@@ -2,14 +2,15 @@ version: '2'
 
 services:
   microsoft.eshoponcontainers.services.ordering.api:
-    image: username/microsoft.eshoponcontainers.services.ordering.api:Debug
+    image: eshop/ordering.api:Debug
     build:
       context: .
       dockerfile: Dockerfile.debug
     environment:
       - REMOTE_DEBUGGING=${REMOTE_DEBUGGING}
+      - ConnectionString=Server=10.0.75.1;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word
     ports:
-      - "80:80"
+      - "81:80"
     volumes:
       - .:/app
     extra_hosts:

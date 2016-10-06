@@ -25,7 +25,7 @@ services:
   ordering.api:
     image: eshop/ordering.api
     environment:
-      - ConnectionString=TBD
+      - ConnectionString=Server=10.0.75.1;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word
     ports:
       - "81:80"
     extra_hosts:
