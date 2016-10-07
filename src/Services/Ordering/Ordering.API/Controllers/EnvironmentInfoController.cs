@@ -15,7 +15,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Controllers
         {
             return new
             {
-                Node = Environment.MachineName
+                InstanceName = Environment.MachineName
             };
         }
 

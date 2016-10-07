@@ -2,7 +2,7 @@ version: '2'
 
 services:
   eshopconsole:
-    image: username/eshopconsole
+    image: user/eshopconsole${TAG}
     build:
       context: .
       dockerfile: Dockerfile

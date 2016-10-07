@@ -1,10 +1,5 @@
-FROM microsoft/dotnet:1.0.0-core
-
-# Set the Working Directory
+FROM microsoft/dotnet:1.0.1-core
+ENTRYPOINT ["dotnet", "eShopConsole.dll"]
+ARG source=.
 WORKDIR /app
-
-# Copy the app
-COPY . /app
-
-# Start the app
-ENTRYPOINT dotnet eShopConsole.dll
+COPY $source .

@@ -7,8 +7,15 @@ services:
       context: .
       dockerfile: Dockerfile
     environment:
-      - ConnectionString=Server=10.0.75.1;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word
+      - ConnectionString=Server=ordering.data;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word
     ports:
       - "81:80"
     extra_hosts:
       - "CESARDLBOOKVHD:10.0.75.1"
+    depends_on:
+      - ordering.data
+
+  ordering.data:
+    image: eshop/ordering.data.sqlserver.linux
+    ports:
+      - "1433:1433"
