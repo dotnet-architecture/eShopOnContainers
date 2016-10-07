@@ -2,7 +2,10 @@ version: '2'
 
 services:
   ordering.api:
-    image: eshop/ordering.api
+    image: eshop/ordering.api${TAG}
+    build:
+      context: .
+      dockerfile: Dockerfile
     environment:
       - ConnectionString=Server=10.0.75.1;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word
     ports:

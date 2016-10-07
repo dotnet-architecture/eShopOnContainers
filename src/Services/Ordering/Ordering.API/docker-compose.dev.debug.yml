@@ -1,0 +1,17 @@
+version: '2'
+
+services:
+  ordering.api:
+    build:
+      args:
+        source: obj/Docker/empty/
+    labels:
+      - "com.microsoft.visualstudio.targetoperatingsystem=linux"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - DOTNET_USE_POLLING_FILE_WATCHER=1
+    volumes:
+      - .:/app
+      - ~/.nuget/packages:/root/.nuget/packages:ro
+      - ~/clrdbg:/clrdbg:ro
+    entrypoint: tail -f /dev/null
