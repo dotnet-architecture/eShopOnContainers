@@ -1,7 +1,7 @@
 #!/bin/sh
 #dotnet restore
 rm -rf ./pub
-dotnet publish "$(pwd)/src/Web/Microsoft.eShopOnContainers.WebMVC/project.json" -o "$(pwd)/pub/webMVC"
+dotnet publish "$(pwd)/src/Web/WebMVC/project.json" -o "$(pwd)/pub/webMVC"
 dotnet publish "$(pwd)/src/Services/Catalog/Catalog.API/project.json" -o "$(pwd)/pub/catalog"
 dotnet publish "$(pwd)/src/Services/Ordering/Ordering.API/project.json" -o "$(pwd)/pub/ordering"
 
