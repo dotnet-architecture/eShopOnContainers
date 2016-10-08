@@ -1,0 +1,42 @@
+version: '2'
+
+services:
+  webmvc:
+    image: eshop/web${TAG}
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - CatalogUrl=http://catalog.api
+    ports:
+      - "80:80"
+    depends_on:
+      - catalog.api
+
+  catalog.api:
+    image: eshop/catalog.api
+    environment:
+      - ConnectionString=Server=catalogdata;Port=5432;Database=postgres;username=postgres
+    expose:
+      - "80"
+    depends_on:
+      - catalogdata
+
+  catalogdata:
+    image: glennc/eshopdata
+
+  ordering.api:
+    image: eshop/ordering.api
+    environment:
+      - ConnectionString=Server=ordering.data;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word
+    ports:
+      - "81:80"
+    extra_hosts:
+      - "CESARDLBOOKVHD:10.0.75.1"
+    depends_on:
+      - ordering.data
+
+  ordering.data:
+    image: eshop/ordering.data.sqlserver.linux
+    ports:
+      - "1433:1433"

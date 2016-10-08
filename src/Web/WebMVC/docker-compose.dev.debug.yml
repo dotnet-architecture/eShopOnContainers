@@ -1,7 +1,7 @@
 version: '2'
 
 services:
-  microsoft.eshoponcontainers.webmvc:
+  webmvc:
     build:
       args:
         source: obj/Docker/empty/

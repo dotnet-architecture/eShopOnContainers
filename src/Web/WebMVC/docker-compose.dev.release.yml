@@ -1,7 +1,7 @@
 version: '2'
 
 services:
-  microsoft.eshoponcontainers.webmvc:
+  webmvc:
     labels:
       - "com.microsoft.visualstudio.targetoperatingsystem=linux"
     volumes:
