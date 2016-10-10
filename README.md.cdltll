@@ -1,0 +1,7 @@
+<<<<<<< HEAD
+# Containerized eShop
+Sample reference containerized application, cross-platform and microservices architecture. 
+Powered by .NET Core, Docker and Docker Swarm mode
+=======
+# eShopOnContainers
+>>>>>>> 4061a14a59c22df03a46a659cbb667db2c0c38c8
