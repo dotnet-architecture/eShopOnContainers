@@ -27,7 +27,6 @@ services:
     image: eshop/ordering.api:latest
     environment:
       - ConnectionString=Server=ordering.data;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word
-      - ASPNETCORE_ENVIRONMENT=Development
     ports:
       - "81:80"
 # (Go to Production): For secured/final deployment, remove Ports mapping and
