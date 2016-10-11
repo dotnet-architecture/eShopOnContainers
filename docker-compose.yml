@@ -10,6 +10,7 @@ services:
       - "80:80"
     depends_on:
       - catalog.api
+      - ordering.api
 
   catalog.api:
     image: eshop/catalog.api:latest
