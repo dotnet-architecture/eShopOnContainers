@@ -17,6 +17,8 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel
 
         public decimal UnitPrice { get; set; }
 
+        public string ProductName { get; set; }
+
         public int Quantity { get; set; }
 
         public decimal Discount { get; set; }

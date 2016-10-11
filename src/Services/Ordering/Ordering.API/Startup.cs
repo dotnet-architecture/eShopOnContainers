@@ -50,6 +50,9 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API
 
             var connString = Configuration["ConnectionString"];
 
+            //(CDLTLL) To use only for EF Migrations
+            //connString = @"Server=10.0.75.1;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word;";
+
             services.AddDbContext<OrderingDbContext>(options => options.UseSqlServer(connString)
                                                                        .UseSqlServer(connString, b => b.MigrationsAssembly("Ordering.API"))
                                                     //(CDLTLL) MigrationsAssembly will be Ordering.SqlData, but when supported

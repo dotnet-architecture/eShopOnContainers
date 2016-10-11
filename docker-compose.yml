@@ -2,16 +2,17 @@ version: '2'
 
 services:
   webmvc:
-    image: eshop/web
+    image: eshop/web:latest
     environment:
       - CatalogUrl=http://catalog.api
+      - OrderingUrl=http://ordering.api
     ports:
       - "80:80"
     depends_on:
       - catalog.api
 
   catalog.api:
-    image: eshop/catalog.api
+    image: eshop/catalog.api:latest
     environment:
       - ConnectionString=Server=catalogdata;Port=5432;Database=postgres;username=postgres
     expose:
@@ -23,11 +24,16 @@ services:
     image: glennc/eshopdata
 
   ordering.api:
-    image: eshop/ordering.api
+    image: eshop/ordering.api:latest
     environment:
       - ConnectionString=Server=ordering.data;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word
+      - ASPNETCORE_ENVIRONMENT=Development
     ports:
       - "81:80"
+# (Go to Production): For secured/final deployment, remove Ports mapping and
+# leave just the internal expose section 
+#    expose:
+#      - "80"
     extra_hosts:
       - "CESARDLBOOKVHD:10.0.75.1"
     depends_on:

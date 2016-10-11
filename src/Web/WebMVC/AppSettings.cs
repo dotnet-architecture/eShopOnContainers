@@ -9,6 +9,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
     {
         public Connectionstrings ConnectionStrings { get; set; }
         public string CatalogUrl { get; set; }
+        public string OrderingUrl { get; set; }
         public Logging Logging { get; set; }
     }
 

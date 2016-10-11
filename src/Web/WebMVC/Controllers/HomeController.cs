@@ -41,6 +41,16 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
             return View();
         }
 
+        public async Task<IActionResult> Orders()
+        {
+            ViewData["Message"] = "Orders page.";
+
+            var ordersUrl = _settings.OrderingUrl + "/api/ordering/orders";
+            var dataString = await _http.GetStringAsync(ordersUrl);
+            var items = JsonConvert.DeserializeObject<List<Order>>(dataString);
+            return View(items);
+        }
+
         public IActionResult Error()
         {
             return View();

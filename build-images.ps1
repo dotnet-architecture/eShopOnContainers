@@ -15,6 +15,7 @@ Write-Host "webPathToPub is $webPathToPub" -ForegroundColor Yellow
 
 Write-Host "Restore Dependencies just in case as it is needed to run dotnet publish" -ForegroundColor Blue
 dotnet restore $webPathToJson
+dotnet build $webPathToJson
 dotnet publish $webPathToJson -o $webPathToPub
 
 #*** Catalog service image ***
@@ -25,6 +26,7 @@ Write-Host "catalogPathToPub is $catalogPathToPub" -ForegroundColor Yellow
 
 Write-Host "Restore Dependencies just in case as it is needed to run dotnet publish" -ForegroundColor Blue
 dotnet restore $catalogPathToJson
+dotnet build $catalogPathToJson
 dotnet publish $catalogPathToJson -o $catalogPathToPub
 
 #*** Ordering service image ***
@@ -35,6 +37,7 @@ Write-Host "orderingPathToPub is $orderingPathToPub" -ForegroundColor Yellow
 
 Write-Host "Restore Dependencies just in case as it is needed to run dotnet publish" -ForegroundColor Blue
 dotnet restore $orderingPathToJson
+dotnet build $orderingPathToJson
 dotnet publish $orderingPathToJson -o $orderingPathToPub
  
 

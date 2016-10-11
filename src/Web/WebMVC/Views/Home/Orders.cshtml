@@ -1,0 +1,50 @@
+﻿@{
+    ViewData["Title"] = "Orders";
+    @model IEnumerable<Order>
+}
+<h2>@ViewData["Title"].</h2>
+<h3>@ViewData["Message"]</h3>
+
+
+@foreach (var order in Model)
+{
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <strong>Order Number:</strong> @order.OrderNumber
+            </h3>
+        </div>
+        <div class="panel-body">
+            <strong>BuyerId: </strong> @order.BuyerId <br />
+            <strong>OrderDate: </strong> @order.OrderDate <br />
+            <strong>SequenceNumber: </strong> @order.SequenceNumber <br />
+        </div>
+        <div class="panel-body">
+            <address>
+                <strong>Street: </strong> @order.ShippingAddress.Street <br />
+                <strong>City: </strong> @order.ShippingAddress.City <br />
+                <strong>State: </strong> @order.ShippingAddress.State <br />
+                <strong>StateCode: </strong> @order.ShippingAddress.StateCode <br />
+                <strong>Country: </strong> @order.ShippingAddress.Country <br />
+                <strong>CountryCode: </strong> @order.ShippingAddress.CountryCode <br />
+                <strong>ZipCode: </strong> @order.ShippingAddress.ZipCode <br />
+                <strong>Latitude: </strong> @order.ShippingAddress.Latitude <br />
+                <strong>Longitude: </strong> @order.ShippingAddress.Longitude <br />
+            </address>
+        </div>
+        <div class="panel-body">
+            @foreach (var orderItem in order.OrderItems)
+            {
+                <address>
+                    <strong>ProductId: </strong> @orderItem.ProductId <br />
+                    <strong>ProductName: </strong> @orderItem.ProductName <br />
+                    <strong>Price: </strong> @orderItem.UnitPrice  <br />
+                    <strong>Quantity: </strong> @orderItem.Quantity <br />
+                    <strong>Discount: </strong> @orderItem.Discount <br />
+                </address>
+            }
+        </div>
+    </div>
+}
+
+

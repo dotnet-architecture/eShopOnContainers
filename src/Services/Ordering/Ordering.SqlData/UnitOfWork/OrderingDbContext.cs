@@ -16,7 +16,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.SqlData.UnitOfWork
 
         public DbSet<Order> Orders { get; set; }
 
-        //(CDLTLL) Probably delete, not using it for now
+        //(CDLTLL) 
         /*
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -39,7 +39,6 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.SqlData.UnitOfWork
                 optionsBuilder.UseSqlServer(connString);
 
             }
-
         }
         */
 
