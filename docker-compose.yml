@@ -43,3 +43,13 @@ services:
     image: eshop/ordering.data.sqlserver.linux
     ports:
       - "1433:1433"
+
+  basket.api:
+    image: eshop/basket.api:latest
+    environment:
+      - ConnectionString=basket.data
+    depends_on:
+      - basket.data
+
+  basket.data:
+    image: redis
