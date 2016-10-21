@@ -7,7 +7,7 @@ services:
       - CatalogUrl=http://catalog.api
       - OrderingUrl=http://ordering.api
     ports:
-      - "80:80"
+      - "800:80"
     depends_on:
       - catalog.api
 
@@ -31,10 +31,10 @@ services:
       - "81:80"
 # (Go to Production): For secured/final deployment, remove Ports mapping and
 # leave just the internal expose section 
-#    expose:
-#      - "80"
+    expose:
+      - "800"
     extra_hosts:
-      - "CESARDLBOOKVHD:10.0.75.1"
+      - "DESKTOP-1HNACCH:192.168.1.39"
     depends_on:
       - ordering.data
 

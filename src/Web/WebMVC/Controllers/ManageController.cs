@@ -60,8 +60,42 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
                 PhoneNumber = await _userManager.GetPhoneNumberAsync(user),
                 TwoFactor = await _userManager.GetTwoFactorEnabledAsync(user),
                 Logins = await _userManager.GetLoginsAsync(user),
-                BrowserRemembered = await _signInManager.IsTwoFactorClientRememberedAsync(user)
+                BrowserRemembered = await _signInManager.IsTwoFactorClientRememberedAsync(user),
+                User = user
             };
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Index(IndexViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+
+            user.CardHolderName = model.User.CardHolderName;
+            user.CardNumber = model.User.CardNumber;
+            //user.CardType = model.User.CardType;
+            user.City = model.User.City;
+            user.Country = model.User.Country;
+            user.Expiration = model.User.Expiration;
+            user.State = model.User.State;
+            user.Street = model.User.Street;
+            user.ZipCode = model.User.ZipCode;
+
+            var result = await _userManager.UpdateAsync(user);
+
+            if (result.Succeeded)
+            {
+                _logger.LogInformation(99, "User changed his address and payment method information.");
+                return RedirectToAction(nameof(Index), new { Message = ManageMessageId.ProfileUpdated });
+            }
+
+            AddErrors(result);
             return View(model);
         }
 
@@ -347,7 +381,8 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
             SetPasswordSuccess,
             RemoveLoginSuccess,
             RemovePhoneSuccess,
-            Error
+            Error, 
+            ProfileUpdated
         }
 
         private Task<ApplicationUser> GetCurrentUserAsync()

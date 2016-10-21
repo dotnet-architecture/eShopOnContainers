@@ -52,6 +52,9 @@ namespace Microsoft.eShopOnContainers.WebMVC
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
+            services.AddTransient<ICatalogService, CatalogService>();
+            services.AddTransient<IOrderingService, OrderingService>();
+            services.AddTransient<ICartService, CartService>();
 
             services.Configure<AppSettings>(Configuration);
         }

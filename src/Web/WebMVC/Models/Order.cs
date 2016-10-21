@@ -19,11 +19,10 @@ namespace Microsoft.eShopOnContainers.WebMVC.Models
         public int SequenceNumber { get; set; }
         public virtual Guid BuyerId { get; set; }
         public virtual Address ShippingAddress { get; set; }
-        public virtual Address BillingAddress { get; set; }
+        
         public virtual DateTime OrderDate { get; set; }
 
+        //(CCE) public virtual Address BillingAddress { get; set; }
         //(CDLTLL) public virtual OrderStatus Status { get; set; }
-
-
     }
 }

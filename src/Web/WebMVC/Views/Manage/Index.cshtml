@@ -3,69 +3,98 @@
     ViewData["Title"] = "Manage your account";
 }
 
-<h2>@ViewData["Title"].</h2>
+@*<h2>@ViewData["Title"].</h2>*@
 <p class="text-success">@ViewData["StatusMessage"]</p>
-
-<div>
-    <h4>Change your account settings</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>Password:</dt>
-        <dd>
-            @if (Model.HasPassword)
-            {
-                <a asp-controller="Manage" asp-action="ChangePassword" class="btn-bracketed">Change</a>
-            }
-            else
-            {
-                <a asp-controller="Manage" asp-action="SetPassword" class="btn-bracketed">Create</a>
-            }
-        </dd>
-        <dt>External Logins:</dt>
-        <dd>
-
-            @Model.Logins.Count <a asp-controller="Manage" asp-action="ManageLogins" class="btn-bracketed">Manage</a>
-        </dd>
-        <dt>Phone Number:</dt>
-        <dd>
-            <p>
-                Phone Numbers can used as a second factor of verification in two-factor authentication.
-                See <a href="http://go.microsoft.com/fwlink/?LinkID=532713">this article</a>
-                for details on setting up this ASP.NET application to support two-factor authentication using SMS.
-            </p>
-            @*@(Model.PhoneNumber ?? "None")
-                @if (Model.PhoneNumber != null)
-                {
-                    <br />
-                    <a asp-controller="Manage" asp-action="AddPhoneNumber" class="btn-bracketed">Change</a>
-                    <form asp-controller="Manage" asp-action="RemovePhoneNumber" method="post">
-                        [<button type="submit" class="btn-link">Remove</button>]
-                    </form>
-                }
-                else
-                {
-                    <a asp-controller="Manage" asp-action="AddPhoneNumber" class="btn-bracketed">Add</a>
-                }*@
-        </dd>
-
-        <dt>Two-Factor Authentication:</dt>
-        <dd>
-            <p>
-                There are no two-factor authentication providers configured. See <a href="http://go.microsoft.com/fwlink/?LinkID=532713">this article</a>
-                for setting up this application to support two-factor authentication.
-            </p>
-            @*@if (Model.TwoFactor)
-                {
-                    <form asp-controller="Manage" asp-action="DisableTwoFactorAuthentication" method="post" class="form-horizontal">
-                        Enabled <button type="submit" class="btn-link btn-bracketed">Disable</button>
-                    </form>
-                }
-                else
-                {
-                    <form asp-controller="Manage" asp-action="EnableTwoFactorAuthentication" method="post" class="form-horizontal">
-                        <button type="submit" class="btn-link btn-bracketed">Enable</button> Disabled
-                    </form>
-                }*@
-        </dd>
-    </dl>
+<div class="brand-header-block">
+    <ul class="container">
+        <li class="brand-header-back"><a asp-area="" asp-controller="Home" asp-action="Index">Back to list</a></li>
+    </ul>
 </div>
+<div class="container cart-index-container">
+    <form asp-controller="Manage" asp-action="Index" method="post" class="form-horizontal">
+        <div class="form-group">
+            <div class="col-md-offset-8 col-md-4">
+                <button type="submit" class="btn btn-default btn-brand">[ Save ]</button>
+            </div>
+        </div>
+        <h4 class="order-create-section-title">SHIPPING ADDRESS</h4>
+        <div class="form-horizontal row">
+            <div class="form-group col-sm-6">
+                <label asp-for="User.Street" class="control-label form-label">ADDRESS</label>
+                <input asp-for="User.Street" class="form-control form-input" />
+                <span asp-validation-for="User.Street" class="text-danger" />
+            </div>
+            <div class="form-group col-sm-6">
+                <label asp-for="User.City" class="control-label form-label"></label>
+                <input asp-for="User.City" class="form-control form-input" />
+                <span asp-validation-for="User.City" class="text-danger" />
+            </div>
+            <div class="form-group col-sm-6">
+                <label asp-for="User.State" class="control-label form-label"></label>
+                <input asp-for="User.State" class="form-control form-input" />
+                <span asp-validation-for="User.State" class="text-danger" />
+            </div>
+            <div class="form-group col-sm-6">
+                <label asp-for="User.Country" class="control-label form-label"></label>
+                <input asp-for="User.Country" class="form-control form-input" />
+                <span asp-validation-for="User.Country" class="text-danger" />
+            </div>
+            <div class="form-group col-sm-6">
+                <label asp-for="User.ZipCode" class="control-label form-label"></label>
+                <input asp-for="User.ZipCode" class="form-control form-input form-input-small" />
+                <span asp-validation-for="User.ZipCode" class="text-danger" />
+            </div>
+        </div>
+        <br /><br />
+        <div class="order-create-section-payment">
+            <h4 class="order-create-section-title">PAYMENT METHOD</h4>
+            <div class="form-horizontal row">
+                <div class="form-group col-sm-6">
+                    <label asp-for="User.CardNumber" class="control-label form-label">Card Number</label>
+                    <input asp-for="User.CardNumber" class="form-control form-input" />
+                    <span asp-validation-for="User.CardNumber" class="text-danger" />
+                </div>
+                <div class="form-group col-sm-6">
+                    <label asp-for="User.CardHolderName" class="control-label form-label">Cardholder Name</label>
+                    <input asp-for="User.CardHolderName" class="form-control form-input" />
+                    <span asp-validation-for="User.CardHolderName" class="text-danger" />
+                </div>
+                <div class="form-group col-sm-3">
+                    <label asp-for="User.Expiration" class="control-label form-label">Expiration Date</label>
+                    <input asp-for="User.Expiration" placeholder="MM/YY" class="form-control form-input form-input-small" />
+                    <span asp-validation-for="User.Expiration" class="text-danger" />
+                </div>
+                <div class="form-group col-sm-3">
+                    <label asp-for="User.SecurityNumber" class="control-label form-label">Security Code</label>
+                    <input asp-for="User.SecurityNumber" class="form-control form-input form-input-small" />
+                    <span asp-validation-for="User.SecurityNumber" class="text-danger" />
+                </div>
+            </div>
+        </div>
+        <br /><br />
+        <h4 class="order-create-section-title">Change your account settings</h4>
+        <div class="form-horizontal row">
+            <div class="form-group col-sm-6">
+                <label asp-for="User.Street" class="control-label form-label">PASSWORD</label>
+                <br />
+                @if (Model.HasPassword)
+                {
+                    <a asp-controller="Manage" asp-action="ChangePassword" class="text">Change</a>
+                }
+                else
+                {
+                    <a asp-controller="Manage" asp-action="SetPassword" class="text">Create</a>
+                }
+            </div>
+        </div>
+        <br /><br />
+        <div class="form-group">
+            <div class="col-md-offset-8 col-md-4">
+                <button type="submit" class="btn btn-default btn-brand">[ Save ]</button>
+            </div>
+        </div>
+        <br /><br />
+    </form>
+</div>
+
+

@@ -1,6 +1,19 @@
-﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
+﻿@font-face {
+    font-family: Montserrat;
+    font-weight: 400;
+    src: url("/fonts/Montserrat-Regular.eot?") format("eot"),url("/fonts/Montserrat-Regular.woff") format("woff"),url("/fonts/Montserrat-Regular.ttf") format("truetype"),url("/fonts/Montserrat-Regular.svg#Montserrat") format("svg")
+}
+
+@font-face {
+    font-family: Montserrat;
+    font-weight: 700;
+    src: url("/fonts/Montserrat-Bold.eot?") format("eot"),url("/fonts/Montserrat-Bold.woff") format("woff"),url("/fonts/Montserrat-Bold.ttf") format("truetype"),url("/fonts/Montserrat-Bold.svg#Montserrat") format("svg")
+}
+
+body {
+    padding-top: 80px;
+    /*padding-bottom: 20px;*/
+    font-family: Montserrat,sans-serif;
 }
 
 /* Wrapping element */
@@ -17,34 +30,514 @@ textarea {
     max-width: 280px;
 }
 
+.select-filter {
+    background-color: transparent;
+    padding: 10px;
+    margin: 10px;
+    margin-right: 20px;
+    color: white;
+    padding-top: 20px;
+    padding-bottom: 5px;
+    min-width: 120px;
+    border-color: #37c7ca;
+    max-height: 43px;
+    -webkit-appearance: none;
+}
+
+select::-ms-expand {
+    display: none;
+}
+
+.select-filter-wrapper {
+    z-index: 0;
+    display:inline-block;
+    margin-left: -10px;
+}
+
+.select-filter-wrapper::before {
+    content: attr(data-name);
+    opacity: 0.5;
+    z-index: 1;
+    text-transform: uppercase;
+    position: absolute;
+    font-size: 10px;
+    margin-top: 15px;
+    margin-left: 25px;
+    color: white;
+}
+
+.select-filter-arrow {
+    position: absolute;
+    margin-left: 110px;
+    margin-top: 40px;
+}
+
+.btn-brand-small-filter {
+    margin-top: 10px;
+    position: absolute;
+    margin-left: 15px;
+}
+
 /* Carousel */
 .carousel-caption p {
     font-size: 20px;
     line-height: 1.4;
 }
 
+.layout-cart-image {
+    height: 36px;
+    margin-top: 5px;
+}
+
 /* buttons and links extension to use brackets: [ click me ] */
-.btn-bracketed::before {
-    display:inline-block;
+.btn-bracketed:hover:before {
+    display: inline-block;
     content: "[";
     padding-right: 0.5em;
+    color: chartreuse;
 }
-.btn-bracketed::after {
-    display:inline-block;
+
+.btn-bracketed:hover:after {
+    display: inline-block;
     content: "]";
     padding-left: 0.5em;
+    color: chartreuse;
+}
+
+.btn-brand {
+    background-color: #83D01B;
+    color: white;
+    padding: 10px 20px 10px 20px;
+    border-radius: 0px;
+    border: none;
+    width: 255px;
+    display: inline-block;
+    text-align: center;
+    text-transform: uppercase;
+    height: 45px;
+    font-size: 16px;
+    font-weight: normal;
+}
+
+.btn-brand::before {
+    content: '['
+}
+
+.btn-brand::after {
+    content: ']'
+}
+
+        .btn-brand:hover:before {
+            padding-right: 5px;
+        }
+
+        .btn-brand:hover:after {
+            padding-left: 5px;
+        }
+
+.btn-brand-big {
+    width: 360px;
+    margin-top: 20px;
+}
+
+.btn-brand-small {
+    width: 120px;
+    font-size: 14px;
+}
+
+    .btn-brand-small::before {
+        content: '';
+    }
+
+    .btn-brand-small::after {
+        content: '';
+    }
+
+    .btn-brand-small:hover:before {
+        content: '';
+        padding: 0;
+    }
+
+    .btn-brand-small:hover:after {
+        content: '';
+        padding: 0;
+    }
+
+.btn-brand-dark {
+    background-color: #00a69c;
+}
+
+.btn-brand:hover {
+    color: white;
+    background-color: #83D01B;
+    text-decoration:none;
+}
+
+.btn-brand-dark:hover {
+    background-color: #00a69c;
+}
+
+.btn-cart {
+    float: right;
+}
+
+.form-label {
+    text-transform: uppercase;
+    font-weight: normal!important;
+    text-align: left;
+    margin-bottom: 10px !important;
+    color: #404040;
+}
+
+.form-input {
+    border-radius: 0;
+    padding: 10px;
+    height: 45px;
+    width: 360px;
+    max-width: 360px;
+}
+
+.form-input-small {
+    max-width: 100px;
+}
+
+.form-select {
+    border-radius: 0;
+    padding: 10px;
+    height: 45px;
+    width: 150px;
 }
 
 /* Make .svg files in the carousel display properly in older browsers */
-.carousel-inner .item img[src$=".svg"]
-{
+.carousel-inner .item img[src$=".svg"] {
     width: 100%;
+}
+
+.navbar-inverse {
+    background-color: #FFF;
+    border-color: #FFF;
+}
+
+    .navbar-inverse li {
+        margin-top: 10px;
+    }
+
+.btn-login {
+    border: 1px solid #00A69C;
+    height: 36px!important;
+    margin-right: 10px;
+    margin-top: 10px;
+    background-color: white;
+    color: #00a69c;
+    text-transform:uppercase;
+    max-width: 140px;
+    width: 140px;
+    padding-top:8px!important;
+}
+
+.btn-login {
+    font-weight:normal!important;
+}
+
+    .btn-login::before {
+        content: '[';
+    }
+
+    .btn-login::after {
+        content: ']';
+    }
+
+    .btn-login:hover:before {
+        content: '[ ';
+    }
+
+    .btn-login:hover:after {
+        content: ' ]';
+    }
+
+.navbar-inverse li a {
+    height: 30px;
+    padding: 5px 20px;
+    color: #00A69C !important;
+}
+
+.navbar-brand {
+    margin-top: 20px;
+    background-image: url(../images/brand.PNG);
+    width: 201px;
+    height: 44px;
+    margin-left: 0px !important;
+}
+
+.nav > li > a {
+    color: white;
+}
+
+    .nav > li > a:hover, .nav > li > a:focus {
+        background-color: #00A69C;
+        font-weight: bolder;
+    }
+
+.container-fluid {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.home-banner {
+    width: 100%;
+    margin-right: 0px;
+    margin-left: 0px;
+    background-image: url(../images/main_banner.PNG);
+    background-size: cover;
+    height: 258px;
+    background-position: center;
+}
+
+.home-banner-text {
+    margin-top: 70px;
+}
+
+.home-catalog-container {
+    min-height: 400px;
+}
+
+.home-catalog-filter-container {
+    background-color: #00A69C;
+    height:63px;
+}
+
+    .home-catalog-filter-container li a {
+        padding-top: 5px !important;
+    }
+
+.home-catalog-filter-brands::before {
+    content: 'BRAND';
+    color: white;
+    font-size: x-small;
+    opacity: 0.5;
+    margin: 10px 0px 0px 15px;
+}
+
+.home-catalog-filter-types::before {
+    content: 'TYPES';
+    color: white;
+    font-size: x-small;
+    opacity: 0.5;
+    margin: 10px 0px 0px 15px;
+}
+
+.home-catalog-item {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.home-catalog-item-image {
+    width: 100%;
+    object-fit: cover;
+    max-width: 320px;
+}
+
+.home-catalog-item-image-addCart {
+    background-color: #83D01B;
+    color: white;
+    display: block;
+    height: 43px;
+    padding: 10px 20px 10px 20px;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 10px;
+    margin-left: 50px;
+    font-size: 16px;
+    font-weight: normal;
+}
+
+    .home-catalog-item-image-addCart:hover {
+        color: white;
+        text-decoration: none;
+    }
+
+
+.home-catalog-item-image:hover:after {
+    cursor: pointer;
+}
+
+.home-catalog-item-title {
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: 300;
+    font-size: 16px;
+    margin-top: 20px;
+}
+
+.home-catalog-item-price {
+    text-align: center;
+    font-weight: 900;
+    font-size: 28px;
+}
+
+    .home-catalog-item-price::before {
+        content: '$';
+    }
+
+.container .nav .navbar-nav .col-sm-6 ::before {
+    content: 'BRAND';
+}
+
+.validation-summary-errors  li {
+    list-style: none;
+}
+
+footer {
+    background-color: black;
+    height: 150px;
+    vertical-align: middle;
+}
+
+    footer .brand {
+        margin-top: 25px;
+        background-image: url(../images/brand_dark.PNG);
+        max-width: 231px;
+        height: 52px;
+        margin-left: 0px !important;
+    }
+
+    footer .text {
+        text-align: right;
+        width: 100%;
+        height: 100%;
+        color: #83D01B;
+        margin-top: 10px;
+    }
+
+form .text {
+    color: #83D01B;
+}
+
+form .col-md-4 {
+    text-align: right;
+}
+
+.brand-header-block {
+    background-color: #00A69C;
+    height: 63px;
+}
+
+    .brand-header-block li {
+        list-style: none;
+        display: inline;
+        opacity: 0.5;
+        margin-top: 25px;
+        margin-left: 10px;
+        float: right;
+        cursor: pointer;
+        color: white;
+    }
+
+        .brand-header-block li a {
+            color: white;
+        }
+
+            .brand-header-block li a:hover {
+                text-decoration:none;
+            }
+
+        .brand-header-block .active {
+            opacity: 1;
+        }
+
+        .brand-header-block .active::before {
+            content: '[ ';
+            color: greenyellow;
+        }
+
+        .brand-header-block .active::after {
+            content: ' ]';
+            color: greenyellow;
+        }
+
+.brand-header-back {
+    float: left!important;
+    margin-top: 20px!important;
+    text-transform: uppercase;
+}
+
+.account-login-container {
+    min-height: 70vh;
+    text-align: center;
+}
+
+.account-register-container {
+    min-height: 70vh;
+    text-align: center !important;
+    align-content: center;
+}
+
+.cart-index-container {
+    min-height: 70vh;
+    padding-top: 40px;
+}
+
+.input-validation-error {
+    border: 1px solid #fb0d0d;
+}
+
+.text-danger {
+    color: #fb0d0d;
+    font-size: 12px;
+}
+
+.cart {
+    border: none !important;
+}
+
+.form-horizontal h4 {
+    margin-top: 30px;
+}
+
+.form-control:focus {
+    border-color: #83d01b;
+}
+
+.form-input-center {
+    margin: auto;
+}
+
+.order-create-section-title {
+    margin-left: -15px;
+    text-transform: uppercase;
+}
+
+.order-create-section-items {
+    margin-left: -30px;
+}
+
+.fr {
+    float:right!important;
+}
+
+.login-user {
+    position: absolute!important;
+    top: 40px;
+    right: 65px;
 }
 
 /* Hide/rearrange for smaller screens */
 @media screen and (max-width: 767px) {
-  /* Hide captions */
-  .carousel-caption {
-    display: none
-  }
+    /* Hide captions */
+    .carousel-caption {
+        display: none;
+    }
+
+    footer .text {
+        text-align: left;
+        margin-top: -15px;
+    }
+}
+
+@media screen and (max-width: 415px) {
+    .btn-brand-small-filter {
+        width: 65px;
+        padding:10px 10px 10px 10px;
+        font-size: 10px;
+    }
 }

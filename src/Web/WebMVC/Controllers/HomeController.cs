@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.eShopOnContainers.WebMVC.Models;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using Microsoft.eShopOnContainers.WebMVC.Services;
+using Microsoft.eShopOnContainers.WebMVC.Models.HomeViewModels;
 
 namespace Microsoft.eShopOnContainers.WebMVC.Controllers
 {
@@ -14,31 +16,25 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
     {
         private HttpClient _http;
         private AppSettings _settings;
+        private ICatalogService _catalogSvc;
 
-        public HomeController(IOptions<AppSettings> options)
+        public HomeController(IOptions<AppSettings> options, ICatalogService catalogSvc)
         {
             _http = new HttpClient();
             _settings = options.Value;
+            _catalogSvc = catalogSvc;
         }
         public async Task<IActionResult> Index()
         {
-            var dataString = await _http.GetStringAsync(_settings.CatalogUrl);
-            var items = JsonConvert.DeserializeObject<List<CatalogItem>>(dataString);
-            return View(items);
-        }
-
-        public IActionResult About()
-        {
-            ViewData["Message"] = "Your application description page.";
-
-            return View();
-        }
-
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
-
-            return View();
+            //var dataString = await _http.GetStringAsync(_settings.CatalogUrl);
+            //var items = JsonConvert.DeserializeObject<List<CatalogItem>>(dataString);
+            //items.AddRange(items);
+            var items = await _catalogSvc.GetCatalogItems();
+            var vm = new IndexViewModel()
+            {
+                CatalogItems = items
+            };
+            return View(vm);
         }
 
         public async Task<IActionResult> Orders()

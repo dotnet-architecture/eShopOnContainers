@@ -19,31 +19,41 @@
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Microsoft.eShopOnContainers.WebMVC</a>
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Orders">Orders</a></li>
-                </ul>
-                @await Html.PartialAsync("_LoginPartial")
+            <div class="row">
+                <div class="navbar-header col-sm-8 col-xs-8">
+                    @*<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>*@
+                    <a asp-area="" asp-controller="Home" asp-action="Index">
+                        <div class="navbar-brand">
+                        </div>
+                    </a>
+                </div>
+                <div class="navbar-header col-sm-4 col-xs-4 text-center">
+                    @await Html.PartialAsync("_LoginPartial")
+                </div>
             </div>
         </div>
     </div>
-    <div class="container body-content">
+    <div>
         @RenderBody()
-        <hr />
         <footer>
-            <p>&copy; 2016 - Microsoft.eShopOnContainers.WebMVC</p>
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <br><div class="brand"></div>
+                    </div>
+                    <div class="col-sm-6">
+                        <br />
+                        <br>
+                        <br />
+                        <div class="text hidden-xs">&copy; e-ShoponContainers. All right reserved</div>
+                    </div>
+                </div>
+            </div>
         </footer>
     </div>
 

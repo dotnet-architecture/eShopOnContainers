@@ -17,5 +17,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Models.ManageViewModels
         public bool TwoFactor { get; set; }
 
         public bool BrowserRemembered { get; set; }
+
+        public ApplicationUser User { get; set; }
     }
 }

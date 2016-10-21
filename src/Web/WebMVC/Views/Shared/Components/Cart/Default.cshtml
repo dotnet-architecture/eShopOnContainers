@@ -1,0 +1,20 @@
+@model Microsoft.eShopOnContainers.WebMVC.Models.Order
+
+@{
+    ViewData["Title"] = "My Cart";
+}
+
+@foreach (var item in Model.OrderItems)
+{
+    <tr>
+        <td>@*image*@</td>
+        <td>@item.ProductName</td>
+        <td>ROSLYN</td>
+        <td>$&nbsp;@item.UnitPrice</td>
+        <td>@item.Quantity</td>
+        <td>$&nbsp;@item.Quantity * @item.UnitPrice</td>
+    </tr>
+}
+
+
+

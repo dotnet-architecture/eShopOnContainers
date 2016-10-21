@@ -18,8 +18,12 @@
     "Microsoft.AspNetCore.Server.Kestrel": "1.0.0",
     "Microsoft.AspNetCore.StaticFiles": "1.0.0",
     "Microsoft.EntityFrameworkCore.SqlServer": "1.0.0",
-    "Microsoft.EntityFrameworkCore.SqlServer.Design": {
-      "version": "1.0.0",
+    //"Microsoft.EntityFrameworkCore.SqlServer.Design": {
+    //  "version": "1.0.0-rc2-final",
+    //  "type": "build"
+    //},
+    "Microsoft.EntityFrameworkCore.Tools": {
+      "version": "1.0.0-preview2-final",
       "type": "build"
     },
     "Microsoft.Extensions.Configuration.EnvironmentVariables": "1.0.0",
@@ -88,6 +92,7 @@
       "dotnet bundle"
     ],
     "postpublish": [
-      /*"dotnet publish-iis --publish-folder %publish:OutputPath% --framework %publish:FullTargetFramework%"*/]
+      "dotnet publish-iis --publish-folder %publish:OutputPath% --framework %publish:FullTargetFramework%"
+    ]
   }
 }
