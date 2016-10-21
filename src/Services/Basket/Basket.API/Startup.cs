@@ -7,6 +7,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.eShopOnContainers.Services.Basket.API.Model;
+using StackExchange.Redis;
+using Microsoft.Extensions.Options;
+using System.Net;
 
 namespace Microsoft.eShopOnContainers.Services.Basket.API
 {
@@ -29,6 +33,21 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
         {
             // Add framework services.
             services.AddMvc();
+            services.Configure<BasketSettings>(Configuration);
+
+            //By connection here we are making sure that our service
+            //cannot start until redis is ready. This might slow down startup,
+            //but given that it is there is a delay on resolving the ip address
+            //and then creating the connection it seems reasonable to move
+            //that cost to startup instead of having the first request pay the
+            //penalty.
+            services.AddSingleton<ConnectionMultiplexer>((sp) => {
+                var config = sp.GetRequiredService<IOptions<BasketSettings>>().Value;
+                var ips = Dns.GetHostAddressesAsync(config.ConnectionString).Result;
+                return ConnectionMultiplexer.Connect(ips.First().ToString());
+            });
+
+            services.AddTransient<IBasketRepository, RedisBasketRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

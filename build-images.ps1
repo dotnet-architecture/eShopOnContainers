@@ -39,8 +39,19 @@ Write-Host "Restore Dependencies just in case as it is needed to run dotnet publ
 dotnet restore $orderingPathToJson
 dotnet build $orderingPathToJson
 dotnet publish $orderingPathToJson -o $orderingPathToPub
- 
+
+#*** Basket service image ***
+$basketPathToJson = $scriptPath + "\src\Services\Basket\Basket.API\project.json"
+Write-Host "basketPathToJson is $orderingPathToJson" -ForegroundColor Yellow
+$basketPathToPub = $scriptPath + "\pub\basket"
+Write-Host "basketPathToPub is $basketPathToPub" -ForegroundColor Yellow
+
+Write-Host "Restore Dependencies just in case as it is needed to run dotnet publish" -ForegroundColor Blue
+dotnet restore $basketPathToJson
+dotnet build $basketPathToPub
+dotnet publish $basketPathToJson -o $basketPathToPub
 
 docker build -t eshop/web $webPathToPub
 docker build -t eshop/catalog.api $catalogPathToPub
 docker build -t eshop/ordering.api $orderingPathToPub
+docker build -t eshop/basket.api $basketPathToPub

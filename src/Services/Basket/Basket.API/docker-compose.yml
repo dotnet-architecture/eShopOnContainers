@@ -1,0 +1,16 @@
+version: '2'
+
+services:
+  basket.api:
+    image: user/basket.api${TAG}
+    environment:
+      - ConnectionString=basket.data
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "32783:80"
+    depends_on:
+      - basket.data
+  basket.data:
+    image: redis
