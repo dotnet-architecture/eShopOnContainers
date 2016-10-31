@@ -1,47 +1,80 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.eShopOnContainers.Services.Catalog.API.Model;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.eShopOnContainers.Services.Catalog.API.Model;
-using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Serialization;
+using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.Services.Catalog.API
 {
     public class Startup
     {
+        public IConfigurationRoot Configuration { get; }
+
         public Startup(IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("settings.json")
+                .AddJsonFile($"settings.{env.EnvironmentName}.json",optional:false)
                 .AddEnvironmentVariables();
+
+
             Configuration = builder.Build();
         }
 
-        public IConfigurationRoot Configuration { get; }
+        
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<CatalogContext>(c => {
+            services.AddSingleton<IConfiguration>(Configuration);
+
+            services.AddDbContext<CatalogContext>(c => 
+            {
                 c.UseNpgsql(Configuration["ConnectionString"]);
+                c.ConfigureWarnings(wb =>
+                {
+                    wb.Throw(RelationalEventId.QueryClientEvaluationWarning);
+                });
             });
 
             // Add framework services.
+
+            services.AddCors();
+
             services.AddMvcCore()
-                    .AddJsonFormatters();
+                 .AddJsonFormatters(settings=>
+                 {
+                     settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                 });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+
+            //Configure logs
+
+            if(env.IsDevelopment())
+            {   
+                app.UseDeveloperExceptionPage();
+            }
+
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+
+            //Seed Data
+
+            CatalogContextSeed.SeedAsync(app)
+                .Wait();
+
+            // Use frameworks
+            app.UseCors(policyBuilder=>policyBuilder.AllowAnyOrigin());
 
             app.UseMvc();
         }

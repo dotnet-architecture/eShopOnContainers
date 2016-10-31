@@ -1,72 +1,45 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.eShopOnContainers.Services.Catalog.API.Model;
-
+﻿
 namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
 {
-    [Route("/")]
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.eShopOnContainers.Services.Catalog.API.Model;
+    using System;
+    using System.Linq;
+    using System.Threading.Tasks;
+
+    [Route("api/v1/[controller]")]
     public class CatalogController : ControllerBase
     {
-        private CatalogContext _context;
+        private readonly CatalogContext _context;
 
         public CatalogController(CatalogContext context)
         {
             _context = context;
         }
 
-        // GET api/values
+        // GET api/v1/[controller]/all
+
         [HttpGet]
-        public IEnumerable<CatalogItem> Get()
+        [Route("[action]")]
+        public async Task<IActionResult> All()
         {
-            return _context.CatalogItems.ToList();
+            var items = await _context.CatalogItems
+                .ToListAsync();
+
+            return Ok(items);
         }
 
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public IActionResult Get(Guid id)
+        // GET api/v1/[controller]/FindByName/samplename
+
+        [HttpGet]
+        [Route("FindByName/{name:minlength(1)}")]
+        public async Task<IActionResult> Find(string name)
         {
-            var item = _context.CatalogItems.FirstOrDefault(x=> x.Id == id);
+            var items = await _context.CatalogItems
+                .Where(c => c.Name.StartsWith(name, StringComparison.CurrentCultureIgnoreCase))
+                .ToListAsync();
 
-            if(item == null)
-            {
-                return NotFound();
-            }
-
-            return new OkObjectResult(item);
-        }
-
-        // POST api/values
-        [HttpPost]
-        public IActionResult Post([FromBody]CatalogItem item)
-        {
-            try
-            {
-                _context.CatalogItems.Add(item);
-                _context.SaveChanges();
-                return Ok();
-            }
-            catch
-            {
-                return StatusCode(500, "Unable to add new catalog item");
-            }
-        }
-
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody]CatalogItem item)
-        {
-            _context.CatalogItems.Update(item);
-            _context.SaveChanges();
-            return Ok();
-        }
-
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public IActionResult Delete(Guid id)
-        {
             return Ok();
         }
     }

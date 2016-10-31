@@ -14,6 +14,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
         {
             var host = new WebHostBuilder()
                 .UseKestrel()
+                .UseUrls(Environment.GetEnvironmentVariable("ASPNETCORE_URLS") ?? String.Empty)
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseStartup<Startup>()
                 .Build();
