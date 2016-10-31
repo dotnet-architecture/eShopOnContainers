@@ -7,7 +7,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Models
 {
     public class Order
     {
-        Guid Id;
+        public string Id;
         public List<OrderItem> OrderItems { get; set; }
         public string OrderNumber
         {
@@ -17,12 +17,20 @@ namespace Microsoft.eShopOnContainers.WebMVC.Models
             }
         }
         public int SequenceNumber { get; set; }
-        public virtual Guid BuyerId { get; set; }
+        public virtual string BuyerId { get; set; }
         public virtual Address ShippingAddress { get; set; }
         
         public virtual DateTime OrderDate { get; set; }
+        public OrderState State { get; set; }
 
         //(CCE) public virtual Address BillingAddress { get; set; }
         //(CDLTLL) public virtual OrderStatus Status { get; set; }
+    }
+    
+    public enum OrderState
+    {
+        Active, 
+        InProcess, 
+        Delivered
     }
 }

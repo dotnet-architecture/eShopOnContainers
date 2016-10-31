@@ -12,7 +12,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
         int TotalItems { get; }
 
         Task<List<CatalogItem>> GetCatalogItems(int? skip, int? take);
-        CatalogItem GetCatalogItem(Guid Id);
+        CatalogItem GetCatalogItem(string Id);
         IEnumerable<SelectListItem> GetBrands();
         IEnumerable<SelectListItem> GetTypes();
     }

@@ -1,4 +1,5 @@
 @model Microsoft.eShopOnContainers.WebMVC.Models.Order
+@inject UserManager<ApplicationUser> UserManager
 
 @{
     ViewData["Title"] = "My Cart";
@@ -17,7 +18,7 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>
+                            <th class="cart-product-column">
                                 PRODUCT
                             </th>
                             <th>
@@ -38,7 +39,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @await Component.InvokeAsync("CartList")
+                        @await Component.InvokeAsync("CartList", new { user = await UserManager.GetUserAsync(User) })
                     </tbody>
                 </table>
             </section>

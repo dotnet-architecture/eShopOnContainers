@@ -7,12 +7,12 @@
 @foreach (var item in Model.OrderItems)
 {
     <tr>
-        <td>@*image*@</td>
+        <td class="cart-product-column"><img class="cart-product-image"src="@item.PicsUrl" /></td>
         <td>@item.ProductName</td>
         <td>ROSLYN</td>
         <td>$&nbsp;@item.UnitPrice</td>
         <td>@item.Quantity</td>
-        <td>$&nbsp;@item.Quantity * @item.UnitPrice</td>
+        <td>$&nbsp;@(item.Quantity * item.UnitPrice)</td>
     </tr>
 }
 

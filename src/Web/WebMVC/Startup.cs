@@ -49,13 +49,14 @@ namespace Microsoft.eShopOnContainers.WebMVC
                 .AddDefaultTokenProviders();
 
             services.AddMvc();
+            services.AddDistributedMemoryCache(); // default implementation (in memory), you can move to SQL or custom store that could be Redis.. 
+            services.AddSession();
 
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
-            services.AddTransient<ICatalogService, CatalogService>();
+            services.AddSingleton<ICatalogService, CatalogService>();
             services.AddTransient<IOrderingService, OrderingService>();
-            services.AddTransient<ICartService, CartService>();
 
             services.Configure<AppSettings>(Configuration);
         }
@@ -80,6 +81,8 @@ namespace Microsoft.eShopOnContainers.WebMVC
             app.UseStaticFiles();
 
             app.UseIdentity();
+
+            app.UseSession();
 
             // Add external authentication middleware below. To configure them please see http://go.microsoft.com/fwlink/?LinkID=532715
 

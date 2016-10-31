@@ -16,6 +16,10 @@ body {
     font-family: Montserrat,sans-serif;
 }
 
+.mt-15 {
+    margin-top:15px;
+}
+
 /* Wrapping element */
 /* Set some basic padding to keep content from hitting the edges */
 .body-content {
@@ -91,6 +95,20 @@ select::-ms-expand {
 .layout-cart-image {
     height: 36px;
     margin-top: 5px;
+}
+
+.layout-cart-badge {
+    position: absolute;
+    margin-top: 2px;
+    margin-left: 14px;
+    background-color: #83d01b;
+    padding: 1px;
+    color: white;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    font-size: 13px;
+    cursor: pointer;
 }
 
 /* buttons and links extension to use brackets: [ click me ] */
@@ -491,6 +509,14 @@ form .col-md-4 {
     padding-top: 40px;
 }
 
+.cart-product-column {
+    max-width: 120px;
+}
+
+.cart-product-image {
+    max-width: 210px;
+}
+
 .input-validation-error {
     border: 1px solid #fb0d0d;
 }
@@ -529,10 +555,35 @@ form .col-md-4 {
     float:right!important;
 }
 
+.down-arrow {
+    background-image: url('../images/arrow-down.png');
+    height: 7px;
+    width: 10px;
+    display: inline-block;
+    margin-left: 20px;
+}
+
+.logout-icon {
+    background-image: url('../images/logout.PNG');
+    display: inline-block;
+    height:19px;
+    width:19px;
+    margin-left: 15px;
+}
+
+.myorders-icon {
+    background-image: url('../images/my_orders.PNG');
+    display: inline-block;
+    height: 20px;
+    width: 20px;
+    margin-left: 15px;
+}
+
 .login-user {
     position: absolute!important;
-    top: 15px;
+    top: 30px;
     right: 65px;
+    cursor:pointer;
 }
 
 .login-user-dropdown {
@@ -543,9 +594,10 @@ form .col-md-4 {
 .login-user-dropdown-content {
     display: none;
     position: absolute;
-    background-color: #f9f9f9;
+    background-color: #FFFFFF;
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    left: 100px;
 }
 
 .login-user-dropdown-content a {
@@ -553,6 +605,16 @@ form .col-md-4 {
     padding: 12px 16px;
     text-decoration: none;
     display: block;
+    text-align:right;
+    text-transform:uppercase;
+}
+
+.login-user:hover .login-user-dropdown-content {
+    display: block;
+}
+
+.login-user-dropdown-content a:hover {
+    color: #f1f1f1;
 }
 
 .es-header {

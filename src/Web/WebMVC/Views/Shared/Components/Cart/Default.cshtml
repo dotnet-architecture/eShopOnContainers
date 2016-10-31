@@ -1,10 +1,17 @@
-@model Microsoft.eShopOnContainers.WebMVC.Models.Order
+@model System.Int32
 
 @{
     ViewData["Title"] = "My Cart";
 }
 
-<a asp-area="" asp-controller="Order" asp-action="Cart"><img src="~/images/cart.PNG" class="layout-cart-image hidden-xs"></a>
+<div>
+    <a asp-area="" asp-controller="Order" asp-action="Cart"><img src="~/images/cart.PNG" class="fr layout-cart-image hidden-xs" />
+       
+    </a>
+    <div class="layout-cart-badge">
+        @Model
+    </div>
+</div>
 
 
 

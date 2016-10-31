@@ -32,41 +32,41 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
             #region fake data
             _items = new List<CatalogItem>()
             {
-                new CatalogItem() { Id = Guid.NewGuid(), Description = "Roslyn Red T-Shirt", Name = "Roslyn Red T-Shirt", Price = 12, PicsUrl = "https://fakeimg.pl/370x240/EEEEEE/000/?text=RoslynRedT-Shirt"  },
-                new CatalogItem() { Id = Guid.NewGuid(), Description = "Cupt Black & White Mug", Name = "Cupt Black & White Mug", Price= 17, PicsUrl = "https://fakeimg.pl/370x240/EEEEEE/000/?text=CuptBlack&WhiteMug" },
-                new CatalogItem() { Id = Guid.NewGuid(), Description = "Prism White T-Shirt", Name = "Prism White T-Shirt", Price = 12, PicsUrl = "http://fakeimg.pl/370x240/EEEEEE/000/?text=.PrismWhiteT-Shirt" },
-                new CatalogItem() { Id = Guid.NewGuid(), Description = ".NET Bot Black Sweatshirt", Name = ".NET Bot Black Sweatshirt", Price = decimal.Parse("19.5"), PicsUrl = "http://fakeimg.pl/370x240/EEEEEE/000/?text=.NETBotBlack" },
-                new CatalogItem() { Id = Guid.NewGuid(), Description = "Roslyn Red T-Shirt", Name = "Roslyn Red T-Shirt", Price = 12, PicsUrl = "http://fakeimg.pl/370x240/EEEEEE/000/?text=RoslynRedT-Shirt"  },
-                new CatalogItem() { Id = Guid.NewGuid(), Description = "Cupt Black & White Mug", Name = "Cupt Black & White Mug", Price= 17, PicsUrl = "https://fakeimg.pl/370x240/EEEEEE/000/?text=CuptBlack&WhiteMug" },
-                new CatalogItem() { Id = Guid.NewGuid(), Description = "Prism White T-Shirt", Name = "Prism White T-Shirt", Price = 12, PicsUrl = "http://fakeimg.pl/370x240/EEEEEE/000/?text=.PrismWhiteT-Shirt" },
-                new CatalogItem() { Id = Guid.NewGuid(), Description = ".NET Bot Black Sweatshirt", Name = ".NET Bot Black Sweatshirt", Price = decimal.Parse("19.5"), PicsUrl = "http://fakeimg.pl/370x240/EEEEEE/000/?text=.NETBotBlack" },
-                new CatalogItem() { Id = Guid.NewGuid(), Description = "Roslyn Red T-Shirt", Name = "Roslyn Red T-Shirt", Price = 12, PicsUrl = "http://fakeimg.pl/370x240/EEEEEE/000/?text=RoslynRedT-Shirt"  },
-                new CatalogItem() { Id = Guid.NewGuid(), Description = "Cupt Black & White Mug", Name = "Cupt Black & White Mug", Price= 17, PicsUrl = "https://fakeimg.pl/370x240/EEEEEE/000/?text=CuptBlack&WhiteMug" },
-                new CatalogItem() { Id = Guid.NewGuid(), Description = "Prism White T-Shirt", Name = "Prism White T-Shirt", Price = 12, PicsUrl = "http://fakeimg.pl/370x240/EEEEEE/000/?text=.PrismWhiteT-Shirt" },
-                new CatalogItem() { Id = Guid.NewGuid(), Description = ".NET Bot Black Sweatshirt", Name = ".NET Bot Black Sweatshirt", Price = decimal.Parse("19.5"), PicsUrl = "http://fakeimg.pl/370x240/EEEEEE/000/?text=.NETBotBlack" },
-                new CatalogItem() { Id = Guid.NewGuid(), Description = "Roslyn Red T-Shirt", Name = "Roslyn Red T-Shirt", Price = 12, PicsUrl = "http://fakeimg.pl/370x240/EEEEEE/000/?text=RoslynRedT-Shirt"  },
-                new CatalogItem() { Id = Guid.NewGuid(), Description = "Cupt Black & White Mug", Name = "Cupt Black & White Mug", Price= 17, PicsUrl = "https://fakeimg.pl/370x240/EEEEEE/000/?text=CuptBlack&WhiteMug" },
-                new CatalogItem() { Id = Guid.NewGuid(), Description = "Prism White T-Shirt", Name = "Prism White T-Shirt", Price = 12, PicsUrl = "http://fakeimg.pl/370x240/EEEEEE/000/?text=.PrismWhiteT-Shirt" },
-                new CatalogItem() { Id = Guid.NewGuid(), Description = ".NET Bot Black Sweatshirt", Name = ".NET Bot Black Sweatshirt", Price = decimal.Parse("19.5"), PicsUrl = "http://fakeimg.pl/370x240/EEEEEE/000/?text=.NETBotBlack" },
-                new CatalogItem() { Id = Guid.NewGuid(), Description = "Roslyn Red T-Shirt", Name = "Roslyn Red T-Shirt", Price = 12, PicsUrl = "http://fakeimg.pl/370x240/EEEEEE/000/?text=RoslynRedT-Shirt"  },
-                new CatalogItem() { Id = Guid.NewGuid(), Description = "Cupt Black & White Mug", Name = "Cupt Black & White Mug", Price= 17, PicsUrl = "https://fakeimg.pl/370x240/EEEEEE/000/?text=CuptBlack&WhiteMug" },
-                new CatalogItem() { Id = Guid.NewGuid(), Description = "Prism White T-Shirt", Name = "Prism White T-Shirt", Price = 12, PicsUrl = "http://fakeimg.pl/370x240/EEEEEE/000/?text=.PrismWhiteT-Shirt" },
-                new CatalogItem() { Id = Guid.NewGuid(), Description = ".NET Bot Black Sweatshirt", Name = ".NET Bot Black Sweatshirt", Price = decimal.Parse("19.5"), PicsUrl = "http://fakeimg.pl/370x240/EEEEEE/000/?text=.NETBotBlack" },
-                new CatalogItem() { Id = Guid.NewGuid(), Description = "Roslyn Red T-Shirt", Name = "Roslyn Red T-Shirt", Price = 12, PicsUrl = "http://fakeimg.pl/370x240/EEEEEE/000/?text=RoslynRedT-Shirt"  },
-                new CatalogItem() { Id = Guid.NewGuid(), Description = "Cupt Black & White Mug", Name = "Cupt Black & White Mug", Price= 17, PicsUrl = "https://fakeimg.pl/370x240/EEEEEE/000/?text=CuptBlack&WhiteMug" },
-                new CatalogItem() { Id = Guid.NewGuid(), Description = "Prism White T-Shirt", Name = "Prism White T-Shirt", Price = 12, PicsUrl = "http://fakeimg.pl/370x240/EEEEEE/000/?text=.PrismWhiteT-Shirt" },
-                new CatalogItem() { Id = Guid.NewGuid(), Description = ".NET Bot Black Sweatshirt", Name = ".NET Bot Black Sweatshirt", Price = decimal.Parse("19.5"), PicsUrl = "http://fakeimg.pl/370x240/EEEEEE/000/?text=.NETBotBlack" },
-                new CatalogItem() { Id = Guid.NewGuid(), Description = "Roslyn Red T-Shirt", Name = "Roslyn Red T-Shirt", Price = 12, PicsUrl = "http://fakeimg.pl/370x240/EEEEEE/000/?text=RoslynRedT-Shirt"  },
-                new CatalogItem() { Id = Guid.NewGuid(), Description = "Cupt Black & White Mug", Name = "Cupt Black & White Mug", Price= 17, PicsUrl = "https://fakeimg.pl/370x240/EEEEEE/000/?text=CuptBlack&WhiteMug" },
-                new CatalogItem() { Id = Guid.NewGuid(), Description = "Prism White T-Shirt", Name = "Prism White T-Shirt", Price = 12, PicsUrl = "http://fakeimg.pl/370x240/EEEEEE/000/?text=.PrismWhiteT-Shirt" },
-                new CatalogItem() { Id = Guid.NewGuid(), Description = ".NET Bot Black Sweatshirt", Name = ".NET Bot Black Sweatshirt", Price = decimal.Parse("19.5"), PicsUrl = "http://fakeimg.pl/370x240/EEEEEE/000/?text=.NETBotBlack" }
+                new CatalogItem() { Id = Guid.NewGuid().ToString(), Description = "Roslyn Red T-Shirt", Name = "Roslyn Red T-Shirt", Price = 12, PicsUrl = "https://fakeimg.pl/370x240/EEEEEE/000/?text=RoslynRedT-Shirt"  },
+                new CatalogItem() { Id = Guid.NewGuid().ToString(), Description = "Cupt Black & White Mug", Name = "Cupt Black & White Mug", Price= 17, PicsUrl = "https://fakeimg.pl/370x240/EEEEEE/000/?text=CuptBlack&WhiteMug" },
+                new CatalogItem() { Id = Guid.NewGuid().ToString(), Description = "Prism White T-Shirt", Name = "Prism White T-Shirt", Price = 12, PicsUrl = "http://fakeimg.pl/370x240/EEEEEE/000/?text=.PrismWhiteT-Shirt" },
+                new CatalogItem() { Id = Guid.NewGuid().ToString(), Description = ".NET Bot Black Sweatshirt", Name = ".NET Bot Black Sweatshirt", Price = decimal.Parse("19.5"), PicsUrl = "http://fakeimg.pl/370x240/EEEEEE/000/?text=.NETBotBlack" },
+                new CatalogItem() { Id = Guid.NewGuid().ToString(), Description = "Roslyn Red T-Shirt", Name = "Roslyn Red T-Shirt", Price = 12, PicsUrl = "http://fakeimg.pl/370x240/EEEEEE/000/?text=RoslynRedT-Shirt"  },
+                new CatalogItem() { Id = Guid.NewGuid().ToString(), Description = "Cupt Black & White Mug", Name = "Cupt Black & White Mug", Price= 17, PicsUrl = "https://fakeimg.pl/370x240/EEEEEE/000/?text=CuptBlack&WhiteMug" },
+                new CatalogItem() { Id = Guid.NewGuid().ToString(), Description = "Prism White T-Shirt", Name = "Prism White T-Shirt", Price = 12, PicsUrl = "http://fakeimg.pl/370x240/EEEEEE/000/?text=.PrismWhiteT-Shirt" },
+                new CatalogItem() { Id = Guid.NewGuid().ToString(), Description = ".NET Bot Black Sweatshirt", Name = ".NET Bot Black Sweatshirt", Price = decimal.Parse("19.5"), PicsUrl = "http://fakeimg.pl/370x240/EEEEEE/000/?text=.NETBotBlack" },
+                new CatalogItem() { Id = Guid.NewGuid().ToString(), Description = "Roslyn Red T-Shirt", Name = "Roslyn Red T-Shirt", Price = 12, PicsUrl = "http://fakeimg.pl/370x240/EEEEEE/000/?text=RoslynRedT-Shirt"  },
+                new CatalogItem() { Id = Guid.NewGuid().ToString(), Description = "Cupt Black & White Mug", Name = "Cupt Black & White Mug", Price= 17, PicsUrl = "https://fakeimg.pl/370x240/EEEEEE/000/?text=CuptBlack&WhiteMug" },
+                new CatalogItem() { Id = Guid.NewGuid().ToString(), Description = "Prism White T-Shirt", Name = "Prism White T-Shirt", Price = 12, PicsUrl = "http://fakeimg.pl/370x240/EEEEEE/000/?text=.PrismWhiteT-Shirt" },
+                new CatalogItem() { Id = Guid.NewGuid().ToString(), Description = ".NET Bot Black Sweatshirt", Name = ".NET Bot Black Sweatshirt", Price = decimal.Parse("19.5"), PicsUrl = "http://fakeimg.pl/370x240/EEEEEE/000/?text=.NETBotBlack" },
+                new CatalogItem() { Id = Guid.NewGuid().ToString(), Description = "Roslyn Red T-Shirt", Name = "Roslyn Red T-Shirt", Price = 12, PicsUrl = "http://fakeimg.pl/370x240/EEEEEE/000/?text=RoslynRedT-Shirt"  },
+                new CatalogItem() { Id = Guid.NewGuid().ToString(), Description = "Cupt Black & White Mug", Name = "Cupt Black & White Mug", Price= 17, PicsUrl = "https://fakeimg.pl/370x240/EEEEEE/000/?text=CuptBlack&WhiteMug" },
+                new CatalogItem() { Id = Guid.NewGuid().ToString(), Description = "Prism White T-Shirt", Name = "Prism White T-Shirt", Price = 12, PicsUrl = "http://fakeimg.pl/370x240/EEEEEE/000/?text=.PrismWhiteT-Shirt" },
+                new CatalogItem() { Id = Guid.NewGuid().ToString(), Description = ".NET Bot Black Sweatshirt", Name = ".NET Bot Black Sweatshirt", Price = decimal.Parse("19.5"), PicsUrl = "http://fakeimg.pl/370x240/EEEEEE/000/?text=.NETBotBlack" },
+                new CatalogItem() { Id = Guid.NewGuid().ToString(), Description = "Roslyn Red T-Shirt", Name = "Roslyn Red T-Shirt", Price = 12, PicsUrl = "http://fakeimg.pl/370x240/EEEEEE/000/?text=RoslynRedT-Shirt"  },
+                new CatalogItem() { Id = Guid.NewGuid().ToString(), Description = "Cupt Black & White Mug", Name = "Cupt Black & White Mug", Price= 17, PicsUrl = "https://fakeimg.pl/370x240/EEEEEE/000/?text=CuptBlack&WhiteMug" },
+                new CatalogItem() { Id = Guid.NewGuid().ToString(), Description = "Prism White T-Shirt", Name = "Prism White T-Shirt", Price = 12, PicsUrl = "http://fakeimg.pl/370x240/EEEEEE/000/?text=.PrismWhiteT-Shirt" },
+                new CatalogItem() { Id = Guid.NewGuid().ToString(), Description = ".NET Bot Black Sweatshirt", Name = ".NET Bot Black Sweatshirt", Price = decimal.Parse("19.5"), PicsUrl = "http://fakeimg.pl/370x240/EEEEEE/000/?text=.NETBotBlack" },
+                new CatalogItem() { Id = Guid.NewGuid().ToString(), Description = "Roslyn Red T-Shirt", Name = "Roslyn Red T-Shirt", Price = 12, PicsUrl = "http://fakeimg.pl/370x240/EEEEEE/000/?text=RoslynRedT-Shirt"  },
+                new CatalogItem() { Id = Guid.NewGuid().ToString(), Description = "Cupt Black & White Mug", Name = "Cupt Black & White Mug", Price= 17, PicsUrl = "https://fakeimg.pl/370x240/EEEEEE/000/?text=CuptBlack&WhiteMug" },
+                new CatalogItem() { Id = Guid.NewGuid().ToString(), Description = "Prism White T-Shirt", Name = "Prism White T-Shirt", Price = 12, PicsUrl = "http://fakeimg.pl/370x240/EEEEEE/000/?text=.PrismWhiteT-Shirt" },
+                new CatalogItem() { Id = Guid.NewGuid().ToString(), Description = ".NET Bot Black Sweatshirt", Name = ".NET Bot Black Sweatshirt", Price = decimal.Parse("19.5"), PicsUrl = "http://fakeimg.pl/370x240/EEEEEE/000/?text=.NETBotBlack" },
+                new CatalogItem() { Id = Guid.NewGuid().ToString(), Description = "Roslyn Red T-Shirt", Name = "Roslyn Red T-Shirt", Price = 12, PicsUrl = "http://fakeimg.pl/370x240/EEEEEE/000/?text=RoslynRedT-Shirt"  },
+                new CatalogItem() { Id = Guid.NewGuid().ToString(), Description = "Cupt Black & White Mug", Name = "Cupt Black & White Mug", Price= 17, PicsUrl = "https://fakeimg.pl/370x240/EEEEEE/000/?text=CuptBlack&WhiteMug" },
+                new CatalogItem() { Id = Guid.NewGuid().ToString(), Description = "Prism White T-Shirt", Name = "Prism White T-Shirt", Price = 12, PicsUrl = "http://fakeimg.pl/370x240/EEEEEE/000/?text=.PrismWhiteT-Shirt" },
+                new CatalogItem() { Id = Guid.NewGuid().ToString(), Description = ".NET Bot Black Sweatshirt", Name = ".NET Bot Black Sweatshirt", Price = decimal.Parse("19.5"), PicsUrl = "http://fakeimg.pl/370x240/EEEEEE/000/?text=.NETBotBlack" }
             };
             #endregion
         }
          
-        public CatalogItem GetCatalogItem(Guid Id)
+        public CatalogItem GetCatalogItem(string Id)
         {
-            return _items.Where(x => x.Id == Id).FirstOrDefault();
+            return _items.Where(x => x.Id.Equals(Id)).FirstOrDefault();
         }
 
         public Task<List<CatalogItem>> GetCatalogItems(int? skip,int? take)

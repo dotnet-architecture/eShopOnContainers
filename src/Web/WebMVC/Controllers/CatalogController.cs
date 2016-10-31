@@ -26,7 +26,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
         {
             var vm = new IndexViewModel()
             {
-                CatalogItems = await _catalogSvc.GetCatalogItems(8 * (page ?? 0), 8),
+                CatalogItems = await _catalogSvc.GetCatalogItems(6 * (page ?? 0), 6),
                 Brands = _catalogSvc.GetTypes(),
                 Types = _catalogSvc.GetBrands(),
                 BrandFilterApplied = BrandFilterApplied ?? 0,
@@ -34,9 +34,9 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
                 PaginationInfo = new PaginationInfo()
                 {
                     ActualPage = page ?? 0,
-                    ItemsPerPage = 8,
+                    ItemsPerPage = 6,
                     TotalItems = _catalogSvc.TotalItems, 
-                    TotalPages = int.Parse(Math.Round(((decimal)_catalogSvc.TotalItems / 8), MidpointRounding.AwayFromZero).ToString())
+                    TotalPages = int.Parse(Math.Round(((decimal)_catalogSvc.TotalItems / 6), MidpointRounding.AwayFromZero).ToString())
                 }
             };
 

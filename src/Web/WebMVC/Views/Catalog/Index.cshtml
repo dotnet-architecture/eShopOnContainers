@@ -63,7 +63,7 @@
             <div class="col-sm-4 home-catalog-item">
                 <div class="home-catalog-item-image" >
                     <img src="@catalogItem.PicsUrl" />
-                    <a asp-area="" asp-controller="Home" asp-action="About" class="btn-brand home-catalog-item-image-addCart">
+                    <a asp-area="" asp-controller="Order" asp-action="AddToCart" asp-route-productId="@catalogItem.Id" class="btn-brand home-catalog-item-image-addCart">
                         ADD TO CART
                     </a>
                 </div>
