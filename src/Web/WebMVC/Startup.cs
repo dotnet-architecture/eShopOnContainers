@@ -22,7 +22,8 @@ namespace Microsoft.eShopOnContainers.WebMVC
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+                .AddEnvironmentVariables();            
 
             if (env.IsDevelopment())
             {
@@ -73,7 +74,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/Catalog/Error");
             }
 
             app.UseStaticFiles();
@@ -86,7 +87,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=Catalog}/{action=Index}/{id?}");
             });
         }
     }

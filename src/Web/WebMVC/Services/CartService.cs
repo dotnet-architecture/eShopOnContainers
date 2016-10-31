@@ -28,7 +28,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
             throw new NotImplementedException();
         }
 
-        public Task<Order> GetOrderInProgress()
+        public Task<Order> GetActiveOrder()
         {
             return Task.Run(() => { return _order; });
         }

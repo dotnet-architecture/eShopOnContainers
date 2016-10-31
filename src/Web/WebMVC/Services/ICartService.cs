@@ -11,6 +11,6 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
         void AddItemToOrder(CatalogItem item);
         void RemoveItemFromOrder(Guid itemIdentifier);
         int GetItemCountFromOrderInProgress();
-        Task<Order> GetOrderInProgress();
+        Task<Order> GetActiveOrder();
     }
 }

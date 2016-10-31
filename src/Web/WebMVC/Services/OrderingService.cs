@@ -9,6 +9,9 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
     public class OrderingService : IOrderingService
     {
         private List<Order> _orders;
+        //var ordersUrl = _settings.OrderingUrl + "/api/ordering/orders";
+        //var dataString = await _http.GetStringAsync(ordersUrl);
+        //var items = JsonConvert.DeserializeObject<List<Order>>(dataString);
 
         public OrderingService()
         {

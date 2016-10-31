@@ -16,6 +16,11 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
             _orderSvc = orderSvc;
         }
 
+        public IActionResult AddToCart()
+        {
+            return View();
+        }
+
         public IActionResult Cart()
         {
             return View();

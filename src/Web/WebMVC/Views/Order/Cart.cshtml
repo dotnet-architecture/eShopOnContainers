@@ -6,14 +6,11 @@
 
 <div class="brand-header-block">
     <ul class="container">
-        <li class="brand-header-back"><a asp-area="" asp-controller="Home" asp-action="Index">Back to list</a></li>
+        <li class="brand-header-back"><a asp-area="" asp-controller="Catalog" asp-action="Index">Back to list</a></li>
     </ul>
 </div>
 <div class="container cart-index-container">
     <div class="row">
-        <div class="col-md-offset-8 col-md-4">
-            <a asp-controller="Home" asp-action="Index" class="btn btn-default btn-brand btn-brand-dark btn-cart">&nbsp;Continue Shopping&nbsp;</a>
-        </div>
         <br /><br /><br /><br />
         <div class="col-md-12">
             <section>
@@ -41,7 +38,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @await Component.InvokeAsync("Cart")
+                        @await Component.InvokeAsync("CartList")
                     </tbody>
                 </table>
             </section>

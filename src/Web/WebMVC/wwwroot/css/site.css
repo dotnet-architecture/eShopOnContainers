@@ -37,12 +37,16 @@ textarea {
     margin-right: 20px;
     color: white;
     padding-top: 20px;
-    padding-bottom: 5px;
-    min-width: 120px;
+    padding-bottom: 3px;
+    min-width: 140px;
     border-color: #37c7ca;
     max-height: 43px;
     -webkit-appearance: none;
 }
+
+    .select-filter option {
+        background-color: #00a69c;
+    }
 
 select::-ms-expand {
     display: none;
@@ -62,13 +66,13 @@ select::-ms-expand {
     position: absolute;
     font-size: 10px;
     margin-top: 15px;
-    margin-left: 25px;
+    margin-left: 21px;
     color: white;
 }
 
 .select-filter-arrow {
     position: absolute;
-    margin-left: 110px;
+    margin-left: 130px;
     margin-top: 40px;
 }
 
@@ -179,6 +183,11 @@ select::-ms-expand {
 
 .btn-cart {
     float: right;
+}
+
+.btn-catalog-apply {
+    padding-left: 10px;
+    padding-top: 13px;
 }
 
 .form-label {
@@ -299,6 +308,7 @@ select::-ms-expand {
 
 .home-catalog-container {
     min-height: 400px;
+    margin-bottom: 20px;
 }
 
 .home-catalog-filter-container {
@@ -409,7 +419,11 @@ footer {
         margin-top: 10px;
     }
 
-form .text {
+.text {
+    color: #83D01B;
+}
+
+.text:hover {
     color: #83D01B;
 }
 
@@ -517,9 +531,73 @@ form .col-md-4 {
 
 .login-user {
     position: absolute!important;
-    top: 40px;
+    top: 15px;
     right: 65px;
 }
+
+.login-user-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.login-user-dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+
+.login-user-dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.es-header {
+    min-height: 80px!important;
+}
+
+.es-pager-bottom {
+    margin-top: 40px;
+}
+
+.es-pager-top {
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.es-pager-top ul {
+    list-style: none;
+}
+
+.es-pager-bottom ul {
+    list-style: none;
+}
+
+.page-item {
+    cursor: pointer;
+}
+
+.next {
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.previous {
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.is-disabled{
+    cursor: not-allowed;
+    opacity: .5;
+    pointer-events: none;
+}
+
 
 /* Hide/rearrange for smaller screens */
 @media screen and (max-width: 767px) {

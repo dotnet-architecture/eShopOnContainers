@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using BikeSharing_Private_Web_Site.Services.Pagination;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Microsoft.eShopOnContainers.WebMVC.Models.HomeViewModels
+namespace Microsoft.eShopOnContainers.WebMVC.Models.CatalogViewModels
 {
     public class IndexViewModel
     {
@@ -13,5 +14,6 @@ namespace Microsoft.eShopOnContainers.WebMVC.Models.HomeViewModels
         public IEnumerable<SelectListItem> Types { get; set; }
         public int BrandFilterApplied { get; set; }
         public int TypesFilterApplied { get; set; }
+        public PaginationInfo PaginationInfo { get; set; }
     }
 }

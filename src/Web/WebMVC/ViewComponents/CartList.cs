@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.WebMVC.ViewComponents
 {
-    public class Cart : ViewComponent
+    public class CartList : ViewComponent
     {
         private readonly ICartService _cartSvc;
 
-        public Cart(ICartService cartSvc)
+        public CartList(ICartService cartSvc)
         {
             _cartSvc = cartSvc;
         }
@@ -24,7 +24,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.ViewComponents
         }
         private Task<Order> GetItemsAsync()
         {
-            return _cartSvc.GetOrderInProgress();
+            return _cartSvc.GetActiveOrder();
         }
     }
 }
