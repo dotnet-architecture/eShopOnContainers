@@ -3,7 +3,7 @@
     "Microsoft.NETCore.App": {
       "version": "1.0.1",
       "type": "platform"
-    },
+    },  
     "Microsoft.AspNetCore.Mvc": "1.0.1",
     "Microsoft.AspNetCore.Diagnostics": "1.0.0",
     "Microsoft.AspNetCore.Diagnostics.Abstractions": "1.0.0",
