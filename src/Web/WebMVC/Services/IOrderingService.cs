@@ -8,10 +8,10 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
 {
     public interface IOrderingService
     {
-        int ItemsInCart { get; }
         List<Order> GetMyOrders(ApplicationUser user);
-        Order GetActiveOrder(ApplicationUser user);
-        void AddToCart(ApplicationUser user, OrderItem product);
         Order GetOrder(ApplicationUser user, Guid orderId);
+        void CreateOrder(Order order);
     }
+
+
 }

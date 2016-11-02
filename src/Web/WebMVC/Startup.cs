@@ -49,14 +49,17 @@ namespace Microsoft.eShopOnContainers.WebMVC
                 .AddDefaultTokenProviders();
 
             services.AddMvc();
+
+            // CCE : Session not apply in this demo we have a mservice to store in redis. (BasketService) Once it's ready I've to remove this lines 
             services.AddDistributedMemoryCache(); // default implementation (in memory), you can move to SQL or custom store that could be Redis.. 
             services.AddSession();
 
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
-            services.AddSingleton<ICatalogService, CatalogService>();
+            services.AddSingleton<ICatalogService, CatalogService>(); //CCE: Once services are integrated, a singleton is not needed we can left transient.
             services.AddTransient<IOrderingService, OrderingService>();
+            services.AddTransient<IBasketService, BasketService>();
 
             services.Configure<AppSettings>(Configuration);
         }
@@ -82,9 +85,8 @@ namespace Microsoft.eShopOnContainers.WebMVC
 
             app.UseIdentity();
 
+            //CCE: Remember to remove this line once Basket mservice is ready.
             app.UseSession();
-
-            // Add external authentication middleware below. To configure them please see http://go.microsoft.com/fwlink/?LinkID=532715
 
             app.UseMvc(routes =>
             {

@@ -7,6 +7,11 @@ namespace Microsoft.eShopOnContainers.WebMVC.Models
 {
     public class Order
     {
+        public Order()
+        {
+            OrderItems = new List<OrderItem>();
+        }
+
         public string Id;
         public List<OrderItem> OrderItems { get; set; }
         public string OrderNumber
@@ -27,10 +32,9 @@ namespace Microsoft.eShopOnContainers.WebMVC.Models
         //(CDLTLL) public virtual OrderStatus Status { get; set; }
     }
     
-    public enum OrderState
+    public enum OrderState:int
     {
-        Active, 
-        InProcess, 
-        Delivered
+        InProcess = 0, 
+        Delivered = 1
     }
 }

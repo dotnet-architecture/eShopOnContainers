@@ -7,6 +7,7 @@ using Microsoft.eShopOnContainers.WebMVC.Services;
 using Microsoft.eShopOnContainers.WebMVC.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.eShopOnContainers.WebMVC.Models.OrderViewModels;
 
 namespace Microsoft.eShopOnContainers.WebMVC.Controllers
 {
@@ -14,42 +15,24 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
     public class OrderController : Controller
     {
         private IOrderingService _orderSvc;
-        private ICatalogService _catalogSvc;
+        private IBasketService _basketSvc;
         private readonly UserManager<ApplicationUser> _userManager;
-        public OrderController(IOrderingService orderSvc, ICatalogService catalogSvc, UserManager<ApplicationUser> userManager)
+        public OrderController(IOrderingService orderSvc, IBasketService basketSvc, UserManager<ApplicationUser> userManager)
         {
             _userManager = userManager;
             _orderSvc = orderSvc;
-            _catalogSvc = catalogSvc;
+            _basketSvc = basketSvc;
         }
 
-        public async Task<IActionResult> AddToCart(string productId)
+        public async Task<IActionResult> Create()
         {
-            //CCE: I need product details (price, ...), so I retrieve from Catalog service again.
-            //     I don't like POST with a form from the catalog view (I'm avoiding Ajax too), 
-            //     I prefer Url.Action and http call here to catalog service to retrieve this info. 
+            var vm = new CreateOrderViewModel();
             var user = await _userManager.GetUserAsync(HttpContext.User);
-            var productDetails = _catalogSvc.GetCatalogItem(productId);
-            var product = new OrderItem()
-            {
-                ProductId = productId, 
-                Quantity = 1, 
-                ProductName = productDetails.Name, 
-                PicsUrl = productDetails.PicsUrl, 
-                UnitPrice = productDetails.Price
-            };
-            _orderSvc.AddToCart(user, product);
-            return RedirectToAction("Index", "Catalog");
-        }
-
-        public IActionResult Cart()
-        {
-            return View();
-        }
-
-        public IActionResult Create()
-        {
-            return View();
+            var basket = _basketSvc.GetBasket(user);
+            var order = _basketSvc.MapBasketToOrder(basket);
+            vm.Order = order;
+            
+            return View(vm);
         }
 
         public async Task<IActionResult> Index(Order item)

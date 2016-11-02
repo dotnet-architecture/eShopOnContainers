@@ -60,20 +60,20 @@
     <div class="row">
         @foreach (var catalogItem in Model.CatalogItems)
         {
-            <div class="col-sm-4 home-catalog-item">
-                <div class="home-catalog-item-image" >
-                    <img src="@catalogItem.PicsUrl" />
-                    <a asp-area="" asp-controller="Order" asp-action="AddToCart" asp-route-productId="@catalogItem.Id" class="btn-brand home-catalog-item-image-addCart">
-                        ADD TO CART
-                    </a>
+            <form asp-controller="Cart" asp-action="AddToCart" asp-route-productId="@catalogItem.Id">
+                <div class="col-sm-4 home-catalog-item">
+                    <div class="home-catalog-item-image" >
+                        <img src="@catalogItem.PictureUrl" />
+                        <input type="submit" value="[ ADD TO CART ]" class="btn-brand home-catalog-item-image-addCart" />
+                    </div>
+                    <div class="home-catalog-item-title">
+                        <span>@catalogItem.Name</span>
+                    </div>
+                    <div class="home-catalog-item-price">
+                        <span>@catalogItem.Price.ToString("N2")</span>
+                    </div>
                 </div>
-                <div class="home-catalog-item-title">
-                    <span>@catalogItem.Name</span>
-                </div>
-                <div class="home-catalog-item-price">
-                    <span>@catalogItem.Price.ToString("N2")</span>
-                </div>
-            </div>
+            </form>
         }
     </div>
     <div class="container es-pager-bottom">

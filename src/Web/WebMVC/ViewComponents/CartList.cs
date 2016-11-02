@@ -10,9 +10,9 @@ namespace Microsoft.eShopOnContainers.WebMVC.ViewComponents
 {
     public class CartList : ViewComponent
     {
-        private readonly IOrderingService _cartSvc;
+        private readonly IBasketService _cartSvc;
 
-        public CartList(IOrderingService cartSvc)
+        public CartList(IBasketService cartSvc)
         {
             _cartSvc = cartSvc;
         }
@@ -22,9 +22,9 @@ namespace Microsoft.eShopOnContainers.WebMVC.ViewComponents
             var item = await GetItemsAsync(user);
             return View(item);
         }
-        private Task<Order> GetItemsAsync(ApplicationUser user)
+        private Task<Basket> GetItemsAsync(ApplicationUser user)
         {
-            return Task.Run(()=> { return _cartSvc.GetActiveOrder(user); });
+            return Task.Run(()=> { return _cartSvc.GetBasket(user); });
         }
     }
 }

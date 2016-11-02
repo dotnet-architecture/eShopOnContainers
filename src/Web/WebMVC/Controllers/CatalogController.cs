@@ -27,8 +27,8 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
             var vm = new IndexViewModel()
             {
                 CatalogItems = await _catalogSvc.GetCatalogItems(6 * (page ?? 0), 6),
-                Brands = _catalogSvc.GetTypes(),
-                Types = _catalogSvc.GetBrands(),
+                Brands = _catalogSvc.GetBrands(),
+                Types = _catalogSvc.GetTypes(),
                 BrandFilterApplied = BrandFilterApplied ?? 0,
                 TypesFilterApplied = TypesFilterApplied ?? 0,
                 PaginationInfo = new PaginationInfo()
