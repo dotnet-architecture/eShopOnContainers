@@ -1,5 +1,5 @@
 ﻿{
-  "ConnectionString": "Server=127.0.0.1;Port=5432;Database=Catalog;username=postgres;password=postgres",
+  "ConnectionString": "Server=127.0.0.1;Port=5432;Database=CatalogDB;username=postgres;password=postgres",
   "Logging": {
     "IncludeScopes": false,
     "LogLevel": {
