@@ -39,10 +39,10 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
             return Ok(model);
         }
 
-        // GET api/v1/[controller]/FindCatalogItemByName/samplename
+        // GET api/v1/[controller]/items/withname/samplename
 
         [HttpGet]
-        [Route("[action]/{name:minlength(1)}")]
+        [Route("[action]/withname/{name:minlength(1)}")]
         public async Task<IActionResult> Items(string name, int pageSize = 10, int pageIndex = 0)
         {
 
@@ -52,6 +52,38 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
 
             var itemsOnPage = await _context.CatalogItems
                 .Where(c => c.Name.StartsWith(name))
+                .Skip(pageSize * pageIndex)
+                .Take(pageSize)
+                .ToListAsync();
+
+            var model = new PaginatedItemsViewModel<CatalogItem>(
+                pageIndex, pageSize, totalItems, itemsOnPage);
+
+            return Ok(model);
+        }
+
+        // GET api/v1/[controller]/items/type/1/brand/null
+
+        [HttpGet]
+        [Route("[action]/type/{catalogTypeId}/brand/{catalogBrandId}")]
+        public async Task<IActionResult> Items(int? catalogTypeId, int? catalogBrandId, int pageSize = 10, int pageIndex = 0)
+        {
+            var root = (IQueryable<CatalogItem>)_context.CatalogItems;
+
+            if (catalogTypeId.HasValue)
+            {
+                root = root.Where(ci => ci.CatalogTypeId == catalogTypeId);
+            }
+
+            if (catalogBrandId.HasValue)
+            {
+                root = root.Where(ci => ci.CatalogBrandId == catalogBrandId);
+            }
+
+            var totalItems = await root
+                .LongCountAsync();
+
+            var itemsOnPage = await root
                 .Skip(pageSize * pageIndex)
                 .Take(pageSize)
                 .ToListAsync();

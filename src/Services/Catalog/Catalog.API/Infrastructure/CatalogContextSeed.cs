@@ -15,6 +15,8 @@
 
             using (context)
             {
+                context.Database.EnsureDeleted();
+
                 context.Database.EnsureCreated();
 
                 if (!context.CatalogBrands.Any())

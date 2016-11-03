@@ -30,9 +30,10 @@
                 .StartsAt(1)
                 .IncrementsBy(1);
 
-            builder.Entity<CatalogItem>(ConfigureCatalogItem);
             builder.Entity<CatalogBrand>(ConfigureCatalogBrand);
             builder.Entity<CatalogType>(ConfigureCatalogType);
+            builder.Entity<CatalogItem>(ConfigureCatalogItem);
+           
 
             builder.HasPostgresExtension("uuid-ossp");
         }
@@ -54,6 +55,14 @@
 
             builder.Property(ci => ci.PictureUri)
                 .IsRequired(false);
+
+            builder.HasOne(ci => ci.CatalogBrand)
+                .WithMany()
+                .HasForeignKey(ci => ci.CatalogBrandId);
+
+            builder.HasOne(ci => ci.CatalogType)
+                .WithMany()
+                .HasForeignKey(ci => ci.CatalogTypeId);
 
         }
 
