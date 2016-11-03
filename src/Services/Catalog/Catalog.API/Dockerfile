@@ -1,4 +1,4 @@
-FROM microsoft/aspnetcore
+FROM microsoft/aspnetcore:latest
 WORKDIR /app
 EXPOSE 80
 ADD . /app
