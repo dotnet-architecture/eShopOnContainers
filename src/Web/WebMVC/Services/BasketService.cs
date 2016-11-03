@@ -19,25 +19,6 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
 
         public int ItemsInCart { get { return _itemsInCart; }}
 
-        public void AddToCart(ApplicationUser user, BasketItem product)
-        {
-            Basket activeOrder = GetBasket(user);
-            if (activeOrder == null)
-            {
-                activeOrder = new Basket()
-                {
-                    BuyerId = user.Id,
-                    Id = Guid.NewGuid().ToString(),
-                    Items = new List<Models.BasketItem>()
-                };
-            }
-
-            activeOrder.Items.Add(product);
-            //CCE: lacks and httpcall to persist in the real back.end service.
-            _httpContextAccessor.HttpContext.Session.SetObject("MyActiveOrder", activeOrder);
-
-        }
-
         public Basket GetBasket(ApplicationUser user)
         {
             Basket activeOrder;
@@ -89,6 +70,29 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
             });
 
             return order;
+        }
+
+        public void AddItemToBasket(ApplicationUser user, BasketItem product)
+        {
+            Basket activeOrder = GetBasket(user);
+            if (activeOrder == null)
+            {
+                activeOrder = new Basket()
+                {
+                    BuyerId = user.Id,
+                    Id = Guid.NewGuid().ToString(),
+                    Items = new List<Models.BasketItem>()
+                };
+            }
+
+            activeOrder.Items.Add(product);
+            //CCE: lacks and httpcall to persist in the real back.end service.
+            _httpContextAccessor.HttpContext.Session.SetObject("MyActiveOrder", activeOrder);
+        }
+
+        public void CleanBasket(ApplicationUser user)
+        {
+            _httpContextAccessor.HttpContext.Session.SetObject("MyActiveOrder", new Basket());
         }
     }
 }

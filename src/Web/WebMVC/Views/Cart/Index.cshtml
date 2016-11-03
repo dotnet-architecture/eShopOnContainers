@@ -14,55 +14,11 @@
 <form method="post" id="cartForm">
     <div class="container cart-index-container">
         <div class="row">
-            <br /><br /><br /><br />
-            <div class="col-md-12">
-                <section>
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th class="cart-product-column">
-                                    PRODUCT
-                                </th>
-                                <th>
-
-                                </th>
-                                <th>
-                                    BRAND
-                                </th>
-                                <th>
-                                    PRICE
-                                </th>
-                                <th>
-                                    QUANTITY
-                                </th>
-                                <th>
-                                    COST
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @await Component.InvokeAsync("CartList", new { user = await UserManager.GetUserAsync(User) })
-                        </tbody>
-                    </table>
-                </section>
-            </div>
+            @await Component.InvokeAsync("CartList", new { user = await UserManager.GetUserAsync(User) })
             <div class="col-md-offset-8 col-md-4">
-                <input type="submit" 
-                       class="btn btn-default btn-brand btn-cart cart-checkout-btn cart-refresh-button" 
-                       value="[ Refresh ]"
-                       name="action" />
-
-                <div class="cart-section-total">
-                    <div class="cart-subtotal-label"><span>SUBTOTAL</span></div>
-                    <div class="cart-subtotal-value"><span>$ 29.00</span></div>
-                    <div class="cart-subtotal-label"><span>TAX</span></div>
-                    <div class="cart-subtotal-value"><span>$ 4.20</span></div>
-                    <div class="cart-total-label"><span>TOTAL</span></div>
-                    <div class="cart-total-value"><span>$ @Model.Total()</span></div>
-                </div>
                 <input type="submit"
-                        class="btn btn-default btn-brand btn-cart cart-checkout-btn cart-refresh-button"
-                        value="[ Checkout ]" name="action" />
+                       class="btn btn-default btn-brand btn-cart"
+                       value="[ Checkout ]" name="action" />
             </div>
         </div>
     </div>

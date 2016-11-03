@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -10,6 +11,8 @@ namespace Microsoft.eShopOnContainers.WebMVC.Models
         public Order()
         {
             OrderItems = new List<OrderItem>();
+            ShippingAddress = new Address();
+            PaymentInfo = new PaymentInfo();
         }
 
         public string Id;
@@ -24,9 +27,13 @@ namespace Microsoft.eShopOnContainers.WebMVC.Models
         public int SequenceNumber { get; set; }
         public virtual string BuyerId { get; set; }
         public virtual Address ShippingAddress { get; set; }
-        
+        public virtual PaymentInfo PaymentInfo { get; set; }
         public virtual DateTime OrderDate { get; set; }
         public OrderState State { get; set; }
+
+        public decimal Total() {
+            return OrderItems.Sum(x => x.Quantity * x.UnitPrice);
+        } 
 
         //(CCE) public virtual Address BillingAddress { get; set; }
         //(CDLTLL) public virtual OrderStatus Status { get; set; }

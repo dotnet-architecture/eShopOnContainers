@@ -32,7 +32,7 @@
                 <nav>
                     <ul>
                         <li class="page-item">
-                           <a class="text previous @Model.PaginationInfo.Previous" id="Previous"
+                            <a class="text previous @Model.PaginationInfo.Previous" id="Previous"
                                href="@Url.Action("Index","Catalog", new { page = Model.PaginationInfo.ActualPage -1 })"
                                aria-label="Previous">
                                 <span>Previous</span>
@@ -60,9 +60,9 @@
     <div class="row">
         @foreach (var catalogItem in Model.CatalogItems)
         {
-            <form asp-controller="Cart" asp-action="AddToCart" asp-route-productId="@catalogItem.Id">
-                <div class="col-sm-4 home-catalog-item">
-                    <div class="home-catalog-item-image" >
+            <div class="col-sm-4 home-catalog-item">
+                <form asp-controller="Cart" asp-action="AddToCart" asp-route-productId="@catalogItem.Id">
+                    <div class="home-catalog-item-image">
                         <img src="@catalogItem.PictureUrl" />
                         <input type="submit" value="[ ADD TO CART ]" class="btn-brand home-catalog-item-image-addCart" />
                     </div>
@@ -72,8 +72,8 @@
                     <div class="home-catalog-item-price">
                         <span>@catalogItem.Price.ToString("N2")</span>
                     </div>
-                </div>
-            </form>
+                </form>
+            </div>
         }
     </div>
     <div class="container es-pager-bottom">

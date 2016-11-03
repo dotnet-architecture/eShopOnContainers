@@ -12,7 +12,7 @@
             <div class="fr login-user">
                 <span>@UserManager.GetUserName(User)<i class="down-arrow"></i></span>
                 <div class="login-user-dropdown-content">
-                    <a href="#">MY ORDERS<i class="myorders-icon"></i></a>
+                    <a asp-controller="Order" asp-action="Index">MY ORDERS<i class="myorders-icon"></i></a>
                     <a href="javascript:document.getElementById('logoutForm').submit()">LOG OUT<i class="logout-icon"></i></a>
                 </div>
             </div>

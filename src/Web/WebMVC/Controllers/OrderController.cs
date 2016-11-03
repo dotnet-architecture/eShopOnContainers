@@ -30,9 +30,35 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
             var user = await _userManager.GetUserAsync(HttpContext.User);
             var basket = _basketSvc.GetBasket(user);
             var order = _basketSvc.MapBasketToOrder(basket);
-            vm.Order = order;
-            
+            vm.Order = _orderSvc.MapUserInfoIntoOrder(user, order);
+
             return View(vm);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(CreateOrderViewModel model)
+        {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var basket = _basketSvc.GetBasket(user);
+            var order = _basketSvc.MapBasketToOrder(basket);
+
+            // override if user has changed some shipping address or payment info data.
+            _orderSvc.OverrideUserInfoIntoOrder(model.Order, order);
+            _orderSvc.CreateOrder(user, order);
+
+            //Empty basket for current user. 
+            _basketSvc.CleanBasket(user);
+
+            //Redirect to historic list.
+            return RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> Detail(string orderId)
+        {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var order = _orderSvc.GetOrder(user, orderId);
+
+            return View(order);
         }
 
         public async Task<IActionResult> Index(Order item)

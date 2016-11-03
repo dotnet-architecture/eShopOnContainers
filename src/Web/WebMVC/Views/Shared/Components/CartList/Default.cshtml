@@ -4,22 +4,65 @@
     ViewData["Title"] = "My Cart";
 }
 
-@for (int i = 0; i < Model.Items.Count; i++)
-{
-    var item = Model.Items[i];
+<div class="col-md-12">
+    <section>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="cart-product-column">
+                        PRODUCT
+                    </th>
+                    <th>
 
-    <tr>
-        <td class="cart-product-column"><img class="cart-product-image" src="@item.PictureUrl" /></td>
-        <td class="cart-product-column">@item.ProductName</td>
-        <td class="cart-product-column">ROSLYN</td>
-        <td class="cart-product-column">$ @item.UnitPrice</td>
-        <td class="cart-product-column">
-            <input type="hidden" name="@("quantities[" + i +"].Key")" value="@item.Id" />
-            <input type="number" name="@("quantities[" + i +"].Value")" value="@item.Quantity" />
-        </td>
-        <td class="cart-product-column cart-total-value">$ @(item.Quantity * item.UnitPrice)</td>
-    </tr>
-}
+                    </th>
+                    <th>
+                        BRAND
+                    </th>
+                    <th>
+                        PRICE
+                    </th>
+                    <th>
+                        QUANTITY
+                    </th>
+                    <th>
+                        COST
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.Items.Count; i++)
+                {
+                var item = Model.Items[i];
 
+                    <tr>
+                        <td class="cart-product-column"><img class="cart-product-image" src="@item.PictureUrl" /></td>
+                        <td class="cart-product-column">@item.ProductName</td>
+                        <td class="cart-product-column">ROSLYN</td>
+                        <td class="cart-product-column">$ @item.UnitPrice</td>
+                        <td class="cart-product-column">
+                            <input type="hidden" name="@("quantities[" + i +"].Key")" value="@item.Id" />
+                            <input type="number" name="@("quantities[" + i +"].Value")" value="@item.Quantity" />
+                        </td>
+                        <td class="cart-product-column cart-total-value">$ @(item.Quantity * item.UnitPrice)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </section>
+</div>
+<div class="col-md-offset-8 col-md-4">
+    <input type="submit"
+           class="btn btn-default cart-refresh-button"
+           value=""
+           name="action" />
+    <div class="cart-section-total">
+        @*<div class="cart-subtotal-label"><span>SUBTOTAL</span></div>
+            <div class="cart-subtotal-value"><span>$ @Model.Total()</span></div>
+            <div class="cart-subtotal-label"><span>TAX</span></div>
+            <div class="cart-subtotal-value"><span>$ 4.20</span></div>*@
+        <div class="cart-total-label"><span>TOTAL</span></div>
+        <div class="cart-total-value"><span>$ @Model.Total()</span></div>
+    </div>
+</div>
 
 

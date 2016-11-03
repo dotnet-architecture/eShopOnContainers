@@ -1,29 +1,28 @@
 @model IEnumerable<Microsoft.eShopOnContainers.WebMVC.Models.Order>
 
 @{
-    ViewData["Title"] = "View";
+    ViewData["Title"] = "My Orders";
 }
 <div class="brand-header-block">
     <ul class="container">
-        <li class="brand-header-back"><a asp-area="" asp-controller="Home" asp-action="Index">Back to home</a></li>
+        <li class="brand-header-back"><a asp-area="" asp-controller="Catalog" asp-action="Index">Back to home</a></li>
     </ul>
 </div>
-<div class="container cart-index-container">
+<div class="container order-index-container">
     <table class="table">
         <thead>
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.OrderNumber)
+                    ORDER NUMBER
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.OrderDate)
-                    @*@Html.DisplayNameFor(model => model.SequenceNumber)*@
+                    DATE
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.BuyerId)
+                    TOTAL
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.OrderDate)
+                    STATUS
                 </th>
                 <th></th>
             </tr>
@@ -36,18 +35,15 @@
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.OrderDate)
-                        @*@Html.DisplayFor(modelItem => item.SequenceNumber)*@
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.BuyerId)
+                        $ @item.Total()
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.OrderDate)
+                        @Html.DisplayFor(modelItem => item.State)
                     </td>
-                    <td>
-                        @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                        @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                    <td class="order-detail-button">
+                        <a asp-controller="Order" asp-action="Detail" asp-route-orderId="@item.Id">Detail</a>
                     </td>
                 </tr>
             }

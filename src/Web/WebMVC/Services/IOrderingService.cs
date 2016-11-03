@@ -9,9 +9,9 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
     public interface IOrderingService
     {
         List<Order> GetMyOrders(ApplicationUser user);
-        Order GetOrder(ApplicationUser user, Guid orderId);
-        void CreateOrder(Order order);
+        Order GetOrder(ApplicationUser user, string orderId);
+        void CreateOrder(ApplicationUser user, Order order);
+        Order MapUserInfoIntoOrder(ApplicationUser user, Order order);
+        void OverrideUserInfoIntoOrder(Order original, Order destination);
     }
-
-
 }

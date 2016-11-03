@@ -107,7 +107,7 @@ select::-ms-expand {
     border-radius: 50%;
     width: 18px;
     height: 18px;
-    font-size: 13px;
+    font-size: 12px;
     cursor: pointer;
 }
 
@@ -512,6 +512,13 @@ form .col-md-4 {
     margin-bottom: 30px;
 }
 
+.order-create-container {
+    min-height: 70vh;
+    padding-top: 40px;
+    margin-bottom: 30px;
+    padding-left: 30px;
+}
+
 .cart-product-column {
     max-width: 120px;
     text-transform: uppercase;
@@ -538,6 +545,7 @@ form .col-md-4 {
 .cart-total-value {
     font-size: 28px;
     color: #00a69c;
+    text-align: left;
 }
 
 .cart-product-image {
@@ -546,7 +554,7 @@ form .col-md-4 {
 
 .cart-section-total {
     margin-bottom: 5px;
-    margin-left: 185px;
+    margin-left: 175px;
     text-align: left;
 }
 
@@ -557,7 +565,19 @@ form .col-md-4 {
 
 .cart-refresh-button {
    margin-top:0;
+   background-image: url('../images/refresh.svg');
+   color: white;
+   font-size: 8px;
+   width: 40px;
+   margin-top: 10px;
+   height: 40px;
+   background-color:transparent;
+   border:none;
 }
+
+    .cart-refresh-button:hover {
+        background-color:transparent;
+    }
 
 .input-validation-error {
     border: 1px solid #fb0d0d;
@@ -584,13 +604,72 @@ form .col-md-4 {
     margin: auto;
 }
 
+.order-index-container {
+    min-height: 70vh;
+    padding-top: 40px;
+    margin-bottom: 30px;
+}
+
+    .order-index-container .table tbody tr {
+        border-bottom:none;
+    }
+
+    .order-index-container .table tbody tr td {
+        border-top:none;
+        padding-top:10px;
+        padding-bottom:10px;
+    }
+
+
+
+    .order-index-container .table tbody tr:nth-child(even) {
+        background-color: #f5f5f5;
+    }
+
 .order-create-section-title {
     margin-left: -15px;
     text-transform: uppercase;
 }
 
 .order-create-section-items {
-    margin-left: -30px;
+    margin-left: -45px;
+    width: 102%;
+}
+
+.order-detail-button {
+    
+}
+
+    .order-detail-button a {
+        color: #83d01b;
+    }
+
+.order-detail-container {
+    min-height: 70vh;
+    padding-top: 40px;
+    margin-bottom: 30px;
+}
+
+    .order-detail-container .table tbody tr:first-child td{
+        border-top:none;
+    }
+
+    .order-detail-container .table tr{
+        border-bottom:none;
+    }
+
+.order-detail-section {
+    margin-top: 50px;
+}
+
+.order-detail-container .table {
+    margin-left: -7px;
+}
+
+.order-section-total {
+    margin-bottom: 5px;
+    margin-left: 20px;
+    text-align: left;
 }
 
 .fr {
@@ -656,7 +735,7 @@ form .col-md-4 {
 }
 
 .login-user-dropdown-content a:hover {
-    color: #f1f1f1;
+    color: #83d01b;
 }
 
 .es-header {
@@ -704,6 +783,10 @@ form .col-md-4 {
 
 .table tr {
     border-bottom:1px solid #ddd;
+}
+
+.table th {
+    text-transform: uppercase;
 }
 
 

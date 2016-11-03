@@ -9,10 +9,9 @@
     </ul>
 </div>
 <div class="container cart-index-container">
-    @*<h2>@ViewData["Title"].</h2>*@
     <h4 class="order-create-section-title">CREATE NEW ACCOUNT</h4>
     <form asp-controller="Account" asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
-        @*<div asp-validation-summary="All" class="text-danger"></div>*@
+        <div asp-validation-summary="All" class="text-danger"></div>
         <div class="row">
             <div class="form-group col-sm-6">
                 <label asp-for="User.Name" class="control-label form-label">NAME</label>

@@ -1,36 +1,37 @@
 @model Microsoft.eShopOnContainers.WebMVC.Models.OrderViewModels.CreateOrderViewModel
+@inject UserManager<ApplicationUser> UserManager
 
 @{
-    ViewData["Title"] = "View";
+    ViewData["Title"] = "New Order";
 }
 <div class="brand-header-block">
     <ul class="container">
-        <li class="brand-header-back"><a asp-area="" asp-controller="Order" asp-action="Cart">Back to list</a></li>
+        <li class="brand-header-back"><a asp-area="" asp-controller="Cart" asp-action="Index">Back to cart</a></li>
     </ul>
 </div>
-<div class="container cart-index-container">
-    <form asp-action="View">
+<div class="container order-create-container">
+    <form method="post" asp-controller="Order" asp-action="Create">
         <h4 class="order-create-section-title">SHIPPING ADDRESS</h4>
         <div class="form-horizontal row">
             <div class="form-group col-sm-6">
-                <label asp-for="Order.OrderNumber" class="control-label form-label">order number</label>
-                <input asp-for="Order.OrderNumber" class="form-control form-input" />
-                <span asp-validation-for="Order.OrderNumber" class="text-danger" />
+                <label asp-for="Order.ShippingAddress.Street" class="control-label form-label">Address</label>
+                <input asp-for="Order.ShippingAddress.Street" class="form-control form-input" />
+                <span asp-validation-for="Order.ShippingAddress.Street" class="text-danger" />
             </div>
             <div class="form-group col-sm-6">
-                <label asp-for="Order.SequenceNumber" class="control-label form-label"></label>
-                <input asp-for="Order.SequenceNumber" class="form-control form-input" />
-                <span asp-validation-for="Order.SequenceNumber" class="text-danger" />
+                <label asp-for="Order.ShippingAddress.City" class="control-label form-label">City</label>
+                <input asp-for="Order.ShippingAddress.City" class="form-control form-input" />
+                <span asp-validation-for="Order.ShippingAddress.City" class="text-danger" />
             </div>
             <div class="form-group col-sm-6">
-                <label asp-for="Order.BuyerId" class="control-label form-label"></label>
-                <input asp-for="Order.BuyerId" class="form-control form-input" />
-                <span asp-validation-for="Order.BuyerId" class="text-danger" />
+                <label asp-for="Order.ShippingAddress.State" class="control-label form-label">State</label>
+                <input asp-for="Order.ShippingAddress.State" class="form-control form-input" />
+                <span asp-validation-for="Order.ShippingAddress.State" class="text-danger" />
             </div>
             <div class="form-group col-sm-6">
-                <label asp-for="Order.OrderDate" class="control-label form-label"></label>
-                <input asp-for="Order.OrderDate" class="form-control form-input" />
-                <span asp-validation-for="Order.OrderDate" class="text-danger" />
+                <label asp-for="Order.ShippingAddress.Country" class="control-label form-label">Country</label>
+                <input asp-for="Order.ShippingAddress.Country" class="form-control form-input" />
+                <span asp-validation-for="Order.ShippingAddress.Country" class="text-danger" />
             </div>
         </div>
         <br /><br />
@@ -38,73 +39,40 @@
             <h4 class="order-create-section-title">PAYMENT METHOD</h4>
             <div class="form-horizontal row">
                 <div class="form-group col-sm-6">
-                    <label asp-for="Order.OrderNumber" class="control-label form-label">Card Number</label>
-                    <input asp-for="Order.OrderNumber" class="form-control form-input" />
-                    <span asp-validation-for="Order.OrderNumber" class="text-danger" />
+                    <label asp-for="Order.PaymentInfo.CardNumber" class="control-label form-label">Card Number</label>
+                    <input asp-for="Order.PaymentInfo.CardNumber" class="form-control form-input" />
+                    <span asp-validation-for="Order.PaymentInfo.CardNumber" class="text-danger" />
                 </div>
                 <div class="form-group col-sm-6">
-                    <label asp-for="Order.OrderNumber" class="control-label form-label">Cardholder Name</label>
-                    <input asp-for="Order.OrderNumber" class="form-control form-input" />
-                    <span asp-validation-for="Order.OrderNumber" class="text-danger" />
+                    <label asp-for="Order.PaymentInfo.CardHolderName" class="control-label form-label">Cardholder Name</label>
+                    <input asp-for="Order.PaymentInfo.CardHolderName" class="form-control form-input" />
+                    <span asp-validation-for="Order.PaymentInfo.CardHolderName" class="text-danger" />
                 </div>
             </div>
             <div class="form-horizontal row">
-                <div class="form-group col-sm-6">
-                    <label asp-for="Order.OrderNumber" class="control-label form-label">Expiration Date</label>
-                    <select asp-for="Order.OrderNumber" class="form-control form-select" />
-                    <span asp-validation-for="Order.OrderNumber" class="text-danger" />
-                    <br />
-                    <label asp-for="Order.OrderDate" class="control-label form-label">hhh</label>
-                    <select asp-for="Order.OrderDate" class="form-control form-select" />
-                    <span asp-validation-for="Order.OrderDate" class="text-danger" />
+                <div class="form-group col-sm-3">
+                    <label asp-for="Order.PaymentInfo.Expiration" class="control-label form-label">Expiration Date</label>
+                    <input asp-for="Order.PaymentInfo.Expiration" placeholder="MM/YY" class="form-control form-select" />
+                    <span asp-validation-for="Order.PaymentInfo.Expiration" class="text-danger" />
                 </div>
-                <div class="form-group col-sm-6">
-                    <label asp-for="Order.OrderNumber" class="control-label form-label">Security Code</label>
-                    <input asp-for="Order.OrderNumber" class="form-control form-input form-input-small" />
-                    <span asp-validation-for="Order.OrderNumber" class="text-danger" />
+                <div class="form-group col-sm-3">
+                    <label asp-for="Order.PaymentInfo.SecurityNumber" class="control-label form-label">Security Code</label>
+                    <input asp-for="Order.PaymentInfo.SecurityNumber" class="form-control form-input form-input-small" />
+                    <span asp-validation-for="Order.PaymentInfo.SecurityNumber" class="text-danger" />
                 </div>
             </div>
         </div>
         <br /><br />
         <div class="col-md-12 order-create-section-items">
             <section>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>
-                                PRODUCT
-                            </th>
-                            <th>
-
-                            </th>
-                            <th>
-                                BRAND
-                            </th>
-                            <th>
-                                PRICE
-                            </th>
-                            <th>
-                                QUANTITY
-                            </th>
-                            <th>
-                                FINAL PRICE
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @await Component.InvokeAsync("Cart")
-                    </tbody>
-                </table>
+                @await Component.InvokeAsync("CartList", new { user = await UserManager.GetUserAsync(User) })
             </section>
         </div>
-        <br /><br /><br /><br /><br /><br />
         <div class="form-group">
             <div class="col-md-offset-8 col-md-4">
-                @*<input type="submit" value="[ PLACE ORDER ]" class="btn btn-default btn-brand" />*@
-                <a asp-controller="Order" asp-action="Index" class="btn btn-default btn-brand">[ PLACE ORDER ]</a>
+                <input type="submit" value="[ PLACE ORDER ]" class="btn btn-default btn-brand btn-cart" />
             </div>
         </div>
-        <br /><br /><br /><br /><br /><br />
     </form>
 </div>
 @section Scripts {

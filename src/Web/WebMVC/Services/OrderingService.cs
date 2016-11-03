@@ -23,38 +23,41 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
             {
                 new Order()
                 {
+                    Id = Guid.NewGuid().ToString(),
                     BuyerId = new Guid("ebcbcb4c-b032-4baa-834b-7fd66d37bc95").ToString(),
                     OrderDate = DateTime.Now,
                     State = OrderState.InProcess,
                     OrderItems = new List<OrderItem>()
                     {
-                        new OrderItem() { UnitPrice = 12, PictureUrl = "https://fakeimg.pl/370x240/EEEEEE/000/?text=RoslynRedT-Shirt", Quantity = 1, ProductName="Roslyn Red T-Shirt" }
+                        new OrderItem() { UnitPrice = 12.40m, PictureUrl = "https://fakeimg.pl/370x240/EEEEEE/000/?text=RoslynRedT-Shirt", Quantity = 1, ProductName="Roslyn Red T-Shirt" }
                     }
                 }, 
                 new Order()
                 {
+                    Id = Guid.NewGuid().ToString(),
                     BuyerId = new Guid("ebcbcb4c-b032-4baa-834b-7fd66d37bc95").ToString(),
                     OrderDate = DateTime.Now,
                     State = OrderState.InProcess,
                     OrderItems = new List<OrderItem>()
                     {
-                        new OrderItem() { UnitPrice = 12, PictureUrl = "https://fakeimg.pl/370x240/EEEEEE/000/?text=RoslynRedT-Shirt", Quantity = 1, ProductName="Roslyn Red T-Shirt" }
+                        new OrderItem() { UnitPrice = 12.00m, PictureUrl = "https://fakeimg.pl/370x240/EEEEEE/000/?text=RoslynRedT-Shirt", Quantity = 1, ProductName="Roslyn Red T-Shirt" }
                     }
                 },
                 new Order()
                 {
+                    Id = Guid.NewGuid().ToString(),
                     BuyerId = new Guid("ebcbcb4c-b032-4baa-834b-7fd66d37bc95").ToString(),
                     OrderDate = DateTime.Now,
                     State = OrderState.Delivered,
                     OrderItems = new List<OrderItem>()
                     {
-                        new OrderItem() { UnitPrice = 12, PictureUrl = "https://fakeimg.pl/370x240/EEEEEE/000/?text=RoslynRedT-Shirt", Quantity = 1, ProductName="Roslyn Red T-Shirt" }
+                        new OrderItem() { UnitPrice = 12.05m, PictureUrl = "https://fakeimg.pl/370x240/EEEEEE/000/?text=RoslynRedT-Shirt", Quantity = 1, ProductName="Roslyn Red T-Shirt" }
                     }
                 }
             };
         }
 
-        public Order GetOrder(ApplicationUser user, Guid Id)
+        public Order GetOrder(ApplicationUser user, string Id)
         {
             return _orders.Where(x => x.BuyerId.Equals(user.Id) && x.Id.Equals(Id)).FirstOrDefault();
         }
@@ -64,9 +67,43 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
             return _orders.Where(x => x.BuyerId.Equals(user.Id)).ToList();
         }
 
-        public void CreateOrder(Order order)
+        public Order MapUserInfoIntoOrder(ApplicationUser user, Order order)
         {
-            throw new NotImplementedException();
+            order.ShippingAddress.City = user.City;
+            order.ShippingAddress.Street = user.Street;
+            order.ShippingAddress.State = user.State;
+            order.ShippingAddress.Country = user.Country;
+
+            order.PaymentInfo.CardNumber = user.CardNumber;
+            order.PaymentInfo.CardHolderName = user.CardHolderName;
+            order.PaymentInfo.Expiration = user.Expiration;
+            order.PaymentInfo.SecurityNumber = user.SecurityNumber;
+
+            return order;
+        }
+
+        public void CreateOrder(ApplicationUser user, Order order)
+        {
+            order.OrderDate = DateTime.Now;
+            order.Id = Guid.NewGuid().ToString();
+            order.BuyerId = user.Id;
+            order.SequenceNumber = new Random(100).Next();
+            order.State = OrderState.InProcess;
+
+            _orders.Add(order);
+        }
+
+        public void OverrideUserInfoIntoOrder(Order original, Order destination)
+        {
+            destination.ShippingAddress.City = original.ShippingAddress.City;
+            destination.ShippingAddress.Street = original.ShippingAddress.Street;
+            destination.ShippingAddress.State = original.ShippingAddress.State;
+            destination.ShippingAddress.Country = original.ShippingAddress.Country;
+
+            destination.PaymentInfo.CardNumber = original.PaymentInfo.CardNumber;
+            destination.PaymentInfo.CardHolderName = original.PaymentInfo.CardHolderName;
+            destination.PaymentInfo.Expiration = original.PaymentInfo.Expiration;
+            destination.PaymentInfo.SecurityNumber = original.PaymentInfo.SecurityNumber;
         }
     }
 }

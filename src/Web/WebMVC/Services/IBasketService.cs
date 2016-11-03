@@ -10,9 +10,10 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
     {
         Basket GetBasket(ApplicationUser user);
         int ItemsInCart { get; }
-        void AddToCart(ApplicationUser user, BasketItem product);
+        void AddItemToBasket(ApplicationUser user, BasketItem product);
         Basket UpdateBasket(Basket basket);
         Basket SetQuantities(ApplicationUser user, Dictionary<string, int> quantities);
         Order MapBasketToOrder(Basket basket);
+        void CleanBasket(ApplicationUser user);
     }
 }

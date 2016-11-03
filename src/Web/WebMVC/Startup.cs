@@ -22,8 +22,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-                .AddEnvironmentVariables();            
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
 
             if (env.IsDevelopment())
             {
@@ -55,10 +54,8 @@ namespace Microsoft.eShopOnContainers.WebMVC
             services.AddSession();
 
             // Add application services.
-            services.AddTransient<IEmailSender, AuthMessageSender>();
-            services.AddTransient<ISmsSender, AuthMessageSender>();
             services.AddSingleton<ICatalogService, CatalogService>(); //CCE: Once services are integrated, a singleton is not needed we can left transient.
-            services.AddTransient<IOrderingService, OrderingService>();
+            services.AddSingleton<IOrderingService, OrderingService>();
             services.AddTransient<IBasketService, BasketService>();
 
             services.Configure<AppSettings>(Configuration);
