@@ -21,7 +21,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
-                .AddJsonFile($"settings.{env.EnvironmentName}.json",optional:false)
+                .AddJsonFile($"settings.json",optional:false)
                 .AddEnvironmentVariables();
 
 
