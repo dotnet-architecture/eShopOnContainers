@@ -49,12 +49,14 @@ namespace Microsoft.eShopOnContainers.WebMVC
 
             services.AddMvc();
 
+            // CCE : Session not apply in this demo we have a mservice to store in redis. (BasketService) Once it's ready I've to remove this lines 
+            services.AddDistributedMemoryCache(); // default implementation (in memory), you can move to SQL or custom store that could be Redis.. 
+            services.AddSession();
+
             // Add application services.
-            services.AddTransient<IEmailSender, AuthMessageSender>();
-            services.AddTransient<ISmsSender, AuthMessageSender>();
-            services.AddTransient<ICatalogService, CatalogService>();
-            services.AddTransient<IOrderingService, OrderingService>();
-            services.AddTransient<ICartService, CartService>();
+            services.AddSingleton<ICatalogService, CatalogService>(); //CCE: Once services are integrated, a singleton is not needed we can left transient.
+            services.AddSingleton<IOrderingService, OrderingService>();
+            services.AddTransient<IBasketService, BasketService>();
 
             services.Configure<AppSettings>(Configuration);
         }
@@ -73,20 +75,21 @@ namespace Microsoft.eShopOnContainers.WebMVC
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/Catalog/Error");
             }
 
             app.UseStaticFiles();
 
             app.UseIdentity();
 
-            // Add external authentication middleware below. To configure them please see http://go.microsoft.com/fwlink/?LinkID=532715
+            //CCE: Remember to remove this line once Basket mservice is ready.
+            app.UseSession();
 
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=Catalog}/{action=Index}/{id?}");
             });
         }
     }

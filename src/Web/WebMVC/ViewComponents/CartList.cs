@@ -8,24 +8,23 @@ using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.WebMVC.ViewComponents
 {
-    public class Cart : ViewComponent
+    public class CartList : ViewComponent
     {
         private readonly IBasketService _cartSvc;
 
-        public Cart(IBasketService cartSvc)
+        public CartList(IBasketService cartSvc)
         {
             _cartSvc = cartSvc;
         }
 
         public async Task<IViewComponentResult> InvokeAsync(ApplicationUser user)
         {
-            var itemsInCart = await ItemsInCartAsync(user);
-            return View(itemsInCart);
+            var item = await GetItemsAsync(user);
+            return View(item);
         }
-        private Task<int> ItemsInCartAsync(ApplicationUser user)
+        private Task<Basket> GetItemsAsync(ApplicationUser user)
         {
-            _cartSvc.GetBasket(user);
-            return Task.Run ( ()=> { return _cartSvc.ItemsInCart; });
+            return Task.Run(()=> { return _cartSvc.GetBasket(user); });
         }
     }
 }

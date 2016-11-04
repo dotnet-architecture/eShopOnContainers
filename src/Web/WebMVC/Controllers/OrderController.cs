@@ -5,31 +5,66 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.eShopOnContainers.WebMVC.Services;
 using Microsoft.eShopOnContainers.WebMVC.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.eShopOnContainers.WebMVC.Models.OrderViewModels;
 
 namespace Microsoft.eShopOnContainers.WebMVC.Controllers
 {
+    [Authorize]
     public class OrderController : Controller
     {
         private IOrderingService _orderSvc;
-        public OrderController(IOrderingService orderSvc)
+        private IBasketService _basketSvc;
+        private readonly UserManager<ApplicationUser> _userManager;
+        public OrderController(IOrderingService orderSvc, IBasketService basketSvc, UserManager<ApplicationUser> userManager)
         {
+            _userManager = userManager;
             _orderSvc = orderSvc;
+            _basketSvc = basketSvc;
         }
 
-        public IActionResult Cart()
+        public async Task<IActionResult> Create()
         {
-            return View();
+            var vm = new CreateOrderViewModel();
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var basket = _basketSvc.GetBasket(user);
+            var order = _basketSvc.MapBasketToOrder(basket);
+            vm.Order = _orderSvc.MapUserInfoIntoOrder(user, order);
+
+            return View(vm);
         }
 
-        public IActionResult Create()
+        [HttpPost]
+        public async Task<IActionResult> Create(CreateOrderViewModel model)
         {
-            return View();
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var basket = _basketSvc.GetBasket(user);
+            var order = _basketSvc.MapBasketToOrder(basket);
+
+            // override if user has changed some shipping address or payment info data.
+            _orderSvc.OverrideUserInfoIntoOrder(model.Order, order);
+            _orderSvc.CreateOrder(user, order);
+
+            //Empty basket for current user. 
+            _basketSvc.CleanBasket(user);
+
+            //Redirect to historic list.
+            return RedirectToAction("Index");
         }
 
-        public IActionResult Index(Order item)
+        public async Task<IActionResult> Detail(string orderId)
         {
-            _orderSvc.AddOrder(item);
-            return View(_orderSvc.GetOrders());
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var order = _orderSvc.GetOrder(user, orderId);
+
+            return View(order);
+        }
+
+        public async Task<IActionResult> Index(Order item)
+        {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            return View(_orderSvc.GetMyOrders(user));
         }
     }
 }

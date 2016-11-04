@@ -7,17 +7,21 @@
 @if (SignInManager.IsSignedIn(User))
 {
     <form asp-area="" asp-controller="Account" asp-action="LogOff" method="post" id="logoutForm" class="navbar-right">
-        <ul class="nav navbar-nav navbar-right">
-            <li style="float:right"><a asp-area="" asp-controller="Order" asp-action="Cart"><img src="~/images/cart.PNG" class="layout-cart-image hidden-xs"></a></li>
-            <li class="fr"><a href="javascript:document.getElementById('logoutForm').submit()" class="btn-login">&nbsp;Log Out&nbsp;</a></li>
-            @*<li class="fr login-user"><a asp-area="" asp-controller="Manage" asp-action="Index" title="Manage">@UserManager.GetUserName(User)</a></li>*@
-        </ul>
+        <div class="nav navbar-nav navbar-right mt-15">
+            @await Component.InvokeAsync("Cart", new { user = await UserManager.GetUserAsync(User) })
+            <div class="fr login-user">
+                <span>@UserManager.GetUserName(User)<i class="down-arrow"></i></span>
+                <div class="login-user-dropdown-content">
+                    <a asp-controller="Order" asp-action="Index">MY ORDERS<i class="myorders-icon"></i></a>
+                    <a href="javascript:document.getElementById('logoutForm').submit()">LOG OUT<i class="logout-icon"></i></a>
+                </div>
+            </div>
+        </div>
     </form>
 }
 else
 {
     <ul class="nav navbar-nav navbar-right">
         <li><a asp-area="" asp-controller="Account" class="btn-login" asp-action="Login">&nbsp;Log In&nbsp;</a></li>
-        <li><a asp-area="" asp-controller="Order" asp-action="Cart"><img src="~/images/cart.PNG" class="layout-cart-image hidden-xs"></a></li>
     </ul>
 }

@@ -30,22 +30,19 @@
                         <input asp-for="Password" class="form-control form-input form-input-center" />
                         <span asp-validation-for="Password" class="text-danger"></span>
                     </div>
-                    @*<div class="form-group">
+                    <div class="form-group">
                         <div class="checkbox">
                             <label asp-for="RememberMe">
                                 <input asp-for="RememberMe" />
                                 @Html.DisplayNameFor(m => m.RememberMe)
                             </label>
                         </div>
-                    </div>*@
+                    </div>
                     <div class="form-group">
                         <button type="submit" class="btn btn-default btn-brand btn-brand-big">&nbsp;LOG IN&nbsp;</button>
                     </div>
                     <p>
                         <a asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]" class="text">Register as a new user?</a>
-                    </p>
-                    <p>
-                        @*<a asp-action="ForgotPassword" class="text">Forgot your password?</a>*@
                     </p>
                 </form>
             </section>
