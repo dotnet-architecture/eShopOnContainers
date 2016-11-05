@@ -24,19 +24,21 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
 
         public async Task<IActionResult> Index(int? BrandFilterApplied, int? TypesFilterApplied, int? page)
         {
+            var itemsPage = 10;
+            var catalog = await _catalogSvc.GetCatalogItems(page ?? 0, itemsPage, BrandFilterApplied, TypesFilterApplied);
             var vm = new IndexViewModel()
             {
-                CatalogItems = await _catalogSvc.GetCatalogItems(6 * (page ?? 0), 6),
-                Brands = _catalogSvc.GetBrands(),
-                Types = _catalogSvc.GetTypes(),
+                CatalogItems = catalog.Data,
+                Brands = await _catalogSvc.GetBrands(),
+                Types = await _catalogSvc.GetTypes(),
                 BrandFilterApplied = BrandFilterApplied ?? 0,
                 TypesFilterApplied = TypesFilterApplied ?? 0,
                 PaginationInfo = new PaginationInfo()
                 {
                     ActualPage = page ?? 0,
-                    ItemsPerPage = 6,
+                    ItemsPerPage = (_catalogSvc.TotalItems < itemsPage) ? _catalogSvc.TotalItems : itemsPage,
                     TotalItems = _catalogSvc.TotalItems, 
-                    TotalPages = int.Parse(Math.Round(((decimal)_catalogSvc.TotalItems / 6), MidpointRounding.AwayFromZero).ToString())
+                    TotalPages = int.Parse(Math.Ceiling(((decimal)_catalogSvc.TotalItems / itemsPage)).ToString())
                 }
             };
 

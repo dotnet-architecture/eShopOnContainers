@@ -58,7 +58,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
                 Id = Guid.NewGuid().ToString(),
                 Quantity = 1,
                 ProductName = productDetails.Name,
-                PictureUrl = productDetails.PictureUrl,
+                PictureUrl = productDetails.PictureUri,
                 UnitPrice = productDetails.Price, 
                 ProductId = productId
             };

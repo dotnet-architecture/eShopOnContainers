@@ -11,9 +11,9 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
     {
         int TotalItems { get; }
 
-        Task<List<CatalogItem>> GetCatalogItems(int? skip, int? take);
+        Task<Catalog> GetCatalogItems(int page, int take, int? brand, int? type);
         CatalogItem GetCatalogItem(string Id);
-        IEnumerable<SelectListItem> GetBrands();
-        IEnumerable<SelectListItem> GetTypes();
+        Task<IEnumerable<SelectListItem>> GetBrands();
+        Task<IEnumerable<SelectListItem>> GetTypes();
     }
 }

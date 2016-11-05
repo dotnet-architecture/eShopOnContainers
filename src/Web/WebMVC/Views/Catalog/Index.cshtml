@@ -63,7 +63,7 @@
             <div class="col-sm-4 home-catalog-item">
                 <form asp-controller="Cart" asp-action="AddToCart" asp-route-productId="@catalogItem.Id">
                     <div class="home-catalog-item-image">
-                        <img src="@catalogItem.PictureUrl" />
+                        <img src="@catalogItem.PictureUri" />
                         <input type="submit" value="[ ADD TO CART ]" class="btn-brand home-catalog-item-image-addCart" />
                     </div>
                     <div class="home-catalog-item-title">

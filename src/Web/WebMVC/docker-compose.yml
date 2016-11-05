@@ -10,14 +10,14 @@ services:
       - CatalogUrl=http://catalog.api
       - OrderingUrl=http://ordering.api
     ports:
-      - "80:80"
+      - "800:80"
     depends_on:
       - catalog.api
 
   catalog.api:
     image: eshop/catalog.api
     environment:
-      - ConnectionString=Server=catalogdata;Port=5432;Database=postgres;username=postgres
+      - ConnectionString=Server=catalogdata;Port=5432;Database=CatalogDB;username=postgres;password=postgres
     expose:
       - "80"
     depends_on:
@@ -44,4 +44,4 @@ services:
   ordering.data:
     image: eshop/ordering.data.sqlserver.linux
     ports:
-      - "1433:1433"
+      - "5432:1433"
