@@ -19,10 +19,10 @@
     "Microsoft.AspNetCore.Server.Kestrel": "1.0.0",
     "Microsoft.AspNetCore.StaticFiles": "1.0.0",
     "Microsoft.EntityFrameworkCore.SqlServer": "1.0.0",
-    //"Microsoft.EntityFrameworkCore.SqlServer.Design": {
-    //  "version": "1.0.0-rc2-final",
-    //  "type": "build"
-    //},
+    "Microsoft.EntityFrameworkCore.SqlServer.Design": {
+      "version": "1.0.0",
+      "type": "build"
+    },
     "Microsoft.EntityFrameworkCore.Tools": {
       "version": "1.0.0-preview2-final",
       "type": "build"

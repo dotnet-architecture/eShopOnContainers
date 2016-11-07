@@ -49,10 +49,10 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
             return View(vm);
         }
 
-        public async Task<IActionResult> AddToCart(string productId)
+        public async Task<IActionResult> AddToCart(CatalogItem productDetails)
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
-            var productDetails = _catalogSvc.GetCatalogItem(productId);
+            //var productDetails = _catalogSvc.GetCatalogItem(productId);
             var product = new BasketItem()
             {
                 Id = Guid.NewGuid().ToString(),
@@ -60,7 +60,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
                 ProductName = productDetails.Name,
                 PictureUrl = productDetails.PictureUri,
                 UnitPrice = productDetails.Price, 
-                ProductId = productId
+                ProductId = productDetails.Id
             };
             _basketSvc.AddItemToBasket(user, product);
             return RedirectToAction("Index", "Catalog");

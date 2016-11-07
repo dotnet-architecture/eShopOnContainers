@@ -1,15 +1,15 @@
-@model System.Int32
+@model Microsoft.eShopOnContainers.WebMVC.Models.CartViewModels.CartComponentViewModel
 
 @{
     ViewData["Title"] = "My Cart";
 }
 
 <div>
-    <a asp-area="" asp-controller="Cart" asp-action="Index"><img src="~/images/cart.PNG" class="fr layout-cart-image hidden-xs" />
+    <a asp-area="" asp-controller="Cart" asp-action="Index"><img src="~/images/cart.png" class="fr layout-cart-image hidden-xs @Model.Disabled" />
        
     </a>
-    <div class="layout-cart-badge">
-        @Model
+    <div class="layout-cart-badge @Model.Disabled">
+        @Model.ItemsCount
     </div>
 </div>
 

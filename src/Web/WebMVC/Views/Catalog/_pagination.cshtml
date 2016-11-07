@@ -1,0 +1,31 @@
+﻿@model Microsoft.eShopOnContainers.WebMVC.Models.CatalogViewModels.IndexViewModel
+
+<div class="row">
+    <div class="col-xs-4">
+        <nav>
+            <ul>
+                <li class="page-item">
+                    <a class="text previous @Model.PaginationInfo.Previous" id="Previous"
+                       href="@Url.Action("Index","Catalog", new { page = Model.PaginationInfo.ActualPage -1 })"
+                       aria-label="Previous">
+                        <span>Previous</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <div class="col-xs-4 u-align-center"><span>Showing @Html.DisplayFor(modelItem => modelItem.PaginationInfo.ItemsPerPage) of @Html.DisplayFor(modelItem => modelItem.PaginationInfo.TotalItems) products - Page @(Model.PaginationInfo.ActualPage + 1) of @Html.DisplayFor(x => x.PaginationInfo.TotalPages)</span></div>
+    <div class="col-xs-4">
+        <nav>
+            <ul>
+                <li class="page-item">
+                    <a class="text next @Model.PaginationInfo.Next" id="Next"
+                       href="@Url.Action("Index","Catalog", new { page = Model.PaginationInfo.ActualPage + 1 })"
+                       aria-label="Next">
+                        <span>Next</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>

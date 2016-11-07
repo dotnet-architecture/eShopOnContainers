@@ -18,7 +18,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Models
 
         public decimal Total()
         {
-            return Items.Sum(x => x.UnitPrice * x.Quantity);
+            return Math.Round(Items.Sum(x => x.UnitPrice * x.Quantity),2);
         }
     }
 }

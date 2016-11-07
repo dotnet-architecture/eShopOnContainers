@@ -43,7 +43,7 @@
                             <input type="hidden" name="@("quantities[" + i +"].Key")" value="@item.Id" />
                             <input type="number" name="@("quantities[" + i +"].Value")" value="@item.Quantity" />
                         </td>
-                        <td class="cart-product-column cart-total-value">$ @(item.Quantity * item.UnitPrice)</td>
+                        <td class="cart-product-column cart-total-value">$ @Math.Round(item.Quantity * item.UnitPrice,2)</td>
                     </tr>
                 }
             </tbody>

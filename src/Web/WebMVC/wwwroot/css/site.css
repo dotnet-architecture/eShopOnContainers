@@ -316,7 +316,7 @@ select::-ms-expand {
     width: 100%;
     margin-right: 0px;
     margin-left: 0px;
-    background-image: url(../images/main_banner.PNG);
+    background-image: url(../images/main_banner.png);
     background-size: cover;
     height: 258px;
     background-position: center;
@@ -364,19 +364,21 @@ select::-ms-expand {
 .home-catalog-item-image {
     width: 100%;
     object-fit: cover;
-    max-width: 320px;
+    /* max-width: 320px; */
+    text-align: center;
 }
 
 .home-catalog-item-image-addCart {
     background-color: #83D01B;
     color: white;
-    display: block;
+    display: inline-block;
     height: 43px;
     padding: 10px 20px 10px 20px;
     font-weight: bold;
     text-align: center;
     margin-top: 10px;
-    margin-left: 50px;
+    margin-left: 60px;
+    margin-right: 60px;
     font-size: 16px;
     font-weight: normal;
 }
@@ -408,6 +410,11 @@ select::-ms-expand {
     .home-catalog-item-price::before {
         content: '$';
     }
+
+.home-catalog-noResults {
+    text-align:center;
+    margin-top: 100px;
+}
 
 .container .nav .navbar-nav .col-sm-6 ::before {
     content: 'BRAND';
@@ -668,7 +675,7 @@ form .col-md-4 {
 
 .order-section-total {
     margin-bottom: 5px;
-    margin-left: 20px;
+    margin-left: 40px;
     text-align: left;
 }
 
@@ -805,8 +812,13 @@ form .col-md-4 {
 
 @media screen and (max-width: 415px) {
     .btn-brand-small-filter {
-        width: 65px;
+        width: 40px;
         padding:10px 10px 10px 10px;
         font-size: 10px;
+    }
+
+    .btn-brand-small-filter::before {
+        content: '->';
+        color: white;
     }
 }

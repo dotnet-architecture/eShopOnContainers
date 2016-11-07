@@ -53,9 +53,9 @@
                             <td class="cart-product-column"><img class="cart-product-image" src="@item.PictureUrl" /></td>
                             <td class="cart-product-column">@item.ProductName</td>
                             <td class="cart-product-column">ROSLYN</td>
-                            <td class="cart-product-column">$ @item.UnitPrice</td>
+                            <td class="cart-product-column">$ @Math.Round(item.UnitPrice, 2)</td>
                             <td class="cart-product-column">@item.Quantity</td>
-                            <td class="cart-product-column cart-total-value">$ @(item.Quantity * item.UnitPrice)</td>
+                            <td class="cart-product-column cart-total-value">$ @Math.Round(item.Quantity * item.UnitPrice,2)</td>
                         </tr>
                     }
                 </tbody>

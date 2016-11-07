@@ -24,87 +24,29 @@
         </div>
     </div>
 </div>
-
 <div class="container home-catalog-container">
-    <div class="container es-pager-top">
-        <div class="row">
-            <div class="col-xs-4">
-                <nav>
-                    <ul>
-                        <li class="page-item">
-                            <a class="text previous @Model.PaginationInfo.Previous" id="Previous"
-                               href="@Url.Action("Index","Catalog", new { page = Model.PaginationInfo.ActualPage -1 })"
-                               aria-label="Previous">
-                                <span>Previous</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-            <div class="col-xs-4 u-align-center"><span>Showing @Html.DisplayFor(modelItem => modelItem.PaginationInfo.ItemsPerPage) of @Html.DisplayFor(modelItem => modelItem.PaginationInfo.TotalItems) products - Page @(Model.PaginationInfo.ActualPage + 1) of @Html.DisplayFor(x => x.PaginationInfo.TotalPages)</span></div>
-            <div class="col-xs-4">
-                <nav>
-                    <ul>
-                        <li class="page-item">
-                            <a class="text next @Model.PaginationInfo.Next" id="Next"
-                               href="@Url.Action("Index","Catalog", new { page = Model.PaginationInfo.ActualPage + 1 })"
-                               aria-label="Next">
-                                <span>Next</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
+    @if (Model.CatalogItems.Count() > 0)
+    {
+        <div class="container es-pager-top">
+            @Html.Partial("_pagination", Model)
         </div>
-    </div>
-    <div class="row">
-        @foreach (var catalogItem in Model.CatalogItems)
-        {
-            <div class="col-sm-4 home-catalog-item">
-                <form asp-controller="Cart" asp-action="AddToCart" asp-route-productId="@catalogItem.Id">
-                    <div class="home-catalog-item-image">
-                        <img src="@catalogItem.PictureUri" />
-                        <input type="submit" value="[ ADD TO CART ]" class="btn-brand home-catalog-item-image-addCart" />
-                    </div>
-                    <div class="home-catalog-item-title">
-                        <span>@catalogItem.Name</span>
-                    </div>
-                    <div class="home-catalog-item-price">
-                        <span>@catalogItem.Price.ToString("N2")</span>
-                    </div>
-                </form>
-            </div>
-        }
-    </div>
-    <div class="container es-pager-bottom">
         <div class="row">
-            <div class="col-xs-4">
-                <nav>
-                    <ul>
-                        <li class="page-item">
-                            <a class="text previous @Model.PaginationInfo.Previous" id="Previous"
-                               href="@Url.Action("Index","Catalog", new { page = Model.PaginationInfo.ActualPage + -1 })"
-                               aria-label="Previous">
-                                <span>Previous</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-            <div class="col-xs-4 u-align-center"><span>Showing @Html.DisplayFor(modelItem => modelItem.PaginationInfo.ItemsPerPage) of @Html.DisplayFor(modelItem => modelItem.PaginationInfo.TotalItems) products - Page @(Model.PaginationInfo.ActualPage + 1) of @Html.DisplayFor(x => x.PaginationInfo.TotalPages)</span></div>
-            <div class="col-xs-4">
-                <nav>
-                    <ul>
-                        <li class="page-item">
-                            <a class="text next @Model.PaginationInfo.Next" id="Next"
-                               href="@Url.Action("Index","Catalog", new { page = Model.PaginationInfo.ActualPage + 1 })"
-                               aria-label="Next">
-                                <span>Next</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
+            @foreach (var catalogItem in Model.CatalogItems)
+            {
+                <div class="col-xs-12 col-sm-6 col-lg-4 home-catalog-item">
+                    @Html.Partial("_product", catalogItem)
+                </div>
+            }
+
         </div>
-    </div>
+        <div class="container es-pager-bottom">
+            @Html.Partial("_pagination", Model)
+        </div>
+    }
+    else
+    {
+        <div class="home-catalog-noResults">
+            THERE ARE NO RESULTS THAT MATCH YOUR SEARCH
+        </div>
+    }
 </div>
