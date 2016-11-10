@@ -10,7 +10,8 @@
         <div class="nav navbar-nav navbar-right mt-15">
             @await Component.InvokeAsync("Cart", new { user = await UserManager.GetUserAsync(User) })
             <div class="fr login-user">
-                <span>@UserManager.GetUserName(User)<i class="down-arrow"></i></span>
+                <span class="hidden-xs">@UserManager.GetUserName(User)</span>
+                <i class="down-arrow"></i>
                 <div class="login-user-dropdown-content">
                     <a asp-controller="Order" asp-action="Index">MY ORDERS<i class="myorders-icon"></i></a>
                     <a href="javascript:document.getElementById('logoutForm').submit()">LOG OUT<i class="logout-icon"></i></a>

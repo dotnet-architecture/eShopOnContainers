@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BikeSharing_Private_Web_Site.Services.Pagination
+namespace Microsoft.eShopOnContainers.WebMVC.Models.Pagination
 {
     public class PaginationInfo
     {

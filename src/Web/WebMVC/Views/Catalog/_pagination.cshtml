@@ -1,12 +1,12 @@
-﻿@model Microsoft.eShopOnContainers.WebMVC.Models.CatalogViewModels.IndexViewModel
+﻿@model Microsoft.eShopOnContainers.WebMVC.Models.Pagination.PaginationInfo
 
 <div class="row">
     <div class="col-xs-4">
         <nav>
             <ul>
                 <li class="page-item">
-                    <a class="text previous @Model.PaginationInfo.Previous" id="Previous"
-                       href="@Url.Action("Index","Catalog", new { page = Model.PaginationInfo.ActualPage -1 })"
+                    <a class="text previous @Model.Previous" id="Previous"
+                       href="@Url.Action("Index","Catalog", new { page = Model.ActualPage -1 })"
                        aria-label="Previous">
                         <span>Previous</span>
                     </a>
@@ -14,13 +14,13 @@
             </ul>
         </nav>
     </div>
-    <div class="col-xs-4 u-align-center"><span>Showing @Html.DisplayFor(modelItem => modelItem.PaginationInfo.ItemsPerPage) of @Html.DisplayFor(modelItem => modelItem.PaginationInfo.TotalItems) products - Page @(Model.PaginationInfo.ActualPage + 1) of @Html.DisplayFor(x => x.PaginationInfo.TotalPages)</span></div>
+    <div class="col-xs-4 u-align-center"><span>Showing @Html.DisplayFor(modelItem => modelItem.ItemsPerPage) of @Html.DisplayFor(modelItem => modelItem.TotalItems) products - Page @(Model.ActualPage + 1) of @Html.DisplayFor(x => x.TotalPages)</span></div>
     <div class="col-xs-4">
         <nav>
             <ul>
                 <li class="page-item">
-                    <a class="text next @Model.PaginationInfo.Next" id="Next"
-                       href="@Url.Action("Index","Catalog", new { page = Model.PaginationInfo.ActualPage + 1 })"
+                    <a class="text next @Model.Next" id="Next"
+                       href="@Url.Action("Index","Catalog", new { page = Model.ActualPage + 1 })"
                        aria-label="Next">
                         <span>Next</span>
                     </a>

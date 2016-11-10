@@ -2,14 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Net.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.eShopOnContainers.WebMVC.Models;
-using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
+using Microsoft.eShopOnContainers.WebMVC.Models.Pagination;
 using Microsoft.eShopOnContainers.WebMVC.Services;
 using Microsoft.eShopOnContainers.WebMVC.Models.CatalogViewModels;
-using BikeSharing_Private_Web_Site.Services.Pagination;
+
 
 namespace Microsoft.eShopOnContainers.WebMVC.Controllers
 {
@@ -36,9 +33,9 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
                 PaginationInfo = new PaginationInfo()
                 {
                     ActualPage = page ?? 0,
-                    ItemsPerPage = (_catalogSvc.TotalItems < itemsPage) ? _catalogSvc.TotalItems : itemsPage,
-                    TotalItems = _catalogSvc.TotalItems, 
-                    TotalPages = int.Parse(Math.Ceiling(((decimal)_catalogSvc.TotalItems / itemsPage)).ToString())
+                    ItemsPerPage = (catalog.Count < itemsPage) ? catalog.Count : itemsPage,
+                    TotalItems = catalog.Count, 
+                    TotalPages = int.Parse(Math.Ceiling(((decimal)catalog.Count / itemsPage)).ToString())
                 }
             };
 

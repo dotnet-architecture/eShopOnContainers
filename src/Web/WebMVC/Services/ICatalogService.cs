@@ -9,10 +9,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
 {
     public interface ICatalogService
     {
-        int TotalItems { get; }
-
         Task<Catalog> GetCatalogItems(int page, int take, int? brand, int? type);
-        CatalogItem GetCatalogItem(string Id);
         Task<IEnumerable<SelectListItem>> GetBrands();
         Task<IEnumerable<SelectListItem>> GetTypes();
     }

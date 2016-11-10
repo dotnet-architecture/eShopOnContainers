@@ -54,8 +54,8 @@ namespace Microsoft.eShopOnContainers.WebMVC
             services.AddSession();
 
             // Add application services.
-            services.AddSingleton<ICatalogService, CatalogService>(); //CCE: Once services are integrated, a singleton is not needed we can left transient.
-            services.AddSingleton<IOrderingService, OrderingService>();
+            services.AddTransient<ICatalogService, CatalogService>(); 
+            services.AddSingleton<IOrderingService, OrderingService>(); //CCE: Once services are integrated, a singleton is not needed we can left transient.
             services.AddTransient<IBasketService, BasketService>();
 
             services.Configure<AppSettings>(Configuration);

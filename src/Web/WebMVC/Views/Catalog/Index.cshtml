@@ -19,7 +19,9 @@
                     <img src="~/images/arrow-down.png" class="select-filter-arrow" />
                     <select asp-for="@Model.TypesFilterApplied" asp-items="@Model.Types" class="select-filter"></select>
                 </div>
-                <input type="submit" class="btn-brand btn-brand-small btn-brand-small-filter btn-catalog-apply" value="APPLY" />
+                <button type="submit" class="btn-brand btn-brand-small btn-brand-small-filter btn-catalog-apply">
+                    <img src="~/images/arrow-right.svg" />
+                </button>
             </form>
         </div>
     </div>
@@ -28,7 +30,7 @@
     @if (Model.CatalogItems.Count() > 0)
     {
         <div class="container es-pager-top">
-            @Html.Partial("_pagination", Model)
+            @Html.Partial("_pagination", Model.PaginationInfo)
         </div>
         <div class="row">
             @foreach (var catalogItem in Model.CatalogItems)
@@ -40,7 +42,7 @@
 
         </div>
         <div class="container es-pager-bottom">
-            @Html.Partial("_pagination", Model)
+            @Html.Partial("_pagination", Model.PaginationInfo)
         </div>
     }
     else

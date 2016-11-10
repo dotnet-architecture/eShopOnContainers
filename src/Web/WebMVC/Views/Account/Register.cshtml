@@ -8,9 +8,9 @@
         <li style="margin-right: 65px;"><a asp-area="" asp-controller="Account" asp-action="Login">LOGIN</a></li>
     </ul>
 </div>
-<div class="container cart-index-container">
-    <h4 class="order-create-section-title">CREATE NEW ACCOUNT</h4>
+<div class="container register-container">
     <form asp-controller="Account" asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
+        <h4 class="order-create-section-title">CREATE NEW ACCOUNT</h4>
         <div asp-validation-summary="All" class="text-danger"></div>
         <div class="row">
             <div class="form-group col-sm-6">

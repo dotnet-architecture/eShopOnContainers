@@ -14,6 +14,7 @@ body {
     padding-top: 80px;
     /*padding-bottom: 20px;*/
     font-family: Montserrat,sans-serif;
+    min-width:480px;
 }
 
 .mt-15 {
@@ -163,8 +164,7 @@ select::-ms-expand {
 }
 
 .btn-brand-small {
-    width: 120px;
-    font-size: 14px;
+    width: 45px;
 }
 
     .btn-brand-small::before {
@@ -206,8 +206,7 @@ select::-ms-expand {
 }
 
 .btn-catalog-apply {
-    padding-left: 10px;
-    padding-top: 13px;
+    padding:0;
 }
 
 .form-label {
@@ -222,12 +221,10 @@ select::-ms-expand {
     border-radius: 0;
     padding: 10px;
     height: 45px;
-    width: 360px;
-    max-width: 360px;
 }
 
 .form-input-small {
-    max-width: 100px;
+    max-width: 100px!important;
 }
 
 .form-select {
@@ -247,9 +244,9 @@ select::-ms-expand {
     border-color: #FFF;
 }
 
-    .navbar-inverse li {
+    /*.navbar-inverse li {
         margin-top: 10px;
-    }
+    }*/
 
 .btn-login {
     border: 1px solid #00A69C;
@@ -505,6 +502,7 @@ form .col-md-4 {
 .account-login-container {
     min-height: 70vh;
     text-align: center;
+    padding-top: 40px;
 }
 
 .account-register-container {
@@ -517,6 +515,14 @@ form .col-md-4 {
     min-height: 70vh;
     padding-top: 40px;
     margin-bottom: 30px;
+    min-width: 992px;
+}
+
+.register-container {
+    min-height: 70vh;
+    padding-top: 40px;
+    margin-bottom: 30px;
+    padding-left: 30px;
 }
 
 .order-create-container {
@@ -524,12 +530,21 @@ form .col-md-4 {
     padding-top: 40px;
     margin-bottom: 30px;
     padding-left: 30px;
+    min-width: 995px;
 }
 
 .cart-product-column {
     max-width: 120px;
     text-transform: uppercase;
     vertical-align: middle!important;
+}
+
+.order-create-container .cart-product-column {
+    max-width: 130px;
+}
+
+.cart-product-column-name {
+    width: 220px;
 }
 
 .cart-subtotal-label {
@@ -576,15 +591,20 @@ form .col-md-4 {
    color: white;
    font-size: 8px;
    width: 40px;
-   margin-top: 10px;
    height: 40px;
    background-color:transparent;
    border:none;
+   margin-top: 25px;
+   margin-left:15px;
 }
 
     .cart-refresh-button:hover {
         background-color:transparent;
     }
+
+.cart-totals {
+    border-bottom:none!important;
+}
 
 .input-validation-error {
     border: 1px solid #fb0d0d;
@@ -601,6 +621,10 @@ form .col-md-4 {
 
 .form-horizontal h4 {
     margin-top: 30px;
+}
+
+.form-horizontal .form-group {
+    margin-right: 0px!important;
 }
 
 .form-control:focus {
@@ -725,7 +749,8 @@ form .col-md-4 {
     background-color: #FFFFFF;
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    left: 100px;
+    /*left: 100px;*/
+    right: 0px;
 }
 
 .login-user-dropdown-content a {
@@ -738,6 +763,10 @@ form .col-md-4 {
 }
 
 .login-user:hover .login-user-dropdown-content {
+    display: block;
+}
+
+.down-arrow:hover > .login-user-dropdown-content {
     display: block;
 }
 
@@ -772,7 +801,7 @@ form .col-md-4 {
 
 .next {
     position: absolute;
-    right: 0;
+    right: 15px;
     top: 0;
 }
 
@@ -796,6 +825,18 @@ form .col-md-4 {
     text-transform: uppercase;
 }
 
+.navbar-nav {
+    margin-top: 10px;
+    margin-bottom: 7.5px;
+    margin-right: -10px;
+    float: right;
+}
+
+@media screen and (max-width: 1195px) {
+    .cart-product-column-name {
+        display:none;
+    }
+}
 
 /* Hide/rearrange for smaller screens */
 @media screen and (max-width: 767px) {
@@ -808,17 +849,17 @@ form .col-md-4 {
         text-align: left;
         margin-top: -15px;
     }
-}
 
-@media screen and (max-width: 415px) {
-    .btn-brand-small-filter {
-        width: 40px;
-        padding:10px 10px 10px 10px;
-        font-size: 10px;
-    }
-
-    .btn-brand-small-filter::before {
-        content: '->';
-        color: white;
+    .cart-product-column-brand {
+        display:none;
     }
 }
+
+@media screen and (min-width: 992px) {
+    .form-input {
+        width: 360px;
+        max-width: 360px;
+    }
+}
+
+
