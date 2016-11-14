@@ -8,14 +8,14 @@ using eShopOnContainers.Core.Services.Catalog;
 
 namespace eShopOnContainers.Core.ViewModels
 {
-    public class ProductsViewModel : ViewModelBase
+    public class CatalogViewModel : ViewModelBase
     {
         private ObservableCollection<CatalogItem> _products;
         private CatalogItem _product;
 
         private ICatalogService _productsService;
 
-        public ProductsViewModel(ICatalogService productsService)
+        public CatalogViewModel(ICatalogService productsService)
         {
             _productsService = productsService;
         }

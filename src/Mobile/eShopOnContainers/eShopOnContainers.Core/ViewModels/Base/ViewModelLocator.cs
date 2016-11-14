@@ -33,7 +33,7 @@ namespace eShopOnContainers.ViewModels.Base
 
             // view models
             _unityContainer.RegisterType<CartViewModel>();
-            _unityContainer.RegisterType<ProductsViewModel>();
+            _unityContainer.RegisterType<CatalogViewModel>();
             _unityContainer.RegisterType<LoginViewModel>();
             _unityContainer.RegisterType<MainViewModel>();
             _unityContainer.RegisterType<OrderDetailViewModel>();

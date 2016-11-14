@@ -10,6 +10,9 @@ using Xamarin.Forms.Platform.Android;
 using eShopOnContainers.Droid.Extensions;
 using eShopOnContainers.Core.Controls;
 using eShopOnContainers.Droid.Renderers;
+using Android.Support.V4.View;
+using Android.Graphics;
+using static Android.Widget.ImageView;
 
 [assembly: ExportRenderer(typeof(TabbedPage), typeof(CustomTabbedPageRenderer))]
 namespace eShopOnContainers.Droid.Renderers
@@ -20,6 +23,9 @@ namespace eShopOnContainers.Droid.Renderers
         protected readonly Dictionary<Element, BadgeView> BadgeViews = new Dictionary<Element, BadgeView>();
         private TabLayout _tabLayout;
         private TabLayout.SlidingTabStrip _tabStrip;
+        private ViewPager _viewPager;
+        private TabbedPage _tabbedPage;
+        private bool _firstTime = true;
 
         protected override void OnElementChanged(ElementChangedEventArgs<TabbedPage> e)
         {
@@ -33,6 +39,32 @@ namespace eShopOnContainers.Droid.Renderers
                 return;
             }
 
+            _tabbedPage = e.NewElement as TabbedPage;
+            _viewPager = (ViewPager)GetChildAt(0);
+
+            _tabLayout.TabSelected += (s, a) => 
+            {
+                var page = _tabbedPage.Children[a.Tab.Position];
+
+                if (page is TabbedPage)
+                {
+                    var tabPage = (TabbedPage)page;
+                    SetTab(a.Tab, tabPage.Icon.File);
+                }
+
+                _viewPager.SetCurrentItem(a.Tab.Position, false);
+            };
+
+            _tabLayout.TabUnselected += (s, a) => 
+            {
+                var page = _tabbedPage.Children[a.Tab.Position];
+
+                if (page is TabbedPage)
+                {
+                    SetTab(a.Tab, page.Icon.File);
+                }
+            };
+
             _tabStrip = _tabLayout.FindChildOfType<TabLayout.SlidingTabStrip>();
 
             for (var i = 0; i < _tabLayout.TabCount; i++)
@@ -42,6 +74,56 @@ namespace eShopOnContainers.Droid.Renderers
 
             Element.ChildAdded += OnTabAdded;
             Element.ChildRemoved += OnTabRemoved;
+        }
+
+
+        private void SetTab(TabLayout.Tab tab, string name)
+        {
+            try
+            {
+                int id = Resources.GetIdentifier(name, "drawable", Context.PackageName);
+                tab.CustomView.FindViewById<ImageView>(Resource.Id.tab_icon).SetImageResource(id);
+                tab.SetCustomView(Resource.Layout.TabLayout);
+                tab.SetIcon(null);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.StackTrace);
+            }
+        }
+
+        protected override void DispatchDraw(Canvas canvas)
+        {
+            base.DispatchDraw(canvas);
+
+            if (!_firstTime)
+            {
+                return;
+            }
+
+            for (int i = 0; i < _tabLayout.TabCount; i++)
+            {
+                var tab = _tabLayout.GetTabAt(i);
+                var page = _tabbedPage.Children[tab.Position];
+
+                if (page is TabbedPage)
+                {
+                    var tabbedPage = (TabbedPage)page;
+
+                    SetTab(tab, tabbedPage.Icon.File);
+                }
+                else
+                {
+                    SetTab(tab, page.Icon.File);
+                }
+
+                if (!string.IsNullOrEmpty(_tabbedPage.Title))
+                {
+                    tab.SetText(string.Empty);
+                }
+            }
+
+            _firstTime = false;
         }
 
         private void AddTabBadge(int tabIndex)
@@ -71,11 +153,12 @@ namespace eShopOnContainers.Droid.Renderers
 
             // Set color if not default
             var tabColor = CustomTabbedPage.GetBadgeColor(element);
-            if (tabColor != Color.Default)
+
+            if (tabColor != Xamarin.Forms.Color.Default)
             {
                 badgeView.BadgeColor = tabColor.ToAndroid();
             }
-
+            
             element.PropertyChanged += OnTabbedPagePropertyChanged;
         }
 
@@ -114,6 +197,7 @@ namespace eShopOnContainers.Droid.Renderers
             await Task.Delay(DeleayBeforeTabAdded);
 
             var page = e.Element as Page;
+
             if (page == null)
                 return;
 

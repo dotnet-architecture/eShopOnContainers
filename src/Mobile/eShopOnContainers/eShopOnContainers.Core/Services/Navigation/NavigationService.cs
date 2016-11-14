@@ -54,9 +54,9 @@ namespace eShopOnContainers.Services
 
         public async Task NavigateBackAsync()
         {
-            if (CurrentApplication.MainPage is HomeView)
+            if (CurrentApplication.MainPage is CatalogView)
             {
-                var mainPage = CurrentApplication.MainPage as HomeView;
+                var mainPage = CurrentApplication.MainPage as CatalogView;
                 await mainPage.Navigation.PopAsync();
             }
             else if (CurrentApplication.MainPage != null)
@@ -148,7 +148,7 @@ namespace eShopOnContainers.Services
         private void CreatePageViewModelMappings()
         {
             _mappings.Add(typeof(CartViewModel), typeof(CartView));
-            _mappings.Add(typeof(ProductsViewModel), typeof(HomeView));
+            _mappings.Add(typeof(CatalogViewModel), typeof(CatalogView));
             _mappings.Add(typeof(LoginViewModel), typeof(LoginView));
             _mappings.Add(typeof(MainViewModel), typeof(MainView));
             _mappings.Add(typeof(OrderDetailViewModel), typeof(OrderDetailView));

@@ -15,7 +15,7 @@ namespace eShopOnContainers.Core.Views
         {
             base.OnAppearing();
 
-            var homeViewModel = ViewModelLocator.Instance.Resolve<ProductsViewModel>();
+            var homeViewModel = ViewModelLocator.Instance.Resolve<CatalogViewModel>();
             await homeViewModel.InitializeAsync(null);
             HomeView.BindingContext = homeViewModel;
 

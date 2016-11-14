@@ -1166,32 +1166,32 @@ namespace eShopOnContainers.Droid
 		public partial class Color
 		{
 			
-			// aapt resource value: 0x7f0b0048
-			public const int abc_background_cache_hint_selector_material_dark = 2131427400;
-			
 			// aapt resource value: 0x7f0b0049
-			public const int abc_background_cache_hint_selector_material_light = 2131427401;
+			public const int abc_background_cache_hint_selector_material_dark = 2131427401;
 			
 			// aapt resource value: 0x7f0b004a
-			public const int abc_color_highlight_material = 2131427402;
+			public const int abc_background_cache_hint_selector_material_light = 2131427402;
+			
+			// aapt resource value: 0x7f0b004b
+			public const int abc_color_highlight_material = 2131427403;
 			
 			// aapt resource value: 0x7f0b0004
 			public const int abc_input_method_navigation_guard = 2131427332;
 			
-			// aapt resource value: 0x7f0b004b
-			public const int abc_primary_text_disable_only_material_dark = 2131427403;
-			
 			// aapt resource value: 0x7f0b004c
-			public const int abc_primary_text_disable_only_material_light = 2131427404;
+			public const int abc_primary_text_disable_only_material_dark = 2131427404;
 			
 			// aapt resource value: 0x7f0b004d
-			public const int abc_primary_text_material_dark = 2131427405;
+			public const int abc_primary_text_disable_only_material_light = 2131427405;
 			
 			// aapt resource value: 0x7f0b004e
-			public const int abc_primary_text_material_light = 2131427406;
+			public const int abc_primary_text_material_dark = 2131427406;
 			
 			// aapt resource value: 0x7f0b004f
-			public const int abc_search_url_text = 2131427407;
+			public const int abc_primary_text_material_light = 2131427407;
+			
+			// aapt resource value: 0x7f0b0050
+			public const int abc_search_url_text = 2131427408;
 			
 			// aapt resource value: 0x7f0b0005
 			public const int abc_search_url_text_normal = 2131427333;
@@ -1202,11 +1202,11 @@ namespace eShopOnContainers.Droid
 			// aapt resource value: 0x7f0b0007
 			public const int abc_search_url_text_selected = 2131427335;
 			
-			// aapt resource value: 0x7f0b0050
-			public const int abc_secondary_text_material_dark = 2131427408;
-			
 			// aapt resource value: 0x7f0b0051
-			public const int abc_secondary_text_material_light = 2131427409;
+			public const int abc_secondary_text_material_dark = 2131427409;
+			
+			// aapt resource value: 0x7f0b0052
+			public const int abc_secondary_text_material_light = 2131427410;
 			
 			// aapt resource value: 0x7f0b0008
 			public const int accent_material_dark = 2131427336;
@@ -1406,17 +1406,20 @@ namespace eShopOnContainers.Droid
 			// aapt resource value: 0x7f0b003b
 			public const int switch_thumb_disabled_material_light = 2131427387;
 			
-			// aapt resource value: 0x7f0b0052
-			public const int switch_thumb_material_dark = 2131427410;
-			
 			// aapt resource value: 0x7f0b0053
-			public const int switch_thumb_material_light = 2131427411;
+			public const int switch_thumb_material_dark = 2131427411;
+			
+			// aapt resource value: 0x7f0b0054
+			public const int switch_thumb_material_light = 2131427412;
 			
 			// aapt resource value: 0x7f0b003c
 			public const int switch_thumb_normal_material_dark = 2131427388;
 			
 			// aapt resource value: 0x7f0b003d
 			public const int switch_thumb_normal_material_light = 2131427389;
+			
+			// aapt resource value: 0x7f0b0048
+			public const int white = 2131427400;
 			
 			static Color()
 			{
@@ -2299,8 +2302,8 @@ namespace eShopOnContainers.Droid
 			// aapt resource value: 0x7f0200a8
 			public const int mr_ic_play_light = 2130837672;
 			
-			// aapt resource value: 0x7f0200ad
-			public const int notification_template_icon_bg = 2130837677;
+			// aapt resource value: 0x7f0200ae
+			public const int notification_template_icon_bg = 2130837678;
 			
 			// aapt resource value: 0x7f0200a9
 			public const int product_add = 2130837673;
@@ -2313,6 +2316,9 @@ namespace eShopOnContainers.Droid
 			
 			// aapt resource value: 0x7f0200ac
 			public const int splash_drawable = 2130837676;
+			
+			// aapt resource value: 0x7f0200ad
+			public const int user_profile = 2130837677;
 			
 			static Drawable()
 			{
@@ -2711,8 +2717,8 @@ namespace eShopOnContainers.Droid
 			// aapt resource value: 0x7f070013
 			public const int showTitle = 2131165203;
 			
-			// aapt resource value: 0x7f07009c
-			public const int sliding_tabs = 2131165340;
+			// aapt resource value: 0x7f07009d
+			public const int sliding_tabs = 2131165341;
 			
 			// aapt resource value: 0x7f07006c
 			public const int snackbar_action = 2131165292;
@@ -2750,6 +2756,9 @@ namespace eShopOnContainers.Droid
 			// aapt resource value: 0x7f07000d
 			public const int tabMode = 2131165197;
 			
+			// aapt resource value: 0x7f07009c
+			public const int tab_icon = 2131165340;
+			
 			// aapt resource value: 0x7f070099
 			public const int text = 2131165337;
 			
@@ -2771,8 +2780,8 @@ namespace eShopOnContainers.Droid
 			// aapt resource value: 0x7f070048
 			public const int title_template = 2131165256;
 			
-			// aapt resource value: 0x7f07009d
-			public const int toolbar = 2131165341;
+			// aapt resource value: 0x7f07009e
+			public const int toolbar = 2131165342;
 			
 			// aapt resource value: 0x7f070032
 			public const int top = 2131165234;
@@ -3051,10 +3060,13 @@ namespace eShopOnContainers.Droid
 			public const int support_simple_spinner_dropdown_item = 2130903097;
 			
 			// aapt resource value: 0x7f03003a
-			public const int Tabbar = 2130903098;
+			public const int TabLayout = 2130903098;
 			
 			// aapt resource value: 0x7f03003b
-			public const int Toolbar = 2130903099;
+			public const int Tabs = 2130903099;
+			
+			// aapt resource value: 0x7f03003c
+			public const int Toolbar = 2130903100;
 			
 			static Layout()
 			{

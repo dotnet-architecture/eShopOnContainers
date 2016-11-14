@@ -41,7 +41,7 @@ namespace eShopOnContainers.Core.ViewModels
 
         public override async Task InitializeAsync(object navigationData)
         {
-            MessagingCenter.Subscribe<ProductsViewModel>(this, MessengerKeys.AddProduct, (sender) =>
+            MessagingCenter.Subscribe<CatalogViewModel>(this, MessengerKeys.AddProduct, (sender) =>
             {
                 BadgeCount++;
             });

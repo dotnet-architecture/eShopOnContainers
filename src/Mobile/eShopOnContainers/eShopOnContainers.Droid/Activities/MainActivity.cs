@@ -1,8 +1,8 @@
-
 using Android.App;
 using Android.OS;
 using Android.Content.PM;
 using Android.Views;
+using Xamarin.Forms.Platform.Android;
 
 namespace eShopOnContainers.Droid.Activities
 {
@@ -12,14 +12,19 @@ namespace eShopOnContainers.Droid.Activities
         Theme = "@style/MainTheme", 
         MainLauncher = true, 
         ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
-    public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
+    public class MainActivity : FormsAppCompatActivity
     {
         protected override void OnCreate(Bundle bundle)
         {
-            TabLayoutResource = Resource.Layout.Tabbar;
-            ToolbarResource = Resource.Layout.Toolbar;
+            FormsAppCompatActivity.ToolbarResource = Resource.Layout.Toolbar;
+            FormsAppCompatActivity.TabLayoutResource = Resource.Layout.Tabs;
 
             base.OnCreate(bundle);
+
+            SupportActionBar.SetDisplayShowHomeEnabled(true); // Show or hide the default home button
+            SupportActionBar.SetDisplayHomeAsUpEnabled(true);
+            SupportActionBar.SetDisplayShowCustomEnabled(true); // Enable overriding the default toolbar layout
+            SupportActionBar.SetDisplayShowTitleEnabled(false);
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
             LoadApplication(new App());

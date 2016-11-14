@@ -7,35 +7,35 @@
             BarBackgroundColor="{StaticResource DarkGreenColor}"
             BackgroundColor="{StaticResource BackgroundColor}"
             Title="eShop on Containers">
-    <views:HomeView  
+    <views:CatalogView  
         x:Name="HomeView">
-        <views:HomeView.Icon>
+        <views:CatalogView.Icon>
             <OnPlatform        
                 x:TypeArguments="FileImageSource"
                 Android="menu_filter"
                 iOS="menu_filter"
                 WinPhone="Assets\menu_filter.png"/>
-        </views:HomeView.Icon>
-    </views:HomeView>
+        </views:CatalogView.Icon>
+    </views:CatalogView>
     <views:ProfileView
         x:Name="ProfileView">
-        <views:HomeView.Icon>
+        <views:ProfileView.Icon>
             <OnPlatform        
                 x:TypeArguments="FileImageSource"
                 Android="menu_profile"
                 iOS="menu_profile"
                 WinPhone="Assets\menu_profile.png"/>
-        </views:HomeView.Icon>
+        </views:ProfileView.Icon>
     </views:ProfileView>
     <views:CartView
         x:Name="CartView"
         controls:CustomTabbedPage.BadgeText="{Binding BadgeCount}">
-        <views:HomeView.Icon>
+        <views:CartView.Icon>
             <OnPlatform        
                 x:TypeArguments="FileImageSource"
                 Android="menu_cart"
                 iOS="menu_cart"
                 WinPhone="Assets\menu_cart.png"/>
-        </views:HomeView.Icon>
+        </views:CartView.Icon>
     </views:CartView>
 </TabbedPage>
