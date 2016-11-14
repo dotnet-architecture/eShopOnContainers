@@ -1,26 +1,26 @@
 ﻿using System.Threading.Tasks;
 using eShopOnContainers.ViewModels.Base;
-using eShopOnContainers.Core.Services.Products;
 using System.Collections.ObjectModel;
-using eShopOnContainers.Core.Models.Products;
 using Xamarin.Forms;
 using eShopOnContainers.Core.ViewModels.Base;
+using eShopOnContainers.Core.Models.Catalog;
+using eShopOnContainers.Core.Services.Catalog;
 
 namespace eShopOnContainers.Core.ViewModels
 {
     public class ProductsViewModel : ViewModelBase
     {
-        private ObservableCollection<Product> _products;
-        private Product _product;
+        private ObservableCollection<CatalogItem> _products;
+        private CatalogItem _product;
 
-        private IProductsService _productsService;
+        private ICatalogService _productsService;
 
-        public ProductsViewModel(IProductsService productsService)
+        public ProductsViewModel(ICatalogService productsService)
         {
             _productsService = productsService;
         }
 
-        public ObservableCollection<Product> Products
+        public ObservableCollection<CatalogItem> Products
         {
             get { return _products; }
             set
@@ -30,7 +30,7 @@ namespace eShopOnContainers.Core.ViewModels
             }
         }
 
-        public Product Product
+        public CatalogItem Product
         {
             get { return _product; }
             set

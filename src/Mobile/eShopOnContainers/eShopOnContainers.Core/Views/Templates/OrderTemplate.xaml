@@ -22,10 +22,10 @@
                 <Setter Property="TextColor"
                         Value="Black" />
             </Style>
-            
+
         </ResourceDictionary>
     </ContentView.Resources>
-  <ContentView.Content>
+    <ContentView.Content>
         <Grid
             BackgroundColor="{StaticResource BackgroundColor}">
             <Grid.ColumnDefinitions>
@@ -67,7 +67,7 @@
                     Text="DATE"
                     Style="{StaticResource OrderTitleStyle}"/>
                 <Label 
-                    Text="{Binding Date, Converter={StaticResource DatetimeConverter}}"
+                    Text="{Binding OrderDate, Converter={StaticResource DatetimeConverter}}"
                     Style="{StaticResource OrderContentStyle}"/>
             </StackLayout>
             <StackLayout
@@ -87,5 +87,5 @@
                 Grid.Row="2"
                 BackgroundColor="Gray"/>
         </Grid>
-  </ContentView.Content>
+    </ContentView.Content>
 </ContentView>

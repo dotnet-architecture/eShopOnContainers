@@ -2,9 +2,9 @@
 
 namespace eShopOnContainers.Core.Views.Templates
 {
-    public partial class OrderTemplate : ContentView
+    public partial class OrderItemTemplate : ContentView
     {
-        public OrderTemplate()
+        public OrderItemTemplate()
         {
             InitializeComponent();
         }

@@ -29,8 +29,7 @@
     </views:ProfileView>
     <views:CartView
         x:Name="CartView"
-        controls:CustomTabbedPage.BadgeText="{Binding BadgeCount}"
-        controls:CustomTabbedPage.BadgeColor="{StaticResource LightGreenColor}">
+        controls:CustomTabbedPage.BadgeText="{Binding BadgeCount}">
         <views:HomeView.Icon>
             <OnPlatform        
                 x:TypeArguments="FileImageSource"

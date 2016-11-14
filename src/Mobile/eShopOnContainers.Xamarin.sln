@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eShopOnContainers.Core", "e
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eShopOnContainers.Windows", "eShopOnContainers\eShopOnContainers.Windows\eShopOnContainers.Windows.csproj", "{C3C1E2CF-B1F7-4654-BBDC-50143DB22E0B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared Code", "Shared Code", "{65D002E7-E869-491C-ABA8-9650CEAF677A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Targets", "Targets", "{8F848898-6B21-4905-AE2E-B3ABDEDA1963}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Ad-Hoc|Any CPU = Ad-Hoc|Any CPU
@@ -257,5 +261,11 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{62DBB163-9CA9-4818-B48B-13233DF37C24} = {8F848898-6B21-4905-AE2E-B3ABDEDA1963}
+		{6EEB23DC-7063-4444-9AF8-90DF24F549C0} = {8F848898-6B21-4905-AE2E-B3ABDEDA1963}
+		{65116D1C-145B-4693-ABDA-F0FB6F425191} = {65D002E7-E869-491C-ABA8-9650CEAF677A}
+		{C3C1E2CF-B1F7-4654-BBDC-50143DB22E0B} = {8F848898-6B21-4905-AE2E-B3ABDEDA1963}
 	EndGlobalSection
 EndGlobal

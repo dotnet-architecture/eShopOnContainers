@@ -1,9 +1,9 @@
 ﻿using Microsoft.Practices.Unity;
 using eShopOnContainers.Core.Services.Orders;
-using eShopOnContainers.Core.Services.Products;
 using eShopOnContainers.Core.ViewModels;
 using eShopOnContainers.Services;
 using System;
+using eShopOnContainers.Core.Services.Catalog;
 
 namespace eShopOnContainers.ViewModels.Base
 {
@@ -28,8 +28,8 @@ namespace eShopOnContainers.ViewModels.Base
             // services
             _unityContainer.RegisterType<IDialogService, DialogService>();
             RegisterSingleton<INavigationService, NavigationService>();
-            _unityContainer.RegisterType<IProductsService, FakeProductsService>();
-            _unityContainer.RegisterType<IOrdersService, FakeOrdersService>();
+            _unityContainer.RegisterType<ICatalogService, CatalogMockService>();
+            _unityContainer.RegisterType<IOrdersService, OrdersMockService>();
 
             // view models
             _unityContainer.RegisterType<CartViewModel>();
@@ -37,7 +37,6 @@ namespace eShopOnContainers.ViewModels.Base
             _unityContainer.RegisterType<LoginViewModel>();
             _unityContainer.RegisterType<MainViewModel>();
             _unityContainer.RegisterType<OrderDetailViewModel>();
-            _unityContainer.RegisterType<OrdersViewModel>();
             _unityContainer.RegisterType<ProfileViewModel>();
         }
 

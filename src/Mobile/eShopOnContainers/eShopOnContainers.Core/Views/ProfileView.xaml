@@ -4,6 +4,7 @@
              x:Class="eShopOnContainers.Core.Views.ProfileView"    
              xmlns:views="clr-namespace:eShopOnContainers.Core.Views;assembly=eShopOnContainers.Core"       
              xmlns:templates="clr-namespace:eShopOnContainers.Core.Views.Templates;assembly=eShopOnContainers.Core"
+             xmlns:behaviors="clr-namespace:eShopOnContainers.Core.Behaviors;assembly=eShopOnContainers.Core"      
              Title="My profile">
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -83,6 +84,12 @@
                 HasUnevenRows="True"
                 SeparatorVisibility="None"
                 CachingStrategy="RecycleElement">
+                <ListView.Behaviors>
+                    <behaviors:EventToCommandBehavior
+                        EventName="ItemTapped"
+                        Command="{Binding OrderDetailCommand}"
+                        EventArgsConverter="{StaticResource ItemTappedEventArgsConverter}" />
+                </ListView.Behaviors>
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>

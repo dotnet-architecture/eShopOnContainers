@@ -31,6 +31,8 @@ namespace eShopOnContainers.Core.ViewModels
 
         public ICommand LogoutCommand => new Command(LogoutAsync);
 
+        public ICommand OrderDetailCommand => new Command<Order>(OrderDetail);
+
         public override async Task InitializeAsync(object navigationData)
         {
             Orders = await _ordersService.GetOrdersAsync();
@@ -40,6 +42,11 @@ namespace eShopOnContainers.Core.ViewModels
         {
             await NavigationService.NavigateToAsync<LoginViewModel>();
             await NavigationService.RemoveBackStackAsync();
+        }
+
+        private void OrderDetail(Order order)
+        {
+            NavigationService.NavigateToAsync<OrderDetailViewModel>(order);
         }
     }
 }
