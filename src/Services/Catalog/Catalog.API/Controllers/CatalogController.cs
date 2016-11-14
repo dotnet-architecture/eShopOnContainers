@@ -29,6 +29,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
                  .LongCountAsync();
 
             var itemsOnPage = await _context.CatalogItems
+                .OrderBy(c=>c.Name)
                 .Skip(pageSize * pageIndex)
                 .Take(pageSize)
                 .ToListAsync();

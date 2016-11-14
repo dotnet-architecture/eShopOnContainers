@@ -47,7 +47,7 @@
       "wwwroot",
       "Views",
       "Areas/**/Views",
-      "settings.Production.json",
+      "settings.json",
       "web.config",
       "project.json",
       "Dockerfile"

@@ -17,8 +17,10 @@
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
-                .AddJsonFile($"settings.{env.EnvironmentName}.json", optional: false)
-                .AddEnvironmentVariables();
+                .AddJsonFile($"settings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile($"settings.{env.EnvironmentName}.json", optional: true);
+
+            builder.AddEnvironmentVariables();
 
 
             Configuration = builder.Build();
@@ -33,7 +35,8 @@
                 c.UseSqlServer(Configuration["ConnectionString"]);
                 c.ConfigureWarnings(wb =>
                 {
-                    wb.Throw(RelationalEventId.QueryClientEvaluationWarning);
+                    //By default, in this application, we don't want to have client evaluations
+                    wb.Log(RelationalEventId.QueryClientEvaluationWarning);
                 });
             });
 
@@ -45,10 +48,10 @@
                 options.DescribeAllEnumsAsStrings();
                 options.SingleApiVersion(new Swashbuckle.Swagger.Model.Info()
                 {
-                    Title = "Values API",
+                    Title = "Catalog HTTP API",
                     Version = "v1",
-                    Description = "An API API With Swagger for RC2",
-                    TermsOfService = "None"
+                    Description = "The Catalog Service HTTP API",
+                    TermsOfService = "Terms Of Service"
                 });
             });
 
@@ -59,10 +62,8 @@
             });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-
             //Configure logs
 
             if (env.IsDevelopment())
