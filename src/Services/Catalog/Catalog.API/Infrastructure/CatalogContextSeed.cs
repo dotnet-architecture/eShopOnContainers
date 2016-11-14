@@ -1,7 +1,7 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure
 {
+    using EntityFrameworkCore;
     using Microsoft.AspNetCore.Builder;
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -15,7 +15,7 @@
 
             using (context)
             {
-                context.Database.EnsureCreated();
+                context.Database.Migrate();
 
                 if (!context.CatalogBrands.Any())
                 {

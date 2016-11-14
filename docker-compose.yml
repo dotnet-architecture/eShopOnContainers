@@ -15,14 +15,19 @@ services:
   catalog.api:
     image: eshop/catalog.api:latest
     environment:
-      - ConnectionString=Server=catalogdata;Port=5432;Database=postgres;username=postgres
+      - ConnectionString=Server=catalogdata;Initial Catalog=CatalogDB;User Id=sa;Password=Pass@word
     expose:
       - "80"
     depends_on:
       - catalogdata
 
   catalogdata:
-    image: glennc/eshopdata
+    image: eshop/mssql-server-private-preview
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Pass@word
+    ports:
+      - "1455:1433"
 
   ordering.api:
     image: eshop/ordering.api:latest
@@ -43,7 +48,7 @@ services:
     image: eshop/ordering.data.sqlserver.linux
     ports:
       - "1433:1433"
-
+	  
   basket.api:
     image: eshop/basket.api:latest
     environment:
