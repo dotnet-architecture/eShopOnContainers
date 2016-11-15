@@ -71,7 +71,10 @@
             </Grid.RowDefinitions>
             <ffimageloading:CachedImage 
                 Grid.Row="0"
-                Source="{Binding Image}"
+                Source="{Binding PictureUri}"       
+                CacheDuration="30"                      
+                CacheType="Disk"             
+                DownsampleToViewSize="True"
                 Aspect="AspectFill"/>
             <Grid
                 Grid.Row="0"
@@ -86,7 +89,7 @@
                     <Image.Margin>
                         <OnPlatform        
                             x:TypeArguments="Thickness"
-                            Android="6, 12, 12, 12"
+                            Android="5, 12, 12, 12"
                             iOS="6, 12, 12, 12"
                             WinPhone="8, 12, 12, 12"/>
                     </Image.Margin>

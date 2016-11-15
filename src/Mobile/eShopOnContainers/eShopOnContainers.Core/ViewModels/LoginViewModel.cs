@@ -2,6 +2,7 @@
 using eShopOnContainers.ViewModels.Base;
 using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -73,6 +74,8 @@ namespace eShopOnContainers.Core.ViewModels
             {
                 try
                 {
+                    await Task.Delay(1000);
+
                     isAuthenticated = true;
                 }
                 catch (Exception ex)

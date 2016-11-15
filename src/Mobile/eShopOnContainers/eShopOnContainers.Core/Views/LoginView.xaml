@@ -146,7 +146,7 @@
         </Grid>
         <!-- INDICATOR -->
         <ActivityIndicator 
-            Color="{StaticResource AccentColor}"   
+            Color="{StaticResource LightGreenColor}"   
             IsRunning="{Binding IsBusy}" 
             IsVisible="{Binding IsBusy}"
             VerticalOptions="Center"
