@@ -1,7 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentView 
     xmlns="http://xamarin.com/schemas/2014/forms" 
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"    
+    xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
     x:Class="eShopOnContainers.Core.Views.Templates.ProductTemplate">
     <ContentView.Resources>
         <ResourceDictionary>
@@ -68,7 +69,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <Image 
+            <ffimageloading:CachedImage 
                 Grid.Row="0"
                 Source="{Binding Image}"
                 Aspect="AspectFill"/>

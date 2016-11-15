@@ -1,4 +1,8 @@
-﻿using System;
+﻿using FFImageLoading.Forms;
+using FFImageLoading.Forms.WinUWP;
+using System;
+using System.Collections.Generic;
+using System.Reflection;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
@@ -48,7 +52,13 @@ namespace eShopOnContainers.UWP
 
                 rootFrame.NavigationFailed += OnNavigationFailed;
 
-                Xamarin.Forms.Forms.Init(e);
+                var assembliesToInclude = new List<Assembly>()
+                {
+                    typeof(CachedImage).GetTypeInfo().Assembly,
+                    typeof(CachedImageRenderer).GetTypeInfo().Assembly
+                };
+
+                Xamarin.Forms.Forms.Init(e, assembliesToInclude);
 
                 if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
                 {

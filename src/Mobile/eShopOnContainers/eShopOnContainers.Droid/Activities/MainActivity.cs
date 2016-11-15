@@ -3,6 +3,7 @@ using Android.OS;
 using Android.Content.PM;
 using Android.Views;
 using Xamarin.Forms.Platform.Android;
+using FFImageLoading.Forms.Droid;
 
 namespace eShopOnContainers.Droid.Activities
 {
@@ -27,6 +28,7 @@ namespace eShopOnContainers.Droid.Activities
             SupportActionBar.SetDisplayShowTitleEnabled(false);
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
+            CachedImageRenderer.Init();
             LoadApplication(new App());
 
             var x = typeof(Xamarin.Forms.Themes.LightThemeResources);

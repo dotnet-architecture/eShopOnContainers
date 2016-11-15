@@ -1,4 +1,5 @@
-﻿using Foundation;
+﻿using FFImageLoading.Forms.Touch;
+using Foundation;
 using UIKit;
 
 namespace eShopOnContainers.iOS
@@ -21,6 +22,7 @@ namespace eShopOnContainers.iOS
             global::Xamarin.Forms.Forms.Init();
             LoadApplication(new App());
             SlideOverKit.iOS.SlideOverKit.Init();
+            CachedImageRenderer.Init();
 
             var x = typeof(Xamarin.Forms.Themes.LightThemeResources);
             x = typeof(Xamarin.Forms.Themes.iOS.UnderlineEffect);
