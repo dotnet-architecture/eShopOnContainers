@@ -55,3 +55,4 @@ docker build -t eshop/web $webPathToPub
 docker build -t eshop/catalog.api $catalogPathToPub
 docker build -t eshop/ordering.api $orderingPathToPub
 docker build -t eshop/basket.api $basketPathToPub
+
