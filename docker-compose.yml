@@ -2,59 +2,62 @@ version: '2'
 
 services:
   webmvc:
-    image: eshop/web:latest
+    image: eshop/web${TAG}
+    build:
+      context: .
+      dockerfile: Dockerfile
     environment:
       - CatalogUrl=http://catalog.api
       - OrderingUrl=http://ordering.api
     ports:
-      - "800:80"
+      - "5100:80"
     depends_on:
       - catalog.api
-      - ordering.api
+      - identity.data
 
   catalog.api:
-    image: eshop/catalog.api:latest
+    image: eshop/catalog.api
     environment:
-      - ConnectionString=Server=catalogdata;Initial Catalog=CatalogDB;User Id=sa;Password=Pass@word
+      - ConnectionString=Server=catalog.data;Initial Catalog=CatalogData;User Id=sa;Password=Pass@word
     expose:
       - "80"
+    ports:
+      - "5101:80"
     depends_on:
-      - catalogdata
+      - catalog.data
 
-  catalogdata:
+  catalog.data:
     image: eshop/mssql-server-private-preview
     environment:
-      - ACCEPT_EULA=Y
       - SA_PASSWORD=Pass@word
+      - ACCEPT_EULA=Y
     ports:
-      - "1455:1433"
+      - "5434:1433"
 
   ordering.api:
-    image: eshop/ordering.api:latest
+    image: eshop/ordering.api
     environment:
       - ConnectionString=Server=ordering.data;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word
     ports:
       - "81:80"
 # (Go to Production): For secured/final deployment, remove Ports mapping and
 # leave just the internal expose section 
-    expose:
-      - "800"
+#    expose:
+#      - "80"
     extra_hosts:
-      - "DESKTOP-1HNACCH:192.168.1.39"
+      - "CESARDLBOOKVHD:10.0.75.1"
     depends_on:
       - ordering.data
 
   ordering.data:
     image: eshop/ordering.data.sqlserver.linux
     ports:
-      - "1433:1433"
-	  
-  basket.api:
-    image: eshop/basket.api:latest
-    environment:
-      - ConnectionString=basket.data
-    depends_on:
-      - basket.data
+      - "5432:1433"
 
-  basket.data:
-    image: redis
+  identity.data:
+    image: eshop/mssql-server-private-preview
+    environment:
+      - SA_PASSWORD=Pass@word
+      - ACCEPT_EULA=Y
+    ports:
+      - "5433:1433"
