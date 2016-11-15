@@ -46,8 +46,10 @@
     <Compile Include="Behaviors\EventToCommandBehavior.cs" />
     <Compile Include="Controls\BindablePicker.cs" />
     <Compile Include="Controls\CustomTabbedPage.cs" />
+    <Compile Include="Converters\CountToBoolConverter.cs" />
     <Compile Include="Converters\DatetimeConverter.cs" />
     <Compile Include="Converters\ImageConverter.cs" />
+    <Compile Include="Converters\InverseCountToBoolConverter.cs" />
     <Compile Include="Converters\ItemTappedConverter.cs" />
     <Compile Include="Converters\ToUpperConverter.cs" />
     <Compile Include="Effects\LineColorEffect.cs" />

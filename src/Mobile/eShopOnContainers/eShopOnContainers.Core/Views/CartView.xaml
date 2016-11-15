@@ -16,52 +16,117 @@
                 <Setter Property="HorizontalOptions" 
                         Value="End" />
             </Style>
-            
+
+            <Style x:Key="CheckoutButtonStyle" 
+               TargetType="{x:Type Label}">
+                <Setter Property="FontFamily"
+                        Value="{StaticResource MontserratRegular}" />
+                <Setter Property="TextColor"
+                        Value="{StaticResource WhiteColor}" />
+                <Setter Property="HorizontalOptions"
+                        Value="Center" />
+                <Setter Property="VerticalOptions"
+                        Value="Center" />
+            </Style>
+
+            <Style x:Key="ShoppingCartStyle" 
+                   TargetType="{x:Type Label}">
+                <Setter Property="FontFamily"
+                        Value="{StaticResource MontserratRegular}" />
+                <Setter Property="FontSize"
+                        Value="{StaticResource MediumSize}" />
+                <Setter Property="TextColor"
+                        Value="Black" />
+                <Setter Property="HorizontalOptions"
+                        Value="Center" />
+                <Setter Property="Margin"
+                        Value="0, 12" />
+            </Style>
+
         </ResourceDictionary>
     </ContentPage.Resources>
-    <ScrollView>
-        <Grid
-            BackgroundColor="{StaticResource BackgroundColor}">
+    <Grid 
+        BackgroundColor="{StaticResource BackgroundColor}">
+        <!-- SHOPPING CART -->
+        <Grid       
+            IsVisible="{Binding OrderItems.Count, Converter={StaticResource CountToBoolConverter}}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
-                <RowDefinition Height="Auto" />
+                <RowDefinition Height="60" />
             </Grid.RowDefinitions>
             <!-- CART ITEMS -->
-            <Grid            
+            <ScrollView
                 Grid.Row="0">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <ListView 
-                    ItemsSource="{Binding OrderItems}"     
-                    HasUnevenRows="True"
-                    SeparatorVisibility="None"
-                    VerticalOptions="FillAndExpand"
-                    CachingStrategy="RecycleElement">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <ViewCell>
-                                <templates:OrderItemTemplate />
-                            </ViewCell>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-                <StackLayout
-                    Grid.Row="1"
-                    Margin="0,0,0,24">
-                    <Label 
-                        Grid.Row="0"
-                        Text="TOTAL"
-                        TextColor="{StaticResource BlackColor}"
-                        Style="{StaticResource CartTotalStyle}"/>
-                    <Label 
-                        Grid.Row="1"                   
-                        Text="{Binding Total, StringFormat='${0:N}'}"
-                        TextColor="{StaticResource GreenColor}"
-                        Style="{StaticResource CartTotalStyle}"/>
-                </StackLayout>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <!-- HEADER -->
+                    <Grid
+                        Grid.Row="0">
+                        <Label
+                            Text="SHOPPING CART"
+                            Style="{StaticResource ShoppingCartStyle}"/>
+                    </Grid>
+                    <!-- ITEMS -->
+                    <ListView 
+                        Grid.Row="1"
+                        ItemsSource="{Binding OrderItems}"     
+                        HasUnevenRows="True"
+                        SeparatorVisibility="None"
+                        VerticalOptions="FillAndExpand"
+                        CachingStrategy="RecycleElement">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <templates:OrderItemTemplate />
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                    <!-- TOTAL -->
+                    <StackLayout
+                        Grid.Row="2"
+                        Margin="0,0,0,24">
+                        <Label 
+                            Grid.Row="0"
+                            Text="TOTAL"
+                            TextColor="{StaticResource BlackColor}"
+                            Style="{StaticResource CartTotalStyle}"/>
+                        <Label 
+                            Grid.Row="1"                   
+                            Text="{Binding Total, StringFormat='${0:N}'}"
+                            TextColor="{StaticResource GreenColor}"
+                            Style="{StaticResource CartTotalStyle}"/>
+                    </StackLayout>
+                </Grid>
+            </ScrollView>
+            <!-- CHECKOUT -->
+            <Grid
+                Grid.Row="1"           
+                BackgroundColor="{StaticResource LightGreenColor}"
+                Padding="0" 
+                ColumnSpacing="0" 
+                RowSpacing="0">
+                <Label       
+                    Text="[ CHECKOUT ]" 
+                    Style="{StaticResource CheckoutButtonStyle}"/>
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer            
+                        Command="{Binding CheckoutCommand}"  
+                        NumberOfTapsRequired="1" />
+                </Grid.GestureRecognizers>
             </Grid>
         </Grid>
-    </ScrollView>
+        <!-- EMPTY SHOPPING CART -->
+        <Grid             
+            IsVisible="{Binding OrderItems.Count, Converter={StaticResource InverseCountToBoolConverter}}">
+            <Label 
+                Text="EMPTY SHOPPING CART"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"/>
+        </Grid>
+    </Grid>
 </ContentPage>
