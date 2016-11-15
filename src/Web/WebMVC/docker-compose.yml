@@ -10,7 +10,7 @@ services:
       - CatalogUrl=http://catalog.api
       - OrderingUrl=http://ordering.api
     ports:
-      - "5000:80"
+      - "5100:80"
     depends_on:
       - catalog.api
       - identity.data
@@ -18,16 +18,21 @@ services:
   catalog.api:
     image: eshop/catalog.api
     environment:
-      - ConnectionString=Server=catalogdata;Port=5432;Database=CatalogDB;username=postgres;password=postgres
+      - ConnectionString=Server=catalog.data;Initial Catalog=CatalogData;User Id=sa;Password=Pass@word
     expose:
       - "80"
     ports:
-      - "5001:80"
+      - "5101:80"
     depends_on:
-      - catalogdata
+      - catalog.data
 
-  catalogdata:
-    image: glennc/eshopdata
+  catalog.data:
+    image: eshop/mssql-server-private-preview
+    environment:
+      - SA_PASSWORD=Pass@word
+      - ACCEPT_EULA=Y
+    ports:
+      - "5434:1433"
 
   ordering.api:
     image: eshop/ordering.api

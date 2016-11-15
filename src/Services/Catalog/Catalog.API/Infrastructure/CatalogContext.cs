@@ -2,7 +2,6 @@
 {
     using EntityFrameworkCore.Metadata.Builders;
     using Microsoft.EntityFrameworkCore;
-    using Npgsql.EntityFrameworkCore.PostgreSQL;
 
     public class CatalogContext : DbContext
     {
@@ -18,32 +17,19 @@
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.HasSequence("idseqcatalog")
-                .StartsAt(1)
-                .IncrementsBy(1);
-
-            builder.HasSequence("idseqcatalogbrand")
-                .StartsAt(1)
-                .IncrementsBy(1);
-
-            builder.HasSequence("idseqcatalogtype")
-                .StartsAt(1)
-                .IncrementsBy(1);
-
             builder.Entity<CatalogBrand>(ConfigureCatalogBrand);
             builder.Entity<CatalogType>(ConfigureCatalogType);
             builder.Entity<CatalogItem>(ConfigureCatalogItem);
            
 
-            builder.HasPostgresExtension("uuid-ossp");
         }
 
         void ConfigureCatalogItem(EntityTypeBuilder<CatalogItem> builder)
         {
-            builder.ForNpgsqlToTable("catalog");
+            builder.ToTable("Catalog");
 
             builder.Property(ci => ci.Id)
-                .HasDefaultValueSql("nextval('idseqcatalog')")
+                .ForSqlServerUseSequenceHiLo("catalog_hilo")
                 .IsRequired();
 
             builder.Property(ci => ci.Name)
@@ -68,11 +54,13 @@
 
         void ConfigureCatalogBrand(EntityTypeBuilder<CatalogBrand> builder)
         {
-            builder.ForNpgsqlToTable("catalogbrand");
+            builder.ToTable("CatalogBrand");
 
-            builder.Property(cb => cb.Id)
-                .HasDefaultValueSql("nextval('idseqcatalogbrand')")
-                .IsRequired();
+            builder.HasKey(ci => ci.Id);
+
+            builder.Property(ci => ci.Id)
+               .ForSqlServerUseSequenceHiLo("catalog_brand_hilo")
+               .IsRequired();
 
             builder.Property(cb => cb.Brand)
                 .IsRequired()
@@ -81,11 +69,14 @@
 
         void ConfigureCatalogType(EntityTypeBuilder<CatalogType> builder)
         {
-            builder.ForNpgsqlToTable("catalogtype");
 
-            builder.Property(cb => cb.Id)
-                .HasDefaultValueSql("nextval('idseqcatalogtype')")
-                .IsRequired();
+            builder.ToTable("CatalogType");
+
+            builder.HasKey(ci => ci.Id);
+
+            builder.Property(ci => ci.Id)
+               .ForSqlServerUseSequenceHiLo("catalog_type_hilo")
+               .IsRequired();
 
             builder.Property(cb => cb.Type)
                 .IsRequired()
