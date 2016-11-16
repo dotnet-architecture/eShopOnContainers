@@ -235,6 +235,10 @@
                     </Setter.Value>
                 </Setter>
             </Style>
+
+            <Style TargetType="PivotItem">
+                <Setter Property="Margin" Value="0" />
+            </Style>
             
         </ResourceDictionary>
     </Application.Resources>    

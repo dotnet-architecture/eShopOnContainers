@@ -55,7 +55,9 @@ namespace eShopOnContainers.UWP
                 var assembliesToInclude = new List<Assembly>()
                 {
                     typeof(CachedImage).GetTypeInfo().Assembly,
-                    typeof(CachedImageRenderer).GetTypeInfo().Assembly
+                    typeof(CachedImageRenderer).GetTypeInfo().Assembly,
+                    typeof(SlideOverKit.MenuContainerPage).GetTypeInfo().Assembly,
+                    typeof(SlideOverKit.UWP.MenuContainerPageUWPRenderer).GetTypeInfo().Assembly
                 };
 
                 Xamarin.Forms.Forms.Init(e, assembliesToInclude);
