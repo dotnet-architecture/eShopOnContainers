@@ -22,7 +22,7 @@ namespace eShopOnContainers.Droid.Renderers
         }
 
         private const int DefaultHmarginDip = -10;
-        private const int DefaultVmarginDip = -5;
+        private const int DefaultVmarginDip = 2;
         private const int DefaultLrPaddingDip = 4;
         private const int DefaultCornerRadiusDip = 7;
 

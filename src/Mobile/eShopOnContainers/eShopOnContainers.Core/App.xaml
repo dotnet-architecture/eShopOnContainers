@@ -98,10 +98,13 @@
                 WinPhone="48"/>
             
             <!-- CONVERTERS -->
-            <converters:ToUpperConverter x:Key="ToUpperConverter" />
+            <converters:CountToBoolConverter x:Key="CountToBoolConverter" />
             <converters:DatetimeConverter x:Key="DatetimeConverter" />
+            <converters:ImageConverter x:Key="ImageConverter" />
             <converters:ItemTappedEventArgsConverter x:Key="ItemTappedEventArgsConverter" />
-
+            <converters:InverseCountToBoolConverter x:Key="InverseCountToBoolConverter" />
+            <converters:ToUpperConverter x:Key="ToUpperConverter" />
+            
             <!-- STYLES -->
             <Style x:Key="EntryStyle"
                    TargetType="{x:Type Entry}">

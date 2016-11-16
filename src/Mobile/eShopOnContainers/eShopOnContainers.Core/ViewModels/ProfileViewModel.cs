@@ -35,13 +35,21 @@ namespace eShopOnContainers.Core.ViewModels
 
         public override async Task InitializeAsync(object navigationData)
         {
+            IsBusy = true;
+
             Orders = await _ordersService.GetOrdersAsync();
+
+            IsBusy = false;
         }
 
         private async void LogoutAsync()
         {
+            IsBusy = true;
+
             await NavigationService.NavigateToAsync<LoginViewModel>();
             await NavigationService.RemoveBackStackAsync();
+
+            IsBusy = false;
         }
 
         private void OrderDetail(Order order)

@@ -38,7 +38,7 @@ namespace eShopOnContainers.Droid.Renderers
                 Console.WriteLine("No TabLayout found. Bedge not added.");
                 return;
             }
-
+       
             _tabbedPage = e.NewElement as TabbedPage;
             _viewPager = (ViewPager)GetChildAt(0);
 
@@ -76,15 +76,22 @@ namespace eShopOnContainers.Droid.Renderers
             Element.ChildRemoved += OnTabRemoved;
         }
 
-
         private void SetTab(TabLayout.Tab tab, string name)
         {
             try
             {
                 int id = Resources.GetIdentifier(name, "drawable", Context.PackageName);
-                tab.CustomView.FindViewById<ImageView>(Resource.Id.tab_icon).SetImageResource(id);
-                tab.SetCustomView(Resource.Layout.TabLayout);
                 tab.SetIcon(null);
+            
+                LinearLayout.LayoutParams linearLayoutParams = new LinearLayout.LayoutParams(LayoutParams.MatchParent, LayoutParams.MatchParent);
+                linearLayoutParams.SetMargins(0, -48, 0, 0);
+
+                ImageView img = new ImageView(Context);
+                img.LayoutParameters = linearLayoutParams;
+                img.SetPadding(0, 0, 0, 48);
+                img.SetImageResource(id);
+            
+                tab.SetCustomView(img);
             }
             catch (Exception ex)
             {

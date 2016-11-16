@@ -5,13 +5,13 @@ using Xamarin.Forms;
 using eShopOnContainers.Core.ViewModels.Base;
 using eShopOnContainers.Core.Models.Catalog;
 using eShopOnContainers.Core.Services.Catalog;
+using System.Windows.Input;
 
 namespace eShopOnContainers.Core.ViewModels
 {
     public class CatalogViewModel : ViewModelBase
     {
         private ObservableCollection<CatalogItem> _products;
-        private CatalogItem _product;
 
         private ICatalogService _productsService;
 
@@ -30,28 +30,20 @@ namespace eShopOnContainers.Core.ViewModels
             }
         }
 
-        public CatalogItem Product
-        {
-            get { return _product; }
-            set
-            {
-                _product = value;
-
-                if (_product != null)
-                {
-                    AddProduct();
-                }
-            }
-        }
+        public ICommand AddCatalogItemCommand => new Command<CatalogItem>(AddCatalogItem);
 
         public override async Task InitializeAsync(object navigationData)
         {
-            Products = await _productsService.GetProductsAsync();
+            IsBusy = true;
+
+            Products = await _productsService.GetCatalogAsync();
+
+            IsBusy = false;
         }
 
-        private void AddProduct()
+        private void AddCatalogItem(CatalogItem catalogItem)
         {
-            MessagingCenter.Send(this, MessengerKeys.AddProduct);
+            MessagingCenter.Send(this, MessengerKeys.AddProduct, catalogItem);
         }
     }
 }

@@ -4,6 +4,7 @@ using eShopOnContainers.Core.ViewModels;
 using eShopOnContainers.Services;
 using System;
 using eShopOnContainers.Core.Services.Catalog;
+using eShopOnContainers.Core.Services.OpenUrl;
 
 namespace eShopOnContainers.ViewModels.Base
 {
@@ -28,6 +29,7 @@ namespace eShopOnContainers.ViewModels.Base
             // services
             _unityContainer.RegisterType<IDialogService, DialogService>();
             RegisterSingleton<INavigationService, NavigationService>();
+            _unityContainer.RegisterType<IOpenUrlService, OpenUrlService>();
             _unityContainer.RegisterType<ICatalogService, CatalogMockService>();
             _unityContainer.RegisterType<IOrdersService, OrdersMockService>();
 

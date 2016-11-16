@@ -2,7 +2,8 @@
 <ContentView
     xmlns="http://xamarin.com/schemas/2014/forms"     
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"  
-    x:Class="eShopOnContainers.Core.Views.Templates.OrderItemTemplate">
+    x:Class="eShopOnContainers.Core.Views.Templates.OrderItemTemplate"    
+    xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms">
     <ContentView.Resources>
         <ResourceDictionary>
 
@@ -55,7 +56,8 @@
         </ResourceDictionary>
     </ContentView.Resources>
     <ContentView.Content>
-        <Grid>
+        <Grid   
+            BackgroundColor="{StaticResource BackgroundColor}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
@@ -64,10 +66,18 @@
                 <RowDefinition Height="*" />
                 <RowDefinition Height="1" />
             </Grid.RowDefinitions>
-            <Image
+            <ffimageloading:CachedImage
                 Grid.Column="0"
                 Grid.Row="0"
-                Source="{Binding Image}"/>
+                Source="{Binding ProductImage, Converter={StaticResource ImageConverter}}"        
+                CacheDuration="30"                      
+                CacheType="Disk"             
+                DownsampleToViewSize="True"
+                HeightRequest="108" 
+                WidthRequest="108"
+                Aspect="AspectFit"
+                VerticalOptions="Start"
+                Margin="12,0,0,0"/>
             <Grid
                 Grid.Column="1"
                 Grid.Row="0"

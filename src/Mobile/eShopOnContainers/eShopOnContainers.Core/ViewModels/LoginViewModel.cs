@@ -1,7 +1,9 @@
-﻿using eShopOnContainers.Core.Validations;
+﻿using eShopOnContainers.Core.Services.OpenUrl;
+using eShopOnContainers.Core.Validations;
 using eShopOnContainers.ViewModels.Base;
 using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -13,8 +15,12 @@ namespace eShopOnContainers.Core.ViewModels
         private ValidatableObject<string> _password;
         private bool _isValid;
 
-        public LoginViewModel()
+        private IOpenUrlService _openUrlService;
+
+        public LoginViewModel(IOpenUrlService openUrlService)
         {
+            _openUrlService = openUrlService;
+
             _userName = new ValidatableObject<string>();
             _password = new ValidatableObject<string>();
 
@@ -62,6 +68,8 @@ namespace eShopOnContainers.Core.ViewModels
 
         public ICommand SignInCommand => new Command(SignInAsync);
 
+        public ICommand RegisterCommand => new Command(Register);
+
         private async void SignInAsync()
         {
             IsBusy = true;
@@ -73,6 +81,8 @@ namespace eShopOnContainers.Core.ViewModels
             {
                 try
                 {
+                    await Task.Delay(1000);
+
                     isAuthenticated = true;
                 }
                 catch (Exception ex)
@@ -92,6 +102,11 @@ namespace eShopOnContainers.Core.ViewModels
             }
 
             IsBusy = false;
+        }
+
+        private void Register()
+        {
+            _openUrlService.OpenUrl(GlobalSetting.RegisterWebsite);
         }
 
         private bool Validate()

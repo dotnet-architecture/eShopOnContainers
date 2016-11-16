@@ -228,6 +228,23 @@
                         Style="{StaticResource OrderTotalStyle}"/>
                 </StackLayout>
             </Grid>
+            <!-- INDICATOR -->
+            <ActivityIndicator
+                Grid.Row="0"
+                Grid.RowSpan="3"
+                Color="{StaticResource LightGreenColor}"
+                IsRunning="{Binding IsBusy}"  
+                IsVisible="{Binding IsBusy}"
+                VerticalOptions="Center"
+                HorizontalOptions="Center">
+                <ActivityIndicator.WidthRequest>
+                    <OnPlatform 
+                        x:TypeArguments="x:Double" 
+                        iOS="100" 
+                        Android="100"
+                        WinPhone="400" />
+                </ActivityIndicator.WidthRequest>
+            </ActivityIndicator>
         </Grid>
     </ScrollView>
 </ContentPage>
