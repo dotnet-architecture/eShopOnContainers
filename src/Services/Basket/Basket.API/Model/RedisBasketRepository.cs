@@ -25,13 +25,13 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Model
 
         }
 
-        public async Task<bool> DeleteBasket(Guid id)
+        public async Task<bool> DeleteBasket(string id)
         {
             var database = await GetDatabase();
             return await database.KeyDeleteAsync(id.ToString());
         }
 
-        public async Task<CustomerBasket> GetBasket(Guid customerId)
+        public async Task<CustomerBasket> GetBasket(string customerId)
         {
             var database = await GetDatabase();
 
@@ -47,7 +47,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Model
         public async Task<bool> UpdateBasket(CustomerBasket basket)
         {
             var database = await GetDatabase();
-            return await database.StringSetAsync(basket.CustomerId.ToString(), JsonConvert.SerializeObject(basket));
+            return await database.StringSetAsync(basket.BuyerId, JsonConvert.SerializeObject(basket));
         }
 
         private async Task<IDatabase> GetDatabase()

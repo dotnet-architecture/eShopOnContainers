@@ -49,10 +49,6 @@ namespace Microsoft.eShopOnContainers.WebMVC
 
             services.AddMvc();
 
-            // CCE : Session not apply in this demo we have a mservice to store in redis. (BasketService) Once it's ready I've to remove this lines 
-            services.AddDistributedMemoryCache(); // default implementation (in memory), you can move to SQL or custom store that could be Redis.. 
-            services.AddSession();
-
             // Add application services.
             services.AddTransient<ICatalogService, CatalogService>(); 
             services.AddSingleton<IOrderingService, OrderingService>(); //CCE: Once services are integrated, a singleton is not needed we can left transient.
@@ -82,15 +78,20 @@ namespace Microsoft.eShopOnContainers.WebMVC
 
             app.UseIdentity();
 
-            //CCE: Remember to remove this line once Basket mservice is ready.
-            app.UseSession();
-
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Catalog}/{action=Index}/{id?}");
             });
+
+            var context = (ApplicationDbContext)app
+            .ApplicationServices.GetService(typeof(ApplicationDbContext));
+
+            using (context)
+            {
+                context.Database.Migrate();
+            }
         }
     }
 }

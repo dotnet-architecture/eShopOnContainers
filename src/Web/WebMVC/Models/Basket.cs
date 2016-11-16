@@ -11,8 +11,6 @@ namespace Microsoft.eShopOnContainers.WebMVC.Models
         {
             Items = new List<BasketItem>();
         }
-
-        public string Id;
         public List<BasketItem> Items { get; set; }
         public string BuyerId { get; set; }
 

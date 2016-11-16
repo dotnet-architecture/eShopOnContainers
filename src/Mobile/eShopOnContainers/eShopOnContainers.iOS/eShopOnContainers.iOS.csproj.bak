@@ -10,7 +10,7 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>eShopOnContainers.iOS</RootNamespace>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
-    <AssemblyName>eShopOnContainersiOS</AssemblyName>
+    <AssemblyName>eShopOnContainers.iOS</AssemblyName>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
   </PropertyGroup>

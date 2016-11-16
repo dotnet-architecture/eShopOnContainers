@@ -14,7 +14,6 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
 {
     public class CatalogService : ICatalogService
     {
-        private readonly List<CatalogItem> _items;          //Fake data while services are ready. 
         private readonly IOptions<AppSettings> _settings;
         private HttpClient _apiClient;
         private readonly string _remoteServiceBaseUrl;

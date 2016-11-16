@@ -42,13 +42,13 @@ dotnet publish $orderingPathToJson -o $orderingPathToPub
 
 #*** Basket service image ***
 $basketPathToJson = $scriptPath + "\src\Services\Basket\Basket.API\project.json"
-Write-Host "basketPathToJson is $orderingPathToJson" -ForegroundColor Yellow
+Write-Host "basketPathToJson is $basketPathToJson" -ForegroundColor Yellow
 $basketPathToPub = $scriptPath + "\pub\basket"
 Write-Host "basketPathToPub is $basketPathToPub" -ForegroundColor Yellow
 
 Write-Host "Restore Dependencies just in case as it is needed to run dotnet publish" -ForegroundColor Blue
 dotnet restore $basketPathToJson
-dotnet build $basketPathToPub
+dotnet build $basketPathToJson
 dotnet publish $basketPathToJson -o $basketPathToPub
 
 docker build -t eshop/web $webPathToPub
