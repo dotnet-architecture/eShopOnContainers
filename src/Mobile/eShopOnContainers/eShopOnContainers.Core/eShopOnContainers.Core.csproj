@@ -54,6 +54,7 @@
     <Compile Include="Converters\ToUpperConverter.cs" />
     <Compile Include="Effects\LineColorEffect.cs" />
     <Compile Include="Extensions\AnimationExtension.cs" />
+    <Compile Include="GlobalSettings.cs" />
     <Compile Include="Helpers\EasingHelper.cs" />
     <Compile Include="Models\Orders\Order.cs" />
     <Compile Include="Models\Orders\OrderItem.cs" />
@@ -65,6 +66,8 @@
     <Compile Include="Services\Dialog\IDialogService.cs" />
     <Compile Include="Services\Navigation\INavigationService.cs" />
     <Compile Include="Services\Navigation\NavigationService.cs" />
+    <Compile Include="Services\OpenUrl\IOpenUrlService.cs" />
+    <Compile Include="Services\OpenUrl\OpenUrlService.cs" />
     <Compile Include="Services\Orders\OrdersMockService.cs" />
     <Compile Include="Services\Orders\IOrdersService.cs" />
     <Compile Include="Services\Catalog\CatalogMockService.cs" />
