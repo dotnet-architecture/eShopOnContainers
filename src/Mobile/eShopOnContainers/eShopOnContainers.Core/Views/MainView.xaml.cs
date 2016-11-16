@@ -1,4 +1,5 @@
 ﻿using eShopOnContainers.Core.ViewModels;
+using eShopOnContainers.Core.ViewModels.Base;
 using eShopOnContainers.ViewModels.Base;
 using Xamarin.Forms;
 
@@ -14,6 +15,22 @@ namespace eShopOnContainers.Core.Views
         protected override async void OnAppearing()
         {
             base.OnAppearing();
+
+            MessagingCenter.Subscribe<MainViewModel, int>(this, MessengerKeys.ChangeTab, (sender, arg) =>
+            {
+               switch(arg)
+                {
+                    case 0:
+                        CurrentPage = HomeView;
+                        break;
+                    case 1:
+                        CurrentPage = ProfileView;
+                        break;
+                    case 2:
+                        CurrentPage = CartView;
+                        break;
+                }
+            });
 
             var homeViewModel = ViewModelLocator.Instance.Resolve<CatalogViewModel>();
             await homeViewModel.InitializeAsync(null);

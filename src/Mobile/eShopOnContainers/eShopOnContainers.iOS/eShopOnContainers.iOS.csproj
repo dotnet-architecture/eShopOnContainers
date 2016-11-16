@@ -240,6 +240,12 @@
   <ItemGroup>
     <BundleResource Include="Resources\fake_product_02.png" />
   </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\fake_product_04.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\fake_product_05.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

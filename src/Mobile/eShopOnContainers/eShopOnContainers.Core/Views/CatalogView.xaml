@@ -30,7 +30,6 @@
                 <Setter Property="VerticalOptions"
                         Value="Center" />
             </Style>
-
             
             <animations:StoryBoard 
                 x:Key="ProductsAnimation"    
@@ -70,28 +69,39 @@
             </Grid.GestureRecognizers>
         </Grid>
         <!-- CATALOG -->
-        <ListView 
-            x:Name="Products"
-            Grid.Row="1"
-            ItemsSource="{Binding Products}"
-            HasUnevenRows="True"
-            SeparatorVisibility="None"
-            CachingStrategy="RecycleElement"
-            Style="{StaticResource ProductsListStyle}">
-            <ListView.Behaviors>
-                <behaviors:EventToCommandBehavior                    
-                    EventName="ItemTapped"
-                    Command="{Binding AddCatalogItemCommand}"
-                    EventArgsConverter="{StaticResource ItemTappedEventArgsConverter}" />
-            </ListView.Behaviors>
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <ViewCell>
-                        <templates:ProductTemplate />
-                    </ViewCell>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+        <Grid  
+            Grid.Row="1">
+            <ListView 
+                x:Name="Products"       
+                IsVisible="{Binding Products.Count, Converter={StaticResource CountToBoolConverter}}"
+                ItemsSource="{Binding Products}"
+                HasUnevenRows="True"
+                SeparatorVisibility="None"
+                CachingStrategy="RecycleElement"
+                Style="{StaticResource ProductsListStyle}">
+                <ListView.Behaviors>
+                    <behaviors:EventToCommandBehavior                    
+                        EventName="ItemTapped"
+                        Command="{Binding AddCatalogItemCommand}"
+                        EventArgsConverter="{StaticResource ItemTappedEventArgsConverter}" />
+                </ListView.Behaviors>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <templates:ProductTemplate />
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <Grid 
+                IsVisible="{Binding IsBusy, Converter={StaticResource InverseBoolConverter}}">
+                <Label 
+                    Text="NO PRODUCTS FOUND"      
+                    IsVisible="{Binding Products.Count, Converter={StaticResource InverseCountToBoolConverter}}"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center"/>
+            </Grid>
+        </Grid>
         <!-- INDICATOR -->
         <ActivityIndicator
             Grid.Row="0"

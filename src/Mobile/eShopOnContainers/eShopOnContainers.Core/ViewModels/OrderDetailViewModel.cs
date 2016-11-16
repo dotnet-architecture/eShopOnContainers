@@ -3,21 +3,27 @@ using eShopOnContainers.Core.Models.Orders;
 using eShopOnContainers.ViewModels.Base;
 using eShopOnContainers.Core.Services.Orders;
 using eShopOnContainers.Core.Services.Catalog;
+using eShopOnContainers.Core.Services.User;
+using eShopOnContainers.Core.Models.User;
 
 namespace eShopOnContainers.Core.ViewModels
 {
     public class OrderDetailViewModel : ViewModelBase
     {
         private Order _order;
+        private User _user;
 
         private IOrdersService _orderService;
         private ICatalogService _catalogService;
+        private IUserService _userService;
 
         public OrderDetailViewModel(IOrdersService orderService,
-            ICatalogService catalogService)
+            ICatalogService catalogService,
+            IUserService userService)
         {
             _orderService = orderService;
             _catalogService = catalogService;
+            _userService = userService;
         }
 
         public Order Order
@@ -27,6 +33,16 @@ namespace eShopOnContainers.Core.ViewModels
             {
                 _order = value;
                 RaisePropertyChanged(() => Order);
+            }
+        }
+
+        public User User
+        {
+            get { return _user; }
+            set
+            {
+                _user = value;
+                RaisePropertyChanged(() => User);
             }
         }
 
@@ -45,6 +61,7 @@ namespace eShopOnContainers.Core.ViewModels
                 }
 
                 Order = order;
+                User = await _userService.GetUserAsync();
 
                 IsBusy = false;
             }

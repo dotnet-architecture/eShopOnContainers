@@ -5,6 +5,7 @@ using eShopOnContainers.Services;
 using System;
 using eShopOnContainers.Core.Services.Catalog;
 using eShopOnContainers.Core.Services.OpenUrl;
+using eShopOnContainers.Core.Services.User;
 
 namespace eShopOnContainers.ViewModels.Base
 {
@@ -16,10 +17,7 @@ namespace eShopOnContainers.ViewModels.Base
 
         public static ViewModelLocator Instance
         {
-            get
-            {
-                return _instance;
-            }
+            get { return _instance; }
         }
 
         protected ViewModelLocator()
@@ -30,12 +28,15 @@ namespace eShopOnContainers.ViewModels.Base
             _unityContainer.RegisterType<IDialogService, DialogService>();
             RegisterSingleton<INavigationService, NavigationService>();
             _unityContainer.RegisterType<IOpenUrlService, OpenUrlService>();
+
             _unityContainer.RegisterType<ICatalogService, CatalogMockService>();
             _unityContainer.RegisterType<IOrdersService, OrdersMockService>();
+            _unityContainer.RegisterType<IUserService, UserMockService>();
 
             // view models
             _unityContainer.RegisterType<CartViewModel>();
             _unityContainer.RegisterType<CatalogViewModel>();
+            _unityContainer.RegisterType<CheckoutViewModel>();
             _unityContainer.RegisterType<LoginViewModel>();
             _unityContainer.RegisterType<MainViewModel>();
             _unityContainer.RegisterType<OrderDetailViewModel>();
