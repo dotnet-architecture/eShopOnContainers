@@ -27,10 +27,10 @@ namespace Microsoft.eShopOnContainers.WebMVC.ViewComponents
             };
             return View(vm);
         }
-        private Task<int> ItemsInCartAsync(ApplicationUser user)
+        private async Task<int> ItemsInCartAsync(ApplicationUser user)
         {
-            _cartSvc.GetBasket(user);
-            return Task.Run ( ()=> { return _cartSvc.ItemsInCart; });
+            var basket = await _cartSvc.GetBasket(user);
+            return basket.Items.Count;
         }
     }
 }

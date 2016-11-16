@@ -22,9 +22,9 @@ namespace Microsoft.eShopOnContainers.WebMVC.ViewComponents
             var item = await GetItemsAsync(user);
             return View(item);
         }
-        private Task<Basket> GetItemsAsync(ApplicationUser user)
+        private async Task<Basket> GetItemsAsync(ApplicationUser user)
         {
-            return Task.Run(()=> { return _cartSvc.GetBasket(user); });
+            return await _cartSvc.GetBasket(user);
         }
     }
 }

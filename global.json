@@ -2,7 +2,8 @@
   "projects": [
     "src",
     "test",
-    "src/Services/Ordering"
+    "src/Services/Ordering",
+    "src/Web"
   ],
 
   "sdk": {

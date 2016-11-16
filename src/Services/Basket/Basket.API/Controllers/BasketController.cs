@@ -22,9 +22,11 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
         }
         // GET api/values/5
         [HttpGet("{id}")]
-        public async Task<CustomerBasket> Get(Guid id)
+        public async Task<IActionResult> Get(string id)
         {
-            return await _repository.GetBasket(id);
+            var basket = await _repository.GetBasket(id);
+
+            return Ok(basket);
         }
 
         // POST api/values
@@ -36,7 +38,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
 
         // DELETE api/values/5
         [HttpDelete("{id}")]
-        public void Delete(Guid id)
+        public void Delete(string id)
         {
             _repository.DeleteBasket(id);
         }

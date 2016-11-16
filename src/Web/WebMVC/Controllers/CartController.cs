@@ -27,7 +27,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
         public async Task<IActionResult> Index()
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
-            var vm = _basketSvc.GetBasket(user);
+            var vm = await _basketSvc.GetBasket(user);
 
             return View(vm);
         }
@@ -37,8 +37,8 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
         public async Task<IActionResult> Index(Dictionary<string, int> quantities, string action)
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
-            var basket = _basketSvc.SetQuantities(user, quantities);
-            var vm = _basketSvc.UpdateBasket(basket);
+            var basket = await _basketSvc.SetQuantities(user, quantities);
+            var vm = await _basketSvc.UpdateBasket(basket);
 
             if (action == "[ Checkout ]")
             {
@@ -62,7 +62,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
                 UnitPrice = productDetails.Price, 
                 ProductId = productDetails.Id
             };
-            _basketSvc.AddItemToBasket(user, product);
+            await _basketSvc.AddItemToBasket(user, product);
             return RedirectToAction("Index", "Catalog");
         }
     }

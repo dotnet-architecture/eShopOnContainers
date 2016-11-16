@@ -10,9 +10,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
     public class OrderingService : IOrderingService
     {
         private List<Order> _orders;
-        private int _itemsInCart;
         
-        public int ItemsInCart { get { return _itemsInCart; } }
         //var ordersUrl = _settings.OrderingUrl + "/api/ordering/orders";
         //var dataString = await _http.GetStringAsync(ordersUrl);
         //var items = JsonConvert.DeserializeObject<List<Order>>(dataString);

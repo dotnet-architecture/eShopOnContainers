@@ -12,5 +12,6 @@ services:
       - "32783:80"
     depends_on:
       - basket.data
+
   basket.data:
     image: redis
