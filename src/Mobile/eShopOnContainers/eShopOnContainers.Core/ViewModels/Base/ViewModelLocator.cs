@@ -41,6 +41,7 @@ namespace eShopOnContainers.ViewModels.Base
             _unityContainer.RegisterType<MainViewModel>();
             _unityContainer.RegisterType<OrderDetailViewModel>();
             _unityContainer.RegisterType<ProfileViewModel>();
+            _unityContainer.RegisterType<SettingsViewModel>();
         }
 
         public T Resolve<T>()

@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+    x:Class="eShopOnContainers.Core.Controls.CartButton">
+    <ContentView.Resources>
+        <ResourceDictionary>
+
+            <Style x:Key="AddButtonStyle" 
+               TargetType="{x:Type Grid}">
+                <Setter Property="HeightRequest"
+                        Value="42" />
+                <Setter Property="WidthRequest"
+                        Value="42" />
+                <Setter Property="HorizontalOptions"
+                        Value="Center" />
+                <Setter Property="VerticalOptions"
+                        Value="End" />
+                <Setter Property="Margin"
+                        Value="0, 0, 0, 24" />
+            </Style>
+
+            <Style x:Key="AddBackgroundImageStyle" 
+               TargetType="{x:Type Image}">
+                <Setter Property="HorizontalOptions"
+                        Value="Center" />
+                <Setter Property="VerticalOptions"
+                        Value="Center" />
+                <Setter Property="HeightRequest"
+                        Value="128" />
+                <Setter Property="WidthRequest"
+                        Value="128" />
+            </Style>
+            
+            <Style x:Key="AddImageStyle" 
+               TargetType="{x:Type Image}">
+                <Setter Property="HeightRequest"
+                        Value="24" />
+                <Setter Property="WidthRequest"
+                        Value="24" />
+            </Style>
+
+        </ResourceDictionary>
+    </ContentView.Resources>
+    <ContentView.Content>
+        <Grid>
+            <!-- IOS & ANDROID -->
+            <Grid
+                Style="{StaticResource AddButtonStyle}">
+                <Grid.IsVisible>
+                    <OnPlatform         
+                        x:TypeArguments="x:Boolean"
+                        Android="True"
+                        iOS="True"
+                        WinPhone="False"/>
+                </Grid.IsVisible>
+                <BoxView  
+                    BackgroundColor="{StaticResource LightGreenColor}"
+                    StyleClass="Circle" />
+                <Image 
+                    Aspect="AspectFit" 
+                    Source="product_add"
+                    Style="{StaticResource AddImageStyle}">
+                    <Image.Margin>
+                        <OnPlatform         
+                            x:TypeArguments="Thickness"
+                            Android="5, 12, 12, 12"
+                            iOS="6, 12, 12, 12"/>
+                    </Image.Margin>
+                </Image>
+            </Grid>
+            <!-- UWP -->
+            <Grid>
+                <Image
+                    Source="Assets/circle_button_background.png"
+                    Aspect="AspectFit"
+                    Style="{StaticResource AddBackgroundImageStyle}" />
+                <Image 
+                    Aspect="AspectFit" 
+                    Source="Assets\product_add.png"
+                    Style="{StaticResource AddImageStyle}"
+                    Margin="12" />
+            </Grid>
+        </Grid>
+    </ContentView.Content>
+</ContentView>

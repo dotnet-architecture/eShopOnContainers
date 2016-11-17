@@ -59,7 +59,7 @@ namespace eShopOnContainers.Core.Effects
 
         class EntryLineColorEffect : RoutingEffect
         {
-            public EntryLineColorEffect() : base("BikeSharing.EntryLineColorEffect")
+            public EntryLineColorEffect() : base("eShopOnContainers.EntryLineColorEffect")
             {
             }
         }

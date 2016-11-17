@@ -57,6 +57,7 @@
     </ContentView.Resources>
     <ContentView.Content>
         <Grid   
+            HeightRequest="120"
             BackgroundColor="{StaticResource BackgroundColor}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />

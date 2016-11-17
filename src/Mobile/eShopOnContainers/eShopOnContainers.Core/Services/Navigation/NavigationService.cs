@@ -154,6 +154,7 @@ namespace eShopOnContainers.Services
             _mappings.Add(typeof(MainViewModel), typeof(MainView));
             _mappings.Add(typeof(OrderDetailViewModel), typeof(OrderDetailView));
             _mappings.Add(typeof(ProfileViewModel), typeof(ProfileView));
+            _mappings.Add(typeof(SettingsViewModel), typeof(SettingsView));
         }
     }
 }

@@ -45,6 +45,10 @@
     <Compile Include="Behaviors\Base\BindableBehavior.cs" />
     <Compile Include="Behaviors\EventToCommandBehavior.cs" />
     <Compile Include="Controls\BindablePicker.cs" />
+    <Compile Include="Controls\CartButton.xaml.cs">
+      <DependentUpon>CartButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CustomSwitch.cs" />
     <Compile Include="Controls\CustomTabbedPage.cs" />
     <Compile Include="Converters\CountToBoolConverter.cs" />
     <Compile Include="Converters\DatetimeConverter.cs" />
@@ -96,6 +100,7 @@
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\OrderDetailViewModel.cs" />
     <Compile Include="ViewModels\ProfileViewModel.cs" />
+    <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="Views\CartView.xaml.cs">
       <DependentUpon>CartView.xaml</DependentUpon>
     </Compile>
@@ -122,6 +127,9 @@
     </Compile>
     <Compile Include="Views\ProfileView.xaml.cs">
       <DependentUpon>ProfileView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SettingsView.xaml.cs">
+      <DependentUpon>SettingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Templates\CartOrderItemTemplate.xaml.cs">
       <DependentUpon>CartOrderItemTemplate.xaml</DependentUpon>
@@ -290,6 +298,18 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\Templates\CartOrderItemTemplate.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Controls\CartButton.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\SettingsView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>

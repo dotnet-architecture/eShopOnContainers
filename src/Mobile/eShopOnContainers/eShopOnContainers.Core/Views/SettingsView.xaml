@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="eShopOnContainers.Core.Views.SettingsView"   
+             xmlns:controls="clr-namespace:eShopOnContainers.Core.Controls;assembly=eShopOnContainers.Core"
+             Title="Settings">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+
+            <Style x:Key="SettingsTitleStyle" 
+               TargetType="{x:Type Label}">
+                <Setter Property="FontFamily"
+                        Value="{StaticResource MontserratRegular}" />
+                <Setter Property="FontSize" 
+                        Value="{StaticResource MediumSize}" />
+                <Setter Property="HorizontalOptions" 
+                        Value="Start" />
+                <Setter Property="VerticalOptions" 
+                        Value="Center" />
+                <Setter Property="Margin" 
+                        Value="12, 0" />
+            </Style>
+
+            <Style x:Key="SettingsDescriptionStyle" 
+                   TargetType="{x:Type Label}"
+                   BasedOn="{StaticResource SettingsTitleStyle}">
+                <Setter Property="FontSize" 
+                        Value="{StaticResource LittleSize}" />
+            </Style>
+            
+            <Style x:Key="SettingsSwitchStyle" 
+                   TargetType="{x:Type controls:CustomSwitch}">
+                <Setter Property="VerticalOptions" 
+                        Value="Center" />
+            </Style>
+            
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <Grid
+        BackgroundColor="{StaticResource BackgroundColor}">
+        <!-- SETTINGS -->
+        <ScrollView>
+            <StackLayout>
+                <!-- MOCK SERVICES -->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="1" />
+                    </Grid.RowDefinitions>
+                    <Grid 
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="2"
+                        BackgroundColor="Gray"/>
+                    <StackLayout
+                        Grid.Column="0"                       
+                        Grid.Row="1">
+                        <Label
+                            Text="Use Mock Services"
+                            TextColor="{StaticResource GreenColor}"
+                            Style="{StaticResource SettingsTitleStyle}"/>
+                        <Label
+                            Text="Mock Services are simulated objects that mimic the behavior of real services in controlled ways"
+                            Style="{StaticResource SettingsDescriptionStyle}"/>
+                    </StackLayout>
+                    <controls:CustomSwitch
+                        TextOn="Mock"
+                        TextOff="Azure"
+                        Grid.Column="1" 
+                        Grid.Row="1" 
+                        Style="{StaticResource SettingsSwitchStyle}"/>
+                    <Grid 
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="2"
+                        BackgroundColor="Gray"/>
+                </Grid>
+            </StackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>

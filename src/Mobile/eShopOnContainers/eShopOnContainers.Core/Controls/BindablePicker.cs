@@ -7,10 +7,10 @@ namespace eShopOnContainers.Core.Controls
     public class BindablePicker : Picker
     {
         public static readonly BindableProperty ItemsSourceProperty = BindableProperty.Create("ItemsSource",
-                    typeof(IEnumerable), typeof(BindablePicker), null, propertyChanged: OnItemsSourceChanged);
+            typeof(IEnumerable), typeof(BindablePicker), null, propertyChanged: OnItemsSourceChanged);
 
         public static readonly BindableProperty SelectedItemProperty = BindableProperty.Create("SelectedItem",
-                    typeof(object), typeof(BindablePicker), null, BindingMode.TwoWay, propertyChanged: OnSelectedItemChanged);
+            typeof(object), typeof(BindablePicker), null, BindingMode.TwoWay, propertyChanged: OnSelectedItemChanged);
 
         public BindablePicker()
         {

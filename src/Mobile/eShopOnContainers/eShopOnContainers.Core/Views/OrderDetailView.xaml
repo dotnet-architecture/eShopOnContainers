@@ -195,7 +195,7 @@
                 Grid.Row="2"        
                 Opacity="0">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <ListView 
@@ -203,7 +203,6 @@
                     ItemsSource="{Binding Order.OrderItems}"       
                     HasUnevenRows="True"
                     SeparatorVisibility="None"
-                    VerticalOptions="FillAndExpand"
                     CachingStrategy="RecycleElement">
                     <ListView.ItemTemplate>
                         <DataTemplate>

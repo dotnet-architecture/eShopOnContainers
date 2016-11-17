@@ -2,5 +2,7 @@
 <NavigationPage xmlns="http://xamarin.com/schemas/2014/forms"
                 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                 x:Class="eShopOnContainers.Core.Views.CustomNavigationPage"
+                BarBackgroundColor="{StaticResource GreenColor}"
+                BarTextColor="{StaticResource WhiteColor}"
                 BackgroundColor="Transparent">
 </NavigationPage>

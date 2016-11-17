@@ -10,6 +10,7 @@ using Windows.UI.Xaml.Controls;
 using eShopOnContainers.Windows.Effects;
 using eShopOnContainers.Core.Effects;
 
+[assembly: ResolutionGroupName("eShopOnContainers")]
 [assembly: ExportEffect(typeof(EntryLineColorEffect), "EntryLineColorEffect")]
 namespace eShopOnContainers.Windows.Effects
 {
@@ -51,7 +52,7 @@ namespace eShopOnContainers.Windows.Effects
                 var lineColor = XamarinFormColorToWindowsColor(LineColorEffect.GetLineColor(Element));
                 control.BorderBrush = new Media.SolidColorBrush(lineColor);
 
-                var style = App.Current.Resources["FormTextBoxStyle"] as Xaml.Style;
+                var style = Xaml.Application.Current.Resources["FormTextBoxStyle"] as Xaml.Style;
                 control.Style = style;
             }
         }

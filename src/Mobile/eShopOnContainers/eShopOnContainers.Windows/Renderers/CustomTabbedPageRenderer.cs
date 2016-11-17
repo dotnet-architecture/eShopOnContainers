@@ -9,6 +9,5 @@ namespace eShopOnContainers.Windows.Renderers
     [Preserve]
     public class CustomTabbedPageRenderer : TabbedPageRenderer
     {
-
     }
 }
