@@ -6,7 +6,7 @@ var extractCSS = new ExtractTextPlugin('styles.css');
 var ForkCheckerPlugin = require('awesome-typescript-loader').ForkCheckerPlugin;
 var devConfig = require('./webpack.config.dev');
 var prodConfig = require('./webpack.config.prod');
-var isDevelopment = process.env.ASPNETCORE_ENVIRONMENT === 'Production';
+var isDevelopment = process.env.ASPNETCORE_ENVIRONMENT === 'Development';
 
 console.log("==========Dev Mode = " + isDevelopment + " ============" )
 
