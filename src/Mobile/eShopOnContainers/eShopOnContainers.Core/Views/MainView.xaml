@@ -6,6 +6,7 @@
             xmlns:controls="clr-namespace:eShopOnContainers.Core.Controls;assembly=eShopOnContainers.Core"
             BarBackgroundColor="{StaticResource DarkGreenColor}"
             BackgroundColor="{StaticResource BackgroundColor}"
+            BarTextColor="{StaticResource WhiteColor}"
             Title="eShop on Containers">
     <views:CatalogView  
         x:Name="HomeView">

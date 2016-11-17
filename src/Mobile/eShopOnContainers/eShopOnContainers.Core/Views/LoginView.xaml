@@ -124,13 +124,28 @@
                     Text="User name or email"
                     Style="{StaticResource HeaderLabelStyle}"/>
                 <Entry  
-                    Text="{Binding UserName.Value, Mode=TwoWay}"/>
+                    Text="{Binding UserName.Value, Mode=TwoWay}">
+                    <Entry.Style>
+                        <OnPlatform x:TypeArguments="Style"
+                            iOS="{StaticResource EntryStyle}"
+                            Android="{StaticResource EntryStyle}"
+                            WinPhone="{StaticResource UwpEntryStyle}"/>
+                    </Entry.Style>
+                </Entry>
                 <Label 
                     Text="Password"
                     Style="{StaticResource HeaderLabelStyle}"/>
                 <Entry 
                     IsPassword="True"
-                    Text="{Binding Password.Value, Mode=TwoWay}" />
+                    Text="{Binding Password.Value, Mode=TwoWay}"  
+                    Style="{StaticResource EntryStyle}">
+                    <Entry.Style>
+                        <OnPlatform x:TypeArguments="Style"
+                            iOS="{StaticResource EntryStyle}"
+                            Android="{StaticResource EntryStyle}"
+                            WinPhone="{StaticResource UwpEntryStyle}"/>
+                    </Entry.Style>
+                </Entry>
             </StackLayout>
             <!-- LOGIN BUTTON -->
             <Grid

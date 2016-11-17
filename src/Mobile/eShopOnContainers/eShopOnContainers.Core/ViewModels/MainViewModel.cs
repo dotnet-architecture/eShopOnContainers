@@ -10,6 +10,8 @@ namespace eShopOnContainers.Core.ViewModels
     {
         public override Task InitializeAsync(object navigationData)
         {
+            IsBusy = true;
+
             if (navigationData is TabParameter)
             {
                 var tabIndex = ((TabParameter)navigationData).TabIndex;

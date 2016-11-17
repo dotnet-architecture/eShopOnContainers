@@ -62,23 +62,39 @@
     RowSpacing="0"
     Margin="48, 24">
     <Grid.RowDefinitions>      
-      <RowDefinition />
-      <RowDefinition /> 
+      <RowDefinition Height="60" />
+      <RowDefinition Height="60" /> 
       <RowDefinition Height="Auto" />
       <RowDefinition Height="Auto" />
     </Grid.RowDefinitions>
-    <controls:BindablePicker 
+    <controls:BindablePicker
       Grid.Row="0"
-      Title="BRAND"
-      ItemsSource="{Binding Brands}" 
+      Title="BRAND" 
+      ItemsSource="{Binding Brands}"
       SelectedItem="{Binding Brand, Mode=TwoWay}"
-      Style="{StaticResource FilterPickerStyle}"/>
-    <controls:BindablePicker 
+      Style="{StaticResource FilterPickerStyle}">
+      <controls:BindablePicker.HeightRequest>   
+        <OnPlatform 
+          x:TypeArguments="x:Double"       
+          Android="48"
+          iOS="48"
+          WinPhone="36"/>
+      </controls:BindablePicker.HeightRequest> 
+    </controls:BindablePicker>
+    <controls:BindablePicker
       Grid.Row="1"
-      Title="TYPE"  
+      Title="TYPE"
       ItemsSource="{Binding Types}"
       SelectedItem="{Binding Type, Mode=TwoWay}"
-      Style="{StaticResource FilterPickerStyle}"/>
+      Style="{StaticResource FilterPickerStyle}">    
+      <controls:BindablePicker.HeightRequest>   
+        <OnPlatform 
+          x:TypeArguments="x:Double"       
+          Android="48"
+          iOS="48"
+          WinPhone="36"/>
+      </controls:BindablePicker.HeightRequest> 
+    </controls:BindablePicker>
     <Button 
       Grid.Row="2"
       Text="Apply" 

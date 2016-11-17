@@ -136,6 +136,39 @@
                 </Style.Triggers>
             </Style>
 
+            <Style x:Key="UwpEntryStyle"
+                   TargetType="{x:Type Entry}">
+                <Setter Property="FontFamily"
+                        Value="{StaticResource MontserratRegular}" />
+                <Setter Property="TextColor"
+                        Value="{StaticResource BlackColor}" />
+                <Setter Property="PlaceholderColor"
+                        Value="{StaticResource BlackColor}" />
+                <Setter Property="FontSize"
+                        Value="{StaticResource LargeSize}" />
+                <Setter Property="HorizontalOptions"                      
+                        Value="FillAndExpand" />
+                <Setter Property="FontAttributes"
+                        Value="Bold" />
+                <Setter Property="BackgroundColor" 
+                        Value="Transparent" />
+                <Setter Property="Opacity"
+                        Value="0.6" />
+                <Setter Property="effects:LineColorEffect.ApplyLineColor"
+                        Value="True" />
+                <Setter Property="effects:LineColorEffect.LineColor"
+                        Value="Gray" />
+                <Style.Triggers>
+                    <Trigger TargetType="Entry"
+                       Property="IsFocused"
+                       Value="True">
+                        <Setter Property="Opacity" Value="1" />
+                        <Setter Property="effects:LineColorEffect.LineColor"                        
+                                Value="{StaticResource GreenColor}" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+            
             <Style TargetType="NavigationPage">
                 <Setter Property="BarBackgroundColor" Value="{StaticResource GreenColor}"/>
                 <Setter Property="BarTextColor" Value="{StaticResource WhiteColor}"/>

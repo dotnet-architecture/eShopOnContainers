@@ -120,6 +120,7 @@
     <None Include="Windows_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\circle_button_background.png" />
     <Content Include="Assets\fake_product_01.png" />
     <Content Include="Assets\fake_product_02.png" />
     <Content Include="Assets\fake_product_03.png" />
