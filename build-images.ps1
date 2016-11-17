@@ -18,6 +18,18 @@ dotnet restore $webPathToJson
 dotnet build $webPathToJson
 dotnet publish $webPathToJson -o $webPathToPub
 
+# *** WebSPA image ***
+$webSPAPathToJson = $scriptPath + "\src\Web\WebSPA\eShopOnContainers.WebSPA\project.json"
+Write-Host "webSPAPathToJson is $webSPAPathToJson" -ForegroundColor Yellow
+$webSPAPathToPub = $scriptPath + "\pub\webSPA"
+Write-Host "webSPAPathToPub is $webSPAPathToPub" -ForegroundColor Yellow
+
+Write-Host "Restore Dependencies just in case as it is needed to run dotnet publish" -ForegroundColor Blue
+dotnet restore $webSPAPathToJson
+dotnet build $webSPAPathToJson
+dotnet publish $webSPAPathToJson -o $webSPAPathToPub
+
+
 #*** Catalog service image ***
 $catalogPathToJson = $scriptPath + "\src\Services\Catalog\Catalog.API\project.json"
 Write-Host "catalogPathToJson is $catalogPathToJson" -ForegroundColor Yellow
@@ -55,4 +67,4 @@ docker build -t eshop/web $webPathToPub
 docker build -t eshop/catalog.api $catalogPathToPub
 docker build -t eshop/ordering.api $orderingPathToPub
 docker build -t eshop/basket.api $basketPathToPub
-
+docker build -t eshop/webspa $webSPAPathToPub

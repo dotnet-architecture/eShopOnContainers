@@ -1,0 +1,5 @@
+<form class="{{formClass}}" (ngSubmit)="onSubmit()" [formGroup]="form" novalidate role="form">
+    <appc-dynamic-control *ngFor="let ctrl of controls" [control]="ctrl" [form]="form"></appc-dynamic-control>
+
+    <button type="submit" class="btn btn-primary pull-right" [disabled]="!form.valid">{{btnText}}</button>
+</form>
