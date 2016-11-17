@@ -1,0 +1,55 @@
+@import '../_variables.scss';
+
+.catalog{
+    &-banner {
+        height: 258px;
+        vertical-align:middle;
+
+        &-image {
+            width: 100%;
+            position: absolute;
+            left: 0;
+            height: 258px;
+        }
+
+        &-text {
+            position:relative;
+            top: 75px;
+        }
+    }
+
+    &-filter {
+        height: 65px;
+
+        &-container {
+            position:absolute;
+            width:100%;
+            background-color: $primary-colour;
+            left:0;
+            height: 65px;
+        }
+    }
+
+    &-content{
+        margin-top: 10px;
+
+        &-item {
+            text-align: center;
+
+            &-image{
+
+            }
+
+            &-button {
+                width: 255px;
+                height: 45px;
+                padding: 10px 20px 10px 20px;
+                background-color: $primary-accent;
+                color: white;
+                font-size: 16px;
+                margin: 10px 0;
+                border:none;
+            }
+        }
+    }
+}

@@ -1,0 +1,20 @@
+<style>
+    div.app-spinner {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+    }
+</style>
+
+<appc-app asp-prerender-webpack-config="config/webpack.config.js">
+    <div class="app-spinner">
+        <i class="fa fa-spinner fa-spin fa-5x" aria-hidden="true"></i>
+    </div>
+</appc-app>
+
+<script>
+    window.user = '@ViewBag.user';
+</script>
+
+<script src="~/dist/vendor.js" asp-append-version="true"></script>
+<script src="~/dist/@ViewBag.HashedMain" asp-append-version="true"></script>

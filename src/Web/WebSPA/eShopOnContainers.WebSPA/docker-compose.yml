@@ -1,21 +1,6 @@
 version: '2'
 
 services:
-  webmvc:
-    image: eshop/web${TAG}
-    build:
-      context: .
-      dockerfile: Dockerfile
-    environment:
-      - CatalogUrl=http://catalog.api
-      - OrderingUrl=http://ordering.api
-    ports:
-      - "5100:80"
-    depends_on:
-      - catalog.api
-      - identity.data
-      - basket.api
-
   webspa:
     image: eshop/webspa
     build:
@@ -29,7 +14,6 @@ services:
     depends_on:
       - catalog.api
       - identity.data
-      - basket.api
 
   catalog.api:
     image: eshop/catalog.api
@@ -43,7 +27,7 @@ services:
       - catalog.data
 
   catalog.data:
-    image: microsoft/mssql-server-linux
+    image: eshop/mssql-server-private-preview
     environment:
       - SA_PASSWORD=Pass@word
       - ACCEPT_EULA=Y
@@ -71,7 +55,7 @@ services:
       - "5432:1433"
 
   identity.data:
-    image: microsoft/mssql-server-linux
+    image: eshop/mssql-server-private-preview
     environment:
       - SA_PASSWORD=Pass@word
       - ACCEPT_EULA=Y
