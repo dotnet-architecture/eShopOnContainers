@@ -6,9 +6,9 @@
     RequestedTheme="Light">
     <Application.Resources>
         <ResourceDictionary>
-
+            
             <Color x:Key="NativeAccentColor">#00A69C</Color>
-
+            
             <Style x:Key="FormTextBoxStyle" TargetType="TextBox">
                 <Setter Property="MinWidth" Value="{ThemeResource TextControlThemeMinWidth}" />
                 <Setter Property="MinHeight" Value="{ThemeResource TextControlThemeMinHeight}" />

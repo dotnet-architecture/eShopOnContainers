@@ -8,6 +8,19 @@
             BackgroundColor="{StaticResource BackgroundColor}"
             BarTextColor="{StaticResource WhiteColor}"
             Title="eShop on Containers">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem 
+            Command="{Binding SettingsCommand}"
+            Text="Settings">
+            <ToolbarItem.Icon>
+                <OnPlatform 
+                    x:TypeArguments="FileImageSource"
+                    WinPhone=""
+                    Android=""
+                    iOS=""/>
+            </ToolbarItem.Icon>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
     <views:CatalogView  
         x:Name="HomeView">
         <views:CatalogView.Icon>

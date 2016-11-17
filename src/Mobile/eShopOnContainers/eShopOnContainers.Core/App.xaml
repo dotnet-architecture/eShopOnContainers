@@ -112,9 +112,9 @@
                 <Setter Property="FontFamily"
                         Value="{StaticResource MontserratRegular}" />
                 <Setter Property="TextColor"
-                        Value="{StaticResource WhiteColor}" />
+                        Value="{StaticResource BlackColor}" />
                 <Setter Property="PlaceholderColor"
-                        Value="{StaticResource WhiteColor}" />
+                        Value="{StaticResource BlackColor}" />
                 <Setter Property="FontSize"
                         Value="{StaticResource LargeSize}" />
                 <Setter Property="HorizontalOptions"
