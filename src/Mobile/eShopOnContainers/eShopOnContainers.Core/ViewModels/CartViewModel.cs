@@ -1,4 +1,5 @@
-﻿using eShopOnContainers.Core.Models.Catalog;
+﻿using eShopOnContainers.Core.Helpers;
+using eShopOnContainers.Core.Models.Catalog;
 using eShopOnContainers.Core.Models.Orders;
 using eShopOnContainers.Core.Services.Orders;
 using eShopOnContainers.Core.ViewModels.Base;
@@ -7,6 +8,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace eShopOnContainers.Core.ViewModels
@@ -43,7 +45,7 @@ namespace eShopOnContainers.Core.ViewModels
                 RaisePropertyChanged(() => OrderItems);
             }
         }
-
+         
         public decimal Total
         {
             get { return _total; }
@@ -54,6 +56,8 @@ namespace eShopOnContainers.Core.ViewModels
             }
         }
 
+        public ICommand CheckoutCommand => new Command(Checkout);
+
         public override Task InitializeAsync(object navigationData)
         {
             MessagingCenter.Subscribe<CatalogViewModel, CatalogItem>(this, MessengerKeys.AddProduct, (sender, arg) =>
@@ -61,6 +65,11 @@ namespace eShopOnContainers.Core.ViewModels
                 BadgeCount++;
 
                 AddCartItem(arg);
+            });
+            
+            MessagingCenter.Subscribe<OrderItem>(this, MessengerKeys.UpdateProduct, (sender) =>
+            {
+                ReCalculateTotal();
             });
 
             OrderItems = new ObservableCollection<OrderItem>();
@@ -98,6 +107,11 @@ namespace eShopOnContainers.Core.ViewModels
             {
                 Total += orderItem.Total;
             }
+        }
+
+        private void Checkout()
+        {
+            NavigationService.NavigateToAsync<CheckoutViewModel>(OrderItems);
         }
     }
 }

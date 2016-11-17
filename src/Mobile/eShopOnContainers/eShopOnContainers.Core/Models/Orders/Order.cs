@@ -6,7 +6,7 @@ namespace eShopOnContainers.Core.Models.Orders
     public class Order
     {
         public int SequenceNumber { get; set; }
-        public double Total { get; set; }
+        public decimal Total { get; set; }
         public DateTime OrderDate { get; set; }
         public OrderStatus Status { get; set; }
         public User.User ShippingAddress { get; set; }

@@ -1,5 +1,9 @@
-﻿using eShopOnContainers.ViewModels.Base;
+﻿using eShopOnContainers.Core.Helpers;
+using eShopOnContainers.Core.ViewModels.Base;
+using eShopOnContainers.ViewModels.Base;
 using System;
+using System.Collections.ObjectModel;
+using Xamarin.Forms;
 
 namespace eShopOnContainers.Core.Models.Orders
 {
@@ -12,6 +16,12 @@ namespace eShopOnContainers.Core.Models.Orders
         private decimal _unitPrice;
         private int _quantity;
         private decimal _discount;
+        private ObservableCollection<int> _numbers;
+
+        public OrderItem()
+        {
+            Numbers = NumericHelper.GetNumericList();
+        }
 
         public int ProductId
         {
@@ -60,6 +70,9 @@ namespace eShopOnContainers.Core.Models.Orders
             {
                 _quantity = value;
                 RaisePropertyChanged(() => Quantity);
+                RaisePropertyChanged(() => Total);
+
+                MessagingCenter.Send(this, MessengerKeys.UpdateProduct);
             }
         }
 
@@ -82,6 +95,16 @@ namespace eShopOnContainers.Core.Models.Orders
             {
                 _productImage = value;
                 RaisePropertyChanged(() => ProductImage);
+            }
+        }
+
+        public ObservableCollection<int> Numbers
+        {
+            get { return _numbers; }
+            set
+            {
+                _numbers = value;
+                RaisePropertyChanged(() => Numbers);
             }
         }
 

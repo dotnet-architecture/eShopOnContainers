@@ -14,9 +14,9 @@ namespace eShopOnContainers.Core.Services.Orders
 
             return new ObservableCollection<Order>
             {
-                new Order { SequenceNumber = 123, Total = 56.40, OrderDate = DateTime.Now, Status = OrderStatus.Delivered, OrderItems = GetOrderItems() },
-                new Order { SequenceNumber = 132, Total = 56.40, OrderDate = DateTime.Now, Status = OrderStatus.Delivered, OrderItems = GetOrderItems() },
-                new Order { SequenceNumber = 231, Total = 56.40, OrderDate = DateTime.Now, Status = OrderStatus.Delivered, OrderItems = GetOrderItems() },
+                new Order { SequenceNumber = 123, Total = 56.40M, OrderDate = DateTime.Now, Status = OrderStatus.Delivered, OrderItems = GetOrderItems() },
+                new Order { SequenceNumber = 132, Total = 56.40M, OrderDate = DateTime.Now, Status = OrderStatus.Delivered, OrderItems = GetOrderItems() },
+                new Order { SequenceNumber = 231, Total = 56.40M, OrderDate = DateTime.Now, Status = OrderStatus.Delivered, OrderItems = GetOrderItems() },
             };
         }
 
@@ -24,7 +24,7 @@ namespace eShopOnContainers.Core.Services.Orders
         {
             await Task.Delay(500);
 
-            return new Order { SequenceNumber = 0123456789, Total = 56.40, OrderDate = DateTime.Now, Status = OrderStatus.Pending, OrderItems = GetOrderItems() };
+            return new Order { SequenceNumber = 0123456789, Total = 56.40M, OrderDate = DateTime.Now, Status = OrderStatus.Pending, OrderItems = GetOrderItems() };
         }
 
         private List<OrderItem> GetOrderItems()

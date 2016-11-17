@@ -101,10 +101,12 @@ namespace eShopOnContainers.Core.Controls
         private static void OnSelectedItemChanged(BindableObject bindable, object oldValue, object newValue)
         {
             var boundPicker = (BindablePicker)bindable;
+
             if (boundPicker.ItemSelected != null)
             {
                 boundPicker.ItemSelected(boundPicker, new SelectedItemChangedEventArgs(newValue));
             }
+
             boundPicker.InternalUpdateSelectedIndex();
         }
     }

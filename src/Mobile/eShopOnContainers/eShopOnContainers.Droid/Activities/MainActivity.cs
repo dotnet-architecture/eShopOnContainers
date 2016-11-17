@@ -4,6 +4,7 @@ using Android.Content.PM;
 using Android.Views;
 using Xamarin.Forms.Platform.Android;
 using FFImageLoading.Forms.Droid;
+using Acr.UserDialogs;
 
 namespace eShopOnContainers.Droid.Activities
 {
@@ -28,6 +29,7 @@ namespace eShopOnContainers.Droid.Activities
             SupportActionBar.SetDisplayShowTitleEnabled(false);
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
+            UserDialogs.Init(this);
             CachedImageRenderer.Init();
             LoadApplication(new App());
 

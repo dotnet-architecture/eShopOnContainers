@@ -81,7 +81,7 @@
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <ViewCell>
-                                    <templates:OrderItemTemplate />
+                                    <templates:CartOrderItemTemplate />
                                 </ViewCell>
                             </DataTemplate>
                         </ListView.ItemTemplate>

@@ -49,13 +49,19 @@
     <Compile Include="Converters\CountToBoolConverter.cs" />
     <Compile Include="Converters\DatetimeConverter.cs" />
     <Compile Include="Converters\ImageConverter.cs" />
+    <Compile Include="Converters\InverseBoolConverter.cs" />
     <Compile Include="Converters\InverseCountToBoolConverter.cs" />
     <Compile Include="Converters\ItemTappedConverter.cs" />
     <Compile Include="Converters\ToUpperConverter.cs" />
     <Compile Include="Effects\LineColorEffect.cs" />
     <Compile Include="Extensions\AnimationExtension.cs" />
+    <Compile Include="Extensions\ObservableExtension.cs" />
     <Compile Include="GlobalSettings.cs" />
     <Compile Include="Helpers\EasingHelper.cs" />
+    <Compile Include="Helpers\NumericHelper.cs" />
+    <Compile Include="Models\Catalog\CatalogBrand.cs" />
+    <Compile Include="Models\Catalog\CatalogType.cs" />
+    <Compile Include="Models\Navigation\TabParameter.cs" />
     <Compile Include="Models\Orders\Order.cs" />
     <Compile Include="Models\Orders\OrderItem.cs" />
     <Compile Include="Models\Orders\OrderStatus.cs" />
@@ -72,6 +78,8 @@
     <Compile Include="Services\Orders\IOrdersService.cs" />
     <Compile Include="Services\Catalog\CatalogMockService.cs" />
     <Compile Include="Services\Catalog\ICatalogService.cs" />
+    <Compile Include="Services\User\IUserService.cs" />
+    <Compile Include="Services\User\UserMockService.cs" />
     <Compile Include="Triggers\BeginAnimation.cs" />
     <Compile Include="Validations\IsNotNullOrEmptyRule.cs" />
     <Compile Include="Validations\IValidationRule.cs" />
@@ -83,12 +91,16 @@
     <Compile Include="ViewModels\Base\ViewModelLocator.cs" />
     <Compile Include="ViewModels\CartViewModel.cs" />
     <Compile Include="ViewModels\CatalogViewModel.cs" />
+    <Compile Include="ViewModels\CheckoutViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\OrderDetailViewModel.cs" />
     <Compile Include="ViewModels\ProfileViewModel.cs" />
     <Compile Include="Views\CartView.xaml.cs">
       <DependentUpon>CartView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CheckoutView.xaml.cs">
+      <DependentUpon>CheckoutView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\CustomNavigationPage.xaml.cs">
       <DependentUpon>CustomNavigationPage.xaml</DependentUpon>
@@ -110,6 +122,9 @@
     </Compile>
     <Compile Include="Views\ProfileView.xaml.cs">
       <DependentUpon>ProfileView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Templates\CartOrderItemTemplate.xaml.cs">
+      <DependentUpon>CartOrderItemTemplate.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Templates\OrderItemTemplate.xaml.cs">
       <DependentUpon>OrderItemTemplate.xaml</DependentUpon>
@@ -263,6 +278,18 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\Templates\OrderItemTemplate.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\CheckoutView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Templates\CartOrderItemTemplate.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>

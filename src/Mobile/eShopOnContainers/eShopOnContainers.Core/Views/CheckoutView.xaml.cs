@@ -2,9 +2,9 @@
 
 namespace eShopOnContainers.Core.Views
 {
-    public partial class OrderDetailView : ContentPage
+    public partial class CheckoutView : ContentPage
     {
-        public OrderDetailView()
+        public CheckoutView()
         {
             InitializeComponent();
         }

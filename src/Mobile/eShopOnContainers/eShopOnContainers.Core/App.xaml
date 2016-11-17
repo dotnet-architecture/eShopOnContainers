@@ -103,6 +103,7 @@
             <converters:ImageConverter x:Key="ImageConverter" />
             <converters:ItemTappedEventArgsConverter x:Key="ItemTappedEventArgsConverter" />
             <converters:InverseCountToBoolConverter x:Key="InverseCountToBoolConverter" />
+            <converters:InverseBoolConverter x:Key="InverseBoolConverter" />
             <converters:ToUpperConverter x:Key="ToUpperConverter" />
             
             <!-- STYLES -->
