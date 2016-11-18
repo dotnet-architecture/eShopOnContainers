@@ -1,6 +1,8 @@
-import {CatalogItem} from './catalogItem.model';
+import {ICatalogItem} from './catalogItem.model';
 
-export class Catalog {
-    constructor(public pageIndex: number, public data: CatalogItem[], public pageSize: number, public count: number) {
-    }
+export interface ICatalog {
+    pageIndex: number
+    data: ICatalogItem[]
+    pageSize: number
+    count: number
 }

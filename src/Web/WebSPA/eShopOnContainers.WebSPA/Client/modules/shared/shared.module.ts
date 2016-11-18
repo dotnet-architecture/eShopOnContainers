@@ -16,9 +16,11 @@ import { HeaderComponent } from './layout/header.component';
 import { FooterComponent } from './layout/footer.component';
 // Services
 import { DataService } from './services/data.service';
-import { AuthService } from './services/auth.service';
 import { UtilityService } from './services/utility.service';
 import { UppercasePipe } from './pipes/uppercase.pipe';
+
+//Components:
+import {Pager } from './components/pager/pager';
 
 @NgModule({
   imports: [
@@ -39,7 +41,8 @@ import { UppercasePipe } from './pipes/uppercase.pipe';
     FooterComponent,
     HeaderComponent,
     PageHeadingComponent,
-    UppercasePipe
+    UppercasePipe, 
+    Pager
   ],
   exports: [
     // Modules
@@ -56,7 +59,8 @@ import { UppercasePipe } from './pipes/uppercase.pipe';
     FooterComponent,
     HeaderComponent,
     PageHeadingComponent,
-    UppercasePipe
+    UppercasePipe, 
+    Pager
   ]
 
 })
@@ -66,7 +70,6 @@ export class SharedModule {
       ngModule: SharedModule,
       providers: [
         // Providers
-        AuthService,
         DataService,
         FormControlService,
         UtilityService

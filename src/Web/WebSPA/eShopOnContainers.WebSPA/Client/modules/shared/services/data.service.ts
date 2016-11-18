@@ -1,6 +1,7 @@
 ﻿import { Injectable } from '@angular/core';
 import { Http, Response, RequestOptionsArgs, RequestMethod, Headers } from '@angular/http';
 
+import 'rxjs/Rx';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/throw';
 import { Observer } from 'rxjs/Observer';
@@ -10,16 +11,17 @@ import 'rxjs/add/operator/catch';
 @Injectable()
 export class DataService {
 
-    constructor(public http: Http) { }
+    constructor(private http: Http) { }
 
-    get(url: string, params?: any) {
+    get(url: string, params?: any): Observable<Response> {
         let options: RequestOptionsArgs = {};
         options.headers = new Headers();
         this.addCors(options);
         
-        return this.http.get(url, options).map(((res: Response) => {
-            return res.json();
-        })).catch(this.handleError);
+        return this.http.get(url, options).map(
+            (res: Response) => {
+            return res;
+        }).catch(this.handleError);
     }
 
     post(url: string, data: any, params?: any) {
@@ -42,6 +44,6 @@ export class DataService {
             }
             return Observable.throw(errMessage);
         }
-        return Observable.throw(error || 'Node.js server error');
+        return Observable.throw(error || 'server error');
     }
 }

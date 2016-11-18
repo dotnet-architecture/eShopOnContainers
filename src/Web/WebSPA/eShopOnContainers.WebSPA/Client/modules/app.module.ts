@@ -15,7 +15,6 @@ import { CatalogModule }  from './catalog/catalog.module';
     imports: [
         BrowserModule,
         routing,
-        // FormsModule,
         HttpModule,
         // Only module that app module loads
         SharedModule.forRoot(),

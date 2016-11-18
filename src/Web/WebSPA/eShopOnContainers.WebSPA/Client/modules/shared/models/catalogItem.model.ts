@@ -1,3 +1,11 @@
-export class CatalogItem {
-    constructor(public Id: string, public Name: string, public Description: string, public Price: number, public PictureUri: string, public CatalogBrandId: number, public CatalogBrand: string, public CatalogTypeId: number, public CatalogType: string) { }
+export interface ICatalogItem {
+    id: string;
+    name: string;
+    description: string;
+    price: number;
+    pictureUri: string;
+    catalogBrandId: number;
+    catalogBrand: string;
+    catalogTypeId: number;
+    catalogType: string;
 }
