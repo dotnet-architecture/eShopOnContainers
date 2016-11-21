@@ -6,11 +6,13 @@ using System;
 using eShopOnContainers.Core.Services.Catalog;
 using eShopOnContainers.Core.Services.OpenUrl;
 using eShopOnContainers.Core.Services.User;
+using eShopOnContainers.Core.Services.RequestProvider;
 
 namespace eShopOnContainers.ViewModels.Base
 {
     public class ViewModelLocator
     {
+        private bool _useMockService;
         private readonly IUnityContainer _unityContainer;
 
         private static readonly ViewModelLocator _instance = new ViewModelLocator();
@@ -18,6 +20,12 @@ namespace eShopOnContainers.ViewModels.Base
         public static ViewModelLocator Instance
         {
             get { return _instance; }
+        }
+
+        public bool UseMockService
+        {
+            get { return _useMockService; }
+            set { _useMockService = value; ; }
         }
 
         protected ViewModelLocator()
@@ -28,6 +36,7 @@ namespace eShopOnContainers.ViewModels.Base
             _unityContainer.RegisterType<IDialogService, DialogService>();
             RegisterSingleton<INavigationService, NavigationService>();
             _unityContainer.RegisterType<IOpenUrlService, OpenUrlService>();
+            _unityContainer.RegisterType<IRequestProvider, RequestProvider>();
 
             _unityContainer.RegisterType<ICatalogService, CatalogMockService>();
             _unityContainer.RegisterType<IOrdersService, OrdersMockService>();
@@ -43,6 +52,26 @@ namespace eShopOnContainers.ViewModels.Base
             _unityContainer.RegisterType<ProfileViewModel>();
             _unityContainer.RegisterType<SettingsViewModel>();
         }
+
+        public void UpdateServices(bool useMockServices)
+        {
+            if (!useMockServices)
+            {
+                _unityContainer.RegisterInstance<ICatalogService>(new CatalogMockService());
+                _unityContainer.RegisterInstance<IOrdersService>(new OrdersMockService());
+                _unityContainer.RegisterInstance<IUserService>(new UserMockService());
+
+                UseMockService = false;
+            }
+            else
+            {
+                var requestProvider = Resolve<IRequestProvider>();
+                _unityContainer.RegisterInstance<ICatalogService>(new CatalogService(requestProvider));
+
+                UseMockService = true;
+            }
+        }
+
 
         public T Resolve<T>()
         {

@@ -108,7 +108,12 @@
     <Compile Include="Controls\TabItem.xaml.cs">
       <DependentUpon>TabItem.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\TabBadgeColorConverter.cs" />
+    <Compile Include="Converters\TabBadgeTextConverter.cs" />
+    <Compile Include="Converters\TabIconConverter.cs" />
     <Compile Include="Effects\EntryLineColorEffect.cs" />
+    <Compile Include="Extensions\VisualTreeExtensions.cs" />
+    <Compile Include="Helpers\ColorHelper.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>

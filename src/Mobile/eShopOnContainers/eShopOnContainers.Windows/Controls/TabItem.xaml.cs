@@ -1,5 +1,6 @@
 ﻿using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
 
 namespace eShopOnContainers.Windows.Controls
 {
@@ -26,14 +27,14 @@ namespace eShopOnContainers.Windows.Controls
         public static readonly DependencyProperty BadgeTextProperty =
             DependencyProperty.Register("BadgeText", typeof(string), typeof(TabItem), null);
 
-        public string BadgeColor
+        public SolidColorBrush BadgeColor
         {
-            get { return GetValue(BadgeColorProperty) as string; }
+            get { return GetValue(BadgeColorProperty) as SolidColorBrush; }
             set { SetValue(BadgeColorProperty, value); }
         }
 
         public static readonly DependencyProperty BadgeColorProperty =
-            DependencyProperty.Register("BadgeColor", typeof(string), typeof(TabItem), null);
+            DependencyProperty.Register("BadgeColor", typeof(SolidColorBrush), typeof(TabItem), null);
 
         public string Label
         {
@@ -44,8 +45,6 @@ namespace eShopOnContainers.Windows.Controls
         public TabItem()
         {
             this.InitializeComponent();
-
-            this.DataContext = this;
         }
     }
 }

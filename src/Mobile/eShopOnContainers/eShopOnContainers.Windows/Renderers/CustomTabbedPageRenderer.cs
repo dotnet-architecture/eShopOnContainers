@@ -1,8 +1,14 @@
-﻿using eShopOnContainers.Windows.Renderers;
+﻿using eShopOnContainers.Core.Controls;
+using eShopOnContainers.Windows.Controls;
+using eShopOnContainers.Windows.Extensions;
+using eShopOnContainers.Windows.Helpers;
+using eShopOnContainers.Windows.Renderers;
 using System.Diagnostics;
+using System.Linq;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
 using Xamarin.Forms.Platform.UWP;
+using Xaml = Windows.UI.Xaml;
 
 [assembly: ExportRenderer(typeof(TabbedPage), typeof(CustomTabbedPageRenderer))]
 namespace eShopOnContainers.Windows.Renderers
@@ -16,7 +22,7 @@ namespace eShopOnContainers.Windows.Renderers
 
             if (Control == null)
             {
-                Debug.WriteLine("No TabLayout found. Badge not added.");
+                Debug.WriteLine("No FormsPivot found. Badge not added.");
                 return;
             }
 
@@ -28,7 +34,47 @@ namespace eShopOnContainers.Windows.Renderers
 
         private void AddTabBadge(int tabIndex)
         {
-         
+            var element = Element.Children[tabIndex];
+
+            if (element != null)
+            {
+
+                var dataTemplate = Xaml.Application.Current.Resources["TabbedPageHeaderTemplate"] as
+                    Xaml.DataTemplate;
+
+                Control.HeaderTemplate = dataTemplate;
+
+                element.PropertyChanged += OnTabbedPagePropertyChanged;
+            }
+        }
+
+        protected virtual void OnTabbedPagePropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            var element = sender as Element;
+
+            if (element == null)
+                return;
+
+            var tabItems = Control.GetDescendantsOfType<TabItem>();
+            var tabItem = tabItems.FirstOrDefault(t => t.Label == ((Page)element).Title);
+
+            if(tabItem == null)
+            {
+                return;
+            }
+
+            if (e.PropertyName == CustomTabbedPage.BadgeTextProperty.PropertyName)
+            {
+                tabItem.BadgeText = CustomTabbedPage.GetBadgeText(element);
+                return;
+            }
+
+            if (e.PropertyName == CustomTabbedPage.BadgeColorProperty.PropertyName)
+            {
+                tabItem.BadgeColor = new Xaml.Media.SolidColorBrush(
+                    ColorHelper.XamarinFormColorToWindowsColor(
+                    CustomTabbedPage.GetBadgeColor(element)));
+            }
         }
     }
 }

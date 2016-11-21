@@ -2,6 +2,7 @@
   "dependencies": {
     "Acr.UserDialogs": "6.3.1",
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.0.0",
+    "Newtonsoft.Json": "9.0.1",
     "SlideOverKit": "2.1.4",
     "StyleCop.MSBuild": "5.0.0-alpha01",
     "Unity": "4.0.1",

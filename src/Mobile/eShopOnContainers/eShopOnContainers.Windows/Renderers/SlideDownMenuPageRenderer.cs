@@ -32,6 +32,5 @@ namespace eShopOnContainers.Windows.Renderers
             base.Dispose(disposing);
             _handler = null;
         }
-
     }
 }

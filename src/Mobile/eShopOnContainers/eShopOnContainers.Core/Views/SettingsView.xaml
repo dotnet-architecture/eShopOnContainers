@@ -77,7 +77,9 @@
                     <controls:ToggleButton
                         Grid.Column="1" 
                         Grid.Row="1" 
-                        Animate="True"
+                        Animate="True"     
+                        Checked="{Binding UseMockServices, Mode=TwoWay}"
+                        Command="{Binding MockServicesCommand}"
                         Style="{StaticResource SettingsToggleButtonStyle}">
                         <controls:ToggleButton.CheckedImage>
                             <OnPlatform x:TypeArguments="ImageSource"

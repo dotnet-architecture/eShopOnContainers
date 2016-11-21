@@ -34,7 +34,8 @@ namespace eShopOnContainers.Core.Services.RequestProvider
             await HandleResponse(response);
 
             string serialized = await response.Content.ReadAsStringAsync();
-            TResult result = await Task.Run(() => JsonConvert.DeserializeObject<TResult>(serialized, _serializerSettings));
+            TResult result = await Task.Run(() => 
+                JsonConvert.DeserializeObject<TResult>(serialized, _serializerSettings));
 
             return result;
         }

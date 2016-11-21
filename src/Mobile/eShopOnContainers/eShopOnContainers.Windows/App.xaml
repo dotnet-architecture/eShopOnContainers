@@ -3,12 +3,22 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:eShopOnContainers.UWP"
+    xmlns:converters="using:eShopOnContainers.Windows.Converters"
+    xmlns:controls="using:eShopOnContainers.Windows.Controls"
     RequestedTheme="Light">
     <Application.Resources>
         <ResourceDictionary>
             
+            <!-- COLORS -->
             <Color x:Key="NativeAccentColor">#00A69C</Color>
+            <Color x:Key="NativeLightGreenColor">#83D01B</Color>
             
+            <!-- CONVERTERS -->
+            <converters:TabIconConverter x:Key="TabIconConverter" />
+            <converters:TabBadgeColorConverter x:Key="TabBadgeColorConverter" />
+            <converters:TabBadgeTextConverter x:Key="TabBadgeTextConverter" />
+                        
+            <!-- STYLES -->
             <Style x:Key="FormTextBoxStyle" TargetType="TextBox">
                 <Setter Property="MinWidth" Value="{ThemeResource TextControlThemeMinWidth}" />
                 <Setter Property="MinHeight" Value="{ThemeResource TextControlThemeMinHeight}" />
@@ -594,6 +604,18 @@
                 </Setter>
             </Style>
 
+            <DataTemplate x:Key="TabbedPageHeaderTemplate">
+                <Grid>
+                    <ContentPresenter>
+                        <controls:TabItem   
+                            Label="{Binding Title}"
+                            Icon="{Binding Icon, Converter={StaticResource TabIconConverter}}"
+                            BadgeColor="{Binding Converter={StaticResource TabBadgeColorConverter}}"
+                            BadgeText="{Binding Converter={StaticResource TabBadgeTextConverter}}"/>
+                    </ContentPresenter>
+                </Grid>
+            </DataTemplate>
+
         </ResourceDictionary>
-    </Application.Resources>    
+    </Application.Resources>
 </Application>
