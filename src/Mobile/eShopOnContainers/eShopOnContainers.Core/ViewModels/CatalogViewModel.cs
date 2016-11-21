@@ -110,7 +110,7 @@ namespace eShopOnContainers.Core.ViewModels
             IsBusy = true;
 
             MessagingCenter.Send(this, MessengerKeys.Filter);
-            Products = await _productsService.FilterAsync(Brand.Brand, Type.Type);
+            Products = await _productsService.FilterAsync(Brand.Id, Type.Id);
 
             IsBusy = false;
         }

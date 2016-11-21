@@ -1,6 +1,5 @@
 ﻿using eShopOnContainers.Core.Extensions;
 using eShopOnContainers.Core.Models.Catalog;
-using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -38,13 +37,13 @@ namespace eShopOnContainers.Core.Services.Catalog
             return MockCatalog;
         }
 
-        public async Task<ObservableCollection<CatalogItem>> FilterAsync(string catalogBrand, string catalogType)
+        public async Task<ObservableCollection<CatalogItem>> FilterAsync(int catalogBrandId, int catalogTypeId)
         {
             await Task.Delay(500);
 
             return MockCatalog
-                .Where(c => c.CatalogBrand.Equals(catalogBrand, StringComparison.CurrentCultureIgnoreCase) &&
-                c.CatalogType.Equals(catalogType, StringComparison.CurrentCultureIgnoreCase))
+                .Where(c => c.CatalogBrandId == catalogBrandId &&
+                c.CatalogTypeId == catalogTypeId)  
                 .ToObservableCollection();
         }
 

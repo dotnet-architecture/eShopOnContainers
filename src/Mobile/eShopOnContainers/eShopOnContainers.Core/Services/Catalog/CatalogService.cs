@@ -17,9 +17,18 @@ namespace eShopOnContainers.Core.Services.Catalog
             _requestProvider = requestProvider;
         }
 
-        public Task<ObservableCollection<CatalogItem>> FilterAsync(string catalogBrand, string catalogType)
+        public async Task<ObservableCollection<CatalogItem>> FilterAsync(int catalogBrandId, int catalogTypeId)
         {
-            throw new NotImplementedException();
+            UriBuilder builder = new UriBuilder(GlobalSetting.CatalogEndpoint);
+
+            builder.Path = string.Format("api/v1/catalog/items/type/{0}/brand/{1}", catalogTypeId, catalogBrandId);
+
+            string uri = builder.ToString();
+
+            CatalogRoot catalog =
+                    await _requestProvider.GetAsync<CatalogRoot>(uri);
+
+            return catalog?.Data?.ToObservableCollection();
         }
 
         public async Task<ObservableCollection<CatalogItem>> GetCatalogAsync()
