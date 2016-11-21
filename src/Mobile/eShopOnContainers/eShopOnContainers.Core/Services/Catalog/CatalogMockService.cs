@@ -12,14 +12,14 @@ namespace eShopOnContainers.Core.Services.Catalog
     {
         private ObservableCollection<CatalogBrand> MockCatalogBrand = new ObservableCollection<CatalogBrand>
         {
-            new CatalogBrand { CatalogBrandId = 1, Name = "Azure" },
-            new CatalogBrand { CatalogBrandId = 2, Name = "Visual Studio" }
+            new CatalogBrand { Id = 1, Brand = "Azure" },
+            new CatalogBrand { Id = 2, Brand = "Visual Studio" }
         };
 
         private ObservableCollection<CatalogType> MockCatalogType = new ObservableCollection<CatalogType>
         {
-            new CatalogType { CatalogTypeId = 1, Name = "Mug" },
-            new CatalogType { CatalogTypeId = 2, Name = "T-Shirt" }
+            new CatalogType { Id = 1, Type = "Mug" },
+            new CatalogType { Id = 2, Type = "T-Shirt" }
         };
 
         private ObservableCollection<CatalogItem> MockCatalog = new ObservableCollection<CatalogItem>

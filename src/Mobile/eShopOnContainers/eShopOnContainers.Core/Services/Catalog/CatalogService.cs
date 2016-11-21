@@ -4,24 +4,13 @@ using System.Threading.Tasks;
 using eShopOnContainers.Core.Models.Catalog;
 using eShopOnContainers.Core.Services.RequestProvider;
 using eShopOnContainers.Core.Extensions;
+using System.Collections.Generic;
 
 namespace eShopOnContainers.Core.Services.Catalog
 {
     public class CatalogService : ICatalogService
     {
         private readonly IRequestProvider _requestProvider;
-
-        private ObservableCollection<CatalogBrand> MockCatalogBrand = new ObservableCollection<CatalogBrand>
-        {
-            new CatalogBrand { CatalogBrandId = 1, Name = "Azure" },
-            new CatalogBrand { CatalogBrandId = 2, Name = "Visual Studio" }
-        };
-
-        private ObservableCollection<CatalogType> MockCatalogType = new ObservableCollection<CatalogType>
-        {
-            new CatalogType { CatalogTypeId = 1, Name = "Mug" },
-            new CatalogType { CatalogTypeId = 2, Name = "T-Shirt" }
-        };
 
         public CatalogService(IRequestProvider requestProvider)
         {
@@ -41,8 +30,6 @@ namespace eShopOnContainers.Core.Services.Catalog
 
             string uri = builder.ToString();
 
-            System.Diagnostics.Debug.WriteLine(uri);
-
             CatalogRoot catalog = 
                 await _requestProvider.GetAsync<CatalogRoot>(uri);
 
@@ -56,16 +43,30 @@ namespace eShopOnContainers.Core.Services.Catalog
 
         public async Task<ObservableCollection<CatalogBrand>> GetCatalogBrandAsync()
         {
-            await Task.Delay(500);
+            UriBuilder builder = new UriBuilder(GlobalSetting.CatalogEndpoint);
 
-            return MockCatalogBrand;
+            builder.Path = "api/v1/catalog/catalogbrands";
+
+            string uri = builder.ToString();
+
+            IEnumerable<CatalogBrand> brands =
+                   await _requestProvider.GetAsync<IEnumerable<CatalogBrand>>(uri);
+
+            return brands?.ToObservableCollection();
         }
 
         public async Task<ObservableCollection<CatalogType>> GetCatalogTypeAsync()
         {
-            await Task.Delay(500);
+            UriBuilder builder = new UriBuilder(GlobalSetting.CatalogEndpoint);
 
-            return MockCatalogType;
+            builder.Path = "api/v1/catalog/catalogtypes";
+
+            string uri = builder.ToString();
+
+            IEnumerable<CatalogType> types =
+                   await _requestProvider.GetAsync<IEnumerable<CatalogType>>(uri);
+
+            return types?.ToObservableCollection();
         }
     }
 }
