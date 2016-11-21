@@ -23,8 +23,15 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-                .AddEnvironmentVariables();
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
+
+            if (env.IsDevelopment())
+            {
+                builder.AddUserSecrets();
+            }
+
+            builder.AddEnvironmentVariables();
+
             Configuration = builder.Build();
         }
 
@@ -37,28 +44,14 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API
             // Add framework services.
             services.AddMvc();
 
-            //Add EF Core Context (UnitOfWork)
-            //SQL LocalDB 
-            // var connString = @"Server=(localdb)\mssqllocaldb;Database=Microsoft.eShopOnContainers.Services.OrderingDb;Trusted_Connection=True;";
-
-            //SQL SERVER on-premises
-            //(Integrated Security)
-            //var connString = @"Server=CESARDLBOOKVHD;Database=Microsoft.eShopOnContainers.Services.OrderingDb;Trusted_Connection=True;";
-
-            //(SQL Server Authentication)
-            //var connString = @"Server=10.0.75.1;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word;";
-
+            
             var connString = Configuration["ConnectionString"];
 
-            //(CDLTLL) To use only for EF Migrations
-            //connString = @"Server=10.0.75.1;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word;";
-
-            services.AddDbContext<OrderingDbContext>(options => options.UseSqlServer(connString)
-                                                                       .UseSqlServer(connString, b => b.MigrationsAssembly("Ordering.API"))
-                                                    //(CDLTLL) MigrationsAssembly will be Ordering.SqlData, but when supported
-                                                    //Standard Library 1.6 by "Microsoft.EntityFrameworkCore.Tools"
-                                                    //Version "1.0.0-preview2-final" just supports .NET Core 
-                                                    );
+            services.AddDbContext<OrderingDbContext>(options =>
+            {
+                options.UseSqlServer(connString)
+                    .UseSqlServer(connString, b => b.MigrationsAssembly("Ordering.API"));
+            });
 
             services.AddTransient<IOrderRepository, OrderRepository>();
             services.AddTransient<IOrderdingQueries, OrderingQueries>();
@@ -70,9 +63,11 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-            //if (env.IsDevelopment())
+            if (env.IsDevelopment())
+            {
                 app.UseDeveloperExceptionPage();
-            
+            }
+             
             app.UseMvc();
         }
     }
