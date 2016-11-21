@@ -1,8 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { AuthService } from '../services/auth.service';
-
 @Component({
     selector: 'appc-header',
     styleUrls: ['./header.component.scss'],
@@ -10,7 +8,7 @@ import { AuthService } from '../services/auth.service';
 })
 export class HeaderComponent {
     isCollapsed: boolean = true;
-    constructor(private router: Router, private authService: AuthService) { }
+    constructor(private router: Router) { }
 
     toggleNav() {
         this.isCollapsed = !this.isCollapsed;

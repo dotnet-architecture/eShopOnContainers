@@ -35,7 +35,7 @@
     "build:prod": "npm run setprod && npm run clean:dist && npm run build:vendor && npm run build:main",
     "lint": "npm run tslint \"Client/**/*.ts\"",
     "docs": "npm run typedoc -- --options typedoc.json --exclude '**/*.spec.ts' ./Client/",
-    "version": "npm run build",
+    "version": "npm run build"
   },
   "dependencies": {
     "@angular/common": "2.1.2",
@@ -55,7 +55,6 @@
     "core-js": "2.4.1",
     "font-awesome": "4.6.3",
     "isomorphic-fetch": "2.2.1",
-    "ng2-translate": "4.0.0",
     "normalize.css": "5.0.0",
     "preboot": "4.5.2",
     "rxjs": "5.0.0-beta.12",

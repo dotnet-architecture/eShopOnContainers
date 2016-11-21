@@ -7,36 +7,21 @@
 <div class="catalog-filter">
     <div class="catalog-filter-container">
         <div class="container">
-            <select>
-                <option>Opción 1</option>
-                <option>Opción 2</option>
+            <select (change)="onBrandFilterChanged($event, $event.target.value)">
+                <option *ngFor="let brand of brands" [value]="brand.id">{{brand.brand}}</option>
             </select>
-            <select>
-                <option>Opción 1</option>
-                <option>Opción 2</option>
+            <select (change)="onTypeFilterChanged($event, $event.target.value)">
+                <option *ngFor="let type of types" [value]="type.id">{{type.type}}</option>
             </select>
         </div>
+        <button class="" (click)="onFilterApplied($event)">Apply</button>
     </div>
 </div>
+<esh-pager [model]="paginationInfo" (changed)="onPageChanged($event)"></esh-pager>
 <div class="catalog-content row">
-    <div class="col-md-4 catalog-content-item">
-        <img src="https://fakeimg.pl/370x240/EEEEEE/000/?text=RoslynRedT-Shirt"/>
-        <button class="catalog-content-item-button">[ ADD TO CART ]</button>
-    </div>
-    <div class="col-md-4 catalog-content-item">
-        <img src="https://fakeimg.pl/370x240/EEEEEE/000/?text=RoslynRedT-Shirt" />
-        <button class="catalog-content-item-button">[ ADD TO CART ]</button>
-    </div>
-    <div class="col-md-4 catalog-content-item">
-        <img src="https://fakeimg.pl/370x240/EEEEEE/000/?text=RoslynRedT-Shirt" />
-        <button class="catalog-content-item-button">[ ADD TO CART ]</button>
-    </div>
-    <div class="col-md-4 catalog-content-item">
-        <img src="https://fakeimg.pl/370x240/EEEEEE/000/?text=RoslynRedT-Shirt" />
-        <button class="catalog-content-item-button">[ ADD TO CART ]</button>
-    </div>
-    <div class="col-md-4 catalog-content-item">
-        <img src="https://fakeimg.pl/370x240/EEEEEE/000/?text=RoslynRedT-Shirt" />
+    <div class="col-md-4 catalog-content-item" *ngFor="let item of catalog?.data">
+        <img src="{{item.pictureUri}}"/>
         <button class="catalog-content-item-button">[ ADD TO CART ]</button>
     </div>
 </div>
+<esh-pager [model]="paginationInfo" (changed)="onPageChanged($event)"></esh-pager>
