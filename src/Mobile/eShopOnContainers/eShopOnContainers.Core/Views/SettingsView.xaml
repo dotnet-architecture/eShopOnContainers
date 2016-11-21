@@ -67,11 +67,11 @@
                         Grid.Column="0"                       
                         Grid.Row="1">
                         <Label 
-                            Text="Use Mock Services"
+                            Text="{Binding Title}"
                             TextColor="{StaticResource GreenColor}"
                             Style="{StaticResource SettingsTitleStyle}"/>
                         <Label
-                            Text="Mock Services are simulated objects that mimic the behavior of real services in controlled ways"
+                            Text="{Binding Description}"
                             Style="{StaticResource SettingsDescriptionStyle}"/>
                     </StackLayout>
                     <controls:ToggleButton
