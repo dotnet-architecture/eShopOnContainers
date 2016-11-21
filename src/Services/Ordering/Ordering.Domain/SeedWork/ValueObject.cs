@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Reflection;
-
+﻿
 namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.SeedWork
 {
-    /// <summary>
-    /// Base class for value objects in domain.
-    /// Value
-    /// </summary>
-    /// <typeparam name="TValueObject">The type of this value object</typeparam>
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using System.Reflection;
+
+
     public class ValueObject<TValueObject> : IEquatable<TValueObject>
         where TValueObject : ValueObject<TValueObject>
     {
@@ -22,11 +19,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.SeedWork
 
         //IEquatable and Override Equals operators
 
-        /// <summary>
-        /// <see cref="M:System.Object.IEquatable{TValueObject}"/>
-        /// </summary>
-        /// <param name="other"><see cref="M:System.Object.IEquatable{TValueObject}"/></param>
-        /// <returns><see cref="M:System.Object.IEquatable{TValueObject}"/></returns>
+        
         public bool Equals(TValueObject other)
         {
             if ((object)other == null)
@@ -62,11 +55,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.SeedWork
             else
                 return true;
         }
-        /// <summary>
-        /// <see cref="M:System.Object.Equals"/>
-        /// </summary>
-        /// <param name="obj"><see cref="M:System.Object.Equals"/></param>
-        /// <returns><see cref="M:System.Object.Equals"/></returns>
+       
         public override bool Equals(object obj)
         {
             if ((object)obj == null)
@@ -83,10 +72,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.SeedWork
                 return false;
 
         }
-        /// <summary>
-        /// <see cref="M:System.Object.GetHashCode"/>
-        /// </summary>
-        /// <returns><see cref="M:System.Object.GetHashCode"/></returns>
+       
         public override int GetHashCode()
         {
             int hashCode = 31;
@@ -119,12 +105,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.SeedWork
 
             return hashCode;
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="left"></param>
-        /// <param name="right"></param>
-        /// <returns></returns>
+        
         public static bool operator ==(ValueObject<TValueObject> left, ValueObject<TValueObject> right)
         {
             if (Object.Equals(left, null))
@@ -133,12 +114,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.SeedWork
                 return left.Equals(right);
 
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="left"></param>
-        /// <param name="right"></param>
-        /// <returns></returns>
+       
         public static bool operator !=(ValueObject<TValueObject> left, ValueObject<TValueObject> right)
         {
             return !(left == right);
