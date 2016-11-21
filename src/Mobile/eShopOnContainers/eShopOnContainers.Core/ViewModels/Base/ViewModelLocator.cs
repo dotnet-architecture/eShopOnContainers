@@ -24,7 +24,7 @@ namespace eShopOnContainers.ViewModels.Base
         {
             _unityContainer = new UnityContainer();
 
-            // services
+            // Services
             _unityContainer.RegisterType<IDialogService, DialogService>();
             RegisterSingleton<INavigationService, NavigationService>();
             _unityContainer.RegisterType<IOpenUrlService, OpenUrlService>();
@@ -33,7 +33,7 @@ namespace eShopOnContainers.ViewModels.Base
             _unityContainer.RegisterType<IOrdersService, OrdersMockService>();
             _unityContainer.RegisterType<IUserService, UserMockService>();
 
-            // view models
+            // View models
             _unityContainer.RegisterType<CartViewModel>();
             _unityContainer.RegisterType<CatalogViewModel>();
             _unityContainer.RegisterType<CheckoutViewModel>();

@@ -27,11 +27,17 @@
                 <Setter Property="FontSize" 
                         Value="{StaticResource LittleSize}" />
             </Style>
-            
-            <Style x:Key="SettingsSwitchStyle" 
-                   TargetType="{x:Type controls:CustomSwitch}">
+
+            <Style x:Key="SettingsToggleButtonStyle" 
+                   TargetType="{x:Type controls:ToggleButton}">
+                <Setter Property="HeightRequest" 
+                        Value="48" />
+                <Setter Property="WidthRequest" 
+                        Value="48" />
                 <Setter Property="VerticalOptions" 
                         Value="Center" />
+                <Setter Property="Margin" 
+                        Value="12, 0" />
             </Style>
             
         </ResourceDictionary>
@@ -60,7 +66,7 @@
                     <StackLayout
                         Grid.Column="0"                       
                         Grid.Row="1">
-                        <Label
+                        <Label 
                             Text="Use Mock Services"
                             TextColor="{StaticResource GreenColor}"
                             Style="{StaticResource SettingsTitleStyle}"/>
@@ -68,12 +74,24 @@
                             Text="Mock Services are simulated objects that mimic the behavior of real services in controlled ways"
                             Style="{StaticResource SettingsDescriptionStyle}"/>
                     </StackLayout>
-                    <controls:CustomSwitch
-                        TextOn="Mock"
-                        TextOff="Azure"
+                    <controls:ToggleButton
                         Grid.Column="1" 
                         Grid.Row="1" 
-                        Style="{StaticResource SettingsSwitchStyle}"/>
+                        Animate="True"
+                        Style="{StaticResource SettingsToggleButtonStyle}">
+                        <controls:ToggleButton.CheckedImage>
+                            <OnPlatform x:TypeArguments="ImageSource"
+                              Android="toggle_azure"
+                              iOS="toggle_azure"
+                              WinPhone="Assets/toggle_azure.png"/>
+                        </controls:ToggleButton.CheckedImage>
+                        <controls:ToggleButton.UnCheckedImage>
+                            <OnPlatform x:TypeArguments="ImageSource"
+                              Android="toggle_local"
+                              iOS="toggle_local"
+                              WinPhone="Assets/toggle_local.png"/>
+                        </controls:ToggleButton.UnCheckedImage>
+                    </controls:ToggleButton>
                     <Grid 
                         Grid.Row="2"
                         Grid.Column="0"

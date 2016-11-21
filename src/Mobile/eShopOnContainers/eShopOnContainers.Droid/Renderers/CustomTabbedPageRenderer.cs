@@ -35,7 +35,7 @@ namespace eShopOnContainers.Droid.Renderers
 
             if (_tabLayout == null)
             {
-                Console.WriteLine("No TabLayout found. Bedge not added.");
+                Console.WriteLine("No TabLayout found. Badge not added.");
                 return;
             }
        
