@@ -2330,10 +2330,10 @@ namespace eShopOnContainers.Droid
 			public const int splash_drawable = 2130837680;
 			
 			// aapt resource value: 0x7f0200b1
-			public const int toggle_azure = 2130837681;
+			public const int switch_off = 2130837681;
 			
 			// aapt resource value: 0x7f0200b2
-			public const int toggle_local = 2130837682;
+			public const int switch_on = 2130837682;
 			
 			static Drawable()
 			{

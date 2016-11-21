@@ -139,8 +139,8 @@
     <Content Include="Assets\menu_filter.png" />
     <Content Include="Assets\menu_profile.png" />
     <Content Include="Assets\product_add.png" />
-    <Content Include="Assets\toggle_azure.png" />
-    <Content Include="Assets\toggle_local.png" />
+    <Content Include="Assets\switchOff.png" />
+    <Content Include="Assets\switchOn.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />

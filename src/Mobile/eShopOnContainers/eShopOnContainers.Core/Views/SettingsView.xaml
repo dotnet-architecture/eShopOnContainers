@@ -37,7 +37,7 @@
                 <Setter Property="VerticalOptions" 
                         Value="Center" />
                 <Setter Property="Margin" 
-                        Value="12, 0" />
+                        Value="12, 12, 12, 0" />
             </Style>
             
         </ResourceDictionary>
@@ -83,15 +83,15 @@
                         Style="{StaticResource SettingsToggleButtonStyle}">
                         <controls:ToggleButton.CheckedImage>
                             <OnPlatform x:TypeArguments="ImageSource"
-                              Android="toggle_azure"
-                              iOS="toggle_azure"
-                              WinPhone="Assets/toggle_azure.png"/>
+                              Android="switchOn"
+                              iOS="switchOn"
+                              WinPhone="Assets/switchOn.png"/>
                         </controls:ToggleButton.CheckedImage>
                         <controls:ToggleButton.UnCheckedImage>
                             <OnPlatform x:TypeArguments="ImageSource"
-                              Android="toggle_local"
-                              iOS="toggle_local"
-                              WinPhone="Assets/toggle_local.png"/>
+                              Android="switchOff"
+                              iOS="switchOff"
+                              WinPhone="Assets/switchOff.png"/>
                         </controls:ToggleButton.UnCheckedImage>
                     </controls:ToggleButton>
                     <Grid 
