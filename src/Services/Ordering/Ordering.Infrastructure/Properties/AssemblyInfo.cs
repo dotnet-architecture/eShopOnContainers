@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Microsoft.eShopOnContainers.Services.Ordering.Infrastructure")]
+[assembly: AssemblyProduct("Ordering.Infrastructure")]
 [assembly: AssemblyTrademark("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible
@@ -16,4 +16,4 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("5da6ef13-c7e0-4ec4-8599-a61c6ac2628d")]
+[assembly: Guid("95f1f07c-4d92-4742-bd07-e5b805aab651")]

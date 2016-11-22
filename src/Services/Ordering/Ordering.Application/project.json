@@ -4,8 +4,11 @@
   "dependencies": {
     "NETStandard.Library": "1.6.0",
     "MediatR": "2.1.0",
+    "Dapper": "1.50.2",
     "System.Dynamic.Runtime": "4.0.11",
-    "Microsoft.CSharp": "4.0.1"
+    "Microsoft.CSharp": "4.0.1",
+    "Microsoft.Extensions.Configuration": "1.0.0",
+    "System.Data.SqlClient": "4.1.0"
   },
 
   "frameworks": {

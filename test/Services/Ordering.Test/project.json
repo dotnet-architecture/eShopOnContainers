@@ -4,13 +4,7 @@
     "debugType": "portable"
   },
   "dependencies": {
-    "System.Runtime.Serialization.Primitives": "4.1.1",
-    "xunit": "2.1.0",
-    "dotnet-test-xunit": "2.2.0-preview2-build1029",
-    "Ordering.Domain": "1.0.0-*",
-    "Ordering.SqlData": "1.0.0-*",
-    "Microsoft.EntityFrameworkCore.SqlServer": "1.0.0",
-    "Microsoft.EntityFrameworkCore.InMemory": "1.0.0"
+    
   },
   "testRunner": "xunit",
   "frameworks": {

@@ -7,6 +7,8 @@
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
+    using Ordering.Infrastructure;
+    using System.Reflection;
 
     public class Startup
     {
@@ -14,8 +16,8 @@
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
+                .AddJsonFile("settings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile($"settings.{env.EnvironmentName}.json", optional: true);
 
             if (env.IsDevelopment())
             {
@@ -34,12 +36,13 @@
             // Add framework services.
             services.AddMvc();
 
-            //services.AddEntityFrameworkSqlServer()
-            //    .AddDbContext<OrderingDbContext>(options =>
-            //    {
-            //        options.UseSqlServer(Configuration["ConnectionString"]);
-            //    });
-            
+            services.AddEntityFrameworkSqlServer()
+                .AddDbContext<OrderingContext>(options =>
+                {
+                    options.UseSqlServer(Configuration["ConnectionString"],
+                        sqlop=>sqlop.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name));
+                });
+
             services.AddSwaggerGen();
             services.ConfigureSwaggerGen(options =>
             {

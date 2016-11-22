@@ -6,11 +6,11 @@
   </PropertyGroup>
   <Import Project="$(VSToolsPath)\DotNet\Microsoft.DotNet.Props" Condition="'$(VSToolsPath)' != ''" />
   <PropertyGroup Label="Globals">
-    <ProjectGuid>5da6ef13-c7e0-4ec4-8599-a61c6ac2628d</ProjectGuid>
-    <RootNamespace>Microsoft.eShopOnContainers.Services.Ordering.SqlData</RootNamespace>
+    <ProjectGuid>95f1f07c-4d92-4742-bd07-e5b805aab651</ProjectGuid>
+    <RootNamespace>Microsoft.eShopOnContainers.Services.Ordering.Infrastructure</RootNamespace>
     <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'=='' ">.\obj</BaseIntermediateOutputPath>
     <OutputPath Condition="'$(OutputPath)'=='' ">.\bin\</OutputPath>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup>
     <SchemaVersion>2.0</SchemaVersion>

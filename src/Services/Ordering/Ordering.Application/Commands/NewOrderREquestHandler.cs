@@ -4,7 +4,7 @@
     using System;
     using System.Threading.Tasks;
 
-    public class NewOrderREquestHandler
+    public class NewOrderRequestHandler
         : IAsyncRequestHandler<NewOrderRequest, bool>
     {
         public Task<bool> Handle(NewOrderRequest message)

@@ -54,5 +54,6 @@
       "Dockerfile"
     ]
   },
-  "scripts": {}
+  "scripts": {},
+  "userSecretsId": "aspnet-Catalog.API-20161122013618"
 }
