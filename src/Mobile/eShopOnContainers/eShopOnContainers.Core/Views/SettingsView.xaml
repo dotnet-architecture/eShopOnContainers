@@ -2,7 +2,10 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="eShopOnContainers.Core.Views.SettingsView"   
-             xmlns:controls="clr-namespace:eShopOnContainers.Core.Controls;assembly=eShopOnContainers.Core"
+             xmlns:controls="clr-namespace:eShopOnContainers.Core.Controls;assembly=eShopOnContainers.Core"    
+             xmlns:animations="clr-namespace:eShopOnContainers.Core.Animations;assembly=eShopOnContainers.Core"
+             xmlns:triggers="clr-namespace:eShopOnContainers.Core.Triggers;assembly=eShopOnContainers.Core"
+             xmlns:behaviors="clr-namespace:eShopOnContainers.Core.Behaviors;assembly=eShopOnContainers.Core"   
              Title="Settings">
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -39,14 +42,37 @@
                 <Setter Property="Margin" 
                         Value="12, 12, 12, 0" />
             </Style>
+
+            <animations:StoryBoard 
+                x:Key="MockServicesAnimation"    
+                Target="{x:Reference MockServices}">
+                <animations:FadeInAnimation 
+                    Direction="Up">
+                    <animations:FadeInAnimation.Duration>
+                        <OnPlatform 
+                            x:TypeArguments="x:String" 
+                            Android="500"
+                            iOS="0"
+                            WinPhone="500"/>
+                    </animations:FadeInAnimation.Duration>
+                </animations:FadeInAnimation>
+            </animations:StoryBoard>
             
         </ResourceDictionary>
     </ContentPage.Resources>
+    <ContentPage.Triggers>
+        <EventTrigger 
+            Event="Appearing">
+            <triggers:BeginAnimation   
+                Animation="{StaticResource MockServicesAnimation}" />
+        </EventTrigger>
+    </ContentPage.Triggers>
     <Grid
         BackgroundColor="{StaticResource BackgroundColor}">
         <!-- SETTINGS -->
         <ScrollView>
-            <StackLayout>
+            <StackLayout
+                x:Name="MockServices">
                 <!-- MOCK SERVICES -->
                 <Grid>
                     <Grid.ColumnDefinitions>
