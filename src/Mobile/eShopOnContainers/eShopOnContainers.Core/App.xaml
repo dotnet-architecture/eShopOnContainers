@@ -126,7 +126,7 @@
                 <Setter Property="effects:LineColorEffect.ApplyLineColor"
                         Value="True" />
                 <Setter Property="effects:LineColorEffect.LineColor"
-                        Value="{StaticResource WhiteColor}" />
+                        Value="{StaticResource BlackColor}" />
                 <Style.Triggers>
                     <Trigger TargetType="Entry"
                              Property="IsFocused" 

@@ -81,9 +81,7 @@
                 Grid.Row="0"
                 Grid.RowSpan="2"
                 Style="{StaticResource AddButtonStyle}">
-                <controls:CartButton>
-                    
-                </controls:CartButton>
+                <controls:CartButton />
             </Grid>
             <Label 
                 Grid.Row="1"

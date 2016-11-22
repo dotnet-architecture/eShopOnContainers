@@ -23,11 +23,11 @@ namespace eShopOnContainers.Core.Services.Catalog
 
         private ObservableCollection<CatalogItem> MockCatalog = new ObservableCollection<CatalogItem>
         {
-            new CatalogItem { Id = "1", PictureUri = Device.OS != TargetPlatform.Windows? "fake_product_01" : "Assets/fake_product_01.png", Name = ".NET Bot Blue Sweatshirt (M)", Price = 19.50M, CatalogBrand = "Visual Studio", CatalogType = "T-Shirt" },
-            new CatalogItem { Id = "2", PictureUri = Device.OS != TargetPlatform.Windows? "fake_product_02": "Assets/fake_product_02.png", Name = ".NET Bot Purple Sweatshirt (M)", Price = 19.50M, CatalogBrand = "Visual Studio", CatalogType = "T-Shirt" },
-            new CatalogItem { Id = "3", PictureUri = Device.OS != TargetPlatform.Windows? "fake_product_03": "Assets/fake_product_03.png", Name = ".NET Bot Black Sweatshirt (M)", Price = 19.95M, CatalogBrand = "Visual Studio", CatalogType = "T-Shirt" },
-            new CatalogItem { Id = "4", PictureUri = Device.OS != TargetPlatform.Windows? "fake_product_04": "Assets/fake_product_04.png", Name = ".NET Black Cupt", Price = 17.00M, CatalogBrand = "Visual Studio", CatalogType = "Mug" },
-            new CatalogItem { Id = "5", PictureUri = Device.OS != TargetPlatform.Windows? "fake_product_05": "Assets/fake_product_05.png", Name = "Azure Black Sweatshirt (M)", Price = 19.50M, CatalogBrand = "Azure", CatalogType = "T-Shirt" }
+            new CatalogItem { Id = "1", PictureUri = Device.OS != TargetPlatform.Windows ? "fake_product_01.png" : "Assets/fake_product_01.png", Name = ".NET Bot Blue Sweatshirt (M)", Price = 19.50M, CatalogBrand = "Visual Studio", CatalogType = "T-Shirt" },
+            new CatalogItem { Id = "2", PictureUri = Device.OS != TargetPlatform.Windows ? "fake_product_02.png" : "Assets/fake_product_02.png", Name = ".NET Bot Purple Sweatshirt (M)", Price = 19.50M, CatalogBrand = "Visual Studio", CatalogType = "T-Shirt" },
+            new CatalogItem { Id = "3", PictureUri = Device.OS != TargetPlatform.Windows ? "fake_product_03.png" : "Assets/fake_product_03.png", Name = ".NET Bot Black Sweatshirt (M)", Price = 19.95M, CatalogBrand = "Visual Studio", CatalogType = "T-Shirt" },
+            new CatalogItem { Id = "4", PictureUri = Device.OS != TargetPlatform.Windows ? "fake_product_04.png" : "Assets/fake_product_04.png", Name = ".NET Black Cupt", Price = 17.00M, CatalogBrand = "Visual Studio", CatalogType = "Mug" },
+            new CatalogItem { Id = "5", PictureUri = Device.OS != TargetPlatform.Windows ? "fake_product_05.png" : "Assets/fake_product_05.png", Name = "Azure Black Sweatshirt (M)", Price = 19.50M, CatalogBrand = "Azure", CatalogType = "T-Shirt" }
         };
 
         public async Task<ObservableCollection<CatalogItem>> GetCatalogAsync()
