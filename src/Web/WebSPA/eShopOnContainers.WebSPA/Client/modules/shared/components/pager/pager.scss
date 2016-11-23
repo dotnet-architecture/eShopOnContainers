@@ -1,0 +1,30 @@
+.pager {
+    margin-bottom: 20px;
+    margin-top: 20px;
+    margin-left: 0px;
+    margin-right: -30px;
+
+    &-previous {
+        position: absolute;
+        left: 0;
+        top: 0;
+        cursor: pointer;
+    }
+
+    &-text {
+        color: #83d01b;
+    }
+
+    &-next {
+        position: absolute;
+        right: 15px;
+        top: 0;
+        cursor: pointer;
+    }
+
+    &-isDisabled {
+        cursor: not-allowed;
+        opacity: .5;
+        pointer-events: none;
+    }
+}

@@ -1,0 +1,63 @@
+<div class="esh-basket-header">
+    <ul class="container">
+        <li class="esh-basket-header-back" routerLink="/catalog">Back to list</li>
+    </ul>
+</div>
+<div class="container esh-basket-container">
+    <div class="row">
+        <div class="col-md-12">
+            <section>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th class="esh-basket-product-column">
+                                PRODUCT
+                            </th>
+                            <th>
+
+                            </th>
+                            <th>
+                                BRAND
+                            </th>
+                            <th>
+                                PRICE
+                            </th>
+                            <th>
+                                QUANTITY
+                            </th>
+                            <th>
+                                COST
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of basket?.items">
+                            <td class="esh-basket-product-column"><img class="esh-basket-product-image" src="{{item.pictureUrl}}" /></td>
+                            <td class="esh-basket-product-column">{{item.productName}}</td>
+                            <td class="esh-basket-product-column">ROSLYN</td>
+                            <td class="esh-basket-product-column">$ {{item.unitPrice}}</td>
+                            <td class="esh-basket-product-column">
+                                <input type="number" style="width:100px" min="1" [(ngModel)]="item.quantity" (change)="itemQuantityChanged(item)"/> 
+                            </td>
+                            <td class="esh-basket-product-column esh-basket-total-value">$ {{item.unitPrice * item.quantity}}</td>
+                        </tr>
+                        <tr class="esh-basket-totals">
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>
+                            </td>
+                            <td>
+                                <div class="esh-basket-total-value">
+                                    <div class="esh-basket-total-label"><span>TOTAL</span></div>
+                                    <span>$ {{totalPrice}}</span>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </div>
+    </div>
+</div>

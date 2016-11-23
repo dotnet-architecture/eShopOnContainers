@@ -5,6 +5,7 @@ import { ICatalogItem }         from '../shared/models/catalogItem.model';
 import { ICatalogType }         from '../shared/models/catalogType.model';
 import { ICatalogBrand }        from '../shared/models/catalogBrand.model';
 import { IPager }               from '../shared/models/pager.model';
+import { BasketWrapperService}  from '../shared/services/basket.wrapper.service';
 
 @Component({
     selector: 'esh-catalog',
@@ -19,11 +20,11 @@ export class CatalogComponent implements OnInit {
     typeSelected: number;
     paginationInfo: IPager;
 
-    constructor(private service: CatalogService) { }
+    constructor(private service: CatalogService, private basketService: BasketWrapperService) { }
 
     ngOnInit() {
         this.getBrands();
-        this.getCatalog(10,0);
+        this.getCatalog(10, 0);
         this.getTypes();
     }
 
@@ -49,8 +50,12 @@ export class CatalogComponent implements OnInit {
         this.getCatalog(this.paginationInfo.itemsPage, value);
     }
 
+    addToCart(item: ICatalogItem) {
+        this.basketService.addItemToBasket(item);
+    }
+
     getCatalog(pageSize:number, pageIndex: number, brand?: number, type?: number) {
-        this.service.getCatalog(brand, type).subscribe(catalog => {
+        this.service.getCatalog(pageIndex, pageSize, brand, type).subscribe(catalog => {
             this.catalog = catalog;
             console.log('catalog items retrieved: ' + catalog.count);
 
@@ -58,7 +63,8 @@ export class CatalogComponent implements OnInit {
                 actualPage : catalog.pageIndex,
                 itemsPage : catalog.pageSize,
                 totalItems : catalog.count,
-                totalPages : (catalog.count / catalog.pageSize)
+                totalPages: Math.ceil(catalog.count / catalog.pageSize),
+                items: catalog.pageSize
             };
 
             console.log(this.paginationInfo);

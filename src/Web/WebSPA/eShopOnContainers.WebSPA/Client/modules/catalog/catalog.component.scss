@@ -1,9 +1,13 @@
 @import '../_variables.scss';
 
-.catalog{
+select::-ms-expand {
+    display: none;
+}
+
+.catalog {
     &-banner {
         height: 258px;
-        vertical-align:middle;
+        vertical-align: middle;
 
         &-image {
             width: 100%;
@@ -13,7 +17,7 @@
         }
 
         &-text {
-            position:relative;
+            position: relative;
             top: 75px;
         }
     }
@@ -22,22 +26,70 @@
         height: 65px;
 
         &-container {
-            position:absolute;
-            width:100%;
+            position: absolute;
+            width: 100%;
             background-color: $primary-colour;
-            left:0;
+            left: 0;
             height: 65px;
+        }
+
+        &-button {
+            width: 45px;
+            height: 45px;
+            padding: 6px 20px 10px 8px;
+            background-color: $primary-accent;
+            color: white;
+            font-size: 16px;
+            margin: 10px 0;
+            border: none;
+            position: absolute;
+        }
+
+        &-select {
+            background-color: transparent;
+            padding: 10px;
+            margin: 10px;
+            margin-right: 20px;
+            color: #fff;
+            padding-top: 20px;
+            padding-bottom: 3px;
+            min-width: 140px;
+            border-color: #37c7ca;
+            max-height: 43px;
+            -webkit-appearance: none;
+
+            & option {
+                background-color: #00a69c;
+            }
+        }
+
+        &-wrapper {
+            z-index: 0;
+            display: inline-block;
+            margin-left: -10px;
+        }
+
+        &-wrapper::before {
+            content: attr(data-name);
+            opacity: 0.5;
+            z-index: 1;
+            text-transform: uppercase;
+            position: absolute;
+            font-size: 10px;
+            margin-top: 15px;
+            margin-left: 21px;
+            color: white;
         }
     }
 
-    &-content{
+    &-content {
         margin-top: 10px;
 
         &-item {
             text-align: center;
+            margin-bottom: 20px;
 
-            &-image{
-
+            &-image {
             }
 
             &-button {
@@ -48,7 +100,26 @@
                 color: white;
                 font-size: 16px;
                 margin: 10px 0;
-                border:none;
+                border: none;
+                cursor: pointer;
+            }
+
+            &-title {
+                text-align: center;
+                text-transform: uppercase;
+                font-weight: 300;
+                font-size: 16px;
+                /*margin-top: 20px;*/
+            }
+
+            &-price {
+                text-align: center;
+                font-weight: 900;
+                font-size: 28px;
+            }
+
+            &-price::before {
+                content: '$';
             }
         }
     }
