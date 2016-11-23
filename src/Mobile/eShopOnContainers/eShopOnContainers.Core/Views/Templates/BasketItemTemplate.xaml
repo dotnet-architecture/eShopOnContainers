@@ -2,7 +2,7 @@
 <ContentView
     xmlns="http://xamarin.com/schemas/2014/forms"     
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"  
-    x:Class="eShopOnContainers.Core.Views.Templates.CartOrderItemTemplate"     
+    x:Class="eShopOnContainers.Core.Views.Templates.BasketItemTemplate"     
     xmlns:controls="clr-namespace:eShopOnContainers.Core.Controls;assembly=eShopOnContainers.Core"   
     xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms">
     <ContentView.Resources>
@@ -82,7 +82,7 @@
             <ffimageloading:CachedImage
                 Grid.Column="0"
                 Grid.Row="0"
-                Source="{Binding ProductImage, Converter={StaticResource ImageConverter}}"        
+                Source="{Binding PictureUrl, Converter={StaticResource ImageConverter}}"        
                 CacheDuration="30"                      
                 CacheType="Disk"             
                 DownsampleToViewSize="True"

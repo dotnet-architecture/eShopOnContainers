@@ -1,7 +1,10 @@
-﻿namespace eShopOnContainers.Core.Models.User
+﻿using System;
+
+namespace eShopOnContainers.Core.Models.User
 {
     public class User
     {
+        public string GuidUser { get; set; }
         public string Name { get; set; }
         public string LastName { get; set; }
         public string CardNumber { get; set; }

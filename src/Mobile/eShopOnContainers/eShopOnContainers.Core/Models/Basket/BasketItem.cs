@@ -1,26 +1,33 @@
 ﻿using eShopOnContainers.Core.Helpers;
-using eShopOnContainers.Core.ViewModels.Base;
 using eShopOnContainers.ViewModels.Base;
 using System;
 using System.Collections.ObjectModel;
-using Xamarin.Forms;
 
-namespace eShopOnContainers.Core.Models.Orders
+namespace eShopOnContainers.Core.Models.Basket
 {
-    public class OrderItem : ExtendedBindableObject
+    public class BasketItem : ExtendedBindableObject
     {
-        private string _productImage;
+        private string _id;
         private string _productId;
-        private Guid _orderId;
         private string _productName;
         private decimal _unitPrice;
         private int _quantity;
-        private decimal _discount;
+        private string _pictureUrl;
         private ObservableCollection<int> _numbers;
 
-        public OrderItem()
+        public BasketItem()
         {
             Numbers = NumericHelper.GetNumericList();
+        }
+
+        public string Id
+        {
+            get { return _id; }
+            set
+            {
+                _id = value;
+                RaisePropertyChanged(() => Id);
+            }
         }
 
         public string ProductId
@@ -30,16 +37,6 @@ namespace eShopOnContainers.Core.Models.Orders
             {
                 _productId = value;
                 RaisePropertyChanged(() => ProductId);
-            }
-        }
-
-        public Guid OrderId
-        {
-            get { return _orderId; }
-            set
-            {
-                _orderId = value;
-                RaisePropertyChanged(() => OrderId);
             }
         }
 
@@ -70,33 +67,20 @@ namespace eShopOnContainers.Core.Models.Orders
             {
                 _quantity = value;
                 RaisePropertyChanged(() => Quantity);
-                RaisePropertyChanged(() => Total);
-
-                MessagingCenter.Send(this, MessengerKeys.UpdateProduct);
             }
         }
 
-        public decimal Discount
+        public string PictureUrl
         {
-            get { return _discount; }
+            get { return _pictureUrl; }
             set
             {
-                _discount = value;
-                RaisePropertyChanged(() => Discount);
+                _pictureUrl = value;
+                RaisePropertyChanged(() => PictureUrl);
             }
         }
 
         public decimal Total { get { return Quantity * UnitPrice; } }
-
-        public string ProductImage
-        {
-            get { return _productImage; }
-            set
-            {
-                _productImage = value;
-                RaisePropertyChanged(() => ProductImage);
-            }
-        }
 
         public ObservableCollection<int> Numbers
         {

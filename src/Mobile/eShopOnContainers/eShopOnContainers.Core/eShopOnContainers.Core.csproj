@@ -45,8 +45,8 @@
     <Compile Include="Behaviors\Base\BindableBehavior.cs" />
     <Compile Include="Behaviors\EventToCommandBehavior.cs" />
     <Compile Include="Controls\BindablePicker.cs" />
-    <Compile Include="Controls\CartButton.xaml.cs">
-      <DependentUpon>CartButton.xaml</DependentUpon>
+    <Compile Include="Controls\AddBasketButton.xaml.cs">
+      <DependentUpon>AddBasketButton.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\CustomTabbedPage.cs" />
     <Compile Include="Controls\ToggleButton.cs" />
@@ -64,10 +64,12 @@
     <Compile Include="GlobalSettings.cs" />
     <Compile Include="Helpers\EasingHelper.cs" />
     <Compile Include="Helpers\NumericHelper.cs" />
+    <Compile Include="Models\Basket\BasketItem.cs" />
     <Compile Include="Models\Catalog\CatalogBrand.cs" />
     <Compile Include="Models\Catalog\CatalogRoot.cs" />
     <Compile Include="Models\Catalog\CatalogType.cs" />
     <Compile Include="Models\Navigation\TabParameter.cs" />
+    <Compile Include="Models\Basket\CustomerBasket.cs" />
     <Compile Include="Models\Orders\Order.cs" />
     <Compile Include="Models\Orders\OrderItem.cs" />
     <Compile Include="Models\Orders\OrderStatus.cs" />
@@ -81,10 +83,11 @@
     <Compile Include="Services\Navigation\NavigationService.cs" />
     <Compile Include="Services\OpenUrl\IOpenUrlService.cs" />
     <Compile Include="Services\OpenUrl\OpenUrlService.cs" />
-    <Compile Include="Services\Orders\OrdersMockService.cs" />
-    <Compile Include="Services\Orders\IOrdersService.cs" />
+    <Compile Include="Services\Basket\BasketMockService.cs" />
+    <Compile Include="Services\Basket\IBasketService.cs" />
     <Compile Include="Services\Catalog\CatalogMockService.cs" />
     <Compile Include="Services\Catalog\ICatalogService.cs" />
+    <Compile Include="Services\Basket\BasketService.cs" />
     <Compile Include="Services\RequestProvider\IRequestProvider.cs" />
     <Compile Include="Services\RequestProvider\RequestProvider.cs" />
     <Compile Include="Services\User\IUserService.cs" />
@@ -98,7 +101,7 @@
     <Compile Include="ViewModels\Base\MessengerKeys.cs" />
     <Compile Include="ViewModels\Base\ViewModelBase.cs" />
     <Compile Include="ViewModels\Base\ViewModelLocator.cs" />
-    <Compile Include="ViewModels\CartViewModel.cs" />
+    <Compile Include="ViewModels\BasketViewModel.cs" />
     <Compile Include="ViewModels\CatalogViewModel.cs" />
     <Compile Include="ViewModels\CheckoutViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
@@ -106,8 +109,8 @@
     <Compile Include="ViewModels\OrderDetailViewModel.cs" />
     <Compile Include="ViewModels\ProfileViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
-    <Compile Include="Views\CartView.xaml.cs">
-      <DependentUpon>CartView.xaml</DependentUpon>
+    <Compile Include="Views\BasketView.xaml.cs">
+      <DependentUpon>BasketView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\CheckoutView.xaml.cs">
       <DependentUpon>CheckoutView.xaml</DependentUpon>
@@ -136,8 +139,8 @@
     <Compile Include="Views\SettingsView.xaml.cs">
       <DependentUpon>SettingsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Templates\CartOrderItemTemplate.xaml.cs">
-      <DependentUpon>CartOrderItemTemplate.xaml</DependentUpon>
+    <Compile Include="Views\Templates\BasketItemTemplate.xaml.cs">
+      <DependentUpon>BasketItemTemplate.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Templates\OrderItemTemplate.xaml.cs">
       <DependentUpon>OrderItemTemplate.xaml</DependentUpon>
@@ -254,7 +257,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\CartView.xaml">
+    <EmbeddedResource Include="Views\BasketView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -314,13 +317,13 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\Templates\CartOrderItemTemplate.xaml">
+    <EmbeddedResource Include="Views\Templates\BasketItemTemplate.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Controls\CartButton.xaml">
+    <EmbeddedResource Include="Controls\AddBasketButton.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -338,9 +341,7 @@
       <ErrorText>Este proyecto hace referencia a los paquetes NuGet que faltan en este equipo. Use la restauración de paquetes NuGet para descargarlos. Para obtener más información, consulte http://go.microsoft.com/fwlink/?LinkID=322105. El archivo que falta es {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\..\packages\Xamarin.Forms.2.3.2.127\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Xamarin.Forms.2.3.2.127\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets'))" />
-    <Error Condition="!Exists('..\..\packages\StyleCop.MSBuild.5.0.0-alpha01\build\StyleCop.MSBuild.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\StyleCop.MSBuild.5.0.0-alpha01\build\StyleCop.MSBuild.targets'))" />
   </Target>
-  <Import Project="..\..\packages\StyleCop.MSBuild.5.0.0-alpha01\build\StyleCop.MSBuild.targets" Condition="Exists('..\..\packages\StyleCop.MSBuild.5.0.0-alpha01\build\StyleCop.MSBuild.targets')" />
   <Import Project="..\..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
   <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
     <Error Condition="!Exists('..\..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />

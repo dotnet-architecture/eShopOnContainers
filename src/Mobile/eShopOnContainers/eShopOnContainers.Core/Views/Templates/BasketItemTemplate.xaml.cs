@@ -2,9 +2,9 @@
 
 namespace eShopOnContainers.Core.Views.Templates
 {
-    public partial class CartOrderItemTemplate : ContentView
+    public partial class BasketItemTemplate : ContentView
     {
-        public CartOrderItemTemplate()
+        public BasketItemTemplate()
         {
             InitializeComponent();
         }

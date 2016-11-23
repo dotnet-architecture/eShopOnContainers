@@ -2,9 +2,9 @@
 
 namespace eShopOnContainers.Core.Views
 {
-    public partial class CartView : ContentPage
+    public partial class BasketView : ContentPage
     {
-        public CartView()
+        public BasketView()
         {
             InitializeComponent();
         }

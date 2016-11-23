@@ -2,10 +2,13 @@
 {
     public class MessengerKeys
     {
-        // Add product to cart
+        // Add product to basket
         public const string AddProduct = "AddProduct";
 
-        // Update product cart
+        // Update Basket
+        public const string UpdateBasket = "UpdateBasket";
+
+        // Update product basket
         public const string UpdateProduct = "UpdateProduct";
 
         // Filter

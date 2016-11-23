@@ -6,6 +6,9 @@ using eShopOnContainers.Core.ViewModels.Base;
 using eShopOnContainers.Core.Models.Catalog;
 using eShopOnContainers.Core.Services.Catalog;
 using System.Windows.Input;
+using eShopOnContainers.Core.Services.User;
+using System.Linq;
+using eShopOnContainers.Core.Services.Basket;
 
 namespace eShopOnContainers.Core.ViewModels
 {
@@ -17,10 +20,16 @@ namespace eShopOnContainers.Core.ViewModels
         private ObservableCollection<CatalogType> _types;
         private CatalogType _type;
 
+        private IUserService _userService;
+        private IBasketService _basketService;
         private ICatalogService _productsService;
 
-        public CatalogViewModel(ICatalogService productsService)
+        public CatalogViewModel(IUserService userService,
+            IBasketService basketService,
+            ICatalogService productsService)
         {
+            _userService = userService;
+            _basketService = basketService;
             _productsService = productsService;
         }
 
@@ -92,6 +101,15 @@ namespace eShopOnContainers.Core.ViewModels
             Brands = await _productsService.GetCatalogBrandAsync();
             Types = await _productsService.GetCatalogTypeAsync();
 
+            var user = await _userService.GetUserAsync();
+            var basket = await _basketService.GetBasketAsync(user.GuidUser);
+
+            if (basket != null && basket.Items.Any())
+            {
+                System.Diagnostics.Debug.WriteLine(basket.Items.Count);
+                MessagingCenter.Send(this, MessengerKeys.UpdateBasket, basket.Items);
+            }
+
             IsBusy = false;
         }
 
@@ -102,7 +120,7 @@ namespace eShopOnContainers.Core.ViewModels
 
         private async void Filter()
         {
-            if(Brand == null && Type == null)
+            if (Brand == null && Type == null)
             {
                 return;
             }

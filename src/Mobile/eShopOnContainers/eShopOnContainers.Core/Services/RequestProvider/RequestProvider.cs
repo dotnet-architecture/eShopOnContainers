@@ -34,6 +34,7 @@ namespace eShopOnContainers.Core.Services.RequestProvider
             await HandleResponse(response);
 
             string serialized = await response.Content.ReadAsStringAsync();
+
             TResult result = await Task.Run(() => 
                 JsonConvert.DeserializeObject<TResult>(serialized, _serializerSettings));
 
@@ -91,7 +92,8 @@ namespace eShopOnContainers.Core.Services.RequestProvider
             {
                 var content = await response.Content.ReadAsStringAsync();
 
-                if (response.StatusCode == HttpStatusCode.Forbidden || response.StatusCode == HttpStatusCode.Unauthorized)
+                if (response.StatusCode == HttpStatusCode.Forbidden 
+                    || response.StatusCode == HttpStatusCode.Unauthorized)
                 {
                     throw new ServiceAuthenticationException(content);
                 }

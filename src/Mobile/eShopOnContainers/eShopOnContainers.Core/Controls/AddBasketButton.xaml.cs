@@ -2,9 +2,9 @@
 
 namespace eShopOnContainers.Core.Controls
 {
-    public partial class CartButton : ContentView
+    public partial class AddBasketButton : ContentView
     {
-        public CartButton()
+        public AddBasketButton()
         {
             InitializeComponent();
         }
