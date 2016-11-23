@@ -9,6 +9,7 @@ import { AppService } from './app.service';
 import { AppComponent } from './app.component';
 import { SharedModule }  from './shared/shared.module';
 import { CatalogModule }  from './catalog/catalog.module';
+import { BasketModule } from './basket/basket.module';
 
 @NgModule({
     declarations: [AppComponent],
@@ -18,7 +19,8 @@ import { CatalogModule }  from './catalog/catalog.module';
         HttpModule,
         // Only module that app module loads
         SharedModule.forRoot(),
-        CatalogModule
+        CatalogModule,
+        BasketModule
     ],
     providers: [
         AppService

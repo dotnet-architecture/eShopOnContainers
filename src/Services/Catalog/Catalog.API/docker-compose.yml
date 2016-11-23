@@ -16,7 +16,7 @@ services:
       - catalog.data
 
   catalog.data:
-    image: eshop/mssql-server-private-preview
+    image: microsoft/mssql-server-linux
     environment:
       - SA_PASSWORD=Pass@word
       - ACCEPT_EULA=Y

@@ -16,31 +16,36 @@ module.exports = merge({
     },
     module: {
         rules: [
-            { test: /\.ts$/, exclude: [/\.(spec|e2e)\.ts$/], loaders: ['awesome-typescript-loader?forkChecker=true ', 'angular2-template-loader'] },
+            {
+                test: /\.ts$/, exclude: [/\.(spec|e2e)\.ts$/],
+                loaders: ['awesome-typescript-loader?forkChecker=true ', 'angular2-template-loader', 'angular2-router-loader']
+            },
             { test: /\.html$/, loader: "html" },
             { test: /\.css/, loader: extractCSS.extract(['css']) },
             { test: /\.scss$/, loaders: ['raw-loader', 'sass-loader?sourceMap'] },
             { test: /\.json$/, loader: 'json-loader' },
             {
                 test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
-                loader: "url?limit=10000&mimetype=application/font-woff"
+                loader: "file"
             }, {
                 test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
-                loader: "url?limit=10000&mimetype=application/font-woff"
+                loader: "file"
             }, {
                 test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
-                loader: "url?limit=10000&mimetype=application/octet-stream"
+                loader: "file"
             }, {
                 test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
                 loader: "file"
-            }, {
-                test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-                loader: "url?limit=10000&mimetype=image/svg+xml"
-            },
+            }, 
             {
-                test: /\.(png|jpg|gif)$/,
+                test: /\.(png|jpg|gif|svg)$/,
                 loader: "file"
             }
+
+            //        {
+            //        test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+            //loader: "url?limit=10000&mimetype=image/svg+xml"
+            //}
         ]
     },
     entry: {

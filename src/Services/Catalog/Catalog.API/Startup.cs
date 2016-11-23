@@ -53,7 +53,14 @@
                 });
             });
 
-            services.AddCors();
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials());
+            });
 
             services.AddMvc(mvcoptions =>
             {
@@ -78,7 +85,7 @@
                 .Wait();
 
             // Use frameworks
-            app.UseCors(policyBuilder => policyBuilder.AllowAnyOrigin());
+            app.UseCors("CorsPolicy");
 
             app.UseMvc();
 

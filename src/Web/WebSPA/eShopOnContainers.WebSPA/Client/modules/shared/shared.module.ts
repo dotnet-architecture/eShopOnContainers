@@ -12,68 +12,66 @@ import { ErrorMessageComponent } from './forms/error-message.component';
 import { ErrorSummaryComponent } from './forms/error-summary.component';
 import { FormControlService } from './forms/form-control.service';
 
-import { HeaderComponent } from './layout/header.component';
-import { FooterComponent } from './layout/footer.component';
 // Services
 import { DataService } from './services/data.service';
 import { UtilityService } from './services/utility.service';
 import { UppercasePipe } from './pipes/uppercase.pipe';
+import { BasketWrapperService} from './services/basket.wrapper.service';
 
 //Components:
 import {Pager } from './components/pager/pager';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    RouterModule,
-    NgbModule.forRoot(),
-    // No need to export as these modules don't expose any components/directive etc'
-    HttpModule,
-    JsonpModule
-  ],
-  declarations: [
-    DynamicFormComponent,
-    DynamicFormControlComponent,
-    ErrorMessageComponent,
-    ErrorSummaryComponent,
-    FooterComponent,
-    HeaderComponent,
-    PageHeadingComponent,
-    UppercasePipe, 
-    Pager
-  ],
-  exports: [
-    // Modules
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    RouterModule,
-    NgbModule,
-    // Providers, Components, directive, pipes
-    DynamicFormComponent,
-    DynamicFormControlComponent,
-    ErrorSummaryComponent,
-    ErrorMessageComponent,
-    FooterComponent,
-    HeaderComponent,
-    PageHeadingComponent,
-    UppercasePipe, 
-    Pager
-  ]
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        RouterModule,
+        NgbModule.forRoot(),
+        // No need to export as these modules don't expose any components/directive etc'
+        HttpModule,
+        JsonpModule
+    ],
+    declarations: [
+        DynamicFormComponent,
+        DynamicFormControlComponent,
+        ErrorMessageComponent,
+        ErrorSummaryComponent,
+        PageHeadingComponent,
+        UppercasePipe,
+        Pager
+    ],
+    exports: [
+        // Modules
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        RouterModule,
+        NgbModule,
+        // Providers, Components, directive, pipes
+        DynamicFormComponent,
+        DynamicFormControlComponent,
+        ErrorSummaryComponent,
+        ErrorMessageComponent,
+        //FooterComponent,
+        //HeaderComponent,
+        PageHeadingComponent,
+        UppercasePipe,
+        Pager
+    ]
 
 })
 export class SharedModule {
-  static forRoot(): ModuleWithProviders {
-    return {
-      ngModule: SharedModule,
-      providers: [
-        // Providers
-        DataService,
-        FormControlService,
-        UtilityService
-      ]
-    };
-  }
+    static forRoot(): ModuleWithProviders {
+        return {
+            ngModule: SharedModule,
+            providers: [
+                // Providers
+                DataService,
+                FormControlService,
+                UtilityService,
+                BasketWrapperService
+            ]
+        };
+    }
 }

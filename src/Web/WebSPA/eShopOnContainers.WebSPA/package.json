@@ -72,6 +72,7 @@
     "@types/uglify-js": "2.6.28",
     "@types/webpack": "1.12.35",
     "angular2-template-loader": "0.6.0",
+    "angular2-router-loader": "0.3.4",
     "awesome-typescript-loader": "2.2.4",
     "codelyzer": "1.0.0-beta.3",
     "copy-webpack-plugin": "^4.0.0",

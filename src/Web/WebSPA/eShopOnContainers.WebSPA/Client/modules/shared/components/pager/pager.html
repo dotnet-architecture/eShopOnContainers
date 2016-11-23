@@ -1,9 +1,10 @@
-<div class="row">
+<div class="row pager">
     <div class="col-xs-4">
         <nav>
             <ul>
                 <li class="page-item">
-                    <span class="text previous" id="Previous"
+                    <span class="pager-text pager-previous" id="Previous"
+                       [hidden]="buttonStates?.previousDisabled"
                        (click)="onPreviousCliked($event)"
                        aria-label="Previous">
                         Previous
@@ -12,12 +13,13 @@
             </ul>
         </nav>
     </div>
-    <div class="col-xs-4 u-align-center"><span>Showing {{model?.itemsPage}} of {{model?.totalItems}} products - Page {{model?.actualPage}} - {{model?.totalPages}}</span></div>
+    <div class="col-xs-4 u-align-center"><span>Showing {{model?.items}} of {{model?.totalItems}} products - Page {{model?.actualPage + 1}} - {{model?.totalPages}}</span></div>
     <div class="col-xs-4">
         <nav>
             <ul>
                 <li class="page-item">
-                    <span class="text next" id="Next"
+                    <span class="pager-text pager-next" id="Next"
+                       [hidden]="buttonStates?.nextDisabled"
                        (click)="onNextClicked($event)"
                        aria-label="Next">
                         Next

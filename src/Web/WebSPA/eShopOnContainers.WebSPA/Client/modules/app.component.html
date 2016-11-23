@@ -1,14 +1,41 @@
-<!-- header component -->
-<appc-header></appc-header>
+<header class="navbar navbar-light navbar-static-top">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-10">
+                <a class="navbar-brand" routerLink="catalog">
+                    <img src="../images/brand.png" />
+                </a>
+            </div>
+            <div class="col-sm-2">
+                <esh-basket-status></esh-basket-status>
+            </div>
+        </div>
+    </div>
+</header>
 
-<div class="container">
-    <!-- component routing placeholder -->
-    <router-outlet></router-outlet>
 
-</div>
 
-<div class="container">
-    <!-- footer component -->
-    <appc-footer></appc-footer>
+<!-- component routing placeholder -->
+<router-outlet></router-outlet>
 
-</div>
+
+<footer class="app-footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <br>
+                <div class="app-footer-brand">
+                    <img src="../images/brand_dark.png" />
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <br>
+                <br>
+                <br>
+                <div class="app-footer-text hidden-xs">e-ShoponContainers. All right reserved</div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+

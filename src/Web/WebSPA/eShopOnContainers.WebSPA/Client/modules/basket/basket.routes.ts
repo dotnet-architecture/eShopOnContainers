@@ -1,9 +1,9 @@
 //import { Routes, RouterModule } from '@angular/router';
 
-//import { CatalogComponent } from './catalog.component';
+//import { BasketComponent } from './basket.component';
 
 //const routes: Routes = [
-//    { path: '', component: CatalogComponent }
+//    { path: '', component: BasketComponent }
 //];
 
 //export const routing = RouterModule.forChild(routes);
