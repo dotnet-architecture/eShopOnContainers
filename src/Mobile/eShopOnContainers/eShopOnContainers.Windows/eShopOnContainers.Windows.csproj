@@ -105,12 +105,19 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\TabItem.xaml.cs">
+      <DependentUpon>TabItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Converters\TabBadgeColorConverter.cs" />
+    <Compile Include="Converters\TabBadgeTextConverter.cs" />
+    <Compile Include="Converters\TabIconConverter.cs" />
     <Compile Include="Effects\EntryLineColorEffect.cs" />
+    <Compile Include="Extensions\VisualTreeExtensions.cs" />
+    <Compile Include="Helpers\ColorHelper.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Renderers\CustomSwitchRenderer.cs" />
     <Compile Include="Renderers\CustomTabbedPageRenderer.cs" />
     <Compile Include="Renderers\SlideDownMenuPageRenderer.cs" />
   </ItemGroup>
@@ -121,6 +128,7 @@
     <None Include="Windows_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\app_settings.png" />
     <Content Include="Assets\circle_button_background.png" />
     <Content Include="Assets\fake_product_01.png" />
     <Content Include="Assets\fake_product_02.png" />
@@ -130,7 +138,10 @@
     <Content Include="Assets\menu_cart.png" />
     <Content Include="Assets\menu_filter.png" />
     <Content Include="Assets\menu_profile.png" />
+    <Content Include="Assets\noimage.png" />
     <Content Include="Assets\product_add.png" />
+    <Content Include="Assets\switchOff.png" />
+    <Content Include="Assets\switchOn.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -145,6 +156,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Controls\TabItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

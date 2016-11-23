@@ -6,20 +6,6 @@
     <ContentView.Resources>
         <ResourceDictionary>
 
-            <Style x:Key="AddButtonStyle" 
-               TargetType="{x:Type Grid}">
-                <Setter Property="HeightRequest"
-                        Value="42" />
-                <Setter Property="WidthRequest"
-                        Value="42" />
-                <Setter Property="HorizontalOptions"
-                        Value="Center" />
-                <Setter Property="VerticalOptions"
-                        Value="End" />
-                <Setter Property="Margin"
-                        Value="0, 0, 0, 24" />
-            </Style>
-
             <Style x:Key="AddBackgroundImageStyle" 
                TargetType="{x:Type Image}">
                 <Setter Property="HorizontalOptions"
@@ -34,6 +20,8 @@
             
             <Style x:Key="AddImageStyle" 
                TargetType="{x:Type Image}">
+                <Setter Property="HorizontalOptions"
+                        Value="Center" />
                 <Setter Property="HeightRequest"
                         Value="24" />
                 <Setter Property="WidthRequest"
@@ -44,9 +32,8 @@
     </ContentView.Resources>
     <ContentView.Content>
         <Grid>
-            <!-- IOS & ANDROID -->
-            <Grid
-                Style="{StaticResource AddButtonStyle}">
+            <!-- ANDROID -->
+            <Grid>
                 <Grid.IsVisible>
                     <OnPlatform         
                         x:TypeArguments="x:Boolean"
@@ -56,25 +43,29 @@
                 </Grid.IsVisible>
                 <BoxView  
                     BackgroundColor="{StaticResource LightGreenColor}"
-                    StyleClass="Circle" />
+                    HeightRequest="48"
+                    WidthRequest="48"
+                    StyleClass="Circle">
+                </BoxView>
                 <Image 
                     Aspect="AspectFit" 
-                    Source="product_add"
-                    Style="{StaticResource AddImageStyle}">
-                    <Image.Margin>
-                        <OnPlatform         
-                            x:TypeArguments="Thickness"
-                            Android="5, 12, 12, 12"
-                            iOS="6, 12, 12, 12"/>
-                    </Image.Margin>
-                </Image>
+                    Source="product_add.png"
+                    Style="{StaticResource AddImageStyle}" />
             </Grid>
-            <!-- UWP -->
+            <!-- IOS & UWP -->
             <Grid>
+                <Grid.IsVisible>
+                    <OnPlatform         
+                        x:TypeArguments="x:Boolean"
+                        Android="False"
+                        iOS="False"
+                        WinPhone="True"/>
+                </Grid.IsVisible>
                 <Image
-                    Source="Assets/circle_button_background.png"
+                    Source="Assets\circle_button_background.png"
                     Aspect="AspectFit"
                     Style="{StaticResource AddBackgroundImageStyle}" />
+
                 <Image 
                     Aspect="AspectFit" 
                     Source="Assets\product_add.png"

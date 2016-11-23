@@ -78,7 +78,15 @@
                 WidthRequest="108"
                 Aspect="AspectFit"
                 VerticalOptions="Start"
-                Margin="12,0,0,0"/>
+                Margin="12,0,0,0">
+                <ffimageloading:CachedImage.ErrorPlaceholder>
+                    <OnPlatform   
+                        x:TypeArguments="ImageSource"
+                        iOS="noimage"
+                        Android="noimage"
+                        WinPhone="Assets/noimage.png"/>
+                </ffimageloading:CachedImage.ErrorPlaceholder>
+            </ffimageloading:CachedImage>
             <Grid
                 Grid.Column="1"
                 Grid.Row="0"

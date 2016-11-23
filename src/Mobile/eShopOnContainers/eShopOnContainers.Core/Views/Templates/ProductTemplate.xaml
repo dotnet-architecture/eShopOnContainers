@@ -72,18 +72,24 @@
             </Grid.RowDefinitions>
             <ffimageloading:CachedImage 
                 Grid.Row="0"
-                Source="{Binding PictureUri}"       
+                Source="{Binding PictureUri}"     
                 CacheDuration="30"                      
                 CacheType="Disk"             
                 DownsampleToViewSize="True"
-                Aspect="AspectFill"/>
+                Aspect="AspectFill">
+                <ffimageloading:CachedImage.ErrorPlaceholder>
+                    <OnPlatform   
+                        x:TypeArguments="ImageSource"
+                        iOS="noimage"
+                        Android="noimage"
+                        WinPhone="Assets/noimage.png"/>
+                </ffimageloading:CachedImage.ErrorPlaceholder>
+            </ffimageloading:CachedImage>
             <Grid
                 Grid.Row="0"
                 Grid.RowSpan="2"
                 Style="{StaticResource AddButtonStyle}">
-                <controls:CartButton>
-                    
-                </controls:CartButton>
+                <controls:CartButton />
             </Grid>
             <Label 
                 Grid.Row="1"

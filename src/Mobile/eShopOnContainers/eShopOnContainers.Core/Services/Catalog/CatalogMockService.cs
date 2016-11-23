@@ -1,6 +1,5 @@
 ﻿using eShopOnContainers.Core.Extensions;
 using eShopOnContainers.Core.Models.Catalog;
-using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,23 +11,23 @@ namespace eShopOnContainers.Core.Services.Catalog
     {
         private ObservableCollection<CatalogBrand> MockCatalogBrand = new ObservableCollection<CatalogBrand>
         {
-            new CatalogBrand { CatalogBrandId = 1, Name = "Azure" },
-            new CatalogBrand { CatalogBrandId = 2, Name = "Visual Studio" }
+            new CatalogBrand { Id = 1, Brand = "Azure" },
+            new CatalogBrand { Id = 2, Brand = "Visual Studio" }
         };
 
         private ObservableCollection<CatalogType> MockCatalogType = new ObservableCollection<CatalogType>
         {
-            new CatalogType { CatalogTypeId = 1, Name = "Mug" },
-            new CatalogType { CatalogTypeId = 2, Name = "T-Shirt" }
+            new CatalogType { Id = 1, Type = "Mug" },
+            new CatalogType { Id = 2, Type = "T-Shirt" }
         };
 
         private ObservableCollection<CatalogItem> MockCatalog = new ObservableCollection<CatalogItem>
         {
-            new CatalogItem { Id = "1", PictureUri = Device.OS != TargetPlatform.Windows? "fake_product_01" : "Assets/fake_product_01.png", Name = ".NET Bot Blue Sweatshirt (M)", Price = 19.50M, CatalogBrand = "Visual Studio", CatalogType = "T-Shirt" },
-            new CatalogItem { Id = "2", PictureUri = Device.OS != TargetPlatform.Windows? "fake_product_02": "Assets/fake_product_02.png", Name = ".NET Bot Purple Sweatshirt (M)", Price = 19.50M, CatalogBrand = "Visual Studio", CatalogType = "T-Shirt" },
-            new CatalogItem { Id = "3", PictureUri = Device.OS != TargetPlatform.Windows? "fake_product_03": "Assets/fake_product_03.png", Name = ".NET Bot Black Sweatshirt (M)", Price = 19.95M, CatalogBrand = "Visual Studio", CatalogType = "T-Shirt" },
-            new CatalogItem { Id = "4", PictureUri = Device.OS != TargetPlatform.Windows? "fake_product_04": "Assets/fake_product_04.png", Name = ".NET Black Cupt", Price = 17.00M, CatalogBrand = "Visual Studio", CatalogType = "Mug" },
-            new CatalogItem { Id = "5", PictureUri = Device.OS != TargetPlatform.Windows? "fake_product_05": "Assets/fake_product_05.png", Name = "Azure Black Sweatshirt (M)", Price = 19.50M, CatalogBrand = "Azure", CatalogType = "T-Shirt" }
+            new CatalogItem { Id = "1", PictureUri = Device.OS != TargetPlatform.Windows ? "fake_product_01.png" : "Assets/fake_product_01.png", Name = ".NET Bot Blue Sweatshirt (M)", Price = 19.50M, CatalogBrand = "Visual Studio", CatalogType = "T-Shirt" },
+            new CatalogItem { Id = "2", PictureUri = Device.OS != TargetPlatform.Windows ? "fake_product_02.png" : "Assets/fake_product_02.png", Name = ".NET Bot Purple Sweatshirt (M)", Price = 19.50M, CatalogBrand = "Visual Studio", CatalogType = "T-Shirt" },
+            new CatalogItem { Id = "3", PictureUri = Device.OS != TargetPlatform.Windows ? "fake_product_03.png" : "Assets/fake_product_03.png", Name = ".NET Bot Black Sweatshirt (M)", Price = 19.95M, CatalogBrand = "Visual Studio", CatalogType = "T-Shirt" },
+            new CatalogItem { Id = "4", PictureUri = Device.OS != TargetPlatform.Windows ? "fake_product_04.png" : "Assets/fake_product_04.png", Name = ".NET Black Cupt", Price = 17.00M, CatalogBrand = "Visual Studio", CatalogType = "Mug" },
+            new CatalogItem { Id = "5", PictureUri = Device.OS != TargetPlatform.Windows ? "fake_product_05.png" : "Assets/fake_product_05.png", Name = "Azure Black Sweatshirt (M)", Price = 19.50M, CatalogBrand = "Azure", CatalogType = "T-Shirt" }
         };
 
         public async Task<ObservableCollection<CatalogItem>> GetCatalogAsync()
@@ -38,13 +37,13 @@ namespace eShopOnContainers.Core.Services.Catalog
             return MockCatalog;
         }
 
-        public async Task<ObservableCollection<CatalogItem>> FilterAsync(string catalogBrand, string catalogType)
+        public async Task<ObservableCollection<CatalogItem>> FilterAsync(int catalogBrandId, int catalogTypeId)
         {
             await Task.Delay(500);
 
             return MockCatalog
-                .Where(c => c.CatalogBrand.Equals(catalogBrand, StringComparison.CurrentCultureIgnoreCase) &&
-                c.CatalogType.Equals(catalogType, StringComparison.CurrentCultureIgnoreCase))
+                .Where(c => c.CatalogBrandId == catalogBrandId &&
+                c.CatalogTypeId == catalogTypeId)  
                 .ToObservableCollection();
         }
 
