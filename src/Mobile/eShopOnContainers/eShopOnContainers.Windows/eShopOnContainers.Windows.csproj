@@ -138,6 +138,7 @@
     <Content Include="Assets\menu_cart.png" />
     <Content Include="Assets\menu_filter.png" />
     <Content Include="Assets\menu_profile.png" />
+    <Content Include="Assets\noimage.png" />
     <Content Include="Assets\product_add.png" />
     <Content Include="Assets\switchOff.png" />
     <Content Include="Assets\switchOn.png" />
