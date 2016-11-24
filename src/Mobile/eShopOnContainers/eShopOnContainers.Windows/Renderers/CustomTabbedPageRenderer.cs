@@ -8,6 +8,7 @@ using System.Linq;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
 using Xamarin.Forms.Platform.UWP;
+using UI = Windows.UI;
 using Xaml = Windows.UI.Xaml;
 
 [assembly: ExportRenderer(typeof(TabbedPage), typeof(CustomTabbedPageRenderer))]
@@ -34,18 +35,28 @@ namespace eShopOnContainers.Windows.Renderers
 
         private void AddTabBadge(int tabIndex)
         {
+            if(Element == null)
+            {
+                return;
+            }
+
             var element = Element.Children[tabIndex];
 
             if (element != null)
             {
-
                 var dataTemplate = Xaml.Application.Current.Resources["TabbedPageHeaderTemplate"] as
                     Xaml.DataTemplate;
 
                 Control.HeaderTemplate = dataTemplate;
+                Control.SelectionChanged += OnControlSelectionChanged;
 
                 element.PropertyChanged += OnTabbedPagePropertyChanged;
             }
+        }
+
+        private void OnControlSelectionChanged(object sender, Xaml.Controls.SelectionChangedEventArgs e)
+        {
+            SetSelectedTab((FormsPivot)sender);
         }
 
         protected virtual void OnTabbedPagePropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -58,7 +69,7 @@ namespace eShopOnContainers.Windows.Renderers
             var tabItems = Control.GetDescendantsOfType<TabItem>();
             var tabItem = tabItems.FirstOrDefault(t => t.Label == ((Page)element).Title);
 
-            if(tabItem == null)
+            if (tabItem == null)
             {
                 return;
             }
@@ -75,6 +86,24 @@ namespace eShopOnContainers.Windows.Renderers
                     ColorHelper.XamarinFormColorToWindowsColor(
                     CustomTabbedPage.GetBadgeColor(element)));
             }
+
+            SetSelectedTab(Control);
+        }
+
+        private void SetSelectedTab(FormsPivot pivot)
+        {
+            var tabItems = Control.GetDescendantsOfType<TabItem>();
+            var tabItem = tabItems.FirstOrDefault(t => t.Label == ((Page)pivot.SelectedItem).Title);
+
+            if (tabItem == null)
+            {
+                return;
+            }
+
+            foreach (var item in tabItems)
+                item.Opacity = 0.5;
+
+            tabItem.Opacity = 1.0;
         }
     }
 }

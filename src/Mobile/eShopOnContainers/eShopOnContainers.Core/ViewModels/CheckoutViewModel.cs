@@ -9,12 +9,14 @@ using eShopOnContainers.Core.Models.Orders;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using eShopOnContainers.Core.Models.Basket;
+using System.Collections.Generic;
 
 namespace eShopOnContainers.Core.ViewModels
 {
     public class CheckoutViewModel : ViewModelBase
     {
-        private ObservableCollection<OrderItem> _orderItems;
+        private ObservableCollection<BasketItem> _orderItems;
         private Order _order;
         private User _user;
 
@@ -25,7 +27,7 @@ namespace eShopOnContainers.Core.ViewModels
             _userService = userService;
         }
 
-        public ObservableCollection<OrderItem> OrderItems
+        public ObservableCollection<BasketItem> OrderItems
         {
             get { return _orderItems; }
             set
@@ -59,11 +61,11 @@ namespace eShopOnContainers.Core.ViewModels
 
         public override async Task InitializeAsync(object navigationData)
         {
-            if (navigationData is ObservableCollection<OrderItem>)
+            if (navigationData is ObservableCollection<BasketItem>)
             {
                 IsBusy = true;
 
-                var orderItems = ((ObservableCollection<OrderItem>)navigationData);
+                var orderItems = ((ObservableCollection<BasketItem>)navigationData);
 
                 OrderItems = orderItems;
 
@@ -72,7 +74,7 @@ namespace eShopOnContainers.Core.ViewModels
                 Order = new Order
                 {
                     ShippingAddress = User,
-                    OrderItems = orderItems.ToList(),
+                    OrderItems = CreateOrderItems(orderItems.ToList()),
                     Status = OrderStatus.Pending,
                     OrderDate = DateTime.Now,
                     Total = GetOrderTotal()
@@ -90,6 +92,25 @@ namespace eShopOnContainers.Core.ViewModels
             await DialogService.ShowAlertAsync("Order sent successfully", string.Format("Order {0}", Order.OrderNumber), "Ok");
             await NavigationService.RemoveLastFromBackStackAsync();
         }
+
+        private List<OrderItem> CreateOrderItems(List<BasketItem> basketItems)
+        {
+            var orderItems = new List<OrderItem>();
+
+            foreach (var basketItem in basketItems)
+            {
+                orderItems.Add(new OrderItem
+                {
+                    ProductId = basketItem.ProductId,
+                    ProductName = basketItem.ProductName,
+                    ProductImage = basketItem.PictureUrl,
+                    Quantity = basketItem.Quantity,
+                    UnitPrice = basketItem.UnitPrice
+                });
+            }
+
+            return orderItems;
+        } 
 
         private decimal GetOrderTotal()
         {

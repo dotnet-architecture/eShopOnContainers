@@ -69,6 +69,7 @@
       <RowDefinition Height="Auto" />
       <RowDefinition Height="Auto" />
     </Grid.RowDefinitions>
+    <!-- BRAND -->
     <controls:BindablePicker
       Grid.Row="0"
       Title="BRAND" 
@@ -83,6 +84,7 @@
           WinPhone="36"/>
       </controls:BindablePicker.HeightRequest> 
     </controls:BindablePicker>
+    <!-- TYPE -->
     <controls:BindablePicker
       Grid.Row="1"
       Title="TYPE"

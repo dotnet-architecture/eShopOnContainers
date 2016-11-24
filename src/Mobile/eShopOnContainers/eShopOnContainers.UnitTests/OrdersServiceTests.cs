@@ -1,4 +1,5 @@
-﻿using eShopOnContainers.Core.Services.Orders;
+﻿using eShopOnContainers.Core.Services.Basket;
+using eShopOnContainers.Core.Services.User;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -9,9 +10,12 @@ namespace eShopOnContainers.UnitTests
         [Fact]
         public async Task GetFakeOrdersTest()
         {
-            var ordersMockService = new OrdersMockService();
-            var result = await ordersMockService.GetOrdersAsync();
-            Assert.NotEqual(0, result.Count);
+            var userMockService = new UserMockService();
+            var user = await userMockService.GetUserAsync();
+
+            var ordersMockService = new BasketMockService();
+            var result = await ordersMockService.GetBasketAsync(user.GuidUser);
+            Assert.NotEqual(0, result.Items.Count);
         }
     }
 }

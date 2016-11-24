@@ -1,10 +1,10 @@
 ﻿using System.Threading.Tasks;
 using eShopOnContainers.Core.Models.Orders;
 using eShopOnContainers.ViewModels.Base;
-using eShopOnContainers.Core.Services.Orders;
 using eShopOnContainers.Core.Services.Catalog;
 using eShopOnContainers.Core.Services.User;
 using eShopOnContainers.Core.Models.User;
+using eShopOnContainers.Core.Services.Basket;
 
 namespace eShopOnContainers.Core.ViewModels
 {
@@ -13,11 +13,11 @@ namespace eShopOnContainers.Core.ViewModels
         private Order _order;
         private User _user;
 
-        private IOrdersService _orderService;
+        private IBasketService _orderService;
         private ICatalogService _catalogService;
         private IUserService _userService;
 
-        public OrderDetailViewModel(IOrdersService orderService,
+        public OrderDetailViewModel(IBasketService orderService,
             ICatalogService catalogService,
             IUserService userService)
         {

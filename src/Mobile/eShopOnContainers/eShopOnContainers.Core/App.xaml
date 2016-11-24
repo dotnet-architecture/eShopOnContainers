@@ -104,6 +104,7 @@
             <converters:ItemTappedEventArgsConverter x:Key="ItemTappedEventArgsConverter" />
             <converters:InverseCountToBoolConverter x:Key="InverseCountToBoolConverter" />
             <converters:InverseBoolConverter x:Key="InverseBoolConverter" />
+            <converters:ItemsToHeightConverter x:Key="ItemsToHeightConverter" />
             <converters:ToUpperConverter x:Key="ToUpperConverter" />
             
             <!-- STYLES -->

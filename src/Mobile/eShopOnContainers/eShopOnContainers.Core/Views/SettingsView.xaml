@@ -89,7 +89,7 @@
                         Grid.Column="0"
                         Grid.ColumnSpan="2"
                         BackgroundColor="Gray"/>
-                    <StackLayout
+                    <StackLayout 
                         Grid.Column="0"                       
                         Grid.Row="1">
                         <Label 
@@ -100,7 +100,8 @@
                             Text="{Binding Description}"
                             Style="{StaticResource SettingsDescriptionStyle}"/>
                     </StackLayout>
-                    <controls:ToggleButton
+                    <!-- ON / OFF -->
+                    <controls:ToggleButton 
                         Grid.Column="1" 
                         Grid.Row="1" 
                         Animate="True"     
@@ -109,14 +110,14 @@
                         Style="{StaticResource SettingsToggleButtonStyle}">
                         <controls:ToggleButton.CheckedImage>
                             <OnPlatform x:TypeArguments="ImageSource"
-                              Android="switchOn"
-                              iOS="switchOn"
+                              Android="switch_on.png"
+                              iOS="switchOn.png"
                               WinPhone="Assets/switchOn.png"/>
                         </controls:ToggleButton.CheckedImage>
                         <controls:ToggleButton.UnCheckedImage>
                             <OnPlatform x:TypeArguments="ImageSource"
-                              Android="switchOff"
-                              iOS="switchOff"
+                              Android="switch_off.png"
+                              iOS="switchOff.png"
                               WinPhone="Assets/switchOff.png"/>
                         </controls:ToggleButton.UnCheckedImage>
                     </controls:ToggleButton>

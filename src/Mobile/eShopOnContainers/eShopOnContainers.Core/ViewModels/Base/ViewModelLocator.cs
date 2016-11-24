@@ -1,5 +1,4 @@
 ﻿using Microsoft.Practices.Unity;
-using eShopOnContainers.Core.Services.Orders;
 using eShopOnContainers.Core.ViewModels;
 using eShopOnContainers.Services;
 using System;
@@ -7,6 +6,7 @@ using eShopOnContainers.Core.Services.Catalog;
 using eShopOnContainers.Core.Services.OpenUrl;
 using eShopOnContainers.Core.Services.User;
 using eShopOnContainers.Core.Services.RequestProvider;
+using eShopOnContainers.Core.Services.Basket;
 
 namespace eShopOnContainers.ViewModels.Base
 {
@@ -39,11 +39,11 @@ namespace eShopOnContainers.ViewModels.Base
             _unityContainer.RegisterType<IRequestProvider, RequestProvider>();
 
             _unityContainer.RegisterType<ICatalogService, CatalogMockService>();
-            _unityContainer.RegisterType<IOrdersService, OrdersMockService>();
+            _unityContainer.RegisterType<IBasketService, BasketMockService>();
             _unityContainer.RegisterType<IUserService, UserMockService>();
 
             // View models
-            _unityContainer.RegisterType<CartViewModel>();
+            _unityContainer.RegisterType<BasketViewModel>();
             _unityContainer.RegisterType<CatalogViewModel>();
             _unityContainer.RegisterType<CheckoutViewModel>();
             _unityContainer.RegisterType<LoginViewModel>();
@@ -58,7 +58,7 @@ namespace eShopOnContainers.ViewModels.Base
             if (!useMockServices)
             {
                 _unityContainer.RegisterInstance<ICatalogService>(new CatalogMockService());
-                _unityContainer.RegisterInstance<IOrdersService>(new OrdersMockService());
+                _unityContainer.RegisterInstance<IBasketService>(new BasketMockService());
                 _unityContainer.RegisterInstance<IUserService>(new UserMockService());
 
                 UseMockService = false;
@@ -67,6 +67,8 @@ namespace eShopOnContainers.ViewModels.Base
             {
                 var requestProvider = Resolve<IRequestProvider>();
                 _unityContainer.RegisterInstance<ICatalogService>(new CatalogService(requestProvider));
+                _unityContainer.RegisterInstance<IBasketService>(new BasketService(requestProvider));
+                _unityContainer.RegisterInstance<IUserService>(new UserMockService());
 
                 UseMockService = true;
             }

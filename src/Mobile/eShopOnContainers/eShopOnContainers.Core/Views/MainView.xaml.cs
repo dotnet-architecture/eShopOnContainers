@@ -27,10 +27,15 @@ namespace eShopOnContainers.Core.Views
                         CurrentPage = ProfileView;
                         break;
                     case 2:
-                        CurrentPage = CartView;
+                        CurrentPage = BasketView;
                         break;
                 }
             });
+
+
+            var basketViewModel = ViewModelLocator.Instance.Resolve<BasketViewModel>();
+            await basketViewModel.InitializeAsync(null);
+            BasketView.BindingContext = basketViewModel;
 
             var homeViewModel = ViewModelLocator.Instance.Resolve<CatalogViewModel>();
             await homeViewModel.InitializeAsync(null);
@@ -39,10 +44,6 @@ namespace eShopOnContainers.Core.Views
             var profileViewModel = ViewModelLocator.Instance.Resolve<ProfileViewModel>();
             await profileViewModel.InitializeAsync(null);
             ProfileView.BindingContext = profileViewModel;
-
-            var cartViewModel = ViewModelLocator.Instance.Resolve<CartViewModel>();
-            await cartViewModel.InitializeAsync(null);
-            CartView.BindingContext = cartViewModel;
         }
     }
 }

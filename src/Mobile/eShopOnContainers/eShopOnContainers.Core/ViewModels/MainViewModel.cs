@@ -8,7 +8,7 @@ using System.Windows.Input;
 namespace eShopOnContainers.Core.ViewModels
 {
     public class MainViewModel : ViewModelBase
-    {
+    {        
         public ICommand SettingsCommand => new Command(Settings);
 
         public override Task InitializeAsync(object navigationData)

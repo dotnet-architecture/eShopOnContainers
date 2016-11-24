@@ -10,7 +10,7 @@ namespace eShopOnContainers.Core.Models.Orders
     public class OrderItem : ExtendedBindableObject
     {
         private string _productImage;
-        private int _productId;
+        private string _productId;
         private Guid _orderId;
         private string _productName;
         private decimal _unitPrice;
@@ -23,7 +23,7 @@ namespace eShopOnContainers.Core.Models.Orders
             Numbers = NumericHelper.GetNumericList();
         }
 
-        public int ProductId
+        public string ProductId
         {
             get { return _productId; }
             set

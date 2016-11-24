@@ -21,6 +21,7 @@
             </ToolbarItem.Icon>
         </ToolbarItem>
     </ContentPage.ToolbarItems>
+    <!-- CATALOG -->
     <views:CatalogView  
         x:Name="HomeView">
         <views:CatalogView.Icon>
@@ -31,6 +32,7 @@
                 WinPhone="Assets\menu_filter.png"/>
         </views:CatalogView.Icon>
     </views:CatalogView>
+    <!-- PROFILE -->
     <views:ProfileView
         x:Name="ProfileView">
         <views:ProfileView.Icon>
@@ -41,16 +43,17 @@
                 WinPhone="Assets\menu_profile.png"/>
         </views:ProfileView.Icon>
     </views:ProfileView>
-    <views:CartView
-        x:Name="CartView"
+    <!-- BASKET -->
+    <views:BasketView
+        x:Name="BasketView"
         controls:CustomTabbedPage.BadgeText="{Binding BadgeCount}"
         controls:CustomTabbedPage.BadgeColor="{StaticResource LightGreenColor}">
-        <views:CartView.Icon>
+        <views:BasketView.Icon>
             <OnPlatform        
                 x:TypeArguments="FileImageSource"
                 Android="menu_cart"
                 iOS="menu_cart"
                 WinPhone="Assets\menu_cart.png"/>
-        </views:CartView.Icon>
-    </views:CartView>
+        </views:BasketView.Icon>
+    </views:BasketView>
 </TabbedPage>
