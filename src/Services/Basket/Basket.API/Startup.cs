@@ -56,6 +56,13 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
+            app.UseIdentityServerAuthentication(new IdentityServerAuthenticationOptions
+            {
+                Authority = Configuration.GetValue("IdentityUrl", "http://localhost:5000"),
+                ScopeName = "basket",
+                RequireHttpsMetadata = false
+            });
+
             app.UseMvc();
         }
     }

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Microsoft.eShopOnContainers.WebMVC.Data;
+using eShopOnContainers.Identity.Data;
 
 namespace WebMVC.Migrations
 {

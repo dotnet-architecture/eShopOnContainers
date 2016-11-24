@@ -22,12 +22,25 @@ dotnet publish $webPathToJson -o $webPathToPub
 $webSPAPathToJson = $scriptPath + "\src\Web\WebSPA\eShopOnContainers.WebSPA\project.json"
 Write-Host "webSPAPathToJson is $webSPAPathToJson" -ForegroundColor Yellow
 $webSPAPathToPub = $scriptPath + "\pub\webSPA"
+#$webSPAPathToNpmBat = $scriptPath + "\src\Web\WebSPA\eShopOnContainers.WebSPA\buildspa.bat"
 Write-Host "webSPAPathToPub is $webSPAPathToPub" -ForegroundColor Yellow
 
 Write-Host "Restore Dependencies just in case as it is needed to run dotnet publish" -ForegroundColor Blue
 dotnet restore $webSPAPathToJson
 dotnet build $webSPAPathToJson
+#Start-Process "cmd.exe" "/c " + $webSPAPathToNpmBat
 dotnet publish $webSPAPathToJson -o $webSPAPathToPub
+
+# *** identitySvc image ***
+$identitySvcPathToJson = $scriptPath + "\src\Services\Identity\eShopOnContainers.Identity\project.json"
+Write-Host "identitySvcPathToJson is $identitySvcPathToJson" -ForegroundColor Yellow
+$identitySvcPathToPub = $scriptPath + "\pub\identity"
+Write-Host "identitySvcPathToPub is $identitySvcPathToPub" -ForegroundColor Yellow
+
+Write-Host "Restore Dependencies just in case as it is needed to run dotnet publish" -ForegroundColor Blue
+dotnet restore $identitySvcPathToJson
+dotnet build $identitySvcPathToJson
+dotnet publish $identitySvcPathToJson -o $identitySvcPathToPub
 
 
 #*** Catalog service image ***
@@ -63,8 +76,10 @@ dotnet restore $basketPathToJson
 dotnet build $basketPathToJson
 dotnet publish $basketPathToJson -o $basketPathToPub
 
+#*** build docker images ***
 docker build -t eshop/web $webPathToPub
 docker build -t eshop/catalog.api $catalogPathToPub
 docker build -t eshop/ordering.api $orderingPathToPub
 docker build -t eshop/basket.api $basketPathToPub
 docker build -t eshop/webspa $webSPAPathToPub
+docker build -t eshop/identity $identitySvcPathToPub

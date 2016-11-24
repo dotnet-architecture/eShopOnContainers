@@ -31,9 +31,11 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody]CustomerBasket value)
+        public async Task<IActionResult> Post([FromBody]CustomerBasket value)
         {
-            _repository.UpdateBasket(value);
+            var basket = await _repository.UpdateBasket(value);
+
+            return Ok(basket);
         }
 
         // DELETE api/values/5

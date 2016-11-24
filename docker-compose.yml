@@ -9,11 +9,13 @@ services:
     environment:
       - CatalogUrl=http://catalog.api
       - OrderingUrl=http://ordering.api
+      - IdentityUrl=http://identity.service
+      - BasketUrl=http://basket.api
     ports:
       - "5100:80"
     depends_on:
       - catalog.api
-      - identity.data
+      - identity.service
       - basket.api
 
   webspa:
@@ -24,12 +26,14 @@ services:
     environment:
       - CatalogUrl=http://catalog.api
       - OrderingUrl=http://ordering.api
+      - IdentityUrl=http://identity.service
+      - BasketUrl=http://basket.api
     ports:
       - "5104:80"
     depends_on:
       - catalog.api
-      - identity.data
       - basket.api
+      - identity.service
 
   catalog.api:
     image: eshop/catalog.api
@@ -56,10 +60,6 @@ services:
       - ConnectionString=Server=ordering.data;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word
     ports:
       - "5102:80"
-# (Go to Production): For secured/final deployment, remove Ports mapping and
-# leave just the internal expose section 
-#    expose:
-#      - "80"
     extra_hosts:
       - "CESARDLBOOKVHD:10.0.75.1"
     depends_on:
@@ -69,6 +69,17 @@ services:
     image: eshop/ordering.data.sqlserver.linux
     ports:
       - "5432:1433"
+
+  identity.service:
+    image: eshop/identity
+    environment:
+      - Spa:http://webspa
+    expose:
+      - "80"
+    ports:
+      - "5105:80"
+    depends_on:
+      - identity.data
 
   identity.data:
     image: microsoft/mssql-server-linux
@@ -89,6 +100,7 @@ services:
       - "5103:80"
     depends_on:
       - basket.data
+      - identity.service
 
   basket.data:
     image: redis
