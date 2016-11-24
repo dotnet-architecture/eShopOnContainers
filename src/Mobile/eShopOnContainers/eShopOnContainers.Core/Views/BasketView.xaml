@@ -55,7 +55,7 @@
                 <RowDefinition Height="60" />
             </Grid.RowDefinitions>
             <!-- CART ITEMS -->
-            <ScrollView
+            <Grid
                 Grid.Row="0">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -73,7 +73,8 @@
                     <!-- ITEMS -->
                     <ListView 
                         Grid.Row="1"
-                        ItemsSource="{Binding BasketItems}"     
+                        ItemsSource="{Binding BasketItems}"    
+                        HeightRequest="{Binding BasketItems.Count, Converter={StaticResource ItemsToHeightConverter}}"
                         HasUnevenRows="True"
                         SeparatorVisibility="None"
                         VerticalOptions="FillAndExpand"
@@ -102,7 +103,7 @@
                             Style="{StaticResource CartTotalStyle}"/>
                     </StackLayout>
                 </Grid>
-            </ScrollView>
+            </Grid>
             <!-- CHECKOUT -->
             <Grid
                 Grid.Row="1"           

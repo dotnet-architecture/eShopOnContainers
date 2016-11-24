@@ -21,6 +21,7 @@
             </ToolbarItem.Icon>
         </ToolbarItem>
     </ContentPage.ToolbarItems>
+    <!-- CATALOG -->
     <views:CatalogView  
         x:Name="HomeView">
         <views:CatalogView.Icon>
@@ -31,6 +32,7 @@
                 WinPhone="Assets\menu_filter.png"/>
         </views:CatalogView.Icon>
     </views:CatalogView>
+    <!-- PROFILE -->
     <views:ProfileView
         x:Name="ProfileView">
         <views:ProfileView.Icon>
@@ -41,6 +43,7 @@
                 WinPhone="Assets\menu_profile.png"/>
         </views:ProfileView.Icon>
     </views:ProfileView>
+    <!-- BASKET -->
     <views:BasketView
         x:Name="BasketView"
         controls:CustomTabbedPage.BadgeText="{Binding BadgeCount}"

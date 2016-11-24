@@ -55,6 +55,7 @@
     <Compile Include="Converters\ImageConverter.cs" />
     <Compile Include="Converters\InverseBoolConverter.cs" />
     <Compile Include="Converters\InverseCountToBoolConverter.cs" />
+    <Compile Include="Converters\ItemsToHeightConverter.cs" />
     <Compile Include="Converters\ItemTappedConverter.cs" />
     <Compile Include="Converters\ToUpperConverter.cs" />
     <Compile Include="Effects\LineColorEffect.cs" />

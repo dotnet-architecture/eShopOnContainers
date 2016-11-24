@@ -56,8 +56,6 @@
 
             <Style x:Key="QuantityPickerStyle"  
              TargetType="{x:Type controls:BindablePicker}">
-                <Setter Property="WidthRequest"
-                        Value="36" />
                 <Setter Property="BackgroundColor"
                         Value="Transparent" />
                 <Setter Property="HorizontalOptions"
@@ -71,6 +69,13 @@
     <ContentView.Content>
         <Grid   
             BackgroundColor="{StaticResource BackgroundColor}">
+            <Grid.Padding>
+                <OnPlatform         
+                    x:TypeArguments="Thickness"
+                    Android="0"
+                    iOS="0"
+                    WinPhone="12, 0"/>
+            </Grid.Padding>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
@@ -79,6 +84,7 @@
                 <RowDefinition Height="*" />
                 <RowDefinition Height="1" />
             </Grid.RowDefinitions>
+            <!-- IMAGE -->
             <ffimageloading:CachedImage
                 Grid.Column="0"
                 Grid.Row="0"
@@ -91,6 +97,13 @@
                 Aspect="AspectFit"
                 VerticalOptions="Start"
                 Margin="12,0,0,0">
+                <ffimageloading:CachedImage.LoadingPlaceholder>
+                    <OnPlatform   
+                        x:TypeArguments="ImageSource"
+                        iOS="default_product"
+                        Android="default_product"
+                        WinPhone="Assets/default_product.png"/>
+                </ffimageloading:CachedImage.LoadingPlaceholder>
                 <ffimageloading:CachedImage.ErrorPlaceholder>
                     <OnPlatform   
                         x:TypeArguments="ImageSource"
@@ -108,6 +121,7 @@
                     <RowDefinition />
                     <RowDefinition />
                 </Grid.RowDefinitions>
+                <!-- NAME -->
                 <Label
                     Grid.Row="0"
                     Text="{Binding ProductName, Converter={StaticResource ToUpperConverter}}"/>
@@ -117,6 +131,7 @@
                         <ColumnDefinition />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
+                    <!-- PRICE -->
                     <Label 
                         Grid.Column="0"
                         Text="{Binding UnitPrice, StringFormat='${0:N}'}"
@@ -125,8 +140,17 @@
                         Grid.Column="1"
                         ItemsSource="{Binding Numbers}"
                         SelectedItem="{Binding Quantity, Mode=TwoWay}"
-                        Style="{StaticResource QuantityPickerStyle}"/>
+                        Style="{StaticResource QuantityPickerStyle}">
+                        <controls:BindablePicker.WidthRequest>
+                            <OnPlatform         
+                                x:TypeArguments="x:Double"
+                                Android="36"
+                                iOS="36"
+                                WinPhone="72"/>
+                        </controls:BindablePicker.WidthRequest>
+                    </controls:BindablePicker>
                 </Grid>
+                <!-- TOTAL -->
                 <Label
                     Grid.Row="2"
                     Text="{Binding Total, StringFormat='${0:N}'}"

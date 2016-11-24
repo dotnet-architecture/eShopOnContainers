@@ -70,6 +70,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
+            <!-- IMAGE -->
             <ffimageloading:CachedImage 
                 Grid.Row="0"
                 Source="{Binding PictureUri}"     
@@ -77,6 +78,13 @@
                 CacheType="Disk"             
                 DownsampleToViewSize="True"
                 Aspect="AspectFill">
+                <ffimageloading:CachedImage.LoadingPlaceholder>
+                    <OnPlatform   
+                        x:TypeArguments="ImageSource"
+                        iOS="default_product"
+                        Android="default_product"
+                        WinPhone="Assets/default_product.png"/>
+                </ffimageloading:CachedImage.LoadingPlaceholder>
                 <ffimageloading:CachedImage.ErrorPlaceholder>
                     <OnPlatform   
                         x:TypeArguments="ImageSource"
@@ -91,10 +99,12 @@
                 Style="{StaticResource AddButtonStyle}">
                 <controls:AddBasketButton />
             </Grid>
+            <!-- NAME -->
             <Label 
                 Grid.Row="1"
                 Text="{Binding Name, Converter={StaticResource ToUpperConverter}}"
                 Style="{StaticResource ProductNameStyle}"/>
+            <!-- PRICE -->
             <Label 
                 Grid.Row="2"
                 Text="{Binding Price, StringFormat='${0:N}'}"
