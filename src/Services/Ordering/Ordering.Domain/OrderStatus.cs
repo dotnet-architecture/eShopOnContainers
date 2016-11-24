@@ -10,11 +10,9 @@
     {
         public string Name { get; private set; }
 
-        public static OrderStatus New = new OrderStatus(1, nameof(New).ToLowerInvariant());
-        public static OrderStatus Submitted = new OrderStatus(1, nameof(Submitted).ToLowerInvariant());
         public static OrderStatus InProcess = new OrderStatus(1, nameof(InProcess).ToLowerInvariant());
-        public static OrderStatus Shipped = new OrderStatus(1, nameof(Shipped).ToLowerInvariant());
-        public static OrderStatus Canceled = new OrderStatus(1, nameof(Canceled).ToLowerInvariant());
+        public static OrderStatus Shipped = new OrderStatus(2, nameof(Shipped).ToLowerInvariant());
+        public static OrderStatus Canceled = new OrderStatus(3, nameof(Canceled).ToLowerInvariant());
 
         protected OrderStatus()
         {
@@ -28,7 +26,7 @@
 
         public static IEnumerable<OrderStatus> List()
         {
-            return new[] { New, Submitted, InProcess, Shipped, Canceled };
+            return new[] { InProcess, Shipped, Canceled };
         }
 
         public static OrderStatus FromName(string name)

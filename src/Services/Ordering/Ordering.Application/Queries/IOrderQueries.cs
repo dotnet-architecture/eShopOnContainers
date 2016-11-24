@@ -6,6 +6,8 @@
     {
         Task<dynamic> GetOrder(int id);
 
-        Task<dynamic> GetPendingOrders();
+        Task<dynamic> GetOrders();
+
+        Task<dynamic> GetCardTypes();
     }
 }

@@ -6,24 +6,15 @@
     public class Address
         : Entity
     {
-        public String Street { get; private set; }
+        public String Street { get; set; }
 
-        public String City { get; private set; }
+        public String City { get; set; }
 
-        public String State { get; private set; }
+        public String State { get; set; }
 
-        public String StateCode { get; private set; }
+        public String Country { get; set; }
 
-        public String Country { get; private set; }
+        public String ZipCode { get; set; }
 
-        public String CountryCode { get; private set; }
-
-        public String ZipCode { get; private set; }
-
-        public double Latitude { get; private set; }
-
-        public double Longitude { get; private set; }
-
-        protected Address() { }
     }
 }

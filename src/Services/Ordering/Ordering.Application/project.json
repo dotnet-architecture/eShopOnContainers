@@ -8,7 +8,9 @@
     "System.Dynamic.Runtime": "4.0.11",
     "Microsoft.CSharp": "4.0.1",
     "Microsoft.Extensions.Configuration": "1.0.0",
-    "System.Data.SqlClient": "4.1.0"
+    "System.Data.SqlClient": "4.1.0",
+    "Microsoft.Extensions.Logging.Abstractions": "1.0.0",
+    "Ordering.Domain": "1.0.0-*"
   },
 
   "frameworks": {
