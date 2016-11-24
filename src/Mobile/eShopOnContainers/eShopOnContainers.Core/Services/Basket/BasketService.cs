@@ -18,7 +18,7 @@ namespace eShopOnContainers.Core.Services.Basket
         {
             try
             {
-                UriBuilder builder = new UriBuilder(GlobalSetting.CatalogEndpoint);
+                UriBuilder builder = new UriBuilder(GlobalSetting.BasketEndpoint);
 
                 builder.Path = guidUser;
 
@@ -41,7 +41,7 @@ namespace eShopOnContainers.Core.Services.Basket
 
         public async Task<CustomerBasket> UpdateBasketAsync(CustomerBasket customerBasket)
         {
-            UriBuilder builder = new UriBuilder(GlobalSetting.CatalogEndpoint);
+            UriBuilder builder = new UriBuilder(GlobalSetting.BasketEndpoint);
 
             string uri = builder.ToString();
 
