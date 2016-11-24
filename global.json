@@ -3,7 +3,8 @@
     "src",
     "test",
     "src/Services/Ordering",
-    "src/Web"
+    "src/Web",
+    "src/Services/Catalog"
   ],
 
   "sdk": {

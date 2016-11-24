@@ -56,7 +56,7 @@
       "wwwroot",
       "Views",
       "Areas/**/Views",
-      "appsettings.json",
+      "settings.json",
       "web.config",
       "docker-compose.yml",
       "docker-compose.debug.yml",
