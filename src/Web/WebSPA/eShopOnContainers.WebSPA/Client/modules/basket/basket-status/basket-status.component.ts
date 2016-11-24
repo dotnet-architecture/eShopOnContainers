@@ -21,7 +21,9 @@ export class BasketStatusComponent implements OnInit {
             item => {
                 console.log(item);
                 this.service.setBasket(item);
-                this.badge = this.service.getBasket().length;
+                this.service.getBasket().subscribe(basket => {
+                    this.badge = basket.items.length;
+                });
             });
     }
 

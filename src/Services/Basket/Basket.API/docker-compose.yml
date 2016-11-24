@@ -15,3 +15,20 @@ services:
 
   basket.data:
     image: redis
+
+  identity.service:
+    image: eshop/identity
+    expose:
+      - "80"
+    ports:
+      - "5105:80"
+    depends_on:
+      - identity.data
+      
+  identity.data:
+    image: microsoft/mssql-server-linux
+    environment:
+      - SA_PASSWORD=Pass@word
+      - ACCEPT_EULA=Y
+    ports:
+      - "5433:1433"

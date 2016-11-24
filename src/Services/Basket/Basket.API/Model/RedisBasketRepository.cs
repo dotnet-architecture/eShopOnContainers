@@ -44,10 +44,19 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Model
             return JsonConvert.DeserializeObject<CustomerBasket>(data);
         }
 
-        public async Task<bool> UpdateBasket(CustomerBasket basket)
+        public async Task<CustomerBasket> UpdateBasket(CustomerBasket basket)
         {
             var database = await GetDatabase();
-            return await database.StringSetAsync(basket.BuyerId, JsonConvert.SerializeObject(basket));
+
+            var created = await database.StringSetAsync(basket.BuyerId, JsonConvert.SerializeObject(basket));
+            if (!created)
+            {
+                _logger.LogInformation("Problem persisting the item");
+                return null;
+            }
+
+            _logger.LogInformation("basket item persisted succesfully");
+            return await GetBasket(basket.BuyerId);
         }
 
         private async Task<IDatabase> GetDatabase()
@@ -64,3 +73,4 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Model
         }
     }
 }
+

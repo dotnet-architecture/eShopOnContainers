@@ -3,14 +3,15 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Microsoft.eShopOnContainers.WebMVC.Data;
+using eShopOnContainers.Identity.Data;
 
 namespace WebMVC.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20161019122215_Init_Scheme")]
+    partial class Init_Scheme
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.0-rtm-21431")
@@ -151,8 +152,6 @@ namespace WebMVC.Migrations
 
                     b.Property<string>("Expiration");
 
-                    b.Property<string>("LastName");
-
                     b.Property<double>("Latitude");
 
                     b.Property<bool>("LockoutEnabled");
@@ -160,8 +159,6 @@ namespace WebMVC.Migrations
                     b.Property<DateTimeOffset?>("LockoutEnd");
 
                     b.Property<double>("Longitude");
-
-                    b.Property<string>("Name");
 
                     b.Property<string>("NormalizedEmail")
                         .HasAnnotation("MaxLength", 256);

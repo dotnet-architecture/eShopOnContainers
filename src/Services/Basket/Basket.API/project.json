@@ -16,7 +16,8 @@
     "Microsoft.Extensions.Logging.Debug": "1.0.0",
     "Microsoft.Extensions.Options.ConfigurationExtensions": "1.0.0",
     "StackExchange.Redis": "1.1.608",
-    "Newtonsoft.Json": "9.0.1"
+    "Newtonsoft.Json": "9.0.1",
+    "IdentityServer4.AccessTokenValidation": "1.0.1-rc3"
   },
   "tools": {
     "Microsoft.AspNetCore.Server.IISIntegration.Tools": "1.0.0-preview2-final"

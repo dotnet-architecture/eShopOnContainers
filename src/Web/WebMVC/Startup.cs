@@ -84,14 +84,6 @@ namespace Microsoft.eShopOnContainers.WebMVC
                     name: "default",
                     template: "{controller=Catalog}/{action=Index}/{id?}");
             });
-
-            var context = (ApplicationDbContext)app
-            .ApplicationServices.GetService(typeof(ApplicationDbContext));
-
-            using (context)
-            {
-                context.Database.Migrate();
-            }
         }
     }
 }

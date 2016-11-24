@@ -16,9 +16,9 @@ export class BasketComponent implements OnInit {
     constructor(private service: BasketService) { }
 
     ngOnInit() {
-        this.basket = this.service.getBasket()
-        this.service.basket.items.forEach(item => {
-            this.totalPrice += (item.unitPrice * item.quantity)
+        this.service.getBasket().subscribe(basket => {
+            this.basket = basket;
+            this.calculateTotalPrice();
         });
     }
 
@@ -27,8 +27,7 @@ export class BasketComponent implements OnInit {
     }
 
     private calculateTotalPrice() {
-        this.basket = this.service.basket.items;
-        this.service.basket.items.forEach(item => {
+        this.basket.items.forEach(item => {
             this.totalPrice += (item.unitPrice * item.quantity)
         });
     }

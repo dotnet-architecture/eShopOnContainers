@@ -1,0 +1,25 @@
+version: '2'
+
+services:
+  identity.service:
+    image: eshop/identity    
+    build:
+    context: .
+    dockerfile: Dockerfile
+    environment:
+      - ConnectionString=Server=identity.data;Initial Catalog=CatalogData;User Id=sa;Password=Pass@word
+      - Spa=http://localhost/5003
+    expose:
+      - "80"
+    ports:
+      - "5101:80"
+    depends_on:
+      - identity.data
+
+  identity.data:
+    image: microsoft/mssql-server-linux
+    environment:
+      - SA_PASSWORD=Pass@word
+      - ACCEPT_EULA=Y
+    ports:
+      - "5434:1433"
