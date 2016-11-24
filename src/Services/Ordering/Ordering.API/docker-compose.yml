@@ -10,16 +10,13 @@ services:
       - ConnectionString=Server=ordering.data;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word
     ports:
       - "81:80"
-# (Go to Production): For secured/final deployment, remove Ports mapping and
-# leave just the internal expose section 
-#    expose:
-#      - "80"
-    extra_hosts:
-      - "CESARDLBOOKVHD:10.0.75.1"
     depends_on:
       - ordering.data
 
   ordering.data:
-    image: eshop/ordering.data.sqlserver.linux
+    image: microsoft/mssql-server-linux
+	environment:
+	  - ACCEPT_EULA=Y
+	  - SA_PASSWORD=Pass@word
     ports:
       - "1433:1433"
