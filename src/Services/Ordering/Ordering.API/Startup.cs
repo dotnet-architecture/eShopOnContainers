@@ -1,5 +1,10 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Ordering.API
 {
+    using Autofac;
+    using Autofac.Extensions.DependencyInjection;
+    using Infrastructure;
+    using Infrastructure.AutofacModules;
+    using Infrastructure.Filters;
     using MediatR;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -8,6 +13,7 @@
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
     using Ordering.Infrastructure;
+    using System;
     using System.Reflection;
 
     public class Startup
@@ -31,10 +37,16 @@
 
         public IConfigurationRoot Configuration { get; }
 
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
-            services.AddMvc();
+
+            services.AddMvc(options=>
+            {
+
+                options.Filters.Add(typeof(HttpGlobalExceptionFilter));
+
+            }).AddControllersAsServices();
 
             services.AddEntityFrameworkSqlServer()
                 .AddDbContext<OrderingContext>(options =>
@@ -56,8 +68,22 @@
                 });
             });
 
-            services.AddMediatR(typeof(Startup)); //TODO:pending
-    
+            services.AddSingleton<IConfiguration>(this.Configuration);
+
+            services.AddOptions();
+
+
+
+            //configure autofac
+
+            var container = new ContainerBuilder();
+            container.Populate(services);
+
+            container.RegisterModule(new MediatorModule());
+            container.RegisterModule(new ApplicationModule());
+
+
+            return new AutofacServiceProvider(container.Build());
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
@@ -69,7 +95,9 @@
             {
                 app.UseDeveloperExceptionPage();
             }
-             
+
+            OrderingContextSeed.SeedAsync(app).Wait();
+
             app.UseMvc();
 
             app.UseSwagger()

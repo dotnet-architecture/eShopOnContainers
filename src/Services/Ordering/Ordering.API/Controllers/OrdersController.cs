@@ -4,6 +4,7 @@
     using Application.Queries;
     using MediatR;
     using Microsoft.AspNetCore.Mvc;
+    using Models;
     using System;
     using System.Threading.Tasks;
 
@@ -13,7 +14,7 @@
         private readonly IMediator _mediator;
         private readonly IOrderQueries _orderQueries;
 
-        public OrdersController(IMediator mediator,IOrderQueries orderQueries)
+        public OrdersController(IMediator mediator, IOrderQueries orderQueries)
         {
             if (mediator == null)
             {
@@ -31,9 +32,21 @@
 
         [Route("new")]
         [HttpPost]
-        public async Task<IActionResult> AddOrder()
+        public async Task<IActionResult> AddOrder([FromBody]NewOrderViewModel order)
         {
-            var newOrderRequest = new NewOrderRequest();
+            var newOrderRequest = new NewOrderRequest()
+            {
+                Buyer =GetUserName(), //TODO
+                CardTypeId = 1, //TODO
+                CardHolderName = order.CardHolderName,
+                CardNumber = order.CardNumber,
+                CardExpiration = order.CardExpiration,
+                CardSecurityNumber = order.CardSecurityNumber,
+                State = order.ShippingState,
+                City = order.ShippingCity,
+                Country = order.ShippingCountry,
+                Street = order.ShippingStreet
+            };
 
             var added = await _mediator.SendAsync(newOrderRequest);
 
@@ -45,50 +58,38 @@
             return BadRequest();
         }
 
-
-        [Route("cancel/{orderId:int}")]
-        [HttpPost]
-        public async Task<IActionResult> CancelOrder(int orderId)
-        {
-            var cancelOrderRequest = new CancelOrderRequest(orderId);
-
-            var cancelled = await _mediator.SendAsync(cancelOrderRequest);
-
-            if (cancelled)
-            {
-                return Ok();
-            }
-
-            return BadRequest();
-        }
-
-
         [Route("{orderId:int}")]
         [HttpGet]
         public async Task<IActionResult> GetOrder(int orderId)
         {
             var order = await _orderQueries.GetOrder(orderId);
 
-            if ( order != null)
-            {
-                Ok(order);
-            }
-
-            return NotFound();
+            
+            return Ok(order);
         }
 
-        [Route("pending")]
+        [Route("")]
         [HttpGet]
-        public async Task<IActionResult> GetPendingOrders(int orderId)
+        public async Task<IActionResult> GetOrders()
         {
-            var orders = await _orderQueries.GetPendingOrders();
+            var orders = await _orderQueries.GetOrders();
 
-            if (orders.Any())
-            {
-                Ok(orders);
-            }
 
-            return NoContent();
+            return Ok(orders);
+        }
+
+        [Route("cardtypes")]
+        [HttpGet]
+        public async Task<IActionResult> GetCardTypes()
+        {
+            var cardTypes = await _orderQueries.GetCardTypes();
+
+            return Ok(cardTypes);
+        }
+
+        string GetUserName()
+        {
+            return "MOCK";
         }
     }
 

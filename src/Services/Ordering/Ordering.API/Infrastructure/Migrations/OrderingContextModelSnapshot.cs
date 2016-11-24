@@ -28,15 +28,7 @@ namespace Ordering.API.Infrastructure.Migrations
 
                     b.Property<string>("Country");
 
-                    b.Property<string>("CountryCode");
-
-                    b.Property<double>("Latitude");
-
-                    b.Property<double>("Longitude");
-
                     b.Property<string>("State");
-
-                    b.Property<string>("StateCode");
 
                     b.Property<string>("Street");
 
@@ -61,15 +53,21 @@ namespace Ordering.API.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("FullName")
+                        .IsUnique();
+
                     b.ToTable("buyers","ordering");
                 });
 
             modelBuilder.Entity("Microsoft.eShopOnContainers.Services.Ordering.Domain.CardType", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(1);
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasAnnotation("MaxLength", 200);
 
                     b.HasKey("Id");
 
@@ -84,8 +82,6 @@ namespace Ordering.API.Infrastructure.Migrations
                         .HasAnnotation("SqlServer:HiLoSequenceSchema", "ordering")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.SequenceHiLo);
 
-                    b.Property<int?>("BillingAddressId");
-
                     b.Property<int>("BuyerId");
 
                     b.Property<DateTime>("OrderDate");
@@ -97,8 +93,6 @@ namespace Ordering.API.Infrastructure.Migrations
                     b.Property<int>("StatusId");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BillingAddressId");
 
                     b.HasIndex("BuyerId");
 
@@ -141,9 +135,12 @@ namespace Ordering.API.Infrastructure.Migrations
             modelBuilder.Entity("Microsoft.eShopOnContainers.Services.Ordering.Domain.OrderStatus", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(1);
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasAnnotation("MaxLength", 200);
 
                     b.HasKey("Id");
 
@@ -157,6 +154,8 @@ namespace Ordering.API.Infrastructure.Migrations
                         .HasAnnotation("SqlServer:HiLoSequenceName", "paymentseq")
                         .HasAnnotation("SqlServer:HiLoSequenceSchema", "ordering")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.SequenceHiLo);
+
+                    b.Property<int>("BuyerId");
 
                     b.Property<string>("CardHolderName")
                         .IsRequired()
@@ -174,6 +173,8 @@ namespace Ordering.API.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("BuyerId");
+
                     b.HasIndex("CardTypeId");
 
                     b.ToTable("payments","ordering");
@@ -181,11 +182,6 @@ namespace Ordering.API.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.eShopOnContainers.Services.Ordering.Domain.Order", b =>
                 {
-                    b.HasOne("Microsoft.eShopOnContainers.Services.Ordering.Domain.Address", "BillingAddress")
-                        .WithMany()
-                        .HasForeignKey("BillingAddressId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
                     b.HasOne("Microsoft.eShopOnContainers.Services.Ordering.Domain.Buyer", "Buyer")
                         .WithMany()
                         .HasForeignKey("BuyerId")
@@ -193,8 +189,7 @@ namespace Ordering.API.Infrastructure.Migrations
 
                     b.HasOne("Microsoft.eShopOnContainers.Services.Ordering.Domain.Payment", "Payment")
                         .WithMany()
-                        .HasForeignKey("PaymentId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("PaymentId");
 
                     b.HasOne("Microsoft.eShopOnContainers.Services.Ordering.Domain.Address", "ShippingAddress")
                         .WithMany()
@@ -216,6 +211,11 @@ namespace Ordering.API.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.eShopOnContainers.Services.Ordering.Domain.Payment", b =>
                 {
+                    b.HasOne("Microsoft.eShopOnContainers.Services.Ordering.Domain.Buyer")
+                        .WithMany("Payments")
+                        .HasForeignKey("BuyerId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("Microsoft.eShopOnContainers.Services.Ordering.Domain.CardType", "CardType")
                         .WithMany()
                         .HasForeignKey("CardTypeId")
