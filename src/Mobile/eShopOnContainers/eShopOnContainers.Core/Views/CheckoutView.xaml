@@ -176,7 +176,8 @@
                     </Grid.RowDefinitions>
                     <ListView 
                         Grid.Row="0"
-                        ItemsSource="{Binding Order.OrderItems}"       
+                        ItemsSource="{Binding Order.OrderItems}"   
+                        HeightRequest="{Binding Order.OrderItems.Count, Converter={StaticResource ItemsToHeightConverter}}"     
                         HasUnevenRows="True"
                         SeparatorVisibility="None"
                         VerticalOptions="FillAndExpand"

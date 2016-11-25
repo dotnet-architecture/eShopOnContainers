@@ -23,6 +23,7 @@ namespace eShopOnContainers.Core.Controls
                 }
 
                 var index = 0;
+
                 foreach (var item in ItemsSource)
                 {
                     if (index == SelectedIndex)
@@ -30,6 +31,7 @@ namespace eShopOnContainers.Core.Controls
                         SelectedItem = item;
                         break;
                     }
+
                     index++;
                 }
             };
@@ -62,6 +64,7 @@ namespace eShopOnContainers.Core.Controls
             if (ItemsSource != null)
             {
                 var index = 0;
+
                 foreach (var item in ItemsSource)
                 {
                     string strItem = item?.ToString();
@@ -73,6 +76,7 @@ namespace eShopOnContainers.Core.Controls
                         selectedIndex = index;
                         break;
                     }
+
                     index++;
                 }
             }
@@ -102,10 +106,8 @@ namespace eShopOnContainers.Core.Controls
         {
             var boundPicker = (BindablePicker)bindable;
 
-            if (boundPicker.ItemSelected != null)
-            {
-                boundPicker.ItemSelected(boundPicker, new SelectedItemChangedEventArgs(newValue));
-            }
+            boundPicker.ItemSelected?.Invoke(boundPicker, 
+                new SelectedItemChangedEventArgs(newValue));
 
             boundPicker.InternalUpdateSelectedIndex();
         }

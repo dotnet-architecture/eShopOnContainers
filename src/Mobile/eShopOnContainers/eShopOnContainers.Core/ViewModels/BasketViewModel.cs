@@ -1,6 +1,5 @@
 ﻿using eShopOnContainers.Core.Models.Basket;
 using eShopOnContainers.Core.Models.Catalog;
-using eShopOnContainers.Core.Models.Orders;
 using eShopOnContainers.Core.Models.User;
 using eShopOnContainers.Core.Services.Basket;
 using eShopOnContainers.Core.Services.User;
@@ -69,10 +68,9 @@ namespace eShopOnContainers.Core.ViewModels
         {
             MessagingCenter.Subscribe<CatalogViewModel, List<BasketItem>>(this, MessengerKeys.UpdateBasket, (sender, arg) =>
             {
-                BadgeCount = arg.Count;
-
                 foreach (var basketItem in arg)
                 {
+                    BadgeCount += basketItem.Quantity;
                     AddBasketItem(basketItem);
                 }
             });
@@ -84,7 +82,7 @@ namespace eShopOnContainers.Core.ViewModels
                 AddCatalogItem(arg);
             });
             
-            MessagingCenter.Subscribe<OrderItem>(this, MessengerKeys.UpdateProduct, (sender) =>
+            MessagingCenter.Subscribe<BasketItem>(this, MessengerKeys.UpdateProduct, (sender) =>
             {
                 ReCalculateTotal();
             });
@@ -126,12 +124,16 @@ namespace eShopOnContainers.Core.ViewModels
         {
             Total = 0;
 
+            if (BasketItems == null)
+            {
+                return;
+            }
+
             foreach (var orderItem in BasketItems)
             {
                 Total += (orderItem.Quantity * orderItem.UnitPrice);
             }
-
-
+            
             _basketService.UpdateBasketAsync(new CustomerBasket
             {
                 BuyerId = _user.GuidUser,

@@ -49,5 +49,16 @@ namespace eShopOnContainers.Core.Services.Basket
 
             return result;
         }
+
+        public async Task ClearBasketAsync(string guidUser)
+        {
+            UriBuilder builder = new UriBuilder(GlobalSetting.BasketEndpoint);
+
+            builder.Path = guidUser;
+
+            string uri = builder.ToString();
+
+             await _requestProvider.DeleteAsync(uri);
+        }
     }
 }

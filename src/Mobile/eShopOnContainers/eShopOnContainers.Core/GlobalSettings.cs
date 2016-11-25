@@ -7,5 +7,7 @@
         public const string CatalogEndpoint = "http://104.40.62.65:5101/";
 
         public const string BasketEndpoint = "http://104.40.62.65:5103/";
+
+        public const string IdentityEndpoint = "http://104.40.62.65:5105/";
     }
 }
