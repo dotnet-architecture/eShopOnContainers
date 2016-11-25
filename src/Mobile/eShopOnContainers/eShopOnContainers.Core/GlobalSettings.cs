@@ -8,6 +8,10 @@
 
         public const string BasketEndpoint = "http://104.40.62.65:5103/";
 
-        public const string IdentityEndpoint = "http://104.40.62.65:5105/";
+        public const string IdentityEndpoint = "http://104.40.62.65:5105/connect/authorize";
+
+        public const string LogoutEndpoint = "http://104.40.62.65:5105/connect/endsession";
+
+        public const string IdentityCallback = "http://localhost:5003/callback.html";
     }
 }

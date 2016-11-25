@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="eShopOnContainers.Core.Views.LoginView"        
              xmlns:animations="clr-namespace:eShopOnContainers.Core.Animations;assembly=eShopOnContainers.Core"
-             xmlns:triggers="clr-namespace:eShopOnContainers.Core.Triggers;assembly=eShopOnContainers.Core"
+             xmlns:triggers="clr-namespace:eShopOnContainers.Core.Triggers;assembly=eShopOnContainers.Core"   
+             xmlns:behaviors="clr-namespace:eShopOnContainers.Core.Behaviors;assembly=eShopOnContainers.Core"
              Title="eShop on Containers">
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -46,6 +47,20 @@
                         Value="Center" />
             </Style>
 
+            <Style x:Key="LoginPanelStyle" 
+               TargetType="{x:Type Grid}">
+                <Setter Property="HeightRequest"
+                        Value="60" />
+                <Setter Property="BackgroundColor"
+                        Value="{StaticResource LightGreenColor}" />
+                <Setter Property="HorizontalOptions"
+                        Value="FillAndExpand" />
+                <Setter Property="VerticalOptions"
+                        Value="Center" />
+                <Setter Property="Margin"
+                        Value="12" />
+            </Style>
+            
             <animations:StoryBoard 
                 x:Key="LoginAnimation"    
                 Target="{x:Reference LoginPanel}">
@@ -65,8 +80,10 @@
     </ContentPage.Triggers>
     <Grid 
         BackgroundColor="{StaticResource BackgroundColor}">
+        <!-- MOCK AUTH -->
         <Grid   
-            x:Name="LoginPanel"
+            x:Name="LoginPanel"     
+            IsVisible="{Binding IsMock}"
             Padding="0"   
             ColumnSpacing="0"   
             RowSpacing="0">
@@ -159,10 +176,40 @@
                     Style="{StaticResource LoginButtonStyle}"/>
                 <Grid.GestureRecognizers>
                     <TapGestureRecognizer 
+                        Command="{Binding MockSignInCommand}"  
+                        NumberOfTapsRequired="1" />
+                </Grid.GestureRecognizers>
+            </Grid>
+        </Grid>
+        <!-- AUTH -->
+        <Grid
+            IsVisible="{Binding IsMock, Converter={StaticResource InverseBoolConverter}}">
+            <!-- LOGIN BUTTON -->
+            <Grid 
+                Style="{StaticResource LoginPanelStyle}">
+                <Label       
+                    Text="[ LOGIN ]" 
+                    Style="{StaticResource LoginButtonStyle}"/>
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer 
                         Command="{Binding SignInCommand}"  
                         NumberOfTapsRequired="1" />
                 </Grid.GestureRecognizers>
             </Grid>
+            <!-- WEBVIEW -->
+            <AbsoluteLayout
+                IsVisible="{Binding IsValid}">
+                <WebView 
+                    x:Name="AuthWebView"
+                    Source="{Binding LoginUrl}"
+			        AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
+			        AbsoluteLayout.LayoutFlags="All">
+                    <WebView.Behaviors>
+                        <behaviors:WebViewNavigationBehavior 
+                            NavigateCommand="{Binding NavigateCommand}"/>
+                    </WebView.Behaviors>
+                </WebView>
+            </AbsoluteLayout>
         </Grid>
         <!-- INDICATOR -->
         <ActivityIndicator 

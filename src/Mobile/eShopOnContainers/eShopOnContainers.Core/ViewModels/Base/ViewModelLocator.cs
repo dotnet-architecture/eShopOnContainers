@@ -7,6 +7,7 @@ using eShopOnContainers.Core.Services.OpenUrl;
 using eShopOnContainers.Core.Services.User;
 using eShopOnContainers.Core.Services.RequestProvider;
 using eShopOnContainers.Core.Services.Basket;
+using eShopOnContainers.Core.Services.Identity;
 
 namespace eShopOnContainers.ViewModels.Base
 {
@@ -37,6 +38,7 @@ namespace eShopOnContainers.ViewModels.Base
             RegisterSingleton<INavigationService, NavigationService>();
             _unityContainer.RegisterType<IOpenUrlService, OpenUrlService>();
             _unityContainer.RegisterType<IRequestProvider, RequestProvider>();
+            _unityContainer.RegisterType<IIdentityService, IdentityService>();
 
             _unityContainer.RegisterType<ICatalogService, CatalogMockService>();
             _unityContainer.RegisterType<IBasketService, BasketMockService>();

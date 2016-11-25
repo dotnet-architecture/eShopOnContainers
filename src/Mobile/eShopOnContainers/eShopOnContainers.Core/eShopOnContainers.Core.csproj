@@ -44,6 +44,7 @@
     </Compile>
     <Compile Include="Behaviors\Base\BindableBehavior.cs" />
     <Compile Include="Behaviors\EventToCommandBehavior.cs" />
+    <Compile Include="Behaviors\WebViewNavigationBehavior.cs" />
     <Compile Include="Controls\BindablePicker.cs" />
     <Compile Include="Controls\AddBasketButton.xaml.cs">
       <DependentUpon>AddBasketButton.xaml</DependentUpon>
@@ -80,6 +81,8 @@
     <Compile Include="Services\Catalog\CatalogService.cs" />
     <Compile Include="Services\Dialog\DialogService.cs" />
     <Compile Include="Services\Dialog\IDialogService.cs" />
+    <Compile Include="Services\Identity\IdentityService.cs" />
+    <Compile Include="Services\Identity\IIdentityService.cs" />
     <Compile Include="Services\Navigation\INavigationService.cs" />
     <Compile Include="Services\Navigation\NavigationService.cs" />
     <Compile Include="Services\OpenUrl\IOpenUrlService.cs" />
@@ -184,6 +187,10 @@
     </Reference>
     <Reference Include="FFImageLoading.Platform, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Xamarin.FFImageLoading.2.2.6-pre-232\lib\portable-net45+win8+wpa81+wp8\FFImageLoading.Platform.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="IdentityModel, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\IdentityModel.1.13.1\lib\portable-net45+wp80+win8+wpa81\IdentityModel.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">

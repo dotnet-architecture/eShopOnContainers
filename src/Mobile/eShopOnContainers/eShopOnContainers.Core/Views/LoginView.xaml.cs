@@ -8,5 +8,24 @@ namespace eShopOnContainers.Core.Views
         {
             InitializeComponent();
         }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+
+            AuthWebView.Navigating += OnAuthWebViewNavigating;
+        }
+
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+
+            AuthWebView.Navigating -= OnAuthWebViewNavigating;
+        }
+
+        private void OnAuthWebViewNavigating(object sender, WebNavigatingEventArgs e)
+        {
+
+        }
     }
 }
