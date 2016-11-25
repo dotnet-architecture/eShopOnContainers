@@ -1,8 +1,8 @@
-{
+﻿{
   "version": "1.0.0-*",
 
   "dependencies": {
-    "NETStandard.Library": "1.6"
+    "NETStandard.Library": "1.6.0"
   },
 
   "frameworks": {

@@ -10,9 +10,7 @@
       "type": "platform",
       "version": "1.0.0"
     },
-    "Ordering.API": "1.0.0-*",
     "Ordering.Domain": "1.0.0-*",
-    "Ordering.SqlData": "1.0.0-*"
   },
   "frameworks": {
     "netcoreapp1.0": {

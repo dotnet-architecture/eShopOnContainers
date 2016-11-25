@@ -1,29 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-
-using Microsoft.eShopOnContainers.Services.Ordering.SqlData.UnitOfWork;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.eShopOnContainers.Services.Ordering.Domain.Contracts;
-using Microsoft.eShopOnContainers.Services.Ordering.SqlData.Repositories;
-using Microsoft.eShopOnContainers.Services.Ordering.SqlData.Queries;
-
-namespace Microsoft.eShopOnContainers.Services.Ordering.API
+﻿namespace Microsoft.eShopOnContainers.Services.Ordering.API
 {
+    using Autofac;
+    using Autofac.Extensions.DependencyInjection;
+    using Infrastructure;
+    using Infrastructure.AutofacModules;
+    using Infrastructure.Filters;
+    using MediatR;
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
+    using Ordering.Infrastructure;
+    using System;
+    using System.Reflection;
+
     public class Startup
     {
         public Startup(IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
+                .AddJsonFile("settings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile($"settings.{env.EnvironmentName}.json", optional: true);
 
             if (env.IsDevelopment())
             {
@@ -37,27 +37,55 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API
 
         public IConfigurationRoot Configuration { get; }
 
-        // This method gets called by the runtime. 
-        // Use this method to add services to the IoC container.
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
-            services.AddMvc();
 
-            
-            var connString = Configuration["ConnectionString"];
-
-            services.AddDbContext<OrderingDbContext>(options =>
+            services.AddMvc(options=>
             {
-                options.UseSqlServer(connString)
-                    .UseSqlServer(connString, b => b.MigrationsAssembly("Ordering.API"));
+
+                options.Filters.Add(typeof(HttpGlobalExceptionFilter));
+
+            }).AddControllersAsServices();
+
+            services.AddEntityFrameworkSqlServer()
+                .AddDbContext<OrderingContext>(options =>
+                {
+                    options.UseSqlServer(Configuration["ConnectionString"],
+                        sqlop=>sqlop.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name));
+                });
+
+            services.AddSwaggerGen();
+            services.ConfigureSwaggerGen(options =>
+            {
+                options.DescribeAllEnumsAsStrings();
+                options.SingleApiVersion(new Swashbuckle.Swagger.Model.Info()
+                {
+                    Title = "Ordering HTTP API",
+                    Version = "v1",
+                    Description = "The Ordering Service HTTP API",
+                    TermsOfService = "Terms Of Service"
+                });
             });
 
-            services.AddTransient<IOrderRepository, OrderRepository>();
-            services.AddTransient<IOrderdingQueries, OrderingQueries>();
+            services.AddSingleton<IConfiguration>(this.Configuration);
+
+            services.AddOptions();
+
+
+
+            //configure autofac
+
+            var container = new ContainerBuilder();
+            container.Populate(services);
+
+            container.RegisterModule(new MediatorModule());
+            container.RegisterModule(new ApplicationModule());
+
+
+            return new AutofacServiceProvider(container.Build());
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
@@ -67,8 +95,13 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API
             {
                 app.UseDeveloperExceptionPage();
             }
-             
+
+            OrderingContextSeed.SeedAsync(app).Wait();
+
             app.UseMvc();
+
+            app.UseSwagger()
+                .UseSwaggerUi();
         }
     }
 }
