@@ -6,7 +6,7 @@ namespace eShopOnContainers.Core.Converters
 {
     public class ItemsToHeightConverter : IValueConverter
     {
-        private const int ItemHeight = 144;
+        private const int ItemHeight = 156;
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

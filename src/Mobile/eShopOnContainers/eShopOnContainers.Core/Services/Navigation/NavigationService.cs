@@ -1,4 +1,5 @@
-﻿using eShopOnContainers.Core.ViewModels;
+﻿using eShopOnContainers.Core.Helpers;
+using eShopOnContainers.Core.ViewModels;
 using eShopOnContainers.Core.Views;
 using eShopOnContainers.ViewModels.Base;
 using System;
@@ -29,7 +30,10 @@ namespace eShopOnContainers.Services
 
         public Task InitializeAsync()
         {
-            return NavigateToAsync<LoginViewModel>();
+            if(string.IsNullOrEmpty(Settings.AuthAccessToken))
+                return NavigateToAsync<LoginViewModel>();
+            else
+                return NavigateToAsync<MainViewModel>();
         }
 
         public Task NavigateToAsync<TViewModel>() where TViewModel : ViewModelBase
@@ -67,7 +71,7 @@ namespace eShopOnContainers.Services
 
         public virtual Task RemoveLastFromBackStackAsync()
         {
-            var mainPage = CurrentApplication.MainPage as CustomNavigationPage;
+            var mainPage = CurrentApplication.MainPage as CustomNavigationView;
 
             if (mainPage != null)
             {
@@ -80,7 +84,7 @@ namespace eShopOnContainers.Services
 
         public virtual Task RemoveBackStackAsync()
         {
-            var mainPage = CurrentApplication.MainPage as CustomNavigationPage;
+            var mainPage = CurrentApplication.MainPage as CustomNavigationView;
 
             if (mainPage != null)
             {
@@ -100,11 +104,11 @@ namespace eShopOnContainers.Services
 
             if (page is LoginView)
             {
-                CurrentApplication.MainPage = new CustomNavigationPage(page);
+                CurrentApplication.MainPage = new CustomNavigationView(page);
             }
             else
             {
-                var navigationPage = CurrentApplication.MainPage as CustomNavigationPage;
+                var navigationPage = CurrentApplication.MainPage as CustomNavigationView;
 
                 if (navigationPage != null)
                 {
@@ -112,7 +116,7 @@ namespace eShopOnContainers.Services
                 }
                 else
                 {
-                    CurrentApplication.MainPage = new CustomNavigationPage(page);
+                    CurrentApplication.MainPage = new CustomNavigationView(page);
                 }
             }
 

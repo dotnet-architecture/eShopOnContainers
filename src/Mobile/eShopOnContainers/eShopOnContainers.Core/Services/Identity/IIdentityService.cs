@@ -3,6 +3,7 @@
     public interface IIdentityService
     {
         string CreateAuthorizeRequest();
+        string CreateLogoutRequest(string token);
         string DecodeToken(string token);
     }
 }

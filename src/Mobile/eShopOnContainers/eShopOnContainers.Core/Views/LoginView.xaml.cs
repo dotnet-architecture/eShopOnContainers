@@ -1,31 +1,59 @@
-﻿using Xamarin.Forms;
+﻿using System;
+using System.Diagnostics;
+using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace eShopOnContainers.Core.Views
 {
     public partial class LoginView : ContentPage
     {
+        private bool _animate;
+
         public LoginView()
         {
             InitializeComponent();
         }
 
-        protected override void OnAppearing()
+        protected override async void OnAppearing()
         {
-            base.OnAppearing();
+            var content = this.Content;
+            this.Content = null;
+            this.Content = content;
 
-            AuthWebView.Navigating += OnAuthWebViewNavigating;
+            _animate = true;
+            await AnimateIn();
         }
 
         protected override void OnDisappearing()
         {
-            base.OnDisappearing();
-
-            AuthWebView.Navigating -= OnAuthWebViewNavigating;
+            _animate = false;
         }
 
-        private void OnAuthWebViewNavigating(object sender, WebNavigatingEventArgs e)
+        public async Task AnimateIn()
         {
+            await AnimateItem(Banner, 10500);
+        }
 
+        private async Task AnimateItem(View uiElement, uint duration)
+        {
+            try
+            {
+                while (_animate)
+                {
+                    await uiElement.ScaleTo(1.05, duration, Easing.SinInOut);
+
+                    await Task.WhenAll(
+                        uiElement.FadeTo(1, duration, Easing.SinInOut),
+                        uiElement.LayoutTo(new Rectangle(new Point(0, 0), new Size(uiElement.Width, uiElement.Height))),
+                        uiElement.FadeTo(.9, duration, Easing.SinInOut),
+                        uiElement.ScaleTo(1.15, duration, Easing.SinInOut)
+                    );
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
         }
     }
 }

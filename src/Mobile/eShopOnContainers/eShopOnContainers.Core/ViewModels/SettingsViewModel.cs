@@ -9,11 +9,11 @@ namespace eShopOnContainers.Core.ViewModels
     {
         private string _title;
         private string _description;
-        private bool _useMockServices;
+        private bool _useAzureServices;
 
         public SettingsViewModel()
         {
-            UseMockServices = ViewModelLocator.Instance.UseMockService;
+            UseAzureServices = !ViewModelLocator.Instance.UseMockService;
         }
 
         public string Title
@@ -36,13 +36,13 @@ namespace eShopOnContainers.Core.ViewModels
             }
         }
 
-        public bool UseMockServices
+        public bool UseAzureServices
         {
-            get { return _useMockServices; }
+            get { return _useAzureServices; }
             set
             {
-                _useMockServices = value;
-                RaisePropertyChanged(() => UseMockServices);
+                _useAzureServices = value;
+                RaisePropertyChanged(() => UseAzureServices);
             }
         }
 
@@ -50,7 +50,7 @@ namespace eShopOnContainers.Core.ViewModels
 
         private void MockServices()
         {
-            ViewModelLocator.Instance.UpdateServices(UseMockServices);
+            ViewModelLocator.Instance.UpdateDependencies(!UseAzureServices);
             UpdateInfo();
         }
 
@@ -63,7 +63,7 @@ namespace eShopOnContainers.Core.ViewModels
 
         private void UpdateInfo()
         {
-            if (!UseMockServices)
+            if (!UseAzureServices)
             {
                 Title = "Use Mock Services";
                 Description = "Mock Services are simulated objects that mimic the behavior of real services in controlled ways";

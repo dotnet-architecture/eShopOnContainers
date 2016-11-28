@@ -116,6 +116,14 @@
       <HintPath>..\..\packages\modernhttpclient.2.4.2\lib\MonoAndroid\OkHttp.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Plugin.Settings, Version=2.6.0.12, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Xam.Plugins.Settings.2.6.0.12-beta\lib\MonoAndroid10\Plugin.Settings.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Plugin.Settings.Abstractions, Version=2.6.0.12, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Xam.Plugins.Settings.2.6.0.12-beta\lib\MonoAndroid10\Plugin.Settings.Abstractions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="SlideOverKit, Version=1.0.6135.18790, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\SlideOverKit.2.1.4\lib\MonoAndroid10\SlideOverKit.dll</HintPath>
       <Private>True</Private>
@@ -203,7 +211,9 @@
     <Compile Include="Activities\SplashActivity.cs" />
     <Compile Include="Effects\EntryLineColorEffect.cs" />
     <Compile Include="Extensions\ViewExtensions.cs" />
+    <Compile Include="Helpers\Settings.cs" />
     <Compile Include="Renderers\BadgeView.cs" />
+    <Compile Include="Renderers\CustomNavigationPageRenderer.cs" />
     <Compile Include="Renderers\CustomTabbedPageRenderer.cs" />
     <Compile Include="Renderers\SlideDownMenuPageRenderer.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
@@ -345,6 +355,18 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\default_product.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\banner.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-hdpi\header_logo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xhdpi\header_logo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxhdpi\header_logo.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\..\packages\Xamarin.Android.Support.Vector.Drawable.23.3.0\build\Xamarin.Android.Support.Vector.Drawable.targets" Condition="Exists('..\..\packages\Xamarin.Android.Support.Vector.Drawable.23.3.0\build\Xamarin.Android.Support.Vector.Drawable.targets')" />

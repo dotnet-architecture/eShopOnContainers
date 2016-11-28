@@ -12,6 +12,7 @@ using System.Linq;
 using eShopOnContainers.Core.Models.Basket;
 using System.Collections.Generic;
 using eShopOnContainers.Core.Services.Basket;
+using eShopOnContainers.Core.Services.Order;
 
 namespace eShopOnContainers.Core.ViewModels
 {
@@ -23,12 +24,15 @@ namespace eShopOnContainers.Core.ViewModels
 
         private IUserService _userService;
         private IBasketService _basketService;
+        private IOrderService _orderService;
 
         public CheckoutViewModel(IUserService userService,
-            IBasketService basketService)
+            IBasketService basketService,
+            IOrderService orderService)
         {
             _basketService = basketService;
             _userService = userService;
+            _orderService = orderService;
         }
 
         public ObservableCollection<BasketItem> OrderItems
@@ -90,6 +94,7 @@ namespace eShopOnContainers.Core.ViewModels
 
         private async void Checkout()
         {
+            await _orderService.CreateOrderAsync(Order);
             await _basketService.ClearBasketAsync(User.GuidUser);
             
             await NavigationService.NavigateToAsync<MainViewModel>(new TabParameter { TabIndex = 1 });

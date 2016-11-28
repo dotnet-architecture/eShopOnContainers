@@ -8,6 +8,7 @@ using eShopOnContainers.Core.Services.User;
 using eShopOnContainers.Core.Services.RequestProvider;
 using eShopOnContainers.Core.Services.Basket;
 using eShopOnContainers.Core.Services.Identity;
+using eShopOnContainers.Core.Services.Order;
 
 namespace eShopOnContainers.ViewModels.Base
 {
@@ -55,28 +56,29 @@ namespace eShopOnContainers.ViewModels.Base
             _unityContainer.RegisterType<SettingsViewModel>();
         }
 
-        public void UpdateServices(bool useMockServices)
+        public void UpdateDependencies(bool useMockServices)
         {
-            if (!useMockServices)
+            if (useMockServices)
             {
                 _unityContainer.RegisterInstance<ICatalogService>(new CatalogMockService());
                 _unityContainer.RegisterInstance<IBasketService>(new BasketMockService());
+                _unityContainer.RegisterInstance<IOrderService>(new OrderMockService());
                 _unityContainer.RegisterInstance<IUserService>(new UserMockService());
 
-                UseMockService = false;
+                UseMockService = true;
             }
             else
             {
                 var requestProvider = Resolve<IRequestProvider>();
                 _unityContainer.RegisterInstance<ICatalogService>(new CatalogService(requestProvider));
                 _unityContainer.RegisterInstance<IBasketService>(new BasketService(requestProvider));
+                _unityContainer.RegisterInstance<IOrderService>(new OrderService(requestProvider));
                 _unityContainer.RegisterInstance<IUserService>(new UserMockService());
 
-                UseMockService = true;
+                UseMockService = false;
             }
         }
-
-
+        
         public T Resolve<T>()
         {
             return _unityContainer.Resolve<T>();

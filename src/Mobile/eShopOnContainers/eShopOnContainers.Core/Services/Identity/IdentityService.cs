@@ -33,6 +33,14 @@ namespace eShopOnContainers.Core.Services.Identity
             return authorizeUri;
         }
 
+        public string CreateLogoutRequest(string token)
+        {
+            return string.Format("{0}?id_token_hint={1}&post_logout_redirect_uri={2}", 
+                GlobalSetting.LogoutEndpoint,
+                token,
+                GlobalSetting.IdentityCallback);
+        }
+
         public string DecodeToken(string token)
         {
             var parts = token.Split('.');

@@ -129,6 +129,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\app_settings.png" />
+    <Content Include="Assets\banner.png" />
     <Content Include="Assets\circle_button_background.png" />
     <Content Include="Assets\default_product.png" />
     <Content Include="Assets\fake_product_01.png" />

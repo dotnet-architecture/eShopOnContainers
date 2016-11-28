@@ -105,7 +105,7 @@
                         Grid.Column="1" 
                         Grid.Row="1" 
                         Animate="True"     
-                        Checked="{Binding UseMockServices, Mode=TwoWay}"
+                        Checked="{Binding UseAzureServices, Mode=TwoWay}"
                         Command="{Binding MockServicesCommand}"
                         Style="{StaticResource SettingsToggleButtonStyle}">
                         <controls:ToggleButton.CheckedImage>

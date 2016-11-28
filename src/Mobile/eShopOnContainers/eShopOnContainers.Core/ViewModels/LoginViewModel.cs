@@ -1,6 +1,8 @@
-﻿using eShopOnContainers.Core.Services.Identity;
+﻿using eShopOnContainers.Core.Helpers;
+using eShopOnContainers.Core.Services.Identity;
 using eShopOnContainers.Core.Services.OpenUrl;
 using eShopOnContainers.Core.Validations;
+using eShopOnContainers.Core.ViewModels.Base;
 using eShopOnContainers.ViewModels.Base;
 using IdentityModel.Client;
 using System;
@@ -17,7 +19,7 @@ namespace eShopOnContainers.Core.ViewModels
         private ValidatableObject<string> _password;
         private bool _isMock;
         private bool _isValid;
-        private string _loginUrl;
+        private string _authUrl;
 
         private IOpenUrlService _openUrlService;
         private IIdentityService _identityService;
@@ -30,6 +32,8 @@ namespace eShopOnContainers.Core.ViewModels
 
             _userName = new ValidatableObject<string>();
             _password = new ValidatableObject<string>();
+
+            IsMock = ViewModelLocator.Instance.UseMockService;
 
             AddValidations();
         }
@@ -90,18 +94,18 @@ namespace eShopOnContainers.Core.ViewModels
         {
             get
             {
-                return _loginUrl;
+                return _authUrl;
             }
             set
             {
-                _loginUrl = value;
+                _authUrl = value;
                 RaisePropertyChanged(() => LoginUrl);
             }
         }
 
         public ICommand MockSignInCommand => new Command(MockSignInAsync);
 
-        public ICommand SignInCommand => new Command(SignInAsync);
+        public ICommand SignInCommand => new Command(async () => await SignInAsync());
 
         public ICommand RegisterCommand => new Command(Register);
 
@@ -109,7 +113,10 @@ namespace eShopOnContainers.Core.ViewModels
 
         public override Task InitializeAsync(object navigationData)
         {
-            LoginUrl = _identityService.CreateAuthorizeRequest();
+            MessagingCenter.Subscribe<ProfileViewModel>(this, MessengerKeys.Logout, (sender) =>
+            {
+                Logout();
+            });
 
             return base.InitializeAsync(navigationData);
         }
@@ -148,11 +155,13 @@ namespace eShopOnContainers.Core.ViewModels
             IsBusy = false;
         }
 
-        private async void SignInAsync()
+        private async Task SignInAsync()
         {
             IsBusy = true;
 
             await Task.Delay(500);
+
+            LoginUrl = _identityService.CreateAuthorizeRequest();
 
             IsValid = true;
 
@@ -162,6 +171,19 @@ namespace eShopOnContainers.Core.ViewModels
         private void Register()
         {
             _openUrlService.OpenUrl(GlobalSetting.RegisterWebsite);
+        }
+
+        private void Logout()
+        {
+            var token = Settings.AuthAccessToken;
+            var logoutRequest = _identityService.CreateLogoutRequest(token);
+
+            if(string.IsNullOrEmpty(logoutRequest))
+            {
+                IsValid = false;
+                LoginUrl = logoutRequest;
+                Settings.AuthAccessToken = string.Empty;
+            }
         }
 
         private async void NavigateAsync(string url)
@@ -177,6 +199,8 @@ namespace eShopOnContainers.Core.ViewModels
                     
                     if(decodedTokens != null)
                     {
+                        Settings.AuthAccessToken = decodedTokens;
+
                         await NavigationService.NavigateToAsync<MainViewModel>();
                         await NavigationService.RemoveLastFromBackStackAsync();
                     }
