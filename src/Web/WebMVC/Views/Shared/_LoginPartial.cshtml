@@ -1,16 +1,16 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using Microsoft.eShopOnContainers.WebMVC.Models
+@using Microsoft.eShopOnContainers.WebMVC.Services
 
-@inject SignInManager<ApplicationUser> SignInManager
-@inject UserManager<ApplicationUser> UserManager
+@inject IIdentityParser<ApplicationUser> UserManager
 
-@if (SignInManager.IsSignedIn(User))
+@if(Context.User.Identity.IsAuthenticated)
 {
     <form asp-area="" asp-controller="Account" asp-action="LogOff" method="post" id="logoutForm" class="navbar-right">
         <div class="nav navbar-nav navbar-right mt-15">
-            @await Component.InvokeAsync("Cart", new { user = await UserManager.GetUserAsync(User) })
+            @await Component.InvokeAsync("Cart", new { user = UserManager.Parse(User) })
             <div class="fr login-user">
-                <span class="hidden-xs">@UserManager.GetUserName(User)</span>
+                <span class="hidden-xs">@User.FindFirst(x => x.Type == "preferred_username").Value</span>
                 <i class="down-arrow"></i>
                 <div class="login-user-dropdown-content">
                     <a asp-controller="Order" asp-action="Index">MY ORDERS<i class="myorders-icon"></i></a>
@@ -23,6 +23,6 @@
 else
 {
     <ul class="nav navbar-nav navbar-right">
-        <li><a asp-area="" asp-controller="Account" class="btn-login" asp-action="Login">&nbsp;Log In&nbsp;</a></li>
+        <li><a asp-area="" asp-controller="Account" class="btn-login" asp-action="SignIn">&nbsp;Log In&nbsp;</a></li>
     </ul>
 }

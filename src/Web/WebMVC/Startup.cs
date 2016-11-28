@@ -4,14 +4,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.eShopOnContainers.WebMVC.Data;
 using Microsoft.eShopOnContainers.WebMVC.Models;
 using Microsoft.eShopOnContainers.WebMVC.Services;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Microsoft.eShopOnContainers.WebMVC
 {
@@ -40,12 +39,12 @@ namespace Microsoft.eShopOnContainers.WebMVC
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            //services.AddDbContext<ApplicationDbContext>(options =>
+            //    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders();
+            //services.AddIdentity<ApplicationUser, IdentityRole>()
+            //    .AddEntityFrameworkStores<ApplicationDbContext>()
+            //    .AddDefaultTokenProviders();
 
             services.AddMvc();
 
@@ -53,6 +52,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
             services.AddTransient<ICatalogService, CatalogService>(); 
             services.AddSingleton<IOrderingService, OrderingService>(); //CCE: Once services are integrated, a singleton is not needed we can left transient.
             services.AddTransient<IBasketService, BasketService>();
+            services.AddTransient<IIdentityParser<ApplicationUser>, IdentityParser>();
 
             services.Configure<AppSettings>(Configuration);
         }
@@ -60,13 +60,14 @@ namespace Microsoft.eShopOnContainers.WebMVC
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
                 app.UseBrowserLink();
             }
             else
@@ -76,7 +77,46 @@ namespace Microsoft.eShopOnContainers.WebMVC
 
             app.UseStaticFiles();
 
-            app.UseIdentity();
+            app.UseCookieAuthentication(new CookieAuthenticationOptions
+            {
+                AuthenticationScheme = "cookies",
+                AutomaticAuthenticate = true,
+            });
+
+            //app.UseIdentity();
+
+            var oidcOptions = new OpenIdConnectOptions
+            {
+                AuthenticationScheme = "oidc",
+                SignInScheme = "cookies",
+
+                Authority = "http://localhost:5000",
+                ClientId = "mvc",
+                ClientSecret = "secret",
+                ResponseType = "code id_token",
+                SaveTokens = true,
+                GetClaimsFromUserInfoEndpoint = true,
+                RequireHttpsMetadata = false,
+                
+                //TokenValidationParameters = new TokenValidationParameters
+                //{
+                //    NameClaimType = "name",
+                //    RoleClaimType = "role"
+                //}
+            };
+
+            oidcOptions.Scope.Clear();
+            oidcOptions.Scope.Add("openid");
+            oidcOptions.Scope.Add("profile");
+            oidcOptions.Scope.Add("orders");
+
+            app.UseOpenIdConnectAuthentication(oidcOptions);
+            app.UseJwtBearerAuthentication(new JwtBearerOptions
+            {
+                Authority = "http://localhost:5000/", // base address of your OIDC server.
+                Audience = "http://localhost:5000/", // base address of your API.
+                RequireHttpsMetadata = false
+            });
 
             app.UseMvc(routes =>
             {

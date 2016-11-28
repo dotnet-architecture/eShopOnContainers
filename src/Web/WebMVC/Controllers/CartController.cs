@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.eShopOnContainers.WebMVC.Services;
 using Microsoft.eShopOnContainers.WebMVC.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -13,21 +12,22 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
     [Authorize]
     public class CartController : Controller
     {
-        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IBasketService _basketSvc;
         private readonly ICatalogService _catalogSvc;
+        private readonly IIdentityParser<ApplicationUser> _appUserParser;
 
-        public CartController(IBasketService basketSvc, ICatalogService catalogSvc, UserManager<ApplicationUser> userManager)
+        public CartController(IBasketService basketSvc, ICatalogService catalogSvc, IIdentityParser<ApplicationUser> appUserParser)
         {
-            _userManager = userManager;
             _basketSvc = basketSvc;
             _catalogSvc = catalogSvc;
+            _appUserParser = appUserParser;
         }
 
         public async Task<IActionResult> Index()
         {
-            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var user = _appUserParser.Parse(HttpContext.User);
             var vm = await _basketSvc.GetBasket(user);
+            
 
             return View(vm);
         }
@@ -36,7 +36,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
         [HttpPost]
         public async Task<IActionResult> Index(Dictionary<string, int> quantities, string action)
         {
-            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var user = _appUserParser.Parse(HttpContext.User);
             var basket = await _basketSvc.SetQuantities(user, quantities);
             var vm = await _basketSvc.UpdateBasket(basket);
 
@@ -51,8 +51,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
 
         public async Task<IActionResult> AddToCart(CatalogItem productDetails)
         {
-            var user = await _userManager.GetUserAsync(HttpContext.User);
-            //var productDetails = _catalogSvc.GetCatalogItem(productId);
+            var user = _appUserParser.Parse(HttpContext.User);
             var product = new BasketItem()
             {
                 Id = Guid.NewGuid().ToString(),

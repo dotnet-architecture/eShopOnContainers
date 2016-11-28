@@ -13,6 +13,7 @@ using eShopOnContainers.Identity.Data;
 using eShopOnContainers.Identity.Models;
 using eShopOnContainers.Identity.Services;
 using eShopOnContainers.Identity.Configuration;
+using IdentityServer4.Services;
 
 namespace eShopOnContainers.Identity
 {
@@ -47,6 +48,7 @@ namespace eShopOnContainers.Identity
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
+         
 
             services.AddMvc();
 
@@ -59,7 +61,8 @@ namespace eShopOnContainers.Identity
                 .AddTemporarySigningCredential()
                 .AddInMemoryScopes(Config.GetScopes())
                 .AddInMemoryClients(Config.GetClients())
-                .AddAspNetIdentity<ApplicationUser>();
+                .AddAspNetIdentity<ApplicationUser>()
+                .Services.AddTransient<IProfileService, ProfileService>();
 
             //Configuration Settings:
             services.AddOptions();
@@ -89,6 +92,7 @@ namespace eShopOnContainers.Identity
 
             // Adds IdentityServer
             app.UseIdentityServer();
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

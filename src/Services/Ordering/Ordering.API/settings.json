@@ -1,3 +1,4 @@
 ﻿{
-  "ConnectionString": "Server=tcp:127.0.0.1,5433;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word;"
+  //"ConnectionString": "Server=tcp:ordering.data;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word;"
+  "ConnectionString": "Server=tcp:127.0.0.1,5432;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word;"
 }

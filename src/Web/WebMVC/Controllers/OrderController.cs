@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.eShopOnContainers.WebMVC.Services;
 using Microsoft.eShopOnContainers.WebMVC.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.eShopOnContainers.WebMVC.Models.OrderViewModels;
 
 namespace Microsoft.eShopOnContainers.WebMVC.Controllers
@@ -16,10 +15,10 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
     {
         private IOrderingService _orderSvc;
         private IBasketService _basketSvc;
-        private readonly UserManager<ApplicationUser> _userManager;
-        public OrderController(IOrderingService orderSvc, IBasketService basketSvc, UserManager<ApplicationUser> userManager)
+        private readonly IIdentityParser<ApplicationUser> _appUserParser;
+        public OrderController(IOrderingService orderSvc, IBasketService basketSvc, IIdentityParser<ApplicationUser> appUserParser)
         {
-            _userManager = userManager;
+            _appUserParser = appUserParser;
             _orderSvc = orderSvc;
             _basketSvc = basketSvc;
         }
@@ -27,7 +26,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
         public async Task<IActionResult> Create()
         {
             var vm = new CreateOrderViewModel();
-            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var user = _appUserParser.Parse(HttpContext.User);
             var basket = await _basketSvc.GetBasket(user);
             var order = _basketSvc.MapBasketToOrder(basket);
             vm.Order = _orderSvc.MapUserInfoIntoOrder(user, order);
@@ -38,7 +37,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateOrderViewModel model, Dictionary<string, int> quantities, string action)
         {
-            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var user = _appUserParser.Parse(HttpContext.User);
             var basket = await _basketSvc.SetQuantities(user, quantities);
             basket = await _basketSvc.UpdateBasket(basket);
             var order = _basketSvc.MapBasketToOrder(basket);
@@ -48,10 +47,18 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
 
             if (action == "[ Place Order ]")
             {
-                _orderSvc.CreateOrder(user, order);
+                try
+                {
+                    await _orderSvc.CreateOrder(user, order);
 
-                //Empty basket for current user. 
-                await _basketSvc.CleanBasket(user);
+                    //Empty basket for current user. 
+                    await _basketSvc.CleanBasket(user);
+
+                }
+                catch (Exception) {
+                    //redirect to some error page if the operation fails. 
+                    return Redirect("http://www.google.com");
+                }
 
                 //Redirect to historic list.
                 return RedirectToAction("Index");
@@ -60,17 +67,17 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> Detail(string orderId)
+        public IActionResult Detail(string orderId)
         {
-            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var user = _appUserParser.Parse(HttpContext.User);
             var order = _orderSvc.GetOrder(user, orderId);
 
             return View(order);
         }
 
-        public async Task<IActionResult> Index(Order item)
+        public IActionResult Index(Order item)
         {
-            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var user = _appUserParser.Parse(HttpContext.User);
             return View(_orderSvc.GetMyOrders(user));
         }
     }

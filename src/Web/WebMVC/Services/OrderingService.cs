@@ -4,65 +4,80 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.eShopOnContainers.WebMVC.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
+using System.Net.Http;
+using Newtonsoft.Json;
 
 namespace Microsoft.eShopOnContainers.WebMVC.Services
 {
     public class OrderingService : IOrderingService
     {
-        private List<Order> _orders;
-        
-        //var ordersUrl = _settings.OrderingUrl + "/api/ordering/orders";
-        //var dataString = await _http.GetStringAsync(ordersUrl);
-        //var items = JsonConvert.DeserializeObject<List<Order>>(dataString);
+        private HttpClient _apiClient;
+        private readonly string _remoteServiceBaseUrl;
+        private readonly IOptions<AppSettings> _settings;
 
-        public OrderingService(IHttpContextAccessor httpContextAccessor)
+        public OrderingService(IOptions<AppSettings> settings)
         {
-            _orders = new List<Order>()
-            {
-                new Order()
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    BuyerId = new Guid("ebcbcb4c-b032-4baa-834b-7fd66d37bc95").ToString(),
-                    OrderDate = DateTime.Now,
-                    State = OrderState.InProcess,
-                    OrderItems = new List<OrderItem>()
-                    {
-                        new OrderItem() { UnitPrice = 12.40m, PictureUrl = "https://fakeimg.pl/370x240/EEEEEE/000/?text=RoslynRedT-Shirt", Quantity = 1, ProductName="Roslyn Red T-Shirt" }
-                    }
-                }, 
-                new Order()
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    BuyerId = new Guid("ebcbcb4c-b032-4baa-834b-7fd66d37bc95").ToString(),
-                    OrderDate = DateTime.Now,
-                    State = OrderState.InProcess,
-                    OrderItems = new List<OrderItem>()
-                    {
-                        new OrderItem() { UnitPrice = 12.00m, PictureUrl = "https://fakeimg.pl/370x240/EEEEEE/000/?text=RoslynRedT-Shirt", Quantity = 1, ProductName="Roslyn Red T-Shirt" }
-                    }
-                },
-                new Order()
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    BuyerId = new Guid("ebcbcb4c-b032-4baa-834b-7fd66d37bc95").ToString(),
-                    OrderDate = DateTime.Now,
-                    State = OrderState.Delivered,
-                    OrderItems = new List<OrderItem>()
-                    {
-                        new OrderItem() { UnitPrice = 12.05m, PictureUrl = "https://fakeimg.pl/370x240/EEEEEE/000/?text=RoslynRedT-Shirt", Quantity = 1, ProductName="Roslyn Red T-Shirt" }
-                    }
-                }
-            };
+            _remoteServiceBaseUrl = $"{settings.Value.OrderingUrl}/api/v1/orders";
+            _settings = settings;
+            #region fake items
+            //_orders = new List<Order>()
+            //{
+            //    new Order()
+            //    {
+            //        Id = Guid.NewGuid().ToString(),
+            //        BuyerId = new Guid("ebcbcb4c-b032-4baa-834b-7fd66d37bc95").ToString(),
+            //        OrderDate = DateTime.Now,
+            //        State = OrderState.InProcess,
+            //        OrderItems = new List<OrderItem>()
+            //        {
+            //            new OrderItem() { UnitPrice = 12.40m, PictureUrl = "https://fakeimg.pl/370x240/EEEEEE/000/?text=RoslynRedT-Shirt", Quantity = 1, ProductName="Roslyn Red T-Shirt" }
+            //        }
+            //    }, 
+            //    new Order()
+            //    {
+            //        Id = Guid.NewGuid().ToString(),
+            //        BuyerId = new Guid("ebcbcb4c-b032-4baa-834b-7fd66d37bc95").ToString(),
+            //        OrderDate = DateTime.Now,
+            //        State = OrderState.InProcess,
+            //        OrderItems = new List<OrderItem>()
+            //        {
+            //            new OrderItem() { UnitPrice = 12.00m, PictureUrl = "https://fakeimg.pl/370x240/EEEEEE/000/?text=RoslynRedT-Shirt", Quantity = 1, ProductName="Roslyn Red T-Shirt" }
+            //        }
+            //    },
+            //    new Order()
+            //    {
+            //        Id = Guid.NewGuid().ToString(),
+            //        BuyerId = new Guid("ebcbcb4c-b032-4baa-834b-7fd66d37bc95").ToString(),
+            //        OrderDate = DateTime.Now,
+            //        State = OrderState.Delivered,
+            //        OrderItems = new List<OrderItem>()
+            //        {
+            //            new OrderItem() { UnitPrice = 12.05m, PictureUrl = "https://fakeimg.pl/370x240/EEEEEE/000/?text=RoslynRedT-Shirt", Quantity = 1, ProductName="Roslyn Red T-Shirt" }
+            //        }
+            //    }
+            //};
+            #endregion
         }
 
-        public Order GetOrder(ApplicationUser user, string Id)
+        async public Task<Order> GetOrder(ApplicationUser user, string Id)
         {
-            return _orders.Where(x => x.BuyerId.Equals(user.Id) && x.Id.Equals(Id)).FirstOrDefault();
+            _apiClient = new HttpClient();
+            var ordersUrl = $"{_remoteServiceBaseUrl}/{Id}";
+            var dataString = await _apiClient.GetStringAsync(ordersUrl);
+            var response = JsonConvert.DeserializeObject<Order>(dataString);
+
+            return response;
         }
 
-        public List<Order> GetMyOrders(ApplicationUser user)
+        async public Task<List<Order>> GetMyOrders(ApplicationUser user)
         {
-            return _orders.Where(x => x.BuyerId.Equals(user.Id)).ToList();
+            _apiClient = new HttpClient();
+            var ordersUrl = _remoteServiceBaseUrl;
+            var dataString = await _apiClient.GetStringAsync(ordersUrl);
+            var response = JsonConvert.DeserializeObject<List<Order>>(dataString);
+
+            return response;
         }
 
         public Order MapUserInfoIntoOrder(ApplicationUser user, Order order)
@@ -80,15 +95,34 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
             return order;
         }
 
-        public void CreateOrder(ApplicationUser user, Order order)
+        public OrderRequest MapOrderIntoOrderRequest(Order order)
         {
-            order.OrderDate = DateTime.Now;
-            order.Id = Guid.NewGuid().ToString();
-            order.BuyerId = user.Id;
-            order.SequenceNumber = new Random(100).Next();
-            order.State = OrderState.InProcess;
+            return new OrderRequest()
+            {
+                CardHolderName = order.PaymentInfo.CardHolderName,
+                CardNumber = order.PaymentInfo.CardNumber,
+                CardSecurityNumber = order.PaymentInfo.SecurityNumber,
+                CardTypeId = (int)order.PaymentInfo.CardType,
+                City = order.ShippingAddress.City,
+                Country = order.ShippingAddress.Country,
+                State = order.ShippingAddress.State,
+                Street = order.ShippingAddress.Street,
+                ZipCode = order.ShippingAddress.ZipCode
+            };
+        }
 
-            _orders.Add(order);
+        async public Task CreateOrder(ApplicationUser user, Order order)
+        {
+            _apiClient = new HttpClient();
+            var ordersUrl = $"{_remoteServiceBaseUrl}/new";
+            order.PaymentInfo.CardType = CardType.AMEX;
+            OrderRequest request = MapOrderIntoOrderRequest(order);
+            StringContent content = new StringContent(JsonConvert.SerializeObject(request), System.Text.Encoding.UTF8, "application/json");
+            
+            var response = await _apiClient.PostAsync(ordersUrl, content);
+
+            if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+                throw new Exception("Error creating order, try later");
         }
 
         public void OverrideUserInfoIntoOrder(Order original, Order destination)
