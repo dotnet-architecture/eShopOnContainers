@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.eShopOnContainers.WebMVC.Services;
 using Microsoft.eShopOnContainers.WebMVC.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication;
 
 namespace Microsoft.eShopOnContainers.WebMVC.Controllers
 {

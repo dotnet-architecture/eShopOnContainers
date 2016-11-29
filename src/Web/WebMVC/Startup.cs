@@ -11,6 +11,7 @@ using Microsoft.eShopOnContainers.WebMVC.Models;
 using Microsoft.eShopOnContainers.WebMVC.Services;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Http;
 
 namespace Microsoft.eShopOnContainers.WebMVC
 {
@@ -38,17 +39,11 @@ namespace Microsoft.eShopOnContainers.WebMVC
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // Add framework services.
-            //services.AddDbContext<ApplicationDbContext>(options =>
-            //    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-
-            //services.AddIdentity<ApplicationUser, IdentityRole>()
-            //    .AddEntityFrameworkStores<ApplicationDbContext>()
-            //    .AddDefaultTokenProviders();
-
             services.AddMvc();
 
             // Add application services.
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
             services.AddTransient<ICatalogService, CatalogService>(); 
             services.AddSingleton<IOrderingService, OrderingService>(); //CCE: Once services are integrated, a singleton is not needed we can left transient.
             services.AddTransient<IBasketService, BasketService>();
@@ -83,8 +78,6 @@ namespace Microsoft.eShopOnContainers.WebMVC
                 AutomaticAuthenticate = true,
             });
 
-            //app.UseIdentity();
-
             var oidcOptions = new OpenIdConnectOptions
             {
                 AuthenticationScheme = "oidc",
@@ -96,27 +89,16 @@ namespace Microsoft.eShopOnContainers.WebMVC
                 ResponseType = "code id_token",
                 SaveTokens = true,
                 GetClaimsFromUserInfoEndpoint = true,
-                RequireHttpsMetadata = false,
-                
-                //TokenValidationParameters = new TokenValidationParameters
-                //{
-                //    NameClaimType = "name",
-                //    RoleClaimType = "role"
-                //}
+                RequireHttpsMetadata = false, 
             };
 
             oidcOptions.Scope.Clear();
             oidcOptions.Scope.Add("openid");
             oidcOptions.Scope.Add("profile");
             oidcOptions.Scope.Add("orders");
+            oidcOptions.Scope.Add("basket");
 
             app.UseOpenIdConnectAuthentication(oidcOptions);
-            app.UseJwtBearerAuthentication(new JwtBearerOptions
-            {
-                Authority = "http://localhost:5000/", // base address of your OIDC server.
-                Audience = "http://localhost:5000/", // base address of your API.
-                RequireHttpsMetadata = false
-            });
 
             app.UseMvc(routes =>
             {

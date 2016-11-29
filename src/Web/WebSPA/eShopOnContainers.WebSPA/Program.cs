@@ -18,6 +18,7 @@ namespace eShopConContainers.WebSPA
                 .UseConfiguration(config)
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseIISIntegration()
+                .UseUrls("http://localhost:1250/")
                 .UseStartup<Startup>()
                 .Build();
 

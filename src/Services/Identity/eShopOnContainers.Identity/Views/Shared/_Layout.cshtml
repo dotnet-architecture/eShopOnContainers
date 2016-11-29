@@ -8,6 +8,7 @@
     <link rel="shortcut icon" type="image/x-icon" href="~/favicon.ico" />
     <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/sitemvc.css" />
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -26,7 +27,9 @@
                     </span>
                 </a>
             </div>
-
+            <div>
+                <a asp-action="Register" asp-controller="Account">Register User</a>
+            </div>
             @if (User.Identity.IsAuthenticated)
             {
                 <ul class="nav navbar-nav">
@@ -34,8 +37,6 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">@User.Identity.Name <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li><a asp-action="Logout" asp-controller="Account">Logout</a></li>
-                            @*<li class="divider"></li>
-                            <li><a asp-route="Login" asp-route-id="@ViewContext.HttpContext.Request.Query["id"]">Login With Different Account</a></li>*@
                         </ul>
                     </li>
                 </ul>

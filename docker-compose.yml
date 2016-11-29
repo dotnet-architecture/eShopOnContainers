@@ -14,7 +14,6 @@ services:
     ports:
       - "5100:80"
     depends_on:
-      - catalog.api
       - identity.service
       - basket.api
 
@@ -31,14 +30,13 @@ services:
     ports:
       - "5104:80"
     depends_on:
-      - catalog.api
       - basket.api
       - identity.service
 
   catalog.api:
     image: eshop/catalog.api
     environment:
-      - ConnectionString=Server=catalog.data;Initial Catalog=CatalogData;User Id=sa;Password=Pass@word
+      - ConnectionString=Server=catalog.data;Database=CatalogDB;User Id=sa;Password=Pass@word
     expose:
       - "80"
     ports:
@@ -77,6 +75,7 @@ services:
     image: eshop/identity
     environment:
       - Spa:http://webspa
+      - ConnectionString=Server=identity.data;Database=aspnet-Microsoft.eShopOnContainers.WebMVC;User Id=sa;Password=Pass@word
     expose:
       - "80"
     ports:

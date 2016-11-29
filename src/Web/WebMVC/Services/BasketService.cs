@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Http;
 using System.Net.Http;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.eShopOnContainers.WebMVC.Extensions;
 
 namespace Microsoft.eShopOnContainers.WebMVC.Services
 {
@@ -15,16 +17,23 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
         private readonly IOptions<AppSettings> _settings;
         private HttpClient _apiClient;
         private readonly string _remoteServiceBaseUrl;
+        private IHttpContextAccessor _httpContextAccesor;
 
-        public BasketService(IOptions<AppSettings> settings)
+        public BasketService(IOptions<AppSettings> settings, IHttpContextAccessor httpContextAccesor)
         {
             _settings = settings;
             _remoteServiceBaseUrl = _settings.Value.BasketUrl;
+            _httpContextAccesor = httpContextAccesor;
         }
 
         public async Task<Basket> GetBasket(ApplicationUser user)
         {
+            var context = _httpContextAccesor.HttpContext;
+            var token = await context.Authentication.GetTokenAsync("access_token");
+
             _apiClient = new HttpClient();
+            _apiClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
             var basketUrl = $"{_remoteServiceBaseUrl}/{user.Id.ToString()}";
             var dataString = await _apiClient.GetStringAsync(basketUrl);
             var response = JsonConvert.DeserializeObject<Basket>(dataString);
@@ -41,7 +50,12 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
 
         public async Task<Basket> UpdateBasket(Basket basket)
         {
+            var context = _httpContextAccesor.HttpContext;
+            var token = await context.Authentication.GetTokenAsync("access_token");
+
             _apiClient = new HttpClient();
+            _apiClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
             var basketUrl = _remoteServiceBaseUrl;
             StringContent content = new StringContent(JsonConvert.SerializeObject(basket), System.Text.Encoding.UTF8, "application/json");
             var response = await _apiClient.PostAsync(basketUrl, content);
@@ -106,7 +120,11 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
 
         public async Task CleanBasket(ApplicationUser user)
         {
+            var context = _httpContextAccesor.HttpContext;
+            var token = await context.Authentication.GetTokenAsync("access_token");
+
             _apiClient = new HttpClient();
+            _apiClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
             var basketUrl = $"{_remoteServiceBaseUrl}/{user.Id.ToString()}";
             var response = await _apiClient.DeleteAsync(basketUrl);
             

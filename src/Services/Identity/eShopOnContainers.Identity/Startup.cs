@@ -62,7 +62,7 @@ namespace eShopOnContainers.Identity
                 .AddInMemoryScopes(Config.GetScopes())
                 .AddInMemoryClients(Config.GetClients())
                 .AddAspNetIdentity<ApplicationUser>()
-                .Services.AddTransient<IProfileService, ProfileService>();
+                .Services.AddTransient<IProfileService, ProfileService>(); 
 
             //Configuration Settings:
             services.AddOptions();

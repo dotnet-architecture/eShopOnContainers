@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.eShopOnContainers.Services.Basket.API.Model;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
 {
@@ -12,6 +13,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
     //If this is the case we should also investigate changing the serialization format used for Redis,
     //using a HashSet instead of a simple string.
     [Route("/")]
+    [Authorize]
     public class BasketController : Controller
     {
         private IBasketRepository _repository;

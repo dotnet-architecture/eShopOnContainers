@@ -6,7 +6,7 @@
 
 @if(Context.User.Identity.IsAuthenticated)
 {
-    <form asp-area="" asp-controller="Account" asp-action="LogOff" method="post" id="logoutForm" class="navbar-right">
+    <form asp-area="" asp-controller="Account" asp-action="SignOut" method="post" id="logoutForm" class="navbar-right">
         <div class="nav navbar-nav navbar-right mt-15">
             @await Component.InvokeAsync("Cart", new { user = UserManager.Parse(User) })
             <div class="fr login-user">

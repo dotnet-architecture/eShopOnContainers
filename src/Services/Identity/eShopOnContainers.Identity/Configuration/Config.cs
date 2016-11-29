@@ -49,11 +49,9 @@ namespace eShopOnContainers.Identity.Configuration
                     ClientName = "eShop SPA OpenId Client",
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
-
                     RedirectUris =           { "http://localhost:5003/callback.html" },
                     PostLogoutRedirectUris = { "http://localhost:5003/index.html" },
                     AllowedCorsOrigins =     { "http://localhost:5003" },
-
                     AllowedScopes =
                     {
                         StandardScopes.OpenId.Name,
@@ -68,11 +66,9 @@ namespace eShopOnContainers.Identity.Configuration
                     ClientName = "eShop Xamarin OpenId Client",
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
-
                     RedirectUris =           { "http://localhost:5003/callback.html" },
                     PostLogoutRedirectUris = { "http://localhost:5003/index.html" },
                     AllowedCorsOrigins =     { "http://localhost:5003" },
-
                     AllowedScopes =
                     {
                         StandardScopes.OpenId.Name,
@@ -90,9 +86,7 @@ namespace eShopOnContainers.Identity.Configuration
                         new Secret("secret".Sha256())
                     },
                     ClientUri = "http://localhost:2114",
-
                     AllowedGrantTypes = GrantTypes.HybridAndClientCredentials,
-                    
                     RedirectUris = new List<string>
                     {
                         "http://localhost:2114/signin-oidc"

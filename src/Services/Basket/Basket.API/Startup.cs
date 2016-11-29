@@ -47,6 +47,15 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
                 return ConnectionMultiplexer.Connect(ips.First().ToString());
             });
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials());
+            });
+
             services.AddTransient<IBasketRepository, RedisBasketRepository>();
         }
 
@@ -56,9 +65,12 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
+            // Use frameworks
+            app.UseCors("CorsPolicy");
+
             app.UseIdentityServerAuthentication(new IdentityServerAuthenticationOptions
             {
-                Authority = Configuration.GetValue("IdentityUrl", "http://localhost:5000"),
+                Authority = "http://localhost:5000",
                 ScopeName = "basket",
                 RequireHttpsMetadata = false
             });

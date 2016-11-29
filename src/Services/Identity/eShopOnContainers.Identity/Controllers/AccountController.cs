@@ -19,6 +19,10 @@ using IdentityServer4.Stores;
 using eShopOnContainers.Identity.Services;
 using eShopOnContainers.Identity.Models;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authorization;
+using eShopOnContainers.Identity.Models.AccountViewModels;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication;
 
 namespace IdentityServer4.Quickstart.UI.Controllers
 {
@@ -34,6 +38,7 @@ namespace IdentityServer4.Quickstart.UI.Controllers
         private readonly IIdentityServerInteractionService _interaction;
         private readonly IClientStore _clientStore;
         private readonly ILogger _logger;
+        private readonly UserManager<ApplicationUser> _userManager;
 
         public AccountController(
             
@@ -41,12 +46,14 @@ namespace IdentityServer4.Quickstart.UI.Controllers
             ILoginService<ApplicationUser> loginService,
             IIdentityServerInteractionService interaction,
             IClientStore clientStore,
-            ILoggerFactory loggerFactory)
+            ILoggerFactory loggerFactory, 
+            UserManager<ApplicationUser> userManager)
         {
             _loginService = loginService;
             _interaction = interaction;
             _clientStore = clientStore;
             _logger = loggerFactory.CreateLogger<AccountController>();
+            _userManager = userManager;
         }
 
         /// <summary>
@@ -64,12 +71,6 @@ namespace IdentityServer4.Quickstart.UI.Controllers
 
             var vm = await BuildLoginViewModelAsync(returnUrl, context);
 
-            if (vm.EnableLocalLogin == false && vm.ExternalProviders.Count() == 1)
-            {
-                // only one option for logging in
-                return ExternalLogin(vm.ExternalProviders.First().AuthenticationScheme, returnUrl);
-            }
-
             return View(vm);
         }
 
@@ -78,11 +79,11 @@ namespace IdentityServer4.Quickstart.UI.Controllers
         /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginInputModel model)
+        public async Task<IActionResult> Login(LoginViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var user = await _loginService.FindByUsername(model.Username);
+                var user = await _loginService.FindByUsername(model.Email);
                 // validate username/password against in-memory store
                 if (await _loginService.ValidateCredentials(user, model.Password))
                 {
@@ -92,7 +93,7 @@ namespace IdentityServer4.Quickstart.UI.Controllers
                     AuthenticationProperties props = null;
                     // only set explicit expiration here if persistent. 
                     // otherwise we reply upon expiration configured in cookie middleware.
-                    if (model.RememberLogin)
+                    if (model.RememberMe)
                     {
                         props = new AuthenticationProperties
                         {
@@ -101,7 +102,6 @@ namespace IdentityServer4.Quickstart.UI.Controllers
                         };
                     };
 
-                    //await HttpContext.Authentication.SignInAsync(, user.UserName, props);
                     await _loginService.SignIn(user);
 
                     // make sure the returnUrl is still valid, and if yes - redirect back to authorize endpoint
@@ -123,14 +123,6 @@ namespace IdentityServer4.Quickstart.UI.Controllers
 
         async Task<LoginViewModel> BuildLoginViewModelAsync(string returnUrl, AuthorizationRequest context)
         {
-            var providers = HttpContext.Authentication.GetAuthenticationSchemes()
-                .Where(x => x.DisplayName != null)
-                .Select(x => new ExternalProvider
-                {
-                    DisplayName = x.DisplayName,
-                    AuthenticationScheme = x.AuthenticationScheme
-                });
-
             var allowLocal = true;
             if (context?.ClientId != null)
             {
@@ -138,29 +130,22 @@ namespace IdentityServer4.Quickstart.UI.Controllers
                 if (client != null)
                 {
                     allowLocal = client.EnableLocalLogin;
-
-                    if (client.IdentityProviderRestrictions != null && client.IdentityProviderRestrictions.Any())
-                    {
-                        providers = providers.Where(provider => client.IdentityProviderRestrictions.Contains(provider.AuthenticationScheme));
-                    }
                 }
             }
 
             return new LoginViewModel
             {
-                EnableLocalLogin = allowLocal,
                 ReturnUrl = returnUrl,
-                Username = context?.LoginHint,
-                ExternalProviders = providers.ToArray()
+                Email = context?.LoginHint,
             };
         }
 
-        async Task<LoginViewModel> BuildLoginViewModelAsync(LoginInputModel model)
+        async Task<LoginViewModel> BuildLoginViewModelAsync(LoginViewModel model)
         {
             var context = await _interaction.GetAuthorizationContextAsync(model.ReturnUrl);
             var vm = await BuildLoginViewModelAsync(model.ReturnUrl, context);
-            vm.Username = model.Username;
-            vm.RememberLogin = model.RememberLogin;
+            vm.Email = model.Email;
+            vm.RememberMe = model.RememberMe;
             return vm;
         }
 
@@ -328,6 +313,63 @@ namespace IdentityServer4.Quickstart.UI.Controllers
             //}
 
             return Redirect("~/");
+        }
+
+        // GET: /Account/Register
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult Register(string returnUrl = null)
+        {
+            ViewData["ReturnUrl"] = returnUrl;
+            return View();
+        }
+
+        //
+        // POST: /Account/Register
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
+        {
+            ViewData["ReturnUrl"] = returnUrl;
+            if (ModelState.IsValid)
+            {
+                var user = new ApplicationUser
+                {
+                    UserName = model.Email,
+                    Email = model.Email,
+                    CardHolderName = model.User.CardHolderName,
+                    CardNumber = model.User.CardNumber,
+                    CardType = model.User.CardType,
+                    City = model.User.City,
+                    Country = model.User.Country,
+                    Expiration = model.User.Expiration,
+                    LastName = model.User.LastName,
+                    Name = model.User.Name,
+                    Street = model.User.Street,
+                    State = model.User.State,
+                    ZipCode = model.User.ZipCode,
+                    PhoneNumber = model.User.PhoneNumber,
+                    SecurityNumber = model.User.SecurityNumber
+                };
+                var result = await _userManager.CreateAsync(user, model.Password);
+                if (result.Errors.Count() > 0)
+                {
+                    AddErrors(result);
+                    // If we got this far, something failed, redisplay form
+                    return View(model);
+                }
+            }
+
+            return RedirectToAction("index", "home");
+        }
+
+        private void AddErrors(IdentityResult result)
+        {
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
         }
     }
 }
