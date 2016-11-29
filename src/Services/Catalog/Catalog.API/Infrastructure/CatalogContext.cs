@@ -8,20 +8,14 @@
         public CatalogContext(DbContextOptions options) : base(options)
         {
         }
-
         public DbSet<CatalogItem> CatalogItems { get; set; }
-
         public DbSet<CatalogBrand> CatalogBrands { get; set; }
-
         public DbSet<CatalogType> CatalogTypes { get; set; }
-
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<CatalogBrand>(ConfigureCatalogBrand);
             builder.Entity<CatalogType>(ConfigureCatalogType);
             builder.Entity<CatalogItem>(ConfigureCatalogItem);
-           
-
         }
 
         void ConfigureCatalogItem(EntityTypeBuilder<CatalogItem> builder)
@@ -49,7 +43,6 @@
             builder.HasOne(ci => ci.CatalogType)
                 .WithMany()
                 .HasForeignKey(ci => ci.CatalogTypeId);
-
         }
 
         void ConfigureCatalogBrand(EntityTypeBuilder<CatalogBrand> builder)
@@ -69,7 +62,6 @@
 
         void ConfigureCatalogType(EntityTypeBuilder<CatalogType> builder)
         {
-
             builder.ToTable("CatalogType");
 
             builder.HasKey(ci => ci.Id);
