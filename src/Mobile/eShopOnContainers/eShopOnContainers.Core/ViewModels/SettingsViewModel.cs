@@ -10,6 +10,7 @@ namespace eShopOnContainers.Core.ViewModels
         private string _title;
         private string _description;
         private bool _useAzureServices;
+        private string _endpoint;
 
         public SettingsViewModel()
         {
@@ -46,6 +47,22 @@ namespace eShopOnContainers.Core.ViewModels
             }
         }
 
+        public string Endpoint
+        {
+            get { return _endpoint; }
+            set
+            {
+                _endpoint = value;
+
+                if(!string.IsNullOrEmpty(_endpoint))
+                {
+                    UpdateEndpoint(_endpoint);
+                }
+
+                RaisePropertyChanged(() => Endpoint);
+            }
+        }
+
         public ICommand MockServicesCommand => new Command(MockServices);
 
         private void MockServices()
@@ -57,6 +74,8 @@ namespace eShopOnContainers.Core.ViewModels
         public override Task InitializeAsync(object navigationData)
         {
             UpdateInfo();
+
+            Endpoint = GlobalSetting.Instance.BaseEndpoint;
 
             return base.InitializeAsync(navigationData);
         }
@@ -73,6 +92,11 @@ namespace eShopOnContainers.Core.ViewModels
                 Title = "Use Azure Services";
                 Description = "Azure Services are real objects that required a valid internet connection";
             }
+        }
+
+        private void UpdateEndpoint(string endpoint)
+        {
+            GlobalSetting.Instance.BaseEndpoint = endpoint;
         }
     }
 }

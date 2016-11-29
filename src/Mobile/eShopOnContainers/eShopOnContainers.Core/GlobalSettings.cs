@@ -1,19 +1,53 @@
 ﻿namespace eShopOnContainers.Core
 {
-    public static class GlobalSetting
+    public class GlobalSetting
     {
-        public const string RegisterWebsite = "http://104.40.62.65/Account/Register";
+        private string _baseEndpoint;
+        private static readonly GlobalSetting _instance = new GlobalSetting();
 
-        public const string CatalogEndpoint = "http://104.40.62.65:5101/";
+        public GlobalSetting()
+        {
+            BaseEndpoint = "http://104.40.62.65";
+        }
 
-        public const string OrdersEndpoint = "http://104.40.62.65:5102/";
+        public static GlobalSetting Instance
+        {
+            get { return _instance; }
+        }
 
-        public const string BasketEndpoint = "http://104.40.62.65:5103/";
+        public string BaseEndpoint
+        {
+            get { return _baseEndpoint; }
+            set
+            {
+                _baseEndpoint = value;
+                UpdateEndpoint(_baseEndpoint);
+            }
+        }
 
-        public const string IdentityEndpoint = "http://104.40.62.65:5105/connect/authorize";
+        public string RegisterWebsite { get; set; }
 
-        public const string LogoutEndpoint = "http://104.40.62.65:5105/connect/endsession";
+        public string CatalogEndpoint { get; set; }
 
-        public const string IdentityCallback = "http://localhost:5003/callback.html";
+        public string OrdersEndpoint { get; set; }
+
+        public string BasketEndpoint { get; set; }
+
+        public string IdentityEndpoint { get; set; }
+
+        public string LogoutEndpoint { get; set; }
+
+        public string IdentityCallback { get; set; }
+
+        private void UpdateEndpoint(string baseEndpoint)
+        {
+            RegisterWebsite = string.Format("{0}/Account/Register", baseEndpoint);
+            CatalogEndpoint = string.Format("{0}:5101", baseEndpoint);
+            OrdersEndpoint = string.Format("{0}:5102", baseEndpoint);
+            BasketEndpoint = string.Format("{0}:5103", baseEndpoint);
+            IdentityEndpoint = string.Format("{0}:5105/connect/authorize", baseEndpoint);
+            LogoutEndpoint = string.Format("{0}:5105/connect/endsession", baseEndpoint);
+            IdentityCallback = "http://localhost:5003/callback.html";
+        }
     }
 }

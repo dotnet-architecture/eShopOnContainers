@@ -21,7 +21,7 @@ namespace eShopOnContainers.Core.Services.Catalog
         {
             try
             {
-                UriBuilder builder = new UriBuilder(GlobalSetting.CatalogEndpoint);
+                UriBuilder builder = new UriBuilder(GlobalSetting.Instance.CatalogEndpoint);
 
                 builder.Path = string.Format("api/v1/catalog/items/type/{0}/brand/{1}", catalogTypeId, catalogBrandId);
 
@@ -42,7 +42,7 @@ namespace eShopOnContainers.Core.Services.Catalog
         {
             try
             {
-                UriBuilder builder = new UriBuilder(GlobalSetting.CatalogEndpoint);
+                UriBuilder builder = new UriBuilder(GlobalSetting.Instance.CatalogEndpoint);
 
                 builder.Path = "api/v1/catalog/items";
 
@@ -68,7 +68,7 @@ namespace eShopOnContainers.Core.Services.Catalog
         {
             try
             {
-                UriBuilder builder = new UriBuilder(GlobalSetting.CatalogEndpoint);
+                UriBuilder builder = new UriBuilder(GlobalSetting.Instance.CatalogEndpoint);
 
                 builder.Path = "api/v1/catalog/catalogbrands";
 
@@ -89,7 +89,7 @@ namespace eShopOnContainers.Core.Services.Catalog
         {
             try
             {
-                UriBuilder builder = new UriBuilder(GlobalSetting.CatalogEndpoint);
+                UriBuilder builder = new UriBuilder(GlobalSetting.Instance.CatalogEndpoint);
 
                 builder.Path = "api/v1/catalog/catalogtypes";
 

@@ -31,6 +31,11 @@ namespace eShopOnContainers.Core.Views
 
         public async Task AnimateIn()
         {
+            if (Device.OS == TargetPlatform.Windows)
+            {
+                return;
+            }
+
             await AnimateItem(Banner, 10500);
         }
 

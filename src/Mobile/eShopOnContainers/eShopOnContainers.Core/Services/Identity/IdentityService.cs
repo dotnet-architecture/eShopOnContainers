@@ -13,15 +13,15 @@ namespace eShopOnContainers.Core.Services.Identity
         {
             // Create URI to authorize endpoint
             var authorizeRequest =
-                new AuthorizeRequest(GlobalSetting.IdentityEndpoint);
+                new AuthorizeRequest(GlobalSetting.Instance.IdentityEndpoint);
 
             // Dictionary with values for the authorize request
             var dic = new Dictionary<string, string>();
-            dic.Add("client_id", "js");
+            dic.Add("client_id", "xamarin");
             dic.Add("response_type", "id_token token");
             dic.Add("scope", "openid profile basket");
 
-            dic.Add("redirect_uri", GlobalSetting.IdentityCallback);
+            dic.Add("redirect_uri", GlobalSetting.Instance.IdentityCallback);
             dic.Add("nonce", Guid.NewGuid().ToString("N"));
 
             // Add CSRF token to protect against cross-site request forgery attacks.
@@ -36,9 +36,9 @@ namespace eShopOnContainers.Core.Services.Identity
         public string CreateLogoutRequest(string token)
         {
             return string.Format("{0}?id_token_hint={1}&post_logout_redirect_uri={2}", 
-                GlobalSetting.LogoutEndpoint,
+                GlobalSetting.Instance.LogoutEndpoint,
                 token,
-                GlobalSetting.IdentityCallback);
+                GlobalSetting.Instance.IdentityCallback);
         }
 
         public string DecodeToken(string token)

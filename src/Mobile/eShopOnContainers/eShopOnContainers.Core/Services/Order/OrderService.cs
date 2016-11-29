@@ -16,7 +16,7 @@ namespace eShopOnContainers.Core.Services.Order
 
         public async Task CreateOrderAsync(Models.Orders.Order newOrder)
         {
-            UriBuilder builder = new UriBuilder(GlobalSetting.OrdersEndpoint);
+            UriBuilder builder = new UriBuilder(GlobalSetting.Instance.OrdersEndpoint);
 
             builder.Path = "api/v1/orders/new";
 
@@ -29,7 +29,7 @@ namespace eShopOnContainers.Core.Services.Order
         {
             try
             {
-                UriBuilder builder = new UriBuilder(GlobalSetting.OrdersEndpoint);
+                UriBuilder builder = new UriBuilder(GlobalSetting.Instance.OrdersEndpoint);
 
                 builder.Path = "api/v1/orders";
 
@@ -50,7 +50,7 @@ namespace eShopOnContainers.Core.Services.Order
         {
             try
             {
-                UriBuilder builder = new UriBuilder(GlobalSetting.OrdersEndpoint);
+                UriBuilder builder = new UriBuilder(GlobalSetting.Instance.OrdersEndpoint);
 
                 builder.Path = string.Format("api/v1/orders/{0}", orderId);
 
@@ -71,7 +71,7 @@ namespace eShopOnContainers.Core.Services.Order
         {
             try
             {
-                UriBuilder builder = new UriBuilder(GlobalSetting.OrdersEndpoint);
+                UriBuilder builder = new UriBuilder(GlobalSetting.Instance.OrdersEndpoint);
 
                 builder.Path = "api/v1/orders/cardtypes";
 

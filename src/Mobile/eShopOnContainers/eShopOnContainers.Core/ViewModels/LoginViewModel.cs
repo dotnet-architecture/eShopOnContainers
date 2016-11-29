@@ -170,7 +170,7 @@ namespace eShopOnContainers.Core.ViewModels
 
         private void Register()
         {
-            _openUrlService.OpenUrl(GlobalSetting.RegisterWebsite);
+            _openUrlService.OpenUrl(GlobalSetting.Instance.RegisterWebsite);
         }
 
         private void Logout()
@@ -188,7 +188,7 @@ namespace eShopOnContainers.Core.ViewModels
 
         private async void NavigateAsync(string url)
         {
-            if (url.Contains(GlobalSetting.IdentityCallback))
+            if (url.Contains(GlobalSetting.Instance.IdentityCallback))
             {
                 // Parse response
                 var authResponse = new AuthorizeResponse(url);
