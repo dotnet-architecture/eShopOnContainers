@@ -20,7 +20,6 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
         }
 
         // GET api/v1/[controller]/items/[?pageSize=3&pageIndex=10]
-
         [HttpGet]
         [Route("[action]")]
         public async Task<IActionResult> Items(int pageSize = 10, int pageIndex = 0)
@@ -41,7 +40,6 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
         }
 
         // GET api/v1/[controller]/items/withname/samplename
-
         [HttpGet]
         [Route("[action]/withname/{name:minlength(1)}")]
         public async Task<IActionResult> Items(string name, int pageSize = 10, int pageIndex = 0)
@@ -64,7 +62,6 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
         }
 
         // GET api/v1/[controller]/items/type/1/brand/null
-
         [HttpGet]
         [Route("[action]/type/{catalogTypeId}/brand/{catalogBrandId}")]
         public async Task<IActionResult> Items(int? catalogTypeId, int? catalogBrandId, int pageSize = 10, int pageIndex = 0)
@@ -96,7 +93,6 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
         }
 
         // GET api/v1/[controller]/CatalogTypes
-
         [HttpGet]
         [Route("[action]")]
         public async Task<IActionResult> CatalogTypes()
@@ -108,7 +104,6 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
         }
 
         // GET api/v1/[controller]/CatalogBrands
-
         [HttpGet]
         [Route("[action]")]
         public async Task<IActionResult> CatalogBrands()
