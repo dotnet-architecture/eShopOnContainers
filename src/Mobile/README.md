@@ -54,6 +54,33 @@ As of 29/11/2016, eShopOnContainers features **89.2% code share** (7.2% iOS / 16
 * Xamarin add-ons for Visual Studio (available via the Visual Studio installer)
 * __Visual Studio Community Edition is fully supported!__
 
+## Setup
+
+#### [1. Ensure the Xamarin platform is installed](http://developer.xamarin.com/guides/cross-platform/getting_started/installation/)
+
+#### 2. Ensure Xamarin are updated
+Xamarin will periodically automatically check for updates. You can also manually check for updates.
+
+<img src="Images/Updates.png" alt="Ensure Xamarin are updated" Width="600" />
+
+### 3. Project Setup
+
+Restore NuGet packages for the project.
+
+### 4. Ensure Android Emulator is installed
+You can use any Android emulator although it is highly recommended to use an x86 based version.
+
+<img src="Images/AndroidEmulator.png" alt="Visual Studio Android Emulator" Width="600" />
+
+**Note**: The Visual Studio Android Emulator cannot run well inside a virtual machine or over Remote Desktop or VNC since it relies on virtualization and OpenGL. 
+
+To deploy and debug the application on a physical device, refer to these [link](https://developer.xamarin.com/guides/android/deployment,_testing,_and_metrics/debug-on-device/).
+
+### 5. Ensure Mac connection
+To set up the Mac host, you must enable communication between the Xamarin extension for Visual Studio and your Mac.
+
+<img src="Images/MacAgent.png" alt="Connect with a Mac" Width="600" />
+
 ## Screens
 
 The app has the following screens:
