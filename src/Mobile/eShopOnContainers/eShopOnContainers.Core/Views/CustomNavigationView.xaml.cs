@@ -2,14 +2,14 @@
 
 namespace eShopOnContainers.Core.Views
 {
-    public partial class CustomNavigationPage : NavigationPage
+    public partial class CustomNavigationView : NavigationPage
     {
-        public CustomNavigationPage() : base()
+        public CustomNavigationView() : base()
         {
             InitializeComponent();
         }
 
-        public CustomNavigationPage(Page root) : base(root)
+        public CustomNavigationView(Page root) : base(root)
         {
             InitializeComponent();
         }

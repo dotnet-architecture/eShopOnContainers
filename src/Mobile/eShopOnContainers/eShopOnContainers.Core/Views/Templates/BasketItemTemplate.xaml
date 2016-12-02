@@ -56,6 +56,8 @@
 
             <Style x:Key="QuantityPickerStyle"  
              TargetType="{x:Type controls:BindablePicker}">
+                <Setter Property="TextColor"
+                        Value="{StaticResource BlackColor}" />
                 <Setter Property="BackgroundColor"
                         Value="Transparent" />
                 <Setter Property="HorizontalOptions"
@@ -139,7 +141,7 @@
                     <controls:BindablePicker 
                         Grid.Column="1"
                         ItemsSource="{Binding Numbers}"
-                        SelectedItem="{Binding Quantity, Mode=TwoWay}"
+                        SelectedItem="{Binding Quantity, Mode=TwoWay}" 
                         Style="{StaticResource QuantityPickerStyle}">
                         <controls:BindablePicker.WidthRequest>
                             <OnPlatform         

@@ -3,7 +3,6 @@ using eShopOnContainers.Core.ViewModels.Base;
 using eShopOnContainers.ViewModels.Base;
 using System;
 using System.Collections.ObjectModel;
-using Xamarin.Forms;
 
 namespace eShopOnContainers.Core.Models.Orders
 {
@@ -71,8 +70,6 @@ namespace eShopOnContainers.Core.Models.Orders
                 _quantity = value;
                 RaisePropertyChanged(() => Quantity);
                 RaisePropertyChanged(() => Total);
-
-                MessagingCenter.Send(this, MessengerKeys.UpdateProduct);
             }
         }
 

@@ -52,9 +52,9 @@
                 options.DescribeAllEnumsAsStrings();
                 options.SingleApiVersion(new Swashbuckle.Swagger.Model.Info()
                 {
-                    Title = "Catalog HTTP API",
+                    Title = "eShopOnContainers - Catalog HTTP API",
                     Version = "v1",
-                    Description = "The Catalog Service HTTP API",
+                    Description = "The Catalog Microservice HTTP API. This is a Data-Driven/CRUD microservice sample",
                     TermsOfService = "Terms Of Service"
                 });
             });

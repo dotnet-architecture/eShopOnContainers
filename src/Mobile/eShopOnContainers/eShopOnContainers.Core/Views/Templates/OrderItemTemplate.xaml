@@ -15,6 +15,8 @@
                         Value="{StaticResource MediumSize}" />
                 <Setter Property="TextColor" 
                         Value="{StaticResource BlackColor}" />
+                <Setter Property="LineBreakMode" 
+                        Value="HeadTruncation" />
             </Style>
 
             <Style x:Key="OrderItemUnitPriceStyle" 
@@ -107,7 +109,8 @@
                 <!-- NAME -->
                 <Label
                     Grid.Row="0"
-                    Text="{Binding ProductName, Converter={StaticResource ToUpperConverter}}"/>
+                    Text="{Binding ProductName, Converter={StaticResource ToUpperConverter}}"
+                    Style="{StaticResource OrderItemTitleStyle}"/>
                 <Grid
                     Grid.Row="1">
                     <Grid.ColumnDefinitions>
