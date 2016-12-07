@@ -14,6 +14,7 @@ using eShopOnContainers.Identity.Models;
 using eShopOnContainers.Identity.Services;
 using eShopOnContainers.Identity.Configuration;
 using IdentityServer4.Services;
+using System.Threading;
 
 namespace eShopOnContainers.Identity
 {
@@ -56,17 +57,18 @@ namespace eShopOnContainers.Identity
             services.AddTransient<ISmsSender, AuthMessageSender>();
             services.AddTransient<ILoginService<ApplicationUser>, EFLoginService>();
 
+            //callbacks urls from config:
+            Dictionary<string, string> clientUrls = new Dictionary<string, string>();
+            clientUrls.Add("Mvc", Configuration.GetValue<string>("MvcClient"));
+            clientUrls.Add("Spa", Configuration.GetValue<string>("SpaClient"));
+
             // Adds IdentityServer
             services.AddIdentityServer()
                 .AddTemporarySigningCredential()
                 .AddInMemoryScopes(Config.GetScopes())
-                .AddInMemoryClients(Config.GetClients())
+                .AddInMemoryClients(Config.GetClients(clientUrls))
                 .AddAspNetIdentity<ApplicationUser>()
                 .Services.AddTransient<IProfileService, ProfileService>(); 
-
-            //Configuration Settings:
-            services.AddOptions();
-            services.Configure<ClientCallBackUrls>(Configuration.GetSection("ClientCallBackUrls"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -100,17 +102,29 @@ namespace eShopOnContainers.Identity
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
+            MigrateDb(app);
+        }
+
+        int retries = 0;
+
+        private void MigrateDb(IApplicationBuilder app)
+        {
             try
             {
                 var context = (ApplicationDbContext)app
-                            .ApplicationServices.GetService(typeof(ApplicationDbContext));
-
+                    .ApplicationServices.GetService(typeof(ApplicationDbContext));
                 using (context)
                 {
                     context.Database.Migrate();
                 }
+
             }
-            catch (Exception) { }
+            catch (Exception)
+            {
+                retries++;
+                if (retries < 2)
+                    MigrateDb(app);
+            }
         }
     }
 }

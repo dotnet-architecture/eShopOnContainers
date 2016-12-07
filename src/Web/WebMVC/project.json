@@ -1,5 +1,5 @@
 {
-  "userSecretsId": "aspnet-Microsoft.eShopOnContainers.WebMVC-946ae052-8305-4a99-965b-ec8636ddbae3",
+  "userSecretsId": "aspnet-Microsoft.eShopOnContainers-946ae052-8305-4a99-965b-ec8636ddbae3",
   "dependencies": {
     "Microsoft.NETCore.App": {
       "version": "1.0.0",
@@ -73,6 +73,7 @@
       "Views",
       "Areas/**/Views",
       "appsettings.json",
+      "appsettings.override.json",
       "web.config",
       "Dockerfile",
       "docker-compose.yml",

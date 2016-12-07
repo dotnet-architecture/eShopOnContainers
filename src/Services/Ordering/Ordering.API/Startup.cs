@@ -15,6 +15,8 @@
     using Ordering.Infrastructure;
     using System;
     using System.Reflection;
+    using System.Threading;
+    using System.Threading.Tasks;
 
     public class Startup
     {
@@ -41,7 +43,7 @@
         {
             // Add framework services.
 
-            services.AddMvc(options=>
+            services.AddMvc(options =>
             {
 
                 options.Filters.Add(typeof(HttpGlobalExceptionFilter));
@@ -52,7 +54,7 @@
                 .AddDbContext<OrderingContext>(options =>
                 {
                     options.UseSqlServer(Configuration["ConnectionString"],
-                        sqlop=>sqlop.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name));
+                        sqlop => sqlop.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name));
                 });
 
             services.AddSwaggerGen();
@@ -96,12 +98,13 @@
                 app.UseDeveloperExceptionPage();
             }
 
-            OrderingContextSeed.SeedAsync(app).Wait();
 
-            app.UseMvc();
+            app.UseMvcWithDefaultRoute();
 
             app.UseSwagger()
                 .UseSwaggerUi();
+
+            OrderingContextSeed.SeedAsync(app).Wait();
         }
     }
 }

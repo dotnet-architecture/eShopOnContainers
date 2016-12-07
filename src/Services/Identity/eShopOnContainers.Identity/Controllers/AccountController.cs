@@ -202,8 +202,9 @@ namespace IdentityServer4.Quickstart.UI.Controllers
                     // hack: try/catch to handle social providers that throw
                     await HttpContext.Authentication.SignOutAsync(idp, new AuthenticationProperties { RedirectUri = url });
                 }
-                catch(NotSupportedException)
+                catch(Exception ex)
                 {
+                    _logger.LogCritical(ex.Message);
                 }
             }
 
@@ -247,73 +248,6 @@ namespace IdentityServer4.Quickstart.UI.Controllers
             return new ChallengeResult(provider, props);
         }
 
-        /// <summary>
-        /// Post processing of external authentication
-        /// </summary>
-        [HttpGet]
-        public async Task<IActionResult> ExternalLoginCallback(string returnUrl)
-        {
-            // read external identity from the temporary cookie
-            var info = await HttpContext.Authentication.GetAuthenticateInfoAsync(IdentityServerConstants.ExternalCookieAuthenticationScheme);
-            //var tempUser = info?.Principal;
-            //if (tempUser == null)
-            //{
-            //    throw new Exception("External authentication error");
-            //}
-
-            //// retrieve claims of the external user
-            //var claims = tempUser.Claims.ToList();
-
-            //// try to determine the unique id of the external user - the most common claim type for that are the sub claim and the NameIdentifier
-            //// depending on the external provider, some other claim type might be used
-            //var userIdClaim = claims.FirstOrDefault(x => x.Type == JwtClaimTypes.Subject);
-            //if (userIdClaim == null)
-            //{
-            //    userIdClaim = claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier);
-            //}
-            //if (userIdClaim == null)
-            //{
-            //    throw new Exception("Unknown userid");
-            //}
-
-            //// remove the user id claim from the claims collection and move to the userId property
-            //// also set the name of the external authentication provider
-            //claims.Remove(userIdClaim);
-            //var provider = info.Properties.Items["scheme"];
-            //var userId = userIdClaim.Value;
-
-            //// check if the external user is already provisioned
-            //var user = _loginService.FindByExternalProvider(provider, userId);
-            //if (user == null)
-            //{
-            //    // this sample simply auto-provisions new external user
-            //    // another common approach is to start a registrations workflow first
-            //    user = _loginService.AutoProvisionUser(provider, userId, claims);
-            //}
-
-            //var additionalClaims = new List<Claim>();
-
-            //// if the external system sent a session id claim, copy it over
-            //var sid = claims.FirstOrDefault(x => x.Type == JwtClaimTypes.SessionId);
-            //if (sid != null)
-            //{
-            //    additionalClaims.Add(new Claim(JwtClaimTypes.SessionId, sid.Value));
-            //}
-
-            //// issue authentication cookie for user
-            //await HttpContext.Authentication.SignInAsync(user.Subject, user.Username, provider, additionalClaims.ToArray());
-
-            //// delete temporary cookie used during external authentication
-            //await HttpContext.Authentication.SignOutAsync(IdentityServerConstants.ExternalCookieAuthenticationScheme);
-
-            //// validate return URL and redirect back to authorization endpoint
-            //if (_interaction.IsValidReturnUrl(returnUrl))
-            //{
-            //    return Redirect(returnUrl);
-            //}
-
-            return Redirect("~/");
-        }
 
         // GET: /Account/Register
         [HttpGet]
@@ -359,6 +293,10 @@ namespace IdentityServer4.Quickstart.UI.Controllers
                     // If we got this far, something failed, redisplay form
                     return View(model);
                 }
+            }
+
+            if (returnUrl != null) {
+                return Redirect(returnUrl);
             }
 
             return RedirectToAction("index", "home");

@@ -12,6 +12,8 @@ using Microsoft.eShopOnContainers.WebMVC.Services;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Http;
+using System.Threading;
+using Microsoft.Extensions.Options;
 
 namespace Microsoft.eShopOnContainers.WebMVC
 {
@@ -20,17 +22,20 @@ namespace Microsoft.eShopOnContainers.WebMVC
         public Startup(IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
+                      .SetBasePath(env.ContentRootPath)
+                      .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)  // Settings for the application
+                      .AddEnvironmentVariables();                                              // override settings with environment variables set in compose.   
+                
 
-            if (env.IsDevelopment())
-            {
-                // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
-                builder.AddUserSecrets();
-            }
+            //if (env.IsDevelopment())
+            //{
+            //    // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
+            //    builder.AddUserSecrets();
+            //}
 
-            builder.AddEnvironmentVariables();
+            //builder.AddJsonFile("appsettings.override.json");
+            //builder.AddEnvironmentVariables();
+
             Configuration = builder.Build();
         }
 
@@ -40,6 +45,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            services.Configure<AppSettings>(Configuration);
 
             // Add application services.
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -48,8 +54,6 @@ namespace Microsoft.eShopOnContainers.WebMVC
             services.AddSingleton<IOrderingService, OrderingService>(); //CCE: Once services are integrated, a singleton is not needed we can left transient.
             services.AddTransient<IBasketService, BasketService>();
             services.AddTransient<IIdentityParser<ApplicationUser>, IdentityParser>();
-
-            services.Configure<AppSettings>(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -74,16 +78,23 @@ namespace Microsoft.eShopOnContainers.WebMVC
 
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
-                AuthenticationScheme = "cookies",
+                AuthenticationScheme = "Cookies",
                 AutomaticAuthenticate = true,
             });
+
+            var identityUrl = Configuration.GetValue(typeof(string), "IdentityUrl");
+            var callBackUrl = Configuration.GetValue(typeof(string), "CallBackUrl");
+            var log = loggerFactory.CreateLogger("identity");
+
+            log.LogDebug(identityUrl.ToString());
+            log.LogDebug(callBackUrl.ToString());
 
             var oidcOptions = new OpenIdConnectOptions
             {
                 AuthenticationScheme = "oidc",
-                SignInScheme = "cookies",
-
-                Authority = "http://localhost:5000",
+                SignInScheme = "Cookies",
+                Authority = identityUrl.ToString(),
+                PostLogoutRedirectUri = callBackUrl.ToString(), 
                 ClientId = "mvc",
                 ClientSecret = "secret",
                 ResponseType = "code id_token",
@@ -98,6 +109,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
             oidcOptions.Scope.Add("orders");
             oidcOptions.Scope.Add("basket");
 
+            //Wait untill identity service is ready on compose. 
             app.UseOpenIdConnectAuthentication(oidcOptions);
 
             app.UseMvc(routes =>

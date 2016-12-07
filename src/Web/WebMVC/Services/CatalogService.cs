@@ -9,6 +9,7 @@ using System.Net.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Microsoft.Extensions.Logging;
 
 namespace Microsoft.eShopOnContainers.WebMVC.Services
 {
@@ -18,9 +19,12 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
         private HttpClient _apiClient;
         private readonly string _remoteServiceBaseUrl;
   
-        public CatalogService(IOptions<AppSettings> settings) {
+        public CatalogService(IOptions<AppSettings> settings, ILoggerFactory loggerFactory) {
             _settings = settings;
             _remoteServiceBaseUrl = $"{_settings.Value.CatalogUrl}/api/v1/catalog/";
+
+            var log = loggerFactory.CreateLogger("catalog service");
+            log.LogDebug(settings.Value.CatalogUrl);
         }
          
         public async Task<Catalog> GetCatalogItems(int page,int take, int? brand, int? type)

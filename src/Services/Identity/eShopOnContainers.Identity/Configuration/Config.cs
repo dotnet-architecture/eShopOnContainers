@@ -6,14 +6,6 @@ namespace eShopOnContainers.Identity.Configuration
 {
     public class Config
     {
-        private readonly IOptions<ClientCallBackUrls> _settings;
-
-        public Config(IOptions<ClientCallBackUrls> settings)
-        {
-            _settings = settings;
-   
-        }
-
         // scopes define the resources in your system
         public static IEnumerable<Scope> GetScopes()
         {
@@ -38,7 +30,7 @@ namespace eShopOnContainers.Identity.Configuration
         }
 
         // client want to access resources (aka scopes)
-        public static IEnumerable<Client> GetClients()
+        public static IEnumerable<Client> GetClients(Dictionary<string,string> clientsUrl)
         {
             return new List<Client>
             {
@@ -49,9 +41,9 @@ namespace eShopOnContainers.Identity.Configuration
                     ClientName = "eShop SPA OpenId Client",
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
-                    RedirectUris =           { "http://localhost:5003/callback.html" },
-                    PostLogoutRedirectUris = { "http://localhost:5003/index.html" },
-                    AllowedCorsOrigins =     { "http://localhost:5003" },
+                    RedirectUris =           { $"{clientsUrl["Spa"]}/callback.html" },
+                    PostLogoutRedirectUris = { $"{clientsUrl["Spa"]}/index.html" },
+                    AllowedCorsOrigins =     { $"{clientsUrl["Spa"]}" },
                     AllowedScopes =
                     {
                         StandardScopes.OpenId.Name,
@@ -66,9 +58,9 @@ namespace eShopOnContainers.Identity.Configuration
                     ClientName = "eShop Xamarin OpenId Client",
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
-                    RedirectUris =           { "http://localhost:5003/callback.html" },
-                    PostLogoutRedirectUris = { "http://localhost:5003/index.html" },
-                    AllowedCorsOrigins =     { "http://localhost:5003" },
+                    RedirectUris =           { "http://eshopxamarin/callback.html" },
+                    PostLogoutRedirectUris = { "http://eshopxamarin/callback.html/index.html" },
+                    AllowedCorsOrigins =     { "http://eshopxamarin" },
                     AllowedScopes =
                     {
                         StandardScopes.OpenId.Name,
@@ -85,17 +77,17 @@ namespace eShopOnContainers.Identity.Configuration
                     {
                         new Secret("secret".Sha256())
                     },
-                    ClientUri = "http://localhost:2114",
+                    ClientUri = $"{clientsUrl["Mvc"]}",                             // public uri of the client
                     AllowedGrantTypes = GrantTypes.HybridAndClientCredentials,
                     RedirectUris = new List<string>
                     {
-                        "http://localhost:2114/signin-oidc"
+                        $"{clientsUrl["Mvc"]}/signin-oidc",
+                        "http://104.40.62.65:5100/signin-oidc"
                     },
                     PostLogoutRedirectUris = new List<string>
                     {
-                        "http://localhost:2114/"
+                        $"{clientsUrl["Mvc"]}/"
                     },
-                    LogoutUri = "http://localhost:2114/signout-oidc",
                     AllowedScopes = new List<string>
                     {
                         StandardScopes.OpenId.Name,

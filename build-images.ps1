@@ -1,11 +1,9 @@
-
 $scriptPath = Split-Path $script:MyInvocation.MyCommand.Path
  
 Write-Host "Current script directory is $scriptPath" -ForegroundColor Yellow
 
 $pubFolderToDelete = $scriptPath + "\pub"
 remove-item -path $pubFolderToDelete -Force -Recurse -ErrorAction SilentlyContinue
-#cmd /c "rd /s pub" /q
 
 # *** WebMVC image ***
 $webPathToJson = $scriptPath + "\src\Web\WebMVC\project.json"
@@ -18,17 +16,18 @@ dotnet restore $webPathToJson
 dotnet build $webPathToJson
 dotnet publish $webPathToJson -o $webPathToPub
 
+
 # *** WebSPA image ***
 $webSPAPathToJson = $scriptPath + "\src\Web\WebSPA\eShopOnContainers.WebSPA\project.json"
 Write-Host "webSPAPathToJson is $webSPAPathToJson" -ForegroundColor Yellow
 $webSPAPathToPub = $scriptPath + "\pub\webSPA"
-#$webSPAPathToNpmBat = $scriptPath + "\src\Web\WebSPA\eShopOnContainers.WebSPA\buildspa.bat"
+$webSPAPathToNpmBat = $scriptPath + "\src\Web\WebSPA\eShopOnContainers.WebSPA\buildspa.bat"
 Write-Host "webSPAPathToPub is $webSPAPathToPub" -ForegroundColor Yellow
 
 Write-Host "Restore Dependencies just in case as it is needed to run dotnet publish" -ForegroundColor Blue
 dotnet restore $webSPAPathToJson
 dotnet build $webSPAPathToJson
-#Start-Process "cmd.exe" "/c " + $webSPAPathToNpmBat
+# Start-Process "cmd.exe" "/c " + $webSPAPathToNpmBat
 dotnet publish $webSPAPathToJson -o $webSPAPathToPub
 
 # *** identitySvc image ***
@@ -75,6 +74,12 @@ Write-Host "Restore Dependencies just in case as it is needed to run dotnet publ
 dotnet restore $basketPathToJson
 dotnet build $basketPathToJson
 dotnet publish $basketPathToJson -o $basketPathToPub
+
+#!/bin/bash
+# Delete all containers
+docker rm $(docker ps -a -q) -f
+# Delete all images
+docker rmi $(docker images -q)
 
 #*** build docker images ***
 docker build -t eshop/web $webPathToPub

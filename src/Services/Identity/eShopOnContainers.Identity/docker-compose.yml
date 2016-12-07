@@ -1,18 +1,15 @@
 version: '2'
 
 services:
-  identity.service:
-    image: eshop/identity    
-    build:
-    context: .
-    dockerfile: Dockerfile
+identity.service:
+    image: eshop/identity
     environment:
-      - ConnectionString=Server=identity.data;Initial Catalog=CatalogData;User Id=sa;Password=Pass@word
-      - Spa=http://localhost/5003
-    expose:
-      - "80"
+      - SpaClient=http://localhost:5104
+      - ConnectionString=Server=identity.data;Database=aspnet-Microsoft.eShopOnContainers;User Id=sa;Password=Pass@word
+      #- MvcClient=http://104.40.62.65:5100             #Remote: VM Needs to have public access at 5105. 
+      - MvcClient=http://localhost:5100                 #Local: You need a entry in windows host file to run identity in local docker. 
     ports:
-      - "5101:80"
+      - "5105:5105"
     depends_on:
       - identity.data
 
@@ -22,4 +19,4 @@ services:
       - SA_PASSWORD=Pass@word
       - ACCEPT_EULA=Y
     ports:
-      - "5434:1433"
+      - "5433:1433"

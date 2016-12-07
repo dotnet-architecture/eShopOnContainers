@@ -68,9 +68,11 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             // Use frameworks
             app.UseCors("CorsPolicy");
 
+            var identityUrl = Configuration.GetValue(typeof(string), "IdentityUrl");
+
             app.UseIdentityServerAuthentication(new IdentityServerAuthenticationOptions
             {
-                Authority = "http://localhost:5000",
+                Authority = identityUrl.ToString(),
                 ScopeName = "basket",
                 RequireHttpsMetadata = false
             });

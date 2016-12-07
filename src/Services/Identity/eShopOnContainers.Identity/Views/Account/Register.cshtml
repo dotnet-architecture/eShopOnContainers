@@ -6,7 +6,7 @@
 <div class="brand-header-block">
     <ul class="container">
         <li class="active">REGISTER</li>
-        <li style="margin-right: 65px;"><a asp-area="" asp-controller="Account" asp-action="Login">LOGIN</a></li>
+        <li style="margin-right: 65px;"><a asp-area="" asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]">LOGIN</a></li>
     </ul>
 </div>
 <div class="container register-container">

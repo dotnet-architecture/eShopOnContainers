@@ -4,7 +4,8 @@
 
 @inject IIdentityParser<ApplicationUser> UserManager
 
-@if(Context.User.Identity.IsAuthenticated)
+@*@if (Context.User.Identity.IsAuthenticated)*@
+@if (User.FindFirst(x => x.Type == "preferred_username") != null)
 {
     <form asp-area="" asp-controller="Account" asp-action="SignOut" method="post" id="logoutForm" class="navbar-right">
         <div class="nav navbar-nav navbar-right mt-15">

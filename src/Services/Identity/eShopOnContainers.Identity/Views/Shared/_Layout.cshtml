@@ -3,50 +3,59 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>IdentityServer4</title>
+    <title>eShopOnContainers Identity</title>
     <link rel="icon" type="image/x-icon" href="~/favicon.ico" />
     <link rel="shortcut icon" type="image/x-icon" href="~/favicon.ico" />
     <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.css" />
     <link rel="stylesheet" href="~/css/site.css" />
-    <link rel="stylesheet" href="~/css/sitemvc.css" />
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a href="~/">
-                    <span class="navbar-brand">
-                        <img src="~/icon.png" class="icon-banner">
-                        IdentityServer4
-                    </span>
-                </a>
+    <div class="navbar navbar-inverse navbar-fixed-top es-header">
+        <div class="container">
+            <div class="row">
+                <div class="navbar-header col-sm-6 col-xs-8">
+                    <a href="~/">
+                        <div class="navbar-brand"></div>
+                    </a>
+                </div>
+                <div>
+                    <a asp-action="Register" asp-controller="Account">Register User</a>
+                </div>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <ul class="nav navbar-nav">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">@User.Identity.Name <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a asp-action="Logout" asp-controller="Account">Logout</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                }
             </div>
-            <div>
-                <a asp-action="Register" asp-controller="Account">Register User</a>
-            </div>
-            @if (User.Identity.IsAuthenticated)
-            {
-                <ul class="nav navbar-nav">
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">@User.Identity.Name <b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li><a asp-action="Logout" asp-controller="Account">Logout</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            }
         </div>
     </div>
-    
-    <div class="container body-content">
+
+    <div>
         @RenderBody()
+        <br /><br />
+        <footer>
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <br><div class="brand"></div>
+                    </div>
+                    <div class="col-sm-6">
+                        <br />
+                        <br>
+                        <br />
+                        <div class="text hidden-xs">&copy; e-ShoponContainers. All right reserved</div>
+                    </div>
+                </div>
+            </div>
+        </footer>
     </div>
+
 
     <script src="~/lib/jquery/jquery.js"></script>
     <script src="~/lib/bootstrap/js/bootstrap.js"></script>

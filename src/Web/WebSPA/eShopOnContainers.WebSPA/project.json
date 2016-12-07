@@ -97,15 +97,16 @@
       "web.config",
       "config",
       "wwwroot",
-      "dockerfile"
+      "dockerfile",
+      "wait-for-it.sh"
     ]
   },
   "scripts": {
-    // "prepublish": [
-    //   "npm install",
-    //   "node node_modules/webpack/bin/webpack.js --config config/webpack.config.vendor.js",
-    //   "node node_modules/webpack/bin/webpack.js --config config/webpack.config.js"
-    // ],
+     //"prepublish": [
+     //  "npm install",
+     //  "node node_modules/webpack/bin/webpack.js --config config/webpack.config.vendor.js",
+     //  "node node_modules/webpack/bin/webpack.js --config config/webpack.config.js"
+     //],
     "postpublish": [
       "dotnet publish-iis --publish-folder %publish:OutputPath% --framework %publish:FullTargetFramework%"
     ]

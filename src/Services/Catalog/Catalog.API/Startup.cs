@@ -8,6 +8,9 @@
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
+    using System;
+    using System.Threading;
+    using System.Threading.Tasks;
 
     public class Startup
     {
@@ -45,7 +48,6 @@
             });
 
             // Add framework services.
-
             services.AddSwaggerGen();
             services.ConfigureSwaggerGen(options =>
             {
@@ -68,9 +70,7 @@
                     .AllowCredentials());
             });
 
-            services.AddMvc(mvcoptions =>
-            {
-            });
+            services.AddMvc();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
@@ -85,18 +85,19 @@
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-            //Seed Data
-
-            CatalogContextSeed.SeedAsync(app)
-                .Wait();
-
             // Use frameworks
             app.UseCors("CorsPolicy");
 
-            app.UseMvc();
+            app.UseMvcWithDefaultRoute();
 
             app.UseSwagger()
               .UseSwaggerUi();
+
+            //Seed Data
+            CatalogContextSeed.SeedAsync(app, loggerFactory)
+            .Wait();
+
+            
         }
     }
 }

@@ -1,44 +1,60 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure
 {
     using EntityFrameworkCore;
+    using Extensions.Logging;
     using Microsoft.AspNetCore.Builder;
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
 
     public class CatalogContextSeed
     {
-        public static async Task SeedAsync(IApplicationBuilder applicationBuilder)
+        public static async Task SeedAsync(IApplicationBuilder applicationBuilder, ILoggerFactory loggerFactory, int? retry = 0)
         {
-            var context = (CatalogContext)applicationBuilder
-                .ApplicationServices.GetService(typeof(CatalogContext));
-
-            using (context)
+            int retryForAvaiability = retry.Value;
+            try
             {
-                context.Database.Migrate();
+                var context = (CatalogContext)applicationBuilder
+                    .ApplicationServices.GetService(typeof(CatalogContext));
 
-                if (!context.CatalogBrands.Any())
+                //using (context)
+                //{
+                    context.Database.Migrate();
+
+                    if (!context.CatalogBrands.Any())
+                    {
+                        context.CatalogBrands.AddRange(
+                            GetPreconfiguredCatalogBrands());
+
+                        await context.SaveChangesAsync();
+                    }
+
+                    if (!context.CatalogTypes.Any())
+                    {
+                        context.CatalogTypes.AddRange(
+                            GetPreconfiguredCatalogTypes());
+
+                        await context.SaveChangesAsync();
+                    }
+
+                    if (!context.CatalogItems.Any())
+                    {
+                        context.CatalogItems.AddRange(
+                            GetPreconfiguredItems());
+
+                        await context.SaveChangesAsync();
+                    }
+                //}
+            }
+            catch (Exception ex)
+            {
+                if (retryForAvaiability < 10)
                 {
-                    context.CatalogBrands.AddRange(
-                        GetPreconfiguredCatalogBrands());
-
-                    await context.SaveChangesAsync();
-                }
-
-                if (!context.CatalogTypes.Any())
-                {
-                    context.CatalogTypes.AddRange(
-                        GetPreconfiguredCatalogTypes());
-
-                    await context.SaveChangesAsync();
-                }
-
-                if (!context.CatalogItems.Any())
-                {
-                    context.CatalogItems.AddRange(
-                        GetPreconfiguredItems());
-
-                    await context.SaveChangesAsync();
+                    retryForAvaiability++;
+                    var log = loggerFactory.CreateLogger("catalog seed");
+                    log.LogError(ex.Message);
+                    await SeedAsync(applicationBuilder, loggerFactory, retryForAvaiability);
                 }
             }
         }

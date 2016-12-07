@@ -17,7 +17,6 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseIISIntegration()
                 .UseStartup<Startup>()
-                .UseUrls("http://localhost:5008")
                 .Build();
 
             host.Run();
