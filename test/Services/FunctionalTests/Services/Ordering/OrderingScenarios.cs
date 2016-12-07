@@ -1,8 +1,6 @@
 ﻿namespace FunctionalTests.Services.Ordering
 {
-    using Microsoft.AspNetCore.TestHost;
     using Microsoft.eShopOnContainers.Services.Ordering.API.Models;
-    using Microsoft.eShopOnContainers.Services.Ordering.Domain;
     using Newtonsoft.Json;
     using System;
     using System.Net.Http;

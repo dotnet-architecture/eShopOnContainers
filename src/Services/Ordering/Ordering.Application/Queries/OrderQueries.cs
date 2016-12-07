@@ -50,6 +50,5 @@
                 return await connection.QueryAsync<dynamic>("SELECT * FROM ordering.cardtypes");
             }
         }
-
     }
 }

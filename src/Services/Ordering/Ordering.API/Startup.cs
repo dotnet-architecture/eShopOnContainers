@@ -43,9 +43,7 @@
 
             services.AddMvc(options=>
             {
-
                 options.Filters.Add(typeof(HttpGlobalExceptionFilter));
-
             }).AddControllersAsServices();
 
             services.AddEntityFrameworkSqlServer()
@@ -72,8 +70,6 @@
 
             services.AddOptions();
 
-
-
             //configure autofac
 
             var container = new ContainerBuilder();
@@ -81,7 +77,6 @@
 
             container.RegisterModule(new MediatorModule());
             container.RegisterModule(new ApplicationModule());
-
 
             return new AutofacServiceProvider(container.Build());
         }

@@ -64,7 +64,6 @@
         {
             var order = await _orderQueries.GetOrder(orderId);
 
-            
             return Ok(order);
         }
 
@@ -73,7 +72,6 @@
         public async Task<IActionResult> GetOrders()
         {
             var orders = await _orderQueries.GetOrders();
-
 
             return Ok(orders);
         }
