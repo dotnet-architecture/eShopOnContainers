@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xamarin.Forms;
-using System;
 
 namespace eShopOnContainers.Core.Services.Basket
 {
@@ -18,11 +17,11 @@ namespace eShopOnContainers.Core.Services.Basket
                 }
         };
 
-        public async Task<CustomerBasket> GetBasketAsync(string guidUser)
+        public async Task<CustomerBasket> GetBasketAsync(string guidUser, string token)
         {
             await Task.Delay(500);
 
-            if(string.IsNullOrEmpty(guidUser))
+            if(string.IsNullOrEmpty(guidUser) || string.IsNullOrEmpty(token))
             {
                 return new CustomerBasket();
             }
@@ -37,6 +36,16 @@ namespace eShopOnContainers.Core.Services.Basket
             MockCustomBasket = customerBasket;
 
             return MockCustomBasket;
+        }
+
+        public async Task ClearBasketAsync(string guidUser)
+        {
+            await Task.Delay(500);
+
+            if (!string.IsNullOrEmpty(guidUser))
+            {
+                MockCustomBasket.Items.Clear();
+            }
         }
     }
 }

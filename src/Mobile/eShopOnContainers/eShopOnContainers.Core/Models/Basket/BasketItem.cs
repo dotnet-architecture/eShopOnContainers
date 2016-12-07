@@ -67,11 +67,14 @@ namespace eShopOnContainers.Core.Models.Basket
             get { return _quantity; }
             set
             {
-                _quantity = value;
-                RaisePropertyChanged(() => Quantity);
-                RaisePropertyChanged(() => Total);
+                if (_quantity != value)
+                {
+                    _quantity = value;
+                    RaisePropertyChanged(() => Quantity);
+                    RaisePropertyChanged(() => Total);
 
-                MessagingCenter.Send(this, MessengerKeys.UpdateProduct);
+                    MessagingCenter.Send(this, MessengerKeys.UpdateProduct);
+                }
             }
         }
 

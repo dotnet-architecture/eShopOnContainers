@@ -41,6 +41,22 @@ namespace eShopOnContainers.Core.Services.RequestProvider
             return result;
         }
 
+        public async Task<TResult> GetAsync<TResult>(string uri, string token)
+        {
+            HttpClient httpClient = CreateHttpClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            HttpResponseMessage response = await httpClient.GetAsync(uri);
+
+            await HandleResponse(response);
+
+            string serialized = await response.Content.ReadAsStringAsync();
+
+            TResult result = await Task.Run(() =>
+                JsonConvert.DeserializeObject<TResult>(serialized, _serializerSettings));
+
+            return result;
+        }
+
         public Task<TResult> PostAsync<TResult>(string uri, TResult data)
         {
             return PostAsync<TResult, TResult>(uri, data);
@@ -75,6 +91,13 @@ namespace eShopOnContainers.Core.Services.RequestProvider
             string responseData = await response.Content.ReadAsStringAsync();
 
             return await Task.Run(() => JsonConvert.DeserializeObject<TResult>(responseData, _serializerSettings));
+        }
+
+        public async Task DeleteAsync(string uri)
+        {
+            HttpClient httpClient = CreateHttpClient();
+
+            await httpClient.DeleteAsync(uri);
         }
 
         private HttpClient CreateHttpClient()

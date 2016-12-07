@@ -43,6 +43,18 @@
                         Value="12, 12, 12, 0" />
             </Style>
 
+            <Style x:Key="HeaderLabelStyle" 
+               TargetType="{x:Type Label}">
+                <Setter Property="FontFamily"
+                        Value="{StaticResource MontserratRegular}" />
+                <Setter Property="FontSize"
+                        Value="{StaticResource LittleSize}" />
+                <Setter Property="TextColor"
+                        Value="{StaticResource GreenColor}" />
+                <Setter Property="HorizontalOptions"
+                        Value="Start" />
+            </Style>
+            
             <animations:StoryBoard 
                 x:Key="MockServicesAnimation"    
                 Target="{x:Reference MockServices}">
@@ -82,6 +94,7 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="1" />
                         <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                         <RowDefinition Height="1" />
                     </Grid.RowDefinitions>
                     <Grid 
@@ -105,7 +118,7 @@
                         Grid.Column="1" 
                         Grid.Row="1" 
                         Animate="True"     
-                        Checked="{Binding UseMockServices, Mode=TwoWay}"
+                        Checked="{Binding UseAzureServices, Mode=TwoWay}"
                         Command="{Binding MockServicesCommand}"
                         Style="{StaticResource SettingsToggleButtonStyle}">
                         <controls:ToggleButton.CheckedImage>
@@ -121,8 +134,29 @@
                               WinPhone="Assets/switchOff.png"/>
                         </controls:ToggleButton.UnCheckedImage>
                     </controls:ToggleButton>
-                    <Grid 
+                    <!-- ENDPOINT -->
+                    <StackLayout
                         Grid.Row="2"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="2"
+                        Margin="12, 0, 12, 12"
+                        IsVisible="{Binding UseAzureServices}">
+                        <Label
+                            Text="Endpoint"
+                            Style="{StaticResource HeaderLabelStyle}"/>
+                        <Entry
+                            Text="{Binding Endpoint, Mode=TwoWay}">
+                            <Entry.Style>
+                                <OnPlatform 
+                                    x:TypeArguments="Style"
+                                    iOS="{StaticResource EntryStyle}"
+                                    Android="{StaticResource EntryStyle}"
+                                    WinPhone="{StaticResource UwpEntryStyle}"/>
+                            </Entry.Style>
+                        </Entry>
+                    </StackLayout>
+                    <Grid 
+                        Grid.Row="3"
                         Grid.Column="0"
                         Grid.ColumnSpan="2"
                         BackgroundColor="Gray"/>

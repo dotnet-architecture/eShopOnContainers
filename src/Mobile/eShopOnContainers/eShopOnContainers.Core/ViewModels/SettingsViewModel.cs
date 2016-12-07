@@ -9,11 +9,12 @@ namespace eShopOnContainers.Core.ViewModels
     {
         private string _title;
         private string _description;
-        private bool _useMockServices;
+        private bool _useAzureServices;
+        private string _endpoint;
 
         public SettingsViewModel()
         {
-            UseMockServices = ViewModelLocator.Instance.UseMockService;
+            UseAzureServices = !ViewModelLocator.Instance.UseMockService;
         }
 
         public string Title
@@ -36,13 +37,29 @@ namespace eShopOnContainers.Core.ViewModels
             }
         }
 
-        public bool UseMockServices
+        public bool UseAzureServices
         {
-            get { return _useMockServices; }
+            get { return _useAzureServices; }
             set
             {
-                _useMockServices = value;
-                RaisePropertyChanged(() => UseMockServices);
+                _useAzureServices = value;
+                RaisePropertyChanged(() => UseAzureServices);
+            }
+        }
+
+        public string Endpoint
+        {
+            get { return _endpoint; }
+            set
+            {
+                _endpoint = value;
+
+                if(!string.IsNullOrEmpty(_endpoint))
+                {
+                    UpdateEndpoint(_endpoint);
+                }
+
+                RaisePropertyChanged(() => Endpoint);
             }
         }
 
@@ -50,7 +67,7 @@ namespace eShopOnContainers.Core.ViewModels
 
         private void MockServices()
         {
-            ViewModelLocator.Instance.UpdateServices(UseMockServices);
+            ViewModelLocator.Instance.UpdateDependencies(!UseAzureServices);
             UpdateInfo();
         }
 
@@ -58,12 +75,14 @@ namespace eShopOnContainers.Core.ViewModels
         {
             UpdateInfo();
 
+            Endpoint = GlobalSetting.Instance.BaseEndpoint;
+
             return base.InitializeAsync(navigationData);
         }
 
         private void UpdateInfo()
         {
-            if (!UseMockServices)
+            if (!UseAzureServices)
             {
                 Title = "Use Mock Services";
                 Description = "Mock Services are simulated objects that mimic the behavior of real services in controlled ways";
@@ -73,6 +92,11 @@ namespace eShopOnContainers.Core.ViewModels
                 Title = "Use Azure Services";
                 Description = "Azure Services are real objects that required a valid internet connection";
             }
+        }
+
+        private void UpdateEndpoint(string endpoint)
+        {
+            GlobalSetting.Instance.BaseEndpoint = endpoint;
         }
     }
 }

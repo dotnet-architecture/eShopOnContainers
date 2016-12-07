@@ -8,7 +8,6 @@ using System.Linq;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
 using Xamarin.Forms.Platform.UWP;
-using UI = Windows.UI;
 using Xaml = Windows.UI.Xaml;
 
 [assembly: ExportRenderer(typeof(TabbedPage), typeof(CustomTabbedPageRenderer))]
@@ -35,7 +34,7 @@ namespace eShopOnContainers.Windows.Renderers
 
         private void AddTabBadge(int tabIndex)
         {
-            if(Element == null)
+            if (Element == null)
             {
                 return;
             }

@@ -58,7 +58,8 @@
         </Grid.RowDefinitions>
         <!-- FILTERS -->
         <Grid
-            BackgroundColor="{StaticResource LightGreenColor}">
+            BackgroundColor="{StaticResource LightGreenColor}"                       
+            IsEnabled="{Binding Products.Count, Converter={StaticResource CountToBoolConverter}}">
             <Label 
                 Text="FILTER"
                 Style="{StaticResource FilterLabelStyle}"/>

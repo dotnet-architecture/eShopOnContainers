@@ -9,6 +9,7 @@ using System.Windows.Input;
 using eShopOnContainers.Core.Services.User;
 using System.Linq;
 using eShopOnContainers.Core.Services.Basket;
+using eShopOnContainers.Core.Helpers;
 
 namespace eShopOnContainers.Core.ViewModels
 {
@@ -100,9 +101,10 @@ namespace eShopOnContainers.Core.ViewModels
             Products = await _productsService.GetCatalogAsync();
             Brands = await _productsService.GetCatalogBrandAsync();
             Types = await _productsService.GetCatalogTypeAsync();
-
+            
             var user = await _userService.GetUserAsync();
-            var basket = await _basketService.GetBasketAsync(user.GuidUser);
+            var authToken = Settings.AuthAccessToken;
+            var basket = await _basketService.GetBasketAsync(user.GuidUser, authToken);
 
             if (basket != null && basket.Items.Any())
             {
