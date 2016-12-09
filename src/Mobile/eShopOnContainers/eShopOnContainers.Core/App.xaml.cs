@@ -9,14 +9,25 @@ namespace eShopOnContainers
 {
     public partial class App : Application
     {
+        public bool UseMockServices { get; set; }
+
         public App()
         {
             InitializeComponent();
+
+            InitApp();
 
             if (Device.OS == TargetPlatform.Windows)
             {
                 InitNavigation();
             }
+        }
+
+        private void InitApp()
+        {
+            UseMockServices = false;
+
+            ViewModelLocator.Instance.UpdateDependencies(UseMockServices);
         }
 
         private Task InitNavigation()
