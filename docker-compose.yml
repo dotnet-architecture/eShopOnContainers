@@ -42,6 +42,7 @@ services:
       - ConnectionString=Server=identity.data;Database=aspnet-Microsoft.eShopOnContainers;User Id=sa;Password=Pass@word
       #- MvcClient=http://104.40.62.65:5100             #Remote: VM Needs to have public access at 5105. 
       - MvcClient=http://localhost:5100                 #Local: You need a entry in windows host file to run identity in local docker. 
+        #10.0.75.1:5105
     ports:
       - "5105:5105"
     depends_on:

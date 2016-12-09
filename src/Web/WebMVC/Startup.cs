@@ -82,8 +82,8 @@ namespace Microsoft.eShopOnContainers.WebMVC
                 AutomaticAuthenticate = true,
             });
 
-            var identityUrl = Configuration.GetValue(typeof(string), "IdentityUrl");
-            var callBackUrl = Configuration.GetValue(typeof(string), "CallBackUrl");
+            var identityUrl = Configuration.GetValue<string>("IdentityUrl");
+            var callBackUrl = Configuration.GetValue<string>("CallBackUrl");
             var log = loggerFactory.CreateLogger("identity");
 
             log.LogDebug(identityUrl.ToString());
@@ -97,7 +97,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
                 PostLogoutRedirectUri = callBackUrl.ToString(), 
                 ClientId = "mvc",
                 ClientSecret = "secret",
-                ResponseType = "code id_token",
+                ResponseType = "code id_token", 
                 SaveTokens = true,
                 GetClaimsFromUserInfoEndpoint = true,
                 RequireHttpsMetadata = false, 
