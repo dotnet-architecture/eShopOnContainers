@@ -1,6 +1,7 @@
 ﻿using eShopOnContainers.Core.Extensions;
 using eShopOnContainers.Core.Models.Orders;
-using eShopOnContainers.Core.Services.User;
+using eShopOnContainers.Core.Services.Order;
+using eShopOnContainers.Core.ViewModels.Base;
 using eShopOnContainers.ViewModels.Base;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
@@ -13,11 +14,11 @@ namespace eShopOnContainers.Core.ViewModels
     {
         private ObservableCollection<Order> _orders;
 
-        private IUserService _userService;
+        private IOrderService _orderService;
 
-        public ProfileViewModel(IUserService userService)
+        public ProfileViewModel(IOrderService orderService)
         {
-            _userService = userService;
+            _orderService = orderService;
         }
 
         public ObservableCollection<Order> Orders
@@ -38,7 +39,7 @@ namespace eShopOnContainers.Core.ViewModels
         {
             IsBusy = true;
 
-            var orders = await _userService.GetOrdersAsync();
+            var orders = await _orderService.GetOrdersAsync();
             Orders = orders.ToObservableCollection();
 
             IsBusy = false;
@@ -48,6 +49,7 @@ namespace eShopOnContainers.Core.ViewModels
         {
             IsBusy = true;
 
+            MessagingCenter.Send(this, MessengerKeys.Logout);
             await NavigationService.NavigateToAsync<LoginViewModel>();
             await NavigationService.RemoveBackStackAsync();
 

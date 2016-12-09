@@ -2,10 +2,7 @@ version: '2'
 
 services:
   catalog.api:
-    image: eshop/catalog.api    
-    build:
-    context: .
-    dockerfile: Dockerfile
+    image: eshop/catalog.api
     environment:
       - ConnectionString=Server=catalog.data;Initial Catalog=CatalogData;User Id=sa;Password=Pass@word
     expose:

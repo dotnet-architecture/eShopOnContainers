@@ -1,6 +1,10 @@
-﻿using eShopOnContainers.Core.Services.OpenUrl;
+﻿using eShopOnContainers.Core.Helpers;
+using eShopOnContainers.Core.Services.Identity;
+using eShopOnContainers.Core.Services.OpenUrl;
 using eShopOnContainers.Core.Validations;
+using eShopOnContainers.Core.ViewModels.Base;
 using eShopOnContainers.ViewModels.Base;
+using IdentityModel.Client;
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -13,16 +17,23 @@ namespace eShopOnContainers.Core.ViewModels
     {
         private ValidatableObject<string> _userName;
         private ValidatableObject<string> _password;
+        private bool _isMock;
         private bool _isValid;
+        private string _authUrl;
 
         private IOpenUrlService _openUrlService;
+        private IIdentityService _identityService;
 
-        public LoginViewModel(IOpenUrlService openUrlService)
+        public LoginViewModel(IOpenUrlService openUrlService,
+            IIdentityService identityService)
         {
             _openUrlService = openUrlService;
+            _identityService = identityService;
 
             _userName = new ValidatableObject<string>();
             _password = new ValidatableObject<string>();
+
+            IsMock = ViewModelLocator.Instance.UseMockService;
 
             AddValidations();
         }
@@ -53,6 +64,19 @@ namespace eShopOnContainers.Core.ViewModels
             }
         }
 
+        public bool IsMock
+        {
+            get
+            {
+                return _isMock;
+            }
+            set
+            {
+                _isMock = value;
+                RaisePropertyChanged(() => IsMock);
+            }
+        }
+
         public bool IsValid
         {
             get
@@ -66,11 +90,38 @@ namespace eShopOnContainers.Core.ViewModels
             }
         }
 
-        public ICommand SignInCommand => new Command(SignInAsync);
+        public string LoginUrl
+        {
+            get
+            {
+                return _authUrl;
+            }
+            set
+            {
+                _authUrl = value;
+                RaisePropertyChanged(() => LoginUrl);
+            }
+        }
+
+        public ICommand MockSignInCommand => new Command(MockSignInAsync);
+
+        public ICommand SignInCommand => new Command(async () => await SignInAsync());
 
         public ICommand RegisterCommand => new Command(Register);
 
-        private async void SignInAsync()
+        public ICommand NavigateCommand => new Command<string>(NavigateAsync);
+
+        public override Task InitializeAsync(object navigationData)
+        {
+            MessagingCenter.Subscribe<ProfileViewModel>(this, MessengerKeys.Logout, (sender) =>
+            {
+                Logout();
+            });
+
+            return base.InitializeAsync(navigationData);
+        }
+
+        private async void MockSignInAsync()
         {
             IsBusy = true;
             IsValid = true;
@@ -104,9 +155,57 @@ namespace eShopOnContainers.Core.ViewModels
             IsBusy = false;
         }
 
+        private async Task SignInAsync()
+        {
+            IsBusy = true;
+
+            await Task.Delay(500);
+
+            LoginUrl = _identityService.CreateAuthorizeRequest();
+
+            IsValid = true;
+
+            IsBusy = false;
+        }
+
         private void Register()
         {
-            _openUrlService.OpenUrl(GlobalSetting.RegisterWebsite);
+            _openUrlService.OpenUrl(GlobalSetting.Instance.RegisterWebsite);
+        }
+
+        private void Logout()
+        {
+            var token = Settings.AuthAccessToken;
+            var logoutRequest = _identityService.CreateLogoutRequest(token);
+
+            if(string.IsNullOrEmpty(logoutRequest))
+            {
+                IsValid = false;
+                LoginUrl = logoutRequest;
+                Settings.AuthAccessToken = string.Empty;
+            }
+        }
+
+        private async void NavigateAsync(string url)
+        {
+            if (url.Contains(GlobalSetting.Instance.IdentityCallback))
+            {
+                // Parse response
+                var authResponse = new AuthorizeResponse(url);
+
+                if (!string.IsNullOrWhiteSpace(authResponse.AccessToken))
+                {
+                    string decodedTokens = _identityService.DecodeToken(authResponse.AccessToken);
+                    
+                    if(decodedTokens != null)
+                    {
+                        Settings.AuthAccessToken = decodedTokens;
+
+                        await NavigationService.NavigateToAsync<MainViewModel>();
+                        await NavigationService.RemoveLastFromBackStackAsync();
+                    }
+                }
+            }
         }
 
         private bool Validate()

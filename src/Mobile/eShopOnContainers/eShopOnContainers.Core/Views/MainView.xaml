@@ -6,8 +6,13 @@
             xmlns:controls="clr-namespace:eShopOnContainers.Core.Controls;assembly=eShopOnContainers.Core"
             BarBackgroundColor="{StaticResource DarkGreenColor}"
             BackgroundColor="{StaticResource BackgroundColor}"
-            BarTextColor="{StaticResource WhiteColor}"
-            Title="eShop on Containers">
+            BarTextColor="{StaticResource WhiteColor}">
+    <TabbedPage.Title>
+        <OnPlatform      
+            x:TypeArguments="x:String"
+            iOS="eShop on Containers"
+            WinPhone="eShop on Containers"/>
+    </TabbedPage.Title>
     <ContentPage.ToolbarItems>
         <ToolbarItem 
             Command="{Binding SettingsCommand}"

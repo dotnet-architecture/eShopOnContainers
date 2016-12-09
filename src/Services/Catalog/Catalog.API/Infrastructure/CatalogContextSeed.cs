@@ -63,8 +63,10 @@
         {
             return new List<CatalogBrand>()
             {
-                new CatalogBrand() { Brand="Azure"},
-                new CatalogBrand() { Brand = "Visual Studio" }
+                new CatalogBrand() { Brand = "Azure"},
+                new CatalogBrand() { Brand = ".NET" },
+                new CatalogBrand() { Brand = "Visual Studio" },
+                new CatalogBrand() { Brand = "SQL Server" }
             };
         }
 
@@ -72,8 +74,10 @@
         {
             return new List<CatalogType>()
             {
-                new CatalogType() { Type="Mug"},
-                new CatalogType() { Type = "T-Shirt" }
+                new CatalogType() { Type = "Mug"},
+                new CatalogType() { Type = "T-Shirt" },
+                new CatalogType() { Type = "Backpack" },
+                new CatalogType() { Type = "USB Memory Stick" }
             };
         }
 

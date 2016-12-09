@@ -77,6 +77,13 @@ namespace eShopOnContainers.Core.Services.RequestProvider
             return await Task.Run(() => JsonConvert.DeserializeObject<TResult>(responseData, _serializerSettings));
         }
 
+        public async Task DeleteAsync(string uri)
+        {
+            HttpClient httpClient = CreateHttpClient();
+
+            await httpClient.DeleteAsync(uri);
+        }
+
         private HttpClient CreateHttpClient()
         {
             var httpClient = new HttpClient();

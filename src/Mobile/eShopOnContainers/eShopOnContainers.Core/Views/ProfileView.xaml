@@ -78,26 +78,36 @@
                 Grid.Row="0"
                 Text="MY ORDERS"
                 Style="{StaticResource MyOrdersLabelStyle}"/>
-            <ListView 
-                Grid.Row="1" 
-                ItemsSource="{Binding Orders}"
-                HasUnevenRows="True"
-                SeparatorVisibility="None"
-                CachingStrategy="RecycleElement">
-                <ListView.Behaviors>
-                    <behaviors:EventToCommandBehavior
-                        EventName="ItemTapped"
-                        Command="{Binding OrderDetailCommand}"
-                        EventArgsConverter="{StaticResource ItemTappedEventArgsConverter}" />
-                </ListView.Behaviors>
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-                            <templates:OrderTemplate />
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+            <Grid 
+                Grid.Row="1">
+                <Grid 
+                    IsVisible="{Binding IsBusy, Converter={StaticResource InverseBoolConverter}}">
+                    <Label 
+                        Text="NO ORDERS"      
+                        IsVisible="{Binding Orders.Count, Converter={StaticResource InverseCountToBoolConverter}}"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center"/>
+                </Grid>
+                <ListView 
+                    ItemsSource="{Binding Orders}"
+                    HasUnevenRows="True"
+                    SeparatorVisibility="None"
+                    CachingStrategy="RecycleElement">
+                    <ListView.Behaviors>
+                        <behaviors:EventToCommandBehavior           
+                            EventName="ItemTapped"
+                            Command="{Binding OrderDetailCommand}"
+                            EventArgsConverter="{StaticResource ItemTappedEventArgsConverter}" />
+                    </ListView.Behaviors>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <templates:OrderTemplate />
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
         </Grid>
     </Grid>
 </ContentPage>

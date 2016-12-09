@@ -7,5 +7,6 @@ namespace eShopOnContainers.Core.Services.Basket
     {
         Task<CustomerBasket> GetBasketAsync(string guidUser);
         Task<CustomerBasket> UpdateBasketAsync(CustomerBasket customerBasket);
+        Task ClearBasketAsync(string guidUser);
     }
 }

@@ -7,7 +7,7 @@ namespace eShopOnContainers.Core.Helpers
         public static ObservableCollection<int> GetNumericList(int count = 100)
         {
             var result = new ObservableCollection<int>();
-            for (int i = 0; i < count; i++)
+            for (int i = 1; i < count; i++)
             {
                 result.Add(i);
             }

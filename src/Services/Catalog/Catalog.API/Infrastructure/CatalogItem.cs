@@ -1,7 +1,7 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure
-{
-    using System;
+﻿using System;
 
+namespace Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure
+{
     public class CatalogItem
     {
         public int Id { get; set; }
