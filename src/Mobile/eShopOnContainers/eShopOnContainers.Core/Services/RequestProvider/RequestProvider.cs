@@ -26,9 +26,9 @@ namespace eShopOnContainers.Core.Services.RequestProvider
             _serializerSettings.Converters.Add(new StringEnumConverter());
         }
 
-        public async Task<TResult> GetAsync<TResult>(string uri)
+        public async Task<TResult> GetAsync<TResult>(string uri, string token = "")
         {
-            HttpClient httpClient = CreateHttpClient();
+            HttpClient httpClient = CreateHttpClient(token);
             HttpResponseMessage response = await httpClient.GetAsync(uri);
 
             await HandleResponse(response);
@@ -41,30 +41,14 @@ namespace eShopOnContainers.Core.Services.RequestProvider
             return result;
         }
 
-        public async Task<TResult> GetAsync<TResult>(string uri, string token)
+        public Task<TResult> PostAsync<TResult>(string uri, TResult data, string token = "")
         {
-            HttpClient httpClient = CreateHttpClient();
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            HttpResponseMessage response = await httpClient.GetAsync(uri);
-
-            await HandleResponse(response);
-
-            string serialized = await response.Content.ReadAsStringAsync();
-
-            TResult result = await Task.Run(() =>
-                JsonConvert.DeserializeObject<TResult>(serialized, _serializerSettings));
-
-            return result;
+            return PostAsync<TResult, TResult>(uri, data, token);
         }
 
-        public Task<TResult> PostAsync<TResult>(string uri, TResult data)
+        public async Task<TResult> PostAsync<TRequest, TResult>(string uri, TRequest data, string token = "")
         {
-            return PostAsync<TResult, TResult>(uri, data);
-        }
-
-        public async Task<TResult> PostAsync<TRequest, TResult>(string uri, TRequest data)
-        {
-            HttpClient httpClient = CreateHttpClient();
+            HttpClient httpClient = CreateHttpClient(token);
             string serialized = await Task.Run(() => JsonConvert.SerializeObject(data, _serializerSettings));
             HttpResponseMessage response = await httpClient.PostAsync(uri, new StringContent(serialized, Encoding.UTF8, "application/json"));
 
@@ -75,14 +59,14 @@ namespace eShopOnContainers.Core.Services.RequestProvider
             return await Task.Run(() => JsonConvert.DeserializeObject<TResult>(responseData, _serializerSettings));
         }
 
-        public Task<TResult> PutAsync<TResult>(string uri, TResult data)
+        public Task<TResult> PutAsync<TResult>(string uri, TResult data, string token = "")
         {
-            return PutAsync<TResult, TResult>(uri, data);
+            return PutAsync<TResult, TResult>(uri, data, token);
         }
 
-        public async Task<TResult> PutAsync<TRequest, TResult>(string uri, TRequest data)
+        public async Task<TResult> PutAsync<TRequest, TResult>(string uri, TRequest data, string token = "")
         {
-            HttpClient httpClient = CreateHttpClient();
+            HttpClient httpClient = CreateHttpClient(token);
             string serialized = await Task.Run(() => JsonConvert.SerializeObject(data, _serializerSettings));
             HttpResponseMessage response = await httpClient.PutAsync(uri, new StringContent(serialized, Encoding.UTF8, "application/json"));
 
@@ -93,18 +77,23 @@ namespace eShopOnContainers.Core.Services.RequestProvider
             return await Task.Run(() => JsonConvert.DeserializeObject<TResult>(responseData, _serializerSettings));
         }
 
-        public async Task DeleteAsync(string uri)
+        public async Task DeleteAsync(string uri, string token = "")
         {
-            HttpClient httpClient = CreateHttpClient();
+            HttpClient httpClient = CreateHttpClient(token);
 
             await httpClient.DeleteAsync(uri);
         }
 
-        private HttpClient CreateHttpClient()
+        private HttpClient CreateHttpClient(string token = "")
         {
             var httpClient = new HttpClient();
 
             httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            if (!string.IsNullOrEmpty(token))
+            {
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            }
 
             return httpClient;
         }

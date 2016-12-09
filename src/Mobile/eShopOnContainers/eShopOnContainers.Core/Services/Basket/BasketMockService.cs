@@ -29,18 +29,28 @@ namespace eShopOnContainers.Core.Services.Basket
             return MockCustomBasket;
         }
 
-        public async Task<CustomerBasket> UpdateBasketAsync(CustomerBasket customerBasket)
+        public async Task<CustomerBasket> UpdateBasketAsync(CustomerBasket customerBasket, string token)
         {
             await Task.Delay(500);
+
+            if (string.IsNullOrEmpty(token))
+            {
+                return new CustomerBasket();
+            }
 
             MockCustomBasket = customerBasket;
 
             return MockCustomBasket;
         }
 
-        public async Task ClearBasketAsync(string guidUser)
+        public async Task ClearBasketAsync(string guidUser, string token)
         {
             await Task.Delay(500);
+
+            if (string.IsNullOrEmpty(token))
+            {
+                return;
+            }
 
             if (!string.IsNullOrEmpty(guidUser))
             {

@@ -186,9 +186,9 @@ namespace eShopOnContainers.Core.ViewModels
 
             if(!string.IsNullOrEmpty(logoutRequest))
             {
-                IsValid = false;
                 LoginUrl = logoutRequest;
                 Settings.AuthAccessToken = string.Empty;
+                IsValid = true;
             }
         }
 
@@ -209,6 +209,13 @@ namespace eShopOnContainers.Core.ViewModels
                     }
                 }
             }
+
+            /*
+            if(url.Contains("endsession"))
+            {
+                await SignInAsync();
+            }
+            */
         }
 
         private bool Validate()

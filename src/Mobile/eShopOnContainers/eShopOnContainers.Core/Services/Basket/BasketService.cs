@@ -39,18 +39,18 @@ namespace eShopOnContainers.Core.Services.Basket
             }
         }
 
-        public async Task<CustomerBasket> UpdateBasketAsync(CustomerBasket customerBasket)
+        public async Task<CustomerBasket> UpdateBasketAsync(CustomerBasket customerBasket, string token)
         {
             UriBuilder builder = new UriBuilder(GlobalSetting.Instance.BasketEndpoint);
 
             string uri = builder.ToString();
 
-            var result = await _requestProvider.PostAsync(uri, customerBasket);
+            var result = await _requestProvider.PostAsync(uri, customerBasket, token);
 
             return result;
         }
 
-        public async Task ClearBasketAsync(string guidUser)
+        public async Task ClearBasketAsync(string guidUser, string token)
         {
             UriBuilder builder = new UriBuilder(GlobalSetting.Instance.BasketEndpoint);
 
@@ -58,7 +58,7 @@ namespace eShopOnContainers.Core.Services.Basket
 
             string uri = builder.ToString();
 
-             await _requestProvider.DeleteAsync(uri);
+             await _requestProvider.DeleteAsync(uri, token);
         }
     }
 }

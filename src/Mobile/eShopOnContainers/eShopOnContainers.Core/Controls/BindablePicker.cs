@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace eShopOnContainers.Core.Controls
@@ -12,6 +13,9 @@ namespace eShopOnContainers.Core.Controls
         public static readonly BindableProperty SelectedItemProperty = BindableProperty.Create("SelectedItem",
             typeof(object), typeof(BindablePicker), null, BindingMode.TwoWay, propertyChanged: OnSelectedItemChanged);
 
+        public static readonly BindableProperty ItemSelectedCommandProperty = BindableProperty.Create("ItemSelectedCommand",
+          typeof(ICommand), typeof(BindablePicker), null);
+
         public BindablePicker()
         {
             SelectedIndexChanged += (o, e) =>
@@ -23,6 +27,7 @@ namespace eShopOnContainers.Core.Controls
                 }
 
                 var index = 0;
+
                 foreach (var item in ItemsSource)
                 {
                     if (index == SelectedIndex)
@@ -52,6 +57,12 @@ namespace eShopOnContainers.Core.Controls
                     InternalUpdateSelectedIndex();
                 }
             }
+        }
+
+        public ICommand ItemSelectedCommand
+        {
+            get { return (ICommand)GetValue(ItemSelectedCommandProperty); }
+            set { SetValue(ItemSelectedCommandProperty, value); }
         }
 
         public event EventHandler<SelectedItemChangedEventArgs> ItemSelected;
@@ -105,6 +116,11 @@ namespace eShopOnContainers.Core.Controls
             if (boundPicker.ItemSelected != null)
             {
                 boundPicker.ItemSelected(boundPicker, new SelectedItemChangedEventArgs(newValue));
+            }
+
+            if(boundPicker.ItemSelectedCommand != null)
+            {
+                boundPicker.ItemSelectedCommand.Execute(newValue);
             }
 
             boundPicker.InternalUpdateSelectedIndex();

@@ -13,6 +13,7 @@ using eShopOnContainers.Core.Models.Basket;
 using System.Collections.Generic;
 using eShopOnContainers.Core.Services.Basket;
 using eShopOnContainers.Core.Services.Order;
+using eShopOnContainers.Core.Helpers;
 
 namespace eShopOnContainers.Core.ViewModels
 {
@@ -94,8 +95,10 @@ namespace eShopOnContainers.Core.ViewModels
 
         private async void Checkout()
         {
+            var authToken = Settings.AuthAccessToken;
+
             await _orderService.CreateOrderAsync(Order);
-            await _basketService.ClearBasketAsync(User.GuidUser);
+            await _basketService.ClearBasketAsync(User.GuidUser, authToken);
             
             await NavigationService.NavigateToAsync<MainViewModel>(new TabParameter { TabIndex = 1 });
             await NavigationService.RemoveLastFromBackStackAsync();

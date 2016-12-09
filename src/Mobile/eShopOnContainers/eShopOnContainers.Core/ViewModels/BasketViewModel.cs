@@ -1,4 +1,5 @@
-﻿using eShopOnContainers.Core.Models.Basket;
+﻿using eShopOnContainers.Core.Helpers;
+using eShopOnContainers.Core.Models.Basket;
 using eShopOnContainers.Core.Models.Catalog;
 using eShopOnContainers.Core.Models.User;
 using eShopOnContainers.Core.Services.Basket;
@@ -133,12 +134,14 @@ namespace eShopOnContainers.Core.ViewModels
             {
                 Total += (orderItem.Quantity * orderItem.UnitPrice);
             }
-            
+
+            var authToken = Settings.AuthAccessToken;
+
             _basketService.UpdateBasketAsync(new CustomerBasket
             {
                 BuyerId = _user.GuidUser,
                 Items = BasketItems.ToList()
-            });
+            }, authToken);
         }
 
         private void Checkout()
