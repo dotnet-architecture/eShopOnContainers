@@ -47,18 +47,10 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
 
             if (action == "[ Place Order ]")
             {
-                try
-                {
-                    await _orderSvc.CreateOrder(user, order);
+                await _orderSvc.CreateOrder(user, order);
 
-                    //Empty basket for current user. 
-                    await _basketSvc.CleanBasket(user);
-
-                }
-                catch (Exception) {
-                    //redirect to some error page if the operation fails. 
-                    return Redirect("http://www.google.com");
-                }
+                //Empty basket for current user. 
+                await _basketSvc.CleanBasket(user);
 
                 //Redirect to historic list.
                 return RedirectToAction("Index");
@@ -75,10 +67,11 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
             return View(order);
         }
 
-        public IActionResult Index(Order item)
+        public async Task<IActionResult> Index(Order item)
         {
             var user = _appUserParser.Parse(HttpContext.User);
-            return View(_orderSvc.GetMyOrders(user));
+            var vm = await _orderSvc.GetMyOrders(user);
+            return View(vm);
         }
     }
 }

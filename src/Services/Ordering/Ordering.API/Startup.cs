@@ -68,6 +68,15 @@
                 });
             });
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials());
+            });
+
             services.AddSingleton<IConfiguration>(this.Configuration);
 
             services.AddOptions();
@@ -92,6 +101,17 @@
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors("CorsPolicy");
+
+            var identityUrl = Configuration.GetValue<string>("IdentityUrl");
+
+            app.UseIdentityServerAuthentication(new IdentityServerAuthenticationOptions
+            {
+                Authority = identityUrl.ToString(),
+                ScopeName = "orders",
+                RequireHttpsMetadata = false
+            });
 
 
             app.UseMvcWithDefaultRoute();

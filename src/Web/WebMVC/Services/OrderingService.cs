@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using System.Net.Http;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Authentication;
 
 namespace Microsoft.eShopOnContainers.WebMVC.Services
 {
@@ -15,11 +16,14 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
         private HttpClient _apiClient;
         private readonly string _remoteServiceBaseUrl;
         private readonly IOptions<AppSettings> _settings;
+        private readonly IHttpContextAccessor _httpContextAccesor;
 
-        public OrderingService(IOptions<AppSettings> settings)
+        public OrderingService(IOptions<AppSettings> settings, IHttpContextAccessor httpContextAccesor)
         {
             _remoteServiceBaseUrl = $"{settings.Value.OrderingUrl}/api/v1/orders";
             _settings = settings;
+            _httpContextAccesor = httpContextAccesor;
+
             #region fake items
             //_orders = new List<Order>()
             //{
@@ -62,7 +66,12 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
 
         async public Task<Order> GetOrder(ApplicationUser user, string Id)
         {
+            var context = _httpContextAccesor.HttpContext;
+            var token = await context.Authentication.GetTokenAsync("access_token");
+
             _apiClient = new HttpClient();
+            _apiClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
             var ordersUrl = $"{_remoteServiceBaseUrl}/{Id}";
             var dataString = await _apiClient.GetStringAsync(ordersUrl);
             var response = JsonConvert.DeserializeObject<Order>(dataString);
@@ -72,12 +81,17 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
 
         async public Task<List<Order>> GetMyOrders(ApplicationUser user)
         {
+            var context = _httpContextAccesor.HttpContext;
+            var token = await context.Authentication.GetTokenAsync("access_token");
+
             _apiClient = new HttpClient();
+            _apiClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
             var ordersUrl = _remoteServiceBaseUrl;
             var dataString = await _apiClient.GetStringAsync(ordersUrl);
             var response = JsonConvert.DeserializeObject<List<Order>>(dataString);
 
-            return response;
+            return response; 
         }
 
         public Order MapUserInfoIntoOrder(ApplicationUser user, Order order)
@@ -113,7 +127,12 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
 
         async public Task CreateOrder(ApplicationUser user, Order order)
         {
+            var context = _httpContextAccesor.HttpContext;
+            var token = await context.Authentication.GetTokenAsync("access_token");
+
             _apiClient = new HttpClient();
+            _apiClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
             var ordersUrl = $"{_remoteServiceBaseUrl}/new";
             order.PaymentInfo.CardType = CardType.AMEX;
             OrderRequest request = MapOrderIntoOrderRequest(order);

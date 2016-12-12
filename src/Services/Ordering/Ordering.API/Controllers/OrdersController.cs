@@ -2,6 +2,7 @@
 {
     using Application.Commands;
     using Application.Queries;
+    using AspNetCore.Authorization;
     using MediatR;
     using Microsoft.AspNetCore.Mvc;
     using Models;
@@ -9,6 +10,7 @@
     using System.Threading.Tasks;
 
     [Route("api/v1/[controller]")]
+    [Authorize]
     public class OrdersController : Controller
     {
         private readonly IMediator _mediator;
@@ -34,9 +36,12 @@
         [HttpPost]
         public async Task<IActionResult> AddOrder([FromBody]NewOrderViewModel order)
         {
+            if (order.CardExpiration == DateTime.MinValue)
+                order.CardExpiration = DateTime.Now;
+
             var newOrderRequest = new NewOrderRequest()
             {
-                Buyer =GetUserName(), //TODO
+                Buyer = GetUserName(), 
                 CardTypeId = 1, //TODO
                 CardHolderName = order.CardHolderName,
                 CardNumber = order.CardNumber,
@@ -85,9 +90,13 @@
             return Ok(cardTypes);
         }
 
+        /// <summary>
+        /// Returns the GUID corresponding to the Id of the authenticated user.
+        /// </summary>
+        /// <returns>GUID (string)</returns>
         string GetUserName()
         {
-            return "MOCK";
+            return HttpContext.User.FindFirst("sub").Value;
         }
     }
 
