@@ -73,7 +73,7 @@
             <ffimageloading:CachedImage
                 Grid.Column="0"
                 Grid.Row="0"
-                Source="{Binding ProductImage, Converter={StaticResource ImageConverter}}"        
+                Source="{Binding PictureUrl, Converter={StaticResource ImageConverter}}"        
                 CacheDuration="30"                      
                 CacheType="Disk"             
                 DownsampleToViewSize="True"

@@ -4,11 +4,11 @@ using eShopOnContainers.Services;
 using System;
 using eShopOnContainers.Core.Services.Catalog;
 using eShopOnContainers.Core.Services.OpenUrl;
-using eShopOnContainers.Core.Services.User;
 using eShopOnContainers.Core.Services.RequestProvider;
 using eShopOnContainers.Core.Services.Basket;
 using eShopOnContainers.Core.Services.Identity;
 using eShopOnContainers.Core.Services.Order;
+using eShopOnContainers.Core.Services.User;
 
 namespace eShopOnContainers.ViewModels.Base
 {

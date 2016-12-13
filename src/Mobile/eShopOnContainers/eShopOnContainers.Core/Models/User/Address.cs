@@ -2,16 +2,9 @@
 
 namespace eShopOnContainers.Core.Models.User
 {
-    public class User
+    public class Address
     {
-        public string GuidUser { get; set; }
-        public string Name { get; set; }
-        public string LastName { get; set; }
-        public string CardNumber { get; set; }
-        public string SecurityNumber { get; set; }
-        public string Expiration { get; set; }
-        public string CardHolderName { get; set; }
-        public int CardType { get; set; }
+        public Guid Id { get; set; }
         public string Street { get; set; }
         public string City { get; set; }
         public string State { get; set; }

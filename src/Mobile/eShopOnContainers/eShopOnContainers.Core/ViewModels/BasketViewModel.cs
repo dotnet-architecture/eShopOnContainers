@@ -1,7 +1,6 @@
 ﻿using eShopOnContainers.Core.Helpers;
 using eShopOnContainers.Core.Models.Basket;
 using eShopOnContainers.Core.Models.Catalog;
-using eShopOnContainers.Core.Models.User;
 using eShopOnContainers.Core.Services.Basket;
 using eShopOnContainers.Core.Services.User;
 using eShopOnContainers.Core.ViewModels.Base;
@@ -18,19 +17,19 @@ namespace eShopOnContainers.Core.ViewModels
 {
     public class BasketViewModel : ViewModelBase
     {
-        private User _user;
         private int _badgeCount;
         private ObservableCollection<BasketItem> _basketItems;
         private decimal _total;
 
-        private IUserService _userService;
         private IBasketService _basketService;
+        private IUserService _userService;
 
-        public BasketViewModel(IUserService userService,
-            IBasketService basketService)
+        public BasketViewModel(
+            IBasketService basketService,
+            IUserService userService)
         {
-            _userService = userService;
             _basketService = basketService;
+            _userService = userService;
         }
 
         public int BadgeCount
@@ -65,7 +64,7 @@ namespace eShopOnContainers.Core.ViewModels
 
         public ICommand CheckoutCommand => new Command(Checkout);
 
-        public override async Task InitializeAsync(object navigationData)
+        public override Task InitializeAsync(object navigationData)
         {
             MessagingCenter.Subscribe<CatalogViewModel, List<BasketItem>>(this, MessengerKeys.UpdateBasket, (sender, arg) =>
             {
@@ -88,8 +87,9 @@ namespace eShopOnContainers.Core.ViewModels
                 ReCalculateTotal();
             });
 
-            _user = await _userService.GetUserAsync();
             BasketItems = new ObservableCollection<BasketItem>();
+
+            return base.InitializeAsync(navigationData);
         }
 
         private void AddCatalogItem(CatalogItem item)
@@ -121,7 +121,7 @@ namespace eShopOnContainers.Core.ViewModels
             ReCalculateTotal();
         }
 
-        private void ReCalculateTotal()
+        private async void ReCalculateTotal()
         {
             Total = 0;
 
@@ -135,11 +135,13 @@ namespace eShopOnContainers.Core.ViewModels
                 Total += (orderItem.Quantity * orderItem.UnitPrice);
             }
 
+
+            var shippingAddress = await _userService.GetAddressAsync();
             var authToken = Settings.AuthAccessToken;
 
-            _basketService.UpdateBasketAsync(new CustomerBasket
+            await _basketService.UpdateBasketAsync(new CustomerBasket
             {
-                BuyerId = _user.GuidUser,
+                BuyerId = shippingAddress.Id.ToString(), 
                 Items = BasketItems.ToList()
             }, authToken);
         }

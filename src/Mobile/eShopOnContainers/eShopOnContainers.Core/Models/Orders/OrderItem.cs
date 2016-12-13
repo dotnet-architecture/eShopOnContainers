@@ -1,5 +1,4 @@
 ﻿using eShopOnContainers.Core.Helpers;
-using eShopOnContainers.Core.ViewModels.Base;
 using eShopOnContainers.ViewModels.Base;
 using System;
 using System.Collections.ObjectModel;
@@ -8,7 +7,7 @@ namespace eShopOnContainers.Core.Models.Orders
 {
     public class OrderItem : ExtendedBindableObject
     {
-        private string _productImage;
+        private string _pictureUrl;
         private string _productId;
         private Guid _orderId;
         private string _productName;
@@ -85,13 +84,13 @@ namespace eShopOnContainers.Core.Models.Orders
 
         public decimal Total { get { return Quantity * UnitPrice; } }
 
-        public string ProductImage
+        public string PictureUrl
         {
-            get { return _productImage; }
+            get { return _pictureUrl; }
             set
             {
-                _productImage = value;
-                RaisePropertyChanged(() => ProductImage);
+                _pictureUrl = value;
+                RaisePropertyChanged(() => PictureUrl);
             }
         }
 

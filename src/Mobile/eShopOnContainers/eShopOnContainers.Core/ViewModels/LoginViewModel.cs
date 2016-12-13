@@ -209,13 +209,6 @@ namespace eShopOnContainers.Core.ViewModels
                     }
                 }
             }
-
-            /*
-            if(url.Contains("endsession"))
-            {
-                await SignInAsync();
-            }
-            */
         }
 
         private bool Validate()

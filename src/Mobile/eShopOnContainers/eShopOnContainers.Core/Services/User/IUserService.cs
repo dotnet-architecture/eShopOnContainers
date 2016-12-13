@@ -1,9 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using eShopOnContainers.Core.Models.User;
+using System.Threading.Tasks;
 
 namespace eShopOnContainers.Core.Services.User
 {
     public interface IUserService
     {
-        Task<Models.User.User> GetUserAsync();
+        Task<Address> GetAddressAsync();
+        Task<PaymentInfo> GetPaymentInfoAsync();
     }
 }

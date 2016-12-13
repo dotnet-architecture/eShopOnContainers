@@ -155,7 +155,7 @@
                         Text="STATUS"
                         Style="{StaticResource OrderTitleStyle}"/>
                     <Label 
-                        Text="{Binding Order.Status, Converter={StaticResource ToUpperConverter}}"
+                        Text="{Binding Order.State, Converter={StaticResource ToUpperConverter}}"
                         Style="{StaticResource OrderContentStyle}"/>
                 </StackLayout>
             </Grid>
@@ -176,16 +176,16 @@
                 <StackLayout
                     Grid.Row="1">
                     <Label
-                        Text="{Binding User.Street}"
+                        Text="{Binding Order.ShippingAddress.Street}"
                         Style="{StaticResource AddressStyle}"/>
                     <Label
-                        Text="{Binding User.City}"   
+                        Text="{Binding Order.ShippingAddress.City}"   
                         Style="{StaticResource AddressStyle}"/>
                     <Label
-                        Text="{Binding User.CountryCode}"   
+                        Text="{Binding Order.ShippingAddress.CountryCode}"   
                         Style="{StaticResource AddressStyle}"/>
                     <Label
-                        Text="{Binding User.Country}"   
+                        Text="{Binding Order.ShippingAddress.Country}"   
                         Style="{StaticResource AddressStyle}"/>
                 </StackLayout>
             </Grid>

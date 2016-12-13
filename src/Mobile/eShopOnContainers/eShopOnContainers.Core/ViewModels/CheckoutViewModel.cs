@@ -1,19 +1,18 @@
 ﻿using eShopOnContainers.Core.Models.Navigation;
-using eShopOnContainers.Core.Services.User;
 using eShopOnContainers.ViewModels.Base;
 using System.Windows.Input;
 using Xamarin.Forms;
 using System.Threading.Tasks;
-using eShopOnContainers.Core.Models.User;
 using eShopOnContainers.Core.Models.Orders;
 using System;
 using System.Collections.ObjectModel;
-using System.Linq;
 using eShopOnContainers.Core.Models.Basket;
 using System.Collections.Generic;
 using eShopOnContainers.Core.Services.Basket;
 using eShopOnContainers.Core.Services.Order;
 using eShopOnContainers.Core.Helpers;
+using eShopOnContainers.Core.Services.User;
+using eShopOnContainers.Core.Models.User;
 
 namespace eShopOnContainers.Core.ViewModels
 {
@@ -21,19 +20,20 @@ namespace eShopOnContainers.Core.ViewModels
     {
         private ObservableCollection<BasketItem> _orderItems;
         private Order _order;
-        private User _user;
+        private Address _shippingAddress; 
 
-        private IUserService _userService;
         private IBasketService _basketService;
         private IOrderService _orderService;
+        private IUserService _userService;
 
-        public CheckoutViewModel(IUserService userService,
+        public CheckoutViewModel(
             IBasketService basketService,
-            IOrderService orderService)
+            IOrderService orderService,
+            IUserService userService)
         {
             _basketService = basketService;
-            _userService = userService;
             _orderService = orderService;
+            _userService = userService;
         }
 
         public ObservableCollection<BasketItem> OrderItems
@@ -56,13 +56,13 @@ namespace eShopOnContainers.Core.ViewModels
             }
         }
 
-        public User User
+        public Address ShippingAddress
         {
-            get { return _user; }
+            get { return _shippingAddress; }
             set
             {
-                _user = value;
-                RaisePropertyChanged(() => User);
+                _shippingAddress = value;
+                RaisePropertyChanged(() => ShippingAddress);
             }
         }
 
@@ -78,15 +78,16 @@ namespace eShopOnContainers.Core.ViewModels
 
                 OrderItems = orderItems;
 
-                User = await _userService.GetUserAsync();
-
+                ShippingAddress = await _userService.GetAddressAsync();
+                var paymentInfo = await _userService.GetPaymentInfoAsync();
+                
                 Order = new Order
                 {
-                    ShippingAddress = User,
                     OrderItems = CreateOrderItems(orderItems),
-                    Status = OrderStatus.Pending,
+                    State = OrderState.InProcess,
                     OrderDate = DateTime.Now,
-                    Total = GetOrderTotal()
+                    PaymentInfo = paymentInfo,
+                    ShippingAddress = _shippingAddress
                 };
 
                 IsBusy = false;
@@ -98,7 +99,8 @@ namespace eShopOnContainers.Core.ViewModels
             var authToken = Settings.AuthAccessToken;
 
             await _orderService.CreateOrderAsync(Order);
-            await _basketService.ClearBasketAsync(User.GuidUser, authToken);
+
+            await _basketService.ClearBasketAsync(_shippingAddress.Id.ToString(), authToken);
             
             await NavigationService.NavigateToAsync<MainViewModel>(new TabParameter { TabIndex = 1 });
             await NavigationService.RemoveLastFromBackStackAsync();
@@ -117,7 +119,7 @@ namespace eShopOnContainers.Core.ViewModels
                 {
                     ProductId = basketItem.ProductId,
                     ProductName = basketItem.ProductName,
-                    ProductImage = basketItem.PictureUrl,
+                    PictureUrl = basketItem.PictureUrl,
                     Quantity = basketItem.Quantity,
                     UnitPrice = basketItem.UnitPrice
                 });
@@ -125,17 +127,5 @@ namespace eShopOnContainers.Core.ViewModels
 
             return orderItems;
         } 
-
-        private decimal GetOrderTotal()
-        {
-            decimal total = 0;
-
-            foreach (var orderItem in OrderItems)
-            {
-                total += orderItem.Total;
-            }
-
-            return total;
-        }
     }
 }

@@ -76,10 +76,11 @@
     <Compile Include="Models\Orders\CardType.cs" />
     <Compile Include="Models\Orders\Order.cs" />
     <Compile Include="Models\Orders\OrderItem.cs" />
-    <Compile Include="Models\Orders\OrderStatus.cs" />
+    <Compile Include="Models\Orders\OrderState.cs" />
     <Compile Include="Models\Catalog\CatalogItem.cs" />
+    <Compile Include="Models\User\Address.cs" />
     <Compile Include="Models\User\LogoutParameter.cs" />
-    <Compile Include="Models\User\User.cs" />
+    <Compile Include="Models\User\PaymentInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Catalog\CatalogService.cs" />
     <Compile Include="Services\Dialog\DialogService.cs" />

@@ -6,10 +6,11 @@ using eShopOnContainers.Core.ViewModels.Base;
 using eShopOnContainers.Core.Models.Catalog;
 using eShopOnContainers.Core.Services.Catalog;
 using System.Windows.Input;
-using eShopOnContainers.Core.Services.User;
 using System.Linq;
 using eShopOnContainers.Core.Services.Basket;
 using eShopOnContainers.Core.Helpers;
+using System;
+using eShopOnContainers.Core.Services.User;
 
 namespace eShopOnContainers.Core.ViewModels
 {
@@ -21,17 +22,18 @@ namespace eShopOnContainers.Core.ViewModels
         private ObservableCollection<CatalogType> _types;
         private CatalogType _type;
 
-        private IUserService _userService;
         private IBasketService _basketService;
         private ICatalogService _productsService;
+        private IUserService _userService;
 
-        public CatalogViewModel(IUserService userService,
+        public CatalogViewModel(
             IBasketService basketService,
-            ICatalogService productsService)
+            ICatalogService productsService,
+            IUserService userService)
         {
-            _userService = userService;
             _basketService = basketService;
             _productsService = productsService;
+            _userService = userService;
         }
 
         public ObservableCollection<CatalogItem> Products
@@ -101,14 +103,14 @@ namespace eShopOnContainers.Core.ViewModels
             Products = await _productsService.GetCatalogAsync();
             Brands = await _productsService.GetCatalogBrandAsync();
             Types = await _productsService.GetCatalogTypeAsync();
-            
-            var user = await _userService.GetUserAsync();
+
+            var shippingAddress = await _userService.GetAddressAsync();
             var authToken = Settings.AuthAccessToken;
-            var basket = await _basketService.GetBasketAsync(user.GuidUser, authToken);
+
+            var basket = await _basketService.GetBasketAsync(shippingAddress.Id.ToString(), authToken);
 
             if (basket != null && basket.Items.Any())
             {
-                System.Diagnostics.Debug.WriteLine(basket.Items.Count);
                 MessagingCenter.Send(this, MessengerKeys.UpdateBasket, basket.Items);
             }
 
