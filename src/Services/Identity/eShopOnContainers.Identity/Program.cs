@@ -15,7 +15,7 @@ namespace eShopOnContainers.Identity
                 .UseKestrel()
                 .UseUrls("http://0.0.0.0:5105")
                 .UseContentRoot(Directory.GetCurrentDirectory())
-                //.UseIISIntegration()
+                .UseIISIntegration()
                 .UseStartup<Startup>()
                 .Build();
 

@@ -14,6 +14,7 @@
   position: relative;
   top: -10px;
 }
+
 .page-consent .client-logo {
   float: left;
 }
@@ -900,5 +901,18 @@ form .col-md-4 {
     .form-input {
         width: 360px;
         max-width: 360px;
+    }
+}
+
+@media screen and (max-width: 415px) {
+    .account-login-container {
+        margin-left: -50px;
+    }
+
+    .page-consent {
+        margin-left: 10px;
+        margin-right: 80px;
+        padding-right: 0px;
+        padding-left: 0px;
     }
 }

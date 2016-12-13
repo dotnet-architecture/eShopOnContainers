@@ -70,6 +70,7 @@ namespace IdentityServer4.Quickstart.UI.Controllers
             }
 
             var vm = await BuildLoginViewModelAsync(returnUrl, context);
+            ViewData["ReturnUrl"] = returnUrl;
 
             return View(vm);
         }
@@ -118,6 +119,7 @@ namespace IdentityServer4.Quickstart.UI.Controllers
 
             // something went wrong, show form with error
             var vm = await BuildLoginViewModelAsync(model);
+            ViewData["ReturnUrl"] = model.ReturnUrl;
             return View(vm);
         }
 
