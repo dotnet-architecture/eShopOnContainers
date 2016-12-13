@@ -12,9 +12,13 @@ $webPathToPub = $scriptPath + "\pub\webMVC"
 Write-Host "webPathToPub is $webPathToPub" -ForegroundColor Yellow
 
 Write-Host "Restore Dependencies just in case as it is needed to run dotnet publish" -ForegroundColor Blue
+Write-Host "****************************************" -ForegroundColor Red
+Write-Host "webPathToJson: " + $webPathToJson -ForegroundColor Red
+Write-Host "webPathToPub: " + $webPathToPub -ForegroundColor Red
 dotnet restore $webPathToJson
 dotnet build $webPathToJson
 dotnet publish $webPathToJson -o $webPathToPub
+Write-Host "****************************************" -ForegroundColor Red
 
 
 # *** WebSPA image ***
