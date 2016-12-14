@@ -104,7 +104,6 @@ namespace IdentityServer4.Quickstart.UI.Controllers
                     };
 
                     await _loginService.SignIn(user);
-
                     // make sure the returnUrl is still valid, and if yes - redirect back to authorize endpoint
                     if (_interaction.IsValidReturnUrl(model.ReturnUrl))
                     {
