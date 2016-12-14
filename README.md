@@ -89,6 +89,11 @@ The next time you run docker-compose up, since it'll have those base images alre
 You can see the 6 custom containers running the microservices plus the 2 web applications. In adition you have the containers with the SQL databases and the Redis cache for the basket microservice data.
 
 ### Test the application and the microservices
+#### IMPORTANT: Modify your local "hosts" file by setting an IP related to the identity.service network name
+- Due to the fact that when trying to authenticate against the STS (Security Token Service) container the browser is redirected to it from outside the docker host (your browser in your PC), it needs to have an IP reachable from outside the Docker Host. Therefore you need to add an entry like `10.0.75.1 identity.service` or `127.0.0.1 identity.service` to your <b>hosts</b> file in your local dev machine.
+- If you don't want to hassle with it, just run the PowerShell script named `add-host-entry.ps1` from the solution root folder.
+- If the STS were running in an external IP in a server, in the Internet or in any cloud like Azure, since that IP is reachable from anywhere, you wouldn't need to configure your hosts file. However, that IP would need to be updated into your docker-compose.yml file, in the identity.service URLs. 
+#### Test the applications and microservices 
 Once the deploy process of docker-compose finishes you should be able to access the services in the following URLs or connection string, from your dev machine:
 - Web MVC: http://localhost:5100
 - Web Spa: http://localhost:5104
