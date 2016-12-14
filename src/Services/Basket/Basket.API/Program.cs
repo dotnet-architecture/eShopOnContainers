@@ -15,7 +15,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             var host = new WebHostBuilder()
                 .UseKestrel()
                 .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseUrls("http://0.0.0.0:5003")
+                .UseUrls("http://0.0.0.0:5103")
                 .UseIISIntegration()
                 .UseStartup<Startup>()
                 .Build();

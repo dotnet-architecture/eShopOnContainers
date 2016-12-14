@@ -77,35 +77,27 @@ services:
   catalog.api:
     image: eshop/catalog.api
     environment:
-      - ConnectionString=Server=catalog.data;Database=CatalogDB;User Id=sa;Password=Pass@word
+      - ConnectionString=Server=business.data;Database=CatalogDB;User Id=sa;Password=Pass@word
     ports:
       - "5101:80"
     depends_on:
-      - catalog.data
+      - business.data
 
-  catalog.data:
+  ordering.api:
+    image: eshop/ordering.api
+    environment:
+      - ConnectionString=Server=business.data;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word
+      - identityUrl=http://identity.service:5105    #local
+      #- identityUrl=http://104.40.62.65:5105       #remote
+    ports:
+      - "5102:5102"
+    depends_on:
+      - business.data
+
+  business.data:
     image: microsoft/mssql-server-linux
     environment:
       - SA_PASSWORD=Pass@word
       - ACCEPT_EULA=Y
     ports:
       - "5434:1433"
-
-  ordering.api:
-    image: eshop/ordering.api
-    environment:
-      - ConnectionString=Server=ordering.data;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word
-      - identityUrl=http://identity.service:5105    #local
-      #- identityUrl=http://104.40.62.65:5105       #remote
-    ports:
-      - "5102:5102"
-    depends_on:
-      - ordering.data
-
-  ordering.data:
-    image: microsoft/mssql-server-linux
-    environment:
-      - SA_PASSWORD=Pass@word
-      - ACCEPT_EULA=Y
-    ports:
-      - "5432:1433"
