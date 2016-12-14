@@ -3,7 +3,6 @@
     xmlns="http://xamarin.com/schemas/2014/forms"     
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"  
     x:Class="eShopOnContainers.Core.Views.Templates.BasketItemTemplate"     
-    xmlns:controls="clr-namespace:eShopOnContainers.Core.Controls;assembly=eShopOnContainers.Core"   
     xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms">
     <ContentView.Resources>
         <ResourceDictionary>
@@ -54,12 +53,12 @@
                         Value="End" />
             </Style>
 
-            <Style x:Key="QuantityPickerStyle"  
-             TargetType="{x:Type controls:BindablePicker}">
+            <Style x:Key="QuantityStyle"  
+             TargetType="{x:Type Label}">
+                <Setter Property="FontFamily"
+                        Value="{StaticResource MontserratRegular}" />
                 <Setter Property="TextColor"
                         Value="{StaticResource BlackColor}" />
-                <Setter Property="BackgroundColor"
-                        Value="Transparent" />
                 <Setter Property="HorizontalOptions"
                         Value="End" />
                 <Setter Property="VerticalOptions"
@@ -138,19 +137,11 @@
                         Grid.Column="0"
                         Text="{Binding UnitPrice, StringFormat='${0:N}'}"
                         Style="{StaticResource OrderItemUnitPriceStyle}"/>
-                    <controls:BindablePicker 
+                    <!-- QUANTITY -->
+                    <Label    
                         Grid.Column="1"
-                        ItemsSource="{Binding Numbers}"
-                        SelectedItem="{Binding Quantity, Mode=TwoWay}" 
-                        Style="{StaticResource QuantityPickerStyle}">
-                        <controls:BindablePicker.WidthRequest>
-                            <OnPlatform         
-                                x:TypeArguments="x:Double"
-                                Android="36"
-                                iOS="36"
-                                WinPhone="72"/>
-                        </controls:BindablePicker.WidthRequest>
-                    </controls:BindablePicker>
+                        Text="{Binding Quantity}"
+                        Style="{StaticResource QuantityStyle}"/>
                 </Grid>
                 <!-- TOTAL -->
                 <Label

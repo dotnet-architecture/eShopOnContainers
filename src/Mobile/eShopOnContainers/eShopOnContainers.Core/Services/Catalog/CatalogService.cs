@@ -30,7 +30,10 @@ namespace eShopOnContainers.Core.Services.Catalog
                 CatalogRoot catalog =
                         await _requestProvider.GetAsync<CatalogRoot>(uri);
 
-                return catalog?.Data?.ToObservableCollection();
+                if (catalog?.Data != null)
+                    return catalog?.Data.ToObservableCollection();
+                else
+                    return new ObservableCollection<CatalogItem>();
             }
             catch
             {
@@ -51,7 +54,10 @@ namespace eShopOnContainers.Core.Services.Catalog
                 CatalogRoot catalog =
                     await _requestProvider.GetAsync<CatalogRoot>(uri);
 
-                return catalog?.Data?.ToObservableCollection();
+                if (catalog?.Data != null)
+                    return catalog?.Data.ToObservableCollection();
+                else
+                    return new ObservableCollection<CatalogItem>();
             }
             catch
             {
@@ -77,7 +83,10 @@ namespace eShopOnContainers.Core.Services.Catalog
                 IEnumerable<CatalogBrand> brands =
                        await _requestProvider.GetAsync<IEnumerable<CatalogBrand>>(uri);
 
-                return brands?.ToObservableCollection();
+                if (brands != null)
+                    return brands?.ToObservableCollection();
+                else
+                    return new ObservableCollection<CatalogBrand>();
             }
             catch
             {
@@ -98,7 +107,10 @@ namespace eShopOnContainers.Core.Services.Catalog
                 IEnumerable<CatalogType> types =
                        await _requestProvider.GetAsync<IEnumerable<CatalogType>>(uri);
 
-                return types?.ToObservableCollection();
+                if (types != null)
+                    return types.ToObservableCollection();
+                else
+                    return new ObservableCollection<CatalogType>();
             }
             catch
             {

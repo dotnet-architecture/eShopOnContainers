@@ -35,6 +35,8 @@
 
         public string IdentityEndpoint { get; set; }
 
+        public string UserInfoEndpoint { get; set; }
+
         public string LogoutEndpoint { get; set; }
 
         public string IdentityCallback { get; set; }
@@ -46,6 +48,7 @@
             OrdersEndpoint = string.Format("{0}:5102", baseEndpoint);
             BasketEndpoint = string.Format("{0}:5103", baseEndpoint);
             IdentityEndpoint = string.Format("{0}:5105/connect/authorize", baseEndpoint);
+            UserInfoEndpoint = string.Format("{0}:5105/connect/userinfo", baseEndpoint);
             LogoutEndpoint = string.Format("{0}:5105/connect/endsession", baseEndpoint);
             IdentityCallback = "http://eshopxamarin/callback.html";
         }

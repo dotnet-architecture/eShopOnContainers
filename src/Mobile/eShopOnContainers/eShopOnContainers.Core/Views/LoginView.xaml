@@ -259,7 +259,7 @@
                 Grid.ColumnSpan="2"
                 Grid.Row="0"
                 Grid.RowSpan="2"
-                IsVisible="{Binding IsValid}">
+                IsVisible="{Binding IsLogin}">
                 <WebView 
                     Source="{Binding LoginUrl}"
 			        AbsoluteLayout.LayoutBounds="0, 0, 1, 1"

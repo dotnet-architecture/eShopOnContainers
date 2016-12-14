@@ -78,8 +78,23 @@ namespace eShopOnContainers.Core.ViewModels
 
                 OrderItems = orderItems;
 
-                ShippingAddress = await _userService.GetAddressAsync();
-                var paymentInfo = await _userService.GetPaymentInfoAsync();
+                var authToken = Settings.AuthAccessToken;
+                var userInfo = await _userService.GetUserInfoAsync(authToken);
+
+                ShippingAddress = new Address
+                {
+                    Street = userInfo.Street,
+                    ZipCode = userInfo.ZipCode,
+                    State = userInfo.State,
+                    Country = userInfo.Country,
+                };
+
+                var paymentInfo = new PaymentInfo
+                {
+                    CardNumber = userInfo.CardNumber,
+                    CardHolderName = userInfo.CardHolder,
+                    SecurityNumber = userInfo.CardSecurityNumber
+                };
                 
                 Order = new Order
                 {
@@ -117,7 +132,8 @@ namespace eShopOnContainers.Core.ViewModels
             {
                 orderItems.Add(new OrderItem
                 {
-                    ProductId = basketItem.ProductId,
+                    // TODO:
+                    //ProductId = basketItem.ProductId,
                     ProductName = basketItem.ProductName,
                     PictureUrl = basketItem.PictureUrl,
                     Quantity = basketItem.Quantity,

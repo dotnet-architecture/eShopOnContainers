@@ -5,7 +5,6 @@ namespace eShopOnContainers.Core.Services.User
 {
     public interface IUserService
     {
-        Task<Address> GetAddressAsync();
-        Task<PaymentInfo> GetPaymentInfoAsync();
+        Task<UserInfo> GetUserInfoAsync(string authToken);
     }
 }

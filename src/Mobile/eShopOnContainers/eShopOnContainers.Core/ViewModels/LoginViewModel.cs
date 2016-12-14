@@ -2,6 +2,7 @@
 using eShopOnContainers.Core.Models.User;
 using eShopOnContainers.Core.Services.Identity;
 using eShopOnContainers.Core.Services.OpenUrl;
+using eShopOnContainers.Core.Services.User;
 using eShopOnContainers.Core.Validations;
 using eShopOnContainers.Core.ViewModels.Base;
 using eShopOnContainers.ViewModels.Base;
@@ -20,16 +21,21 @@ namespace eShopOnContainers.Core.ViewModels
         private ValidatableObject<string> _password;
         private bool _isMock;
         private bool _isValid;
+        private bool _isLogin;
         private string _authUrl;
 
         private IOpenUrlService _openUrlService;
         private IIdentityService _identityService;
+        private IUserService _userService;
 
-        public LoginViewModel(IOpenUrlService openUrlService,
-            IIdentityService identityService)
+        public LoginViewModel(
+            IOpenUrlService openUrlService,
+            IIdentityService identityService,
+            IUserService userService)
         {
             _openUrlService = openUrlService;
             _identityService = identityService;
+            _userService = userService;
 
             _userName = new ValidatableObject<string>();
             _password = new ValidatableObject<string>();
@@ -88,6 +94,19 @@ namespace eShopOnContainers.Core.ViewModels
             {
                 _isValid = value;
                 RaisePropertyChanged(() => IsValid);
+            }
+        }
+
+        public bool IsLogin
+        {
+            get
+            {
+                return _isLogin;
+            }
+            set
+            {
+                _isLogin = value;
+                RaisePropertyChanged(() => IsLogin);
             }
         }
 
@@ -170,6 +189,7 @@ namespace eShopOnContainers.Core.ViewModels
             LoginUrl = _identityService.CreateAuthorizeRequest();
 
             IsValid = true;
+            IsLogin = true;
 
             IsBusy = false;
         }
@@ -188,7 +208,7 @@ namespace eShopOnContainers.Core.ViewModels
             {
                 LoginUrl = logoutRequest;
                 Settings.AuthAccessToken = string.Empty;
-                IsValid = true;
+                IsLogin = true;
             }
         }
 

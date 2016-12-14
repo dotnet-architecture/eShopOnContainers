@@ -10,7 +10,6 @@ namespace eShopOnContainers.Droid.Activities
          Label = "eShopOnContainers",
          Icon = "@drawable/icon",
          Theme = "@style/Theme.Splash",
-         MainLauncher = true,
          NoHistory = true,
          ScreenOrientation = ScreenOrientation.Portrait)]
     public class SplashActivity : AppCompatActivity

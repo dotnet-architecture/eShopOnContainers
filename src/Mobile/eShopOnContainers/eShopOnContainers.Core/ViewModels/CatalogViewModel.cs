@@ -104,10 +104,10 @@ namespace eShopOnContainers.Core.ViewModels
             Brands = await _productsService.GetCatalogBrandAsync();
             Types = await _productsService.GetCatalogTypeAsync();
 
-            var shippingAddress = await _userService.GetAddressAsync();
             var authToken = Settings.AuthAccessToken;
+            var userInfo = await _userService.GetUserInfoAsync(authToken);
 
-            var basket = await _basketService.GetBasketAsync(shippingAddress.Id.ToString(), authToken);
+            var basket = await _basketService.GetBasketAsync(userInfo.UserId, authToken);
 
             if (basket != null && basket.Items.Any())
             {

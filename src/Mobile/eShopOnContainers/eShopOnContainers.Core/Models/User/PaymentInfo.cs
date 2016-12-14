@@ -3,7 +3,6 @@ using System;
 
 namespace eShopOnContainers.Core.Models.User
 {
-
     public class PaymentInfo
     {
         public Guid Id { get; set; }

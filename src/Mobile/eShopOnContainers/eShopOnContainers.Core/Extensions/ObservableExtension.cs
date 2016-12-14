@@ -9,12 +9,19 @@ namespace eShopOnContainers.Core.Extensions
         {
             ObservableCollection<T> collection = new ObservableCollection<T>();
 
-            foreach (T item in source)
+            try
             {
-                collection.Add(item);
-            }
+                foreach (T item in source)
+                {
+                    collection.Add(item);
+                }
 
-            return collection;
+                return collection;
+            }
+            catch
+            {
+                return collection;
+            }
         }
     }
 }

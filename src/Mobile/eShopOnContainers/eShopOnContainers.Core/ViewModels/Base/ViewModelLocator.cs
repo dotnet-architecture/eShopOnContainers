@@ -73,7 +73,7 @@ namespace eShopOnContainers.ViewModels.Base
                 _unityContainer.RegisterInstance<ICatalogService>(new CatalogService(requestProvider));
                 _unityContainer.RegisterInstance<IBasketService>(new BasketService(requestProvider));
                 _unityContainer.RegisterInstance<IOrderService>(new OrderService(requestProvider));
-                _unityContainer.RegisterInstance<IUserService>(new UserMockService());
+                _unityContainer.RegisterInstance<IUserService>(new UserService(requestProvider));
 
                 UseMockService = false;
             }

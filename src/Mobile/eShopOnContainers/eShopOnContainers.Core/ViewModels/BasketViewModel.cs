@@ -63,11 +63,13 @@ namespace eShopOnContainers.Core.ViewModels
         }
 
         public ICommand CheckoutCommand => new Command(Checkout);
-
+         
         public override Task InitializeAsync(object navigationData)
         {
             MessagingCenter.Subscribe<CatalogViewModel, List<BasketItem>>(this, MessengerKeys.UpdateBasket, (sender, arg) =>
             {
+                MessagingCenter.Unsubscribe<CatalogViewModel, List<BasketItem>>(this, MessengerKeys.UpdateBasket);
+
                 foreach (var basketItem in arg)
                 {
                     BadgeCount += basketItem.Quantity;
@@ -77,16 +79,13 @@ namespace eShopOnContainers.Core.ViewModels
 
             MessagingCenter.Subscribe<CatalogViewModel, CatalogItem>(this, MessengerKeys.AddProduct, (sender, arg) =>
             {
+                MessagingCenter.Unsubscribe<CatalogViewModel, CatalogItem>(this, MessengerKeys.AddProduct);
+
                 BadgeCount++;
 
                 AddCatalogItem(arg);
             });
             
-            MessagingCenter.Subscribe<BasketItem>(this, MessengerKeys.UpdateProduct, (sender) =>
-            {
-                ReCalculateTotal();
-            });
-
             BasketItems = new ObservableCollection<BasketItem>();
 
             return base.InitializeAsync(navigationData);
@@ -135,13 +134,12 @@ namespace eShopOnContainers.Core.ViewModels
                 Total += (orderItem.Quantity * orderItem.UnitPrice);
             }
 
-
-            var shippingAddress = await _userService.GetAddressAsync();
             var authToken = Settings.AuthAccessToken;
+            var userInfo = await _userService.GetUserInfoAsync(authToken);
 
             await _basketService.UpdateBasketAsync(new CustomerBasket
             {
-                BuyerId = shippingAddress.Id.ToString(), 
+                BuyerId = userInfo.UserId, 
                 Items = BasketItems.ToList()
             }, authToken);
         }

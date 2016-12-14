@@ -156,10 +156,10 @@
                             Text="{Binding ShippingAddress.Street}"
                             Style="{StaticResource AddressStyle}"/>
                         <Label
-                            Text="{Binding ShippingAddress.City}"   
+                            Text="{Binding ShippingAddress.ZipCode}"   
                             Style="{StaticResource AddressStyle}"/>
                         <Label
-                            Text="{Binding ShippingAddress.CountryCode}"   
+                            Text="{Binding ShippingAddress.State}"   
                             Style="{StaticResource AddressStyle}"/>
                         <Label
                             Text="{Binding ShippingAddress.Country}"   
