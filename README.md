@@ -5,7 +5,7 @@ Sample .NET Core reference application, powered by Microsoft, based on a simplif
 <img src="img/eShopOnContainers_Architecture_Diagram.png">
 - Simplified Architecture Diagram of eShopOnContainers -
 
-> ### @icon-info-circle Note on tested Docker Containers/Images
+> ### Note on tested Docker Containers/Images
 > The development and testing of this project was done on Docker Linux containers running in development machines with "Docker for Windows" and the default Hyper-V Linux VM (MobiLinuxVM) installed by "Docker for Windows". 
 The Windows Containers scenario has not been tested, but the application should be able to run on Windows Containers, as well, as the .NET Core services have also been tested running on plain Windows (with no Docker).
 The app was also partially tested on "Docker for Mac" using a development MacOS machine with .NET Core and VS Code installed. However, that is still a scenario using Linux containers running on the VM setup in the Mac by the "Docker for Windows" setup.
@@ -109,7 +109,7 @@ Once the deploy process of docker-compose finishes you should be able to access 
 ### Deploying individiual services into docker
 Under each project root you will find a readme.md file which describes how to run and deploy the service individually into a docker host.
 
-> ### @icon-info-circle Note on Windows Containers
+> ### Note on Windows Containers
 > As mentioned, the development and testing of this project was done on Docker Linux containers running in development machines with "Docker for Windows" and the default Hyper-V Linux VM (MobiLinuxVM) installed by "Docker for Windows". 
 In order to run the application on Windows Containers you'd need to change the base images used by each container:
 > - Official .NET Core base-image for Windows Containers, at Docker Hub: https://hub.docker.com/r/microsoft/dotnet/ (Using the Windows Nanoserver tag)
