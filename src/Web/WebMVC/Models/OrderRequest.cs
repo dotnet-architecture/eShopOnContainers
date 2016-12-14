@@ -8,7 +8,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Models
     public class OrderRequest
     {
         public OrderRequest() {
-
+            Items = new List<OrderRequestItem>();
         }
 
         public string City { get; set; }
@@ -32,5 +32,9 @@ namespace Microsoft.eShopOnContainers.WebMVC.Models
         public int CardTypeId { get; set; }
 
         public string Buyer { get; set; }
+
+        public List<OrderRequestItem> Items { get; }
+
+
     }
 }

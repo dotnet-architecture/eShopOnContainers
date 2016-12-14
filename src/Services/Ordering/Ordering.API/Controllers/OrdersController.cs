@@ -53,6 +53,17 @@
                 Street = order.ShippingStreet
             };
 
+            foreach (var orderItem in order.Items)
+            {
+                newOrderRequest.AddOrderItem(new Domain.OrderItem() {
+                    Discount = orderItem.Discount,
+                    ProductId = orderItem.ProductId,
+                    UnitPrice = orderItem.UnitPrice,
+                    ProductName = orderItem.ProductName,
+                    Units = orderItem.Units
+                });
+            }
+
             var added = await _mediator.SendAsync(newOrderRequest);
 
             if (added)

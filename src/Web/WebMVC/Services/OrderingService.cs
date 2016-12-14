@@ -111,7 +111,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
 
         public OrderRequest MapOrderIntoOrderRequest(Order order)
         {
-            return new OrderRequest()
+            var od = new OrderRequest()
             {
                 CardHolderName = order.PaymentInfo.CardHolderName,
                 CardNumber = order.PaymentInfo.CardNumber,
@@ -121,8 +121,22 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
                 Country = order.ShippingAddress.Country,
                 State = order.ShippingAddress.State,
                 Street = order.ShippingAddress.Street,
-                ZipCode = order.ShippingAddress.ZipCode
+                ZipCode = order.ShippingAddress.ZipCode, 
             };
+
+            foreach (var item in order.OrderItems)
+            {
+                od.Items.Add(new OrderRequestItem()
+                {
+                    Discount = item.Discount,
+                    ProductId = int.Parse(item.ProductId),
+                    ProductName = item.ProductName,
+                    UnitPrice = item.UnitPrice,
+                    Units = item.Quantity
+                });           
+            }
+
+            return od;
         }
 
         async public Task CreateOrder(ApplicationUser user, Order order)

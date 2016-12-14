@@ -17,7 +17,7 @@
 
         public OrderStatus Status { get; private set; }
 
-        public ICollection<OrderItem> OrderItems { get; set; }
+        public ICollection<OrderItem> OrderItems { get; private set; }
 
         public int? ShippingAddressId { get; private set; }
 
@@ -35,6 +35,7 @@
             PaymentId = paymentId;
             StatusId = OrderStatus.InProcess.Id;
             OrderDate = DateTime.UtcNow;
+            OrderItems = new List<OrderItem>();
         }
 
         public void SetAddress(Address address)
@@ -45,6 +46,13 @@
             }
 
             ShippingAddress = address;
+        }
+
+        public void AddOrderItem(OrderItem item)
+        {
+            // Note: Some logic could be added here (like grouping items in one single OrderItem)
+            // Also validation logic could be added here (like ensuring adding almost one item)
+            OrderItems.Add(item);
         }
     }
 }

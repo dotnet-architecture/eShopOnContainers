@@ -1,22 +1,15 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Ordering.Domain
+﻿namespace Microsoft.eShopOnContainers.Services.Ordering.API.Models
 {
-    using Microsoft.eShopOnContainers.Services.Ordering.Domain.SeedWork;
-
-
-    public class OrderItem
-        :Entity
+    public class OrderItemViewModel
     {
         public int ProductId { get;  set; }
 
         public string ProductName { get;  set; }
-
-        public int OrderId { get;  set; }
 
         public decimal UnitPrice { get;  set; }
 
         public decimal Discount { get;  set; }
 
         public int Units { get;  set; }
-
     }
 }

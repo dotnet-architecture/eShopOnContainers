@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Microsoft.eShopOnContainers.Services.Ordering.API.Models
 {
@@ -21,5 +22,12 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Models
         public DateTime CardExpiration { get; set; }
 
         public string CardSecurityNumber { get; set; }
+
+        public List<OrderItemViewModel> Items { get; set; }
+
+        public NewOrderViewModel()
+        {
+            Items = new List<OrderItemViewModel>();
+        }
     }
 }

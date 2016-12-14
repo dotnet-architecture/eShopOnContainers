@@ -13,7 +13,7 @@ namespace eShopOnContainers.Identity
         {
             var host = new WebHostBuilder()
                 .UseKestrel()
-                .UseUrls("http://0.0.0.0:5105")
+                .UseUrls("http://0.0.0.0:5000")
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseIISIntegration()
                 .UseStartup<Startup>()

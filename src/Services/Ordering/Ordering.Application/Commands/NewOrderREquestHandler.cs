@@ -55,6 +55,11 @@
                 ZipCode = message.ZipCode
             });
 
+            foreach (var item in message.OrderItems)
+            {
+                order.AddOrderItem(item);
+            }
+
             _orderRepository.Add(order);
 
             var result = await _orderRepository.UnitOfWork

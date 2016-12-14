@@ -56,29 +56,29 @@
             var user = 
             new ApplicationUser()
             {
-                CardHolderName = "Jhon Doe",
-                CardNumber = "1111-2222-33-4444",
+                CardHolderName = "DemoUser",
+                CardNumber = "4012888888881881",
                 CardType = 1,
-                City = "Seattle",
-                Country = "EEUU",
+                City = "Redmond",
+                Country = "U.S.",
                 CountryCode = "91",
-                Email = "jdoe@eshop.com",
+                Email = "demouser@microsoft.com",
                 Expiration = "12/20",
                 Id = Guid.NewGuid().ToString(), 
-                LastName = "Doe", 
-                Name = "Jhon", 
-                PhoneNumber = "600 11 22 33", 
-                UserName = "jdoe@eshop.com", 
-                ZipCode = "56730", 
-                State = "Washington", 
-                Street = "Street..", 
-                SecurityNumber = "256", 
-                NormalizedEmail = "JDOE@ESHOP.COM", 
-                NormalizedUserName = "JDOE@ESHOP.COM", 
+                LastName = "DemoLastName", 
+                Name = "DemoUser", 
+                PhoneNumber = "1234567890", 
+                UserName = "demouser@microsoft.com", 
+                ZipCode = "98052", 
+                State = "WA", 
+                Street = "15703 NE 61st Ct", 
+                SecurityNumber = "535", 
+                NormalizedEmail = "DEMOUSER@MICROSOFT.COM", 
+                NormalizedUserName = "DEMOUSER@MICROSOFT.COM", 
                 SecurityStamp = Guid.NewGuid().ToString("D")
             };
 
-            user.PasswordHash = _passwordHasher.HashPassword(user, "eshopContainers.123");
+            user.PasswordHash = _passwordHasher.HashPassword(user, "Pass@word1");
 
             return user;
         }

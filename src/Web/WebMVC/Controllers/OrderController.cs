@@ -42,11 +42,13 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
             basket = await _basketSvc.UpdateBasket(basket);
             var order = _basketSvc.MapBasketToOrder(basket);
 
+
             // override if user has changed some shipping address or payment info data.
             _orderSvc.OverrideUserInfoIntoOrder(model.Order, order);
 
             if (action == "[ Place Order ]")
             {
+                
                 await _orderSvc.CreateOrder(user, order);
 
                 //Empty basket for current user. 
