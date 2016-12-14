@@ -297,7 +297,10 @@ namespace IdentityServer4.Quickstart.UI.Controllers
             }
 
             if (returnUrl != null) {
-                return Redirect(returnUrl);
+                if (HttpContext.User.Identity.IsAuthenticated)
+                    return Redirect(returnUrl);
+                else
+                    return RedirectToAction("login", "account", new { returnUrl = returnUrl });
             }
 
             return RedirectToAction("index", "home");
