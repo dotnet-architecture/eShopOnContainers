@@ -110,6 +110,15 @@ Once the deploy process of docker-compose finishes you should be able to access 
 - ASP.NET Identity database (SQL Server): Server=localhost,5433;Database=aspnet-Microsoft.eShopOnContainers;User Id=sa;Password=Pass@word
 - Basket data (Redis): listening at localhost:6379
 
+#### Trying the WebMVC application with the DemoUser@microsoft.com user account
+When you try the WebMVC application by using the url •Web MVC: http://localhost:5100, you'll be able to test the home page which is also the catalog page. But when trying to add any article to the basket you will get redirected to the login page which is handled by the STS microservice (Security Token Service). At this point, you could register your own user/customer or you can also use the a convenient default user/customer named DemoUser@microsoft.com so you don't need to register and it'll be faster.
+The credentials are:
+- User: demouser@microsoft.com
+- Password: Pass@word1
+
+Below you can see the login page when providing those credentials.
+<img src="img/login-demo-user.png">
+
 ### Deploying individiual services into docker
 Under each project root you will find a readme.md file which describes how to run and deploy the service individually into a docker host.
 
