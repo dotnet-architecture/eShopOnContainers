@@ -79,23 +79,21 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
 
         public Order MapBasketToOrder(Basket basket)
         {
-            var order = new Order()
-            {
-                Id = Guid.NewGuid().ToString(),
-                BuyerId = basket.BuyerId
-            };
+            var order = new Order();
+            order.Total = 0;
 
             basket.Items.ForEach(x =>
             {
                 order.OrderItems.Add(new OrderItem()
                 {
-                    ProductId = x.ProductId,
-                    OrderId = order.Id,
+                    ProductId = int.Parse(x.ProductId),
+                    
                     PictureUrl = x.PictureUrl,
                     ProductName = x.ProductName,
-                    Quantity = x.Quantity,
+                    Units = x.Quantity,
                     UnitPrice = x.UnitPrice
                 });
+                order.Total += (x.Quantity * x.UnitPrice);
             });
 
             return order;
@@ -109,8 +107,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
                 basket = new Basket()
                 {
                     BuyerId = user.Id,
-                    //Id = Guid.NewGuid().ToString(),
-                    Items = new List<Models.BasketItem>()
+                    Items = new List<BasketItem>()
                 };
             }
 

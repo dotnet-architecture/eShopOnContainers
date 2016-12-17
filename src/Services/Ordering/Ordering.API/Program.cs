@@ -15,9 +15,9 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API
             var host = new WebHostBuilder()
                 .UseKestrel()
                 .UseContentRoot(Directory.GetCurrentDirectory())
-                //.UseIISIntegration()
-                .UseStartup<Startup>()
                 .UseUrls("http://0.0.0.0:5102")
+                .UseIISIntegration()
+                .UseStartup<Startup>()
                 .Build();
 
             host.Run();

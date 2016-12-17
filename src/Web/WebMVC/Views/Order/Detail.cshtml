@@ -1,5 +1,4 @@
 @model Microsoft.eShopOnContainers.WebMVC.Models.Order
-@inject UserManager<ApplicationUser> UserManager
 
 @{
     ViewData["Title"] = "Order Detail";
@@ -7,7 +6,7 @@
 
 <div class="brand-header-block">
     <ul class="container">
-        <li class="brand-header-back"><a asp-area="" asp-controller="Catalog" asp-action="Index">Back to list</a></li>
+        <li class="brand-header-back"><a asp-area="" asp-controller="Order" asp-action="Index">Back to list</a></li>
     </ul>
 </div>
 
@@ -20,24 +19,24 @@
         </div>
         <div class="col-sm-3">
             <span>DATE</span><br />
-            <span>@Model.OrderDate</span>
+            <span>@Model.Date</span>
         </div>
         <div class="col-sm-3">
             <span>TOTAL</span><br />
-            <span>$ @Model.Total()</span>
+            <span>$ @Model.Total</span>
         </div>
         <div class="col-sm-3">
             <span>STATUS</span><br />
-            <span>@Model.State</span>
+            <span>@Model.Status</span>
         </div>
     </div>
     <div class="row order-detail-section">
         <div class="col-sm-3">
             <span>SHIPING ADDRESS</span><br />
-            <span>@Model.ShippingAddress.Street</span><br />
-            <span>@Model.ShippingAddress.City</span><br />
+            <span>@Model.Street</span><br />
+            <span>@Model.City</span><br />
             @*<span>@Model.ShippingAddress.ZipCode</span><br />*@
-            <span>@Model.ShippingAddress.Country</span><br />
+            <span>@Model.Country</span><br />
         </div>
     </div>
     <div>
@@ -54,8 +53,8 @@
                             <td class="cart-product-column">@item.ProductName</td>
                             <td class="cart-product-column">ROSLYN</td>
                             <td class="cart-product-column">$ @Math.Round(item.UnitPrice, 2)</td>
-                            <td class="cart-product-column">@item.Quantity</td>
-                            <td class="cart-product-column cart-total-value">$ @Math.Round(item.Quantity * item.UnitPrice,2)</td>
+                            <td class="cart-product-column">@item.Units</td>
+                            <td class="cart-product-column cart-total-value">$ @Math.Round(item.Units * item.UnitPrice,2)</td>
                         </tr>
                     }
                 </tbody>
@@ -68,17 +67,9 @@
         </section>
     </div>
     <div class="col-md-offset-9 col-md-3">
-        @*<input type="submit"
-               class="btn btn-default cart-refresh-button"
-               value=""
-               name="action" />*@
         <div class="order-section-total">
-            @*<div class="cart-subtotal-label"><span>SUBTOTAL</span></div>
-                <div class="cart-subtotal-value"><span>$ @Model.Total()</span></div>
-                <div class="cart-subtotal-label"><span>TAX</span></div>
-                <div class="cart-subtotal-value"><span>$ 4.20</span></div>*@
             <div class="cart-total-label"><span>TOTAL</span></div>
-            <div class="cart-total-value"><span>$ @Model.Total()</span></div>
+            <div class="cart-total-value"><span>$ @Model.Total</span></div>
         </div>
     </div>
 </div>

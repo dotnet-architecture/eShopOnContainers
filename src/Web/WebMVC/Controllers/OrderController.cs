@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.eShopOnContainers.WebMVC.Services;
 using Microsoft.eShopOnContainers.WebMVC.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.eShopOnContainers.WebMVC.Models.OrderViewModels;
+using System.Net.Http;
 
 namespace Microsoft.eShopOnContainers.WebMVC.Controllers
 {
@@ -25,31 +25,22 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
 
         public async Task<IActionResult> Create()
         {
-            var vm = new CreateOrderViewModel();
             var user = _appUserParser.Parse(HttpContext.User);
             var basket = await _basketSvc.GetBasket(user);
             var order = _basketSvc.MapBasketToOrder(basket);
-            vm.Order = _orderSvc.MapUserInfoIntoOrder(user, order);
+            var vm = _orderSvc.MapUserInfoIntoOrder(user, order);
+            vm.CardExpirationShortFormat();
 
             return View(vm);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateOrderViewModel model, Dictionary<string, int> quantities, string action)
+        public async Task<IActionResult> Create(Order model, string action)
         {
             var user = _appUserParser.Parse(HttpContext.User);
-            var basket = await _basketSvc.SetQuantities(user, quantities);
-            basket = await _basketSvc.UpdateBasket(basket);
-            var order = _basketSvc.MapBasketToOrder(basket);
-
-
-            // override if user has changed some shipping address or payment info data.
-            _orderSvc.OverrideUserInfoIntoOrder(model.Order, order);
-
             if (action == "[ Place Order ]")
             {
-                
-                await _orderSvc.CreateOrder(user, order);
+                await _orderSvc.CreateOrder(model);
 
                 //Empty basket for current user. 
                 await _basketSvc.CleanBasket(user);
@@ -61,11 +52,11 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
             return View(model);
         }
 
-        public IActionResult Detail(string orderId)
+        public async Task<IActionResult> Detail(string orderId)
         {
             var user = _appUserParser.Parse(HttpContext.User);
-            var order = _orderSvc.GetOrder(user, orderId);
 
+            var order = await _orderSvc.GetOrder(user, orderId);
             return View(order);
         }
 

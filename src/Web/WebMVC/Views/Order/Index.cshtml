@@ -34,16 +34,16 @@
                         @Html.DisplayFor(modelItem => item.OrderNumber)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.OrderDate)
+                        @Html.DisplayFor(modelItem => item.Date)
                     </td>
                     <td>
-                        $ @item.Total()
+                        $ @Html.DisplayFor(modelItem => item.Total)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.State)
+                        @Html.DisplayFor(modelItem => item.Status)
                     </td>
                     <td class="order-detail-button">
-                        <a asp-controller="Order" asp-action="Detail" asp-route-orderId="@item.Id">Detail</a>
+                        <a asp-controller="Order" asp-action="Detail" asp-route-orderId="@item.OrderNumber">Detail</a>
                     </td>
                 </tr>
             }

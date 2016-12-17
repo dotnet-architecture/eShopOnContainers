@@ -9,15 +9,15 @@ version: '2'
 
 services:
 
-  webmvc:
-    environment:
-      - CatalogUrl=http://catalog.api
-      - OrderingUrl=http://ordering.api:5102
+#  webmvc:
+#    environment:
+#      - CatalogUrl=http://catalog.api
+#      - OrderingUrl=http://ordering.api:5102
       #- IdentityUrl=http://104.40.62.65:5105           #Remote: VM Needs to have public access at 5105. 
-      - IdentityUrl=http://identity.service:5105        #Local: You need a entry in windows host file to run identity in local docker. 
-      - BasketUrl=http://basket.api:5103
-    ports:
-      - "5100:5100"
+#      - IdentityUrl=http://identity.service:5105        #Local: You need a entry in windows host file to run identity in local docker. 
+#      - BasketUrl=http://basket.api:5103
+#    ports:
+#      - "5100:5100"
 
   webspa:
     environment:
@@ -39,38 +39,31 @@ services:
 
   catalog.api:
     environment:
-      - ConnectionString=Server=business.data;Database=CatalogDB;User Id=sa;Password=Pass@word
+      - ConnectionString=Server=sql.data;Database=CatalogDB;User Id=sa;Password=Pass@word
     ports:
       - "5101:80"
 
-  ordering.api:
-    environment:
-      - ConnectionString=Server=business.data;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word
-      - identityUrl=http://identity.service:5105    #local
+#  ordering.api:
+#    environment:
+#      - ConnectionString=Server=sql.data;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word
+#      - identityUrl=http://identity.service:5105    #local
       #- identityUrl=http://104.40.62.65:5105       #remote
-    ports:
-      - "5102:5102"
+#    ports:
+#      - "5102:5102"
 
   identity.service:
     environment:
       - SpaClient=http://localhost:5104
-      - ConnectionStrings__DefaultConnection=Server=identity.data;Database=aspnet-Microsoft.eShopOnContainers;User Id=sa;Password=Pass@word
+      - ConnectionStrings__DefaultConnection=Server=sql.data;Database=aspnet-Microsoft.eShopOnContainers;User Id=sa;Password=Pass@word
       #- MvcClient=http://104.40.62.65:5100             #Remote: VM Needs to have public access at 5105. 
       - MvcClient=http://localhost:5100                 #Local: You need a entry in windows host file to run identity in local docker. 
                                                         #10.0.75.1:5105 CCE/TODO: try to avoid host entry. 
     ports:
       - "5105:5105"
 
-  identity.data:
+  sql.data:
     environment:
       - SA_PASSWORD=Pass@word
       - ACCEPT_EULA=Y
     ports:
       - "5433:1433"
-
-  business.data:
-    environment:
-      - SA_PASSWORD=Pass@word
-      - ACCEPT_EULA=Y
-    ports:
-      - "5434:1433"

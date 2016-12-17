@@ -1,4 +1,12 @@
 ﻿{
-  "ConnectionString": "Server=tcp:127.0.0.1,5434;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word;",
-  "IdentityUrl": "http://localhost:5105"
+  "ConnectionString": "Server=tcp:127.0.0.1,5433;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word;",
+  "IdentityUrl": "http://identity.service:5105", 
+  "Logging": {
+    "IncludeScopes": false,
+    "LogLevel": {
+      "Default": "Debug",
+      "System": "Information",
+      "Microsoft": "Information"
+    }
+  }
 }

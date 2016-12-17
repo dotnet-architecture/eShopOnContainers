@@ -11,5 +11,7 @@
         public decimal Discount { get;  set; }
 
         public int Units { get;  set; }
+
+        public string PictureUrl { get; set; }
     }
 }

@@ -10,6 +10,8 @@
 
         public string ProductName { get;  set; }
 
+        public string PictureUrl { get; set; }
+
         public int OrderId { get;  set; }
 
         public decimal UnitPrice { get;  set; }

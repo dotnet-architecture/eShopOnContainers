@@ -1,8 +1,4 @@
-@model Microsoft.eShopOnContainers.WebMVC.Models.Basket
-
-@{
-    ViewData["Title"] = "My Cart";
-}
+﻿@model Microsoft.eShopOnContainers.WebMVC.Models.Order
 
 <div class="col-md-12">
     <section>
@@ -30,20 +26,27 @@
                 </tr>
             </thead>
             <tbody>
-                @for (int i = 0; i < Model.Items.Count; i++)
+                @for (int i = 0; i < Model.OrderItems.Count; i++)
                 {
-                var item = Model.Items[i];
+                    var item = Model.OrderItems[i];
 
                     <tr>
-                        <td class="cart-product-column"><img class="cart-product-image" src="@item.PictureUrl" /></td>
-                        <td class="cart-product-column"><span class="cart-product-column-name">@item.ProductName</span></td>
-                        <td class="cart-product-column">ROSLYN</td>
-                        <td class="cart-product-column">$ @item.UnitPrice</td>
                         <td class="cart-product-column">
-                            <input type="hidden" name="@("quantities[" + i +"].Key")" value="@item.Id" />
-                            <input type="number" name="@("quantities[" + i +"].Value")" value="@item.Quantity" />
+                            <img class="cart-product-image" src="@item.PictureUrl" />
+                            <input type="hidden" value="@item.PictureUrl" name=@("orderitems[" + i + "].PictureUrl") />
                         </td>
-                        <td class="cart-product-column cart-total-value">$ @Math.Round(item.Quantity * item.UnitPrice,2)</td>
+                        <td class="cart-product-column">
+                            <span class="cart-product-column-name">@item.ProductName</span>
+                            <input type="hidden" value="@item.ProductName" name=@("orderitems[" + i + "].ProductName") />
+                        </td>
+                        <td class="cart-product-column">ROSLYN</td>
+                        <td class="cart-product-column">$ @item.UnitPrice
+                            <input type="hidden" value="@item.UnitPrice" name=@("orderitems[" + i + "].UnitPrice") />
+                        </td>
+                        <td class="cart-product-column">@item.Units
+                            <input type="hidden" value="@item.Units" name=@("orderitems[" + i + "].Units") />
+                        </td>
+                        <td class="cart-product-column cart-total-value">$ @Math.Round(item.Units * item.UnitPrice, 2)</td>
                     </tr>
                 }
                 <tr class="cart-totals">
@@ -60,7 +63,7 @@
                     <td>
                         <div class="cart-total-value">
                             <div class="cart-total-label"><span>TOTAL</span></div>
-                            <span>$ @Model.Total()</span>
+                            <span>$ @Model.Total</span>
                         </div>
                     </td>
                 </tr>
@@ -68,5 +71,3 @@
         </table>
     </section>
 </div>
-
-

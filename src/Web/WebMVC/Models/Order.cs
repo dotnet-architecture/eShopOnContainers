@@ -1,6 +1,7 @@
-﻿using System;
+﻿using Microsoft.eShopOnContainers.WebMVC.Models.Annotations;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -8,40 +9,61 @@ namespace Microsoft.eShopOnContainers.WebMVC.Models
 {
     public class Order
     {
-        public Order()
-        {
+        public Order() {
             OrderItems = new List<OrderItem>();
-            ShippingAddress = new Address();
-            PaymentInfo = new PaymentInfo();
         }
 
-        public string Id;
-        public List<OrderItem> OrderItems { get; set; }
-        public string OrderNumber
+        public string OrderNumber {get;set;}
+
+        public DateTime Date {get;set;}
+
+        public string Status { get; set; }
+
+        public decimal Total {get;set;}
+        [Required]
+        public string City { get; set; }
+        [Required]
+        public string Street { get; set; }
+        [Required]
+        public string State { get; set; }
+        [Required]
+        public string Country { get; set; }
+
+        public string ZipCode { get; set; }
+        [Required]
+        public string CardNumber { get; set; }
+        [Required]
+        public string CardHolderName { get; set; }
+
+        public DateTime CardExpiration { get; set; }
+        [RegularExpression(@"(0[1-9]|1[0-2])\/[0-9]{2}", ErrorMessage = "Expiration should match a valid MM/YY value")]
+        [CardExpiration(ErrorMessage = "Should't be expired"), Required]
+        public string CardExpirationShort { get; set; }
+        [Required]
+        public string CardSecurityNumber { get; set; }
+
+        public int CardTypeId { get; set; }
+
+        public string Buyer { get; set; }
+
+        public List<OrderItem> OrderItems { get; }
+
+        public void CardExpirationShortFormat()
         {
-            get
-            {
-                return string.Format("{0}/{1}-{2}", OrderDate.Year, OrderDate.Month, SequenceNumber);
-            }
+            CardExpirationShort = CardExpiration.ToString("MM/yy");
         }
-        public int SequenceNumber { get; set; }
-        public virtual string BuyerId { get; set; }
-        public virtual Address ShippingAddress { get; set; }
-        public virtual PaymentInfo PaymentInfo { get; set; }
-        public virtual DateTime OrderDate { get; set; }
-        public OrderState State { get; set; }
 
-        public decimal Total() {
-            return OrderItems.Sum(x => x.Quantity * x.UnitPrice);
-        } 
+        public void CardExpirationApiFormat()
+        {
+            var month = CardExpirationShort.Split('/')[0];
+            var year = $"20{CardExpirationShort.Split('/')[1]}";
 
-        //(CCE) public virtual Address BillingAddress { get; set; }
-        //(CDLTLL) public virtual OrderStatus Status { get; set; }
+            CardExpiration = new DateTime(int.Parse(year), int.Parse(month), 1);
+        }
     }
-    
-    public enum OrderState:int
+
+    public enum CardType
     {
-        InProcess = 0, 
-        Delivered = 1
+        AMEX = 1
     }
 }

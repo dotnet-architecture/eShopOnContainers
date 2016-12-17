@@ -7,11 +7,11 @@
 version: '2'
 
 services:
-  webmvc:
-    image: eshop/web
-    depends_on:
-      - identity.service
-      - basket.api
+#  webmvc:
+#    image: eshop/web
+#    depends_on:
+#      - identity.service
+#      - basket.api
 
   webspa:
     image: eshop/webspa
@@ -28,22 +28,19 @@ services:
   catalog.api:
     image: eshop/catalog.api
     depends_on:
-      - business.data
+      - sql.data
 
-  ordering.api:
-    image: eshop/ordering.api
-    depends_on:
-      - business.data
+#  ordering.api:
+#    image: eshop/ordering.api
+#    depends_on:
+#      - sql.data
 
   identity.service:
     image: eshop/identity
     depends_on:
-      - identity.data
+      - sql.data
 
-  identity.data:
-    image: microsoft/mssql-server-linux
-
-  business.data:
+  sql.data:
     image: microsoft/mssql-server-linux
 
   basket.data:

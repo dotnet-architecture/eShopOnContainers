@@ -172,6 +172,7 @@ namespace Ordering.API.Infrastructure.Migrations
                     OrderId = table.Column<int>(nullable: false),
                     ProductId = table.Column<int>(nullable: false),
                     ProductName = table.Column<string>(nullable: false),
+                    PictureUrl = table.Column<string>(nullable: false),
                     UnitPrice = table.Column<decimal>(nullable: false),
                     Units = table.Column<int>(nullable: false, defaultValue: 1)
                 },

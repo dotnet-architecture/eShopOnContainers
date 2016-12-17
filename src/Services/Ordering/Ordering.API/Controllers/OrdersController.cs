@@ -7,6 +7,7 @@
     using Microsoft.AspNetCore.Mvc;
     using Models;
     using System;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     [Route("api/v1/[controller]")]
@@ -34,38 +35,14 @@
 
         [Route("new")]
         [HttpPost]
-        public async Task<IActionResult> AddOrder([FromBody]NewOrderViewModel order)
+        public async Task<IActionResult> AddOrder([FromBody]NewOrderRequest order)
         {
             if (order.CardExpiration == DateTime.MinValue)
                 order.CardExpiration = DateTime.Now;
 
-            var newOrderRequest = new NewOrderRequest()
-            {
-                Buyer = GetUserName(), 
-                CardTypeId = 1, //TODO
-                CardHolderName = order.CardHolderName,
-                CardNumber = order.CardNumber,
-                CardExpiration = order.CardExpiration,
-                CardSecurityNumber = order.CardSecurityNumber,
-                State = order.ShippingState,
-                City = order.ShippingCity,
-                Country = order.ShippingCountry,
-                Street = order.ShippingStreet
-            };
+            order.Buyer = GetUserName();
 
-            foreach (var orderItem in order.Items)
-            {
-                newOrderRequest.AddOrderItem(new Domain.OrderItem() {
-                    Discount = orderItem.Discount,
-                    ProductId = orderItem.ProductId,
-                    UnitPrice = orderItem.UnitPrice,
-                    ProductName = orderItem.ProductName,
-                    Units = orderItem.Units
-                });
-            }
-
-            var added = await _mediator.SendAsync(newOrderRequest);
-
+            var added = await _mediator.SendAsync(order);
             if (added)
             {
                 return Ok();
@@ -78,9 +55,15 @@
         [HttpGet]
         public async Task<IActionResult> GetOrder(int orderId)
         {
-            var order = await _orderQueries.GetOrder(orderId);
-
-            return Ok(order);
+            try
+            {
+                var order = await _orderQueries.GetOrder(orderId);
+                return Ok(order);
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
         }
 
         [Route("")]

@@ -61,7 +61,6 @@
                 CardType = 1,
                 City = "Redmond",
                 Country = "U.S.",
-                CountryCode = "91",
                 Email = "demouser@microsoft.com",
                 Expiration = "12/20",
                 Id = Guid.NewGuid().ToString(), 
