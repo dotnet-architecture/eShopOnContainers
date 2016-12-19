@@ -24,9 +24,6 @@ namespace IdentityServer4.Quickstart.UI.Controllers
 
         public IActionResult Index(string returnUrl)
         {
-            if (returnUrl != "")
-                return Redirect(_settings.Value.MvcClient);
-
             return View();
         }
 

@@ -38,7 +38,10 @@
         public async Task<IActionResult> AddOrder([FromBody]NewOrderRequest order)
         {
             if (order.CardExpiration == DateTime.MinValue)
-                order.CardExpiration = DateTime.Now;
+                order.CardExpiration = DateTime.Now.AddYears(5);
+
+            if (order.CardTypeId == 0)
+                order.CardTypeId = 1;
 
             order.Buyer = GetUserName();
 

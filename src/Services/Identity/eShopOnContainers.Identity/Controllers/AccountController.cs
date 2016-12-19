@@ -156,10 +156,11 @@ namespace IdentityServer4.Quickstart.UI.Controllers
                 return await Logout(new LogoutViewModel { LogoutId = logoutId });
             }
 
+            //Test for Xamarin. 
             var context = await _interaction.GetLogoutContextAsync(logoutId);
             if (context?.ShowSignoutPrompt == false)
             {
-                // it's safe to automatically sign-out
+                //it's safe to automatically sign-out
                 return await Logout(new LogoutViewModel { LogoutId = logoutId });
             }
 
@@ -169,7 +170,6 @@ namespace IdentityServer4.Quickstart.UI.Controllers
             {
                 LogoutId = logoutId
             };
-
             return View(vm);
         }
 
@@ -211,7 +211,19 @@ namespace IdentityServer4.Quickstart.UI.Controllers
 
             // get context information (client name, post logout redirect URI and iframe for federated signout)
             var logout = await _interaction.GetLogoutContextAsync(model.LogoutId);
+
             return Redirect(logout?.PostLogoutRedirectUri);
+        }
+
+        public async Task<IActionResult> DeviceLogOut(string redirectUrl)
+        {
+            // delete authentication cookie
+            await HttpContext.Authentication.SignOutAsync();
+
+            // set this so UI rendering sees an anonymous user
+            HttpContext.User = new ClaimsPrincipal(new ClaimsIdentity());
+
+            return Redirect(redirectUrl);
         }
 
         /// <summary>

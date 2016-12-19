@@ -31,7 +31,6 @@ namespace Microsoft.eShopOnContainers.WebMVC.ViewComponents
         {
             var basket = await _cartSvc.GetBasket(user);
             return basket.Items.Count;
-            return await Task<int>.Run(()=> { return 0; });
         }
     }
 }
