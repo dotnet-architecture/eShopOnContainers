@@ -83,26 +83,32 @@ namespace eShopOnContainers.Core.ViewModels
 
                 ShippingAddress = new Address
                 {
-                    Street = userInfo.Street,
-                    ZipCode = userInfo.ZipCode,
-                    State = userInfo.State,
-                    Country = userInfo.Country,
+                    Street = userInfo?.Street,
+                    ZipCode = userInfo?.ZipCode,
+                    State = userInfo?.State,
+                    Country = userInfo?.Country,
                 };
 
                 var paymentInfo = new PaymentInfo
                 {
-                    CardNumber = userInfo.CardNumber,
-                    CardHolderName = userInfo.CardHolder,
-                    SecurityNumber = userInfo.CardSecurityNumber
+                    CardNumber = userInfo?.CardNumber,
+                    CardHolderName = userInfo?.CardHolder,
+                    SecurityNumber = userInfo?.CardSecurityNumber
                 };
-                
+
                 Order = new Order
                 {
+                    BuyerId = userInfo.UserId,
                     OrderItems = CreateOrderItems(orderItems),
                     State = OrderState.InProcess,
                     OrderDate = DateTime.Now,
-                    PaymentInfo = paymentInfo,
-                    ShippingAddress = _shippingAddress
+                    CardHolderName = paymentInfo.CardHolderName,
+                    CardNumber = paymentInfo.CardNumber,
+                    CardSecurityNumber = paymentInfo.SecurityNumber,
+                    CardExpiration = DateTime.Now.AddYears(5),
+                    ShippingState = _shippingAddress.State,
+                    ShippingCountry = _shippingAddress.Country,
+                    ShippingStreet = _shippingAddress.Street
                 };
 
                 IsBusy = false;
@@ -113,14 +119,14 @@ namespace eShopOnContainers.Core.ViewModels
         {
             var authToken = Settings.AuthAccessToken;
 
-            await _orderService.CreateOrderAsync(Order);
+            await _orderService.CreateOrderAsync(Order, authToken);
 
             await _basketService.ClearBasketAsync(_shippingAddress.Id.ToString(), authToken);
             
             await NavigationService.NavigateToAsync<MainViewModel>(new TabParameter { TabIndex = 1 });
             await NavigationService.RemoveLastFromBackStackAsync();
 
-            await DialogService.ShowAlertAsync("Order sent successfully!", string.Format("Order {0}", Order.OrderNumber), "Ok");
+            await DialogService.ShowAlertAsync("Order sent successfully!", string.Format("Order {0}", Order.SequenceNumber), "Ok");
             await NavigationService.RemoveLastFromBackStackAsync();
         }
 
@@ -132,8 +138,7 @@ namespace eShopOnContainers.Core.ViewModels
             {
                 orderItems.Add(new OrderItem
                 {
-                    // TODO:
-                    //ProductId = basketItem.ProductId,
+                    ProductId = basketItem.ProductId,
                     ProductName = basketItem.ProductName,
                     PictureUrl = basketItem.PictureUrl,
                     Quantity = basketItem.Quantity,

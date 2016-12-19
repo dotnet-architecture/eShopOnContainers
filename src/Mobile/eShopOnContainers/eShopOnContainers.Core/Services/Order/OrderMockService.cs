@@ -45,9 +45,9 @@ namespace eShopOnContainers.Core.Services.Order
 
         private List<Models.Orders.Order> MockOrders = new List<Models.Orders.Order>()
         {
-            new Models.Orders.Order { SequenceNumber = 123, OrderDate = DateTime.Now, State = OrderState.Delivered, OrderItems = MockOrderItems, PaymentInfo = MockPaymentInfo, ShippingAddress = MockAdress },
-            new Models.Orders.Order { SequenceNumber = 132, OrderDate = DateTime.Now, State = OrderState.Delivered, OrderItems = MockOrderItems, PaymentInfo = MockPaymentInfo, ShippingAddress = MockAdress },
-            new Models.Orders.Order { SequenceNumber = 231, OrderDate = DateTime.Now, State = OrderState.Delivered, OrderItems = MockOrderItems, PaymentInfo = MockPaymentInfo, ShippingAddress = MockAdress },
+            new Models.Orders.Order { SequenceNumber = 123, OrderDate = DateTime.Now, State = OrderState.Delivered, OrderItems = MockOrderItems, CardType = MockPaymentInfo.CardType.ToString(), CardHolderName = MockPaymentInfo.CardHolderName, CardNumber = MockPaymentInfo.CardNumber, CardSecurityNumber = MockPaymentInfo.SecurityNumber, CardExpiration = new DateTime(MockPaymentInfo.ExpirationYear, MockPaymentInfo.ExpirationMonth, 1), ShippingCity = MockAdress.City, ShippingState = MockAdress.State, ShippingCountry = MockAdress.Country, ShippingStreet = MockAdress.Street },
+            new Models.Orders.Order { SequenceNumber = 132, OrderDate = DateTime.Now, State = OrderState.Delivered, OrderItems = MockOrderItems, CardType = MockPaymentInfo.CardType.ToString(), CardHolderName = MockPaymentInfo.CardHolderName, CardNumber = MockPaymentInfo.CardNumber, CardSecurityNumber = MockPaymentInfo.SecurityNumber, CardExpiration = new DateTime(MockPaymentInfo.ExpirationYear, MockPaymentInfo.ExpirationMonth, 1), ShippingCity = MockAdress.City, ShippingState = MockAdress.State, ShippingCountry = MockAdress.Country, ShippingStreet = MockAdress.Street },
+            new Models.Orders.Order { SequenceNumber = 231, OrderDate = DateTime.Now, State = OrderState.Delivered, OrderItems = MockOrderItems, CardType = MockPaymentInfo.CardType.ToString(), CardHolderName = MockPaymentInfo.CardHolderName, CardNumber = MockPaymentInfo.CardNumber, CardSecurityNumber = MockPaymentInfo.SecurityNumber, CardExpiration = new DateTime(MockPaymentInfo.ExpirationYear, MockPaymentInfo.ExpirationMonth, 1), ShippingCity = MockAdress.City, ShippingState = MockAdress.State, ShippingCountry = MockAdress.Country, ShippingStreet = MockAdress.Street },
         };
 
         private static List<OrderItem> MockOrderItems = new List<OrderItem>()
@@ -62,33 +62,45 @@ namespace eShopOnContainers.Core.Services.Order
             new CardType { Id = 2, Name = "Visa" },
             new CardType { Id = 3, Name = "MasterCard" },
         };
-        
-        public async Task CreateOrderAsync(Models.Orders.Order newOrder)
+
+        public async Task CreateOrderAsync(Models.Orders.Order newOrder, string token)
         {
             await Task.Delay(500);
 
-            MockOrders.Insert(0, newOrder);
+            if (!string.IsNullOrEmpty(token))
+            {
+                MockOrders.Insert(0, newOrder);
+            }
         }
 
-        public async Task<ObservableCollection<Models.Orders.Order>> GetOrdersAsync()
+        public async Task<ObservableCollection<Models.Orders.Order>> GetOrdersAsync(string token)
         {
             await Task.Delay(500);
 
-            return MockOrders.ToObservableCollection();
+            if (!string.IsNullOrEmpty(token))
+                return MockOrders.ToObservableCollection();
+            else
+                return new ObservableCollection<Models.Orders.Order>();
         }
 
-        public async Task<Models.Orders.Order> GetOrderAsync(int orderId)
+        public async Task<Models.Orders.Order> GetOrderAsync(int orderId, string token)
         {
             await Task.Delay(500);
 
-            return MockOrders.FirstOrDefault(o => o.SequenceNumber == orderId);
+            if (!string.IsNullOrEmpty(token))
+                return MockOrders.FirstOrDefault(o => o.SequenceNumber == orderId);
+            else
+                return new Models.Orders.Order();
         }
 
-        public async Task<ObservableCollection<CardType>> GetCardTypesAsync()
+        public async Task<ObservableCollection<CardType>> GetCardTypesAsync(string token)
         {
             await Task.Delay(500);
 
-            return MockCardTypes.ToObservableCollection();
+            if (!string.IsNullOrEmpty(token))
+                return MockCardTypes.ToObservableCollection();
+            else
+                return new ObservableCollection<CardType>();
         }
     }
 }

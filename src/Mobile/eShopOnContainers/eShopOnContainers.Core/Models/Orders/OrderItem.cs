@@ -4,7 +4,7 @@ namespace eShopOnContainers.Core.Models.Orders
 {
     public class OrderItem
     {
-        public Guid ProductId { get; set; }
+        public string ProductId { get; set; }
         public Guid OrderId { get; set; }
         public decimal UnitPrice { get; set; }
         public string ProductName { get; set; }

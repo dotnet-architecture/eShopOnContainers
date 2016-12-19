@@ -19,7 +19,7 @@ namespace eShopOnContainers.Core.Services.Identity
             var dic = new Dictionary<string, string>();
             dic.Add("client_id", "xamarin");
             dic.Add("response_type", "id_token token");
-            dic.Add("scope", "openid profile basket");
+            dic.Add("scope", "openid profile basket orders");
 
             dic.Add("redirect_uri", GlobalSetting.Instance.IdentityCallback);
             dic.Add("nonce", Guid.NewGuid().ToString("N"));

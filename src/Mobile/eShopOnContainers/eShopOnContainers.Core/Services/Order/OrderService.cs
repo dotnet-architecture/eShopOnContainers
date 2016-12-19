@@ -14,7 +14,7 @@ namespace eShopOnContainers.Core.Services.Order
             _requestProvider = requestProvider;
         }
 
-        public async Task CreateOrderAsync(Models.Orders.Order newOrder)
+        public async Task CreateOrderAsync(Models.Orders.Order newOrder, string token)
         {
             UriBuilder builder = new UriBuilder(GlobalSetting.Instance.OrdersEndpoint);
 
@@ -22,10 +22,10 @@ namespace eShopOnContainers.Core.Services.Order
 
             string uri = builder.ToString();
 
-            await _requestProvider.PostAsync(uri, newOrder);
+            await _requestProvider.PostAsync(uri, newOrder, token);
         }
 
-        public async Task<ObservableCollection<Models.Orders.Order>> GetOrdersAsync()
+        public async Task<ObservableCollection<Models.Orders.Order>> GetOrdersAsync(string token)
         {
             try
             {
@@ -36,7 +36,7 @@ namespace eShopOnContainers.Core.Services.Order
                 string uri = builder.ToString();
 
                 ObservableCollection<Models.Orders.Order> orders =
-                    await _requestProvider.GetAsync<ObservableCollection<Models.Orders.Order>>(uri);
+                    await _requestProvider.GetAsync<ObservableCollection<Models.Orders.Order>>(uri, token);
 
                 return orders;
             }
@@ -46,7 +46,7 @@ namespace eShopOnContainers.Core.Services.Order
             }
         }
 
-        public async Task<Models.Orders.Order> GetOrderAsync(int orderId)
+        public async Task<Models.Orders.Order> GetOrderAsync(int orderId, string token)
         {
             try
             {
@@ -57,7 +57,7 @@ namespace eShopOnContainers.Core.Services.Order
                 string uri = builder.ToString();
 
                 Models.Orders.Order order =
-                    await _requestProvider.GetAsync<Models.Orders.Order>(uri);
+                    await _requestProvider.GetAsync<Models.Orders.Order>(uri, token);
 
                 return order;
             }
@@ -67,7 +67,7 @@ namespace eShopOnContainers.Core.Services.Order
             }
         }
 
-        public async Task<ObservableCollection<Models.Orders.CardType>> GetCardTypesAsync()
+        public async Task<ObservableCollection<Models.Orders.CardType>> GetCardTypesAsync(string token)
         {
             try
             {
@@ -78,7 +78,7 @@ namespace eShopOnContainers.Core.Services.Order
                 string uri = builder.ToString();
 
                 ObservableCollection<Models.Orders.CardType> cardTypes =
-                    await _requestProvider.GetAsync<ObservableCollection<Models.Orders.CardType>>(uri);
+                    await _requestProvider.GetAsync<ObservableCollection<Models.Orders.CardType>>(uri, token);
 
                 return cardTypes;
             }

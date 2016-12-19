@@ -7,7 +7,7 @@
 
         public GlobalSetting()
         {
-            BaseEndpoint = "http://104.40.62.65";
+            BaseEndpoint = "http://13.88.8.119";
         }
 
         public static GlobalSetting Instance

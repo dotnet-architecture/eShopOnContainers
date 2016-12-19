@@ -101,18 +101,17 @@ namespace eShopOnContainers.Core.Services.RequestProvider
 
         private async Task HandleResponse(HttpResponseMessage response)
         {
-            // TODO:
             if (!response.IsSuccessStatusCode)
             {
                 var content = await response.Content.ReadAsStringAsync();
 
-                if (response.StatusCode == HttpStatusCode.Forbidden 
+                if (response.StatusCode == HttpStatusCode.Forbidden
                     || response.StatusCode == HttpStatusCode.Unauthorized)
                 {
-                     // throw new ServiceAuthenticationException(content);
+                    throw new ServiceAuthenticationException(content);
                 }
 
-                // throw new HttpRequestException(content);
+                throw new HttpRequestException(content);
             }
         }
     }

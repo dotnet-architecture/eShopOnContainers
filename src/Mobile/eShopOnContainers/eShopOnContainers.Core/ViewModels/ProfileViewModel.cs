@@ -1,4 +1,5 @@
 ﻿using eShopOnContainers.Core.Extensions;
+using eShopOnContainers.Core.Helpers;
 using eShopOnContainers.Core.Models.Orders;
 using eShopOnContainers.Core.Models.User;
 using eShopOnContainers.Core.Services.Order;
@@ -40,7 +41,8 @@ namespace eShopOnContainers.Core.ViewModels
         {
             IsBusy = true;
 
-            var orders = await _orderService.GetOrdersAsync();
+            var authToken = Settings.AuthAccessToken;
+            var orders = await _orderService.GetOrdersAsync(authToken);
             Orders = orders.ToObservableCollection();
 
             IsBusy = false;

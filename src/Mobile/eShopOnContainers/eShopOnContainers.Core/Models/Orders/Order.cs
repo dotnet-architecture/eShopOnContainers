@@ -1,7 +1,7 @@
-﻿using eShopOnContainers.Core.Models.User;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 
 namespace eShopOnContainers.Core.Models.Orders
 {
@@ -9,34 +9,52 @@ namespace eShopOnContainers.Core.Models.Orders
     {
         public Order()
         {
+            SequenceNumber = 1;
             OrderItems = new List<OrderItem>();
-            ShippingAddress = new Address();
-            PaymentInfo = new PaymentInfo();
         }
 
-        public string Id;
-        public List<OrderItem> OrderItems { get; set; }
+        public string BuyerId { get; set; }
 
-        public string OrderNumber
-        {
-            get
-            {
-                return string.Format("{0}/{1}-{2}", OrderDate.Year, OrderDate.Month, SequenceNumber);
-            }
-        }
         public int SequenceNumber { get; set; }
-        public virtual string BuyerId { get; set; }
-        public virtual Address ShippingAddress { get; set; }
-        public virtual PaymentInfo PaymentInfo { get; set; }
-        public virtual DateTime OrderDate { get; set; }
+
+        public DateTime OrderDate { get; set; }
+
         public OrderState State { get; set; }
+
+        public string ShippingCity { get; set; }
+
+        public string ShippingStreet { get; set; }
+
+        public string ShippingState { get; set; }
+
+        public string ShippingCountry { get; set; }
+
+        public string CardType { get; set; }
+
+        public string CardNumber { get; set; }
+
+        public string CardHolderName { get; set; }
+
+        public DateTime CardExpiration { get; set; }
+
+        public string CardSecurityNumber { get; set; }
+
+        [JsonProperty("items")]
+        public List<OrderItem> OrderItems { get; set; }
 
         public decimal Total { get { return CalculateTotal(); } }
 
+        public string OrderNumber { get { return CalculateOrderNumber(); } }
 
-        public decimal CalculateTotal()
+
+        private decimal CalculateTotal()
         {
             return OrderItems.Sum(x => x.Quantity * x.UnitPrice);
+        }
+
+        private string CalculateOrderNumber()
+        {
+            return string.Format("{0}/{1}-{2}", OrderDate.Year, OrderDate.Month, SequenceNumber);
         }
     }
 }
