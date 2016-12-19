@@ -1,4 +1,6 @@
-﻿namespace eShopOnContainers.Core.Services.Identity
+﻿using System.Threading.Tasks;
+
+namespace eShopOnContainers.Core.Services.Identity
 {
     public interface IIdentityService
     {

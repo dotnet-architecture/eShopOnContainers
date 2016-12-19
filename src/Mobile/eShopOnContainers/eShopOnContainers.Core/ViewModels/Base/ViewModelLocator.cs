@@ -9,6 +9,11 @@ using eShopOnContainers.Core.Services.Basket;
 using eShopOnContainers.Core.Services.Identity;
 using eShopOnContainers.Core.Services.Order;
 using eShopOnContainers.Core.Services.User;
+using Xamarin.Forms;
+using System.Collections.Generic;
+using eShopOnContainers.Core.Models.Basket;
+using eShopOnContainers.Core.Models.Catalog;
+using eShopOnContainers.Core.ViewModels.Base;
 
 namespace eShopOnContainers.ViewModels.Base
 {
@@ -58,6 +63,12 @@ namespace eShopOnContainers.ViewModels.Base
 
         public void UpdateDependencies(bool useMockServices)
         {
+            // Clear message subscriptions
+            var basketViewModel = _unityContainer.Resolve<BasketViewModel>();
+            MessagingCenter.Unsubscribe<CatalogViewModel, List<BasketItem>>(basketViewModel, MessengerKeys.UpdateBasket);
+            MessagingCenter.Unsubscribe<CatalogViewModel, CatalogItem>(basketViewModel, MessengerKeys.AddProduct);
+
+            // Change injected dpendencies
             if (useMockServices)
             {
                 _unityContainer.RegisterInstance<ICatalogService>(new CatalogMockService());

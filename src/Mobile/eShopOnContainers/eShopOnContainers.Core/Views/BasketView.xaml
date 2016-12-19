@@ -1,7 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="eShopOnContainers.Core.Views.BasketView"
+             x:Class="eShopOnContainers.Core.Views.BasketView"  
+             xmlns:behaviors="clr-namespace:eShopOnContainers.Core.Behaviors;assembly=eShopOnContainers.Core" 
              xmlns:templates="clr-namespace:eShopOnContainers.Core.Views.Templates;assembly=eShopOnContainers.Core"   
              Title="Cart">
     <ContentPage.Resources>
@@ -73,7 +74,8 @@
                     <!-- ITEMS -->
                     <ListView 
                         Grid.Row="1"
-                        ItemsSource="{Binding BasketItems}"    
+                        ItemsSource="{Binding BasketItems}"                              
+                        behaviors:ItemTappedCommandListViewBehavior.ItemTappedCommand="{Binding AddCommand}"
                         HeightRequest="{Binding BasketItems.Count, Converter={StaticResource ItemsToHeightConverter}}"
                         HasUnevenRows="True"
                         SeparatorVisibility="None"

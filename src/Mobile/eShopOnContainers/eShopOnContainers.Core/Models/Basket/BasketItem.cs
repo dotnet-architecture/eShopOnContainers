@@ -1,9 +1,12 @@
 ﻿using System;
+using Xamarin.Forms;
 
 namespace eShopOnContainers.Core.Models.Basket
 {
-    public class BasketItem 
+    public class BasketItem : BindableObject
     {
+        private int _quantity;
+
         public string Id { get; set; }
        
         public string ProductId { get; set; }
@@ -12,7 +15,15 @@ namespace eShopOnContainers.Core.Models.Basket
 
         public decimal UnitPrice { get; set; }
 
-        public int Quantity { get; set; }
+        public int Quantity
+        {
+            get { return _quantity; }
+            set
+            {
+                _quantity = value;
+                OnPropertyChanged("Quantity");
+            }
+        }
 
         public string PictureUrl { get; set; }
 

@@ -5,7 +5,7 @@
              xmlns:templates="clr-namespace:eShopOnContainers.Core.Views.Templates;assembly=eShopOnContainers.Core"   
              xmlns:animations="clr-namespace:eShopOnContainers.Core.Animations;assembly=eShopOnContainers.Core"
              xmlns:triggers="clr-namespace:eShopOnContainers.Core.Triggers;assembly=eShopOnContainers.Core"
-             Title="{Binding Order.SequenceNumber}">
+             Title="{Binding Order.OrderNumber}">
     <ContentPage.Resources>
         <ResourceDictionary>
 
@@ -176,16 +176,16 @@
                 <StackLayout
                     Grid.Row="1">
                     <Label
-                        Text="{Binding Order.ShippingAddress.Street}"
+                        Text="{Binding Order.ShippingStreet}"
                         Style="{StaticResource AddressStyle}"/>
                     <Label
-                        Text="{Binding Order.ShippingAddress.City}"   
+                        Text="{Binding Order.ShippingCity}"   
                         Style="{StaticResource AddressStyle}"/>
                     <Label
-                        Text="{Binding Order.ShippingAddress.CountryCode}"   
+                        Text="{Binding Order.ShippingState}"   
                         Style="{StaticResource AddressStyle}"/>
                     <Label
-                        Text="{Binding Order.ShippingAddress.Country}"   
+                        Text="{Binding Order.ShippingCountry}"   
                         Style="{StaticResource AddressStyle}"/>
                 </StackLayout>
             </Grid>

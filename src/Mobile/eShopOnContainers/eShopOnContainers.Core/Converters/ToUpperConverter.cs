@@ -8,7 +8,10 @@ namespace eShopOnContainers.Core.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return value.ToString().ToUpperInvariant();
+            if (value != null)
+                return value.ToString().ToUpperInvariant();
+            else
+                return value;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

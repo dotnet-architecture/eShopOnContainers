@@ -62,14 +62,14 @@ namespace eShopOnContainers.Core.ViewModels
             }
         }
 
+        public ICommand AddCommand => new Command<BasketItem>(AddItem);
+
         public ICommand CheckoutCommand => new Command(Checkout);
          
         public override Task InitializeAsync(object navigationData)
         {
             MessagingCenter.Subscribe<CatalogViewModel, List<BasketItem>>(this, MessengerKeys.UpdateBasket, (sender, arg) =>
             {
-                MessagingCenter.Unsubscribe<CatalogViewModel, List<BasketItem>>(this, MessengerKeys.UpdateBasket);
-
                 foreach (var basketItem in arg)
                 {
                     BadgeCount += basketItem.Quantity;
@@ -107,6 +107,21 @@ namespace eShopOnContainers.Core.ViewModels
                     Quantity = 1
                 });
             }
+
+            ReCalculateTotal();
+        }
+
+        private void AddItem(BasketItem parameter)
+        {
+            BadgeCount++;
+
+            var basketItem = BasketItems
+                .FirstOrDefault(bi => bi.ProductId.Equals(parameter.ProductId, 
+                StringComparison.CurrentCultureIgnoreCase));
+
+            basketItem.Quantity++;
+
+            RaisePropertyChanged(() => BasketItems);
 
             ReCalculateTotal();
         }

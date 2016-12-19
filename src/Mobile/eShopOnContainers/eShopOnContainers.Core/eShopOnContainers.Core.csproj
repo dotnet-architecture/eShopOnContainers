@@ -44,6 +44,7 @@
     </Compile>
     <Compile Include="Behaviors\Base\BindableBehavior.cs" />
     <Compile Include="Behaviors\EventToCommandBehavior.cs" />
+    <Compile Include="Behaviors\ItemTappedCommandListViewBehavior.cs" />
     <Compile Include="Behaviors\WebViewNavigationBehavior.cs" />
     <Compile Include="Controls\BindablePicker.cs" />
     <Compile Include="Controls\AddBasketButton.xaml.cs">

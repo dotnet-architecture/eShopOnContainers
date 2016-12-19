@@ -83,16 +83,19 @@ namespace eShopOnContainers.Core.ViewModels
 
                 ShippingAddress = new Address
                 {
+                    Id = new Guid(userInfo.UserId),
                     Street = userInfo?.Street,
                     ZipCode = userInfo?.ZipCode,
                     State = userInfo?.State,
                     Country = userInfo?.Country,
+                    City = string.Empty
                 };
 
                 var paymentInfo = new PaymentInfo
                 {
                     CardNumber = userInfo?.CardNumber,
                     CardHolderName = userInfo?.CardHolder,
+                    CardType = new CardType {  Id = 3, Name = "MasterCard" },
                     SecurityNumber = userInfo?.CardSecurityNumber
                 };
 
@@ -106,9 +109,12 @@ namespace eShopOnContainers.Core.ViewModels
                     CardNumber = paymentInfo.CardNumber,
                     CardSecurityNumber = paymentInfo.SecurityNumber,
                     CardExpiration = DateTime.Now.AddYears(5),
+                    CardTypeId = paymentInfo.CardType.Id,
                     ShippingState = _shippingAddress.State,
                     ShippingCountry = _shippingAddress.Country,
-                    ShippingStreet = _shippingAddress.Street
+                    ShippingStreet = _shippingAddress.Street,
+                    ShippingCity = _shippingAddress.City,                  
+                    Total = CalculateTotal(CreateOrderItems(orderItems))
                 };
 
                 IsBusy = false;
@@ -126,7 +132,7 @@ namespace eShopOnContainers.Core.ViewModels
             await NavigationService.NavigateToAsync<MainViewModel>(new TabParameter { TabIndex = 1 });
             await NavigationService.RemoveLastFromBackStackAsync();
 
-            await DialogService.ShowAlertAsync("Order sent successfully!", string.Format("Order {0}", Order.SequenceNumber), "Ok");
+            await DialogService.ShowAlertAsync("Order sent successfully!", string.Format("Order {0}", Order.OrderNumber), "Ok");
             await NavigationService.RemoveLastFromBackStackAsync();
         }
 
@@ -138,6 +144,7 @@ namespace eShopOnContainers.Core.ViewModels
             {
                 orderItems.Add(new OrderItem
                 {
+                    OrderId = null,
                     ProductId = basketItem.ProductId,
                     ProductName = basketItem.ProductName,
                     PictureUrl = basketItem.PictureUrl,
@@ -148,5 +155,17 @@ namespace eShopOnContainers.Core.ViewModels
 
             return orderItems;
         } 
+
+        private decimal CalculateTotal(List<OrderItem> orderItems)
+        {
+            decimal total = 0;
+
+            foreach(var orderItem in orderItems)
+            {
+                total += (orderItem.Quantity * orderItem.UnitPrice);
+            }
+
+            return total;
+        }
     }
 }

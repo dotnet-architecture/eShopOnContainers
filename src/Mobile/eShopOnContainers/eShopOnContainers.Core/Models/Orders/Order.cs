@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Newtonsoft.Json;
 
 namespace eShopOnContainers.Core.Models.Orders
@@ -17,19 +16,25 @@ namespace eShopOnContainers.Core.Models.Orders
 
         public int SequenceNumber { get; set; }
 
+        [JsonProperty("date")]
         public DateTime OrderDate { get; set; }
 
+        [JsonProperty("status")]
         public OrderState State { get; set; }
 
+        [JsonProperty("city")]
         public string ShippingCity { get; set; }
 
+        [JsonProperty("street")]
         public string ShippingStreet { get; set; }
 
+        [JsonProperty("state")]
         public string ShippingState { get; set; }
 
+        [JsonProperty("country")]
         public string ShippingCountry { get; set; }
 
-        public string CardType { get; set; }
+        public int CardTypeId { get; set; }
 
         public string CardNumber { get; set; }
 
@@ -39,22 +44,13 @@ namespace eShopOnContainers.Core.Models.Orders
 
         public string CardSecurityNumber { get; set; }
 
-        [JsonProperty("items")]
+        [JsonProperty("orderitems")]
         public List<OrderItem> OrderItems { get; set; }
 
-        public decimal Total { get { return CalculateTotal(); } }
+        [JsonProperty("total")]
+        public decimal Total { get; set; }
 
-        public string OrderNumber { get { return CalculateOrderNumber(); } }
-
-
-        private decimal CalculateTotal()
-        {
-            return OrderItems.Sum(x => x.Quantity * x.UnitPrice);
-        }
-
-        private string CalculateOrderNumber()
-        {
-            return string.Format("{0}/{1}-{2}", OrderDate.Year, OrderDate.Month, SequenceNumber);
-        }
+        [JsonProperty("ordernumber")]
+        public string OrderNumber { get; set; }
     }
 }
