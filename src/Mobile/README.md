@@ -2,7 +2,7 @@
 
 eShopOnContainers is a reference app whose imagined purpose is to serve the mobile workforce of a fictitious company that sells products. The app allow to manage the catalog, view products, manage the basket and the orders.
 
-<img src="Images/Preview.png" alt="eShopOnContainers" Width="320" />
+<img src="Images/eShopOnContainers_Architecture_Diagram.png" alt="eShopOnContainers" Width="800" />
 
 ###Try it out:
 You can download and build the app's source as-is, preconfigured to consume our Azure service instance. 
@@ -47,12 +47,25 @@ The app targets **three** platforms:
     * UWP supported only in Visual Studio, not Xamarin Studio
 
 
-As of 29/11/2016, eShopOnContainers features **89.2% code share** (7.2% iOS / 16.7% Android / 8.7% Windows).
+As of 19/12/2016, eShopOnContainers features **89.2% code share** (7.2% iOS / 16.7% Android / 8.7% Windows).
+
+##Licenses
+
+This project uses some third-party assets with a license that requires attribution:
+
+- [Xamarin.Plugins](https://github.com/jamesmontemagno/Xamarin.Plugins): by James Montemagno
+- [FFImageLoading](https://github.com/daniel-luberda/FFImageLoading): by Daniel Luberda
+- [ACR User Dialogs](https://github.com/aritchie/userdialogs): by Allan Ritchie
+- [Xamarin.Forms Animation Helpers](https://github.com/jsuarezruiz/Xamanimation): by Javier Suárez
+- [SlideOverKit](https://github.com/XAM-Consulting/SlideOverKit): by XAM-Consulting
 
 ## Requirements
+### Requirements for Dec. 2016 version of eShopOnContainers
+
 * [Visual Studio __2015__](https://www.visualstudio.com/en-us/products/vs-2015-product-editions.aspx) (14.0 or higher) to compile C# 6 langage features (or Visual Studio MacOS)
 * Xamarin add-ons for Visual Studio (available via the Visual Studio installer)
 * __Visual Studio Community Edition is fully supported!__
+* Android SDK Tools 25.2.3 or higher
 
 ## Setup
 
