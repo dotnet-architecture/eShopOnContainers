@@ -1,7 +1,7 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Ordering.API.Controllers
 {
-    using Application.Commands;
-    using Application.Queries;
+    using Api.Application.Commands;
+    using Api.Application.Queries;
     using AspNetCore.Authorization;
     using MediatR;
     using Microsoft.AspNetCore.Mvc;
@@ -11,7 +11,7 @@
     using System.Threading.Tasks;
 
     [Route("api/v1/[controller]")]
-    [Authorize]
+    //[Authorize]
     public class OrdersController : Controller
     {
         private readonly IMediator _mediator;

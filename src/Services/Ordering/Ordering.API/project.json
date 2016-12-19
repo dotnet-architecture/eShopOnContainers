@@ -19,16 +19,16 @@
     "Microsoft.Extensions.Options.ConfigurationExtensions": "1.0.0",
     "Microsoft.EntityFrameworkCore.SqlServer": "1.0.1",
     "Microsoft.EntityFrameworkCore": "1.0.1",
-    "Microsoft.EntityFrameworkCore.Design" : "1.0.0-preview2-final",
+    "Microsoft.EntityFrameworkCore.Design": "1.0.0-preview2-final",
     "Microsoft.EntityFrameworkCore.SqlServer.Design": "1.0.1",
     "Microsoft.AspNetCore.Diagnostics": "1.0.0",
     "Swashbuckle": "6.0.0-beta902",
     "MediatR": "2.1.0",
     "Ordering.Domain": "1.0.0-*",
-    "Ordering.Application": "1.0.0-*",
     "Ordering.Infrastructure": "1.0.0-*",
     "System.Reflection": "4.3.0",
-    "IdentityServer4.AccessTokenValidation": "1.0.1-rc3"
+    "IdentityServer4.AccessTokenValidation": "1.0.1-rc3",
+    "Dapper": "1.50.2"
   },
   "tools": {
     "Microsoft.EntityFrameworkCore.Tools": "1.0.0-preview2-final",

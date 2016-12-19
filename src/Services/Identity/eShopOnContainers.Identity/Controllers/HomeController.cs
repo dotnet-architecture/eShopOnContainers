@@ -2,9 +2,11 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
+using eShopOnContainers.Identity;
 using IdentityServer4.Quickstart.UI.Models;
 using IdentityServer4.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 
 namespace IdentityServer4.Quickstart.UI.Controllers
@@ -12,14 +14,19 @@ namespace IdentityServer4.Quickstart.UI.Controllers
     public class HomeController : Controller
     {
         private readonly IIdentityServerInteractionService _interaction;
+        private readonly IOptions<AppSettings> _settings;
 
-        public HomeController(IIdentityServerInteractionService interaction)
+        public HomeController(IIdentityServerInteractionService interaction, IOptions<AppSettings> settings)
         {
             _interaction = interaction;
+            _settings = settings;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string returnUrl)
         {
+            if (returnUrl != "")
+                return Redirect(_settings.Value.MvcClient);
+
             return View();
         }
 

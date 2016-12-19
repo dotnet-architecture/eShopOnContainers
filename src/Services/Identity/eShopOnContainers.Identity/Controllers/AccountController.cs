@@ -85,15 +85,9 @@ namespace IdentityServer4.Quickstart.UI.Controllers
             if (ModelState.IsValid)
             {
                 var user = await _loginService.FindByUsername(model.Email);
-                // validate username/password against in-memory store
                 if (await _loginService.ValidateCredentials(user, model.Password))
                 {
-                    // issue authentication cookie with subject ID and username
-                    //var user = _loginService.FindByUsername(model.Username);
-
-                    AuthenticationProperties props = null;
-                    // only set explicit expiration here if persistent. 
-                    // otherwise we reply upon expiration configured in cookie middleware.
+                     AuthenticationProperties props = null;
                     if (model.RememberMe)
                     {
                         props = new AuthenticationProperties
@@ -217,15 +211,7 @@ namespace IdentityServer4.Quickstart.UI.Controllers
 
             // get context information (client name, post logout redirect URI and iframe for federated signout)
             var logout = await _interaction.GetLogoutContextAsync(model.LogoutId);
-
-            var vm = new LoggedOutViewModel
-            {
-                PostLogoutRedirectUri = logout?.PostLogoutRedirectUri,
-                ClientName = logout?.ClientId,
-                SignOutIframeUrl = logout?.SignOutIFrameUrl
-            };
-
-            return View("LoggedOut", vm);
+            return Redirect(logout?.PostLogoutRedirectUri);
         }
 
         /// <summary>
