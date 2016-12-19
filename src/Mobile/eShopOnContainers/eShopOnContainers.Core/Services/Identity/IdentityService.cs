@@ -35,10 +35,15 @@ namespace eShopOnContainers.Core.Services.Identity
 
         public string CreateLogoutRequest(string token)
         {
+            if(string.IsNullOrEmpty(token))
+            {
+                return string.Empty;
+            }
+
             return string.Format("{0}?id_token_hint={1}&post_logout_redirect_uri={2}", 
                 GlobalSetting.Instance.LogoutEndpoint,
                 token,
-                GlobalSetting.Instance.IdentityCallback);
+                GlobalSetting.Instance.LogoutCallback);
         }
 
         public string DecodeToken(string token)

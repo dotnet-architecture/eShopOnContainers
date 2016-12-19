@@ -190,7 +190,6 @@ namespace eShopOnContainers.Core.ViewModels
 
             IsValid = true;
             IsLogin = true;
-
             IsBusy = false;
         }
 
@@ -201,28 +200,36 @@ namespace eShopOnContainers.Core.ViewModels
 
         private void Logout()
         {
-            var token = Settings.AuthAccessToken;
-            var logoutRequest = _identityService.CreateLogoutRequest(token);
+            var authIdToken = Settings.AuthIdToken;
+
+            var logoutRequest = _identityService.CreateLogoutRequest(authIdToken);
 
             if(!string.IsNullOrEmpty(logoutRequest))
             {
+                // Logout
                 LoginUrl = logoutRequest;
-                Settings.AuthAccessToken = string.Empty;
-                IsLogin = true;
             }
         }
 
         private async void NavigateAsync(string url)
         {
-            if (url.Contains(GlobalSetting.Instance.IdentityCallback))
+            if (url.Equals(GlobalSetting.Instance.LogoutCallback))
+            {
+                Settings.AuthAccessToken = string.Empty;
+                Settings.AuthIdToken = string.Empty;
+                IsLogin = false;
+                LoginUrl = _identityService.CreateAuthorizeRequest();
+            }
+            else if (url.Contains(GlobalSetting.Instance.IdentityCallback))
             {
                 var authResponse = new AuthorizeResponse(url);
 
                 if (!string.IsNullOrWhiteSpace(authResponse.AccessToken))
                 {
-                    if(authResponse.AccessToken != null)
+                    if (authResponse.AccessToken != null)
                     {
                         Settings.AuthAccessToken = authResponse.AccessToken;
+                        Settings.AuthIdToken = authResponse.IdentityToken;
 
                         await NavigationService.NavigateToAsync<MainViewModel>();
                         await NavigationService.RemoveLastFromBackStackAsync();

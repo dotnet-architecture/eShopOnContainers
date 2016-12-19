@@ -3,7 +3,6 @@ using eShopOnContainers.Core.Helpers;
 using eShopOnContainers.Core.Models.Orders;
 using eShopOnContainers.Core.Models.User;
 using eShopOnContainers.Core.Services.Order;
-using eShopOnContainers.Core.ViewModels.Base;
 using eShopOnContainers.ViewModels.Base;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
@@ -41,6 +40,7 @@ namespace eShopOnContainers.Core.ViewModels
         {
             IsBusy = true;
 
+            // Get orders
             var authToken = Settings.AuthAccessToken;
             var orders = await _orderService.GetOrdersAsync(authToken);
             Orders = orders.ToObservableCollection();
@@ -52,6 +52,7 @@ namespace eShopOnContainers.Core.ViewModels
         {
             IsBusy = true;
 
+            // Logout
             await NavigationService.NavigateToAsync<LoginViewModel>(new LogoutParameter { Logout = true });
             await NavigationService.RemoveBackStackAsync();
 

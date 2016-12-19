@@ -44,6 +44,8 @@
 
         public string IdentityCallback { get; set; }
 
+        public string LogoutCallback { get; set; }
+
         private void UpdateEndpoint(string baseEndpoint)
         {
             RegisterWebsite = string.Format("{0}/Account/Register", baseEndpoint);
@@ -54,6 +56,7 @@
             UserInfoEndpoint = string.Format("{0}:5105/connect/userinfo", baseEndpoint);
             LogoutEndpoint = string.Format("{0}:5105/connect/endsession", baseEndpoint);
             IdentityCallback = "http://eshopxamarin/callback.html";
+            LogoutCallback = "http://eshopxamarin/callback.html/index.html";
         }
     }
 }

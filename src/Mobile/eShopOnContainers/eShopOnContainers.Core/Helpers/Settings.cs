@@ -21,7 +21,9 @@ namespace eShopOnContainers.Core.Helpers
         #region Setting Constants
 
         private const string AccessToken = "access_token";
+        private const string IdToken = "id_token";
         private static readonly string AccessTokenDefault = string.Empty;
+        private static readonly string IdTokenDefault = string.Empty;
 
         #endregion
 
@@ -35,6 +37,18 @@ namespace eShopOnContainers.Core.Helpers
             set
             {
                 AppSettings.AddOrUpdateValue<string>(AccessToken, value);
+            }
+        }
+
+        public static string AuthIdToken
+        {
+            get
+            {
+                return AppSettings.GetValueOrDefault<string>(IdToken, IdTokenDefault);
+            }
+            set
+            {
+                AppSettings.AddOrUpdateValue<string>(IdToken, value);
             }
         }
     }

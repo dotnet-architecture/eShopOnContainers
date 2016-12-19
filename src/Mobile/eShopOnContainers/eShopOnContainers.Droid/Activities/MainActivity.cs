@@ -5,6 +5,10 @@ using Android.Views;
 using Xamarin.Forms.Platform.Android;
 using FFImageLoading.Forms.Droid;
 using Acr.UserDialogs;
+using Android.Content;
+using Android.Runtime;
+using FFImageLoading;
+using System;
 
 namespace eShopOnContainers.Droid.Activities
 {
@@ -40,6 +44,17 @@ namespace eShopOnContainers.Droid.Activities
             window.ClearFlags(WindowManagerFlags.TranslucentStatus);
             window.AddFlags(WindowManagerFlags.DrawsSystemBarBackgrounds);
             window.SetStatusBarColor(Android.Graphics.Color.Rgb(0, 166, 156));
+        }
+
+        /// <summary>
+        /// FFImageLoading image service preserves in heap memory of the device every image newly downloaded 
+        /// from url. In order to avoid application crash, you should reclaim memory in low memory situations.
+        /// </summary>
+        public override void OnTrimMemory([GeneratedEnum] TrimMemory level)
+        {
+            ImageService.Instance.InvalidateMemoryCache();
+            GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
+            base.OnTrimMemory(level);
         }
     }
 }

@@ -45,10 +45,9 @@ namespace eShopOnContainers.Core.ViewModels
 
                 var order = navigationData as Order;
 
+                // Get order detail info
                 var authToken = Settings.AuthAccessToken;
                 Order = await _ordersService.GetOrderAsync(Convert.ToInt32(order.OrderNumber), authToken);
-
-                // TODO: Change Mock Order Service
 
                 IsBusy = false;
             }

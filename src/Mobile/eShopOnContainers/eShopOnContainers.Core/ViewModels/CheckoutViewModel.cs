@@ -74,6 +74,7 @@ namespace eShopOnContainers.Core.ViewModels
             {
                 IsBusy = true;
 
+                // Get navigation data
                 var orderItems = ((ObservableCollection<BasketItem>)navigationData);
 
                 OrderItems = orderItems;
@@ -81,6 +82,7 @@ namespace eShopOnContainers.Core.ViewModels
                 var authToken = Settings.AuthAccessToken;
                 var userInfo = await _userService.GetUserInfoAsync(authToken);
 
+                // Create Shipping Address
                 ShippingAddress = new Address
                 {
                     Id = new Guid(userInfo.UserId),
@@ -91,6 +93,7 @@ namespace eShopOnContainers.Core.ViewModels
                     City = string.Empty
                 };
 
+                // Create Payment Info
                 var paymentInfo = new PaymentInfo
                 {
                     CardNumber = userInfo?.CardNumber,
@@ -99,6 +102,7 @@ namespace eShopOnContainers.Core.ViewModels
                     SecurityNumber = userInfo?.CardSecurityNumber
                 };
 
+                // Create new Order
                 Order = new Order
                 {
                     BuyerId = userInfo.UserId,
@@ -123,17 +127,32 @@ namespace eShopOnContainers.Core.ViewModels
 
         private async void Checkout()
         {
-            var authToken = Settings.AuthAccessToken;
+            try
+            {
+                var authToken = Settings.AuthAccessToken;
 
-            await _orderService.CreateOrderAsync(Order, authToken);
+                // Create new order
+                await _orderService.CreateOrderAsync(Order, authToken);
 
-            await _basketService.ClearBasketAsync(_shippingAddress.Id.ToString(), authToken);
-            
-            await NavigationService.NavigateToAsync<MainViewModel>(new TabParameter { TabIndex = 1 });
-            await NavigationService.RemoveLastFromBackStackAsync();
+                // Clean Basket
+                await _basketService.ClearBasketAsync(_shippingAddress.Id.ToString(), authToken);
 
-            await DialogService.ShowAlertAsync("Order sent successfully!", string.Format("Order {0}", Order.OrderNumber), "Ok");
-            await NavigationService.RemoveLastFromBackStackAsync();
+                // Reset Basket badge
+                var basketViewModel = ViewModelLocator.Instance.Resolve<BasketViewModel>();
+                basketViewModel.BadgeCount = 0;
+
+                // Navigate to Orders
+                await NavigationService.NavigateToAsync<MainViewModel>(new TabParameter { TabIndex = 1 });
+                await NavigationService.RemoveLastFromBackStackAsync();
+
+                // Show Dialog
+                await DialogService.ShowAlertAsync("Order sent successfully!", string.Format("Order {0}", Order.OrderNumber), "Ok");
+                await NavigationService.RemoveLastFromBackStackAsync();
+            }
+            catch
+            {
+                await DialogService.ShowAlertAsync("An error ocurred. Please, try again.", "Oops!", "Ok");
+            }
         }
 
         private List<OrderItem> CreateOrderItems(ObservableCollection<BasketItem> basketItems)

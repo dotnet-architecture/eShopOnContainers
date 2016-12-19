@@ -96,6 +96,7 @@ namespace eShopOnContainers.Core.ViewModels
 
         private void UpdateEndpoint(string endpoint)
         {
+            // Update remote endpoint 
             GlobalSetting.Instance.BaseEndpoint = endpoint;
         }
     }

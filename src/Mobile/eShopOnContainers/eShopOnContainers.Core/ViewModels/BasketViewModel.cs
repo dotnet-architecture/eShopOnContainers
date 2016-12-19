@@ -65,9 +65,13 @@ namespace eShopOnContainers.Core.ViewModels
         public ICommand AddCommand => new Command<BasketItem>(AddItem);
 
         public ICommand CheckoutCommand => new Command(Checkout);
-         
+
         public override Task InitializeAsync(object navigationData)
         {
+            if (BasketItems == null)
+                BasketItems = new ObservableCollection<BasketItem>();
+
+            MessagingCenter.Unsubscribe<CatalogViewModel, List<BasketItem>>(this, MessengerKeys.UpdateBasket);
             MessagingCenter.Subscribe<CatalogViewModel, List<BasketItem>>(this, MessengerKeys.UpdateBasket, (sender, arg) =>
             {
                 foreach (var basketItem in arg)
@@ -77,6 +81,7 @@ namespace eShopOnContainers.Core.ViewModels
                 }
             });
 
+            MessagingCenter.Unsubscribe<CatalogViewModel, CatalogItem>(this, MessengerKeys.AddProduct);
             MessagingCenter.Subscribe<CatalogViewModel, CatalogItem>(this, MessengerKeys.AddProduct, (sender, arg) =>
             {
                 BadgeCount++;
@@ -84,8 +89,6 @@ namespace eShopOnContainers.Core.ViewModels
                 AddCatalogItem(arg);
             });
             
-            BasketItems = new ObservableCollection<BasketItem>();
-
             return base.InitializeAsync(navigationData);
         }
 

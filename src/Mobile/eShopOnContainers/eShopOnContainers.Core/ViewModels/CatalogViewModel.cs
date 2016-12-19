@@ -100,6 +100,7 @@ namespace eShopOnContainers.Core.ViewModels
         {
             IsBusy = true;
 
+            // Get Catalog, Brands and Types
             Products = await _productsService.GetCatalogAsync();
             Brands = await _productsService.GetCatalogBrandAsync();
             Types = await _productsService.GetCatalogTypeAsync();
@@ -107,6 +108,7 @@ namespace eShopOnContainers.Core.ViewModels
             var authToken = Settings.AuthAccessToken;
             var userInfo = await _userService.GetUserInfoAsync(authToken);
 
+            // Update Basket
             var basket = await _basketService.GetBasketAsync(userInfo.UserId, authToken);
 
             if (basket != null && basket.Items.Any())
@@ -131,6 +133,7 @@ namespace eShopOnContainers.Core.ViewModels
 
             IsBusy = true;
 
+            // Filter
             MessagingCenter.Send(this, MessengerKeys.Filter);
             Products = await _productsService.FilterAsync(Brand.Id, Type.Id);
 

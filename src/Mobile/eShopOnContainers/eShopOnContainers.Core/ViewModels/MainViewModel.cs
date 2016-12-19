@@ -17,6 +17,7 @@ namespace eShopOnContainers.Core.ViewModels
 
             if (navigationData is TabParameter)
             {
+                // Change selected application tab
                 var tabIndex = ((TabParameter)navigationData).TabIndex;
                 MessagingCenter.Send(this, MessengerKeys.ChangeTab, tabIndex);
             }

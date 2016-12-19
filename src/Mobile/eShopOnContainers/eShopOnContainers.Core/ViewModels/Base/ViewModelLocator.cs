@@ -63,11 +63,6 @@ namespace eShopOnContainers.ViewModels.Base
 
         public void UpdateDependencies(bool useMockServices)
         {
-            // Clear message subscriptions
-            var basketViewModel = _unityContainer.Resolve<BasketViewModel>();
-            MessagingCenter.Unsubscribe<CatalogViewModel, List<BasketItem>>(basketViewModel, MessengerKeys.UpdateBasket);
-            MessagingCenter.Unsubscribe<CatalogViewModel, CatalogItem>(basketViewModel, MessengerKeys.AddProduct);
-
             // Change injected dpendencies
             if (useMockServices)
             {
