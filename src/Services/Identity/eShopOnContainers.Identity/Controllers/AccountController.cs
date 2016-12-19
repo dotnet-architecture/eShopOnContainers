@@ -70,6 +70,7 @@ namespace IdentityServer4.Quickstart.UI.Controllers
             }
 
             var vm = await BuildLoginViewModelAsync(returnUrl, context);
+            ViewData["ReturnUrl"] = returnUrl;
 
             return View(vm);
         }
@@ -98,12 +99,11 @@ namespace IdentityServer4.Quickstart.UI.Controllers
                         props = new AuthenticationProperties
                         {
                             IsPersistent = true,
-                            ExpiresUtc = DateTimeOffset.UtcNow.AddMonths(1)
+                            ExpiresUtc = DateTimeOffset.UtcNow.AddYears(10)
                         };
                     };
 
                     await _loginService.SignIn(user);
-
                     // make sure the returnUrl is still valid, and if yes - redirect back to authorize endpoint
                     if (_interaction.IsValidReturnUrl(model.ReturnUrl))
                     {
@@ -118,6 +118,7 @@ namespace IdentityServer4.Quickstart.UI.Controllers
 
             // something went wrong, show form with error
             var vm = await BuildLoginViewModelAsync(model);
+            ViewData["ReturnUrl"] = model.ReturnUrl;
             return View(vm);
         }
 
@@ -296,7 +297,10 @@ namespace IdentityServer4.Quickstart.UI.Controllers
             }
 
             if (returnUrl != null) {
-                return Redirect(returnUrl);
+                if (HttpContext.User.Identity.IsAuthenticated)
+                    return Redirect(returnUrl);
+                else
+                    return RedirectToAction("login", "account", new { returnUrl = returnUrl });
             }
 
             return RedirectToAction("index", "home");

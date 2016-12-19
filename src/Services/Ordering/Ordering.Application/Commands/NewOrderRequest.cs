@@ -2,10 +2,15 @@
 {
     using System;
     using MediatR;
+    using Domain;
+    using System.Collections;
+    using System.Collections.Generic;
 
     public class NewOrderRequest
         :IAsyncRequest<bool>
     {
+
+        private readonly List<OrderItem> _orderItems;
         public string City { get; set; }
 
         public string Street { get; set; }
@@ -28,8 +33,16 @@
 
         public string Buyer { get; set; }
 
+        public IEnumerable<OrderItem> OrderItems => _orderItems;
+
+        public void AddOrderItem(OrderItem item)
+        {
+            _orderItems.Add(item);
+        }
+
         public NewOrderRequest()
         {
+            _orderItems = new List<OrderItem>();
         }
     }
 }

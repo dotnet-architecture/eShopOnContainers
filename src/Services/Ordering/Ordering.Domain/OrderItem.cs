@@ -6,20 +6,19 @@
     public class OrderItem
         :Entity
     {
-        public int ProductId { get; private set; }
+        public int ProductId { get;  set; }
 
-        public string ProductName { get; private set; }
+        public string ProductName { get;  set; }
 
-        public int OrderId { get; private set; }
+        public string PictureUrl { get; set; }
 
-        public decimal UnitPrice { get; private set; }
+        public int OrderId { get;  set; }
 
-        public decimal Discount { get; private set; }
+        public decimal UnitPrice { get;  set; }
 
-        public int Units { get; private set; }
+        public decimal Discount { get;  set; }
 
-        protected OrderItem()
-        {
-        }
+        public int Units { get;  set; }
+
     }
 }

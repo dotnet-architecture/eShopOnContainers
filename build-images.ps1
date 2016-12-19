@@ -16,7 +16,6 @@ dotnet restore $webPathToJson
 dotnet build $webPathToJson
 dotnet publish $webPathToJson -o $webPathToPub
 
-
 # *** WebSPA image ***
 $webSPAPathToJson = $scriptPath + "\src\Web\WebSPA\eShopOnContainers.WebSPA\project.json"
 Write-Host "webSPAPathToJson is $webSPAPathToJson" -ForegroundColor Yellow

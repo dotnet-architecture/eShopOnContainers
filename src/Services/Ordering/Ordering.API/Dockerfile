@@ -4,5 +4,5 @@ FROM microsoft/aspnetcore:1.0.1
 ENTRYPOINT ["dotnet", "Ordering.API.dll"]
 ARG source=.
 WORKDIR /app
-EXPOSE 80
+ENV ASPNETCORE_URLS http://*:5102
 COPY $source .

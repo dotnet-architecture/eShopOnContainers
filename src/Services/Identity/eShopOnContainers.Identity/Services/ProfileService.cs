@@ -88,6 +88,9 @@ namespace eShopOnContainers.Identity.Services
             if (!string.IsNullOrWhiteSpace(user.SecurityNumber))
                 claims.Add(new Claim("card_security_number", user.SecurityNumber));
 
+            if (!string.IsNullOrWhiteSpace(user.Expiration))
+                claims.Add(new Claim("card_expiration", user.Expiration));
+
             if (!string.IsNullOrWhiteSpace(user.City))
                 claims.Add(new Claim("address_city", user.City));
 

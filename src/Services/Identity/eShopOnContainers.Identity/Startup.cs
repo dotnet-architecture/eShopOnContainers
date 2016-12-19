@@ -15,6 +15,8 @@ using eShopOnContainers.Identity.Services;
 using eShopOnContainers.Identity.Configuration;
 using IdentityServer4.Services;
 using System.Threading;
+using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
+using Microsoft.AspNetCore.Identity;
 
 namespace eShopOnContainers.Identity
 {
@@ -49,6 +51,7 @@ namespace eShopOnContainers.Identity
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
+                
          
 
             services.AddMvc();
@@ -102,29 +105,10 @@ namespace eShopOnContainers.Identity
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            MigrateDb(app);
-        }
-
-        int retries = 0;
-
-        private void MigrateDb(IApplicationBuilder app)
-        {
-            try
-            {
-                var context = (ApplicationDbContext)app
-                    .ApplicationServices.GetService(typeof(ApplicationDbContext));
-                using (context)
-                {
-                    context.Database.Migrate();
-                }
-
-            }
-            catch (Exception)
-            {
-                retries++;
-                if (retries < 2)
-                    MigrateDb(app);
-            }
+            //Seed Data
+            var hasher = new PasswordHasher<ApplicationUser>();
+            new ApplicationContextSeed(hasher).SeedAsync(app, loggerFactory)
+            .Wait();
         }
     }
 }

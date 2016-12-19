@@ -30,7 +30,7 @@
         }
         public async Task<bool> Handle(NewOrderRequest message)
         {
-            //find buyer/payment or add a new one 
+            //find buyer/payment or add a new one buyer/payment 
 
             var buyer = await _buyerRepository.FindAsync(message.Buyer);
 
@@ -41,9 +41,11 @@
 
             var payment = GetExistingPaymentOrAddANewOne(buyer, message);
 
-            await _buyerRepository.UnitOfWork.SaveChangesAsync();
+            await _buyerRepository.UnitOfWork
+                .SaveChangesAsync();
 
-            //create order
+            //create order for buyer and payment method
+
             var order = CreateOrder(buyer.Id, payment.Id, 0);
             order.SetAddress( new Address()
             {
@@ -53,9 +55,15 @@
                 ZipCode = message.ZipCode
             });
 
+            foreach (var item in message.OrderItems)
+            {
+                order.AddOrderItem(item);
+            }
+
             _orderRepository.Add(order);
 
-            var result = await _orderRepository.UnitOfWork.SaveChangesAsync();
+            var result = await _orderRepository.UnitOfWork
+                .SaveChangesAsync();
 
             return result > 0;
         }

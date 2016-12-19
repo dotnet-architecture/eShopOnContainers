@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using System.Net.Http;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Authentication;
 
 namespace Microsoft.eShopOnContainers.WebMVC.Services
 {
@@ -15,56 +16,26 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
         private HttpClient _apiClient;
         private readonly string _remoteServiceBaseUrl;
         private readonly IOptions<AppSettings> _settings;
+        private readonly IHttpContextAccessor _httpContextAccesor;
 
-        public OrderingService(IOptions<AppSettings> settings)
+        public OrderingService(IOptions<AppSettings> settings, IHttpContextAccessor httpContextAccesor)
         {
             _remoteServiceBaseUrl = $"{settings.Value.OrderingUrl}/api/v1/orders";
             _settings = settings;
-            #region fake items
-            //_orders = new List<Order>()
-            //{
-            //    new Order()
-            //    {
-            //        Id = Guid.NewGuid().ToString(),
-            //        BuyerId = new Guid("ebcbcb4c-b032-4baa-834b-7fd66d37bc95").ToString(),
-            //        OrderDate = DateTime.Now,
-            //        State = OrderState.InProcess,
-            //        OrderItems = new List<OrderItem>()
-            //        {
-            //            new OrderItem() { UnitPrice = 12.40m, PictureUrl = "https://fakeimg.pl/370x240/EEEEEE/000/?text=RoslynRedT-Shirt", Quantity = 1, ProductName="Roslyn Red T-Shirt" }
-            //        }
-            //    }, 
-            //    new Order()
-            //    {
-            //        Id = Guid.NewGuid().ToString(),
-            //        BuyerId = new Guid("ebcbcb4c-b032-4baa-834b-7fd66d37bc95").ToString(),
-            //        OrderDate = DateTime.Now,
-            //        State = OrderState.InProcess,
-            //        OrderItems = new List<OrderItem>()
-            //        {
-            //            new OrderItem() { UnitPrice = 12.00m, PictureUrl = "https://fakeimg.pl/370x240/EEEEEE/000/?text=RoslynRedT-Shirt", Quantity = 1, ProductName="Roslyn Red T-Shirt" }
-            //        }
-            //    },
-            //    new Order()
-            //    {
-            //        Id = Guid.NewGuid().ToString(),
-            //        BuyerId = new Guid("ebcbcb4c-b032-4baa-834b-7fd66d37bc95").ToString(),
-            //        OrderDate = DateTime.Now,
-            //        State = OrderState.Delivered,
-            //        OrderItems = new List<OrderItem>()
-            //        {
-            //            new OrderItem() { UnitPrice = 12.05m, PictureUrl = "https://fakeimg.pl/370x240/EEEEEE/000/?text=RoslynRedT-Shirt", Quantity = 1, ProductName="Roslyn Red T-Shirt" }
-            //        }
-            //    }
-            //};
-            #endregion
+            _httpContextAccesor = httpContextAccesor;
         }
 
         async public Task<Order> GetOrder(ApplicationUser user, string Id)
         {
+            var context = _httpContextAccesor.HttpContext;
+            var token = await context.Authentication.GetTokenAsync("access_token");
+
             _apiClient = new HttpClient();
+            _apiClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
             var ordersUrl = $"{_remoteServiceBaseUrl}/{Id}";
             var dataString = await _apiClient.GetStringAsync(ordersUrl);
+            
             var response = JsonConvert.DeserializeObject<Order>(dataString);
 
             return response;
@@ -72,52 +43,46 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
 
         async public Task<List<Order>> GetMyOrders(ApplicationUser user)
         {
+            var context = _httpContextAccesor.HttpContext;
+            var token = await context.Authentication.GetTokenAsync("access_token");
+
             _apiClient = new HttpClient();
+            _apiClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
             var ordersUrl = _remoteServiceBaseUrl;
             var dataString = await _apiClient.GetStringAsync(ordersUrl);
             var response = JsonConvert.DeserializeObject<List<Order>>(dataString);
 
-            return response;
+            return response; 
         }
 
         public Order MapUserInfoIntoOrder(ApplicationUser user, Order order)
         {
-            order.ShippingAddress.City = user.City;
-            order.ShippingAddress.Street = user.Street;
-            order.ShippingAddress.State = user.State;
-            order.ShippingAddress.Country = user.Country;
+            order.City = user.City;
+            order.Street = user.Street;
+            order.State = user.State;
+            order.Country = user.Country;
 
-            order.PaymentInfo.CardNumber = user.CardNumber;
-            order.PaymentInfo.CardHolderName = user.CardHolderName;
-            order.PaymentInfo.Expiration = user.Expiration;
-            order.PaymentInfo.SecurityNumber = user.SecurityNumber;
+            order.CardNumber = user.CardNumber;
+            order.CardHolderName = user.CardHolderName;
+            //order.CardExpiration = user.Expiration;
+            order.CardSecurityNumber = user.SecurityNumber;
 
             return order;
         }
 
-        public OrderRequest MapOrderIntoOrderRequest(Order order)
+        async public Task CreateOrder(Order order)
         {
-            return new OrderRequest()
-            {
-                CardHolderName = order.PaymentInfo.CardHolderName,
-                CardNumber = order.PaymentInfo.CardNumber,
-                CardSecurityNumber = order.PaymentInfo.SecurityNumber,
-                CardTypeId = (int)order.PaymentInfo.CardType,
-                City = order.ShippingAddress.City,
-                Country = order.ShippingAddress.Country,
-                State = order.ShippingAddress.State,
-                Street = order.ShippingAddress.Street,
-                ZipCode = order.ShippingAddress.ZipCode
-            };
-        }
+            var context = _httpContextAccesor.HttpContext;
+            var token = await context.Authentication.GetTokenAsync("access_token");
 
-        async public Task CreateOrder(ApplicationUser user, Order order)
-        {
             _apiClient = new HttpClient();
+            _apiClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
             var ordersUrl = $"{_remoteServiceBaseUrl}/new";
-            order.PaymentInfo.CardType = CardType.AMEX;
-            OrderRequest request = MapOrderIntoOrderRequest(order);
-            StringContent content = new StringContent(JsonConvert.SerializeObject(request), System.Text.Encoding.UTF8, "application/json");
+            order.CardTypeId = 1;
+            order.CardExpirationApiFormat();
+            StringContent content = new StringContent(JsonConvert.SerializeObject(order), System.Text.Encoding.UTF8, "application/json");
             
             var response = await _apiClient.PostAsync(ordersUrl, content);
 
@@ -127,15 +92,15 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
 
         public void OverrideUserInfoIntoOrder(Order original, Order destination)
         {
-            destination.ShippingAddress.City = original.ShippingAddress.City;
-            destination.ShippingAddress.Street = original.ShippingAddress.Street;
-            destination.ShippingAddress.State = original.ShippingAddress.State;
-            destination.ShippingAddress.Country = original.ShippingAddress.Country;
+            destination.City = original.City;
+            destination.Street = original.Street;
+            destination.State = original.State;
+            destination.Country = original.Country;
 
-            destination.PaymentInfo.CardNumber = original.PaymentInfo.CardNumber;
-            destination.PaymentInfo.CardHolderName = original.PaymentInfo.CardHolderName;
-            destination.PaymentInfo.Expiration = original.PaymentInfo.Expiration;
-            destination.PaymentInfo.SecurityNumber = original.PaymentInfo.SecurityNumber;
+            destination.CardNumber = original.CardNumber;
+            destination.CardHolderName = original.CardHolderName;
+            destination.CardExpiration = original.CardExpiration;
+            destination.CardSecurityNumber = original.CardSecurityNumber;
         }
     }
 }

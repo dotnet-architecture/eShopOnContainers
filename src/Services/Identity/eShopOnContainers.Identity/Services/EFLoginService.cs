@@ -19,7 +19,7 @@ namespace eShopOnContainers.Identity.Services
 
         public async Task<ApplicationUser> FindByUsername(string user)
         {
-            return await _userManager.FindByNameAsync(user);
+            return await _userManager.FindByEmailAsync(user);
         }
 
         public async Task<bool> ValidateCredentials(ApplicationUser user, string password)

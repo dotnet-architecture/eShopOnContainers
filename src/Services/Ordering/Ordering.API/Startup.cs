@@ -45,9 +45,7 @@
 
             services.AddMvc(options =>
             {
-
                 options.Filters.Add(typeof(HttpGlobalExceptionFilter));
-
             }).AddControllersAsServices();
 
             services.AddEntityFrameworkSqlServer()
@@ -70,11 +68,18 @@
                 });
             });
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials());
+            });
+
             services.AddSingleton<IConfiguration>(this.Configuration);
 
             services.AddOptions();
-
-
 
             //configure autofac
 
@@ -83,7 +88,6 @@
 
             container.RegisterModule(new MediatorModule());
             container.RegisterModule(new ApplicationModule());
-
 
             return new AutofacServiceProvider(container.Build());
         }
@@ -97,6 +101,17 @@
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors("CorsPolicy");
+
+            var identityUrl = Configuration.GetValue<string>("IdentityUrl");
+
+            app.UseIdentityServerAuthentication(new IdentityServerAuthenticationOptions
+            {
+                Authority = identityUrl.ToString(),
+                ScopeName = "orders",
+                RequireHttpsMetadata = false
+            });
 
 
             app.UseMvcWithDefaultRoute();

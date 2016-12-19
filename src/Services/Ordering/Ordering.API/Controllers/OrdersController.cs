@@ -2,13 +2,16 @@
 {
     using Application.Commands;
     using Application.Queries;
+    using AspNetCore.Authorization;
     using MediatR;
     using Microsoft.AspNetCore.Mvc;
     using Models;
     using System;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     [Route("api/v1/[controller]")]
+    [Authorize]
     public class OrdersController : Controller
     {
         private readonly IMediator _mediator;
@@ -32,24 +35,14 @@
 
         [Route("new")]
         [HttpPost]
-        public async Task<IActionResult> AddOrder([FromBody]NewOrderViewModel order)
+        public async Task<IActionResult> AddOrder([FromBody]NewOrderRequest order)
         {
-            var newOrderRequest = new NewOrderRequest()
-            {
-                Buyer =GetUserName(), //TODO
-                CardTypeId = 1, //TODO
-                CardHolderName = order.CardHolderName,
-                CardNumber = order.CardNumber,
-                CardExpiration = order.CardExpiration,
-                CardSecurityNumber = order.CardSecurityNumber,
-                State = order.ShippingState,
-                City = order.ShippingCity,
-                Country = order.ShippingCountry,
-                Street = order.ShippingStreet
-            };
+            if (order.CardExpiration == DateTime.MinValue)
+                order.CardExpiration = DateTime.Now;
 
-            var added = await _mediator.SendAsync(newOrderRequest);
+            order.Buyer = GetUserName();
 
+            var added = await _mediator.SendAsync(order);
             if (added)
             {
                 return Ok();
@@ -62,10 +55,15 @@
         [HttpGet]
         public async Task<IActionResult> GetOrder(int orderId)
         {
-            var order = await _orderQueries.GetOrder(orderId);
-
-            
-            return Ok(order);
+            try
+            {
+                var order = await _orderQueries.GetOrder(orderId);
+                return Ok(order);
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
         }
 
         [Route("")]
@@ -73,7 +71,6 @@
         public async Task<IActionResult> GetOrders()
         {
             var orders = await _orderQueries.GetOrders();
-
 
             return Ok(orders);
         }
@@ -87,9 +84,13 @@
             return Ok(cardTypes);
         }
 
+        /// <summary>
+        /// Returns the GUID corresponding to the Id of the authenticated user.
+        /// </summary>
+        /// <returns>GUID (string)</returns>
         string GetUserName()
         {
-            return "MOCK";
+            return HttpContext.User.FindFirst("sub").Value;
         }
     }
 

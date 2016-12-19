@@ -40,6 +40,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
         {
             HttpContext.Authentication.SignOutAsync("Cookies");
             HttpContext.Authentication.SignOutAsync("oidc");
+             
             return new SignOutResult("oidc", new AuthenticationProperties { RedirectUri = "/" });
         }
     }

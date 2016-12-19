@@ -12,7 +12,6 @@ using eShopOnContainers.Core.Controls;
 using eShopOnContainers.Droid.Renderers;
 using Android.Support.V4.View;
 using Android.Graphics;
-using static Android.Widget.ImageView;
 
 [assembly: ExportRenderer(typeof(TabbedPage), typeof(CustomTabbedPageRenderer))]
 namespace eShopOnContainers.Droid.Renderers

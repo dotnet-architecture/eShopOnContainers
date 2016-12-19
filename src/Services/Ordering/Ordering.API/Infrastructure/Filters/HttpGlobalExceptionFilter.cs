@@ -1,9 +1,11 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure.Filters
 {
+    using AspNetCore.Mvc;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc.Filters;
     using Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure.ActionResults;
     using Microsoft.Extensions.Logging;
+    using System;
 
     public class HttpGlobalExceptionFilter : IExceptionFilter
     {
@@ -22,17 +24,30 @@
                 context.Exception,
                 context.Exception.Message);
 
-            var json = new JsonErrorResponse
+            if (context.Exception.GetType() == typeof(ArgumentException)) //TODO:Select a common exception for application like EshopException
             {
-                Messages = new[] { "An error ocurr.Try it again." }
-            };
+                var json = new JsonErrorResponse
+                {
+                    Messages = new[] { context.Exception.Message }
+                };
 
-            if (env.IsDevelopment())
-            {
-                json.DeveloperMeesage = context.Exception;
+                context.Result = new BadRequestObjectResult(json);
             }
+            else
+            {
+                var json = new JsonErrorResponse
+                {
+                    Messages = new[] { "An error ocurr.Try it again." }
+                };
 
-            context.Result = new InternalServerErrorObjectResult(json);
+                if (env.IsDevelopment())
+                {
+                    json.DeveloperMeesage = context.Exception;
+                }
+
+                context.Result = new InternalServerErrorObjectResult(json);
+            }
+            
         }
 
         private class JsonErrorResponse
