@@ -7,6 +7,7 @@
 
         public GlobalSetting()
         {
+            AuthToken = "INSERT AUTHENTICATION TOKEN";
             BaseEndpoint = "http://13.88.8.119";
         }
 
@@ -24,6 +25,8 @@
                 UpdateEndpoint(_baseEndpoint);
             }
         }
+
+        public string AuthToken { get; set; }
 
         public string RegisterWebsite { get; set; }
 
