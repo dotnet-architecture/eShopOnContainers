@@ -65,7 +65,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
 
             order.CardNumber = user.CardNumber;
             order.CardHolderName = user.CardHolderName;
-            order.CardExpiration = new DateTime(1,int.Parse(user.Expiration.Split('/')[0]), int.Parse("20" + user.Expiration.Split('/')[1]));
+            order.CardExpiration = new DateTime(int.Parse("20" + user.Expiration.Split('/')[1]),int.Parse(user.Expiration.Split('/')[0]), 1);
             order.CardSecurityNumber = user.SecurityNumber;
 
             return order;

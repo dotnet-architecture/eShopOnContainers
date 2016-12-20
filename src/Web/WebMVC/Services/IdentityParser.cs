@@ -17,6 +17,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
 
             user.CardHolderName = (claims.Claims.Where(x => x.Type == "card_holder").Count() > 0) ? claims.Claims.First(x => x.Type == "card_holder").Value : "";
             user.CardNumber = (claims.Claims.Where(x => x.Type == "card_number").Count() > 0) ? claims.Claims.First(x => x.Type == "card_number").Value : "";
+            user.Expiration = (claims.Claims.Where(x => x.Type == "card_expiration").Count() > 0) ? claims.Claims.First(x => x.Type == "card_expiration").Value : "";
             user.CardType = (claims.Claims.Where(x => x.Type == "missing").Count() > 0) ? int.Parse(claims.Claims.First(x => x.Type == "missing").Value) : 0;
             user.City = (claims.Claims.Where(x => x.Type == "address_city").Count() > 0) ? claims.Claims.First(x => x.Type == "address_city").Value : "";
             user.Country = (claims.Claims.Where(x => x.Type == "address_country").Count() > 0) ? claims.Claims.First(x => x.Type == "address_country").Value : "";

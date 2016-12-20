@@ -37,9 +37,9 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(Order model, string action)
         {
-            var user = _appUserParser.Parse(HttpContext.User);
-            if (action == "[ Place Order ]")
+            if (ModelState.IsValid)
             {
+                var user = _appUserParser.Parse(HttpContext.User);
                 await _orderSvc.CreateOrder(model);
 
                 //Empty basket for current user. 

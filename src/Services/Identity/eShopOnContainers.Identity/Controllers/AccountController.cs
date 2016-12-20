@@ -298,7 +298,10 @@ namespace IdentityServer4.Quickstart.UI.Controllers
                 if (HttpContext.User.Identity.IsAuthenticated)
                     return Redirect(returnUrl);
                 else
+                    if (ModelState.IsValid)
                     return RedirectToAction("login", "account", new { returnUrl = returnUrl });
+                else
+                    return View(model);
             }
 
             return RedirectToAction("index", "home");

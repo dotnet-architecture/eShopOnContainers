@@ -37,7 +37,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Models
 
         public DateTime CardExpiration { get; set; }
         [RegularExpression(@"(0[1-9]|1[0-2])\/[0-9]{2}", ErrorMessage = "Expiration should match a valid MM/YY value")]
-        [CardExpiration(ErrorMessage = "Should't be expired"), Required]
+        [CardExpiration(ErrorMessage = "The card is expired"), Required]
         public string CardExpirationShort { get; set; }
         [Required]
         public string CardSecurityNumber { get; set; }
