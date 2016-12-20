@@ -2,7 +2,7 @@
 
 namespace Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure.AutofacModules
 {
-    using Application.Queries;
+    using Api.Application.Queries;
     using Autofac;
     using Domain.Repositories;
     using Ordering.Infrastructure.Repositories;

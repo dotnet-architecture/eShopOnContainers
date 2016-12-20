@@ -51,8 +51,8 @@ namespace eShopOnContainers.Identity
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
-                
-         
+
+            services.Configure<AppSettings>(Configuration);
 
             services.AddMvc();
 

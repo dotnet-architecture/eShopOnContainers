@@ -1,7 +1,7 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Ordering.API.Controllers
 {
-    using Application.Commands;
-    using Application.Queries;
+    using Api.Application.Commands;
+    using Api.Application.Queries;
     using AspNetCore.Authorization;
     using MediatR;
     using Microsoft.AspNetCore.Mvc;
@@ -11,7 +11,7 @@
     using System.Threading.Tasks;
 
     [Route("api/v1/[controller]")]
-    [Authorize]
+    //[Authorize]
     public class OrdersController : Controller
     {
         private readonly IMediator _mediator;
@@ -38,7 +38,10 @@
         public async Task<IActionResult> AddOrder([FromBody]NewOrderRequest order)
         {
             if (order.CardExpiration == DateTime.MinValue)
-                order.CardExpiration = DateTime.Now;
+                order.CardExpiration = DateTime.Now.AddYears(5);
+
+            if (order.CardTypeId == 0)
+                order.CardTypeId = 1;
 
             order.Buyer = GetUserName();
 

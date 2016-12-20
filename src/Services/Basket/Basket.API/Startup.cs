@@ -47,6 +47,20 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
                 return ConnectionMultiplexer.Connect(ips.First().ToString());
             });
 
+            services.AddSwaggerGen();
+            services.ConfigureSwaggerGen(options =>
+            {
+                options.DescribeAllEnumsAsStrings();
+                options.SingleApiVersion(new Swashbuckle.Swagger.Model.Info()
+                {
+                    Title = "Basket HTTP API",
+                    Version = "v1",
+                    Description = "The Basket Service HTTP API",
+                    TermsOfService = "Terms Of Service"
+                });
+            });
+
+
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy",
@@ -77,7 +91,11 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
                 RequireHttpsMetadata = false
             });
 
-            app.UseMvc();
+            app.UseMvcWithDefaultRoute();
+
+            app.UseSwagger()
+                .UseSwaggerUi();
+
         }
     }
 }

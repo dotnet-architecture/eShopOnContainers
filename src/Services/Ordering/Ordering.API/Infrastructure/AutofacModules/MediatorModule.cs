@@ -1,7 +1,7 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure.AutofacModules
 {
-    using Application.Commands;
-    using Application.Decorators;
+    using Api.Application.Commands;
+    using Api.Application.Decorators;
     using Autofac;
     using Autofac.Core;
     using MediatR;

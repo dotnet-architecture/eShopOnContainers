@@ -85,15 +85,9 @@ namespace IdentityServer4.Quickstart.UI.Controllers
             if (ModelState.IsValid)
             {
                 var user = await _loginService.FindByUsername(model.Email);
-                // validate username/password against in-memory store
                 if (await _loginService.ValidateCredentials(user, model.Password))
                 {
-                    // issue authentication cookie with subject ID and username
-                    //var user = _loginService.FindByUsername(model.Username);
-
-                    AuthenticationProperties props = null;
-                    // only set explicit expiration here if persistent. 
-                    // otherwise we reply upon expiration configured in cookie middleware.
+                     AuthenticationProperties props = null;
                     if (model.RememberMe)
                     {
                         props = new AuthenticationProperties
@@ -162,10 +156,11 @@ namespace IdentityServer4.Quickstart.UI.Controllers
                 return await Logout(new LogoutViewModel { LogoutId = logoutId });
             }
 
+            //Test for Xamarin. 
             var context = await _interaction.GetLogoutContextAsync(logoutId);
             if (context?.ShowSignoutPrompt == false)
             {
-                // it's safe to automatically sign-out
+                //it's safe to automatically sign-out
                 return await Logout(new LogoutViewModel { LogoutId = logoutId });
             }
 
@@ -175,7 +170,6 @@ namespace IdentityServer4.Quickstart.UI.Controllers
             {
                 LogoutId = logoutId
             };
-
             return View(vm);
         }
 
@@ -218,14 +212,18 @@ namespace IdentityServer4.Quickstart.UI.Controllers
             // get context information (client name, post logout redirect URI and iframe for federated signout)
             var logout = await _interaction.GetLogoutContextAsync(model.LogoutId);
 
-            var vm = new LoggedOutViewModel
-            {
-                PostLogoutRedirectUri = logout?.PostLogoutRedirectUri,
-                ClientName = logout?.ClientId,
-                SignOutIframeUrl = logout?.SignOutIFrameUrl
-            };
+            return Redirect(logout?.PostLogoutRedirectUri);
+        }
 
-            return View("LoggedOut", vm);
+        public async Task<IActionResult> DeviceLogOut(string redirectUrl)
+        {
+            // delete authentication cookie
+            await HttpContext.Authentication.SignOutAsync();
+
+            // set this so UI rendering sees an anonymous user
+            HttpContext.User = new ClaimsPrincipal(new ClaimsIdentity());
+
+            return Redirect(redirectUrl);
         }
 
         /// <summary>
