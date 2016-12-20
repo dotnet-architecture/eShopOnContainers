@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure
+namespace Microsoft.eShopOnContainers.Services.Catalog.API.Model
 {
     public class CatalogItem
     {

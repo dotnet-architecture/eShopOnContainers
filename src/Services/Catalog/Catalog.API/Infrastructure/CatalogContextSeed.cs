@@ -3,6 +3,7 @@
     using EntityFrameworkCore;
     using Extensions.Logging;
     using Microsoft.AspNetCore.Builder;
+    using Model;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -18,34 +19,31 @@
                 var context = (CatalogContext)applicationBuilder
                     .ApplicationServices.GetService(typeof(CatalogContext));
 
-                //using (context)
-                //{
-                    context.Database.Migrate();
+                context.Database.Migrate();
 
-                    if (!context.CatalogBrands.Any())
-                    {
-                        context.CatalogBrands.AddRange(
-                            GetPreconfiguredCatalogBrands());
+                if (!context.CatalogBrands.Any())
+                {
+                    context.CatalogBrands.AddRange(
+                        GetPreconfiguredCatalogBrands());
 
-                        await context.SaveChangesAsync();
-                    }
+                    await context.SaveChangesAsync();
+                }
 
-                    if (!context.CatalogTypes.Any())
-                    {
-                        context.CatalogTypes.AddRange(
-                            GetPreconfiguredCatalogTypes());
+                if (!context.CatalogTypes.Any())
+                {
+                    context.CatalogTypes.AddRange(
+                        GetPreconfiguredCatalogTypes());
 
-                        await context.SaveChangesAsync();
-                    }
+                    await context.SaveChangesAsync();
+                }
 
-                    if (!context.CatalogItems.Any())
-                    {
-                        context.CatalogItems.AddRange(
-                            GetPreconfiguredItems());
+                if (!context.CatalogItems.Any())
+                {
+                    context.CatalogItems.AddRange(
+                        GetPreconfiguredItems());
 
-                        await context.SaveChangesAsync();
-                    }
-                //}
+                    await context.SaveChangesAsync();
+                }
             }
             catch (Exception ex)
             {

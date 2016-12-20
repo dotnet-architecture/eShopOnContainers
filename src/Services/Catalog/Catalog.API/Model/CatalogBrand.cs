@@ -1,4 +1,4 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure
+﻿namespace Microsoft.eShopOnContainers.Services.Catalog.API.Model
 {
     using System;
     using System.Collections.Generic;
