@@ -12,11 +12,11 @@
         <div class="container">
             <form asp-action="Index" asp-controller="Catalog" method="post">
                 <div data-name="brand" class="select-filter-wrapper">
-                    <img src="~/images/arrow-down.png" class="select-filter-arrow" />
+                    <div class="select-filter-arrow-container"><img src="~/images/arrow-down.png" class="select-filter-arrow" /></div>
                     <select asp-for="@Model.BrandFilterApplied" asp-items="@Model.Brands" class="select-filter"></select>
                 </div>
                 <div data-name="type" class="select-filter-wrapper">
-                    <img src="~/images/arrow-down.png" class="select-filter-arrow" />
+                    <div class="select-filter-arrow-container"><img src="~/images/arrow-down.png" class="select-filter-arrow" /></div>
                     <select asp-for="@Model.TypesFilterApplied" asp-items="@Model.Types" class="select-filter"></select>
                 </div>
                 <button type="submit" class="btn-brand btn-brand-small btn-brand-small-filter btn-catalog-apply">

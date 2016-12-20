@@ -12,6 +12,7 @@
 </div>
 <div class="container order-create-container">
     <form method="post" asp-controller="Order" asp-action="Create">
+        <div asp-validation-summary="All" class="text-danger"></div>
         <h4 class="order-create-section-title">SHIPPING ADDRESS</h4>
         <div class="form-horizontal row">
             <div class="form-group col-sm-6">

@@ -6,11 +6,10 @@
 
 <div>
     <a asp-area="" asp-controller="Cart" asp-action="Index"><img src="~/images/cart.png" class="fr layout-cart-image @Model.Disabled" />
-       
+        <div class="layout-cart-badge @Model.Disabled">
+            @Model.ItemsCount
+        </div>
     </a>
-    <div class="layout-cart-badge @Model.Disabled">
-        @Model.ItemsCount
-    </div>
 </div>
 
 

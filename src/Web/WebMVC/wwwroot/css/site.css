@@ -36,7 +36,7 @@ textarea {
 }
 
 .select-filter {
-    background-color: transparent;
+    background-color: #00A69C;
     padding: 10px;
     margin: 10px;
     margin-right: 20px;
@@ -61,6 +61,7 @@ select::-ms-expand {
     z-index: 0;
     display:inline-block;
     margin-left: -10px;
+    position:relative
 }
 
 .select-filter-wrapper::before {
@@ -75,11 +76,18 @@ select::-ms-expand {
     color: white;
 }
 
-.select-filter-arrow {
+.select-filter-arrow-container {
+    position: absolute;
+    top: 15px;
+    right: 25px;
+}
+   
+
+/*.select-filter-arrow {
     position: absolute;
     margin-left: 130px;
     margin-top: 40px;
-}
+}*/
 
 .btn-brand-small-filter {
     margin-top: 10px;
