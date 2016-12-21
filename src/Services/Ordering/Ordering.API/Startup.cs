@@ -5,7 +5,6 @@
     using Infrastructure;
     using Infrastructure.AutofacModules;
     using Infrastructure.Filters;
-    using MediatR;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.EntityFrameworkCore;
@@ -15,8 +14,6 @@
     using Ordering.Infrastructure;
     using System;
     using System.Reflection;
-    using System.Threading;
-    using System.Threading.Tasks;
 
     public class Startup
     {
@@ -64,7 +61,7 @@
                     Title = "Ordering HTTP API",
                     Version = "v1",
                     Description = "The Ordering Service HTTP API",
-                    TermsOfService = "Terms Of Service"
+                    TermsOfService = "Terms Of Service" 
                 });
             });
 

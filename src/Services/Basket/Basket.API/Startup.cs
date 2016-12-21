@@ -11,6 +11,8 @@ using Microsoft.eShopOnContainers.Services.Basket.API.Model;
 using StackExchange.Redis;
 using Microsoft.Extensions.Options;
 using System.Net;
+using Swashbuckle.Swagger.Model;
+using Microsoft.eShopOnContainers.Services.Basket.API.Auth.Server;
 
 namespace Microsoft.eShopOnContainers.Services.Basket.API
 {
@@ -48,8 +50,11 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             });
 
             services.AddSwaggerGen();
+            //var sch = new IdentitySecurityScheme();
             services.ConfigureSwaggerGen(options =>
             {
+                //options.AddSecurityDefinition("IdentityServer", sch);
+                options.OperationFilter<AuthorizationHeaderParameterOperationFilter>();
                 options.DescribeAllEnumsAsStrings();
                 options.SingleApiVersion(new Swashbuckle.Swagger.Model.Info()
                 {
@@ -78,6 +83,8 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+
+            app.UseStaticFiles();
 
             // Use frameworks
             app.UseCors("CorsPolicy");

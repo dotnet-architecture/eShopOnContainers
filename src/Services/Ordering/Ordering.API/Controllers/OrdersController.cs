@@ -11,7 +11,7 @@
     using System.Threading.Tasks;
 
     [Route("api/v1/[controller]")]
-    //[Authorize]
+    [Authorize]
     public class OrdersController : Controller
     {
         private readonly IMediator _mediator;
