@@ -3,6 +3,7 @@
     using Api.Application.Commands;
     using Api.Application.Queries;
     using AspNetCore.Authorization;
+    using Infrastructure.Services;
     using MediatR;
     using Microsoft.AspNetCore.Mvc;
     using Models;
@@ -16,8 +17,9 @@
     {
         private readonly IMediator _mediator;
         private readonly IOrderQueries _orderQueries;
+        private readonly IIdentityService _identityService;
 
-        public OrdersController(IMediator mediator, IOrderQueries orderQueries)
+        public OrdersController(IMediator mediator, IOrderQueries orderQueries, IIdentityService identityService)
         {
             if (mediator == null)
             {
@@ -29,21 +31,24 @@
                 throw new ArgumentNullException(nameof(orderQueries));
             }
 
+            if (identityService == null)
+            {
+                throw new ArgumentException(nameof(identityService));
+            }
+
             _mediator = mediator;
             _orderQueries = orderQueries;
+            _identityService = identityService;
         }
 
         [Route("new")]
         [HttpPost]
         public async Task<IActionResult> AddOrder([FromBody]NewOrderRequest order)
         {
-            if (order.CardExpiration == DateTime.MinValue)
-                order.CardExpiration = DateTime.Now.AddYears(5);
-
             if (order.CardTypeId == 0)
                 order.CardTypeId = 1;
 
-            order.Buyer = GetUserName();
+            order.Buyer = _identityService.GetUserIdentity();
 
             var added = await _mediator.SendAsync(order);
             if (added)
@@ -86,17 +91,7 @@
 
             return Ok(cardTypes);
         }
-
-        /// <summary>
-        /// Returns the GUID corresponding to the Id of the authenticated user.
-        /// </summary>
-        /// <returns>GUID (string)</returns>
-        string GetUserName()
-        {
-            return HttpContext.User.FindFirst("sub").Value;
-        }
     }
-
 }
 
 

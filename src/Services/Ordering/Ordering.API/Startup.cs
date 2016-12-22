@@ -1,10 +1,12 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Ordering.API
 {
+    using AspNetCore.Http;
     using Autofac;
     using Autofac.Extensions.DependencyInjection;
     using Infrastructure;
     using Infrastructure.AutofacModules;
     using Infrastructure.Filters;
+    using Infrastructure.Services;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.EntityFrameworkCore;
@@ -74,7 +76,10 @@
                     .AllowCredentials());
             });
 
+            // Add application services.
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IConfiguration>(this.Configuration);
+            services.AddTransient<IIdentityService,IdentityService>();
 
             services.AddOptions();
 

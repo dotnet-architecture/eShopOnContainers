@@ -33,9 +33,6 @@ namespace Microsoft.eShopOnContainers.WebMVC
             //    builder.AddUserSecrets();
             //}
 
-            //builder.AddJsonFile("appsettings.override.json");
-            //builder.AddEnvironmentVariables();
-
             Configuration = builder.Build();
         }
 
@@ -51,7 +48,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddTransient<ICatalogService, CatalogService>(); 
-            services.AddSingleton<IOrderingService, OrderingService>(); //CCE: Once services are integrated, a singleton is not needed we can left transient.
+            services.AddTransient<IOrderingService, OrderingService>(); 
             services.AddTransient<IBasketService, BasketService>();
             services.AddTransient<IIdentityParser<ApplicationUser>, IdentityParser>();
         }
@@ -85,9 +82,6 @@ namespace Microsoft.eShopOnContainers.WebMVC
             var identityUrl = Configuration.GetValue<string>("IdentityUrl");
             var callBackUrl = Configuration.GetValue<string>("CallBackUrl");
             var log = loggerFactory.CreateLogger("identity");
-
-            log.LogDebug(identityUrl.ToString());
-            log.LogDebug(callBackUrl.ToString());
 
             var oidcOptions = new OpenIdConnectOptions
             {
