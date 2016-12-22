@@ -8,7 +8,7 @@
     "angular2",
     "webpack2",
     "typescript2",
-    "bootstrap4", 
+    "bootstrap4",
     "docker"
   ],
   "author": {
@@ -71,11 +71,11 @@
     "@types/source-map": "0.1.28",
     "@types/uglify-js": "2.6.28",
     "@types/webpack": "1.12.35",
-    "angular2-template-loader": "0.6.0",
     "angular2-router-loader": "0.3.4",
+    "angular2-template-loader": "0.6.0",
     "awesome-typescript-loader": "2.2.4",
     "codelyzer": "1.0.0-beta.3",
-    "copy-webpack-plugin": "^4.0.0",
+    "copy-webpack-plugin": "^4.0.1",
     "css": "2.2.1",
     "css-loader": "0.25.0",
     "es6-promise": "3.2.1",

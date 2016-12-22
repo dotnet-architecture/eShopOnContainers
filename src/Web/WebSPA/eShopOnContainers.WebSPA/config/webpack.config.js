@@ -6,6 +6,7 @@ var extractCSS = new ExtractTextPlugin('styles.css');
 var ForkCheckerPlugin = require('awesome-typescript-loader').ForkCheckerPlugin;
 var devConfig = require('./webpack.config.dev');
 var prodConfig = require('./webpack.config.prod');
+var CopyWebpackPlugin = require('copy-webpack-plugin');
 var isDevelopment = process.env.ASPNETCORE_ENVIRONMENT === 'Development';
 
 console.log("==========Dev Mode = " + isDevelopment + " ============" )
@@ -74,6 +75,9 @@ module.exports = merge({
             'process.env': {
                 'ENV': JSON.stringify(process.env.ASPNETCORE_ENVIRONMENT)
             }
-        })
+        }),
+         new CopyWebpackPlugin([
+            { from: 'Client/fonts', to: 'fonts' }
+         ])
     ]
 }, isDevelopment ? devConfig : prodConfig);
