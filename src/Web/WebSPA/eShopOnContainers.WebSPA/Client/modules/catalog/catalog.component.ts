@@ -8,7 +8,7 @@ import { IPager }               from '../shared/models/pager.model';
 import { BasketWrapperService}  from '../shared/services/basket.wrapper.service';
 
 @Component({
-    selector: 'esh-catalog',
+    selector: 'esh-catalog .catalog',
     styleUrls: ['./catalog.component.scss'],
     templateUrl: './catalog.component.html'
 })
