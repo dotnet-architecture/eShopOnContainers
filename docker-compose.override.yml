@@ -62,7 +62,7 @@ services:
       - SpaClient=http://localhost:5104
       - ConnectionStrings__DefaultConnection=Server=sql.data;Database=Microsoft.eShopOnContainers.Service.IdentityDb;User Id=sa;Password=Pass@word
       #- MvcClient=http://13.88.8.119:5100              #Remote: VM Needs to have public access at 5105. 
-      - MvcClient=http://localhost:5100                 #Local: You need a entry in windows host file to run identity in local docker. 
+      #- MvcClient=http://localhost:5100                 #Local: You need a entry in windows host file to run identity in local docker. 
       - MvcClient=http://10.0.75.1:5100                 #Local: You need to open windows firewall at range 5100-5105. 
     ports:
       - "5105:5105"

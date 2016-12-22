@@ -82,7 +82,8 @@ namespace eShopOnContainers.Identity.Configuration
                     RedirectUris = new List<string>
                     {
                         $"{clientsUrl["Mvc"]}/signin-oidc",
-                        "http://104.40.62.65:5100/signin-oidc"
+                        "http://104.40.62.65:5100/signin-oidc", 
+                        "http://localhost:5100"
                     },
                     PostLogoutRedirectUris = new List<string>
                     {

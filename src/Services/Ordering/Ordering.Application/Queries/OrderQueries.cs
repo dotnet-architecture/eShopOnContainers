@@ -7,9 +7,10 @@
     using System;
     using System.Dynamic;
     using System.Collections.Generic;
+    using System.Linq;
 
     public class OrderQueries
-        :IOrderQueries
+        : IOrderQueries
     {
         private string _connectionString = string.Empty;
 
@@ -97,5 +98,31 @@
 
             return order;
         }
+
+        //TODO/CCE: try to use this method instead actual. 
+        //private object MapOrderItems(dynamic result)
+        //{
+        //    IEnumerable<dynamic> items = (result as System.Collections.IEnumerable).Cast<dynamic>();
+        //    var order = new
+        //    {
+        //        ordernumber = result[0].ordernumbe,
+        //        date = result[0].date,
+        //        status = result[0].status,
+        //        street = result[0].street,
+        //        city = result[0].city,
+        //        zipcode = result[0].zipcode,
+        //        country = result[0].country,
+        //        total = items.Select(r => (int)r.units * (int)r.unitprice).Sum(),
+        //        orderItems = items.Select(r => new
+        //        {
+        //            productname = r.productname,
+        //            units = r.units,
+        //            unitprice = r.unitprice,
+        //            pictureurl = r.pictureurl
+        //        })
+        //    };
+
+        //    return order;
+        //}
     }
 }
