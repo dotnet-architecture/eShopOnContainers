@@ -5,7 +5,7 @@ import { IBasket }              from '../shared/models/basket.model';
 import { IBasketItem }          from '../shared/models/basketItem.model';
 
 @Component({
-    selector: 'esh-basket',
+    selector: 'esh-basket .esh-basket',
     styleUrls: ['./basket.component.scss'],
     templateUrl: './basket.component.html'
 })
