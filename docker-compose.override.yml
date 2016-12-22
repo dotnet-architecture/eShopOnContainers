@@ -19,8 +19,6 @@ services:
       - BasketUrl=http://basket.api:5103
     ports:
       - "5100:5100"
-    links:
-      - identity.service:10.0.75.1
 
   webspa:
     environment:

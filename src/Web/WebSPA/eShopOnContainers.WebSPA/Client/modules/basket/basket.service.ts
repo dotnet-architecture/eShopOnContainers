@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Response } from '@angular/http';
+import { Response, Headers } from '@angular/http';
 
 import { DataService } from '../shared/services/data.service';
+import { SecurityService } from '../shared/services/security.service';
 import { IBasket } from '../shared/models/basket.model';
 import { IBasketItem } from '../shared/models/basketItem.model';
 
@@ -19,13 +20,16 @@ export class BasketService {
         items: []
     };
 
-    constructor(private service: DataService) {
+    constructor(private service: DataService, private authService: SecurityService) {
         this.basket.items = [];
     }
 
-    setBasket(item) {
+    setBasket(item): Observable<boolean> {
+        console.log('set basket');
         this.basket.items.push(item);
-        this.service.post(this.basket.buyerId, this.basket.items);
+        return this.service.post(this.basketUrl + '/', this.basket).map((response: Response) => {
+            return true;
+        });
     }
 
     getBasket(): Observable<IBasket> {

@@ -17,8 +17,8 @@ namespace eShopConContainers.WebSPA
                 .UseKestrel()
                 .UseConfiguration(config)
                 .UseContentRoot(Directory.GetCurrentDirectory())
+                .UseUrls("http://localhost:5104/")
                 .UseIISIntegration()
-                //.UseUrls("http://localhost:5104/")
                 .UseStartup<Startup>()
                 .Build();
 

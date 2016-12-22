@@ -17,9 +17,11 @@ import { DataService } from './services/data.service';
 import { UtilityService } from './services/utility.service';
 import { UppercasePipe } from './pipes/uppercase.pipe';
 import { BasketWrapperService} from './services/basket.wrapper.service';
+import { SecurityService } from './services/security.service';
 
 //Components:
 import {Pager } from './components/pager/pager';
+import {Identity } from './components/identity/identity';
 
 @NgModule({
     imports: [
@@ -39,7 +41,8 @@ import {Pager } from './components/pager/pager';
         ErrorSummaryComponent,
         PageHeadingComponent,
         UppercasePipe,
-        Pager
+        Pager, 
+        Identity
     ],
     exports: [
         // Modules
@@ -57,9 +60,9 @@ import {Pager } from './components/pager/pager';
         //HeaderComponent,
         PageHeadingComponent,
         UppercasePipe,
-        Pager
+        Pager, 
+        Identity
     ]
-
 })
 export class SharedModule {
     static forRoot(): ModuleWithProviders {
@@ -70,7 +73,8 @@ export class SharedModule {
                 DataService,
                 FormControlService,
                 UtilityService,
-                BasketWrapperService
+                BasketWrapperService, 
+                SecurityService
             ]
         };
     }
