@@ -3,23 +3,18 @@
 @font-face {
     font-family: Montserrat;
     font-weight: 400;
-    src: url("../fonts/Montserrat-Regular.eot?") format("eot"),url("../fonts/Montserrat-Regular.woff") format("woff"),url("../fonts/Montserrat-Regular.ttf") format("truetype"),url("../fonts/Montserrat-Regular.svg#Montserrat") format("svg")
+    src: url("../dist/fonts/Montserrat-Regular.eot?") format("eot"),url("../dist/fonts/Montserrat-Regular.woff") format("woff"),url("../dist/fonts/Montserrat-Regular.ttf") format("truetype"),url("../dist/fonts/Montserrat-Regular.svg#Montserrat") format("svg")
 }
 
 @font-face {
     font-family: Montserrat;
     font-weight: 700;
-    src: url("../fonts/Montserrat-Bold.eot?") format("eot"),url("../fonts/Montserrat-Bold.woff") format("woff"),url("../fonts/Montserrat-Bold.ttf") format("truetype"),url("../fonts/Montserrat-Bold.svg#Montserrat") format("svg")
-}
-
-body {
-    padding-top: 80px;
-    /*padding-bottom: 20px;*/
-    font-family: Montserrat,sans-serif;
-    min-width:480px;
+    src: url("../dist/fonts/Montserrat-Bold.eot?") format("eot"),url("../dist/fonts/Montserrat-Bold.woff") format("woff"),url("../dist/fonts/Montserrat-Bold.ttf") format("truetype"),url("../dist/fonts/Montserrat-Bold.svg#Montserrat") format("svg")
 }
 
 .app {
+    font-family: Montserrat,sans-serif;
+
     &-footer {
         padding-top: 40px;
         padding-bottom: 40px;
