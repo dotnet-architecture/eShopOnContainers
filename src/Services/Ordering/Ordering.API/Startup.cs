@@ -1,11 +1,12 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Ordering.API
 {
+    using AspNetCore.Http;
     using Autofac;
     using Autofac.Extensions.DependencyInjection;
     using Infrastructure;
     using Infrastructure.AutofacModules;
     using Infrastructure.Filters;
-    using MediatR;
+    using Infrastructure.Services;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.EntityFrameworkCore;
@@ -15,8 +16,6 @@
     using Ordering.Infrastructure;
     using System;
     using System.Reflection;
-    using System.Threading;
-    using System.Threading.Tasks;
 
     public class Startup
     {
@@ -64,7 +63,7 @@
                     Title = "Ordering HTTP API",
                     Version = "v1",
                     Description = "The Ordering Service HTTP API",
-                    TermsOfService = "Terms Of Service"
+                    TermsOfService = "Terms Of Service" 
                 });
             });
 
@@ -77,7 +76,10 @@
                     .AllowCredentials());
             });
 
+            // Add application services.
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IConfiguration>(this.Configuration);
+            services.AddTransient<IIdentityService,IdentityService>();
 
             services.AddOptions();
 

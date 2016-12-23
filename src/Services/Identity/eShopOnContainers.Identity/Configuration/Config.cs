@@ -41,8 +41,8 @@ namespace eShopOnContainers.Identity.Configuration
                     ClientName = "eShop SPA OpenId Client",
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
-                    RedirectUris =           { $"{clientsUrl["Spa"]}/callback.html" },
-                    PostLogoutRedirectUris = { $"{clientsUrl["Spa"]}/index.html" },
+                    RedirectUris =           { $"{clientsUrl["Spa"]}/" },
+                    PostLogoutRedirectUris = { $"{clientsUrl["Spa"]}/" },
                     AllowedCorsOrigins =     { $"{clientsUrl["Spa"]}" },
                     AllowedScopes =
                     {
@@ -82,7 +82,9 @@ namespace eShopOnContainers.Identity.Configuration
                     RedirectUris = new List<string>
                     {
                         $"{clientsUrl["Mvc"]}/signin-oidc",
-                        "http://104.40.62.65:5100/signin-oidc"
+                        "http://104.40.62.65:5100/signin-oidc", 
+                        "http://localhost:5100/signin-oidc",
+                        "http://13.88.8.119:5100/signin-oidc"
                     },
                     PostLogoutRedirectUris = new List<string>
                     {

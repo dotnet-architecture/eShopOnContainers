@@ -1,0 +1,237 @@
+﻿import { Injectable } from '@angular/core';
+import { Http, Response, Headers } from '@angular/http';
+import 'rxjs/add/operator/map';
+import { Observable } from 'rxjs/Observable';
+import { Subject }    from 'rxjs/Subject';
+//import { Configuration } from '../app.constants';
+import { Router } from '@angular/router';
+
+@Injectable()
+export class SecurityService {
+
+    private actionUrl: string;
+    private headers: Headers;
+    private storage: any;
+    private authenticationSource = new Subject<boolean>();
+    authenticationChallenge$ = this.authenticationSource.asObservable();
+
+    constructor(private _http: Http, private _router: Router) {
+        this.headers = new Headers();
+        this.headers.append('Content-Type', 'application/json');
+        this.headers.append('Accept', 'application/json');
+        this.storage = sessionStorage; //localStorage;
+
+        if (this.retrieve("IsAuthorized") !== "") {
+            this.IsAuthorized = this.retrieve("IsAuthorized");
+        }
+    }
+
+    public IsAuthorized: boolean;
+
+    public GetToken(): any {
+        return this.retrieve("authorizationData");
+    }
+
+    public ResetAuthorizationData() {
+        this.store("authorizationData", "");
+        this.store("authorizationDataIdToken", "");
+
+        this.IsAuthorized = false;
+        this.store("IsAuthorized", false);
+    }
+
+    public UserData: any;
+    public SetAuthorizationData(token: any, id_token:any) {
+        if (this.retrieve("authorizationData") !== "") {
+            this.store("authorizationData", "");
+        }
+
+        this.store("authorizationData", token);
+        this.store("authorizationDataIdToken", id_token);
+        this.IsAuthorized = true;
+        this.store("IsAuthorized", true);
+
+        this.getUserData()
+            .subscribe(data => {
+                this.UserData = data;
+                //emit observable
+                this.authenticationSource.next(true);
+            },
+            error => this.HandleError(error),
+            () => {
+                console.log(this.UserData);
+            });
+    }
+
+    public Authorize() {
+        this.ResetAuthorizationData();
+
+        var authorizationUrl = 'http://localhost:5105/connect/authorize';
+        var client_id = 'js';
+        var redirect_uri = 'http://localhost:5104/';
+        var response_type = "id_token token";
+        var scope = "openid profile orders basket";
+        var nonce = "N" + Math.random() + "" + Date.now();
+        var state = Date.now() + "" + Math.random();
+
+        this.store("authStateControl", state);
+        this.store("authNonce", nonce);
+
+        var url =
+            authorizationUrl + "?" +
+            "response_type=" + encodeURI(response_type) + "&" +
+            "client_id=" + encodeURI(client_id) + "&" +
+            "redirect_uri=" + encodeURI(redirect_uri) + "&" +
+            "scope=" + encodeURI(scope) + "&" +
+            "nonce=" + encodeURI(nonce) + "&" +
+            "state=" + encodeURI(state);
+
+        window.location.href = url;
+    }
+
+    public AuthorizedCallback() {
+        this.ResetAuthorizationData();
+
+        var hash = window.location.hash.substr(1);
+
+        var result: any = hash.split('&').reduce(function (result : any, item: string) {
+            var parts = item.split('=');
+            result[parts[0]] = parts[1];
+            return result;
+        }, {});
+
+        console.log(result);
+
+        var token = "";
+        var id_token = "";
+        var authResponseIsValid = false;
+        if (!result.error) {
+
+            if (result.state !== this.retrieve("authStateControl")) {
+                console.log("AuthorizedCallback incorrect state");
+            } else {
+
+                token = result.access_token;
+                id_token = result.id_token
+
+                var dataIdToken: any = this.getDataFromToken(id_token);
+                console.log(dataIdToken);
+
+                // validate nonce
+                if (dataIdToken.nonce !== this.retrieve("authNonce")) {
+                    console.log("AuthorizedCallback incorrect nonce");
+                } else {
+                    this.store("authNonce", "");
+                    this.store("authStateControl", "");
+
+                    authResponseIsValid = true;
+                    console.log("AuthorizedCallback state and nonce validated, returning access token");
+                }
+            }
+        }
+
+        if (authResponseIsValid) {
+            this.SetAuthorizationData(token, id_token);
+            console.log(this.retrieve("authorizationData"));
+
+            // router navigate to DataEventRecordsList
+            this._router.navigate(['/dataeventrecords/list']);
+        }
+        else {
+            this.ResetAuthorizationData();
+            this._router.navigate(['/Unauthorized']);
+        }
+    }
+
+    public Logoff() {
+        // /connect/endsession?id_token_hint=...&post_logout_redirect_uri=https://myapp.com
+        console.log("BEGIN Authorize, no auth data");
+
+        var authorizationUrl = 'http://localhost:5105/connect/endsession';
+        console.log(this.retrieve("authorizationDataIdToken"));
+        var id_token_hint = this.retrieve("authorizationDataIdToken");
+        var post_logout_redirect_uri = 'http://localhost:5104/';
+
+        var url =
+            authorizationUrl + "?" +
+            "id_token_hint=" + encodeURI(id_token_hint) + "&" +
+            "post_logout_redirect_uri=" + encodeURI(post_logout_redirect_uri);
+
+        this.ResetAuthorizationData();
+
+        window.location.href = url;
+    }
+
+    public HandleError(error: any) {
+        console.log(error);
+        if (error.status == 403) {
+            this._router.navigate(['/Forbidden'])
+        }
+        else if (error.status == 401) {
+            this.ResetAuthorizationData();
+            this._router.navigate(['/Unauthorized'])
+        }
+    }
+
+    private urlBase64Decode(str: string) {
+        var output = str.replace('-', '+').replace('_', '/');
+        switch (output.length % 4) {
+            case 0:
+                break;
+            case 2:
+                output += '==';
+                break;
+            case 3:
+                output += '=';
+                break;
+            default:
+                throw 'Illegal base64url string!';
+        }
+
+        return window.atob(output);
+    }
+
+    private getDataFromToken(token: any) {
+        var data = {};
+        if (typeof token !== 'undefined') {
+            var encoded = token.split('.')[1];
+            data = JSON.parse(this.urlBase64Decode(encoded));
+        }
+
+        return data;
+    }
+
+    private retrieve(key: string): any {
+        var item = this.storage.getItem(key);
+
+        if (item && item !== 'undefined') {
+            return JSON.parse(this.storage.getItem(key));
+        }
+
+        return;
+    }
+
+    private store(key: string, value: any) {
+        this.storage.setItem(key, JSON.stringify(value));
+    }
+
+    private getUserData = (): Observable<string[]> => {
+        this.setHeaders();
+        return this._http.get('http://localhost:5105/connect/userinfo', {
+            headers: this.headers,
+            body: ''
+        }).map(res => res.json());
+    }
+
+    private setHeaders() {
+        this.headers = new Headers();
+        this.headers.append('Content-Type', 'application/json');
+        this.headers.append('Accept', 'application/json');
+
+        var token = this.GetToken();
+
+        if (token !== "") {
+            this.headers.append('Authorization', 'Bearer ' + token);
+        }
+    }
+}

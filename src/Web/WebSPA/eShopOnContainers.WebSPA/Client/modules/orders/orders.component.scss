@@ -1,0 +1,85 @@
+@import '../_variables.scss';
+
+.esh-orders {
+    min-height: 80vh;
+
+    &-header {
+        background-color: #00A69C;
+        height: 63px;
+
+        li {
+            list-style: none;
+            display: inline;
+            opacity: 0.5;
+            margin-top: 25px;
+            margin-left: 10px;
+            float: right;
+            cursor: pointer;
+            color: white;
+        }
+
+        li a {
+            color: white;
+        }
+
+        &-back {
+            float: left !important;
+            margin-top: 20px !important;
+            text-transform: uppercase;
+        }
+
+        li a:hover {
+            text-decoration: none;
+        }
+    }
+
+    &-container {
+        min-height: 70vh;
+        padding-top: 40px;
+        margin-bottom: 30px;
+        min-width: 992px;
+    }
+
+    &-order-column {
+        max-width: 120px;
+        vertical-align: middle !important;
+    }
+
+    &-order-link {
+        color: #83d01b;
+    }
+
+    &-order-image {
+        max-width: 210px;
+    }
+
+    &-total-value {
+        font-size: 20px;
+        color: #00a69c;
+    }
+
+    &-total-label {
+        font-size: 14px;
+        color: #404040;
+        margin-top: 10px;
+    }
+
+    &-totals {
+        border-bottom:none!important;
+    }
+}
+
+.table td {
+    border-top: solid 1px #ddd;
+}
+
+.table thead th {
+    border: none !important;
+}
+
+
+
+
+
+
+

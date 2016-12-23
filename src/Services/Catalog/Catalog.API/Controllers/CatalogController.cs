@@ -4,6 +4,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
+    using Model;
     using System;
     using System.Linq;
     using System.Threading.Tasks;
