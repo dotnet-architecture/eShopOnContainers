@@ -16,22 +16,17 @@ export class SecurityService {
     authenticationChallenge$ = this.authenticationSource.asObservable();
 
     constructor(private _http: Http, private _router: Router) {
-
-        //this.actionUrl = _configuration.Server + 'api/DataEventRecords/';
-
         this.headers = new Headers();
         this.headers.append('Content-Type', 'application/json');
         this.headers.append('Accept', 'application/json');
         this.storage = sessionStorage; //localStorage;
 
         if (this.retrieve("IsAuthorized") !== "") {
-            //this.HasAdminRole = this.retrieve("HasAdminRole");
             this.IsAuthorized = this.retrieve("IsAuthorized");
         }
     }
 
     public IsAuthorized: boolean;
-    //public HasAdminRole: boolean;
 
     public GetToken(): any {
         return this.retrieve("authorizationData");
@@ -42,8 +37,6 @@ export class SecurityService {
         this.store("authorizationDataIdToken", "");
 
         this.IsAuthorized = false;
-        //this.HasAdminRole = false;
-        this.store("HasAdminRole", false);
         this.store("IsAuthorized", false);
     }
 
@@ -57,11 +50,13 @@ export class SecurityService {
         this.store("authorizationDataIdToken", id_token);
         this.IsAuthorized = true;
         this.store("IsAuthorized", true);
-        //emit observable
-        this.authenticationSource.next(true);
 
         this.getUserData()
-            .subscribe(data => this.UserData = data,
+            .subscribe(data => {
+                this.UserData = data;
+                //emit observable
+                this.authenticationSource.next(true);
+            },
             error => this.HandleError(error),
             () => {
                 console.log(this.UserData);
@@ -70,8 +65,6 @@ export class SecurityService {
 
     public Authorize() {
         this.ResetAuthorizationData();
-
-        console.log("BEGIN Authorize, no auth data");
 
         var authorizationUrl = 'http://localhost:5105/connect/authorize';
         var client_id = 'js';
@@ -83,7 +76,6 @@ export class SecurityService {
 
         this.store("authStateControl", state);
         this.store("authNonce", nonce);
-        console.log("AuthorizedController created. adding myautostate: " + this.retrieve("authStateControl"));
 
         var url =
             authorizationUrl + "?" +
@@ -98,7 +90,6 @@ export class SecurityService {
     }
 
     public AuthorizedCallback() {
-        console.log("BEGIN AuthorizedCallback, no auth data");
         this.ResetAuthorizationData();
 
         var hash = window.location.hash.substr(1);
@@ -110,7 +101,6 @@ export class SecurityService {
         }, {});
 
         console.log(result);
-        console.log("AuthorizedCallback created, begin token validation");
 
         var token = "";
         var id_token = "";
