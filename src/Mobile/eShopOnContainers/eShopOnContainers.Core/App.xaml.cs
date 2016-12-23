@@ -25,7 +25,7 @@ namespace eShopOnContainers
 
         private void InitApp()
         {
-            UseMockServices = false;
+            UseMockServices = true;
 
             ViewModelLocator.Instance.UpdateDependencies(UseMockServices);
         }
