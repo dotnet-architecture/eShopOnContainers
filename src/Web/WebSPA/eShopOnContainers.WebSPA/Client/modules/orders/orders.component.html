@@ -1,57 +1,38 @@
-<div class="esh-order-header">
+<div class="esh-orders-header">
     <ul class="container">
-        <li class="esh-order-header-back" routerLink="/catalog">Back to list</li>
+        <li class="esh-orders-header-back" routerLink="/catalog">Back to list</li>
     </ul>
 </div>
-<div class="container esh-order-container">
+<div class="container esh-orders-container">
     <div class="row">
         <div class="col-md-12">
             <section>
                 <table class="table">
                     <thead>
                         <tr>
-                            <th class="esh-order-product-column">
-                                PRODUCT
+                            <th class="esh-orders-order-column">
+                                ORDER NUMBER
                             </th>
                             <th>
-
+                                DATE
                             </th>
                             <th>
-                                BRAND
+                                TOTAL
                             </th>
                             <th>
-                                PRICE
+                                STATUS
                             </th>
-                            <th>
-                                QUANTITY
-                            </th>
-                            <th>
-                                COST
-                            </th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let item of order?.items">
-                            <td class="esh-order-product-column"><img class="esh-order-product-image" src="{{item.pictureUrl}}" /></td>
-                            <td class="esh-order-product-column">{{item.productName}}</td>
-                            <td class="esh-order-product-column">ROSLYN</td>
-                            <td class="esh-order-product-column">$ {{item.unitPrice}}</td>
-                            <td class="esh-order-product-column">
-                                <input type="number" style="width:100px" min="1" [(ngModel)]="item.quantity" (change)="itemQuantityChanged(item)" />
-                            </td>
-                            <td class="esh-order-product-column esh-order-total-value">$ {{item.unitPrice * item.quantity}}</td>
-                        </tr>
-                        <tr class="esh-order-totals">
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td>
-                                <div class="esh-order-total-value">
-                                    <div class="esh-order-total-label"><span>TOTAL</span></div>
-                                    <span>$ {{totalPrice}}</span>
-                                </div>
+                        <tr *ngFor="let order of orders">
+                            <td class="esh-orders-order-column">{{order.ordernumber}}</td>
+                            <td class="esh-orders-order-column">{{order.date | date:'short'}}</td>
+                            <td class="esh-orders-order-column">$ {{order.total}}</td>
+                            <td class="esh-orders-order-column">{{order.status}}</td>
+                            <td class="esh-orders-order-column">
+                                <a class="esh-orders-order-link" href="#">Detail</a>
                             </td>
                         </tr>
                     </tbody>

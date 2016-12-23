@@ -11,4 +11,4 @@ import { Pager }                from '../shared/components/pager/pager';
     declarations: [OrdersComponent],
     providers: [OrdersService]
 })
-export class CatalogModule { }
+export class OrdersModule { }

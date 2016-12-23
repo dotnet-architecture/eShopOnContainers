@@ -1,6 +1,8 @@
 @import '../_variables.scss';
 
 .esh-orders {
+    min-height: 80vh;
+
     &-header {
         background-color: #00A69C;
         height: 63px;
@@ -38,13 +40,16 @@
         min-width: 992px;
     }
 
-    &-product-column {
+    &-order-column {
         max-width: 120px;
-        text-transform: uppercase;
         vertical-align: middle !important;
     }
 
-    &-product-image {
+    &-order-link {
+        color: #83d01b;
+    }
+
+    &-order-image {
         max-width: 210px;
     }
 
