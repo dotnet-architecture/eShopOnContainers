@@ -8,15 +8,19 @@ import { Observer } from 'rxjs/Observer';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 
+import { SecurityService } from './security.service';
+
 @Injectable()
 export class DataService {
-
-    constructor(private http: Http) { }
+    constructor(private http: Http, private securityService: SecurityService) { }
 
     get(url: string, params?: any): Observable<Response> {
         let options: RequestOptionsArgs = {};
-        options.headers = new Headers();
-        this.addCors(options);
+
+        if (this.securityService) {
+            options.headers = new Headers();
+            options.headers.append("Authorization", "Bearer " + this.securityService.GetToken());
+        }
         
         return this.http.get(url, options).map(
             (res: Response) => {
@@ -24,13 +28,18 @@ export class DataService {
         }).catch(this.handleError);
     }
 
-    post(url: string, data: any, params?: any) {
-        return this.http.post(url, data, params);
-    }
+    post(url: string, data: any, params?: any): Observable<Response> {
+        let options: RequestOptionsArgs = {};
 
-    private addCors(options: RequestOptionsArgs): RequestOptionsArgs {
-        options.headers.append('Access-Control-Allow-Origin', '*');
-        return options;
+        if (this.securityService) {
+            options.headers = new Headers();
+            options.headers.append("Authorization", "Bearer " + this.securityService.GetToken());
+        }
+
+        return this.http.post(url, data, options).map(
+            (res: Response) => {
+                return res;
+            }).catch(this.handleError);
     }
 
     private handleError(error: any) {

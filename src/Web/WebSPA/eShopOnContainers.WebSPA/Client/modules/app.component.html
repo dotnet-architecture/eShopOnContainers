@@ -8,7 +8,8 @@
                     </a>
                 </div>
                 <div class="col-sm-2">
-                    <esh-basket-status></esh-basket-status>
+                    <esh-basket-status *ngIf="Authenticated"></esh-basket-status>
+                    <esh-identity *ngIf="!Authenticated"></esh-identity>
                 </div>
             </div>
         </div>
@@ -39,3 +40,5 @@
         </div>
     </footer>
 </div>
+
+
