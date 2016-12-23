@@ -8,4 +8,5 @@ export interface ICatalogItem {
     catalogBrand: string;
     catalogTypeId: number;
     catalogType: string;
+    units: number;
 }

@@ -1,0 +1,86 @@
+@import '../../_variables.scss';
+
+.esh-orders-detail {
+    min-height: 80vh;
+
+    &-header {
+        background-color: #00A69C;
+        height: 63px;
+
+        li {
+            list-style: none;
+            display: inline;
+            opacity: 0.5;
+            margin-top: 25px;
+            margin-left: 10px;
+            float: right;
+            cursor: pointer;
+            color: white;
+        }
+
+        li a {
+            color: white;
+        }
+
+        &-back {
+            float: left !important;
+            margin-top: 20px !important;
+            text-transform: uppercase;
+        }
+
+        li a:hover {
+            text-decoration: none;
+        }
+    }
+
+    &-container {
+        min-height: 70vh;
+        padding-top: 40px;
+        margin-bottom: 30px;
+    }
+
+    &-container .table tbody tr:first-child td {
+        border-top: none;
+    }
+
+    &-container .table tr {
+        border-bottom: none;
+    }
+
+    &-section {
+        margin-top: 50px;
+    }
+
+    &-container .table {
+        margin-left: -7px;
+    }
+
+    &-total {
+        margin-bottom: 5px;
+        margin-left: 20px;
+        text-align: left;
+    }
+
+    &-total-label {
+        font-size: 14px;
+        color: #404040;
+        margin-top:10px;
+    }
+
+    &-total-value {
+        font-size: 28px;
+        color: #00a69c;
+        text-align: left;
+    }
+
+    &-image {
+        max-width: 210px;
+    }
+
+    &-column {
+        max-width: 120px;
+        padding: 8px;
+        text-transform: uppercase;
+        vertical-align: middle!important;
+    }
+}

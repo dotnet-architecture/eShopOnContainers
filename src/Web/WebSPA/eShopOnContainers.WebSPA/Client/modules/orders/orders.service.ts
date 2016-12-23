@@ -17,8 +17,16 @@ export class OrdersService {
     constructor(private service: DataService) {
     }
 
-    getOrders(): Observable<any> {
-        var url = this.ordersUrl;
+    getOrders(): Observable<IOrder[]> {
+        let url = this.ordersUrl;
+
+        return this.service.get(url).map((response: Response) => {
+            return response.json();
+        });
+    }
+
+    getOrder(id: number): Observable<IOrder> {
+        let url = `${this.ordersUrl}/${id}`;
 
         return this.service.get(url).map((response: Response) => {
             return response.json();
