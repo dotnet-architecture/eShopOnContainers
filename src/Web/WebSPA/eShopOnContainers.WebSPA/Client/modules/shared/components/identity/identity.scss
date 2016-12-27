@@ -1,3 +1,82 @@
 .identity {
+    &-user {
+        position: absolute !important;
+        top: 30px;
+        right: 120px;
+        cursor: pointer;
 
+        &:hover .identity-userDropdown{
+            display:block;
+        }
+    }
+
+    &-userDropdown {
+        display: none;
+        position: absolute;
+        background-color: #FFFFFF;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        right: -15px;
+        z-index: 3;
+
+        &:hover{
+            display:block;
+        }
+
+        //TODO: DELETE THIS BLOCK ONCE REFACTOR.
+        & a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            text-align: right;
+            text-transform: uppercase;
+
+            &:hover{
+                color: #83d01b;
+            }
+        }
+        //
+
+        & div {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            text-align: right;
+            text-transform: uppercase;
+
+            &:hover{
+                color: #83d01b;
+            }
+        }
+    }
+
+    &-downArrow {
+        background-image: url('../images/arrow-down.png');
+        height: 7px;
+        width: 10px;
+        display: inline-block;
+        margin-left: 20px;
+
+        &:hover > identity.userDropdown {
+            display:block;
+        }
+    }
+
+    &-ordersIcon {
+        background-image: url('../images/my_orders.PNG');
+        display: inline-block;
+        height: 20px;
+        width: 20px;
+        margin-left: 15px;
+    }
+
+    &-logOutIcon {
+        background-image: url('../images/logout.PNG');
+        display: inline-block;
+        height: 19px;
+        width: 19px;
+        margin-left: 15px;
+    }
 }

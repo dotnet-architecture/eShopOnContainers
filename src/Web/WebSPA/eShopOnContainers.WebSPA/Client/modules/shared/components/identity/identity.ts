@@ -33,6 +33,12 @@ export class Identity implements OnInit  {
         }
     }
 
+    logoutClicked(event: any) {
+        event.preventDefault();
+        console.log('Logout clicked');
+        this.logout();
+    }
+
     login() {
         this.service.Authorize();
     }

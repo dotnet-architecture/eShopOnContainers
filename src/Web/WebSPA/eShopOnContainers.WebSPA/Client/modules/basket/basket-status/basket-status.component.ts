@@ -1,6 +1,5 @@
 import { Component, OnInit }    from '@angular/core';
-
-import { Subscription }   from 'rxjs/Subscription';
+import { Subscription }         from 'rxjs/Subscription';
 
 import { BasketService }        from '../basket.service';
 import { BasketWrapperService } from '../../shared/services/basket.wrapper.service';
@@ -19,18 +18,12 @@ export class BasketStatusComponent implements OnInit {
     ngOnInit() {
         this.subscription = this.basketEvents.addItemToBasket$.subscribe(
             item => {
-                console.log('element received in basket');
-                console.log(item);
                 this.service.setBasket(item).subscribe(res => {
-                    console.log(res);
                     this.service.getBasket().subscribe(basket => {
                         this.badge = basket.items.length;
-                        console.log('response from basket api');
-                        console.log(basket.items.length);
                     });
                 });
             });
     }
-
 }
 

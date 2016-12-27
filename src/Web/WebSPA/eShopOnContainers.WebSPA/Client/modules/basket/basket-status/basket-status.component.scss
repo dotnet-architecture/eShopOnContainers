@@ -1,6 +1,7 @@
 @import '../../_variables.scss';
 
 .esh-basketstatus {
+    float:right;
 
     &-image {
         height: 36px;
@@ -20,5 +21,6 @@
         font-size: 12px;
         cursor: pointer;
         top: 0;
+        padding-left: 3px;
     }
 }

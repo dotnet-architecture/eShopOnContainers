@@ -159,6 +159,9 @@ export class SecurityService {
 
         this.ResetAuthorizationData();
 
+        //emit observable
+        this.authenticationSource.next(false);
+
         window.location.href = url;
     }
 
