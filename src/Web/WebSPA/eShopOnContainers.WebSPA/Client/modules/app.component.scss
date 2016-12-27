@@ -1,44 +1,28 @@
 @import './_variables.scss';
 
-@font-face {
-    font-family: Montserrat;
-    font-weight: 400;
-    src: url("../dist/fonts/Montserrat-Regular.eot?") format("eot"),url("../dist/fonts/Montserrat-Regular.woff") format("woff"),url("../dist/fonts/Montserrat-Regular.ttf") format("truetype"),url("../dist/fonts/Montserrat-Regular.svg#Montserrat") format("svg")
-}
-
-@font-face {
-    font-family: Montserrat;
-    font-weight: 700;
-    src: url("../dist/fonts/Montserrat-Bold.eot?") format("eot"),url("../dist/fonts/Montserrat-Bold.woff") format("woff"),url("../dist/fonts/Montserrat-Bold.ttf") format("truetype"),url("../dist/fonts/Montserrat-Bold.svg#Montserrat") format("svg")
-}
-
-.app {
-    font-family: Montserrat,sans-serif;
-
+.esh-app {
     &-footer {
-        padding-top: 40px;
-        padding-bottom: 40px;
-        margin-top: 40px;
-        border-top: 1px solid #eee;
-        background-color: black;
+        $margin: 2.5rem;
+        $padding: 2.5rem;
+
+        background-color: $color-background-darker;
+        border-top: $border-light solid $color-foreground-bright;
+        margin-top: $margin;
+        padding-bottom: $padding;
+        padding-top: $padding;
         width: 100%;
 
+        $height: 50px;
         &-brand {
-            margin-top: 25px;
-            max-width: 231px;
-            height: 52px;
-            margin-left: 0px !important;
+            height: $height;
+            width: 230px;
         }
 
         &-text {
+            color: $color-secondary;
+            line-height: $height;
             text-align: right;
             width: 100%;
-            height: 100%;
-            color: #83d01b;
-            margin-top: 10px;
         }
     }
 }
-
-
-
