@@ -20,13 +20,20 @@ body {
     font-weight: $font-weight-normal;
     z-index: 10;
 }
+*,
+*::after,
+*::before {
+    box-sizing: border-box;
+}
 
 .preloading {
     color: $color-brand;
+    display: block;
     font-size: $font-size-xl;
     left: 50%;
     position: fixed;
     top: 50%;
+    transform: translate(-50%, -50%);
 }
 
 select::-ms-expand {

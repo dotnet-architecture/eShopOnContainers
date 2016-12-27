@@ -1,38 +1,46 @@
+<section class="esh-catalog-hero">
+    <div class="container">
+        <img class="esh-catalog-title" src="../../images/main_banner_text.png" />
+    </div>
+</section>
+
+<section class="esh-catalog-filters">
+    <div class="container">
+        <label class="esh-catalog-label" data-title="brand">
+            <select class="esh-catalog-filter" (change)="onBrandFilterChanged($event, $event.target.value)">
+                <option *ngFor="let brand of brands" [value]="brand.id">{{brand.brand}}</option>
+            </select>
+        </label>
+        <label class="esh-catalog-label" data-title="type">
+            <select class="esh-catalog-filter" (change)="onTypeFilterChanged($event, $event.target.value)">
+                <option *ngFor="let type of types" [value]="type.id">{{type.type}}</option>
+            </select>
+        </label>
+        <img class="esh-catalog-send" (click)="onFilterApplied($event)" src="../../images/arrow-right.svg" />
+    </div>
+</section>
+
 <div class="container">
-    <div class="esh-catalog-hero">
-        <img class="esh-catalog-title" src="../../images/main_banner_text.png"/>
-    </div>
-    <div class="esh-catalog-filter">
-        <div class="esh-catalog-filter-container">
-            <div class="container">
-                <div data-name="brand" class="esh-catalog-filter-wrapper">
-                    <select class="esh-catalog-filter-select" (change)="onBrandFilterChanged($event, $event.target.value)">
-                        <option *ngFor="let brand of brands" [value]="brand.id">{{brand.brand}}</option>
-                    </select>
-                </div>
-                <div data-name="type" class="esh-catalog-filter-wrapper">
-                    <select class="esh-catalog-filter-select" (change)="onTypeFilterChanged($event, $event.target.value)">
-                        <option *ngFor="let type of types" [value]="type.id">{{type.type}}</option>
-                    </select>
-                </div>
-                <button class="esh-catalog-filter-button" (click)="onFilterApplied($event)">
-                    <img src="../../images/arrow-right.svg">
-                </button>
-            </div>
-        </div>
-    </div>
     <esh-pager [model]="paginationInfo" (changed)="onPageChanged($event)"></esh-pager>
-    <div class="esh-catalog-content row">
-        <div class="col-md-4 esh-catalog-content-item" *ngFor="let item of catalog?.data">
-            <img src="{{item.pictureUri}}" />
-            <button (click)="addToCart(item)" class="esh-catalog-content-item-button">[ ADD TO CART ]</button>
-            <div class="esh-catalog-content-item-title">
+
+    <div class="esh-catalog-items row">
+        <div class="esh-catalog-item col-md-4"
+             *ngFor="let item of catalog?.data">
+
+            <img class="esh-catalog-thumbnail" src="{{item.pictureUri}}" />
+            <button class="esh-catalog-button" (click)="addToCart(item)">
+                [ ADD TO CART ]
+            </button>
+
+            <div class="esh-catalog-name">
                 <span>{{item.name}}</span>
             </div>
-            <div class="esh-catalog-content-item-price">
+            <div class="esh-catalog-price">
                 <span>{{item.price}}</span>
             </div>
         </div>
     </div>
+
     <esh-pager [model]="paginationInfo" (changed)="onPageChanged($event)"></esh-pager>
 </div>
+
