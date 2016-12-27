@@ -1,0 +1,43 @@
+<div class="esh-orders-header">
+    <ul class="container">
+        <li class="esh-orders-header-back" routerLink="/catalog">Back to list</li>
+    </ul>
+</div>
+<div class="container esh-orders-container">
+    <div class="row">
+        <div class="col-md-12">
+            <section>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th class="esh-orders-order-column">
+                                ORDER NUMBER
+                            </th>
+                            <th>
+                                DATE
+                            </th>
+                            <th>
+                                TOTAL
+                            </th>
+                            <th>
+                                STATUS
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let order of orders">
+                            <td class="esh-orders-order-column">{{order.ordernumber}}</td>
+                            <td class="esh-orders-order-column">{{order.date | date:'short'}}</td>
+                            <td class="esh-orders-order-column">$ {{order.total}}</td>
+                            <td class="esh-orders-order-column">{{order.status}}</td>
+                            <td class="esh-orders-order-column">
+                                <a class="esh-orders-order-link" routerLink="/orders/{{order.ordernumber}}">Detail</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </div>
+    </div>
+</div>

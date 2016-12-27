@@ -161,15 +161,18 @@ namespace eShopOnContainers.Core.ViewModels
 
             foreach (var basketItem in basketItems)
             {
-                orderItems.Add(new OrderItem
+                if (!string.IsNullOrEmpty(basketItem.ProductName))
                 {
-                    OrderId = null,
-                    ProductId = basketItem.ProductId,
-                    ProductName = basketItem.ProductName,
-                    PictureUrl = basketItem.PictureUrl,
-                    Quantity = basketItem.Quantity,
-                    UnitPrice = basketItem.UnitPrice
-                });
+                    orderItems.Add(new OrderItem
+                    {
+                        OrderId = null,
+                        ProductId = basketItem.ProductId,
+                        ProductName = basketItem.ProductName,
+                        PictureUrl = basketItem.PictureUrl,
+                        Quantity = basketItem.Quantity,
+                        UnitPrice = basketItem.UnitPrice
+                    });
+                }
             }
 
             return orderItems;

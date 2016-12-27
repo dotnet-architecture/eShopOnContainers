@@ -1,0 +1,59 @@
+<div class="esh-orders-detail-header">
+    <ul class="container">
+        <li class="esh-orders-detail-header-back" routerLink="/orders">Back to list</li>
+    </ul>
+</div>
+<div class="container esh-orders-detail-container">
+    <div class="row">
+        <div class="col-sm-3">
+            <span>ORDER NUMBER</span><br>
+            <span>{{order.ordernumber}}</span>
+        </div>
+        <div class="col-sm-3">
+            <span>DATE</span><br>
+            <span>{{order.date | date:'short'}}</span>
+        </div>
+        <div class="col-sm-3">
+            <span>TOTAL</span><br>
+            <span>$ {{order.total}}</span>
+        </div>
+        <div class="col-sm-3">
+            <span>STATUS</span><br>
+            <span>{{order.status}}</span>
+        </div>
+    </div>
+    <div class="row esh-orders-detail-section">
+        <div class="col-sm-3">
+            <span>SHIPING ADDRESS</span><br>
+            <span>{{order.street}}</span><br>
+            <span>{{order.city}}</span><br>
+            <span>{{order.country}}</span><br>
+        </div>
+    </div>
+    <div>
+        <div class="row esh-orders-detail-section"><div class="col-sm-3">ORDER DETAILS</div></div>
+        <section>
+            <table class="table">
+                <tbody>
+                    <tr *ngFor="let item of order.orderitems">
+                        <td class="esh-orders-detail-column"><img class="esh-orders-detail-image" src="{{item.pictureurl}}"></td>
+                        <td class="esh-orders-detail-column">{{item.productname}}</td>
+                        <td class="esh-orders-detail-column">ROSLYN</td>
+                        <td class="esh-orders-detail-column">$ {{item.unitprice}}</td>
+                        <td class="esh-orders-detail-column">{{item.units}}</td>
+                        <td class="esh-orders-detail-column esh-orders-detail-total-value">$ {{item.units * item.unitprice}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </div>
+    <div class="col-md-9 col-md-3">
+        
+    </div>
+    <div class="col-md-3">
+        <div class="esh-orders-detail-total">
+            <div class="esh-orders-detail-total-label"><span>TOTAL</span></div>
+            <div class="esh-orders-detail-total-value"><span>$ 12.00</span></div>
+        </div>
+    </div>
+</div>
