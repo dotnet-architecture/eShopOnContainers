@@ -1,36 +1,30 @@
-@import '../_variables.scss';
+@import '../variables';
 
-select::-ms-expand {
-    display: none;
-}
+.esh-catalog {
 
-.catalog {
-    &-banner {
-        height: 258px;
-        vertical-align: middle;
-
-        &-image {
-            width: 100%;
-            position: absolute;
-            left: 0;
-            height: 258px;
-        }
-
-        &-text {
-            position: relative;
-            top: 75px;
-        }
+    $banner-height: 260px;
+    &-hero {
+        background-image: url('../../images/main_banner.png');
+        background-size: cover;
+        height: $banner-height;
+        width: 100%;
     }
 
+    &-title {
+        position: relative;
+        top: $banner-height / 3.5;
+    }
+
+    $filter-height: 65px;
     &-filter {
-        height: 65px;
+        height: $filter-height;
 
         &-container {
+            background-color: $color-brand;
+            height: $filter-height;
+            left: 0;
             position: absolute;
             width: 100%;
-            background-color: $color-brand;
-            left: 0;
-            height: 65px;
         }
 
         &-button {

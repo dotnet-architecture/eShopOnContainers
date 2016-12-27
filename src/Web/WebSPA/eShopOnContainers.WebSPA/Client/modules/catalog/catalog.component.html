@@ -1,38 +1,35 @@
 <div class="container">
-    <div class="catalog-banner">
-        <img class="catalog-banner-image" src="../../images/main_banner.png" />
-        <div class="container">
-            <img src="../../images/main_banner_text.png" class="catalog-banner-text" />
-        </div>
+    <div class="esh-catalog-hero">
+        <img class="esh-catalog-title" src="../../images/main_banner_text.png"/>
     </div>
-    <div class="catalog-filter">
-        <div class="catalog-filter-container">
+    <div class="esh-catalog-filter">
+        <div class="esh-catalog-filter-container">
             <div class="container">
-                <div data-name="brand" class="catalog-filter-wrapper">
-                    <select class="catalog-filter-select" (change)="onBrandFilterChanged($event, $event.target.value)">
+                <div data-name="brand" class="esh-catalog-filter-wrapper">
+                    <select class="esh-catalog-filter-select" (change)="onBrandFilterChanged($event, $event.target.value)">
                         <option *ngFor="let brand of brands" [value]="brand.id">{{brand.brand}}</option>
                     </select>
                 </div>
-                <div data-name="type" class="catalog-filter-wrapper">
-                    <select class="catalog-filter-select" (change)="onTypeFilterChanged($event, $event.target.value)">
+                <div data-name="type" class="esh-catalog-filter-wrapper">
+                    <select class="esh-catalog-filter-select" (change)="onTypeFilterChanged($event, $event.target.value)">
                         <option *ngFor="let type of types" [value]="type.id">{{type.type}}</option>
                     </select>
                 </div>
-                <button class="catalog-filter-button" (click)="onFilterApplied($event)">
+                <button class="esh-catalog-filter-button" (click)="onFilterApplied($event)">
                     <img src="../../images/arrow-right.svg">
                 </button>
             </div>
         </div>
     </div>
     <esh-pager [model]="paginationInfo" (changed)="onPageChanged($event)"></esh-pager>
-    <div class="catalog-content row">
-        <div class="col-md-4 catalog-content-item" *ngFor="let item of catalog?.data">
+    <div class="esh-catalog-content row">
+        <div class="col-md-4 esh-catalog-content-item" *ngFor="let item of catalog?.data">
             <img src="{{item.pictureUri}}" />
-            <button (click)="addToCart(item)" class="catalog-content-item-button">[ ADD TO CART ]</button>
-            <div class="catalog-content-item-title">
+            <button (click)="addToCart(item)" class="esh-catalog-content-item-button">[ ADD TO CART ]</button>
+            <div class="esh-catalog-content-item-title">
                 <span>{{item.name}}</span>
             </div>
-            <div class="catalog-content-item-price">
+            <div class="esh-catalog-content-item-price">
                 <span>{{item.price}}</span>
             </div>
         </div>

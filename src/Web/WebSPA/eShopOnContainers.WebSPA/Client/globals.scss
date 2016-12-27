@@ -28,3 +28,7 @@ body {
     position: fixed;
     top: 50%;
 }
+
+select::-ms-expand {
+    display: none;
+}

@@ -1,4 +1,4 @@
-.identity {
+/*.identity {
     &-user {
         position: absolute !important;
         top: 30px;
@@ -53,7 +53,7 @@
     }
 
     &-downArrow {
-        background-image: url('../images/arrow-down.png');
+        background-image: url('../../../../images/arrow-down.png');
         height: 7px;
         width: 10px;
         display: inline-block;
@@ -65,7 +65,7 @@
     }
 
     &-ordersIcon {
-        background-image: url('../images/my_orders.PNG');
+        background-image: url('../../../../images/my_orders.png');
         display: inline-block;
         height: 20px;
         width: 20px;
@@ -73,10 +73,10 @@
     }
 
     &-logOutIcon {
-        background-image: url('../images/logout.PNG');
+        background-image: url('../../../../images/logout.PNG');
         display: inline-block;
         height: 19px;
         width: 19px;
         margin-left: 15px;
     }
-}
+}*/
