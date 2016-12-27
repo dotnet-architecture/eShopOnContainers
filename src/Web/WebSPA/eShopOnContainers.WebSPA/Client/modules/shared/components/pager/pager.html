@@ -1,31 +1,25 @@
-<div class="row pager">
-    <div class="col-xs-4">
+<div class="container">
+    <article class="esh-pager-wrapper row">
         <nav>
-            <ul>
-                <li class="page-item">
-                    <span class="pager-text pager-previous" id="Previous"
-                       [hidden]="buttonStates?.previousDisabled"
-                       (click)="onPreviousCliked($event)"
-                       aria-label="Previous">
-                        Previous
-                    </span>
-                </li>
-            </ul>
+            <span class="esh-pager-item esh-pager-item--navigable"
+                  id="Previous"
+                  [hidden]="buttonStates?.previousDisabled"
+                  (click)="onPreviousCliked($event)"
+                  aria-label="Previous">
+                Previous
+            </span>
+
+            <span class="esh-pager-item">
+                Showing {{model?.items}} of {{model?.totalItems}} products - Page {{model?.actualPage + 1}} - {{model?.totalPages}}
+            </span>
+
+            <span class="esh-pager-item esh-pager-item--navigable"
+                  id="Next"
+                  [hidden]="buttonStates?.nextDisabled"
+                  (click)="onNextClicked($event)"
+                  aria-label="Next">
+                Next
+            </span>
         </nav>
-    </div>
-    <div class="col-xs-4 u-align-center"><span>Showing {{model?.items}} of {{model?.totalItems}} products - Page {{model?.actualPage + 1}} - {{model?.totalPages}}</span></div>
-    <div class="col-xs-4">
-        <nav>
-            <ul>
-                <li class="page-item">
-                    <span class="pager-text pager-next" id="Next"
-                       [hidden]="buttonStates?.nextDisabled"
-                       (click)="onNextClicked($event)"
-                       aria-label="Next">
-                        Next
-                    </span>
-                </li>
-            </ul>
-        </nav>
-    </div>
+    </article>
 </div>

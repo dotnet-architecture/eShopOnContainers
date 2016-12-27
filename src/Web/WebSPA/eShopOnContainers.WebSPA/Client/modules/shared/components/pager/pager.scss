@@ -1,30 +1,30 @@
-.pager {
-    margin-bottom: 20px;
-    margin-top: 20px;
-    margin-left: 0px;
-    margin-right: -30px;
+@import "../../../variables";
 
-    &-previous {
-        position: absolute;
-        left: 0;
-        top: 0;
-        cursor: pointer;
+.esh-pager {
+
+    &-wrapper {
+        padding-top: 1rem;
+        text-align: center;
     }
 
-    &-text {
-        color: #83d01b;
-    }
+    &-item {
+        $margin: 8vw;
+        margin: 0 $margin;
 
-    &-next {
-        position: absolute;
-        right: 15px;
-        top: 0;
-        cursor: pointer;
-    }
+        &--navigable {
+            cursor: pointer;
 
-    &-isDisabled {
-        cursor: not-allowed;
-        opacity: .5;
-        pointer-events: none;
+            &:hover {
+                color: $color-secondary;
+            }
+        }
+
+        @media screen and (max-width: $media-screen-l) {
+            font-size: $font-size-s;
+        }
+
+        @media screen and (max-width: $media-screen-m) {
+            margin: 0 $margin / 2;
+        }
     }
 }
