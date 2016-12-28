@@ -40,7 +40,10 @@
     }
 
     &-items {
-        
+        &--border {
+            border-bottom: $border-light solid $color-foreground-bright;
+            padding: .5rem 0;
+        }
     }
 
     $item-height: 8rem;
