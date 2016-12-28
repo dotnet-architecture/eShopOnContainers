@@ -1,86 +1,51 @@
 @import '../../_variables.scss';
 
-.esh-orders-detail {
+.esh-orders_detail {
     min-height: 80vh;
 
+    $header-height: 4rem;
     &-header {
         background-color: #00A69C;
-        height: 63px;
-
-        li {
-            list-style: none;
-            display: inline;
-            opacity: 0.5;
-            margin-top: 25px;
-            margin-left: 10px;
-            float: right;
-            cursor: pointer;
-            color: white;
-        }
-
-        li a {
-            color: white;
-        }
-
-        &-back {
-            float: left !important;
-            margin-top: 20px !important;
-            text-transform: uppercase;
-        }
-
-        li a:hover {
-            text-decoration: none;
-        }
+        height: $header-height;
     }
 
-    &-container {
-        min-height: 70vh;
-        padding-top: 40px;
-        margin-bottom: 30px;
-    }
+    &-back {
+        color: rgba($color-foreground-brighter, .4);
+        line-height: $header-height;
+        text-transform: uppercase;
+        text-decoration: none;
+        transition: color $animation-speed-default;
 
-    &-container .table tbody tr:first-child td {
-        border-top: none;
-    }
-
-    &-container .table tr {
-        border-bottom: none;
+        &:hover {
+            color: $color-foreground-brighter;
+            transition: color $animation-speed-default;
+        }
     }
 
     &-section {
-        margin-top: 50px;
+        padding: 1rem 0;
     }
 
-    &-container .table {
-        margin-left: -7px;
+    &-titles {
+        padding-bottom: 1rem;
+        padding-top: 2rem;
     }
 
-    &-total {
-        margin-bottom: 5px;
-        margin-left: 20px;
-        text-align: left;
+    &-title {
+        font-size: $font-size-l;
     }
 
-    &-total-label {
-        font-size: 14px;
-        color: #404040;
-        margin-top:10px;
-    }
-
-    &-total-value {
-        font-size: 28px;
-        color: #00a69c;
-        text-align: left;
+    &-item {
+        font-weight: $font-weight-semilight;
     }
 
     &-image {
         max-width: 210px;
-    }
+        min-width: 80px;
+        width: 100%;
 
-    &-column {
-        max-width: 120px;
-        padding: 8px;
-        text-transform: uppercase;
-        vertical-align: middle!important;
+        @media screen and (max-width: $media-screen-s) {
+            display: none;
+        }
     }
 }
