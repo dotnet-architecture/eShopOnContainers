@@ -1,11 +1,13 @@
-﻿import { Injectable } from '@angular/core';
-import { Subject }    from 'rxjs/Subject';
+﻿import { Injectable }       from '@angular/core';
+import { Subject }          from 'rxjs/Subject';
 
-import { ICatalogItem } from '../models/catalogItem.model';
-import { IBasketItem } from '../models/basketItem.model';
+import { ICatalogItem }     from '../models/catalogItem.model';
+import { IBasketItem }      from '../models/basketItem.model';
+import { IBasket }          from '../models/basket.model';
 
 @Injectable()
 export class BasketWrapperService {
+    public basket: IBasket
 
     constructor() { }
 

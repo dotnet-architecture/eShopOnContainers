@@ -1,0 +1,175 @@
+<div class="esh-orders-new-header">
+    <ul class="container">
+        <li class="esh-orders-new-header-back" routerLink="/basket">Back to basket</li>
+    </ul>
+</div>
+
+
+<div class="jumbotron">
+    <h2>Form with Validations</h2>
+    <form [formGroup]="newOrderForm" (ngSubmit)="submitForm(newOrderForm.value)">
+        <div class="form-group" [ngClass]="{'has-error':!newOrderForm.controls['firstName'].valid && newOrderForm.controls['firstName'].touched}">
+            <label>First Name:</label>
+            <input class="form-control" type="text" placeholder="John" [formControl]="newOrderForm.controls['firstName']">
+            <!-- The hasError method will tell us if a particular error exists -->
+            <div *ngIf="newOrderForm.controls['firstName'].hasError('required') && newOrderForm.controls['firstName'].touched" class="alert alert-danger">You must include a first name.</div>
+        </div>
+        <div class="form-group" [ngClass]="{'has-error':!newOrderForm.controls['lastName'].valid && newOrderForm.controls['lastName'].touched}">
+            <label>Last Name</label>
+            <input class="form-control" type="text" placeholder="Doe" [formControl]="complexForm.controls['lastName']">
+            <!-- The hasError method can work with the built in validators but custom validators as well -->
+            <div *ngIf="newOrderForm.controls['lastName'].hasError('required') && newOrderForm.controls['lastName'].touched" class="alert alert-danger">You must include a last name.</div>
+            <div *ngIf="newOrderForm.controls['lastName'].hasError('minlength') && newOrderForm.controls['lastName'].touched" class="alert alert-danger">Your last name must be at least 5 characters long.</div>
+            <div *ngIf="newOrderForm.controls['lastName'].hasError('maxlength') && newOrderForm.controls['lastName'].touched" class="alert alert-danger">Your last name cannot exceed 10 characters.</div>
+        </div>
+        <div class="form-group">
+            <label>Gender</label>
+            <div class="alert alert-danger" *ngIf="!newOrderForm.controls['gender'].valid && complexForm.controls['gender'].touched">You must select a gender.</div>
+        </div>
+        <div class="radio">
+            <label>
+                <input type="radio" name="gender" value="Male" [formControl]="newOrderForm.controls['gender']">
+                Male
+            </label>
+        </div>
+        <div class="radio">
+            <label>
+                <input type="radio" name="gender" value="Female" [formControl]="complexForm.controls['gender']">
+                Female
+            </label>
+        </div>
+        <div class="form-group">
+            <label>Activities</label>
+        </div>
+        <label class="checkbox-inline">
+            <input type="checkbox" value="hiking" name="hiking" [formControl]="complexForm.controls['hiking']"> Hiking
+        </label>
+        <label class="checkbox-inline">
+            <input type="checkbox" value="swimming" name="swimming" [formControl]="complexForm.controls['swimming']"> Swimming
+        </label>
+        <label class="checkbox-inline">
+            <input type="checkbox" value="running" name="running" [formControl]="complexForm.controls['running']"> Running
+        </label>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary" [disabled]="!complexForm.valid">Submit</button>
+        </div>
+    </form>
+</div>
+
+
+
+
+
+<div class="container esh-orders-new-container">
+    <h1>SHIPPING ADDRESS</h1>
+    <div class="row">
+        <div class="col-md-6">
+            ADDRESS<br />
+            {{address}}
+        </div>
+        <div class="col-md-6">
+            CITY<br />
+            {{city}}
+        </div>
+        <div class="col-md-6">
+            STATE<br />
+            {{state}}
+        </div>
+        <div class="col-md-6">
+            COUNTRY<br />
+            {{country}}
+        </div>
+    </div>
+    <h1>PAYMENT METHOD</h1>
+    <div class="row">
+        <div class="col-md-6">
+            CARD NUMBER<br />
+            {{address}}
+        </div>
+        <div class="col-md-6">
+            CARDHOLDER NAME<br />
+            {{city}}
+        </div>
+        <div class="col-md-3">
+            EXPIRATION DATE<br />
+            {{state}}
+        </div>
+        <div class="col-md-3">
+            SECURITY CODE<br />
+            {{country}}
+        </div>
+    </div>
+    <div class="col-md-12">
+        <section>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="cart-product-column">
+                            PRODUCT
+                        </th>
+                        <th>
+
+                        </th>
+                        <th>
+                            BRAND
+                        </th>
+                        <th>
+                            PRICE
+                        </th>
+                        <th>
+                            QUANTITY
+                        </th>
+                        <th>
+                            COST
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- ngFor -->
+                    <tr>
+                        <td class="cart-product-column">
+
+                        </td>
+                        <td class="cart-product-column">
+
+                        </td>
+                        <td class="cart-product-column">
+                            ROSLYN
+                        </td>
+                        <td class="cart-product-column">
+
+                        </td>
+                        <td class="cart-product-column">
+
+                        </td>
+                        <td class="cart-product-column cart-total-value">
+
+                        </td>
+                    </tr>
+                    <tr class="cart-totals">
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <div class="cart-total-value">
+                                <div class="cart-total-label"><span>TOTAL</span></div>
+                                <span>$ 29,00</span>
+                                <input type="hidden" value="29,00" name="Total">
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </div>
+    <div class="form-group">
+        <div class="col-md-8">
+
+        </div>
+        <div class="col-md-4">
+            <input type="submit" value="[ Place Order ]" name="action" class="btn esh-orders-new-placeOrder">
+        </div>
+    </div>
+</div>

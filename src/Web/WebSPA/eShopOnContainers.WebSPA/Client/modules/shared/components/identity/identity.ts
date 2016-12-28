@@ -21,15 +21,20 @@ export class Identity implements OnInit  {
     ngOnInit() {
         this.subscription = this.service.authenticationChallenge$.subscribe(res =>
         {
-            //console.log(res);
-            //console.log(this.service.UserData);
-            //console.log(this.service);
             this.authenticated = res;
             this.userName = this.service.UserData.email;
         });
 
         if (window.location.hash) {
             this.service.AuthorizedCallback();
+        }
+
+        console.log('identity component, checking authorized' + this.service.IsAuthorized);
+        this.authenticated = this.service.IsAuthorized;
+
+        if (this.authenticated) {
+            if (this.service.UserData)
+                this.userName = this.service.UserData.email;
         }
     }
 

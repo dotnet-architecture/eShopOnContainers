@@ -16,16 +16,25 @@ import 'rxjs/add/operator/map';
 export class BasketService {
     private basketUrl: string = 'http://eshopcontainers:5103';
     basket: IBasket = {
-        buyerId: 'fakeIdentity',
+        buyerId: '',
         items: []
     };
 
     constructor(private service: DataService, private authService: SecurityService) {
         this.basket.items = [];
+
+        // Init:
+        if (this.authService.IsAuthorized) {
+            if (this.authService.UserData) {
+                this.basket.buyerId = this.authService.UserData.sub;
+                this.getBasket().subscribe(basket => {
+                    this.basket = basket;
+                });
+            }
+        }
     }
 
     setBasket(item): Observable<boolean> {
-        console.log('set basket');
         this.basket.items.push(item);
         return this.service.post(this.basketUrl + '/', this.basket).map((response: Response) => {
             return true;

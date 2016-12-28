@@ -1,10 +1,11 @@
-﻿import { Injectable } from '@angular/core';
-import { Http, Response, Headers } from '@angular/http';
+﻿import { Injectable }                   from '@angular/core';
+import { Http, Response, Headers }      from '@angular/http';
 import 'rxjs/add/operator/map';
-import { Observable } from 'rxjs/Observable';
-import { Subject }    from 'rxjs/Subject';
+import { Observable }                   from 'rxjs/Observable';
+import { Subject }                      from 'rxjs/Subject';
 //import { Configuration } from '../app.constants';
-import { Router } from '@angular/router';
+import { Router }                       from '@angular/router';
+import { ActivatedRoute }               from '@angular/router';
 
 @Injectable()
 export class SecurityService {
@@ -15,7 +16,7 @@ export class SecurityService {
     private authenticationSource = new Subject<boolean>();
     authenticationChallenge$ = this.authenticationSource.asObservable();
 
-    constructor(private _http: Http, private _router: Router) {
+    constructor(private _http: Http, private _router: Router, private route: ActivatedRoute) {
         this.headers = new Headers();
         this.headers.append('Content-Type', 'application/json');
         this.headers.append('Accept', 'application/json');
@@ -23,6 +24,8 @@ export class SecurityService {
 
         if (this.retrieve("IsAuthorized") !== "") {
             this.IsAuthorized = this.retrieve("IsAuthorized");
+            this.authenticationSource.next(true);
+            this.UserData = this.retrieve("userData");
         }
     }
 
@@ -54,8 +57,10 @@ export class SecurityService {
         this.getUserData()
             .subscribe(data => {
                 this.UserData = data;
+                this.store("userData", data);
                 //emit observable
                 this.authenticationSource.next(true);
+                window.location.href = 'http://localhost:5104';
             },
             error => this.HandleError(error),
             () => {
@@ -105,6 +110,7 @@ export class SecurityService {
         var token = "";
         var id_token = "";
         var authResponseIsValid = false;
+
         if (!result.error) {
 
             if (result.state !== this.retrieve("authStateControl")) {
@@ -130,25 +136,14 @@ export class SecurityService {
             }
         }
 
+
         if (authResponseIsValid) {
             this.SetAuthorizationData(token, id_token);
-            console.log(this.retrieve("authorizationData"));
-
-            // router navigate to DataEventRecordsList
-            this._router.navigate(['/dataeventrecords/list']);
-        }
-        else {
-            this.ResetAuthorizationData();
-            this._router.navigate(['/Unauthorized']);
         }
     }
 
     public Logoff() {
-        // /connect/endsession?id_token_hint=...&post_logout_redirect_uri=https://myapp.com
-        console.log("BEGIN Authorize, no auth data");
-
         var authorizationUrl = 'http://localhost:5105/connect/endsession';
-        console.log(this.retrieve("authorizationDataIdToken"));
         var id_token_hint = this.retrieve("authorizationDataIdToken");
         var post_logout_redirect_uri = 'http://localhost:5104/';
 
@@ -161,7 +156,6 @@ export class SecurityService {
 
         //emit observable
         this.authenticationSource.next(false);
-
         window.location.href = url;
     }
 
@@ -171,7 +165,7 @@ export class SecurityService {
             this._router.navigate(['/Forbidden'])
         }
         else if (error.status == 401) {
-            this.ResetAuthorizationData();
+            //this.ResetAuthorizationData();
             this._router.navigate(['/Unauthorized'])
         }
     }

@@ -5,8 +5,8 @@
         right: 120px;
         cursor: pointer;
 
-        &:hover .identity-userDropdown{
-            display:block;
+        &:hover .identity-userDropdown {
+            display: block;
         }
     }
 
@@ -19,24 +19,9 @@
         right: -15px;
         z-index: 3;
 
-        &:hover{
-            display:block;
-        }
-
-        //TODO: DELETE THIS BLOCK ONCE REFACTOR.
-        & a {
-            color: black;
-            padding: 12px 16px;
-            text-decoration: none;
+        &:hover {
             display: block;
-            text-align: right;
-            text-transform: uppercase;
-
-            &:hover{
-                color: #83d01b;
-            }
         }
-        //
 
         & div {
             color: black;
@@ -46,37 +31,33 @@
             text-align: right;
             text-transform: uppercase;
 
-            &:hover{
+            &:hover {
                 color: #83d01b;
             }
         }
     }
 
     &-downArrow {
-        background-image: url('../images/arrow-down.png');
         height: 7px;
         width: 10px;
         display: inline-block;
         margin-left: 20px;
 
         &:hover > identity.userDropdown {
-            display:block;
+            display: block;
         }
     }
 
-    &-ordersIcon {
-        background-image: url('../images/my_orders.PNG');
-        display: inline-block;
-        height: 20px;
-        width: 20px;
-        margin-left: 15px;
-    }
-
-    &-logOutIcon {
-        background-image: url('../images/logout.PNG');
-        display: inline-block;
-        height: 19px;
-        width: 19px;
-        margin-left: 15px;
+    &-login {
+        border: 1px solid #00a69c;
+        height: 36px !important;
+        margin-right: 10px;
+        margin-top: 10px;
+        background-color: #fff;
+        color: #00a69c;
+        text-transform: uppercase;
+        max-width: 140px;
+        width: 140px;
+        padding-top: 8px !important;
     }
 }

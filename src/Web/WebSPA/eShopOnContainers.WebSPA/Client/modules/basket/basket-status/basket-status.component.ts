@@ -3,6 +3,7 @@ import { Subscription }         from 'rxjs/Subscription';
 
 import { BasketService }        from '../basket.service';
 import { BasketWrapperService } from '../../shared/services/basket.wrapper.service';
+import { SecurityService }      from '../../shared/services/security.service';
 
 @Component({
     selector: 'esh-basket-status',
@@ -11,11 +12,13 @@ import { BasketWrapperService } from '../../shared/services/basket.wrapper.servi
 })
 export class BasketStatusComponent implements OnInit {
     subscription: Subscription;
+    authSubscription: Subscription;
     badge: number = 0;
 
-    constructor(private service: BasketService, private basketEvents: BasketWrapperService) { }
+    constructor(private service: BasketService, private basketEvents: BasketWrapperService, private authService: SecurityService) { }
 
     ngOnInit() {
+        // Subscribe to Add Basket Observable:
         this.subscription = this.basketEvents.addItemToBasket$.subscribe(
             item => {
                 this.service.setBasket(item).subscribe(res => {
@@ -24,6 +27,18 @@ export class BasketStatusComponent implements OnInit {
                     });
                 });
             });
+
+        // Subscribe to login and logout observable
+        this.authSubscription = this.authService.authenticationChallenge$.subscribe(res => {
+            this.service.getBasket().subscribe(basket => {
+                this.badge = basket.items.length;
+            });
+        });
+
+        // Init:
+        this.service.getBasket().subscribe(basket => {
+            this.badge = basket.items.length;
+        });
     }
 }
 

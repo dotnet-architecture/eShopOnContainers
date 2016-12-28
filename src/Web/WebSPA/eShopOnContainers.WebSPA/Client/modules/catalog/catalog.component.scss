@@ -28,7 +28,7 @@ select::-ms-expand {
         &-container {
             position: absolute;
             width: 100%;
-            background-color: $primary-colour;
+            background-color: $color-brand;
             left: 0;
             height: 65px;
         }
@@ -37,7 +37,7 @@ select::-ms-expand {
             width: 45px;
             height: 45px;
             padding: 6px 20px 10px 8px;
-            background-color: $primary-accent;
+            background-color: $color-secondary;
             color: white;
             font-size: 16px;
             margin: 10px 0;
@@ -96,7 +96,7 @@ select::-ms-expand {
                 width: 255px;
                 height: 45px;
                 padding: 10px 20px 10px 20px;
-                background-color: $primary-accent;
+                background-color: $color-secondary;
                 color: white;
                 font-size: 16px;
                 margin: 10px 0;
@@ -109,7 +109,6 @@ select::-ms-expand {
                 text-transform: uppercase;
                 font-weight: 300;
                 font-size: 16px;
-                /*margin-top: 20px;*/
             }
 
             &-price {

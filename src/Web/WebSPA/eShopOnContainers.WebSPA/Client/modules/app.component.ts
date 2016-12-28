@@ -21,7 +21,7 @@ export class AppComponent implements OnInit {
     subscription: Subscription;
 
     constructor(private titleService: Title, private securityService: SecurityService) {
-
+        this.Authenticated = this.securityService.IsAuthorized;
     }
 
     ngOnInit() {
