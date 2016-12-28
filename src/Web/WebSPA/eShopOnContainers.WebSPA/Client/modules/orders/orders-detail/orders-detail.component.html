@@ -1,12 +1,12 @@
 <div class="esh-orders_detail">
     <div class="esh-orders_detail-header">
         <div class="container">
-            <a class="esh-orders-back" routerLink="/orders">Back to list</a>
+            <a class="esh-orders_detail-back" routerLink="/orders">Back to list</a>
         </div>
     </div>
 
     <div class="container">
-        <div class="aaaaaaaa">
+        <section class="esh-orders_detail-section">
             <article class="esh-orders_detail-titles row">
                 <section class="esh-orders_detail-title col-xs-3">Order number</section>
                 <section class="esh-orders_detail-title col-xs-3">Date</section>
@@ -15,58 +15,58 @@
             </article>
 
             <article class="esh-orders_detail-items row">
-                <section class="esh-orders_detail-item col-xs-2">{{order.ordernumber}}</section>
-                <section class="esh-orders_detail-item col-xs-4">{{order.date | date:'short'}}</section>
-                <section class="esh-orders_detail-item col-xs-2">$ {{order.total}}</section>
-                <section class="esh-orders_detail-item col-xs-2">{{order.status}}</section>
+                <section class="esh-orders_detail-item col-xs-3">{{order.ordernumber}}</section>
+                <section class="esh-orders_detail-item col-xs-3">{{order.date | date:'short'}}</section>
+                <section class="esh-orders_detail-item col-xs-3">$ {{order.total}}</section>
+                <section class="esh-orders_detail-item col-xs-3">{{order.status}}</section>
             </article>
-        </div>
+        </section>
 
-        <div class="bbbbb">
+        <section class="esh-orders_detail-section">
             <article class="esh-orders_detail-titles row">
-                <section class="esh-orders_detail-title col-xs-3">Shipig address</section>
+                <section class="esh-orders_detail-title col-xs-12">Shipig address</section>
             </article>
 
             <article class="esh-orders_detail-items row">
-                <section class="esh-orders_detail-item col-xs-3">{{order.street}}</section>
+                <section class="esh-orders_detail-item col-xs-12">{{order.street}}</section>
             </article>
 
             <article class="esh-orders_detail-items row">
-                <section class="esh-orders_detail-item col-xs-4">{{order.city}}</section>
+                <section class="esh-orders_detail-item col-xs-12">{{order.city}}</section>
             </article>
 
             <article class="esh-orders_detail-items row">
-                <section class="esh-orders_detail-item col-xs-2">{{order.country}}</section>
+                <section class="esh-orders_detail-item col-xs-12">{{order.country}}</section>
             </article>
-        </div>
+        </section>
 
-        <div class="ccccc">
+        <section class="esh-orders_detail-section">
             <article class="esh-orders_detail-titles row">
-                <section class="esh-orders_detail-title col-xs-3">Order details</section>
+                <section class="esh-orders_detail-title col-xs-12">Order details</section>
             </article>
 
-            <article class="esh-orders_detail-items row"
+            <article class="esh-orders_detail-items esh-orders_detail-items--border row"
                      *ngFor="let item of order.orderitems">
-                <section class="esh-orders_detail-item col-xs-4">
-                    <img class="esh-orders-detail-image" src="{{item.pictureurl}}">
+                <section class="esh-orders_detail-item col-md-4 hidden-md-down">
+                    <img class="esh-orders_detail-image" src="{{item.pictureurl}}">
                 </section>
-                <section class="esh-orders_detail-item col-xs-2">{{item.productname}}</section>
-                <section class="esh-orders_detail-item col-xs-2">$ {{item.unitprice}}</section>
-                <section class="esh-orders_detail-item col-xs-2">{{item.units}}</section>
-                <section class="esh-orders_detail-item col-xs-2">$ {{item.units * item.unitprice}}</section>
+                <section class="esh-orders_detail-item esh-orders_detail-item--middle col-xs-4">{{item.productname}}</section>
+                <section class="esh-orders_detail-item esh-orders_detail-item--middle col-xs-1">$ {{item.unitprice}}</section>
+                <section class="esh-orders_detail-item esh-orders_detail-item--middle col-xs-1">{{item.units}}</section>
+                <section class="esh-orders_detail-item esh-orders_detail-item--middle col-xs-2">$ {{item.units * item.unitprice}}</section>
             </article>
-        </div>
+        </section>
 
-        <div class="ddddddd">
+        <section class="esh-orders_detail-section esh-orders_detail-section--right">
             <article class="esh-orders_detail-titles row">
-                <section class="esh-orders_detail-title col-xs-9"></section>
-                <section class="esh-orders_detail-title col-xs-3">Total</section>
+                <section class="esh-orders_detail-title col-xs-10"></section>
+                <section class="esh-orders_detail-title col-xs-2">Total</section>
             </article>
 
             <article class="esh-orders_detail-items row">
-                <section class="esh-orders_detail-item col-xs-9"></section>
-                <section class="esh-orders_detail-item col-xs-3">$ XX</section>
+                <section class="esh-orders_detail-item col-xs-10"></section>
+                <section class="esh-orders_detail-item esh-orders_detail-item--mark col-xs-2">$ XX</section>
             </article>
-        </div>
+        </section>
     </div>
 </div>
