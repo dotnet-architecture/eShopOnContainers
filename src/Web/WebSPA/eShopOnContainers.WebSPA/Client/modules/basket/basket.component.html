@@ -1,68 +1,54 @@
-<div class="esh-basket-header">
-    <ul class="container">
-        <li class="esh-basket-header-back" routerLink="/catalog">Back to list</li>
-    </ul>
-</div>
-<div class="container esh-basket-container">
-    <div class="row">
-        <div class="col-md-12">
-            <section>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th class="esh-basket-product-column">
-                                PRODUCT
-                            </th>
-                            <th>
+<div class="esh-basket">
+    <div class="esh-basket-header">
+        <div class="container">
+            <a class="esh-basket-back" routerLink="/catalog">Back to catalog</a>
+        </div>
+    </div>
 
-                            </th>
-                            <th>
-                                BRAND
-                            </th>
-                            <th>
-                                PRICE
-                            </th>
-                            <th>
-                                QUANTITY
-                            </th>
-                            <th>
-                                COST
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let item of basket?.items">
-                            <td class="esh-basket-product-column"><img class="esh-basket-product-image" src="{{item.pictureUrl}}" /></td>
-                            <td class="esh-basket-product-column">{{item.productName}}</td>
-                            <td class="esh-basket-product-column">ROSLYN</td>
-                            <td class="esh-basket-product-column">$ {{item.unitPrice}}</td>
-                            <td class="esh-basket-product-column">
-                                <input type="number" style="width:100px" min="1" [(ngModel)]="item.quantity" (change)="itemQuantityChanged(item)"/> 
-                            </td>
-                            <td class="esh-basket-product-column esh-basket-total-value">$ {{item.unitPrice * item.quantity}}</td>
-                        </tr>
-                        <tr class="esh-basket-totals">
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td>
-                            </td>
-                            <td>
-                                <div class="esh-basket-total-value">
-                                    <div class="esh-basket-total-label"><span>TOTAL</span></div>
-                                    <span>$ {{totalPrice}}</span>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+    <div class="container">
+        <article class="esh-basket-titles row">
+            <section class="esh-basket-title col-xs-3">Product</section>
+            <section class="esh-basket-title col-xs-3 hidden-lg-down"></section>
+            <section class="esh-basket-title col-xs-2">Price</section>
+            <section class="esh-basket-title col-xs-2">Quantity</section>
+            <section class="esh-basket-title col-xs-2">Cost</section>
+        </article>
+
+        <article class="esh-basket-items esh-basket-items--border row"
+                    *ngFor="let item of basket?.items">
+
+            <section class="esh-basket-item esh-basket-item--middle col-lg-3 hidden-lg-down">
+                <img class="esh-basket-image" src="{{item.pictureUrl}}" />
             </section>
-        </div>
-        <div class="col-md-8">
-        </div>
-        <div class="col-md-4">
-            <div (click)="checkOut($event)" class="btn esh-basket-checkout">[ Checkout ]</div>
-        </div>
+            <section class="esh-basket-item esh-basket-item--middle col-xs-3">{{item.productName}}</section>
+            <section class="esh-basket-item esh-basket-item--middle col-xs-2">$ {{item.unitPrice}}</section>
+            <section class="esh-basket-item esh-basket-item--middle col-xs-2">
+                <input class="esh-basket-input"
+                        type="number" 
+                        min="1" 
+                        [(ngModel)]="item.quantity" 
+                        (change)="itemQuantityChanged(item)" />
+            </section>
+            <section class="esh-basket-item esh-basket-item--middle col-xs-2">$ {{item.unitPrice * item.quantity}}</section>
+        </article>
+    </div>
+
+    <div class="container">
+        <article class="esh-basket-titles esh-basket-titles--clean row">
+            <section class="esh-basket-title col-xs-10"></section>
+            <section class="esh-basket-title col-xs-2">Total</section>
+        </article>
+
+        <article class="esh-basket-items row">
+            <section class="esh-basket-item col-xs-10"></section>
+            <section class="esh-basket-item esh-basket-item--mark col-xs-2">$ {{totalPrice}}</section>
+        </article>
+
+        <article class="esh-basket-items row">
+            <section class="esh-basket-item col-xs-9"></section>
+            <section class="esh-basket-item col-xs-3">
+                <div (click)="checkOut($event)" class="btn esh-basket-checkout">[ Checkout ]</div>
+            </section>
+        </article>
     </div>
 </div>
