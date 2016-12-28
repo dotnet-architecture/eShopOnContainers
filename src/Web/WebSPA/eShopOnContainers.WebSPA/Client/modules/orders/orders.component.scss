@@ -22,15 +22,15 @@
             color: white;
         }
 
-        &-back {
-            float: left !important;
-            margin-top: 20px !important;
-            text-transform: uppercase;
-        }
-
         li a:hover {
             text-decoration: none;
         }
+    }
+
+    &-back {
+        float: left !important;
+        margin-top: 20px !important;
+        text-transform: uppercase;
     }
 
     &-container {
