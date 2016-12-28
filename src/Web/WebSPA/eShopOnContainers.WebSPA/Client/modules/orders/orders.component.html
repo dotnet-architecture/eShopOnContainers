@@ -1,28 +1,28 @@
 <div class="esh-orders">
     <div class="esh-orders-header">
         <div class="container">
-            <a class="esh-orders-back" routerLink="/catalog">Back to list</a>
+            <a class="esh-orders-back" routerLink="/catalog">Back to catalog</a>
         </div>
     </div>
 
     <div class="container">
         <article class="esh-orders-titles row">
-            <div class="esh-orders-title col-xs-2">Order number</div>
-            <div class="esh-orders-title col-xs-4">Date</div>
-            <div class="esh-orders-title col-xs-2">Total</div>
-            <div class="esh-orders-title col-xs-2">Status</div>
-            <div class="esh-orders-title col-xs-2"></div>
+            <section class="esh-orders-title col-xs-2">Order number</section>
+            <section class="esh-orders-title col-xs-4">Date</section>
+            <section class="esh-orders-title col-xs-2">Total</section>
+            <section class="esh-orders-title col-xs-2">Status</section>
+            <section class="esh-orders-title col-xs-2"></section>
         </article>
 
         <article class="esh-orders-items row"
                  *ngFor="let order of orders">
-            <div class="esh-orders-item col-xs-2">{{order.ordernumber}}</div>
-            <div class="esh-orders-item col-xs-4">{{order.date | date:'short'}}</div>
-            <div class="esh-orders-item col-xs-2">$ {{order.total}}</div>
-            <div class="esh-orders-item col-xs-2">{{order.status}}</div>
-            <div class="esh-orders-item col-xs-2">
+            <section class="esh-orders-item col-xs-2">{{order.ordernumber}}</section>
+            <section class="esh-orders-item col-xs-4">{{order.date | date:'short'}}</section>
+            <section class="esh-orders-item col-xs-2">$ {{order.total}}</section>
+            <section class="esh-orders-item col-xs-2">{{order.status}}</section>
+            <section class="esh-orders-item col-xs-2">
                 <a class="esh-orders-link" routerLink="/orders/{{order.ordernumber}}">Detail</a>
-            </div>
+            </section>
         </article>
     </div>
 </div>

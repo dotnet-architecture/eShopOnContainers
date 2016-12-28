@@ -4,7 +4,7 @@ import { IOrder }               from '../../shared/models/order.model';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
-    selector: 'esh-orders-detail .esh-orders-detail',
+    selector: 'esh-orders_detail',
     styleUrls: ['./orders-detail.component.scss'],
     templateUrl: './orders-detail.component.html'
 })
