@@ -1,6 +1,7 @@
 import { Component, OnInit }                        from '@angular/core';
 import { OrdersService }                            from '../orders.service';
 import { IOrder }                                   from '../../shared/models/order.model';
+import { BasketWrapperService }                     from '../../shared/services/basket.wrapper.service';
 
 import { FormGroup, FormBuilder, Validators  }      from '@angular/forms';
 import { Router }                                   from '@angular/router';
@@ -14,7 +15,7 @@ export class OrdersNewComponent implements OnInit {
     private newOrderForm : FormGroup;  // new order form
     private order: IOrder;
 
-    constructor(private service: OrdersService, fb: FormBuilder, private router: Router) {
+    constructor(private service: OrdersService, fb: FormBuilder, private router: Router, private basketEvents: BasketWrapperService) {
         //Obtener información del perfil de usuario.
         this.order = service.mapBasketAndIdentityInfoNewOrder();
         this.newOrderForm = fb.group({
@@ -40,12 +41,13 @@ export class OrdersNewComponent implements OnInit {
         this.order.country = this.newOrderForm.controls['country'].value;
         this.order.cardnumber = this.newOrderForm.controls['cardnumber'].value;
         this.order.cardholdername = this.newOrderForm.controls['cardholdername'].value;
-        this.order.cardexpiration = new Date(2020, 1);
+        this.order.cardexpiration = new Date(20 + this.newOrderForm.controls['expirationdate'].value.split('/')[1], this.newOrderForm.controls['expirationdate'].value.split('/')[0]);
         this.order.cardsecuritynumber = this.newOrderForm.controls['securitycode'].value;
 
         this.service.postOrder(this.order).subscribe(res => {
-            console.log('order response from api retrieved');
-            console.log(res);
+            //this will emit an observable. Basket service is subscribed to this observable, and will react deleting the basket for the current user. 
+            this.basketEvents.orderCreated();
+           
 
             this.router.navigate(['orders']);
         });

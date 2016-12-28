@@ -42,6 +42,20 @@ export class DataService {
             }).catch(this.handleError);
     }
 
+    delete(url: string, params?: any): Observable<Response> {
+        let options: RequestOptionsArgs = {};
+
+        if (this.securityService) {
+            options.headers = new Headers();
+            options.headers.append("Authorization", "Bearer " + this.securityService.GetToken());
+        }
+
+        return this.http.delete(url, options).map(
+            (res: Response) => {
+                return res;
+            }).catch(this.handleError);
+    }
+
     private handleError(error: any) {
         console.error('server error:', error);
         if (error instanceof Response) {

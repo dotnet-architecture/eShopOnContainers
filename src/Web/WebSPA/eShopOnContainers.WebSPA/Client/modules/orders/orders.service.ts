@@ -63,6 +63,7 @@ export class OrdersService {
         order.cardtypeid = identityInfo.card_type;
         order.cardholdername = identityInfo.card_holder;
         order.total = 0;
+        order.expiration = identityInfo.card_expiration;
 
         //basket data mapping:
         order.orderItems = new Array<IOrderItem>();

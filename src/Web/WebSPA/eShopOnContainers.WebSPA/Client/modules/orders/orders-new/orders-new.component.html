@@ -73,51 +73,32 @@
             </div>
         </section>
         <section class="esh-orders_new-section">
-            <div class="col-md-12">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th class="cart-product-column">
-                                PRODUCT
-                            </th>
-                            <th>
+            <article class="esh-orders_new-titles row">
+                <section class="esh-orders_new-title col-xs-12">Order details</section>
+            </article>
 
-                            </th>
-                            <th>
-                                PRICE
-                            </th>
-                            <th>
-                                QUANTITY
-                            </th>
-                            <th>
-                                COST
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let item of order.orderItems">
-                            <td class="esh-orders-detail-column"><img class="esh-orders-detail-image" src="{{item.pictureurl}}"></td>
-                            <td class="esh-orders-detail-column">{{item.productname}}</td>
-                            <td class="esh-orders-detail-column">$ {{item.unitprice}}</td>
-                            <td class="esh-orders-detail-column">{{item.units}}</td>
-                            <td class="esh-orders-detail-column esh-orders-detail-total-value">$ {{item.units * item.unitprice}}</td>
-                        </tr>
-                        <tr class="cart-totals">
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td>
-                                <div class="cart-total-value">
-                                    <div class="cart-total-label"><span>TOTAL</span></div>
-                                    <span>$ {{order.total}}</span>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+            <article class="esh-orders_new-items esh-orders_new-items--border row"
+                     *ngFor="let item of order.orderItems">
+                <section class="esh-orders_new-item col-md-4 hidden-md-down">
+                    <img class="esh-orders_new-image" src="{{item.pictureurl}}">
+                </section>
+                <section class="esh-orders_new-item esh-orders_new-item--middle col-xs-4">{{item.productname}}</section>
+                <section class="esh-orders_new-item esh-orders_new-item--middle col-xs-1">$ {{item.unitprice}}</section>
+                <section class="esh-orders_new-item esh-orders_new-item--middle col-xs-1">{{item.units}}</section>
+                <section class="esh-orders_new-item esh-orders_new-item--middle col-xs-2">$ {{item.units * item.unitprice}}</section>
+            </article>
+        </section>
+
+        <section class="esh-orders_new-section esh-orders_new-section--right">
+            <article class="esh-orders_new-titles row">
+                <section class="esh-orders_new-title col-xs-10"></section>
+                <section class="esh-orders_new-title col-xs-2">Total</section>
+            </article>
+
+            <article class="esh-orders_new-items row">
+                <section class="esh-orders_new-item col-xs-10"></section>
+                <section class="esh-orders_new-item esh-orders_new-item--mark col-xs-2">$ {{order.total}}</section>
+            </article>
         </section>
         <section class="esh-orders_new-section">
             <div class="form-group">
