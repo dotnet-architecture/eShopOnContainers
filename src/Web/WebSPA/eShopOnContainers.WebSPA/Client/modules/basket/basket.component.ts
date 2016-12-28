@@ -29,8 +29,7 @@ export class BasketComponent implements OnInit {
         this.service.setBasket(this.basket);
     }
 
-    checkOut() {
-        console.log('checkout clicked!');
+    checkOut(event: any) {
         this.basketwrapper.basket = this.basket;
         this.router.navigate(['order']);
     }

@@ -1,13 +1,18 @@
 import {IOrderItem} from './orderItem.model';
 
 export interface IOrder {
-    ordernumber: number;
-    date: Date;
-    status: string;
-    total: number;
-    street?: string;
-    city?: string;
-    zipcode?: string;
-    country?: string;
-    orderitems?: IOrderItem[];
+    city: number;
+    street: string;
+    state: string;
+    country: number;
+    zipcode: string;
+    cardnumber: string;
+    cardexpiration: Date;
+    expiration: string;
+    cardsecuritynumber: string;
+    cardholdername: string;
+    cardtypeid: number;
+    buyer: string;
+    ordernumber: string,
+    orderItems: IOrderItem[];
 }
