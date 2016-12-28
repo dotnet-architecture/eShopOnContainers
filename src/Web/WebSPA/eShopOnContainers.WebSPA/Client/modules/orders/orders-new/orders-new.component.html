@@ -1,77 +1,79 @@
-<div class="esh-orders-new-header">
-    <ul class="container">
-        <li class="esh-orders-new-header-back" routerLink="/basket">Back to basket</li>
-    </ul>
+<div class="esh-orders_new-header">
+    <div class="container">
+        <a class="esh-orders_new-back" routerLink="/basket">Back to basket</a>
+    </div>
 </div>
 
-<div class="container esh-orders-new-container">
+<div class="container">
     <form [formGroup]="newOrderForm" (ngSubmit)="submitForm(newOrderForm.value)">
-        <h4>SHIPPING ADDRESS</h4>
-        <div class="row">
-            <div class="col-md-6">
-                <div class="form-group" [ngClass]="{'has-error':!newOrderForm.controls['street'].valid && newOrderForm.controls['street'].touched}">
-                    <label>ADDRESS</label>
-                    <input class="form-control" type="text" placeholder="Street" [formControl]="newOrderForm.controls['street']">
-                    <div *ngIf="newOrderForm.controls['street'].hasError('required') && newOrderForm.controls['street'].touched" class="alert alert-danger">Required field.</div>
+        <section class="esh-orders_new-section">
+            <h4>SHIPPING ADDRESS</h4>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group" [ngClass]="{'has-error':!newOrderForm.controls['street'].valid && newOrderForm.controls['street'].touched}">
+                        <label>ADDRESS</label>
+                        <input class="form-control form-input" type="text" placeholder="Street" [formControl]="newOrderForm.controls['street']">
+                        <div *ngIf="newOrderForm.controls['street'].hasError('required') && newOrderForm.controls['street'].touched" class="alert alert-danger">Required field.</div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group" [ngClass]="{'has-error':!newOrderForm.controls['city'].valid && newOrderForm.controls['city'].touched}">
+                        <label>CITY</label>
+                        <input class="form-control form-input" type="text" placeholder="City" [formControl]="newOrderForm.controls['city']">
+                        <div *ngIf="newOrderForm.controls['city'].hasError('required') && newOrderForm.controls['city'].touched" class="alert alert-danger">Required field.</div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group" [ngClass]="{'has-error':!newOrderForm.controls['state'].valid && newOrderForm.controls['state'].touched}">
+                        <label>STATE</label>
+                        <input class="form-control form-input" type="text" placeholder="state" [formControl]="newOrderForm.controls['state']">
+                        <div *ngIf="newOrderForm.controls['state'].hasError('required') && newOrderForm.controls['state'].touched" class="alert alert-danger">Required field.</div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group" [ngClass]="{'has-error':!newOrderForm.controls['country'].valid && newOrderForm.controls['country'].touched}">
+                        <label>COUNTRY</label>
+                        <input class="form-control form-input" type="text" placeholder="country" [formControl]="newOrderForm.controls['country']">
+                        <div *ngIf="newOrderForm.controls['country'].hasError('required') && newOrderForm.controls['country'].touched" class="alert alert-danger">Required field.</div>
+                    </div>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="form-group" [ngClass]="{'has-error':!newOrderForm.controls['city'].valid && newOrderForm.controls['city'].touched}">
-                    <label>CITY</label>
-                    <input class="form-control" type="text" placeholder="City" [formControl]="newOrderForm.controls['city']">
-                    <div *ngIf="newOrderForm.controls['city'].hasError('required') && newOrderForm.controls['city'].touched" class="alert alert-danger">Required field.</div>
+        </section>
+        <section class="esh-orders_new-section">
+            <h4>PAYMENT METHOD</h4>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group" [ngClass]="{'has-error':!newOrderForm.controls['cardnumber'].valid && newOrderForm.controls['cardnumber'].touched}">
+                        <label>CARD NUMBER</label>
+                        <input class="form-control form-input" type="text" placeholder="Card number" [formControl]="newOrderForm.controls['cardnumber']">
+                        <div *ngIf="newOrderForm.controls['cardnumber'].hasError('required') && newOrderForm.controls['cardnumber'].touched" class="alert alert-danger">Required field.</div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group" [ngClass]="{'has-error':!newOrderForm.controls['cardholdername'].valid && newOrderForm.controls['cardholdername'].touched}">
+                        <label>CARDHOLDER NAME</label>
+                        <input class="form-control form-input" type="text" placeholder="Card holder" [formControl]="newOrderForm.controls['cardholdername']">
+                        <div *ngIf="newOrderForm.controls['cardholdername'].hasError('required') && newOrderForm.controls['cardholdername'].touched" class="alert alert-danger">Required field.</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group" [ngClass]="{'has-error':!newOrderForm.controls['expirationdate'].valid && newOrderForm.controls['expirationdate'].touched}">
+                        <label>EXPIRATION DATE</label>
+                        <input class="form-control form-input form-input-medium" type="text" placeholder="Card expiration" [formControl]="newOrderForm.controls['expirationdate']">
+                        <div *ngIf="newOrderForm.controls['expirationdate'].hasError('required') && newOrderForm.controls['expirationdate'].touched" class="alert alert-danger">Required field.</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group" [ngClass]="{'has-error':!newOrderForm.controls['securitycode'].valid && newOrderForm.controls['securitycode'].touched}">
+                        <label>SECURITY CODE</label>
+                        <input class="form-control form-input form-input-small" type="text" placeholder="Card security Code" [formControl]="newOrderForm.controls['securitycode']">
+                        <div *ngIf="newOrderForm.controls['securitycode'].hasError('required') && newOrderForm.controls['securitycode'].touched" class="alert alert-danger">Required field.</div>
+                    </div>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="form-group" [ngClass]="{'has-error':!newOrderForm.controls['state'].valid && newOrderForm.controls['state'].touched}">
-                    <label>STATE</label>
-                    <input class="form-control" type="text" placeholder="state" [formControl]="newOrderForm.controls['state']">
-                    <div *ngIf="newOrderForm.controls['state'].hasError('required') && newOrderForm.controls['state'].touched" class="alert alert-danger">Required field.</div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group" [ngClass]="{'has-error':!newOrderForm.controls['country'].valid && newOrderForm.controls['country'].touched}">
-                    <label>COUNTRY</label>
-                    <input class="form-control" type="text" placeholder="country" [formControl]="newOrderForm.controls['country']">
-                    <div *ngIf="newOrderForm.controls['country'].hasError('required') && newOrderForm.controls['country'].touched" class="alert alert-danger">Required field.</div>
-                </div>
-            </div>
-        </div>
-        <br />
-        <h4>PAYMENT METHOD</h4>
-        <div class="row">
-            <div class="col-md-6">
-                <div class="form-group" [ngClass]="{'has-error':!newOrderForm.controls['cardnumber'].valid && newOrderForm.controls['cardnumber'].touched}">
-                    <label>CARD NUMBER</label>
-                    <input class="form-control" type="text" placeholder="Card number" [formControl]="newOrderForm.controls['cardnumber']">
-                    <div *ngIf="newOrderForm.controls['cardnumber'].hasError('required') && newOrderForm.controls['cardnumber'].touched" class="alert alert-danger">Required field.</div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group" [ngClass]="{'has-error':!newOrderForm.controls['cardholdername'].valid && newOrderForm.controls['cardholdername'].touched}">
-                    <label>CARDHOLDER NAME</label>
-                    <input class="form-control" type="text" placeholder="Card holder" [formControl]="newOrderForm.controls['cardholdername']">
-                    <div *ngIf="newOrderForm.controls['cardholdername'].hasError('required') && newOrderForm.controls['cardholdername'].touched" class="alert alert-danger">Required field.</div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-group" [ngClass]="{'has-error':!newOrderForm.controls['expirationdate'].valid && newOrderForm.controls['expirationdate'].touched}">
-                    <label>EXPIRATION DATE</label>
-                    <input class="form-control" type="text" placeholder="Card expiration" [formControl]="newOrderForm.controls['expirationdate']">
-                    <div *ngIf="newOrderForm.controls['expirationdate'].hasError('required') && newOrderForm.controls['expirationdate'].touched" class="alert alert-danger">Required field.</div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-group" [ngClass]="{'has-error':!newOrderForm.controls['securitycode'].valid && newOrderForm.controls['securitycode'].touched}">
-                    <label>SECURITY CODE</label>
-                    <input class="form-control" type="text" placeholder="Card security Code" [formControl]="newOrderForm.controls['securitycode']">
-                    <div *ngIf="newOrderForm.controls['securitycode'].hasError('required') && newOrderForm.controls['securitycode'].touched" class="alert alert-danger">Required field.</div>
-                </div>
-            </div>
-        </div>
-        <br/>
-        <div class="col-md-12">
-            <section>
+        </section>
+        <section class="esh-orders_new-section">
+            <div class="col-md-12">
                 <table class="table">
                     <thead>
                         <tr>
@@ -80,9 +82,6 @@
                             </th>
                             <th>
 
-                            </th>
-                            <th>
-                                BRAND
                             </th>
                             <th>
                                 PRICE
@@ -99,7 +98,6 @@
                         <tr *ngFor="let item of order.orderItems">
                             <td class="esh-orders-detail-column"><img class="esh-orders-detail-image" src="{{item.pictureurl}}"></td>
                             <td class="esh-orders-detail-column">{{item.productname}}</td>
-                            <td class="esh-orders-detail-column">ROSLYN</td>
                             <td class="esh-orders-detail-column">$ {{item.unitprice}}</td>
                             <td class="esh-orders-detail-column">{{item.units}}</td>
                             <td class="esh-orders-detail-column esh-orders-detail-total-value">$ {{item.units * item.unitprice}}</td>
@@ -113,20 +111,22 @@
                             <td>
                                 <div class="cart-total-value">
                                     <div class="cart-total-label"><span>TOTAL</span></div>
-                                    <span>{{order.total}}</span>
+                                    <span>$ {{order.total}}</span>
                                 </div>
                             </td>
                         </tr>
                     </tbody>
                 </table>
-            </section>
-        </div>
-        <div class="form-group">
-            <div class="col-md-8">
             </div>
-            <div class="col-md-4">
-                <button type="submit" class="btn esh-orders-new-placeOrder" [disabled]="!newOrderForm.valid">[ Place Order ]</button>
+        </section>
+        <section class="esh-orders_new-section">
+            <div class="form-group">
+                <div class="col-md-8">
+                </div>
+                <div class="col-md-4">
+                    <button type="submit" class="btn esh-orders_new-placeOrder" [disabled]="!newOrderForm.valid">[ Place Order ]</button>
+                </div>
             </div>
-        </div>
+        </section>
     </form>
 </div>

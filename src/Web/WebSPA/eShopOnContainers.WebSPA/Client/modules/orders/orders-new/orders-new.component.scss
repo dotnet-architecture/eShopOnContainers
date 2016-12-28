@@ -1,42 +1,34 @@
 @import '../../_variables.scss';
 
-.esh-orders-new {
+.esh-orders_new {
     min-height: 80vh;
+
+    $header-height: 4rem;
 
     &-header {
         background-color: #00A69C;
-        height: 63px;
+        height: $header-height;
+    }
 
-        li {
-            list-style: none;
-            display: inline;
-            opacity: 0.5;
-            margin-top: 25px;
-            margin-left: 10px;
-            float: right;
-            cursor: pointer;
-            color: white;
-        }
+    &-back {
+        color: rgba($color-foreground-brighter, .4);
+        line-height: $header-height;
+        text-transform: uppercase;
+        text-decoration: none;
+        transition: color $animation-speed-default;
 
-        li a {
-            color: white;
-        }
-
-        &-back {
-            float: left !important;
-            margin-top: 20px !important;
-            text-transform: uppercase;
-        }
-
-        li a:hover {
-            text-decoration: none;
+        &:hover {
+            color: $color-foreground-brighter;
+            transition: color $animation-speed-default;
         }
     }
 
-    &-container {
-        min-height: 70vh;
-        padding-top: 40px;
-        margin-bottom: 30px;
+    &-section {
+        padding: 1rem 0;
+
+        &--right {
+            text-align: right;
+        }
     }
 
     &-placeOrder {
@@ -56,4 +48,26 @@
         font-size: 16px;
         font-weight: normal;
     }
+}
+
+
+@media screen and (min-width: 992px) {
+    .form-input {
+        width: 360px;
+        max-width: 360px;
+    }
+}
+
+.form-input {
+    border-radius: 0;
+    padding: 10px;
+    height: 45px;
+}
+
+.form-input-small {
+    max-width: 100px!important;
+}
+
+.form-input-medium {
+    width: 150px!important;
 }

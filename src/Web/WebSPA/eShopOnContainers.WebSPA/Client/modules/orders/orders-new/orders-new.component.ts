@@ -6,7 +6,7 @@ import { FormGroup, FormBuilder, Validators  }      from '@angular/forms';
 import { Router }                                   from '@angular/router';
 
 @Component({
-    selector: 'esh-orders-new .esh-orders-new',
+    selector: 'esh-orders_new',
     styleUrls: ['./orders-new.component.scss'],
     templateUrl: './orders-new.component.html'
 })
