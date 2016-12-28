@@ -43,6 +43,10 @@
         &--border {
             border-bottom: $border-light solid $color-foreground-bright;
             padding: .5rem 0;
+
+            &:last-of-type {
+                border-color: transparent;
+            }
         }
     }
 
