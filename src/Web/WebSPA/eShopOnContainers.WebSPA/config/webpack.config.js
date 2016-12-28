@@ -22,31 +22,25 @@ module.exports = merge({
                 loaders: ['awesome-typescript-loader?forkChecker=true ', 'angular2-template-loader', 'angular2-router-loader']
             },
             { test: /\.html$/, loader: "html" },
-            { test: /\.css/, loader: extractCSS.extract(['css']) },
-            { test: /\.scss$/, loaders: ['raw-loader', 'sass-loader?sourceMap'] },
+            { test: /\.scss$/, loader: 'exports-loader?module.exports.toString()!css-loader!sass-loader' },
             { test: /\.json$/, loader: 'json-loader' },
             {
                 test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
-                loader: "file"
+                loader: "file-loader"
             }, {
                 test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
-                loader: "file"
+                loader: "file-loader"
             }, {
                 test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
-                loader: "file"
+                loader: "file-loader"
             }, {
                 test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-                loader: "file"
+                loader: "file-loader"
             }, 
             {
                 test: /\.(png|jpg|gif|svg)$/,
-                loader: "file"
+                loader: "file-loader?name=images/[name].[ext]"
             }
-
-            //        {
-            //        test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-            //loader: "url?limit=10000&mimetype=image/svg+xml"
-            //}
         ]
     },
     entry: {

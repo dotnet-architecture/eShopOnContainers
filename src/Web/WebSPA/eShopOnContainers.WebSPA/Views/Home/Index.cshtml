@@ -1,16 +1,8 @@
-<style>
-    div.app-spinner {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-    }
-</style>
-
-<appc-app asp-prerender-webpack-config="config/webpack.config.js">
-    <div class="app-spinner">
+<esh-app class="esh-app" asp-prerender-webpack-config="config/webpack.config.js">
+    <div class="preloading">
         <i class="fa fa-spinner fa-spin fa-5x" aria-hidden="true"></i>
     </div>
-</appc-app>
+</esh-app>
 
 <script>
     window.user = '@ViewBag.user';

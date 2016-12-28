@@ -1,44 +1,38 @@
-<div class="app">
-    <header class="navbar navbar-light navbar-static-top">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-10">
-                    <a class="navbar-brand" routerLink="catalog">
-                        <img src="../images/brand.png" />
-                    </a>
-                </div>
-                <div class="col-sm-2">
-                    <esh-basket-status *ngIf="Authenticated"></esh-basket-status>
-                    <esh-identity></esh-identity>
-                </div>
-            </div>
-        </div>
-    </header>
+<header class="navbar navbar-light navbar-static-top">
+    <div class="container">
+        <article class="row">
 
+            <section class="col-sm-10">
+                <a class="navbar-brand" routerLink="catalog">
+                    <img src="../images/brand.png" />
+                </a>
+            </section>
 
+            <section class="col-sm-2">
+                <esh-basket-status *ngIf="Authenticated"></esh-basket-status>
+                <esh-identity></esh-identity>
+            </section>
 
-    <!-- component routing placeholder -->
-    <router-outlet></router-outlet>
+        </article>
+    </div>
+</header>
 
+<!-- component routing placeholder -->
+<router-outlet></router-outlet>
 
-    <footer class="app-footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-6">
-                    <br>
-                    <div class="app-footer-brand">
-                        <img src="../images/brand_dark.png" />
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <br>
-                    <br>
-                    <br>
-                    <div class="app-footer-text hidden-xs">e-ShoponContainers. All right reserved</div>
-                </div>
-            </div>
-        </div>
-    </footer>
-</div>
+<footer class="esh-app-footer">
+    <div class="container">
+        <article class="row">
 
+            <section class="col-sm-6">
+                <img class="esh-app-footer-brand" src="../images/brand_dark.png" />
+            </section>
+
+            <section class="col-sm-6">
+                <div class="esh-app-footer-text hidden-xs"> e-ShoponContainers. All right reserved </div>
+            </section>
+
+        </article>
+    </div>
+</footer>
 

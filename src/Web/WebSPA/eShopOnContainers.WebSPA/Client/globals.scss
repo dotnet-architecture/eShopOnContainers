@@ -1,0 +1,41 @@
+@import './modules/_variables.scss';
+
+$dist: './fonts/Montserrat-Regular';
+@font-face {
+    font-family: Montserrat;
+    font-weight: 400;
+    src: url("./fonts/Montserrat-Regular.eot?") format("eot"),url("./fonts/Montserrat-Regular.woff") format("woff"),url("./fonts/Montserrat-Regular.ttf") format("truetype"),url("./fonts/Montserrat-Regular.svg#Montserrat") format("svg")
+}
+
+@font-face {
+    font-family: Montserrat;
+    font-weight: 700;
+    src: url("./fonts/Montserrat-Bold.eot?") format("eot"),url("./fonts/Montserrat-Bold.woff") format("woff"),url("./fonts/Montserrat-Bold.ttf") format("truetype"),url("./fonts/Montserrat-Bold.svg#Montserrat") format("svg")
+}
+
+html,
+body {
+    font-family: Montserrat,sans-serif;
+    font-size: 16px;
+    font-weight: $font-weight-normal;
+    z-index: 10;
+}
+*,
+*::after,
+*::before {
+    box-sizing: border-box;
+}
+
+.preloading {
+    color: $color-brand;
+    display: block;
+    font-size: $font-size-xl;
+    left: 50%;
+    position: fixed;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+select::-ms-expand {
+    display: none;
+}

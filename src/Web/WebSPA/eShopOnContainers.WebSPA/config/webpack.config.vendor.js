@@ -44,7 +44,8 @@ module.exports = {
             '@angular/forms',
             '@angular/platform-browser',
             '@angular/platform-browser-dynamic',
-            '@angular/router'
+            '@angular/router',
+            './Client/globals.scss'
         ]
     },
     output: {

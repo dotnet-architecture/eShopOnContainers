@@ -12,7 +12,7 @@ import { SecurityService } from './shared/services/security.service';
  */
 
 @Component({
-    selector: 'appc-app',
+    selector: 'esh-app.esh-app',
     styleUrls: ['./app.component.scss'],
     templateUrl: './app.component.html'
 })
