@@ -11,8 +11,12 @@ export class BasketWrapperService {
 
     constructor() { }
 
+    //observable that is fired when a product is added to the cart
     private addItemToBasketSource = new Subject<IBasketItem>();
     addItemToBasket$ = this.addItemToBasketSource.asObservable();
+
+    private orderCreatedSource = new Subject();
+    orderCreated$ = this.orderCreatedSource.asObservable();
     
     addItemToBasket(item: ICatalogItem) {
         let basket: IBasketItem = {
@@ -26,5 +30,7 @@ export class BasketWrapperService {
         this.addItemToBasketSource.next(basket);
     }
 
-    
+    orderCreated() {
+        this.orderCreatedSource.next();
+    }
 }

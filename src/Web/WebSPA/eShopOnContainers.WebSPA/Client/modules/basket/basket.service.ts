@@ -1,15 +1,16 @@
-import { Injectable } from '@angular/core';
-import { Response, Headers } from '@angular/http';
+import { Injectable }               from '@angular/core';
+import { Response, Headers }        from '@angular/http';
 
-import { DataService } from '../shared/services/data.service';
-import { SecurityService } from '../shared/services/security.service';
-import { IBasket } from '../shared/models/basket.model';
-import { IBasketItem } from '../shared/models/basketItem.model';
+import { DataService }              from '../shared/services/data.service';
+import { SecurityService }          from '../shared/services/security.service';
+import { IBasket }                  from '../shared/models/basket.model';
+import { IBasketItem }              from '../shared/models/basketItem.model';
+import { BasketWrapperService }     from '../shared/services/basket.wrapper.service';
 
 import 'rxjs/Rx';
-import { Observable } from 'rxjs/Observable';
+import { Observable }               from 'rxjs/Observable';
 import 'rxjs/add/observable/throw';
-import { Observer } from 'rxjs/Observer';
+import { Observer }                 from 'rxjs/Observer';
 import 'rxjs/add/operator/map';
 
 @Injectable()
@@ -20,7 +21,7 @@ export class BasketService {
         items: []
     };
 
-    constructor(private service: DataService, private authService: SecurityService) {
+    constructor(private service: DataService, private authService: SecurityService, private basketEvents: BasketWrapperService) {
         this.basket.items = [];
 
         // Init:
@@ -32,6 +33,8 @@ export class BasketService {
                 });
             }
         }
+
+        this.basketEvents.orderCreated$.subscribe(x => this.dropBasket());
     }
 
     setBasket(item): Observable<boolean> {
@@ -48,6 +51,8 @@ export class BasketService {
     }
 
     dropBasket() {
-        //TODO.. 
+        return this.service.delete(this.basketUrl + '/' + this.basket.buyerId).map((response: Response) => {
+            return true;
+        });
     }
 }
