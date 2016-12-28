@@ -24,6 +24,10 @@
 
     &-section {
         padding: 1rem 0;
+
+        &--right {
+            text-align: right;
+        }
     }
 
     &-titles {
@@ -35,17 +39,29 @@
         font-size: $font-size-l;
     }
 
+    &-items {
+        
+    }
+
+    $item-height: 8rem;
     &-item {
+        font-size: $font-size-m;
         font-weight: $font-weight-semilight;
+
+        &--middle {
+            line-height: $item-height;
+
+            @media screen and (max-width: $media-screen-s) {
+                line-height: $font-size-m;
+            }
+        }
+
+        &--mark {
+            color: $color-secondary;
+        }
     }
 
     &-image {
-        max-width: 210px;
-        min-width: 80px;
-        width: 100%;
-
-        @media screen and (max-width: $media-screen-s) {
-            display: none;
-        }
+        height: $item-height;
     }
 }

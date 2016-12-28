@@ -47,17 +47,17 @@
 
             <article class="esh-orders_detail-items row"
                      *ngFor="let item of order.orderitems">
-                <section class="esh-orders_detail-item col-xs-4">
+                <section class="esh-orders_detail-item col-md-4 hidden-md-down">
                     <img class="esh-orders_detail-image" src="{{item.pictureurl}}">
                 </section>
-                <section class="esh-orders_detail-item col-xs-4">{{item.productname}}</section>
-                <section class="esh-orders_detail-item col-xs-1">$ {{item.unitprice}}</section>
-                <section class="esh-orders_detail-item col-xs-1">{{item.units}}</section>
-                <section class="esh-orders_detail-item col-xs-2">$ {{item.units * item.unitprice}}</section>
+                <section class="esh-orders_detail-item esh-orders_detail-item--middle col-xs-4">{{item.productname}}</section>
+                <section class="esh-orders_detail-item esh-orders_detail-item--middle col-xs-1">$ {{item.unitprice}}</section>
+                <section class="esh-orders_detail-item esh-orders_detail-item--middle col-xs-1">{{item.units}}</section>
+                <section class="esh-orders_detail-item esh-orders_detail-item--middle col-xs-2">$ {{item.units * item.unitprice}}</section>
             </article>
         </section>
 
-        <section class="esh-orders_detail-section">
+        <section class="esh-orders_detail-section esh-orders_detail-section--right">
             <article class="esh-orders_detail-titles row">
                 <section class="esh-orders_detail-title col-xs-10"></section>
                 <section class="esh-orders_detail-title col-xs-2">Total</section>
@@ -65,7 +65,7 @@
 
             <article class="esh-orders_detail-items row">
                 <section class="esh-orders_detail-item col-xs-10"></section>
-                <section class="esh-orders_detail-item col-xs-2">$ XX</section>
+                <section class="esh-orders_detail-item esh-orders_detail-item--mark col-xs-2">$ XX</section>
             </article>
         </section>
     </div>
