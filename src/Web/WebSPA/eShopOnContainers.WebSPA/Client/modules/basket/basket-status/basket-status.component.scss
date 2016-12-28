@@ -1,8 +1,10 @@
 @import '../../_variables.scss';
 
 .esh-basketstatus {
+    cursor: pointer;
     float: right;
     position: relative;
+    transition: all $animation-speed-default;
 
     &-image {
         height: 36px;
@@ -21,6 +23,13 @@
         text-align: center;
         top: 0;
         transform: translateX(-38%);
+        transition: all $animation-speed-default;
         width: $size;
+    }
+
+    &:hover &-badge {
+        background-color: transparent;
+        color: $color-secondary-dark;
+        transition: all $animation-speed-default;
     }
 }

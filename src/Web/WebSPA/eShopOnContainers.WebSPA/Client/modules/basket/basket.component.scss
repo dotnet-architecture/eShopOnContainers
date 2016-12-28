@@ -86,5 +86,11 @@
         padding: 1rem 1.5rem;
         text-align: center;
         text-transform: uppercase;
+        transition: all $animation-speed-default;
+
+        &:hover {
+            background-color: $color-secondary-darker;
+            transition: all $animation-speed-default;
+        }
     }
 }
