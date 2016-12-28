@@ -1,63 +1,55 @@
-.identity {
-    &-user {
-        position: absolute !important;
-        top: 30px;
-        right: 120px;
-        cursor: pointer;
+@import "../../../variables";
 
-        &:hover .identity-userDropdown {
-            display: block;
+.esh-identity {
+    line-height: 3rem;
+    position: relative;
+    text-align: right;
+
+    &-section {
+        display: inline-block;
+        width: 100%;
+    }
+
+    &-name {
+        display: inline-block;
+
+        &--upper {
+            text-transform: uppercase;
+        }
+
+        @media screen and (max-width: $media-screen-s) {
+            font-size: $font-size-s;
         }
     }
 
-    &-userDropdown {
-        display: none;
+    &-image {
+        display: inline-block;
+    }
+
+    &-drop {
+        background: $color-background-brighter;
+        height: 0;
+        min-width: 14rem;
+        right: 0;
+        overflow: hidden;
+        padding: .5rem;
         position: absolute;
-        background-color: #FFFFFF;
-        min-width: 160px;
-        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-        right: -15px;
-        z-index: 3;
+        top: 2rem;
+        transition: height $animation-speed-default;
+    }
+
+    &:hover &-drop {
+        height: 6rem;
+        transition: height $animation-speed-default;
+    }
+
+    &-item {
+        cursor: pointer;
+        transition: color $animation-speed-default;
 
         &:hover {
-            display: block;
+            color: $color-secondary-dark;
+            transition: color $animation-speed-default;
         }
-
-        & div {
-            color: black;
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-            text-align: right;
-            text-transform: uppercase;
-
-            &:hover {
-                color: #83d01b;
-            }
-        }
-    }
-
-    &-downArrow {
-        height: 7px;
-        width: 10px;
-        display: inline-block;
-        margin-left: 20px;
-
-        &:hover > identity.userDropdown {
-            display: block;
-        }
-    }
-
-    &-login {
-        border: 1px solid #00a69c;
-        height: 36px !important;
-        margin-right: 10px;
-        margin-top: 10px;
-        background-color: #fff;
-        color: #00a69c;
-        text-transform: uppercase;
-        max-width: 140px;
-        width: 140px;
-        padding-top: 8px !important;
     }
 }
