@@ -1,8 +1,8 @@
-<button *ngIf="!authenticated" (click)="login()">Login</button>
+<button *ngIf="!authenticated" class="identity-login" (click)="login()">Login</button>
 <div *ngIf="authenticated" class="identity-user">
     <div><span>{{userName}}</span></div><div style="float: right;top: 0;right: -15px;position: absolute;"><img src="../../../../images/arrow-down.png" class="identity-downArrow"></div>
     <div class="identity-userDropdown">
-        <a href="http://www.google.es">MY ORDERS<img src="../../../../images/my_orders.png" class="myorders-icon"></a>
-        <div (click)="logoutClicked($event)">LOG OUT<img src="../../../../images/logout.png" class="logout-icon"></div>
+        <div [routerLink]="['orders']">MY ORDERS<img src="../../../../images/my_orders.png"></div>
+        <div (click)="logoutClicked($event)">LOG OUT<img src="../../../../images/logout.png"></div>
     </div>
 </div>
