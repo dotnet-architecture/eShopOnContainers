@@ -15,7 +15,7 @@ export class BasketComponent implements OnInit {
     basket: IBasket;
     totalPrice: number = 0;
 
-    constructor(private service: BasketService, private router: Router, private basketwrapper: BasketComponent) { }
+    constructor(private service: BasketService, private router: Router, private basketwrapper: BasketWrapperService) { }
 
     ngOnInit() {
         this.service.getBasket().subscribe(basket => {
