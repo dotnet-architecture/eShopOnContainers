@@ -3,7 +3,7 @@ import { OrdersService }        from './orders.service';
 import { IOrder }               from '../shared/models/order.model';
 
 @Component({
-    selector: 'esh-orders .esh-orders',
+    selector: 'esh-orders',
     styleUrls: ['./orders.component.scss'],
     templateUrl: './orders.component.html'
 })

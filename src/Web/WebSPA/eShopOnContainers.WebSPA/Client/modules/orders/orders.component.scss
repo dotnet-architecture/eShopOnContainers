@@ -3,83 +3,52 @@
 .esh-orders {
     min-height: 80vh;
 
+    $header-height: 4rem;
     &-header {
         background-color: #00A69C;
-        height: 63px;
-
-        li {
-            list-style: none;
-            display: inline;
-            opacity: 0.5;
-            margin-top: 25px;
-            margin-left: 10px;
-            float: right;
-            cursor: pointer;
-            color: white;
-        }
-
-        li a {
-            color: white;
-        }
-
-        li a:hover {
-            text-decoration: none;
-        }
+        height: $header-height;
     }
 
     &-back {
-        float: left !important;
-        margin-top: 20px !important;
+        color: rgba($color-foreground-brighter, .4);
+        line-height: $header-height;
         text-transform: uppercase;
+        text-decoration: none;
+        transition: color $animation-speed-default;
+
+        &:hover {
+            color: $color-foreground-brighter;
+            transition: color $animation-speed-default;
+        }
     }
 
-    &-container {
-        min-height: 70vh;
-        padding-top: 40px;
-        margin-bottom: 30px;
-        min-width: 992px;
+    &-titles {
+        padding-bottom: 1rem;
+        padding-top: 2rem;
     }
 
-    &-order-column {
-        max-width: 120px;
-        vertical-align: middle !important;
+    &-title {
+        font-size: $font-size-l;
     }
 
-    &-order-link {
-        color: #83d01b;
+    &-items {
+        $height: 2rem;
+        height: $height;
+        line-height: $height;
     }
 
-    &-order-image {
-        max-width: 210px;
+    &-item {
+        font-weight: $font-weight-semilight;
     }
 
-    &-total-value {
-        font-size: 20px;
-        color: #00a69c;
-    }
+    &-link {
+        color: $color-secondary;
+        text-decoration: none;
+        transition: color $animation-speed-default;
 
-    &-total-label {
-        font-size: 14px;
-        color: #404040;
-        margin-top: 10px;
-    }
-
-    &-totals {
-        border-bottom:none!important;
+        &:hover {
+            color: $color-secondary-dark;
+            transition: color $animation-speed-default;
+        }
     }
 }
-
-.table td {
-    border-top: solid 1px #ddd;
-}
-
-.table thead th {
-    border: none !important;
-}
-
-
-
-
-
-
-

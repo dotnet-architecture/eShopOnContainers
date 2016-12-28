@@ -1,43 +1,28 @@
-<div class="esh-orders-header">
-    <ul class="container">
-        <li class="esh-orders-back" routerLink="/catalog">Back to list</li>
-    </ul>
-</div>
-<div class="container esh-orders-container">
-    <div class="row">
-        <div class="col-md-12">
-            <section>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th class="esh-orders-order-column">
-                                ORDER NUMBER
-                            </th>
-                            <th>
-                                DATE
-                            </th>
-                            <th>
-                                TOTAL
-                            </th>
-                            <th>
-                                STATUS
-                            </th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let order of orders">
-                            <td class="esh-orders-order-column">{{order.ordernumber}}</td>
-                            <td class="esh-orders-order-column">{{order.date | date:'short'}}</td>
-                            <td class="esh-orders-order-column">$ {{order.total}}</td>
-                            <td class="esh-orders-order-column">{{order.status}}</td>
-                            <td class="esh-orders-order-column">
-                                <a class="esh-orders-order-link" routerLink="/orders/{{order.ordernumber}}">Detail</a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </section>
+<div class="esh-orders">
+    <div class="esh-orders-header">
+        <div class="container">
+            <a class="esh-orders-back" routerLink="/catalog">Back to list</a>
         </div>
+    </div>
+
+    <div class="container">
+        <article class="esh-orders-titles row">
+            <div class="esh-orders-title col-xs-2">Order number</div>
+            <div class="esh-orders-title col-xs-4">Date</div>
+            <div class="esh-orders-title col-xs-2">Total</div>
+            <div class="esh-orders-title col-xs-2">Status</div>
+            <div class="esh-orders-title col-xs-2"></div>
+        </article>
+
+        <article class="esh-orders-items row"
+                 *ngFor="let order of orders">
+            <div class="esh-orders-item col-xs-2">{{order.ordernumber}}</div>
+            <div class="esh-orders-item col-xs-4">{{order.date | date:'short'}}</div>
+            <div class="esh-orders-item col-xs-2">$ {{order.total}}</div>
+            <div class="esh-orders-item col-xs-2">{{order.status}}</div>
+            <div class="esh-orders-item col-xs-2">
+                <a class="esh-orders-link" routerLink="/orders/{{order.ordernumber}}">Detail</a>
+            </div>
+        </article>
     </div>
 </div>
