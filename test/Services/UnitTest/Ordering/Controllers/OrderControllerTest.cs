@@ -17,6 +17,7 @@ namespace UnitTest.Ordering.Controllers
         private readonly Mock<IMediator> _mediatorMock;
         private readonly Mock<IIdentityService> _identityMock;
         private readonly Mock<IOrderQueries> _queriesMock;
+        private readonly string _userIdentity;
 
         public OrderControllerTest()
         {
@@ -24,6 +25,7 @@ namespace UnitTest.Ordering.Controllers
             _mediatorMock = new Mock<IMediator>();
             _identityMock = new Mock<IIdentityService>();
             _queriesMock = new Mock<IOrderQueries>();
+            _userIdentity = Guid.NewGuid().ToString();
         }
 
         [Fact]
@@ -34,25 +36,6 @@ namespace UnitTest.Ordering.Controllers
 
             _mediatorMock.Setup(mediator => mediator.SendAsync(OrderFakeNotExpired()))
                 .Returns(Task.FromResult(false));
-
-            _identityMock.Setup(identity => identity.GetUserIdentity())
-                .Returns(Guid.NewGuid().ToString());
-
-            var controller = new OrdersController(_mediatorMock.Object, _queriesMock.Object, _identityMock.Object);
-
-            // Act
-            var badRequestResult = await controller.AddOrder(OrderFakeNotExpired());
-
-            // Assert
-            Assert.IsType<BadRequestResult>(badRequestResult);
-        }
-
-        [Fact]
-        public async Task AddOrder_ReturnsOK_WhenPersistenceOperationSucceed()
-        {
-            // Arrange
-            _mediatorMock.Setup(mediator => mediator.SendAsync(OrderFakeNotExpired()))
-                .Returns(Task.FromResult(true));
 
             _identityMock.Setup(identity => identity.GetUserIdentity())
                 .Returns(Guid.NewGuid().ToString());
@@ -136,7 +119,8 @@ namespace UnitTest.Ordering.Controllers
             return new NewOrderRequest()
             {
                 CardTypeId = 1,
-                CardExpiration = DateTime.Now.AddYears(1)
+                CardExpiration = new DateTime(2020, 12, 12),
+                Buyer = _userIdentity
             };
         }
 

@@ -62,6 +62,7 @@ export class OrdersService {
         order.cardsecuritynumber = identityInfo.card_security_number;
         order.cardtypeid = identityInfo.card_type;
         order.cardholdername = identityInfo.card_holder;
+        order.total = 0;
 
         //basket data mapping:
         order.orderItems = new Array<IOrderItem>();
@@ -73,6 +74,8 @@ export class OrdersService {
             item.productname = x.productName;
             item.unitprice = x.unitPrice;
             item.units = x.quantity;
+
+            order.total += (item.unitprice * item.units);
 
             order.orderItems.push(item);
         });
