@@ -3,4 +3,5 @@ export interface IOrderItem {
     productname: string;
     unitprice: number;
     units: number;
+    productId: number
 }

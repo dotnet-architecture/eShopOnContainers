@@ -3,6 +3,9 @@ import { Response } from '@angular/http';
 
 import { DataService } from '../shared/services/data.service';
 import { IOrder } from '../shared/models/order.model';
+import { IOrderItem } from '../shared/models/orderItem.model';
+import { SecurityService } from '../shared/services/security.service';
+import { BasketWrapperService } from '../shared/services/basket.wrapper.service';
 
 import 'rxjs/Rx';
 import { Observable } from 'rxjs/Observable';
@@ -10,11 +13,12 @@ import 'rxjs/add/observable/throw';
 import { Observer } from 'rxjs/Observer';
 import 'rxjs/add/operator/map';
 
+
 @Injectable()
 export class OrdersService {
     private ordersUrl: string = 'http://eshopcontainers:5102/api/v1/orders';
 
-    constructor(private service: DataService) {
+    constructor(private service: DataService, private basketService: BasketWrapperService, private identityService: SecurityService) {
     }
 
     getOrders(): Observable<IOrder[]> {
@@ -32,4 +36,51 @@ export class OrdersService {
             return response.json();
         });
     }
+    
+    postOrder(item): Observable<boolean> {
+        return this.service.post(this.ordersUrl + '/new', item).map((response: Response) => {
+            return true;
+        });
+    }
+
+    mapBasketAndIdentityInfoNewOrder(): IOrder {
+        let order = <IOrder>{};
+        let basket = this.basketService.basket;
+        let identityInfo = this.identityService.UserData;
+
+        console.log(basket);
+        console.log(identityInfo);
+
+        //Identity data mapping:
+        order.street = identityInfo.address_street;
+        order.city = identityInfo.address_city;
+        order.country = identityInfo.address_country;
+        order.state = identityInfo.address_state;
+        order.zipcode = identityInfo.addrees_zipcode;
+        order.cardexpiration = identityInfo.card_expiration;
+        order.cardnumber = identityInfo.card_number;
+        order.cardsecuritynumber = identityInfo.card_security_number;
+        order.cardtypeid = identityInfo.card_type;
+        order.cardholdername = identityInfo.card_holder;
+
+        //basket data mapping:
+        order.orderItems = new Array<IOrderItem>();
+        basket.items.forEach(x =>
+        {
+            let item: IOrderItem = <IOrderItem>{};
+            item.pictureurl = x.pictureUrl;
+            item.productId =  +x.productId;
+            item.productname = x.productName;
+            item.unitprice = x.unitPrice;
+            item.units = x.quantity;
+
+            order.orderItems.push(item);
+        });
+
+        order.buyer = basket.buyerId;
+
+        return order;
+    }
+
 }
+
