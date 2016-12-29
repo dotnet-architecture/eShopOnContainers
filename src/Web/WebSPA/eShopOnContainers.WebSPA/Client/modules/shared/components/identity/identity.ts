@@ -12,15 +12,14 @@ import { SecurityService } from  '../../services/security.service';
 export class Identity implements OnInit  {
     private authenticated: boolean = false;
     private subscription: Subscription;
-    private userName: string = "";
+    private userName: string = '';
 
     constructor(private service: SecurityService) {
 
     }
 
     ngOnInit() {
-        this.subscription = this.service.authenticationChallenge$.subscribe(res =>
-        {
+        this.subscription = this.service.authenticationChallenge$.subscribe(res => {
             this.authenticated = res;
             this.userName = this.service.UserData.email;
         });

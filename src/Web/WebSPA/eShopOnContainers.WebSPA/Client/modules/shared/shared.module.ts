@@ -19,7 +19,7 @@ import { UppercasePipe } from './pipes/uppercase.pipe';
 import { BasketWrapperService} from './services/basket.wrapper.service';
 import { SecurityService } from './services/security.service';
 
-//Components:
+// Components:
 import { Pager } from './components/pager/pager';
 import { Header } from './components/header/header';
 import { Identity } from './components/identity/identity';
@@ -58,8 +58,6 @@ import { Identity } from './components/identity/identity';
         DynamicFormControlComponent,
         ErrorSummaryComponent,
         ErrorMessageComponent,
-        //FooterComponent,
-        //HeaderComponent,
         PageHeadingComponent,
         UppercasePipe,
         Pager,
@@ -76,7 +74,7 @@ export class SharedModule {
                 DataService,
                 FormControlService,
                 UtilityService,
-                BasketWrapperService, 
+                BasketWrapperService,
                 SecurityService
             ]
         };

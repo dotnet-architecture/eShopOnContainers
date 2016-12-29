@@ -18,10 +18,9 @@ export class Pager implements OnInit, OnChanges  {
     buttonStates: any = {
         nextDisabled: true,
         previousDisabled: true,
-    }
+    };
 
     ngOnInit() {
-        //console.log(this.model);
     }
 
     ngOnChanges() {

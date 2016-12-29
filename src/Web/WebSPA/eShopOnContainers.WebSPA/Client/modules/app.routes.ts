@@ -13,11 +13,6 @@ export const routes: Routes = [
     { path: 'orders', component: OrdersComponent },
     { path: 'orders/:id', component: OrdersDetailComponent },
     { path: 'order', component: OrdersNewComponent }
-   //Lazy async modules (angular-loader-router) and enable a router in each module. 
-   //{
-   // path: 'basket',  loadChildren: '/basket/basket.module' });
-   // })
-   //}
 ];
 
 export const routing = RouterModule.forRoot(routes);

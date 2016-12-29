@@ -8,17 +8,17 @@ import { SecurityService }  from '../services/security.service';
 
 @Injectable()
 export class BasketWrapperService {
-    public basket: IBasket
+    public basket: IBasket;
 
     constructor(private identityService: SecurityService) { }
 
-    //observable that is fired when a product is added to the cart
+    // observable that is fired when a product is added to the cart
     private addItemToBasketSource = new Subject<IBasketItem>();
     addItemToBasket$ = this.addItemToBasketSource.asObservable();
 
     private orderCreatedSource = new Subject();
     orderCreated$ = this.orderCreatedSource.asObservable();
-    
+
     addItemToBasket(item: ICatalogItem) {
         if (this.identityService.IsAuthorized) {
             let basket: IBasketItem = {
@@ -28,7 +28,8 @@ export class BasketWrapperService {
                 quantity: 1,
                 unitPrice: item.price,
                 id: ''
-            }
+            };
+
             this.addItemToBasketSource.next(basket);
         } else {
             this.identityService.Authorize();

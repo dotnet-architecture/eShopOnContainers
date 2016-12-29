@@ -36,7 +36,7 @@ export class OrdersService {
             return response.json();
         });
     }
-    
+
     postOrder(item): Observable<boolean> {
         return this.service.post(this.ordersUrl + '/new', item).map((response: Response) => {
             return true;
@@ -51,7 +51,7 @@ export class OrdersService {
         console.log(basket);
         console.log(identityInfo);
 
-        //Identity data mapping:
+        // Identity data mapping:
         order.street = identityInfo.address_street;
         order.city = identityInfo.address_city;
         order.country = identityInfo.address_country;
@@ -65,10 +65,9 @@ export class OrdersService {
         order.total = 0;
         order.expiration = identityInfo.card_expiration;
 
-        //basket data mapping:
+        // basket data mapping:
         order.orderItems = new Array<IOrderItem>();
-        basket.items.forEach(x =>
-        {
+        basket.items.forEach(x => {
             let item: IOrderItem = <IOrderItem>{};
             item.pictureurl = x.pictureUrl;
             item.productId =  +x.productId;

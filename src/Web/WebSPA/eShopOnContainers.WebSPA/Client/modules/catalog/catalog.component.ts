@@ -54,7 +54,7 @@ export class CatalogComponent implements OnInit {
         this.basketService.addItemToBasket(item);
     }
 
-    getCatalog(pageSize:number, pageIndex: number, brand?: number, type?: number) {
+    getCatalog(pageSize: number, pageIndex: number, brand?: number, type?: number) {
         this.service.getCatalog(pageIndex, pageSize, brand, type).subscribe(catalog => {
             this.catalog = catalog;
 

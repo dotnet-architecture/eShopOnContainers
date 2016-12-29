@@ -3,7 +3,6 @@ import { Http, Response, Headers }      from '@angular/http';
 import 'rxjs/add/operator/map';
 import { Observable }                   from 'rxjs/Observable';
 import { Subject }                      from 'rxjs/Subject';
-//import { Configuration } from '../app.constants';
 import { Router }                       from '@angular/router';
 import { ActivatedRoute }               from '@angular/router';
 
@@ -20,45 +19,45 @@ export class SecurityService {
         this.headers = new Headers();
         this.headers.append('Content-Type', 'application/json');
         this.headers.append('Accept', 'application/json');
-        this.storage = sessionStorage; //localStorage;
+        this.storage = sessionStorage; // localStorage;
 
-        if (this.retrieve("IsAuthorized") !== "") {
-            this.IsAuthorized = this.retrieve("IsAuthorized");
+        if (this.retrieve('IsAuthorized') !== '') {
+            this.IsAuthorized = this.retrieve('IsAuthorized');
             this.authenticationSource.next(true);
-            this.UserData = this.retrieve("userData");
+            this.UserData = this.retrieve('userData');
         }
     }
 
     public IsAuthorized: boolean;
 
     public GetToken(): any {
-        return this.retrieve("authorizationData");
+        return this.retrieve('authorizationData');
     }
 
     public ResetAuthorizationData() {
-        this.store("authorizationData", "");
-        this.store("authorizationDataIdToken", "");
+        this.store('authorizationData', '');
+        this.store('authorizationDataIdToken', '');
 
         this.IsAuthorized = false;
-        this.store("IsAuthorized", false);
+        this.store('IsAuthorized', false);
     }
 
     public UserData: any;
-    public SetAuthorizationData(token: any, id_token:any) {
-        if (this.retrieve("authorizationData") !== "") {
-            this.store("authorizationData", "");
+    public SetAuthorizationData(token: any, id_token: any) {
+        if (this.retrieve('authorizationData') !== '') {
+            this.store('authorizationData', '');
         }
 
-        this.store("authorizationData", token);
-        this.store("authorizationDataIdToken", id_token);
+        this.store('authorizationData', token);
+        this.store('authorizationDataIdToken', id_token);
         this.IsAuthorized = true;
-        this.store("IsAuthorized", true);
+        this.store('IsAuthorized', true);
 
         this.getUserData()
             .subscribe(data => {
                 this.UserData = data;
-                this.store("userData", data);
-                //emit observable
+                this.store('userData', data);
+                // emit observable
                 this.authenticationSource.next(true);
                 window.location.href = 'http://localhost:5104';
             },
@@ -71,25 +70,25 @@ export class SecurityService {
     public Authorize() {
         this.ResetAuthorizationData();
 
-        var authorizationUrl = 'http://localhost:5105/connect/authorize';
-        var client_id = 'js';
-        var redirect_uri = 'http://localhost:5104/';
-        var response_type = "id_token token";
-        var scope = "openid profile orders basket";
-        var nonce = "N" + Math.random() + "" + Date.now();
-        var state = Date.now() + "" + Math.random();
+        let authorizationUrl = 'http://localhost:5105/connect/authorize';
+        let client_id = 'js';
+        let redirect_uri = 'http://localhost:5104/';
+        let response_type = 'id_token token';
+        let scope = 'openid profile orders basket';
+        let nonce = 'N' + Math.random() + '' + Date.now();
+        let state = Date.now() + '' + Math.random();
 
-        this.store("authStateControl", state);
-        this.store("authNonce", nonce);
+        this.store('authStateControl', state);
+        this.store('authNonce', nonce);
 
-        var url =
-            authorizationUrl + "?" +
-            "response_type=" + encodeURI(response_type) + "&" +
-            "client_id=" + encodeURI(client_id) + "&" +
-            "redirect_uri=" + encodeURI(redirect_uri) + "&" +
-            "scope=" + encodeURI(scope) + "&" +
-            "nonce=" + encodeURI(nonce) + "&" +
-            "state=" + encodeURI(state);
+        let url =
+            authorizationUrl + '?' +
+            'response_type=' + encodeURI(response_type) + '&' +
+            'client_id=' + encodeURI(client_id) + '&' +
+            'redirect_uri=' + encodeURI(redirect_uri) + '&' +
+            'scope=' + encodeURI(scope) + '&' +
+            'nonce=' + encodeURI(nonce) + '&' +
+            'state=' + encodeURI(state);
 
         window.location.href = url;
     }
@@ -97,41 +96,41 @@ export class SecurityService {
     public AuthorizedCallback() {
         this.ResetAuthorizationData();
 
-        var hash = window.location.hash.substr(1);
+        let hash = window.location.hash.substr(1);
 
-        var result: any = hash.split('&').reduce(function (result : any, item: string) {
-            var parts = item.split('=');
+        let result: any = hash.split('&').reduce(function (result: any, item: string) {
+            let parts = item.split('=');
             result[parts[0]] = parts[1];
             return result;
         }, {});
 
         console.log(result);
 
-        var token = "";
-        var id_token = "";
-        var authResponseIsValid = false;
+        let token = '';
+        let id_token = '';
+        let authResponseIsValid = false;
 
         if (!result.error) {
 
-            if (result.state !== this.retrieve("authStateControl")) {
-                console.log("AuthorizedCallback incorrect state");
+            if (result.state !== this.retrieve('authStateControl')) {
+                console.log('AuthorizedCallback incorrect state');
             } else {
 
                 token = result.access_token;
-                id_token = result.id_token
+                id_token = result.id_token;
 
-                var dataIdToken: any = this.getDataFromToken(id_token);
+                let dataIdToken: any = this.getDataFromToken(id_token);
                 console.log(dataIdToken);
 
                 // validate nonce
-                if (dataIdToken.nonce !== this.retrieve("authNonce")) {
-                    console.log("AuthorizedCallback incorrect nonce");
+                if (dataIdToken.nonce !== this.retrieve('authNonce')) {
+                    console.log('AuthorizedCallback incorrect nonce');
                 } else {
-                    this.store("authNonce", "");
-                    this.store("authStateControl", "");
+                    this.store('authNonce', '');
+                    this.store('authStateControl', '');
 
                     authResponseIsValid = true;
-                    console.log("AuthorizedCallback state and nonce validated, returning access token");
+                    console.log('AuthorizedCallback state and nonce validated, returning access token');
                 }
             }
         }
@@ -143,18 +142,18 @@ export class SecurityService {
     }
 
     public Logoff() {
-        var authorizationUrl = 'http://localhost:5105/connect/endsession';
-        var id_token_hint = this.retrieve("authorizationDataIdToken");
-        var post_logout_redirect_uri = 'http://localhost:5104/';
+        let authorizationUrl = 'http://localhost:5105/connect/endsession';
+        let id_token_hint = this.retrieve('authorizationDataIdToken');
+        let post_logout_redirect_uri = 'http://localhost:5104/';
 
-        var url =
-            authorizationUrl + "?" +
-            "id_token_hint=" + encodeURI(id_token_hint) + "&" +
-            "post_logout_redirect_uri=" + encodeURI(post_logout_redirect_uri);
+        let url =
+            authorizationUrl + '?' +
+            'id_token_hint=' + encodeURI(id_token_hint) + '&' +
+            'post_logout_redirect_uri=' + encodeURI(post_logout_redirect_uri);
 
         this.ResetAuthorizationData();
 
-        //emit observable
+        // emit observable
         this.authenticationSource.next(false);
         window.location.href = url;
     }
@@ -162,16 +161,16 @@ export class SecurityService {
     public HandleError(error: any) {
         console.log(error);
         if (error.status == 403) {
-            this._router.navigate(['/Forbidden'])
+            this._router.navigate(['/Forbidden']);
         }
         else if (error.status == 401) {
-            //this.ResetAuthorizationData();
-            this._router.navigate(['/Unauthorized'])
+            // this.ResetAuthorizationData();
+            this._router.navigate(['/Unauthorized']);
         }
     }
 
     private urlBase64Decode(str: string) {
-        var output = str.replace('-', '+').replace('_', '/');
+        let output = str.replace('-', '+').replace('_', '/');
         switch (output.length % 4) {
             case 0:
                 break;
@@ -189,9 +188,9 @@ export class SecurityService {
     }
 
     private getDataFromToken(token: any) {
-        var data = {};
+        let data = {};
         if (typeof token !== 'undefined') {
-            var encoded = token.split('.')[1];
+            let encoded = token.split('.')[1];
             data = JSON.parse(this.urlBase64Decode(encoded));
         }
 
@@ -199,7 +198,7 @@ export class SecurityService {
     }
 
     private retrieve(key: string): any {
-        var item = this.storage.getItem(key);
+        let item = this.storage.getItem(key);
 
         if (item && item !== 'undefined') {
             return JSON.parse(this.storage.getItem(key));
@@ -225,9 +224,9 @@ export class SecurityService {
         this.headers.append('Content-Type', 'application/json');
         this.headers.append('Accept', 'application/json');
 
-        var token = this.GetToken();
+        let token = this.GetToken();
 
-        if (token !== "") {
+        if (token !== '') {
             this.headers.append('Authorization', 'Bearer ' + token);
         }
     }
