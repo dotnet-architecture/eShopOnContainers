@@ -34,11 +34,12 @@
         overflow: hidden;
         padding: .5rem;
         position: absolute;
-        top: 2rem;
+        top: 2.5rem;
         transition: height $animation-speed-default;
     }
 
     &:hover &-drop {
+        border: $border-light solid $color-foreground-bright;
         height: 7rem;
         transition: height $animation-speed-default;
     }
