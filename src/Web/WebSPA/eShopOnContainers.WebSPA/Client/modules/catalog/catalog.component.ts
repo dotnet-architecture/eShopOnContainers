@@ -57,7 +57,6 @@ export class CatalogComponent implements OnInit {
     getCatalog(pageSize:number, pageIndex: number, brand?: number, type?: number) {
         this.service.getCatalog(pageIndex, pageSize, brand, type).subscribe(catalog => {
             this.catalog = catalog;
-            //console.log('catalog items retrieved: ' + catalog.count);
 
             this.paginationInfo = {
                 actualPage : catalog.pageIndex,
@@ -67,7 +66,6 @@ export class CatalogComponent implements OnInit {
                 items: catalog.pageSize
             };
 
-            //console.log(this.paginationInfo);
         });
     }
 
@@ -76,7 +74,6 @@ export class CatalogComponent implements OnInit {
             this.types = types;
             let alltypes = { id: null, type: 'All' };
             this.types.unshift(alltypes);
-            //console.log('types retrieved: ' + types.length);
         });
     }
 
@@ -85,7 +82,6 @@ export class CatalogComponent implements OnInit {
             this.brands = brands;
             let allBrands = { id: null, brand: 'All' };
             this.brands.unshift(allBrands);
-            //console.log('brands retrieved: ' + brands.length);
         });
     }
 }

@@ -29,9 +29,10 @@
     "build:main": "node node_modules/webpack/bin/webpack.js --config config/webpack.config.js",
     "setdev": "set ASPNETCORE_ENVIRONMENT=Development",
     "setprod": "set ASPNETCORE_ENVIRONMENT=Production",
-    "build:dev": "npm run setdev && npm run clean:dist && npm run build:vendor && npm run build:main",
+    "build:dev": "npm run lint:sass && npm run setdev && npm run clean:dist && npm run build:vendor && npm run build:main",
     "build:prod": "npm run setprod && npm run clean:dist && npm run build:vendor && npm run build:main",
-    "version": "npm run build"
+    "version": "npm run build",
+    "lint:sass": "sass-lint -c .sass-lint.yml Client/**/*.scss --verbose"
   },
   "dependencies": {
     "@angular/common": "2.1.2",
@@ -87,6 +88,7 @@
     "node-sass": "3.9.3",
     "parse5": "2.1.5",
     "rimraf": "2.5.4",
+    "sass-lint": "^1.10.2",
     "sass-loader": "4.0.2",
     "ts-helpers": "1.1.1",
     "ts-node": "1.4.3",

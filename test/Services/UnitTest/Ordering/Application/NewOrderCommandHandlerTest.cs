@@ -1,18 +1,15 @@
-﻿using MediatR;
-using Microsoft.eShopOnContainers.Services.Ordering.Api.Application.Commands;
-using Microsoft.eShopOnContainers.Services.Ordering.Domain;
-using Microsoft.eShopOnContainers.Services.Ordering.Domain.Repositories;
-using Microsoft.eShopOnContainers.Services.Ordering.Domain.SeedWork;
-using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Xunit;
-
-namespace UnitTest.Ordering.Application
+﻿namespace UnitTest.Ordering.Application
 {
+    using Microsoft.eShopOnContainers.Services.Ordering.Api.Application.Commands;
+    using Microsoft.eShopOnContainers.Services.Ordering.Domain;
+    using Microsoft.eShopOnContainers.Services.Ordering.Domain.Repositories;
+    using Moq;
+    using System;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using Xunit;
+
+
     public class NewOrderRequestHandlerTest
     {
         private readonly Mock<IBuyerRepository> _buyerRepositoryMock;
@@ -20,25 +17,29 @@ namespace UnitTest.Ordering.Application
 
         public NewOrderRequestHandlerTest()
         {
-            //Mocks;
+            
             _buyerRepositoryMock = new Mock<IBuyerRepository>();
             _orderRepositoryMock = new Mock<IOrderRepository>();
         }
 
         [Fact]
-        public async Task Handle_ReturnsTrue_WhenOrderIsPersistedSuccesfully()
+        public async Task Handle_returns_true_when_order_is_persisted_succesfully()
         {
             // Arrange
             _buyerRepositoryMock.Setup(buyerRepo => buyerRepo.FindAsync(FakeOrderRequestWithBuyer().Buyer))
                .Returns(Task.FromResult<Buyer>(FakeBuyer()));
+
             _buyerRepositoryMock.Setup(buyerRepo => buyerRepo.UnitOfWork.SaveChangesAsync(default(CancellationToken)))
                 .Returns(Task.FromResult(1));
 
-            _orderRepositoryMock.Setup(or => or.Add(FakeOrder())).Returns(FakeOrder());
-            _orderRepositoryMock.Setup(or => or.UnitOfWork.SaveChangesAsync(default(CancellationToken))).Returns(Task.FromResult(1));
+            _orderRepositoryMock.Setup(or => or.Add(FakeOrder()))
+                .Returns(FakeOrder());
+
+            _orderRepositoryMock.Setup(or => or.UnitOfWork.SaveChangesAsync(default(CancellationToken)))
+                .Returns(Task.FromResult(1));
 
             //Act
-            var handler = new NewOrderRequestHandler(_buyerRepositoryMock.Object, _orderRepositoryMock.Object);
+            var handler = new NewOrderCommandHandler(_buyerRepositoryMock.Object, _orderRepositoryMock.Object);
             var result = await handler.Handle(FakeOrderRequestWithBuyer());
             
             //Assert
@@ -46,18 +47,20 @@ namespace UnitTest.Ordering.Application
         }
 
         [Fact]
-        public async Task Handle_ReturnsFalse_WhenOrderIsNotPersisted()
+        public async Task Handle_return_false_if_order_is_not_persisted()
         {
             _buyerRepositoryMock.Setup(buyerRepo => buyerRepo.FindAsync(FakeOrderRequestWithBuyer().Buyer))
                 .Returns(Task.FromResult<Buyer>(FakeBuyer()));
+
             _buyerRepositoryMock.Setup(buyerRepo => buyerRepo.UnitOfWork.SaveChangesAsync(default(CancellationToken)))
                 .Returns(Task.FromResult(1));
 
             _orderRepositoryMock.Setup(or => or.Add(FakeOrder())).Returns(FakeOrder());
-            _orderRepositoryMock.Setup(or => or.UnitOfWork.SaveChangesAsync(default(CancellationToken))).Returns(Task.FromResult(0));
+            _orderRepositoryMock.Setup(or => or.UnitOfWork.SaveChangesAsync(default(CancellationToken)))
+                .Returns(Task.FromResult(0));
 
             //Act
-            var handler = new NewOrderRequestHandler(_buyerRepositoryMock.Object, _orderRepositoryMock.Object);
+            var handler = new NewOrderCommandHandler(_buyerRepositoryMock.Object, _orderRepositoryMock.Object);
             var result = await handler.Handle(FakeOrderRequestWithBuyer());
 
             //Assert
@@ -77,9 +80,9 @@ namespace UnitTest.Ordering.Application
             };
         }
 
-        private NewOrderRequest FakeOrderRequestWithBuyer()
+        private NewOrderCommand FakeOrderRequestWithBuyer()
         {
-            return new NewOrderRequest
+            return new NewOrderCommand
             {
                 Buyer = "1234",
                 CardNumber = "1234",

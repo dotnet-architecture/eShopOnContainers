@@ -3,7 +3,6 @@ import { BrowserModule  }       from '@angular/platform-browser';
 
 import { SharedModule }         from '../shared/shared.module';
 import { CatalogComponent }     from './catalog.component';
-//import { routing }              from './catalog.routes';
 import { CatalogService }       from './catalog.service';
 import { Pager }                from '../shared/components/pager/pager';
 

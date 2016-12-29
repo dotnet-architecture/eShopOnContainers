@@ -1,8 +1,35 @@
-<button *ngIf="!authenticated" class="identity-login" (click)="login()">Login</button>
-<div *ngIf="authenticated" class="identity-user">
-    <div><span>{{userName}}</span></div><div style="float: right;top: 0;right: -15px;position: absolute;"><img src="../../../../images/arrow-down.png" class="identity-downArrow"></div>
-    <div class="identity-userDropdown">
-        <div [routerLink]="['orders']">MY ORDERS<img src="../../../../images/my_orders.png"></div>
-        <div (click)="logoutClicked($event)">LOG OUT<img src="../../../../images/logout.png"></div>
-    </div>
+<div class="esh-identity">
+    <section class="esh-identity-section"
+             *ngIf="!authenticated">
+        <div class="esh-identity-item"
+             (click)="login()">
+
+            <div class="esh-identity-name esh-identity-name--upper">Login</div>
+        </div>
+    </section>
+
+    <section class="esh-identity-section"
+         *ngIf="authenticated">
+
+        <div class="esh-identity-name">{{userName}}</div>
+        <img class="esh-identity-image" src="../../../../images/arrow-down.png">
+    </section>
+
+    <section class="esh-identity-drop"
+             *ngIf="authenticated">
+
+        <div class="esh-identity-item"
+             [routerLink]="['orders']">
+
+            <div class="esh-identity-name esh-identity-name--upper">My orders</div>
+            <img class="esh-identity-image" src="../../../../images/my_orders.png">
+        </div>
+
+        <div class="esh-identity-item"
+             (click)="logoutClicked($event)">
+
+            <div class="esh-identity-name esh-identity-name--upper">Log Out</div>
+            <img class="esh-identity-image" src="../../../../images/logout.png">
+        </div>
+    </section>
 </div>

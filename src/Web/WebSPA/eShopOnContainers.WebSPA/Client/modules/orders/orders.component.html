@@ -1,9 +1,5 @@
 <div class="esh-orders">
-    <div class="esh-orders-header">
-        <div class="container">
-            <a class="esh-orders-back" routerLink="/catalog">Back to catalog</a>
-        </div>
-    </div>
+    <esh-header url="/catalog">Back to catalog</esh-header>
 
     <div class="container">
         <article class="esh-orders-titles row">
@@ -20,7 +16,7 @@
             <section class="esh-orders-item col-xs-4">{{order.date | date:'short'}}</section>
             <section class="esh-orders-item col-xs-2">$ {{order.total}}</section>
             <section class="esh-orders-item col-xs-2">{{order.status}}</section>
-            <section class="esh-orders-item col-xs-2">
+            <section class="esh-orders-item esh-orders-item--hover col-xs-2">
                 <a class="esh-orders-link" routerLink="/orders/{{order.ordernumber}}">Detail</a>
             </section>
         </article>

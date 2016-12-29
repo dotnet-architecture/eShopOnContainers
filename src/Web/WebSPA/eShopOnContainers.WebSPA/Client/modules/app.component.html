@@ -2,15 +2,18 @@
     <div class="container">
         <article class="row">
 
-            <section class="col-sm-10">
+            <section class="col-lg-7 col-md-6 col-xs-12">
                 <a class="navbar-brand" routerLink="catalog">
                     <img src="../images/brand.png" />
                 </a>
             </section>
 
-            <section class="col-sm-2">
-                <esh-basket-status *ngIf="Authenticated"></esh-basket-status>
+            <section class="col-lg-4 col-md-5 col-xs-12">
                 <esh-identity></esh-identity>
+            </section>
+
+            <section class="col-lg-1 col-xs-12">
+                <esh-basket-status *ngIf="Authenticated"></esh-basket-status>
             </section>
 
         </article>

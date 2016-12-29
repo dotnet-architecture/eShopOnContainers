@@ -4,7 +4,7 @@
     using Xunit;
 
     public class CatalogScenarios
-        :CatalogScenarioBase
+        : CatalogScenarioBase
     {
         [Fact]
         public async Task Get_get_all_catalogitems_and_response_ok_status_code()
@@ -24,7 +24,7 @@
             using (var server = CreateServer())
             {
                 var response = await server.CreateClient()
-                    .GetAsync(Get.Paginated(0,4));
+                    .GetAsync(Get.Paginated(0, 4));
 
                 response.EnsureSuccessStatusCode();
             }

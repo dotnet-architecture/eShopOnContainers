@@ -20,8 +20,9 @@ import { BasketWrapperService} from './services/basket.wrapper.service';
 import { SecurityService } from './services/security.service';
 
 //Components:
-import {Pager } from './components/pager/pager';
-import {Identity } from './components/identity/identity';
+import { Pager } from './components/pager/pager';
+import { Header } from './components/header/header';
+import { Identity } from './components/identity/identity';
 
 @NgModule({
     imports: [
@@ -41,7 +42,8 @@ import {Identity } from './components/identity/identity';
         ErrorSummaryComponent,
         PageHeadingComponent,
         UppercasePipe,
-        Pager, 
+        Pager,
+        Header,
         Identity
     ],
     exports: [
@@ -60,7 +62,8 @@ import {Identity } from './components/identity/identity';
         //HeaderComponent,
         PageHeadingComponent,
         UppercasePipe,
-        Pager, 
+        Pager,
+        Header,
         Identity
     ]
 })

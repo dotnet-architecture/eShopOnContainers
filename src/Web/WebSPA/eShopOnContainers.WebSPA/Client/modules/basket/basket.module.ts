@@ -4,8 +4,8 @@ import { BrowserModule  }               from '@angular/platform-browser';
 import { SharedModule }                 from '../shared/shared.module';
 import { BasketComponent }              from './basket.component';
 import { BasketStatusComponent }        from './basket-status/basket-status.component';
-//import { routing }                      from './basket.routes';
 import { BasketService }                from './basket.service';
+import { Header }                from '../shared/components/header/header';
 
 @NgModule({
     imports: [SharedModule],

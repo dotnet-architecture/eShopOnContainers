@@ -56,7 +56,7 @@
                 var content = new StringContent(BuildOrderWithInvalidExperationTime(), UTF8Encoding.UTF8, "application/json");
 
                 var response = await server.CreateClient()
-                    .PostAsync(Post.AddNewOrder,content);
+                    .PostAsync(Post.AddNewOrder, content);
 
                 Assert.True(response.StatusCode == System.Net.HttpStatusCode.BadRequest);
             }

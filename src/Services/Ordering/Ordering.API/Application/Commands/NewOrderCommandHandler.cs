@@ -1,4 +1,4 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Ordering.Application.Commands
+﻿namespace Microsoft.eShopOnContainers.Services.Ordering.Api.Application.Commands
 {
     using Domain.Repositories;
     using MediatR;
@@ -7,13 +7,13 @@
     using System.Threading.Tasks;
     using Domain;
 
-    public class NewOrderRequestHandler
-        : IAsyncRequestHandler<NewOrderRequest, bool>
+    public class NewOrderCommandHandler
+        : IAsyncRequestHandler<NewOrderCommand, bool>
     {
         private readonly IBuyerRepository _buyerRepository;
         private readonly IOrderRepository _orderRepository;
 
-        public NewOrderRequestHandler(IBuyerRepository buyerRepository,IOrderRepository orderRepository)
+        public NewOrderCommandHandler(IBuyerRepository buyerRepository,IOrderRepository orderRepository)
         {
             if (buyerRepository == null)
             {
@@ -28,7 +28,7 @@
             _buyerRepository = buyerRepository;
             _orderRepository = orderRepository;
         }
-        public async Task<bool> Handle(NewOrderRequest message)
+        public async Task<bool> Handle(NewOrderCommand message)
         {
             //find buyer/payment or add a new one buyer/payment 
 
@@ -70,7 +70,7 @@
 
 
 
-        Payment GetExistingPaymentOrAddANewOne(Buyer buyer, NewOrderRequest message)
+        Payment GetExistingPaymentOrAddANewOne(Buyer buyer, NewOrderCommand message)
         {
             Payment payment = PaymentAlreadyExist(buyer, message);
 
@@ -84,7 +84,7 @@
 
         }
 
-        Payment PaymentAlreadyExist(Domain.Buyer buyer, NewOrderRequest message)
+        Payment PaymentAlreadyExist(Domain.Buyer buyer, NewOrderCommand message)
         {
             return buyer.Payments
                 .SingleOrDefault(p =>
@@ -99,7 +99,7 @@
                 });
         }
 
-        Buyer CreateBuyer(NewOrderRequest message)
+        Buyer CreateBuyer(NewOrderCommand message)
         {
             return _buyerRepository.Add(
                 new Buyer(message.Buyer));
@@ -110,7 +110,7 @@
             return new Order(buyerId, paymentId);
         }
 
-        Payment CreatePayment(NewOrderRequest message)
+        Payment CreatePayment(NewOrderCommand message)
         {
             return new Payment(message.CardNumber, message.CardSecurityNumber, message.CardHolderName, message.CardExpiration, message.CardTypeId);
         }

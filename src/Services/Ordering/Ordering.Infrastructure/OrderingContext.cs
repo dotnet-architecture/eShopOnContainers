@@ -39,12 +39,7 @@
             modelBuilder.Entity<CardType>(ConfigureCardTypes);
             modelBuilder.Entity<OrderStatus>(ConfigureOrderStatus);
             modelBuilder.Entity<Address>(ConfigureAddress);
-
-            modelBuilder.Entity<Address>()
-                .ToTable("address", DEFAULT_SCHEMA);
         }
-
-       
 
         void ConfigureBuyer(EntityTypeBuilder<Buyer> buyerConfiguration)
         {
