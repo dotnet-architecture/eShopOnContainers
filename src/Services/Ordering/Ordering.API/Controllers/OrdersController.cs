@@ -43,7 +43,7 @@
 
         [Route("new")]
         [HttpPost]
-        public async Task<IActionResult> AddOrder([FromBody]NewOrderRequest order)
+        public async Task<IActionResult> AddOrder([FromBody]NewOrderCommand order)
         {
             if (order.CardTypeId == 0)
                 order.CardTypeId = 1;
