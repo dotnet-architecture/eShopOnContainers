@@ -1,17 +1,21 @@
 .esh-basketstatus {
-  cursor: pointer;
-  float: right;
-  position: relative;
-  transition: all 0.35s; }
-
-.esh-basketstatus.is-disabled {
-    opacity: .5;
-    pointer-events: none;
+    cursor: pointer;
+    float: right;
+    position: relative;
+    transition: all 0.35s;
 }
-  .esh-basketstatus-image {
+
+    .esh-basketstatus.is-disabled {
+        opacity: .5;
+        pointer-events: none;
+    }
+
+.esh-basketstatus-image {
     height: 36px;
-    margin-top: .5rem; }
-  .esh-basketstatus-badge {
+    margin-top: .5rem;
+}
+
+.esh-basketstatus-badge {
     background-color: #83D01B;
     border-radius: 50%;
     color: #FFFFFF;
@@ -23,8 +27,11 @@
     top: 0;
     transform: translateX(-38%);
     transition: all 0.35s;
-    width: 1.5rem; }
-  .esh-basketstatus:hover .esh-basketstatus-badge {
+    width: 1.5rem;
+}
+
+.esh-basketstatus:hover .esh-basketstatus-badge {
     background-color: transparent;
     color: #75b918;
-    transition: all 0.35s; }
+    transition: all 0.35s;
+}
