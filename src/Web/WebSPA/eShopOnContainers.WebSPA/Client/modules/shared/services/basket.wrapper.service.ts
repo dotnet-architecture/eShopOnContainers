@@ -4,12 +4,13 @@ import { Subject }          from 'rxjs/Subject';
 import { ICatalogItem }     from '../models/catalogItem.model';
 import { IBasketItem }      from '../models/basketItem.model';
 import { IBasket }          from '../models/basket.model';
+import { SecurityService }  from '../services/security.service';
 
 @Injectable()
 export class BasketWrapperService {
     public basket: IBasket
 
-    constructor() { }
+    constructor(private identityService: SecurityService) { }
 
     //observable that is fired when a product is added to the cart
     private addItemToBasketSource = new Subject<IBasketItem>();
@@ -19,15 +20,19 @@ export class BasketWrapperService {
     orderCreated$ = this.orderCreatedSource.asObservable();
     
     addItemToBasket(item: ICatalogItem) {
-        let basket: IBasketItem = {
-            pictureUrl: item.pictureUri,
-            productId: item.id,
-            productName: item.name,
-            quantity: 1,
-            unitPrice: item.price,
-            id: ''
+        if (this.identityService.IsAuthorized) {
+            let basket: IBasketItem = {
+                pictureUrl: item.pictureUri,
+                productId: item.id,
+                productName: item.name,
+                quantity: 1,
+                unitPrice: item.price,
+                id: ''
+            }
+            this.addItemToBasketSource.next(basket);
+        } else {
+            this.identityService.Authorize();
         }
-        this.addItemToBasketSource.next(basket);
     }
 
     orderCreated() {
