@@ -12,6 +12,7 @@ import { Observable }               from 'rxjs/Observable';
 import 'rxjs/add/observable/throw';
 import { Observer }                 from 'rxjs/Observer';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/catch';
 
 @Injectable()
 export class BasketService {
@@ -51,8 +52,7 @@ export class BasketService {
     }
 
     dropBasket() {
-        return this.service.delete(this.basketUrl + '/' + this.basket.buyerId).map((response: Response) => {
-            return true;
-        });
+        console.log('drop basket!');
+        this.service.delete(this.basketUrl + '/' + this.basket.buyerId);
     }
 }

@@ -47,7 +47,6 @@ export class OrdersNewComponent implements OnInit {
         this.service.postOrder(this.order).subscribe(res => {
             //this will emit an observable. Basket service is subscribed to this observable, and will react deleting the basket for the current user. 
             this.basketEvents.orderCreated();
-           
 
             this.router.navigate(['orders']);
         });
