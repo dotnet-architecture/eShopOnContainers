@@ -1,4 +1,4 @@
-@import "../../../variables";
+@import '../../../variables';
 
 .esh-header {
     $header-height: 4rem;
@@ -9,8 +9,8 @@
     &-back {
         color: rgba($color-foreground-brighter, .5);
         line-height: $header-height;
-        text-transform: uppercase;
         text-decoration: none;
+        text-transform: uppercase;
         transition: color $animation-speed-default;
 
         &:hover {

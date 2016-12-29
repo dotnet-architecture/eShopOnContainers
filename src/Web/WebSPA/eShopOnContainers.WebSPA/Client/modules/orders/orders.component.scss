@@ -1,10 +1,11 @@
-@import '../_variables.scss';
+@import '../variables';
 
 .esh-orders {
     min-height: 80vh;
     overflow-x: hidden;
 
     $header-height: 4rem;
+
     &-header {
         background-color: #00A69C;
         height: $header-height;
@@ -13,8 +14,8 @@
     &-back {
         color: rgba($color-foreground-brighter, .4);
         line-height: $header-height;
-        text-transform: uppercase;
         text-decoration: none;
+        text-transform: uppercase;
         transition: color $animation-speed-default;
 
         &:hover {

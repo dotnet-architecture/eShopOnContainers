@@ -40,7 +40,7 @@
   no-universal-selectors: 0
   no-url-domains: 0
   no-url-protocols: 0
-  no-vendor-prefixes: 2
+  no-vendor-prefixes: 0
   no-warn: 2
   property-units: 0
 
