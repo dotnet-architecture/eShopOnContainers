@@ -7,49 +7,60 @@
 
     <environment names="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-        <link rel="stylesheet" href="~/css/site.css" />
+        <link rel="stylesheet" href="~/css/app.css" />
+        <link rel="stylesheet" href="~/css/app.component.css" />
+        <link rel="stylesheet" href="~/css/shared/components/header/header.css" />
+        <link rel="stylesheet" href="~/css/shared/components/identity/identity.css" />
+        <link rel="stylesheet" href="~/css/shared/components/pager/pager.css" />
+        <link rel="stylesheet" href="~/css/basket/basket.component.css" />
+        <link rel="stylesheet" href="~/css/basket/basket-status/basket-status.component.css" />
+        <link rel="stylesheet" href="~/css/catalog/catalog.component.css" />
+        <link rel="stylesheet" href="~/css/orders/orders.component.css" />
+        <link rel="stylesheet" href="~/css/orders/orders-detail/orders-detail.component.css" />
+        <link rel="stylesheet" href="~/css/orders/orders-new/orders-new.component.css" />
     </environment>
     <environment names="Staging,Production">
-        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/css/bootstrap.min.css"
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.5/css/bootstrap.min.css"
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
-        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/css/app.min.css" asp-append-version="true" />
     </environment>
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top es-header">
+    <header class="navbar navbar-light navbar-static-top">
         <div class="container">
-            <div class="row">
-                <div class="navbar-header col-sm-6 col-xs-8">
-                   <a asp-area="" asp-controller="Catalog" asp-action="Index">
-                        <div class="navbar-brand">
-                        </div>
-                    </a>
-                </div>
-                <div class="navbar-header col-sm-6 col-xs-4 text-center">
-                    @await Html.PartialAsync("_LoginPartial")
-                </div>
-            </div>
+            <article class="row">
+
+                <section class="col-lg-7 col-md-6 col-xs-12">
+                    <a class="navbar-brand" routerLink="catalog">
+                        <a asp-area="" asp-controller="Catalog" asp-action="Index">
+                            <img src="../images/brand.png" />
+                        </a>
+                </section>
+
+                @await Html.PartialAsync("_LoginPartial")
+            </article>
         </div>
-    </div>
-    <div>
-        @RenderBody()
-        <footer>
-            <div class="container">
-                <div class="row">
-                    <div class="col-sm-6">
-                        <br><div class="brand"></div>
-                    </div>
-                    <div class="col-sm-6">
-                        <br />
-                        <br>
-                        <br />
-                        <div class="text hidden-xs">&copy; e-ShoponContainers. All right reserved</div>
-                    </div>
-                </div>
-            </div>
-        </footer>
-    </div>
+    </header>
+
+    @RenderBody()
+
+
+    <footer class="esh-app-footer">
+        <div class="container">
+            <article class="row">
+
+                <section class="col-sm-6">
+                    <img class="esh-app-footer-brand" src="../images/brand_dark.png" />
+                </section>
+
+                <section class="col-sm-6">
+                    <div class="esh-app-footer-text hidden-xs"> e-ShoponContainers. All right reserved </div>
+                </section>
+
+            </article>
+        </div>
+    </footer>
 
     <environment names="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>

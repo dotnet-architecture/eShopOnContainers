@@ -2,52 +2,46 @@
     ViewData["Title"] = "Catalog";
     @model Microsoft.eShopOnContainers.WebMVC.Models.CatalogViewModels.IndexViewModel
 }
-
-<div class="container-fluid">
-    <div class="row home-banner">
-        <div class="container home-banner-text"><img src="~/images/main_banner_text.png" /></div>
+<section class="esh-catalog-hero">
+    <div class="container">
+        <img class="esh-catalog-title" src="../images/main_banner_text.png" />
     </div>
+</section>
 
-    <div class="home-catalog-filter-container">
-        <div class="container">
-            <form asp-action="Index" asp-controller="Catalog" method="post">
-                <div data-name="brand" class="select-filter-wrapper">
-                    <div class="select-filter-arrow-container"><img src="~/images/arrow-down.png" class="select-filter-arrow" /></div>
-                    <select asp-for="@Model.BrandFilterApplied" asp-items="@Model.Brands" class="select-filter"></select>
-                </div>
-                <div data-name="type" class="select-filter-wrapper">
-                    <div class="select-filter-arrow-container"><img src="~/images/arrow-down.png" class="select-filter-arrow" /></div>
-                    <select asp-for="@Model.TypesFilterApplied" asp-items="@Model.Types" class="select-filter"></select>
-                </div>
-                <button type="submit" class="btn-brand btn-brand-small btn-brand-small-filter btn-catalog-apply">
-                    <img src="~/images/arrow-right.svg" />
-                </button>
-            </form>
-        </div>
+<section class="esh-catalog-filters">
+    <div class="container">
+        <form asp-action="Index" asp-controller="Catalog" method="post">
+            <label class="esh-catalog-label" data-title="brand">
+                <select asp-for="@Model.BrandFilterApplied" asp-items="@Model.Brands" class="esh-catalog-filter"></select>
+            </label>
+            <label class="esh-catalog-label" data-title="type">
+                <select asp-for="@Model.TypesFilterApplied" asp-items="@Model.Types" class="esh-catalog-filter"></select>
+            </label>
+            <input class="esh-catalog-send" type="image" src="images/arrow-right.svg" />
+        </form>
     </div>
-</div>
-<div class="container home-catalog-container">
+</section>
+
+<div class="container">
+
     @if (Model.CatalogItems.Count() > 0)
     {
-        <div class="container es-pager-top">
-            @Html.Partial("_pagination", Model.PaginationInfo)
-        </div>
-        <div class="row">
+        @Html.Partial("_pagination", Model.PaginationInfo)
+
+        <div class="esh-catalog-items row">
             @foreach (var catalogItem in Model.CatalogItems)
             {
-                <div class="col-xs-12 col-sm-6 col-lg-4 home-catalog-item">
+                <div class="esh-catalog-item col-md-4">
                     @Html.Partial("_product", catalogItem)
                 </div>
             }
+        </div>
 
-        </div>
-        <div class="container es-pager-bottom">
-            @Html.Partial("_pagination", Model.PaginationInfo)
-        </div>
+        @Html.Partial("_pagination", Model.PaginationInfo)
     }
     else
     {
-        <div class="home-catalog-noResults">
+        <div class="esh-catalog-items row">
             THERE ARE NO RESULTS THAT MATCH YOUR SEARCH
         </div>
     }

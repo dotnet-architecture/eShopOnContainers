@@ -1,17 +1,18 @@
 ﻿@model CatalogItem
 
+
 <form asp-controller="Cart" asp-action="AddToCart">
-    <div class="home-catalog-item-image">
-        <img src="@Model.PictureUri" />
-        <input type="submit" value="[ ADD TO CART ]" class="btn-brand home-catalog-item-image-addCart" />
-    </div>
-    <div class="home-catalog-item-title">
+
+    <img class="esh-catalog-thumbnail" src="@Model.PictureUri" />
+    <input class="esh-catalog-button" type="submit" value="[ ADD TO CART ]" />
+
+    <div class="esh-catalog-name">
         <span>@Model.Name</span>
     </div>
-    <div class="home-catalog-item-price">
+    <div class="esh-catalog-price">
         <span>@Model.Price.ToString("N2")</span>
     </div>
-    <input type="hidden" asp-for="@Model.CatalogBrand" name="brand"/>
+    <input type="hidden" asp-for="@Model.CatalogBrand" name="brand" />
     <input type="hidden" asp-for="@Model.CatalogBrandId" name="brandId" />
     <input type="hidden" asp-for="@Model.CatalogType" name="type" />
     <input type="hidden" asp-for="@Model.CatalogTypeId" name="typeId" />

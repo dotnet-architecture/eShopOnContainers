@@ -1,0 +1,20 @@
+.esh-app-footer {
+    background-color: #000000;
+    border-top: 1px solid #EEEEEE;
+    margin-top: 2.5rem;
+    padding-bottom: 2.5rem;
+    padding-top: 2.5rem;
+    width: 100%;
+}
+
+.esh-app-footer-brand {
+    height: 50px;
+    width: 230px;
+}
+
+.esh-app-footer-text {
+    color: #83D01B;
+    line-height: 50px;
+    text-align: right;
+    width: 100%;
+}
