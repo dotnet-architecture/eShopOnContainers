@@ -7,7 +7,7 @@
     height: $header-height;
 
     &-back {
-        color: red;
+        color: rgba($color-foreground-brighter, .5);
         line-height: $header-height;
         text-transform: uppercase;
         text-decoration: none;

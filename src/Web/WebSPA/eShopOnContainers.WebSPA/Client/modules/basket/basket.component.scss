@@ -3,25 +3,6 @@
 .esh-basket {
     min-height: 80vh;
 
-    $header-height: 4rem;
-    &-header {
-        background-color: #00A69C;
-        height: $header-height;
-    }
-
-    &-back {
-        color: rgba($color-foreground-brighter, .4);
-        line-height: $header-height;
-        text-transform: uppercase;
-        text-decoration: none;
-        transition: color $animation-speed-default;
-
-        &:hover {
-            color: $color-foreground-brighter;
-            transition: color $animation-speed-default;
-        }
-    }
-    
     &-titles {
         padding-bottom: 1rem;
         padding-top: 2rem;
@@ -61,7 +42,7 @@
         }
 
         &--mark {
-            color: $color-secondary;
+            color: $color-brand;
         }
     }
 
