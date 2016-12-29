@@ -4,69 +4,55 @@
     ViewData["Title"] = "My Cart";
 }
 
-<div class="col-md-12">
-    <section>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th class="cart-product-column">
-                        PRODUCT
-                    </th>
-                    <th>
+<div class="container">
+    <article class="esh-basket-titles row">
+        <section class="esh-basket-title col-xs-3">Product</section>
+        <section class="esh-basket-title col-xs-3 hidden-lg-down"></section>
+        <section class="esh-basket-title col-xs-2">Price</section>
+        <section class="esh-basket-title col-xs-2">Quantity</section>
+        <section class="esh-basket-title col-xs-2">Cost</section>
+    </article>
 
-                    </th>
-                    <th>
-                        BRAND
-                    </th>
-                    <th>
-                        PRICE
-                    </th>
-                    <th>
-                        QUANTITY
-                    </th>
-                    <th>
-                        COST
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @for (int i = 0; i < Model.Items.Count; i++)
-                {
-                var item = Model.Items[i];
+    @for (int i = 0; i < Model.Items.Count; i++)
+    {
+        var item = Model.Items[i];
 
-                    <tr>
-                        <td class="cart-product-column"><img class="cart-product-image" src="@item.PictureUrl" /></td>
-                        <td class="cart-product-column"><span class="cart-product-column-name">@item.ProductName</span></td>
-                        <td class="cart-product-column">ROSLYN</td>
-                        <td class="cart-product-column">$ @item.UnitPrice</td>
-                        <td class="cart-product-column">
-                            <input type="hidden" name="@("quantities[" + i +"].Key")" value="@item.Id" />
-                            <input type="number" name="@("quantities[" + i +"].Value")" value="@item.Quantity" />
-                        </td>
-                        <td class="cart-product-column cart-total-value">$ @Math.Round(item.Quantity * item.UnitPrice,2)</td>
-                    </tr>
-                }
-                <tr class="cart-totals">
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>
-                        <input type="submit"
-                               class="btn btn-default cart-refresh-button"
-                               value=""
-                               name="action" />
-                    </td>
-                    <td>
-                        <div class="cart-total-value">
-                            <div class="cart-total-label"><span>TOTAL</span></div>
-                            <span>$ @Model.Total()</span>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </section>
+        <article class="esh-basket-items esh-basket-items--border row">
+
+            <section class="esh-basket-item esh-basket-item--middle col-lg-3 hidden-lg-down">
+                <img class="esh-basket-image" src="@item.PictureUrl" />
+            </section>
+            <section class="esh-basket-item esh-basket-item--middle col-xs-3">@item.ProductName</section>
+            <section class="esh-basket-item esh-basket-item--middle col-xs-2">$ @item.UnitPrice</section>
+            <section class="esh-basket-item esh-basket-item--middle col-xs-2">
+                <input type="hidden" name="@("quantities[" + i +"].Key")" value="@item.Id" />
+                <input type="number" class="esh-basket-input" min="1" name="@("quantities[" + i +"].Value")" value="@item.Quantity" />
+            </section>
+            <section class="esh-basket-item esh-basket-item--middle esh-basket-item--mark col-xs-2">$ @Math.Round(item.Quantity * item.UnitPrice, 2)</section>
+        </article>
+    }
 </div>
 
+<div class="container">
+    <article class="esh-basket-titles esh-basket-titles--clean row">
+        <section class="esh-basket-title col-xs-10"></section>
+        <section class="esh-basket-title col-xs-2">Total</section>
+    </article>
 
+    <article class="esh-basket-items row">
+        <section class="esh-basket-item col-xs-10"></section>
+        <section class="esh-basket-item esh-basket-item--mark col-xs-2">$ @Model.Total()</section>
+    </article>
+
+    <article class="esh-basket-items row">
+        <section class="esh-basket-item col-xs-7"></section>
+        <section class="esh-basket-item col-xs-2">
+            <button class="btn esh-basket-checkout" name="name" value="" type="submit">[ Update ]</button>
+        </section>
+        <section class="esh-basket-item col-xs-3">
+            <input type="submit"
+                   class="btn esh-basket-checkout"
+                   value="[ Checkout ]" name="action" />
+        </section>
+    </article>
+</div>

@@ -3,9 +3,11 @@
   text-align: center; }
 
 .esh-pager-item {
-  margin: 0 8vw; }
+  margin: 0 5vw; }
   .esh-pager-item--navigable {
     cursor: pointer; }
+  .esh-pager-item--navigable.is-disabled {
+    display: none; }
     .esh-pager-item--navigable:hover {
       color: #83D01B; }
   @media screen and (max-width: 1280px) {

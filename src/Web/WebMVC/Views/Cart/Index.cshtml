@@ -7,21 +7,10 @@
     ViewData["Title"] = "My Cart";
 }
 
-<div class="brand-header-block">
-    <ul class="container">
-        <li class="brand-header-back"><a asp-area="" asp-controller="Catalog" asp-action="Index">Back to list</a></li>
-    </ul>
-</div>
-
 <form method="post" id="cartForm">
-    <div class="container cart-index-container">
-        <div class="row">
-            @await Component.InvokeAsync("CartList", new { user = UserManager.Parse(User) })
-            <div class="col-md-offset-8 col-md-4">
-                <input type="submit"
-                       class="btn btn-default btn-brand btn-cart"
-                       value="[ Checkout ]" name="action" />
-            </div>
-        </div>
+    <div class="esh-basket">
+        @await Component.InvokeAsync("Header", new { controller = "Catalog", text = "Back to catalog" })
+
+        @await Component.InvokeAsync("CartList", new { user = UserManager.Parse(User) })
     </div>
 </form>

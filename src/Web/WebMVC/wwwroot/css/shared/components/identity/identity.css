@@ -30,6 +30,7 @@
     transition: height 0.35s; }
   .esh-identity-item {
     cursor: pointer;
+    display: block;
     transition: color 0.35s; }
     .esh-identity-item:hover {
       color: #75b918;
