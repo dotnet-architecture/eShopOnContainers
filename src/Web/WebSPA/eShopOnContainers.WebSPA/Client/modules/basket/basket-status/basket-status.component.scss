@@ -6,6 +6,11 @@
     position: relative;
     transition: all $animation-speed-default;
 
+    &.is-disabled {
+        opacity: .5;
+        pointer-events: none;
+    }
+
     &-image {
         height: 36px;
         margin-top: .5rem;
