@@ -59,6 +59,7 @@ namespace eShopOnContainers.Identity
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
             services.AddTransient<ILoginService<ApplicationUser>, EFLoginService>();
+            services.AddTransient<IRedirectService, RedirectService>();
 
             //callbacks urls from config:
             Dictionary<string, string> clientUrls = new Dictionary<string, string>();

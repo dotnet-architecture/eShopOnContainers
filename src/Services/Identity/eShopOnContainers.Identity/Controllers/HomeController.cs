@@ -3,6 +3,7 @@
 
 
 using eShopOnContainers.Identity;
+using eShopOnContainers.Identity.Services;
 using IdentityServer4.Quickstart.UI.Models;
 using IdentityServer4.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -15,16 +16,26 @@ namespace IdentityServer4.Quickstart.UI.Controllers
     {
         private readonly IIdentityServerInteractionService _interaction;
         private readonly IOptions<AppSettings> _settings;
+        private readonly IRedirectService _redirectSvc;
 
-        public HomeController(IIdentityServerInteractionService interaction, IOptions<AppSettings> settings)
+        public HomeController(IIdentityServerInteractionService interaction, IOptions<AppSettings> settings,IRedirectService redirectSvc)
         {
             _interaction = interaction;
             _settings = settings;
+            _redirectSvc = redirectSvc;
         }
 
         public IActionResult Index(string returnUrl)
         {
             return View();
+        }
+
+        public IActionResult ReturnToOriginalApplication(string returnUrl)
+        {
+            if (returnUrl != null)
+                return Redirect(_redirectSvc.ExtractRedirectUriFromReturnUrl(returnUrl));
+            else
+                return RedirectToAction("Index", "Home");
         }
 
         /// <summary>
