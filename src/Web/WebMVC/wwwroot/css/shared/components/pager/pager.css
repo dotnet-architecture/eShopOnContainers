@@ -12,7 +12,8 @@
 }
 
     .esh-pager-item--navigable.is-disabled {
-        display: none;
+        opacity: 0;
+        pointer-events: none;
     }
 
     .esh-pager-item--navigable:hover {

@@ -4,7 +4,7 @@
             <nav>
                 <span class="esh-pager-item esh-pager-item--navigable"
                       id="Previous"
-                      [hidden]="buttonStates?.previousDisabled"
+                      [ngClass]="{'is-disabled': buttonStates?.previousDisabled}"
                       (click)="onPreviousCliked($event)"
                       aria-label="Previous">
                     Previous
@@ -16,7 +16,7 @@
 
                 <span class="esh-pager-item esh-pager-item--navigable"
                       id="Next"
-                      [hidden]="buttonStates?.nextDisabled"
+                      [ngClass]="{'is-disabled': buttonStates?.nextDisabled}"
                       (click)="onNextClicked($event)"
                       aria-label="Next">
                     Next
