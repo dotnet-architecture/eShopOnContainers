@@ -50,8 +50,11 @@ export class DataService {
             options.headers.append("Authorization", "Bearer " + this.securityService.GetToken());
         }
 
+        console.log('data.service deleting');
         return this.http.delete(url, options).map(
             (res: Response) => {
+                console.log('response from server in delete operation');
+                console.log(res);
                 return res;
             }).catch(this.handleError);
     }

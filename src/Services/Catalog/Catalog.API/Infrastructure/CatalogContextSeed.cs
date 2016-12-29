@@ -74,7 +74,7 @@
             {
                 new CatalogType() { Type = "Mug"},
                 new CatalogType() { Type = "T-Shirt" },
-                new CatalogType() { Type = "Backpack" },
+                new CatalogType() { Type = "Sheet" },
                 new CatalogType() { Type = "USB Memory Stick" }
             };
         }
@@ -83,10 +83,18 @@
         {
             return new List<CatalogItem>()
             {
-                new CatalogItem() { CatalogTypeId=2,CatalogBrandId=2, Description = "Roslyn Red T-Shirt", Name = "Roslyn Red T-Shirt", Price = 12, PictureUri = "https://fakeimg.pl/370x240/EEEEEE/000/?text=RoslynRedT-Shirt"  },
-                new CatalogItem() { CatalogTypeId=1,CatalogBrandId=2, Description = "Cupt Black & White Mug", Name = "Cupt Black & White Mug", Price= 17, PictureUri = "https://fakeimg.pl/370x240/EEEEEE/000/?text=CuptBlack&WhiteMug" },
-                new CatalogItem() { CatalogTypeId=2,CatalogBrandId=2, Description = "Prism White T-Shirt", Name = "Prism White T-Shirt", Price = 12, PictureUri = "http://fakeimg.pl/370x240/EEEEEE/000/?text=.PrismWhiteT-Shirt" },
-                new CatalogItem() { CatalogTypeId=2,CatalogBrandId=1, Description = ".NET Bot Black Sweatshirt", Name = ".NET Bot Black Sweatshirt", Price = 19.5M, PictureUri = "http://fakeimg.pl/370x240/EEEEEE/000/?text=.NETBotBlack" },
+                new CatalogItem() { CatalogTypeId=2,CatalogBrandId=1, Description = ".NET Bot Black Sweatshirt", Name = ".NET Bot Black Sweatshirt", Price = 19.5M, PictureUri = "http://localhost:5101/api/v1/pic/1" },
+                new CatalogItem() { CatalogTypeId=1,CatalogBrandId=2, Description = ".NET Black & White Mug", Name = ".NET Black & White Mug", Price= 8.50M, PictureUri = "http://localhost:5101/api/v1/pic/2" },
+                new CatalogItem() { CatalogTypeId=2,CatalogBrandId=2, Description = "Prism White T-Shirt", Name = "Prism White T-Shirt", Price = 12, PictureUri = "http://localhost:5101/api/v1/pic/3" },
+                new CatalogItem() { CatalogTypeId=2,CatalogBrandId=1, Description = ".NET Foundation Sweatshirt", Name = ".NET Foundation Sweatshirt", Price = 12, PictureUri = "http://localhost:5101/api/v1/pic/4" },
+                new CatalogItem() { CatalogTypeId=2,CatalogBrandId=1, Description = "Roslyn Red Sheet", Name = "Roslyn Red Sheet", Price = 8.5M, PictureUri = "http://localhost:5101/api/v1/pic/5" },
+                new CatalogItem() { CatalogTypeId=2,CatalogBrandId=1, Description = ".NET Blue Sweatshirt", Name = ".NET Blue Sweatshirt", Price = 12, PictureUri = "http://localhost:5101/api/v1/pic/6" },
+                new CatalogItem() { CatalogTypeId=2,CatalogBrandId=2, Description = "Roslyn Red T-Shirt", Name = "Roslyn Red T-Shirt", Price = 12, PictureUri = "http://localhost:5101/api/v1/pic/7"  },
+                new CatalogItem() { CatalogTypeId=2,CatalogBrandId=1, Description = ".NET Purple Sweatshirt", Name = ".NET Purple Sweatshirt", Price = 8.5M, PictureUri = "http://localhost:5101/api/v1/pic/8" },
+                new CatalogItem() { CatalogTypeId=1,CatalogBrandId=1, Description = ".NET T White Mug", Name = ".NET T White Mug", Price = 12, PictureUri = "http://localhost:5101/api/v1/pic/9" },
+                new CatalogItem() { CatalogTypeId=2,CatalogBrandId=1, Description = ".NET Foundation Sheet", Name = ".NET Foundation Sheet", Price = 12, PictureUri = "http://localhost:5101/api/v1/pic/10" },
+                new CatalogItem() { CatalogTypeId=2,CatalogBrandId=1, Description = ".NET T Sheet", Name = ".NET T Sheet", Price = 8.5M, PictureUri = "http://localhost:5101/api/v1/pic/11" },
+                new CatalogItem() { CatalogTypeId=2,CatalogBrandId=1, Description = "Prism White TShirt", Name = "Prism White TShirt", Price = 12, PictureUri = "http://localhost:5101/api/v1/pic/12" }
             };
         }
     }

@@ -1,4 +1,4 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Ordering.Application.Commands
+﻿namespace Microsoft.eShopOnContainers.Services.Ordering.Api.Application.Commands
 {
     using System;
     using MediatR;
@@ -6,7 +6,7 @@
     using System.Collections;
     using System.Collections.Generic;
 
-    public class NewOrderRequest
+    public class NewOrderCommand
         :IAsyncRequest<bool>
     {
 
@@ -40,7 +40,7 @@
             _orderItems.Add(item);
         }
 
-        public NewOrderRequest()
+        public NewOrderCommand()
         {
             _orderItems = new List<OrderItem>();
         }

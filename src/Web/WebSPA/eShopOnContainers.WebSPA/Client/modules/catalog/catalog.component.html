@@ -21,26 +21,31 @@
 </section>
 
 <div class="container">
-    <esh-pager [model]="paginationInfo" (changed)="onPageChanged($event)"></esh-pager>
+    <div *ngIf="catalog?.data.length > 0">
+        <esh-pager [model]="paginationInfo" (changed)="onPageChanged($event)"></esh-pager>
 
-    <div class="esh-catalog-items row">
-        <div class="esh-catalog-item col-md-4"
-             *ngFor="let item of catalog?.data">
+        <div class="esh-catalog-items row">
+            <div class="esh-catalog-item col-md-4"
+                 *ngFor="let item of catalog?.data">
 
-            <img class="esh-catalog-thumbnail" src="{{item.pictureUri}}" />
-            <button class="esh-catalog-button" (click)="addToCart(item)">
-                [ ADD TO CART ]
-            </button>
+                <img class="esh-catalog-thumbnail" src="{{item.pictureUri}}" />
+                <button class="esh-catalog-button" (click)="addToCart(item)">
+                    [ ADD TO CART ]
+                </button>
 
-            <div class="esh-catalog-name">
-                <span>{{item.name}}</span>
-            </div>
-            <div class="esh-catalog-price">
-                <span>{{item.price}}</span>
+                <div class="esh-catalog-name">
+                    <span>{{item.name}}</span>
+                </div>
+                <div class="esh-catalog-price">
+                    <span>{{item.price}}</span>
+                </div>
             </div>
         </div>
-    </div>
 
-    <esh-pager [model]="paginationInfo" (changed)="onPageChanged($event)"></esh-pager>
+        <esh-pager [model]="paginationInfo" (changed)="onPageChanged($event)"></esh-pager>
+    </div>
+    <div *ngIf="catalog?.data.length == 0">
+        <span>THERE ARE NO RESULTS THAT MATCH YOUR SEARCH</span>
+    </div>
 </div>
 

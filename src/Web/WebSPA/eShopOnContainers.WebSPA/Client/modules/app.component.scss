@@ -1,4 +1,4 @@
-@import './_variables.scss';
+@import './variables';
 
 .esh-app {
     &-footer {
@@ -13,6 +13,7 @@
         width: 100%;
 
         $height: 50px;
+
         &-brand {
             height: $height;
             width: 230px;

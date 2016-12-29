@@ -1,4 +1,4 @@
-@import '../../_variables.scss';
+@import '../../variables';
 
 .esh-orders_new {
     min-height: 80vh;
@@ -13,8 +13,8 @@
     &-back {
         color: rgba($color-foreground-brighter, .4);
         line-height: $header-height;
-        text-transform: uppercase;
         text-decoration: none;
+        text-transform: uppercase;
         transition: color $animation-speed-default;
 
         &:hover {
@@ -32,24 +32,26 @@
     }
 
     &-placeOrder {
-        float: right;
-        margin-top: 40px;
-        margin-bottom: 40px;
-        background-color: #83d01b;
-        color: #fff;
-        padding: 10px 20px 10px 20px;
+        background-color: $color-secondary;
+        border: 0;
         border-radius: 0;
-        border: none;
-        width: 255px;
+        color: $color-foreground-brighter;
         display: inline-block;
+        font-size: 1rem;
+        font-weight: $font-weight-normal;
+        margin-top: 1rem;
+        padding: 1rem 1.5rem;
         text-align: center;
         text-transform: uppercase;
-        height: 45px;
-        font-size: 16px;
-        font-weight: normal;
+        transition: all $animation-speed-default;
+
+        &:hover {
+            background-color: $color-secondary-darker;
+            transition: all $animation-speed-default;
+        }
     }
 
-        &-titles {
+    &-titles {
         padding-bottom: 1rem;
         padding-top: 2rem;
     }
@@ -70,6 +72,7 @@
     }
 
     $item-height: 8rem;
+
     &-item {
         font-size: $font-size-m;
         font-weight: $font-weight-semilight;
@@ -90,37 +93,4 @@
     &-image {
         height: $item-height;
     }
-}
-
-
-@media screen and (min-width: 992px) {
-    .form-input {
-        width: 360px;
-        max-width: 360px;
-    }
-}
-
-.form-input {
-    border-radius: 0;
-    padding: 10px;
-    height: 45px;
-}
-
-.form-input-small {
-    max-width: 100px!important;
-}
-
-.form-input-medium {
-    width: 150px!important;
-}
-
-.alert{
-    padding-left: 0px;
-}
-
-.alert-danger {
-    background-color:transparent;
-    border:none;
-    color: #fb0d0d;
-    font-size: 12px;
 }

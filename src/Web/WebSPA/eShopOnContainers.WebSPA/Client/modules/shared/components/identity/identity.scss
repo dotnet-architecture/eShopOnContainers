@@ -1,4 +1,4 @@
-@import "../../../variables";
+@import '../../../variables';
 
 .esh-identity {
     line-height: 3rem;
@@ -30,10 +30,10 @@
         background: $color-background-brighter;
         height: 0;
         min-width: 14rem;
-        right: 0;
         overflow: hidden;
         padding: .5rem;
         position: absolute;
+        right: 0;
         top: 2.5rem;
         transition: height $animation-speed-default;
     }

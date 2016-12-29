@@ -25,19 +25,19 @@
     $filter-padding: .5rem;
 
     &-filter {
+        -webkit-appearance: none;
         background-color: transparent;
         border-color: $color-brand-bright;
         color: $color-foreground-brighter;
         cursor: pointer;
         margin-right: 1rem;
         margin-top: .5rem;
+        min-width: 140px;
         outline-color: $color-secondary;
         padding-bottom: 0;
         padding-left: $filter-padding;
         padding-right: $filter-padding;
         padding-top: $filter-padding * 3;
-        min-width: 140px;
-        -webkit-appearance: none;
 
         option {
             background-color: $color-brand;
@@ -53,8 +53,8 @@
             color: rgba($color-foreground-brighter, .5);
             content: attr(data-title);
             font-size: $font-size-xs;
-            margin-top: $font-size-xs;
             margin-left: $filter-padding;
+            margin-top: $font-size-xs;
             position: absolute;
             text-transform: uppercase;
             z-index: 1;
@@ -62,8 +62,8 @@
 
         &::after {
             background-image: url('../../images/arrow-down.png');
-            height: 7px; //png height
             content: '';
+            height: 7px; //png height
             position: absolute;
             right: $filter-padding * 3;
             top: $filter-padding * 5;
@@ -92,8 +92,8 @@
     }
 
     &-item {
-        text-align: center;
         margin-bottom: 1.5rem;
+        text-align: center;
         width: 33%;
 
         @media screen and (max-width: $media-screen-m) {
@@ -112,7 +112,7 @@
 
     &-button {
         background-color: $color-secondary;
-        border: none;
+        border: 0;
         color: $color-foreground-brighter;
         cursor: pointer;
         font-size: $font-size-m;
@@ -136,9 +136,9 @@
     }
 
     &-price {
-        text-align: center;
-        font-weight: 900;
         font-size: 28px;
+        font-weight: 900;
+        text-align: center;
 
         &::before {
             content: '$';

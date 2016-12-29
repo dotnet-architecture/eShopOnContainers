@@ -11,6 +11,7 @@ using IdentityServer4.Models;
 using IdentityServer4.Stores;
 using IdentityServer4.Quickstart.UI.Models;
 using eShopOnContainers.Identity.Models.AccountViewModels;
+using eShopOnContainers.Identity.Services;
 
 namespace IdentityServer4.Quickstart.UI.Controllers
 {
@@ -23,6 +24,7 @@ namespace IdentityServer4.Quickstart.UI.Controllers
         private readonly IClientStore _clientStore;
         private readonly IScopeStore _scopeStore;
         private readonly IIdentityServerInteractionService _interaction;
+
         
         public ConsentController(
             ILogger<ConsentController> logger,
@@ -45,6 +47,7 @@ namespace IdentityServer4.Quickstart.UI.Controllers
         public async Task<IActionResult> Index(string returnUrl)
         {
             var vm = await BuildViewModelAsync(returnUrl);
+            ViewData["ReturnUrl"] = returnUrl;
             if (vm != null)
             {
                 return View("Index", vm);

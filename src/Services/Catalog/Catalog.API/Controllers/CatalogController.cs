@@ -6,6 +6,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
     using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
     using Model;
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
     using ViewModel;
@@ -56,6 +57,8 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
                 .Take(pageSize)
                 .ToListAsync();
 
+            itemsOnPage = ComposePicUri(itemsOnPage);
+
             var model = new PaginatedItemsViewModel<CatalogItem>(
                 pageIndex, pageSize, totalItems, itemsOnPage);
 
@@ -87,9 +90,11 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
                 .Take(pageSize)
                 .ToListAsync();
 
+            itemsOnPage = ComposePicUri(itemsOnPage);
+
             var model = new PaginatedItemsViewModel<CatalogItem>(
                 pageIndex, pageSize, totalItems, itemsOnPage);
-
+            
             return Ok(model);
         }
 
@@ -113,6 +118,15 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
                 .ToListAsync();
 
             return Ok(items);
+        }
+
+        private List<CatalogItem> ComposePicUri(List<CatalogItem> items) {
+            items.ForEach(x =>
+            {
+                x.PictureUri = x.PictureUri.Replace("localhost", Request.Host.Host);
+            });
+
+            return items;
         }
     }
 }

@@ -14,7 +14,7 @@
         <div class="container">
             <div class="row">
                 <div class="navbar-header col-sm-6 col-xs-8">
-                    <a href="~/">
+                    <a asp-controller="home" asp-action="ReturnToOriginalApplication" asp-route-returnUrl="@ViewData["ReturnUrl"]">
                         <div class="navbar-brand"></div>
                     </a>
                 </div>
