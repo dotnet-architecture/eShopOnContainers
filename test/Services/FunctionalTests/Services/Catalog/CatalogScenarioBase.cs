@@ -31,7 +31,7 @@ namespace FunctionalTests.Services.Catalog
                 return $"api/v1/catalog/items?pageIndex={pageIndex}&pageSize={pageCount}";
             }
 
-            public static string Filtered(int catalogTypeId,int catalogBrandId)
+            public static string Filtered(int catalogTypeId, int catalogBrandId)
             {
                 return $"api/v1/catalog/items/type/{catalogTypeId}/brand/{catalogBrandId}";
             }
