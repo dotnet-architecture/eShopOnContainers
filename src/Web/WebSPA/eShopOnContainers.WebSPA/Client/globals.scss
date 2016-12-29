@@ -41,3 +41,36 @@ body {
 select::-ms-expand {
     display: none;
 }
+
+@media screen and (min-width: 992px) {
+    .form-input {
+        max-width: 360px;
+        width: 360px;
+    }
+}
+
+.form-input {
+    border-radius: 0;
+    height: 45px;
+    padding: 10px;
+}
+
+.form-input-small {
+    max-width: 100px !important;
+}
+
+.form-input-medium {
+    width: 150px !important;
+}
+
+.alert {
+    padding-left: 0;
+}
+
+.alert-danger {
+    background-color: transparent;
+    border: 0;
+    color: #FB0D0D;
+    font-size: 12px;
+}
+

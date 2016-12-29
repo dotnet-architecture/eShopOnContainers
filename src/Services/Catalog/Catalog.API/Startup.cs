@@ -1,5 +1,7 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Catalog.API
 {
+    using AspNetCore.Http;
+    using Extensions.FileProviders;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.EntityFrameworkCore;
@@ -9,6 +11,7 @@
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
     using System;
+    using System.IO;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -85,7 +88,6 @@
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-            // Use frameworks
             app.UseCors("CorsPolicy");
 
             app.UseMvcWithDefaultRoute();
