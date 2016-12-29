@@ -6,8 +6,8 @@
   .esh-orders_new-back {
     color: rgba(255, 255, 255, 0.4);
     line-height: 4rem;
-    text-transform: uppercase;
     text-decoration: none;
+    text-transform: uppercase;
     transition: color 0.35s; }
     .esh-orders_new-back:hover {
       color: #FFFFFF;
@@ -17,21 +17,21 @@
     .esh-orders_new-section--right {
       text-align: right; }
   .esh-orders_new-placeOrder {
-    float: right;
-    margin-top: 40px;
-    margin-bottom: 40px;
-    background-color: #83d01b;
-    color: #fff;
-    padding: 10px 20px 10px 20px;
+    background-color: #83D01B;
+    border: 0;
     border-radius: 0;
-    border: none;
-    width: 255px;
+    color: #FFFFFF;
     display: inline-block;
+    font-size: 1rem;
+    font-weight: 400;
+    margin-top: 1rem;
+    padding: 1rem 1.5rem;
     text-align: center;
     text-transform: uppercase;
-    height: 45px;
-    font-size: 16px;
-    font-weight: normal; }
+    transition: all 0.35s; }
+    .esh-orders_new-placeOrder:hover {
+      background-color: #4a760f;
+      transition: all 0.35s; }
   .esh-orders_new-titles {
     padding-bottom: 1rem;
     padding-top: 2rem; }
@@ -54,28 +54,3 @@
       color: #83D01B; }
   .esh-orders_new-image {
     height: 8rem; }
-
-@media screen and (min-width: 992px) {
-  .form-input {
-    width: 360px;
-    max-width: 360px; } }
-
-.form-input {
-  border-radius: 0;
-  padding: 10px;
-  height: 45px; }
-
-.form-input-small {
-  max-width: 100px !important; }
-
-.form-input-medium {
-  width: 150px !important; }
-
-.alert {
-  padding-left: 0px; }
-
-.alert-danger {
-  background-color: transparent;
-  border: none;
-  color: #fb0d0d;
-  font-size: 12px; }
