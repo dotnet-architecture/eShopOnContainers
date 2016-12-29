@@ -1,5 +1,6 @@
 import { Injectable }               from '@angular/core';
 import { Response, Headers }        from '@angular/http';
+import { Router }                   from '@angular/router';
 
 import { DataService }              from '../shared/services/data.service';
 import { SecurityService }          from '../shared/services/security.service';
@@ -22,7 +23,7 @@ export class BasketService {
         items: []
     };
 
-    constructor(private service: DataService, private authService: SecurityService, private basketEvents: BasketWrapperService) {
+    constructor(private service: DataService, private authService: SecurityService, private basketEvents: BasketWrapperService, private router: Router) {
         this.basket.items = [];
 
         // Init:
@@ -35,7 +36,9 @@ export class BasketService {
             }
         }
 
-        this.basketEvents.orderCreated$.subscribe(x => this.dropBasket());
+        this.basketEvents.orderCreated$.subscribe(x => {
+            this.dropBasket();
+        });
     }
 
     setBasket(item): Observable<boolean> {
