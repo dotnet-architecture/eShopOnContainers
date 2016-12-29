@@ -42,7 +42,7 @@ export class DataService {
             }).catch(this.handleError);
     }
 
-    delete(url: string, params?: any): Observable<Response> {
+    delete(url: string, params?: any) {
         let options: RequestOptionsArgs = {};
 
         if (this.securityService) {
@@ -51,12 +51,13 @@ export class DataService {
         }
 
         console.log('data.service deleting');
-        return this.http.delete(url, options).map(
-            (res: Response) => {
-                console.log('response from server in delete operation');
-                console.log(res);
-                return res;
-            }).catch(this.handleError);
+        // return this.http.delete(url, options).subscribe(
+        //        return res;
+        //    );
+
+        this.http.delete(url, options).subscribe((res) => {
+            console.log('deleted');
+        });
     }
 
     private handleError(error: any) {
