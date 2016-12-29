@@ -1,0 +1,12 @@
+/* For development environment */
+
+@import url('./app.component.css');
+@import url('./shared/components/header/header.css');
+@import url('./shared/components/identity/identity.css');
+@import url('./shared/components/pager/pager.css');
+@import url('./basket/basket.component.css');
+@import url('./basket/basket-status/basket-status.component.css');
+@import url('./catalog/catalog.component.css');
+@import url('./orders/orders.component.css');
+@import url('./orders/orders-detail/orders-detail.component.css');
+@import url('./orders/orders-new/orders-new.component.css');
