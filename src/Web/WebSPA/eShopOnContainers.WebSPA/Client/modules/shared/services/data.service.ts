@@ -19,9 +19,9 @@ export class DataService {
 
         if (this.securityService) {
             options.headers = new Headers();
-            options.headers.append("Authorization", "Bearer " + this.securityService.GetToken());
+            options.headers.append('Authorization', 'Bearer ' + this.securityService.GetToken());
         }
-        
+
         return this.http.get(url, options).map(
             (res: Response) => {
             return res;
@@ -33,7 +33,7 @@ export class DataService {
 
         if (this.securityService) {
             options.headers = new Headers();
-            options.headers.append("Authorization", "Bearer " + this.securityService.GetToken());
+            options.headers.append('Authorization', 'Bearer ' + this.securityService.GetToken());
         }
 
         return this.http.post(url, data, options).map(
@@ -47,11 +47,11 @@ export class DataService {
 
         if (this.securityService) {
             options.headers = new Headers();
-            options.headers.append("Authorization", "Bearer " + this.securityService.GetToken());
+            options.headers.append('Authorization', 'Bearer ' + this.securityService.GetToken());
         }
 
         console.log('data.service deleting');
-        //return this.http.delete(url, options).subscribe(
+        // return this.http.delete(url, options).subscribe(
         //        return res;
         //    );
 

@@ -9,7 +9,7 @@ import { Header }                from '../shared/components/header/header';
 
 @NgModule({
     imports: [SharedModule],
-    declarations: [BasketComponent, BasketStatusComponent], 
+    declarations: [BasketComponent, BasketStatusComponent],
     providers: [BasketService],
     exports: [BasketStatusComponent]
 })

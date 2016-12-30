@@ -12,11 +12,11 @@ import { Router }                                   from '@angular/router';
     templateUrl: './orders-new.component.html'
 })
 export class OrdersNewComponent implements OnInit {
-    private newOrderForm : FormGroup;  // new order form
+    private newOrderForm: FormGroup;  // new order form
     private order: IOrder;
 
     constructor(private service: OrdersService, fb: FormBuilder, private router: Router, private basketEvents: BasketWrapperService) {
-        //Obtener información del perfil de usuario.
+        // Obtener información del perfil de usuario.
         this.order = service.mapBasketAndIdentityInfoNewOrder();
         this.newOrderForm = fb.group({
             'street': [this.order.street, Validators.required],
@@ -31,7 +31,6 @@ export class OrdersNewComponent implements OnInit {
     }
 
     ngOnInit() {
-        
     }
 
     submitForm(value: any) {
@@ -45,7 +44,7 @@ export class OrdersNewComponent implements OnInit {
         this.order.cardsecuritynumber = this.newOrderForm.controls['securitycode'].value;
 
         this.service.postOrder(this.order).subscribe(res => {
-            //this will emit an observable. Basket service is subscribed to this observable, and will react deleting the basket for the current user. 
+            // this will emit an observable. Basket service is subscribed to this observable, and will react deleting the basket for the current user. 
             this.basketEvents.orderCreated();
 
             this.router.navigate(['orders']);

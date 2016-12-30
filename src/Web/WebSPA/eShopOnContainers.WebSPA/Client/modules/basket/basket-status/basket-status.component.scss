@@ -2,9 +2,15 @@
 
 .esh-basketstatus {
     cursor: pointer;
+    display: inline-block;
     float: right;
     position: relative;
     transition: all $animation-speed-default;
+
+    &.is-disabled {
+        opacity: .5;
+        pointer-events: none;
+    }
 
     &-image {
         height: 36px;

@@ -10,7 +10,7 @@ import { DataService } from './services/data.service';
 import { BasketWrapperService} from './services/basket.wrapper.service';
 import { SecurityService } from './services/security.service';
 
-//Components:
+// Components:
 import { Pager } from './components/pager/pager';
 import { Header } from './components/header/header';
 import { Identity } from './components/identity/identity';
@@ -51,7 +51,7 @@ export class SharedModule {
             providers: [
                 // Providers
                 DataService,
-                BasketWrapperService, 
+                BasketWrapperService,
                 SecurityService
             ]
         };

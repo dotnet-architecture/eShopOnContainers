@@ -13,7 +13,7 @@ export interface IOrder {
     cardholdername: string;
     cardtypeid: number;
     buyer: string;
-    ordernumber: string,
-    total: number,
+    ordernumber: string;
+    total: number;
     orderItems: IOrderItem[];
 }

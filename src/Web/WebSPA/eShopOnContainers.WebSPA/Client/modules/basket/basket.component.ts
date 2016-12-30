@@ -37,10 +37,7 @@ export class BasketComponent implements OnInit {
     private calculateTotalPrice() {
         this.totalPrice = 0;
         this.basket.items.forEach(item => {
-            this.totalPrice += (item.unitPrice * item.quantity)
+            this.totalPrice += (item.unitPrice * item.quantity);
         });
     }
-
-    
 }
-

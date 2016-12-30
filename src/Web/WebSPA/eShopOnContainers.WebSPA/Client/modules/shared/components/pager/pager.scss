@@ -11,8 +11,14 @@
         $margin: 5vw;
         margin: 0 $margin;
 
+        &.is-disabled {
+            opacity: 0;
+            pointer-events: none;
+        }
+
         &--navigable {
             cursor: pointer;
+            display: inline-block;
 
             &:hover {
                 color: $color-secondary;

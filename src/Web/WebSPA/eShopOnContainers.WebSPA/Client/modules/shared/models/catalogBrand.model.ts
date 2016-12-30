@@ -1,4 +1,4 @@
 export interface ICatalogBrand {
-    id: number
-    brand: string
+    id: number;
+    brand: string;
 }
