@@ -1,6 +1,7 @@
 ﻿using Microsoft.eShopOnContainers.WebMVC.Models.Annotations;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,6 +21,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Models
         public string Status { get; set; }
 
         public decimal Total {get;set;}
+
         [Required]
         public string City { get; set; }
         [Required]
@@ -31,15 +33,19 @@ namespace Microsoft.eShopOnContainers.WebMVC.Models
 
         public string ZipCode { get; set; }
         [Required]
+        [DisplayName("Card number")]
         public string CardNumber { get; set; }
         [Required]
+        [DisplayName("Cardholder name")]
         public string CardHolderName { get; set; }
 
         public DateTime CardExpiration { get; set; }
         [RegularExpression(@"(0[1-9]|1[0-2])\/[0-9]{2}", ErrorMessage = "Expiration should match a valid MM/YY value")]
         [CardExpiration(ErrorMessage = "The card is expired"), Required]
+        [DisplayName("Card expiration")]
         public string CardExpirationShort { get; set; }
         [Required]
+        [DisplayName("Card security number")]
         public string CardSecurityNumber { get; set; }
 
         public int CardTypeId { get; set; }

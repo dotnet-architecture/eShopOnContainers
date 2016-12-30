@@ -45,7 +45,7 @@
                 <div class="col-md-6">
                     <div class="form-group" [ngClass]="{'has-error':!newOrderForm.controls['cardnumber'].valid && newOrderForm.controls['cardnumber'].touched}">
                         <label class="esh-orders_new-title">Card number</label>
-                        <input class="form-control form-input" type="text" placeholder="Card number" [formControl]="newOrderForm.controls['cardnumber']">
+                        <input class="form-control form-input" type="text" placeholder="000000000000000" [formControl]="newOrderForm.controls['cardnumber']">
                         <div *ngIf="newOrderForm.controls['cardnumber'].hasError('required') && newOrderForm.controls['cardnumber'].touched" class="alert alert-danger">Required field.</div>
                     </div>
                 </div>
@@ -56,17 +56,17 @@
                         <div *ngIf="newOrderForm.controls['cardholdername'].hasError('required') && newOrderForm.controls['cardholdername'].touched" class="alert alert-danger">Required field.</div>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-6">
                     <div class="form-group" [ngClass]="{'has-error':!newOrderForm.controls['expirationdate'].valid && newOrderForm.controls['expirationdate'].touched}">
                         <label class="esh-orders_new-title">Expiration date</label>
-                        <input class="form-control form-input form-input-medium" type="text" placeholder="Card expiration" [formControl]="newOrderForm.controls['expirationdate']">
+                        <input class="form-control form-input form-input-medium" type="text" placeholder="MM/YY" [formControl]="newOrderForm.controls['expirationdate']">
                         <div *ngIf="newOrderForm.controls['expirationdate'].hasError('required') && newOrderForm.controls['expirationdate'].touched" class="alert alert-danger">Required field.</div>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-6">
                     <div class="form-group" [ngClass]="{'has-error':!newOrderForm.controls['securitycode'].valid && newOrderForm.controls['securitycode'].touched}">
                         <label class="esh-orders_new-title">Security code</label>
-                        <input class="form-control form-input form-input-small" type="text" placeholder="Card security Code" [formControl]="newOrderForm.controls['securitycode']">
+                        <input class="form-control form-input form-input-small" type="text" placeholder="000" [formControl]="newOrderForm.controls['securitycode']">
                         <div *ngIf="newOrderForm.controls['securitycode'].hasError('required') && newOrderForm.controls['securitycode'].touched" class="alert alert-danger">Required field.</div>
                     </div>
                 </div>
@@ -102,9 +102,9 @@
         </section>
         <section class="esh-orders_new-section">
             <div class="form-group">
-                <div class="col-md-8">
+                <div class="col-md-9">
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-2">
                     <button type="submit" class="btn esh-orders_new-placeOrder" [disabled]="!newOrderForm.valid">[ Place Order ]</button>
                 </div>
             </div>
