@@ -8,6 +8,7 @@
 }
 
 .esh-pager-item--navigable {
+    display: inline-block;
     cursor: pointer;
 }
 

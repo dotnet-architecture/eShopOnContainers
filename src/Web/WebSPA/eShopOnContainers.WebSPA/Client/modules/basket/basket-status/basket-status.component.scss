@@ -2,6 +2,7 @@
 
 .esh-basketstatus {
     cursor: pointer;
+    display: inline-block;
     float: right;
     position: relative;
     transition: all $animation-speed-default;

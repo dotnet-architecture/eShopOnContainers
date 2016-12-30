@@ -1,5 +1,6 @@
 .esh-basketstatus {
     cursor: pointer;
+    display: inline-block;
     float: right;
     position: relative;
     transition: all 0.35s;

@@ -18,6 +18,7 @@
 
         &--navigable {
             cursor: pointer;
+            display: inline-block;
 
             &:hover {
                 color: $color-secondary;
