@@ -52,8 +52,6 @@
 }
 
 body {
-    padding-top: 80px;
-    /*padding-bottom: 20px;*/
     font-family: Montserrat,sans-serif;
     min-width:480px;
 }
@@ -372,6 +370,7 @@ select::-ms-expand {
 .home-catalog-filter-container {
     background-color: #00A69C;
     height:63px;
+    line-height: 76px;
 }
 
     .home-catalog-filter-container li a {
