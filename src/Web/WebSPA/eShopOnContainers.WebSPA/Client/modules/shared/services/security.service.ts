@@ -70,7 +70,7 @@ export class SecurityService {
     public Authorize() {
         this.ResetAuthorizationData();
 
-        let authorizationUrl = 'http://localhost:5105/connect/authorize';
+        let authorizationUrl = 'http://10.0.75.1:5105/connect/authorize';
         let client_id = 'js';
         let redirect_uri = 'http://localhost:5104/';
         let response_type = 'id_token token';
@@ -142,7 +142,7 @@ export class SecurityService {
     }
 
     public Logoff() {
-        let authorizationUrl = 'http://localhost:5105/connect/endsession';
+        let authorizationUrl = 'http://10.0.75.1:5105/connect/endsession';
         let id_token_hint = this.retrieve('authorizationDataIdToken');
         let post_logout_redirect_uri = 'http://localhost:5104/';
 
@@ -213,7 +213,7 @@ export class SecurityService {
 
     private getUserData = (): Observable<string[]> => {
         this.setHeaders();
-        return this._http.get('http://localhost:5105/connect/userinfo', {
+        return this._http.get('http://10.0.75.1:5105/connect/userinfo', {
             headers: this.headers,
             body: ''
         }).map(res => res.json());
