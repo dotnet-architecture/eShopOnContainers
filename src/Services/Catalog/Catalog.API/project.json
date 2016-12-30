@@ -47,6 +47,7 @@
   "publishOptions": {
     "include": [
       "wwwroot",
+      "Pics",
       "Views",
       "Areas/**/Views",
       "settings.json",

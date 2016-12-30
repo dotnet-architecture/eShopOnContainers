@@ -11,15 +11,17 @@ import { SecurityService }      from '../../shared/services/security.service';
     templateUrl: './basket-status.component.html'
 })
 export class BasketStatusComponent implements OnInit {
-    subscription: Subscription;
+    basketItemAddedSubscription: Subscription;
     authSubscription: Subscription;
+    basketDroppedSubscription: Subscription;
+
     badge: number = 0;
 
     constructor(private service: BasketService, private basketEvents: BasketWrapperService, private authService: SecurityService) { }
 
     ngOnInit() {
         // Subscribe to Add Basket Observable:
-        this.subscription = this.basketEvents.addItemToBasket$.subscribe(
+        this.basketItemAddedSubscription = this.basketEvents.addItemToBasket$.subscribe(
             item => {
                 this.service.setBasket(item).subscribe(res => {
                     this.service.getBasket().subscribe(basket => {
@@ -27,6 +29,13 @@ export class BasketStatusComponent implements OnInit {
                     });
                 });
             });
+
+        // Subscribe to Drop Basket Observable: 
+        this.basketDroppedSubscription = this.service.basketDroped$.subscribe(res => 
+            this.service.getBasket().subscribe(basket => {
+                this.badge = basket.items.length;
+            })
+        );
 
         // Subscribe to login and logout observable
         this.authSubscription = this.authService.authenticationChallenge$.subscribe(res => {

@@ -57,7 +57,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
                 .Take(pageSize)
                 .ToListAsync();
 
-            itemsOnPage = ComposePicUri(itemsOnPage);
+            //itemsOnPage = ComposePicUri(itemsOnPage);
 
             var model = new PaginatedItemsViewModel<CatalogItem>(
                 pageIndex, pageSize, totalItems, itemsOnPage);
@@ -90,7 +90,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
                 .Take(pageSize)
                 .ToListAsync();
 
-            itemsOnPage = ComposePicUri(itemsOnPage);
+            //itemsOnPage = ComposePicUri(itemsOnPage);
 
             var model = new PaginatedItemsViewModel<CatalogItem>(
                 pageIndex, pageSize, totalItems, itemsOnPage);
