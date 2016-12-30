@@ -11,7 +11,7 @@ services:
 
   webmvc:
     environment:
-      - CatalogUrl=http://catalog.api
+      - CatalogUrl=http://catalog.api:5101
       - OrderingUrl=http://ordering.api:5102
       #- IdentityUrl=http://13.88.8.119:5105           #Remote: VM Needs to have public access at 5105. 
       - IdentityUrl=http://10.0.75.1:5105              #Local: You need to open windows firewall at range 5100-5105. 
@@ -22,14 +22,14 @@ services:
 
   webspa:
     environment:
-      - CatalogUrl=http://catalog.api
-      - OrderingUrl=http://ordering.api
+      - CatalogUrl=http://catalog.api:5101
+      - OrderingUrl=http://ordering.api:5102
       #- IdentityUrl=http://13.88.8.119:5105            #Remote: VM Needs to have public access at 5105. 
       #- IdentityUrl=http://identity.service:5105       #Local: You need a entry in windows host file to run identity in local docker. 
       - IdentityUrl=http://10.0.75.1:5105               #Local: You need to open windows firewall at range 5100-5105. 
       - BasketUrl=http://basket.api:5103                
     ports:
-      - "5104:80"
+      - "5104:5104"
 
   basket.api:
     environment:
@@ -44,7 +44,7 @@ services:
     environment:
       - ConnectionString=Server=sql.data;Database=Microsoft.eShopOnContainers.Services.CatalogDb;User Id=sa;Password=Pass@word
     ports:
-      - "5101:80"
+      - "5101:5101"
 
   ordering.api:
     environment:

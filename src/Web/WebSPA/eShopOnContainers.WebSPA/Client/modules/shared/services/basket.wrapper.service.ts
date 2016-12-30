@@ -18,7 +18,7 @@ export class BasketWrapperService {
 
     private orderCreatedSource = new Subject();
     orderCreated$ = this.orderCreatedSource.asObservable();
-    
+
     addItemToBasket(item: ICatalogItem) {
         if (this.identityService.IsAuthorized) {
             let basket: IBasketItem = {

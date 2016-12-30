@@ -14,6 +14,7 @@ import 'rxjs/add/observable/throw';
 import { Observer }                 from 'rxjs/Observer';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
+import { Subject }          from 'rxjs/Subject';
 
 @Injectable()
 export class BasketService {
@@ -23,6 +24,10 @@ export class BasketService {
         items: []
     };
 
+    //observable that is fired when the basket is dropped
+    private basketDropedSource = new Subject();
+    basketDroped$ = this.basketDropedSource.asObservable();
+    
     constructor(private service: DataService, private authService: SecurityService, private basketEvents: BasketWrapperService, private router: Router) {
         this.basket.items = [];
 
@@ -55,7 +60,7 @@ export class BasketService {
     }
 
     dropBasket() {
-        console.log('drop basket!');
         this.service.delete(this.basketUrl + '/' + this.basket.buyerId);
+        this.basketDropedSource.next();
     }
 }

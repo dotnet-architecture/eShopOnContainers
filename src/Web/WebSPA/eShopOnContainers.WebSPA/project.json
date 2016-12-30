@@ -97,8 +97,7 @@
       "web.config",
       "config",
       "wwwroot",
-      "dockerfile",
-      "wait-for-it.sh"
+      "dockerfile"
     ]
   },
   "scripts": {
