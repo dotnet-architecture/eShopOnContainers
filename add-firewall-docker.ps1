@@ -15,9 +15,13 @@ Start-Process powershell.exe -Verb RunAs -ArgumentList ('-noprofile -noexit -fil
 }
 exit
 }
-$reglas = Get-NetFirewallRule -DisplayName 'EshopDocker'
-if ($reglas.Length -gt 0)
-{
-    New-NetFirewallRule -DisplayName EshopDocker -Confirm -Description "Eshop on Containers" -LocalAddress Any -LocalPort Any -Protocol tcp -RemoteAddress Any -RemotePort 5100-5105 -Direction Inbound
-    New-NetFirewallRule -DisplayName EshopDocker -Confirm -Description "Eshop on Containers" -LocalAddress Any -LocalPort Any -Protocol tcp -RemoteAddress Any -RemotePort 5100-5105 -Direction Outbound
+
+try {
+  Get-NetFirewallRule -DisplayName EshopDocker -ErrorAction Stop
+  Write-Host "Rule found"
+}
+  catch [Exception] {
+  New-NetFirewallRule -DisplayName EshopDocker -Confirm -Description "Eshop on Containers" -LocalAddress Any -LocalPort Any -Protocol tcp -RemoteAddress Any -RemotePort 5100-5105 -Direction Inbound
+  New-NetFirewallRule -DisplayName EshopDocker -Confirm -Description "Eshop on Containers" -LocalAddress Any -LocalPort Any -Protocol tcp -RemoteAddress Any -RemotePort 5100-5105 -Direction Outbound
+  ac -Encoding UTF8  C:\Windows\system32\drivers\etc\hosts "127.0.0.1 eshopcontainers" #avoid cors problem in Angular2-http-localhost
 }
