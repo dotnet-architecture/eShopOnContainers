@@ -42,6 +42,7 @@ namespace eShopOnContainers.Identity.Configuration
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
                     RedirectUris =           { $"{clientsUrl["Spa"]}/" },
+                    RequireConsent = false,
                     PostLogoutRedirectUris = { $"{clientsUrl["Spa"]}/" },
                     AllowedCorsOrigins =     { $"{clientsUrl["Spa"]}" },
                     AllowedScopes =
@@ -59,6 +60,7 @@ namespace eShopOnContainers.Identity.Configuration
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
                     RedirectUris =           { "http://eshopxamarin/callback.html" },
+                    RequireConsent = false,
                     PostLogoutRedirectUris = { "http://eshopxamarin/callback.html/index.html" },
                     AllowedCorsOrigins =     { "http://eshopxamarin" },
                     AllowedScopes =
@@ -79,6 +81,7 @@ namespace eShopOnContainers.Identity.Configuration
                     },
                     ClientUri = $"{clientsUrl["Mvc"]}",                             // public uri of the client
                     AllowedGrantTypes = GrantTypes.Hybrid,
+                    RequireConsent = false,
                     RedirectUris = new List<string>
                     {
                         $"{clientsUrl["Mvc"]}/signin-oidc",
