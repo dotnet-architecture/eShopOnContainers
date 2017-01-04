@@ -1,4 +1,4 @@
-# eShopOnContainers - Microservices Architecture and Containers based Reference Application
+# eShopOnContainers - Microservices Architecture and Containers based Reference Application (**ALPHA state**)
 Sample .NET Core reference application, powered by Microsoft, based on a simplified microservices architecture and Docker containers. It is cross-platform thanks to .NET Core services capable of running on Linux or Windows containers depending on your Docker host. 
 
 <img src="img/eshop_logo.png">
@@ -25,7 +25,7 @@ Finally, those microservices are consumed by multiple client web and mobile apps
 <img src="img/xamarin-mobile-App.png">
 
 > ### Note on tested Docker Containers/Images
-> The development and testing of this project was (as of Dec. 2016) done <b>only on Docker Linux containers</b> running in development machines with "Docker for Windows" and the default Hyper-V Linux VM (MobiLinuxVM) installed by "Docker for Windows". 
+> The development and testing of this project was (as of January 2017) done <b>only on Docker Linux containers</b> running in development machines with "Docker for Windows" and the default Hyper-V Linux VM (MobiLinuxVM) installed by "Docker for Windows". 
 The <b>Windows Containers scenario has not been tested</b>, but the application should be able to run on Windows Containers, as well, as the .NET Core services have also been tested running on plain Windows (with no Docker).
 The app was also partially tested on "Docker for Mac" using a development MacOS machine with .NET Core and VS Code installed. However, that is still a scenario using Linux containers running on the VM setup in the Mac by the "Docker for Windows" setup.
  
@@ -49,8 +49,8 @@ MAC DEV MACHINE
 ### Installing and configuring Docker in your development machine
 
 #### Set needed assigned Memory and CPU to Docker
-In this application (Mid-December 2016 version) we run 3 instances of SQL Server running as containers plus 6 ASP.NET Core apps/services and 1 Redis server all of them running as Docker containers. So it's important to set Docker up properly with enough memory RAM and CPU assigned to it or you will get difficult errors when starting the containers with "docker-compose up". 
-Once Docker for Windows/Mac is installed in your machine, enter into its Settings and the Advanced menu option so you are able to adjust it to the new values (Memory: Around 7GB and CPU:4) as shown in the image. Usually you might need a 16GB or 12GB memory machine for this configuration. If you have a less powerful machine, you can try with a lower configuration and/or by not starting certain containers like the basket and Redis. But if you don't start all the containers, the application will not fully function properly, of course. 
+In this application (January 2017 version) we run 1 instance of SQL Server running as a container plus 6 ASP.NET Core apps/services and 1 Redis server all of them running as Docker containers. So, especially because of SQL Server requirements on memory, it is important to set Docker up properly with enough memory RAM and CPU assigned to it or you will get difficult errors when starting the containers with "docker-compose up". 
+Once Docker for Windows/Mac is installed in your machine, enter into its Settings and the Advanced menu option so you are able to adjust it to the new values (Memory: Around 6GB and CPU:4) as shown in the image. Usually you might need a 16GB or 12GB memory machine for this configuration. If you have a less powerful machine, you can try with a lower configuration and/or by not starting certain containers like the basket and Redis. But if you don't start all the containers, the application will not fully function properly, of course. 
 
 <img src="img/docker_settings.png">
 
