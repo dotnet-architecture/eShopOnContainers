@@ -1,0 +1,28 @@
+{
+  "version": "1.0.0-*",
+
+  "dependencies": {
+    "Microsoft.NETCore.App": "1.1.0",
+    "Microsoft.AspNetCore.TestHost": "1.1.0",
+    "dotnet-test-xunit": "2.2.0-preview2-build1029",
+    "xunit": "2.2.0-beta4-build3444",
+    "Catalog.API": "1.0.0-*",
+    "Ordering.API": "1.0.0-*"
+  },
+  "testRunner": "xunit",
+  "runtimes": {
+    "win10-x64": {}
+  },
+  "frameworks": {
+    "netcoreapp1.0": {
+      "dependencies": {
+      }
+    }
+  },
+  "publishOptions": {
+    "include": [
+      "settings.json",
+      "web.config"
+    ]
+  }
+}

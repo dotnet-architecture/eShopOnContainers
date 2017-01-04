@@ -5,31 +5,66 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.eShopOnContainers.WebMVC.Services;
 using Microsoft.eShopOnContainers.WebMVC.Models;
+using Microsoft.AspNetCore.Authorization;
+using System.Net.Http;
 
 namespace Microsoft.eShopOnContainers.WebMVC.Controllers
 {
+    [Authorize]
     public class OrderController : Controller
     {
         private IOrderingService _orderSvc;
-        public OrderController(IOrderingService orderSvc)
+        private IBasketService _basketSvc;
+        private readonly IIdentityParser<ApplicationUser> _appUserParser;
+        public OrderController(IOrderingService orderSvc, IBasketService basketSvc, IIdentityParser<ApplicationUser> appUserParser)
         {
+            _appUserParser = appUserParser;
             _orderSvc = orderSvc;
+            _basketSvc = basketSvc;
         }
 
-        public IActionResult Cart()
+        public async Task<IActionResult> Create()
         {
-            return View();
+            var user = _appUserParser.Parse(HttpContext.User);
+            var basket = await _basketSvc.GetBasket(user);
+            var order = _basketSvc.MapBasketToOrder(basket);
+            var vm = _orderSvc.MapUserInfoIntoOrder(user, order);
+            vm.CardExpirationShortFormat();
+
+            return View(vm);
         }
 
-        public IActionResult Create()
+        [HttpPost]
+        public async Task<IActionResult> Create(Order model, string action)
         {
-            return View();
+            if (ModelState.IsValid)
+            {
+                var user = _appUserParser.Parse(HttpContext.User);
+                await _orderSvc.CreateOrder(model);
+
+                //Empty basket for current user. 
+                await _basketSvc.CleanBasket(user);
+
+                //Redirect to historic list.
+                return RedirectToAction("Index");
+            }
+
+            return View(model);
         }
 
-        public IActionResult Index(Order item)
+        public async Task<IActionResult> Detail(string orderId)
         {
-            _orderSvc.AddOrder(item);
-            return View(_orderSvc.GetOrders());
+            var user = _appUserParser.Parse(HttpContext.User);
+
+            var order = await _orderSvc.GetOrder(user, orderId);
+            return View(order);
+        }
+
+        public async Task<IActionResult> Index(Order item)
+        {
+            var user = _appUserParser.Parse(HttpContext.User);
+            var vm = await _orderSvc.GetMyOrders(user);
+            return View(vm);
         }
     }
 }

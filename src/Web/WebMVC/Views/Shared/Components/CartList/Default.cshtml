@@ -1,0 +1,58 @@
+@model Microsoft.eShopOnContainers.WebMVC.Models.Basket
+
+@{
+    ViewData["Title"] = "My Cart";
+}
+
+<div class="container">
+    <article class="esh-basket-titles row">
+        <section class="esh-basket-title col-xs-3">Product</section>
+        <section class="esh-basket-title col-xs-3 hidden-lg-down"></section>
+        <section class="esh-basket-title col-xs-2">Price</section>
+        <section class="esh-basket-title col-xs-2">Quantity</section>
+        <section class="esh-basket-title col-xs-2">Cost</section>
+    </article>
+
+    @for (int i = 0; i < Model.Items.Count; i++)
+    {
+        var item = Model.Items[i];
+
+        <article class="esh-basket-items esh-basket-items--border row">
+
+            <section class="esh-basket-item esh-basket-item--middle col-lg-3 hidden-lg-down">
+                <img class="esh-basket-image" src="@item.PictureUrl" />
+            </section>
+            <section class="esh-basket-item esh-basket-item--middle col-xs-3">@item.ProductName</section>
+            <section class="esh-basket-item esh-basket-item--middle col-xs-2">$ @item.UnitPrice</section>
+            <section class="esh-basket-item esh-basket-item--middle col-xs-2">
+                <input type="hidden" name="@("quantities[" + i +"].Key")" value="@item.Id" />
+                <input type="number" class="esh-basket-input" min="1" name="@("quantities[" + i +"].Value")" value="@item.Quantity" />
+            </section>
+            <section class="esh-basket-item esh-basket-item--middle esh-basket-item--mark col-xs-2">$ @Math.Round(item.Quantity * item.UnitPrice, 2)</section>
+        </article>
+    }
+</div>
+
+<div class="container">
+    <article class="esh-basket-titles esh-basket-titles--clean row">
+        <section class="esh-basket-title col-xs-10"></section>
+        <section class="esh-basket-title col-xs-2">Total</section>
+    </article>
+
+    <article class="esh-basket-items row">
+        <section class="esh-basket-item col-xs-10"></section>
+        <section class="esh-basket-item esh-basket-item--mark col-xs-2">$ @Model.Total()</section>
+    </article>
+
+    <article class="esh-basket-items row">
+        <section class="esh-basket-item col-xs-7"></section>
+        <section class="esh-basket-item col-xs-2">
+            <button class="btn esh-basket-checkout" name="name" value="" type="submit">[ Update ]</button>
+        </section>
+        <section class="esh-basket-item col-xs-3">
+            <input type="submit"
+                   class="btn esh-basket-checkout"
+                   value="[ Checkout ]" name="action" />
+        </section>
+    </article>
+</div>

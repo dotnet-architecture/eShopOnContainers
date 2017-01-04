@@ -1,4 +1,5 @@
-﻿using Microsoft.eShopOnContainers.WebMVC.Models;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.eShopOnContainers.WebMVC.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,8 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
 {
     public interface ICatalogService
     {
-        Task<List<CatalogItem>> GetCatalogItems();
-        CatalogItem GetCatalogItem(Guid Id);
+        Task<Catalog> GetCatalogItems(int page, int take, int? brand, int? type);
+        Task<IEnumerable<SelectListItem>> GetBrands();
+        Task<IEnumerable<SelectListItem>> GetTypes();
     }
 }

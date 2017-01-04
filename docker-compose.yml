@@ -1,55 +1,51 @@
+#
+# docker-compose.yml is used to set up the base config per container to be deployed
+# Take into account that when deploying, this base configuration is merged with the 
+# configuration-per-environment specified at the docker-compose.override.yml
+# Further details and docs: https://docs.docker.com/compose/extends/ 
+#
 version: '2'
 
 services:
   webmvc:
-    image: eshop/web:latest
-    environment:
-      - CatalogUrl=http://catalog.api
-      - OrderingUrl=http://ordering.api
-    ports:
-      - "800:80"
+    image: eshop/web
+    links:
+      - identity.service:localhost
     depends_on:
-      - catalog.api
-      - ordering.api
+      - identity.service
+      - basket.api
 
-  catalog.api:
-    image: eshop/catalog.api:latest
-    environment:
-      - ConnectionString=Server=catalogdata;Port=5432;Database=postgres;username=postgres
-    expose:
-      - "80"
+  webspa:
+    image: eshop/webspa
     depends_on:
-      - catalogdata
-
-  catalogdata:
-    image: glennc/eshopdata
-
-  ordering.api:
-    image: eshop/ordering.api:latest
-    environment:
-      - ConnectionString=Server=ordering.data;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word
-    ports:
-      - "81:80"
-# (Go to Production): For secured/final deployment, remove Ports mapping and
-# leave just the internal expose section 
-    expose:
-      - "800"
-    extra_hosts:
-      - "DESKTOP-1HNACCH:192.168.1.39"
-    depends_on:
-      - ordering.data
-
-  ordering.data:
-    image: eshop/ordering.data.sqlserver.linux
-    ports:
-      - "1433:1433"
+      - basket.api
+      - identity.service
 
   basket.api:
-    image: eshop/basket.api:latest
-    environment:
-      - ConnectionString=basket.data
+    image: eshop/basket.api
     depends_on:
       - basket.data
+      - identity.service
+
+  catalog.api:
+    image: eshop/catalog.api
+    depends_on:
+      - sql.data
+
+  ordering.api:
+    image: eshop/ordering.api
+    depends_on:
+      - sql.data
+
+  identity.service:
+    image: eshop/identity
+    depends_on:
+      - sql.data
+
+  sql.data:
+    image: microsoft/mssql-server-linux
 
   basket.data:
     image: redis
+    ports:
+      - "6379:6379"

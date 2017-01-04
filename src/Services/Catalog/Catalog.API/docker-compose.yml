@@ -1,0 +1,21 @@
+version: '2'
+
+services:
+  catalog.api:
+    image: eshop/catalog.api
+    environment:
+      - ConnectionString=Server=catalog.data;Initial Catalog=CatalogData;User Id=sa;Password=Pass@word
+    expose:
+      - "80"
+    ports:
+      - "5101:80"
+    depends_on:
+      - catalog.data
+
+  catalog.data:
+    image: microsoft/mssql-server-linux
+    environment:
+      - SA_PASSWORD=Pass@word
+      - ACCEPT_EULA=Y
+    ports:
+      - "5434:1433"

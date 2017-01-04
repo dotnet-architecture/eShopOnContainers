@@ -2,10 +2,12 @@
   "projects": [
     "src",
     "test",
-    "src/Services/Ordering"
+    "src/Services/Ordering",
+    "src/Web",
+    "src/Services/Catalog"
   ],
 
   "sdk": {
-    "version": "1.0.0-preview2-003121"
+    "version": "1.0.0-preview2-003131"
   }
 }

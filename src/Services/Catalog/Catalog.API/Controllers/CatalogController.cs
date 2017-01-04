@@ -1,73 +1,132 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.eShopOnContainers.Services.Catalog.API.Model;
-
+﻿
 namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
 {
-    [Route("/")]
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
+    using Model;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using ViewModel;
+
+    [Route("api/v1/[controller]")]
     public class CatalogController : ControllerBase
     {
-        private CatalogContext _context;
+        private readonly CatalogContext _context;
 
         public CatalogController(CatalogContext context)
         {
             _context = context;
         }
 
-        // GET api/values
+        // GET api/v1/[controller]/items/[?pageSize=3&pageIndex=10]
         [HttpGet]
-        public IEnumerable<CatalogItem> Get()
+        [Route("[action]")]
+        public async Task<IActionResult> Items(int pageSize = 10, int pageIndex = 0)
         {
-            return _context.CatalogItems.ToList();
+            var totalItems = await _context.CatalogItems
+                 .LongCountAsync();
+
+            var itemsOnPage = await _context.CatalogItems
+                .OrderBy(c=>c.Name)
+                .Skip(pageSize * pageIndex)
+                .Take(pageSize)
+                .ToListAsync();
+
+            var model = new PaginatedItemsViewModel<CatalogItem>(
+                pageIndex, pageSize, totalItems, itemsOnPage);
+
+            return Ok(model);
         }
 
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public IActionResult Get(Guid id)
+        // GET api/v1/[controller]/items/withname/samplename
+        [HttpGet]
+        [Route("[action]/withname/{name:minlength(1)}")]
+        public async Task<IActionResult> Items(string name, int pageSize = 10, int pageIndex = 0)
         {
-            var item = _context.CatalogItems.FirstOrDefault(x=> x.Id == id);
 
-            if(item == null)
+            var totalItems = await _context.CatalogItems
+                .Where(c => c.Name.StartsWith(name))
+                .LongCountAsync();
+
+            var itemsOnPage = await _context.CatalogItems
+                .Where(c => c.Name.StartsWith(name))
+                .Skip(pageSize * pageIndex)
+                .Take(pageSize)
+                .ToListAsync();
+
+            //itemsOnPage = ComposePicUri(itemsOnPage);
+
+            var model = new PaginatedItemsViewModel<CatalogItem>(
+                pageIndex, pageSize, totalItems, itemsOnPage);
+
+            return Ok(model);
+        }
+
+        // GET api/v1/[controller]/items/type/1/brand/null
+        [HttpGet]
+        [Route("[action]/type/{catalogTypeId}/brand/{catalogBrandId}")]
+        public async Task<IActionResult> Items(int? catalogTypeId, int? catalogBrandId, int pageSize = 10, int pageIndex = 0)
+        {
+            var root = (IQueryable<CatalogItem>)_context.CatalogItems;
+
+            if (catalogTypeId.HasValue)
             {
-                return NotFound();
+                root = root.Where(ci => ci.CatalogTypeId == catalogTypeId);
             }
 
-            return new OkObjectResult(item);
-        }
-
-        // POST api/values
-        [HttpPost]
-        public IActionResult Post([FromBody]CatalogItem item)
-        {
-            try
+            if (catalogBrandId.HasValue)
             {
-                _context.CatalogItems.Add(item);
-                _context.SaveChanges();
-                return Ok();
+                root = root.Where(ci => ci.CatalogBrandId == catalogBrandId);
             }
-            catch
+
+            var totalItems = await root
+                .LongCountAsync();
+
+            var itemsOnPage = await root
+                .Skip(pageSize * pageIndex)
+                .Take(pageSize)
+                .ToListAsync();
+
+            //itemsOnPage = ComposePicUri(itemsOnPage);
+
+            var model = new PaginatedItemsViewModel<CatalogItem>(
+                pageIndex, pageSize, totalItems, itemsOnPage);
+            
+            return Ok(model);
+        }
+
+        // GET api/v1/[controller]/CatalogTypes
+        [HttpGet]
+        [Route("[action]")]
+        public async Task<IActionResult> CatalogTypes()
+        {
+            var items = await _context.CatalogTypes
+                .ToListAsync();
+
+            return Ok(items);
+        }
+
+        // GET api/v1/[controller]/CatalogBrands
+        [HttpGet]
+        [Route("[action]")]
+        public async Task<IActionResult> CatalogBrands()
+        {
+            var items = await _context.CatalogBrands
+                .ToListAsync();
+
+            return Ok(items);
+        }
+
+        private List<CatalogItem> ComposePicUri(List<CatalogItem> items) {
+            items.ForEach(x =>
             {
-                return StatusCode(500, "Unable to add new catalog item");
-            }
-        }
+                x.PictureUri = x.PictureUri.Replace("localhost", Request.Host.Host);
+            });
 
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody]CatalogItem item)
-        {
-            _context.CatalogItems.Update(item);
-            _context.SaveChanges();
-            return Ok();
-        }
-
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public IActionResult Delete(Guid id)
-        {
-            return Ok();
+            return items;
         }
     }
 }

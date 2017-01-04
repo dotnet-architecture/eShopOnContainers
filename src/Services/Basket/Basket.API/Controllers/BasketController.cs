@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.eShopOnContainers.Services.Basket.API.Model;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
 {
@@ -12,6 +13,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
     //If this is the case we should also investigate changing the serialization format used for Redis,
     //using a HashSet instead of a simple string.
     [Route("/")]
+    [Authorize]
     public class BasketController : Controller
     {
         private IBasketRepository _repository;
@@ -22,21 +24,25 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
         }
         // GET api/values/5
         [HttpGet("{id}")]
-        public async Task<CustomerBasket> Get(Guid id)
+        public async Task<IActionResult> Get(string id)
         {
-            return await _repository.GetBasket(id);
+            var basket = await _repository.GetBasket(id);
+
+            return Ok(basket);
         }
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody]CustomerBasket value)
+        public async Task<IActionResult> Post([FromBody]CustomerBasket value)
         {
-            _repository.UpdateBasket(value);
+            var basket = await _repository.UpdateBasket(value);
+
+            return Ok(basket);
         }
 
         // DELETE api/values/5
         [HttpDelete("{id}")]
-        public void Delete(Guid id)
+        public void Delete(string id)
         {
             _repository.DeleteBasket(id);
         }

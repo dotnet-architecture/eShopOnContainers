@@ -1,0 +1,167 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="eShopOnContainers.Core.Views.SettingsView"   
+             xmlns:controls="clr-namespace:eShopOnContainers.Core.Controls;assembly=eShopOnContainers.Core"    
+             xmlns:animations="clr-namespace:eShopOnContainers.Core.Animations;assembly=eShopOnContainers.Core"
+             xmlns:triggers="clr-namespace:eShopOnContainers.Core.Triggers;assembly=eShopOnContainers.Core"
+             xmlns:behaviors="clr-namespace:eShopOnContainers.Core.Behaviors;assembly=eShopOnContainers.Core"   
+             Title="Settings">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+
+            <Style x:Key="SettingsTitleStyle" 
+               TargetType="{x:Type Label}">
+                <Setter Property="FontFamily"
+                        Value="{StaticResource MontserratRegular}" />
+                <Setter Property="FontSize" 
+                        Value="{StaticResource MediumSize}" />
+                <Setter Property="HorizontalOptions" 
+                        Value="Start" />
+                <Setter Property="VerticalOptions" 
+                        Value="Center" />
+                <Setter Property="Margin" 
+                        Value="12, 0" />
+            </Style>
+
+            <Style x:Key="SettingsDescriptionStyle" 
+                   TargetType="{x:Type Label}"
+                   BasedOn="{StaticResource SettingsTitleStyle}">
+                <Setter Property="FontSize" 
+                        Value="{StaticResource LittleSize}" />
+            </Style>
+
+            <Style x:Key="SettingsToggleButtonStyle" 
+                   TargetType="{x:Type controls:ToggleButton}">
+                <Setter Property="HeightRequest" 
+                        Value="48" />
+                <Setter Property="WidthRequest" 
+                        Value="48" />
+                <Setter Property="VerticalOptions" 
+                        Value="Center" />
+                <Setter Property="Margin" 
+                        Value="12, 12, 12, 0" />
+            </Style>
+
+            <Style x:Key="HeaderLabelStyle" 
+               TargetType="{x:Type Label}">
+                <Setter Property="FontFamily"
+                        Value="{StaticResource MontserratRegular}" />
+                <Setter Property="FontSize"
+                        Value="{StaticResource LittleSize}" />
+                <Setter Property="TextColor"
+                        Value="{StaticResource GreenColor}" />
+                <Setter Property="HorizontalOptions"
+                        Value="Start" />
+            </Style>
+            
+            <animations:StoryBoard 
+                x:Key="MockServicesAnimation"    
+                Target="{x:Reference MockServices}">
+                <animations:FadeInAnimation 
+                    Direction="Up">
+                    <animations:FadeInAnimation.Duration>
+                        <OnPlatform 
+                            x:TypeArguments="x:String" 
+                            Android="500"
+                            iOS="0"
+                            WinPhone="500"/>
+                    </animations:FadeInAnimation.Duration>
+                </animations:FadeInAnimation>
+            </animations:StoryBoard>
+            
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Triggers>
+        <EventTrigger 
+            Event="Appearing">
+            <triggers:BeginAnimation   
+                Animation="{StaticResource MockServicesAnimation}" />
+        </EventTrigger>
+    </ContentPage.Triggers>
+    <Grid
+        BackgroundColor="{StaticResource BackgroundColor}">
+        <!-- SETTINGS -->
+        <ScrollView>
+            <StackLayout
+                x:Name="MockServices">
+                <!-- MOCK SERVICES -->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="1" />
+                    </Grid.RowDefinitions>
+                    <Grid 
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="2"
+                        BackgroundColor="Gray"/>
+                    <StackLayout 
+                        Grid.Column="0"                       
+                        Grid.Row="1">
+                        <Label 
+                            Text="{Binding Title}"
+                            TextColor="{StaticResource GreenColor}"
+                            Style="{StaticResource SettingsTitleStyle}"/>
+                        <Label
+                            Text="{Binding Description}"
+                            Style="{StaticResource SettingsDescriptionStyle}"/>
+                    </StackLayout>
+                    <!-- ON / OFF -->
+                    <controls:ToggleButton 
+                        Grid.Column="1" 
+                        Grid.Row="1" 
+                        Animate="True"     
+                        Checked="{Binding UseAzureServices, Mode=TwoWay}"
+                        Command="{Binding MockServicesCommand}"
+                        Style="{StaticResource SettingsToggleButtonStyle}">
+                        <controls:ToggleButton.CheckedImage>
+                            <OnPlatform x:TypeArguments="ImageSource"
+                              Android="switch_on.png"
+                              iOS="switchOn.png"
+                              WinPhone="Assets/switchOn.png"/>
+                        </controls:ToggleButton.CheckedImage>
+                        <controls:ToggleButton.UnCheckedImage>
+                            <OnPlatform x:TypeArguments="ImageSource"
+                              Android="switch_off.png"
+                              iOS="switchOff.png"
+                              WinPhone="Assets/switchOff.png"/>
+                        </controls:ToggleButton.UnCheckedImage>
+                    </controls:ToggleButton>
+                    <!-- ENDPOINT -->
+                    <StackLayout
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="2"
+                        Margin="12, 0, 12, 12"
+                        IsVisible="{Binding UseAzureServices}">
+                        <Label
+                            Text="Endpoint"
+                            Style="{StaticResource HeaderLabelStyle}"/>
+                        <Entry
+                            Text="{Binding Endpoint, Mode=TwoWay}">
+                            <Entry.Style>
+                                <OnPlatform 
+                                    x:TypeArguments="Style"
+                                    iOS="{StaticResource EntryStyle}"
+                                    Android="{StaticResource EntryStyle}"
+                                    WinPhone="{StaticResource UwpEntryStyle}"/>
+                            </Entry.Style>
+                        </Entry>
+                    </StackLayout>
+                    <Grid 
+                        Grid.Row="3"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="2"
+                        BackgroundColor="Gray"/>
+                </Grid>
+            </StackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>

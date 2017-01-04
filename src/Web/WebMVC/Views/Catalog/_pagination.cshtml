@@ -1,0 +1,28 @@
+﻿@model Microsoft.eShopOnContainers.WebMVC.Models.Pagination.PaginationInfo
+
+<div class="esh-pager">
+    <div class="container">
+        <article class="esh-pager-wrapper row">
+            <nav>
+                <a class="esh-pager-item esh-pager-item--navigable @Model.Previous"
+                      id="Previous"
+                      href="@Url.Action("Index","Catalog", new { page = Model.ActualPage -1 })"
+                      aria-label="Previous">
+                    Previous
+                </a>
+
+                <span class="esh-pager-item">
+                    Showing @Html.DisplayFor(modelItem => modelItem.ItemsPerPage) of @Html.DisplayFor(modelItem => modelItem.TotalItems) products - Page @(Model.ActualPage + 1) - @Html.DisplayFor(x => x.TotalPages)
+                </span>
+
+                <a class="esh-pager-item esh-pager-item--navigable @Model.Next"
+                      id="Next"
+                      href="@Url.Action("Index","Catalog", new { page = Model.ActualPage + 1 })"
+                      aria-label="Next">
+                    Next
+                </a>
+            </nav>
+        </article>
+    </div>
+</div>
+

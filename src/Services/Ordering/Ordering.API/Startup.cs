@@ -1,79 +1,127 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-
-using Microsoft.eShopOnContainers.Services.Ordering.SqlData.UnitOfWork;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.eShopOnContainers.Services.Ordering.Domain.Contracts;
-using Microsoft.eShopOnContainers.Services.Ordering.SqlData.Repositories;
-using Microsoft.eShopOnContainers.Services.Ordering.SqlData.Queries;
-
-namespace Microsoft.eShopOnContainers.Services.Ordering.API
+﻿namespace Microsoft.eShopOnContainers.Services.Ordering.API
 {
+    using AspNetCore.Http;
+    using Autofac;
+    using Autofac.Extensions.DependencyInjection;
+    using Infrastructure;
+    using Infrastructure.AutofacModules;
+    using Infrastructure.Filters;
+    using Infrastructure.Services;
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
+    using Ordering.Infrastructure;
+    using System;
+    using System.Reflection;
+
     public class Startup
     {
         public Startup(IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-                .AddEnvironmentVariables();
+                .AddJsonFile("settings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile($"settings.{env.EnvironmentName}.json", optional: true);
+
+            if (env.IsDevelopment())
+            {
+                builder.AddUserSecrets();
+            }
+
+            builder.AddEnvironmentVariables();
+
             Configuration = builder.Build();
         }
 
         public IConfigurationRoot Configuration { get; }
 
-        // This method gets called by the runtime. 
-        // Use this method to add services to the IoC container.
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
-            services.AddMvc();
 
-            //Add EF Core Context (UnitOfWork)
-            //SQL LocalDB 
-            // var connString = @"Server=(localdb)\mssqllocaldb;Database=Microsoft.eShopOnContainers.Services.OrderingDb;Trusted_Connection=True;";
+            services.AddMvc(options =>
+            {
+                options.Filters.Add(typeof(HttpGlobalExceptionFilter));
+            }).AddControllersAsServices();
 
-            //SQL SERVER on-premises
-            //(Integrated Security)
-            //var connString = @"Server=CESARDLBOOKVHD;Database=Microsoft.eShopOnContainers.Services.OrderingDb;Trusted_Connection=True;";
+            services.AddEntityFrameworkSqlServer()
+                .AddDbContext<OrderingContext>(options =>
+                {
+                    options.UseSqlServer(Configuration["ConnectionString"],
+                        sqlop => sqlop.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name));
+                });
 
-            //(SQL Server Authentication)
-            //var connString = @"Server=10.0.75.1;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word;";
+            services.AddSwaggerGen();
+            services.ConfigureSwaggerGen(options =>
+            {
+                options.DescribeAllEnumsAsStrings();
+                options.SingleApiVersion(new Swashbuckle.Swagger.Model.Info()
+                {
+                    Title = "Ordering HTTP API",
+                    Version = "v1",
+                    Description = "The Ordering Service HTTP API",
+                    TermsOfService = "Terms Of Service" 
+                });
+            });
 
-            var connString = Configuration["ConnectionString"];
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials());
+            });
 
-            //(CDLTLL) To use only for EF Migrations
-            //connString = @"Server=10.0.75.1;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word;";
+            // Add application services.
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSingleton<IConfiguration>(this.Configuration);
+            services.AddTransient<IIdentityService,IdentityService>();
 
-            services.AddDbContext<OrderingDbContext>(options => options.UseSqlServer(connString)
-                                                                       .UseSqlServer(connString, b => b.MigrationsAssembly("Ordering.API"))
-                                                    //(CDLTLL) MigrationsAssembly will be Ordering.SqlData, but when supported
-                                                    //Standard Library 1.6 by "Microsoft.EntityFrameworkCore.Tools"
-                                                    //Version "1.0.0-preview2-final" just supports .NET Core 
-                                                    );
+            services.AddOptions();
 
-            services.AddTransient<IOrderRepository, OrderRepository>();
-            services.AddTransient<IOrderdingQueries, OrderingQueries>();
+            //configure autofac
+
+            var container = new ContainerBuilder();
+            container.Populate(services);
+
+            container.RegisterModule(new MediatorModule());
+            container.RegisterModule(new ApplicationModule());
+
+            return new AutofacServiceProvider(container.Build());
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-            //if (env.IsDevelopment())
+            if (env.IsDevelopment())
+            {
                 app.UseDeveloperExceptionPage();
-            
-            app.UseMvc();
+            }
+
+            app.UseCors("CorsPolicy");
+
+            var identityUrl = Configuration.GetValue<string>("IdentityUrl");
+
+            app.UseIdentityServerAuthentication(new IdentityServerAuthenticationOptions
+            {
+                Authority = identityUrl.ToString(),
+                ScopeName = "orders",
+                RequireHttpsMetadata = false
+            });
+
+
+            app.UseMvcWithDefaultRoute();
+
+            app.UseSwagger()
+                .UseSwaggerUi();
+
+            OrderingContextSeed.SeedAsync(app).Wait();
         }
     }
 }

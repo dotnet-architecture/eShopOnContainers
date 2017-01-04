@@ -1,0 +1,111 @@
+﻿rules:
+  # https://github.com/sasstools/sass-lint/tree/master/docs/rules
+  # 0 = disabled - 1 = warning - 2 = error
+  # Extends
+  extends-before-mixins: 1
+  extends-before-declarations: 2
+  placeholder-in-extend: 0
+
+  # Mixins
+  mixins-before-declarations: 2
+
+  # Line Spacing
+  one-declaration-per-line: 2
+  empty-line-between-blocks: 2
+  single-line-per-selector: 2
+
+  # Disallows
+  # We disable some of that because we know that
+  # if you use it is because is necessary
+  no-attribute-selectors: 0
+  no-color-hex: 0
+  no-color-keywords: 2
+  no-color-literals: 0
+  no-combinators: 0
+  no-css-comments: 0
+  no-debug: 1
+  no-disallowed-properties: 0
+  no-duplicate-properties: 2
+  no-empty-rulesets: 1
+  no-extends: 0
+  no-ids: 2
+  no-important: 0
+  no-invalid-hex: 2
+  no-mergeable-selectors: 1
+  no-misspelled-properties: 2
+  no-qualifying-elements: 0
+  no-trailing-whitespace: 2
+  no-trailing-zero: 2
+  no-transition-all: 0
+  no-universal-selectors: 0
+  no-url-domains: 0
+  no-url-protocols: 0
+  no-vendor-prefixes: 0
+  no-warn: 2
+  property-units: 0
+
+  # Nesting
+  declarations-before-nesting: 2
+  force-attribute-nesting: 0
+  force-element-nesting: 0
+  force-pseudo-nesting: 0
+
+  # Name Formats
+  class-name-format: 0
+  function-name-format: 0
+  id-name-format: 0
+  mixin-name-format: 0
+  placeholder-name-format:
+    - 1
+    - allow-leading-underscore: true
+    - convention: hyphenatedlowercase
+  variable-name-format: 
+    - 1
+    - allow-leading-underscore: true
+    - convention: hyphenatedlowercase
+
+  # Style Guide
+  attribute-quotes: 2
+  # We know that always 1 level
+  bem-depth: 0
+  border-zero: 2
+  brace-style: 
+    - 2
+    - style: 1tbs
+  clean-import-paths: 2
+  empty-args: 2
+  hex-length:
+    - 2 
+    - style: long
+  hex-notation:
+    - 2
+    - style: uppercase
+  indentation:
+    - 2
+    - size: 4
+  leading-zero: 2
+  max-line-length: 0
+  max-file-line-count: 0
+  nesting-depth: 0
+  # alphabetically
+  property-sort-order: 2
+  pseudo-element: 0
+  quotes: 2
+  shorthand-values: 0
+  url-quotes: 0
+  variable-for-property: 0
+  zero-unit: 2
+
+  # Inner Spacing
+  space-after-comma: 2
+  space-before-colon: 2
+  space-after-colon: 2
+  space-before-brace: 2
+  space-before-bang: 2
+  space-after-bang: 2
+  space-between-parens: 2
+  space-around-operator: 2
+
+  # Final Items
+  trailing-semicolon: 2
+  final-newline: 2

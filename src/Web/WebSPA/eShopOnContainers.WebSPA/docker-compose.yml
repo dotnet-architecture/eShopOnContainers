@@ -1,0 +1,91 @@
+version: '2'
+
+services:
+  webspa:
+    image: eshop/webspa
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - CatalogUrl=http://catalog.api
+      - OrderingUrl=http://ordering.api
+      #- IdentityUrl=http://104.40.62.65:5105           #Remote: VM Needs to have public access at 5105. 
+      - IdentityUrl=http://identity.service:5105        #Local: You need a entry in windows host file to run identity in local docker. 
+      - BasketUrl=http://basket.api
+    ports:
+      - "5104:80"
+    depends_on:
+      - basket.api
+      - identity.service
+
+  identity.service:
+    image: eshop/identity
+    environment:
+      - SpaClient=http://localhost:5104
+      - ConnectionString=Server=identity.data;Database=aspnet-Microsoft.eShopOnContainers;User Id=sa;Password=Pass@word
+      #- MvcClient=http://104.40.62.65:5100             #Remote: VM Needs to have public access at 5105. 
+      - MvcClient=http://localhost:5100                 #Local: You need a entry in windows host file to run identity in local docker. 
+    ports:
+      - "5105:5105"
+    depends_on:
+      - identity.data
+
+  identity.data:
+    image: microsoft/mssql-server-linux
+    environment:
+      - SA_PASSWORD=Pass@word
+      - ACCEPT_EULA=Y
+    ports:
+      - "5433:1433"
+
+  basket.api:
+    image: eshop/basket.api
+    environment:
+      - ConnectionString=basket.data
+      #- identityUrl=http://104.40.62.65:5105           #Remote: VM Needs to have public access at 5105. 
+      - identityUrl=http://identity.service:5105        #Local: You need a entry in windows host file to run identity in local docker. 
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5103:5103"
+    depends_on:
+      - basket.data
+      - identity.service
+
+  basket.data:
+    image: redis
+
+  catalog.api:
+    image: eshop/catalog.api
+    environment:
+      - ConnectionString=Server=catalog.data;Database=CatalogDB;User Id=sa;Password=Pass@word
+    ports:
+      - "5101:80"
+    depends_on:
+      - catalog.data
+
+  catalog.data:
+    image: microsoft/mssql-server-linux
+    environment:
+      - SA_PASSWORD=Pass@word
+      - ACCEPT_EULA=Y
+    ports:
+      - "5434:1433"
+
+  ordering.api:
+    image: eshop/ordering.api
+    environment:
+      - ConnectionString=Server=ordering.data;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word
+    ports:
+      - "5102:80"
+    depends_on:
+      - ordering.data
+
+  ordering.data:
+    image: microsoft/mssql-server-linux
+    environment:
+      - SA_PASSWORD=Pass@word
+      - ACCEPT_EULA=Y
+    ports:
+      - "5432:1433"

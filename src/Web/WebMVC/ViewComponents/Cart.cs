@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.eShopOnContainers.WebMVC.Models;
+using Microsoft.eShopOnContainers.WebMVC.Models.CartViewModels;
 using Microsoft.eShopOnContainers.WebMVC.Services;
 using System;
 using System.Collections.Generic;
@@ -10,21 +11,26 @@ namespace Microsoft.eShopOnContainers.WebMVC.ViewComponents
 {
     public class Cart : ViewComponent
     {
-        private readonly ICartService _cartSvc;
+        private readonly IBasketService _cartSvc;
 
-        public Cart(ICartService cartSvc)
+        public Cart(IBasketService cartSvc)
         {
             _cartSvc = cartSvc;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync()
+        public async Task<IViewComponentResult> InvokeAsync(ApplicationUser user)
         {
-            var item = await GetItemsAsync();
-            return View(item);
+            var itemsInCart = await ItemsInCartAsync(user);
+            var vm = new CartComponentViewModel()
+            {
+                ItemsCount = itemsInCart
+            };
+            return View(vm);
         }
-        private Task<Order> GetItemsAsync()
+        private async Task<int> ItemsInCartAsync(ApplicationUser user)
         {
-            return _cartSvc.GetOrderInProgress();
+            var basket = await _cartSvc.GetBasket(user);
+            return basket.Items.Count;
         }
     }
 }

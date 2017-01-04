@@ -14,6 +14,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
             var host = new WebHostBuilder()
                 .UseKestrel()
                 .UseContentRoot(Directory.GetCurrentDirectory())
+                .UseUrls("http://0.0.0.0:5100")
                 .UseIISIntegration()
                 .UseStartup<Startup>()
                 .Build();

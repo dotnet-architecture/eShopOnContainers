@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            x:Class="eShopOnContainers.Core.Views.MainView"
+            xmlns:views="clr-namespace:eShopOnContainers.Core.Views;assembly=eShopOnContainers.Core"
+            xmlns:controls="clr-namespace:eShopOnContainers.Core.Controls;assembly=eShopOnContainers.Core"
+            BarBackgroundColor="{StaticResource DarkGreenColor}"
+            BackgroundColor="{StaticResource BackgroundColor}"
+            BarTextColor="{StaticResource WhiteColor}">
+    <TabbedPage.Title>
+        <OnPlatform      
+            x:TypeArguments="x:String"
+            iOS="eShop on Containers"
+            WinPhone="eShop on Containers"/>
+    </TabbedPage.Title>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem 
+            Command="{Binding SettingsCommand}"
+            Text="Settings">
+            <ToolbarItem.Icon>
+                <OnPlatform 
+                    x:TypeArguments="FileImageSource"
+                    WinPhone="Assets/app_settings.png"
+                    Android="app_settings"
+                    iOS="app_settings"/>
+            </ToolbarItem.Icon>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+    <!-- CATALOG -->
+    <views:CatalogView  
+        x:Name="HomeView">
+        <views:CatalogView.Icon>
+            <OnPlatform        
+                x:TypeArguments="FileImageSource"
+                Android="menu_filter"
+                iOS="menu_filter"
+                WinPhone="Assets\menu_filter.png"/>
+        </views:CatalogView.Icon>
+    </views:CatalogView>
+    <!-- PROFILE -->
+    <views:ProfileView
+        x:Name="ProfileView">
+        <views:ProfileView.Icon>
+            <OnPlatform        
+                x:TypeArguments="FileImageSource"
+                Android="menu_profile"
+                iOS="menu_profile"
+                WinPhone="Assets\menu_profile.png"/>
+        </views:ProfileView.Icon>
+    </views:ProfileView>
+    <!-- BASKET -->
+    <views:BasketView
+        x:Name="BasketView"
+        controls:CustomTabbedPage.BadgeText="{Binding BadgeCount}"
+        controls:CustomTabbedPage.BadgeColor="{StaticResource LightGreenColor}">
+        <views:BasketView.Icon>
+            <OnPlatform        
+                x:TypeArguments="FileImageSource"
+                Android="menu_cart"
+                iOS="menu_cart"
+                WinPhone="Assets\menu_cart.png"/>
+        </views:BasketView.Icon>
+    </views:BasketView>
+</TabbedPage>

@@ -9,39 +9,87 @@ services:
     environment:
       - CatalogUrl=http://catalog.api
       - OrderingUrl=http://ordering.api
+      #- IdentityUrl=http://104.40.62.65:5105
+      - IdentityUrl=http://identity.service:5105 #You need a entry in windows host file. 
+      - BasketUrl=http://basket.api
+      - ASPNETCORE_ENVIRONMENT=Development
     ports:
-      - "80:80"
+      - "5100:5100"
     depends_on:
-      - catalog.api
+      - identity.service
+      - basket.api
+    links:
+      - identity.service:localhost  # This line should be removed
+
+  identity.service:
+    image: eshop/identity
+    environment:
+      - Spa=http://webspa
+      - ConnectionString=Server=identity.data;Database=aspnet-Microsoft.eShopOnContainers;User Id=sa;Password=Pass@word
+      - Mvc=http://webmvc
+    ports:
+      - "5105:5105"
+    depends_on:
+      - identity.data
+
+  identity.data:
+    image: microsoft/mssql-server-linux
+    environment:
+      - SA_PASSWORD=Pass@word
+      - ACCEPT_EULA=Y
+    ports:
+      - "5433:1433"
+
+  basket.api:
+    image: eshop/basket.api
+    environment:
+      - ConnectionString=basket.data
+      #- identityUrl=http://104.40.62.65:5105
+      - identityUrl=http://identity.service:5105
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5103:80"
+    depends_on:
+      - basket.data
+      - identity.service
+
+  basket.data:
+    image: redis
 
   catalog.api:
     image: eshop/catalog.api
     environment:
-      - ConnectionString=Server=catalogdata;Port=5432;Database=postgres;username=postgres
+      - ConnectionString=Server=catalog.data;Database=CatalogDB;User Id=sa;Password=Pass@word
     expose:
       - "80"
+    ports:
+      - "5101:80"
     depends_on:
-      - catalogdata
+      - catalog.data
 
-  catalogdata:
-    image: glennc/eshopdata
+  catalog.data:
+    image: microsoft/mssql-server-linux
+    environment:
+      - SA_PASSWORD=Pass@word
+      - ACCEPT_EULA=Y
+    ports:
+      - "5434:1433"
 
   ordering.api:
     image: eshop/ordering.api
     environment:
       - ConnectionString=Server=ordering.data;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word
     ports:
-      - "81:80"
-# (Go to Production): For secured/final deployment, remove Ports mapping and
-# leave just the internal expose section 
-#    expose:
-#      - "80"
-    extra_hosts:
-      - "CESARDLBOOKVHD:10.0.75.1"
+      - "5102:80"
     depends_on:
       - ordering.data
 
   ordering.data:
-    image: eshop/ordering.data.sqlserver.linux
+    image: microsoft/mssql-server-linux
+    environment:
+      - SA_PASSWORD=Pass@word
+      - ACCEPT_EULA=Y
     ports:
-      - "1433:1433"
+      - "5432:1433"

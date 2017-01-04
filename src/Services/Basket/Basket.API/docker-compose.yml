@@ -2,15 +2,39 @@ version: '2'
 
 services:
   basket.api:
-    image: user/basket.api${TAG}
+    image: eshop/basket.api
     environment:
       - ConnectionString=basket.data
+      #- identityUrl=http://104.40.62.65:5105           #Remote: VM Needs to have public access at 5105. 
+      - identityUrl=http://identity.service:5105        #Local: You need a entry in windows host file to run identity in local docker. 
     build:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "32783:80"
+      - "5103:5103"
     depends_on:
       - basket.data
+      - identity.service
+
   basket.data:
     image: redis
+
+  identity.service:
+    image: eshop/identity
+    environment:
+      - SpaClient=http://localhost:5104
+      - ConnectionString=Server=identity.data;Database=aspnet-Microsoft.eShopOnContainers;User Id=sa;Password=Pass@word
+      #- MvcClient=http://104.40.62.65:5100             #Remote: VM Needs to have public access at 5105. 
+      - MvcClient=http://localhost:5100                 #Local: You need a entry in windows host file to run identity in local docker. 
+    ports:
+      - "5105:5105"
+    depends_on:
+      - identity.data
+
+  identity.data:
+    image: microsoft/mssql-server-linux
+    environment:
+      - SA_PASSWORD=Pass@word
+      - ACCEPT_EULA=Y
+    ports:
+      - "5433:1433"

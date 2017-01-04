@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_weight="25"
+    android:layout_width="0dp"
+    android:layout_height="match_parent"
+    android:id="@+id/linearLayout_Home"
+
+    android:weightSum="100"
+    android:clickable="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+  <ImageView
+      android:src="@drawable/icon"
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:layout_weight="70"
+      android:id="@+id/tab_icon" 
+      android:scaleType="fitCenter"
+      android:adjustViewBounds="false" />
+  <TextView
+      android:gravity="center_horizontal"
+      android:text="Home"
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:layout_weight="30"
+      android:id="@+id/tab_layout_textview" />
+</LinearLayout>

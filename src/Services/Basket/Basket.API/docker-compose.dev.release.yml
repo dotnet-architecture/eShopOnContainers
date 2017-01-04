@@ -1,9 +1,0 @@
-version: '2'
-
-services:
-  basket.api:
-    labels:
-      - "com.microsoft.visualstudio.targetoperatingsystem=linux"
-    volumes:
-      - ~/clrdbg:/clrdbg:ro
-    entrypoint: tail -f /dev/null

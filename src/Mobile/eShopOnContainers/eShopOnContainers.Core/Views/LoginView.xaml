@@ -1,0 +1,290 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="eShopOnContainers.Core.Views.LoginView"        
+             xmlns:animations="clr-namespace:eShopOnContainers.Core.Animations;assembly=eShopOnContainers.Core"
+             xmlns:triggers="clr-namespace:eShopOnContainers.Core.Triggers;assembly=eShopOnContainers.Core"   
+             xmlns:behaviors="clr-namespace:eShopOnContainers.Core.Behaviors;assembly=eShopOnContainers.Core">
+    <ContentPage.Title>
+        <OnPlatform      
+            x:TypeArguments="x:String"
+            iOS="eShop on Containers"
+            WinPhone="eShop on Containers"/>
+    </ContentPage.Title>
+    <ContentPage.Resources>
+        <ResourceDictionary>
+
+            <Style x:Key="TitleLabelStyle" 
+               TargetType="{x:Type Label}">
+                <Setter Property="FontFamily"
+                        Value="{StaticResource MontserratRegular}" />
+                <Setter Property="FontAttributes"
+                        Value="Bold" />
+                <Setter Property="FontSize"
+                        Value="{StaticResource MediumSize}" />
+                <Setter Property="HorizontalOptions"
+                        Value="Center" />
+                <Setter Property="Margin"
+                        Value="0, 12" />
+            </Style>
+            
+            <Style x:Key="HeaderLabelStyle" 
+               TargetType="{x:Type Label}">
+                <Setter Property="FontFamily"
+                        Value="{StaticResource MontserratRegular}" />
+                <Setter Property="FontSize"
+                        Value="{StaticResource LittleSize}" />
+                <Setter Property="TextColor"
+                        Value="{StaticResource GreenColor}" />
+                <Setter Property="HorizontalOptions"
+                        Value="Start" />
+            </Style>
+
+            <Style x:Key="LoginButtonStyle" 
+               TargetType="{x:Type Label}">
+                <Setter Property="FontFamily"
+                        Value="{StaticResource MontserratRegular}" />
+                <Setter Property="TextColor"
+                        Value="{StaticResource WhiteColor}" />
+                <Setter Property="HorizontalOptions"
+                        Value="Center" />
+                <Setter Property="VerticalOptions"
+                        Value="Center" />
+            </Style>
+
+            <Style x:Key="LoginPanelStyle" 
+               TargetType="{x:Type Grid}">
+                <Setter Property="HeightRequest"
+                        Value="60" />
+                <Setter Property="BackgroundColor"
+                        Value="{StaticResource LightGreenColor}" />
+                <Setter Property="HorizontalOptions"
+                        Value="FillAndExpand" />
+                <Setter Property="VerticalOptions"
+                        Value="FillAndExpand" />
+            </Style>
+
+            <Style x:Key="RegisterPanelStyle" 
+               TargetType="{x:Type Grid}"
+                   BasedOn="{StaticResource LoginPanelStyle}">
+                <Setter Property="BackgroundColor"
+                        Value="{StaticResource BlackColor}" />
+            </Style>
+
+            <animations:StoryBoard 
+                x:Key="LoginAnimation"    
+                Target="{x:Reference LoginPanel}">
+                <animations:FadeInAnimation 
+                    Direction="Up"
+                    Duration="1500" />
+            </animations:StoryBoard>
+
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Triggers>
+        <EventTrigger 
+            Event="Appearing">
+            <triggers:BeginAnimation   
+                Animation="{StaticResource LoginAnimation}" />
+        </EventTrigger>
+    </ContentPage.Triggers>
+    <Grid 
+        BackgroundColor="{StaticResource BackgroundColor}">
+        <!-- MOCK AUTH -->
+        <Grid   
+            x:Name="LoginPanel"     
+            IsVisible="{Binding IsMock}"
+            Padding="0"   
+            ColumnSpacing="0"   
+            RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="60" />
+            </Grid.RowDefinitions>
+            <!-- LOGIN / REGISTER -->
+            <Grid
+                Grid.Row="0"
+                Margin="48, 24">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <StackLayout
+                    Grid.Column="0"
+                    Orientation="Horizontal"
+                    HorizontalOptions="Center">
+                    <Label 
+                        Text="["
+                        TextColor="{StaticResource LightGreenColor}"/>
+                    <Label
+                        Text="LOGIN"
+                        FontAttributes="Bold"/>
+                    <Label 
+                        Text="]"
+                        TextColor="{StaticResource LightGreenColor}"/>
+                </StackLayout>
+                <Grid
+                    Grid.Column="1"
+                    HorizontalOptions="Center">
+                    <Label 
+                        Text="REGISTER"
+                        TextColor="Gray"/>
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer 
+                            Command="{Binding RegisterCommand}"               
+                            NumberOfTapsRequired="1" />
+                    </Grid.GestureRecognizers>
+                </Grid>
+            </Grid>
+            <!-- INFO -->
+            <Label 
+                Grid.Row="1" 
+                Text="ARE YOU REGISTERED?"
+                Style="{StaticResource TitleLabelStyle}"/>
+            <!-- LOGIN FORM -->
+            <StackLayout
+                Grid.Row="2"
+                Margin="24">
+                <Label
+                    Text="User name or email"
+                    Style="{StaticResource HeaderLabelStyle}"/>
+                <Entry  
+                    Text="{Binding UserName.Value, Mode=TwoWay}">
+                    <Entry.Style>
+                        <OnPlatform x:TypeArguments="Style"
+                            iOS="{StaticResource EntryStyle}"
+                            Android="{StaticResource EntryStyle}"
+                            WinPhone="{StaticResource UwpEntryStyle}"/>
+                    </Entry.Style>
+                </Entry>
+                <Label 
+                    Text="Password"
+                    Style="{StaticResource HeaderLabelStyle}"/>
+                <Entry 
+                    IsPassword="True"
+                    Text="{Binding Password.Value, Mode=TwoWay}"  
+                    Style="{StaticResource EntryStyle}">
+                    <Entry.Style>
+                        <OnPlatform x:TypeArguments="Style"
+                            iOS="{StaticResource EntryStyle}"
+                            Android="{StaticResource EntryStyle}"
+                            WinPhone="{StaticResource UwpEntryStyle}"/>
+                    </Entry.Style>
+                </Entry>
+            </StackLayout>
+            <!-- LOGIN BUTTON -->
+            <Grid
+                BackgroundColor="{StaticResource LightGreenColor}"
+                Grid.Row="3"
+                Padding="0" 
+                ColumnSpacing="0" 
+                RowSpacing="0">
+                <Label       
+                    Text="[ LOGIN ]" 
+                    Style="{StaticResource LoginButtonStyle}"/>
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer 
+                        Command="{Binding MockSignInCommand}"  
+                        NumberOfTapsRequired="1" />
+                </Grid.GestureRecognizers>
+            </Grid>
+        </Grid>
+        <!-- AUTH -->
+        <Grid
+            ColumnSpacing="0"
+            RowSpacing="0"
+            IsVisible="{Binding IsMock, Converter={StaticResource InverseBoolConverter}}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="60" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <!-- BANNER -->
+            <Image 
+                x:Name="Banner"
+                Grid.Row="0"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                Aspect="AspectFill">
+                <Image.Source>
+                    <OnPlatform 
+                        x:TypeArguments="ImageSource"
+                        Android="banner.png"
+                        iOS="banner.png"
+                        WinPhone="Assets\banner.png"/>
+                </Image.Source>
+            </Image>
+            <Grid      
+                Grid.Row="0"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                BackgroundColor="{StaticResource BlackColor}"
+                Opacity="0.5"/>
+            <!-- LOG IN BUTTON -->
+            <Grid 
+                Grid.Column="0"
+                Grid.Row="1"
+                Style="{StaticResource LoginPanelStyle}">
+                <Label       
+                    Text="[ LOGIN ]" 
+                    Style="{StaticResource LoginButtonStyle}"/>
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer 
+                        Command="{Binding SignInCommand}"  
+                        NumberOfTapsRequired="1" />
+                </Grid.GestureRecognizers>
+            </Grid>
+            <!-- REGISTER BUTTON -->
+            <Grid 
+                Grid.Column="1"
+                Grid.Row="1"
+                Style="{StaticResource RegisterPanelStyle}">
+                <Label       
+                    Text="[ REGISTER ]" 
+                    Style="{StaticResource LoginButtonStyle}"/>
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer 
+                        Command="{Binding RegisterCommand}"  
+                        NumberOfTapsRequired="1" />
+                </Grid.GestureRecognizers>
+            </Grid>
+            <!-- WEBVIEW -->
+            <AbsoluteLayout
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                Grid.Row="0"
+                Grid.RowSpan="2"
+                IsVisible="{Binding IsLogin}">
+                <WebView 
+                    Source="{Binding LoginUrl}"
+			        AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
+			        AbsoluteLayout.LayoutFlags="All">
+                    <WebView.Behaviors>
+                        <behaviors:WebViewNavigationBehavior 
+                            NavigateCommand="{Binding NavigateCommand}"/>
+                    </WebView.Behaviors>
+                </WebView>
+            </AbsoluteLayout>
+        </Grid>
+        <!-- INDICATOR -->
+        <ActivityIndicator 
+            Color="{StaticResource LightGreenColor}"   
+            IsRunning="{Binding IsBusy}" 
+            IsVisible="{Binding IsBusy}"
+            VerticalOptions="Center"
+            HorizontalOptions="Center">
+            <ActivityIndicator.WidthRequest>
+                <OnPlatform 
+                    x:TypeArguments="x:Double" 
+                    iOS="100" 
+                    Android="100"
+                    WinPhone="400" />
+            </ActivityIndicator.WidthRequest>
+        </ActivityIndicator>
+    </Grid>
+</ContentPage>

@@ -11,6 +11,8 @@ using Microsoft.eShopOnContainers.Services.Basket.API.Model;
 using StackExchange.Redis;
 using Microsoft.Extensions.Options;
 using System.Net;
+using Swashbuckle.Swagger.Model;
+using Microsoft.eShopOnContainers.Services.Basket.API.Auth.Server;
 
 namespace Microsoft.eShopOnContainers.Services.Basket.API
 {
@@ -47,6 +49,32 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
                 return ConnectionMultiplexer.Connect(ips.First().ToString());
             });
 
+            services.AddSwaggerGen();
+            //var sch = new IdentitySecurityScheme();
+            services.ConfigureSwaggerGen(options =>
+            {
+                //options.AddSecurityDefinition("IdentityServer", sch);
+                options.OperationFilter<AuthorizationHeaderParameterOperationFilter>();
+                options.DescribeAllEnumsAsStrings();
+                options.SingleApiVersion(new Swashbuckle.Swagger.Model.Info()
+                {
+                    Title = "Basket HTTP API",
+                    Version = "v1",
+                    Description = "The Basket Service HTTP API",
+                    TermsOfService = "Terms Of Service"
+                });
+            });
+
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials());
+            });
+
             services.AddTransient<IBasketRepository, RedisBasketRepository>();
         }
 
@@ -56,7 +84,25 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-            app.UseMvc();
+            app.UseStaticFiles();
+
+            // Use frameworks
+            app.UseCors("CorsPolicy");
+
+            var identityUrl = Configuration.GetValue<string>("IdentityUrl");
+
+            app.UseIdentityServerAuthentication(new IdentityServerAuthenticationOptions
+            {
+                Authority = identityUrl.ToString(),
+                ScopeName = "basket",
+                RequireHttpsMetadata = false
+            });
+
+            app.UseMvcWithDefaultRoute();
+
+            app.UseSwagger()
+                .UseSwaggerUi();
+
         }
     }
 }

@@ -7,12 +7,13 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Model
 {
     public class CustomerBasket
     {
-        public Guid CustomerId { get; private set; }
-        public IList<BasketItem> BasketItems => new List<BasketItem>();
+        public string BuyerId { get;  set; }
+        public List<BasketItem> Items { get; set; } 
 
-        public CustomerBasket(Guid customerId)
+        public CustomerBasket(string customerId)
         {
-            CustomerId = customerId;
+            BuyerId = customerId;
+            Items = new List<Model.BasketItem>();
         }
     }
 }

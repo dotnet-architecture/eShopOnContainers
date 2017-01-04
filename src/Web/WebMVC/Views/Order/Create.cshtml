@@ -1,112 +1,96 @@
+@using Microsoft.eShopOnContainers.WebMVC.Services
 @model Microsoft.eShopOnContainers.WebMVC.Models.Order
+@inject IIdentityParser<ApplicationUser> UserManager
 
 @{
-    ViewData["Title"] = "View";
+    ViewData["Title"] = "New Order";
 }
-<div class="brand-header-block">
-    <ul class="container">
-        <li class="brand-header-back"><a asp-area="" asp-controller="Order" asp-action="Cart">Back to list</a></li>
-    </ul>
-</div>
-<div class="container cart-index-container">
-    <form asp-action="View">
-        <h4 class="order-create-section-title">SHIPPING ADDRESS</h4>
-        <div class="form-horizontal row">
-            <div class="form-group col-sm-6">
-                <label asp-for="OrderNumber" class="control-label form-label">order number</label>
-                <input asp-for="OrderNumber" class="form-control form-input" />
-                <span asp-validation-for="OrderNumber" class="text-danger" />
-            </div>
-            <div class="form-group col-sm-6">
-                <label asp-for="SequenceNumber" class="control-label form-label"></label>
-                <input asp-for="SequenceNumber" class="form-control form-input" />
-                <span asp-validation-for="SequenceNumber" class="text-danger" />
-            </div>
-            <div class="form-group col-sm-6">
-                <label asp-for="BuyerId" class="control-label form-label"></label>
-                <input asp-for="BuyerId" class="form-control form-input" />
-                <span asp-validation-for="BuyerId" class="text-danger" />
-            </div>
-            <div class="form-group col-sm-6">
-                <label asp-for="OrderDate" class="control-label form-label"></label>
-                <input asp-for="OrderDate" class="form-control form-input" />
-                <span asp-validation-for="OrderDate" class="text-danger" />
-            </div>
-        </div>
-        <br /><br />
-        <div class="order-create-section-payment">
-            <h4 class="order-create-section-title">PAYMENT METHOD</h4>
-            <div class="form-horizontal row">
-                <div class="form-group col-sm-6">
-                    <label asp-for="OrderNumber" class="control-label form-label">Card Number</label>
-                    <input asp-for="OrderNumber" class="form-control form-input" />
-                    <span asp-validation-for="OrderNumber" class="text-danger" />
-                </div>
-                <div class="form-group col-sm-6">
-                    <label asp-for="OrderNumber" class="control-label form-label">Cardholder Name</label>
-                    <input asp-for="OrderNumber" class="form-control form-input" />
-                    <span asp-validation-for="OrderNumber" class="text-danger" />
-                </div>
-            </div>
-            <div class="form-horizontal row">
-                <div class="form-group col-sm-6">
-                    <label asp-for="OrderNumber" class="control-label form-label">Expiration Date</label>
-                    <select asp-for="OrderNumber" class="form-control form-select" />
-                    <span asp-validation-for="OrderNumber" class="text-danger" />
-                    <br />
-                    <label asp-for="OrderDate" class="control-label form-label">hhh</label>
-                    <select asp-for="OrderDate" class="form-control form-select" />
-                    <span asp-validation-for="OrderDate" class="text-danger" />
-                </div>
-                <div class="form-group col-sm-6">
-                    <label asp-for="OrderNumber" class="control-label form-label">Security Code</label>
-                    <input asp-for="OrderNumber" class="form-control form-input form-input-small" />
-                    <span asp-validation-for="OrderNumber" class="text-danger" />
-                </div>
-            </div>
-        </div>
-        <br /><br />
-        <div class="col-md-12 order-create-section-items">
-            <section>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>
-                                PRODUCT
-                            </th>
-                            <th>
 
-                            </th>
-                            <th>
-                                BRAND
-                            </th>
-                            <th>
-                                PRICE
-                            </th>
-                            <th>
-                                QUANTITY
-                            </th>
-                            <th>
-                                FINAL PRICE
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @await Component.InvokeAsync("Cart")
-                    </tbody>
-                </table>
-            </section>
-        </div>
-        <br /><br /><br /><br /><br /><br />
-        <div class="form-group">
-            <div class="col-md-offset-8 col-md-4">
-                @*<input type="submit" value="[ PLACE ORDER ]" class="btn btn-default btn-brand" />*@
-                <a asp-controller="Order" asp-action="Index" class="btn btn-default btn-brand">[ PLACE ORDER ]</a>
+@Html.Partial("_Header", new Header() { Controller = "Cart", Text = "Back to cart" })
+
+<div class="container">
+    <form method="post" asp-controller="Order" asp-action="Create">
+        <section class="esh-orders_new-section">
+            <h4 class="esh-orders_new-title">Shipping address</h4>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="Street" class="esh-orders_new-title">Address</label>
+                        <input asp-for="Street" class="form-control form-input" type="text" placeholder="Street"/>
+                        <span asp-validation-for="Street" class="alert alert-danger" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="City" class="esh-orders_new-title">City</label>
+                        <input asp-for="City" class="form-control form-input" type="text" placeholder="City"/>
+                        <span asp-validation-for="City" class="alert alert-danger" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="State" class="esh-orders_new-title">State</label>
+                        <input asp-for="State" class="form-control form-input" type="text" placeholder="State"/>
+                        <span asp-validation-for="State" class="alert alert-danger" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="Country" class="esh-orders_new-title">Country</label>
+                        <input asp-for="Country" class="form-control form-input" type="text" placeholder="Country"/>
+                        <span asp-validation-for="Country" class="alert alert-danger" />
+                    </div>
+                </div>
             </div>
-        </div>
-        <br /><br /><br /><br /><br /><br />
+        </section>
+        <section class="esh-orders_new-section">
+            <h4 class="esh-orders_new-title">Payment method</h4>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="CardNumber" class="esh-orders_new-title">Card number</label>
+                        <input asp-for="CardNumber" class="form-control form-input" type="text" placeholder="000000000000000"/>
+                        <span asp-validation-for="CardNumber" class="alert alert-danger" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="CardHolderName" class="esh-orders_new-title">Cardholder name</label>
+                        <input asp-for="CardHolderName" class="form-control form-input" type="text" placeholder="Cardholder"/>
+                        <span asp-validation-for="CardHolderName" class="alert alert-danger" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="CardExpirationShort" class="esh-orders_new-title">Expiration date</label>
+                        <input asp-for="CardExpirationShort" class="form-control form-input form-input-medium" type="text" placeholder="MM/YY"/>
+                        <span asp-validation-for="CardExpirationShort" class="alert alert-danger" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="CardSecurityNumber" class="esh-orders_new-title">Security code</label>
+                        <input asp-for="CardSecurityNumber" class="form-control form-input form-input-small" type="text" placeholder="000"/>
+                        <span asp-validation-for="CardSecurityNumber" class="alert alert-danger" />
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        @await Html.PartialAsync("_OrderItems")
+
+        <section class="esh-orders_new-section">
+            <div class="form-group">
+                <div class="col-md-9">
+                </div>
+                <div class="col-md-2">
+                    <input type="submit" value="[ Place Order ]" name="action" class="btn esh-orders_new-placeOrder" />
+                </div>
+            </div>
+        </section>
     </form>
 </div>
+
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

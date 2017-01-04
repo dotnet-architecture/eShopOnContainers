@@ -1,23 +1,63 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using Microsoft.eShopOnContainers.WebMVC.Models
+@using Microsoft.eShopOnContainers.WebMVC.Services
 
-@inject SignInManager<ApplicationUser> SignInManager
-@inject UserManager<ApplicationUser> UserManager
+@inject IIdentityParser<ApplicationUser> UserManager
 
-@if (SignInManager.IsSignedIn(User))
+@*@if (Context.User.Identity.IsAuthenticated)*@
+@if (User.FindFirst(x => x.Type == "preferred_username") != null)
 {
-    <form asp-area="" asp-controller="Account" asp-action="LogOff" method="post" id="logoutForm" class="navbar-right">
-        <ul class="nav navbar-nav navbar-right">
-            <li style="float:right"><a asp-area="" asp-controller="Order" asp-action="Cart"><img src="~/images/cart.PNG" class="layout-cart-image hidden-xs"></a></li>
-            <li class="fr"><a href="javascript:document.getElementById('logoutForm').submit()" class="btn-login">&nbsp;Log Out&nbsp;</a></li>
-            @*<li class="fr login-user"><a asp-area="" asp-controller="Manage" asp-action="Index" title="Manage">@UserManager.GetUserName(User)</a></li>*@
-        </ul>
-    </form>
+    <section class="col-lg-4 col-md-5 col-xs-12">
+        <div class="esh-identity">
+            <form asp-area="" asp-controller="Account" asp-action="SignOut" method="post" id="logoutForm" class="navbar-right">
+                <section class="esh-identity-section">
+
+                    <div class="esh-identity-name">@User.FindFirst(x => x.Type == "preferred_username").Value</div>
+                    <img class="esh-identity-image" src="../images/arrow-down.png">
+                </section>
+
+                <section class="esh-identity-drop">
+
+                    <a class="esh-identity-item"
+                       asp-controller="Order"
+                       asp-action="Index">
+
+                        <div class="esh-identity-name esh-identity-name--upper">My orders</div>
+                        <img class="esh-identity-image" src="../images/my_orders.png">
+                    </a>
+
+                    <a class="esh-identity-item"
+                       href="javascript:document.getElementById('logoutForm').submit()">
+
+                        <div class="esh-identity-name esh-identity-name--upper">Log Out</div>
+                        <img class="esh-identity-image" src="../images/logout.png">
+                    </a>
+                </section>
+            </form>
+        </div>
+    </section>
+
+    <section class="col-lg-1 col-xs-12">
+        @await Component.InvokeAsync("Cart", new { user = UserManager.Parse(User) })
+    </section>
+
 }
 else
 {
-    <ul class="nav navbar-nav navbar-right">
-        <li><a asp-area="" asp-controller="Account" class="btn-login" asp-action="Login">&nbsp;Log In&nbsp;</a></li>
-        <li><a asp-area="" asp-controller="Order" asp-action="Cart"><img src="~/images/cart.PNG" class="layout-cart-image hidden-xs"></a></li>
-    </ul>
+    <section class="col-lg-4 col-md-5 col-xs-12">
+        <div class="esh-identity">
+            <section class="esh-identity-section">
+                <div class="esh-identity-item">
+
+                    <a asp-area="" asp-controller="Account" asp-action="SignIn" class="esh-identity-name esh-identity-name--upper">
+                        Login
+                    </a>
+                </div>
+            </section>
+        </div>
+    </section>
+
+    <section class="col-lg-1 col-xs-12">
+
+    </section>
 }

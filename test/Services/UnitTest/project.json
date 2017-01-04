@@ -1,0 +1,24 @@
+{
+  "version": "1.0.0-*",
+
+  "dependencies": {
+    "MediatR": "2.1.0",
+    "Moq": "4.6.38-alpha",
+    "Microsoft.NETCore.App": "1.1.0",
+    "xunit": "2.2.0-beta4-build3444",
+    "Ordering.API": "1.0.0-*",
+    "Catalog.API": "1.0.0-*",
+    "Microsoft.AspNetCore.TestHost": "1.1.0",
+    "dotnet-test-xunit": "2.2.0-preview2-build1029"
+  },
+  "testRunner": "xunit",
+  "runtimes": {
+    "win10-x64": {}
+  },
+  "frameworks": {
+    "netcoreapp1.0": {
+      "dependencies": {
+      }
+    }
+  }
+}

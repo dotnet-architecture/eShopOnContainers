@@ -3,41 +3,104 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.eShopOnContainers.WebMVC.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
+using System.Net.Http;
+using Newtonsoft.Json;
+using Microsoft.AspNetCore.Authentication;
 
 namespace Microsoft.eShopOnContainers.WebMVC.Services
 {
     public class OrderingService : IOrderingService
     {
-        private List<Order> _orders;
+        private HttpClient _apiClient;
+        private readonly string _remoteServiceBaseUrl;
+        private readonly IOptions<AppSettings> _settings;
+        private readonly IHttpContextAccessor _httpContextAccesor;
 
-        public OrderingService()
+        public OrderingService(IOptions<AppSettings> settings, IHttpContextAccessor httpContextAccesor)
         {
-            _orders = new List<Order>()
-            {
-                new Order()
-                {
-                    BuyerId = Guid.NewGuid(), OrderDate = DateTime.Now,
-                    OrderItems = new List<OrderItem>()
-                    {
-                        new OrderItem() { UnitPrice = 12 }
-                    }
-                }
-            };
+            _remoteServiceBaseUrl = $"{settings.Value.OrderingUrl}/api/v1/orders";
+            _settings = settings;
+            _httpContextAccesor = httpContextAccesor;
         }
 
-        public void AddOrder(Order Order)
+        async public Task<Order> GetOrder(ApplicationUser user, string Id)
         {
-            _orders.Add(Order);
+            var context = _httpContextAccesor.HttpContext;
+            var token = await context.Authentication.GetTokenAsync("access_token");
+
+            _apiClient = new HttpClient();
+            _apiClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+            var ordersUrl = $"{_remoteServiceBaseUrl}/{Id}";
+            var dataString = await _apiClient.GetStringAsync(ordersUrl);
+            
+            var response = JsonConvert.DeserializeObject<Order>(dataString);
+
+            return response;
         }
 
-        public Order GetOrder(Guid Id)
+        async public Task<List<Order>> GetMyOrders(ApplicationUser user)
         {
-            return _orders.Where(x => x.BuyerId == Id).FirstOrDefault();
+            var context = _httpContextAccesor.HttpContext;
+            var token = await context.Authentication.GetTokenAsync("access_token");
+
+            _apiClient = new HttpClient();
+            _apiClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+            var ordersUrl = _remoteServiceBaseUrl;
+            var dataString = await _apiClient.GetStringAsync(ordersUrl);
+            var response = JsonConvert.DeserializeObject<List<Order>>(dataString);
+
+            return response; 
         }
 
-        public List<Order> GetOrders()
+        public Order MapUserInfoIntoOrder(ApplicationUser user, Order order)
         {
-            return _orders;
+            order.City = user.City;
+            order.Street = user.Street;
+            order.State = user.State;
+            order.Country = user.Country;
+
+            order.CardNumber = user.CardNumber;
+            order.CardHolderName = user.CardHolderName;
+            order.CardExpiration = new DateTime(int.Parse("20" + user.Expiration.Split('/')[1]),int.Parse(user.Expiration.Split('/')[0]), 1);
+            order.CardSecurityNumber = user.SecurityNumber;
+
+            return order;
+        }
+
+        async public Task CreateOrder(Order order)
+        {
+            var context = _httpContextAccesor.HttpContext;
+            var token = await context.Authentication.GetTokenAsync("access_token");
+
+            _apiClient = new HttpClient();
+            _apiClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+            var ordersUrl = $"{_remoteServiceBaseUrl}/new";
+            order.CardTypeId = 1;
+            order.CardExpirationApiFormat();
+            StringContent content = new StringContent(JsonConvert.SerializeObject(order), System.Text.Encoding.UTF8, "application/json");
+            
+            var response = await _apiClient.PostAsync(ordersUrl, content);
+
+            if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+                throw new Exception("Error creating order, try later");
+        }
+
+        public void OverrideUserInfoIntoOrder(Order original, Order destination)
+        {
+            destination.City = original.City;
+            destination.Street = original.Street;
+            destination.State = original.State;
+            destination.Country = original.Country;
+
+            destination.CardNumber = original.CardNumber;
+            destination.CardHolderName = original.CardHolderName;
+            destination.CardExpiration = original.CardExpiration;
+            destination.CardSecurityNumber = original.CardSecurityNumber;
         }
     }
 }
