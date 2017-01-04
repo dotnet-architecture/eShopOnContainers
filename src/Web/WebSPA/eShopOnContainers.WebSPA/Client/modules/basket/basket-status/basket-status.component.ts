@@ -31,7 +31,10 @@ export class BasketStatusComponent implements OnInit {
             });
 
         // Subscribe to Drop Basket Observable: 
-        this.basketDroppedSubscription = this.service.basketDroped$.subscribe(res => this.badge = 0);
+        this.basketDroppedSubscription = this.service.basketDroped$.subscribe(res => {
+            this.badge = 0;
+            console.log('dropped event fired');
+        });
 
         // Subscribe to login and logout observable
         this.authSubscription = this.authService.authenticationChallenge$.subscribe(res => {

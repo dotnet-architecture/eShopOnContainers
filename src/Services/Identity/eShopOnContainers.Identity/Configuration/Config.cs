@@ -88,7 +88,8 @@ namespace eShopOnContainers.Identity.Configuration
                     },
                     PostLogoutRedirectUris = new List<string>
                     {
-                        $"{clientsUrl["Mvc"]}/"
+                        $"{clientsUrl["Mvc"]}/", 
+                        "http://localhost:5100/"
                     },
                     AllowedScopes = new List<string>
                     {
