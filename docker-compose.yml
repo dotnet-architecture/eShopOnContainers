@@ -9,8 +9,6 @@ version: '2'
 services:
   webmvc:
     image: eshop/web
-    links:
-      - identity.service:localhost
     depends_on:
       - identity.service
       - basket.api
