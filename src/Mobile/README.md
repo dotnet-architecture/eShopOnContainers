@@ -4,16 +4,11 @@ eShopOnContainers is a reference app whose imagined purpose is to serve the mobi
 
 <img src="Images/eShopOnContainers_Architecture_Diagram.png" alt="eShopOnContainers" Width="800" />
 
-###Try it out:
-You can download and build the app's source as-is, preconfigured to consume our Azure service instance. 
-
 ###Supported platforms: iOS, Android and Windows
 
 ###The app architecture consists of two parts:
   1. A Xamarin.Forms mobile app for iOS, Android and Windows.
-  2. A .NET Web API-backed Entity Framework based Azure Mobile Service for data.
-
-**The Azure Mobile Service does not need to be deployed by you.** There is already an instance of the service up and running in Azure, and the mobile app is configured by default to consume that service instance. We've included the code for the service so that you may run your own service instance on Azure if you'd like. 
+  2. Several .NET Web API microservices deployed as Docker containers.
 
 ##Xamarin.Forms App (eShopOnContainers)
 

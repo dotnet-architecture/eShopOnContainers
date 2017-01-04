@@ -49,7 +49,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label asp-for="CardNumber" class="esh-orders_new-title">Card number</label>
-                        <input asp-for="CardNumber" class="form-control form-input" type="text" placeholder="000000000"/>
+                        <input asp-for="CardNumber" class="form-control form-input" type="text" placeholder="000000000000000"/>
                         <span asp-validation-for="CardNumber" class="alert alert-danger" />
                     </div>
                 </div>
@@ -63,14 +63,14 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label asp-for="CardExpirationShort" class="esh-orders_new-title">Expiration date</label>
-                        <input asp-for="CardExpirationShort" class="form-control form-input" type="text" placeholder="00/00"/>
+                        <input asp-for="CardExpirationShort" class="form-control form-input form-input-medium" type="text" placeholder="MM/YY"/>
                         <span asp-validation-for="CardExpirationShort" class="alert alert-danger" />
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label asp-for="CardSecurityNumber" class="esh-orders_new-title">Security code</label>
-                        <input asp-for="CardSecurityNumber" class="form-control form-input" type="text" placeholder="000"/>
+                        <input asp-for="CardSecurityNumber" class="form-control form-input form-input-small" type="text" placeholder="000"/>
                         <span asp-validation-for="CardSecurityNumber" class="alert alert-danger" />
                     </div>
                 </div>
