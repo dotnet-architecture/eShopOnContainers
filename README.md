@@ -72,6 +72,9 @@ In the global directory you will find the scripts needed to build, deploy and ru
 
 ### Compile the .NET apps and Build the Docker images
 - Open a PowerShell window in Windows, move to the root folder of your solution and run the <b>build-images.ps1</b> script file like in the following screenshot.
+
+<b>IMPORTANT</b>: This script deletes all the Docker images in your dev machine before creating the new images, so it is starting from a clean state. If you don't want your local images in your PC to be deleted, edit and change the <b>build-images.ps1</b> script file before you run it.
+
 - This Power-Shell script that you will find in the <u>root directory of the solution</u> is responsible for building the .NET applications, copy the binaries in a pub folder and use Docker CLI commands to build the custom Docker images needed to run the containers. You can see how to run that PowerShell script in the screenshot below:
 <img src="img/Generating_Docker_Images.png">
 
