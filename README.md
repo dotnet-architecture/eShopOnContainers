@@ -111,6 +111,10 @@ Once the deploy process of docker-compose finishes you should be able to access 
 - ASP.NET Identity database (SQL Server): Server=localhost,5433;Database=aspnet-Microsoft.eShopOnContainers;User Id=sa;Password=Pass@word
 - Basket data (Redis): listening at localhost:6379
 
+To test the microservices deployed in local Docker in a Xamarin App it is necessary to add the IP address of the development machine in the Settings section of the App. In addition, is neccesary to open the port where you want to access the docker service in the local firewall.
+
+<img src="img/xamarin-settings.png">
+
 #### Trying the WebMVC application with the DemoUser@microsoft.com user account
 When you try the WebMVC application by using the url •Web MVC: http://localhost:5100, you'll be able to test the home page which is also the catalog page. But when trying to add any article to the basket you will get redirected to the login page which is handled by the STS microservice (Security Token Service). At this point, you could register your own user/customer or you can also use the a convenient default user/customer named DemoUser@microsoft.com so you don't need to register and it'll be faster.
 The credentials are:
