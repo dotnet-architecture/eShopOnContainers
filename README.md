@@ -104,35 +104,40 @@ You can see the 6 custom containers running the microservices plus the 2 web app
 
 ### Test the applications and microservices
 Once the deploy process of docker-compose finishes you should be able to access the services in the following URLs or connection string, from your dev machine:
-- Web MVC: http://localhost:5100
-- Web Spa: http://localhost:5104 (Important, check how to set up the SPA app and requirements before building the Docker images. Instructions at  https://github.com/dotnet/eShopOnContainers/tree/master/src/Web/WebSPA/eShopOnContainers.WebSPA or the README.MD from eShopOnContainers/src/Web/WebSPA/eShopOnContainers.WebSPA)
-- Catalog microservice: http://localhost:5101 (Not secured)
-- Ordering microservice: http://localhost:5102  (Requires token for authorization)
-- Basket microservice: http://localhost:5103 (Requires token for authorization)
-- Identity microservice: http://localhost:5105
-- Orders database (SQL Server): Server=tcp:localhost,5432;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word;
-- Catalog database (SQL Server): Server=tcp:localhost,5434;Database=CatalogDB;User Id=sa;Password=Pass@word
-- ASP.NET Identity database (SQL Server): Server=localhost,5433;Database=aspnet-Microsoft.eShopOnContainers;User Id=sa;Password=Pass@word
+
+<a href="" target="top"></a>
+- Web MVC: <a href="http://localhost:5100" target="top">http://localhost:5100</a>
+- Web Spa: <a href="http://localhost:5104" target="top">http://localhost:5104</a> (Important, check how to set up the SPA app and requirements before building the Docker images. Instructions at  https://github.com/dotnet/eShopOnContainers/tree/master/src/Web/WebSPA/eShopOnContainers.WebSPA or the README.MD from eShopOnContainers/src/Web/WebSPA/eShopOnContainers.WebSPA)
+- Catalog microservice: <a href="http://localhost:5101" target="top">http://localhost:5101</a> (Not secured)
+- Ordering microservice: <a href="http://localhost:5102" target="top">http://localhost:5102</a> (Requires token for authorization)
+- Basket microservice: <a href="http://localhost:5103" target="top">http://localhost:5103</a> (Requires token for authorization)
+- Identity microservice: <a href="http://localhost:5105" target="top">http://localhost:5105</a>
+- Orders database (SQL Server connection string): Server=tcp:localhost,5432;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word;
+- Catalog database (SQL Server connection string): Server=tcp:localhost,5434;Database=CatalogDB;User Id=sa;Password=Pass@word
+- ASP.NET Identity database (SQL Server connection string): Server=localhost,5433;Database=aspnet-Microsoft.eShopOnContainers;User Id=sa;Password=Pass@word
 - Basket data (Redis): listening at localhost:6379
-
-To test the microservices deployed in local Docker in a Xamarin App it is necessary to add the IP address of the development machine in the Settings section of the App. In addition, is neccesary to open the port where you want to access the docker service in the local firewall.
-
-<img src="img/xamarin-settings.png">
-
-#### Trying the WebMVC application with the DemoUser@microsoft.com user account
-When you try the WebMVC application by using the url •Web MVC: http://localhost:5100, you'll be able to test the home page which is also the catalog page. But when trying to add any article to the basket you will get redirected to the login page which is handled by the STS microservice (Security Token Service). At this point, you could register your own user/customer or you can also use the a convenient default user/customer named DemoUser@microsoft.com so you don't need to register and it'll be faster.
-The credentials are:
+ 
+#### Trying the Web MVC application with the DemoUser@microsoft.com user account
+When you try the Web MVC application by using the url http://localhost:5100, you'll be able to test the home page which is also the catalog page. But when trying to add any article to the basket you will get redirected to the login page which is handled by the STS microservice (Security Token Service). At this point, you could register your own user/customer or you can also use a convenient default user/customer named DemoUser@microsoft.com so you don't need to register your own user and it'll be easier to test.
+The credentials for this demo user are:
 - User: demouser@microsoft.com
 - Password: Pass@word1
 
 Below you can see the login page when providing those credentials.
 <img src="img/login-demo-user.png">
 
-### Deploying individiual services into docker
+#### Trying the Xamarin.Forms mobile apps for Android, iOS and Windows
+By default, this app shows fake data from mock-services. In order to really access the microservices/containers in Docker from the mobile app, you need to:
+ - Disable mock-services in the Xamarin app by setting the <b>UseMockServices = false</b> in the App.xaml.cs and specify the host IP in  BaseEndpoint = "http://10.106.144.28" at the GlobalSettings.cs. Both files in the Xamarin.Forms project (PCL).
+ - Another alternative is to change that IP through the app UI, by modifying the IP address in the Settings page of the App as shown in the screenshot below. 
+- In addition, you need to make sure that the used TCP ports of the services are open in the local firewall. <img src="img/xamarin-settings.png">
+
+
+### Deploying individiual services into Docker
 Under each project root you will find a readme.md file which describes how to run and deploy the service individually into a docker host.
 
 > ### Note on Windows Containers
-> As mentioned, the development and testing of this project was done on Docker Linux containers running in development machines with "Docker for Windows" and the default Hyper-V Linux VM (MobiLinuxVM) installed by "Docker for Windows". 
+> As mentioned, the development and testing of this project (January 2017 version) was done on Docker Linux containers running in development machines with "Docker for Windows" and the default Hyper-V Linux VM (MobiLinuxVM) installed by "Docker for Windows". 
 In order to run the application on Windows Containers you'd need to change the base images used by each container:
 > - Official .NET Core base-image for Windows Containers, at Docker Hub: https://hub.docker.com/r/microsoft/dotnet/ (Using the Windows Nanoserver tag)
 > - Official base-image for SQL Server on Windows Containers, at Docker Hub: https://hub.docker.com/r/microsoft/mssql-server-windows
