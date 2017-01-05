@@ -4,7 +4,7 @@ Sample .NET Core reference application, powered by Microsoft, based on a simplif
 <img src="img/eshop_logo.png">
 <img src="img/eShopOnContainers_Architecture_Diagram.png">
 <p>
-<b>IMPORTANT NOTE</b>: In this solution, the SQL databases are automatically deployed with sample data into a single SQL Server for Linux container (a single shared Docker container) so the whole solution can be up and running without any dependency in the cloud or server. A similar case is defined in regards Redis cache running as a container. However, in a real production environment it is recommended to have persistance (SQL Server and Redis) in HA services like Azure SQL Database, Redis as a service or any other clustering system. If you want to configure this solution like that, you'll just need to change the connection strings.
+<b>IMPORTANT NOTE</b>: In this solution, the SQL databases are automatically deployed with sample data into a single SQL Server for Linux container (a single shared Docker container) so the whole solution can be up and running without any dependency in the cloud or server. A similar case is defined in regards Redis cache running as a container. However, in a real production environment it is recommended to have persistance (SQL Server and Redis) in HA services like Azure SQL Database, Redis as a service or any other clustering system. If you want to configure this solution like that, you'll just need to change the connection strings once you have set up the servers in the cloud or on-premises.
 
 ## Overview
 In this repo you can find a sample reference application that will help you to understand how to implement a microservice architecture based application using <b>.NET Core</b> and <b>Docker</b>.
@@ -73,7 +73,7 @@ In the global directory you will find the scripts needed to build, deploy and ru
 ### Compile the .NET apps and Build the Docker images
 - Open a PowerShell window in Windows, move to the root folder of your solution and run the <b>build-images.ps1</b> script file like in the following screenshot.
 
-<b>IMPORTANT</b>: This script deletes all the Docker images in your dev machine before creating the new images, so it is starting from a clean state. If you don't want your local images in your PC to be deleted, edit and change the <b>build-images.ps1</b> script file before you run it.
+<b>IMPORTANT</b>: This script deletes all the Docker images registered in your local dev machine repository before creating the new images, so it is starting from a 100% clean state. If you don't want your local images in your PC to be deleted, edit and change the <b>build-images.ps1</b> script file before you run it.
 
 - This Power-Shell script that you will find in the <u>root directory of the solution</u> is responsible for building the .NET applications, copy the binaries in a pub folder and use Docker CLI commands to build the custom Docker images needed to run the containers. You can see how to run that PowerShell script in the screenshot below:
 <img src="img/Generating_Docker_Images.png">
@@ -98,10 +98,9 @@ The next time you run docker-compose up, since it'll have those base images alre
 You can see the 6 custom containers running the microservices plus the 2 web applications. In adition you have the containers with the SQL databases and the Redis cache for the basket microservice data.
 
 
-#### IMPORTANT: Modify your local "hosts" file by setting an IP related to the identity.service network name
-- Due to the fact that when trying to authenticate against the STS (Security Token Service) container the browser is redirected to it from outside the docker host (your browser in your PC), it needs to have an IP reachable from outside the Docker Host. Therefore you need to add an entry like `10.0.75.1 identity.service` or `127.0.0.1 identity.service` to your <b>hosts</b> file in your local dev machine.
-- If you don't want to hassle with it, just run the PowerShell script named `add-host-entry.ps1` from the solution root folder.
-- If the STS were running in an external IP in a server, in the Internet or in any cloud like Azure, since that IP is reachable from anywhere, you wouldn't need to configure your hosts file. However, that IP would need to be updated into your docker-compose.yml file, in the identity.service URLs. 
+#### IMPORTANT: Open ports in Firewall so Authentication to the STS (Security Token Service container) can be done through the 10.0.75.1 IP which should be available and already setup by Docker
+- You can manually create a rule in your local firewall in your development machine or you can also create that rule by just executing the <b>add-firewall-docker.ps1</b> script in the solution's root. 
+- Basically, you need to open the ports 5100 to 5105 that are used by the solution.
 
 ### Test the applications and microservices
 Once the deploy process of docker-compose finishes you should be able to access the services in the following URLs or connection string, from your dev machine:
