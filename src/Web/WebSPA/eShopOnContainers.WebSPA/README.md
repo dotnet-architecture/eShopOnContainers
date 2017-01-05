@@ -5,7 +5,7 @@
 
 
 ### Install NPM
-The SPA application is using a newer version of NPM than the one provided by Visual Studio 2015 (npm 2.7.4 currently), so you need to install the latest stable version of NPM,like npm .
+The SPA application is using a newer version of NPM than the one provided by Visual Studio 2015 (npm 2.7.4 currently), so you need to install the latest stable version of NPM.
 
 NPM is bundled with NODE.JS. Installing NPM and NODE is pretty straightforward by using the installer package available at https://nodejs.org/en/
 

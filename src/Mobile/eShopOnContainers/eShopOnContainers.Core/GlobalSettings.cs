@@ -8,7 +8,7 @@
         public GlobalSetting()
         {
             AuthToken = "INSERT AUTHENTICATION TOKEN";
-            BaseEndpoint = "http://13.88.8.119";
+            BaseEndpoint = "http://10.106.144.28";
         }
 
         public static GlobalSetting Instance
