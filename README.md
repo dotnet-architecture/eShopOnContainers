@@ -3,6 +3,8 @@ Sample .NET Core reference application, powered by Microsoft, based on a simplif
 
 <img src="img/eshop_logo.png">
 <img src="img/eShopOnContainers_Architecture_Diagram.png">
+<p>
+<b>IMPORTANT NOTE</b>: In this solution, the SQL databases are automatically deployed with sample data into a single SQL Server for Linux container (a single shared Docker container) so the whole solution can be up and running without any dependency in the cloud or server. A similar case is defined in regards Redis cache running as a container. However, in a real production environment it is recommended to have persistance (SQL Server and Redis) in HA services like Azure SQL Database, Redis as a service or any other clustering system. If you want to configure this solution like that, you'll just need to change the connection strings.
 
 ## Overview
 In this repo you can find a sample reference application that will help you to understand how to implement a microservice architecture based application using <b>.NET Core</b> and <b>Docker</b>.
