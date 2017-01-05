@@ -111,7 +111,7 @@ namespace eShopOnContainers.Core.ViewModels
             // Update Basket
             var basket = await _basketService.GetBasketAsync(userInfo.UserId, authToken);
 
-            if (basket != null && basket.Items.Any())
+            if (basket != null && basket.Items != null && basket.Items.Any())
             {
                 MessagingCenter.Send(this, MessengerKeys.UpdateBasket, basket.Items);
             }

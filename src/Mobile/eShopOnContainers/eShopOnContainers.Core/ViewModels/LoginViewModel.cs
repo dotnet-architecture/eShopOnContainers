@@ -131,6 +131,8 @@ namespace eShopOnContainers.Core.ViewModels
 
         public ICommand NavigateCommand => new Command<string>(NavigateAsync);
 
+        public ICommand SettingsCommand => new Command(SettingsAsync);
+
         public override Task InitializeAsync(object navigationData)
         {
             if(navigationData is LogoutParameter)
@@ -236,6 +238,11 @@ namespace eShopOnContainers.Core.ViewModels
                     }
                 }
             }
+        }
+
+        private async void SettingsAsync()
+        {
+            await NavigationService.NavigateToAsync<SettingsViewModel>();
         }
 
         private bool Validate()

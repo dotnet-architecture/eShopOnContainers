@@ -70,6 +70,8 @@ namespace eShopOnContainers.Core.Services.Order
 
             if (!string.IsNullOrEmpty(token))
             {
+                newOrder.OrderNumber = string.Format("{0}", MockOrders.Count + 1);
+
                 MockOrders.Insert(0, newOrder);
             }
         }
@@ -79,7 +81,11 @@ namespace eShopOnContainers.Core.Services.Order
             await Task.Delay(500);
 
             if (!string.IsNullOrEmpty(token))
-                return MockOrders.ToObservableCollection();
+            {
+                return MockOrders
+                    .OrderByDescending(o => o.OrderNumber)
+                    .ToObservableCollection();
+            }
             else
                 return new ObservableCollection<Models.Orders.Order>();
         }

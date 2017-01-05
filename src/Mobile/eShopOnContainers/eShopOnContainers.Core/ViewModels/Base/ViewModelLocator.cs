@@ -14,6 +14,8 @@ using System.Collections.Generic;
 using eShopOnContainers.Core.Models.Basket;
 using eShopOnContainers.Core.Models.Catalog;
 using eShopOnContainers.Core.ViewModels.Base;
+using eShopOnContainers.Core.Helpers;
+using eShopOnContainers.Core;
 
 namespace eShopOnContainers.ViewModels.Base
 {
@@ -63,13 +65,15 @@ namespace eShopOnContainers.ViewModels.Base
 
         public void UpdateDependencies(bool useMockServices)
         {
-            // Change injected dpendencies
+            // Change injected dependencies
             if (useMockServices)
             {
                 _unityContainer.RegisterInstance<ICatalogService>(new CatalogMockService());
                 _unityContainer.RegisterInstance<IBasketService>(new BasketMockService());
                 _unityContainer.RegisterInstance<IOrderService>(new OrderMockService());
                 _unityContainer.RegisterInstance<IUserService>(new UserMockService());
+
+                Settings.AuthAccessToken = GlobalSetting.Instance.AuthToken;
 
                 UseMockService = true;
             }
