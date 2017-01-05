@@ -32,7 +32,7 @@ The app was also partially tested on "Docker for Mac" using a development MacOS 
 
 
 ## Development Environment Setup
-### Requirements for Dec. 2016 version of eShopOnContainers
+### Requirements for January 2016 version of eShopOnContainers
 
 WINDOWS DEV MACHINE
 - Visual Studio 2015 with latest Update
@@ -49,8 +49,8 @@ MAC DEV MACHINE
 ### Installing and configuring Docker in your development machine
 
 #### Set needed assigned Memory and CPU to Docker
-In this application (January 2017 version) we run 1 instance of SQL Server running as a container plus 6 ASP.NET Core apps/services and 1 Redis server all of them running as Docker containers. So, especially because of SQL Server requirements on memory, it is important to set Docker up properly with enough memory RAM and CPU assigned to it or you will get difficult errors when starting the containers with "docker-compose up". 
-Once Docker for Windows/Mac is installed in your machine, enter into its Settings and the Advanced menu option so you are able to adjust it to the new values (Memory: Around 6GB and CPU:4) as shown in the image. Usually you might need a 16GB or 12GB memory machine for this configuration. If you have a less powerful machine, you can try with a lower configuration and/or by not starting certain containers like the basket and Redis. But if you don't start all the containers, the application will not fully function properly, of course. 
+In this application (January 2017 version) we run 1 instance of SQL Server running as a container with multiple databases (one DB per microservice), plus 6 ASP.NET Core apps/services and 1 Redis server, all of them running as Docker containers. So, especially because of SQL Server requirements on memory, it is important to set Docker up properly with enough memory RAM and CPU assigned to it or you will get difficult errors when starting the containers with "docker-compose up". 
+Once Docker for Windows/Mac is installed in your machine, enter into its Settings and the Advanced menu option so you are able to adjust it to the minimum amount of memory and CPU (Memory: Around 4096MB and CPU:3) as shown in the image. Usually you might need a 16GB memory machine for this configuration if you also want to run the Android emulator for the Xamarin app at the same time. If you have a less powerful machine, you can try with a lower configuration and/or by not starting certain containers like the basket and Redis. But if you don't start all the containers, the application will not fully function properly, of course. 
 
 <img src="img/docker_settings.png">
 
@@ -88,22 +88,23 @@ You can deploy Docker containers to a regularDocker host either by using the `do
 The next time you run docker-compose up, since it'll have those base images already pulled/downloaded, it will just start the containers, like in the following screenshot:
 <img src="img/docker-compose-up-2.png">
 
-- <b>Check out the containers running in your Docker host</b>:Once docker-compose up finishes after a few minutes, you will have that PowerShell showing the execution's output in a "wait state", so in order to ask to Docker about "how it went" and see what containers are running, you need to open a second PowerShell window and type "docker ps" so you'll see all the running containers, as shown in the following screenshot.
+- <b>Check out the containers running in your Docker host</b>: Once docker-compose up finishes after a few minutes, you will have that PowerShell showing the execution's output in a "wait state", so in order to ask to Docker about "how it went" and see what containers are running, you need to open a second PowerShell window and type "docker ps" so you'll see all the running containers, as shown in the following screenshot.
 <img src="img/docker-ps-with-all-microservices.png"> 
 You can see the 6 custom containers running the microservices plus the 2 web applications. In adition you have the containers with the SQL databases and the Redis cache for the basket microservice data.
 
-### Test the application and the microservices
+
 #### IMPORTANT: Modify your local "hosts" file by setting an IP related to the identity.service network name
 - Due to the fact that when trying to authenticate against the STS (Security Token Service) container the browser is redirected to it from outside the docker host (your browser in your PC), it needs to have an IP reachable from outside the Docker Host. Therefore you need to add an entry like `10.0.75.1 identity.service` or `127.0.0.1 identity.service` to your <b>hosts</b> file in your local dev machine.
 - If you don't want to hassle with it, just run the PowerShell script named `add-host-entry.ps1` from the solution root folder.
 - If the STS were running in an external IP in a server, in the Internet or in any cloud like Azure, since that IP is reachable from anywhere, you wouldn't need to configure your hosts file. However, that IP would need to be updated into your docker-compose.yml file, in the identity.service URLs. 
-#### Test the applications and microservices 
+
+### Test the applications and microservices
 Once the deploy process of docker-compose finishes you should be able to access the services in the following URLs or connection string, from your dev machine:
 - Web MVC: http://localhost:5100
-- Web Spa: http://localhost:5104
-- Catalog microservice: http://localhost:5101
-- Ordering microservice: http://localhost:5102
-- Basket microservice: http://localhost:5103
+- Web Spa: http://localhost:5104 (Important, check how to set up the SPA app and requirements before building the Docker images. Instructions at  https://github.com/dotnet/eShopOnContainers/tree/master/src/Web/WebSPA/eShopOnContainers.WebSPA or the README.MD from eShopOnContainers/src/Web/WebSPA/eShopOnContainers.WebSPA)
+- Catalog microservice: http://localhost:5101 (Not secured)
+- Ordering microservice: http://localhost:5102  (Requires token for authorization)
+- Basket microservice: http://localhost:5103 (Requires token for authorization)
 - Identity microservice: http://localhost:5105
 - Orders database (SQL Server): Server=tcp:localhost,5432;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word;
 - Catalog database (SQL Server): Server=tcp:localhost,5434;Database=CatalogDB;User Id=sa;Password=Pass@word
