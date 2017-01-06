@@ -1,5 +1,5 @@
 # eShopOnContainers - Microservices Architecture and Containers based Reference Application (**ALPHA state**)
-Sample .NET Core reference application, powered by Microsoft, based on a simplified microservices architecture and Docker containers. It is cross-platform thanks to .NET Core services capable of running on Linux or Windows containers depending on your Docker host. 
+Sample .NET Core reference application, powered by Microsoft, based on a simplified microservices architecture and Docker containers. <p>It is cross-platform either in the server and client side, thanks to .NET Core services capable of running on Linux or Windows containers depending on your Docker host, and to Xamarin for mobile apps running on Android, iOS or Windows/UWP plus any browser for the client web apps. 
 
 <img src="img/eshop_logo.png">
 <img src="img/eShopOnContainers_Architecture_Diagram.png">
