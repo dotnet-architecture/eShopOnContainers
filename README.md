@@ -4,31 +4,35 @@ Sample .NET Core reference application, powered by Microsoft, based on a simplif
 <img src="img/eshop_logo.png">
 <img src="img/eShopOnContainers_Architecture_Diagram.png">
 <p>
-<b>IMPORTANT NOTE</b>: In this solution, the SQL databases are automatically deployed with sample data into a single SQL Server for Linux container (a single shared Docker container) so the whole solution can be up and running without any dependency in the cloud or server. A similar case is defined in regards Redis cache running as a container. However, in a real production environment it is recommended to have persistance (SQL Server and Redis) in HA services like Azure SQL Database, Redis as a service or any other clustering system. If you want to configure this solution like that, you'll just need to change the connection strings once you have set up the servers in the cloud or on-premises.
+<b>IMPORTANT NOTE</b>: In this solution, the SQL databases are automatically deployed with sample data into a single SQL Server for Linux container (a single shared Docker container for SQL databases) so the whole solution can be up and running without any dependency in the cloud or server. A similar case is defined in regards Redis cache running as a container. However, in a real production environment it is recommended to have persistance (SQL Server and Redis) in HA services like Azure SQL Database, Redis as a service or any other clustering system. If you want to configure this solution like that, you'll just need to change the connection strings once you have set up the servers in the cloud or on-premises.
 
 ## Overview
 In this repo you can find a sample reference application that will help you to understand how to implement a microservice architecture based application using <b>.NET Core</b> and <b>Docker</b>.
 
 The example business domain or scenario is based on an eShop or eCommerce which is implemented as a multi-container application. Each container is a microservice deployment (like the basket-microservice, catalog-microservice, ordering-microservice and the  identity-microservice) which are developed using ASP.NET Core running on .NET Core so they can run either on Linux Containers and Windows Containers.
 The screenshot below shows the VS Solution structure for those microservices/containers and client apps.
+- Open <b>eShopOnContainers.sln</b> for a solution containing all the projects (All client apps and services).
+- Open <b>eShopOnContainers-ServicesAndWebApps.sln</b> for a solution containing just the server-side projects related to the microservices and web applications.
+- Open <b>eShopOnContainers-MobileApps.sln</b> for a solution containing just the client mobile app projects (Xamarin mobile apps only).
+
 
 <img src="img/vs-solution-structure.png">
 
 Finally, those microservices are consumed by multiple client web and mobile apps, as described below.
 
-<b>*MVC Application (ASP.NET Core)*</b>: Its an MVC 6 development where you can find interesting scenarios on how to consume HTTP-based microservices from C# running in the server side, as it is a typical ASP.NET Core MVC application. 
+<b>*MVC Application (ASP.NET Core)*</b>: Its an MVC 6 application where you can find interesting scenarios on how to consume HTTP-based microservices from C# running in the server side, as it is a typical ASP.NET Core MVC application. Since it is a server-side application, access to other containers/microservices is done within the internal Docker Host network with its internal name resolution.
 <img src="img/eshop-webmvc-app-screenshot.png">
 
-<b>*SPA (Single Page Application)*</b>: Developed with Angular.js 2, Typescript and ASP.NET Core MVC 6. This is another approach for client web applications to be used when you want to have a more modern behavior which is not having the typical browser round-trip on every action but behaving like a Single-Page-Application, more similar to a desktop app behavior. The consumption of the HTTP-based microservices is done from TypeScript/JavaScript, in this case. 
+<b>*SPA (Single Page Application)*</b>: Developed with Angular 2, Typescript and ASP.NET Core MVC 6. This is another approach for client web applications to be used when you want to have a more modern behavior which is not behaving with the typical browser round-trip on every action but behaving like a Single-Page-Application which is more similar to a desktop app experience. The consumption of the HTTP-based microservices is done from TypeScript/JavaScript in the client browser, so out of the Docker Host internal network (Like from your network or even from the Internet). 
 -  <<<<< TBD Image for SPA App >>>>>
 
-<b>*Xamarin Mobile App (For iOS, Android and Windows/UWP)*</b>: It is a client mobile app supporting the most common OS platforms (iOS, Android and Windows/UWP). In this case, the consumption of the microservices is done from C# but running on the client devices, so out of the Docker Host.
+<b>*Xamarin Mobile App (For iOS, Android and Windows/UWP)*</b>: It is a client mobile app supporting the most common mobilee OS platforms (iOS, Android and Windows/UWP). In this case, the consumption of the microservices is done from C# but running on the client devices, so out of the Docker Host internal network (Like from your network or even the Internet).
 
 <img src="img/xamarin-mobile-App.png">
 
 > ### Note on tested Docker Containers/Images
 > The development and testing of this project was (as of January 2017) done <b>only on Docker Linux containers</b> running in development machines with "Docker for Windows" and the default Hyper-V Linux VM (MobiLinuxVM) installed by "Docker for Windows". 
-The <b>Windows Containers scenario has not been tested</b>, but the application should be able to run on Windows Containers, as well, as the .NET Core services have also been tested running on plain Windows (with no Docker).
+The <b>Windows Containers scenario has not been implemented/tested yet</b>, but the application should be able to run on Windows Containers based on different Docker base images, as well, as the .NET Core services have also been tested running on plain Windows (with no Docker).
 The app was also partially tested on "Docker for Mac" using a development MacOS machine with .NET Core and VS Code installed. However, that is still a scenario using Linux containers running on the VM setup in the Mac by the "Docker for Windows" setup.
  
 
