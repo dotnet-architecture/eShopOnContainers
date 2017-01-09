@@ -1,32 +1,38 @@
 # eShopOnContainers - Microservices Architecture and Containers based Reference Application (**ALPHA state**)
-Sample .NET Core reference application, powered by Microsoft, based on a simplified microservices architecture and Docker containers. It is cross-platform thanks to .NET Core services capable of running on Linux or Windows containers depending on your Docker host. 
+Sample .NET Core reference application, powered by Microsoft, based on a simplified microservices architecture and Docker containers. <p>It is cross-platform either in the server and client side, thanks to .NET Core services capable of running on Linux or Windows containers depending on your Docker host, and to Xamarin for mobile apps running on Android, iOS or Windows/UWP plus any browser for the client web apps. 
 
 <img src="img/eshop_logo.png">
 <img src="img/eShopOnContainers_Architecture_Diagram.png">
+<p>
+<b>IMPORTANT NOTE</b>: In this solution, the SQL databases are automatically deployed with sample data into a single SQL Server for Linux container (a single shared Docker container for SQL databases) so the whole solution can be up and running without any dependency in the cloud or server. A similar case is defined in regards Redis cache running as a container. However, in a real production environment it is recommended to have persistance (SQL Server and Redis) in HA services like Azure SQL Database, Redis as a service or any other clustering system. If you want to configure this solution like that, you'll just need to change the connection strings once you have set up the servers in the cloud or on-premises.
 
 ## Overview
 In this repo you can find a sample reference application that will help you to understand how to implement a microservice architecture based application using <b>.NET Core</b> and <b>Docker</b>.
 
 The example business domain or scenario is based on an eShop or eCommerce which is implemented as a multi-container application. Each container is a microservice deployment (like the basket-microservice, catalog-microservice, ordering-microservice and the  identity-microservice) which are developed using ASP.NET Core running on .NET Core so they can run either on Linux Containers and Windows Containers.
 The screenshot below shows the VS Solution structure for those microservices/containers and client apps.
+- Open <b>eShopOnContainers.sln</b> for a solution containing all the projects (All client apps and services).
+- Open <b>eShopOnContainers-ServicesAndWebApps.sln</b> for a solution containing just the server-side projects related to the microservices and web applications.
+- Open <b>eShopOnContainers-MobileApps.sln</b> for a solution containing just the client mobile app projects (Xamarin mobile apps only).
+
 
 <img src="img/vs-solution-structure.png">
 
 Finally, those microservices are consumed by multiple client web and mobile apps, as described below.
 
-<b>*MVC Application (ASP.NET Core)*</b>: Its an MVC 6 development where you can find interesting scenarios on how to consume HTTP-based microservices from C# running in the server side, as it is a typical ASP.NET Core MVC application. 
+<b>*MVC Application (ASP.NET Core)*</b>: Its an MVC 6 application where you can find interesting scenarios on how to consume HTTP-based microservices from C# running in the server side, as it is a typical ASP.NET Core MVC application. Since it is a server-side application, access to other containers/microservices is done within the internal Docker Host network with its internal name resolution.
 <img src="img/eshop-webmvc-app-screenshot.png">
 
-<b>*SPA (Single Page Application)*</b>: Developed with Angular.js 2, Typescript and ASP.NET Core MVC 6. This is another approach for client web applications to be used when you want to have a more modern behavior which is not having the typical browser round-trip on every action but behaving like a Single-Page-Application, more similar to a desktop app behavior. The consumption of the HTTP-based microservices is done from TypeScript/JavaScript, in this case. 
+<b>*SPA (Single Page Application)*</b>: Developed with Angular 2, Typescript and ASP.NET Core MVC 6. This is another approach for client web applications to be used when you want to have a more modern behavior which is not behaving with the typical browser round-trip on every action but behaving like a Single-Page-Application which is more similar to a desktop app experience. The consumption of the HTTP-based microservices is done from TypeScript/JavaScript in the client browser, so out of the Docker Host internal network (Like from your network or even from the Internet). 
 -  <<<<< TBD Image for SPA App >>>>>
 
-<b>*Xamarin Mobile App (For iOS, Android and Windows/UWP)*</b>: It is a client mobile app supporting the most common OS platforms (iOS, Android and Windows/UWP). In this case, the consumption of the microservices is done from C# but running on the client devices, so out of the Docker Host.
+<b>*Xamarin Mobile App (For iOS, Android and Windows/UWP)*</b>: It is a client mobile app supporting the most common mobilee OS platforms (iOS, Android and Windows/UWP). In this case, the consumption of the microservices is done from C# but running on the client devices, so out of the Docker Host internal network (Like from your network or even the Internet).
 
 <img src="img/xamarin-mobile-App.png">
 
 > ### Note on tested Docker Containers/Images
 > The development and testing of this project was (as of January 2017) done <b>only on Docker Linux containers</b> running in development machines with "Docker for Windows" and the default Hyper-V Linux VM (MobiLinuxVM) installed by "Docker for Windows". 
-The <b>Windows Containers scenario has not been tested</b>, but the application should be able to run on Windows Containers, as well, as the .NET Core services have also been tested running on plain Windows (with no Docker).
+The <b>Windows Containers scenario has not been implemented/tested yet</b>, but the application should be able to run on Windows Containers based on different Docker base images, as well, as the .NET Core services have also been tested running on plain Windows (with no Docker).
 The app was also partially tested on "Docker for Mac" using a development MacOS machine with .NET Core and VS Code installed. However, that is still a scenario using Linux containers running on the VM setup in the Mac by the "Docker for Windows" setup.
  
 
@@ -70,6 +76,9 @@ In the global directory you will find the scripts needed to build, deploy and ru
 
 ### Compile the .NET apps and Build the Docker images
 - Open a PowerShell window in Windows, move to the root folder of your solution and run the <b>build-images.ps1</b> script file like in the following screenshot.
+
+<b>IMPORTANT</b>: This script deletes all the Docker images registered in your local dev machine repository before creating the new images, so it is starting from a 100% clean state. If you don't want your local images in your PC to be deleted, edit and change the <b>build-images.ps1</b> script file before you run it.
+
 - This Power-Shell script that you will find in the <u>root directory of the solution</u> is responsible for building the .NET applications, copy the binaries in a pub folder and use Docker CLI commands to build the custom Docker images needed to run the containers. You can see how to run that PowerShell script in the screenshot below:
 <img src="img/Generating_Docker_Images.png">
 
@@ -93,38 +102,46 @@ The next time you run docker-compose up, since it'll have those base images alre
 You can see the 6 custom containers running the microservices plus the 2 web applications. In adition you have the containers with the SQL databases and the Redis cache for the basket microservice data.
 
 
-#### IMPORTANT: Modify your local "hosts" file by setting an IP related to the identity.service network name
-- Due to the fact that when trying to authenticate against the STS (Security Token Service) container the browser is redirected to it from outside the docker host (your browser in your PC), it needs to have an IP reachable from outside the Docker Host. Therefore you need to add an entry like `10.0.75.1 identity.service` or `127.0.0.1 identity.service` to your <b>hosts</b> file in your local dev machine.
-- If you don't want to hassle with it, just run the PowerShell script named `add-host-entry.ps1` from the solution root folder.
-- If the STS were running in an external IP in a server, in the Internet or in any cloud like Azure, since that IP is reachable from anywhere, you wouldn't need to configure your hosts file. However, that IP would need to be updated into your docker-compose.yml file, in the identity.service URLs. 
+#### IMPORTANT: Open ports in Firewall so Authentication to the STS (Security Token Service container) can be done through the 10.0.75.1 IP which should be available and already setup by Docker
+- You can manually create a rule in your local firewall in your development machine or you can also create that rule by just executing the <b>add-firewall-docker.ps1</b> script in the solution's root. 
+- Basically, you need to open the ports 5100 to 5105 that are used by the solution.
 
 ### Test the applications and microservices
 Once the deploy process of docker-compose finishes you should be able to access the services in the following URLs or connection string, from your dev machine:
-- Web MVC: http://localhost:5100
-- Web Spa: http://localhost:5104 (Important, check how to set up the SPA app and requirements before building the Docker images. Instructions at  https://github.com/dotnet/eShopOnContainers/tree/master/src/Web/WebSPA/eShopOnContainers.WebSPA or the README.MD from eShopOnContainers/src/Web/WebSPA/eShopOnContainers.WebSPA)
-- Catalog microservice: http://localhost:5101 (Not secured)
-- Ordering microservice: http://localhost:5102  (Requires token for authorization)
-- Basket microservice: http://localhost:5103 (Requires token for authorization)
-- Identity microservice: http://localhost:5105
-- Orders database (SQL Server): Server=tcp:localhost,5432;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word;
-- Catalog database (SQL Server): Server=tcp:localhost,5434;Database=CatalogDB;User Id=sa;Password=Pass@word
-- ASP.NET Identity database (SQL Server): Server=localhost,5433;Database=aspnet-Microsoft.eShopOnContainers;User Id=sa;Password=Pass@word
-- Basket data (Redis): listening at localhost:6379
 
-#### Trying the WebMVC application with the DemoUser@microsoft.com user account
-When you try the WebMVC application by using the url •Web MVC: http://localhost:5100, you'll be able to test the home page which is also the catalog page. But when trying to add any article to the basket you will get redirected to the login page which is handled by the STS microservice (Security Token Service). At this point, you could register your own user/customer or you can also use the a convenient default user/customer named DemoUser@microsoft.com so you don't need to register and it'll be faster.
-The credentials are:
+<a href="" target="top"></a>
+- Web MVC: <a href="http://localhost:5100" target="top">http://localhost:5100</a>
+- Web Spa: <a href="http://localhost:5104" target="top">http://localhost:5104</a> (Important, check how to set up the SPA app and requirements before building the Docker images. Instructions at  https://github.com/dotnet/eShopOnContainers/tree/master/src/Web/WebSPA/eShopOnContainers.WebSPA or the README.MD from eShopOnContainers/src/Web/WebSPA/eShopOnContainers.WebSPA)
+- Catalog microservice: <a href="http://localhost:5101" target="top">http://localhost:5101</a> (Not secured)
+- Ordering microservice: <a href="http://localhost:5102" target="top">http://localhost:5102</a> (Requires token for authorization)
+- Basket microservice: <a href="http://localhost:5103" target="top">http://localhost:5103</a> (Requires token for authorization)
+- Identity microservice: <a href="http://localhost:5105" target="top">http://localhost:5105</a>
+- Orders database (SQL Server connection string): Server=tcp:localhost,5432;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word;
+- Catalog database (SQL Server connection string): Server=tcp:localhost,5434;Database=CatalogDB;User Id=sa;Password=Pass@word
+- ASP.NET Identity database (SQL Server connection string): Server=localhost,5433;Database=aspnet-Microsoft.eShopOnContainers;User Id=sa;Password=Pass@word
+- Basket data (Redis): listening at localhost:6379
+ 
+#### Trying the Web MVC application with the DemoUser@microsoft.com user account
+When you try the Web MVC application by using the url http://localhost:5100, you'll be able to test the home page which is also the catalog page. But when trying to add any article to the basket you will get redirected to the login page which is handled by the STS microservice (Security Token Service). At this point, you could register your own user/customer or you can also use a convenient default user/customer named DemoUser@microsoft.com so you don't need to register your own user and it'll be easier to test.
+The credentials for this demo user are:
 - User: demouser@microsoft.com
 - Password: Pass@word1
 
 Below you can see the login page when providing those credentials.
 <img src="img/login-demo-user.png">
 
-### Deploying individiual services into docker
+#### Trying the Xamarin.Forms mobile apps for Android, iOS and Windows
+By default, this app shows fake data from mock-services. In order to really access the microservices/containers in Docker from the mobile app, you need to:
+ - Disable mock-services in the Xamarin app by setting the <b>UseMockServices = false</b> in the App.xaml.cs and specify the host IP in  BaseEndpoint = "http://10.106.144.28" at the GlobalSettings.cs. Both files in the Xamarin.Forms project (PCL).
+ - Another alternative is to change that IP through the app UI, by modifying the IP address in the Settings page of the App as shown in the screenshot below. 
+- In addition, you need to make sure that the used TCP ports of the services are open in the local firewall. <img src="img/xamarin-settings.png">
+
+
+### Deploying individiual services into Docker
 Under each project root you will find a readme.md file which describes how to run and deploy the service individually into a docker host.
 
 > ### Note on Windows Containers
-> As mentioned, the development and testing of this project was done on Docker Linux containers running in development machines with "Docker for Windows" and the default Hyper-V Linux VM (MobiLinuxVM) installed by "Docker for Windows". 
+> As mentioned, the development and testing of this project (January 2017 version) was done on Docker Linux containers running in development machines with "Docker for Windows" and the default Hyper-V Linux VM (MobiLinuxVM) installed by "Docker for Windows". 
 In order to run the application on Windows Containers you'd need to change the base images used by each container:
 > - Official .NET Core base-image for Windows Containers, at Docker Hub: https://hub.docker.com/r/microsoft/dotnet/ (Using the Windows Nanoserver tag)
 > - Official base-image for SQL Server on Windows Containers, at Docker Hub: https://hub.docker.com/r/microsoft/mssql-server-windows

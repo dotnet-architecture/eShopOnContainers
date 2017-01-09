@@ -73,8 +73,6 @@ namespace eShopOnContainers.ViewModels.Base
                 _unityContainer.RegisterInstance<IOrderService>(new OrderMockService());
                 _unityContainer.RegisterInstance<IUserService>(new UserMockService());
 
-                Settings.AuthAccessToken = GlobalSetting.Instance.AuthToken;
-
                 UseMockService = true;
             }
             else

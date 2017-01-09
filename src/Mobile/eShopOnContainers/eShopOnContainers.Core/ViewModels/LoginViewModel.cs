@@ -175,6 +175,8 @@ namespace eShopOnContainers.Core.ViewModels
 
             if (isAuthenticated)
             {
+                Settings.AuthAccessToken = GlobalSetting.Instance.AuthToken;
+
                 await NavigationService.NavigateToAsync<MainViewModel>();
                 await NavigationService.RemoveLastFromBackStackAsync();
             }
@@ -210,6 +212,12 @@ namespace eShopOnContainers.Core.ViewModels
             {
                 // Logout
                 LoginUrl = logoutRequest;
+            }
+
+            if(ViewModelLocator.Instance.UseMockService)
+            {
+                Settings.AuthAccessToken = string.Empty;
+                Settings.AuthIdToken = string.Empty;
             }
         }
 
