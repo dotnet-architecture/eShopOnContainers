@@ -4,7 +4,6 @@ using eShopOnContainers.Core.Services.Identity;
 using eShopOnContainers.Core.Services.OpenUrl;
 using eShopOnContainers.Core.Services.User;
 using eShopOnContainers.Core.Validations;
-using eShopOnContainers.Core.ViewModels.Base;
 using eShopOnContainers.ViewModels.Base;
 using IdentityModel.Client;
 using System;
@@ -40,8 +39,7 @@ namespace eShopOnContainers.Core.ViewModels
             _userName = new ValidatableObject<string>();
             _password = new ValidatableObject<string>();
 
-            IsMock = ViewModelLocator.Instance.UseMockService;
-
+            InvalidateMock();
             AddValidations();
         }
 
@@ -214,7 +212,7 @@ namespace eShopOnContainers.Core.ViewModels
                 LoginUrl = logoutRequest;
             }
 
-            if(ViewModelLocator.Instance.UseMockService)
+            if(Settings.UseMocks)
             {
                 Settings.AuthAccessToken = string.Empty;
                 Settings.AuthIdToken = string.Empty;
@@ -265,6 +263,11 @@ namespace eShopOnContainers.Core.ViewModels
         {
             _userName.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Username should not be empty" });
             _password.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Password should not be empty" });
+        }
+
+        public void InvalidateMock()
+        {
+            IsMock = Settings.UseMocks;
         }
     }
 }

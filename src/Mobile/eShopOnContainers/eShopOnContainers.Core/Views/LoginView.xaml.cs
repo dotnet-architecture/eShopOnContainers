@@ -1,4 +1,5 @@
-﻿using System;
+﻿using eShopOnContainers.Core.ViewModels;
+using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -22,6 +23,13 @@ namespace eShopOnContainers.Core.Views
 
             _animate = true;
             await AnimateIn();
+
+            var vm = BindingContext as LoginViewModel;
+
+            if(vm != null)
+            {
+                vm.InvalidateMock();
+            }
         }
 
         protected override void OnDisappearing()

@@ -2,6 +2,7 @@
 using System.Windows.Input;
 using Xamarin.Forms;
 using System.Threading.Tasks;
+using eShopOnContainers.Core.Helpers;
 
 namespace eShopOnContainers.Core.ViewModels
 {
@@ -14,7 +15,7 @@ namespace eShopOnContainers.Core.ViewModels
 
         public SettingsViewModel()
         {
-            UseAzureServices = !ViewModelLocator.Instance.UseMockService;
+            UseAzureServices = !Settings.UseMocks;
         }
 
         public string Title
@@ -43,6 +44,9 @@ namespace eShopOnContainers.Core.ViewModels
             set
             {
                 _useAzureServices = value;
+
+                // Save use mocks services to local storage
+                Settings.UseMocks = !_useAzureServices;
                 RaisePropertyChanged(() => UseAzureServices);
             }
         }
@@ -75,7 +79,7 @@ namespace eShopOnContainers.Core.ViewModels
         {
             UpdateInfo();
 
-            Endpoint = GlobalSetting.Instance.BaseEndpoint;
+            Endpoint = Settings.UrlBase;
 
             return base.InitializeAsync(navigationData);
         }
@@ -96,8 +100,8 @@ namespace eShopOnContainers.Core.ViewModels
 
         private void UpdateEndpoint(string endpoint)
         {
-            // Update remote endpoint 
-            GlobalSetting.Instance.BaseEndpoint = endpoint;
+            // Update remote endpoint (save to local storage)
+            Settings.UrlBase = endpoint;
         }
     }
 }

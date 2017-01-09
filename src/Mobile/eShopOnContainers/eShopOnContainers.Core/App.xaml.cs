@@ -1,4 +1,5 @@
-﻿using eShopOnContainers.Services;
+﻿using eShopOnContainers.Core.Helpers;
+using eShopOnContainers.Services;
 using eShopOnContainers.ViewModels.Base;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -25,7 +26,7 @@ namespace eShopOnContainers
 
         private void InitApp()
         {
-            UseMockServices = true;
+            UseMockServices = Settings.UseMocks;
 
             ViewModelLocator.Instance.UpdateDependencies(UseMockServices);
         }

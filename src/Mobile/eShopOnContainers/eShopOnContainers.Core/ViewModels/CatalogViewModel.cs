@@ -9,7 +9,6 @@ using System.Windows.Input;
 using System.Linq;
 using eShopOnContainers.Core.Services.Basket;
 using eShopOnContainers.Core.Helpers;
-using System;
 using eShopOnContainers.Core.Services.User;
 
 namespace eShopOnContainers.Core.ViewModels
@@ -121,6 +120,7 @@ namespace eShopOnContainers.Core.ViewModels
 
         private void AddCatalogItem(CatalogItem catalogItem)
         {
+            // Add new item to Basket
             MessagingCenter.Send(this, MessengerKeys.AddProduct, catalogItem);
         }
 
@@ -133,7 +133,7 @@ namespace eShopOnContainers.Core.ViewModels
 
             IsBusy = true;
 
-            // Filter
+            // Filter catalog products
             MessagingCenter.Send(this, MessengerKeys.Filter);
             Products = await _productsService.FilterAsync(Brand.Id, Type.Id);
 
