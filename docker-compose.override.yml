@@ -13,8 +13,8 @@ services:
     environment:
       - CatalogUrl=http://catalog.api:5101
       - OrderingUrl=http://ordering.api:5102
-      #- IdentityUrl=http://13.88.8.119:5105           #Remote: VM Needs to have public access at 5105. 
-      - IdentityUrl=http://10.0.75.1:5105              #Local: You need to open windows firewall at range 5100-5105. 
+      - IdentityUrl=http://13.88.8.119:5105           #Remote: VM Needs to have public access at 5105. 
+      #- IdentityUrl=http://10.0.75.1:5105              #Local: You need to open windows firewall at range 5100-5105. 
       #- IdentityUrl=http://identity.service:5105      #Local: You need a entry in windows host file to run identity in local docker. 
       - BasketUrl=http://basket.api:5103
     ports:
@@ -24,9 +24,9 @@ services:
     environment:
       - CatalogUrl=http://catalog.api:5101
       - OrderingUrl=http://ordering.api:5102
-      #- IdentityUrl=http://13.88.8.119:5105            #Remote: VM Needs to have public access at 5105. 
+      - IdentityUrl=http://13.88.8.119:5105            #Remote: VM Needs to have public access at 5105. 
       #- IdentityUrl=http://identity.service:5105       #Local: You need a entry in windows host file to run identity in local docker. 
-      - IdentityUrl=http://10.0.75.1:5105               #Local: You need to open windows firewall at range 5100-5105. 
+      #- IdentityUrl=http://10.0.75.1:5105               #Local: You need to open windows firewall at range 5100-5105. 
       - BasketUrl=http://basket.api:5103                
     ports:
       - "5104:5104"
@@ -34,24 +34,26 @@ services:
   basket.api:
     environment:
       - ConnectionString=basket.data
-      #- identityUrl=http://13.88.8.119:5105             #Remote
+      - identityUrl=http://13.88.8.119:5105             #Remote
       #- identityUrl=http://identity.service:5105        #Local: You need a entry in windows host file to run identity in local docker. 
-      - identityUrl=http://10.0.75.1:5105                #Local: You need to open windows firewall at range 5100-5105. 
+      #- identityUrl=http://10.0.75.1:5105                #Local: You need to open windows firewall at range 5100-5105. 
     ports:
       - "5103:5103"
 
   catalog.api:
     environment:
       - ConnectionString=Server=sql.data;Database=Microsoft.eShopOnContainers.Services.CatalogDb;User Id=sa;Password=Pass@word
+      #- ExternalCatalogBaseUrl=http://10.0.75.1:5101        #Local
+      - ExternalCatalogBaseUrl=http://13.88.8.119:5101      #Remote
     ports:
       - "5101:5101"
 
   ordering.api:
     environment:
       - ConnectionString=Server=sql.data;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word
-      #- identityUrl=http://13.88.8.119:5105             #Remote: VM Needs to have public access at 5105. 
+      - identityUrl=http://13.88.8.119:5105             #Remote: VM Needs to have public access at 5105. 
       #- identityUrl=http://identity.service:5105        #Local: You need a entry in windows host file to run identity in local docker. 
-      - identityUrl=http://10.0.75.1:5105                #Local: You need to open windows firewall at range 5100-5105. 
+      #- identityUrl=http://10.0.75.1:5105                #Local: You need to open windows firewall at range 5100-5105. 
     ports:
       - "5102:5102"
 
@@ -59,9 +61,9 @@ services:
     environment:
       - SpaClient=http://localhost:5104
       - ConnectionStrings__DefaultConnection=Server=sql.data;Database=Microsoft.eShopOnContainers.Service.IdentityDb;User Id=sa;Password=Pass@word
-      #- MvcClient=http://13.88.8.119:5100              #Remote: VM Needs to have public access at 5105. 
+      - MvcClient=http://13.88.8.119:5100              #Remote: VM Needs to have public access at 5105. 
       #- MvcClient=http://localhost:5100                 #Local: You need a entry in windows host file to run identity in local docker. 
-      - MvcClient=http://10.0.75.1:5100                 #Local: You need to open windows firewall at range 5100-5105. 
+      #- MvcClient=http://10.0.75.1:5100                 #Local: You need to open windows firewall at range 5100-5105. 
     ports:
       - "5105:5105"
 

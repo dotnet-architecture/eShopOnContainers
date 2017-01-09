@@ -50,6 +50,8 @@
                 });
             });
 
+            services.Configure<Settings>(Configuration);
+
             // Add framework services.
             services.AddSwaggerGen();
             services.ConfigureSwaggerGen(options =>

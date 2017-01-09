@@ -1,6 +1,7 @@
 ﻿
 namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
 {
+    using Extensions.Options;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
@@ -15,10 +16,12 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
     public class CatalogController : ControllerBase
     {
         private readonly CatalogContext _context;
+        private readonly IOptions<Settings> _settings;
 
-        public CatalogController(CatalogContext context)
+        public CatalogController(CatalogContext context, IOptions<Settings> settings)
         {
             _context = context;
+            _settings = settings;
         }
 
         // GET api/v1/[controller]/items/[?pageSize=3&pageIndex=10]
@@ -35,7 +38,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
                 .Take(pageSize)
                 .ToListAsync();
 
-            //itemsOnPage = ComposePicUri(itemsOnPage);
+            itemsOnPage = ComposePicUri(itemsOnPage);
 
             var model = new PaginatedItemsViewModel<CatalogItem>(
                 pageIndex, pageSize, totalItems, itemsOnPage);
@@ -59,7 +62,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
                 .Take(pageSize)
                 .ToListAsync();
 
-            //itemsOnPage = ComposePicUri(itemsOnPage);
+            itemsOnPage = ComposePicUri(itemsOnPage);
 
             var model = new PaginatedItemsViewModel<CatalogItem>(
                 pageIndex, pageSize, totalItems, itemsOnPage);
@@ -92,7 +95,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
                 .Take(pageSize)
                 .ToListAsync();
 
-            //itemsOnPage = ComposePicUri(itemsOnPage);
+            itemsOnPage = ComposePicUri(itemsOnPage);
 
             var model = new PaginatedItemsViewModel<CatalogItem>(
                 pageIndex, pageSize, totalItems, itemsOnPage);
@@ -123,9 +126,10 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
         }
 
         private List<CatalogItem> ComposePicUri(List<CatalogItem> items) {
+            var baseUri = _settings.Value.ExternalCatalogBaseUrl;
             items.ForEach(x =>
             {
-                x.PictureUri = x.PictureUri.Replace("localhost", Request.Host.Host);
+                x.PictureUri = x.PictureUri.Replace("http://externalcatalogbaseurltobereplaced", baseUri);
             });
 
             return items;
