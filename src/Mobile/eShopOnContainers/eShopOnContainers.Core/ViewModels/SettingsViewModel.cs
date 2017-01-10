@@ -102,6 +102,7 @@ namespace eShopOnContainers.Core.ViewModels
         {
             // Update remote endpoint (save to local storage)
             Settings.UrlBase = endpoint;
+            GlobalSetting.Instance.BaseEndpoint = Settings.UrlBase;
         }
     }
 }
