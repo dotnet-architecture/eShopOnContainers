@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using eShopOnContainers.Core.Services.RequestProvider;
 using eShopOnContainers.Core.Models.Basket;
+using eShopOnContainers.Core.Helpers;
 
 namespace eShopOnContainers.Core.Services.Basket
 {
@@ -26,6 +27,8 @@ namespace eShopOnContainers.Core.Services.Basket
 
                 CustomerBasket basket =
                      await _requestProvider.GetAsync<CustomerBasket>(uri, token);
+
+                 ServicesHelper.FixBasketItemPictureUri(basket?.Items);
 
                 return basket;
             }
