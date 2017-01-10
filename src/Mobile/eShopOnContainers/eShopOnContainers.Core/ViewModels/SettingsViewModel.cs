@@ -93,8 +93,8 @@ namespace eShopOnContainers.Core.ViewModels
             }
             else
             {
-                Title = "Use Azure Services";
-                Description = "Azure Services are real objects that required a valid internet connection";
+                Title = "Use Microservices/Containers from eShopOnContainers";
+                Description = "When enabling the use of microservices/containers the Xamarin.Forms app will try to use real services deployed as Docker containers in the specified base IP that will need to be reachable through the network";
             }
         }
 
