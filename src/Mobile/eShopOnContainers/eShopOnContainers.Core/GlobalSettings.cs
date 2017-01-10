@@ -2,6 +2,9 @@
 {
     public class GlobalSetting
     {
+        public const string AzureTag = "Azure";
+        public const string MockTag = "Mock";
+
         private string _baseEndpoint;
         private static readonly GlobalSetting _instance = new GlobalSetting();
 
@@ -48,7 +51,7 @@
 
         private void UpdateEndpoint(string baseEndpoint)
         {
-            RegisterWebsite = string.Format("{0}/Account/Register", baseEndpoint);
+            RegisterWebsite = string.Format("{0}:5105/Account/Register", baseEndpoint);
             CatalogEndpoint = string.Format("{0}:5101", baseEndpoint);
             OrdersEndpoint = string.Format("{0}:5102", baseEndpoint);
             BasketEndpoint = string.Format("{0}:5103", baseEndpoint);

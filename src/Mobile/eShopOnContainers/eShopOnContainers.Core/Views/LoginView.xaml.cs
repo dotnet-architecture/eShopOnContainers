@@ -1,4 +1,5 @@
-﻿using eShopOnContainers.Core.ViewModels;
+﻿using eShopOnContainers.Core.Helpers;
+using eShopOnContainers.Core.ViewModels;
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -17,6 +18,8 @@ namespace eShopOnContainers.Core.Views
 
         protected override async void OnAppearing()
         {
+            GlobalSetting.Instance.BaseEndpoint = Settings.UrlBase;
+
             var content = this.Content;
             this.Content = null;
             this.Content = content;
