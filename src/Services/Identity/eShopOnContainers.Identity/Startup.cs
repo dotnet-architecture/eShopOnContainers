@@ -67,7 +67,7 @@ namespace eShopOnContainers.Identity
             clientUrls.Add("Spa", Configuration.GetValue<string>("SpaClient"));
 
             // Adds IdentityServer
-            services.AddIdentityServer()
+            services.AddIdentityServer(x => x.IssuerUri = "null")
                 .AddTemporarySigningCredential()
                 .AddInMemoryScopes(Config.GetScopes())
                 .AddInMemoryClients(Config.GetClients(clientUrls))
