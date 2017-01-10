@@ -32,14 +32,13 @@ namespace eShopOnContainers.Core.Views
                 }
             });
 
+            var homeViewModel = ViewModelLocator.Instance.Resolve<CatalogViewModel>();
+            await homeViewModel.InitializeAsync(null);
+            HomeView.BindingContext = homeViewModel;
 
             var basketViewModel = ViewModelLocator.Instance.Resolve<BasketViewModel>();
             await basketViewModel.InitializeAsync(null);
             BasketView.BindingContext = basketViewModel;
-
-            var homeViewModel = ViewModelLocator.Instance.Resolve<CatalogViewModel>();
-            await homeViewModel.InitializeAsync(null);
-            HomeView.BindingContext = homeViewModel;
 
             var profileViewModel = ViewModelLocator.Instance.Resolve<ProfileViewModel>();
             await profileViewModel.InitializeAsync(null);

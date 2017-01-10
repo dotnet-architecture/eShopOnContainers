@@ -5,9 +5,6 @@
         // Add product to basket
         public const string AddProduct = "AddProduct";
 
-        // Update Basket
-        public const string UpdateBasket = "UpdateBasket";
-
         // Filter
         public const string Filter = "Filter";
 

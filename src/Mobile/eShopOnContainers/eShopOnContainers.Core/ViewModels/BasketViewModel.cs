@@ -6,7 +6,6 @@ using eShopOnContainers.Core.Services.User;
 using eShopOnContainers.Core.ViewModels.Base;
 using eShopOnContainers.ViewModels.Base;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -66,20 +65,26 @@ namespace eShopOnContainers.Core.ViewModels
 
         public ICommand CheckoutCommand => new Command(Checkout);
 
-        public override Task InitializeAsync(object navigationData)
+        public override async Task InitializeAsync(object navigationData)
         {
             if (BasketItems == null)
                 BasketItems = new ObservableCollection<BasketItem>();
 
-            MessagingCenter.Unsubscribe<CatalogViewModel, List<BasketItem>>(this, MessengerKeys.UpdateBasket);
-            MessagingCenter.Subscribe<CatalogViewModel, List<BasketItem>>(this, MessengerKeys.UpdateBasket, (sender, arg) =>
+            var authToken = Settings.AuthAccessToken;
+            var userInfo = await _userService.GetUserInfoAsync(authToken);
+
+            // Update Basket
+            var basket = await _basketService.GetBasketAsync(userInfo.UserId, authToken);
+
+            if (basket != null && basket.Items != null && basket.Items.Any())
             {
-                foreach (var basketItem in arg)
+                BasketItems.Clear();
+                foreach (var basketItem in basket.Items)
                 {
                     BadgeCount += basketItem.Quantity;
                     AddBasketItem(basketItem);
                 }
-            });
+            }
 
             MessagingCenter.Unsubscribe<CatalogViewModel, CatalogItem>(this, MessengerKeys.AddProduct);
             MessagingCenter.Subscribe<CatalogViewModel, CatalogItem>(this, MessengerKeys.AddProduct, (sender, arg) =>
@@ -89,7 +94,7 @@ namespace eShopOnContainers.Core.ViewModels
                 AddCatalogItem(arg);
             });
             
-            return base.InitializeAsync(navigationData);
+            await base.InitializeAsync(navigationData);
         }
 
         private void AddCatalogItem(CatalogItem item)
