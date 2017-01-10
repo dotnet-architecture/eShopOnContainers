@@ -18,8 +18,6 @@ namespace eShopOnContainers.Core.Views
 
         protected override async void OnAppearing()
         {
-            GlobalSetting.Instance.BaseEndpoint = Settings.UrlBase;
-
             var content = this.Content;
             this.Content = null;
             this.Content = content;

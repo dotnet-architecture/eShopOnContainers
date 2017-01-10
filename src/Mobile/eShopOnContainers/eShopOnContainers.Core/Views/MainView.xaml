@@ -13,6 +13,19 @@
             iOS="eShop on Containers"
             WinPhone="eShop on Containers"/>
     </TabbedPage.Title>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem 
+            Command="{Binding SettingsCommand}"
+            Text="Settings">
+            <ToolbarItem.Icon>
+                <OnPlatform 
+                    x:TypeArguments="FileImageSource"
+                    WinPhone="Assets/app_settings.png"
+                    Android="app_settings"
+                    iOS="app_settings"/>
+            </ToolbarItem.Icon>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
     <!-- CATALOG -->
     <views:CatalogView  
         x:Name="HomeView">
