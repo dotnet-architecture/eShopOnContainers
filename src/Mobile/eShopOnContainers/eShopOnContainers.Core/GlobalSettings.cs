@@ -4,6 +4,8 @@
     {
         public const string AzureTag = "Azure";
         public const string MockTag = "Mock";
+        public const string DefaultEndpoint = "http://13.88.8.119";
+
 
         private string _baseEndpoint;
         private static readonly GlobalSetting _instance = new GlobalSetting();
@@ -11,7 +13,7 @@
         public GlobalSetting()
         {
             AuthToken = "INSERT AUTHENTICATION TOKEN";
-            BaseEndpoint = "http://13.88.8.119";
+            BaseEndpoint = DefaultEndpoint;
         }
 
         public static GlobalSetting Instance

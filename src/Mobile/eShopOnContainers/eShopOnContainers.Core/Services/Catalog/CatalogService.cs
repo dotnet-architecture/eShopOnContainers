@@ -5,6 +5,10 @@ using eShopOnContainers.Core.Models.Catalog;
 using eShopOnContainers.Core.Services.RequestProvider;
 using eShopOnContainers.Core.Extensions;
 using System.Collections.Generic;
+using eShopOnContainers.ViewModels.Base;
+using eShopOnContainers.Core.Helpers;
+using Xamarin.Forms;
+using eShopOnContainers.Core.Services.IPAddress;
 
 namespace eShopOnContainers.Core.Services.Catalog
 {
@@ -55,7 +59,19 @@ namespace eShopOnContainers.Core.Services.Catalog
                     await _requestProvider.GetAsync<CatalogRoot>(uri);
 
                 if (catalog?.Data != null)
+                {
+                    // TODO: Experimental
+                    if (!ViewModelLocator.Instance.UseMockService && Settings.UrlBase != GlobalSetting.DefaultEndpoint)
+                    {
+                        foreach (var catalogItem in catalog?.Data)
+                        {
+                            string ipaddress = DependencyService.Get<IIPAddressService>().GetIPAddress();
+                            catalogItem.PictureUri.Replace(Settings.UrlBase, ipaddress);
+                        }
+                    }
+
                     return catalog?.Data.ToObservableCollection();
+                }
                 else
                     return new ObservableCollection<CatalogItem>();
             }

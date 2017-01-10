@@ -94,6 +94,7 @@
     <Compile Include="Services\Dialog\IDialogService.cs" />
     <Compile Include="Services\Identity\IdentityService.cs" />
     <Compile Include="Services\Identity\IIdentityService.cs" />
+    <Compile Include="Services\IPAddress\IIPAddressService.cs" />
     <Compile Include="Services\Navigation\INavigationService.cs" />
     <Compile Include="Services\Navigation\NavigationService.cs" />
     <Compile Include="Services\OpenUrl\IOpenUrlService.cs" />
