@@ -9,13 +9,6 @@ using eShopOnContainers.Core.Services.Basket;
 using eShopOnContainers.Core.Services.Identity;
 using eShopOnContainers.Core.Services.Order;
 using eShopOnContainers.Core.Services.User;
-using Xamarin.Forms;
-using System.Collections.Generic;
-using eShopOnContainers.Core.Models.Basket;
-using eShopOnContainers.Core.Models.Catalog;
-using eShopOnContainers.Core.ViewModels.Base;
-using eShopOnContainers.Core.Helpers;
-using eShopOnContainers.Core;
 
 namespace eShopOnContainers.ViewModels.Base
 {
