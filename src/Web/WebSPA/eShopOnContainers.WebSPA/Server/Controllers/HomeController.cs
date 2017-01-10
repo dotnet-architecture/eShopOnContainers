@@ -3,16 +3,20 @@
 using System.Linq;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using eShopOnContainers.WebSPA;
 
 namespace eShopConContainers.WebSPA.Server.Controllers
 {
     public class HomeController : Controller
     {
         private readonly IHostingEnvironment _env;
+        private readonly IOptions<AppSettings> _settings;
 
-        public HomeController(IHostingEnvironment env)
+        public HomeController(IHostingEnvironment env, IOptions<AppSettings> settings)
         {
             _env = env;
+            _settings = settings;
         }
 
         public IActionResult Index()
@@ -31,5 +35,9 @@ namespace eShopConContainers.WebSPA.Server.Controllers
             return file.Name;
         }
 
+        public IActionResult Configuration()
+        {
+            return Json(_settings.Value);
+        } 
     }
 }

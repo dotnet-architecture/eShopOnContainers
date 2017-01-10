@@ -4,6 +4,7 @@
     using Autofac;
     using Autofac.Extensions.DependencyInjection;
     using Infrastructure;
+    using Infrastructure.Auth;
     using Infrastructure.AutofacModules;
     using Infrastructure.Filters;
     using Infrastructure.Services;
@@ -41,7 +42,6 @@
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
-
             services.AddMvc(options =>
             {
                 options.Filters.Add(typeof(HttpGlobalExceptionFilter));
@@ -57,6 +57,7 @@
             services.AddSwaggerGen();
             services.ConfigureSwaggerGen(options =>
             {
+                options.OperationFilter<AuthorizationHeaderParameterOperationFilter>();
                 options.DescribeAllEnumsAsStrings();
                 options.SingleApiVersion(new Swashbuckle.Swagger.Model.Info()
                 {
