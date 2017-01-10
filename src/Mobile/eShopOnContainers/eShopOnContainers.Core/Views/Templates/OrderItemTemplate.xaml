@@ -70,33 +70,15 @@
                 <RowDefinition Height="1" />
             </Grid.RowDefinitions>
             <!-- IMAGE -->
-            <ffimageloading:CachedImage
+            <Image
                 Grid.Column="0"
                 Grid.Row="0"
                 Source="{Binding PictureUrl, Converter={StaticResource ImageConverter}}"        
-                CacheDuration="30"                      
-                CacheType="Disk"             
-                DownsampleToViewSize="True"
                 HeightRequest="108" 
                 WidthRequest="108"
                 Aspect="AspectFit"
                 VerticalOptions="Start"
-                Margin="12,0,0,0">
-                <ffimageloading:CachedImage.LoadingPlaceholder>
-                    <OnPlatform   
-                        x:TypeArguments="ImageSource"
-                        iOS="default_product"
-                        Android="default_product"
-                        WinPhone="Assets/default_product.png"/>
-                </ffimageloading:CachedImage.LoadingPlaceholder>
-                <ffimageloading:CachedImage.ErrorPlaceholder>
-                    <OnPlatform   
-                        x:TypeArguments="ImageSource"
-                        iOS="noimage"
-                        Android="noimage"
-                        WinPhone="Assets/noimage.png"/>
-                </ffimageloading:CachedImage.ErrorPlaceholder>
-            </ffimageloading:CachedImage>
+                Margin="12,0,0,0" />
             <Grid
                 Grid.Column="1"
                 Grid.Row="0"

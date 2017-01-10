@@ -9,14 +9,6 @@
     <ContentPage.Resources>
         <ResourceDictionary>
 
-            <Style x:Key="LogoutLabelStyle" 
-               TargetType="{x:Type Label}">
-                <Setter Property="HorizontalOptions"
-                        Value="Center" />
-                <Setter Property="VerticalOptions"
-                        Value="Center" />
-            </Style>
-            
             <Style x:Key="LoginButtonStyle" 
                TargetType="{x:Type Label}">
                 <Setter Property="FontFamily"
@@ -55,18 +47,12 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <!-- LOG OUT BUTTON -->
-        <Grid
+        <Button         
             Grid.Row="0"
-            BackgroundColor="{StaticResource GrayColor}">
-            <Label 
-                Text="LOG OUT"
-                Style="{StaticResource LogoutLabelStyle}"/>
-            <Grid.GestureRecognizers>
-                <TapGestureRecognizer   
-                    Command="{Binding LogoutCommand}"  
-                    NumberOfTapsRequired="1" />
-            </Grid.GestureRecognizers>
-        </Grid>
+            Text="LOG OUT" 
+            TextColor="{StaticResource BlackColor}"
+            BackgroundColor="{StaticResource GrayColor}"
+            Command="{Binding LogoutCommand}" />
         <!-- ORDERS -->
         <Grid
             Grid.Row="1">
