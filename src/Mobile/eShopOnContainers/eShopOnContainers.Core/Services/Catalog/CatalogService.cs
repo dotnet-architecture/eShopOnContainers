@@ -9,6 +9,7 @@ using eShopOnContainers.ViewModels.Base;
 using eShopOnContainers.Core.Helpers;
 using Xamarin.Forms;
 using eShopOnContainers.Core.Services.IPAddress;
+using System.Text.RegularExpressions;
 
 namespace eShopOnContainers.Core.Services.Catalog
 {
@@ -65,8 +66,15 @@ namespace eShopOnContainers.Core.Services.Catalog
                     {
                         foreach (var catalogItem in catalog?.Data)
                         {
-                            string ipaddress = DependencyService.Get<IIPAddressService>().GetIPAddress();
-                            catalogItem.PictureUri.Replace(Settings.UrlBase, ipaddress);
+                            //string ipaddress = DependencyService.Get<IIPAddressService>().GetIPAddress();
+                            Regex ip = new Regex(@"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b");
+                            MatchCollection result = ip.Matches(catalogItem.PictureUri);
+
+                            if (result.Count != -1)
+                            {
+                                var serviceIp = result[0].Value;
+                                catalogItem.PictureUri = catalogItem.PictureUri.Replace(serviceIp, Settings.UrlBase);
+                            }
                         }
                     }
 
