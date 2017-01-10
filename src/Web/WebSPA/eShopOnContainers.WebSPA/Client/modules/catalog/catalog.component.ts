@@ -1,5 +1,6 @@
 import { Component, OnInit }    from '@angular/core';
 import { CatalogService }       from './catalog.service';
+import { ConfigurationService } from '../shared/services/configuration.service';
 import { ICatalog }             from '../shared/models/catalog.model';
 import { ICatalogItem }         from '../shared/models/catalogItem.model';
 import { ICatalogType }         from '../shared/models/catalogType.model';
@@ -20,9 +21,19 @@ export class CatalogComponent implements OnInit {
     typeSelected: number;
     paginationInfo: IPager;
 
-    constructor(private service: CatalogService, private basketService: BasketWrapperService) { }
+    constructor(private service: CatalogService, private basketService: BasketWrapperService, private configurationService: ConfigurationService) { }
 
     ngOnInit() {
+        if (this.configurationService.isReady) {
+            this.loadData();
+        }else{
+            this.configurationService.settingsLoaded$.subscribe(x => {
+                this.loadData();
+            });
+        }
+    }
+
+    loadData() {
         this.getBrands();
         this.getCatalog(10, 0);
         this.getTypes();

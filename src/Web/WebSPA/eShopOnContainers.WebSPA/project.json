@@ -27,6 +27,7 @@
     "Microsoft.Extensions.Logging": "1.0.0",
     "Microsoft.Extensions.Logging.Console": "1.0.0",
     "Microsoft.Extensions.Logging.Debug": "1.0.0",
+    "Microsoft.Extensions.Options.ConfigurationExtensions": "1.0.0",
     "Microsoft.VisualStudio.Web.CodeGeneration.Tools": {
       "version": "1.0.0-preview2-final",
       "type": "build"
@@ -101,11 +102,9 @@
     ]
   },
   "scripts": {
-     //"prepublish": [
-     //  "npm install",
-     //  "node node_modules/webpack/bin/webpack.js --config config/webpack.config.vendor.js",
-     //  "node node_modules/webpack/bin/webpack.js --config config/webpack.config.js"
-     //],
+     "prepublish": [
+       "npm run build:prod"
+     ],
     "postpublish": [
       "dotnet publish-iis --publish-folder %publish:OutputPath% --framework %publish:FullTargetFramework%"
     ]

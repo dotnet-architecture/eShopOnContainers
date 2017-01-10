@@ -5,58 +5,66 @@ import { Observable }                   from 'rxjs/Observable';
 import { Subject }                      from 'rxjs/Subject';
 import { Router }                       from '@angular/router';
 import { ActivatedRoute }               from '@angular/router';
+import { ConfigurationService }         from './configuration.service';
+import { StorageService }               from './storage.service';
 
 @Injectable()
 export class SecurityService {
 
     private actionUrl: string;
     private headers: Headers;
-    private storage: any;
+    private storage: StorageService;
     private authenticationSource = new Subject<boolean>();
     authenticationChallenge$ = this.authenticationSource.asObservable();
+    private authorityUrl = '';
 
-    constructor(private _http: Http, private _router: Router, private route: ActivatedRoute) {
+    constructor(private _http: Http, private _router: Router, private route: ActivatedRoute, private _configurationService: ConfigurationService, private _storageService: StorageService) {
         this.headers = new Headers();
         this.headers.append('Content-Type', 'application/json');
         this.headers.append('Accept', 'application/json');
-        this.storage = sessionStorage; // localStorage;
+        this.storage = _storageService;
 
-        if (this.retrieve('IsAuthorized') !== '') {
-            this.IsAuthorized = this.retrieve('IsAuthorized');
+        this._configurationService.settingsLoaded$.subscribe(x => {
+            this.authorityUrl = this._configurationService.serverSettings.identityUrl
+            this.storage.store('IdentityUrl', this.authorityUrl);
+        });
+
+        if (this.storage.retrieve('IsAuthorized') !== '') {
+            this.IsAuthorized = this.storage.retrieve('IsAuthorized');
             this.authenticationSource.next(true);
-            this.UserData = this.retrieve('userData');
+            this.UserData = this.storage.retrieve('userData');
         }
     }
 
     public IsAuthorized: boolean;
 
     public GetToken(): any {
-        return this.retrieve('authorizationData');
+        return this.storage.retrieve('authorizationData');
     }
 
     public ResetAuthorizationData() {
-        this.store('authorizationData', '');
-        this.store('authorizationDataIdToken', '');
+        this.storage.store('authorizationData', '');
+        this.storage.store('authorizationDataIdToken', '');
 
         this.IsAuthorized = false;
-        this.store('IsAuthorized', false);
+        this.storage.store('IsAuthorized', false);
     }
 
     public UserData: any;
     public SetAuthorizationData(token: any, id_token: any) {
-        if (this.retrieve('authorizationData') !== '') {
-            this.store('authorizationData', '');
+        if (this.storage.retrieve('authorizationData') !== '') {
+            this.storage.store('authorizationData', '');
         }
 
-        this.store('authorizationData', token);
-        this.store('authorizationDataIdToken', id_token);
+        this.storage.store('authorizationData', token);
+        this.storage.store('authorizationDataIdToken', id_token);
         this.IsAuthorized = true;
-        this.store('IsAuthorized', true);
+        this.storage.store('IsAuthorized', true);
 
         this.getUserData()
             .subscribe(data => {
                 this.UserData = data;
-                this.store('userData', data);
+                this.storage.store('userData', data);
                 // emit observable
                 this.authenticationSource.next(true);
                 window.location.href = 'http://localhost:5104';
@@ -70,7 +78,7 @@ export class SecurityService {
     public Authorize() {
         this.ResetAuthorizationData();
 
-        let authorizationUrl = 'http://10.0.75.1:5105/connect/authorize';
+        let authorizationUrl = this.authorityUrl + '/connect/authorize';
         let client_id = 'js';
         let redirect_uri = 'http://localhost:5104/';
         let response_type = 'id_token token';
@@ -78,8 +86,8 @@ export class SecurityService {
         let nonce = 'N' + Math.random() + '' + Date.now();
         let state = Date.now() + '' + Math.random();
 
-        this.store('authStateControl', state);
-        this.store('authNonce', nonce);
+        this.storage.store('authStateControl', state);
+        this.storage.store('authNonce', nonce);
 
         let url =
             authorizationUrl + '?' +
@@ -112,7 +120,7 @@ export class SecurityService {
 
         if (!result.error) {
 
-            if (result.state !== this.retrieve('authStateControl')) {
+            if (result.state !== this.storage.retrieve('authStateControl')) {
                 console.log('AuthorizedCallback incorrect state');
             } else {
 
@@ -123,11 +131,11 @@ export class SecurityService {
                 console.log(dataIdToken);
 
                 // validate nonce
-                if (dataIdToken.nonce !== this.retrieve('authNonce')) {
+                if (dataIdToken.nonce !== this.storage.retrieve('authNonce')) {
                     console.log('AuthorizedCallback incorrect nonce');
                 } else {
-                    this.store('authNonce', '');
-                    this.store('authStateControl', '');
+                    this.storage.store('authNonce', '');
+                    this.storage.store('authStateControl', '');
 
                     authResponseIsValid = true;
                     console.log('AuthorizedCallback state and nonce validated, returning access token');
@@ -142,8 +150,8 @@ export class SecurityService {
     }
 
     public Logoff() {
-        let authorizationUrl = 'http://10.0.75.1:5105/connect/endsession';
-        let id_token_hint = this.retrieve('authorizationDataIdToken');
+        let authorizationUrl = this.authorityUrl + '/connect/endsession';
+        let id_token_hint = this.storage.retrieve('authorizationDataIdToken');
         let post_logout_redirect_uri = 'http://localhost:5104/';
 
         let url =
@@ -197,23 +205,26 @@ export class SecurityService {
         return data;
     }
 
-    private retrieve(key: string): any {
-        let item = this.storage.getItem(key);
+    //private retrieve(key: string): any {
+    //    let item = this.storage.getItem(key);
 
-        if (item && item !== 'undefined') {
-            return JSON.parse(this.storage.getItem(key));
-        }
+    //    if (item && item !== 'undefined') {
+    //        return JSON.parse(this.storage.getItem(key));
+    //    }
 
-        return;
-    }
+    //    return;
+    //}
 
-    private store(key: string, value: any) {
-        this.storage.setItem(key, JSON.stringify(value));
-    }
+    //private store(key: string, value: any) {
+    //    this.storage.setItem(key, JSON.stringify(value));
+    //}
 
     private getUserData = (): Observable<string[]> => {
         this.setHeaders();
-        return this._http.get('http://10.0.75.1:5105/connect/userinfo', {
+        if (this.authorityUrl === '')
+            this.authorityUrl = this.storage.retrieve('IdentityUrl');
+
+        return this._http.get(this.authorityUrl + '/connect/userinfo', {
             headers: this.headers,
             body: ''
         }).map(res => res.json());

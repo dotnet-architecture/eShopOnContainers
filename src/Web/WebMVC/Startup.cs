@@ -25,13 +25,13 @@ namespace Microsoft.eShopOnContainers.WebMVC
                       .SetBasePath(env.ContentRootPath)
                       .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)  // Settings for the application
                       .AddEnvironmentVariables();                                              // override settings with environment variables set in compose.   
-                
 
-            //if (env.IsDevelopment())
-            //{
-            //    // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
-            //    builder.AddUserSecrets();
-            //}
+
+            if (env.IsDevelopment())
+            {
+                // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
+                builder.AddUserSecrets();
+            }
 
             Configuration = builder.Build();
         }

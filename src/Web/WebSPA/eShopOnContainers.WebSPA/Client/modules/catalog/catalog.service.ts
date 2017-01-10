@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Response } from '@angular/http';
 
 import { DataService } from '../shared/services/data.service';
+import { ConfigurationService } from '../shared/services/configuration.service';
 import { ICatalog } from '../shared/models/catalog.model';
 import { ICatalogBrand } from '../shared/models/catalogBrand.model';
 import { ICatalogType } from '../shared/models/catalogType.model';
@@ -14,11 +15,16 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class CatalogService {
-    private catalogUrl: string = 'http://eshopcontainers:5101/api/v1/catalog/items';
-    private brandUrl: string = 'http://eshopcontainers:5101/api/v1/catalog/catalogbrands';
-    private typesUrl: string = 'http://eshopcontainers:5101/api/v1/catalog/catalogtypes';
+    private catalogUrl: string = '';
+    private brandUrl: string = '';
+    private typesUrl: string = '';
 
-    constructor(private service: DataService) {
+    constructor(private service: DataService, private configurationService: ConfigurationService) {
+        this.configurationService.settingsLoaded$.subscribe(x => {
+            this.catalogUrl = this.configurationService.serverSettings.catalogUrl + '/api/v1/catalog/items';
+            this.brandUrl = this.configurationService.serverSettings.catalogUrl + '/api/v1/catalog/catalogbrands';
+            this.typesUrl = this.configurationService.serverSettings.catalogUrl + '/api/v1/catalog/catalogtypes';
+        });
     }
 
     getCatalog(pageIndex: number, pageSize: number, brand: number, type: number): Observable<ICatalog> {

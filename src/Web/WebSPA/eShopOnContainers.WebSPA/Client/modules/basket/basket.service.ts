@@ -7,6 +7,8 @@ import { SecurityService }          from '../shared/services/security.service';
 import { IBasket }                  from '../shared/models/basket.model';
 import { IBasketItem }              from '../shared/models/basketItem.model';
 import { BasketWrapperService }     from '../shared/services/basket.wrapper.service';
+import { ConfigurationService }     from '../shared/services/configuration.service';
+import { StorageService }           from '../shared/services/storage.service';
 
 import 'rxjs/Rx';
 import { Observable }               from 'rxjs/Observable';
@@ -14,11 +16,11 @@ import 'rxjs/add/observable/throw';
 import { Observer }                 from 'rxjs/Observer';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
-import { Subject }          from 'rxjs/Subject';
+import { Subject }                  from 'rxjs/Subject';
 
 @Injectable()
 export class BasketService {
-    private basketUrl: string = 'http://eshopcontainers:5103';
+    private basketUrl: string = '';
     basket: IBasket = {
         buyerId: '',
         items: []
@@ -28,16 +30,23 @@ export class BasketService {
     private basketDropedSource = new Subject();
     basketDroped$ = this.basketDropedSource.asObservable();
     
-    constructor(private service: DataService, private authService: SecurityService, private basketEvents: BasketWrapperService, private router: Router) {
+    constructor(private service: DataService, private authService: SecurityService, private basketEvents: BasketWrapperService, private router: Router, private configurationService: ConfigurationService, private storageService: StorageService) {
         this.basket.items = [];
-
+        
         // Init:
         if (this.authService.IsAuthorized) {
             if (this.authService.UserData) {
                 this.basket.buyerId = this.authService.UserData.sub;
-                this.getBasket().subscribe(basket => {
-                    this.basket = basket;
-                });
+                if (this.configurationService.isReady) {
+                    this.basketUrl = this.configurationService.serverSettings.basketUrl;
+                    this.loadData();
+                }
+                else {
+                    this.configurationService.settingsLoaded$.subscribe(x => {
+                        this.basketUrl = this.configurationService.serverSettings.basketUrl;
+                        this.loadData();
+                    });
+                }
             }
         }
 
@@ -45,7 +54,7 @@ export class BasketService {
             this.dropBasket();
         });
     }
-
+    
     setBasket(item): Observable<boolean> {
         this.basket.items.push(item);
         return this.service.post(this.basketUrl + '/', this.basket).map((response: Response) => {
@@ -55,12 +64,24 @@ export class BasketService {
 
     getBasket(): Observable<IBasket> {
         return this.service.get(this.basketUrl + '/' + this.basket.buyerId).map((response: Response) => {
+            if (response.status === 204) {
+                return null;
+            }
+
             return response.json();
         });
     }
 
     dropBasket() {
+        this.basket.items = [];
         this.service.delete(this.basketUrl + '/' + this.basket.buyerId);
         this.basketDropedSource.next();
+    }
+
+    private loadData() {
+        this.getBasket().subscribe(basket => {
+            if (basket != null)
+                this.basket.items = basket.items;
+        });
     }
 }
