@@ -52,17 +52,20 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
 
         public async Task<IActionResult> AddToCart(CatalogItem productDetails)
         {
-            var user = _appUserParser.Parse(HttpContext.User);
-            var product = new BasketItem()
+            if (productDetails != null)
             {
-                Id = Guid.NewGuid().ToString(),
-                Quantity = 1,
-                ProductName = productDetails.Name,
-                PictureUrl = productDetails.PictureUri,
-                UnitPrice = productDetails.Price, 
-                ProductId = productDetails.Id
-            };
-            await _basketSvc.AddItemToBasket(user, product);
+                var user = _appUserParser.Parse(HttpContext.User);
+                var product = new BasketItem()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Quantity = 1,
+                    ProductName = productDetails.Name,
+                    PictureUrl = productDetails.PictureUri,
+                    UnitPrice = productDetails.Price,
+                    ProductId = productDetails.Id
+                };
+                await _basketSvc.AddItemToBasket(user, product);
+            }
             return RedirectToAction("Index", "Catalog");
         }
     }
