@@ -61,7 +61,7 @@
             UserInfoEndpoint = string.Format("{0}:5105/connect/userinfo", baseEndpoint);
             LogoutEndpoint = string.Format("{0}:5105/connect/endsession", baseEndpoint);
             IdentityCallback = "http://eshopxamarin/callback.html";
-            LogoutCallback = "http://eshopxamarin/callback.html/index.html";
+            LogoutCallback = string.Format("{0}:5105/Account/InProgress", baseEndpoint);
         }
     }
 }
