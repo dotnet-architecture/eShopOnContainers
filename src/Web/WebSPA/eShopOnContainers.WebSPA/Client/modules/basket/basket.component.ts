@@ -26,7 +26,11 @@ export class BasketComponent implements OnInit {
 
     itemQuantityChanged(item: IBasketItem) {
         this.calculateTotalPrice();
-        this.service.setBasket(this.basket);
+        this.service.setBasket(this.basket).subscribe(x => console.log('basket updated: ' + x));
+    }
+
+    update(event: any) {
+        this.service.setBasket(this.basket).subscribe(x => console.log('basket updated: ' + x));
     }
 
     checkOut(event: any) {

@@ -55,9 +55,14 @@ export class BasketService {
         });
     }
     
-    setBasket(item): Observable<boolean> {
+    addItemToBasket(item): Observable<boolean> {
         this.basket.items.push(item);
-        return this.service.post(this.basketUrl + '/', this.basket).map((response: Response) => {
+        return this.setBasket(this.basket);
+    }
+
+    setBasket(basket): Observable<boolean> {
+        this.basket = basket;
+        return this.service.post(this.basketUrl + '/', basket).map((response: Response) => {
             return true;
         });
     }

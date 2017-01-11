@@ -52,7 +52,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
 
         public async Task<IActionResult> AddToCart(CatalogItem productDetails)
         {
-            if (productDetails != null)
+            if (productDetails.Id != null)
             {
                 var user = _appUserParser.Parse(HttpContext.User);
                 var product = new BasketItem()

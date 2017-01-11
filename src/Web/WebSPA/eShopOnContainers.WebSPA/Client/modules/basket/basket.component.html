@@ -41,8 +41,11 @@
         </article>
 
         <article class="esh-basket-items row">
-            <section class="esh-basket-item col-xs-9"></section>
+            <section class="esh-basket-item col-xs-7"></section>
             <section class="esh-basket-item col-xs-2">
+                <button class="btn esh-basket-checkout" (click)="update($event)">[ Update ]</button>
+            </section>
+            <section class="esh-basket-item col-xs-3">
                 <div (click)="checkOut($event)" class="btn esh-basket-checkout">[ Checkout ]</div>
             </section>
         </article>
