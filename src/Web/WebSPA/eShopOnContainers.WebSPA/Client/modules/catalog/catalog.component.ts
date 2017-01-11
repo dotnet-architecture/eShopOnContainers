@@ -1,4 +1,6 @@
 import { Component, OnInit }    from '@angular/core';
+import { Subscription }         from 'rxjs/Subscription';
+
 import { CatalogService }       from './catalog.service';
 import { ConfigurationService } from '../shared/services/configuration.service';
 import { ICatalog }             from '../shared/models/catalog.model';
@@ -7,6 +9,7 @@ import { ICatalogType }         from '../shared/models/catalogType.model';
 import { ICatalogBrand }        from '../shared/models/catalogBrand.model';
 import { IPager }               from '../shared/models/pager.model';
 import { BasketWrapperService}  from '../shared/services/basket.wrapper.service';
+import { SecurityService }      from '../shared/services/security.service';
 
 @Component({
     selector: 'esh-catalog .esh-catalog',
@@ -20,17 +23,27 @@ export class CatalogComponent implements OnInit {
     brandSelected: number;
     typeSelected: number;
     paginationInfo: IPager;
+    authenticated: boolean = false;
+    authSubscription: Subscription;
 
-    constructor(private service: CatalogService, private basketService: BasketWrapperService, private configurationService: ConfigurationService) { }
+    constructor(private service: CatalogService, private basketService: BasketWrapperService, private configurationService: ConfigurationService, private securityService: SecurityService) {
+        this.authenticated = securityService.IsAuthorized;
+    }
 
     ngOnInit() {
-        if (this.configurationService.isReady) {
+
+        // Configuration Settings:
+        if (this.configurationService.isReady) 
             this.loadData();
-        }else{
+        else
             this.configurationService.settingsLoaded$.subscribe(x => {
                 this.loadData();
             });
-        }
+
+        // Subscribe to login and logout observable
+        this.authSubscription = this.securityService.authenticationChallenge$.subscribe(res => {
+            this.authenticated = res;
+        });
     }
 
     loadData() {

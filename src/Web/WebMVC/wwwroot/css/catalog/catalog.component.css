@@ -86,6 +86,8 @@
     text-align: center;
     margin-bottom: 1.5rem;
     width: 33%;
+    display: inline-block;
+    float: none !important;
 }
 
 @media screen and (max-width: 1024px) {
@@ -116,6 +118,10 @@
     transition: all 0.35s;
     width: 80%;
 }
+    .esh-catalog-button.is-disabled {
+        opacity: .5;
+        pointer-events: none;
+    }
 
     .esh-catalog-button:hover {
         background-color: #4a760f;

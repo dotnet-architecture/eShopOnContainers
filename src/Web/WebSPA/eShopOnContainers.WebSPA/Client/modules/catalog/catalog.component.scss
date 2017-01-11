@@ -95,6 +95,8 @@
         margin-bottom: 1.5rem;
         text-align: center;
         width: 33%;
+        display: inline-block;
+        float: none !important;
 
         @media screen and (max-width: $media-screen-m) {
             width: 50%;
@@ -120,6 +122,11 @@
         margin-top: 1rem;
         transition: all $animation-speed-default;
         width: 80%;
+
+        &.is-disabled {
+            opacity: .5;
+            pointer-events: none;
+        }
 
         &:hover {
             background-color: $color-secondary-darker;

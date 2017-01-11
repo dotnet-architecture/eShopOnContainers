@@ -29,7 +29,7 @@
                  *ngFor="let item of catalog?.data">
 
                 <img class="esh-catalog-thumbnail" src="{{item.pictureUri}}" />
-                <button class="esh-catalog-button" (click)="addToCart(item)">
+                <button [ngClass]="{'esh-catalog-button': true, 'is-disabled': !authenticated}" (click)="addToCart(item)">
                     [ ADD TO CART ]
                 </button>
 

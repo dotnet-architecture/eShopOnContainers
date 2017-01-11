@@ -24,7 +24,7 @@ export class BasketStatusComponent implements OnInit {
         // Subscribe to Add Basket Observable:
         this.basketItemAddedSubscription = this.basketEvents.addItemToBasket$.subscribe(
             item => {
-                this.service.setBasket(item).subscribe(res => {
+                this.service.addItemToBasket(item).subscribe(res => {
                     this.service.getBasket().subscribe(basket => {
                         if (basket)
                             this.badge = basket.items.length;
