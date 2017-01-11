@@ -74,9 +74,6 @@
             <ffimageloading:CachedImage 
                 Grid.Row="0"
                 Source="{Binding PictureUri}"     
-                CacheDuration="30"                      
-                CacheType="Disk"             
-                DownsampleToViewSize="True"
                 Aspect="AspectFill">
                 <ffimageloading:CachedImage.LoadingPlaceholder>
                     <OnPlatform   

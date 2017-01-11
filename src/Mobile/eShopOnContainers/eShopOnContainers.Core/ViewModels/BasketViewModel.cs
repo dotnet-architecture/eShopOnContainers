@@ -99,39 +99,25 @@ namespace eShopOnContainers.Core.ViewModels
 
         private void AddCatalogItem(CatalogItem item)
         {
-            if (BasketItems.Any(o => o.ProductId.Equals(item.Id, StringComparison.CurrentCultureIgnoreCase)))
+            BasketItems.Add(new BasketItem
             {
-                var orderItem = BasketItems.First(o => o.ProductId.Equals(item.Id, StringComparison.CurrentCultureIgnoreCase));
-                orderItem.Quantity++;
-            }
-            else
-            {
-                BasketItems.Add(new BasketItem
-                {
-                    ProductId = item.Id,
-                    ProductName = item.Name,
-                    PictureUrl = item.PictureUri,
-                    UnitPrice = item.Price,
-                    Quantity = 1
-                });
-            }
+                ProductId = item.Id,
+                ProductName = item.Name,
+                PictureUrl = item.PictureUri,
+                UnitPrice = item.Price,
+                Quantity = 1
+            });
 
             ReCalculateTotal();
         }
 
-        private void AddItem(BasketItem parameter)
+        private void AddItem(BasketItem item)
         {
             BadgeCount++;
 
-            var basketItem = BasketItems
-                .FirstOrDefault(bi => bi.ProductId.Equals(parameter.ProductId, 
-                StringComparison.CurrentCultureIgnoreCase));
-
-            basketItem.Quantity++;
+            AddBasketItem(item);
 
             RaisePropertyChanged(() => BasketItems);
-
-            ReCalculateTotal();
         }
 
         private void AddBasketItem(BasketItem item)
