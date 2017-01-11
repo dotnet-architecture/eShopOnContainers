@@ -62,7 +62,6 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
-                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <!-- HEADER -->
                     <Grid
@@ -71,39 +70,42 @@
                             Text="SHOPPING CART"
                             Style="{StaticResource ShoppingCartStyle}"/>
                     </Grid>
-                    <!-- ITEMS -->
-                    <ListView 
-                        Grid.Row="1"
-                        ItemsSource="{Binding BasketItems}"                              
-                        behaviors:ItemTappedCommandListViewBehavior.ItemTappedCommand="{Binding AddCommand}"
-                        HeightRequest="{Binding BasketItems.Count, Converter={StaticResource ItemsToHeightConverter}}"
-                        HasUnevenRows="True"
-                        SeparatorVisibility="None"
-                        VerticalOptions="FillAndExpand"
-                        CachingStrategy="RecycleElement">
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <ViewCell>
-                                    <templates:BasketItemTemplate />
-                                </ViewCell>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
-                    <!-- TOTAL -->
-                    <StackLayout
-                        Grid.Row="2"
-                        Margin="0,0,0,24">
-                        <Label 
-                            Grid.Row="0"
-                            Text="TOTAL"
-                            TextColor="{StaticResource BlackColor}"
-                            Style="{StaticResource CartTotalStyle}"/>
-                        <Label 
-                            Grid.Row="1"                   
-                            Text="{Binding Total, StringFormat='${0:N}'}"
-                            TextColor="{StaticResource GreenColor}"
-                            Style="{StaticResource CartTotalStyle}"/>
-                    </StackLayout>
+                    <ScrollView
+                        Grid.Row="1">
+                        <StackLayout>
+                            <!-- ITEMS -->
+                            <ListView  
+                                ItemsSource="{Binding BasketItems}"                              
+                                behaviors:ItemTappedCommandListViewBehavior.ItemTappedCommand="{Binding AddCommand}"
+                                HeightRequest="{Binding BasketItems.Count, Converter={StaticResource ItemsToHeightConverter}}"
+                                HasUnevenRows="True"
+                                SeparatorVisibility="None"
+                                VerticalOptions="FillAndExpand"
+                                CachingStrategy="RecycleElement">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <ViewCell>
+                                            <templates:BasketItemTemplate />
+                                        </ViewCell>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                            <!-- TOTAL -->
+                            <StackLayout
+                                Margin="0,0,0,24">
+                                <Label 
+                                    Grid.Row="0"
+                                    Text="TOTAL"
+                                    TextColor="{StaticResource BlackColor}"
+                                    Style="{StaticResource CartTotalStyle}"/>
+                                <Label 
+                                    Grid.Row="1"                   
+                                    Text="{Binding Total, StringFormat='${0:N}'}"
+                                    TextColor="{StaticResource GreenColor}"
+                                    Style="{StaticResource CartTotalStyle}"/>
+                            </StackLayout>
+                        </StackLayout>
+                    </ScrollView>
                 </Grid>
             </Grid>
             <!-- CHECKOUT -->
