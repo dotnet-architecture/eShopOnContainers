@@ -61,7 +61,7 @@ namespace eShopOnContainers.Identity.Configuration
                     AllowAccessTokensViaBrowser = true,
                     RedirectUris =           { "http://eshopxamarin/callback.html" },
                     RequireConsent = false,
-                    PostLogoutRedirectUris = { "http://eshopxamarin/callback.html/index.html" },
+                    PostLogoutRedirectUris = { "http://13.88.8.119:5105/Account/Redirecting", "http://10.6.1.234:5105/Account/Redirecting" },
                     AllowedCorsOrigins =     { "http://eshopxamarin" },
                     AllowedScopes =
                     {

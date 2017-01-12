@@ -307,6 +307,12 @@ namespace IdentityServer4.Quickstart.UI.Controllers
             return RedirectToAction("index", "home");
         }
 
+        [HttpGet]
+        public IActionResult Redirecting()
+        {
+            return View();
+        }
+
         private void AddErrors(IdentityResult result)
         {
             foreach (var error in result.Errors)
