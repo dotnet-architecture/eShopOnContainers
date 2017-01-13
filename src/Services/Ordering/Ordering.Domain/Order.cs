@@ -4,6 +4,9 @@
     using System;
     using System.Collections.Generic;
 
+    //(CDLTLL)
+    //TO DO: Need to add additional Domain Logic to this Aggregate-Root for 
+    //scenarios related to Order state changes, stock availability validation, etc.
     public class Order
         : Entity, IAggregateRoot
     {

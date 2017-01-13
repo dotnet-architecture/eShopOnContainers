@@ -3,6 +3,8 @@
     using Microsoft.eShopOnContainers.Services.Ordering.Domain.SeedWork;
     using System;
 
+    //(CDLTLL)
+    //TO DO: Need to convert this entity to a Value-Object (Address VO)
     public class Address
         : Entity
     {
