@@ -3,7 +3,8 @@
     using Domain.SeedWork;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.eShopOnContainers.Services.Ordering.Domain;
-    using Microsoft.eShopOnContainers.Services.Ordering.Domain.Repositories;
+    using Microsoft.eShopOnContainers.Services.Ordering.Domain.RepositoryContracts;
+    using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.BuyerAggregate;
     using System;
     using System.Linq;
     using System.Threading.Tasks;

@@ -6,6 +6,8 @@
     using Ordering.Infrastructure;
     using System.Linq;
     using System.Threading.Tasks;
+    using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.BuyerAggregate;
+    using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
 
     public class OrderingContextSeed
     {

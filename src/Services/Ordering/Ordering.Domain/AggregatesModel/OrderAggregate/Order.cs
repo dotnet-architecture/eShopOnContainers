@@ -1,6 +1,7 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Ordering.Domain
+﻿namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate
 {
     using Microsoft.eShopOnContainers.Services.Ordering.Domain.SeedWork;
+    using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.BuyerAggregate;
     using System;
     using System.Collections.Generic;
 

@@ -1,6 +1,8 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Ordering.Api.Application.Commands
 {
-    using Domain.Repositories;
+    using Domain.RepositoryContracts;
+    using Domain.AggregatesModel.OrderAggregate;
+    using Domain.AggregatesModel.BuyerAggregate;
     using MediatR;
     using System.Linq;
     using System;
@@ -84,7 +86,7 @@
 
         }
 
-        Payment PaymentAlreadyExist(Domain.Buyer buyer, NewOrderCommand message)
+        Payment PaymentAlreadyExist(Buyer buyer, NewOrderCommand message)
         {
             return buyer.Payments
                 .SingleOrDefault(p =>

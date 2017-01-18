@@ -7,6 +7,8 @@
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
     using Microsoft.eShopOnContainers.Services.Ordering.Domain;
+    using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.BuyerAggregate;
+    using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
 
     public class OrderingContext
        : DbContext,IUnitOfWork
