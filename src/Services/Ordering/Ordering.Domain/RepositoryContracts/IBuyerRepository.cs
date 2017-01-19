@@ -9,6 +9,6 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.RepositoryContrac
     {
         Buyer Add(Buyer buyer);
 
-        Task<Buyer> FindAsync(string name);
+        Task<Buyer> FindAsync(string BuyerIdentityGuid);
     }
 }

@@ -78,6 +78,10 @@
                 .HasMaxLength(200)
                 .IsRequired();
 
+            paymentConfiguration.Property(p => p.Alias)
+                .HasMaxLength(200)
+                .IsRequired();
+
             paymentConfiguration.Property(p => p.CardNumber)
                 .HasMaxLength(25)
                 .IsRequired();

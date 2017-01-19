@@ -39,11 +39,11 @@
                 .Entity;
         }
 
-        public async Task<Buyer> FindAsync(string name)
+        public async Task<Buyer> FindAsync(string BuyerIdentityGuid)
         {
             var buyer = await _context.Buyers
                 .Include(b => b.Payments)
-                .Where(b => b.FullName == name)
+                .Where(b => b.FullName == BuyerIdentityGuid)
                 .SingleOrDefaultAsync();
 
             return buyer;

@@ -43,14 +43,14 @@
 
         [Route("new")]
         [HttpPost]
-        public async Task<IActionResult> AddOrder([FromBody]NewOrderCommand order)
+        public async Task<IActionResult> AddOrder([FromBody]CreateOrderCommand createOrderCommand)
         {
-            if (order.CardTypeId == 0)
-                order.CardTypeId = 1;
+            if (createOrderCommand.CardTypeId == 0)
+                createOrderCommand.CardTypeId = 1;
 
-            order.Buyer = _identityService.GetUserIdentity();
+            createOrderCommand.BuyerIdentityGuid = _identityService.GetUserIdentity();
 
-            var added = await _mediator.SendAsync(order);
+            var added = await _mediator.SendAsync(createOrderCommand);
             if (added)
             {
                 return Ok();

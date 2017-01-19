@@ -7,6 +7,7 @@
     public class Payment
         : Entity
     {
+        public string Alias { get; private set; }
         public int BuyerId { get; private set; }
 
         public string CardNumber { get; private set; }
@@ -23,7 +24,7 @@
 
         protected Payment() { }
 
-        public Payment(string cardNumber, string securityNumber, string cardHolderName, DateTime expiration, int cardTypeId)
+        public Payment(string alias, string cardNumber, string securityNumber, string cardHolderName, DateTime expiration, int cardTypeId)
         {
             if (String.IsNullOrWhiteSpace(cardNumber))
             {
@@ -45,6 +46,7 @@
                 throw new ArgumentException(nameof(expiration));
             }
 
+            this.Alias = alias;
             this.CardNumber = cardNumber;
             this.SecurityNumber = securityNumber;
             this.CardHolderName = cardHolderName;

@@ -13,14 +13,14 @@
 
         protected Buyer() { }
 
-        public Buyer(string fullName)
+        public Buyer(string IdentityGuid)
         {
-            if (String.IsNullOrWhiteSpace(fullName))
+            if (String.IsNullOrWhiteSpace(IdentityGuid))
             {
-                throw new ArgumentNullException(nameof(fullName));
+                throw new ArgumentNullException(nameof(IdentityGuid));
             }
 
-            this.FullName = fullName;
+            this.FullName = IdentityGuid;
             this.Payments = new HashSet<Payment>();
         }
     }

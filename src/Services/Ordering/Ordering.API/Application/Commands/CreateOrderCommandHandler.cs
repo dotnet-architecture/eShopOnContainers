@@ -9,13 +9,13 @@
     using System.Threading.Tasks;
     using Domain;
 
-    public class NewOrderCommandHandler
-        : IAsyncRequestHandler<NewOrderCommand, bool>
+    public class CreateOrderCommandHandler
+        : IAsyncRequestHandler<CreateOrderCommand, bool>
     {
         private readonly IBuyerRepository _buyerRepository;
         private readonly IOrderRepository _orderRepository;
 
-        public NewOrderCommandHandler(IBuyerRepository buyerRepository,IOrderRepository orderRepository)
+        public CreateOrderCommandHandler(IBuyerRepository buyerRepository,IOrderRepository orderRepository)
         {
             if (buyerRepository == null)
             {
@@ -30,11 +30,11 @@
             _buyerRepository = buyerRepository;
             _orderRepository = orderRepository;
         }
-        public async Task<bool> Handle(NewOrderCommand message)
+        public async Task<bool> Handle(CreateOrderCommand message)
         {
             //find buyer/payment or add a new one buyer/payment 
 
-            var buyer = await _buyerRepository.FindAsync(message.Buyer);
+            var buyer = await _buyerRepository.FindAsync(message.BuyerIdentityGuid);
 
             if (buyer == null)
             {
@@ -70,9 +70,32 @@
             return result > 0;
         }
 
+        Buyer CreateBuyer(CreateOrderCommand message)
+        {
+            return _buyerRepository.Add(
+                new Buyer(message.BuyerIdentityGuid));
+        }
+
+        Order CreateOrder(int buyerId, int paymentId, int addressId)
+        {
+            return new Order(buyerId, paymentId);
+        }
 
 
-        Payment GetExistingPaymentOrAddANewOne(Buyer buyer, NewOrderCommand message)
+        //TO DO:
+        //(CDLTLL) This is wrong. We shouldn't be able to create a PaymentMethod from a CommandHandler or anywhere in the Application Layer
+        //because a PaymentMethod is a child-entity, part of the Buyer Aggregate.
+        //So, any creation/update of a PaymentMethod should be done through its Aggregate-Root: the Buyer root entity.
+        //Need to move this logic to the Buyer Aggregate-Root and rename to "AddPaymentMethod()"
+        Payment CreatePayment(CreateOrderCommand message)
+        {
+            return new Payment("My Default Payment Method", message.CardNumber, message.CardSecurityNumber, message.CardHolderName, message.CardExpiration, message.CardTypeId);
+        }
+
+        //TO DO:
+        //(CDLTLL) This is wrong. As explained, this logic should be part of the
+        //Buyer Aggregate Root, as a PaymentMethod is a child-entity of that Aggregate.
+        Payment GetExistingPaymentOrAddANewOne(Buyer buyer, CreateOrderCommand message)
         {
             Payment payment = PaymentAlreadyExist(buyer, message);
 
@@ -86,7 +109,10 @@
 
         }
 
-        Payment PaymentAlreadyExist(Buyer buyer, NewOrderCommand message)
+        //TO DO:
+        //(CDLTLL) This is wrong. As explained, this logic should be part of the
+        //Buyer Aggregate Root, as a PaymentMethod is a child-entity of that Aggregate.
+        Payment PaymentAlreadyExist(Buyer buyer, CreateOrderCommand message)
         {
             return buyer.Payments
                 .SingleOrDefault(p =>
@@ -99,22 +125,6 @@
                     &&
                     p.SecurityNumber == message.CardSecurityNumber;
                 });
-        }
-
-        Buyer CreateBuyer(NewOrderCommand message)
-        {
-            return _buyerRepository.Add(
-                new Buyer(message.Buyer));
-        }
-
-        Order CreateOrder(int buyerId, int paymentId, int addressId)
-        {
-            return new Order(buyerId, paymentId);
-        }
-
-        Payment CreatePayment(NewOrderCommand message)
-        {
-            return new Payment(message.CardNumber, message.CardSecurityNumber, message.CardHolderName, message.CardExpiration, message.CardTypeId);
         }
     }
 }

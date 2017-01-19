@@ -16,7 +16,7 @@
             builder.RegisterAssemblyTypes(typeof(IMediator).GetTypeInfo().Assembly)
                 .AsImplementedInterfaces();
 
-            builder.RegisterAssemblyTypes(typeof(NewOrderCommand).GetTypeInfo().Assembly)
+            builder.RegisterAssemblyTypes(typeof(CreateOrderCommand).GetTypeInfo().Assembly)
                 .As(o => o.GetInterfaces()
                     .Where(i => i.IsClosedTypeOf(typeof(IAsyncRequestHandler<,>)))
                     .Select(i => new KeyedService("IAsyncRequestHandler", i)));

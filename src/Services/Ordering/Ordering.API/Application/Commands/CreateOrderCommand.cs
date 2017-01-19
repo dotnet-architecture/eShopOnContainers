@@ -10,10 +10,10 @@
     //Need to create a different DTO class, like OrderLineDTO or similar...
     using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
 
-    public class NewOrderCommand
+    public class CreateOrderCommand
         :IAsyncRequest<bool>
     {
-        //(CDLTLL) TO DO: This is wrong, we must NOT use a child-entity class within a Command class!!
+        //(CDLTLL) TO DO: This is wrong, we must NOT use a child-entity class (OrderItem) within a Command class!!
         //Need to create a different DTO class, like OrderLineDTO or similar...
         private readonly List<OrderItem> _orderItems;
         public string City { get; set; }
@@ -36,7 +36,7 @@
 
         public int CardTypeId { get; set; }
 
-        public string Buyer { get; set; }
+        public string BuyerIdentityGuid { get; set; }
 
         public IEnumerable<OrderItem> OrderItems => _orderItems;
 
@@ -45,7 +45,7 @@
             _orderItems.Add(item);
         }
 
-        public NewOrderCommand()
+        public CreateOrderCommand()
         {
             _orderItems = new List<OrderItem>();
         }
