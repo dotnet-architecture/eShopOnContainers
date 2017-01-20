@@ -23,7 +23,7 @@ You can download both eBooks from here:
 | Architecting & Developing | Containers Lifecycle & CI/CD |
 | ------------ | ------------|
 | <img src="img/ebook_arch_dev_microservices_containers_cover.png">      | <img src="img/ebook_containers_lifecycle.png">  |
-| <a href='docs/architecting-and-developing-containerized-and-microservice-based-net-applications-ebook-early-draft.pdf'>Download (DRAFT)</a>  | <a href='https://aka.ms/dockerlifecycleebook'>Download</a>   |
+| <a href='docs/architecting-and-developing-containerized-and-microservice-based-net-applications-ebook-early-draft.pdf'>Download (Confidential DRAFT until published)</a> | <a href='https://aka.ms/dockerlifecycleebook'>Download</a>   |
 
 
 <p>However, we encourage to review the "Architecting/Developing " because is pretty much related to this reference application.
