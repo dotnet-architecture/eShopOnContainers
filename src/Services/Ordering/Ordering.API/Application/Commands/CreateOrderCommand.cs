@@ -14,7 +14,7 @@
         :IAsyncRequest<bool>
     {
         //(CDLTLL) TO DO: This is wrong, we must NOT use a child-entity class (OrderItem) within a Command class!!
-        //Need to create a different DTO class, like OrderLineDTO or similar...
+        //Need to create a different DTO class, like OrderLineData or similar within the CreateOrderCommand class...
         private readonly List<OrderItem> _orderItems;
         public string City { get; set; }
 

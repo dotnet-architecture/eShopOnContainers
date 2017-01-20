@@ -52,11 +52,28 @@
             ShippingAddress = address;
         }
 
+        //TO DO: 
+        // (CDLTLL) Bad implementation, needs to be changed.
+        // The AddOrderItem should have the needed data params 
+        // instead of an already created OrderItem object.
+        // The Aggregate-Root is responsible for any Update/Creation of its child entities
+        // If we are providing an already created OrderItem, that was created from the outside
+        // and the AggregateRoot cannot control/validate any rule/invariants/consistency. 
         public void AddOrderItem(OrderItem item)
         {
-            // Note: Some logic could be added here (like grouping items in one single OrderItem)
-            // Also validation logic could be added here (like ensuring adding almost one item)
+            //TO DO: Bad implementation, need to change.
+            // The code "new OrderItem(params);" should be done here
+            // Plus any validation/rule related
             OrderItems.Add(item);
+
+            //(CDLTLL)
+            // TO DO: Some more logic needs to be added here,
+            // Like consolidating items that are the same product in one single OrderItem with several units
+            // Also validation logic could be added here (like ensuring it is adding at least one item unit)
+
+            //Or, If there are different amounts of discounts per added OrderItem 
+            //but the product Id is the same to existing Order Items, you should 
+            //apply the higher discount, or any other domain logic that makes sense.
         }
     }
 }

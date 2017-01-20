@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 namespace Microsoft.eShopOnContainers.Services.Ordering.API.Models
 {
+    //TO DO: Confirm if this class is not needed, if not, remove it
+    //(CDLTLL)
     public class NewOrderViewModel
     {
         public string ShippingCity { get; set; }

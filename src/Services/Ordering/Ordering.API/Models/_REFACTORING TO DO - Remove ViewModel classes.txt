@@ -1,0 +1,5 @@
+﻿
+REFACTORING TO DO:
+    //TO DO: Confirm if these ViewModel classes are still needed, if not, remove it
+    //and remove the related Unit Tests
+    //(CDLTLL)
