@@ -1,6 +1,5 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Ordering.Api.Application.Commands
 {
-    using Domain.RepositoryContracts;
     using Domain.AggregatesModel.OrderAggregate;
     using Domain.AggregatesModel.BuyerAggregate;
     using MediatR;

@@ -4,7 +4,8 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure.Autof
 {
     using Api.Application.Queries;
     using Autofac;
-    using Domain.RepositoryContracts;
+    using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
+    using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.BuyerAggregate;
     using Ordering.Infrastructure.Repositories;
 
     public class ApplicationModule

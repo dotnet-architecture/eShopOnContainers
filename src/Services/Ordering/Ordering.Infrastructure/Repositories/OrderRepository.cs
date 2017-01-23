@@ -2,7 +2,6 @@
 {
     using Domain;
     using Domain.SeedWork;
-    using Microsoft.eShopOnContainers.Services.Ordering.Domain.RepositoryContracts;
     using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
     using System;
 
