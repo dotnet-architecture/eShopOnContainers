@@ -83,6 +83,12 @@ Once Docker for Windows/Mac is installed in your machine, enter into its Setting
 
 <img src="img/docker_settings.png">
 
+#### Share drives in Docker settings (In order to deploy and debug from VS 2017)
+In order to deploy/debug from Visual Studio 2017, you'll need to share the drives from Settings-> Shared Drives in the "Docker for Windows" configuration.
+If you don't do this, you will get an error when trying to deploy/debug from VS 2017, like "Cannot create container for service yourApplication: C: drive is not shared"
+(Note, that this is not required if running from Docker CLI with docker-compose up)
+*** TBD Image of Docker Settings and Shared Drives ***
+
 #### Bower and Gulp global installation
 Before generating the Docker images, and specifically when generating the web apps binaries with "dotnet publish" from the custom scripts (like when running the build-images.ps1 script from PowerShell or the build-images.sh from bash in a Mac), it needs to have access to the paths where you have installed Bower and Gulp. For that, the recommendation is to install Bower and Gulp with a global installation by running the following commands from command-line or bash:
 
