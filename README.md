@@ -2,11 +2,13 @@
 Sample .NET Core reference application, powered by Microsoft, based on a simplified microservices architecture and Docker containers. <p>
 
 > ### DISCLAIMER
-> This reference application proposes a simplified microservice oriented architecture implementation (currently in ALPHA state) to introduce technologies like .NET Core with Docker containers through a comprehensive but simplified application. However, this reference application it is not trying to solve all the problems in a large and mission-critical distributed system, it is a bootstrap for developers to easily get started in the world of Docker containers and microservices with .NET Core. 
-> <p>In fact, the next step after understanding Docker containers and microservices is to select a microservice cluster/orchestrator like Docker Swarm, Kubernetes or DC/OS (in Azure Container Service) or Azure Service Fabric which in most of the cases will require additional partial changes to your application's configuration (although the present architecture should work on most orchestrators with small changes). In the future we might fork this project and make multiple versions targeting specific microservice cluster/orchestrators.
+> This reference application proposes a simplified microservice oriented architecture implementation (currently in ALPHA state) to introduce technologies like .NET Core with Docker containers through a comprehensive but simplified application. However, this reference application it is not trying to solve all the problems in a large and mission-critical distributed system, it is just a bootstrap for developers to easily get started in the world of Docker containers and microservices with .NET Core. 
+> <p>For example, the next step (still not covered here) after understanding Docker containers and microservices is to select a microservice cluster/orchestrator like Docker Swarm, Kubernetes or DC/OS (in Azure Container Service) or Azure Service Fabric which in most of the cases will require additional partial changes to your application's configuration (although the present architecture should work on most orchestrators with small changes). In the future we might fork this project and make multiple versions targeting specific microservice cluster/orchestrators. <p>
+> Read the planned <a href='https://github.com/dotnet/eShopOnContainers/wiki/Roadmap-and-Milestones-for-future-releases'>Roadmap and Milestones for future releases of eShopOnContainers</a> within the Wiki for further info about possible new implementations and provide feedback at the ISSUES level if you'd like to see any specific scenario implemented.
+
 <p>
 This reference application is cross-platform either in the server and client side, thanks to .NET Core services capable of running on Linux or Windows containers depending on your Docker host, and to Xamarin for mobile apps running on Android, iOS or Windows/UWP plus any browser for the client web apps. 
-
+<p>
 <img src="img/eshop_logo.png">
 <img src="img/eShopOnContainers_Architecture_Diagram.png">
 <p>
@@ -83,13 +85,16 @@ Once Docker for Windows/Mac is installed in your machine, enter into its Setting
 
 <img src="img/docker_settings.png">
 
-#### Share drives in Docker settings (In order to deploy and debug from VS 2017)
+#### Share drives in Docker settings (In order to deploy and debug with Visual Studio 2017)
+(Note, this is not required if running from Docker CLI with docker-compose up and using VS 2015 or any other IDE or Editor)<p>
 In order to deploy/debug from Visual Studio 2017, you'll need to share the drives from Settings-> Shared Drives in the "Docker for Windows" configuration.
-If you don't do this, you will get an error when trying to deploy/debug from VS 2017, like "Cannot create container for service yourApplication: C: drive is not shared"
-(Note, that this is not required if running from Docker CLI with docker-compose up)
-*** TBD Image of Docker Settings and Shared Drives ***
+If you don't do this, you will get an error when trying to deploy/debug from VS 2017, like "Cannot create container for service yourApplication: C: drive is not shared". <p>
+
+
+<img src="img/docker_settings_shared_drives.png">
 
 #### Bower and Gulp global installation
+(These steps about installing bower and gulp might not be needed anymore as these are being triggered from the project.json in the MVC project at the section 'prepublish":'). However, this will need to be migrated to .csproj when migrating to VS 2017. <p>
 Before generating the Docker images, and specifically when generating the web apps binaries with "dotnet publish" from the custom scripts (like when running the build-images.ps1 script from PowerShell or the build-images.sh from bash in a Mac), it needs to have access to the paths where you have installed Bower and Gulp. For that, the recommendation is to install Bower and Gulp with a global installation by running the following commands from command-line or bash:
 
 `npm install -g bower` 
