@@ -1,4 +1,4 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Ordering.Api.Application.Queries
+﻿namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.Queries
 {
     using Dapper;
     using Microsoft.Extensions.Configuration;

@@ -1,16 +1,14 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Ordering.API.Controllers
-{
-    using Api.Application.Commands;
-    using Api.Application.Queries;
-    using AspNetCore.Authorization;
-    using Infrastructure.Services;
-    using MediatR;
-    using Microsoft.AspNetCore.Mvc;
-    using Models;
-    using System;
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands;
+using Microsoft.eShopOnContainers.Services.Ordering.API.Application.Queries;
+using Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure.Services;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
+namespace Microsoft.eShopOnContainers.Services.Ordering.API.Controllers
+{
     [Route("api/v1/[controller]")]
     [Authorize]
     public class OrdersController : Controller
@@ -46,9 +44,11 @@
         public async Task<IActionResult> AddOrder([FromBody]CreateOrderCommand createOrderCommand)
         {
             if (createOrderCommand.CardTypeId == 0)
+            {
                 createOrderCommand.CardTypeId = 1;
+            }
 
-            createOrderCommand.BuyerIdentityGuid = _identityService.GetUserIdentity();
+            createOrderCommand.BuyerFullName = _identityService.GetUserIdentity();
 
             var added = await _mediator.SendAsync(createOrderCommand);
             if (added)

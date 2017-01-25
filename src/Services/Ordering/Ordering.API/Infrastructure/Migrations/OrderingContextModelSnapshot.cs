@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure;
 
-namespace Ordering.API.Infrastructure.Migrations
+namespace Ordering.API.Migrations
 {
     [DbContext(typeof(OrderingContext))]
     partial class OrderingContextModelSnapshot : ModelSnapshot
@@ -13,7 +13,8 @@ namespace Ordering.API.Infrastructure.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
             modelBuilder
-                .HasAnnotation("ProductVersion", "1.0.1")
+                .HasAnnotation("ProductVersion", "1.1.0-rtm-22752")
+                .HasAnnotation("SqlServer:Sequence:.orderitemseq", "'orderitemseq', '', '1', '10', '', '', 'Int64', 'False'")
                 .HasAnnotation("SqlServer:Sequence:ordering.buyerseq", "'buyerseq', 'ordering', '1', '10', '', '', 'Int64', 'False'")
                 .HasAnnotation("SqlServer:Sequence:ordering.orderseq", "'orderseq', 'ordering', '1', '10', '', '', 'Int64', 'False'")
                 .HasAnnotation("SqlServer:Sequence:ordering.paymentseq", "'paymentseq', 'ordering', '1', '10', '', '', 'Int64', 'False'")
@@ -29,7 +30,7 @@ namespace Ordering.API.Infrastructure.Migrations
 
                     b.Property<string>("FullName")
                         .IsRequired()
-                        .HasAnnotation("MaxLength", 200);
+                        .HasMaxLength(200);
 
                     b.HasKey("Id");
 
@@ -42,12 +43,11 @@ namespace Ordering.API.Infrastructure.Migrations
             modelBuilder.Entity("Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.BuyerAggregate.CardType", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasDefaultValue(1);
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasAnnotation("MaxLength", 200);
+                        .HasMaxLength(200);
 
                     b.HasKey("Id");
 
@@ -64,23 +64,21 @@ namespace Ordering.API.Infrastructure.Migrations
 
                     b.Property<string>("Alias")
                         .IsRequired()
-                        .HasAnnotation("MaxLength", 200);
+                        .HasMaxLength(200);
 
                     b.Property<int>("BuyerId");
 
                     b.Property<string>("CardHolderName")
                         .IsRequired()
-                        .HasAnnotation("MaxLength", 200);
+                        .HasMaxLength(200);
 
                     b.Property<string>("CardNumber")
                         .IsRequired()
-                        .HasAnnotation("MaxLength", 25);
+                        .HasMaxLength(25);
 
                     b.Property<int>("CardTypeId");
 
                     b.Property<DateTime>("Expiration");
-
-                    b.Property<string>("SecurityNumber");
 
                     b.HasKey("Id");
 
@@ -89,26 +87,6 @@ namespace Ordering.API.Infrastructure.Migrations
                     b.HasIndex("CardTypeId");
 
                     b.ToTable("payments","ordering");
-                });
-
-            modelBuilder.Entity("Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate.Address", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("City");
-
-                    b.Property<string>("Country");
-
-                    b.Property<string>("State");
-
-                    b.Property<string>("Street");
-
-                    b.Property<string>("ZipCode");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("address","ordering");
                 });
 
             modelBuilder.Entity("Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate.Order", b =>
@@ -121,23 +99,31 @@ namespace Ordering.API.Infrastructure.Migrations
 
                     b.Property<int>("BuyerId");
 
+                    b.Property<string>("City")
+                        .IsRequired();
+
                     b.Property<DateTime>("OrderDate");
+
+                    b.Property<int>("OrderStatusId");
 
                     b.Property<int>("PaymentId");
 
-                    b.Property<int?>("ShippingAddressId");
+                    b.Property<string>("State")
+                        .IsRequired();
 
-                    b.Property<int>("StatusId");
+                    b.Property<string>("Street")
+                        .IsRequired();
+
+                    b.Property<string>("ZipCode")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
                     b.HasIndex("BuyerId");
 
+                    b.HasIndex("OrderStatusId");
+
                     b.HasIndex("PaymentId");
-
-                    b.HasIndex("ShippingAddressId");
-
-                    b.HasIndex("StatusId");
 
                     b.ToTable("orders","ordering");
                 });
@@ -145,13 +131,13 @@ namespace Ordering.API.Infrastructure.Migrations
             modelBuilder.Entity("Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate.OrderItem", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:HiLoSequenceName", "orderitemseq")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.SequenceHiLo);
 
                     b.Property<decimal>("Discount");
 
                     b.Property<int>("OrderId");
-
-                    b.Property<string>("PictureUrl");
 
                     b.Property<int>("ProductId");
 
@@ -160,9 +146,7 @@ namespace Ordering.API.Infrastructure.Migrations
 
                     b.Property<decimal>("UnitPrice");
 
-                    b.Property<int>("Units")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:DefaultValue", 1);
+                    b.Property<int>("Units");
 
                     b.HasKey("Id");
 
@@ -174,12 +158,11 @@ namespace Ordering.API.Infrastructure.Migrations
             modelBuilder.Entity("Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate.OrderStatus", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasDefaultValue(1);
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasAnnotation("MaxLength", 200);
+                        .HasMaxLength(200);
 
                     b.HasKey("Id");
 
@@ -206,18 +189,14 @@ namespace Ordering.API.Infrastructure.Migrations
                         .HasForeignKey("BuyerId")
                         .OnDelete(DeleteBehavior.Cascade);
 
+                    b.HasOne("Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate.OrderStatus", "OrderStatus")
+                        .WithMany()
+                        .HasForeignKey("OrderStatusId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.BuyerAggregate.Payment", "Payment")
                         .WithMany()
                         .HasForeignKey("PaymentId");
-
-                    b.HasOne("Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate.Address", "ShippingAddress")
-                        .WithMany()
-                        .HasForeignKey("ShippingAddressId");
-
-                    b.HasOne("Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate.OrderStatus", "Status")
-                        .WithMany()
-                        .HasForeignKey("StatusId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate.OrderItem", b =>

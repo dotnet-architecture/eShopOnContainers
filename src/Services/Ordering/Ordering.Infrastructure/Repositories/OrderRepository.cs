@@ -1,14 +1,14 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Repositories
-{
-    using Domain;
-    using Domain.SeedWork;
-    using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
-    using System;
+﻿using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
+using Microsoft.eShopOnContainers.Services.Ordering.Domain.SeedWork;
+using System;
 
+namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Repositories
+{
     public class OrderRepository
         : IOrderRepository
     {
         private readonly OrderingContext _context;
+
         public IUnitOfWork UnitOfWork
         {
             get
