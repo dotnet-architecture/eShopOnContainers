@@ -13,6 +13,14 @@
     {
         private readonly OrderingContext _context;
 
+        public IUnitOfWork UnitOfWork
+        {
+            get
+            {
+                return _context;
+            }
+        }
+
         public BuyerRepository(OrderingContext context)
         {
             if (context == null)
@@ -21,14 +29,6 @@
             }
 
             _context = context;
-        }
-
-        public IUnitOfWork UnitOfWork
-        {
-            get
-            {
-                return _context;
-            }
         }
 
         public Buyer Add(Buyer buyer)
