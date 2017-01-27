@@ -3,7 +3,7 @@ using System;
 
 namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.BuyerAggregate
 {
-    public class Payment
+    public class PaymentMethod
         : Entity
     {
         private int _buyerId;
@@ -17,9 +17,9 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.B
         public CardType CardType { get; private set; }
 
 
-        protected Payment() { }
+        protected PaymentMethod() { }
 
-        public Payment(int cardTypeId, string alias, string cardNumber, string securityNumber, string cardHolderName, DateTime expiration)
+        public PaymentMethod(int cardTypeId, string alias, string cardNumber, string securityNumber, string cardHolderName, DateTime expiration)
         {
             if (String.IsNullOrWhiteSpace(cardNumber))
             {

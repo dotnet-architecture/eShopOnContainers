@@ -9,7 +9,6 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
     public class Order
         : Entity
     {
-
         private string _street;
         private string _city;
         private string _state;
@@ -26,16 +25,16 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
         HashSet<OrderItem> _orderItems;
         public IEnumerable<OrderItem> OrderItems => _orderItems.ToList().AsEnumerable();
 
-        public Payment Payment { get; private set; }
-        int _paymentId;
+        public PaymentMethod PaymentMethod { get; private set; }
+        int _paymentMethodId;
 
         protected Order() { }
 
-        public Order(int buyerId, int paymentId, Address address)
+        public Order(int buyerId, int paymentMethodId, Address address)
         {
 
             _buyerId = buyerId;
-            _paymentId = paymentId;
+            _paymentMethodId = paymentMethodId;
             _orderStatusId = OrderStatus.InProcess.Id;
             _orderDate = DateTime.UtcNow;
             _street = address.Street;

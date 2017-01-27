@@ -10,9 +10,9 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.B
     {
         public string FullName { get; private set; }
 
-        private HashSet<Payment> _payments;
+        private HashSet<PaymentMethod> _paymentMethods;
 
-        public IEnumerable<Payment> Payments => _payments?.ToList().AsEnumerable();
+        public IEnumerable<PaymentMethod> PaymentMethods => _paymentMethods?.ToList().AsEnumerable();
 
         protected Buyer() { }
 
@@ -25,12 +25,12 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.B
 
             FullName = identity;
 
-            _payments = new HashSet<Payment>();
+            _paymentMethods = new HashSet<PaymentMethod>();
         }
 
-        public Payment AddPayment(int cardTypeId, string alias, string cardNumber, string securityNumber, string cardHolderName, DateTime expiration)
+        public PaymentMethod AddPaymentMethod(int cardTypeId, string alias, string cardNumber, string securityNumber, string cardHolderName, DateTime expiration)
         {
-            var existingPayment = Payments.Where(p => p.IsEqualTo(cardTypeId, cardNumber, expiration))
+            var existingPayment = _paymentMethods.Where(p => p.IsEqualTo(cardTypeId, cardNumber, expiration))
                 .SingleOrDefault();
 
             if (existingPayment != null)
@@ -39,9 +39,9 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.B
             }
             else
             {
-                var payment = new Payment(cardTypeId, alias, cardNumber, securityNumber, cardHolderName, expiration);
+                var payment = new PaymentMethod(cardTypeId, alias, cardNumber, securityNumber, cardHolderName, expiration);
 
-                _payments.Add(payment);
+                _paymentMethods.Add(payment);
 
                 return payment;
             }

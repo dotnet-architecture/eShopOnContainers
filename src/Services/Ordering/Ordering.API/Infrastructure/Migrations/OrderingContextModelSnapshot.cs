@@ -54,7 +54,7 @@ namespace Ordering.API.Migrations
                     b.ToTable("cardtypes","ordering");
                 });
 
-            modelBuilder.Entity("Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.BuyerAggregate.Payment", b =>
+            modelBuilder.Entity("Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.BuyerAggregate.PaymentMethod", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -86,7 +86,7 @@ namespace Ordering.API.Migrations
 
                     b.HasIndex("CardTypeId");
 
-                    b.ToTable("payments","ordering");
+                    b.ToTable("paymentmethods","ordering");
                 });
 
             modelBuilder.Entity("Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate.Order", b =>
@@ -102,11 +102,14 @@ namespace Ordering.API.Migrations
                     b.Property<string>("City")
                         .IsRequired();
 
+                    b.Property<string>("Country")
+                        .IsRequired();
+
                     b.Property<DateTime>("OrderDate");
 
                     b.Property<int>("OrderStatusId");
 
-                    b.Property<int>("PaymentId");
+                    b.Property<int>("PaymentMethodId");
 
                     b.Property<string>("State")
                         .IsRequired();
@@ -123,7 +126,7 @@ namespace Ordering.API.Migrations
 
                     b.HasIndex("OrderStatusId");
 
-                    b.HasIndex("PaymentId");
+                    b.HasIndex("PaymentMethodId");
 
                     b.ToTable("orders","ordering");
                 });
@@ -138,6 +141,8 @@ namespace Ordering.API.Migrations
                     b.Property<decimal>("Discount");
 
                     b.Property<int>("OrderId");
+
+                    b.Property<string>("PictureUrl");
 
                     b.Property<int>("ProductId");
 
@@ -169,10 +174,10 @@ namespace Ordering.API.Migrations
                     b.ToTable("orderstatus","ordering");
                 });
 
-            modelBuilder.Entity("Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.BuyerAggregate.Payment", b =>
+            modelBuilder.Entity("Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.BuyerAggregate.PaymentMethod", b =>
                 {
                     b.HasOne("Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.BuyerAggregate.Buyer")
-                        .WithMany("Payments")
+                        .WithMany("PaymentMethods")
                         .HasForeignKey("BuyerId")
                         .OnDelete(DeleteBehavior.Cascade);
 
@@ -194,9 +199,9 @@ namespace Ordering.API.Migrations
                         .HasForeignKey("OrderStatusId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.BuyerAggregate.Payment", "Payment")
+                    b.HasOne("Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.BuyerAggregate.PaymentMethod", "PaymentMethod")
                         .WithMany()
-                        .HasForeignKey("PaymentId");
+                        .HasForeignKey("PaymentMethodId");
                 });
 
             modelBuilder.Entity("Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate.OrderItem", b =>

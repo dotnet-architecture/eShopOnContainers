@@ -48,7 +48,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Repositor
         public async Task<Buyer> FindAsync(string identity)
         {
             var buyer = await _context.Buyers
-                .Include(b => b.Payments)
+                .Include(b => b.PaymentMethods)
                 .Where(b => b.FullName == identity)
                 .SingleOrDefaultAsync();
 

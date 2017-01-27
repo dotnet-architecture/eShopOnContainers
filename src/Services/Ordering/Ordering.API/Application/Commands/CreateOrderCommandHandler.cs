@@ -39,7 +39,7 @@
                 buyer = new Buyer(message.BuyerFullName);
             }
 
-            var payment = buyer.AddPayment(message.CardTypeId,
+            var payment = buyer.AddPaymentMethod(message.CardTypeId,
                 $"Payment Method on {DateTime.UtcNow}",
                 message.CardNumber,
                 message.CardSecurityNumber,

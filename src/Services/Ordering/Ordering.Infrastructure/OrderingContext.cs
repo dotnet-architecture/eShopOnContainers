@@ -18,7 +18,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
 
         public DbSet<OrderItem> OrderItems { get; set; }
 
-        public DbSet<Payment> Payments { get; set; }
+        public DbSet<PaymentMethod> Payments { get; set; }
 
         public DbSet<Buyer> Buyers { get; set; }
 
@@ -31,7 +31,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Buyer>(ConfigureBuyer);
-            modelBuilder.Entity<Payment>(ConfigurePayment);
+            modelBuilder.Entity<PaymentMethod>(ConfigurePayment);
             modelBuilder.Entity<Order>(ConfigureOrder);
             modelBuilder.Entity<OrderItem>(ConfigureOrderItems);
             modelBuilder.Entity<CardType>(ConfigureCardTypes);
@@ -54,18 +54,19 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
             buyerConfiguration.HasIndex("FullName")
               .IsUnique(true);
 
-            buyerConfiguration.HasMany(b => b.Payments)
+            buyerConfiguration.HasMany(b => b.PaymentMethods)
                .WithOne()
                .HasForeignKey("BuyerId")
                .OnDelete(DeleteBehavior.Cascade);
 
-            var navigation = buyerConfiguration.Metadata.FindNavigation(nameof(Buyer.Payments));
+            var navigation = buyerConfiguration.Metadata.FindNavigation(nameof(Buyer.PaymentMethods));
+
             navigation.SetPropertyAccessMode(PropertyAccessMode.Field);
         }
 
-        void ConfigurePayment(EntityTypeBuilder<Payment> paymentConfiguration)
+        void ConfigurePayment(EntityTypeBuilder<PaymentMethod> paymentConfiguration)
         {
-            paymentConfiguration.ToTable("payments", DEFAULT_SCHEMA);
+            paymentConfiguration.ToTable("paymentmethods", DEFAULT_SCHEMA);
 
             paymentConfiguration.HasKey(b => b.Id);
 
@@ -112,17 +113,18 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
             orderConfiguration.Property<string>("State").IsRequired();
             orderConfiguration.Property<string>("City").IsRequired();
             orderConfiguration.Property<string>("ZipCode").IsRequired();
+            orderConfiguration.Property<string>("Country").IsRequired();
             orderConfiguration.Property<int>("BuyerId").IsRequired();
             orderConfiguration.Property<int>("OrderStatusId").IsRequired();
-            orderConfiguration.Property<int>("PaymentId").IsRequired();
+            orderConfiguration.Property<int>("PaymentMethodId").IsRequired();
 
             var navigation = orderConfiguration.Metadata.FindNavigation(nameof(Order.OrderItems));
 
             navigation.SetPropertyAccessMode(PropertyAccessMode.Field);
 
-            orderConfiguration.HasOne(o => o.Payment)
+            orderConfiguration.HasOne(o => o.PaymentMethod)
                 .WithMany()
-                .HasForeignKey("PaymentId")
+                .HasForeignKey("PaymentMethodId")
                 .OnDelete(DeleteBehavior.Restrict);
 
             orderConfiguration.HasOne(o => o.Buyer)
@@ -160,6 +162,9 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
 
             orderItemConfiguration.Property<int>("Units")
                 .IsRequired();
+
+            orderItemConfiguration.Property<string>("PictureUrl")
+                .IsRequired(false);
         }
 
         void ConfigureOrderStatus(EntityTypeBuilder<OrderStatus> orderStatusConfiguration)
