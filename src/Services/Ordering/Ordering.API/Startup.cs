@@ -45,7 +45,7 @@
             services.AddMvc(options =>
             {
                 options.Filters.Add(typeof(HttpGlobalExceptionFilter));
-            }).AddControllersAsServices();
+            }).AddControllersAsServices();  //Controllers are also injected thru DI
 
             services.AddEntityFrameworkSqlServer()
                     .AddDbContext<OrderingContext>(options =>
@@ -53,7 +53,7 @@
                         options.UseSqlServer(Configuration["ConnectionString"],
                             sqlop => sqlop.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name));
                     },
-                    ServiceLifetime.Scoped
+                    ServiceLifetime.Scoped  //DbContext is shared across the HTTP request scope (graph of objects started in the HTTP request)
                     );
 
             services.AddSwaggerGen();
