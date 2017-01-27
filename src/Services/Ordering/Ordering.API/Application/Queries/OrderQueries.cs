@@ -28,11 +28,10 @@
                 var result = await connection.QueryAsync<dynamic>(
                    @"select o.[Id] as ordernumber,o.OrderDate as date, os.Name as status, 
                         oi.ProductName as productname, oi.Units as units, oi.UnitPrice as unitprice, oi.PictureUrl as pictureurl, 
-						oa.Street as street, oa.City as city, oa.Country as country, oa.State as state, oa.ZipCode as zipcode
+						o.Street as street, o.City as city, o.Country as country, o.State as state, o.ZipCode as zipcode
                         FROM ordering.Orders o
                         LEFT JOIN ordering.Orderitems oi ON o.Id = oi.orderid 
                         LEFT JOIN ordering.orderstatus os on o.StatusId = os.Id
-						LEFT JOIN ordering.address oa on o.ShippingAddressId = oa.Id
                         WHERE o.Id=@id"
                         , new { id }
                     );
