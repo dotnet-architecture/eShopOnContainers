@@ -55,9 +55,9 @@
 
             var order = new Order(buyer.Id, payment.Id, new Address(message.Street, message.City, message.State, message.Country, message.ZipCode));
 
-            foreach (var item in message.Items)
+            foreach (var item in message.OrderItems)
             {
-                order.AddOrderItem(item.ProductId, item.ProductName, item.UnitPrice, item.Discount, item.Units);
+                order.AddOrderItem(item.ProductId, item.ProductName, item.UnitPrice, item.Discount, item.PictureUrl, item.Units);
             }
 
             _orderRepository.Add(order);

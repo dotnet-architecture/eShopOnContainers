@@ -62,7 +62,8 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
             order.Street = user.Street;
             order.State = user.State;
             order.Country = user.Country;
-
+            order.ZipCode = user.ZipCode;
+                
             order.CardNumber = user.CardNumber;
             order.CardHolderName = user.CardHolderName;
             order.CardExpiration = new DateTime(int.Parse("20" + user.Expiration.Split('/')[1]),int.Parse(user.Expiration.Split('/')[0]), 1);
@@ -82,6 +83,8 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
             var ordersUrl = $"{_remoteServiceBaseUrl}/new";
             order.CardTypeId = 1;
             order.CardExpirationApiFormat();
+            SetFakeIdToProducts(order);
+            
             StringContent content = new StringContent(JsonConvert.SerializeObject(order), System.Text.Encoding.UTF8, "application/json");
             
             var response = await _apiClient.PostAsync(ordersUrl, content);
@@ -96,11 +99,18 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
             destination.Street = original.Street;
             destination.State = original.State;
             destination.Country = original.Country;
+            destination.ZipCode = original.ZipCode;
 
             destination.CardNumber = original.CardNumber;
             destination.CardHolderName = original.CardHolderName;
             destination.CardExpiration = original.CardExpiration;
             destination.CardSecurityNumber = original.CardSecurityNumber;
+        }
+
+        private void SetFakeIdToProducts(Order order)
+        {
+            var id = 1;
+            order.OrderItems.ForEach(x => { x.ProductId = id; id++; });
         }
     }
 }

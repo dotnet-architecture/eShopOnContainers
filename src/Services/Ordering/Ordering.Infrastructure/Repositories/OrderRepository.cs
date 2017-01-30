@@ -1,5 +1,5 @@
 ﻿using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
-using Microsoft.eShopOnContainers.Services.Ordering.Domain.SeedWork;
+using Microsoft.eShopOnContainers.Services.Ordering.Domain.Seedwork;
 using System;
 
 namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Repositories

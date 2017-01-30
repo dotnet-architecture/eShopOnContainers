@@ -1,4 +1,4 @@
-﻿using Microsoft.eShopOnContainers.Services.Ordering.Domain.SeedWork;
+﻿using Microsoft.eShopOnContainers.Services.Ordering.Domain.Seedwork;
 using System;
 using System.Collections.Generic;
 using System.Linq;

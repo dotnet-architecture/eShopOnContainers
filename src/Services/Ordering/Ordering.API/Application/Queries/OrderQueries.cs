@@ -31,7 +31,7 @@
 						o.Street as street, o.City as city, o.Country as country, o.State as state, o.ZipCode as zipcode
                         FROM ordering.Orders o
                         LEFT JOIN ordering.Orderitems oi ON o.Id = oi.orderid 
-                        LEFT JOIN ordering.orderstatus os on o.StatusId = os.Id
+                        LEFT JOIN ordering.orderstatus os on o.OrderStatusId = os.Id
                         WHERE o.Id=@id"
                         , new { id }
                     );
@@ -52,7 +52,7 @@
                 return await connection.QueryAsync<dynamic>(@"SELECT o.[Id] as ordernumber,o.[OrderDate] as [date],os.[Name] as [status],SUM(oi.units*oi.unitprice) as total
                      FROM [ordering].[Orders] o
                      LEFT JOIN[ordering].[orderitems] oi ON  o.Id = oi.orderid 
-                     LEFT JOIN[ordering].[orderstatus] os on o.StatusId = os.Id
+                     LEFT JOIN[ordering].[orderstatus] os on o.OrderStatusId = os.Id
                      GROUP BY o.[Id], o.[OrderDate], os.[Name]");
             }
         }

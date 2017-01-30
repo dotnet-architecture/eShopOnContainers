@@ -1,5 +1,5 @@
 ﻿using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.BuyerAggregate;
-using Microsoft.eShopOnContainers.Services.Ordering.Domain.SeedWork;
+using Microsoft.eShopOnContainers.Services.Ordering.Domain.Seedwork;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,7 +47,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
         }
 
 
-        public void AddOrderItem(int productId, string productName, decimal unitPrice, decimal discount, int units = 1)
+        public void AddOrderItem(int productId, string productName, decimal unitPrice, decimal discount, string pictureUrl, int units = 1)
         {
             var existingOrderForProduct = _orderItems.Where(o => o.ProductId == productId)
                 .SingleOrDefault();
@@ -66,7 +66,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
             {
                 //add validated new order item
 
-                var orderItem = new OrderItem(productId, productName, unitPrice, discount, units);
+                var orderItem = new OrderItem(productId, productName, unitPrice, discount, pictureUrl, units);
 
                 _orderItems.Add(orderItem);
             }

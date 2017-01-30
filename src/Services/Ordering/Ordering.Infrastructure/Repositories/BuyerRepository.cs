@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.BuyerAggregate;
-using Microsoft.eShopOnContainers.Services.Ordering.Domain.SeedWork;
+using Microsoft.eShopOnContainers.Services.Ordering.Domain.Seedwork;
 using System;
 using System.Linq;
 using System.Threading.Tasks;

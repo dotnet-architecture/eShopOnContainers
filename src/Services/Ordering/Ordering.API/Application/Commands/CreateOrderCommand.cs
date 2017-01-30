@@ -33,7 +33,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands
 
         public string BuyerFullName { get; set; }
 
-        public IEnumerable<OrderItemDTO> Items => _orderItems;
+        public IEnumerable<OrderItemDTO> OrderItems => _orderItems;
 
         public void AddOrderItem(OrderItemDTO item)
         {
@@ -57,6 +57,8 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands
             public decimal Discount { get; set; }
 
             public int Units { get; set; }
+
+            public string PictureUrl { get; set; }
         }
     }
 }

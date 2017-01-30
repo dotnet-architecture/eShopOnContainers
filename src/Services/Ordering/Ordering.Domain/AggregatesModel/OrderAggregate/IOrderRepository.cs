@@ -1,4 +1,4 @@
-﻿using Microsoft.eShopOnContainers.Services.Ordering.Domain.SeedWork;
+﻿using Microsoft.eShopOnContainers.Services.Ordering.Domain.Seedwork;
 
 namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate
 { 

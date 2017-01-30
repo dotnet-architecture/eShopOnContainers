@@ -1,4 +1,4 @@
-﻿using Microsoft.eShopOnContainers.Services.Ordering.Domain.SeedWork;
+﻿using Microsoft.eShopOnContainers.Services.Ordering.Domain.Seedwork;
 using System;
 
 namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate
@@ -18,7 +18,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
 
         protected OrderItem() { }
 
-        public OrderItem(int productId, string productName, decimal unitPrice, decimal discount, int units = 1)
+        public OrderItem(int productId, string productName, decimal unitPrice, decimal discount, string PictureUrl, int units = 1)
         {
             if (units <= 0)
             {
@@ -36,6 +36,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
             _unitPrice = unitPrice;
             _discount = discount;
             _units = units;
+            _pictureUrl = PictureUrl;
         }
 
         public void SetPictureUri(string pictureUri)
