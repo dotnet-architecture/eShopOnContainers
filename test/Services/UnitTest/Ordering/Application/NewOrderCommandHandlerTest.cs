@@ -2,7 +2,8 @@
 {
     using Microsoft.eShopOnContainers.Services.Ordering.Api.Application.Commands;
     using Microsoft.eShopOnContainers.Services.Ordering.Domain;
-    using Microsoft.eShopOnContainers.Services.Ordering.Domain.Repositories;
+    using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.BuyerAggregate;
+    using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
     using Moq;
     using System;
     using System.Threading;
