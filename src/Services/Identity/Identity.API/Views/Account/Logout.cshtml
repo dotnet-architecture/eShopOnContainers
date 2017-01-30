@@ -1,0 +1,21 @@
+﻿@model Identity.API.Models.AccountViewModels.LogoutViewModel
+
+<div class="container logout-page">
+    <div class="page-header">
+        <h1>Logout</h1>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-6">
+            <p>Would you like to logout of IdentityServer?</p>
+            <form asp-action="Logout">
+                <input type="hidden" name="logoutId" value="@Model.LogoutId"  />
+                <fieldset>
+                    <div class="form-group">
+                        <button class="btn btn-primary">Yes</button>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>

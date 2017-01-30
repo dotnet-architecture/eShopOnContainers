@@ -30,7 +30,7 @@ dotnet build $webSPAPathToJson
 dotnet publish $webSPAPathToJson -o $webSPAPathToPub
 
 # *** identitySvc image ***
-$identitySvcPathToJson = $scriptPath + "\src\Services\Identity\eShopOnContainers.Identity\project.json"
+$identitySvcPathToJson = $scriptPath + "\src\Services\Identity\Identity.API\project.json"
 Write-Host "identitySvcPathToJson is $identitySvcPathToJson" -ForegroundColor Yellow
 $identitySvcPathToPub = $scriptPath + "\pub\identity"
 Write-Host "identitySvcPathToPub is $identitySvcPathToPub" -ForegroundColor Yellow
