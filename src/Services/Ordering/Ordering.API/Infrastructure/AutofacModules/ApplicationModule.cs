@@ -1,12 +1,11 @@
-﻿
+﻿using Autofac;
+using Microsoft.eShopOnContainers.Services.Ordering.API.Application.Queries;
+using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.BuyerAggregate;
+using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
+using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Repositories;
 
 namespace Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure.AutofacModules
 {
-    using Api.Application.Queries;
-    using Autofac;
-    using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
-    using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.BuyerAggregate;
-    using Ordering.Infrastructure.Repositories;
 
     public class ApplicationModule
         :Autofac.Module

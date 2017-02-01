@@ -1,12 +1,11 @@
-﻿
+﻿using Microsoft.eShopOnContainers.Services.Ordering.Domain.Seedwork;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.BuyerAggregate
 {
-    using Microsoft.eShopOnContainers.Services.Ordering.Domain.SeedWork;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-
+    
     public class CardType
         : Entity
     {

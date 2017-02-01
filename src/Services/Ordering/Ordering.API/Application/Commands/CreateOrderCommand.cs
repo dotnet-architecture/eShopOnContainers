@@ -1,21 +1,16 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Ordering.Api.Application.Commands
-{
-    using System;
-    using MediatR;
-    using Domain;
-    using System.Collections;
-    using System.Collections.Generic;
+﻿using System;
+using MediatR;
+using System.Collections.Generic;
 
-    //(CDLTLL) TO DO: This is wrong, we must NOT use a child-entity class within a Command class!!
-    //Need to create a different DTO class, like OrderLineDTO or similar...
-    using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
+namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands
+{
+    
 
     public class CreateOrderCommand
         :IAsyncRequest<bool>
     {
-        //(CDLTLL) TO DO: This is wrong, we must NOT use a child-entity class (OrderItem) within a Command class!!
-        //Need to create a different DTO class, like OrderLineData or similar within the CreateOrderCommand class...
-        private readonly List<OrderItem> _orderItems;
+        private readonly List<OrderItemDTO> _orderItems;
+
         public string City { get; set; }
 
         public string Street { get; set; }
@@ -36,18 +31,34 @@
 
         public int CardTypeId { get; set; }
 
-        public string BuyerIdentityGuid { get; set; }
+        public string BuyerFullName { get; set; }
 
-        public IEnumerable<OrderItem> OrderItems => _orderItems;
+        public IEnumerable<OrderItemDTO> OrderItems => _orderItems;
 
-        public void AddOrderItem(OrderItem item)
+        public void AddOrderItem(OrderItemDTO item)
         {
             _orderItems.Add(item);
         }
 
         public CreateOrderCommand()
         {
-            _orderItems = new List<OrderItem>();
+            _orderItems = new List<OrderItemDTO>();
+        }
+
+
+        public class OrderItemDTO
+        {
+            public int ProductId { get; set; }
+
+            public string ProductName { get; set; }
+
+            public decimal UnitPrice { get; set; }
+
+            public decimal Discount { get; set; }
+
+            public int Units { get; set; }
+
+            public string PictureUrl { get; set; }
         }
     }
 }

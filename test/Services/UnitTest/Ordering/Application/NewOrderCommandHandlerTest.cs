@@ -1,16 +1,14 @@
-﻿namespace UnitTest.Ordering.Application
+﻿using Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands;
+using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.BuyerAggregate;
+using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
+using Moq;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+using Xunit;
+
+namespace UnitTest.Ordering.Application
 {
-    using Microsoft.eShopOnContainers.Services.Ordering.Api.Application.Commands;
-    using Microsoft.eShopOnContainers.Services.Ordering.Domain;
-    using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
-    using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.BuyerAggregate;
-    using Moq;
-    using System;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using Xunit;
-
-
     public class NewOrderRequestHandlerTest
     {
         private readonly Mock<IBuyerRepository> _buyerRepositoryMock;
@@ -27,7 +25,7 @@
         public async Task Handle_returns_true_when_order_is_persisted_succesfully()
         {
             // Arrange
-            _buyerRepositoryMock.Setup(buyerRepo => buyerRepo.FindAsync(FakeOrderRequestWithBuyer().BuyerIdentityGuid))
+            _buyerRepositoryMock.Setup(buyerRepo => buyerRepo.FindAsync(FakeOrderRequestWithBuyer().BuyerFullName))
                .Returns(Task.FromResult<Buyer>(FakeBuyer()));
 
             _buyerRepositoryMock.Setup(buyerRepo => buyerRepo.UnitOfWork.SaveChangesAsync(default(CancellationToken)))
@@ -50,7 +48,7 @@
         [Fact]
         public async Task Handle_return_false_if_order_is_not_persisted()
         {
-            _buyerRepositoryMock.Setup(buyerRepo => buyerRepo.FindAsync(FakeOrderRequestWithBuyer().BuyerIdentityGuid))
+            _buyerRepositoryMock.Setup(buyerRepo => buyerRepo.FindAsync(FakeOrderRequestWithBuyer().BuyerFullName))
                 .Returns(Task.FromResult<Buyer>(FakeBuyer()));
 
             _buyerRepositoryMock.Setup(buyerRepo => buyerRepo.UnitOfWork.SaveChangesAsync(default(CancellationToken)))
@@ -75,17 +73,14 @@
 
         private Order FakeOrder()
         {
-            return new Order(1, 1)
-            {
-
-            };
+            return new Order(1, 1, new Address("street", "city", "state", "country", "zipcode"));
         }
 
         private CreateOrderCommand FakeOrderRequestWithBuyer()
         {
             return new CreateOrderCommand
             {
-                BuyerIdentityGuid = "1234",
+                BuyerFullName = "1234",
                 CardNumber = "1234",
                 CardExpiration = DateTime.Now.AddYears(1), 
                 CardSecurityNumber = "123", 

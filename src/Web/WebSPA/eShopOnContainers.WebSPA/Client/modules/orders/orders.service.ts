@@ -62,7 +62,7 @@ export class OrdersService {
         order.city = identityInfo.address_city;
         order.country = identityInfo.address_country;
         order.state = identityInfo.address_state;
-        order.zipcode = identityInfo.addrees_zipcode;
+        order.zipcode = identityInfo.address_zip_code;
         order.cardexpiration = identityInfo.card_expiration;
         order.cardnumber = identityInfo.card_number;
         order.cardsecuritynumber = identityInfo.card_security_number;

@@ -47,7 +47,7 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "UnitTest", "test\Services\U
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Identity", "Identity", "{24CD3B53-141E-4A07-9B0D-796641E1CF78}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "eShopOnContainers.Identity", "src\Services\Identity\eShopOnContainers.Identity\eShopOnContainers.Identity.xproj", "{A579E108-5445-403D-A407-339AC4D1611B}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Identity.API", "src\Services\Identity\eShopOnContainers.Identity\Identity.API.xproj", "{A579E108-5445-403D-A407-339AC4D1611B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
