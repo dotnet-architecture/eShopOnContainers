@@ -1,13 +1,12 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Repositories
-{
-    using Domain.SeedWork;
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.eShopOnContainers.Services.Ordering.Domain;
-    using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.BuyerAggregate;
-    using System;
-    using System.Linq;
-    using System.Threading.Tasks;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.BuyerAggregate;
+using Microsoft.eShopOnContainers.Services.Ordering.Domain.Seedwork;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
+namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Repositories
+{
     public class BuyerRepository
         : IBuyerRepository
     {
@@ -33,16 +32,24 @@
 
         public Buyer Add(Buyer buyer)
         {
-            return _context.Buyers
-                .Add(buyer)
-                .Entity;
+            if (buyer.IsTransient())
+            {
+                return _context.Buyers
+                    .Add(buyer)
+                    .Entity;
+            }
+            else
+            {
+                return buyer;
+            }
+            
         }
 
-        public async Task<Buyer> FindAsync(string BuyerIdentityGuid)
+        public async Task<Buyer> FindAsync(string identity)
         {
             var buyer = await _context.Buyers
-                .Include(b => b.Payments)
-                .Where(b => b.FullName == BuyerIdentityGuid)
+                .Include(b => b.PaymentMethods)
+                .Where(b => b.FullName == identity)
                 .SingleOrDefaultAsync();
 
             return buyer;

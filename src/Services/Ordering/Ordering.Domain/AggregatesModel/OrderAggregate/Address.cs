@@ -1,22 +1,26 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate
+﻿using System;
+
+namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate
 {
-    using Microsoft.eShopOnContainers.Services.Ordering.Domain.SeedWork;
-    using System;
-
-    //(CDLTLL)
-    //TO DO: Need to convert this entity to a Value-Object (Address VO)
     public class Address
-        : Entity
     {
-        public String Street { get; set; }
+        public String Street { get; }
 
-        public String City { get; set; }
+        public String City { get; }
 
-        public String State { get; set; }
+        public String State { get; }
 
-        public String Country { get; set; }
+        public String Country { get; }
 
-        public String ZipCode { get; set; }
+        public String ZipCode { get; }
 
+        public Address(string street, string city, string state, string country, string zipcode)
+        {
+            Street = street;
+            City = city;
+            State = state;
+            Country = country;
+            ZipCode = zipcode;
+        }
     }
 }

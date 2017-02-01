@@ -1,79 +1,75 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate
-{
-    using Microsoft.eShopOnContainers.Services.Ordering.Domain.SeedWork;
-    using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.BuyerAggregate;
-    using System;
-    using System.Collections.Generic;
+﻿using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.BuyerAggregate;
+using Microsoft.eShopOnContainers.Services.Ordering.Domain.Seedwork;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
-    //(CDLTLL)
-    //TO DO: Need to add additional Domain Logic to this Aggregate-Root for 
-    //scenarios related to Order state changes, stock availability validation, etc.
+namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate
+{
     public class Order
-        : Entity, IAggregateRoot
+        : Entity
     {
-        public int BuyerId { get; private set; }
+        private string _street;
+        private string _city;
+        private string _state;
+        private string _country;
+        private string _zipCode;
+        private DateTime _orderDate;
 
         public Buyer Buyer { get; private set; }
+        int _buyerId;
 
-        public DateTime OrderDate { get; private set; }
+        public OrderStatus OrderStatus { get; private set; }
+        int _orderStatusId;
 
-        public int StatusId { get; private set; }
+        HashSet<OrderItem> _orderItems;
+        public IEnumerable<OrderItem> OrderItems => _orderItems.ToList().AsEnumerable();
 
-        public OrderStatus Status { get; private set; }
-
-        public ICollection<OrderItem> OrderItems { get; private set; }
-
-        public int? ShippingAddressId { get; private set; }
-
-        public Address ShippingAddress { get; private set; }
-
-        public int PaymentId { get; private set; }
-
-        public Payment Payment { get; private set; }
+        public PaymentMethod PaymentMethod { get; private set; }
+        int _paymentMethodId;
 
         protected Order() { }
 
-        public Order(int buyerId, int paymentId)
+        public Order(int buyerId, int paymentMethodId, Address address)
         {
-            BuyerId = buyerId;
-            PaymentId = paymentId;
-            StatusId = OrderStatus.InProcess.Id;
-            OrderDate = DateTime.UtcNow;
-            OrderItems = new List<OrderItem>();
+
+            _buyerId = buyerId;
+            _paymentMethodId = paymentMethodId;
+            _orderStatusId = OrderStatus.InProcess.Id;
+            _orderDate = DateTime.UtcNow;
+            _street = address.Street;
+            _city = address.City;
+            _state = address.State;
+            _country = address.Country;
+            _zipCode = address.ZipCode;
+
+            _orderItems = new HashSet<OrderItem>();
         }
 
-        public void SetAddress(Address address)
+
+        public void AddOrderItem(int productId, string productName, decimal unitPrice, decimal discount, string pictureUrl, int units = 1)
         {
-            if (address == null)
+            var existingOrderForProduct = _orderItems.Where(o => o.ProductId == productId)
+                .SingleOrDefault();
+
+            if (existingOrderForProduct != null)
             {
-                throw new ArgumentNullException(nameof(address));
+                //if previous line exist modify it with higher discount  and units..
+
+                if (discount > existingOrderForProduct.GetCurrentDiscount())
+                {
+                    existingOrderForProduct.SetNewDiscount(discount);
+                    existingOrderForProduct.AddUnits(units);
+                }
             }
+            else
+            {
+                //add validated new order item
 
-            ShippingAddress = address;
-        }
+                var orderItem = new OrderItem(productId, productName, unitPrice, discount, pictureUrl, units);
 
-        //TO DO: 
-        // (CDLTLL) Bad implementation, needs to be changed.
-        // The AddOrderItem should have the needed data params 
-        // instead of an already created OrderItem object.
-        // The Aggregate-Root is responsible for any Update/Creation of its child entities
-        // If we are providing an already created OrderItem, that was created from the outside
-        // and the AggregateRoot cannot control/validate any rule/invariants/consistency. 
-        public void AddOrderItem(OrderItem item)
-        {
-            //TO DO: Bad implementation, need to change.
-            // The code "new OrderItem(params);" should be done here
-            // Plus any validation/rule related
-            OrderItems.Add(item);
-
-            //(CDLTLL)
-            // TO DO: Some more logic needs to be added here,
-            // Like consolidating items that are the same product in one single OrderItem with several units
-            // Also validation logic could be added here (like ensuring it is adding at least one item unit)
-
-            //Or, If there are different amounts of discounts per added OrderItem 
-            //but the product Id is the same to existing Order Items, you should 
-            //apply the higher discount, or any other domain logic that makes sense.
+                _orderItems.Add(orderItem);
+            }
         }
     }
 }

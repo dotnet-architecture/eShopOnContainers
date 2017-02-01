@@ -1,4 +1,4 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Ordering.Api.Application.Decorators
+﻿namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.Decorators
 {
     using Extensions.Logging;
     using MediatR;

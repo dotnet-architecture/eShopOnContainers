@@ -1,17 +1,15 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
-{
-    using System;
-    using System.Threading.Tasks;
-    using Domain.SeedWork;
-    using EntityFrameworkCore.Metadata;
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.EntityFrameworkCore.Metadata.Builders;
-    using Microsoft.eShopOnContainers.Services.Ordering.Domain;
-    using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.BuyerAggregate;
-    using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.BuyerAggregate;
+using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
+using Microsoft.eShopOnContainers.Services.Ordering.Domain.Seedwork;
+using System;
 
+namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
+{
     public class OrderingContext
-       : DbContext,IUnitOfWork
+      : DbContext,IUnitOfWork
 
     {
         const string DEFAULT_SCHEMA = "ordering";
@@ -20,7 +18,7 @@
 
         public DbSet<OrderItem> OrderItems { get; set; }
 
-        public DbSet<Payment> Payments { get; set; }
+        public DbSet<PaymentMethod> Payments { get; set; }
 
         public DbSet<Buyer> Buyers { get; set; }
 
@@ -28,70 +26,77 @@
 
         public DbSet<OrderStatus> OrderStatus { get; set; }
 
-        public DbSet<Address> Addresses { get; set; }
-
         public OrderingContext(DbContextOptions options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Buyer>(ConfigureBuyer);
-            modelBuilder.Entity<Payment>(ConfigurePayment);
+            modelBuilder.Entity<PaymentMethod>(ConfigurePayment);
             modelBuilder.Entity<Order>(ConfigureOrder);
             modelBuilder.Entity<OrderItem>(ConfigureOrderItems);
             modelBuilder.Entity<CardType>(ConfigureCardTypes);
             modelBuilder.Entity<OrderStatus>(ConfigureOrderStatus);
-            modelBuilder.Entity<Address>(ConfigureAddress);
         }
 
         void ConfigureBuyer(EntityTypeBuilder<Buyer> buyerConfiguration)
         {
             buyerConfiguration.ToTable("buyers", DEFAULT_SCHEMA);
 
-            buyerConfiguration.HasIndex(b => b.FullName)
-                .IsUnique(true);
-
             buyerConfiguration.HasKey(b => b.Id);
 
             buyerConfiguration.Property(b => b.Id)
                 .ForSqlServerUseSequenceHiLo("buyerseq", DEFAULT_SCHEMA);
 
-            buyerConfiguration.Property(b => b.FullName)
+            buyerConfiguration.Property(b=>b.FullName)
                 .HasMaxLength(200)
                 .IsRequired();
 
-            buyerConfiguration.HasMany(b => b.Payments)
-                .WithOne()
-                .HasForeignKey(p => p.BuyerId)
-                .OnDelete(DeleteBehavior.Cascade);
+            buyerConfiguration.HasIndex("FullName")
+              .IsUnique(true);
+
+            buyerConfiguration.HasMany(b => b.PaymentMethods)
+               .WithOne()
+               .HasForeignKey("BuyerId")
+               .OnDelete(DeleteBehavior.Cascade);
+
+            var navigation = buyerConfiguration.Metadata.FindNavigation(nameof(Buyer.PaymentMethods));
+
+            navigation.SetPropertyAccessMode(PropertyAccessMode.Field);
         }
 
-        void ConfigurePayment(EntityTypeBuilder<Payment> paymentConfiguration)
+        void ConfigurePayment(EntityTypeBuilder<PaymentMethod> paymentConfiguration)
         {
-            paymentConfiguration.ToTable("payments", DEFAULT_SCHEMA);
+            paymentConfiguration.ToTable("paymentmethods", DEFAULT_SCHEMA);
 
             paymentConfiguration.HasKey(b => b.Id);
 
             paymentConfiguration.Property(b => b.Id)
                 .ForSqlServerUseSequenceHiLo("paymentseq", DEFAULT_SCHEMA);
 
-            paymentConfiguration.Property(p => p.CardHolderName)
+            paymentConfiguration.Property<int>("BuyerId")
+                .IsRequired();
+
+            paymentConfiguration.Property<string>("CardHolderName")
                 .HasMaxLength(200)
                 .IsRequired();
 
-            paymentConfiguration.Property(p => p.Alias)
+            paymentConfiguration.Property<string>("Alias")
                 .HasMaxLength(200)
                 .IsRequired();
 
-            paymentConfiguration.Property(p => p.CardNumber)
+            paymentConfiguration.Property<string>("CardNumber")
                 .HasMaxLength(25)
                 .IsRequired();
 
-            paymentConfiguration.Property(p => p.Expiration)
+            paymentConfiguration.Property<DateTime>("Expiration")
+                .IsRequired();
+
+            paymentConfiguration.Property<int>("CardTypeId")
                 .IsRequired();
 
             paymentConfiguration.HasOne(p => p.CardType)
                 .WithMany()
-                .HasForeignKey(p => p.CardTypeId);
+                .HasForeignKey("CardTypeId");
         }
 
         void ConfigureOrder(EntityTypeBuilder<Order> orderConfiguration)
@@ -103,21 +108,32 @@
             orderConfiguration.Property(o => o.Id)
                 .ForSqlServerUseSequenceHiLo("orderseq", DEFAULT_SCHEMA);
 
-            orderConfiguration.Property(o => o.OrderDate)
-                .IsRequired();
+            orderConfiguration.Property<DateTime>("OrderDate").IsRequired();
+            orderConfiguration.Property<string>("Street").IsRequired();
+            orderConfiguration.Property<string>("State").IsRequired();
+            orderConfiguration.Property<string>("City").IsRequired();
+            orderConfiguration.Property<string>("ZipCode").IsRequired();
+            orderConfiguration.Property<string>("Country").IsRequired();
+            orderConfiguration.Property<int>("BuyerId").IsRequired();
+            orderConfiguration.Property<int>("OrderStatusId").IsRequired();
+            orderConfiguration.Property<int>("PaymentMethodId").IsRequired();
 
-            orderConfiguration.HasOne(o => o.Payment)
+            var navigation = orderConfiguration.Metadata.FindNavigation(nameof(Order.OrderItems));
+
+            navigation.SetPropertyAccessMode(PropertyAccessMode.Field);
+
+            orderConfiguration.HasOne(o => o.PaymentMethod)
                 .WithMany()
-                .HasForeignKey(o => o.PaymentId)
+                .HasForeignKey("PaymentMethodId")
                 .OnDelete(DeleteBehavior.Restrict);
 
             orderConfiguration.HasOne(o => o.Buyer)
                 .WithMany()
-                .HasForeignKey(o => o.BuyerId);
+                .HasForeignKey("BuyerId");
 
-            orderConfiguration.HasOne(o => o.Status)
+            orderConfiguration.HasOne(o => o.OrderStatus)
                 .WithMany()
-                .HasForeignKey(o => o.StatusId);
+                .HasForeignKey("OrderStatusId");
         }
 
         void ConfigureOrderItems(EntityTypeBuilder<OrderItem> orderItemConfiguration)
@@ -126,21 +142,29 @@
 
             orderItemConfiguration.HasKey(o => o.Id);
 
-            orderItemConfiguration.Property(o => o.Discount)
+            orderItemConfiguration.Property(o => o.Id)
+                .ForSqlServerUseSequenceHiLo("orderitemseq");
+
+            orderItemConfiguration.Property<int>("OrderId")
                 .IsRequired();
 
-            orderItemConfiguration.Property(o => o.ProductId)
+            orderItemConfiguration.Property<decimal>("Discount")
                 .IsRequired();
 
-            orderItemConfiguration.Property(o => o.ProductName)
+            orderItemConfiguration.Property<int>("ProductId")
                 .IsRequired();
 
-            orderItemConfiguration.Property(o => o.UnitPrice)
+            orderItemConfiguration.Property<string>("ProductName")
                 .IsRequired();
 
-            orderItemConfiguration.Property(o => o.Units)
-                .ForSqlServerHasDefaultValue(1)
+            orderItemConfiguration.Property<decimal>("UnitPrice")
                 .IsRequired();
+
+            orderItemConfiguration.Property<int>("Units")
+                .IsRequired();
+
+            orderItemConfiguration.Property<string>("PictureUrl")
+                .IsRequired(false);
         }
 
         void ConfigureOrderStatus(EntityTypeBuilder<OrderStatus> orderStatusConfiguration)
@@ -151,6 +175,7 @@
 
             orderStatusConfiguration.Property(o => o.Id)
                 .HasDefaultValue(1)
+                .ValueGeneratedNever()
                 .IsRequired();
 
             orderStatusConfiguration.Property(o => o.Name)
@@ -166,16 +191,12 @@
 
             cardTypesConfiguration.Property(ct => ct.Id)
                 .HasDefaultValue(1)
+                .ValueGeneratedNever()
                 .IsRequired();
 
             cardTypesConfiguration.Property(ct => ct.Name)
                 .HasMaxLength(200)
                 .IsRequired();
-        }
-
-        void ConfigureAddress(EntityTypeBuilder<Address> addressConfiguration)
-        {
-            addressConfiguration.ToTable("address", DEFAULT_SCHEMA);
         }
     }
 }

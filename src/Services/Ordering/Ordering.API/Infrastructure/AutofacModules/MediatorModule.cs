@@ -1,14 +1,14 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure.AutofacModules
-{
-    using Api.Application.Commands;
-    using Api.Application.Decorators;
-    using Autofac;
-    using Autofac.Core;
-    using MediatR;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Reflection;
+﻿using Autofac;
+using Autofac.Core;
+using MediatR;
+using Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands;
+using Microsoft.eShopOnContainers.Services.Ordering.API.Application.Decorators;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 
+namespace Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure.AutofacModules
+{
     public class MediatorModule : Autofac.Module
     {
         protected override void Load(ContainerBuilder builder)

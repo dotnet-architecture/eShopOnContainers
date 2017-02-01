@@ -2,21 +2,28 @@
   "version": "1.0.0-*",
 
   "dependencies": {
-    "Microsoft.NETCore.App": "1.1.0",
+    "Microsoft.NETCore.App": {
+      "type": "platform",
+      "version": "1.1.0"
+    },
     "Microsoft.AspNetCore.TestHost": "1.1.0",
     "dotnet-test-xunit": "2.2.0-preview2-build1029",
+    "Microsoft.DotNet.InternalAbstractions": "1.0.0",
     "xunit": "2.2.0-beta4-build3444",
     "Catalog.API": "1.0.0-*",
     "Ordering.API": "1.0.0-*"
   },
   "testRunner": "xunit",
-  "runtimes": {
-    "win10-x64": {}
-  },
+  //"runtimes": {
+  //  "win10-x64": {}
+  //},
   "frameworks": {
-    "netcoreapp1.0": {
-      "dependencies": {
-      }
+    "netcoreapp1.1": {
+      "imports": [
+        "netstandard1.6.1",
+        "dnxcore50",
+        "portable-net451+win8"
+      ]
     }
   },
   "publishOptions": {

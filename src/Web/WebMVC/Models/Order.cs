@@ -1,4 +1,5 @@
 ﻿using Microsoft.eShopOnContainers.WebMVC.Models.Annotations;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
