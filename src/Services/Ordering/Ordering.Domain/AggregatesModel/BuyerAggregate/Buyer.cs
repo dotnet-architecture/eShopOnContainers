@@ -12,7 +12,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.B
 
         private HashSet<PaymentMethod> _paymentMethods;
 
-        public IEnumerable<PaymentMethod> PaymentMethods => _paymentMethods?.ToList().AsEnumerable();
+        public IEnumerable<PaymentMethod> PaymentMethods => _paymentMethods?.ToList().AsReadOnly();
 
         protected Buyer() { }
 

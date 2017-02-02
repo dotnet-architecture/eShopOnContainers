@@ -119,7 +119,8 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
             orderConfiguration.Property<int>("PaymentMethodId").IsRequired();
 
             var navigation = orderConfiguration.Metadata.FindNavigation(nameof(Order.OrderItems));
-
+            // DDD Patterns comment:
+            //Set as Field (New since EF 1.1) to access the OrderItem collection property through its field
             navigation.SetPropertyAccessMode(PropertyAccessMode.Field);
 
             orderConfiguration.HasOne(o => o.PaymentMethod)
