@@ -52,7 +52,10 @@
                 {
                     options.UseSqlServer(Configuration["ConnectionString"],
                         sqlop => sqlop.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name));
-                });
+                },
+                ServiceLifetime.Scoped
+                );
+                
 
             services.AddSwaggerGen();
             services.ConfigureSwaggerGen(options =>
