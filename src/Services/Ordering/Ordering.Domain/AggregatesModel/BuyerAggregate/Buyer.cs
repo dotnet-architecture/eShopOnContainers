@@ -10,9 +10,9 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.B
     {
         public string FullName { get; private set; }
 
-        private HashSet<PaymentMethod> _paymentMethods;
+        private List<PaymentMethod> _paymentMethods;
 
-        public IEnumerable<PaymentMethod> PaymentMethods => _paymentMethods?.ToList().AsReadOnly();
+        public IEnumerable<PaymentMethod> PaymentMethods => _paymentMethods?.AsReadOnly();
 
         protected Buyer() { }
 
@@ -25,7 +25,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.B
 
             FullName = identity;
 
-            _paymentMethods = new HashSet<PaymentMethod>();
+            _paymentMethods = new List<PaymentMethod>();
         }
 
         public PaymentMethod AddPaymentMethod(int cardTypeId, string alias, string cardNumber, string securityNumber, string cardHolderName, DateTime expiration)

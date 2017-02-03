@@ -31,15 +31,12 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
         // Using a private collection field, better for DDD Aggregate's encapsulation
         // so OrderItems cannot be added from "outside the AggregateRoot" directly to the collection,
         // but only through the method OrderAggrergateRoot.AddOrderItem() which includes behaviour.
-        private readonly HashSet<OrderItem> _orderItems;
+        private readonly List<OrderItem> _orderItems;
 
-        //TODO: Use List<> instead of HashSet<> because of the comment below
-        // So we won't need the ".ToList()"
-
-        public IEnumerable<OrderItem> OrderItems => _orderItems.ToList().AsReadOnly();
+        public IEnumerable<OrderItem> OrderItems => _orderItems.AsReadOnly();
         // Using List<>.AsReadOnly() 
-        //This will create a read only wrapper around the private list.
-        //It's much cheaper than .ToList() because it will not have to copy all items in a new collection. (Just one heap alloc for the wrapper instance)
+        // This will create a read only wrapper around the private list so is protected against "external updates".
+        // It's much cheaper than .ToList() because it will not have to copy all items in a new collection. (Just one heap alloc for the wrapper instance)
         //https://msdn.microsoft.com/en-us/library/e78dcd75(v=vs.110).aspx 
 
         public PaymentMethod PaymentMethod { get; private set; }
@@ -60,7 +57,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
             _country = address.Country;
             _zipCode = address.ZipCode;
 
-            _orderItems = new HashSet<OrderItem>();
+            _orderItems = new List<OrderItem>();
         }
 
         // DDD Patterns comment
