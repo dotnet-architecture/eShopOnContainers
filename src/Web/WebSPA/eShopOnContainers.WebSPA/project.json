@@ -36,7 +36,8 @@
       "version": "1.0.0-preview2-final",
       "type": "build"
     },
-    "Microsoft.AspNetCore.Http.Abstractions": "1.0.0"
+    "Microsoft.AspNetCore.Http.Abstractions": "1.0.0",
+    "Microsoft.Extensions.Options": "1.1.0"
   },
   "tools": {
     "Microsoft.DotNet.Watcher.Tools": {

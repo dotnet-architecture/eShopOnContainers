@@ -44,7 +44,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             //that cost to startup instead of having the first request pay the
             //penalty.
             services.AddSingleton<ConnectionMultiplexer>((sp) => {
-                var config = sp.GetRequiredService<IOptions<BasketSettings>>().Value;
+                var config = sp.GetRequiredService<IOptionsSnapshot<BasketSettings>>().Value;
                 var ips = Dns.GetHostAddressesAsync(config.ConnectionString).Result;
                 return ConnectionMultiplexer.Connect(ips.First().ToString());
             });

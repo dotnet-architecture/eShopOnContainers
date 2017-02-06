@@ -35,7 +35,8 @@
     "System.IdentityModel.Tokens.Jwt": "5.0.0",
     "Microsoft.AspNetCore.Authentication.OpenIdConnect": "1.0.0",
     "Microsoft.AspNetCore.Authentication.JwtBearer": "1.0.0",
-    "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "1.0.0"
+    "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "1.0.0",
+    "Microsoft.Extensions.Options": "1.1.0"
   },
   "tools": {
     "BundlerMinifier.Core": "2.0.238",

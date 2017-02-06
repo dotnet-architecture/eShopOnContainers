@@ -38,8 +38,6 @@
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<IConfiguration>(Configuration);
-
             services.AddDbContext<CatalogContext>(c =>
             {
                 c.UseSqlServer(Configuration["ConnectionString"]);

@@ -14,9 +14,9 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
     public class CatalogController : ControllerBase
     {
         private readonly CatalogContext _context;
-        private readonly IOptions<Settings> _settings;
+        private readonly IOptionsSnapshot<Settings> _settings;
 
-        public CatalogController(CatalogContext context, IOptions<Settings> settings)
+        public CatalogController(CatalogContext context, IOptionsSnapshot<Settings> settings)
         {
             _context = context;
             _settings = settings;

@@ -14,12 +14,12 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
 {
     public class BasketService : IBasketService
     {
-        private readonly IOptions<AppSettings> _settings;
+        private readonly IOptionsSnapshot<AppSettings> _settings;
         private HttpClient _apiClient;
         private readonly string _remoteServiceBaseUrl;
         private IHttpContextAccessor _httpContextAccesor;
 
-        public BasketService(IOptions<AppSettings> settings, IHttpContextAccessor httpContextAccesor)
+        public BasketService(IOptionsSnapshot<AppSettings> settings, IHttpContextAccessor httpContextAccesor)
         {
             _settings = settings;
             _remoteServiceBaseUrl = _settings.Value.BasketUrl;

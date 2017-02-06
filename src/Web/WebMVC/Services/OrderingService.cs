@@ -15,10 +15,10 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
     {
         private HttpClient _apiClient;
         private readonly string _remoteServiceBaseUrl;
-        private readonly IOptions<AppSettings> _settings;
+        private readonly IOptionsSnapshot<AppSettings> _settings;
         private readonly IHttpContextAccessor _httpContextAccesor;
 
-        public OrderingService(IOptions<AppSettings> settings, IHttpContextAccessor httpContextAccesor)
+        public OrderingService(IOptionsSnapshot<AppSettings> settings, IHttpContextAccessor httpContextAccesor)
         {
             _remoteServiceBaseUrl = $"{settings.Value.OrderingUrl}/api/v1/orders";
             _settings = settings;

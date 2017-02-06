@@ -18,7 +18,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Model
         private ConnectionMultiplexer _redis;
 
 
-        public RedisBasketRepository(IOptions<BasketSettings> options, ILoggerFactory loggerFactory)
+        public RedisBasketRepository(IOptionsSnapshot<BasketSettings> options, ILoggerFactory loggerFactory)
         {
             _settings = options.Value;
             _logger = loggerFactory.CreateLogger<RedisBasketRepository>();
