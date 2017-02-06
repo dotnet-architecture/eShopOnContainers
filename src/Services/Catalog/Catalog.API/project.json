@@ -1,4 +1,9 @@
 {
+  "buildOptions": {
+    "emitEntryPoint": true,
+    "preserveCompilationContext": true,
+    "debugType": "portable"
+  },
   "dependencies": {
     "Microsoft.NETCore.App": {
       "version": "1.1.0",
@@ -23,25 +28,12 @@
     "Microsoft.EntityFrameworkCore.Design": "1.1.0",
     "Swashbuckle": "6.0.0-beta902"
   },
-  "tools": {
-    "Microsoft.EntityFrameworkCore.Tools": "1.1.0-preview4-final"
-  },
   "frameworks": {
     "netcoreapp1.1": {
       "imports": [
         "dotnet5.6",
         "portable-net45+win8"
       ]
-    }
-  },
-  "buildOptions": {
-    "emitEntryPoint": true,
-    "preserveCompilationContext": true,
-    "debugType": "portable"
-  },
-  "runtimeOptions": {
-    "configProperties": {
-      "System.GC.Server": true
     }
   },
   "publishOptions": {
@@ -56,6 +48,14 @@
       "Dockerfile"
     ]
   },
+  "runtimeOptions": {
+    "configProperties": {
+      "System.GC.Server": true
+    }
+  },
   "scripts": {},
+  "tools": {
+    "Microsoft.EntityFrameworkCore.Tools": "1.1.0-preview4-final"
+  },
   "userSecretsId": "aspnet-Catalog.API-20161122013618"
 }

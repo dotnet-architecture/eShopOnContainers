@@ -1,17 +1,15 @@
-﻿
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
+using Microsoft.eShopOnContainers.Services.Catalog.API.Model;
+using Microsoft.eShopOnContainers.Services.Catalog.API.ViewModel;
+using Microsoft.Extensions.Options;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
 namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
 {
-    using Extensions.Options;
-    using Microsoft.AspNetCore.Mvc;
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
-    using Model;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
-    using ViewModel;
-
     [Route("api/v1/[controller]")]
     public class CatalogController : ControllerBase
     {
@@ -22,6 +20,8 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
         {
             _context = context;
             _settings = settings;
+
+            ((DbContext)context).ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
         // GET api/v1/[controller]/items/[?pageSize=3&pageIndex=10]
@@ -30,7 +30,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
         public async Task<IActionResult> Items(int pageSize = 10, int pageIndex = 0)
         {
             var totalItems = await _context.CatalogItems
-                 .LongCountAsync();
+                .LongCountAsync();
 
             var itemsOnPage = await _context.CatalogItems
                 .OrderBy(c=>c.Name)
