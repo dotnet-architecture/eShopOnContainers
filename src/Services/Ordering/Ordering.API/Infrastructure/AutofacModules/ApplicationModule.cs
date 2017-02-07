@@ -10,9 +10,19 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure.Autof
     public class ApplicationModule
         :Autofac.Module
     {
+
+        public string QueriesConnectionString { get; }
+
+        public ApplicationModule(string qconstr)
+        {
+            QueriesConnectionString = qconstr;
+
+        }
+
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<OrderQueries>()
+
+            builder.Register(c => new OrderQueries(QueriesConnectionString))
                 .As<IOrderQueries>()
                 .InstancePerLifetimeScope();
 

@@ -13,9 +13,9 @@
     {
         private string _connectionString = string.Empty;
 
-        public OrderQueries(IConfiguration configuration)
+        public OrderQueries(string constr)
         {
-            _connectionString = configuration["ConnectionString"];
+            _connectionString = constr;
         }
 
 
