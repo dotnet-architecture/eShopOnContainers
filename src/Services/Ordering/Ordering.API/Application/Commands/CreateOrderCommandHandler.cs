@@ -12,6 +12,7 @@
         private readonly IBuyerRepository _buyerRepository;
         private readonly IOrderRepository _orderRepository;
 
+        // Using DI to inject infrastructure persistence Repositories
         public CreateOrderCommandHandler(IBuyerRepository buyerRepository, IOrderRepository orderRepository)
         {
             if (buyerRepository == null)
@@ -29,8 +30,11 @@
         }
 
         public async Task<bool> Handle(CreateOrderCommand message)
-        {
-            //find buyer/payment or add a new one buyer/payment 
+        { 
+            // Add/Update the Buyer AggregateRoot
+            // DDD patterns comment: Add child entities and value-objects through the Order Aggregate-Root
+            // methods and constructor so validations, invariants and business logic 
+            // make sure that consistency is preserved across the whole aggregate
 
             var buyer = await _buyerRepository.FindAsync(message.BuyerFullName);
 
@@ -51,7 +55,10 @@
             await _buyerRepository.UnitOfWork
                 .SaveChangesAsync();
 
-            //create order for buyer and payment method
+            // Create the Order AggregateRoot
+            // DDD patterns comment: Add child entities and value-objects through the Order Aggregate-Root
+            // methods and constructor so validations, invariants and business logic 
+            // make sure that consistency is preserved across the whole aggregate
 
             var order = new Order(buyer.Id, payment.Id, new Address(message.Street, message.City, message.State, message.Country, message.ZipCode));
 
