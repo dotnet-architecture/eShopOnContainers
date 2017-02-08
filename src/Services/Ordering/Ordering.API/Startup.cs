@@ -109,14 +109,14 @@
 
             app.UseCors("CorsPolicy");
 
-            var identityUrl = Configuration.GetValue<string>("IdentityUrl");
+            //var identityUrl = Configuration.GetValue<string>("IdentityUrl");
 
-            app.UseIdentityServerAuthentication(new IdentityServerAuthenticationOptions
-            {
-                Authority = identityUrl.ToString(),
-                ScopeName = "orders",
-                RequireHttpsMetadata = false
-            });
+            //app.UseIdentityServerAuthentication(new IdentityServerAuthenticationOptions
+            //{
+            //    Authority = identityUrl.ToString(),
+            //    ScopeName = "orders",
+            //    RequireHttpsMetadata = false
+            //});
 
 
             app.UseMvcWithDefaultRoute();

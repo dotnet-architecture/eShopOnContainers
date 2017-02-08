@@ -30,12 +30,23 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Address>(ConfigureAddress);
             modelBuilder.Entity<Buyer>(ConfigureBuyer);
             modelBuilder.Entity<PaymentMethod>(ConfigurePayment);
             modelBuilder.Entity<Order>(ConfigureOrder);
             modelBuilder.Entity<OrderItem>(ConfigureOrderItems);
             modelBuilder.Entity<CardType>(ConfigureCardTypes);
             modelBuilder.Entity<OrderStatus>(ConfigureOrderStatus);
+        }
+
+        void ConfigureAddress(EntityTypeBuilder<Address> addressConfiguration)
+        {
+            addressConfiguration.ToTable("address", DEFAULT_SCHEMA);
+
+            addressConfiguration.Property<int>("Id")
+                .IsRequired();
+
+            addressConfiguration.HasKey("Id");
         }
 
         void ConfigureBuyer(EntityTypeBuilder<Buyer> buyerConfiguration)
@@ -109,11 +120,6 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
                 .ForSqlServerUseSequenceHiLo("orderseq", DEFAULT_SCHEMA);
 
             orderConfiguration.Property<DateTime>("OrderDate").IsRequired();
-            orderConfiguration.Property<string>("Street").IsRequired();
-            orderConfiguration.Property<string>("State").IsRequired();
-            orderConfiguration.Property<string>("City").IsRequired();
-            orderConfiguration.Property<string>("ZipCode").IsRequired();
-            orderConfiguration.Property<string>("Country").IsRequired();
             orderConfiguration.Property<int>("BuyerId").IsRequired();
             orderConfiguration.Property<int>("OrderStatusId").IsRequired();
             orderConfiguration.Property<int>("PaymentMethodId").IsRequired();

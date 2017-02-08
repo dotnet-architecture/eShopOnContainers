@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Ordering.API.Migrations
 {
@@ -36,7 +37,7 @@ namespace Ordering.API.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false),
-                    FullName = table.Column<string>(maxLength: 200, nullable: false)
+                    IdentityGuid = table.Column<string>(maxLength: 200, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -54,6 +55,24 @@ namespace Ordering.API.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_cardtypes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "address",
+                schema: "ordering",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    City = table.Column<string>(nullable: true),
+                    Country = table.Column<string>(nullable: true),
+                    State = table.Column<string>(nullable: true),
+                    Street = table.Column<string>(nullable: true),
+                    ZipCode = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_address", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -107,19 +126,22 @@ namespace Ordering.API.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false),
+                    AddressId = table.Column<int>(nullable: true),
                     BuyerId = table.Column<int>(nullable: false),
-                    City = table.Column<string>(nullable: false),
-                    Country = table.Column<string>(nullable: false),
                     OrderDate = table.Column<DateTime>(nullable: false),
                     OrderStatusId = table.Column<int>(nullable: false),
-                    PaymentMethodId = table.Column<int>(nullable: false),
-                    State = table.Column<string>(nullable: false),
-                    Street = table.Column<string>(nullable: false),
-                    ZipCode = table.Column<string>(nullable: false)
+                    PaymentMethodId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_orders", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_orders_address_AddressId",
+                        column: x => x.AddressId,
+                        principalSchema: "ordering",
+                        principalTable: "address",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_orders_buyers_BuyerId",
                         column: x => x.BuyerId,
@@ -170,10 +192,10 @@ namespace Ordering.API.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_buyers_FullName",
+                name: "IX_buyers_IdentityGuid",
                 schema: "ordering",
                 table: "buyers",
-                column: "FullName",
+                column: "IdentityGuid",
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -187,6 +209,12 @@ namespace Ordering.API.Migrations
                 schema: "ordering",
                 table: "paymentmethods",
                 column: "CardTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_orders_AddressId",
+                schema: "ordering",
+                table: "orders",
+                column: "AddressId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_orders_BuyerId",
@@ -221,6 +249,10 @@ namespace Ordering.API.Migrations
 
             migrationBuilder.DropTable(
                 name: "orders",
+                schema: "ordering");
+
+            migrationBuilder.DropTable(
+                name: "address",
                 schema: "ordering");
 
             migrationBuilder.DropTable(

@@ -14,12 +14,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
         // aligned with DDD Aggregates and Domain Entities (Instead of properties and property collections)
         private DateTime _orderDate;
 
-        //TO DO: These fields need to be converted to a VALUE-OBJECT "Address" 
-        private string _street;
-        private string _city;
-        private string _state;
-        private string _country;
-        private string _zipCode;
+        public Address Address { get; private set; }
 
         public Buyer Buyer { get; private set; }
         private int _buyerId;
@@ -46,18 +41,13 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
 
         public Order(int buyerId, int paymentMethodId, Address address)
         {
-
+            _orderItems = new List<OrderItem>();
             _buyerId = buyerId;
             _paymentMethodId = paymentMethodId;
             _orderStatusId = OrderStatus.InProcess.Id;
             _orderDate = DateTime.UtcNow;
-            _street = address.Street;
-            _city = address.City;
-            _state = address.State;
-            _country = address.Country;
-            _zipCode = address.ZipCode;
 
-            _orderItems = new List<OrderItem>();
+            Address = address;
         }
 
         // DDD Patterns comment

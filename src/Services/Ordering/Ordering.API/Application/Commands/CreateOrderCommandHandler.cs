@@ -30,7 +30,7 @@
         }
 
         public async Task<bool> Handle(CreateOrderCommand message)
-        { 
+        {
             // Add/Update the Buyer AggregateRoot
             // DDD patterns comment: Add child entities and value-objects through the Order Aggregate-Root
             // methods and constructor so validations, invariants and business logic 
@@ -73,6 +73,7 @@
                 .SaveChangesAsync();
 
             return result > 0;
+
         }
     }
 }
