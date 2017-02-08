@@ -12,7 +12,11 @@ This reference application is cross-platform either in the server and client sid
 <img src="img/eshop_logo.png">
 <img src="img/eShopOnContainers_Architecture_Diagram.png">
 <p>
-<b>Important Note on Database Servers/Containers</b>: In this solution, the SQL databases are automatically deployed with sample data into a single SQL Server for Linux container (a single shared Docker container for SQL databases) so the whole solution can be up and running without any dependency in the cloud or server. A similar case is defined in regards Redis cache running as a container. However, in a real production environment it is recommended to have persistance (SQL Server and Redis) in HA services like Azure SQL Database, Redis as a service or any other clustering system. If you want to configure this solution like that, you'll just need to change the connection strings once you have set up the servers in the cloud or on-premises.
+
+> ### Important Note on Database Servers/Containers
+> In this solution's current configuration for a development environment, the SQL databases are automatically deployed with sample data into a single SQL Server for Linux container (a single shared Docker container for SQL databases) so the whole solution can be up and running without any dependency in the cloud or server. Each database could also be deployed as a single Docker container, but then you'd need more then 8GB or memory RAM in your development machine in order to be able to run 3 SQL Server Docker containers in your Docker Linux host in "Docker for Windows" or "Docker for Mac" development environments.
+> <p> A similar case is defined in regards Redis cache running as a container for the development environment.
+> <p> However, in a real production environment it is recommended to have persistance (SQL Server and Redis) in HA services like Azure SQL Database, Redis as a service or any other clustering system. If you want to change to a production configuration, you'll just need to change the connection strings once you have set up the servers in HA cloud or on-premises.
 
 ## Related documentation and guidance
 While developing this reference application, we've been creating a reference Guide/eBook named <b>"Architecting and Developing Containerized and Microservice based .NET Applications"</b> which explains in detail how to develop this kind of architectural style (microservices, Docker containers, Domain-Driven Design for certain microservices) plus other simpler architectural styles, like monolithic that can also live as Docker containers.
@@ -67,13 +71,13 @@ The app was also partially tested on "Docker for Mac" using a development MacOS 
 
 WINDOWS DEV MACHINE
 - Visual Studio 2015 with latest Update
-- .NET Core 1.0 (Including ASP.NET Core and VS Tooling)
+- .NET Core 1.1 setup (Including ASP.NET Core and VS Tooling)
 - Bower and Gulp as global installs (See steps below)
 - <a href='https://docs.docker.com/docker-for-windows/'>Docker for Windows</a>
 
 MAC DEV MACHINE
 - Visual Studio Code
-- .NET Core 1.0 for Mac
+- .NET Core 1.1 for Mac - setup
 - Bower and Gulp as global installs (See steps below)
 - <a href='https://docs.docker.com/docker-for-mac/'>Docker for Mac</a>
 
