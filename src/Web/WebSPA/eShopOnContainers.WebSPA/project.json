@@ -2,16 +2,16 @@
   "userSecretsId": "aspnetcorespa-c23d27a4-eb88-4b18-9b77-2a93f3b15119",
   "dependencies": {
     "Microsoft.NETCore.App": {
-      "version": "1.0.0",
+      "version": "1.1.0",
       "type": "platform"
     },
-    "Microsoft.Extensions.Configuration.UserSecrets": "1.0.0",
-    "Microsoft.AspNetCore.Authentication.Cookies": "1.0.0",
-    "Microsoft.AspNetCore.Diagnostics": "1.0.0",
-    "Microsoft.AspNetCore.Mvc": "1.0.1",
-    "Microsoft.AspNetCore.Cors": "1.0.0",
-    "Microsoft.AspNetCore.Antiforgery": "1.0.1",
-    "Microsoft.AspNetCore.Authorization": "1.0.0",
+    "Microsoft.Extensions.Configuration.UserSecrets": "1.1.0",
+    "Microsoft.AspNetCore.Authentication.Cookies": "1.1.0",
+    "Microsoft.AspNetCore.Diagnostics": "1.1.0",
+    "Microsoft.AspNetCore.Mvc": "1.1.1",
+    "Microsoft.AspNetCore.Cors": "1.1.0",
+    "Microsoft.AspNetCore.Antiforgery": "1.1.0",
+    "Microsoft.AspNetCore.Authorization": "1.1.0",
     "Newtonsoft.Json": "9.0.1",
     "Webpack": "3.0.0",
     "Microsoft.AspNetCore.AngularServices": "1.0.0-beta-000014",
@@ -19,15 +19,15 @@
       "version": "1.0.0-preview2-final",
       "type": "build"
     },
-    "Microsoft.AspNetCore.Server.IISIntegration": "1.0.0",
-    "Microsoft.AspNetCore.Server.Kestrel": "1.0.0",
-    "Microsoft.AspNetCore.StaticFiles": "1.0.0",
-    "Microsoft.Extensions.Configuration.EnvironmentVariables": "1.0.0",
-    "Microsoft.Extensions.Configuration.Json": "1.0.0",
-    "Microsoft.Extensions.Logging": "1.0.0",
-    "Microsoft.Extensions.Logging.Console": "1.0.0",
-    "Microsoft.Extensions.Logging.Debug": "1.0.0",
-    "Microsoft.Extensions.Options.ConfigurationExtensions": "1.0.0",
+    "Microsoft.AspNetCore.Server.IISIntegration": "1.1.0",
+    "Microsoft.AspNetCore.Server.Kestrel": "1.1.0",
+    "Microsoft.AspNetCore.StaticFiles": "1.1.0",
+    "Microsoft.Extensions.Configuration.EnvironmentVariables": "1.1.0",
+    "Microsoft.Extensions.Configuration.Json": "1.1.0",
+    "Microsoft.Extensions.Logging": "1.1.0",
+    "Microsoft.Extensions.Logging.Console": "1.1.0",
+    "Microsoft.Extensions.Logging.Debug": "1.1.0",
+    "Microsoft.Extensions.Options.ConfigurationExtensions": "1.1.0",
     "Microsoft.VisualStudio.Web.CodeGeneration.Tools": {
       "version": "1.0.0-preview2-final",
       "type": "build"
@@ -36,7 +36,7 @@
       "version": "1.0.0-preview2-final",
       "type": "build"
     },
-    "Microsoft.AspNetCore.Http.Abstractions": "1.0.0",
+    "Microsoft.AspNetCore.Http.Abstractions": "1.1.0",
     "Microsoft.Extensions.Options": "1.1.0"
   },
   "tools": {
