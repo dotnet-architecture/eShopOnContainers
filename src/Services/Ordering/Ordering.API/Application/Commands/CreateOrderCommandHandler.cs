@@ -36,11 +36,11 @@
             // methods and constructor so validations, invariants and business logic 
             // make sure that consistency is preserved across the whole aggregate
 
-            var buyer = await _buyerRepository.FindAsync(message.BuyerFullName);
+            var buyer = await _buyerRepository.FindAsync(message.BuyerIdentityGuid);
 
             if (buyer == null)
             {
-                buyer = new Buyer(message.BuyerFullName);
+                buyer = new Buyer(message.BuyerIdentityGuid);
             }
 
             var payment = buyer.AddPaymentMethod(message.CardTypeId,

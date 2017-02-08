@@ -25,7 +25,7 @@ namespace UnitTest.Ordering.Application
         public async Task Handle_returns_true_when_order_is_persisted_succesfully()
         {
             // Arrange
-            _buyerRepositoryMock.Setup(buyerRepo => buyerRepo.FindAsync(FakeOrderRequestWithBuyer().BuyerFullName))
+            _buyerRepositoryMock.Setup(buyerRepo => buyerRepo.FindAsync(FakeOrderRequestWithBuyer().BuyerIdentityGuid))
                .Returns(Task.FromResult<Buyer>(FakeBuyer()));
 
             _buyerRepositoryMock.Setup(buyerRepo => buyerRepo.UnitOfWork.SaveChangesAsync(default(CancellationToken)))
@@ -48,7 +48,7 @@ namespace UnitTest.Ordering.Application
         [Fact]
         public async Task Handle_return_false_if_order_is_not_persisted()
         {
-            _buyerRepositoryMock.Setup(buyerRepo => buyerRepo.FindAsync(FakeOrderRequestWithBuyer().BuyerFullName))
+            _buyerRepositoryMock.Setup(buyerRepo => buyerRepo.FindAsync(FakeOrderRequestWithBuyer().BuyerIdentityGuid))
                 .Returns(Task.FromResult<Buyer>(FakeBuyer()));
 
             _buyerRepositoryMock.Setup(buyerRepo => buyerRepo.UnitOfWork.SaveChangesAsync(default(CancellationToken)))
@@ -80,7 +80,7 @@ namespace UnitTest.Ordering.Application
         {
             return new CreateOrderCommand
             {
-                BuyerFullName = "1234",
+                BuyerIdentityGuid = "1234",
                 CardNumber = "1234",
                 CardExpiration = DateTime.Now.AddYears(1), 
                 CardSecurityNumber = "123", 

@@ -47,11 +47,11 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
             buyerConfiguration.Property(b => b.Id)
                 .ForSqlServerUseSequenceHiLo("buyerseq", DEFAULT_SCHEMA);
 
-            buyerConfiguration.Property(b=>b.FullName)
+            buyerConfiguration.Property(b=>b.IdentityGuid)
                 .HasMaxLength(200)
                 .IsRequired();
 
-            buyerConfiguration.HasIndex("FullName")
+            buyerConfiguration.HasIndex("IdentityGuid")
               .IsUnique(true);
 
             buyerConfiguration.HasMany(b => b.PaymentMethods)

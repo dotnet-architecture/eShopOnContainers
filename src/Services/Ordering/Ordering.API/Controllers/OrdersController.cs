@@ -49,7 +49,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Controllers
                 createOrderCommand.CardTypeId = 1;
             }
 
-            createOrderCommand.BuyerFullName = _identityService.GetUserIdentity();
+            createOrderCommand.BuyerIdentityGuid = _identityService.GetUserIdentity();
 
             var added = await _mediator.SendAsync(createOrderCommand);
             if (added)

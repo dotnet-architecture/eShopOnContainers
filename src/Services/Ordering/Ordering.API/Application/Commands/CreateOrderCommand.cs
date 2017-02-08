@@ -31,7 +31,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands
 
         public int CardTypeId { get; set; }
 
-        public string BuyerFullName { get; set; }
+        public string BuyerIdentityGuid { get; set; }
 
         public IEnumerable<OrderItemDTO> OrderItems => _orderItems;
 

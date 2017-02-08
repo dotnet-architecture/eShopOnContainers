@@ -8,7 +8,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.B
     public class Buyer
       : Entity, IAggregateRoot
     {
-        public string FullName { get; private set; }
+        public string IdentityGuid { get; private set; }
 
         private List<PaymentMethod> _paymentMethods;
 
@@ -23,7 +23,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.B
                 throw new ArgumentNullException(nameof(identity));
             }
 
-            FullName = identity;
+            IdentityGuid = identity;
 
             _paymentMethods = new List<PaymentMethod>();
         }
