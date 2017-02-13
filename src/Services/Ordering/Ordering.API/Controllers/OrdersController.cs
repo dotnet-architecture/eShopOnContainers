@@ -42,7 +42,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Controllers
 
         [Route("new")]
         [HttpPost]
-        public async Task<IActionResult> AddOrder([FromBody]CreateOrderCommand createOrderCommand)
+        public async Task<IActionResult> CreateOrder([FromBody]CreateOrderCommand createOrderCommand)
         {
             if (createOrderCommand.CardTypeId == 0)
             {
@@ -51,8 +51,8 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Controllers
 
             createOrderCommand.BuyerIdentityGuid = _identityService.GetUserIdentity();
 
-            var added = await _mediator.SendAsync(createOrderCommand);
-            if (added)
+            var result = await _mediator.SendAsync(createOrderCommand);
+            if (result)
             {
                 return Ok();
             }
