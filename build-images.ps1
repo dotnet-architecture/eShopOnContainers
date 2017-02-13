@@ -77,11 +77,10 @@ dotnet restore $basketPathToJson
 dotnet build $basketPathToJson
 dotnet publish $basketPathToJson -o $basketPathToPub
 
-#!/bin/bash
-# Delete all containers
-docker rm $(docker ps -a -q) -f
-# Delete all images
-docker rmi $(docker images -q)
+# Delete all eshop containers
+docker rm $(docker images --filter=reference="eshop/*" -q) -f
+# Delete all eshop images
+docker rmi $(docker images --filter=reference="eshop/*" -q)
 
 #*** build docker images ***
 docker build -t eshop/web $webPathToPub
