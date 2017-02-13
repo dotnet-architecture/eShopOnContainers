@@ -17,16 +17,18 @@ dotnet build $webPathToJson
 dotnet publish $webPathToJson -o $webPathToPub
 
 # *** WebSPA image ***
-$webSPAPathToJson = $scriptPath + "\src\Web\WebSPA\eShopOnContainers.WebSPA\project.json"
+$webSPAPath = $scriptPath + "\src\Web\WebSPA\eShopOnContainers.WebSPA"
+$webSPAPathToJson = $webSPAPath + "\project.json"
 Write-Host "webSPAPathToJson is $webSPAPathToJson" -ForegroundColor Yellow
 $webSPAPathToPub = $scriptPath + "\pub\webSPA"
-$webSPAPathToNpmBat = $scriptPath + "\src\Web\WebSPA\eShopOnContainers.WebSPA\buildspa.bat"
 Write-Host "webSPAPathToPub is $webSPAPathToPub" -ForegroundColor Yellow
+
+Write-Host "Installing npm dependencies"
+Start-Process -WorkingDirectory $webSPAPath -NoNewWindow -Wait npm i
 
 Write-Host "Restore Dependencies just in case as it is needed to run dotnet publish" -ForegroundColor Blue
 dotnet restore $webSPAPathToJson
 dotnet build $webSPAPathToJson
-# Start-Process "cmd.exe" "/c " + $webSPAPathToNpmBat
 dotnet publish $webSPAPathToJson -o $webSPAPathToPub
 
 # *** identitySvc image ***
