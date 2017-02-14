@@ -15,10 +15,10 @@ namespace IdentityServer4.Quickstart.UI.Controllers
     public class HomeController : Controller
     {
         private readonly IIdentityServerInteractionService _interaction;
-        private readonly IOptions<AppSettings> _settings;
+        private readonly IOptionsSnapshot<AppSettings> _settings;
         private readonly IRedirectService _redirectSvc;
 
-        public HomeController(IIdentityServerInteractionService interaction, IOptions<AppSettings> settings,IRedirectService redirectSvc)
+        public HomeController(IIdentityServerInteractionService interaction, IOptionsSnapshot<AppSettings> settings,IRedirectService redirectSvc)
         {
             _interaction = interaction;
             _settings = settings;

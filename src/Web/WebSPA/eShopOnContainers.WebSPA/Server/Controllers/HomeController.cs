@@ -11,9 +11,9 @@ namespace eShopConContainers.WebSPA.Server.Controllers
     public class HomeController : Controller
     {
         private readonly IHostingEnvironment _env;
-        private readonly IOptions<AppSettings> _settings;
+        private readonly IOptionsSnapshot<AppSettings> _settings;
 
-        public HomeController(IHostingEnvironment env, IOptions<AppSettings> settings)
+        public HomeController(IHostingEnvironment env, IOptionsSnapshot<AppSettings> settings)
         {
             _env = env;
             _settings = settings;

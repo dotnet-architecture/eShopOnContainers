@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace Microsoft.eShopOnContainers.Services.Ordering.API.Controllers
 {
     [Route("api/v1/[controller]")]
-    [Authorize]
+    //[Authorize]
     public class OrdersController : Controller
     {
         private readonly IMediator _mediator;
@@ -42,17 +42,17 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Controllers
 
         [Route("new")]
         [HttpPost]
-        public async Task<IActionResult> AddOrder([FromBody]CreateOrderCommand createOrderCommand)
+        public async Task<IActionResult> CreateOrder([FromBody]CreateOrderCommand createOrderCommand)
         {
             if (createOrderCommand.CardTypeId == 0)
             {
                 createOrderCommand.CardTypeId = 1;
             }
 
-            createOrderCommand.BuyerFullName = _identityService.GetUserIdentity();
+            createOrderCommand.BuyerIdentityGuid = _identityService.GetUserIdentity();
 
-            var added = await _mediator.SendAsync(createOrderCommand);
-            if (added)
+            var result = await _mediator.SendAsync(createOrderCommand);
+            if (result)
             {
                 return Ok();
             }

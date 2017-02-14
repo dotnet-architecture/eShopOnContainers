@@ -15,11 +15,11 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
 {
     public class CatalogService : ICatalogService
     {
-        private readonly IOptions<AppSettings> _settings;
+        private readonly IOptionsSnapshot<AppSettings> _settings;
         private HttpClient _apiClient;
         private readonly string _remoteServiceBaseUrl;
   
-        public CatalogService(IOptions<AppSettings> settings, ILoggerFactory loggerFactory) {
+        public CatalogService(IOptionsSnapshot<AppSettings> settings, ILoggerFactory loggerFactory) {
             _settings = settings;
             _remoteServiceBaseUrl = $"{_settings.Value.CatalogUrl}/api/v1/catalog/";
 

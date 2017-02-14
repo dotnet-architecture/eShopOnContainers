@@ -8,11 +8,11 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.B
     public class Buyer
       : Entity, IAggregateRoot
     {
-        public string FullName { get; private set; }
+        public string IdentityGuid { get; private set; }
 
-        private HashSet<PaymentMethod> _paymentMethods;
+        private List<PaymentMethod> _paymentMethods;
 
-        public IEnumerable<PaymentMethod> PaymentMethods => _paymentMethods?.ToList().AsEnumerable();
+        public IEnumerable<PaymentMethod> PaymentMethods => _paymentMethods?.AsReadOnly();
 
         protected Buyer() { }
 
@@ -23,9 +23,9 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.B
                 throw new ArgumentNullException(nameof(identity));
             }
 
-            FullName = identity;
+            IdentityGuid = identity;
 
-            _paymentMethods = new HashSet<PaymentMethod>();
+            _paymentMethods = new List<PaymentMethod>();
         }
 
         public PaymentMethod AddPaymentMethod(int cardTypeId, string alias, string cardNumber, string securityNumber, string cardHolderName, DateTime expiration)

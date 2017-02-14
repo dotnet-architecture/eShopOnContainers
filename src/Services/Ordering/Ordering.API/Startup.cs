@@ -81,7 +81,6 @@
 
             // Add application services.
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddSingleton<IConfiguration>(this.Configuration);
             services.AddTransient<IIdentityService,IdentityService>();
 
             services.AddOptions();
@@ -92,7 +91,7 @@
             container.Populate(services);
 
             container.RegisterModule(new MediatorModule());
-            container.RegisterModule(new ApplicationModule());
+            container.RegisterModule(new ApplicationModule(Configuration["ConnectionString"] ));
 
             return new AutofacServiceProvider(container.Build());
         }

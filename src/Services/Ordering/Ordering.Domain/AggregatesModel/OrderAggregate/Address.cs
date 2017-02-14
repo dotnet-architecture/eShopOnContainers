@@ -1,18 +1,21 @@
-﻿using System;
+﻿using Microsoft.eShopOnContainers.Services.Ordering.Domain.SeedWork;
+using System;
+using System.Collections.Generic;
 
 namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate
 {
     public class Address
+        :ValueObject
     {
-        public String Street { get; }
+        public String Street { get; private set; }
 
-        public String City { get; }
+        public String City { get; private set; }
 
-        public String State { get; }
+        public String State { get; private set; }
 
-        public String Country { get; }
+        public String Country { get; private set; }
 
-        public String ZipCode { get; }
+        public String ZipCode { get; private set; }
 
         public Address(string street, string city, string state, string country, string zipcode)
         {
@@ -21,6 +24,15 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
             State = state;
             Country = country;
             ZipCode = zipcode;
+        }
+
+        protected override IEnumerable<object> GetAtomicValues()
+        {
+            yield return Street;
+            yield return City;
+            yield return State;
+            yield return Country;
+            yield return ZipCode;
         }
     }
 }

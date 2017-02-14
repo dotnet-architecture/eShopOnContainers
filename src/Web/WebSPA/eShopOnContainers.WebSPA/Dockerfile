@@ -1,4 +1,4 @@
-FROM microsoft/aspnetcore:1.0.1
+FROM microsoft/aspnetcore:1.1
 ENTRYPOINT ["dotnet", "eShopOnContainers.WebSPA.dll"]
 ARG source=.
 WORKDIR /app

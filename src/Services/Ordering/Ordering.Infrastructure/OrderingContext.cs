@@ -30,12 +30,23 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Address>(ConfigureAddress);
             modelBuilder.Entity<Buyer>(ConfigureBuyer);
             modelBuilder.Entity<PaymentMethod>(ConfigurePayment);
             modelBuilder.Entity<Order>(ConfigureOrder);
             modelBuilder.Entity<OrderItem>(ConfigureOrderItems);
             modelBuilder.Entity<CardType>(ConfigureCardTypes);
             modelBuilder.Entity<OrderStatus>(ConfigureOrderStatus);
+        }
+
+        void ConfigureAddress(EntityTypeBuilder<Address> addressConfiguration)
+        {
+            addressConfiguration.ToTable("address", DEFAULT_SCHEMA);
+
+            addressConfiguration.Property<int>("Id")
+                .IsRequired();
+
+            addressConfiguration.HasKey("Id");
         }
 
         void ConfigureBuyer(EntityTypeBuilder<Buyer> buyerConfiguration)
@@ -47,11 +58,11 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
             buyerConfiguration.Property(b => b.Id)
                 .ForSqlServerUseSequenceHiLo("buyerseq", DEFAULT_SCHEMA);
 
-            buyerConfiguration.Property(b=>b.FullName)
+            buyerConfiguration.Property(b=>b.IdentityGuid)
                 .HasMaxLength(200)
                 .IsRequired();
 
-            buyerConfiguration.HasIndex("FullName")
+            buyerConfiguration.HasIndex("IdentityGuid")
               .IsUnique(true);
 
             buyerConfiguration.HasMany(b => b.PaymentMethods)
@@ -109,17 +120,13 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
                 .ForSqlServerUseSequenceHiLo("orderseq", DEFAULT_SCHEMA);
 
             orderConfiguration.Property<DateTime>("OrderDate").IsRequired();
-            orderConfiguration.Property<string>("Street").IsRequired();
-            orderConfiguration.Property<string>("State").IsRequired();
-            orderConfiguration.Property<string>("City").IsRequired();
-            orderConfiguration.Property<string>("ZipCode").IsRequired();
-            orderConfiguration.Property<string>("Country").IsRequired();
             orderConfiguration.Property<int>("BuyerId").IsRequired();
             orderConfiguration.Property<int>("OrderStatusId").IsRequired();
             orderConfiguration.Property<int>("PaymentMethodId").IsRequired();
 
             var navigation = orderConfiguration.Metadata.FindNavigation(nameof(Order.OrderItems));
-
+            // DDD Patterns comment:
+            //Set as Field (New since EF 1.1) to access the OrderItem collection property through its field
             navigation.SetPropertyAccessMode(PropertyAccessMode.Field);
 
             orderConfiguration.HasOne(o => o.PaymentMethod)

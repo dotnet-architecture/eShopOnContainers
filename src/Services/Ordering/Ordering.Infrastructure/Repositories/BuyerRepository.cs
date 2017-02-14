@@ -49,7 +49,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Repositor
         {
             var buyer = await _context.Buyers
                 .Include(b => b.PaymentMethods)
-                .Where(b => b.FullName == identity)
+                .Where(b => b.IdentityGuid == identity)
                 .SingleOrDefaultAsync();
 
             return buyer;

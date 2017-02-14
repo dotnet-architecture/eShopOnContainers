@@ -13,9 +13,9 @@
     {
         private string _connectionString = string.Empty;
 
-        public OrderQueries(IConfiguration configuration)
+        public OrderQueries(string constr)
         {
-            _connectionString = configuration["ConnectionString"];
+            _connectionString = constr;
         }
 
 
@@ -28,8 +28,9 @@
                 var result = await connection.QueryAsync<dynamic>(
                    @"select o.[Id] as ordernumber,o.OrderDate as date, os.Name as status, 
                         oi.ProductName as productname, oi.Units as units, oi.UnitPrice as unitprice, oi.PictureUrl as pictureurl, 
-						o.Street as street, o.City as city, o.Country as country, o.State as state, o.ZipCode as zipcode
+						a.Street as street, a.City as city, a.Country as country, a.State as state, a.ZipCode as zipcode
                         FROM ordering.Orders o
+                        INNER JOIN ordering.Address a ON o.AddressId = a.Id 
                         LEFT JOIN ordering.Orderitems oi ON o.Id = oi.orderid 
                         LEFT JOIN ordering.orderstatus os on o.OrderStatusId = os.Id
                         WHERE o.Id=@id"

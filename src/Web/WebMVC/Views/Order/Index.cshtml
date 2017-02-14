@@ -25,7 +25,7 @@
                 <section class="esh-orders-item col-xs-4">@Html.DisplayFor(modelItem => item.Date)</section>
                 <section class="esh-orders-item col-xs-2">$ @Html.DisplayFor(modelItem => item.Total)</section>
                 <section class="esh-orders-item col-xs-2">@Html.DisplayFor(modelItem => item.Status)</section>
-                <section class="esh-orders-item esh-orders-item--hover col-xs-2">
+                <section class="esh-orders-item col-xs-2">
                     <a class="esh-orders-link" asp-controller="Order" asp-action="Detail" asp-route-orderId="@item.OrderNumber">Detail</a>
                 </section>
             </article>

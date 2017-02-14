@@ -8,7 +8,7 @@ using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure;
 namespace Ordering.API.Migrations
 {
     [DbContext(typeof(OrderingContext))]
-    [Migration("20170127103457_Initial")]
+    [Migration("20170208181933_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -29,13 +29,13 @@ namespace Ordering.API.Migrations
                         .HasAnnotation("SqlServer:HiLoSequenceSchema", "ordering")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.SequenceHiLo);
 
-                    b.Property<string>("FullName")
+                    b.Property<string>("IdentityGuid")
                         .IsRequired()
                         .HasMaxLength(200);
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FullName")
+                    b.HasIndex("IdentityGuid")
                         .IsUnique();
 
                     b.ToTable("buyers","ordering");
@@ -90,6 +90,26 @@ namespace Ordering.API.Migrations
                     b.ToTable("paymentmethods","ordering");
                 });
 
+            modelBuilder.Entity("Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate.Address", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("City");
+
+                    b.Property<string>("Country");
+
+                    b.Property<string>("State");
+
+                    b.Property<string>("Street");
+
+                    b.Property<string>("ZipCode");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("address","ordering");
+                });
+
             modelBuilder.Entity("Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate.Order", b =>
                 {
                     b.Property<int>("Id")
@@ -98,13 +118,9 @@ namespace Ordering.API.Migrations
                         .HasAnnotation("SqlServer:HiLoSequenceSchema", "ordering")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.SequenceHiLo);
 
+                    b.Property<int?>("AddressId");
+
                     b.Property<int>("BuyerId");
-
-                    b.Property<string>("City")
-                        .IsRequired();
-
-                    b.Property<string>("Country")
-                        .IsRequired();
 
                     b.Property<DateTime>("OrderDate");
 
@@ -112,16 +128,9 @@ namespace Ordering.API.Migrations
 
                     b.Property<int>("PaymentMethodId");
 
-                    b.Property<string>("State")
-                        .IsRequired();
-
-                    b.Property<string>("Street")
-                        .IsRequired();
-
-                    b.Property<string>("ZipCode")
-                        .IsRequired();
-
                     b.HasKey("Id");
+
+                    b.HasIndex("AddressId");
 
                     b.HasIndex("BuyerId");
 
@@ -190,6 +199,10 @@ namespace Ordering.API.Migrations
 
             modelBuilder.Entity("Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate.Order", b =>
                 {
+                    b.HasOne("Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate.Address", "Address")
+                        .WithMany()
+                        .HasForeignKey("AddressId");
+
                     b.HasOne("Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.BuyerAggregate.Buyer", "Buyer")
                         .WithMany()
                         .HasForeignKey("BuyerId")
