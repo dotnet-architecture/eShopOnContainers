@@ -1,6 +1,6 @@
 FROM microsoft/aspnetcore:1.1
-ENTRYPOINT ["dotnet", "WebMVC.dll"]
-ARG source=.
+ARG source
 WORKDIR /app
-ENV ASPNETCORE_URLS http://0.0.0.0:5100
-COPY $source .
+EXPOSE 80
+COPY ${source:-obj/Docker/publish} .
+ENTRYPOINT ["dotnet", "WebMVC.dll"]

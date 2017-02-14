@@ -1,44 +1,56 @@
-#
-# docker-compose.yml is used to set up the base config per container to be deployed
-# Take into account that when deploying, this base configuration is merged with the 
-# configuration-per-environment specified at the docker-compose.override.yml
-# Further details and docs: https://docs.docker.com/compose/extends/ 
-#
 version: '2'
 
 services:
-  webmvc:
-    image: eshop/web
-    depends_on:
-      - identity.service
-      - basket.api
-
-  webspa:
-    image: eshop/webspa
-    depends_on:
-      - basket.api
-      - identity.service
-
   basket.api:
-    image: eshop/basket.api
+    image: basket.api
+    build:
+      context: ./src/Services/Basket/Basket.API
+      dockerfile: Dockerfile
     depends_on:
       - basket.data
-      - identity.service
+      - identity.api
 
   catalog.api:
-    image: eshop/catalog.api
+    image: catalog.api
+    build:
+      context: ./src/Services/Catalog/Catalog.API
+      dockerfile: Dockerfile
+    depends_on:
+      - sql.data
+
+  identity.api:
+    image: identity.api
+    build:
+      context: ./src/Services/Identity/Identity.API
+      dockerfile: Dockerfile
     depends_on:
       - sql.data
 
   ordering.api:
-    image: eshop/ordering.api
+    image: ordering.api
+    build:
+      context: ./src/Services/Ordering/Ordering.API
+      dockerfile: Dockerfile
     depends_on:
       - sql.data
 
-  identity.service:
-    image: eshop/identity
+  eshoponcontainers.webspa:
+    image: eshoponcontainers.webspa
+    build:
+      context: ./src/Web/WebSPA/eShopOnContainers.WebSPA
+      dockerfile: Dockerfile
     depends_on:
-      - sql.data
+      - identity.api
+      - basket.api
+
+  webmvc:
+    image: webmvc
+    build:
+      context: ./src/Web/WebMVC
+      dockerfile: Dockerfile
+    depends_on:
+      - identity.api
+      - basket.api
 
   sql.data:
     image: microsoft/mssql-server-linux
