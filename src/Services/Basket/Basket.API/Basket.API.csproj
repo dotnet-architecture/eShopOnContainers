@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+    <DebugType>portable</DebugType>
+    <PreserveCompilationContext>true</PreserveCompilationContext>
+    <AssemblyName>Basket.API</AssemblyName>
+    <OutputType>Exe</OutputType>
+    <PackageId>Basket.API</PackageId>
+    <RuntimeFrameworkVersion>1.1.0</RuntimeFrameworkVersion>
+    <PackageTargetFallback>$(PackageTargetFallback);netstandard1.6.1;dnxcore50;portable-net451+win8</PackageTargetFallback>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Update="wwwroot;Views;Areas\**\Views;appsettings.json;web.config;Dockerfile;docker-compose.yml;.dockerignore">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Threading" Version="4.3.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="1.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Server.IISIntegration" Version="1.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="1.1.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="1.1.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="1.1.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="1.1.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="1.1.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="1.1.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="1.1.0" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="1.1.0" />
+    <PackageReference Include="StackExchange.Redis" Version="1.1.608" />
+    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
+    <PackageReference Include="IdentityServer4.AccessTokenValidation" Version="1.0.1-rc3" />
+    <PackageReference Include="Swashbuckle" Version="6.0.0-beta902" />
+  </ItemGroup>
+
+</Project>
