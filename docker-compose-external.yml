@@ -1,0 +1,16 @@
+#
+# docker-compose.yml is used to set up the base config per container to be deployed
+# Take into account that when deploying, this base configuration is merged with the 
+# configuration-per-environment specified at the docker-compose.override.yml
+# Further details and docs: https://docs.docker.com/compose/extends/ 
+#
+version: '2'
+
+services:
+  sql.data:
+    image: microsoft/mssql-server-linux
+
+  basket.data:
+    image: redis
+    ports:
+      - "6379:6379"

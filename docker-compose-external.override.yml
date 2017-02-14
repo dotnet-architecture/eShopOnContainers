@@ -1,0 +1,17 @@
+#
+# docker-compose.override.yml is used to set up local configuration environment
+# Things like the external ports to use or secrets/passwords depend on the 
+# specific deployment environment you might be using.
+# Further details and docs: https://docs.docker.com/compose/extends/ 
+#
+
+version: '2'
+
+services:
+
+  sql.data:
+    environment:
+      - SA_PASSWORD=Pass@word
+      - ACCEPT_EULA=Y
+    ports:
+      - "5433:1433"

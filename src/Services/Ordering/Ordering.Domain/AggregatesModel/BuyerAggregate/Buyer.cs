@@ -1,5 +1,6 @@
 ﻿using Microsoft.eShopOnContainers.Services.Ordering.Domain.Seedwork;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -12,11 +13,13 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.B
 
         private List<PaymentMethod> _paymentMethods;
 
-        public IEnumerable<PaymentMethod> PaymentMethods => _paymentMethods?.AsReadOnly();
+        public IEnumerable<PaymentMethod> PaymentMethods => _paymentMethods.AsReadOnly();
 
-        protected Buyer() { }
+        protected Buyer() {
+            _paymentMethods = new List<PaymentMethod>();
+        }
 
-        public Buyer(string identity)
+        public Buyer(string identity) : this()
         {
             if (String.IsNullOrWhiteSpace(identity))
             {
@@ -25,7 +28,6 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.B
 
             IdentityGuid = identity;
 
-            _paymentMethods = new List<PaymentMethod>();
         }
 
         public PaymentMethod AddPaymentMethod(int cardTypeId, string alias, string cardNumber, string securityNumber, string cardHolderName, DateTime expiration)
