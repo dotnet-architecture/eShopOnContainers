@@ -3,8 +3,8 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>fea0c318-ffed-4d39-8781-265718ca43dd</ProjectGuid>
     <DockerLaunchBrowser>True</DockerLaunchBrowser>
-    <DockerServiceUrl>http://localhost:{ServicePort}/api/values</DockerServiceUrl>
-    <DockerServiceName>basket.api</DockerServiceName>
+    <DockerServiceUrl>http://localhost:5100</DockerServiceUrl>
+    <DockerServiceName>webmvc</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
     <None Include="docker-compose.ci.build.yml" />
