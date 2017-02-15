@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26213.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{932D8224-11F6-4D07-B109-DA28AD288A63}"
 EndProject
@@ -25,19 +25,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Basket", "Basket", "{BF3EF4
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Ordering", "Ordering", "{0BD0DB92-2D98-44D9-9AC0-C59186D59B0B}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Basket.API", "src\Services\Basket\Basket.API\Basket.API.xproj", "{2110CBB0-3B38-4EE4-A743-DF6968D80D90}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Basket.API", "src\Services\Basket\Basket.API\Basket.API.csproj", "{2110CBB0-3B38-4EE4-A743-DF6968D80D90}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Catalog.API", "src\Services\Catalog\Catalog.API\Catalog.API.xproj", "{42681D9D-750A-4DF7-BD9F-9292CFD5C253}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Catalog.API", "src\Services\Catalog\Catalog.API\Catalog.API.csproj", "{42681D9D-750A-4DF7-BD9F-9292CFD5C253}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Ordering.API", "src\Services\Ordering\Ordering.API\Ordering.API.xproj", "{231226CE-690B-4979-8870-9A79D80928E2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ordering.API", "src\Services\Ordering\Ordering.API\Ordering.API.csproj", "{231226CE-690B-4979-8870-9A79D80928E2}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Ordering.Domain", "src\Services\Ordering\Ordering.Domain\Ordering.Domain.xproj", "{F5598DCB-6DDE-4661-AD9D-A55612DA7E76}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ordering.Domain", "src\Services\Ordering\Ordering.Domain\Ordering.Domain.csproj", "{F5598DCB-6DDE-4661-AD9D-A55612DA7E76}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{A857AD10-40FF-4303-BEC2-FF1C58D5735E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{EF0337F2-ED00-4643-89FD-EE10863F1870}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "eShopOnContainers.WebMVC", "src\Web\WebMVC\eShopOnContainers.WebMVC.xproj", "{F0333D8E-0B27-42B7-B2C6-78F3657624E2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebMVC", "src\Web\WebMVC\WebMVC.csproj", "{F0333D8E-0B27-42B7-B2C6-78F3657624E2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eShopOnContainers.Droid", "src\Mobile\eShopOnContainers\eShopOnContainers.Droid\eShopOnContainers.Droid.csproj", "{62DBB163-9CA9-4818-B48B-13233DF37C24}"
 EndProject
@@ -49,7 +49,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared Code", "Shared Code"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Targets", "Targets", "{9CC7814B-72A6-465B-A61C-57B512DEE303}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "eShopOnContainers.WebSPA", "src\Web\WebSPA\eShopOnContainers.WebSPA\eShopOnContainers.WebSPA.xproj", "{9842DB3A-1391-48C7-A49C-2FABD0A18AC2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eShopOnContainers.WebSPA", "src\Web\WebSPA\eShopOnContainers.WebSPA\eShopOnContainers.WebSPA.csproj", "{9842DB3A-1391-48C7-A49C-2FABD0A18AC2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mobile Apps", "Mobile Apps", "{B7B1D395-4E06-4036-BE86-C216756B9367}"
 EndProject
@@ -61,19 +61,19 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eShopOnContainers.TestRunne
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eShopOnContainers.TestRunner.iOS", "src\Mobile\eShopOnContainers\eShopOnContainers.TestRunner.iOS\eShopOnContainers.TestRunner.iOS.csproj", "{B68C2B56-7581-46AE-B55D-D25DDFD3BFE3}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Ordering.Infrastructure", "src\Services\Ordering\Ordering.Infrastructure\Ordering.Infrastructure.xproj", "{95F1F07C-4D92-4742-BD07-E5B805AAB651}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ordering.Infrastructure", "src\Services\Ordering\Ordering.Infrastructure\Ordering.Infrastructure.csproj", "{95F1F07C-4D92-4742-BD07-E5B805AAB651}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Identity", "Identity", "{02DF7FEE-C302-433D-A6CD-237A2569F236}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "FunctionalTests", "test\Services\FunctionalTests\FunctionalTests.xproj", "{621E7211-58D0-45FD-9600-1CB490BD930E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FunctionalTests", "test\Services\FunctionalTests\FunctionalTests.csproj", "{621E7211-58D0-45FD-9600-1CB490BD930E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eShopOnContainers.UITests", "src\Mobile\eShopOnContainers\eShopOnContainers.UITests\eShopOnContainers.UITests.csproj", "{E3B18084-842C-4B80-8E4A-A7E588EC3137}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eShopOnContainers.Core", "src\Mobile\eShopOnContainers\eShopOnContainers.Core\eShopOnContainers.Core.csproj", "{67F9D3A8-F71E-4428-913F-C37AE82CDB24}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "UnitTest", "test\Services\UnitTest\UnitTest.xproj", "{7796F5D8-31FC-45A4-B673-19DE5BA194CF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTest", "test\Services\UnitTest\UnitTest.csproj", "{7796F5D8-31FC-45A4-B673-19DE5BA194CF}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Identity.API", "src\Services\Identity\Identity.API\Identity.API.xproj", "{A579E108-5445-403D-A407-339AC4D1611B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Identity.API", "src\Services\Identity\Identity.API\Identity.API.csproj", "{A579E108-5445-403D-A407-339AC4D1611B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -956,6 +956,54 @@ Global
 		{A579E108-5445-403D-A407-339AC4D1611B}.Release|x64.Build.0 = Release|Any CPU
 		{A579E108-5445-403D-A407-339AC4D1611B}.Release|x86.ActiveCfg = Release|Any CPU
 		{A579E108-5445-403D-A407-339AC4D1611B}.Release|x86.Build.0 = Release|Any CPU
+		{FEA0C318-FFED-4D39-8781-265718CA43DD}.Ad-Hoc|Any CPU.ActiveCfg = Debug|Any CPU
+		{FEA0C318-FFED-4D39-8781-265718CA43DD}.Ad-Hoc|Any CPU.Build.0 = Debug|Any CPU
+		{FEA0C318-FFED-4D39-8781-265718CA43DD}.Ad-Hoc|ARM.ActiveCfg = Debug|Any CPU
+		{FEA0C318-FFED-4D39-8781-265718CA43DD}.Ad-Hoc|ARM.Build.0 = Debug|Any CPU
+		{FEA0C318-FFED-4D39-8781-265718CA43DD}.Ad-Hoc|iPhone.ActiveCfg = Debug|Any CPU
+		{FEA0C318-FFED-4D39-8781-265718CA43DD}.Ad-Hoc|iPhone.Build.0 = Debug|Any CPU
+		{FEA0C318-FFED-4D39-8781-265718CA43DD}.Ad-Hoc|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{FEA0C318-FFED-4D39-8781-265718CA43DD}.Ad-Hoc|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{FEA0C318-FFED-4D39-8781-265718CA43DD}.Ad-Hoc|x64.ActiveCfg = Debug|Any CPU
+		{FEA0C318-FFED-4D39-8781-265718CA43DD}.Ad-Hoc|x64.Build.0 = Debug|Any CPU
+		{FEA0C318-FFED-4D39-8781-265718CA43DD}.Ad-Hoc|x86.ActiveCfg = Debug|Any CPU
+		{FEA0C318-FFED-4D39-8781-265718CA43DD}.Ad-Hoc|x86.Build.0 = Debug|Any CPU
+		{FEA0C318-FFED-4D39-8781-265718CA43DD}.AppStore|Any CPU.ActiveCfg = Debug|Any CPU
+		{FEA0C318-FFED-4D39-8781-265718CA43DD}.AppStore|Any CPU.Build.0 = Debug|Any CPU
+		{FEA0C318-FFED-4D39-8781-265718CA43DD}.AppStore|ARM.ActiveCfg = Debug|Any CPU
+		{FEA0C318-FFED-4D39-8781-265718CA43DD}.AppStore|ARM.Build.0 = Debug|Any CPU
+		{FEA0C318-FFED-4D39-8781-265718CA43DD}.AppStore|iPhone.ActiveCfg = Debug|Any CPU
+		{FEA0C318-FFED-4D39-8781-265718CA43DD}.AppStore|iPhone.Build.0 = Debug|Any CPU
+		{FEA0C318-FFED-4D39-8781-265718CA43DD}.AppStore|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{FEA0C318-FFED-4D39-8781-265718CA43DD}.AppStore|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{FEA0C318-FFED-4D39-8781-265718CA43DD}.AppStore|x64.ActiveCfg = Debug|Any CPU
+		{FEA0C318-FFED-4D39-8781-265718CA43DD}.AppStore|x64.Build.0 = Debug|Any CPU
+		{FEA0C318-FFED-4D39-8781-265718CA43DD}.AppStore|x86.ActiveCfg = Debug|Any CPU
+		{FEA0C318-FFED-4D39-8781-265718CA43DD}.AppStore|x86.Build.0 = Debug|Any CPU
+		{FEA0C318-FFED-4D39-8781-265718CA43DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FEA0C318-FFED-4D39-8781-265718CA43DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FEA0C318-FFED-4D39-8781-265718CA43DD}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{FEA0C318-FFED-4D39-8781-265718CA43DD}.Debug|ARM.Build.0 = Debug|Any CPU
+		{FEA0C318-FFED-4D39-8781-265718CA43DD}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{FEA0C318-FFED-4D39-8781-265718CA43DD}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{FEA0C318-FFED-4D39-8781-265718CA43DD}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{FEA0C318-FFED-4D39-8781-265718CA43DD}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{FEA0C318-FFED-4D39-8781-265718CA43DD}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{FEA0C318-FFED-4D39-8781-265718CA43DD}.Debug|x64.Build.0 = Debug|Any CPU
+		{FEA0C318-FFED-4D39-8781-265718CA43DD}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FEA0C318-FFED-4D39-8781-265718CA43DD}.Debug|x86.Build.0 = Debug|Any CPU
+		{FEA0C318-FFED-4D39-8781-265718CA43DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FEA0C318-FFED-4D39-8781-265718CA43DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FEA0C318-FFED-4D39-8781-265718CA43DD}.Release|ARM.ActiveCfg = Release|Any CPU
+		{FEA0C318-FFED-4D39-8781-265718CA43DD}.Release|ARM.Build.0 = Release|Any CPU
+		{FEA0C318-FFED-4D39-8781-265718CA43DD}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{FEA0C318-FFED-4D39-8781-265718CA43DD}.Release|iPhone.Build.0 = Release|Any CPU
+		{FEA0C318-FFED-4D39-8781-265718CA43DD}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{FEA0C318-FFED-4D39-8781-265718CA43DD}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{FEA0C318-FFED-4D39-8781-265718CA43DD}.Release|x64.ActiveCfg = Release|Any CPU
+		{FEA0C318-FFED-4D39-8781-265718CA43DD}.Release|x64.Build.0 = Release|Any CPU
+		{FEA0C318-FFED-4D39-8781-265718CA43DD}.Release|x86.ActiveCfg = Release|Any CPU
+		{FEA0C318-FFED-4D39-8781-265718CA43DD}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
