@@ -52,7 +52,7 @@ Write-Host "basketPathToPub is $basketPathToPub" -ForegroundColor Yellow
 ########################################################################################
 # Delete old eShop dotnet publish bits
 ########################################################################################
-Write-Host "Deleting previous dotnet publish bits from all projects" -ForegroundColor Blue
+# Write-Host "Deleting previous dotnet publish bits from all projects" -ForegroundColor Blue
 
 remove-item -path $WebMVCPathToPub -Force -Recurse -ErrorAction SilentlyContinue
 remove-item -path $webSPAPathToPub -Force -Recurse -ErrorAction SilentlyContinue

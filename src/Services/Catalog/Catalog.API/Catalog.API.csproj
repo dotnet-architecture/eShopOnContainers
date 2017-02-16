@@ -48,6 +48,9 @@
     <None Update="Dockerfile">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Pics">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Pics\1.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
