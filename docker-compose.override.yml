@@ -1,12 +1,23 @@
 version: '2'
 
 services:
+
+  webmvc:
+    environment:
+      - CatalogUrl=http://catalog.api:5101
+      - OrderingUrl=http://ordering.api:5102
+      #- IdentityUrl=http://13.88.8.119:5105             #Remote: VM Needs to have public access at 5105. 
+      - IdentityUrl=http://identity.service:5105              #Local: You need to open your local dev-machine firewall at range 5100-5105.  at range 5100-5105. 
+      - BasketUrl=http://basket.api:5103
+    ports:
+      - "5100:5100"
+
   basket.api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionString=basket.data
       #- identityUrl=http://13.88.8.119:5105             #Remote: VM Needs to have public access at 5105. 
-      - identityUrl=http://10.0.75.1:5105              #Local: You need to open your local dev-machine firewall at range 5100-5105.  at range 5100-5105. 
+      - identityUrl=http://identity.service:5105              #Local: You need to open your local dev-machine firewall at range 5100-5105.  at range 5100-5105. 
     ports:
       - "5103:5103"
 
@@ -15,10 +26,9 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionString=Server=sql.data;Database=Microsoft.eShopOnContainers.Services.CatalogDb;User Id=sa;Password=Pass@word
       #- ExternalCatalogBaseUrl=http://13.88.8.119:5101   #Remote: VM Needs to have public access at 5105. 
-      - ExternalCatalogBaseUrl=http://10.0.75.1:5101    #Local: You need to open your local dev-machine firewall at range 5100-5105.  at range 5100-5105.
+      - ExternalCatalogBaseUrl=http://localhost:5101    #Local: You need to open your local dev-machine firewall at range 5100-5105.  at range 5100-5105.
     ports:
       - "5101:5101"
-
 
   identity.api:
     environment:
@@ -26,7 +36,7 @@ services:
       - SpaClient=http://localhost:5104
       - ConnectionStrings__DefaultConnection=Server=sql.data;Database=Microsoft.eShopOnContainers.Service.IdentityDb;User Id=sa;Password=Pass@word
       #- MvcClient=http://13.88.8.119:5100              #Remote: VM Needs to have public access at 5105. 
-      - MvcClient=http://10.0.75.1:5105              #Local: You need to open your local dev-machine firewall at range 5100-5105.  
+      - MvcClient=http://localhost:5100              #Local: You need to open your local dev-machine firewall at range 5100-5105.  
     ports:
       - "5105:5105"
 
@@ -35,18 +45,17 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionString=Server=sql.data;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word
       #- identityUrl=http://13.88.8.119:5105             #Remote: VM Needs to have public access at 5105. 
-      - identityUrl=http://10.0.75.1:5105              #Local: You need to open your local dev-machine firewall at range 5100-5105.  at range 5100-5105. 
+      - identityUrl=http://identity.service:5105              #Local: You need to open your local dev-machine firewall at range 5100-5105.  at range 5100-5105. 
     ports:
       - "5102:5102"
 
   eshoponcontainers.webspa:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - CatalogUrl=http://10.0.75.1:5101
-      - OrderingUrl=http://10.0.75.1:5102
+      - CatalogUrl=http://localhost:5101
+      - OrderingUrl=http://localhost:5102
       #- IdentityUrl=http://13.88.8.119:5105             #Remote: VM Needs to have public access at 5105. 
-      - IdentityUrl=http://10.0.75.1:5105              #Local: You need to open your local dev-machine firewall at range 5100-5105.  at range 5100-5105. 
-      - BasketUrl=http://10.0.75.1:5103                
+      - IdentityUrl=http://localhost:5105              #Local: You need to open your local dev-machine firewall at range 5100-5105.  at range 5100-5105. 
+      - BasketUrl=http://localhost:5103                
     ports:
       - "5104:5104"
 
