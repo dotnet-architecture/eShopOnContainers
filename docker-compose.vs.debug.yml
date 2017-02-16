@@ -2,7 +2,7 @@ version: '2'
 
 services:
   basket.api:
-    image: basket.api:dev
+    image: eshop/basket.api:dev
     build:
       args:
         source: ${DOCKER_BUILD_SOURCE}
@@ -17,7 +17,7 @@ services:
       - "com.microsoft.visualstudio.targetoperatingsystem=linux"
 
   catalog.api:
-    image: catalog.api:dev
+    image: eshop/catalog.api:dev
     build:
       args:
         source: ${DOCKER_BUILD_SOURCE}
@@ -32,7 +32,7 @@ services:
       - "com.microsoft.visualstudio.targetoperatingsystem=linux"
 
   identity.api:
-    image: identity.api:dev
+    image: eshop/identity.api:dev
     build:
       args:
         source: ${DOCKER_BUILD_SOURCE}
@@ -47,7 +47,7 @@ services:
       - "com.microsoft.visualstudio.targetoperatingsystem=linux"
 
   ordering.api:
-    image: ordering.api:dev
+    image: eshop/ordering.api:dev
     build:
       args:
         source: ${DOCKER_BUILD_SOURCE}
@@ -62,7 +62,7 @@ services:
       - "com.microsoft.visualstudio.targetoperatingsystem=linux"
 
   eshoponcontainers.webspa:
-    image: eshoponcontainers.webspa:dev
+    image: eshop/eshoponcontainers.webspa:dev
     build:
       args:
         source: ${DOCKER_BUILD_SOURCE}
@@ -77,7 +77,7 @@ services:
       - "com.microsoft.visualstudio.targetoperatingsystem=linux"
 
   webmvc:
-    image: webmvc:dev
+    image: eshop/webmvc:dev
     build:
       args:
         source: ${DOCKER_BUILD_SOURCE}

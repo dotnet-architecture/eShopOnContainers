@@ -2,7 +2,7 @@ version: '2'
 
 services:
   basket.api:
-    image: basket.api
+    image: eshop/basket.api
     build:
       context: ./src/Services/Basket/Basket.API
       dockerfile: Dockerfile
@@ -11,7 +11,7 @@ services:
       - identity.api
 
   catalog.api:
-    image: catalog.api
+    image: eshop/catalog.api
     build:
       context: ./src/Services/Catalog/Catalog.API
       dockerfile: Dockerfile
@@ -19,7 +19,7 @@ services:
       - sql.data
 
   identity.api:
-    image: identity.api
+    image: eshop/identity.api
     build:
       context: ./src/Services/Identity/Identity.API
       dockerfile: Dockerfile
@@ -27,7 +27,7 @@ services:
       - sql.data
 
   ordering.api:
-    image: ordering.api
+    image: eshop/ordering.api
     build:
       context: ./src/Services/Ordering/Ordering.API
       dockerfile: Dockerfile
@@ -35,7 +35,7 @@ services:
       - sql.data
 
   eshoponcontainers.webspa:
-    image: eshoponcontainers.webspa
+    image: eshop/eshoponcontainers.webspa
     build:
       context: ./src/Web/WebSPA/eShopOnContainers.WebSPA
       dockerfile: Dockerfile
@@ -44,7 +44,7 @@ services:
       - basket.api
 
   webmvc:
-    image: webmvc
+    image: eshop/webmvc
     build:
       context: ./src/Web/WebMVC
       dockerfile: Dockerfile
