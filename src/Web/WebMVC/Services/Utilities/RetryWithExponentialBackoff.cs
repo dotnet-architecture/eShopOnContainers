@@ -21,7 +21,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
     {
         private readonly int maxRetries, delayMilliseconds, maxDelayMilliseconds;
 
-        public RetryWithExponentialBackoff(int maxRetries = 5, int delayMilliseconds = 200, int maxDelayMilliseconds = 2000)
+        public RetryWithExponentialBackoff(int maxRetries = 10, int delayMilliseconds = 200, int maxDelayMilliseconds = 2000)
         {
             this.maxRetries = maxRetries;
             this.delayMilliseconds = delayMilliseconds;
