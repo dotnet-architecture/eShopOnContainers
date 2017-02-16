@@ -36,4 +36,10 @@
     <PackageReference Include="Swashbuckle" Version="6.0.0-beta902" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Dockerfile">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

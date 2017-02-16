@@ -2,80 +2,120 @@ $scriptPath = Split-Path $script:MyInvocation.MyCommand.Path
  
 Write-Host "Current script directory is $scriptPath" -ForegroundColor Yellow
 
-$pubFolderToDelete = $scriptPath + "\pub"
-remove-item -path $pubFolderToDelete -Force -Recurse -ErrorAction SilentlyContinue
+# *** WebMVC paths ***
+$webMVCPath = $scriptPath + "\src\Web\WebMVC"
+$webMVCPathToProject = $webMVCPath + "\WebMVC.csproj"
+Write-Host "webMVCPathToProject is $webMVCPathToProject" -ForegroundColor Yellow
+$webMVCPathToPub = $webMVCPath + "\obj\Docker\publish"
+Write-Host "webMVCPathToPub is $webMVCPathToPub" -ForegroundColor Yellow
 
-# *** WebMVC image ***
-$webPathToJson = $scriptPath + "\src\Web\WebMVC\project.json"
-Write-Host "webPathToJson is $webPathToJson" -ForegroundColor Yellow
-$webPathToPub = $scriptPath + "\pub\webMVC"
-Write-Host "webPathToPub is $webPathToPub" -ForegroundColor Yellow
 
-Write-Host "Restore Dependencies just in case as it is needed to run dotnet publish" -ForegroundColor Blue
-dotnet restore $webPathToJson
-dotnet build $webPathToJson
-dotnet publish $webPathToJson -o $webPathToPub
-
-# *** WebSPA image ***
+# *** WebSPA paths ***
 $webSPAPath = $scriptPath + "\src\Web\WebSPA\eShopOnContainers.WebSPA"
-$webSPAPathToJson = $webSPAPath + "\project.json"
-Write-Host "webSPAPathToJson is $webSPAPathToJson" -ForegroundColor Yellow
-$webSPAPathToPub = $scriptPath + "\pub\webSPA"
+$webSPAPathToProject = $webSPAPath + "\eShopOnContainers.WebSPA.csproj"
+Write-Host "webSPAPathToProject is $webSPAPathToProject" -ForegroundColor Yellow
+$webSPAPathToPub = $webSPAPath + "\obj\Docker\publish"
 Write-Host "webSPAPathToPub is $webSPAPathToPub" -ForegroundColor Yellow
 
-Write-Host "Installing npm dependencies"
-Start-Process -WorkingDirectory $webSPAPath -NoNewWindow -Wait npm i
 
-Write-Host "Restore Dependencies just in case as it is needed to run dotnet publish" -ForegroundColor Blue
-dotnet restore $webSPAPathToJson
-dotnet build $webSPAPathToJson
-dotnet publish $webSPAPathToJson -o $webSPAPathToPub
-
-# *** identitySvc image ***
-$identitySvcPathToJson = $scriptPath + "\src\Services\Identity\Identity.API\project.json"
-Write-Host "identitySvcPathToJson is $identitySvcPathToJson" -ForegroundColor Yellow
-$identitySvcPathToPub = $scriptPath + "\pub\identity"
+# *** IdentitySvc paths ***
+$identitySvcPath = $scriptPath + "\src\Services\Identity\Identity.API"
+$identitySvcToProject = $identitySvcPath + "\Identity.API.csproj"
+Write-Host "identitySvcToProject is $identitySvcToProject" -ForegroundColor Yellow
+$identitySvcPathToPub = $identitySvcPath + "\obj\Docker\publish"
 Write-Host "identitySvcPathToPub is $identitySvcPathToPub" -ForegroundColor Yellow
 
-Write-Host "Restore Dependencies just in case as it is needed to run dotnet publish" -ForegroundColor Blue
-dotnet restore $identitySvcPathToJson
-dotnet build $identitySvcPathToJson
-dotnet publish $identitySvcPathToJson -o $identitySvcPathToPub
 
-#*** Catalog service image ***
-$catalogPathToJson = $scriptPath + "\src\Services\Catalog\Catalog.API\project.json"
-Write-Host "catalogPathToJson is $catalogPathToJson" -ForegroundColor Yellow
-$catalogPathToPub = $scriptPath + "\pub\catalog"
+# *** Catalog paths ***
+$catalogPath = $scriptPath + "\src\Services\Catalog\Catalog.API"
+$catalogPathToProject = $catalogPath + "\Catalog.API.csproj"
+Write-Host "catalogPathToProject is $catalogPathToProject" -ForegroundColor Yellow
+$catalogPathToPub = $catalogPath + "\obj\Docker\publish"
 Write-Host "catalogPathToPub is $catalogPathToPub" -ForegroundColor Yellow
 
-Write-Host "Restore Dependencies just in case as it is needed to run dotnet publish" -ForegroundColor Blue
-dotnet restore $catalogPathToJson
-dotnet build $catalogPathToJson
-dotnet publish $catalogPathToJson -o $catalogPathToPub
 
-#*** Ordering service image ***
-$orderingPath = $scriptPath + "\src\Services\Ordering"
-Write-Host "orderingPath is $orderingPath" -ForegroundColor Yellow
-$orderingApiPathToJson = $orderingPath + "\Ordering.API\project.json"
-Write-Host "orderingApiPathToJson is $orderingApiPathToJson" -ForegroundColor Yellow
-$orderingApiPathToPub = $scriptPath + "\pub\ordering"
-Write-Host "orderingApiPathToPub is $orderingApiPathToPub" -ForegroundColor Yellow
+# *** Ordering paths ***
+$orderingPath = $scriptPath + "\src\Services\Ordering\Ordering.API"
+$orderingPathToProject = $orderingPath + "\Ordering.API.csproj"
+Write-Host "orderingPathToProject is $orderingPathToProject" -ForegroundColor Yellow
+$orderingPathToPub = $orderingPath + "\obj\Docker\publish"
+Write-Host "orderingPathToPub is $orderingPathToPub" -ForegroundColor Yellow
 
-Write-Host "Restore Dependencies just in case as it is needed to run dotnet publish" -ForegroundColor Blue
-dotnet restore $orderingPath
-dotnet build $orderingApiPathToJson
-dotnet publish $orderingApiPathToJson -o $orderingApiPathToPub
-
-#*** Basket service image ***
-$basketPathToJson = $scriptPath + "\src\Services\Basket\Basket.API\project.json"
-Write-Host "basketPathToJson is $basketPathToJson" -ForegroundColor Yellow
-$basketPathToPub = $scriptPath + "\pub\basket"
+# *** Basket paths ***
+$basketPath = $scriptPath + "\src\Services\Basket\Basket.API"
+$basketPathToProject = $basketPath + "\Basket.API.csproj"
+Write-Host "basketPathToProject is $basketPathToProject" -ForegroundColor Yellow
+$basketPathToPub = $basketPath + "\obj\Docker\publish"
 Write-Host "basketPathToPub is $basketPathToPub" -ForegroundColor Yellow
 
-Write-Host "Restore Dependencies just in case as it is needed to run dotnet publish" -ForegroundColor Blue
-dotnet restore $basketPathToJson
-dotnet build $basketPathToJson
-dotnet publish $basketPathToJson -o $basketPathToPub
+
+########################################################################################
+# Delete old eShop dotnet publish bits
+########################################################################################
+Write-Host "Deleting previous dotnet publish bits from all projects" -ForegroundColor Blue
+
+remove-item -path $WebMVCPathToPub -Force -Recurse -ErrorAction SilentlyContinue
+remove-item -path $webSPAPathToPub -Force -Recurse -ErrorAction SilentlyContinue
+remove-item -path $identitySvcPathToPub -Force -Recurse -ErrorAction SilentlyContinue
+remove-item -path $catalogPathToPub -Force -Recurse -ErrorAction SilentlyContinue
+remove-item -path $orderingPathToPub -Force -Recurse -ErrorAction SilentlyContinue
+remove-item -path $basketPathToPub -Force -Recurse -ErrorAction SilentlyContinue
+
+
+
+########################################################################################
+# Building DotNet bits
+########################################################################################
+
+# WebMVC: Build dotnet bits
+Write-Host "WebMVC: Restore Dependencies, dotnet build and dotnet publish" -ForegroundColor Blue
+dotnet restore $WebMVCPathToProject
+dotnet build $WebMVCPathToProject
+dotnet publish $WebMVCPathToProject -o $WebMVCPathToPub
+
+
+# WebSPA: Build dotnet bits
+Write-Host "WebSPA: Installing npm dependencies"
+#TEMP COMMENT---     Start-Process -WorkingDirectory $webSPAPath -NoNewWindow -Wait npm i
+
+Write-Host "WebSPA: Restore Dependencies, dotnet build and dotnet publish" -ForegroundColor Blue
+dotnet restore $webSPAPathToProject
+dotnet build $webSPAPathToProject
+dotnet publish $webSPAPathToProject -o $webSPAPathToPub
+
+
+# Identity Service: Build dotnet bits
+Write-Host "Identity Service: Restore Dependencies, dotnet build and dotnet publish" -ForegroundColor Blue
+dotnet restore $identitySvcToProject
+dotnet build $identitySvcToProject
+dotnet publish $identitySvcToProject -o $identitySvcPathToPub
+
+
+# Catalog Service: Build dotnet bits
+Write-Host "Catalog Service: Restore Dependencies, dotnet build and dotnet publish" -ForegroundColor Blue
+dotnet restore $catalogPathToProject
+dotnet build $catalogPathToProject
+dotnet publish $catalogPathToProject -o $catalogPathToPub
+
+
+# Ordering Service: Build dotnet bits
+Write-Host "Ordering Service: Restore Dependencies, dotnet build and dotnet publish" -ForegroundColor Blue
+dotnet restore $orderingPathToProject
+dotnet build $orderingPathToProject
+dotnet publish $orderingPathToProject -o $orderingPathToPub
+
+
+# Basket Service: Build dotnet bits
+Write-Host "Basket Service: Restore Dependencies, dotnet build and dotnet publish" -ForegroundColor Blue
+dotnet restore $basketPathToProject
+dotnet build $basketPathToProject
+dotnet publish $basketPathToProject -o $basketPathToPub
+
+
+
+########################################################################################
+# Delete old eShop Docker images
+########################################################################################
 
 $imagesToDelete = docker images --filter=reference="eshop/*" -q
 
@@ -92,10 +132,17 @@ Else
     docker rmi $(docker images --filter=reference="eshop/*" -q) -f
 }
 
+
+########################################################################################
+# Build new eShop images
+########################################################################################
+
+# WE DON'T NEED DOCKER BUILD AS WE CAN RUN "DOCKER-COMPOSE BUILD" OR "DOCKER-COMPOSE UP" AND IT WILL BUILD ALL THE IMAGES IN THE .YML FOR US
+
 #*** build docker images ***
-docker build -t eshop/web $webPathToPub
-docker build -t eshop/catalog.api $catalogPathToPub
-docker build -t eshop/ordering.api $orderingApiPathToPub
-docker build -t eshop/basket.api $basketPathToPub
-docker build -t eshop/webspa $webSPAPathToPub
-docker build -t eshop/identity $identitySvcPathToPub
+# docker build -t eshop/web $webPathToPub
+# docker build -t eshop/catalog.api $catalogPathToPub
+# docker build -t eshop/ordering.api $orderingApiPathToPub
+# docker build -t eshop/basket.api $basketPathToPub
+# docker build -t eshop/webspa $webSPAPathToPub
+# docker build -t eshop/identity $identitySvcPathToPub

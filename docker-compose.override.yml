@@ -39,16 +39,16 @@ services:
     ports:
       - "5102:5102"
 
-  eshoponcontainers.webspa:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - CatalogUrl=http://10.0.75.1:5101
-      - OrderingUrl=http://10.0.75.1:5102
-      #- IdentityUrl=http://13.88.8.119:5105             #Remote: VM Needs to have public access at 5105. 
-      - IdentityUrl=http://10.0.75.1:5105              #Local: You need to open your local dev-machine firewall at range 5100-5105.  at range 5100-5105. 
-      - BasketUrl=http://10.0.75.1:5103                
-    ports:
-      - "5104:5104"
+#  eshoponcontainers.webspa:
+#    environment:
+#      - ASPNETCORE_ENVIRONMENT=Development
+#      - CatalogUrl=http://10.0.75.1:5101
+#      - OrderingUrl=http://10.0.75.1:5102
+#      #- IdentityUrl=http://13.88.8.119:5105             #Remote: VM Needs to have public access at 5105. 
+#      - IdentityUrl=http://10.0.75.1:5105              #Local: You need to open your local dev-machine firewall at range 5100-5105.  at range 5100-5105. 
+#      - BasketUrl=http://10.0.75.1:5103                
+#    ports:
+#      - "5104:5104"
 
   webmvc:
     environment:
