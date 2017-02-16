@@ -77,10 +77,21 @@ dotnet restore $basketPathToJson
 dotnet build $basketPathToJson
 dotnet publish $basketPathToJson -o $basketPathToPub
 
-# Delete all eshop containers
-docker rm $(docker images --filter=reference="eshop/*" -q) -f
-# Delete all eshop images
-docker rmi $(docker images --filter=reference="eshop/*" -q)
+$imagesToDelete = docker images --filter=reference="eshop/*" -q
+
+If (-Not $imagesToDelete) {Write-Host "Not deleting eShop images as there are no eShop images in the current local Docker repo."} 
+Else 
+{
+    # Delete all eshop containers
+    Write-Host "Deleting eShop containers in local Docker Host"
+    docker rm $($imagesToDelete) -f
+    #docker rm $(docker images --filter=reference="eshop/*" -q) -f
+    
+    # Delete all eshop images
+    Write-Host "Deleting eShop images in local Docker repo"
+    docker rm $($imagesToDelete) -f
+    #docker rmi $(docker images --filter=reference="eshop/*" -q)
+}
 
 #*** build docker images ***
 docker build -t eshop/web $webPathToPub
