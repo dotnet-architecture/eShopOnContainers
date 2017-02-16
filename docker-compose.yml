@@ -49,6 +49,8 @@ services:
       context: ./src/Web/WebMVC
       dockerfile: Dockerfile
     depends_on:
+      - catalog.api
+      - ordering.api
       - identity.api
       - basket.api
 
