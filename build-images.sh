@@ -21,3 +21,4 @@ docker build -t eshop/ordering.api "$(pwd)/pub/ordering"
 docker build -t eshop/basket.api "$(pwd)/pub/basket"
 docker build -t eshop/webspa "$(pwd)/pub/webSPA"
 docker build -t eshop/identity "$(pwd)/pub/identity"
+
