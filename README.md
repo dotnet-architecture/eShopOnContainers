@@ -145,7 +145,9 @@ You can see the 6 custom containers running the microservices plus the 2 web app
 
 #### IMPORTANT: Open ports in Firewall so Authentication to the STS (Security Token Service container) can be done through the 10.0.75.1 IP which should be available and already setup by Docker
 - You can manually create a rule in your local firewall in your development machine or you can also create that rule by just executing the <b>add-firewall-docker.ps1</b> script in the solution's root. 
-- Basically, you need to open the ports 5100 to 5105 that are used by the solution.
+- Basically, you need to open the ports 5100 to 5105 that are used by the solution by creating an IN-BOUND RULE in your firewall, as shown in the screenshot below (for Windows).
+<img src="img/firewall-rule-for-eshop.png"> 
+
 
 ### Test the applications and microservices
 Once the deploy process of docker-compose finishes you should be able to access the services in the following URLs or connection string, from your dev machine:
