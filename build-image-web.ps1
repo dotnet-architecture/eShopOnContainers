@@ -40,15 +40,17 @@ dotnet build $catalogPathToJson
 dotnet publish $catalogPathToJson -o $catalogPathToPub
 
 #*** Ordering service image ***
-$orderingPathToJson = $scriptPath + "\src\Services\Ordering\Ordering.API\project.json"
-Write-Host "orderingPathToJson is $orderingPathToJson" -ForegroundColor Yellow
-$orderingPathToPub = $scriptPath + "\pub\ordering"
-Write-Host "orderingPathToPub is $orderingPathToPub" -ForegroundColor Yellow
+$orderingPath = $scriptPath + "\src\Services\Ordering"
+Write-Host "orderingPath is $orderingPath" -ForegroundColor Yellow
+$orderingApiPathToJson = $orderingPath + "\Ordering.API\project.json"
+Write-Host "orderingApiPathToJson is $orderingApiPathToJson" -ForegroundColor Yellow
+$orderingApiPathToPub = $scriptPath + "\pub\ordering"
+Write-Host "orderingApiPathToPub is $orderingApiPathToPub" -ForegroundColor Yellow
 
 Write-Host "Restore Dependencies just in case as it is needed to run dotnet publish" -ForegroundColor Blue
-dotnet restore $orderingPathToJson
-dotnet build $orderingPathToJson
-dotnet publish $orderingPathToJson -o $orderingPathToPub
+dotnet restore $orderingPath
+dotnet build $orderingApiPathToJson
+dotnet publish $orderingApiPathToJson -o $orderingApiPathToPub
 
 #*** Basket service image ***
 $basketPathToJson = $scriptPath + "\src\Services\Basket\Basket.API\project.json"
@@ -61,11 +63,10 @@ dotnet restore $basketPathToJson
 dotnet build $basketPathToJson
 dotnet publish $basketPathToJson -o $basketPathToPub
 
-#!/bin/bash
-# Delete all containers
-docker rm $(docker ps -a -q) -f
-# Delete all images
-docker rmi $(docker images -q)
+# Delete all eshop containers
+docker rm $(docker images --filter=reference="eshop/*" -q) -f
+# Delete all eshop images
+docker rmi $(docker images --filter=reference="eshop/*" -q)
 
 #*** build docker images ***
 docker build -t eshop/web $webPathToPub

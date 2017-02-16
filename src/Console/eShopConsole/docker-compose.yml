@@ -1,8 +1,0 @@
-version: '2'
-
-services:
-  eshopconsole:
-    image: user/eshopconsole${TAG}
-    build:
-      context: .
-      dockerfile: Dockerfile

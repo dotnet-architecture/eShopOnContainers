@@ -41,7 +41,20 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
             }
 
             var catalogUrl = $"{_remoteServiceBaseUrl}items{filterQs}?pageIndex={page}&pageSize={take}";
-            var dataString = await _apiClient.GetStringAsync(catalogUrl);
+
+            var dataString = "";
+
+            //
+            // Using HttpClient with Retry and Exponential Backoff
+            //
+            var retry = new RetryWithExponentialBackoff();
+            await retry.RunAsync(async () =>
+            {
+                // work with HttpClient call
+                dataString = await _apiClient.GetStringAsync(catalogUrl);
+            });
+
+            //var dataString = await _apiClient.GetStringAsync(catalogUrl);
             var response = JsonConvert.DeserializeObject<Catalog>(dataString);
 
             return response;
