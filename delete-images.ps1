@@ -26,3 +26,6 @@ Else
 # Delete all images
 # docker rmi $(docker images -q)
 
+#Filter by image name (Has to be complete, cannot be a wildcard)
+#docker ps -q  --filter=ancestor=eshop/identity.api:dev
+
