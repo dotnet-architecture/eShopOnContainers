@@ -97,11 +97,13 @@ If you don't do this, you will get an error when trying to deploy/debug from VS 
 
 <img src="img/docker_settings_shared_drives.png">
 
-#### Bower and Gulp global installation
+#### Node, Bower and Gulp installation
 (These steps about installing bower and gulp might not be needed anymore as these are being triggered from the project.json in the MVC project at the section 'prepublish":'). However, this will need to be migrated to .csproj when migrating to VS 2017. <p>
 Before generating the Docker images, and specifically when generating the web apps binaries with "dotnet publish" from the custom scripts (like when running the build-images.ps1 script from PowerShell or the build-images.sh from bash in a Mac), it needs to have access to the paths where you have installed Bower and Gulp. For that, the recommendation is to install Bower and Gulp with a global installation by running the following commands from command-line or bash:
 - Install Node if you don't have it installed, from here: https://nodejs.org/en/ 
  <img src="img/Node_setup_for_npm.png">
+- After you install Node, you need to align that installed version with the version used by Visual Studio, so you need to make sure that VS2017 is using the same nodejs that you are using from command line.<br>
+**Go to "Tools -> Options -> Project and Solutions -> Web Package Management -> External Web Tools"** and ensure that the nodejs you use from command line is listed before the entry "$(VSINSTALLDIR)\Web\External"
 - Install Bower and Gulp with the following npm commands (npm is installed as part of Node)
 
     `npm install -g bower` 
