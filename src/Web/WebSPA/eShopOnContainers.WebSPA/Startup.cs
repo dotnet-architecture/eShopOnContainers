@@ -57,13 +57,6 @@ namespace eShopConContainers.WebSPA
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-
-                app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
-                {
-                    HotModuleReplacement = true,
-                    ConfigFile = "config/webpack.config.js"
-                });
-
             }
 
             // Configure XSRF middleware, This pattern is for SPA style applications where XSRF token is added on Index page 

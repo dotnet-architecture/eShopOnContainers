@@ -34,14 +34,14 @@ services:
     depends_on:
       - sql.data
 
-#  eshoponcontainers.webspa:
-#    image: eshop/eshoponcontainers.webspa
-#    build:
-#      context: ./src/Web/WebSPA/eShopOnContainers.WebSPA
-#      dockerfile: Dockerfile
-#    depends_on:
-#      - identity.api
-#      - basket.api
+  eshoponcontainers.webspa:
+    image: eshop/eshoponcontainers.webspa
+    build:
+      context: ./src/Web/WebSPA/eShopOnContainers.WebSPA
+      dockerfile: Dockerfile
+    depends_on:
+      - identity.api
+      - basket.api
 
   webmvc:
     image: eshop/webmvc
