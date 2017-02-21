@@ -26,7 +26,7 @@
 
             var response = await _inner.Handle(message);
 
-            _logger.LogInformation($"Succedded executed command {_inner.GetType().FullName}");
+            _logger.LogInformation($"Command executed successfully {_inner.GetType().FullName}");
 
             return response;
         }
