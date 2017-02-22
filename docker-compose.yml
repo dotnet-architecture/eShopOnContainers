@@ -34,8 +34,8 @@ services:
     depends_on:
       - sql.data
 
-  eshoponcontainers.webspa:
-    image: eshop/eshoponcontainers.webspa
+  webspa:
+    image: eshop/webspa
     build:
       context: ./src/Web/WebSPA/eShopOnContainers.WebSPA
       dockerfile: Dockerfile
