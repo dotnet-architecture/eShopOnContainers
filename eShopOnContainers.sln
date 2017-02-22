@@ -49,7 +49,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared Code", "Shared Code"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Targets", "Targets", "{9CC7814B-72A6-465B-A61C-57B512DEE303}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eShopOnContainers.WebSPA", "src\Web\WebSPA\eShopOnContainers.WebSPA\eShopOnContainers.WebSPA.csproj", "{9842DB3A-1391-48C7-A49C-2FABD0A18AC2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebSPA", "src\Web\WebSPA\WebSPA.csproj"", "{9842DB3A-1391-48C7-A49C-2FABD0A18AC2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mobile Apps", "Mobile Apps", "{B7B1D395-4E06-4036-BE86-C216756B9367}"
 EndProject
