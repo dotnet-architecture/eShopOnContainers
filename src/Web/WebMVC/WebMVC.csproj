@@ -14,7 +14,19 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Update="wwwroot\**\*;Views\**\*;Areas\**\Views;appsettings.json;appsettings.override.json;web.config;Dockerfile;docker-compose.yml;.dockerignore">
+    <Content Update="wwwroot\**\*;">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\**\*;">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="appsettings.json;">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="web.config">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update=".dockerignore">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
   </ItemGroup>

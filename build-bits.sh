@@ -1,12 +1,35 @@
 #!/bin/sh
-#dotnet restore
-rm -rf ./pub
-dotnet publish "$(pwd)/src/Web/WebMVC/project.json" -o "$(pwd)/pub/webMVC"
-dotnet publish "$(pwd)/src/Services/Catalog/Catalog.API/project.json" -o "$(pwd)/pub/catalog"
-dotnet publish "$(pwd)/src/Services/Ordering/Ordering.API/project.json" -o "$(pwd)/pub/ordering"
-dotnet publish "$(pwd)/src/Services/Basket/Basket.API/project.json" -o "$(pwd)/pub/basket"
 
-docker build -t eshop/web "$(pwd)/pub/webMVC"
-docker build -t eshop/catalog.api "$(pwd)/pub/catalog"
-docker build -t eshop/ordering.api "$(pwd)/pub/ordering"
-docker build -t eshop/basket.api "$(pwd)/pub/basket"
+projectList=(
+    "src/Services/Catalog/Catalog.API"
+    "src/Services/Basket/Basket.API"
+    "src/Services/Ordering/Ordering.API"
+    "src/Services/Identity/Identity.API"
+    "src/Web/WebMVC"
+    "src/Web/WebSPA/eShopOnContainers.WebSPA"
+)
+
+for project in "${projectList[@]}"
+do
+    echo -e "\e[33mWorking on $(pwd)/$project"
+    echo -e "\e[33m\tRemoving old publish output"
+    pushd $(pwd)/$project
+    rm -rf obj/Docker/publish
+    echo -e "\e[33m\tRestoring project"
+    dotnet restore
+    echo -e "\e[33m\tBuilding and publishing projects"
+    dotnet publish -o obj/Docker/publish
+    popd
+done
+
+# remove old docker images:
+images=$(docker images --filter=reference="eshop/*" -q)
+if [ -n "$images" ]; then
+    docker rm $(docker ps -a -q) -f
+    echo "Deleting eShop images in local Docker repo"
+    echo $images
+    docker rmi $(docker images --filter=reference="eshop/*" -q) -f
+fi
+
+# No need to build the images, docker build or docker compose will
+# do that using the images and containers defined in the docker-compose.yml file.

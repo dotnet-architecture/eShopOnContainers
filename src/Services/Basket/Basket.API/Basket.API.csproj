@@ -13,7 +13,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Update="wwwroot;Views;Areas\**\Views;appsettings.json;web.config;Dockerfile;docker-compose.yml;.dockerignore">
+    <Content Update="web.config">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include=".dockerignore">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
   </ItemGroup>
