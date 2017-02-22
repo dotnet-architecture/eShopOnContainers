@@ -61,15 +61,15 @@ services:
     labels:
       - "com.microsoft.visualstudio.targetoperatingsystem=linux"
 
-  eshoponcontainers.webspa:
-    image: eshop/eshoponcontainers.webspa:dev
+  webspa:
+    image: eshop/webspa:dev
     build:
       args:
         source: ${DOCKER_BUILD_SOURCE}
     environment:
       - DOTNET_USE_POLLING_FILE_WATCHER=1
     volumes:
-      - ./src/Web/WebSPA/eShopOnContainers.WebSPA:/app
+      - ./src/Web/WebSPA:/app
       - ~/.nuget/packages:/root/.nuget/packages:ro
       - ~/clrdbg:/clrdbg:ro
     entrypoint: tail -f /dev/null

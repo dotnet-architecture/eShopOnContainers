@@ -41,7 +41,7 @@ services:
     labels:
       - "com.microsoft.visualstudio.targetoperatingsystem=linux"
 
-  eshoponcontainers.webspa:
+  webspa:
     build:
       args:
         source: ${DOCKER_BUILD_SOURCE}
