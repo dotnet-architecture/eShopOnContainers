@@ -31,12 +31,12 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Address>(ConfigureAddress);
-            modelBuilder.Entity<Buyer>(ConfigureBuyer);
             modelBuilder.Entity<PaymentMethod>(ConfigurePayment);
             modelBuilder.Entity<Order>(ConfigureOrder);
             modelBuilder.Entity<OrderItem>(ConfigureOrderItems);
             modelBuilder.Entity<CardType>(ConfigureCardTypes);
             modelBuilder.Entity<OrderStatus>(ConfigureOrderStatus);
+            modelBuilder.Entity<Buyer>(ConfigureBuyer);
         }
 
         void ConfigureAddress(EntityTypeBuilder<Address> addressConfiguration)
