@@ -1,6 +1,5 @@
-﻿using System.IO;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Hosting;
+using System.IO;
 
 namespace eShopConContainers.WebSPA
 {
@@ -11,7 +10,6 @@ namespace eShopConContainers.WebSPA
             var host = new WebHostBuilder()
                 .UseKestrel()
                 .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseUrls("http://0.0.0.0:5104")
                 .UseIISIntegration()
                 .UseStartup<Startup>()
                 .Build();
