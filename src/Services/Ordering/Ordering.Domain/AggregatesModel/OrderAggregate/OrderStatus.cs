@@ -1,15 +1,14 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate
 {
     using Seedwork;
+    using SeedWork;
     using System;
     using System.Collections.Generic;
     using System.Linq;
 
     public class OrderStatus
-        :Entity
+        : Enumeration
     {
-        public string Name { get; private set; }
-
         public static OrderStatus InProcess = new OrderStatus(1, nameof(InProcess).ToLowerInvariant());
         public static OrderStatus Shipped = new OrderStatus(2, nameof(Shipped).ToLowerInvariant());
         public static OrderStatus Canceled = new OrderStatus(3, nameof(Canceled).ToLowerInvariant());
@@ -19,9 +18,8 @@
         }
 
         public OrderStatus(int id, string name)
+            : base(id, name)
         {
-            Id = id;
-            Name = name;
         }
 
         public static IEnumerable<OrderStatus> List()

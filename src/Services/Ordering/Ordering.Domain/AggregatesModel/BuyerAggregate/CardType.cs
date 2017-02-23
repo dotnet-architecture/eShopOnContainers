@@ -1,26 +1,24 @@
-﻿using Microsoft.eShopOnContainers.Services.Ordering.Domain.Seedwork;
+﻿using Microsoft.eShopOnContainers.Services.Ordering.Domain.SeedWork;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.BuyerAggregate
 {
-    
+
     public class CardType
-        : Entity
+        : Enumeration
     {
         public static CardType Amex = new CardType(1, "Amex");
         public static CardType Visa = new CardType(2, "Visa");
         public static CardType MasterCard = new CardType(3, "MasterCard");
 
-        public string Name { get; private set; }
-
         protected CardType() { }
 
         public CardType(int id, string name)
+            : base(id, name)
         {
-            Id = id;
-            Name = name;
+
         }
 
         public static IEnumerable<CardType> List()
