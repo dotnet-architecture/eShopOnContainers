@@ -6,7 +6,7 @@ projectList=(
     "src/Services/Ordering/Ordering.API"
     "src/Services/Identity/Identity.API"
     "src/Web/WebMVC"
-    "src/Web/WebSPA/eShopOnContainers.WebSPA"
+    "src/Web/WebSPA"
 )
 
 for project in "${projectList[@]}"

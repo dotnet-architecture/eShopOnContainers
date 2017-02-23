@@ -11,8 +11,8 @@ Write-Host "webMVCPathToPub is $webMVCPathToPub" -ForegroundColor Yellow
 
 
 # *** WebSPA paths ***
-$webSPAPath = $scriptPath + "\src\Web\WebSPA\eShopOnContainers.WebSPA"
-$webSPAPathToProject = $webSPAPath + "\eShopOnContainers.WebSPA.csproj"
+$webSPAPath = $scriptPath + "\src\Web\WebSPA"
+$webSPAPathToProject = $webSPAPath + "\WebSPA.csproj"
 Write-Host "webSPAPathToProject is $webSPAPathToProject" -ForegroundColor Yellow
 $webSPAPathToPub = $webSPAPath + "\obj\Docker\publish"
 Write-Host "webSPAPathToPub is $webSPAPathToPub" -ForegroundColor Yellow
