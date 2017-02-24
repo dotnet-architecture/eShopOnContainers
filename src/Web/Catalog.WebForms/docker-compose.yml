@@ -1,0 +1,8 @@
+version: '2.1'
+
+services:
+  catalog.webforms:
+    image: catalog.webforms
+    build:
+      context: .\Catalog.WebForms
+      dockerfile: Dockerfile
