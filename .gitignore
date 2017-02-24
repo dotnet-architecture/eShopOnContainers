@@ -262,5 +262,6 @@ docker-compose.vs.release.yml
 docker-compose.yml
 docker-compose-external.override.yml
 docker-compose-external.yml
+docker-compose.ci.build.yml
 #Same with Dockerfiles
 /**/Dockerfile
