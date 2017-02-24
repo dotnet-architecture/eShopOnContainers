@@ -1,4 +1,4 @@
-﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="Catalog.WebForms.SiteMaster" %>
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="Microsoft.eShopOnContainers.Catalog.WebForms.SiteMaster" %>
 
 <!DOCTYPE html>
 

@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace Catalog.WebForms
+namespace Microsoft.eShopOnContainers.Catalog.WebForms
 {
     public partial class _Default : Page
     {
