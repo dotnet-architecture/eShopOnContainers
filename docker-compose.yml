@@ -1,4 +1,4 @@
-version: '2'
+version: '2.1'
 
 services:
   basket.api:
@@ -55,9 +55,17 @@ services:
       - basket.api
 
   sql.data:
-    image: microsoft/mssql-server-linux
+    image: microsoft/mssql-server-windows
 
   basket.data:
-    image: redis
+    image: eshop/redis
+    build:
+      context: ./extradf
+      dockerfile: Dockerfile  
     ports:
-      - "6379:6379"
+        - "6379:6379"
+networks:
+  default:
+    external:
+      name: nat
+

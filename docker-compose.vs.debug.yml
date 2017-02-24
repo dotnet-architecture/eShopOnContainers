@@ -1,4 +1,4 @@
-version: '2'
+version: '2.1'
 
 services:
   basket.api:
@@ -14,7 +14,7 @@ services:
       - ~/clrdbg:/clrdbg:ro
     entrypoint: tail -f /dev/null
     labels:
-      - "com.microsoft.visualstudio.targetoperatingsystem=linux"
+      - "com.microsoft.visualstudio.targetoperatingsystem=windows"
 
   catalog.api:
     image: eshop/catalog.api:dev
@@ -29,7 +29,7 @@ services:
       - ~/clrdbg:/clrdbg:ro
     entrypoint: tail -f /dev/null
     labels:
-      - "com.microsoft.visualstudio.targetoperatingsystem=linux"
+      - "com.microsoft.visualstudio.targetoperatingsystem=windows"
 
   identity.api:
     image: eshop/identity.api:dev
@@ -44,7 +44,7 @@ services:
       - ~/clrdbg:/clrdbg:ro
     entrypoint: tail -f /dev/null
     labels:
-      - "com.microsoft.visualstudio.targetoperatingsystem=linux"
+      - "com.microsoft.visualstudio.targetoperatingsystem=windows"
 
   ordering.api:
     image: eshop/ordering.api:dev
@@ -59,7 +59,7 @@ services:
       - ~/clrdbg:/clrdbg:ro
     entrypoint: tail -f /dev/null
     labels:
-      - "com.microsoft.visualstudio.targetoperatingsystem=linux"
+      - "com.microsoft.visualstudio.targetoperatingsystem=windows"
 
   webspa:
     image: eshop/webspa:dev
@@ -74,7 +74,7 @@ services:
       - ~/clrdbg:/clrdbg:ro
     entrypoint: tail -f /dev/null
     labels:
-      - "com.microsoft.visualstudio.targetoperatingsystem=linux"
+      - "com.microsoft.visualstudio.targetoperatingsystem=windows"
 
   webmvc:
     image: eshop/webmvc:dev
@@ -89,4 +89,4 @@ services:
       - ~/clrdbg:/clrdbg:ro
     entrypoint: tail -f /dev/null
     labels:
-      - "com.microsoft.visualstudio.targetoperatingsystem=linux"
+      - "com.microsoft.visualstudio.targetoperatingsystem=windows"

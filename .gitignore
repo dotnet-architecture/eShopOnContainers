@@ -254,3 +254,13 @@ pub/
 /src/Web/WebMVC/Properties/PublishProfiles/eShopOnContainersWebMVC2016 - Web Deploy-publish.ps1
 /src/Web/WebMVC/Properties/PublishProfiles/publish-module.psm1
 /src/Services/Identity/eShopOnContainers.Identity/Properties/launchSettings.json
+
+#docker-compose files are copied from nanowin or linux folders, so we need to ignore them
+docker-compose.override.yml
+docker-compose.vs.debug.yml
+docker-compose.vs.release.yml
+docker-compose.yml
+docker-compose-external.override.yml
+docker-compose-external.yml
+#Same with Dockerfiles
+/**/Dockerfile
