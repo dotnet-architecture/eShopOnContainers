@@ -45,7 +45,8 @@
             services.AddMvc(options =>
             {
                 options.Filters.Add(typeof(HttpGlobalExceptionFilter));
-            }).AddControllersAsServices();  //Controllers are also injected thru DI
+            }).AddControllersAsServices();  //Injecting Controllers themselves thru DI
+                                            //For further info see: http://docs.autofac.org/en/latest/integration/aspnetcore.html#controllers-as-services
 
             services.AddEntityFrameworkSqlServer()
                     .AddDbContext<OrderingContext>(options =>
