@@ -3,12 +3,12 @@ Sample reference containerized application, cross-platform and microservices arc
 Powered by Microsoft
 
 #Overview
-This sample runs a microservices oriented application and a .net core Mvc application that consumes this services. You can find more information about how to set up docker in your machine in the global directory solution.
+This sample runs a microservices oriented application and an ASP.NET Core MVC application that consumes these services. You can find more information about how to set up docker in your machine in the global directory solution.
 
 #Deploy
-In the global directory you will find the scripts needed to run and deploy the demo into your local docker infraestructure.
+In the global directory you will find the scripts needed to run and deploy the demo into your local docker infrastructure.
 
-- <a href='build-image-services-catalog.ps1'>build-image-services-catalog.ps1</a>  <b>Build .net applications and docker images</b>: This power shell script that you will find in the <u>root directory of the solution</u> is the responsible of building .net applications and package in a pub folder and use docker commands to build the images needed to run the previously packaged .net applications.
+- <a href='build-image-services-catalog.ps1'>build-image-services-catalog.ps1</a>  <b>Build .net applications and docker images</b>: This PowerShell script that you will find in the <u>root directory of the solution</u> is  responsible for building .NET applications and package in a pub folder and use docker commands to build the images needed to run the previously packaged .NET applications.
 
 - <b>Compose containers in your docker local VM</b>: Finally you have to open your favourite command tool pointing to the <u>root directory of this project</u> where docker-compose.yml file is located and run the command  `docker-compose up`
 
