@@ -22,5 +22,11 @@
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="1.0.0-msbuild3-final" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\" />
+    <Folder Include="Views\Catalog\" />
+    <Folder Include="wwwroot\css\catalog\" />
+    <Folder Include="wwwroot\fonts\" />
+  </ItemGroup>
 
 </Project>
