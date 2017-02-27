@@ -13,6 +13,7 @@ namespace eShopWeb
         {
             var host = new WebHostBuilder()
                 .UseKestrel()
+                .UseUrls("http://0.0.0.0:5106")
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseIISIntegration()
                 .UseStartup<Startup>()

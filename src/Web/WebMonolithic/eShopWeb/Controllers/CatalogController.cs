@@ -7,6 +7,8 @@ using eShopWeb.Models.CatalogViewModels;
 using eShopWeb.Models;
 using eShopWeb.Models.Pagination;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -14,6 +16,14 @@ namespace eShopWeb.Controllers
 {
     public class CatalogController : Controller
     {
+        private readonly IHostingEnvironment _env;
+
+        public CatalogController(IHostingEnvironment env)
+        {
+            _env = env;            
+        }   
+
+
         // GET: /<controller>/
         public IActionResult Index(int? BrandFilterApplied, int? TypesFilterApplied, int? page)
         {
@@ -41,6 +51,18 @@ namespace eShopWeb.Controllers
             vm.PaginationInfo.Previous = (vm.PaginationInfo.ActualPage == 0) ? "is-disabled" : "";
 
             return View(vm);
+        }
+
+        [HttpGet("{id}")]
+        [Route("[controller]/pic/{id}")]
+        // GET: /<controller>/pic/{id}
+        public IActionResult GetImage(int id)
+        {
+            var contentRoot = _env.ContentRootPath + "//Pics";
+            var path = Path.Combine(contentRoot, id + ".png");
+            Byte[] b = System.IO.File.ReadAllBytes(path);
+            return File(b, "image/png");
+
         }
 
 
@@ -73,18 +95,18 @@ namespace eShopWeb.Controllers
         {
             return new List<CatalogItem>()
             {
-                new CatalogItem() { CatalogTypeId=2,CatalogBrandId=2, Description = ".NET Bot Black Sweatshirt", Name = ".NET Bot Black Sweatshirt", Price = 19.5M, PictureUri = "http://externalcatalogbaseurltobereplaced/api/v1/pic/1" },
-                new CatalogItem() { CatalogTypeId=1,CatalogBrandId=2, Description = ".NET Black & White Mug", Name = ".NET Black & White Mug", Price= 8.50M, PictureUri = "http://externalcatalogbaseurltobereplaced/api/v1/pic/2" },
-                new CatalogItem() { CatalogTypeId=2,CatalogBrandId=5, Description = "Prism White T-Shirt", Name = "Prism White T-Shirt", Price = 12, PictureUri = "http://externalcatalogbaseurltobereplaced/api/v1/pic/3" },
-                new CatalogItem() { CatalogTypeId=2,CatalogBrandId=2, Description = ".NET Foundation Sweatshirt", Name = ".NET Foundation Sweatshirt", Price = 12, PictureUri = "http://externalcatalogbaseurltobereplaced/api/v1/pic/4" },
-                new CatalogItem() { CatalogTypeId=3,CatalogBrandId=5, Description = "Roslyn Red Sheet", Name = "Roslyn Red Sheet", Price = 8.5M, PictureUri = "http://externalcatalogbaseurltobereplaced/api/v1/pic/5" },
-                new CatalogItem() { CatalogTypeId=2,CatalogBrandId=2, Description = ".NET Blue Sweatshirt", Name = ".NET Blue Sweatshirt", Price = 12, PictureUri = "http://externalcatalogbaseurltobereplaced/api/v1/pic/6" },
-                new CatalogItem() { CatalogTypeId=2,CatalogBrandId=5, Description = "Roslyn Red T-Shirt", Name = "Roslyn Red T-Shirt", Price = 12, PictureUri = "http://externalcatalogbaseurltobereplaced/api/v1/pic/7"  },
-                new CatalogItem() { CatalogTypeId=2,CatalogBrandId=5, Description = "Kudu Purple Sweatshirt", Name = "Kudu Purple Sweatshirt", Price = 8.5M, PictureUri = "http://externalcatalogbaseurltobereplaced/api/v1/pic/8" },
-                new CatalogItem() { CatalogTypeId=1,CatalogBrandId=5, Description = "Cup<T> White Mug", Name = "Cup<T> White Mug", Price = 12, PictureUri = "http://externalcatalogbaseurltobereplaced/api/v1/pic/9" },
-                new CatalogItem() { CatalogTypeId=3,CatalogBrandId=2, Description = ".NET Foundation Sheet", Name = ".NET Foundation Sheet", Price = 12, PictureUri = "http://externalcatalogbaseurltobereplaced/api/v1/pic/10" },
-                new CatalogItem() { CatalogTypeId=3,CatalogBrandId=2, Description = "Cup<T> Sheet", Name = "Cup<T> Sheet", Price = 8.5M, PictureUri = "http://externalcatalogbaseurltobereplaced/api/v1/pic/11" },
-                new CatalogItem() { CatalogTypeId=2,CatalogBrandId=5, Description = "Prism White TShirt", Name = "Prism White TShirt", Price = 12, PictureUri = "http://externalcatalogbaseurltobereplaced/api/v1/pic/12" }
+                new CatalogItem() { CatalogTypeId=2,CatalogBrandId=2, Description = ".NET Bot Black Sweatshirt", Name = ".NET Bot Black Sweatshirt", Price = 19.5M, PictureUri = "http://localhost:5106/catalog/pic/1" },
+                new CatalogItem() { CatalogTypeId=1,CatalogBrandId=2, Description = ".NET Black & White Mug", Name = ".NET Black & White Mug", Price= 8.50M, PictureUri = "http://localhost:5106/catalog/pic/2" },
+                new CatalogItem() { CatalogTypeId=2,CatalogBrandId=5, Description = "Prism White T-Shirt", Name = "Prism White T-Shirt", Price = 12, PictureUri = "http://localhost:5106/catalog/pic/3" },
+                new CatalogItem() { CatalogTypeId=2,CatalogBrandId=2, Description = ".NET Foundation Sweatshirt", Name = ".NET Foundation Sweatshirt", Price = 12, PictureUri = "http://localhost:5106/catalog/pic/4" },
+                new CatalogItem() { CatalogTypeId=3,CatalogBrandId=5, Description = "Roslyn Red Sheet", Name = "Roslyn Red Sheet", Price = 8.5M, PictureUri = "http://localhost:5106/catalog/pic/5" },
+                new CatalogItem() { CatalogTypeId=2,CatalogBrandId=2, Description = ".NET Blue Sweatshirt", Name = ".NET Blue Sweatshirt", Price = 12, PictureUri = "http://localhost:5106/catalog/pic/6" },
+                new CatalogItem() { CatalogTypeId=2,CatalogBrandId=5, Description = "Roslyn Red T-Shirt", Name = "Roslyn Red T-Shirt", Price = 12, PictureUri = "http://localhost:5106/catalog/pic/7"  },
+                new CatalogItem() { CatalogTypeId=2,CatalogBrandId=5, Description = "Kudu Purple Sweatshirt", Name = "Kudu Purple Sweatshirt", Price = 8.5M, PictureUri = "http://localhost:5106/catalog/pic/8" },
+                new CatalogItem() { CatalogTypeId=1,CatalogBrandId=5, Description = "Cup<T> White Mug", Name = "Cup<T> White Mug", Price = 12, PictureUri = "http://localhost:5106/catalog/pic/9" },
+                new CatalogItem() { CatalogTypeId=3,CatalogBrandId=2, Description = ".NET Foundation Sheet", Name = ".NET Foundation Sheet", Price = 12, PictureUri = "http://localhost:5106/catalog/pic/10" },
+                new CatalogItem() { CatalogTypeId=3,CatalogBrandId=2, Description = "Cup<T> Sheet", Name = "Cup<T> Sheet", Price = 8.5M, PictureUri = "http://localhost:5106/catalog/pic/11" },
+                new CatalogItem() { CatalogTypeId=2,CatalogBrandId=5, Description = "Prism White TShirt", Name = "Prism White TShirt", Price = 12, PictureUri = "http://localhost:5106/catalog/pic/12" }
             };
         }
     }

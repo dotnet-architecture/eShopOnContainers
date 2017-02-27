@@ -7,6 +7,36 @@
   <PropertyGroup>
     <PackageTargetFallback>$(PackageTargetFallback);portable-net45+win8+wp8+wpa81;</PackageTargetFallback>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Pics\1.png" />
+    <None Remove="Pics\10.png" />
+    <None Remove="Pics\11.png" />
+    <None Remove="Pics\12.png" />
+    <None Remove="Pics\2.png" />
+    <None Remove="Pics\3.png" />
+    <None Remove="Pics\4.png" />
+    <None Remove="Pics\5.png" />
+    <None Remove="Pics\6.png" />
+    <None Remove="Pics\7.png" />
+    <None Remove="Pics\8.png" />
+    <None Remove="Pics\9.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Pics\1.png" />
+    <Content Include="Pics\10.png" />
+    <Content Include="Pics\11.png" />
+    <Content Include="Pics\12.png" />
+    <Content Include="Pics\2.png" />
+    <Content Include="Pics\3.png" />
+    <Content Include="Pics\4.png" />
+    <Content Include="Pics\5.png" />
+    <Content Include="Pics\6.png" />
+    <Content Include="Pics\7.png" />
+    <Content Include="Pics\8.png" />
+    <Content Include="Pics\9.png" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore" Version="1.0.3" />
