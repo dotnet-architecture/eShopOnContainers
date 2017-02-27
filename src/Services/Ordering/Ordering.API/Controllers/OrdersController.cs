@@ -30,13 +30,6 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateOrder([FromBody]CreateOrderCommand createOrderCommand)
         {
-            if (createOrderCommand.CardTypeId == 0)
-            {
-                createOrderCommand.CardTypeId = 1;
-            }
-
-            createOrderCommand.BuyerIdentityGuid = _identityService.GetUserIdentity();
-
             var result = await _mediator.SendAsync(createOrderCommand);
             if (result)
             {

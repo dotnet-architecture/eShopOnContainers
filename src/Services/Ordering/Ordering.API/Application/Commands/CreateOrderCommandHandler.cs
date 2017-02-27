@@ -3,6 +3,7 @@
     using Domain.AggregatesModel.BuyerAggregate;
     using Domain.AggregatesModel.OrderAggregate;
     using MediatR;
+    using Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure.Services;
     using System;
     using System.Threading.Tasks;
 
@@ -11,12 +12,14 @@
     {
         private readonly IBuyerRepository<Buyer> _buyerRepository;
         private readonly IOrderRepository<Order> _orderRepository;
+        private readonly IIdentityService _identityService;
 
         // Using DI to inject infrastructure persistence Repositories
-        public CreateOrderCommandHandler(IBuyerRepository<Buyer> buyerRepository, IOrderRepository<Order> orderRepository)
+        public CreateOrderCommandHandler(IBuyerRepository<Buyer> buyerRepository, IOrderRepository<Order> orderRepository, IIdentityService identityService)
         {
             _buyerRepository = buyerRepository ?? throw new ArgumentNullException(nameof(buyerRepository));
             _orderRepository = orderRepository ?? throw new ArgumentNullException(nameof(orderRepository));
+            _identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
         }
 
         public async Task<bool> Handle(CreateOrderCommand message)
@@ -26,14 +29,17 @@
             // methods and constructor so validations, invariants and business logic 
             // make sure that consistency is preserved across the whole aggregate
 
-            var buyer = await _buyerRepository.FindAsync(message.BuyerIdentityGuid);
+            var cardTypeId = message.CardTypeId != 0 ? message.CardTypeId : 1;
+
+            var buyerGuid = _identityService.GetUserIdentity();
+            var buyer = await _buyerRepository.FindAsync(buyerGuid);
 
             if (buyer == null)
             {
-                buyer = new Buyer(message.BuyerIdentityGuid);
+                buyer = new Buyer(buyerGuid);
             }
 
-            var payment = buyer.AddPaymentMethod(message.CardTypeId,
+            var payment = buyer.AddPaymentMethod(cardTypeId,
                 $"Payment Method on {DateTime.UtcNow}",
                 message.CardNumber,
                 message.CardSecurityNumber,
