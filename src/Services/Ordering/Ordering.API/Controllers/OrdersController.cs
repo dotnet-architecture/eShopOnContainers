@@ -20,24 +20,10 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Controllers
 
         public OrdersController(IMediator mediator, IOrderQueries orderQueries, IIdentityService identityService)
         {
-            if (mediator == null)
-            {
-                throw new ArgumentNullException(nameof(mediator));
-            }
 
-            if (orderQueries == null)
-            {
-                throw new ArgumentNullException(nameof(orderQueries));
-            }
-
-            if (identityService == null)
-            {
-                throw new ArgumentException(nameof(identityService));
-            }
-
-            _mediator = mediator;
-            _orderQueries = orderQueries;
-            _identityService = identityService;
+            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+            _orderQueries = orderQueries ?? throw new ArgumentNullException(nameof(orderQueries));
+            _identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
         }
 
         [Route("new")]

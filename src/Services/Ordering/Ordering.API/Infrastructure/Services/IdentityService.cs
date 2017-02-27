@@ -13,12 +13,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure.Servi
 
         public IdentityService(IHttpContextAccessor context)
         {
-            if (context == null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
-
-            _context = context;
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         public string GetUserIdentity()

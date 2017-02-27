@@ -22,8 +22,7 @@ namespace Identity.API.Services
 
         async public Task GetProfileDataAsync(ProfileDataRequestContext context)
         {
-            var subject = context.Subject;
-            if (subject == null) throw new ArgumentNullException(nameof(context.Subject));
+            var subject = context.Subject ?? throw new ArgumentNullException(nameof(context.Subject));
 
             var subjectId = subject.Claims.Where(x => x.Type == "sub").FirstOrDefault().Value;
 
@@ -37,8 +36,7 @@ namespace Identity.API.Services
 
         async public Task IsActiveAsync(IsActiveContext context)
         {
-            var subject = context.Subject;
-            if (subject == null) throw new ArgumentNullException(nameof(context.Subject));
+            var subject = context.Subject ?? throw new ArgumentNullException(nameof(context.Subject));
 
             var subjectId = subject.Claims.Where(x => x.Type == "sub").FirstOrDefault().Value;
             var user = await _userManager.FindByIdAsync(subjectId);

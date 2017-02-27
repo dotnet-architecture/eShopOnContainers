@@ -15,7 +15,7 @@
 
         public OrderQueries(string constr)
         {
-            _connectionString = constr;
+            _connectionString = !string.IsNullOrWhiteSpace(constr) ? constr : throw new ArgumentNullException(nameof(constr));
         }
 
 

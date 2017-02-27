@@ -15,18 +15,8 @@
         // Using DI to inject infrastructure persistence Repositories
         public CreateOrderCommandHandler(IBuyerRepository buyerRepository, IOrderRepository orderRepository)
         {
-            if (buyerRepository == null)
-            {
-                throw new ArgumentNullException(nameof(buyerRepository));
-            }
-
-            if (orderRepository == null)
-            {
-                throw new ArgumentNullException(nameof(orderRepository));
-            }
-
-            _buyerRepository = buyerRepository;
-            _orderRepository = orderRepository;
+            _buyerRepository = buyerRepository ?? throw new ArgumentNullException(nameof(buyerRepository));
+            _orderRepository = orderRepository ?? throw new ArgumentNullException(nameof(orderRepository));
         }
 
         public async Task<bool> Handle(CreateOrderCommand message)

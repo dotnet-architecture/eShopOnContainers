@@ -21,20 +21,10 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.B
 
         public PaymentMethod(int cardTypeId, string alias, string cardNumber, string securityNumber, string cardHolderName, DateTime expiration)
         {
-            if (String.IsNullOrWhiteSpace(cardNumber))
-            {
-                throw new ArgumentException(nameof(cardNumber));
-            }
 
-            if (String.IsNullOrWhiteSpace(securityNumber))
-            {
-                throw new ArgumentException(nameof(securityNumber));
-            }
-
-            if (String.IsNullOrWhiteSpace(cardHolderName))
-            {
-                throw new ArgumentException(nameof(cardHolderName));
-            }
+            _cardNumber = !string.IsNullOrWhiteSpace(cardNumber) ? cardNumber : throw new ArgumentException(nameof(cardNumber));
+            _securityNumber = !string.IsNullOrWhiteSpace(securityNumber) ? securityNumber : throw new ArgumentException(nameof(securityNumber));
+            _cardHolderName = !string.IsNullOrWhiteSpace(cardHolderName) ? cardHolderName : throw new ArgumentException(nameof(cardHolderName));
 
             if (expiration < DateTime.UtcNow)
             {
@@ -42,9 +32,6 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.B
             }
 
             _alias = alias;
-            _cardNumber = cardNumber;
-            _securityNumber = securityNumber;
-            _cardHolderName = cardHolderName;
             _expiration = expiration;
             _cardTypeId = cardTypeId;
         }

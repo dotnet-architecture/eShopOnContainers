@@ -21,12 +21,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.B
 
         public Buyer(string identity) : this()
         {
-            if (String.IsNullOrWhiteSpace(identity))
-            {
-                throw new ArgumentNullException(nameof(identity));
-            }
-
-            IdentityGuid = identity;
+            IdentityGuid = !string.IsNullOrWhiteSpace(identity) ? identity : throw new ArgumentNullException(nameof(identity));
 
         }
 
