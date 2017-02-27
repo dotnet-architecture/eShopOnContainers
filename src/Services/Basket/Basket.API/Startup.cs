@@ -37,9 +37,9 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             services.AddMvc();
             services.Configure<BasketSettings>(Configuration);
 
-            //By connection here we are making sure that our service
+            //By connecting here we are making sure that our service
             //cannot start until redis is ready. This might slow down startup,
-            //but given that it is there is a delay on resolving the ip address
+            //but given that there is a delay on resolving the ip address
             //and then creating the connection it seems reasonable to move
             //that cost to startup instead of having the first request pay the
             //penalty.

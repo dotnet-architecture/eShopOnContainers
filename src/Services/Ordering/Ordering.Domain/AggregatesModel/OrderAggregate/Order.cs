@@ -7,7 +7,7 @@ using System.Linq;
 namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate
 {
     public class Order
-        : Entity
+        : Entity, IAggregateRoot
     {
         // DDD Patterns comment
         // Using private fields, allowed since EF Core 1.1, is a much better encapsulation

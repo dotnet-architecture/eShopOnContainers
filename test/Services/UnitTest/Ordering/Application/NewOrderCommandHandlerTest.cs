@@ -11,14 +11,14 @@ namespace UnitTest.Ordering.Application
 {
     public class NewOrderRequestHandlerTest
     {
-        private readonly Mock<IBuyerRepository> _buyerRepositoryMock;
-        private readonly Mock<IOrderRepository> _orderRepositoryMock;
+        private readonly Mock<IBuyerRepository<Buyer>> _buyerRepositoryMock;
+        private readonly Mock<IOrderRepository<Order>> _orderRepositoryMock;
 
         public NewOrderRequestHandlerTest()
         {
             
-            _buyerRepositoryMock = new Mock<IBuyerRepository>();
-            _orderRepositoryMock = new Mock<IOrderRepository>();
+            _buyerRepositoryMock = new Mock<IBuyerRepository<Buyer>>();
+            _orderRepositoryMock = new Mock<IOrderRepository<Order>>();
         }
 
         [Fact]
