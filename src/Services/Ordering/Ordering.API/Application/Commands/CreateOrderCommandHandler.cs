@@ -9,11 +9,11 @@
     public class CreateOrderCommandHandler
         : IAsyncRequestHandler<CreateOrderCommand, bool>
     {
-        private readonly IBuyerRepository _buyerRepository;
-        private readonly IOrderRepository _orderRepository;
+        private readonly IBuyerRepository<Buyer> _buyerRepository;
+        private readonly IOrderRepository<Order> _orderRepository;
 
         // Using DI to inject infrastructure persistence Repositories
-        public CreateOrderCommandHandler(IBuyerRepository buyerRepository, IOrderRepository orderRepository)
+        public CreateOrderCommandHandler(IBuyerRepository<Buyer> buyerRepository, IOrderRepository<Order> orderRepository)
         {
             if (buyerRepository == null)
             {

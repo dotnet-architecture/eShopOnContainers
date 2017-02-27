@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Repositories
 {
     public class BuyerRepository
-        : IBuyerRepository
+        : IBuyerRepository<Buyer>
     {
         private readonly OrderingContext _context;
 
