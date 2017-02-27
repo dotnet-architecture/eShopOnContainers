@@ -27,13 +27,12 @@ namespace eShopWeb.Controllers
         // GET: /<controller>/
         public IActionResult Index(int? BrandFilterApplied, int? TypesFilterApplied, int? page)
         {
-            var itemsPage = 10;
-            //var catalog = await _catalogSvc.GetCatalogItems(page ?? 0, itemsPage, BrandFilterApplied, TypesFilterApplied);
-
-            var catalog = new List<CatalogItem>();
+            var itemsPage = 10;            
+            var catalog = this.GetCatalogItems(page ?? 0, itemsPage, BrandFilterApplied, TypesFilterApplied);
+           
             var vm = new IndexViewModel()
             {
-                CatalogItems = GetPreconfiguredItems(),
+                CatalogItems = catalog,
                 Brands = GetPreconfiguredCatalogBrands(),
                 Types = GetPreconfiguredCatalogTypes(),
                 BrandFilterApplied = BrandFilterApplied ?? 0,
@@ -65,17 +64,26 @@ namespace eShopWeb.Controllers
 
         }
 
+        private IList<CatalogItem> GetCatalogItems(int page, int itemsPage, int? brandFilterApplied, int? typesFilterApplied)
+        {
+            return GetPreconfiguredItems()
+                .Where(item => brandFilterApplied == null || item.CatalogBrandId == brandFilterApplied)
+                .Where(item => typesFilterApplied == null || item.CatalogTypeId == typesFilterApplied)
+                .Skip(page * itemsPage)
+                .Take(itemsPage)
+                .ToList();
+        }
 
         static IEnumerable<SelectListItem> GetPreconfiguredCatalogBrands()
         {
             return new List<SelectListItem>()
             {
                 new SelectListItem() { Value = null, Text="All", Selected= true},
-                new SelectListItem() { Value = null, Text = "Azure", Selected= true},
-                new SelectListItem() { Value = null, Text = ".NET", Selected= true },
-                new SelectListItem() { Value = null, Text = "Visual Studio", Selected= true },
-                new SelectListItem() { Value = null, Text = "SQL Server", Selected= true },
-                new SelectListItem() { Value = null, Text = "Other", Selected= true }
+                new SelectListItem() { Value = "1", Text = "Azure", Selected= false},
+                new SelectListItem() { Value = "2", Text = ".NET", Selected= false },
+                new SelectListItem() { Value = "3", Text = "Visual Studio", Selected= false },
+                new SelectListItem() { Value = "4", Text = "SQL Server", Selected= false },
+                new SelectListItem() { Value = "5", Text = "Other", Selected= false }
             };
         }
 
@@ -84,14 +92,14 @@ namespace eShopWeb.Controllers
             return new List<SelectListItem>()
             {
                 new SelectListItem() { Value = null, Text="All", Selected= true},
-                new SelectListItem() { Value = null, Text = "Mug", Selected= true },
-                new SelectListItem() { Value = null, Text = "T-Shirt", Selected= true },
-                new SelectListItem() { Value = null, Text = "Sheet", Selected= true },
-                new SelectListItem() { Value = null, Text = "USB Memory Stick", Selected= true }
+                new SelectListItem() { Value = "1", Text = "Mug", Selected= false },
+                new SelectListItem() { Value = "2", Text = "T-Shirt", Selected= false },
+                new SelectListItem() { Value = "3", Text = "Sheet", Selected= false },
+                new SelectListItem() { Value = "4", Text = "USB Memory Stick", Selected= false }
             };
         }
 
-        static IEnumerable<CatalogItem> GetPreconfiguredItems()
+        static IList<CatalogItem> GetPreconfiguredItems()
         {
             return new List<CatalogItem>()
             {
