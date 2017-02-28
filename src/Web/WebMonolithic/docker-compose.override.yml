@@ -1,0 +1,15 @@
+version: '2'
+
+services:
+  eshopweb:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "5106:5106"
+
+  sql.data:
+    environment:
+      - SA_PASSWORD=Pass@word
+      - ACCEPT_EULA=Y
+    ports:
+      - "5433:1433"
