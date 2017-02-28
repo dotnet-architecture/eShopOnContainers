@@ -1,36 +1,48 @@
 ﻿using System;
 using MediatR;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands
 {
-    
-
+    [DataContract]
     public class CreateOrderCommand
         :IAsyncRequest<bool>
     {
+        [DataMember]
         private readonly List<OrderItemDTO> _orderItems;
 
+        [DataMember]
         public string City { get; private set; }
 
+        [DataMember]
         public string Street { get; private set; }
 
+        [DataMember]
         public string State { get; private set; }
 
+        [DataMember]
         public string Country { get; private set; }
 
+        [DataMember]
         public string ZipCode { get; private set; }
 
+        [DataMember]
         public string CardNumber { get; private set; }
 
+        [DataMember]
         public string CardHolderName { get; private set; }
 
+        [DataMember]
         public DateTime CardExpiration { get; private set; }
 
+        [DataMember]
         public string CardSecurityNumber { get; private set; }
 
+        [DataMember]
         public int CardTypeId { get; private set; }
 
+        [DataMember]
         public IEnumerable<OrderItemDTO> OrderItems => _orderItems;
 
         public void AddOrderItem(OrderItemDTO item)
