@@ -133,6 +133,11 @@
     <Content Include="Contact.aspx" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\fake_product_01.png" />
+    <Content Include="Content\fake_product_02.png" />
+    <Content Include="Content\fake_product_03.png" />
+    <Content Include="Content\fake_product_04.png" />
+    <Content Include="Content\fake_product_05.png" />
     <Content Include="Content\Site.css" />
     <Content Include="Default.aspx" />
     <Content Include="favicon.ico" />
