@@ -4,6 +4,7 @@ services:
   eshopweb:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionString=Server=sql.data;Database=Microsoft.eShopOnContainers.Services.CatalogDb;User Id=sa;Password=Pass@word
     ports:
       - "5106:5106"
 

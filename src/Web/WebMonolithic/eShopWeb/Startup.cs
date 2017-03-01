@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using eShopWeb.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -27,7 +26,24 @@ namespace eShopWeb
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // Add framework services.
+            services.AddDbContext<CatalogContext>(c =>
+            {
+                try
+                {
+                    var text = Configuration["ConnectionString"];
+                    c.UseSqlServer(Configuration["ConnectionString"]);
+                    c.ConfigureWarnings(wb =>
+                    {
+                        //By default, in this application, we don't want to have client evaluations
+                        wb.Log(RelationalEventId.QueryClientEvaluationWarning);
+                    });
+                }
+                catch (System.Exception ex )
+                {
+                    var message = ex.Message;
+                }                
+            });
+            
             services.AddMvc();
         }
 
@@ -55,6 +71,10 @@ namespace eShopWeb
                     name: "default",
                     template: "{controller=Catalog}/{action=Index}/{id?}");
             });
+
+            //Seed Data
+            CatalogContextSeed.SeedAsync(app, loggerFactory)
+            .Wait();
         }
     }
 }
