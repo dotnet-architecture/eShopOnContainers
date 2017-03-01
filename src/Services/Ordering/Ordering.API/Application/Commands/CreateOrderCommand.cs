@@ -1,38 +1,57 @@
 ﻿using System;
 using MediatR;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands
 {
-    
+    // DDD and CQRS patterns comment: Note that it is recommened to implement immutable Commands
+    // In this case, its immutability is achieved by having all the setters as private
+    // plus only being able to update the data just once, when creating the object through its constructor.
+    // References on Immutable Commands:  
+    // http://cqrs.nu/Faq
+    // https://docs.spine3.org/motivation/immutability.html 
+    // http://blog.gauffin.org/2012/06/griffin-container-introducing-command-support/
+    // https://msdn.microsoft.com/en-us/library/bb383979.aspx
 
+    [DataContract]
     public class CreateOrderCommand
         :IAsyncRequest<bool>
     {
+        [DataMember]
         private readonly List<OrderItemDTO> _orderItems;
 
-        public string City { get; set; }
+        [DataMember]
+        public string City { get; private set; }
 
-        public string Street { get; set; }
+        [DataMember]
+        public string Street { get; private set; }
 
-        public string State { get; set; }
+        [DataMember]
+        public string State { get; private set; }
 
-        public string Country { get; set; }
+        [DataMember]
+        public string Country { get; private set; }
 
-        public string ZipCode { get; set; }
+        [DataMember]
+        public string ZipCode { get; private set; }
 
-        public string CardNumber { get; set; }
+        [DataMember]
+        public string CardNumber { get; private set; }
 
-        public string CardHolderName { get; set; }
+        [DataMember]
+        public string CardHolderName { get; private set; }
 
-        public DateTime CardExpiration { get; set; }
+        [DataMember]
+        public DateTime CardExpiration { get; private set; }
 
-        public string CardSecurityNumber { get; set; }
+        [DataMember]
+        public string CardSecurityNumber { get; private set; }
 
-        public int CardTypeId { get; set; }
+        [DataMember]
+        public int CardTypeId { get; private set; }
 
-        public string BuyerIdentityGuid { get; set; }
-
+        [DataMember]
         public IEnumerable<OrderItemDTO> OrderItems => _orderItems;
 
         public void AddOrderItem(OrderItemDTO item)
@@ -43,6 +62,21 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands
         public CreateOrderCommand()
         {
             _orderItems = new List<OrderItemDTO>();
+        }
+
+        public CreateOrderCommand(string city, string street, string state, string country, string zipcode, 
+            string cardNumber, string cardHolderName, DateTime cardExpiration,
+            string cardSecurityNumber, int cardTypeId) : this()
+        {
+            City = city;
+            Street = street;
+            State = state;
+            Country = country;
+            ZipCode = zipcode;
+            CardNumber = cardNumber;
+            CardHolderName = cardHolderName;
+            CardSecurityNumber = cardSecurityNumber;
+            CardTypeId = cardTypeId;
         }
 
 

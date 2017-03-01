@@ -65,19 +65,18 @@
 
         string BuildOrder()
         {
-            var order = new CreateOrderCommand()
-            {
-                CardExpiration = DateTime.UtcNow.AddYears(1),
-                CardNumber = "5145-555-5555",
-                CardHolderName = "Jhon Senna",
-                CardSecurityNumber = "232",
-                CardTypeId = 1,
-                City = "Redmon",
-                Country = "USA",
-                State = "WA",
-                Street = "One way",
-                ZipCode = "zipcode",
-            };
+            var order = new CreateOrderCommand(
+                cardExpiration: DateTime.UtcNow.AddYears(1),
+                cardNumber: "5145-555-5555",
+                cardHolderName: "Jhon Senna",
+                cardSecurityNumber: "232",
+                cardTypeId: 1,
+                city: "Redmon",
+                country: "USA",
+                state: "WA",
+                street: "One way",
+                zipcode: "zipcode"
+            );
 
             order.AddOrderItem(new OrderItemDTO()
             {
@@ -92,19 +91,18 @@
         }
         string BuildOrderWithInvalidExperationTime()
         {
-            var order = new CreateOrderCommand()
-            {
-                CardExpiration = DateTime.UtcNow.AddYears(-1),
-                CardNumber = "5145-555-5555",
-                CardHolderName = "Jhon Senna",
-                CardSecurityNumber = "232",
-                CardTypeId = 1,
-                City = "Redmon",
-                Country = "USA",
-                State = "WA",
-                Street = "One way",
-                ZipCode = "zipcode"
-            };
+            var order = new CreateOrderCommand(
+                cardExpiration: DateTime.UtcNow.AddYears(-1),
+                cardNumber: "5145-555-5555",
+                cardHolderName: "Jhon Senna",
+                cardSecurityNumber: "232",
+                cardTypeId: 1,
+                city: "Redmon",
+                country: "USA",
+                state: "WA",
+                street: "One way",
+                zipcode: "zipcode"
+            );
 
             return JsonConvert.SerializeObject(order);
         }
