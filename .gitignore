@@ -255,13 +255,5 @@ pub/
 /src/Web/WebMVC/Properties/PublishProfiles/publish-module.psm1
 /src/Services/Identity/eShopOnContainers.Identity/Properties/launchSettings.json
 
-#docker-compose files are copied from nanowin or linux folders, so we need to ignore them
-docker-compose.override.yml
-docker-compose.vs.debug.yml
-docker-compose.vs.release.yml
-docker-compose.yml
-docker-compose-external.override.yml
-docker-compose-external.yml
-docker-compose.ci.build.yml
-#Same with Dockerfiles
-/**/Dockerfile
+#Ignore marker-file used to know which docker files we have.
+.eshopdocker_*

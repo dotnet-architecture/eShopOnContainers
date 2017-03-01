@@ -5,6 +5,7 @@ Param(
 )
 
 $scriptPath = Split-Path $script:MyInvocation.MyCommand.Path
+$Platform = $Platform.ToLowerInvariant()
  
 $SourcePerPlatformDockerFilesPath = "$ScriptPath\_docker\$Platform\extradf"
 $TargetPerPlatformDockerFilesPath = "$ScriptPath\extradf"
@@ -41,5 +42,8 @@ Copy-Item "$ScriptPath\src\Web\WebSPA\Dockerfile.$Platform"  "$ScriptPath\src\We
 
 Write-Host "Replacing Docker-compose"
 Copy-Item "$ScriptPath\_docker\$Platform\*.yml"  "$ScriptPath\" -Force
+
+Remove-Item "$ScriptPath\.eshopdocker_*" -Force -ErrorAction SilentlyContinue
+New-Item "$ScriptPath\.eshopdocker_$Platform" -ItemType File | Out-Null
 
 Write-Host "Done. Docker files are set for platform: $Platform"
