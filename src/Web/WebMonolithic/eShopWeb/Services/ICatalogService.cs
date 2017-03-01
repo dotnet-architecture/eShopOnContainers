@@ -9,8 +9,8 @@ namespace eShopWeb.Services
 {
     public interface ICatalogService
     {
-        IList<CatalogItem> GetCatalogItems(int page, int itemsPage, int? brandFilterApplied, int? typesFilterApplied);
-        IEnumerable<SelectListItem> GetBrands();
-        IEnumerable<SelectListItem> GetTypes();
+        Task<Catalog> GetCatalogItems(int pageIndex, int itemsPage, int? brandID, int? typeId);
+        Task<IEnumerable<SelectListItem>> GetBrands();
+        Task<IEnumerable<SelectListItem>> GetTypes();
     }
 }

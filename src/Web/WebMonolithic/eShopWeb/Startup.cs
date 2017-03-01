@@ -1,4 +1,5 @@
 ﻿using eShopWeb.Infrastructure;
+using eShopWeb.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -43,7 +44,8 @@ namespace eShopWeb
                     var message = ex.Message;
                 }                
             });
-            
+
+            services.AddTransient<ICatalogService, CatalogService>();
             services.AddMvc();
         }
 

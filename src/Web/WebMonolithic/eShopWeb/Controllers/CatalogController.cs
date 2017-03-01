@@ -9,6 +9,7 @@ using eShopWeb.Models.Pagination;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
+using eShopWeb.Services;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -17,24 +18,26 @@ namespace eShopWeb.Controllers
     public class CatalogController : Controller
     {
         private readonly IHostingEnvironment _env;
+        private readonly ICatalogService _catalogSvc;
 
-        public CatalogController(IHostingEnvironment env)
+        public CatalogController(IHostingEnvironment env, ICatalogService catalogSvc)
         {
-            _env = env;            
+            _env = env;
+            _catalogSvc = catalogSvc;
         }   
 
 
         // GET: /<controller>/
-        public IActionResult Index(int? BrandFilterApplied, int? TypesFilterApplied, int? page)
+        public async Task<IActionResult> Index(int? BrandFilterApplied, int? TypesFilterApplied, int? page)
         {
-            var itemsPage = 10;            
-            var catalog = this.GetCatalogItems(page ?? 0, itemsPage, BrandFilterApplied, TypesFilterApplied);
-           
+            var itemsPage = 10;           
+            var catalog = await _catalogSvc.GetCatalogItems(page ?? 0, itemsPage, BrandFilterApplied, TypesFilterApplied);
+
             var vm = new IndexViewModel()
             {
-                CatalogItems = catalog,
-                Brands = GetPreconfiguredCatalogBrands(),
-                Types = GetPreconfiguredCatalogTypes(),
+                CatalogItems = catalog.Data,
+                Brands = await _catalogSvc.GetBrands(),
+                Types = await _catalogSvc.GetTypes(),
                 BrandFilterApplied = BrandFilterApplied ?? 0,
                 TypesFilterApplied = TypesFilterApplied ?? 0,
                 PaginationInfo = new PaginationInfo()
@@ -62,60 +65,6 @@ namespace eShopWeb.Controllers
             Byte[] b = System.IO.File.ReadAllBytes(path);
             return File(b, "image/png");
 
-        }
-
-        private IList<CatalogItem> GetCatalogItems(int page, int itemsPage, int? brandFilterApplied, int? typesFilterApplied)
-        {
-            return GetPreconfiguredItems()
-                .Where(item => brandFilterApplied == null || item.CatalogBrandId == brandFilterApplied)
-                .Where(item => typesFilterApplied == null || item.CatalogTypeId == typesFilterApplied)
-                .Skip(page * itemsPage)
-                .Take(itemsPage)
-                .ToList();
-        }
-
-        static IEnumerable<SelectListItem> GetPreconfiguredCatalogBrands()
-        {
-            return new List<SelectListItem>()
-            {
-                new SelectListItem() { Value = null, Text="All", Selected= true},
-                new SelectListItem() { Value = "1", Text = "Azure", Selected= false},
-                new SelectListItem() { Value = "2", Text = ".NET", Selected= false },
-                new SelectListItem() { Value = "3", Text = "Visual Studio", Selected= false },
-                new SelectListItem() { Value = "4", Text = "SQL Server", Selected= false },
-                new SelectListItem() { Value = "5", Text = "Other", Selected= false }
-            };
-        }
-
-        static IEnumerable<SelectListItem> GetPreconfiguredCatalogTypes()
-        {
-            return new List<SelectListItem>()
-            {
-                new SelectListItem() { Value = null, Text="All", Selected= true},
-                new SelectListItem() { Value = "1", Text = "Mug", Selected= false },
-                new SelectListItem() { Value = "2", Text = "T-Shirt", Selected= false },
-                new SelectListItem() { Value = "3", Text = "Sheet", Selected= false },
-                new SelectListItem() { Value = "4", Text = "USB Memory Stick", Selected= false }
-            };
-        }
-
-        static IList<CatalogItem> GetPreconfiguredItems()
-        {
-            return new List<CatalogItem>()
-            {
-                new CatalogItem() { CatalogTypeId=2,CatalogBrandId=2, Description = ".NET Bot Black Sweatshirt", Name = ".NET Bot Black Sweatshirt", Price = 19.5M, PictureUri = "http://localhost:5106/catalog/pic/1" },
-                new CatalogItem() { CatalogTypeId=1,CatalogBrandId=2, Description = ".NET Black & White Mug", Name = ".NET Black & White Mug", Price= 8.50M, PictureUri = "http://localhost:5106/catalog/pic/2" },
-                new CatalogItem() { CatalogTypeId=2,CatalogBrandId=5, Description = "Prism White T-Shirt", Name = "Prism White T-Shirt", Price = 12, PictureUri = "http://localhost:5106/catalog/pic/3" },
-                new CatalogItem() { CatalogTypeId=2,CatalogBrandId=2, Description = ".NET Foundation Sweatshirt", Name = ".NET Foundation Sweatshirt", Price = 12, PictureUri = "http://localhost:5106/catalog/pic/4" },
-                new CatalogItem() { CatalogTypeId=3,CatalogBrandId=5, Description = "Roslyn Red Sheet", Name = "Roslyn Red Sheet", Price = 8.5M, PictureUri = "http://localhost:5106/catalog/pic/5" },
-                new CatalogItem() { CatalogTypeId=2,CatalogBrandId=2, Description = ".NET Blue Sweatshirt", Name = ".NET Blue Sweatshirt", Price = 12, PictureUri = "http://localhost:5106/catalog/pic/6" },
-                new CatalogItem() { CatalogTypeId=2,CatalogBrandId=5, Description = "Roslyn Red T-Shirt", Name = "Roslyn Red T-Shirt", Price = 12, PictureUri = "http://localhost:5106/catalog/pic/7"  },
-                new CatalogItem() { CatalogTypeId=2,CatalogBrandId=5, Description = "Kudu Purple Sweatshirt", Name = "Kudu Purple Sweatshirt", Price = 8.5M, PictureUri = "http://localhost:5106/catalog/pic/8" },
-                new CatalogItem() { CatalogTypeId=1,CatalogBrandId=5, Description = "Cup<T> White Mug", Name = "Cup<T> White Mug", Price = 12, PictureUri = "http://localhost:5106/catalog/pic/9" },
-                new CatalogItem() { CatalogTypeId=3,CatalogBrandId=2, Description = ".NET Foundation Sheet", Name = ".NET Foundation Sheet", Price = 12, PictureUri = "http://localhost:5106/catalog/pic/10" },
-                new CatalogItem() { CatalogTypeId=3,CatalogBrandId=2, Description = "Cup<T> Sheet", Name = "Cup<T> Sheet", Price = 8.5M, PictureUri = "http://localhost:5106/catalog/pic/11" },
-                new CatalogItem() { CatalogTypeId=2,CatalogBrandId=5, Description = "Prism White TShirt", Name = "Prism White TShirt", Price = 12, PictureUri = "http://localhost:5106/catalog/pic/12" }
-            };
-        }
+        }        
     }
 }
