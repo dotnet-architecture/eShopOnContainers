@@ -46,6 +46,7 @@ namespace eShopWeb
             });
 
             services.AddTransient<ICatalogService, CatalogService>();
+            services.Configure<CatalogSettings>(Configuration);
             services.AddMvc();
         }
 

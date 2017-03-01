@@ -6,15 +6,20 @@ using eShopWeb.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using eShopWeb.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Configuration;
 
 namespace eShopWeb.Services
 {
     public class CatalogService : ICatalogService
     {
         private readonly CatalogContext _context;
-        public CatalogService(CatalogContext context)
+        private readonly IOptionsSnapshot<CatalogSettings> _settings;
+        
+        public CatalogService(CatalogContext context, IOptionsSnapshot<CatalogSettings> settings)
         {
             _context = context;
+            _settings = settings;            
         }
 
         public async Task<Catalog> GetCatalogItems(int pageIndex, int itemsPage, int? brandId, int? typeId)
@@ -38,6 +43,8 @@ namespace eShopWeb.Services
                 .Skip(itemsPage * pageIndex)
                 .Take(itemsPage)
                 .ToListAsync();
+
+            itemsOnPage = ComposePicUri(itemsOnPage);
 
             return new Catalog() { Data = itemsOnPage, PageIndex = pageIndex, Count = (int)totalItems };           
         }
@@ -64,6 +71,17 @@ namespace eShopWeb.Services
             {
                 items.Add(new SelectListItem() { Value = type.Id.ToString(), Text = type.Type });
             }
+
+            return items;
+        }
+
+        private List<CatalogItem> ComposePicUri(List<CatalogItem> items)
+        {
+            var baseUri = _settings.Value.CatalogBaseUrl;                      
+            items.ForEach(x =>
+            {
+                x.PictureUri = x.PictureUri.Replace("http://catalogbaseurltobereplaced", baseUri);
+            });
 
             return items;
         }
