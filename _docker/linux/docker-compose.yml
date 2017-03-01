@@ -1,0 +1,63 @@
+version: '2'
+
+services:
+  basket.api:
+    image: eshop/basket.api
+    build:
+      context: ./src/Services/Basket/Basket.API
+      dockerfile: Dockerfile
+    depends_on:
+      - basket.data
+      - identity.api
+
+  catalog.api:
+    image: eshop/catalog.api
+    build:
+      context: ./src/Services/Catalog/Catalog.API
+      dockerfile: Dockerfile
+    depends_on:
+      - sql.data
+
+  identity.api:
+    image: eshop/identity.api
+    build:
+      context: ./src/Services/Identity/Identity.API
+      dockerfile: Dockerfile
+    depends_on:
+      - sql.data
+
+  ordering.api:
+    image: eshop/ordering.api
+    build:
+      context: ./src/Services/Ordering/Ordering.API
+      dockerfile: Dockerfile
+    depends_on:
+      - sql.data
+
+  webspa:
+    image: eshop/webspa
+    build:
+      context: ./src/Web/WebSPA
+      dockerfile: Dockerfile
+    depends_on:
+      - identity.api
+      - basket.api
+
+  webmvc:
+    image: eshop/webmvc
+    build:
+      context: ./src/Web/WebMVC
+      dockerfile: Dockerfile
+    depends_on:
+      - catalog.api
+      - ordering.api
+      - identity.api
+      - basket.api
+
+  sql.data:
+    image: microsoft/mssql-server-linux
+
+  basket.data:
+    image: redis
+    ports:
+      - "6379:6379"
