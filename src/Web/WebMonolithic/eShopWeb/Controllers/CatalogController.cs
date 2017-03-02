@@ -65,6 +65,11 @@ namespace eShopWeb.Controllers
             Byte[] b = System.IO.File.ReadAllBytes(path);
             return File(b, "image/png");
 
-        }        
+        }
+        
+        public IActionResult Error()
+        {
+            return View();
+        }
     }
 }

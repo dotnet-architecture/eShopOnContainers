@@ -63,7 +63,7 @@ namespace eShopWeb
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/Catalog/Error");
             }
 
             app.UseStaticFiles();
