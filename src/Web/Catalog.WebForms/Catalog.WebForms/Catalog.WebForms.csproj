@@ -218,11 +218,14 @@
     </Compile>
     <Compile Include="Models\CatalogBrand.cs" />
     <Compile Include="Models\CatalogItem.cs" />
+    <Compile Include="Models\CatalogRoot.cs" />
     <Compile Include="Models\CatalogType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\CatalogMockService.cs" />
+    <Compile Include="Services\CatalogService.cs" />
     <Compile Include="Services\Common.cs" />
     <Compile Include="Services\ICatalogService.cs" />
+    <Compile Include="Services\IRouteProvider.cs" />
     <Compile Include="Site.Master.cs">
       <DependentUpon>Site.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

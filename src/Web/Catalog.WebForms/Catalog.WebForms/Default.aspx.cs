@@ -20,12 +20,12 @@ namespace Microsoft.eShopOnContainers.Catalog.WebForms
 
         protected override void OnLoad(EventArgs e)
         {
-            RegisterAsyncTask(new PageAsyncTask(LoadCatalogData));
+            RegisterAsyncTask(new PageAsyncTask(LoadCatalogDataAsync));
 
             base.OnLoad(e);
         }
 
-        private async Task LoadCatalogData()
+        private async Task LoadCatalogDataAsync()
         {
             var container = Application.Get("container") as IContainer;
             using (scope = container?.BeginLifetimeScope())

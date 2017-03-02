@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Configuration;
 using System.Web.Optimization;
 using System.Web.Routing;
 using System.Web.Security;
@@ -20,10 +21,19 @@ namespace Microsoft.eShopOnContainers.Catalog.WebForms
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
-            // TODO:  CONTENT on this
             // Register Containers:
+            var settings= WebConfigurationManager.AppSettings;
+            var useFake = settings["usefake"];
+            bool fake = useFake == "true";
             var builder = new ContainerBuilder();
-            builder.RegisterType<CatalogMockService>().As<ICatalogService>();
+            if (fake)
+            {
+                builder.RegisterType<CatalogMockService>()
+                    .As<ICatalogService>();
+            } else {
+                builder.RegisterType<CatalogMockService>()
+                    .As<ICatalogService>();
+            }
             var container = builder.Build();
             Application.Add("container", container);
         }
