@@ -24,7 +24,7 @@
 
 <div class="container">
 
-    @if (Model.CatalogItems.Count() > 0)
+    @if (Model.CatalogItems.Any())
     {
         @Html.Partial("_pagination", Model.PaginationInfo)
 
