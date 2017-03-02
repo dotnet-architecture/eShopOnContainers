@@ -19,8 +19,7 @@
                 var context = (CatalogContext)applicationBuilder
                     .ApplicationServices.GetService(typeof(CatalogContext));
 
-                //context.Database.Migrate();
-                context.Database.EnsureCreated();
+                context.Database.Migrate();                
 
                 if (!context.CatalogBrands.Any())
                 {
