@@ -6,6 +6,7 @@
 
   <PropertyGroup>
     <PackageTargetFallback>$(PackageTargetFallback);portable-net45+win8+wp8+wpa81;</PackageTargetFallback>
+    <RuntimeFrameworkVersion>1.1.0</RuntimeFrameworkVersion>
     <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
 
