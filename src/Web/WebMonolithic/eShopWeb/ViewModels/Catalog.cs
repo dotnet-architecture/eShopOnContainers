@@ -1,9 +1,7 @@
-﻿using System;
+﻿using eShopWeb.Models;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace eShopWeb.Models
+namespace eShopWeb.ViewModels
 {
     public class Catalog
     {

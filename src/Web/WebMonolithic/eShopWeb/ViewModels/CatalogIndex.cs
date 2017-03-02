@@ -1,13 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using eShopWeb.Models.Pagination;
-using System;
+﻿using eShopWeb.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace eShopWeb.Models.CatalogViewModels
+namespace eShopWeb.ViewModels
 {
-    public class IndexViewModel
+    public class CatalogIndex
     {
         public IEnumerable<CatalogItem> CatalogItems { get; set; }
         public IEnumerable<SelectListItem> Brands { get; set; }

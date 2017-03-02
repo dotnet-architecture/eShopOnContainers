@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using eShopWeb.Models.CatalogViewModels;
-using eShopWeb.Models;
-using eShopWeb.Models.Pagination;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using eShopWeb.Services;
+using eShopWeb.ViewModels;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using System;
 using System.IO;
-using eShopWeb.Services;
+using System.Threading.Tasks;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -33,7 +28,7 @@ namespace eShopWeb.Controllers
             var itemsPage = 10;           
             var catalog = await _catalogSvc.GetCatalogItems(page ?? 0, itemsPage, BrandFilterApplied, TypesFilterApplied);
 
-            var vm = new IndexViewModel()
+            var vm = new CatalogIndex()
             {
                 CatalogItems = catalog.Data,
                 Brands = await _catalogSvc.GetBrands(),
