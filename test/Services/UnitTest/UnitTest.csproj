@@ -13,12 +13,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Services\Catalog\Catalog.API\Catalog.API.csproj" />
     <ProjectReference Include="..\..\..\src\Services\Ordering\Ordering.API\Ordering.API.csproj" />
     <ProjectReference Include="..\..\..\src\Services\Ordering\Ordering.Infrastructure\Ordering.Infrastructure.csproj" />
     <ProjectReference Include="..\..\..\src\Services\Ordering\Ordering.Domain\Ordering.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.DotNet.InternalAbstractions" Version="1.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0-preview-20170106-08" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.2.0-beta5-build1225" />
     <PackageReference Include="MediatR" Version="2.1.0" />

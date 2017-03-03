@@ -77,6 +77,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands
             CardHolderName = cardHolderName;
             CardSecurityNumber = cardSecurityNumber;
             CardTypeId = cardTypeId;
+            CardExpiration = cardExpiration;
         }
 
 
