@@ -64,7 +64,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands
             _orderItems = new List<OrderItemDTO>();
         }
 
-        public CreateOrderCommand(string city, string street, string state, string country, string zipcode, 
+        public CreateOrderCommand(string city, string street, string state, string country, string zipcode,
             string cardNumber, string cardHolderName, DateTime cardExpiration,
             string cardSecurityNumber, int cardTypeId) : this()
         {

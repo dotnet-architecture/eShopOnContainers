@@ -51,10 +51,11 @@
     <PackageReference Include="System.Reflection" Version="4.3.0" />
     <PackageReference Include="IdentityServer4.AccessTokenValidation" Version="1.0.1-rc3" />
     <PackageReference Include="Dapper" Version="1.50.2" />
+    <PackageReference Include="System.ValueTuple" Version="4.3.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="1.1.0-preview4-final" />
+    <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="1.0.0" />
   </ItemGroup>
 
   <ItemGroup>

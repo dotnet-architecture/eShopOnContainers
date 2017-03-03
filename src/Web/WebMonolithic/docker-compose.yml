@@ -1,0 +1,12 @@
+version: '2'
+
+services:
+  eshopweb:
+    image: eshop/web
+    build:
+      context: ./eShopWeb
+      dockerfile: Dockerfile
+    depends_on:
+      - sql.data
+  sql.data:
+    image: microsoft/mssql-server-linux

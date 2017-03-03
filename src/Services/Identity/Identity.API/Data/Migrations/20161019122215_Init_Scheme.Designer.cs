@@ -124,7 +124,7 @@ namespace WebMVC.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("Microsoft.eShopOnContainers.WebMVC.Models.ApplicationUser", b =>
+            modelBuilder.Entity("Microsoft.eShopOnContainers.WebMVC.ViewModels.ApplicationUser", b =>
                 {
                     b.Property<string>("Id");
 
@@ -211,7 +211,7 @@ namespace WebMVC.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Microsoft.eShopOnContainers.WebMVC.Models.ApplicationUser")
+                    b.HasOne("Microsoft.eShopOnContainers.WebMVC.ViewModels.ApplicationUser")
                         .WithMany("Claims")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -219,7 +219,7 @@ namespace WebMVC.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Microsoft.eShopOnContainers.WebMVC.Models.ApplicationUser")
+                    b.HasOne("Microsoft.eShopOnContainers.WebMVC.ViewModels.ApplicationUser")
                         .WithMany("Logins")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -232,7 +232,7 @@ namespace WebMVC.Migrations
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Microsoft.eShopOnContainers.WebMVC.Models.ApplicationUser")
+                    b.HasOne("Microsoft.eShopOnContainers.WebMVC.ViewModels.ApplicationUser")
                         .WithMany("Roles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);

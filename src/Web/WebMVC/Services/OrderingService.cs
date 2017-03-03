@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.eShopOnContainers.WebMVC.Models;
+using Microsoft.eShopOnContainers.WebMVC.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using System.Net.Http;
@@ -79,14 +79,14 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
 
             _apiClient = new HttpClient();
             _apiClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
-
+            _apiClient.DefaultRequestHeaders.Add("x-requestid", order.RequestId.ToString());
             var ordersUrl = $"{_remoteServiceBaseUrl}/new";
             order.CardTypeId = 1;
             order.CardExpirationApiFormat();
             SetFakeIdToProducts(order);
             
             StringContent content = new StringContent(JsonConvert.SerializeObject(order), System.Text.Encoding.UTF8, "application/json");
-            
+           
             var response = await _apiClient.PostAsync(ordersUrl, content);
 
             if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)

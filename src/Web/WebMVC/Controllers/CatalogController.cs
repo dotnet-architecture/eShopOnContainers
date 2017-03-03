@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.eShopOnContainers.WebMVC.Models.Pagination;
+using Microsoft.eShopOnContainers.WebMVC.ViewModels.Pagination;
 using Microsoft.eShopOnContainers.WebMVC.Services;
-using Microsoft.eShopOnContainers.WebMVC.Models.CatalogViewModels;
+using Microsoft.eShopOnContainers.WebMVC.ViewModels.CatalogViewModels;
 
 
 namespace Microsoft.eShopOnContainers.WebMVC.Controllers
@@ -33,7 +33,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
                 PaginationInfo = new PaginationInfo()
                 {
                     ActualPage = page ?? 0,
-                    ItemsPerPage = (catalog.Count < itemsPage) ? catalog.Count : itemsPage,
+                    ItemsPerPage = catalog.Data.Count,
                     TotalItems = catalog.Count, 
                     TotalPages = int.Parse(Math.Ceiling(((decimal)catalog.Count / itemsPage)).ToString())
                 }

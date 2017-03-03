@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.eShopOnContainers.WebMVC.Models;
+using Microsoft.eShopOnContainers.WebMVC.ViewModels;
 using Microsoft.eShopOnContainers.WebMVC.Services;
 using System;
 using System.Collections.Generic;
