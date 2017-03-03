@@ -14,22 +14,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\css\*.min.css" CopyToPublishDirectory="PreserveNewest" />
-    <None Include="wwwroot\fonts\**\*" CopyToPublishDirectory="PreserveNewest" />
-    <None Include="wwwroot\images\**\*" CopyToPublishDirectory="PreserveNewest" />
-    <None Include="wwwroot\js\*.min.js" CopyToPublishDirectory="PreserveNewest" />
-    <None Include="wwwroot\*.*" CopyToPublishDirectory="PreserveNewest" />
-    <None Include="wwwroot\lib\bootstrap\dist\**\*.min.*" CopyToPublishDirectory="PreserveNewest" />
-    <None Include="wwwroot\lib\jquery*\**\*.min.*" CopyToPublishDirectory="PreserveNewest" />
-    <None Include="wwwroot\lib\tether\dist\**\*" CopyToPublishDirectory="PreserveNewest" />
-    <Content Update="wwwroot\**\*;" CopyToPublishDirectory="Never" />
-    <Content Update="Views\**\*;" CopyToPublishDirectory="PreserveNewest" />
-    <Content Update="appsettings.json;" CopyToPublishDirectory="PreserveNewest" />
-    <Content Update="web.config" CopyToPublishDirectory="PreserveNewest" />
-    <Content Update=".dockerignore" CopyToPublishDirectory="PreserveNewest" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="1.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="1.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="1.1.1" />
@@ -57,7 +41,7 @@
 
   <Target Name="PrepublishScript" BeforeTargets="PrepareForPublish">
     <Exec Command="bower install" />
-    <Exec Command="dotnet bundle" />
+    <Exec Command="dotnet bundle" Condition="'$(ASPNETCORE_ENVIRONMENT)'!='Development'" />
   </Target>
 
   <ItemGroup>
