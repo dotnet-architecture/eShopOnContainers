@@ -26,7 +26,7 @@ namespace Microsoft.eShopWeb.Controllers
         public async Task<IActionResult> Index(int? BrandFilterApplied, int? TypesFilterApplied, int? page)
         {
             var itemsPage = 10;           
-            var catalog = await _catalogSvc.GetCatalogItems(page ?? 0, itemsPage, BrandFilterApplied, TypesFilterApplied);
+            var catalog = await _catalogSvc.GetCatalogItems(page ?? 0, itemsPage, BrandFilterApplied, TypesFilterApplied);        
 
             var vm = new CatalogIndex()
             {
@@ -38,7 +38,7 @@ namespace Microsoft.eShopWeb.Controllers
                 PaginationInfo = new PaginationInfo()
                 {
                     ActualPage = page ?? 0,
-                    ItemsPerPage = (catalog.Count < itemsPage) ? catalog.Count : itemsPage,
+                    ItemsPerPage = catalog.Data.Count,
                     TotalItems = catalog.Count,
                     TotalPages = int.Parse(Math.Ceiling(((decimal)catalog.Count / itemsPage)).ToString())
                 }
