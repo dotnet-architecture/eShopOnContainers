@@ -36,6 +36,13 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Controllers
                 var requestCreateOrder = new IdentifiedCommand<CreateOrderCommand, bool>(createOrderCommand, guid);
                 result = await _mediator.SendAsync(requestCreateOrder);
             }
+            else
+            {
+                // If no x-requestid header is found we process the order anyway. This is just temporary to not break existing clients
+                // that aren't still updated. When all clients were updated this could be removed.
+                result = await _mediator.SendAsync(createOrderCommand);
+            }
+
             if (result)
             {
                 return Ok();
