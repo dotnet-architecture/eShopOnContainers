@@ -33,7 +33,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
                 PaginationInfo = new PaginationInfo()
                 {
                     ActualPage = page ?? 0,
-                    ItemsPerPage = (catalog.Count < itemsPage) ? catalog.Count : itemsPage,
+                    ItemsPerPage = catalog.Data.Count,
                     TotalItems = catalog.Count, 
                     TotalPages = int.Parse(Math.Ceiling(((decimal)catalog.Count / itemsPage)).ToString())
                 }
