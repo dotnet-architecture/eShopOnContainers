@@ -14,18 +14,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Update="wwwroot;">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Update="Views\**\*;">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Update="web.config;">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include=".dockerignore">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
+      <None Include="wwwroot\css\*.min.css" CopyToPublishDirectory="PreserveNewest" />
+      <None Include="wwwroot\fonts\**\*" CopyToPublishDirectory="PreserveNewest" />
+      <None Include="wwwroot\images\**\*" CopyToPublishDirectory="PreserveNewest" />
+      <None Include="wwwroot\js\*.min.js" CopyToPublishDirectory="PreserveNewest" />
+      <None Include="wwwroot\*.*" CopyToPublishDirectory="PreserveNewest" />
+      <None Include="wwwroot\lib\bootstrap\dist\**\*.min.*" CopyToPublishDirectory="PreserveNewest" />
+      <None Include="wwwroot\lib\jquery*\**\*.min.*" CopyToPublishDirectory="PreserveNewest" />
+      <Content Update="wwwroot\**\*;" CopyToPublishDirectory="Never" />
+      <Content Update="Views\**\*;" CopyToPublishDirectory="PreserveNewest" />
+      <Content Update="web.config" CopyToPublishDirectory="PreserveNewest" />
+      <Content Update=".dockerignore" CopyToPublishDirectory="PreserveNewest" />
   </ItemGroup>
 
   <ItemGroup>
@@ -66,7 +65,7 @@
   </Target>
 
   <ItemGroup>
-    <DotNetCliToolReference Include="BundlerMinifier.Core" Version="2.2.301" />
+    <DotNetCliToolReference Include="BundlerMinifier.Core" Version="2.4.337" />
     <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="1.0.0-msbuild3-final" />
     <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="1.0.0-msbuild3-final" />
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="1.0.0-msbuild3-final" />
@@ -76,6 +75,10 @@
     <None Update="Dockerfile">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\css\" />
   </ItemGroup>
 
 </Project>

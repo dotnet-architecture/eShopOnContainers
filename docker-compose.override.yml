@@ -5,6 +5,7 @@ services:
   basket.api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:5103
       - ConnectionString=basket.data
       #- identityUrl=http://13.88.8.119:5105             #Remote: VM Needs to have public access at 5105. 
       - identityUrl=http://identity.api:5105              #Local: You need to open your local dev-machine firewall at range 5100-5105.  at range 5100-5105. 
@@ -14,6 +15,7 @@ services:
   catalog.api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:5101
       - ConnectionString=Server=sql.data;Database=Microsoft.eShopOnContainers.Services.CatalogDb;User Id=sa;Password=Pass@word
       #- ExternalCatalogBaseUrl=http://13.88.8.119:5101   #Remote: VM Needs to have public access at 5105. 
       - ExternalCatalogBaseUrl=http://localhost:5101    #Local: You need to open your local dev-machine firewall at range 5100-5105.  at range 5100-5105.
@@ -23,6 +25,7 @@ services:
   identity.api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:5105
       - SpaClient=http://localhost:5104
       - ConnectionStrings__DefaultConnection=Server=sql.data;Database=Microsoft.eShopOnContainers.Service.IdentityDb;User Id=sa;Password=Pass@word
       #- MvcClient=http://13.88.8.119:5100              #Remote: VM Needs to have public access at 5105. 
@@ -33,6 +36,7 @@ services:
   ordering.api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:5102
       - ConnectionString=Server=sql.data;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word
       #- identityUrl=http://13.88.8.119:5105             #Remote: VM Needs to have public access at 5105. 
       - identityUrl=http://identity.api:5105              #Local: You need to open your local dev-machine firewall at range 5100-5105.  at range 5100-5105. 
@@ -42,6 +46,7 @@ services:
   webspa:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:5104
       - CatalogUrl=http://localhost:5101
       - OrderingUrl=http://localhost:5102
       #- IdentityUrl=http://13.88.8.119:5105             #Remote: VM Needs to have public access at 5105. 
@@ -53,6 +58,7 @@ services:
   webmvc:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:5100
       - CatalogUrl=http://catalog.api:5101
       - OrderingUrl=http://ordering.api:5102
       #- IdentityUrl=http://13.88.8.119:5105             #Remote: VM Needs to have public access at 5105. 
