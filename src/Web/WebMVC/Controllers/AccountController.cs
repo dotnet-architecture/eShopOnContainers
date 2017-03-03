@@ -33,15 +33,20 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
                 ViewData["access_token"] = token.Value;
             }
 
-            return Redirect("/");
+            // "Catalog" because UrlHelper doesn't support nameof() for controllers
+            // https://github.com/aspnet/Mvc/issues/5853
+            return RedirectToAction(nameof(CatalogController.Index), "Catalog");
         }
 
         public IActionResult Signout()
         {
             HttpContext.Authentication.SignOutAsync("Cookies");
             HttpContext.Authentication.SignOutAsync("oidc");
-             
-            return new SignOutResult("oidc", new AuthenticationProperties { RedirectUri = "/" });
+
+            // "Catalog" because UrlHelper doesn't support nameof() for controllers
+            // https://github.com/aspnet/Mvc/issues/5853
+            var homeUrl = Url.Action(nameof(CatalogController.Index), "Catalog");
+            return new SignOutResult("oidc", new AuthenticationProperties { RedirectUri = homeUrl });
         }
     }
 }
