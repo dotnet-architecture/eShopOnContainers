@@ -4,8 +4,22 @@
     using Domain.AggregatesModel.OrderAggregate;
     using MediatR;
     using Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure.Services;
+    using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Repositories;
     using System;
     using System.Threading.Tasks;
+
+
+    public class CreateOrderCommandIdentifiedHandler : IdentifierCommandHandler<CreateOrderCommand, bool>
+    {
+        public CreateOrderCommandIdentifiedHandler(IMediator mediator, IRequestManager requestManager) : base(mediator, requestManager)
+        {
+        }
+
+        protected override bool CreateResultForDuplicateRequest()
+        {
+            return true;                // Ignore duplicate requests for creating order.
+        }
+    }
 
     public class CreateOrderCommandHandler
         : IAsyncRequestHandler<CreateOrderCommand, bool>

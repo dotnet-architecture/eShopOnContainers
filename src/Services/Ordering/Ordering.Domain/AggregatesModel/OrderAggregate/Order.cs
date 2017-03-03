@@ -22,6 +22,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
         public OrderStatus OrderStatus { get; private set; }
         private int _orderStatusId;
 
+
         // DDD Patterns comment
         // Using a private collection field, better for DDD Aggregate's encapsulation
         // so OrderItems cannot be added from "outside the AggregateRoot" directly to the collection,
@@ -46,7 +47,6 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
             _paymentMethodId = paymentMethodId;
             _orderStatusId = OrderStatus.InProcess.Id;
             _orderDate = DateTime.UtcNow;
-
             Address = address;
         }
 

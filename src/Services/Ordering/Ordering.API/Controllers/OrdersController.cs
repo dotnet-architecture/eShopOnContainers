@@ -28,9 +28,14 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Controllers
 
         [Route("new")]
         [HttpPost]
-        public async Task<IActionResult> CreateOrder([FromBody]CreateOrderCommand createOrderCommand)
+        public async Task<IActionResult> CreateOrder([FromBody]CreateOrderCommand createOrderCommand, [FromHeader(Name = "x-requestid")] string requestId)
         {
-            var result = await _mediator.SendAsync(createOrderCommand);
+            bool result = false;
+            if (Guid.TryParse(requestId, out Guid guid) && guid != Guid.Empty)
+            {
+                var requestCreateOrder = new IdentifiedCommand<CreateOrderCommand, bool>(createOrderCommand, guid);
+                result = await _mediator.SendAsync(requestCreateOrder);
+            }
             if (result)
             {
                 return Ok();

@@ -55,6 +55,10 @@ namespace Microsoft.eShopOnContainers.WebMVC.Models
 
         public List<OrderItem> OrderItems { get; }
 
+        [Required]
+        public Guid RequestId { get; set; }
+
+
         public void CardExpirationShortFormat()
         {
             CardExpirationShort = CardExpiration.ToString("MM/yy");

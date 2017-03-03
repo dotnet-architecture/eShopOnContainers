@@ -30,6 +30,8 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
+            modelBuilder.Entity<ClientRequest>(ConfigureRequests);
             modelBuilder.Entity<Address>(ConfigureAddress);
             modelBuilder.Entity<PaymentMethod>(ConfigurePayment);
             modelBuilder.Entity<Order>(ConfigureOrder);
@@ -37,6 +39,14 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
             modelBuilder.Entity<CardType>(ConfigureCardTypes);
             modelBuilder.Entity<OrderStatus>(ConfigureOrderStatus);
             modelBuilder.Entity<Buyer>(ConfigureBuyer);
+        }
+
+        private void ConfigureRequests(EntityTypeBuilder<ClientRequest> requestConfiguration)
+        {
+            requestConfiguration.ToTable("requests", DEFAULT_SCHEMA);
+            requestConfiguration.HasKey(cr => cr.Id);
+            requestConfiguration.Property(cr => cr.Name).IsRequired();
+            requestConfiguration.Property(cr => cr.Time).IsRequired();
         }
 
         void ConfigureAddress(EntityTypeBuilder<Address> addressConfiguration)

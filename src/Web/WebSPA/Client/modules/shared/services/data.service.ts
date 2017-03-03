@@ -9,6 +9,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 
 import { SecurityService } from './security.service';
+import { Guid } from '../../../guid';
 
 @Injectable()
 export class DataService {
@@ -28,12 +29,24 @@ export class DataService {
         }).catch(this.handleError);
     }
 
+    postWithId(url: string, data: any, params?: any): Observable<Response> {
+        return this.doPost(url, data, true, params);
+    }
+
     post(url: string, data: any, params?: any): Observable<Response> {
+        return this.doPost(url, data, false, params);
+    }
+
+    private doPost(url: string, data: any, needId: boolean, params?: any): Observable<Response> {
         let options: RequestOptionsArgs = {};
 
+        options.headers = new Headers();
         if (this.securityService) {
-            options.headers = new Headers();
             options.headers.append('Authorization', 'Bearer ' + this.securityService.GetToken());
+        }
+        if (needId) {
+            let guid = Guid.newGuid();
+            options.headers.append('x-requestid', guid);
         }
 
         return this.http.post(url, data, options).map(
