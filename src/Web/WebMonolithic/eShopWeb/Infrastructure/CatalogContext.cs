@@ -1,4 +1,4 @@
-﻿namespace eShopWeb.Infrastructure
+﻿namespace Microsoft.eShopWeb.Infrastructure
 {
     using eShopWeb.Models;
     using Microsoft.EntityFrameworkCore;

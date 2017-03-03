@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace eShopWeb.ViewModels
+namespace Microsoft.eShopWeb.ViewModels
 {
     public class PaginationInfo
     {

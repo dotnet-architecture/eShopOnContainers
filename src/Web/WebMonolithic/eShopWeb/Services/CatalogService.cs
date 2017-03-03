@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using eShopWeb.Models;
+using Microsoft.eShopWeb.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using eShopWeb.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using eShopWeb.ViewModels;
+using Microsoft.eShopWeb.Infrastructure;
+using Microsoft.eShopWeb.ViewModels;
 
-namespace eShopWeb.Services
+namespace Microsoft.eShopWeb.Services
 {
     public class CatalogService : ICatalogService
     {

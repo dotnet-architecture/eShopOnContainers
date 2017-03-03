@@ -1,7 +1,7 @@
-﻿using eShopWeb.Models;
+﻿using Microsoft.eShopWeb.Models;
 using System.Collections.Generic;
 
-namespace eShopWeb.ViewModels
+namespace Microsoft.eShopWeb.ViewModels
 {
     public class Catalog
     {

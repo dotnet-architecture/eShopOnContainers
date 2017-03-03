@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace eShopWeb.Models
+namespace Microsoft.eShopWeb.Models
 {
     public class CatalogItem
     {

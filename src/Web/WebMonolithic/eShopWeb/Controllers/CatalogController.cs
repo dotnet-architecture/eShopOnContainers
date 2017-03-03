@@ -1,5 +1,5 @@
-﻿using eShopWeb.Services;
-using eShopWeb.ViewModels;
+﻿using Microsoft.eShopWeb.Services;
+using Microsoft.eShopWeb.ViewModels;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace eShopWeb.Controllers
+namespace Microsoft.eShopWeb.Controllers
 {
     public class CatalogController : Controller
     {

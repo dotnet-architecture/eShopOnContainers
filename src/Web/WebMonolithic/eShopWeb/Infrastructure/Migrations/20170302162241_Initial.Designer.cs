@@ -1,11 +1,9 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using eShopWeb.Infrastructure;
 
-namespace eShopWeb.Infrastructure.Migrations
+namespace Microsoft.eShopWeb.Infrastructure.Migrations
 {
     [DbContext(typeof(CatalogContext))]
     [Migration("20170302162241_Initial")]

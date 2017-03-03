@@ -1,5 +1,5 @@
-﻿using eShopWeb.Infrastructure;
-using eShopWeb.Services;
+﻿using Microsoft.eShopWeb.Infrastructure;
+using Microsoft.eShopWeb.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -8,7 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace eShopWeb
+namespace Microsoft.eShopWeb
 {
     public class Startup
     {
