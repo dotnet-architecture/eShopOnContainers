@@ -44,7 +44,7 @@ export class OrdersService {
     }
 
     postOrder(item): Observable<boolean> {
-        return this.service.post(this.ordersUrl + '/api/v1/orders/new', item).map((response: Response) => {
+        return this.service.postWithId(this.ordersUrl + '/api/v1/orders/new', item).map((response: Response) => {
             return true;
         });
     }

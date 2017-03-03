@@ -29,7 +29,7 @@
 
             if (env.IsDevelopment())
             {
-                builder.AddUserSecrets();
+                builder.AddUserSecrets(typeof(Startup).GetTypeInfo().Assembly);
             }
 
             builder.AddEnvironmentVariables();
@@ -67,7 +67,7 @@
                     Title = "Ordering HTTP API",
                     Version = "v1",
                     Description = "The Ordering Service HTTP API",
-                    TermsOfService = "Terms Of Service" 
+                    TermsOfService = "Terms Of Service"
                 });
             });
 
@@ -82,7 +82,7 @@
 
             // Add application services.
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddTransient<IIdentityService,IdentityService>();
+            services.AddTransient<IIdentityService, IdentityService>();
 
             services.AddOptions();
 
@@ -92,7 +92,7 @@
             container.Populate(services);
 
             container.RegisterModule(new MediatorModule());
-            container.RegisterModule(new ApplicationModule(Configuration["ConnectionString"] ));
+            container.RegisterModule(new ApplicationModule(Configuration["ConnectionString"]));
 
             return new AutofacServiceProvider(container.Build());
         }
