@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Microsoft.eShopOnContainers.WebMVC.Models
+namespace Microsoft.eShopOnContainers.WebMVC.ViewModels
 {
     public class Basket
     {

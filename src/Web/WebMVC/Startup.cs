@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.eShopOnContainers.WebMVC.Models;
+using Microsoft.eShopOnContainers.WebMVC.ViewModels;
 using Microsoft.eShopOnContainers.WebMVC.Services;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;

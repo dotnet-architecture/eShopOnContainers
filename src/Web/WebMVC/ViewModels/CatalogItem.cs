@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Microsoft.eShopOnContainers.WebMVC.Models
+namespace Microsoft.eShopOnContainers.WebMVC.ViewModels
 {
     public class CatalogItem
     {

@@ -1,4 +1,4 @@
-﻿using Microsoft.eShopOnContainers.WebMVC.Models.Annotations;
+﻿using Microsoft.eShopOnContainers.WebMVC.ViewModels.Annotations;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Microsoft.eShopOnContainers.WebMVC.Models
+namespace Microsoft.eShopOnContainers.WebMVC.ViewModels
 {
     public class Order
     {

@@ -1,4 +1,4 @@
-﻿using Microsoft.eShopOnContainers.WebMVC.Models;
+﻿using Microsoft.eShopOnContainers.WebMVC.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
