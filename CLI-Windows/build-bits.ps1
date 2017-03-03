@@ -1,9 +1,15 @@
+Param([string] $rootPath)
 $scriptPath = Split-Path $script:MyInvocation.MyCommand.Path
- 
+
 Write-Host "Current script directory is $scriptPath" -ForegroundColor Yellow
 
+if ([string]::IsNullOrEmpty($rootPath)) {
+    $rootPath = "$scriptPath\.."
+}
+Write-Host "Root path used is $rootPath" -ForegroundColor Yellow
+
 # *** WebMVC paths ***
-$webMVCPath = $scriptPath + "\src\Web\WebMVC"
+$webMVCPath = $rootPath + "\src\Web\WebMVC"
 $webMVCPathToProject = $webMVCPath + "\WebMVC.csproj"
 Write-Host "webMVCPathToProject is $webMVCPathToProject" -ForegroundColor Yellow
 $webMVCPathToPub = $webMVCPath + "\obj\Docker\publish"
@@ -11,7 +17,7 @@ Write-Host "webMVCPathToPub is $webMVCPathToPub" -ForegroundColor Yellow
 
 
 # *** WebSPA paths ***
-$webSPAPath = $scriptPath + "\src\Web\WebSPA"
+$webSPAPath = $rootPath + "\src\Web\WebSPA"
 $webSPAPathToProject = $webSPAPath + "\WebSPA.csproj"
 Write-Host "webSPAPathToProject is $webSPAPathToProject" -ForegroundColor Yellow
 $webSPAPathToPub = $webSPAPath + "\obj\Docker\publish"
@@ -19,7 +25,7 @@ Write-Host "webSPAPathToPub is $webSPAPathToPub" -ForegroundColor Yellow
 
 
 # *** IdentitySvc paths ***
-$identitySvcPath = $scriptPath + "\src\Services\Identity\Identity.API"
+$identitySvcPath = $rootPath + "\src\Services\Identity\Identity.API"
 $identitySvcToProject = $identitySvcPath + "\Identity.API.csproj"
 Write-Host "identitySvcToProject is $identitySvcToProject" -ForegroundColor Yellow
 $identitySvcPathToPub = $identitySvcPath + "\obj\Docker\publish"
@@ -27,7 +33,7 @@ Write-Host "identitySvcPathToPub is $identitySvcPathToPub" -ForegroundColor Yell
 
 
 # *** Catalog paths ***
-$catalogPath = $scriptPath + "\src\Services\Catalog\Catalog.API"
+$catalogPath = $rootPath + "\src\Services\Catalog\Catalog.API"
 $catalogPathToProject = $catalogPath + "\Catalog.API.csproj"
 Write-Host "catalogPathToProject is $catalogPathToProject" -ForegroundColor Yellow
 $catalogPathToPub = $catalogPath + "\obj\Docker\publish"
@@ -35,14 +41,14 @@ Write-Host "catalogPathToPub is $catalogPathToPub" -ForegroundColor Yellow
 
 
 # *** Ordering paths ***
-$orderingPath = $scriptPath + "\src\Services\Ordering\Ordering.API"
+$orderingPath = $rootPath + "\src\Services\Ordering\Ordering.API"
 $orderingPathToProject = $orderingPath + "\Ordering.API.csproj"
 Write-Host "orderingPathToProject is $orderingPathToProject" -ForegroundColor Yellow
 $orderingPathToPub = $orderingPath + "\obj\Docker\publish"
 Write-Host "orderingPathToPub is $orderingPathToPub" -ForegroundColor Yellow
 
 # *** Basket paths ***
-$basketPath = $scriptPath + "\src\Services\Basket\Basket.API"
+$basketPath = $rootPath + "\src\Services\Basket\Basket.API"
 $basketPathToProject = $basketPath + "\Basket.API.csproj"
 Write-Host "basketPathToProject is $basketPathToProject" -ForegroundColor Yellow
 $basketPathToPub = $basketPath + "\obj\Docker\publish"

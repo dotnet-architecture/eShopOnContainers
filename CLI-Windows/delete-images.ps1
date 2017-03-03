@@ -1,7 +1,3 @@
-$scriptPath = Split-Path $script:MyInvocation.MyCommand.Path
- 
-Write-Host "Current script directory is $scriptPath" -ForegroundColor Yellow
-
 $imagesToDelete = docker images --filter=reference="eshop/*" -q
 
 If (-Not $imagesToDelete) {Write-Host "Not deleting eShop images as there are no eShop images in the current local Docker repo."} 
