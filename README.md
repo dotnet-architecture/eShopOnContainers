@@ -6,7 +6,7 @@ Sample .NET Core reference application, powered by Microsoft, based on a simplif
 >
 > This reference application proposes a simplified microservice oriented architecture implementation (as mentioned, currently in ALPHA state) to introduce technologies like .NET Core with Docker containers through a comprehensive but simplified application. However, this reference application it is not trying to solve all the problems in a large and mission-critical distributed system, it is just a bootstrap for developers to easily get started in the world of Docker containers and microservices with .NET Core. 
 > <p>For example, the next step (still not covered here) after understanding Docker containers and microservices is to select a microservice cluster/orchestrator like Docker Swarm, Kubernetes or DC/OS (in Azure Container Service) or Azure Service Fabric which in most of the cases will require additional partial changes to your application's configuration (although the present architecture should work on most orchestrators with small changes). In the future we might fork this project and make multiple versions targeting specific microservice cluster/orchestrators. <p>
-> Read the planned <a href='https://github.com/dotnet/eShopOnContainers/wiki/Roadmap-and-Milestones-for-future-releases'>Roadmap and Milestones for future releases of eShopOnContainers</a> within the Wiki for further info about possible new implementations and provide feedback at the ISSUES level if you'd like to see any specific scenario implemented.
+> Read the planned <a href='https://github.com/dotnet/eShopOnContainers/wiki/01.-Roadmap-and-Milestones-for-future-releases'>Roadmap and Milestones for future releases of eShopOnContainers</a> within the Wiki for further info about possible new implementations and provide feedback at the ISSUES level if you'd like to see any specific scenario implemented.
 
 <p>
 This reference application is cross-platform either in the server and client side, thanks to .NET Core services capable of running on Linux or Windows containers depending on your Docker host, and to Xamarin for mobile apps running on Android, iOS or Windows/UWP plus any browser for the client web apps. 
@@ -21,7 +21,7 @@ This reference application is cross-platform either in the server and client sid
 > <p> However, in a real production environment it is recommended to have persistance (SQL Server and Redis) in HA services like Azure SQL Database, Redis as a service or any other clustering system. If you want to change to a production configuration, you'll just need to change the connection strings once you have set up the servers in HA cloud or on-premises.
 
 ## Related documentation and guidance
-While developing this reference application, we've been creating a reference Guide/eBook named <b>"Architecting and Developing Containerized and Microservice based .NET Applications"</b> which explains in detail how to develop this kind of architectural style (microservices, Docker containers, Domain-Driven Design for certain microservices) plus other simpler architectural styles, like monolithic that can also live as Docker containers.
+While developing this reference application, we are creating a reference Guide/eBook named <b>"Architecting and Developing Containerized and Microservice based .NET Applications"</b> which explains in detail how to develop this kind of architectural style (microservices, Docker containers, Domain-Driven Design for certain microservices) plus other simpler architectural styles, like monolithic apps that can also live as Docker containers.
 <p>
 There's also an additional eBook focusing on Containers/Docker lifecycle (DevOps, CI/CD, etc.) with Microsoft Tools, already published.
 You can start reviewing these Guides/eBooks here:
@@ -31,10 +31,10 @@ You can download both eBooks from here:
 | Architecting & Developing | Containers Lifecycle & CI/CD |
 | ------------ | ------------|
 | <a href='docs/architecting-and-developing-containerized-and-microservice-based-net-applications-ebook-early-draft.pdf'><img src="img/ebook_arch_dev_microservices_containers_cover.png"> </a> | <a href='https://aka.ms/dockerlifecycleebook'> <img src="img/ebook_containers_lifecycle.png"> </a> |
-| <a href='docs/architecting-and-developing-containerized-and-microservice-based-net-applications-ebook-early-draft.pdf'>Download (Confidential DRAFT until published)</a> | <a href='https://aka.ms/dockerlifecycleebook'>Download</a>   |
+| <a href='docs/architecting-and-developing-containerized-and-microservice-based-net-applications-ebook-early-draft.pdf'>**Download (Early DRAFT, still work in progress)** - send feedback to cesardl@microsoft.com</a> | <a href='https://aka.ms/dockerlifecycleebook'>**Download** - First Edition from late 2016</a>   |
 
 
-<p>However, we encourage to review the "Architecting/Developing" eBook because the architectural styles and architectural patterns and technologies explained in the guidance are using this reference application when explaining many sample implementations.
+<p>However, we encourage to review the "*Architecting/Developing*" eBook because the architectural styles and architectural patterns and technologies explained in the guidance are using this reference application when explaining many sample implementations, so you'll understand much better the context, design and decisions taken.
 
 
 ## Overview of the application code
