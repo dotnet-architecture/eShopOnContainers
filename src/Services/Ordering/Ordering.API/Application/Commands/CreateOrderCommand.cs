@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 
 namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands
 {
-    // DDD and CQRS patterns comment: Note that it is recommened to implement immutable Commands
+    // DDD and CQRS patterns comment: Note that it is recommended to implement immutable Commands
     // In this case, its immutability is achieved by having all the setters as private
     // plus only being able to update the data just once, when creating the object through its constructor.
     // References on Immutable Commands:  
