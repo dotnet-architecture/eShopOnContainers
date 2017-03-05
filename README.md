@@ -35,11 +35,11 @@ You can download both eBooks from here:
 | Architecting & Developing | Containers Lifecycle & CI/CD |
 | ------------ | ------------|
 | <a href='docs/architecting-and-developing-containerized-and-microservice-based-net-applications-ebook-early-draft.pdf'><img src="img/ebook_arch_dev_microservices_containers_cover.png"> </a> | <a href='https://aka.ms/dockerlifecycleebook'> <img src="img/ebook_containers_lifecycle.png"> </a> |
-| <a href='docs/architecting-and-developing-containerized-and-microservice-based-net-applications-ebook-early-draft.pdf'>**Download (Early DRAFT, still work in progress)** - send feedback to cesardl@microsoft.com</a> | <a href='https://aka.ms/dockerlifecycleebook'>**Download** - First Edition from late 2016</a>   |
+| <a href='docs/architecting-and-developing-containerized-and-microservice-based-net-applications-ebook-early-draft.pdf'>**Download** (Early DRAFT, still work in progress)</a> | <a href='https://aka.ms/dockerlifecycleebook'>**Download** - First Edition from late 2016</a> |
 
-
-<p>However, we encourage to review the *Architecting/Developing eBook* because the architectural styles and architectural patterns and technologies explained in the guidance are using this reference application when explaining many pattern implementations, so you'll understand much better the context, design and decisions taken in th current architecture and internal design.
-
+Send feedback to [cesardl@microsoft.com](cesardl@microsoft.com)
+<p>
+However, we encourage to download and review the "Architecting & Developing eBook" because the architectural styles and architectural patterns and technologies explained in the guidance are using this reference application when explaining many pattern implementations, so you'll understand much better the context, design and decisions taken in the current architecture and internal designs.
 
 ## Overview of the application code
 In this repo you can find a sample reference application that will help you to understand how to implement a microservice architecture based application using <b>.NET Core</b> and <b>Docker</b>.
@@ -84,4 +84,6 @@ https://github.com/dotnet/eShopOnContainers/wiki/04.-Setting-eShopOnContainer-so
 The <b>Windows Containers scenario is currently being implemented/tested yet</b>. The application should be able to run on Windows Nano Containers based on different Docker base images, as well, as the .NET Core services have also been tested running on plain Windows (with no Docker).
 The app was also partially tested on "Docker for Mac" using a development MacOS machine with .NET Core and VS Code installed, which is still a scenario using Linux containers running on the VM setup in the Mac by the "Docker for Windows" setup. But further testing and feedback on Mac environments and Windows Containers, from the community, will be appreciated.
 
-
+## Sending feedback and pull requests
+As mentioned, ew'd love to get your feedback, improvements and ideas.
+Create new issues at the issues section and/or send emails to cesardl@microsoft.com 
