@@ -42,11 +42,10 @@
             services.AddDbContext<CatalogContext>(c =>
             {
                 c.UseSqlServer(Configuration["ConnectionString"]);
-                c.ConfigureWarnings(wb =>
-                {
-                    //By default, in this application, we don't want to have client evaluations
-                    wb.Log(RelationalEventId.QueryClientEvaluationWarning);
-                });
+                // Changing default behavior when client evaluation occurs to throw. 
+                // Default in EF Core would be to log a warning when client evaluation is performed.
+                c.ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning));
+                //Check Client vs. Server evaluation: https://docs.microsoft.com/en-us/ef/core/querying/client-eval
             });
 
             services.Configure<Settings>(Configuration);

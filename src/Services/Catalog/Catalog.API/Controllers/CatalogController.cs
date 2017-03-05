@@ -24,10 +24,10 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
             ((DbContext)context).ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
-        // GET api/v1/[controller]/items/[?pageSize=3&pageIndex=10]
+        // GET api/v1/[controller]/items[?pageSize=3&pageIndex=10]
         [HttpGet]
         [Route("[action]")]
-        public async Task<IActionResult> Items(int pageSize = 10, int pageIndex = 0)
+        public async Task<IActionResult> Items([FromQuery]int pageSize = 10, [FromQuery]int pageIndex = 0)
         {
             var totalItems = await _context.CatalogItems
                 .LongCountAsync();
@@ -46,10 +46,10 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
             return Ok(model);
         }
 
-        // GET api/v1/[controller]/items/withname/samplename
+        // GET api/v1/[controller]/items/withname/samplename[?pageSize=3&pageIndex=10]
         [HttpGet]
         [Route("[action]/withname/{name:minlength(1)}")]
-        public async Task<IActionResult> Items(string name, int pageSize = 10, int pageIndex = 0)
+        public async Task<IActionResult> Items(string name, [FromQuery]int pageSize = 10, [FromQuery]int pageIndex = 0)
         {
 
             var totalItems = await _context.CatalogItems
@@ -70,10 +70,10 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
             return Ok(model);
         }
 
-        // GET api/v1/[controller]/items/type/1/brand/null
+        // GET api/v1/[controller]/items/type/1/brand/null[?pageSize=3&pageIndex=10]
         [HttpGet]
         [Route("[action]/type/{catalogTypeId}/brand/{catalogBrandId}")]
-        public async Task<IActionResult> Items(int? catalogTypeId, int? catalogBrandId, int pageSize = 10, int pageIndex = 0)
+        public async Task<IActionResult> Items(int? catalogTypeId, int? catalogBrandId, [FromQuery]int pageSize = 10, [FromQuery]int pageIndex = 0)
         {
             var root = (IQueryable<CatalogItem>)_context.CatalogItems;
 
