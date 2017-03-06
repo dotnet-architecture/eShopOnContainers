@@ -1,5 +1,5 @@
 ﻿
-//namespace FunctionalTests.Services.Basket
+//namespace IntegrationTests.Services.Basket
 //{
 //    using Microsoft.eShopOnContainers.Services.Basket.API;
 //    using Microsoft.eShopOnContainers.Services.Basket.API.Model;

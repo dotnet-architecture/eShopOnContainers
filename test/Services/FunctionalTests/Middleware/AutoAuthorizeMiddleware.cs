@@ -5,7 +5,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FunctionalTests.Middleware
+namespace IntegrationTests.Middleware
 {
     class AutoAuthorizeMiddleware
     {

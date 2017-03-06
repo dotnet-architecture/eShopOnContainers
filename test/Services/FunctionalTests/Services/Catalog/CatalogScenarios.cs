@@ -1,4 +1,4 @@
-﻿namespace FunctionalTests.Services.Catalog
+﻿namespace IntegrationTests.Services.Catalog
 {
     using System.Threading.Tasks;
     using Xunit;

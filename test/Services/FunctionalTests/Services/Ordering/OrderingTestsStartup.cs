@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Builder;
-using FunctionalTests.Middleware;
+using IntegrationTests.Middleware;
 
-namespace FunctionalTests.Services.Ordering
+namespace IntegrationTests.Services.Ordering
 {
     public class OrderingTestsStartup : Startup
     {

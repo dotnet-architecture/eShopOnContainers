@@ -1,4 +1,4 @@
-﻿namespace FunctionalTests.Services.Ordering
+﻿namespace IntegrationTests.Services.Ordering
 {
     using Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands;
     using Newtonsoft.Json;

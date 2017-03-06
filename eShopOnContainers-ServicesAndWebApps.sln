@@ -38,7 +38,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebMVC", "src\Web\WebMVC\We
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ordering.Infrastructure", "src\Services\Ordering\Ordering.Infrastructure\Ordering.Infrastructure.csproj", "{95F1F07C-4D92-4742-BD07-E5B805AAB651}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FunctionalTests", "test\Services\FunctionalTests\FunctionalTests.csproj", "{621E7211-58D0-45FD-9600-1CB490BD930E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegrationTests", "test\Services\FunctionalTests\IntegrationTests.csproj", "{621E7211-58D0-45FD-9600-1CB490BD930E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTest", "test\Services\UnitTest\UnitTest.csproj", "{7796F5D8-31FC-45A4-B673-19DE5BA194CF}"
 EndProject

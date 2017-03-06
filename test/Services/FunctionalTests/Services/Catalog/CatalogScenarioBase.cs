@@ -1,6 +1,6 @@
 ﻿
 
-namespace FunctionalTests.Services.Catalog
+namespace IntegrationTests.Services.Catalog
 {
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.TestHost;

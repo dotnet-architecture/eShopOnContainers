@@ -1,4 +1,4 @@
-﻿namespace FunctionalTests.Services.Ordering
+﻿namespace IntegrationTests.Services.Ordering
 {
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.TestHost;
