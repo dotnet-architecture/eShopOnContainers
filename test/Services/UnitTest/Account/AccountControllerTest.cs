@@ -39,8 +39,9 @@ namespace UnitTest.Account
             var actionResult = accountController.SignIn("");
 
             //Assert
-            var redirectResult = Assert.IsType<RedirectResult>(actionResult);
-            Assert.Equal(redirectResult.Url, "/");
+            var redirectResult = Assert.IsType<RedirectToActionResult>(actionResult);
+            Assert.Equal(redirectResult.ActionName, "Index");
+            Assert.Equal(redirectResult.ControllerName, "Catalog");
             Assert.Equal(accountController.ViewData["access_token"], "fakeToken");
         }
 
