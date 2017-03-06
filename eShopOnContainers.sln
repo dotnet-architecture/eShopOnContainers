@@ -65,7 +65,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ordering.Infrastructure", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Identity", "Identity", "{02DF7FEE-C302-433D-A6CD-237A2569F236}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FunctionalTests", "test\Services\FunctionalTests\FunctionalTests.csproj", "{621E7211-58D0-45FD-9600-1CB490BD930E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegrationTests", "test\Services\IntegrationTests\IntegrationTests.csproj", "{621E7211-58D0-45FD-9600-1CB490BD930E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eShopOnContainers.UITests", "src\Mobile\eShopOnContainers\eShopOnContainers.UITests\eShopOnContainers.UITests.csproj", "{E3B18084-842C-4B80-8E4A-A7E588EC3137}"
 EndProject
