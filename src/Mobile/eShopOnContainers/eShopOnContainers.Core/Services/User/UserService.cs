@@ -16,21 +16,16 @@ namespace eShopOnContainers.Core.Services.User
 
         public async Task<UserInfo> GetUserInfoAsync(string authToken)
         {
-            try
-            {
-                UriBuilder builder = new UriBuilder(GlobalSetting.Instance.UserInfoEndpoint);
 
-                string uri = builder.ToString();
+            UriBuilder builder = new UriBuilder(GlobalSetting.Instance.UserInfoEndpoint);
 
-                var userInfo =
-                    await _requestProvider.GetAsync<UserInfo>(uri, authToken);
+            string uri = builder.ToString();
 
-                return userInfo;
-            }
-            catch
-            {
-                return new UserInfo();
-            }
+            var userInfo =
+                await _requestProvider.GetAsync<UserInfo>(uri, authToken);
+
+            return userInfo;
+
         }
     }
 }
