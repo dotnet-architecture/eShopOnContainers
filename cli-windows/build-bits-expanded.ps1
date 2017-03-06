@@ -1,3 +1,9 @@
+
+#########################################################################################################
+# This "expanded Script" can be used when debugging issues when building the .NET Core bits 
+# as it is easier to follow and debug than when using a loop (like in the optimized build-bits.ps1)
+#########################################################################################################
+
 Param([string] $rootPath)
 $scriptPath = Split-Path $script:MyInvocation.MyCommand.Path
 
