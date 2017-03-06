@@ -9,9 +9,9 @@
     {
         public TestServer CreateServer()
         {
-            var webHostBuilder = new WebHostBuilder();
+            var webHostBuilder = new WebHostBuilder();            
             webHostBuilder.UseContentRoot(Directory.GetCurrentDirectory());
-            webHostBuilder.UseStartup<Startup>();
+            webHostBuilder.UseStartup<OrderingTestsStartup>();
 
             return new TestServer(webHostBuilder);
         }
