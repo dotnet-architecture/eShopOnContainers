@@ -13,7 +13,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="settings.json;web.config">
+    <!--<Content Include="settings.json;web.config">-->
+    <Content Include="settings.json">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
   </ItemGroup>
