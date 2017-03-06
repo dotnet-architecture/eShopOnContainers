@@ -32,4 +32,10 @@
     <PackageReference Include="xunit" Version="2.2.0-beta5-build3474" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="settings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>
