@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp1.1</TargetFramework>
-    <AssemblyName>FunctionalTests</AssemblyName>
+    <AssemblyName>IntegrationTests</AssemblyName>
     <PackageId>FunctionalTests</PackageId>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
     <RuntimeFrameworkVersion>1.1.0</RuntimeFrameworkVersion>
