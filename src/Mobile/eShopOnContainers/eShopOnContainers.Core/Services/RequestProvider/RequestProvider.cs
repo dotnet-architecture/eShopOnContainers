@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using System;
 
 namespace eShopOnContainers.Core.Services.RequestProvider
 {
@@ -36,6 +37,27 @@ namespace eShopOnContainers.Core.Services.RequestProvider
             string serialized = await response.Content.ReadAsStringAsync();
 
             TResult result = await Task.Run(() => 
+                JsonConvert.DeserializeObject<TResult>(serialized, _serializerSettings));
+
+            return result;
+        }
+
+        public async Task<TResult> PostAsync<TResult>(string uri, TResult data, string token = "", string header = "")
+        {
+            HttpClient httpClient = CreateHttpClient(token);
+
+            if (!string.IsNullOrEmpty(header))
+            {
+                AddHeaderParameter(httpClient, header);
+            }
+
+            HttpResponseMessage response = await httpClient.GetAsync(uri);
+
+            await HandleResponse(response);
+
+            string serialized = await response.Content.ReadAsStringAsync();
+
+            TResult result = await Task.Run(() =>
                 JsonConvert.DeserializeObject<TResult>(serialized, _serializerSettings));
 
             return result;
@@ -97,6 +119,17 @@ namespace eShopOnContainers.Core.Services.RequestProvider
             }
 
             return httpClient;
+        }
+
+        private void AddHeaderParameter(HttpClient httpClient, string parameter)
+        {
+            if (httpClient == null)
+                return;
+
+            if (string.IsNullOrEmpty(parameter))
+                return;
+
+            httpClient.DefaultRequestHeaders.Add(parameter, Guid.NewGuid().ToString());
         }
 
         private async Task HandleResponse(HttpResponseMessage response)

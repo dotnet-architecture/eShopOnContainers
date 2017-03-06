@@ -22,7 +22,7 @@ namespace eShopOnContainers.Core.Services.Order
 
             string uri = builder.ToString();
 
-            await _requestProvider.PostAsync(uri, newOrder, token);
+            await _requestProvider.PostAsync(uri, newOrder, token, "x-requestid");
         }
 
         public async Task<ObservableCollection<Models.Orders.Order>> GetOrdersAsync(string token)

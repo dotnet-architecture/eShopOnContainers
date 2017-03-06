@@ -8,6 +8,8 @@ namespace eShopOnContainers.Core.Services.RequestProvider
 
         Task<TResult> PostAsync<TResult>(string uri, TResult data, string token = "");
 
+        Task<TResult> PostAsync<TResult>(string uri, TResult data, string token = "", string header = "");
+
         Task<TResult> PostAsync<TRequest, TResult>(string uri, TRequest data, string token = "");
 
         Task<TResult> PutAsync<TResult>(string uri, TResult data, string token = "");
