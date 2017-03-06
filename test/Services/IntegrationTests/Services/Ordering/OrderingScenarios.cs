@@ -25,18 +25,6 @@
         }
 
         [Fact]
-        public async Task Get_get_order_and_response_ok_status_code()
-        {
-            using (var server = CreateServer())
-            {
-                var response = await server.CreateClient()
-                    .GetAsync(Get.OrderBy(31));
-
-                response.EnsureSuccessStatusCode();
-            }
-        }
-
-        [Fact]
         public async Task AddNewOrder_add_new_order_and_response_ok_status_code()
         {
             using (var server = CreateServer())
