@@ -85,5 +85,5 @@ The <b>Windows Containers scenario is currently being implemented/tested yet</b>
 The app was also partially tested on "Docker for Mac" using a development MacOS machine with .NET Core and VS Code installed, which is still a scenario using Linux containers running on the VM setup in the Mac by the "Docker for Windows" setup. But further testing and feedback on Mac environments and Windows Containers, from the community, will be appreciated.
 
 ## Sending feedback and pull requests
-As mentioned, ew'd love to get your feedback, improvements and ideas.
-Create new issues at the issues section and/or send emails to cesardl@microsoft.com 
+As mentioned, we'd appreciate to your feedback, improvements and ideas.
+You can create new issues at the issues section, do pull requests and/or send emails to eshop_feedback@service.microsoft.com
