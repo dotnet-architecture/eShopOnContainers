@@ -20,54 +20,44 @@ namespace eShopOnContainers.Core.Services.Catalog
 
         public async Task<ObservableCollection<CatalogItem>> FilterAsync(int catalogBrandId, int catalogTypeId)
         {
-            try
-            {
-                UriBuilder builder = new UriBuilder(GlobalSetting.Instance.CatalogEndpoint);
 
-                builder.Path = string.Format("api/v1/catalog/items/type/{0}/brand/{1}", catalogTypeId, catalogBrandId);
+            UriBuilder builder = new UriBuilder(GlobalSetting.Instance.CatalogEndpoint);
 
-                string uri = builder.ToString();
+            builder.Path = string.Format("api/v1/catalog/items/type/{0}/brand/{1}", catalogTypeId, catalogBrandId);
 
-                CatalogRoot catalog =
-                        await _requestProvider.GetAsync<CatalogRoot>(uri);
+            string uri = builder.ToString();
 
-                if (catalog?.Data != null)
-                    return catalog?.Data.ToObservableCollection();
-                else
-                    return new ObservableCollection<CatalogItem>();
-            }
-            catch
-            {
+            CatalogRoot catalog =
+                    await _requestProvider.GetAsync<CatalogRoot>(uri);
+
+            if (catalog?.Data != null)
+                return catalog?.Data.ToObservableCollection();
+            else
                 return new ObservableCollection<CatalogItem>();
-            }
+
         }
 
         public async Task<ObservableCollection<CatalogItem>> GetCatalogAsync()
         {
-            try
+
+            UriBuilder builder = new UriBuilder(GlobalSetting.Instance.CatalogEndpoint);
+
+            builder.Path = "api/v1/catalog/items";
+
+            string uri = builder.ToString();
+
+            CatalogRoot catalog =
+                await _requestProvider.GetAsync<CatalogRoot>(uri);
+
+            if (catalog?.Data != null)
             {
-                UriBuilder builder = new UriBuilder(GlobalSetting.Instance.CatalogEndpoint);
+                ServicesHelper.FixCatalogItemPictureUri(catalog?.Data);
 
-                builder.Path = "api/v1/catalog/items";
-
-                string uri = builder.ToString();
-
-                CatalogRoot catalog =
-                    await _requestProvider.GetAsync<CatalogRoot>(uri);
-
-                if (catalog?.Data != null)
-                {
-                    ServicesHelper.FixCatalogItemPictureUri(catalog?.Data);
-
-                    return catalog?.Data.ToObservableCollection();
-                }
-                else
-                    return new ObservableCollection<CatalogItem>();
+                return catalog?.Data.ToObservableCollection();
             }
-            catch
-            {
+            else
                 return new ObservableCollection<CatalogItem>();
-            }
+            
         }
 
         public Task<CatalogItem> GetCatalogItemAsync(string id)
@@ -77,8 +67,7 @@ namespace eShopOnContainers.Core.Services.Catalog
 
         public async Task<ObservableCollection<CatalogBrand>> GetCatalogBrandAsync()
         {
-            try
-            {
+
                 UriBuilder builder = new UriBuilder(GlobalSetting.Instance.CatalogEndpoint);
 
                 builder.Path = "api/v1/catalog/catalogbrands";
@@ -92,35 +81,26 @@ namespace eShopOnContainers.Core.Services.Catalog
                     return brands?.ToObservableCollection();
                 else
                     return new ObservableCollection<CatalogBrand>();
-            }
-            catch
-            {
-                return new ObservableCollection<CatalogBrand>();
-            }
+
         }
 
         public async Task<ObservableCollection<CatalogType>> GetCatalogTypeAsync()
         {
-            try
-            {
-                UriBuilder builder = new UriBuilder(GlobalSetting.Instance.CatalogEndpoint);
 
-                builder.Path = "api/v1/catalog/catalogtypes";
+            UriBuilder builder = new UriBuilder(GlobalSetting.Instance.CatalogEndpoint);
 
-                string uri = builder.ToString();
+            builder.Path = "api/v1/catalog/catalogtypes";
 
-                IEnumerable<CatalogType> types =
-                       await _requestProvider.GetAsync<IEnumerable<CatalogType>>(uri);
+            string uri = builder.ToString();
 
-                if (types != null)
-                    return types.ToObservableCollection();
-                else
-                    return new ObservableCollection<CatalogType>();
-            }
-            catch
-            {
+            IEnumerable<CatalogType> types =
+                    await _requestProvider.GetAsync<IEnumerable<CatalogType>>(uri);
+
+            if (types != null)
+                return types.ToObservableCollection();
+            else
                 return new ObservableCollection<CatalogType>();
-            }
+            
         }
     }
 }
