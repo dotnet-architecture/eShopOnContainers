@@ -35,10 +35,24 @@ namespace IntegrationTests.Services.Basket
             Assert.Equal(1, basket.Items.Count);
         }
 
-        //[Fact]
-        //public async Task GetBasket_return_existing_basket()
-        //{
-        //}
+        [Fact]
+        public async Task Delete_Basket_return_null()
+        {
+            var redisBasketRepository = BuildBasketRepository();
+
+            var basket = await redisBasketRepository.UpdateBasket(new CustomerBasket("customerId")
+            {
+                BuyerId = "buyerId",
+                Items = BuildBasketItems()
+            });
+
+            var deleteResult = await redisBasketRepository.DeleteBasket("buyerId");
+
+            var result = await redisBasketRepository.GetBasket(basket.BuyerId);
+
+            Assert.True(deleteResult);
+            Assert.Null(result);
+        }
 
         RedisBasketRepository BuildBasketRepository()
         {
