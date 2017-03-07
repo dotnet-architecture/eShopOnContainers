@@ -1,7 +1,9 @@
 ﻿using eShopOnContainers.Core.Models.Basket;
 using eShopOnContainers.Core.Models.Catalog;
 using eShopOnContainers.ViewModels.Base;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text.RegularExpressions;
 
 namespace eShopOnContainers.Core.Helpers
@@ -12,26 +14,34 @@ namespace eShopOnContainers.Core.Helpers
 
         public static void FixCatalogItemPictureUri(IEnumerable<CatalogItem> catalogItems)
         {
-            if(catalogItems == null)
+            if (catalogItems == null)
             {
                 return;
             }
 
-            if (!ViewModelLocator.Instance.UseMockService 
-                && Settings.UrlBase != GlobalSetting.DefaultEndpoint)
+            try
             {
-                foreach (var catalogItem in catalogItems)
+                if (!ViewModelLocator.Instance.UseMockService
+                    && Settings.UrlBase != GlobalSetting.DefaultEndpoint)
                 {
-                    MatchCollection serverResult = IpRegex.Matches(catalogItem.PictureUri);
-                    MatchCollection localResult = IpRegex.Matches(Settings.UrlBase);
-
-                    if (serverResult.Count != -1 && localResult.Count != -1)
+                    foreach (var catalogItem in catalogItems)
                     {
-                        var serviceIp = serverResult[0].Value;
-                        var localIp = localResult[0].Value;
-                        catalogItem.PictureUri = catalogItem.PictureUri.Replace(serviceIp, localIp);
+                        MatchCollection serverResult = IpRegex.Matches(catalogItem.PictureUri);
+                        MatchCollection localResult = IpRegex.Matches(Settings.UrlBase);
+
+                        if (serverResult.Count != -1 && localResult.Count != -1)
+                        {
+                            var serviceIp = serverResult[0].Value;
+                            var localIp = localResult[0].Value;
+
+                            catalogItem.PictureUri = catalogItem.PictureUri.Replace(serviceIp, localIp);
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
             }
         }
 
@@ -42,21 +52,28 @@ namespace eShopOnContainers.Core.Helpers
                 return;
             }
 
-            if (!ViewModelLocator.Instance.UseMockService
-                && Settings.UrlBase != GlobalSetting.DefaultEndpoint)
+            try
             {
-                foreach (var basketItem in basketItems)
+                if (!ViewModelLocator.Instance.UseMockService
+                    && Settings.UrlBase != GlobalSetting.DefaultEndpoint)
                 {
-                    MatchCollection serverResult = IpRegex.Matches(basketItem.PictureUrl);
-                    MatchCollection localResult = IpRegex.Matches(Settings.UrlBase);
-
-                    if (serverResult.Count != -1 && localResult.Count != -1)
+                    foreach (var basketItem in basketItems)
                     {
-                        var serviceIp = serverResult[0].Value;
-                        var localIp = localResult[0].Value;
-                        basketItem.PictureUrl = basketItem.PictureUrl.Replace(serviceIp, localIp);
+                        MatchCollection serverResult = IpRegex.Matches(basketItem.PictureUrl);
+                        MatchCollection localResult = IpRegex.Matches(Settings.UrlBase);
+
+                        if (serverResult.Count != -1 && localResult.Count != -1)
+                        {
+                            var serviceIp = serverResult[0].Value;
+                            var localIp = localResult[0].Value;
+                            basketItem.PictureUrl = basketItem.PictureUrl.Replace(serviceIp, localIp);
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
             }
         }
     }
