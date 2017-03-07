@@ -106,6 +106,7 @@
             <converters:InverseBoolConverter x:Key="InverseBoolConverter" />
             <converters:ItemsToHeightConverter x:Key="ItemsToHeightConverter" />
             <converters:ToUpperConverter x:Key="ToUpperConverter" />
+			<converters:WebNavigatingEventArgsConverter x:Key="WebNavigatingEventArgsConverter" />
             
             <!-- STYLES -->
             <Style x:Key="EntryStyle"

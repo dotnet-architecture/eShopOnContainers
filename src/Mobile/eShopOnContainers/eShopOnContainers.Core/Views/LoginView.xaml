@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="eShopOnContainers.Core.Views.LoginView"
@@ -313,8 +313,10 @@
                   AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
                   AbsoluteLayout.LayoutFlags="All">
                     <WebView.Behaviors>
-                        <behaviors:WebViewNavigationBehavior
-                            NavigateCommand="{Binding NavigateCommand}"/>
+						<behaviors:EventToCommandBehavior
+							EventName="Navigating"
+							EventArgsConverter="{StaticResource WebNavigatingEventArgsConverter}"
+							Command="{Binding NavigateCommand}" />
                     </WebView.Behaviors>
                 </WebView>
             </AbsoluteLayout>

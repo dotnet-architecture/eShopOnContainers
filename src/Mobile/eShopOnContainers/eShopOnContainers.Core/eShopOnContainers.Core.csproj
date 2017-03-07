@@ -44,8 +44,6 @@
     </Compile>
     <Compile Include="Behaviors\Base\BindableBehavior.cs" />
     <Compile Include="Behaviors\EventToCommandBehavior.cs" />
-    <Compile Include="Behaviors\ItemTappedCommandListViewBehavior.cs" />
-    <Compile Include="Behaviors\WebViewNavigationBehavior.cs" />
     <Compile Include="Controls\AddBasketButton.xaml.cs">
       <DependentUpon>AddBasketButton.xaml</DependentUpon>
     </Compile>
@@ -58,7 +56,7 @@
     <Compile Include="Converters\InverseBoolConverter.cs" />
     <Compile Include="Converters\InverseCountToBoolConverter.cs" />
     <Compile Include="Converters\ItemsToHeightConverter.cs" />
-    <Compile Include="Converters\ItemTappedConverter.cs" />
+    <Compile Include="Converters\ItemTappedEventArgsConverter.cs" />
     <Compile Include="Converters\ToUpperConverter.cs" />
     <Compile Include="Effects\LineColorEffect.cs" />
     <Compile Include="Exceptions\ServiceAuthenticationException.cs" />
@@ -166,6 +164,7 @@
     <Compile Include="Views\Templates\ProductTemplate.xaml.cs">
       <DependentUpon>ProductTemplate.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\WebNavigatingEventArgsConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
