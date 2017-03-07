@@ -4,8 +4,6 @@ using eShopOnContainers.Core.Models.Catalog;
 using eShopOnContainers.Core.Services.Basket;
 using eShopOnContainers.Core.Services.User;
 using eShopOnContainers.Core.ViewModels.Base;
-using eShopOnContainers.ViewModels.Base;
-using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
