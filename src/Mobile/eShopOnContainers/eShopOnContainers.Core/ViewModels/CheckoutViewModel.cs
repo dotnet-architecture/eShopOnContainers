@@ -66,7 +66,7 @@ namespace eShopOnContainers.Core.ViewModels
             }
         }
 
-        public ICommand CheckoutCommand => new Command(Checkout);
+        public ICommand CheckoutCommand => new Command(async () => await CheckoutAsync());
 
         public override async Task InitializeAsync(object navigationData)
         {
@@ -125,7 +125,7 @@ namespace eShopOnContainers.Core.ViewModels
             }
         }
 
-        private async void Checkout()
+        private async Task CheckoutAsync()
         {
             try
             {

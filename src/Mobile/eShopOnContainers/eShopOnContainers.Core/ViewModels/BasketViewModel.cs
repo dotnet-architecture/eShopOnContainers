@@ -63,7 +63,7 @@ namespace eShopOnContainers.Core.ViewModels
 
         public ICommand AddCommand => new Command<BasketItem>(AddItem);
 
-        public ICommand CheckoutCommand => new Command(Checkout);
+        public ICommand CheckoutCommand => new Command(async () => await CheckoutAsync());
 
         public override async Task InitializeAsync(object navigationData)
         {
@@ -151,11 +151,11 @@ namespace eShopOnContainers.Core.ViewModels
             }, authToken);
         }
 
-        private void Checkout()
+        private async Task CheckoutAsync()
         {
             if (BasketItems.Any())
             {
-                NavigationService.NavigateToAsync<CheckoutViewModel>(BasketItems);
+                await NavigationService.NavigateToAsync<CheckoutViewModel>(BasketItems);
             }
         }
     }

@@ -121,15 +121,15 @@ namespace eShopOnContainers.Core.ViewModels
             }
         }
 
-        public ICommand MockSignInCommand => new Command(MockSignInAsync);
+        public ICommand MockSignInCommand => new Command(async () => await MockSignInAsync());
 
         public ICommand SignInCommand => new Command(async () => await SignInAsync());
 
         public ICommand RegisterCommand => new Command(Register);
 
-        public ICommand NavigateCommand => new Command<string>(NavigateAsync);
+        public ICommand NavigateCommand => new Command<string>(async (url) => await NavigateAsync(url));
 
-        public ICommand SettingsCommand => new Command(SettingsAsync);
+        public ICommand SettingsCommand => new Command(async () => await SettingsAsync());
 
         public override Task InitializeAsync(object navigationData)
         {
@@ -146,7 +146,7 @@ namespace eShopOnContainers.Core.ViewModels
             return base.InitializeAsync(navigationData);
         }
 
-        private async void MockSignInAsync()
+        private async Task MockSignInAsync()
         {
             IsBusy = true;
             IsValid = true;
@@ -219,7 +219,7 @@ namespace eShopOnContainers.Core.ViewModels
             }
         }
 
-        private async void NavigateAsync(string url)
+        private async Task NavigateAsync(string url)
         {
             if (url.Equals(GlobalSetting.Instance.LogoutCallback))
             {
@@ -246,7 +246,7 @@ namespace eShopOnContainers.Core.ViewModels
             }
         }
 
-        private async void SettingsAsync()
+        private async Task SettingsAsync()
         {
             await NavigationService.NavigateToAsync<SettingsViewModel>();
         }
