@@ -79,13 +79,13 @@ namespace eShopOnContainers.Core.ViewModels
 
                 OrderItems = orderItems;
 
-                var authToken = Settings.AuthAccessToken;
+                var authToken = Settings.AuthAccessToken;       
                 var userInfo = await _userService.GetUserInfoAsync(authToken);
 
                 // Create Shipping Address
                 ShippingAddress = new Address
                 {
-                    Id = new Guid(userInfo.UserId),
+                    Id = !string.IsNullOrEmpty(userInfo?.UserId) ? new Guid(userInfo.UserId) : Guid.NewGuid(),
                     Street = userInfo?.Street,
                     ZipCode = userInfo?.ZipCode,
                     State = userInfo?.State,
