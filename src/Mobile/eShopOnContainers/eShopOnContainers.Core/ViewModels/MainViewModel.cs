@@ -9,7 +9,7 @@ namespace eShopOnContainers.Core.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {
-        public ICommand SettingsCommand => new Command(Settings);
+        public ICommand SettingsCommand => new Command(async () => await SettingsAsync());
 
         public override Task InitializeAsync(object navigationData)
         {
@@ -25,9 +25,9 @@ namespace eShopOnContainers.Core.ViewModels
             return base.InitializeAsync(navigationData);
         }
 
-        private void Settings()
+        private async Task SettingsAsync()
         {
-            NavigationService.NavigateToAsync<SettingsViewModel>();
+            await NavigationService.NavigateToAsync<SettingsViewModel>();
         }
     }
 }
