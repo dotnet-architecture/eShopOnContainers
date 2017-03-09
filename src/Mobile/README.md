@@ -16,6 +16,7 @@ This project exercises the following platforms, frameworks or features:
 
 * Xamarin.Forms
   * XAML
+  * Behaviors
   * Bindings
   * Converters
   * Central Styles
@@ -39,10 +40,10 @@ The app targets **three** platforms:
 * iOS
 * Android
 * Universal Windows Platform (UWP)
-    * UWP supported only in Visual Studio, not Xamarin Studio
+    * UWP supported only in Visual Studio, not Xamarin Studio or Visual Studio for MacOS
 
 
-As of 19/12/2016, eShopOnContainers features **89.2% code share** (7.2% iOS / 16.7% Android / 8.7% Windows).
+As of 07/03/2017, eShopOnContainers features **89.2% code share** (7.2% iOS / 16.7% Android / 8.7% Windows).
 
 ##Licenses
 
@@ -55,12 +56,12 @@ This project uses some third-party assets with a license that requires attributi
 - [SlideOverKit](https://github.com/XAM-Consulting/SlideOverKit): by XAM-Consulting
 
 ## Requirements
-### Requirements for Jan. 2017 version of eShopOnContainers
+### Requirements for March 2017 version of eShopOnContainers
 
 * [Visual Studio __2015__](https://www.visualstudio.com/en-us/products/vs-2015-product-editions.aspx) (14.0 or higher) to compile C# 6 langage features (or Visual Studio MacOS)
 * Xamarin add-ons for Visual Studio (available via the Visual Studio installer)
 * __Visual Studio Community Edition is fully supported!__
-* Android SDK Tools 25.2.3 or higher
+* [Android SDK Tools](https://developer.xamarin.com/guides/android/getting_started/installation/windows/) 25.2.3 or higher
 * JDK 8.0
 
 ## Setup
@@ -154,4 +155,4 @@ In the configuration window of the machine, go to the Compatibility section and 
 <img src="Images/set-compatibility-vs-sml.png" alt="Migrate to a physical computer with a different processor version" Width="600" />
 
 ## Copyright and license
-* Code and documentation copyright 2016 Microsoft Corp. Code released under the [MIT license](https://opensource.org/licenses/MIT).
+* Code and documentation copyright 2017 Microsoft Corp. Code released under the [MIT license](https://opensource.org/licenses/MIT).
