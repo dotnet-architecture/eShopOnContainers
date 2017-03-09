@@ -7,6 +7,7 @@
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Infrastructure;
     using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
+    using Microsoft.eShopOnContainers.Services.Common.Infrastructure;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
@@ -73,6 +74,8 @@
                     .AllowCredentials());
             });
 
+            services.AddSingleton<IEventBus, EventBus>();
+            
             services.AddMvc();
         }
 

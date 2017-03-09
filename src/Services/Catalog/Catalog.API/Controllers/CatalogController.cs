@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
 using Microsoft.eShopOnContainers.Services.Catalog.API.Model;
 using Microsoft.eShopOnContainers.Services.Catalog.API.ViewModel;
+using Microsoft.eShopOnContainers.Services.Common.Infrastructure;
+using Microsoft.eShopOnContainers.Services.Common.Infrastructure.Catalog;
 using Microsoft.Extensions.Options;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,11 +17,13 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
     {
         private readonly CatalogContext _context;
         private readonly IOptionsSnapshot<Settings> _settings;
+        private readonly IEventBus _eventBus;
 
-        public CatalogController(CatalogContext context, IOptionsSnapshot<Settings> settings)
+        public CatalogController(CatalogContext context, IOptionsSnapshot<Settings> settings, IEventBus eventBus)
         {
             _context = context;
             _settings = settings;
+            _eventBus = eventBus;
 
             ((DbContext)context).ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
@@ -41,7 +45,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
             itemsOnPage = ComposePicUri(itemsOnPage);
 
             var model = new PaginatedItemsViewModel<CatalogItem>(
-                pageIndex, pageSize, totalItems, itemsOnPage);
+                pageIndex, pageSize, totalItems, itemsOnPage);           
 
             return Ok(model);
         }
@@ -99,7 +103,13 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
 
             var model = new PaginatedItemsViewModel<CatalogItem>(
                 pageIndex, pageSize, totalItems, itemsOnPage);
-            
+
+            //hook to run integration tests until POST methods are created
+            if (catalogTypeId.HasValue && catalogTypeId == 1)
+            {
+                _eventBus.Publish(new CatalogPriceChanged());
+            }
+
             return Ok(model);
         }
 
