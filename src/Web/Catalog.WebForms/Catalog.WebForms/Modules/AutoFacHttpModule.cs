@@ -53,9 +53,8 @@ namespace Microsoft.eShopOnContainers.Catalog.WebForms.Modules
 
         private void InjectDependencies()
         {
-            if  (HttpContext.Current.CurrentHandler is Page)
+            if  (HttpContext.Current.CurrentHandler is Page page)
             {
-                var page = HttpContext.Current.CurrentHandler as Page;
                 // Get the code-behind class that we may have written
                 var pageType = page.GetType().BaseType;
 

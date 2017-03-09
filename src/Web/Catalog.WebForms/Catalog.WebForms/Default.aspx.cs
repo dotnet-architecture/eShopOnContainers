@@ -14,8 +14,6 @@ namespace Microsoft.eShopOnContainers.Catalog.WebForms
 {
     public partial class _Default : Page
     {
-        private ILifetimeScope scope;
-
         private ICatalogService catalog;
 
         protected _Default() { }
