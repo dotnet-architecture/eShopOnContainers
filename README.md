@@ -87,3 +87,7 @@ The app was also partially tested on "Docker for Mac" using a development MacOS 
 ## Sending feedback and pull requests
 As mentioned, we'd appreciate to your feedback, improvements and ideas.
 You can create new issues at the issues section, do pull requests and/or send emails to eshop_feedback@service.microsoft.com
+
+## Questions
+[QUESTION] Answer +1 if the solution is working for you (Through VS2017 or CLI environment):
+https://github.com/dotnet/eShopOnContainers/issues/107 
