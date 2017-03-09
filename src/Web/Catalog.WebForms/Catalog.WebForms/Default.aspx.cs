@@ -18,6 +18,13 @@ namespace Microsoft.eShopOnContainers.Catalog.WebForms
 
         private ICatalogService catalog;
 
+        protected _Default() { }
+
+        public _Default(ICatalogService catalog)
+        {
+            this.catalog = catalog;
+        }
+
         protected override void OnLoad(EventArgs e)
         {
             RegisterAsyncTask(new PageAsyncTask(LoadCatalogDataAsync));
@@ -27,14 +34,9 @@ namespace Microsoft.eShopOnContainers.Catalog.WebForms
 
         private async Task LoadCatalogDataAsync()
         {
-            var container = Application.Get("container") as IContainer;
-            using (scope = container?.BeginLifetimeScope())
-            {
-                catalog = container?.Resolve<ICatalogService>();
-                var collection = await catalog?.GetCatalogAsync();
-                catalogList.DataSource = collection;
-                catalogList.DataBind();
-            }
+            var collection = await catalog?.GetCatalogAsync();
+            catalogList.DataSource = collection;
+            catalogList.DataBind();
         }
 
         protected void Page_Load(object sender, EventArgs e)
