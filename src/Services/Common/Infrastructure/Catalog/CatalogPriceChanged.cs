@@ -5,17 +5,18 @@ using System.Text;
 namespace Microsoft.eShopOnContainers.Services.Common.Infrastructure.Catalog
 {
     public class CatalogPriceChanged : IIntegrationEvent
-    {
-        public string Message { get { return "CatalogPriceChanged here!!"; } }
-
+    {        
         public int ItemId { get; private set; }
 
         public decimal NewPrice { get; private set; }
 
-        public CatalogPriceChanged(int itemId, decimal newPrice)
+        public decimal OldPrice { get; set; }
+
+        public CatalogPriceChanged(int itemId, decimal newPrice, decimal oldPrice)
         {
             ItemId = itemId;
             NewPrice = newPrice;
+            OldPrice = oldPrice;
         }
 }
 }

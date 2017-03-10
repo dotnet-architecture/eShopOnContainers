@@ -107,7 +107,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
             //hook to run integration tests until POST methods are created
             if (catalogTypeId.HasValue && catalogTypeId == 1)
             {
-                _eventBus.Publish(new CatalogPriceChanged(2, 10.4M));
+                _eventBus.Publish(new CatalogPriceChanged(2, 10.4M, 8.4M));
             }
 
             return Ok(model);
@@ -133,6 +133,30 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
                 .ToListAsync();
 
             return Ok(items);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody]CatalogItem value)
+        {
+            var item = await _context.CatalogItems.SingleOrDefaultAsync(i => i.Id == value.Id);
+
+            if (item == null)
+            {
+                return NotFound();
+            }
+
+            if (item.Price != value.Price)
+            {
+                var oldPrice = item.Price;
+                item.Price = value.Price;
+
+                _context.CatalogItems.Update(item);
+                await _context.SaveChangesAsync();
+
+                _eventBus.Publish(new CatalogPriceChanged(item.Id, item.Price, oldPrice));
+            }
+
+            return Ok();
         }
 
         private List<CatalogItem> ComposePicUri(List<CatalogItem> items) {

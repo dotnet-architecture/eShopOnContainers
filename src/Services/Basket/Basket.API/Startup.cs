@@ -79,9 +79,24 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             });
 
             services.AddTransient<IBasketRepository, RedisBasketRepository>();
-            var eventBus = new EventBus();            
+            services.AddTransient<IIntegrationEventHandler<CatalogPriceChanged>, CatalogPriceChangedHandler>();
+
+            var eventBus = new EventBus();
             services.AddSingleton<IEventBus>(eventBus);
-            eventBus.Subscribe<CatalogPriceChanged>(new CatalogPriceChangedHandler());            
+
+            var serviceProvider = services.BuildServiceProvider();
+            var catalogPriceHandler = serviceProvider.GetService<IIntegrationEventHandler<CatalogPriceChanged>>();
+            eventBus.Subscribe<CatalogPriceChanged>(catalogPriceHandler);
+
+            //var container = new ContainerBuilder();
+            //container.Populate(services);            
+            //container.RegisterModule(new ApplicationModule());
+
+            //return new AutofacServiceProvider(container.Build());
+
+            //var eventBus = new EventBus();            
+            //services.AddSingleton<IEventBus>(eventBus);
+            //eventBus.Subscribe<CatalogPriceChanged>(new CatalogPriceChangedHandler(new RedisBasketRepository());            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

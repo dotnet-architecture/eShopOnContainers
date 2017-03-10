@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.Services.Common.Infrastructure
 {
@@ -116,7 +117,7 @@ namespace Microsoft.eShopOnContainers.Services.Common.Infrastructure
                 }
 
                 var consumer = new EventingBasicConsumer(channel);
-                consumer.Received += (model, ea) =>
+                consumer.Received += async (model, ea) =>
                 {                    
                     var eventName = ea.RoutingKey;
                     if (_handlers.ContainsKey(eventName))
@@ -132,7 +133,7 @@ namespace Microsoft.eShopOnContainers.Services.Common.Infrastructure
                         
                         foreach (var handler in handlers)
                         {
-                            concreteType.GetMethod("Handle").Invoke(handler, new object[] { integrationEvent });
+                            await (Task)concreteType.GetMethod("Handle").Invoke(handler, new object[] { integrationEvent });                            
                         }
                     }
                 };
