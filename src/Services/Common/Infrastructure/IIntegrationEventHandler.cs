@@ -10,5 +10,7 @@ namespace Microsoft.eShopOnContainers.Services.Common.Infrastructure
         void Handle(TIntegrationEvent @event);
     }
 
-    public interface IIntegrationEventHandler { }
+    public interface IIntegrationEventHandler
+    {
+    }
 }

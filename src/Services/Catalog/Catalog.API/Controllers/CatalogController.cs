@@ -107,7 +107,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
             //hook to run integration tests until POST methods are created
             if (catalogTypeId.HasValue && catalogTypeId == 1)
             {
-                _eventBus.Publish(new CatalogPriceChanged());
+                _eventBus.Publish(new CatalogPriceChanged(2, 10.4M));
             }
 
             return Ok(model);

@@ -1,40 +1,47 @@
 ﻿
 using Microsoft.eShopOnContainers.Services.Common.Infrastructure.Catalog;
+using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace Microsoft.eShopOnContainers.Services.Common.Infrastructure
 {
     public class EventBus : IEventBus
     {
-        private readonly Dictionary<string, List<IIntegrationEventHandler>>  _handlers;        
-        private readonly Dictionary<string, Tuple<IModel, IConnection>> _listeners;
+        private readonly string _brokerName = "event_bus";
+        private readonly Dictionary<string, List<IIntegrationEventHandler>>  _handlers;
+        private readonly List<Type> _eventTypes;
+
+        private Tuple<IModel, IConnection> _connection;
+        private string _queueName;
+        
 
         public EventBus()
         {
             _handlers = new Dictionary<string, List<IIntegrationEventHandler>>();
-            _listeners = new Dictionary<string, Tuple<IModel, IConnection>>();
+            _eventTypes = new List<Type>();
         }
         public void Publish(IIntegrationEvent @event)
         {
+            var eventName = @event.GetType().Name;
             var factory = new ConnectionFactory() { HostName = "172.20.0.1" };
             using (var connection = factory.CreateConnection())
             using (var channel = connection.CreateModel())
-            {                
-                channel.QueueDeclare(queue: @event.Name,
-                                     durable: false,
-                                     exclusive: false,
-                                     autoDelete: false,
-                                     arguments: null);
+            {
+                channel.ExchangeDeclare(exchange: _brokerName,
+                                    type: "direct");
 
-                string message = ((CatalogPriceChanged)@event).Message;                
+                string message = JsonConvert.SerializeObject(@event);                                
                 var body = Encoding.UTF8.GetBytes(message);
 
-                channel.BasicPublish(exchange: "",
-                                     routingKey: @event.Name,
+                channel.BasicPublish(exchange: _brokerName,
+                                     routingKey: eventName,
                                      basicProperties: null,
                                      body: body);                
             }
@@ -50,30 +57,14 @@ namespace Microsoft.eShopOnContainers.Services.Common.Infrastructure
             }
             else
             {
-                var factory = new ConnectionFactory() { HostName = "172.18.0.1" };
-                var connection = factory.CreateConnection();
-                var channel = connection.CreateModel();
-                
-                channel.QueueDeclare(queue: eventName,
-                                     durable: false,
-                                     exclusive: false,
-                                     autoDelete: false,
-                                     arguments: null);
-
-                var consumer = new EventingBasicConsumer(channel);
-                consumer.Received += (model, ea) =>
-                {
-                    var body = ea.Body;
-                    var message = Encoding.UTF8.GetString(body);                    
-                };
-                channel.BasicConsume(queue: "hello",
-                                     noAck: true,
-                                     consumer: consumer);
-                ;
-
-                _listeners.Add(eventName, new Tuple<IModel, IConnection>(channel, connection));
+                var channel = GetChannel();
+                channel.QueueBind(queue: _queueName,
+                                  exchange: _brokerName,
+                                  routingKey: eventName);
+                                               
                 _handlers.Add(eventName, new List<IIntegrationEventHandler>());
                 _handlers[eventName].Add(handler);
+                _eventTypes.Add(typeof(T));
             }
             
         }
@@ -88,13 +79,69 @@ namespace Microsoft.eShopOnContainers.Services.Common.Infrastructure
                 if (_handlers[eventName].Count == 0)
                 {
                     _handlers.Remove(eventName);
+                    var eventType = _eventTypes.Single(e => e.Name == eventName);
+                    _eventTypes.Remove(eventType);
+                    _connection.Item1.QueueUnbind(queue: _queueName, 
+                        exchange: _brokerName, 
+                        routingKey: eventName);
 
-                    var connectionItems =_listeners[eventName];
-                    _listeners.Remove(eventName);
-
-                    connectionItems.Item1.Close();
-                    connectionItems.Item2.Close();
+                    if (_handlers.Keys.Count == 0)
+                    {
+                        _queueName = string.Empty;
+                        _connection.Item1.Close();
+                        _connection.Item2.Close();
+                    }
+                    
                 }
+            }
+        }
+
+        private IModel GetChannel()
+        {
+            if (_connection != null)
+            {
+                return _connection.Item1;
+            }
+            else
+            {
+                var factory = new ConnectionFactory() { HostName = "172.20.0.1" };
+                var connection = factory.CreateConnection();
+                var channel = connection.CreateModel();
+
+                channel.ExchangeDeclare(exchange: _brokerName,
+                                    type: "direct");
+                if (string.IsNullOrEmpty(_queueName))
+                {
+                    _queueName = channel.QueueDeclare().QueueName;
+                }
+
+                var consumer = new EventingBasicConsumer(channel);
+                consumer.Received += (model, ea) =>
+                {                    
+                    var eventName = ea.RoutingKey;
+                    if (_handlers.ContainsKey(eventName))
+                    {                        
+                        var message = Encoding.UTF8.GetString(ea.Body);
+                        Type eventType = _eventTypes.Single(t => t.Name == eventName);
+                        
+                        var integrationEvent = JsonConvert.DeserializeObject(message, eventType);                        
+                        var handlers = _handlers[eventName];
+
+                                             
+                        var concreteType = typeof(IIntegrationEventHandler<>).MakeGenericType(eventType);
+                        
+                        foreach (var handler in handlers)
+                        {
+                            concreteType.GetMethod("Handle").Invoke(handler, new object[] { integrationEvent });
+                        }
+                    }
+                };
+                channel.BasicConsume(queue: _queueName,
+                                     noAck: true,
+                                     consumer: consumer);
+                _connection = new Tuple<IModel, IConnection>(channel, connection);
+
+                return _connection.Item1;
             }
         }
     }
