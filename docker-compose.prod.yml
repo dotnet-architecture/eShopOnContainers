@@ -23,7 +23,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:5101
       - ConnectionString=Server=sql.data;Database=Microsoft.eShopOnContainers.Services.CatalogDb;User Id=sa;Password=Pass@word
-      - ExternalCatalogBaseUrl=http://192.168.88.248:5101    #Local: You need to open your host's firewall at range 5100-5105.  at range 5100-5105.
+      - ExternalCatalogBaseUrl=http://${ESHOP_EXTERNAL_IP}:5101    #Local: You need to open your host's firewall at range 5100-5105.  at range 5100-5105.
     ports:
       - "5101:5101"
 
@@ -31,9 +31,9 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:5105
-      - SpaClient=http://192.168.88.248:5104
+      - SpaClient=http://${ESHOP_EXTERNAL_IP}:5104
       - ConnectionStrings__DefaultConnection=Server=sql.data;Database=Microsoft.eShopOnContainers.Service.IdentityDb;User Id=sa;Password=Pass@word 
-      - MvcClient=http://192.168.88.248:5100              #Local: You need to open your host's firewall at range 5100-5105.  
+      - MvcClient=http://${ESHOP_EXTERNAL_IP}:5100              #Local: You need to open your host's firewall at range 5100-5105.  
     ports:
       - "5105:5105"
 
@@ -50,10 +50,10 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:5104
-      - CatalogUrl=http://192.168.88.248:5101
-      - OrderingUrl=http://192.168.88.248:5102
-      - IdentityUrl=http://192.168.88.248:5105              #Local: You need to open your host's firewall at range 5100-5105.  at range 5100-5105. 
-      - BasketUrl=http://192.168.88.248:5103                
+      - CatalogUrl=http://${ESHOP_EXTERNAL_IP}:5101
+      - OrderingUrl=http://${ESHOP_EXTERNAL_IP}:5102
+      - IdentityUrl=http://${ESHOP_EXTERNAL_IP}:5105              #Local: You need to open your host's firewall at range 5100-5105.  at range 5100-5105. 
+      - BasketUrl=http://${ESHOP_EXTERNAL_IP}:5103                
     ports:
       - "5104:5104"
 
@@ -63,7 +63,7 @@ services:
       - ASPNETCORE_URLS=http://0.0.0.0:5100
       - CatalogUrl=http://catalog.api:5101
       - OrderingUrl=http://ordering.api:5102
-      - IdentityUrl=http://192.168.88.248:5105              #Local: You need to open your host's firewall at range 5100-5105.  at range 5100-5105. 
+      - IdentityUrl=http://${ESHOP_EXTERNAL_IP}:5105              #Local: You need to open your host's firewall at range 5100-5105.  at range 5100-5105. 
       - BasketUrl=http://basket.api:5103
     ports:
       - "5100:5100"
