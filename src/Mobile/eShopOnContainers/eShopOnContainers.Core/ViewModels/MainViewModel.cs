@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using eShopOnContainers.ViewModels.Base;
+using eShopOnContainers.Core.ViewModels.Base;
 using eShopOnContainers.Core.Models.Navigation;
 using Xamarin.Forms;
 using eShopOnContainers.Core.ViewModels.Base;

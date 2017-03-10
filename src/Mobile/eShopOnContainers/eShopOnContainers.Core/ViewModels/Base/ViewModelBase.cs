@@ -1,9 +1,8 @@
-﻿using eShopOnContainers.Core;
-using eShopOnContainers.Core.Helpers;
+﻿using eShopOnContainers.Core.Helpers;
 using eShopOnContainers.Services;
 using System.Threading.Tasks;
 
-namespace eShopOnContainers.ViewModels.Base
+namespace eShopOnContainers.Core.ViewModels.Base
 {
     public abstract class ViewModelBase : ExtendedBindableObject
     {
@@ -28,14 +27,14 @@ namespace eShopOnContainers.ViewModels.Base
 
         public ViewModelBase()
         {
-            DialogService = ViewModelLocator.Instance.Resolve<IDialogService>();
-            NavigationService = ViewModelLocator.Instance.Resolve<INavigationService>();
+            DialogService = ViewModelLocator.Resolve<IDialogService>();
+            NavigationService = ViewModelLocator.Resolve<INavigationService>();
             GlobalSetting.Instance.BaseEndpoint = Settings.UrlBase;
         }
 
         public virtual Task InitializeAsync(object navigationData)
         {
-            return Task.FromResult(false);
+             return Task.FromResult(false);
         }
     }
 }
