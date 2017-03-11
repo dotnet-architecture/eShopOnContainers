@@ -1,7 +1,8 @@
 version: '2'
 
 # The default docker-compose.override file can use the "localhost" as the external name for testing web apps within the same dev machine. 
-# The ESHOP_EXTERNAL_DNS_NAME_OR_IP environment variable is taken, by default, from the ".env" file defined like ESHOP_EXTERNAL_DNS_NAME_OR_IP=localhost
+# The ESHOP_EXTERNAL_DNS_NAME_OR_IP environment variable is taken, by default, from the ".env" file defined like: 
+#     ESHOP_EXTERNAL_DNS_NAME_OR_IP=localhost
 # but values present in the environment vars at runtime will always override those defined inside the .env file
 # An external IP or DNS name has to be used (instead localhost and the 10.0.75.1 IP) when testing the Web apps and the Xamarin apps from remote machines/devices using the same WiFi, for instance.
 
