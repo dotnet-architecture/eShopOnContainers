@@ -1,5 +1,10 @@
 version: '2'
 
+# The default docker-compose.override file can use the "localhost" as the external name for testing web apps within the same dev machine. 
+# The ESHOP_EXTERNAL_DNS_NAME_OR_IP environment variable is taken, by default, from the ".env" file defined like ESHOP_EXTERNAL_DNS_NAME_OR_IP=localhost
+# but values present in the environment vars at runtime will always override those defined inside the .env file
+# An external IP or DNS name has to be used (instead localhost and the 10.0.75.1 IP) when testing the Web apps and the Xamarin apps from remote machines/devices using the same WiFi, for instance.
+
 services:
 
   basket.api:
@@ -16,7 +21,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:5101
       - ConnectionString=Server=sql.data;Database=Microsoft.eShopOnContainers.Services.CatalogDb;User Id=sa;Password=Pass@word
-      - ExternalCatalogBaseUrl=http://localhost:5101    #Local: You need to open your local dev-machine firewall at range 5100-5105.  at range 5100-5105.
+      - ExternalCatalogBaseUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5101    #Local: You need to open your local dev-machine firewall at range 5100-5105.  at range 5100-5105.
     ports:
       - "5101:5101"
 
@@ -24,9 +29,9 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:5105
-      - SpaClient=http://localhost:5104
+      - SpaClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5104
       - ConnectionStrings__DefaultConnection=Server=sql.data;Database=Microsoft.eShopOnContainers.Service.IdentityDb;User Id=sa;Password=Pass@word 
-      - MvcClient=http://localhost:5100              #Local: You need to open your local dev-machine firewall at range 5100-5105.  
+      - MvcClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5100              #Local: You need to open your local dev-machine firewall at range 5100-5105.  
     ports:
       - "5105:5105"
 
@@ -43,10 +48,10 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:5104
-      - CatalogUrl=http://localhost:5101
-      - OrderingUrl=http://localhost:5102
-      - IdentityUrl=http://localhost:5105              #Local: You need to open your local dev-machine firewall at range 5100-5105.  at range 5100-5105. 
-      - BasketUrl=http://localhost:5103                
+      - CatalogUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5101
+      - OrderingUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5102
+      - IdentityUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105              #Local: You need to open your local dev-machine firewall at range 5100-5105.  at range 5100-5105. 
+      - BasketUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5103                
     ports:
       - "5104:5104"
 
@@ -56,8 +61,9 @@ services:
       - ASPNETCORE_URLS=http://0.0.0.0:5100
       - CatalogUrl=http://catalog.api:5101
       - OrderingUrl=http://ordering.api:5102
-      - IdentityUrl=http://10.0.75.1:5105              #Local: You need to open your local dev-machine firewall at range 5100-5105.  at range 5100-5105. 
       - BasketUrl=http://basket.api:5103
+      - IdentityUrl=http://10.0.75.1:5105        #Local:  Use 10.0.75.1 in a "Docker for Windows" environment, if using "localhost" from browser. 
+                                                 #Remote: Use ${ESHOP_EXTERNAL_DNS_NAME_OR_IP} if using external IP or DNS name from browser. 
     ports:
       - "5100:5100"
 
