@@ -1,11 +1,14 @@
 ﻿using System.Threading.Tasks;
-using eShopOnContainers.Core.ViewModels.Base;
+using eShopOnContainers.ViewModels.Base;
 using System.Collections.ObjectModel;
 using Xamarin.Forms;
+using eShopOnContainers.Core.ViewModels.Base;
 using eShopOnContainers.Core.Models.Catalog;
 using eShopOnContainers.Core.Services.Catalog;
 using System.Windows.Input;
+using System.Linq;
 using eShopOnContainers.Core.Services.Basket;
+using eShopOnContainers.Core.Helpers;
 using eShopOnContainers.Core.Services.User;
 
 namespace eShopOnContainers.Core.ViewModels
@@ -88,9 +91,9 @@ namespace eShopOnContainers.Core.ViewModels
 
         public ICommand AddCatalogItemCommand => new Command<CatalogItem>(AddCatalogItem);
 
-        public ICommand FilterCommand => new Command(async () => await FilterAsync());
+        public ICommand FilterCommand => new Command(Filter);
 
-		public ICommand ClearFilterCommand => new Command(async () => await ClearFilterAsync());
+        public ICommand ClearFilterCommand => new Command(ClearFilter);
 
         public override async Task InitializeAsync(object navigationData)
         {
@@ -110,7 +113,7 @@ namespace eShopOnContainers.Core.ViewModels
             MessagingCenter.Send(this, MessengerKeys.AddProduct, catalogItem);
         }
 
-        private async Task FilterAsync()
+        private async void Filter()
         {
             if (Brand == null && Type == null)
             {
@@ -126,7 +129,7 @@ namespace eShopOnContainers.Core.ViewModels
             IsBusy = false;
         }
 
-        private async Task ClearFilterAsync()
+        private async void ClearFilter()
         {
             IsBusy = true;
 

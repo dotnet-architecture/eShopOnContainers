@@ -1,5 +1,6 @@
 ﻿using eShopOnContainers.Core.ViewModels;
 using eShopOnContainers.Core.ViewModels.Base;
+using eShopOnContainers.ViewModels.Base;
 using Xamarin.Forms;
 
 namespace eShopOnContainers.Core.Views
@@ -31,9 +32,17 @@ namespace eShopOnContainers.Core.Views
                 }
             });
 
-			await ((CatalogViewModel)HomeView.BindingContext).InitializeAsync(null);
-			await ((BasketViewModel)BasketView.BindingContext).InitializeAsync(null);
-			await ((ProfileViewModel)ProfileView.BindingContext).InitializeAsync(null);
+            var homeViewModel = ViewModelLocator.Instance.Resolve<CatalogViewModel>();
+            await homeViewModel.InitializeAsync(null);
+            HomeView.BindingContext = homeViewModel;
+
+            var basketViewModel = ViewModelLocator.Instance.Resolve<BasketViewModel>();
+            await basketViewModel.InitializeAsync(null);
+            BasketView.BindingContext = basketViewModel;
+
+            var profileViewModel = ViewModelLocator.Instance.Resolve<ProfileViewModel>();
+            await profileViewModel.InitializeAsync(null);
+            ProfileView.BindingContext = profileViewModel;
         }
     }
 }

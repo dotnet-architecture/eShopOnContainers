@@ -4,7 +4,7 @@ using eShopOnContainers.Core.Services.Identity;
 using eShopOnContainers.Core.Services.OpenUrl;
 using eShopOnContainers.Core.Services.User;
 using eShopOnContainers.Core.Validations;
-using eShopOnContainers.Core.ViewModels.Base;
+using eShopOnContainers.ViewModels.Base;
 using IdentityModel.Client;
 using System;
 using System.Diagnostics;
@@ -133,9 +133,10 @@ namespace eShopOnContainers.Core.ViewModels
 
         public override Task InitializeAsync(object navigationData)
         {
-            if (navigationData is LogoutParameter)
+            if(navigationData is LogoutParameter)
             {
                 var logoutParameter = (LogoutParameter)navigationData;
+
                 if (logoutParameter.Logout)
                 {
                     Logout();

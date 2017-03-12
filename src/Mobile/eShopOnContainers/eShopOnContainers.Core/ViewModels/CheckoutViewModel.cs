@@ -1,5 +1,5 @@
 ﻿using eShopOnContainers.Core.Models.Navigation;
-using eShopOnContainers.Core.ViewModels.Base;
+using eShopOnContainers.ViewModels.Base;
 using System.Windows.Input;
 using Xamarin.Forms;
 using System.Threading.Tasks;
@@ -138,7 +138,7 @@ namespace eShopOnContainers.Core.ViewModels
                 await _basketService.ClearBasketAsync(_shippingAddress.Id.ToString(), authToken);
 
                 // Reset Basket badge
-                var basketViewModel = ViewModelLocator.Resolve<BasketViewModel>();
+                var basketViewModel = ViewModelLocator.Instance.Resolve<BasketViewModel>();
                 basketViewModel.BadgeCount = 0;
 
                 // Navigate to Orders
