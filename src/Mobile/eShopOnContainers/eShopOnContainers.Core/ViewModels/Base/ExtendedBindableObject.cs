@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using Xamarin.Forms;
 
-namespace eShopOnContainers.Core.ViewModels.Base
+namespace eShopOnContainers.ViewModels.Base
 {
     public abstract class ExtendedBindableObject : BindableObject
     {

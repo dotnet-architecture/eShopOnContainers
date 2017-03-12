@@ -1,10 +1,9 @@
 ﻿using eShopOnContainers.Core.Helpers;
 using eShopOnContainers.Core.ViewModels;
 using eShopOnContainers.Core.Views;
-using eShopOnContainers.Core.ViewModels.Base;
+using eShopOnContainers.ViewModels.Base;
 using System;
-using System.Globalization;
-using System.Reflection;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
@@ -12,12 +11,21 @@ namespace eShopOnContainers.Services
 {
     public class NavigationService : INavigationService
     {
-		protected Application CurrentApplication
+        protected readonly Dictionary<Type, Type> _mappings;
+
+        protected Application CurrentApplication
         {
             get
             {
                 return Application.Current;
             }
+        }
+
+        public NavigationService()
+        {
+            _mappings = new Dictionary<Type, Type>();
+
+            CreatePageViewModelMappings();
         }
 
         public Task InitializeAsync()
@@ -92,7 +100,7 @@ namespace eShopOnContainers.Services
 
         protected virtual async Task InternalNavigateToAsync(Type viewModelType, object parameter)
         {
-            Page page = CreatePage(viewModelType, parameter);
+            Page page = CreateAndBindPage(viewModelType, parameter);
 
             if (page is LoginView)
             {
@@ -101,6 +109,7 @@ namespace eShopOnContainers.Services
             else
             {
                 var navigationPage = CurrentApplication.MainPage as CustomNavigationView;
+
                 if (navigationPage != null)
                 {
                     await navigationPage.PushAsync(page);
@@ -116,23 +125,40 @@ namespace eShopOnContainers.Services
 
         protected Type GetPageTypeForViewModel(Type viewModelType)
         {
-			var viewName = viewModelType.FullName.Replace("Model", string.Empty);
-			var viewModelAssemblyName = viewModelType.GetTypeInfo().Assembly.FullName;
-			var viewAssemblyName = string.Format(CultureInfo.InvariantCulture, "{0}, {1}", viewName, viewModelAssemblyName);
-			var viewType = Type.GetType(viewAssemblyName);
-			return viewType;
+            if (!_mappings.ContainsKey(viewModelType))
+            {
+                throw new KeyNotFoundException($"No map for ${viewModelType} was found on navigation mappings");
+            }
+
+            return _mappings[viewModelType];
         }
 
-        protected Page CreatePage(Type viewModelType, object parameter)
+        protected Page CreateAndBindPage(Type viewModelType, object parameter)
         {
             Type pageType = GetPageTypeForViewModel(viewModelType);
+
             if (pageType == null)
             {
-				throw new Exception($"Cannot locate page type for {viewModelType}");
+                throw new Exception($"Mapping type for {viewModelType} is not a page");
             }
 
             Page page = Activator.CreateInstance(pageType) as Page;
+            ViewModelBase viewModel = ViewModelLocator.Instance.Resolve(viewModelType) as ViewModelBase;
+            page.BindingContext = viewModel;
+
             return page;
+        }
+
+        private void CreatePageViewModelMappings()
+        {
+            _mappings.Add(typeof(BasketViewModel), typeof(BasketView));
+            _mappings.Add(typeof(CatalogViewModel), typeof(CatalogView));
+            _mappings.Add(typeof(CheckoutViewModel), typeof(CheckoutView));
+            _mappings.Add(typeof(LoginViewModel), typeof(LoginView));
+            _mappings.Add(typeof(MainViewModel), typeof(MainView));
+            _mappings.Add(typeof(OrderDetailViewModel), typeof(OrderDetailView));
+            _mappings.Add(typeof(ProfileViewModel), typeof(ProfileView));
+            _mappings.Add(typeof(SettingsViewModel), typeof(SettingsView));
         }
     }
 }

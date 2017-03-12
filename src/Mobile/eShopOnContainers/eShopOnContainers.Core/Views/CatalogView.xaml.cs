@@ -47,8 +47,7 @@ namespace eShopOnContainers.Core.Views
         {
             base.OnBindingContextChanged();
 
-			if (_filterView != null)
-	            _filterView.BindingContext = BindingContext;
+            _filterView.BindingContext = BindingContext;
         }
 
         private void OnFilterChanged(object sender, EventArgs e)
