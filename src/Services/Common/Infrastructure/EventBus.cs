@@ -16,6 +16,7 @@ namespace Microsoft.eShopOnContainers.Services.Common.Infrastructure
     public class EventBus : IEventBus
     {
         private readonly string _brokerName = "event_bus";
+        private readonly string _connectionString;
         private readonly Dictionary<string, List<IIntegrationEventHandler>>  _handlers;
         private readonly List<Type> _eventTypes;
 
@@ -23,15 +24,16 @@ namespace Microsoft.eShopOnContainers.Services.Common.Infrastructure
         private string _queueName;
         
 
-        public EventBus()
+        public EventBus(string connectionString)
         {
+            _connectionString = connectionString;
             _handlers = new Dictionary<string, List<IIntegrationEventHandler>>();
             _eventTypes = new List<Type>();
         }
         public void Publish(IIntegrationEvent @event)
         {
             var eventName = @event.GetType().Name;
-            var factory = new ConnectionFactory() { HostName = "172.20.0.1" };
+            var factory = new ConnectionFactory() { HostName = _connectionString };
             using (var connection = factory.CreateConnection())
             using (var channel = connection.CreateModel())
             {
@@ -105,7 +107,7 @@ namespace Microsoft.eShopOnContainers.Services.Common.Infrastructure
             }
             else
             {
-                var factory = new ConnectionFactory() { HostName = "172.20.0.1" };
+                var factory = new ConnectionFactory() { HostName = _connectionString };
                 var connection = factory.CreateConnection();
                 var channel = connection.CreateModel();
 

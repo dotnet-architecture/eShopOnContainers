@@ -28,8 +28,7 @@ namespace Basket.API.Events
 
         private async Task UpdateBasket(int itemId, decimal newPrice, CustomerBasket basket)
         {
-            //TODO here seems to be a problem with the format
-            var itemsToUpdate = basket?.Items?.Where(x => int.Parse(x.Id) == itemId).ToList();
+            var itemsToUpdate = basket?.Items?.Where(x => int.Parse(x.ProductId) == itemId).ToList();
             if (itemsToUpdate != null)
             {
                 foreach (var item in itemsToUpdate)
@@ -39,7 +38,7 @@ namespace Basket.API.Events
                     item.OldUnitPrice = originalPrice;
                 }
                 await _repository.UpdateBasket(basket);
-            }
+            }           
         }
     }
 }
