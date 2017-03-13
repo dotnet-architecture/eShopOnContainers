@@ -51,7 +51,9 @@ namespace eShopOnContainers.Core.Services.RequestProvider
                 AddHeaderParameter(httpClient, header);
             }
 
-            HttpResponseMessage response = await httpClient.GetAsync(uri);
+            var content = new StringContent(JsonConvert.SerializeObject(data));
+            content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            HttpResponseMessage response = await httpClient.PostAsync(uri, content);
 
             await HandleResponse(response);
 
