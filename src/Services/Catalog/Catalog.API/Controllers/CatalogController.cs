@@ -5,7 +5,9 @@ using Microsoft.eShopOnContainers.Services.Catalog.API.Model;
 using Microsoft.eShopOnContainers.Services.Catalog.API.ViewModel;
 using Microsoft.eShopOnContainers.Services.Common.Infrastructure;
 using Microsoft.eShopOnContainers.Services.Common.Infrastructure.Catalog;
+using Microsoft.eShopOnContainers.Services.Common.Infrastructure.Data;
 using Microsoft.Extensions.Options;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -104,12 +106,6 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
             var model = new PaginatedItemsViewModel<CatalogItem>(
                 pageIndex, pageSize, totalItems, itemsOnPage);
 
-            //hook to run integration tests until POST methods are created
-            if (catalogTypeId.HasValue && catalogTypeId == 1)
-            {
-                _eventBus.Publish(new CatalogPriceChanged(2, 10.4M, 8.4M));
-            }
-
             return Ok(model);
         }
 
@@ -153,11 +149,12 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
                 _context.CatalogItems.Update(item);
                 await _context.SaveChangesAsync();
 
-                _eventBus.Publish(new CatalogPriceChanged(item.Id, item.Price, oldPrice));
+                var @event = new CatalogPriceChanged(item.Id, item.Price, oldPrice);
+                await ProcessEventAsync(@event);
             }
 
             return Ok();
-        }
+        }        
 
         private List<CatalogItem> ComposePicUri(List<CatalogItem> items) {
             var baseUri = _settings.Value.ExternalCatalogBaseUrl;
@@ -167,6 +164,23 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
             });
 
             return items;
+        }
+
+        private async Task ProcessEventAsync(IntegrationEventBase @event)
+        {
+            _eventBus.Publish(@event);
+            var eventData = new IntegrationEvent(@event);
+            eventData.TimesSent++;
+            eventData.State = EventStateEnum.Sent;            
+            try
+            {
+                _context.IntegrationEvents.Add(eventData);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                var t = ex.Message;                
+            }            
         }
     }
 }

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Microsoft.eShopOnContainers.Services.Common.Infrastructure.Catalog
 {
-    public class CatalogPriceChanged : IIntegrationEvent
+    public class CatalogPriceChanged : IntegrationEventBase
     {        
         public int ItemId { get; private set; }
 

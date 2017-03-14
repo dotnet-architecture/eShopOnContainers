@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace Microsoft.eShopOnContainers.Services.Common.Infrastructure
 {
     public interface IIntegrationEventHandler<in TIntegrationEvent> : IIntegrationEventHandler 
-        where TIntegrationEvent: IIntegrationEvent
+        where TIntegrationEvent: IntegrationEventBase
     {
         Task Handle(TIntegrationEvent @event);
     }

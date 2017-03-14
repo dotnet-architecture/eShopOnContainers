@@ -4,7 +4,10 @@ using System.Text;
 
 namespace Microsoft.eShopOnContainers.Services.Common.Infrastructure
 {
-    public interface IIntegrationEvent
-    {        
+    public enum EventStateEnum
+    {
+        NotSend = 0,
+        Sent = 1,
+        SendingFailed = 2
     }
 }
