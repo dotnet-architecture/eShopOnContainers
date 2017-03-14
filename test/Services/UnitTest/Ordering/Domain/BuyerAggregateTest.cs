@@ -103,4 +103,25 @@ public class BuyerAggregateTest
         //Assert
         Assert.True(result);
     }
+
+    [Fact]
+    public void Add_new_PaymentMethod_raises_new_event()
+    {
+        //Arrange    
+        var alias = "fakeAlias";
+        var orderId = 1;
+        var cardTypeId = 5;
+        var cardNumber = "12";
+        var cardSecurityNumber = "123";
+        var cardHolderName = "FakeName";
+        var cardExpiration = DateTime.Now.AddYears(1);
+        var expectedResult = 1;
+
+        //Act 
+        var fakeBuyer = new Buyer(Guid.NewGuid().ToString());
+        fakeBuyer.AddPaymentMethod(cardTypeId, alias, cardNumber, cardSecurityNumber, cardHolderName, cardExpiration, orderId);
+
+        //Assert
+        Assert.Equal(fakeBuyer.Events.Count, expectedResult);
+    }
 }
