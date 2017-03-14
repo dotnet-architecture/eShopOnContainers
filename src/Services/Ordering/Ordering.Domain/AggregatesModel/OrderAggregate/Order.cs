@@ -1,5 +1,7 @@
-﻿using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.BuyerAggregate;
+﻿using MediatR;
+using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.BuyerAggregate;
 using Microsoft.eShopOnContainers.Services.Ordering.Domain.Seedwork;
+using Ordering.Domain.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +19,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
         public Address Address { get; private set; }
 
         public Buyer Buyer { get; private set; }
-        private int _buyerId;
+        private int? _buyerId;
 
         public OrderStatus OrderStatus { get; private set; }
         private int _orderStatusId;
@@ -36,11 +38,12 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
         //https://msdn.microsoft.com/en-us/library/e78dcd75(v=vs.110).aspx 
 
         public PaymentMethod PaymentMethod { get; private set; }
-        private int _paymentMethodId;
+        private int? _paymentMethodId;
 
         protected Order() { }
 
-        public Order(int buyerId, int paymentMethodId, Address address)
+        public Order(Address address, int cardTypeId, string cardNumber, string cardSecurityNumber,
+                string cardHolderName, DateTime cardExpiration, int? buyerId = null, int? paymentMethodId = null)
         {
             _orderItems = new List<OrderItem>();
             _buyerId = buyerId;
@@ -48,6 +51,8 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
             _orderStatusId = OrderStatus.InProcess.Id;
             _orderDate = DateTime.UtcNow;
             Address = address;
+            AddCreatedOrderEvent(cardTypeId, cardNumber,
+                cardSecurityNumber, cardHolderName, cardExpiration);
         }
 
         // DDD Patterns comment
@@ -74,9 +79,28 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
                 //add validated new order item
 
                 var orderItem = new OrderItem(productId, productName, unitPrice, discount, pictureUrl, units);
-
                 _orderItems.Add(orderItem);
             }
+        }
+
+        public void SetPaymentId(int id)
+        {
+            _paymentMethodId = id;
+        }
+
+        public void SetBuyerId(int id)
+        {
+            _buyerId = id;
+        }
+
+        private void AddCreatedOrderEvent(int cardTypeId, string cardNumber,
+                string cardSecurityNumber, string cardHolderName, DateTime cardExpiration)
+        {
+            var @orderCreatedEvent = new OrderCreated(
+                this, cardTypeId, cardNumber, cardSecurityNumber,
+                cardHolderName, cardExpiration);
+
+            AddEvent(@orderCreatedEvent);
         }
     }
 }

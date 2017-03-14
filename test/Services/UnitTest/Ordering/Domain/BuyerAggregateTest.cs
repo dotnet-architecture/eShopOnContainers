@@ -40,11 +40,12 @@ public class BuyerAggregateTest
         var securityNumber = "1234";
         var cardHolderName = "FakeHolderNAme";
         var expiration = DateTime.Now.AddYears(1);
+        var orderId = 1;
         var identity = new Guid().ToString();
         var fakeBuyerItem = new Buyer(identity);
 
         //Act
-        var result = fakeBuyerItem.AddPaymentMethod(cardTypeId, alias, cardNumber, securityNumber, cardHolderName, expiration);
+        var result = fakeBuyerItem.AddPaymentMethod(cardTypeId, alias, cardNumber, securityNumber, cardHolderName, expiration, orderId);
 
         //Assert
         Assert.NotNull(result);
