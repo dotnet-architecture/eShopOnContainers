@@ -149,7 +149,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
                 _context.CatalogItems.Update(item);
                 await _context.SaveChangesAsync();
 
-                var @event = new CatalogPriceChanged(item.Id, item.Price, oldPrice);
+                var @event = new ProductPriceChanged(item.Id, item.Price, oldPrice);
                 await ProcessEventAsync(@event);
             }
 

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Microsoft.eShopOnContainers.Services.Common.Infrastructure.Catalog
 {
-    public class CatalogPriceChanged : IntegrationEventBase
+    public class ProductPriceChanged : IntegrationEventBase
     {        
         public int ItemId { get; private set; }
 
@@ -12,7 +12,7 @@ namespace Microsoft.eShopOnContainers.Services.Common.Infrastructure.Catalog
 
         public decimal OldPrice { get; set; }
 
-        public CatalogPriceChanged(int itemId, decimal newPrice, decimal oldPrice)
+        public ProductPriceChanged(int itemId, decimal newPrice, decimal oldPrice)
         {
             ItemId = itemId;
             NewPrice = newPrice;

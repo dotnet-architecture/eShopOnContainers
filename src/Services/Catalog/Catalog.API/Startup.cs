@@ -77,7 +77,7 @@
 
             var serviceProvider = services.BuildServiceProvider();
             var configuration = serviceProvider.GetRequiredService<IOptionsSnapshot<Settings>>().Value;
-            services.AddSingleton<IEventBus>(new EventBus(configuration.EventBusConnection));
+            services.AddSingleton<IEventBus>(new EventBusRabbitMQ(configuration.EventBusConnection));
             
             services.AddMvc();
         }

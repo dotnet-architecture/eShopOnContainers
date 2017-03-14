@@ -8,15 +8,15 @@ using System.Threading.Tasks;
 
 namespace Basket.API.Events
 {
-    public class CatalogPriceChangedHandler : IIntegrationEventHandler<CatalogPriceChanged>
+    public class ProductPriceChangedHandler : IIntegrationEventHandler<ProductPriceChanged>
     {
         private readonly IBasketRepository _repository;
-        public CatalogPriceChangedHandler(IBasketRepository repository)
+        public ProductPriceChangedHandler(IBasketRepository repository)
         {
             _repository = repository;
         }
 
-        public async Task Handle(CatalogPriceChanged @event)
+        public async Task Handle(ProductPriceChanged @event)
         {
             var userIds = await _repository.GetUsers();
             foreach (var id in userIds)

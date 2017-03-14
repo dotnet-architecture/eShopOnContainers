@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.Services.Common.Infrastructure
 {
-    public class EventBus : IEventBus
+    public class EventBusRabbitMQ : IEventBus
     {
         private readonly string _brokerName = "event_bus";
         private readonly string _connectionString;
@@ -24,7 +24,7 @@ namespace Microsoft.eShopOnContainers.Services.Common.Infrastructure
         private string _queueName;
         
 
-        public EventBus(string connectionString)
+        public EventBusRabbitMQ(string connectionString)
         {
             _connectionString = connectionString;
             _handlers = new Dictionary<string, List<IIntegrationEventHandler>>();
