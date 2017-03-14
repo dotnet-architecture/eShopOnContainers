@@ -22,7 +22,7 @@ export class ConfigurationService {
     constructor(private http: Http, private storageService: StorageService) { }
     
     load() {
-        let url = "http://localhost:5104/Home/Configuration";
+        let url = "/Home/Configuration";
         this.http.get(url).subscribe((response: Response) => {
             console.log('server settings loaded');
             this.serverSettings = response.json();

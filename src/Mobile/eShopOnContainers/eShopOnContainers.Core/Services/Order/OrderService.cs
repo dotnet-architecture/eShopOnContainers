@@ -22,28 +22,23 @@ namespace eShopOnContainers.Core.Services.Order
 
             string uri = builder.ToString();
 
-            await _requestProvider.PostAsync(uri, newOrder, token);
+            await _requestProvider.PostAsync(uri, newOrder, token, "x-requestid");
         }
 
         public async Task<ObservableCollection<Models.Orders.Order>> GetOrdersAsync(string token)
         {
-            try
-            {
-                UriBuilder builder = new UriBuilder(GlobalSetting.Instance.OrdersEndpoint);
+        
+            UriBuilder builder = new UriBuilder(GlobalSetting.Instance.OrdersEndpoint);
 
-                builder.Path = "api/v1/orders";
+            builder.Path = "api/v1/orders";
 
-                string uri = builder.ToString();
+            string uri = builder.ToString();
 
-                ObservableCollection<Models.Orders.Order> orders =
-                    await _requestProvider.GetAsync<ObservableCollection<Models.Orders.Order>>(uri, token);
+            ObservableCollection<Models.Orders.Order> orders =
+                await _requestProvider.GetAsync<ObservableCollection<Models.Orders.Order>>(uri, token);
 
-                return orders;
-            }
-            catch
-            {
-                return new ObservableCollection<Models.Orders.Order>();
-            }
+            return orders;
+            
         }
 
         public async Task<Models.Orders.Order> GetOrderAsync(int orderId, string token)

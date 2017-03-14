@@ -32,9 +32,9 @@ namespace eShopOnContainers.Core.ViewModels
             }
         }
 
-        public ICommand LogoutCommand => new Command(LogoutAsync);
+        public ICommand LogoutCommand => new Command(async () => await LogoutAsync());
 
-        public ICommand OrderDetailCommand => new Command<Order>(OrderDetail);
+        public ICommand OrderDetailCommand => new Command<Order>(async (order) => await OrderDetailAsync(order));
 
         public override async Task InitializeAsync(object navigationData)
         {
@@ -48,7 +48,7 @@ namespace eShopOnContainers.Core.ViewModels
             IsBusy = false;
         }
 
-        private async void LogoutAsync()
+        private async Task LogoutAsync()
         {
             IsBusy = true;
 
@@ -59,9 +59,9 @@ namespace eShopOnContainers.Core.ViewModels
             IsBusy = false;
         }
 
-        private void OrderDetail(Order order)
+        private async Task OrderDetailAsync(Order order)
         {
-            NavigationService.NavigateToAsync<OrderDetailViewModel>(order);
+            await NavigationService.NavigateToAsync<OrderDetailViewModel>(order);
         }
     }
 }

@@ -1,68 +1,48 @@
-﻿namespace FunctionalTests.Services.Ordering
-{
-    using Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands;
-    using Newtonsoft.Json;
-    using System;
-    using System.Net.Http;
-    using System.Text;
-    using System.Threading.Tasks;
-    using Xunit;
-    using static Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands.CreateOrderCommand;
+﻿using Microsoft.AspNetCore.TestHost;
+using Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands;
+using Microsoft.eShopOnContainers.WebMVC.ViewModels;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
+using Xunit;
+using static Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands.CreateOrderCommand;
 
-    public class OrderingScenarios
-        : OrderingScenarioBase
+namespace FunctionalTests.Services.Ordering
+{
+    public class OrderingScenarios : OrderingScenariosBase
     {
         [Fact]
-        public async Task Get_get_all_stored_orders_and_response_ok_status_code()
+        public async Task Create_order_and_return_the_order_by_id()
         {
             using (var server = CreateServer())
             {
-                var response = await server.CreateClient()
-                    .GetAsync(Get.Orders);
+                var client = server.CreateClient();
 
-                response.EnsureSuccessStatusCode();
+                //Arrange               
+                await client.PostAsync(Post.AddNewOrder, new StringContent(BuildOrder(), UTF8Encoding.UTF8, "application/json"));
+
+                var ordersResponse = await client.GetAsync(Get.Orders);
+                var responseBody = await ordersResponse.Content.ReadAsStringAsync();
+                dynamic orders = JsonConvert.DeserializeObject(responseBody);                
+                string orderId = orders[0].ordernumber;
+
+                //Act
+                var order= await client.GetAsync(Get.OrderBy(int.Parse(orderId)));
+                var orderBody = await order.Content.ReadAsStringAsync();
+                var result = JsonConvert.DeserializeObject<Order>(orderBody);
+
+                //Assert
+                Assert.Equal(orderId, result.OrderNumber);
+                Assert.Equal("inprocess", result.Status);
+                Assert.Equal(1, result.OrderItems.Count);
+                Assert.Equal(10, result.OrderItems[0].UnitPrice);
             }
         }
-
-        [Fact]
-        public async Task Get_get_order_and_response_ok_status_code()
-        {
-            using (var server = CreateServer())
-            {
-                var response = await server.CreateClient()
-                    .GetAsync(Get.OrderBy(31));
-
-                response.EnsureSuccessStatusCode();
-            }
-        }
-
-        [Fact]
-        public async Task AddNewOrder_add_new_order_and_response_ok_status_code()
-        {
-            using (var server = CreateServer())
-            {
-                var content = new StringContent(BuildOrder(), UTF8Encoding.UTF8, "application/json");
-                var response = await server.CreateClient()
-                    .PostAsync(Post.AddNewOrder, content);
-
-                response.EnsureSuccessStatusCode();
-            }
-        }
-
-        [Fact]
-        public async Task AddNewOrder_response_bad_request_if_card_expiration_is_invalid()
-        {
-            using (var server = CreateServer())
-            {
-                var content = new StringContent(BuildOrderWithInvalidExperationTime(), UTF8Encoding.UTF8, "application/json");
-
-                var response = await server.CreateClient()
-                    .PostAsync(Post.AddNewOrder, content);
-
-                Assert.True(response.StatusCode == System.Net.HttpStatusCode.BadRequest);
-            }
-        }
-
+       
         string BuildOrder()
         {
             var order = new CreateOrderCommand(
@@ -86,23 +66,6 @@
                 Units = 1,
                 ProductName = "Some name"
             });
-
-            return JsonConvert.SerializeObject(order);
-        }
-        string BuildOrderWithInvalidExperationTime()
-        {
-            var order = new CreateOrderCommand(
-                cardExpiration: DateTime.UtcNow.AddYears(-1),
-                cardNumber: "5145-555-5555",
-                cardHolderName: "Jhon Senna",
-                cardSecurityNumber: "232",
-                cardTypeId: 1,
-                city: "Redmon",
-                country: "USA",
-                state: "WA",
-                street: "One way",
-                zipcode: "zipcode"
-            );
 
             return JsonConvert.SerializeObject(order);
         }

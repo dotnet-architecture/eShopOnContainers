@@ -109,15 +109,7 @@
 
             app.UseCors("CorsPolicy");
 
-            var identityUrl = Configuration.GetValue<string>("IdentityUrl");
-
-            app.UseIdentityServerAuthentication(new IdentityServerAuthenticationOptions
-            {
-                Authority = identityUrl.ToString(),
-                ScopeName = "orders",
-                RequireHttpsMetadata = false
-            });
-
+            ConfigureAuth(app);
 
             app.UseMvcWithDefaultRoute();
 
@@ -125,6 +117,17 @@
                 .UseSwaggerUi();
 
             OrderingContextSeed.SeedAsync(app).Wait();
+        }
+
+        protected virtual void ConfigureAuth(IApplicationBuilder app)
+        {
+            var identityUrl = Configuration.GetValue<string>("IdentityUrl");
+            app.UseIdentityServerAuthentication(new IdentityServerAuthenticationOptions
+            {
+                Authority = identityUrl.ToString(),
+                ScopeName = "orders",
+                RequireHttpsMetadata = false
+            });
         }
     }
 }
