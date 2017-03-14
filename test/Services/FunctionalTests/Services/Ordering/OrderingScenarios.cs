@@ -70,26 +70,6 @@ namespace FunctionalTests.Services.Ordering
             });
 
             return JsonConvert.SerializeObject(order);
-        }
-
-        string BuildOrderWithInvalidExperationTime()
-        {
-            var order = new CreateOrderCommand(
-                cardExpiration: DateTime.UtcNow.AddYears(-1),
-                cardNumber: "5145-555-5555",
-                cardHolderName: "Jhon Senna",
-                cardSecurityNumber: "232",
-                cardTypeId: 1,
-                city: "Redmon",
-                country: "USA",
-                state: "WA",
-                street: "One way",
-                zipcode: "zipcode",
-                paymentId: 1,
-                buyerId: 3
-            );
-
-            return JsonConvert.SerializeObject(order);
-        }
+        }       
     }
 }
