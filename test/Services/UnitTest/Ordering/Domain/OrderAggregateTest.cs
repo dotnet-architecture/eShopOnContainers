@@ -1,4 +1,5 @@
 ﻿using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
+using Ordering.Domain.Events;
 using System;
 using Xunit;
 
@@ -89,5 +90,76 @@ public class OrderAggregateTest
 
         //Assert
         Assert.Throws<ArgumentException>(() => fakeOrderItem.AddUnits(-1));
+    }
+
+    [Fact]
+    public void Add_new_Order_raises_new_event()
+    {
+        //Arrange    
+        var street = "fakeStreet";
+        var city = "FakeCity";
+        var state = "fakeState";
+        var country = "fakeCountry";
+        var zipcode = "FakeZipCode";
+        var cardTypeId = 5;
+        var cardNumber = "12";
+        var cardSecurityNumber = "123";
+        var cardHolderName = "FakeName";
+        var cardExpiration = DateTime.Now.AddYears(1);
+        var expectedResult = 1;
+
+        //Act 
+        var fakeOrder = new Order(new Address(street, city, state, country, zipcode), cardTypeId, cardNumber, cardSecurityNumber, cardHolderName, cardExpiration);
+
+        //Assert
+        Assert.Equal(fakeOrder.Events.Count, expectedResult);
+    }
+
+    [Fact]
+    public void Add_event_Order_explicitly_raises_new_event()
+    {
+        //Arrange    
+        var street = "fakeStreet";
+        var city = "FakeCity";
+        var state = "fakeState";
+        var country = "fakeCountry";
+        var zipcode = "FakeZipCode";
+        var cardTypeId = 5;
+        var cardNumber = "12";
+        var cardSecurityNumber = "123";
+        var cardHolderName = "FakeName";
+        var cardExpiration = DateTime.Now.AddYears(1);
+        var expectedResult = 2;
+
+        //Act 
+        var fakeOrder = new Order(new Address(street, city, state, country, zipcode), cardTypeId, cardNumber, cardSecurityNumber, cardHolderName, cardExpiration);
+        fakeOrder.AddEvent(new OrderCreated(fakeOrder,cardTypeId,cardNumber,cardSecurityNumber,cardHolderName,cardExpiration));
+        //Assert
+        Assert.Equal(fakeOrder.Events.Count, expectedResult);
+    }
+
+    [Fact]
+    public void Remove_event_Order_explicitly()
+    {
+        //Arrange    
+        var street = "fakeStreet";
+        var city = "FakeCity";
+        var state = "fakeState";
+        var country = "fakeCountry";
+        var zipcode = "FakeZipCode";
+        var cardTypeId = 5;
+        var cardNumber = "12";
+        var cardSecurityNumber = "123";
+        var cardHolderName = "FakeName";
+        var cardExpiration = DateTime.Now.AddYears(1);
+        var fakeOrder = new Order(new Address(street, city, state, country, zipcode), cardTypeId, cardNumber, cardSecurityNumber, cardHolderName, cardExpiration);
+        var @fakeEvent = new OrderCreated(fakeOrder, cardTypeId, cardNumber, cardSecurityNumber, cardHolderName, cardExpiration);
+        var expectedResult = 1;
+
+        //Act         
+        fakeOrder.AddEvent(@fakeEvent);
+        fakeOrder.RemoveEvent(@fakeEvent);
+        //Assert
+        Assert.Equal(fakeOrder.Events.Count, expectedResult);
     }
 }

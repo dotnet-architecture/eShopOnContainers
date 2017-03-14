@@ -1,13 +1,16 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.Seedwork
 {
     using System;
-
+    using MediatR;
+    using System.Collections.Generic;
 
     public abstract class Entity
     {
 
         int? _requestedHashCode;
         int _Id;
+
+        private List<IAsyncNotification> _events;
 
         public virtual  int Id 
         {
@@ -19,6 +22,19 @@
             {
                 _Id = value;
             }
+        }
+
+        public List<IAsyncNotification> Events => _events;        
+        public void AddEvent(IAsyncNotification eventItem)
+        {
+            _events = _events ?? new List<IAsyncNotification>();
+            _events.Add(eventItem);
+        }
+
+        public void RemoveEvent(IAsyncNotification eventItem)
+        {
+            if (_events is null) return;
+            _events.Remove(eventItem);
         }
 
         public bool IsTransient()

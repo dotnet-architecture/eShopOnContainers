@@ -55,7 +55,9 @@ namespace FunctionalTests.Services.Ordering
                 country: "USA",
                 state: "WA",
                 street: "One way",
-                zipcode: "zipcode"
+                zipcode: "zipcode",
+                paymentId: 1,
+                buyerId: 3
             );
 
             order.AddOrderItem(new OrderItemDTO()
@@ -66,6 +68,26 @@ namespace FunctionalTests.Services.Ordering
                 Units = 1,
                 ProductName = "Some name"
             });
+
+            return JsonConvert.SerializeObject(order);
+        }
+
+        string BuildOrderWithInvalidExperationTime()
+        {
+            var order = new CreateOrderCommand(
+                cardExpiration: DateTime.UtcNow.AddYears(-1),
+                cardNumber: "5145-555-5555",
+                cardHolderName: "Jhon Senna",
+                cardSecurityNumber: "232",
+                cardTypeId: 1,
+                city: "Redmon",
+                country: "USA",
+                state: "WA",
+                street: "One way",
+                zipcode: "zipcode",
+                paymentId: 1,
+                buyerId: 3
+            );
 
             return JsonConvert.SerializeObject(order);
         }

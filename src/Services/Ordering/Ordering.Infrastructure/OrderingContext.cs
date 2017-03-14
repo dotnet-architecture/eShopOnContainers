@@ -1,10 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.BuyerAggregate;
 using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
 using Microsoft.eShopOnContainers.Services.Ordering.Domain.Seedwork;
+using Ordering.Infrastructure;
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
 {
@@ -26,7 +30,12 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
 
         public DbSet<OrderStatus> OrderStatus { get; set; }
 
-        public OrderingContext(DbContextOptions options) : base(options) { }
+        private readonly IMediator _mediator;
+
+        public OrderingContext(DbContextOptions options, IMediator mediator) : base(options)
+        {
+            _mediator = mediator;
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -38,7 +47,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
             modelBuilder.Entity<OrderItem>(ConfigureOrderItems);
             modelBuilder.Entity<CardType>(ConfigureCardTypes);
             modelBuilder.Entity<OrderStatus>(ConfigureOrderStatus);
-            modelBuilder.Entity<Buyer>(ConfigureBuyer);
+            modelBuilder.Entity<Buyer>(ConfigureBuyer); 
         }
 
         private void ConfigureRequests(EntityTypeBuilder<ClientRequest> requestConfiguration)
@@ -65,6 +74,8 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
 
             buyerConfiguration.HasKey(b => b.Id);
 
+            buyerConfiguration.Ignore(b => b.Events);
+
             buyerConfiguration.Property(b => b.Id)
                 .ForSqlServerUseSequenceHiLo("buyerseq", DEFAULT_SCHEMA);
 
@@ -90,6 +101,8 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
             paymentConfiguration.ToTable("paymentmethods", DEFAULT_SCHEMA);
 
             paymentConfiguration.HasKey(b => b.Id);
+
+            paymentConfiguration.Ignore(b => b.Events);
 
             paymentConfiguration.Property(b => b.Id)
                 .ForSqlServerUseSequenceHiLo("paymentseq", DEFAULT_SCHEMA);
@@ -126,13 +139,15 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
 
             orderConfiguration.HasKey(o => o.Id);
 
+            orderConfiguration.Ignore(b => b.Events);
+
             orderConfiguration.Property(o => o.Id)
                 .ForSqlServerUseSequenceHiLo("orderseq", DEFAULT_SCHEMA);
 
             orderConfiguration.Property<DateTime>("OrderDate").IsRequired();
-            orderConfiguration.Property<int>("BuyerId").IsRequired();
+            orderConfiguration.Property<int?>("BuyerId").IsRequired(false);
             orderConfiguration.Property<int>("OrderStatusId").IsRequired();
-            orderConfiguration.Property<int>("PaymentMethodId").IsRequired();
+            orderConfiguration.Property<int?>("PaymentMethodId").IsRequired(false);
 
             var navigation = orderConfiguration.Metadata.FindNavigation(nameof(Order.OrderItems));
             // DDD Patterns comment:
@@ -142,10 +157,12 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
             orderConfiguration.HasOne(o => o.PaymentMethod)
                 .WithMany()
                 .HasForeignKey("PaymentMethodId")
+                .IsRequired(false)
                 .OnDelete(DeleteBehavior.Restrict);
 
             orderConfiguration.HasOne(o => o.Buyer)
                 .WithMany()
+                .IsRequired(false)
                 .HasForeignKey("BuyerId");
 
             orderConfiguration.HasOne(o => o.OrderStatus)
@@ -158,6 +175,8 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
             orderItemConfiguration.ToTable("orderItems", DEFAULT_SCHEMA);
 
             orderItemConfiguration.HasKey(o => o.Id);
+
+            orderItemConfiguration.Ignore(b => b.Events);
 
             orderItemConfiguration.Property(o => o.Id)
                 .ForSqlServerUseSequenceHiLo("orderitemseq");
@@ -215,5 +234,12 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
                 .HasMaxLength(200)
                 .IsRequired();
         }
+
+        public async Task<int> SaveEntitiesAsync(CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var result = await base.SaveChangesAsync();
+            await _mediator.RaiseDomainEventsAsync(this);
+            return result;
+        }        
     }
 }
