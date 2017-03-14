@@ -7,9 +7,11 @@
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Infrastructure;
     using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
+    using Microsoft.eShopOnContainers.Services.Common.Infrastructure;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Options;
     using System;
     using System.IO;
     using System.Reflection;
@@ -73,6 +75,10 @@
                     .AllowCredentials());
             });
 
+            var serviceProvider = services.BuildServiceProvider();
+            var configuration = serviceProvider.GetRequiredService<IOptionsSnapshot<Settings>>().Value;
+            services.AddSingleton<IEventBus>(new EventBusRabbitMQ(configuration.EventBusConnection));
+            
             services.AddMvc();
         }
 

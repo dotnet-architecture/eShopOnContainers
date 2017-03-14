@@ -13,6 +13,9 @@ using Microsoft.Extensions.Options;
 using System.Net;
 using Swashbuckle.Swagger.Model;
 using Microsoft.eShopOnContainers.Services.Basket.API.Auth.Server;
+using Microsoft.eShopOnContainers.Services.Common.Infrastructure;
+using Microsoft.eShopOnContainers.Services.Common.Infrastructure.Catalog;
+using Basket.API.Events;
 
 namespace Microsoft.eShopOnContainers.Services.Basket.API
 {
@@ -76,6 +79,17 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             });
 
             services.AddTransient<IBasketRepository, RedisBasketRepository>();
+            services.AddTransient<IIntegrationEventHandler<ProductPriceChanged>, ProductPriceChangedHandler>();
+
+            var serviceProvider = services.BuildServiceProvider();
+            var configuration = serviceProvider.GetRequiredService<IOptionsSnapshot<BasketSettings>>().Value;
+            var eventBus = new EventBusRabbitMQ(configuration.EventBusConnection);
+            services.AddSingleton<IEventBus>(eventBus);
+
+            
+            var catalogPriceHandler = serviceProvider.GetService<IIntegrationEventHandler<ProductPriceChanged>>();
+            eventBus.Subscribe<ProductPriceChanged>(catalogPriceHandler);
+                    
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

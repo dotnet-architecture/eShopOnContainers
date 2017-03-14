@@ -18,17 +18,24 @@
         var item = Model.Items[i];
 
         <article class="esh-basket-items esh-basket-items--border row">
-
-            <section class="esh-basket-item esh-basket-item--middle col-lg-3 hidden-lg-down">
-                <img class="esh-basket-image" src="@item.PictureUrl" />
-            </section>
-            <section class="esh-basket-item esh-basket-item--middle col-xs-3">@item.ProductName</section>
-            <section class="esh-basket-item esh-basket-item--middle col-xs-2">$ @item.UnitPrice</section>
-            <section class="esh-basket-item esh-basket-item--middle col-xs-2">
-                <input type="hidden" name="@("quantities[" + i +"].Key")" value="@item.Id" />
-                <input type="number" class="esh-basket-input" min="1" name="@("quantities[" + i +"].Value")" value="@item.Quantity" />
-            </section>
-            <section class="esh-basket-item esh-basket-item--middle esh-basket-item--mark col-xs-2">$ @Math.Round(item.Quantity * item.UnitPrice, 2)</section>
+            <div>
+                <section class="esh-basket-item esh-basket-item--middle col-lg-3 hidden-lg-down">
+                    <img class="esh-basket-image" src="@item.PictureUrl" />
+                </section>
+                <section class="esh-basket-item esh-basket-item--middle col-xs-3">@item.ProductName</section>
+                <section class="esh-basket-item esh-basket-item--middle col-xs-2">$ @item.UnitPrice</section>
+                <section class="esh-basket-item esh-basket-item--middle col-xs-2">
+                    <input type="hidden" name="@("quantities[" + i +"].Key")" value="@item.Id" />
+                    <input type="number" class="esh-basket-input" min="1" name="@("quantities[" + i +"].Value")" value="@item.Quantity" />
+                </section>
+                <section class="esh-basket-item esh-basket-item--middle esh-basket-item--mark col-xs-2">$ @Math.Round(item.Quantity * item.UnitPrice, 2)</section>
+            </div>
+            @if (item.OldUnitPrice != 0)
+            {
+                <div class="esh-basket-item">
+                    The price of the item has changed. Old price was @item.OldUnitPrice $
+                </div>
+            }
         </article>
     }
 </div>

@@ -3,7 +3,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
 using Microsoft.eShopOnContainers.Services.Catalog.API.Model;
 using Microsoft.eShopOnContainers.Services.Catalog.API.ViewModel;
+using Microsoft.eShopOnContainers.Services.Common.Infrastructure;
+using Microsoft.eShopOnContainers.Services.Common.Infrastructure.Catalog;
+using Microsoft.eShopOnContainers.Services.Common.Infrastructure.Data;
 using Microsoft.Extensions.Options;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,11 +19,13 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
     {
         private readonly CatalogContext _context;
         private readonly IOptionsSnapshot<Settings> _settings;
+        private readonly IEventBus _eventBus;
 
-        public CatalogController(CatalogContext context, IOptionsSnapshot<Settings> settings)
+        public CatalogController(CatalogContext context, IOptionsSnapshot<Settings> settings, IEventBus eventBus)
         {
             _context = context;
             _settings = settings;
+            _eventBus = eventBus;
 
             ((DbContext)context).ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
@@ -41,7 +47,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
             itemsOnPage = ComposePicUri(itemsOnPage);
 
             var model = new PaginatedItemsViewModel<CatalogItem>(
-                pageIndex, pageSize, totalItems, itemsOnPage);
+                pageIndex, pageSize, totalItems, itemsOnPage);           
 
             return Ok(model);
         }
@@ -99,7 +105,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
 
             var model = new PaginatedItemsViewModel<CatalogItem>(
                 pageIndex, pageSize, totalItems, itemsOnPage);
-            
+
             return Ok(model);
         }
 
@@ -125,6 +131,31 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
             return Ok(items);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody]CatalogItem value)
+        {
+            var item = await _context.CatalogItems.SingleOrDefaultAsync(i => i.Id == value.Id);
+
+            if (item == null)
+            {
+                return NotFound();
+            }
+
+            if (item.Price != value.Price)
+            {
+                var oldPrice = item.Price;
+                item.Price = value.Price;
+
+                _context.CatalogItems.Update(item);
+                await _context.SaveChangesAsync();
+
+                var @event = new ProductPriceChanged(item.Id, item.Price, oldPrice);
+                await ProcessEventAsync(@event);
+            }
+
+            return Ok();
+        }        
+
         private List<CatalogItem> ComposePicUri(List<CatalogItem> items) {
             var baseUri = _settings.Value.ExternalCatalogBaseUrl;
             items.ForEach(x =>
@@ -133,6 +164,23 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
             });
 
             return items;
+        }
+
+        private async Task ProcessEventAsync(IntegrationEventBase @event)
+        {
+            _eventBus.Publish(@event);
+            var eventData = new IntegrationEvent(@event);
+            eventData.TimesSent++;
+            eventData.State = EventStateEnum.Sent;            
+            try
+            {
+                _context.IntegrationEvents.Add(eventData);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                var t = ex.Message;                
+            }            
         }
     }
 }
