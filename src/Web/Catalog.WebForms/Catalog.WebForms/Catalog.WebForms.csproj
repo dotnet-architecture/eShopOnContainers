@@ -131,8 +131,11 @@
   <ItemGroup>
     <Content Include="About.aspx" />
     <Content Include="Contact.aspx" />
+    <Content Include="Content\app.component.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\brand_dark.png" />
+    <Content Include="Content\catalog.component.css" />
     <Content Include="Content\fake_product_01.png" />
     <Content Include="Content\fake_product_02.png" />
     <Content Include="Content\fake_product_03.png" />

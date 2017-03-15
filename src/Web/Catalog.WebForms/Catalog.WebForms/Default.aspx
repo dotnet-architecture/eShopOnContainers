@@ -1,9 +1,15 @@
 ﻿<%@ Page Title="Home Page" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="Microsoft.eShopOnContainers.Catalog.WebForms._Default" Async="true" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
+    <section class="esh-catalog-hero">
+        <div class="container">
+            <img class="esh-catalog-title" src="/Content/main_banner_text.png" />
+        </div>
+    </section>
+
     <div class="row">
         <asp:ListView ID="catalogList" runat="server"
-            DataKeyNames="Id" GroupItemCount="4"
+            DataKeyNames="Id" GroupItemCount="2"
             ItemType="eShopOnContainers.Core.Models.Catalog.CatalogItem">
             <EmptyDataTemplate>
                 <table >
@@ -26,19 +32,19 @@
                         <tr>
                             <td>
                                 <a href="ProductDetails.aspx?productID=<%#:Item.Id%>">
-                                    <img src="<%#:Item.PictureUri%>"
+                                    <img  class="esh-catalog-thumbnail"  src="<%#:Item.PictureUri%>"
                                         style="border: solid" /></a>
                             </td>
                         </tr>
                         <tr>
                             <td>
                                 <a href="ProductDetails.aspx?productID=<%#:Item.Id%>">
-                                    <span>
+                                    <span class="esh-catalog-name">
                                         <%#:Item.Name%>
                                     </span>
                                 </a>
                                 <br />
-                                <span>
+                                <span class="esh-catalog-price">
                                     <b>Price: </b><%#:String.Format("{0:c}", Item.Price)%>
                                 </span>
                                 <br />
@@ -48,7 +54,6 @@
                             <td>&nbsp;</td>
                         </tr>
                     </table>
-                    </p>
                 </td>
             </ItemTemplate>
             <LayoutTemplate>
@@ -69,5 +74,14 @@
                 </table>
             </LayoutTemplate>
         </asp:ListView>
+        <asp:DataPager 
+            ID="DataPager1" 
+            PagedControlID="catalogList"
+            PageSize="4"
+            runat="server">
+            <Fields>
+                <asp:NextPreviousPagerField ButtonType="Button" />
+            </Fields>
+        </asp:DataPager>
     </div>
 </asp:Content>
