@@ -55,7 +55,9 @@ namespace FunctionalTests.Services.Ordering
                 country: "USA",
                 state: "WA",
                 street: "One way",
-                zipcode: "zipcode"
+                zipcode: "zipcode",
+                paymentId: 1,
+                buyerId: 3
             );
 
             order.AddOrderItem(new OrderItemDTO()
@@ -68,6 +70,6 @@ namespace FunctionalTests.Services.Ordering
             });
 
             return JsonConvert.SerializeObject(order);
-        }
+        }       
     }
 }
