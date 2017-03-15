@@ -51,6 +51,10 @@
             }
         }
 
+        //public CreateOrderCommand(string city, string street, string state, string country, string zipcode,
+        //   string cardNumber, string cardHolderName, DateTime cardExpiration,
+        //   string cardSecurityNumber, int cardTypeId, int paymentId, int buyerId) : this()
+
         string BuildOrder()
         {
             var order = new CreateOrderCommand(
@@ -63,7 +67,9 @@
                 country: "USA",
                 state: "WA",
                 street: "One way",
-                zipcode: "zipcode"
+                zipcode: "zipcode",
+                paymentId: 1,
+                buyerId: 1               
             );
 
             order.AddOrderItem(new OrderItemDTO()
@@ -89,7 +95,9 @@
                 country: "USA",
                 state: "WA",
                 street: "One way",
-                zipcode: "zipcode"
+                zipcode: "zipcode",
+                buyerId: 1,
+                paymentId:1
             );
 
             return JsonConvert.SerializeObject(order);
