@@ -172,15 +172,10 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
             var eventData = new IntegrationEvent(@event);
             eventData.TimesSent++;
             eventData.State = EventStateEnum.Sent;            
-            try
-            {
-                _context.IntegrationEvents.Add(eventData);
-                await _context.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                var t = ex.Message;                
-            }            
+
+            _context.IntegrationEvents.Add(eventData);
+            await _context.SaveChangesAsync();
+     
         }
     }
 }
