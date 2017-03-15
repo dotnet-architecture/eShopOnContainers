@@ -22,13 +22,13 @@ namespace Basket.API.Events
             foreach (var id in userIds)
             {
                 var basket = await _repository.GetBasket(id);
-                await UpdateBasket(@event.ItemId, @event.NewPrice, basket);
+                await UpdateBasket(@event.ProductId, @event.NewPrice, basket);
             }
         }
 
-        private async Task UpdateBasket(int itemId, decimal newPrice, CustomerBasket basket)
+        private async Task UpdateBasket(int productId, decimal newPrice, CustomerBasket basket)
         {
-            var itemsToUpdate = basket?.Items?.Where(x => int.Parse(x.ProductId) == itemId).ToList();
+            var itemsToUpdate = basket?.Items?.Where(x => int.Parse(x.ProductId) == productId).ToList();
             if (itemsToUpdate != null)
             {
                 foreach (var item in itemsToUpdate)
