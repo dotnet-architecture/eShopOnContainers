@@ -54,6 +54,11 @@ namespace eShopOnContainers.Identity
 
             services.Configure<AppSettings>(Configuration);
 
+            services.AddDataProtection(opts =>
+            {
+                opts.ApplicationDiscriminator = "eshop.identity";
+            });
+
             services.AddMvc();
 
             services.AddTransient<IEmailSender, AuthMessageSender>();
