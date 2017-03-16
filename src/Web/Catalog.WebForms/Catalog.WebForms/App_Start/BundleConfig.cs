@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Optimization;
 using System.Web.UI;
 
-namespace Microsoft.eShopOnContainers.Catalog.WebForms
+namespace eShopOnContainers.Catalog.WebForms
 {
     public class BundleConfig
     {
@@ -34,7 +34,7 @@ namespace Microsoft.eShopOnContainers.Catalog.WebForms
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                             "~/Scripts/modernizr-*"));
 
-            System.Web.UI.ScriptManager.ScriptResourceMapping.AddDefinition(
+            ScriptManager.ScriptResourceMapping.AddDefinition(
                 "respond",
                 new ScriptResourceDefinition
                 {

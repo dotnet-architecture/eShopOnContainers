@@ -7,7 +7,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Microsoft.AspNet.FriendlyUrls.Resolvers;
 
-namespace Microsoft.eShopOnContainers.Catalog.WebForms
+namespace eShopOnContainers.Catalog.WebForms
 {
     public partial class ViewSwitcher : System.Web.UI.UserControl
     {

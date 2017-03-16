@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Microsoft.eShopOnContainers.Catalog.WebForms {
+namespace eShopOnContainers.Catalog.WebForms {
     
     
     public partial class Site_Mobile {

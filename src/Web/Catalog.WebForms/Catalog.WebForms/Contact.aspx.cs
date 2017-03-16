@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace Microsoft.eShopOnContainers.Catalog.WebForms
+namespace eShopOnContainers.Catalog.WebForms
 {
     public partial class Contact : Page
     {

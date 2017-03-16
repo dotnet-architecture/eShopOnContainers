@@ -4,7 +4,7 @@ using System.Web;
 using System.Web.Routing;
 using Microsoft.AspNet.FriendlyUrls;
 
-namespace Microsoft.eShopOnContainers.Catalog.WebForms
+namespace eShopOnContainers.Catalog.WebForms
 {
     public static class RouteConfig
     {
