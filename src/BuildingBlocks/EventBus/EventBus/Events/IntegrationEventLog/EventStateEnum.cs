@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events
+namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events.IntegrationEventLog
 {
     public enum EventStateEnum
     {

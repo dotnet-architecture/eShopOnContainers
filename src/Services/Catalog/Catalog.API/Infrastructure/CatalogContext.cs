@@ -2,8 +2,8 @@
 {
     using EntityFrameworkCore.Metadata.Builders;
     using Microsoft.EntityFrameworkCore;
-    using Model;  
-    using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
+    using Model;
+    using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events.IntegrationEventLog;
 
     public class CatalogContext : DbContext
     {
