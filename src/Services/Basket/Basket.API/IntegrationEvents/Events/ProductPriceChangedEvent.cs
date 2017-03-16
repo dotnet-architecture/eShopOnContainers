@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Microsoft.eShopOnContainers.Services.Common.Infrastructure.Catalog
+namespace Microsoft.eShopOnContainers.Services.Basket.API.IntegrationEvents.Events
 {
     // Integration Events notes: 
     // An Event is “something that has happened in the past”, therefore its name has to be   

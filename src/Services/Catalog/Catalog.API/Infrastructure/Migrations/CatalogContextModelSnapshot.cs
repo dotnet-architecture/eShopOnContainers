@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
-using Microsoft.eShopOnContainers.Services.Common.Infrastructure;
+using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
 
 namespace Catalog.API.Infrastructure.Migrations
 {
@@ -19,6 +19,28 @@ namespace Catalog.API.Infrastructure.Migrations
                 .HasAnnotation("SqlServer:Sequence:.catalog_hilo", "'catalog_hilo', '', '1', '10', '', '', 'Int64', 'False'")
                 .HasAnnotation("SqlServer:Sequence:.catalog_type_hilo", "'catalog_type_hilo', '', '1', '10', '', '', 'Int64', 'False'")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events.IntegrationEventLogEntry", b =>
+                {
+                    b.Property<Guid>("EventId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Content")
+                        .IsRequired();
+
+                    b.Property<DateTime>("CreationTime");
+
+                    b.Property<string>("EventTypeName")
+                        .IsRequired();
+
+                    b.Property<int>("State");
+
+                    b.Property<int>("TimesSent");
+
+                    b.HasKey("EventId");
+
+                    b.ToTable("IntegrationEventLog");
+                });
 
             modelBuilder.Entity("Microsoft.eShopOnContainers.Services.Catalog.API.Model.CatalogBrand", b =>
                 {
@@ -80,28 +102,6 @@ namespace Catalog.API.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("CatalogType");
-                });
-
-            modelBuilder.Entity("Microsoft.eShopOnContainers.Services.Common.Infrastructure.Data.IntegrationEventLogEntry", b =>
-                {
-                    b.Property<Guid>("EventId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Content")
-                        .IsRequired();
-
-                    b.Property<DateTime>("CreationTime");
-
-                    b.Property<string>("EventTypeName")
-                        .IsRequired();
-
-                    b.Property<int>("State");
-
-                    b.Property<int>("TimesSent");
-
-                    b.HasKey("EventId");
-
-                    b.ToTable("IntegrationEventLog");
                 });
 
             modelBuilder.Entity("Microsoft.eShopOnContainers.Services.Catalog.API.Model.CatalogItem", b =>

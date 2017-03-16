@@ -1,22 +1,17 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Catalog.API
 {
-    using AspNetCore.Http;
-    using Extensions.FileProviders;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Infrastructure;
+    using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
+    using Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ;
     using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
-    using Microsoft.eShopOnContainers.Services.Common.Infrastructure;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
-    using System;
-    using System.IO;
     using System.Reflection;
-    using System.Threading;
-    using System.Threading.Tasks;
 
     public class Startup
     {

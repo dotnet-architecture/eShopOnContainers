@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -11,11 +8,11 @@ using Microsoft.eShopOnContainers.Services.Basket.API.Model;
 using StackExchange.Redis;
 using Microsoft.Extensions.Options;
 using System.Net;
-using Swashbuckle.Swagger.Model;
 using Microsoft.eShopOnContainers.Services.Basket.API.Auth.Server;
-using Microsoft.eShopOnContainers.Services.Common.Infrastructure;
-using Microsoft.eShopOnContainers.Services.Common.Infrastructure.Catalog;
-using Basket.API.IntegrationEvents.EventHandling;
+using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
+using Microsoft.eShopOnContainers.Services.Basket.API.IntegrationEvents.Events;
+using Microsoft.eShopOnContainers.Services.Basket.API.IntegrationEvents.EventHandling;
+using Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ;
 
 namespace Microsoft.eShopOnContainers.Services.Basket.API
 {

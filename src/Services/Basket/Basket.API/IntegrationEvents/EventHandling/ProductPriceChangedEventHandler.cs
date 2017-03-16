@@ -1,12 +1,10 @@
-﻿using Microsoft.eShopOnContainers.Services.Basket.API.Model;
-using Microsoft.eShopOnContainers.Services.Common.Infrastructure;
-using Microsoft.eShopOnContainers.Services.Common.Infrastructure.Catalog;
-using System;
-using System.Collections.Generic;
+﻿using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
+using Microsoft.eShopOnContainers.Services.Basket.API.IntegrationEvents.Events;
+using Microsoft.eShopOnContainers.Services.Basket.API.Model;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Basket.API.IntegrationEvents.EventHandling
+namespace Microsoft.eShopOnContainers.Services.Basket.API.IntegrationEvents.EventHandling
 {
     public class ProductPriceChangedEventHandler : IIntegrationEventHandler<ProductPriceChangedEvent>
     {
