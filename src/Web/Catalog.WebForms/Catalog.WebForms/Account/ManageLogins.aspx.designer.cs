@@ -7,18 +7,18 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace eShopOnContainers.Catalog.WebForms {
+namespace eShopOnContainers.Catalog.WebForms.Account {
     
     
-    public partial class _Default {
+    public partial class ManageLogins {
         
         /// <summary>
-        /// catalogList control.
+        /// successMessage control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ListView catalogList;
+        protected global::System.Web.UI.WebControls.PlaceHolder successMessage;
     }
 }
