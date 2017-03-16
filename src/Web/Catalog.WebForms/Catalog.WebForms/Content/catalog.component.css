@@ -35,7 +35,7 @@
     .esh-catalog-filter option {
         background-color: #00A69C;
     }
-
+*/
 .esh-catalog-label {
     display: inline-block;
     position: relative;
@@ -63,7 +63,7 @@
         width: 10px;
         z-index: 1;
     }
-
+    /*
 .esh-catalog-send {
     background-color: #83D01B;
     color: #FFFFFF;

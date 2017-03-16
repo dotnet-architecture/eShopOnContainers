@@ -1,6 +1,4 @@
-﻿using Autofac;
-using Autofac.Core;
-using eShopOnContainers.Core.Models.Catalog;
+﻿using eShopOnContainers.Core.Models.Catalog;
 using eShopOnContainers.Core.Services.Catalog;
 using System;
 using System.Collections.Generic;
@@ -10,11 +8,12 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace Microsoft.eShopOnContainers.Catalog.WebForms
+namespace eShopOnContainers.Catalog.WebForms
 {
     public partial class _Default : Page
     {
         private ICatalogService catalog;
+        private CatalogItem itemToEdit;
 
         protected _Default() { }
 
@@ -23,23 +22,26 @@ namespace Microsoft.eShopOnContainers.Catalog.WebForms
             this.catalog = catalog;
         }
 
-        protected override void OnLoad(EventArgs e)
-        {
-            RegisterAsyncTask(new PageAsyncTask(LoadCatalogDataAsync));
-
-            base.OnLoad(e);
-        }
-
-        private async Task LoadCatalogDataAsync()
-        {
-            var collection = await catalog?.GetCatalogAsync();
-            catalogList.DataSource = collection;
-            catalogList.DataBind();
-        }
-
         protected void Page_Load(object sender, EventArgs e)
         {
 
+        }
+
+        // The return type can be changed to IEnumerable, however to support
+        // paging and sorting, the following parameters must be added:
+        //     int maximumRows
+        //     int startRowIndex
+        //     out int totalRowCount
+        //     string sortByExpression
+        public async Task<IEnumerable<CatalogItem>> catalogList_GetData()
+        {
+            return await catalog?.GetCatalogAsync();
+        }
+
+        // The id parameter name should match the DataKeyNames value set on the control
+        public async Task catalogList_DeleteItem(int id)
+        {
+            //TODO: Call the service.
         }
     }
 }
