@@ -5,15 +5,15 @@ using Newtonsoft.Json;
 
 namespace Microsoft.eShopOnContainers.Services.Common.Infrastructure.Data
 {
-    public class IntegrationEvent
+    public class IntegrationEventLogEntry
     {
-        public IntegrationEvent(IntegrationEventBase @event)
+        public IntegrationEventLogEntry(IntegrationEvent @event)
         {
             EventId = @event.Id;
             CreationTime = DateTime.UtcNow;
             EventTypeName = @event.GetType().FullName;
             Content = JsonConvert.SerializeObject(@event);
-            State = EventStateEnum.NotSend;
+            State = EventStateEnum.NotPublished;
             TimesSent = 0;
         }
         public Guid EventId { get; private set; }

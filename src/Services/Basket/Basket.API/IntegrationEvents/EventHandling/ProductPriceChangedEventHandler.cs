@@ -6,17 +6,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Basket.API.Events
+namespace Basket.API.IntegrationEvents.EventHandling
 {
-    public class ProductPriceChangedHandler : IIntegrationEventHandler<ProductPriceChanged>
+    public class ProductPriceChangedEventHandler : IIntegrationEventHandler<ProductPriceChangedEvent>
     {
         private readonly IBasketRepository _repository;
-        public ProductPriceChangedHandler(IBasketRepository repository)
+        public ProductPriceChangedEventHandler(IBasketRepository repository)
         {
             _repository = repository;
         }
 
-        public async Task Handle(ProductPriceChanged @event)
+        public async Task Handle(ProductPriceChangedEvent @event)
         {
             var userIds = await _repository.GetUsers();
             foreach (var id in userIds)

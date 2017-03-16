@@ -6,8 +6,8 @@ namespace Microsoft.eShopOnContainers.Services.Common.Infrastructure
 {
     public enum EventStateEnum
     {
-        NotSend = 0,
-        Sent = 1,
-        SendingFailed = 2
+        NotPublished = 0,
+        Published = 1,
+        PublishedFailed = 2
     }
 }

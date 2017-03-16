@@ -6,8 +6,8 @@ namespace Microsoft.eShopOnContainers.Services.Common.Infrastructure
 {
     public interface IEventBus
     {
-        void Subscribe<T>(IIntegrationEventHandler<T> handler) where T: IntegrationEventBase;
-        void Unsubscribe<T>(IIntegrationEventHandler<T> handler) where T : IntegrationEventBase;
-        void Publish(IntegrationEventBase @event);
+        void Subscribe<T>(IIntegrationEventHandler<T> handler) where T: IntegrationEvent;
+        void Unsubscribe<T>(IIntegrationEventHandler<T> handler) where T : IntegrationEvent;
+        void Publish(IntegrationEvent @event);
     }
 }

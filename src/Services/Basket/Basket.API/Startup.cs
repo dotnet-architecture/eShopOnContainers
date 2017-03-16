@@ -15,7 +15,7 @@ using Swashbuckle.Swagger.Model;
 using Microsoft.eShopOnContainers.Services.Basket.API.Auth.Server;
 using Microsoft.eShopOnContainers.Services.Common.Infrastructure;
 using Microsoft.eShopOnContainers.Services.Common.Infrastructure.Catalog;
-using Basket.API.Events;
+using Basket.API.IntegrationEvents.EventHandling;
 
 namespace Microsoft.eShopOnContainers.Services.Basket.API
 {
@@ -79,7 +79,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             });
 
             services.AddTransient<IBasketRepository, RedisBasketRepository>();
-            services.AddTransient<IIntegrationEventHandler<ProductPriceChanged>, ProductPriceChangedHandler>();
+            services.AddTransient<IIntegrationEventHandler<ProductPriceChangedEvent>, ProductPriceChangedEventHandler>();
 
             var serviceProvider = services.BuildServiceProvider();
             var configuration = serviceProvider.GetRequiredService<IOptionsSnapshot<BasketSettings>>().Value;
@@ -87,8 +87,8 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             services.AddSingleton<IEventBus>(eventBus);
 
             
-            var catalogPriceHandler = serviceProvider.GetService<IIntegrationEventHandler<ProductPriceChanged>>();
-            eventBus.Subscribe<ProductPriceChanged>(catalogPriceHandler);
+            var catalogPriceHandler = serviceProvider.GetService<IIntegrationEventHandler<ProductPriceChangedEvent>>();
+            eventBus.Subscribe<ProductPriceChangedEvent>(catalogPriceHandler);
                     
         }
 

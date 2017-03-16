@@ -30,7 +30,7 @@ namespace Microsoft.eShopOnContainers.Services.Common.Infrastructure
             _handlers = new Dictionary<string, List<IIntegrationEventHandler>>();
             _eventTypes = new List<Type>();
         }
-        public void Publish(IntegrationEventBase @event)
+        public void Publish(IntegrationEvent @event)
         {
             var eventName = @event.GetType().Name;
             var factory = new ConnectionFactory() { HostName = _connectionString };
@@ -51,7 +51,7 @@ namespace Microsoft.eShopOnContainers.Services.Common.Infrastructure
             
         }
 
-        public void Subscribe<T>(IIntegrationEventHandler<T> handler) where T : IntegrationEventBase
+        public void Subscribe<T>(IIntegrationEventHandler<T> handler) where T : IntegrationEvent
         {
             var eventName = typeof(T).Name;
             if (_handlers.ContainsKey(eventName))   
@@ -72,7 +72,7 @@ namespace Microsoft.eShopOnContainers.Services.Common.Infrastructure
             
         }
 
-        public void Unsubscribe<T>(IIntegrationEventHandler<T> handler) where T : IntegrationEventBase
+        public void Unsubscribe<T>(IIntegrationEventHandler<T> handler) where T : IntegrationEvent
         {
             var eventName = typeof(T).Name;
             if (_handlers.ContainsKey(eventName) && _handlers[eventName].Contains(handler))

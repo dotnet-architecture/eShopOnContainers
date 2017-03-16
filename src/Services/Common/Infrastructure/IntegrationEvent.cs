@@ -4,9 +4,9 @@ using System.Text;
 
 namespace Microsoft.eShopOnContainers.Services.Common.Infrastructure
 {
-    public class IntegrationEventBase
+    public class IntegrationEvent
     {
-        public IntegrationEventBase()
+        public IntegrationEvent()
         {
             Id = Guid.NewGuid();
         }
