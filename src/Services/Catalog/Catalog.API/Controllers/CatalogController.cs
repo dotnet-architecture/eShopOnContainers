@@ -144,12 +144,20 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
             {
                 var oldPrice = item.Price;
                 item.Price = value.Price;
-
                 _context.CatalogItems.Update(item);
-                await _context.SaveChangesAsync();
 
                 var @event = new ProductPriceChangedEvent(item.Id, item.Price, oldPrice);
-                await ProcessEventAsync(@event);
+                var eventLogEntry = new IntegrationEventLogEntry(@event);                
+                _context.IntegrationEventLog.Add(eventLogEntry);                
+
+                await _context.SaveChangesAsync();
+                
+                _eventBus.Publish(@event);
+                
+                eventLogEntry.TimesSent++;
+                eventLogEntry.State = EventStateEnum.Published;
+                _context.IntegrationEventLog.Update(eventLogEntry);
+                await _context.SaveChangesAsync();
             }
 
             return Ok();
@@ -163,18 +171,6 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
             });
 
             return items;
-        }
-
-        private async Task ProcessEventAsync(IntegrationEvent @event)
-        {
-            _eventBus.Publish(@event);
-            var eventLogEntry = new IntegrationEventLogEntry(@event);
-            eventLogEntry.TimesSent++;
-            eventLogEntry.State = EventStateEnum.Published;            
-
-            _context.IntegrationEventLog.Add(eventLogEntry);
-            await _context.SaveChangesAsync();
-     
         }
     }
 }
