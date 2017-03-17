@@ -146,7 +146,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
                 item.Price = value.Price;
                 _context.CatalogItems.Update(item);
 
-                var @event = new ProductPriceChangedEvent(item.Id, item.Price, oldPrice);
+                var @event = new ProductPriceChangedIntegrationEvent(item.Id, item.Price, oldPrice);
                 var eventLogEntry = new IntegrationEventLogEntry(@event);                
                 _context.IntegrationEventLog.Add(eventLogEntry);                
 

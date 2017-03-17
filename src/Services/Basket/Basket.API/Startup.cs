@@ -76,7 +76,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             });
 
             services.AddTransient<IBasketRepository, RedisBasketRepository>();
-            services.AddTransient<IIntegrationEventHandler<ProductPriceChangedEvent>, ProductPriceChangedEventHandler>();
+            services.AddTransient<IIntegrationEventHandler<ProductPriceChangedIntegrationEvent>, ProductPriceChangedIntegrationEventHandler>();
 
             var serviceProvider = services.BuildServiceProvider();
             var configuration = serviceProvider.GetRequiredService<IOptionsSnapshot<BasketSettings>>().Value;
@@ -84,8 +84,8 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             services.AddSingleton<IEventBus>(eventBus);
 
             
-            var catalogPriceHandler = serviceProvider.GetService<IIntegrationEventHandler<ProductPriceChangedEvent>>();
-            eventBus.Subscribe<ProductPriceChangedEvent>(catalogPriceHandler);
+            var catalogPriceHandler = serviceProvider.GetService<IIntegrationEventHandler<ProductPriceChangedIntegrationEvent>>();
+            eventBus.Subscribe<ProductPriceChangedIntegrationEvent>(catalogPriceHandler);
                     
         }
 
