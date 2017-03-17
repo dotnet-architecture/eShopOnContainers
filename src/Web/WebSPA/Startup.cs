@@ -32,6 +32,9 @@ namespace eShopConContainers.WebSPA
             }
 
             Configuration = builder.Build();
+
+            var localPath = new Uri(Configuration["ASPNETCORE_URLS"])?.LocalPath ?? "/";
+            Configuration["BaseUrl"] = localPath;
         }
 
         public static IConfigurationRoot Configuration { get; set;}

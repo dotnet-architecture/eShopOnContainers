@@ -22,6 +22,7 @@ namespace eShopConContainers.WebSPA.Server.Controllers
         public IActionResult Index()
         {
             ViewBag.HashedMain = GetHashedMainDotJs();
+            ViewBag.BaseUrl = _settings.Value.BaseUrl;
 
             return View();
         }
