@@ -110,7 +110,7 @@ namespace eShopOnContainers.Core.ViewModels
         private void AddCatalogItem(CatalogItem catalogItem)
         {
             // Add new item to Basket
-            MessagingCenter.Send(this, MessengerKeys.AddProduct, catalogItem);
+            MessagingCenter.Send(this, MessageKeys.AddProduct, catalogItem);
         }
 
         private async void Filter()
@@ -123,7 +123,7 @@ namespace eShopOnContainers.Core.ViewModels
             IsBusy = true;
 
             // Filter catalog products
-            MessagingCenter.Send(this, MessengerKeys.Filter);
+            MessagingCenter.Send(this, MessageKeys.Filter);
             Products = await _productsService.FilterAsync(Brand.Id, Type.Id);
 
             IsBusy = false;
