@@ -3,6 +3,7 @@
     using AspNetCore.Http;
     using Autofac;
     using Autofac.Extensions.DependencyInjection;
+    using global::Ordering.API.Infrastructure.Middlewares;
     using Infrastructure;
     using Infrastructure.Auth;
     using Infrastructure.AutofacModules;
@@ -108,6 +109,8 @@
             }
 
             app.UseCors("CorsPolicy");
+
+            app.UseFailingMiddleware();
 
             ConfigureAuth(app);
 
