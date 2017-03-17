@@ -10,7 +10,7 @@
         int? _requestedHashCode;
         int _Id;
 
-        private List<IAsyncNotification> _events;
+        private List<IAsyncNotification> _domainEvents;
 
         public virtual  int Id 
         {
@@ -24,17 +24,17 @@
             }
         }
 
-        public List<IAsyncNotification> Events => _events;        
-        public void AddEvent(IAsyncNotification eventItem)
+        public List<IAsyncNotification> DomainEvents => _domainEvents;        
+        public void AddDomainEvent(IAsyncNotification eventItem)
         {
-            _events = _events ?? new List<IAsyncNotification>();
-            _events.Add(eventItem);
+            _domainEvents = _domainEvents ?? new List<IAsyncNotification>();
+            _domainEvents.Add(eventItem);
         }
 
-        public void RemoveEvent(IAsyncNotification eventItem)
+        public void RemoveDomainEvent(IAsyncNotification eventItem)
         {
-            if (_events is null) return;
-            _events.Remove(eventItem);
+            if (_domainEvents is null) return;
+            _domainEvents.Remove(eventItem);
         }
 
         public bool IsTransient()

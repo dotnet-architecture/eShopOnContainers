@@ -51,7 +51,10 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
             _orderStatusId = OrderStatus.InProcess.Id;
             _orderDate = DateTime.UtcNow;
             Address = address;
-            AddCreatedOrderEvent(cardTypeId, cardNumber,
+
+            // Add the OrderCreatedEvent to the domain events collection 
+            // to be raised/dispatched when comitting changes into the Database [ After DbContext.SaveChanges() ]
+            AddOrderCreatedDomainEvent(cardTypeId, cardNumber,
                 cardSecurityNumber, cardHolderName, cardExpiration);
         }
 
@@ -93,14 +96,14 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
             _buyerId = id;
         }
 
-        private void AddCreatedOrderEvent(int cardTypeId, string cardNumber,
+        private void AddOrderCreatedDomainEvent(int cardTypeId, string cardNumber,
                 string cardSecurityNumber, string cardHolderName, DateTime cardExpiration)
         {
-            var @orderCreatedEvent = new OrderCreated(
+            var orderCreatedDomainEvent = new OrderCreatedDomainEvent(
                 this, cardTypeId, cardNumber, cardSecurityNumber,
                 cardHolderName, cardExpiration);
 
-            AddEvent(@orderCreatedEvent);
+            AddDomainEvent(orderCreatedDomainEvent);
         }
     }
 }

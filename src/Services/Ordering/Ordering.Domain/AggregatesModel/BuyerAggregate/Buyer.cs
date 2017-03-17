@@ -33,7 +33,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.B
 
             if (existingPayment != null)
             {
-                AddEvent(new PaymentMethodChecked(this, existingPayment, orderId));
+                AddDomainEvent(new PaymentMethodCheckedDomainEvent(this, existingPayment, orderId));
                 return existingPayment;
             }
             else
@@ -41,7 +41,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.B
                 var payment = new PaymentMethod(cardTypeId, alias, cardNumber, securityNumber, cardHolderName, expiration);
 
                 _paymentMethods.Add(payment);
-                AddEvent(new PaymentMethodChecked(this, payment, orderId));
+                AddDomainEvent(new PaymentMethodCheckedDomainEvent(this, payment, orderId));
                 return payment;
             }
         }       
