@@ -122,6 +122,6 @@ public class BuyerAggregateTest
         fakeBuyer.AddPaymentMethod(cardTypeId, alias, cardNumber, cardSecurityNumber, cardHolderName, cardExpiration, orderId);
 
         //Assert
-        Assert.Equal(fakeBuyer.Events.Count, expectedResult);
+        Assert.Equal(fakeBuyer.DomainEvents.Count, expectedResult);
     }
 }

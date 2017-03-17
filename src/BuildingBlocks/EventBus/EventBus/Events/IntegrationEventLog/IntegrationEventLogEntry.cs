@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Newtonsoft.Json;
 
-namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events
+namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events.IntegrationEventLog
 {
     public class IntegrationEventLogEntry
     {

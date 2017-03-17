@@ -1,3 +1,0 @@
-﻿
-
-// To implement any future integration event handler here

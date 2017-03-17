@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
-using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
+using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events.IntegrationEventLog;
 using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
 using Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationEvents.Events;
 using Microsoft.eShopOnContainers.Services.Catalog.API.Model;
@@ -146,7 +146,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
                 item.Price = value.Price;
                 _context.CatalogItems.Update(item);
 
-                var @event = new ProductPriceChangedEvent(item.Id, item.Price, oldPrice);
+                var @event = new ProductPriceChangedIntegrationEvent(item.Id, item.Price, oldPrice);
                 var eventLogEntry = new IntegrationEventLogEntry(@event);                
                 _context.IntegrationEventLog.Add(eventLogEntry);                
 

@@ -5,19 +5,19 @@ using Ordering.Domain.Events;
 using System;
 using System.Threading.Tasks;
 
-namespace Ordering.API.Application.EventHandlers
+namespace Ordering.API.Application.DomainEventHandlers
 {
-    public class PaymentMethodCheckedEventHandler : IAsyncNotificationHandler<PaymentMethodChecked>
+    public class PaymentMethodCheckedDomainEventHandler : IAsyncNotificationHandler<PaymentMethodCheckedDomainEvent>
     {
         private readonly IOrderRepository<Order> _orderRepository;
         private readonly ILoggerFactory _logger;
-        public PaymentMethodCheckedEventHandler(IOrderRepository<Order> orderRepository, ILoggerFactory logger)
+        public PaymentMethodCheckedDomainEventHandler(IOrderRepository<Order> orderRepository, ILoggerFactory logger)
         {
             _orderRepository = orderRepository ?? throw new ArgumentNullException(nameof(orderRepository));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public async Task Handle(PaymentMethodChecked paymentMethodNotification)
+        public async Task Handle(PaymentMethodCheckedDomainEvent paymentMethodNotification)
         {
             var orderToUpdate = await _orderRepository.GetAsync(paymentMethodNotification.OrderId);
             orderToUpdate.SetBuyerId(paymentMethodNotification.Buyer.Id);
@@ -26,7 +26,7 @@ namespace Ordering.API.Application.EventHandlers
             await _orderRepository.UnitOfWork
                 .SaveEntitiesAsync();
                                        
-            _logger.CreateLogger(nameof(PaymentMethodCheckedEventHandler))
+            _logger.CreateLogger(nameof(PaymentMethodCheckedDomainEventHandler))
                 .LogTrace($"Order with Id: {paymentMethodNotification.OrderId} has been successfully updated with a new payment method id: { paymentMethodNotification.Payment.Id }");
         }
     }

@@ -74,7 +74,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
 
             buyerConfiguration.HasKey(b => b.Id);
 
-            buyerConfiguration.Ignore(b => b.Events);
+            buyerConfiguration.Ignore(b => b.DomainEvents);
 
             buyerConfiguration.Property(b => b.Id)
                 .ForSqlServerUseSequenceHiLo("buyerseq", DEFAULT_SCHEMA);
@@ -102,7 +102,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
 
             paymentConfiguration.HasKey(b => b.Id);
 
-            paymentConfiguration.Ignore(b => b.Events);
+            paymentConfiguration.Ignore(b => b.DomainEvents);
 
             paymentConfiguration.Property(b => b.Id)
                 .ForSqlServerUseSequenceHiLo("paymentseq", DEFAULT_SCHEMA);
@@ -139,7 +139,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
 
             orderConfiguration.HasKey(o => o.Id);
 
-            orderConfiguration.Ignore(b => b.Events);
+            orderConfiguration.Ignore(b => b.DomainEvents);
 
             orderConfiguration.Property(o => o.Id)
                 .ForSqlServerUseSequenceHiLo("orderseq", DEFAULT_SCHEMA);
@@ -176,7 +176,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
 
             orderItemConfiguration.HasKey(o => o.Id);
 
-            orderItemConfiguration.Ignore(b => b.Events);
+            orderItemConfiguration.Ignore(b => b.DomainEvents);
 
             orderItemConfiguration.Property(o => o.Id)
                 .ForSqlServerUseSequenceHiLo("orderitemseq");
@@ -238,6 +238,8 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
         public async Task<int> SaveEntitiesAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             var result = await base.SaveChangesAsync();
+
+            // Dispatch the Domain Events collection right after saving/commiting data into the database
             await _mediator.RaiseDomainEventsAsync(this);
             return result;
         }        

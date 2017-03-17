@@ -9,7 +9,7 @@ namespace Ordering.Domain.Events
     /// <summary>
     /// Event used when an order is created
     /// </summary>
-    public class OrderCreated
+    public class OrderCreatedDomainEvent
         : IAsyncNotification
     {
         public int CardTypeId { get; private set; }
@@ -19,7 +19,7 @@ namespace Ordering.Domain.Events
         public DateTime CardExpiration { get; private set; }
         public Order Order { get; private set; }
 
-        public OrderCreated(Order order,
+        public OrderCreatedDomainEvent(Order order,
             int cardTypeId, string cardNumber, 
             string cardSecurityNumber, string cardHolderName, 
             DateTime cardExpiration)

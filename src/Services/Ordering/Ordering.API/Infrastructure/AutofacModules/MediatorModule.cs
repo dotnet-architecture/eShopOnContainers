@@ -3,7 +3,7 @@ using Autofac.Core;
 using MediatR;
 using Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands;
 using Microsoft.eShopOnContainers.Services.Ordering.API.Application.Decorators;
-using Ordering.API.Application.EventHandlers;
+using Ordering.API.Application.DomainEventHandlers;
 using Ordering.Domain.Events;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +24,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure.Autof
                     .Select(i => new KeyedService("IAsyncRequestHandler", i)));
             
             builder
-                .RegisterAssemblyTypes(typeof(OrderCreatedEventHandler).GetTypeInfo().Assembly)
+                .RegisterAssemblyTypes(typeof(OrderCreatedDomainEventHandler).GetTypeInfo().Assembly)
                 .Where(t => t.IsClosedTypeOf(typeof(IAsyncNotificationHandler<>)))
                 .AsImplementedInterfaces();           
 

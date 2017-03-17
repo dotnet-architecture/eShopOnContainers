@@ -112,7 +112,7 @@ public class OrderAggregateTest
         var fakeOrder = new Order(new Address(street, city, state, country, zipcode), cardTypeId, cardNumber, cardSecurityNumber, cardHolderName, cardExpiration);
 
         //Assert
-        Assert.Equal(fakeOrder.Events.Count, expectedResult);
+        Assert.Equal(fakeOrder.DomainEvents.Count, expectedResult);
     }
 
     [Fact]
@@ -133,9 +133,9 @@ public class OrderAggregateTest
 
         //Act 
         var fakeOrder = new Order(new Address(street, city, state, country, zipcode), cardTypeId, cardNumber, cardSecurityNumber, cardHolderName, cardExpiration);
-        fakeOrder.AddEvent(new OrderCreated(fakeOrder,cardTypeId,cardNumber,cardSecurityNumber,cardHolderName,cardExpiration));
+        fakeOrder.AddDomainEvent(new OrderCreatedDomainEvent(fakeOrder,cardTypeId,cardNumber,cardSecurityNumber,cardHolderName,cardExpiration));
         //Assert
-        Assert.Equal(fakeOrder.Events.Count, expectedResult);
+        Assert.Equal(fakeOrder.DomainEvents.Count, expectedResult);
     }
 
     [Fact]
@@ -153,13 +153,13 @@ public class OrderAggregateTest
         var cardHolderName = "FakeName";
         var cardExpiration = DateTime.Now.AddYears(1);
         var fakeOrder = new Order(new Address(street, city, state, country, zipcode), cardTypeId, cardNumber, cardSecurityNumber, cardHolderName, cardExpiration);
-        var @fakeEvent = new OrderCreated(fakeOrder, cardTypeId, cardNumber, cardSecurityNumber, cardHolderName, cardExpiration);
+        var @fakeEvent = new OrderCreatedDomainEvent(fakeOrder, cardTypeId, cardNumber, cardSecurityNumber, cardHolderName, cardExpiration);
         var expectedResult = 1;
 
         //Act         
-        fakeOrder.AddEvent(@fakeEvent);
-        fakeOrder.RemoveEvent(@fakeEvent);
+        fakeOrder.AddDomainEvent(@fakeEvent);
+        fakeOrder.RemoveDomainEvent(@fakeEvent);
         //Assert
-        Assert.Equal(fakeOrder.Events.Count, expectedResult);
+        Assert.Equal(fakeOrder.DomainEvents.Count, expectedResult);
     }
 }

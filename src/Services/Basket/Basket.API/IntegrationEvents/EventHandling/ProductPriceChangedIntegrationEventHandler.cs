@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.Services.Basket.API.IntegrationEvents.EventHandling
 {
-    public class ProductPriceChangedEventHandler : IIntegrationEventHandler<ProductPriceChangedEvent>
+    public class ProductPriceChangedIntegrationEventHandler : IIntegrationEventHandler<ProductPriceChangedIntegrationEvent>
     {
         private readonly IBasketRepository _repository;
-        public ProductPriceChangedEventHandler(IBasketRepository repository)
+        public ProductPriceChangedIntegrationEventHandler(IBasketRepository repository)
         {
             _repository = repository;
         }
 
-        public async Task Handle(ProductPriceChangedEvent @event)
+        public async Task Handle(ProductPriceChangedIntegrationEvent @event)
         {
             var userIds = await _repository.GetUsers();
             foreach (var id in userIds)
