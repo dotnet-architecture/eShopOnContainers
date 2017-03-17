@@ -14,6 +14,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Http;
 using System.Threading;
 using Microsoft.Extensions.Options;
+using WebMVC.Services.Utilities;
 
 namespace Microsoft.eShopOnContainers.WebMVC
 {
@@ -43,14 +44,22 @@ namespace Microsoft.eShopOnContainers.WebMVC
         {
             services.AddMvc();
             services.Configure<AppSettings>(Configuration);
-
+            
             // Add application services.
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();            
             services.AddTransient<ICatalogService, CatalogService>(); 
             services.AddTransient<IOrderingService, OrderingService>(); 
             services.AddTransient<IBasketService, BasketService>();
             services.AddTransient<IIdentityParser<ApplicationUser>, IdentityParser>();
+
+            if(Configuration.GetValue<string>("ActivateCircuitBreaker") == bool.TrueString)
+            {
+                services.AddSingleton<IHttpClient, HttpApiClientWrapper>();
+            }
+            else
+            {
+                services.AddSingleton<IHttpClient, HttpApiClient>();
+            }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
