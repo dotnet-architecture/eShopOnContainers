@@ -22,7 +22,6 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
     <Compile Include="IntegrationEvents\EventHandling\AnyFutureIntegrationEventHandler.cs.txt" />
-    <Compile Include="IntegrationEvents\Events\ProductPriceChangedIntegrationEvent.cs.txt" />
     <Content Update="web.config;">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
