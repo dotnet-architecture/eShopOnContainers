@@ -14,24 +14,23 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
 {
     public class OrderingService : IOrderingService
     {
-        private HttpClientWrapper _apiClient;
+        private IHttpClient _apiClient;
         private readonly string _remoteServiceBaseUrl;
         private readonly IOptionsSnapshot<AppSettings> _settings;
         private readonly IHttpContextAccessor _httpContextAccesor;
 
-        public OrderingService(IOptionsSnapshot<AppSettings> settings, IHttpContextAccessor httpContextAccesor)
+        public OrderingService(IOptionsSnapshot<AppSettings> settings, IHttpContextAccessor httpContextAccesor, IHttpClient httpClient)
         {
             _remoteServiceBaseUrl = $"{settings.Value.OrderingUrl}/api/v1/orders";
             _settings = settings;
             _httpContextAccesor = httpContextAccesor;
+            _apiClient = httpClient;
         }
 
         async public Task<Order> GetOrder(ApplicationUser user, string Id)
         {
             var context = _httpContextAccesor.HttpContext;
             var token = await context.Authentication.GetTokenAsync("access_token");
-
-            _apiClient = new HttpClientWrapper();
             _apiClient.Inst.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
             var ordersUrl = $"{_remoteServiceBaseUrl}/{Id}";
@@ -47,7 +46,6 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
             var context = _httpContextAccesor.HttpContext;
             var token = await context.Authentication.GetTokenAsync("access_token");
 
-            _apiClient = new HttpClientWrapper();
             _apiClient.Inst.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
             var ordersUrl = _remoteServiceBaseUrl;
@@ -78,7 +76,6 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
             var context = _httpContextAccesor.HttpContext;
             var token = await context.Authentication.GetTokenAsync("access_token");
 
-            _apiClient = new HttpClientWrapper();            
             _apiClient.Inst.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
             _apiClient.Inst.DefaultRequestHeaders.Add("x-requestid", order.RequestId.ToString());
 

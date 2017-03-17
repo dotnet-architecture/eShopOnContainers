@@ -13,20 +13,19 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
     public class CatalogService : ICatalogService
     {
         private readonly IOptionsSnapshot<AppSettings> _settings;
-        private HttpClientWrapper _apiClient;
+        private IHttpClient _apiClient;
         private readonly string _remoteServiceBaseUrl;
   
-        public CatalogService(IOptionsSnapshot<AppSettings> settings, ILoggerFactory loggerFactory) {
+        public CatalogService(IOptionsSnapshot<AppSettings> settings, ILoggerFactory loggerFactory, IHttpClient httpClient) {
             _settings = settings;
             _remoteServiceBaseUrl = $"{_settings.Value.CatalogUrl}/api/v1/catalog/";
-
+            _apiClient = httpClient;
             var log = loggerFactory.CreateLogger("catalog service");
             log.LogDebug(settings.Value.CatalogUrl);
         }
          
         public async Task<Catalog> GetCatalogItems(int page,int take, int? brand, int? type)
         {
-            _apiClient = new HttpClientWrapper();
             var itemsQs = $"items?pageIndex={page}&pageSize={take}";
             var filterQs = "";
 
@@ -53,7 +52,6 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
 
         public async Task<IEnumerable<SelectListItem>> GetBrands()
         {
-            _apiClient = new HttpClientWrapper();
             var url = $"{_remoteServiceBaseUrl}catalogBrands";
             var dataString = await _apiClient.GetStringAsync(url);
 
@@ -72,7 +70,6 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
 
         public async Task<IEnumerable<SelectListItem>> GetTypes()
         {
-            _apiClient = new HttpClientWrapper();
             var url = $"{_remoteServiceBaseUrl}catalogTypes";
             var dataString = await _apiClient.GetStringAsync(url);
 

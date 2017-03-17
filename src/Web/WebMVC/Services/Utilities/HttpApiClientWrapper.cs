@@ -8,16 +8,16 @@ using System.Threading.Tasks;
 
 namespace WebMVC.Services.Utilities
 {
-    public class HttpClientWrapper
+    public class HttpApiClientWrapper : IHttpClient
     {
         private HttpClient _client;
         private PolicyWrap _policyWrapper;
         private ILogger _logger;
         public HttpClient Inst => _client;
-        public HttpClientWrapper()
+        public HttpApiClientWrapper()
         {
             _client = new HttpClient();
-            _logger = new LoggerFactory().CreateLogger(nameof(HttpClientWrapper));
+            _logger = new LoggerFactory().CreateLogger(nameof(HttpApiClientWrapper));
 
             // Add Policies to be applied
             _policyWrapper = Policy.WrapAsync(
