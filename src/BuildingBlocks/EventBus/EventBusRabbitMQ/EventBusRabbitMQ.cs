@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
 {
-    public class EventBusRabbitMQ : IEventBus
+    public class EventBusRabbitMQ : IEventBus, IDisposable
     {
         private readonly string _brokerName = "eshop_event_bus";
         private readonly string _connectionString;
@@ -31,6 +31,7 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
             _handlers = new Dictionary<string, List<IIntegrationEventHandler>>();
             _eventTypes = new List<Type>();
         }
+
         public void Publish(IntegrationEvent @event)
         {
             var eventName = @event.GetType().Name;
@@ -92,11 +93,21 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
                     if (_handlers.Keys.Count == 0)
                     {
                         _queueName = string.Empty;
-                        _connection.Item1.Close();
-                        _connection.Item2.Close();
+                        _connection.Item1.Dispose();
+                        _connection.Item2.Dispose();
                     }
                     
                 }
+            }
+        }
+
+        public void Dispose()
+        {
+            if (_connection != null)
+            {
+                _handlers.Clear();
+                _connection.Item1.Dispose();
+                _connection.Item2.Dispose();
             }
         }
 
@@ -151,5 +162,6 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
                 }
             }
         }
+
     }
 }

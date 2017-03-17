@@ -24,6 +24,8 @@ namespace FunctionalTests.Services.Catalog
         {
             public static string Orders = "api/v1/orders";
 
+            public static string Items = "api/v1/catalog/items";
+
             public static string ProductByName(string name)
             {
                 return $"api/v1/catalog/items/withname/{name}";
