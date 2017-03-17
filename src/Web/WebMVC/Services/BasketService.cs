@@ -1,21 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.eShopOnContainers.WebMVC.ViewModels;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
-using System.Net.Http;
+using Microsoft.eShopOnContainers.WebMVC.ViewModels;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.eShopOnContainers.WebMVC.Extensions;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
+using WebMVC.Services.Utilities;
 
 namespace Microsoft.eShopOnContainers.WebMVC.Services
 {
     public class BasketService : IBasketService
     {
         private readonly IOptionsSnapshot<AppSettings> _settings;
-        private HttpClient _apiClient;
+        private HttpClientWrapper _apiClient;
         private readonly string _remoteServiceBaseUrl;
         private IHttpContextAccessor _httpContextAccesor;
 
@@ -31,8 +30,8 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
             var context = _httpContextAccesor.HttpContext;
             var token = await context.Authentication.GetTokenAsync("access_token");
 
-            _apiClient = new HttpClient();
-            _apiClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+            var _apiClient = new HttpClientWrapper();
+            _apiClient.Inst.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
             var basketUrl = $"{_remoteServiceBaseUrl}/{user.Id.ToString()}";
             var dataString = await _apiClient.GetStringAsync(basketUrl);
@@ -53,12 +52,12 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
             var context = _httpContextAccesor.HttpContext;
             var token = await context.Authentication.GetTokenAsync("access_token");
 
-            _apiClient = new HttpClient();
-            _apiClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+            _apiClient = new HttpClientWrapper();
+            _apiClient.Inst.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
             var basketUrl = _remoteServiceBaseUrl;
-            StringContent content = new StringContent(JsonConvert.SerializeObject(basket), System.Text.Encoding.UTF8, "application/json");
-            var response = await _apiClient.PostAsync(basketUrl, content);
+            
+            var response = await _apiClient.PostAsync(basketUrl, basket);
 
             return basket;
         }
@@ -120,8 +119,8 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
             var context = _httpContextAccesor.HttpContext;
             var token = await context.Authentication.GetTokenAsync("access_token");
 
-            _apiClient = new HttpClient();
-            _apiClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+            _apiClient = new HttpClientWrapper();
+            _apiClient.Inst.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
             var basketUrl = $"{_remoteServiceBaseUrl}/{user.Id.ToString()}";
             var response = await _apiClient.DeleteAsync(basketUrl);
             

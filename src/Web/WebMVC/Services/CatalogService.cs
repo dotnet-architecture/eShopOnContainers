@@ -1,22 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.eShopOnContainers.WebMVC.ViewModels;
-using Microsoft.CodeAnalysis.Options;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using System.Net.Http;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using WebMVC.Services.Utilities;
 
 namespace Microsoft.eShopOnContainers.WebMVC.Services
 {
     public class CatalogService : ICatalogService
     {
         private readonly IOptionsSnapshot<AppSettings> _settings;
-        private HttpClient _apiClient;
+        private HttpClientWrapper _apiClient;
         private readonly string _remoteServiceBaseUrl;
   
         public CatalogService(IOptionsSnapshot<AppSettings> settings, ILoggerFactory loggerFactory) {
@@ -29,7 +26,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
          
         public async Task<Catalog> GetCatalogItems(int page,int take, int? brand, int? type)
         {
-            _apiClient = new HttpClient();
+            _apiClient = new HttpClientWrapper();
             var itemsQs = $"items?pageIndex={page}&pageSize={take}";
             var filterQs = "";
 
@@ -45,16 +42,10 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
             var dataString = "";
 
             //
-            // Using HttpClient with Retry and Exponential Backoff
+            // Using a HttpClient wrapper with Retry and Exponential Backoff
             //
-            var retry = new RetryWithExponentialBackoff();
-            await retry.RunAsync(async () =>
-            {
-                // work with HttpClient call
-                dataString = await _apiClient.GetStringAsync(catalogUrl);
-            });
+            dataString = await _apiClient.GetStringAsync(catalogUrl);
 
-            //var dataString = await _apiClient.GetStringAsync(catalogUrl);
             var response = JsonConvert.DeserializeObject<Catalog>(dataString);
 
             return response;
@@ -62,7 +53,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
 
         public async Task<IEnumerable<SelectListItem>> GetBrands()
         {
-            _apiClient = new HttpClient();
+            _apiClient = new HttpClientWrapper();
             var url = $"{_remoteServiceBaseUrl}catalogBrands";
             var dataString = await _apiClient.GetStringAsync(url);
 
@@ -81,7 +72,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
 
         public async Task<IEnumerable<SelectListItem>> GetTypes()
         {
-            _apiClient = new HttpClient();
+            _apiClient = new HttpClientWrapper();
             var url = $"{_remoteServiceBaseUrl}catalogTypes";
             var dataString = await _apiClient.GetStringAsync(url);
 

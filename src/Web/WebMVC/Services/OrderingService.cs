@@ -8,12 +8,13 @@ using Microsoft.Extensions.Options;
 using System.Net.Http;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Authentication;
+using WebMVC.Services.Utilities;
 
 namespace Microsoft.eShopOnContainers.WebMVC.Services
 {
     public class OrderingService : IOrderingService
     {
-        private HttpClient _apiClient;
+        private HttpClientWrapper _apiClient;
         private readonly string _remoteServiceBaseUrl;
         private readonly IOptionsSnapshot<AppSettings> _settings;
         private readonly IHttpContextAccessor _httpContextAccesor;
@@ -30,8 +31,8 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
             var context = _httpContextAccesor.HttpContext;
             var token = await context.Authentication.GetTokenAsync("access_token");
 
-            _apiClient = new HttpClient();
-            _apiClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+            _apiClient = new HttpClientWrapper();
+            _apiClient.Inst.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
             var ordersUrl = $"{_remoteServiceBaseUrl}/{Id}";
             var dataString = await _apiClient.GetStringAsync(ordersUrl);
@@ -46,8 +47,8 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
             var context = _httpContextAccesor.HttpContext;
             var token = await context.Authentication.GetTokenAsync("access_token");
 
-            _apiClient = new HttpClient();
-            _apiClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+            _apiClient = new HttpClientWrapper();
+            _apiClient.Inst.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
             var ordersUrl = _remoteServiceBaseUrl;
             var dataString = await _apiClient.GetStringAsync(ordersUrl);
@@ -77,17 +78,16 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
             var context = _httpContextAccesor.HttpContext;
             var token = await context.Authentication.GetTokenAsync("access_token");
 
-            _apiClient = new HttpClient();
-            _apiClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
-            _apiClient.DefaultRequestHeaders.Add("x-requestid", order.RequestId.ToString());
+            _apiClient = new HttpClientWrapper();            
+            _apiClient.Inst.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+            _apiClient.Inst.DefaultRequestHeaders.Add("x-requestid", order.RequestId.ToString());
+
             var ordersUrl = $"{_remoteServiceBaseUrl}/new";
             order.CardTypeId = 1;
             order.CardExpirationApiFormat();
             SetFakeIdToProducts(order);
-            
-            StringContent content = new StringContent(JsonConvert.SerializeObject(order), System.Text.Encoding.UTF8, "application/json");
-           
-            var response = await _apiClient.PostAsync(ordersUrl, content);
+
+            var response = await _apiClient.PostAsync(ordersUrl, order);
 
             if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
                 throw new Exception("Error creating order, try later");
