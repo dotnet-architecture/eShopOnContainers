@@ -13,6 +13,7 @@ using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
 using Microsoft.eShopOnContainers.Services.Basket.API.IntegrationEvents.Events;
 using Microsoft.eShopOnContainers.Services.Basket.API.IntegrationEvents.EventHandling;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ;
+using System;
 
 namespace Microsoft.eShopOnContainers.Services.Basket.API
 {
@@ -80,13 +81,8 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
 
             var serviceProvider = services.BuildServiceProvider();
             var configuration = serviceProvider.GetRequiredService<IOptionsSnapshot<BasketSettings>>().Value;
-            var eventBus = new EventBusRabbitMQ(configuration.EventBusConnection);
-            services.AddSingleton<IEventBus>(eventBus);
+            services.AddSingleton<IEventBus>(provider => new EventBusRabbitMQ(configuration.EventBusConnection));
 
-            
-            var catalogPriceHandler = serviceProvider.GetService<IIntegrationEventHandler<ProductPriceChangedIntegrationEvent>>();
-            eventBus.Subscribe<ProductPriceChangedIntegrationEvent>(catalogPriceHandler);
-                    
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -100,20 +96,28 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             // Use frameworks
             app.UseCors("CorsPolicy");
 
-            var identityUrl = Configuration.GetValue<string>("IdentityUrl");
-
-            app.UseIdentityServerAuthentication(new IdentityServerAuthenticationOptions
-            {
-                Authority = identityUrl.ToString(),
-                ScopeName = "basket",
-                RequireHttpsMetadata = false
-            });
+            ConfigureAuth(app);
 
             app.UseMvcWithDefaultRoute();
 
             app.UseSwagger()
                 .UseSwaggerUi();
 
+            var catalogPriceHandler = app.ApplicationServices.GetService<IIntegrationEventHandler<ProductPriceChangedIntegrationEvent>>();
+            var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
+            eventBus.Subscribe<ProductPriceChangedIntegrationEvent>(catalogPriceHandler);
+
         }
+
+        protected virtual void ConfigureAuth(IApplicationBuilder app)
+        {
+            var identityUrl = Configuration.GetValue<string>("IdentityUrl");
+            app.UseIdentityServerAuthentication(new IdentityServerAuthenticationOptions
+            {
+                Authority = identityUrl.ToString(),
+                ScopeName = "basket",
+                RequireHttpsMetadata = false
+            });
+        }       
     }
 }

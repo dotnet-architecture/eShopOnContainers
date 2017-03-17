@@ -20,7 +20,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.IntegrationEvents.Even
             foreach (var id in userIds)
             {
                 var basket = await _repository.GetBasket(id);
-                await UpdateBasket(@event.ProductId, @event.NewPrice, basket);
+                await UpdateBasket(@event.ProductId, @event.NewPrice, basket);                      
             }
         }
 
@@ -31,9 +31,12 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.IntegrationEvents.Even
             {
                 foreach (var item in itemsToUpdate)
                 {
-                    var originalPrice = item.UnitPrice;
-                    item.UnitPrice = newPrice;
-                    item.OldUnitPrice = originalPrice;
+                    if(item.UnitPrice != newPrice)
+                    { 
+                        var originalPrice = item.UnitPrice;
+                        item.UnitPrice = newPrice;
+                        item.OldUnitPrice = originalPrice;
+                    }
                 }
                 await _repository.UpdateBasket(basket);
             }           
