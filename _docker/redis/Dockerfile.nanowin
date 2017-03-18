@@ -22,6 +22,8 @@ RUN Get-Content redis.windows.conf | Where { $_ -notmatch 'bind 127.0.0.1' } | S
 
 EXPOSE 6379
 
+RUN set-itemproperty -path 'HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\Parameters' -Name ServerPriorityTimeLimit -Value 0 -Type DWord
+
 # Define our command to be run when launching the container
 CMD .\\redis-server.exe .\\redis.unprotected.conf --port 6379 ; \
     Write-Host Redis Started... ; \
