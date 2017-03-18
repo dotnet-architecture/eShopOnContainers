@@ -59,6 +59,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Application\DomainEventHandlers\OrderStartedEvent\SendEmailToCustomerWhenOrderStartedDomainEventHandler.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="Dockerfile">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

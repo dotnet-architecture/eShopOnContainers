@@ -41,7 +41,6 @@ namespace Ordering.API.Infrastructure.Middlewares
 
         private async Task ProcessConfigRequest(HttpContext context)
         {
-            int i = 0;
             var enable = context.Request.Query.Keys.Any(k => k == "enable");
             var disable = context.Request.Query.Keys.Any(k => k == "disable");
 

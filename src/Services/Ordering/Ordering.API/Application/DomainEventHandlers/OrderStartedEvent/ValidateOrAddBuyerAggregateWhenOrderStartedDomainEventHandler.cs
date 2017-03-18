@@ -6,15 +6,15 @@ using Ordering.Domain.Events;
 using System;
 using System.Threading.Tasks;
 
-namespace Ordering.API.Application.DomainEventHandlers
+namespace Ordering.API.Application.DomainEventHandlers.OrderStartedEvent
 {
-    public class OrderStartedDomainEventHandler : IAsyncNotificationHandler<OrderStartedDomainEvent>
+    public class ValidateOrAddBuyerAggregateWhenOrderStartedDomainEventHandler : IAsyncNotificationHandler<OrderStartedDomainEvent>
     {
         private readonly ILoggerFactory _logger;
         private readonly IBuyerRepository<Buyer> _buyerRepository;
         private readonly IIdentityService _identityService;
 
-        public OrderStartedDomainEventHandler(ILoggerFactory logger, IBuyerRepository<Buyer> buyerRepository, IIdentityService identityService)
+        public ValidateOrAddBuyerAggregateWhenOrderStartedDomainEventHandler(ILoggerFactory logger, IBuyerRepository<Buyer> buyerRepository, IIdentityService identityService)
         {
             _buyerRepository = buyerRepository ?? throw new ArgumentNullException(nameof(buyerRepository));
             _identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
@@ -46,7 +46,7 @@ namespace Ordering.API.Application.DomainEventHandlers
             await _buyerRepository.UnitOfWork
                 .SaveEntitiesAsync();
 
-            _logger.CreateLogger(nameof(OrderStartedDomainEventHandler)).LogTrace($"A new payment method has been successfully added for orderId: {orderNotification.Order.Id}.");
+            _logger.CreateLogger(nameof(ValidateOrAddBuyerAggregateWhenOrderStartedDomainEventHandler)).LogTrace($"A new payment method has been successfully added for orderId: {orderNotification.Order.Id}.");
 
         }
     }
