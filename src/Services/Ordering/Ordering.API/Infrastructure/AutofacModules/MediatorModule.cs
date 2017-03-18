@@ -24,7 +24,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure.Autof
                     .Select(i => new KeyedService("IAsyncRequestHandler", i)));
             
             builder
-                .RegisterAssemblyTypes(typeof(OrderCreatedDomainEventHandler).GetTypeInfo().Assembly)
+                .RegisterAssemblyTypes(typeof(OrderStartedDomainEventHandler).GetTypeInfo().Assembly)
                 .Where(t => t.IsClosedTypeOf(typeof(IAsyncNotificationHandler<>)))
                 .AsImplementedInterfaces();           
 

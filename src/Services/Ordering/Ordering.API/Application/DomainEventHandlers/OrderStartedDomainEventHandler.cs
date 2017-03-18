@@ -8,20 +8,20 @@ using System.Threading.Tasks;
 
 namespace Ordering.API.Application.DomainEventHandlers
 {
-    public class OrderCreatedDomainEventHandler : IAsyncNotificationHandler<OrderCreatedDomainEvent>
+    public class OrderStartedDomainEventHandler : IAsyncNotificationHandler<OrderStartedDomainEvent>
     {
         private readonly ILoggerFactory _logger;
         private readonly IBuyerRepository<Buyer> _buyerRepository;
         private readonly IIdentityService _identityService;
 
-        public OrderCreatedDomainEventHandler(ILoggerFactory logger, IBuyerRepository<Buyer> buyerRepository, IIdentityService identityService)
+        public OrderStartedDomainEventHandler(ILoggerFactory logger, IBuyerRepository<Buyer> buyerRepository, IIdentityService identityService)
         {
             _buyerRepository = buyerRepository ?? throw new ArgumentNullException(nameof(buyerRepository));
             _identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public async Task Handle(OrderCreatedDomainEvent orderNotification)
+        public async Task Handle(OrderStartedDomainEvent orderNotification)
         {
             var cardTypeId = orderNotification.CardTypeId != 0 ? orderNotification.CardTypeId : 1;
 
@@ -33,7 +33,7 @@ namespace Ordering.API.Application.DomainEventHandlers
                 buyer = new Buyer(buyerGuid);
             }
 
-            var payment = buyer.AddPaymentMethod(cardTypeId,
+            var paymentMethod = buyer.VerifyOrAddPaymentMethod(cardTypeId,
                 $"Payment Method on {DateTime.UtcNow}",
                 orderNotification.CardNumber,
                 orderNotification.CardSecurityNumber,
@@ -46,7 +46,7 @@ namespace Ordering.API.Application.DomainEventHandlers
             await _buyerRepository.UnitOfWork
                 .SaveEntitiesAsync();
 
-            _logger.CreateLogger(nameof(OrderCreatedDomainEventHandler)).LogTrace($"A new payment method has been successfully added for orderId: {orderNotification.Order.Id}.");
+            _logger.CreateLogger(nameof(OrderStartedDomainEventHandler)).LogTrace($"A new payment method has been successfully added for orderId: {orderNotification.Order.Id}.");
 
         }
     }

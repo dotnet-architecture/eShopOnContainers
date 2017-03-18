@@ -45,7 +45,7 @@ public class BuyerAggregateTest
         var fakeBuyerItem = new Buyer(identity);
 
         //Act
-        var result = fakeBuyerItem.AddPaymentMethod(cardTypeId, alias, cardNumber, securityNumber, cardHolderName, expiration, orderId);
+        var result = fakeBuyerItem.VerifyOrAddPaymentMethod(cardTypeId, alias, cardNumber, securityNumber, cardHolderName, expiration, orderId);
 
         //Assert
         Assert.NotNull(result);
@@ -119,7 +119,7 @@ public class BuyerAggregateTest
 
         //Act 
         var fakeBuyer = new Buyer(Guid.NewGuid().ToString());
-        fakeBuyer.AddPaymentMethod(cardTypeId, alias, cardNumber, cardSecurityNumber, cardHolderName, cardExpiration, orderId);
+        fakeBuyer.VerifyOrAddPaymentMethod(cardTypeId, alias, cardNumber, cardSecurityNumber, cardHolderName, cardExpiration, orderId);
 
         //Assert
         Assert.Equal(fakeBuyer.DomainEvents.Count, expectedResult);

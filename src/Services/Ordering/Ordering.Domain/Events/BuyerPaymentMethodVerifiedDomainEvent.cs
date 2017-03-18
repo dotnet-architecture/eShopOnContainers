@@ -6,14 +6,14 @@ using System.Text;
 
 namespace Ordering.Domain.Events
 {
-    public class PaymentMethodCheckedDomainEvent
+    public class BuyerPaymentMethodVerifiedDomainEvent
         : IAsyncNotification
     {
         public Buyer Buyer { get; private set; }
         public PaymentMethod Payment { get; private set; }
         public int OrderId { get; private set; }
 
-        public PaymentMethodCheckedDomainEvent(Buyer buyer, PaymentMethod payment, int orderId)
+        public BuyerPaymentMethodVerifiedDomainEvent(Buyer buyer, PaymentMethod payment, int orderId)
         {
             Buyer = buyer;
             Payment = payment;

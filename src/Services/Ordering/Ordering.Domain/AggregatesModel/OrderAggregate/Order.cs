@@ -52,10 +52,10 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
             _orderDate = DateTime.UtcNow;
             Address = address;
 
-            // Add the OrderCreatedEvent to the domain events collection 
+            // Add the OrderStarterDomainEvent to the domain events collection 
             // to be raised/dispatched when comitting changes into the Database [ After DbContext.SaveChanges() ]
-            AddOrderCreatedDomainEvent(cardTypeId, cardNumber,
-                cardSecurityNumber, cardHolderName, cardExpiration);
+            AddOrderStartedDomainEvent(cardTypeId, cardNumber,
+                                       cardSecurityNumber, cardHolderName, cardExpiration);
         }
 
         // DDD Patterns comment
@@ -96,14 +96,14 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
             _buyerId = id;
         }
 
-        private void AddOrderCreatedDomainEvent(int cardTypeId, string cardNumber,
+        private void AddOrderStartedDomainEvent(int cardTypeId, string cardNumber,
                 string cardSecurityNumber, string cardHolderName, DateTime cardExpiration)
         {
-            var orderCreatedDomainEvent = new OrderCreatedDomainEvent(
+            var orderStartedDomainEvent = new OrderStartedDomainEvent(
                 this, cardTypeId, cardNumber, cardSecurityNumber,
                 cardHolderName, cardExpiration);
 
-            AddDomainEvent(orderCreatedDomainEvent);
+            this.AddDomainEvent(orderStartedDomainEvent);
         }
     }
 }

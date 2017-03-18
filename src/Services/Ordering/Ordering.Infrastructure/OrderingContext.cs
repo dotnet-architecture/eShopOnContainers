@@ -239,8 +239,8 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
         {
             var result = await base.SaveChangesAsync();
 
-            // Dispatch the Domain Events collection right after saving/commiting data into the database
-            await _mediator.RaiseDomainEventsAsync(this);
+            // Dispatch the Domain Events collection right after saving/committing data into the database
+            await _mediator.DispatchDomainEventsAsync(this);
             return result;
         }        
     }

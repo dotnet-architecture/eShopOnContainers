@@ -24,7 +24,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.B
             IdentityGuid = !string.IsNullOrWhiteSpace(identity) ? identity : throw new ArgumentNullException(nameof(identity));
         }
 
-        public PaymentMethod AddPaymentMethod(
+        public PaymentMethod VerifyOrAddPaymentMethod(
             int cardTypeId, string alias, string cardNumber, 
             string securityNumber, string cardHolderName, DateTime expiration, int orderId)
         {
@@ -33,7 +33,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.B
 
             if (existingPayment != null)
             {
-                AddDomainEvent(new PaymentMethodCheckedDomainEvent(this, existingPayment, orderId));
+                AddDomainEvent(new BuyerPaymentMethodVerifiedDomainEvent(this, existingPayment, orderId));
                 return existingPayment;
             }
             else
@@ -41,7 +41,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.B
                 var payment = new PaymentMethod(cardTypeId, alias, cardNumber, securityNumber, cardHolderName, expiration);
 
                 _paymentMethods.Add(payment);
-                AddDomainEvent(new PaymentMethodCheckedDomainEvent(this, payment, orderId));
+                AddDomainEvent(new BuyerPaymentMethodVerifiedDomainEvent(this, payment, orderId));
                 return payment;
             }
         }       
