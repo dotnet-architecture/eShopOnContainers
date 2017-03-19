@@ -16,13 +16,15 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure.Autof
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterAssemblyTypes(typeof(IMediator).GetTypeInfo().Assembly)
-                .AsImplementedInterfaces();            
+                .AsImplementedInterfaces();
 
+            // Register all the Command classes (they implement IAsyncRequestHandler) in assembly holding the Commands
             builder.RegisterAssemblyTypes(typeof(CreateOrderCommand).GetTypeInfo().Assembly)
                 .As(o => o.GetInterfaces()
                     .Where(i => i.IsClosedTypeOf(typeof(IAsyncRequestHandler<,>)))
                     .Select(i => new KeyedService("IAsyncRequestHandler", i)));
-            
+
+            // Register all the Domain Event Handler classes (they implement IAsyncNotificationHandler<>) in assembly holding the Domain Events
             builder
                 .RegisterAssemblyTypes(typeof(ValidateOrAddBuyerAggregateWhenOrderStartedDomainEventHandler).GetTypeInfo().Assembly)
                 .Where(t => t.IsClosedTypeOf(typeof(IAsyncNotificationHandler<>)))

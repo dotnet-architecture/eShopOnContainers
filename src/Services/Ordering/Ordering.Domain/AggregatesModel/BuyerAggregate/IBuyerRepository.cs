@@ -9,7 +9,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.B
     public interface IBuyerRepository<T> : IRepository<T> where T : IAggregateRoot
     {
         Buyer Add(Buyer buyer);
-
+        Buyer Update(Buyer buyer);
         Task<Buyer> FindAsync(string BuyerIdentityGuid);
     }
 }

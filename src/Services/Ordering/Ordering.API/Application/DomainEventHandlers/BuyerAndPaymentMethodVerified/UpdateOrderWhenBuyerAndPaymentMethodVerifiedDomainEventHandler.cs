@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 
 namespace Ordering.API.Application.DomainEventHandlers.BuyerAndPaymentMethodVerified
 {
-    public class UpdateOrderWhenBuyerAndPaymentMethodVerifiedDomainEventHandler : IAsyncNotificationHandler<BuyerAndPaymentMethodVerifiedDomainEvent>
+    public class UpdateOrderWhenBuyerAndPaymentMethodVerifiedDomainEventHandler 
+                   : IAsyncNotificationHandler<BuyerAndPaymentMethodVerifiedDomainEvent>
     {
         private readonly IOrderRepository<Order> _orderRepository;
         private readonly ILoggerFactory _logger;
