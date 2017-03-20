@@ -25,13 +25,13 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Model
 
         }
 
-        public async Task<bool> DeleteBasket(string id)
+        public async Task<bool> DeleteBasketAsync(string id)
         {
             var database = await GetDatabase();
             return await database.KeyDeleteAsync(id.ToString());
         }
 
-        public async Task<CustomerBasket> GetBasket(string customerId)
+        public async Task<CustomerBasket> GetBasketAsync(string customerId)
         {
             var database = await GetDatabase();
 
@@ -44,7 +44,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Model
             return JsonConvert.DeserializeObject<CustomerBasket>(data);
         }
 
-        public async Task<CustomerBasket> UpdateBasket(CustomerBasket basket)
+        public async Task<CustomerBasket> UpdateBasketAsync(CustomerBasket basket)
         {
             var database = await GetDatabase();
 
@@ -56,7 +56,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Model
             }
 
             _logger.LogInformation("basket item persisted succesfully");
-            return await GetBasket(basket.BuyerId);
+            return await GetBasketAsync(basket.BuyerId);
         }
 
         private async Task<IDatabase> GetDatabase()
