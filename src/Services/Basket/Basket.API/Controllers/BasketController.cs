@@ -26,7 +26,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(string id)
         {
-            var basket = await _repository.GetBasket(id);
+            var basket = await _repository.GetBasketAsync(id);
 
             return Ok(basket);
         }
@@ -35,7 +35,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody]CustomerBasket value)
         {
-            var basket = await _repository.UpdateBasket(value);
+            var basket = await _repository.UpdateBasketAsync(value);
 
             return Ok(basket);
         }
@@ -44,7 +44,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
         [HttpDelete("{id}")]
         public void Delete(string id)
         {
-            _repository.DeleteBasket(id);
+            _repository.DeleteBasketAsync(id);
         }
     }
 }

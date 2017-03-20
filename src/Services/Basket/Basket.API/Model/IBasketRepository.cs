@@ -7,8 +7,8 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Model
 {
     public interface IBasketRepository
     {
-        Task<CustomerBasket> GetBasket(string customerId);
-        Task<CustomerBasket> UpdateBasket(CustomerBasket basket);
-        Task<bool> DeleteBasket(string id);
+        Task<CustomerBasket> GetBasketAsync(string customerId);
+        Task<CustomerBasket> UpdateBasketAsync(CustomerBasket basket);
+        Task<bool> DeleteBasketAsync(string id);
     }
 }
