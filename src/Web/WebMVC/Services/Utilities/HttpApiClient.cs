@@ -17,29 +17,29 @@ namespace WebMVC.Services.Utilities
             _logger = new LoggerFactory().CreateLogger(nameof(HttpApiClientWrapper));
         }
 
-        public async Task<string> GetStringAsync(string uri)
-        {
-            return await HttpInvoker(async () =>
-                await _client.GetStringAsync(uri));
-        }
+        // Notice that these (and other methods below) are Task
+        // returning asynchronous methods. But, they do not
+        // have the 'async' modifier, and do not contain
+        // any 'await statements. In each of these methods,
+        // the only asynchronous call is the last (or only)
+        // statement of the method. In those instances,
+        // a Task returning method that does not use the 
+        // async modifier is preferred. The compiler generates
+        // synchronous code for this method, but returns the 
+        // task from the underlying asynchronous method. The
+        // generated code does not contain the state machine
+        // generated for asynchronous methods.
+        public Task<string> GetStringAsync(string uri) =>
+            _client.GetStringAsync(uri);
 
-        public async Task<HttpResponseMessage> PostAsync<T>(string uri, T item)
+        public Task<HttpResponseMessage> PostAsync<T>(string uri, T item)
         {
             var contentString = new StringContent(JsonConvert.SerializeObject(item), System.Text.Encoding.UTF8, "application/json");
-            return await HttpInvoker(async () =>
-                    await _client.PostAsync(uri, contentString));
+            return _client.PostAsync(uri, contentString);
         }
 
-        public async Task<HttpResponseMessage> DeleteAsync(string uri)
-        {
-            return await HttpInvoker(async () =>
-                await _client.DeleteAsync(uri));
-        }
-
-        private async Task<T> HttpInvoker<T>(Func<Task<T>> action)
-        {
-            return await action();
-        }
+        public Task<HttpResponseMessage> DeleteAsync(string uri) =>
+            _client.DeleteAsync(uri);
     }
 }
 

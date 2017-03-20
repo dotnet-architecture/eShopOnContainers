@@ -13,10 +13,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.ViewComponents
     {
         private readonly IBasketService _cartSvc;
 
-        public Cart(IBasketService cartSvc)
-        {
-            _cartSvc = cartSvc;
-        }
+        public Cart(IBasketService cartSvc) => _cartSvc = cartSvc;
 
         public async Task<IViewComponentResult> InvokeAsync(ApplicationUser user)
         {
