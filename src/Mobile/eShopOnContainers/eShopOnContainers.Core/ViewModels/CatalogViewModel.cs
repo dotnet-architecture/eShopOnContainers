@@ -1,14 +1,11 @@
 ﻿using System.Threading.Tasks;
-using eShopOnContainers.ViewModels.Base;
+using eShopOnContainers.Core.ViewModels.Base;
 using System.Collections.ObjectModel;
 using Xamarin.Forms;
-using eShopOnContainers.Core.ViewModels.Base;
 using eShopOnContainers.Core.Models.Catalog;
 using eShopOnContainers.Core.Services.Catalog;
 using System.Windows.Input;
-using System.Linq;
 using eShopOnContainers.Core.Services.Basket;
-using eShopOnContainers.Core.Helpers;
 using eShopOnContainers.Core.Services.User;
 
 namespace eShopOnContainers.Core.ViewModels
