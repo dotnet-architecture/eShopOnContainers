@@ -17,19 +17,11 @@ namespace eShopOnContainers.Core.ViewModels
         private CatalogBrand _brand;
         private ObservableCollection<CatalogType> _types;
         private CatalogType _type;
-
-        private IBasketService _basketService;
         private ICatalogService _productsService;
-        private IUserService _userService;
 
-        public CatalogViewModel(
-            IBasketService basketService,
-            ICatalogService productsService,
-            IUserService userService)
+        public CatalogViewModel(ICatalogService productsService)
         {
-            _basketService = basketService;
             _productsService = productsService;
-            _userService = userService;
         }
 
         public ObservableCollection<CatalogItem> Products

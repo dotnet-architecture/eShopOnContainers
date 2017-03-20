@@ -13,17 +13,10 @@ namespace eShopOnContainers.Core.ViewModels
     {
         private Order _order;
 
-        private IBasketService _orderService;
-        private ICatalogService _catalogService;
         private IOrderService _ordersService;
 
-        public OrderDetailViewModel(
-            IBasketService orderService,
-            ICatalogService catalogService,
-            IOrderService ordersService)
+        public OrderDetailViewModel(IOrderService ordersService)
         {
-            _orderService = orderService;
-            _catalogService = catalogService;
             _ordersService = ordersService;
         }
 

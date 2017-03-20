@@ -25,16 +25,13 @@ namespace eShopOnContainers.Core.ViewModels
 
         private IOpenUrlService _openUrlService;
         private IIdentityService _identityService;
-        private IUserService _userService;
 
         public LoginViewModel(
             IOpenUrlService openUrlService,
-            IIdentityService identityService,
-            IUserService userService)
+            IIdentityService identityService)
         {
             _openUrlService = openUrlService;
             _identityService = identityService;
-            _userService = userService;
 
             _userName = new ValidatableObject<string>();
             _password = new ValidatableObject<string>();
