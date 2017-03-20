@@ -27,11 +27,11 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure.Autof
                 .InstancePerLifetimeScope();
 
             builder.RegisterType<BuyerRepository>()
-                .As<IBuyerRepository<Buyer>>()
+                .As<IBuyerRepository>()
                 .InstancePerLifetimeScope();
 
             builder.RegisterType<OrderRepository>()
-                .As<IOrderRepository<Order>>()
+                .As<IOrderRepository>()
                 .InstancePerLifetimeScope();
 
             builder.RegisterType<RequestManager>()
