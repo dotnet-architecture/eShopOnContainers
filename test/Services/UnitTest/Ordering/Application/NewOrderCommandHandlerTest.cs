@@ -15,15 +15,15 @@ namespace UnitTest.Ordering.Application
     using Xunit;
     public class NewOrderRequestHandlerTest
     {
-        private readonly Mock<IBuyerRepository<Buyer>> _buyerRepositoryMock;
-        private readonly Mock<IOrderRepository<Order>> _orderRepositoryMock;
+        private readonly Mock<IBuyerRepository> _buyerRepositoryMock;
+        private readonly Mock<IOrderRepository> _orderRepositoryMock;
         private readonly Mock<IIdentityService> _identityServiceMock;
 
         public NewOrderRequestHandlerTest()
         {
 
-            _buyerRepositoryMock = new Mock<IBuyerRepository<Buyer>>();
-            _orderRepositoryMock = new Mock<IOrderRepository<Order>>();
+            _buyerRepositoryMock = new Mock<IBuyerRepository>();
+            _orderRepositoryMock = new Mock<IOrderRepository>();
             _identityServiceMock = new Mock<IIdentityService>();
         }
 

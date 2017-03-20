@@ -24,12 +24,12 @@
     public class CreateOrderCommandHandler
         : IAsyncRequestHandler<CreateOrderCommand, bool>
     {
-        private readonly IBuyerRepository<Buyer> _buyerRepository;
-        private readonly IOrderRepository<Order> _orderRepository;
+        private readonly IBuyerRepository _buyerRepository;
+        private readonly IOrderRepository _orderRepository;
         private readonly IIdentityService _identityService;
 
         // Using DI to inject infrastructure persistence Repositories
-        public CreateOrderCommandHandler(IBuyerRepository<Buyer> buyerRepository, IOrderRepository<Order> orderRepository, IIdentityService identityService)
+        public CreateOrderCommandHandler(IBuyerRepository buyerRepository,  IOrderRepository orderRepository, IIdentityService identityService)
         {
             _buyerRepository = buyerRepository ?? throw new ArgumentNullException(nameof(buyerRepository));
             _orderRepository = orderRepository ?? throw new ArgumentNullException(nameof(orderRepository));
