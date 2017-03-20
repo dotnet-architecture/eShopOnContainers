@@ -13,47 +13,33 @@
     {
         public static async Task SeedAsync(IApplicationBuilder applicationBuilder, ILoggerFactory loggerFactory, int? retry = 0)
         {
-            int retryForAvaiability = retry.Value;
-            try
+            var context = (CatalogContext)applicationBuilder
+                .ApplicationServices.GetService(typeof(CatalogContext));
+
+            context.Database.Migrate();
+
+            if (!context.CatalogBrands.Any())
             {
-                var context = (CatalogContext)applicationBuilder
-                    .ApplicationServices.GetService(typeof(CatalogContext));
+                context.CatalogBrands.AddRange(
+                    GetPreconfiguredCatalogBrands());
 
-                context.Database.Migrate();
-
-                if (!context.CatalogBrands.Any())
-                {
-                    context.CatalogBrands.AddRange(
-                        GetPreconfiguredCatalogBrands());
-
-                    await context.SaveChangesAsync();
-                }
-
-                if (!context.CatalogTypes.Any())
-                {
-                    context.CatalogTypes.AddRange(
-                        GetPreconfiguredCatalogTypes());
-
-                    await context.SaveChangesAsync();
-                }
-
-                if (!context.CatalogItems.Any())
-                {
-                    context.CatalogItems.AddRange(
-                        GetPreconfiguredItems());
-
-                    await context.SaveChangesAsync();
-                }
+                await context.SaveChangesAsync();
             }
-            catch (Exception ex)
+
+            if (!context.CatalogTypes.Any())
             {
-                if (retryForAvaiability < 10)
-                {
-                    retryForAvaiability++;
-                    var log = loggerFactory.CreateLogger("catalog seed");
-                    log.LogError(ex.Message);
-                    await SeedAsync(applicationBuilder, loggerFactory, retryForAvaiability);
-                }
+                context.CatalogTypes.AddRange(
+                    GetPreconfiguredCatalogTypes());
+
+                await context.SaveChangesAsync();
+            }
+
+            if (!context.CatalogItems.Any())
+            {
+                context.CatalogItems.AddRange(
+                    GetPreconfiguredItems());
+
+                await context.SaveChangesAsync();
             }
         }
 
