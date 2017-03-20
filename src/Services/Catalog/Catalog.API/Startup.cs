@@ -11,6 +11,7 @@
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
     using System;
+    using System.Data.SqlClient;
     using System.IO;
     using System.Reflection;
     using System.Threading;
@@ -95,11 +96,35 @@
             app.UseSwagger()
               .UseSwaggerUi();
 
+            var context = (CatalogContext)app
+                        .ApplicationServices.GetService(typeof(CatalogContext));
+
+            WaitForSqlAvailability(context, loggerFactory);
             //Seed Data
             CatalogContextSeed.SeedAsync(app, loggerFactory)
-            .Wait();
+            .Wait();            
+        }
 
-            
+        private void WaitForSqlAvailability(CatalogContext ctx, ILoggerFactory loggerFactory, int? retry = 0)
+        {
+            int retryForAvailability = retry.Value;            
+            try
+            {
+                ctx.Database.OpenConnection();
+            }
+            catch(SqlException ex)
+            {
+                if (retryForAvailability < 10)
+                {
+                    retryForAvailability++;
+                    var log = loggerFactory.CreateLogger(nameof(Startup));
+                    log.LogError(ex.Message);
+                    WaitForSqlAvailability(ctx, loggerFactory, retryForAvailability);
+                }
+            }
+            finally {
+                ctx.Database.CloseConnection(); 
+            }
         }
     }
 }
