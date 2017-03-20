@@ -5,7 +5,7 @@ using System;
 namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Repositories
 {
     public class OrderRepository
-        : IOrderRepository<Order> 
+        : IOrderRepository
     {
         private readonly OrderingContext _context;
 
