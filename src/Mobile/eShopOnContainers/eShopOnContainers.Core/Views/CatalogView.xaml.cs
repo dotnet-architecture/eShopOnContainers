@@ -8,13 +8,11 @@ namespace eShopOnContainers.Core.Views
 {
     public partial class CatalogView : ContentPage, IMenuContainerPage
     {
-        private FiltersView _filterView;
+        private FiltersView _filterView = new FiltersView();
 
         public CatalogView()
         {
             InitializeComponent();
-
-            _filterView = new FiltersView();
 
             SlideMenu = _filterView;
 
@@ -42,13 +40,11 @@ namespace eShopOnContainers.Core.Views
             set;
         }
 
-
         protected override void OnBindingContextChanged()
         {
             base.OnBindingContextChanged();
 
-			if (_filterView != null)
-	            _filterView.BindingContext = BindingContext;
+            _filterView.BindingContext = BindingContext;
         }
 
         private void OnFilterChanged(object sender, EventArgs e)
