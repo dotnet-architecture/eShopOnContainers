@@ -15,7 +15,7 @@ namespace eShopOnContainers.Core.Views
         {
             base.OnAppearing();
 
-            MessagingCenter.Subscribe<MainViewModel, int>(this, MessengerKeys.ChangeTab, (sender, arg) =>
+            MessagingCenter.Subscribe<MainViewModel, int>(this, MessageKeys.ChangeTab, (sender, arg) =>
             {
                switch(arg)
                 {

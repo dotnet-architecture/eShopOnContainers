@@ -16,7 +16,7 @@ namespace eShopOnContainers.Core.Views
 
             SlideMenu = _filterView;
 
-            MessagingCenter.Subscribe<CatalogViewModel>(this, MessengerKeys.Filter, (sender) =>
+            MessagingCenter.Subscribe<CatalogViewModel>(this, MessageKeys.Filter, (sender) =>
             {
                 Filter();
             });

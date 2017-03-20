@@ -84,8 +84,8 @@ namespace eShopOnContainers.Core.ViewModels
                 }
             }
 
-            MessagingCenter.Unsubscribe<CatalogViewModel, CatalogItem>(this, MessengerKeys.AddProduct);
-            MessagingCenter.Subscribe<CatalogViewModel, CatalogItem>(this, MessengerKeys.AddProduct, async (sender, arg) =>
+            MessagingCenter.Unsubscribe<CatalogViewModel, CatalogItem>(this, MessageKeys.AddProduct);
+            MessagingCenter.Subscribe<CatalogViewModel, CatalogItem>(this, MessageKeys.AddProduct, async (sender, arg) =>
             {
                 BadgeCount++;
 

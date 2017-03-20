@@ -1,6 +1,6 @@
 ﻿namespace eShopOnContainers.Core.ViewModels.Base
 {
-    public class MessengerKeys
+    public class MessageKeys
     {
         // Add product to basket
         public const string AddProduct = "AddProduct";
