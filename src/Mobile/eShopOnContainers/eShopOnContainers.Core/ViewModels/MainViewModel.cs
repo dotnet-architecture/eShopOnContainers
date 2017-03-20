@@ -2,7 +2,6 @@
 using eShopOnContainers.Core.ViewModels.Base;
 using eShopOnContainers.Core.Models.Navigation;
 using Xamarin.Forms;
-using eShopOnContainers.Core.ViewModels.Base;
 using System.Windows.Input;
 
 namespace eShopOnContainers.Core.ViewModels
