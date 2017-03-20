@@ -67,7 +67,7 @@ export class SecurityService {
                 this.storage.store('userData', data);
                 // emit observable
                 this.authenticationSource.next(true);
-                window.location.href = 'http://localhost:5104';
+                window.location.href = location.origin;
             },
             error => this.HandleError(error),
             () => {
@@ -80,7 +80,7 @@ export class SecurityService {
 
         let authorizationUrl = this.authorityUrl + '/connect/authorize';
         let client_id = 'js';
-        let redirect_uri = 'http://localhost:5104/';
+        let redirect_uri = location.origin + '/';
         let response_type = 'id_token token';
         let scope = 'openid profile orders basket';
         let nonce = 'N' + Math.random() + '' + Date.now();
@@ -152,7 +152,7 @@ export class SecurityService {
     public Logoff() {
         let authorizationUrl = this.authorityUrl + '/connect/endsession';
         let id_token_hint = this.storage.retrieve('authorizationDataIdToken');
-        let post_logout_redirect_uri = 'http://localhost:5104/';
+        let post_logout_redirect_uri = location.origin + '/';
 
         let url =
             authorizationUrl + '?' +

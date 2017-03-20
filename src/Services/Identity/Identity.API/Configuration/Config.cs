@@ -91,8 +91,8 @@ namespace Identity.API.Configuration
                     },
                     PostLogoutRedirectUris = new List<string>
                     {
-                        $"{clientsUrl["Mvc"]}/", 
-                        "http://localhost:5100/"
+                        $"{clientsUrl["Mvc"]}/signout-callback-oidc",
+                        "http://localhost:5100/signout-callback-oidc"
                     },
                     AllowedScopes = new List<string>
                     {

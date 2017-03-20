@@ -1,4 +1,4 @@
-﻿using eShopOnContainers.Core.ViewModels.Base;
+﻿using eShopOnContainers.ViewModels.Base;
 using System;
 using System.Threading.Tasks;
 
