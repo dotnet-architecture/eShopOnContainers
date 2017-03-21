@@ -5,6 +5,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
+
 namespace Microsoft.eShopOnContainers.Services.Basket.API.IntegrationEvents.EventHandling
 {
     public class ProductPriceChangedIntegrationEventHandler : IIntegrationEventHandler<ProductPriceChangedIntegrationEvent>
@@ -16,7 +17,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.IntegrationEvents.Even
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
-        public async Task Handle(ProductPriceChangedIntegrationEvent @event)
+         public async Task Handle(ProductPriceChangedIntegrationEvent @event)
         {
             var userIds = await _repository.GetUsersAsync();
             
@@ -32,7 +33,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.IntegrationEvents.Even
         {
             var itemsToUpdate = basket?.Items?.Where(x => int.Parse(x.ProductId) == productId).ToList();
 
-            if (itemsToUpdate != null)
+            if ((itemsToUpdate != null) && (itemsToUpdate.Any())
             {
                 foreach (var item in itemsToUpdate)
                 {
