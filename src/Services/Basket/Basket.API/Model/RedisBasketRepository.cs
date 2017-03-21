@@ -63,10 +63,18 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Model
         {
             if (_redis == null)
             {
-                //TODO: Need to make this more robust. Also want to understand why the static connection method cannot accept dns names.
-                var ips = await Dns.GetHostAddressesAsync(_settings.ConnectionString);
-                _logger.LogInformation($"Connecting to database {_settings.ConnectionString} at IP {ips.First().ToString()}");
-                _redis = await ConnectionMultiplexer.ConnectAsync(ips.First().ToString());
+                if (IPAddress.TryParse(_settings.ConnectionString, out var ip))
+                {
+                    _redis = await ConnectionMultiplexer.ConnectAsync(ip.ToString());
+                    _logger.LogInformation($"Connecting to database at {_settings.ConnectionString}");
+                }
+                else
+                {
+                    // workaround for https://github.com/StackExchange/StackExchange.Redis/issues/410
+                    var ips = await Dns.GetHostAddressesAsync(_settings.ConnectionString);
+                    _logger.LogInformation($"Connecting to database {_settings.ConnectionString} at IP {ips.First().ToString()}");
+                    _redis = await ConnectionMultiplexer.ConnectAsync(ips.First().ToString());
+                }
             }
 
             return _redis.GetDatabase();
