@@ -114,7 +114,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             var identityUrl = Configuration.GetValue<string>("IdentityUrl");
             app.UseIdentityServerAuthentication(new IdentityServerAuthenticationOptions
             {
-                Authority = identityUrl.ToString(),
+                Authority = identityUrl,
                 ScopeName = "basket",
                 RequireHttpsMetadata = false
             });

@@ -28,7 +28,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Model
         public async Task<bool> DeleteBasket(string id)
         {
             var database = await GetDatabase();
-            return await database.KeyDeleteAsync(id.ToString());
+            return await database.KeyDeleteAsync(id);
         }
 
         public async Task<IEnumerable<string>> GetUsers()
@@ -36,11 +36,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Model
             var server = await GetServer();
             
             IEnumerable<RedisKey> data = server.Keys();
-            if (data == null)
-            {
-                return null;
-            }
-            return data.Select(k => k.ToString());
+            return data?.Select(k => k.ToString());
         }
 
         public async Task<CustomerBasket> GetBasket(string customerId)
@@ -99,8 +95,6 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Model
             _logger.LogInformation($"Connecting to database {_settings.ConnectionString} at IP {ips.First().ToString()}");
             _redis = await ConnectionMultiplexer.ConnectAsync(ips.First().ToString());
         }
-
-        
     }
 }
 

@@ -18,10 +18,9 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
     {
         private IBasketRepository _repository;
 
-        public BasketController(IBasketRepository repository)
-        {
+        public BasketController(IBasketRepository repository) =>
             _repository = repository;
-        }
+
         // GET api/values/5
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(string id)
@@ -42,9 +41,9 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
 
         // DELETE api/values/5
         [HttpDelete("{id}")]
-        public void Delete(string id)
+        public Task Delete(string id) 
         {
-            _repository.DeleteBasket(id);
+            return _repository.DeleteBasket(id);
         }
     }
 }
