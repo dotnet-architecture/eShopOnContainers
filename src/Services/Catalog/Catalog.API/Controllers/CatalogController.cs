@@ -130,20 +130,21 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
             return Ok(items);
         }
 
+        [Route("edit")]
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody]CatalogItem value)
+        public async Task<IActionResult> EditProduct([FromBody]CatalogItem product)
         {
-            var item = await _context.CatalogItems.SingleOrDefaultAsync(i => i.Id == value.Id);
+            var item = await _context.CatalogItems.SingleOrDefaultAsync(i => i.Id == product.Id);
 
             if (item == null)
             {
                 return NotFound();
             }
 
-            if (item.Price != value.Price)
+            if (item.Price != product.Price)
             {
                 var oldPrice = item.Price;
-                item.Price = value.Price;
+                item.Price = product.Price;
                 _context.CatalogItems.Update(item);
 
                 var @event = new ProductPriceChangedIntegrationEvent(item.Id, item.Price, oldPrice);
@@ -158,10 +159,47 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
                 eventLogEntry.State = EventStateEnum.Published;
                 _context.IntegrationEventLog.Update(eventLogEntry);
                 await _context.SaveChangesAsync();
-            }
+            }         
 
             return Ok();
-        }        
+        }
+
+        [Route("create")]
+        [HttpPost]
+        public async Task<IActionResult> CreateProduct([FromBody]CatalogItem product)
+        {
+            _context.CatalogItems.Add(
+                new CatalogItem
+                {
+                    CatalogBrandId = product.CatalogBrandId,
+                    CatalogTypeId = product.CatalogTypeId,
+                    Description = product.Description,
+                    Name = product.Name,
+                    PictureUri = product.PictureUri,
+                    Price = product.Price
+                });
+
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
+
+        [Route("{id}")]
+        [HttpDelete]
+        public async Task<IActionResult> DeleteProduct(int id)
+        {
+            var product = _context.CatalogItems.SingleOrDefault(x => x.Id == id);
+
+            if (product == null)
+            {
+                return NotFound();
+            }            
+
+            _context.CatalogItems.Remove(product);
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
 
         private List<CatalogItem> ComposePicUri(List<CatalogItem> items) {
             var baseUri = _settings.Value.ExternalCatalogBaseUrl;
