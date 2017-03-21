@@ -16,30 +16,18 @@ namespace WebMVC.Services.Utilities
             _client = new HttpClient();
             _logger = new LoggerFactory().CreateLogger(nameof(HttpApiClientWrapper));
         }
+        
+        public Task<string> GetStringAsync(string uri) =>
+            _client.GetStringAsync(uri);
 
-        public async Task<string> GetStringAsync(string uri)
-        {
-            return await HttpInvoker(async () =>
-                await _client.GetStringAsync(uri));
-        }
-
-        public async Task<HttpResponseMessage> PostAsync<T>(string uri, T item)
+        public Task<HttpResponseMessage> PostAsync<T>(string uri, T item)
         {
             var contentString = new StringContent(JsonConvert.SerializeObject(item), System.Text.Encoding.UTF8, "application/json");
-            return await HttpInvoker(async () =>
-                    await _client.PostAsync(uri, contentString));
+            return _client.PostAsync(uri, contentString);
         }
 
-        public async Task<HttpResponseMessage> DeleteAsync(string uri)
-        {
-            return await HttpInvoker(async () =>
-                await _client.DeleteAsync(uri));
-        }
-
-        private async Task<T> HttpInvoker<T>(Func<Task<T>> action)
-        {
-            return await action();
-        }
+        public Task<HttpResponseMessage> DeleteAsync(string uri) =>
+            _client.DeleteAsync(uri);
     }
 }
 

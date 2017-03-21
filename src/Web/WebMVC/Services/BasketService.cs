@@ -33,16 +33,14 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
 
             _apiClient.Inst.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
-            var basketUrl = $"{_remoteServiceBaseUrl}/{user.Id.ToString()}";
+            var basketUrl = $"{_remoteServiceBaseUrl}/{user.Id}";
             var dataString = await _apiClient.GetStringAsync(basketUrl);
-            var response = JsonConvert.DeserializeObject<Basket>(dataString);
-            if (response == null)
-            {
-                response = new Basket()
+            // Use the ?? Null conditional operator to simplify the initialization of response
+            var response = JsonConvert.DeserializeObject<Basket>(dataString) ?? 
+                new Basket()
                 {
                     BuyerId = user.Id
                 };
-            }
 
             return response;
         }
@@ -67,9 +65,12 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
 
             basket.Items.ForEach(x =>
             {
-                var quantity = quantities.Where(y => y.Key == x.Id).FirstOrDefault();
-                if (quantities.Where(y => y.Key == x.Id).Count() > 0)
-                    x.Quantity = quantity.Value;
+                // Simplify this logic by using the
+                // new out variable initializer.
+                if (quantities.TryGetValue(x.Id, out var quantity))
+                {
+                    x.Quantity = quantity;
+                }
             });
 
             return basket;
@@ -119,7 +120,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
             var token = await context.Authentication.GetTokenAsync("access_token");
 
             _apiClient.Inst.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
-            var basketUrl = $"{_remoteServiceBaseUrl}/{user.Id.ToString()}";
+            var basketUrl = $"{_remoteServiceBaseUrl}/{user.Id}";
             var response = await _apiClient.DeleteAsync(basketUrl);
             
             //CCE: response status code...
