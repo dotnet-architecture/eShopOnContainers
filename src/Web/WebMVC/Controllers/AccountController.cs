@@ -11,16 +11,11 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
     public class AccountController : Controller
     {
         private readonly IIdentityParser<ApplicationUser> _identityParser;
-        public AccountController(IIdentityParser<ApplicationUser> identityParser)
-        {
+        public AccountController(IIdentityParser<ApplicationUser> identityParser) => 
             _identityParser = identityParser;
-        }
 
-        public ActionResult Index()
-        {
-            return View();
-        }
-
+        public ActionResult Index() => View();
+        
         [Authorize]
         public IActionResult SignIn(string returnUrl)
         {

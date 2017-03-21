@@ -61,8 +61,11 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
             JArray brands = JArray.Parse(dataString);
             foreach (JObject brand in brands.Children<JObject>())
             {
-                dynamic item = brand;
-                items.Add(new SelectListItem() { Value = item.id, Text = item.brand });
+                items.Add(new SelectListItem()
+                {
+                    Value = brand.Value<string>("id"),
+                    Text = brand.Value<string>("brand")
+                });
             }
 
             return items;
@@ -79,10 +82,12 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
             JArray brands = JArray.Parse(dataString);
             foreach (JObject brand in brands.Children<JObject>())
             {
-                dynamic item = brand;
-                items.Add(new SelectListItem() { Value = item.id, Text = item.type });
+                items.Add(new SelectListItem()
+                {
+                    Value = brand.Value<string>("id"),
+                    Text = brand.Value<string>("type")
+                });
             }
-
             return items;
         }
     }
