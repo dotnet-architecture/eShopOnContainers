@@ -4,7 +4,7 @@
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     <asp:ListView ID="catalogList" runat="server"
         DataKeyNames="Id" GroupItemCount="3"
-        ItemType="eShopOnContainers.Core.Models.Catalog.CatalogItem" SelectMethod="catalogList_GetData" DeleteMethod="catalogList_DeleteItem">
+        ItemType="eShopOnContainers.Core.Models.Catalog.CatalogItem" SelectMethod="GetCatalogDataAsync" DeleteMethod="DeleteCatalogItemAsync">
         <EmptyDataTemplate>
             <div class="row">
                 <span class="col-md-10 col-md-offset-1">There's nothing in the catalog to display at this time.

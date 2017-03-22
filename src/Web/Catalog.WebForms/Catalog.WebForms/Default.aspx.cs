@@ -33,13 +33,13 @@ namespace eShopOnContainers.Catalog.WebForms
         //     int startRowIndex
         //     out int totalRowCount
         //     string sortByExpression
-        public async Task<IEnumerable<CatalogItem>> catalogList_GetData()
+        public async Task<IEnumerable<CatalogItem>> GetCatalogDataAsync()
         {
             return await catalog?.GetCatalogAsync();
         }
 
         // The id parameter name should match the DataKeyNames value set on the control
-        public async Task catalogList_DeleteItem(int id)
+        public async Task DeleteCatalogItemAsync(int id)
         {
             //TODO: Call the service.
         }
