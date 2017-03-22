@@ -8,6 +8,12 @@ using System.Threading.Tasks;
 
 namespace WebMVC.Services.Utilities
 {
+    /// <summary>
+    /// HttpClient wrapper that integrates Retry and Circuit
+    /// breaker policies when calling to Api services. 
+    /// Currently is ONLY implemented for the ASP MVC
+    /// and Xamarin App
+    /// </summary>
     public class HttpApiClientWrapper : IHttpClient
     {
         private HttpClient _client;
@@ -49,11 +55,11 @@ namespace WebMVC.Services.Utilities
             Policy.Handle<HttpRequestException>()
             .WaitAndRetryAsync(
                 // number of retries
-                3, 
+                3,
                 // exponential backofff
                 retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
                 // on retry
-                (exception, timeSpan, retryCount, context) =>  
+                (exception, timeSpan, retryCount, context) =>
                 {
                     _logger.LogTrace($"Retry {retryCount} " +
                         $"of {context.PolicyKey} " +
@@ -62,27 +68,21 @@ namespace WebMVC.Services.Utilities
                 }
             );
 
-        // Notice that these (and other methods below) are Task
-        // returning asynchronous methods. But, they do not
-        // have the 'async' modifier, and do not contain
-        // any 'await statements. In each of these methods,
-        // the only asynchronous call is the last (or only)
-        // statement of the method. In those instances,
-        // a Task returning method that does not use the 
-        // async modifier is preferred. The compiler generates
-        // synchronous code for this method, but returns the 
-        // task from the underlying asynchronous method. The
-        // generated code does not contain the state machine
-        // generated for asynchronous methods.
         public Task<string> GetStringAsync(string uri) =>
-            HttpInvoker(() => _client.GetStringAsync(uri));
+            HttpInvoker(() => 
+                _client.GetStringAsync(uri));
 
         public Task<HttpResponseMessage> PostAsync<T>(string uri, T item) =>
             // a new StringContent must be created for each retry 
             // as it is disposed after each call
-            HttpInvoker(() =>_client.PostAsync(uri, 
-                new StringContent(JsonConvert.SerializeObject(item), 
-                System.Text.Encoding.UTF8, "application/json")));
+            HttpInvoker(() =>
+                {
+                    var response = _client.PostAsync(uri, new StringContent(JsonConvert.SerializeObject(item), System.Text.Encoding.UTF8, "application/json"));
+                    // raise exception if not success response
+                    // needed for circuit breaker to track fails
+                    response.Result.EnsureSuccessStatusCode();
+                    return response;
+                });
 
         public Task<HttpResponseMessage> DeleteAsync(string uri) =>
             HttpInvoker(() => _client.DeleteAsync(uri));
