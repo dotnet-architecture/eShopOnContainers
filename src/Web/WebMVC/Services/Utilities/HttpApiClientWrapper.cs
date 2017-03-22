@@ -36,7 +36,7 @@ namespace WebMVC.Services.Utilities
             Policy.Handle<HttpRequestException>()
             .CircuitBreakerAsync(
                 // number of exceptions before breaking circuit
-                3,
+                5,
                 // time circuit opened before retry
                 TimeSpan.FromMinutes(1),
                 (exception, duration) =>
@@ -55,7 +55,7 @@ namespace WebMVC.Services.Utilities
             Policy.Handle<HttpRequestException>()
             .WaitAndRetryAsync(
                 // number of retries
-                3,
+                5,
                 // exponential backofff
                 retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
                 // on retry
