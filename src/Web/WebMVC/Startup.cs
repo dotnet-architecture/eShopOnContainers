@@ -54,11 +54,11 @@ namespace Microsoft.eShopOnContainers.WebMVC
 
             if(Configuration.GetValue<string>("ActivateCircuitBreaker") == bool.TrueString)
             {
-                services.AddSingleton<IHttpClient, HttpApiClientWrapper>();
+                services.AddTransient<IHttpClient, HttpApiClientWrapper>();
             }
             else
             {
-                services.AddSingleton<IHttpClient, HttpApiClient>();
+                services.AddTransient<IHttpClient, HttpApiClient>();
             }
         }
 

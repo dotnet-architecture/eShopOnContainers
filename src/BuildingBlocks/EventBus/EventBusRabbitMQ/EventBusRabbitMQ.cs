@@ -21,7 +21,8 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
         private readonly Dictionary<string, List<IIntegrationEventHandler>>  _handlers;
         private readonly List<Type> _eventTypes;
 
-        private Tuple<IModel, IConnection> _connection;
+        private IModel _model;
+        private IConnection _connection;
         private string _queueName;
         
 
@@ -86,15 +87,15 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
                     _handlers.Remove(eventName);
                     var eventType = _eventTypes.Single(e => e.Name == eventName);
                     _eventTypes.Remove(eventType);
-                    _connection.Item1.QueueUnbind(queue: _queueName, 
+                    _model.QueueUnbind(queue: _queueName, 
                         exchange: _brokerName, 
                         routingKey: eventName);
 
                     if (_handlers.Keys.Count == 0)
                     {
                         _queueName = string.Empty;
-                        _connection.Item1.Dispose();
-                        _connection.Item2.Dispose();
+                        _model.Dispose();
+                        _connection.Dispose();
                     }
                     
                 }
@@ -103,48 +104,51 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
 
         public void Dispose()
         {
-            if (_connection != null)
-            {
-                _handlers.Clear();
-                _connection.Item1.Dispose();
-                _connection.Item2.Dispose();
-            }
+            _handlers.Clear();
+            _model?.Dispose();
+            _connection?.Dispose();                
         }
 
         private IModel GetChannel()
         {
-            if (_connection != null)
+            if (_model != null)
             {
-                return _connection.Item1;
+                return _model;
             }
             else
             {
-                var factory = new ConnectionFactory() { HostName = _connectionString };
-                var connection = factory.CreateConnection();
-                var channel = connection.CreateModel();
-
-                channel.ExchangeDeclare(exchange: _brokerName,
-                                    type: "direct");
-                if (string.IsNullOrEmpty(_queueName))
-                {
-                    _queueName = channel.QueueDeclare().QueueName;
-                }
-
-                var consumer = new EventingBasicConsumer(channel);
-                consumer.Received += async (model, ea) =>
-                {
-                    var eventName = ea.RoutingKey;
-                    var message = Encoding.UTF8.GetString(ea.Body);
-
-                    await ProcessEvent(eventName, message);
-                };
-                channel.BasicConsume(queue: _queueName,
-                                     noAck: true,
-                                     consumer: consumer);
-                _connection = new Tuple<IModel, IConnection>(channel, connection);
-
-                return _connection.Item1;
+                (_model, _connection) = CreateConnection();
+                return _model;
             }
+        }
+
+
+        private (IModel model, IConnection connection) CreateConnection()
+        {
+            var factory = new ConnectionFactory() { HostName = _connectionString };
+            var con = factory.CreateConnection();
+            var channel = con.CreateModel();
+
+            channel.ExchangeDeclare(exchange: _brokerName,
+                                type: "direct");
+            if (string.IsNullOrEmpty(_queueName))
+            {
+                _queueName = channel.QueueDeclare().QueueName;
+            }
+
+            var consumer = new EventingBasicConsumer(channel);
+            consumer.Received += async (model, ea) =>
+            {
+                var eventName = ea.RoutingKey;
+                var message = Encoding.UTF8.GetString(ea.Body);
+
+                await ProcessEvent(eventName, message);
+            };
+            channel.BasicConsume(queue: _queueName,
+                                 noAck: true,
+                                 consumer: consumer);
+
+            return (channel, con);
         }
 
         private async Task ProcessEvent(string eventName, string message)
