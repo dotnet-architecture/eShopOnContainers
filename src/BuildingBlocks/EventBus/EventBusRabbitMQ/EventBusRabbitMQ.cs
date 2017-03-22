@@ -117,7 +117,7 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
             }
             else
             {
-                ((_model, _connection) = CreateConnection();
+                (_model, _connection) = CreateConnection();
                 return _model;
             }
         }
