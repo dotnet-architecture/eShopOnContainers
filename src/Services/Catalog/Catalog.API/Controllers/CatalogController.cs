@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
-using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events.IntegrationEventLog;
+using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF;
 using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
 using Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationEvents.Events;
 using Microsoft.eShopOnContainers.Services.Catalog.API.Model;
@@ -16,28 +16,31 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
     [Route("api/v1/[controller]")]
     public class CatalogController : ControllerBase
     {
-        private readonly CatalogContext _context;
+        private readonly CatalogContext _catalogContext;
+        private readonly IntegrationEventLogContext _integrationEventLogContext;
         private readonly IOptionsSnapshot<Settings> _settings;
         private readonly IEventBus _eventBus;
 
-        public CatalogController(CatalogContext context, IOptionsSnapshot<Settings> settings, IEventBus eventBus)
+        public CatalogController(CatalogContext catalogContext, IntegrationEventLogContext integrationEventLogContext, IOptionsSnapshot<Settings> settings, IEventBus eventBus)
         {
-            _context = context;
+            _catalogContext = catalogContext;
+            _integrationEventLogContext = integrationEventLogContext;
             _settings = settings;
             _eventBus = eventBus;
 
-            ((DbContext)context).ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+            ((DbContext)catalogContext).ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
         // GET api/v1/[controller]/items[?pageSize=3&pageIndex=10]
         [HttpGet]
         [Route("[action]")]
         public async Task<IActionResult> Items([FromQuery]int pageSize = 10, [FromQuery]int pageIndex = 0)
+
         {
-            var totalItems = await _context.CatalogItems
+            var totalItems = await _catalogContext.CatalogItems
                 .LongCountAsync();
 
-            var itemsOnPage = await _context.CatalogItems
+            var itemsOnPage = await _catalogContext.CatalogItems
                 .OrderBy(c=>c.Name)
                 .Skip(pageSize * pageIndex)
                 .Take(pageSize)
@@ -57,11 +60,11 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
         public async Task<IActionResult> Items(string name, [FromQuery]int pageSize = 10, [FromQuery]int pageIndex = 0)
         {
 
-            var totalItems = await _context.CatalogItems
+            var totalItems = await _catalogContext.CatalogItems
                 .Where(c => c.Name.StartsWith(name))
                 .LongCountAsync();
 
-            var itemsOnPage = await _context.CatalogItems
+            var itemsOnPage = await _catalogContext.CatalogItems
                 .Where(c => c.Name.StartsWith(name))
                 .Skip(pageSize * pageIndex)
                 .Take(pageSize)
@@ -80,7 +83,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
         [Route("[action]/type/{catalogTypeId}/brand/{catalogBrandId}")]
         public async Task<IActionResult> Items(int? catalogTypeId, int? catalogBrandId, [FromQuery]int pageSize = 10, [FromQuery]int pageIndex = 0)
         {
-            var root = (IQueryable<CatalogItem>)_context.CatalogItems;
+            var root = (IQueryable<CatalogItem>)_catalogContext.CatalogItems;
 
             if (catalogTypeId.HasValue)
             {
@@ -113,7 +116,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
         [Route("[action]")]
         public async Task<IActionResult> CatalogTypes()
         {
-            var items = await _context.CatalogTypes
+            var items = await _catalogContext.CatalogTypes
                 .ToListAsync();
 
             return Ok(items);
@@ -124,7 +127,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
         [Route("[action]")]
         public async Task<IActionResult> CatalogBrands()
         {
-            var items = await _context.CatalogBrands
+            var items = await _catalogContext.CatalogBrands
                 .ToListAsync();
 
             return Ok(items);
@@ -135,7 +138,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
         [HttpPost]
         public async Task<IActionResult> EditProduct([FromBody]CatalogItem product)
         {
-            var item = await _context.CatalogItems.SingleOrDefaultAsync(i => i.Id == product.Id);
+            var item = await _catalogContext.CatalogItems.SingleOrDefaultAsync(i => i.Id == product.Id);
 
             if (item == null)
             {
@@ -146,20 +149,21 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
             {
                 var oldPrice = item.Price;
                 item.Price = product.Price;
-                _context.CatalogItems.Update(item);
+                _catalogContext.CatalogItems.Update(item);
 
                 var @event = new ProductPriceChangedIntegrationEvent(item.Id, item.Price, oldPrice);
                 var eventLogEntry = new IntegrationEventLogEntry(@event);                
-                _context.IntegrationEventLog.Add(eventLogEntry);                
+                _integrationEventLogContext.IntegrationEventLogs.Add(eventLogEntry);                
 
-                await _context.SaveChangesAsync();
+                await _integrationEventLogContext.SaveChangesAsync();
+                await _catalogContext.SaveChangesAsync();
                 
                 _eventBus.Publish(@event);
                 
                 eventLogEntry.TimesSent++;
                 eventLogEntry.State = EventStateEnum.Published;
-                _context.IntegrationEventLog.Update(eventLogEntry);
-                await _context.SaveChangesAsync();
+                _integrationEventLogContext.IntegrationEventLogs.Update(eventLogEntry);
+                await _integrationEventLogContext.SaveChangesAsync();
             }         
 
             return Ok();
@@ -170,7 +174,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateProduct([FromBody]CatalogItem product)
         {
-            _context.CatalogItems.Add(
+            _catalogContext.CatalogItems.Add(
                 new CatalogItem
                 {
                     CatalogBrandId = product.CatalogBrandId,
@@ -181,7 +185,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
                     Price = product.Price
                 });
 
-            await _context.SaveChangesAsync();
+            await _catalogContext.SaveChangesAsync();
 
             return Ok();
         }
@@ -191,15 +195,15 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
         [HttpDelete]
         public async Task<IActionResult> DeleteProduct(int id)
         {
-            var product = _context.CatalogItems.SingleOrDefault(x => x.Id == id);
+            var product = _catalogContext.CatalogItems.SingleOrDefault(x => x.Id == id);
 
             if (product == null)
             {
                 return NotFound();
             }            
 
-            _context.CatalogItems.Remove(product);
-            await _context.SaveChangesAsync();
+            _catalogContext.CatalogItems.Remove(product);
+            await _catalogContext.SaveChangesAsync();
 
             return Ok();
         }

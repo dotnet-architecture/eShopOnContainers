@@ -6,6 +6,7 @@
     using Microsoft.EntityFrameworkCore.Infrastructure;
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ;
+    using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF;
     using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -45,6 +46,12 @@
                 //Check Client vs. Server evaluation: https://docs.microsoft.com/en-us/ef/core/querying/client-eval
             });
 
+            services.AddDbContext<IntegrationEventLogContext>(c =>
+            {
+                c.UseSqlServer(Configuration["ConnectionString"], b => b.MigrationsAssembly("Catalog.API"));               
+                c.ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning));                
+            });
+
             services.Configure<Settings>(Configuration);
 
             // Add framework services.
@@ -77,7 +84,7 @@
             services.AddMvc();
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IntegrationEventLogContext integrationEventLogContext)
         {
             //Configure logs
 
@@ -98,9 +105,11 @@
 
             //Seed Data
             CatalogContextSeed.SeedAsync(app, loggerFactory)
-            .Wait();
+                .Wait();
 
-            
+            // TODO: move this creation to a db initializer
+             integrationEventLogContext.Database.Migrate();
+
         }
     }
 }
