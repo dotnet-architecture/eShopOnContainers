@@ -130,6 +130,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
             return Ok(items);
         }
 
+        //POST api/v1/[controller]/edit
         [Route("edit")]
         [HttpPost]
         public async Task<IActionResult> EditProduct([FromBody]CatalogItem product)
@@ -164,6 +165,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
             return Ok();
         }
 
+        //POST api/v1/[controller]/create
         [Route("create")]
         [HttpPost]
         public async Task<IActionResult> CreateProduct([FromBody]CatalogItem product)
@@ -184,6 +186,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
             return Ok();
         }
 
+        //DELETE api/v1/[controller]/id
         [Route("{id}")]
         [HttpDelete]
         public async Task<IActionResult> DeleteProduct(int id)
