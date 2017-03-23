@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 using Newtonsoft.Json;
+using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
 
-namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events.IntegrationEventLog
+namespace Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF
 {
     public class IntegrationEventLogEntry
     {
+        private IntegrationEventLogEntry() { }
         public IntegrationEventLogEntry(IntegrationEvent @event)
         {
             EventId = @event.Id;

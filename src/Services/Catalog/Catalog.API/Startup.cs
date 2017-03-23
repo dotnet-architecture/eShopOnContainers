@@ -1,16 +1,19 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Catalog.API
 {
+    using global::Catalog.API.IntegrationEvents;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Infrastructure;
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ;
+    using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF;
     using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
+    using System.Data.SqlClient;
     using System.Reflection;
 
     public class Startup
@@ -36,13 +39,21 @@
 
         public void ConfigureServices(IServiceCollection services)
         {
+            var sqlConnection = new SqlConnection(Configuration["ConnectionString"]);
+
             services.AddDbContext<CatalogContext>(c =>
             {
-                c.UseSqlServer(Configuration["ConnectionString"]);
+                c.UseSqlServer(sqlConnection);
                 // Changing default behavior when client evaluation occurs to throw. 
                 // Default in EF Core would be to log a warning when client evaluation is performed.
                 c.ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning));
                 //Check Client vs. Server evaluation: https://docs.microsoft.com/en-us/ef/core/querying/client-eval
+            });
+
+            services.AddDbContext<IntegrationEventLogContext>(c =>
+            {
+                c.UseSqlServer(sqlConnection, b => b.MigrationsAssembly("Catalog.API"));               
+                c.ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning));                
             });
 
             services.Configure<Settings>(Configuration);
@@ -70,6 +81,8 @@
                     .AllowCredentials());
             });
 
+            services.AddTransient<IIntegrationEventLogService, IntegrationEventLogService>();
+            
             var serviceProvider = services.BuildServiceProvider();
             var configuration = serviceProvider.GetRequiredService<IOptionsSnapshot<Settings>>().Value;
             services.AddSingleton<IEventBus>(new EventBusRabbitMQ(configuration.EventBusConnection));
@@ -77,7 +90,7 @@
             services.AddMvc();
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IntegrationEventLogContext integrationEventLogContext)
         {
             //Configure logs
 
@@ -98,9 +111,10 @@
 
             //Seed Data
             CatalogContextSeed.SeedAsync(app, loggerFactory)
-            .Wait();
-
+                .Wait();
             
+            integrationEventLogContext.Database.Migrate();
+
         }
     }
 }
