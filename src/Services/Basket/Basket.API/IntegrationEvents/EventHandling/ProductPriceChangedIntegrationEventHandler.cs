@@ -4,6 +4,7 @@ using Microsoft.eShopOnContainers.Services.Basket.API.Model;
 using System.Linq;
 using System.Threading.Tasks;
 
+
 namespace Microsoft.eShopOnContainers.Services.Basket.API.IntegrationEvents.EventHandling
 {
     public class ProductPriceChangedIntegrationEventHandler : IIntegrationEventHandler<ProductPriceChangedIntegrationEvent>
@@ -20,26 +21,29 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.IntegrationEvents.Even
             foreach (var id in userIds)
             {
                 var basket = await _repository.GetBasket(id);
-                await UpdateBasket(@event.ProductId, @event.NewPrice, basket);                      
+                await UpdateBasket(@event.ProductId, @event.NewPrice, basket);
             }
         }
 
-        private async Task UpdateBasket(int productId, decimal newPrice, CustomerBasket basket)
+        private ValueTask<CustomerBasket> UpdateBasket(int productId, decimal newPrice, CustomerBasket basket)
         {
             var itemsToUpdate = basket?.Items?.Where(x => int.Parse(x.ProductId) == productId).ToList();
             if (itemsToUpdate != null)
             {
                 foreach (var item in itemsToUpdate)
                 {
-                    if(item.UnitPrice != newPrice)
-                    { 
+                    if (item.UnitPrice != newPrice)
+                    {
                         var originalPrice = item.UnitPrice;
                         item.UnitPrice = newPrice;
                         item.OldUnitPrice = originalPrice;
                     }
                 }
-                await _repository.UpdateBasket(basket);
-            }           
+                return new ValueTask<CustomerBasket>(_repository.UpdateBasket(basket));
+            } else
+            {
+                return new ValueTask<CustomerBasket>(default(CustomerBasket));
+            }
         }
     }
 }

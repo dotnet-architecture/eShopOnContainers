@@ -10,11 +10,11 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.IntegrationEvents.Even
     // An Integration Event is an event that can cause side effects to other microsrvices, Bounded-Contexts or external systems.
     public class ProductPriceChangedIntegrationEvent : IntegrationEvent
     {        
-        public int ProductId { get; private set; }
+        public int ProductId { get; }
 
-        public decimal NewPrice { get; private set; }
+        public decimal NewPrice { get; }
 
-        public decimal OldPrice { get; private set; }
+        public decimal OldPrice { get; }
 
         public ProductPriceChangedIntegrationEvent(int productId, decimal newPrice, decimal oldPrice)
         {
