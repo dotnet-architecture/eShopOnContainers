@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Catalog.API.IntegrationEvents;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
 using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF;
 using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
@@ -17,18 +19,18 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
     public class CatalogController : ControllerBase
     {
         private readonly CatalogContext _catalogContext;
-        private readonly IntegrationEventLogContext _integrationEventLogContext;
         private readonly IOptionsSnapshot<Settings> _settings;
         private readonly IEventBus _eventBus;
+        private readonly IIntegrationEventLogService _integrationEventLogService;
 
-        public CatalogController(CatalogContext catalogContext, IntegrationEventLogContext integrationEventLogContext, IOptionsSnapshot<Settings> settings, IEventBus eventBus)
+        public CatalogController(CatalogContext Context, IOptionsSnapshot<Settings> settings, IEventBus eventBus, IIntegrationEventLogService integrationEventLogService)
         {
-            _catalogContext = catalogContext;
-            _integrationEventLogContext = integrationEventLogContext;
+            _catalogContext = Context;
             _settings = settings;
             _eventBus = eventBus;
+            _integrationEventLogService = integrationEventLogService;
 
-            ((DbContext)catalogContext).ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+            ((DbContext)Context).ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
         // GET api/v1/[controller]/items[?pageSize=3&pageIndex=10]
@@ -149,21 +151,21 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
             {
                 var oldPrice = item.Price;
                 item.Price = product.Price;
-                _catalogContext.CatalogItems.Update(item);
-
                 var @event = new ProductPriceChangedIntegrationEvent(item.Id, item.Price, oldPrice);
-                var eventLogEntry = new IntegrationEventLogEntry(@event);                
-                _integrationEventLogContext.IntegrationEventLogs.Add(eventLogEntry);                
 
-                await _integrationEventLogContext.SaveChangesAsync();
-                await _catalogContext.SaveChangesAsync();
-                
+                using (var transaction = _catalogContext.Database.BeginTransaction())
+                {
+                    _catalogContext.CatalogItems.Update(item);
+                    await _catalogContext.SaveChangesAsync();
+
+                    await _integrationEventLogService.SaveEventAsync(@event);
+
+                    transaction.Commit();
+                }
+
                 _eventBus.Publish(@event);
-                
-                eventLogEntry.TimesSent++;
-                eventLogEntry.State = EventStateEnum.Published;
-                _integrationEventLogContext.IntegrationEventLogs.Update(eventLogEntry);
-                await _integrationEventLogContext.SaveChangesAsync();
+
+                await _integrationEventLogService.MarkEventAsPublishedAsync(@event);               
             }         
 
             return Ok();

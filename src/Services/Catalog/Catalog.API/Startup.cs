@@ -1,5 +1,6 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Catalog.API
 {
+    using global::Catalog.API.IntegrationEvents;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.EntityFrameworkCore;
@@ -12,6 +13,7 @@
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
+    using System.Data.SqlClient;
     using System.Reflection;
 
     public class Startup
@@ -37,9 +39,11 @@
 
         public void ConfigureServices(IServiceCollection services)
         {
+            var sqlConnection = new SqlConnection(Configuration["ConnectionString"]);
+
             services.AddDbContext<CatalogContext>(c =>
             {
-                c.UseSqlServer(Configuration["ConnectionString"]);
+                c.UseSqlServer(sqlConnection);
                 // Changing default behavior when client evaluation occurs to throw. 
                 // Default in EF Core would be to log a warning when client evaluation is performed.
                 c.ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning));
@@ -48,7 +52,7 @@
 
             services.AddDbContext<IntegrationEventLogContext>(c =>
             {
-                c.UseSqlServer(Configuration["ConnectionString"], b => b.MigrationsAssembly("Catalog.API"));               
+                c.UseSqlServer(sqlConnection, b => b.MigrationsAssembly("Catalog.API"));               
                 c.ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning));                
             });
 
@@ -77,6 +81,8 @@
                     .AllowCredentials());
             });
 
+            services.AddTransient<IIntegrationEventLogService, IntegrationEventLogService>();
+            
             var serviceProvider = services.BuildServiceProvider();
             var configuration = serviceProvider.GetRequiredService<IOptionsSnapshot<Settings>>().Value;
             services.AddSingleton<IEventBus>(new EventBusRabbitMQ(configuration.EventBusConnection));
@@ -106,9 +112,8 @@
             //Seed Data
             CatalogContextSeed.SeedAsync(app, loggerFactory)
                 .Wait();
-
-            // TODO: move this creation to a db initializer
-             integrationEventLogContext.Database.Migrate();
+            
+            integrationEventLogContext.Database.Migrate();
 
         }
     }

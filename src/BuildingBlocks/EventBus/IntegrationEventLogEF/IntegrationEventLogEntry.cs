@@ -8,6 +8,7 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF
 {
     public class IntegrationEventLogEntry
     {
+        private IntegrationEventLogEntry() { }
         public IntegrationEventLogEntry(IntegrationEvent @event)
         {
             EventId = @event.Id;
