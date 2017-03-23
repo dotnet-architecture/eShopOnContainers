@@ -36,7 +36,7 @@ namespace eShopOnContainers.Catalog.WebForms
 
         public Task DeleteCatalogItemAsync(int id)
         {
-            return catalog?.DeleteCatalogItem(id.ToString());
+            return catalog?.DeleteCatalogItemAsync(id.ToString());
         }
     }
 }

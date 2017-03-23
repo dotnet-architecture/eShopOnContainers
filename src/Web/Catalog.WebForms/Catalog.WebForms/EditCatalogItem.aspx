@@ -5,7 +5,7 @@
         ItemType="eShopOnContainers.Core.Models.Catalog.CatalogItem" DataKeyNames="Id"
         SelectMethod="GetCatalogItemAsync"
         UpdateMethod="UpdateCatalogItemAsync"
-        InsertMethod="InsertCatalogItemAsync" 
+        InsertMethod="InsertCatalogItemAsync"
         CssClass="table-compact table-full-width">
         <EditItemTemplate>
             <div class="row form-inline">

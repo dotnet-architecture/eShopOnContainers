@@ -47,21 +47,19 @@ namespace eShopOnContainers.Catalog.WebForms
         }
 
         // The id parameter name should match the DataKeyNames value set on the control
-        public void UpdateCatalogItemAsync(int id)
+        public async Task UpdateCatalogItemAsync(int id)
         {
-            CatalogItem item = null;
-            // Load the item here, e.g. item = MyDataLayer.Find(id);
+            CatalogItem item = await catalog?.GetCatalogItemAsync(id.ToString());
             if (item == null)
             {
                 // The item wasn't found
                 ModelState.AddModelError("", String.Format("Item with id {0} was not found", id));
                 return;
             }
-            
             if (TryUpdateModel(item) && (ModelState.IsValid))
             {
-                // Save changes here, e.g. MyDataLayer.SaveChanges();
-                // Send the item to the Catalog Service.
+                await catalog?.UpdateCatalogItemAsync(item);
+                Response.Redirect("~");
             }
         }
 

@@ -10,19 +10,21 @@ namespace eShopOnContainers.Core.Services.Catalog
 {
     public class CatalogMockService : ICatalogService
     {
-        private ObservableCollection<CatalogBrand> MockCatalogBrand = new ObservableCollection<CatalogBrand>
+        // Change to static so these remain 
+        // in scope between requests:
+        private static ObservableCollection<CatalogBrand> MockCatalogBrand = new ObservableCollection<CatalogBrand>
         {
             new CatalogBrand { Id = 1, Brand = "Azure" },
             new CatalogBrand { Id = 2, Brand = "Visual Studio" }
         };
 
-        private ObservableCollection<CatalogType> MockCatalogType = new ObservableCollection<CatalogType>
+        private static ObservableCollection<CatalogType> MockCatalogType = new ObservableCollection<CatalogType>
         {
             new CatalogType { Id = 1, Type = "Mug" },
             new CatalogType { Id = 2, Type = "T-Shirt" }
         };
 
-        private ObservableCollection<CatalogItem> MockCatalog = new ObservableCollection<CatalogItem>
+        private static ObservableCollection<CatalogItem> MockCatalog = new ObservableCollection<CatalogItem>
         {
             new CatalogItem { Id = Common.Common.MockCatalogItemId01, PictureUri = Device.OS != TargetPlatform.Windows ? "fake_product_01.png" : "Assets/fake_product_01.png", Name = ".NET Bot Blue Sweatshirt (M)", Price = 19.50M, CatalogBrandId = 2, CatalogBrand = "Visual Studio", CatalogTypeId = 2, CatalogType = "T-Shirt" },
             new CatalogItem { Id = Common.Common.MockCatalogItemId02, PictureUri = Device.OS != TargetPlatform.Windows ? "fake_product_02.png" : "Assets/fake_product_02.png", Name = ".NET Bot Purple Sweatshirt (M)", Price = 19.50M, CatalogBrandId = 2, CatalogBrand = "Visual Studio", CatalogTypeId = 2, CatalogType = "T-Shirt" },
@@ -35,7 +37,8 @@ namespace eShopOnContainers.Core.Services.Catalog
         {
             await Task.Delay(500);
 
-            return MockCatalog;
+            // copy so that edits must be changed here to take affect:
+            return new ObservableCollection<CatalogItem>(MockCatalog);
         }
 
         public async Task<ObservableCollection<CatalogItem>> FilterAsync(int catalogBrandId, int catalogTypeId)
@@ -68,7 +71,7 @@ namespace eShopOnContainers.Core.Services.Catalog
             return MockCatalog.FirstOrDefault(c => c.Id == id);
         }
 
-        public async Task DeleteCatalogItem(string catalogItemId)
+        public async Task DeleteCatalogItemAsync(string catalogItemId)
         {
             var itemToRemove = MockCatalog.FirstOrDefault(c => c.Id == catalogItemId);
             await Task.Delay(500);
@@ -77,5 +80,21 @@ namespace eShopOnContainers.Core.Services.Catalog
             else
                 throw new ArgumentException(message: "item could not be found", paramName: nameof(catalogItemId));
         }
+
+        public async Task<CatalogItem> UpdateCatalogItemAsync(CatalogItem item)
+        {
+            var itemToChange = MockCatalog.FirstOrDefault(c => item.Id == c.Id);
+            await Task.Delay(500);
+            if (itemToChange != null)
+            {
+                itemToChange.CatalogBrandId = item.CatalogBrandId;
+                itemToChange.CatalogTypeId = item.CatalogTypeId;
+                itemToChange.Description = item.Description;
+                itemToChange.Name = item.Name;
+                itemToChange.Price = item.Price;
+            }
+            return itemToChange;
+        }
+
     }
 }
