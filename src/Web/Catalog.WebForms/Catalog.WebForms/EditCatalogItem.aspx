@@ -36,13 +36,22 @@
                         <div class="row">
                             <div class="col-md-12 form-group">
                                 <label class="control-label form-label" for="ItemBrand">Brand</label>
-                                <asp:DropDownList ID="ItemBrand" runat="server" DataTextField="Brand" />
+                                <asp:DropDownList ID="ItemBrand" runat="server" 
+                                    ItemType="eShopOnContainers.Core.Models.Catalog.CatalogBrand" 
+                                    SelectMethod="GetBrandsAsync" 
+                                    DataTextField="Brand" 
+                                    DataValueField="Id" 
+                                    SelectedValue="<%# BindItem.CatalogBrandId %>" />
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-12 form-group">
                                 <label class="control-label form-label" for="ItemType">Type</label>
-                                <asp:DropDownList ID="ItemType" runat="server" DataTextField="Type" />
+                                <asp:DropDownList ID="ItemType" runat="server"  
+                                    SelectMethod="GetTypesAsync"
+                                    DataTextField="Type" 
+                                    DataValueField="Id" 
+                                    SelectedValue="<%# BindItem.CatalogTypeId %>" />
                             </div>
                         </div>
                         <div class="row">
@@ -86,13 +95,22 @@
                         <div class="row">
                             <div class="col-md-12 form-group">
                                 <label class="control-label form-label" for="ItemBrand">Brand</label>
-                                <asp:DropDownList ID="ItemBrand" runat="server" DataTextField="Brand" />
+                                <asp:DropDownList ID="ItemBrand" runat="server" 
+                                    ItemType="eShopOnContainers.Core.Models.Catalog.CatalogBrand" 
+                                    SelectMethod="GetBrandsAsync" 
+                                    DataTextField="Brand" 
+                                    DataValueField="Id" 
+                                    SelectedValue="<%# BindItem.CatalogBrandId %>" />
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-12 form-group">
                                 <label class="control-label form-label" for="ItemType">Type</label>
-                                <asp:DropDownList ID="ItemType" runat="server" DataTextField="Type" />
+                                <asp:DropDownList ID="ItemType" runat="server"  
+                                    SelectMethod="GetTypesAsync"
+                                    DataTextField="Type" 
+                                    DataValueField="Id" 
+                                    SelectedValue="<%# BindItem.CatalogTypeId %>" />
                             </div>
                         </div>
                         <div class="row">
