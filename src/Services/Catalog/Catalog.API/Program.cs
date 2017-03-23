@@ -10,6 +10,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
         {
             var host = new WebHostBuilder()
                 .UseKestrel()
+                .UseHealthChecks("/hc")
                 .UseIISIntegration()
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseWebRoot("Pics")

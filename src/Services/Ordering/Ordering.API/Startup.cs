@@ -14,6 +14,7 @@
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.HealthChecks;
     using Microsoft.Extensions.Logging;
     using Ordering.Infrastructure;
     using System;
@@ -48,6 +49,12 @@
                 options.Filters.Add(typeof(HttpGlobalExceptionFilter));
             }).AddControllersAsServices();  //Injecting Controllers themselves thru DI
                                             //For further info see: http://docs.autofac.org/en/latest/integration/aspnetcore.html#controllers-as-services
+
+
+            services.AddHealthChecks(checks =>
+            {
+                checks.AddSqlCheck("Ordering_Db", Configuration["ConnectionString"]);
+            });
 
             services.AddEntityFrameworkSqlServer()
                     .AddDbContext<OrderingContext>(options =>

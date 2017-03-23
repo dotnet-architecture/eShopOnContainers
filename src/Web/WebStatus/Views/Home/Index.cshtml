@@ -1,0 +1,20 @@
+﻿@model WebStatus.Viewmodels.HealthStatusViewModel
+
+@{
+    ViewData["Title"] = "System Status";
+}
+
+
+<div class="row">
+    <div class="col-md-12">
+        <h2>Overall Status: @Model.OverallStatus</h2>
+    </div>
+</div>
+
+@foreach (var result in Model.Results)
+{
+    <div class="row">
+        <div class="col-md-6">@result.Description</div>
+        <div class="col-md-6">@result.CheckStatus</div>
+    </div>
+}

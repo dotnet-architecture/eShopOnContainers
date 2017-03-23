@@ -14,6 +14,8 @@ using Microsoft.eShopOnContainers.Services.Basket.API.IntegrationEvents.Events;
 using Microsoft.eShopOnContainers.Services.Basket.API.IntegrationEvents.EventHandling;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ;
 using System;
+using Microsoft.Extensions.HealthChecks;
+using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.Services.Basket.API
 {
@@ -34,6 +36,12 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            services.AddHealthChecks(checks =>
+            {
+                checks.AddValueTaskCheck("Always OK", () => new ValueTask<IHealthCheckResult>(HealthCheckResult.Healthy("Ok")));
+            });
+
             // Add framework services.
             services.AddMvc();
             services.Configure<BasketSettings>(Configuration);

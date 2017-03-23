@@ -9,6 +9,7 @@
     using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.HealthChecks;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
     using System.Reflection;
@@ -36,6 +37,12 @@
 
         public void ConfigureServices(IServiceCollection services)
         {
+
+            services.AddHealthChecks(checks =>
+            {
+                checks.AddUrlCheck(Configuration["ConnectionString"]);
+            });
+
             services.AddDbContext<CatalogContext>(c =>
             {
                 c.UseSqlServer(Configuration["ConnectionString"]);

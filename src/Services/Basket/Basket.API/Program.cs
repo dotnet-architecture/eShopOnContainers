@@ -10,6 +10,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
         {
             var host = new WebHostBuilder()
                 .UseKestrel()
+                .UseHealthChecks("/hc")
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseIISIntegration()
                 .UseStartup<Startup>()

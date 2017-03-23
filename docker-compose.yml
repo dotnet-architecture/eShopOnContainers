@@ -68,3 +68,9 @@ services:
     image: rabbitmq
     ports:
       - "5672:5672"
+
+  webstatus:
+    image: eshop/webstatus
+    build:
+      context: ./src/Web/WebStatus
+      dockerfile: Dockerfile

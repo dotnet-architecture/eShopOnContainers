@@ -77,3 +77,14 @@ services:
       - ACCEPT_EULA=Y
     ports:
       - "5433:1433"
+
+  webstatus:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:5107
+      - CatalogUrl=http://catalog.api:5101/hc
+      - OrderingUrl=http://ordering.api:5102/hc
+      - BasketUrl=http://basket.api:5103/hc
+      - IdentityUrl=http://10.0.75.1:5105/hc
+    ports:
+      - "5107:5107"
