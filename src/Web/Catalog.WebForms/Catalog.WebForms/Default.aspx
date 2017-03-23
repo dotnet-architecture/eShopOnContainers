@@ -4,7 +4,9 @@
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     <asp:ListView ID="catalogList" runat="server"
         DataKeyNames="Id" GroupItemCount="3"
-        ItemType="eShopOnContainers.Core.Models.Catalog.CatalogItem" SelectMethod="GetCatalogDataAsync" DeleteMethod="DeleteCatalogItemAsync">
+        ItemType="eShopOnContainers.Core.Models.Catalog.CatalogItem" 
+        SelectMethod="GetCatalogDataAsync" 
+        DeleteMethod="DeleteCatalogItemAsync">
         <EmptyDataTemplate>
             <div class="row">
                 <span class="col-md-10 col-md-offset-1">There's nothing in the catalog to display at this time.
@@ -44,4 +46,11 @@
             </div>
        </ItemTemplate>
     </asp:ListView>
+    <div class="row">
+        <span class="esh-catalog-label col-md-4 col-md-offset-2l">
+            <a href="EditCatalogItem.aspx">
+                Insert item
+            </a>
+        </span>
+    </div>
 </asp:Content>
