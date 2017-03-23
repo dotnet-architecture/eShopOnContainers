@@ -13,7 +13,6 @@ namespace eShopOnContainers.Catalog.WebForms
     public partial class _Default : Page
     {
         private ICatalogService catalog;
-        private CatalogItem itemToEdit;
 
         protected _Default() { }
 

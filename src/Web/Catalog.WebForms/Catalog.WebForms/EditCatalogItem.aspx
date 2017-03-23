@@ -24,13 +24,13 @@
                         <div class="row">
                             <div class="col-md-12 form-group">
                                 <label for="ItemDescription">Description</label>
-                                <asp:TextBox runat="server" name="ItemDescription" Width="100%" ID="ItemDescription" CssClass="form-control form-input form-input-center" Text='<%# Bind("Description")%>' />
+                                <asp:TextBox runat="server" Width="100%" ID="ItemDescription" CssClass="form-control form-input form-input-center" Text='<%# Bind("Description")%>' />
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-12 form-group">
                                 <label for="ItemPrice">Price</label>
-                                <asp:TextBox runat="server" TextMode="Number" Width="75%" name="ItemPrice" ID="ItemPrice" CssClass="form-control form-input form-input-center" Text='<%# Bind("Price")%>' />
+                                <asp:TextBox runat="server" TextMode="Number" Width="75%" ID="ItemPrice" CssClass="form-control form-input form-input-center" Text='<%# Bind("Price")%>' />
                             </div>
                         </div>
                         <div class="row">
@@ -74,13 +74,13 @@
                         <div class="row">
                             <div class="col-md-12 form-group">
                                 <label for="ItemDescription">Description</label>
-                                <asp:TextBox runat="server" name="ItemDescription" Width="100%" ID="ItemDescription" CssClass="form-control form-input form-input-center" Text='<%# Bind("Description")%>' />
+                                <asp:TextBox runat="server" Width="100%" ID="ItemDescription" CssClass="form-control form-input form-input-center" Text='<%# Bind("Description")%>' />
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-12 form-group">
                                 <label for="ItemPrice">Price</label>
-                                <asp:TextBox runat="server" TextMode="Number" Width="75%" name="ItemPrice" ID="ItemPrice" CssClass="form-control form-input form-input-center" Text='<%# Bind("Price")%>' />
+                                <asp:TextBox runat="server" TextMode="Number" Width="75%" ID="ItemPrice" CssClass="form-control form-input form-input-center" Text='<%# Bind("Price")%>' />
                             </div>
                         </div>
                         <div class="row">
@@ -97,7 +97,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-6 form-group">
-                                <asp:LinkButton runat="server" Text="Update" CommandName="Update" />
+                                <asp:LinkButton runat="server" Text="Add" CommandName="Insert" />
                             </div>
                             <div class="col-md-6 form-group">
                                 <asp:LinkButton runat="server" Text="Cancel" CommandName="Cancel" />
