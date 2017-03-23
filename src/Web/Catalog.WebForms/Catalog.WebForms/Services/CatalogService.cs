@@ -128,7 +128,7 @@ namespace eShopOnContainers.Core.Services.Catalog
             }
         }
 
-        public async Task DeleteCatalogItem(string catalogItemId)
+        public Task DeleteCatalogItemAsync(string catalogItemId)
         {
             // TODO:
             UriBuilder builder = new UriBuilder("" /* GlobalSetting.Instance.CatalogEndpoint */);
@@ -137,7 +137,19 @@ namespace eShopOnContainers.Core.Services.Catalog
 
             string uri = builder.ToString();
 
-            await _requestProvider.DeleteAsync(uri);
+            return _requestProvider.DeleteAsync(uri);
+        }
+
+        public Task<CatalogItem> UpdateCatalogItemAsync(CatalogItem item)
+        {
+            // TODO:
+            UriBuilder builder = new UriBuilder("" /* GlobalSetting.Instance.CatalogEndpoint */);
+
+            builder.Path = "api/v1/catalog/edit";
+
+            string uri = builder.ToString();
+
+            return _requestProvider.PostAsync(uri, item);
         }
     }
 }
