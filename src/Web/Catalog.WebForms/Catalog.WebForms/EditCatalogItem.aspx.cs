@@ -32,17 +32,24 @@ namespace eShopOnContainers.Catalog.WebForms
 
         // The id parameter should match the DataKeyNames value set on the control
         // or be decorated with a value provider attribute, e.g. [QueryString]int id
-        public async Task<CatalogItem> GetCatalogItemAsync([QueryString]int id)
+        public async Task<CatalogItem> GetCatalogItemAsync([QueryString]int? id)
         {
-            // TODO: If null, go into insert mode.
-            var itemToEdit = await catalog?.GetCatalogItemAsync(id.ToString());
-            return itemToEdit;
+            if (id.HasValue)
+            {
+                var itemToEdit = await catalog?.GetCatalogItemAsync(id.ToString());
+                return itemToEdit;
+            }
+            else
+            {
+                EditCatalogItemForm.ChangeMode(FormViewMode.Insert);
+                return new CatalogItem();
+            }
         }
 
         // The id parameter name should match the DataKeyNames value set on the control
         public void UpdateCatalogItemAsync(int id)
         {
-            eShopOnContainers.Core.Models.Catalog.CatalogItem item = null;
+            CatalogItem item = null;
             // Load the item here, e.g. item = MyDataLayer.Find(id);
             if (item == null)
             {
@@ -50,11 +57,11 @@ namespace eShopOnContainers.Catalog.WebForms
                 ModelState.AddModelError("", String.Format("Item with id {0} was not found", id));
                 return;
             }
-            TryUpdateModel(item);
-            if (ModelState.IsValid)
+            
+            if (TryUpdateModel(item) && (ModelState.IsValid))
             {
                 // Save changes here, e.g. MyDataLayer.SaveChanges();
-
+                // Send the item to the Catalog Service.
             }
         }
 
