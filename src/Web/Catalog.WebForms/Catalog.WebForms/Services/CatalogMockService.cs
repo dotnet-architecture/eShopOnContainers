@@ -100,5 +100,17 @@ namespace eShopOnContainers.Core.Services.Catalog
             return itemToChange;
         }
 
+        public async Task<CatalogItem> CreateCatalogItemAsync(CatalogItem item)
+        {
+            // set the Id
+            var nextId = MockCatalog.Max(c => int.Parse(c.Id)) + 1;
+            item.Id = nextId.ToString();
+            await Task.Delay(500);
+
+            // add.
+            MockCatalog.Add(item);
+            return item;
+        }
+
     }
 }

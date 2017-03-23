@@ -63,14 +63,15 @@ namespace eShopOnContainers.Catalog.WebForms
             }
         }
 
-        public void InsertCatalogItemAsync()
+        public async Task InsertCatalogItemAsync()
         {
             var item = new eShopOnContainers.Core.Models.Catalog.CatalogItem();
             TryUpdateModel(item);
             if (ModelState.IsValid)
             {
                 // Save changes here
-
+                await catalog?.CreateCatalogItemAsync(item);
+                Response.Redirect("~");
             }
         }
     }
