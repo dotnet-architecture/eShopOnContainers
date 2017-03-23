@@ -61,5 +61,21 @@ namespace eShopOnContainers.Core.Services.Catalog
 
             return MockCatalogType;
         }
+        public async Task<CatalogItem> GetCatalogItemAsync(string id)
+        {
+            await Task.Delay(500);
+
+            return MockCatalog.FirstOrDefault(c => c.Id == id);
+        }
+
+        public async Task DeleteCatalogItem(string catalogItemId)
+        {
+            var itemToRemove = MockCatalog.FirstOrDefault(c => c.Id == catalogItemId);
+            await Task.Delay(500);
+            if (itemToRemove != null)
+                MockCatalog.Remove(itemToRemove);
+            else
+                throw new ArgumentException(message: "item could not be found", paramName: nameof(catalogItemId));
+        }
     }
 }
