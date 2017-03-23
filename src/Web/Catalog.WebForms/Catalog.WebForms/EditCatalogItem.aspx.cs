@@ -74,5 +74,17 @@ namespace eShopOnContainers.Catalog.WebForms
                 Response.Redirect("~");
             }
         }
+
+        public async Task<IEnumerable<CatalogBrand>> GetBrandsAsync()
+        {
+            var brands = await catalog?.GetCatalogBrandAsync();
+            return brands.AsEnumerable();
+        }
+
+        public async Task<IEnumerable<CatalogType>> GetTypesAsync()
+        {
+            var types = await catalog?.GetCatalogTypeAsync();
+            return types.AsEnumerable();
+        }
     }
 }
