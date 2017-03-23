@@ -127,5 +127,17 @@ namespace eShopOnContainers.Core.Services.Catalog
                 return new ObservableCollection<CatalogType>();
             }
         }
+
+        public async Task DeleteCatalogItem(string catalogItemId)
+        {
+            // TODO:
+            UriBuilder builder = new UriBuilder("" /* GlobalSetting.Instance.CatalogEndpoint */);
+
+            builder.Path = $"api/v1/catalog/{catalogItemId}";
+
+            string uri = builder.ToString();
+
+            await _requestProvider.DeleteAsync(uri);
+        }
     }
 }

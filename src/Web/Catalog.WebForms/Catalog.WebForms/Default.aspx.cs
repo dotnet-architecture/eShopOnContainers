@@ -17,10 +17,8 @@ namespace eShopOnContainers.Catalog.WebForms
 
         protected _Default() { }
 
-        public _Default(ICatalogService catalog)
-        {
+        public _Default(ICatalogService catalog) =>
             this.catalog = catalog;
-        }
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -33,15 +31,12 @@ namespace eShopOnContainers.Catalog.WebForms
         //     int startRowIndex
         //     out int totalRowCount
         //     string sortByExpression
-        public async Task<IEnumerable<CatalogItem>> GetCatalogDataAsync()
-        {
-            return await catalog?.GetCatalogAsync();
-        }
+        public async Task<IEnumerable<CatalogItem>> GetCatalogDataAsync() =>
+            (await catalog?.GetCatalogAsync()).AsEnumerable();
 
-        // The id parameter name should match the DataKeyNames value set on the control
-        public async Task DeleteCatalogItemAsync(int id)
+        public Task DeleteCatalogItemAsync(int id)
         {
-            //TODO: Call the service.
+            return catalog?.DeleteCatalogItem(id.ToString());
         }
     }
 }
