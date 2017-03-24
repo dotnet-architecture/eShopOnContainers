@@ -1,5 +1,7 @@
 ﻿namespace IntegrationTests.Services.Ordering
 {
+    using IntegrationTests.Services.Extensions;
+    using Microsoft.AspNetCore.TestHost;
     using Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands;
     using Newtonsoft.Json;
     using System;
@@ -28,9 +30,9 @@
         public async Task AddNewOrder_add_new_order_and_response_ok_status_code()
         {
             using (var server = CreateServer())
-            {
+            {                
                 var content = new StringContent(BuildOrder(), UTF8Encoding.UTF8, "application/json");
-                var response = await server.CreateClient()
+                var response = await server.CreateIdempotentClient()
                     .PostAsync(Post.AddNewOrder, content);
 
                 response.EnsureSuccessStatusCode();
@@ -44,7 +46,7 @@
             {
                 var content = new StringContent(BuildOrderWithInvalidExperationTime(), UTF8Encoding.UTF8, "application/json");
 
-                var response = await server.CreateClient()
+                var response = await server.CreateIdempotentClient()
                     .PostAsync(Post.AddNewOrder, content);
 
                 Assert.True(response.StatusCode == System.Net.HttpStatusCode.BadRequest);
@@ -102,5 +104,5 @@
 
             return JsonConvert.SerializeObject(order);
         }
-    }
+    }        
 }
