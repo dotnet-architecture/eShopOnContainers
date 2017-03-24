@@ -1,0 +1,13 @@
+version: '2.1'
+
+services:
+  catalog.webforms:
+    image: catalog.webforms:dev
+    build:
+      args:
+        source: ${DOCKER_BUILD_SOURCE}
+    volumes:
+      - .\Catalog.WebForms:C:\inetpub\wwwroot
+      - ~\msvsmon:C:\msvsmon:ro
+    labels:
+      - "com.microsoft.visualstudio.targetoperatingsystem=windows"
