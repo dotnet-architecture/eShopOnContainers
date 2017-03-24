@@ -164,6 +164,7 @@
       <DependentUpon>ProductTemplate.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\WebNavigatingEventArgsConverter.cs" />
+    <Compile Include="Converters\FirstValidationErrorConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
