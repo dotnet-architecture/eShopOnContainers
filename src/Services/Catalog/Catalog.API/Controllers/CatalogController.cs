@@ -1,15 +1,17 @@
-﻿using Catalog.API.IntegrationEvents;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
-using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF;
+using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF.Services;
 using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
 using Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationEvents.Events;
 using Microsoft.eShopOnContainers.Services.Catalog.API.Model;
 using Microsoft.eShopOnContainers.Services.Catalog.API.ViewModel;
 using Microsoft.Extensions.Options;
+using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -21,14 +23,14 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
         private readonly CatalogContext _catalogContext;
         private readonly IOptionsSnapshot<Settings> _settings;
         private readonly IEventBus _eventBus;
-        private readonly IIntegrationEventLogService _integrationEventLogService;
+        private readonly Func<DbConnection, IIntegrationEventLogService> _integrationEventLogServiceFactory;
 
-        public CatalogController(CatalogContext Context, IOptionsSnapshot<Settings> settings, IEventBus eventBus, IIntegrationEventLogService integrationEventLogService)
+        public CatalogController(CatalogContext Context, IOptionsSnapshot<Settings> settings, IEventBus eventBus, Func<DbConnection, IIntegrationEventLogService> integrationEventLogServiceFactory)
         {
             _catalogContext = Context;
             _settings = settings;
             _eventBus = eventBus;
-            _integrationEventLogService = integrationEventLogService;
+            _integrationEventLogServiceFactory = integrationEventLogServiceFactory;
 
             ((DbContext)Context).ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
@@ -152,20 +154,22 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
                 var oldPrice = item.Price;
                 item.Price = product.Price;
                 var @event = new ProductPriceChangedIntegrationEvent(item.Id, item.Price, oldPrice);
+                var eventLogService = _integrationEventLogServiceFactory(_catalogContext.Database.GetDbConnection());
 
                 using (var transaction = _catalogContext.Database.BeginTransaction())
                 {
                     _catalogContext.CatalogItems.Update(item);
                     await _catalogContext.SaveChangesAsync();
 
-                    await _integrationEventLogService.SaveEventAsync(@event);
+
+                    await eventLogService.SaveEventAsync(@event, _catalogContext.Database.CurrentTransaction.GetDbTransaction());
 
                     transaction.Commit();
                 }
 
                 _eventBus.Publish(@event);
 
-                await _integrationEventLogService.MarkEventAsPublishedAsync(@event);               
+                await eventLogService.MarkEventAsPublishedAsync(@event);               
             }         
 
             return Ok();
