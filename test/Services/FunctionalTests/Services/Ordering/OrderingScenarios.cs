@@ -62,7 +62,7 @@ namespace FunctionalTests.Services.Ordering
             order.AddOrderItem(new OrderItemDTO()
             {
                 ProductId = 1,
-                Discount = 12M,
+                Discount = 8M,
                 UnitPrice = 10,
                 Units = 1,
                 ProductName = "Some name"
