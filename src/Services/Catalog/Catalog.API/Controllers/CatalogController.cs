@@ -136,10 +136,10 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
             return Ok(items);
         }
 
-        //POST api/v1/[controller]/edit
-        [Route("edit")]
+        //POST api/v1/[controller]/update
+        [Route("update")]
         [HttpPost]
-        public async Task<IActionResult> EditProduct([FromBody]CatalogItem productToUpdate)
+        public async Task<IActionResult> UpdateProduct([FromBody]CatalogItem productToUpdate)
         {
             var catalogItem = await _catalogContext.CatalogItems.SingleOrDefaultAsync(i => i.Id == productToUpdate.Id);
             if (catalogItem == null) return NotFound();
