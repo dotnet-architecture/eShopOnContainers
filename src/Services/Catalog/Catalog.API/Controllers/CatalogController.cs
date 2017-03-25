@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
+using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
 using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF;
 using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
 using Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationEvents.Events;
@@ -138,36 +139,45 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
         //POST api/v1/[controller]/edit
         [Route("edit")]
         [HttpPost]
-        public async Task<IActionResult> EditProduct([FromBody]CatalogItem product)
+        public async Task<IActionResult> EditProduct([FromBody]CatalogItem productToUpdate)
         {
-            var item = await _catalogContext.CatalogItems.SingleOrDefaultAsync(i => i.Id == product.Id);
+            var catalogItem = await _catalogContext.CatalogItems.SingleOrDefaultAsync(i => i.Id == productToUpdate.Id);
+            if (catalogItem == null) return NotFound();
 
-            if (item == null)
+            bool raiseProductPriceChangedEvent = false;
+            IntegrationEvent priceChangedEvent = null;
+
+            if (catalogItem.Price != productToUpdate.Price) raiseProductPriceChangedEvent = true;
+           
+            if (raiseProductPriceChangedEvent) // Create event if price has changed
             {
-                return NotFound();
+                var oldPrice = catalogItem.Price;                
+                priceChangedEvent = new ProductPriceChangedIntegrationEvent(catalogItem.Id, productToUpdate.Price, oldPrice);
             }
 
-            if (item.Price != product.Price)
-            {
-                var oldPrice = item.Price;
-                item.Price = product.Price;
-                var @event = new ProductPriceChangedIntegrationEvent(item.Id, item.Price, oldPrice);
+            //Update current product
+            catalogItem = productToUpdate;
 
-                using (var transaction = _catalogContext.Database.BeginTransaction())
-                {
-                    _catalogContext.CatalogItems.Update(item);
+            // Achieving atomicity between original Catalog database operation and the IntegrationEventLog thanks to a local transaction
+            using (var transaction = _catalogContext.Database.BeginTransaction())
+            {
+                    _catalogContext.CatalogItems.Update(catalogItem);
                     await _catalogContext.SaveChangesAsync();
 
-                    await _integrationEventLogService.SaveEventAsync(@event);
+                    //Save to EventLog only if product price changed
+                    if(raiseProductPriceChangedEvent)
+                        await _integrationEventLogService.SaveEventAsync(priceChangedEvent);
 
                     transaction.Commit();
-                }
+            }
 
-                _eventBus.Publish(@event);
-
-                await _integrationEventLogService.MarkEventAsPublishedAsync(@event);               
-            }         
-
+            //Publish to Event Bus only if product price changed
+            if (raiseProductPriceChangedEvent)
+            {
+                _eventBus.Publish(priceChangedEvent);                                             
+                await _integrationEventLogService.MarkEventAsPublishedAsync(priceChangedEvent);   
+            }
+                                                   
             return Ok();
         }
 
