@@ -51,11 +51,8 @@
 
              _orderRepository.Add(order);
 
-            var result = await _orderRepository.UnitOfWork
+            return await _orderRepository.UnitOfWork
                 .SaveEntitiesAsync();
-
-            return result > 0;
-
         }
     }
 }

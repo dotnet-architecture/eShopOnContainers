@@ -88,6 +88,8 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
 
             if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
                 throw new Exception("Error creating order, try later");
+
+            response.EnsureSuccessStatusCode();
         }
 
         public void OverrideUserInfoIntoOrder(Order original, Order destination)

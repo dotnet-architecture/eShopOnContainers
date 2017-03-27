@@ -56,6 +56,8 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
             
             var response = await _apiClient.PostAsync(basketUrl, basket);
 
+            response.EnsureSuccessStatusCode();
+
             return basket;
         }
 

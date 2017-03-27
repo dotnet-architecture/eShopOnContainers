@@ -48,9 +48,9 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands
                 return CreateResultForDuplicateRequest();
             }
             else
-            {
-                await _requestManager.CreateRequestForCommandAsync<T>(message.Id);
+            {                
                 var result = await _mediator.SendAsync(message.Command);
+                await _requestManager.CreateRequestForCommandAsync<T>(message.Id);
                 return result;
             }
         }

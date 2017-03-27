@@ -235,7 +235,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
                 .IsRequired();
         }
 
-        public async Task<int> SaveEntitiesAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             // Dispatch Domain Events collection. 
             // Choices:
@@ -250,7 +250,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
             // performed thought the DbContext will be commited
             var result = await base.SaveChangesAsync();
 
-            return result;
+            return true;
         }        
     }
 }
