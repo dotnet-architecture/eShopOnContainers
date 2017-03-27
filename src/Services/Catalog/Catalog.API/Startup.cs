@@ -1,6 +1,5 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Catalog.API
 {
-    using global::Catalog.API.IntegrationEvents;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.EntityFrameworkCore;
@@ -8,12 +7,14 @@
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ;
     using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF;
+    using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF.Services;
     using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
     using System;
+    using System.Data.Common;
     using System.Data.SqlClient;
     using System.Reflection;
 
@@ -40,14 +41,11 @@
 
         public void ConfigureServices(IServiceCollection services)
         {
-            //Using the same SqlConnection for both DbContexts (CatalogContext and IntegrationEventLogContext)
-            var sqlConnection = new SqlConnection(Configuration["ConnectionString"]);
-
             services.AddDbContext<CatalogContext>(options =>
             {
-                options.UseSqlServer(sqlConnection,
+                options.UseSqlServer(Configuration["ConnectionString"],
                                      sqlServerOptionsAction: sqlOptions =>
-                                     {
+                                     {                                         
                                          sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
                                          //Configuring Connection Resiliency: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency 
                                          sqlOptions.EnableRetryOnFailure(maxRetryCount: 5, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
@@ -56,19 +54,6 @@
                 // Default in EF Core would be to log a warning when client evaluation is performed.
                 options.ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning));
                 //Check Client vs. Server evaluation: https://docs.microsoft.com/en-us/ef/core/querying/client-eval
-            });
-
-            services.AddDbContext<IntegrationEventLogContext>(options =>
-            {
-                options.UseSqlServer(sqlConnection,
-                                     sqlServerOptionsAction: sqlOptions =>
-                                     {
-                                         sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
-                                         //Configuring Connection Resiliency: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency 
-                                         sqlOptions.EnableRetryOnFailure(maxRetryCount: 5, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
-                                     });
-
-                options.ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning));                
             });
 
             services.Configure<Settings>(Configuration);
@@ -96,8 +81,9 @@
                     .AllowCredentials());
             });
 
-            services.AddTransient<IIntegrationEventLogService, IntegrationEventLogService>();
-            
+            services.AddTransient<Func<DbConnection, IIntegrationEventLogService>>(
+                sp => (DbConnection c) => new IntegrationEventLogService(c));
+
             var serviceProvider = services.BuildServiceProvider();
             var configuration = serviceProvider.GetRequiredService<IOptionsSnapshot<Settings>>().Value;
             services.AddSingleton<IEventBus>(new EventBusRabbitMQ(configuration.EventBusConnection));
@@ -105,7 +91,7 @@
             services.AddMvc();
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IntegrationEventLogContext integrationEventLogContext)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             //Configure logs
 
@@ -127,7 +113,11 @@
             //Seed Data
             CatalogContextSeed.SeedAsync(app, loggerFactory)
                 .Wait();
-            
+
+            var integrationEventLogContext = new IntegrationEventLogContext(
+                new DbContextOptionsBuilder<IntegrationEventLogContext>()
+                .UseSqlServer(Configuration["ConnectionString"], b => b.MigrationsAssembly("Catalog.API"))                
+                .Options);
             integrationEventLogContext.Database.Migrate();
 
         }

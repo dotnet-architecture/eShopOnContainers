@@ -1,18 +1,20 @@
-﻿using Catalog.API.IntegrationEvents;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
-using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
-using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF;
+using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF.Services;
 using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
 using Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationEvents.Events;
 using Microsoft.eShopOnContainers.Services.Catalog.API.Model;
 using Microsoft.eShopOnContainers.Services.Catalog.API.ViewModel;
 using Microsoft.Extensions.Options;
+using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
 
 namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
 {
@@ -22,14 +24,14 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
         private readonly CatalogContext _catalogContext;
         private readonly IOptionsSnapshot<Settings> _settings;
         private readonly IEventBus _eventBus;
-        private readonly IIntegrationEventLogService _integrationEventLogService;
+        private readonly Func<DbConnection, IIntegrationEventLogService> _integrationEventLogServiceFactory;
 
-        public CatalogController(CatalogContext Context, IOptionsSnapshot<Settings> settings, IEventBus eventBus, IIntegrationEventLogService integrationEventLogService)
+        public CatalogController(CatalogContext Context, IOptionsSnapshot<Settings> settings, IEventBus eventBus, Func<DbConnection, IIntegrationEventLogService> integrationEventLogServiceFactory)
         {
             _catalogContext = Context;
             _settings = settings;
             _eventBus = eventBus;
-            _integrationEventLogService = integrationEventLogService;
+            _integrationEventLogServiceFactory = integrationEventLogServiceFactory;
 
             ((DbContext)Context).ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
@@ -161,7 +163,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
             //Use of an EF Core resiliency strategy when using multiple DbContexts within an explicit BeginTransaction():
             //See: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency
             var strategy = _catalogContext.Database.CreateExecutionStrategy();
-
+            var eventLogService = _integrationEventLogServiceFactory(_catalogContext.Database.GetDbConnection());
             await strategy.ExecuteAsync(async () =>
             {
                 // Achieving atomicity between original Catalog database operation and the IntegrationEventLog thanks to a local transaction
@@ -172,7 +174,10 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
 
                     //Save to EventLog only if product price changed
                     if (raiseProductPriceChangedEvent)
-                        await _integrationEventLogService.SaveEventAsync(priceChangedEvent);
+                    {
+
+                        await eventLogService.SaveEventAsync(priceChangedEvent, _catalogContext.Database.CurrentTransaction.GetDbTransaction());
+                    }
 
                     transaction.Commit();
                 }
@@ -183,9 +188,9 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
             if (raiseProductPriceChangedEvent)
             {
                 _eventBus.Publish(priceChangedEvent);                                             
-                await _integrationEventLogService.MarkEventAsPublishedAsync(priceChangedEvent);   
+                await eventLogService.MarkEventAsPublishedAsync(priceChangedEvent);                
             }
-                                                   
+
             return Ok();
         }
 

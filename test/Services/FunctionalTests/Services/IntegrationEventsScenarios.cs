@@ -43,7 +43,7 @@ namespace FunctionalTests.Services
                 var itemToModify = basket.Items[2];
                 var oldPrice = itemToModify.UnitPrice;
                 var newPrice = oldPrice + priceModification;
-                var pRes = await catalogClient.PostAsync(CatalogScenariosBase.Post.UpdateCatalogProduct, new StringContent(ChangePrice(itemToModify, newPrice), UTF8Encoding.UTF8, "application/json"));
+                var pRes = await catalogClient.PostAsync(CatalogScenariosBase.Post.UpdateCatalogProduct, new StringContent(ChangePrice(itemToModify, newPrice, originalCatalogProducts), UTF8Encoding.UTF8, "application/json"));
                                 
                 var modifiedCatalogProducts = await GetCatalogAsync(catalogClient);               
 
@@ -100,14 +100,11 @@ namespace FunctionalTests.Services
             return JsonConvert.DeserializeObject<PaginatedItemsViewModel<CatalogItem>>(items);
         }
 
-        private string ChangePrice(BasketItem itemToModify, decimal newPrice)
+        private string ChangePrice(BasketItem itemToModify, decimal newPrice, PaginatedItemsViewModel<CatalogItem> catalogProducts)
         {
-            var item = new CatalogItem()
-            {
-                Id = int.Parse(itemToModify.ProductId),
-                Price = newPrice
-            };
-            return JsonConvert.SerializeObject(item);
+            var catalogProduct = catalogProducts.Data.Single(pr => pr.Id == int.Parse(itemToModify.ProductId));
+            catalogProduct.Price = newPrice;
+            return JsonConvert.SerializeObject(catalogProduct);
         }
 
         private CustomerBasket ComposeBasket(string customerId, IEnumerable<CatalogItem> items)
