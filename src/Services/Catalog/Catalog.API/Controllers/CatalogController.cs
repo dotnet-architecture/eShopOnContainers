@@ -1,17 +1,20 @@
-﻿using Catalog.API.IntegrationEvents;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
-using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF;
+using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF.Services;
 using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
 using Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationEvents.Events;
 using Microsoft.eShopOnContainers.Services.Catalog.API.Model;
 using Microsoft.eShopOnContainers.Services.Catalog.API.ViewModel;
 using Microsoft.Extensions.Options;
+using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
 
 namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
 {
@@ -21,14 +24,14 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
         private readonly CatalogContext _catalogContext;
         private readonly IOptionsSnapshot<Settings> _settings;
         private readonly IEventBus _eventBus;
-        private readonly IIntegrationEventLogService _integrationEventLogService;
+        private readonly Func<DbConnection, IIntegrationEventLogService> _integrationEventLogServiceFactory;
 
-        public CatalogController(CatalogContext Context, IOptionsSnapshot<Settings> settings, IEventBus eventBus, IIntegrationEventLogService integrationEventLogService)
+        public CatalogController(CatalogContext Context, IOptionsSnapshot<Settings> settings, IEventBus eventBus, Func<DbConnection, IIntegrationEventLogService> integrationEventLogServiceFactory)
         {
             _catalogContext = Context;
             _settings = settings;
             _eventBus = eventBus;
-            _integrationEventLogService = integrationEventLogService;
+            _integrationEventLogServiceFactory = integrationEventLogServiceFactory;
 
             ((DbContext)Context).ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
@@ -135,38 +138,58 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
             return Ok(items);
         }
 
-        //POST api/v1/[controller]/edit
-        [Route("edit")]
+        //POST api/v1/[controller]/update
+        [Route("update")]
         [HttpPost]
-        public async Task<IActionResult> EditProduct([FromBody]CatalogItem product)
+        public async Task<IActionResult> UpdateProduct([FromBody]CatalogItem productToUpdate)
         {
-            var item = await _catalogContext.CatalogItems.SingleOrDefaultAsync(i => i.Id == product.Id);
+            var catalogItem = await _catalogContext.CatalogItems.SingleOrDefaultAsync(i => i.Id == productToUpdate.Id);
+            if (catalogItem == null) return NotFound();
 
-            if (item == null)
+            bool raiseProductPriceChangedEvent = false;
+            IntegrationEvent priceChangedEvent = null;
+
+            if (catalogItem.Price != productToUpdate.Price) raiseProductPriceChangedEvent = true;
+           
+            if (raiseProductPriceChangedEvent) // Create event if price has changed
             {
-                return NotFound();
+                var oldPrice = catalogItem.Price;                
+                priceChangedEvent = new ProductPriceChangedIntegrationEvent(catalogItem.Id, productToUpdate.Price, oldPrice);
             }
 
-            if (item.Price != product.Price)
-            {
-                var oldPrice = item.Price;
-                item.Price = product.Price;
-                var @event = new ProductPriceChangedIntegrationEvent(item.Id, item.Price, oldPrice);
+            //Update current product
+            catalogItem = productToUpdate;
 
+            //Use of an EF Core resiliency strategy when using multiple DbContexts within an explicit BeginTransaction():
+            //See: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency
+            var strategy = _catalogContext.Database.CreateExecutionStrategy();
+            var eventLogService = _integrationEventLogServiceFactory(_catalogContext.Database.GetDbConnection());
+            await strategy.ExecuteAsync(async () =>
+            {
+                // Achieving atomicity between original Catalog database operation and the IntegrationEventLog thanks to a local transaction
                 using (var transaction = _catalogContext.Database.BeginTransaction())
                 {
-                    _catalogContext.CatalogItems.Update(item);
+                    _catalogContext.CatalogItems.Update(catalogItem);
                     await _catalogContext.SaveChangesAsync();
 
-                    await _integrationEventLogService.SaveEventAsync(@event);
+                    //Save to EventLog only if product price changed
+                    if (raiseProductPriceChangedEvent)
+                    {
+
+                        await eventLogService.SaveEventAsync(priceChangedEvent, _catalogContext.Database.CurrentTransaction.GetDbTransaction());
+                    }
 
                     transaction.Commit();
                 }
+            });
 
-                _eventBus.Publish(@event);
 
-                await _integrationEventLogService.MarkEventAsPublishedAsync(@event);               
-            }         
+            //Publish to Event Bus only if product price changed
+            if (raiseProductPriceChangedEvent)
+            {
+                _eventBus.Publish(priceChangedEvent);                                             
+                await eventLogService.MarkEventAsPublishedAsync(priceChangedEvent);                
+            }
 
             return Ok();
         }

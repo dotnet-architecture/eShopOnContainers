@@ -246,7 +246,8 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
             await _mediator.DispatchDomainEventsAsync(this);
 
 
-            // After executing this line all the changes performed thought the DbContext will be commited
+            // After executing this line all the changes (from the Command Handler and Domain Event Handlers) 
+            // performed thought the DbContext will be commited
             var result = await base.SaveChangesAsync();
 
             return true;

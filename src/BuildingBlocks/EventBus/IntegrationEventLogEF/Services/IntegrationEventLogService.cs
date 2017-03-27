@@ -1,37 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
+using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
-using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
-using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF;
-using Microsoft.EntityFrameworkCore.Infrastructure;
+using System;
 
-namespace Catalog.API.IntegrationEvents
+namespace Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF.Services
 {
     public class IntegrationEventLogService : IIntegrationEventLogService
     {
         private readonly IntegrationEventLogContext _integrationEventLogContext;
-        private readonly CatalogContext _catalogContext;
+        private readonly DbConnection _dbConnection;
 
-        public IntegrationEventLogService(CatalogContext catalogContext)
+        public IntegrationEventLogService(DbConnection dbConnection)
         {
-            _catalogContext = catalogContext;
+            _dbConnection = dbConnection?? throw new ArgumentNullException("dbConnection");
             _integrationEventLogContext = new IntegrationEventLogContext(
                 new DbContextOptionsBuilder<IntegrationEventLogContext>()
-                    .UseSqlServer(catalogContext.Database.GetDbConnection())
+                    .UseSqlServer(_dbConnection)
                     .ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning))
                     .Options);
         }
 
-        public Task SaveEventAsync(IntegrationEvent @event)
+        public Task SaveEventAsync(IntegrationEvent @event, DbTransaction transaction)
         {
+            if(transaction == null)
+            {
+                throw new ArgumentNullException("transaction", $"A {typeof(DbTransaction).FullName} is required as a pre-requisite to save the event.");
+            }
+            
             var eventLogEntry = new IntegrationEventLogEntry(@event);
             
-            // as a constraint this transaction has to be done together with a catalogContext transaction
-            _integrationEventLogContext.Database.UseTransaction(_catalogContext.Database.CurrentTransaction.GetDbTransaction());
+            _integrationEventLogContext.Database.UseTransaction(transaction);
             _integrationEventLogContext.IntegrationEventLogs.Add(eventLogEntry);
 
             return _integrationEventLogContext.SaveChangesAsync();
