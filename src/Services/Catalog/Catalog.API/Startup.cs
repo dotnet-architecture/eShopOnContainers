@@ -1,5 +1,6 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Catalog.API
 {
+    using global::Catalog.API.Infrastructure.Filters;
     using global::Catalog.API.IntegrationEvents;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -40,6 +41,12 @@
         public void ConfigureServices(IServiceCollection services)
         {
             var sqlConnection = new SqlConnection(Configuration["ConnectionString"]);
+
+            // Add framework services.
+            services.AddMvc(options =>
+            {
+                options.Filters.Add(typeof(HttpGlobalExceptionFilter));
+            }).AddControllersAsServices();
 
             services.AddDbContext<CatalogContext>(c =>
             {
@@ -85,19 +92,12 @@
             
             var serviceProvider = services.BuildServiceProvider();
             var configuration = serviceProvider.GetRequiredService<IOptionsSnapshot<Settings>>().Value;
-            services.AddSingleton<IEventBus>(new EventBusRabbitMQ(configuration.EventBusConnection));
-            
-            services.AddMvc();
+            services.AddSingleton<IEventBus>(new EventBusRabbitMQ(configuration.EventBusConnection));            
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IntegrationEventLogContext integrationEventLogContext)
         {
             //Configure logs
-
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
 
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();

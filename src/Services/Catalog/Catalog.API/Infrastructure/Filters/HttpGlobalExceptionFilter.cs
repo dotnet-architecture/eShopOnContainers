@@ -1,13 +1,13 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure.Filters
-{
-    using AspNetCore.Mvc;
-    using global::Ordering.Domain.Exceptions;
-    using Microsoft.AspNetCore.Hosting;
-    using Microsoft.AspNetCore.Mvc.Filters;
-    using Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure.ActionResults;
-    using Microsoft.Extensions.Logging;
-    using System.Net;
+﻿using Catalog.API.Infrastructure.ActionResults;
+using Catalog.API.Infrastructure.Exceptions;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.Logging;
+using System.Net;
 
+namespace Catalog.API.Infrastructure.Filters
+{
     public class HttpGlobalExceptionFilter : IExceptionFilter
     {
         private readonly IHostingEnvironment env;
@@ -25,7 +25,7 @@
                 context.Exception,
                 context.Exception.Message);
 
-            if (context.Exception.GetType() == typeof(OrderingDomainException)) 
+            if (context.Exception.GetType() == typeof(CatalogDomainException))
             {
                 var json = new JsonErrorResponse
                 {
@@ -48,7 +48,7 @@
                 }
 
                 context.Result = new InternalServerErrorObjectResult(json);
-                context.HttpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;                
+                context.HttpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
             }
             context.ExceptionHandled = true;
         }

@@ -45,7 +45,7 @@
             // Add framework services.
             services.AddMvc(options =>
             {
-                options.Filters.Add(typeof(HttpGlobalExceptionFilter));
+                options.Filters.Add(typeof(HttpGlobalExceptionFilter));                
             }).AddControllersAsServices();  //Injecting Controllers themselves thru DI
                                             //For further info see: http://docs.autofac.org/en/latest/integration/aspnetcore.html#controllers-as-services
 
@@ -102,12 +102,7 @@
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
-
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-
+            
             app.UseCors("CorsPolicy");
 
             app.UseFailingMiddleware();

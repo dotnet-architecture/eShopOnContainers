@@ -1,5 +1,6 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate
 {
+    using global::Ordering.Domain.Exceptions;
     using Seedwork;
     using SeedWork;
     using System;
@@ -34,7 +35,7 @@
 
             if (state == null)
             {
-                throw new ArgumentException($"Possible values for OrderStatus: {String.Join(",", List().Select(s => s.Name))}");
+                throw new OrderingDomainException($"Possible values for OrderStatus: {String.Join(",", List().Select(s => s.Name))}");
             }
 
             return state;
@@ -46,7 +47,7 @@
 
             if (state == null)
             {
-                throw new ArgumentException($"Possible values for OrderStatus: {String.Join(",", List().Select(s => s.Name))}");
+                throw new OrderingDomainException($"Possible values for OrderStatus: {String.Join(",", List().Select(s => s.Name))}");
             }
 
             return state;
