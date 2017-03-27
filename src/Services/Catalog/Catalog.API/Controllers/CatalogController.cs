@@ -158,18 +158,26 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
             //Update current product
             catalogItem = productToUpdate;
 
-            // Achieving atomicity between original Catalog database operation and the IntegrationEventLog thanks to a local transaction
-            using (var transaction = _catalogContext.Database.BeginTransaction())
+            //Use of an EF Core resiliency strategy when using multiple DbContexts within an explicit BeginTransaction():
+            //See: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency
+            var strategy = _catalogContext.Database.CreateExecutionStrategy();
+
+            await strategy.ExecuteAsync(async () =>
             {
+                // Achieving atomicity between original Catalog database operation and the IntegrationEventLog thanks to a local transaction
+                using (var transaction = _catalogContext.Database.BeginTransaction())
+                {
                     _catalogContext.CatalogItems.Update(catalogItem);
                     await _catalogContext.SaveChangesAsync();
 
                     //Save to EventLog only if product price changed
-                    if(raiseProductPriceChangedEvent)
+                    if (raiseProductPriceChangedEvent)
                         await _integrationEventLogService.SaveEventAsync(priceChangedEvent);
 
                     transaction.Commit();
-            }
+                }
+            });
+
 
             //Publish to Event Bus only if product price changed
             if (raiseProductPriceChangedEvent)
