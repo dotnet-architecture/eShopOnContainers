@@ -20,11 +20,11 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.IntegrationEvents.Even
             foreach (var id in userIds)
             {
                 var basket = await _repository.GetBasket(id);
-                await UpdateBasket(@event.ProductId, @event.NewPrice, basket);                      
+                await UpdatePriceInBasketItems(@event.ProductId, @event.NewPrice, basket);                      
             }
         }
 
-        private async Task UpdateBasket(int productId, decimal newPrice, CustomerBasket basket)
+        private async Task UpdatePriceInBasketItems(int productId, decimal newPrice, CustomerBasket basket)
         {
             var itemsToUpdate = basket?.Items?.Where(x => int.Parse(x.ProductId) == productId).ToList();
             if (itemsToUpdate != null)

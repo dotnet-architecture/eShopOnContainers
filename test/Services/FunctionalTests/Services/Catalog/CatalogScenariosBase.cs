@@ -34,7 +34,7 @@ namespace FunctionalTests.Services.Catalog
 
         public static class Post
         {
-            public static string UpdateCatalogProduct = "api/v1/catalog/edit";
+            public static string UpdateCatalogProduct = "api/v1/catalog/update";
         }
     }
 }

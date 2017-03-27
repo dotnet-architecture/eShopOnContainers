@@ -1,4 +1,5 @@
-﻿using Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands;
+﻿using FunctionalTests.Extensions;
+using Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands;
 using Microsoft.eShopOnContainers.WebMVC.ViewModels;
 using Newtonsoft.Json;
 using System;
@@ -19,7 +20,7 @@ namespace FunctionalTests.Services.Ordering
         {
             using (var server = CreateServer())
             {
-                var client = server.CreateClient();
+                var client = server.CreateIdempotentClient();
 
                 // GIVEN an order is created              
                 await client.PostAsync(Post.AddNewOrder, new StringContent(BuildOrder(), UTF8Encoding.UTF8, "application/json"));
@@ -62,7 +63,7 @@ namespace FunctionalTests.Services.Ordering
             order.AddOrderItem(new OrderItemDTO()
             {
                 ProductId = 1,
-                Discount = 12M,
+                Discount = 8M,
                 UnitPrice = 10,
                 Units = 1,
                 ProductName = "Some name"

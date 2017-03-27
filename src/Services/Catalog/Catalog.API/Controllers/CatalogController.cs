@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
 
 namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
 {
@@ -137,40 +138,58 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
             return Ok(items);
         }
 
-        //POST api/v1/[controller]/edit
-        [Route("edit")]
+        //POST api/v1/[controller]/update
+        [Route("update")]
         [HttpPost]
-        public async Task<IActionResult> EditProduct([FromBody]CatalogItem product)
+        public async Task<IActionResult> UpdateProduct([FromBody]CatalogItem productToUpdate)
         {
-            var item = await _catalogContext.CatalogItems.SingleOrDefaultAsync(i => i.Id == product.Id);
+            var catalogItem = await _catalogContext.CatalogItems.SingleOrDefaultAsync(i => i.Id == productToUpdate.Id);
+            if (catalogItem == null) return NotFound();
 
-            if (item == null)
+            bool raiseProductPriceChangedEvent = false;
+            IntegrationEvent priceChangedEvent = null;
+
+            if (catalogItem.Price != productToUpdate.Price) raiseProductPriceChangedEvent = true;
+           
+            if (raiseProductPriceChangedEvent) // Create event if price has changed
             {
-                return NotFound();
+                var oldPrice = catalogItem.Price;                
+                priceChangedEvent = new ProductPriceChangedIntegrationEvent(catalogItem.Id, productToUpdate.Price, oldPrice);
             }
 
-            if (item.Price != product.Price)
-            {
-                var oldPrice = item.Price;
-                item.Price = product.Price;
-                var @event = new ProductPriceChangedIntegrationEvent(item.Id, item.Price, oldPrice);
-                var eventLogService = _integrationEventLogServiceFactory(_catalogContext.Database.GetDbConnection());
+            //Update current product
+            catalogItem = productToUpdate;
 
+            //Use of an EF Core resiliency strategy when using multiple DbContexts within an explicit BeginTransaction():
+            //See: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency
+            var strategy = _catalogContext.Database.CreateExecutionStrategy();
+            var eventLogService = _integrationEventLogServiceFactory(_catalogContext.Database.GetDbConnection());
+            await strategy.ExecuteAsync(async () =>
+            {
+                // Achieving atomicity between original Catalog database operation and the IntegrationEventLog thanks to a local transaction
                 using (var transaction = _catalogContext.Database.BeginTransaction())
                 {
-                    _catalogContext.CatalogItems.Update(item);
+                    _catalogContext.CatalogItems.Update(catalogItem);
                     await _catalogContext.SaveChangesAsync();
 
+                    //Save to EventLog only if product price changed
+                    if (raiseProductPriceChangedEvent)
+                    {
 
-                    await eventLogService.SaveEventAsync(@event, _catalogContext.Database.CurrentTransaction.GetDbTransaction());
+                        await eventLogService.SaveEventAsync(priceChangedEvent, _catalogContext.Database.CurrentTransaction.GetDbTransaction());
+                    }
 
                     transaction.Commit();
                 }
+            });
 
-                _eventBus.Publish(@event);
 
-                await eventLogService.MarkEventAsPublishedAsync(@event);               
-            }         
+            //Publish to Event Bus only if product price changed
+            if (raiseProductPriceChangedEvent)
+            {
+                _eventBus.Publish(priceChangedEvent);                                             
+                await eventLogService.MarkEventAsPublishedAsync(priceChangedEvent);                
+            }
 
             return Ok();
         }
