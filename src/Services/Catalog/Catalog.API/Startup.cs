@@ -41,9 +41,6 @@
 
         public void ConfigureServices(IServiceCollection services)
         {
-            //Using the same SqlConnection for both DbContexts (CatalogContext and IntegrationEventLogContext)
-            //var sqlConnection = new SqlConnection(Configuration["ConnectionString"]);
-
             services.AddDbContext<CatalogContext>(options =>
             {
                 options.UseSqlServer(Configuration["ConnectionString"],
@@ -58,19 +55,6 @@
                 options.ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning));
                 //Check Client vs. Server evaluation: https://docs.microsoft.com/en-us/ef/core/querying/client-eval
             });
-
-            //services.AddDbContext<IntegrationEventLogContext>(options =>
-            //{
-            //    options.UseSqlServer(sqlConnection,
-            //                         sqlServerOptionsAction: sqlOptions =>
-            //                         {
-            //                             sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
-            //                             //Configuring Connection Resiliency: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency 
-            //                             sqlOptions.EnableRetryOnFailure(maxRetryCount: 5, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
-            //                         });
-
-            //    options.ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning));                
-            //});
 
             services.Configure<Settings>(Configuration);
 
