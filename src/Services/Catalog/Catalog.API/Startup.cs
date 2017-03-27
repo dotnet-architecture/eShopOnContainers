@@ -1,7 +1,6 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Catalog.API
 {
     using global::Catalog.API.Infrastructure.Filters;
-    using global::Catalog.API.IntegrationEvents;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.EntityFrameworkCore;
@@ -17,7 +16,6 @@
     using Microsoft.Extensions.Options;
     using System;
     using System.Data.Common;
-    using System.Data.SqlClient;
     using System.Reflection;
 
     public class Startup
@@ -43,14 +41,13 @@
 
         public void ConfigureServices(IServiceCollection services)
         {
-
             // Add framework services.
             services.AddMvc(options =>
             {
                 options.Filters.Add(typeof(HttpGlobalExceptionFilter));
             }).AddControllersAsServices();
 
-            services.AddDbContext<CatalogContext>(c =>
+            services.AddDbContext<CatalogContext>(options =>
             {
                 options.UseSqlServer(Configuration["ConnectionString"],
                                      sqlServerOptionsAction: sqlOptions =>
