@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace WebMVC.Services.Utilities
 {
-    public class HttpApiClient : IHttpClient
+    public class StandardHttpClient : IHttpClient
     {
         private HttpClient _client;
         private ILogger _logger;
         public HttpClient Inst => _client;
-        public HttpApiClient()
+        public StandardHttpClient()
         {
             _client = new HttpClient();
-            _logger = new LoggerFactory().CreateLogger(nameof(HttpApiClientWrapper));
+            _logger = new LoggerFactory().CreateLogger(nameof(ResilientHttpClient));
         }
         
         public Task<string> GetStringAsync(string uri) =>

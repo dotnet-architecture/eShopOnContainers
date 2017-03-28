@@ -16,16 +16,16 @@ namespace WebMVC.Services.Utilities
     /// Currently is ONLY implemented for the ASP MVC
     /// and Xamarin App
     /// </summary>
-    public class HttpApiClientWrapper : IHttpClient
+    public class ResilientHttpClient : IHttpClient
     {
         private HttpClient _client;
         private PolicyWrap _policyWrapper;
         private ILogger _logger;
         public HttpClient Inst => _client;
-        public HttpApiClientWrapper()
+        public ResilientHttpClient()
         {
             _client = new HttpClient();
-            _logger = new LoggerFactory().CreateLogger(nameof(HttpApiClientWrapper));
+            _logger = new LoggerFactory().CreateLogger(nameof(ResilientHttpClient));
 
             // Add Policies to be applied
             _policyWrapper = Policy.WrapAsync(

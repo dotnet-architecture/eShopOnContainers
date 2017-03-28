@@ -60,11 +60,11 @@ namespace Microsoft.eShopOnContainers.WebMVC
 
             if(Configuration.GetValue<string>("ActivateCircuitBreaker") == bool.TrueString)
             {
-                services.AddTransient<IHttpClient, HttpApiClientWrapper>();
+                services.AddTransient<IHttpClient, ResilientHttpClient>();
             }
             else
             {
-                services.AddTransient<IHttpClient, HttpApiClient>();
+                services.AddTransient<IHttpClient, StandardHttpClient>();
             }
         }
 
