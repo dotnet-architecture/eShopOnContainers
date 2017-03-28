@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using MediatR;
+using Ordering.Domain.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,8 +34,8 @@ namespace Ordering.API.Application.Decorators
 
             if (failures.Any())
             {
-                throw new ValidationException(
-                    $"Command Validation Errors for type {typeof(TRequest).Name}", failures);
+                throw new OrderingDomainException(
+                    $"Command Validation Errors for type {typeof(TRequest).Name}", new ValidationException("Validation exception", failures));
             }
             
             var response = await _inner.Handle(message);
