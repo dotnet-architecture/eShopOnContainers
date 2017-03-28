@@ -1,10 +1,11 @@
 ﻿using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure;
+using Ordering.Domain.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Repositories
+namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Idempotency
 {
     public class RequestManager : IRequestManager
     {
@@ -26,7 +27,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Repositor
 
             var exists = await ExistAsync(id);
             var request = exists ? 
-                throw new Exception($"Request with {id} already exists") : 
+                throw new OrderingDomainException($"Request with {id} already exists") : 
                 new ClientRequest()
                 {
                     Id = id,

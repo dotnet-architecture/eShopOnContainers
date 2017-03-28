@@ -1,8 +1,10 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Polly;
 using Polly.Wrap;
 using System;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -76,13 +78,17 @@ namespace WebMVC.Services.Utilities
             // a new StringContent must be created for each retry 
             // as it is disposed after each call
             HttpInvoker(() =>
+            {
+                var response = _client.PostAsync(uri, new StringContent(JsonConvert.SerializeObject(item), System.Text.Encoding.UTF8, "application/json"));
+                // raise exception if HttpResponseCode 500 
+                // needed for circuit breaker to track fails
+                if (response.Result.StatusCode == HttpStatusCode.InternalServerError)
                 {
-                    var response = _client.PostAsync(uri, new StringContent(JsonConvert.SerializeObject(item), System.Text.Encoding.UTF8, "application/json"));
-                    // raise exception if not success response
-                    // needed for circuit breaker to track fails
-                    response.Result.EnsureSuccessStatusCode();
-                    return response;
-                });
+                    throw new HttpRequestException();
+                }
+
+                return response;
+            });
 
         public Task<HttpResponseMessage> DeleteAsync(string uri) =>
             HttpInvoker(() => _client.DeleteAsync(uri));

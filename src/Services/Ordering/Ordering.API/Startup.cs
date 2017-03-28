@@ -46,7 +46,7 @@
             // Add framework services.
             services.AddMvc(options =>
             {
-                options.Filters.Add(typeof(HttpGlobalExceptionFilter));
+                options.Filters.Add(typeof(HttpGlobalExceptionFilter));                
             }).AddControllersAsServices();  //Injecting Controllers themselves thru DI
                                             //For further info see: http://docs.autofac.org/en/latest/integration/aspnetcore.html#controllers-as-services
 
@@ -59,10 +59,14 @@
             services.AddEntityFrameworkSqlServer()
                     .AddDbContext<OrderingContext>(options =>
                     {
-                        options.UseSqlServer(Configuration["ConnectionString"],
-                            sqlop => sqlop.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name));
+                    options.UseSqlServer(Configuration["ConnectionString"],
+                        sqlServerOptionsAction: sqlOptions =>
+                        {
+                            sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
+                            sqlOptions.EnableRetryOnFailure(maxRetryCount: 5, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
+                        });                                       
                     },
-                    ServiceLifetime.Scoped  //DbContext is shared across the HTTP request scope (graph of objects started in the HTTP request)
+                    ServiceLifetime.Scoped  //Showing explicitly that the DbContext is shared across the HTTP request scope (graph of objects started in the HTTP request)
                     );
 
             services.AddSwaggerGen();
@@ -109,12 +113,7 @@
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
-
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-
+            
             app.UseCors("CorsPolicy");
 
             app.UseFailingMiddleware();

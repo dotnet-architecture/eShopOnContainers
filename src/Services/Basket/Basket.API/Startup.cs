@@ -16,6 +16,7 @@ using Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ;
 using System;
 using Microsoft.Extensions.HealthChecks;
 using System.Threading.Tasks;
+using Basket.API.Infrastructure.Filters;
 
 namespace Microsoft.eShopOnContainers.Services.Basket.API
 {
@@ -43,7 +44,11 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             });
 
             // Add framework services.
-            services.AddMvc();
+            services.AddMvc(options =>
+            {
+                options.Filters.Add(typeof(HttpGlobalExceptionFilter));
+            }).AddControllersAsServices();
+
             services.Configure<BasketSettings>(Configuration);
 
             //By connecting here we are making sure that our service

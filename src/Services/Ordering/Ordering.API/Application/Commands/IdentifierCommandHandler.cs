@@ -1,8 +1,5 @@
 ﻿using MediatR;
-using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Idempotency;
 using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands
@@ -48,9 +45,9 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands
                 return CreateResultForDuplicateRequest();
             }
             else
-            {
-                await _requestManager.CreateRequestForCommandAsync<T>(message.Id);
+            {                
                 var result = await _mediator.SendAsync(message.Command);
+                await _requestManager.CreateRequestForCommandAsync<T>(message.Id);
                 return result;
             }
         }

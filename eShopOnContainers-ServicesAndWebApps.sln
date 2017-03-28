@@ -72,6 +72,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventBus", "src\BuildingBlo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventBusRabbitMQ", "src\BuildingBlocks\EventBus\EventBusRabbitMQ\EventBusRabbitMQ.csproj", "{8088F3FC-6787-45FA-A924-816EC81CBFAC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationEventLogEF", "src\BuildingBlocks\EventBus\IntegrationEventLogEF\IntegrationEventLogEF.csproj", "{9EE28E45-1533-472B-8267-56C48855BA0E}"
+EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "HealthChecks", "HealthChecks", "{A81ECBC2-6B00-4DCD-8388-469174033379}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.AspNetCore.HealthChecks", "src\BuildingBlocks\HealthChecks\src\Microsoft.AspNetCore.HealthChecks\Microsoft.AspNetCore.HealthChecks.csproj", "{DF8367F8-E6BD-4D07-99D2-E416BF8AB01E}"
@@ -896,5 +898,6 @@ Global
 		{942ED6E8-0050-495F-A0EA-01E97F63760C} = {A81ECBC2-6B00-4DCD-8388-469174033379}
 		{7804FC60-23E6-490C-8E08-F9FEF829F184} = {A81ECBC2-6B00-4DCD-8388-469174033379}
 		{C0A7918D-B4F2-4E7F-8DE2-1E5279EF079F} = {E279BF0F-7F66-4F3A-A3AB-2CDA66C1CD04}
+		{9EE28E45-1533-472B-8267-56C48855BA0E} = {807BB76E-B2BB-47A2-A57B-3D1B20FF5E7F}
 	EndGlobalSection
 EndGlobal

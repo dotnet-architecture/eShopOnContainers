@@ -8,7 +8,7 @@ version: '2'
 #
 # Set ASPNETCORE_ENVIRONMENT=Development to get errors while testing. 
 #
-# You need to start it with the following CLI command: 
+# You need to start it with the following CLI command:
 # docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 
 services:

@@ -1,4 +1,5 @@
 ﻿using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.BuyerAggregate;
+using Ordering.Domain.Exceptions;
 using System;
 using Xunit;
 
@@ -82,7 +83,7 @@ public class BuyerAggregateTest
         var expiration = DateTime.Now.AddYears(-1);        
 
         //Act - Assert
-        Assert.Throws<ArgumentException>(() => new PaymentMethod(cardTypeId, alias, cardNumber, securityNumber, cardHolderName, expiration));
+        Assert.Throws<OrderingDomainException>(() => new PaymentMethod(cardTypeId, alias, cardNumber, securityNumber, cardHolderName, expiration));
     }
 
     [Fact]

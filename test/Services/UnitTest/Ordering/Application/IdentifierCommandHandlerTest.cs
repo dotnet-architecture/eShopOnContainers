@@ -6,7 +6,7 @@ namespace UnitTest.Ordering.Application
 {
     using MediatR;
     using Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands;
-    using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Repositories;
+    using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Idempotency;
     using Moq;
     using System.Collections;
     using System.Collections.Generic;

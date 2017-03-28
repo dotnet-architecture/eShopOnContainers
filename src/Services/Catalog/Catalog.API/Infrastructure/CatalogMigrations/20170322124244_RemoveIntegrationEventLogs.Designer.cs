@@ -4,14 +4,14 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
-using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
 
 namespace Catalog.API.Infrastructure.Migrations
 {
     [DbContext(typeof(CatalogContext))]
-    partial class CatalogContextModelSnapshot : ModelSnapshot
+    [Migration("20170322124244_RemoveIntegrationEventLogs")]
+    partial class RemoveIntegrationEventLogs
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.1")
@@ -19,28 +19,6 @@ namespace Catalog.API.Infrastructure.Migrations
                 .HasAnnotation("SqlServer:Sequence:.catalog_hilo", "'catalog_hilo', '', '1', '10', '', '', 'Int64', 'False'")
                 .HasAnnotation("SqlServer:Sequence:.catalog_type_hilo", "'catalog_type_hilo', '', '1', '10', '', '', 'Int64', 'False'")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events.IntegrationEventLogEntry", b =>
-                {
-                    b.Property<Guid>("EventId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Content")
-                        .IsRequired();
-
-                    b.Property<DateTime>("CreationTime");
-
-                    b.Property<string>("EventTypeName")
-                        .IsRequired();
-
-                    b.Property<int>("State");
-
-                    b.Property<int>("TimesSent");
-
-                    b.HasKey("EventId");
-
-                    b.ToTable("IntegrationEventLog");
-                });
 
             modelBuilder.Entity("Microsoft.eShopOnContainers.Services.Catalog.API.Model.CatalogBrand", b =>
                 {

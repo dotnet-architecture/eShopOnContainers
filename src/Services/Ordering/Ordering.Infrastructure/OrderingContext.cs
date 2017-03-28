@@ -235,7 +235,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
                 .IsRequired();
         }
 
-        public async Task<int> SaveEntitiesAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             // Dispatch Domain Events collection. 
             // Choices:
@@ -246,10 +246,11 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
             await _mediator.DispatchDomainEventsAsync(this);
 
 
-            // After executing this line all the changes performed thought the DbContext will be commited
+            // After executing this line all the changes (from the Command Handler and Domain Event Handlers) 
+            // performed thought the DbContext will be commited
             var result = await base.SaveChangesAsync();
 
-            return result;
+            return true;
         }        
     }
 }
