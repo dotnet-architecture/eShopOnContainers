@@ -15,10 +15,11 @@ import { Router }                                   from '@angular/router';
 export class OrdersNewComponent implements OnInit {
     private newOrderForm: FormGroup;  // new order form
     private isOrderProcessing: Boolean;
+    private errorReceived: Boolean;
     private order: IOrder;
 
     constructor(private service: OrdersService, fb: FormBuilder, private router: Router, private basketEvents: BasketWrapperService) {
-        // Obtener información del perfil de usuario.
+        // Obtain user profile information
         this.order = service.mapBasketAndIdentityInfoNewOrder();
         this.newOrderForm = fb.group({
             'street': [this.order.street, Validators.required],
@@ -48,6 +49,7 @@ export class OrdersNewComponent implements OnInit {
 
         this.service.postOrder(this.order)
             .catch((errMessage) => {
+                this.errorReceived = true;
                 this.isOrderProcessing = false;
                 return Observable.throw(errMessage); 
             })
@@ -56,8 +58,8 @@ export class OrdersNewComponent implements OnInit {
             this.basketEvents.orderCreated();
             
             this.router.navigate(['orders']);
-        });
-
+            });
+        this.errorReceived = false;
         this.isOrderProcessing = true;
     }
 }
