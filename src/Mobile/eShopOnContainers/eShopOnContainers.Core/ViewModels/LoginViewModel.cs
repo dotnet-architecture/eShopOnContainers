@@ -272,7 +272,7 @@ namespace eShopOnContainers.Core.ViewModels
         private void AddValidations()
         {
             _userName.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "A username is required." });
-            _password.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "A password is required" });
+            _password.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "A password is required." });
         }
 
         public void InvalidateMock()
