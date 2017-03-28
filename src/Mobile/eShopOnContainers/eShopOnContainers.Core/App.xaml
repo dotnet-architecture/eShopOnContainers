@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"  
              xmlns:light="clr-namespace:Xamarin.Forms.Themes;assembly=Xamarin.Forms.Theme.Light"
              xmlns:converters="clr-namespace:eShopOnContainers.Core.Converters;assembly=eShopOnContainers.Core"
-             xmlns:effects="clr-namespace:eShopOnContainers.Core.Effects;assembly=eShopOnContainers.Core"
+             xmlns:behaviors="clr-namespace:eShopOnContainers.Core.Behaviors;assembly=eShopOnContainers.Core"
              x:Class="eShopOnContainers.App">
     <Application.Resources>
         <ResourceDictionary MergedWith="light:LightThemeResources">
@@ -135,9 +135,9 @@
                         Value="Bold" />
                 <Setter Property="Opacity"
                         Value="0.6" />
-                <Setter Property="effects:LineColorEffect.ApplyLineColor"
+                <Setter Property="behaviors:LineColorBehavior.ApplyLineColor"
                         Value="True" />
-                <Setter Property="effects:LineColorEffect.LineColor"
+                <Setter Property="behaviors:LineColorBehavior.LineColor"
                         Value="{StaticResource BlackColor}" />
                 <Style.Triggers>
                     <Trigger TargetType="Entry"
@@ -166,16 +166,16 @@
                         Value="Transparent" />
                 <Setter Property="Opacity"
                         Value="0.6" />
-                <Setter Property="effects:LineColorEffect.ApplyLineColor"
+                <Setter Property="behaviors:LineColorBehavior.ApplyLineColor"
                         Value="True" />
-                <Setter Property="effects:LineColorEffect.LineColor"
+                <Setter Property="behaviors:LineColorBehavior.LineColor"
                         Value="Gray" />
                 <Style.Triggers>
                     <Trigger TargetType="Entry"
                        Property="IsFocused"
                        Value="True">
                         <Setter Property="Opacity" Value="1" />
-                        <Setter Property="effects:LineColorEffect.LineColor"                        
+                        <Setter Property="behaviors:LineColorBehavior.LineColor"                        
                                 Value="{StaticResource GreenColor}" />
                     </Trigger>
                 </Style.Triggers>

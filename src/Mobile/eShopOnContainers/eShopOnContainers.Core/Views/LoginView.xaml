@@ -6,7 +6,6 @@
              xmlns:animations="clr-namespace:eShopOnContainers.Core.Animations;assembly=eShopOnContainers.Core"
              xmlns:triggers="clr-namespace:eShopOnContainers.Core.Triggers;assembly=eShopOnContainers.Core"
              xmlns:behaviors="clr-namespace:eShopOnContainers.Core.Behaviors;assembly=eShopOnContainers.Core"
-			 xmlns:effects="clr-namespace:eShopOnContainers.Core.Effects;assembly=eShopOnContainers.Core"
 			 viewModelBase:ViewModelLocator.AutoWireViewModel="true">
     <ContentPage.Title>
         <OnPlatform
@@ -196,7 +195,7 @@
 							TargetType="Entry"
 							Binding="{Binding UserName.IsValid}"
 							Value="False">
-							<Setter Property="effects:LineColorEffect.LineColor" Value="{StaticResource ErrorColor}" />
+							<Setter Property="behaviors:LineColorBehavior.LineColor" Value="{StaticResource ErrorColor}" />
 						</DataTrigger>
 					</Entry.Triggers>
                 </Entry>
@@ -225,7 +224,7 @@
 							TargetType="Entry"
 							Binding="{Binding Password.IsValid}"
 							Value="False">
-							<Setter Property="effects:LineColorEffect.LineColor" Value="{StaticResource ErrorColor}" />
+							<Setter Property="behaviors:LineColorBehavior.LineColor" Value="{StaticResource ErrorColor}" />
 						</DataTrigger>
 					</Entry.Triggers>
                 </Entry>

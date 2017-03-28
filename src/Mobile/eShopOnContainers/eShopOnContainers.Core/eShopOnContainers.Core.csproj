@@ -58,7 +58,6 @@
     <Compile Include="Converters\ItemsToHeightConverter.cs" />
     <Compile Include="Converters\ItemTappedEventArgsConverter.cs" />
     <Compile Include="Converters\ToUpperConverter.cs" />
-    <Compile Include="Effects\LineColorEffect.cs" />
     <Compile Include="Exceptions\ServiceAuthenticationException.cs" />
     <Compile Include="Extensions\ObservableExtension.cs" />
     <Compile Include="GlobalSettings.cs" />
@@ -165,6 +164,8 @@
     </Compile>
     <Compile Include="Converters\WebNavigatingEventArgsConverter.cs" />
     <Compile Include="Converters\FirstValidationErrorConverter.cs" />
+    <Compile Include="Effects\EntryLineColorEffect.cs" />
+    <Compile Include="Behaviors\LineColorBehavior.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
