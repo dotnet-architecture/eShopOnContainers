@@ -42,9 +42,9 @@ namespace eShopOnContainers.Core.Behaviors
                 return;
             }
 
-            bool hasShadow = (bool)newValue;
+            bool hasLine = (bool)newValue;
 
-            if (hasShadow)
+            if (hasLine)
             {
                 view.Effects.Add(new EntryLineColorEffect());
             }
