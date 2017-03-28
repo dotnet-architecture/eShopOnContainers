@@ -43,14 +43,13 @@
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
-            services.AddMvc(options =>
-
+            
             services.AddHealthChecks(checks =>
             {
                 checks.AddUrlCheck(Configuration["ExternalCatalogBaseUrl"]);
             });
 
-            services.AddDbContext<CatalogContext>(c =>
+            services.AddMvc(options =>
             {
                 options.Filters.Add(typeof(HttpGlobalExceptionFilter));
             }).AddControllersAsServices();
