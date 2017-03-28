@@ -3,7 +3,7 @@
     using Domain.AggregatesModel.OrderAggregate;
     using MediatR;
     using Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure.Services;
-    using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Repositories;
+    using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Idempotency;
     using System;
     using System.Threading.Tasks;
 

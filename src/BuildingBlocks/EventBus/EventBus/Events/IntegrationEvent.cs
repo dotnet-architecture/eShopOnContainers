@@ -9,8 +9,10 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events
         public IntegrationEvent()
         {
             Id = Guid.NewGuid();
+            CreationDate = DateTime.UtcNow;
         }
 
         public Guid Id  { get; }
+        public DateTime CreationDate { get; }
     }
 }

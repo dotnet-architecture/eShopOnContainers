@@ -1,8 +1,5 @@
 ﻿using MediatR;
-using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Idempotency;
 using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands

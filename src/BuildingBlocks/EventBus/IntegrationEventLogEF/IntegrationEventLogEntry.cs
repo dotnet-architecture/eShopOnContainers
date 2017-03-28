@@ -12,7 +12,7 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF
         public IntegrationEventLogEntry(IntegrationEvent @event)
         {
             EventId = @event.Id;
-            CreationTime = DateTime.UtcNow;
+            CreationTime = @event.CreationDate;
             EventTypeName = @event.GetType().FullName;
             Content = JsonConvert.SerializeObject(@event);
             State = EventStateEnum.NotPublished;

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Repositories
+namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Idempotency
 {
     public class RequestManager : IRequestManager
     {
