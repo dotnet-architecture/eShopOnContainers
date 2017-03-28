@@ -12,6 +12,7 @@
     using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.HealthChecks;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
     using System;
@@ -42,6 +43,12 @@
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
+            
+            services.AddHealthChecks(checks =>
+            {
+                checks.AddUrlCheck(Configuration["ExternalCatalogBaseUrl"]);
+            });
+
             services.AddMvc(options =>
             {
                 options.Filters.Add(typeof(HttpGlobalExceptionFilter));

@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Http;
 using System.Threading;
 using Microsoft.Extensions.Options;
 using WebMVC.Services.Utilities;
+using Microsoft.Extensions.HealthChecks;
 
 namespace Microsoft.eShopOnContainers.WebMVC
 {
@@ -44,7 +45,12 @@ namespace Microsoft.eShopOnContainers.WebMVC
         {
             services.AddMvc();
             services.Configure<AppSettings>(Configuration);
-            
+
+            services.AddHealthChecks(checks =>
+            {
+                checks.AddUrlCheck(Configuration["CallBackUrl"]);
+            });
+
             // Add application services.
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();            
             services.AddTransient<ICatalogService, CatalogService>(); 
