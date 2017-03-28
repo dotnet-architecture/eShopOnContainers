@@ -35,8 +35,9 @@ namespace WebStatus
                 checks.AddUrlCheckIfNotNull(Configuration["OrderingUrl"]);
                 checks.AddUrlCheckIfNotNull(Configuration["BasketUrl"]);
                 checks.AddUrlCheckIfNotNull(Configuration["CatalogUrl"]);
+                checks.AddUrlCheckIfNotNull(Configuration["IdentityUrl"]);
                 checks.AddUrlCheckIfNotNull(Configuration["mvc"]);
-                checks.AddUrlCheckIfNotNull(Configuration["spa"]);
+                checks.AddUrlCheckIfNotNull(Configuration["spa"]); 
             });
             services.AddMvc();
         }

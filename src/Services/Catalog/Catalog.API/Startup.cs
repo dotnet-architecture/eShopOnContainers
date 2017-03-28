@@ -40,7 +40,7 @@
 
             services.AddHealthChecks(checks =>
             {
-                checks.AddUrlCheck(Configuration["ConnectionString"]);
+                checks.AddUrlCheck(Configuration["ExternalCatalogBaseUrl"]);
             });
 
             services.AddDbContext<CatalogContext>(c =>
