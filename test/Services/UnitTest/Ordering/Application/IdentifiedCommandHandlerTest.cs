@@ -12,12 +12,12 @@ namespace UnitTest.Ordering.Application
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Xunit;
-    public class IdentifierCommandHandlerTest
+    public class IdentifiedCommandHandlerTest
     {
         private readonly Mock<IRequestManager> _requestManager;
         private readonly Mock<IMediator> _mediator;
 
-        public IdentifierCommandHandlerTest()
+        public IdentifiedCommandHandlerTest()
         {
             _requestManager = new Mock<IRequestManager>();
             _mediator = new Mock<IMediator>();
@@ -37,7 +37,7 @@ namespace UnitTest.Ordering.Application
                .Returns(Task.FromResult(true));
 
             //Act
-            var handler = new IdentifierCommandHandler<CreateOrderCommand, bool>(_mediator.Object, _requestManager.Object);
+            var handler = new IdentifiedCommandHandler<CreateOrderCommand, bool>(_mediator.Object, _requestManager.Object);
             var result = await handler.Handle(fakeOrderCmd);
 
             //Assert
@@ -59,7 +59,7 @@ namespace UnitTest.Ordering.Application
                .Returns(Task.FromResult(true));
 
             //Act
-            var handler = new IdentifierCommandHandler<CreateOrderCommand, bool>(_mediator.Object, _requestManager.Object);
+            var handler = new IdentifiedCommandHandler<CreateOrderCommand, bool>(_mediator.Object, _requestManager.Object);
             var result = await handler.Handle(fakeOrderCmd);
 
             //Assert
