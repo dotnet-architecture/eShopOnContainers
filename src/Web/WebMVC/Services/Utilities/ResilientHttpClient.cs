@@ -38,7 +38,7 @@ namespace WebMVC.Services.Utilities
                 // number of retries
                 6,
                 // exponential backofff
-                retryAttempt => TimeSpan.FromSeconds(Math.Pow(1, retryAttempt)),
+                retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
                 // on retry
                 (exception, timeSpan, retryCount, context) =>
                 {
