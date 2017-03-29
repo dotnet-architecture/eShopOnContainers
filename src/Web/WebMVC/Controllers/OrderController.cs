@@ -54,7 +54,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
             }
             catch(BrokenCircuitException ex)
             {
-                ModelState.AddModelError("Error", "Not possible to create a new order, please try later on");
+                ModelState.AddModelError("Error", "It was not possible to create a new order, please try later on");
             }
             return View(model);
         }

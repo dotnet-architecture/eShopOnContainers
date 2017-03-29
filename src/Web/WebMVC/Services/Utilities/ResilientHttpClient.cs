@@ -12,9 +12,7 @@ namespace WebMVC.Services.Utilities
 {
     /// <summary>
     /// HttpClient wrapper that integrates Retry and Circuit
-    /// breaker policies when calling to Api services. 
-    /// Currently is ONLY implemented for the ASP MVC
-    /// and Xamarin App
+    /// breaker policies when invoking HTTP services. 
     /// </summary>
     public class ResilientHttpClient : IHttpClient
     {
@@ -34,41 +32,43 @@ namespace WebMVC.Services.Utilities
             );
         }
 
-        private Policy CreateCircuitBreakerPolicy() =>
-            Policy.Handle<HttpRequestException>()
-            .CircuitBreakerAsync(
-                // number of exceptions before breaking circuit
-                5,
-                // time circuit opened before retry
-                TimeSpan.FromMinutes(1),
-                (exception, duration) =>
-                {
-                    // on circuit opened
-                    _logger.LogTrace("Circuit breaker opened");
-                },
-                () =>
-                {
-                    // on circuit closed
-                    _logger.LogTrace("Circuit breaker reset");
-                }
-            );
-
         private Policy CreateRetryPolicy() =>
             Policy.Handle<HttpRequestException>()
             .WaitAndRetryAsync(
                 // number of retries
-                5,
+                6,
                 // exponential backofff
-                retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
+                retryAttempt => TimeSpan.FromSeconds(Math.Pow(1, retryAttempt)),
                 // on retry
                 (exception, timeSpan, retryCount, context) =>
                 {
-                    _logger.LogTrace($"Retry {retryCount} " +
+                    var msg = $"Retry {retryCount} implemented with Polly's RetryPolicy " +
                         $"of {context.PolicyKey} " +
                         $"at {context.ExecutionKey}, " +
-                        $"due to: {exception}.");
+                        $"due to: {exception}.";
+                    _logger.LogWarning(msg);
+                    _logger.LogDebug(msg);
                 }
             );
+
+        private Policy CreateCircuitBreakerPolicy() =>
+           Policy.Handle<HttpRequestException>()
+           .CircuitBreakerAsync(
+               // number of exceptions before breaking circuit
+               5,
+               // time circuit opened before retry
+               TimeSpan.FromMinutes(1),
+               (exception, duration) =>
+               {
+                    // on circuit opened
+                    _logger.LogTrace("Circuit breaker opened");
+               },
+               () =>
+               {
+                    // on circuit closed
+                    _logger.LogTrace("Circuit breaker reset");
+               }
+           );
 
         public Task<string> GetStringAsync(string uri) =>
             HttpInvoker(() => 
