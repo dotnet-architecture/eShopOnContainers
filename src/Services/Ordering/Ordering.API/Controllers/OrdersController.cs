@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace Microsoft.eShopOnContainers.Services.Ordering.API.Controllers
 {
     [Route("api/v1/[controller]")]
-    //[Authorize]
+    [Authorize]
     public class OrdersController : Controller
     {
         private readonly IMediator _mediator;
@@ -28,19 +28,19 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Controllers
 
         [Route("new")]
         [HttpPost]
-        public async Task<IActionResult> CreateOrder([FromBody]CreateOrderCommand createOrderCommand, [FromHeader(Name = "x-requestid")] string requestId)
+        public async Task<IActionResult> CreateOrder([FromBody]CreateOrderCommand command, [FromHeader(Name = "x-requestid")] string requestId)
         {
             bool result = false;
             if (Guid.TryParse(requestId, out Guid guid) && guid != Guid.Empty)
             {
-                var requestCreateOrder = new IdentifiedCommand<CreateOrderCommand, bool>(createOrderCommand, guid);
+                var requestCreateOrder = new IdentifiedCommand<CreateOrderCommand, bool>(command, guid);
                 result = await _mediator.SendAsync(requestCreateOrder);
             }
             else
             {
                 // If no x-requestid header is found we process the order anyway. This is just temporary to not break existing clients
                 // that aren't still updated. When all clients were updated this could be removed.
-                result = await _mediator.SendAsync(createOrderCommand);
+                result = await _mediator.SendAsync(command);
             }
 
             if (result)
@@ -82,7 +82,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Controllers
             var cardTypes = await _orderQueries.GetCardTypes();
 
             return Ok(cardTypes);
-        }
+        }        
     }
 }
 

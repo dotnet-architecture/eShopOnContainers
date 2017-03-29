@@ -1,11 +1,12 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure.Filters
 {
     using AspNetCore.Mvc;
+    using global::Ordering.Domain.Exceptions;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc.Filters;
     using Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure.ActionResults;
     using Microsoft.Extensions.Logging;
-    using System;
+    using System.Net;
 
     public class HttpGlobalExceptionFilter : IExceptionFilter
     {
@@ -24,14 +25,17 @@
                 context.Exception,
                 context.Exception.Message);
 
-            if (context.Exception.GetType() == typeof(ArgumentException)) //TODO:Select a common exception for application like EshopException
+            if (context.Exception.GetType() == typeof(OrderingDomainException)) 
             {
                 var json = new JsonErrorResponse
                 {
                     Messages = new[] { context.Exception.Message }
                 };
 
+                // Result asigned to a result object but in destiny the response is empty. This is a known bug of .net core 1.1
+                //It will be fixed in .net core 1.1.2. See https://github.com/aspnet/Mvc/issues/5594 for more information
                 context.Result = new BadRequestObjectResult(json);
+                context.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
             }
             else
             {
@@ -45,9 +49,12 @@
                     json.DeveloperMeesage = context.Exception;
                 }
 
+                // Result asigned to a result object but in destiny the response is empty. This is a known bug of .net core 1.1
+                // It will be fixed in .net core 1.1.2. See https://github.com/aspnet/Mvc/issues/5594 for more information
                 context.Result = new InternalServerErrorObjectResult(json);
+                context.HttpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;                
             }
-            
+            context.ExceptionHandled = true;
         }
 
         private class JsonErrorResponse

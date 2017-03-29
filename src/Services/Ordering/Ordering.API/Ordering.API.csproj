@@ -23,11 +23,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\BuildingBlocks\HealthChecks\src\Microsoft.AspNetCore.HealthChecks\Microsoft.AspNetCore.HealthChecks.csproj" />
+    <ProjectReference Include="..\..\..\BuildingBlocks\HealthChecks\src\Microsoft.Extensions.HealthChecks.Data\Microsoft.Extensions.HealthChecks.Data.csproj" />
+    <ProjectReference Include="..\..\..\BuildingBlocks\HealthChecks\src\Microsoft.Extensions.HealthChecks\Microsoft.Extensions.HealthChecks.csproj" />
     <ProjectReference Include="..\Ordering.Domain\Ordering.Domain.csproj" />
     <ProjectReference Include="..\Ordering.Infrastructure\Ordering.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentValidation.AspNetCore" Version="6.4.0" />
+    <PackageReference Include="FluentValidation.MVC6" Version="6.4.0" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="1.1.0" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="1.1.0" />
@@ -56,6 +61,10 @@
 
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="1.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Application\DomainEventHandlers\OrderStartedEvent\SendEmailToCustomerWhenOrderStartedDomainEventHandler.cs" />
   </ItemGroup>
 
   <ItemGroup>

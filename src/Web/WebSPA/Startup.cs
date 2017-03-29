@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Serialization;
 using eShopOnContainers.WebSPA;
+using Microsoft.Extensions.HealthChecks;
 
 namespace eShopConContainers.WebSPA
 {
@@ -39,6 +40,11 @@ namespace eShopConContainers.WebSPA
         // For more information on how to configure your application, visit http://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHealthChecks(checks =>
+            {
+                checks.AddUrlCheck(Configuration["CallBackUrl"]);
+            });
+
             services.Configure<AppSettings>(Configuration);
 
             services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");

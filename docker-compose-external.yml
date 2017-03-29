@@ -8,3 +8,8 @@ services:
     image: redis
     ports:
       - "6379:6379"
+
+  rabbitmq:
+    image: rabbitmq
+    ports:
+      - "5672:5672"

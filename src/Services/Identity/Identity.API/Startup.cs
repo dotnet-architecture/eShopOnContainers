@@ -17,6 +17,7 @@ using IdentityServer4.Services;
 using System.Threading;
 using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.HealthChecks;
 
 namespace eShopOnContainers.Identity
 {
@@ -43,7 +44,8 @@ namespace eShopOnContainers.Identity
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {
+        {            
+
             // Add framework services.
             services.AddDbContext<ApplicationDbContext>(options =>
              options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
@@ -55,6 +57,11 @@ namespace eShopOnContainers.Identity
             services.Configure<AppSettings>(Configuration);
 
             services.AddMvc();
+
+            services.AddHealthChecks(checks =>
+            {
+                checks.AddSqlCheck("Identity_Db", Configuration.GetConnectionString("DefaultConnection"));
+            });
 
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();

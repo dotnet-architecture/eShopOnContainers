@@ -119,13 +119,13 @@ namespace Ordering.API.Migrations
 
                     b.Property<int?>("AddressId");
 
-                    b.Property<int>("BuyerId");
+                    b.Property<int?>("BuyerId");
 
                     b.Property<DateTime>("OrderDate");
 
                     b.Property<int>("OrderStatusId");
 
-                    b.Property<int>("PaymentMethodId");
+                    b.Property<int?>("PaymentMethodId");
 
                     b.HasKey("Id");
 
@@ -183,7 +183,7 @@ namespace Ordering.API.Migrations
                     b.ToTable("orderstatus","ordering");
                 });
 
-            modelBuilder.Entity("Ordering.Infrastructure.ClientRequest", b =>
+            modelBuilder.Entity("Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.ClientRequest", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
@@ -219,8 +219,7 @@ namespace Ordering.API.Migrations
 
                     b.HasOne("Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.BuyerAggregate.Buyer", "Buyer")
                         .WithMany()
-                        .HasForeignKey("BuyerId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("BuyerId");
 
                     b.HasOne("Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate.OrderStatus", "OrderStatus")
                         .WithMany()

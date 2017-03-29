@@ -14,10 +14,8 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
     {
         private ICatalogService _catalogSvc;
 
-        public CatalogController(ICatalogService catalogSvc)
-        {
+        public CatalogController(ICatalogService catalogSvc) => 
             _catalogSvc = catalogSvc;
-        }
 
         public async Task<IActionResult> Index(int? BrandFilterApplied, int? TypesFilterApplied, int? page)
         {
@@ -35,7 +33,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
                     ActualPage = page ?? 0,
                     ItemsPerPage = catalog.Data.Count,
                     TotalItems = catalog.Count, 
-                    TotalPages = int.Parse(Math.Ceiling(((decimal)catalog.Count / itemsPage)).ToString())
+                    TotalPages = (int)Math.Ceiling(((decimal)catalog.Count / itemsPage))
                 }
             };
 
@@ -45,10 +43,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
             return View(vm);
         }
 
-        public IActionResult Error()
-        {
-            return View();
-        }
+        public IActionResult Error() => View();
     }
 }
 

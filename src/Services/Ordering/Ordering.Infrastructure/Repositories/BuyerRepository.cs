@@ -41,6 +41,13 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Repositor
             
         }
 
+        public Buyer Update(Buyer buyer)
+        {
+            return _context.Buyers
+                    .Update(buyer)
+                    .Entity;
+        }
+
         public async Task<Buyer> FindAsync(string identity)
         {
             var buyer = await _context.Buyers
