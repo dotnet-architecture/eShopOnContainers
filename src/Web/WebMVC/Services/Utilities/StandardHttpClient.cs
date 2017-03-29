@@ -9,12 +9,12 @@ namespace WebMVC.Services.Utilities
     public class StandardHttpClient : IHttpClient
     {
         private HttpClient _client;
-        private ILogger _logger;
+        private ILogger<StandardHttpClient> _logger;
         public HttpClient Inst => _client;
-        public StandardHttpClient()
+        public StandardHttpClient(ILogger<StandardHttpClient> logger)
         {
             _client = new HttpClient();
-            _logger = new LoggerFactory().CreateLogger(nameof(ResilientHttpClient));
+            _logger = logger;
         }
         
         public Task<string> GetStringAsync(string uri) =>

@@ -18,12 +18,12 @@ namespace WebMVC.Services.Utilities
     {
         private HttpClient _client;
         private PolicyWrap _policyWrapper;
-        private ILogger _logger;
+        private ILogger<ResilientHttpClient> _logger;
         public HttpClient Inst => _client;
-        public ResilientHttpClient()
+        public ResilientHttpClient(ILogger<ResilientHttpClient> logger)
         {
             _client = new HttpClient();
-            _logger = new LoggerFactory().CreateLogger(nameof(ResilientHttpClient));
+            _logger = logger;
 
             // Add Policies to be applied
             _policyWrapper = Policy.WrapAsync(
