@@ -2,9 +2,11 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="eShopOnContainers.Core.Views.LoginView"
+		 	 xmlns:viewModelBase="clr-namespace:eShopOnContainers.Core.ViewModels.Base;assembly=eShopOnContainers.Core"
              xmlns:animations="clr-namespace:eShopOnContainers.Core.Animations;assembly=eShopOnContainers.Core"
              xmlns:triggers="clr-namespace:eShopOnContainers.Core.Triggers;assembly=eShopOnContainers.Core"
-             xmlns:behaviors="clr-namespace:eShopOnContainers.Core.Behaviors;assembly=eShopOnContainers.Core">
+             xmlns:behaviors="clr-namespace:eShopOnContainers.Core.Behaviors;assembly=eShopOnContainers.Core"
+			 viewModelBase:ViewModelLocator.AutoWireViewModel="true">
     <ContentPage.Title>
         <OnPlatform
             x:TypeArguments="x:String"
@@ -175,30 +177,60 @@
                 Margin="24">
                 <Label
                   Text="User name or email"
-                  Style="{StaticResource HeaderLabelStyle}"/>
-                <Entry
-                    Text="{Binding UserName.Value, Mode=TwoWay}">
-                    <Entry.Style>
+                  Style="{StaticResource HeaderLabelStyle}" />
+                <Entry Text="{Binding UserName.Value, Mode=TwoWay}">
+					<Entry.Style>
                         <OnPlatform x:TypeArguments="Style"
                           iOS="{StaticResource EntryStyle}"
                           Android="{StaticResource EntryStyle}"
                           WinPhone="{StaticResource UwpEntryStyle}"/>
                     </Entry.Style>
+                    <Entry.Behaviors>
+						<behaviors:EventToCommandBehavior
+							EventName="TextChanged"
+							Command="{Binding ValidateUserNameCommand}" />
+					</Entry.Behaviors>
+					<Entry.Triggers>
+						<DataTrigger 
+							TargetType="Entry"
+							Binding="{Binding UserName.IsValid}"
+							Value="False">
+							<Setter Property="behaviors:LineColorBehavior.LineColor" Value="{StaticResource ErrorColor}" />
+						</DataTrigger>
+					</Entry.Triggers>
                 </Entry>
+				<Label 
+					Text="{Binding UserName.Errors, Converter={StaticResource FirstValidationErrorConverter}"
+					Style="{StaticResource ValidationErrorLabelStyle}" />
                 <Label
                   Text="Password"
                   Style="{StaticResource HeaderLabelStyle}"/>
                 <Entry
                   IsPassword="True"
-                  Text="{Binding Password.Value, Mode=TwoWay}"
-                  Style="{StaticResource EntryStyle}">
+                  Text="{Binding Password.Value, Mode=TwoWay}">
                     <Entry.Style>
                         <OnPlatform x:TypeArguments="Style"
                           iOS="{StaticResource EntryStyle}"
                           Android="{StaticResource EntryStyle}"
                           WinPhone="{StaticResource UwpEntryStyle}"/>
                     </Entry.Style>
+					<Entry.Behaviors>
+						<behaviors:EventToCommandBehavior
+							EventName="TextChanged"
+							Command="{Binding ValidatePasswordCommand}" />
+					</Entry.Behaviors>
+					<Entry.Triggers>
+						<DataTrigger 
+							TargetType="Entry"
+							Binding="{Binding Password.IsValid}"
+							Value="False">
+							<Setter Property="behaviors:LineColorBehavior.LineColor" Value="{StaticResource ErrorColor}" />
+						</DataTrigger>
+					</Entry.Triggers>
                 </Entry>
+				<Label 
+					Text="{Binding Password.Errors, Converter={StaticResource FirstValidationErrorConverter}"
+					Style="{StaticResource ValidationErrorLabelStyle}" />
             </StackLayout>
             <!-- LOGIN BUTTON -->
             <Grid
