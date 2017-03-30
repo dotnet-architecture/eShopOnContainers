@@ -1,0 +1,439 @@
+{
+  "id": "/eshop",
+  "apps": [
+    {
+      "id": "basket-data",
+      "container": {
+        "type": "DOCKER",
+        "docker": {
+          "image": "redis:3.2-alpine",
+          "network": "BRIDGE",
+          "portMappings": [
+            {
+              "hostPort": 6379,
+              "labels": {
+                "VIP_0": "eshopbasket-data:6379"
+              }
+            }
+          ]
+        }
+      },
+      "healthChecks": [
+        {
+          "protocol": "TCP",
+          "gracePeriodSeconds": 30,
+          "intervalSeconds": 60,
+          "timeoutSeconds": 30,
+          "maxConsecutiveFailures": 3,
+          "port": 6379
+        }
+      ],
+      "cpus": 0.1,
+      "mem": 1024,
+      "instances": 1
+    },
+    {
+      "id": "basket-api",
+      "dependencies": [
+        "basket-data",
+        "rabbitmq"
+      ],
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_URLS": "http://0.0.0.0:80/basket",
+        "ConnectionString": "eshopbasket-data.marathon.l4lb.thisdcos.directory",
+        "EventBusConnection": "eshoprabbitmq.marathon.l4lb.thisdcos.directory",
+        "IdentityUrl": "http://AGENTS_FQDN/id"
+      },
+      "instances": 1,
+      "cpus": 0.1,
+      "mem": 128,
+      "container": {
+        "docker": {
+          "image": "REGISTRY/eshop/basket.api",
+          "forcePullImage": true,
+          "portMappings": [
+            {
+              "containerPort": 80
+            }
+          ],
+          "network": "BRIDGE"
+        }
+      },
+      "healthChecks": [
+        {
+          "path": "/hc",
+          "protocol": "HTTP",
+          "gracePeriodSeconds": 60,
+          "intervalSeconds": 60,
+          "timeoutSeconds": 10,
+          "maxConsecutiveFailures": 3,
+          "ignoreHttp1xx": false
+        }
+      ],
+      "labels": {
+        "HAPROXY_GROUP": "external",
+        "HAPROXY_0_VHOST": "AGENTS_FQDN",
+        "HAPROXY_0_MODE": "http",
+        "HAPROXY_0_PATH": "/basket"
+      },
+      "uris": [
+        "file:///mnt/share/docker.tar.gz"
+      ]
+    },
+    {
+      "id": "catalog",
+      "dependencies": [
+        "rabbitmq",
+        "sql-data"
+      ],
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_URLS": "http://0.0.0.0:80/catalog",
+        "ConnectionString": "Server=eshopsql-data.marathon.l4lb.thisdcos.directory;Initial Catalog=Microsoft.eShopOnContainers.Services.CatalogDb;User Id=sa;Password=Pass@word",
+        "EventBusConnection": "eshoprabbitmq.marathon.l4lb.thisdcos.directory",
+        "ExternalCatalogBaseUrl": "http://AGENTS_FQDN/catalog"
+      },
+      "instances": 1,
+      "cpus": 0.1,
+      "mem": 128,
+      "container": {
+        "docker": {
+          "image": "REGISTRY/eshop/catalog.api",
+          "forcePullImage": true,
+          "portMappings": [
+            {
+              "containerPort": 80
+            }
+          ],
+          "network": "BRIDGE"
+        }
+      },
+      "healthChecks": [
+        {
+          "path": "/hc",
+          "protocol": "HTTP",
+          "gracePeriodSeconds": 60,
+          "intervalSeconds": 60,
+          "timeoutSeconds": 10,
+          "maxConsecutiveFailures": 3,
+          "ignoreHttp1xx": false
+        }
+      ],
+      "labels": {
+        "HAPROXY_GROUP": "external",
+        "HAPROXY_0_VHOST": "AGENTS_FQDN",
+        "HAPROXY_0_MODE": "http",
+        "HAPROXY_0_PATH": "/catalog"
+      },
+      "uris": [
+        "file:///mnt/share/docker.tar.gz"
+      ]
+    },
+    {
+      "id": "identity",
+      "dependencies": [
+        "sql-data"
+      ],
+      "env": {
+        "MvcClient": "http://AGENTS_FQDN/webmvc",
+        "SpaClient": "http://AGENTS_FQDN",
+        "ASPNETCORE_URLS": "http://0.0.0.0:80/id",
+        "ConnectionStrings__DefaultConnection": "Server=eshopsql-data.marathon.l4lb.thisdcos.directory;Initial Catalog=Microsoft.eShopOnContainers.Services.CatalogDb;User Id=sa;Password=Pass@word",
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "instances": 1,
+      "cpus": 0.1,
+      "mem": 128,
+      "container": {
+        "docker": {
+          "image": "REGISTRY/eshop/identity.api",
+          "forcePullImage": true,
+          "portMappings": [
+            {
+              "containerPort": 80
+            }
+          ],
+          "network": "BRIDGE"
+        }
+      },
+      "healthChecks": [
+        {
+          "path": "/hc",
+          "protocol": "HTTP",
+          "gracePeriodSeconds": 60,
+          "intervalSeconds": 60,
+          "timeoutSeconds": 10,
+          "maxConsecutiveFailures": 3,
+          "ignoreHttp1xx": false
+        }
+      ],
+      "labels": {
+        "HAPROXY_GROUP": "external",
+        "HAPROXY_0_VHOST": "AGENTS_FQDN",
+        "HAPROXY_0_MODE": "http",
+        "HAPROXY_0_PATH": "/id"
+      },
+      "uris": [
+        "file:///mnt/share/docker.tar.gz"
+      ]
+    },
+    {
+      "id": "ordering",
+      "dependencies": [
+        "rabbitmq",
+        "sql-data"
+      ],
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_URLS": "http://0.0.0.0:80/ordering",
+        "ConnectionString": "Server=eshopsql-data.marathon.l4lb.thisdcos.directory;Initial Catalog=Microsoft.eShopOnContainers.Services.CatalogDb;User Id=sa;Password=Pass@word",
+        "EventBusConnection": "eshoprabbitmq.marathon.l4lb.thisdcos.directory",
+        "IdentityUrl": "http://AGENTS_FQDN/id"
+      },
+      "instances": 1,
+      "cpus": 0.1,
+      "mem": 128,
+      "container": {
+        "docker": {
+          "image": "REGISTRY/eshop/ordering.api",
+          "forcePullImage": true,
+          "portMappings": [
+            {
+              "containerPort": 80
+            }
+          ],
+          "network": "BRIDGE"
+        }
+      },
+      "healthChecks": [
+        {
+          "path": "/hc",
+          "protocol": "HTTP",
+          "gracePeriodSeconds": 60,
+          "intervalSeconds": 60,
+          "timeoutSeconds": 10,
+          "maxConsecutiveFailures": 3,
+          "ignoreHttp1xx": false
+        }
+      ],
+      "labels": {
+        "HAPROXY_GROUP": "external",
+        "HAPROXY_0_VHOST": "AGENTS_FQDN",
+        "HAPROXY_0_MODE": "http",
+        "HAPROXY_0_PATH": "/ordering"
+      },
+      "uris": [
+        "file:///mnt/share/docker.tar.gz"
+      ]
+    },
+    {
+      "id": "rabbitmq",
+      "container": {
+        "type": "DOCKER",
+        "docker": {
+          "image": "rabbitmq:3.6-alpine",
+          "network": "BRIDGE",
+          "portMappings": [
+            {
+              "hostPort": 5672,
+              "labels": {
+                "VIP_0": "eshoprabbitmq:5672"
+              }
+            }
+          ]
+        }
+      },
+      "healthChecks": [
+        {
+          "protocol": "TCP",
+          "gracePeriodSeconds": 30,
+          "intervalSeconds": 60,
+          "timeoutSeconds": 30,
+          "maxConsecutiveFailures": 3,
+          "port": 5672
+        }
+      ],
+      "cpus": 0.1,
+      "mem": 256,
+      "instances": 1
+    },
+    {
+      "id": "sql-data",
+      "container": {
+        "type": "DOCKER",
+        "docker": {
+          "image": "microsoft/mssql-server-linux:ctp1-4",
+          "network": "BRIDGE",
+          "portMappings": [
+            {
+              "hostPort": 1433,
+              "labels": {
+                "VIP_0": "eshopsql-data:1433"
+              }
+            }
+          ]
+        }
+      },
+      "env": {
+        "ACCEPT_EULA": "Y",
+        "SA_PASSWORD": "Pass@word"
+      },
+      "healthChecks": [
+        {
+          "protocol": "TCP",
+          "gracePeriodSeconds": 30,
+          "intervalSeconds": 60,
+          "timeoutSeconds": 30,
+          "maxConsecutiveFailures": 3,
+          "port": 1433
+        }
+      ],
+      "cpus": 0.1,
+      "mem": 1024,
+      "instances": 1
+    },
+    {
+      "id": "webmvc",
+      "dependencies": [
+        "basket-api",
+        "catalog",
+        "identity",
+        "ordering"
+      ],
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_URLS": "http://0.0.0.0:80/webmvc",
+        "BasketUrl": "http://AGENTS_FQDN/basket",
+        "CallBackUrl": "http://AGENTS_FQDN/webmvc",
+        "CatalogUrl": "http://AGENTS_FQDN/catalog",
+        "IdentityUrl": "http://AGENTS_FQDN/id",
+        "OrderingUrl": "http://AGENTS_FQDN/ordering"
+      },
+      "instances": 1,
+      "cpus": 0.1,
+      "mem": 128,
+      "container": {
+        "docker": {
+          "image": "REGISTRY/eshop/webmvc",
+          "forcePullImage": true,
+          "portMappings": [
+            {
+              "containerPort": 80
+            }
+          ],
+          "network": "BRIDGE"
+        }
+      },
+      "healthChecks": [
+        {
+          "path": "/hc",
+          "protocol": "HTTP",
+          "gracePeriodSeconds": 60,
+          "intervalSeconds": 60,
+          "timeoutSeconds": 10,
+          "maxConsecutiveFailures": 3,
+          "ignoreHttp1xx": false
+        }
+      ],
+      "labels": {
+        "HAPROXY_GROUP": "external",
+        "HAPROXY_0_VHOST": "AGENTS_FQDN",
+        "HAPROXY_0_MODE": "http",
+        "HAPROXY_0_PATH": "/webmvc"
+      },
+      "uris": [
+        "file:///mnt/share/docker.tar.gz"
+      ]
+    },
+    {
+      "id": "webspa",
+      "dependencies": [
+        "basket-api",
+        "catalog",
+        "identity",
+        "ordering"
+      ],
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_URLS": "http://0.0.0.0:80",
+        "BasketUrl": "http://AGENTS_FQDN/basket",
+        "CallBackUrl": "http://AGENTS_FQDN/webmvc",
+        "CatalogUrl": "http://AGENTS_FQDN/catalog",
+        "IdentityUrl": "http://AGENTS_FQDN/id",
+        "OrderingUrl": "http://AGENTS_FQDN/ordering"
+      },
+      "instances": 1,
+      "cpus": 0.1,
+      "mem": 128,
+      "container": {
+        "docker": {
+          "image": "REGISTRY/eshop/webspa",
+          "forcePullImage": true,
+          "portMappings": [
+            {
+              "containerPort": 80
+            }
+          ],
+          "network": "BRIDGE"
+        }
+      },
+      "healthChecks": [
+        {
+          "path": "/hc",
+          "protocol": "HTTP",
+          "gracePeriodSeconds": 60,
+          "intervalSeconds": 60,
+          "timeoutSeconds": 10,
+          "maxConsecutiveFailures": 3,
+          "ignoreHttp1xx": false
+        }
+      ],
+      "labels": {
+        "HAPROXY_GROUP": "external",
+        "HAPROXY_0_VHOST": "AGENTS_FQDN",
+        "HAPROXY_0_MODE": "http"
+      },
+      "uris": [
+        "file:///mnt/share/docker.tar.gz"
+      ]
+    },
+    {
+      "id": "webstatus",
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_URLS": "http://0.0.0.0:80/webstatus",
+        "BasketUrl": "http://AGENTS_FQDN/basket",
+        "CatalogUrl": "http://AGENTS_FQDN/catalog",
+        "IdentityUrl": "http://AGENTS_FQDN/id",
+        "OrderingUrl": "http://AGENTS_FQDN/ordering",
+        "mvc": "http://AGENTS_FQDN/webmvc",
+        "spa": "http://AGENTS_FQDN/webspa"
+      },
+      "instances": 1,
+      "cpus": 0.1,
+      "mem": 128,
+      "container": {
+        "docker": {
+          "image": "REGISTRY/eshop/webstatus",
+          "forcePullImage": true,
+          "portMappings": [
+            {
+              "containerPort": 80
+            }
+          ],
+          "network": "BRIDGE"
+        }
+      },
+      "labels": {
+        "HAPROXY_GROUP": "external",
+        "HAPROXY_0_VHOST": "AGENTS_FQDN",
+        "HAPROXY_0_MODE": "http",
+        "HAPROXY_0_PATH": "/webstatus"
+      },
+      "uris": [
+        "file:///mnt/share/docker.tar.gz"
+      ]
+    }
+  ]
+}

@@ -86,6 +86,31 @@ https://github.com/dotnet/eShopOnContainers/wiki/04.-Setting-eShopOnContainer-so
 The <b>Windows Containers scenario is currently being implemented/tested yet</b>. The application should be able to run on Windows Nano Containers based on different Docker base images, as well, as the .NET Core services have also been tested running on plain Windows (with no Docker).
 The app was also partially tested on "Docker for Mac" using a development MacOS machine with .NET Core and VS Code installed, which is still a scenario using Linux containers running on the VM setup in the Mac by the "Docker for Windows" setup. But further testing and feedback on Mac environments and Windows Containers, from the community, will be appreciated.
 
+## DC/OS
+### Prerequisites
+* A private Docker registry. Follow Azure Container Registry's [guide](https://docs.microsoft.com/en-us/azure/container-registry/container-registry-get-started-portal) to create one.
+* A DC/OS cluster. Follow Azure Container Service's [walkthrough](https://docs.microsoft.com/en-us/azure/container-service/container-service-deployment) to create one.
+* The `dcos` CLI (DC/OS docs: [Installing the CLI](https://dcos.io/docs/1.8/usage/cli/install/))
+
+### Prepare the Cluster
+1. Install Marathon-LB. ([DC/OS docs](https://dcos.io/docs/1.8/usage/service-discovery/marathon-lb/usage/))
+1. Mount an Azure file share on each agent of the cluster at `/mnt/share`. See the Azure Container Service [documentation](https://docs.microsoft.com/en-us/azure/container-service/container-service-dcos-fileshare) for guidance.
+1. Copy your private registry credentials to the mounted file share as described in the Azure Container Service [documentation](https://docs.microsoft.com/en-us/azure/container-service/container-service-dcos-acr).
+
+### Deploy the Application
+1. Build the eShopOnContainers Docker images, and push them to your registry.
+1. Open an SSH tunnel to your cluster as described in the ACS documentation: [Connect with an ACS cluster](https://docs.microsoft.com/en-us/azure/container-service/container-service-connect#connect-to-a-dcos-or-swarm-cluster)
+1. Open a PowerShell window with the `dcos` CLI on your path.
+1. Navigate to your local `eShopOnContainers` repository's `dcos` directory.
+1. Run `generate-config.ps1` to generate configuration for the eShopOnContainers services. The script requires URLs for your cluster's agents and your private registry. Your agents' URL is of the form `[dns prefix]agents.[Azure region].cloudapp.azure.com`:
+>```powershell
+>./generate-config.ps1 -agentsFqdn mydcosagents.centralus.cloudapp.azure.com -registry myregistry.azurecr.io
+>```
+6. Use the `dcos` CLI to deploy the application:
+>```powershell
+>dcos marathon group add eShopOnContainers.json
+>```
+
 ## Sending feedback and pull requests
 As mentioned, we'd appreciate to your feedback, improvements and ideas.
 You can create new issues at the issues section, do pull requests and/or send emails to eshop_feedback@service.microsoft.com
