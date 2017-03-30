@@ -24,7 +24,7 @@ namespace UnitTest.Basket.Application
             var fakeCustomerId = "1";
             var fakeCustomerBasket = GetCustomerBasketFake(fakeCustomerId);
 
-            _basketRepositoryMock.Setup(x => x.GetBasket(It.IsAny<string>()))
+            _basketRepositoryMock.Setup(x => x.GetBasketAsync(It.IsAny<string>()))
                 .Returns(Task.FromResult(fakeCustomerBasket));
 
             //Act
@@ -43,7 +43,7 @@ namespace UnitTest.Basket.Application
             var fakeCustomerId = "1";
             var fakeCustomerBasket = GetCustomerBasketFake(fakeCustomerId);
 
-            _basketRepositoryMock.Setup(x => x.UpdateBasket(It.IsAny<CustomerBasket>()))
+            _basketRepositoryMock.Setup(x => x.UpdateBasketAsync(It.IsAny<CustomerBasket>()))
                 .Returns(Task.FromResult(fakeCustomerBasket));
 
             //Act

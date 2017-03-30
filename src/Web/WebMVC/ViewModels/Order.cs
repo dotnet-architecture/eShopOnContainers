@@ -11,10 +11,6 @@ namespace Microsoft.eShopOnContainers.WebMVC.ViewModels
 {
     public class Order
     {
-        public Order() {
-            OrderItems = new List<OrderItem>();
-        }
-
         public string OrderNumber {get;set;}
 
         public DateTime Date {get;set;}
@@ -53,7 +49,10 @@ namespace Microsoft.eShopOnContainers.WebMVC.ViewModels
 
         public string Buyer { get; set; }
 
-        public List<OrderItem> OrderItems { get; }
+        // See the property initializer syntax below. This
+        // initializes the compiler generated field for this
+        // auto-implemented property.
+        public List<OrderItem> OrderItems { get; } = new List<OrderItem>();
 
         [Required]
         public Guid RequestId { get; set; }

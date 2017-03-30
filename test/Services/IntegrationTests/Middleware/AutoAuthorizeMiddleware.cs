@@ -17,7 +17,7 @@ namespace IntegrationTests.Middleware
 
         public async Task Invoke(HttpContext httpContext)
         {
-            var identity = new ClaimsIdentity();
+            var identity = new ClaimsIdentity("cookies");
             identity.AddClaim(new Claim("sub", "1234"));
             httpContext.User.AddIdentity(identity);
             await _next.Invoke(httpContext);

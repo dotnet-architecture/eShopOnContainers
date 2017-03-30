@@ -1,4 +1,5 @@
 ﻿using Microsoft.eShopOnContainers.Services.Ordering.Domain.Seedwork;
+using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate
 {
@@ -8,5 +9,9 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
     public interface IOrderRepository : IRepository<Order>
     {
         Order Add(Order order);
+
+        Task<Order> GetAsync(int orderId);
+
+        void Update(Order order);
     }
 }

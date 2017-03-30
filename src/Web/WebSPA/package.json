@@ -86,7 +86,7 @@
     "html-loader": "0.4.4",
     "html-webpack-plugin": "2.24.1",
     "json-loader": "0.5.4",
-    "node-sass": "3.9.3",
+    "node-sass": "4.5.0",
     "parse5": "2.1.5",
     "rimraf": "2.5.4",
     "sass-lint": "1.10.2",

@@ -8,7 +8,7 @@ version: '2'
 #
 # Set ASPNETCORE_ENVIRONMENT=Development to get errors while testing. 
 #
-# You need to start it with the following CLI command: 
+# You need to start it with the following CLI command:
 # docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 
 services:
@@ -78,3 +78,13 @@ services:
       - ACCEPT_EULA=Y
     ports:
       - "5433:1433"
+
+  webstatus:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - CatalogUrl=http://catalog.api:5101/hc
+      - OrderingUrl=http://ordering.api:5102/hc
+      - BasketUrl=http://basket.api:5103/hc
+      - IdentityUrl=http://10.0.75.1:5105/hc
+    ports:
+      - "5107:5107"

@@ -25,7 +25,7 @@ namespace IntegrationTests.Services.Basket
         {
             var redisBasketRepository = BuildBasketRepository();
 
-            var basket = await redisBasketRepository.UpdateBasket(new CustomerBasket("customerId")
+            var basket = await redisBasketRepository.UpdateBasketAsync(new CustomerBasket("customerId")
             {
                 BuyerId = "buyerId",
                 Items = BuildBasketItems()
@@ -40,15 +40,15 @@ namespace IntegrationTests.Services.Basket
         {
             var redisBasketRepository = BuildBasketRepository();
 
-            var basket = await redisBasketRepository.UpdateBasket(new CustomerBasket("customerId")
+            var basket = await redisBasketRepository.UpdateBasketAsync(new CustomerBasket("customerId")
             {
                 BuyerId = "buyerId",
                 Items = BuildBasketItems()
             });
 
-            var deleteResult = await redisBasketRepository.DeleteBasket("buyerId");
+            var deleteResult = await redisBasketRepository.DeleteBasketAsync("buyerId");
 
-            var result = await redisBasketRepository.GetBasket(basket.BuyerId);
+            var result = await redisBasketRepository.GetBasketAsync(basket.BuyerId);
 
             Assert.True(deleteResult);
             Assert.Null(result);
