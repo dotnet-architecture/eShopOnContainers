@@ -27,7 +27,7 @@ namespace eShopOnContainers.Core.Helpers
         private const string IdUrlBase = "url_base";
         private static readonly string AccessTokenDefault = string.Empty;
         private static readonly string IdTokenDefault = string.Empty;
-        private static readonly bool UseMocksDefault = ViewModelLocator.UseMockService;
+		private static readonly bool UseMocksDefault = true;
         private static readonly string UrlBaseDefault = GlobalSetting.Instance.BaseEndpoint;
 
         #endregion
