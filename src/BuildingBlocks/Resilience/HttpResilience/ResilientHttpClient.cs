@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Polly;
 using Polly.Wrap;
@@ -8,7 +7,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace WebMVC.Services.Utilities
+namespace Microsoft.eShopOnContainers.BuildingBlocks.Resilience.HttpResilience
 {
     /// <summary>
     /// HttpClient wrapper that integrates Retry and Circuit

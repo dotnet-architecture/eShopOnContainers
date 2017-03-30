@@ -4,7 +4,7 @@ using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace WebMVC.Services.Utilities
+namespace Microsoft.eShopOnContainers.BuildingBlocks.Resilience.HttpResilience
 {
     public class StandardHttpClient : IHttpClient
     {

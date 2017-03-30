@@ -8,7 +8,7 @@ using Microsoft.Extensions.Options;
 using System.Net.Http;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Authentication;
-using WebMVC.Services.Utilities;
+using Microsoft.eShopOnContainers.BuildingBlocks.Resilience.HttpResilience;
 
 namespace Microsoft.eShopOnContainers.WebMVC.Services
 {

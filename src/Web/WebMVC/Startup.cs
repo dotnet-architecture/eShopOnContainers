@@ -14,8 +14,8 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Http;
 using System.Threading;
 using Microsoft.Extensions.Options;
-using WebMVC.Services.Utilities;
 using Microsoft.Extensions.HealthChecks;
+using Microsoft.eShopOnContainers.BuildingBlocks.Resilience.HttpResilience;
 
 namespace Microsoft.eShopOnContainers.WebMVC
 {
