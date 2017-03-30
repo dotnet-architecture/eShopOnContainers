@@ -18,6 +18,7 @@ using System.Threading;
 using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.HealthChecks;
+using Identity.API.Certificate;
 
 namespace eShopOnContainers.Identity
 {
@@ -75,7 +76,7 @@ namespace eShopOnContainers.Identity
 
             // Adds IdentityServer
             services.AddIdentityServer(x => x.IssuerUri = "null")
-                .AddTemporarySigningCredential()
+                .AddSigningCredential(Certificate.Get())
                 .AddInMemoryScopes(Config.GetScopes())
                 .AddInMemoryClients(Config.GetClients(clientUrls))
                 .AddAspNetIdentity<ApplicationUser>()
