@@ -13,6 +13,7 @@ namespace WebMVC.Services.Utilities
     /// <summary>
     /// HttpClient wrapper that integrates Retry and Circuit
     /// breaker policies when invoking HTTP services. 
+    /// Based on Polly library: https://github.com/App-vNext/Polly
     /// </summary>
     public class ResilientHttpClient : IHttpClient
     {

@@ -1,13 +1,17 @@
 ﻿using System.Linq;
 using Xamarin.Forms;
+using eShopOnContainers.Core.Effects;
 
-namespace eShopOnContainers.Core.Effects
+namespace eShopOnContainers.Core.Behaviors
 {
-    public static class LineColorEffect
+    public static class LineColorBehavior
     {
         public static readonly BindableProperty ApplyLineColorProperty =
-            BindableProperty.CreateAttached("ApplyLineColor", typeof(bool), typeof(LineColorEffect), false, 
+            BindableProperty.CreateAttached("ApplyLineColor", typeof(bool), typeof(LineColorBehavior), false, 
                 propertyChanged: OnApplyLineColorChanged);
+
+		public static readonly BindableProperty LineColorProperty =
+			BindableProperty.CreateAttached("LineColor", typeof(Color), typeof(LineColorBehavior), Color.Default);
 
         public static bool GetApplyLineColor(BindableObject view)
         {
@@ -19,6 +23,16 @@ namespace eShopOnContainers.Core.Effects
             view.SetValue(ApplyLineColorProperty, value);
         }
 
+		public static Color GetLineColor(BindableObject view)
+		{
+			return (Color)view.GetValue(LineColorProperty);
+		}
+
+		public static void SetLineColor(BindableObject view, Color value)
+		{
+			view.SetValue(LineColorProperty, value);
+		}
+
         private static void OnApplyLineColorChanged(BindableObject bindable, object oldValue, object newValue)
         {
             var view = bindable as View;
@@ -28,9 +42,9 @@ namespace eShopOnContainers.Core.Effects
                 return;
             }
 
-            bool hasShadow = (bool)newValue;
+            bool hasLine = (bool)newValue;
 
-            if (hasShadow)
+            if (hasLine)
             {
                 view.Effects.Add(new EntryLineColorEffect());
             }
@@ -41,26 +55,6 @@ namespace eShopOnContainers.Core.Effects
                 {
                     view.Effects.Remove(entryLineColorEffectToRemove);
                 }
-            }
-        }
-
-        public static readonly BindableProperty LineColorProperty =
-            BindableProperty.CreateAttached("LineColor", typeof(Color), typeof(LineColorEffect), Color.Default);
-
-        public static Color GetLineColor(BindableObject view)
-        {
-            return (Color)view.GetValue(LineColorProperty);
-        }
-
-        public static void SetLineColor(BindableObject view, Color value)
-        {
-            view.SetValue(LineColorProperty, value);
-        }
-
-        class EntryLineColorEffect : RoutingEffect
-        {
-            public EntryLineColorEffect() : base("eShopOnContainers.EntryLineColorEffect")
-            {
             }
         }
     }

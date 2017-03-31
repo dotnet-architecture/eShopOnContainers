@@ -1,12 +1,14 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
             x:Class="eShopOnContainers.Core.Views.MainView"
             xmlns:views="clr-namespace:eShopOnContainers.Core.Views;assembly=eShopOnContainers.Core"
+			xmlns:viewModelBase="clr-namespace:eShopOnContainers.Core.ViewModels.Base;assembly=eShopOnContainers.Core"
             xmlns:controls="clr-namespace:eShopOnContainers.Core.Controls;assembly=eShopOnContainers.Core"
             BarBackgroundColor="{StaticResource DarkGreenColor}"
             BackgroundColor="{StaticResource BackgroundColor}"
-            BarTextColor="{StaticResource WhiteColor}">
+            BarTextColor="{StaticResource WhiteColor}"
+			viewModelBase:ViewModelLocator.AutoWireViewModel="true">
     <TabbedPage.Title>
         <OnPlatform      
             x:TypeArguments="x:String"

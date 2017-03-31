@@ -1,4 +1,4 @@
-﻿using eShopOnContainers.ViewModels.Base;
+﻿using eShopOnContainers.Core.ViewModels.Base;
 using System.Windows.Input;
 using Xamarin.Forms;
 using System.Threading.Tasks;
@@ -71,7 +71,7 @@ namespace eShopOnContainers.Core.ViewModels
 
         private void MockServices()
         {
-            ViewModelLocator.Instance.UpdateDependencies(!UseAzureServices);
+            ViewModelLocator.UpdateDependencies(!UseAzureServices);
             UpdateInfo();
         }
 
