@@ -48,7 +48,10 @@ namespace Microsoft.eShopOnContainers.WebMVC
 
             services.AddHealthChecks(checks =>
             {
-                checks.AddUrlCheck(Configuration["CallBackUrl"]);
+                checks.AddUrlCheck(Configuration["CatalogUrl"]);
+                checks.AddUrlCheck(Configuration["OrderingUrl"]);
+                checks.AddUrlCheck(Configuration["BasketUrl"]);
+                checks.AddUrlCheck(Configuration["IdentityUrl"]);
             });
 
             // Add application services.

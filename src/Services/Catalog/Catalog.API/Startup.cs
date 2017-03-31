@@ -20,6 +20,7 @@
     using System.IO;
     using System.Data.Common;
     using System.Reflection;
+    using System.Threading.Tasks;
 
     public class Startup
     {
@@ -48,7 +49,7 @@
             
             services.AddHealthChecks(checks =>
             {
-                checks.AddUrlCheck(Configuration["ExternalCatalogBaseUrl"]);
+                checks.AddSqlCheck("Catalog_Db", Configuration["ConnectionString"]);
             });
 
             services.AddMvc(options =>
