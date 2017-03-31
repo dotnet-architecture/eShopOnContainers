@@ -17,6 +17,8 @@ using System;
 using Microsoft.Extensions.HealthChecks;
 using System.Threading.Tasks;
 using Basket.API.Infrastructure.Filters;
+using Basket.API.IntegrationEvents.Events;
+using Basket.API.IntegrationEvents.EventHandling;
 
 namespace Microsoft.eShopOnContainers.Services.Basket.API
 {
@@ -91,6 +93,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
 
             services.AddTransient<IBasketRepository, RedisBasketRepository>();
             services.AddTransient<IIntegrationEventHandler<ProductPriceChangedIntegrationEvent>, ProductPriceChangedIntegrationEventHandler>();
+            services.AddTransient<IIntegrationEventHandler<OrderStartedIntegrationEvent>, OrderStartedIntegrationEventHandler>();
 
             var serviceProvider = services.BuildServiceProvider();
             var configuration = serviceProvider.GetRequiredService<IOptionsSnapshot<BasketSettings>>().Value;
@@ -117,8 +120,10 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
                 .UseSwaggerUi();
 
             var catalogPriceHandler = app.ApplicationServices.GetService<IIntegrationEventHandler<ProductPriceChangedIntegrationEvent>>();
+            var orderStartedHandler = app.ApplicationServices.GetService<IIntegrationEventHandler<OrderStartedIntegrationEvent>>();
             var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
             eventBus.Subscribe<ProductPriceChangedIntegrationEvent>(catalogPriceHandler);
+            eventBus.Subscribe<OrderStartedIntegrationEvent>(orderStartedHandler);
 
         }
 

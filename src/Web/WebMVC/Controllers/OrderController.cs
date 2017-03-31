@@ -45,9 +45,6 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
                     var user = _appUserParser.Parse(HttpContext.User);
                     await _orderSvc.CreateOrder(model);
 
-                    //Empty basket for current user. 
-                    await _basketSvc.CleanBasket(user);
-
                     //Redirect to historic list.
                     return RedirectToAction("Index");
                 }

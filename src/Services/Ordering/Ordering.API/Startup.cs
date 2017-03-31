@@ -12,12 +12,17 @@
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
+    using Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ;
+    using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF;
+    using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF.Services;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.HealthChecks;
     using Microsoft.Extensions.Logging;
     using Ordering.Infrastructure;
     using System;
+    using System.Data.Common;
     using System.Reflection;
 
     public class Startup
@@ -55,7 +60,7 @@
             {
                 checks.AddSqlCheck("Ordering_Db", Configuration["ConnectionString"]);
             });
-
+            
             services.AddEntityFrameworkSqlServer()
                     .AddDbContext<OrderingContext>(options =>
                     {
@@ -95,7 +100,11 @@
             // Add application services.
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IIdentityService, IdentityService>();
+            services.AddTransient<Func<DbConnection, IIntegrationEventLogService>>(
+                sp => (DbConnection c) => new IntegrationEventLogService(c));
 
+            var serviceProvider = services.BuildServiceProvider();
+            services.AddSingleton<IEventBus>(new EventBusRabbitMQ(Configuration["EventBusConnection"]));
             services.AddOptions();
 
             //configure autofac
@@ -126,6 +135,12 @@
                 .UseSwaggerUi();
 
             OrderingContextSeed.SeedAsync(app).Wait();
+
+            var integrationEventLogContext = new IntegrationEventLogContext(
+                new DbContextOptionsBuilder<IntegrationEventLogContext>()
+                .UseSqlServer(Configuration["ConnectionString"], b => b.MigrationsAssembly("Ordering.API"))
+                .Options);
+            integrationEventLogContext.Database.Migrate();
         }
 
         protected virtual void ConfigureAuth(IApplicationBuilder app)
