@@ -48,7 +48,7 @@
             
             services.AddHealthChecks(checks =>
             {
-                checks.AddUrlCheck(Configuration["ExternalCatalogBaseUrl"]);
+                checks.AddSqlCheck("CatalogDb", Configuration["ConnectionString"]);
             });
 
             services.AddMvc(options =>

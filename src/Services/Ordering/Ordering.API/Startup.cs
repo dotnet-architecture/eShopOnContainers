@@ -53,7 +53,7 @@
 
             services.AddHealthChecks(checks =>
             {
-                checks.AddSqlCheck("Ordering_Db", Configuration["ConnectionString"]);
+                checks.AddSqlCheck("OrderingDb", Configuration["ConnectionString"]);
             });
 
             services.AddEntityFrameworkSqlServer()

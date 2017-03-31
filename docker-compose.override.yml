@@ -85,7 +85,7 @@ services:
       - CatalogUrl=http://catalog.api:5101/hc
       - OrderingUrl=http://ordering.api:5102/hc
       - BasketUrl=http://basket.api:5103/hc
-      - IdentityUrl=http://10.0.75.1:5105/hc
+      - IdentityUrl=http://identity.api:5105/hc
       - mvc=http://webmvc:5100/hc
       - spa=http://webspa:5104/hc
     ports:
