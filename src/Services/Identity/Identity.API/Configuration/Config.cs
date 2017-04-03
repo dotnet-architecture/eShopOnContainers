@@ -59,7 +59,7 @@ namespace Identity.API.Configuration
                     ClientName = "eShop Xamarin OpenId Client",
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
-                    RedirectUris =           { "http://eshopxamarin/callback.html" },
+                    RedirectUris =          { $"{clientsUrl["Xamarin"]}/" },
                     RequireConsent = false,
                     PostLogoutRedirectUris = { "http://13.88.8.119:5105/Account/Redirecting", "http://10.6.1.234:5105/Account/Redirecting" },
                     AllowedCorsOrigins =     { "http://eshopxamarin" },
