@@ -8,9 +8,10 @@ using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure;
 namespace Ordering.API.Migrations
 {
     [DbContext(typeof(OrderingContext))]
-    partial class OrderingContextModelSnapshot : ModelSnapshot
+    [Migration("20170403082405_NoBuyerPropertyInOrder")]
+    partial class NoBuyerPropertyInOrder
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.0-rtm-22752")

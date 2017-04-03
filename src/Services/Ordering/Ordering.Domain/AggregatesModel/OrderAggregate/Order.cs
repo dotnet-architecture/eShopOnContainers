@@ -18,7 +18,6 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
 
         public Address Address { get; private set; }
 
-        public Buyer Buyer { get; private set; }
         private int? _buyerId;
 
         public OrderStatus OrderStatus { get; private set; }
