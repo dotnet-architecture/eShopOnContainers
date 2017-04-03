@@ -71,16 +71,14 @@ namespace eShopOnContainers.Core.ViewModels
 
         private void MockServices()
         {
-            ViewModelLocator.UpdateDependencies(!UseAzureServices);
+            ViewModelLocator.RegisterDependencies(!UseAzureServices);
             UpdateInfo();
         }
 
         public override Task InitializeAsync(object navigationData)
         {
             UpdateInfo();
-
             Endpoint = Settings.UrlBase;
-
             return base.InitializeAsync(navigationData);
         }
 
