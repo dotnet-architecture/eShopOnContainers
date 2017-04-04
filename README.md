@@ -20,7 +20,7 @@ It also supports asynchronous communication for data updates propagation across 
 <img src="img/eShopOnContainers_Architecture_Diagram.png">
 <p>
 The microservices are different in type, meaning different internal architecture patterns approaches depending on it purpose, as shown in the image below.
-
+<p>
 <img src="img/eShopOnContainers_Types_Of_Microservices.png">
 <p>
 <p>
