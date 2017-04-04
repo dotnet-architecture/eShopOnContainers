@@ -44,5 +44,16 @@ namespace eShopOnContainers.Core.Views
             await profileViewModel.InitializeAsync(null);
             ProfileView.BindingContext = profileViewModel;
         }
+
+        protected override async void OnCurrentPageChanged()
+        {
+            base.OnCurrentPageChanged();
+
+            if (CurrentPage is BasketView)
+            {
+                // Force basket view refresh every time we access it
+                await (BasketView.BindingContext as ViewModelBase).InitializeAsync(null);
+            }
+        }
     }
 }
