@@ -58,13 +58,13 @@ namespace Microsoft.eShopOnContainers.WebMVC
             services.AddTransient<IBasketService, BasketService>();
             services.AddTransient<IIdentityParser<ApplicationUser>, IdentityParser>();
 
-            if (Configuration.GetValue<string>("ActivateCircuitBreaker") == bool.TrueString)
+            if (Configuration.GetValue<string>("UseResilientHttp") == bool.TrueString)
             {
                 services.AddSingleton(
-                    new List<ResilientPolicy>
+                    new List<ResiliencePolicy>
                     {
-                        ResilientPolicyFactory.CreateRetryPolicy(6, 2, true),
-                        ResilientPolicyFactory.CreateCiscuitBreakerPolicy(5, 1)
+                        ResiliencePolicyFactory.CreateRetryPolicy(6, 2, true),
+                        ResiliencePolicyFactory.CreateCiscuitBreakerPolicy(5, 1)
                     });
                 services.AddTransient<IHttpClient, ResilientHttpClient>();
             }

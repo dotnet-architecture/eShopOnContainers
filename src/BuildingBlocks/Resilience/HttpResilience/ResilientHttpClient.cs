@@ -32,7 +32,7 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.Resilience.HttpResilience
             _policyWrapper = Policy.WrapAsync(policies.ToArray());
         }
 
-        public ResilientHttpClient(List<ResilientPolicy> policies, ILogger<ResilientHttpClient> logger)
+        public ResilientHttpClient(List<ResiliencePolicy> policies, ILogger<ResilientHttpClient> logger)
         {
             _client = new HttpClient();
             _logger = logger;
@@ -41,7 +41,7 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.Resilience.HttpResilience
             _policyWrapper = Policy.WrapAsync(GeneratePolicies(policies));
         }
 
-        private Policy[] GeneratePolicies(IList<ResilientPolicy> policies)
+        private Policy[] GeneratePolicies(IList<ResiliencePolicy> policies)
         {
             var pollyPolicies = new List<Policy>();
 

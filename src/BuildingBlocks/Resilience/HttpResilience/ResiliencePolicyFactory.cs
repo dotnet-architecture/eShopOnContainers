@@ -5,14 +5,14 @@ using System.Text;
 
 namespace Microsoft.eShopOnContainers.BuildingBlocks.Resilience.HttpResilience
 {
-    public static class ResilientPolicyFactory
+    public static class ResiliencePolicyFactory
     {
-        public static ResilientPolicy CreateRetryPolicy(int retries, int backoffSeconds, bool exponentialBackoff)
+        public static ResiliencePolicy CreateRetryPolicy(int retries, int backoffSeconds, bool exponentialBackoff)
         {
             return new RetryPolicy(retries, backoffSeconds, exponentialBackoff); 
         }
 
-        public static ResilientPolicy CreateCiscuitBreakerPolicy(int exceptionsAllowedBeforeBreaking, int durationOfBreakInMinutes)
+        public static ResiliencePolicy CreateCiscuitBreakerPolicy(int exceptionsAllowedBeforeBreaking, int durationOfBreakInMinutes)
         {
             return new CircuitBreakerPolicy(exceptionsAllowedBeforeBreaking, durationOfBreakInMinutes);
         }

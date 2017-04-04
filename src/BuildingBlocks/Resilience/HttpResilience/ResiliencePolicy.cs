@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Microsoft.eShopOnContainers.BuildingBlocks.Resilience.HttpResilience
 {
-    public class ResilientPolicy
+    public class ResiliencePolicy
     {
     }
 }

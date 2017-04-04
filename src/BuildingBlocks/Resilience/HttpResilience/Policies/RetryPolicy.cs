@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Microsoft.eShopOnContainers.BuildingBlocks.Resilience.HttpResilience.Policies
 {
-    internal class RetryPolicy : ResilientPolicy
+    internal class RetryPolicy : ResiliencePolicy
     {
         public RetryPolicy(int retries, int backoffSeconds, bool exponentialBackoff)
         {

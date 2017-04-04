@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Microsoft.eShopOnContainers.BuildingBlocks.Resilience.HttpResilience.Policies
 {
-    internal class CircuitBreakerPolicy : ResilientPolicy
+    internal class CircuitBreakerPolicy : ResiliencePolicy
     {
         public CircuitBreakerPolicy(int exceptionsAllowedBeforeBreaking, int durationOfBreakInMinutes)
         {
