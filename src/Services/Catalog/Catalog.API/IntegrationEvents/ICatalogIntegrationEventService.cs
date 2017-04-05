@@ -8,7 +8,7 @@ namespace Catalog.API.IntegrationEvents
 {
     public interface ICatalogIntegrationEventService
     {
-        Task SaveEventAsync(IntegrationEvent evt);
-        Task PublishAsync(IntegrationEvent evt);
+        Task SaveEventAndCatalogContextChangesAsync(IntegrationEvent evt);
+        Task PublishThroughEventBusAsync(IntegrationEvent evt);
     }
 }
