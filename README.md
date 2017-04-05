@@ -14,10 +14,14 @@ Sample .NET Core reference application, powered by Microsoft, based on a simplif
 **Architecture overview**: This reference application is cross-platform either at the server and client side, thanks to .NET Core services capable of running on Linux or Windows containers depending on your Docker host, and to Xamarin for mobile apps running on Android, iOS or Windows/UWP plus any browser for the client web apps. 
 The architecture proposes a simplified microservice oriented architecture implementation with multiple autonomous microservices (each one owning its own data/db) and implementing different approaches within each microservice (simple CRUD vs. DDD/CQRS patterns) using Http as the current communication protocol. 
 <p>
-The plan is to add asynchronous communication for data updates propagation across multiple services based on integration events and an event bus plus other features defined at the <a href='https://github.com/dotnet/eShopOnContainers/wiki/01.-Roadmap-and-Milestones-for-future-releases'>roadmap</a>. 
+It also supports asynchronous communication for data updates propagation across multiple services based on Integration Events and an Event Bus plus other features defined at the <a href='https://github.com/dotnet/eShopOnContainers/wiki/01.-Roadmap-and-Milestones-for-future-releases'>roadmap</a>. 
 <p>
 <img src="img/eshop_logo.png">
 <img src="img/eShopOnContainers_Architecture_Diagram.png">
+<p>
+The microservices are different in type, meaning different internal architecture patterns approaches depending on it purpose, as shown in the image below.
+<p>
+<img src="img/eShopOnContainers_Types_Of_Microservices.png">
 <p>
 <p>
 Additional miroservice styles with other frameworks and No-SQL databases will be added, eventually. This is a great opportunity for pull requests from the community, like a new microservice using Nancy, or even other languages like Node, Go, Python or data containers with MongoDB with Azure DocDB compatibility, PostgreSQL, RavenDB, Event Store, MySql, etc. You name it! :)
@@ -30,15 +34,14 @@ Additional miroservice styles with other frameworks and No-SQL databases will be
 ## Related documentation and guidance
 While developing this reference application, we are creating a reference Guide/eBook named <b>"Architecting and Developing Containerized and Microservice based .NET Applications"</b> which explains in detail how to develop this kind of architectural style (microservices, Docker containers, Domain-Driven Design for certain microservices) plus other simpler architectural styles, like monolithic apps that can also live as Docker containers.
 <p>
-There's also an additional eBook focusing on Containers/Docker lifecycle (DevOps, CI/CD, etc.) with Microsoft Tools, already published.
-You can start reviewing these Guides/eBooks here:
+There are also additional eBooks focusing on Containers/Docker lifecycle (DevOps, CI/CD, etc.) with Microsoft Tools, already published plus an additional eBook focusing on Enterprise Apps Patterns with Xamarin.Forms.
+You can download them and start reviewing these Guides/eBooks here:
 <p>
-You can download both eBooks from here:
 
-| Architecting & Developing | Containers Lifecycle & CI/CD |
-| ------------ | ------------|
-| <a href='docs/architecting-and-developing-containerized-and-microservice-based-net-applications-ebook-early-draft.pdf'><img src="img/ebook_arch_dev_microservices_containers_cover.png"> </a> | <a href='https://aka.ms/dockerlifecycleebook'> <img src="img/ebook_containers_lifecycle.png"> </a> |
-| <a href='docs/architecting-and-developing-containerized-and-microservice-based-net-applications-ebook-early-draft.pdf'>**Download** (Early DRAFT, still work in progress)</a> | <a href='https://aka.ms/dockerlifecycleebook'>**Download** - First Edition from late 2016</a> |
+| Architecting & Developing | Containers Lifecycle & CI/CD | App patterns with Xamarin.Forms |
+| ------------ | ------------|  ------------|
+| <a href='https://aka.ms/microservicesebook'><img src="img/ebook_arch_dev_microservices_containers_cover.png"> </a> | <a href='https://aka.ms/dockerlifecycleebook'> <img src="img/ebook_containers_lifecycle.png"> </a> | <a href='https://aka.ms/xamarinpatternsebook'> <img src="img/xamarin-enterprise-patterns-ebook-cover-small.png"> </a> |
+| <sup> <a href='https://aka.ms/microservicesebook'>**Download** (Early DRAFT, still work in progress)</a> </sup>  | <sup> <a href='https://aka.ms/dockerlifecycleebook'>**Download** (First Edition from late 2016) </a>  </sup> | <sup> <a href='https://aka.ms/xamarinpatternsebook'>**Download** (Early DRAFT, still work in progress) </a>  </sup> |
 
 Send feedback to [cesardl@microsoft.com](cesardl@microsoft.com)
 <p>
@@ -89,7 +92,7 @@ The app was also partially tested on "Docker for Mac" using a development MacOS 
 
 ## Sending feedback and pull requests
 As mentioned, we'd appreciate to your feedback, improvements and ideas.
-You can create new issues at the issues section, do pull requests and/or send emails to eshop_feedback@service.microsoft.com
+You can create new issues at the issues section, do pull requests and/or send emails to **eshop_feedback@service.microsoft.com**
 
 ## Questions
 [QUESTION] Answer +1 if the solution is working for you (Through VS2017 or CLI environment):

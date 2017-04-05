@@ -1,4 +1,4 @@
-using eShopOnContainers.ViewModels.Base;
+using eShopOnContainers.Core.ViewModels.Base;
 using Plugin.Settings;
 using Plugin.Settings.Abstractions;
 
@@ -27,7 +27,7 @@ namespace eShopOnContainers.Core.Helpers
         private const string IdUrlBase = "url_base";
         private static readonly string AccessTokenDefault = string.Empty;
         private static readonly string IdTokenDefault = string.Empty;
-        private static readonly bool UseMocksDefault = ViewModelLocator.Instance.UseMockService;
+		private static readonly bool UseMocksDefault = true;
         private static readonly string UrlBaseDefault = GlobalSetting.Instance.BaseEndpoint;
 
         #endregion

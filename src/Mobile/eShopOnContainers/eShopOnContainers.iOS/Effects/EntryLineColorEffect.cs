@@ -1,6 +1,6 @@
 ﻿using CoreAnimation;
 using CoreGraphics;
-using eShopOnContainers.Core.Effects;
+using eShopOnContainers.Core.Behaviors;
 using eShopOnContainers.iOS.Effects;
 using System;
 using System.ComponentModel;
@@ -39,7 +39,7 @@ namespace eShopOnContainers.iOS.Effects
         {
             base.OnElementPropertyChanged(args);
 
-            if (args.PropertyName == LineColorEffect.LineColorProperty.PropertyName ||
+            if (args.PropertyName == LineColorBehavior.LineColorProperty.PropertyName ||
                 args.PropertyName == "Height")
             {
                 Initialize();
@@ -71,7 +71,7 @@ namespace eShopOnContainers.iOS.Effects
             }
 
             lineLayer.Frame = new CGRect(0f, Control.Frame.Height - 1f, Control.Bounds.Width, 1f);
-            lineLayer.BorderColor = LineColorEffect.GetLineColor(Element).ToCGColor();
+            lineLayer.BorderColor = LineColorBehavior.GetLineColor(Element).ToCGColor();
             control.TintColor = control.TextColor;
         }
 

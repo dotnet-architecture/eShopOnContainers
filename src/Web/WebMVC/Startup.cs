@@ -14,6 +14,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Http;
 using System.Threading;
 using Microsoft.Extensions.Options;
+using WebMVC.Services.Utilities;
 using Microsoft.Extensions.HealthChecks;
 using Microsoft.eShopOnContainers.BuildingBlocks.Resilience.HttpResilience;
 
@@ -48,7 +49,10 @@ namespace Microsoft.eShopOnContainers.WebMVC
 
             services.AddHealthChecks(checks =>
             {
-                checks.AddValueTaskCheck("HTTP Endpoint", () => new ValueTask<IHealthCheckResult>(HealthCheckResult.Healthy("Ok")));
+                checks.AddUrlCheck(Configuration["CatalogUrl"]);
+                checks.AddUrlCheck(Configuration["OrderingUrl"]);
+                checks.AddUrlCheck(Configuration["BasketUrl"]);
+                checks.AddUrlCheck(Configuration["IdentityUrl"]);
             });
 
             // Add application services.
@@ -115,14 +119,9 @@ namespace Microsoft.eShopOnContainers.WebMVC
                 ResponseType = "code id_token", 
                 SaveTokens = true,
                 GetClaimsFromUserInfoEndpoint = true,
-                RequireHttpsMetadata = false, 
+                RequireHttpsMetadata = false,
+                Scope = { "openid", "profile", "orders", "basket" }
             };
-
-            oidcOptions.Scope.Clear();
-            oidcOptions.Scope.Add("openid");
-            oidcOptions.Scope.Add("profile");
-            oidcOptions.Scope.Add("orders");
-            oidcOptions.Scope.Add("basket");
 
             //Wait untill identity service is ready on compose. 
             app.UseOpenIdConnectAuthentication(oidcOptions);

@@ -3,7 +3,7 @@ using eShopOnContainers.Core.Helpers;
 using eShopOnContainers.Core.Models.Orders;
 using eShopOnContainers.Core.Models.User;
 using eShopOnContainers.Core.Services.Order;
-using eShopOnContainers.ViewModels.Base;
+using eShopOnContainers.Core.ViewModels.Base;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;

@@ -1,6 +1,6 @@
 ﻿using eShopOnContainers.Core.Helpers;
 using eShopOnContainers.Services;
-using eShopOnContainers.ViewModels.Base;
+using eShopOnContainers.Core.ViewModels.Base;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -27,13 +27,13 @@ namespace eShopOnContainers
         private void InitApp()
         {
             UseMockServices = Settings.UseMocks;
-
-            ViewModelLocator.Instance.UpdateDependencies(UseMockServices);
+			ViewModelLocator.Initialize();
+            ViewModelLocator.UpdateDependencies(UseMockServices);
         }
 
         private Task InitNavigation()
         {
-            var navigationService = ViewModelLocator.Instance.Resolve<INavigationService>();
+            var navigationService = ViewModelLocator.Resolve<INavigationService>();
             return navigationService.InitializeAsync();
         }
 
