@@ -154,7 +154,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
             //Set as Field (New since EF 1.1) to access the OrderItem collection property through its field
             navigation.SetPropertyAccessMode(PropertyAccessMode.Field);
 
-            orderConfiguration.HasOne(o => o.PaymentMethod)
+            orderConfiguration.HasOne<PaymentMethod>()
                 .WithMany()
                 .HasForeignKey("PaymentMethodId")
                 .IsRequired(false)
