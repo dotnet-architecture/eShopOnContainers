@@ -41,8 +41,8 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="1.1.0-msbuild3-final">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="IdentityServer4.AspNetIdentity" Version="1.0.0-rc3" />
-    <PackageReference Include="IdentityServer4.EntityFramework" Version="1.0.0-rc3" />
+    <PackageReference Include="IdentityServer4.AspNetIdentity" Version="1.0.0" />
+    <PackageReference Include="IdentityServer4.EntityFramework" Version="1.0.0" />
   </ItemGroup>
 
   <Target Name="PrepublishScript" BeforeTargets="PrepareForPublish">
