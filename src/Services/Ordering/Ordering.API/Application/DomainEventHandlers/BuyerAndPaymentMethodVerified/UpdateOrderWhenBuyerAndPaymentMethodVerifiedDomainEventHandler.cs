@@ -39,11 +39,11 @@ namespace Ordering.API.Application.DomainEventHandlers.BuyerAndPaymentMethodVeri
             // Using a local transaction to achieve atomicity between original Ordering database operation and 
             // the IntegrationEventLog. Only saving event if order has been successfully persisted to db
             await _orderingIntegrationEventService
-                .SaveEventAsync(orderStartedIntegrationEvent);
+                .SaveEventAndOrderingContextChangesAsync(orderStartedIntegrationEvent);
 
             // Publish ordering integration event and mark it as published
             await _orderingIntegrationEventService
-                .PublishAsync(orderStartedIntegrationEvent);
+                .PublishThroughEventBusAsync(orderStartedIntegrationEvent);
 
             _logger.CreateLogger(nameof(UpdateOrderWhenBuyerAndPaymentMethodVerifiedDomainEventHandler))
                 .LogTrace($"Order with Id: {buyerPaymentMethodVerifiedEvent.OrderId} has been successfully updated with a payment method id: { buyerPaymentMethodVerifiedEvent.Payment.Id }");                        

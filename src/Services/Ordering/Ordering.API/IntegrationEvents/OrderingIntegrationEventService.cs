@@ -28,13 +28,13 @@ namespace Ordering.API.IntegrationEvents
             _eventLogService = _integrationEventLogServiceFactory(_orderingContext.Database.GetDbConnection());
         }
 
-        public async Task PublishAsync(IntegrationEvent evt)
+        public async Task PublishThroughEventBusAsync(IntegrationEvent evt)
         {
             _eventBus.Publish(evt);
             await _eventLogService.MarkEventAsPublishedAsync(evt);
         }
 
-        public async Task SaveEventAsync(IntegrationEvent evt)
+        public async Task SaveEventAndOrderingContextChangesAsync(IntegrationEvent evt)
         {
             //Use of an EF Core resiliency strategy when using multiple DbContexts within an explicit BeginTransaction():
             //See: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency            
