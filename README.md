@@ -77,18 +77,46 @@ This is the more straightforward way to get started:
 https://github.com/dotnet/eShopOnContainers/wiki/02.-Setting-eShopOnContainer-solution-up-in-a-Visual-Studio-2017-environment
 
 ### CLI and Windows based
-For those who prefer the CLI on Windows, using dotnet CLI, docker CLI and VS Code for Windows: 
+For those who prefer the CLI on Windows, using dotnet CLI, docker CLI and VS Code for Windows:
 https://github.com/dotnet/eShopOnContainers/wiki/03.-Setting-the-eShopOnContainers-solution-up-in-a-Windows-CLI-environment-(dotnet-CLI,-Docker-CLI-and-VS-Code)
 
 ### CLI and Mac based
-For those who prefer the CLI on a Mac, using dotnet CLI, docker CLI and VS Code for Mac 
+For those who prefer the CLI on a Mac, using dotnet CLI, docker CLI and VS Code for Mac
 (Instructions still TBD, but similar to Windows CLI):
 https://github.com/dotnet/eShopOnContainers/wiki/04.-Setting-eShopOnContainer-solution-up-in-a-Mac,-VS-Code-and-CLI-environment--(dotnet-CLI,-Docker-CLI-and-VS-Code)
 
 > ### Note on tested Docker Containers/Images
-> Most of the development and testing of this project was (as of early March 2017) done <b> on Docker Linux containers</b> running in development machines with "Docker for Windows" and the default Hyper-V Linux VM (MobiLinuxVM) installed by "Docker for Windows". 
+> Most of the development and testing of this project was (as of early March 2017) done <b> on Docker Linux containers</b> running in development machines with "Docker for Windows" and the default Hyper-V Linux VM (MobiLinuxVM) installed by "Docker for Windows".
 The <b>Windows Containers scenario is currently being implemented/tested yet</b>. The application should be able to run on Windows Nano Containers based on different Docker base images, as well, as the .NET Core services have also been tested running on plain Windows (with no Docker).
 The app was also partially tested on "Docker for Mac" using a development MacOS machine with .NET Core and VS Code installed, which is still a scenario using Linux containers running on the VM setup in the Mac by the "Docker for Windows" setup. But further testing and feedback on Mac environments and Windows Containers, from the community, will be appreciated.
+
+## Docker Swarm
+### Prerequisites
+1. A Docker Swarm cluster ([Azure Container Service](https://docs.microsoft.com/en-us/azure/container-service/container-service-deployment))
+1. Docker tooling, including docker-compose, on your development machine ([docker.com](https://www.docker.com/))
+
+### Deploying to a Swarm Cluster
+1. Open a command line to your local eShopOnContainers repository.
+2. Restore and publish the projects:
+>```
+>dotnet restore eShopOnContainers-ServicesAndWebApps.sln
+>dotnet publish eShopOnContainers-ServicesAndWebApps.sln -c Release -o ./obj/Docker/publish
+>```
+3. Create an SSH tunnel to your cluster's master node (See [Connect with an ACS cluster](https://docs.microsoft.com/en-us/azure/container-service/container-service-connect#connect-to-a-dcos-or-swarm-cluster))
+4. Set `SWARM_AGENTS_FQDN` to the domain name of your swarm agents' load balancer. This is of the form `[dns prefix]agents.[azure region].cloudapp.azure.com` (it can also be found in the Azure portal). For example:
+>```bash
+>export SWARM_AGENTS_FQDN=myswarmclusteragents.centralus.cloudapp.azure.com
+>```
+Or, in PowerShell:
+>```powershell
+>$env:SWARM_AGENTS_FQDN='myswarmclusteragents.centralus.cloudapp.azure.com'
+>```
+5. Deploy eShopOnContainers with `docker-compose`:
+>```
+>docker-compose -f docker-compose.yml -f docker-compose.swarm.yml up -d
+>```
+### Further Reading
+* Docker: [Swarm mode overview](https://docs.docker.com/engine/swarm/)
 
 ## Sending feedback and pull requests
 As mentioned, we'd appreciate to your feedback, improvements and ideas.
@@ -96,4 +124,4 @@ You can create new issues at the issues section, do pull requests and/or send em
 
 ## Questions
 [QUESTION] Answer +1 if the solution is working for you (Through VS2017 or CLI environment):
-https://github.com/dotnet/eShopOnContainers/issues/107 
+https://github.com/dotnet/eShopOnContainers/issues/107

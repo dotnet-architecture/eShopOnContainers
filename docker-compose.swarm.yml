@@ -1,0 +1,99 @@
+version: '2'
+
+services:
+  basket.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:80/basket-api
+      - ConnectionString=basket.data
+      - IdentityUrl=http://${SWARM_AGENTS_FQDN}/identity
+      - EventBusConnection=rabbitmq
+    ports:
+      - "5100:80"
+
+  catalog.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:80/catalog-api
+      - ConnectionString=Server=sql.data;Database=Microsoft.eShopOnContainers.Services.CatalogDb;User Id=sa;Password=Pass@word
+      - ExternalCatalogBaseUrl=http://${SWARM_AGENTS_FQDN}/catalog-api
+      - EventBusConnection=rabbitmq
+    ports:
+      - "5101:80"
+
+  frontend:
+    build:
+      context: ./swarm
+    depends_on:
+      - basket.api
+      - catalog.api
+      - identity.api
+      - ordering.api
+      - webmvc
+      - webspa
+      - webstatus
+    ports:
+      - "80:8080"
+
+  identity.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:80/identity
+      - SpaClient=http://${SWARM_AGENTS_FQDN}
+      - ConnectionStrings__DefaultConnection=Server=sql.data;Database=Microsoft.eShopOnContainers.Service.IdentityDb;User Id=sa;Password=Pass@word
+      - MvcClient=http://${SWARM_AGENTS_FQDN}/webmvc
+    ports:
+      - "5102:80"
+
+  ordering.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:80/ordering-api
+      - ConnectionString=Server=sql.data;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word
+      - IdentityUrl=http://${SWARM_AGENTS_FQDN}/identity
+      - BasketUrl=http://${SWARM_AGENTS_FQDN}/basket-api
+      - EventBusConnection=rabbitmq
+    ports:
+      - "5103:80"
+
+  webmvc:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:80/webmvc
+      - CatalogUrl=http://${SWARM_AGENTS_FQDN}/catalog-api
+      - OrderingUrl=http://${SWARM_AGENTS_FQDN}/ordering-api
+      - BasketUrl=http://${SWARM_AGENTS_FQDN}/basket-api
+      - IdentityUrl=http://${SWARM_AGENTS_FQDN}/identity
+    ports:
+      - "5104:80"
+
+  webspa:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - CatalogUrl=http://${SWARM_AGENTS_FQDN}/catalog-api
+      - OrderingUrl=http://${SWARM_AGENTS_FQDN}/ordering-api
+      - IdentityUrl=http://${SWARM_AGENTS_FQDN}/identity
+      - BasketUrl=http://${SWARM_AGENTS_FQDN}/basket-api
+    ports:
+      - "5105:80"
+
+  sql.data:
+    environment:
+      - SA_PASSWORD=Pass@word
+      - ACCEPT_EULA=Y
+    ports:
+      - "1433:1433"
+
+  webstatus:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:80/webstatus
+      - CatalogUrl=http://${SWARM_AGENTS_FQDN}/catalog-api
+      - OrderingUrl=http://${SWARM_AGENTS_FQDN}/ordering-api
+      - BasketUrl=http://${SWARM_AGENTS_FQDN}/basket-api
+      - IdentityUrl=http://${SWARM_AGENTS_FQDN}/identity
+      - mvc=http://${SWARM_AGENTS_FQDN}/webmvc
+      - spa=http://${SWARM_AGENTS_FQDN}
+    ports:
+      - "5106:80"
