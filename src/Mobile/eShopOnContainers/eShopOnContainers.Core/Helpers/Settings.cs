@@ -1,4 +1,3 @@
-using eShopOnContainers.Core.ViewModels.Base;
 using Plugin.Settings;
 using Plugin.Settings.Abstractions;
 
@@ -32,7 +31,6 @@ namespace eShopOnContainers.Core.Helpers
 
         #endregion
 
-
         public static string AuthAccessToken
         {
             get
@@ -56,7 +54,6 @@ namespace eShopOnContainers.Core.Helpers
                 AppSettings.AddOrUpdateValue<string>(IdToken, value);
             }
         }
-
 
         public static bool UseMocks
         {
