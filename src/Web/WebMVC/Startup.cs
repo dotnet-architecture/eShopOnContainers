@@ -112,14 +112,9 @@ namespace Microsoft.eShopOnContainers.WebMVC
                 ResponseType = "code id_token", 
                 SaveTokens = true,
                 GetClaimsFromUserInfoEndpoint = true,
-                RequireHttpsMetadata = false, 
+                RequireHttpsMetadata = false,
+                Scope = { "openid", "profile", "orders", "basket" }
             };
-
-            oidcOptions.Scope.Clear();
-            oidcOptions.Scope.Add("openid");
-            oidcOptions.Scope.Add("profile");
-            oidcOptions.Scope.Add("orders");
-            oidcOptions.Scope.Add("basket");
 
             //Wait untill identity service is ready on compose. 
             app.UseOpenIdConnectAuthentication(oidcOptions);
