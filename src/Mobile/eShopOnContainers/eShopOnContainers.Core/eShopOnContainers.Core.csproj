@@ -58,6 +58,7 @@
     <Compile Include="Converters\ItemsToHeightConverter.cs" />
     <Compile Include="Converters\ItemTappedEventArgsConverter.cs" />
     <Compile Include="Converters\ToUpperConverter.cs" />
+    <Compile Include="Converters\WebNavigatedEventArgsConverter.cs" />
     <Compile Include="Effects\LineColorEffect.cs" />
     <Compile Include="Exceptions\ServiceAuthenticationException.cs" />
     <Compile Include="Extensions\AnimationExtension.cs" />

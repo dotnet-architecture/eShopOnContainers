@@ -14,8 +14,8 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Http;
 using System.Threading;
 using Microsoft.Extensions.Options;
-using WebMVC.Services.Utilities;
 using Microsoft.Extensions.HealthChecks;
+using Microsoft.eShopOnContainers.BuildingBlocks.Resilience.HttpResilience;
 
 namespace Microsoft.eShopOnContainers.WebMVC
 {
@@ -48,7 +48,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
 
             services.AddHealthChecks(checks =>
             {
-                checks.AddUrlCheck(Configuration["CallBackUrl"]);
+                checks.AddValueTaskCheck("HTTP Endpoint", () => new ValueTask<IHealthCheckResult>(HealthCheckResult.Healthy("Ok")));
             });
 
             // Add application services.
@@ -58,8 +58,14 @@ namespace Microsoft.eShopOnContainers.WebMVC
             services.AddTransient<IBasketService, BasketService>();
             services.AddTransient<IIdentityParser<ApplicationUser>, IdentityParser>();
 
-            if(Configuration.GetValue<string>("ActivateCircuitBreaker") == bool.TrueString)
+            if (Configuration.GetValue<string>("UseResilientHttp") == bool.TrueString)
             {
+                services.AddSingleton(
+                    new List<ResiliencePolicy>
+                    {
+                        ResiliencePolicyFactory.CreateRetryPolicy(6, 2, true),
+                        ResiliencePolicyFactory.CreateCiscuitBreakerPolicy(5, 1)
+                    });
                 services.AddTransient<IHttpClient, ResilientHttpClient>();
             }
             else

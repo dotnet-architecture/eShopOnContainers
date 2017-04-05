@@ -42,7 +42,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
 
             services.AddHealthChecks(checks =>
             {
-                checks.AddValueTaskCheck("Always OK", () => new ValueTask<IHealthCheckResult>(HealthCheckResult.Healthy("Ok")));
+                checks.AddValueTaskCheck("HTTP Endpoint", () => new ValueTask<IHealthCheckResult>(HealthCheckResult.Healthy("Ok")));
             });
 
             // Add framework services.
