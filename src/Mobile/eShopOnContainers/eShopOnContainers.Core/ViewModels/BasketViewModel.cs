@@ -4,8 +4,6 @@ using eShopOnContainers.Core.Models.Catalog;
 using eShopOnContainers.Core.Services.Basket;
 using eShopOnContainers.Core.Services.User;
 using eShopOnContainers.Core.ViewModels.Base;
-using eShopOnContainers.ViewModels.Base;
-using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -61,7 +59,7 @@ namespace eShopOnContainers.Core.ViewModels
             }
         }
 
-        public ICommand AddCommand => new Command<BasketItem>(AddItem);
+        public ICommand AddCommand => new Command<BasketItem>(async (item) => await AddItemAsync(item));
 
         public ICommand CheckoutCommand => new Command(async () => await CheckoutAsync());
 
@@ -84,22 +82,22 @@ namespace eShopOnContainers.Core.ViewModels
                 foreach (var basketItem in basket.Items)
                 {
                     BadgeCount += basketItem.Quantity;
-                    AddBasketItem(basketItem);
+                    await AddBasketItemAsync(basketItem);
                 }
             }
 
-            MessagingCenter.Unsubscribe<CatalogViewModel, CatalogItem>(this, MessengerKeys.AddProduct);
-            MessagingCenter.Subscribe<CatalogViewModel, CatalogItem>(this, MessengerKeys.AddProduct, (sender, arg) =>
+            MessagingCenter.Unsubscribe<CatalogViewModel, CatalogItem>(this, MessageKeys.AddProduct);
+            MessagingCenter.Subscribe<CatalogViewModel, CatalogItem>(this, MessageKeys.AddProduct, async (sender, arg) =>
             {
                 BadgeCount++;
 
-                AddCatalogItem(arg);
+                await AddCatalogItemAsync(arg);
             });
             
             await base.InitializeAsync(navigationData);
         }
 
-        private void AddCatalogItem(CatalogItem item)
+        private async Task AddCatalogItemAsync(CatalogItem item)
         {
             BasketItems.Add(new BasketItem
             {
@@ -110,26 +108,26 @@ namespace eShopOnContainers.Core.ViewModels
                 Quantity = 1
             });
 
-            ReCalculateTotal();
+            await ReCalculateTotalAsync();
         }
 
-        private void AddItem(BasketItem item)
+        private async Task AddItemAsync(BasketItem item)
         {
             BadgeCount++;
 
-            AddBasketItem(item);
+            await AddBasketItemAsync(item);
 
             RaisePropertyChanged(() => BasketItems);
         }
 
-        private void AddBasketItem(BasketItem item)
+        private async Task AddBasketItemAsync(BasketItem item)
         {
             BasketItems.Add(item);
 
-            ReCalculateTotal();
+            await ReCalculateTotalAsync();
         }
 
-        private async void ReCalculateTotal()
+        private async Task ReCalculateTotalAsync()
         {
             Total = 0;
 

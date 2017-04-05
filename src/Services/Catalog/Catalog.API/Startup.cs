@@ -21,6 +21,7 @@
     using System.Data.Common;
     using System.Reflection;
     using global::Catalog.API.IntegrationEvents;
+    using System.Threading.Tasks;
 
     public class Startup
     {

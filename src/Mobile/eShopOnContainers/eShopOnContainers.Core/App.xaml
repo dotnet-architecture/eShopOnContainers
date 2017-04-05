@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"  
              xmlns:light="clr-namespace:Xamarin.Forms.Themes;assembly=Xamarin.Forms.Theme.Light"
              xmlns:converters="clr-namespace:eShopOnContainers.Core.Converters;assembly=eShopOnContainers.Core"
-             xmlns:effects="clr-namespace:eShopOnContainers.Core.Effects;assembly=eShopOnContainers.Core"
+             xmlns:behaviors="clr-namespace:eShopOnContainers.Core.Behaviors;assembly=eShopOnContainers.Core"
              x:Class="eShopOnContainers.App">
     <Application.Resources>
         <ResourceDictionary MergedWith="light:LightThemeResources">
@@ -17,6 +17,7 @@
             <Color x:Key="GreenColor">#00A69C</Color>
             <Color x:Key="DarkGreenColor">#00857D</Color>
             <Color x:Key="GrayColor">#e2e2e2</Color>
+            <Color x:Key="ErrorColor">#ff5252</Color>
             
             <!-- FONTS -->
             <OnPlatform 
@@ -100,6 +101,7 @@
             <!-- CONVERTERS -->
             <converters:CountToBoolConverter x:Key="CountToBoolConverter" />
             <converters:DatetimeConverter x:Key="DatetimeConverter" />
+			<converters:FirstValidationErrorConverter x:Key="FirstValidationErrorConverter" />
             <converters:ImageConverter x:Key="ImageConverter" />
             <converters:ItemTappedEventArgsConverter x:Key="ItemTappedEventArgsConverter" />
             <converters:InverseCountToBoolConverter x:Key="InverseCountToBoolConverter" />
@@ -110,6 +112,14 @@
             <converters:WebNavigatedEventArgsConverter x:Key="WebNavigatedEventArgsConverter" />
 
             <!-- STYLES -->
+            <Style x:Key="ValidationErrorLabelStyle"
+				   TargetType="{x:Type Label}">
+				   <Setter Property="TextColor"
+						   Value="{StaticResource ErrorColor}" />
+				   <Setter Property="FontSize"
+					       Value="{StaticResource LittleSize}" />
+ 			</Style>
+			
             <Style x:Key="EntryStyle"
                    TargetType="{x:Type Entry}">
                 <Setter Property="FontFamily"
@@ -126,9 +136,9 @@
                         Value="Bold" />
                 <Setter Property="Opacity"
                         Value="0.6" />
-                <Setter Property="effects:LineColorEffect.ApplyLineColor"
+                <Setter Property="behaviors:LineColorBehavior.ApplyLineColor"
                         Value="True" />
-                <Setter Property="effects:LineColorEffect.LineColor"
+                <Setter Property="behaviors:LineColorBehavior.LineColor"
                         Value="{StaticResource BlackColor}" />
                 <Style.Triggers>
                     <Trigger TargetType="Entry"
@@ -157,16 +167,16 @@
                         Value="Transparent" />
                 <Setter Property="Opacity"
                         Value="0.6" />
-                <Setter Property="effects:LineColorEffect.ApplyLineColor"
+                <Setter Property="behaviors:LineColorBehavior.ApplyLineColor"
                         Value="True" />
-                <Setter Property="effects:LineColorEffect.LineColor"
+                <Setter Property="behaviors:LineColorBehavior.LineColor"
                         Value="Gray" />
                 <Style.Triggers>
                     <Trigger TargetType="Entry"
                        Property="IsFocused"
                        Value="True">
                         <Setter Property="Opacity" Value="1" />
-                        <Setter Property="effects:LineColorEffect.LineColor"                        
+                        <Setter Property="behaviors:LineColorBehavior.LineColor"                        
                                 Value="{StaticResource GreenColor}" />
                     </Trigger>
                 </Style.Triggers>

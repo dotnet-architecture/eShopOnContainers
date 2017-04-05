@@ -112,7 +112,7 @@
     <Compile Include="Validations\IValidity.cs" />
     <Compile Include="Validations\ValidatableObject.cs" />
     <Compile Include="ViewModels\Base\ExtendedBindableObject.cs" />
-    <Compile Include="ViewModels\Base\MessengerKeys.cs" />
+    <Compile Include="ViewModels\Base\MessageKeys.cs" />
     <Compile Include="ViewModels\Base\ViewModelBase.cs" />
     <Compile Include="ViewModels\Base\ViewModelLocator.cs" />
     <Compile Include="ViewModels\BasketViewModel.cs" />
@@ -166,6 +166,9 @@
       <DependentUpon>ProductTemplate.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\WebNavigatingEventArgsConverter.cs" />
+    <Compile Include="Converters\FirstValidationErrorConverter.cs" />
+    <Compile Include="Effects\EntryLineColorEffect.cs" />
+    <Compile Include="Behaviors\LineColorBehavior.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

@@ -78,7 +78,8 @@ namespace eShopOnContainers.Identity
             // Adds IdentityServer
             services.AddIdentityServer(x => x.IssuerUri = "null")
                 .AddSigningCredential(Certificate.Get())
-                .AddInMemoryScopes(Config.GetScopes())
+                .AddInMemoryApiResources(Config.GetApis())
+                .AddInMemoryIdentityResources(Config.GetResources())
                 .AddInMemoryClients(Config.GetClients(clientUrls))
                 .AddAspNetIdentity<ApplicationUser>()
                 .Services.AddTransient<IProfileService, ProfileService>(); 

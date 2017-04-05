@@ -33,6 +33,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure.Autof
                     .Where(i => i.IsClosedTypeOf(typeof(IAsyncNotificationHandler<>)))
                     .Select(i => new KeyedService("IAsyncNotificationHandler", i)))
                     .AsImplementedInterfaces();
+                    
 
             builder
                 .RegisterAssemblyTypes(typeof(CreateOrderCommandValidator).GetTypeInfo().Assembly)
