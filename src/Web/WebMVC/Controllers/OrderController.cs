@@ -49,7 +49,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
                     return RedirectToAction("Index");
                 }
             }
-            catch(BrokenCircuitException ex)
+            catch(BrokenCircuitException)
             {
                 ModelState.AddModelError("Error", "It was not possible to create a new order, please try later on");
             }

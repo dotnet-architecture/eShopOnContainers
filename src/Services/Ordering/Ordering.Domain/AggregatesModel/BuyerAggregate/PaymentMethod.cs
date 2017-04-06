@@ -7,7 +7,6 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.B
     public class PaymentMethod
         : Entity
     {
-        private int _buyerId;
         private string _alias;
         private string _cardNumber;
         private string _securityNumber;
