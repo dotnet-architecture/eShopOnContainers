@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Http;
 using System.Threading;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.HealthChecks;
-using Microsoft.eShopOnContainers.BuildingBlocks.Resilience.HttpResilience;
+using Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http;
 
 namespace Microsoft.eShopOnContainers.WebMVC
 {

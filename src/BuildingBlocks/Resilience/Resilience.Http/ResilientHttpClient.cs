@@ -1,4 +1,4 @@
-﻿using Microsoft.eShopOnContainers.BuildingBlocks.Resilience.HttpResilience.Policies;
+﻿using Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http.Policies;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Polly;
@@ -9,7 +9,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace Microsoft.eShopOnContainers.BuildingBlocks.Resilience.HttpResilience
+namespace Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http
 {
     /// <summary>
     /// HttpClient wrapper that integrates Retry and Circuit

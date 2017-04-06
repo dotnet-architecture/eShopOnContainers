@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Microsoft.eShopOnContainers.BuildingBlocks.Resilience.HttpResilience.Policies
+namespace Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http.Policies
 {
     internal class RetryPolicy : ResiliencePolicy
     {

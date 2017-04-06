@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard1.4</TargetFramework>
-    <RootNamespace>Microsoft.eShopOnContainers.BuildingBlocks.Resilience.HttpResilience</RootNamespace>
+    <RootNamespace>Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
