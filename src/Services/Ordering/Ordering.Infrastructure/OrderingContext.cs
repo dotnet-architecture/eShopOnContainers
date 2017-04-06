@@ -62,6 +62,10 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
         {
             addressConfiguration.ToTable("address", DEFAULT_SCHEMA);
 
+            // DDD Pattern comment: Implementing the Address Id as "Shadow property"
+            // becuase the Address is a Value-Object (VO) and an Id (Identity) is not desired for a VO
+            // EF Core just needs the Id so it is capable to store it in a database table
+            // See: https://docs.microsoft.com/en-us/ef/core/modeling/shadow-properties 
             addressConfiguration.Property<int>("Id")
                 .IsRequired();
 
