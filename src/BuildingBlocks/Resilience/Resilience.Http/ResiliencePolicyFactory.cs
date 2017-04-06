@@ -1,9 +1,9 @@
-﻿using Microsoft.eShopOnContainers.BuildingBlocks.Resilience.HttpResilience.Policies;
+﻿using Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http.Policies;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Microsoft.eShopOnContainers.BuildingBlocks.Resilience.HttpResilience
+namespace Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http
 {
     public static class ResiliencePolicyFactory
     {
