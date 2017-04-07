@@ -1,5 +1,4 @@
-﻿using Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http.Policies;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Polly;
 using Polly.Wrap;
@@ -23,84 +22,14 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http
         private ILogger<ResilientHttpClient> _logger;
         public HttpClient Inst => _client;
 
-        public ResilientHttpClient(List<Policy> policies, ILogger<ResilientHttpClient> logger)
+        public ResilientHttpClient(Policy[] policies, ILogger<ResilientHttpClient> logger)
         {
             _client = new HttpClient();
             _logger = logger;
 
             // Add Policies to be applied
-            _policyWrapper = Policy.WrapAsync(policies.ToArray());
-        }
-
-        public ResilientHttpClient(List<ResiliencePolicy> policies, ILogger<ResilientHttpClient> logger)
-        {
-            _client = new HttpClient();
-            _logger = logger;
-
-            // Add Policies to be applied
-            _policyWrapper = Policy.WrapAsync(GeneratePolicies(policies));
-        }
-
-        private Policy[] GeneratePolicies(IList<ResiliencePolicy> policies)
-        {
-            var pollyPolicies = new List<Policy>();
-
-            foreach (var policy in policies)
-            {
-                switch (policy)
-                {
-                    case RetryPolicy retryPolicy:
-                        pollyPolicies.Add(
-                            CreateRetryPolicy(
-                                retryPolicy.Retries,
-                                retryPolicy.BackoffSeconds,
-                                retryPolicy.ExponentialBackoff));
-                        break;
-
-                    case CircuitBreakerPolicy circuitPolicy:
-                        pollyPolicies.Add(
-                            CreateCircuitBreakerPolicy(
-                                circuitPolicy.ExceptionsAllowedBeforeBreaking,
-                                circuitPolicy.DurationOfBreakInMinutes));
-                        break;
-                }
-            }
-
-            return pollyPolicies.ToArray();
-        }
-
-        private Policy CreateRetryPolicy(int retries, int backoffSeconds, bool exponentialBackoff) =>            
-            Policy.Handle<HttpRequestException>()
-                .WaitAndRetryAsync(
-                retries,               
-                retryAttempt => exponentialBackoff ? TimeSpan.FromSeconds(Math.Pow(backoffSeconds, retryAttempt)) : TimeSpan.FromSeconds(backoffSeconds),
-                (exception, timeSpan, retryCount, context) =>
-                {
-                    var msg = $"Retry {retryCount} implemented with Polly's RetryPolicy " +
-                        $"of {context.PolicyKey} " +
-                        $"at {context.ExecutionKey}, " +
-                        $"due to: {exception}.";
-                    _logger.LogWarning(msg);
-                    _logger.LogDebug(msg);
-                }
-            );
-
-        private Policy CreateCircuitBreakerPolicy(int exceptionsAllowedBeforeBreaking, int durationOfBreakInMinutes) =>
-           Policy.Handle<HttpRequestException>()
-           .CircuitBreakerAsync(
-               exceptionsAllowedBeforeBreaking,
-               TimeSpan.FromMinutes(durationOfBreakInMinutes),
-               (exception, duration) =>
-               {
-                   // on circuit opened
-                   _logger.LogTrace("Circuit breaker opened");
-               },
-               () =>
-               {
-                   // on circuit closed
-                   _logger.LogTrace("Circuit breaker reset");
-               }
-           );
+            _policyWrapper = Policy.WrapAsync(policies);
+        }        
 
         public Task<string> GetStringAsync(string uri) =>
             HttpInvoker(() => 
