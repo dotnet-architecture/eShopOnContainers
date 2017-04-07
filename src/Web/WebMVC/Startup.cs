@@ -16,6 +16,7 @@ using System.Threading;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.HealthChecks;
 using Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http;
+using Microsoft.eShopOnContainers.WebMVC.Infrastructure;
 
 namespace Microsoft.eShopOnContainers.WebMVC
 {
@@ -63,19 +64,14 @@ namespace Microsoft.eShopOnContainers.WebMVC
 
             if (Configuration.GetValue<string>("UseResilientHttp") == bool.TrueString)
             {
-                services.AddSingleton(
-                    new List<ResiliencePolicy>
-                    {
-                        ResiliencePolicyFactory.CreateRetryPolicy(6, 2, true),
-                        ResiliencePolicyFactory.CreateCiscuitBreakerPolicy(5, 1)
-                    });
-                services.AddTransient<IHttpClient, ResilientHttpClient>();
+                services.AddTransient<IResilientHttpClientFactory, ResilientHttpClientFactory>();
+                services.AddTransient<IHttpClient, ResilientHttpClient>(sp => sp.GetService<IResilientHttpClientFactory>().CreateResilientHttpClient());
             }
             else
             {
                 services.AddTransient<IHttpClient, StandardHttpClient>();
             }
-        }
+        }        
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
