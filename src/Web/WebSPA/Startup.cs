@@ -43,7 +43,10 @@ namespace eShopConContainers.WebSPA
         {
             services.AddHealthChecks(checks =>
             {
-                checks.AddValueTaskCheck("HTTP Endpoint", () => new ValueTask<IHealthCheckResult>(HealthCheckResult.Healthy("Ok")));
+                checks.AddUrlCheck(Configuration["CatalogUrl"]);
+                checks.AddUrlCheck(Configuration["OrderingUrl"]);
+                checks.AddUrlCheck(Configuration["BasketUrl"]);
+                checks.AddUrlCheck(Configuration["IdentityUrl"]);
             });
 
             services.Configure<AppSettings>(Configuration);
