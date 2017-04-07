@@ -13,8 +13,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Services\Catalog\settings.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <!--<Content Include="settings.json;web.config">-->
-    <Content Include="settings.json">
+    <Content Include="Services\Catalog\settings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Services\Ordering\settings.json">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
   </ItemGroup>
@@ -35,7 +42,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="settings.json">
+    <Content Update="Services\Ordering\settings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
