@@ -1,73 +1,56 @@
-﻿<%@ Page Title="Home Page" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="Microsoft.eShopOnContainers.Catalog.WebForms._Default" Async="true" %>
+﻿<%@ Page Title="eShopOnContainers - Home Page" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" 
+    CodeBehind="Default.aspx.cs" Inherits="eShopOnContainers.Catalog.WebForms._Default" Async="true" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
+    <asp:ListView ID="catalogList" runat="server"
+        DataKeyNames="Id" GroupItemCount="3"
+        ItemType="eShopOnContainers.Core.Models.Catalog.CatalogItem" 
+        SelectMethod="GetCatalogDataAsync" 
+        DeleteMethod="DeleteCatalogItemAsync">
+        <EmptyDataTemplate>
+            <div class="row">
+                <span class="col-md-10 col-md-offset-1">There's nothing in the catalog to display at this time.
+                </span>
+            </div>
+        </EmptyDataTemplate>
+        <LayoutTemplate>
+                <div id="groupPlaceholder" runat="server"></div>
+        </LayoutTemplate>
+        <GroupTemplate>
+            <div id="itemPlaceholderConatiner" class="row">
+                <div id="itemPlaceholder" runat="server"></div>
+            </div>
+            <br />
+            <br />
+        </GroupTemplate>
+        <ItemTemplate>
+            <div class="col-md-4">
+                <a href="EditCatalogItem.aspx?id=<%#:Item.Id%>">
+                    <img class="esh-catalog-thumbnail" src="<%#:Item.PictureUri%>"
+                        style="border: solid" />
+                    <br />
+                    <span class="esh-catalog-name">
+                        <%#:Item.Name%>
+                    </span>
+                    <br />
+                    <span class="esh-catalog-price">
+                        <b>Price: </b><%#:String.Format("{0:c}", Item.Price)%>
+                    </span>
+                    <br />
+                </a>
+                <span class="esh-catalog-label">
+                    <asp:LinkButton ID="DeleteItem" CommandArgument="<%= Item.Id %>"
+                        runat="server" CommandName="Delete"
+                        Text="Delete">Delete</asp:LinkButton>
+                </span>
+            </div>
+       </ItemTemplate>
+    </asp:ListView>
     <div class="row">
-        <asp:ListView ID="catalogList" runat="server"
-            DataKeyNames="Id" GroupItemCount="4"
-            ItemType="eShopOnContainers.Core.Models.Catalog.CatalogItem">
-            <EmptyDataTemplate>
-                <table >
-                    <tr>
-                        <td>Well, there's nothing in the catalog.</td>
-                    </tr>
-                </table>
-            </EmptyDataTemplate>
-            <EmptyItemTemplate>
-                <td/>
-            </EmptyItemTemplate>
-            <GroupTemplate>
-                <tr id="itemPlaceholderContainer" runat="server">
-                    <td id="itemPlaceholder" runat="server"></td>
-                </tr>
-            </GroupTemplate>
-            <ItemTemplate>
-                <td runat="server">
-                    <table>
-                        <tr>
-                            <td>
-                                <a href="ProductDetails.aspx?productID=<%#:Item.Id%>">
-                                    <img src="<%#:Item.PictureUri%>"
-                                        style="border: solid" /></a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <a href="ProductDetails.aspx?productID=<%#:Item.Id%>">
-                                    <span>
-                                        <%#:Item.Name%>
-                                    </span>
-                                </a>
-                                <br />
-                                <span>
-                                    <b>Price: </b><%#:String.Format("{0:c}", Item.Price)%>
-                                </span>
-                                <br />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>&nbsp;</td>
-                        </tr>
-                    </table>
-                    </p>
-                </td>
-            </ItemTemplate>
-            <LayoutTemplate>
-                <table style="width:100%;">
-                    <tbody>
-                        <tr>
-                            <td>
-                                <table id="groupPlaceholderContainer" runat="server" style="width:100%">
-                                    <tr id="groupPlaceholder"></tr>
-                                </table>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                        </tr>
-                        <tr></tr>
-                    </tbody>
-                </table>
-            </LayoutTemplate>
-        </asp:ListView>
+        <span class="esh-catalog-label col-md-4 col-md-offset-2l">
+            <a href="EditCatalogItem.aspx">
+                Insert item
+            </a>
+        </span>
     </div>
 </asp:Content>

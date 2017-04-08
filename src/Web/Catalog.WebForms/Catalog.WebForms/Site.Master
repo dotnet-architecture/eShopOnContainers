@@ -1,4 +1,4 @@
-﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="Microsoft.eShopOnContainers.Catalog.WebForms.SiteMaster" %>
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="eShopOnContainers.Catalog.WebForms.SiteMaster" %>
 
 <!DOCTYPE html>
 
@@ -11,10 +11,10 @@
     <asp:PlaceHolder runat="server">
         <%: Scripts.Render("~/bundles/modernizr") %>
     </asp:PlaceHolder>
-
-    <webopt:bundlereference runat="server" path="~/Content/css" />
+    <webopt:BundleReference runat="server" Path="~/Content/css" />
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-
+    <link href="~/Content/catalog.component.css" rel="stylesheet" />
+    <link href="~/Content/app.component.css" rel="stylesheet" />
 </head>
 <body>
     <form runat="server">
@@ -39,31 +39,42 @@
             </Scripts>
         </asp:ScriptManager>
 
-        <div class="navbar navbar-inverse navbar-fixed-top">
+        <header class="navbar navbar-light navbar-static-top">
             <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" runat="server" href="~/">Application name</a>
-                </div>
-                <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
-                        <li><a runat="server" href="~/">Home</a></li>
-                        <li><a runat="server" href="~/About">About</a></li>
-                        <li><a runat="server" href="~/Contact">Contact</a></li>
-                    </ul>
-                </div>
+                <article class="row">
+
+                    <section class="col-lg-7 col-md-6 col-xs-12">
+                        <a class="navbar-brand" href="Default.aspx">
+                            <img src="/Content/brand.png" />
+                        </a>
+                    </section>
+                </article>
             </div>
-        </div>
+        </header>
         <div class="container body-content">
+            <section class="esh-catalog-hero">
+                <div class="container">
+                    <img class="esh-catalog-title" src="/Content/main_banner_text.png" />
+                </div>
+            </section>
+            <br />
             <asp:ContentPlaceHolder ID="MainContent" runat="server">
             </asp:ContentPlaceHolder>
             <hr />
-            <footer>
-                <p>&copy; <%: DateTime.Now.Year %> - My ASP.NET Application</p>
+            <footer class="esh-app-footer">
+                <div class="container">
+                    <article class="row">
+
+                        <section class="col-sm-6">
+                            <img class="esh-app-footer-brand" src="/Content/brand_dark.png" />
+                        </section>
+
+                        <section class="col-sm-6">
+                            <div class="esh-app-footer-text hidden-xs">e-ShoponContainers. All right reserved </div>
+                        </section>
+
+                    </article>
+                </div>
             </footer>
         </div>
 

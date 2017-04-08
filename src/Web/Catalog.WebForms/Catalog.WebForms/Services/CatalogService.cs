@@ -127,5 +127,42 @@ namespace eShopOnContainers.Core.Services.Catalog
                 return new ObservableCollection<CatalogType>();
             }
         }
+
+        public Task DeleteCatalogItemAsync(string catalogItemId)
+        {
+            // TODO:
+            UriBuilder builder = new UriBuilder("" /* GlobalSetting.Instance.CatalogEndpoint */);
+
+            builder.Path = $"api/v1/catalog/{catalogItemId}";
+
+            string uri = builder.ToString();
+
+            return _requestProvider.DeleteAsync(uri);
+        }
+
+        public Task<CatalogItem> UpdateCatalogItemAsync(CatalogItem item)
+        {
+            // TODO:
+            UriBuilder builder = new UriBuilder("" /* GlobalSetting.Instance.CatalogEndpoint */);
+
+            builder.Path = "api/v1/catalog/edit";
+
+            string uri = builder.ToString();
+
+            return _requestProvider.PostAsync(uri, item);
+        }
+
+        public Task<CatalogItem> CreateCatalogItemAsync(CatalogItem item)
+        {
+            // TODO:
+            UriBuilder builder = new UriBuilder("" /* GlobalSetting.Instance.CatalogEndpoint */);
+
+            builder.Path = "api/v1/catalog/create";
+
+            string uri = builder.ToString();
+
+            return _requestProvider.PostAsync(uri, item);
+
+        }
     }
 }

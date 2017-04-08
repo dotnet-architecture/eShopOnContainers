@@ -7,7 +7,7 @@ using System.Web;
 using System.Web.Configuration;
 using System.Web.UI;
 
-namespace Microsoft.eShopOnContainers.Catalog.WebForms.Modules
+namespace eShopOnContainers.Catalog.WebForms.Modules
 {
     // Using DI with WebForms is not yet implemented.
     // This implementation has been adapted from this post:
@@ -15,9 +15,9 @@ namespace Microsoft.eShopOnContainers.Catalog.WebForms.Modules
 
     public class AutoFacHttpModule : IHttpModule
     {
-        private static IContainer Container => lazyContainer.Value;
+        private IContainer Container => lazyContainer.Value;
 
-        private static Lazy<IContainer> lazyContainer = new Lazy<IContainer>(() => CreateContainer());
+        private Lazy<IContainer> lazyContainer = new Lazy<IContainer>(() => CreateContainer());
 
         private static IContainer CreateContainer()
         {
@@ -44,6 +44,7 @@ namespace Microsoft.eShopOnContainers.Catalog.WebForms.Modules
         public void Dispose()
         {
             Container.Dispose();
+
         }
 
         public void Init(HttpApplication context)

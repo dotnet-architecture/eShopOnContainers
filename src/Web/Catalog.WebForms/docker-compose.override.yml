@@ -3,7 +3,10 @@ version: '2.1'
 services:
   sql.data:
     environment:
+      - SA_PASSWORD=Pass@word
       - ACCEPT_EULA=Y
+    ports:
+      - "5433:1433"
 
   catalog.api:
     environment:
@@ -16,7 +19,8 @@ services:
 
   catalog.webforms:
     ports:
-      - "80"
+      - "80:80"
+
 networks:
   default:
     external:
