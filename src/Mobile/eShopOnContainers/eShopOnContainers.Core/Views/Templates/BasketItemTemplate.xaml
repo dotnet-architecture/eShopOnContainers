@@ -144,7 +144,7 @@
                     HorizontalTextAlignment="Center"
                     VerticalTextAlignment="Center"
                     HeightRequest="60"
-                    Text="{Binding OldUnitPrice, StringFormat='Note that the price of this article changed in our Catalog. The old price when you originally added it to the basket was ${0:N2}'}" />
+                    Text="{Binding OldUnitPrice, StringFormat='Note that the price of this article changed in our Catalog. The old price when you originally added it to the basket was $ {0:N2}'}" />
             </Grid>
             <Grid 
                 Grid.Column="0"
