@@ -51,6 +51,11 @@ namespace eShopConContainers.WebSPA
 
             services.Configure<AppSettings>(Configuration);
 
+            services.AddDataProtection(opts =>
+            {
+                opts.ApplicationDiscriminator = "eshop.webspa";
+            });
+
             services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
 
             services.AddMvc()

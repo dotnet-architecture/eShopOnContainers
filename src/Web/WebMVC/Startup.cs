@@ -44,6 +44,11 @@ namespace Microsoft.eShopOnContainers.WebMVC
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDataProtection(opts =>
+            {
+                opts.ApplicationDiscriminator = "eshop.webmvc";
+            });
+
             services.AddMvc();
             services.Configure<AppSettings>(Configuration);
 
