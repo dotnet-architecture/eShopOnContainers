@@ -9,6 +9,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Serialization;
 using eShopOnContainers.WebSPA;
+using Microsoft.Extensions.HealthChecks;
+using System.Threading.Tasks;
 
 namespace eShopConContainers.WebSPA
 {
@@ -42,6 +44,14 @@ namespace eShopConContainers.WebSPA
         // For more information on how to configure your application, visit http://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHealthChecks(checks =>
+            {
+                checks.AddUrlCheck(Configuration["CatalogUrl"]);
+                checks.AddUrlCheck(Configuration["OrderingUrl"]);
+                checks.AddUrlCheck(Configuration["BasketUrl"]);
+                checks.AddUrlCheck(Configuration["IdentityUrl"]);
+            });
+
             services.Configure<AppSettings>(Configuration);
 
             services.AddDataProtection(opts =>

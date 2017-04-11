@@ -9,5 +9,6 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
     public class Settings
     {
         public string ExternalCatalogBaseUrl {get;set;}
+        public string EventBusConnection { get; set; }
     }
 }

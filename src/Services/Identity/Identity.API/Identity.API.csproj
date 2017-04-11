@@ -12,7 +12,7 @@
     <PackageTargetFallback>$(PackageTargetFallback);dotnet5.6;portable-net45+win8</PackageTargetFallback>
     <DockerComposeProjectPath>..\..\..\..\docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
-
+  
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="1.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="1.1.0" />
@@ -41,8 +41,8 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="1.1.0-msbuild3-final">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="IdentityServer4.AspNetIdentity" Version="1.0.0-rc3" />
-    <PackageReference Include="IdentityServer4.EntityFramework" Version="1.0.0-rc3" />
+    <PackageReference Include="IdentityServer4.AspNetIdentity" Version="1.0.0" />
+    <PackageReference Include="IdentityServer4.EntityFramework" Version="1.0.0" />
   </ItemGroup>
 
   <Target Name="PrepublishScript" BeforeTargets="PrepareForPublish">
@@ -55,6 +55,16 @@
     <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="1.0.0-msbuild3-final" />
     <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="1.0.0-msbuild3-final" />
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="1.0.0-msbuild3-final" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Certificate\idsrv3test.pfx" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\BuildingBlocks\HealthChecks\src\Microsoft.AspNetCore.HealthChecks\Microsoft.AspNetCore.HealthChecks.csproj" />
+    <ProjectReference Include="..\..\..\BuildingBlocks\HealthChecks\src\Microsoft.Extensions.HealthChecks.Data\Microsoft.Extensions.HealthChecks.Data.csproj" />
+    <ProjectReference Include="..\..\..\BuildingBlocks\HealthChecks\src\Microsoft.Extensions.HealthChecks\Microsoft.Extensions.HealthChecks.csproj" />
   </ItemGroup>
 
   <ItemGroup>

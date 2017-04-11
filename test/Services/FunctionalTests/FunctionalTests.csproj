@@ -5,6 +5,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Services\Catalog\settings.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Services\Catalog\settings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.DotNet.InternalAbstractions" Version="1.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0-preview-20170106-08" />
     <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="1.1.0" />
@@ -13,12 +23,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Services\Basket\Basket.API\Basket.API.csproj" />
+    <ProjectReference Include="..\..\..\src\Services\Catalog\Catalog.API\Catalog.API.csproj" />
     <ProjectReference Include="..\..\..\src\Services\Ordering\Ordering.API\Ordering.API.csproj" />
     <ProjectReference Include="..\..\..\src\Web\WebMVC\WebMVC.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="settings.json">
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Services\Ordering\settings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

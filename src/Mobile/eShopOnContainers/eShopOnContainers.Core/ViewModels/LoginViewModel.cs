@@ -2,9 +2,8 @@
 using eShopOnContainers.Core.Models.User;
 using eShopOnContainers.Core.Services.Identity;
 using eShopOnContainers.Core.Services.OpenUrl;
-using eShopOnContainers.Core.Services.User;
 using eShopOnContainers.Core.Validations;
-using eShopOnContainers.ViewModels.Base;
+using eShopOnContainers.Core.ViewModels.Base;
 using IdentityModel.Client;
 using System;
 using System.Diagnostics;
@@ -25,16 +24,13 @@ namespace eShopOnContainers.Core.ViewModels
 
         private IOpenUrlService _openUrlService;
         private IIdentityService _identityService;
-        private IUserService _userService;
 
         public LoginViewModel(
             IOpenUrlService openUrlService,
-            IIdentityService identityService,
-            IUserService userService)
+            IIdentityService identityService)
         {
             _openUrlService = openUrlService;
             _identityService = identityService;
-            _userService = userService;
 
             _userName = new ValidatableObject<string>();
             _password = new ValidatableObject<string>();
@@ -131,6 +127,10 @@ namespace eShopOnContainers.Core.ViewModels
 
         public ICommand SettingsCommand => new Command(async () => await SettingsAsync());
 
+		public ICommand ValidateUserNameCommand => new Command(() => ValidateUserName());
+
+		public ICommand ValidatePasswordCommand => new Command(() => ValidatePassword());
+
         public override Task InitializeAsync(object navigationData)
         {
             if(navigationData is LogoutParameter)
@@ -221,14 +221,16 @@ namespace eShopOnContainers.Core.ViewModels
 
         private async Task NavigateAsync(string url)
         {
-            if (url.Equals(GlobalSetting.Instance.LogoutCallback))
+            var unescapedUrl = System.Net.WebUtility.UrlDecode(url);
+
+            if (unescapedUrl.Equals(GlobalSetting.Instance.LogoutCallback))
             {
                 Settings.AuthAccessToken = string.Empty;
                 Settings.AuthIdToken = string.Empty;
                 IsLogin = false;
                 LoginUrl = _identityService.CreateAuthorizeRequest();
             }
-            else if (url.Contains(GlobalSetting.Instance.IdentityCallback))
+            else if (unescapedUrl.Contains(GlobalSetting.Instance.IdentityCallback))
             {
                 var authResponse = new AuthorizeResponse(url);
 
@@ -253,16 +255,26 @@ namespace eShopOnContainers.Core.ViewModels
 
         private bool Validate()
         {
-            bool isValidUser = _userName.Validate();
-            bool isValidPassword = _password.Validate();
+			bool isValidUser = ValidateUserName();
+            bool isValidPassword = ValidatePassword();
 
             return isValidUser && isValidPassword;
         }
 
+		private bool ValidateUserName()
+		{
+			return _userName.Validate();
+		}
+
+		private bool ValidatePassword()
+		{
+			return _password.Validate();
+		}
+
         private void AddValidations()
         {
-            _userName.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Username should not be empty" });
-            _password.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Password should not be empty" });
+            _userName.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "A username is required." });
+            _password.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "A password is required." });
         }
 
         public void InvalidateMock()

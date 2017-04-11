@@ -3,21 +3,23 @@
     using EntityFrameworkCore.Metadata.Builders;
     using Microsoft.EntityFrameworkCore;
     using Model;
+    using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF;
 
     public class CatalogContext : DbContext
     {
-        public CatalogContext(DbContextOptions options) : base(options)
+        public CatalogContext(DbContextOptions<CatalogContext> options) : base(options)
         {
         }
         public DbSet<CatalogItem> CatalogItems { get; set; }
         public DbSet<CatalogBrand> CatalogBrands { get; set; }
         public DbSet<CatalogType> CatalogTypes { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<CatalogBrand>(ConfigureCatalogBrand);
             builder.Entity<CatalogType>(ConfigureCatalogType);
             builder.Entity<CatalogItem>(ConfigureCatalogItem);
-        }
+        }     
 
         void ConfigureCatalogItem(EntityTypeBuilder<CatalogItem> builder)
         {

@@ -11,6 +11,8 @@ import 'rxjs/add/operator/catch';
 import { SecurityService } from './security.service';
 import { Guid } from '../../../guid';
 
+// Implementing a Retry-Circuit breaker policy 
+// is pending to do for the SPA app
 @Injectable()
 export class DataService {
     constructor(private http: Http, private securityService: SecurityService) { }

@@ -27,7 +27,8 @@ export class BasketWrapperService {
                 productName: item.name,
                 quantity: 1,
                 unitPrice: item.price,
-                id: ''
+                id: '',
+                oldUnitPrice: 0
             };
 
             this.addItemToBasketSource.next(basket);

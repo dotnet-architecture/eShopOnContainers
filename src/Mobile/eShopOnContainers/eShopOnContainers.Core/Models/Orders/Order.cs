@@ -34,6 +34,9 @@ namespace eShopOnContainers.Core.Models.Orders
         [JsonProperty("country")]
         public string ShippingCountry { get; set; }
 
+        [JsonProperty("zipCode")]
+        public string ShippingZipCode { get; set; }
+
         public int CardTypeId { get; set; }
 
         public string CardNumber { get; set; }

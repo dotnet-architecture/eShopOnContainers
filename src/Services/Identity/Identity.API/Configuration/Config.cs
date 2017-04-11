@@ -1,31 +1,30 @@
 ﻿using IdentityServer4.Models;
 using Microsoft.Extensions.Options;
 using System.Collections.Generic;
+using IdentityServer4;
 
 namespace Identity.API.Configuration
 {
     public class Config
     {
-        // scopes define the resources in your system
-        public static IEnumerable<Scope> GetScopes()
+        // ApiResources define the apis in your system
+        public static IEnumerable<ApiResource> GetApis()
         {
-            return new List<Scope>
+            return new List<ApiResource>
             {
-                //Authentication OpenId uses this scopes;
-                StandardScopes.OpenId,
-                StandardScopes.Profile,
+                new ApiResource("orders", "Orders Service"),
+                new ApiResource("basket", "Basket Service")
+            };
+        }
 
-                //Each api we want to securice;
-                new Scope
-                {
-                    Name = "orders",
-                    Description = "Orders Service"
-                },
-                new Scope
-                {
-                    Name = "basket",
-                    Description = "Basket Service"
-                }
+        // Identity resources are data like user ID, name, or email address of a user
+        // see: http://docs.identityserver.io/en/release/configuration/resources.html
+        public static IEnumerable<IdentityResource> GetResources()
+        {
+            return new List<IdentityResource>
+            {
+                new IdentityResources.OpenId(),
+                new IdentityResources.Profile()
             };
         }
 
@@ -47,8 +46,8 @@ namespace Identity.API.Configuration
                     AllowedCorsOrigins =     { $"{clientsUrl["Spa"]}" },
                     AllowedScopes =
                     {
-                        StandardScopes.OpenId.Name,
-                        StandardScopes.Profile.Name,
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
                         "orders",
                         "basket"
                     }
@@ -59,14 +58,14 @@ namespace Identity.API.Configuration
                     ClientName = "eShop Xamarin OpenId Client",
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
-                    RedirectUris =           { "http://eshopxamarin/callback.html" },
+                    RedirectUris =          { clientsUrl["Xamarin"] },
                     RequireConsent = false,
                     PostLogoutRedirectUris = { "http://13.88.8.119:5105/Account/Redirecting", "http://10.6.1.234:5105/Account/Redirecting" },
                     AllowedCorsOrigins =     { "http://eshopxamarin" },
                     AllowedScopes =
                     {
-                        StandardScopes.OpenId.Name,
-                        StandardScopes.Profile.Name,
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
                         "orders",
                         "basket"
                     }
@@ -82,6 +81,7 @@ namespace Identity.API.Configuration
                     ClientUri = $"{clientsUrl["Mvc"]}",                             // public uri of the client
                     AllowedGrantTypes = GrantTypes.Hybrid,
                     RequireConsent = false,
+                    AllowOfflineAccess = true,
                     RedirectUris = new List<string>
                     {
                         $"{clientsUrl["Mvc"]}/signin-oidc",
@@ -96,9 +96,9 @@ namespace Identity.API.Configuration
                     },
                     AllowedScopes = new List<string>
                     {
-                        StandardScopes.OpenId.Name,
-                        StandardScopes.Profile.Name,
-                        StandardScopes.OfflineAccess.Name,
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServerConstants.StandardScopes.OfflineAccess,
                         "orders",
                         "basket",
                     },

@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.TestHost;
+﻿using FunctionalTests.Extensions;
 using Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands;
 using Microsoft.eShopOnContainers.WebMVC.ViewModels;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,22 +20,22 @@ namespace FunctionalTests.Services.Ordering
         {
             using (var server = CreateServer())
             {
-                var client = server.CreateClient();
+                var client = server.CreateIdempotentClient();
 
-                //Arrange               
+                // GIVEN an order is created              
                 await client.PostAsync(Post.AddNewOrder, new StringContent(BuildOrder(), UTF8Encoding.UTF8, "application/json"));
 
                 var ordersResponse = await client.GetAsync(Get.Orders);
                 var responseBody = await ordersResponse.Content.ReadAsStringAsync();
-                dynamic orders = JsonConvert.DeserializeObject(responseBody);                
-                string orderId = orders[0].ordernumber;
+                var orders = JsonConvert.DeserializeObject<List<Order>>(responseBody);
+                string orderId = orders.OrderByDescending(o => o.Date).First().OrderNumber;
 
-                //Act
+                //WHEN we request the order bit its id
                 var order= await client.GetAsync(Get.OrderBy(int.Parse(orderId)));
                 var orderBody = await order.Content.ReadAsStringAsync();
                 var result = JsonConvert.DeserializeObject<Order>(orderBody);
 
-                //Assert
+                //THEN the requested order is returned 
                 Assert.Equal(orderId, result.OrderNumber);
                 Assert.Equal("inprocess", result.Status);
                 Assert.Equal(1, result.OrderItems.Count);
@@ -55,19 +55,21 @@ namespace FunctionalTests.Services.Ordering
                 country: "USA",
                 state: "WA",
                 street: "One way",
-                zipcode: "zipcode"
+                zipcode: "zipcode",
+                paymentId: 1,
+                buyerId: 3
             );
 
             order.AddOrderItem(new OrderItemDTO()
             {
                 ProductId = 1,
-                Discount = 10M,
+                Discount = 8M,
                 UnitPrice = 10,
                 Units = 1,
                 ProductName = "Some name"
             });
 
             return JsonConvert.SerializeObject(order);
-        }
+        }       
     }
 }

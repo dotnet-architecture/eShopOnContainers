@@ -1,6 +1,5 @@
-﻿using eShopOnContainers.ViewModels.Base;
+﻿using eShopOnContainers.Core.ViewModels.Base;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace eShopOnContainers.Core.Validations
@@ -8,13 +7,24 @@ namespace eShopOnContainers.Core.Validations
     public class ValidatableObject<T> : ExtendedBindableObject, IValidity
     {
         private readonly List<IValidationRule<T>> _validations;
-        private readonly ObservableCollection<string> _errors;
+		private List<string> _errors;
         private T _value;
         private bool _isValid;
 
         public List<IValidationRule<T>> Validations => _validations;
 
-        public ObservableCollection<string> Errors => _errors;
+		public List<string> Errors
+		{
+			get
+			{
+				return _errors;
+			}
+			set
+			{
+				_errors = value;
+				RaisePropertyChanged(() => Errors);
+			}
+		}
 
         public T Value
         {
@@ -22,7 +32,6 @@ namespace eShopOnContainers.Core.Validations
             {
                 return _value;
             }
-
             set
             {
                 _value = value;
@@ -36,11 +45,9 @@ namespace eShopOnContainers.Core.Validations
             {
                 return _isValid;
             }
-
             set
             {
                 _isValid = value;
-                _errors.Clear();
                 RaisePropertyChanged(() => IsValid);
             }
         }
@@ -48,7 +55,7 @@ namespace eShopOnContainers.Core.Validations
         public ValidatableObject()
         {
             _isValid = true;
-            _errors = new ObservableCollection<string>();
+            _errors = new List<string>();
             _validations = new List<IValidationRule<T>>();
         }
 
@@ -59,11 +66,7 @@ namespace eShopOnContainers.Core.Validations
             IEnumerable<string> errors = _validations.Where(v => !v.Check(Value))                             
                 .Select(v => v.ValidationMessage);
 
-            foreach (var error in errors)
-            {
-                Errors.Add(error);
-            }
-
+			Errors = errors.ToList();
             IsValid = !Errors.Any();
 
             return this.IsValid;

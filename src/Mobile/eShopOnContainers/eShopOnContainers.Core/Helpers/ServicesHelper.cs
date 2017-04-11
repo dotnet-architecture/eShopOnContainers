@@ -1,6 +1,6 @@
 ﻿using eShopOnContainers.Core.Models.Basket;
 using eShopOnContainers.Core.Models.Catalog;
-using eShopOnContainers.ViewModels.Base;
+using eShopOnContainers.Core.ViewModels.Base;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -21,7 +21,7 @@ namespace eShopOnContainers.Core.Helpers
 
             try
             {
-                if (!ViewModelLocator.Instance.UseMockService
+                if (!ViewModelLocator.UseMockService
                     && Settings.UrlBase != GlobalSetting.DefaultEndpoint)
                 {
                     foreach (var catalogItem in catalogItems)
@@ -54,7 +54,7 @@ namespace eShopOnContainers.Core.Helpers
 
             try
             {
-                if (!ViewModelLocator.Instance.UseMockService
+                if (!ViewModelLocator.UseMockService
                     && Settings.UrlBase != GlobalSetting.DefaultEndpoint)
                 {
                     foreach (var basketItem in basketItems)

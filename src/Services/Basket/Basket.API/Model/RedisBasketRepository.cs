@@ -31,6 +31,18 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Model
             return await database.KeyDeleteAsync(id.ToString());
         }
 
+        public async Task<IEnumerable<string>> GetUsers()
+        {
+            var server = await GetServer();
+            
+            IEnumerable<RedisKey> data = server.Keys();
+            if (data == null)
+            {
+                return null;
+            }
+            return data.Select(k => k.ToString());
+        }
+
         public async Task<CustomerBasket> GetBasketAsync(string customerId)
         {
             var database = await GetDatabase();
@@ -63,22 +75,38 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Model
         {
             if (_redis == null)
             {
-                if (IPAddress.TryParse(_settings.ConnectionString, out var ip))
-                {
-                    _redis = await ConnectionMultiplexer.ConnectAsync(ip.ToString());
-                    _logger.LogInformation($"Connecting to database at {_settings.ConnectionString}");
-                }
-                else
-                {
-                    // workaround for https://github.com/StackExchange/StackExchange.Redis/issues/410
-                    var ips = await Dns.GetHostAddressesAsync(_settings.ConnectionString);
-                    _logger.LogInformation($"Connecting to database {_settings.ConnectionString} at IP {ips.First().ToString()}");
-                    _redis = await ConnectionMultiplexer.ConnectAsync(ips.First().ToString());
-                }
+                await ConnectToRedisAsync();
             }
 
             return _redis.GetDatabase();
         }
+
+        private async Task<IServer> GetServer()
+        {
+            if (_redis == null)
+            {
+                await ConnectToRedisAsync();
+            }
+            var endpoint = _redis.GetEndPoints();
+
+            return _redis.GetServer(endpoint.First());
+        }
+
+        private async Task ConnectToRedisAsync()
+        {
+            //TODO: Need to make this more robust.
+            if (IPAddress.TryParse(_settings.ConnectionString, out var ip))
+            {
+                _redis = await ConnectionMultiplexer.ConnectAsync(ip.ToString());
+                _logger.LogInformation($"Connecting to database at {_settings.ConnectionString}");
+            }
+            else
+            {
+                // workaround for https://github.com/StackExchange/StackExchange.Redis/issues/410
+                var ips = await Dns.GetHostAddressesAsync(_settings.ConnectionString);
+                _logger.LogInformation($"Connecting to database {_settings.ConnectionString} at IP {ips.First().ToString()}");
+                _redis = await ConnectionMultiplexer.ConnectAsync(ips.First().ToString());
+            }
+        }
     }
 }
-
