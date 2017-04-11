@@ -10,7 +10,7 @@
         public TestServer CreateServer()
         {
             var webHostBuilder = new WebHostBuilder();            
-            webHostBuilder.UseContentRoot(Directory.GetCurrentDirectory());
+            webHostBuilder.UseContentRoot(Directory.GetCurrentDirectory() + "\\Services\\Ordering");
             webHostBuilder.UseStartup<OrderingTestsStartup>();
 
             return new TestServer(webHostBuilder);

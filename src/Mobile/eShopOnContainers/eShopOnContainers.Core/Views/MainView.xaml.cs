@@ -1,6 +1,5 @@
 ﻿using eShopOnContainers.Core.ViewModels;
 using eShopOnContainers.Core.ViewModels.Base;
-using eShopOnContainers.ViewModels.Base;
 using Xamarin.Forms;
 
 namespace eShopOnContainers.Core.Views
@@ -16,7 +15,7 @@ namespace eShopOnContainers.Core.Views
         {
             base.OnAppearing();
 
-            MessagingCenter.Subscribe<MainViewModel, int>(this, MessengerKeys.ChangeTab, (sender, arg) =>
+            MessagingCenter.Subscribe<MainViewModel, int>(this, MessageKeys.ChangeTab, (sender, arg) =>
             {
                switch(arg)
                 {
@@ -32,17 +31,20 @@ namespace eShopOnContainers.Core.Views
                 }
             });
 
-            var homeViewModel = ViewModelLocator.Instance.Resolve<CatalogViewModel>();
-            await homeViewModel.InitializeAsync(null);
-            HomeView.BindingContext = homeViewModel;
+			await ((CatalogViewModel)HomeView.BindingContext).InitializeAsync(null);
+			await ((BasketViewModel)BasketView.BindingContext).InitializeAsync(null);
+			await ((ProfileViewModel)ProfileView.BindingContext).InitializeAsync(null);
+        }
 
-            var basketViewModel = ViewModelLocator.Instance.Resolve<BasketViewModel>();
-            await basketViewModel.InitializeAsync(null);
-            BasketView.BindingContext = basketViewModel;
+        protected override async void OnCurrentPageChanged()
+        {
+            base.OnCurrentPageChanged();
 
-            var profileViewModel = ViewModelLocator.Instance.Resolve<ProfileViewModel>();
-            await profileViewModel.InitializeAsync(null);
-            ProfileView.BindingContext = profileViewModel;
+            if (CurrentPage is BasketView)
+            {
+                // Force basket view refresh every time we access it
+                await (BasketView.BindingContext as ViewModelBase).InitializeAsync(null);
+            }
         }
     }
 }

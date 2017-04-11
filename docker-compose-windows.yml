@@ -1,0 +1,80 @@
+version: '2.1'
+
+services:
+  basket.api:
+    image: eshop/basket.api
+    build:
+      context: ./src/Services/Basket/Basket.API
+      dockerfile: Dockerfile.nanowin
+    depends_on:
+      - basket.data
+      - identity.api
+
+  catalog.api:
+    image: eshop/catalog.api
+    build:
+      context: ./src/Services/Catalog/Catalog.API
+      dockerfile: Dockerfile.nanowin
+    depends_on:
+      - sql.data
+
+  identity.api:
+    image: eshop/identity.api
+    build:
+      context: ./src/Services/Identity/Identity.API
+      dockerfile: Dockerfile.nanowin
+    depends_on:
+      - sql.data
+
+  ordering.api:
+    image: eshop/ordering.api
+    build:
+      context: ./src/Services/Ordering/Ordering.API
+      dockerfile: Dockerfile.nanowin
+    depends_on:
+      - sql.data
+
+  webspa:
+    image: eshop/webspa
+    build:
+      context: ./src/Web/WebSPA
+      dockerfile: Dockerfile.nanowin
+    depends_on:
+      - identity.api
+      - basket.api
+
+  webmvc:
+    image: eshop/webmvc
+    build:
+      context: ./src/Web/WebMVC
+      dockerfile: Dockerfile.nanowin
+    depends_on:
+      - catalog.api
+      - ordering.api
+      - identity.api
+      - basket.api
+
+  sql.data:
+    image: microsoft/mssql-server-windows
+
+  basket.data:
+    image: redis
+    build:
+      context: ./_docker/redis
+      dockerfile: Dockerfile.nanowin
+    ports:
+        - "6379:6379"
+
+  rabbitmq:
+    image: rabbitmq
+    build:
+      context: ./_docker/rabbitmq
+      dockerfile: Dockerfile.nanowin  
+    ports:
+        - "5672:5672"
+  
+networks:
+  default:
+    external:
+      name: nat
+

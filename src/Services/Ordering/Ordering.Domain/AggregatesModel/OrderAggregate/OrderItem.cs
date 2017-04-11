@@ -1,4 +1,5 @@
 ﻿using Microsoft.eShopOnContainers.Services.Ordering.Domain.Seedwork;
+using Ordering.Domain.Exceptions;
 using System;
 
 namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate
@@ -11,7 +12,6 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
         // aligned with DDD Aggregates and Domain Entities (Instead of properties and property collections)
         private string  _productName;
         private string  _pictureUrl;
-        private int     _orderId;
         private decimal _unitPrice;
         private decimal _discount;
         private int     _units;
@@ -24,12 +24,12 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
         {
             if (units <= 0)
             {
-                throw new ArgumentNullException("Invalid number of units");
+                throw new OrderingDomainException("Invalid number of units");
             }
 
             if ((unitPrice * units) < discount)
             {
-                throw new ArgumentException("The total of order item is lower than applied discount");
+                throw new OrderingDomainException("The total of order item is lower than applied discount");
             }
 
             ProductId = productId;
@@ -58,7 +58,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
         {
             if (discount < 0)
             {
-                throw new ArgumentException("Discount is not valid");
+                throw new OrderingDomainException("Discount is not valid");
             }
 
             _discount = discount;
@@ -68,7 +68,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
         {
             if (units < 0)
             {
-                throw new ArgumentException("Invalid units");
+                throw new OrderingDomainException("Invalid units");
             }
 
             _units += units;

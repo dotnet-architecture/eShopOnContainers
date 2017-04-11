@@ -12,7 +12,7 @@ namespace IntegrationTests.Services.Catalog
         public TestServer CreateServer()
         {
             var webHostBuilder = new WebHostBuilder();
-            webHostBuilder.UseContentRoot(Directory.GetCurrentDirectory());
+            webHostBuilder.UseContentRoot(Directory.GetCurrentDirectory() + "\\Services\\Catalog");
             webHostBuilder.UseStartup<Startup>();
 
             return new TestServer(webHostBuilder);

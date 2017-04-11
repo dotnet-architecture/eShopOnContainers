@@ -9,6 +9,6 @@ namespace Microsoft.eShopOnContainers.WebMVC.ViewModels.CartViewModels
     public class CartComponentViewModel
     {
         public int ItemsCount { get; set; }
-        public string Disabled { get { return (ItemsCount == 0) ? "is-disabled" : ""; } }
+        public string Disabled => (ItemsCount == 0) ? "is-disabled" : "";
     }
 }

@@ -17,6 +17,8 @@ using IdentityServer4.Services;
 using System.Threading;
 using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.HealthChecks;
+using Identity.API.Certificate;
 
 namespace eShopOnContainers.Identity
 {
@@ -43,7 +45,8 @@ namespace eShopOnContainers.Identity
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {
+        {            
+
             // Add framework services.
             services.AddDbContext<ApplicationDbContext>(options =>
              options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
@@ -61,6 +64,11 @@ namespace eShopOnContainers.Identity
 
             services.AddMvc();
 
+            services.AddHealthChecks(checks =>
+            {
+                checks.AddSqlCheck("Identity_Db", Configuration.GetConnectionString("DefaultConnection"));
+            });
+
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
             services.AddTransient<ILoginService<ApplicationUser>, EFLoginService>();
@@ -70,11 +78,13 @@ namespace eShopOnContainers.Identity
             Dictionary<string, string> clientUrls = new Dictionary<string, string>();
             clientUrls.Add("Mvc", Configuration.GetValue<string>("MvcClient"));
             clientUrls.Add("Spa", Configuration.GetValue<string>("SpaClient"));
+            clientUrls.Add("Xamarin", Configuration.GetValue<string>("XamarinCallback"));
 
             // Adds IdentityServer
             services.AddIdentityServer(x => x.IssuerUri = "null")
-                .AddTemporarySigningCredential()
-                .AddInMemoryScopes(Config.GetScopes())
+                .AddSigningCredential(Certificate.Get())
+                .AddInMemoryApiResources(Config.GetApis())
+                .AddInMemoryIdentityResources(Config.GetResources())
                 .AddInMemoryClients(Config.GetClients(clientUrls))
                 .AddAspNetIdentity<ApplicationUser>()
                 .Services.AddTransient<IProfileService, ProfileService>(); 

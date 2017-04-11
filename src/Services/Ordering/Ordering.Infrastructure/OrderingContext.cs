@@ -1,10 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.BuyerAggregate;
 using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
 using Microsoft.eShopOnContainers.Services.Ordering.Domain.Seedwork;
+using Ordering.Infrastructure;
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
 {
@@ -26,7 +30,12 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
 
         public DbSet<OrderStatus> OrderStatus { get; set; }
 
-        public OrderingContext(DbContextOptions options) : base(options) { }
+        private readonly IMediator _mediator;
+
+        public OrderingContext(DbContextOptions options, IMediator mediator) : base(options)
+        {
+            _mediator = mediator;
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -38,7 +47,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
             modelBuilder.Entity<OrderItem>(ConfigureOrderItems);
             modelBuilder.Entity<CardType>(ConfigureCardTypes);
             modelBuilder.Entity<OrderStatus>(ConfigureOrderStatus);
-            modelBuilder.Entity<Buyer>(ConfigureBuyer);
+            modelBuilder.Entity<Buyer>(ConfigureBuyer); 
         }
 
         private void ConfigureRequests(EntityTypeBuilder<ClientRequest> requestConfiguration)
@@ -53,6 +62,10 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
         {
             addressConfiguration.ToTable("address", DEFAULT_SCHEMA);
 
+            // DDD Pattern comment: Implementing the Address Id as "Shadow property"
+            // becuase the Address is a Value-Object (VO) and an Id (Identity) is not desired for a VO
+            // EF Core just needs the Id so it is capable to store it in a database table
+            // See: https://docs.microsoft.com/en-us/ef/core/modeling/shadow-properties 
             addressConfiguration.Property<int>("Id")
                 .IsRequired();
 
@@ -64,6 +77,8 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
             buyerConfiguration.ToTable("buyers", DEFAULT_SCHEMA);
 
             buyerConfiguration.HasKey(b => b.Id);
+
+            buyerConfiguration.Ignore(b => b.DomainEvents);
 
             buyerConfiguration.Property(b => b.Id)
                 .ForSqlServerUseSequenceHiLo("buyerseq", DEFAULT_SCHEMA);
@@ -90,6 +105,8 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
             paymentConfiguration.ToTable("paymentmethods", DEFAULT_SCHEMA);
 
             paymentConfiguration.HasKey(b => b.Id);
+
+            paymentConfiguration.Ignore(b => b.DomainEvents);
 
             paymentConfiguration.Property(b => b.Id)
                 .ForSqlServerUseSequenceHiLo("paymentseq", DEFAULT_SCHEMA);
@@ -126,26 +143,30 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
 
             orderConfiguration.HasKey(o => o.Id);
 
+            orderConfiguration.Ignore(b => b.DomainEvents);
+
             orderConfiguration.Property(o => o.Id)
                 .ForSqlServerUseSequenceHiLo("orderseq", DEFAULT_SCHEMA);
 
             orderConfiguration.Property<DateTime>("OrderDate").IsRequired();
-            orderConfiguration.Property<int>("BuyerId").IsRequired();
+            orderConfiguration.Property<int?>("BuyerId").IsRequired(false);
             orderConfiguration.Property<int>("OrderStatusId").IsRequired();
-            orderConfiguration.Property<int>("PaymentMethodId").IsRequired();
+            orderConfiguration.Property<int?>("PaymentMethodId").IsRequired(false);
 
             var navigation = orderConfiguration.Metadata.FindNavigation(nameof(Order.OrderItems));
             // DDD Patterns comment:
             //Set as Field (New since EF 1.1) to access the OrderItem collection property through its field
             navigation.SetPropertyAccessMode(PropertyAccessMode.Field);
 
-            orderConfiguration.HasOne(o => o.PaymentMethod)
+            orderConfiguration.HasOne<PaymentMethod>()
                 .WithMany()
                 .HasForeignKey("PaymentMethodId")
+                .IsRequired(false)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            orderConfiguration.HasOne(o => o.Buyer)
+            orderConfiguration.HasOne<Buyer>()
                 .WithMany()
+                .IsRequired(false)
                 .HasForeignKey("BuyerId");
 
             orderConfiguration.HasOne(o => o.OrderStatus)
@@ -158,6 +179,8 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
             orderItemConfiguration.ToTable("orderItems", DEFAULT_SCHEMA);
 
             orderItemConfiguration.HasKey(o => o.Id);
+
+            orderItemConfiguration.Ignore(b => b.DomainEvents);
 
             orderItemConfiguration.Property(o => o.Id)
                 .ForSqlServerUseSequenceHiLo("orderitemseq");
@@ -215,5 +238,23 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
                 .HasMaxLength(200)
                 .IsRequired();
         }
+
+        public async Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken = default(CancellationToken))
+        {
+            // Dispatch Domain Events collection. 
+            // Choices:
+            // A) Right BEFORE committing data (EF SaveChanges) into the DB will make a single transaction including  
+            // side effects from the domain event handlers which are using the same DbContext with "InstancePerLifetimeScope" or "scoped" lifetime
+            // B) Right AFTER committing data (EF SaveChanges) into the DB will make multiple transactions. 
+            // You will need to handle eventual consistency and compensatory actions in case of failures in any of the Handlers. 
+            await _mediator.DispatchDomainEventsAsync(this);
+
+
+            // After executing this line all the changes (from the Command Handler and Domain Event Handlers) 
+            // performed thought the DbContext will be commited
+            var result = await base.SaveChangesAsync();
+
+            return true;
+        }        
     }
 }

@@ -1,38 +1,51 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
+using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF.Services;
 using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
+using Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationEvents.Events;
 using Microsoft.eShopOnContainers.Services.Catalog.API.Model;
 using Microsoft.eShopOnContainers.Services.Catalog.API.ViewModel;
 using Microsoft.Extensions.Options;
+using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
+using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF.Utilities;
+using Catalog.API.IntegrationEvents;
 
 namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
 {
     [Route("api/v1/[controller]")]
     public class CatalogController : ControllerBase
     {
-        private readonly CatalogContext _context;
+        private readonly CatalogContext _catalogContext;
         private readonly IOptionsSnapshot<Settings> _settings;
+        private readonly ICatalogIntegrationEventService _catalogIntegrationEventService;
 
-        public CatalogController(CatalogContext context, IOptionsSnapshot<Settings> settings)
+        public CatalogController(CatalogContext Context, IOptionsSnapshot<Settings> settings, ICatalogIntegrationEventService catalogIntegrationEventService)
         {
-            _context = context;
+            _catalogContext = Context;
+            _catalogIntegrationEventService = catalogIntegrationEventService;
             _settings = settings;
 
-            ((DbContext)context).ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+            ((DbContext)Context).ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
         // GET api/v1/[controller]/items[?pageSize=3&pageIndex=10]
         [HttpGet]
         [Route("[action]")]
         public async Task<IActionResult> Items([FromQuery]int pageSize = 10, [FromQuery]int pageIndex = 0)
+
         {
-            var totalItems = await _context.CatalogItems
+            var totalItems = await _catalogContext.CatalogItems
                 .LongCountAsync();
 
-            var itemsOnPage = await _context.CatalogItems
+            var itemsOnPage = await _catalogContext.CatalogItems
                 .OrderBy(c=>c.Name)
                 .Skip(pageSize * pageIndex)
                 .Take(pageSize)
@@ -41,7 +54,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
             itemsOnPage = ComposePicUri(itemsOnPage);
 
             var model = new PaginatedItemsViewModel<CatalogItem>(
-                pageIndex, pageSize, totalItems, itemsOnPage);
+                pageIndex, pageSize, totalItems, itemsOnPage);           
 
             return Ok(model);
         }
@@ -52,11 +65,11 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
         public async Task<IActionResult> Items(string name, [FromQuery]int pageSize = 10, [FromQuery]int pageIndex = 0)
         {
 
-            var totalItems = await _context.CatalogItems
+            var totalItems = await _catalogContext.CatalogItems
                 .Where(c => c.Name.StartsWith(name))
                 .LongCountAsync();
 
-            var itemsOnPage = await _context.CatalogItems
+            var itemsOnPage = await _catalogContext.CatalogItems
                 .Where(c => c.Name.StartsWith(name))
                 .Skip(pageSize * pageIndex)
                 .Take(pageSize)
@@ -75,7 +88,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
         [Route("[action]/type/{catalogTypeId}/brand/{catalogBrandId}")]
         public async Task<IActionResult> Items(int? catalogTypeId, int? catalogBrandId, [FromQuery]int pageSize = 10, [FromQuery]int pageIndex = 0)
         {
-            var root = (IQueryable<CatalogItem>)_context.CatalogItems;
+            var root = (IQueryable<CatalogItem>)_catalogContext.CatalogItems;
 
             if (catalogTypeId.HasValue)
             {
@@ -99,7 +112,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
 
             var model = new PaginatedItemsViewModel<CatalogItem>(
                 pageIndex, pageSize, totalItems, itemsOnPage);
-            
+
             return Ok(model);
         }
 
@@ -108,7 +121,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
         [Route("[action]")]
         public async Task<IActionResult> CatalogTypes()
         {
-            var items = await _context.CatalogTypes
+            var items = await _catalogContext.CatalogTypes
                 .ToListAsync();
 
             return Ok(items);
@@ -119,10 +132,82 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
         [Route("[action]")]
         public async Task<IActionResult> CatalogBrands()
         {
-            var items = await _context.CatalogBrands
+            var items = await _catalogContext.CatalogBrands
                 .ToListAsync();
 
             return Ok(items);
+        }
+
+        //POST api/v1/[controller]/update
+        [Route("update")]
+        [HttpPost]
+        public async Task<IActionResult> UpdateProduct([FromBody]CatalogItem productToUpdate)
+        {
+            var catalogItem = await _catalogContext.CatalogItems.SingleOrDefaultAsync(i => i.Id == productToUpdate.Id);
+            if (catalogItem == null) return NotFound();
+            var raiseProductPriceChangedEvent = catalogItem.Price != productToUpdate.Price;
+            var oldPrice = catalogItem.Price;
+            
+            // Update current product
+            catalogItem = productToUpdate;
+            _catalogContext.CatalogItems.Update(catalogItem);
+
+            if (raiseProductPriceChangedEvent) // Save and publish integration event if price has changed
+            {
+                //Create Integration Event to be published through the Event Bus
+                var priceChangedEvent = new ProductPriceChangedIntegrationEvent(catalogItem.Id, productToUpdate.Price, oldPrice);
+                
+                // Achieving atomicity between original Catalog database operation and the IntegrationEventLog thanks to a local transaction
+                await _catalogIntegrationEventService.SaveEventAndCatalogContextChangesAsync(priceChangedEvent);
+                
+                // Publish through the Event Bus and mark the saved event as published
+                await _catalogIntegrationEventService.PublishThroughEventBusAsync(priceChangedEvent);
+            }
+            else // Save updated product
+            {
+                await _catalogContext.SaveChangesAsync();
+            }           
+
+            return Ok();
+        }
+
+        //POST api/v1/[controller]/create
+        [Route("create")]
+        [HttpPost]
+        public async Task<IActionResult> CreateProduct([FromBody]CatalogItem product)
+        {
+            _catalogContext.CatalogItems.Add(
+                new CatalogItem
+                {
+                    CatalogBrandId = product.CatalogBrandId,
+                    CatalogTypeId = product.CatalogTypeId,
+                    Description = product.Description,
+                    Name = product.Name,
+                    PictureUri = product.PictureUri,
+                    Price = product.Price
+                });
+
+            await _catalogContext.SaveChangesAsync();
+
+            return Ok();
+        }
+
+        //DELETE api/v1/[controller]/id
+        [Route("{id}")]
+        [HttpDelete]
+        public async Task<IActionResult> DeleteProduct(int id)
+        {
+            var product = _catalogContext.CatalogItems.SingleOrDefault(x => x.Id == id);
+
+            if (product == null)
+            {
+                return NotFound();
+            }            
+
+            _catalogContext.CatalogItems.Remove(product);
+            await _catalogContext.SaveChangesAsync();
+
+            return Ok();
         }
 
         private List<CatalogItem> ComposePicUri(List<CatalogItem> items) {

@@ -7,6 +7,7 @@ using Microsoft.eShopOnContainers.WebMVC.Services;
 using Microsoft.eShopOnContainers.WebMVC.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using System.Net.Http;
+using Polly.CircuitBreaker;
 
 namespace Microsoft.eShopOnContainers.WebMVC.Controllers
 {
@@ -37,18 +38,21 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(Order model, string action)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var user = _appUserParser.Parse(HttpContext.User);
-                await _orderSvc.CreateOrder(model);
+                if (ModelState.IsValid)
+                {
+                    var user = _appUserParser.Parse(HttpContext.User);
+                    await _orderSvc.CreateOrder(model);
 
-                //Empty basket for current user. 
-                await _basketSvc.CleanBasket(user);
-
-                //Redirect to historic list.
-                return RedirectToAction("Index");
+                    //Redirect to historic list.
+                    return RedirectToAction("Index");
+                }
             }
-
+            catch(BrokenCircuitException)
+            {
+                ModelState.AddModelError("Error", "It was not possible to create a new order, please try later on");
+            }
             return View(model);
         }
 

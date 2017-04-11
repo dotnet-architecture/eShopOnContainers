@@ -1,5 +1,0 @@
-﻿{
-  "ConnectionString": "Server=tcp:127.0.0.1,5433;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word;",
-  "IdentityUrl": "http://localhost:5105",
-  "isTest": "true"
-}

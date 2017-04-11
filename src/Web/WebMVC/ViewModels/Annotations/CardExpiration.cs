@@ -14,11 +14,20 @@ namespace Microsoft.eShopOnContainers.WebMVC.ViewModels.Annotations
             if (value == null)
                 return false;
 
-            var month = value.ToString().Split('/')[0];
-            var year = $"20{value.ToString().Split('/')[1]}";
-            DateTime d = new DateTime(int.Parse(year), int.Parse(month), 1);
+            var monthString = value.ToString().Split('/')[0];
+            var yearString = $"20{value.ToString().Split('/')[1]}";
+            // Use the 'out' variable initializer to simplify 
+            // the logic of validating the expiration date
+            if ((int.TryParse(monthString, out var month)) &&
+                (int.TryParse(yearString, out var year)))
+            {
+                DateTime d = new DateTime(year, month, 1);
 
-            return d > DateTime.UtcNow;
+                return d > DateTime.UtcNow;
+            } else
+            {
+                return false;
+            }
         }
     }
 }
