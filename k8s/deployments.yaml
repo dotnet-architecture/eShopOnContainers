@@ -15,12 +15,12 @@ spec:
         image: eshop/basket.api
         imagePullPolicy: Always
         env:
-        - name: ASPNETCORE_ENVIRONMENT
-          value: Development
         - name: ASPNETCORE_URLS
           value: http://0.0.0.0:80/basket-api
         - name: ConnectionString
           value: 127.0.0.1
+        - name: EventBusConnection
+          value: rabbitmq
         - name: IdentityUrl
           valueFrom:
            configMapKeyRef:
@@ -52,12 +52,12 @@ spec:
         image: eshop/catalog.api
         imagePullPolicy: Always
         env:
-        - name: ASPNETCORE_ENVIRONMENT
-          value: Development
         - name: ASPNETCORE_URLS
           value: http://0.0.0.0:80/catalog-api
         - name: ConnectionString
           value: "Server=sql-data;Initial Catalog=Microsoft.eShopOnContainers.Services.CatalogDb;User Id=sa;Password=Pass@word"
+        - name: EventBusConnection
+          value: rabbitmq
         - name: ExternalCatalogBaseUrl
           valueFrom:
            configMapKeyRef:
@@ -85,8 +85,6 @@ spec:
         image: eshop/identity.api
         imagePullPolicy: Always
         env:
-        - name: ASPNETCORE_ENVIRONMENT
-          value: Development
         - name: ASPNETCORE_URLS
           value: http://0.0.0.0:80/identity
         - name: ConnectionStrings__DefaultConnection
@@ -123,12 +121,12 @@ spec:
         image: eshop/ordering.api
         imagePullPolicy: Always
         env:
-        - name: ASPNETCORE_ENVIRONMENT
-          value: Development
         - name: ASPNETCORE_URLS
           value: http://0.0.0.0:80/ordering-api
         - name: ConnectionString
           value: "Server=sql-data;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word;"
+        - name: EventBusConnection
+          value: rabbitmq
         - name: IdentityUrl
           valueFrom:
            configMapKeyRef:
@@ -156,8 +154,6 @@ spec:
         image: eshop/webmvc
         imagePullPolicy: Always
         env:
-        - name: ASPNETCORE_ENVIRONMENT
-          value: Development
         - name: ASPNETCORE_URLS
           value: http://0.0.0.0:80/webmvc
         - name: BasketUrl
@@ -207,8 +203,6 @@ spec:
         image: eshop/webspa
         imagePullPolicy: Always
         env:
-        - name: ASPNETCORE_ENVIRONMENT
-          value: Development
         - name: ASPNETCORE_URLS
           value: http://0.0.0.0:80
         - name: BasketUrl
