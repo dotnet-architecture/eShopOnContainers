@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
-  <Identity Name="54687c57-08ec-4504-8060-f36bcb62ddcf" Publisher="CN=jsuarez" Version="1.0.0.0" />
+  <Identity Name="54687c57-08ec-4504-8060-f36bcb62ddce" Publisher="CN=jsuarez" Version="1.0.0.0" />
   <mp:PhoneIdentity PhoneProductId="54687c57-08ec-4504-8060-f36bcb62ddcf" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>eShopOnContainers.UWP</DisplayName>
