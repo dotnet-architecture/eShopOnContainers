@@ -9,9 +9,8 @@ namespace eShopOnContainers.Core.ViewModels
 {
     public class OrderDetailViewModel : ViewModelBase
     {
-        private Order _order;
-
         private IOrderService _ordersService;
+		private Order _order;
 
         public OrderDetailViewModel(IOrderService ordersService)
         {
