@@ -1,9 +1,6 @@
 ﻿using IdentityModel.Client;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace eShopOnContainers.Core.Services.Identity
 {
@@ -42,32 +39,6 @@ namespace eShopOnContainers.Core.Services.Identity
                 GlobalSetting.Instance.LogoutEndpoint,
                 token,
                 GlobalSetting.Instance.LogoutCallback);
-        }
-
-        public string DecodeToken(string token)
-        {
-            var parts = token.Split('.');
-
-            string partToConvert = parts[1];
-            partToConvert = partToConvert.Replace('-', '+');
-            partToConvert = partToConvert.Replace('_', '/');
-
-            switch (partToConvert.Length % 4)
-            {
-                case 0:
-                    break;
-                case 2:
-                    partToConvert += "==";
-                    break;
-                case 3:
-                    partToConvert += "=";
-                    break;
-            }
-
-            var partAsBytes = Convert.FromBase64String(partToConvert);
-            var partAsUTF8String = Encoding.UTF8.GetString(partAsBytes, 0, partAsBytes.Count());
-
-            return JObject.Parse(partAsUTF8String).ToString();
         }
     }
 }

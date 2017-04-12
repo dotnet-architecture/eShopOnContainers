@@ -4,6 +4,5 @@
     {
         string CreateAuthorizationRequest();
         string CreateLogoutRequest(string token);
-        string DecodeToken(string token);
     }
 }
