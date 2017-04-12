@@ -1,8 +1,6 @@
 ﻿using System.Threading.Tasks;
 using eShopOnContainers.Core.Models.Orders;
 using eShopOnContainers.Core.ViewModels.Base;
-using eShopOnContainers.Core.Services.Catalog;
-using eShopOnContainers.Core.Services.Basket;
 using eShopOnContainers.Core.Services.Order;
 using System;
 using eShopOnContainers.Core.Helpers;
