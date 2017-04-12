@@ -33,6 +33,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:5105
       - SpaClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5104
+      - XamarinCallback=http://${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP}:5105/xamarincallback      #localhost do not work for UWP login, so we have to use "external" IP always
       - ConnectionStrings__DefaultConnection=Server=sql.data;Database=Microsoft.eShopOnContainers.Service.IdentityDb;User Id=sa;Password=Pass@word 
       - MvcClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5100              #Local: You need to open your local dev-machine firewall at range 5100-5105.  
     ports:
@@ -86,7 +87,7 @@ services:
       - CatalogUrl=http://catalog.api:5101/hc
       - OrderingUrl=http://ordering.api:5102/hc
       - BasketUrl=http://basket.api:5103/hc
-      - IdentityUrl=http://10.0.75.1:5105/hc
+      - IdentityUrl=http://identity.api:5105/hc
       - mvc=http://webmvc:5100/hc
       - spa=http://webspa:5104/hc
     ports:

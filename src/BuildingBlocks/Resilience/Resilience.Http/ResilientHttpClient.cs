@@ -1,14 +1,14 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Polly;
 using Polly.Wrap;
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace WebMVC.Services.Utilities
+namespace Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http
 {
     /// <summary>
     /// HttpClient wrapper that integrates Retry and Circuit
@@ -21,55 +21,15 @@ namespace WebMVC.Services.Utilities
         private PolicyWrap _policyWrapper;
         private ILogger<ResilientHttpClient> _logger;
         public HttpClient Inst => _client;
-        public ResilientHttpClient(ILogger<ResilientHttpClient> logger)
+
+        public ResilientHttpClient(Policy[] policies, ILogger<ResilientHttpClient> logger)
         {
             _client = new HttpClient();
             _logger = logger;
 
             // Add Policies to be applied
-            _policyWrapper = Policy.WrapAsync(
-                CreateRetryPolicy(),
-                CreateCircuitBreakerPolicy()
-            );
-        }
-
-        private Policy CreateRetryPolicy() =>
-            Policy.Handle<HttpRequestException>()
-            .WaitAndRetryAsync(
-                // number of retries
-                6,
-                // exponential backofff
-                retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
-                // on retry
-                (exception, timeSpan, retryCount, context) =>
-                {
-                    var msg = $"Retry {retryCount} implemented with Polly's RetryPolicy " +
-                        $"of {context.PolicyKey} " +
-                        $"at {context.ExecutionKey}, " +
-                        $"due to: {exception}.";
-                    _logger.LogWarning(msg);
-                    _logger.LogDebug(msg);
-                }
-            );
-
-        private Policy CreateCircuitBreakerPolicy() =>
-           Policy.Handle<HttpRequestException>()
-           .CircuitBreakerAsync(
-               // number of exceptions before breaking circuit
-               5,
-               // time circuit opened before retry
-               TimeSpan.FromMinutes(1),
-               (exception, duration) =>
-               {
-                    // on circuit opened
-                    _logger.LogTrace("Circuit breaker opened");
-               },
-               () =>
-               {
-                    // on circuit closed
-                    _logger.LogTrace("Circuit breaker reset");
-               }
-           );
+            _policyWrapper = Policy.WrapAsync(policies);
+        }        
 
         public Task<string> GetStringAsync(string uri) =>
             HttpInvoker(() => 

@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Serialization;
 using eShopOnContainers.WebSPA;
 using Microsoft.Extensions.HealthChecks;
+using System.Threading.Tasks;
 
 namespace eShopConContainers.WebSPA
 {
@@ -42,7 +43,10 @@ namespace eShopConContainers.WebSPA
         {
             services.AddHealthChecks(checks =>
             {
-                checks.AddUrlCheck(Configuration["CallBackUrl"]);
+                checks.AddUrlCheck(Configuration["CatalogUrl"]);
+                checks.AddUrlCheck(Configuration["OrderingUrl"]);
+                checks.AddUrlCheck(Configuration["BasketUrl"]);
+                checks.AddUrlCheck(Configuration["IdentityUrl"]);
             });
 
             services.Configure<AppSettings>(Configuration);

@@ -76,7 +76,9 @@ namespace eShopOnContainers.Core.ViewModels
 
             if (basket != null && basket.Items != null && basket.Items.Any())
             {
+                BadgeCount = 0;
                 BasketItems.Clear();
+
                 foreach (var basketItem in basket.Items)
                 {
                     BadgeCount += basketItem.Quantity;

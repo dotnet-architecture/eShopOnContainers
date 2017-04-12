@@ -6,6 +6,7 @@ projectList=(
     "/src/Services/Identity/Identity.API"
     "/src/Web/WebMVC"
     "/src/Web/WebSPA"
+    "/src/Web/WebStatus
 )
 
 # Build SPA app

@@ -15,13 +15,14 @@ $projectPaths =
     @{Path="$rootPath\src\Services\Catalog\Catalog.API";Prj="Catalog.API.csproj"},
     @{Path="$rootPath\src\Services\Ordering\Ordering.API";Prj="Ordering.API.csproj"},
     @{Path="$rootPath\src\Services\Basket\Basket.API";Prj="Basket.API.csproj"}
+    @{Path="$rootPath\src\Web\WebStatus";Prj="WebStatus.csproj"}
 
 $projectPaths | foreach {
     $projectPath = $_.Path
     $projectFile = $_.Prj
     $outPath = $_.Path + "\obj\Docker\publish"
     $projectPathAndFile = "$projectPath\$projectFile"
-    Write-Host "Deleting $outPath" -ForegroundColor Yellow
+    Write-Host "Deleting old publish files in $outPath" -ForegroundColor Yellow
     remove-item -path $outPath -Force -Recurse -ErrorAction SilentlyContinue
     Write-Host "Publishing $projectPathAndFile to $outPath" -ForegroundColor Yellow
     dotnet restore $projectPathAndFile
