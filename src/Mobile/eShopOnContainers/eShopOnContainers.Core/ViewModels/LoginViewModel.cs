@@ -188,7 +188,7 @@ namespace eShopOnContainers.Core.ViewModels
 
             await Task.Delay(500);
 
-            LoginUrl = _identityService.CreateAuthorizeRequest();
+            LoginUrl = _identityService.CreateAuthorizationRequest();
 
             IsValid = true;
             IsLogin = true;
@@ -226,7 +226,7 @@ namespace eShopOnContainers.Core.ViewModels
                 Settings.AuthAccessToken = string.Empty;
                 Settings.AuthIdToken = string.Empty;
                 IsLogin = false;
-                LoginUrl = _identityService.CreateAuthorizeRequest();
+                LoginUrl = _identityService.CreateAuthorizationRequest();
             }
             else if (url.Contains(GlobalSetting.Instance.IdentityCallback))
             {
