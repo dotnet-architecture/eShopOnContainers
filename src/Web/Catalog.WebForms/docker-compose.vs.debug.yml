@@ -2,7 +2,7 @@ version: '2.1'
 
 services:
   catalog.webforms:
-    image: catalog.webforms:dev
+    image: eshop/catalog.webforms:dev
     build:
       args:
         source: ${DOCKER_BUILD_SOURCE}
@@ -22,6 +22,5 @@ services:
     volumes:
       - ../../Services/Catalog/Catalog.API:C:\app
       - ~\msvsmon:C:\msvsmon:ro
-    entrypoint: tail -f /dev/null
     labels:
       - "com.microsoft.visualstudio.targetoperatingsystem=windows"
