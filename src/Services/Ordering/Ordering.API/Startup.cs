@@ -150,7 +150,7 @@
             app.UseIdentityServerAuthentication(new IdentityServerAuthenticationOptions
             {
                 Authority = identityUrl.ToString(),
-                ScopeName = "orders",
+              //  ScopeName = "orders",
                 RequireHttpsMetadata = false
             });
         }
