@@ -62,6 +62,10 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
         {
             addressConfiguration.ToTable("address", DEFAULT_SCHEMA);
 
+            // DDD Pattern comment: Implementing the Address Id as "Shadow property"
+            // becuase the Address is a Value-Object (VO) and an Id (Identity) is not desired for a VO
+            // EF Core just needs the Id so it is capable to store it in a database table
+            // See: https://docs.microsoft.com/en-us/ef/core/modeling/shadow-properties 
             addressConfiguration.Property<int>("Id")
                 .IsRequired();
 
@@ -154,13 +158,13 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
             //Set as Field (New since EF 1.1) to access the OrderItem collection property through its field
             navigation.SetPropertyAccessMode(PropertyAccessMode.Field);
 
-            orderConfiguration.HasOne(o => o.PaymentMethod)
+            orderConfiguration.HasOne<PaymentMethod>()
                 .WithMany()
                 .HasForeignKey("PaymentMethodId")
                 .IsRequired(false)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            orderConfiguration.HasOne(o => o.Buyer)
+            orderConfiguration.HasOne<Buyer>()
                 .WithMany()
                 .IsRequired(false)
                 .HasForeignKey("BuyerId");

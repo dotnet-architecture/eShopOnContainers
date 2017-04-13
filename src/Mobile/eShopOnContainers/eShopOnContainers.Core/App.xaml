@@ -108,8 +108,9 @@
             <converters:InverseBoolConverter x:Key="InverseBoolConverter" />
             <converters:ItemsToHeightConverter x:Key="ItemsToHeightConverter" />
             <converters:ToUpperConverter x:Key="ToUpperConverter" />
-			<converters:WebNavigatingEventArgsConverter x:Key="WebNavigatingEventArgsConverter" />
-            
+            <converters:WebNavigatingEventArgsConverter x:Key="WebNavigatingEventArgsConverter" />
+            <converters:WebNavigatedEventArgsConverter x:Key="WebNavigatedEventArgsConverter" />
+
             <!-- STYLES -->
             <Style x:Key="ValidationErrorLabelStyle"
 				   TargetType="{x:Type Label}">

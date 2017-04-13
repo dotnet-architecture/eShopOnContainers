@@ -19,6 +19,7 @@ services:
       - ASPNETCORE_URLS=http://0.0.0.0:5103
       - ConnectionString=basket.data
       - identityUrl=http://identity.api:5105              #Local: You need to open your host's firewall at range 5100-5105.  at range 5100-5105. 
+      - EventBusConnection=rabbitmq
     ports:
       - "5103:5103"
 
@@ -28,6 +29,7 @@ services:
       - ASPNETCORE_URLS=http://0.0.0.0:5101
       - ConnectionString=Server=sql.data;Database=Microsoft.eShopOnContainers.Services.CatalogDb;User Id=sa;Password=Pass@word
       - ExternalCatalogBaseUrl=http://${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP}:5101    #Local: You need to open your host's firewall at range 5100-5105.  at range 5100-5105.
+      - EventBusConnection=rabbitmq
     ports:
       - "5101:5101"
 
@@ -38,6 +40,7 @@ services:
       - SpaClient=http://${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP}:5104
       - ConnectionStrings__DefaultConnection=Server=sql.data;Database=Microsoft.eShopOnContainers.Service.IdentityDb;User Id=sa;Password=Pass@word 
       - MvcClient=http://${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP}:5100              #Local: You need to open your host's firewall at range 5100-5105.  
+      - XamarinCallback=http://${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP}:5105/xamarincallback
     ports:
       - "5105:5105"
 
@@ -47,6 +50,8 @@ services:
       - ASPNETCORE_URLS=http://0.0.0.0:5102
       - ConnectionString=Server=sql.data;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word
       - identityUrl=http://identity.api:5105              #Local: You need to open your host's firewall at range 5100-5105.  at range 5100-5105. 
+      - BasketUrl=http://basket.api:5103
+      - EventBusConnection=rabbitmq
     ports:
       - "5102:5102"
 
@@ -81,10 +86,13 @@ services:
 
   webstatus:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://0.0.0.0:5107
       - CatalogUrl=http://catalog.api:5101/hc
       - OrderingUrl=http://ordering.api:5102/hc
       - BasketUrl=http://basket.api:5103/hc
-      - IdentityUrl=http://10.0.75.1:5105/hc
+      - mvc=http://webmvc:5100/hc
+      - spa=http://webspa:5104/hc
+      - IdentityUrl=http://${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP}:5105     #Local: Use ${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP}, if using external IP or DNS name from browser.    
     ports:
       - "5107:5107"

@@ -221,14 +221,16 @@ namespace eShopOnContainers.Core.ViewModels
 
         private async Task NavigateAsync(string url)
         {
-            if (url.Equals(GlobalSetting.Instance.LogoutCallback))
+            var unescapedUrl = System.Net.WebUtility.UrlDecode(url);
+
+            if (unescapedUrl.Equals(GlobalSetting.Instance.LogoutCallback))
             {
                 Settings.AuthAccessToken = string.Empty;
                 Settings.AuthIdToken = string.Empty;
                 IsLogin = false;
                 LoginUrl = _identityService.CreateAuthorizationRequest();
             }
-            else if (url.Contains(GlobalSetting.Instance.IdentityCallback))
+            else if (unescapedUrl.Contains(GlobalSetting.Instance.IdentityCallback))
             {
                 var authResponse = new AuthorizeResponse(url);
 

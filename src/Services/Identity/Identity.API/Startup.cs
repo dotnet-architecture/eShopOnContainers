@@ -73,11 +73,13 @@ namespace eShopOnContainers.Identity
             Dictionary<string, string> clientUrls = new Dictionary<string, string>();
             clientUrls.Add("Mvc", Configuration.GetValue<string>("MvcClient"));
             clientUrls.Add("Spa", Configuration.GetValue<string>("SpaClient"));
+            clientUrls.Add("Xamarin", Configuration.GetValue<string>("XamarinCallback"));
 
             // Adds IdentityServer
             services.AddIdentityServer(x => x.IssuerUri = "null")
                 .AddSigningCredential(Certificate.Get())
-                .AddInMemoryScopes(Config.GetScopes())
+                .AddInMemoryApiResources(Config.GetApis())
+                .AddInMemoryIdentityResources(Config.GetResources())
                 .AddInMemoryClients(Config.GetClients(clientUrls))
                 .AddAspNetIdentity<ApplicationUser>()
                 .Services.AddTransient<IProfileService, ProfileService>(); 

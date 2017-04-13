@@ -90,7 +90,7 @@ namespace eShopOnContainers.Core.ViewModels
                     ZipCode = userInfo?.ZipCode,
                     State = userInfo?.State,
                     Country = userInfo?.Country,
-                    City = string.Empty
+                    City = userInfo?.Address
                 };
 
                 // Create Payment Info
@@ -117,7 +117,8 @@ namespace eShopOnContainers.Core.ViewModels
                     ShippingState = _shippingAddress.State,
                     ShippingCountry = _shippingAddress.Country,
                     ShippingStreet = _shippingAddress.Street,
-                    ShippingCity = _shippingAddress.City,                  
+                    ShippingCity = _shippingAddress.City,  
+                    ShippingZipCode = _shippingAddress.ZipCode,
                     Total = CalculateTotal(CreateOrderItems(orderItems))
                 };
 

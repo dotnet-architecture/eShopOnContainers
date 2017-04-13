@@ -25,7 +25,7 @@ namespace WebStatus.Controllers
 
             foreach (var checkResult in result.Results)
             {
-                data.AddResult(checkResult.Value);
+                data.AddResult(checkResult.Key, checkResult.Value);
             }
 
             return View(data);
