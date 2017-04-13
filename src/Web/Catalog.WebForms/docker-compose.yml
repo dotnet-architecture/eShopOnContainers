@@ -6,5 +6,16 @@ services:
     build:
       context: .\Catalog.WebForms
       dockerfile: Dockerfile
+    depends_on:
+      - catalog.api
 
-  
+  catalog.api:
+    image: eshop/catalog.api
+    build:
+      context: ../../Services/Catalog/Catalog.API
+      dockerfile: Dockerfile.nanowin
+    depends_on:
+      - sql.data
+
+  sql.data:
+    image: microsoft/mssql-server-windows
