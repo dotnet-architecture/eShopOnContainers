@@ -20,6 +20,8 @@
     using System.IO;
     using System.Data.Common;
     using System.Reflection;
+    using global::Catalog.API.IntegrationEvents;
+    using System.Threading.Tasks;
 
     public class Startup
     {
@@ -48,7 +50,7 @@
             
             services.AddHealthChecks(checks =>
             {
-                checks.AddUrlCheck(Configuration["ExternalCatalogBaseUrl"]);
+                checks.AddSqlCheck("CatalogDb", Configuration["ConnectionString"]);
             });
 
             services.AddMvc(options =>
@@ -97,10 +99,10 @@
             });
 
             services.AddTransient<Func<DbConnection, IIntegrationEventLogService>>(
-                sp => (DbConnection c) => new IntegrationEventLogService(c));
-
+                sp => (DbConnection c) => new IntegrationEventLogService(c));            
             var serviceProvider = services.BuildServiceProvider();
             var configuration = serviceProvider.GetRequiredService<IOptionsSnapshot<Settings>>().Value;
+            services.AddTransient<ICatalogIntegrationEventService, CatalogIntegrationEventService>();
             services.AddSingleton<IEventBus>(new EventBusRabbitMQ(configuration.EventBusConnection));            
         }
 

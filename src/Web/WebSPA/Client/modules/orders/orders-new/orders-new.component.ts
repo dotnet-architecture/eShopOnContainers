@@ -18,7 +18,7 @@ export class OrdersNewComponent implements OnInit {
     private errorReceived: Boolean;
     private order: IOrder;
 
-    constructor(private service: OrdersService, fb: FormBuilder, private router: Router, private basketEvents: BasketWrapperService) {
+    constructor(private service: OrdersService, fb: FormBuilder, private router: Router) {
         // Obtain user profile information
         this.order = service.mapBasketAndIdentityInfoNewOrder();
         this.newOrderForm = fb.group({
@@ -54,10 +54,7 @@ export class OrdersNewComponent implements OnInit {
                 return Observable.throw(errMessage); 
             })
             .subscribe(res => {
-            // this will emit an observable. Basket service is subscribed to this observable, and will react deleting the basket for the current user. 
-            this.basketEvents.orderCreated();
-            
-            this.router.navigate(['orders']);
+                this.router.navigate(['orders']);
             });
         this.errorReceived = false;
         this.isOrderProcessing = true;

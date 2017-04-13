@@ -345,10 +345,26 @@
                   AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
                   AbsoluteLayout.LayoutFlags="All">
                     <WebView.Behaviors>
-						<behaviors:EventToCommandBehavior
-							EventName="Navigating"
-							EventArgsConverter="{StaticResource WebNavigatingEventArgsConverter}"
-							Command="{Binding NavigateCommand}" />
+                        <OnPlatform x:TypeArguments="Behavior">
+                            <OnPlatform.Android>
+                                <behaviors:EventToCommandBehavior
+							        EventName="Navigating"
+							        EventArgsConverter="{StaticResource WebNavigatingEventArgsConverter}"
+							        Command="{Binding NavigateCommand}" />
+                            </OnPlatform.Android>
+                            <OnPlatform.iOS>
+                                <behaviors:EventToCommandBehavior
+							        EventName="Navigating"
+							        EventArgsConverter="{StaticResource WebNavigatingEventArgsConverter}"
+							        Command="{Binding NavigateCommand}" />
+                            </OnPlatform.iOS>
+                            <OnPlatform.WinPhone>
+                                <behaviors:EventToCommandBehavior
+							        EventName="Navigated"
+							        EventArgsConverter="{StaticResource WebNavigatedEventArgsConverter}"
+							        Command="{Binding NavigateCommand}" />
+                            </OnPlatform.WinPhone>
+                        </OnPlatform>
                     </WebView.Behaviors>
                 </WebView>
             </AbsoluteLayout>

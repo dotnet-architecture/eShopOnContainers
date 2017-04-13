@@ -12,7 +12,6 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
         // aligned with DDD Aggregates and Domain Entities (Instead of properties and property collections)
         private string  _productName;
         private string  _pictureUrl;
-        private int     _orderId;
         private decimal _unitPrice;
         private decimal _discount;
         private int     _units;

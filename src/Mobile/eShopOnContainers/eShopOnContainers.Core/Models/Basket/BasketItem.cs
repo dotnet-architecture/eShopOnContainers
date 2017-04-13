@@ -15,6 +15,16 @@ namespace eShopOnContainers.Core.Models.Basket
 
         public decimal UnitPrice { get; set; }
 
+        public decimal OldUnitPrice { get; set; }
+
+        public bool HasNewPrice
+        {
+            get
+            {
+                return OldUnitPrice != 0.0m;
+            }
+        }
+
         public int Quantity
         {
             get { return _quantity; }
