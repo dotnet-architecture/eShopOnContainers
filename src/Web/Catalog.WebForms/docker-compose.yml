@@ -19,3 +19,8 @@ services:
 
   sql.data:
     image: microsoft/mssql-server-windows
+
+networks:
+  default:
+    external:
+      name: nat

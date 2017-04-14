@@ -20,8 +20,3 @@ services:
   catalog.webforms:
     ports:
       - "80:80"
-
-networks:
-  default:
-    external:
-      name: nat
