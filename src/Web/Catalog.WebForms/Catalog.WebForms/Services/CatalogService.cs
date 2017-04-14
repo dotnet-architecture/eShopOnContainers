@@ -24,7 +24,7 @@ namespace eShopOnContainers.Core.Services.Catalog
             try
             {
                 // TODO:
-                UriBuilder builder = new UriBuilder("" /* GlobalSetting.Instance.CatalogEndpoint */);
+                UriBuilder builder = new UriBuilder("http://catalog.api:5101");
 
                 builder.Path = string.Format("api/v1/catalog/items/type/{0}/brand/{1}", catalogTypeId, catalogBrandId);
 
@@ -49,7 +49,7 @@ namespace eShopOnContainers.Core.Services.Catalog
             try
             {
                 // TODO:
-                UriBuilder builder = new UriBuilder("" /* GlobalSetting.Instance.CatalogEndpoint */);
+                UriBuilder builder = new UriBuilder("http://catalog.api:5101");
 
                 builder.Path = "api/v1/catalog/items";
 
@@ -83,7 +83,7 @@ namespace eShopOnContainers.Core.Services.Catalog
             try
             {
                 // TODO:
-                UriBuilder builder = new UriBuilder("" /* GlobalSetting.Instance.CatalogEndpoint */);
+                UriBuilder builder = new UriBuilder("http://catalog.api:5101");
 
                 builder.Path = "api/v1/catalog/catalogbrands";
 
@@ -108,7 +108,7 @@ namespace eShopOnContainers.Core.Services.Catalog
             try
             {
                 // TODO:
-                UriBuilder builder = new UriBuilder("" /* GlobalSetting.Instance.CatalogEndpoint */);
+                UriBuilder builder = new UriBuilder("http://catalog.api:5101");
 
                 builder.Path = "api/v1/catalog/catalogtypes";
 
@@ -131,7 +131,7 @@ namespace eShopOnContainers.Core.Services.Catalog
         public Task DeleteCatalogItemAsync(string catalogItemId)
         {
             // TODO:
-            UriBuilder builder = new UriBuilder("" /* GlobalSetting.Instance.CatalogEndpoint */);
+            UriBuilder builder = new UriBuilder("http://catalog.api:5101");
 
             builder.Path = $"api/v1/catalog/{catalogItemId}";
 
@@ -143,7 +143,7 @@ namespace eShopOnContainers.Core.Services.Catalog
         public Task<CatalogItem> UpdateCatalogItemAsync(CatalogItem item)
         {
             // TODO:
-            UriBuilder builder = new UriBuilder("" /* GlobalSetting.Instance.CatalogEndpoint */);
+            UriBuilder builder = new UriBuilder("http://catalog.api:5101");
 
             builder.Path = "api/v1/catalog/edit";
 
@@ -155,7 +155,7 @@ namespace eShopOnContainers.Core.Services.Catalog
         public Task<CatalogItem> CreateCatalogItemAsync(CatalogItem item)
         {
             // TODO:
-            UriBuilder builder = new UriBuilder("" /* GlobalSetting.Instance.CatalogEndpoint */);
+            UriBuilder builder = new UriBuilder("http://catalog.api:5101");
 
             builder.Path = "api/v1/catalog/create";
 
