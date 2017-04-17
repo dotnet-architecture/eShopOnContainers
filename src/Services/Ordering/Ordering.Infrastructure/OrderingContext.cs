@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.BuyerAggregate;
 using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
 using Microsoft.eShopOnContainers.Services.Ordering.Domain.Seedwork;
+using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Idempotency;
 using Ordering.Infrastructure;
 using System;
 using System.Threading;
@@ -34,7 +35,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
 
         public OrderingContext(DbContextOptions options, IMediator mediator) : base(options)
         {
-            _mediator = mediator;
+            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

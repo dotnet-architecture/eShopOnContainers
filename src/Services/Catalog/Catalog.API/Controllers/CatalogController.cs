@@ -1,9 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Catalog.API.IntegrationEvents;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
-using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF.Services;
 using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
 using Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationEvents.Events;
 using Microsoft.eShopOnContainers.Services.Catalog.API.Model;
@@ -11,12 +8,8 @@ using Microsoft.eShopOnContainers.Services.Catalog.API.ViewModel;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
-using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
-using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF.Utilities;
-using Catalog.API.IntegrationEvents;
 
 namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
 {
@@ -24,16 +17,16 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
     public class CatalogController : ControllerBase
     {
         private readonly CatalogContext _catalogContext;
-        private readonly IOptionsSnapshot<Settings> _settings;
+        private readonly CatalogSettings _settings;
         private readonly ICatalogIntegrationEventService _catalogIntegrationEventService;
 
-        public CatalogController(CatalogContext Context, IOptionsSnapshot<Settings> settings, ICatalogIntegrationEventService catalogIntegrationEventService)
+        public CatalogController(CatalogContext context, IOptionsSnapshot<CatalogSettings> settings, ICatalogIntegrationEventService catalogIntegrationEventService)
         {
-            _catalogContext = Context;
-            _catalogIntegrationEventService = catalogIntegrationEventService;
-            _settings = settings;
+            _catalogContext = context ?? throw new ArgumentNullException(nameof(context));
+            _catalogIntegrationEventService = catalogIntegrationEventService ?? throw new ArgumentNullException(nameof(catalogIntegrationEventService));
 
-            ((DbContext)Context).ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+            _settings = settings.Value;
+            ((DbContext)context).ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
         // GET api/v1/[controller]/items[?pageSize=3&pageIndex=10]
@@ -51,7 +44,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
                 .Take(pageSize)
                 .ToListAsync();
 
-            itemsOnPage = ComposePicUri(itemsOnPage);
+            itemsOnPage = ChangeUriPlaceholder(itemsOnPage);
 
             var model = new PaginatedItemsViewModel<CatalogItem>(
                 pageIndex, pageSize, totalItems, itemsOnPage);           
@@ -75,7 +68,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
                 .Take(pageSize)
                 .ToListAsync();
 
-            itemsOnPage = ComposePicUri(itemsOnPage);
+            itemsOnPage = ChangeUriPlaceholder(itemsOnPage);
 
             var model = new PaginatedItemsViewModel<CatalogItem>(
                 pageIndex, pageSize, totalItems, itemsOnPage);
@@ -108,7 +101,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
                 .Take(pageSize)
                 .ToListAsync();
 
-            itemsOnPage = ComposePicUri(itemsOnPage);
+            itemsOnPage = ChangeUriPlaceholder(itemsOnPage);
 
             var model = new PaginatedItemsViewModel<CatalogItem>(
                 pageIndex, pageSize, totalItems, itemsOnPage);
@@ -143,10 +136,17 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateProduct([FromBody]CatalogItem productToUpdate)
         {
-            var catalogItem = await _catalogContext.CatalogItems.SingleOrDefaultAsync(i => i.Id == productToUpdate.Id);
-            if (catalogItem == null) return NotFound();
-            var raiseProductPriceChangedEvent = catalogItem.Price != productToUpdate.Price;
+            var catalogItem = await _catalogContext.CatalogItems
+                .SingleOrDefaultAsync(i => i.Id == productToUpdate.Id);
+
+            if (catalogItem == null)
+            {
+                return NotFound();
+            }
+
             var oldPrice = catalogItem.Price;
+            var raiseProductPriceChangedEvent = oldPrice != productToUpdate.Price;
+            
             
             // Update current product
             catalogItem = productToUpdate;
@@ -205,13 +205,16 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
             }            
 
             _catalogContext.CatalogItems.Remove(product);
+
             await _catalogContext.SaveChangesAsync();
 
             return Ok();
         }
 
-        private List<CatalogItem> ComposePicUri(List<CatalogItem> items) {
-            var baseUri = _settings.Value.ExternalCatalogBaseUrl;
+        private List<CatalogItem> ChangeUriPlaceholder(List<CatalogItem> items)
+        {
+            var baseUri = _settings.ExternalCatalogBaseUrl;
+
             items.ForEach(x =>
             {
                 x.PictureUri = x.PictureUri.Replace("http://externalcatalogbaseurltobereplaced", baseUri);

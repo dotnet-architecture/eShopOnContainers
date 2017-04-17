@@ -57,7 +57,9 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Controllers
         {
             try
             {
-                var order = await _orderQueries.GetOrder(orderId);
+                var order = await _orderQueries
+                    .GetOrderAsync(orderId);
+
                 return Ok(order);
             }
             catch (KeyNotFoundException)
@@ -70,7 +72,8 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetOrders()
         {
-            var orders = await _orderQueries.GetOrders();
+            var orders = await _orderQueries
+                .GetOrdersAsync();
 
             return Ok(orders);
         }
@@ -79,7 +82,8 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetCardTypes()
         {
-            var cardTypes = await _orderQueries.GetCardTypes();
+            var cardTypes = await _orderQueries
+                .GetCardTypesAsync();
 
             return Ok(cardTypes);
         }        
