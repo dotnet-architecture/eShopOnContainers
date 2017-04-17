@@ -2,12 +2,25 @@ version: '2.1'
 
 services:
   catalog.webforms:
-    image: catalog.webforms:dev
+    image: eshop/catalog.webforms:dev
     build:
       args:
         source: ${DOCKER_BUILD_SOURCE}
     volumes:
       - .\Catalog.WebForms:C:\inetpub\wwwroot
+      - ~\msvsmon:C:\msvsmon:ro
+    labels:
+      - "com.microsoft.visualstudio.targetoperatingsystem=windows"
+
+  catalog.api:
+    image: eshop/catalog.api:dev
+    build:
+      args:
+        source: ${DOCKER_BUILD_SOURCE}
+    environment:
+      - DOTNET_USE_POLLING_FILE_WATCHER=1
+    volumes:
+      - ../../Services/Catalog/Catalog.API:C:\app
       - ~\msvsmon:C:\msvsmon:ro
     labels:
       - "com.microsoft.visualstudio.targetoperatingsystem=windows"

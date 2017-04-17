@@ -57,6 +57,8 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Drawing" />
@@ -415,6 +417,7 @@
     <Compile Include="Services\Common.cs" />
     <Compile Include="Services\ICatalogService.cs" />
     <Compile Include="Services\IRouteProvider.cs" />
+    <Compile Include="Services\RequestProvider.cs" />
     <Compile Include="Site.Master.cs">
       <DependentUpon>Site.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

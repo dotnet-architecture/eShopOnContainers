@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using eShopOnContainers.Core.Services.Catalog;
+using eShopOnContainers.Core.Services.RequestProvider;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,8 +35,11 @@ namespace eShopOnContainers.Catalog.WebForms.Modules
             }
             else
             {
-                builder.RegisterType<CatalogMockService>()
+                builder.RegisterType<CatalogService>()
                     .As<ICatalogService>();
+
+                builder.RegisterType<RequestProvider>()
+                    .As<IRequestProvider>();
             }
             var container = builder.Build();
             return container;

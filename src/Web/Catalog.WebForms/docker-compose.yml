@@ -2,7 +2,7 @@ version: '2.1'
 
 services:
   catalog.webforms:
-    image: catalog.webforms
+    image: eshop/catalog.webforms
     build:
       context: .\Catalog.WebForms
       dockerfile: Dockerfile
@@ -12,10 +12,15 @@ services:
   catalog.api:
     image: eshop/catalog.api
     build:
-      context: ..\..\Services\Catalog\Catalog.API
-      dockerfile: Dockerfile.windows
+      context: ../../Services/Catalog/Catalog.API
+      dockerfile: Dockerfile.nanowin
     depends_on:
       - sql.data
 
   sql.data:
     image: microsoft/mssql-server-windows
+
+networks:
+  default:
+    external:
+      name: nat
