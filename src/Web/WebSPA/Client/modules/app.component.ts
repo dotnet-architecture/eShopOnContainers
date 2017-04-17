@@ -18,7 +18,7 @@ import { ConfigurationService } from './shared/services/configuration.service';
     templateUrl: './app.component.html'
 })
 export class AppComponent implements OnInit {
-    private Authenticated: boolean = false;
+    Authenticated: boolean = false;
     subscription: Subscription;
 
     constructor(private titleService: Title, private securityService: SecurityService, private configurationService: ConfigurationService) {
