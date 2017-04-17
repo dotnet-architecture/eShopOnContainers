@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
+namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Idempotency
 {
     public class ClientRequest
     {
