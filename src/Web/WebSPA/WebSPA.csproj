@@ -56,7 +56,7 @@
 
   <Target Name="PrepublishScript" BeforeTargets="PrepareForPublish">
     <Exec Command="npm install" />
-    <Exec Command="npm run build:dev" />
+    <Exec Command="npm run build:prod" />
   </Target>
 
   <ItemGroup>

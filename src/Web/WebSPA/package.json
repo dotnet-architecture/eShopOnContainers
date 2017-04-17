@@ -17,9 +17,11 @@
   },
   "scripts": {
     "ng": "ng",
+    "rimraf": "rimraf",
+    "clean": "npm cache clean && npm run rimraf -- node_modules doc typings coverage wwwroot",
     "start": "ng serve",
     "build:dev": "ng build",
-    "build:prod": "ng build",
+    "build:prod": "ng build --prod --aot --extract-css",
     "lint:sass": "sass-lint -c .sass-lint.yml Client/**/*.scss --verbose",
     "lint:ts": "tslint -c tslint.json Client/**/*.ts"
   },
@@ -33,8 +35,6 @@
     "@angular/platform-browser-dynamic": "^4.0.0",
     "@angular/router": "^4.0.0",
     "@ng-bootstrap/ng-bootstrap": "1.0.0-alpha.22",
-    "aspnet-prerendering": "1.0.7",
-    "aspnet-webpack": "1.0.24",
     "bootstrap": "4.0.0-alpha.5",
     "core-js": "^2.4.1",
     "file-loader": "0.9.0",
