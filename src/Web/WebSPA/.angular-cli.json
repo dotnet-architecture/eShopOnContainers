@@ -19,7 +19,8 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": [
-        "global.scss"
+        "globals.scss",
+        "../node_modules/bootstrap/scss/bootstrap.scss"
       ],
       "scripts": [],
       "environmentSource": "environments/environment.ts",

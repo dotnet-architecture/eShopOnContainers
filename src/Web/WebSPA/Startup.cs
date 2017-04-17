@@ -101,8 +101,8 @@ namespace eShopConContainers.WebSPA
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
-  
-            app.UseMvc();
+
+            app.UseMvcWithDefaultRoute();
         }
     }
 }
