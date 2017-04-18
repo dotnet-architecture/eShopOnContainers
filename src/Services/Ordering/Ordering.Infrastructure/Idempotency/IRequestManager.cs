@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Idempotency
@@ -8,6 +6,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Idempoten
     public interface IRequestManager
     {
         Task<bool> ExistAsync(Guid id);
+
         Task CreateRequestForCommandAsync<T>(Guid id);
     }
 }

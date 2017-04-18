@@ -4,10 +4,10 @@
 
     public interface IOrderQueries
     {
-        Task<dynamic> GetOrder(int id);
+        Task<dynamic> GetOrderAsync(int id);
 
-        Task<dynamic> GetOrders();
+        Task<dynamic> GetOrdersAsync();
 
-        Task<dynamic> GetCardTypes();
+        Task<dynamic> GetCardTypesAsync();
     }
 }

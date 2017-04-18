@@ -71,17 +71,17 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.SeedWork
 
         public static T FromValue<T>(int value) where T : Enumeration, new()
         {
-            var matchingItem = parse<T, int>(value, "value", item => item.Id == value);
+            var matchingItem = Parse<T, int>(value, "value", item => item.Id == value);
             return matchingItem;
         }
 
         public static T FromDisplayName<T>(string displayName) where T : Enumeration, new()
         {
-            var matchingItem = parse<T, string>(displayName, "display name", item => item.Name == displayName);
+            var matchingItem = Parse<T, string>(displayName, "display name", item => item.Name == displayName);
             return matchingItem;
         }
 
-        private static T parse<T, K>(K value, string description, Func<T, bool> predicate) where T : Enumeration, new()
+        private static T Parse<T, K>(K value, string description, Func<T, bool> predicate) where T : Enumeration, new()
         {
             var matchingItem = GetAll<T>().FirstOrDefault(predicate);
 
