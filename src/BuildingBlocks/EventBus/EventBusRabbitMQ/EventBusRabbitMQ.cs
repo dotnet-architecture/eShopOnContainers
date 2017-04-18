@@ -5,7 +5,6 @@ using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -35,7 +34,9 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
 
         public void Publish(IntegrationEvent @event)
         {
-            var eventName = @event.GetType().Name;
+            var eventName = @event.GetType()
+                .Name;
+
             var factory = new ConnectionFactory() { HostName = _connectionString };
             using (var connection = factory.CreateConnection())
             using (var channel = connection.CreateModel())

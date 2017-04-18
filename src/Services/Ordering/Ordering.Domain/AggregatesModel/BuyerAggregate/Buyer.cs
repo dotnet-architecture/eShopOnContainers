@@ -16,6 +16,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.B
         public IEnumerable<PaymentMethod> PaymentMethods => _paymentMethods.AsReadOnly();
 
         protected Buyer() {
+
             _paymentMethods = new List<PaymentMethod>();
         }
 
@@ -34,6 +35,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.B
             if (existingPayment != null)
             {
                 AddDomainEvent(new BuyerAndPaymentMethodVerifiedDomainEvent(this, existingPayment, orderId));
+
                 return existingPayment;
             }
             else
@@ -41,7 +43,9 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.B
                 var payment = new PaymentMethod(cardTypeId, alias, cardNumber, securityNumber, cardHolderName, expiration);
 
                 _paymentMethods.Add(payment);
+
                 AddDomainEvent(new BuyerAndPaymentMethodVerifiedDomainEvent(this, payment, orderId));
+
                 return payment;
             }
         }       

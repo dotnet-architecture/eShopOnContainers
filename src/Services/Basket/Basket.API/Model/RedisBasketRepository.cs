@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using StackExchange.Redis;
+﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using Microsoft.Extensions.Logging;
+using StackExchange.Redis;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.Services.Basket.API.Model
 {
@@ -31,7 +30,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Model
             return await database.KeyDeleteAsync(id.ToString());
         }
 
-        public async Task<IEnumerable<string>> GetUsers()
+        public async Task<IEnumerable<string>> GetUsersAsync()
         {
             var server = await GetServer();
             
@@ -63,11 +62,12 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Model
             var created = await database.StringSetAsync(basket.BuyerId, JsonConvert.SerializeObject(basket));
             if (!created)
             {
-                _logger.LogInformation("Problem persisting the item");
+                _logger.LogInformation("Problem occur persisting the item.");
                 return null;
             }
 
-            _logger.LogInformation("basket item persisted succesfully");
+            _logger.LogInformation("Basket item persisted succesfully.");
+
             return await GetBasketAsync(basket.BuyerId);
         }
 
