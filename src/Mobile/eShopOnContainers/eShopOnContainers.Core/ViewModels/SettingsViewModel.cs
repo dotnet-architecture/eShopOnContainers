@@ -71,16 +71,14 @@ namespace eShopOnContainers.Core.ViewModels
 
         private void MockServices()
         {
-            ViewModelLocator.UpdateDependencies(!UseAzureServices);
+            ViewModelLocator.RegisterDependencies(!UseAzureServices);
             UpdateInfo();
         }
 
         public override Task InitializeAsync(object navigationData)
         {
             UpdateInfo();
-
             Endpoint = Settings.UrlBase;
-
             return base.InitializeAsync(navigationData);
         }
 
@@ -89,12 +87,12 @@ namespace eShopOnContainers.Core.ViewModels
             if (!UseAzureServices)
             {
                 Title = "Use Mock Services";
-                Description = "Mock Services are simulated objects that mimic the behavior of real services in controlled ways";
+                Description = "Mock Services are simulated objects that mimic the behavior of real services using a controlled approach.";
             }
             else
             {
                 Title = "Use Microservices/Containers from eShopOnContainers";
-                Description = "When enabling the use of microservices/containers the Xamarin.Forms app will try to use real services deployed as Docker containers in the specified base IP that will need to be reachable through the network";
+                Description = "When enabling the use of microservices/containers, the app will attempt to use real services deployed as Docker containers at the specified base endpoint, which will must be reachable through the network.";
             }
         }
 
