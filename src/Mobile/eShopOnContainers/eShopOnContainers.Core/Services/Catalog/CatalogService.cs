@@ -60,11 +60,6 @@ namespace eShopOnContainers.Core.Services.Catalog
             
         }
 
-        public Task<CatalogItem> GetCatalogItemAsync(string id)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<ObservableCollection<CatalogBrand>> GetCatalogBrandAsync()
         {
 
