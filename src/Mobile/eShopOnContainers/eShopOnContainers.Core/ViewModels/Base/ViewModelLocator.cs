@@ -1,4 +1,4 @@
-﻿using Microsoft.Practices.Unity;
+﻿using Autofac;
 using eShopOnContainers.Services;
 using System;
 using System.Globalization;
@@ -16,7 +16,7 @@ namespace eShopOnContainers.Core.ViewModels.Base
 {
     public static class ViewModelLocator
     {
-		private static readonly IUnityContainer _unityContainer = new UnityContainer();
+		private static IContainer _container;
 
 		public static readonly BindableProperty AutoWireViewModelProperty =
 			BindableProperty.CreateAttached("AutoWireViewModel", typeof(bool), typeof(ViewModelLocator), default(bool), propertyChanged: OnAutoWireViewModelChanged);
@@ -33,56 +33,56 @@ namespace eShopOnContainers.Core.ViewModels.Base
 
 		public static bool UseMockService { get; set; }
 
-		public static void Initialize()
+		public static void RegisterDependencies(bool useMockServices)
 		{
-			// Services
-			_unityContainer.RegisterType<IDialogService, DialogService>();
-			_unityContainer.RegisterType<INavigationService, NavigationService>(new ContainerControlledLifetimeManager());
-			_unityContainer.RegisterType<IOpenUrlService, OpenUrlService>();
-			_unityContainer.RegisterType<IRequestProvider, RequestProvider>();
-			_unityContainer.RegisterType<IIdentityService, IdentityService>();
-			_unityContainer.RegisterType<ICatalogService, CatalogMockService>();
-			_unityContainer.RegisterType<IBasketService, BasketMockService>();
-			_unityContainer.RegisterType<IUserService, UserMockService>();
+			var builder = new ContainerBuilder();
 
 			// View models
-			_unityContainer.RegisterType<BasketViewModel>();
-			_unityContainer.RegisterType<CatalogViewModel>();
-			_unityContainer.RegisterType<CheckoutViewModel>();
-			_unityContainer.RegisterType<LoginViewModel>();
-			_unityContainer.RegisterType<MainViewModel>();
-			_unityContainer.RegisterType<OrderDetailViewModel>();
-			_unityContainer.RegisterType<ProfileViewModel>();
-			_unityContainer.RegisterType<SettingsViewModel>();
-		}
+			builder.RegisterType<BasketViewModel>();
+			builder.RegisterType<CatalogViewModel>();
+			builder.RegisterType<CheckoutViewModel>();
+			builder.RegisterType<LoginViewModel>();
+			builder.RegisterType<MainViewModel>();
+			builder.RegisterType<OrderDetailViewModel>();
+			builder.RegisterType<ProfileViewModel>();
+			builder.RegisterType<SettingsViewModel>();
 
-		public static void UpdateDependencies(bool useMockServices)
-		{
-			// Change injected dependencies
+			// Services
+			builder.RegisterType<NavigationService>().As<INavigationService>().SingleInstance();
+			builder.RegisterType<DialogService>().As<IDialogService>();
+			builder.RegisterType<OpenUrlService>().As<IOpenUrlService>();
+			builder.RegisterType<IdentityService>().As<IIdentityService>();
+			builder.RegisterType<RequestProvider>().As<IRequestProvider>();
+
 			if (useMockServices)
 			{
-				_unityContainer.RegisterInstance<ICatalogService>(new CatalogMockService());
-				_unityContainer.RegisterInstance<IBasketService>(new BasketMockService());
-				_unityContainer.RegisterInstance<IOrderService>(new OrderMockService());
-				_unityContainer.RegisterInstance<IUserService>(new UserMockService());
+				builder.RegisterInstance(new CatalogMockService()).As<ICatalogService>();
+				builder.RegisterInstance(new BasketMockService()).As<IBasketService>();
+				builder.RegisterInstance(new OrderMockService()).As<IOrderService>();
+				builder.RegisterInstance(new UserMockService()).As<IUserService>();
 
 				UseMockService = true;
 			}
 			else
 			{
-				var requestProvider = Resolve<IRequestProvider>();
-				_unityContainer.RegisterInstance<ICatalogService>(new CatalogService(requestProvider));
-				_unityContainer.RegisterInstance<IBasketService>(new BasketService(requestProvider));
-				_unityContainer.RegisterInstance<IOrderService>(new OrderService(requestProvider));
-				_unityContainer.RegisterInstance<IUserService>(new UserService(requestProvider));
+				builder.RegisterType<CatalogService>().As<ICatalogService>().SingleInstance();
+				builder.RegisterType<BasketService>().As<IBasketService>().SingleInstance();
+				builder.RegisterType<OrderService>().As<IOrderService>().SingleInstance();
+				builder.RegisterType<UserService>().As<IUserService>().SingleInstance();
 
 				UseMockService = false;
 			}
+
+			if (_container != null)
+			{
+				_container.Dispose();
+			}
+			_container = builder.Build();
 		}
 
 		public static T Resolve<T>()
 		{
-			return _unityContainer.Resolve<T>();
+			return _container.Resolve<T>();
 		}
 
 		private static void OnAutoWireViewModelChanged(BindableObject bindable, object oldValue, object newValue)
@@ -103,7 +103,7 @@ namespace eShopOnContainers.Core.ViewModels.Base
 			{
 				return;
 			}
-			var viewModel = _unityContainer.Resolve(viewModelType);
+			var viewModel = _container.Resolve(viewModelType);
 			view.BindingContext = viewModel;
 		}
 	}
