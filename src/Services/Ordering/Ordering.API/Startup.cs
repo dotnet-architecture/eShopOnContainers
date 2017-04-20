@@ -22,6 +22,7 @@
     using Microsoft.Extensions.HealthChecks;
     using Microsoft.Extensions.Logging;
     using Ordering.Infrastructure;
+    using RabbitMQ.Client;
     using System;
     using System.Data.Common;
     using System.Reflection;
@@ -105,7 +106,21 @@
                 sp => (DbConnection c) => new IntegrationEventLogService(c));            
             var serviceProvider = services.BuildServiceProvider();
             services.AddTransient<IOrderingIntegrationEventService, OrderingIntegrationEventService>();
-            services.AddSingleton<IEventBus>(new EventBusRabbitMQ(Configuration["EventBusConnection"]));
+
+            services.AddSingleton<IRabbitMQPersisterConnection>(sp =>
+            {
+                var logger = sp.GetRequiredService<ILogger<DefaultRabbitMQPersisterConnection>>();
+
+                var factory = new ConnectionFactory()
+                {
+                    HostName = Configuration["EventBusConnection"]
+                };
+
+                return new DefaultRabbitMQPersisterConnection(factory, logger);
+            });
+
+            services.AddSingleton<IEventBus, EventBusRabbitMQ>();
+
             services.AddOptions();
 
             //configure autofac
