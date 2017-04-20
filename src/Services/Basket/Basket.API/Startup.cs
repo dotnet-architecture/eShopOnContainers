@@ -14,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.HealthChecks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using RabbitMQ.Client;
 using StackExchange.Redis;
 using System.Linq;
 using System.Net;
@@ -58,22 +59,31 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             //and then creating the connection it seems reasonable to move
             //that cost to startup instead of having the first request pay the
             //penalty.
-            services.AddSingleton<ConnectionMultiplexer>(sp => {
+            services.AddSingleton<ConnectionMultiplexer>(sp =>
+            {
                 var settings = sp.GetRequiredService<IOptions<BasketSettings>>().Value;
                 var ips = Dns.GetHostAddressesAsync(settings.ConnectionString).Result;
 
                 return ConnectionMultiplexer.Connect(ips.First().ToString());
             });
 
-            services.AddSingleton<IEventBus>(sp =>
+
+            services.AddSingleton<IRabbitMQPersisterConnection>(sp =>
             {
                 var settings = sp.GetRequiredService<IOptions<BasketSettings>>().Value;
+                var logger = sp.GetRequiredService<ILogger<DefaultRabbitMQPersisterConnection>>();
+                var factory = new ConnectionFactory()
+                {
+                    HostName = settings.EventBusConnection
+                };
 
-                return new EventBusRabbitMQ(settings.EventBusConnection);
+                return new DefaultRabbitMQPersisterConnection(factory, logger);
             });
 
+            services.AddSingleton<IEventBus, EventBusRabbitMQ>();
+
             services.AddSwaggerGen();
-            
+
             services.ConfigureSwaggerGen(options =>
             {
                 options.OperationFilter<AuthorizationHeaderParameterOperationFilter>();
@@ -101,7 +111,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             services.AddTransient<IIntegrationEventHandler<ProductPriceChangedIntegrationEvent>, ProductPriceChangedIntegrationEventHandler>();
             services.AddTransient<IIntegrationEventHandler<OrderStartedIntegrationEvent>, OrderStartedIntegrationEventHandler>();
 
-          
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
