@@ -8,7 +8,7 @@
     using System.Threading.Tasks;
 
 
-    public class CreateOrderCommandIdentifiedHandler : IdentifierCommandHandler<CreateOrderCommand, bool>
+    public class CreateOrderCommandIdentifiedHandler : IdentifiedCommandHandler<CreateOrderCommand, bool>
     {
         public CreateOrderCommandIdentifiedHandler(IMediator mediator, IRequestManager requestManager) : base(mediator, requestManager)
         {

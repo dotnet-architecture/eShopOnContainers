@@ -10,13 +10,13 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands
     /// </summary>
     /// <typeparam name="T">Type of the command handler that performs the operation if request is not duplicated</typeparam>
     /// <typeparam name="R">Return value of the inner command handler</typeparam>
-    public class IdentifierCommandHandler<T, R> : IAsyncRequestHandler<IdentifiedCommand<T, R>, R>
+    public class IdentifiedCommandHandler<T, R> : IAsyncRequestHandler<IdentifiedCommand<T, R>, R>
         where T : IAsyncRequest<R>
     {
         private readonly IMediator _mediator;
         private readonly IRequestManager _requestManager;
 
-        public IdentifierCommandHandler(IMediator mediator, IRequestManager requestManager)
+        public IdentifiedCommandHandler(IMediator mediator, IRequestManager requestManager)
         {
             _mediator = mediator;
             _requestManager = requestManager;
