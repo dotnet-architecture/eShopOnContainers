@@ -13,6 +13,8 @@
     <DockerComposeProjectPath>..\..\..\docker-compose.dcproj</DockerComposeProjectPath>
     <TypeScriptCompileOnSaveEnabled>false</TypeScriptCompileOnSaveEnabled>
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+    <GeneratedItemPatterns>wwwroot/dist/**</GeneratedItemPatterns>
+    <DefaultItemExcludes>$(DefaultItemExcludes);$(GeneratedItemPatterns)</DefaultItemExcludes>
   </PropertyGroup>
 
   <ItemGroup>
@@ -67,9 +69,14 @@
     <PackageReference Include="Microsoft.Extensions.Options" Version="1.1.0" />
   </ItemGroup>
 
+  <!-- workaround for https://github.com/aspnet/websdk/issues/114 -->
   <Target Name="PrepublishScript" BeforeTargets="PrepareForPublish">
     <Exec Command="npm install" />
     <Exec Command="npm run build:prod" />
+    <ItemGroup>
+      <_GeneratedFiles Include="$(GeneratedItemPatterns)" />
+      <ContentWithTargetPath Include="@(_GeneratedFiles)" TargetPath="%(Identity)" CopyToPublishDirectory="PreserveNewest" />
+    </ItemGroup>
   </Target>
 
   <ItemGroup>
