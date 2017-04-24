@@ -88,7 +88,7 @@ spec:
         - name: ASPNETCORE_URLS
           value: http://0.0.0.0:80/identity
         - name: ConnectionStrings__DefaultConnection
-          value: "Server=sql-data;Initial Catalog=Microsoft.eShopOnContainers.Services.CatalogDb;User Id=sa;Password=Pass@word"
+          value: "Server=sql-data;Initial Catalog=Microsoft.eShopOnContainers.Services.IdentityDb;User Id=sa;Password=Pass@word"
         - name: MvcClient
           valueFrom:
            configMapKeyRef:
