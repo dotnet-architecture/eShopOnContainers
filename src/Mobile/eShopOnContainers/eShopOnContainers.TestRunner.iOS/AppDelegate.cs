@@ -17,7 +17,7 @@ namespace eShopOnContainers.TestRunner.iOS
 
             // Otherwise you need to ensure that the test assemblies will 
             // become part of the app bundle
-            AddTestAssembly(typeof(UnitTests.DummyTests).Assembly);
+			AddTestAssembly(typeof(UnitTests.CatalogViewModelTests).Assembly);
 
             return base.FinishedLaunching(app, options);
         }
