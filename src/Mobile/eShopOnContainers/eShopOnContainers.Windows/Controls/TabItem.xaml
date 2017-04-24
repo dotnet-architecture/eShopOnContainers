@@ -1,0 +1,78 @@
+﻿<UserControl
+    x:Name="Control"
+    x:Class="eShopOnContainers.Windows.Controls.TabItem"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:eShopOnContainers.Windows.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+    <UserControl.Resources>
+        <ResourceDictionary>
+
+            <Style x:Key="TabMainPanelStyle" TargetType="StackPanel">
+                <Setter Property="Height" Value="48" />
+                <Setter Property="Width" Value="60" />
+            </Style>
+            
+            <Style x:Key="TabIconStyle" TargetType="Image">
+                <Setter Property="Height" Value="20" />
+                <Setter Property="Width" Value="20" />
+                <Setter Property="HorizontalAlignment" Value="Center" />
+                <Setter Property="Margin" Value="0, 4" />
+            </Style>
+            
+            <Style x:Key="TabTextStyle" TargetType="TextBlock">
+                <Setter Property="Foreground" Value="White" />
+                <Setter Property="FontFamily" Value="Segoe UI" />
+                <Setter Property="FontSize" Value="12" />
+                <Setter Property="LineStackingStrategy" Value="BlockLineHeight" />
+                <Setter Property="LineHeight" Value="14" />
+                <Setter Property="MaxLines" Value="2" />
+                <Setter Property="TextAlignment" Value="Center" />
+                <Setter Property="HorizontalAlignment" Value="Center" />
+                <Setter Property="Margin" Value="2,5,2,7" />
+            </Style>
+
+            <Style x:Key="TabBadgeStyle" TargetType="Grid">
+                <Setter Property="Height" Value="16" />
+                <Setter Property="Width" Value="16" />
+                <Setter Property="CornerRadius" Value="24" />
+                <Setter Property="HorizontalAlignment" Value="Right" />
+                <Setter Property="VerticalAlignment" Value="Top" />
+                <Setter Property="Margin" Value="6, 2, 0, 6" />
+            </Style>
+
+            <Style x:Key="BadgeTextStyle" TargetType="TextBlock">
+                <Setter Property="Foreground" Value="White" />
+                <Setter Property="FontSize" Value="10" />
+                <Setter Property="HorizontalAlignment" Value="Center" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+            </Style>
+            
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <StackPanel
+            Style="{StaticResource TabMainPanelStyle}">
+            <!-- TAB ICON -->
+            <Image       
+                Source="{Binding ElementName=Control, Path=Icon}"
+                Style="{StaticResource TabIconStyle}"/>
+            <!-- TAB TEXT -->
+            <TextBlock  
+                Text="{Binding ElementName=Control, Path=Label}"
+                Style="{StaticResource TabTextStyle}" />
+        </StackPanel>
+        <!-- TAB BADGE -->
+        <Grid
+            Background="{Binding ElementName=Control, Path=BadgeColor}"
+            Style="{StaticResource TabBadgeStyle}">
+            <TextBlock
+                Text="{Binding ElementName=Control, Path=BadgeText}"
+                Style="{StaticResource BadgeTextStyle}"/>
+        </Grid>
+    </Grid>
+</UserControl>

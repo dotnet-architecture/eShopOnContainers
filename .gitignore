@@ -25,7 +25,7 @@ bld/
 # Visual Studio 2015 cache/options directory
 .vs/
 # Uncomment if you have tasks that create the project's static files in wwwroot
-#wwwroot/
+**/wwwroot/lib/
 
 # MSTest test Results
 [Tt]est[Rr]esult*/
@@ -250,3 +250,11 @@ paket-files/
 # JetBrains Rider
 .idea/
 *.sln.iml
+pub/
+/src/Web/WebMVC/Properties/PublishProfiles/eShopOnContainersWebMVC2016 - Web Deploy-publish.ps1
+/src/Web/WebMVC/Properties/PublishProfiles/publish-module.psm1
+/src/Services/Identity/eShopOnContainers.Identity/Properties/launchSettings.json
+
+#Ignore marker-file used to know which docker files we have.
+.eshopdocker_*
+/src/Web/WebMVC/wwwroot/lib

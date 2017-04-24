@@ -1,0 +1,86 @@
+@font-face {
+    font-family: Montserrat;
+    font-weight: 400;
+    src: url("../fonts/Montserrat-Regular.eot?") format("eot"), url("../fonts/Montserrat-Regular.woff") format("woff"), url("../fonts/Montserrat-Regular.ttf") format("truetype"), url("../fonts/Montserrat-Regular.svg#Montserrat") format("svg");
+}
+
+@font-face {
+    font-family: Montserrat;
+    font-weight: 700;
+    src: url("../fonts/Montserrat-Bold.eot?") format("eot"), url("../fonts/Montserrat-Bold.woff") format("woff"), url("../fonts/Montserrat-Bold.ttf") format("truetype"), url("../fonts/Montserrat-Bold.svg#Montserrat") format("svg");
+}
+
+html,
+body {
+    font-family: Montserrat, sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    z-index: 10;
+}
+
+*,
+*::after,
+*::before {
+    box-sizing: border-box;
+}
+
+.preloading {
+    color: #00A69C;
+    display: block;
+    font-size: 1.5rem;
+    left: 50%;
+    position: fixed;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+select::-ms-expand {
+    display: none;
+}
+
+@media screen and (min-width: 992px) {
+    .form-input {
+        max-width: 360px;
+        width: 360px;
+    }
+}
+
+.form-input {
+    border-radius: 0;
+    height: 45px;
+    padding: 10px;
+}
+
+.form-input-small {
+    max-width: 100px !important;
+}
+
+.form-input-medium {
+    width: 150px !important;
+}
+
+.alert {
+    padding-left: 0;
+}
+
+.alert-danger {
+    background-color: transparent;
+    border: 0;
+    color: #FB0D0D;
+    font-size: 12px;
+}
+
+a,
+a:active,
+a:hover,
+a:visited {
+    color: #000;
+    text-decoration: none;
+    transition: color 0.35s;
+}
+
+    a:hover,
+    a:active {
+        color: #75B918;
+        transition: color 0.35s;
+    }

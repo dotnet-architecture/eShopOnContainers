@@ -1,0 +1,98 @@
+version: '2'
+
+# The Production docker-compose file has to have the external/real IPs or DNS names for the services 
+# The ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP environment variable is taken, by default, from the ".env" file defined like: 
+#     ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP=192.168.88.248
+# but values present in the environment vars at runtime will always override those defined inside the .env file
+# An external IP or DNS name has to be used when testing the Web apps and the Xamarin apps from remote machines/devices using the same WiFi, for instance.
+#
+# Set ASPNETCORE_ENVIRONMENT=Development to get errors while testing. 
+#
+# You need to start it with the following CLI command:
+# docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+
+services:
+
+  basket.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://0.0.0.0:5103
+      - ConnectionString=basket.data
+      - identityUrl=http://identity.api:5105              #Local: You need to open your host's firewall at range 5100-5105.  at range 5100-5105. 
+      - EventBusConnection=rabbitmq
+    ports:
+      - "5103:5103"
+
+  catalog.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://0.0.0.0:5101
+      - ConnectionString=Server=sql.data;Database=Microsoft.eShopOnContainers.Services.CatalogDb;User Id=sa;Password=Pass@word
+      - ExternalCatalogBaseUrl=http://${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP}:5101    #Local: You need to open your host's firewall at range 5100-5105.  at range 5100-5105.
+      - EventBusConnection=rabbitmq
+    ports:
+      - "5101:5101"
+
+  identity.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://0.0.0.0:5105
+      - SpaClient=http://${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP}:5104
+      - ConnectionStrings__DefaultConnection=Server=sql.data;Database=Microsoft.eShopOnContainers.Service.IdentityDb;User Id=sa;Password=Pass@word 
+      - MvcClient=http://${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP}:5100              #Local: You need to open your host's firewall at range 5100-5105.  
+      - XamarinCallback=http://${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP}:5105/xamarincallback
+    ports:
+      - "5105:5105"
+
+  ordering.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://0.0.0.0:5102
+      - ConnectionString=Server=sql.data;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word
+      - identityUrl=http://identity.api:5105              #Local: You need to open your host's firewall at range 5100-5105.  at range 5100-5105. 
+      - BasketUrl=http://basket.api:5103
+      - EventBusConnection=rabbitmq
+    ports:
+      - "5102:5102"
+
+  webspa:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://0.0.0.0:5104
+      - CatalogUrl=http://${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP}:5101
+      - OrderingUrl=http://${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP}:5102
+      - IdentityUrl=http://${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP}:5105              #Local: You need to open your host's firewall at range 5100-5105.  at range 5100-5105. 
+      - BasketUrl=http://${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP}:5103                
+    ports:
+      - "5104:5104"
+
+  webmvc:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://0.0.0.0:5100
+      - CatalogUrl=http://catalog.api:5101
+      - OrderingUrl=http://ordering.api:5102
+      - IdentityUrl=http://${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP}:5105     #Local: Use ${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP}, if using external IP or DNS name from browser.          
+      - BasketUrl=http://basket.api:5103
+    ports:
+      - "5100:5100"
+
+  sql.data:
+    environment:
+      - SA_PASSWORD=Pass@word
+      - ACCEPT_EULA=Y
+    ports:
+      - "5433:1433"
+
+  webstatus:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://0.0.0.0:5107
+      - CatalogUrl=http://catalog.api:5101/hc
+      - OrderingUrl=http://ordering.api:5102/hc
+      - BasketUrl=http://basket.api:5103/hc
+      - mvc=http://webmvc:5100/hc
+      - spa=http://webspa:5104/hc
+      - IdentityUrl=http://${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP}:5105     #Local: Use ${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP}, if using external IP or DNS name from browser.    
+    ports:
+      - "5107:5107"

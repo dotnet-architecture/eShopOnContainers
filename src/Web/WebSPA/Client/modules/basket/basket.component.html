@@ -1,0 +1,58 @@
+<div class="esh-basket">
+    <esh-header url="/catalog">Back to catalog</esh-header>
+
+    <div class="container">
+        <article class="esh-basket-titles row">
+            <section class="esh-basket-title col-xs-3">Product</section>
+            <section class="esh-basket-title col-xs-3 hidden-lg-down"></section>
+            <section class="esh-basket-title col-xs-2">Price</section>
+            <section class="esh-basket-title col-xs-2">Quantity</section>
+            <section class="esh-basket-title col-xs-2">Cost</section>
+        </article>
+
+        <div *ngFor="let item of basket?.items" class="esh-basket-items--border">
+            <article class="esh-basket-items row">
+
+                <section class="esh-basket-item esh-basket-item--middle col-lg-3 hidden-lg-down">
+                    <img class="esh-basket-image" src="{{item.pictureUrl}}" />
+                </section>
+                <section class="esh-basket-item esh-basket-item--middle col-xs-3">{{item.productName}}</section>
+                <section class="esh-basket-item esh-basket-item--middle col-xs-2">$ {{item.unitPrice}}</section>
+                <section class="esh-basket-item esh-basket-item--middle col-xs-2">
+                    <input class="esh-basket-input"
+                           type="number"
+                           min="1"
+                           [(ngModel)]="item.quantity"
+                           (change)="itemQuantityChanged(item)" />
+                </section>
+                <section class="esh-basket-item esh-basket-item--middle esh-basket-item--mark col-xs-2">$ {{item.unitPrice * item.quantity}}</section>
+            </article>
+            <br/>
+            <div class="esh-basket-items-margin-left1 row">
+                <div class="alert alert-warning" role="alert" *ngIf="item.oldUnitPrice > 0">&nbsp;Note that the price of this article changed in our Catalog. The old price when you originally added it to the basket was $ {{item.oldUnitPrice}} </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <article class="esh-basket-titles esh-basket-titles--clean row">
+            <section class="esh-basket-title col-xs-9"></section>
+            <section class="esh-basket-title col-xs-2">Total</section>
+        </article>
+
+        <article class="esh-basket-items row">
+            <section class="esh-basket-item col-xs-9"></section>
+            <section class="esh-basket-item esh-basket-item--mark col-xs-2">$ {{totalPrice}}</section>
+        </article>
+
+        <article class="esh-basket-items row">
+            <section class="esh-basket-item col-xs-7"></section>
+            <section class="esh-basket-item col-xs-2">
+                <button class="btn esh-basket-checkout" (click)="update($event)">[ Update ]</button>
+            </section>
+            <section class="esh-basket-item col-xs-3">
+                <div (click)="checkOut($event)" class="btn esh-basket-checkout">[ Checkout ]</div>
+            </section>
+        </article>
+    </div>
+</div>
