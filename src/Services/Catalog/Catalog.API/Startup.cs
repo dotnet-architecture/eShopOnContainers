@@ -1,6 +1,7 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Catalog.API
 {
     using global::Catalog.API.Infrastructure.Filters;
+    using global::Catalog.API.IntegrationEvents;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.EntityFrameworkCore;
@@ -15,13 +16,11 @@
     using Microsoft.Extensions.HealthChecks;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
+    using RabbitMQ.Client;
     using System;
-    using System.Data.SqlClient;
-    using System.IO;
     using System.Data.Common;
+    using System.Data.SqlClient;
     using System.Reflection;
-    using global::Catalog.API.IntegrationEvents;
-    using System.Threading.Tasks;
 
     public class Startup
     {
@@ -47,7 +46,7 @@
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
-            
+
             services.AddHealthChecks(checks =>
             {
                 checks.AddSqlCheck("CatalogDb", Configuration["ConnectionString"]);
@@ -62,18 +61,19 @@
             {
                 options.UseSqlServer(Configuration["ConnectionString"],
                                      sqlServerOptionsAction: sqlOptions =>
-                                     {                                         
+                                     {
                                          sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
                                          //Configuring Connection Resiliency: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency 
                                          sqlOptions.EnableRetryOnFailure(maxRetryCount: 5, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
                                      });
+
                 // Changing default behavior when client evaluation occurs to throw. 
                 // Default in EF Core would be to log a warning when client evaluation is performed.
                 options.ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning));
                 //Check Client vs. Server evaluation: https://docs.microsoft.com/en-us/ef/core/querying/client-eval
             });
 
-            services.Configure<Settings>(Configuration);
+            services.Configure<CatalogSettings>(Configuration);
 
             // Add framework services.
             services.AddSwaggerGen();
@@ -99,11 +99,23 @@
             });
 
             services.AddTransient<Func<DbConnection, IIntegrationEventLogService>>(
-                sp => (DbConnection c) => new IntegrationEventLogService(c));            
-            var serviceProvider = services.BuildServiceProvider();
-            var configuration = serviceProvider.GetRequiredService<IOptionsSnapshot<Settings>>().Value;
+                sp => (DbConnection c) => new IntegrationEventLogService(c));
+
             services.AddTransient<ICatalogIntegrationEventService, CatalogIntegrationEventService>();
-            services.AddSingleton<IEventBus>(new EventBusRabbitMQ(configuration.EventBusConnection));            
+
+            services.AddSingleton<IRabbitMQPersisterConnection>(sp =>
+            {
+                var settings = sp.GetRequiredService<IOptions<CatalogSettings>>().Value;
+                var logger = sp.GetRequiredService<ILogger<DefaultRabbitMQPersisterConnection>>();
+                var factory = new ConnectionFactory()
+                {
+                    HostName = settings.EventBusConnection
+                };
+
+                return new DefaultRabbitMQPersisterConnection(factory, logger);
+            });
+
+            services.AddSingleton<IEventBus, EventBusRabbitMQ>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
@@ -124,25 +136,28 @@
                         .ApplicationServices.GetService(typeof(CatalogContext));
 
             WaitForSqlAvailability(context, loggerFactory);
+
             //Seed Data
             CatalogContextSeed.SeedAsync(app, loggerFactory)
-            .Wait();
+                .Wait();
 
             var integrationEventLogContext = new IntegrationEventLogContext(
                 new DbContextOptionsBuilder<IntegrationEventLogContext>()
                 .UseSqlServer(Configuration["ConnectionString"], b => b.MigrationsAssembly("Catalog.API"))
                 .Options);
+
             integrationEventLogContext.Database.Migrate();
         }
 
         private void WaitForSqlAvailability(CatalogContext ctx, ILoggerFactory loggerFactory, int? retry = 0)
         {
-            int retryForAvailability = retry.Value;            
+            int retryForAvailability = retry.Value;
+
             try
             {
                 ctx.Database.OpenConnection();
             }
-            catch(SqlException ex)
+            catch (SqlException ex)
             {
                 if (retryForAvailability < 10)
                 {
@@ -152,11 +167,10 @@
                     WaitForSqlAvailability(ctx, loggerFactory, retryForAvailability);
                 }
             }
-            finally {
-                ctx.Database.CloseConnection(); 
+            finally
+            {
+                ctx.Database.CloseConnection();
             }
-            
-
         }
     }
 }
