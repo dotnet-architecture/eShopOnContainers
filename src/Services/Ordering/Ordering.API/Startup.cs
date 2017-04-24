@@ -22,6 +22,7 @@
     using Microsoft.Extensions.HealthChecks;
     using Microsoft.Extensions.Logging;
     using Ordering.Infrastructure;
+    using RabbitMQ.Client;
     using System;
     using System.Data.Common;
     using System.Reflection;
@@ -65,14 +66,14 @@
             services.AddEntityFrameworkSqlServer()
                     .AddDbContext<OrderingContext>(options =>
                     {
-                    options.UseSqlServer(Configuration["ConnectionString"],
-                        sqlServerOptionsAction: sqlOptions =>
-                        {
-                            sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
-                            sqlOptions.EnableRetryOnFailure(maxRetryCount: 5, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
-                        });                                       
-                    },
-                    ServiceLifetime.Scoped  //Showing explicitly that the DbContext is shared across the HTTP request scope (graph of objects started in the HTTP request)
+                        options.UseSqlServer(Configuration["ConnectionString"],
+                            sqlServerOptionsAction: sqlOptions =>
+                            {
+                                sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
+                                sqlOptions.EnableRetryOnFailure(maxRetryCount: 5, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
+                            });                                       
+                        },
+                        ServiceLifetime.Scoped  //Showing explicitly that the DbContext is shared across the HTTP request scope (graph of objects started in the HTTP request)
                     );
 
             services.AddSwaggerGen();
@@ -105,7 +106,21 @@
                 sp => (DbConnection c) => new IntegrationEventLogService(c));            
             var serviceProvider = services.BuildServiceProvider();
             services.AddTransient<IOrderingIntegrationEventService, OrderingIntegrationEventService>();
-            services.AddSingleton<IEventBus>(new EventBusRabbitMQ(Configuration["EventBusConnection"]));
+
+            services.AddSingleton<IRabbitMQPersisterConnection>(sp =>
+            {
+                var logger = sp.GetRequiredService<ILogger<DefaultRabbitMQPersisterConnection>>();
+
+                var factory = new ConnectionFactory()
+                {
+                    HostName = Configuration["EventBusConnection"]
+                };
+
+                return new DefaultRabbitMQPersisterConnection(factory, logger);
+            });
+
+            services.AddSingleton<IEventBus, EventBusRabbitMQ>();
+
             services.AddOptions();
 
             //configure autofac

@@ -30,6 +30,7 @@ namespace Catalog.API.IntegrationEvents
         public async Task PublishThroughEventBusAsync(IntegrationEvent evt)
         {
             _eventBus.Publish(evt);
+
             await _eventLogService.MarkEventAsPublishedAsync(evt);
         }
 
