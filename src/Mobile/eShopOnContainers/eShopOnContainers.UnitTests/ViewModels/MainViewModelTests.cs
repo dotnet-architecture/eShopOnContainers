@@ -8,12 +8,15 @@ namespace eShopOnContainers.UnitTests
 {
 	public class MainViewModelTests
 	{
+		public MainViewModelTests()
+		{
+			ViewModelLocator.RegisterDependencies(true);
+		}
+
 		[Fact]
 		public void SettingsCommandIsNotNullWhenViewModelInstantiatedTest()
 		{
-			ViewModelLocator.RegisterDependencies(true);
 			var mainViewModel = new MainViewModel();
-
 			Assert.NotNull(mainViewModel.SettingsCommand);
 		}
 
@@ -21,7 +24,6 @@ namespace eShopOnContainers.UnitTests
 		public async Task ViewModelInitializationSendsChangeTabMessageTest()
 		{
 			bool messageReceived = false;
-			ViewModelLocator.RegisterDependencies(true);
 			var mainViewModel = new MainViewModel();
 			var tabParam = new TabParameter { TabIndex = 2 };
 
@@ -37,7 +39,6 @@ namespace eShopOnContainers.UnitTests
 		[Fact]
 		public void IsBusyPropertyIsFalseWhenViewModelInstantiatedTest()
 		{
-			ViewModelLocator.RegisterDependencies(true);
 			var mainViewModel = new MainViewModel();
 			Assert.False(mainViewModel.IsBusy);
 		}
@@ -45,11 +46,8 @@ namespace eShopOnContainers.UnitTests
 		[Fact]
 		public async Task IsBusyPropertyIsTrueAfterViewModelInitializationTest()
 		{
-			ViewModelLocator.RegisterDependencies(true);
 			var mainViewModel = new MainViewModel();
-
 			await mainViewModel.InitializeAsync(null);
-
 			Assert.True(mainViewModel.IsBusy);
 		}
 	}
