@@ -14,6 +14,12 @@ namespace eShopOnContainers.UnitTests
 			bool isValid = mockViewModel.Validate();
 
 			Assert.False(isValid);
+			Assert.Null(mockViewModel.Forename.Value);
+			Assert.Null(mockViewModel.Surname.Value);
+			Assert.False(mockViewModel.Forename.IsValid);
+			Assert.False(mockViewModel.Surname.IsValid);
+			Assert.NotEmpty(mockViewModel.Forename.Errors);
+            Assert.NotEmpty(mockViewModel.Surname.Errors);
 		}
 
 		[Fact]
@@ -26,6 +32,12 @@ namespace eShopOnContainers.UnitTests
 			bool isValid = mockViewModel.Validate();
 
 			Assert.False(isValid);
+			Assert.NotNull(mockViewModel.Forename.Value);
+			Assert.Null(mockViewModel.Surname.Value);
+			Assert.True(mockViewModel.Forename.IsValid);
+			Assert.False(mockViewModel.Surname.IsValid);
+			Assert.Empty(mockViewModel.Forename.Errors);
+			Assert.NotEmpty(mockViewModel.Surname.Errors);
 		}
 
 		[Fact]
@@ -38,10 +50,16 @@ namespace eShopOnContainers.UnitTests
 			bool isValid = mockViewModel.Validate();
 
 			Assert.False(isValid);
+			Assert.Null(mockViewModel.Forename.Value);
+			Assert.NotNull(mockViewModel.Surname.Value);
+			Assert.False(mockViewModel.Forename.IsValid);
+			Assert.True(mockViewModel.Surname.IsValid);
+			Assert.NotEmpty(mockViewModel.Forename.Errors);
+			Assert.Empty(mockViewModel.Surname.Errors);
 		}
 
 		[Fact]
-		public void CheckValidationPassesWhenPropertiesHaveDataTest()
+		public void CheckValidationPassesWhenBothPropertiesHaveDataTest()
 		{
 			ViewModelLocator.RegisterDependencies(true);
 			var mockViewModel = new MockViewModel();
@@ -51,6 +69,12 @@ namespace eShopOnContainers.UnitTests
 			bool isValid = mockViewModel.Validate();
 
 			Assert.True(isValid);
+			Assert.NotNull(mockViewModel.Forename.Value);
+			Assert.NotNull(mockViewModel.Surname.Value);
+			Assert.True(mockViewModel.Forename.IsValid);
+			Assert.True(mockViewModel.Surname.IsValid);
+			Assert.Empty(mockViewModel.Forename.Errors);
+			Assert.Empty(mockViewModel.Surname.Errors);
 		}
 
 		[Fact]
