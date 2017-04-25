@@ -4,11 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
 
 namespace Basket.API.Infrastructure.Filters
 {
@@ -43,12 +39,12 @@ namespace Basket.API.Infrastructure.Filters
             {
                 var json = new JsonErrorResponse
                 {
-                    Messages = new[] { "An error ocurr.Try it again." }
+                    Messages = new[] { "An error occurred. Try it again." }
                 };
 
                 if (env.IsDevelopment())
                 {
-                    json.DeveloperMeesage = context.Exception;
+                    json.DeveloperMessage = context.Exception;
                 }
 
                 context.Result = new InternalServerErrorObjectResult(json);
@@ -61,7 +57,7 @@ namespace Basket.API.Infrastructure.Filters
         {
             public string[] Messages { get; set; }
 
-            public object DeveloperMeesage { get; set; }
+            public object DeveloperMessage { get; set; }
         }
     }
 }
