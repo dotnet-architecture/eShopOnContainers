@@ -9,13 +9,16 @@ namespace eShopOnContainers.UnitTests
 {
 	public class OrderViewModelTests
 	{
+		public OrderViewModelTests()
+		{
+			ViewModelLocator.RegisterDependencies(true);
+		}
+
 		[Fact]
 		public void OrderPropertyIsNullWhenViewModelInstantiatedTest()
 		{
 			var orderService = new OrderMockService();
-			ViewModelLocator.RegisterDependencies(true);
 			var orderViewModel = new OrderDetailViewModel(orderService);
-
 			Assert.Null(orderViewModel.Order);
 		}
 
@@ -23,7 +26,6 @@ namespace eShopOnContainers.UnitTests
 		public async Task OrderPropertyIsNotNullAfterViewModelInitializationTest()
 		{
 			var orderService = new OrderMockService();
-			ViewModelLocator.RegisterDependencies(true);
 			var orderViewModel = new OrderDetailViewModel(orderService);
 
 			var order = await orderService.GetOrderAsync(1, GlobalSetting.Instance.AuthToken);
@@ -36,9 +38,7 @@ namespace eShopOnContainers.UnitTests
 		public async Task SettingOrderPropertyShouldRaisePropertyChanged()
 		{
 			bool invoked = false;
-
 			var orderService = new OrderMockService();
-			ViewModelLocator.RegisterDependencies(true);
 			var orderViewModel = new OrderDetailViewModel(orderService);
 
 			orderViewModel.PropertyChanged += (sender, e) =>

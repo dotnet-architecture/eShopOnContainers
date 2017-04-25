@@ -5,10 +5,14 @@ namespace eShopOnContainers.UnitTests
 {
 	public class MockViewModelTests
 	{
+		public MockViewModelTests()
+		{
+			ViewModelLocator.RegisterDependencies(true);
+		}
+
 		[Fact]
 		public void CheckValidationFailsWhenPropertiesAreEmptyTest()
 		{
-			ViewModelLocator.RegisterDependencies(true);
 			var mockViewModel = new MockViewModel();
 
 			bool isValid = mockViewModel.Validate();
@@ -25,7 +29,6 @@ namespace eShopOnContainers.UnitTests
 		[Fact]
 		public void CheckValidationFailsWhenOnlyForenameHasDataTest()
 		{
-			ViewModelLocator.RegisterDependencies(true);
 			var mockViewModel = new MockViewModel();
 			mockViewModel.Forename.Value = "John";
 
@@ -43,7 +46,6 @@ namespace eShopOnContainers.UnitTests
 		[Fact]
 		public void CheckValidationPassesWhenOnlySurnameHasDataTest()
 		{
-			ViewModelLocator.RegisterDependencies(true);
 			var mockViewModel = new MockViewModel();
 			mockViewModel.Surname.Value = "Smith";
 
@@ -61,7 +63,6 @@ namespace eShopOnContainers.UnitTests
 		[Fact]
 		public void CheckValidationPassesWhenBothPropertiesHaveDataTest()
 		{
-			ViewModelLocator.RegisterDependencies(true);
 			var mockViewModel = new MockViewModel();
 			mockViewModel.Forename.Value = "John";
 			mockViewModel.Surname.Value = "Smith";
@@ -81,8 +82,6 @@ namespace eShopOnContainers.UnitTests
 		public void SettingForenamePropertyShouldRaisePropertyChanged()
 		{
 			bool invoked = false;
-
-			ViewModelLocator.RegisterDependencies(true);
 			var mockViewModel = new MockViewModel();
 
 			mockViewModel.Forename.PropertyChanged += (sender, e) =>
@@ -99,8 +98,6 @@ namespace eShopOnContainers.UnitTests
 		public void SettingSurnamePropertyShouldRaisePropertyChanged()
 		{
 			bool invoked = false;
-
-			ViewModelLocator.RegisterDependencies(true);
 			var mockViewModel = new MockViewModel();
 
 			mockViewModel.Surname.PropertyChanged += (sender, e) =>

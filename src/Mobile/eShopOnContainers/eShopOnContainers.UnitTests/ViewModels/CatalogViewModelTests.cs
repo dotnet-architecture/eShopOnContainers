@@ -10,13 +10,16 @@ namespace eShopOnContainers.UnitTests
 {
 	public class CatalogViewModelTests
 	{
+		public CatalogViewModelTests()
+		{
+			ViewModelLocator.RegisterDependencies(true);
+		}
+
 		[Fact]
 		public void AddCatalogItemCommandIsNotNullTest()
 		{
 			var catalogService = new CatalogMockService();
-			ViewModelLocator.RegisterDependencies(true);
 			var catalogViewModel = new CatalogViewModel(catalogService);
-
 			Assert.NotNull(catalogViewModel.AddCatalogItemCommand);
 		}
 
@@ -24,9 +27,7 @@ namespace eShopOnContainers.UnitTests
 		public void FilterCommandIsNotNullTest()
 		{
 			var catalogService = new CatalogMockService();
-			ViewModelLocator.RegisterDependencies(true);
 			var catalogViewModel = new CatalogViewModel(catalogService);
-
 			Assert.NotNull(catalogViewModel.FilterCommand);
 		}
 
@@ -34,9 +35,7 @@ namespace eShopOnContainers.UnitTests
 		public void ClearFilterCommandIsNotNullTest()
 		{
 			var catalogService = new CatalogMockService();
-			ViewModelLocator.RegisterDependencies(true);
 			var catalogViewModel = new CatalogViewModel(catalogService);
-
 			Assert.NotNull(catalogViewModel.ClearFilterCommand);
 		}
 
@@ -44,9 +43,7 @@ namespace eShopOnContainers.UnitTests
 		public void ProductsPropertyIsNullWhenViewModelInstantiatedTest()
 		{
 			var catalogService = new CatalogMockService();
-			ViewModelLocator.RegisterDependencies(true);
 			var catalogViewModel = new CatalogViewModel(catalogService);
-
 			Assert.Null(catalogViewModel.Products);
 		}
 
@@ -54,9 +51,7 @@ namespace eShopOnContainers.UnitTests
 		public void BrandsPropertyuIsNullWhenViewModelInstantiatedTest()
 		{
 			var catalogService = new CatalogMockService();
-			ViewModelLocator.RegisterDependencies(true);
 			var catalogViewModel = new CatalogViewModel(catalogService);
-
 			Assert.Null(catalogViewModel.Brands);
 		}
 
@@ -64,9 +59,7 @@ namespace eShopOnContainers.UnitTests
 		public void BrandPropertyIsNullWhenViewModelInstantiatedTest()
 		{
 			var catalogService = new CatalogMockService();
-			ViewModelLocator.RegisterDependencies(true);
 			var catalogViewModel = new CatalogViewModel(catalogService);
-
 			Assert.Null(catalogViewModel.Brand);
 		}
 
@@ -74,9 +67,7 @@ namespace eShopOnContainers.UnitTests
 		public void TypesPropertyIsNullWhenViewModelInstantiatedTest()
 		{
 			var catalogService = new CatalogMockService();
-			ViewModelLocator.RegisterDependencies(true);
 			var catalogViewModel = new CatalogViewModel(catalogService);
-
 			Assert.Null(catalogViewModel.Types);
 		}
 
@@ -84,9 +75,7 @@ namespace eShopOnContainers.UnitTests
 		public void TypePropertyIsNullWhenViewModelInstantiatedTest()
 		{
 			var catalogService = new CatalogMockService();
-			ViewModelLocator.RegisterDependencies(true);
 			var catalogViewModel = new CatalogViewModel(catalogService);
-
 			Assert.Null(catalogViewModel.Type);
 		}
 
@@ -94,9 +83,7 @@ namespace eShopOnContainers.UnitTests
 		public void IsFilterPropertyIsFalseWhenViewModelInstantiatedTest()
 		{
 			var catalogService = new CatalogMockService();
-			ViewModelLocator.RegisterDependencies(true);
 			var catalogViewModel = new CatalogViewModel(catalogService);
-
 			Assert.False(catalogViewModel.IsFilter);
 		}
 
@@ -104,7 +91,6 @@ namespace eShopOnContainers.UnitTests
 		public async Task ProductsPropertyIsNotNullAfterViewModelInitializationTest()
 		{
 			var catalogService = new CatalogMockService();
-			ViewModelLocator.RegisterDependencies(true);
 			var catalogViewModel = new CatalogViewModel(catalogService);
 
 			await catalogViewModel.InitializeAsync(null);
@@ -116,7 +102,6 @@ namespace eShopOnContainers.UnitTests
 		public async Task BrandsPropertyIsNotNullAfterViewModelInitializationTest()
 		{
 			var catalogService = new CatalogMockService();
-			ViewModelLocator.RegisterDependencies(true);
 			var catalogViewModel = new CatalogViewModel(catalogService);
 
 			await catalogViewModel.InitializeAsync(null);
@@ -128,7 +113,6 @@ namespace eShopOnContainers.UnitTests
 		public async Task TypesPropertyIsNotNullAfterViewModelInitializationTest()
 		{
 			var catalogService = new CatalogMockService();
-			ViewModelLocator.RegisterDependencies(true);
 			var catalogViewModel = new CatalogViewModel(catalogService);
 
 			await catalogViewModel.InitializeAsync(null);
@@ -140,9 +124,7 @@ namespace eShopOnContainers.UnitTests
 		public async Task SettingProductsPropertyShouldRaisePropertyChanged()
 		{
 			bool invoked = false;
-
 			var catalogService = new CatalogMockService();
-			ViewModelLocator.RegisterDependencies(true);
 			var catalogViewModel = new CatalogViewModel(catalogService);
 
 			catalogViewModel.PropertyChanged += (sender, e) =>
@@ -159,9 +141,7 @@ namespace eShopOnContainers.UnitTests
 		public async Task SettingBrandsPropertyShouldRaisePropertyChanged()
 		{
 			bool invoked = false;
-
 			var catalogService = new CatalogMockService();
-			ViewModelLocator.RegisterDependencies(true);
 			var catalogViewModel = new CatalogViewModel(catalogService);
 
 			catalogViewModel.PropertyChanged += (sender, e) =>
@@ -178,9 +158,7 @@ namespace eShopOnContainers.UnitTests
 		public async Task SettingTypesPropertyShouldRaisePropertyChanged()
 		{
 			bool invoked = false;
-
 			var catalogService = new CatalogMockService();
-			ViewModelLocator.RegisterDependencies(true);
 			var catalogViewModel = new CatalogViewModel(catalogService);
 
 			catalogViewModel.PropertyChanged += (sender, e) =>
@@ -198,7 +176,6 @@ namespace eShopOnContainers.UnitTests
 		{
 			bool messageReceived = false;
 			var catalogService = new CatalogMockService();
-			ViewModelLocator.RegisterDependencies(true);
 			var catalogViewModel = new CatalogViewModel(catalogService);
 
 			Xamarin.Forms.MessagingCenter.Subscribe<CatalogViewModel, CatalogItem>(this, MessageKeys.AddProduct, (sender, arg) =>
@@ -215,7 +192,6 @@ namespace eShopOnContainers.UnitTests
 		{
 			bool messageReceived = false;
 			var catalogService = new CatalogMockService();
-			ViewModelLocator.RegisterDependencies(true);
 			var catalogViewModel = new CatalogViewModel(catalogService);
 			await catalogViewModel.InitializeAsync(null);
 			catalogViewModel.Brand = catalogViewModel.Brands.FirstOrDefault();
@@ -234,7 +210,6 @@ namespace eShopOnContainers.UnitTests
 		public async Task ClearFilterCommandResetsPropertiesTest()
 		{
 			var catalogService = new CatalogMockService();
-			ViewModelLocator.RegisterDependencies(true);
 			var catalogViewModel = new CatalogViewModel(catalogService);
 
 			await catalogViewModel.InitializeAsync(null);
