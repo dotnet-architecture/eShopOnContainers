@@ -58,18 +58,18 @@ services:
     image: microsoft/mssql-server-windows
 
   basket.data:
-    image: redis-win
-    build:
-      context: ./_docker/redis
-      dockerfile: Dockerfile.nanowin
+    image: eshop/redis-win
+#    build:
+#      context: ./_docker/redis
+#      dockerfile: Dockerfile.nanowin
     ports:
         - "6379:6379"
 
   rabbitmq:
-    image: rabbitmq-win
-    build:
-      context: ./_docker/rabbitmq
-      dockerfile: Dockerfile.nanowin  
+    image: eshop/rabbitmq-win
+#    build:
+#      context: ./_docker/rabbitmq
+#      dockerfile: Dockerfile.nanowin  
     ports:
         - "5672:5672"
   
