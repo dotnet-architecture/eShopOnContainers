@@ -43,6 +43,8 @@
     <Compile Include="ViewModels\OrderViewModelTests.cs" />
     <Compile Include="Services\OrdersServiceTests.cs" />
     <Compile Include="Behaviors\EventToCommandBehaviorTests.cs" />
+    <Compile Include="Mocks\MockViewModel.cs" />
+    <Compile Include="ViewModels\MockViewModelTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="xunit.abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
