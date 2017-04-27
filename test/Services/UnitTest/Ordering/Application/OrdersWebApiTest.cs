@@ -60,7 +60,7 @@ namespace UnitTest.Ordering.Application
         {
             //Arrange
             var fakeDynamicResult = new Object();
-            _orderQueriesMock.Setup(x => x.GetOrders())
+            _orderQueriesMock.Setup(x => x.GetOrdersAsync())
                 .Returns(Task.FromResult(fakeDynamicResult));
 
             //Act
@@ -77,7 +77,7 @@ namespace UnitTest.Ordering.Application
             //Arrange
             var fakeOrderId = 123;
             var fakeDynamicResult = new Object();
-            _orderQueriesMock.Setup(x => x.GetOrder(It.IsAny<int>()))
+            _orderQueriesMock.Setup(x => x.GetOrderAsync(It.IsAny<int>()))
                 .Returns(Task.FromResult(fakeDynamicResult));
 
             //Act
@@ -93,7 +93,7 @@ namespace UnitTest.Ordering.Application
         {
             //Arrange
             var fakeDynamicResult = new Object();
-            _orderQueriesMock.Setup(x => x.GetCardTypes())
+            _orderQueriesMock.Setup(x => x.GetCardTypesAsync())
                 .Returns(Task.FromResult(fakeDynamicResult));
 
             //Act
