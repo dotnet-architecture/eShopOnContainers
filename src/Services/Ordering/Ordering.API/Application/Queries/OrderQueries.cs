@@ -44,13 +44,13 @@
             }
         }
 
-        public async Task<dynamic> GetOrdersAsync()
+        public Task<IEnumerable<dynamic>> GetOrdersAsync()
         {
             using (var connection = new SqlConnection(_connectionString))
             {
                 connection.Open();
 
-                return await connection.QueryAsync<dynamic>(@"SELECT o.[Id] as ordernumber,o.[OrderDate] as [date],os.[Name] as [status],SUM(oi.units*oi.unitprice) as total
+                return connection.QueryAsync<dynamic>(@"SELECT o.[Id] as ordernumber,o.[OrderDate] as [date],os.[Name] as [status],SUM(oi.units*oi.unitprice) as total
                      FROM [ordering].[Orders] o
                      LEFT JOIN[ordering].[orderitems] oi ON  o.Id = oi.orderid 
                      LEFT JOIN[ordering].[orderstatus] os on o.OrderStatusId = os.Id
@@ -58,13 +58,13 @@
             }
         }
 
-        public async Task<dynamic> GetCardTypesAsync()
+        public Task<IEnumerable<dynamic>> GetCardTypesAsync()
         {
             using (var connection = new SqlConnection(_connectionString))
             {
                 connection.Open();
 
-                return await connection.QueryAsync<dynamic>("SELECT * FROM ordering.cardtypes");
+                return connection.QueryAsync<dynamic>("SELECT * FROM ordering.cardtypes");
             }
         }
 
