@@ -16,8 +16,7 @@ namespace eShopOnContainers.Core.Services.Basket
         }
 
         public async Task<CustomerBasket> GetBasketAsync(string guidUser, string token)
-        {
-    
+        {    
             UriBuilder builder = new UriBuilder(GlobalSetting.Instance.BasketEndpoint);
 
             builder.Path = guidUser;
@@ -30,18 +29,17 @@ namespace eShopOnContainers.Core.Services.Basket
                 ServicesHelper.FixBasketItemPictureUri(basket?.Items);
 
             return basket;
-
         }
 
         public async Task<CustomerBasket> UpdateBasketAsync(CustomerBasket customerBasket, string token)
         {
-                UriBuilder builder = new UriBuilder(GlobalSetting.Instance.BasketEndpoint);
+            UriBuilder builder = new UriBuilder(GlobalSetting.Instance.BasketEndpoint);
 
-                string uri = builder.ToString();
+            string uri = builder.ToString();
 
-                var result = await _requestProvider.PostAsync(uri, customerBasket, token);
+            var result = await _requestProvider.PostAsync(uri, customerBasket, token);
 
-                return result;
+            return result;
         }
 
         public async Task ClearBasketAsync(string guidUser, string token)

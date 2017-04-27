@@ -61,12 +61,5 @@ namespace eShopOnContainers.Core.Services.Catalog
 
             return MockCatalogType;
         }
-
-        public async Task<CatalogItem> GetCatalogItemAsync(string id)
-        {
-            await Task.Delay(500);
-
-            return MockCatalog.FirstOrDefault(c => c.Id == id);
-        }
     }
 }

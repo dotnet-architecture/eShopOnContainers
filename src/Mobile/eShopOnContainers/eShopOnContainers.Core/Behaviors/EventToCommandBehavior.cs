@@ -31,7 +31,7 @@ namespace eShopOnContainers.Core.Behaviors
             BindableProperty.CreateAttached("EventArgsConverterParameter", typeof(object), typeof(EventToCommandBehavior), null,
                 BindingMode.OneWay);
 
-        private Delegate _handler;
+        protected Delegate _handler;
         private EventInfo _eventInfo;
 
         public string EventName
