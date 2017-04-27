@@ -5,8 +5,6 @@ using Xamarin.Forms;
 using eShopOnContainers.Core.Models.Catalog;
 using eShopOnContainers.Core.Services.Catalog;
 using System.Windows.Input;
-using eShopOnContainers.Core.Services.Basket;
-using eShopOnContainers.Core.Services.User;
 
 namespace eShopOnContainers.Core.ViewModels
 {

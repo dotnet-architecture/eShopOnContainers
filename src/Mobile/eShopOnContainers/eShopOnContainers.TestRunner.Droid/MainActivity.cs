@@ -14,7 +14,7 @@ namespace eShopOnContainers.TestRunner.Droid
             AddExecutionAssembly(typeof(ExtensibilityPointFactory).Assembly);
 
             // or in any reference assemblies getting the Assembly from any type/class	
-            AddTestAssembly(typeof(UnitTests.DummyTests).Assembly);
+			AddTestAssembly(typeof(UnitTests.CatalogViewModelTests).Assembly);
 
             base.OnCreate(bundle);
         }
