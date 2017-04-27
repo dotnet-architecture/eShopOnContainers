@@ -19,7 +19,7 @@
         }
 
 
-        public async Task<dynamic> GetOrder(int id)
+        public async Task<dynamic> GetOrderAsync(int id)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -44,7 +44,7 @@
             }
         }
 
-        public async Task<dynamic> GetOrders()
+        public async Task<dynamic> GetOrdersAsync()
         {
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -58,7 +58,7 @@
             }
         }
 
-        public async Task<dynamic> GetCardTypes()
+        public async Task<dynamic> GetCardTypesAsync()
         {
             using (var connection = new SqlConnection(_connectionString))
             {
