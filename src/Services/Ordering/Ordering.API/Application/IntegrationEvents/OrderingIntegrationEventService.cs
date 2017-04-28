@@ -1,16 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
 using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF.Services;
 using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF.Utilities;
-using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
 using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure;
 using System;
 using System.Data.Common;
 using System.Threading.Tasks;
 
-namespace Ordering.API.IntegrationEvents
+namespace Ordering.API.Application.IntegrationEvents
 {
     public class OrderingIntegrationEventService : IOrderingIntegrationEventService
     {
@@ -19,7 +17,7 @@ namespace Ordering.API.IntegrationEvents
         private readonly OrderingContext _orderingContext;
         private readonly IIntegrationEventLogService _eventLogService;
 
-        public OrderingIntegrationEventService (IEventBus eventBus, OrderingContext orderingContext,
+        public OrderingIntegrationEventService(IEventBus eventBus, OrderingContext orderingContext,
         Func<DbConnection, IIntegrationEventLogService> integrationEventLogServiceFactory)
         {
             _orderingContext = orderingContext ?? throw new ArgumentNullException(nameof(orderingContext));
