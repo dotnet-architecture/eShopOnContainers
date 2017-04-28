@@ -3,8 +3,8 @@
     using AspNetCore.Http;
     using Autofac;
     using Autofac.Extensions.DependencyInjection;
+    using global::Ordering.API.Application.IntegrationEvents;
     using global::Ordering.API.Infrastructure.Middlewares;
-    using global::Ordering.API.IntegrationEvents;
     using Infrastructure;
     using Infrastructure.Auth;
     using Infrastructure.AutofacModules;
