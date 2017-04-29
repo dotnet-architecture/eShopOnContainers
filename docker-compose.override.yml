@@ -45,7 +45,6 @@ services:
       - ASPNETCORE_URLS=http://0.0.0.0:5102
       - ConnectionString=Server=sql.data;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word
       - identityUrl=http://identity.api:5105              #Local: You need to open your local dev-machine firewall at range 5100-5105.  at range 5100-5105. 
-      - BasketUrl=http://basket.api:5103
       - EventBusConnection=rabbitmq
     ports:
       - "5102:5102"
