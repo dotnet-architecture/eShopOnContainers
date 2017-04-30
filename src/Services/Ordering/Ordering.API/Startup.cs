@@ -107,16 +107,16 @@
             var serviceProvider = services.BuildServiceProvider();
             services.AddTransient<IOrderingIntegrationEventService, OrderingIntegrationEventService>();
 
-            services.AddSingleton<IRabbitMQPersisterConnection>(sp =>
+            services.AddSingleton<IRabbitMQPersistentConnection>(sp =>
             {
-                var logger = sp.GetRequiredService<ILogger<DefaultRabbitMQPersisterConnection>>();
+                var logger = sp.GetRequiredService<ILogger<DefaultRabbitMQPersistentConnection>>();
 
                 var factory = new ConnectionFactory()
                 {
                     HostName = Configuration["EventBusConnection"]
                 };
 
-                return new DefaultRabbitMQPersisterConnection(factory, logger);
+                return new DefaultRabbitMQPersistentConnection(factory, logger);
             });
 
             services.AddSingleton<IEventBus, EventBusRabbitMQ>();
