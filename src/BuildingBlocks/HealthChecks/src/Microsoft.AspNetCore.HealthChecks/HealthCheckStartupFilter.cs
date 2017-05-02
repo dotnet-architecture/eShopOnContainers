@@ -11,15 +11,18 @@ namespace Microsoft.AspNetCore.HealthChecks
     {
         private string _path;
         private int? _port;
+        private TimeSpan _timeout;
 
-        public HealthCheckStartupFilter(int port)
+        public HealthCheckStartupFilter(int port, TimeSpan timeout)
         {
             _port = port;
+            _timeout = timeout;
         }
 
-        public HealthCheckStartupFilter(string path)
+        public HealthCheckStartupFilter(string path, TimeSpan timeout)
         {
             _path = path;
+            _timeout = timeout;
         }
 
         public Action<IApplicationBuilder> Configure(Action<IApplicationBuilder> next)
@@ -27,9 +30,13 @@ namespace Microsoft.AspNetCore.HealthChecks
             return app =>
             {
                 if (_port.HasValue)
-                    app.UseMiddleware<HealthCheckMiddleware>(_port);
+                {
+                    app.UseMiddleware<HealthCheckMiddleware>(_port, _timeout);
+                }
                 else
-                    app.UseMiddleware<HealthCheckMiddleware>(_path);
+                {
+                    app.UseMiddleware<HealthCheckMiddleware>(_path, _timeout);
+                }
 
                 next(app);
             };
