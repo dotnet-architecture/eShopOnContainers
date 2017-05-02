@@ -43,6 +43,7 @@
     </PackageReference>
     <PackageReference Include="IdentityServer4.AspNetIdentity" Version="1.0.0" />
     <PackageReference Include="IdentityServer4.EntityFramework" Version="1.0.0" />
+    <PackageReference Include="Swashbuckle" Version="6.0.0-beta902" />
   </ItemGroup>
 
   <Target Name="PrepublishScript" BeforeTargets="PrepareForPublish">

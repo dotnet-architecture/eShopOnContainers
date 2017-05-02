@@ -1,8 +1,8 @@
 ﻿using MediatR;
 using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
 using Microsoft.Extensions.Logging;
-using Ordering.API.IntegrationEvents;
-using Ordering.API.IntegrationEvents.Events;
+using Ordering.API.Application.IntegrationEvents;
+using Ordering.API.Application.IntegrationEvents.Events;
 using Ordering.Domain.Events;
 using System;
 using System.Threading.Tasks;
