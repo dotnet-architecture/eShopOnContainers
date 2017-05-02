@@ -7,7 +7,7 @@ using System.Data.SqlClient;
 
 namespace Microsoft.Extensions.HealthChecks
 {
-    public static class HealthCheckBuilderDataExtensions
+    public static class HealthCheckBuilderSqlServerExtensions
     {
         public static HealthCheckBuilder AddSqlCheck(this HealthCheckBuilder builder, string name, string connectionString)
         {
@@ -33,7 +33,7 @@ namespace Microsoft.Extensions.HealthChecks
                         }
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     return HealthCheckResult.Unhealthy($"SqlCheck({name}): Exception during check: {ex.GetType().FullName}");
                 }
