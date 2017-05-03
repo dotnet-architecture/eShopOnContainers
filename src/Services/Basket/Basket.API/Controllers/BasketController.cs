@@ -43,7 +43,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
         [HttpDelete("{id}")]
         public Task Delete(string id) 
         {
-            return _repository.DeleteBasket(id);
+            return _repository.DeleteBasketAsync(id);
         }
     }
 }

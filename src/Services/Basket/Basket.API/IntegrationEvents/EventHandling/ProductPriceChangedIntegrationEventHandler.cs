@@ -33,7 +33,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.IntegrationEvents.Even
         {
             var itemsToUpdate = basket?.Items?.Where(x => int.Parse(x.ProductId) == productId).ToList();
 
-            if ((itemsToUpdate != null) && (itemsToUpdate.Any())
+            if ((itemsToUpdate != null) && (itemsToUpdate.Any()))
             {
                 foreach (var item in itemsToUpdate)
                 {
