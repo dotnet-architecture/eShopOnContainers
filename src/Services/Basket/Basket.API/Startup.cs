@@ -3,6 +3,7 @@ using Basket.API.IntegrationEvents.EventHandling;
 using Basket.API.IntegrationEvents.Events;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.eShopOnContainers.BuildingBlocks.EventBus;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ;
 using Microsoft.eShopOnContainers.Services.Basket.API.Auth.Server;
@@ -19,6 +20,7 @@ using StackExchange.Redis;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using System;
 
 namespace Microsoft.eShopOnContainers.Services.Basket.API
 {
@@ -68,19 +70,17 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             });
 
 
-            services.AddSingleton<IRabbitMQPersisterConnection>(sp =>
+            services.AddSingleton<IRabbitMQPersistentConnection>(sp =>
             {
                 var settings = sp.GetRequiredService<IOptions<BasketSettings>>().Value;
-                var logger = sp.GetRequiredService<ILogger<DefaultRabbitMQPersisterConnection>>();
+                var logger = sp.GetRequiredService<ILogger<DefaultRabbitMQPersistentConnection>>();
                 var factory = new ConnectionFactory()
                 {
                     HostName = settings.EventBusConnection
                 };
 
-                return new DefaultRabbitMQPersisterConnection(factory, logger);
+                return new DefaultRabbitMQPersistentConnection(factory, logger);
             });
-
-            services.AddSingleton<IEventBus, EventBusRabbitMQ>();
 
             services.AddSwaggerGen();
 
@@ -108,9 +108,16 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             });
 
             services.AddTransient<IBasketRepository, RedisBasketRepository>();
-            services.AddTransient<IIntegrationEventHandler<ProductPriceChangedIntegrationEvent>, ProductPriceChangedIntegrationEventHandler>();
-            services.AddTransient<IIntegrationEventHandler<OrderStartedIntegrationEvent>, OrderStartedIntegrationEventHandler>();
+            RegisterServiceBus(services);
+        }
 
+        private void RegisterServiceBus(IServiceCollection services)
+        {
+            services.AddSingleton<IEventBus, EventBusRabbitMQ>();
+            services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
+
+            services.AddTransient<ProductPriceChangedIntegrationEventHandler>();
+            services.AddTransient<OrderStartedIntegrationEventHandler>();
 
         }
 
@@ -155,11 +162,13 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             var orderStartedHandler = app.ApplicationServices
                 .GetService<IIntegrationEventHandler<OrderStartedIntegrationEvent>>();
 
-            var eventBus = app.ApplicationServices
-                .GetRequiredService<IEventBus>();
+            var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
 
-            eventBus.Subscribe<ProductPriceChangedIntegrationEvent>(catalogPriceHandler);
-            eventBus.Subscribe<OrderStartedIntegrationEvent>(orderStartedHandler);
+            eventBus.Subscribe<ProductPriceChangedIntegrationEvent, ProductPriceChangedIntegrationEventHandler>
+                (() => app.ApplicationServices.GetRequiredService<ProductPriceChangedIntegrationEventHandler>());
+
+            eventBus.Subscribe<OrderStartedIntegrationEvent, OrderStartedIntegrationEventHandler>
+                (() => app.ApplicationServices.GetRequiredService<OrderStartedIntegrationEventHandler>());
         }
     }
 }
