@@ -1,13 +1,25 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.9
+VisualStudioVersion = 15.0.26502.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Catalog.WebForms", "Catalog.WebForms\Catalog.WebForms.csproj", "{487A4E92-FAA3-415C-A019-6EDADB8AB1D9}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Catalog.API", "..\..\Services\Catalog\Catalog.API\Catalog.API.csproj", "{3D130B2D-632C-4839-8CF7-F2F70EA43306}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{E562EED3-9F2F-459B-83AE-C6F15706B7AD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.AspNetCore.HealthChecks", "..\..\BuildingBlocks\HealthChecks\src\Microsoft.AspNetCore.HealthChecks\Microsoft.AspNetCore.HealthChecks.csproj", "{B053B0BE-CE51-4DBE-BCDC-27D0984C9F73}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Extensions.HealthChecks", "..\..\BuildingBlocks\HealthChecks\src\Microsoft.Extensions.HealthChecks\Microsoft.Extensions.HealthChecks.csproj", "{BCDE5D98-B852-4406-9B4C-08351AE516F8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Extensions.HealthChecks.SqlServer", "..\..\BuildingBlocks\HealthChecks\src\Microsoft.Extensions.HealthChecks.SqlServer\Microsoft.Extensions.HealthChecks.SqlServer.csproj", "{69B6619F-07EF-4151-A1E0-B7401A0986FB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventBus", "..\..\BuildingBlocks\EventBus\EventBus\EventBus.csproj", "{4AA18AC1-AD5F-4A2B-B9EB-584DABAD4A47}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventBusRabbitMQ", "..\..\BuildingBlocks\EventBus\EventBusRabbitMQ\EventBusRabbitMQ.csproj", "{8BF49A04-E535-4E04-83EB-76EBF60E4921}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegrationEventLogEF", "..\..\BuildingBlocks\EventBus\IntegrationEventLogEF\IntegrationEventLogEF.csproj", "{5370E624-A71C-4D3B-A2E1-870F5E908A05}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +39,30 @@ Global
 		{E562EED3-9F2F-459B-83AE-C6F15706B7AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E562EED3-9F2F-459B-83AE-C6F15706B7AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E562EED3-9F2F-459B-83AE-C6F15706B7AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B053B0BE-CE51-4DBE-BCDC-27D0984C9F73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B053B0BE-CE51-4DBE-BCDC-27D0984C9F73}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B053B0BE-CE51-4DBE-BCDC-27D0984C9F73}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B053B0BE-CE51-4DBE-BCDC-27D0984C9F73}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BCDE5D98-B852-4406-9B4C-08351AE516F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCDE5D98-B852-4406-9B4C-08351AE516F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCDE5D98-B852-4406-9B4C-08351AE516F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCDE5D98-B852-4406-9B4C-08351AE516F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69B6619F-07EF-4151-A1E0-B7401A0986FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69B6619F-07EF-4151-A1E0-B7401A0986FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69B6619F-07EF-4151-A1E0-B7401A0986FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69B6619F-07EF-4151-A1E0-B7401A0986FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4AA18AC1-AD5F-4A2B-B9EB-584DABAD4A47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4AA18AC1-AD5F-4A2B-B9EB-584DABAD4A47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4AA18AC1-AD5F-4A2B-B9EB-584DABAD4A47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4AA18AC1-AD5F-4A2B-B9EB-584DABAD4A47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8BF49A04-E535-4E04-83EB-76EBF60E4921}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BF49A04-E535-4E04-83EB-76EBF60E4921}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8BF49A04-E535-4E04-83EB-76EBF60E4921}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8BF49A04-E535-4E04-83EB-76EBF60E4921}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5370E624-A71C-4D3B-A2E1-870F5E908A05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5370E624-A71C-4D3B-A2E1-870F5E908A05}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5370E624-A71C-4D3B-A2E1-870F5E908A05}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5370E624-A71C-4D3B-A2E1-870F5E908A05}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

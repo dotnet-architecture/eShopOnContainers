@@ -1,4 +1,4 @@
-version: '2.1'
+version: '3'
 
 services:
   catalog.webforms:
@@ -10,12 +10,21 @@ services:
       - catalog.api
 
   catalog.api:
-    image: eshop/catalog.api
+    image: eshop/catalog.api-win
     build:
       context: ../../Services/Catalog/Catalog.API
       dockerfile: Dockerfile.nanowin
     depends_on:
       - sql.data
+      - rabbitmq
+
+  rabbitmq:
+    image: eshop/rabbitmq-win
+    build:
+      context: ../../../_docker/rabbitmq
+      dockerfile: Dockerfile.nanowin  
+    ports:
+        - "5672:5672"
 
   sql.data:
     image: microsoft/mssql-server-windows
