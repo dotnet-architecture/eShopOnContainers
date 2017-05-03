@@ -10,18 +10,18 @@ using System.Net.Sockets;
 
 namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
 {
-    public class DefaultRabbitMQPersisterConnection
-       : IRabbitMQPersisterConnection
+    public class DefaultRabbitMQPersistentConnection
+       : IRabbitMQPersistentConnection
     {
         private readonly IConnectionFactory _connectionFactory;
-        private readonly ILogger<DefaultRabbitMQPersisterConnection> _logger;
+        private readonly ILogger<DefaultRabbitMQPersistentConnection> _logger;
 
         IConnection _connection;
         bool _disposed;
 
         object sync_root = new object();
 
-        public DefaultRabbitMQPersisterConnection(IConnectionFactory connectionFactory,ILogger<DefaultRabbitMQPersisterConnection> logger)
+        public DefaultRabbitMQPersistentConnection(IConnectionFactory connectionFactory,ILogger<DefaultRabbitMQPersistentConnection> logger)
         {
             _connectionFactory = connectionFactory ?? throw new ArgumentNullException(nameof(connectionFactory));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -87,13 +87,13 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
                     _connection.CallbackException += OnCallbackException;
                     _connection.ConnectionBlocked += OnConnectionBlocked;
 
-                    _logger.LogInformation($"RabbitMQ persister connection acquire a connection {_connection.Endpoint.HostName} and is subscribed to failure events");
+                    _logger.LogInformation($"RabbitMQ persistent connection acquired a connection {_connection.Endpoint.HostName} and is subscribed to failure events");
                  
                     return true;
                 }
                 else
                 {
-                    _logger.LogCritical("FATAL ERROR: RabbitMQ connections can't be created and opened");
+                    _logger.LogCritical("FATAL ERROR: RabbitMQ connections could not be created and opened");
 
                     return false;
                 }

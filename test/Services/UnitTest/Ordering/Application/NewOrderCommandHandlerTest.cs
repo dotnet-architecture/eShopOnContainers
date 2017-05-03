@@ -72,6 +72,7 @@ namespace UnitTest.Ordering.Application
         private CreateOrderCommand FakeOrderRequestWithBuyer(Dictionary<string, object> args = null)
         {
             return new CreateOrderCommand(
+                null,
                 city: args != null && args.ContainsKey("city") ? (string)args["city"] : null,
                 street: args != null && args.ContainsKey("street") ? (string)args["street"] : null,
                 state: args != null && args.ContainsKey("state") ? (string)args["state"] : null,

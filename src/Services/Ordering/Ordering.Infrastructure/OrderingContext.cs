@@ -252,7 +252,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
 
 
             // After executing this line all the changes (from the Command Handler and Domain Event Handlers) 
-            // performed thought the DbContext will be commited
+            // performed throught the DbContext will be commited
             var result = await base.SaveChangesAsync();
 
             return true;

@@ -45,7 +45,19 @@ namespace FunctionalTests.Services.Ordering
        
         string BuildOrder()
         {
+            List<OrderItemDTO> orderItemsList = new List<OrderItemDTO>();
+            orderItemsList.Add(new OrderItemDTO()
+                                                    {
+                                                        ProductId = 1,
+                                                        Discount = 8M,
+                                                        UnitPrice = 10,
+                                                        Units = 1,
+                                                        ProductName = "Some name"
+                                                    }
+                               );
+
             var order = new CreateOrderCommand(
+                orderItemsList,
                 cardExpiration: DateTime.UtcNow.AddYears(1),
                 cardNumber: "5145-555-5555",
                 cardHolderName: "Jhon Senna",
@@ -59,15 +71,6 @@ namespace FunctionalTests.Services.Ordering
                 paymentId: 1,
                 buyerId: 3
             );
-
-            order.AddOrderItem(new OrderItemDTO()
-            {
-                ProductId = 1,
-                Discount = 8M,
-                UnitPrice = 10,
-                Units = 1,
-                ProductName = "Some name"
-            });
 
             return JsonConvert.SerializeObject(order);
         }       
