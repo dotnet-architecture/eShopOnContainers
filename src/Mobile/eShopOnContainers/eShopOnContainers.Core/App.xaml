@@ -134,6 +134,8 @@
                         Value="FillAndExpand" />
                 <Setter Property="FontAttributes"
                         Value="Bold" />
+				<Setter Property="BackgroundColor" 
+                        Value="Transparent" />
                 <Setter Property="Opacity"
                         Value="0.6" />
                 <Setter Property="behaviors:LineColorBehavior.ApplyLineColor"
