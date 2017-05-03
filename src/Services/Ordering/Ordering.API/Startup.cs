@@ -13,6 +13,7 @@
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.eShopOnContainers.BuildingBlocks.EventBus;
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ;
     using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF;
@@ -119,6 +120,7 @@
                 return new DefaultRabbitMQPersistentConnection(factory, logger);
             });
 
+            services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
             services.AddSingleton<IEventBus, EventBusRabbitMQ>();
 
             services.AddOptions();
