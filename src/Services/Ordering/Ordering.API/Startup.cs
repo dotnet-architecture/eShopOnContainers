@@ -4,6 +4,7 @@
     using Autofac;
     using Autofac.Extensions.DependencyInjection;
     using global::Ordering.API.Application.IntegrationEvents;
+    using global::Ordering.API.Application.IntegrationEvents.EventHandling;
     using global::Ordering.API.Infrastructure.Middlewares;
     using Infrastructure;
     using Infrastructure.Auth;
@@ -120,9 +121,10 @@
                 return new DefaultRabbitMQPersistentConnection(factory, logger);
             });
 
+
             services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
             services.AddSingleton<IEventBus, EventBusRabbitMQ>();
-
+            services.AddTransient<UserCheckoutAcceptedIntegrationEventHandler>();
             services.AddOptions();
 
             //configure autofac
@@ -136,6 +138,7 @@
             return new AutofacServiceProvider(container.Build());
         }
 
+
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
@@ -146,6 +149,7 @@
             app.UseFailingMiddleware();
 
             ConfigureAuth(app);
+            ConfigureEventBus(app);
 
             app.UseMvcWithDefaultRoute();
 
@@ -159,6 +163,15 @@
                 .UseSqlServer(Configuration["ConnectionString"], b => b.MigrationsAssembly("Ordering.API"))
                 .Options);
             integrationEventLogContext.Database.Migrate();
+        }
+
+        private void ConfigureEventBus(IApplicationBuilder app)
+        {
+            var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
+            eventBus.SubscribeDynamic(
+                "UserCheckoutAccepted",
+                () => app.ApplicationServices.GetRequiredService<UserCheckoutAcceptedIntegrationEventHandler>());
+
         }
 
         protected virtual void ConfigureAuth(IApplicationBuilder app)

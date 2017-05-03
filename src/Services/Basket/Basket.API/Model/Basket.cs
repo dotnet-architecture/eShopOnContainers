@@ -13,7 +13,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Model
         public CustomerBasket(string customerId)
         {
             BuyerId = customerId;
-            Items = new List<Model.BasketItem>();
+            Items = new List<BasketItem>();
         }
     }
 }
