@@ -3,6 +3,7 @@ using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Polly;
 using Polly.Retry;
 using RabbitMQ.Client;
@@ -96,12 +97,25 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
             }
         }
 
+        public void SubscribeDynamic<TH>(string eventName, Func<TH> handler)
+            where TH: IDynamicIntegrationEventHandler
+        {
+            DoInternalSubscription(eventName);
+            _subsManager.AddDynamicSubscription<TH>(eventName,handler);
+        }
+
         public void Subscribe<T, TH>(Func<TH> handler)
             where T : IntegrationEvent
             where TH : IIntegrationEventHandler<T>
         {
-            var eventName = typeof(T).Name;
-            var containsKey = _subsManager.HasSubscriptionsForEvent<T>();
+            var eventName = _subsManager.GetEventKey<T>();
+            DoInternalSubscription(eventName);
+            _subsManager.AddSubscription<T, TH>(handler);
+        }
+
+        private void DoInternalSubscription(string eventName)
+        {
+            var containsKey = _subsManager.HasSubscriptionsForEvent(eventName);
             if (!containsKey)
             {
                 if (!_persistentConnection.IsConnected)
@@ -116,9 +130,6 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
                                       routingKey: eventName);
                 }
             }
-
-            _subsManager.AddSubscription<T, TH>(handler);
-
         }
 
         public void Unsubscribe<T, TH>()
@@ -128,18 +139,12 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
             _subsManager.RemoveSubscription<T, TH>();
         }
 
-        private static Func<IIntegrationEventHandler> FindHandlerByType(Type handlerType, IEnumerable<Func<IIntegrationEventHandler>> handlers)
+        public void UnsubscribeDynamic<TH>(string eventName)
+            where TH: IDynamicIntegrationEventHandler
         {
-            foreach (var func in handlers)
-            {
-                if (func.GetMethodInfo().ReturnType == handlerType)
-                {
-                    return func;
-                }
-            }
-
-            return null;
+            _subsManager.RemoveDynamicSubscription<TH>(eventName);
         }
+
 
         public void Dispose()
         {
@@ -191,16 +196,25 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
         {
 
             if (_subsManager.HasSubscriptionsForEvent(eventName))
-            { 
-                var eventType = _subsManager.GetEventTypeByName(eventName);
-                var integrationEvent = JsonConvert.DeserializeObject(message, eventType);
-                var handlers = _subsManager.GetHandlersForEvent(eventName);
+            {
+                var subscriptions = _subsManager.GetHandlersForEvent(eventName);
 
-                foreach (var handlerfactory in handlers)
+                foreach (var subscription in subscriptions)
                 {
-                    var handler = handlerfactory.DynamicInvoke();
-                    var concreteType = typeof(IIntegrationEventHandler<>).MakeGenericType(eventType);
-                    await (Task)concreteType.GetMethod("Handle").Invoke(handler, new object[] { integrationEvent });
+                    if (subscription.IsDynamic)
+                    {
+                        var handler = subscription.Factory.DynamicInvoke() as IDynamicIntegrationEventHandler;
+                        dynamic eventData = JObject.Parse(message);
+                        await handler.Handle(eventData);
+                    }
+                    else
+                    {
+                        var eventType = _subsManager.GetEventTypeByName(eventName);
+                        var integrationEvent = JsonConvert.DeserializeObject(message, eventType);
+                        var handler = subscription.Factory.DynamicInvoke();
+                        var concreteType = typeof(IIntegrationEventHandler<>).MakeGenericType(eventType);
+                        await (Task)concreteType.GetMethod("Handle").Invoke(handler, new object[] { integrationEvent });
+                    }
                 }
             }
         }
