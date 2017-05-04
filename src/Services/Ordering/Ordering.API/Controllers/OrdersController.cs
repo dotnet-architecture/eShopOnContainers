@@ -30,25 +30,21 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateOrder([FromBody]CreateOrderCommand command, [FromHeader(Name = "x-requestid")] string requestId)
         {
-            bool result = false;
+            bool commandResult = false;
             if (Guid.TryParse(requestId, out Guid guid) && guid != Guid.Empty)
             {
                 var requestCreateOrder = new IdentifiedCommand<CreateOrderCommand, bool>(command, guid);
-                result = await _mediator.SendAsync(requestCreateOrder);
+                commandResult = await _mediator.SendAsync(requestCreateOrder);
             }
             else
             {
                 // If no x-requestid header is found we process the order anyway. This is just temporary to not break existing clients
                 // that aren't still updated. When all clients were updated this could be removed.
-                result = await _mediator.SendAsync(command);
+                commandResult = await _mediator.SendAsync(command);
             }
 
-            if (result)
-            {
-                return Ok();
-            }
+            return commandResult ? (StatusCodeResult)Ok() : (StatusCodeResult)BadRequest();
 
-            return BadRequest();
         }
 
         [Route("{orderId:int}")]
