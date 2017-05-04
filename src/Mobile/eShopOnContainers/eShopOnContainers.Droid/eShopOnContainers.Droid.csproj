@@ -70,20 +70,16 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="FFImageLoading, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\packages\Xamarin.FFImageLoading.2.2.6-pre-256\lib\MonoAndroid10\FFImageLoading.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\..\..\packages\Xamarin.FFImageLoading.2.2.9\lib\MonoAndroid10\FFImageLoading.dll</HintPath>
     </Reference>
     <Reference Include="FFImageLoading.Forms, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\packages\Xamarin.FFImageLoading.Forms.2.2.6-pre-256\lib\MonoAndroid10\FFImageLoading.Forms.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\..\..\packages\Xamarin.FFImageLoading.Forms.2.2.9\lib\MonoAndroid10\FFImageLoading.Forms.dll</HintPath>
     </Reference>
     <Reference Include="FFImageLoading.Forms.Droid, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\packages\Xamarin.FFImageLoading.Forms.2.2.6-pre-256\lib\MonoAndroid10\FFImageLoading.Forms.Droid.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\..\..\packages\Xamarin.FFImageLoading.Forms.2.2.9\lib\MonoAndroid10\FFImageLoading.Forms.Droid.dll</HintPath>
     </Reference>
     <Reference Include="FFImageLoading.Platform, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\packages\Xamarin.FFImageLoading.2.2.6-pre-256\lib\MonoAndroid10\FFImageLoading.Platform.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\..\..\packages\Xamarin.FFImageLoading.2.2.9\lib\MonoAndroid10\FFImageLoading.Platform.dll</HintPath>
     </Reference>
     <Reference Include="IdentityModel.Portable, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\..\..\packages\IdentityModel.1.3.1\lib\portable-net45+wp80+win8+wpa81\IdentityModel.Portable.dll</HintPath>
