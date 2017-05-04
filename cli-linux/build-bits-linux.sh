@@ -1,18 +1,17 @@
-
-projectList=(
-    "/src/Services/Catalog/Catalog.API"
-    "/src/Services/Basket/Basket.API"
-    "/src/Services/Ordering/Ordering.API"
-    "/src/Services/Identity/Identity.API"
-    "/src/Web/WebMVC"
-    "/src/Web/WebSPA"
-    "/src/Web/WebStatus
+#!/bin/bash
+declare -a projectList=(
+    '../src/Services/Catalog/Catalog.API'
+    '../src/Services/Basket/Basket.API'
+    '../src/Services/Ordering/Ordering.API'
+    '../src/Services/Identity/Identity.API'
+    '../src/Web/WebMVC'
+    '../src/Web/WebSPA'
+    '../src/Web/WebStatus'
 )
 
 # Build SPA app
-pushd $(pwd)/src/Web/WebSPA
-npm rebuild node-sass
-npm run build:prod
+# pushd $(pwd)../src/Web/WebSPA
+# npm run build:prod
 
 for project in "${projectList[@]}"
 do
@@ -28,13 +27,13 @@ do
 done
 
 # remove old docker images:
-#images=$(docker images --filter=reference="eshop/*" -q)
-#if [ -n "$images" ]; then
-#    docker rm $(docker ps -a -q) -f
-#    echo "Deleting eShop images in local Docker repo"
-#    echo $images
-#    docker rmi $(docker images --filter=reference="eshop/*" -q) -f
-#fi
+images=$(docker images --filter=reference="eshop/*" -q)
+if [ -n "$images" ]; then
+    docker rm $(docker ps -a -q) -f
+    echo "Deleting eShop images in local Docker repo"
+    echo $images
+    docker rmi $(docker images --filter=reference="eshop/*" -q) -f
+fi
 
 # No need to build the images, docker build or docker compose will
 # do that using the images and containers defined in the docker-compose.yml file.

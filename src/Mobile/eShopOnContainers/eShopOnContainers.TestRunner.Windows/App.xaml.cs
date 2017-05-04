@@ -12,7 +12,7 @@ namespace eShopOnContainers.TestRunner.Windows
         {    
             // Otherwise you need to ensure that the test assemblies will 
             // become part of the app bundle
-            AddTestAssembly(typeof(UnitTests.DummyTests).GetTypeInfo().Assembly);
+            AddTestAssembly(typeof(UnitTests.CatalogViewModelTests).GetTypeInfo().Assembly);
         }
     }
 }

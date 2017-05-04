@@ -13,6 +13,7 @@
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.eShopOnContainers.BuildingBlocks.EventBus;
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ;
     using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF;
@@ -22,6 +23,7 @@
     using Microsoft.Extensions.HealthChecks;
     using Microsoft.Extensions.Logging;
     using Ordering.Infrastructure;
+    using RabbitMQ.Client;
     using System;
     using System.Data.Common;
     using System.Reflection;
@@ -105,7 +107,22 @@
                 sp => (DbConnection c) => new IntegrationEventLogService(c));            
             var serviceProvider = services.BuildServiceProvider();
             services.AddTransient<IOrderingIntegrationEventService, OrderingIntegrationEventService>();
-            services.AddSingleton<IEventBus>(new EventBusRabbitMQ(Configuration["EventBusConnection"]));
+
+            services.AddSingleton<IRabbitMQPersistentConnection>(sp =>
+            {
+                var logger = sp.GetRequiredService<ILogger<DefaultRabbitMQPersistentConnection>>();
+
+                var factory = new ConnectionFactory()
+                {
+                    HostName = Configuration["EventBusConnection"]
+                };
+
+                return new DefaultRabbitMQPersistentConnection(factory, logger);
+            });
+
+            services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
+            services.AddSingleton<IEventBus, EventBusRabbitMQ>();
+
             services.AddOptions();
 
             //configure autofac
