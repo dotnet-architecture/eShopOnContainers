@@ -47,7 +47,6 @@
     <Compile Include="Controls\AddBasketButton.xaml.cs">
       <DependentUpon>AddBasketButton.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\BindablePicker.cs" />
     <Compile Include="Controls\CustomTabbedPage.cs" />
     <Compile Include="Controls\ToggleButton.cs" />
     <Compile Include="Converters\CountToBoolConverter.cs" />

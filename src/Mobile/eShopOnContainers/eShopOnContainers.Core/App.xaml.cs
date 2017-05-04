@@ -18,7 +18,7 @@ namespace eShopOnContainers
 
             InitApp();
 
-            if (Device.OS == TargetPlatform.Windows)
+			if (Device.RuntimePlatform == Device.Windows)
             {
                 InitNavigation();
             }
@@ -40,7 +40,7 @@ namespace eShopOnContainers
         {
             base.OnStart();
 
-            if (Device.OS != TargetPlatform.Windows)
+			if (Device.RuntimePlatform != Device.Windows)
             {
                 await InitNavigation();
             }
