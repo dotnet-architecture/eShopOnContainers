@@ -43,7 +43,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Controllers
                 commandResult = await _mediator.SendAsync(command);
             }
 
-            return commandResult ? (StatusCodeResult)Ok() : (StatusCodeResult)BadRequest();
+            return commandResult ? (IActionResult)Ok() : (IActionResult)BadRequest();
 
         }
 
