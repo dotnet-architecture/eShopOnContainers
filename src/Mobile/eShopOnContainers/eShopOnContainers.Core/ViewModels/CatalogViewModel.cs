@@ -102,7 +102,7 @@ namespace eShopOnContainers.Core.ViewModels
 
         private async Task FilterAsync()
         {
-            if (Brand == null && Type == null)
+            if (Brand == null || Type == null)
             {
                 return;
             }
