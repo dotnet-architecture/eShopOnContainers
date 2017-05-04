@@ -61,20 +61,16 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands
         [DataMember]
         public IEnumerable<OrderItemDTO> OrderItems => _orderItems;
 
-        public void AddOrderItem(OrderItemDTO item)
-        {
-            _orderItems.Add(item);
-        }
-
         public CreateOrderCommand()
         {
             _orderItems = new List<OrderItemDTO>();
         }
 
-        public CreateOrderCommand(string city, string street, string state, string country, string zipcode,
+        public CreateOrderCommand(List<OrderItemDTO> orderItems, string city, string street, string state, string country, string zipcode,
             string cardNumber, string cardHolderName, DateTime cardExpiration,
             string cardSecurityNumber, int cardTypeId, int paymentId, int buyerId) : this()
         {
+            _orderItems = orderItems;
             City = city;
             Street = street;
             State = state;

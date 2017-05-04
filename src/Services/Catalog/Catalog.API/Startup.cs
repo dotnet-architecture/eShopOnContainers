@@ -6,6 +6,7 @@
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Infrastructure;
+    using Microsoft.eShopOnContainers.BuildingBlocks.EventBus;
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ;
     using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF;
@@ -16,6 +17,7 @@
     using Microsoft.Extensions.HealthChecks;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
+    using RabbitMQ.Client;
     using System;
     using System.Data.Common;
     using System.Data.SqlClient;
@@ -102,14 +104,20 @@
 
             services.AddTransient<ICatalogIntegrationEventService, CatalogIntegrationEventService>();
 
-
-            var serviceProvider = services.BuildServiceProvider();
-
-            services.AddSingleton<IEventBus>(sp =>
+            services.AddSingleton<IRabbitMQPersistentConnection>(sp =>
             {
-                var settings = serviceProvider.GetRequiredService<IOptionsSnapshot<CatalogSettings>>().Value;
-                return new EventBusRabbitMQ(settings.EventBusConnection);
+                var settings = sp.GetRequiredService<IOptions<CatalogSettings>>().Value;
+                var logger = sp.GetRequiredService<ILogger<DefaultRabbitMQPersistentConnection>>();
+                var factory = new ConnectionFactory()
+                {
+                    HostName = settings.EventBusConnection
+                };
+
+                return new DefaultRabbitMQPersistentConnection(factory, logger);
             });
+
+            services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
+            services.AddSingleton<IEventBus, EventBusRabbitMQ>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)

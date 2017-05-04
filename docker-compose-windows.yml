@@ -2,7 +2,7 @@ version: '2.1'
 
 services:
   basket.api:
-    image: eshop/basket.api
+    image: eshop/basket.api-win
     build:
       context: ./src/Services/Basket/Basket.API
       dockerfile: Dockerfile.nanowin
@@ -11,7 +11,7 @@ services:
       - identity.api
 
   catalog.api:
-    image: eshop/catalog.api
+    image: eshop/catalog.api-win
     build:
       context: ./src/Services/Catalog/Catalog.API
       dockerfile: Dockerfile.nanowin
@@ -19,7 +19,7 @@ services:
       - sql.data
 
   identity.api:
-    image: eshop/identity.api
+    image: eshop/identity.api-win
     build:
       context: ./src/Services/Identity/Identity.API
       dockerfile: Dockerfile.nanowin
@@ -27,7 +27,7 @@ services:
       - sql.data
 
   ordering.api:
-    image: eshop/ordering.api
+    image: eshop/ordering.api-win
     build:
       context: ./src/Services/Ordering/Ordering.API
       dockerfile: Dockerfile.nanowin
@@ -35,7 +35,7 @@ services:
       - sql.data
 
   webspa:
-    image: eshop/webspa
+    image: eshop/webspa-win
     build:
       context: ./src/Web/WebSPA
       dockerfile: Dockerfile.nanowin
@@ -44,7 +44,7 @@ services:
       - basket.api
 
   webmvc:
-    image: eshop/webmvc
+    image: eshop/webmvc-win
     build:
       context: ./src/Web/WebMVC
       dockerfile: Dockerfile.nanowin
@@ -58,18 +58,18 @@ services:
     image: microsoft/mssql-server-windows
 
   basket.data:
-    image: redis
-    build:
-      context: ./_docker/redis
-      dockerfile: Dockerfile.nanowin
+    image: eshop/redis-win
+#    build:
+#      context: ./_docker/redis
+#      dockerfile: Dockerfile.nanowin
     ports:
         - "6379:6379"
 
   rabbitmq:
-    image: rabbitmq
-    build:
-      context: ./_docker/rabbitmq
-      dockerfile: Dockerfile.nanowin  
+    image: eshop/rabbitmq-win
+#    build:
+#      context: ./_docker/rabbitmq
+#      dockerfile: Dockerfile.nanowin  
     ports:
         - "5672:5672"
   

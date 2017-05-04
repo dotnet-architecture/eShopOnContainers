@@ -13,10 +13,10 @@ import { Router }                                   from '@angular/router';
     templateUrl: './orders-new.component.html'
 })
 export class OrdersNewComponent implements OnInit {
-    private newOrderForm: FormGroup;  // new order form
-    private isOrderProcessing: Boolean;
-    private errorReceived: Boolean;
-    private order: IOrder;
+    newOrderForm: FormGroup;  // new order form
+    isOrderProcessing: boolean;
+    errorReceived: boolean;
+    order: IOrder;
 
     constructor(private service: OrdersService, fb: FormBuilder, private router: Router) {
         // Obtain user profile information
