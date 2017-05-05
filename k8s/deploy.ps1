@@ -12,16 +12,16 @@ if(-not [string]::IsNullOrEmpty($execPath)) {
     $kubectl_exec = $execPath + '/' + 'kubectl';
 }
 
-$requiredCommands = ("docker", "docker-compose", "kubectl")
-foreach ($command in $requiredCommands) {
-    if ((Get-Command $command -ErrorAction SilentlyContinue) -eq $null) {
-        Write-Host "$command must be on path" -ForegroundColor Red
-        exit
-    }
-}
-
 # Not using ACR when deploying through CI VSTS
 if(-not $deployCI) {
+        $requiredCommands = ("docker", "docker-compose", "kubectl")
+        foreach ($command in $requiredCommands) {
+        if ((Get-Command $command -ErrorAction SilentlyContinue) -eq $null) {
+            Write-Host "$command must be on path" -ForegroundColor Red
+            exit
+        }
+    }
+
     Write-Host "Logging in to $registry" -ForegroundColor Yellow
     docker login -u $dockerUser -p $dockerPassword $registry
     if (-not $LastExitCode -eq 0) {
