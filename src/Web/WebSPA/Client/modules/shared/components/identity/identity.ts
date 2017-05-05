@@ -10,7 +10,7 @@ import { SecurityService } from  '../../services/security.service';
     styleUrls: ['./identity.scss']
 })
 export class Identity implements OnInit  {
-    private authenticated: boolean = false;
+    authenticated: boolean = false;
     private subscription: Subscription;
     private userName: string = '';
 
