@@ -1,48 +1,27 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-
-<Package
-  xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
-  xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest"
-  xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
-  IgnorableNamespaces="uap mp">
-
-  <Identity
-    Name="d659d59b-903a-4c8e-bbb8-d56346506a44"
-    Publisher="CN=jsuarez"
-    Version="1.0.0.0" />
-
-  <mp:PhoneIdentity PhoneProductId="d659d59b-903a-4c8e-bbb8-d56346506a44" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
-
+<Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
+  <Identity Name="ffaee00c-a350-48bb-9a8d-a19c46a0a880" Publisher="CN=Dave" Version="1.0.0.0" />
+  <mp:PhoneIdentity PhoneProductId="ffaee00c-a350-48bb-9a8d-a19c46a0a880" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>eShopOnContainers.TestRunner.Windows</DisplayName>
-    <PublisherDisplayName>jsuarez</PublisherDisplayName>
+    <PublisherDisplayName>Dave</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
-
   <Dependencies>
     <TargetDeviceFamily Name="Windows.Universal" MinVersion="10.0.0.0" MaxVersionTested="10.0.0.0" />
   </Dependencies>
-
   <Resources>
-    <Resource Language="x-generate"/>
+    <Resource Language="x-generate" />
   </Resources>
-
   <Applications>
-    <Application Id="App"
-      Executable="$targetnametoken$.exe"
-      EntryPoint="eShopOnContainers.TestRunner.Windows.App">
-      <uap:VisualElements
-        DisplayName="eShopOnContainers.TestRunner.Windows"
-        Square150x150Logo="Assets\Square150x150Logo.png"
-        Square44x44Logo="Assets\Square44x44Logo.png"
-        Description="eShopOnContainers.TestRunner.Windows"
-        BackgroundColor="transparent">
-        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png"/>
+    <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="eShopOnContainers.TestRunner.Windows.App">
+      <uap:VisualElements DisplayName="eShopOnContainers.TestRunner.Windows" Square150x150Logo="Assets\Square150x150Logo.png" Square44x44Logo="Assets\Square44x44Logo.png" Description="eShopOnContainers.TestRunner.Windows" BackgroundColor="transparent">
+        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png">
+        </uap:DefaultTile>
         <uap:SplashScreen Image="Assets\SplashScreen.png" />
       </uap:VisualElements>
     </Application>
   </Applications>
-
   <Capabilities>
     <Capability Name="internetClient" />
   </Capabilities>
