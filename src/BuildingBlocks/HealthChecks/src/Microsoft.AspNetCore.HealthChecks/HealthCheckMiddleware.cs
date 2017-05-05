@@ -1,6 +1,8 @@
 // Copyright (c) .NET Foundation. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
@@ -11,30 +13,34 @@ namespace Microsoft.AspNetCore.HealthChecks
 {
     public class HealthCheckMiddleware
     {
-        private RequestDelegate _next;
-        private string _path;
-        private int? _port;
-        private IHealthCheckService _service;
+        private readonly RequestDelegate _next;
+        private readonly string _path;
+        private readonly int? _port;
+        private readonly IHealthCheckService _service;
+        private readonly TimeSpan _timeout;
 
-        public HealthCheckMiddleware(RequestDelegate next, IHealthCheckService service, int port)
+        public HealthCheckMiddleware(RequestDelegate next, IHealthCheckService service, int port, TimeSpan timeout)
         {
             _port = port;
             _service = service;
             _next = next;
+            _timeout = timeout;
         }
 
-        public HealthCheckMiddleware(RequestDelegate next, IHealthCheckService service, string path)
+        public HealthCheckMiddleware(RequestDelegate next, IHealthCheckService service, string path, TimeSpan timeout)
         {
             _path = path;
             _service = service;
             _next = next;
+            _timeout = timeout;
         }
 
         public async Task Invoke(HttpContext context)
         {
             if (IsHealthCheckRequest(context))
             {
-                var result = await _service.CheckHealthAsync();
+                var timeoutTokenSource = new CancellationTokenSource(_timeout);
+                var result = await _service.CheckHealthAsync(timeoutTokenSource.Token);
                 var status = result.CheckStatus;
 
                 if (status != CheckStatus.Healthy)
@@ -60,7 +66,9 @@ namespace Microsoft.AspNetCore.HealthChecks
             }
 
             if (context.Request.Path == _path)
+            {
                 return true;
+            }
 
             return false;
         }
