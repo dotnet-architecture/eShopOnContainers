@@ -15,7 +15,7 @@ services:
       - ConnectionString=Server=sql.data;Database=Microsoft.eShopOnContainers.Services.CatalogDb;User Id=sa;Password=Pass@word
       - ExternalCatalogBaseUrl=http://localhost:5101    #Local: You need to open your local dev-machine firewall at range 5100-5105.  at range 5100-5105.
       #- ExternalCatalogBaseUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5101    #Local: You need to open your local dev-machine firewall at range 5100-5105.  at range 5100-5105.	  
-      - EventBusConnection=172.21.4.39  # rabbitmq
+      - EventBusConnection=172.24.176.5  # rabbitmq
     ports:
       - "5101:5101"
 

@@ -24,7 +24,7 @@ services:
         - "5672:5672"
     networks:
      default:
-      ipv4_address: 172.21.4.39
+      ipv4_address: 172.24.176.5
 
   sql.data:
     image: microsoft/mssql-server-windows
