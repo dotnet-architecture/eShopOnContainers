@@ -31,6 +31,13 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http
             _policyWrapper = Policy.WrapAsync(policies);
         }
 
+        private Task<T> HttpInvoker<T>(Func<Task<T>> action)
+        {
+            // Executes the action applying all 
+            // the policies defined in the wrapper
+            return _policyWrapper.ExecuteAsync(() => action());
+        }
+
         public Task<string> GetStringAsync(string uri, string authorizationToken = null, string authorizationMethod = "Bearer")
         {
             return HttpInvoker(async () =>
@@ -103,13 +110,5 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http
             });
         }
 
-
-
-        private Task<T> HttpInvoker<T>(Func<Task<T>> action)
-        {
-            // Executes the action applying all 
-            // the policies defined in the wrapper
-            return _policyWrapper.ExecuteAsync(() => action());
-        }
     }
 }
