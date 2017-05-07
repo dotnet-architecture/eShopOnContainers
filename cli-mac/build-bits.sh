@@ -10,6 +10,12 @@ projectList=(
     "../src/Web/WebStatus"
 )
 
+
+pushd $(pwd)/../src/Web/WebSPA
+npm install
+npm rebuild node-sass
+popd 
+
 for project in "${projectList[@]}"
 do
     echo -e "\e[33mWorking on $(pwd)/$project"
