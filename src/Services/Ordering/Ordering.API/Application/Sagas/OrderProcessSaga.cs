@@ -10,6 +10,7 @@ using Ordering.API.Application.IntegrationCommands.Commands;
 using Ordering.Domain.Exceptions;
 using System;
 using System.Threading.Tasks;
+using Ordering.API.Application.IntegrationEvents.Events;
 
 namespace Ordering.API.Application.Sagas
 {
@@ -73,13 +74,17 @@ namespace Ordering.API.Application.Sagas
         /// <returns></returns>
         public async Task Handle(ConfirmGracePeriodCommandMsg command)
         {
-            var orderSaga = FindSagaById(command.OrderNumber);
+            var orderSaga = FindSagaById(command.OrderId);
             CheckValidSagaId(orderSaga);
 
             // TODO: This handler should change to Integration command handler type once command bus is implemented
-
             // TODO: If order status is not cancelled, change state to awaitingValidation and 
-            // send ConfirmOrderStockCommandMsg to Inventory api           
+            // send ConfirmOrderStockCommandMsg to Inventory api  
+            if (orderSaga.OrderStatus == OrderStatus.Submitted)
+            {
+                
+            }
+                
         }
         
 
