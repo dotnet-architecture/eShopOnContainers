@@ -70,11 +70,11 @@ namespace Microsoft.eShopOnContainers.WebMVC
             if (Configuration.GetValue<string>("UseResilientHttp") == bool.TrueString)
             {
                 services.AddTransient<IResilientHttpClientFactory, ResilientHttpClientFactory>();
-                services.AddTransient<IHttpClient, ResilientHttpClient>(sp => sp.GetService<IResilientHttpClientFactory>().CreateResilientHttpClient());
+                services.AddSingleton<IHttpClient, ResilientHttpClient>(sp => sp.GetService<IResilientHttpClientFactory>().CreateResilientHttpClient());
             }
             else
             {
-                services.AddTransient<IHttpClient, StandardHttpClient>();
+                services.AddSingleton<IHttpClient, StandardHttpClient>();
             }
         }        
 
