@@ -186,15 +186,6 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API
 
         }
 
-        private void ConfigureEventBus(IApplicationBuilder app)
-        {
-            var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
-            eventBus.SubscribeDynamic(
-                "UserCheckoutAccepted",
-                () => app.ApplicationServices.GetRequiredService<UserCheckoutAcceptedIntegrationEventHandler>());
-
-        }
-
         protected virtual void ConfigureAuth(IApplicationBuilder app)
         {
             var identityUrl = Configuration.GetValue<string>("IdentityUrl");
