@@ -7,7 +7,12 @@ version: '2'
 # An external IP or DNS name has to be used (instead localhost and the 10.0.75.1 IP) when testing the Web apps and the Xamarin apps from remote machines/devices using the same WiFi, for instance.
 
 services:
-
+  sagamanager:
+    environment:
+      - ConnectionString=Server=sql.data;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word
+      - EventBusConnection=rabbitmq
+      - GracePeriod=15 #In minutes
+      
   basket.api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development

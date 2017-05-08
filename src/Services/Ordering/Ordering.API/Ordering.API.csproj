@@ -14,6 +14,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Application\IntegrationEvents\EventHandling\**" />
+    <Content Remove="Application\IntegrationEvents\EventHandling\**" />
+    <EmbeddedResource Remove="Application\IntegrationEvents\EventHandling\**" />
+    <None Remove="Application\IntegrationEvents\EventHandling\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Update="web.config;">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
@@ -80,7 +87,6 @@
 
   <ItemGroup>
     <Folder Include="Application\IntegrationCommands\CommandHandlers\" />
-    <Folder Include="Application\IntegrationEvents\EventHandling\" />
     <Folder Include="Infrastructure\IntegrationEventMigrations\" />
   </ItemGroup>
 

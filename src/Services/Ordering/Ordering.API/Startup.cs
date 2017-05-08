@@ -1,4 +1,6 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Ordering.API
+﻿
+
+namespace Microsoft.eShopOnContainers.Services.Ordering.API
 {
     using AspNetCore.Http;
     using Autofac;
@@ -21,6 +23,9 @@
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.HealthChecks;
     using Microsoft.Extensions.Logging;
+    using Ordering.API.Application.Commands;
+    using Ordering.API.Application.IntegrationCommands.Commands;
+    using Ordering.API.Application.IntegrationEvents.Events;
     using Ordering.Infrastructure;
     using RabbitMQ.Client;
     using System;
@@ -157,6 +162,8 @@
                 .UseSqlServer(Configuration["ConnectionString"], b => b.MigrationsAssembly("Ordering.API"))
                 .Options);
             integrationEventLogContext.Database.Migrate();
+
+            ConfigureEventBus(app);
         }
 
         protected virtual void ConfigureAuth(IApplicationBuilder app)
@@ -168,6 +175,17 @@
                 ScopeName = "orders",
                 RequireHttpsMetadata = false
             });
+        }
+
+        protected virtual void ConfigureEventBus(IApplicationBuilder app)
+        {
+            var confirmGracePeriodHandler = app.ApplicationServices
+                .GetService<IIntegrationEventHandler<ConfirmGracePeriodCommandMsg>>();
+
+            var eventBus = app.ApplicationServices
+                .GetRequiredService<IEventBus>();
+
+            eventBus.Subscribe<ConfirmGracePeriodCommandMsg>(confirmGracePeriodHandler);
         }
     }
 }
