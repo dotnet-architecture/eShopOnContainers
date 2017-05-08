@@ -1,5 +1,7 @@
 ﻿
 
+using Ordering.API.Application.IntegrationCommands.Commands;
+
 namespace Microsoft.eShopOnContainers.Services.Ordering.API
 {
     using AspNetCore.Http;
@@ -23,9 +25,6 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.HealthChecks;
     using Microsoft.Extensions.Logging;
-    using Ordering.API.Application.Commands;
-    using Ordering.API.Application.IntegrationCommands.Commands;
-    using Ordering.API.Application.IntegrationEvents.Events;
     using Ordering.Infrastructure;
     using RabbitMQ.Client;
     using System;

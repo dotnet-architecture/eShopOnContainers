@@ -34,15 +34,12 @@
             IEnumerable<int> orderIds = new List<int>();
             using (var conn = new SqlConnection(_settings.ConnectionString))
             {
-                if (conn != null)
-                {
-                    conn.Open();
-                    orderIds = conn.Query<int>(
-                        @"SELECT Id FROM [Microsoft.eShopOnContainers.Services.OrderingDb].[ordering].[orders] 
-                          WHERE DATEDIFF(hour, [OrderDate], GETDATE()) >= @GracePeriod
-                          AND [OrderStatusId] = 1",
-                        new { GracePeriod = _settings.GracePeriod });
-                }
+                conn.Open();
+                orderIds = conn.Query<int>(
+                    @"SELECT Id FROM [Microsoft.eShopOnContainers.Services.OrderingDb].[ordering].[orders] 
+                        WHERE DATEDIFF(hour, [OrderDate], GETDATE()) >= @GracePeriod
+                        AND [OrderStatusId] = 1",
+                    new { GracePeriod = _settings.GracePeriod });
             }
 
             return orderIds;
@@ -52,7 +49,7 @@
         {
             var confirmGracePeriodEvent = new ConfirmGracePeriodIntegrationEvent(orderId);
 
-            // Publish through the Event Bus and mark the saved event as published
+            // Publish through the Event Bus
            _confirmGracePeriodEvent.PublishThroughEventBus(confirmGracePeriodEvent);
         }
     }

@@ -78,12 +78,9 @@ namespace Ordering.API.Application.Sagas
             CheckValidSagaId(orderSaga);
 
             // TODO: This handler should change to Integration command handler type once command bus is implemented
+
             // TODO: If order status is not cancelled, change state to awaitingValidation and 
             // send ConfirmOrderStockCommandMsg to Inventory api  
-            if (orderSaga.OrderStatus == OrderStatus.Submitted)
-            {
-                
-            }
                 
         }
         
