@@ -21,6 +21,8 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System;
+using Microsoft.eShopOnContainers.Services.Basket.API.Services;
+using Microsoft.AspNetCore.Http;
 
 namespace Microsoft.eShopOnContainers.Services.Basket.API
 {
@@ -106,8 +108,9 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
                     .AllowAnyHeader()
                     .AllowCredentials());
             });
-
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IBasketRepository, RedisBasketRepository>();
+            services.AddTransient<IIdentityService, IdentityService>();
             RegisterServiceBus(services);
         }
 
