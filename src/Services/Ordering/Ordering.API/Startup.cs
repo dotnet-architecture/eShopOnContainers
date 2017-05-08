@@ -10,6 +10,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API
     using Autofac;
     using Autofac.Extensions.DependencyInjection;
     using global::Ordering.API.Application.IntegrationEvents;
+    using global::Ordering.API.Application.IntegrationEvents.EventHandling;
     using global::Ordering.API.Infrastructure.Middlewares;
     using Infrastructure;
     using Infrastructure.Auth;
@@ -182,6 +183,15 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API
                 () => app.ApplicationServices
                         .GetService<IIntegrationEventHandler<ConfirmGracePeriodCommandMsg>>()
                 );
+
+        }
+
+        private void ConfigureEventBus(IApplicationBuilder app)
+        {
+            var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
+            eventBus.SubscribeDynamic(
+                "UserCheckoutAccepted",
+                () => app.ApplicationServices.GetRequiredService<UserCheckoutAcceptedIntegrationEventHandler>());
 
         }
 
