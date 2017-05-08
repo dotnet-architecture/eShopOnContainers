@@ -50,6 +50,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
             return Ok(basket);
         }
 
+        [Route("checkouts")]
         [HttpPost]
         public async Task<IActionResult> Checkout()
         {
