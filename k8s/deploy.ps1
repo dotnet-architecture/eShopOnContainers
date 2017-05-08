@@ -20,7 +20,7 @@ function ExecKube($cmd) {
     }
 }
 
-# Check command paths only for manual deployment
+# No when deploying through CI VSTS
 if(-not $deployCI) {
         $requiredCommands = ("docker", "docker-compose", "kubectl")
         foreach ($command in $requiredCommands) {
@@ -48,7 +48,14 @@ if(-not $useDockerHub) {
     --docker-email=not@used.com'
 }
 
-# start sql, rabbitmq, frontend deployments
+# Removing previous services & deployments
+Write-Host "Removing existing services & deployments.." -ForegroundColor Yellow
+ExecKube -cmd 'delete -f sql-data.yaml -f rabbitmq.yaml'
+ExecKube -cmd 'delete -f services.yaml -f frontend.yaml -f deployments.yaml'
+ExecKube -cmd 'delete configmap config-files'
+ExecKube -cmd 'delete configmap urls'
+
+# start sql, rabbitmq, frontend deploymentsExecKube -cmd 'delete configmap config-files'
 ExecKube -cmd 'create configmap config-files --from-file=nginx-conf=nginx.conf'
 ExecKube -cmd 'label configmap config-files app=eshop'
 ExecKube -cmd 'create -f sql-data.yaml -f rabbitmq.yaml -f services.yaml -f frontend.yaml'
@@ -90,10 +97,10 @@ ExecKube -cmd 'create configmap urls `
 ExecKube -cmd 'label configmap urls app=eshop'
 
 Write-Host "Creating deployments..."
-ExecKube -cmd 'apply -f deployments.yaml'
+ExecKube -cmd 'create -f deployments.yaml'
 
-# use ACR registry for pulling images if docker hub is not specified
-if(-not $useDockerHub) {
+# not using ACR for pulling images when deploying through CI VSTS
+if(-not $deployCI) {
     # update deployments with the private registry before k8s tries to pull images
     # (deployment templating, or Helm, would obviate this)
     ExecKube -cmd 'set image -f deployments.yaml `
