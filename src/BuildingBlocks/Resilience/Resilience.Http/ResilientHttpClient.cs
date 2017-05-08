@@ -55,13 +55,19 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http
             });
         }
 
-        public Task<HttpResponseMessage> PostAsync<T>(string uri, T item, string authorizationToken = null, string requestId = null, string authorizationMethod = "Bearer")
+        private Task<HttpResponseMessage> DoPostPutAsync<T>(HttpMethod method, string uri, T item, string authorizationToken = null, string requestId = null, string authorizationMethod = "Bearer")
         {
+
+            if (method != HttpMethod.Post && method != HttpMethod.Put)
+            {
+                throw new ArgumentException("Value must be either post or put.", nameof(method));
+            }
+
             // a new StringContent must be created for each retry 
             // as it is disposed after each call
             return HttpInvoker(async () =>
             {
-                var requestMessage = new HttpRequestMessage(HttpMethod.Post, uri);
+                var requestMessage = new HttpRequestMessage(method, uri);
 
                 requestMessage.Content = new StringContent(JsonConvert.SerializeObject(item), System.Text.Encoding.UTF8, "application/json");
 
@@ -89,7 +95,14 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http
             });
         }
 
-
+        public Task<HttpResponseMessage> PostAsync<T>(string uri, T item, string authorizationToken = null, string requestId = null, string authorizationMethod = "Bearer")
+        {
+            return DoPostPutAsync(HttpMethod.Post, uri, item, authorizationToken, requestId, authorizationMethod);
+        }
+        public Task<HttpResponseMessage> PutAsync<T>(string uri, T item, string authorizationToken = null, string requestId = null, string authorizationMethod = "Bearer")
+        {
+            return DoPostPutAsync(HttpMethod.Put, uri, item, authorizationToken, requestId, authorizationMethod);
+        }
         public Task<HttpResponseMessage> DeleteAsync(string uri, string authorizationToken = null, string requestId = null, string authorizationMethod = "Bearer")
         {
             return HttpInvoker(async () =>
