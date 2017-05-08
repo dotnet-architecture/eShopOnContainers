@@ -5,6 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.eShopOnContainers.Services.Basket.API.Model;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
+using Basket.API.IntegrationEvents.Events;
+using Microsoft.eShopOnContainers.Services.Basket.API.Services;
 
 namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
 {
@@ -16,11 +20,17 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
     [Authorize]
     public class BasketController : Controller
     {
-        private IBasketRepository _repository;
+        private readonly IBasketRepository _repository;
+        private readonly IIdentityService _identitySvc;
+        private readonly IEventBus _eventBus;
 
-        public BasketController(IBasketRepository repository)
+        public BasketController(IBasketRepository repository, 
+            IIdentityService identityService,
+            IEventBus eventBus)
         {
             _repository = repository;
+            _identitySvc = identityService;
+            _eventBus = eventBus;
         }
         // GET api/values/5
         [HttpGet("{id}")]
@@ -40,11 +50,28 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
             return Ok(basket);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Checkout()
+        {
+            var userId = _identitySvc.GetUserIdentity();
+            var basket = await _repository.GetBasketAsync(userId);
+            _eventBus.Publish(new UserCheckoutAccepted(userId, basket));
+            if (basket == null)
+            {
+                return BadRequest();
+            }
+
+
+
+            return Accepted();
+        }
+
         // DELETE api/values/5
         [HttpDelete("{id}")]
         public void Delete(string id)
         {
             _repository.DeleteBasketAsync(id);
         }
+
     }
 }

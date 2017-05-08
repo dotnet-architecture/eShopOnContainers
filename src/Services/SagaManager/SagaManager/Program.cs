@@ -1,4 +1,5 @@
-﻿using SagaManager.IntegrationEvents;
+﻿using Microsoft.eShopOnContainers.BuildingBlocks.EventBus;
+using SagaManager.IntegrationEvents;
 
 namespace SagaManager
 {
@@ -19,38 +20,14 @@ namespace SagaManager
 
         public static void Main(string[] args)
         {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddEnvironmentVariables();
+            StartUp(); 
 
-            Configuration = builder.Build();
+            IServiceCollection services = new ServiceCollection();
+            var serviceProvider = ConfigureServices(services);
 
-            var serviceProvider = new ServiceCollection()
-                .AddLogging()
-                .AddOptions()
-                .Configure<SagaManagerSettings>(Configuration)
-                .AddSingleton<ISagaManagerService, SagaManagerService>()
-                .AddSingleton<IConfirmGracePeriodEvent, ConfirmGracePeriodEvent>()
-                .AddSingleton<IRabbitMQPersisterConnection>(sp =>
-                {
-                    var settings = sp.GetRequiredService<IOptions<SagaManagerSettings>>().Value;
-                    var logger = sp.GetRequiredService<ILogger<DefaultRabbitMQPersisterConnection>>();
-                    var factory = new ConnectionFactory()
-                    {
-                        HostName = settings.EventBusConnection
-                    };
+            var logger = serviceProvider.GetService<ILoggerFactory>();
+            Configure(logger);
 
-                    return new DefaultRabbitMQPersisterConnection(factory, logger);
-                })
-                .AddSingleton<IEventBus, EventBusRabbitMQ>()
-                .BuildServiceProvider();
-
-            //configure console logging
-            serviceProvider
-                .GetService<ILoggerFactory>()
-                .AddConsole(Configuration.GetSection("Logging"))
-                .AddConsole(LogLevel.Debug);
 
             var sagaManagerService = serviceProvider
                 .GetRequiredService<ISagaManagerService>();
@@ -60,6 +37,56 @@ namespace SagaManager
                 sagaManagerService.CheckFinishedGracePeriodOrders();
                 System.Threading.Thread.Sleep(30000);
             }
+        }
+
+        public static void StartUp()
+        {
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddEnvironmentVariables();
+
+            Configuration = builder.Build();
+        }
+
+        public static IServiceProvider ConfigureServices(IServiceCollection services)
+        {
+            services.AddLogging()
+                .AddOptions()
+                .Configure<SagaManagerSettings>(Configuration)
+                .AddSingleton<ISagaManagerService, SagaManagerService>()
+                .AddSingleton<IConfirmGracePeriodEvent, ConfirmGracePeriodEvent>()
+                .AddSingleton<IEventBus, EventBusRabbitMQ>()
+                .AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>()
+                .AddSingleton<IRabbitMQPersistentConnection>(sp =>
+                {
+                    var settings = sp.GetRequiredService<IOptions<SagaManagerSettings>>().Value;
+                    var logger = sp.GetRequiredService<ILogger<DefaultRabbitMQPersistentConnection>>();
+                    var factory = new ConnectionFactory()
+                    {
+                        HostName = settings.EventBusConnection
+                    };
+
+                    return new DefaultRabbitMQPersistentConnection(factory, logger);
+                })
+                .AddSingleton<IEventBus, EventBusRabbitMQ>();
+
+                RegisterServiceBus(services);
+
+            return services.BuildServiceProvider();
+        }
+
+        public static void Configure(ILoggerFactory loggerFactory)
+        {
+            loggerFactory
+                .AddConsole(Configuration.GetSection("Logging"))
+                .AddConsole(LogLevel.Debug);
+        }
+
+        private static void RegisterServiceBus(IServiceCollection services)
+        {
+            services.AddSingleton<IEventBus, EventBusRabbitMQ>();
+            services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
         }
     }
 }
