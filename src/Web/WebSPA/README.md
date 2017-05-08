@@ -3,7 +3,6 @@
 
 ## Requirements and set up
 
-
 ### Install NPM
 The SPA application is using a newer version of NPM than the one provided by Visual Studio 2015 (npm 2.7.4 currently), so you need to install the latest stable version of NPM.
 
