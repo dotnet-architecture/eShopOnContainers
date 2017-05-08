@@ -1,7 +1,8 @@
 ﻿{
   "dependencies": {
     "Xamarin.Forms": "2.3.4.231",
-    "xunit": "2.2.0"
+    "xunit": "2.2.0",
+    "xunit.runner.console": "2.2.0"
   },
   "frameworks": {
     ".NETPortable,Version=v4.5,Profile=Profile111": {}
