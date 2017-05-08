@@ -1,6 +1,5 @@
 # eShop Web SPA (Single Page Application)
 
-
 ## Requirements and set up
 
 ### Install NPM
