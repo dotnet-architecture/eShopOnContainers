@@ -3,6 +3,8 @@ using Newtonsoft.Json;
 using Polly;
 using Polly.Wrap;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -18,29 +20,45 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http
     public class ResilientHttpClient : IHttpClient
     {
         private HttpClient _client;
-        private PolicyWrap _policyWrapper;
+        private readonly Dictionary<string, PolicyWrap> _policiesPerOrigin;
         private ILogger<ResilientHttpClient> _logger;
+        private readonly Func<string, IEnumerable<Policy>> _policyCreator;
         //public HttpClient Inst => _client;
 
-        public ResilientHttpClient(Policy[] policies, ILogger<ResilientHttpClient> logger)
+        public ResilientHttpClient(Func<string, IEnumerable<Policy>> policyCreator, ILogger<ResilientHttpClient> logger)
         {
             _client = new HttpClient();
             _logger = logger;
-
-            // Add Policies to be applied
-            _policyWrapper = Policy.WrapAsync(policies);
+            _policiesPerOrigin = new Dictionary<string, PolicyWrap>();
+            _policyCreator = policyCreator;
         }
 
-        private Task<T> HttpInvoker<T>(Func<Task<T>> action)
+        private Task<T> HttpInvoker<T>(string origin, Func<Task<T>> action)
         {
+            var normalizedOrigin = NormalizeOrigin(origin);
+
+            if (!_policiesPerOrigin.ContainsKey(normalizedOrigin))
+            {
+                var newWrapper = Policy.WrapAsync(_policyCreator(normalizedOrigin).ToArray());
+                _policiesPerOrigin.Add(normalizedOrigin, newWrapper);
+            }
+
+            var policyWrapper = _policiesPerOrigin[normalizedOrigin];
+
             // Executes the action applying all 
             // the policies defined in the wrapper
-            return _policyWrapper.ExecuteAsync(() => action());
+            return policyWrapper.ExecuteAsync(() => action());
+        }
+
+        private static string NormalizeOrigin(string origin)
+        {
+            return origin?.Trim()?.ToLower();
         }
 
         public Task<string> GetStringAsync(string uri, string authorizationToken = null, string authorizationMethod = "Bearer")
         {
-            return HttpInvoker(async () =>
+            var origin = GetOriginFromUri(uri);
+            return HttpInvoker(origin, async () =>
             {
                 var requestMessage = new HttpRequestMessage(HttpMethod.Get, uri);
 
@@ -55,9 +73,15 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http
             });
         }
 
+        private static string GetOriginFromUri(string uri)
+        {
+            var url = new Uri(uri);
+            var origin = $"{url.Scheme}://{url.DnsSafeHost}:{url.Port}";
+            return origin;
+        }
+
         private Task<HttpResponseMessage> DoPostPutAsync<T>(HttpMethod method, string uri, T item, string authorizationToken = null, string requestId = null, string authorizationMethod = "Bearer")
         {
-
             if (method != HttpMethod.Post && method != HttpMethod.Put)
             {
                 throw new ArgumentException("Value must be either post or put.", nameof(method));
@@ -65,7 +89,8 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http
 
             // a new StringContent must be created for each retry 
             // as it is disposed after each call
-            return HttpInvoker(async () =>
+            var origin = GetOriginFromUri(uri);
+            return HttpInvoker(origin, async () =>
             {
                 var requestMessage = new HttpRequestMessage(method, uri);
 
@@ -105,7 +130,8 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http
         }
         public Task<HttpResponseMessage> DeleteAsync(string uri, string authorizationToken = null, string requestId = null, string authorizationMethod = "Bearer")
         {
-            return HttpInvoker(async () =>
+            var origin = GetOriginFromUri(uri);
+            return HttpInvoker(origin, async () =>
             {
                 var requestMessage = new HttpRequestMessage(HttpMethod.Delete, uri);
 
