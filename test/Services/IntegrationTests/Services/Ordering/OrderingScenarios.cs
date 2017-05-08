@@ -9,7 +9,9 @@
     using System.Text;
     using System.Threading.Tasks;
     using Xunit;
+    using System.Collections;
     using static Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands.CreateOrderCommand;
+    using System.Collections.Generic;
 
     public class OrderingScenarios
         : OrderingScenarioBase
@@ -59,7 +61,19 @@
 
         string BuildOrder()
         {
+            List<OrderItemDTO> orderItemsList = new List<OrderItemDTO>();
+            orderItemsList.Add(new OrderItemDTO()
+                                                {
+                                                    ProductId = 1,
+                                                    Discount = 10M,
+                                                    UnitPrice = 10,
+                                                    Units = 1,
+                                                    ProductName = "Some name"
+                                                }
+                               );
+
             var order = new CreateOrderCommand(
+                orderItemsList,
                 cardExpiration: DateTime.UtcNow.AddYears(1),
                 cardNumber: "5145-555-5555",
                 cardHolderName: "Jhon Senna",
@@ -74,20 +88,12 @@
                 buyerId: 1               
             );
 
-            order.AddOrderItem(new OrderItemDTO()
-            {
-                ProductId = 1,
-                Discount = 10M,
-                UnitPrice = 10,
-                Units = 1,
-                ProductName = "Some name"
-            });
-
             return JsonConvert.SerializeObject(order);
         }
         string BuildOrderWithInvalidExperationTime()
         {
             var order = new CreateOrderCommand(
+                null,
                 cardExpiration: DateTime.UtcNow.AddYears(-1),
                 cardNumber: "5145-555-5555",
                 cardHolderName: "Jhon Senna",

@@ -1,6 +1,8 @@
 ﻿
 
 using Ordering.API.Application.IntegrationCommands.Commands;
+using Ordering.API.Application.IntegrationEvents.EventHandling;
+using Ordering.API.Application.Sagas;
 
 namespace Microsoft.eShopOnContainers.Services.Ordering.API
 {
@@ -17,6 +19,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.eShopOnContainers.BuildingBlocks.EventBus;
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ;
     using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF;
@@ -111,20 +114,22 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API
             var serviceProvider = services.BuildServiceProvider();
             services.AddTransient<IOrderingIntegrationEventService, OrderingIntegrationEventService>();
 
-            services.AddSingleton<IRabbitMQPersisterConnection>(sp =>
+            services.AddSingleton<IRabbitMQPersistentConnection>(sp =>
             {
-                var logger = sp.GetRequiredService<ILogger<DefaultRabbitMQPersisterConnection>>();
+                var logger = sp.GetRequiredService<ILogger<DefaultRabbitMQPersistentConnection>>();
 
                 var factory = new ConnectionFactory()
                 {
                     HostName = Configuration["EventBusConnection"]
                 };
 
-                return new DefaultRabbitMQPersisterConnection(factory, logger);
+                return new DefaultRabbitMQPersistentConnection(factory, logger);
             });
 
-            services.AddSingleton<IEventBus, EventBusRabbitMQ>();
 
+            services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
+            services.AddSingleton<IEventBus, EventBusRabbitMQ>();
+            services.AddTransient<UserCheckoutAcceptedIntegrationEventHandler>();
             services.AddOptions();
 
             //configure autofac
@@ -138,6 +143,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API
             return new AutofacServiceProvider(container.Build());
         }
 
+
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
@@ -148,6 +154,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API
             app.UseFailingMiddleware();
 
             ConfigureAuth(app);
+            ConfigureEventBus(app);
 
             app.UseMvcWithDefaultRoute();
 
@@ -162,7 +169,20 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API
                 .Options);
             integrationEventLogContext.Database.Migrate();
 
-            ConfigureEventBus(app);
+        }
+
+        private void ConfigureEventBus(IApplicationBuilder app)
+        {
+            var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
+            eventBus.SubscribeDynamic(
+                "UserCheckoutAccepted",
+                () => app.ApplicationServices.GetRequiredService<UserCheckoutAcceptedIntegrationEventHandler>());
+
+            eventBus.Subscribe<ConfirmGracePeriodCommandMsg, IIntegrationEventHandler<ConfirmGracePeriodCommandMsg>>(
+                () => app.ApplicationServices
+                        .GetService<IIntegrationEventHandler<ConfirmGracePeriodCommandMsg>>()
+                );
+
         }
 
         protected virtual void ConfigureAuth(IApplicationBuilder app)
@@ -174,17 +194,6 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API
                 ScopeName = "orders",
                 RequireHttpsMetadata = false
             });
-        }
-
-        protected virtual void ConfigureEventBus(IApplicationBuilder app)
-        {
-            var confirmGracePeriodHandler = app.ApplicationServices
-                .GetService<IIntegrationEventHandler<ConfirmGracePeriodCommandMsg>>();
-
-            var eventBus = app.ApplicationServices
-                .GetRequiredService<IEventBus>();
-
-            eventBus.Subscribe<ConfirmGracePeriodCommandMsg>(confirmGracePeriodHandler);
         }
     }
 }

@@ -1,4 +1,7 @@
-﻿namespace SagaManager.Services
+﻿using System;
+using Microsoft.Extensions.Logging;
+
+namespace SagaManager.Services
 {
     using System.Collections.Generic;
     using System.Data.SqlClient;
@@ -11,12 +14,15 @@
     {
         private readonly SagaManagerSettings _settings;
         private readonly IConfirmGracePeriodEvent _confirmGracePeriodEvent;
+        private readonly ILogger<SagaManagerService> _logger;
 
         public SagaManagerService(IOptions<SagaManagerSettings> settings,
-            IConfirmGracePeriodEvent confirmGracePeriodEvent)
+            IConfirmGracePeriodEvent confirmGracePeriodEvent,
+            ILogger<SagaManagerService> logger)
         {
             _settings = settings.Value;
             _confirmGracePeriodEvent = confirmGracePeriodEvent;
+            _logger = logger;
         }
 
         public void CheckFinishedGracePeriodOrders()
@@ -34,12 +40,20 @@
             IEnumerable<int> orderIds = new List<int>();
             using (var conn = new SqlConnection(_settings.ConnectionString))
             {
-                conn.Open();
-                orderIds = conn.Query<int>(
-                    @"SELECT Id FROM [Microsoft.eShopOnContainers.Services.OrderingDb].[ordering].[orders] 
-                        WHERE DATEDIFF(hour, [OrderDate], GETDATE()) >= @GracePeriod
-                        AND [OrderStatusId] = 1",
-                    new { GracePeriod = _settings.GracePeriod });
+                try
+                {
+                    conn.Open();
+                    orderIds = conn.Query<int>(
+                        @"SELECT Id FROM [Microsoft.eShopOnContainers.Services.OrderingDb].[ordering].[orders] 
+                            WHERE DATEDIFF(hour, [OrderDate], GETDATE()) >= @GracePeriod
+                            AND [OrderStatusId] = 1",
+                        new { GracePeriod = _settings.GracePeriod });  
+                }
+                catch (SqlException exception)
+                {
+                    _logger.LogError(exception.Message);
+                }
+                
             }
 
             return orderIds;
