@@ -17,7 +17,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Infrastructure
             =>_logger = logger;        
 
         public  ResilientHttpClient CreateResilientHttpClient()        
-            => new ResilientHttpClient(CreatePolicies(), _logger);
+            => new ResilientHttpClient((origin) => CreatePolicies(), _logger);
 
 
         private Policy[] CreatePolicies()
