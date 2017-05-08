@@ -3,6 +3,7 @@ using System.Windows.Input;
 using Xamarin.Forms;
 using System.Threading.Tasks;
 using eShopOnContainers.Core.Helpers;
+using eShopOnContainers.Core.Models.User;
 
 namespace eShopOnContainers.Core.ViewModels
 {
@@ -67,13 +68,7 @@ namespace eShopOnContainers.Core.ViewModels
             }
         }
 
-        public ICommand MockServicesCommand => new Command(MockServices);
-
-        private void MockServices()
-        {
-            ViewModelLocator.RegisterDependencies(!UseAzureServices);
-            UpdateInfo();
-        }
+        public ICommand ToggleMockServicesCommand => new Command(async () => await ToggleMockServicesAsync());
 
         public override Task InitializeAsync(object navigationData)
         {
@@ -82,7 +77,30 @@ namespace eShopOnContainers.Core.ViewModels
             return base.InitializeAsync(navigationData);
         }
 
-        private void UpdateInfo()
+		private async Task ToggleMockServicesAsync()
+		{
+			ViewModelLocator.RegisterDependencies(!UseAzureServices);
+			UpdateInfo();
+
+			var previousPageViewModel = NavigationService.PreviousPageViewModel;
+			if (previousPageViewModel != null)
+			{
+				if (previousPageViewModel is MainViewModel)
+				{
+					// Slight delay so that page navigation isn't instantaneous
+					await Task.Delay(1000);
+					if (UseAzureServices)
+					{
+						Settings.AuthAccessToken = string.Empty;
+						Settings.AuthIdToken = string.Empty;
+						await NavigationService.NavigateToAsync<LoginViewModel>(new LogoutParameter { Logout = true });
+						await NavigationService.RemoveBackStackAsync();
+					}
+				}
+			}
+		}
+
+		private void UpdateInfo()
         {
             if (!UseAzureServices)
             {
