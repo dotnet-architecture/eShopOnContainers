@@ -74,7 +74,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
 
             if (Configuration.GetValue<string>("UseResilientHttp") == bool.TrueString)
             {
-                services.AddTransient<IResilientHttpClientFactory, ResilientHttpClientFactory>();
+                services.AddSingleton<IResilientHttpClientFactory, ResilientHttpClientFactory>();
                 services.AddSingleton<IHttpClient, ResilientHttpClient>(sp => sp.GetService<IResilientHttpClientFactory>().CreateResilientHttpClient());
             }
             else
