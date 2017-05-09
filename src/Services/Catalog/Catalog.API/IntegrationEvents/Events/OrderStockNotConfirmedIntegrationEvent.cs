@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-
-namespace Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationEvents.Events
+﻿namespace Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationEvents.Events
 {
     using BuildingBlocks.EventBus.Events;
+    using System.Collections.Generic;
 
     public class OrderStockNotConfirmedIntegrationEvent : IntegrationEvent
     {
@@ -16,19 +15,17 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationEvents.Eve
             OrderId = orderId;
             OrderStockItem = orderStockItem;
         }
+    }
 
-        public class ConfirmedOrderStockItem
+    public class ConfirmedOrderStockItem
+    {
+        public int ProductId { get; }
+        public bool Confirmed { get; }
+
+        public ConfirmedOrderStockItem(int productId, bool confirmed)
         {
-            public int ProductId { get; }
-            public int Units { get; }
-            public bool Confirmed { get; }
-
-            public ConfirmedOrderStockItem(int productId, int units, bool confirmed)
-            {
-                ProductId = productId;
-                Units = units;
-                Confirmed = confirmed;
-            }
+            ProductId = productId;
+            Confirmed = confirmed;
         }
     }
 }
