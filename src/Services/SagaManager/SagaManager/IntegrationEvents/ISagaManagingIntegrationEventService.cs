@@ -4,6 +4,6 @@
 
     public interface ISagaManagingIntegrationEventService
     {
-        void PublishThroughEventBusAsync(IntegrationEvent evt);
+        void PublishThroughEventBus(IntegrationEvent evt);
     }
 }

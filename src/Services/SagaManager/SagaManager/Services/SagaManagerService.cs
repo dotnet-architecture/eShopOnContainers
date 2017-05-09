@@ -66,7 +66,7 @@ namespace SagaManager.Services
             var confirmGracePeriodEvent = new ConfirmGracePeriodCommandMsg(orderId);
 
             // Publish through the Event Bus
-            _sagaManagingIntegrationEventService.PublishThroughEventBusAsync(confirmGracePeriodEvent);
+            _sagaManagingIntegrationEventService.PublishThroughEventBus(confirmGracePeriodEvent);
         }
     }
 }
