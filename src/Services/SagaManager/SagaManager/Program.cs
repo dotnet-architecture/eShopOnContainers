@@ -55,7 +55,7 @@ namespace SagaManager
                 .AddOptions()
                 .Configure<SagaManagerSettings>(Configuration)
                 .AddSingleton<ISagaManagerService, SagaManagerService>()
-                .AddSingleton<IConfirmGracePeriodEvent, ConfirmGracePeriodEvent>()
+                .AddSingleton<ISagaManagingIntegrationEventService, SagaManagingIntegrationEventService>()
                 .AddSingleton<IEventBus, EventBusRabbitMQ>()
                 .AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>()
                 .AddSingleton<IRabbitMQPersistentConnection>(sp =>
