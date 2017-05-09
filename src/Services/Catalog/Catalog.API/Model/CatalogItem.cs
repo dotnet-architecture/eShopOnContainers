@@ -14,6 +14,8 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Model
 
         public string PictureUri { get; set; }
 
+        public int Stock { get; set; }
+
         public int CatalogTypeId { get; set; }
 
         public CatalogType CatalogType { get; set; }
