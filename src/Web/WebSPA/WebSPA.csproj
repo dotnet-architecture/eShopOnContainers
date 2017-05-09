@@ -73,12 +73,14 @@
   </ItemGroup>
 
   <!-- workaround for https://github.com/aspnet/websdk/issues/114 -->
+  <!--
   <Target Name="AddGeneratedContentItems" BeforeTargets="AssignTargetPaths" DependsOnTargets="PrepareForPublish">
       <ItemGroup>
           <Content Include="wwwroot/**" CopyToPublishDirectory="PreserveNewest" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder);@(Content)" />
       </ItemGroup>
   </Target>
-
+  -->
+    
   <ItemGroup>
     <ProjectReference Include="..\..\BuildingBlocks\HealthChecks\src\Microsoft.AspNetCore.HealthChecks\Microsoft.AspNetCore.HealthChecks.csproj" />
     <ProjectReference Include="..\..\BuildingBlocks\HealthChecks\src\Microsoft.Extensions.HealthChecks\Microsoft.Extensions.HealthChecks.csproj" />
