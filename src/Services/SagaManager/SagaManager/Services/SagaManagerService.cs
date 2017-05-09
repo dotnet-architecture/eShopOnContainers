@@ -43,6 +43,7 @@ namespace SagaManager.Services
             {
                 try
                 {
+                    _logger.LogInformation("SagaManager Client is trying to connect to database server");
                     conn.Open();
                     orderIds = conn.Query<int>(
                         @"SELECT Id FROM [Microsoft.eShopOnContainers.Services.OrderingDb].[ordering].[orders] 
@@ -52,7 +53,7 @@ namespace SagaManager.Services
                 }
                 catch (SqlException exception)
                 {
-                    _logger.LogError(exception.Message);
+                    _logger.LogCritical($"FATAL ERROR: Database connections could not be opened: {exception.Message}");
                 }
                 
             }
@@ -60,12 +61,12 @@ namespace SagaManager.Services
             return orderIds;
         }
 
-        private async Task Publish(int orderId)
+        private void Publish(int orderId)
         {
             var confirmGracePeriodEvent = new ConfirmGracePeriodCommandMsg(orderId);
 
             // Publish through the Event Bus
-            await _sagaManagingIntegrationEventService.PublishThroughEventBusAsync(confirmGracePeriodEvent);
+            _sagaManagingIntegrationEventService.PublishThroughEventBusAsync(confirmGracePeriodEvent);
         }
     }
 }

@@ -1,4 +1,7 @@
-﻿using Microsoft.eShopOnContainers.BuildingBlocks.EventBus;
+﻿using System.Reflection;
+using Microsoft.eShopOnContainers.BuildingBlocks.EventBus;
+using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 using SagaManager.IntegrationEvents;
 
 namespace SagaManager
@@ -27,7 +30,6 @@ namespace SagaManager
 
             var logger = serviceProvider.GetService<ILoggerFactory>();
             Configure(logger);
-
 
             var sagaManagerService = serviceProvider
                 .GetRequiredService<ISagaManagerService>();
