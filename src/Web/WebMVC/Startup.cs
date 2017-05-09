@@ -59,10 +59,10 @@ namespace Microsoft.eShopOnContainers.WebMVC
                 {
                     minutes = minutesParsed;
                 }
-                checks.AddUrlCheck(Configuration["CatalogUrl"], TimeSpan.FromMinutes(minutes));
-                checks.AddUrlCheck(Configuration["OrderingUrl"], TimeSpan.FromMinutes(minutes));
-                checks.AddUrlCheck(Configuration["BasketUrl"], TimeSpan.FromMinutes(minutes));
-                checks.AddUrlCheck(Configuration["IdentityUrl"], TimeSpan.FromMinutes(minutes));
+                checks.AddUrlCheck(Configuration["CatalogUrl"] + "/hc", TimeSpan.FromMinutes(minutes));
+                checks.AddUrlCheck(Configuration["OrderingUrl"] + "/hc", TimeSpan.FromMinutes(minutes));
+                checks.AddUrlCheck(Configuration["BasketUrl"] + "/hc", TimeSpan.FromMinutes(minutes));
+                checks.AddUrlCheck(Configuration["IdentityUrl"] + "/hc", TimeSpan.FromMinutes(minutes));
             });
 
             // Add application services.
