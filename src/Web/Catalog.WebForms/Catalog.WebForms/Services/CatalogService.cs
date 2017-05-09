@@ -75,7 +75,14 @@ namespace eShopOnContainers.Core.Services.Catalog
 
         public Task<CatalogItem> GetCatalogItemAsync(string id)
         {
-            throw new NotImplementedException();
+            var baseURl = System.Configuration.ConfigurationManager.AppSettings["CatalogURL"];
+            UriBuilder builder = new UriBuilder(baseURl);
+
+            builder.Path = $"api/v1/catalog/items/{id}";
+
+            string uri = builder.ToString();
+
+            return _requestProvider.GetAsync<CatalogItem>(uri);
         }
 
         public async Task<ObservableCollection<CatalogBrand>> GetCatalogBrandAsync()

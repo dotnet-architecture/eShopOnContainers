@@ -22,10 +22,7 @@ services:
     image: eshop/rabbitmq-win
     ports:
         - "5672:5672"
-    networks:
-     default:
-      ipv4_address: 172.24.176.5
-
+    
   sql.data:
     image: microsoft/mssql-server-windows
 
