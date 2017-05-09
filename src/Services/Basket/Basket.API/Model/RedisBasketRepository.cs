@@ -111,4 +111,3 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Model
     
     }
 }
-
