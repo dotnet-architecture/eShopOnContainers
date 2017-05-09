@@ -61,7 +61,12 @@
 
             services.AddHealthChecks(checks =>
             {
-                checks.AddSqlCheck("OrderingDb", Configuration["ConnectionString"]);
+                var minutes = 1;
+                if (int.TryParse(Configuration["HealthCheck:Timeout"], out var minutesParsed))
+                {
+                    minutes = minutesParsed;
+                }
+                checks.AddSqlCheck("OrderingDb", Configuration["ConnectionString"], TimeSpan.FromMinutes(minutes));
             });
             
             services.AddEntityFrameworkSqlServer()
