@@ -79,6 +79,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Application\DomainEventHandlers\OrderStockMethodVerified\" />
     <Folder Include="Application\IntegrationCommands\CommandHandlers\" />
     <Folder Include="Infrastructure\IntegrationEventMigrations\" />
   </ItemGroup>

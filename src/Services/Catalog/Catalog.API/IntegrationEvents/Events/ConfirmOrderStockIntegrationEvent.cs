@@ -6,13 +6,13 @@
     public class ConfirmOrderStockIntegrationEvent : IntegrationEvent
     {
         public int OrderId { get; }
-        public IEnumerable<OrderStockItem> OrderStockItem { get; }
+        public IEnumerable<OrderStockItem> OrderStockItems { get; }
 
         public ConfirmOrderStockIntegrationEvent(int orderId,
-            IEnumerable<OrderStockItem> orderStockItem)
+            IEnumerable<OrderStockItem> orderStockItems)
         {
             OrderId = orderId;
-            OrderStockItem = orderStockItem;
+            OrderStockItems = orderStockItems;
         }
     }
 
