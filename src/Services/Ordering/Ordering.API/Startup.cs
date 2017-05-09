@@ -148,8 +148,6 @@
             
             app.UseCors("CorsPolicy");
 
-            app.UseFailingMiddleware();
-
             ConfigureAuth(app);
 
             app.UseMvcWithDefaultRoute();
