@@ -3,7 +3,6 @@ using Newtonsoft.Json;
 using Polly;
 using Polly.Wrap;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -20,18 +19,15 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http
     /// </summary>
     public class ResilientHttpClient : IHttpClient
     {
-        private HttpClient _client;
-        private readonly ConcurrentDictionary<string, PolicyWrap> _policiesPerOrigin;
-        private ILogger<ResilientHttpClient> _logger;
-        private readonly Func<string, IEnumerable<Policy>> _policyCreator;
+        private readonly HttpClient _client;
+        private readonly ILogger<ResilientHttpClient> _logger;
+        private PolicyWrap _policyWrap;
 
-
-        public ResilientHttpClient(Func<string, IEnumerable<Policy>> policyCreator, ILogger<ResilientHttpClient> logger)
+        public ResilientHttpClient(IEnumerable<Policy> policies, ILogger<ResilientHttpClient> logger)
         {
             _client = new HttpClient();
             _logger = logger;
-            _policiesPerOrigin = new ConcurrentDictionary<string, PolicyWrap>();
-            _policyCreator = policyCreator;
+            _policyWrap = Policy.Wrap(policies.ToArray());
         }
 
 
@@ -129,34 +125,13 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http
 
         private Task<T> HttpInvoker<T>(string origin, Func<Task<T>> action)
         {
-            var policyWrapper = GetPolicyForOrigin(origin);
-
-            if (policyWrapper != null)
-            {
-                // Executes the action applying all 
-                // the policies defined in the wrapper
-                return policyWrapper.ExecuteAsync(() => action());
-            }
-            else
-            {
-                throw new InvalidOperationException($"PolicyWrapper can't be created for origin {origin}");
-            }
-        }
-
-        private PolicyWrap GetPolicyForOrigin(string origin)
-        {
             var normalizedOrigin = NormalizeOrigin(origin);
 
-            if (!_policiesPerOrigin.TryGetValue(normalizedOrigin, out PolicyWrap policyWrapper))
-            {
-                policyWrapper = Policy.WrapAsync(_policyCreator(normalizedOrigin)
-                    .ToArray());
-
-                _policiesPerOrigin.TryAdd(normalizedOrigin, policyWrapper);
-            }
-
-            return policyWrapper;
+            // Executes the action applying all 
+            // the policies defined in the wrapper
+            return _policyWrap.ExecuteAsync(() => action(), new Context(normalizedOrigin));
         }
+
 
         private static string NormalizeOrigin(string origin)
         {
