@@ -44,7 +44,7 @@
             }
         }
 
-        public async Task<dynamic> GetOrdersAsync()
+        public async Task<IEnumerable<dynamic>> GetOrdersAsync()
         {
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -58,7 +58,7 @@
             }
         }
 
-        public async Task<dynamic> GetCardTypesAsync()
+        public async Task<IEnumerable<dynamic>> GetCardTypesAsync()
         {
             using (var connection = new SqlConnection(_connectionString))
             {
