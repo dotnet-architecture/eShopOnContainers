@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using Polly;
 using Polly.Wrap;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -21,13 +22,13 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http
     {
         private readonly HttpClient _client;
         private readonly ILogger<ResilientHttpClient> _logger;
-        private PolicyWrap _policyWrap;
+        private ConcurrentDictionary<string, PolicyWrap> _policyWrappers;
 
-        public ResilientHttpClient(IEnumerable<Policy> policies, ILogger<ResilientHttpClient> logger)
+        public ResilientHttpClient(ILogger<ResilientHttpClient> logger)
         {
             _client = new HttpClient();
             _logger = logger;
-            _policyWrap = Policy.Wrap(policies.ToArray());
+            _policyWrappers = new ConcurrentDictionary<string, PolicyWrap>();
         }
 
 
@@ -93,43 +94,49 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http
             // as it is disposed after each call
             var origin = GetOriginFromUri(uri);
 
-            return HttpInvoker(origin, async () =>
-            {
-                var requestMessage = new HttpRequestMessage(method, uri);
+            return HttpInvoker(origin, () =>
+           {
+               var requestMessage = new HttpRequestMessage(method, uri);
 
-                requestMessage.Content = new StringContent(JsonConvert.SerializeObject(item), System.Text.Encoding.UTF8, "application/json");
+               requestMessage.Content = new StringContent(JsonConvert.SerializeObject(item), System.Text.Encoding.UTF8, "application/json");
 
-                if (authorizationToken != null)
-                {
-                    requestMessage.Headers.Authorization = new AuthenticationHeaderValue(authorizationMethod, authorizationToken);
-                }
+               if (authorizationToken != null)
+               {
+                   requestMessage.Headers.Authorization = new AuthenticationHeaderValue(authorizationMethod, authorizationToken);
+               }
 
-                if (requestId != null)
-                {
-                    requestMessage.Headers.Add("x-requestid", requestId);
-                }
+               if (requestId != null)
+               {
+                   requestMessage.Headers.Add("x-requestid", requestId);
+               }
 
-                var response = await _client.SendAsync(requestMessage);
+               var response = _client.SendAsync(requestMessage).Result;
 
-                // raise exception if HttpResponseCode 500 
-                // needed for circuit breaker to track fails
+               // raise exception if HttpResponseCode 500 
+               // needed for circuit breaker to track fails
 
-                if (response.StatusCode == HttpStatusCode.InternalServerError)
-                {
-                    throw new HttpRequestException();
-                }
+               if (response.StatusCode == HttpStatusCode.InternalServerError)
+               {
+                   throw new HttpRequestException();
+               }
 
-                return response;
-            });
+               return Task.FromResult(response);
+           });
         }
 
-        private Task<T> HttpInvoker<T>(string origin, Func<Task<T>> action)
+        private async Task<T> HttpInvoker<T>(string origin, Func<Task<T>> action)
         {
             var normalizedOrigin = NormalizeOrigin(origin);
 
+            if (!_policyWrappers.TryGetValue(normalizedOrigin, out PolicyWrap policyWrap))
+            {
+                policyWrap = Policy.Wrap(CreatePolicies());
+                _policyWrappers.TryAdd(normalizedOrigin, policyWrap);
+            }
+
             // Executes the action applying all 
             // the policies defined in the wrapper
-            return _policyWrap.ExecuteAsync(() => action(), new Context(normalizedOrigin));
+            return await policyWrap.Execute(action, new Context(normalizedOrigin));
         }
 
 
@@ -145,6 +152,46 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http
             var origin = $"{url.Scheme}://{url.DnsSafeHost}:{url.Port}";
 
             return origin;
+        }
+
+
+        private Policy[] CreatePolicies()
+        {
+            return new Policy[]
+            {
+                Policy.Handle<HttpRequestException>()
+                .WaitAndRetry(
+                    // number of retries
+                    6,
+                    // exponential backofff
+                    retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
+                    // on retry
+                    (exception, timeSpan, retryCount, context) =>
+                    {
+                        var msg = $"Retry {retryCount} implemented with Polly's RetryPolicy " +
+                            $"of {context.PolicyKey} " +
+                            $"at {context.ExecutionKey}, " +
+                            $"due to: {exception}.";
+                        _logger.LogWarning(msg);
+                        _logger.LogDebug(msg);
+                    }),
+                Policy.Handle<HttpRequestException>()
+                .CircuitBreaker(
+                   // number of exceptions before breaking circuit
+                   5,
+                   // time circuit opened before retry
+                   TimeSpan.FromMinutes(1),
+                   (exception, duration) =>
+                   {
+                        // on circuit opened
+                        _logger.LogTrace("Circuit breaker opened");
+                   },
+                   () =>
+                   {
+                        // on circuit closed
+                        _logger.LogTrace("Circuit breaker reset");
+                   })
+            };
         }
     }
 }
