@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 
 namespace SagaManager.Services
@@ -13,15 +14,15 @@ namespace SagaManager.Services
     public class SagaManagerService : ISagaManagerService
     {
         private readonly SagaManagerSettings _settings;
-        private readonly IConfirmGracePeriodEvent _confirmGracePeriodEvent;
+        private readonly ISagaManagingIntegrationEventService _sagaManagingIntegrationEventService;
         private readonly ILogger<SagaManagerService> _logger;
 
         public SagaManagerService(IOptions<SagaManagerSettings> settings,
-            IConfirmGracePeriodEvent confirmGracePeriodEvent,
+            ISagaManagingIntegrationEventService sagaManagingIntegrationEventService,
             ILogger<SagaManagerService> logger)
         {
             _settings = settings.Value;
-            _confirmGracePeriodEvent = confirmGracePeriodEvent;
+            _sagaManagingIntegrationEventService = sagaManagingIntegrationEventService;
             _logger = logger;
         }
 
@@ -59,12 +60,12 @@ namespace SagaManager.Services
             return orderIds;
         }
 
-        private void Publish(int orderId)
+        private async Task Publish(int orderId)
         {
-            var confirmGracePeriodEvent = new ConfirmGracePeriodIntegrationEvent(orderId);
+            var confirmGracePeriodEvent = new ConfirmGracePeriodCommandMsg(orderId);
 
             // Publish through the Event Bus
-           _confirmGracePeriodEvent.PublishThroughEventBus(confirmGracePeriodEvent);
+            await _sagaManagingIntegrationEventService.PublishThroughEventBusAsync(confirmGracePeriodEvent);
         }
     }
 }
