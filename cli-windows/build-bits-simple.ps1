@@ -11,8 +11,7 @@ if ([string]::IsNullOrEmpty($rootPath)) {
 }
 Write-Host "Root path used is $rootPath" -ForegroundColor Yellow
 
-
-$SolutionFilePath = $rootPath + "eShopOnContainers-ServicesAndWebApps.sln"
+$SolutionFilePath = [IO.Path]::Combine($rootPath, "eShopOnContainers-ServicesAndWebApps.sln")
 
 dotnet restore $SolutionFilePath
 

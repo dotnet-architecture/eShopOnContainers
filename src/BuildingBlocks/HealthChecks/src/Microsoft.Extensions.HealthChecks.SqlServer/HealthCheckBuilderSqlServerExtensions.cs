@@ -7,9 +7,18 @@ using System.Data.SqlClient;
 
 namespace Microsoft.Extensions.HealthChecks
 {
+    // REVIEW: What are the appropriate guards for these functions?
+
     public static class HealthCheckBuilderSqlServerExtensions
     {
         public static HealthCheckBuilder AddSqlCheck(this HealthCheckBuilder builder, string name, string connectionString)
+        {
+            Guard.ArgumentNotNull(nameof(builder), builder);
+
+            return AddSqlCheck(builder, name, connectionString, builder.DefaultCacheDuration);
+        }
+
+        public static HealthCheckBuilder AddSqlCheck(this HealthCheckBuilder builder, string name, string connectionString, TimeSpan cacheDuration)
         {
             builder.AddCheck($"SqlCheck({name})", async () =>
             {
@@ -37,7 +46,7 @@ namespace Microsoft.Extensions.HealthChecks
                 {
                     return HealthCheckResult.Unhealthy($"SqlCheck({name}): Exception during check: {ex.GetType().FullName}");
                 }
-            });
+            }, cacheDuration);
 
             return builder;
         }
