@@ -1,0 +1,83 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: eshop
+    component: basket
+  name: basket
+spec:
+  ports:
+  - port: 80
+  selector:
+    app: eshop
+    component: basket
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: eshop
+    component: catalog
+  name: catalog
+spec:
+  ports:
+  - port: 80
+  selector:
+    app: eshop
+    component: catalog
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: eshop
+    component: identity
+  name: identity
+spec:
+  ports:
+  - port: 80
+  selector:
+    app: eshop
+    component: identity
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: eshop
+    component: ordering
+  name: ordering
+spec:
+  ports:
+  - port: 80
+  selector:
+    app: eshop
+    component: ordering
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: eshop
+    component: webmvc
+  name: webmvc
+spec:
+  ports:
+  - port: 80
+  selector:
+    app: eshop
+    component: webmvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: eshop
+    component: webspa
+  name: webspa
+spec:
+  ports:
+  - port: 80
+  selector:
+    app: eshop
+    component: webspa

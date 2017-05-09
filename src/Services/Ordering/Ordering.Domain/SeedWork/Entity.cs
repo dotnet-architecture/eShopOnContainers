@@ -50,6 +50,9 @@
             if (Object.ReferenceEquals(this, obj))
                 return true;
 
+            if (this.GetType() != obj.GetType())
+                return false;
+
             Entity item = (Entity)obj;
 
             if (item.IsTransient() || this.IsTransient())
