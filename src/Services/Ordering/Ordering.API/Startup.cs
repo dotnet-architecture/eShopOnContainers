@@ -1,10 +1,4 @@
-﻿
-
-using Ordering.API.Application.IntegrationCommands.Commands;
-using Ordering.API.Application.IntegrationEvents.EventHandling;
-using Ordering.API.Application.Sagas;
-
-namespace Microsoft.eShopOnContainers.Services.Ordering.API
+﻿namespace Microsoft.eShopOnContainers.Services.Ordering.API
 {
     using AspNetCore.Http;
     using Autofac;
@@ -12,6 +6,9 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API
     using global::Ordering.API.Application.IntegrationEvents;
     using global::Ordering.API.Application.IntegrationEvents.EventHandling;
     using global::Ordering.API.Infrastructure.Middlewares;
+    using global::Ordering.API.Application.IntegrationCommands.Commands;
+    using global::Ordering.API.Application.IntegrationEvents.Events;
+    using global::Ordering.API.Application.Sagas;
     using Infrastructure;
     using Infrastructure.Auth;
     using Infrastructure.AutofacModules;
@@ -131,6 +128,10 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API
             services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
             services.AddSingleton<IEventBus, EventBusRabbitMQ>();
             services.AddTransient<UserCheckoutAcceptedIntegrationEventHandler>();
+            services.AddTransient<IIntegrationEventHandler<ConfirmGracePeriodCommandMsg>, OrderProcessSaga>();
+            services.AddTransient<IIntegrationEventHandler<SubmitOrderCommandMsg>, OrderProcessSaga>();
+            services.AddTransient<OrderStockConfirmedIntegrationEventHandler>();
+            services.AddTransient<OrderStockNotConfirmedIntegrationEventHandler>();
             services.AddOptions();
 
             //configure autofac
@@ -179,11 +180,14 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API
                 "UserCheckoutAccepted",
                 () => app.ApplicationServices.GetRequiredService<UserCheckoutAcceptedIntegrationEventHandler>());
 
-            eventBus.Subscribe<ConfirmGracePeriodCommandMsg, IIntegrationEventHandler<ConfirmGracePeriodCommandMsg>>(
-                () => app.ApplicationServices
-                        .GetService<IIntegrationEventHandler<ConfirmGracePeriodCommandMsg>>()
-                );
+            eventBus.Subscribe<ConfirmGracePeriodCommandMsg, IIntegrationEventHandler<ConfirmGracePeriodCommandMsg>>
+                (() => app.ApplicationServices.GetRequiredService<IIntegrationEventHandler<ConfirmGracePeriodCommandMsg>>());
 
+            eventBus.Subscribe<OrderStockConfirmedIntegrationEvent, OrderStockConfirmedIntegrationEventHandler>
+                (() => app.ApplicationServices.GetRequiredService<OrderStockConfirmedIntegrationEventHandler>());
+
+            eventBus.Subscribe<OrderStockNotConfirmedIntegrationEvent, OrderStockNotConfirmedIntegrationEventHandler>
+                (() => app.ApplicationServices.GetRequiredService<OrderStockNotConfirmedIntegrationEventHandler>());
         }
 
         protected virtual void ConfigureAuth(IApplicationBuilder app)

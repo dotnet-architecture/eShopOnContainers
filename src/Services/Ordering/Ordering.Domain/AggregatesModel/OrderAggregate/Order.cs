@@ -46,7 +46,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
             _orderItems = new List<OrderItem>();
             _buyerId = buyerId;
             _paymentMethodId = paymentMethodId;
-            _orderStatusId = OrderStatus.InProcess.Id;
+            _orderStatusId = OrderStatus.Submited.Id;
             _orderDate = DateTime.UtcNow;
             Address = address;
 
@@ -92,6 +92,11 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
         public void SetBuyerId(int id)
         {
             _buyerId = id;
+        }
+
+        public void SetOrderStatusId(int id)
+        {
+            _orderStatusId = id;
         }
 
         private void AddOrderStartedDomainEvent(int cardTypeId, string cardNumber,
