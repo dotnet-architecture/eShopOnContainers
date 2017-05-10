@@ -8,13 +8,13 @@ namespace Ordering.API.Application.IntegrationEvents.Events
     {
         public int OrderId { get; }
 
-        public IEnumerable<ConfirmedOrderStockItem> OrderStockItem { get; }
+        public List<ConfirmedOrderStockItem> OrderStockItems { get; }
 
         public OrderStockNotConfirmedIntegrationEvent(int orderId,
-            IEnumerable<ConfirmedOrderStockItem> orderStockItem)
+            List<ConfirmedOrderStockItem> orderStockItems)
         {
             OrderId = orderId;
-            OrderStockItem = orderStockItem;
+            OrderStockItems = orderStockItems;
         }
     }
 

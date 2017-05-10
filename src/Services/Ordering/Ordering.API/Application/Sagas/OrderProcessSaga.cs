@@ -78,9 +78,9 @@ namespace Ordering.API.Application.Sagas
         /// period has completed.
         /// </param>
         /// <returns></returns>
-        public async Task Handle(ConfirmGracePeriodCommandMsg command)
+        public async Task Handle(ConfirmGracePeriodCommandMsg @event)
         {
-            var orderSaga = FindSagaById(command.OrderId);
+            var orderSaga = FindSagaById(@event.OrderId);
             CheckValidSagaId(orderSaga);
 
             if (orderSaga.OrderStatus != OrderStatus.Cancelled)
@@ -88,14 +88,14 @@ namespace Ordering.API.Application.Sagas
                 orderSaga.SetOrderStatusId(OrderStatus.AwaitingValidation.Id);
                 await SaveChangesAsync();
 
-            var orderStockList = orderSaga.OrderItems
-                .Select(orderItem => new OrderStockItem(orderItem.ProductId, orderItem.GetUnits()));
+                var orderStockList = orderSaga.OrderItems
+                    .Select(orderItem => new OrderStockItem(orderItem.ProductId, orderItem.GetUnits()));
 
-            //Create Integration Event to be published through the Event Bus
-            var confirmOrderStockEvent = new ConfirmOrderStockCommandMsg(orderSaga.Id, orderStockList);
+                //Create Integration Event to be published through the Event Bus
+                var confirmOrderStockEvent = new ConfirmOrderStockCommandMsg(orderSaga.Id, orderStockList);
 
-            // Publish through the Event Bus and mark the saved event as published
-            await _orderingIntegrationEventService.PublishThroughEventBusAsync(confirmOrderStockEvent);
+                // Publish through the Event Bus and mark the saved event as published
+                await _orderingIntegrationEventService.PublishThroughEventBusAsync(confirmOrderStockEvent);
             }
         }
         

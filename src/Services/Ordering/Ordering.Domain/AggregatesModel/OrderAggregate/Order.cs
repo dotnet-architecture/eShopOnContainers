@@ -99,6 +99,20 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
             _orderStatusId = id;
         }
 
+        public void SetOrderStockConfirmed(bool confirmed)
+        {
+            if(confirmed)
+            {
+                OrderStatus = OrderStatus.StockValidated;
+                AddDomainEvent(new OrderStockMethodVerifiedDomainEvent(Id, OrderStatus.StockValidated));
+            }
+            else
+            {
+                OrderStatus = OrderStatus.Cancelled;
+                AddDomainEvent(new OrderStockMethodVerifiedDomainEvent(Id, OrderStatus.Cancelled));
+            }
+        }
+
         private void AddOrderStartedDomainEvent(int cardTypeId, string cardNumber,
                 string cardSecurityNumber, string cardHolderName, DateTime cardExpiration)
         {

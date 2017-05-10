@@ -1,16 +1,14 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Catalog.API.Infrastructure.Exceptions;
-using Catalog.API.IntegrationEvents;
-using Microsoft.eShopOnContainers.Services.Catalog.API.Model;
-
-namespace Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationEvents.EventHandling
+﻿namespace Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationEvents.EventHandling
 {
     using BuildingBlocks.EventBus.Abstractions;
     using System.Threading.Tasks;
     using BuildingBlocks.EventBus.Events;
     using Infrastructure;
-
+    using System.Collections.Generic;
+    using System.Linq;
+    using global::Catalog.API.Infrastructure.Exceptions;
+    using global::Catalog.API.IntegrationEvents;
+    using Model;
     using Events;
 
     public class ConfirmOrderStockIntegrationEventHandler : IIntegrationEventHandler<ConfirmOrderStockIntegrationEvent>
@@ -41,12 +39,15 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationEvents.Eve
             }
 
             //Create Integration Event to be published through the Event Bus
-            var integrationEvent = confirmedOrderStockItems.Any(c => !c.Confirmed)
+            var confirmedIntegrationEvent = confirmedOrderStockItems.Any(c => !c.Confirmed)
                 ? (IntegrationEvent) new OrderStockNotConfirmedIntegrationEvent(@event.OrderId, confirmedOrderStockItems)
                 : new OrderStockConfirmedIntegrationEvent(@event.OrderId);
-          
+
+            // Achieving atomicity between original Catalog database operation and the IntegrationEventLog thanks to a local transaction
+            await _catalogIntegrationEventService.SaveEventAndCatalogContextChangesAsync(confirmedIntegrationEvent);
+
             // Publish through the Event Bus and mark the saved event as published
-            await _catalogIntegrationEventService.PublishThroughEventBusAsync(integrationEvent);
+            await _catalogIntegrationEventService.PublishThroughEventBusAsync(confirmedIntegrationEvent);
         }
 
         private void CheckValidcatalogItemId(CatalogItem catalogItem)
