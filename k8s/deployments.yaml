@@ -1,0 +1,236 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: basket
+spec:
+  paused: true
+  template:
+    metadata:
+      labels:
+        app: eshop
+        component: basket
+    spec:
+      containers:
+      - name: basket
+        image: eshop/basket.api
+        imagePullPolicy: Always
+        env:
+        - name: ASPNETCORE_URLS
+          value: http://0.0.0.0:80/basket-api
+        - name: ConnectionString
+          value: 127.0.0.1
+        - name: EventBusConnection
+          value: rabbitmq
+        - name: IdentityUrl
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: IdentityUrl
+        ports:
+        - containerPort: 80
+      - name: basket-data
+        image: redis:3.2-alpine
+        ports:
+        - containerPort: 6379
+      imagePullSecrets:
+      - name: registry-key
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: catalog
+spec:
+  paused: true
+  template:
+    metadata:
+      labels:
+        app: eshop
+        component: catalog
+    spec:
+      containers:
+      - name: catalog
+        image: eshop/catalog.api
+        imagePullPolicy: Always
+        env:
+        - name: ASPNETCORE_URLS
+          value: http://0.0.0.0:80/catalog-api
+        - name: ConnectionString
+          value: "Server=sql-data;Initial Catalog=Microsoft.eShopOnContainers.Services.CatalogDb;User Id=sa;Password=Pass@word"
+        - name: EventBusConnection
+          value: rabbitmq
+        - name: ExternalCatalogBaseUrl
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: CatalogUrl
+        ports:
+        - containerPort: 80
+      imagePullSecrets:
+      - name: registry-key
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: identity
+spec:
+  paused: true
+  template:
+    metadata:
+      labels:
+        app: eshop
+        component: identity
+    spec:
+      containers:
+      - name: identity
+        image: eshop/identity.api
+        imagePullPolicy: Always
+        env:
+        - name: ASPNETCORE_URLS
+          value: http://0.0.0.0:80/identity
+        - name: ConnectionStrings__DefaultConnection
+          value: "Server=sql-data;Initial Catalog=Microsoft.eShopOnContainers.Services.IdentityDb;User Id=sa;Password=Pass@word"
+        - name: MvcClient
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: MvcClient
+        - name: SpaClient
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: SpaClient
+        ports:
+        - containerPort: 80
+      imagePullSecrets:
+      - name: registry-key
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ordering
+spec:
+  paused: true
+  template:
+    metadata:
+      labels:
+        app: eshop
+        component: ordering
+    spec:
+      containers:
+      - name: ordering
+        image: eshop/ordering.api
+        imagePullPolicy: Always
+        env:
+        - name: ASPNETCORE_URLS
+          value: http://0.0.0.0:80/ordering-api
+        - name: ConnectionString
+          value: "Server=sql-data;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word;"
+        - name: EventBusConnection
+          value: rabbitmq
+        - name: IdentityUrl
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: IdentityUrl
+        ports:
+        - containerPort: 80
+      imagePullSecrets:
+      - name: registry-key
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: webmvc
+spec:
+  paused: true
+  template:
+    metadata:
+      labels:
+        app: eshop
+        component: webmvc
+    spec:
+      containers:
+      - name: webmvc
+        image: eshop/webmvc
+        imagePullPolicy: Always
+        env:
+        - name: ASPNETCORE_URLS
+          value: http://0.0.0.0:80/webmvc
+        - name: BasketUrl
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: BasketUrl
+        - name: CallBackUrl
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: MvcClient
+        - name: CatalogUrl
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: CatalogUrl
+        - name: IdentityUrl
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: IdentityUrl
+        - name: OrderingUrl
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: OrderingUrl
+        ports:
+        - containerPort: 80
+      imagePullSecrets:
+      - name: registry-key
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: webspa
+spec:
+  paused: true
+  template:
+    metadata:
+      labels:
+        app: eshop
+        component: webspa
+    spec:
+      containers:
+      - name: webspa
+        image: eshop/webspa
+        imagePullPolicy: Always
+        env:
+        - name: ASPNETCORE_URLS
+          value: http://0.0.0.0:80
+        - name: BasketUrl
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: BasketUrl
+        - name: CallBackUrl
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: SpaClient
+        - name: CatalogUrl
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: CatalogUrl
+        - name: IdentityUrl
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: IdentityUrl
+        - name: OrderingUrl
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: OrderingUrl
+        ports:
+        - containerPort: 80
+      imagePullSecrets:
+      - name: registry-key

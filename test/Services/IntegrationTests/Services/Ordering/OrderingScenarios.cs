@@ -93,7 +93,7 @@
         string BuildOrderWithInvalidExperationTime()
         {
             var order = new CreateOrderCommand(
-                null,
+                new List<OrderItemDTO>(),
                 cardExpiration: DateTime.UtcNow.AddYears(-1),
                 cardNumber: "5145-555-5555",
                 cardHolderName: "Jhon Senna",
