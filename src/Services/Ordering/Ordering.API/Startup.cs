@@ -127,9 +127,9 @@
 
             services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
             services.AddSingleton<IEventBus, EventBusRabbitMQ>();
+
             services.AddTransient<UserCheckoutAcceptedIntegrationEventHandler>();
             services.AddTransient<IIntegrationEventHandler<ConfirmGracePeriodCommandMsg>, OrderProcessSaga>();
-            services.AddTransient<IIntegrationEventHandler<SubmitOrderCommandMsg>, OrderProcessSaga>();
             services.AddTransient<OrderStockConfirmedIntegrationEventHandler>();
             services.AddTransient<OrderStockNotConfirmedIntegrationEventHandler>();
             services.AddOptions();
