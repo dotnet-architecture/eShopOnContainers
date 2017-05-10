@@ -20,16 +20,22 @@ Then, set the startup project in Visual Studio to the *Catalog.WebForms* project
 
 ## Configure Windows Containers
 
-The Catalog.WebForms project uses the full framework, so will only run in Windows based Docker containers. Before running in Docker, make sure you
-are running Docker with Windows containers configured. Right-click on the Docker node, and if "switch to Windows Containers" is displayed, click that. If "switch to Linux containers" is displayed, you are already running
+You'll need to install and configure
+[Docker for Windows](https://docs.docker.com/docker-for-windows/install/) to run
+this project in Docker containers.
+
+The Catalog.WebForms project uses the full .NET framework, so will only run in Windows based Docker containers. Before running in *Docker for Windows*, make sure you
+are running Docker with Windows containers configured. Right-click on the *Docker for Windows* node, and if "switch to Windows Containers" is displayed, click that. If "switch to Linux containers" is displayed, you are already running
 with Windows containers.
 
 ## Update Configured IP address
 
-There is a current limitation in Docker for Windows when running with
-Windows containers where *localhost* doesn't resolve to the Docker host IP.
-Instead, you need to find the physical machine's IP address and use that for
-the external address of the services.
+There is a current limitation when running with
+Windows containers where *localhost* doesn't route from the Docker host to a container.
+
+There are two workarounds for this. You need to find the IP address of the host machine to access
+the external address of the services, or you can use the IP address of the host running the container
+and its exposed port. This project uses several containers, so the first method is simpler.
 
 To find your machine's IP address, run `ipconfig`. Find the IPv4 address
 for your machine. In the GitHub example, it is configured for a home
@@ -41,6 +47,8 @@ your machine's address.
 ```yml
 ESHOP_EXTERNAL_DNS_NAME_OR_IP=192.168.1.103
 ```
+
+For more details on the issue and workarounds, see [this StackOverflow post and answer](http://stackoverflow.com/questions/43769806/docker-for-windows-cannot-access-service-on-exposed-port-in-windows-container-m/43770786)
 
 ## Building for Docker
 
