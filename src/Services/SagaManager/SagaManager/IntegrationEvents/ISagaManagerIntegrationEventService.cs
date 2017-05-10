@@ -2,7 +2,7 @@
 {
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
 
-    public interface ISagaManagingIntegrationEventService
+    public interface ISagaManagerIntegrationEventService
     {
         void PublishThroughEventBus(IntegrationEvent evt);
     }
