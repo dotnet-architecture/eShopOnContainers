@@ -51,7 +51,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
             }
             catch(BrokenCircuitException)
             {
-                ModelState.AddModelError("Error", "It was not possible to create a new order, please try later on");
+                ModelState.AddModelError("Error", "It was not possible to create a new order, please try later on. (Business Msg Due to Circuit-Breaker)");
             }
             return View(model);
         }
