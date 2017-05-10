@@ -14,15 +14,15 @@ namespace SagaManager.Services
     public class SagaManagerService : ISagaManagerService
     {
         private readonly SagaManagerSettings _settings;
-        private readonly ISagaManagingIntegrationEventService _sagaManagingIntegrationEventService;
+        private readonly ISagaManagerIntegrationEventService _sagaManagerIntegrationEventService;
         private readonly ILogger<SagaManagerService> _logger;
 
         public SagaManagerService(IOptions<SagaManagerSettings> settings,
-            ISagaManagingIntegrationEventService sagaManagingIntegrationEventService,
+            ISagaManagerIntegrationEventService sagaManagerIntegrationEventService,
             ILogger<SagaManagerService> logger)
         {
             _settings = settings.Value;
-            _sagaManagingIntegrationEventService = sagaManagingIntegrationEventService;
+            _sagaManagerIntegrationEventService = sagaManagerIntegrationEventService;
             _logger = logger;
         }
 
@@ -66,7 +66,7 @@ namespace SagaManager.Services
             var confirmGracePeriodEvent = new ConfirmGracePeriodCommandMsg(orderId);
 
             // Publish through the Event Bus
-            _sagaManagingIntegrationEventService.PublishThroughEventBus(confirmGracePeriodEvent);
+            _sagaManagerIntegrationEventService.PublishThroughEventBus(confirmGracePeriodEvent);
         }
     }
 }

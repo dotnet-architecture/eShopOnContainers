@@ -4,11 +4,11 @@
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
     using System;
 
-    public class SagaManagingIntegrationEventService : ISagaManagingIntegrationEventService
+    public class SagaManagerIntegrationEventService : ISagaManagerIntegrationEventService
     {
         private readonly IEventBus _eventBus;
 
-        public SagaManagingIntegrationEventService(IEventBus eventBus)
+        public SagaManagerIntegrationEventService(IEventBus eventBus)
         {
             _eventBus = eventBus ?? throw new ArgumentNullException(nameof(eventBus));
         }
