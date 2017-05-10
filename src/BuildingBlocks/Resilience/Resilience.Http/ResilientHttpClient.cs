@@ -22,12 +22,14 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http
     {
         private readonly HttpClient _client;
         private readonly ILogger<ResilientHttpClient> _logger;
+        private readonly Func<string, IEnumerable<Policy>> _policyCreator;
         private ConcurrentDictionary<string, PolicyWrap> _policyWrappers;
 
-        public ResilientHttpClient(ILogger<ResilientHttpClient> logger)
+        public ResilientHttpClient(Func<string, IEnumerable<Policy>> policyCreator, ILogger<ResilientHttpClient> logger)
         {
             _client = new HttpClient();
             _logger = logger;
+            _policyCreator = policyCreator;
             _policyWrappers = new ConcurrentDictionary<string, PolicyWrap>();
         }
 
@@ -130,7 +132,7 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http
 
             if (!_policyWrappers.TryGetValue(normalizedOrigin, out PolicyWrap policyWrap))
             {
-                policyWrap = Policy.Wrap(CreatePolicies());
+                policyWrap = Policy.Wrap(_policyCreator(normalizedOrigin).ToArray());
                 _policyWrappers.TryAdd(normalizedOrigin, policyWrap);
             }
 
@@ -152,46 +154,6 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http
             var origin = $"{url.Scheme}://{url.DnsSafeHost}:{url.Port}";
 
             return origin;
-        }
-
-
-        private Policy[] CreatePolicies()
-        {
-            return new Policy[]
-            {
-                Policy.Handle<HttpRequestException>()
-                .WaitAndRetry(
-                    // number of retries
-                    6,
-                    // exponential backofff
-                    retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
-                    // on retry
-                    (exception, timeSpan, retryCount, context) =>
-                    {
-                        var msg = $"Retry {retryCount} implemented with Polly's RetryPolicy " +
-                            $"of {context.PolicyKey} " +
-                            $"at {context.ExecutionKey}, " +
-                            $"due to: {exception}.";
-                        _logger.LogWarning(msg);
-                        _logger.LogDebug(msg);
-                    }),
-                Policy.Handle<HttpRequestException>()
-                .CircuitBreaker(
-                   // number of exceptions before breaking circuit
-                   5,
-                   // time circuit opened before retry
-                   TimeSpan.FromMinutes(1),
-                   (exception, duration) =>
-                   {
-                        // on circuit opened
-                        _logger.LogTrace("Circuit breaker opened");
-                   },
-                   () =>
-                   {
-                        // on circuit closed
-                        _logger.LogTrace("Circuit breaker reset");
-                   })
-            };
-        }
+        }        
     }
 }
