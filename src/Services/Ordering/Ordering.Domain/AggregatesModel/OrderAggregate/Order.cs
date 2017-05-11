@@ -103,21 +103,22 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
             if(orderStockNotConfirmedItems is null)
             {
                 OrderStatus = OrderStatus.StockValidated;
+
                 _description = "All the items were confirmed with available stock.";
-                //AddDomainEvent(new OrderStockMethodVerifiedDomainEvent(Id, OrderStatus.StockValidated));
             }
             else
             {
+                OrderStatus = OrderStatus.Cancelled;
+
                 var itemsStockNotConfirmedProductNames = OrderItems
                     .Where(c => orderStockNotConfirmedItems.Contains(c.ProductId))
                     .Select(c => c.GetOrderItemProductName());
 
                 var itemsStockNotConfirmedDescription = string.Join(", ", itemsStockNotConfirmedProductNames);
-
-                OrderStatus = OrderStatus.Cancelled;
-                _description = $"The product items don't have stock: ({itemsStockNotConfirmedDescription}).";
-                //AddDomainEvent(new OrderStockMethodVerifiedDomainEvent(Id, OrderStatus.Cancelled));
+                _description = $"The product items don't have stock: ({itemsStockNotConfirmedDescription}).";   
             }
+
+            AddDomainEvent(new OrderStockConfirmedDomainEvent(Id, OrderStatus));
         }
 
         private void AddOrderStartedDomainEvent(int cardTypeId, string cardNumber,

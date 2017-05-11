@@ -1,18 +1,20 @@
-﻿namespace Ordering.Domain.Events
+﻿using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
+
+namespace Ordering.Domain.Events
 {
     using MediatR;
-    using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Event used when the order stock items are verified
     /// </summary>
-    public class OrderStockMethodVerifiedDomainEvent
+    public class OrderStockConfirmedDomainEvent
         : IAsyncNotification
     {
         public int OrderId { get; }
         public OrderStatus OrderStatus { get; }
 
-        public OrderStockMethodVerifiedDomainEvent(int orderId,
+        public OrderStockConfirmedDomainEvent(int orderId,
             OrderStatus orderStatus)
         {
             OrderId = orderId;

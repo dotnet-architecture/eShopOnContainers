@@ -14,7 +14,6 @@ namespace Ordering.API.Application.IntegrationEvents.EventHandling
         private readonly ILoggerFactory _logger;
 
         public UserCheckoutAcceptedIntegrationEventHandler(IMediator mediator,
-            IOrderingIntegrationEventService orderingIntegrationEventService,
             ILoggerFactory logger)
         {
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));

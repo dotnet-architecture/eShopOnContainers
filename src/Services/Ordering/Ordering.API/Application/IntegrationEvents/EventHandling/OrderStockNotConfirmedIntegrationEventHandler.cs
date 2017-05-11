@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Ordering.API.Application.IntegrationCommands.Commands;
 
 namespace Ordering.API.Application.IntegrationEvents.EventHandling
 {
@@ -25,15 +26,18 @@ namespace Ordering.API.Application.IntegrationEvents.EventHandling
 
         public async Task Handle(OrderStockNotConfirmedIntegrationEvent @event)
         {
-            //TODO: must update the order state to cancelled and the CurrentOrderStateContextDescription with the reasons of no-stock confirm 
-            var order = await _orderRepository.GetAsync(@event.OrderId);
-            CheckValidSagaId(order);
+            var orderToUpdate = await _orderRepository.GetAsync(@event.OrderId);
+            CheckValidSagaId(orderToUpdate);
 
             var orderStockNotConfirmedItems = @event.OrderStockItems
                 .FindAll(c => !c.Confirmed)
                 .Select(c => c.ProductId);
 
-            order.SetOrderStockConfirmed(orderStockNotConfirmedItems);
+            orderToUpdate.SetOrderStockConfirmed(orderStockNotConfirmedItems);
+
+            var payOrderCommandMsg = new PayOrderCommandMsg(orderToUpdate.Id);
+            await _orderingIntegrationEventService.SaveEventAndOrderingContextChangesAsync(payOrderCommandMsg);
+            await _orderingIntegrationEventService.PublishThroughEventBusAsync(payOrderCommandMsg);
         }
 
         private void CheckValidSagaId(Order orderSaga)
