@@ -19,6 +19,8 @@ namespace Microsoft.eShopOnContainers.WebMVC.ViewModels
 
         public decimal Total {get;set;}
 
+        public string Description { get; set; }
+
         [Required]
         public string City { get; set; }
         [Required]
