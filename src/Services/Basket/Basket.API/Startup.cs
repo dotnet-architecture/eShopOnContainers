@@ -23,6 +23,8 @@ using System.Threading.Tasks;
 using System;
 using Microsoft.eShopOnContainers.Services.Basket.API.Services;
 using Microsoft.AspNetCore.Http;
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
 
 namespace Microsoft.eShopOnContainers.Services.Basket.API
 {
@@ -41,7 +43,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
         public IConfigurationRoot Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
 
             services.AddHealthChecks(checks =>
@@ -112,6 +114,10 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             services.AddTransient<IBasketRepository, RedisBasketRepository>();
             services.AddTransient<IIdentityService, IdentityService>();
             RegisterServiceBus(services);
+
+            var container = new ContainerBuilder();
+            container.Populate(services);
+            return new AutofacServiceProvider(container.Build());
         }
 
         private void RegisterServiceBus(IServiceCollection services)
@@ -167,11 +173,8 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
 
             var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
 
-            eventBus.Subscribe<ProductPriceChangedIntegrationEvent, ProductPriceChangedIntegrationEventHandler>
-                (() => app.ApplicationServices.GetRequiredService<ProductPriceChangedIntegrationEventHandler>());
-
-            eventBus.Subscribe<OrderStartedIntegrationEvent, OrderStartedIntegrationEventHandler>
-                (() => app.ApplicationServices.GetRequiredService<OrderStartedIntegrationEventHandler>());
+            eventBus.Subscribe<ProductPriceChangedIntegrationEvent, ProductPriceChangedIntegrationEventHandler>();
+            eventBus.Subscribe<OrderStartedIntegrationEvent, OrderStartedIntegrationEventHandler>();
         }
     }
 }

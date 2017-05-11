@@ -1,13 +1,48 @@
-﻿using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
+﻿using MediatR;
+using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
 using System.Threading.Tasks;
 
 namespace Ordering.API.Application.IntegrationEvents.EventHandling
 {
-    public class UserCheckoutAcceptedIntegrationEventHandler : IDynamicIntegrationEventHandler
+    public class UserCheckoutAcceptedIntegrationEventHandler : IIntegrationEventHandler<UserCheckoutAcceptedIntegrationEvent>
     {
-        public async Task Handle(dynamic eventData)
+        private readonly IMediator _mediator;
+        private readonly ILoggerFactory _logger;
+
+        public UserCheckoutAcceptedIntegrationEventHandler(IMediator mediator,
+            IOrderingIntegrationEventService orderingIntegrationEventService,
+            ILoggerFactory logger)
         {
-            int i = 0;
+            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        }
+
+        /// <summary>
+        /// Integration event handler which starts the create order process
+        /// </summary>
+        /// <param name="eventMsg">
+        /// Integration event message which is sent by the
+        /// basket.api once it has successfully process the 
+        /// order items.
+        /// </param>
+        /// <returns></returns>
+        public async Task Handle(UserCheckoutAcceptedIntegrationEvent eventMsg)
+        {
+            var result = false;
+            if (eventMsg.RequestId != Guid.Empty)
+            {
+                var createOrderCommand = new CreateOrderCommand(eventMsg.Basket.Items, eventMsg.City, eventMsg.Street, 
+                    eventMsg.State, eventMsg.Country, eventMsg.ZipCode,
+                    eventMsg.CardNumber, eventMsg.CardHolderName, eventMsg.CardExpiration,
+                    eventMsg.CardSecurityNumber, eventMsg.CardTypeId);
+
+                var requestCreateOrder = new IdentifiedCommand<CreateOrderCommand, bool>(createOrderCommand, eventMsg.RequestId);
+                result = await _mediator.SendAsync(requestCreateOrder);
+            }
+
+            _logger.CreateLogger(nameof(UserCheckoutAcceptedIntegrationEventHandler))
+                .LogTrace(result ? $"UserCheckoutAccepted integration event has been received and a create new order process is started with requestId: {eventMsg.RequestId}" : 
+                    $"UserCheckoutAccepted integration event has been received but a new order process has failed with requestId: {eventMsg.RequestId}");
         }
     }
 }

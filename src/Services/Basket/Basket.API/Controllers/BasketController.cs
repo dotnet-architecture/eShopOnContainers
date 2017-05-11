@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
 using Basket.API.IntegrationEvents.Events;
 using Microsoft.eShopOnContainers.Services.Basket.API.Services;
+using Basket.API.Model;
 
 namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
 {
@@ -50,19 +51,22 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
             return Ok(basket);
         }
 
-        [Route("checkouts")]
-        [HttpPost]
-        public async Task<IActionResult> Checkout()
+        [Route("checkout")]
+        [HttpPut]
+        public async Task<IActionResult> Checkout([FromBody]BasketCheckout value)
         {
             var userId = _identitySvc.GetUserIdentity();
             var basket = await _repository.GetBasketAsync(userId);
-            _eventBus.Publish(new UserCheckoutAccepted(userId, basket));
+            var eventMessage = new UserCheckoutAcceptedIntegrationEvent(userId, value.City, value.Street,
+                value.State, value.Country, value.ZipCode, value.CardNumber, value.CardHolderName,
+                value.CardExpiration, value.CardSecurityNumber, value.CardTypeId, value.Buyer, value.RequestId, basket);
+
+            _eventBus.Publish(eventMessage);
+
             if (basket == null)
             {
                 return BadRequest();
             }
-
-
 
             return Accepted();
         }

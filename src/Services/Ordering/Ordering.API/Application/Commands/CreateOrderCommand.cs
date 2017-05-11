@@ -3,6 +3,7 @@ using MediatR;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Collections;
+using Ordering.API.Application.Models;
 
 namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands
 {
@@ -53,12 +54,6 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands
         public int CardTypeId { get; private set; }
 
         [DataMember]
-        public int PaymentId { get; private set; }
-
-        [DataMember]
-        public int BuyerId { get; private set; }
-
-        [DataMember]
         public IEnumerable<OrderItemDTO> OrderItems => _orderItems;
 
         public CreateOrderCommand()
@@ -66,11 +61,11 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands
             _orderItems = new List<OrderItemDTO>();
         }
 
-        public CreateOrderCommand(List<OrderItemDTO> orderItems, string city, string street, string state, string country, string zipcode,
+        public CreateOrderCommand(List<BasketItem> basketItems, string city, string street, string state, string country, string zipcode,
             string cardNumber, string cardHolderName, DateTime cardExpiration,
-            string cardSecurityNumber, int cardTypeId, int paymentId, int buyerId) : this()
+            string cardSecurityNumber, int cardTypeId) : this()
         {
-            _orderItems = orderItems;
+            _orderItems = MapToOrderItems(basketItems);
             City = city;
             Street = street;
             State = state;
@@ -82,8 +77,21 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands
             CardSecurityNumber = cardSecurityNumber;
             CardTypeId = cardTypeId;
             CardExpiration = cardExpiration;
-            PaymentId = paymentId;
-            BuyerId = buyerId;
+        }
+
+        private List<OrderItemDTO> MapToOrderItems(List<BasketItem> basketItems)
+        {
+            var result = new List<OrderItemDTO>();
+            basketItems.ForEach((item) => {
+                result.Add(new OrderItemDTO() {
+                    ProductId = int.TryParse(item.Id, out int id) ? id : -1,
+                    ProductName = item.ProductName,
+                    PictureUrl = item.PictureUrl,
+                    UnitPrice = item.UnitPrice,
+                    Units = item.Quantity                 
+                });
+            });
+            return result;
         }
 
         public class OrderItemDTO

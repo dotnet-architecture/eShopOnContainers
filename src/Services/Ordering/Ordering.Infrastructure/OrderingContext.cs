@@ -36,6 +36,9 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
         public OrderingContext(DbContextOptions options, IMediator mediator) : base(options)
         {
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+
+
+            System.Diagnostics.Debug.WriteLine("OrderingContext::ctor ->" + this.GetHashCode());
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

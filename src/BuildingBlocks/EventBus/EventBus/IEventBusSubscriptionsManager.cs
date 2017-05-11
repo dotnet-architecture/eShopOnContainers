@@ -10,10 +10,10 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBus
     {
         bool IsEmpty { get; }
         event EventHandler<string> OnEventRemoved;
-        void AddDynamicSubscription<TH>(string eventName, Func<TH> handler)
+        void AddDynamicSubscription<TH>(string eventName)
            where TH : IDynamicIntegrationEventHandler;
 
-        void AddSubscription<T, TH>(Func<TH> handler)
+        void AddSubscription<T, TH>()
            where T : IntegrationEvent
            where TH : IIntegrationEventHandler<T>;
 
