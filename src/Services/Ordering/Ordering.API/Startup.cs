@@ -4,7 +4,7 @@
     using Autofac;
     using Autofac.Extensions.DependencyInjection;
     using global::Ordering.API.Application.IntegrationEvents;
-    using global::Ordering.API.Application.IntegrationEvents.EventHandling;
+    using global::Ordering.API.Application.IntegrationEvents.Events;
     using global::Ordering.API.Infrastructure.Middlewares;
     using global::Ordering.API.Application.IntegrationCommands.Commands;
     using global::Ordering.API.Application.IntegrationEvents.Events;
@@ -31,6 +31,7 @@
     using System;
     using System.Data.Common;
     using System.Reflection;
+    using global::Ordering.API.Application.IntegrationEvents.EventHandling;
 
     public class Startup
     {
@@ -127,8 +128,7 @@
 
             services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
             services.AddSingleton<IEventBus, EventBusRabbitMQ>();
-
-            services.AddTransient<UserCheckoutAcceptedIntegrationEventHandler>();
+            services.AddTransient<IIntegrationEventHandler, UserCheckoutAcceptedIntegrationEventHandler>();
             services.AddTransient<IIntegrationEventHandler<ConfirmGracePeriodCommandMsg>, OrderProcessSaga>();
             services.AddTransient<OrderStockConfirmedIntegrationEventHandler>();
             services.AddTransient<OrderStockNotConfirmedIntegrationEventHandler>();
@@ -156,14 +156,13 @@
             app.UseFailingMiddleware();
 
             ConfigureAuth(app);
-            ConfigureEventBus(app);
-
             app.UseMvcWithDefaultRoute();
 
             app.UseSwagger()
                 .UseSwaggerUi();
 
             OrderingContextSeed.SeedAsync(app).Wait();
+            ConfigureEventBus(app);
 
             var integrationEventLogContext = new IntegrationEventLogContext(
                 new DbContextOptionsBuilder<IntegrationEventLogContext>()
@@ -176,9 +175,9 @@
         private void ConfigureEventBus(IApplicationBuilder app)
         {
             var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
-            eventBus.SubscribeDynamic(
-                "UserCheckoutAccepted",
-                () => app.ApplicationServices.GetRequiredService<UserCheckoutAcceptedIntegrationEventHandler>());
+
+            eventBus.Subscribe<UserCheckoutAcceptedIntegrationEvent,IIntegrationEventHandler<UserCheckoutAcceptedIntegrationEvent>>(
+                () => app.ApplicationServices.GetRequiredService<IIntegrationEventHandler<UserCheckoutAcceptedIntegrationEvent>>());
 
             eventBus.Subscribe<ConfirmGracePeriodCommandMsg, IIntegrationEventHandler<ConfirmGracePeriodCommandMsg>>
                 (() => app.ApplicationServices.GetRequiredService<IIntegrationEventHandler<ConfirmGracePeriodCommandMsg>>());
