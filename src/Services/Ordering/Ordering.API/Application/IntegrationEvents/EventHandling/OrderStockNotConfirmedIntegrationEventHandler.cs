@@ -34,10 +34,6 @@ namespace Ordering.API.Application.IntegrationEvents.EventHandling
                 .Select(c => c.ProductId);
 
             orderToUpdate.SetOrderStockConfirmed(orderStockNotConfirmedItems);
-
-            var payOrderCommandMsg = new PayOrderCommandMsg(orderToUpdate.Id);
-            await _orderingIntegrationEventService.SaveEventAndOrderingContextChangesAsync(payOrderCommandMsg);
-            await _orderingIntegrationEventService.PublishThroughEventBusAsync(payOrderCommandMsg);
         }
 
         private void CheckValidSagaId(Order orderSaga)
