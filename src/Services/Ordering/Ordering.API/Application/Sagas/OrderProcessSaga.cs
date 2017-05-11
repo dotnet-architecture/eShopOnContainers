@@ -10,7 +10,12 @@ using Ordering.API.Application.IntegrationCommands.Commands;
 using Ordering.API.Application.IntegrationEvents.Events;
 using Ordering.Domain.Exceptions;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
+using Ordering.API.Application.IntegrationEvents;
+using Ordering.API.Application.IntegrationEvents.Events;
 
 namespace Ordering.API.Application.Sagas
 {
@@ -29,14 +34,16 @@ namespace Ordering.API.Application.Sagas
     {
         private readonly IMediator _mediator;
         private readonly Func<Owned<OrderingContext>> _dbContextFactory;
+        private readonly IOrderingIntegrationEventService _orderingIntegrationEventService;
 
         public OrderProcessSaga(
             Func<Owned<OrderingContext>> dbContextFactory, OrderingContext orderingContext,
-            IMediator mediator)
+            IMediator mediator, IOrderingIntegrationEventService orderingIntegrationEventService)
             : base(orderingContext)
         {
             _dbContextFactory = dbContextFactory;
             _mediator = mediator;
+            _orderingIntegrationEventService = orderingIntegrationEventService;
         }
 
         /// <summary>
@@ -72,18 +79,27 @@ namespace Ordering.API.Application.Sagas
         /// period has completed.
         /// </param>
         /// <returns></returns>
-        public async Task Handle(ConfirmGracePeriodCommandMsg command)
+        public async Task Handle(ConfirmGracePeriodCommandMsg @event)
         {
-            var orderSaga = FindSagaById(command.OrderNumber);
+            var orderSaga = FindSagaById(@event.OrderId);
             CheckValidSagaId(orderSaga);
 
-            // TODO: This handler should change to Integration command handler type once command bus is implemented
+            if (orderSaga.OrderStatus != OrderStatus.Cancelled)
+            {
+                orderSaga.SetOrderStatusId(OrderStatus.AwaitingValidation.Id);
+                await SaveChangesAsync();
 
-            // TODO: If order status is not cancelled, change state to awaitingValidation and 
-            // send ConfirmOrderStockCommandMsg to Inventory api           
+                var orderStockList = orderSaga.OrderItems
+                    .Select(orderItem => new OrderStockItem(orderItem.ProductId, orderItem.GetUnits()));
+
+                //Create Integration Event to be published through the Event Bus
+                var confirmOrderStockEvent = new ConfirmOrderStockCommandMsg(orderSaga.Id, orderStockList);
+
+                // Publish through the Event Bus and mark the saved event as published
+                await _orderingIntegrationEventService.PublishThroughEventBusAsync(confirmOrderStockEvent);
+            }
         }
         
-
         /// <summary>
         /// Handler which processes the command when
         /// customer executes cancel order from app
