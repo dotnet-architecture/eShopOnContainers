@@ -7,6 +7,7 @@ using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure;
 using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Idempotency;
 using Ordering.API.Application.Commands;
 using Ordering.API.Application.IntegrationCommands.Commands;
+using Ordering.API.Application.IntegrationEvents.Events;
 using Ordering.Domain.Exceptions;
 using System;
 using System.Threading.Tasks;
@@ -22,7 +23,7 @@ namespace Ordering.API.Application.Sagas
     /// with the validations.
     /// </summary>
     public class OrderProcessSaga : Saga<Order>,
-        IIntegrationEventHandler<SubmitOrderCommandMsg>,
+        IIntegrationEventHandler<UserCheckoutAcceptedIntegrationEvent>,
         IIntegrationEventHandler<ConfirmGracePeriodCommandMsg>,
         IAsyncRequestHandler<CancelOrderCommand, bool>
     {
@@ -48,10 +49,10 @@ namespace Ordering.API.Application.Sagas
         /// order items.
         /// </param>
         /// <returns></returns>
-        public async Task Handle(SubmitOrderCommandMsg command)
+        public async Task Handle(UserCheckoutAcceptedIntegrationEvent command)
         {
-            var orderSaga = FindSagaById(command.OrderNumber);
-            CheckValidSagaId(orderSaga);
+
+            var commanda = command; 
 
             // TODO: This handler should change to Integration command handler type once command bus is implemented
 
