@@ -8,20 +8,15 @@ namespace Ordering.API.Application.IntegrationEvents.EventHandling
     using System.Threading.Tasks;
     using Events;
     using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
-    using Ordering.API.Application.Sagas;
-    using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure;
-    using Ordering.Domain.Exceptions;
+    using Domain.Exceptions;
 
     public class OrderStockNotConfirmedIntegrationEventHandler : IIntegrationEventHandler<OrderStockNotConfirmedIntegrationEvent>
     {
-        private readonly IOrderingIntegrationEventService _orderingIntegrationEventService;
         private readonly IOrderRepository _orderRepository;
 
-        public OrderStockNotConfirmedIntegrationEventHandler(IOrderRepository orderRepository,
-            IOrderingIntegrationEventService orderingIntegrationEventService)
+        public OrderStockNotConfirmedIntegrationEventHandler(IOrderRepository orderRepository)
         {
             _orderRepository = orderRepository;
-            _orderingIntegrationEventService = orderingIntegrationEventService;
         }
 
         public async Task Handle(OrderStockNotConfirmedIntegrationEvent @event)
