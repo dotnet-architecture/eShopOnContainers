@@ -10,9 +10,12 @@
     public class OrderStatus
         : Enumeration
     {
-        public static OrderStatus InProcess = new OrderStatus(1, nameof(InProcess).ToLowerInvariant());
-        public static OrderStatus Shipped = new OrderStatus(2, nameof(Shipped).ToLowerInvariant());
-        public static OrderStatus Canceled = new OrderStatus(3, nameof(Canceled).ToLowerInvariant());
+        public static OrderStatus Submited = new OrderStatus(1, nameof(Submited).ToLowerInvariant());
+        public static OrderStatus AwaitingValidation = new OrderStatus(2, nameof(AwaitingValidation).ToLowerInvariant());
+        public static OrderStatus StockValidated = new OrderStatus(3, nameof(StockValidated).ToLowerInvariant());
+        public static OrderStatus Paid = new OrderStatus(4, nameof(Paid).ToLowerInvariant());
+        public static OrderStatus Shipped = new OrderStatus(5, nameof(Shipped).ToLowerInvariant());
+        public static OrderStatus Cancelled = new OrderStatus(6, nameof(Cancelled).ToLowerInvariant());
 
         protected OrderStatus()
         {
@@ -23,10 +26,8 @@
         {
         }
 
-        public static IEnumerable<OrderStatus> List()
-        {
-            return new[] { InProcess, Shipped, Canceled };
-        }
+        public static IEnumerable<OrderStatus> List() =>
+            new[] { Submited, AwaitingValidation, StockValidated, Paid, Shipped, Cancelled };
 
         public static OrderStatus FromName(string name)
         {
