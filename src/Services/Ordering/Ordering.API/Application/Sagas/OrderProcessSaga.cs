@@ -72,7 +72,7 @@ namespace Ordering.API.Application.Sagas
         /// has been completed and order has not been cancelled.
         /// If so, the process continues for validation. 
         /// </summary>
-        /// <param name="command">
+        /// <param name="event">
         /// Integration command message which is sent by a saga 
         /// scheduler which provides the sagas that its grace 
         /// period has completed.
@@ -91,10 +91,10 @@ namespace Ordering.API.Application.Sagas
                 var orderStockList = orderSaga.OrderItems
                     .Select(orderItem => new OrderStockItem(orderItem.ProductId, orderItem.GetUnits()));
 
-                //Create Integration Event to be published through the Event Bus
                 var confirmOrderStockEvent = new ConfirmOrderStockCommandMsg(orderSaga.Id, orderStockList);
 
-                // Publish through the Event Bus and mark the saved event as published
+                await _orderingIntegrationEventService.SaveEventAndOrderingContextChangesAsync(confirmOrderStockEvent);
+
                 await _orderingIntegrationEventService.PublishThroughEventBusAsync(confirmOrderStockEvent);
             }
         }

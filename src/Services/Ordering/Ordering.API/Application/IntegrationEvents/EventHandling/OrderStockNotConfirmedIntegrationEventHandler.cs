@@ -1,4 +1,6 @@
-﻿namespace Ordering.API.Application.IntegrationEvents.EventHandling
+﻿using System.Linq;
+
+namespace Ordering.API.Application.IntegrationEvents.EventHandling
 {
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
     using System;
@@ -27,14 +29,11 @@
             var order = await _orderRepository.GetAsync(@event.OrderId);
             CheckValidSagaId(order);
 
-            order.SetOrderStockConfirmed(false);
+            var orderStockNotConfirmedItems = @event.OrderStockItems
+                .FindAll(c => !c.Confirmed)
+                .Select(c => c.ProductId);
 
-            var orderStockNotConfirmedItems = @event.OrderStockItems.FindAll(c => !c.Confirmed); 
-
-            foreach (var orderStockNotConfirmedItem in orderStockNotConfirmedItems)
-            {
-                //TODO: Add messages
-            }
+            order.SetOrderStockConfirmed(orderStockNotConfirmedItems);
         }
 
         private void CheckValidSagaId(Order orderSaga)

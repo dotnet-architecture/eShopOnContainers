@@ -7,7 +7,8 @@
     using Ordering.API.Application.IntegrationCommands.Commands;
     using Ordering.Domain.Exceptions;
 
-    public class OrderStockConfirmedIntegrationEventHandler : IIntegrationEventHandler<OrderStockConfirmedIntegrationEvent>
+    public class OrderStockConfirmedIntegrationEventHandler : 
+        IIntegrationEventHandler<OrderStockConfirmedIntegrationEvent>
     {
         private readonly IOrderingIntegrationEventService _orderingIntegrationEventService;
         private readonly IOrderRepository _orderRepository;
@@ -25,7 +26,7 @@
             var order = await _orderRepository.GetAsync(@event.OrderId);
             CheckValidSagaId(order);
 
-            order.SetOrderStockConfirmed(true);
+            order.SetOrderStockConfirmed();
 
             //Create Integration Event to be published through the Event Bus
             var payOrderCommandMsg = new PayOrderCommandMsg(order.Id);
