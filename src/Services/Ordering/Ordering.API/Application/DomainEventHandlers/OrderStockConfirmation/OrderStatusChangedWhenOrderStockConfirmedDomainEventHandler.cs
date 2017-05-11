@@ -1,4 +1,6 @@
-﻿namespace Ordering.API.Application.DomainEventHandlers.OrderStartedEvent
+﻿using System.Linq;
+
+namespace Ordering.API.Application.DomainEventHandlers.OrderStartedEvent
 {
     using MediatR;
     using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
@@ -9,14 +11,14 @@
     using Ordering.API.Application.IntegrationCommands.Commands;
     using Ordering.API.Application.IntegrationEvents;
 
-    public class UpdateOrderWhenOrderStockMethodVerifiedDomainEventHandler
-                   : IAsyncNotificationHandler<OrderStockMethodVerifiedDomainEvent>
+    public class OrderStatusChangedWhenOrderStockConfirmedDomainEventHandler
+                   : IAsyncNotificationHandler<OrderStockConfirmedDomainEvent>
     {
         private readonly IOrderRepository _orderRepository;
         private readonly ILoggerFactory _logger;
         private readonly IOrderingIntegrationEventService _orderingIntegrationEventService;
 
-        public UpdateOrderWhenOrderStockMethodVerifiedDomainEventHandler(
+        public OrderStatusChangedWhenOrderStockConfirmedDomainEventHandler(
             IOrderRepository orderRepository, ILoggerFactory logger,
             IOrderingIntegrationEventService orderingIntegrationEventService)
         {
@@ -25,23 +27,18 @@
             _orderingIntegrationEventService = orderingIntegrationEventService;
         }
 
-        public async Task Handle(OrderStockMethodVerifiedDomainEvent orderStockMethodVerifiedDomainEvent)
+        public async Task Handle(OrderStockConfirmedDomainEvent orderStockMethodVerifiedDomainEvent)
         {
-            var orderToUpdate = await _orderRepository.GetAsync(orderStockMethodVerifiedDomainEvent.OrderId);
-            orderToUpdate.SetOrderStatusId(orderStockMethodVerifiedDomainEvent.OrderStatus.Id);
-                             
-            _orderRepository.Update(orderToUpdate);
-
-            await _orderRepository.UnitOfWork
-                .SaveEntitiesAsync();
-
-            _logger.CreateLogger(nameof(UpdateOrderWhenOrderStockMethodVerifiedDomainEventHandler))
+            _logger.CreateLogger(nameof(OrderStatusChangedWhenOrderStockConfirmedDomainEventHandler))
                 .LogTrace($"Order with Id: {orderStockMethodVerifiedDomainEvent.OrderId} has been successfully updated with " +
                           $"a status order id: { orderStockMethodVerifiedDomainEvent.OrderStatus.Id }");
 
-            var payOrderCommandMsg = new PayOrderCommandMsg(orderToUpdate.Id);
-            await _orderingIntegrationEventService.SaveEventAndOrderingContextChangesAsync(payOrderCommandMsg);
-            await _orderingIntegrationEventService.PublishThroughEventBusAsync(payOrderCommandMsg);
+            if (orderStockMethodVerifiedDomainEvent.OrderStatus == OrderStatus.StockValidated)
+            {
+                var payOrderCommandMsg = new PayOrderCommandMsg(orderStockMethodVerifiedDomainEvent.OrderId);
+                await _orderingIntegrationEventService.SaveEventAndOrderingContextChangesAsync(payOrderCommandMsg);
+                await _orderingIntegrationEventService.PublishThroughEventBusAsync(payOrderCommandMsg);
+            }
         }
     }  
 }
