@@ -80,8 +80,6 @@ namespace SagaManager
             var container = new ContainerBuilder();
             container.Populate(services);
             return new AutofacServiceProvider(container.Build());
-
-            return services.BuildServiceProvider();
         }
 
         public static void Configure(ILoggerFactory loggerFactory)

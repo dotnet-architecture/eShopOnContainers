@@ -1,6 +1,4 @@
-﻿using MediatR;
-using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.BuyerAggregate;
-using Microsoft.eShopOnContainers.Services.Ordering.Domain.Seedwork;
+﻿using Microsoft.eShopOnContainers.Services.Ordering.Domain.Seedwork;
 using Ordering.Domain.Events;
 using System;
 using System.Collections.Generic;
@@ -23,6 +21,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
         public OrderStatus OrderStatus { get; private set; }
         private int _orderStatusId;
 
+        private string _description;
 
         // DDD Patterns comment
         // Using a private collection field, better for DDD Aggregate's encapsulation
@@ -99,17 +98,25 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
             _orderStatusId = id;
         }
 
-        public void SetOrderStockConfirmed(bool confirmed)
+        public void SetOrderStockConfirmed(IEnumerable<int> orderStockNotConfirmedItems = null)
         {
-            if(confirmed)
+            if(orderStockNotConfirmedItems is null)
             {
                 OrderStatus = OrderStatus.StockValidated;
-                AddDomainEvent(new OrderStockMethodVerifiedDomainEvent(Id, OrderStatus.StockValidated));
+                _description = "All the items were confirmed with available stock.";
+                //AddDomainEvent(new OrderStockMethodVerifiedDomainEvent(Id, OrderStatus.StockValidated));
             }
             else
             {
+                var itemsStockNotConfirmedProductNames = OrderItems
+                    .Where(c => orderStockNotConfirmedItems.Contains(c.ProductId))
+                    .Select(c => c.GetOrderItemProductName());
+
+                var itemsStockNotConfirmedDescription = string.Join(", ", itemsStockNotConfirmedProductNames);
+
                 OrderStatus = OrderStatus.Cancelled;
-                AddDomainEvent(new OrderStockMethodVerifiedDomainEvent(Id, OrderStatus.Cancelled));
+                _description = $"The product items don't have stock: ({itemsStockNotConfirmedDescription}).";
+                //AddDomainEvent(new OrderStockMethodVerifiedDomainEvent(Id, OrderStatus.Cancelled));
             }
         }
 
@@ -124,3 +131,4 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
         }
     }
 }
+
