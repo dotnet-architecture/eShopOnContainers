@@ -98,6 +98,8 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
 
         public BasketDTO MapOrderToBasket(Order order)
         {
+            order.CardExpirationApiFormat();
+
             return new BasketDTO()
             {
                 City = order.City,
@@ -109,7 +111,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
                 CardHolderName = order.CardHolderName,
                 CardExpiration = order.CardExpiration,
                 CardSecurityNumber = order.CardSecurityNumber,
-                CardTypeId = order.CardTypeId,
+                CardTypeId = 1,
                 Buyer = order.Buyer,
                 RequestId = order.RequestId
             };

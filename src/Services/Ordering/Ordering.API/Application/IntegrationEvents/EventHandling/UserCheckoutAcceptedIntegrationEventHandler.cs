@@ -14,7 +14,6 @@ namespace Ordering.API.Application.IntegrationEvents.EventHandling
         private readonly ILoggerFactory _logger;
 
         public UserCheckoutAcceptedIntegrationEventHandler(IMediator mediator,
-            IOrderingIntegrationEventService orderingIntegrationEventService,
             ILoggerFactory logger)
         {
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
@@ -35,7 +34,7 @@ namespace Ordering.API.Application.IntegrationEvents.EventHandling
             var result = false;
             if (eventMsg.RequestId != Guid.Empty)
             {
-                var createOrderCommand = new CreateOrderCommand(eventMsg.Basket.Items, eventMsg.City, eventMsg.Street, 
+                var createOrderCommand = new CreateOrderCommand(eventMsg.Basket.Items, eventMsg.UserId, eventMsg.City, eventMsg.Street, 
                     eventMsg.State, eventMsg.Country, eventMsg.ZipCode,
                     eventMsg.CardNumber, eventMsg.CardHolderName, eventMsg.CardExpiration,
                     eventMsg.CardSecurityNumber, eventMsg.CardTypeId);
