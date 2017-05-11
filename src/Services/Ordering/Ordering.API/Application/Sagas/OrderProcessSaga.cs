@@ -28,7 +28,6 @@ namespace Ordering.API.Application.Sagas
     /// with the validations.
     /// </summary>
     public class OrderProcessSaga : Saga<Order>,
-        IIntegrationEventHandler<UserCheckoutAcceptedIntegrationEvent>,
         IIntegrationEventHandler<ConfirmGracePeriodCommandMsg>,
         IAsyncRequestHandler<CancelOrderCommand, bool>
     {
@@ -44,29 +43,7 @@ namespace Ordering.API.Application.Sagas
             _dbContextFactory = dbContextFactory;
             _mediator = mediator;
             _orderingIntegrationEventService = orderingIntegrationEventService;
-        }
-
-        /// <summary>
-        /// Command handler which starts the create order process
-        /// and initializes the saga
-        /// </summary>
-        /// <param name="command">
-        /// Integration command message which is sent by the
-        /// basket.api once it has successfully process the 
-        /// order items.
-        /// </param>
-        /// <returns></returns>
-        public async Task Handle(UserCheckoutAcceptedIntegrationEvent command)
-        {
-
-            var commanda = command; 
-
-            // TODO: This handler should change to Integration command handler type once command bus is implemented
-
-            // TODO: Send createOrder Command
-
-            // TODO: Set saga timeout            
-        }
+        }        
 
         /// <summary>
         /// Command handler which confirms that the grace period
