@@ -176,17 +176,13 @@
         {
             var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
 
-            eventBus.Subscribe<UserCheckoutAcceptedIntegrationEvent,IIntegrationEventHandler<UserCheckoutAcceptedIntegrationEvent>>(
-                () => app.ApplicationServices.GetRequiredService<IIntegrationEventHandler<UserCheckoutAcceptedIntegrationEvent>>());
+            eventBus.Subscribe<UserCheckoutAcceptedIntegrationEvent,IIntegrationEventHandler<UserCheckoutAcceptedIntegrationEvent>>();
 
-            eventBus.Subscribe<ConfirmGracePeriodCommandMsg, IIntegrationEventHandler<ConfirmGracePeriodCommandMsg>>
-                (() => app.ApplicationServices.GetRequiredService<IIntegrationEventHandler<ConfirmGracePeriodCommandMsg>>());
+            eventBus.Subscribe<ConfirmGracePeriodCommandMsg, IIntegrationEventHandler<ConfirmGracePeriodCommandMsg>>();
 
-            eventBus.Subscribe<OrderStockConfirmedIntegrationEvent, OrderStockConfirmedIntegrationEventHandler>
-                (() => app.ApplicationServices.GetRequiredService<OrderStockConfirmedIntegrationEventHandler>());
+            eventBus.Subscribe<OrderStockConfirmedIntegrationEvent, OrderStockConfirmedIntegrationEventHandler>();
 
-            eventBus.Subscribe<OrderStockNotConfirmedIntegrationEvent, OrderStockNotConfirmedIntegrationEventHandler>
-                (() => app.ApplicationServices.GetRequiredService<OrderStockNotConfirmedIntegrationEventHandler>());
+            eventBus.Subscribe<OrderStockNotConfirmedIntegrationEvent, OrderStockNotConfirmedIntegrationEventHandler>();
         }
 
         protected virtual void ConfigureAuth(IApplicationBuilder app)
