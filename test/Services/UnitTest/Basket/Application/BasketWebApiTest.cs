@@ -1,4 +1,5 @@
 ﻿using Basket.API.IntegrationEvents.Events;
+using Basket.API.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
 using Microsoft.eShopOnContainers.Services.Basket.API.Controllers;
@@ -35,7 +36,7 @@ namespace UnitTest.Basket.Application
                 .Returns(Task.FromResult(fakeCustomerBasket));
             _identityServiceMock.Setup(x => x.GetUserIdentity()).Returns(fakeCustomerId);
 
-            _serviceBusMock.Setup(x => x.Publish(It.IsAny<UserCheckoutAccepted>()));
+            _serviceBusMock.Setup(x => x.Publish(It.IsAny<UserCheckoutAcceptedIntegrationEvent>()));
             //Act
             var basketController = new BasketController(
                 _basketRepositoryMock.Object, _identityServiceMock.Object, _serviceBusMock.Object);
@@ -56,7 +57,7 @@ namespace UnitTest.Basket.Application
             _basketRepositoryMock.Setup(x => x.UpdateBasketAsync(It.IsAny<CustomerBasket>()))
                 .Returns(Task.FromResult(fakeCustomerBasket));
             _identityServiceMock.Setup(x => x.GetUserIdentity()).Returns(fakeCustomerId);
-            _serviceBusMock.Setup(x => x.Publish(It.IsAny<UserCheckoutAccepted>()));
+            _serviceBusMock.Setup(x => x.Publish(It.IsAny<UserCheckoutAcceptedIntegrationEvent>()));
             //Act
             var basketController = new BasketController(
                 _basketRepositoryMock.Object, _identityServiceMock.Object, _serviceBusMock.Object);
@@ -79,7 +80,7 @@ namespace UnitTest.Basket.Application
             var basketController = new BasketController(
                 _basketRepositoryMock.Object, _identityServiceMock.Object, _serviceBusMock.Object);
 
-            var result = await basketController.Checkout() as BadRequestResult;
+            var result = await basketController.Checkout(new BasketCheckout()) as BadRequestResult;
             Assert.NotNull(result);
         }
 
@@ -95,8 +96,8 @@ namespace UnitTest.Basket.Application
             var basketController = new BasketController(
                 _basketRepositoryMock.Object, _identityServiceMock.Object, _serviceBusMock.Object);
 
-            var result = await basketController.Checkout() as AcceptedResult;
-            _serviceBusMock.Verify(mock => mock.Publish(It.IsAny<UserCheckoutAccepted>()), Times.Once);
+            var result = await basketController.Checkout(new BasketCheckout()) as AcceptedResult;
+            _serviceBusMock.Verify(mock => mock.Publish(It.IsAny<UserCheckoutAcceptedIntegrationEvent>()), Times.Once);
             Assert.NotNull(result);
         }
 

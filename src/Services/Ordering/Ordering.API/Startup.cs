@@ -4,7 +4,7 @@
     using Autofac;
     using Autofac.Extensions.DependencyInjection;
     using global::Ordering.API.Application.IntegrationEvents;
-    using global::Ordering.API.Application.IntegrationEvents.EventHandling;
+    using global::Ordering.API.Application.IntegrationEvents.Events;
     using global::Ordering.API.Infrastructure.Middlewares;
     using Infrastructure;
     using Infrastructure.Auth;
@@ -124,7 +124,7 @@
 
             services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
             services.AddSingleton<IEventBus, EventBusRabbitMQ>();
-            services.AddTransient<UserCheckoutAcceptedIntegrationEventHandler>();
+            //services.AddTransient<UserCheckoutAcceptedIntegrationEventHandler>();
             services.AddOptions();
 
             //configure autofac
@@ -168,9 +168,9 @@
         private void ConfigureEventBus(IApplicationBuilder app)
         {
             var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
-            eventBus.SubscribeDynamic(
-                "UserCheckoutAccepted",
-                () => app.ApplicationServices.GetRequiredService<UserCheckoutAcceptedIntegrationEventHandler>());
+
+            eventBus.Subscribe<UserCheckoutAcceptedIntegrationEvent,IIntegrationEventHandler<UserCheckoutAcceptedIntegrationEvent>>(
+                () => app.ApplicationServices.GetRequiredService<IIntegrationEventHandler<UserCheckoutAcceptedIntegrationEvent>>());
 
         }
 

@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using WebMVC.Infrastructure;
+using WebMVC.Models;
 
 namespace Microsoft.eShopOnContainers.WebMVC.Services
 {
@@ -52,6 +53,16 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
             response.EnsureSuccessStatusCode();
 
             return basket;
+        }
+
+        public async Task Checkout(BasketDTO basket)
+        {
+            var token = await GetUserTokenAsync();
+            var updateBasketUri = API.Basket.CheckoutBasket(_remoteServiceBaseUrl);
+
+            var response = await _apiClient.PutAsync(updateBasketUri, basket, token);
+
+            response.EnsureSuccessStatusCode();
         }
 
         public async Task<Basket> SetQuantities(ApplicationUser user, Dictionary<string, int> quantities)
