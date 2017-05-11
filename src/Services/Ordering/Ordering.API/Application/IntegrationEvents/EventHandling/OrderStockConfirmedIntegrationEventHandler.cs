@@ -10,14 +10,11 @@
     public class OrderStockConfirmedIntegrationEventHandler : 
         IIntegrationEventHandler<OrderStockConfirmedIntegrationEvent>
     {
-        private readonly IOrderingIntegrationEventService _orderingIntegrationEventService;
         private readonly IOrderRepository _orderRepository;
 
-        public OrderStockConfirmedIntegrationEventHandler(IOrderRepository orderRepository,
-            IOrderingIntegrationEventService orderingIntegrationEventService)
+        public OrderStockConfirmedIntegrationEventHandler(IOrderRepository orderRepository)
         {
             _orderRepository = orderRepository;
-            _orderingIntegrationEventService = orderingIntegrationEventService;
         }
 
         public async Task Handle(OrderStockConfirmedIntegrationEvent @event)
