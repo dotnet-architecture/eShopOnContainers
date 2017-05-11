@@ -19,6 +19,8 @@ using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.HealthChecks;
 using Identity.API.Certificate;
+using Autofac.Extensions.DependencyInjection;
+using Autofac;
 
 namespace eShopOnContainers.Identity
 {
@@ -44,7 +46,7 @@ namespace eShopOnContainers.Identity
         public IConfigurationRoot Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {            
 
             // Add framework services.
@@ -87,7 +89,11 @@ namespace eShopOnContainers.Identity
                 .AddInMemoryIdentityResources(Config.GetResources())
                 .AddInMemoryClients(Config.GetClients(clientUrls))
                 .AddAspNetIdentity<ApplicationUser>()
-                .Services.AddTransient<IProfileService, ProfileService>(); 
+                .Services.AddTransient<IProfileService, ProfileService>();
+
+            var container = new ContainerBuilder();
+            container.Populate(services);
+            return new AutofacServiceProvider(container.Build());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
