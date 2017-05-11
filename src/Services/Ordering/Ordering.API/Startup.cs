@@ -129,7 +129,7 @@
             services.AddSingleton<IEventBus, EventBusRabbitMQ>();
 
             services.AddTransient<UserCheckoutAcceptedIntegrationEventHandler>();
-            services.AddTransient<IIntegrationEventHandler<ConfirmGracePeriodCommandMsg>, OrderProcessSaga>();
+            services.AddTransient<OrderProcessSaga>();
             services.AddTransient<OrderStockConfirmedIntegrationEventHandler>();
             services.AddTransient<OrderStockNotConfirmedIntegrationEventHandler>();
             services.AddOptions();
@@ -156,14 +156,13 @@
             app.UseFailingMiddleware();
 
             ConfigureAuth(app);
-            ConfigureEventBus(app);
-
             app.UseMvcWithDefaultRoute();
 
             app.UseSwagger()
                 .UseSwaggerUi();
 
             OrderingContextSeed.SeedAsync(app).Wait();
+            ConfigureEventBus(app);
 
             var integrationEventLogContext = new IntegrationEventLogContext(
                 new DbContextOptionsBuilder<IntegrationEventLogContext>()
@@ -176,18 +175,11 @@
         private void ConfigureEventBus(IApplicationBuilder app)
         {
             var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
-            eventBus.SubscribeDynamic(
-                "UserCheckoutAccepted",
-                () => app.ApplicationServices.GetRequiredService<UserCheckoutAcceptedIntegrationEventHandler>());
+            eventBus.SubscribeDynamic<UserCheckoutAcceptedIntegrationEventHandler>("UserCheckoutAccepted");
 
-            eventBus.Subscribe<ConfirmGracePeriodCommandMsg, IIntegrationEventHandler<ConfirmGracePeriodCommandMsg>>
-                (() => app.ApplicationServices.GetRequiredService<IIntegrationEventHandler<ConfirmGracePeriodCommandMsg>>());
-
-            eventBus.Subscribe<OrderStockConfirmedIntegrationEvent, OrderStockConfirmedIntegrationEventHandler>
-                (() => app.ApplicationServices.GetRequiredService<OrderStockConfirmedIntegrationEventHandler>());
-
-            eventBus.Subscribe<OrderStockNotConfirmedIntegrationEvent, OrderStockNotConfirmedIntegrationEventHandler>
-                (() => app.ApplicationServices.GetRequiredService<OrderStockNotConfirmedIntegrationEventHandler>());
+            eventBus.Subscribe<ConfirmGracePeriodCommandMsg, OrderProcessSaga>();
+            eventBus.Subscribe<OrderStockConfirmedIntegrationEvent, OrderStockConfirmedIntegrationEventHandler>();
+            eventBus.Subscribe<OrderStockNotConfirmedIntegrationEvent, OrderStockNotConfirmedIntegrationEventHandler>();
         }
 
         protected virtual void ConfigureAuth(IApplicationBuilder app)

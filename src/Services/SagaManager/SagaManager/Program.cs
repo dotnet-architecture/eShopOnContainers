@@ -16,7 +16,8 @@ namespace SagaManager
     using Microsoft.Extensions.Options;
     using RabbitMQ.Client;
     using Services;
- 
+    using Autofac.Extensions.DependencyInjection;
+    using Autofac;
 
     public class Program
     {
@@ -75,6 +76,10 @@ namespace SagaManager
                 .AddSingleton<IEventBus, EventBusRabbitMQ>();
 
                 RegisterServiceBus(services);
+
+            var container = new ContainerBuilder();
+            container.Populate(services);
+            return new AutofacServiceProvider(container.Build());
 
             return services.BuildServiceProvider();
         }
