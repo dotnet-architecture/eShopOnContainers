@@ -7,6 +7,7 @@ using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF.Utilities
 using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure;
 using System;
 using System.Data.Common;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace Ordering.API.Application.IntegrationEvents

@@ -1,5 +1,7 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Catalog.API
 {
+    using Autofac;
+    using Autofac.Extensions.DependencyInjection;
     using global::Catalog.API.Infrastructure.Filters;
     using global::Catalog.API.IntegrationEvents;
     using Microsoft.AspNetCore.Builder;
@@ -44,7 +46,7 @@
             Configuration = builder.Build();
         }
 
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
 
@@ -118,6 +120,10 @@
 
             services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
             services.AddSingleton<IEventBus, EventBusRabbitMQ>();
+
+            var container = new ContainerBuilder();
+            container.Populate(services);
+            return new AutofacServiceProvider(container.Build());
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)

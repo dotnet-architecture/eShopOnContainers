@@ -156,14 +156,13 @@
             app.UseFailingMiddleware();
 
             ConfigureAuth(app);
-            ConfigureEventBus(app);
-
             app.UseMvcWithDefaultRoute();
 
             app.UseSwagger()
                 .UseSwaggerUi();
 
             OrderingContextSeed.SeedAsync(app).Wait();
+            ConfigureEventBus(app);
 
             var integrationEventLogContext = new IntegrationEventLogContext(
                 new DbContextOptionsBuilder<IntegrationEventLogContext>()
