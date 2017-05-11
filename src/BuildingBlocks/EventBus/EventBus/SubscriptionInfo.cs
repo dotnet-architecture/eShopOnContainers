@@ -7,21 +7,21 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBus
         public class SubscriptionInfo
         {
             public bool IsDynamic { get; }
-            public Delegate Factory { get; }
+            public Type HandlerType{ get; }
 
-            private SubscriptionInfo(bool isDynamic, Delegate factory)
+            private SubscriptionInfo(bool isDynamic, Type handlerType)
             {
                 IsDynamic = isDynamic;
-                Factory = factory;
+                HandlerType = handlerType;
             }
 
-            public static SubscriptionInfo Dynamic(Delegate factory)
+            public static SubscriptionInfo Dynamic(Type handlerType)
             {
-                return new SubscriptionInfo(true, factory);
+                return new SubscriptionInfo(true, handlerType);
             }
-            public static SubscriptionInfo Typed(Delegate factory)
+            public static SubscriptionInfo Typed(Type handlerType)
             {
-                return new SubscriptionInfo(false, factory);
+                return new SubscriptionInfo(false, handlerType);
             }
         }
     }
