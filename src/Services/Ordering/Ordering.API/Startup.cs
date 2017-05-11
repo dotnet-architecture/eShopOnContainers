@@ -31,6 +31,7 @@
     using System;
     using System.Data.Common;
     using System.Reflection;
+    using global::Ordering.API.Application.IntegrationEvents.EventHandling;
 
     public class Startup
     {
@@ -127,7 +128,7 @@
 
             services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
             services.AddSingleton<IEventBus, EventBusRabbitMQ>();
-            //services.AddTransient<UserCheckoutAcceptedIntegrationEventHandler>();
+            services.AddTransient<IIntegrationEventHandler, UserCheckoutAcceptedIntegrationEventHandler>();
             services.AddTransient<IIntegrationEventHandler<ConfirmGracePeriodCommandMsg>, OrderProcessSaga>();
             services.AddTransient<OrderStockConfirmedIntegrationEventHandler>();
             services.AddTransient<OrderStockNotConfirmedIntegrationEventHandler>();

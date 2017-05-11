@@ -80,7 +80,6 @@
 
   <ItemGroup>
     <Folder Include="Application\IntegrationCommands\CommandHandlers\" />
-    <Folder Include="Application\IntegrationEvents\EventHandling\" />
     <Folder Include="Infrastructure\IntegrationEventMigrations\" />
   </ItemGroup>
 
