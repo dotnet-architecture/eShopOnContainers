@@ -36,12 +36,9 @@ namespace Ordering.API.Application.DomainEventHandlers.BuyerAndPaymentMethodVeri
                                     
             var orderStartedIntegrationEvent = new OrderStartedIntegrationEvent(buyerPaymentMethodVerifiedEvent.Buyer.IdentityGuid);
 
-            // Using a local transaction to achieve atomicity between original Ordering database operation and 
-            // the IntegrationEventLog. Only saving event if order has been successfully persisted to db
             await _orderingIntegrationEventService
                 .SaveEventAndOrderingContextChangesAsync(orderStartedIntegrationEvent);
 
-            // Publish ordering integration event and mark it as published
             await _orderingIntegrationEventService
                 .PublishThroughEventBusAsync(orderStartedIntegrationEvent);
 
