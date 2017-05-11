@@ -42,7 +42,7 @@
             // methods and constructor so validations, invariants and business logic 
             // make sure that consistency is preserved across the whole aggregate
             var address = new Address(message.Street, message.City, message.State, message.Country, message.ZipCode);
-            var order = new Order(address , message.CardTypeId, message.CardNumber, message.CardSecurityNumber, message.CardHolderName, message.CardExpiration);
+            var order = new Order(message.UserId, address, message.CardTypeId, message.CardNumber, message.CardSecurityNumber, message.CardHolderName, message.CardExpiration);
             order.SetOrderStatusId(OrderStatus.Submited.Id);
             foreach (var item in message.OrderItems)
             {

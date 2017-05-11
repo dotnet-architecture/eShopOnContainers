@@ -40,7 +40,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
 
         protected Order() { _orderItems = new List<OrderItem>(); }
 
-        public Order(Address address, int cardTypeId, string cardNumber, string cardSecurityNumber,
+        public Order(string userId, Address address, int cardTypeId, string cardNumber, string cardSecurityNumber,
                 string cardHolderName, DateTime cardExpiration, int? buyerId = null, int? paymentMethodId = null)
         {
             _orderItems = new List<OrderItem>();
@@ -52,7 +52,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
 
             // Add the OrderStarterDomainEvent to the domain events collection 
             // to be raised/dispatched when comitting changes into the Database [ After DbContext.SaveChanges() ]
-            AddOrderStartedDomainEvent(cardTypeId, cardNumber,
+            AddOrderStartedDomainEvent(userId, cardTypeId, cardNumber,
                                        cardSecurityNumber, cardHolderName, cardExpiration);
         }
 
@@ -113,11 +113,11 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
             }
         }
 
-        private void AddOrderStartedDomainEvent(int cardTypeId, string cardNumber,
+        private void AddOrderStartedDomainEvent(string userId, int cardTypeId, string cardNumber,
                 string cardSecurityNumber, string cardHolderName, DateTime cardExpiration)
         {
             var orderStartedDomainEvent = new OrderStartedDomainEvent(
-                this, cardTypeId, cardNumber, cardSecurityNumber,
+                this, userId, cardTypeId, cardNumber, cardSecurityNumber,
                 cardHolderName, cardExpiration);
 
             this.AddDomainEvent(orderStartedDomainEvent);
