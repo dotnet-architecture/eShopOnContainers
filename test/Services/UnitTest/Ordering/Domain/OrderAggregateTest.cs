@@ -110,7 +110,7 @@ public class OrderAggregateTest
         var expectedResult = 1;
 
         //Act 
-        var fakeOrder = new Order(new Address(street, city, state, country, zipcode), cardTypeId, cardNumber, cardSecurityNumber, cardHolderName, cardExpiration);
+        var fakeOrder = new Order("1", new Address(street, city, state, country, zipcode), cardTypeId, cardNumber, cardSecurityNumber, cardHolderName, cardExpiration);
 
         //Assert
         Assert.Equal(fakeOrder.DomainEvents.Count, expectedResult);
@@ -133,8 +133,8 @@ public class OrderAggregateTest
         var expectedResult = 2;
 
         //Act 
-        var fakeOrder = new Order(new Address(street, city, state, country, zipcode), cardTypeId, cardNumber, cardSecurityNumber, cardHolderName, cardExpiration);
-        fakeOrder.AddDomainEvent(new OrderStartedDomainEvent(fakeOrder,cardTypeId,cardNumber,cardSecurityNumber,cardHolderName,cardExpiration));
+        var fakeOrder = new Order("1", new Address(street, city, state, country, zipcode), cardTypeId, cardNumber, cardSecurityNumber, cardHolderName, cardExpiration);
+        fakeOrder.AddDomainEvent(new OrderStartedDomainEvent(fakeOrder, "1", cardTypeId,cardNumber,cardSecurityNumber,cardHolderName,cardExpiration));
         //Assert
         Assert.Equal(fakeOrder.DomainEvents.Count, expectedResult);
     }
@@ -153,8 +153,8 @@ public class OrderAggregateTest
         var cardSecurityNumber = "123";
         var cardHolderName = "FakeName";
         var cardExpiration = DateTime.Now.AddYears(1);
-        var fakeOrder = new Order(new Address(street, city, state, country, zipcode), cardTypeId, cardNumber, cardSecurityNumber, cardHolderName, cardExpiration);
-        var @fakeEvent = new OrderStartedDomainEvent(fakeOrder, cardTypeId, cardNumber, cardSecurityNumber, cardHolderName, cardExpiration);
+        var fakeOrder = new Order("1", new Address(street, city, state, country, zipcode), cardTypeId, cardNumber, cardSecurityNumber, cardHolderName, cardExpiration);
+        var @fakeEvent = new OrderStartedDomainEvent(fakeOrder, "1", cardTypeId, cardNumber, cardSecurityNumber, cardHolderName, cardExpiration);
         var expectedResult = 1;
 
         //Act         

@@ -61,6 +61,9 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
                 value.State, value.Country, value.ZipCode, value.CardNumber, value.CardHolderName,
                 value.CardExpiration, value.CardSecurityNumber, value.CardTypeId, value.Buyer, value.RequestId, basket);
 
+            // Once basket is checkout, sends an integration event to
+            // ordering.api to convert basket to order and proceeds with
+            // order creation process
             _eventBus.Publish(eventMessage);
 
             if (basket == null)

@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace UnitTest.Ordering.Application
 {
+    using global::Ordering.API.Application.Models;
     using MediatR;
     using System.Collections;
     using System.Collections.Generic;
@@ -66,13 +67,14 @@ namespace UnitTest.Ordering.Application
 
         private Order FakeOrder()
         {
-            return new Order(new Address("street", "city", "state", "country", "zipcode"), 1, "12", "111", "fakeName", DateTime.Now.AddYears(1));
+            return new Order("1", new Address("street", "city", "state", "country", "zipcode"), 1, "12", "111", "fakeName", DateTime.Now.AddYears(1));
         }
 
         private CreateOrderCommand FakeOrderRequestWithBuyer(Dictionary<string, object> args = null)
         {
             return new CreateOrderCommand(
-                null,
+                new List<BasketItem>(),
+                userId: args != null && args.ContainsKey("userId") ? (string)args["userId"] : null,
                 city: args != null && args.ContainsKey("city") ? (string)args["city"] : null,
                 street: args != null && args.ContainsKey("street") ? (string)args["street"] : null,
                 state: args != null && args.ContainsKey("state") ? (string)args["state"] : null,
