@@ -88,7 +88,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands
             var result = new List<OrderItemDTO>();
             basketItems.ForEach((item) => {
                 result.Add(new OrderItemDTO() {
-                    ProductId = int.TryParse(item.Id, out int id) ? id : -1,
+                    ProductId = int.TryParse(item.ProductId, out int id) ? id : -1,
                     ProductName = item.ProductName,
                     PictureUrl = item.PictureUrl,
                     UnitPrice = item.UnitPrice,

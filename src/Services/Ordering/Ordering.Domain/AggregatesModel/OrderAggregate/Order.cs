@@ -120,6 +120,11 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
             }
         }
 
+        public int GetOrderStatusId()
+        {
+            return _orderStatusId;
+        }
+
         private void AddOrderStartedDomainEvent(string userId, int cardTypeId, string cardNumber,
                 string cardSecurityNumber, string cardHolderName, DateTime cardExpiration)
         {

@@ -4,6 +4,7 @@ using System.Text;
 
 namespace UnitTest.Ordering.Application
 {
+    using global::Ordering.API.Application.Models;
     using MediatR;
     using Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands;
     using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Idempotency;
@@ -70,7 +71,8 @@ namespace UnitTest.Ordering.Application
         private CreateOrderCommand FakeOrderRequest(Dictionary<string, object> args = null)
         {
             return new CreateOrderCommand(
-                null,
+                new List<BasketItem>(),
+                userId: args != null && args.ContainsKey("userId") ? (string)args["userId"] : null,
                 city: args != null && args.ContainsKey("city") ? (string)args["city"] : null,
                 street: args != null && args.ContainsKey("street") ? (string)args["street"] : null,
                 state: args != null && args.ContainsKey("state") ? (string)args["state"] : null,
