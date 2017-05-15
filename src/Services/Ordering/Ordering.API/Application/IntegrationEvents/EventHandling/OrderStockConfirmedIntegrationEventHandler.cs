@@ -22,7 +22,7 @@
             var order = await _orderRepository.GetAsync(@event.OrderId);
             CheckValidSagaId(order);
 
-            order.SetOrderStockConfirmed();
+            order.SetStockConfirmedStatus();
         }
 
         private void CheckValidSagaId(Order orderSaga)
