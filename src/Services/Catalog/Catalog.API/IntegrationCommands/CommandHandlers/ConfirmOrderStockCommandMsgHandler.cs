@@ -1,4 +1,4 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationEvents.EventHandling
+﻿namespace Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationCommands.CommandHandlers
 {
     using BuildingBlocks.EventBus.Abstractions;
     using System.Threading.Tasks;
@@ -9,21 +9,22 @@
     using global::Catalog.API.Infrastructure.Exceptions;
     using global::Catalog.API.IntegrationEvents;
     using Model;
-    using Events;
+    using Commands;
+    using IntegrationEvents.Events;
 
-    public class ConfirmOrderStockIntegrationEventHandler : IIntegrationEventHandler<ConfirmOrderStockIntegrationEvent>
+    public class ConfirmOrderStockCommandMsgHandler : IIntegrationEventHandler<ConfirmOrderStockCommandMsg>
     {
         private readonly CatalogContext _catalogContext;
         private readonly ICatalogIntegrationEventService _catalogIntegrationEventService;
 
-        public ConfirmOrderStockIntegrationEventHandler(CatalogContext catalogContext,
+        public ConfirmOrderStockCommandMsgHandler(CatalogContext catalogContext,
             ICatalogIntegrationEventService catalogIntegrationEventService)
         {
             _catalogContext = catalogContext;
             _catalogIntegrationEventService = catalogIntegrationEventService;
         }
 
-        public async Task Handle(ConfirmOrderStockIntegrationEvent @event)
+        public async Task Handle(ConfirmOrderStockCommandMsg @event)
         {
             var confirmedOrderStockItems = new List<ConfirmedOrderStockItem>();
 
@@ -38,15 +39,11 @@
                 confirmedOrderStockItems.Add(confirmedOrderStockItem);
             }
 
-            //Create Integration Event to be published through the Event Bus
             var confirmedIntegrationEvent = confirmedOrderStockItems.Any(c => !c.Confirmed)
                 ? (IntegrationEvent) new OrderStockNotConfirmedIntegrationEvent(@event.OrderId, confirmedOrderStockItems)
                 : new OrderStockConfirmedIntegrationEvent(@event.OrderId);
 
-            // Achieving atomicity between original Catalog database operation and the IntegrationEventLog thanks to a local transaction
             await _catalogIntegrationEventService.SaveEventAndCatalogContextChangesAsync(confirmedIntegrationEvent);
-
-            // Publish through the Event Bus and mark the saved event as published
             await _catalogIntegrationEventService.PublishThroughEventBusAsync(confirmedIntegrationEvent);
         }
 
