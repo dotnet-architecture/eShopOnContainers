@@ -71,6 +71,7 @@ namespace UnitTest.Ordering.Application
         {
             return new CreateOrderCommand(
                 null,
+                userId: args != null && args.ContainsKey("userId") ? (string)args["userId"] : null,
                 city: args != null && args.ContainsKey("city") ? (string)args["city"] : null,
                 street: args != null && args.ContainsKey("street") ? (string)args["street"] : null,
                 state: args != null && args.ContainsKey("state") ? (string)args["state"] : null,
