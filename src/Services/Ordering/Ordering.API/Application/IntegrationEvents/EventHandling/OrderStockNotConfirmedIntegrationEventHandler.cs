@@ -28,7 +28,7 @@ namespace Ordering.API.Application.IntegrationEvents.EventHandling
                 .FindAll(c => !c.Confirmed)
                 .Select(c => c.ProductId);
 
-            orderToUpdate.SetOrderStockConfirmed(orderStockNotConfirmedItems);
+            orderToUpdate.SetStockConfirmedStatus(orderStockNotConfirmedItems);
         }
 
         private void CheckValidSagaId(Order orderSaga)

@@ -7,15 +7,11 @@ using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure;
 using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Idempotency;
 using Ordering.API.Application.Commands;
 using Ordering.API.Application.IntegrationCommands.Commands;
-using Ordering.API.Application.IntegrationEvents.Events;
 using Ordering.Domain.Exceptions;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 using Ordering.API.Application.IntegrationEvents;
-using Ordering.API.Application.IntegrationEvents.Events;
 
 namespace Ordering.API.Application.Sagas
 {
@@ -27,7 +23,7 @@ namespace Ordering.API.Application.Sagas
     /// the opportunity to cancel the order before proceeding
     /// with the validations.
     /// </summary>
-    public class OrderProcessSaga : Saga<Order>,
+    public class OrderProcessSaga : OrderSaga,
         IIntegrationEventHandler<ConfirmGracePeriodCommandMsg>,
         IAsyncRequestHandler<CancelOrderCommand, bool>
     {
@@ -63,17 +59,9 @@ namespace Ordering.API.Application.Sagas
 
             if (orderSaga.OrderStatus != OrderStatus.Cancelled)
             {
-                orderSaga.SetOrderStatusId(OrderStatus.AwaitingValidation.Id);
+                orderSaga.SetAwaitingValidationStatus();
+
                 await SaveChangesAsync();
-
-                var orderStockList = orderSaga.OrderItems
-                    .Select(orderItem => new OrderStockItem(orderItem.ProductId, orderItem.GetUnits()));
-
-                var confirmOrderStockEvent = new ConfirmOrderStockCommandMsg(orderSaga.Id, orderStockList);
-
-                await _orderingIntegrationEventService.SaveEventAndOrderingContextChangesAsync(confirmOrderStockEvent);
-
-                await _orderingIntegrationEventService.PublishThroughEventBusAsync(confirmOrderStockEvent);
             }
         }
         
