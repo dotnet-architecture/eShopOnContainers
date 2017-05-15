@@ -6,6 +6,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
+using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
+using Payment.API.IntegrationCommands.Commands;
+using Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ;
+using RabbitMQ.Client;
+using Microsoft.eShopOnContainers.BuildingBlocks.EventBus;
 
 namespace Payment.API
 {
@@ -29,6 +34,21 @@ namespace Payment.API
             // Add framework services.
             services.AddMvc();
 
+            services.AddSingleton<IRabbitMQPersistentConnection>(sp =>
+            {
+                var logger = sp.GetRequiredService<ILogger<DefaultRabbitMQPersistentConnection>>();
+
+                var factory = new ConnectionFactory()
+                {
+                    HostName = Configuration["EventBusConnection"]
+                };
+
+                return new DefaultRabbitMQPersistentConnection(factory, logger);
+            });
+
+            services.AddSingleton<IEventBus, EventBusRabbitMQ>();
+            services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
+
             services.AddSwaggerGen();
             services.ConfigureSwaggerGen(options =>
             {
@@ -47,6 +67,8 @@ namespace Payment.API
             return new AutofacServiceProvider(container.Build());
         }
 
+
+
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
@@ -57,6 +79,14 @@ namespace Payment.API
 
             app.UseSwagger()
               .UseSwaggerUi();
+
+            ConfigureEventBus(app);
+        }
+
+        private void ConfigureEventBus(IApplicationBuilder app)
+        {
+            var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
+            eventBus.Subscribe<PayOrderCommandMsg, IIntegrationEventHandler<PayOrderCommandMsg>>();
         }
     }
 }
