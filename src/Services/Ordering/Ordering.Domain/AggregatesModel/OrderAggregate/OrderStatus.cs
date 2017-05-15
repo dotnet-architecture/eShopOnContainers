@@ -12,7 +12,7 @@
     {
         public static OrderStatus Submited = new OrderStatus(1, nameof(Submited).ToLowerInvariant());
         public static OrderStatus AwaitingValidation = new OrderStatus(2, nameof(AwaitingValidation).ToLowerInvariant());
-        public static OrderStatus StockValidated = new OrderStatus(3, nameof(StockValidated).ToLowerInvariant());
+        public static OrderStatus StockConfirmed = new OrderStatus(3, nameof(StockConfirmed).ToLowerInvariant());
         public static OrderStatus Paid = new OrderStatus(4, nameof(Paid).ToLowerInvariant());
         public static OrderStatus Shipped = new OrderStatus(5, nameof(Shipped).ToLowerInvariant());
         public static OrderStatus Cancelled = new OrderStatus(6, nameof(Cancelled).ToLowerInvariant());
@@ -27,7 +27,7 @@
         }
 
         public static IEnumerable<OrderStatus> List() =>
-            new[] { Submited, AwaitingValidation, StockValidated, Paid, Shipped, Cancelled };
+            new[] { Submited, AwaitingValidation, StockConfirmed, Paid, Shipped, Cancelled };
 
         public static OrderStatus FromName(string name)
         {
