@@ -14,6 +14,9 @@
     using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF;
     using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF.Services;
     using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
+    using Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationCommands.Commands;
+    using Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationEvents;
+    using Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationCommands.CommandsHandlers;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.HealthChecks;
@@ -24,7 +27,7 @@
     using System.Data.Common;
     using System.Data.SqlClient;
     using System.Reflection;
-
+    
     public class Startup
     {
         public IConfigurationRoot Configuration { get; }
@@ -120,6 +123,8 @@
 
             services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
             services.AddSingleton<IEventBus, EventBusRabbitMQ>();
+            services.AddTransient<IIntegrationEventHandler<ConfirmOrderStockCommandMsg>, ConfirmOrderStockCommandMsgHandler>();
+            services.AddTransient<IIntegrationEventHandler<DecrementOrderStockCommandMsg>, DecrementOrderStockCommandMsgHandler>();
 
             var container = new ContainerBuilder();
             container.Populate(services);
@@ -148,6 +153,8 @@
             //Seed Data
             CatalogContextSeed.SeedAsync(app, loggerFactory)
                 .Wait();
+
+            ConfigureEventBus(app);
 
             var integrationEventLogContext = new IntegrationEventLogContext(
                 new DbContextOptionsBuilder<IntegrationEventLogContext>()
@@ -179,6 +186,14 @@
             {
                 ctx.Database.CloseConnection();
             }
+        }
+
+        private void ConfigureEventBus(IApplicationBuilder app)
+        {
+            var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
+
+            eventBus.Subscribe<ConfirmOrderStockCommandMsg, IIntegrationEventHandler<ConfirmOrderStockCommandMsg>>();
+            eventBus.Subscribe<DecrementOrderStockCommandMsg, IIntegrationEventHandler<DecrementOrderStockCommandMsg>>();
         }
     }
 }
