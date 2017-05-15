@@ -17,10 +17,5 @@ namespace Ordering.API.Application.Sagas
         public abstract TEntity FindSagaById(int id);
 
         public abstract Task<bool> SaveChangesAsync();
-        //{
-        //    var ctx = context ?? _dbContext;
-        //    var result = await ctx.SaveChangesAsync();
-        //    return result > 0;
-        //}
     }
 }
