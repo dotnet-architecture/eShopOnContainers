@@ -16,7 +16,7 @@
     using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
     using Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationCommands.Commands;
     using Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationEvents;
-    using Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationCommands.CommandsHandlers;
+    using Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationCommands.CommandHandlers;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.HealthChecks;
