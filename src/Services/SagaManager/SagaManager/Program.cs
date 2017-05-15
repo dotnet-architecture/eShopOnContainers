@@ -18,6 +18,7 @@ namespace SagaManager
     using Services;
     using Autofac.Extensions.DependencyInjection;
     using Autofac;
+    using System.Threading.Tasks;
 
     public class Program
     {
@@ -25,7 +26,12 @@ namespace SagaManager
 
         public static void Main(string[] args)
         {
-            StartUp(); 
+            MainAsync().Wait();
+        }
+
+        static async Task MainAsync()
+        {
+            StartUp();
 
             IServiceCollection services = new ServiceCollection();
             var serviceProvider = ConfigureServices(services);
@@ -39,7 +45,7 @@ namespace SagaManager
             while (true)
             {
                 sagaManagerService.CheckFinishedGracePeriodOrders();
-                System.Threading.Thread.Sleep(30000);
+                await Task.Delay(30000);
             }
         }
 
