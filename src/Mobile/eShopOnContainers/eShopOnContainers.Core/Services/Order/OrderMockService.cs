@@ -1,4 +1,5 @@
 ﻿using eShopOnContainers.Core.Extensions;
+using eShopOnContainers.Core.Models.Basket;
 using eShopOnContainers.Core.Models.Orders;
 using eShopOnContainers.Core.Models.User;
 using System;
@@ -64,17 +65,18 @@ namespace eShopOnContainers.Core.Services.Order
             new CardType { Id = 3, Name = "MasterCard" },
         };
 
-        public async Task CreateOrderAsync(Models.Orders.Order newOrder, string token)
+        private static BasketCheckout MockBasketCheckout = new BasketCheckout()
         {
-            await Task.Delay(500);
-
-            if (!string.IsNullOrEmpty(token))
-            {
-                newOrder.OrderNumber = string.Format("{0}", MockOrders.Count + 1);
-
-                MockOrders.Insert(0, newOrder);
-            }
-        }
+            CardExpiration = DateTime.UtcNow,
+            CardHolderName = "FakeCardHolderName",
+            CardNumber = "122333423224",
+            CardSecurityNumber = "1234",
+            CardTypeId = 1,
+            City = "FakeCity",
+            Country = "FakeCountry",
+            ZipCode = "FakeZipCode",
+            Street = "FakeStreet"
+        };
 
         public async Task<ObservableCollection<Models.Orders.Order>> GetOrdersAsync(string token)
         {
@@ -110,6 +112,11 @@ namespace eShopOnContainers.Core.Services.Order
                 return MockCardTypes.ToObservableCollection();
             else
                 return new ObservableCollection<CardType>();
+        }
+
+        public BasketCheckout MapOrderToBasket(Models.Orders.Order order)
+        {
+            return MockBasketCheckout;            
         }
     }
 }
