@@ -48,6 +48,7 @@ namespace Payment.API
 
             services.AddSingleton<IEventBus, EventBusRabbitMQ>();
             services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
+            services.AddTransient<IIntegrationEventHandler<PayOrderCommandMsg>>();
 
             services.AddSwaggerGen();
             services.ConfigureSwaggerGen(options =>
