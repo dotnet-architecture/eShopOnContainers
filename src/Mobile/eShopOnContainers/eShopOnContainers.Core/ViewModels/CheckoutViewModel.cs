@@ -132,8 +132,10 @@ namespace eShopOnContainers.Core.ViewModels
             {
                 var authToken = Settings.AuthAccessToken;
 
-                // Create new order
-                await _orderService.CreateOrderAsync(Order, authToken);
+                var basket = _orderService.MapOrderToBasket(Order);
+
+                // Create basket checkout
+                await _basketService.CheckoutAsync(basket, authToken);
 
                 // Clean Basket
                 await _basketService.ClearBasketAsync(_shippingAddress.Id.ToString(), authToken);
