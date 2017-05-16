@@ -11,6 +11,7 @@ using Payment.API.IntegrationCommands.Commands;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ;
 using RabbitMQ.Client;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus;
+using Payment.API.IntegrationEvents;
 
 namespace Payment.API
 {
@@ -34,6 +35,7 @@ namespace Payment.API
             // Add framework services.
             services.AddMvc();
 
+            services.AddTransient<IPaymentIntegrationEventService, PaymentIntegrationEventService>();
             services.AddSingleton<IRabbitMQPersistentConnection>(sp =>
             {
                 var logger = sp.GetRequiredService<ILogger<DefaultRabbitMQPersistentConnection>>();
@@ -45,10 +47,10 @@ namespace Payment.API
 
                 return new DefaultRabbitMQPersistentConnection(factory, logger);
             });
-
             services.AddSingleton<IEventBus, EventBusRabbitMQ>();
             services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
             services.AddTransient<IIntegrationEventHandler<PayOrderCommandMsg>>();
+            
 
             services.AddSwaggerGen();
             services.ConfigureSwaggerGen(options =>
