@@ -20,7 +20,7 @@ function ExecKube($cmd) {
     }
 }
 
-# No when deploying through CI VSTS
+# Not used when deploying through CI VSTS
 if(-not $deployCI) {
         $requiredCommands = ("docker", "docker-compose", "kubectl")
         foreach ($command in $requiredCommands) {
