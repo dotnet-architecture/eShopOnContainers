@@ -30,7 +30,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
         // but only through the method OrderAggrergateRoot.AddOrderItem() which includes behaviour.
         private readonly List<OrderItem> _orderItems;
 
-        public IEnumerable<OrderItem> OrderItems => _orderItems.AsReadOnly();
+        public IReadOnlyList<OrderItem> OrderItems => _orderItems;
         // Using List<>.AsReadOnly() 
         // This will create a read only wrapper around the private list so is protected against "external updates".
         // It's much cheaper than .ToList() because it will not have to copy all items in a new collection. (Just one heap alloc for the wrapper instance)
@@ -107,9 +107,9 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
                 StatusChangeException();
             }  
 
-            _orderStatusId = OrderStatus.AwaitingValidation.Id;
+            AddDomainEvent(new OrderStatusChangedToAwaitingValidationDomainEvent(Id, _orderItems));
 
-            AddDomainEvent(new OrderStatusChangedToAwaitingValidationDomainEvent(Id, OrderItems));
+            _orderStatusId = OrderStatus.AwaitingValidation.Id;
         }
 
         public void SetStockConfirmedStatus(IEnumerable<int> orderStockNotConfirmedItems = null)
@@ -121,15 +121,14 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
 
             if (orderStockNotConfirmedItems is null)
             {
-                OrderStatus = OrderStatus.StockConfirmed;
-
-                _description = "All the items were confirmed with available stock.";
-
                 AddDomainEvent(new OrderStatusChangedToStockConfirmedDomainEvent(Id));
+
+                _orderStatusId = OrderStatus.StockConfirmed.Id;
+                _description = "All the items were confirmed with available stock.";
             }
             else
             {
-                OrderStatus = OrderStatus.Cancelled;
+                _orderStatusId = OrderStatus.Cancelled.Id;
 
                 var itemsStockNotConfirmedProductNames = OrderItems
                     .Where(c => orderStockNotConfirmedItems.Contains(c.ProductId))
@@ -147,10 +146,10 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
                 StatusChangeException();
             }
 
+            AddDomainEvent(new OrderStatusChangedToPaidDomainEvent(Id, OrderItems));
+
             _orderStatusId = OrderStatus.Paid.Id;
             _description = "The payment was performed at a simulated \"American Bank checking bank account endinf on XX35071\"";
-
-            AddDomainEvent(new OrderStatusChangedToPaidDomainEvent(Id, OrderItems));
         }
 
         public void SetShippedStatus()
@@ -162,8 +161,6 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
 
             _orderStatusId = OrderStatus.Shipped.Id;
             _description = "";
-
-            //Call Domain Event
         }
 
         public void SetCancelledStatus()

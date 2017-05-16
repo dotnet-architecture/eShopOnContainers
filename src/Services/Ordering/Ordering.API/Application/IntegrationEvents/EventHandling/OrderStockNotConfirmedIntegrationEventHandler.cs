@@ -26,6 +26,8 @@ namespace Ordering.API.Application.IntegrationEvents.EventHandling
                 .Select(c => c.ProductId);
 
             orderToUpdate.SetStockConfirmedStatus(orderStockNotConfirmedItems);
+
+            await _orderRepository.UnitOfWork.SaveChangesAsync();
         }
     }
 }
