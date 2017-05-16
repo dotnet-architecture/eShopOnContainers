@@ -3,6 +3,7 @@
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
     using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
     using Ordering.API.Application.IntegrationEvents.Events;
+    using Ordering.Domain.Exceptions;
     using System.Threading.Tasks;
 
     public class OrderPaymentFailedIntegrationEventHandler : 
@@ -17,7 +18,9 @@
 
         public async Task Handle(OrderPaymentFailedIntegrationEvent @event)
         {
-            //TODO: Cancel Order
+            var orderToUpdate = await _orderRepository.GetAsync(@event.OrderId);
+
+            orderToUpdate.SetCancelledStatus();
         }
     }
 }
