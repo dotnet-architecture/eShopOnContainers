@@ -166,6 +166,28 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
             //Call Domain Event
         }
 
+        public void SetCancelledStatus()
+        {
+            switch(OrderStatus.From(_orderStatusId))
+            {
+                //case OrderStatus.Submited:
+                //    _description = "";
+                //    break;
+                //case OrderStatus.StockConfirmed:
+                //    _description = "";
+                //    break;
+                //case OrderStatus.Paid:
+                //    _description = "";
+                //    break;
+                //case OrderStatus.Shipped:
+                //    _description = "";
+                //    break;
+
+            }
+
+            _orderStatusId = OrderStatus.Cancelled.Id;
+        }
+
         #endregion
 
         private void AddOrderStartedDomainEvent(string userId, int cardTypeId, string cardNumber,
