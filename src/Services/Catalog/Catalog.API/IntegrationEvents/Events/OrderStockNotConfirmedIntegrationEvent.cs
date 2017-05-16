@@ -7,13 +7,13 @@
     {
         public int OrderId { get; }
 
-        public IEnumerable<ConfirmedOrderStockItem> OrderStockItem { get; }
+        public List<ConfirmedOrderStockItem> OrderStockItems { get; }
 
-        public OrderStockNotConfirmedIntegrationEvent(int orderId, 
-            IEnumerable<ConfirmedOrderStockItem> orderStockItem)
+        public OrderStockNotConfirmedIntegrationEvent(int orderId,
+            List<ConfirmedOrderStockItem> orderStockItems)
         {
             OrderId = orderId;
-            OrderStockItem = orderStockItem;
+            OrderStockItems = orderStockItems;
         }
     }
 
