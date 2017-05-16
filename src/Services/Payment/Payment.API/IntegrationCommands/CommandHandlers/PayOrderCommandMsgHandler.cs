@@ -12,7 +12,10 @@
         private readonly IPaymentIntegrationEventService _paymentIntegrationEventService;
 
         public PayOrderCommandMsgHandler(IPaymentIntegrationEventService paymentIntegrationEventService)
-            => _paymentIntegrationEventService = paymentIntegrationEventService;
+        {
+            _paymentIntegrationEventService = paymentIntegrationEventService;
+        }
+
 
         public async Task Handle(PayOrderCommandMsg @event)
         {
