@@ -10,32 +10,19 @@
     public class OrderStockConfirmedIntegrationEventHandler : 
         IIntegrationEventHandler<OrderStockConfirmedIntegrationEvent>
     {
-        private readonly IOrderingIntegrationEventService _orderingIntegrationEventService;
         private readonly IOrderRepository _orderRepository;
 
-        public OrderStockConfirmedIntegrationEventHandler(IOrderRepository orderRepository,
-            IOrderingIntegrationEventService orderingIntegrationEventService)
+        public OrderStockConfirmedIntegrationEventHandler(IOrderRepository orderRepository)
         {
             _orderRepository = orderRepository;
-            _orderingIntegrationEventService = orderingIntegrationEventService;
         }
 
         public async Task Handle(OrderStockConfirmedIntegrationEvent @event)
         {
-            //TODO: 1) Updates the state to "StockValidated" and any meaningful OrderContextDescription message saying that all the items were confirmed with available stock, etc
             var order = await _orderRepository.GetAsync(@event.OrderId);
             CheckValidSagaId(order);
 
-            order.SetOrderStockConfirmed();
-
-            //Create Integration Event to be published through the Event Bus
-            var payOrderCommandMsg = new PayOrderCommandMsg(order.Id);
-
-            // Achieving atomicity between original Catalog database operation and the IntegrationEventLog thanks to a local transaction
-            await _orderingIntegrationEventService.SaveEventAndOrderingContextChangesAsync(payOrderCommandMsg);
-
-            // Publish through the Event Bus and mark the saved event as published
-            await _orderingIntegrationEventService.PublishThroughEventBusAsync(payOrderCommandMsg);
+            order.SetStockConfirmedStatus();
         }
 
         private void CheckValidSagaId(Order orderSaga)

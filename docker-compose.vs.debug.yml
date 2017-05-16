@@ -107,7 +107,7 @@ services:
       - "com.microsoft.visualstudio.targetoperatingsystem=linux"
 
   payment.api:
-    image: payment.api:dev
+    image: eshop/payment.api:dev
     build:
       args:
         source: ${DOCKER_BUILD_SOURCE}

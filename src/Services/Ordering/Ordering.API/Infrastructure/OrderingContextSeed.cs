@@ -33,7 +33,7 @@
                 {
                     context.OrderStatus.Add(OrderStatus.Submited);
                     context.OrderStatus.Add(OrderStatus.AwaitingValidation);
-                    context.OrderStatus.Add(OrderStatus.StockValidated);
+                    context.OrderStatus.Add(OrderStatus.StockConfirmed);
                     context.OrderStatus.Add(OrderStatus.Paid);
                     context.OrderStatus.Add(OrderStatus.Shipped);
                     context.OrderStatus.Add(OrderStatus.Cancelled);

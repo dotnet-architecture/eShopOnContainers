@@ -86,7 +86,7 @@ services:
       dockerfile: Dockerfile
 
   payment.api:
-    image: payment.api
+    image: eshop/payment.api
     build:
       context: ./src/Services/Payment/Payment.API
       dockerfile: Dockerfile
