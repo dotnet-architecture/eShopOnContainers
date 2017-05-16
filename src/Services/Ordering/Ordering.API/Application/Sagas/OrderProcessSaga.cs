@@ -8,10 +8,7 @@ using Ordering.API.Application.Commands;
 using Ordering.API.Application.IntegrationCommands.Commands;
 using Ordering.API.Application.IntegrationEvents;
 using Ordering.Domain.Exceptions;
-using System;
-using System.Linq;
 using System.Threading.Tasks;
-using Ordering.API.Application.IntegrationEvents;
 
 namespace Ordering.API.Application.Sagas
 {
@@ -28,14 +25,11 @@ namespace Ordering.API.Application.Sagas
         IAsyncRequestHandler<CancelOrderCommand, bool>,
         IAsyncRequestHandler<ShipOrderCommand, bool>
     {
-        private readonly IOrderingIntegrationEventService _orderingIntegrationEventService;
 
         public OrderProcessSaga(
-            OrderingContext orderingContext,
-            IOrderingIntegrationEventService orderingIntegrationEventService)
+            OrderingContext orderingContext)
             : base(orderingContext)
         {
-            _orderingIntegrationEventService = orderingIntegrationEventService;
         }        
 
         /// <summary>
@@ -79,7 +73,7 @@ namespace Ordering.API.Application.Sagas
             if (orderSaga.GetOrderStatusId() != OrderStatus.Cancelled.Id
                 || orderSaga.GetOrderStatusId() != OrderStatus.Shipped.Id)
             {
-                orderSaga.SetOrderStatusId(OrderStatus.Cancelled.Id);
+                orderSaga.SetCancelStatus();
                 result = await SaveChangesAsync();
             }
             return result;
@@ -101,7 +95,7 @@ namespace Ordering.API.Application.Sagas
             // its status is paid
             if (orderSaga.GetOrderStatusId() == OrderStatus.Paid.Id)
             {
-                orderSaga.SetOrderStatusId(OrderStatus.Shipped.Id);
+                orderSaga.SetShippedStatus();
                 result = await SaveChangesAsync();
             }
             return result;

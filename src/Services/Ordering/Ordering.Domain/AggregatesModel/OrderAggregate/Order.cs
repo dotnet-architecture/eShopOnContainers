@@ -166,6 +166,15 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
             //Call Domain Event
         }
 
+        public void SetCancelStatus()
+        {
+            if (_orderStatusId == OrderStatus.Shipped.Id)
+            {
+                throw new OrderingDomainException("Not possible to change order status. Reason: cannot cancel order it is already shipped");
+            }
+            _orderStatusId = OrderStatus.Cancelled.Id;
+        }        
+
         #endregion
 
         public int GetOrderStatusId()
