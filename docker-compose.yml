@@ -90,3 +90,5 @@ services:
     build:
       context: ./src/Services/Payment/Payment.API
       dockerfile: Dockerfile
+    depends_on:
+      - rabbitmq
