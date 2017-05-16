@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
@@ -20,10 +18,9 @@ namespace Ordering.API.Application.Sagas
         public override Order FindSagaById(int id)
         {
             var order = _orderingContext.Orders
-             .Single(c => c.Id == id);
-
-            _orderingContext.Entry(order)
-            .Member("OrderStatus");
+                .Include(c => c.OrderStatus)
+                .Include(c => c.OrderItems)
+                .Single(c => c.Id == id);
 
             return order;
         }
