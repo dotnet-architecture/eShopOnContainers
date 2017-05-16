@@ -73,7 +73,7 @@ namespace Ordering.API.Application.Sagas
             if (orderSaga.GetOrderStatusId() != OrderStatus.Cancelled.Id
                 || orderSaga.GetOrderStatusId() != OrderStatus.Shipped.Id)
             {
-                orderSaga.SetCancelStatus();
+                orderSaga.SetCancelledStatus();
                 result = await SaveChangesAsync();
             }
             return result;
