@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
 using Microsoft.eShopOnContainers.Services.Ordering.Domain.Seedwork;
+using Ordering.Domain.Exceptions;
 using System;
 using System.Threading.Tasks;
 
@@ -32,7 +33,8 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Repositor
 
         public async Task<Order> GetAsync(int orderId)
         {
-            return await _context.Orders.FindAsync(orderId);
+            return await _context.Orders.FindAsync(orderId)
+                ?? throw new OrderingDomainException($"Not able to get the order. Reason: no valid orderId: {orderId}");
         }
 
         public void Update(Order order)
