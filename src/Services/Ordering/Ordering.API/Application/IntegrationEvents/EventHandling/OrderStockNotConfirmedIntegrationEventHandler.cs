@@ -27,7 +27,7 @@ namespace Ordering.API.Application.IntegrationEvents.EventHandling
 
             orderToUpdate.SetStockConfirmedStatus(orderStockNotConfirmedItems);
 
-            await _orderRepository.UnitOfWork.SaveChangesAsync();
+            await _orderRepository.UnitOfWork.SaveEntitiesAsync();
         }
     }
 }
