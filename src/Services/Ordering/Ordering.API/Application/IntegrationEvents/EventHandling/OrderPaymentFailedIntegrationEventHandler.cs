@@ -21,7 +21,7 @@
 
             orderToUpdate.SetCancelledStatus();
 
-            await _orderRepository.UnitOfWork.SaveChangesAsync();
+            await _orderRepository.UnitOfWork.SaveEntitiesAsync();
         }
     }
 }

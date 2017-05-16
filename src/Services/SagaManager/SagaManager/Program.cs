@@ -45,7 +45,7 @@ namespace SagaManager
             while (true)
             {
                 sagaManagerService.CheckFinishedGracePeriodOrders();
-                await Task.Delay(30000);
+                await Task.Delay(90000);
             }
         }
 
