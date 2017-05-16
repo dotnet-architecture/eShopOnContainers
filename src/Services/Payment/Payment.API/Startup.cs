@@ -12,6 +12,7 @@ using Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ;
 using RabbitMQ.Client;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus;
 using Payment.API.IntegrationEvents;
+using Payment.API.IntegrationCommands.CommandHandlers;
 
 namespace Payment.API
 {
@@ -49,7 +50,7 @@ namespace Payment.API
             });
             services.AddSingleton<IEventBus, EventBusRabbitMQ>();
             services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
-            services.AddTransient<IIntegrationEventHandler<PayOrderCommandMsg>>();
+            services.AddTransient<IIntegrationEventHandler<PayOrderCommandMsg>, PayOrderCommandMsgHandler>();
             
 
             services.AddSwaggerGen();
