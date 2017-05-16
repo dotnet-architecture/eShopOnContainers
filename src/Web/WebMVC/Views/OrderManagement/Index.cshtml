@@ -1,4 +1,4 @@
-@using Microsoft.eShopOnContainers.WebMVC.ViewModels
+﻿@using Microsoft.eShopOnContainers.WebMVC.ViewModels
 
 @model IEnumerable<Microsoft.eShopOnContainers.WebMVC.ViewModels.Order>
 
@@ -8,8 +8,7 @@
 
 <div class="esh-orders">
     @Html.Partial("_Header", new List<Header>() {
-        new Header() { Controller = "Catalog", Text = "Back to catalog" },
-        new Header() { Controller = "OrderManagement", Text = "Orders Management" } })
+            new Header() { Controller = "Catalog", Text = "Back to catalog" } })
 
     <div class="container">
         <article class="esh-orders-titles row">
@@ -27,14 +26,16 @@
                 <section class="esh-orders-item col-xs-4">@Html.DisplayFor(modelItem => item.Date)</section>
                 <section class="esh-orders-item col-xs-2">$ @Html.DisplayFor(modelItem => item.Total)</section>
                 <section class="esh-orders-item col-xs-2">@Html.DisplayFor(modelItem => item.Status)</section>
-                <section class="esh-orders-item col-xs-1">
-                    <a class="esh-orders-link" asp-controller="Order" asp-action="Detail" asp-route-orderId="@item.OrderNumber">Detail</a>
-                </section>
-                <section class="esh-orders-item col-xs-1">
-                    @if ((item.Status.ToLower() != "shipped") && (item.Status.ToLower() != "cancelled"))
-                    {
-                        <a class="esh-orders-link" asp-controller="Order" asp-action="Cancel" asp-route-orderId="@item.OrderNumber">Cancel</a>
-                    }                    
+                <section class="esh-orders-item col-xs-2">
+                    <form asp-action="OrderProcess" id="orderForm+@item.OrderNumber" method="post">
+                        <input type="hidden" name="orderId" value="@item.OrderNumber" />
+                        <select name="actionCode" asp-items="@item.ActionCodeSelectList"
+                                disabled=@(item.Status != "paid")
+                                onchange="document.getElementById('orderForm+@item.OrderNumber').submit()">
+                            <option value="">&nbsp;&nbsp;Select Action</option>
+                            <option value="">------------------</option>
+                        </select>
+                    </form>
                 </section>
             </article>
         }

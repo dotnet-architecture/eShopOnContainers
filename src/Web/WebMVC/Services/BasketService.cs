@@ -60,7 +60,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
             var token = await GetUserTokenAsync();
             var updateBasketUri = API.Basket.CheckoutBasket(_remoteServiceBaseUrl);
 
-            var response = await _apiClient.PutAsync(updateBasketUri, basket, token);
+            var response = await _apiClient.PostAsync(updateBasketUri, basket, token);
 
             response.EnsureSuccessStatusCode();
         }

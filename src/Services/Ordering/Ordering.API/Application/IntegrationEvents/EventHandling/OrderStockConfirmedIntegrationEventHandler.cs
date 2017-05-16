@@ -4,8 +4,6 @@
     using System.Threading.Tasks;
     using Events;
     using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
-    using Ordering.API.Application.IntegrationCommands.Commands;
-    using Ordering.Domain.Exceptions;
 
     public class OrderStockConfirmedIntegrationEventHandler : 
         IIntegrationEventHandler<OrderStockConfirmedIntegrationEvent>
