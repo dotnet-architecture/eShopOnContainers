@@ -27,8 +27,6 @@
 
         public async Task Handle(OrderStatusChangedToStockConfirmedDomainEvent orderStatusChangedToStockConfirmedDomainEvent)
         {
-            await _orderRepository.UnitOfWork.SaveEntitiesAsync();
-
             _logger.CreateLogger(nameof(OrderStatusChangedToStockConfirmedDomainEventHandler))
                 .LogTrace($"Order with Id: {orderStatusChangedToStockConfirmedDomainEvent.OrderId} has been successfully updated with " +
                           $"a status order id: {OrderStatus.StockConfirmed.Id}");
