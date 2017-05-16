@@ -33,6 +33,11 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Repositor
 
         public async Task<Order> GetAsync(int orderId)
         {
+            return await _context.Orders.FindAsync(orderId);
+        }
+
+        public async Task<Order> GetWithDependenciesAsync(int orderId)
+        {
             return await _context.Orders
                 .Include(c => c.OrderStatus)
                 .Include(c => c.OrderItems)

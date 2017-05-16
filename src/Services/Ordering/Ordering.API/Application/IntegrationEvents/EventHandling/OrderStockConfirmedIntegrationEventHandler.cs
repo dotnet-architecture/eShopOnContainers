@@ -17,11 +17,11 @@
 
         public async Task Handle(OrderStockConfirmedIntegrationEvent @event)
         {
-            var orderToUpdate = await _orderRepository.GetAsync(@event.OrderId);
+            var orderToUpdate = await _orderRepository.GetWithDependenciesAsync(@event.OrderId);
 
             orderToUpdate.SetStockConfirmedStatus();
 
-            await _orderRepository.UnitOfWork.SaveEntitiesAsync();
+            await _orderRepository.UnitOfWork.SaveChangesAsync();
         }
     }
 }

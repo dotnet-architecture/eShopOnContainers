@@ -41,11 +41,6 @@
                 orderStockList);
             await _orderingIntegrationEventService.SaveEventAndOrderingContextChangesAsync(decrementOrderStockCommandMsg);
             await _orderingIntegrationEventService.PublishThroughEventBusAsync(decrementOrderStockCommandMsg);
-
-            //is it necessary get a DecrementOrderStockSuccessIntegrationEvent/DecrementOrderStockFailedIntegrationEvent before to call ShipOrderCommandMsg???
-            var shipOrderCommandMsg = new ShipOrderCommandMsg(orderStatusChangedToPaidDomainEvent.OrderId);
-            await _orderingIntegrationEventService.SaveEventAndOrderingContextChangesAsync(shipOrderCommandMsg);
-            await _orderingIntegrationEventService.PublishThroughEventBusAsync(shipOrderCommandMsg);
         }
     }  
 }
