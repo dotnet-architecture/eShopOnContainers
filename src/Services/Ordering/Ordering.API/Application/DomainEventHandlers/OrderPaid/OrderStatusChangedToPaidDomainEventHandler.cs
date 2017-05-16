@@ -28,8 +28,6 @@
 
         public async Task Handle(OrderStatusChangedToPaidDomainEvent orderStatusChangedToPaidDomainEvent)
         {
-            await _orderRepository.UnitOfWork.SaveEntitiesAsync();
-
             _logger.CreateLogger(nameof(OrderStatusChangedToPaidDomainEventHandler))
                 .LogTrace($"Order with Id: {orderStatusChangedToPaidDomainEvent.OrderId} has been successfully updated with " +
                           $"a status order id: {OrderStatus.Paid.Id}");

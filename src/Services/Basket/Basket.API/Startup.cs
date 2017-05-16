@@ -165,12 +165,6 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
 
         protected virtual void ConfigureEventBus(IApplicationBuilder app)
         {
-            var catalogPriceHandler = app.ApplicationServices
-                .GetService<IIntegrationEventHandler<ProductPriceChangedIntegrationEvent>>();
-
-            var orderStartedHandler = app.ApplicationServices
-                .GetService<IIntegrationEventHandler<OrderStartedIntegrationEvent>>();
-
             var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
 
             eventBus.Subscribe<ProductPriceChangedIntegrationEvent, ProductPriceChangedIntegrationEventHandler>();
