@@ -3,12 +3,11 @@
     using AspNetCore.Http;
     using Autofac;
     using Autofac.Extensions.DependencyInjection;
+    using global::Ordering.API.Application.IntegrationCommands.Commands;
     using global::Ordering.API.Application.IntegrationEvents;
     using global::Ordering.API.Application.IntegrationEvents.Events;
-    using global::Ordering.API.Infrastructure.Middlewares;
-    using global::Ordering.API.Application.IntegrationCommands.Commands;
-    using global::Ordering.API.Application.IntegrationEvents.Events;
     using global::Ordering.API.Application.Sagas;
+    using global::Ordering.API.Infrastructure.Middlewares;
     using Infrastructure;
     using Infrastructure.Auth;
     using Infrastructure.AutofacModules;
@@ -31,7 +30,6 @@
     using System;
     using System.Data.Common;
     using System.Reflection;
-    using global::Ordering.API.Application.IntegrationEvents.EventHandling;
 
     public class Startup
     {

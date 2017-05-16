@@ -52,10 +52,13 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
         }
 
         [Route("checkout")]
-        [HttpPut]
-        public async Task<IActionResult> Checkout([FromBody]BasketCheckout value)
+        [HttpPost]
+        public async Task<IActionResult> Checkout([FromBody]BasketCheckout value, [FromHeader(Name = "x-requestid")] string requestId)
         {
             var userId = _identitySvc.GetUserIdentity();
+            value.RequestId = (Guid.TryParse(requestId, out Guid guid) && guid != Guid.Empty) ?
+                guid : value.RequestId;
+
             var basket = await _repository.GetBasketAsync(userId);
             var eventMessage = new UserCheckoutAcceptedIntegrationEvent(userId, value.City, value.Street,
                 value.State, value.Country, value.ZipCode, value.CardNumber, value.CardHolderName,

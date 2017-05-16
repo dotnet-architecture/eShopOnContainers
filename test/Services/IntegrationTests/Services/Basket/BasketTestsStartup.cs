@@ -1,9 +1,9 @@
-﻿using FunctionalTests.Middleware;
+﻿using IntegrationTests.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.eShopOnContainers.Services.Basket.API;
 
-namespace FunctionalTests.Services.Basket
+namespace IntegrationTests.Services.Basket
 {
     public class BasketTestsStartup : Startup
     {
@@ -21,6 +21,6 @@ namespace FunctionalTests.Services.Basket
             {
                 base.ConfigureAuth(app);
             }
-        }        
+        }
     }
 }

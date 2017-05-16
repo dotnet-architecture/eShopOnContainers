@@ -5,6 +5,7 @@ using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
 using Microsoft.eShopOnContainers.Services.Basket.API.Controllers;
 using Microsoft.eShopOnContainers.Services.Basket.API.Model;
 using Moq;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;
@@ -80,7 +81,7 @@ namespace UnitTest.Basket.Application
             var basketController = new BasketController(
                 _basketRepositoryMock.Object, _identityServiceMock.Object, _serviceBusMock.Object);
 
-            var result = await basketController.Checkout(new BasketCheckout()) as BadRequestResult;
+            var result = await basketController.Checkout(new BasketCheckout(), Guid.NewGuid().ToString()) as BadRequestResult;
             Assert.NotNull(result);
         }
 
@@ -96,7 +97,7 @@ namespace UnitTest.Basket.Application
             var basketController = new BasketController(
                 _basketRepositoryMock.Object, _identityServiceMock.Object, _serviceBusMock.Object);
 
-            var result = await basketController.Checkout(new BasketCheckout()) as AcceptedResult;
+            var result = await basketController.Checkout(new BasketCheckout(), Guid.NewGuid().ToString()) as AcceptedResult;
             _serviceBusMock.Verify(mock => mock.Publish(It.IsAny<UserCheckoutAcceptedIntegrationEvent>()), Times.Once);
             Assert.NotNull(result);
         }
