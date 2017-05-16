@@ -20,6 +20,8 @@
             var orderToUpdate = await _orderRepository.GetAsync(@event.OrderId);
 
             orderToUpdate.SetPaidStatus();
+
+            await _orderRepository.UnitOfWork.SaveEntitiesAsync();
         }
     }
 }

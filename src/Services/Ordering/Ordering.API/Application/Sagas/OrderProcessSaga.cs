@@ -43,15 +43,14 @@ namespace Ordering.API.Application.Sagas
         /// period has completed.
         /// </param>
         /// <returns></returns>
-        public async Task Handle(ConfirmGracePeriodCommandMsg @event)
+        public async Task Handle(ConfirmGracePeriodCommandMsg command)
         {
-            var orderSaga = FindSagaById(@event.OrderId);
+            var orderSaga = FindSagaById(command.OrderId);
             CheckValidSagaId(orderSaga);
 
             if (orderSaga.OrderStatus != OrderStatus.Cancelled)
             {
                 orderSaga.SetAwaitingValidationStatus();
-
                 await SaveChangesAsync();
             }
         }
