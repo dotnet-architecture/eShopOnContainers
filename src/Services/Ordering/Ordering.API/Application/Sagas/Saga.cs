@@ -14,17 +14,8 @@ namespace Ordering.API.Application.Sagas
             _dbContext = dbContext;
         }
 
-        protected TEntity FindSagaById(int id, DbContext context = null)
-        {
-            var ctx = context ?? _dbContext;
-            return ctx.Set<TEntity>().Where(x => x.Id == id).SingleOrDefault();
-        }
+        public abstract TEntity FindSagaById(int id);
 
-        protected async Task<bool> SaveChangesAsync(DbContext context = null)
-        {
-            var ctx = context ?? _dbContext;
-            var result = await ctx.SaveChangesAsync();
-            return result > 0;
-        }
+        public abstract Task<bool> SaveChangesAsync();
     }
 }

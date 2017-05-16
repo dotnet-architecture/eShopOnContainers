@@ -8,6 +8,8 @@
     using global::Ordering.API.Application.IntegrationEvents.Events;
     using global::Ordering.API.Application.Sagas;
     using global::Ordering.API.Infrastructure.Middlewares;
+    using global::Ordering.API.Application.IntegrationCommands.Commands;
+    using global::Ordering.API.Application.Sagas;
     using Infrastructure;
     using Infrastructure.Auth;
     using Infrastructure.AutofacModules;
@@ -108,7 +110,7 @@
             services.AddTransient<IIdentityService, IdentityService>();
             services.AddTransient<Func<DbConnection, IIntegrationEventLogService>>(
                 sp => (DbConnection c) => new IntegrationEventLogService(c));            
-            var serviceProvider = services.BuildServiceProvider();
+            
             services.AddTransient<IOrderingIntegrationEventService, OrderingIntegrationEventService>();
 
             services.AddSingleton<IRabbitMQPersistentConnection>(sp =>

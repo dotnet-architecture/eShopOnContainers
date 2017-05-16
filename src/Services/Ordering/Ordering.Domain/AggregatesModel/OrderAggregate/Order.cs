@@ -1,5 +1,6 @@
 ﻿using Microsoft.eShopOnContainers.Services.Ordering.Domain.Seedwork;
 using Ordering.Domain.Events;
+using Ordering.Domain.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -93,32 +94,79 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
             _buyerId = id;
         }
 
-        public void SetOrderStatusId(int id)
+        #region Status Changes
+        public void SetSubmitedStatus()
         {
-            _orderStatusId = id;
+            _orderStatusId = OrderStatus.Submited.Id;
         }
 
-        public void SetOrderStockConfirmed(IEnumerable<int> orderStockNotConfirmedItems = null)
+        public void SetAwaitingValidationStatus()
         {
-            if(orderStockNotConfirmedItems is null)
+            if (_orderStatusId != OrderStatus.Submited.Id)
             {
-                OrderStatus = OrderStatus.StockValidated;
+                StatusChangeException();
+            }  
+
+            _orderStatusId = OrderStatus.AwaitingValidation.Id;
+
+            AddDomainEvent(new OrderStatusChangedToAwaitingValidationDomainEvent(Id, OrderItems));
+        }
+
+        public void SetStockConfirmedStatus(IEnumerable<int> orderStockNotConfirmedItems = null)
+        {
+            if (_orderStatusId != OrderStatus.AwaitingValidation.Id)
+            {
+                StatusChangeException();
+            }
+
+            if (orderStockNotConfirmedItems is null)
+            {
+                OrderStatus = OrderStatus.StockConfirmed;
+
                 _description = "All the items were confirmed with available stock.";
-                //AddDomainEvent(new OrderStockMethodVerifiedDomainEvent(Id, OrderStatus.StockValidated));
+
+                AddDomainEvent(new OrderStatusChangedToStockConfirmedDomainEvent(Id));
             }
             else
             {
+                OrderStatus = OrderStatus.Cancelled;
+
                 var itemsStockNotConfirmedProductNames = OrderItems
                     .Where(c => orderStockNotConfirmedItems.Contains(c.ProductId))
                     .Select(c => c.GetOrderItemProductName());
 
                 var itemsStockNotConfirmedDescription = string.Join(", ", itemsStockNotConfirmedProductNames);
-
-                OrderStatus = OrderStatus.Cancelled;
-                _description = $"The product items don't have stock: ({itemsStockNotConfirmedDescription}).";
-                //AddDomainEvent(new OrderStockMethodVerifiedDomainEvent(Id, OrderStatus.Cancelled));
+                _description = $"The product items don't have stock: ({itemsStockNotConfirmedDescription}).";   
             }
         }
+
+        public void SetPaidStatus()
+        {
+            if (_orderStatusId != OrderStatus.StockConfirmed.Id)
+            {
+                StatusChangeException();
+            }
+
+            _orderStatusId = OrderStatus.Paid.Id;
+            _description = "The payment was performed at a simulated \"American Bank checking bank account endinf on XX35071\"";
+
+            AddDomainEvent(new OrderStatusChangedToPaidDomainEvent(Id, OrderItems));
+        }
+
+        public void SetShippedStatus()
+        {
+            if (_orderStatusId != OrderStatus.Paid.Id)
+            {
+                StatusChangeException();
+            }
+
+            _orderStatusId = OrderStatus.Shipped.Id;
+            _description = "";
+
+            //Call Domain Event
+        }
+
+        #endregion
 
         public int GetOrderStatusId()
         {
@@ -133,6 +181,11 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
                 cardHolderName, cardExpiration);
 
             this.AddDomainEvent(orderStartedDomainEvent);
+        }
+
+        private void StatusChangeException()
+        {
+            throw new OrderingDomainException("Not able to process order event. Reason: no valid order status change");
         }
     }
 }
