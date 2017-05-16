@@ -28,7 +28,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Controllers
         }
 
         [Route("cancel")]
-        [HttpPost]
+        [HttpPut]
         public async Task<IActionResult> CancelOrder([FromBody]CancelOrderCommand command, [FromHeader(Name = "x-requestid")] string requestId)
         {
             bool commandResult = false;
@@ -38,6 +38,21 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Controllers
                 commandResult = await _mediator.SendAsync(requestCancelOrder);
             }
            
+            return commandResult ? (IActionResult)Ok() : (IActionResult)BadRequest();
+
+        }
+
+        [Route("ship")]
+        [HttpPut]
+        public async Task<IActionResult> ShipOrder([FromBody]ShipOrderCommand command, [FromHeader(Name = "x-requestid")] string requestId)
+        {
+            bool commandResult = false;
+            if (Guid.TryParse(requestId, out Guid guid) && guid != Guid.Empty)
+            {
+                var requestShipOrder = new IdentifiedCommand<ShipOrderCommand, bool>(command, guid);
+                commandResult = await _mediator.SendAsync(requestShipOrder);
+            }
+
             return commandResult ? (IActionResult)Ok() : (IActionResult)BadRequest();
 
         }

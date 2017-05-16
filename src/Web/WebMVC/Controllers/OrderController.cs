@@ -59,18 +59,12 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
             return View(model);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> Cancel(Order model)
+        public async Task<IActionResult> Cancel(string orderId)
         {
-            if (ModelState.IsValid)
-            {
-                var user = _appUserParser.Parse(HttpContext.User);
-                await _orderSvc.CancelOrder(model);
+            await _orderSvc.CancelOrder(orderId);
 
-                //Redirect to historic list.
-                return RedirectToAction("Index");
-            }
-            return View(model);
+            //Redirect to historic list.
+            return RedirectToAction("Index");
         }
 
         public async Task<IActionResult> Detail(string orderId)

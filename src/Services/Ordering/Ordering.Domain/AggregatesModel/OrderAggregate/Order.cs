@@ -168,27 +168,44 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
 
         public void SetCancelledStatus()
         {
-            switch(OrderStatus.From(_orderStatusId))
+            if (_orderStatusId == OrderStatus.Submited.Id)
             {
-                //case OrderStatus.Submited:
-                //    _description = "";
-                //    break;
-                //case OrderStatus.StockConfirmed:
-                //    _description = "";
-                //    break;
-                //case OrderStatus.Paid:
-                //    _description = "";
-                //    break;
-                //case OrderStatus.Shipped:
-                //    _description = "";
-                //    break;
-
+                _description = "";
             }
-
+            else if (_orderStatusId == OrderStatus.AwaitingValidation.Id)
+            {
+                _description = "";
+            }
+            else if (_orderStatusId == OrderStatus.StockConfirmed.Id)
+            {
+                _description = "";
+            }
+            else if (_orderStatusId == OrderStatus.Paid.Id)
+            {
+                _description = "";
+            }
+            else if(_orderStatusId == OrderStatus.Shipped.Id)
+            {
+                throw new OrderingDomainException("Not possible to change order status. Reason: cannot cancel order it is already shipped");
+            }
             _orderStatusId = OrderStatus.Cancelled.Id;
         }
 
+        public void SetCancelStatus()
+        {
+            if (_orderStatusId == OrderStatus.Shipped.Id)
+            {
+                throw new OrderingDomainException("Not possible to change order status. Reason: cannot cancel order it is already shipped");
+            }
+            _orderStatusId = OrderStatus.Cancelled.Id;
+        }        
+
         #endregion
+
+        public int GetOrderStatusId()
+        {
+            return _orderStatusId;
+        }
 
         private void AddOrderStartedDomainEvent(string userId, int cardTypeId, string cardNumber,
                 string cardSecurityNumber, string cardHolderName, DateTime cardExpiration)

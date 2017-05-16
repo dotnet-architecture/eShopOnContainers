@@ -3,7 +3,6 @@
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
     using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
     using Ordering.API.Application.IntegrationEvents.Events;
-    using Ordering.Domain.Exceptions;
     using System.Threading.Tasks;
 
     public class OrderPaymentSuccededIntegrationEventHandler : 

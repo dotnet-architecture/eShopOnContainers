@@ -33,8 +33,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Repositor
 
         public async Task<Order> GetAsync(int orderId)
         {
-            return await _context.Orders.FindAsync(orderId)
-                ?? throw new OrderingDomainException($"Not able to get the order. Reason: no valid orderId: {orderId}");
+            return await _context.Orders.FindAsync(orderId);
         }
 
         public void Update(Order order)

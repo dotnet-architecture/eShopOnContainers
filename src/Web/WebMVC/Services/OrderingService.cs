@@ -66,17 +66,41 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
             return order;
         }
 
-        async public Task CancelOrder(Order order)
+        async public Task CancelOrder(string orderId)
         {
             var token = await GetUserTokenAsync();
-            var requestId = order.RequestId.ToString();
+            var order = new OrderDTO()
+            {
+                OrderNumber = orderId
+            };
+
             var cancelOrderUri = API.Order.CancelOrder(_remoteServiceBaseUrl);
             
-            var response = await _apiClient.PutAsync(cancelOrderUri, order, token, requestId);
+            var response = await _apiClient.PutAsync(cancelOrderUri, order, token, Guid.NewGuid().ToString());
 
             if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
             {
                 throw new Exception("Error cancelling order, try later.");
+            }
+
+            response.EnsureSuccessStatusCode();
+        }
+
+        async public Task ShipOrder(string orderId)
+        {
+            var token = await GetUserTokenAsync();
+            var order = new OrderDTO()
+            {
+                OrderNumber = orderId
+            };
+
+            var shipOrderUri = API.Order.ShipOrder(_remoteServiceBaseUrl);
+
+            var response = await _apiClient.PutAsync(shipOrderUri, order, token, Guid.NewGuid().ToString());
+
+            if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+            {
+                throw new Exception("Error in ship order process, try later.");
             }
 
             response.EnsureSuccessStatusCode();

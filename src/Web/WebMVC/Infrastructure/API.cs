@@ -46,6 +46,11 @@
             {
                 return $"{baseUri}/cancel";
             }
+
+            public static string ShipOrder(string baseUri)
+            {
+                return $"{baseUri}/ship";
+            }
         }
 
         public static class Catalog

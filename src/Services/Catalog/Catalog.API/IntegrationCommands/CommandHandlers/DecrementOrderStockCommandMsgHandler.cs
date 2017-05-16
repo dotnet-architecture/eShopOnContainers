@@ -23,20 +23,11 @@
             foreach (var orderStockItem in @event.OrderStockItems)
             {
                 var catalogItem = _catalogContext.CatalogItems.Find(orderStockItem.ProductId);
-                CheckValidcatalogItemId(catalogItem);
 
                 catalogItem.RemoveStock(orderStockItem.Units);
             }
 
             await _catalogContext.SaveChangesAsync();
-        }
-
-        private void CheckValidcatalogItemId(CatalogItem catalogItem)
-        {
-            if (catalogItem is null)
-            {
-                throw new CatalogDomainException("Not able to process catalog event. Reason: no valid catalogItemId");
-            }
         }
     }
 }

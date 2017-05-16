@@ -26,8 +26,6 @@ namespace Ordering.API.Application.DomainEventHandlers.OrderStartedEvent
         {
             var cardTypeId = (orderStartedEvent.CardTypeId != 0) ? orderStartedEvent.CardTypeId : 1;
 
-            //var userGuid = _identityService.GetUserIdentity();
-
             var buyer = await _buyerRepository.FindAsync(orderStartedEvent.UserId);
             bool buyerOriginallyExisted = (buyer == null) ? false : true;
 

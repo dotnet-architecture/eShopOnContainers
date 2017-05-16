@@ -1,5 +1,4 @@
-﻿using Autofac.Features.OwnedInstances;
-using MediatR;
+﻿using MediatR;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
 using Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands;
 using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
@@ -7,11 +6,9 @@ using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure;
 using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Idempotency;
 using Ordering.API.Application.Commands;
 using Ordering.API.Application.IntegrationCommands.Commands;
-using Ordering.Domain.Exceptions;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 using Ordering.API.Application.IntegrationEvents;
+using Ordering.Domain.Exceptions;
+using System.Threading.Tasks;
 
 namespace Ordering.API.Application.Sagas
 {
@@ -25,20 +22,14 @@ namespace Ordering.API.Application.Sagas
     /// </summary>
     public class OrderProcessSaga : OrderSaga,
         IIntegrationEventHandler<ConfirmGracePeriodCommandMsg>,
-        IAsyncRequestHandler<CancelOrderCommand, bool>
+        IAsyncRequestHandler<CancelOrderCommand, bool>,
+        IAsyncRequestHandler<ShipOrderCommand, bool>
     {
-        private readonly IMediator _mediator;
-        private readonly Func<Owned<OrderingContext>> _dbContextFactory;
-        private readonly IOrderingIntegrationEventService _orderingIntegrationEventService;
 
         public OrderProcessSaga(
-            Func<Owned<OrderingContext>> dbContextFactory, OrderingContext orderingContext,
-            IMediator mediator, IOrderingIntegrationEventService orderingIntegrationEventService)
+            OrderingContext orderingContext)
             : base(orderingContext)
         {
-            _dbContextFactory = dbContextFactory;
-            _mediator = mediator;
-            _orderingIntegrationEventService = orderingIntegrationEventService;
         }        
 
         /// <summary>
@@ -73,12 +64,41 @@ namespace Ordering.API.Application.Sagas
         /// <returns></returns>
         public async Task<bool> Handle(CancelOrderCommand command)
         {
+            var result = false;
             var orderSaga = FindSagaById(command.OrderNumber);
             CheckValidSagaId(orderSaga);
 
-            // Set order status tu cancelled
+            // Not possible to cancel order when 
+            // it has already been shipped
+            if (orderSaga.GetOrderStatusId() != OrderStatus.Cancelled.Id
+                || orderSaga.GetOrderStatusId() != OrderStatus.Shipped.Id)
+            {
+                orderSaga.SetCancelStatus();
+                result = await SaveChangesAsync();
+            }
+            return result;
+        }
 
-            return true;
+        /// <summary>
+        /// Handler which processes the command when
+        /// administrator executes ship order from app
+        /// </summary>
+        /// <param name="command"></param>
+        /// <returns></returns>
+        public async Task<bool> Handle(ShipOrderCommand command)
+        {
+            var result = false;
+            var orderSaga = FindSagaById(command.OrderNumber);
+            CheckValidSagaId(orderSaga);
+
+            // Only ship order when 
+            // its status is paid
+            if (orderSaga.GetOrderStatusId() == OrderStatus.Paid.Id)
+            {
+                orderSaga.SetShippedStatus();
+                result = await SaveChangesAsync();
+            }
+            return result;
         }
 
         private void CheckValidSagaId(Order orderSaga)
@@ -94,6 +114,18 @@ namespace Ordering.API.Application.Sagas
         public class CancelOrderCommandIdentifiedHandler : IdentifierCommandHandler<CancelOrderCommand, bool>
         {
             public CancelOrderCommandIdentifiedHandler(IMediator mediator, IRequestManager requestManager) : base(mediator, requestManager)
+            {
+            }
+
+            protected override bool CreateResultForDuplicateRequest()
+            {
+                return true;                // Ignore duplicate requests for processing order.
+            }
+        }
+
+        public class ShipOrderCommandIdentifiedHandler : IdentifierCommandHandler<ShipOrderCommand, bool>
+        {
+            public ShipOrderCommandIdentifiedHandler(IMediator mediator, IRequestManager requestManager) : base(mediator, requestManager)
             {
             }
 

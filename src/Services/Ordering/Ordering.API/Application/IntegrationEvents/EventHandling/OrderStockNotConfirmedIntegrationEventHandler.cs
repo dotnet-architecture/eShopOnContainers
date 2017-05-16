@@ -4,11 +4,9 @@ using Ordering.API.Application.IntegrationCommands.Commands;
 namespace Ordering.API.Application.IntegrationEvents.EventHandling
 {
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
-    using System;
     using System.Threading.Tasks;
     using Events;
     using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
-    using Domain.Exceptions;
 
     public class OrderStockNotConfirmedIntegrationEventHandler : IIntegrationEventHandler<OrderStockNotConfirmedIntegrationEvent>
     {
