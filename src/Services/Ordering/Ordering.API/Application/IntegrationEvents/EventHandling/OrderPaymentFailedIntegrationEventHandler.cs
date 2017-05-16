@@ -17,7 +17,9 @@
 
         public async Task Handle(OrderPaymentFailedIntegrationEvent @event)
         {
-            //TODO: Cancel Order
+            var orderToUpdate = await _orderRepository.GetAsync(@event.OrderId);
+
+            orderToUpdate.SetCancelledStatus();
         }
     }
 }

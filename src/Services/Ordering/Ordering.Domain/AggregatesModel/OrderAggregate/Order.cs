@@ -166,14 +166,31 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
             //Call Domain Event
         }
 
-        public void SetCancelStatus()
+        public void SetCancelledStatus()
         {
-            if (_orderStatusId == OrderStatus.Shipped.Id)
+            if (_orderStatusId == OrderStatus.Submited.Id)
             {
-                throw new OrderingDomainException("Not possible to change order status. Reason: cannot cancel order it is already shipped");
+                _description = "The order was cancelled before the grace period was confirm.";
             }
+            else if (_orderStatusId == OrderStatus.AwaitingValidation.Id)
+            {
+                _description = "The order was cancelled before to check the order stock items.";
+            }
+            else if (_orderStatusId == OrderStatus.StockConfirmed.Id)
+            {
+                _description = "The order was cancelled before to pay the order.";
+            }
+            else if (_orderStatusId == OrderStatus.Paid.Id)
+            {
+                _description = "The order was cancelled before to ship the order.";
+            }
+            else if(_orderStatusId == OrderStatus.Shipped.Id)
+            {
+                throw new OrderingDomainException("Not possible to change order status. Reason: cannot cancel order it is already shipped.");
+            }
+
             _orderStatusId = OrderStatus.Cancelled.Id;
-        }        
+        }
 
         #endregion
 

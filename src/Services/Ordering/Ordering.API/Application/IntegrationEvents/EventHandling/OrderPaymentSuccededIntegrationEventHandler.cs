@@ -3,7 +3,6 @@
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
     using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
     using Ordering.API.Application.IntegrationEvents.Events;
-    using Ordering.Domain.Exceptions;
     using System.Threading.Tasks;
 
     public class OrderPaymentSuccededIntegrationEventHandler : 
@@ -18,18 +17,9 @@
 
         public async Task Handle(OrderPaymentSuccededIntegrationEvent @event)
         {
-            var order = await _orderRepository.GetAsync(@event.OrderId);
-            CheckValidSagaId(order);
+            var orderToUpdate = await _orderRepository.GetAsync(@event.OrderId);
 
-            order.SetPaidStatus();
-        }
-
-        private void CheckValidSagaId(Order orderSaga)
-        {
-            if (orderSaga is null)
-            {
-                throw new OrderingDomainException("Not able to process order saga event. Reason: no valid orderId");
-            }
+            orderToUpdate.SetPaidStatus();
         }
     }
 }
