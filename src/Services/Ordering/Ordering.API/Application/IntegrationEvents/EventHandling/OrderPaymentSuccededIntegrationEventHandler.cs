@@ -18,18 +18,9 @@
 
         public async Task Handle(OrderPaymentSuccededIntegrationEvent @event)
         {
-            var order = await _orderRepository.GetAsync(@event.OrderId);
-            CheckValidSagaId(order);
+            var orderToUpdate = await _orderRepository.GetAsync(@event.OrderId);
 
-            order.SetPaidStatus();
-        }
-
-        private void CheckValidSagaId(Order orderSaga)
-        {
-            if (orderSaga is null)
-            {
-                throw new OrderingDomainException("Not able to process order saga event. Reason: no valid orderId");
-            }
+            orderToUpdate.SetPaidStatus();
         }
     }
 }

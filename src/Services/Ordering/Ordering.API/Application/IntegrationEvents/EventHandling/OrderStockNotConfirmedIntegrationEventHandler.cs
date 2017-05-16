@@ -22,21 +22,12 @@ namespace Ordering.API.Application.IntegrationEvents.EventHandling
         public async Task Handle(OrderStockNotConfirmedIntegrationEvent @event)
         {
             var orderToUpdate = await _orderRepository.GetAsync(@event.OrderId);
-            CheckValidSagaId(orderToUpdate);
 
             var orderStockNotConfirmedItems = @event.OrderStockItems
                 .FindAll(c => !c.Confirmed)
                 .Select(c => c.ProductId);
 
             orderToUpdate.SetStockConfirmedStatus(orderStockNotConfirmedItems);
-        }
-
-        private void CheckValidSagaId(Order orderSaga)
-        {
-            if (orderSaga is null)
-            {
-                throw new OrderingDomainException("Not able to process order saga event. Reason: no valid orderId");
-            }
         }
     }
 }
