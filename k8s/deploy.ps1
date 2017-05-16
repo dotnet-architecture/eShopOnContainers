@@ -87,10 +87,10 @@ while ($true) {
 }
 
 ExecKube -cmd 'create configmap urls `
-    --from-literal=BasketUrl=http://$($frontendUrl)/basket-api `
-    --from-literal=CatalogUrl=http://$($frontendUrl)/catalog-api `
+    --from-literal=BasketUrl=http://basket `
+    --from-literal=CatalogUrl=http://catalog `
     --from-literal=IdentityUrl=http://$($frontendUrl)/identity `
-    --from-literal=OrderingUrl=http://$($frontendUrl)/ordering-api `
+    --from-literal=OrderingUrl=http://ordering `
     --from-literal=MvcClient=http://$($frontendUrl)/webmvc `
     --from-literal=SpaClient=http://$($frontendUrl)'
 
