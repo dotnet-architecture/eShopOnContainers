@@ -37,7 +37,7 @@
 
             while (true)
             {
-                sagaManagerService.CheckFinishedGracePeriodOrders();
+                sagaManagerService.CheckConfirmedGracePeriodOrders();
                 await Task.Delay(90000);
             }
         }

@@ -22,7 +22,7 @@ namespace Ordering.API.Application.IntegrationEvents.EventHandling
             var orderToUpdate = await _orderRepository.GetWithDependenciesAsync(@event.OrderId);
 
             var orderStockNotConfirmedItems = @event.OrderStockItems
-                .FindAll(c => !c.Confirmed)
+                .FindAll(c => !c.HasStock)
                 .Select(c => c.ProductId);
 
             orderToUpdate.SetStockConfirmedStatus(orderStockNotConfirmedItems);

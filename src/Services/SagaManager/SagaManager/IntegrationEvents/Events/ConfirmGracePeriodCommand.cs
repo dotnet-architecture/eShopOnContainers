@@ -2,10 +2,10 @@
 {
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
 
-    public class ConfirmGracePeriodCommandMsg : IntegrationEvent
+    public class ConfirmGracePeriodCommand : IntegrationEvent
     {
         public int OrderId { get;}
 
-        public ConfirmGracePeriodCommandMsg(int orderId) => OrderId = orderId;
+        public ConfirmGracePeriodCommand(int orderId) => OrderId = orderId;
     }
 }

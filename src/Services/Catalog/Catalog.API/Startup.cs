@@ -190,10 +190,10 @@
             services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
             services.AddSingleton<IEventBus, EventBusRabbitMQ>();
 
-            services.AddTransient<IIntegrationEventHandler<ConfirmOrderStockCommandMsg>,
-                ConfirmOrderStockCommandMsgHandler>();
-            services.AddTransient<IIntegrationEventHandler<DecrementOrderStockCommandMsg>,
-                DecrementOrderStockCommandMsgHandler>();
+            services.AddTransient<IIntegrationEventHandler<ConfirmOrderStockCommand>,
+                ConfirmOrderStockCommandHandler>();
+            services.AddTransient<IIntegrationEventHandler<DecrementOrderStockCommand>,
+                DecrementOrderStockCommandHandler>();
 
         }
 
@@ -201,8 +201,8 @@
         {
             var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
 
-            eventBus.Subscribe<ConfirmOrderStockCommandMsg, IIntegrationEventHandler<ConfirmOrderStockCommandMsg>>();
-            eventBus.Subscribe<DecrementOrderStockCommandMsg, IIntegrationEventHandler<DecrementOrderStockCommandMsg>>();
+            eventBus.Subscribe<ConfirmOrderStockCommand, IIntegrationEventHandler<ConfirmOrderStockCommand>>();
+            eventBus.Subscribe<DecrementOrderStockCommand, IIntegrationEventHandler<DecrementOrderStockCommand>>();
         }
     }
 }

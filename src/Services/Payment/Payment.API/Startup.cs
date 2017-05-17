@@ -48,10 +48,8 @@ namespace Payment.API
 
                 return new DefaultRabbitMQPersistentConnection(factory, logger);
             });
-            services.AddSingleton<IEventBus, EventBusRabbitMQ>();
-            services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
-            services.AddTransient<IIntegrationEventHandler<PayOrderCommandMsg>, PayOrderCommandMsgHandler>();
-            
+
+            RegisterServiceBus(services);
 
             services.AddSwaggerGen();
             services.ConfigureSwaggerGen(options =>
@@ -85,10 +83,18 @@ namespace Payment.API
             ConfigureEventBus(app);
         }
 
+        private void RegisterServiceBus(IServiceCollection services)
+        {
+            services.AddSingleton<IEventBus, EventBusRabbitMQ>();
+            services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
+
+            services.AddTransient<IIntegrationEventHandler<PayOrderCommand>, PayOrderCommandHandler>();
+        }
+
         private void ConfigureEventBus(IApplicationBuilder app)
         {
             var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
-            eventBus.Subscribe<PayOrderCommandMsg, IIntegrationEventHandler<PayOrderCommandMsg>>();
+            eventBus.Subscribe<PayOrderCommand, IIntegrationEventHandler<PayOrderCommand>>();
         }
     }
 }

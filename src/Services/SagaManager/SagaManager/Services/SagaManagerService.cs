@@ -23,19 +23,18 @@
             _logger = logger;
         }
 
-        public void CheckFinishedGracePeriodOrders()
+        public void CheckConfirmedGracePeriodOrders()
         {
-            var orderIds = GetFinishedGracePeriodOrders();
+            var orderIds = GetConfirmedGracePeriodOrders();
 
             foreach (var orderId in orderIds)
             {
-                var confirmGracePeriodEvent = new ConfirmGracePeriodCommandMsg(orderId);
-
+                var confirmGracePeriodEvent = new ConfirmGracePeriodCommand(orderId);
                 _sagaManagerIntegrationEventService.PublishThroughEventBus(confirmGracePeriodEvent);
             }
         }
 
-        private IEnumerable<int> GetFinishedGracePeriodOrders()
+        private IEnumerable<int> GetConfirmedGracePeriodOrders()
         {
             IEnumerable<int> orderIds = new List<int>();
             using (var conn = new SqlConnection(_settings.ConnectionString))

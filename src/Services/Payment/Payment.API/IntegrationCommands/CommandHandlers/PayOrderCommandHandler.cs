@@ -3,21 +3,17 @@
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
     using Payment.API.IntegrationCommands.Commands;
     using System.Threading.Tasks;
-    using System;
     using Payment.API.IntegrationEvents;
     using Payment.API.IntegrationEvents.Events;
 
-    public class PayOrderCommandMsgHandler : IIntegrationEventHandler<PayOrderCommandMsg>
+    public class PayOrderCommandHandler : IIntegrationEventHandler<PayOrderCommand>
     {
         private readonly IPaymentIntegrationEventService _paymentIntegrationEventService;
 
-        public PayOrderCommandMsgHandler(IPaymentIntegrationEventService paymentIntegrationEventService)
-        {
-            _paymentIntegrationEventService = paymentIntegrationEventService;
-        }
+        public PayOrderCommandHandler(IPaymentIntegrationEventService paymentIntegrationEventService)
+            => _paymentIntegrationEventService = paymentIntegrationEventService;
 
-
-        public async Task Handle(PayOrderCommandMsg @event)
+        public async Task Handle(PayOrderCommand @event)
         {
             //PAYMENT SUCCESSED
             var orderPaymentSuccededIntegrationEvent = new OrderPaymentSuccededIntegrationEvent(@event.OrderId);

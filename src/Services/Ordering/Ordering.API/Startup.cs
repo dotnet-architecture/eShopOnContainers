@@ -171,7 +171,7 @@
             services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
 
             services.AddTransient<IIntegrationEventHandler<UserCheckoutAcceptedIntegrationEvent>>();
-            services.AddTransient<IIntegrationEventHandler<ConfirmGracePeriodCommandMsg>, OrderProcessSaga>();
+            services.AddTransient<IIntegrationEventHandler<ConfirmGracePeriodCommand>, OrderProcessSaga>();
             services.AddTransient<IIntegrationEventHandler<OrderStockConfirmedIntegrationEvent>,
                 OrderStockConfirmedIntegrationEventHandler>();
             services.AddTransient<IIntegrationEventHandler<OrderStockNotConfirmedIntegrationEvent>,
@@ -187,7 +187,7 @@
             var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
 
             eventBus.Subscribe<UserCheckoutAcceptedIntegrationEvent, IIntegrationEventHandler<UserCheckoutAcceptedIntegrationEvent>>();
-            eventBus.Subscribe<ConfirmGracePeriodCommandMsg, IIntegrationEventHandler<ConfirmGracePeriodCommandMsg>>();
+            eventBus.Subscribe<ConfirmGracePeriodCommand, IIntegrationEventHandler<ConfirmGracePeriodCommand>>();
             eventBus.Subscribe<OrderStockConfirmedIntegrationEvent, IIntegrationEventHandler<OrderStockConfirmedIntegrationEvent>>();
             eventBus.Subscribe<OrderStockNotConfirmedIntegrationEvent, IIntegrationEventHandler<OrderStockNotConfirmedIntegrationEvent>>();
             eventBus.Subscribe<OrderPaymentFailedIntegrationEvent, IIntegrationEventHandler<OrderPaymentFailedIntegrationEvent>>();
