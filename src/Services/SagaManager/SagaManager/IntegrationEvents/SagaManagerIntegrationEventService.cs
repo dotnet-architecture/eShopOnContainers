@@ -9,13 +9,9 @@
         private readonly IEventBus _eventBus;
 
         public SagaManagerIntegrationEventService(IEventBus eventBus)
-        {
-            _eventBus = eventBus ?? throw new ArgumentNullException(nameof(eventBus));
-        }
+            => _eventBus = eventBus ?? throw new ArgumentNullException(nameof(eventBus));
 
-        public void PublishThroughEventBus(IntegrationEvent evt)
-        {
-            _eventBus.Publish(evt);
-        }
+
+        public void PublishThroughEventBus(IntegrationEvent evt) => _eventBus.Publish(evt);
     }
 }

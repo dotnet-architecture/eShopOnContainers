@@ -48,11 +48,8 @@ namespace Ordering.API.Application.Sagas
             var orderSaga = FindSagaById(command.OrderId);
             CheckValidSagaId(orderSaga);
 
-            if (orderSaga.OrderStatus != OrderStatus.Cancelled)
-            {
-                orderSaga.SetAwaitingValidationStatus();
-                await SaveChangesAsync();
-            }
+            orderSaga.SetAwaitingValidationStatus();
+            await SaveChangesAsync();
         }
         
         /// <summary>
@@ -67,14 +64,9 @@ namespace Ordering.API.Application.Sagas
             var orderSaga = FindSagaById(command.OrderNumber);
             CheckValidSagaId(orderSaga);
 
-            // Not possible to cancel order when 
-            // it has already been shipped
-            if (orderSaga.GetOrderStatusId() != OrderStatus.Cancelled.Id
-                || orderSaga.GetOrderStatusId() != OrderStatus.Shipped.Id)
-            {
-                orderSaga.SetCancelledStatus();
-                result = await SaveChangesAsync();
-            }
+            orderSaga.SetCancelledStatus();
+            result = await SaveChangesAsync();
+            
             return result;
         }
 
@@ -90,13 +82,9 @@ namespace Ordering.API.Application.Sagas
             var orderSaga = FindSagaById(command.OrderNumber);
             CheckValidSagaId(orderSaga);
 
-            // Only ship order when 
-            // its status is paid
-            if (orderSaga.GetOrderStatusId() == OrderStatus.Paid.Id)
-            {
-                orderSaga.SetShippedStatus();
-                result = await SaveChangesAsync();
-            }
+            orderSaga.SetShippedStatus();
+            result = await SaveChangesAsync();
+            
             return result;
         }
 

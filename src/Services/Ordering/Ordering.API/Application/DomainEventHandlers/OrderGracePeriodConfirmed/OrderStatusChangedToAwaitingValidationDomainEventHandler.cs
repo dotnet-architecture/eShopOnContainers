@@ -28,8 +28,6 @@
 
         public async Task Handle(OrderStatusChangedToAwaitingValidationDomainEvent orderStatusChangedToAwaitingValidationDomainEvent)
         {
-            await _orderRepository.UnitOfWork.SaveEntitiesAsync();
-
             _logger.CreateLogger(nameof(OrderStatusChangedToAwaitingValidationDomainEvent))
                 .LogTrace($"Order with Id: {orderStatusChangedToAwaitingValidationDomainEvent.OrderId} has been successfully updated with " +
                           $"a status order id: {OrderStatus.AwaitingValidation.Id}");

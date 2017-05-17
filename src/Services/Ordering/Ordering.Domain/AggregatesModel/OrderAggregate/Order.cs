@@ -95,14 +95,11 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
         }
 
         #region Status Changes
-        public void SetSubmitedStatus()
-        {
-            _orderStatusId = OrderStatus.Submited.Id;
-        }
 
         public void SetAwaitingValidationStatus()
         {
-            if (_orderStatusId != OrderStatus.Submited.Id)
+            if (_orderStatusId != OrderStatus.Submited.Id &&
+                _orderStatusId != OrderStatus.Cancelled.Id)
             {
                 StatusChangeException();
             }  
@@ -167,7 +164,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
         {
             if (_orderStatusId == OrderStatus.Submited.Id)
             {
-                _description = "The order was cancelled before the grace period was confirm.";
+                _description = "The order was cancelled before the grace period was confirmed.";
             }
             else if (_orderStatusId == OrderStatus.AwaitingValidation.Id)
             {
@@ -190,11 +187,6 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
         }
 
         #endregion
-
-        public int GetOrderStatusId()
-        {
-            return _orderStatusId;
-        }
 
         private void AddOrderStartedDomainEvent(string userId, int cardTypeId, string cardNumber,
                 string cardSecurityNumber, string cardHolderName, DateTime cardExpiration)

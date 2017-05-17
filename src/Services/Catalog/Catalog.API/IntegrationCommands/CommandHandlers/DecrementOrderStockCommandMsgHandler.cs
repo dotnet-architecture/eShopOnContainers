@@ -3,9 +3,6 @@
     using BuildingBlocks.EventBus.Abstractions;
     using System.Threading.Tasks;
     using Infrastructure;
-    using global::Catalog.API.Infrastructure.Exceptions;
-    using global::Catalog.API.IntegrationEvents;
-    using Model;
     using Commands;
 
     public class DecrementOrderStockCommandMsgHandler : IIntegrationEventHandler<DecrementOrderStockCommandMsg>
