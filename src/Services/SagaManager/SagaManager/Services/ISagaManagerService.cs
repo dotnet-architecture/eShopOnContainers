@@ -2,6 +2,6 @@
 {
     public interface ISagaManagerService
     {
-        void CheckFinishedGracePeriodOrders();
+        void CheckConfirmedGracePeriodOrders();
     }
 }

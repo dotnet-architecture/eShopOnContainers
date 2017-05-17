@@ -35,10 +35,10 @@
             var orderStockList = orderStatusChangedToPaidDomainEvent.OrderItems
                 .Select(orderItem => new OrderStockItem(orderItem.ProductId, orderItem.GetUnits()));
 
-            var decrementOrderStockCommandMsg = new DecrementOrderStockCommandMsg(orderStatusChangedToPaidDomainEvent.OrderId,
+            var decrementOrderStockCommand = new DecrementOrderStockCommand(orderStatusChangedToPaidDomainEvent.OrderId,
                 orderStockList);
-            await _orderingIntegrationEventService.SaveEventAndOrderingContextChangesAsync(decrementOrderStockCommandMsg);
-            await _orderingIntegrationEventService.PublishThroughEventBusAsync(decrementOrderStockCommandMsg);
+            await _orderingIntegrationEventService.SaveEventAndOrderingContextChangesAsync(decrementOrderStockCommand);
+            await _orderingIntegrationEventService.PublishThroughEventBusAsync(decrementOrderStockCommand);
         }
     }  
 }

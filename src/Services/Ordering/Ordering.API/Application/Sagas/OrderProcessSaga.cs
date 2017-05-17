@@ -21,7 +21,7 @@ namespace Ordering.API.Application.Sagas
     /// with the validations.
     /// </summary>
     public class OrderProcessSaga : OrderSaga,
-        IIntegrationEventHandler<ConfirmGracePeriodCommandMsg>,
+        IIntegrationEventHandler<ConfirmGracePeriodCommand>,
         IAsyncRequestHandler<CancelOrderCommand, bool>,
         IAsyncRequestHandler<ShipOrderCommand, bool>
     {
@@ -43,7 +43,7 @@ namespace Ordering.API.Application.Sagas
         /// period has completed.
         /// </param>
         /// <returns></returns>
-        public async Task Handle(ConfirmGracePeriodCommandMsg command)
+        public async Task Handle(ConfirmGracePeriodCommand command)
         {
             var orderSaga = FindSagaById(command.OrderId);
             CheckValidSagaId(orderSaga);

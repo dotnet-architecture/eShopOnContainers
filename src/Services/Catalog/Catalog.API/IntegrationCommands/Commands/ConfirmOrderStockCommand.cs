@@ -1,14 +1,14 @@
-﻿namespace Ordering.API.Application.IntegrationCommands.Commands
+﻿namespace Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationCommands.Commands
 {
+    using BuildingBlocks.EventBus.Events;
     using System.Collections.Generic;
-    using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
 
-    public class ConfirmOrderStockCommandMsg : IntegrationEvent
+    public class ConfirmOrderStockCommand : IntegrationEvent
     {
         public int OrderId { get; }
         public IEnumerable<OrderStockItem> OrderStockItems { get; }
 
-        public ConfirmOrderStockCommandMsg(int orderId,
+        public ConfirmOrderStockCommand(int orderId,
             IEnumerable<OrderStockItem> orderStockItems)
         {
             OrderId = orderId;
