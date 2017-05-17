@@ -121,10 +121,7 @@
                 return new DefaultRabbitMQPersistentConnection(factory, logger);
             });
 
-            services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
-            services.AddSingleton<IEventBus, EventBusRabbitMQ>();
-            services.AddTransient<IIntegrationEventHandler<ConfirmOrderStockCommandMsg>, ConfirmOrderStockCommandMsgHandler>();
-            services.AddTransient<IIntegrationEventHandler<DecrementOrderStockCommandMsg>, DecrementOrderStockCommandMsgHandler>();
+            RegisterServiceBus(services);
 
             var container = new ContainerBuilder();
             container.Populate(services);
@@ -186,6 +183,18 @@
             {
                 ctx.Database.CloseConnection();
             }
+        }
+
+        private void RegisterServiceBus(IServiceCollection services)
+        {
+            services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
+            services.AddSingleton<IEventBus, EventBusRabbitMQ>();
+
+            services.AddTransient<IIntegrationEventHandler<ConfirmOrderStockCommandMsg>,
+                ConfirmOrderStockCommandMsgHandler>();
+            services.AddTransient<IIntegrationEventHandler<DecrementOrderStockCommandMsg>,
+                DecrementOrderStockCommandMsgHandler>();
+
         }
 
         private void ConfigureEventBus(IApplicationBuilder app)

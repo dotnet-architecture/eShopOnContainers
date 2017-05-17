@@ -1,34 +1,27 @@
-﻿using System.Reflection;
-using Microsoft.eShopOnContainers.BuildingBlocks.EventBus;
-using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure;
-using Microsoft.EntityFrameworkCore;
-using SagaManager.IntegrationEvents;
-
-namespace SagaManager
+﻿namespace SagaManager
 {
     using System.IO;
     using System;
+    using System.Threading.Tasks;
+    using Autofac.Extensions.DependencyInjection;
+    using Autofac;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ;
+    using Microsoft.eShopOnContainers.BuildingBlocks.EventBus;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
     using RabbitMQ.Client;
     using Services;
-    using Autofac.Extensions.DependencyInjection;
-    using Autofac;
-    using System.Threading.Tasks;
+    using IntegrationEvents;
 
     public class Program
     {
         public static IConfigurationRoot Configuration { get; set; }
 
-        public static void Main(string[] args)
-        {
-            MainAsync().Wait();
-        }
-
+        public static void Main(string[] args) => MainAsync().Wait();
+        
         static async Task MainAsync()
         {
             StartUp();
@@ -66,8 +59,7 @@ namespace SagaManager
                 .Configure<SagaManagerSettings>(Configuration)
                 .AddSingleton<ISagaManagerService, SagaManagerService>()
                 .AddSingleton<ISagaManagerIntegrationEventService, SagaManagerIntegrationEventService>()
-                .AddSingleton<IEventBus, EventBusRabbitMQ>()
-                .AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>()
+
                 .AddSingleton<IRabbitMQPersistentConnection>(sp =>
                 {
                     var settings = sp.GetRequiredService<IOptions<SagaManagerSettings>>().Value;
@@ -78,8 +70,7 @@ namespace SagaManager
                     };
 
                     return new DefaultRabbitMQPersistentConnection(factory, logger);
-                })
-                .AddSingleton<IEventBus, EventBusRabbitMQ>();
+                });
 
                 RegisterServiceBus(services);
 

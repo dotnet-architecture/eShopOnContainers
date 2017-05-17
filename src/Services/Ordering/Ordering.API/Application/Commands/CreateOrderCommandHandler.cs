@@ -43,7 +43,7 @@
             // make sure that consistency is preserved across the whole aggregate
             var address = new Address(message.Street, message.City, message.State, message.Country, message.ZipCode);
             var order = new Order(message.UserId, address, message.CardTypeId, message.CardNumber, message.CardSecurityNumber, message.CardHolderName, message.CardExpiration);
-            order.SetSubmitedStatus();
+            
             foreach (var item in message.OrderItems)
             {
                 order.AddOrderItem(item.ProductId, item.ProductName, item.UnitPrice, item.Discount, item.PictureUrl, item.Units);
