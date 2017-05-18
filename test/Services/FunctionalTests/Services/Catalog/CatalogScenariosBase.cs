@@ -32,9 +32,9 @@ namespace FunctionalTests.Services.Catalog
             }
         }
 
-        public static class Post
+        public static class Put
         {
-            public static string UpdateCatalogProduct = "api/v1/catalog/update";
+            public static string UpdateCatalogProduct = "api/v1/catalog/items";
         }
     }
 }

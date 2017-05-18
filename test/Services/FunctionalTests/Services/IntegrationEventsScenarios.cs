@@ -43,7 +43,7 @@ namespace FunctionalTests.Services
                 var itemToModify = basket.Items[2];
                 var oldPrice = itemToModify.UnitPrice;
                 var newPrice = oldPrice + priceModification;
-                var pRes = await catalogClient.PostAsync(CatalogScenariosBase.Post.UpdateCatalogProduct, new StringContent(ChangePrice(itemToModify, newPrice, originalCatalogProducts), UTF8Encoding.UTF8, "application/json"));
+                var pRes = await catalogClient.PutAsync(CatalogScenariosBase.Put.UpdateCatalogProduct, new StringContent(ChangePrice(itemToModify, newPrice, originalCatalogProducts), UTF8Encoding.UTF8, "application/json"));
                                 
                 var modifiedCatalogProducts = await GetCatalogAsync(catalogClient);               
 

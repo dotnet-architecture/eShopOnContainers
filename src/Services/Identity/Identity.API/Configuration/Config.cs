@@ -60,7 +60,7 @@ namespace Identity.API.Configuration
                     AllowAccessTokensViaBrowser = true,
                     RedirectUris =          { clientsUrl["Xamarin"] },
                     RequireConsent = false,
-                    PostLogoutRedirectUris = { "http://13.88.8.119:5105/Account/Redirecting", "http://10.6.1.234:5105/Account/Redirecting" },
+                    PostLogoutRedirectUris = { $"{clientsUrl["Xamarin"]}/Account/Redirecting" },
                     AllowedCorsOrigins =     { "http://eshopxamarin" },
                     AllowedScopes =
                     {
@@ -84,15 +84,11 @@ namespace Identity.API.Configuration
                     AllowOfflineAccess = true,
                     RedirectUris = new List<string>
                     {
-                        $"{clientsUrl["Mvc"]}/signin-oidc",
-                        "http://104.40.62.65:5100/signin-oidc", 
-                        "http://localhost:5100/signin-oidc",
-                        "http://13.88.8.119:5100/signin-oidc"
+                        $"{clientsUrl["Mvc"]}/signin-oidc"
                     },
                     PostLogoutRedirectUris = new List<string>
                     {
-                        $"{clientsUrl["Mvc"]}/signout-callback-oidc",
-                        "http://localhost:5100/signout-callback-oidc"
+                        $"{clientsUrl["Mvc"]}/signout-callback-oidc"
                     },
                     AllowedScopes = new List<string>
                     {

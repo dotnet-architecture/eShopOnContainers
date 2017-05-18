@@ -15,6 +15,8 @@ namespace UnitTest.Ordering.Application
     using System.Collections;
     using System.Collections.Generic;
     using Xunit;
+    using static Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands.CreateOrderCommand;
+
     public class NewOrderRequestHandlerTest
     {
         private readonly Mock<IOrderRepository> _orderRepositoryMock;
