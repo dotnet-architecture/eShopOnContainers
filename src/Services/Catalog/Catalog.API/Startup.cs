@@ -14,9 +14,8 @@
     using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF;
     using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF.Services;
     using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
-    using Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationCommands.Commands;
-    using Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationEvents;
-    using Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationCommands.CommandHandlers;
+    using Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationEvents.EventHandling;
+    using Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationEvents.Events;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.HealthChecks;
@@ -27,7 +26,7 @@
     using System.Data.Common;
     using System.Data.SqlClient;
     using System.Reflection;
-    
+
     public class Startup
     {
         public IConfigurationRoot Configuration { get; }
@@ -190,19 +189,20 @@
             services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
             services.AddSingleton<IEventBus, EventBusRabbitMQ>();
 
-            services.AddTransient<IIntegrationEventHandler<ConfirmOrderStockCommand>,
-                ConfirmOrderStockCommandHandler>();
-            services.AddTransient<IIntegrationEventHandler<DecrementOrderStockCommand>,
-                DecrementOrderStockCommandHandler>();
-
+            services.AddTransient<IIntegrationEventHandler<OrderStatusChangedToAwaitingValidationIntegrationEvent>,
+                OrderStatusChangedToAwaitingValidationIntegrationEventHandler>();
+            services.AddTransient<IIntegrationEventHandler<OrderStatusChangedToPaidIntegrationEvent>,
+                OrderStatusChangedToPaidIntegrationEventHandler>();
         }
 
         private void ConfigureEventBus(IApplicationBuilder app)
         {
             var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
 
-            eventBus.Subscribe<ConfirmOrderStockCommand, IIntegrationEventHandler<ConfirmOrderStockCommand>>();
-            eventBus.Subscribe<DecrementOrderStockCommand, IIntegrationEventHandler<DecrementOrderStockCommand>>();
+            eventBus.Subscribe<OrderStatusChangedToAwaitingValidationIntegrationEvent, 
+                IIntegrationEventHandler<OrderStatusChangedToAwaitingValidationIntegrationEvent>>();
+            eventBus.Subscribe<OrderStatusChangedToPaidIntegrationEvent, 
+                IIntegrationEventHandler<OrderStatusChangedToPaidIntegrationEvent>>();
         }
     }
 }

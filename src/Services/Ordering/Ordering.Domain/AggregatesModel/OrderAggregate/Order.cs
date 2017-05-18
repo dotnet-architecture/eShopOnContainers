@@ -94,14 +94,12 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
             _buyerId = id;
         }
 
-        #region Status Changes
-
         public void SetAwaitingValidationStatus()
         {
-            if (_orderStatusId != OrderStatus.Submited.Id &&
-                _orderStatusId != OrderStatus.Cancelled.Id)
+            if (_orderStatusId == OrderStatus.Cancelled.Id ||
+                _orderStatusId != OrderStatus.Submited.Id)
             {
-                StatusChangeException();
+                StatusChangeException(OrderStatus.AwaitingValidation);
             }  
 
             AddDomainEvent(new OrderStatusChangedToAwaitingValidationDomainEvent(Id, _orderItems));
@@ -109,38 +107,24 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
             _orderStatusId = OrderStatus.AwaitingValidation.Id;
         }
 
-        public void SetStockConfirmedStatus(IEnumerable<int> orderStockNotConfirmedItems = null)
+        public void SetStockConfirmedStatus()
         {
             if (_orderStatusId != OrderStatus.AwaitingValidation.Id)
             {
-                StatusChangeException();
+                StatusChangeException(OrderStatus.StockConfirmed);
             }
 
-            if (orderStockNotConfirmedItems is null)
-            {
-                AddDomainEvent(new OrderStatusChangedToStockConfirmedDomainEvent(Id));
+            AddDomainEvent(new OrderStatusChangedToStockConfirmedDomainEvent(Id));
 
-                _orderStatusId = OrderStatus.StockConfirmed.Id;
-                _description = "All the items were confirmed with available stock.";
-            }
-            else
-            {
-                _orderStatusId = OrderStatus.Cancelled.Id;
-
-                var itemsStockNotConfirmedProductNames = OrderItems
-                    .Where(c => orderStockNotConfirmedItems.Contains(c.ProductId))
-                    .Select(c => c.GetOrderItemProductName());
-
-                var itemsStockNotConfirmedDescription = string.Join(", ", itemsStockNotConfirmedProductNames);
-                _description = $"The product items don't have stock: ({itemsStockNotConfirmedDescription}).";   
-            }
+            _orderStatusId = OrderStatus.StockConfirmed.Id;
+            _description = "All the items were confirmed with available stock.";
         }
 
         public void SetPaidStatus()
         {
             if (_orderStatusId != OrderStatus.StockConfirmed.Id)
             {
-                StatusChangeException();
+                StatusChangeException(OrderStatus.Paid);
             }
 
             AddDomainEvent(new OrderStatusChangedToPaidDomainEvent(Id, OrderItems));
@@ -153,40 +137,41 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
         {
             if (_orderStatusId != OrderStatus.Paid.Id)
             {
-                StatusChangeException();
+                StatusChangeException(OrderStatus.Shipped);
             }
 
             _orderStatusId = OrderStatus.Shipped.Id;
-            _description = "";
+            _description = "The order was shipped.";
         }
 
         public void SetCancelledStatus()
         {
-            if (_orderStatusId == OrderStatus.Submited.Id)
+            if (_orderStatusId == OrderStatus.Paid.Id ||
+                _orderStatusId == OrderStatus.Shipped.Id)
             {
-                _description = "The order was cancelled before the grace period was confirmed.";
-            }
-            else if (_orderStatusId == OrderStatus.AwaitingValidation.Id)
-            {
-                _description = "The order was cancelled before to check the order stock items.";
-            }
-            else if (_orderStatusId == OrderStatus.StockConfirmed.Id)
-            {
-                _description = "The order was cancelled before to pay the order.";
-            }
-            else if (_orderStatusId == OrderStatus.Paid.Id)
-            {
-                _description = "The order was cancelled before to ship the order.";
-            }
-            else if(_orderStatusId == OrderStatus.Shipped.Id)
-            {
-                throw new OrderingDomainException("Not possible to change order status. Reason: cannot cancel order it is already shipped.");
+                StatusChangeException(OrderStatus.Cancelled);
             }
 
             _orderStatusId = OrderStatus.Cancelled.Id;
+            _description = $"The order was cancelled.";
         }
 
-        #endregion
+        public void SetCancelledStatusWhenStockIsRejected(IEnumerable<int> orderStockRejectedItems)
+        {
+            if (_orderStatusId != OrderStatus.AwaitingValidation.Id)
+            {
+                StatusChangeException(OrderStatus.Cancelled);
+            }
+
+            _orderStatusId = OrderStatus.Cancelled.Id;
+
+            var itemsStockRejectedProductNames = OrderItems
+                .Where(c => orderStockRejectedItems.Contains(c.ProductId))
+                .Select(c => c.GetOrderItemProductName());
+
+            var itemsStockRejectedDescription = string.Join(", ", itemsStockRejectedProductNames);
+            _description = $"The product items don't have stock: ({itemsStockRejectedDescription}).";
+        }
 
         private void AddOrderStartedDomainEvent(string userId, int cardTypeId, string cardNumber,
                 string cardSecurityNumber, string cardHolderName, DateTime cardExpiration)
@@ -198,9 +183,9 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
             this.AddDomainEvent(orderStartedDomainEvent);
         }
 
-        private void StatusChangeException()
+        private void StatusChangeException(OrderStatus orderStatusToChange)
         {
-            throw new OrderingDomainException("Not able to process order event. Reason: no valid order status change");
+            throw new OrderingDomainException($"Not possible to change order status from {OrderStatus.Name} to {orderStatusToChange.Name}.");
         }
     }
 }

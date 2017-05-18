@@ -3,23 +3,27 @@
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
     using System.Threading.Tasks;
     using Events;
+    using System.Linq;
     using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
 
-    public class OrderStockConfirmedIntegrationEventHandler : 
-        IIntegrationEventHandler<OrderStockConfirmedIntegrationEvent>
+    public class OrderStockRejectedIntegrationEventHandler : IIntegrationEventHandler<OrderStockRejectedIntegrationEvent>
     {
         private readonly IOrderRepository _orderRepository;
 
-        public OrderStockConfirmedIntegrationEventHandler(IOrderRepository orderRepository)
+        public OrderStockRejectedIntegrationEventHandler(IOrderRepository orderRepository)
         {
             _orderRepository = orderRepository;
         }
 
-        public async Task Handle(OrderStockConfirmedIntegrationEvent @event)
+        public async Task Handle(OrderStockRejectedIntegrationEvent @event)
         {
             var orderToUpdate = await _orderRepository.GetAsync(@event.OrderId);
 
-            orderToUpdate.SetStockConfirmedStatus();
+            var orderStockRejectedItems = @event.OrderStockItems
+                .FindAll(c => !c.HasStock)
+                .Select(c => c.ProductId);
+
+            orderToUpdate.SetCancelledStatusWhenStockIsRejected(orderStockRejectedItems);
 
             await _orderRepository.UnitOfWork.SaveEntitiesAsync();
         }

@@ -1,14 +1,14 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationCommands.Commands
+﻿namespace Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationEvents.Events
 {
     using System.Collections.Generic;
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
 
-    public class DecrementOrderStockCommand : IntegrationEvent
+    public class OrderStatusChangedToPaidIntegrationEvent : IntegrationEvent
     {
         public int OrderId { get; }
         public IEnumerable<OrderStockItem> OrderStockItems { get; }
 
-        public DecrementOrderStockCommand(int orderId,
+        public OrderStatusChangedToPaidIntegrationEvent(int orderId,
             IEnumerable<OrderStockItem> orderStockItems)
         {
             OrderId = orderId;

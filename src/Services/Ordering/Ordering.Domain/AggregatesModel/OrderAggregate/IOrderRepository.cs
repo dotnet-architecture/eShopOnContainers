@@ -13,7 +13,5 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
         void Update(Order order);
 
         Task<Order> GetAsync(int orderId);
-
-        Task<Order> GetWithDependenciesAsync(int orderId);
     }
 }

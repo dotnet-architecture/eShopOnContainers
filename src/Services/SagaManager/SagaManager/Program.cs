@@ -14,7 +14,6 @@
     using Microsoft.Extensions.Options;
     using RabbitMQ.Client;
     using Services;
-    using IntegrationEvents;
 
     public class Program
     {
@@ -34,11 +33,13 @@
 
             var sagaManagerService = serviceProvider
                 .GetRequiredService<ISagaManagerService>();
+            var checkUpdateTime = serviceProvider
+                .GetRequiredService<IOptions<SagaManagerSettings>>().Value.CheckUpdateTime;
 
             while (true)
             {
                 sagaManagerService.CheckConfirmedGracePeriodOrders();
-                await Task.Delay(90000);
+                await Task.Delay(checkUpdateTime);
             }
         }
 
@@ -58,8 +59,6 @@
                 .AddOptions()
                 .Configure<SagaManagerSettings>(Configuration)
                 .AddSingleton<ISagaManagerService, SagaManagerService>()
-                .AddSingleton<ISagaManagerIntegrationEventService, SagaManagerIntegrationEventService>()
-
                 .AddSingleton<IRabbitMQPersistentConnection>(sp =>
                 {
                     var settings = sp.GetRequiredService<IOptions<SagaManagerSettings>>().Value;
