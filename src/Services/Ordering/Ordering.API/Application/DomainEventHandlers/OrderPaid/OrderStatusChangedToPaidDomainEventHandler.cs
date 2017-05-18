@@ -6,9 +6,9 @@
     using Domain.Events;
     using System;
     using System.Threading.Tasks;
-    using Ordering.API.Application.IntegrationCommands.Commands;
     using Ordering.API.Application.IntegrationEvents;
     using System.Linq;
+    using Ordering.API.Application.IntegrationEvents.Events;
 
     public class OrderStatusChangedToPaidDomainEventHandler
                    : IAsyncNotificationHandler<OrderStatusChangedToPaidDomainEvent>
@@ -35,10 +35,9 @@
             var orderStockList = orderStatusChangedToPaidDomainEvent.OrderItems
                 .Select(orderItem => new OrderStockItem(orderItem.ProductId, orderItem.GetUnits()));
 
-            var decrementOrderStockCommand = new DecrementOrderStockCommand(orderStatusChangedToPaidDomainEvent.OrderId,
+            var orderStatusChangedToPaidIntegrationEvent = new OrderStatusChangedToPaidIntegrationEvent(orderStatusChangedToPaidDomainEvent.OrderId,
                 orderStockList);
-            await _orderingIntegrationEventService.SaveEventAndOrderingContextChangesAsync(decrementOrderStockCommand);
-            await _orderingIntegrationEventService.PublishThroughEventBusAsync(decrementOrderStockCommand);
+            await _orderingIntegrationEventService.PublishThroughEventBusAsync(orderStatusChangedToPaidIntegrationEvent);
         }
     }  
 }

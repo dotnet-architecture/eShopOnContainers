@@ -30,11 +30,12 @@ namespace Ordering.API.Application.IntegrationEvents
 
         public async Task PublishThroughEventBusAsync(IntegrationEvent evt)
         {
+            await SaveEventAndOrderingContextChangesAsync(evt);
             _eventBus.Publish(evt);
             await _eventLogService.MarkEventAsPublishedAsync(evt);
         }
 
-        public async Task SaveEventAndOrderingContextChangesAsync(IntegrationEvent evt)
+        private async Task SaveEventAndOrderingContextChangesAsync(IntegrationEvent evt)
         {
             //Use of an EF Core resiliency strategy when using multiple DbContexts within an explicit BeginTransaction():
             //See: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency            
