@@ -14,6 +14,8 @@ namespace UnitTest.Ordering.Application
     using System.Collections;
     using System.Collections.Generic;
     using Xunit;
+    using static Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands.CreateOrderCommand;
+
     public class NewOrderRequestHandlerTest
     {
         private readonly Mock<IOrderRepository> _orderRepositoryMock;
@@ -72,7 +74,7 @@ namespace UnitTest.Ordering.Application
         private CreateOrderCommand FakeOrderRequestWithBuyer(Dictionary<string, object> args = null)
         {
             return new CreateOrderCommand(
-                null,
+                new List<OrderItemDTO>(),
                 city: args != null && args.ContainsKey("city") ? (string)args["city"] : null,
                 street: args != null && args.ContainsKey("street") ? (string)args["street"] : null,
                 state: args != null && args.ContainsKey("state") ? (string)args["state"] : null,

@@ -54,29 +54,34 @@ namespace Microsoft.eShopOnContainers.WebMVC
 
             services.AddHealthChecks(checks =>
             {
-                checks.AddUrlCheck(Configuration["CatalogUrl"]);
-                checks.AddUrlCheck(Configuration["OrderingUrl"]);
-                checks.AddUrlCheck(Configuration["BasketUrl"]);
-                checks.AddUrlCheck(Configuration["IdentityUrl"]);
+                var minutes = 1;
+                if (int.TryParse(Configuration["HealthCheck:Timeout"], out var minutesParsed))
+                {
+                    minutes = minutesParsed;
+                }
+                checks.AddUrlCheck(Configuration["CatalogUrl"] + "/hc", TimeSpan.FromMinutes(minutes));
+                checks.AddUrlCheck(Configuration["OrderingUrl"] + "/hc", TimeSpan.FromMinutes(minutes));
+                checks.AddUrlCheck(Configuration["BasketUrl"] + "/hc", TimeSpan.FromMinutes(minutes));
+                checks.AddUrlCheck(Configuration["IdentityUrl"] + "/hc", TimeSpan.FromMinutes(minutes));
             });
 
             // Add application services.
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();            
-            services.AddTransient<ICatalogService, CatalogService>(); 
-            services.AddTransient<IOrderingService, OrderingService>(); 
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddTransient<ICatalogService, CatalogService>();
+            services.AddTransient<IOrderingService, OrderingService>();
             services.AddTransient<IBasketService, BasketService>();
             services.AddTransient<IIdentityParser<ApplicationUser>, IdentityParser>();
 
             if (Configuration.GetValue<string>("UseResilientHttp") == bool.TrueString)
             {
-                services.AddTransient<IResilientHttpClientFactory, ResilientHttpClientFactory>();
-                services.AddTransient<IHttpClient, ResilientHttpClient>(sp => sp.GetService<IResilientHttpClientFactory>().CreateResilientHttpClient());
+                services.AddSingleton<IResilientHttpClientFactory, ResilientHttpClientFactory>();
+                services.AddSingleton<IHttpClient, ResilientHttpClient>(sp => sp.GetService<IResilientHttpClientFactory>().CreateResilientHttpClient());
             }
             else
             {
-                services.AddTransient<IHttpClient, StandardHttpClient>();
+                services.AddSingleton<IHttpClient, StandardHttpClient>();
             }
-        }        
+        }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
@@ -113,10 +118,10 @@ namespace Microsoft.eShopOnContainers.WebMVC
                 AuthenticationScheme = "oidc",
                 SignInScheme = "Cookies",
                 Authority = identityUrl.ToString(),
-                PostLogoutRedirectUri = callBackUrl.ToString(), 
+                PostLogoutRedirectUri = callBackUrl.ToString(),
                 ClientId = "mvc",
                 ClientSecret = "secret",
-                ResponseType = "code id_token", 
+                ResponseType = "code id_token",
                 SaveTokens = true,
                 GetClaimsFromUserInfoEndpoint = true,
                 RequireHttpsMetadata = false,

@@ -5,9 +5,8 @@ using Microsoft.eShopOnContainers.WebMVC.ViewModels;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
+using WebMVC.Infrastructure;
 
 namespace Microsoft.eShopOnContainers.WebMVC.Services
 {
@@ -28,15 +27,13 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
 
         public async Task<Basket> GetBasket(ApplicationUser user)
         {
-            var context = _httpContextAccesor.HttpContext;
-            var token = await context.Authentication.GetTokenAsync("access_token");
+            var token = await GetUserTokenAsync();
+            var getBasketUri = API.Basket.GetBasket(_remoteServiceBaseUrl, user.Id);
 
-            _apiClient.Inst.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+            var dataString = await _apiClient.GetStringAsync(getBasketUri, token);
 
-            var basketUrl = $"{_remoteServiceBaseUrl}/{user.Id}";
-            var dataString = await _apiClient.GetStringAsync(basketUrl);
             // Use the ?? Null conditional operator to simplify the initialization of response
-            var response = JsonConvert.DeserializeObject<Basket>(dataString) ?? 
+            var response = JsonConvert.DeserializeObject<Basket>(dataString) ??
                 new Basket()
                 {
                     BuyerId = user.Id
@@ -47,14 +44,10 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
 
         public async Task<Basket> UpdateBasket(Basket basket)
         {
-            var context = _httpContextAccesor.HttpContext;
-            var token = await context.Authentication.GetTokenAsync("access_token");
-           
-            _apiClient.Inst.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+            var token = await GetUserTokenAsync();
+            var updateBasketUri = API.Basket.UpdateBasket(_remoteServiceBaseUrl);
 
-            var basketUrl = _remoteServiceBaseUrl;
-            
-            var response = await _apiClient.PostAsync(basketUrl, basket);
+            var response = await _apiClient.PostAsync(updateBasketUri, basket, token);
 
             response.EnsureSuccessStatusCode();
 
@@ -88,7 +81,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
                 order.OrderItems.Add(new OrderItem()
                 {
                     ProductId = int.Parse(x.ProductId),
-                    
+
                     PictureUrl = x.PictureUrl,
                     ProductName = x.ProductName,
                     Units = x.Quantity,
@@ -102,7 +95,8 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
 
         public async Task AddItemToBasket(ApplicationUser user, BasketItem product)
         {
-            Basket basket = await GetBasket(user);
+            var basket = await GetBasket(user);
+
             if (basket == null)
             {
                 basket = new Basket()
@@ -113,20 +107,25 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
             }
 
             basket.Items.Add(product);
+
             await UpdateBasket(basket);
         }
 
         public async Task CleanBasket(ApplicationUser user)
         {
-            var context = _httpContextAccesor.HttpContext;
-            var token = await context.Authentication.GetTokenAsync("access_token");
+            var token = await GetUserTokenAsync();
+            var cleanBasketUri = API.Basket.CleanBasket(_remoteServiceBaseUrl, user.Id);
 
-            _apiClient.Inst.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
-            var basketUrl = $"{_remoteServiceBaseUrl}/{user.Id}";
-            var response = await _apiClient.DeleteAsync(basketUrl);
-            
+            var response = await _apiClient.DeleteAsync(cleanBasketUri, token);
+
             //CCE: response status code...
 
+        }
+
+        async Task<string> GetUserTokenAsync()
+        {
+            var context = _httpContextAccesor.HttpContext;
+            return await context.Authentication.GetTokenAsync("access_token");
         }
     }
 }
