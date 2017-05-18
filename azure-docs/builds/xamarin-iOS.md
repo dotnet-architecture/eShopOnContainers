@@ -12,7 +12,7 @@ Despite the _"Get Sources"_ task there are three tasks more in the build:
 2. Copy generated packages
 3. Publish the build artifact.
 
-![iOS Build Steps](images/android-ios.png)
+![iOS Build Steps](images/ios-build.png)
 
 Let's discuss each of them.
 
