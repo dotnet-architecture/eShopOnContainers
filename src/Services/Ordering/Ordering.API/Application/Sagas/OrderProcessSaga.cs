@@ -5,8 +5,7 @@ using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.Order
 using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure;
 using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Idempotency;
 using Ordering.API.Application.Commands;
-using Ordering.API.Application.IntegrationCommands.Commands;
-using Ordering.API.Application.IntegrationEvents;
+using Ordering.API.Application.IntegrationEvents.Events;
 using Ordering.Domain.Exceptions;
 using System.Threading.Tasks;
 
@@ -21,7 +20,7 @@ namespace Ordering.API.Application.Sagas
     /// with the validations.
     /// </summary>
     public class OrderProcessSaga : OrderSaga,
-        IIntegrationEventHandler<ConfirmGracePeriodCommand>,
+        IIntegrationEventHandler<GracePeriodConfirmedIntegrationEvent>,
         IAsyncRequestHandler<CancelOrderCommand, bool>,
         IAsyncRequestHandler<ShipOrderCommand, bool>
     {
@@ -43,9 +42,9 @@ namespace Ordering.API.Application.Sagas
         /// period has completed.
         /// </param>
         /// <returns></returns>
-        public async Task Handle(ConfirmGracePeriodCommand command)
+        public async Task Handle(GracePeriodConfirmedIntegrationEvent @event)
         {
-            var orderSaga = FindSagaById(command.OrderId);
+            var orderSaga = FindSagaById(@event.OrderId);
             CheckValidSagaId(orderSaga);
 
             orderSaga.SetAwaitingValidationStatus();
@@ -96,8 +95,6 @@ namespace Ordering.API.Application.Sagas
             }
         }
 
-        #region CommandHandlerIdentifiers
-
         public class CancelOrderCommandIdentifiedHandler : IdentifierCommandHandler<CancelOrderCommand, bool>
         {
             public CancelOrderCommandIdentifiedHandler(IMediator mediator, IRequestManager requestManager) : base(mediator, requestManager)
@@ -121,7 +118,5 @@ namespace Ordering.API.Application.Sagas
                 return true;                // Ignore duplicate requests for processing order.
             }
         }
-
-        #endregion
     }
 }

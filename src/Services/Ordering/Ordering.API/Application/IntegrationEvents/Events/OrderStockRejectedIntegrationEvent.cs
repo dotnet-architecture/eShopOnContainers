@@ -1,16 +1,15 @@
-﻿using System.Collections.Generic;
-
-namespace Ordering.API.Application.IntegrationEvents.Events
+﻿namespace Ordering.API.Application.IntegrationEvents.Events
 {
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
+    using System.Collections.Generic;
 
-    public class OrderStockNotConfirmedIntegrationEvent : IntegrationEvent
+    public class OrderStockRejectedIntegrationEvent : IntegrationEvent
     {
         public int OrderId { get; }
 
         public List<ConfirmedOrderStockItem> OrderStockItems { get; }
 
-        public OrderStockNotConfirmedIntegrationEvent(int orderId,
+        public OrderStockRejectedIntegrationEvent(int orderId,
             List<ConfirmedOrderStockItem> orderStockItems)
         {
             OrderId = orderId;

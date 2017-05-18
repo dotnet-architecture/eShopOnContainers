@@ -20,6 +20,7 @@ namespace Ordering.API.Application.Sagas
             var order = _orderingContext.Orders
                 .Include(c => c.OrderStatus)
                 .Include(c => c.OrderItems)
+                .Include(c => c.Address)
                 .Single(c => c.Id == id);
 
             return order;

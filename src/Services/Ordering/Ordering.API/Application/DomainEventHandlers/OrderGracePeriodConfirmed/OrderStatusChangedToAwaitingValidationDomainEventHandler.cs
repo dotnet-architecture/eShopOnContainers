@@ -6,9 +6,9 @@
     using Domain.Events;
     using System;
     using System.Threading.Tasks;
-    using Ordering.API.Application.IntegrationCommands.Commands;
     using Ordering.API.Application.IntegrationEvents;
     using System.Linq;
+    using Ordering.API.Application.IntegrationEvents.Events;
 
     public class OrderStatusChangedToAwaitingValidationDomainEventHandler
                    : IAsyncNotificationHandler<OrderStatusChangedToAwaitingValidationDomainEvent>
@@ -35,10 +35,9 @@
             var orderStockList = orderStatusChangedToAwaitingValidationDomainEvent.OrderItems
                 .Select(orderItem => new OrderStockItem(orderItem.ProductId, orderItem.GetUnits()));
 
-            var confirmOrderStockCommand = new ConfirmOrderStockCommand(orderStatusChangedToAwaitingValidationDomainEvent.OrderId, 
-                orderStockList);
-            await _orderingIntegrationEventService.SaveEventAndOrderingContextChangesAsync(confirmOrderStockCommand);
-            await _orderingIntegrationEventService.PublishThroughEventBusAsync(confirmOrderStockCommand);
+            var orderStatusChangedToAwaitingValidationIntegrationEvent = new OrderStatusChangedToAwaitingValidationIntegrationEvent(
+                orderStatusChangedToAwaitingValidationDomainEvent.OrderId, orderStockList);
+            await _orderingIntegrationEventService.PublishThroughEventBusAsync(orderStatusChangedToAwaitingValidationIntegrationEvent);
         }
     }  
 }
