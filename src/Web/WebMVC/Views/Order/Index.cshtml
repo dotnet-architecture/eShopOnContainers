@@ -31,9 +31,9 @@
                     <a class="esh-orders-link" asp-controller="Order" asp-action="Detail" asp-route-orderId="@item.OrderNumber">Detail</a>
                 </section>
                 <section class="esh-orders-item col-xs-1">
-                    @if ((item.Status.ToLower() != "shipped") && (item.Status.ToLower() != "cancelled"))
+                    @if (item.Status.ToLower() == "submited")
                     {
-                        <a class="esh-orders-link" asp-controller="Order" asp-action="Cancel" asp-route-orderId="@item.OrderNumber">Cancel</a>
+                        <a class="esh-orders-link" asp-controller="Order" asp-action="cancel" asp-route-orderId="@item.OrderNumber">Cancel</a>
                     }                    
                 </section>
             </article>
