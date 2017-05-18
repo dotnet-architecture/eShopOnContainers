@@ -22,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="1.0.0" />
     <PackageReference Include="System.Threading" Version="4.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="1.1.3" />
     <PackageReference Include="Microsoft.AspNetCore.Server.IISIntegration" Version="1.1.2" />
@@ -36,7 +37,6 @@
     <PackageReference Include="StackExchange.Redis" Version="1.1.608" />
     <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
     <PackageReference Include="IdentityServer4.AccessTokenValidation" Version="1.0.1-rc3" />
-    <PackageReference Include="Swashbuckle" Version="6.0.0-beta902" />
   </ItemGroup>
 
   <ItemGroup>
