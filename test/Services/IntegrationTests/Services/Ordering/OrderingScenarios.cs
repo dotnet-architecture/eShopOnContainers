@@ -2,6 +2,7 @@
 {
     using IntegrationTests.Services.Extensions;
     using Newtonsoft.Json;
+    using System.Net;
     using System.Net.Http;
     using System.Text;
     using System.Threading.Tasks;
@@ -24,7 +25,7 @@
         }
 
         [Fact]
-        public async Task Cancel_order_and_response_ok_status_code()
+        public async Task Cancel_order_no_order_created_response_bad_status_code()
         {
             using (var server = CreateServer())
             {
@@ -32,12 +33,12 @@
                 var response = await server.CreateIdempotentClient()
                     .PutAsync(Put.CancelOrder, content);
 
-                response.EnsureSuccessStatusCode();
+                Assert.Equal(response.StatusCode, HttpStatusCode.InternalServerError);
             }
         }
 
         [Fact]
-        public async Task Ship_order_and_response_bad_status_code()
+        public async Task Ship_order_no_order_created_response_bad_status_code()
         {
             using (var server = CreateServer())
             {
@@ -45,7 +46,7 @@
                 var response = await server.CreateIdempotentClient()
                     .PutAsync(Put.ShipOrder, content);
 
-                response.EnsureSuccessStatusCode();
+                Assert.Equal(response.StatusCode, HttpStatusCode.InternalServerError);
             }
         }
 

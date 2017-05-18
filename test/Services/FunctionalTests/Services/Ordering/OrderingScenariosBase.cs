@@ -32,5 +32,18 @@ namespace FunctionalTests.Services.Ordering
         {
             public static string AddNewOrder = "api/v1/orders/new";
         }
+
+        public static class Put
+        {
+            public static string CancelOrder = "api/v1/orders/cancel";
+        }
+
+        public static class Delete
+        {
+            public static string OrderBy(int id)
+            {
+                return $"api/v1/orders/{id}";
+            }
+        }
     }
 }

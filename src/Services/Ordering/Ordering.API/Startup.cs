@@ -4,6 +4,7 @@
     using Autofac;
     using Autofac.Extensions.DependencyInjection;
     using global::Ordering.API.Application.IntegrationEvents;
+    using global::Ordering.API.Application.IntegrationEvents.EventHandling;
     using global::Ordering.API.Application.IntegrationEvents.Events;
     using global::Ordering.API.Infrastructure.Middlewares;
     using Infrastructure;
@@ -121,7 +122,7 @@
                 return new DefaultRabbitMQPersistentConnection(factory, logger);
             });
 
-            RegisterServiceBus(services);
+            RegisterServiceBus(services);            
             services.AddOptions();
 
             //configure autofac
