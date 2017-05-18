@@ -121,10 +121,7 @@
                 return new DefaultRabbitMQPersistentConnection(factory, logger);
             });
 
-            services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
-            services.AddSingleton<IEventBus, EventBusRabbitMQ>();
-            services.AddTransient<IIntegrationEventHandler<ConfirmOrderStockCommandMsg>, ConfirmOrderStockCommandMsgHandler>();
-            services.AddTransient<IIntegrationEventHandler<DecrementOrderStockCommandMsg>, DecrementOrderStockCommandMsgHandler>();
+            RegisterServiceBus(services);
 
             var container = new ContainerBuilder();
             container.Populate(services);
@@ -188,12 +185,24 @@
             }
         }
 
+        private void RegisterServiceBus(IServiceCollection services)
+        {
+            services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
+            services.AddSingleton<IEventBus, EventBusRabbitMQ>();
+
+            services.AddTransient<IIntegrationEventHandler<ConfirmOrderStockCommand>,
+                ConfirmOrderStockCommandHandler>();
+            services.AddTransient<IIntegrationEventHandler<DecrementOrderStockCommand>,
+                DecrementOrderStockCommandHandler>();
+
+        }
+
         private void ConfigureEventBus(IApplicationBuilder app)
         {
             var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
 
-            eventBus.Subscribe<ConfirmOrderStockCommandMsg, IIntegrationEventHandler<ConfirmOrderStockCommandMsg>>();
-            eventBus.Subscribe<DecrementOrderStockCommandMsg, IIntegrationEventHandler<DecrementOrderStockCommandMsg>>();
+            eventBus.Subscribe<ConfirmOrderStockCommand, IIntegrationEventHandler<ConfirmOrderStockCommand>>();
+            eventBus.Subscribe<DecrementOrderStockCommand, IIntegrationEventHandler<DecrementOrderStockCommand>>();
         }
     }
 }

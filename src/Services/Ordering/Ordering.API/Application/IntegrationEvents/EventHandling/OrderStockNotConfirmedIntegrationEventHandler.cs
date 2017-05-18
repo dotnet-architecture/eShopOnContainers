@@ -19,13 +19,15 @@ namespace Ordering.API.Application.IntegrationEvents.EventHandling
 
         public async Task Handle(OrderStockNotConfirmedIntegrationEvent @event)
         {
-            var orderToUpdate = await _orderRepository.GetAsync(@event.OrderId);
+            var orderToUpdate = await _orderRepository.GetWithDependenciesAsync(@event.OrderId);
 
             var orderStockNotConfirmedItems = @event.OrderStockItems
-                .FindAll(c => !c.Confirmed)
+                .FindAll(c => !c.HasStock)
                 .Select(c => c.ProductId);
 
             orderToUpdate.SetStockConfirmedStatus(orderStockNotConfirmedItems);
+
+            await _orderRepository.UnitOfWork.SaveEntitiesAsync();
         }
     }
 }

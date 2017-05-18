@@ -2,11 +2,11 @@
 {
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
 
-    public class ShipOrderCommandMsg : IntegrationEvent
+    public class PayOrderCommand : IntegrationEvent
     {
         public int OrderId { get; }
 
-        public ShipOrderCommandMsg(int orderId)
+        public PayOrderCommand(int orderId)
         {
             OrderId = orderId;
         }

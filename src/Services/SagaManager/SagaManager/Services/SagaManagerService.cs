@@ -1,12 +1,9 @@
-﻿using System;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
-
-namespace SagaManager.Services
+﻿namespace SagaManager.Services
 {
     using System.Collections.Generic;
     using System.Data.SqlClient;
     using Microsoft.Extensions.Options;
+    using Microsoft.Extensions.Logging;
     using Dapper;
     using IntegrationEvents;
     using IntegrationEvents.Events;
@@ -26,17 +23,18 @@ namespace SagaManager.Services
             _logger = logger;
         }
 
-        public void CheckFinishedGracePeriodOrders()
+        public void CheckConfirmedGracePeriodOrders()
         {
-            var orderIds = GetFinishedGracePeriodOrders();
+            var orderIds = GetConfirmedGracePeriodOrders();
 
             foreach (var orderId in orderIds)
             {
-                Publish(orderId);
+                var confirmGracePeriodEvent = new ConfirmGracePeriodCommand(orderId);
+                _sagaManagerIntegrationEventService.PublishThroughEventBus(confirmGracePeriodEvent);
             }
         }
 
-        private IEnumerable<int> GetFinishedGracePeriodOrders()
+        private IEnumerable<int> GetConfirmedGracePeriodOrders()
         {
             IEnumerable<int> orderIds = new List<int>();
             using (var conn = new SqlConnection(_settings.ConnectionString))
@@ -59,14 +57,6 @@ namespace SagaManager.Services
             }
 
             return orderIds;
-        }
-
-        private void Publish(int orderId)
-        {
-            var confirmGracePeriodEvent = new ConfirmGracePeriodCommandMsg(orderId);
-
-            // Publish through the Event Bus
-            _sagaManagerIntegrationEventService.PublishThroughEventBus(confirmGracePeriodEvent);
         }
     }
 }

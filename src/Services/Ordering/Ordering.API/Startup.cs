@@ -31,6 +31,7 @@
     using System;
     using System.Data.Common;
     using System.Reflection;
+    using global::Ordering.API.Application.IntegrationEvents.EventHandling;
 
     public class Startup
     {
@@ -124,6 +125,7 @@
                 return new DefaultRabbitMQPersistentConnection(factory, logger);
             });
 
+            RegisterServiceBus(services);
             services.AddSingleton<IEventBus, EventBusRabbitMQ>();
             services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
             services.AddTransient<UserCheckoutAcceptedIntegrationEventHandler>();
@@ -170,10 +172,33 @@
 
         }
 
+        private void RegisterServiceBus(IServiceCollection services)
+        {
+            services.AddSingleton<IEventBus, EventBusRabbitMQ>();
+            services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
+
+            services.AddTransient<IIntegrationEventHandler<UserCheckoutAcceptedIntegrationEvent>>();
+            services.AddTransient<IIntegrationEventHandler<ConfirmGracePeriodCommand>, OrderProcessSaga>();
+            services.AddTransient<IIntegrationEventHandler<OrderStockConfirmedIntegrationEvent>,
+                OrderStockConfirmedIntegrationEventHandler>();
+            services.AddTransient<IIntegrationEventHandler<OrderStockNotConfirmedIntegrationEvent>,
+                OrderStockNotConfirmedIntegrationEventHandler>();
+            services.AddTransient<IIntegrationEventHandler<OrderPaymentFailedIntegrationEvent>,
+                OrderPaymentFailedIntegrationEventHandler>();
+            services.AddTransient<IIntegrationEventHandler<OrderPaymentSuccededIntegrationEvent>,
+                OrderPaymentSuccededIntegrationEventHandler>();
+        }
+
         private void ConfigureEventBus(IApplicationBuilder app)
         {
             var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
 
+            eventBus.Subscribe<UserCheckoutAcceptedIntegrationEvent, IIntegrationEventHandler<UserCheckoutAcceptedIntegrationEvent>>();
+            eventBus.Subscribe<ConfirmGracePeriodCommand, IIntegrationEventHandler<ConfirmGracePeriodCommand>>();
+            eventBus.Subscribe<OrderStockConfirmedIntegrationEvent, IIntegrationEventHandler<OrderStockConfirmedIntegrationEvent>>();
+            eventBus.Subscribe<OrderStockNotConfirmedIntegrationEvent, IIntegrationEventHandler<OrderStockNotConfirmedIntegrationEvent>>();
+            eventBus.Subscribe<OrderPaymentFailedIntegrationEvent, IIntegrationEventHandler<OrderPaymentFailedIntegrationEvent>>();
+            eventBus.Subscribe<OrderPaymentSuccededIntegrationEvent, IIntegrationEventHandler<OrderPaymentSuccededIntegrationEvent>>();
             eventBus.Subscribe<UserCheckoutAcceptedIntegrationEvent, UserCheckoutAcceptedIntegrationEventHandler>();
 
             eventBus.Subscribe<ConfirmGracePeriodCommandMsg, IIntegrationEventHandler<ConfirmGracePeriodCommandMsg>>();

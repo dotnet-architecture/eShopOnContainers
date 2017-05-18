@@ -28,8 +28,6 @@
 
         public async Task Handle(OrderStatusChangedToPaidDomainEvent orderStatusChangedToPaidDomainEvent)
         {
-            await _orderRepository.UnitOfWork.SaveEntitiesAsync();
-
             _logger.CreateLogger(nameof(OrderStatusChangedToPaidDomainEventHandler))
                 .LogTrace($"Order with Id: {orderStatusChangedToPaidDomainEvent.OrderId} has been successfully updated with " +
                           $"a status order id: {OrderStatus.Paid.Id}");
@@ -37,15 +35,10 @@
             var orderStockList = orderStatusChangedToPaidDomainEvent.OrderItems
                 .Select(orderItem => new OrderStockItem(orderItem.ProductId, orderItem.GetUnits()));
 
-            var decrementOrderStockCommandMsg = new DecrementOrderStockCommandMsg(orderStatusChangedToPaidDomainEvent.OrderId,
+            var decrementOrderStockCommand = new DecrementOrderStockCommand(orderStatusChangedToPaidDomainEvent.OrderId,
                 orderStockList);
-            await _orderingIntegrationEventService.SaveEventAndOrderingContextChangesAsync(decrementOrderStockCommandMsg);
-            await _orderingIntegrationEventService.PublishThroughEventBusAsync(decrementOrderStockCommandMsg);
-
-            //is it necessary get a DecrementOrderStockSuccessIntegrationEvent/DecrementOrderStockFailedIntegrationEvent before to call ShipOrderCommandMsg???
-            var shipOrderCommandMsg = new ShipOrderCommandMsg(orderStatusChangedToPaidDomainEvent.OrderId);
-            await _orderingIntegrationEventService.SaveEventAndOrderingContextChangesAsync(shipOrderCommandMsg);
-            await _orderingIntegrationEventService.PublishThroughEventBusAsync(shipOrderCommandMsg);
+            await _orderingIntegrationEventService.SaveEventAndOrderingContextChangesAsync(decrementOrderStockCommand);
+            await _orderingIntegrationEventService.PublishThroughEventBusAsync(decrementOrderStockCommand);
         }
     }  
 }

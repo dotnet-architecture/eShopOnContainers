@@ -28,8 +28,6 @@
 
         public async Task Handle(OrderStatusChangedToAwaitingValidationDomainEvent orderStatusChangedToAwaitingValidationDomainEvent)
         {
-            await _orderRepository.UnitOfWork.SaveEntitiesAsync();
-
             _logger.CreateLogger(nameof(OrderStatusChangedToAwaitingValidationDomainEvent))
                 .LogTrace($"Order with Id: {orderStatusChangedToAwaitingValidationDomainEvent.OrderId} has been successfully updated with " +
                           $"a status order id: {OrderStatus.AwaitingValidation.Id}");
@@ -37,10 +35,10 @@
             var orderStockList = orderStatusChangedToAwaitingValidationDomainEvent.OrderItems
                 .Select(orderItem => new OrderStockItem(orderItem.ProductId, orderItem.GetUnits()));
 
-            var confirmOrderStockEvent = new ConfirmOrderStockCommandMsg(orderStatusChangedToAwaitingValidationDomainEvent.OrderId, 
+            var confirmOrderStockCommand = new ConfirmOrderStockCommand(orderStatusChangedToAwaitingValidationDomainEvent.OrderId, 
                 orderStockList);
-            await _orderingIntegrationEventService.SaveEventAndOrderingContextChangesAsync(confirmOrderStockEvent);
-            await _orderingIntegrationEventService.PublishThroughEventBusAsync(confirmOrderStockEvent);
+            await _orderingIntegrationEventService.SaveEventAndOrderingContextChangesAsync(confirmOrderStockCommand);
+            await _orderingIntegrationEventService.PublishThroughEventBusAsync(confirmOrderStockCommand);
         }
     }  
 }

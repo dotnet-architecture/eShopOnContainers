@@ -7,25 +7,25 @@
     {
         public int OrderId { get; }
 
-        public IEnumerable<ConfirmedOrderStockItem> OrderStockItem { get; }
+        public List<ConfirmedOrderStockItem> OrderStockItems { get; }
 
-        public OrderStockNotConfirmedIntegrationEvent(int orderId, 
-            IEnumerable<ConfirmedOrderStockItem> orderStockItem)
+        public OrderStockNotConfirmedIntegrationEvent(int orderId,
+            List<ConfirmedOrderStockItem> orderStockItems)
         {
             OrderId = orderId;
-            OrderStockItem = orderStockItem;
+            OrderStockItems = orderStockItems;
         }
     }
 
     public class ConfirmedOrderStockItem
     {
         public int ProductId { get; }
-        public bool Confirmed { get; }
+        public bool HasStock { get; }
 
-        public ConfirmedOrderStockItem(int productId, bool confirmed)
+        public ConfirmedOrderStockItem(int productId, bool hasStock)
         {
             ProductId = productId;
-            Confirmed = confirmed;
+            HasStock = hasStock;
         }
     }
 }

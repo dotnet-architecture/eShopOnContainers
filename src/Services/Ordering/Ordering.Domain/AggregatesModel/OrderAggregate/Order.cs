@@ -30,7 +30,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
         // but only through the method OrderAggrergateRoot.AddOrderItem() which includes behaviour.
         private readonly List<OrderItem> _orderItems;
 
-        public IEnumerable<OrderItem> OrderItems => _orderItems.AsReadOnly();
+        public IReadOnlyCollection<OrderItem> OrderItems => _orderItems;
         // Using List<>.AsReadOnly() 
         // This will create a read only wrapper around the private list so is protected against "external updates".
         // It's much cheaper than .ToList() because it will not have to copy all items in a new collection. (Just one heap alloc for the wrapper instance)
@@ -95,21 +95,18 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
         }
 
         #region Status Changes
-        public void SetSubmitedStatus()
-        {
-            _orderStatusId = OrderStatus.Submited.Id;
-        }
 
         public void SetAwaitingValidationStatus()
         {
-            if (_orderStatusId != OrderStatus.Submited.Id)
+            if (_orderStatusId != OrderStatus.Submited.Id &&
+                _orderStatusId != OrderStatus.Cancelled.Id)
             {
                 StatusChangeException();
             }  
 
-            _orderStatusId = OrderStatus.AwaitingValidation.Id;
+            AddDomainEvent(new OrderStatusChangedToAwaitingValidationDomainEvent(Id, _orderItems));
 
-            AddDomainEvent(new OrderStatusChangedToAwaitingValidationDomainEvent(Id, OrderItems));
+            _orderStatusId = OrderStatus.AwaitingValidation.Id;
         }
 
         public void SetStockConfirmedStatus(IEnumerable<int> orderStockNotConfirmedItems = null)
@@ -121,15 +118,14 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
 
             if (orderStockNotConfirmedItems is null)
             {
-                OrderStatus = OrderStatus.StockConfirmed;
-
-                _description = "All the items were confirmed with available stock.";
-
                 AddDomainEvent(new OrderStatusChangedToStockConfirmedDomainEvent(Id));
+
+                _orderStatusId = OrderStatus.StockConfirmed.Id;
+                _description = "All the items were confirmed with available stock.";
             }
             else
             {
-                OrderStatus = OrderStatus.Cancelled;
+                _orderStatusId = OrderStatus.Cancelled.Id;
 
                 var itemsStockNotConfirmedProductNames = OrderItems
                     .Where(c => orderStockNotConfirmedItems.Contains(c.ProductId))
@@ -147,10 +143,10 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
                 StatusChangeException();
             }
 
+            AddDomainEvent(new OrderStatusChangedToPaidDomainEvent(Id, OrderItems));
+
             _orderStatusId = OrderStatus.Paid.Id;
             _description = "The payment was performed at a simulated \"American Bank checking bank account endinf on XX35071\"";
-
-            AddDomainEvent(new OrderStatusChangedToPaidDomainEvent(Id, OrderItems));
         }
 
         public void SetShippedStatus()
@@ -162,15 +158,13 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
 
             _orderStatusId = OrderStatus.Shipped.Id;
             _description = "";
-
-            //Call Domain Event
         }
 
         public void SetCancelledStatus()
         {
             if (_orderStatusId == OrderStatus.Submited.Id)
             {
-                _description = "The order was cancelled before the grace period was confirm.";
+                _description = "The order was cancelled before the grace period was confirmed.";
             }
             else if (_orderStatusId == OrderStatus.AwaitingValidation.Id)
             {
@@ -193,11 +187,6 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
         }
 
         #endregion
-
-        public int GetOrderStatusId()
-        {
-            return _orderStatusId;
-        }
 
         private void AddOrderStartedDomainEvent(string userId, int cardTypeId, string cardNumber,
                 string cardSecurityNumber, string cardHolderName, DateTime cardExpiration)
