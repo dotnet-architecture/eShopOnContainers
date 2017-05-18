@@ -1,4 +1,4 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationCommands.CommandHandlers
+﻿namespace Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationEvents.EventHandling
 {
     using BuildingBlocks.EventBus.Abstractions;
     using System.Threading.Tasks;
@@ -6,53 +6,41 @@
     using Infrastructure;
     using System.Collections.Generic;
     using System.Linq;
-    using global::Catalog.API.Infrastructure.Exceptions;
     using global::Catalog.API.IntegrationEvents;
-    using Model;
-    using Commands;
     using IntegrationEvents.Events;
 
-    public class ConfirmOrderStockCommandHandler : IIntegrationEventHandler<ConfirmOrderStockCommand>
+    public class OrderStatusChangedToAwaitingValidationIntegrationEventHandler : 
+        IIntegrationEventHandler<OrderStatusChangedToAwaitingValidationIntegrationEvent>
     {
         private readonly CatalogContext _catalogContext;
         private readonly ICatalogIntegrationEventService _catalogIntegrationEventService;
 
-        public ConfirmOrderStockCommandHandler(CatalogContext catalogContext,
+        public OrderStatusChangedToAwaitingValidationIntegrationEventHandler(CatalogContext catalogContext,
             ICatalogIntegrationEventService catalogIntegrationEventService)
         {
             _catalogContext = catalogContext;
             _catalogIntegrationEventService = catalogIntegrationEventService;
         }
 
-        public async Task Handle(ConfirmOrderStockCommand command)
+        public async Task Handle(OrderStatusChangedToAwaitingValidationIntegrationEvent command)
         {
             var confirmedOrderStockItems = new List<ConfirmedOrderStockItem>();
 
             foreach (var orderStockItem in command.OrderStockItems)
             {
                 var catalogItem = _catalogContext.CatalogItems.Find(orderStockItem.ProductId);
-                CheckValidcatalogItemId(catalogItem);
-
-                var confirmedOrderStockItem = new ConfirmedOrderStockItem(catalogItem.Id, 
-                    catalogItem.AvailableStock >= orderStockItem.Units);
+                var hasStock = catalogItem.AvailableStock >= orderStockItem.Units;
+                var confirmedOrderStockItem = new ConfirmedOrderStockItem(catalogItem.Id, hasStock);
 
                 confirmedOrderStockItems.Add(confirmedOrderStockItem);
             }
 
             var confirmedIntegrationEvent = confirmedOrderStockItems.Any(c => !c.HasStock)
-                ? (IntegrationEvent) new OrderStockNotConfirmedIntegrationEvent(command.OrderId, confirmedOrderStockItems)
+                ? (IntegrationEvent) new OrderStockRejectedIntegrationEvent(command.OrderId, confirmedOrderStockItems)
                 : new OrderStockConfirmedIntegrationEvent(command.OrderId);
 
             await _catalogIntegrationEventService.SaveEventAndCatalogContextChangesAsync(confirmedIntegrationEvent);
             await _catalogIntegrationEventService.PublishThroughEventBusAsync(confirmedIntegrationEvent);
-        }
-
-        private void CheckValidcatalogItemId(CatalogItem catalogItem)
-        {
-            if (catalogItem is null)
-            {
-                throw new CatalogDomainException("Not able to process catalog event. Reason: no valid catalogItemId");
-            }
         }
     }
 }

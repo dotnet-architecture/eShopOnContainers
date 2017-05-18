@@ -17,12 +17,11 @@ namespace Ordering.API.Application.Sagas
 
         public override Order FindSagaById(int id)
         {
-            var order = _orderingContext.Orders
+            return _orderingContext.Orders
                 .Include(c => c.OrderStatus)
                 .Include(c => c.OrderItems)
+                .Include(c => c.Address)
                 .Single(c => c.Id == id);
-
-            return order;
         }
 
         public override async Task<bool> SaveChangesAsync()

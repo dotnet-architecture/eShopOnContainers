@@ -7,12 +7,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
-using Payment.API.IntegrationCommands.Commands;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ;
 using RabbitMQ.Client;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus;
-using Payment.API.IntegrationEvents;
-using Payment.API.IntegrationCommands.CommandHandlers;
+using Payment.API.IntegrationEvents.Events;
+using Payment.API.IntegrationEvents.EventHandling;
 
 namespace Payment.API
 {
@@ -35,8 +34,7 @@ namespace Payment.API
         {
             // Add framework services.
             services.AddMvc();
-
-            services.AddTransient<IPaymentIntegrationEventService, PaymentIntegrationEventService>();
+            services.Configure<PaymentSettings>(Configuration);
             services.AddSingleton<IRabbitMQPersistentConnection>(sp =>
             {
                 var logger = sp.GetRequiredService<ILogger<DefaultRabbitMQPersistentConnection>>();
@@ -88,13 +86,15 @@ namespace Payment.API
             services.AddSingleton<IEventBus, EventBusRabbitMQ>();
             services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
 
-            services.AddTransient<IIntegrationEventHandler<PayOrderCommand>, PayOrderCommandHandler>();
+            services.AddTransient<IIntegrationEventHandler<OrderStatusChangedToStockConfirmedIntegrationEvent>, 
+                OrderStatusChangedToStockConfirmedIntegrationEventHandler>();
         }
 
         private void ConfigureEventBus(IApplicationBuilder app)
         {
             var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
-            eventBus.Subscribe<PayOrderCommand, IIntegrationEventHandler<PayOrderCommand>>();
+            eventBus.Subscribe<OrderStatusChangedToStockConfirmedIntegrationEvent, 
+                IIntegrationEventHandler<OrderStatusChangedToStockConfirmedIntegrationEvent>>();
         }
     }
 }

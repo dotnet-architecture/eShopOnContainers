@@ -6,8 +6,8 @@
     using Domain.Events;
     using System;
     using System.Threading.Tasks;
-    using Ordering.API.Application.IntegrationCommands.Commands;
     using Ordering.API.Application.IntegrationEvents;
+    using Ordering.API.Application.IntegrationEvents.Events;
 
     public class OrderStatusChangedToStockConfirmedDomainEventHandler
                    : IAsyncNotificationHandler<OrderStatusChangedToStockConfirmedDomainEvent>
@@ -31,9 +31,8 @@
                 .LogTrace($"Order with Id: {orderStatusChangedToStockConfirmedDomainEvent.OrderId} has been successfully updated with " +
                           $"a status order id: {OrderStatus.StockConfirmed.Id}");
 
-            var payOrderCommand = new PayOrderCommand(orderStatusChangedToStockConfirmedDomainEvent.OrderId);
-            await _orderingIntegrationEventService.SaveEventAndOrderingContextChangesAsync(payOrderCommand);
-            await _orderingIntegrationEventService.PublishThroughEventBusAsync(payOrderCommand);
+            var orderStatusChangedToStockConfirmedIntegrationEvent = new OrderStatusChangedToStockConfirmedIntegrationEvent(orderStatusChangedToStockConfirmedDomainEvent.OrderId);
+            await _orderingIntegrationEventService.PublishThroughEventBusAsync(orderStatusChangedToStockConfirmedIntegrationEvent);
         }
     }  
 }

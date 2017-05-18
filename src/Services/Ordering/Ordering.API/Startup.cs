@@ -3,11 +3,9 @@
     using AspNetCore.Http;
     using Autofac;
     using Autofac.Extensions.DependencyInjection;
-    using global::Ordering.API.Application.IntegrationCommands.Commands;
     using global::Ordering.API.Application.IntegrationEvents;
     using global::Ordering.API.Application.IntegrationEvents.EventHandling;
     using global::Ordering.API.Application.IntegrationEvents.Events;
-    using global::Ordering.API.Application.Sagas;
     using global::Ordering.API.Infrastructure.Middlewares;
     using Infrastructure;
     using Infrastructure.Auth;
@@ -169,24 +167,18 @@
         {
             services.AddSingleton<IEventBus, EventBusRabbitMQ>();
             services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
-            services.AddTransient<IIntegrationEventHandler<ConfirmGracePeriodCommand>, OrderProcessSaga>();
-            services.AddTransient<UserCheckoutAcceptedIntegrationEventHandler>();            
-            services.AddTransient<OrderStockConfirmedIntegrationEventHandler>();
-            services.AddTransient<OrderStockNotConfirmedIntegrationEventHandler>();
-            services.AddTransient<OrderPaymentFailedIntegrationEventHandler>();
-            services.AddTransient<OrderPaymentSuccededIntegrationEventHandler>();
         }
 
         private void ConfigureEventBus(IApplicationBuilder app)
         {
             var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
 
-            eventBus.Subscribe<ConfirmGracePeriodCommand, IIntegrationEventHandler<ConfirmGracePeriodCommand>>();
-            eventBus.Subscribe<UserCheckoutAcceptedIntegrationEvent, UserCheckoutAcceptedIntegrationEventHandler>();            
-            eventBus.Subscribe<OrderStockConfirmedIntegrationEvent, OrderStockConfirmedIntegrationEventHandler>();
-            eventBus.Subscribe<OrderStockNotConfirmedIntegrationEvent, OrderStockNotConfirmedIntegrationEventHandler>();
-            eventBus.Subscribe<OrderPaymentFailedIntegrationEvent, OrderPaymentFailedIntegrationEventHandler>();
-            eventBus.Subscribe<OrderPaymentSuccededIntegrationEvent, OrderPaymentSuccededIntegrationEventHandler>();
+            eventBus.Subscribe<UserCheckoutAcceptedIntegrationEvent, IIntegrationEventHandler<UserCheckoutAcceptedIntegrationEvent>>();
+            eventBus.Subscribe<GracePeriodConfirmedIntegrationEvent, IIntegrationEventHandler<GracePeriodConfirmedIntegrationEvent>>();
+            eventBus.Subscribe<OrderStockConfirmedIntegrationEvent, IIntegrationEventHandler<OrderStockConfirmedIntegrationEvent>>();
+            eventBus.Subscribe<OrderStockRejectedIntegrationEvent, IIntegrationEventHandler<OrderStockRejectedIntegrationEvent>>();
+            eventBus.Subscribe<OrderPaymentFailedIntegrationEvent, IIntegrationEventHandler<OrderPaymentFailedIntegrationEvent>>();
+            eventBus.Subscribe<OrderPaymentSuccededIntegrationEvent, IIntegrationEventHandler<OrderPaymentSuccededIntegrationEvent>>();
         }
 
         protected virtual void ConfigureAuth(IApplicationBuilder app)

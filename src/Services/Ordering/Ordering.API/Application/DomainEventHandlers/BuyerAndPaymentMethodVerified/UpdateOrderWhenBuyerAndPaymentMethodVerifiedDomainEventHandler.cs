@@ -36,11 +36,7 @@ namespace Ordering.API.Application.DomainEventHandlers.BuyerAndPaymentMethodVeri
                                     
             var orderStartedIntegrationEvent = new OrderStartedIntegrationEvent(buyerPaymentMethodVerifiedEvent.Buyer.IdentityGuid);
 
-            await _orderingIntegrationEventService
-                .SaveEventAndOrderingContextChangesAsync(orderStartedIntegrationEvent);
-
-            await _orderingIntegrationEventService
-                .PublishThroughEventBusAsync(orderStartedIntegrationEvent);
+            await _orderingIntegrationEventService.PublishThroughEventBusAsync(orderStartedIntegrationEvent);
 
             _logger.CreateLogger(nameof(UpdateOrderWhenBuyerAndPaymentMethodVerifiedDomainEventHandler))
                 .LogTrace($"Order with Id: {buyerPaymentMethodVerifiedEvent.OrderId} has been successfully updated with a payment method id: { buyerPaymentMethodVerifiedEvent.Payment.Id }");                        

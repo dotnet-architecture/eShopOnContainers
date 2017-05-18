@@ -6,6 +6,8 @@
 
         public string EventBusConnection { get; set; }
 
-        public int GracePeriod { get; set; }
+        public int GracePeriodTime { get; set; }
+
+        public int CheckUpdateTime { get; set; }
     }
 }
