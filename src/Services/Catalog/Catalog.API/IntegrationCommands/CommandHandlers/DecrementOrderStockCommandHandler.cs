@@ -3,24 +3,21 @@
     using BuildingBlocks.EventBus.Abstractions;
     using System.Threading.Tasks;
     using Infrastructure;
-    using global::Catalog.API.Infrastructure.Exceptions;
-    using global::Catalog.API.IntegrationEvents;
-    using Model;
     using Commands;
 
-    public class DecrementOrderStockCommandMsgHandler : IIntegrationEventHandler<DecrementOrderStockCommandMsg>
+    public class DecrementOrderStockCommandHandler : IIntegrationEventHandler<DecrementOrderStockCommand>
     {
         private readonly CatalogContext _catalogContext;
 
-        public DecrementOrderStockCommandMsgHandler(CatalogContext catalogContext)
+        public DecrementOrderStockCommandHandler(CatalogContext catalogContext)
         {
             _catalogContext = catalogContext;
         }
 
-        public async Task Handle(DecrementOrderStockCommandMsg @event)
+        public async Task Handle(DecrementOrderStockCommand command)
         {
             //we're not blocking stock/inventory
-            foreach (var orderStockItem in @event.OrderStockItems)
+            foreach (var orderStockItem in command.OrderStockItems)
             {
                 var catalogItem = _catalogContext.CatalogItems.Find(orderStockItem.ProductId);
 

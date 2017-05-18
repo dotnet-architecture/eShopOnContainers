@@ -12,23 +12,23 @@
     using Commands;
     using IntegrationEvents.Events;
 
-    public class ConfirmOrderStockCommandMsgHandler : IIntegrationEventHandler<ConfirmOrderStockCommandMsg>
+    public class ConfirmOrderStockCommandHandler : IIntegrationEventHandler<ConfirmOrderStockCommand>
     {
         private readonly CatalogContext _catalogContext;
         private readonly ICatalogIntegrationEventService _catalogIntegrationEventService;
 
-        public ConfirmOrderStockCommandMsgHandler(CatalogContext catalogContext,
+        public ConfirmOrderStockCommandHandler(CatalogContext catalogContext,
             ICatalogIntegrationEventService catalogIntegrationEventService)
         {
             _catalogContext = catalogContext;
             _catalogIntegrationEventService = catalogIntegrationEventService;
         }
 
-        public async Task Handle(ConfirmOrderStockCommandMsg @event)
+        public async Task Handle(ConfirmOrderStockCommand command)
         {
             var confirmedOrderStockItems = new List<ConfirmedOrderStockItem>();
 
-            foreach (var orderStockItem in @event.OrderStockItems)
+            foreach (var orderStockItem in command.OrderStockItems)
             {
                 var catalogItem = _catalogContext.CatalogItems.Find(orderStockItem.ProductId);
                 CheckValidcatalogItemId(catalogItem);
@@ -39,9 +39,9 @@
                 confirmedOrderStockItems.Add(confirmedOrderStockItem);
             }
 
-            var confirmedIntegrationEvent = confirmedOrderStockItems.Any(c => !c.Confirmed)
-                ? (IntegrationEvent) new OrderStockNotConfirmedIntegrationEvent(@event.OrderId, confirmedOrderStockItems)
-                : new OrderStockConfirmedIntegrationEvent(@event.OrderId);
+            var confirmedIntegrationEvent = confirmedOrderStockItems.Any(c => !c.HasStock)
+                ? (IntegrationEvent) new OrderStockNotConfirmedIntegrationEvent(command.OrderId, confirmedOrderStockItems)
+                : new OrderStockConfirmedIntegrationEvent(command.OrderId);
 
             await _catalogIntegrationEventService.SaveEventAndCatalogContextChangesAsync(confirmedIntegrationEvent);
             await _catalogIntegrationEventService.PublishThroughEventBusAsync(confirmedIntegrationEvent);

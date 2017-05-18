@@ -17,9 +17,11 @@
 
         public async Task Handle(OrderPaymentSuccededIntegrationEvent @event)
         {
-            var orderToUpdate = await _orderRepository.GetAsync(@event.OrderId);
+            var orderToUpdate = await _orderRepository.GetWithDependenciesAsync(@event.OrderId);
 
             orderToUpdate.SetPaidStatus();
+
+            await _orderRepository.UnitOfWork.SaveEntitiesAsync();
         }
     }
 }
