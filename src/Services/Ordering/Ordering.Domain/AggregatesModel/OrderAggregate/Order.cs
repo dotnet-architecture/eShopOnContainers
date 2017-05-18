@@ -156,7 +156,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
             _description = $"The order was cancelled.";
         }
 
-        public void SetCancelledStatusWhenStockIsRejected(IEnumerable<int> orderStockNotConfirmedItems)
+        public void SetCancelledStatusWhenStockIsRejected(IEnumerable<int> orderStockRejectedItems)
         {
             if (_orderStatusId != OrderStatus.AwaitingValidation.Id)
             {
@@ -165,12 +165,12 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
 
             _orderStatusId = OrderStatus.Cancelled.Id;
 
-            var itemsStockNotConfirmedProductNames = OrderItems
-                .Where(c => orderStockNotConfirmedItems.Contains(c.ProductId))
+            var itemsStockRejectedProductNames = OrderItems
+                .Where(c => orderStockRejectedItems.Contains(c.ProductId))
                 .Select(c => c.GetOrderItemProductName());
 
-            var itemsStockNotConfirmedDescription = string.Join(", ", itemsStockNotConfirmedProductNames);
-            _description = $"The product items don't have stock: ({itemsStockNotConfirmedDescription}).";
+            var itemsStockRejectedDescription = string.Join(", ", itemsStockRejectedProductNames);
+            _description = $"The product items don't have stock: ({itemsStockRejectedDescription}).";
         }
 
         private void AddOrderStartedDomainEvent(string userId, int cardTypeId, string cardNumber,

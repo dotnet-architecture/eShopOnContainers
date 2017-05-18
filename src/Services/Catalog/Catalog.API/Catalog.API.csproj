@@ -74,9 +74,4 @@
     </None>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="IntegrationCommands\CommandHandlers\" />
-    <Folder Include="IntegrationCommands\Commands\" />
-  </ItemGroup>
-
 </Project>

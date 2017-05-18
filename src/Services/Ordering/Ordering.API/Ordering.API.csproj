@@ -79,8 +79,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Application\IntegrationCommands\CommandHandlers\" />
-    <Folder Include="Application\IntegrationCommands\Commands\" />
     <Folder Include="Infrastructure\IntegrationEventMigrations\" />
   </ItemGroup>
 

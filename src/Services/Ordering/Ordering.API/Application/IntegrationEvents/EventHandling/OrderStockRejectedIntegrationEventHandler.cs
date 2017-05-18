@@ -19,11 +19,11 @@
         {
             var orderToUpdate = await _orderRepository.GetAsync(@event.OrderId);
 
-            var orderStockNotConfirmedItems = @event.OrderStockItems
+            var orderStockRejectedItems = @event.OrderStockItems
                 .FindAll(c => !c.HasStock)
                 .Select(c => c.ProductId);
 
-            orderToUpdate.SetCancelledStatusWhenStockIsRejected(orderStockNotConfirmedItems);
+            orderToUpdate.SetCancelledStatusWhenStockIsRejected(orderStockRejectedItems);
 
             await _orderRepository.UnitOfWork.SaveEntitiesAsync();
         }
