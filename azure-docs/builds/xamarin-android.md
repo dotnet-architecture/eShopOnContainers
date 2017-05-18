@@ -1,6 +1,6 @@
 # Xamarin Android Build
 
-Follow these steps to create a VSTS build for your eShopOnContainers app.
+Follow these steps to create a VSTS build for your eShopOnContainers app (android).
 
 **Note**: This document assumes basic knowledge about creating builds and configuring external VSTS connections 
 
