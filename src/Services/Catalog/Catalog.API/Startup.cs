@@ -82,11 +82,10 @@
             services.Configure<CatalogSettings>(Configuration);
 
             // Add framework services.
-            services.AddSwaggerGen();
-            services.ConfigureSwaggerGen(options =>
+            services.AddSwaggerGen(options =>
             {
                 options.DescribeAllEnumsAsStrings();
-                options.SingleApiVersion(new Swashbuckle.Swagger.Model.Info()
+                options.SwaggerDoc("eShopOnContainers - Catalog HTTP API",new Swashbuckle.AspNetCore.Swagger.Info
                 {
                     Title = "eShopOnContainers - Catalog HTTP API",
                     Version = "v1",
@@ -137,7 +136,10 @@
             app.UseMvcWithDefaultRoute();
 
             app.UseSwagger()
-              .UseSwaggerUi();
+              .UseSwaggerUI(c =>
+              {
+                  c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+              });
 
             var context = (CatalogContext)app
                         .ApplicationServices.GetService(typeof(CatalogContext));

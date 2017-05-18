@@ -82,12 +82,10 @@
                         ServiceLifetime.Scoped  //Showing explicitly that the DbContext is shared across the HTTP request scope (graph of objects started in the HTTP request)
                     );
 
-            services.AddSwaggerGen();
-            services.ConfigureSwaggerGen(options =>
+            services.AddSwaggerGen(options =>
             {
-                options.OperationFilter<AuthorizationHeaderParameterOperationFilter>();
                 options.DescribeAllEnumsAsStrings();
-                options.SingleApiVersion(new Swashbuckle.Swagger.Model.Info()
+                options.SwaggerDoc("eShopOnContainers - Ordering HTTP API", new Swashbuckle.AspNetCore.Swagger.Info
                 {
                     Title = "Ordering HTTP API",
                     Version = "v1",
@@ -153,7 +151,10 @@
             app.UseMvcWithDefaultRoute();
 
             app.UseSwagger()
-                .UseSwaggerUi();
+               .UseSwaggerUI(c =>
+               {
+                   c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+               });
 
             OrderingContextSeed.SeedAsync(app).Wait();
 

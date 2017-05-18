@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc.Authorization;
-using Swashbuckle.Swagger.Model;
-using Swashbuckle.SwaggerGen.Generator;
-using System;
+using Swashbuckle.AspNetCore.Swagger;
+using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.Services.Basket.API.Auth.Server
 {
