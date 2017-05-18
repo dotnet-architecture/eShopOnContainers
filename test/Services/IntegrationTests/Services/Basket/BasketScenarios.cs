@@ -1,4 +1,5 @@
-﻿using Microsoft.eShopOnContainers.Services.Basket.API.Model;
+﻿using IntegrationTests.Services.Extensions;
+using Microsoft.eShopOnContainers.Services.Basket.API.Model;
 using Newtonsoft.Json;
 using System;
 using System.Net.Http;
@@ -42,9 +43,13 @@ namespace IntegrationTests.Services.Basket
         {
             using (var server = CreateServer())
             {
-                var content = new StringContent(BuildCheckout(), UTF8Encoding.UTF8, "application/json");
-                var response = await server.CreateClient()
-                   .PostAsync(Post.CheckoutOrder, content);
+                var contentBasket = new StringContent(BuildBasket(), UTF8Encoding.UTF8, "application/json");
+                await server.CreateClient()
+                   .PostAsync(Post.Basket, contentBasket);
+
+                var contentCheckout = new StringContent(BuildCheckout(), UTF8Encoding.UTF8, "application/json");
+                var response = await server.CreateIdempotentClient()
+                   .PostAsync(Post.CheckoutOrder, contentCheckout);
 
                 response.EnsureSuccessStatusCode();
             }
@@ -52,7 +57,7 @@ namespace IntegrationTests.Services.Basket
 
         string BuildBasket()
         {
-            var order = new CustomerBasket("1");            
+            var order = new CustomerBasket("1234");            
             return JsonConvert.SerializeObject(order);
         }
 
