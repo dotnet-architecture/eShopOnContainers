@@ -53,16 +53,16 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
 
         [Route("checkout")]
         [HttpPost]
-        public async Task<IActionResult> Checkout([FromBody]BasketCheckout value, [FromHeader(Name = "x-requestid")] string requestId)
+        public async Task<IActionResult> Checkout([FromBody]BasketCheckout basketCheckout, [FromHeader(Name = "x-requestid")] string requestId)
         {
             var userId = _identitySvc.GetUserIdentity();
-            value.RequestId = (Guid.TryParse(requestId, out Guid guid) && guid != Guid.Empty) ?
-                guid : value.RequestId;
+            basketCheckout.RequestId = (Guid.TryParse(requestId, out Guid guid) && guid != Guid.Empty) ?
+                guid : basketCheckout.RequestId;
 
             var basket = await _repository.GetBasketAsync(userId);
-            var eventMessage = new UserCheckoutAcceptedIntegrationEvent(userId, value.City, value.Street,
-                value.State, value.Country, value.ZipCode, value.CardNumber, value.CardHolderName,
-                value.CardExpiration, value.CardSecurityNumber, value.CardTypeId, value.Buyer, value.RequestId, basket);
+            var eventMessage = new UserCheckoutAcceptedIntegrationEvent(userId, basketCheckout.City, basketCheckout.Street,
+                basketCheckout.State, basketCheckout.Country, basketCheckout.ZipCode, basketCheckout.CardNumber, basketCheckout.CardHolderName,
+                basketCheckout.CardExpiration, basketCheckout.CardSecurityNumber, basketCheckout.CardTypeId, basketCheckout.Buyer, basketCheckout.RequestId, basket);
 
             // Once basket is checkout, sends an integration event to
             // ordering.api to convert basket to order and proceeds with
