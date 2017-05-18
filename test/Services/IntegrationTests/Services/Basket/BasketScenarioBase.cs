@@ -23,14 +23,14 @@ namespace IntegrationTests.Services.Basket
         {
             public static string GetBasket(int id)
             {
-                return $"api/v1/basket/{id}";
+                return $"{id}";
             }
         }
 
         public static class Post
         {
-            public static string Basket = "api/v1/basket";
-            public static string CheckoutOrder = "api/v1/basket/checkout";
+            public static string Basket = "";
+            public static string CheckoutOrder = "checkout";
         }
     }
 }

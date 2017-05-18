@@ -29,6 +29,7 @@ namespace FunctionalTests.Services.Basket
         public static class Post
         {
             public static string CreateBasket = "/";
+            public static string Checkout = "/checkout";
         }
     }
 }

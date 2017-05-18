@@ -65,6 +65,7 @@
     <Compile Include="Helpers\EasingHelper.cs" />
     <Compile Include="Helpers\ServicesHelper.cs" />
     <Compile Include="Helpers\Settings.cs" />
+    <Compile Include="Models\Basket\BasketCheckout.cs" />
     <Compile Include="Models\Basket\BasketItem.cs" />
     <Compile Include="Models\Basket\CustomerBasket.cs" />
     <Compile Include="Models\Catalog\CatalogBrand.cs" />
@@ -259,6 +260,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.ComponentModel.Annotations">
+      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.6\Profile\Profile44\System.ComponentModel.Annotations.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
