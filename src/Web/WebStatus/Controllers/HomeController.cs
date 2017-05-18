@@ -28,6 +28,7 @@ namespace WebStatus.Controllers
                 data.AddResult(checkResult.Key, checkResult.Value);
             }
 
+            ViewBag.RefreshSeconds = 60;
             return View(data);
         }
 

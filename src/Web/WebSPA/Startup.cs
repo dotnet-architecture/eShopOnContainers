@@ -45,10 +45,16 @@ namespace eShopConContainers.WebSPA
         {
             services.AddHealthChecks(checks =>
             {
-                checks.AddUrlCheck(Configuration["CatalogUrl"]);
-                checks.AddUrlCheck(Configuration["OrderingUrl"]);
-                checks.AddUrlCheck(Configuration["BasketUrl"]);
-                checks.AddUrlCheck(Configuration["IdentityUrl"]);
+                var minutes = 1;
+                if (int.TryParse(Configuration["HealthCheck:Timeout"], out var minutesParsed))
+                {
+                    minutes = minutesParsed;
+                }
+
+                checks.AddUrlCheck(Configuration["CatalogUrlHC"], TimeSpan.FromMinutes(minutes));
+                checks.AddUrlCheck(Configuration["OrderingUrlHC"], TimeSpan.FromMinutes(minutes));
+                checks.AddUrlCheck(Configuration["BasketUrlHC"], TimeSpan.FromMinutes(minutes));
+                checks.AddUrlCheck(Configuration["IdentityUrlHC"], TimeSpan.FromMinutes(minutes));
             });
 
             services.Configure<AppSettings>(Configuration);

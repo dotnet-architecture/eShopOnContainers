@@ -20,18 +20,17 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http
     /// </summary>
     public class ResilientHttpClient : IHttpClient
     {
-        private HttpClient _client;
-        private readonly ConcurrentDictionary<string, PolicyWrap> _policiesPerOrigin;
-        private ILogger<ResilientHttpClient> _logger;
+        private readonly HttpClient _client;
+        private readonly ILogger<ResilientHttpClient> _logger;
         private readonly Func<string, IEnumerable<Policy>> _policyCreator;
-
+        private ConcurrentDictionary<string, PolicyWrap> _policyWrappers;
 
         public ResilientHttpClient(Func<string, IEnumerable<Policy>> policyCreator, ILogger<ResilientHttpClient> logger)
         {
             _client = new HttpClient();
             _logger = logger;
-            _policiesPerOrigin = new ConcurrentDictionary<string, PolicyWrap>();
             _policyCreator = policyCreator;
+            _policyWrappers = new ConcurrentDictionary<string, PolicyWrap>();
         }
 
 
@@ -97,66 +96,51 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http
             // as it is disposed after each call
             var origin = GetOriginFromUri(uri);
 
-            return HttpInvoker(origin, async () =>
-            {
-                var requestMessage = new HttpRequestMessage(method, uri);
+            return HttpInvoker(origin, () =>
+           {
+               var requestMessage = new HttpRequestMessage(method, uri);
 
-                requestMessage.Content = new StringContent(JsonConvert.SerializeObject(item), System.Text.Encoding.UTF8, "application/json");
+               requestMessage.Content = new StringContent(JsonConvert.SerializeObject(item), System.Text.Encoding.UTF8, "application/json");
 
-                if (authorizationToken != null)
-                {
-                    requestMessage.Headers.Authorization = new AuthenticationHeaderValue(authorizationMethod, authorizationToken);
-                }
+               if (authorizationToken != null)
+               {
+                   requestMessage.Headers.Authorization = new AuthenticationHeaderValue(authorizationMethod, authorizationToken);
+               }
 
-                if (requestId != null)
-                {
-                    requestMessage.Headers.Add("x-requestid", requestId);
-                }
+               if (requestId != null)
+               {
+                   requestMessage.Headers.Add("x-requestid", requestId);
+               }
 
-                var response = await _client.SendAsync(requestMessage);
+               var response = _client.SendAsync(requestMessage).Result;
 
-                // raise exception if HttpResponseCode 500 
-                // needed for circuit breaker to track fails
+               // raise exception if HttpResponseCode 500 
+               // needed for circuit breaker to track fails
 
-                if (response.StatusCode == HttpStatusCode.InternalServerError)
-                {
-                    throw new HttpRequestException();
-                }
+               if (response.StatusCode == HttpStatusCode.InternalServerError)
+               {
+                   throw new HttpRequestException();
+               }
 
-                return response;
-            });
+               return Task.FromResult(response);
+           });
         }
 
-        private Task<T> HttpInvoker<T>(string origin, Func<Task<T>> action)
-        {
-            var policyWrapper = GetPolicyForOrigin(origin);
-
-            if (policyWrapper != null)
-            {
-                // Executes the action applying all 
-                // the policies defined in the wrapper
-                return policyWrapper.ExecuteAsync(() => action());
-            }
-            else
-            {
-                throw new InvalidOperationException($"PolicyWrapper can't be created for origin {origin}");
-            }
-        }
-
-        private PolicyWrap GetPolicyForOrigin(string origin)
+        private async Task<T> HttpInvoker<T>(string origin, Func<Task<T>> action)
         {
             var normalizedOrigin = NormalizeOrigin(origin);
 
-            if (!_policiesPerOrigin.TryGetValue(normalizedOrigin, out PolicyWrap policyWrapper))
+            if (!_policyWrappers.TryGetValue(normalizedOrigin, out PolicyWrap policyWrap))
             {
-                policyWrapper = Policy.WrapAsync(_policyCreator(normalizedOrigin)
-                    .ToArray());
-
-                _policiesPerOrigin.TryAdd(normalizedOrigin, policyWrapper);
+                policyWrap = Policy.Wrap(_policyCreator(normalizedOrigin).ToArray());
+                _policyWrappers.TryAdd(normalizedOrigin, policyWrap);
             }
 
-            return policyWrapper;
+            // Executes the action applying all 
+            // the policies defined in the wrapper
+            return await policyWrap.Execute(action, new Context(normalizedOrigin));
         }
+
 
         private static string NormalizeOrigin(string origin)
         {
@@ -170,6 +154,6 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http
             var origin = $"{url.Scheme}://{url.DnsSafeHost}:{url.Port}";
 
             return origin;
-        }
+        }        
     }
 }

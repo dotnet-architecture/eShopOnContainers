@@ -54,7 +54,12 @@
 
             services.AddHealthChecks(checks =>
             {
-                checks.AddSqlCheck("CatalogDb", Configuration["ConnectionString"]);
+                var minutes = 1;
+                if (int.TryParse(Configuration["HealthCheck:Timeout"], out var minutesParsed))
+                {
+                    minutes = minutesParsed;
+                }
+                checks.AddSqlCheck("CatalogDb", Configuration["ConnectionString"], TimeSpan.FromMinutes(minutes));
             });
 
             services.AddMvc(options =>
