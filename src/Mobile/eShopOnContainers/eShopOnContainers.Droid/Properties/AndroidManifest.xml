@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" android:installLocation="auto">
-	<uses-sdk android:minSdkVersion="15" />
+	<uses-sdk android:minSdkVersion="15" android:targetSdkVersion="23" />
 	<uses-permission android:name="android.permission.INTERNET" />
 	<application android:label="eShopOnContainers" android:icon="@drawable/icon" android:largeHeap="true"></application>
 </manifest>
