@@ -2,13 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp1.1</TargetFramework>
-    <DebugType>portable</DebugType>
-    <PreserveCompilationContext>true</PreserveCompilationContext>
-    <AssemblyName>WebSPA</AssemblyName>
     <OutputType>Exe</OutputType>
     <PackageId>eShopOnContainers.WebSPA</PackageId>
     <UserSecretsId>aspnetcorespa-c23d27a4-eb88-4b18-9b77-2a93f3b15119</UserSecretsId>
-    <RuntimeFrameworkVersion>1.1.0</RuntimeFrameworkVersion>
     <PackageTargetFallback>$(PackageTargetFallback);dotnet5.6;portable-net45+win8</PackageTargetFallback>
     <DockerComposeProjectPath>..\..\..\docker-compose.dcproj</DockerComposeProjectPath>
     <TypeScriptCompileOnSaveEnabled>false</TypeScriptCompileOnSaveEnabled>
@@ -38,7 +34,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Cors" Version="1.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Antiforgery" Version="1.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="1.1.2" />
-    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.AngularServices" Version="1.0.0-beta-000014" />
     <PackageReference Include="Microsoft.AspNetCore.Server.IISIntegration" Version="1.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="1.1.2" />

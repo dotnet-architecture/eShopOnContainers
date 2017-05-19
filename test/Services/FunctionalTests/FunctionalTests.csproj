@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp1.1</TargetFramework>
-    <RuntimeFrameworkVersion>1.1.0</RuntimeFrameworkVersion>
   </PropertyGroup>
 
   <ItemGroup>

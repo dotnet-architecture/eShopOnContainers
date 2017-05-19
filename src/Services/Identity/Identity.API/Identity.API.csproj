@@ -2,13 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp1.1</TargetFramework>
-    <DebugType>portable</DebugType>
-    <PreserveCompilationContext>true</PreserveCompilationContext>
-    <AssemblyName>Identity.API</AssemblyName>
     <OutputType>Exe</OutputType>
-    <PackageId>Identity.API</PackageId>
     <UserSecretsId>aspnet-eShopOnContainers.Identity-90487118-103c-4ff0-b9da-e5e26f7ab0c5</UserSecretsId>
-    <RuntimeFrameworkVersion>1.1.0</RuntimeFrameworkVersion>
     <PackageTargetFallback>$(PackageTargetFallback);dotnet5.6;portable-net45+win8</PackageTargetFallback>
     <DockerComposeProjectPath>..\..\..\..\docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
