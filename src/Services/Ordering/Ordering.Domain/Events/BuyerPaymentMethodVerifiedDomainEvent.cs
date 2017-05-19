@@ -1,13 +1,10 @@
 ﻿using MediatR;
 using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.BuyerAggregate;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Ordering.Domain.Events
 {
     public class BuyerAndPaymentMethodVerifiedDomainEvent
-        : IAsyncNotification
+        : INotification
     {
         public Buyer Buyer { get; private set; }
         public PaymentMethod Payment { get; private set; }

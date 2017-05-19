@@ -9,8 +9,8 @@
 
         int? _requestedHashCode;
         int _Id;
-
-        private List<IAsyncNotification> _domainEvents;
+        
+        private List<INotification> _domainEvents;
 
         public virtual  int Id 
         {
@@ -24,14 +24,14 @@
             }
         }
 
-        public List<IAsyncNotification> DomainEvents => _domainEvents;        
-        public void AddDomainEvent(IAsyncNotification eventItem)
+        public List<INotification> DomainEvents => _domainEvents;        
+        public void AddDomainEvent(INotification eventItem)
         {
-            _domainEvents = _domainEvents ?? new List<IAsyncNotification>();
+            _domainEvents = _domainEvents ?? new List<INotification>();
             _domainEvents.Add(eventItem);
         }
 
-        public void RemoveDomainEvent(IAsyncNotification eventItem)
+        public void RemoveDomainEvent(INotification eventItem)
         {
             if (_domainEvents is null) return;
             _domainEvents.Remove(eventItem);
