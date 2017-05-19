@@ -13,15 +13,21 @@ Ensure you are logged in the desired subscription (use `az login` and `az accoun
 
 Go to `linux-vm` or `win-vm` folder (based on if you want a Linux or Windows VM). Then:
 
-1. Edit the file `mvparams.json` with your desired values
-2. Run the file `create-resources.cmd` from command-line to create the VM.
+1. Edit the file `linuxvm.parameters.json` or `windowsvm.parameters.json` (based on what VM do you want to create) with your desired values
+2. Run the [create-resources script](../readme.md) to deploy the desired template (`linux-vm/linuxvm.json` or `win-vm/windowsvm.json`).
 
-**Note:** To avoid errors, ARM template used (`azuredeploy.json`), generates unique names for:
+I. e. if you are in Windows and want to deploy a linux based VM, in a new resourcegroup located in westus, go to `deploy\az` folder and type:
+
+```
+create-resources.cmd vms\linux-vm\linuxvm newResourceGroup -c westus
+```
+
+**Note:** To avoid errors, ARM template used generates unique names for:
 
 1. VM used storage
 2. Public DNS
 
-Those public names are based on the parameters set in `mvparams.json` file.
+Those public names are based on the parameters set in the parameters file.
 
 ### The mvparams.json file
 

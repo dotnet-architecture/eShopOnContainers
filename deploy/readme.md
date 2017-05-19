@@ -14,7 +14,7 @@ Login into your azure subscription by typing `az login` (note that you maybe nee
 
 ## Deploying Azure resources used by the services
 
-1. [Deploying SQL Server and databases](arm/sql-server.md)
+1. [Deploying SQL Server and databases](az/sql/readme.md)
 
 
 
