@@ -1,0 +1,37 @@
+version: '2'
+
+services:
+  basket.api:
+    build:
+      context: ./src/Services/Basket/Basket.API
+      dockerfile: Dockerfile
+
+  catalog.api:
+    build:
+      context: ./src/Services/Catalog/Catalog.API
+      dockerfile: Dockerfile
+
+  identity.api:
+    build:
+      context: ./src/Services/Identity/Identity.API
+      dockerfile: Dockerfile
+
+  ordering.api:
+    build:
+      context: ./src/Services/Ordering/Ordering.API
+      dockerfile: Dockerfile
+
+  webspa:
+    build:
+      context: ./src/Web/WebSPA
+      dockerfile: Dockerfile
+
+  webmvc:
+    build:
+      context: ./src/Web/WebMVC
+      dockerfile: Dockerfile
+
+  webstatus:
+    build:
+      context: ./src/Web/WebStatus
+      dockerfile: Dockerfile
