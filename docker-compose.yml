@@ -53,6 +53,4 @@ services:
 
   webstatus:
     image: eshop/webstatus
-    build:
-      context: ./src/Web/WebStatus
-      dockerfile: Dockerfile
+    
