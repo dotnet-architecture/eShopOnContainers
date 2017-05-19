@@ -1,0 +1,21 @@
+﻿{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "sql_server": {
+      "value": {
+        "name": "eshop-sqlsrv",
+        "admin": "eshop",
+        "adminpwd": "Pass@word",
+        "dbs": {
+          "ordering": "orderingdb",
+          "identity": "identitydb",
+          "catalog":  "catalogdb"
+        }
+      }
+    },
+    "suffix": {
+      "value": "edu"
+    }
+  }
+}
