@@ -148,7 +148,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             app.UseIdentityServerAuthentication(new IdentityServerAuthenticationOptions
             {
                 Authority = identityUrl.ToString(),
-                ScopeName = "basket",
+                ApiName = "basket",
                 RequireHttpsMetadata = false
             });
         }
