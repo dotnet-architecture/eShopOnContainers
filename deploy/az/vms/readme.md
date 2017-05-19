@@ -29,12 +29,11 @@ create-resources.cmd vms\linux-vm\linuxvm newResourceGroup -c westus
 
 Those public names are based on the parameters set in the parameters file.
 
-### The mvparams.json file
+### The parameters file (linuxvm.parameters.json or winsowsvm.parameters.json)
 
-This file contains the minimum set of parameters needed by the ARM template to deploy the VM. ARM template accepts some other parameters (set with
-default values). Look the template for more info.
+Both files are identical and contains the minimum set of parameters needed by the ARM template to deploy the VM. ARM template accepts some other parameters (set with default values). Look the template for more info.
 
-The parameters defined in this file are:
+The parameters defined are:
 
 1. `newStorageAccountName`: Name of the storage created for the VM. To ensure uniqueness a unique suffix will be added to this value.
 2. `adminUsername`: Admin login
