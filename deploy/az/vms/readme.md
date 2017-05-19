@@ -3,7 +3,7 @@
 Follow these instructions to deploy a Linux-based VM with the Docker Host installed, or a VM with Windows Server 2016 plus
 windows containers and Docker Daemon.
 
-You can use this machine to installthe microservices and having a "development" environment (useful to develop and test the client apps).
+You can use this machine to install the microservices and having a "development" environment (useful to develop and test the client apps).
 
 Please note that this deployment is not a production deployment. In a production-based scenario, you should deploy all containers in ACS.
 
