@@ -51,4 +51,13 @@ You can use this information to connect your new VM.
 
 ## Deploy services in the VM
 
-We are providing public images of the services in DockerHub (https://hub.docker.com/u/eshop/).
+We are providing public images of the services in DockerHub (https://hub.docker.com/u/eshop/). To use these images, just create a folder in the VM and copy
+following files to it (those files are in the root of the repo):
+
+1. `docker-compose.yml`
+2. `docker-compose.prod.yml`
+
+Then log into the VM and run the command `docker-compose -f docker-compose.yml -f docker-compose.prod.yml up --no-build -d` to start all the microservices.
+
+
+
