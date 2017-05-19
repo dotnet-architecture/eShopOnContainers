@@ -2,7 +2,7 @@
 {
     public class PaymentSettings
     {
-        public bool SuccessPayment { get; set; }
+        public bool PaymentSucceded { get; set; }
         public string EventBusConnection { get; set; }
     }
 }
