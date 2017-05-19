@@ -1,68 +1,10 @@
-# Deploy a VM to run the services
+## Create VM with Docker installed
 
-Follow these instructions to deploy a Linux-based VM with the Docker Host installed, or a VM with Windows Server 2016 plus
-windows containers and Docker Daemon.
+There are two options for creating VM machines with Docker installed:
 
-You can use this machine to install the microservices and having a "development" environment (useful to develop and test the client apps).
+1. [Deploying a Linux VM to run single-server development environment using docker-machine (**Recommended for development environments**)](./docker-machine.md)
+2. [Deploying a Linux VM or Windows Server 2016 to run a single-server development environment using ARM template (**Recommended for creating testing environments**)](./plain-vm.md)
 
-Please note that this deployment is not a production deployment. In a production-based scenario, you should deploy all containers in ACS.
+If you want to create a VM for deploying images you build locally, then use the first option.
 
-## Create the VM
-
-Ensure you are logged in the desired subscription (use `az login` and `az account set` if needed. Refer to [this article](https://docs.microsoft.com/en-us/cli/azure/authenticate-azure-cli) for more details.
-
-Go to `linux-vm` or `win-vm` folder (based on if you want a Linux or Windows VM). Then:
-
-1. Edit the file `linuxvm.parameters.json` or `windowsvm.parameters.json` (based on what VM do you want to create) with your desired values
-2. Run the [create-resources script](../readme.md) to deploy the desired template (`linux-vm/linuxvm.json` or `win-vm/windowsvm.json`).
-
-I. e. if you are in Windows and want to deploy a linux based VM, in a new resourcegroup located in westus, go to `deploy\az` folder and type:
-
-```
-create-resources.cmd vms\linux-vm\linuxvm newResourceGroup -c westus
-```
-
-**Note:** To avoid errors, ARM template used generates unique names for:
-
-1. VM used storage
-2. Public DNS
-
-Those public names are based on the parameters set in the parameters file.
-
-### The parameters file (linuxvm.parameters.json or winsowsvm.parameters.json)
-
-Both files are identical and contains the minimum set of parameters needed by the ARM template to deploy the VM. ARM template accepts some other parameters (set with default values). Look the template for more info.
-
-The parameters defined are:
-
-1. `newStorageAccountName`: Name of the storage created for the VM. To ensure uniqueness a unique suffix will be added to this value.
-2. `adminUsername`: Admin login
-3. `adminPassword`: Admin password
-4. `dnsNameForPublicIP`: DNS of the VM. To ensure uniqueness a unique suffix will be added to this value.
-5. `VMName`: Name of the VM inside Azure
-
-## Finding the IP and DNS of the VM
-
-To find the IP and FQDN of the VM you can type `az vm list --resource-group <resourcegroup> --output table --show-details` (where resourcegroup is the
-name of the resourcegroup where you created the VM). This command will generate output like:
-
-```
-Name        ResourceGroup    PowerState    PublicIps      Fqdns                                             Location
-----------  ---------------  ------------  -------------  ------------------------------------------------  ----------
-MyDockerVM  MyResourceGroup  VM running    xx.xx.xxx.xxx  eshop-srvxxxxxxxxxxxxx.westus.cloudapp.azure.com  westus
-```
-
-You can use this information to connect your new VM.
-
-## Deploy services in the VM
-
-We are providing public images of the services in DockerHub (https://hub.docker.com/u/eshop/). To use these images, just create a folder in the VM and copy
-following files to it (those files are in the root of the repo):
-
-1. `docker-compose.yml`
-2. `docker-compose.prod.yml`
-
-Then log into the VM and run the command `docker-compose -f docker-compose.yml -f docker-compose.prod.yml up --no-build -d` to start all the microservices.
-
-
-
+If you want to create a VM to run images deployed to DockerHub (to provide some test environment) then use the second option.

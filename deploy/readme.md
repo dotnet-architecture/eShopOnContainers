@@ -10,7 +10,10 @@ Login into your azure subscription by typing `az login` (note that you maybe nee
 
 ## Deploying Virtual machines to host the services
 
-1. [Deploying a Linux VM or Windows Server 2016 to run a single-development environment](az/vms/readme.md)
+1. [Deploying a Linux VM to run single-server development environment using docker-machine (**Recommended for development environments**)](az/vms/docker-machine.md)
+2. [Deploying a Linux VM or Windows Server 2016 to run a single-server development environment using ARM template (**Recommended for creating testing environments**)](az/vms/plain-vm.md)
+
+Using `docker-machine` is the recommended way to create a VM with docker installed. But it is limited to Linux based VMs.
 
 ## Deploying Azure resources used by the services
 
