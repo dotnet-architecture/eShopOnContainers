@@ -71,7 +71,7 @@
                     return new DefaultRabbitMQPersistentConnection(factory, logger);
                 });
 
-                RegisterServiceBus(services);
+                RegisterEventBus(services);
 
             var container = new ContainerBuilder();
             container.Populate(services);
@@ -85,7 +85,7 @@
                 .AddConsole(LogLevel.Debug);
         }
 
-        private static void RegisterServiceBus(IServiceCollection services)
+        private static void RegisterEventBus(IServiceCollection services)
         {
             services.AddSingleton<IEventBus, EventBusRabbitMQ>();
             services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
