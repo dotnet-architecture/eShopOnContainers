@@ -186,6 +186,61 @@ spec:
       imagePullSecrets:
       - name: registry-key
 ---
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: webstatus
+spec:
+  paused: true
+  template:
+    metadata:
+      labels:
+        app: eshop
+        component: webstatus
+    spec:
+      containers:
+      - name: webstatus
+        image: eshop/webstatus
+        imagePullPolicy: Always
+        env:
+        - name: ASPNETCORE_URLS
+          value: http://0.0.0.0:80/webstatus
+        - name: BasketUrl
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: BasketHealthCheckUrl
+        - name: CatalogUrl
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: CatalogHealthCheckUrl
+        - name: IdentityUrl
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: IdentityHealthCheckUrl
+        - name: OrderingUrl
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: OrderingHealthCheckUrl
+        - name: mvc
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: WebMvcHealthCheckUrl
+        - name: spa
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: WebSpaHealthCheckUrl             
+        ports:
+        - containerPort: 80
+      imagePullSecrets:
+      - name: registry-key
+---
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
