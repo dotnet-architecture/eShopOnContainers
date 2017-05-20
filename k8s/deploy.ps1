@@ -70,7 +70,7 @@ if(-not $deployCI) {
     docker-compose -p .. -f ../docker-compose.yml build
 
     Write-Host "Pushing images to $registry..." -ForegroundColor Yellow
-    $services = ("basket.api", "catalog.api", "identity.api", "ordering.api", "webmvc", "webspa")
+    $services = ("basket.api", "catalog.api", "identity.api", "ordering.api", "webmvc", "webspa", "webstatus")
     foreach ($service in $services) {
         docker tag eshop/$service $registry/eshop/$service
         docker push $registry/eshop/$service
@@ -88,10 +88,17 @@ while ($true) {
 
 ExecKube -cmd 'create configmap urls `
     --from-literal=BasketUrl=http://$($frontendUrl)/basket-api `
+    --from-literal=BasketHealthCheckUrl=http://$($frontendUrl)/basket-api/hc `
     --from-literal=CatalogUrl=http://$($frontendUrl)/catalog-api `
+    --from-literal=CatalogHealthCheckUrl=http://$($frontendUrl)/catalog-api/hc `
     --from-literal=IdentityUrl=http://$($frontendUrl)/identity `
+    --from-literal=IdentityHealthCheckUrl=http://$($frontendUrl)/identity/hc `
     --from-literal=OrderingUrl=http://$($frontendUrl)/ordering-api `
+    --from-literal=OrderingHealthCheckUrl=http://$($frontendUrl)/ordering-api/hc `
     --from-literal=MvcClient=http://$($frontendUrl)/webmvc `
+    --from-literal=WebMvcHealthCheckUrl=http://$($frontendUrl)/webmvc/hc `
+    --from-literal=WebStatusClient=http://$($frontendUrl)/webstatus `
+    --from-literal=WebSpaHealthCheckUrl=http://$($frontendUrl)/hc `
     --from-literal=SpaClient=http://$($frontendUrl)'
 
 ExecKube -cmd 'label configmap urls app=eshop'
@@ -109,9 +116,11 @@ if(-not $deployCI) {
         identity=$registry/eshop/identity.api `
         ordering=$registry/eshop/ordering.api `
         webmvc=$registry/eshop/webmvc `
+        webstatus=$registry/eshop/webstatus `
         webspa=$registry/eshop/webspa'
 }
 
 ExecKube -cmd 'rollout resume -f deployments.yaml'
 
-Write-Host "WebSPA is exposed at http://$frontendUrl, WebMVC at http://$frontendUrl/webmvc" -ForegroundColor Yellow
+Write-Host "WebSPA is exposed at http://$frontendUrl, WebMVC at http://$frontendUrl/webmvc, WebStatus at http://$frontendUrl/webstatus" -ForegroundColor Yellow
+
