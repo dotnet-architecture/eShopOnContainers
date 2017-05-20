@@ -31,7 +31,7 @@
 
                 if (!context.OrderStatus.Any())
                 {
-                    context.OrderStatus.Add(OrderStatus.Submited);
+                    context.OrderStatus.Add(OrderStatus.Submitted);
                     context.OrderStatus.Add(OrderStatus.AwaitingValidation);
                     context.OrderStatus.Add(OrderStatus.StockConfirmed);
                     context.OrderStatus.Add(OrderStatus.Paid);

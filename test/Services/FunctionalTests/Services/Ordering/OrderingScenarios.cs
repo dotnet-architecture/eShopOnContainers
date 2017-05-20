@@ -18,14 +18,14 @@ namespace FunctionalTests.Services.Ordering
     {
         // Issue: Unable to communicate with test host process
         //[Fact]
-        //public async Task Checkout_basket_and_check_order_status_submited()
+        //public async Task Checkout_basket_and_check_order_status_submitted()
         //{
         //    using (var orderServer = new OrderingScenariosBase().CreateServer())
         //    using (var basketServer = new BasketScenariosBase().CreateServer())
         //    {
         //        // Expected data
         //        var cityExpected = $"city-{Guid.NewGuid()}";
-        //        var orderStatusExpected = "submited";
+        //        var orderStatusExpected = "submitted";
 
         //        var basketClient = basketServer.CreateIdempotentClient();
         //        var orderClient = orderServer.CreateIdempotentClient();

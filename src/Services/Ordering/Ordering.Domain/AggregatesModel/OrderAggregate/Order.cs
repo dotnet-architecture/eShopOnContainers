@@ -46,7 +46,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
             _orderItems = new List<OrderItem>();
             _buyerId = buyerId;
             _paymentMethodId = paymentMethodId;
-            _orderStatusId = OrderStatus.Submited.Id;
+            _orderStatusId = OrderStatus.Submitted.Id;
             _orderDate = DateTime.UtcNow;
             Address = address;
 
@@ -97,7 +97,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
         public void SetAwaitingValidationStatus()
         {
             if (_orderStatusId == OrderStatus.Cancelled.Id ||
-                _orderStatusId != OrderStatus.Submited.Id)
+                _orderStatusId != OrderStatus.Submitted.Id)
             {
                 StatusChangeException(OrderStatus.AwaitingValidation);
             }  

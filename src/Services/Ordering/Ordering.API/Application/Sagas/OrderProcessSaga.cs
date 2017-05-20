@@ -29,17 +29,16 @@ namespace Ordering.API.Application.Sagas
             OrderingContext orderingContext)
             : base(orderingContext)
         {
-        }        
+        }
 
         /// <summary>
-        /// Command handler which confirms that the grace period
-        /// has been completed and order has not been cancelled.
-        /// If so, the process continues for validation. 
+        /// Event handler which confirms that the grace period
+        /// has been completed and order will not initially be cancelled.
+        /// Therefore, the order process continues for validation. 
         /// </summary>
         /// <param name="event">
-        /// Integration command message which is sent by a saga 
-        /// scheduler which provides the sagas that its grace 
-        /// period has completed.
+        /// Integration event message which is sent by a saga scheduler
+        /// telling us that the saga's grace period has completed.
         /// </param>
         /// <returns></returns>
         public async Task Handle(GracePeriodConfirmedIntegrationEvent @event)
