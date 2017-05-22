@@ -8,10 +8,6 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
 {
-    //TODO NOTE: Right now this is a very chunky API, as the app evolves it is possible we would
-    //want to make the actions more fine grained, add basket item as an action for example.
-    //If this is the case we should also investigate changing the serialization format used for Redis,
-    //using a HashSet instead of a simple string.
     [Route("/")]
     [Authorize]
     public class BasketController : Controller
