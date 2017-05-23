@@ -85,7 +85,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             services.AddSwaggerGen(options =>
             {
                 options.DescribeAllEnumsAsStrings();
-                options.SwaggerDoc("eShopOnContainers - Basket HTTP API", new Swashbuckle.AspNetCore.Swagger.Info
+                options.SwaggerDoc("v1", new Swashbuckle.AspNetCore.Swagger.Info
                 {
                     Title = "Basket HTTP API",
                     Version = "v1",
