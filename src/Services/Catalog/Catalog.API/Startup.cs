@@ -85,7 +85,7 @@
             services.AddSwaggerGen(options =>
             {
                 options.DescribeAllEnumsAsStrings();
-                options.SwaggerDoc("eShopOnContainers - Catalog HTTP API",new Swashbuckle.AspNetCore.Swagger.Info
+                options.SwaggerDoc("v1",new Swashbuckle.AspNetCore.Swagger.Info
                 {
                     Title = "eShopOnContainers - Catalog HTTP API",
                     Version = "v1",
