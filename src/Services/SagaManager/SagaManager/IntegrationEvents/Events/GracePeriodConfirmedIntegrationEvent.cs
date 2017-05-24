@@ -1,4 +1,4 @@
-﻿namespace SagaManager.IntegrationEvents.Events
+﻿namespace GracePeriodManager.IntegrationEvents.Events
 {
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
 

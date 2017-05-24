@@ -12,12 +12,14 @@ namespace Ordering.API.Application.IntegrationEvents.EventHandling
     {
         private readonly IMediator _mediator;
         private readonly ILoggerFactory _logger;
+        private readonly IOrderingIntegrationEventService _orderingIntegrationEventService;
 
         public UserCheckoutAcceptedIntegrationEventHandler(IMediator mediator,
-            ILoggerFactory logger)
+            ILoggerFactory logger, IOrderingIntegrationEventService orderingIntegrationEventService)
         {
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _orderingIntegrationEventService = orderingIntegrationEventService ?? throw new ArgumentNullException(nameof(orderingIntegrationEventService));
         }
 
         /// <summary>
@@ -32,6 +34,11 @@ namespace Ordering.API.Application.IntegrationEvents.EventHandling
         public async Task Handle(UserCheckoutAcceptedIntegrationEvent eventMsg)
         {
             var result = false;
+
+            // Send Integration event to clean basket once basket is converted to Order and before starting with the order creation process
+            var orderStartedIntegrationEvent = new OrderStartedIntegrationEvent(eventMsg.UserId);
+            await _orderingIntegrationEventService.PublishThroughEventBusAsync(orderStartedIntegrationEvent);
+
             if (eventMsg.RequestId != Guid.Empty)
             {
                 var createOrderCommand = new CreateOrderCommand(eventMsg.Basket.Items, eventMsg.UserId, eventMsg.City, eventMsg.Street, 
@@ -41,7 +48,7 @@ namespace Ordering.API.Application.IntegrationEvents.EventHandling
 
                 var requestCreateOrder = new IdentifiedCommand<CreateOrderCommand, bool>(createOrderCommand, eventMsg.RequestId);
                 result = await _mediator.SendAsync(requestCreateOrder);
-            }
+            }            
 
             _logger.CreateLogger(nameof(UserCheckoutAcceptedIntegrationEventHandler))
                 .LogTrace(result ? $"UserCheckoutAccepted integration event has been received and a create new order process is started with requestId: {eventMsg.RequestId}" : 

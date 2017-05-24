@@ -120,18 +120,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
             basket.Items.Add(product);
 
             await UpdateBasket(basket);
-        }
-
-        public async Task CleanBasket(ApplicationUser user)
-        {
-            var token = await GetUserTokenAsync();
-            var cleanBasketUri = API.Basket.CleanBasket(_remoteServiceBaseUrl, user.Id);
-
-            var response = await _apiClient.DeleteAsync(cleanBasketUri, token);
-
-            //CCE: response status code...
-
-        }
+        }        
 
         async Task<string> GetUserTokenAsync()
         {
