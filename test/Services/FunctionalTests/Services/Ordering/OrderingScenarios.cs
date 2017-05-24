@@ -15,36 +15,7 @@ using Xunit;
 namespace FunctionalTests.Services.Ordering
 {
     public class OrderingScenarios : OrderingScenariosBase
-    {
-        // Issue: Unable to communicate with test host process
-        //[Fact]
-        //public async Task Checkout_basket_and_check_order_status_submitted()
-        //{
-        //    using (var orderServer = new OrderingScenariosBase().CreateServer())
-        //    using (var basketServer = new BasketScenariosBase().CreateServer())
-        //    {
-        //        // Expected data
-        //        var cityExpected = $"city-{Guid.NewGuid()}";
-        //        var orderStatusExpected = "submitted";
-
-        //        var basketClient = basketServer.CreateIdempotentClient();
-        //        var orderClient = orderServer.CreateIdempotentClient();
-
-        //        // GIVEN a basket is created 
-        //        var contentBasket = new StringContent(BuildBasket(), UTF8Encoding.UTF8, "application/json");
-        //        await basketClient.PostAsync(BasketScenariosBase.Post.CreateBasket, contentBasket);
-
-        //        // AND basket checkout is sent
-        //        await basketClient.PostAsync(BasketScenariosBase.Post.Checkout, new StringContent(BuildCheckout(cityExpected), UTF8Encoding.UTF8, "application/json"));
-
-        //        // AND the requested order is retrieved        
-        //        var newOrder = await TryGetNewOrderCreated(cityExpected, orderClient);
-
-        //        // THEN check status
-        //        Assert.Equal(orderStatusExpected, newOrder.Status);
-        //    }
-        //}
-
+    {        
         [Fact]
         public async Task Cancel_basket_and_check_order_status_cancelled()
         {
