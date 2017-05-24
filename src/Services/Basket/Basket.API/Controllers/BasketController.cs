@@ -8,10 +8,6 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
 {
-    //TODO NOTE: Right now this is a very chunky API, as the app evolves it is possible we would
-    //want to make the actions more fine grained, add basket item as an action for example.
-    //If this is the case we should also investigate changing the serialization format used for Redis,
-    //using a HashSet instead of a simple string.
     [Route("/")]
     [Authorize]
     public class BasketController : Controller
@@ -22,7 +18,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
         {
             _repository = repository;
         }
-        // GET api/values/5
+        // GET /id
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(string id)
         {
@@ -31,7 +27,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
             return Ok(basket);
         }
 
-        // POST api/values
+        // POST /value
         [HttpPost]
         public async Task<IActionResult> Post([FromBody]CustomerBasket value)
         {
@@ -40,7 +36,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
             return Ok(basket);
         }
 
-        // DELETE api/values/5
+        // DELETE /id
         [HttpDelete("{id}")]
         public void Delete(string id)
         {

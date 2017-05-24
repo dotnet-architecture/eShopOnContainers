@@ -23,7 +23,7 @@ namespace Ordering.Infrastructure
 
             var tasks = domainEvents
                 .Select(async (domainEvent) => {
-                    await mediator.PublishAsync(domainEvent);
+                    await mediator.Publish(domainEvent);
                 });
 
             await Task.WhenAll(tasks);
