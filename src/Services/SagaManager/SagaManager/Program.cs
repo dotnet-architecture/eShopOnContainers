@@ -1,4 +1,4 @@
-﻿namespace SagaManager
+﻿namespace GracePeriodManager
 {
     using System.IO;
     using System;
@@ -31,14 +31,14 @@
             var logger = serviceProvider.GetService<ILoggerFactory>();
             Configure(logger);
 
-            var sagaManagerService = serviceProvider
-                .GetRequiredService<ISagaManagerService>();
+            var gracePeriodManagerService = serviceProvider
+                .GetRequiredService<IManagerService>();
             var checkUpdateTime = serviceProvider
-                .GetRequiredService<IOptions<SagaManagerSettings>>().Value.CheckUpdateTime;
+                .GetRequiredService<IOptions<ManagerSettings>>().Value.CheckUpdateTime;
 
             while (true)
             {
-                sagaManagerService.CheckConfirmedGracePeriodOrders();
+                gracePeriodManagerService.CheckConfirmedGracePeriodOrders();
                 await Task.Delay(checkUpdateTime);
             }
         }
@@ -57,11 +57,11 @@
         {
             services.AddLogging()
                 .AddOptions()
-                .Configure<SagaManagerSettings>(Configuration)
-                .AddSingleton<ISagaManagerService, SagaManagerService>()
+                .Configure<ManagerSettings>(Configuration)
+                .AddSingleton<IManagerService, ManagerService>()
                 .AddSingleton<IRabbitMQPersistentConnection>(sp =>
                 {
-                    var settings = sp.GetRequiredService<IOptions<SagaManagerSettings>>().Value;
+                    var settings = sp.GetRequiredService<IOptions<ManagerSettings>>().Value;
                     var logger = sp.GetRequiredService<ILogger<DefaultRabbitMQPersistentConnection>>();
                     var factory = new ConnectionFactory()
                     {

@@ -1,22 +1,22 @@
-﻿namespace SagaManager.Services
+﻿namespace GracePeriodManager.Services
 {
+    using Dapper;
+    using GracePeriodManager.IntegrationEvents.Events;
+    using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
+    using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Options;
     using System.Collections.Generic;
     using System.Data.SqlClient;
-    using Microsoft.Extensions.Options;
-    using Microsoft.Extensions.Logging;
-    using Dapper;
-    using IntegrationEvents.Events;
-    using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
 
-    public class SagaManagerService : ISagaManagerService
+    public class ManagerService : IManagerService
     {
-        private readonly SagaManagerSettings _settings;
+        private readonly ManagerSettings _settings;
         private readonly IEventBus _eventBus;
-        private readonly ILogger<SagaManagerService> _logger;
+        private readonly ILogger<ManagerService> _logger;
 
-        public SagaManagerService(IOptions<SagaManagerSettings> settings,
+        public ManagerService(IOptions<ManagerSettings> settings,
             IEventBus eventBus,
-            ILogger<SagaManagerService> logger)
+            ILogger<ManagerService> logger)
         {
             _settings = settings.Value;
             _eventBus = eventBus;
@@ -41,11 +41,11 @@
             {
                 try
                 {
-                    _logger.LogInformation("SagaManager Client is trying to connect to database server");
+                    _logger.LogInformation("Grace Period Manager Client is trying to connect to database server");
                     conn.Open();
                     orderIds = conn.Query<int>(
                         @"SELECT Id FROM [Microsoft.eShopOnContainers.Services.OrderingDb].[ordering].[orders] 
-                            WHERE DATEDIFF(hour, [OrderDate], GETDATE()) >= @GracePeriodTime
+                            WHERE DATEDIFF(minute, [OrderDate], GETDATE()) >= @GracePeriodTime
                             AND [OrderStatusId] = 1",
                         new { GracePeriodTime = _settings.GracePeriodTime });  
                 }

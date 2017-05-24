@@ -12,16 +12,13 @@ namespace Ordering.API.Application.DomainEventHandlers.BuyerAndPaymentMethodVeri
     public class UpdateOrderWhenBuyerAndPaymentMethodVerifiedDomainEventHandler 
                    : IAsyncNotificationHandler<BuyerAndPaymentMethodVerifiedDomainEvent>
     {
-        private readonly IOrderRepository _orderRepository;
-        private readonly IOrderingIntegrationEventService _orderingIntegrationEventService;
+        private readonly IOrderRepository _orderRepository;        
         private readonly ILoggerFactory _logger;        
 
         public UpdateOrderWhenBuyerAndPaymentMethodVerifiedDomainEventHandler(
-            IOrderRepository orderRepository, ILoggerFactory logger, 
-            IOrderingIntegrationEventService orderingIntegrationEventService)
+            IOrderRepository orderRepository, ILoggerFactory logger)            
         {
-            _orderRepository = orderRepository ?? throw new ArgumentNullException(nameof(orderRepository));
-            _orderingIntegrationEventService = orderingIntegrationEventService ?? throw new ArgumentNullException(nameof(orderingIntegrationEventService));
+            _orderRepository = orderRepository ?? throw new ArgumentNullException(nameof(orderRepository));            
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
@@ -32,11 +29,7 @@ namespace Ordering.API.Application.DomainEventHandlers.BuyerAndPaymentMethodVeri
         {
             var orderToUpdate = await _orderRepository.GetAsync(buyerPaymentMethodVerifiedEvent.OrderId);
             orderToUpdate.SetBuyerId(buyerPaymentMethodVerifiedEvent.Buyer.Id);
-            orderToUpdate.SetPaymentId(buyerPaymentMethodVerifiedEvent.Payment.Id);
-                                    
-            var orderStartedIntegrationEvent = new OrderStartedIntegrationEvent(buyerPaymentMethodVerifiedEvent.Buyer.IdentityGuid);
-
-            await _orderingIntegrationEventService.PublishThroughEventBusAsync(orderStartedIntegrationEvent);
+            orderToUpdate.SetPaymentId(buyerPaymentMethodVerifiedEvent.Payment.Id);                                                
 
             _logger.CreateLogger(nameof(UpdateOrderWhenBuyerAndPaymentMethodVerifiedDomainEventHandler))
                 .LogTrace($"Order with Id: {buyerPaymentMethodVerifiedEvent.OrderId} has been successfully updated with a payment method id: { buyerPaymentMethodVerifiedEvent.Payment.Id }");                        

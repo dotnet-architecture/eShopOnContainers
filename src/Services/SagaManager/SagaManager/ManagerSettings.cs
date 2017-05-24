@@ -1,6 +1,6 @@
-﻿namespace SagaManager
+﻿namespace GracePeriodManager
 {
-    public class SagaManagerSettings
+    public class ManagerSettings
     {
         public string ConnectionString { get; set; }
 

@@ -15,6 +15,5 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
         Task Checkout(BasketDTO basket);
         Task<Basket> SetQuantities(ApplicationUser user, Dictionary<string, int> quantities);
         Order MapBasketToOrder(Basket basket);
-        Task CleanBasket(ApplicationUser user);
     }
 }

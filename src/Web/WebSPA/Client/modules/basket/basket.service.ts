@@ -51,10 +51,6 @@ export class BasketService {
                 }
             }
         }
-
-        this.basketEvents.orderCreated$.subscribe(x => {
-            this.dropBasket();
-        });
     }
     
     addItemToBasket(item): Observable<boolean> {
@@ -83,13 +79,7 @@ export class BasketService {
 
             return response.json();
         });
-    }
-
-    dropBasket() {
-        this.basket.items = [];
-        this.service.delete(this.basketUrl + '/' + this.basket.buyerId);
-        this.basketDropedSource.next();
-    }
+    }    
 
     mapBasketInfoCheckout(order: IOrder): IBasketCheckout {
         let basketCheckout = <IBasketCheckout>{};
