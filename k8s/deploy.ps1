@@ -50,7 +50,7 @@ if(-not $useDockerHub) {
 
 # Removing previous services & deployments
 Write-Host "Removing existing services & deployments.." -ForegroundColor Yellow
-ExecKube -cmd 'delete -f sql-data.yaml -f rabbitmq.yaml'
+ExecKube -cmd 'delete -f sql-data.yaml -f rabbitmq.yaml -f basket-data.yaml'
 ExecKube -cmd 'delete -f services.yaml -f frontend.yaml -f deployments.yaml'
 ExecKube -cmd 'delete configmap config-files'
 ExecKube -cmd 'delete configmap urls'
@@ -58,7 +58,7 @@ ExecKube -cmd 'delete configmap urls'
 # start sql, rabbitmq, frontend deploymentsExecKube -cmd 'delete configmap config-files'
 ExecKube -cmd 'create configmap config-files --from-file=nginx-conf=nginx.conf'
 ExecKube -cmd 'label configmap config-files app=eshop'
-ExecKube -cmd 'create -f sql-data.yaml -f rabbitmq.yaml -f services.yaml -f frontend.yaml'
+ExecKube -cmd 'create -f sql-data.yaml -f basket-data.yaml -f rabbitmq.yaml -f services.yaml -f frontend.yaml'
 
 # building and publishing docker images not necessary when deploying through CI VSTS
 if(-not $deployCI) {
@@ -67,7 +67,7 @@ if(-not $deployCI) {
     dotnet publish -c Release -o obj/Docker/publish ../eShopOnContainers-ServicesAndWebApps.sln
 
     Write-Host "Building Docker images..." -ForegroundColor Yellow
-    docker-compose -p .. -f ../docker-compose.yml build
+    docker-compose -p .. -f ../docker-compose.yml build    
 
     Write-Host "Pushing images to $registry..." -ForegroundColor Yellow
     $services = ("basket.api", "catalog.api", "identity.api", "ordering.api", "webmvc", "webspa", "webstatus")
@@ -87,23 +87,30 @@ while ($true) {
 }
 
 ExecKube -cmd 'create configmap urls `
-    --from-literal=BasketUrl=http://$($frontendUrl)/basket-api `
-    --from-literal=BasketHealthCheckUrl=http://$($frontendUrl)/basket-api/hc `
+    --from-literal=BasketUrl=http://basket `
+    --from-literal=BasketHealthCheckUrl=http://basket/hc `
     --from-literal=CatalogUrl=http://$($frontendUrl)/catalog-api `
-    --from-literal=CatalogHealthCheckUrl=http://$($frontendUrl)/catalog-api/hc `
+    --from-literal=CatalogHealthCheckUrl=http://catalog/hc `
     --from-literal=IdentityUrl=http://$($frontendUrl)/identity `
-    --from-literal=IdentityHealthCheckUrl=http://$($frontendUrl)/identity/hc `
-    --from-literal=OrderingUrl=http://$($frontendUrl)/ordering-api `
-    --from-literal=OrderingHealthCheckUrl=http://$($frontendUrl)/ordering-api/hc `
-    --from-literal=MvcClient=http://$($frontendUrl)/webmvc `
-    --from-literal=WebMvcHealthCheckUrl=http://$($frontendUrl)/webmvc/hc `
-    --from-literal=WebStatusClient=http://$($frontendUrl)/webstatus `
-    --from-literal=WebSpaHealthCheckUrl=http://$($frontendUrl)/hc `
-    --from-literal=SpaClient=http://$($frontendUrl)'
-
+    --from-literal=IdentityHealthCheckUrl=http://identity/hc `
+    --from-literal=OrderingUrl=http://ordering `
+    --from-literal=OrderingHealthCheckUrl=http://ordering/hc `
+    --from-literal=MvcClientExternalUrl=http://$($frontendUrl)/webmvc `
+    --from-literal=WebMvcHealthCheckUrl=http://webmvc/hc `
+    --from-literal=MvcClientOrderingUrl=http://ordering `
+    --from-literal=MvcClientCatalogUrl=http://catalog `
+    --from-literal=MvcClientBasketUrl=http://basket `
+    --from-literal=WebSpaHealthCheckUrl=http://webspa/hc `
+    --from-literal=SpaClientOrderingExternalUrl=http://$($frontendUrl)/ordering-api `
+    --from-literal=SpaClientCatalogExternalUrl=http://$($frontendUrl)/catalog-api `
+    --from-literal=SpaClientBasketExternalUrl=http://$($frontendUrl)/basket-api `
+    --from-literal=SpaClientIdentityExternalUrl=http://$($frontendUrl)/identity `
+    --from-literal=SpaClientExternalUrl=http://$($frontendUrl)'
+    
 ExecKube -cmd 'label configmap urls app=eshop'
 
-Write-Host "Creating deployments..."
+Write-Host "Creating deployments..." -ForegroundColor Yellow
+
 ExecKube -cmd 'create -f deployments.yaml'
 
 # not using ACR for pulling images when deploying through CI VSTS

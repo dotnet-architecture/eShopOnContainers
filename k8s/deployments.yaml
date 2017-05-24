@@ -18,7 +18,7 @@ spec:
         - name: ASPNETCORE_URLS
           value: http://0.0.0.0:80/basket-api
         - name: ConnectionString
-          value: 127.0.0.1
+          value: basket-data
         - name: EventBusConnection
           value: rabbitmq
         - name: IdentityUrl
@@ -27,11 +27,7 @@ spec:
              name: urls
              key: IdentityUrl
         ports:
-        - containerPort: 80
-      - name: basket-data
-        image: redis:3.2-alpine
-        ports:
-        - containerPort: 6379
+        - containerPort: 80      
       imagePullSecrets:
       - name: registry-key
 ---
@@ -93,12 +89,12 @@ spec:
           valueFrom:
            configMapKeyRef:
              name: urls
-             key: MvcClient
+             key: MvcClientExternalUrl
         - name: SpaClient
           valueFrom:
            configMapKeyRef:
              name: urls
-             key: SpaClient
+             key: SpaClientExternalUrl
         ports:
         - containerPort: 80
       imagePullSecrets:
@@ -160,17 +156,17 @@ spec:
           valueFrom:
            configMapKeyRef:
              name: urls
-             key: BasketUrl
+             key: MvcClientBasketUrl
         - name: CallBackUrl
           valueFrom:
            configMapKeyRef:
              name: urls
-             key: MvcClient
+             key: MvcClientExternalUrl
         - name: CatalogUrl
           valueFrom:
            configMapKeyRef:
              name: urls
-             key: CatalogUrl
+             key: MvcClientCatalogUrl
         - name: IdentityUrl
           valueFrom:
            configMapKeyRef:
@@ -180,12 +176,11 @@ spec:
           valueFrom:
            configMapKeyRef:
              name: urls
-             key: OrderingUrl
+             key: MvcClientOrderingUrl
         ports:
         - containerPort: 80
       imagePullSecrets:
       - name: registry-key
----
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
@@ -264,27 +259,47 @@ spec:
           valueFrom:
            configMapKeyRef:
              name: urls
-             key: BasketUrl
+             key: SpaClientBasketExternalUrl
         - name: CallBackUrl
           valueFrom:
            configMapKeyRef:
              name: urls
-             key: SpaClient
+             key: SpaClientExternalUrl
         - name: CatalogUrl
           valueFrom:
            configMapKeyRef:
              name: urls
-             key: CatalogUrl
+             key: SpaClientCatalogExternalUrl
         - name: IdentityUrl
           valueFrom:
            configMapKeyRef:
              name: urls
-             key: IdentityUrl
+             key: SpaClientIdentityExternalUrl
         - name: OrderingUrl
           valueFrom:
            configMapKeyRef:
              name: urls
-             key: OrderingUrl
+             key: SpaClientOrderingExternalUrl
+        - name: BasketUrlHC
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: BasketHealthCheckUrl        
+        - name: CatalogUrlHC
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: CatalogHealthCheckUrl
+        - name: IdentityUrlHC
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: IdentityHealthCheckUrl
+        - name: OrderingUrlHC
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: OrderingHealthCheckUrl
         ports:
         - containerPort: 80
       imagePullSecrets:
