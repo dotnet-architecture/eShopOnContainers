@@ -72,14 +72,14 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             });
 
 
-            if (Configuration.GetValue<bool>("AzureServiceBus"))
+            if (Configuration.GetValue<bool>("AzureServiceBusEnabled"))
             {
                 services.AddSingleton<IServiceBusPersisterConnection>(sp =>
                 {
                     var settings = sp.GetRequiredService<IOptions<BasketSettings>>().Value;
                     var logger = sp.GetRequiredService<ILogger<DefaultServiceBusPersisterConnection>>();
 
-                    var serviceBusConnection = new ServiceBusConnectionStringBuilder(settings.ServiceBusConnection);
+                    var serviceBusConnection = new ServiceBusConnectionStringBuilder(settings.ServiceBusConnectionString);
 
                     return new DefaultServiceBusPersisterConnection(serviceBusConnection, logger);
                 });
@@ -131,7 +131,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
 
         private void RegisterServiceBus(IServiceCollection services)
         {
-            if (Configuration.GetValue<bool>("AzureServiceBus"))
+            if (Configuration.GetValue<bool>("AzureServiceBusEnabled"))
             {
                 services.AddSingleton<IEventBus, EventBusServiceBus>(sp =>
                 {

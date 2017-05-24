@@ -6,6 +6,6 @@
 
         public string EventBusConnection { get; set; }
 
-        public string ServiceBusConnection { get; set; }
+        public string ServiceBusConnectionString { get; set; }
     }
 }

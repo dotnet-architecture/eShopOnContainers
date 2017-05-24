@@ -115,13 +115,14 @@
             var serviceProvider = services.BuildServiceProvider();
             services.AddTransient<IOrderingIntegrationEventService, OrderingIntegrationEventService>();
 
-            if (Configuration.GetValue<bool>("AzureServiceBus"))
+            if (Configuration.GetValue<bool>("AzureServiceBusEnabled"))
             {
                 services.AddSingleton<IServiceBusPersisterConnection>(sp =>
                 {
                     var logger = sp.GetRequiredService<ILogger<DefaultServiceBusPersisterConnection>>();
 
-                    var serviceBusConnection = new ServiceBusConnectionStringBuilder(Configuration["ServiceBusConnection"]);
+                    var serviceBusConnectionString = Configuration["ServiceBusConnectionString"];
+                    var serviceBusConnection = new ServiceBusConnectionStringBuilder(serviceBusConnectionString);
 
                     return new DefaultServiceBusPersisterConnection(serviceBusConnection, logger);
                 });
@@ -192,7 +193,7 @@
 
         private void RegisterServiceBus(IServiceCollection services)
         {
-            if (Configuration.GetValue<bool>("AzureServiceBus"))
+            if (Configuration.GetValue<bool>("AzureServiceBusEnabled"))
             {
                 services.AddSingleton<IEventBus, EventBusServiceBus>(sp =>
                 {
