@@ -13,8 +13,8 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus
 
         bool _disposed;
 
-        public DefaultServiceBusPersisterConnection(ServiceBusConnectionStringBuilder serviceBusConnectionStringBuilder, 
-            TimeSpan operationTimeout, RetryPolicy retryPolicy, ILogger<DefaultServiceBusPersisterConnection> logger)
+        public DefaultServiceBusPersisterConnection(ServiceBusConnectionStringBuilder serviceBusConnectionStringBuilder,
+            ILogger<DefaultServiceBusPersisterConnection> logger)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             

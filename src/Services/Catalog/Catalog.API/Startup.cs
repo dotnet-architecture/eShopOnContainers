@@ -120,7 +120,7 @@
 
                     var serviceBusConnection = new ServiceBusConnectionStringBuilder(settings.ServiceBusConnection);
 
-                    return new DefaultServiceBusPersisterConnection(serviceBusConnection, TimeSpan.FromSeconds(5), RetryPolicy.Default, logger);
+                    return new DefaultServiceBusPersisterConnection(serviceBusConnection, logger);
                 });
             }
             else
@@ -205,7 +205,7 @@
                     var serviceBusPersisterConnection = sp.GetRequiredService<IServiceBusPersisterConnection>();
                     var logger = sp.GetRequiredService<ILogger<EventBusServiceBus>>();
                     var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
-                    var subscriptionClientName = Configuration.GetValue<string>("SubscriptionClientName");
+                    var subscriptionClientName = Configuration["SubscriptionClientName"];
 
                     return new EventBusServiceBus(serviceBusPersisterConnection, logger,
                         eventBusSubcriptionsManager, subscriptionClientName);
