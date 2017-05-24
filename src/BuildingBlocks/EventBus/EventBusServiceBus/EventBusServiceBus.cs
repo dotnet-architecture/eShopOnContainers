@@ -29,6 +29,8 @@
 
             _subscriptionClient = new SubscriptionClient(serviceBusPersisterConnection.ServiceBusConnectionStringBuilder, 
                 subscriptionClientName);
+
+            CreateConsumerChannel();
         }
 
         public void Publish(IntegrationEvent @event)
@@ -69,7 +71,7 @@
                 }
                 catch(ServiceBusException)
                 {
-                    _logger.LogWarning($"The messaging entity {eventName} already exists.");
+                    _logger.LogInformation($"The messaging entity {eventName} already exists.");
                 }
             }
 
@@ -91,7 +93,7 @@
             }
             catch (MessagingEntityNotFoundException)
             {
-                _logger.LogWarning($"The messaging entity {eventName} Could not be found.");
+                _logger.LogInformation($"The messaging entity {eventName} Could not be found.");
             }
 
             _subsManager.RemoveSubscription<T, TH>();
@@ -102,17 +104,17 @@
             _subsManager.Clear();
         }
 
-        //private async Task CreateConsumerChannel()
-        //{
-        //     _subscriptionClient.RegisterMessageHandler(
-        //         async (message, token) =>
-        //         {
-        //             var eventName = message.Label;
-        //             var messageData = Encoding.UTF8.GetString(message.Body);
-        //             await ProcessEvent(eventName, messageData);
-        //        },
-        //        new MessageHandlerOptions() { MaxConcurrentCalls = 10, AutoComplete = true });
-        //}
+        private void CreateConsumerChannel()
+        {
+            _subscriptionClient.RegisterMessageHandler(
+                async (message, token) =>
+                {
+                    var eventName = message.Label;
+                    var messageData = Encoding.UTF8.GetString(message.Body);
+                    await ProcessEvent(eventName, messageData);
+                },
+               new MessageHandlerOptions() { MaxConcurrentCalls = 10, AutoComplete = true });
+        }
 
         private async Task ProcessEvent(string eventName, string message)
         {
