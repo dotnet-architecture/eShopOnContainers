@@ -7,8 +7,6 @@
     {
         ServiceBusConnectionStringBuilder ServiceBusConnectionStringBuilder { get; }
 
-        bool IsConnected { get; }
-
         ITopicClient CreateModel();
     }
 }
