@@ -5,27 +5,23 @@ using System.IO;
 
 namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus
 {
-    public class DefaultServiceBusPersisterConnection : ServiceBusConnection, IServiceBusPersisterConnection
+    public class DefaultServiceBusPersisterConnection :IServiceBusPersisterConnection
     {
-        private readonly ILogger<ServiceBusConnection> _logger;
+        private readonly ILogger<DefaultServiceBusPersisterConnection> _logger;
         private readonly ServiceBusConnectionStringBuilder _serviceBusConnectionStringBuilder;
         private ITopicClient _topicClient;
 
         bool _disposed;
-        object sync_root = new object();
 
         public DefaultServiceBusPersisterConnection(ServiceBusConnectionStringBuilder serviceBusConnectionStringBuilder, 
-            TimeSpan operationTimeout, RetryPolicy retryPolicy, ILogger<ServiceBusConnection> logger)
-            : base(operationTimeout, retryPolicy)
+            TimeSpan operationTimeout, RetryPolicy retryPolicy, ILogger<DefaultServiceBusPersisterConnection> logger)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-
-            InitializeConnection(serviceBusConnectionStringBuilder);
+            
             _serviceBusConnectionStringBuilder = serviceBusConnectionStringBuilder ?? 
                 throw new ArgumentNullException(nameof(serviceBusConnectionStringBuilder));
+            _topicClient = new TopicClient(_serviceBusConnectionStringBuilder, RetryPolicy.Default);
         }
-
-        public bool IsConnected => _topicClient.IsClosedOrClosing;
 
         public ServiceBusConnectionStringBuilder ServiceBusConnectionStringBuilder => _serviceBusConnectionStringBuilder;
 
@@ -33,7 +29,7 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus
         {
             if(_topicClient.IsClosedOrClosing)
             {
-                _topicClient = new TopicClient(_serviceBusConnectionStringBuilder, RetryPolicy);
+                _topicClient = new TopicClient(_serviceBusConnectionStringBuilder, RetryPolicy.Default);
             }
 
             return _topicClient;
