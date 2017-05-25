@@ -126,10 +126,10 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             });
 
             services.AddTransient<IBasketRepository, RedisBasketRepository>();
-            RegisterServiceBus(services);
+            RegisterEventBus(services);
         }
 
-        private void RegisterServiceBus(IServiceCollection services)
+        private void RegisterEventBus(IServiceCollection services)
         {
             if (Configuration.GetValue<bool>("AzureServiceBusEnabled"))
             {

@@ -142,7 +142,7 @@
                 });
             }
 
-            RegisterServiceBus(services);
+            RegisterEventBus(services);
 
             services.AddOptions();
 
@@ -178,6 +178,8 @@
                 .UseSqlServer(Configuration["ConnectionString"], b => b.MigrationsAssembly("Ordering.API"))
                 .Options);
             integrationEventLogContext.Database.Migrate();
+
+            ConfigureEventBus(app);
         }
 
         protected virtual void ConfigureAuth(IApplicationBuilder app)
@@ -191,7 +193,7 @@
             });
         }
 
-        private void RegisterServiceBus(IServiceCollection services)
+        private void RegisterEventBus(IServiceCollection services)
         {
             if (Configuration.GetValue<bool>("AzureServiceBusEnabled"))
             {
@@ -212,6 +214,11 @@
             }
 
             services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
+        }
+
+        protected virtual void ConfigureEventBus(IApplicationBuilder app)
+        {
+            var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
         }
     }
 }

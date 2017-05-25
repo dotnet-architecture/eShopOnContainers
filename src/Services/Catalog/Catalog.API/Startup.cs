@@ -138,7 +138,7 @@
                 });
             }
 
-            RegisterServiceBus(services);
+            RegisterEventBus(services);
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
@@ -170,6 +170,8 @@
                 .Options);
 
             integrationEventLogContext.Database.Migrate();
+
+            ConfigureEventBus(app);
         }
 
         private void WaitForSqlAvailability(CatalogContext ctx, ILoggerFactory loggerFactory, int? retry = 0)
@@ -196,7 +198,7 @@
             }
         }
 
-        private void RegisterServiceBus(IServiceCollection services)
+        private void RegisterEventBus(IServiceCollection services)
         {
             if (Configuration.GetValue<bool>("AzureServiceBusEnabled"))
             {
@@ -217,6 +219,10 @@
             }
 
             services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
+        }
+        protected virtual void ConfigureEventBus(IApplicationBuilder app)
+        {
+            var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
         }
     }
 }
