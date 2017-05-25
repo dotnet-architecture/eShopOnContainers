@@ -81,7 +81,7 @@ services:
     labels:
       - "com.microsoft.visualstudio.targetoperatingsystem=linux"
 
-  sagamanager:
+  graceperiodmanager:
     build:
       args:
         source: ${DOCKER_BUILD_SOURCE}

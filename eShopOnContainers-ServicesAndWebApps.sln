@@ -82,7 +82,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventBus.Tests", "src\Build
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GracePeriod", "GracePeriod", "{F38B4FF0-0B49-405A-B1B4-F7A5E3BC4C4E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GracePeriodManager", "src\Services\SagaManager\SagaManager\GracePeriodManager.csproj", "{F6E0F0DD-1400-43C3-B5E0-7CC325728C47}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GracePeriodManager", "src\Services\GracePeriod\GracePeriodManager\GracePeriodManager.csproj", "{F6E0F0DD-1400-43C3-B5E0-7CC325728C47}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

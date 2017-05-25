@@ -2,10 +2,10 @@ version: '2'
 
 
 services:
-  sagamanager:
-    image: eshop/sagamanager
+  graceperiodmanager:
+    image: eshop/graceperiodmanager
     build:
-      context: ./src/Services/SagaManager/SagaManager
+      context: ./src/Services/GracePeriod/GracePeriodManager
       dockerfile: Dockerfile
     depends_on:
       - sql.data
