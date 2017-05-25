@@ -121,13 +121,13 @@ services:
     labels:
       - "com.microsoft.visualstudio.targetoperatingsystem=linux"
 
-  sagamanager:
-    image: eshop/sagamanager:dev
+  graceperiodmanager:
+    image: eshop/graceperiodmanager:dev
     build:
       args:
         source: ${DOCKER_BUILD_SOURCE}
     volumes:
-      - ./src/Services/SagaManager/SagaManager:/app
+      - ./src/Services/GracePeriod/GracePeriodManager:/app
       - ~/.nuget/packages:/root/.nuget/packages:ro
       - ~/clrdbg:/clrdbg:ro
     entrypoint: tail -f /dev/null
