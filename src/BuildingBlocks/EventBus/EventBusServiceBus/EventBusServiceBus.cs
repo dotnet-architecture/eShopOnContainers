@@ -30,7 +30,8 @@
             _subscriptionClient = new SubscriptionClient(serviceBusPersisterConnection.ServiceBusConnectionStringBuilder, 
                 subscriptionClientName);
 
-            CreateConsumerChannel();
+            RemoveDefaultRule();
+            RegisterSubscriptionClientMessageHandler();
         }
 
         public void Publish(IntegrationEvent @event)
@@ -60,7 +61,7 @@
             var eventName = typeof(T).Name;
             var containsKey = _subsManager.HasSubscriptionsForEvent<T>();
             if (!containsKey)
-            { 
+            {
                 try
                 {
                     _subscriptionClient.AddRuleAsync(new RuleDescription
@@ -104,7 +105,7 @@
             _subsManager.Clear();
         }
 
-        private void CreateConsumerChannel()
+        private void RegisterSubscriptionClientMessageHandler()
         {
             _subscriptionClient.RegisterMessageHandler(
                 async (message, token) =>
@@ -130,6 +131,21 @@
                     var concreteType = typeof(IIntegrationEventHandler<>).MakeGenericType(eventType);
                     await (Task)concreteType.GetMethod("Handle").Invoke(handler, new object[] { integrationEvent });
                 }
+            }
+        }
+
+        private void RemoveDefaultRule()
+        {
+            try
+            {
+                _subscriptionClient
+                 .RemoveRuleAsync(SubscriptionClient.DefaultRule)
+                 .GetAwaiter()
+                 .GetResult();
+            }
+            catch (MessagingEntityNotFoundException)
+            {
+                _logger.LogInformation($"The messaging entity {SubscriptionClient.DefaultRule} Could not be found.");
             }
         }
     }
