@@ -50,8 +50,8 @@ if(-not $useDockerHub) {
 
 # Removing previous services & deployments
 Write-Host "Removing existing services & deployments.." -ForegroundColor Yellow
-ExecKube -cmd 'delete -f sql-data.yaml -f rabbitmq.yaml -f basket-data.yaml'
-ExecKube -cmd 'delete -f services.yaml -f frontend.yaml -f deployments.yaml'
+ExecKube -cmd 'delete deployments --all'
+ExecKube -cmd 'delete services --all'
 ExecKube -cmd 'delete configmap config-files'
 ExecKube -cmd 'delete configmap urls'
 
@@ -117,17 +117,24 @@ ExecKube -cmd 'create -f deployments.yaml'
 if(-not $deployCI) {
     # update deployments with the private registry before k8s tries to pull images
     # (deployment templating, or Helm, would obviate this)
-    ExecKube -cmd 'set image -f deployments.yaml `
-        basket=$registry/eshop/basket.api `
-        catalog=$registry/eshop/catalog.api `
-        identity=$registry/eshop/identity.api `
-        ordering=$registry/eshop/ordering.api `
-        webmvc=$registry/eshop/webmvc `
-        webstatus=$registry/eshop/webstatus `
-        webspa=$registry/eshop/webspa'
+    Write-Host "Update Image containers..." -ForegroundColor Yellow
+    ExecKube -cmd 'set image deployments/basket basket=$registry/eshop/basket.api'
+    ExecKube -cmd 'set image deployments/catalog catalog=$registry/eshop/catalog.api'
+    ExecKube -cmd 'set image deployments/identity identity=$registry/eshop/identity.api'
+    ExecKube -cmd 'set image deployments/ordering ordering=$registry/eshop/ordering.api'
+    ExecKube -cmd 'set image deployments/webmvc webmvc=$registry/eshop/webmvc'
+    ExecKube -cmd 'set image deployments/webstatus webstatus=$registry/eshop/webstatus'
+    ExecKube -cmd 'set image deployments/webspa webspa=$registry/eshop/webspa'
 }
 
-ExecKube -cmd 'rollout resume -f deployments.yaml'
+Write-Host "Execute rollout..." -ForegroundColor Yellow
+ExecKube -cmd 'rollout resume deployments/basket'
+ExecKube -cmd 'rollout resume deployments/catalog'
+ExecKube -cmd 'rollout resume deployments/identity'
+ExecKube -cmd 'rollout resume deployments/ordering'
+ExecKube -cmd 'rollout resume deployments/webmvc'
+ExecKube -cmd 'rollout resume deployments/webstatus'
+ExecKube -cmd 'rollout resume deployments/webspa'
 
 Write-Host "WebSPA is exposed at http://$frontendUrl, WebMVC at http://$frontendUrl/webmvc, WebStatus at http://$frontendUrl/webstatus" -ForegroundColor Yellow
 
