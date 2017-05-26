@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp1.1</TargetFramework>
+    <RuntimeFrameworkVersion>1.1.2</RuntimeFrameworkVersion>
     <OutputType>Exe</OutputType>
     <UserSecretsId>aspnet-Ordering.API-20161122013547</UserSecretsId>
     <PackageTargetFallback>$(PackageTargetFallback);netstandard1.6.1;dnxcore50;portable-net451+win8</PackageTargetFallback>
