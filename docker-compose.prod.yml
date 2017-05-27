@@ -17,7 +17,6 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://0.0.0.0:80
-      - ConnectionString=basket.data
       - identityUrl=http://identity.api              #Local: You need to open your host's firewall at range 5100-5105.  at range 5100-5105. 
       - EventBusConnection=rabbitmq
     ports:

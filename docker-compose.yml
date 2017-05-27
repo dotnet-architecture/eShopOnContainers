@@ -7,7 +7,6 @@ services:
       context: ./src/Services/Basket/Basket.API
       dockerfile: Dockerfile
     depends_on:
-      - basket.data
       - identity.api
       - rabbitmq
 
@@ -58,11 +57,6 @@ services:
 
   sql.data:
     image: microsoft/mssql-server-linux
-
-  basket.data:
-    image: redis
-    ports:
-      - "6379:6379"
 
   rabbitmq:
     image: rabbitmq
