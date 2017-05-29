@@ -19,6 +19,7 @@ Using `docker-machine` is the recommended way to create a VM with docker install
 
 1. [Deploying SQL Server and databases](az/sql/readme.md)
 2. [Deploying Azure Service Bus](az/servicebus/readme.md)
+3. [Deploying Redis Cache](az/redis/readme.md)
 
 
 
