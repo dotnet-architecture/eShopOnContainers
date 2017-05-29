@@ -9,7 +9,7 @@
       "Microsoft": "Information"
     }
   },
-  "ServiceBusConnectionString": "Endpoint=sb://eshoponazuretest.servicebus.windows.net/;SharedAccessKeyName=Root;SharedAccessKey=Xo9wlr4bRv5iqTTditgFhTeZqxIpczaAUqfspo+QE/s=;EntityPath=eshop_event_bus",
+  "ServiceBusConnectionString": "Endpoint=sb://eshopsbez55a72p6wm62.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=oA6WpfCfCbScZbQa/DBOLfwl6oi5ezPsCYL7QsTb4PY=;EntityPath=eshop_event_bus",
   "AzureServiceBusEnabled": "true",
   "SubscriptionClientName": "Ordering"
 }
