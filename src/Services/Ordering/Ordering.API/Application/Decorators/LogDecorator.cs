@@ -6,7 +6,7 @@
 
     public class LogDecorator<TRequest, TResponse>
         : IAsyncRequestHandler<TRequest, TResponse>
-         where TRequest : IAsyncRequest<TResponse>
+         where TRequest : IRequest<TResponse>
     {
         private readonly IAsyncRequestHandler<TRequest, TResponse> _inner;
         private readonly ILogger<LogDecorator<TRequest, TResponse>> _logger;
