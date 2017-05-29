@@ -61,7 +61,12 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             services.AddSingleton<ConnectionMultiplexer>(sp =>
             {
                 var settings = sp.GetRequiredService<IOptions<BasketSettings>>().Value;
-                var configuration = ConfigurationOptions.Parse(settings.ConnectionString, true);
+                if (Configuration.GetValue<bool>("AzureRedisEnabled"))
+                {
+                    settings.ConnectionString = Configuration["AzureRedisConnectionString"];
+                }
+
+                ConfigurationOptions configuration = ConfigurationOptions.Parse(settings.ConnectionString, true);           
                 configuration.ResolveDns = true;
 
                 return ConnectionMultiplexer.Connect(configuration);
