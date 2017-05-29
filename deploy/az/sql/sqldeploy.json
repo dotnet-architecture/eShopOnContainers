@@ -5,12 +5,17 @@
     "sql_server": {
       "type": "object"
     },
-    "suffix": {
+    "admin": {
+      "type": "string"
+    },
+    "adminpwd":  {
       "type": "string"
     }
   },
   "variables": {
-    "sql_server_name": "[concat(parameters('sql_server').name, '-', parameters('suffix'))]"
+    "sql_server_name": "[concat(parameters('sql_server').name, '-', uniqueString(resourceGroup().id))]",
+    "admin": "[parameters('admin')]",
+    "adminpwd": "[parameters('adminpwd')]"
   },
   "resources": [
     {
@@ -19,8 +24,8 @@
       "apiVersion": "2014-04-01-preview",
       "location": "[resourceGroup().location]",
       "properties": {
-        "administratorLogin": "[parameters('sql_server').admin]",
-        "administratorLoginPassword": "[parameters('sql_server').adminpwd]",
+        "administratorLogin": "[variables('admin')]",
+        "administratorLoginPassword": "[variables('adminpwd')]",
         "version": "12.0"
       },
       "resources": [

@@ -4,9 +4,7 @@
   "parameters": {
     "sql_server": {
       "value": {
-        "name": "eshop-sqlsrv",
-        "admin": "eshop",
-        "adminpwd": "Pass@word",
+        "name": "eshopsql",
         "dbs": {
           "ordering": "orderingdb",
           "identity": "identitydb",
@@ -14,8 +12,11 @@
         }
       }
     },
-    "suffix": {
-      "value": "edu"
+    "admin": {
+      "value": null
+    },
+    "adminpwd": {
+      "value": null
     }
   }
 }
