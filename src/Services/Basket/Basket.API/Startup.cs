@@ -50,7 +50,14 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
                 options.Filters.Add(typeof(HttpGlobalExceptionFilter));
             }).AddControllersAsServices();
 
-            services.Configure<BasketSettings>(Configuration);
+            services.Configure<BasketSettings>(options =>
+            {
+                Configuration.Bind(options);
+                if (Configuration.GetValue<bool>("AzureRedisEnabled"))
+                {
+                    options.ConnectionString = Configuration["AzureRedisConnectionString"];
+                }
+            });
 
             //By connecting here we are making sure that our service
             //cannot start until redis is ready. This might slow down startup,
@@ -61,11 +68,6 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             services.AddSingleton<ConnectionMultiplexer>(sp =>
             {
                 var settings = sp.GetRequiredService<IOptions<BasketSettings>>().Value;
-                if (Configuration.GetValue<bool>("AzureRedisEnabled"))
-                {
-                    settings.ConnectionString = Configuration["AzureRedisConnectionString"];
-                }
-
                 ConfigurationOptions configuration = ConfigurationOptions.Parse(settings.ConnectionString, true);           
                 configuration.ResolveDns = true;
 
