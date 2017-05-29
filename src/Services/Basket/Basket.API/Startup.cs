@@ -82,13 +82,10 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
                 return new DefaultRabbitMQPersistentConnection(factory, logger);
             });
 
-            services.AddSwaggerGen();
-
-            services.ConfigureSwaggerGen(options =>
+            services.AddSwaggerGen(options =>
             {
-                options.OperationFilter<AuthorizationHeaderParameterOperationFilter>();
                 options.DescribeAllEnumsAsStrings();
-                options.SingleApiVersion(new Swashbuckle.Swagger.Model.Info()
+                options.SwaggerDoc("v1", new Swashbuckle.AspNetCore.Swagger.Info
                 {
                     Title = "Basket HTTP API",
                     Version = "v1",
@@ -96,7 +93,6 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
                     TermsOfService = "Terms Of Service"
                 });
             });
-
 
             services.AddCors(options =>
             {
@@ -137,7 +133,10 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             app.UseMvcWithDefaultRoute();
 
             app.UseSwagger()
-                .UseSwaggerUi();
+               .UseSwaggerUI(c =>
+               {
+                   c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+               });
 
             ConfigureEventBus(app);
 
@@ -149,7 +148,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             app.UseIdentityServerAuthentication(new IdentityServerAuthenticationOptions
             {
                 Authority = identityUrl.ToString(),
-                ScopeName = "basket",
+                ApiName = "basket",
                 RequireHttpsMetadata = false
             });
         }
