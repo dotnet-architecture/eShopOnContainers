@@ -9,6 +9,6 @@
       "Microsoft": "Information"
     }
   },
-  "AzureServiceBusEnabled": "true",
+  "AzureServiceBusEnabled": false,
   "SubscriptionClientName": "Catalog"
 }

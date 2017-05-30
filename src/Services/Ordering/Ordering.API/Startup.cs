@@ -121,7 +121,7 @@
                 {
                     var logger = sp.GetRequiredService<ILogger<DefaultServiceBusPersisterConnection>>();
 
-                    var serviceBusConnectionString = Configuration["ServiceBusConnectionString"];
+                    var serviceBusConnectionString = Configuration["EventBusConnection"];
                     var serviceBusConnection = new ServiceBusConnectionStringBuilder(serviceBusConnectionString);
 
                     return new DefaultServiceBusPersisterConnection(serviceBusConnection, logger);
