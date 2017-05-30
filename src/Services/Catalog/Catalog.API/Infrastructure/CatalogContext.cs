@@ -36,8 +36,10 @@
             builder.Property(ci => ci.Price)
                 .IsRequired(true);
 
-            builder.Property(ci => ci.PictureUri)
+            builder.Property(ci => ci.PictureFileName)
                 .IsRequired(false);
+
+            builder.Ignore(ci => ci.PictureUri);
 
             builder.HasOne(ci => ci.CatalogBrand)
                 .WithMany()

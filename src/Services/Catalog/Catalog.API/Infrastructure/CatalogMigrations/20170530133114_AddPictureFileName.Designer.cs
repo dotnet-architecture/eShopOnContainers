@@ -8,9 +8,10 @@ using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
 namespace Catalog.API.Infrastructure.Migrations
 {
     [DbContext(typeof(CatalogContext))]
-    partial class CatalogContextModelSnapshot : ModelSnapshot
+    [Migration("20170530133114_AddPictureFile")]
+    partial class AddPictureFile
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.1")
@@ -52,7 +53,7 @@ namespace Catalog.API.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(50);
 
-                    b.Property<string>("PictureFileName");
+                    b.Property<string>("PictureFile");
 
                     b.Property<decimal>("Price");
 
