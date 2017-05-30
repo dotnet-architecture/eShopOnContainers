@@ -12,7 +12,8 @@ namespace Identity.API.Configuration
             return new List<ApiResource>
             {
                 new ApiResource("orders", "Orders Service"),
-                new ApiResource("basket", "Basket Service")
+                new ApiResource("basket", "Basket Service"),
+                new ApiResource("locations", "Locations Service")
             };
         }
 
