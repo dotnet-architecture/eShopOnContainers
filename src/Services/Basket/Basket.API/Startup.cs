@@ -77,7 +77,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
                     var settings = sp.GetRequiredService<IOptions<BasketSettings>>().Value;
                     var logger = sp.GetRequiredService<ILogger<DefaultServiceBusPersisterConnection>>();
 
-                    var serviceBusConnection = new ServiceBusConnectionStringBuilder(settings.ServiceBusConnectionString);
+                    var serviceBusConnection = new ServiceBusConnectionStringBuilder(settings.EventBusConnection);
 
                     return new DefaultServiceBusPersisterConnection(serviceBusConnection, logger);
                 });
