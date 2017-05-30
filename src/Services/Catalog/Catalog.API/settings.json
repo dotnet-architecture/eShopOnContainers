@@ -1,6 +1,6 @@
 ﻿{
   "ConnectionString": "Server=tcp:127.0.0.1,5433;Initial Catalog=Microsoft.eShopOnContainers.Services.CatalogDb;User Id=sa;Password=Pass@word",
-  "ExternalCatalogBaseUrl": "http://localhost:5101",
+  "PicBaseUrl": "http://localhost:5101",
   "Logging": {
     "IncludeScopes": false,
     "LogLevel": {
@@ -11,5 +11,6 @@
   },
   "ServiceBusConnectionString": "Endpoint=sb://eshopsbez55a72p6wm62.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=oA6WpfCfCbScZbQa/DBOLfwl6oi5ezPsCYL7QsTb4PY=;EntityPath=eshop_event_bus",
   "AzureServiceBusEnabled": "true",
+  "AzureStorageEnabled": false,
   "SubscriptionClientName": "Catalog"
 }
