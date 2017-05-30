@@ -95,3 +95,13 @@ services:
       - spa=http://webspa/hc
     ports:
       - "5107:80"
+
+  locations.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - ConnectionString=Server=sql.data;Database=Microsoft.eShopOnContainers.Services.LocationsDb;User Id=sa;Password=Pass@word
+      - identityUrl=http://identity.api              #Local: You need to open your local dev-machine firewall at range 5100-5105.  at range 5100-5105. 
+      - EventBusConnection=rabbitmq
+    ports:
+      - "5109:80"
