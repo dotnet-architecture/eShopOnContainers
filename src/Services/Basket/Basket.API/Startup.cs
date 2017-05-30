@@ -18,6 +18,8 @@ using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
 using System.Threading.Tasks;
 using StackExchange.Redis;
+using Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus;
+using Microsoft.Azure.ServiceBus;
 
 namespace Microsoft.eShopOnContainers.Services.Basket.API
 {
