@@ -53,7 +53,7 @@ namespace Catalog.API.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(50);
 
-                    b.Property<string>("PictureFile");
+                    b.Property<string>("PictureFileName");
 
                     b.Property<decimal>("Price");
 
