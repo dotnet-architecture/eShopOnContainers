@@ -16,13 +16,8 @@ using Microsoft.Extensions.HealthChecks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
-using StackExchange.Redis;
-using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
-using System;
-using Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus;
-using Microsoft.Azure.ServiceBus;
+using StackExchange.Redis;
 
 namespace Microsoft.eShopOnContainers.Services.Basket.API
 {
@@ -66,9 +61,10 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             services.AddSingleton<ConnectionMultiplexer>(sp =>
             {
                 var settings = sp.GetRequiredService<IOptions<BasketSettings>>().Value;
-                var ips = Dns.GetHostAddressesAsync(settings.ConnectionString).Result;
+                ConfigurationOptions configuration = ConfigurationOptions.Parse(settings.ConnectionString, true);           
+                configuration.ResolveDns = true;
 
-                return ConnectionMultiplexer.Connect(ips.First().ToString());
+                return ConnectionMultiplexer.Connect(configuration);
             });
 
 
