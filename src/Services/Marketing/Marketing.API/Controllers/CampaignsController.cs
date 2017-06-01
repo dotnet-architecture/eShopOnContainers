@@ -6,7 +6,7 @@
     using Microsoft.eShopOnContainers.Services.Marketing.API.Model;
     using Microsoft.EntityFrameworkCore;
 
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     public class CampaignsController : Controller
     {
         private readonly MarketingContext _context;
