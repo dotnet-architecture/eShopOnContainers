@@ -36,6 +36,15 @@ services:
     depends_on:
       - sql.data
 
+  marketing.api:
+    image: eshop/marketing.api
+    build:
+      context: ./src/Services/Marketing/Marketing.API
+      dockerfile: Dockerfile    
+    depends_on:
+      - sql.data
+      - identity.api
+
   webspa:
     image: eshop/webspa
     build:
@@ -74,4 +83,4 @@ services:
     build:
       context: ./src/Web/WebStatus
       dockerfile: Dockerfile    
-    
+
