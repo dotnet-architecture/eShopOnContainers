@@ -7,17 +7,27 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API.Model
 {
     public class Locations
     {
-        public int Id { get; set; }
-        public string Code { get; set; }
-        public int? ParentId { get; set; }
-        public string Description { get; set; }
-        public double Latitude { get; set; }
-        public double Longitude { get; set; }
-        public bool IsPointInPolygon(double lat, double lon) => CheckIsPointInPolygon(lat, lon);
+        public int Id { get; private set; }
+        public string Code { get; private set; }
+        public int? ParentId { get; private set; }
+        public string Description { get; private set; }
+        public double Latitude { get; private set; }
+        public double Longitude { get; private set; }
+        public (Locations location, bool isSuccess) GetUserMostSpecificLocation(double userLatitude, double userLongitude) 
+            => CheckUserMostSpecificLocation(userLatitude, userLongitude);
 
         public Locations()
         {
             ChildLocations = new List<Locations>();
+        }
+
+        public Locations(string code, string description, double latitude, double longitude, List<FrontierPoints> polygon = null) : this()
+        {
+            Code = code;
+            Description = description;
+            Latitude = latitude;
+            Longitude = longitude;
+            Polygon = polygon ?? new List<FrontierPoints>();
         }
 
         public virtual List<FrontierPoints> Polygon { get; set; }
@@ -25,9 +35,31 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API.Model
         [ForeignKey("ParentId")]
         public virtual List<Locations> ChildLocations { get; set; }
 
+        private (Locations location, bool isSuccess) CheckUserMostSpecificLocation(double userLatitude, double userLongitude, Locations location = null)
+        {
+            Locations result = this;
+            var childLocations = location != null ? location.ChildLocations : ChildLocations;
+
+            // Check if user is in location's area, if not then returns false
+            if (!CheckIsPointInPolygon(userLatitude, userLongitude))
+            {
+                return (this, false);
+            }
+
+            foreach (var childLocation in childLocations)
+            {
+                result = childLocation;
+
+                if (childLocation.ChildLocations.Count == 0){ break; }
+
+                CheckUserMostSpecificLocation(userLatitude, userLongitude, childLocation);
+            }
+            return (result, true);
+        }
 
         private bool CheckIsPointInPolygon(double lat, double lon)
         {
+            if(Polygon.Count == 0) { return false; };
             double minX = Polygon[0].Latitude;
             double maxX = Polygon[0].Latitude;
             double minY = Polygon[0].Longitude;

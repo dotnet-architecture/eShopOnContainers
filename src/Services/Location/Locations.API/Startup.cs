@@ -8,6 +8,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System.Reflection;
 using System;
+using Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure.Services;
+using Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure.Repositories;
+using Microsoft.AspNetCore.Http;
 
 namespace Microsoft.eShopOnContainers.Services.Locations.API
 {
@@ -75,6 +78,11 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
                     .AllowAnyHeader()
                     .AllowCredentials());
             });
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddTransient<IIdentityService, IdentityService>();
+            services.AddTransient<ILocationsService, LocationsService>();
+            services.AddTransient<ILocationsRepository, LocationsRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
