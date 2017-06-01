@@ -72,7 +72,8 @@ namespace Identity.API.Configuration
                         IdentityServerConstants.StandardScopes.Profile,
                         IdentityServerConstants.StandardScopes.OfflineAccess,
                         "orders",
-                        "basket"
+                        "basket",
+                        "locations"
                     },
                     //Allow requesting refresh tokens for long lived API access
                     AllowOfflineAccess = true                    
@@ -103,7 +104,8 @@ namespace Identity.API.Configuration
                         IdentityServerConstants.StandardScopes.Profile,
                         IdentityServerConstants.StandardScopes.OfflineAccess,
                         "orders",
-                        "basket"
+                        "basket",
+                        "locations"
                     },
                 }
             };

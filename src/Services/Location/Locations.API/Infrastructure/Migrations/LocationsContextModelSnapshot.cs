@@ -14,15 +14,16 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure.Migr
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
-                .HasAnnotation("SqlServer:Sequence:.frontier_hilo", "'frontier_hilo', '', '1', '10', '', '', 'Int64', 'False'")
-                .HasAnnotation("SqlServer:Sequence:.locations_hilo", "'locations_hilo', '', '1', '10', '', '', 'Int64', 'False'")
+                .HasAnnotation("SqlServer:Sequence:.frontier_seq", "'frontier_seq', '', '1', '10', '', '', 'Int64', 'False'")
+                .HasAnnotation("SqlServer:Sequence:.locations_seq", "'locations_seq', '', '1', '10', '', '', 'Int64', 'False'")
+                .HasAnnotation("SqlServer:Sequence:.UserLocation_seq", "'UserLocation_seq', '', '1', '10', '', '', 'Int64', 'False'")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Microsoft.eShopOnContainers.Services.Locations.API.Model.FrontierPoints", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:HiLoSequenceName", "frontier_hilo")
+                        .HasAnnotation("SqlServer:HiLoSequenceName", "frontier_seq")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.SequenceHiLo);
 
                     b.Property<double>("Latitude");
@@ -43,7 +44,7 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure.Migr
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:HiLoSequenceName", "locations_hilo")
+                        .HasAnnotation("SqlServer:HiLoSequenceName", "locations_seq")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.SequenceHiLo);
 
                     b.Property<string>("Code")
@@ -67,10 +68,31 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure.Migr
                     b.ToTable("Locations");
                 });
 
+            modelBuilder.Entity("Microsoft.eShopOnContainers.Services.Locations.API.Model.UserLocation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:HiLoSequenceName", "UserLocation_seq")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.SequenceHiLo);
+
+                    b.Property<int?>("LocationId");
+
+                    b.Property<int>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LocationId");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("UserLocation");
+                });
+
             modelBuilder.Entity("Microsoft.eShopOnContainers.Services.Locations.API.Model.FrontierPoints", b =>
                 {
                     b.HasOne("Microsoft.eShopOnContainers.Services.Locations.API.Model.Locations", "Location")
-                        .WithMany("FrontierPoints")
+                        .WithMany("Polygon")
                         .HasForeignKey("LocationId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
@@ -80,6 +102,13 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure.Migr
                     b.HasOne("Microsoft.eShopOnContainers.Services.Locations.API.Model.Locations")
                         .WithMany("ChildLocations")
                         .HasForeignKey("ParentId");
+                });
+
+            modelBuilder.Entity("Microsoft.eShopOnContainers.Services.Locations.API.Model.UserLocation", b =>
+                {
+                    b.HasOne("Microsoft.eShopOnContainers.Services.Locations.API.Model.Locations", "Location")
+                        .WithMany()
+                        .HasForeignKey("LocationId");
                 });
         }
     }

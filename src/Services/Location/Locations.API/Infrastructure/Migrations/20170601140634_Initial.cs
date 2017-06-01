@@ -10,11 +10,15 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure.Migr
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateSequence(
-                name: "frontier_hilo",
+                name: "frontier_seq",
                 incrementBy: 10);
 
             migrationBuilder.CreateSequence(
-                name: "locations_hilo",
+                name: "locations_seq",
+                incrementBy: 10);
+
+            migrationBuilder.CreateSequence(
+                name: "UserLocation_seq",
                 incrementBy: 10);
 
             migrationBuilder.CreateTable(
@@ -59,6 +63,25 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure.Migr
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "UserLocation",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false),
+                    LocationId = table.Column<int>(nullable: true),
+                    UserId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserLocation", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserLocation_Locations_LocationId",
+                        column: x => x.LocationId,
+                        principalTable: "Locations",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_FrontierPoints_LocationId",
                 table: "FrontierPoints",
@@ -69,8 +92,18 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure.Migr
                 table: "Locations",
                 column: "ParentId");
 
+            migrationBuilder.CreateIndex(
+                name: "IX_UserLocation_LocationId",
+                table: "UserLocation",
+                column: "LocationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserLocation_UserId",
+                table: "UserLocation",
+                column: "UserId",
+                unique: true);
+
             migrationBuilder.Sql(CreateGetDistanceFunction());
-            migrationBuilder.Sql(CreateLocationsNearSP());
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -79,32 +112,21 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure.Migr
                 name: "FrontierPoints");
 
             migrationBuilder.DropTable(
+                name: "UserLocation");
+
+            migrationBuilder.DropTable(
                 name: "Locations");
 
             migrationBuilder.DropSequence(
-                name: "frontier_hilo");
+                name: "frontier_seq");
 
             migrationBuilder.DropSequence(
-                name: "locations_hilo");
+                name: "locations_seq");
 
-            migrationBuilder.Sql(@"DROP PROCEDURE IF EXISTS pLocationsNear");
+            migrationBuilder.DropSequence(
+                name: "UserLocation_seq");
+
             migrationBuilder.Sql(@"DROP FUNCTION IF EXISTS dbo.GetDistanceFromLocation");
-        }
-
-        private string CreateLocationsNearSP()
-        {
-            var sb = new StringBuilder();
-            sb.AppendLine(@"CREATE PROCEDURE [dbo].[pLocationsNear]");
-            sb.AppendLine(@"@latitude float,");
-            sb.AppendLine(@"@longitude float,");
-            sb.AppendLine(@"@size int = 500");
-            sb.AppendLine(@"AS");
-            sb.AppendLine(@"BEGIN");
-            sb.AppendLine(@"SELECT TOP( @size) location.*");
-            sb.AppendLine(@"FROM [dbo].[Locations] AS location");
-            sb.AppendLine(@"ORDER BY dbo.[GetDistanceFromLocation](location.Latitude, location.Longitude, @latitude, @longitude)");
-            sb.AppendLine(@"END");
-            return sb.ToString();
         }
 
         private string CreateGetDistanceFunction()
@@ -125,5 +147,6 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure.Migr
             sb.AppendLine(@"END");
             return sb.ToString();
         }
+
     }
 }
