@@ -74,7 +74,7 @@ namespace Identity.API.Services
             if (!string.IsNullOrWhiteSpace(user.Name))
                 claims.Add(new Claim("name", user.Name));
 
-            if (!string.IsNullOrWhiteSpace(user.Name))
+            if (!string.IsNullOrWhiteSpace(user.LastName))
                 claims.Add(new Claim("last_name", user.LastName));
 
             if (!string.IsNullOrWhiteSpace(user.CardNumber))
