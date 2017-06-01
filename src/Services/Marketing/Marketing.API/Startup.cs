@@ -36,16 +36,6 @@
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddHealthChecks(checks =>
-            //{
-            //    var minutes = 1;
-            //    if (int.TryParse(Configuration["HealthCheck:Timeout"], out var minutesParsed))
-            //    {
-            //        minutes = minutesParsed;
-            //    }
-            //    checks.AddSqlCheck("MarketingDb", Configuration["ConnectionString"], TimeSpan.FromMinutes(minutes));
-            //});
-
             // Add framework services.
             services.AddMvc();
 
@@ -106,8 +96,8 @@
                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
                });
 
-            //MarketingContextSeed.SeedAsync(app, loggerFactory)
-            //    .Wait();
+            MarketingContextSeed.SeedAsync(app, loggerFactory)
+                .Wait();
         }
 
 
