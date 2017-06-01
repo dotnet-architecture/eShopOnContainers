@@ -1,36 +1,86 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Marketing.API.Controllers
 {
-    using System.Collections.Generic;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.eShopOnContainers.Services.Marketing.API.Infrastructure;
+    using System.Threading.Tasks;
+    using Microsoft.eShopOnContainers.Services.Marketing.API.Model;
+    using Microsoft.EntityFrameworkCore;
 
     [Route("api/[controller]")]
     public class CampaignsController : Controller
     {
-        [HttpGet]
-        public IEnumerable<string> Get()
+        private readonly MarketingContext _context;
+
+        public CampaignsController(MarketingContext context)
         {
-            return new string[] { "value1", "value2" };
+            _context = context;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllCampaigns()
+        {
+            var campaignList = await _context.Campaigns
+                .Include(c => c.Rules)
+                .ToListAsync();
+
+            return Ok(campaignList);
         }
 
         [HttpGet("{id:int}")]
-        public string Get(int id)
+        public async Task<IActionResult> GetCampaignById(int id)
         {
-            return "value";
+            var campaign = await _context.Campaigns
+                .Include(c => c.Rules)
+                .SingleAsync(c => c.Id == id);
+
+            if (campaign is null)
+            {
+                return NotFound();
+            }
+
+            return Ok(campaign);
         }
 
         [HttpPost]
-        public void Post([FromBody]string value)
+        public async Task<IActionResult> CreateCampaign([FromBody] Campaign campaign)
         {
+            await _context.Campaigns.AddAsync(campaign);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(GetCampaignById), new { id = campaign.Id }, null);
         }
 
         [HttpPut("{id:int}")]
-        public void Put(int id, [FromBody]string value)
+        public async Task<IActionResult> UpdateCampaign(int id, [FromBody]Campaign campaign)
         {
+            var campaignToUpdate = await _context.Campaigns.FindAsync(id);
+            if (campaign is null)
+            {
+                return NotFound();
+            }
+
+            campaignToUpdate.Description = campaign.Description;
+            campaignToUpdate.From = campaign.From;
+            campaignToUpdate.To = campaign.To;
+
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(GetCampaignById), new { id = campaignToUpdate.Id }, null);
         }
 
         [HttpDelete("{id:int}")]
-        public void Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
+            var campaign = await _context.Campaigns.FindAsync(id);
+            if (campaign is null)
+            {
+                return NotFound();
+            }
+
+            _context.Campaigns.Remove(campaign);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
         }
     }
 }
