@@ -20,7 +20,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Infrastructure
             => new Policy[]
             {
                 Policy.Handle<HttpRequestException>()
-                .WaitAndRetry(
+                .WaitAndRetryAsync(
                     // number of retries
                     6,
                     // exponential backofff
@@ -36,7 +36,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Infrastructure
                         _logger.LogDebug(msg);
                     }),
                 Policy.Handle<HttpRequestException>()
-                .CircuitBreaker(
+                .CircuitBreakerAsync(
                    // number of exceptions before breaking circuit
                    5,
                    // time circuit opened before retry
