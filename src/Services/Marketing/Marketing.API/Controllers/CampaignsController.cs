@@ -7,6 +7,7 @@
     using Microsoft.EntityFrameworkCore;
     using Microsoft.eShopOnContainers.Services.Marketing.API.Dto;
     using System.Collections.Generic;
+    using Microsoft.AspNetCore.Authorization;
 
     [Route("api/v1/[controller]")]
     [Authorize]
