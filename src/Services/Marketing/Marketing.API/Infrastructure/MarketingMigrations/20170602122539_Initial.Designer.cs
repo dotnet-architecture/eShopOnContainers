@@ -5,16 +5,18 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.eShopOnContainers.Services.Marketing.API.Infrastructure;
 
-namespace Microsoft.eShopOnContainers.Services.Marketing.API.Migrations
+namespace Microsoft.eShopOnContainers.Services.Marketing.API.Infrastructure.MarketingMigrations
 {
     [DbContext(typeof(MarketingContext))]
-    partial class MarketingContextModelSnapshot : ModelSnapshot
+    [Migration("20170602122539_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
                 .HasAnnotation("SqlServer:Sequence:.campaign_hilo", "'campaign_hilo', '', '1', '10', '', '', 'Int64', 'False'")
+                .HasAnnotation("SqlServer:Sequence:.rule_hilo", "'rule_hilo', '', '1', '10', '', '', 'Int64', 'False'")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Microsoft.eShopOnContainers.Services.Marketing.API.Model.Campaign", b =>
@@ -44,7 +46,9 @@ namespace Microsoft.eShopOnContainers.Services.Marketing.API.Migrations
             modelBuilder.Entity("Microsoft.eShopOnContainers.Services.Marketing.API.Model.Rule", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:HiLoSequenceName", "rule_hilo")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.SequenceHiLo);
 
                     b.Property<int>("CampaignId");
 
@@ -58,7 +62,7 @@ namespace Microsoft.eShopOnContainers.Services.Marketing.API.Migrations
 
                     b.HasIndex("CampaignId");
 
-                    b.ToTable("Rules");
+                    b.ToTable("Rule");
 
                     b.HasDiscriminator<int>("RuleTypeId");
                 });
@@ -97,7 +101,7 @@ namespace Microsoft.eShopOnContainers.Services.Marketing.API.Migrations
 
             modelBuilder.Entity("Microsoft.eShopOnContainers.Services.Marketing.API.Model.Rule", b =>
                 {
-                    b.HasOne("Microsoft.eShopOnContainers.Services.Marketing.API.Model.Campaign", "Campaign")
+                    b.HasOne("Microsoft.eShopOnContainers.Services.Marketing.API.Model.Campaign")
                         .WithMany("Rules")
                         .HasForeignKey("CampaignId")
                         .OnDelete(DeleteBehavior.Cascade);

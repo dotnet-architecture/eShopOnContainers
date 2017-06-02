@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace Microsoft.eShopOnContainers.Services.Marketing.API.Migrations
+namespace Microsoft.eShopOnContainers.Services.Marketing.API.Infrastructure.MarketingMigrations
 {
     public partial class Initial : Migration
     {
@@ -11,6 +10,10 @@ namespace Microsoft.eShopOnContainers.Services.Marketing.API.Migrations
         {
             migrationBuilder.CreateSequence(
                 name: "campaign_hilo",
+                incrementBy: 10);
+
+            migrationBuilder.CreateSequence(
+                name: "rule_hilo",
                 incrementBy: 10);
 
             migrationBuilder.CreateTable(
@@ -29,11 +32,10 @@ namespace Microsoft.eShopOnContainers.Services.Marketing.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Rules",
+                name: "Rule",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Id = table.Column<int>(nullable: false),
                     CampaignId = table.Column<int>(nullable: false),
                     Description = table.Column<string>(nullable: false),
                     RuleTypeId = table.Column<int>(nullable: false),
@@ -41,9 +43,9 @@ namespace Microsoft.eShopOnContainers.Services.Marketing.API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Rules", x => x.Id);
+                    table.PrimaryKey("PK_Rule", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Rules_Campaign_CampaignId",
+                        name: "FK_Rule_Campaign_CampaignId",
                         column: x => x.CampaignId,
                         principalTable: "Campaign",
                         principalColumn: "Id",
@@ -51,21 +53,24 @@ namespace Microsoft.eShopOnContainers.Services.Marketing.API.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Rules_CampaignId",
-                table: "Rules",
+                name: "IX_Rule_CampaignId",
+                table: "Rule",
                 column: "CampaignId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Rules");
+                name: "Rule");
 
             migrationBuilder.DropTable(
                 name: "Campaign");
 
             migrationBuilder.DropSequence(
                 name: "campaign_hilo");
+
+            migrationBuilder.DropSequence(
+                name: "rule_hilo");
         }
     }
 }
