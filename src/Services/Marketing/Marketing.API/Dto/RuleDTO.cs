@@ -1,10 +1,13 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Marketing.API.Dto
+﻿using Microsoft.eShopOnContainers.Services.Marketing.API.Infrastructure.Exceptions;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Microsoft.eShopOnContainers.Services.Marketing.API.Dto
 {
     public class RuleDTO
     {
         public int Id { get; set; }
-
-        public RuleTypeEnum RuleType => (RuleTypeEnum) RuleTypeId;
 
         public int RuleTypeId { get; set; }
 
@@ -14,6 +17,4 @@
 
         public string Description { get; set; }
     }
-
-    public enum RuleTypeEnum { UserProfileRule = 1, PurchaseHistoryRule = 2, UserLocationRule = 3 }
 }

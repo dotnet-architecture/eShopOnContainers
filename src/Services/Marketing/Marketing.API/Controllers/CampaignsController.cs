@@ -8,9 +8,10 @@
     using Microsoft.eShopOnContainers.Services.Marketing.API.Dto;
     using System.Collections.Generic;
     using Microsoft.AspNetCore.Authorization;
+    using System.Linq;
 
     [Route("api/v1/[controller]")]
-    [Authorize]
+    //[Authorize]
     public class CampaignsController : Controller
     {
         private readonly MarketingContext _context;
@@ -27,7 +28,7 @@
                 .Include(c => c.Rules)
                 .ToListAsync();
 
-            var campaignDtoList = CampaignModelListToDtoList(campaignList);
+            var campaignDtoList = MapCampaignModelListToDtoList(campaignList);
 
             return Ok(campaignDtoList);
         }
@@ -44,7 +45,7 @@
                 return NotFound();
             }
 
-            var campaignDto = CampaignModelToDto(campaign);
+            var campaignDto = MapCampaignModelToDto(campaign);
 
             return Ok(campaignDto);
         }
@@ -57,7 +58,7 @@
                 return BadRequest();
             }
 
-            var campaingToCreate = CampaignDtoToModel(campaign);
+            var campaingToCreate = MapCampaignDtoToModel(campaign);
 
             await _context.Campaigns.AddAsync(campaingToCreate);
             await _context.SaveChangesAsync();
@@ -110,17 +111,17 @@
 
 
 
-        private List<CampaignDTO> CampaignModelListToDtoList(List<Campaign> campaignList)
+        private List<CampaignDTO> MapCampaignModelListToDtoList(List<Campaign> campaignList)
         {
             var campaignDtoList = new List<CampaignDTO>();
 
             campaignList.ForEach(campaign => campaignDtoList
-                .Add(CampaignModelToDto(campaign)));
+                .Add(MapCampaignModelToDto(campaign)));
 
             return campaignDtoList;
         }
 
-        private CampaignDTO CampaignModelToDto(Campaign campaign)
+        private CampaignDTO MapCampaignModelToDto(Campaign campaign)
         {
             var campaignDto = new CampaignDTO
             {
@@ -132,7 +133,7 @@
 
             campaign.Rules.ForEach(c =>
             {
-                switch ((RuleTypeEnum)c.RuleTypeId)
+                switch (RuleType.From(c.RuleTypeId))
                 {
                     case RuleTypeEnum.UserLocationRule:
                         var userLocationRule = c as UserLocationRule;
@@ -149,7 +150,7 @@
             return campaignDto;
         }
 
-        private Campaign CampaignDtoToModel(CampaignDTO campaignDto)
+        private Campaign MapCampaignDtoToModel(CampaignDTO campaignDto)
         {
             var campaingModel = new Campaign
             {
@@ -161,13 +162,13 @@
 
             campaignDto.Rules.ForEach(c =>
             {
-                switch (c.RuleType)
+                switch (RuleType.From(c.RuleTypeId))
                 {
                     case RuleTypeEnum.UserLocationRule:
                         campaingModel.Rules.Add(new UserLocationRule
                         {
                             LocationId = c.LocationId.Value,
-                            RuleTypeId = (int)c.RuleType,
+                            RuleTypeId = c.RuleTypeId,
                             Description = c.Description,
                             Campaign = campaingModel
                         });
