@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Microsoft.eShopOnContainers.Services.Marketing.API.Model
 {
