@@ -57,7 +57,7 @@
                         new UserLocationRule
                         {
                             Description = "UserLocationRule2",
-                            LocationId = 1
+                            LocationId = 3
                         }
                     }
                 }

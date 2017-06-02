@@ -28,9 +28,9 @@
         {
             builder.ToTable("Campaign");
 
-            builder.HasKey(ci => ci.Id);
+            builder.HasKey(m => m.Id);
 
-            builder.Property(ci => ci.Id)
+            builder.Property(m => m.Id)
                 .ForSqlServerUseSequenceHiLo("campaign_hilo")
                 .IsRequired();
 
@@ -52,15 +52,19 @@
 
             builder.HasMany(m => m.Rules)
                 .WithOne(r => r.Campaign)
-                .HasForeignKey(m => m.CampaignId)
+                .HasForeignKey(r => r.CampaignId)
                 .IsRequired();
         }
 
         void ConfigureRules(EntityTypeBuilder<Rule> builder)
         {
-            builder.ToTable("Rules");
+            builder.ToTable("Rule");
 
             builder.HasKey(r => r.Id);
+
+            builder.Property(r => r.Id)
+               .ForSqlServerUseSequenceHiLo("rule_hilo")
+               .IsRequired();
 
             builder.HasDiscriminator<int>("RuleTypeId")
                 .HasValue<UserProfileRule>(1)
