@@ -15,6 +15,12 @@
 
         public string Url { get; set; }
 
-        public ICollection<Rule> Rules { get; set; }
+        public List<Rule> Rules { get; set; }
+
+
+        public Campaign()
+        {
+            Rules = new List<Rule>();
+        }
     }
 }
