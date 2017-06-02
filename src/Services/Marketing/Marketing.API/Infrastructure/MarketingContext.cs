@@ -13,9 +13,6 @@
         public DbSet<Campaign> Campaigns { get; set; }
 
         public DbSet<Rule> Rules { get; set; }
-        public DbSet<UserProfileRule> UserProfileRules { get; set; }
-        public DbSet<PurchaseHistoryRule> PurchaseHistoryRules { get; set; }
-        public DbSet<UserLocationRule> UserLocationRules { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
