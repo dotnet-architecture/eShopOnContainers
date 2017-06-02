@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace Microsoft.eShopOnContainers.Services.Marketing.API.Model
+﻿namespace Microsoft.eShopOnContainers.Services.Marketing.API.Model
 {
     public abstract class Rule
     {
