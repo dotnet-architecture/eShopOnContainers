@@ -9,7 +9,7 @@
     using System.Collections.Generic;
 
     [Route("api/v1/[controller]")]
-    //[Authorize]
+    [Authorize]
     public class CampaignsController : Controller
     {
         private readonly MarketingContext _context;
@@ -18,7 +18,6 @@
         {
             _context = context;
         }
-
 
         [HttpGet]
         public async Task<IActionResult> GetAllCampaigns()
