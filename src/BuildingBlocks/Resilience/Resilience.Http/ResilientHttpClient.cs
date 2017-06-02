@@ -96,7 +96,7 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http
             // as it is disposed after each call
             var origin = GetOriginFromUri(uri);
 
-            return HttpInvoker(origin, () =>
+            return HttpInvoker(origin, async () =>
            {
                var requestMessage = new HttpRequestMessage(method, uri);
 
@@ -112,7 +112,7 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http
                    requestMessage.Headers.Add("x-requestid", requestId);
                }
 
-               var response = _client.SendAsync(requestMessage).Result;
+               var response = await _client.SendAsync(requestMessage);
 
                // raise exception if HttpResponseCode 500 
                // needed for circuit breaker to track fails
@@ -122,7 +122,7 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http
                    throw new HttpRequestException();
                }
 
-               return Task.FromResult(response);
+               return response;
            });
         }
 
@@ -132,13 +132,13 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http
 
             if (!_policyWrappers.TryGetValue(normalizedOrigin, out PolicyWrap policyWrap))
             {
-                policyWrap = Policy.Wrap(_policyCreator(normalizedOrigin).ToArray());
+                policyWrap = Policy.WrapAsync(_policyCreator(normalizedOrigin).ToArray());
                 _policyWrappers.TryAdd(normalizedOrigin, policyWrap);
             }
 
             // Executes the action applying all 
             // the policies defined in the wrapper
-            return await policyWrap.Execute(action, new Context(normalizedOrigin));
+            return await policyWrap.ExecuteAsync(action, new Context(normalizedOrigin));
         }
 
 

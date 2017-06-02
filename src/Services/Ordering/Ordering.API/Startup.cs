@@ -23,10 +23,13 @@
     using Microsoft.Extensions.HealthChecks;
     using Microsoft.Extensions.Logging;
     using Ordering.Infrastructure;
+    using Polly;
     using RabbitMQ.Client;
     using System;
     using System.Data.Common;
+    using System.Data.SqlClient;
     using System.Reflection;
+    using System.Threading.Tasks;
 
     public class Startup
     {
@@ -156,7 +159,7 @@
                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
                });
 
-            OrderingContextSeed.SeedAsync(app).Wait();
+            WaitForSqlAvailabilityAsync(loggerFactory, app).Wait();
 
             var integrationEventLogContext = new IntegrationEventLogContext(
                 new DbContextOptionsBuilder<IntegrationEventLogContext>()
@@ -174,6 +177,31 @@
                 ApiName = "orders",
                 RequireHttpsMetadata = false
             });
+        }
+
+
+        private async Task WaitForSqlAvailabilityAsync(ILoggerFactory loggerFactory, IApplicationBuilder app, int retries = 0)
+        {
+            var logger = loggerFactory.CreateLogger(nameof(Startup));
+            var policy = CreatePolicy(retries, logger, nameof(WaitForSqlAvailabilityAsync));
+            await policy.ExecuteAsync(async () =>
+            {
+                await OrderingContextSeed.SeedAsync(app);
+            });
+
+        }
+
+        private Policy CreatePolicy(int retries, ILogger logger, string prefix)
+        {
+            return Policy.Handle<SqlException>().
+                WaitAndRetryAsync(
+                    retryCount: retries,
+                    sleepDurationProvider: retry => TimeSpan.FromSeconds(5),
+                    onRetry: (exception, timeSpan, retry, ctx) =>
+                    {
+                        logger.LogTrace($"[{prefix}] Exception {exception.GetType().Name} with message ${exception.Message} detected on attempt {retry} of {retries}");
+                    }
+                );
         }
     }
 }
