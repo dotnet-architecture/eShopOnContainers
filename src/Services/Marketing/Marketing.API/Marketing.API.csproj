@@ -11,6 +11,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Infrastructure\MarketingMigrations\" />
     <Folder Include="IntegrationEvents\EventHandling\" />
     <Folder Include="IntegrationEvents\Events\" />
   </ItemGroup>
