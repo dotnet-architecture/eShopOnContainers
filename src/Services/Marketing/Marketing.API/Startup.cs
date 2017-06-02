@@ -10,6 +10,7 @@
     using Microsoft.Extensions.Logging;
     using System.Reflection;
     using System;
+    using Microsoft.eShopOnContainers.Services.Marketing.API.Infrastructure.Filters;
 
     public class Startup
     {
@@ -37,7 +38,10 @@
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
-            services.AddMvc();
+            services.AddMvc(options =>
+            {
+                options.Filters.Add(typeof(HttpGlobalExceptionFilter));
+            }).AddControllersAsServices();  //Injecting Controllers themselves thru DIFor further info see: http://docs.autofac.org/en/latest/integration/aspnetcore.html#controllers-as-services
 
             services.AddDbContext<MarketingContext>(options =>
             {
