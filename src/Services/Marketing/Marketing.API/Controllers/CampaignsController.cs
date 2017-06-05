@@ -125,26 +125,32 @@
         {
             var campaignDto = new CampaignDTO
             {
+                Id = campaign.Id,
                 Description = campaign.Description,
                 From = campaign.From,
                 To = campaign.To,
                 Url = campaign.Url,
             };
 
-            campaign.Rules.ForEach(c =>
+            campaign.Rules.ForEach(rule =>
             {
-                switch (RuleType.From(c.RuleTypeId))
+                var ruleDto = new RuleDTO
+                {
+                    Id = rule.Id,
+                    RuleTypeId = rule.RuleTypeId,
+                    Description = rule.Description,
+                    CampaignId = rule.CampaignId                    
+                };
+
+                switch (RuleType.From(rule.RuleTypeId))
                 {
                     case RuleTypeEnum.UserLocationRule:
-                        var userLocationRule = c as UserLocationRule;
-                        campaignDto.Rules.Add(new RuleDTO
-                        {
-                            LocationId = userLocationRule.LocationId,
-                            RuleTypeId = userLocationRule.RuleTypeId,
-                            Description = userLocationRule.Description
-                        });
+                        var userLocationRule = rule as UserLocationRule;
+                        ruleDto.LocationId = userLocationRule.LocationId;
                         break;
                 }
+
+                campaignDto.Rules.Add(ruleDto);
             });
 
             return campaignDto;
@@ -154,22 +160,24 @@
         {
             var campaingModel = new Campaign
             {
+                Id = campaignDto.Id,
                 Description = campaignDto.Description,
                 From = campaignDto.From,
                 To = campaignDto.To,
                 Url = campaignDto.Url
             };
 
-            campaignDto.Rules.ForEach(c =>
+            campaignDto.Rules.ForEach(ruleDto =>
             {
-                switch (RuleType.From(c.RuleTypeId))
+                switch (RuleType.From(ruleDto.RuleTypeId))
                 {
                     case RuleTypeEnum.UserLocationRule:
                         campaingModel.Rules.Add(new UserLocationRule
                         {
-                            LocationId = c.LocationId.Value,
-                            RuleTypeId = c.RuleTypeId,
-                            Description = c.Description,
+                            Id = ruleDto.Id,
+                            LocationId = ruleDto.LocationId.Value,
+                            RuleTypeId = ruleDto.RuleTypeId,
+                            Description = ruleDto.Description,
                             Campaign = campaingModel
                         });
                         break;
