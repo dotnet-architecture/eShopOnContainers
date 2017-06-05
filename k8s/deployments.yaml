@@ -69,6 +69,7 @@ kind: Deployment
 metadata:
   name: identity
 spec:
+  replicas: 3
   paused: true
   template:
     metadata:

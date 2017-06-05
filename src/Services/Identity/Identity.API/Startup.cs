@@ -19,6 +19,11 @@ using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.HealthChecks;
 using Identity.API.Certificate;
+using DataProtectionExtensions;
+using System.Reflection;
+using IdentityServer4.Test;
+using IdentityServer4.EntityFramework.DbContexts;
+using IdentityServer4.EntityFramework.Mappers;
 
 namespace eShopOnContainers.Identity
 {
@@ -34,7 +39,7 @@ namespace eShopOnContainers.Identity
             if (env.IsDevelopment())
             {
                 // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
-                builder.AddUserSecrets();
+                //builder.AddUserSecrets();
             }
 
             builder.AddEnvironmentVariables();
@@ -45,8 +50,7 @@ namespace eShopOnContainers.Identity
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {            
-
+        {
             // Add framework services.
             services.AddDbContext<ApplicationDbContext>(options =>
              options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
@@ -57,12 +61,12 @@ namespace eShopOnContainers.Identity
 
             services.Configure<AppSettings>(Configuration);
 
+            services.AddMvc();
+
             services.AddDataProtection(opts =>
             {
                 opts.ApplicationDiscriminator = "eshop.identity";
-            });
-
-            services.AddMvc();
+            });//.PersistKeysToRedis("basket.data");
 
             services.AddHealthChecks(checks =>
             {
@@ -79,20 +83,20 @@ namespace eShopOnContainers.Identity
             services.AddTransient<ILoginService<ApplicationUser>, EFLoginService>();
             services.AddTransient<IRedirectService, RedirectService>();
 
-            //callbacks urls from config:
-            Dictionary<string, string> clientUrls = new Dictionary<string, string>();
-            clientUrls.Add("Mvc", Configuration.GetValue<string>("MvcClient"));
-            clientUrls.Add("Spa", Configuration.GetValue<string>("SpaClient"));
-            clientUrls.Add("Xamarin", Configuration.GetValue<string>("XamarinCallback"));
+            var connectionString = Configuration.GetConnectionString("DefaultConnection");
+            var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
 
             // Adds IdentityServer
             services.AddIdentityServer(x => x.IssuerUri = "null")
-                .AddSigningCredential(Certificate.Get())
-                .AddInMemoryApiResources(Config.GetApis())
-                .AddInMemoryIdentityResources(Config.GetResources())
-                .AddInMemoryClients(Config.GetClients(clientUrls))
+                .AddSigningCredential(Certificate.Get())               
                 .AddAspNetIdentity<ApplicationUser>()
-                .Services.AddTransient<IProfileService, ProfileService>(); 
+                .AddConfigurationStore(builder =>
+                    builder.UseSqlServer(connectionString, options =>
+                        options.MigrationsAssembly(migrationsAssembly)))
+                .AddOperationalStore(builder =>
+                    builder.UseSqlServer(connectionString, options =>
+                        options.MigrationsAssembly(migrationsAssembly)))
+                .Services.AddTransient<IProfileService, ProfileService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -134,10 +138,55 @@ namespace eShopOnContainers.Identity
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
+            InitializeDatabase(app);
+
             //Seed Data
             var hasher = new PasswordHasher<ApplicationUser>();
             new ApplicationContextSeed(hasher).SeedAsync(app, loggerFactory)
             .Wait();
+        }
+
+        private void InitializeDatabase(IApplicationBuilder app)
+        {
+            //callbacks urls from config:
+            Dictionary<string, string> clientUrls = new Dictionary<string, string>();
+            clientUrls.Add("Mvc", Configuration.GetValue<string>("MvcClient"));
+            clientUrls.Add("Spa", Configuration.GetValue<string>("SpaClient"));
+            clientUrls.Add("Xamarin", Configuration.GetValue<string>("XamarinCallback"));
+
+            using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+            {
+                serviceScope.ServiceProvider.GetRequiredService<PersistedGrantDbContext>().Database.Migrate();
+                var context = serviceScope.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
+                context.Database.Migrate();
+
+                if (!context.Clients.Any())
+                {
+                    foreach (var client in Config.GetClients(clientUrls))
+                    {
+                        context.Clients.Add(client.ToEntity());
+                    }
+                    context.SaveChanges();
+                }
+
+                if (!context.IdentityResources.Any())
+                {
+                    foreach (var resource in Config.GetResources())
+                    {
+                        context.IdentityResources.Add(resource.ToEntity());
+                    }
+                    context.SaveChanges();
+                }
+
+                if (!context.ApiResources.Any())
+                {
+                    foreach (var api in Config.GetApis())
+                    {
+                        context.ApiResources.Add(api.ToEntity());
+                    }
+                    context.SaveChanges();
+                }
+            }
         }
     }
 }
