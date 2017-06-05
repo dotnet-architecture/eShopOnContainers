@@ -55,7 +55,8 @@
         {
             using (var server = CreateServer())
             {
-                var content = new StringContent(JsonConvert.SerializeObject(FakeCampaignDto), Encoding.UTF8, "application/json");
+                var fakeCampaignDto = GetFakeCampaignDto();
+                var content = new StringContent(JsonConvert.SerializeObject(fakeCampaignDto), Encoding.UTF8, "application/json");
                 var response = await server.CreateClient()
                     .PostAsync(Post.AddNewCampaign, content);
 
@@ -68,7 +69,8 @@
         {
             using (var server = CreateServer())
             {
-                var content = new StringContent(JsonConvert.SerializeObject(FakeCampaignDto), Encoding.UTF8, "application/json");
+                var fakeCampaignDto = GetFakeCampaignDto();
+                var content = new StringContent(JsonConvert.SerializeObject(fakeCampaignDto), Encoding.UTF8, "application/json");
 
                 //add campaign
                 var campaignResponse = await server.CreateClient()
@@ -91,7 +93,8 @@
         {
             using (var server = CreateServer())
             {
-                var content = new StringContent(JsonConvert.SerializeObject(FakeCampaignDto), Encoding.UTF8, "application/json");
+                var fakeCampaignDto = GetFakeCampaignDto();
+                var content = new StringContent(JsonConvert.SerializeObject(fakeCampaignDto), Encoding.UTF8, "application/json");
 
                 //add campaign
                 var campaignResponse = await server.CreateClient()
@@ -99,8 +102,8 @@
 
                 if (int.TryParse(campaignResponse.Headers.Location.Segments[4], out int id))
                 {
-                    FakeCampaignDto.Description = "FakeCampaignUpdatedDescription";
-                    content = new StringContent(JsonConvert.SerializeObject(FakeCampaignDto), Encoding.UTF8, "application/json");
+                    fakeCampaignDto.Description = "FakeCampaignUpdatedDescription";
+                    content = new StringContent(JsonConvert.SerializeObject(fakeCampaignDto), Encoding.UTF8, "application/json");
                     var response = await server.CreateClient()
                     .PutAsync(Put.CampaignBy(id), content);
 
@@ -111,22 +114,24 @@
             }
         }
 
-
-        private static CampaignDTO FakeCampaignDto = new CampaignDTO
+        private static CampaignDTO GetFakeCampaignDto()
         {
-            Description = "FakeCampaignDescription",
-            From = DateTime.Now,
-            To = DateTime.Now.AddDays(7),
-            Url = "http://CampaignUrl.test/fdaf91ad0cef5419719f50198",
-            Rules = new List<RuleDTO>
+            return new CampaignDTO()
             {
-                new RuleDTO
+                Description = "FakeCampaignDescription",
+                From = DateTime.Now,
+                To = DateTime.Now.AddDays(7),
+                Url = "http://CampaignUrl.test/fdaf91ad0cef5419719f50198",
+                Rules = new List<RuleDTO>
                 {
-                    LocationId = 1,
-                    Description = "testDescription",
-                    RuleTypeId = 3,
+                    new RuleDTO
+                    {
+                        LocationId = 1,
+                        Description = "testDescription",
+                        RuleTypeId = 3,
+                    }
                 }
-            }
-        };
+            }; 
+        }
     }
 }

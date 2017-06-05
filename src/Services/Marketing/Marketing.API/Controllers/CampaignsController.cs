@@ -11,7 +11,7 @@
     using System.Linq;
 
     [Route("api/v1/[controller]")]
-    //[Authorize]
+    [Authorize]
     public class CampaignsController : Controller
     {
         private readonly MarketingContext _context;
@@ -178,6 +178,5 @@
 
             return campaingModel;
         }
-
     }
 }
