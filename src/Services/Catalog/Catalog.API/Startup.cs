@@ -17,11 +17,13 @@
     using Microsoft.Extensions.HealthChecks;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
+    using Polly;
     using RabbitMQ.Client;
     using System;
     using System.Data.Common;
     using System.Data.SqlClient;
     using System.Reflection;
+    using System.Threading.Tasks;
 
     public class Startup
     {
@@ -85,7 +87,7 @@
             services.AddSwaggerGen(options =>
             {
                 options.DescribeAllEnumsAsStrings();
-                options.SwaggerDoc("v1",new Swashbuckle.AspNetCore.Swagger.Info
+                options.SwaggerDoc("v1", new Swashbuckle.AspNetCore.Swagger.Info
                 {
                     Title = "eShopOnContainers - Catalog HTTP API",
                     Version = "v1",
@@ -144,11 +146,7 @@
             var context = (CatalogContext)app
                         .ApplicationServices.GetService(typeof(CatalogContext));
 
-            WaitForSqlAvailability(context, loggerFactory);
-
-            //Seed Data
-            CatalogContextSeed.SeedAsync(app, loggerFactory)
-                .Wait();
+            WaitForSqlAvailabilityAsync(context, loggerFactory, app).Wait();
 
             var integrationEventLogContext = new IntegrationEventLogContext(
                 new DbContextOptionsBuilder<IntegrationEventLogContext>()
@@ -158,28 +156,28 @@
             integrationEventLogContext.Database.Migrate();
         }
 
-        private void WaitForSqlAvailability(CatalogContext ctx, ILoggerFactory loggerFactory, int? retry = 0)
+        private async Task WaitForSqlAvailabilityAsync(CatalogContext ctx, ILoggerFactory loggerFactory, IApplicationBuilder app, int retries = 0)
         {
-            int retryForAvailability = retry.Value;
+            var logger = loggerFactory.CreateLogger(nameof(Startup));
+            var policy = CreatePolicy(retries, logger, nameof (WaitForSqlAvailabilityAsync));
+            await policy.ExecuteAsync(async () =>
+            {
+                await CatalogContextSeed.SeedAsync(app, loggerFactory);
+            });
 
-            try
-            {
-                ctx.Database.OpenConnection();
-            }
-            catch (SqlException ex)
-            {
-                if (retryForAvailability < 10)
-                {
-                    retryForAvailability++;
-                    var log = loggerFactory.CreateLogger(nameof(Startup));
-                    log.LogError(ex.Message);
-                    WaitForSqlAvailability(ctx, loggerFactory, retryForAvailability);
-                }
-            }
-            finally
-            {
-                ctx.Database.CloseConnection();
-            }
+        }
+
+        private Policy CreatePolicy(int retries, ILogger logger, string prefix)
+        {
+            return Policy.Handle<SqlException>().
+                WaitAndRetryAsync(
+                    retryCount: retries,
+                    sleepDurationProvider: retry => TimeSpan.FromSeconds(5),
+                    onRetry: (exception, timeSpan, retry, ctx) =>
+                    {
+                        logger.LogTrace($"[{prefix}] Exception {exception.GetType().Name} with message ${exception.Message} detected on attempt {retry} of {retries}");
+                    }
+                );
         }
     }
 }
