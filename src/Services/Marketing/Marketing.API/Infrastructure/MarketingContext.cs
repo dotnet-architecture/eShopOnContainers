@@ -64,9 +64,9 @@
                .IsRequired();
 
             builder.HasDiscriminator<int>("RuleTypeId")
-                .HasValue<UserProfileRule>(1)
-                .HasValue<PurchaseHistoryRule>(2)
-                .HasValue<UserLocationRule>(3);
+                .HasValue<UserProfileRule>((int)RuleTypeEnum.UserProfileRule)
+                .HasValue<PurchaseHistoryRule>((int)RuleTypeEnum.PurchaseHistoryRule)
+                .HasValue<UserLocationRule>((int)RuleTypeEnum.UserLocationRule);
 
             builder.Property(r => r.Description)
                 .HasColumnName("Description")
