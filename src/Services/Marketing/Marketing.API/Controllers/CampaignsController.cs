@@ -8,10 +8,9 @@
     using Microsoft.eShopOnContainers.Services.Marketing.API.Dto;
     using System.Collections.Generic;
     using Microsoft.AspNetCore.Authorization;
-    using System.Linq;
 
     [Route("api/v1/[controller]")]
-    [Authorize]
+    //[Authorize]
     public class CampaignsController : Controller
     {
         private readonly MarketingContext _context;
@@ -51,14 +50,14 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateCampaign([FromBody] CampaignDTO campaign)
+        public async Task<IActionResult> CreateCampaign([FromBody] CampaignDTO campaignDto)
         {
-            if (campaign is null)
+            if (campaignDto is null)
             {
                 return BadRequest();
             }
 
-            var campaingToCreate = MapCampaignDtoToModel(campaign);
+            var campaingToCreate = MapCampaignDtoToModel(campaignDto);
 
             await _context.Campaigns.AddAsync(campaingToCreate);
             await _context.SaveChangesAsync();
@@ -67,9 +66,9 @@
         }
 
         [HttpPut("{id:int}")]
-        public async Task<IActionResult> UpdateCampaign(int id, [FromBody]CampaignDTO campaign)
+        public async Task<IActionResult> UpdateCampaign(int id, [FromBody]CampaignDTO campaignDto)
         {
-            if (id < 1 || campaign is null)
+            if (id < 1 || campaignDto is null)
             {
                 return BadRequest();
             }
@@ -80,9 +79,10 @@
                 return NotFound();
             }
 
-            campaignToUpdate.Description = campaign.Description;
-            campaignToUpdate.From = campaign.From;
-            campaignToUpdate.To = campaign.To;
+            campaignToUpdate.Description = campaignDto.Description;
+            campaignToUpdate.From = campaignDto.From;
+            campaignToUpdate.To = campaignDto.To;
+            campaignToUpdate.Url = campaignDto.Url;
 
             await _context.SaveChangesAsync();
 
