@@ -6,13 +6,11 @@
     using Xunit;
     using System;
     using Newtonsoft.Json;
-    using Microsoft.eShopOnContainers.Services.Marketing.API.Model;
-    using System.Collections.Generic;
     using System.Net;
     using Microsoft.eShopOnContainers.Services.Marketing.API.Dto;
 
-    public class MarketingScenarios
-        : MarketingScenarioBase
+    public class CampaignScenarios
+        : CampaignScenarioBase
     {
         [Fact]
         public async Task Get_get_all_campaigns_and_response_ok_status_code()
@@ -29,10 +27,11 @@
         [Fact]
         public async Task Get_get_campaign_by_id_and_response_ok_status_code()
         {
+            var campaignId = 1;
             using (var server = CreateServer())
             {
                 var response = await server.CreateClient()
-                    .GetAsync(Get.CampaignBy(1));
+                    .GetAsync(Get.CampaignBy(campaignId));
 
                 response.EnsureSuccessStatusCode();
             }
@@ -44,7 +43,7 @@
             using (var server = CreateServer())
             {
                 var response = await server.CreateClient()
-                    .GetAsync(Get.CampaignBy(9999999));
+                    .GetAsync(Get.CampaignBy(int.MaxValue));
 
                 Assert.True(response.StatusCode == HttpStatusCode.NotFound);
             }
@@ -122,15 +121,6 @@
                 From = DateTime.Now,
                 To = DateTime.Now.AddDays(7),
                 Url = "http://CampaignUrl.test/fdaf91ad0cef5419719f50198",
-                Rules = new List<RuleDTO>
-                {
-                    new RuleDTO
-                    {
-                        LocationId = 1,
-                        Description = "testDescription",
-                        RuleTypeId = 3,
-                    }
-                }
             }; 
         }
     }
