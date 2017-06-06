@@ -1,8 +1,8 @@
-﻿using Microsoft.eShopOnContainers.Services.Marketing.API.Infrastructure.Exceptions;
-using System;
-
-namespace Microsoft.eShopOnContainers.Services.Marketing.API.Dto
+﻿namespace Microsoft.eShopOnContainers.Services.Marketing.API.Model
 {
+    using Microsoft.eShopOnContainers.Services.Marketing.API.Infrastructure.Exceptions;
+    using System;
+
     public enum RuleTypeEnum { UserProfileRule = 1, PurchaseHistoryRule = 2, UserLocationRule = 3 }
 
     public static class RuleType
