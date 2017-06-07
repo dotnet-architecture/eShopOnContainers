@@ -10,7 +10,7 @@ namespace Ordering.Domain.Events
     /// Event used when an order is created
     /// </summary>
     public class OrderStartedDomainEvent
-        : IAsyncNotification
+        : INotification
     {
         public int CardTypeId { get; private set; }
         public string CardNumber { get; private set; }
