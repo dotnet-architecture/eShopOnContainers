@@ -29,7 +29,7 @@ namespace UnitTest.Ordering.Application
         public async Task Create_order_with_requestId_success()
         {
             //Arrange
-            _mediatorMock.Setup(x => x.SendAsync(It.IsAny<IdentifiedCommand<CreateOrderCommand, bool>>()))
+            _mediatorMock.Setup(x => x.Send(It.IsAny<IdentifiedCommand<CreateOrderCommand, bool>>(), default(System.Threading.CancellationToken)))
                 .Returns(Task.FromResult(true));
 
             //Act
@@ -45,7 +45,7 @@ namespace UnitTest.Ordering.Application
         public async Task Create_order_bad_request()
         {
             //Arrange
-            _mediatorMock.Setup(x => x.SendAsync(It.IsAny<IdentifiedCommand<CreateOrderCommand, bool>>()))
+            _mediatorMock.Setup(x => x.Send(It.IsAny<IdentifiedCommand<CreateOrderCommand, bool>>(), default(System.Threading.CancellationToken)))
                 .Returns(Task.FromResult(true));
 
             //Act

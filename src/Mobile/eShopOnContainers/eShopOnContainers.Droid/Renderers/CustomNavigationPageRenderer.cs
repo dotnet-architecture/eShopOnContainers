@@ -12,16 +12,16 @@ namespace eShopOnContainers.Droid.Renderers
         {
             base.OnLayout(changed, l, t, r, b);
 
+            if (Element.CurrentPage == null)
+            {
+                return;
+            }
+
             var toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
 
             if (toolbar != null)
             {
                 var image = toolbar.FindViewById<ImageView>(Resource.Id.toolbar_image);
-
-                if (Element.CurrentPage == null)
-                {
-                    return;
-                }
 
                 if (!string.IsNullOrEmpty(Element.CurrentPage.Title))
                     image.Visibility = Android.Views.ViewStates.Invisible;
