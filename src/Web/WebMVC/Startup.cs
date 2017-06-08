@@ -1,22 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.eShopOnContainers.WebMVC.ViewModels;
-using Microsoft.eShopOnContainers.WebMVC.Services;
-using System.IdentityModel.Tokens.Jwt;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Http;
-using System.Threading;
-using Microsoft.Extensions.Options;
-using Microsoft.Extensions.HealthChecks;
+using Microsoft.eShopOnContainers.BuildingBlocks;
 using Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http;
 using Microsoft.eShopOnContainers.WebMVC.Infrastructure;
+using Microsoft.eShopOnContainers.WebMVC.Services;
+using Microsoft.eShopOnContainers.WebMVC.ViewModels;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.HealthChecks;
+using Microsoft.Extensions.Logging;
+using System;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace Microsoft.eShopOnContainers.WebMVC
 {
@@ -46,12 +41,15 @@ namespace Microsoft.eShopOnContainers.WebMVC
         {
             services.AddMvc();
 
-            services.AddDataProtection(opts =>
+            if (Configuration.GetValue<string>("IsClusterEnv") == bool.TrueString)
             {
-                opts.ApplicationDiscriminator = "eshop.webmvc";
-            });
+                services.AddDataProtection(opts =>
+                {
+                    opts.ApplicationDiscriminator = "eshop.webmvc";
+                })
+                .PersistKeysToRedis(Configuration["DPConnectionString"]);
+            }
 
-            
             services.Configure<AppSettings>(Configuration);
 
             services.AddHealthChecks(checks =>

@@ -1,29 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
+﻿using Identity.API.Certificate;
+using Identity.API.Configuration;
 using Identity.API.Data;
 using Identity.API.Models;
 using Identity.API.Services;
-using Identity.API.Configuration;
-using IdentityServer4.Services;
-using System.Threading;
-using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.HealthChecks;
-using Identity.API.Certificate;
-using DataProtectionExtensions;
-using System.Reflection;
-using IdentityServer4.Test;
 using IdentityServer4.EntityFramework.DbContexts;
 using IdentityServer4.EntityFramework.Mappers;
+using IdentityServer4.Services;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.eShopOnContainers.BuildingBlocks;
+using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.HealthChecks;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Threading.Tasks;
 
 namespace eShopOnContainers.Identity
 {
@@ -39,7 +37,7 @@ namespace eShopOnContainers.Identity
             if (env.IsDevelopment())
             {
                 // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
-                //builder.AddUserSecrets();
+                builder.AddUserSecrets();
             }
 
             builder.AddEnvironmentVariables();
@@ -63,10 +61,14 @@ namespace eShopOnContainers.Identity
 
             services.AddMvc();
 
-            services.AddDataProtection(opts =>
+            if (Configuration.GetValue<string>("IsClusterEnv") == bool.TrueString)
             {
-                opts.ApplicationDiscriminator = "eshop.identity";
-            });//.PersistKeysToRedis("basket.data");
+                services.AddDataProtection(opts =>
+                {
+                    opts.ApplicationDiscriminator = "eshop.identity";
+                })
+                .PersistKeysToRedis(Configuration["DPConnectionString"]);
+            }
 
             services.AddHealthChecks(checks =>
             {
@@ -138,15 +140,15 @@ namespace eShopOnContainers.Identity
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            InitializeDatabase(app);
+            // Store idsrv grant config into db
+            InitializeGrantStoreAndConfiguration(app).Wait();
 
             //Seed Data
             var hasher = new PasswordHasher<ApplicationUser>();
-            new ApplicationContextSeed(hasher).SeedAsync(app, loggerFactory)
-            .Wait();
+            new ApplicationContextSeed(hasher).SeedAsync(app, loggerFactory).Wait();
         }
 
-        private void InitializeDatabase(IApplicationBuilder app)
+        private async Task InitializeGrantStoreAndConfiguration(IApplicationBuilder app)
         {
             //callbacks urls from config:
             Dictionary<string, string> clientUrls = new Dictionary<string, string>();
@@ -164,27 +166,27 @@ namespace eShopOnContainers.Identity
                 {
                     foreach (var client in Config.GetClients(clientUrls))
                     {
-                        context.Clients.Add(client.ToEntity());
+                        await context.Clients.AddAsync(client.ToEntity());
                     }
-                    context.SaveChanges();
+                    await context.SaveChangesAsync();
                 }
 
                 if (!context.IdentityResources.Any())
                 {
                     foreach (var resource in Config.GetResources())
                     {
-                        context.IdentityResources.Add(resource.ToEntity());
+                        await context.IdentityResources.AddAsync(resource.ToEntity());
                     }
-                    context.SaveChanges();
+                    await context.SaveChangesAsync();
                 }
 
                 if (!context.ApiResources.Any())
                 {
                     foreach (var api in Config.GetApis())
                     {
-                        context.ApiResources.Add(api.ToEntity());
+                        await context.ApiResources.AddAsync(api.ToEntity());
                     }
-                    context.SaveChanges();
+                    await context.SaveChangesAsync();
                 }
             }
         }

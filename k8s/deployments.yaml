@@ -69,7 +69,6 @@ kind: Deployment
 metadata:
   name: identity
 spec:
-  replicas: 3
   paused: true
   template:
     metadata:
@@ -86,6 +85,10 @@ spec:
           value: http://0.0.0.0:80/identity
         - name: ConnectionStrings__DefaultConnection
           value: "Server=sql-data;Initial Catalog=Microsoft.eShopOnContainers.Services.IdentityDb;User Id=sa;Password=Pass@word"
+        - name: DPConnectionString
+          value: keystore-data
+        - name: IsClusterEnv
+          value: 'True'
         - name: MvcClient
           valueFrom:
            configMapKeyRef:
@@ -153,6 +156,10 @@ spec:
         env:
         - name: ASPNETCORE_URLS
           value: http://0.0.0.0:80/webmvc
+        - name: DPConnectionString
+          value: keystore-data
+        - name: IsClusterEnv
+          value: 'True'
         - name: BasketUrl
           valueFrom:
            configMapKeyRef:
@@ -256,6 +263,10 @@ spec:
         env:
         - name: ASPNETCORE_URLS
           value: http://0.0.0.0:80
+        - name: DPConnectionString
+          value: keystore-data
+        - name: IsClusterEnv
+          value: 'True'
         - name: BasketUrl
           valueFrom:
            configMapKeyRef:

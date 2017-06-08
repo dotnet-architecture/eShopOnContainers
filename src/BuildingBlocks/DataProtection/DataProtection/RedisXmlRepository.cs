@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Xml.Linq;
-using Microsoft.AspNetCore.DataProtection.Repositories;
-using Microsoft.Extensions.Logging;
-using StackExchange.Redis;
-
-namespace DataProtectionExtensions
+﻿namespace Microsoft.eShopOnContainers.BuildingBlocks
 {
+    using Microsoft.AspNetCore.DataProtection.Repositories;
+    using Microsoft.Extensions.Logging;
+    using StackExchange.Redis;
+    using System;
+    using System.Collections.Generic;
+    using System.Text.RegularExpressions;
+    using System.Xml.Linq;
+
     /// <summary>
     /// Key repository that stores XML encrypted keys in a Redis distributed cache.
     /// </summary>
