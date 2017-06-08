@@ -1,13 +1,11 @@
-﻿namespace DataProtectionExtensions
+﻿namespace Microsoft.eShopOnContainers.BuildingBlocks
 {
-    using System;
-    using System.Linq;
-    using System.Security.Cryptography.X509Certificates;
     using Microsoft.AspNetCore.DataProtection;
     using Microsoft.AspNetCore.DataProtection.Repositories;
-    using Microsoft.AspNetCore.DataProtection.XmlEncryption;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
+    using System;
+    using System.Linq;
     using System.Net;
 
     /// <summary>
@@ -46,10 +44,11 @@
             {
                 throw new ArgumentException("Redis connection string may not be empty.", nameof(redisConnectionString));
             }
-            
+
             var ips = Dns.GetHostAddressesAsync(redisConnectionString).Result;
 
-            return builder.Use(ServiceDescriptor.Singleton<IXmlRepository>(services => new RedisXmlRepository(ips.First().ToString(), services.GetRequiredService<ILogger<RedisXmlRepository>>())));
+            return builder.Use(ServiceDescriptor.Singleton<IXmlRepository>(services =>
+                new RedisXmlRepository(ips.First().ToString(), services.GetRequiredService<ILogger<RedisXmlRepository>>())));
         }
 
         /// <summary>

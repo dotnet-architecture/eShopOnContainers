@@ -24,8 +24,6 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
             var user = User as ClaimsPrincipal;
             var token = await HttpContext.Authentication.GetTokenAsync("access_token");
 
-            //TODO - Not retrieving AccessToken yet
-            //var token = user.FindFirst("access_token");
             if (token != null)
             {
                 ViewData["access_token"] = token;

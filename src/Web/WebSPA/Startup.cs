@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.HealthChecks;
 using Newtonsoft.Json.Serialization;
 using eShopOnContainers.WebSPA;
+using Microsoft.eShopOnContainers.BuildingBlocks;
 
 namespace eShopConContainers.WebSPA
 {
@@ -59,10 +60,14 @@ namespace eShopConContainers.WebSPA
 
             services.Configure<AppSettings>(Configuration);
 
-            services.AddDataProtection(opts =>
+            if (Configuration.GetValue<string>("IsClusterEnv") == bool.TrueString)
             {
-                opts.ApplicationDiscriminator = "eshop.webspa";
-            });
+                services.AddDataProtection(opts =>
+                {
+                    opts.ApplicationDiscriminator = "eshop.webspa";
+                })
+                .PersistKeysToRedis(Configuration["DPConnectionString"]);
+            }
 
             services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
 
