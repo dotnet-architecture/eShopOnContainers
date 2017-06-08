@@ -59,6 +59,9 @@ services:
   sql.data:
     image: microsoft/mssql-server-linux
 
+  nosql.data:
+    image: mongo
+
   basket.data:
     image: redis
     ports:
@@ -81,4 +84,4 @@ services:
       context: ./src/Services/Location/Locations.API
       dockerfile: Dockerfile
     depends_on:
-      - sql.data
+      - nosql.data

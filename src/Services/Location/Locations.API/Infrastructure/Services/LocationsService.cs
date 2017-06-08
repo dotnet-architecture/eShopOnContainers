@@ -5,6 +5,9 @@
     using Microsoft.eShopOnContainers.Services.Locations.API.Model;
     using System;
     using System.Threading.Tasks;
+    using System.Linq;
+    using Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure.Exceptions;
+    using System.Collections.Generic;
 
     public class LocationsService : ILocationsService
     {
@@ -15,48 +18,53 @@
             _locationsRepository = locationsRepository ?? throw new ArgumentNullException(nameof(locationsRepository));
         }
 
+        public async Task<UserLocation> GetUserLocation(int id)
+        {
+            return await _locationsRepository.GetUserLocationAsync(id);
+        }
+
+        public async Task<List<Locations>> GetAllLocation()
+        {
+            return await _locationsRepository.GetLocationListAsync();
+        }
+
         public async Task<bool> AddOrUpdateUserLocation(string id, LocationRequest currentPosition)
         {
-            int.TryParse(id, out int userId);
-            var currentUserLocation = await _locationsRepository.GetAsync(userId);
-            
-            // Get the nearest locations ordered by proximity 
+            Locations currentUserAreaLocation = null;
+
+            if (!int.TryParse(id, out int userId))
+            {
+                throw new ArgumentException("Not valid userId");
+            }
+
+            // Get the nearest locations ordered
             var nearestLocationList = await _locationsRepository.GetNearestLocationListAsync(currentPosition.Latitude, currentPosition.Longitude);
 
             // Check out in which region we currently are 
-            foreach(var locCandidate in nearestLocationList)
+            foreach(var locationCandidate in nearestLocationList.Where(x=> x.Polygon != null))
             {
-                // Check location's tree and retrive user most specific area
-                var findNewLocationResult = locCandidate.GetUserMostSpecificLocation(currentPosition.Latitude, currentPosition.Longitude);
-                if (findNewLocationResult.isSuccess)
-                {
-                    CreateUserLocation(currentUserLocation, findNewLocationResult.location, userId);
-                    UpdateUserLocation(currentUserLocation, findNewLocationResult.location);
-                    break;
-                }
+                currentUserAreaLocation = await _locationsRepository.GetLocationByCurrentAreaAsync(locationCandidate);
+                if(currentUserAreaLocation != null) { break; }
             }
             
-            var result = await _locationsRepository.UnitOfWork.SaveChangesAsync();
-            return result > 0;
-        }
-
-        private void CreateUserLocation(UserLocation currentUserLocation, Locations newLocation, int userId)
-        {
-            if (currentUserLocation is null)
+            if(currentUserAreaLocation is null)
             {
-                currentUserLocation = currentUserLocation ?? new UserLocation(userId);
-                currentUserLocation.Location = newLocation;
-                _locationsRepository.Add(currentUserLocation);
-            }           
-        }
+                throw new LocationDomainException("User current area not found");
+            }
 
-        private void UpdateUserLocation(UserLocation currentUserLocation, Locations newLocation)
-        {
-            if (currentUserLocation != null)
+            // If current area found, then update user location
+            if(currentUserAreaLocation != null)
             {
-                currentUserLocation.Location = newLocation;
-                _locationsRepository.Update(currentUserLocation);
-            }            
+                var locationAncestors = new List<string>();
+                var userLocation = await _locationsRepository.GetUserLocationAsync(userId);
+                userLocation = userLocation ?? new UserLocation();
+                userLocation.UserId = userId;
+                userLocation.LocationId = currentUserAreaLocation.Id;
+                userLocation.UpdateDate = DateTime.UtcNow;
+                await _locationsRepository.UpdateUserLocationAsync(userLocation);
+            }
+            
+            return true;
         }
     }
 }

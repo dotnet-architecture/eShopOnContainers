@@ -1,131 +1,123 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure
 {
     using Microsoft.AspNetCore.Builder;
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.Extensions.Logging;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
     using Microsoft.eShopOnContainers.Services.Locations.API.Model;
-    using System.Text;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Options;
+    using MongoDB.Bson;
+    using MongoDB.Driver;
+    using MongoDB.Driver.GeoJsonObjectModel;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
 
     public class LocationsContextSeed
     {
+        private static LocationsContext ctx;
         public static async Task SeedAsync(IApplicationBuilder applicationBuilder, ILoggerFactory loggerFactory)
         {
-            var context = (LocationsContext)applicationBuilder
-                .ApplicationServices.GetService(typeof(LocationsContext));
+            var config = applicationBuilder
+                .ApplicationServices.GetRequiredService<IOptions<LocationSettings>>();
 
-            context.Database.Migrate();
+            ctx = new LocationsContext(config);
 
-            if (!context.Locations.Any())
+            if (!ctx.Locations.Database.GetCollection<Locations>(nameof(Locations)).AsQueryable().Any())
             {
-                context.Locations.AddRange(
-                    GetPreconfiguredLocations());
-
-                await context.SaveChangesAsync();
-            }
+                await SetIndexes();
+                await SetUSLocations();
+            }            
         }
 
-        static Locations GetPreconfiguredLocations()
+        static async Task SetUSLocations()
         {
-            var ww = new Locations("WW", "WorldWide", -1, -1);
-            ww.ChildLocations.Add(GetUSLocations());
-            return ww;
+            var us = new Locations()
+            {
+                Code = "US",
+                Description = "United States"
+            };
+            us.SetLocation(-101.357386, 41.650455);
+            await ctx.Locations.InsertOneAsync(us);        
+            await SetWashingtonLocations(us.Id);
         }
 
-        static Locations GetUSLocations()
+        static async Task SetWashingtonLocations(ObjectId parentId)
         {
-            var us = new Locations("US", "United States", 41.650455, -101.357386, GetUSPoligon());
-            us.ChildLocations.Add(GetWashingtonLocations());
-            return us;
+            var wht = new Locations()
+            {
+                Parent_Id = parentId,
+                Code = "WHT",
+                Description = "Washington"
+            };
+            wht.SetLocation(-119.542781, 47.223652);
+            await ctx.Locations.InsertOneAsync(wht);
+            await SetSeattleLocations(wht.Id);
+            await SetRedmondLocations(wht.Id);
         }
 
-        static Locations GetWashingtonLocations()
+        static async Task SetSeattleLocations(ObjectId parentId)
         {
-            var wht = new Locations("WHT", "Washington", 47.223652, -119.542781, GetWashingtonPoligon());
-            wht.ChildLocations.Add(GetSeattleLocations());
-            wht.ChildLocations.Add(GetRedmondLocations());
-            return wht;
-        }
-   
-        static Locations GetSeattleLocations()
-        {
-            var bcn = new Locations("SEAT", "Seattle", 47.603111, -122.330747, GetSeattlePoligon());
-            bcn.ChildLocations.Add(new Locations("SEAT-PioneerSqr", "Seattle Pioneer Square Shop", 47.602053, -122.333884, GetSeattlePioneerSqrPoligon()));
-            return bcn;
+            var stl = new Locations()
+            {
+                Parent_Id = parentId,
+                Code = "SEAT",
+                Description = "Seattle",
+                Polygon = GetSeattlePoligon()
+            };
+            stl.SetLocation(-122.330747, 47.603111);
+            await ctx.Locations.InsertOneAsync(stl);
         }
 
-        static Locations GetRedmondLocations()
+        static async Task SetRedmondLocations(ObjectId parentId)
         {
-            var bcn = new Locations("REDM", "Redmond", 47.674961, -122.122887, GetRedmondPoligon());
-            bcn.ChildLocations.Add(new Locations("REDM-DWNTWP", "Redmond Downtown Central Park Shop", 47.674433, -122.125006, GetRedmondDowntownParkPoligon()));
-            return bcn;
-        }
-   
-        static List<FrontierPoints> GetUSPoligon()
-        {
-            var poligon = new List<FrontierPoints>();
-            poligon.Add(new FrontierPoints(48.7985, -62.88205));
-            poligon.Add(new FrontierPoints(48.76513, -129.3132));
-            poligon.Add(new FrontierPoints(30.12256, -120.9496));
-            poligon.Add(new FrontierPoints(30.87114, -111.3944));
-            poligon.Add(new FrontierPoints(24.24979, -78.11975));
-            return poligon;
+            var rdm = new Locations()
+            {
+                Parent_Id = parentId,
+                Code = "REDM",
+                Description = "Redmond",
+                Polygon = GetRedmondPoligon()
+            };
+            rdm.SetLocation(-122.122887, 47.674961);
+            await ctx.Locations.InsertOneAsync(rdm);
         }
 
-        static List<FrontierPoints> GetWashingtonPoligon()
+        static async Task SetIndexes()
         {
-            var poligon = new List<FrontierPoints>();
-            poligon.Add(new FrontierPoints(48.8943,  -124.68633));
-            poligon.Add(new FrontierPoints(45.66613, -124.32962));
-            poligon.Add(new FrontierPoints(45.93384, -116.73824));
-            poligon.Add(new FrontierPoints(49.04282, -116.96912));
-            return poligon;
+            // Set location indexes
+            var builder = Builders<Locations>.IndexKeys;
+            var keys = builder.Geo2DSphere(prop => prop.Location);
+            await ctx.Locations.Indexes.CreateOneAsync(keys);
+        }        
+
+        static GeoJsonPolygon<GeoJson2DGeographicCoordinates> GetSeattlePoligon()
+        {
+            return new GeoJsonPolygon<GeoJson2DGeographicCoordinates>(new GeoJsonPolygonCoordinates<GeoJson2DGeographicCoordinates>(
+                 new GeoJsonLinearRingCoordinates<GeoJson2DGeographicCoordinates>(
+                     new List<GeoJson2DGeographicCoordinates>()
+                     {
+                        new GeoJson2DGeographicCoordinates(-122.36238,47.82929),
+                        new GeoJson2DGeographicCoordinates(-122.42091,47.6337),
+                        new GeoJson2DGeographicCoordinates(-122.37371,47.45224),
+                        new GeoJson2DGeographicCoordinates(-122.20788,47.50259),
+                        new GeoJson2DGeographicCoordinates(-122.26934,47.73644),
+                        new GeoJson2DGeographicCoordinates(-122.36238,47.82929)
+                     })));
         }
 
-        static List<FrontierPoints> GetSeattlePoligon()
+        static GeoJsonPolygon<GeoJson2DGeographicCoordinates> GetRedmondPoligon()
         {
-            var poligon = new List<FrontierPoints>();
-            poligon.Add(new FrontierPoints(47.82929, -122.36238));
-            poligon.Add(new FrontierPoints(47.6337, -122.42091));
-            poligon.Add(new FrontierPoints(47.45224, -122.37371));
-            poligon.Add(new FrontierPoints(47.50259, -122.20788));
-            poligon.Add(new FrontierPoints(47.73644, -122.26934));
-            return poligon;
-        }
-
-        static List<FrontierPoints> GetRedmondPoligon()
-        {
-            var poligon = new List<FrontierPoints>();
-            poligon.Add(new FrontierPoints(47.73148, -122.15432));
-            poligon.Add(new FrontierPoints(47.72559, -122.17673));
-            poligon.Add(new FrontierPoints(47.67851, -122.16904));
-            poligon.Add(new FrontierPoints(47.65036, -122.16136));
-            poligon.Add(new FrontierPoints(47.62746, -122.15604));
-            poligon.Add(new FrontierPoints(47.63463, -122.01562));
-            poligon.Add(new FrontierPoints(47.74244, -122.04961));
-            return poligon;
-        }
-
-        static List<FrontierPoints> GetSeattlePioneerSqrPoligon()
-        {
-            var poligon = new List<FrontierPoints>();
-            poligon.Add(new FrontierPoints(47.60338, -122.3327));
-            poligon.Add(new FrontierPoints(47.60192, -122.33665));
-            poligon.Add(new FrontierPoints(47.60096, -122.33456));
-            poligon.Add(new FrontierPoints(47.60136, -122.33186));            
-            return poligon;
-        }
-
-        static List<FrontierPoints> GetRedmondDowntownParkPoligon()
-        {
-            var poligon = new List<FrontierPoints>();
-            poligon.Add(new FrontierPoints(47.67595, -122.12467));
-            poligon.Add(new FrontierPoints(47.67449, -122.12862));
-            poligon.Add(new FrontierPoints(47.67353, -122.12653));
-            poligon.Add(new FrontierPoints(47.67368, -122.12197));
-            return poligon;
-        }
+            return new GeoJsonPolygon<GeoJson2DGeographicCoordinates>(new GeoJsonPolygonCoordinates<GeoJson2DGeographicCoordinates>(
+                 new GeoJsonLinearRingCoordinates<GeoJson2DGeographicCoordinates>(
+                     new List<GeoJson2DGeographicCoordinates>()
+                     {
+                        new GeoJson2DGeographicCoordinates(47.73148, -122.15432),
+                        new GeoJson2DGeographicCoordinates(47.72559, -122.17673),
+                        new GeoJson2DGeographicCoordinates(47.67851, -122.16904),
+                        new GeoJson2DGeographicCoordinates(47.65036, -122.16136),
+                        new GeoJson2DGeographicCoordinates(47.62746, -122.15604),
+                        new GeoJson2DGeographicCoordinates(47.63463, -122.01562),
+                        new GeoJson2DGeographicCoordinates(47.74244, -122.04961),
+                        new GeoJson2DGeographicCoordinates(47.73148, -122.15432),
+                     })));
+        }       
     }
 }
