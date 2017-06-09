@@ -8,7 +8,7 @@ using Microsoft.eShopOnContainers.Services.Marketing.API.Infrastructure;
 namespace Microsoft.eShopOnContainers.Services.Marketing.API.Infrastructure.MarketingMigrations
 {
     [DbContext(typeof(MarketingContext))]
-    [Migration("20170602122539_Initial")]
+    [Migration("20170609104915_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -101,7 +101,7 @@ namespace Microsoft.eShopOnContainers.Services.Marketing.API.Infrastructure.Mark
 
             modelBuilder.Entity("Microsoft.eShopOnContainers.Services.Marketing.API.Model.Rule", b =>
                 {
-                    b.HasOne("Microsoft.eShopOnContainers.Services.Marketing.API.Model.Campaign")
+                    b.HasOne("Microsoft.eShopOnContainers.Services.Marketing.API.Model.Campaign", "Campaign")
                         .WithMany("Rules")
                         .HasForeignKey("CampaignId")
                         .OnDelete(DeleteBehavior.Cascade);
