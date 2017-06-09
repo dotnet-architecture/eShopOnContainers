@@ -11,6 +11,7 @@ using eShopOnContainers.Core.Services.Identity;
 using eShopOnContainers.Core.Services.Order;
 using eShopOnContainers.Core.Services.User;
 using Xamarin.Forms;
+using eShopOnContainers.Core.Services.Location;
 
 namespace eShopOnContainers.Core.ViewModels.Base
 {
@@ -53,24 +54,25 @@ namespace eShopOnContainers.Core.ViewModels.Base
 			builder.RegisterType<OpenUrlService>().As<IOpenUrlService>();
 			builder.RegisterType<IdentityService>().As<IIdentityService>();
 			builder.RegisterType<RequestProvider>().As<IRequestProvider>();
+            builder.RegisterType<LocationService>().As<ILocationService>().SingleInstance();
 
-			if (useMockServices)
+            if (useMockServices)
 			{
 				builder.RegisterInstance(new CatalogMockService()).As<ICatalogService>();
 				builder.RegisterInstance(new BasketMockService()).As<IBasketService>();
 				builder.RegisterInstance(new OrderMockService()).As<IOrderService>();
 				builder.RegisterInstance(new UserMockService()).As<IUserService>();
 
-				UseMockService = true;
+                UseMockService = true;
 			}
 			else
 			{
 				builder.RegisterType<CatalogService>().As<ICatalogService>().SingleInstance();
 				builder.RegisterType<BasketService>().As<IBasketService>().SingleInstance();
 				builder.RegisterType<OrderService>().As<IOrderService>().SingleInstance();
-				builder.RegisterType<UserService>().As<IUserService>().SingleInstance();
+				builder.RegisterType<UserService>().As<IUserService>().SingleInstance();       
 
-				UseMockService = false;
+                UseMockService = false;
 			}
 
 			if (_container != null)
