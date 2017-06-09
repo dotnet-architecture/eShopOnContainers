@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -70,6 +70,7 @@
     <Compile Include="Models\Catalog\CatalogItem.cs" />
     <Compile Include="Models\Catalog\CatalogRoot.cs" />
     <Compile Include="Models\Catalog\CatalogType.cs" />
+    <Compile Include="Models\Location\LocationRequest.cs" />
     <Compile Include="Models\Navigation\TabParameter.cs" />
     <Compile Include="Models\Orders\CardType.CS" />
     <Compile Include="Models\Orders\Order.cs" />
@@ -91,6 +92,8 @@
     <Compile Include="Services\Dialog\IDialogService.cs" />
     <Compile Include="Services\Identity\IdentityService.cs" />
     <Compile Include="Services\Identity\IIdentityService.cs" />
+    <Compile Include="Services\Location\ILocationService.cs" />
+    <Compile Include="Services\Location\LocationService.cs" />
     <Compile Include="Services\Navigation\INavigationService.cs" />
     <Compile Include="Services\Navigation\NavigationService.cs" />
     <Compile Include="Services\OpenUrl\IOpenUrlService.cs" />
