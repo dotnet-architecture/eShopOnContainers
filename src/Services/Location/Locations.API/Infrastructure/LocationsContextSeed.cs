@@ -5,7 +5,6 @@
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
-    using MongoDB.Bson;
     using MongoDB.Driver;
     using MongoDB.Driver.GeoJsonObjectModel;
     using System.Collections.Generic;
@@ -25,7 +24,7 @@
             {
                 await SetIndexes();
                 await SetUSLocations();
-            }            
+            }
         }
 
         static async Task SetUSLocations()
@@ -36,11 +35,12 @@
                 Description = "United States"
             };
             us.SetLocation(-101.357386, 41.650455);
-            await ctx.Locations.InsertOneAsync(us);        
+            us.SetArea(GetUSPoligon());
+            await ctx.Locations.InsertOneAsync(us);
             await SetWashingtonLocations(us.Id);
         }
 
-        static async Task SetWashingtonLocations(ObjectId parentId)
+        static async Task SetWashingtonLocations(string parentId)
         {
             var wht = new Locations()
             {
@@ -49,34 +49,35 @@
                 Description = "Washington"
             };
             wht.SetLocation(-119.542781, 47.223652);
+            wht.SetArea(GetWashingtonPoligon());
             await ctx.Locations.InsertOneAsync(wht);
             await SetSeattleLocations(wht.Id);
             await SetRedmondLocations(wht.Id);
         }
 
-        static async Task SetSeattleLocations(ObjectId parentId)
+        static async Task SetSeattleLocations(string parentId)
         {
             var stl = new Locations()
             {
                 Parent_Id = parentId,
                 Code = "SEAT",
-                Description = "Seattle",
-                Polygon = GetSeattlePoligon()
+                Description = "Seattle"
             };
+            stl.SetArea(GetSeattlePoligon());
             stl.SetLocation(-122.330747, 47.603111);
             await ctx.Locations.InsertOneAsync(stl);
         }
 
-        static async Task SetRedmondLocations(ObjectId parentId)
+        static async Task SetRedmondLocations(string parentId)
         {
             var rdm = new Locations()
             {
                 Parent_Id = parentId,
                 Code = "REDM",
-                Description = "Redmond",
-                Polygon = GetRedmondPoligon()
+                Description = "Redmond"
             };
             rdm.SetLocation(-122.122887, 47.674961);
+            rdm.SetArea(GetRedmondPoligon());
             await ctx.Locations.InsertOneAsync(rdm);
         }
 
@@ -86,13 +87,24 @@
             var builder = Builders<Locations>.IndexKeys;
             var keys = builder.Geo2DSphere(prop => prop.Location);
             await ctx.Locations.Indexes.CreateOneAsync(keys);
-        }        
+        }
 
-        static GeoJsonPolygon<GeoJson2DGeographicCoordinates> GetSeattlePoligon()
+        static List<GeoJson2DGeographicCoordinates> GetUSPoligon()
         {
-            return new GeoJsonPolygon<GeoJson2DGeographicCoordinates>(new GeoJsonPolygonCoordinates<GeoJson2DGeographicCoordinates>(
-                 new GeoJsonLinearRingCoordinates<GeoJson2DGeographicCoordinates>(
-                     new List<GeoJson2DGeographicCoordinates>()
+            return new List<GeoJson2DGeographicCoordinates>()
+                     {
+                        new GeoJson2DGeographicCoordinates(-62.88205, 48.7985),
+                        new GeoJson2DGeographicCoordinates(-129.3132, 48.76513),
+                        new GeoJson2DGeographicCoordinates(-120.9496, 30.12256),
+                        new GeoJson2DGeographicCoordinates(-111.3944, 30.87114),
+                        new GeoJson2DGeographicCoordinates(-78.11975, 24.24979),
+                        new GeoJson2DGeographicCoordinates(-62.88205, 48.7985)
+                     };
+        }
+
+        static List<GeoJson2DGeographicCoordinates> GetSeattlePoligon()
+        {
+            return new List<GeoJson2DGeographicCoordinates>()
                      {
                         new GeoJson2DGeographicCoordinates(-122.36238,47.82929),
                         new GeoJson2DGeographicCoordinates(-122.42091,47.6337),
@@ -100,24 +112,34 @@
                         new GeoJson2DGeographicCoordinates(-122.20788,47.50259),
                         new GeoJson2DGeographicCoordinates(-122.26934,47.73644),
                         new GeoJson2DGeographicCoordinates(-122.36238,47.82929)
-                     })));
+                     };
         }
 
-        static GeoJsonPolygon<GeoJson2DGeographicCoordinates> GetRedmondPoligon()
+        static List<GeoJson2DGeographicCoordinates> GetRedmondPoligon()
         {
-            return new GeoJsonPolygon<GeoJson2DGeographicCoordinates>(new GeoJsonPolygonCoordinates<GeoJson2DGeographicCoordinates>(
-                 new GeoJsonLinearRingCoordinates<GeoJson2DGeographicCoordinates>(
-                     new List<GeoJson2DGeographicCoordinates>()
+            return new List<GeoJson2DGeographicCoordinates>()
                      {
-                        new GeoJson2DGeographicCoordinates(47.73148, -122.15432),
-                        new GeoJson2DGeographicCoordinates(47.72559, -122.17673),
-                        new GeoJson2DGeographicCoordinates(47.67851, -122.16904),
-                        new GeoJson2DGeographicCoordinates(47.65036, -122.16136),
-                        new GeoJson2DGeographicCoordinates(47.62746, -122.15604),
-                        new GeoJson2DGeographicCoordinates(47.63463, -122.01562),
-                        new GeoJson2DGeographicCoordinates(47.74244, -122.04961),
-                        new GeoJson2DGeographicCoordinates(47.73148, -122.15432),
-                     })));
-        }       
+                        new GeoJson2DGeographicCoordinates(-122.15432, 47.73148),
+                        new GeoJson2DGeographicCoordinates(-122.17673, 47.72559),
+                        new GeoJson2DGeographicCoordinates(-122.16904, 47.67851),
+                        new GeoJson2DGeographicCoordinates(-122.16136, 47.65036),
+                        new GeoJson2DGeographicCoordinates(-122.15604, 47.62746),
+                        new GeoJson2DGeographicCoordinates(-122.01562, 47.63463),
+                        new GeoJson2DGeographicCoordinates(-122.04961, 47.74244),
+                        new GeoJson2DGeographicCoordinates(-122.15432, 47.73148)
+                     };
+        }
+
+        static List<GeoJson2DGeographicCoordinates> GetWashingtonPoligon()
+        {
+            return new List<GeoJson2DGeographicCoordinates>()
+                     {
+                        new GeoJson2DGeographicCoordinates(-124.68633, 48.8943),
+                        new GeoJson2DGeographicCoordinates(-124.32962, 45.66613),
+                        new GeoJson2DGeographicCoordinates(-116.73824, 45.93384),
+                        new GeoJson2DGeographicCoordinates(-116.96912, 49.04282),
+                        new GeoJson2DGeographicCoordinates(-124.68633, 48.8943)
+                     };
+        }
     }
 }

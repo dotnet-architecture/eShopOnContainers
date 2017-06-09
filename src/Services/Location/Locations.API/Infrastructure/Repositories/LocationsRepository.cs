@@ -1,17 +1,14 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure.Repositories
 {
-    using System;
-    using System.Threading.Tasks;
-    using Microsoft.eShopOnContainers.Services.Locations.API.Model;
     using Microsoft.EntityFrameworkCore;
-    using System.Collections.Generic;
-    using System.Globalization;
-    using System.Linq;
+    using Microsoft.eShopOnContainers.Services.Locations.API.Model;
     using Microsoft.Extensions.Options;
+    using MongoDB.Bson;
     using MongoDB.Driver;
     using MongoDB.Driver.GeoJsonObjectModel;
-    using MongoDB.Driver.Builders;
-    using MongoDB.Bson;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using ViewModel;
 
     public class LocationsRepository
         : ILocationsRepository
@@ -23,9 +20,9 @@
             _context = new LocationsContext(settings);
         }        
         
-        public async Task<Locations> GetAsync(ObjectId locationId)
+        public async Task<Locations> GetAsync(string locationId)
         {
-            var filter = Builders<Locations>.Filter.Eq("Id", locationId);
+            var filter = Builders<Locations>.Filter.Eq("Id", ObjectId.Parse(locationId));
             return await _context.Locations
                                  .Find(filter)
                                  .FirstOrDefaultAsync();
@@ -42,20 +39,16 @@
         public async Task<List<Locations>> GetLocationListAsync()
         {
             return await _context.Locations.Find(new BsonDocument()).ToListAsync();
-        }
+        }       
 
-        public async Task<List<Locations>> GetNearestLocationListAsync(double lat, double lon)
+        public async Task<List<Locations>> GetCurrentUserRegionsListAsync(LocationRequest currentPosition)
         {
-            var point = GeoJson.Point(GeoJson.Geographic(lon, lat));
-            var query = new FilterDefinitionBuilder<Locations>().Near(x => x.Location, point);
-            return await _context.Locations.Find(query).ToListAsync(); 
-        }
-
-        public async Task<Locations> GetLocationByCurrentAreaAsync(Locations location)
-        {
-            var query = new FilterDefinitionBuilder<Locations>().GeoIntersects("Location", location.Polygon);
-            return await _context.Locations.Find(query).FirstOrDefaultAsync();
-        }
+            var point = GeoJson.Point(GeoJson.Geographic(currentPosition.Longitude, currentPosition.Latitude));
+            var orderByDistanceQuery = new FilterDefinitionBuilder<Locations>().Near(x => x.Location, point);
+            var withinAreaQuery = new FilterDefinitionBuilder<Locations>().GeoIntersects("Polygon", point);
+            var filter = Builders<Locations>.Filter.And(orderByDistanceQuery, withinAreaQuery);
+            return await _context.Locations.Find(filter).ToListAsync(); 
+        }        
 
         public async Task AddUserLocationAsync(UserLocation location)
         {

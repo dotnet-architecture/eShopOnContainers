@@ -20,8 +20,8 @@ namespace Locations.API.Controllers
             _identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
         }
 
-        //GET api/v1/[controller]/1
-        [Route("{userId:int}")]
+        //GET api/v1/[controller]/user/1
+        [Route("user/{userId:int}")]
         [HttpGet]
         public async Task<IActionResult> GetUserLocation(int userId)
         {
@@ -29,19 +29,28 @@ namespace Locations.API.Controllers
             return Ok(userLocation);
         }
 
-        //GET api/v1/[controller]/locations
-        [Route("locations")]
+        //GET api/v1/[controller]/
+        [Route("")]
         [HttpGet]
         public async Task<IActionResult> GetAllLocations()
         {
-            var userLocation = await _locationsService.GetAllLocation();
-            return Ok(userLocation);
+            var locations = await _locationsService.GetAllLocation();
+            return Ok(locations);
+        }
+
+        //GET api/v1/[controller]/1
+        [Route("{locationId}")]
+        [HttpGet]
+        public async Task<IActionResult> GetLocation(string locationId)
+        {
+            var location = await _locationsService.GetLocation(locationId);
+            return Ok(location);
         }
 
         //POST api/v1/[controller]/
         [Route("")]
         [HttpPost]
-        public async Task<IActionResult> UpdateUserLocation([FromBody]LocationRequest newLocReq)
+        public async Task<IActionResult> CreateOrUpdateUserLocation([FromBody]LocationRequest newLocReq)
         {
             var userId = _identityService.GetUserIdentity();
             var result = await _locationsService.AddOrUpdateUserLocation(userId, newLocReq);

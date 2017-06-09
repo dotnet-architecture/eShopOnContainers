@@ -22,9 +22,14 @@ namespace IntegrationTests.Services.Locations
         {
             public static string Locations = "api/v1/locations";
 
-            public static string LocationBy(int id)
+            public static string LocationBy(string id)
             {
                 return $"api/v1/locations/{id}";
+            }
+
+            public static string UserLocationBy(int id)
+            {
+                return $"api/v1/locations/user/{id}";
             }
         }
 
