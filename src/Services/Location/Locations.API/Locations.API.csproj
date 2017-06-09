@@ -7,9 +7,6 @@
     <UserSecretsId>aspnet-Locations.API-20161122013619</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="Infrastructure\Migrations\" />
-    <Folder Include="Infrastructure\Migrations\" />
-    <Folder Include="Infrastructure\Migrations\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
   <ItemGroup>
@@ -28,6 +25,10 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="1.1.2" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="1.1.2" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="1.1.2" />
+    <PackageReference Include="mongocsharpdriver" Version="2.4.3" />
+    <PackageReference Include="MongoDB.Bson" Version="2.4.3" />
+    <PackageReference Include="MongoDB.Driver" Version="2.4.3" />
+    <PackageReference Include="MongoDB.Driver.Core" Version="2.4.3" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="1.0.0" />
   </ItemGroup>
   <ItemGroup>

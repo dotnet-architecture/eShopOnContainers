@@ -20,6 +20,24 @@ namespace Locations.API.Controllers
             _identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
         }
 
+        //GET api/v1/[controller]/1
+        [Route("{userId:int}")]
+        [HttpGet]
+        public async Task<IActionResult> GetUserLocation(int userId)
+        {
+            var userLocation = await _locationsService.GetUserLocation(userId);
+            return Ok(userLocation);
+        }
+
+        //GET api/v1/[controller]/locations
+        [Route("locations")]
+        [HttpGet]
+        public async Task<IActionResult> GetAllLocations()
+        {
+            var userLocation = await _locationsService.GetAllLocation();
+            return Ok(userLocation);
+        }
+
         //POST api/v1/[controller]/
         [Route("")]
         [HttpPost]

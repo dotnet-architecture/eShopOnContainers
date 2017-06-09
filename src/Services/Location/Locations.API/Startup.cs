@@ -11,6 +11,7 @@ using System;
 using Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure.Services;
 using Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Http;
+using Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure.Filters;
 
 namespace Microsoft.eShopOnContainers.Services.Locations.API
 {
@@ -39,24 +40,13 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
-            services.AddMvc();
-
-            services.AddDbContext<LocationsContext>(options =>
+            services.AddMvc(options =>
             {
-                options.UseSqlServer(Configuration["ConnectionString"],
-                                     sqlServerOptionsAction: sqlOptions =>
-                                     {
-                                         sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
-                                         //Configuring Connection Resiliency: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency 
-                                         sqlOptions.EnableRetryOnFailure(maxRetryCount: 5, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
-                                     });
+                options.Filters.Add(typeof(HttpGlobalExceptionFilter));
+            }).AddControllersAsServices();
 
-                // Changing default behavior when client evaluation occurs to throw. 
-                // Default in EF Core would be to log a warning when client evaluation is performed.
-                options.ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning));
-                //Check Client vs. Server evaluation: https://docs.microsoft.com/en-us/ef/core/querying/client-eval
-            });
-
+            services.Configure<LocationSettings>(Configuration);
+            
             // Add framework services.
             services.AddSwaggerGen(options =>
             {
@@ -82,7 +72,7 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IIdentityService, IdentityService>();
             services.AddTransient<ILocationsService, LocationsService>();
-            services.AddTransient<ILocationsRepository, LocationsRepository>();
+            services.AddTransient<ILocationsRepository, LocationsRepository>();           
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
