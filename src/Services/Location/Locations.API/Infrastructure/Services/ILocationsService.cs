@@ -7,6 +7,8 @@
 
     public interface ILocationsService
     {
+        Task<Locations> GetLocation(string locationId);
+
         Task<UserLocation> GetUserLocation(int id);
 
         Task<List<Locations>> GetAllLocation();
