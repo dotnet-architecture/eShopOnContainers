@@ -100,7 +100,7 @@ namespace Microsoft.eShopOnContainers.Services.Marketing.API.Infrastructure.Mark
 
             modelBuilder.Entity("Microsoft.eShopOnContainers.Services.Marketing.API.Model.Rule", b =>
                 {
-                    b.HasOne("Microsoft.eShopOnContainers.Services.Marketing.API.Model.Campaign")
+                    b.HasOne("Microsoft.eShopOnContainers.Services.Marketing.API.Model.Campaign", "Campaign")
                         .WithMany("Rules")
                         .HasForeignKey("CampaignId")
                         .OnDelete(DeleteBehavior.Cascade);
