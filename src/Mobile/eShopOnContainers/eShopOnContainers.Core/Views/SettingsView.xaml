@@ -108,11 +108,11 @@
                         Grid.Column="0"                       
                         Grid.Row="1">
                         <Label 
-                            Text="{Binding Title}"
+                            Text="{Binding TitleUseAzureServices}"
                             TextColor="{StaticResource GreenColor}"
                             Style="{StaticResource SettingsTitleStyle}"/>
                         <Label
-                            Text="{Binding Description}"
+                            Text="{Binding DescriptionUseAzureServices}"
                             Style="{StaticResource SettingsDescriptionStyle}"/>
                     </StackLayout>
                     <!-- ON / OFF -->
@@ -160,8 +160,79 @@
                     <Grid 
                         Grid.Row="3"
                         Grid.Column="0"
+                        Grid.ColumnSpan="2"/>
+                    <StackLayout 
+                        Grid.Column="0"                       
+                        Grid.Row="4">
+                        <Label 
+                            Text="{Binding TitleUseFakeLocation}"
+                            TextColor="{StaticResource GreenColor}"
+                            Style="{StaticResource SettingsTitleStyle}"/>
+                        <Label
+                            Text="{Binding DescriptionUseFakeLocation}"
+                            Style="{StaticResource SettingsDescriptionStyle}"/>
+                    </StackLayout>
+                    <!-- ON / OFF -->
+                    <controls:ToggleButton 
+                        Grid.Column="1" 
+                        Grid.Row="4" 
+                        Animate="True"     
+                        Checked="{Binding UseFakeLocation, Mode=TwoWay}"
+                        Command="{Binding ToggleFakeLocationCommand}"
+                        Style="{StaticResource SettingsToggleButtonStyle}">
+                        <controls:ToggleButton.CheckedImage>
+                            <OnPlatform x:TypeArguments="ImageSource"
+                              Android="switch_on.png"
+                              iOS="switchOn.png"
+                              WinPhone="Assets/switchOn.png"/>
+                        </controls:ToggleButton.CheckedImage>
+                        <controls:ToggleButton.UnCheckedImage>
+                            <OnPlatform x:TypeArguments="ImageSource"
+                              Android="switch_off.png"
+                              iOS="switchOff.png"
+                              WinPhone="Assets/switchOff.png"/>
+                        </controls:ToggleButton.UnCheckedImage>
+                    </controls:ToggleButton>
+                    <!-- ENDPOINT -->
+                    <StackLayout
+                        Grid.Row="5"
+                        Grid.Column="0"
                         Grid.ColumnSpan="2"
-                        BackgroundColor="Gray"/>
+                        Margin="12, 0, 12, 12"
+                        IsVisible="{Binding UseFakeLocation}">
+                        <Label
+                            Text="Latitude"
+                            Style="{StaticResource HeaderLabelStyle}"/>
+                        <Entry
+                            Text="{Binding Latitude, Mode=TwoWay}"
+                            Keyboard="Numeric">
+                            <Entry.Style>
+                                <OnPlatform 
+                                    x:TypeArguments="Style"
+                                    iOS="{StaticResource EntryStyle}"
+                                    Android="{StaticResource EntryStyle}"
+                                    WinPhone="{StaticResource UwpEntryStyle}"/>
+                            </Entry.Style>
+                        </Entry>
+                        <Label
+                            Text="Longitude"
+                            Style="{StaticResource HeaderLabelStyle}"/>
+                        <Entry
+                            Text="{Binding Longitude, Mode=TwoWay}"
+                            Keyboard="Numeric">
+                            <Entry.Style>
+                                <OnPlatform 
+                                    x:TypeArguments="Style"
+                                    iOS="{StaticResource EntryStyle}"
+                                    Android="{StaticResource EntryStyle}"
+                                    WinPhone="{StaticResource UwpEntryStyle}"/>
+                            </Entry.Style>
+                        </Entry>
+                        <Button 
+                            Command="{Binding ToggleSendLocationCommand}"
+                            Text="Send Location"/>
+                    </StackLayout>
+                    
                 </Grid>
             </StackLayout>
         </ScrollView>
