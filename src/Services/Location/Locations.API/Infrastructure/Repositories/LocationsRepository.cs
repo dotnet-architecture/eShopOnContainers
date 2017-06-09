@@ -7,54 +7,67 @@
     using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
+    using Microsoft.Extensions.Options;
+    using MongoDB.Driver;
+    using MongoDB.Driver.GeoJsonObjectModel;
+    using MongoDB.Driver.Builders;
+    using MongoDB.Bson;
 
     public class LocationsRepository
         : ILocationsRepository
     {
-        private readonly LocationsContext _context;
+        private readonly LocationsContext _context;       
 
-        public IUnitOfWork UnitOfWork
+        public LocationsRepository(IOptions<LocationSettings> settings)
         {
-            get
-            {
-                return _context;
-            }
+            _context = new LocationsContext(settings);
+        }        
+        
+        public async Task<Locations> GetAsync(ObjectId locationId)
+        {
+            var filter = Builders<Locations>.Filter.Eq("Id", locationId);
+            return await _context.Locations
+                                 .Find(filter)
+                                 .FirstOrDefaultAsync();
         }
 
-        public LocationsRepository(LocationsContext context)
+        public async Task<UserLocation> GetUserLocationAsync(int userId)
         {
-            _context = context ?? throw new ArgumentNullException(nameof(context));
-        }
-
-        public UserLocation Add(UserLocation location)
-        {
-            return _context.UserLocation.Add(location).Entity;
-
-        }
-
-        public async Task<UserLocation> GetAsync(int userId)
-        {
+            var filter = Builders<UserLocation>.Filter.Eq("UserId", userId);
             return await _context.UserLocation
-                .Where(ul => ul.UserId == userId)
-                .SingleOrDefaultAsync();
-        }       
+                                 .Find(filter)
+                                 .FirstOrDefaultAsync();
+        }
+
+        public async Task<List<Locations>> GetLocationListAsync()
+        {
+            return await _context.Locations.Find(new BsonDocument()).ToListAsync();
+        }
 
         public async Task<List<Locations>> GetNearestLocationListAsync(double lat, double lon)
         {
-            var query = $"SELECT TOP(100) location.* " +
-                $"FROM[dbo].[Locations] AS location " +
-                $"ORDER BY [dbo].[GetDistanceFromLocation](location.Latitude, location.Longitude, " +
-                $"{lat.ToString(CultureInfo.InvariantCulture)}, " +
-                $"{lon.ToString(CultureInfo.InvariantCulture)})";
-
-            return await _context.Locations.FromSql(query)
-                .Include(f => f.Polygon)
-                .ToListAsync();
+            var point = GeoJson.Point(GeoJson.Geographic(lon, lat));
+            var query = new FilterDefinitionBuilder<Locations>().Near(x => x.Location, point);
+            return await _context.Locations.Find(query).ToListAsync(); 
         }
 
-        public void Update(UserLocation location)
+        public async Task<Locations> GetLocationByCurrentAreaAsync(Locations location)
         {
-            _context.Entry(location).State = EntityState.Modified;
+            var query = new FilterDefinitionBuilder<Locations>().GeoIntersects("Location", location.Polygon);
+            return await _context.Locations.Find(query).FirstOrDefaultAsync();
+        }
+
+        public async Task AddUserLocationAsync(UserLocation location)
+        {
+            await _context.UserLocation.InsertOneAsync(location);
+        }
+
+        public async Task UpdateUserLocationAsync(UserLocation userLocation)
+        {
+            await _context.UserLocation.ReplaceOneAsync(
+                doc => doc.UserId == userLocation.UserId,
+                userLocation,
+                new UpdateOptions { IsUpsert = true });
         }
     }
 }

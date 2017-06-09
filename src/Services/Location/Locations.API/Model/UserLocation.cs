@@ -1,24 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Microsoft.eShopOnContainers.Services.Locations.API.Model
+﻿namespace Microsoft.eShopOnContainers.Services.Locations.API.Model
 {
+    using MongoDB.Bson.Serialization.Attributes;
+    using MongoDB.Bson;
+    using System;
+    using System.Collections.Generic;
+
     public class UserLocation
     {
-        public int Id { get; set; }
-        public int UserId { get; set; }
-
-        public UserLocation()
-        {
-        }
-
-        public UserLocation(int userId) : this()
-        {
-            UserId = userId;
-        }
-
-        public Locations Location { get; set; }
+        [BsonIgnoreIfDefault]
+        public ObjectId Id { get; set; }
+        public int UserId { get; set; } = 0;
+        public ObjectId LocationId { get; set; }
+        public DateTime UpdateDate { get; set; }
     }
 }

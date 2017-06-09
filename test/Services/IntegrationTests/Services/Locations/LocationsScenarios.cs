@@ -1,4 +1,5 @@
-﻿using Microsoft.eShopOnContainers.Services.Locations.API.ViewModel;
+﻿using Microsoft.eShopOnContainers.Services.Locations.API.Model;
+using Microsoft.eShopOnContainers.Services.Locations.API.ViewModel;
 using Newtonsoft.Json;
 using System.Net.Http;
 using System.Text;
@@ -11,26 +12,37 @@ namespace IntegrationTests.Services.Locations
         : LocationsScenarioBase
     {
         [Fact]
-        public async Task Set_new_user_location_response_ok_status_code()
+        public async Task Set_new_user_seattle_location_response_ok_status_code()
         {
             using (var server = CreateServer())
             {
-                var content = new StringContent(BuildLocationsRequest(), UTF8Encoding.UTF8, "application/json");
+                var userId = 1234;
+                var content = new StringContent(BuildLocationsRequest(-122.315752, 47.604610), UTF8Encoding.UTF8, "application/json");
 
                 var response = await server.CreateClient()
                     .PostAsync(Post.AddNewLocation, content);
 
                 response.EnsureSuccessStatusCode();
+
+                var userLocationResponse = await server.CreateClient()
+                    .GetAsync(Get.LocationBy(userId));
+
+                var responseBody = await userLocationResponse.Content.ReadAsStringAsync();
+                var userLocation = JsonConvert.DeserializeObject<UserLocation>(responseBody);
+
+                response.EnsureSuccessStatusCode();
+
+
             }
         }
 
-        string BuildLocationsRequest()
+        string BuildLocationsRequest(double lon, double lat)
         {
             var location = new LocationRequest()
             {
-                Longitude = -122.333875,
-                Latitude = 47.602050
-            };
+                Longitude = lon,
+                Latitude = lat
+            }; 
             return JsonConvert.SerializeObject(location);
         }
     }
