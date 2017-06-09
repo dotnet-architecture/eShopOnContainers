@@ -13,7 +13,8 @@ namespace Identity.API.Configuration
             {
                 new ApiResource("orders", "Orders Service"),
                 new ApiResource("basket", "Basket Service"),
-                new ApiResource("marketing", "Marketing Service")
+                new ApiResource("marketing", "Marketing Service"),
+                new ApiResource("locations", "Locations Service")
             };
         }
 
@@ -72,7 +73,8 @@ namespace Identity.API.Configuration
                         IdentityServerConstants.StandardScopes.Profile,
                         IdentityServerConstants.StandardScopes.OfflineAccess,
                         "orders",
-                        "basket"
+                        "basket",
+                        "locations"
                     },
                     //Allow requesting refresh tokens for long lived API access
                     AllowOfflineAccess = true                    
@@ -104,7 +106,8 @@ namespace Identity.API.Configuration
                         IdentityServerConstants.StandardScopes.Profile,
                         IdentityServerConstants.StandardScopes.OfflineAccess,
                         "orders",
-                        "basket"
+                        "basket",
+                        "locations"
                     },
                 }
             };

@@ -43,6 +43,8 @@
 
         public string IdentityEndpoint { get; set; }
 
+        public string LocationEndpoint { get; set; }
+
         public string UserInfoEndpoint { get; set; }
 
         public string LogoutEndpoint { get; set; }
@@ -62,6 +64,7 @@
             LogoutEndpoint = string.Format("{0}:5105/connect/endsession", baseEndpoint);
             IdentityCallback = string.Format("{0}:5105/xamarincallback", baseEndpoint);
             LogoutCallback = string.Format("{0}:5105/Account/Redirecting", baseEndpoint);
+            LocationEndpoint = string.Format("{0}:5109", baseEndpoint);
         }
     }
 }
