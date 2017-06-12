@@ -16,7 +16,7 @@ namespace eShopOnContainers.Core.Services.Identity
             dic.Add("client_id", "xamarin");
             dic.Add("client_secret", "secret"); 
             dic.Add("response_type", "code id_token token");
-            dic.Add("scope", "openid profile basket orders offline_access");
+            dic.Add("scope", "openid profile basket orders locations offline_access");
 
             dic.Add("redirect_uri", GlobalSetting.Instance.IdentityCallback);
             dic.Add("nonce", Guid.NewGuid().ToString("N"));
