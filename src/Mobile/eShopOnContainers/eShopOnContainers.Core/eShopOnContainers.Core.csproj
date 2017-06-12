@@ -170,8 +170,6 @@
     <Compile Include="Effects\EntryLineColorEffect.cs" />
     <Compile Include="Behaviors\LineColorBehavior.cs" />
     <Compile Include="Models\Token\UserToken.cs" />
-    <Compile Include="Services\Token\TokenService.cs" />
-    <Compile Include="Services\Token\ITokenService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -267,7 +265,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\Token\" />
-    <Folder Include="Services\Token\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

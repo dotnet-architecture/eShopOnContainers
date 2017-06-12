@@ -8,7 +8,6 @@ using eShopOnContainers.Core.Services.OpenUrl;
 using eShopOnContainers.Core.Services.RequestProvider;
 using eShopOnContainers.Core.Services.Basket;
 using eShopOnContainers.Core.Services.Identity;
-using eShopOnContainers.Core.Services.Token;
 using eShopOnContainers.Core.Services.Order;
 using eShopOnContainers.Core.Services.User;
 using Xamarin.Forms;
@@ -54,7 +53,6 @@ namespace eShopOnContainers.Core.ViewModels.Base
 			builder.RegisterType<DialogService>().As<IDialogService>();
 			builder.RegisterType<OpenUrlService>().As<IOpenUrlService>();
 			builder.RegisterType<IdentityService>().As<IIdentityService>();
-            builder.RegisterType<TokenService>().As<ITokenService>();
 			builder.RegisterType<RequestProvider>().As<IRequestProvider>();
             builder.RegisterType<LocationService>().As<ILocationService>().SingleInstance();
 
