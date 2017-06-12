@@ -1,12 +1,12 @@
-#eShopOnContainers
+# eShopOnContainers
 
 eShopOnContainers is a reference app whose imagined purpose is to serve the mobile workforce of a fictitious company that sells products. The app allow to manage the catalog, view products, manage the basket and the orders.
 
 <img src="Images/eShopOnContainers_Architecture_Diagram.png" alt="eShopOnContainers" Width="800" />
 
-###Supported platforms: iOS, Android and Windows
+### Supported platforms: iOS, Android and Windows
 
-###The app architecture consists of two parts:
+### The app architecture consists of two parts:
   1. A Xamarin.Forms mobile app for iOS, Android and Windows.
   2. Several .NET Web API microservices deployed as Docker containers.
 
@@ -34,7 +34,7 @@ This project exercises the following platforms, frameworks or features:
   * Entity Framework
   * Identity Server 4
 
-##Three platforms
+## Three platforms
 The app targets **three** platforms:
 
 * iOS
@@ -45,7 +45,7 @@ The app targets **three** platforms:
 
 As of 07/03/2017, eShopOnContainers features **89.2% code share** (7.2% iOS / 16.7% Android / 8.7% Windows).
 
-##Licenses
+## Licenses
 
 This project uses some third-party assets with a license that requires attribution:
 

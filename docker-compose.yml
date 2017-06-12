@@ -5,7 +5,7 @@ services:
     image: eshop/basket.api
     build:
       context: ./src/Services/Basket/Basket.API
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile    
     depends_on:
       - basket.data
       - identity.api
@@ -15,7 +15,7 @@ services:
     image: eshop/catalog.api
     build:
       context: ./src/Services/Catalog/Catalog.API
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile    
     depends_on:
       - sql.data
       - rabbitmq
@@ -24,7 +24,7 @@ services:
     image: eshop/identity.api
     build:
       context: ./src/Services/Identity/Identity.API
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile    
     depends_on:
       - sql.data
 
@@ -32,7 +32,7 @@ services:
     image: eshop/ordering.api
     build:
       context: ./src/Services/Ordering/Ordering.API
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile    
     depends_on:
       - sql.data
 
@@ -40,7 +40,7 @@ services:
     image: eshop/webspa
     build:
       context: ./src/Web/WebSPA
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile    
     depends_on:
       - identity.api
       - basket.api
@@ -49,7 +49,7 @@ services:
     image: eshop/webmvc
     build:
       context: ./src/Web/WebMVC
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile    
     depends_on:
       - catalog.api
       - ordering.api
@@ -73,4 +73,5 @@ services:
     image: eshop/webstatus
     build:
       context: ./src/Web/WebStatus
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile    
+    

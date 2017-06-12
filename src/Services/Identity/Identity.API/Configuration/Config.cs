@@ -1,7 +1,6 @@
-﻿using IdentityServer4.Models;
-using Microsoft.Extensions.Options;
+﻿using IdentityServer4;
+using IdentityServer4.Models;
 using System.Collections.Generic;
-using IdentityServer4;
 
 namespace Identity.API.Configuration
 {
@@ -56,19 +55,26 @@ namespace Identity.API.Configuration
                 {
                     ClientId = "xamarin",
                     ClientName = "eShop Xamarin OpenId Client",
-                    AllowedGrantTypes = GrantTypes.Implicit,
-                    AllowAccessTokensViaBrowser = true,
-                    RedirectUris =          { clientsUrl["Xamarin"] },
+                    AllowedGrantTypes = GrantTypes.Hybrid,                    
+                    //Used to retrieve the access token on the back channel.
+                    ClientSecrets =
+                    {
+                        new Secret("secret".Sha256())
+                    },
+                    RedirectUris = { clientsUrl["Xamarin"] },
                     RequireConsent = false,
-                    PostLogoutRedirectUris = { "http://13.88.8.119:5105/Account/Redirecting", "http://10.6.1.234:5105/Account/Redirecting" },
-                    AllowedCorsOrigins =     { "http://eshopxamarin" },
-                    AllowedScopes =
+                    PostLogoutRedirectUris = { $"{clientsUrl["Xamarin"]}/Account/Redirecting" },
+                    AllowedCorsOrigins = { "http://eshopxamarin" },
+                    AllowedScopes = new List<string>
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServerConstants.StandardScopes.OfflineAccess,
                         "orders",
                         "basket"
-                    }
+                    },
+                    //Allow requesting refresh tokens for long lived API access
+                    AllowOfflineAccess = true                    
                 },
                 new Client
                 {
@@ -84,15 +90,11 @@ namespace Identity.API.Configuration
                     AllowOfflineAccess = true,
                     RedirectUris = new List<string>
                     {
-                        $"{clientsUrl["Mvc"]}/signin-oidc",
-                        "http://104.40.62.65:5100/signin-oidc", 
-                        "http://localhost:5100/signin-oidc",
-                        "http://13.88.8.119:5100/signin-oidc"
+                        $"{clientsUrl["Mvc"]}/signin-oidc"
                     },
                     PostLogoutRedirectUris = new List<string>
                     {
-                        $"{clientsUrl["Mvc"]}/signout-callback-oidc",
-                        "http://localhost:5100/signout-callback-oidc"
+                        $"{clientsUrl["Mvc"]}/signout-callback-oidc"
                     },
                     AllowedScopes = new List<string>
                     {
@@ -100,7 +102,7 @@ namespace Identity.API.Configuration
                         IdentityServerConstants.StandardScopes.Profile,
                         IdentityServerConstants.StandardScopes.OfflineAccess,
                         "orders",
-                        "basket",
+                        "basket"
                     },
                 }
             };

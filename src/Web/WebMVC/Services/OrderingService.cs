@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.eShopOnContainers.WebMVC.ViewModels;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Options;
-using System.Net.Http;
-using Newtonsoft.Json;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http;
+using Microsoft.eShopOnContainers.WebMVC.ViewModels;
+using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using WebMVC.Infrastructure;
 
 namespace Microsoft.eShopOnContainers.WebMVC.Services
 {
@@ -27,15 +26,13 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
             _apiClient = httpClient;
         }
 
-        async public Task<Order> GetOrder(ApplicationUser user, string Id)
+        async public Task<Order> GetOrder(ApplicationUser user, string id)
         {
-            var context = _httpContextAccesor.HttpContext;
-            var token = await context.Authentication.GetTokenAsync("access_token");
-            _apiClient.Inst.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+            var token = await GetUserTokenAsync();
+            var getOrderUri = API.Order.GetOrder(_remoteServiceBaseUrl, id);
 
-            var ordersUrl = $"{_remoteServiceBaseUrl}/{Id}";
-            var dataString = await _apiClient.GetStringAsync(ordersUrl);
-            
+            var dataString = await _apiClient.GetStringAsync(getOrderUri, token);
+
             var response = JsonConvert.DeserializeObject<Order>(dataString);
 
             return response;
@@ -43,16 +40,13 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
 
         async public Task<List<Order>> GetMyOrders(ApplicationUser user)
         {
-            var context = _httpContextAccesor.HttpContext;
-            var token = await context.Authentication.GetTokenAsync("access_token");
+            var token = await GetUserTokenAsync();
+            var allMyOrdersUri = API.Order.GetAllMyOrders(_remoteServiceBaseUrl);
 
-            _apiClient.Inst.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
-
-            var ordersUrl = _remoteServiceBaseUrl;
-            var dataString = await _apiClient.GetStringAsync(ordersUrl);
+            var dataString = await _apiClient.GetStringAsync(allMyOrdersUri, token);
             var response = JsonConvert.DeserializeObject<List<Order>>(dataString);
 
-            return response; 
+            return response;
         }
 
         public Order MapUserInfoIntoOrder(ApplicationUser user, Order order)
@@ -62,10 +56,10 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
             order.State = user.State;
             order.Country = user.Country;
             order.ZipCode = user.ZipCode;
-                
+
             order.CardNumber = user.CardNumber;
             order.CardHolderName = user.CardHolderName;
-            order.CardExpiration = new DateTime(int.Parse("20" + user.Expiration.Split('/')[1]),int.Parse(user.Expiration.Split('/')[0]), 1);
+            order.CardExpiration = new DateTime(int.Parse("20" + user.Expiration.Split('/')[1]), int.Parse(user.Expiration.Split('/')[0]), 1);
             order.CardSecurityNumber = user.SecurityNumber;
 
             return order;
@@ -73,21 +67,21 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
 
         async public Task CreateOrder(Order order)
         {
-            var context = _httpContextAccesor.HttpContext;
-            var token = await context.Authentication.GetTokenAsync("access_token");
+            var token = await GetUserTokenAsync();
+            var requestId = order.RequestId.ToString();
+            var addNewOrderUri = API.Order.AddNewOrder(_remoteServiceBaseUrl);
 
-            _apiClient.Inst.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
-            _apiClient.Inst.DefaultRequestHeaders.Add("x-requestid", order.RequestId.ToString());
-
-            var ordersUrl = $"{_remoteServiceBaseUrl}/new";
             order.CardTypeId = 1;
             order.CardExpirationApiFormat();
+
             SetFakeIdToProducts(order);
 
-            var response = await _apiClient.PostAsync(ordersUrl, order);
+            var response = await _apiClient.PostAsync(addNewOrderUri, order, token, requestId);
 
             if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
-                throw new Exception("Error creating order, try later");
+            {
+                throw new Exception("Error creating order, try later.");
+            }
 
             response.EnsureSuccessStatusCode();
         }
@@ -106,10 +100,17 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
             destination.CardSecurityNumber = original.CardSecurityNumber;
         }
 
-        private void SetFakeIdToProducts(Order order)
+        void SetFakeIdToProducts(Order order)
         {
             var id = 1;
             order.OrderItems.ForEach(x => { x.ProductId = id; id++; });
+        }
+
+        async Task<string> GetUserTokenAsync()
+        {
+            var context = _httpContextAccesor.HttpContext;
+
+            return await context.Authentication.GetTokenAsync("access_token");
         }
     }
 }

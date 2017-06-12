@@ -1,0 +1,56 @@
+version: '2'
+
+services:
+  basket.api:
+    image: eshop/basket.api
+    depends_on:
+      - basket.data
+      - identity.api
+      - rabbitmq
+
+  catalog.api:
+    image: eshop/catalog.api
+    depends_on:
+      - sql.data
+      - rabbitmq
+
+  identity.api:
+    image: eshop/identity.api
+    depends_on:
+      - sql.data
+
+  ordering.api:
+    image: eshop/ordering.api
+    depends_on:
+      - sql.data
+
+  webspa:
+    image: eshop/webspa
+    depends_on:
+      - identity.api
+      - basket.api
+
+  webmvc:
+    image: eshop/webmvc  
+    depends_on:
+      - catalog.api
+      - ordering.api
+      - identity.api
+      - basket.api
+
+  sql.data:
+    image: microsoft/mssql-server-linux
+
+  basket.data:
+    image: redis
+    ports:
+      - "6379:6379"
+
+  rabbitmq:
+    image: rabbitmq
+    ports:
+      - "5672:5672"
+
+  webstatus:
+    image: eshop/webstatus
+    
