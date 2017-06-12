@@ -1,6 +1,7 @@
 ﻿using eShopOnContainers.Core.Helpers;
 using eShopOnContainers.Core.Models.User;
 using eShopOnContainers.Core.Services.Identity;
+using eShopOnContainers.Core.Services.Token;
 using eShopOnContainers.Core.Services.OpenUrl;
 using eShopOnContainers.Core.Validations;
 using eShopOnContainers.Core.ViewModels.Base;
@@ -24,13 +25,16 @@ namespace eShopOnContainers.Core.ViewModels
 
         private IOpenUrlService _openUrlService;
         private IIdentityService _identityService;
+        private ITokenService _tokenService;
 
         public LoginViewModel(
             IOpenUrlService openUrlService,
-            IIdentityService identityService)
+            IIdentityService identityService,
+            ITokenService tokenService)
         {
             _openUrlService = openUrlService;
             _identityService = identityService;
+            _tokenService = tokenService;
 
             _userName = new ValidatableObject<string>();
             _password = new ValidatableObject<string>();
@@ -233,10 +237,12 @@ namespace eShopOnContainers.Core.ViewModels
             else if (unescapedUrl.Contains(GlobalSetting.Instance.IdentityCallback))
             {
                 var authResponse = new AuthorizeResponse(url);
-
-                if (!string.IsNullOrWhiteSpace(authResponse.AccessToken))
+                if (!string.IsNullOrWhiteSpace(authResponse.Code))
                 {
-                    if (authResponse.AccessToken != null)
+                    var userToken = await _tokenService.GetTokenAsync(authResponse.Code);
+                    string accessToken = userToken.AccessToken;
+
+                    if (!string.IsNullOrWhiteSpace(accessToken))
                     {
                         Settings.AuthAccessToken = authResponse.AccessToken;
                         Settings.AuthIdToken = authResponse.IdentityToken;
