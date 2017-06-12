@@ -3,8 +3,10 @@
     using AspNetCore.Http;
     using Autofac;
     using Autofac.Extensions.DependencyInjection;
+    using global::Ordering.API.Application.IntegrationEvents;
+    using global::Ordering.API.Application.IntegrationEvents.EventHandling;
+    using global::Ordering.API.Application.IntegrationEvents.Events;
     using global::Ordering.API.Infrastructure.Middlewares;
-    using global::Ordering.API.IntegrationEvents;
     using Infrastructure;
     using Infrastructure.Auth;
     using Infrastructure.AutofacModules;
@@ -111,7 +113,7 @@
             services.AddTransient<IIdentityService, IdentityService>();
             services.AddTransient<Func<DbConnection, IIntegrationEventLogService>>(
                 sp => (DbConnection c) => new IntegrationEventLogService(c));            
-            var serviceProvider = services.BuildServiceProvider();
+            
             services.AddTransient<IOrderingIntegrationEventService, OrderingIntegrationEventService>();
 
             services.AddSingleton<IRabbitMQPersistentConnection>(sp =>
@@ -126,9 +128,7 @@
                 return new DefaultRabbitMQPersistentConnection(factory, logger);
             });
 
-            services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
-            services.AddSingleton<IEventBus, EventBusRabbitMQ>();
-
+            RegisterServiceBus(services);            
             services.AddOptions();
 
             //configure autofac
@@ -142,6 +142,7 @@
             return new AutofacServiceProvider(container.Build());
         }
 
+
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
@@ -150,7 +151,6 @@
             app.UseCors("CorsPolicy");
 
             ConfigureAuth(app);
-
             app.UseMvcWithDefaultRoute();
 
             app.UseSwagger()
@@ -160,12 +160,32 @@
                });
 
             WaitForSqlAvailabilityAsync(loggerFactory, app).Wait();
+            ConfigureEventBus(app);
 
             var integrationEventLogContext = new IntegrationEventLogContext(
                 new DbContextOptionsBuilder<IntegrationEventLogContext>()
                 .UseSqlServer(Configuration["ConnectionString"], b => b.MigrationsAssembly("Ordering.API"))
                 .Options);
             integrationEventLogContext.Database.Migrate();
+
+        }
+
+        private void RegisterServiceBus(IServiceCollection services)
+        {
+            services.AddSingleton<IEventBus, EventBusRabbitMQ>();
+            services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
+        }
+
+        private void ConfigureEventBus(IApplicationBuilder app)
+        {
+            var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
+
+            eventBus.Subscribe<UserCheckoutAcceptedIntegrationEvent, IIntegrationEventHandler<UserCheckoutAcceptedIntegrationEvent>>();
+            eventBus.Subscribe<GracePeriodConfirmedIntegrationEvent, IIntegrationEventHandler<GracePeriodConfirmedIntegrationEvent>>();
+            eventBus.Subscribe<OrderStockConfirmedIntegrationEvent, IIntegrationEventHandler<OrderStockConfirmedIntegrationEvent>>();
+            eventBus.Subscribe<OrderStockRejectedIntegrationEvent, IIntegrationEventHandler<OrderStockRejectedIntegrationEvent>>();
+            eventBus.Subscribe<OrderPaymentFailedIntegrationEvent, IIntegrationEventHandler<OrderPaymentFailedIntegrationEvent>>();
+            eventBus.Subscribe<OrderPaymentSuccededIntegrationEvent, IIntegrationEventHandler<OrderPaymentSuccededIntegrationEvent>>();
         }
 
         protected virtual void ConfigureAuth(IApplicationBuilder app)

@@ -1,5 +1,7 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Catalog.API
 {
+    using Autofac;
+    using Autofac.Extensions.DependencyInjection;
     using global::Catalog.API.Infrastructure.Filters;
     using global::Catalog.API.IntegrationEvents;
     using Microsoft.AspNetCore.Builder;
@@ -12,6 +14,8 @@
     using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF;
     using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF.Services;
     using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
+    using Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationEvents.EventHandling;
+    using Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationEvents.Events;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.HealthChecks;
@@ -46,7 +50,7 @@
             Configuration = builder.Build();
         }
 
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
 
@@ -122,8 +126,11 @@
                 return new DefaultRabbitMQPersistentConnection(factory, logger);
             });
 
-            services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
-            services.AddSingleton<IEventBus, EventBusRabbitMQ>();
+            RegisterServiceBus(services);
+
+            var container = new ContainerBuilder();
+            container.Populate(services);
+            return new AutofacServiceProvider(container.Build());
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
@@ -147,6 +154,8 @@
                         .ApplicationServices.GetService(typeof(CatalogContext));
 
             WaitForSqlAvailabilityAsync(context, loggerFactory, app).Wait();
+
+            ConfigureEventBus(app);
 
             var integrationEventLogContext = new IntegrationEventLogContext(
                 new DbContextOptionsBuilder<IntegrationEventLogContext>()
@@ -178,6 +187,27 @@
                         logger.LogTrace($"[{prefix}] Exception {exception.GetType().Name} with message ${exception.Message} detected on attempt {retry} of {retries}");
                     }
                 );
+        }
+
+        private void RegisterServiceBus(IServiceCollection services)
+        {
+            services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
+            services.AddSingleton<IEventBus, EventBusRabbitMQ>();
+
+            services.AddTransient<IIntegrationEventHandler<OrderStatusChangedToAwaitingValidationIntegrationEvent>,
+                OrderStatusChangedToAwaitingValidationIntegrationEventHandler>();
+            services.AddTransient<IIntegrationEventHandler<OrderStatusChangedToPaidIntegrationEvent>,
+                OrderStatusChangedToPaidIntegrationEventHandler>();
+        }
+
+        private void ConfigureEventBus(IApplicationBuilder app)
+        {
+            var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
+
+            eventBus.Subscribe<OrderStatusChangedToAwaitingValidationIntegrationEvent, 
+                IIntegrationEventHandler<OrderStatusChangedToAwaitingValidationIntegrationEvent>>();
+            eventBus.Subscribe<OrderStatusChangedToPaidIntegrationEvent, 
+                IIntegrationEventHandler<OrderStatusChangedToPaidIntegrationEvent>>();
         }
     }
 }

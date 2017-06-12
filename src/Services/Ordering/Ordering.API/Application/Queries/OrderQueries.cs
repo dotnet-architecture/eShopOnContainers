@@ -26,7 +26,7 @@
                 connection.Open();
 
                 var result = await connection.QueryAsync<dynamic>(
-                   @"select o.[Id] as ordernumber,o.OrderDate as date, os.Name as status, 
+                   @"select o.[Id] as ordernumber,o.OrderDate as date, o.Description as description, os.Name as status, 
                         oi.ProductName as productname, oi.Units as units, oi.UnitPrice as unitprice, oi.PictureUrl as pictureurl, 
 						a.Street as street, a.City as city, a.Country as country, a.State as state, a.ZipCode as zipcode
                         FROM ordering.Orders o
@@ -75,6 +75,7 @@
             order.ordernumber = result[0].ordernumber;
             order.date = result[0].date;
             order.status = result[0].status;
+            order.description = result[0].description;
             order.street = result[0].street;
             order.city = result[0].city;
             order.zipcode = result[0].zipcode;

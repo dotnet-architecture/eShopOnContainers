@@ -1,6 +1,16 @@
 version: '2'
 
+
 services:
+  graceperiodmanager:
+    image: eshop/graceperiodmanager
+    build:
+      context: ./src/Services/GracePeriod/GracePeriodManager
+      dockerfile: Dockerfile
+    depends_on:
+      - sql.data
+      - rabbitmq
+
   basket.api:
     image: eshop/basket.api
     build:
@@ -9,7 +19,6 @@ services:
     depends_on:
       - basket.data
       - identity.api
-      - rabbitmq
 
   catalog.api:
     image: eshop/catalog.api
@@ -35,6 +44,7 @@ services:
       dockerfile: Dockerfile    
     depends_on:
       - sql.data
+      - rabbitmq
 
   marketing.api:
     image: eshop/marketing.api
@@ -85,7 +95,15 @@ services:
     image: eshop/webstatus
     build:
       context: ./src/Web/WebStatus
-      dockerfile: Dockerfile    
+      dockerfile: Dockerfile
+
+  payment.api:
+    image: eshop/payment.api
+    build:
+      context: ./src/Services/Payment/Payment.API
+      dockerfile: Dockerfile
+    depends_on:
+      - rabbitmq    
     
   locations.api:
     image: locations.api

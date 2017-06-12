@@ -14,6 +14,11 @@
                 return baseUri;
             }
 
+            public static string CheckoutBasket(string baseUri)
+            {
+                return $"{baseUri}/checkout";
+            }
+
             public static string CleanBasket(string baseUri, string basketId)
             {
                 return $"{baseUri}/{basketId}";
@@ -35,6 +40,16 @@
             public static string AddNewOrder(string baseUri)
             {
                 return $"{baseUri}/new";
+            }
+
+            public static string CancelOrder(string baseUri)
+            {
+                return $"{baseUri}/cancel";
+            }
+
+            public static string ShipOrder(string baseUri)
+            {
+                return $"{baseUri}/ship";
             }
         }
 

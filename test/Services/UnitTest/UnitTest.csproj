@@ -10,6 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\src\BuildingBlocks\EventBus\EventBus\EventBus.csproj" />
     <ProjectReference Include="..\..\..\src\Services\Basket\Basket.API\Basket.API.csproj" />
     <ProjectReference Include="..\..\..\src\Services\Catalog\Catalog.API\Catalog.API.csproj" />
     <ProjectReference Include="..\..\..\src\Services\Ordering\Ordering.API\Ordering.API.csproj" />
