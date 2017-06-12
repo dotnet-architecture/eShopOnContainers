@@ -18,6 +18,9 @@
 
   <ItemGroup>
     <!--<Content Include="settings.json;web.config">-->
+    <Content Include="Services\Basket\appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Services\Catalog\settings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -38,6 +41,7 @@
     <ProjectReference Include="..\..\..\src\Services\Location\Locations.API\Locations.API.csproj" />
     <ProjectReference Include="..\..\..\src\Services\Marketing\Marketing.API\Marketing.API.csproj" />
     <ProjectReference Include="..\..\..\src\Services\Ordering\Ordering.API\Ordering.API.csproj" />
+    <ProjectReference Include="..\..\..\src\Web\WebMVC\WebMVC.csproj" />
   </ItemGroup>
 
   <ItemGroup>

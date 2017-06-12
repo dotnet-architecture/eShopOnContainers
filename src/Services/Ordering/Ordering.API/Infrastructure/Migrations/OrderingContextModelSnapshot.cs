@@ -121,6 +121,8 @@ namespace Ordering.API.Migrations
 
                     b.Property<int?>("BuyerId");
 
+                    b.Property<string>("Description");
+
                     b.Property<DateTime>("OrderDate");
 
                     b.Property<int>("OrderStatusId");
@@ -183,7 +185,7 @@ namespace Ordering.API.Migrations
                     b.ToTable("orderstatus","ordering");
                 });
 
-            modelBuilder.Entity("Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.ClientRequest", b =>
+            modelBuilder.Entity("Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Idempotency.ClientRequest", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();

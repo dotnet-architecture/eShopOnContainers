@@ -4,13 +4,13 @@ using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
 using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF.Services;
 using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF.Utilities;
-using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
 using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure;
 using System;
 using System.Data.Common;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
-namespace Ordering.API.IntegrationEvents
+namespace Ordering.API.Application.IntegrationEvents
 {
     public class OrderingIntegrationEventService : IOrderingIntegrationEventService
     {
@@ -19,7 +19,7 @@ namespace Ordering.API.IntegrationEvents
         private readonly OrderingContext _orderingContext;
         private readonly IIntegrationEventLogService _eventLogService;
 
-        public OrderingIntegrationEventService (IEventBus eventBus, OrderingContext orderingContext,
+        public OrderingIntegrationEventService(IEventBus eventBus, OrderingContext orderingContext,
         Func<DbConnection, IIntegrationEventLogService> integrationEventLogServiceFactory)
         {
             _orderingContext = orderingContext ?? throw new ArgumentNullException(nameof(orderingContext));
@@ -30,11 +30,12 @@ namespace Ordering.API.IntegrationEvents
 
         public async Task PublishThroughEventBusAsync(IntegrationEvent evt)
         {
+            await SaveEventAndOrderingContextChangesAsync(evt);
             _eventBus.Publish(evt);
             await _eventLogService.MarkEventAsPublishedAsync(evt);
         }
 
-        public async Task SaveEventAndOrderingContextChangesAsync(IntegrationEvent evt)
+        private async Task SaveEventAndOrderingContextChangesAsync(IntegrationEvent evt)
         {
             //Use of an EF Core resiliency strategy when using multiple DbContexts within an explicit BeginTransaction():
             //See: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency            

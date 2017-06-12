@@ -77,7 +77,6 @@
 
   <ItemGroup>
     <Folder Include="Infrastructure\IntegrationEventMigrations\" />
-    <Folder Include="IntegrationEvents\EventHandling\" />
   </ItemGroup>
 
 </Project>

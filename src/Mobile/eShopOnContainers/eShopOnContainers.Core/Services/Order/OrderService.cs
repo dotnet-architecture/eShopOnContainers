@@ -1,4 +1,5 @@
-﻿using eShopOnContainers.Core.Services.RequestProvider;
+﻿using eShopOnContainers.Core.Models.Basket;
+using eShopOnContainers.Core.Services.RequestProvider;
 using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
@@ -12,17 +13,6 @@ namespace eShopOnContainers.Core.Services.Order
         public OrderService(IRequestProvider requestProvider)
         {
             _requestProvider = requestProvider;
-        }
-
-        public async Task CreateOrderAsync(Models.Orders.Order newOrder, string token)
-        {
-            UriBuilder builder = new UriBuilder(GlobalSetting.Instance.OrdersEndpoint);
-
-            builder.Path = "api/v1/orders/new";
-
-            string uri = builder.ToString();
-
-            await _requestProvider.PostAsync(uri, newOrder, token, "x-requestid");
         }
 
         public async Task<ObservableCollection<Models.Orders.Order>> GetOrdersAsync(string token)
@@ -81,6 +71,22 @@ namespace eShopOnContainers.Core.Services.Order
             {
                 return new ObservableCollection<Models.Orders.CardType>();
             }
+        }
+
+        public BasketCheckout MapOrderToBasket(Models.Orders.Order order)
+        {
+            return new BasketCheckout()
+            {
+                CardExpiration = order.CardExpiration,
+                CardHolderName = order.CardHolderName,
+                CardNumber = order.CardNumber,
+                CardSecurityNumber = order.CardSecurityNumber,
+                CardTypeId = order.CardTypeId,
+                City = order.ShippingCity,
+                Country = order.ShippingCountry,
+                ZipCode = order.ShippingZipCode,
+                Street = order.ShippingStreet
+            };
         }
     }
 }

@@ -26,9 +26,10 @@
             }
         }
 
-        public static class Post
+        public static class Put
         {
-            public static string AddNewOrder = "api/v1/orders/new";
+            public static string CancelOrder = "api/v1/orders/cancel";
+            public static string ShipOrder = "api/v1/orders/ship";
         }
     }
 }

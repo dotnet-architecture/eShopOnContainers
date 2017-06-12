@@ -1,8 +1,11 @@
-﻿using Basket.API.Infrastructure.Filters;
+﻿using Autofac;
+using Autofac.Extensions.DependencyInjection;
+using Basket.API.Infrastructure.Filters;
 using Basket.API.IntegrationEvents.EventHandling;
 using Basket.API.IntegrationEvents.Events;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ;
@@ -10,6 +13,7 @@ using Microsoft.eShopOnContainers.Services.Basket.API.Auth.Server;
 using Microsoft.eShopOnContainers.Services.Basket.API.IntegrationEvents.EventHandling;
 using Microsoft.eShopOnContainers.Services.Basket.API.IntegrationEvents.Events;
 using Microsoft.eShopOnContainers.Services.Basket.API.Model;
+using Microsoft.eShopOnContainers.Services.Basket.API.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.HealthChecks;
@@ -17,10 +21,10 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
 using StackExchange.Redis;
+using System;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using System;
 
 namespace Microsoft.eShopOnContainers.Services.Basket.API
 {
@@ -39,7 +43,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
         public IConfigurationRoot Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
 
             services.AddHealthChecks(checks =>
@@ -102,9 +106,15 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
                     .AllowAnyHeader()
                     .AllowCredentials());
             });
-
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IBasketRepository, RedisBasketRepository>();
+            services.AddTransient<IIdentityService, IdentityService>();
             RegisterServiceBus(services);
+            services.AddOptions();
+
+            var container = new ContainerBuilder();
+            container.Populate(services);
+            return new AutofacServiceProvider(container.Build());
         }
 
         private void RegisterServiceBus(IServiceCollection services)
@@ -114,7 +124,6 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
 
             services.AddTransient<ProductPriceChangedIntegrationEventHandler>();
             services.AddTransient<OrderStartedIntegrationEventHandler>();
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -155,19 +164,9 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
 
         protected virtual void ConfigureEventBus(IApplicationBuilder app)
         {
-            var catalogPriceHandler = app.ApplicationServices
-                .GetService<IIntegrationEventHandler<ProductPriceChangedIntegrationEvent>>();
-
-            var orderStartedHandler = app.ApplicationServices
-                .GetService<IIntegrationEventHandler<OrderStartedIntegrationEvent>>();
-
             var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
-
-            eventBus.Subscribe<ProductPriceChangedIntegrationEvent, ProductPriceChangedIntegrationEventHandler>
-                (() => app.ApplicationServices.GetRequiredService<ProductPriceChangedIntegrationEventHandler>());
-
-            eventBus.Subscribe<OrderStartedIntegrationEvent, OrderStartedIntegrationEventHandler>
-                (() => app.ApplicationServices.GetRequiredService<OrderStartedIntegrationEventHandler>());
+            eventBus.Subscribe<ProductPriceChangedIntegrationEvent, ProductPriceChangedIntegrationEventHandler>();
+            eventBus.Subscribe<OrderStartedIntegrationEvent, OrderStartedIntegrationEventHandler>();
         }
     }
 }
