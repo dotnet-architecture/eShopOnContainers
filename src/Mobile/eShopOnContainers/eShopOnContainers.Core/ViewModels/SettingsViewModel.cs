@@ -140,6 +140,8 @@ namespace eShopOnContainers.Core.ViewModels
             }
         }
 
+        public bool UserIsLogged => !string.IsNullOrEmpty(Settings.AuthAccessToken);
+
         public ICommand ToggleMockServicesCommand => new Command(async () => await ToggleMockServicesAsync());
 
         public ICommand ToggleFakeLocationCommand => new Command(() => ToggleFakeLocationAsync());
@@ -194,8 +196,9 @@ namespace eShopOnContainers.Core.ViewModels
                 Latitude = _latitude,
                 Longitude = _longitude
             };
+            var authToken = Settings.AuthAccessToken;
 
-            await _locationService.UpdateUserLocation(locationRequest);
+            await _locationService.UpdateUserLocation(locationRequest, authToken);
         }
 
         private void UpdateInfo()
