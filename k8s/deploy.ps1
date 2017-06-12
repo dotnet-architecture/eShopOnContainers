@@ -58,7 +58,7 @@ ExecKube -cmd 'delete configmap urls'
 # start sql, rabbitmq, frontend deploymentsExecKube -cmd 'delete configmap config-files'
 ExecKube -cmd 'create configmap config-files --from-file=nginx-conf=nginx.conf'
 ExecKube -cmd 'label configmap config-files app=eshop'
-ExecKube -cmd 'create -f sql-data.yaml -f basket-data.yaml -f rabbitmq.yaml -f services.yaml -f frontend.yaml'
+ExecKube -cmd 'create -f sql-data.yaml -f basket-data.yaml -f keystore-data.yaml -f rabbitmq.yaml -f services.yaml -f frontend.yaml'
 
 # building and publishing docker images not necessary when deploying through CI VSTS
 if(-not $deployCI) {

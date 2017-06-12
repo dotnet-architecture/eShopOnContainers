@@ -61,6 +61,22 @@ services:
     labels:
       - "com.microsoft.visualstudio.targetoperatingsystem=linux"
 
+  marketing.api:
+    image: eshop/marketing.api:dev
+    build:
+      args:
+        source: ${DOCKER_BUILD_SOURCE}
+    environment:
+      - DOTNET_USE_POLLING_FILE_WATCHER=1
+    volumes:
+      - ./src/Services/Marketing/Marketing.API:/app
+      - ~/.nuget/packages:/root/.nuget/packages:ro
+      - ~/clrdbg:/clrdbg:ro
+    entrypoint: tail -f /dev/null
+    labels:
+      - "com.microsoft.visualstudio.targetoperatingsystem=linux"
+
+
   webspa:
     image: eshop/webspa:dev
     build:
@@ -100,6 +116,21 @@ services:
       - DOTNET_USE_POLLING_FILE_WATCHER=1
     volumes:
       - ./src/Web/WebStatus:/app
+      - ~/.nuget/packages:/root/.nuget/packages:ro
+      - ~/clrdbg:/clrdbg:ro
+    entrypoint: tail -f /dev/null
+    labels:
+      - "com.microsoft.visualstudio.targetoperatingsystem=linux"
+
+  locations.api:
+    image: eshop/locations.api:dev
+    build:
+      args:
+        source: ${DOCKER_BUILD_SOURCE}
+    environment:
+      - DOTNET_USE_POLLING_FILE_WATCHER=1
+    volumes:
+      - ./src/Services/Location/Locations.API:/app
       - ~/.nuget/packages:/root/.nuget/packages:ro
       - ~/clrdbg:/clrdbg:ro
     entrypoint: tail -f /dev/null

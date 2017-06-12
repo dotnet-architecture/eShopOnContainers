@@ -41,6 +41,16 @@ services:
     labels:
       - "com.microsoft.visualstudio.targetoperatingsystem=linux"
 
+  marketing.api:
+    build:
+      args:
+        source: ${DOCKER_BUILD_SOURCE}
+    volumes:
+      - ~/clrdbg:/clrdbg:ro
+    entrypoint: tail -f /dev/null
+    labels:
+      - "com.microsoft.visualstudio.targetoperatingsystem=linux"
+
   webspa:
     build:
       args:
@@ -62,6 +72,16 @@ services:
       - "com.microsoft.visualstudio.targetoperatingsystem=linux"
 
   webstatus:
+    build:
+      args:
+        source: ${DOCKER_BUILD_SOURCE}
+    volumes:
+      - ~/clrdbg:/clrdbg:ro
+    entrypoint: tail -f /dev/null
+    labels:
+      - "com.microsoft.visualstudio.targetoperatingsystem=linux"
+
+  locations.api:
     build:
       args:
         source: ${DOCKER_BUILD_SOURCE}

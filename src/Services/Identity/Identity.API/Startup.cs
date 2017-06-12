@@ -1,24 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
+﻿using Identity.API.Certificate;
+using Identity.API.Configuration;
 using Identity.API.Data;
 using Identity.API.Models;
 using Identity.API.Services;
-using Identity.API.Configuration;
+using IdentityServer4.EntityFramework.DbContexts;
+using IdentityServer4.EntityFramework.Mappers;
 using IdentityServer4.Services;
-using System.Threading;
-using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.eShopOnContainers.BuildingBlocks;
+using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.HealthChecks;
-using Identity.API.Certificate;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Threading.Tasks;
 
 namespace eShopOnContainers.Identity
 {
@@ -45,8 +48,7 @@ namespace eShopOnContainers.Identity
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {            
-
+        {
             // Add framework services.
             services.AddDbContext<ApplicationDbContext>(options =>
              options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
@@ -57,12 +59,16 @@ namespace eShopOnContainers.Identity
 
             services.Configure<AppSettings>(Configuration);
 
-            services.AddDataProtection(opts =>
-            {
-                opts.ApplicationDiscriminator = "eshop.identity";
-            });
-
             services.AddMvc();
+
+            if (Configuration.GetValue<string>("IsClusterEnv") == bool.TrueString)
+            {
+                services.AddDataProtection(opts =>
+                {
+                    opts.ApplicationDiscriminator = "eshop.identity";
+                })
+                .PersistKeysToRedis(Configuration["DPConnectionString"]);
+            }
 
             services.AddHealthChecks(checks =>
             {
@@ -79,20 +85,20 @@ namespace eShopOnContainers.Identity
             services.AddTransient<ILoginService<ApplicationUser>, EFLoginService>();
             services.AddTransient<IRedirectService, RedirectService>();
 
-            //callbacks urls from config:
-            Dictionary<string, string> clientUrls = new Dictionary<string, string>();
-            clientUrls.Add("Mvc", Configuration.GetValue<string>("MvcClient"));
-            clientUrls.Add("Spa", Configuration.GetValue<string>("SpaClient"));
-            clientUrls.Add("Xamarin", Configuration.GetValue<string>("XamarinCallback"));
+            var connectionString = Configuration.GetConnectionString("DefaultConnection");
+            var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
 
             // Adds IdentityServer
             services.AddIdentityServer(x => x.IssuerUri = "null")
-                .AddSigningCredential(Certificate.Get())
-                .AddInMemoryApiResources(Config.GetApis())
-                .AddInMemoryIdentityResources(Config.GetResources())
-                .AddInMemoryClients(Config.GetClients(clientUrls))
+                .AddSigningCredential(Certificate.Get())               
                 .AddAspNetIdentity<ApplicationUser>()
-                .Services.AddTransient<IProfileService, ProfileService>(); 
+                .AddConfigurationStore(builder =>
+                    builder.UseSqlServer(connectionString, options =>
+                        options.MigrationsAssembly(migrationsAssembly)))
+                .AddOperationalStore(builder =>
+                    builder.UseSqlServer(connectionString, options =>
+                        options.MigrationsAssembly(migrationsAssembly)))
+                .Services.AddTransient<IProfileService, ProfileService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -134,10 +140,55 @@ namespace eShopOnContainers.Identity
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
+            // Store idsrv grant config into db
+            InitializeGrantStoreAndConfiguration(app).Wait();
+
             //Seed Data
             var hasher = new PasswordHasher<ApplicationUser>();
-            new ApplicationContextSeed(hasher).SeedAsync(app, loggerFactory)
-            .Wait();
+            new ApplicationContextSeed(hasher).SeedAsync(app, loggerFactory).Wait();
+        }
+
+        private async Task InitializeGrantStoreAndConfiguration(IApplicationBuilder app)
+        {
+            //callbacks urls from config:
+            Dictionary<string, string> clientUrls = new Dictionary<string, string>();
+            clientUrls.Add("Mvc", Configuration.GetValue<string>("MvcClient"));
+            clientUrls.Add("Spa", Configuration.GetValue<string>("SpaClient"));
+            clientUrls.Add("Xamarin", Configuration.GetValue<string>("XamarinCallback"));
+
+            using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+            {
+                serviceScope.ServiceProvider.GetRequiredService<PersistedGrantDbContext>().Database.Migrate();
+                var context = serviceScope.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
+                context.Database.Migrate();
+
+                if (!context.Clients.Any())
+                {
+                    foreach (var client in Config.GetClients(clientUrls))
+                    {
+                        await context.Clients.AddAsync(client.ToEntity());
+                    }
+                    await context.SaveChangesAsync();
+                }
+
+                if (!context.IdentityResources.Any())
+                {
+                    foreach (var resource in Config.GetResources())
+                    {
+                        await context.IdentityResources.AddAsync(resource.ToEntity());
+                    }
+                    await context.SaveChangesAsync();
+                }
+
+                if (!context.ApiResources.Any())
+                {
+                    foreach (var api in Config.GetApis())
+                    {
+                        await context.ApiResources.AddAsync(api.ToEntity());
+                    }
+                    await context.SaveChangesAsync();
+                }
+            }
         }
     }
 }

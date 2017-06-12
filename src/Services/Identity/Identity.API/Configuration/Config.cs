@@ -12,7 +12,9 @@ namespace Identity.API.Configuration
             return new List<ApiResource>
             {
                 new ApiResource("orders", "Orders Service"),
-                new ApiResource("basket", "Basket Service")
+                new ApiResource("basket", "Basket Service"),
+                new ApiResource("marketing", "Marketing Service"),
+                new ApiResource("locations", "Locations Service")
             };
         }
 
@@ -71,7 +73,8 @@ namespace Identity.API.Configuration
                         IdentityServerConstants.StandardScopes.Profile,
                         IdentityServerConstants.StandardScopes.OfflineAccess,
                         "orders",
-                        "basket"
+                        "basket",
+                        "locations"
                     },
                     //Allow requesting refresh tokens for long lived API access
                     AllowOfflineAccess = true                    
@@ -86,6 +89,7 @@ namespace Identity.API.Configuration
                     },
                     ClientUri = $"{clientsUrl["Mvc"]}",                             // public uri of the client
                     AllowedGrantTypes = GrantTypes.Hybrid,
+                    AllowAccessTokensViaBrowser = false,
                     RequireConsent = false,
                     AllowOfflineAccess = true,
                     RedirectUris = new List<string>
@@ -102,7 +106,8 @@ namespace Identity.API.Configuration
                         IdentityServerConstants.StandardScopes.Profile,
                         IdentityServerConstants.StandardScopes.OfflineAccess,
                         "orders",
-                        "basket"
+                        "basket",
+                        "locations"
                     },
                 }
             };
