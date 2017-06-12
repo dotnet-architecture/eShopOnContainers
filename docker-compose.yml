@@ -36,6 +36,15 @@ services:
     depends_on:
       - sql.data
 
+  marketing.api:
+    image: eshop/marketing.api
+    build:
+      context: ./src/Services/Marketing/Marketing.API
+      dockerfile: Dockerfile    
+    depends_on:
+      - sql.data
+      - identity.api
+
   webspa:
     image: eshop/webspa
     build:
@@ -59,6 +68,9 @@ services:
   sql.data:
     image: microsoft/mssql-server-linux
 
+  nosql.data:
+    image: mongo
+
   basket.data:
     image: redis
     ports:
@@ -75,3 +87,10 @@ services:
       context: ./src/Web/WebStatus
       dockerfile: Dockerfile    
     
+  locations.api:
+    image: locations.api
+    build:
+      context: ./src/Services/Location/Locations.API
+      dockerfile: Dockerfile
+    depends_on:
+      - nosql.data

@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.eShopOnContainers.WebMVC.ViewModels;
 using Microsoft.eShopOnContainers.WebMVC.Services;
 using Microsoft.AspNetCore.Http.Authentication;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 
 namespace Microsoft.eShopOnContainers.WebMVC.Controllers
 {
@@ -17,15 +19,14 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
         public ActionResult Index() => View();
         
         [Authorize]
-        public IActionResult SignIn(string returnUrl)
+        public async Task<IActionResult> SignIn(string returnUrl)
         {
             var user = User as ClaimsPrincipal;
-            
-            //TODO - Not retrieving AccessToken yet
-            var token = user.FindFirst("access_token");
+            var token = await HttpContext.Authentication.GetTokenAsync("access_token");
+
             if (token != null)
             {
-                ViewData["access_token"] = token.Value;
+                ViewData["access_token"] = token;
             }
 
             // "Catalog" because UrlHelper doesn't support nameof() for controllers
