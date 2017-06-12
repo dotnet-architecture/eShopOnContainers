@@ -169,6 +169,9 @@
     <Compile Include="Converters\FirstValidationErrorConverter.cs" />
     <Compile Include="Effects\EntryLineColorEffect.cs" />
     <Compile Include="Behaviors\LineColorBehavior.cs" />
+    <Compile Include="Models\Token\UserToken.cs" />
+    <Compile Include="Services\Token\TokenService.cs" />
+    <Compile Include="Services\Token\ITokenService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -261,6 +264,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\Token\" />
+    <Folder Include="Services\Token\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
