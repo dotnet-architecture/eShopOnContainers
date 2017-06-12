@@ -76,7 +76,7 @@ Finally, those microservices are consumed by multiple client web and mobile apps
 ## Setting up your development environment for eShopOnContainers
 ### Visual Studio 2017 and Windows based
 This is the more straightforward way to get started:
-https://github.com/dotnet/eShopOnContainers/wiki/02.-Setting-eShopOnContainer-solution-up-in-a-Visual-Studio-2017-environment
+https://github.com/dotnet-architecture/eShopOnContainers/wiki/02.-Setting-eShopOnContainers-in-a-Visual-Studio-2017-environment
 
 ### CLI and Windows based
 For those who prefer the CLI on Windows, using dotnet CLI, docker CLI and VS Code for Windows:
