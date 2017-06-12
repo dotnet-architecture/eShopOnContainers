@@ -207,16 +207,15 @@ namespace eShopOnContainers.Core.ViewModels
         private void Logout()
         {
             var authIdToken = Settings.AuthIdToken;
-
             var logoutRequest = _identityService.CreateLogoutRequest(authIdToken);
 
-            if(!string.IsNullOrEmpty(logoutRequest))
+            if (!string.IsNullOrEmpty(logoutRequest))
             {
                 // Logout
                 LoginUrl = logoutRequest;
             }
 
-            if(Settings.UseMocks)
+            if (Settings.UseMocks)
             {
                 Settings.AuthAccessToken = string.Empty;
                 Settings.AuthIdToken = string.Empty;
@@ -244,7 +243,7 @@ namespace eShopOnContainers.Core.ViewModels
 
                     if (!string.IsNullOrWhiteSpace(accessToken))
                     {
-                        Settings.AuthAccessToken = authResponse.AccessToken;
+                        Settings.AuthAccessToken = accessToken;
                         Settings.AuthIdToken = authResponse.IdentityToken;
 
                         await NavigationService.NavigateToAsync<MainViewModel>();
