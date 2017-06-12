@@ -163,7 +163,8 @@
                         Grid.ColumnSpan="2"/>
                     <StackLayout 
                         Grid.Column="0"                       
-                        Grid.Row="4">
+                        Grid.Row="4"
+                        IsVisible="{Binding UserIsLogged}">
                         <Label 
                             Text="{Binding TitleUseFakeLocation}"
                             TextColor="{StaticResource GreenColor}"
@@ -179,7 +180,8 @@
                         Animate="True"     
                         Checked="{Binding UseFakeLocation, Mode=TwoWay}"
                         Command="{Binding ToggleFakeLocationCommand}"
-                        Style="{StaticResource SettingsToggleButtonStyle}">
+                        Style="{StaticResource SettingsToggleButtonStyle}"
+                        IsVisible="{Binding UserIsLogged}">
                         <controls:ToggleButton.CheckedImage>
                             <OnPlatform x:TypeArguments="ImageSource"
                               Android="switch_on.png"
@@ -193,7 +195,7 @@
                               WinPhone="Assets/switchOff.png"/>
                         </controls:ToggleButton.UnCheckedImage>
                     </controls:ToggleButton>
-                    <!-- ENDPOINT -->
+                    <!-- FAKE LOCATIONS -->
                     <StackLayout
                         Grid.Row="5"
                         Grid.Column="0"
@@ -205,7 +207,7 @@
                             Style="{StaticResource HeaderLabelStyle}"/>
                         <Entry
                             Text="{Binding Latitude, Mode=TwoWay}"
-                            Keyboard="Numeric">
+                            Keyboard="Text">
                             <Entry.Style>
                                 <OnPlatform 
                                     x:TypeArguments="Style"
@@ -219,7 +221,7 @@
                             Style="{StaticResource HeaderLabelStyle}"/>
                         <Entry
                             Text="{Binding Longitude, Mode=TwoWay}"
-                            Keyboard="Numeric">
+                            Keyboard="Text">
                             <Entry.Style>
                                 <OnPlatform 
                                     x:TypeArguments="Style"
