@@ -76,7 +76,8 @@ namespace Identity.API.Configuration
                         "locations"
                     },
                     //Allow requesting refresh tokens for long lived API access
-                    AllowOfflineAccess = true                    
+                    AllowOfflineAccess = true,
+                    AllowAccessTokensViaBrowser = true
                 },
                 new Client
                 {
