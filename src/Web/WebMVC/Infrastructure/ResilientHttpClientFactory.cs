@@ -1,10 +1,7 @@
 ﻿using Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Polly;
+using System;
 using System.Net.Http;
 
 namespace Microsoft.eShopOnContainers.WebMVC.Infrastructure
@@ -17,13 +14,12 @@ namespace Microsoft.eShopOnContainers.WebMVC.Infrastructure
             =>_logger = logger;        
 
         public  ResilientHttpClient CreateResilientHttpClient()        
-            => new ResilientHttpClient(CreatePolicies(), _logger);
-
+            => new ResilientHttpClient((origin) => CreatePolicies(), _logger);
 
         private Policy[] CreatePolicies()
             => new Policy[]
             {
-                Policy.Handle<HttpRequestException>()                
+                Policy.Handle<HttpRequestException>()
                 .WaitAndRetryAsync(
                     // number of retries
                     6,
@@ -40,7 +36,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Infrastructure
                         _logger.LogDebug(msg);
                     }),
                 Policy.Handle<HttpRequestException>()
-               .CircuitBreakerAsync(
+                .CircuitBreakerAsync(
                    // number of exceptions before breaking circuit
                    5,
                    // time circuit opened before retry
@@ -54,6 +50,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Infrastructure
                    {
                         // on circuit closed
                         _logger.LogTrace("Circuit breaker reset");
-                   })};
+                   })
+            };        
     }
 }

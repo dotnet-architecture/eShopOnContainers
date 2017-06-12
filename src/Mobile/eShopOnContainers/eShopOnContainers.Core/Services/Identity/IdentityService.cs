@@ -14,8 +14,9 @@ namespace eShopOnContainers.Core.Services.Identity
             // Dictionary with values for the authorize request
             var dic = new Dictionary<string, string>();
             dic.Add("client_id", "xamarin");
-            dic.Add("response_type", "id_token token");
-            dic.Add("scope", "openid profile basket orders");
+            dic.Add("client_secret", "secret"); 
+            dic.Add("response_type", "code id_token token");
+            dic.Add("scope", "openid profile basket orders offline_access");
 
             dic.Add("redirect_uri", GlobalSetting.Instance.IdentityCallback);
             dic.Add("nonce", Guid.NewGuid().ToString("N"));
@@ -24,7 +25,7 @@ namespace eShopOnContainers.Core.Services.Identity
             var currentCSRFToken = Guid.NewGuid().ToString("N");
             dic.Add("state", currentCSRFToken);
 
-            var authorizeUri = authorizeRequest.Create(dic);
+            var authorizeUri = authorizeRequest.Create(dic); 
             return authorizeUri;
         }
 

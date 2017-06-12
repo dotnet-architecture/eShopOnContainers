@@ -17,7 +17,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands
 
     [DataContract]
     public class CreateOrderCommand
-        :IAsyncRequest<bool>
+        : IRequest<bool>
     {
         [DataMember]
         private readonly List<OrderItemDTO> _orderItems;
