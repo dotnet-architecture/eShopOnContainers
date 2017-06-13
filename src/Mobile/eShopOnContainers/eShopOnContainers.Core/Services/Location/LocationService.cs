@@ -14,7 +14,7 @@
             _requestProvider = requestProvider;
         }
 
-        public async Task UpdateUserLocation(LocationRequest newLocReq)
+        public async Task UpdateUserLocation(LocationRequest newLocReq, string token)
         {
             UriBuilder builder = new UriBuilder(GlobalSetting.Instance.LocationEndpoint);
 
@@ -22,7 +22,7 @@
 
             string uri = builder.ToString();
 
-            var result = await _requestProvider.PostAsync(uri, newLocReq);
+            await _requestProvider.PostAsync(uri, newLocReq, token);
         }
     }
 }

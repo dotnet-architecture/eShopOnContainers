@@ -11,7 +11,7 @@
 
         Task<List<Locations>> GetLocationListAsync();
 
-        Task<UserLocation> GetUserLocationAsync(int userId);
+        Task<UserLocation> GetUserLocationAsync(string userId);
 
         Task<List<Locations>> GetCurrentUserRegionsListAsync(LocationRequest currentPosition);
 

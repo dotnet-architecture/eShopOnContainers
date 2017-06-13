@@ -28,7 +28,7 @@
                                  .FirstOrDefaultAsync();
         }
 
-        public async Task<UserLocation> GetUserLocationAsync(int userId)
+        public async Task<UserLocation> GetUserLocationAsync(string userId)
         {
             var filter = Builders<UserLocation>.Filter.Eq("UserId", userId);
             return await _context.UserLocation

@@ -5,6 +5,6 @@
     
     public interface ILocationService
     {
-        Task UpdateUserLocation(LocationRequest newLocReq);
+        Task UpdateUserLocation(LocationRequest newLocReq, string token);
     }
 }
