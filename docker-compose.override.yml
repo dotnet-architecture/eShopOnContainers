@@ -58,6 +58,9 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - ConnectionString=Server=sql.data;Database=Microsoft.eShopOnContainers.Services.MarketingDb;User Id=sa;Password=Pass@word
+      - MongoConnectionString=mongodb://nosql.data
+      - MongoDatabase=MarketingDb
+      - EventBusConnection=rabbitmq
       - identityUrl=http://identity.api              #Local: You need to open your local dev-machine firewall at range 5100-5105.  at range 5100-5105. 
     ports:
       - "5110:80"

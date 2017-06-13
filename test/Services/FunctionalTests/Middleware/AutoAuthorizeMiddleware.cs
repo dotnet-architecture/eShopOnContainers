@@ -18,7 +18,7 @@ namespace FunctionalTests.Middleware
         public async Task Invoke(HttpContext httpContext)
         {
             var identity = new ClaimsIdentity("cookies");
-            identity.AddClaim(new Claim("sub", "1234"));
+            identity.AddClaim(new Claim("sub", "9e3163b9-1ae6-4652-9dc6-7898ab7b7a00"));
             httpContext.User.AddIdentity(identity);
             await _next.Invoke(httpContext);
         }
