@@ -54,6 +54,7 @@ namespace Locations.API.Controllers
         {
             var userId = _identityService.GetUserIdentity();
             var result = await _locationsService.AddOrUpdateUserLocation(userId, newLocReq);
+           
             return result ? 
                 (IActionResult)Ok() : 
                 (IActionResult)BadRequest();
