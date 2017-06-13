@@ -1,5 +1,6 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Marketing.API.Controllers
 {
+    using Infrastructure.Repositories;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.eShopOnContainers.Services.Marketing.API.Infrastructure;
     using System.Threading.Tasks;
@@ -18,10 +19,13 @@
     public class CampaignsController : Controller
     {
         private readonly MarketingContext _context;
+        private readonly IMarketingDataRepository _marketingDataRepository;
 
-        public CampaignsController(MarketingContext context)
+        public CampaignsController(MarketingContext context,
+            IMarketingDataRepository marketingDataRepository)
         {
             _context = context;
+            _marketingDataRepository = marketingDataRepository;
         }
 
         [HttpGet]
@@ -117,19 +121,14 @@
         }
 
         [HttpGet("user/{userId:guid}")]
-        public async Task<IActionResult> GetCampaignByUserId(Guid userId)
+        public async Task<IActionResult> GetCampaignsByUserId(Guid userId)
         {
-            //TODO: Call data read model to get userLocation from userId
-            UserLocationDTO userLocationDto = new UserLocationDTO
-            {
-                Id = "test",
-                LocationId = 1,
-                UpdateDate = DateTime.Now,
-                UserId = userId
-            };
+            var userLocation = await _marketingDataRepository.GetAsync(userId.ToString());
+
+            var userLocationId = 1;
 
             var userLocationRule = await _context.Rules.OfType<UserLocationRule>().Include(c => c.Campaign)
-                .FirstOrDefaultAsync(c => c.LocationId == userLocationDto.LocationId);
+                .FirstOrDefaultAsync(c => c.LocationId == userLocationId);
 
             return Ok(userLocationRule.Campaign);
         }
