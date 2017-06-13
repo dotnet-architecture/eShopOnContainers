@@ -27,7 +27,7 @@ namespace IntegrationTests.Services.Locations
                 return $"api/v1/locations/{id}";
             }
 
-            public static string UserLocationBy(int id)
+            public static string UserLocationBy(Guid id)
             {
                 return $"api/v1/locations/user/{id}";
             }

@@ -23,9 +23,14 @@
             return await _locationsRepository.GetAsync(locationId);
         }
 
-        public async Task<UserLocation> GetUserLocation(int id)
+        public async Task<UserLocation> GetUserLocation(string id)
         {
-            return await _locationsRepository.GetUserLocationAsync(id);
+            if (!Guid.TryParse(id, out Guid userId))
+            {
+                throw new ArgumentException("Not valid userId");
+            }
+
+            return await _locationsRepository.GetUserLocationAsync(userId.ToString());
         }
 
         public async Task<List<Locations>> GetAllLocation()
@@ -35,7 +40,7 @@
 
         public async Task<bool> AddOrUpdateUserLocation(string id, LocationRequest currentPosition)
         {
-            if (!int.TryParse(id, out int userId))
+            if (!Guid.TryParse(id, out Guid userId))
             {
                 throw new ArgumentException("Not valid userId");
             }
@@ -50,7 +55,7 @@
 
             // If current area found, then update user location
             var locationAncestors = new List<string>();
-            var userLocation = await _locationsRepository.GetUserLocationAsync(userId);
+            var userLocation = await _locationsRepository.GetUserLocationAsync(userId.ToString());
             userLocation = userLocation ?? new UserLocation();
             userLocation.UserId = userId;
             userLocation.LocationId = currentUserAreaLocationList[0].Id;
