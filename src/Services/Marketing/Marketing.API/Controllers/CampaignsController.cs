@@ -8,6 +8,10 @@
     using Microsoft.eShopOnContainers.Services.Marketing.API.Dto;
     using System.Collections.Generic;
     using Microsoft.AspNetCore.Authorization;
+    using System;
+    using System.Net.Http;
+    using System.Linq;
+    using System.Net.Http.Headers;
 
     [Route("api/v1/[controller]")]
     [Authorize]
@@ -112,6 +116,23 @@
             return NoContent();
         }
 
+        [HttpGet("user/{userId:guid}")]
+        public async Task<IActionResult> GetCampaignByUserId(Guid userId)
+        {
+            //TODO: Call data read model to get userLocation from userId
+            UserLocationDTO userLocationDto = new UserLocationDTO
+            {
+                Id = "test",
+                LocationId = 1,
+                UpdateDate = DateTime.Now,
+                UserId = userId
+            };
+
+            var userLocationRule = await _context.Rules.OfType<UserLocationRule>().Include(c => c.Campaign)
+                .FirstOrDefaultAsync(c => c.LocationId == userLocationDto.LocationId);
+
+            return Ok(userLocationRule.Campaign);
+        }
 
 
         private List<CampaignDTO> MapCampaignModelListToDtoList(List<Campaign> campaignList)
