@@ -9,7 +9,7 @@
     {
         Task<Locations> GetLocation(string locationId);
 
-        Task<UserLocation> GetUserLocation(int id);
+        Task<UserLocation> GetUserLocation(string id);
 
         Task<List<Locations>> GetAllLocation();
 

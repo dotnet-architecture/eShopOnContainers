@@ -1,17 +1,21 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Autofac;
+using Autofac.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
+using Microsoft.eShopOnContainers.BuildingBlocks.EventBus;
+using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
+using Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ;
 using Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure;
+using Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure.Filters;
+using Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure.Repositories;
+using Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using RabbitMQ.Client;
 using System.Reflection;
 using System;
-using Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure.Services;
-using Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure.Repositories;
-using Microsoft.AspNetCore.Http;
-using Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure.Filters;
 
 namespace Microsoft.eShopOnContainers.Services.Locations.API
 {
@@ -37,7 +41,7 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
             services.AddMvc(options =>
@@ -46,7 +50,21 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
             }).AddControllersAsServices();
 
             services.Configure<LocationSettings>(Configuration);
-            
+
+            services.AddSingleton<IRabbitMQPersistentConnection>(sp =>
+            {
+                var logger = sp.GetRequiredService<ILogger<DefaultRabbitMQPersistentConnection>>();
+
+                var factory = new ConnectionFactory()
+                {
+                    HostName = Configuration["EventBusConnection"]
+                };
+
+                return new DefaultRabbitMQPersistentConnection(factory, logger);
+            });
+
+            RegisterServiceBus(services);
+
             // Add framework services.
             services.AddSwaggerGen(options =>
             {
@@ -72,7 +90,13 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IIdentityService, IdentityService>();
             services.AddTransient<ILocationsService, LocationsService>();
-            services.AddTransient<ILocationsRepository, LocationsRepository>();           
+            services.AddTransient<ILocationsRepository, LocationsRepository>();
+
+            //configure autofac
+            var container = new ContainerBuilder();
+            container.Populate(services);
+
+            return new AutofacServiceProvider(container.Build());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -109,5 +133,11 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
                 RequireHttpsMetadata = false
             });
         }
+
+        private void RegisterServiceBus(IServiceCollection services)
+        {
+            services.AddSingleton<IEventBus, EventBusRabbitMQ>();
+            services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
+        }        
     }
 }
