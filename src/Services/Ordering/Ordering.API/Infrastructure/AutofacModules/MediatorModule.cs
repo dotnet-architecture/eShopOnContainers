@@ -45,7 +45,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure.Autof
             {
                 var componentContext = context.Resolve<IComponentContext>();
 
-                return t => componentContext.Resolve(t);
+                return t => { object o; return componentContext.TryResolve(t, out o) ? o : null; };
             });
 
             builder.Register<MultiInstanceFactory>(context =>
