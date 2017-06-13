@@ -29,7 +29,7 @@
 
         public async Task<UserLocation> GetUserLocation(string userId)
         {
-            return await _locationsRepository.GetUserLocationAsync(id);
+            return await _locationsRepository.GetUserLocationAsync(userId);
         }
 
         public async Task<List<Locations>> GetAllLocation()
@@ -52,7 +52,7 @@
             var userLocation = await _locationsRepository.GetUserLocationAsync(userId);
             userLocation = userLocation ?? new UserLocation();
             userLocation.UserId = userId;
-            userLocation.LocationId = currentUserAreaLocationList[0].Id;
+            userLocation.LocationId = currentUserAreaLocationList[0].LocationId;
             userLocation.UpdateDate = DateTime.UtcNow;
             await _locationsRepository.UpdateUserLocationAsync(userLocation);
 
