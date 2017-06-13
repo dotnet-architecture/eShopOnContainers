@@ -61,7 +61,19 @@ services:
       dockerfile: Dockerfile
     depends_on:
       - nosql.data
-      
+      - rabbitmq
+
+  marketing.api:
+    image: eshop/marketing.api
+    build:
+      context: ./src/Services/Marketing/Marketing.API
+      dockerfile: Dockerfile    
+    depends_on:
+      - sql.data
+      - nosql.data
+      - identity.api
+      - rabbitmq
+
   sql.data:
     image: microsoft/mssql-server-windows
   

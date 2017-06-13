@@ -21,11 +21,11 @@ namespace Locations.API.Controllers
         }
 
         //GET api/v1/[controller]/user/1
-        [Route("user/{userId:int}")]
+        [Route("user/{userId:guid}")]
         [HttpGet]
-        public async Task<IActionResult> GetUserLocation(int userId)
+        public async Task<IActionResult> GetUserLocation(Guid userId)
         {
-            var userLocation = await _locationsService.GetUserLocation(userId);
+            var userLocation = await _locationsService.GetUserLocation(userId.ToString());
             return Ok(userLocation);
         }
 
@@ -54,6 +54,7 @@ namespace Locations.API.Controllers
         {
             var userId = _identityService.GetUserIdentity();
             var result = await _locationsService.AddOrUpdateUserLocation(userId, newLocReq);
+           
             return result ? 
                 (IActionResult)Ok() : 
                 (IActionResult)BadRequest();
