@@ -19,7 +19,7 @@ namespace IntegrationTests.Services.Locations
         {
             using (var server = CreateServer())
             {
-                var userId = new Guid("4611ce3f-380d-4db5-8d76-87a8689058ed");
+                var userId = "4611ce3f-380d-4db5-8d76-87a8689058ed";
                 var content = new StringContent(BuildLocationsRequest(-122.315752, 47.604610), UTF8Encoding.UTF8, "application/json");
 
                 // Expected result
@@ -51,7 +51,7 @@ namespace IntegrationTests.Services.Locations
         {
             using (var server = CreateServer())
             {
-                var userId = new Guid("4611ce3f-380d-4db5-8d76-87a8689058ed");
+                var userId = "4611ce3f-380d-4db5-8d76-87a8689058ed";
                 var content = new StringContent(BuildLocationsRequest(-122.119998, 47.690876), UTF8Encoding.UTF8, "application/json");
 
                 // Expected result
@@ -83,7 +83,7 @@ namespace IntegrationTests.Services.Locations
         {
             using (var server = CreateServer())
             {
-                var userId = new Guid("4611ce3f-380d-4db5-8d76-87a8689058ed");
+                var userId = "4611ce3f-380d-4db5-8d76-87a8689058ed";
                 var content = new StringContent(BuildLocationsRequest(-121.040360, 48.091631), UTF8Encoding.UTF8, "application/json");
 
                 // Expected result
