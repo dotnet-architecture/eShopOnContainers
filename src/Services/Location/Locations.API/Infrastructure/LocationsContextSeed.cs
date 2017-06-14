@@ -32,7 +32,8 @@
             var us = new Locations()
             {
                 Code = "US",
-                Description = "United States"
+                Description = "United States",
+                LocationId = 1
             };
             us.SetLocation(-101.357386, 41.650455);
             us.SetArea(GetUSPoligon());
@@ -46,7 +47,8 @@
             {
                 Parent_Id = parentId,
                 Code = "WHT",
-                Description = "Washington"
+                Description = "Washington",
+                LocationId = 2
             };
             wht.SetLocation(-119.542781, 47.223652);
             wht.SetArea(GetWashingtonPoligon());
@@ -61,7 +63,8 @@
             {
                 Parent_Id = parentId,
                 Code = "SEAT",
-                Description = "Seattle"
+                Description = "Seattle",
+                LocationId = 3
             };
             stl.SetArea(GetSeattlePoligon());
             stl.SetLocation(-122.330747, 47.603111);
@@ -74,7 +77,8 @@
             {
                 Parent_Id = parentId,
                 Code = "REDM",
-                Description = "Redmond"
+                Description = "Redmond",
+                LocationId = 4
             };
             rdm.SetLocation(-122.122887, 47.674961);
             rdm.SetArea(GetRedmondPoligon());

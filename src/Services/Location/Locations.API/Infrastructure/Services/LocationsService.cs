@@ -22,7 +22,7 @@
             _eventBus = eventBus ?? throw new ArgumentNullException(nameof(eventBus));
         }
 
-        public async Task<Locations> GetLocation(string locationId)
+        public async Task<Locations> GetLocation(int locationId)
         {
             return await _locationsRepository.GetAsync(locationId);
         }
@@ -76,7 +76,7 @@
             newLocations.ForEach(location => {
                 result.Add(new UserLocationDetails()
                 {
-                    LocationId = location.Id,
+                    LocationId = location.LocationId,
                     Code = location.Code,
                     Description = location.Description
                 });
