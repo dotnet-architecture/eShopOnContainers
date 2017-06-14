@@ -84,7 +84,7 @@ namespace Microsoft.eShopOnContainers.Services.Marketing.API.Controllers
             await _context.Rules.AddAsync(locationRule);
             await _context.SaveChangesAsync();
 
-            return CreatedAtRoute(nameof(GetLocationByCampaignAndLocationRuleId), 
+            return CreatedAtRoute("GetLocationByCampaignAndLocationRuleId",
                 new { campaignId = campaignId, locationRuleId = locationRule.Id }, null);
         }
 
