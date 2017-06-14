@@ -7,7 +7,7 @@
 
     public interface ILocationsRepository
     {        
-        Task<Locations> GetAsync(string locationId);
+        Task<Locations> GetAsync(int locationId);
 
         Task<List<Locations>> GetLocationListAsync();
 
