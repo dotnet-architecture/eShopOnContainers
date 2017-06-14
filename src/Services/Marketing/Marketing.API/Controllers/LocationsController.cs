@@ -20,8 +20,7 @@ namespace Microsoft.eShopOnContainers.Services.Marketing.API.Controllers
         }
 
         [HttpGet]
-        [Route("api/v1/campaigns/{campaignId:int}/locations/{userLocationRuleId:int}", 
-            Name = "GetLocationByCampaignAndLocationRuleId")]
+        [Route("api/v1/campaigns/{campaignId:int}/locations/{userLocationRuleId:int}")]
         public IActionResult GetLocationByCampaignAndLocationRuleId(int campaignId, 
             int userLocationRuleId)
         {
@@ -84,8 +83,8 @@ namespace Microsoft.eShopOnContainers.Services.Marketing.API.Controllers
             await _context.Rules.AddAsync(locationRule);
             await _context.SaveChangesAsync();
 
-            return CreatedAtRoute("GetLocationByCampaignAndLocationRuleId",
-                new { campaignId = campaignId, locationRuleId = locationRule.Id }, null);
+            return CreatedAtAction(nameof(GetLocationByCampaignAndLocationRuleId),
+                new { campaignId = campaignId, userLocationRuleId = locationRule.Id }, null);
         }
 
         [HttpDelete]
