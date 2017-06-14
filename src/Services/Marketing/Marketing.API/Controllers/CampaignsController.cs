@@ -10,9 +10,7 @@
     using System.Collections.Generic;
     using Microsoft.AspNetCore.Authorization;
     using System;
-    using System.Net.Http;
     using System.Linq;
-    using System.Net.Http.Headers;
 
     [Route("api/v1/[controller]")]
     [Authorize]
@@ -123,14 +121,33 @@
         [HttpGet("user/{userId:guid}")]
         public async Task<IActionResult> GetCampaignsByUserId(Guid userId)
         {
-            var userLocation = await _marketingDataRepository.GetAsync(userId.ToString());
+            var marketingData = await _marketingDataRepository.GetAsync(userId.ToString());
 
-            var userLocationId = 1;
+            if (marketingData is null)
+            {
+                return NotFound();
+            }
 
-            var userLocationRule = await _context.Rules.OfType<UserLocationRule>().Include(c => c.Campaign)
-                .FirstOrDefaultAsync(c => c.LocationId == userLocationId);
+            var campaignDtoList = new List<CampaignDTO>();
 
-            return Ok(userLocationRule.Campaign);
+            //Get User Location Campaign
+            foreach(var userLocation in marketingData.Locations)
+            {
+                var userCampaignList = await _context.Rules
+                    .OfType<UserLocationRule>()
+                    .Include(c => c.Campaign)
+                    .Where(c => c.LocationId == userLocation.LocationId)
+                    .Select(c => c.Campaign)
+                    .ToListAsync();
+
+                if (userCampaignList != null && userCampaignList.Any())
+                {
+                    var userCampaignDtoList = MapCampaignModelListToDtoList(userCampaignList);
+                    campaignDtoList.AddRange(userCampaignDtoList);
+                }
+            }
+
+            return Ok(campaignDtoList);
         }
 
 
