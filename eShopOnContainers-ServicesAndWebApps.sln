@@ -95,11 +95,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Marketing", "Marketing", "{A5260DE0-1FDD-467E-9CC1-A028AB081CEE}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Marketing.API", "src\Services\Marketing\Marketing.API\Marketing.API.csproj", "{DF395F85-B010-465D-857A-7EBCC512C0C2}"
-	ProjectSection(ProjectDependencies) = postProject
-		{0044B293-1DCC-4224-B948-00CF6DC7F510} = {0044B293-1DCC-4224-B948-00CF6DC7F510}
-		{22A0F9C1-2D4A-4107-95B7-8459E6688BC5} = {22A0F9C1-2D4A-4107-95B7-8459E6688BC5}
-		{942ED6E8-0050-495F-A0EA-01E97F63760C} = {942ED6E8-0050-495F-A0EA-01E97F63760C}
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
