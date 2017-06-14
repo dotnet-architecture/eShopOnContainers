@@ -1,22 +1,16 @@
 ﻿namespace FunctionalTests.Services.Marketing
 {
-    using UserLocationDTO = Microsoft.eShopOnContainers.Services.Marketing.API.Dto.UserLocationDTO;
     using UserLocation = Microsoft.eShopOnContainers.Services.Locations.API.Model.UserLocation;
     using LocationRequest = Microsoft.eShopOnContainers.Services.Locations.API.ViewModel.LocationRequest;
-    using FunctionalTests.Extensions;
-    using FunctionalTests.Services.Basket;
     using FunctionalTests.Services.Locations;
-    using Microsoft.eShopOnContainers.Services.Basket.API.Model;
-    using Microsoft.eShopOnContainers.WebMVC.ViewModels;
     using Newtonsoft.Json;
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Net.Http;
     using System.Text;
     using System.Threading.Tasks;
-    using WebMVC.Models;
     using Xunit;
+    using System.Collections.Generic;
+    using Microsoft.eShopOnContainers.Services.Marketing.API.Dto;
 
     public class MarketingScenarios : MarketingScenariosBase
     {
@@ -24,7 +18,7 @@
         public async Task Set_new_user_location_and_get_location_campaign_by_user_id()
         {
             using (var locationsServer = new LocationsScenariosBase().CreateServer())
-            using (var marketingServer = CreateServer())
+            using (var marketingServer = new MarketingScenariosBase().CreateServer())
             {
                 var location = new LocationRequest
                 {
@@ -35,7 +29,7 @@
                     Encoding.UTF8, "application/json");
 
                 var userId = new Guid("4611ce3f-380d-4db5-8d76-87a8689058ed");
-                
+
 
                 // GIVEN a new location of user is created 
                 var response = await locationsServer.CreateClient()
@@ -48,17 +42,16 @@
                 var responseBody = await userLocationResponse.Content.ReadAsStringAsync();
                 var userLocation = JsonConvert.DeserializeObject<UserLocation>(responseBody);
 
-                await Task.Delay(5000);
+                await Task.Delay(300);
 
                 //Get campaing from Marketing.API given a userId
-                var UserLocationCampaignResponse = await locationsServer.CreateClient()
-                    .GetAsync(Get.UserCampaignByUserId(userId));
+                var UserLocationCampaignResponse = await marketingServer.CreateClient()
+                    .GetAsync(CampaignScenariosBase.Get.UserCampaignsByUserId(userId));
 
                 responseBody = await UserLocationCampaignResponse.Content.ReadAsStringAsync();
-                var userLocationCampaign = JsonConvert.DeserializeObject<UserLocationDTO>(responseBody);
+                var userLocationCampaigns = JsonConvert.DeserializeObject<List<CampaignDTO>>(responseBody);
 
-                // Assert
-                Assert.Equal(userLocation.LocationId, userLocationCampaign.LocationId);
+                Assert.True(userLocationCampaigns.Count > 0);
             }
         }
     }
