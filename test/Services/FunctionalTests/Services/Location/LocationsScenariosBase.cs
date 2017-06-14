@@ -1,15 +1,16 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.TestHost;
-using System.IO;
-
-namespace IntegrationTests.Services.Locations
+﻿namespace FunctionalTests.Services.Locations
 {
-    public class LocationsScenarioBase
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.TestHost;
+    using System;
+    using System.IO;
+
+    public class LocationsScenariosBase
     {
         public TestServer CreateServer()
         {
             var webHostBuilder = new WebHostBuilder();
-            webHostBuilder.UseContentRoot(Directory.GetCurrentDirectory() + "\\Services\\Locations");
+            webHostBuilder.UseContentRoot(Directory.GetCurrentDirectory() + "\\Services\\Location");
             webHostBuilder.UseStartup<LocationsTestsStartup>();
 
             return new TestServer(webHostBuilder);
@@ -19,12 +20,12 @@ namespace IntegrationTests.Services.Locations
         {
             public static string Locations = "api/v1/locations";
 
-            public static string LocationBy(int id)
+            public static string LocationBy(string id)
             {
                 return $"api/v1/locations/{id}";
             }
 
-            public static string UserLocationBy(string id)
+            public static string UserLocationBy(Guid id)
             {
                 return $"api/v1/locations/user/{id}";
             }

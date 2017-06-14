@@ -83,8 +83,8 @@ namespace Microsoft.eShopOnContainers.Services.Marketing.API.Controllers
             await _context.Rules.AddAsync(locationRule);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetLocationByCampaignAndLocationRuleId), 
-                new { campaignId = campaignId, locationRuleId = locationRule.Id }, null);
+            return CreatedAtAction(nameof(GetLocationByCampaignAndLocationRuleId),
+                new { campaignId = campaignId, userLocationRuleId = locationRule.Id }, null);
         }
 
         [HttpDelete]

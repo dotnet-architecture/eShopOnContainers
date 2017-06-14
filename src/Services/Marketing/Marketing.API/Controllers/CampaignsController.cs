@@ -1,5 +1,6 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Marketing.API.Controllers
 {
+    using Infrastructure.Repositories;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.eShopOnContainers.Services.Marketing.API.Infrastructure;
     using System.Threading.Tasks;
@@ -8,16 +9,21 @@
     using Microsoft.eShopOnContainers.Services.Marketing.API.Dto;
     using System.Collections.Generic;
     using Microsoft.AspNetCore.Authorization;
+    using System;
+    using System.Linq;
 
     [Route("api/v1/[controller]")]
     [Authorize]
     public class CampaignsController : Controller
     {
         private readonly MarketingContext _context;
+        private readonly IMarketingDataRepository _marketingDataRepository;
 
-        public CampaignsController(MarketingContext context)
+        public CampaignsController(MarketingContext context,
+            IMarketingDataRepository marketingDataRepository)
         {
             _context = context;
+            _marketingDataRepository = marketingDataRepository;
         }
 
         [HttpGet]
@@ -112,6 +118,37 @@
             return NoContent();
         }
 
+        [HttpGet("user/{userId:guid}")]
+        public async Task<IActionResult> GetCampaignsByUserId(Guid userId)
+        {
+            var marketingData = await _marketingDataRepository.GetAsync(userId.ToString());
+
+            if (marketingData is null)
+            {
+                return NotFound();
+            }
+
+            var campaignDtoList = new List<CampaignDTO>();
+
+            //Get User Location Campaign
+            foreach(var userLocation in marketingData.Locations)
+            {
+                var userCampaignList = await _context.Rules
+                    .OfType<UserLocationRule>()
+                    .Include(c => c.Campaign)
+                    .Where(c => c.LocationId == userLocation.LocationId)
+                    .Select(c => c.Campaign)
+                    .ToListAsync();
+
+                if (userCampaignList != null && userCampaignList.Any())
+                {
+                    var userCampaignDtoList = MapCampaignModelListToDtoList(userCampaignList);
+                    campaignDtoList.AddRange(userCampaignDtoList);
+                }
+            }
+
+            return Ok(campaignDtoList);
+        }
 
 
         private List<CampaignDTO> MapCampaignModelListToDtoList(List<Campaign> campaignList)
