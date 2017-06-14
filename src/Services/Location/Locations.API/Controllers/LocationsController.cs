@@ -41,7 +41,7 @@ namespace Locations.API.Controllers
         //GET api/v1/[controller]/1
         [Route("{locationId}")]
         [HttpGet]
-        public async Task<IActionResult> GetLocation(string locationId)
+        public async Task<IActionResult> GetLocation(int locationId)
         {
             var location = await _locationsService.GetLocation(locationId);
             return Ok(location);

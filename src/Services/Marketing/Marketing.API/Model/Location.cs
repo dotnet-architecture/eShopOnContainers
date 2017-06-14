@@ -9,8 +9,7 @@ namespace Microsoft.eShopOnContainers.Services.Marketing.API.Model
 {
     public class Location
     {
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string LocationId { get; set; }
+        public int LocationId { get; set; }
         public string Code { get; set; }
         public string Description { get; set; }
     }
