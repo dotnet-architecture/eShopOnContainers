@@ -53,8 +53,9 @@
                 return await connection.QueryAsync<dynamic>(@"SELECT o.[Id] as ordernumber,o.[OrderDate] as [date],os.[Name] as [status],SUM(oi.units*oi.unitprice) as total
                      FROM [ordering].[Orders] o
                      LEFT JOIN[ordering].[orderitems] oi ON  o.Id = oi.orderid 
-                     LEFT JOIN[ordering].[orderstatus] os on o.OrderStatusId = os.Id
-                     GROUP BY o.[Id], o.[OrderDate], os.[Name]");
+                     LEFT JOIN[ordering].[orderstatus] os on o.OrderStatusId = os.Id                     
+                     GROUP BY o.[Id], o.[OrderDate], os.[Name] 
+                     ORDER BY o.[Id]");
             }
         }
 
