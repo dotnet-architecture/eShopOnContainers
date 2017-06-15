@@ -1,8 +1,8 @@
-﻿namespace Microsoft.eShopOnContainers.WebMVC.Models
+﻿namespace Microsoft.eShopOnContainers.WebMVC.ViewModels
 {
     using System;
 
-    public class CampaignDTO
+    public class Campaign
     {
         public int Id { get; set; }
 
