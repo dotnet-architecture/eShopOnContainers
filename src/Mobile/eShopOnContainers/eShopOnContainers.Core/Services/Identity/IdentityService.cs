@@ -1,11 +1,22 @@
 ﻿using IdentityModel.Client;
 using System;
 using System.Collections.Generic;
+using System.Net;
+using System.Threading.Tasks;
+using eShopOnContainers.Core.Services.RequestProvider;
+using eShopOnContainers.Core.Models.Token;
 
 namespace eShopOnContainers.Core.Services.Identity
 {
     public class IdentityService : IIdentityService
     {
+		private readonly IRequestProvider _requestProvider;
+
+		public IdentityService(IRequestProvider requestProvider)
+		{
+			_requestProvider = requestProvider;
+		}
+
         public string CreateAuthorizationRequest()
         {
             // Create URI to authorization endpoint
@@ -13,11 +24,10 @@ namespace eShopOnContainers.Core.Services.Identity
 
             // Dictionary with values for the authorize request
             var dic = new Dictionary<string, string>();
-            dic.Add("client_id", "xamarin");
-            dic.Add("client_secret", "secret"); 
-            dic.Add("response_type", "code id_token token");
+            dic.Add("client_id", GlobalSetting.Instance.ClientId);
+            dic.Add("client_secret", GlobalSetting.Instance.ClientSecret); 
+            dic.Add("response_type", "code id_token");
             dic.Add("scope", "openid profile basket orders locations offline_access");
-
             dic.Add("redirect_uri", GlobalSetting.Instance.IdentityCallback);
             dic.Add("nonce", Guid.NewGuid().ToString("N"));
 
@@ -31,7 +41,7 @@ namespace eShopOnContainers.Core.Services.Identity
 
         public string CreateLogoutRequest(string token)
         {
-            if(string.IsNullOrEmpty(token))
+            if (string.IsNullOrEmpty(token))
             {
                 return string.Empty;
             }
@@ -41,5 +51,12 @@ namespace eShopOnContainers.Core.Services.Identity
                 token,
                 GlobalSetting.Instance.LogoutCallback);
         }
+
+		public async Task<UserToken> GetTokenAsync(string code)
+		{
+			string data = string.Format("grant_type=authorization_code&code={0}&redirect_uri={1}", code, WebUtility.UrlEncode(GlobalSetting.Instance.IdentityCallback));
+			var token = await _requestProvider.PostAsync<UserToken>(GlobalSetting.Instance.TokenEndpoint, data, GlobalSetting.Instance.ClientId, GlobalSetting.Instance.ClientSecret);
+			return token;
+		}
     }
 }
