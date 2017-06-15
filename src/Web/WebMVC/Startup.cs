@@ -70,6 +70,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
             services.AddTransient<ICatalogService, CatalogService>();
             services.AddTransient<IOrderingService, OrderingService>();
             services.AddTransient<IBasketService, BasketService>();
+            services.AddTransient<ICampaignService, CampaignService>();
             services.AddTransient<IIdentityParser<ApplicationUser>, IdentityParser>();
 
             if (Configuration.GetValue<string>("UseResilientHttp") == bool.TrueString)
