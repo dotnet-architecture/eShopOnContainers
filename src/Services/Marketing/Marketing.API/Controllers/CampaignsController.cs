@@ -184,7 +184,7 @@
                 Description = campaignDto.Description,
                 From = campaignDto.From,
                 To = campaignDto.To,
-                PictureUri = campaignDto.PictureUri
+                PictureUri = $"http://externalcatalogbaseurltobereplaced/api/v1/campaigns/{campaignDto.Id}/pic"
             };
         }
     }
