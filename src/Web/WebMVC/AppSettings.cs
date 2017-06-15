@@ -11,6 +11,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
         public string CatalogUrl { get; set; }
         public string OrderingUrl { get; set; }
         public string BasketUrl { get; set; }
+        public string MarketingUrl { get; set; }
         public Logging Logging { get; set; }
     }
 
