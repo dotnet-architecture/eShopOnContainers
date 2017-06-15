@@ -6,6 +6,8 @@
 
     public interface ICampaignService
     {
-        Task<List<CampaignDTO>> GetCampaigns();
+        Task<IEnumerable<CampaignDTO>> GetCampaigns();
+
+        Task<CampaignDTO> GetCampaignById(int id);
     }
 }

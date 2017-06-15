@@ -31,15 +31,28 @@
             _httpContextAccesor = httpContextAccesor ?? throw new ArgumentNullException(nameof(httpContextAccesor));
         }
 
-        public async Task<List<CampaignDTO>> GetCampaigns()
+        public async Task<IEnumerable<CampaignDTO>> GetCampaigns()
         {
             var userId = GetUserIdentity();
-            var allCampaignItemsUri = API.Marketing.GetAllCampaigns(_remoteServiceBaseUrl, userId);
+            var allCampaignItemsUri = API.Marketing.GetAllCampaigns(_remoteServiceBaseUrl, Guid.Parse(userId));
 
             var authorizationToken = await GetUserTokenAsync();
             var dataString = await _apiClient.GetStringAsync(allCampaignItemsUri, authorizationToken);
 
-            var response = JsonConvert.DeserializeObject<List<CampaignDTO>>(dataString);
+            var response = JsonConvert.DeserializeObject<IEnumerable<CampaignDTO>>(dataString);
+
+            return response;
+        }
+
+        public async Task<CampaignDTO> GetCampaignById(int id)
+        {
+            var userId = GetUserIdentity();
+            var campaignByIdItemUri = API.Marketing.GetAllCampaignById(_remoteServiceBaseUrl, id);
+
+            var authorizationToken = await GetUserTokenAsync();
+            var dataString = await _apiClient.GetStringAsync(campaignByIdItemUri, authorizationToken);
+
+            var response = JsonConvert.DeserializeObject<CampaignDTO>(dataString);
 
             return response;
         }
