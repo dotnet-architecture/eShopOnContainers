@@ -88,10 +88,11 @@
                 return NotFound();
             }
 
+            campaignToUpdate.Name = campaignDto.Name;
             campaignToUpdate.Description = campaignDto.Description;
             campaignToUpdate.From = campaignDto.From;
             campaignToUpdate.To = campaignDto.To;
-            campaignToUpdate.Url = campaignDto.Url;
+            campaignToUpdate.PictureUri = campaignDto.PictureUri;
 
             await _context.SaveChangesAsync();
 
@@ -166,10 +167,11 @@
             return new CampaignDTO
             {
                 Id = campaign.Id,
+                Name = campaign.Name,
                 Description = campaign.Description,
                 From = campaign.From,
                 To = campaign.To,
-                Url = campaign.Url,
+                PictureUri = campaign.PictureUri
             };
         }
 
@@ -178,10 +180,11 @@
             return new Campaign
             {
                 Id = campaignDto.Id,
+                Name = campaignDto.Name,
                 Description = campaignDto.Description,
                 From = campaignDto.From,
                 To = campaignDto.To,
-                Url = campaignDto.Url
+                PictureUri = campaignDto.PictureUri
             };
         }
     }

@@ -9,7 +9,7 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    public class MarketingContextSeed
+    public static class MarketingContextSeed
     {
         public static async Task SeedAsync(IApplicationBuilder applicationBuilder, ILoggerFactory loggerFactory, int? retry = 0)
         {
@@ -33,10 +33,11 @@
             {
                 new Campaign
                 {
-                    Description = "Campaign1",
+                    Name = "Campaign Name 1",
+                    Description = "Campaign Description 1",
                     From = DateTime.Now,
                     To = DateTime.Now.AddDays(7),
-                    Url = "http://CampaignUrl.test/12f09ed3cef54187123f500ad",
+                    PictureUri = "http://externalcatalogbaseurltobereplaced/api/v1/campaigns/1/pic",
                     Rules = new List<Rule>
                     {
                         new UserLocationRule
@@ -48,10 +49,11 @@
                 },
                 new Campaign
                 {
-                    Description = "Campaign2",
+                    Name = "Campaign Name 2",
+                    Description = "Campaign Description 2",
                     From = DateTime.Now.AddDays(7),
                     To = DateTime.Now.AddDays(14),
-                    Url = "http://CampaignUrl.test/02a59eda65f241871239000ff",
+                    PictureUri = "http://externalcatalogbaseurltobereplaced/api/v1/campaigns/2/pic",
                     Rules = new List<Rule>
                     {
                         new UserLocationRule
