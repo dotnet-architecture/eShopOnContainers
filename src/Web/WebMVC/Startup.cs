@@ -126,7 +126,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
                 SaveTokens = true,
                 GetClaimsFromUserInfoEndpoint = true,
                 RequireHttpsMetadata = false,
-                Scope = { "openid", "profile", "orders", "basket" }
+                Scope = { "openid", "profile", "orders", "basket", "marketing" }
             };
 
             //Wait untill identity service is ready on compose. 

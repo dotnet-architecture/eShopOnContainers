@@ -11,19 +11,23 @@
     using Microsoft.AspNetCore.Authorization;
     using System;
     using System.Linq;
+    using Microsoft.Extensions.Options;
 
     [Route("api/v1/[controller]")]
     [Authorize]
     public class CampaignsController : Controller
     {
         private readonly MarketingContext _context;
+        private readonly MarketingSettings _settings;
         private readonly IMarketingDataRepository _marketingDataRepository;
 
         public CampaignsController(MarketingContext context,
-            IMarketingDataRepository marketingDataRepository)
+            IMarketingDataRepository marketingDataRepository,
+             IOptionsSnapshot<MarketingSettings> settings)
         {
             _context = context;
             _marketingDataRepository = marketingDataRepository;
+            _settings = settings.Value;
         }
 
         [HttpGet]
@@ -171,7 +175,7 @@
                 Description = campaign.Description,
                 From = campaign.From,
                 To = campaign.To,
-                PictureUri = campaign.PictureUri
+                PictureUri = GetUriPlaceholder(campaign.PictureUri)
             };
         }
 
@@ -184,8 +188,17 @@
                 Description = campaignDto.Description,
                 From = campaignDto.From,
                 To = campaignDto.To,
-                PictureUri = $"http://externalcatalogbaseurltobereplaced/api/v1/campaigns/{campaignDto.Id}/pic"
+                PictureUri = campaignDto.PictureUri
             };
+        }
+
+        private string GetUriPlaceholder(string campaignUri)
+        {
+            var baseUri = _settings.ExternalCatalogBaseUrl;
+
+            campaignUri = campaignUri.Replace("http://externalcatalogbaseurltobereplaced", baseUri);
+
+            return campaignUri;
         }
     }
 }

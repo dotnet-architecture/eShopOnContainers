@@ -20,15 +20,15 @@
                     <form asp-controller="Campaigns" asp-action="Details" asp-route-id="@campaign.Id">
                         <div class="card-block">
                             <h4 class="card-title esh-campaigns-name">@campaign.Name</h4>
-                            <p class="card-text esh-campaigns-description">@campaign.Description</p>
                             <img class="card-img-top esh-campaigns-thumbnail" src="@campaign.PictureUri" alt="@campaign.Name">
+                        <input class="esh-campaigns-button" type="submit" value="More details">
                         </div>
                         <div class="card-footer">
+
                             <small class="text-muted">
                                 From @campaign.From.ToString("MMMM dd, yyyy") until @campaign.To.ToString("MMMM dd, yyyy")
                             </small>
-                        </div>
-                        <input class="esh-campaigns-button" type="submit" value="More details">
+                        </div> 
                     </form>
                 </div>
             }

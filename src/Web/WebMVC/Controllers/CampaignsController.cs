@@ -83,7 +83,17 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
 
         public async Task<IActionResult> Details(int id)
         {
-            var campaign = await _campaignService.GetCampaignById(id);
+            var campaignDto = await _campaignService.GetCampaignById(id);
+
+            var campaign = new Campaign
+            {
+                Id = campaignDto.Id,
+                Name = campaignDto.Name,
+                Description = campaignDto.Description,
+                From = campaignDto.From,
+                To = campaignDto.To,
+                PictureUri = campaignDto.PictureUri
+            };
 
             return View(campaign);
         }
