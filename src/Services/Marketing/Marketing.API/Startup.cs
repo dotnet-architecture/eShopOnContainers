@@ -20,6 +20,9 @@
     using Infrastructure.Repositories;
     using Autofac;
     using Autofac.Extensions.DependencyInjection;
+    using Polly;
+    using System.Threading.Tasks;
+    using System.Data.SqlClient;
 
     public class Startup
     {
@@ -133,10 +136,12 @@
                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
                });
 
-            ConfigureEventBus(app);
+            var context = (MarketingContext)app
+                        .ApplicationServices.GetService(typeof(MarketingContext));
 
-            MarketingContextSeed.SeedAsync(app, loggerFactory)
-                .Wait();
+            WaitForSqlAvailabilityAsync(context, loggerFactory, app).Wait();
+
+            ConfigureEventBus(app);
         }
 
         protected virtual void ConfigureAuth(IApplicationBuilder app)
@@ -165,6 +170,29 @@
             var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
             eventBus.Subscribe<UserLocationUpdatedIntegrationEvent, 
                 IIntegrationEventHandler<UserLocationUpdatedIntegrationEvent>>();
+        }
+
+        private async Task WaitForSqlAvailabilityAsync(MarketingContext ctx, ILoggerFactory loggerFactory, IApplicationBuilder app, int retries = 0)
+        {
+            var logger = loggerFactory.CreateLogger(nameof(Startup));
+            var policy = CreatePolicy(retries, logger, nameof(WaitForSqlAvailabilityAsync));
+            await policy.ExecuteAsync(async () =>
+            {
+                await MarketingContextSeed.SeedAsync(app, loggerFactory);
+            });
+        }
+
+        private Policy CreatePolicy(int retries, ILogger logger, string prefix)
+        {
+            return Policy.Handle<SqlException>().
+                WaitAndRetryAsync(
+                    retryCount: retries,
+                    sleepDurationProvider: retry => TimeSpan.FromSeconds(5),
+                    onRetry: (exception, timeSpan, retry, ctx) =>
+                    {
+                        logger.LogTrace($"[{prefix}] Exception {exception.GetType().Name} with message ${exception.Message} detected on attempt {retry} of {retries}");
+                    }
+                );
         }
     }
 }
