@@ -1,4 +1,6 @@
-﻿namespace WebMVC.Infrastructure
+﻿using System;
+
+namespace WebMVC.Infrastructure
 {
     public static class API
     {
@@ -82,9 +84,14 @@
 
         public static class Marketing
         {
-            public static string GetAllCampaigns(string baseUri, string userId)
+            public static string GetAllCampaigns(string baseUri, Guid userId)
             {
                 return $"{baseUri}user/{userId}";
+            }
+
+            public static string GetAllCampaignById(string baseUri, int id)
+            {
+                return $"{baseUri}{id}";
             }
         }
     }
