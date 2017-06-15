@@ -120,7 +120,6 @@
                 Description = "FakeCampaignDescription",
                 From = DateTime.Now,
                 To = DateTime.Now.AddDays(7),
-                Url = "http://CampaignUrl.test/fdaf91ad0cef5419719f50198",
             }; 
         }
     }
