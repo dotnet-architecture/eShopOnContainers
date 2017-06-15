@@ -79,5 +79,13 @@
                 return $"{baseUri}catalogTypes";
             }
         }
+
+        public static class Marketing
+        {
+            public static string GetAllCampaigns(string baseUri, string userId)
+            {
+                return $"{baseUri}user/{userId}";
+            }
+        }
     }
 }
