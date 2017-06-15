@@ -67,6 +67,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Views\Campaigns\" />
     <Folder Include="wwwroot\lib\" />
   </ItemGroup>
 
