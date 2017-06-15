@@ -1,7 +1,36 @@
-
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Campaigns";
+    @model IEnumerable<Campaign>
 }
 
-<h2>Index</h2>
+<section class="esh-campaigns-hero">
+    <div class="container">
+        <img class="esh-campaigns-title" src="~/images/main_banner_text.png" />
+    </div>
+</section>
 
+    @Html.Partial("_Header", new List<Header>() {
+            new Header() { Controller = "Catalog", Text = "Back to catalog" } })
+
+<div class="container">
+    <div class="card-group esh-campaigns-items row">
+            @foreach (var campaign in Model ?? Enumerable.Empty<Campaign>())
+            {
+                <div class="esh-campaigns-item col-md-4">
+                    <form asp-controller="Campaigns" asp-action="Details" asp-route-id="@campaign.Id">
+                        <div class="card-block">
+                            <h4 class="card-title esh-campaigns-name">@campaign.Name</h4>
+                            <p class="card-text esh-campaigns-description">@campaign.Description</p>
+                            <img class="card-img-top esh-campaigns-thumbnail" src="@campaign.PictureUri" alt="@campaign.Name">
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-muted">
+                                From @campaign.From.ToString("MMMM dd, yyyy") until @campaign.To.ToString("MMMM dd, yyyy")
+                            </small>
+                        </div>
+                        <input class="esh-campaigns-button" type="submit" value="More details">
+                    </form>
+                </div>
+            }
+        </div>
+</div>
