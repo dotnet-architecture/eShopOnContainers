@@ -1,15 +1,14 @@
 ﻿namespace Microsoft.eShopOnContainers.WebMVC.Services
 {
     using global::WebMVC.Infrastructure;
-    using Microsoft.AspNetCore.Authentication;
-    using Microsoft.AspNetCore.Http;
-    using Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http;
-    using Microsoft.eShopOnContainers.WebMVC.Models;
+    using AspNetCore.Authentication;
+    using AspNetCore.Http;
+    using BuildingBlocks.Resilience.Http;
+    using ViewModels;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
     using Newtonsoft.Json;
     using System;
-    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     public class CampaignService : ICampaignService
@@ -31,28 +30,28 @@
             _httpContextAccesor = httpContextAccesor ?? throw new ArgumentNullException(nameof(httpContextAccesor));
         }
 
-        public async Task<IEnumerable<CampaignDTO>> GetCampaigns()
+        public async Task<Campaign> GetCampaigns(int pageSize, int pageIndex)
         {
             var userId = GetUserIdentity();
-            var allCampaignItemsUri = API.Marketing.GetAllCampaigns(_remoteServiceBaseUrl, Guid.Parse(userId));
+            var allCampaignItemsUri = API.Marketing.GetAllCampaigns(_remoteServiceBaseUrl, 
+                userId, pageSize, pageIndex);
 
             var authorizationToken = await GetUserTokenAsync();
             var dataString = await _apiClient.GetStringAsync(allCampaignItemsUri, authorizationToken);
 
-            var response = JsonConvert.DeserializeObject<IEnumerable<CampaignDTO>>(dataString);
+            var response = JsonConvert.DeserializeObject<Campaign>(dataString);
 
             return response;
         }
 
-        public async Task<CampaignDTO> GetCampaignById(int id)
+        public async Task<CampaignItem> GetCampaignById(int id)
         {
-            var userId = GetUserIdentity();
             var campaignByIdItemUri = API.Marketing.GetAllCampaignById(_remoteServiceBaseUrl, id);
 
             var authorizationToken = await GetUserTokenAsync();
             var dataString = await _apiClient.GetStringAsync(campaignByIdItemUri, authorizationToken);
 
-            var response = JsonConvert.DeserializeObject<CampaignDTO>(dataString);
+            var response = JsonConvert.DeserializeObject<CampaignItem>(dataString);
 
             return response;
         }
