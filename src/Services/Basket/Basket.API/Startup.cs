@@ -16,11 +16,8 @@ using Microsoft.Extensions.HealthChecks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
-using StackExchange.Redis;
-using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
-using System;
+using StackExchange.Redis;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus;
 using Microsoft.Azure.ServiceBus;
 
@@ -66,9 +63,10 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             services.AddSingleton<ConnectionMultiplexer>(sp =>
             {
                 var settings = sp.GetRequiredService<IOptions<BasketSettings>>().Value;
-                var ips = Dns.GetHostAddressesAsync(settings.ConnectionString).Result;
+                ConfigurationOptions configuration = ConfigurationOptions.Parse(settings.ConnectionString, true);           
+                configuration.ResolveDns = true;
 
-                return ConnectionMultiplexer.Connect(ips.First().ToString());
+                return ConnectionMultiplexer.Connect(configuration);
             });
 
 
@@ -79,7 +77,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
                     var settings = sp.GetRequiredService<IOptions<BasketSettings>>().Value;
                     var logger = sp.GetRequiredService<ILogger<DefaultServiceBusPersisterConnection>>();
 
-                    var serviceBusConnection = new ServiceBusConnectionStringBuilder(settings.ServiceBusConnectionString);
+                    var serviceBusConnection = new ServiceBusConnectionStringBuilder(settings.EventBusConnection);
 
                     return new DefaultServiceBusPersisterConnection(serviceBusConnection, logger);
                 });

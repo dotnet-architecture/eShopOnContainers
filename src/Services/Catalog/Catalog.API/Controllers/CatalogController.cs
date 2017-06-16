@@ -200,7 +200,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
                 CatalogTypeId = product.CatalogTypeId,
                 Description = product.Description,
                 Name = product.Name,
-                PictureUri = product.PictureUri,
+                PictureFileName = product.PictureFileName,
                 Price = product.Price
             };
             _catalogContext.CatalogItems.Add(item);
@@ -231,11 +231,14 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
 
         private List<CatalogItem> ChangeUriPlaceholder(List<CatalogItem> items)
         {
-            var baseUri = _settings.ExternalCatalogBaseUrl;
-
-            items.ForEach(x =>
+            var baseUri = _settings.PicBaseUrl;
+            
+            items.ForEach(catalogItem =>
             {
-                x.PictureUri = x.PictureUri.Replace("http://externalcatalogbaseurltobereplaced", baseUri);
+                catalogItem.PictureUri = _settings.AzureStorageEnabled
+                    ? baseUri + catalogItem.PictureFileName
+                    : baseUri + catalogItem.Id;
+
             });
 
             return items;
