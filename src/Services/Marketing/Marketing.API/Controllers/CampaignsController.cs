@@ -141,8 +141,8 @@
                 var userCampaignList = await _context.Rules
                     .OfType<UserLocationRule>()
                     .Include(c => c.Campaign)
-                    .Where(c => c.Campaign.From >= DateTime.Now
-                    && c.Campaign.To <= DateTime.Now 
+                    .Where(c => c.Campaign.From <= DateTime.Now
+                    && c.Campaign.To >= DateTime.Now 
                     && c.LocationId == userLocation.LocationId)
                     .Select(c => c.Campaign)
                     .ToListAsync();
