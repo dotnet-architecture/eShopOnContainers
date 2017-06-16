@@ -22,6 +22,8 @@
         "ordering": "rabbitmq",
         "marketing": "rabbitmq",
         "locations": "rabbitmq",
-        "payment": "rabbitmq"
+        "payment": "rabbitmq",
+        "basket": "rabbitmq",
+        "catalog": "rabbitmq"
     }
 }

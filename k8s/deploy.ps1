@@ -6,11 +6,11 @@ Param(
     [parameter(Mandatory=$false)][bool]$useDockerHub,
     [parameter(Mandatory=$false)][string]$execPath,
     [parameter(Mandatory=$false)][string]$kubeconfigPath,
-    [parameter(Mandatory=$true)][string]$configFile
+    [parameter(Mandatory=$true)][string]$configFile,
+    [parameter(Mandatory=$false)][bool]$deployInfrastructure=$true
 )
 
 $debugMode = $PSCmdlet.MyInvocation.BoundParameters["Debug"].IsPresent
-
 function ExecKube($cmd) {    
     if($deployCI) {
         $kubeconfig = $kubeconfigPath + 'config';
@@ -75,7 +75,13 @@ ExecKube -cmd 'delete configmap externalcfg'
 # start sql, rabbitmq, frontend deploymentsExecKube -cmd 'delete configmap config-files'
 ExecKube -cmd 'create configmap config-files --from-file=nginx-conf=nginx.conf'
 ExecKube -cmd 'label configmap config-files app=eshop'
-# ExecKube -cmd 'create -f sql-data.yaml -f basket-data.yaml -f keystore-data.yaml -f rabbitmq.yaml -f services.yaml -f frontend.yaml'
+
+if ($deployInfrastructure) {
+    Write-Host 'Deploying infrastructure deployments (databases, redis, ...)' -ForegroundColor Yellow
+    ExecKube -cmd 'create -f sql-data.yaml -f basket-data.yaml -f keystore-data.yaml -f rabbitmq.yaml -f nosql-data.yaml'
+}
+
+Write-Host 'Deploying code deployments (databases, redis, ...)' -ForegroundColor Yellow
 ExecKube -cmd 'create -f services.yaml -f frontend.yaml'
 
 # building and publishing docker images not necessary when deploying through CI VSTS
@@ -143,6 +149,7 @@ ExecKube -cmd 'create configmap externalcfg `
     --from-literal=MarketingBus=$($config.servicebus.marketing) `
     --from-literal=BasketBus=$($config.servicebus.basket) `
     --from-literal=OrderingBus=$($config.servicebus.ordering) `
+    --from-literal=CatalogBus=$($config.servicebus.catalog) `
     --from-literal=PaymentBus=$($config.servicebus.payment) '
 
 ExecKube -cmd 'label configmap externalcfg app=eshop'

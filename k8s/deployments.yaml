@@ -68,6 +68,11 @@ spec:
            configMapKeyRef:
              name: urls
              key: CatalogUrl
+        -name: EventBusConnection
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: CatalogBus        
         ports:
         - containerPort: 80
       imagePullSecrets:
