@@ -1,7 +1,6 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Marketing.API.Model
+﻿namespace Microsoft.eShopOnContainers.WebMVC.ViewModels
 {
     using System;
-    using System.Collections.Generic;
 
     public class Campaign
     {
@@ -16,13 +15,5 @@
         public DateTime To { get; set; }
 
         public string PictureUri { get; set; }
-
-        public List<Rule> Rules { get; set; }
-
-
-        public Campaign()
-        {
-            Rules = new List<Rule>();
-        }
     }
 }

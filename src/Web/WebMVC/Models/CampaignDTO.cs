@@ -1,9 +1,8 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Marketing.API.Model
+﻿namespace Microsoft.eShopOnContainers.WebMVC.Models
 {
     using System;
-    using System.Collections.Generic;
 
-    public class Campaign
+    public class CampaignDTO
     {
         public int Id { get; set; }
 
@@ -16,13 +15,5 @@
         public DateTime To { get; set; }
 
         public string PictureUri { get; set; }
-
-        public List<Rule> Rules { get; set; }
-
-
-        public Campaign()
-        {
-            Rules = new List<Rule>();
-        }
     }
 }

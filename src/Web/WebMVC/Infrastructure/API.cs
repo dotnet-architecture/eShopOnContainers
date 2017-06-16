@@ -1,4 +1,6 @@
-﻿namespace WebMVC.Infrastructure
+﻿using System;
+
+namespace WebMVC.Infrastructure
 {
     public static class API
     {
@@ -77,6 +79,19 @@
             public static string GetAllTypes(string baseUri)
             {
                 return $"{baseUri}catalogTypes";
+            }
+        }
+
+        public static class Marketing
+        {
+            public static string GetAllCampaigns(string baseUri, Guid userId)
+            {
+                return $"{baseUri}user/{userId}";
+            }
+
+            public static string GetAllCampaignById(string baseUri, int id)
+            {
+                return $"{baseUri}{id}";
             }
         }
     }

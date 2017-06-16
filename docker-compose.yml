@@ -76,6 +76,7 @@ services:
       - ordering.api
       - identity.api
       - basket.api
+      - marketing.api
 
   sql.data:
     image: microsoft/mssql-server-linux

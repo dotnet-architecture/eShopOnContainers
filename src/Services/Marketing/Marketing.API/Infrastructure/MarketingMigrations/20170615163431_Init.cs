@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Microsoft.eShopOnContainers.Services.Marketing.API.Infrastructure.MarketingMigrations
 {
-    public partial class Initial : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -23,8 +23,9 @@ namespace Microsoft.eShopOnContainers.Services.Marketing.API.Infrastructure.Mark
                     Id = table.Column<int>(nullable: false),
                     Description = table.Column<string>(nullable: false),
                     From = table.Column<DateTime>(nullable: false),
-                    To = table.Column<DateTime>(nullable: false),
-                    Url = table.Column<string>(nullable: true)
+                    Name = table.Column<string>(nullable: false),
+                    PictureUri = table.Column<string>(nullable: false),
+                    To = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {

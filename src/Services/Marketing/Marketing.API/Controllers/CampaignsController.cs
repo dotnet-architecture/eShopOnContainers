@@ -11,19 +11,23 @@
     using Microsoft.AspNetCore.Authorization;
     using System;
     using System.Linq;
+    using Microsoft.Extensions.Options;
 
     [Route("api/v1/[controller]")]
     [Authorize]
     public class CampaignsController : Controller
     {
         private readonly MarketingContext _context;
+        private readonly MarketingSettings _settings;
         private readonly IMarketingDataRepository _marketingDataRepository;
 
         public CampaignsController(MarketingContext context,
-            IMarketingDataRepository marketingDataRepository)
+            IMarketingDataRepository marketingDataRepository,
+             IOptionsSnapshot<MarketingSettings> settings)
         {
             _context = context;
             _marketingDataRepository = marketingDataRepository;
+            _settings = settings.Value;
         }
 
         [HttpGet]
@@ -88,10 +92,11 @@
                 return NotFound();
             }
 
+            campaignToUpdate.Name = campaignDto.Name;
             campaignToUpdate.Description = campaignDto.Description;
             campaignToUpdate.From = campaignDto.From;
             campaignToUpdate.To = campaignDto.To;
-            campaignToUpdate.Url = campaignDto.Url;
+            campaignToUpdate.PictureUri = campaignDto.PictureUri;
 
             await _context.SaveChangesAsync();
 
@@ -136,7 +141,9 @@
                 var userCampaignList = await _context.Rules
                     .OfType<UserLocationRule>()
                     .Include(c => c.Campaign)
-                    .Where(c => c.LocationId == userLocation.LocationId)
+                    .Where(c => c.Campaign.From <= DateTime.Now
+                    && c.Campaign.To >= DateTime.Now 
+                    && c.LocationId == userLocation.LocationId)
                     .Select(c => c.Campaign)
                     .ToListAsync();
 
@@ -166,10 +173,11 @@
             return new CampaignDTO
             {
                 Id = campaign.Id,
+                Name = campaign.Name,
                 Description = campaign.Description,
                 From = campaign.From,
                 To = campaign.To,
-                Url = campaign.Url,
+                PictureUri = GetUriPlaceholder(campaign.PictureUri)
             };
         }
 
@@ -178,11 +186,21 @@
             return new Campaign
             {
                 Id = campaignDto.Id,
+                Name = campaignDto.Name,
                 Description = campaignDto.Description,
                 From = campaignDto.From,
                 To = campaignDto.To,
-                Url = campaignDto.Url
+                PictureUri = campaignDto.PictureUri
             };
+        }
+
+        private string GetUriPlaceholder(string campaignUri)
+        {
+            var baseUri = _settings.ExternalCatalogBaseUrl;
+
+            campaignUri = campaignUri.Replace("http://externalcatalogbaseurltobereplaced", baseUri);
+
+            return campaignUri;
         }
     }
 }
