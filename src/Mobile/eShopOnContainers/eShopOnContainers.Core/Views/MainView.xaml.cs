@@ -28,12 +28,16 @@ namespace eShopOnContainers.Core.Views
                     case 2:
                         CurrentPage = BasketView;
                         break;
+                    case 3:
+                        CurrentPage = CampaignView;
+                        break;
                 }
             });
 
 			await ((CatalogViewModel)HomeView.BindingContext).InitializeAsync(null);
 			await ((BasketViewModel)BasketView.BindingContext).InitializeAsync(null);
 			await ((ProfileViewModel)ProfileView.BindingContext).InitializeAsync(null);
+            await ((CampaignViewModel)CampaignView.BindingContext).InitializeAsync(null);
         }
 
         protected override async void OnCurrentPageChanged()
@@ -44,6 +48,7 @@ namespace eShopOnContainers.Core.Views
             {
                 // Force basket view refresh every time we access it
                 await (BasketView.BindingContext as ViewModelBase).InitializeAsync(null);
+                await (CampaignView.BindingContext as ViewModelBase).InitializeAsync(null);
             }
         }
     }

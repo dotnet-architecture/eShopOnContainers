@@ -20,6 +20,7 @@ namespace eShopOnContainers.Core.Helpers
 
         #region Setting Constants
 
+        private const string IdUserId = "user_id";
         private const string AccessToken = "access_token";
         private const string IdToken = "id_token";
         private const string IdUseMocks = "use_mocks";
@@ -34,6 +35,12 @@ namespace eShopOnContainers.Core.Helpers
         private static readonly string UrlBaseDefault = GlobalSetting.Instance.BaseEndpoint;
 
         #endregion
+
+        public static string UserId
+        {
+            get { return AppSettings.GetValueOrDefault<string>(IdUserId); }
+            set { AppSettings.AddOrUpdateValue<string>(IdUserId, value); }
+        }
 
         public static string AuthAccessToken
         {
