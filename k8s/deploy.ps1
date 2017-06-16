@@ -5,8 +5,11 @@ Param(
     [parameter(Mandatory=$false)][bool]$deployCI,
     [parameter(Mandatory=$false)][bool]$useDockerHub,
     [parameter(Mandatory=$false)][string]$execPath,
-    [parameter(Mandatory=$false)][string]$kubeconfigPath
+    [parameter(Mandatory=$false)][string]$kubeconfigPath,
+    [parameter(Mandatory=$true)][string]$configFile
 )
+
+$debugMode = $PSCmdlet.MyInvocation.BoundParameters["Debug"].IsPresent
 
 function ExecKube($cmd) {    
     if($deployCI) {
@@ -19,6 +22,19 @@ function ExecKube($cmd) {
         Invoke-Expression $exp
     }
 }
+
+
+$config =  Get-Content -Raw -Path $configFile | ConvertFrom-Json
+
+if ($debugMode) {
+Write-Host "Using following JSON config: "
+$json = ConvertTo-Json $config -Depth 5 
+Write-Host $json
+Write-Host "Press a key "
+[System.Console]::Read()
+}
+
+
 
 # Not used when deploying through CI VSTS
 if(-not $deployCI) {
@@ -54,11 +70,13 @@ ExecKube -cmd 'delete deployments --all'
 ExecKube -cmd 'delete services --all'
 ExecKube -cmd 'delete configmap config-files'
 ExecKube -cmd 'delete configmap urls'
+ExecKube -cmd 'delete configmap externalcfg'
 
 # start sql, rabbitmq, frontend deploymentsExecKube -cmd 'delete configmap config-files'
 ExecKube -cmd 'create configmap config-files --from-file=nginx-conf=nginx.conf'
 ExecKube -cmd 'label configmap config-files app=eshop'
-ExecKube -cmd 'create -f sql-data.yaml -f basket-data.yaml -f keystore-data.yaml -f rabbitmq.yaml -f services.yaml -f frontend.yaml'
+# ExecKube -cmd 'create -f sql-data.yaml -f basket-data.yaml -f keystore-data.yaml -f rabbitmq.yaml -f services.yaml -f frontend.yaml'
+ExecKube -cmd 'create -f services.yaml -f frontend.yaml'
 
 # building and publishing docker images not necessary when deploying through CI VSTS
 if(-not $deployCI) {
@@ -108,6 +126,27 @@ ExecKube -cmd 'create configmap urls `
     --from-literal=SpaClientExternalUrl=http://$($frontendUrl)'
     
 ExecKube -cmd 'label configmap urls app=eshop'
+
+Write-Host "Applying external configuration from json" -ForegroundColor Yellow
+
+ExecKube -cmd 'create configmap externalcfg `
+    --from-literal=CatalogSqlDb=$($config.sql.catalog) `
+    --from-literal=IdentitySqlDb=$($config.sql.identity) `
+    --from-literal=OrderingSqlDb=$($config.sql.ordering) `
+    --from-literal=MarketingSqlDb=$($config.sql.marketing) `
+    --from-literal=LocationsNoSqlDb=$($config.nosql.locations.constr) `
+    --from-literal=LocationsNoSqlDbName=$($config.nosql.locations.db) `
+    --from-literal=MarketingsNoSqlDb=$($config.nosql.marketing.constr) `
+    --from-literal=MarketingNoSqlDbName=$($config.nosql.marketing.db) `
+    --from-literal=BasketRedisConStr=$($config.redis.basket) `
+    --from-literal=LocationsBus=$($config.servicebus.locations) `
+    --from-literal=MarketingBus=$($config.servicebus.marketing) `
+    --from-literal=BasketBus=$($config.servicebus.basket) `
+    --from-literal=OrderingBus=$($config.servicebus.ordering) `
+    --from-literal=PaymentBus=$($config.servicebus.payment) '
+
+ExecKube -cmd 'label configmap externalcfg app=eshop'
+
 
 Write-Host "Creating deployments..." -ForegroundColor Yellow
 

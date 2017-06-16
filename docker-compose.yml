@@ -108,7 +108,7 @@ services:
       - rabbitmq    
     
   locations.api:
-    image: locations.api
+    image: eshop/locations.api
     build:
       context: ./src/Services/Location/Locations.API
       dockerfile: Dockerfile
