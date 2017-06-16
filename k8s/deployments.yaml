@@ -72,7 +72,7 @@ spec:
           valueFrom:
            configMapKeyRef:
              name: externalcfg
-             key: CatalogBus        
+             key: CatalogBus
         ports:
         - containerPort: 80
       imagePullSecrets:
