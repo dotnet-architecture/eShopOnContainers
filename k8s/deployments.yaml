@@ -68,7 +68,7 @@ spec:
            configMapKeyRef:
              name: urls
              key: CatalogUrl
-        -name: EventBusConnection
+        - name: EventBusConnection
           valueFrom:
            configMapKeyRef:
              name: externalcfg
