@@ -1,6 +1,6 @@
 @{
     ViewData["Title"] = "Campaigns";
-    @model IEnumerable<Campaign>
+@model WebMVC.ViewModels.CampaignViewModel
 }
 
 <section class="esh-campaigns-hero">
@@ -9,28 +9,29 @@
     </div>
 </section>
 
-    @Html.Partial("_Header", new List<Header>() {
-            new Header() { Controller = "Catalog", Text = "Back to catalog" } })
+@Html.Partial("_Header", new List<Header>() {
+    new Header() { Controller = "Catalog", Text = "Back to catalog" } })
 
 <div class="container">
-    <div class="card-group esh-campaigns-items row">
-            @foreach (var campaign in Model ?? Enumerable.Empty<Campaign>())
-            {
-                <div class="esh-campaigns-item col-md-4">
-                    <form asp-controller="Campaigns" asp-action="Details" asp-route-id="@campaign.Id">
-                        <div class="card-block">
-                            <h4 class="card-title esh-campaigns-name">@campaign.Name</h4>
-                            <img class="card-img-top esh-campaigns-thumbnail" src="@campaign.PictureUri" alt="@campaign.Name">
-                        <input class="esh-campaigns-button" type="submit" value="More details">
-                        </div>
-                        <div class="card-footer">
+    @if (Model.CampaignItems != null && Model.CampaignItems.Any())
+    {
+        @Html.Partial("_pagination", Model.PaginationInfo)
 
-                            <small class="text-muted">
-                                From @campaign.From.ToString("MMMM dd, yyyy") until @campaign.To.ToString("MMMM dd, yyyy")
-                            </small>
-                        </div> 
-                    </form>
-                </div>
-            }
+        <div class="card-group esh-campaigns-items row">
+        @foreach (var catalogItem in Model.CampaignItems)
+        {
+            <div class="esh-campaigns-item col-md-4">
+                @Html.Partial("_campaign", catalogItem)
+            </div>
+        }
         </div>
+
+        @Html.Partial("_pagination", Model.PaginationInfo)
+    }
+    else
+    {
+        <div class="esh-campaigns-items row">
+            THERE ARE NO CAMPAIGNS
+        </div>
+    }    
 </div>
