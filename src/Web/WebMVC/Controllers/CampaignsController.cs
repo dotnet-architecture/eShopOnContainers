@@ -1,6 +1,3 @@
-using Microsoft.EntityFrameworkCore.Query.Internal;
-using WebMVC.ViewModels;
-
 namespace Microsoft.eShopOnContainers.WebMVC.Controllers
 {
     using AspNetCore.Authorization;
@@ -10,6 +7,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
     using System.Threading.Tasks;
     using System;
     using ViewModels.Pagination;
+    using global::WebMVC.ViewModels;
 
     [Authorize]
     public class CampaignsController : Controller
