@@ -74,7 +74,8 @@ namespace Identity.API.Configuration
                         IdentityServerConstants.StandardScopes.OfflineAccess,
                         "orders",
                         "basket",
-                        "locations"
+                        "locations",
+                        "marketing"
                     },
                     //Allow requesting refresh tokens for long lived API access
                     AllowOfflineAccess = true,
