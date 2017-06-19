@@ -1,6 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Application Name="fabric:/eShopOnServiceFabric" xmlns="http://schemas.microsoft.com/2011/01/fabric" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <Parameters>
+    <Parameter Name="MarketingApi_InstanceCount" Value="-1" />
+    <Parameter Name="GracePeriodManager_InstanceCount" Value="-1" />
+    <Parameter Name="MongoDb_InstanceCount" Value="-1" />
     <Parameter Name="WebStatus_InstanceCount" Value="-1" />
     <Parameter Name="WebSPA_InstanceCount" Value="-1" />
     <Parameter Name="WebMVC_InstanceCount" Value="-1" />

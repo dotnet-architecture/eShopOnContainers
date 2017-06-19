@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.6
+VisualStudioVersion = 15.0.26430.13
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{932D8224-11F6-4D07-B109-DA28AD288A63}"
 EndProject
@@ -58,21 +58,21 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventBus", "src\BuildingBlo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventBusRabbitMQ", "src\BuildingBlocks\EventBus\EventBusRabbitMQ\EventBusRabbitMQ.csproj", "{8088F3FC-6787-45FA-A924-816EC81CBFAC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationEventLogEF", "src\BuildingBlocks\EventBus\IntegrationEventLogEF\IntegrationEventLogEF.csproj", "{9EE28E45-1533-472B-8267-56C48855BA0E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegrationEventLogEF", "src\BuildingBlocks\EventBus\IntegrationEventLogEF\IntegrationEventLogEF.csproj", "{9EE28E45-1533-472B-8267-56C48855BA0E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "HealthChecks", "HealthChecks", "{A81ECBC2-6B00-4DCD-8388-469174033379}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Extensions.HealthChecks", "src\BuildingBlocks\HealthChecks\src\Microsoft.Extensions.HealthChecks\Microsoft.Extensions.HealthChecks.csproj", "{942ED6E8-0050-495F-A0EA-01E97F63760C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebStatus", "src\Web\WebStatus\WebStatus.csproj", "{C0A7918D-B4F2-4E7F-8DE2-1E5279EF079F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebStatus", "src\Web\WebStatus\WebStatus.csproj", "{C0A7918D-B4F2-4E7F-8DE2-1E5279EF079F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resilience", "Resilience", "{FBF43D93-F2E7-4FF8-B4AB-186895949B88}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Resilience.Http", "src\BuildingBlocks\Resilience\Resilience.Http\Resilience.Http.csproj", "{D1C47FF1-91F1-4CAF-9ABB-AD642B821502}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Resilience.Http", "src\BuildingBlocks\Resilience\Resilience.Http\Resilience.Http.csproj", "{D1C47FF1-91F1-4CAF-9ABB-AD642B821502}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Payment", "Payment", "{022E145D-1593-47EE-9608-8E323D3C63F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payment.API", "src\Services\Payment\Payment.API\Payment.API.csproj", "{1A01AF82-6FCB-464C-B39C-F127AEBD315D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Payment.API", "src\Services\Payment\Payment.API\Payment.API.csproj", "{1A01AF82-6FCB-464C-B39C-F127AEBD315D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.AspNetCore.HealthChecks", "src\BuildingBlocks\HealthChecks\src\Microsoft.AspNetCore.HealthChecks\Microsoft.AspNetCore.HealthChecks.csproj", "{22A0F9C1-2D4A-4107-95B7-8459E6688BC5}"
 EndProject
@@ -82,15 +82,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventBus.Tests", "src\Build
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GracePeriod", "GracePeriod", "{F38B4FF0-0B49-405A-B1B4-F7A5E3BC4C4E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GracePeriodManager", "src\Services\GracePeriod\GracePeriodManager\GracePeriodManager.csproj", "{F6E0F0DD-1400-43C3-B5E0-7CC325728C47}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GracePeriodManager", "src\Services\GracePeriod\GracePeriodManager\GracePeriodManager.csproj", "{F6E0F0DD-1400-43C3-B5E0-7CC325728C47}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Location", "Location", "{41139F64-4046-4F16-96B7-D941D96FA9C6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Locations.API", "src\Services\Location\Locations.API\Locations.API.csproj", "{E7581357-FC34-474C-B8F5-307EE3CE05EF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Locations.API", "src\Services\Location\Locations.API\Locations.API.csproj", "{E7581357-FC34-474C-B8F5-307EE3CE05EF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataProtection", "DataProtection", "{88B22DBB-AA8F-4290-A454-2C109352C345}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataProtection", "src\BuildingBlocks\DataProtection\DataProtection\DataProtection.csproj", "{23A33F9B-7672-426D-ACF9-FF8436ADC81A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataProtection", "src\BuildingBlocks\DataProtection\DataProtection\DataProtection.csproj", "{23A33F9B-7672-426D-ACF9-FF8436ADC81A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Marketing", "Marketing", "{A5260DE0-1FDD-467E-9CC1-A028AB081CEE}"
 EndProject

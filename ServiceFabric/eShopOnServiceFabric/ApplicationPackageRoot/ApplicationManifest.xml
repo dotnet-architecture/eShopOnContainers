@@ -5,6 +5,9 @@
                      xmlns:xsd="http://www.w3.org/2001/XMLSchema"
                      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <Parameters>
+    <Parameter Name="MarketingApi_InstanceCount" DefaultValue="-1" />
+    <Parameter Name="GracePeriodManager_InstanceCount" DefaultValue="-1" />
+    <Parameter Name="MongoDb_InstanceCount" DefaultValue="-1" />
     <Parameter Name="WebStatus_InstanceCount" DefaultValue="-1" />
     <Parameter Name="WebSPA_InstanceCount" DefaultValue="-1" />
     <Parameter Name="WebMVC_InstanceCount" DefaultValue="-1" />
@@ -15,19 +18,22 @@
     <Parameter Name="IdentityApi_InstanceCount" DefaultValue="-1" />
     <Parameter Name="CatalogAPI_InstanceCount" DefaultValue="-1" />
     <Parameter Name="BasketApi_InstanceCount" DefaultValue="-1" />
-    <Parameter Name="SqlServer_InstanceCount" DefaultValue="-1" />
-    <Parameter Name="Rabbit_InstanceCount" DefaultValue="-1" />
-    <Parameter Name="Redis_InstanceCount" DefaultValue="-1" />
-    <Parameter Name="IdentityApi_InstanceCount" DefaultValue="-1" />
-    <Parameter Name="CatalogApi_InstanceCount" DefaultValue="-1" />
-    <Parameter Name="OrderingApi_InstanceCount" DefaultValue="-1" />
-    <Parameter Name="WebStatus_InstanceCount" DefaultValue="-1" />
-    <Parameter Name="WebSPA_InstanceCount" DefaultValue="-1" />
-    <Parameter Name="WebMVC_InstanceCount" DefaultValue="-1" />
   </Parameters>
   <!-- Import the ServiceManifest from the ServicePackage. The ServiceManifestName and ServiceManifestVersion 
        should match the Name and Version attributes of the ServiceManifest element defined in the 
        ServiceManifest.xml file. -->
+  <ServiceManifestImport>
+    <ServiceManifestRef ServiceManifestName="MarketingApiPkg" ServiceManifestVersion="1.0.0" />
+    <ConfigOverrides />
+  </ServiceManifestImport>
+  <ServiceManifestImport>
+    <ServiceManifestRef ServiceManifestName="GracePeriodManagerPkg" ServiceManifestVersion="1.0.0" />
+    <ConfigOverrides />
+  </ServiceManifestImport>
+  <ServiceManifestImport>
+    <ServiceManifestRef ServiceManifestName="MongoDbPkg" ServiceManifestVersion="1.0.0" />
+    <ConfigOverrides />
+  </ServiceManifestImport>
   <ServiceManifestImport>
     <ServiceManifestRef ServiceManifestName="WebStatusPkg" ServiceManifestVersion="1.0.0" />
     <ConfigOverrides />
@@ -154,12 +160,36 @@
       </ContainerHostPolicies>
     </Policies>
   </ServiceManifestImport>
+  <ServiceManifestImport>
+    <ServiceManifestRef ServiceManifestName="MongoDbPkg" ServiceManifestVersion="1.0.0" />
+    <ConfigOverrides />
+    <Policies>
+      <ContainerHostPolicies CodePackageRef="Code">
+        <PortBinding ContainerPort="27017" EndpointRef="MongoDbTypeEndpoint"/>
+      </ContainerHostPolicies>
+    </Policies>
+  </ServiceManifestImport>
   <DefaultServices>
     <!-- The section below creates instances of service types, when an instance of this 
          application type is created. You can also create one or more instances of service type using the 
          ServiceFabric PowerShell module.
          
          The attribute ServiceTypeName below must match the name defined in the imported ServiceManifest.xml file. -->
+    <Service Name="MarketingApi" ServicePackageActivationMode="ExclusiveProcess">
+      <StatelessService ServiceTypeName="MarketingApiType" InstanceCount="[MarketingApi_InstanceCount]">
+        <SingletonPartition />
+      </StatelessService>
+    </Service>
+    <Service Name="GracePeriodManager" ServicePackageActivationMode="ExclusiveProcess">
+      <StatelessService ServiceTypeName="GracePeriodManagerType" InstanceCount="[GracePeriodManager_InstanceCount]">
+        <SingletonPartition />
+      </StatelessService>
+    </Service>
+    <Service Name="MongoDb" ServicePackageActivationMode="ExclusiveProcess">
+      <StatelessService ServiceTypeName="MongoDbType" InstanceCount="[MongoDb_InstanceCount]">
+        <SingletonPartition />
+      </StatelessService>
+    </Service>
     <Service Name="WebStatus">
       <StatelessService ServiceTypeName="WebStatusType" InstanceCount="[WebStatus_InstanceCount]">
         <SingletonPartition />
@@ -209,51 +239,6 @@
       <StatelessService ServiceTypeName="BasketApiType" InstanceCount="[BasketApi_InstanceCount]">
         <SingletonPartition />
       </StatelessService>
-    </Service>
-    <Service Name="SqlServer">
-      <StatelessService ServiceTypeName="SqlServerType" InstanceCount="[SqlServer_InstanceCount]">
-        <SingletonPartition />
-      </StatelessService>
-    </Service>
-    <Service Name="Rabbit">
-      <StatelessService ServiceTypeName="RabbitType" InstanceCount="[Rabbit_InstanceCount]">
-        <SingletonPartition />
-      </StatelessService>
-    </Service>
-    <Service Name="Redis">
-      <StatelessService ServiceTypeName="RedisType" InstanceCount="[Redis_InstanceCount]">
-        <SingletonPartition />
-      </StatelessService>
-    </Service>
-    <Service Name="IdentityApi">
-      <StatelessService ServiceTypeName="IdentityApiType" InstanceCount="[IdentityApi_InstanceCount]">
-        <SingletonPartition />
-      </StatelessService>
-    </Service>
-    <Service Name="CatalogApi">
-      <StatelessService ServiceTypeName="CatalogApiType" InstanceCount="[CatalogApi_InstanceCount]">
-        <SingletonPartition />
-      </StatelessService>
-    </Service>
-    <Service Name="OrderingApi">
-      <StatelessService ServiceTypeName="OrderingApiType" InstanceCount="[OrderingApi_InstanceCount]">
-        <SingletonPartition />
-      </StatelessService>
-    </Service>
-    <Service Name="WebStatus">
-      <StatelessService ServiceTypeName="WebStatusType" InstanceCount="[WebStatus_InstanceCount]">
-        <SingletonPartition />
-      </StatelessService>
-    </Service>
-    <Service Name="WebSPA">
-      <StatelessService ServiceTypeName="WebSPAType" InstanceCount="[WebSPA_InstanceCount]">
-        <SingletonPartition />
-      </StatelessService>
-    </Service>
-    <Service Name="WebMVC">
-      <StatelessService ServiceTypeName="WebMVCType" InstanceCount="[WebMVC_InstanceCount]">
-        <SingletonPartition />
-      </StatelessService>
-    </Service>
+    </Service>   
   </DefaultServices>
 </ApplicationManifest>
