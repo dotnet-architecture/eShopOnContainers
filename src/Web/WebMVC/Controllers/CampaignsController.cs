@@ -1,33 +1,42 @@
 namespace Microsoft.eShopOnContainers.WebMVC.Controllers
 {
-    using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Mvc;
-    using Microsoft.eShopOnContainers.WebMVC.Models;
-    using Microsoft.eShopOnContainers.WebMVC.Services;
-    using Microsoft.eShopOnContainers.WebMVC.ViewModels;
-    using System.Collections.Generic;
+    using AspNetCore.Authorization;
+    using AspNetCore.Mvc;
+    using Services;
+    using ViewModels;
     using System.Threading.Tasks;
+    using System;
+    using ViewModels.Pagination;
+    using global::WebMVC.ViewModels;
 
     [Authorize]
     public class CampaignsController : Controller
     {
-        private ICampaignService _campaignService;
+        private readonly ICampaignService _campaignService;
 
         public CampaignsController(ICampaignService campaignService) =>
             _campaignService = campaignService;
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 0, int pageSize = 10)
         {
-            var campaignDtoList = await _campaignService.GetCampaigns();
+            var campaignList = await _campaignService.GetCampaigns(pageSize, page);
 
-            if(campaignDtoList is null)
+            var vm = new CampaignViewModel()
             {
-                return View();
-            }
+                CampaignItems = campaignList.Data,
+                PaginationInfo = new PaginationInfo()
+                {
+                    ActualPage = page,
+                    ItemsPerPage = pageSize,
+                    TotalItems = campaignList.Count,
+                    TotalPages = (int)Math.Ceiling(((decimal)campaignList.Count / pageSize))
+                }
+            };
 
-            var campaignList = MapCampaignModelListToDtoList(campaignDtoList);
+            vm.PaginationInfo.Next = (vm.PaginationInfo.ActualPage == vm.PaginationInfo.TotalPages - 1) ? "is-disabled" : "";
+            vm.PaginationInfo.Previous = (vm.PaginationInfo.ActualPage == 0) ? "is-disabled" : "";
 
-            return View(campaignList);
+            return View(vm);
         }
 
         public async Task<IActionResult> Details(int id)
@@ -39,7 +48,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
                 return NotFound();
             }
 
-            var campaign = new Campaign
+            var campaign = new CampaignItem
             {
                 Id = campaignDto.Id,
                 Name = campaignDto.Name,
@@ -50,31 +59,6 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
             };
 
             return View(campaign);
-        }
-
-        private List<Campaign> MapCampaignModelListToDtoList(IEnumerable<CampaignDTO> campaignDtoList)
-        {
-            var campaignList = new List<Campaign>();
-
-            foreach(var campaignDto in campaignDtoList)
-            {
-                campaignList.Add(MapCampaignDtoToModel(campaignDto));
-            }
-
-            return campaignList;
-        }
-
-        private Campaign MapCampaignDtoToModel(CampaignDTO campaign)
-        {
-            return new Campaign
-            {
-                Id = campaign.Id,
-                Name = campaign.Name,
-                Description = campaign.Description,
-                From = campaign.From,
-                To = campaign.To,
-                PictureUri = campaign.PictureUri
-            };
         }
     }
 }

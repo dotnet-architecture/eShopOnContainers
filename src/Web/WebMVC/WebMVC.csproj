@@ -79,8 +79,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\Campaigns\" />
     <Folder Include="wwwroot\lib\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="ViewModels\CampaignItem.cs" />
   </ItemGroup>
 
 </Project>

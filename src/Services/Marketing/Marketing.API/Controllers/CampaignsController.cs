@@ -1,17 +1,18 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Marketing.API.Controllers
 {
-    using Infrastructure.Repositories;
-    using Microsoft.AspNetCore.Mvc;
-    using Microsoft.eShopOnContainers.Services.Marketing.API.Infrastructure;
-    using System.Threading.Tasks;
-    using Microsoft.eShopOnContainers.Services.Marketing.API.Model;
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.eShopOnContainers.Services.Marketing.API.Dto;
-    using System.Collections.Generic;
-    using Microsoft.AspNetCore.Authorization;
     using System;
     using System.Linq;
-    using Microsoft.Extensions.Options;
+    using System.Collections.Generic;
+    using Infrastructure.Repositories;
+    using AspNetCore.Mvc;
+    using Infrastructure;
+    using System.Threading.Tasks;
+    using Model;
+    using EntityFrameworkCore;
+    using Dto;
+    using AspNetCore.Authorization;
+    using Extensions.Options;
+    using Microsoft.eShopOnContainers.Services.Marketing.API.ViewModel;
 
     [Route("api/v1/[controller]")]
     [Authorize]
@@ -124,37 +125,43 @@
         }
 
         [HttpGet("user/{userId:guid}")]
-        public async Task<IActionResult> GetCampaignsByUserId(Guid userId)
+        public async Task<IActionResult> GetCampaignsByUserId(Guid userId, int pageSize = 10, int pageIndex = 0)
         {
             var marketingData = await _marketingDataRepository.GetAsync(userId.ToString());
 
-            if (marketingData is null)
-            {
-                return NotFound();
-            }
-
             var campaignDtoList = new List<CampaignDTO>();
 
-            //Get User Location Campaign
-            foreach(var userLocation in marketingData.Locations)
+            if (marketingData != null)
             {
-                var userCampaignList = await _context.Rules
-                    .OfType<UserLocationRule>()
-                    .Include(c => c.Campaign)
-                    .Where(c => c.Campaign.From <= DateTime.Now
-                    && c.Campaign.To >= DateTime.Now 
-                    && c.LocationId == userLocation.LocationId)
-                    .Select(c => c.Campaign)
-                    .ToListAsync();
-
-                if (userCampaignList != null && userCampaignList.Any())
+                //Get User Location Campaign
+                foreach (var userLocation in marketingData.Locations)
                 {
-                    var userCampaignDtoList = MapCampaignModelListToDtoList(userCampaignList);
-                    campaignDtoList.AddRange(userCampaignDtoList);
+                    var userCampaignList = await _context.Rules
+                        .OfType<UserLocationRule>()
+                        .Include(c => c.Campaign)
+                        .Where(c => c.Campaign.From <= DateTime.Now
+                        && c.Campaign.To >= DateTime.Now
+                        && c.LocationId == userLocation.LocationId)
+                        .Select(c => c.Campaign)
+                        .ToListAsync();
+
+                    if (userCampaignList != null && userCampaignList.Any())
+                    {
+                        var userCampaignDtoList = MapCampaignModelListToDtoList(userCampaignList);
+                        campaignDtoList.AddRange(userCampaignDtoList);
+                    }
                 }
             }
 
-            return Ok(campaignDtoList);
+            var totalItems = campaignDtoList.Count();
+            campaignDtoList = campaignDtoList
+                .Skip(pageSize * pageIndex)
+                .Take(pageSize).ToList();
+
+            var model = new PaginatedItemsViewModel<CampaignDTO>(
+                pageIndex, pageSize, totalItems, campaignDtoList);
+
+            return Ok(model);
         }
 
 
