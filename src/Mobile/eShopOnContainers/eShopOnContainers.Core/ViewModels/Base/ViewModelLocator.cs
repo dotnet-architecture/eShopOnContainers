@@ -49,6 +49,7 @@ namespace eShopOnContainers.Core.ViewModels.Base
 			builder.RegisterType<ProfileViewModel>();
 			builder.RegisterType<SettingsViewModel>();
 		    builder.RegisterType<CampaignViewModel>();
+		    builder.RegisterType<CampaignDetailsViewModel>();
 
             // Services
             builder.RegisterType<NavigationService>().As<INavigationService>().SingleInstance();
