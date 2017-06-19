@@ -50,7 +50,9 @@ namespace Identity.API.Configuration
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
                         "orders",
-                        "basket"
+                        "basket",
+                        "locations",
+                        "marketing"
                     }
                 },
                 new Client
@@ -74,7 +76,8 @@ namespace Identity.API.Configuration
                         IdentityServerConstants.StandardScopes.OfflineAccess,
                         "orders",
                         "basket",
-                        "locations"
+                        "locations",
+                        "marketing"
                     },
                     //Allow requesting refresh tokens for long lived API access
                     AllowOfflineAccess = true,
