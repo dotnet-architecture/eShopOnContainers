@@ -11,9 +11,9 @@ namespace eShopOnContainers.Core.Services.Marketing
 
     public class CampaignMockService : ICampaignService
     {
-        private readonly ObservableCollection<Campaign> _mockCampaign = new ObservableCollection<Campaign>
+        private readonly ObservableCollection<CampaignItem> _mockCampaign = new ObservableCollection<CampaignItem>
         {
-            new Campaign
+            new CampaignItem
             {
                 Id = Common.Common.MockCampaignd01,
                 PictureUri = Device.RuntimePlatform != Device.Windows
@@ -25,7 +25,7 @@ namespace eShopOnContainers.Core.Services.Marketing
                 To = DateTime.Now.AddDays(7)
             },
 
-            new Campaign
+            new CampaignItem
             {
                 Id = Common.Common.MockCampaignd02,
                 PictureUri = Device.RuntimePlatform != Device.Windows
@@ -38,18 +38,16 @@ namespace eShopOnContainers.Core.Services.Marketing
             }
         };
 
-        public async Task<ObservableCollection<Campaign>> GetAllCampaignsAsync(string userId, string token)
+        public async Task<ObservableCollection<CampaignItem>> GetAllCampaignsAsync(string userId, string token)
         {
             await Task.Delay(500);
 
             return _mockCampaign;
         }
 
-        public async Task<Campaign> GetCampaignByIdAsync(int camapignId, string token)
+        public async Task<CampaignItem> GetCampaignByIdAsync(int campaignId, string token)
         {
-            await Task.Delay(500);
-
-            return _mockCampaign.First();
+            return _mockCampaign.SingleOrDefault(c => c.Id == campaignId);
         }
     }
 }

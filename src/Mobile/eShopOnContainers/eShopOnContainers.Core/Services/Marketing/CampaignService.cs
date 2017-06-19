@@ -1,4 +1,7 @@
-﻿namespace eShopOnContainers.Core.Services.Marketing
+﻿using eShopOnContainers.Core.Extensions;
+using eShopOnContainers.Core.Helpers;
+
+namespace eShopOnContainers.Core.Services.Marketing
 {
     using System;
     using System.Collections.ObjectModel;
@@ -15,20 +18,36 @@
             _requestProvider = requestProvider;
         }
 
-        public async Task<ObservableCollection<Campaign>> GetAllCampaignsAsync(string userId, string token)
+        public async Task<ObservableCollection<CampaignItem>> GetAllCampaignsAsync(string userId, string token)
         {
             UriBuilder builder = new UriBuilder(GlobalSetting.Instance.MarketingEndpoint);
 
-            builder.Path = $"api/v1/campaigns/{userId}";
+            builder.Path = $"api/v1/campaigns/user/{userId}";
 
             string uri = builder.ToString();
 
-            return await _requestProvider.GetAsync<ObservableCollection<Campaign>>(uri, token);
+            CampaignRoot campaign =
+                await _requestProvider.GetAsync<CampaignRoot>(uri, token);
+
+            if (campaign?.Data != null)
+            {
+                ServicesHelper.FixCatalogItemPictureUri(campaign?.Data);
+
+                return campaign?.Data.ToObservableCollection();
+            }
+
+            return new ObservableCollection<CampaignItem>();
         }
 
-        public Task<Campaign> GetCampaignByIdAsync(int campaignId, string token)
+        public async Task<CampaignItem> GetCampaignByIdAsync(int campaignId, string token)
         {
-            throw new NotImplementedException();
+            UriBuilder builder = new UriBuilder(GlobalSetting.Instance.MarketingEndpoint);
+
+            builder.Path = $"api/v1/campaigns/{campaignId}";
+
+            string uri = builder.ToString();
+
+            return await _requestProvider.GetAsync<CampaignItem>(uri, token);
         }
     }
 }

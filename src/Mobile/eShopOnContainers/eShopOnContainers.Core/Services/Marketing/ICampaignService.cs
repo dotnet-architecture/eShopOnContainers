@@ -7,8 +7,8 @@ namespace eShopOnContainers.Core.Services.Marketing
 
     public interface ICampaignService
     {
-        Task<ObservableCollection<Campaign>> GetAllCampaignsAsync(string userId, string token);
+        Task<ObservableCollection<CampaignItem>> GetAllCampaignsAsync(string userId, string token);
 
-        Task<Campaign> GetCampaignByIdAsync(int id, string token);
+        Task<CampaignItem> GetCampaignByIdAsync(int id, string token);
     }
 }
