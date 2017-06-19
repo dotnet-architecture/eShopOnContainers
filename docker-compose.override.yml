@@ -122,7 +122,7 @@ services:
   payment.api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://0.0.0.0:5108
+      - ASPNETCORE_URLS=http://0.0.0.0:80
       - EventBusConnection=rabbitmq
     ports:
       - "5108:80"

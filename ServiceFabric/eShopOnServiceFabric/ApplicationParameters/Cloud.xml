@@ -1,6 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Application Name="fabric:/eShopOnServiceFabric" xmlns="http://schemas.microsoft.com/2011/01/fabric" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <Parameters>
+    <Parameter Name="BasketData_InstanceCount" Value="-1" />
+    <Parameter Name="LocationsApi_InstanceCount" Value="-1" />
+    <Parameter Name="PaymentApi_InstanceCount" Value="-1" />
     <Parameter Name="MarketingApi_InstanceCount" Value="-1" />
     <Parameter Name="GracePeriodManager_InstanceCount" Value="-1" />
     <Parameter Name="MongoDb_InstanceCount" Value="-1" />
@@ -8,11 +11,10 @@
     <Parameter Name="WebSPA_InstanceCount" Value="-1" />
     <Parameter Name="WebMVC_InstanceCount" Value="-1" />
     <Parameter Name="SqlServer_InstanceCount" Value="-1" />
-    <Parameter Name="Redis_InstanceCount" Value="-1" />
     <Parameter Name="Rabbit_InstanceCount" Value="-1" />
     <Parameter Name="OrderingApi_InstanceCount" Value="-1" />
     <Parameter Name="IdentityApi_InstanceCount" Value="-1" />
-    <Parameter Name="CatalogAPI_InstanceCount" Value="-1" />
+    <Parameter Name="CatalogApi_InstanceCount" Value="-1" />
     <Parameter Name="BasketApi_InstanceCount" Value="-1" />
   </Parameters>
 </Application>

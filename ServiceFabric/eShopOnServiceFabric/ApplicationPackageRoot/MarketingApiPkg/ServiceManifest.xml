@@ -23,14 +23,12 @@
       <EnvironmentVariable Name="ASPNETCORE_ENVIRONMENT" Value="Development"/>
       <EnvironmentVariable Name="ASPNETCORE_URLS" Value="http://0.0.0.0:80"/>
       <EnvironmentVariable Name="ConnectionString" Value="Server=sql.data;Database=Microsoft.eShopOnContainers.Services.MarketingDb;User Id=sa;Password=Pass@word"/>
-      <EnvironmentVariable Name="OrderingUrl" Value=""/>
-      <EnvironmentVariable Name="IdentityUrl" Value=""/>
-      <EnvironmentVariable Name="BasketUrl" Value=""/>
-    </EnvironmentVariables>
-    - ASPNETCORE_ENVIRONMENT=Development
-    - ASPNETCORE_URLS=http://0.0.0.0:80
-    - ConnectionString=Server=sql.data;Database=Microsoft.eShopOnContainers.Services.MarketingDb;User Id=sa;Password=Pass@word
-    - identityUrl=http://identity.api              #Local: You need to open your local dev-machine firewall at range 5100-5105.  at range 5100-5105.
+      <EnvironmentVariable Name="MongoConnectionString" Value="mongodb://nosql.data"/>
+      <EnvironmentVariable Name="MongoDatabase" Value="MarketingDb"/>
+      <EnvironmentVariable Name="EventBusConnection" Value="rabbitmq"/>
+      <EnvironmentVariable Name="ExternalCatalogBaseUrl" Value="http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5110"/>
+      <EnvironmentVariable Name="identityUrl" Value="http://identity.api"/>
+    </EnvironmentVariables>   
   </CodePackage>
 
   <!-- Config package is the contents of the Config directoy under PackageRoot that contains an 
