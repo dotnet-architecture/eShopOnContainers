@@ -32,6 +32,8 @@ namespace eShopOnContainers.Core.Helpers
         private static readonly string IdTokenDefault = string.Empty;
 		private static readonly bool UseMocksDefault = true;
         private static readonly bool UseFakeLocationDefault = false;
+        private static readonly double FakeLatitudeValue = 47.604610d;
+        private static readonly double FakeLongitudeValue = -122.315752d;
         private static readonly string UrlBaseDefault = GlobalSetting.Instance.BaseEndpoint;
 
         #endregion
@@ -106,7 +108,7 @@ namespace eShopOnContainers.Core.Helpers
         {
             get
             {
-                return AppSettings.GetValueOrDefault<double>(IdFakeLatitude);
+                return AppSettings.GetValueOrDefault<double>(IdFakeLatitude, FakeLatitudeValue);
             }
             set
             {
@@ -117,7 +119,7 @@ namespace eShopOnContainers.Core.Helpers
         {
             get
             {
-                return AppSettings.GetValueOrDefault<double>(IdFakeLongitude);
+                return AppSettings.GetValueOrDefault<double>(IdFakeLongitude, FakeLongitudeValue);
             }
             set
             {
