@@ -12,6 +12,7 @@
                 .UseKestrel()
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseStartup<Startup>()
+                .UseWebRoot("Pics")
                 .Build();
 
             host.Run();

@@ -11,6 +11,7 @@
     using Xunit;
     using System.Collections.Generic;
     using Microsoft.eShopOnContainers.Services.Marketing.API.Dto;
+    using Microsoft.eShopOnContainers.Services.Catalog.API.ViewModel;
 
     public class MarketingScenarios : MarketingScenariosBase
     {
@@ -49,9 +50,9 @@
                     .GetAsync(CampaignScenariosBase.Get.UserCampaignsByUserId(userId));
 
                 responseBody = await UserLocationCampaignResponse.Content.ReadAsStringAsync();
-                var userLocationCampaigns = JsonConvert.DeserializeObject<List<CampaignDTO>>(responseBody);
+                var userLocationCampaigns = JsonConvert.DeserializeObject<PaginatedItemsViewModel<CampaignDTO>>(responseBody);
 
-                Assert.True(userLocationCampaigns.Count > 0);
+                Assert.True(userLocationCampaigns.Data != null);
             }
         }
     }

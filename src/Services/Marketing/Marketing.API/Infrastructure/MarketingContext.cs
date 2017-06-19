@@ -31,8 +31,8 @@
                 .ForSqlServerUseSequenceHiLo("campaign_hilo")
                 .IsRequired();
 
-            builder.Property(m => m.Description)
-                .HasColumnName("Description")
+            builder.Property(m => m.Name)
+                .HasColumnName("Name")
                 .IsRequired();
 
             builder.Property(m => m.From)
@@ -45,6 +45,10 @@
 
             builder.Property(m => m.Description)
                 .HasColumnName("Description")
+                .IsRequired();
+
+            builder.Property(m => m.PictureUri)
+                .HasColumnName("PictureUri")
                 .IsRequired();
 
             builder.HasMany(m => m.Rules)

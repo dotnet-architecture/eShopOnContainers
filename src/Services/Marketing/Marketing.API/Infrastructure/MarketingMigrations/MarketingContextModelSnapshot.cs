@@ -32,10 +32,16 @@ namespace Microsoft.eShopOnContainers.Services.Marketing.API.Infrastructure.Mark
                     b.Property<DateTime>("From")
                         .HasColumnName("From");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnName("Name");
+
+                    b.Property<string>("PictureUri")
+                        .IsRequired()
+                        .HasColumnName("PictureUri");
+
                     b.Property<DateTime>("To")
                         .HasColumnName("To");
-
-                    b.Property<string>("Url");
 
                     b.HasKey("Id");
 

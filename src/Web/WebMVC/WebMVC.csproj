@@ -9,6 +9,18 @@
     <DockerComposeProjectPath>..\..\..\docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Content Remove="wwwroot/css\campaigns\catalog.component.css" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="wwwroot\css\campaigns\campaigns.component.css" />
+    <Content Include="wwwroot\css\campaigns\orders.component.css" />
+    <Content Include="wwwroot\css\catalog\orders.component.css">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
   <!--<ItemGroup>
     <Compile Remove="wwwroot\lib\bootstrap\**" />
     <Content Remove="wwwroot\lib\bootstrap\**" />
@@ -68,6 +80,10 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\lib\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="ViewModels\CampaignItem.cs" />
   </ItemGroup>
 
 </Project>
