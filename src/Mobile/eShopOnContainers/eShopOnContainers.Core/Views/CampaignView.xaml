@@ -74,7 +74,7 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <templates:ProductTemplate />
+                            <templates:CampaignTemplate />
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using eShopOnContainers.Core.Helpers;
 using eShopOnContainers.Core.Models.Catalog;
@@ -14,7 +15,7 @@ namespace eShopOnContainers.Core.ViewModels
 
     public class CampaignViewModel : ViewModelBase
     {
-        private ObservableCollection<Campaign> _campaigns;
+        private ObservableCollection<CampaignItem> _campaigns;
         private readonly ICampaignService _campaignService;
 
         public CampaignViewModel(ICampaignService campaignService)
@@ -22,7 +23,7 @@ namespace eShopOnContainers.Core.ViewModels
             _campaignService = campaignService;
         }
 
-        public ObservableCollection<Campaign> Campaigns
+        public ObservableCollection<CampaignItem> Campaigns
         {
             get => _campaigns;
             set
@@ -32,7 +33,7 @@ namespace eShopOnContainers.Core.ViewModels
             }
         }
 
-        public ICommand GetCampaignDetailsCommand => new Command<Campaign>(GetCampaignDetails);
+        public ICommand GetCampaignDetailsCommand => new Command<CampaignItem>(async (item) => await GetCampaignDetails(item));
 
         public override async Task InitializeAsync(object navigationData)
         {
@@ -44,9 +45,9 @@ namespace eShopOnContainers.Core.ViewModels
             IsBusy = false;
         }
 
-        private void GetCampaignDetails(Campaign campaign)
+        private async Task GetCampaignDetails(CampaignItem campaign)
         {
-            
+            await NavigationService.NavigateToAsync<CampaignDetailsViewModel>(campaign.Id);
         }
     }
 }
