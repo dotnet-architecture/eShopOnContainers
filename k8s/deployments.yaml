@@ -28,7 +28,10 @@ spec:
              name: externalcfg
              key: BasketBus
         - name: AzureServiceBusEnabled
-          value: "true"
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: UseAzureServiceBus
         - name: IdentityUrl
           valueFrom:
            configMapKeyRef:
@@ -103,7 +106,10 @@ spec:
              name: externalcfg
              key: IdentitySqlDb
         - name: DPConnectionString
-          value: keystore-data
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: keystore
         - name: IsClusterEnv
           value: 'True'
         - name: MvcClient
@@ -151,7 +157,10 @@ spec:
              name: externalcfg
              key: OrderingBus
         - name: AzureServiceBusEnabled
-          value: "true"
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: UseAzureServiceBus
         - name: IdentityUrl
           valueFrom:
            configMapKeyRef:
@@ -192,7 +201,10 @@ spec:
              name: externalcfg
              key: LocationsNoSqlDbName
         - name: AzureServiceBusEnabled
-          value: "true"
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: UseAzureServiceBus
         - name: EventBusConnection
           valueFrom:
            configMapKeyRef:
@@ -243,7 +255,10 @@ spec:
              name: externalcfg
              key: MarketingNoSqlDbName 
         - name: AzureServiceBusEnabled
-          value: "true"
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: UseAzureServiceBus
         - name: EventBusConnection
           valueFrom:
            configMapKeyRef:
@@ -279,7 +294,10 @@ spec:
         - name: ASPNETCORE_URLS
           value: http://0.0.0.0:80/payment-api
         - name: AzureServiceBusEnabled
-          value: ·true"
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: UseAzureServiceBus
         - name: EventBusConnection
           valueFrom:
            configMapKeyRef:
@@ -310,7 +328,10 @@ spec:
         - name: ASPNETCORE_URLS
           value: http://0.0.0.0:80/webmvc
         - name: DPConnectionString
-          value: keystore-data
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: keystore
         - name: IsClusterEnv
           value: 'True'
         - name: BasketUrl
@@ -417,7 +438,10 @@ spec:
         - name: ASPNETCORE_URLS
           value: http://0.0.0.0:80
         - name: DPConnectionString
-          value: keystore-data
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: keystore
         - name: IsClusterEnv
           value: 'True'
         - name: BasketUrl

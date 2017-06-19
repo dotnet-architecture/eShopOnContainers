@@ -7,10 +7,17 @@ Param(
     [parameter(Mandatory=$false)][string]$execPath,
     [parameter(Mandatory=$false)][string]$kubeconfigPath,
     [parameter(Mandatory=$true)][string]$configFile,
+    [parameter(Mandatory=$false)][string]$imageTag,
     [parameter(Mandatory=$false)][bool]$deployInfrastructure=$true
 )
 
 $debugMode = $PSCmdlet.MyInvocation.BoundParameters["Debug"].IsPresent
+if ([string]::IsNullOrEmpty($imageTag)) {
+    $imageTag = $(git rev-parse --abbrev-ref HEAD)
+}
+
+Write-Host "Docker image Tag: $imageTag" -ForegroundColor Yellow
+
 function ExecKube($cmd) {    
     if($deployCI) {
         $kubeconfig = $kubeconfigPath + 'config';
@@ -27,10 +34,10 @@ function ExecKube($cmd) {
 $config =  Get-Content -Raw -Path $configFile | ConvertFrom-Json
 
 if ($debugMode) {
-Write-Host "Using following JSON config: "
+Write-Host "Using following JSON config: " -ForegroundColor Yellow
 $json = ConvertTo-Json $config -Depth 5 
-Write-Host $json
-Write-Host "Press a key "
+Write-Host $json 
+Write-Host "Press a key " -ForegroundColor Yellow
 [System.Console]::Read()
 }
 
@@ -90,14 +97,15 @@ if(-not $deployCI) {
     dotnet restore ../eShopOnContainers-ServicesAndWebApps.sln
     dotnet publish -c Release -o obj/Docker/publish ../eShopOnContainers-ServicesAndWebApps.sln
 
-    Write-Host "Building Docker images..." -ForegroundColor Yellow
+    Write-Host "Building Docker images." -ForegroundColor Yellow
+    $env:TAG=$imageTag
     docker-compose -p .. -f ../docker-compose.yml build    
 
     Write-Host "Pushing images to $registry..." -ForegroundColor Yellow
-    $services = ("basket.api", "catalog.api", "identity.api", "ordering.api", "webmvc", "webspa", "webstatus")
+    $services = ("basket.api", "catalog.api", "identity.api", "ordering.api", "marketing.api","payment.api","locations.api", "webmvc", "webspa", "webstatus")
     foreach ($service in $services) {
-        docker tag eshop/$service $registry/eshop/$service
-        docker push $registry/eshop/$service
+        docker tag eshop/${service}:$imageTag $registry/eshop/${service}:$imageTag
+        docker push $registry/eshop/${service}:$imageTag
     }
 }
 
@@ -142,7 +150,7 @@ ExecKube -cmd 'create configmap externalcfg `
     --from-literal=MarketingSqlDb=$($config.sql.marketing) `
     --from-literal=LocationsNoSqlDb=$($config.nosql.locations.constr) `
     --from-literal=LocationsNoSqlDbName=$($config.nosql.locations.db) `
-    --from-literal=MarketingsNoSqlDb=$($config.nosql.marketing.constr) `
+    --from-literal=MarketingNoSqlDb=$($config.nosql.marketing.constr) `
     --from-literal=MarketingNoSqlDbName=$($config.nosql.marketing.db) `
     --from-literal=BasketRedisConStr=$($config.redis.basket) `
     --from-literal=LocationsBus=$($config.servicebus.locations) `
@@ -150,7 +158,9 @@ ExecKube -cmd 'create configmap externalcfg `
     --from-literal=BasketBus=$($config.servicebus.basket) `
     --from-literal=OrderingBus=$($config.servicebus.ordering) `
     --from-literal=CatalogBus=$($config.servicebus.catalog) `
-    --from-literal=PaymentBus=$($config.servicebus.payment) '
+    --from-literal=PaymentBus=$($config.servicebus.payment) `
+    --from-literal=UseAzureServiceBus=$($config.servicebus.use_azure) `
+    --from-literal=keystore=$($config.redis.keystore) '
 
 ExecKube -cmd 'label configmap externalcfg app=eshop'
 
@@ -164,13 +174,16 @@ if(-not $deployCI) {
     # update deployments with the private registry before k8s tries to pull images
     # (deployment templating, or Helm, would obviate this)
     Write-Host "Update Image containers..." -ForegroundColor Yellow
-    ExecKube -cmd 'set image deployments/basket basket=$registry/eshop/basket.api'
-    ExecKube -cmd 'set image deployments/catalog catalog=$registry/eshop/catalog.api'
-    ExecKube -cmd 'set image deployments/identity identity=$registry/eshop/identity.api'
-    ExecKube -cmd 'set image deployments/ordering ordering=$registry/eshop/ordering.api'
-    ExecKube -cmd 'set image deployments/webmvc webmvc=$registry/eshop/webmvc'
-    ExecKube -cmd 'set image deployments/webstatus webstatus=$registry/eshop/webstatus'
-    ExecKube -cmd 'set image deployments/webspa webspa=$registry/eshop/webspa'
+    ExecKube -cmd 'set image deployments/basket basket=$registry/eshop/basket.api:$imageTag'
+    ExecKube -cmd 'set image deployments/catalog catalog=$registry/eshop/catalog.api:$imageTag'
+    ExecKube -cmd 'set image deployments/identity identity=$registry/eshop/identity.api:$imageTag'
+    ExecKube -cmd 'set image deployments/ordering ordering=$registry/eshop/ordering.api:$imageTag'
+    ExecKube -cmd 'set image deployments/marketing marketing=$registry/eshop/marketing.api:$imageTag'
+    ExecKube -cmd 'set image deployments/locations locations=$registry/eshop/locations.api:$imageTag'
+    ExecKube -cmd 'set image deployments/payment payment=$registry/eshop/payment.api:$imageTag'
+    ExecKube -cmd 'set image deployments/webmvc webmvc=$registry/eshop/webmvc:$imageTag'
+    ExecKube -cmd 'set image deployments/webstatus webstatus=$registry/eshop/webstatus:$imageTag'
+    ExecKube -cmd 'set image deployments/webspa webspa=$registry/eshop/webspa:$imageTag'
 }
 
 Write-Host "Execute rollout..." -ForegroundColor Yellow
@@ -178,6 +191,9 @@ ExecKube -cmd 'rollout resume deployments/basket'
 ExecKube -cmd 'rollout resume deployments/catalog'
 ExecKube -cmd 'rollout resume deployments/identity'
 ExecKube -cmd 'rollout resume deployments/ordering'
+ExecKube -cmd 'rollout resume deployments/marketing'
+ExecKube -cmd 'rollout resume deployments/locations'
+ExecKube -cmd 'rollout resume deployments/payment'
 ExecKube -cmd 'rollout resume deployments/webmvc'
 ExecKube -cmd 'rollout resume deployments/webstatus'
 ExecKube -cmd 'rollout resume deployments/webspa'

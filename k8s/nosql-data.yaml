@@ -24,7 +24,7 @@ spec:
         component: nosql-data
     spec:
       containers:
-      - name: nosql.data
+      - name: nosql-data
         image: mongo
         ports:
         - containerPort: 27017
