@@ -11,6 +11,18 @@
     using System.Reflection;
     using System;
     using Microsoft.eShopOnContainers.Services.Marketing.API.Infrastructure.Filters;
+    using Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ;
+    using RabbitMQ.Client;
+    using BuildingBlocks.EventBus.Abstractions;
+    using BuildingBlocks.EventBus;
+    using IntegrationEvents.Events;
+    using IntegrationEvents.Handlers;
+    using Infrastructure.Repositories;
+    using Autofac;
+    using Autofac.Extensions.DependencyInjection;
+    using Polly;
+    using System.Threading.Tasks;
+    using System.Data.SqlClient;
 
     public class Startup
     {
@@ -35,13 +47,15 @@
         public IConfigurationRoot Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
             services.AddMvc(options =>
             {
                 options.Filters.Add(typeof(HttpGlobalExceptionFilter));
             }).AddControllersAsServices();  //Injecting Controllers themselves thru DIFor further info see: http://docs.autofac.org/en/latest/integration/aspnetcore.html#controllers-as-services
+
+            services.Configure<MarketingSettings>(Configuration);
 
             services.AddDbContext<MarketingContext>(options =>
             {
@@ -58,6 +72,20 @@
                 options.ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning));
                 //Check Client vs. Server evaluation: https://docs.microsoft.com/en-us/ef/core/querying/client-eval
             });
+
+            services.AddSingleton<IRabbitMQPersistentConnection>(sp =>
+            {
+                var logger = sp.GetRequiredService<ILogger<DefaultRabbitMQPersistentConnection>>();
+
+                var factory = new ConnectionFactory()
+                {
+                    HostName = Configuration["EventBusConnection"]
+                };
+
+                return new DefaultRabbitMQPersistentConnection(factory, logger);
+            });
+
+            RegisterServiceBus(services);
 
             // Add framework services.
             services.AddSwaggerGen(options =>
@@ -80,6 +108,14 @@
                     .AllowAnyHeader()
                     .AllowCredentials());
             });
+
+            services.AddTransient<IMarketingDataRepository, MarketingDataRepository>();
+
+            //configure autofac
+            var container = new ContainerBuilder();
+            container.Populate(services);
+
+            return new AutofacServiceProvider(container.Build());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -100,10 +136,13 @@
                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
                });
 
-            MarketingContextSeed.SeedAsync(app, loggerFactory)
-                .Wait();
-        }
+            var context = (MarketingContext)app
+                        .ApplicationServices.GetService(typeof(MarketingContext));
 
+            WaitForSqlAvailabilityAsync(context, loggerFactory, app).Wait();
+
+            ConfigureEventBus(app);
+        }
 
         protected virtual void ConfigureAuth(IApplicationBuilder app)
         {
@@ -114,6 +153,46 @@
                 ApiName = "marketing",
                 RequireHttpsMetadata = false
             });
+        }
+
+        private void RegisterServiceBus(IServiceCollection services)
+        {
+            services.AddSingleton<IEventBus, EventBusRabbitMQ>();
+            services.AddSingleton<IEventBusSubscriptionsManager, 
+                InMemoryEventBusSubscriptionsManager>();
+
+            services.AddTransient<IIntegrationEventHandler<UserLocationUpdatedIntegrationEvent>,
+                UserLocationUpdatedIntegrationEventHandler>();
+        }
+
+        private void ConfigureEventBus(IApplicationBuilder app)
+        {
+            var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
+            eventBus.Subscribe<UserLocationUpdatedIntegrationEvent, 
+                IIntegrationEventHandler<UserLocationUpdatedIntegrationEvent>>();
+        }
+
+        private async Task WaitForSqlAvailabilityAsync(MarketingContext ctx, ILoggerFactory loggerFactory, IApplicationBuilder app, int retries = 0)
+        {
+            var logger = loggerFactory.CreateLogger(nameof(Startup));
+            var policy = CreatePolicy(retries, logger, nameof(WaitForSqlAvailabilityAsync));
+            await policy.ExecuteAsync(async () =>
+            {
+                await MarketingContextSeed.SeedAsync(app, loggerFactory);
+            });
+        }
+
+        private Policy CreatePolicy(int retries, ILogger logger, string prefix)
+        {
+            return Policy.Handle<SqlException>().
+                WaitAndRetryAsync(
+                    retryCount: retries,
+                    sleepDurationProvider: retry => TimeSpan.FromSeconds(5),
+                    onRetry: (exception, timeSpan, retry, ctx) =>
+                    {
+                        logger.LogTrace($"[{prefix}] Exception {exception.GetType().Name} with message ${exception.Message} detected on attempt {retry} of {retries}");
+                    }
+                );
         }
     }
 }

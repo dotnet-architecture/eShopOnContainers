@@ -8,8 +8,8 @@ using Microsoft.eShopOnContainers.Services.Marketing.API.Infrastructure;
 namespace Microsoft.eShopOnContainers.Services.Marketing.API.Infrastructure.MarketingMigrations
 {
     [DbContext(typeof(MarketingContext))]
-    [Migration("20170609104915_Initial")]
-    partial class Initial
+    [Migration("20170615163431_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -33,10 +33,16 @@ namespace Microsoft.eShopOnContainers.Services.Marketing.API.Infrastructure.Mark
                     b.Property<DateTime>("From")
                         .HasColumnName("From");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnName("Name");
+
+                    b.Property<string>("PictureUri")
+                        .IsRequired()
+                        .HasColumnName("PictureUri");
+
                     b.Property<DateTime>("To")
                         .HasColumnName("To");
-
-                    b.Property<string>("Url");
 
                     b.HasKey("Id");
 

@@ -20,9 +20,9 @@
             _context = new LocationsContext(settings);
         }        
         
-        public async Task<Locations> GetAsync(string locationId)
+        public async Task<Locations> GetAsync(int locationId)
         {
-            var filter = Builders<Locations>.Filter.Eq("Id", ObjectId.Parse(locationId));
+            var filter = Builders<Locations>.Filter.Eq("LocationId", locationId);
             return await _context.Locations
                                  .Find(filter)
                                  .FirstOrDefaultAsync();

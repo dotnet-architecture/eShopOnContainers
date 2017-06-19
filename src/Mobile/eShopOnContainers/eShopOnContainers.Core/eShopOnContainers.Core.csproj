@@ -170,6 +170,7 @@
     <Compile Include="Converters\FirstValidationErrorConverter.cs" />
     <Compile Include="Effects\EntryLineColorEffect.cs" />
     <Compile Include="Behaviors\LineColorBehavior.cs" />
+    <Compile Include="Models\Token\UserToken.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -262,6 +263,9 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\Token\" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.ComponentModel.Annotations">

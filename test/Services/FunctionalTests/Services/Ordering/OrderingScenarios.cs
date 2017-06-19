@@ -88,7 +88,7 @@ namespace FunctionalTests.Services.Ordering
 
         string BuildBasket()
         {
-            var order = new CustomerBasket("1234");
+            var order = new CustomerBasket("9e3163b9-1ae6-4652-9dc6-7898ab7b7a00");
             order.Items = new List<Microsoft.eShopOnContainers.Services.Basket.API.Model.BasketItem>()
             {
                 new Microsoft.eShopOnContainers.Services.Basket.API.Model.BasketItem()

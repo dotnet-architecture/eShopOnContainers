@@ -108,7 +108,8 @@ namespace Identity.API.Configuration
                         IdentityServerConstants.StandardScopes.OfflineAccess,
                         "orders",
                         "basket",
-                        "locations"
+                        "locations",
+                        "marketing"
                     },
                 }
             };

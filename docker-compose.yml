@@ -53,7 +53,9 @@ services:
       dockerfile: Dockerfile    
     depends_on:
       - sql.data
+      - nosql.data
       - identity.api
+      - rabbitmq
 
   webspa:
     image: eshop/webspa
@@ -74,6 +76,7 @@ services:
       - ordering.api
       - identity.api
       - basket.api
+      - marketing.api
 
   sql.data:
     image: microsoft/mssql-server-linux
@@ -112,3 +115,4 @@ services:
       dockerfile: Dockerfile
     depends_on:
       - nosql.data
+      - rabbitmq

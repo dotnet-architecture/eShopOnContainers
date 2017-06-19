@@ -58,6 +58,10 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - ConnectionString=Server=sql.data;Database=Microsoft.eShopOnContainers.Services.MarketingDb;User Id=sa;Password=Pass@word
+      - MongoConnectionString=mongodb://nosql.data
+      - MongoDatabase=MarketingDb
+      - EventBusConnection=rabbitmq
+      - ExternalCatalogBaseUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5110   #Local: You need to open your local dev-machine firewall at range 5100-5105.  at range 5100-5105.	  
       - identityUrl=http://identity.api              #Local: You need to open your local dev-machine firewall at range 5100-5105.  at range 5100-5105. 
     ports:
       - "5110:80"
@@ -70,6 +74,7 @@ services:
       - OrderingUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5102
       - IdentityUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105              #Local: You need to open your local dev-machine firewall at range 5100-5105.  at range 5100-5105. 
       - BasketUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5103
+      - MarketingUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5110
       - CatalogUrlHC=http://catalog.api/hc
       - OrderingUrlHC=http://ordering.api/hc
       - IdentityUrlHC=http://identity.api/hc     #Local: Use ${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP}, if using external IP or DNS name from browser.          
@@ -84,7 +89,8 @@ services:
       - CatalogUrl=http://catalog.api
       - OrderingUrl=http://ordering.api
       - BasketUrl=http://basket.api
-      - IdentityUrl=http://10.0.75.1:5105        #Local:  Use 10.0.75.1 in a "Docker for Windows" environment, if using "localhost" from browser. 
+      - IdentityUrl=http://10.0.75.1:5105
+      - MarketingUrl=http://marketing.api  #Local:  Use 10.0.75.1 in a "Docker for Windows" environment, if using "localhost" from browser. 
                                                  #Remote: Use ${ESHOP_EXTERNAL_DNS_NAME_OR_IP} if using external IP or DNS name from browser. 
     ports:
       - "5100:80"
