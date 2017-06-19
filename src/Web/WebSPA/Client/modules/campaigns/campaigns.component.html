@@ -8,8 +8,8 @@
                  *ngFor="let item of campaigns.data">
 
                 <div class="card-block">
-                    <h4 class="card-title esh-campaigns-name">{{item.name}}</h4>
-                    <img class="card-img-top esh-campaigns-thumbnail" src="{{item.pictureUri}}" alt="{{item.name}}">
+                    <h4 class="card-title esh-campaign-name">{{item.name}}</h4>
+                    <img class="card-img-top esh-campaign-thumbnail" src="{{item.pictureUri}}" alt="{{item.name}}">
                     <input [ngClass]="{'esh-campaign-button': true}" type="submit" value="More details" routerLink="/campaigns/{{item.id}}">
                 </div>
                 <div class="card-footer">
