@@ -7,12 +7,12 @@
     using AspNetCore.Mvc;
     using Infrastructure;
     using System.Threading.Tasks;
-    using Catalog.API.ViewModel;
     using Model;
     using EntityFrameworkCore;
     using Dto;
     using AspNetCore.Authorization;
     using Extensions.Options;
+    using Microsoft.eShopOnContainers.Services.Marketing.API.ViewModel;
 
     [Route("api/v1/[controller]")]
     [Authorize]
@@ -129,30 +129,26 @@
         {
             var marketingData = await _marketingDataRepository.GetAsync(userId.ToString());
 
-            if (marketingData is null)
-            {
-                return NotFound();
-            }
-
             var campaignDtoList = new List<CampaignDTO>();
-
-            //Get User Location Campaign
-            foreach (var userLocation in marketingData.Locations)
+            
+            if (marketingData != null)
             {
+                var locationIdCandidateList = marketingData.Locations.Select(x => x.LocationId);
                 var userCampaignList = await _context.Rules
                     .OfType<UserLocationRule>()
                     .Include(c => c.Campaign)
                     .Where(c => c.Campaign.From <= DateTime.Now
-                    && c.Campaign.To >= DateTime.Now
-                    && c.LocationId == userLocation.LocationId)
-                    .Select(c => c.Campaign)
-                    .ToListAsync();
+                                && c.Campaign.To >= DateTime.Now
+                                && locationIdCandidateList.Contains(c.LocationId))
+                                    .Select(c => c.Campaign)
+                                    .ToListAsync();
 
                 if (userCampaignList != null && userCampaignList.Any())
                 {
                     var userCampaignDtoList = MapCampaignModelListToDtoList(userCampaignList);
                     campaignDtoList.AddRange(userCampaignDtoList);
                 }
+                
             }
 
             var totalItems = campaignDtoList.Count();

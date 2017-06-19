@@ -10,6 +10,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
     using System.Threading.Tasks;
     using System;
     using ViewModels.Pagination;
+    using global::WebMVC.ViewModels;
 
     [Authorize]
     public class CampaignsController : Controller

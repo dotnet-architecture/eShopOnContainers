@@ -1,7 +1,6 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Catalog.API.ViewModel
+﻿namespace Microsoft.eShopOnContainers.Services.Marketing.API.ViewModel
 {
     using System.Collections.Generic;
-
 
     public class PaginatedItemsViewModel<TEntity> where TEntity : class
     {
