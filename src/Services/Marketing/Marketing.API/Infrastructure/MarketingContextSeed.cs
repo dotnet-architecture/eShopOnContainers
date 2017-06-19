@@ -33,7 +33,7 @@
             {
                 new Campaign
                 {
-                    Name = "Campaign Name 1",
+                    Name = ".NET Bot Black Hoodie 50% OFF",
                     Description = "Campaign Description 1",
                     From = DateTime.Now,
                     To = DateTime.Now.AddDays(7),
@@ -42,24 +42,24 @@
                     {
                         new UserLocationRule
                         {
-                            Description = "UserLocationRule1",
+                            Description = "Campaign is only for United States users.",
                             LocationId = 1
                         }
                     }
                 },
                 new Campaign
                 {
-                    Name = "Campaign Name 2",
+                    Name = "Roslyn Red T-Shirt 3x2",
                     Description = "Campaign Description 2",
-                    From = DateTime.Now.AddDays(7),
+                    From = DateTime.Now.AddDays(-7),
                     To = DateTime.Now.AddDays(14),
                     PictureUri = "http://externalcatalogbaseurltobereplaced/api/v1/campaigns/2/pic",
                     Rules = new List<Rule>
                     {
                         new UserLocationRule
                         {
-                            Description = "UserLocationRule2",
-                            LocationId = 6
+                            Description = "Campaign is only for Seattle users.",
+                            LocationId = 3
                         }
                     }
                 }

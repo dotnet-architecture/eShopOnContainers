@@ -1,19 +1,12 @@
 ﻿namespace Microsoft.eShopOnContainers.WebMVC.ViewModels
 {
-    using System;
+    using System.Collections.Generic;
 
     public class Campaign
     {
-        public int Id { get; set; }
-
-        public string Name { get; set; }
-
-        public string Description { get; set; }
-
-        public DateTime From { get; set; }
-
-        public DateTime To { get; set; }
-
-        public string PictureUri { get; set; }
+        public int PageIndex { get; set; }
+        public int PageSize { get; set; }
+        public int Count { get; set; }
+        public List<CampaignItem> Data { get; set; }
     }
 }

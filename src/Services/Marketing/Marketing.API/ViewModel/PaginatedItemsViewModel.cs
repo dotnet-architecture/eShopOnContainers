@@ -2,7 +2,6 @@
 {
     using System.Collections.Generic;
 
-
     public class PaginatedItemsViewModel<TEntity> where TEntity : class
     {
         public int PageIndex { get; private set; }
