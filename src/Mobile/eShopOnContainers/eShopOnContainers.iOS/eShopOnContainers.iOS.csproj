@@ -418,10 +418,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <BundleResource Include="Resources\fake_campaign_1.png" />
+    <BundleResource Include="Resources\fake_campaign_01.png" />
   </ItemGroup>
   <ItemGroup>
-    <BundleResource Include="Resources\fake_campaign_2.png" />
+    <BundleResource Include="Resources\fake_campaign_02.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\default_campaign.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
