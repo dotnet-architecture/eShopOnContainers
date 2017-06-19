@@ -130,27 +130,25 @@
             var marketingData = await _marketingDataRepository.GetAsync(userId.ToString());
 
             var campaignDtoList = new List<CampaignDTO>();
-
+            
             if (marketingData != null)
             {
-                //Get User Location Campaign
-                foreach (var userLocation in marketingData.Locations)
-                {
-                    var userCampaignList = await _context.Rules
-                        .OfType<UserLocationRule>()
-                        .Include(c => c.Campaign)
-                        .Where(c => c.Campaign.From <= DateTime.Now
-                        && c.Campaign.To >= DateTime.Now
-                        && c.LocationId == userLocation.LocationId)
-                        .Select(c => c.Campaign)
-                        .ToListAsync();
+                var locationIdCandidateList = marketingData.Locations.Select(x => x.LocationId);
+                var userCampaignList = await _context.Rules
+                    .OfType<UserLocationRule>()
+                    .Include(c => c.Campaign)
+                    .Where(c => c.Campaign.From <= DateTime.Now
+                                && c.Campaign.To >= DateTime.Now
+                                && locationIdCandidateList.Contains(c.LocationId))
+                                    .Select(c => c.Campaign)
+                                    .ToListAsync();
 
-                    if (userCampaignList != null && userCampaignList.Any())
-                    {
-                        var userCampaignDtoList = MapCampaignModelListToDtoList(userCampaignList);
-                        campaignDtoList.AddRange(userCampaignDtoList);
-                    }
+                if (userCampaignList != null && userCampaignList.Any())
+                {
+                    var userCampaignDtoList = MapCampaignModelListToDtoList(userCampaignList);
+                    campaignDtoList.AddRange(userCampaignDtoList);
                 }
+                
             }
 
             var totalItems = campaignDtoList.Count();
