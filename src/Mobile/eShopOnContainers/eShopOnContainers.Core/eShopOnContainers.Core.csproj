@@ -44,9 +44,6 @@
     </Compile>
     <Compile Include="Behaviors\Base\BindableBehavior.cs" />
     <Compile Include="Behaviors\EventToCommandBehavior.cs" />
-    <Compile Include="Controls\MoreDetailsCampaignButton.xaml.cs">
-      <DependentUpon>MoreDetailsCampaignButton.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\AddBasketButton.xaml.cs">
       <DependentUpon>AddBasketButton.xaml</DependentUpon>
     </Compile>
@@ -302,12 +299,6 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\Templates\CampaignTemplate.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Controls\MoreDetailsCampaignButton.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
