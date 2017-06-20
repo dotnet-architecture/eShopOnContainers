@@ -27,8 +27,8 @@ namespace eShopOnContainers.Core.ViewModels
         {
             UseAzureServices = !Settings.UseMocks;
             _useFakeLocation = Settings.UseFakeLocation;
-            _latitude = Settings.FakeLatitude;
-            _longitude = Settings.FakeLongitude;
+            _latitude = Settings.Latitude;
+            _longitude = Settings.Longitude;
             _locationService = locationService;
         }
 
@@ -154,8 +154,8 @@ namespace eShopOnContainers.Core.ViewModels
             UpdateInfoFakeLocation();
             
             Endpoint = Settings.UrlBase;
-            _latitude = Settings.FakeLatitude;
-            _longitude = Settings.FakeLongitude;
+            _latitude = Settings.Latitude;
+            _longitude = Settings.Longitude;
             _useFakeLocation = Settings.UseFakeLocation;
             return base.InitializeAsync(navigationData);
         }
@@ -191,14 +191,17 @@ namespace eShopOnContainers.Core.ViewModels
 
         private async Task ToggleSendLocationAsync()
         {
-            Location locationRequest = new Location
+            if (!Settings.UseMocks)
             {
-                Latitude = _latitude,
-                Longitude = _longitude
-            };
-            var authToken = Settings.AuthAccessToken;
+                var locationRequest = new Location
+                {
+                    Latitude = _latitude,
+                    Longitude = _longitude
+                };
+                var authToken = Settings.AuthAccessToken;
 
-            await _locationService.UpdateUserLocation(locationRequest, authToken);
+                await _locationService.UpdateUserLocation(locationRequest, authToken);
+            } 
         }
 
         private void UpdateInfo()
@@ -238,13 +241,13 @@ namespace eShopOnContainers.Core.ViewModels
         private void UpdateLatitude(double latitude)
         {
             // Update fake latitude (save to local storage)
-            Settings.FakeLatitude = latitude;
+            Settings.Latitude = latitude;
         }
 
         private void UpdateLongitude(double longitude)
         {
             // Update fake longitude (save to local storage)
-            Settings.FakeLongitude = longitude;
+            Settings.Longitude = longitude;
         }
     }
 }
