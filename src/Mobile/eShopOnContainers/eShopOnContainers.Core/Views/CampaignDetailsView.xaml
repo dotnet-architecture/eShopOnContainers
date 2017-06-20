@@ -3,9 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="eShopOnContainers.Core.Views.CampaignDetailsView"
 			 xmlns:viewModelBase="clr-namespace:eShopOnContainers.Core.ViewModels.Base;assembly=eShopOnContainers.Core"
-             xmlns:templates="clr-namespace:eShopOnContainers.Core.Views.Templates;assembly=eShopOnContainers.Core"
-             xmlns:animations="clr-namespace:eShopOnContainers.Core.Animations;assembly=eShopOnContainers.Core"
-             xmlns:triggers="clr-namespace:eShopOnContainers.Core.Triggers;assembly=eShopOnContainers.Core"
              viewModelBase:ViewModelLocator.AutoWireViewModel="true"
              Title="Campaign Details">
     <ContentPage.Resources>
@@ -17,7 +14,7 @@
                 <Setter Property="Margin"
                         Value="0" />
             </Style>
-            <Style x:Key="SettingsTitleStyle" 
+            <Style x:Key="CampaignTitleStyle" 
                    TargetType="{x:Type Label}">
                 <Setter Property="FontFamily"
                         Value="{StaticResource MontserratRegular}" />
@@ -31,9 +28,9 @@
                         Value="12, 0" />
             </Style>
 
-            <Style x:Key="SettingsDescriptionStyle" 
+            <Style x:Key="CampaignDescriptionStyle" 
                    TargetType="{x:Type Label}"
-                   BasedOn="{StaticResource SettingsTitleStyle}">
+                   BasedOn="{StaticResource CampaignTitleStyle}">
                 <Setter Property="FontSize" 
                         Value="{StaticResource LittleSize}" />
             </Style>
@@ -70,8 +67,6 @@
                         Grid.Column="0"                       
                         Grid.Row="1">
                         <Image
-                            Grid.Column="0"
-                            Grid.Row="0"
                             Source="{Binding Campaign.PictureUri, Converter={StaticResource ImageConverter}}"        
                             Aspect="AspectFit"
                             VerticalOptions="Start"
@@ -79,21 +74,19 @@
                         <Label 
                             Text="{Binding Campaign.Name}"
                             TextColor="{StaticResource GreenColor}"
-                            Style="{StaticResource SettingsTitleStyle}"/>
+                            Style="{StaticResource CampaignTitleStyle}"/>
                         <Label
                             Text="{Binding Campaign.Description}"
-                            Style="{StaticResource SettingsDescriptionStyle}"/>
-                        <StackLayout 
-                            Style ="{StaticResource CampaignStyle}"                    
-                            Grid.Row="2"
+                            Style="{StaticResource CampaignDescriptionStyle}"/>
+                        <StackLayout                
                             HorizontalOptions="Center"
                             Margin="12,0,0,0" >
                             <Label
                             Text="{Binding Campaign.From, StringFormat='From {0:MMMM dd, yyyy}'}"
-                            Style="{StaticResource SettingsDescriptionStyle}"/>
+                            Style="{StaticResource CampaignDescriptionStyle}"/>
                             <Label
                             Text="{Binding Campaign.To, StringFormat='until {0:MMMM dd, yyyy}'}"
-                            Style="{StaticResource SettingsDescriptionStyle}"/>
+                            Style="{StaticResource CampaignDescriptionStyle}"/>
                         </StackLayout>
                     </StackLayout>
                 </Grid>

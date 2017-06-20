@@ -1,17 +1,13 @@
-﻿using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using eShopOnContainers.Core.Helpers;
-using eShopOnContainers.Core.Models.Catalog;
-using eShopOnContainers.Core.Models.User;
-using Xamarin.Forms;
-
-namespace eShopOnContainers.Core.ViewModels
+﻿namespace eShopOnContainers.Core.ViewModels
 {
+    using System.Threading.Tasks;
+    using System.Windows.Input;
+    using Xamarin.Forms;
     using System.Collections.ObjectModel;
     using Models.Marketing;
     using Services.Marketing;
     using Base;
+    using Helpers;
 
     public class CampaignViewModel : ViewModelBase
     {
