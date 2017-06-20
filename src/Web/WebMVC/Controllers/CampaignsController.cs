@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore.Query.Internal;
+using WebMVC.ViewModels;
+
 namespace Microsoft.eShopOnContainers.WebMVC.Controllers
 {
     using AspNetCore.Authorization;

@@ -191,7 +191,7 @@ namespace eShopOnContainers.Core.ViewModels
 
         private async Task ToggleSendLocationAsync()
         {
-            LocationRequest locationRequest = new LocationRequest
+            Location locationRequest = new Location
             {
                 Latitude = _latitude,
                 Longitude = _longitude
