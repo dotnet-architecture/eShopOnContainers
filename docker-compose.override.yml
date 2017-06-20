@@ -29,6 +29,7 @@ services:
       - ConnectionString=Server=sql.data;Database=Microsoft.eShopOnContainers.Services.CatalogDb;User Id=sa;Password=Pass@word
       - ExternalCatalogBaseUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5101    #Local: You need to open your local dev-machine firewall at range 5100-5105.  at range 5100-5105.	  
       - EventBusConnection=rabbitmq
+      - UseCustomizationData=True
     ports:
       - "5101:80"
 
@@ -40,6 +41,7 @@ services:
       - XamarinCallback=http://${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP}:5105/xamarincallback      #localhost do not work for UWP login, so we have to use "external" IP always
       - ConnectionStrings__DefaultConnection=Server=sql.data;Database=Microsoft.eShopOnContainers.Service.IdentityDb;User Id=sa;Password=Pass@word 
       - MvcClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5100              #Local: You need to open your local dev-machine firewall at range 5100-5105.  
+      - UseCustomizationData=True
     ports:
       - "5105:80"
 
@@ -50,6 +52,7 @@ services:
       - ConnectionString=Server=sql.data;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word
       - identityUrl=http://identity.api              #Local: You need to open your local dev-machine firewall at range 5100-5105.  at range 5100-5105. 
       - EventBusConnection=rabbitmq
+      - UseCustomizationData=True
     ports:
       - "5102:80"
 
@@ -77,6 +80,7 @@ services:
       - OrderingUrlHC=http://ordering.api/hc
       - IdentityUrlHC=http://identity.api/hc     #Local: Use ${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP}, if using external IP or DNS name from browser.          
       - BasketUrlHC=http://basket.api/hc
+      - UseCustomizationData=True
     ports:
       - "5104:80"
 
@@ -88,7 +92,7 @@ services:
       - OrderingUrl=http://ordering.api
       - BasketUrl=http://basket.api
       - IdentityUrl=http://10.0.75.1:5105        #Local:  Use 10.0.75.1 in a "Docker for Windows" environment, if using "localhost" from browser. 
-                                                 #Remote: Use ${ESHOP_EXTERNAL_DNS_NAME_OR_IP} if using external IP or DNS name from browser. 
+      - UseCustomizationData=True                #Remote: Use ${ESHOP_EXTERNAL_DNS_NAME_OR_IP} if using external IP or DNS name from browser. 
     ports:
       - "5100:80"
 

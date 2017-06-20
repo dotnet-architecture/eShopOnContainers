@@ -153,7 +153,7 @@
             var context = (CatalogContext)app
                         .ApplicationServices.GetService(typeof(CatalogContext));
 
-            WaitForSqlAvailabilityAsync(context, loggerFactory, app).Wait();
+            WaitForSqlAvailabilityAsync(context, loggerFactory, app, env).Wait();
 
             ConfigureEventBus(app);
 
@@ -165,13 +165,13 @@
             integrationEventLogContext.Database.Migrate();
         }
 
-        private async Task WaitForSqlAvailabilityAsync(CatalogContext ctx, ILoggerFactory loggerFactory, IApplicationBuilder app, int retries = 0)
+        private async Task WaitForSqlAvailabilityAsync(CatalogContext ctx, ILoggerFactory loggerFactory, IApplicationBuilder app, IHostingEnvironment env, int retries = 0)
         {
             var logger = loggerFactory.CreateLogger(nameof(Startup));
             var policy = CreatePolicy(retries, logger, nameof (WaitForSqlAvailabilityAsync));
             await policy.ExecuteAsync(async () =>
             {
-                await CatalogContextSeed.SeedAsync(app, loggerFactory);
+                await CatalogContextSeed.SeedAsync(app, env, loggerFactory);
             });
 
         }
