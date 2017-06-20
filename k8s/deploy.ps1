@@ -2,21 +2,15 @@ Param(
     [parameter(Mandatory=$false)][string]$registry,
     [parameter(Mandatory=$false)][string]$dockerUser,
     [parameter(Mandatory=$false)][string]$dockerPassword,
-    [parameter(Mandatory=$false)][bool]$deployCI,
-    [parameter(Mandatory=$false)][bool]$useDockerHub,
     [parameter(Mandatory=$false)][string]$execPath,
     [parameter(Mandatory=$false)][string]$kubeconfigPath,
     [parameter(Mandatory=$true)][string]$configFile,
     [parameter(Mandatory=$false)][string]$imageTag,
+    [parameter(Mandatory=$false)][string]$externalDns,
+    [parameter(Mandatory=$false)][bool]$deployCI=$false,
+    [parameter(Mandatory=$false)][bool]$buildImages=$false,
     [parameter(Mandatory=$false)][bool]$deployInfrastructure=$true
 )
-
-$debugMode = $PSCmdlet.MyInvocation.BoundParameters["Debug"].IsPresent
-if ([string]::IsNullOrEmpty($imageTag)) {
-    $imageTag = $(git rev-parse --abbrev-ref HEAD)
-}
-
-Write-Host "Docker image Tag: $imageTag" -ForegroundColor Yellow
 
 function ExecKube($cmd) {    
     if($deployCI) {
@@ -30,20 +24,11 @@ function ExecKube($cmd) {
     }
 }
 
+# Initialization
+$debugMode = $PSCmdlet.MyInvocation.BoundParameters["Debug"].IsPresent
+$useDockerHub = [string]::IsNullOrEmpty($registry)
 
-$config =  Get-Content -Raw -Path $configFile | ConvertFrom-Json
-
-if ($debugMode) {
-Write-Host "Using following JSON config: " -ForegroundColor Yellow
-$json = ConvertTo-Json $config -Depth 5 
-Write-Host $json 
-Write-Host "Press a key " -ForegroundColor Yellow
-[System.Console]::Read()
-}
-
-
-
-# Not used when deploying through CI VSTS
+# Check required commands (only if not in CI environment)
 if(-not $deployCI) {
         $requiredCommands = ("docker", "docker-compose", "kubectl")
         foreach ($command in $requiredCommands) {
@@ -51,6 +36,45 @@ if(-not $deployCI) {
             Write-Host "$command must be on path" -ForegroundColor Red
             exit
         }
+    }
+}
+else {
+    $buildImages = false;       # Never build images through CI, as they previously built
+}
+
+# Get tag to use from current branch if no tag is passed
+if ([string]::IsNullOrEmpty($imageTag)) {
+    $imageTag = $(git rev-parse --abbrev-ref HEAD)
+}
+Write-Host "Docker image Tag: $imageTag" -ForegroundColor Yellow
+
+# Read config to use
+$config =  Get-Content -Raw -Path $configFile | ConvertFrom-Json
+if ($debugMode) {
+    Write-Host "[DEBUG]: Using following JSON config: " -ForegroundColor Yellow
+    $json = ConvertTo-Json $config -Depth 5 
+    Write-Host $json 
+    if (-not $deployCI) {
+        Write-Host "[DEBUG]: Press a key " -ForegroundColor Yellow
+        [System.Console]::Read()
+    }
+}
+
+# building and publishing docker images if needed
+if($buildImages) {
+    Write-Host "Building and publishing eShopOnContainers..." -ForegroundColor Yellow
+    dotnet restore ../eShopOnContainers-ServicesAndWebApps.sln
+    dotnet publish -c Release -o obj/Docker/publish ../eShopOnContainers-ServicesAndWebApps.sln
+
+    Write-Host "Building Docker images tagged with '$imageTag'" -ForegroundColor Yellow
+    $env:TAG=$imageTag
+    docker-compose -p .. -f ../docker-compose.yml build    
+
+    Write-Host "Pushing images to $registry..." -ForegroundColor Yellow
+    $services = ("basket.api", "catalog.api", "identity.api", "ordering.api", "marketing.api","payment.api","locations.api", "webmvc", "webspa", "webstatus")
+    foreach ($service in $services) {
+        docker tag eshop/${service}:$imageTag $registry/eshop/${service}:$imageTag
+        docker push $registry/eshop/${service}:$imageTag
     }
 }
 
@@ -91,32 +115,19 @@ if ($deployInfrastructure) {
 Write-Host 'Deploying code deployments (databases, redis, ...)' -ForegroundColor Yellow
 ExecKube -cmd 'create -f services.yaml -f frontend.yaml'
 
-# building and publishing docker images not necessary when deploying through CI VSTS
-if(-not $deployCI) {
-    Write-Host "Building and publishing eShopOnContainers..." -ForegroundColor Yellow
-    dotnet restore ../eShopOnContainers-ServicesAndWebApps.sln
-    dotnet publish -c Release -o obj/Docker/publish ../eShopOnContainers-ServicesAndWebApps.sln
-
-    Write-Host "Building Docker images." -ForegroundColor Yellow
-    $env:TAG=$imageTag
-    docker-compose -p .. -f ../docker-compose.yml build    
-
-    Write-Host "Pushing images to $registry..." -ForegroundColor Yellow
-    $services = ("basket.api", "catalog.api", "identity.api", "ordering.api", "marketing.api","payment.api","locations.api", "webmvc", "webspa", "webstatus")
-    foreach ($service in $services) {
-        docker tag eshop/${service}:$imageTag $registry/eshop/${service}:$imageTag
-        docker push $registry/eshop/${service}:$imageTag
-    }
+if ([string]::IsNullOrEmpty($externalDns)) {
+        Write-Host "Waiting for frontend's external ip..." -ForegroundColor Yellow
+        while ($true) {
+            $frontendUrl = & ExecKube -cmd 'get svc frontend -o=jsonpath="{.status.loadBalancer.ingress[0].ip}"'
+            if ([bool]($frontendUrl -as [ipaddress])) {
+                break
+            }
+            Start-Sleep -s 15
+        }
+        $externalDns = $frontendUrl
 }
 
-Write-Host "Waiting for frontend's external ip..." -ForegroundColor Yellow
-while ($true) {
-    $frontendUrl = & ExecKube -cmd 'get svc frontend -o=jsonpath="{.status.loadBalancer.ingress[0].ip}"'
-    if ([bool]($frontendUrl -as [ipaddress])) {
-        break
-    }
-    Start-Sleep -s 15
-}
+Write-Host "Using $externalDns as the external DNS/IP of the k8s cluster"
 
 ExecKube -cmd 'create configmap urls `
     --from-literal=BasketUrl=http://basket `
@@ -133,11 +144,11 @@ ExecKube -cmd 'create configmap urls `
     --from-literal=MvcClientCatalogUrl=http://catalog `
     --from-literal=MvcClientBasketUrl=http://basket `
     --from-literal=WebSpaHealthCheckUrl=http://webspa/hc `
-    --from-literal=SpaClientOrderingExternalUrl=http://$($frontendUrl)/ordering-api `
-    --from-literal=SpaClientCatalogExternalUrl=http://$($frontendUrl)/catalog-api `
-    --from-literal=SpaClientBasketExternalUrl=http://$($frontendUrl)/basket-api `
-    --from-literal=SpaClientIdentityExternalUrl=http://$($frontendUrl)/identity `
-    --from-literal=SpaClientExternalUrl=http://$($frontendUrl)'
+    --from-literal=SpaClientOrderingExternalUrl=http://$($externalDns)/ordering-api `
+    --from-literal=SpaClientCatalogExternalUrl=http://$($externalDns)/catalog-api `
+    --from-literal=SpaClientBasketExternalUrl=http://$($externalDns)/basket-api `
+    --from-literal=SpaClientIdentityExternalUrl=http://$($externalDns)/identity `
+    --from-literal=SpaClientExternalUrl=http://$($externalDns)'
     
 ExecKube -cmd 'label configmap urls app=eshop'
 
@@ -161,30 +172,28 @@ ExecKube -cmd 'create configmap externalcfg `
     --from-literal=PaymentBus=$($config.servicebus.payment) `
     --from-literal=UseAzureServiceBus=$($config.servicebus.use_azure) `
     --from-literal=keystore=$($config.redis.keystore) '
-
 ExecKube -cmd 'label configmap externalcfg app=eshop'
 
-
 Write-Host "Creating deployments..." -ForegroundColor Yellow
-
 ExecKube -cmd 'create -f deployments.yaml'
 
-# not using ACR for pulling images when deploying through CI VSTS
-if(-not $deployCI) {
-    # update deployments with the private registry before k8s tries to pull images
-    # (deployment templating, or Helm, would obviate this)
-    Write-Host "Update Image containers..." -ForegroundColor Yellow
-    ExecKube -cmd 'set image deployments/basket basket=$registry/eshop/basket.api:$imageTag'
-    ExecKube -cmd 'set image deployments/catalog catalog=$registry/eshop/catalog.api:$imageTag'
-    ExecKube -cmd 'set image deployments/identity identity=$registry/eshop/identity.api:$imageTag'
-    ExecKube -cmd 'set image deployments/ordering ordering=$registry/eshop/ordering.api:$imageTag'
-    ExecKube -cmd 'set image deployments/marketing marketing=$registry/eshop/marketing.api:$imageTag'
-    ExecKube -cmd 'set image deployments/locations locations=$registry/eshop/locations.api:$imageTag'
-    ExecKube -cmd 'set image deployments/payment payment=$registry/eshop/payment.api:$imageTag'
-    ExecKube -cmd 'set image deployments/webmvc webmvc=$registry/eshop/webmvc:$imageTag'
-    ExecKube -cmd 'set image deployments/webstatus webstatus=$registry/eshop/webstatus:$imageTag'
-    ExecKube -cmd 'set image deployments/webspa webspa=$registry/eshop/webspa:$imageTag'
+# update deployments with the correct image (with tag and/or registry)
+Write-Host "Update Image containers to use prefix '$registry' and tag '$imageTag'" -ForegroundColor Yellow
+$registryPath = ""
+if (-not [string]::IsNullOrEmpty($registry)) {
+    $registryPath = "$registry/"
 }
+
+ExecKube -cmd 'set image deployments/basket basket=${registryPath}eshop/basket.api:$imageTag'
+ExecKube -cmd 'set image deployments/catalog catalog=${registryPath}eshop/catalog.api:$imageTag'
+ExecKube -cmd 'set image deployments/identity identity=${registryPath}eshop/identity.api:$imageTag'
+ExecKube -cmd 'set image deployments/ordering ordering=${registryPath}eshop/ordering.api:$imageTag'
+ExecKube -cmd 'set image deployments/marketing marketing=${registryPath}eshop/marketing.api:$imageTag'
+ExecKube -cmd 'set image deployments/locations locations=${registryPath}eshop/locations.api:$imageTag'
+ExecKube -cmd 'set image deployments/payment payment=${registryPath}eshop/payment.api:$imageTag'
+ExecKube -cmd 'set image deployments/webmvc webmvc=${registryPath}eshop/webmvc:$imageTag'
+ExecKube -cmd 'set image deployments/webstatus webstatus=${registryPath}eshop/webstatus:$imageTag'
+ExecKube -cmd 'set image deployments/webspa webspa=${registryPath}eshop/webspa:$imageTag'
 
 Write-Host "Execute rollout..." -ForegroundColor Yellow
 ExecKube -cmd 'rollout resume deployments/basket'
