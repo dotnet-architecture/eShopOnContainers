@@ -59,6 +59,48 @@ kind: Service
 metadata:
   labels:
     app: eshop
+    component: locations
+  name: locations
+spec:
+  ports:
+  - port: 80
+  selector:
+    app: eshop
+    component: locations
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: eshop
+    component: payment
+  name: payment
+spec:
+  ports:
+  - port: 80
+  selector:
+    app: eshop
+    component: payment
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: eshop
+    component: marketing
+  name: marketing
+spec:
+  ports:
+  - port: 80
+  selector:
+    app: eshop
+    component: marketing
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: eshop
     component: webmvc
   name: webmvc
 spec:
