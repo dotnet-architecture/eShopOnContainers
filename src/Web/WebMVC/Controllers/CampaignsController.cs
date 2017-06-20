@@ -21,20 +21,21 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
         {
             var campaignList = await _campaignService.GetCampaigns(pageSize, page);
 
-            var vm = new CampaignViewModel()
+            var totalPages = (int) Math.Ceiling((decimal) campaignList.Count / pageSize);
+
+            var vm = new CampaignViewModel
             {
                 CampaignItems = campaignList.Data,
-                PaginationInfo = new PaginationInfo()
+                PaginationInfo = new PaginationInfo
                 {
                     ActualPage = page,
-                    ItemsPerPage = pageSize,
+                    ItemsPerPage = campaignList.Data.Count,
                     TotalItems = campaignList.Count,
-                    TotalPages = (int)Math.Ceiling(((decimal)campaignList.Count / pageSize))
+                    TotalPages = totalPages,
+                    Next = page == totalPages - 1 ? "is-disabled" : "",
+                    Previous = page == 0 ? "is-disabled" : ""
                 }
             };
-
-            vm.PaginationInfo.Next = (vm.PaginationInfo.ActualPage == vm.PaginationInfo.TotalPages - 1) ? "is-disabled" : "";
-            vm.PaginationInfo.Previous = (vm.PaginationInfo.ActualPage == 0) ? "is-disabled" : "";
 
             return View(vm);
         }
