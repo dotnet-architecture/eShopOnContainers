@@ -81,7 +81,7 @@
             try
             {
                 string[] requiredHeaders = { "catalogbrand" };
-                csvheaders = GetHeaders(requiredHeaders, csvFileCatalogBrands);
+                csvheaders = GetHeaders( csvFileCatalogBrands, requiredHeaders );
             }
             catch (Exception ex)
             {
@@ -136,7 +136,7 @@
             try
             {
                 string[] requiredHeaders = { "catalogtype" };
-                csvheaders = GetHeaders(requiredHeaders, csvFileCatalogTypes);
+                csvheaders = GetHeaders( csvFileCatalogTypes, requiredHeaders );
             }
             catch (Exception ex)
             {
@@ -188,7 +188,8 @@
             try
             {
                 string[] requiredHeaders = { "catalogtypename", "catalogbrandname", "description", "name", "price", "pictureuri" };
-                csvheaders = GetHeaders(requiredHeaders, csvFileCatalogItems);
+                string[] optionalheaders = { "availablestock", "restockThreshold", "maxStockThreshold", "onreorder" };
+                csvheaders = GetHeaders(csvFileCatalogItems, requiredHeaders, optionalheaders );
             }
             catch (Exception ex)
             {
@@ -227,20 +228,90 @@
             }
 
             string priceString = column[Array.IndexOf(headers, "price")];
-            if (!Decimal.TryParse(priceString, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out Decimal price)) // TODO: number styles
+            if (!Decimal.TryParse(priceString, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out Decimal price))
             {
                 throw new Exception($"price={priceString}is not a valid decimal number");
             }
 
-            return new CatalogItem()
+            var catalogItem = new CatalogItem()
             {
                 CatalogTypeId = catalogTypeIdLookup[catalogTypeName],
                 CatalogBrandId = catalogBrandIdLookup[catalogBrandName],
                 Description = column[Array.IndexOf(headers, "description")],
                 Name = column[Array.IndexOf(headers, "name")],
                 Price = price,
-                PictureUri = column[Array.IndexOf(headers, "pictureuri")]
+                PictureUri = column[Array.IndexOf(headers, "pictureuri")],
             };
+
+            int availableStockIndex = Array.IndexOf(headers, "availablestock");
+            if (availableStockIndex != -1)
+            {
+                string availableStockString = column[availableStockIndex];
+                if (!String.IsNullOrEmpty(availableStockString))
+                {
+                    if ( int.TryParse(availableStockString, out int availableStock))
+                    {
+                        catalogItem.AvailableStock = availableStock;
+                    }
+                    else
+                    {
+                        throw new Exception($"availableStock={availableStockString} is not a valid integer");
+                    }
+                }
+            }
+
+            int restockThresholdIndex = Array.IndexOf(headers, "restockthreshold");
+            if (restockThresholdIndex != -1)
+            {
+                string restockThresholdString = column[restockThresholdIndex];
+                if (!String.IsNullOrEmpty(restockThresholdString))
+                {
+                    if (int.TryParse(restockThresholdString, out int restockThreshold))
+                    {
+                        catalogItem.RestockThreshold = restockThreshold;
+                    }
+                    else
+                    {
+                        throw new Exception($"restockThreshold={restockThreshold} is not a valid integer");
+                    }
+                }
+            }
+
+            int maxStockThresholdIndex = Array.IndexOf(headers, "maxstockthreshold");
+            if (maxStockThresholdIndex != -1)
+            {
+                string maxStockThresholdString = column[maxStockThresholdIndex];
+                if (!String.IsNullOrEmpty(maxStockThresholdString))
+                {
+                    if (int.TryParse(maxStockThresholdString, out int maxStockThreshold))
+                    {
+                        catalogItem.MaxStockThreshold = maxStockThreshold;
+                    }
+                    else
+                    {
+                        throw new Exception($"maxStockThreshold={maxStockThreshold} is not a valid integer");
+                    }
+                }
+            }
+
+            int onReorderIndex = Array.IndexOf(headers, "onreorder");
+            if (onReorderIndex != -1)
+            {
+                string onReorderString = column[onReorderIndex];
+                if (!String.IsNullOrEmpty(onReorderString))
+                {
+                    if (bool.TryParse(onReorderString, out bool onReorder))
+                    {
+                        catalogItem.OnReorder = onReorder;
+                    }
+                    else
+                    {
+                        throw new Exception($"onReorder={onReorderString} is not a valid boolean");
+                    }
+                }
+            }
+
+            return catalogItem;
         }
 
         static IEnumerable<CatalogItem> GetPreconfiguredItems()
@@ -262,13 +333,21 @@
             };
         }
 
-        static string[] GetHeaders(string[] requiredHeaders, string csvfile)
+        static string[] GetHeaders(string csvfile, string[] requiredHeaders, string[] optionalHeaders = null)
         {
             string[] csvheaders = File.ReadLines(csvfile).First().ToLowerInvariant().Split(',');
 
-            if (csvheaders.Count() != requiredHeaders.Count())
+            if (csvheaders.Count() < requiredHeaders.Count())
             {
-                throw new Exception($"requiredHeader count '{ requiredHeaders.Count()}' is different then read header '{csvheaders.Count()}'");
+                throw new Exception($"requiredHeader count '{ requiredHeaders.Count()}' is bigger then csv header count '{csvheaders.Count()}' ");
+            }
+
+            if (optionalHeaders != null)
+            {
+                if (csvheaders.Count() > (requiredHeaders.Count() + optionalHeaders.Count()))
+                {
+                    throw new Exception($"csv header count '{csvheaders.Count()}'  is larger then required '{requiredHeaders.Count()}' and optional '{optionalHeaders.Count()}' headers count");
+                }
             }
 
             foreach (var requiredHeader in requiredHeaders)
