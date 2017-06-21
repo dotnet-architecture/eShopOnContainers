@@ -161,6 +161,7 @@
         {
             return new List<GeoJson2DGeographicCoordinates>()
             {
+                new GeoJson2DGeographicCoordinates(2.033879, 41.383858),
                 new GeoJson2DGeographicCoordinates(2.113741, 41.419068),
                 new GeoJson2DGeographicCoordinates(2.188778, 41.451153),
                 new GeoJson2DGeographicCoordinates(2.235266, 41.418033),
