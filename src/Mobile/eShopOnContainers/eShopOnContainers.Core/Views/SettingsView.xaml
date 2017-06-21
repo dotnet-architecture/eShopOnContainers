@@ -33,6 +33,14 @@
                         Value="{StaticResource LittleSize}" />
             </Style>
 
+            <Style x:Key="SettingsWarningMessageStyle" 
+                   TargetType="{x:Type Label}"
+                   BasedOn="{StaticResource SettingsTitleStyle}">
+                <Setter Property="FontSize" 
+                        Value="{StaticResource LittleSize}" />
+                <Setter Property="TextColor" Value="Red" />
+            </Style>
+
             <Style x:Key="SettingsToggleButtonStyle" 
                    TargetType="{x:Type controls:ToggleButton}">
                 <Setter Property="HeightRequest" 
@@ -98,8 +106,6 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="1" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
@@ -247,29 +253,32 @@
                         Margin="12, 0, 12, 12"
                         IsVisible="{Binding UseFakeLocation, Converter={StaticResource InverseBoolConverter}}">
                     </StackLayout>
-                    <Grid 
+                    <!--<Grid 
                         Grid.Row="6"
                         Grid.Column="0"
-                        Grid.ColumnSpan="2"/>
+                        Grid.ColumnSpan="2"/>-->
                     <StackLayout 
                         Grid.Column="0"                       
-                        Grid.Row="7"
+                        Grid.Row="6"
                         IsVisible="{Binding UseFakeLocation, Converter={StaticResource InverseBoolConverter}}">
                         <Label 
-                            Text="{Binding TitleGpsUsage}"
+                            Text="{Binding TitleAllowGpsLocation}"
                             TextColor="{StaticResource GreenColor}"
                             Style="{StaticResource SettingsTitleStyle}"/>
                         <Label
-                            Text="{Binding DescriptionGpsUsage}"
+                            Text="{Binding DescriptionAllowGpsLocation}"
                             Style="{StaticResource SettingsDescriptionStyle}"/>
+                        <Label
+                            Text="{Binding GpsWarningMessage}"
+                            Style="{StaticResource SettingsWarningMessageStyle}"/>
                     </StackLayout>
                     <!-- ON / OFF -->
                     <controls:ToggleButton 
                         Grid.Column="1" 
-                        Grid.Row="7" 
+                        Grid.Row="6" 
                         Animate="True"     
-                        Checked="{Binding GpsUsage, Mode=TwoWay}"
-                        Command="{Binding ToggleGpsUsageCommand}"
+                        Checked="{Binding AllowGpsLocation, Mode=TwoWay}"
+                        Command="{Binding ToggleAllowGpsLocationCommand}"
                         Style="{StaticResource SettingsToggleButtonStyle}"
                         IsVisible="{Binding UseFakeLocation, Converter={StaticResource InverseBoolConverter}}">
                         <controls:ToggleButton.CheckedImage>

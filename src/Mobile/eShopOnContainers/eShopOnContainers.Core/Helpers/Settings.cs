@@ -28,12 +28,12 @@ namespace eShopOnContainers.Core.Helpers
         private const string IdUseFakeLocation = "use_fake_location";
         private const string IdLatitude = "latitude";
         private const string IdLongitude = "flongitude";
-        private const string IdGpsUsage = "gps_usage";
+        private const string IdAllowGpsLocation = "allow_gps_location";
         private static readonly string AccessTokenDefault = string.Empty;
         private static readonly string IdTokenDefault = string.Empty;
 		private static readonly bool UseMocksDefault = true;
         private static readonly bool UseFakeLocationDefault = false;
-        private static readonly bool GpsUsageValue = false;
+        private static readonly bool AllowGpsLocationValue = false;
         private static readonly double FakeLatitudeValue = 47.604610d;
         private static readonly double FakeLongitudeValue = -122.315752d;
         private static readonly string UrlBaseDefault = GlobalSetting.Instance.BaseEndpoint;
@@ -81,16 +81,17 @@ namespace eShopOnContainers.Core.Helpers
             get => AppSettings.GetValueOrDefault<double>(IdLatitude, FakeLatitudeValue);
             set => AppSettings.AddOrUpdateValue<double>(IdLatitude, value);
         }
+
         public static double Longitude
         {
             get => AppSettings.GetValueOrDefault<double>(IdLongitude, FakeLongitudeValue);
             set => AppSettings.AddOrUpdateValue<double>(IdLongitude, value);
         }
 
-        public static bool GpsUsage
+        public static bool AllowGpsLocation
         {
-            get => AppSettings.GetValueOrDefault<bool>(IdGpsUsage, GpsUsageValue);
-            set => AppSettings.AddOrUpdateValue<bool>(IdGpsUsage, value);
+            get => AppSettings.GetValueOrDefault<bool>(IdAllowGpsLocation, AllowGpsLocationValue);
+            set => AppSettings.AddOrUpdateValue<bool>(IdAllowGpsLocation, value);
         }
     }
 }

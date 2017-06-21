@@ -8,6 +8,7 @@
     using Base;
     using Models.Location;
     using Services.Location;
+    using Plugin.Geolocator;
 
     public class SettingsViewModel : ViewModelBase
     {
@@ -16,14 +17,16 @@
         private bool _useAzureServices;
         private string _titleUseFakeLocation;
         private string _descriptionUseFakeLocation;
-        private bool _gpsUsage;
-        private string _titleGpsUsage;
-        private string _descriptionGpsUsage;
+        private bool _allowGpsLocation;
+        private string _titleAllowGpsLocation;
+        private string _descriptionAllowGpsLocation;
         private bool _useFakeLocation;
         private string _endpoint;
         private double _latitude;
         private double _longitude;
-        
+        private string _gpsWarningMessage;
+
+
         private readonly ILocationService _locationService;
 
         public SettingsViewModel(ILocationService locationService)
@@ -35,7 +38,8 @@
             _latitude = Settings.Latitude;
             _longitude = Settings.Longitude;
             _useFakeLocation = Settings.UseFakeLocation;
-            _gpsUsage = Settings.GpsUsage;
+            _allowGpsLocation = Settings.AllowGpsLocation;
+            _gpsWarningMessage = string.Empty;
         }
 
         public string TitleUseAzureServices
@@ -104,23 +108,33 @@
             }
         }
 
-        public string TitleGpsUsage
+        public string TitleAllowGpsLocation
         {
-            get => _titleGpsUsage;
+            get => _titleAllowGpsLocation;
             set
             {
-                _titleGpsUsage = value;
-                RaisePropertyChanged(() => TitleGpsUsage);
+                _titleAllowGpsLocation = value;
+                RaisePropertyChanged(() => TitleAllowGpsLocation);
             }
         }
 
-        public string DescriptionGpsUsage
+        public string DescriptionAllowGpsLocation
         {
-            get => _descriptionGpsUsage;
+            get => _descriptionAllowGpsLocation;
             set
             {
-                _descriptionGpsUsage = value;
-                RaisePropertyChanged(() => DescriptionGpsUsage);
+                _descriptionAllowGpsLocation = value;
+                RaisePropertyChanged(() => DescriptionAllowGpsLocation);
+            }
+        }
+
+        public string GpsWarningMessage
+        {
+            get => _gpsWarningMessage;
+            set
+            {
+                _gpsWarningMessage = value;
+                RaisePropertyChanged(() => GpsWarningMessage);
             }
         }
 
@@ -166,16 +180,16 @@
             }
         }
 
-        public bool GpsUsage
+        public bool AllowGpsLocation
         {
-            get => _gpsUsage;
+            get => _allowGpsLocation;
             set
             {
-                _gpsUsage = value;
+                _allowGpsLocation = value;
 
                 UpdateGpsUsage();
 
-                RaisePropertyChanged(() => GpsUsage);
+                RaisePropertyChanged(() => AllowGpsLocation);
             }
         }
 
@@ -187,7 +201,7 @@
 
         public ICommand ToggleSendLocationCommand => new Command(async () => await ToggleSendLocationAsync());
 
-        public ICommand ToggleGpsUsageCommand => new Command(ToggleGpsUsage);
+        public ICommand ToggleAllowGpsLocationCommand => new Command(ToggleAllowGpsLocation);
 
         public override Task InitializeAsync(object navigationData)
         {
@@ -242,7 +256,7 @@
             } 
         }
 
-        private void ToggleGpsUsage()
+        private void ToggleAllowGpsLocation()
         {
             UpdateInfoGpsUsage();
         }
@@ -277,15 +291,15 @@
 
         private void UpdateInfoGpsUsage()
         {
-            if (!GpsUsage)
+            if (!AllowGpsLocation)
             {
-                TitleGpsUsage = "Enable GPS";
-                DescriptionGpsUsage = "When enabling the use of device gps you will get the location campaigns through your real location.";
+                TitleAllowGpsLocation = "Allow GPS location";
+                DescriptionAllowGpsLocation = "When allowing the use of device gps you will get the location campaigns through your real location.";
             }
             else
             {
-                TitleGpsUsage = "Disable GPS";
-                DescriptionGpsUsage = "When disabling the use of device gps you won't get the location campaigns through your real location.";
+                TitleAllowGpsLocation = "Deny GPS location";
+                DescriptionAllowGpsLocation = "When denying the use of device gps you won't get the location campaigns through your real location.";
             }
         }
 
@@ -321,7 +335,20 @@
 
         private void UpdateGpsUsage()
         {
-            Settings.GpsUsage = _gpsUsage;
+            if (_allowGpsLocation)
+            {
+                var locator = CrossGeolocator.Current;
+                if (!locator.IsGeolocationEnabled)
+                {
+                    _allowGpsLocation = !_allowGpsLocation;
+                    GpsWarningMessage = "Enable your GPS system in your device";
+                }
+                else
+                {
+                    Settings.AllowGpsLocation = _allowGpsLocation;
+                    GpsWarningMessage = string.Empty;
+                }
+            }
         }
     }
 }

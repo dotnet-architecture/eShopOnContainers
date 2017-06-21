@@ -50,7 +50,7 @@ namespace eShopOnContainers
                 await InitNavigation();
             }
 
-            if (Settings.GpsUsage && !Settings.UseFakeLocation)
+            if (Settings.AllowGpsLocation && !Settings.UseFakeLocation)
             {
                 await GetRealLocation();
             }
@@ -77,10 +77,14 @@ namespace eShopOnContainers
                 locator.AllowsBackgroundUpdates = true;
                 locator.DesiredAccuracy = 50;
 
-                var position = await locator.GetPositionAsync(20000);
+                var position = await locator.GetPositionAsync();
 
                 Settings.Latitude = position.Latitude;
                 Settings.Longitude = position.Longitude;
+            }
+            else
+            {
+                Settings.AllowGpsLocation = false;
             }
         }
 
