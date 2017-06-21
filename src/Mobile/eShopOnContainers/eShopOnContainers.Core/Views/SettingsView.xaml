@@ -100,6 +100,9 @@
                         <RowDefinition Height="1" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Grid 
                         Grid.Row="0"
@@ -236,7 +239,52 @@
                             Command="{Binding ToggleSendLocationCommand}"
                             Text="Send Location"/>
                     </StackLayout>
-                    
+                    <!-- GPS USAGE -->
+                    <StackLayout
+                        Grid.Row="5"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="2"
+                        Margin="12, 0, 12, 12"
+                        IsVisible="{Binding UseFakeLocation, Converter={StaticResource InverseBoolConverter}}">
+                    </StackLayout>
+                    <Grid 
+                        Grid.Row="6"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="2"/>
+                    <StackLayout 
+                        Grid.Column="0"                       
+                        Grid.Row="7"
+                        IsVisible="{Binding UseFakeLocation, Converter={StaticResource InverseBoolConverter}}">
+                        <Label 
+                            Text="{Binding TitleGpsUsage}"
+                            TextColor="{StaticResource GreenColor}"
+                            Style="{StaticResource SettingsTitleStyle}"/>
+                        <Label
+                            Text="{Binding DescriptionGpsUsage}"
+                            Style="{StaticResource SettingsDescriptionStyle}"/>
+                    </StackLayout>
+                    <!-- ON / OFF -->
+                    <controls:ToggleButton 
+                        Grid.Column="1" 
+                        Grid.Row="7" 
+                        Animate="True"     
+                        Checked="{Binding GpsUsage, Mode=TwoWay}"
+                        Command="{Binding ToggleGpsUsageCommand}"
+                        Style="{StaticResource SettingsToggleButtonStyle}"
+                        IsVisible="{Binding UseFakeLocation, Converter={StaticResource InverseBoolConverter}}">
+                        <controls:ToggleButton.CheckedImage>
+                            <OnPlatform x:TypeArguments="ImageSource"
+                                        Android="switch_on.png"
+                                        iOS="switchOn.png"
+                                        WinPhone="Assets/switchOn.png"/>
+                        </controls:ToggleButton.CheckedImage>
+                        <controls:ToggleButton.UnCheckedImage>
+                            <OnPlatform x:TypeArguments="ImageSource"
+                                        Android="switch_off.png"
+                                        iOS="switchOff.png"
+                                        WinPhone="Assets/switchOff.png"/>
+                        </controls:ToggleButton.UnCheckedImage>
+                    </controls:ToggleButton>
                 </Grid>
             </StackLayout>
         </ScrollView>

@@ -50,7 +50,7 @@ namespace eShopOnContainers
                 await InitNavigation();
             }
 
-            if (!Settings.UseFakeLocation)
+            if (Settings.GpsUsage && !Settings.UseFakeLocation)
             {
                 await GetRealLocation();
             }
@@ -71,13 +71,17 @@ namespace eShopOnContainers
         private async Task GetRealLocation()
         {
             var locator = CrossGeolocator.Current;
-            locator.AllowsBackgroundUpdates = true;
-            locator.DesiredAccuracy = 50;
 
-            var position = await locator.GetPositionAsync(20000);
+            if (locator.IsGeolocationEnabled && locator.IsGeolocationAvailable)
+            { 
+                locator.AllowsBackgroundUpdates = true;
+                locator.DesiredAccuracy = 50;
 
-            Settings.Latitude = position.Latitude;
-            Settings.Longitude = position.Longitude;
+                var position = await locator.GetPositionAsync(20000);
+
+                Settings.Latitude = position.Latitude;
+                Settings.Longitude = position.Longitude;
+            }
         }
 
         private async Task SendCurrentLocation()
