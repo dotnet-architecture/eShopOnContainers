@@ -16,7 +16,6 @@ using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.HealthChecks;
-using Identity.API.Certificate;
 using Autofac.Extensions.DependencyInjection;
 using Autofac;
 using Microsoft.Extensions.Logging;
@@ -40,7 +39,7 @@ namespace eShopOnContainers.Identity
             if (env.IsDevelopment())
             {
                 // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
-                builder.AddUserSecrets();
+                builder.AddUserSecrets<Startup>();
             }
 
             builder.AddEnvironmentVariables();
