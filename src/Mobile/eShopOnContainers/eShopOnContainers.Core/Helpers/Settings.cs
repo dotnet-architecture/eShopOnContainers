@@ -26,8 +26,8 @@ namespace eShopOnContainers.Core.Helpers
         private const string IdUseMocks = "use_mocks";
         private const string IdUrlBase = "url_base";
         private const string IdUseFakeLocation = "use_fake_location";
-        private const string IdFakeLatitude = "fake_latitude";
-        private const string IdFakeLongitude = "fake_longitude";
+        private const string IdLatitude = "latitude";
+        private const string IdLongitude = "flongitude";
         private static readonly string AccessTokenDefault = string.Empty;
         private static readonly string IdTokenDefault = string.Empty;
 		private static readonly bool UseMocksDefault = true;
@@ -40,91 +40,49 @@ namespace eShopOnContainers.Core.Helpers
 
         public static string UserId
         {
-            get { return AppSettings.GetValueOrDefault<string>(IdUserId); }
-            set { AppSettings.AddOrUpdateValue<string>(IdUserId, value); }
+            get => AppSettings.GetValueOrDefault<string>(IdUserId);
+            set => AppSettings.AddOrUpdateValue<string>(IdUserId, value);
         }
 
         public static string AuthAccessToken
         {
-            get
-            {
-                return AppSettings.GetValueOrDefault<string>(AccessToken, AccessTokenDefault);
-            }
-            set
-            {
-                AppSettings.AddOrUpdateValue<string>(AccessToken, value);
-            }
+            get => AppSettings.GetValueOrDefault<string>(AccessToken, AccessTokenDefault);
+            set => AppSettings.AddOrUpdateValue<string>(AccessToken, value);
         }
 
         public static string AuthIdToken
         {
-            get
-            {
-                return AppSettings.GetValueOrDefault<string>(IdToken, IdTokenDefault);
-            }
-            set
-            {
-                AppSettings.AddOrUpdateValue<string>(IdToken, value);
-            }
+            get => AppSettings.GetValueOrDefault<string>(IdToken, IdTokenDefault);
+            set => AppSettings.AddOrUpdateValue<string>(IdToken, value);
         }
 
         public static bool UseMocks
         {
-            get
-            {
-                return AppSettings.GetValueOrDefault<bool>(IdUseMocks, UseMocksDefault);
-            }
-            set
-            {
-                AppSettings.AddOrUpdateValue<bool>(IdUseMocks, value);
-            }
+            get => AppSettings.GetValueOrDefault<bool>(IdUseMocks, UseMocksDefault);
+            set => AppSettings.AddOrUpdateValue<bool>(IdUseMocks, value);
         }
 
         public static string UrlBase
         {
-            get
-            {
-                return AppSettings.GetValueOrDefault<string>(IdUrlBase, UrlBaseDefault);
-            }
-            set
-            {
-                AppSettings.AddOrUpdateValue<string>(IdUrlBase, value);
-            }
+            get => AppSettings.GetValueOrDefault<string>(IdUrlBase, UrlBaseDefault);
+            set => AppSettings.AddOrUpdateValue<string>(IdUrlBase, value);
         }
 
         public static bool UseFakeLocation
         {
-            get
-            {
-                return AppSettings.GetValueOrDefault<bool>(IdUseFakeLocation, UseFakeLocationDefault);
-            }
-            set
-            {
-                AppSettings.AddOrUpdateValue<bool>(IdUseFakeLocation, value);
-            }
+            get => AppSettings.GetValueOrDefault<bool>(IdUseFakeLocation, UseFakeLocationDefault);
+            set => AppSettings.AddOrUpdateValue<bool>(IdUseFakeLocation, value);
         }
 
-        public static double FakeLatitude
+        public static double Latitude
         {
-            get
-            {
-                return AppSettings.GetValueOrDefault<double>(IdFakeLatitude, FakeLatitudeValue);
-            }
-            set
-            {
-                AppSettings.AddOrUpdateValue<double>(IdFakeLatitude, value);
-            }
+            get => AppSettings.GetValueOrDefault<double>(IdLatitude, FakeLatitudeValue);
+            set => AppSettings.AddOrUpdateValue<double>(IdLatitude, value);
         }
-        public static double FakeLongitude
+        public static double Longitude
         {
-            get
-            {
-                return AppSettings.GetValueOrDefault<double>(IdFakeLongitude, FakeLongitudeValue);
-            }
-            set
-            {
-                AppSettings.AddOrUpdateValue<double>(IdFakeLongitude, value);
-            }
+            get => AppSettings.GetValueOrDefault<double>(IdLongitude, FakeLongitudeValue);
+            set => AppSettings.AddOrUpdateValue<double>(IdLongitude, value);
         }
     }
 }
