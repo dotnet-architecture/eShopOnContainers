@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
     <DockerComposeProjectPath>..\..\..\..\docker-compose.dcproj</DockerComposeProjectPath>
     <RootNamespace>Microsoft.eShopOnContainers.Services.Locations.API</RootNamespace>
     <UserSecretsId>aspnet-Locations.API-20161122013619</UserSecretsId>

@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.eShopOnContainers.BuildingBlocks;
@@ -116,7 +118,6 @@ namespace Microsoft.eShopOnContainers.WebMVC
 
             var oidcOptions = new OpenIdConnectOptions
             {
-                AuthenticationScheme = "oidc",
                 SignInScheme = "Cookies",
                 Authority = identityUrl.ToString(),
                 PostLogoutRedirectUri = callBackUrl.ToString(),
