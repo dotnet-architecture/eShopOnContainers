@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard1.5</TargetFramework>
     <RootNamespace>Microsoft.eShopOnContainers.BuildingBlocks</RootNamespace>
+    <NetStandardImplicitPackageVersion>2.0.0-preview1-25301-01</NetStandardImplicitPackageVersion>
   </PropertyGroup>
 
   <ItemGroup>
