@@ -26,13 +26,6 @@ namespace Microsoft.eShopOnContainers.WebMVC
                       .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)  // Settings for the application
                       .AddEnvironmentVariables();                                              // override settings with environment variables set in compose.   
 
-
-            if (env.IsDevelopment())
-            {
-                // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
-                builder.AddUserSecrets();
-            }
-
             Configuration = builder.Build();
         }
 
@@ -84,6 +77,32 @@ namespace Microsoft.eShopOnContainers.WebMVC
             {
                 services.AddSingleton<IHttpClient, StandardHttpClient>();
             }
+
+
+            var identityUrl = Configuration.GetValue<string>("IdentityUrl");
+            var callBackUrl = Configuration.GetValue<string>("CallBackUrl");
+            // Add Authentication services
+            services.AddCookieAuthentication(CookieAuthenticationDefaults.AuthenticationScheme);
+            services.AddOpenIdConnectAuthentication("Oidc", options =>
+            {
+                options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.Authority = identityUrl.ToString();
+                options.PostLogoutRedirectUri = callBackUrl.ToString();
+                options.ClientId = "mvc";
+                options.ClientSecret = "secret";
+                options.ResponseType = "code id_token";
+                options.SaveTokens = true;
+                options.GetClaimsFromUserInfoEndpoint = true;
+                options.RequireHttpsMetadata = false;
+                options.Scope.Add("openid");
+                options.Scope.Add("profile");
+                options.Scope.Add("orders");
+                options.Scope.Add("basket");
+                options.Scope.Add("marketing");
+            });
+
+            services.AddAuthentication(sharedOptions => sharedOptions.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme);
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -106,32 +125,9 @@ namespace Microsoft.eShopOnContainers.WebMVC
 
             app.UseStaticFiles();
 
-            app.UseCookieAuthentication(new CookieAuthenticationOptions
-            {
-                AuthenticationScheme = "Cookies",
-                AutomaticAuthenticate = true,
-            });
 
-            var identityUrl = Configuration.GetValue<string>("IdentityUrl");
-            var callBackUrl = Configuration.GetValue<string>("CallBackUrl");
+
             var log = loggerFactory.CreateLogger("identity");
-
-            var oidcOptions = new OpenIdConnectOptions
-            {
-                SignInScheme = "Cookies",
-                Authority = identityUrl.ToString(),
-                PostLogoutRedirectUri = callBackUrl.ToString(),
-                ClientId = "mvc",
-                ClientSecret = "secret",
-                ResponseType = "code id_token",
-                SaveTokens = true,
-                GetClaimsFromUserInfoEndpoint = true,
-                RequireHttpsMetadata = false,
-                Scope = { "openid", "profile", "orders", "basket", "marketing" }
-            };
-
-            //Wait untill identity service is ready on compose. 
-            app.UseOpenIdConnectAuthentication(oidcOptions);
 
             app.UseMvc(routes =>
             {
