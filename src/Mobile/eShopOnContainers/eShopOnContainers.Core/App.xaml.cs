@@ -52,7 +52,7 @@ namespace eShopOnContainers
 
             if (Settings.AllowGpsLocation && !Settings.UseFakeLocation)
             {
-                await GetRealLocation();
+                await GetGpsLocation();
             }
 
             if (!Settings.UseMocks && !string.IsNullOrEmpty(Settings.UserId))
@@ -68,7 +68,7 @@ namespace eShopOnContainers
             // Handle when your app sleeps
         }
 
-        private async Task GetRealLocation()
+        private async Task GetGpsLocation()
         {
             var locator = CrossGeolocator.Current;
 
