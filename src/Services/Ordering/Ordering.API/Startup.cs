@@ -4,13 +4,10 @@
     using Autofac;
     using Autofac.Extensions.DependencyInjection;
     using global::Ordering.API.Application.IntegrationEvents;
-    using global::Ordering.API.Application.IntegrationEvents.EventHandling;
     using global::Ordering.API.Application.IntegrationEvents.Events;
-    using global::Ordering.API.Infrastructure.Middlewares;
+    using global::Ordering.Domain.Exceptions;
     using Infrastructure;
-    using Infrastructure.Auth;
     using Infrastructure.AutofacModules;
-    using Infrastructure.Filters;
     using Infrastructure.Services;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -20,6 +17,7 @@
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ;
     using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF;
     using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF.Services;
+    using Microsoft.eShopOnContainers.Infrastructure.Filters;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.HealthChecks;
@@ -59,7 +57,7 @@
             // Add framework services.
             services.AddMvc(options =>
             {
-                options.Filters.Add(typeof(HttpGlobalExceptionFilter));                
+                options.Filters.Add(typeof(HttpGlobalExceptionFilter<OrderingDomainException>));                
             }).AddControllersAsServices();  //Injecting Controllers themselves thru DI
                                             //For further info see: http://docs.autofac.org/en/latest/integration/aspnetcore.html#controllers-as-services
 

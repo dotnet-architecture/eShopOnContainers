@@ -7,7 +7,6 @@ using Microsoft.eShopOnContainers.BuildingBlocks.EventBus;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ;
 using Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure;
-using Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure.Filters;
 using Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure.Repositories;
 using Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure.Services;
 using Microsoft.Extensions.Configuration;
@@ -16,6 +15,8 @@ using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
 using System.Reflection;
 using System;
+using Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure.Exceptions;
+using Microsoft.eShopOnContainers.Infrastructure.Filters;
 
 namespace Microsoft.eShopOnContainers.Services.Locations.API
 {
@@ -46,7 +47,7 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
             // Add framework services.
             services.AddMvc(options =>
             {
-                options.Filters.Add(typeof(HttpGlobalExceptionFilter));
+                options.Filters.Add(typeof(HttpGlobalExceptionFilter<LocationDomainException>));
             }).AddControllersAsServices();
 
             services.Configure<LocationSettings>(Configuration);
