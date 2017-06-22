@@ -17,7 +17,7 @@ $projectPaths =
     @{Path="$rootPath\src\Services\GracePeriod\GracePeriodManager";Prj="GracePeriodManager.csproj"},
     @{Path="$rootPath\src\Services\Basket\Basket.API";Prj="Basket.API.csproj"},
     @{Path="$rootPath\src\Services\Identity\Identity.API";Prj="Identity.API.csproj"},
-    @{Path="$rootPath\src\Services\Location\Location.API";Prj="Locations.API.csproj"},
+    @{Path="$rootPath\src\Services\Location\Locations.API";Prj="Locations.API.csproj"},
     @{Path="$rootPath\src\Services\Marketing\Marketing.API";Prj="Marketing.API.csproj"},
     @{Path="$rootPath\src\Services\Payment\Payment.API";Prj="Payment.API.csproj"},
     @{Path="$rootPath\src\Web\WebStatus";Prj="WebStatus.csproj"}
