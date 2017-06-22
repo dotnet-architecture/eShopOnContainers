@@ -1,5 +1,4 @@
-﻿
-namespace eShopOnContainers.Core.Services.Marketing
+﻿namespace eShopOnContainers.Core.Services.Marketing
 {
     using System.Collections.ObjectModel;
     using System.Threading.Tasks;

@@ -1,13 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-
-namespace eShopOnContainers.Core.Services.Marketing
+﻿namespace eShopOnContainers.Core.Services.Marketing
 {
     using System;
     using System.Collections.ObjectModel;
     using System.Threading.Tasks;
     using Models.Marketing;
     using Xamarin.Forms;
+    using System.Linq;
 
     public class CampaignMockService : ICampaignService
     {

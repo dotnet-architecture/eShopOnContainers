@@ -1,13 +1,12 @@
-﻿using eShopOnContainers.Core.Extensions;
-using eShopOnContainers.Core.Helpers;
-
-namespace eShopOnContainers.Core.Services.Marketing
+﻿namespace eShopOnContainers.Core.Services.Marketing
 {
     using System;
     using System.Collections.ObjectModel;
     using System.Threading.Tasks;
     using Models.Marketing;
     using RequestProvider;
+    using Extensions;
+    using Helpers;
 
     public class CampaignService : ICampaignService
     {

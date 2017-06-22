@@ -26,7 +26,6 @@
         private double _longitude;
         private string _gpsWarningMessage;
 
-
         private readonly ILocationService _locationService;
 
         public SettingsViewModel(ILocationService locationService)
@@ -187,7 +186,7 @@
             {
                 _allowGpsLocation = value;
 
-                UpdateGpsUsage();
+                UpdateAllowGpsLocation();
 
                 RaisePropertyChanged(() => AllowGpsLocation);
             }
@@ -207,7 +206,7 @@
         {
             UpdateInfoUseAzureServices();
             UpdateInfoFakeLocation();
-            UpdateInfoGpsUsage();
+            UpdateInfoAllowGpsLocation();
 
             return base.InitializeAsync(navigationData);
         }
@@ -258,7 +257,7 @@
 
         private void ToggleAllowGpsLocation()
         {
-            UpdateInfoGpsUsage();
+            UpdateInfoAllowGpsLocation();
         }
 
         private void UpdateInfoUseAzureServices()
@@ -279,27 +278,29 @@
         {
             if (!UseFakeLocation)
             {
+                TitleUseFakeLocation = "Use Real Location";
+                DescriptionUseFakeLocation = "When enabling the use of real location, the app will attempt to use real location from the device.";
+
+            }
+            else
+            {
                 TitleUseFakeLocation = "Use Fake Location";
                 DescriptionUseFakeLocation = "Fake Location are added for marketing campaign testing.";
             }
-            else
-            {
-                TitleUseFakeLocation = "Use Real Location";
-                DescriptionUseFakeLocation = "When enabling the use of real location, the app will attempt to use real location from the device.";
-            }
         }
 
-        private void UpdateInfoGpsUsage()
+        private void UpdateInfoAllowGpsLocation()
         {
             if (!AllowGpsLocation)
             {
-                TitleAllowGpsLocation = "Allow GPS location";
-                DescriptionAllowGpsLocation = "When allowing the use of device gps you will get the location campaigns through your real location.";
+                TitleAllowGpsLocation = "GPS location Denied";
+                DescriptionAllowGpsLocation = "When denying the use of device gps you won't get the location campaigns through your real location.";
             }
             else
             {
-                TitleAllowGpsLocation = "Deny GPS location";
-                DescriptionAllowGpsLocation = "When denying the use of device gps you won't get the location campaigns through your real location.";
+                TitleAllowGpsLocation = "GPS location Allowed";
+                DescriptionAllowGpsLocation = "When allowing the use of device gps you will get the location campaigns through your real location.";
+
             }
         }
 
@@ -333,14 +334,14 @@
             Settings.Longitude = _longitude;
         }
 
-        private void UpdateGpsUsage()
+        private void UpdateAllowGpsLocation()
         {
             if (_allowGpsLocation)
             {
                 var locator = CrossGeolocator.Current;
                 if (!locator.IsGeolocationEnabled)
                 {
-                    _allowGpsLocation = !_allowGpsLocation;
+                    _allowGpsLocation = false;
                     GpsWarningMessage = "Enable your GPS system in your device";
                 }
                 else
@@ -348,6 +349,10 @@
                     Settings.AllowGpsLocation = _allowGpsLocation;
                     GpsWarningMessage = string.Empty;
                 }
+            }
+            else
+            {
+                Settings.AllowGpsLocation = _allowGpsLocation;
             }
         }
     }

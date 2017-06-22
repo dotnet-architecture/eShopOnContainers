@@ -27,15 +27,15 @@ namespace eShopOnContainers.Core.Helpers
         private const string IdUrlBase = "url_base";
         private const string IdUseFakeLocation = "use_fake_location";
         private const string IdLatitude = "latitude";
-        private const string IdLongitude = "flongitude";
+        private const string IdLongitude = "longitude";
         private const string IdAllowGpsLocation = "allow_gps_location";
         private static readonly string AccessTokenDefault = string.Empty;
         private static readonly string IdTokenDefault = string.Empty;
 		private static readonly bool UseMocksDefault = true;
         private static readonly bool UseFakeLocationDefault = false;
-        private static readonly bool AllowGpsLocationValue = false;
-        private static readonly double FakeLatitudeValue = 47.604610d;
-        private static readonly double FakeLongitudeValue = -122.315752d;
+        private static readonly bool AllowGpsLocationDefault = false;
+        private static readonly double FakeLatitudeDefault = 47.604610d;
+        private static readonly double FakeLongitudeDefault = -122.315752d;
         private static readonly string UrlBaseDefault = GlobalSetting.Instance.BaseEndpoint;
 
         #endregion
@@ -78,19 +78,19 @@ namespace eShopOnContainers.Core.Helpers
 
         public static double Latitude
         {
-            get => AppSettings.GetValueOrDefault<double>(IdLatitude, FakeLatitudeValue);
+            get => AppSettings.GetValueOrDefault<double>(IdLatitude, FakeLatitudeDefault);
             set => AppSettings.AddOrUpdateValue<double>(IdLatitude, value);
         }
 
         public static double Longitude
         {
-            get => AppSettings.GetValueOrDefault<double>(IdLongitude, FakeLongitudeValue);
+            get => AppSettings.GetValueOrDefault<double>(IdLongitude, FakeLongitudeDefault);
             set => AppSettings.AddOrUpdateValue<double>(IdLongitude, value);
         }
 
         public static bool AllowGpsLocation
         {
-            get => AppSettings.GetValueOrDefault<bool>(IdAllowGpsLocation, AllowGpsLocationValue);
+            get => AppSettings.GetValueOrDefault<bool>(IdAllowGpsLocation, AllowGpsLocationDefault);
             set => AppSettings.AddOrUpdateValue<bool>(IdAllowGpsLocation, value);
         }
     }

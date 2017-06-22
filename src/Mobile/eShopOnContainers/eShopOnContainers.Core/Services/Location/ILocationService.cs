@@ -1,7 +1,7 @@
 ﻿namespace eShopOnContainers.Core.Services.Location
 {
     using System.Threading.Tasks;
-    using eShopOnContainers.Core.Models.Location;
+    using Models.Location;
     
     public interface ILocationService
     {

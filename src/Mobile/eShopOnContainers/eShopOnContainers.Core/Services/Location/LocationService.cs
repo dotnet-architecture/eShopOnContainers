@@ -1,9 +1,9 @@
 ﻿namespace eShopOnContainers.Core.Services.Location
 {
-    using eShopOnContainers.Core.Models.Location;
-    using eShopOnContainers.Core.Services.RequestProvider;
     using System;
     using System.Threading.Tasks;
+    using Models.Location;
+    using RequestProvider;
 
     public class LocationService : ILocationService
     {
