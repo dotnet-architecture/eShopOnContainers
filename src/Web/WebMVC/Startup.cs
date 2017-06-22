@@ -102,7 +102,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
             }
             else
             {
-                app.UseExceptionHandler("/Catalog/Error");
+                app.UseExceptionHandler("/Error");
             }
 
             app.UseSession();
@@ -145,6 +145,10 @@ namespace Microsoft.eShopOnContainers.WebMVC
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Catalog}/{action=Index}/{id?}");
+
+                routes.MapRoute(
+                    name: "defaultError",
+                    template: "{controller=Error}/{action=Error}");
             });
         }
     }
