@@ -93,7 +93,7 @@
                 throw new Exception("Orderstatus is null or empty");
             }
 
-            return new CardType(id++, value.Trim());
+            return new CardType(id++, value.Trim('"').Trim());
         }
 
 
@@ -143,7 +143,7 @@
                 throw new Exception("Orderstatus is null or empty");
             }
 
-            return new OrderStatus(id++, value.Trim().ToLowerInvariant());
+            return new OrderStatus(id++, value.Trim('"').Trim().ToLowerInvariant());
         }
 
         static IEnumerable<OrderStatus> GetPredefinedOrderStatus()

@@ -14,6 +14,7 @@
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.IO.Compression;
     using System.Linq;
     using System.Security.Cryptography;
     using System.Text.RegularExpressions;
@@ -45,6 +46,7 @@
 
                 var useCustomizationData = settings.UseCustomizationData;
                 var contentRootPath = env.ContentRootPath;
+                var webroot = env.WebRootPath;
 
                 if (!context.Users.Any())
                 {
@@ -53,6 +55,11 @@
                         : GetDefaultUser());
 
                     await context.SaveChangesAsync();
+                }
+
+                if (useCustomizationData)
+                {
+                    GetPreconfiguredImages(contentRootPath, webroot, log);
                 }
             }
             catch (Exception ex)
@@ -111,7 +118,7 @@
                 throw new Exception($"column count '{column.Count()}' not the same as headers count'{headers.Count()}'");
             }
 
-            string cardtypeString = column[Array.IndexOf(headers, "cardtype")].Trim();
+            string cardtypeString = column[Array.IndexOf(headers, "cardtype")].Trim('"').Trim();
             if (!int.TryParse(cardtypeString, out int cardtype))
             {
                 throw new Exception($"cardtype='{cardtypeString}' is not a number");
@@ -119,26 +126,26 @@
 
             var user = new ApplicationUser
             {
-                CardHolderName = column[Array.IndexOf(headers, "cardholdername")].Trim(),
-                CardNumber = column[Array.IndexOf(headers, "cardnumber")].Trim(),
+                CardHolderName = column[Array.IndexOf(headers, "cardholdername")].Trim('"').Trim(),
+                CardNumber = column[Array.IndexOf(headers, "cardnumber")].Trim('"').Trim(),
                 CardType = cardtype,
-                City = column[Array.IndexOf(headers, "city")].Trim(),
-                Country = column[Array.IndexOf(headers, "country")].Trim(),
-                Email = column[Array.IndexOf(headers, "email")].Trim(),
-                Expiration = column[Array.IndexOf(headers, "expiration")].Trim(),
+                City = column[Array.IndexOf(headers, "city")].Trim('"').Trim(),
+                Country = column[Array.IndexOf(headers, "country")].Trim('"').Trim(),
+                Email = column[Array.IndexOf(headers, "email")].Trim('"').Trim(),
+                Expiration = column[Array.IndexOf(headers, "expiration")].Trim('"').Trim(),
                 Id = Guid.NewGuid().ToString(),
-                LastName = column[Array.IndexOf(headers, "lastname")].Trim(),
-                Name = column[Array.IndexOf(headers, "name")].Trim(),
-                PhoneNumber = column[Array.IndexOf(headers, "phonenumber")].Trim(),
-                UserName = column[Array.IndexOf(headers, "username")].Trim(),
-                ZipCode = column[Array.IndexOf(headers, "zipcode")].Trim(),
-                State = column[Array.IndexOf(headers, "state")].Trim(),
-                Street = column[Array.IndexOf(headers, "street")].Trim(),
-                SecurityNumber = column[Array.IndexOf(headers, "securitynumber")].Trim(),
-                NormalizedEmail = column[Array.IndexOf(headers, "normalizedemail")].Trim(),
-                NormalizedUserName = column[Array.IndexOf(headers, "normalizedusername")].Trim(),
+                LastName = column[Array.IndexOf(headers, "lastname")].Trim('"').Trim(),
+                Name = column[Array.IndexOf(headers, "name")].Trim('"').Trim(),
+                PhoneNumber = column[Array.IndexOf(headers, "phonenumber")].Trim('"').Trim(),
+                UserName = column[Array.IndexOf(headers, "username")].Trim('"').Trim(),
+                ZipCode = column[Array.IndexOf(headers, "zipcode")].Trim('"').Trim(),
+                State = column[Array.IndexOf(headers, "state")].Trim('"').Trim(),
+                Street = column[Array.IndexOf(headers, "street")].Trim('"').Trim(),
+                SecurityNumber = column[Array.IndexOf(headers, "securitynumber")].Trim('"').Trim(),
+                NormalizedEmail = column[Array.IndexOf(headers, "normalizedemail")].Trim('"').Trim(),
+                NormalizedUserName = column[Array.IndexOf(headers, "normalizedusername")].Trim('"').Trim(),
                 SecurityStamp = Guid.NewGuid().ToString("D"),
-                PasswordHash = column[Array.IndexOf(headers, "password")].Trim(), // Note: This is the password
+                PasswordHash = column[Array.IndexOf(headers, "password")].Trim('"').Trim(), // Note: This is the password
             };
 
             user.PasswordHash = _passwordHasher.HashPassword(user, user.PasswordHash);
@@ -198,6 +205,46 @@
             }
 
             return csvheaders;
+        }
+
+        static void GetPreconfiguredImages(string contentRootPath, string webroot, ILogger log)
+        {
+            try
+            {
+                string imagesZipFile = Path.Combine(contentRootPath, "Setup", "images.zip");
+                if (!File.Exists(imagesZipFile))
+                {
+                    log.LogError($" zip file '{imagesZipFile}' does not exists.");
+                    return;
+                }
+
+                string imagePath = Path.Combine(webroot, "images");
+                string[] imageFiles = Directory.GetFiles(imagePath).Select(file => Path.GetFileName(file)).ToArray();
+
+                using (ZipArchive zip = ZipFile.Open(imagesZipFile, ZipArchiveMode.Read))
+                {
+                    foreach (ZipArchiveEntry entry in zip.Entries)
+                    {
+                        if (imageFiles.Contains(entry.Name))
+                        {
+                            string destinationFilename = Path.Combine(imagePath, entry.Name);
+                            if (File.Exists(destinationFilename))
+                            {
+                                File.Delete(destinationFilename);
+                            }
+                            entry.ExtractToFile(destinationFilename);
+                        }
+                        else
+                        {
+                            log.LogWarning($"Skip file '{entry.Name}' in zipfile '{imagesZipFile}'");
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                log.LogError($"Exception in method GetPreconfiguredImages WebMVC. Exception Message={ex.Message}");
+            }
         }
     }
 }
