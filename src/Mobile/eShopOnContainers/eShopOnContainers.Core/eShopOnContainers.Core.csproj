@@ -78,7 +78,7 @@
     <Compile Include="Models\Orders\CardType.CS" />
     <Compile Include="Models\Orders\Order.cs" />
     <Compile Include="Models\Orders\OrderItem.cs" />
-    <Compile Include="Models\Orders\OrderState.cs" />
+    <Compile Include="Models\Orders\OrderStatus.cs" />
     <Compile Include="Models\User\Address.cs" />
     <Compile Include="Models\User\LogoutParameter.cs" />
     <Compile Include="Models\User\PaymentInfo.cs" />

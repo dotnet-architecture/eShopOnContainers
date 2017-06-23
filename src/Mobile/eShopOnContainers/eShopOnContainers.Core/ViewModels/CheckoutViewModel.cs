@@ -107,7 +107,7 @@ namespace eShopOnContainers.Core.ViewModels
                 {
                     BuyerId = userInfo.UserId,
                     OrderItems = CreateOrderItems(orderItems),
-                    State = OrderState.InProcess,
+                    OrderStatus = OrderStatus.Submitted,
                     OrderDate = DateTime.Now,
                     CardHolderName = paymentInfo.CardHolderName,
                     CardNumber = paymentInfo.CardNumber,
