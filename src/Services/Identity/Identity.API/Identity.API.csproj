@@ -3,7 +3,6 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp1.1</TargetFramework>
     <RuntimeFrameworkVersion>1.1.2</RuntimeFrameworkVersion>
-    <OutputType>Exe</OutputType>
     <UserSecretsId>aspnet-eShopOnContainers.Identity-90487118-103c-4ff0-b9da-e5e26f7ab0c5</UserSecretsId>
     <PackageTargetFallback>$(PackageTargetFallback);dotnet5.6;portable-net45+win8</PackageTargetFallback>
     <DockerComposeProjectPath>..\..\..\..\docker-compose.dcproj</DockerComposeProjectPath>

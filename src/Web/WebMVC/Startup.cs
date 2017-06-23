@@ -83,7 +83,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
             var callBackUrl = Configuration.GetValue<string>("CallBackUrl");
             // Add Authentication services
             services.AddCookieAuthentication(CookieAuthenticationDefaults.AuthenticationScheme);
-            services.AddOpenIdConnectAuthentication("Oidc", options =>
+            services.AddOpenIdConnectAuthentication(OpenIdConnectDefaults.AuthenticationScheme, options =>
             {
                 options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.Authority = identityUrl.ToString();
@@ -101,8 +101,11 @@ namespace Microsoft.eShopOnContainers.WebMVC
                 options.Scope.Add("marketing");
             });
 
-            services.AddAuthentication(sharedOptions => sharedOptions.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme);
-
+            services.AddAuthentication(options => {
+                options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+                options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -125,7 +128,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
 
             app.UseStaticFiles();
 
-
+            app.UseAuthentication();
 
             var log = loggerFactory.CreateLogger("identity");
 
