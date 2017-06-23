@@ -20,14 +20,14 @@
                 <input type="hidden" value="@item.ProductName" name=@("orderitems[" + i + "].ProductName") />
             </section>
             <section class="esh-orders_new-item esh-orders_new-item--middle col-xs-1">
-                $ @item.UnitPrice
+                $ @item.UnitPrice.ToString("N2")
                 <input type="hidden" value="@item.UnitPrice" name=@("orderitems[" + i + "].UnitPrice") />
             </section>
             <section class="esh-orders_new-item esh-orders_new-item--middle col-xs-1">
                 @item.Units
                 <input type="hidden" value="@item.Units" name=@("orderitems[" + i + "].Units") />
             </section>
-            <section class="esh-orders_new-item esh-orders_new-item--middle col-xs-2">$ @Math.Round(item.Units * item.UnitPrice, 2)</section>
+            <section class="esh-orders_new-item esh-orders_new-item--middle col-xs-2">$ @Math.Round(item.Units * item.UnitPrice, 2).ToString("N2")</section>
         </article>
     }
 </section>
@@ -41,7 +41,7 @@
     <article class="esh-orders_new-items row">
         <section class="esh-orders_new-item col-xs-9"></section>
         <section class="esh-orders_new-item esh-orders_new-item--mark col-xs-2">
-            $ @Model.Total
+            $ @Model.Total.ToString("N2")
             <input type="hidden" value="@Model.Total" name="Total"/>
         </section>
     </article>

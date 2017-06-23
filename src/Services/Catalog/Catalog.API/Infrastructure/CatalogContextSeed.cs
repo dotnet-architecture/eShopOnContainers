@@ -98,7 +98,7 @@
 
         static CatalogBrand CreateCatalogBrand(string brand)
         {
-            brand = brand.Trim();
+            brand = brand.Trim('"').Trim();
 
             if (String.IsNullOrEmpty(brand))
             {
@@ -153,6 +153,8 @@
 
         static CatalogType CreateCatalogType(string type)
         {
+            type = type.Trim('"').Trim();
+
             if (String.IsNullOrEmpty(type))
             {
                 throw new Exception("catalog Type Name is empty");
@@ -215,19 +217,19 @@
                 throw new Exception($"column count '{column.Count()}' not the same as headers count'{headers.Count()}'");
             }
 
-            string catalogTypeName = column[Array.IndexOf(headers, "catalogtypename")].Trim();
+            string catalogTypeName = column[Array.IndexOf(headers, "catalogtypename")].Trim('"').Trim();
             if (!catalogTypeIdLookup.ContainsKey(catalogTypeName))
             {
                 throw new Exception($"type={catalogTypeName} does not exist in catalogTypes");
             }
 
-            string catalogBrandName = column[Array.IndexOf(headers, "catalogbrandname")].Trim();
+            string catalogBrandName = column[Array.IndexOf(headers, "catalogbrandname")].Trim('"').Trim();
             if (!catalogBrandIdLookup.ContainsKey(catalogBrandName))
             {
                 throw new Exception($"type={catalogTypeName} does not exist in catalogTypes");
             }
 
-            string priceString = column[Array.IndexOf(headers, "price")];
+            string priceString = column[Array.IndexOf(headers, "price")].Trim('"').Trim();
             if (!Decimal.TryParse(priceString, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out Decimal price))
             {
                 throw new Exception($"price={priceString}is not a valid decimal number");
@@ -237,16 +239,16 @@
             {
                 CatalogTypeId = catalogTypeIdLookup[catalogTypeName],
                 CatalogBrandId = catalogBrandIdLookup[catalogBrandName],
-                Description = column[Array.IndexOf(headers, "description")],
-                Name = column[Array.IndexOf(headers, "name")],
+                Description = column[Array.IndexOf(headers, "description")].Trim('"').Trim(),
+                Name = column[Array.IndexOf(headers, "name")].Trim('"').Trim(),
                 Price = price,
-                PictureUri = column[Array.IndexOf(headers, "pictureuri")],
+                PictureUri = column[Array.IndexOf(headers, "pictureuri")].Trim('"').Trim(),
             };
 
             int availableStockIndex = Array.IndexOf(headers, "availablestock");
             if (availableStockIndex != -1)
             {
-                string availableStockString = column[availableStockIndex];
+                string availableStockString = column[availableStockIndex].Trim('"').Trim();
                 if (!String.IsNullOrEmpty(availableStockString))
                 {
                     if ( int.TryParse(availableStockString, out int availableStock))
@@ -263,7 +265,7 @@
             int restockThresholdIndex = Array.IndexOf(headers, "restockthreshold");
             if (restockThresholdIndex != -1)
             {
-                string restockThresholdString = column[restockThresholdIndex];
+                string restockThresholdString = column[restockThresholdIndex].Trim('"').Trim();
                 if (!String.IsNullOrEmpty(restockThresholdString))
                 {
                     if (int.TryParse(restockThresholdString, out int restockThreshold))
@@ -280,7 +282,7 @@
             int maxStockThresholdIndex = Array.IndexOf(headers, "maxstockthreshold");
             if (maxStockThresholdIndex != -1)
             {
-                string maxStockThresholdString = column[maxStockThresholdIndex];
+                string maxStockThresholdString = column[maxStockThresholdIndex].Trim('"').Trim();
                 if (!String.IsNullOrEmpty(maxStockThresholdString))
                 {
                     if (int.TryParse(maxStockThresholdString, out int maxStockThreshold))
@@ -297,7 +299,7 @@
             int onReorderIndex = Array.IndexOf(headers, "onreorder");
             if (onReorderIndex != -1)
             {
-                string onReorderString = column[onReorderIndex];
+                string onReorderString = column[onReorderIndex].Trim('"').Trim();
                 if (!String.IsNullOrEmpty(onReorderString))
                 {
                     if (bool.TryParse(onReorderString, out bool onReorder))
