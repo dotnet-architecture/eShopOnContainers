@@ -2,7 +2,7 @@
 {
     using Autofac;
     using Autofac.Extensions.DependencyInjection;
-    using global::Catalog.API.Infrastructure.Filters;
+    using global::Catalog.API.Infrastructure.Exceptions;
     using global::Catalog.API.IntegrationEvents;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -13,6 +13,7 @@
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ;
     using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF;
     using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF.Services;
+    using Microsoft.eShopOnContainers.Infrastructure.Filters;
     using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
     using Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationEvents.EventHandling;
     using Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationEvents.Events;
@@ -66,7 +67,7 @@
 
             services.AddMvc(options =>
             {
-                options.Filters.Add(typeof(HttpGlobalExceptionFilter));
+                options.Filters.Add(typeof(HttpGlobalExceptionFilter<CatalogDomainException>));
             }).AddControllersAsServices();
 
             services.AddDbContext<CatalogContext>(options =>

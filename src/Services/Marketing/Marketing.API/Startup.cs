@@ -13,7 +13,6 @@ namespace Microsoft.eShopOnContainers.Services.Marketing.API
     using Microsoft.Extensions.Logging;
     using System.Reflection;
     using System;
-    using Microsoft.eShopOnContainers.Services.Marketing.API.Infrastructure.Filters;
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ;
     using RabbitMQ.Client;
     using BuildingBlocks.EventBus.Abstractions;
@@ -26,6 +25,8 @@ namespace Microsoft.eShopOnContainers.Services.Marketing.API
     using Polly;
     using System.Threading.Tasks;
     using System.Data.SqlClient;
+    using Microsoft.eShopOnContainers.Services.Marketing.API.Infrastructure.Exceptions;
+    using Microsoft.eShopOnContainers.Infrastructure.Filters;
 
     public class Startup
     {
@@ -55,7 +56,7 @@ namespace Microsoft.eShopOnContainers.Services.Marketing.API
             // Add framework services.
             services.AddMvc(options =>
             {
-                options.Filters.Add(typeof(HttpGlobalExceptionFilter));
+                options.Filters.Add(typeof(HttpGlobalExceptionFilter<MarketingDomainException>));
             }).AddControllersAsServices();  //Injecting Controllers themselves thru DIFor further info see: http://docs.autofac.org/en/latest/integration/aspnetcore.html#controllers-as-services
 
             services.Configure<MarketingSettings>(Configuration);
