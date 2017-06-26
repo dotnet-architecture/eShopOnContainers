@@ -2,7 +2,9 @@
 using eShopOnContainers.Core.Services.RequestProvider;
 using System;
 using System.Collections.ObjectModel;
+using System.Net.Http;
 using System.Threading.Tasks;
+using eShopOnContainers.Core.Models.Orders;
 
 namespace eShopOnContainers.Core.Services.Order
 {
@@ -87,6 +89,31 @@ namespace eShopOnContainers.Core.Services.Order
                 ZipCode = order.ShippingZipCode,
                 Street = order.ShippingStreet
             };
+        }
+
+        public async Task<bool> CancelOrderAsync(int orderId, string token)
+        {
+            UriBuilder builder = new UriBuilder(GlobalSetting.Instance.OrdersEndpoint);
+
+            builder.Path = "api/v1/orders/cancel";
+
+            var cancelOrderCommand = new CancelOrderCommand(orderId);
+
+            string uri = builder.ToString();
+            var header = "x-requestid";
+
+            try
+            {
+                await _requestProvider.PutAsync(uri, cancelOrderCommand, token, header);
+            }
+            //If the status of the order has changed before to click cancel button, we will get
+            //a BadRequest HttpStatus
+            catch (HttpRequestExceptionEx ex) when (ex.HttpCode == System.Net.HttpStatusCode.BadRequest)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

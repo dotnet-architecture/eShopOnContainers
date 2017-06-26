@@ -54,6 +54,6 @@ namespace eShopOnContainers.Core.Models.Orders
         public decimal Total { get; set; }
 
         [JsonProperty("ordernumber")]
-        public string OrderNumber { get; set; }
+        public int OrderNumber { get; set; }
     }
 }
