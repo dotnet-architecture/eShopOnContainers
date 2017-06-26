@@ -1,4 +1,7 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Marketing.API
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure.Services;
+
+namespace Microsoft.eShopOnContainers.Services.Marketing.API
 {
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -110,6 +113,8 @@
             });
 
             services.AddTransient<IMarketingDataRepository, MarketingDataRepository>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddTransient<IIdentityService, IdentityService>();
 
             //configure autofac
             var container = new ContainerBuilder();
