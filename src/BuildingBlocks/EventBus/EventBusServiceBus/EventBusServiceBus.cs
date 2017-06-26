@@ -11,17 +11,21 @@
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBus;
     using System.Reflection;
     using Microsoft.Azure.ServiceBus.Filters;
+    using Autofac;
+    using Newtonsoft.Json.Linq;
 
     public class EventBusServiceBus : IEventBus
     {
         private readonly IServiceBusPersisterConnection _serviceBusPersisterConnection;
-        private ServiceBusConnectionStringBuilder _serviceBusConnectionStringBuilder;
         private readonly ILogger<EventBusServiceBus> _logger;
         private readonly IEventBusSubscriptionsManager _subsManager;
         private readonly SubscriptionClient _subscriptionClient;
-        
+        private readonly ILifetimeScope _autofac;
+        private readonly string AUTOFAC_SCOPE_NAME = "eshop_event_bus";
+
         public EventBusServiceBus(IServiceBusPersisterConnection serviceBusPersisterConnection, 
-            ILogger<EventBusServiceBus> logger, IEventBusSubscriptionsManager subsManager, string subscriptionClientName)
+            ILogger<EventBusServiceBus> logger, IEventBusSubscriptionsManager subsManager, string subscriptionClientName,
+            ILifetimeScope autofac)
         {
             _serviceBusPersisterConnection = serviceBusPersisterConnection;
             _logger = logger;
@@ -29,6 +33,7 @@
 
             _subscriptionClient = new SubscriptionClient(serviceBusPersisterConnection.ServiceBusConnectionStringBuilder, 
                 subscriptionClientName);
+            _autofac = autofac;
 
             RemoveDefaultRule();
             RegisterSubscriptionClientMessageHandler();
@@ -54,7 +59,13 @@
                 .GetResult();
         }
 
-        public void Subscribe<T, TH>(Func<TH> handler)
+        public void SubscribeDynamic<TH>(string eventName)
+            where TH : IDynamicIntegrationEventHandler
+        {
+            _subsManager.AddDynamicSubscription<TH>(eventName);
+        }
+
+        public void Subscribe<T, TH>()
             where T : IntegrationEvent
             where TH : IIntegrationEventHandler<T>
         {
@@ -76,7 +87,7 @@
                 }
             }
 
-            _subsManager.AddSubscription<T, TH>(handler);
+            _subsManager.AddSubscription<T, TH>();
         }
 
         public void Unsubscribe<T, TH>()
@@ -100,6 +111,12 @@
             _subsManager.RemoveSubscription<T, TH>();
         }
 
+        public void UnsubscribeDynamic<TH>(string eventName)
+            where TH : IDynamicIntegrationEventHandler
+        {
+            _subsManager.RemoveDynamicSubscription<TH>(eventName);
+        }
+
         public void Dispose()
         {
             _subsManager.Clear();
@@ -121,15 +138,26 @@
         {
             if (_subsManager.HasSubscriptionsForEvent(eventName))
             {
-                var eventType = _subsManager.GetEventTypeByName(eventName);
-                var integrationEvent = JsonConvert.DeserializeObject(message, eventType);
-                var handlers = _subsManager.GetHandlersForEvent(eventName);
-
-                foreach (var handlerfactory in handlers)
+                using (var scope = _autofac.BeginLifetimeScope(AUTOFAC_SCOPE_NAME))
                 {
-                    var handler = handlerfactory.DynamicInvoke();
-                    var concreteType = typeof(IIntegrationEventHandler<>).MakeGenericType(eventType);
-                    await (Task)concreteType.GetMethod("Handle").Invoke(handler, new object[] { integrationEvent });
+                    var subscriptions = _subsManager.GetHandlersForEvent(eventName);
+                    foreach (var subscription in subscriptions)
+                    {
+                        if (subscription.IsDynamic)
+                        {
+                            var handler = scope.ResolveOptional(subscription.HandlerType) as IDynamicIntegrationEventHandler;
+                            dynamic eventData = JObject.Parse(message);
+                            await handler.Handle(eventData);
+                        }
+                        else
+                        {
+                            var eventType = _subsManager.GetEventTypeByName(eventName);
+                            var integrationEvent = JsonConvert.DeserializeObject(message, eventType);
+                            var handler = scope.ResolveOptional(subscription.HandlerType);
+                            var concreteType = typeof(IIntegrationEventHandler<>).MakeGenericType(eventType);
+                            await (Task)concreteType.GetMethod("Handle").Invoke(handler, new object[] { integrationEvent });
+                        }
+                    }
                 }
             }
         }

@@ -178,7 +178,6 @@
                });
 
             WaitForSqlAvailabilityAsync(loggerFactory, app).Wait();
-            ConfigureEventBus(app);
 
             var integrationEventLogContext = new IntegrationEventLogContext(
                 new DbContextOptionsBuilder<IntegrationEventLogContext>()
@@ -219,12 +218,13 @@
                 services.AddSingleton<IEventBus, EventBusServiceBus>(sp =>
                 {
                     var serviceBusPersisterConnection = sp.GetRequiredService<IServiceBusPersisterConnection>();
+                    var iLifetimeScope = sp.GetRequiredService<ILifetimeScope>();
                     var logger = sp.GetRequiredService<ILogger<EventBusServiceBus>>();
                     var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
                     var subscriptionClientName = Configuration["SubscriptionClientName"];
 
                     return new EventBusServiceBus(serviceBusPersisterConnection, logger,
-                        eventBusSubcriptionsManager, subscriptionClientName);
+                        eventBusSubcriptionsManager, subscriptionClientName, iLifetimeScope);
                 });
             }
             else

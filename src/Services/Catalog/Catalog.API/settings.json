@@ -10,6 +10,6 @@
     }
   },
   "AzureServiceBusEnabled": false,
-  "AzureStorageEnabled": false,
+  "AzureStorageEnabled": true,
   "SubscriptionClientName": "Catalog"
 }
