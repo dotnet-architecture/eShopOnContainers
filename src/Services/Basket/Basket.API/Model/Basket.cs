@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Microsoft.eShopOnContainers.Services.Basket.API.Model
 {
@@ -13,7 +10,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Model
         public CustomerBasket(string customerId)
         {
             BuyerId = customerId;
-            Items = new List<Model.BasketItem>();
+            Items = new List<BasketItem>();
         }
     }
 }

@@ -1,7 +1,6 @@
-﻿using IdentityServer4.Models;
-using Microsoft.Extensions.Options;
+﻿using IdentityServer4;
+using IdentityServer4.Models;
 using System.Collections.Generic;
-using IdentityServer4;
 
 namespace Identity.API.Configuration
 {
@@ -13,7 +12,9 @@ namespace Identity.API.Configuration
             return new List<ApiResource>
             {
                 new ApiResource("orders", "Orders Service"),
-                new ApiResource("basket", "Basket Service")
+                new ApiResource("basket", "Basket Service"),
+                new ApiResource("marketing", "Marketing Service"),
+                new ApiResource("locations", "Locations Service")
             };
         }
 
@@ -49,26 +50,38 @@ namespace Identity.API.Configuration
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
                         "orders",
-                        "basket"
+                        "basket",
+                        "locations",
+                        "marketing"
                     }
                 },
                 new Client
                 {
                     ClientId = "xamarin",
                     ClientName = "eShop Xamarin OpenId Client",
-                    AllowedGrantTypes = GrantTypes.Implicit,
-                    AllowAccessTokensViaBrowser = true,
-                    RedirectUris =          { clientsUrl["Xamarin"] },
+                    AllowedGrantTypes = GrantTypes.Hybrid,                    
+                    //Used to retrieve the access token on the back channel.
+                    ClientSecrets =
+                    {
+                        new Secret("secret".Sha256())
+                    },
+                    RedirectUris = { clientsUrl["Xamarin"] },
                     RequireConsent = false,
                     PostLogoutRedirectUris = { $"{clientsUrl["Xamarin"]}/Account/Redirecting" },
-                    AllowedCorsOrigins =     { "http://eshopxamarin" },
-                    AllowedScopes =
+                    AllowedCorsOrigins = { "http://eshopxamarin" },
+                    AllowedScopes = new List<string>
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServerConstants.StandardScopes.OfflineAccess,
                         "orders",
-                        "basket"
-                    }
+                        "basket",
+                        "locations",
+                        "marketing"
+                    },
+                    //Allow requesting refresh tokens for long lived API access
+                    AllowOfflineAccess = true,
+                    AllowAccessTokensViaBrowser = true
                 },
                 new Client
                 {
@@ -80,6 +93,7 @@ namespace Identity.API.Configuration
                     },
                     ClientUri = $"{clientsUrl["Mvc"]}",                             // public uri of the client
                     AllowedGrantTypes = GrantTypes.Hybrid,
+                    AllowAccessTokensViaBrowser = false,
                     RequireConsent = false,
                     AllowOfflineAccess = true,
                     RedirectUris = new List<string>
@@ -97,6 +111,8 @@ namespace Identity.API.Configuration
                         IdentityServerConstants.StandardScopes.OfflineAccess,
                         "orders",
                         "basket",
+                        "locations",
+                        "marketing"
                     },
                 }
             };

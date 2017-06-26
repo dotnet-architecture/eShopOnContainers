@@ -29,7 +29,7 @@
 
 .esh-identity-drop {
     background: #FFFFFF;
-    height: 0;
+    height: 0rem;
     min-width: 14rem;
     right: 0;
     overflow: hidden;
@@ -41,7 +41,7 @@
 
 .esh-identity:hover .esh-identity-drop {
     border: 1px solid #EEEEEE;
-    height: 7rem;
+    height: 9.5rem;
     transition: height 0.35s;
 }
 

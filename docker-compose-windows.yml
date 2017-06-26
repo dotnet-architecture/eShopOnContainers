@@ -2,7 +2,7 @@ version: '2.1'
 
 services:
   basket.api:
-    image: eshop/basket.api-win
+    image: eshop/basket.api-win:${TAG:-latest}
     build:
       context: ./src/Services/Basket/Basket.API
       dockerfile: Dockerfile.nanowin
@@ -11,7 +11,7 @@ services:
       - identity.api
 
   catalog.api:
-    image: eshop/catalog.api-win
+    image: eshop/catalog.api-win:${TAG:-latest}
     build:
       context: ./src/Services/Catalog/Catalog.API
       dockerfile: Dockerfile.nanowin
@@ -19,7 +19,7 @@ services:
       - sql.data
 
   identity.api:
-    image: eshop/identity.api-win
+    image: eshop/identity.api-win:${TAG:-latest}
     build:
       context: ./src/Services/Identity/Identity.API
       dockerfile: Dockerfile.nanowin
@@ -27,7 +27,7 @@ services:
       - sql.data
 
   ordering.api:
-    image: eshop/ordering.api-win
+    image: eshop/ordering.api-win:${TAG:-latest}
     build:
       context: ./src/Services/Ordering/Ordering.API
       dockerfile: Dockerfile.nanowin
@@ -35,7 +35,7 @@ services:
       - sql.data
 
   webspa:
-    image: eshop/webspa-win
+    image: eshop/webspa-win:${TAG:-latest}
     build:
       context: ./src/Web/WebSPA
       dockerfile: Dockerfile.nanowin
@@ -44,7 +44,7 @@ services:
       - basket.api
 
   webmvc:
-    image: eshop/webmvc-win
+    image: eshop/webmvc-win:${TAG:-latest}
     build:
       context: ./src/Web/WebMVC
       dockerfile: Dockerfile.nanowin
@@ -53,9 +53,32 @@ services:
       - ordering.api
       - identity.api
       - basket.api
+  
+  locations.api:
+    image: eshop/locations.api:${TAG:-latest}
+    build:
+      context: ./src/Services/Location/Locations.API
+      dockerfile: Dockerfile
+    depends_on:
+      - nosql.data
+      - rabbitmq
+
+  marketing.api:
+    image: eshop/marketing.api:${TAG:-latest}
+    build:
+      context: ./src/Services/Marketing/Marketing.API
+      dockerfile: Dockerfile    
+    depends_on:
+      - sql.data
+      - nosql.data
+      - identity.api
+      - rabbitmq
 
   sql.data:
     image: microsoft/mssql-server-windows
+  
+  nosql.data:
+    image: mongo:windowsservercore
 
   basket.data:
     image: redis:nanoserver

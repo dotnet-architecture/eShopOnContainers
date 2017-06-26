@@ -3,6 +3,20 @@
     height: 4rem;
 }
 
+.esh-header-title {
+    color: rgba(255, 255, 255, 0.5) !important;
+    line-height: 4rem;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: color 0.35s;
+    margin-right: 15px;
+}
+
+    .esh-header-title:hover {
+        color: #FFFFFF !important;
+        transition: color 0.35s;
+    }
+
 .esh-header-back {
     color: rgba(255, 255, 255, 0.5) !important;
     line-height: 4rem;

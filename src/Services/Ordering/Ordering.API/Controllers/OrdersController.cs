@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands;
 using Microsoft.eShopOnContainers.Services.Ordering.API.Application.Queries;
 using Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure.Services;
+using Ordering.API.Application.Commands;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -26,21 +27,30 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Controllers
             _identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
         }
 
-        [Route("new")]
-        [HttpPost]
-        public async Task<IActionResult> CreateOrder([FromBody]CreateOrderCommand command, [FromHeader(Name = "x-requestid")] string requestId)
+        [Route("cancel")]
+        [HttpPut]
+        public async Task<IActionResult> CancelOrder([FromBody]CancelOrderCommand command, [FromHeader(Name = "x-requestid")] string requestId)
         {
             bool commandResult = false;
             if (Guid.TryParse(requestId, out Guid guid) && guid != Guid.Empty)
             {
-                var requestCreateOrder = new IdentifiedCommand<CreateOrderCommand, bool>(command, guid);
-                commandResult = await _mediator.SendAsync(requestCreateOrder);
+                var requestCancelOrder = new IdentifiedCommand<CancelOrderCommand, bool>(command, guid);
+                commandResult = await _mediator.Send(requestCancelOrder);
             }
-            else
+           
+            return commandResult ? (IActionResult)Ok() : (IActionResult)BadRequest();
+
+        }
+
+        [Route("ship")]
+        [HttpPut]
+        public async Task<IActionResult> ShipOrder([FromBody]ShipOrderCommand command, [FromHeader(Name = "x-requestid")] string requestId)
+        {
+            bool commandResult = false;
+            if (Guid.TryParse(requestId, out Guid guid) && guid != Guid.Empty)
             {
-                // If no x-requestid header is found we process the order anyway. This is just temporary to not break existing clients
-                // that aren't still updated. When all clients were updated this could be removed.
-                commandResult = await _mediator.SendAsync(command);
+                var requestShipOrder = new IdentifiedCommand<ShipOrderCommand, bool>(command, guid);
+                commandResult = await _mediator.Send(requestShipOrder);
             }
 
             return commandResult ? (IActionResult)Ok() : (IActionResult)BadRequest();

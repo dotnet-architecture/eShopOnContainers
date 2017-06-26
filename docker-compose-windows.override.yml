@@ -81,3 +81,30 @@ services:
       - ACCEPT_EULA=Y
     ports:
       - "5433:1433"
+
+  nosql.data:
+    ports:
+      - "27017:27017"
+
+  locations.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - ConnectionString=mongodb://nosql.data
+      - Database=LocationsDb
+      - identityUrl=http://identity.api              #Local: You need to open your local dev-machine firewall at range 5100-5105.  at range 5100-5105. 
+      - EventBusConnection=rabbitmq
+    ports:
+      - "5109:80"
+
+  marketing.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - ConnectionString=Server=sql.data;Database=Microsoft.eShopOnContainers.Services.MarketingDb;User Id=sa;Password=Pass@word
+      - EventBusConnection=rabbitmq
+      - MongoConnectionString=mongodb://nosql.data
+      - MongoDatabase=MarketingDb
+      - identityUrl=http://identity.api              #Local: You need to open your local dev-machine firewall at range 5100-5105.  at range 5100-5105. 
+    ports:
+      - "5110:80"

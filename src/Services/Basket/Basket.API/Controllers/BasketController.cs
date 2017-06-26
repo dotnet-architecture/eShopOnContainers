@@ -5,24 +5,31 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.eShopOnContainers.Services.Basket.API.Model;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
+using Basket.API.IntegrationEvents.Events;
+using Microsoft.eShopOnContainers.Services.Basket.API.Services;
+using Basket.API.Model;
 
 namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
 {
-    //TODO NOTE: Right now this is a very chunky API, as the app evolves it is possible we would
-    //want to make the actions more fine grained, add basket item as an action for example.
-    //If this is the case we should also investigate changing the serialization format used for Redis,
-    //using a HashSet instead of a simple string.
     [Route("/")]
     [Authorize]
     public class BasketController : Controller
     {
-        private IBasketRepository _repository;
+        private readonly IBasketRepository _repository;
+        private readonly IIdentityService _identitySvc;
+        private readonly IEventBus _eventBus;
 
-        public BasketController(IBasketRepository repository)
+        public BasketController(IBasketRepository repository, 
+            IIdentityService identityService,
+            IEventBus eventBus)
         {
             _repository = repository;
+            _identitySvc = identityService;
+            _eventBus = eventBus;
         }
-        // GET api/values/5
+        // GET /id
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(string id)
         {
@@ -31,7 +38,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
             return Ok(basket);
         }
 
-        // POST api/values
+        // POST /value
         [HttpPost]
         public async Task<IActionResult> Post([FromBody]CustomerBasket value)
         {
@@ -40,11 +47,38 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
             return Ok(basket);
         }
 
+        [Route("checkout")]
+        [HttpPost]
+        public async Task<IActionResult> Checkout([FromBody]BasketCheckout basketCheckout, [FromHeader(Name = "x-requestid")] string requestId)
+        {
+            var userId = _identitySvc.GetUserIdentity();
+            basketCheckout.RequestId = (Guid.TryParse(requestId, out Guid guid) && guid != Guid.Empty) ?
+                guid : basketCheckout.RequestId;
+
+            var basket = await _repository.GetBasketAsync(userId);
+            var eventMessage = new UserCheckoutAcceptedIntegrationEvent(userId, basketCheckout.City, basketCheckout.Street,
+                basketCheckout.State, basketCheckout.Country, basketCheckout.ZipCode, basketCheckout.CardNumber, basketCheckout.CardHolderName,
+                basketCheckout.CardExpiration, basketCheckout.CardSecurityNumber, basketCheckout.CardTypeId, basketCheckout.Buyer, basketCheckout.RequestId, basket);
+
+            // Once basket is checkout, sends an integration event to
+            // ordering.api to convert basket to order and proceeds with
+            // order creation process
+            _eventBus.Publish(eventMessage);
+
+            if (basket == null)
+            {
+                return BadRequest();
+            }
+
+            return Accepted();
+        }
+
         // DELETE api/values/5
         [HttpDelete("{id}")]
         public void Delete(string id)
         {
             _repository.DeleteBasketAsync(id);
         }
+
     }
 }

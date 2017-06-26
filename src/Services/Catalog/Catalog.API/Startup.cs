@@ -1,5 +1,7 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Catalog.API
 {
+    using Autofac;
+    using Autofac.Extensions.DependencyInjection;
     using global::Catalog.API.Infrastructure.Filters;
     using global::Catalog.API.IntegrationEvents;
     using Microsoft.AspNetCore.Builder;
@@ -14,16 +16,20 @@
     using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF;
     using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF.Services;
     using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
+    using Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationEvents.EventHandling;
+    using Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationEvents.Events;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.HealthChecks;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
+    using Polly;
     using RabbitMQ.Client;
     using System;
     using System.Data.Common;
     using System.Data.SqlClient;
     using System.Reflection;
+    using System.Threading.Tasks;
 
     public class Startup
     {
@@ -46,7 +52,7 @@
             Configuration = builder.Build();
         }
 
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
 
@@ -84,11 +90,10 @@
             services.Configure<CatalogSettings>(Configuration);
 
             // Add framework services.
-            services.AddSwaggerGen();
-            services.ConfigureSwaggerGen(options =>
+            services.AddSwaggerGen(options =>
             {
                 options.DescribeAllEnumsAsStrings();
-                options.SingleApiVersion(new Swashbuckle.Swagger.Model.Info()
+                options.SwaggerDoc("v1", new Swashbuckle.AspNetCore.Swagger.Info
                 {
                     Title = "eShopOnContainers - Catalog HTTP API",
                     Version = "v1",
@@ -139,6 +144,11 @@
             }
 
             RegisterEventBus(services);
+
+            var container = new ContainerBuilder();
+            container.Populate(services);
+            return new AutofacServiceProvider(container.Build());
+            
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
@@ -153,16 +163,17 @@
             app.UseMvcWithDefaultRoute();
 
             app.UseSwagger()
-              .UseSwaggerUi();
+              .UseSwaggerUI(c =>
+              {
+                  c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+              });
 
             var context = (CatalogContext)app
                         .ApplicationServices.GetService(typeof(CatalogContext));
 
-            WaitForSqlAvailability(context, loggerFactory);
+            WaitForSqlAvailabilityAsync(context, loggerFactory, app).Wait();
 
-            //Seed Data
-            CatalogContextSeed.SeedAsync(app, loggerFactory)
-                .Wait();
+            ConfigureEventBus(app);
 
             var integrationEventLogContext = new IntegrationEventLogContext(
                 new DbContextOptionsBuilder<IntegrationEventLogContext>()
@@ -170,32 +181,30 @@
                 .Options);
 
             integrationEventLogContext.Database.Migrate();
-
-            ConfigureEventBus(app);
         }
 
-        private void WaitForSqlAvailability(CatalogContext ctx, ILoggerFactory loggerFactory, int? retry = 0)
+        private async Task WaitForSqlAvailabilityAsync(CatalogContext ctx, ILoggerFactory loggerFactory, IApplicationBuilder app, int retries = 0)
         {
-            int retryForAvailability = retry.Value;
+            var logger = loggerFactory.CreateLogger(nameof(Startup));
+            var policy = CreatePolicy(retries, logger, nameof (WaitForSqlAvailabilityAsync));
+            await policy.ExecuteAsync(async () =>
+            {
+                await CatalogContextSeed.SeedAsync(app, loggerFactory);
+            });
 
-            try
-            {
-                ctx.Database.OpenConnection();
-            }
-            catch (SqlException ex)
-            {
-                if (retryForAvailability < 10)
-                {
-                    retryForAvailability++;
-                    var log = loggerFactory.CreateLogger(nameof(Startup));
-                    log.LogError(ex.Message);
-                    WaitForSqlAvailability(ctx, loggerFactory, retryForAvailability);
-                }
-            }
-            finally
-            {
-                ctx.Database.CloseConnection();
-            }
+        }
+
+        private Policy CreatePolicy(int retries, ILogger logger, string prefix)
+        {
+            return Policy.Handle<SqlException>().
+                WaitAndRetryAsync(
+                    retryCount: retries,
+                    sleepDurationProvider: retry => TimeSpan.FromSeconds(5),
+                    onRetry: (exception, timeSpan, retry, ctx) =>
+                    {
+                        logger.LogTrace($"[{prefix}] Exception {exception.GetType().Name} with message ${exception.Message} detected on attempt {retry} of {retries}");
+                    }
+                );
         }
 
         private void RegisterEventBus(IServiceCollection services)
@@ -212,6 +221,7 @@
                     return new EventBusServiceBus(serviceBusPersisterConnection, logger,
                         eventBusSubcriptionsManager, subscriptionClientName);
                 });
+                
             }
             else
             {
@@ -219,6 +229,10 @@
             }
 
             services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
+            services.AddTransient<IIntegrationEventHandler<OrderStatusChangedToAwaitingValidationIntegrationEvent>,
+                OrderStatusChangedToAwaitingValidationIntegrationEventHandler>();
+            services.AddTransient<IIntegrationEventHandler<OrderStatusChangedToPaidIntegrationEvent>,
+                OrderStatusChangedToPaidIntegrationEventHandler>();
         }
         protected virtual void ConfigureEventBus(IApplicationBuilder app)
         {

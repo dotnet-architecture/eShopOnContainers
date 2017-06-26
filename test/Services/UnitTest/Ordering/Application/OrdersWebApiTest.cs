@@ -5,8 +5,10 @@ using Microsoft.eShopOnContainers.Services.Ordering.API.Application.Queries;
 using Microsoft.eShopOnContainers.Services.Ordering.API.Controllers;
 using Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure.Services;
 using Moq;
+using Ordering.API.Application.Commands;
 using System;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -29,12 +31,12 @@ namespace UnitTest.Ordering.Application
         public async Task Create_order_with_requestId_success()
         {
             //Arrange
-            _mediatorMock.Setup(x => x.SendAsync(It.IsAny<IdentifiedCommand<CreateOrderCommand, bool>>()))
+            _mediatorMock.Setup(x => x.Send(It.IsAny<IdentifiedCommand<CancelOrderCommand, bool>>(), default(CancellationToken)))
                 .Returns(Task.FromResult(true));
 
             //Act
             var orderController = new OrdersController(_mediatorMock.Object, _orderQueriesMock.Object, _identityServiceMock.Object);
-            var actionResult = await orderController.CreateOrder(new CreateOrderCommand(), Guid.NewGuid().ToString()) as OkResult;
+            var actionResult = await orderController.CancelOrder(new CancelOrderCommand(1), Guid.NewGuid().ToString()) as OkResult;
 
             //Assert
             Assert.Equal(actionResult.StatusCode, (int)System.Net.HttpStatusCode.OK);
@@ -42,15 +44,46 @@ namespace UnitTest.Ordering.Application
         }
 
         [Fact]
-        public async Task Create_order_bad_request()
+        public async Task Cancel_order_bad_request()
         {
             //Arrange
-            _mediatorMock.Setup(x => x.SendAsync(It.IsAny<IdentifiedCommand<CreateOrderCommand, bool>>()))
+            _mediatorMock.Setup(x => x.Send(It.IsAny<IdentifiedCommand<CancelOrderCommand, bool>>(), default(CancellationToken)))
                 .Returns(Task.FromResult(true));
 
             //Act
             var orderController = new OrdersController(_mediatorMock.Object, _orderQueriesMock.Object, _identityServiceMock.Object);
-            var actionResult = await orderController.CreateOrder(new CreateOrderCommand(), String.Empty) as BadRequestResult;
+            var actionResult = await orderController.CancelOrder(new CancelOrderCommand(1), String.Empty) as BadRequestResult;
+
+            //Assert
+            Assert.Equal(actionResult.StatusCode, (int)System.Net.HttpStatusCode.BadRequest);
+        }
+
+        [Fact]
+        public async Task Ship_order_with_requestId_success()
+        {
+            //Arrange
+            _mediatorMock.Setup(x => x.Send(It.IsAny<IdentifiedCommand<CreateOrderCommand, bool>>(), default(System.Threading.CancellationToken)))
+                .Returns(Task.FromResult(true));
+
+            //Act
+            var orderController = new OrdersController(_mediatorMock.Object, _orderQueriesMock.Object, _identityServiceMock.Object);
+            var actionResult = await orderController.ShipOrder(new ShipOrderCommand(1), Guid.NewGuid().ToString()) as OkResult;
+
+            //Assert
+            Assert.Equal(actionResult.StatusCode, (int)System.Net.HttpStatusCode.OK);
+
+        }
+
+        [Fact]
+        public async Task Ship_order_bad_request()
+        {
+            //Arrange
+            _mediatorMock.Setup(x => x.Send(It.IsAny<IdentifiedCommand<CreateOrderCommand, bool>>(), default(System.Threading.CancellationToken)))
+                .Returns(Task.FromResult(true));
+
+            //Act
+            var orderController = new OrdersController(_mediatorMock.Object, _orderQueriesMock.Object, _identityServiceMock.Object);
+            var actionResult = await orderController.ShipOrder(new ShipOrderCommand(1), String.Empty) as BadRequestResult;
 
             //Assert
             Assert.Equal(actionResult.StatusCode, (int)System.Net.HttpStatusCode.BadRequest);

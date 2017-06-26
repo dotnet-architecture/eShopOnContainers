@@ -38,8 +38,10 @@
     <Compile Include="Mocks\MockEventToCommandBehavior.cs" />
     <Compile Include="Services\BasketServiceTests.cs" />
     <Compile Include="Services\CatalogServiceTests.cs" />
+    <Compile Include="Services\MarketingServiceTests.cs" />
     <Compile Include="ViewModels\CatalogViewModelTests.cs" />
     <Compile Include="ViewModels\MainViewModelTests.cs" />
+    <Compile Include="ViewModels\MarketingViewModelTests.cs" />
     <Compile Include="ViewModels\OrderViewModelTests.cs" />
     <Compile Include="Services\OrdersServiceTests.cs" />
     <Compile Include="Behaviors\EventToCommandBehaviorTests.cs" />
@@ -56,12 +58,7 @@
       <Name>eShopOnContainers.Core</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Mocks\" />
-    <Folder Include="Services\" />
-    <Folder Include="ViewModels\" />
-    <Folder Include="Behaviors\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

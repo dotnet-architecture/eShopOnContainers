@@ -31,9 +31,12 @@
 
                 if (!context.OrderStatus.Any())
                 {
-                    context.OrderStatus.Add(OrderStatus.Canceled);
-                    context.OrderStatus.Add(OrderStatus.InProcess);
+                    context.OrderStatus.Add(OrderStatus.Submitted);
+                    context.OrderStatus.Add(OrderStatus.AwaitingValidation);
+                    context.OrderStatus.Add(OrderStatus.StockConfirmed);
+                    context.OrderStatus.Add(OrderStatus.Paid);
                     context.OrderStatus.Add(OrderStatus.Shipped);
+                    context.OrderStatus.Add(OrderStatus.Cancelled);
                 }
 
                 await context.SaveChangesAsync();

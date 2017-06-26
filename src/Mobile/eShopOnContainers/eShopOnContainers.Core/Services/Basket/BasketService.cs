@@ -42,6 +42,15 @@ namespace eShopOnContainers.Core.Services.Basket
             return result;
         }
 
+        public async Task CheckoutAsync(BasketCheckout basketCheckout, string token)
+        {
+            UriBuilder builder = new UriBuilder(GlobalSetting.Instance.BasketEndpoint + "/checkout");
+
+            string uri = builder.ToString();
+
+            await _requestProvider.PostAsync(uri, basketCheckout, token);
+        }
+
         public async Task ClearBasketAsync(string guidUser, string token)
         {
             UriBuilder builder = new UriBuilder(GlobalSetting.Instance.BasketEndpoint);

@@ -1,4 +1,4 @@
-version: '2.1'
+version: '3'
 
 # The default docker-compose.override file can use the "localhost" as the external name for testing web apps within the same dev machine. 
 # The ESHOP_EXTERNAL_DNS_NAME_OR_IP environment variable is taken, by default, from the ".env" file defined like: 
@@ -7,7 +7,11 @@ version: '2.1'
 # An external IP or DNS name has to be used (instead localhost and the 10.0.75.1 IP) when testing the Web apps and the Xamarin apps from remote machines/devices using the same WiFi, for instance.
 
 services:
-
+  graceperiodmanager:
+    environment:
+      - ConnectionString=Server=sql.data;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word
+      - EventBusConnection=rabbitmq
+      
   basket.api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
@@ -49,6 +53,19 @@ services:
     ports:
       - "5102:80"
 
+  marketing.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - ConnectionString=Server=sql.data;Database=Microsoft.eShopOnContainers.Services.MarketingDb;User Id=sa;Password=Pass@word
+      - MongoConnectionString=mongodb://nosql.data
+      - MongoDatabase=MarketingDb
+      - EventBusConnection=rabbitmq
+      - ExternalCatalogBaseUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5110   #Local: You need to open your local dev-machine firewall at range 5100-5105.  at range 5100-5105.	  
+      - identityUrl=http://identity.api              #Local: You need to open your local dev-machine firewall at range 5100-5105.  at range 5100-5105. 
+    ports:
+      - "5110:80"
+
   webspa:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
@@ -57,6 +74,7 @@ services:
       - OrderingUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5102
       - IdentityUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105              #Local: You need to open your local dev-machine firewall at range 5100-5105.  at range 5100-5105. 
       - BasketUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5103
+      - MarketingUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5110
       - CatalogUrlHC=http://catalog.api/hc
       - OrderingUrlHC=http://ordering.api/hc
       - IdentityUrlHC=http://identity.api/hc     #Local: Use ${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP}, if using external IP or DNS name from browser.          
@@ -71,7 +89,8 @@ services:
       - CatalogUrl=http://catalog.api
       - OrderingUrl=http://ordering.api
       - BasketUrl=http://basket.api
-      - IdentityUrl=http://10.0.75.1:5105        #Local:  Use 10.0.75.1 in a "Docker for Windows" environment, if using "localhost" from browser. 
+      - IdentityUrl=http://10.0.75.1:5105
+      - MarketingUrl=http://marketing.api  #Local:  Use 10.0.75.1 in a "Docker for Windows" environment, if using "localhost" from browser. 
                                                  #Remote: Use ${ESHOP_EXTERNAL_DNS_NAME_OR_IP} if using external IP or DNS name from browser. 
     ports:
       - "5100:80"
@@ -82,6 +101,10 @@ services:
       - ACCEPT_EULA=Y
     ports:
       - "5433:1433"
+
+  nosql.data:
+    ports:
+      - "27017:27017"
 
   webstatus:
     environment:
@@ -95,3 +118,22 @@ services:
       - spa=http://webspa/hc
     ports:
       - "5107:80"
+
+  payment.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:5108
+      - EventBusConnection=rabbitmq
+    ports:
+      - "5108:80"
+
+  locations.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - ConnectionString=mongodb://nosql.data
+      - Database=LocationsDb
+      - identityUrl=http://identity.api              #Local: You need to open your local dev-machine firewall at range 5100-5105.  at range 5100-5105. 
+      - EventBusConnection=rabbitmq
+    ports:
+      - "5109:80"

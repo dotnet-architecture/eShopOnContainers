@@ -1,22 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.eShopOnContainers.WebMVC.ViewModels;
-using Microsoft.eShopOnContainers.WebMVC.Services;
-using System.IdentityModel.Tokens.Jwt;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Http;
-using System.Threading;
-using Microsoft.Extensions.Options;
-using Microsoft.Extensions.HealthChecks;
+using Microsoft.eShopOnContainers.BuildingBlocks;
 using Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http;
 using Microsoft.eShopOnContainers.WebMVC.Infrastructure;
+using Microsoft.eShopOnContainers.WebMVC.Services;
+using Microsoft.eShopOnContainers.WebMVC.ViewModels;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.HealthChecks;
+using Microsoft.Extensions.Logging;
+using System;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace Microsoft.eShopOnContainers.WebMVC
 {
@@ -44,12 +39,17 @@ namespace Microsoft.eShopOnContainers.WebMVC
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDataProtection(opts =>
-            {
-                opts.ApplicationDiscriminator = "eshop.webmvc";
-            });
-
             services.AddMvc();
+
+            if (Configuration.GetValue<string>("IsClusterEnv") == bool.TrueString)
+            {
+                services.AddDataProtection(opts =>
+                {
+                    opts.ApplicationDiscriminator = "eshop.webmvc";
+                })
+                .PersistKeysToRedis(Configuration["DPConnectionString"]);
+            }
+
             services.Configure<AppSettings>(Configuration);
 
             services.AddHealthChecks(checks =>
@@ -70,6 +70,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
             services.AddTransient<ICatalogService, CatalogService>();
             services.AddTransient<IOrderingService, OrderingService>();
             services.AddTransient<IBasketService, BasketService>();
+            services.AddTransient<ICampaignService, CampaignService>();
             services.AddTransient<IIdentityParser<ApplicationUser>, IdentityParser>();
 
             if (Configuration.GetValue<string>("UseResilientHttp") == bool.TrueString)
@@ -125,7 +126,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
                 SaveTokens = true,
                 GetClaimsFromUserInfoEndpoint = true,
                 RequireHttpsMetadata = false,
-                Scope = { "openid", "profile", "orders", "basket" }
+                Scope = { "openid", "profile", "orders", "basket", "marketing" }
             };
 
             //Wait untill identity service is ready on compose. 

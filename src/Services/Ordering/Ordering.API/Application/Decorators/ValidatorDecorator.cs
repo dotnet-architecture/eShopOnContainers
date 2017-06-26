@@ -10,7 +10,7 @@ namespace Ordering.API.Application.Decorators
 {
     public class ValidatorDecorator<TRequest, TResponse>
         : IAsyncRequestHandler<TRequest, TResponse>
-         where TRequest : IAsyncRequest<TResponse>
+         where TRequest : IRequest<TResponse>
     {
         private readonly IAsyncRequestHandler<TRequest, TResponse> _inner;
         private readonly IValidator<TRequest>[] _validators;

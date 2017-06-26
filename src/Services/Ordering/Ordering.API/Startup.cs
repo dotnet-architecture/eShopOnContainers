@@ -3,8 +3,10 @@
     using AspNetCore.Http;
     using Autofac;
     using Autofac.Extensions.DependencyInjection;
+    using global::Ordering.API.Application.IntegrationEvents;
+    using global::Ordering.API.Application.IntegrationEvents.EventHandling;
+    using global::Ordering.API.Application.IntegrationEvents.Events;
     using global::Ordering.API.Infrastructure.Middlewares;
-    using global::Ordering.API.IntegrationEvents;
     using Infrastructure;
     using Infrastructure.Auth;
     using Infrastructure.AutofacModules;
@@ -25,10 +27,13 @@
     using Microsoft.Extensions.HealthChecks;
     using Microsoft.Extensions.Logging;
     using Ordering.Infrastructure;
+    using Polly;
     using RabbitMQ.Client;
     using System;
     using System.Data.Common;
+    using System.Data.SqlClient;
     using System.Reflection;
+    using System.Threading.Tasks;
 
     public class Startup
     {
@@ -84,12 +89,10 @@
                         ServiceLifetime.Scoped  //Showing explicitly that the DbContext is shared across the HTTP request scope (graph of objects started in the HTTP request)
                     );
 
-            services.AddSwaggerGen();
-            services.ConfigureSwaggerGen(options =>
+            services.AddSwaggerGen(options =>
             {
-                options.OperationFilter<AuthorizationHeaderParameterOperationFilter>();
                 options.DescribeAllEnumsAsStrings();
-                options.SingleApiVersion(new Swashbuckle.Swagger.Model.Info()
+                options.SwaggerDoc("v1", new Swashbuckle.AspNetCore.Swagger.Info
                 {
                     Title = "Ordering HTTP API",
                     Version = "v1",
@@ -112,7 +115,7 @@
             services.AddTransient<IIdentityService, IdentityService>();
             services.AddTransient<Func<DbConnection, IIntegrationEventLogService>>(
                 sp => (DbConnection c) => new IntegrationEventLogService(c));            
-            var serviceProvider = services.BuildServiceProvider();
+            
             services.AddTransient<IOrderingIntegrationEventService, OrderingIntegrationEventService>();
 
             if (Configuration.GetValue<bool>("AzureServiceBusEnabled"))
@@ -157,6 +160,7 @@
             return new AutofacServiceProvider(container.Build());
         }
 
+
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
@@ -165,13 +169,16 @@
             app.UseCors("CorsPolicy");
 
             ConfigureAuth(app);
-
             app.UseMvcWithDefaultRoute();
 
             app.UseSwagger()
-                .UseSwaggerUi();
+               .UseSwaggerUI(c =>
+               {
+                   c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+               });
 
-            OrderingContextSeed.SeedAsync(app).Wait();
+            WaitForSqlAvailabilityAsync(loggerFactory, app).Wait();
+            ConfigureEventBus(app);
 
             var integrationEventLogContext = new IntegrationEventLogContext(
                 new DbContextOptionsBuilder<IntegrationEventLogContext>()
@@ -182,13 +189,25 @@
             ConfigureEventBus(app);
         }
 
+        private void ConfigureEventBus(IApplicationBuilder app)
+        {
+            var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
+
+            eventBus.Subscribe<UserCheckoutAcceptedIntegrationEvent, IIntegrationEventHandler<UserCheckoutAcceptedIntegrationEvent>>();
+            eventBus.Subscribe<GracePeriodConfirmedIntegrationEvent, IIntegrationEventHandler<GracePeriodConfirmedIntegrationEvent>>();
+            eventBus.Subscribe<OrderStockConfirmedIntegrationEvent, IIntegrationEventHandler<OrderStockConfirmedIntegrationEvent>>();
+            eventBus.Subscribe<OrderStockRejectedIntegrationEvent, IIntegrationEventHandler<OrderStockRejectedIntegrationEvent>>();
+            eventBus.Subscribe<OrderPaymentFailedIntegrationEvent, IIntegrationEventHandler<OrderPaymentFailedIntegrationEvent>>();
+            eventBus.Subscribe<OrderPaymentSuccededIntegrationEvent, IIntegrationEventHandler<OrderPaymentSuccededIntegrationEvent>>();
+        }
+
         protected virtual void ConfigureAuth(IApplicationBuilder app)
         {
             var identityUrl = Configuration.GetValue<string>("IdentityUrl");
             app.UseIdentityServerAuthentication(new IdentityServerAuthenticationOptions
             {
                 Authority = identityUrl.ToString(),
-                ScopeName = "orders",
+                ApiName = "orders",
                 RequireHttpsMetadata = false
             });
         }
@@ -216,9 +235,28 @@
             services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
         }
 
-        protected virtual void ConfigureEventBus(IApplicationBuilder app)
+        private async Task WaitForSqlAvailabilityAsync(ILoggerFactory loggerFactory, IApplicationBuilder app, int retries = 0)
         {
-            var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
+            var logger = loggerFactory.CreateLogger(nameof(Startup));
+            var policy = CreatePolicy(retries, logger, nameof(WaitForSqlAvailabilityAsync));
+            await policy.ExecuteAsync(async () =>
+            {
+                await OrderingContextSeed.SeedAsync(app);
+            });
+
+        }
+
+        private Policy CreatePolicy(int retries, ILogger logger, string prefix)
+        {
+            return Policy.Handle<SqlException>().
+                WaitAndRetryAsync(
+                    retryCount: retries,
+                    sleepDurationProvider: retry => TimeSpan.FromSeconds(5),
+                    onRetry: (exception, timeSpan, retry, ctx) =>
+                    {
+                        logger.LogTrace($"[{prefix}] Exception {exception.GetType().Name} with message ${exception.Message} detected on attempt {retry} of {retries}");
+                    }
+                );
         }
     }
 }
