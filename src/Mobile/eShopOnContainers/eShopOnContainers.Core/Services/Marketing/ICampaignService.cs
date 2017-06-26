@@ -6,7 +6,7 @@
 
     public interface ICampaignService
     {
-        Task<ObservableCollection<CampaignItem>> GetAllCampaignsAsync(string userId, string token);
+        Task<ObservableCollection<CampaignItem>> GetAllCampaignsAsync(string token);
 
         Task<CampaignItem> GetCampaignByIdAsync(int id, string token);
     }

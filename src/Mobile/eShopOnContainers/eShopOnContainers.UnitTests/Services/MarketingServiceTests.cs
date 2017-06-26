@@ -21,7 +21,7 @@
         public async Task GetFakeCampaignsTest()
         {
             var campaignMockService = new CampaignMockService();
-            var result = await campaignMockService.GetAllCampaignsAsync(Settings.UserId, GlobalSetting.Instance.AuthToken);
+            var result = await campaignMockService.GetAllCampaignsAsync(GlobalSetting.Instance.AuthToken);
 
             Assert.NotEqual(0, result.Count);
         }

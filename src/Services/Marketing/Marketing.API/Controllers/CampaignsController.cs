@@ -1,4 +1,6 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Marketing.API.Controllers
+﻿using Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure.Services;
+
+namespace Microsoft.eShopOnContainers.Services.Marketing.API.Controllers
 {
     using System;
     using System.Linq;
@@ -21,14 +23,17 @@
         private readonly MarketingContext _context;
         private readonly MarketingSettings _settings;
         private readonly IMarketingDataRepository _marketingDataRepository;
+        private readonly IIdentityService _identityService;
 
         public CampaignsController(MarketingContext context,
             IMarketingDataRepository marketingDataRepository,
-             IOptionsSnapshot<MarketingSettings> settings)
+             IOptionsSnapshot<MarketingSettings> settings,
+            IIdentityService identityService)
         {
             _context = context;
             _marketingDataRepository = marketingDataRepository;
             _settings = settings.Value;
+            _identityService = identityService;
         }
 
         [HttpGet]
@@ -124,9 +129,11 @@
             return NoContent();
         }
 
-        [HttpGet("user/{userId:guid}")]
-        public async Task<IActionResult> GetCampaignsByUserId(Guid userId, int pageSize = 10, int pageIndex = 0)
+        [HttpGet("user")]
+        public async Task<IActionResult> GetCampaignsByUserId( int pageSize = 10, int pageIndex = 0)
         {
+            var userId = _identityService.GetUserIdentity();
+
             var marketingData = await _marketingDataRepository.GetAsync(userId.ToString());
 
             var campaignDtoList = new List<CampaignDTO>();

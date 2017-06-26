@@ -17,11 +17,11 @@
             _requestProvider = requestProvider;
         }
 
-        public async Task<ObservableCollection<CampaignItem>> GetAllCampaignsAsync(string userId, string token)
+        public async Task<ObservableCollection<CampaignItem>> GetAllCampaignsAsync(string token)
         {
             UriBuilder builder = new UriBuilder(GlobalSetting.Instance.MarketingEndpoint);
 
-            builder.Path = $"api/v1/campaigns/user/{userId}";
+            builder.Path = "api/v1/campaigns/user";
 
             string uri = builder.ToString();
 

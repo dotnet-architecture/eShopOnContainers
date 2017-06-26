@@ -55,7 +55,7 @@ namespace eShopOnContainers
                 await GetGpsLocation();
             }
 
-            if (!Settings.UseMocks && !string.IsNullOrEmpty(Settings.UserId))
+            if (!Settings.UseMocks && !string.IsNullOrEmpty(Settings.AuthAccessToken))
             {
                 await SendCurrentLocation();
             }

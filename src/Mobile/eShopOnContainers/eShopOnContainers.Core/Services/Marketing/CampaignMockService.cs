@@ -36,7 +36,7 @@
             }
         };
 
-        public async Task<ObservableCollection<CampaignItem>> GetAllCampaignsAsync(string userId, string token)
+        public async Task<ObservableCollection<CampaignItem>> GetAllCampaignsAsync(string token)
         {
             await Task.Delay(500);
 
