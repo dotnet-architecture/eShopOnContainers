@@ -1,13 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-
-namespace eShopOnContainers.Core.Services.Marketing
+﻿namespace eShopOnContainers.Core.Services.Marketing
 {
     using System;
     using System.Collections.ObjectModel;
     using System.Threading.Tasks;
     using Models.Marketing;
     using Xamarin.Forms;
+    using System.Linq;
 
     public class CampaignMockService : ICampaignService
     {
@@ -38,7 +36,7 @@ namespace eShopOnContainers.Core.Services.Marketing
             }
         };
 
-        public async Task<ObservableCollection<CampaignItem>> GetAllCampaignsAsync(string userId, string token)
+        public async Task<ObservableCollection<CampaignItem>> GetAllCampaignsAsync(string token)
         {
             await Task.Delay(500);
 

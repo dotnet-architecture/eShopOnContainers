@@ -217,7 +217,6 @@ namespace eShopOnContainers.Core.ViewModels
                 Settings.AuthIdToken = string.Empty; 
             }
 
-            Settings.UserId = string.Empty;
             Settings.UseFakeLocation = false;
         }
 
@@ -244,7 +243,6 @@ namespace eShopOnContainers.Core.ViewModels
                     {
                         Settings.AuthAccessToken = accessToken;
                         Settings.AuthIdToken = authResponse.IdentityToken;
-                        Settings.UserId = authResponse.Values["sub"];
                         await NavigationService.NavigateToAsync<MainViewModel>();
                         await NavigationService.RemoveLastFromBackStackAsync();
                     }

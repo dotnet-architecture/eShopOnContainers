@@ -36,7 +36,7 @@
             IsBusy = true;
 
             // Get campaigns by user
-            Campaigns = await _campaignService.GetAllCampaignsAsync(Settings.UserId, Settings.AuthAccessToken);
+            Campaigns = await _campaignService.GetAllCampaignsAsync(Settings.AuthAccessToken);
 
             IsBusy = false;
         }

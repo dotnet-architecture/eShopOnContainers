@@ -107,7 +107,7 @@ namespace eShopOnContainers.Core.ViewModels
                 {
                     BuyerId = userInfo.UserId,
                     OrderItems = CreateOrderItems(orderItems),
-                    State = OrderState.InProcess,
+                    OrderStatus = OrderStatus.Submitted,
                     OrderDate = DateTime.Now,
                     CardHolderName = paymentInfo.CardHolderName,
                     CardNumber = paymentInfo.CardNumber,
@@ -133,6 +133,7 @@ namespace eShopOnContainers.Core.ViewModels
                 var authToken = Settings.AuthAccessToken;
 
                 var basket = _orderService.MapOrderToBasket(Order);
+                basket.RequestId = Guid.NewGuid();
 
                 // Create basket checkout
                 await _basketService.CheckoutAsync(basket, authToken);

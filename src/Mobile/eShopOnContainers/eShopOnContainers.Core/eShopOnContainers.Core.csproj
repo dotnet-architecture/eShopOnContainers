@@ -75,10 +75,11 @@
     <Compile Include="Models\Marketing\CampaignItem.cs" />
     <Compile Include="Models\Marketing\CampaignRoot.cs" />
     <Compile Include="Models\Navigation\TabParameter.cs" />
+    <Compile Include="Models\Orders\CancelOrderCommand.cs" />
     <Compile Include="Models\Orders\CardType.CS" />
     <Compile Include="Models\Orders\Order.cs" />
     <Compile Include="Models\Orders\OrderItem.cs" />
-    <Compile Include="Models\Orders\OrderState.cs" />
+    <Compile Include="Models\Orders\OrderStatus.cs" />
     <Compile Include="Models\User\Address.cs" />
     <Compile Include="Models\User\LogoutParameter.cs" />
     <Compile Include="Models\User\PaymentInfo.cs" />
@@ -107,6 +108,7 @@
     <Compile Include="Services\Order\IOrderService.cs" />
     <Compile Include="Services\Order\OrderMockService.cs" />
     <Compile Include="Services\Order\OrderService.cs" />
+    <Compile Include="Services\RequestProvider\HttpRequestExceptionEx.cs" />
     <Compile Include="Services\RequestProvider\IRequestProvider.cs" />
     <Compile Include="Services\RequestProvider\RequestProvider.cs" />
     <Compile Include="Services\User\IUserService.cs" />
