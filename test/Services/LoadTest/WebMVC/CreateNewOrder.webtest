@@ -1,0 +1,353 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WebTest Name="CreateNewOrder" Id="f7d59638-c9f2-43e5-92b1-37e9437a37fa" Owner="" Priority="2147483647" Enabled="True" CssProjectStructure="" CssIteration="" Timeout="0" WorkItemIds="" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" Description="" CredentialUserName="" CredentialPassword="" PreAuthenticate="True" Proxy="default" StopOnError="False" RecordedResultFile="WebTest1.ba73b0af-8c31-4a1b-a4b0-ea5804c6a312.rec.webtestresult" ResultsLocale="">
+  <Items>
+    <Request Method="GET" Guid="35ddfacd-25a2-4d79-9edd-1a01eb7e4387" Version="1.1" Url="{{WebServer}}:5100/Account/SignIn" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="{{WebServer}}:5105/account/login?returnUrl=%2Fconnect%2Fauthorize%2Flogin%3Fclient_id%3Dmvc%26redirect_uri%3Dhttp%253A%252F%252F192.168.1.64%253A5100%252Fsignin-oidc%26response_type%3Dcode%2520id_token%26scope%3Dopenid%2520profile%2520orders%2520basket%2520marketing%26response_mode%3Dform_post%26nonce%3D636342378747934840.OGZkMzJhZTAtYWU5MS00YTMxLWE2ZDctZjE1MjVmMzgyOTY0MzMzY2FlMjUtMjUzMy00MDZjLWI2NjktOTUxMzE1ZDQxMzNj%26state%3DCfDJ8Cdrh-iylPpOkQpr1RyNCAEauzlQGRD0a5Vr2AcE9RNhkksEJEU1MfzIx7dH1sQkFHS9jHEzg1EY9O0Nv2rVwzdScaqc7ShHJu4Dw-r0cfNLBLGHPJGrAQH05x1YwIUsxxfmRUfU4Vcm3-38VR4g0lmQAywKqK_8nJ_D8aoPdU_4x8OMxkCiNuIlfu8wlsajdkOLtnXKC77RJFD8OIXiWpjBnP2SeApOqLHn3Ny5_HIw9V5N6YqvqSfZIAqcqN70tPFPlwopsi-AiWwULHdFPWkpJ7NOJ0TSN7c6nBIPCIbEEYlSZmxk2wUogm4l7JjQ2O6Sz2CR35Wq80g_wzKmZz0ZNaxQM0pVDYpS0lQzbWmn" ReportingName="" IgnoreHttpStatusCode="False">
+      <DependentRequests>
+        <Request Method="GET" Guid="98e250a3-09bd-4df8-95ce-6bb083d1f18d" Version="1.1" Url="{{WebServer}}:5105/fonts/Montserrat-Regular.woff" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False">
+          <Headers>
+            <Header Name="Referer" Value="{{WebServer}}:5105/account/login?returnUrl=%2Fconnect%2Fauthorize%2Flogin%3Fclient_id%3Dmvc%26redirect_uri%3Dhttp%253A%252F%252F192.168.1.64%253A5100%252Fsignin-oidc%26response_type%3Dcode%2520id_token%26scope%3Dopenid%2520profile%2520orders%2520basket%2520marketing%26response_mode%3Dform_post%26nonce%3D636342378747934840.OGZkMzJhZTAtYWU5MS00YTMxLWE2ZDctZjE1MjVmMzgyOTY0MzMzY2FlMjUtMjUzMy00MDZjLWI2NjktOTUxMzE1ZDQxMzNj%26state%3DCfDJ8Cdrh-iylPpOkQpr1RyNCAEauzlQGRD0a5Vr2AcE9RNhkksEJEU1MfzIx7dH1sQkFHS9jHEzg1EY9O0Nv2rVwzdScaqc7ShHJu4Dw-r0cfNLBLGHPJGrAQH05x1YwIUsxxfmRUfU4Vcm3-38VR4g0lmQAywKqK_8nJ_D8aoPdU_4x8OMxkCiNuIlfu8wlsajdkOLtnXKC77RJFD8OIXiWpjBnP2SeApOqLHn3Ny5_HIw9V5N6YqvqSfZIAqcqN70tPFPlwopsi-AiWwULHdFPWkpJ7NOJ0TSN7c6nBIPCIbEEYlSZmxk2wUogm4l7JjQ2O6Sz2CR35Wq80g_wzKmZz0ZNaxQM0pVDYpS0lQzbWmn" />
+          </Headers>
+        </Request>
+        <Request Method="GET" Guid="dacb3428-db50-4099-b681-d3d4465d67c3" Version="1.1" Url="{{WebServer}}:5105/fonts/Montserrat-Bold.woff" ThinkTime="11" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False">
+          <Headers>
+            <Header Name="Referer" Value="{{WebServer}}:5105/account/login?returnUrl=%2Fconnect%2Fauthorize%2Flogin%3Fclient_id%3Dmvc%26redirect_uri%3Dhttp%253A%252F%252F192.168.1.64%253A5100%252Fsignin-oidc%26response_type%3Dcode%2520id_token%26scope%3Dopenid%2520profile%2520orders%2520basket%2520marketing%26response_mode%3Dform_post%26nonce%3D636342378747934840.OGZkMzJhZTAtYWU5MS00YTMxLWE2ZDctZjE1MjVmMzgyOTY0MzMzY2FlMjUtMjUzMy00MDZjLWI2NjktOTUxMzE1ZDQxMzNj%26state%3DCfDJ8Cdrh-iylPpOkQpr1RyNCAEauzlQGRD0a5Vr2AcE9RNhkksEJEU1MfzIx7dH1sQkFHS9jHEzg1EY9O0Nv2rVwzdScaqc7ShHJu4Dw-r0cfNLBLGHPJGrAQH05x1YwIUsxxfmRUfU4Vcm3-38VR4g0lmQAywKqK_8nJ_D8aoPdU_4x8OMxkCiNuIlfu8wlsajdkOLtnXKC77RJFD8OIXiWpjBnP2SeApOqLHn3Ny5_HIw9V5N6YqvqSfZIAqcqN70tPFPlwopsi-AiWwULHdFPWkpJ7NOJ0TSN7c6nBIPCIbEEYlSZmxk2wUogm4l7JjQ2O6Sz2CR35Wq80g_wzKmZz0ZNaxQM0pVDYpS0lQzbWmn" />
+          </Headers>
+        </Request>
+      </DependentRequests>
+      <Headers>
+        <Header Name="Referer" Value="{{WebServer}}:5100/" />
+      </Headers>
+      <ExtractionRules>
+        <ExtractionRule Classname="Microsoft.VisualStudio.TestTools.WebTesting.Rules.ExtractHiddenFields, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" VariableName="1" DisplayName="Extract Hidden Fields" Description="Extract all hidden fields from the response and place them into the test context.">
+          <RuleParameters>
+            <RuleParameter Name="Required" Value="True" />
+            <RuleParameter Name="HtmlDecode" Value="True" />
+          </RuleParameters>
+        </ExtractionRule>
+      </ExtractionRules>
+      <CorrelationExtractionRules>
+        <ExtractionRule Classname="Microsoft.VisualStudio.TestTools.WebTesting.Rules.ExtractText, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" VariableName="QueryStringParam1.returnurl" DisplayName="" Description="">
+          <RuleParameters>
+            <RuleParameter Name="StartsWith" Value="?returnurl=" />
+            <RuleParameter Name="EndsWith" Value="&quot;" />
+            <RuleParameter Name="Index" Value="0" />
+            <RuleParameter Name="IgnoreCase" Value="False" />
+            <RuleParameter Name="UseRegularExpression" Value="False" />
+            <RuleParameter Name="HtmlDecode" Value="True" />
+            <RuleParameter Name="Required" Value="False" />
+          </RuleParameters>
+        </ExtractionRule>
+      </CorrelationExtractionRules>
+    </Request>
+    <Request Method="POST" Guid="c5d366d1-9a5b-45e0-9e44-f8b4a1ced519" Version="1.1" Url="{{WebServer}}:5105/Account/Login" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="{{WebServer}}:5105/connect/authorize/login?client_id=mvc&amp;redirect_uri=http%3A%2F%2F192.168.1.64%3A5100%2Fsignin-oidc&amp;response_type=code%20id_token&amp;scope=openid%20profile%20orders%20basket%20marketing&amp;response_mode=form_post&amp;nonce=636342378747934840.OGZkMzJhZTAtYWU5MS00YTMxLWE2ZDctZjE1MjVmMzgyOTY0MzMzY2FlMjUtMjUzMy00MDZjLWI2NjktOTUxMzE1ZDQxMzNj&amp;state=CfDJ8Cdrh-iylPpOkQpr1RyNCAEauzlQGRD0a5Vr2AcE9RNhkksEJEU1MfzIx7dH1sQkFHS9jHEzg1EY9O0Nv2rVwzdScaqc7ShHJu4Dw-r0cfNLBLGHPJGrAQH05x1YwIUsxxfmRUfU4Vcm3-38VR4g0lmQAywKqK_8nJ_D8aoPdU_4x8OMxkCiNuIlfu8wlsajdkOLtnXKC77RJFD8OIXiWpjBnP2SeApOqLHn3Ny5_HIw9V5N6YqvqSfZIAqcqN70tPFPlwopsi-AiWwULHdFPWkpJ7NOJ0TSN7c6nBIPCIbEEYlSZmxk2wUogm4l7JjQ2O6Sz2CR35Wq80g_wzKmZz0ZNaxQM0pVDYpS0lQzbWmn" ReportingName="" IgnoreHttpStatusCode="False">
+      <Headers>
+        <Header Name="Referer" Value="{{WebServer}}:5105/account/login?returnUrl=%2Fconnect%2Fauthorize%2Flogin%3Fclient_id%3Dmvc%26redirect_uri%3Dhttp%253A%252F%252F192.168.1.64%253A5100%252Fsignin-oidc%26response_type%3Dcode%2520id_token%26scope%3Dopenid%2520profile%2520orders%2520basket%2520marketing%26response_mode%3Dform_post%26nonce%3D636342378747934840.OGZkMzJhZTAtYWU5MS00YTMxLWE2ZDctZjE1MjVmMzgyOTY0MzMzY2FlMjUtMjUzMy00MDZjLWI2NjktOTUxMzE1ZDQxMzNj%26state%3DCfDJ8Cdrh-iylPpOkQpr1RyNCAEauzlQGRD0a5Vr2AcE9RNhkksEJEU1MfzIx7dH1sQkFHS9jHEzg1EY9O0Nv2rVwzdScaqc7ShHJu4Dw-r0cfNLBLGHPJGrAQH05x1YwIUsxxfmRUfU4Vcm3-38VR4g0lmQAywKqK_8nJ_D8aoPdU_4x8OMxkCiNuIlfu8wlsajdkOLtnXKC77RJFD8OIXiWpjBnP2SeApOqLHn3Ny5_HIw9V5N6YqvqSfZIAqcqN70tPFPlwopsi-AiWwULHdFPWkpJ7NOJ0TSN7c6nBIPCIbEEYlSZmxk2wUogm4l7JjQ2O6Sz2CR35Wq80g_wzKmZz0ZNaxQM0pVDYpS0lQzbWmn" />
+      </Headers>
+      <ExtractionRules>
+        <ExtractionRule Classname="Microsoft.VisualStudio.TestTools.WebTesting.Rules.ExtractHiddenFields, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" VariableName="1" DisplayName="Extract Hidden Fields" Description="Extract all hidden fields from the response and place them into the test context.">
+          <RuleParameters>
+            <RuleParameter Name="Required" Value="True" />
+            <RuleParameter Name="HtmlDecode" Value="True" />
+          </RuleParameters>
+        </ExtractionRule>
+      </ExtractionRules>
+      <QueryStringParameters>
+        <QueryStringParameter Name="returnurl" Value="%2Fconnect%2Fauthorize%2Flogin%3Fclient_id%3Dmvc%26redirect_uri%3Dhttp%253A%252F%252F192.168.1.64%253A5100%252Fsignin-oidc%26response_type%3Dcode%2520id_token%26scope%3Dopenid%2520profile%2520orders%2520basket%2520marketing%26response_mode%3Dform_post%26nonce%3D636342378747934840.OGZkMzJhZTAtYWU5MS00YTMxLWE2ZDctZjE1MjVmMzgyOTY0MzMzY2FlMjUtMjUzMy00MDZjLWI2NjktOTUxMzE1ZDQxMzNj%26state%3DCfDJ8Cdrh-iylPpOkQpr1RyNCAEauzlQGRD0a5Vr2AcE9RNhkksEJEU1MfzIx7dH1sQkFHS9jHEzg1EY9O0Nv2rVwzdScaqc7ShHJu4Dw-r0cfNLBLGHPJGrAQH05x1YwIUsxxfmRUfU4Vcm3-38VR4g0lmQAywKqK_8nJ_D8aoPdU_4x8OMxkCiNuIlfu8wlsajdkOLtnXKC77RJFD8OIXiWpjBnP2SeApOqLHn3Ny5_HIw9V5N6YqvqSfZIAqcqN70tPFPlwopsi-AiWwULHdFPWkpJ7NOJ0TSN7c6nBIPCIbEEYlSZmxk2wUogm4l7JjQ2O6Sz2CR35Wq80g_wzKmZz0ZNaxQM0pVDYpS0lQzbWmn" RecordedValue="%2Fconnect%2Fauthorize%2Flogin%3Fclient_id%3Dmvc%26redirect_uri%3Dhttp%253A%252F%252F192.168.1.64%253A5100%252Fsignin-oidc%26response_type%3Dcode%2520id_token%26scope%3Dopenid%2520profile%2520orders%2520basket%2520marketing%26response_mode%3Dform_post%26nonce%3D636342378747934840.OGZkMzJhZTAtYWU5MS00YTMxLWE2ZDctZjE1MjVmMzgyOTY0MzMzY2FlMjUtMjUzMy00MDZjLWI2NjktOTUxMzE1ZDQxMzNj%26state%3DCfDJ8Cdrh-iylPpOkQpr1RyNCAEauzlQGRD0a5Vr2AcE9RNhkksEJEU1MfzIx7dH1sQkFHS9jHEzg1EY9O0Nv2rVwzdScaqc7ShHJu4Dw-r0cfNLBLGHPJGrAQH05x1YwIUsxxfmRUfU4Vcm3-38VR4g0lmQAywKqK_8nJ_D8aoPdU_4x8OMxkCiNuIlfu8wlsajdkOLtnXKC77RJFD8OIXiWpjBnP2SeApOqLHn3Ny5_HIw9V5N6YqvqSfZIAqcqN70tPFPlwopsi-AiWwULHdFPWkpJ7NOJ0TSN7c6nBIPCIbEEYlSZmxk2wUogm4l7JjQ2O6Sz2CR35Wq80g_wzKmZz0ZNaxQM0pVDYpS0lQzbWmn" CorrelationBinding="{{QueryStringParam1.returnurl}}" UrlEncode="False" UseToGroupResults="False" />
+      </QueryStringParameters>
+      <FormPostHttpBody>
+        <FormPostParameter Name="ReturnUrl" Value="{{$HIDDEN1.ReturnUrl}}" RecordedValue="/connect/authorize/login?client_id=mvc&amp;redirect_uri=http%3A%2F%2F192.168.1.64%3A5100%2Fsignin-oidc&amp;response_type=code%20id_token&amp;scope=openid%20profile%20orders%20basket%20marketing&amp;response_mode=form_post&amp;nonce=636342378747934840.OGZkMzJhZTAtYWU5MS00YTMxLWE2ZDctZjE1MjVmMzgyOTY0MzMzY2FlMjUtMjUzMy00MDZjLWI2NjktOTUxMzE1ZDQxMzNj&amp;state=CfDJ8Cdrh-iylPpOkQpr1RyNCAEauzlQGRD0a5Vr2AcE9RNhkksEJEU1MfzIx7dH1sQkFHS9jHEzg1EY9O0Nv2rVwzdScaqc7ShHJu4Dw-r0cfNLBLGHPJGrAQH05x1YwIUsxxfmRUfU4Vcm3-38VR4g0lmQAywKqK_8nJ_D8aoPdU_4x8OMxkCiNuIlfu8wlsajdkOLtnXKC77RJFD8OIXiWpjBnP2SeApOqLHn3Ny5_HIw9V5N6YqvqSfZIAqcqN70tPFPlwopsi-AiWwULHdFPWkpJ7NOJ0TSN7c6nBIPCIbEEYlSZmxk2wUogm4l7JjQ2O6Sz2CR35Wq80g_wzKmZz0ZNaxQM0pVDYpS0lQzbWmn" CorrelationBinding="" UrlEncode="True" />
+        <FormPostParameter Name="Email" Value="{{Email}}" RecordedValue="demouser@microsoft.com" CorrelationBinding="" UrlEncode="True" />
+        <FormPostParameter Name="Password" Value="{{Password}}" RecordedValue="Pass@word1" CorrelationBinding="" UrlEncode="True" />
+        <FormPostParameter Name="__RequestVerificationToken" Value="{{$HIDDEN1.__RequestVerificationToken}}" RecordedValue="CfDJ8AkHkhH7jE1EtLOpO0RvC9eyOIgXSdiYvzHsy0r18btwyw1yGnhrnqXIQQQXOsRqy4sg2IHSm7vH8EXiSIL28H82_4LMJ3gljfpckgK9C3W2oyZ_-phJ2Xm_bD9SBkMhdLmLU4ZK0YjKkd41svXKVQc" CorrelationBinding="" UrlEncode="True" />
+        <FormPostParameter Name="RememberMe" Value="{{$HIDDEN1.RememberMe}}" RecordedValue="false" CorrelationBinding="" UrlEncode="True" />
+      </FormPostHttpBody>
+    </Request>
+    <Request Method="POST" Guid="55431f06-0559-4da1-a855-5ab48d9b479b" Version="1.1" Url="{{WebServer}}:5100/signin-oidc" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="{{WebServer}}:5100/" ReportingName="" IgnoreHttpStatusCode="False">
+      <DependentRequests>
+        <Request Method="GET" Guid="b2ddab7b-a034-4c95-8477-166c357c4081" Version="1.1" Url="{{WebServer}}:5100/fonts/Montserrat-Regular.woff" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False">
+          <Headers>
+            <Header Name="Referer" Value="{{WebServer}}:5100/" />
+          </Headers>
+        </Request>
+        <Request Method="GET" Guid="2b70b1aa-9525-4730-9680-cb00d74f6cbd" Version="1.1" Url="{{WebServer}}:5100/fonts/Montserrat-Bold.woff" ThinkTime="2" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False">
+          <Headers>
+            <Header Name="Referer" Value="{{WebServer}}:5100/" />
+          </Headers>
+        </Request>
+      </DependentRequests>
+      <Headers>
+        <Header Name="Referer" Value="{{WebServer}}:5105/connect/authorize/login?client_id=mvc&amp;redirect_uri=http%3A%2F%2F192.168.1.64%3A5100%2Fsignin-oidc&amp;response_type=code%20id_token&amp;scope=openid%20profile%20orders%20basket%20marketing&amp;response_mode=form_post&amp;nonce=636342378747934840.OGZkMzJhZTAtYWU5MS00YTMxLWE2ZDctZjE1MjVmMzgyOTY0MzMzY2FlMjUtMjUzMy00MDZjLWI2NjktOTUxMzE1ZDQxMzNj&amp;state=CfDJ8Cdrh-iylPpOkQpr1RyNCAEauzlQGRD0a5Vr2AcE9RNhkksEJEU1MfzIx7dH1sQkFHS9jHEzg1EY9O0Nv2rVwzdScaqc7ShHJu4Dw-r0cfNLBLGHPJGrAQH05x1YwIUsxxfmRUfU4Vcm3-38VR4g0lmQAywKqK_8nJ_D8aoPdU_4x8OMxkCiNuIlfu8wlsajdkOLtnXKC77RJFD8OIXiWpjBnP2SeApOqLHn3Ny5_HIw9V5N6YqvqSfZIAqcqN70tPFPlwopsi-AiWwULHdFPWkpJ7NOJ0TSN7c6nBIPCIbEEYlSZmxk2wUogm4l7JjQ2O6Sz2CR35Wq80g_wzKmZz0ZNaxQM0pVDYpS0lQzbWmn" />
+      </Headers>
+      <ExtractionRules>
+        <ExtractionRule Classname="Microsoft.VisualStudio.TestTools.WebTesting.Rules.ExtractHiddenFields, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" VariableName="1" DisplayName="Extract Hidden Fields" Description="Extract all hidden fields from the response and place them into the test context.">
+          <RuleParameters>
+            <RuleParameter Name="Required" Value="True" />
+            <RuleParameter Name="HtmlDecode" Value="True" />
+          </RuleParameters>
+        </ExtractionRule>
+      </ExtractionRules>
+      <FormPostHttpBody>
+        <FormPostParameter Name="code" Value="{{$HIDDEN1.code}}" RecordedValue="55e25facec5dd72909eb173e08bbf97bbb7b32a4fc7fbbe840c6525b73190ce1" CorrelationBinding="" UrlEncode="True" />
+        <FormPostParameter Name="id_token" Value="{{$HIDDEN1.id_token}}" RecordedValue="eyJhbGciOiJSUzI1NiIsImtpZCI6IjZCN0FDQzUyMDMwNUJGREI0RjcyNTJEQUVCMjE3N0NDMDkxRkFBRTEiLCJ0eXAiOiJKV1QiLCJ4NXQiOiJhM3JNVWdNRnY5dFBjbExhNnlGM3pBa2ZxdUUifQ.eyJuYmYiOjE0OTg2NDEwOTMsImV4cCI6MTQ5ODY0MTM5MywiaXNzIjoibnVsbCIsImF1ZCI6Im12YyIsIm5vbmNlIjoiNjM2MzQyMzc4NzQ3OTM0ODQwLk9HWmtNekpoWlRBdFlXVTVNUzAwWVRNeExXRTJaRGN0WmpFMU1qVm1Nemd5T1RZME16TXpZMkZsTWpVdE1qVXpNeTAwTURaakxXSTJOamt0T1RVeE16RTFaRFF4TXpOaiIsImlhdCI6MTQ5ODY0MTA5MiwiY19oYXNoIjoiWUxueV9aQlRfc3VHa3V0V1FuX0tRUSIsInNpZCI6ImFjYjJjM2YwNjc2OTYyYzJlYjQ1ZDZjNWUwMzNmYzY3Iiwic3ViIjoiNWYxYTYxYjUtZGFkNS00NDFlLWJkMTctY2VlZjM1NWQxNWNjIiwiYXV0aF90aW1lIjoxNDk4NjQxMDkyLCJpZHAiOiJsb2NhbCIsImFtciI6WyJwd2QiXX0.GbsXOUaKEmjaIVNQynncCVrBIGf7GGScHe-n6dEp3TkTAbGOElt-61x3r-3Lh4Shhfup9xvEnzML4ZNOIMQze6us6__YDfionATjOHnEt8PcvUt5-iMc3LhH7T1CfIgg3_WjftMS98vs0QUJ275Dw-ixvQ8itDpxwcrLPgAUlWRJ6YTcR84TAbyvI21TDLc9bQa_LriVOtoFr-GidlGwdBNbP3Wca814nuqRhNK8i77A9uHun4MYvrYelx_xzbAUBRP5N32yq_6FxpEgxbPGWmdOBH7Z_tqoz57_iaTbVegxTsl_JOeNYDKedS9rdINEKXkMpanDt8yQV8rtbj29tg" CorrelationBinding="" UrlEncode="True" />
+        <FormPostParameter Name="scope" Value="{{$HIDDEN1.scope}}" RecordedValue="openid profile orders basket marketing" CorrelationBinding="" UrlEncode="True" />
+        <FormPostParameter Name="state" Value="{{$HIDDEN1.state}}" RecordedValue="CfDJ8Cdrh-iylPpOkQpr1RyNCAEauzlQGRD0a5Vr2AcE9RNhkksEJEU1MfzIx7dH1sQkFHS9jHEzg1EY9O0Nv2rVwzdScaqc7ShHJu4Dw-r0cfNLBLGHPJGrAQH05x1YwIUsxxfmRUfU4Vcm3-38VR4g0lmQAywKqK_8nJ_D8aoPdU_4x8OMxkCiNuIlfu8wlsajdkOLtnXKC77RJFD8OIXiWpjBnP2SeApOqLHn3Ny5_HIw9V5N6YqvqSfZIAqcqN70tPFPlwopsi-AiWwULHdFPWkpJ7NOJ0TSN7c6nBIPCIbEEYlSZmxk2wUogm4l7JjQ2O6Sz2CR35Wq80g_wzKmZz0ZNaxQM0pVDYpS0lQzbWmn" CorrelationBinding="" UrlEncode="True" />
+        <FormPostParameter Name="session_state" Value="{{$HIDDEN1.session_state}}" RecordedValue="AmzNwXDsLMKEU7V2g0zI47YUS_KWVVf9OEPAtVHNVsU.539de0526b907162ee008ea0b40a498b" CorrelationBinding="" UrlEncode="True" />
+      </FormPostHttpBody>
+    </Request>
+    <Request Method="POST" Guid="b47fedf7-81a2-412a-b114-cf234d07c7e6" Version="1.1" Url="{{WebServer}}:5100/Cart/AddToCart" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="{{WebServer}}:5100/" ReportingName="" IgnoreHttpStatusCode="False">
+      <DependentRequests>
+        <Request Method="GET" Guid="2f8b90b5-5bd4-4649-be09-0341616555d2" Version="1.1" Url="{{WebServer}}:5100/fonts/Montserrat-Regular.woff" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False">
+          <Headers>
+            <Header Name="Referer" Value="{{WebServer}}:5100/" />
+          </Headers>
+        </Request>
+        <Request Method="GET" Guid="3469943d-b7d8-4d4f-8165-81a301ecb846" Version="1.1" Url="{{WebServer}}:5100/fonts/Montserrat-Bold.woff" ThinkTime="2" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False">
+          <Headers>
+            <Header Name="Referer" Value="{{WebServer}}:5100/" />
+          </Headers>
+        </Request>
+      </DependentRequests>
+      <Headers>
+        <Header Name="Referer" Value="{{WebServer}}:5100/" />
+      </Headers>
+      <FormPostHttpBody>
+        <FormPostParameter Name="brand" Value="{{$HIDDEN1.brand}}" RecordedValue="" CorrelationBinding="" UrlEncode="True" />
+        <FormPostParameter Name="brandId" Value="{{$HIDDEN1.brandId}}" RecordedValue="2" CorrelationBinding="" UrlEncode="True" />
+        <FormPostParameter Name="type" Value="{{$HIDDEN1.type}}" RecordedValue="" CorrelationBinding="" UrlEncode="True" />
+        <FormPostParameter Name="typeId" Value="{{$HIDDEN1.typeId}}" RecordedValue="1" CorrelationBinding="" UrlEncode="True" />
+        <FormPostParameter Name="description" Value="{{$HIDDEN1.description}}" RecordedValue=".NET Black &amp; White Mug" CorrelationBinding="" UrlEncode="True" />
+        <FormPostParameter Name="id" Value="{{$HIDDEN1.id}}" RecordedValue="2" CorrelationBinding="" UrlEncode="True" />
+        <FormPostParameter Name="name" Value="{{$HIDDEN1.name}}" RecordedValue=".NET Black &amp; White Mug" CorrelationBinding="" UrlEncode="True" />
+        <FormPostParameter Name="pictureUri" Value="{{$HIDDEN1.pictureUri}}" RecordedValue="http://192.168.1.64:5101/api/v1/pic/2" CorrelationBinding="" UrlEncode="True" />
+        <FormPostParameter Name="price" Value="{{$HIDDEN1.price}}" RecordedValue="8.5" CorrelationBinding="" UrlEncode="True" />
+        <FormPostParameter Name="__RequestVerificationToken" Value="{{$HIDDEN1.__RequestVerificationToken}}" RecordedValue="CfDJ8Cdrh-iylPpOkQpr1RyNCAGwyXSwm5cWA5jXJBjAHbtJrWFC6jweGNPajZ3OI21bhRgQWnF24pQY15d9canQFRyD_NDDzL7fgjA7HOdZogASTsSwPyEes9KCKgzxLYuWAQBGRc2sKLXciWAEYao5rNEAUOV2g1K2x9oMyxKMwgNFtJKPSwRQQi9lPEkXB9uqcw" CorrelationBinding="" UrlEncode="True" />
+      </FormPostHttpBody>
+    </Request>
+    <Request Method="GET" Guid="3c054e49-5dd7-4bcd-b459-d91707182e79" Version="1.1" Url="{{WebServer}}:5100/Cart" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False">
+      <DependentRequests>
+        <Request Method="GET" Guid="6dc3a57c-391d-4854-9ed9-bfd43c63c9ec" Version="1.1" Url="{{WebServer}}:5100/fonts/Montserrat-Regular.woff" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False">
+          <Headers>
+            <Header Name="Referer" Value="{{WebServer}}:5100/Cart" />
+          </Headers>
+        </Request>
+        <Request Method="GET" Guid="37706838-70cb-420a-9642-1001f0b79577" Version="1.1" Url="{{WebServer}}:5100/fonts/Montserrat-Bold.woff" ThinkTime="2" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False">
+          <Headers>
+            <Header Name="Referer" Value="{{WebServer}}:5100/Cart" />
+          </Headers>
+        </Request>
+      </DependentRequests>
+      <Headers>
+        <Header Name="Referer" Value="{{WebServer}}:5100/" />
+      </Headers>
+      <ExtractionRules>
+        <ExtractionRule Classname="Microsoft.VisualStudio.TestTools.WebTesting.Rules.ExtractHiddenFields, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" VariableName="1" DisplayName="Extract Hidden Fields" Description="Extract all hidden fields from the response and place them into the test context.">
+          <RuleParameters>
+            <RuleParameter Name="Required" Value="True" />
+            <RuleParameter Name="HtmlDecode" Value="True" />
+          </RuleParameters>
+        </ExtractionRule>
+      </ExtractionRules>
+      <CorrelationExtractionRules>
+        <ExtractionRule Classname="Microsoft.VisualStudio.TestTools.WebTesting.Rules.ExtractFormField, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" VariableName="FormPostParam10.quantities[0].Value" DisplayName="" Description="">
+          <RuleParameters>
+            <RuleParameter Name="Name" Value="quantities[0].Value" />
+            <RuleParameter Name="HtmlDecode" Value="True" />
+            <RuleParameter Name="Required" Value="False" />
+            <RuleParameter Name="Index" Value="0" />
+          </RuleParameters>
+        </ExtractionRule>
+        <ExtractionRule Classname="Microsoft.VisualStudio.TestTools.WebTesting.Rules.ExtractFormField, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" VariableName="FormPostParam11.action" DisplayName="" Description="">
+          <RuleParameters>
+            <RuleParameter Name="Name" Value="action" />
+            <RuleParameter Name="HtmlDecode" Value="True" />
+            <RuleParameter Name="Required" Value="False" />
+            <RuleParameter Name="Index" Value="0" />
+          </RuleParameters>
+        </ExtractionRule>
+      </CorrelationExtractionRules>
+    </Request>
+    <Request Method="POST" Guid="824868c7-c534-48be-9ee2-251b22415b3c" Version="1.1" Url="{{WebServer}}:5100/Cart" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="{{WebServer}}:5100/Order/Create" ReportingName="" IgnoreHttpStatusCode="False">
+      <DependentRequests>
+        <Request Method="GET" Guid="06ab6228-024b-42f0-bbf9-3410d3f58758" Version="1.1" Url="{{WebServer}}:5100/fonts/Montserrat-Regular.woff" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False">
+          <Headers>
+            <Header Name="Referer" Value="{{WebServer}}:5100/Order/Create" />
+          </Headers>
+        </Request>
+        <Request Method="GET" Guid="a8374bfa-1511-4ab0-8425-779d3cd65707" Version="1.1" Url="{{WebServer}}:5100/fonts/Montserrat-Bold.woff" ThinkTime="2" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False">
+          <Headers>
+            <Header Name="Referer" Value="{{WebServer}}:5100/Order/Create" />
+          </Headers>
+        </Request>
+      </DependentRequests>
+      <Headers>
+        <Header Name="Referer" Value="{{WebServer}}:5100/Cart" />
+      </Headers>
+      <ExtractionRules>
+        <ExtractionRule Classname="Microsoft.VisualStudio.TestTools.WebTesting.Rules.ExtractHiddenFields, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" VariableName="1" DisplayName="Extract Hidden Fields" Description="Extract all hidden fields from the response and place them into the test context.">
+          <RuleParameters>
+            <RuleParameter Name="Required" Value="True" />
+            <RuleParameter Name="HtmlDecode" Value="True" />
+          </RuleParameters>
+        </ExtractionRule>
+      </ExtractionRules>
+      <CorrelationExtractionRules>
+        <ExtractionRule Classname="Microsoft.VisualStudio.TestTools.WebTesting.Rules.ExtractFormField, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" VariableName="FormPostParam1.Street" DisplayName="" Description="">
+          <RuleParameters>
+            <RuleParameter Name="Name" Value="Street" />
+            <RuleParameter Name="HtmlDecode" Value="True" />
+            <RuleParameter Name="Required" Value="False" />
+            <RuleParameter Name="Index" Value="0" />
+          </RuleParameters>
+        </ExtractionRule>
+        <ExtractionRule Classname="Microsoft.VisualStudio.TestTools.WebTesting.Rules.ExtractFormField, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" VariableName="FormPostParam2.City" DisplayName="" Description="">
+          <RuleParameters>
+            <RuleParameter Name="Name" Value="City" />
+            <RuleParameter Name="HtmlDecode" Value="True" />
+            <RuleParameter Name="Required" Value="False" />
+            <RuleParameter Name="Index" Value="0" />
+          </RuleParameters>
+        </ExtractionRule>
+        <ExtractionRule Classname="Microsoft.VisualStudio.TestTools.WebTesting.Rules.ExtractFormField, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" VariableName="FormPostParam3.State" DisplayName="" Description="">
+          <RuleParameters>
+            <RuleParameter Name="Name" Value="State" />
+            <RuleParameter Name="HtmlDecode" Value="True" />
+            <RuleParameter Name="Required" Value="False" />
+            <RuleParameter Name="Index" Value="0" />
+          </RuleParameters>
+        </ExtractionRule>
+        <ExtractionRule Classname="Microsoft.VisualStudio.TestTools.WebTesting.Rules.ExtractFormField, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" VariableName="FormPostParam4.Country" DisplayName="" Description="">
+          <RuleParameters>
+            <RuleParameter Name="Name" Value="Country" />
+            <RuleParameter Name="HtmlDecode" Value="True" />
+            <RuleParameter Name="Required" Value="False" />
+            <RuleParameter Name="Index" Value="0" />
+          </RuleParameters>
+        </ExtractionRule>
+        <ExtractionRule Classname="Microsoft.VisualStudio.TestTools.WebTesting.Rules.ExtractFormField, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" VariableName="FormPostParam5.CardNumber" DisplayName="" Description="">
+          <RuleParameters>
+            <RuleParameter Name="Name" Value="CardNumber" />
+            <RuleParameter Name="HtmlDecode" Value="True" />
+            <RuleParameter Name="Required" Value="False" />
+            <RuleParameter Name="Index" Value="0" />
+          </RuleParameters>
+        </ExtractionRule>
+        <ExtractionRule Classname="Microsoft.VisualStudio.TestTools.WebTesting.Rules.ExtractFormField, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" VariableName="FormPostParam6.CardHolderName" DisplayName="" Description="">
+          <RuleParameters>
+            <RuleParameter Name="Name" Value="CardHolderName" />
+            <RuleParameter Name="HtmlDecode" Value="True" />
+            <RuleParameter Name="Required" Value="False" />
+            <RuleParameter Name="Index" Value="0" />
+          </RuleParameters>
+        </ExtractionRule>
+        <ExtractionRule Classname="Microsoft.VisualStudio.TestTools.WebTesting.Rules.ExtractFormField, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" VariableName="FormPostParam7.CardExpirationShort" DisplayName="" Description="">
+          <RuleParameters>
+            <RuleParameter Name="Name" Value="CardExpirationShort" />
+            <RuleParameter Name="HtmlDecode" Value="True" />
+            <RuleParameter Name="Required" Value="False" />
+            <RuleParameter Name="Index" Value="0" />
+          </RuleParameters>
+        </ExtractionRule>
+        <ExtractionRule Classname="Microsoft.VisualStudio.TestTools.WebTesting.Rules.ExtractFormField, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" VariableName="FormPostParam8.CardSecurityNumber" DisplayName="" Description="">
+          <RuleParameters>
+            <RuleParameter Name="Name" Value="CardSecurityNumber" />
+            <RuleParameter Name="HtmlDecode" Value="True" />
+            <RuleParameter Name="Required" Value="False" />
+            <RuleParameter Name="Index" Value="0" />
+          </RuleParameters>
+        </ExtractionRule>
+        <ExtractionRule Classname="Microsoft.VisualStudio.TestTools.WebTesting.Rules.ExtractFormField, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" VariableName="FormPostParam9.action" DisplayName="" Description="">
+          <RuleParameters>
+            <RuleParameter Name="Name" Value="action" />
+            <RuleParameter Name="HtmlDecode" Value="True" />
+            <RuleParameter Name="Required" Value="False" />
+            <RuleParameter Name="Index" Value="0" />
+          </RuleParameters>
+        </ExtractionRule>
+      </CorrelationExtractionRules>
+      <FormPostHttpBody>
+        <FormPostParameter Name="quantities[0].Key" Value="{{$HIDDEN1.quantities[0].Key}}" RecordedValue="20c8ed9d-25fa-4c04-b6d6-0ff919b766cc" CorrelationBinding="" UrlEncode="True" />
+        <FormPostParameter Name="quantities[0].Value" Value="1" RecordedValue="1" CorrelationBinding="{{FormPostParam10.quantities[0].Value}}" UrlEncode="True" />
+        <FormPostParameter Name="action" Value="[ Checkout ]" RecordedValue="[ Checkout ]" CorrelationBinding="{{FormPostParam11.action}}" UrlEncode="True" />
+      </FormPostHttpBody>
+    </Request>
+    <Request Method="POST" Guid="37f6bc56-40fe-4b4b-8d32-700d0cadee04" Version="1.1" Url="{{WebServer}}:5100/Order/Checkout" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="{{WebServer}}:5100/Order" ReportingName="" IgnoreHttpStatusCode="False">
+      <DependentRequests>
+        <Request Method="GET" Guid="58d46e95-df38-47b7-a9e9-d9aaf9d302d1" Version="1.1" Url="{{WebServer}}:5100/fonts/Montserrat-Regular.woff" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False">
+          <Headers>
+            <Header Name="Referer" Value="{{WebServer}}:5100/Order" />
+          </Headers>
+        </Request>
+        <Request Method="GET" Guid="1f057017-a787-4db3-9ed1-4b3edd7de9d0" Version="1.1" Url="{{WebServer}}:5100/fonts/Montserrat-Bold.woff" ThinkTime="5" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False">
+          <Headers>
+            <Header Name="Referer" Value="{{WebServer}}:5100/Order" />
+          </Headers>
+        </Request>
+      </DependentRequests>
+      <Headers>
+        <Header Name="Referer" Value="{{WebServer}}:5100/Order/Create" />
+      </Headers>
+      <FormPostHttpBody>
+        <FormPostParameter Name="Street" Value="15703 NE 61st Ct" RecordedValue="15703 NE 61st Ct" CorrelationBinding="{{FormPostParam1.Street}}" UrlEncode="True" />
+        <FormPostParameter Name="City" Value="Redmond" RecordedValue="Redmond" CorrelationBinding="{{FormPostParam2.City}}" UrlEncode="True" />
+        <FormPostParameter Name="State" Value="WA" RecordedValue="WA" CorrelationBinding="{{FormPostParam3.State}}" UrlEncode="True" />
+        <FormPostParameter Name="Country" Value="U.S." RecordedValue="U.S." CorrelationBinding="{{FormPostParam4.Country}}" UrlEncode="True" />
+        <FormPostParameter Name="CardNumber" Value="4012888888881881" RecordedValue="4012888888881881" CorrelationBinding="{{FormPostParam5.CardNumber}}" UrlEncode="True" />
+        <FormPostParameter Name="CardHolderName" Value="DemoUser" RecordedValue="DemoUser" CorrelationBinding="{{FormPostParam6.CardHolderName}}" UrlEncode="True" />
+        <FormPostParameter Name="CardExpirationShort" Value="12/20" RecordedValue="12/20" CorrelationBinding="{{FormPostParam7.CardExpirationShort}}" UrlEncode="True" />
+        <FormPostParameter Name="CardSecurityNumber" Value="535" RecordedValue="535" CorrelationBinding="{{FormPostParam8.CardSecurityNumber}}" UrlEncode="True" />
+        <FormPostParameter Name="orderitems[0].PictureUrl" Value="{{$HIDDEN1.orderitems[0].PictureUrl}}" RecordedValue="http://192.168.1.64:5101/api/v1/pic/2" CorrelationBinding="" UrlEncode="True" />
+        <FormPostParameter Name="orderitems[0].ProductName" Value="{{$HIDDEN1.orderitems[0].ProductName}}" RecordedValue=".NET Black &amp; White Mug" CorrelationBinding="" UrlEncode="True" />
+        <FormPostParameter Name="orderitems[0].UnitPrice" Value="{{$HIDDEN1.orderitems[0].UnitPrice}}" RecordedValue="8.5" CorrelationBinding="" UrlEncode="True" />
+        <FormPostParameter Name="orderitems[0].Units" Value="{{$HIDDEN1.orderitems[0].Units}}" RecordedValue="1" CorrelationBinding="" UrlEncode="True" />
+        <FormPostParameter Name="Total" Value="{{$HIDDEN1.Total}}" RecordedValue="8.5" CorrelationBinding="" UrlEncode="True" />
+        <FormPostParameter Name="action" Value="[ Place Order ]" RecordedValue="[ Place Order ]" CorrelationBinding="{{FormPostParam9.action}}" UrlEncode="True" />
+        <FormPostParameter Name="ZipCode" Value="{{$HIDDEN1.ZipCode}}" RecordedValue="98052" CorrelationBinding="" UrlEncode="True" />
+        <FormPostParameter Name="RequestId" Value="{{$HIDDEN1.RequestId}}" RecordedValue="f58b9345-ea25-4125-a8bf-b0992233af6c" CorrelationBinding="" UrlEncode="True" />
+        <FormPostParameter Name="__RequestVerificationToken" Value="{{$HIDDEN1.__RequestVerificationToken}}" RecordedValue="CfDJ8Cdrh-iylPpOkQpr1RyNCAFGQoLNAyo2LBV9_NmqTRqo691TuJQOVNY-EwyaSBfsE8oln7PmOP46bJbubIL8zbrKu6Ow3Vuwa-hDNg2QGkpNyeh1epxhyWLwTg8gW8OegxsoiTqWQhDXvelBIqJGqfB5rHUhxR9lAxrLG85JkWL_1UnwWSIpUOV6XzDB9U7Vfw" CorrelationBinding="" UrlEncode="True" />
+      </FormPostHttpBody>
+    </Request>
+    <Request Method="GET" Guid="60e4b7e1-95fc-43a0-932d-d1d1a311b49f" Version="1.1" Url="{{WebServer}}:5100/Order" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False">
+      <Headers>
+        <Header Name="Referer" Value="{{WebServer}}:5100/Order/Create" />
+      </Headers>
+    </Request>
+    <Request Method="GET" Guid="fe68954c-56b1-4b4e-aa7d-8c353d4efbc4" Version="1.1" Url="{{WebServer}}:5100/Order" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False">
+      <Headers>
+        <Header Name="Referer" Value="{{WebServer}}:5100/Order/Create" />
+      </Headers>
+    </Request>
+    <Request Method="POST" Guid="845ebdbb-7277-41e4-bf6d-bc2b2096ca31" Version="1.1" Url="{{WebServer}}:5100/Account/SignOut" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="{{WebServer}}:5100/" ReportingName="" IgnoreHttpStatusCode="False">
+      <DependentRequests>
+        <Request Method="GET" Guid="44a33c90-a634-4a20-ac8a-189899b749fd" Version="1.1" Url="{{WebServer}}:5100/fonts/Montserrat-Regular.woff" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False">
+          <Headers>
+            <Header Name="Referer" Value="{{WebServer}}:5100/" />
+          </Headers>
+        </Request>
+        <Request Method="GET" Guid="67f52ca1-a821-4fae-8d4c-18cf88487dd9" Version="1.1" Url="{{WebServer}}:5100/fonts/Montserrat-Bold.woff" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False">
+          <Headers>
+            <Header Name="Referer" Value="{{WebServer}}:5100/" />
+          </Headers>
+        </Request>
+      </DependentRequests>
+      <Headers>
+        <Header Name="Referer" Value="{{WebServer}}:5100/" />
+      </Headers>
+      <FormPostHttpBody>
+        <FormPostParameter Name="__RequestVerificationToken" Value="{{$HIDDEN1.__RequestVerificationToken}}" RecordedValue="CfDJ8KF1l9jrGGVBqwjqh6oMtEsKFpdQ8gAgwS0typ2jiVDZ8oX6tuiVLv-FVrtg8FOlWcbEIsUO4xeajrDnhuizGQptXRa0AHTH7_sqyud4BovXbU2GJgNRGU8-_5Czw3cd9yp9NewqnmUq3K0eawmjpTH782CbPZ5ON4Zzoo9g7slSYCR9X9eK_CcL7zDFt-aYUA" CorrelationBinding="" UrlEncode="True" />
+      </FormPostHttpBody>
+    </Request>
+  </Items>
+  <ContextParameters>
+    <ContextParameter Name="WebServer" Value="http://" />
+    <ContextParameter Name="Email" Value="demouser@microsoft.com" />
+    <ContextParameter Name="Password" Value="Pass@word1" />
+  </ContextParameters>
+  <ValidationRules>
+    <ValidationRule Classname="Microsoft.VisualStudio.TestTools.WebTesting.Rules.ValidateResponseUrl, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" DisplayName="Response URL" Description="Validates that the response URL after redirects are followed is the same as the recorded response URL.  QueryString parameters are ignored." Level="Low" ExectuionOrder="BeforeDependents" />
+    <ValidationRule Classname="Microsoft.VisualStudio.TestTools.WebTesting.Rules.ValidationRuleResponseTimeGoal, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" DisplayName="Response Time Goal" Description="Validates that the response time for the request is less than or equal to the response time goal as specified on the request.  Response time goals of zero will be ignored." Level="Low" ExectuionOrder="AfterDependents">
+      <RuleParameters>
+        <RuleParameter Name="Tolerance" Value="0" />
+      </RuleParameters>
+    </ValidationRule>
+  </ValidationRules>
+</WebTest>
