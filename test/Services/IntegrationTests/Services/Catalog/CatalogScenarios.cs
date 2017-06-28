@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 
 namespace IntegrationTests.Services.Catalog
 {
@@ -40,7 +41,7 @@ namespace IntegrationTests.Services.Catalog
                 var response = await server.CreateClient()
                     .GetAsync(Get.ItemById(int.MinValue));
 
-                response.EnsureSuccessStatusCode();
+                Assert.Equal(response.StatusCode, HttpStatusCode.BadRequest);
             }
         }
 
@@ -52,7 +53,7 @@ namespace IntegrationTests.Services.Catalog
                 var response = await server.CreateClient()
                     .GetAsync(Get.ItemById(int.MaxValue));
 
-                response.EnsureSuccessStatusCode();
+                Assert.Equal(response.StatusCode, HttpStatusCode.NotFound);
             }
         }
 
