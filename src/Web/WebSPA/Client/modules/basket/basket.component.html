@@ -17,7 +17,7 @@
                     <img class="esh-basket-image" src="{{item.pictureUrl}}" />
                 </section>
                 <section class="esh-basket-item esh-basket-item--middle col-xs-3">{{item.productName}}</section>
-                <section class="esh-basket-item esh-basket-item--middle col-xs-2">$ {{item.unitPrice}}</section>
+                <section class="esh-basket-item esh-basket-item--middle col-xs-2">$ {{item.unitPrice | number:'.2-2'}}</section>
                 <section class="esh-basket-item esh-basket-item--middle col-xs-2">
                     <input class="esh-basket-input"
                            type="number"
@@ -25,7 +25,7 @@
                            [(ngModel)]="item.quantity"
                            (change)="itemQuantityChanged(item)" />
                 </section>
-                <section class="esh-basket-item esh-basket-item--middle esh-basket-item--mark col-xs-2">$ {{item.unitPrice * item.quantity}}</section>
+                <section class="esh-basket-item esh-basket-item--middle esh-basket-item--mark col-xs-2">$ {{(item.unitPrice * item.quantity) | number:'.2-2'}}</section>
             </article>
             <br/>
             <div class="esh-basket-items-margin-left1 row">
@@ -42,7 +42,7 @@
 
         <article class="esh-basket-items row">
             <section class="esh-basket-item col-xs-9"></section>
-            <section class="esh-basket-item esh-basket-item--mark col-xs-2">$ {{totalPrice}}</section>
+            <section class="esh-basket-item esh-basket-item--mark col-xs-2">$ {{totalPrice | number:'.2-2'}}</section>
         </article>
 
         <article class="esh-basket-items row">

@@ -23,12 +23,12 @@
                     <img class="esh-basket-image" src="@item.PictureUrl" />
                 </section>
                 <section class="esh-basket-item esh-basket-item--middle col-xs-3">@item.ProductName</section>
-                <section class="esh-basket-item esh-basket-item--middle col-xs-2">$ @item.UnitPrice</section>
+                <section class="esh-basket-item esh-basket-item--middle col-xs-2">$ @item.UnitPrice.ToString("N2")</section>
                 <section class="esh-basket-item esh-basket-item--middle col-xs-2">
                     <input type="hidden" name="@("quantities[" + i +"].Key")" value="@item.Id" />
                     <input type="number" class="esh-basket-input" min="1" name="@("quantities[" + i +"].Value")" value="@item.Quantity" />
                 </section>
-                <section class="esh-basket-item esh-basket-item--middle esh-basket-item--mark col-xs-2">$ @Math.Round(item.Quantity * item.UnitPrice, 2)</section>
+                <section class="esh-basket-item esh-basket-item--middle esh-basket-item--mark col-xs-2">$ @Math.Round(item.Quantity * item.UnitPrice, 2).ToString("N2")</section>
             </div>
             <div class="row">
 

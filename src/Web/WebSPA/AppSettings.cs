@@ -13,5 +13,6 @@ namespace eShopOnContainers.WebSPA
         public string IdentityUrl { get; set; }
         public string BasketUrl { get; set; }
         public string MarketingUrl { get; set; }
+	public bool UseCustomizationData { get; set; }
     }
 }

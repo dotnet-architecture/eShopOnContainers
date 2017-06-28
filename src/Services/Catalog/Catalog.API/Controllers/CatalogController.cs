@@ -235,7 +235,10 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
 
             items.ForEach(x =>
             {
-                x.PictureUri = x.PictureUri.Replace("http://externalcatalogbaseurltobereplaced", baseUri);
+                if (!x.PictureUri.Contains('/'))
+                {
+                    x.PictureUri = $"{baseUri}/api/v1/pic/{x.PictureUri}";
+                }
             });
 
             return items;

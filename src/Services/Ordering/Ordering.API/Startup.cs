@@ -87,6 +87,8 @@
                         ServiceLifetime.Scoped  //Showing explicitly that the DbContext is shared across the HTTP request scope (graph of objects started in the HTTP request)
                     );
 
+            services.Configure<OrderingSettings>(Configuration);
+
             services.AddSwaggerGen(options =>
             {
                 options.DescribeAllEnumsAsStrings();
@@ -159,7 +161,7 @@
                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
                });
 
-            WaitForSqlAvailabilityAsync(loggerFactory, app).Wait();
+            WaitForSqlAvailabilityAsync(loggerFactory, app, env).Wait();
             ConfigureEventBus(app);
 
             var integrationEventLogContext = new IntegrationEventLogContext(
@@ -200,13 +202,13 @@
         }
 
 
-        private async Task WaitForSqlAvailabilityAsync(ILoggerFactory loggerFactory, IApplicationBuilder app, int retries = 0)
+        private async Task WaitForSqlAvailabilityAsync(ILoggerFactory loggerFactory, IApplicationBuilder app, IHostingEnvironment env, int retries = 0)
         {
             var logger = loggerFactory.CreateLogger(nameof(Startup));
             var policy = CreatePolicy(retries, logger, nameof(WaitForSqlAvailabilityAsync));
             await policy.ExecuteAsync(async () =>
             {
-                await OrderingContextSeed.SeedAsync(app);
+                await OrderingContextSeed.SeedAsync(app, env, loggerFactory);
             });
 
         }

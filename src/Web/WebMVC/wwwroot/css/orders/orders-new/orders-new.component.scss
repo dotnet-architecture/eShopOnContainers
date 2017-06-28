@@ -1,0 +1,101 @@
+@import '../../variables';
+
+.esh-orders_new {
+    min-height: 80vh;
+
+    $header-height: 4rem;
+
+    &-header {
+        background-color: #00A69C;
+        height: $header-height;
+    }
+
+    &-back {
+        color: rgba($color-foreground-brighter, .4);
+        line-height: $header-height;
+        text-decoration: none;
+        text-transform: uppercase;
+        transition: color $animation-speed-default;
+
+        &:hover {
+            color: $color-foreground-brighter;
+            transition: color $animation-speed-default;
+        }
+    }
+
+    &-section {
+        padding: 1rem 0;
+
+        &--right {
+            text-align: right;
+        }
+    }
+
+    &-placeOrder {
+        background-color: $color-secondary;
+        border: 0;
+        border-radius: 0;
+        color: $color-foreground-brighter;
+        display: inline-block;
+        font-size: 1rem;
+        font-weight: $font-weight-normal;
+        margin-top: 1rem;
+        padding: 1rem 1.5rem;
+        text-align: center;
+        text-transform: uppercase;
+        transition: all $animation-speed-default;
+
+        &:hover {
+            background-color: $color-secondary-darker;
+            transition: all $animation-speed-default;
+        }
+    }
+
+    &-titles {
+        padding-bottom: 1rem;
+        padding-top: 2rem;
+    }
+
+    &-title {
+        font-size: $font-size-l;
+        text-transform: uppercase;
+    }
+
+    &-items {
+        &--border {
+            border-bottom: $border-light solid $color-foreground-bright;
+            padding: .5rem 0;
+
+            &:last-of-type {
+                border-color: transparent;
+            }
+        }
+    }
+
+    $item-height: 8rem;
+
+    &-item {
+        font-size: $font-size-m;
+        font-weight: $font-weight-semilight;
+
+        &--middle {
+            line-height: $item-height;
+
+            @media screen and (max-width: $media-screen-s) {
+                line-height: $font-size-m;
+            }
+        }
+
+        &--mark {
+            color: $color-secondary;
+        }
+    }
+
+    &-image {
+        height: $item-height;
+    }
+
+    &-alert {
+       margin-top: 10px;
+    }
+}

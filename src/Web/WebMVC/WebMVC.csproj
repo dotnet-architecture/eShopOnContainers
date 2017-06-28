@@ -9,6 +9,24 @@
     <DockerComposeProjectPath>..\..\..\docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Extensions\LinqSelectExtensions.cs" />
+    <Compile Remove="Services\CustomUIService.cs" />
+    <Compile Remove="Services\ICustomUIService.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="Views\Shared\_Footer.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Setup\images.zip">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="Setup\override.css">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
 
   <!--<ItemGroup>
     <Compile Remove="wwwroot\lib\bootstrap\**" />

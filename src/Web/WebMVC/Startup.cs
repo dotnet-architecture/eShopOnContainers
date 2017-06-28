@@ -12,6 +12,7 @@ using Microsoft.Extensions.HealthChecks;
 using Microsoft.Extensions.Logging;
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using WebMVC.Infrastructure;
 
 namespace Microsoft.eShopOnContainers.WebMVC
 {
@@ -128,6 +129,9 @@ namespace Microsoft.eShopOnContainers.WebMVC
                 RequireHttpsMetadata = false,
                 Scope = { "openid", "profile", "orders", "basket", "marketing" }
             };
+
+            //Seed Data
+            WebContextSeed.Seed(app, env, loggerFactory);
 
             //Wait untill identity service is ready on compose. 
             app.UseOpenIdConnectAuthentication(oidcOptions);

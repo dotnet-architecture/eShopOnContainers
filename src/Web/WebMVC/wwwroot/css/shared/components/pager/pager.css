@@ -1,34 +1,35 @@
-.esh-pager-wrapper {
-    padding-top: 1rem;
-    text-align: center;
+﻿.esh-pager-wrapper {
+  padding-top: 1rem;
+  text-align: center;
 }
 
 .esh-pager-item {
-    margin: 0 5vw;
+  margin: 0 5vw;
+}
+
+.esh-pager-item.is-disabled {
+  opacity: 0;
+  pointer-events: none;
 }
 
 .esh-pager-item--navigable {
-    display: inline-block;
-    cursor: pointer;
+  cursor: pointer;
+  display: inline-block;
 }
 
-    .esh-pager-item--navigable.is-disabled {
-        opacity: 0;
-        pointer-events: none;
-    }
-
-    .esh-pager-item--navigable:hover {
-        color: #83D01B;
-    }
+.esh-pager-item--navigable:hover {
+  color: #83D01B;
+}
 
 @media screen and (max-width: 1280px) {
-    .esh-pager-item {
-        font-size: 0.85rem;
-    }
+  .esh-pager-item {
+    font-size: 0.85rem;
+  }
 }
 
 @media screen and (max-width: 1024px) {
-    .esh-pager-item {
-        margin: 0 4vw;
-    }
+  .esh-pager-item {
+    margin: 0 2.5vw;
+  }
 }
+
