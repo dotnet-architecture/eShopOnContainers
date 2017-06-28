@@ -16,9 +16,9 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
-      - ConnectionString=basket.data
+      - ConnectionString=${ESHOP_AZURE_REDIS:-basket.data}
       - identityUrl=http://identity.api              #Local: You need to open your local dev-machine firewall at range 5100-5105.  at range 5100-5105. 
-      - EventBusConnection=rabbitmq
+      - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
     ports:
       - "5103:80"
 
@@ -27,8 +27,8 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - ConnectionString=Server=sql.data;Database=Microsoft.eShopOnContainers.Services.CatalogDb;User Id=sa;Password=Pass@word
-      - ExternalCatalogBaseUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5101    #Local: You need to open your local dev-machine firewall at range 5100-5105.  at range 5100-5105.	  
-      - EventBusConnection=rabbitmq
+      - PicBaseUrl=${ESHOP_AZURE_STORAGE_ACCOUNT:-http://localhost:5101/api/v1/pic/}   #Local: You need to open your local dev-machine firewall at range 5100-5105.  at range 5100-5105.	  
+      - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
       - UseCustomizationData=True
     ports:
       - "5101:80"
@@ -51,7 +51,7 @@ services:
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - ConnectionString=Server=sql.data;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word
       - identityUrl=http://identity.api              #Local: You need to open your local dev-machine firewall at range 5100-5105.  at range 5100-5105. 
-      - EventBusConnection=rabbitmq
+      - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
       - UseCustomizationData=True
     ports:
       - "5102:80"
