@@ -51,10 +51,35 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GetItemCoded.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="Basket.API\WebTest1.webtest">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Catalog.API\GetCatalogBrands.webtest">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Catalog.API\GetCatalogFiltered.webtest">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Catalog.API\GetCatalogTypes.webtest">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Catalog.API\GetItemPic.webtest">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Catalog.API\GetItemsByName.webtest">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Catalog.API\GetItem.webtest">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Catalog.API\GetItems.webtest">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="WebMVC\AddProductsWithLogin.webtest">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -78,8 +103,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Basket.API\" />
-    <Folder Include="Catalog.API\" />
     <Folder Include="Location.API\" />
     <Folder Include="Marketing.API\" />
     <Folder Include="Ordering.API\" />
