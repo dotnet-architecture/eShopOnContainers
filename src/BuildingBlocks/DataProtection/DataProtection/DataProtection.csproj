@@ -11,7 +11,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.DataProtection" Version="1.1.2" />
     <!--
-    <PackageReference Include="Microsoft.AspNetCore.DataProtection" Version="2.0.0-preview1-final" />
+    <PackageReference Include="Microsoft.AspNetCore.DataProtection" Version="2.0.0-preview2-final" />
     -->
     <PackageReference Include="StackExchange.Redis" Version="1.2.3" />
   </ItemGroup>

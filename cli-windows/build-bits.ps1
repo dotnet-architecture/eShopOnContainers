@@ -20,6 +20,7 @@ $projectPaths =
     @{Path="$rootPath\src\Services\Location\Locations.API";Prj="Locations.API.csproj"},
     @{Path="$rootPath\src\Services\Marketing\Marketing.API";Prj="Marketing.API.csproj"},
     @{Path="$rootPath\src\Services\Payment\Payment.API";Prj="Payment.API.csproj"},
+    @{Path="$rootPath\src\Services\GracePeriod\GracePeriodManager";Prj="GracePeriodManager.csproj"},
     @{Path="$rootPath\src\Web\WebStatus";Prj="WebStatus.csproj"}
 
 $projectPaths | foreach {
