@@ -51,13 +51,12 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GetItemCoded.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="Basket.API\WebTest1.webtest">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <None Include="Basket.API\GetBasket.webtest">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Catalog.API\GetCatalogBrands.webtest">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -80,20 +79,21 @@
     <None Include="Catalog.API\GetItems.webtest">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Marketing.API\GetUserCampaigns.webtest">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Marketing.API\WebTest1.webtest">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="WebMVC\AddProducts.webtest">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="WebMVC\AddProductsWithLogin.webtest">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="WebMVC\AddProducts.webtest">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="WebMVC\CatalogFilter.webtest">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="WebMVC\Logout.webtest">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="WebMVC\Login.webtest">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="WebMVC\LoginAndLogout.webtest">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -104,7 +104,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Location.API\" />
-    <Folder Include="Marketing.API\" />
     <Folder Include="Ordering.API\" />
   </ItemGroup>
   <Choose>
