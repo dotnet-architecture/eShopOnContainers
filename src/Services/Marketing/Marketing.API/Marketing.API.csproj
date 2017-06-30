@@ -5,7 +5,7 @@
     <RuntimeFrameworkVersion>1.1.2</RuntimeFrameworkVersion>
     <OutputType>Exe</OutputType>
     <DockerComposeProjectPath>..\..\..\..\docker-compose.dcproj</DockerComposeProjectPath>
-    <RootNamespace>Microsoft.eShopOnContainers.Services.Marketing.API</RootNamespace>
+    <RootNamespace>Marketing.API</RootNamespace>
     <PackageTargetFallback>portable-net45+win8</PackageTargetFallback>
     <UserSecretsId>aspnet-Marketing.API-20161122013619</UserSecretsId>
   </PropertyGroup>
@@ -56,6 +56,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\BuildingBlocks\EventBus\EventBusRabbitMQ\EventBusRabbitMQ.csproj" />
+    <ProjectReference Include="..\..\..\BuildingBlocks\EventBus\EventBusServiceBus\EventBusServiceBus.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -16,6 +16,10 @@ using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
 using System.Reflection;
 using System;
+using Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus;
+using Microsoft.Azure.ServiceBus;
+using System.Collections.Generic;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace Microsoft.eShopOnContainers.Services.Locations.API
 {
@@ -51,19 +55,34 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
 
             services.Configure<LocationSettings>(Configuration);
 
-            services.AddSingleton<IRabbitMQPersistentConnection>(sp =>
+            if (Configuration.GetValue<bool>("AzureServiceBusEnabled"))
             {
-                var logger = sp.GetRequiredService<ILogger<DefaultRabbitMQPersistentConnection>>();
-
-                var factory = new ConnectionFactory()
+                services.AddSingleton<IServiceBusPersisterConnection>(sp =>
                 {
-                    HostName = Configuration["EventBusConnection"]
-                };
+                    var logger = sp.GetRequiredService<ILogger<DefaultServiceBusPersisterConnection>>();
 
-                return new DefaultRabbitMQPersistentConnection(factory, logger);
-            });
+                    var serviceBusConnectionString = Configuration["EventBusConnection"];
+                    var serviceBusConnection = new ServiceBusConnectionStringBuilder(serviceBusConnectionString);
 
-            RegisterServiceBus(services);
+                    return new DefaultServiceBusPersisterConnection(serviceBusConnection, logger);
+                });
+            }
+            else
+            {
+                services.AddSingleton<IRabbitMQPersistentConnection>(sp =>
+                {
+                    var logger = sp.GetRequiredService<ILogger<DefaultRabbitMQPersistentConnection>>();
+
+                    var factory = new ConnectionFactory()
+                    {
+                        HostName = Configuration["EventBusConnection"]
+                    };
+
+                    return new DefaultRabbitMQPersistentConnection(factory, logger);
+                });
+            }
+
+            RegisterEventBus(services);
 
             // Add framework services.
             services.AddSwaggerGen(options =>
@@ -76,6 +95,21 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
                     Description = "The Location Microservice HTTP API. This is a Data-Driven/CRUD microservice sample",
                     TermsOfService = "Terms Of Service"
                 });
+
+                options.AddSecurityDefinition("oauth2", new OAuth2Scheme
+                {
+                    Type = "oauth2",
+                    Flow = "implicit",
+                    AuthorizationUrl = "http://localhost:5105/connect/authorize",
+                    TokenUrl = "http://localhost:5105/connect/token",
+                    Scopes = new Dictionary<string, string>()
+                    {
+                        { "locations", "Locations API" }
+                    }
+                });
+
+                options.OperationFilter<AuthorizeCheckOperationFilter>();
+
             });
 
             services.AddCors(options =>
@@ -117,6 +151,7 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
               .UseSwaggerUI(c =>
               {
                   c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                  c.ConfigureOAuth2("swaggerui", "", "", "Swagger UI");
               });
 
             LocationsContextSeed.SeedAsync(app, loggerFactory)
@@ -134,10 +169,28 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
             });
         }
 
-        private void RegisterServiceBus(IServiceCollection services)
+        private void RegisterEventBus(IServiceCollection services)
         {
-            services.AddSingleton<IEventBus, EventBusRabbitMQ>();
+            if (Configuration.GetValue<bool>("AzureServiceBusEnabled"))
+            {
+                services.AddSingleton<IEventBus, EventBusServiceBus>(sp =>
+                {
+                    var serviceBusPersisterConnection = sp.GetRequiredService<IServiceBusPersisterConnection>();
+                    var iLifetimeScope = sp.GetRequiredService<ILifetimeScope>();
+                    var logger = sp.GetRequiredService<ILogger<EventBusServiceBus>>();
+                    var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
+                    var subscriptionClientName = Configuration["SubscriptionClientName"];
+
+                    return new EventBusServiceBus(serviceBusPersisterConnection, logger,
+                        eventBusSubcriptionsManager, subscriptionClientName, iLifetimeScope);
+                });
+            }
+            else
+            {
+                services.AddSingleton<IEventBus, EventBusRabbitMQ>();
+            }
+
             services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
-        }        
+        }
     }
 }

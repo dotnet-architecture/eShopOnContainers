@@ -1,28 +1,32 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Marketing.API
+﻿namespace Marketing.API
 {
+    using Autofac;
+    using Autofac.Extensions.DependencyInjection;
+    using global::Marketing.API.IntegrationEvents.Events;
+    using Marketing.API.IntegrationEvents.Handlers;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
-    using Microsoft.EntityFrameworkCore.Infrastructure;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.Azure.ServiceBus;
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.Infrastructure;
+    using Microsoft.eShopOnContainers.BuildingBlocks.EventBus;
+    using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
+    using Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ;
+    using Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus;
+    using Microsoft.eShopOnContainers.Services.Marketing.API;
     using Microsoft.eShopOnContainers.Services.Marketing.API.Infrastructure;
+    using Microsoft.eShopOnContainers.Services.Marketing.API.Infrastructure.Filters;
+    using Microsoft.eShopOnContainers.Services.Marketing.API.Infrastructure.Repositories;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
-    using System.Reflection;
-    using System;
-    using Microsoft.eShopOnContainers.Services.Marketing.API.Infrastructure.Filters;
-    using Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ;
-    using RabbitMQ.Client;
-    using BuildingBlocks.EventBus.Abstractions;
-    using BuildingBlocks.EventBus;
-    using IntegrationEvents.Events;
-    using IntegrationEvents.Handlers;
-    using Infrastructure.Repositories;
-    using Autofac;
-    using Autofac.Extensions.DependencyInjection;
     using Polly;
-    using System.Threading.Tasks;
+    using RabbitMQ.Client;
+    using System;
     using System.Data.SqlClient;
+    using System.Reflection;
+    using System.Threading.Tasks;
 
     public class Startup
     {
@@ -73,19 +77,32 @@
                 //Check Client vs. Server evaluation: https://docs.microsoft.com/en-us/ef/core/querying/client-eval
             });
 
-            services.AddSingleton<IRabbitMQPersistentConnection>(sp =>
+            if (Configuration.GetValue<bool>("AzureServiceBusEnabled"))
             {
-                var logger = sp.GetRequiredService<ILogger<DefaultRabbitMQPersistentConnection>>();
-
-                var factory = new ConnectionFactory()
+                services.AddSingleton<IServiceBusPersisterConnection>(sp =>
                 {
-                    HostName = Configuration["EventBusConnection"]
-                };
+                    var logger = sp.GetRequiredService<ILogger<DefaultServiceBusPersisterConnection>>();
 
-                return new DefaultRabbitMQPersistentConnection(factory, logger);
-            });
+                    var serviceBusConnectionString = Configuration["EventBusConnection"];
+                    var serviceBusConnection = new ServiceBusConnectionStringBuilder(serviceBusConnectionString);
 
-            RegisterServiceBus(services);
+                    return new DefaultServiceBusPersisterConnection(serviceBusConnection, logger);
+                });
+            }
+            else
+            {
+                services.AddSingleton<IRabbitMQPersistentConnection>(sp =>
+                {
+                    var logger = sp.GetRequiredService<ILogger<DefaultRabbitMQPersistentConnection>>();
+
+                    var factory = new ConnectionFactory()
+                    {
+                        HostName = Configuration["EventBusConnection"]
+                    };
+
+                    return new DefaultRabbitMQPersistentConnection(factory, logger);
+                });
+            }            
 
             // Add framework services.
             services.AddSwaggerGen(options =>
@@ -109,7 +126,12 @@
                     .AllowCredentials());
             });
 
+            RegisterEventBus(services);
+
             services.AddTransient<IMarketingDataRepository, MarketingDataRepository>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            services.AddOptions();
 
             //configure autofac
             var container = new ContainerBuilder();
@@ -134,7 +156,7 @@
                .UseSwaggerUI(c =>
                {
                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-               });
+               });            
 
             var context = (MarketingContext)app
                         .ApplicationServices.GetService(typeof(MarketingContext));
@@ -155,21 +177,35 @@
             });
         }
 
-        private void RegisterServiceBus(IServiceCollection services)
+        private void RegisterEventBus(IServiceCollection services)
         {
-            services.AddSingleton<IEventBus, EventBusRabbitMQ>();
-            services.AddSingleton<IEventBusSubscriptionsManager, 
-                InMemoryEventBusSubscriptionsManager>();
+            if (Configuration.GetValue<bool>("AzureServiceBusEnabled"))
+            {
+                services.AddSingleton<IEventBus, EventBusServiceBus>(sp =>
+                {
+                    var serviceBusPersisterConnection = sp.GetRequiredService<IServiceBusPersisterConnection>();
+                    var iLifetimeScope = sp.GetRequiredService<ILifetimeScope>();
+                    var logger = sp.GetRequiredService<ILogger<EventBusServiceBus>>();
+                    var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
+                    var subscriptionClientName = Configuration["SubscriptionClientName"];
 
-            services.AddTransient<IIntegrationEventHandler<UserLocationUpdatedIntegrationEvent>,
-                UserLocationUpdatedIntegrationEventHandler>();
+                    return new EventBusServiceBus(serviceBusPersisterConnection, logger,
+                        eventBusSubcriptionsManager, subscriptionClientName, iLifetimeScope);
+                });
+            }
+            else
+            {
+                services.AddSingleton<IEventBus, EventBusRabbitMQ>();
+            }
+
+            services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
+            services.AddTransient<UserLocationUpdatedIntegrationEventHandler>();
         }
 
         private void ConfigureEventBus(IApplicationBuilder app)
         {
             var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
-            eventBus.Subscribe<UserLocationUpdatedIntegrationEvent, 
-                IIntegrationEventHandler<UserLocationUpdatedIntegrationEvent>>();
+            eventBus.Subscribe<UserLocationUpdatedIntegrationEvent, UserLocationUpdatedIntegrationEventHandler>();
         }
 
         private async Task WaitForSqlAvailabilityAsync(MarketingContext ctx, ILoggerFactory loggerFactory, IApplicationBuilder app, int retries = 0)

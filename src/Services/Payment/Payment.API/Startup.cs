@@ -12,6 +12,8 @@ using RabbitMQ.Client;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus;
 using Payment.API.IntegrationEvents.Events;
 using Payment.API.IntegrationEvents.EventHandling;
+using Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus;
+using Microsoft.Azure.ServiceBus;
 
 namespace Payment.API
 {
@@ -35,19 +37,34 @@ namespace Payment.API
             // Add framework services.
             services.AddMvc();
             services.Configure<PaymentSettings>(Configuration);
-            services.AddSingleton<IRabbitMQPersistentConnection>(sp =>
+            if (Configuration.GetValue<bool>("AzureServiceBusEnabled"))
             {
-                var logger = sp.GetRequiredService<ILogger<DefaultRabbitMQPersistentConnection>>();
-
-                var factory = new ConnectionFactory()
+                services.AddSingleton<IServiceBusPersisterConnection>(sp =>
                 {
-                    HostName = Configuration["EventBusConnection"]
-                };
+                    var logger = sp.GetRequiredService<ILogger<DefaultServiceBusPersisterConnection>>();
 
-                return new DefaultRabbitMQPersistentConnection(factory, logger);
-            });
+                    var serviceBusConnectionString = Configuration["EventBusConnection"];
+                    var serviceBusConnection = new ServiceBusConnectionStringBuilder(serviceBusConnectionString);
 
-            RegisterServiceBus(services);
+                    return new DefaultServiceBusPersisterConnection(serviceBusConnection, logger);
+                });
+            }
+            else
+            {
+                services.AddSingleton<IRabbitMQPersistentConnection>(sp =>
+                {
+                    var logger = sp.GetRequiredService<ILogger<DefaultRabbitMQPersistentConnection>>();
+
+                    var factory = new ConnectionFactory()
+                    {
+                        HostName = Configuration["EventBusConnection"]
+                    };
+
+                    return new DefaultRabbitMQPersistentConnection(factory, logger);
+                });
+            }
+
+            RegisterEventBus(services);
 
             services.AddSwaggerGen(options =>
             {
@@ -84,13 +101,28 @@ namespace Payment.API
             ConfigureEventBus(app);
         }
 
-        private void RegisterServiceBus(IServiceCollection services)
+        private void RegisterEventBus(IServiceCollection services)
         {
-            services.AddSingleton<IEventBus, EventBusRabbitMQ>();
-            services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
+            if (Configuration.GetValue<bool>("AzureServiceBusEnabled"))
+            {
+                services.AddSingleton<IEventBus, EventBusServiceBus>(sp =>
+                {
+                    var serviceBusPersisterConnection = sp.GetRequiredService<IServiceBusPersisterConnection>();
+                    var iLifetimeScope = sp.GetRequiredService<ILifetimeScope>();
+                    var logger = sp.GetRequiredService<ILogger<EventBusServiceBus>>();
+                    var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
+                    var subscriptionClientName = Configuration["SubscriptionClientName"];
 
-            services.AddTransient<IIntegrationEventHandler<OrderStatusChangedToStockConfirmedIntegrationEvent>,
-                OrderStatusChangedToStockConfirmedIntegrationEventHandler>();
+                    return new EventBusServiceBus(serviceBusPersisterConnection, logger,
+                        eventBusSubcriptionsManager, subscriptionClientName, iLifetimeScope);
+                });
+            }
+            else
+            {
+                services.AddSingleton<IEventBus, EventBusRabbitMQ>();
+            }
+
+            services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
         }
 
         private void ConfigureEventBus(IApplicationBuilder app)

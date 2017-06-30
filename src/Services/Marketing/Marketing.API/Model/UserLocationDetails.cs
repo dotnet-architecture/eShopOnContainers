@@ -1,4 +1,4 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Marketing.API.Model
+﻿namespace Marketing.API.Model
 {
     public class UserLocationDetails
     {

@@ -82,10 +82,10 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             {
                 services.AddSingleton<IServiceBusPersisterConnection>(sp =>
                 {
-                    var settings = sp.GetRequiredService<IOptions<BasketSettings>>().Value;
                     var logger = sp.GetRequiredService<ILogger<DefaultServiceBusPersisterConnection>>();
 
-                    var serviceBusConnection = new ServiceBusConnectionStringBuilder(settings.EventBusConnection);
+                    var serviceBusConnectionString = Configuration["EventBusConnection"];
+                    var serviceBusConnection = new ServiceBusConnectionStringBuilder(serviceBusConnectionString);
 
                     return new DefaultServiceBusPersisterConnection(serviceBusConnection, logger);
                 });
@@ -94,16 +94,18 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             {
                 services.AddSingleton<IRabbitMQPersistentConnection>(sp =>
                 {
-                    var settings = sp.GetRequiredService<IOptions<BasketSettings>>().Value;
                     var logger = sp.GetRequiredService<ILogger<DefaultRabbitMQPersistentConnection>>();
+
                     var factory = new ConnectionFactory()
                     {
-                        HostName = settings.EventBusConnection
+                        HostName = Configuration["EventBusConnection"]
                     };
 
                     return new DefaultRabbitMQPersistentConnection(factory, logger);
                 });
             }
+
+            RegisterEventBus(services);
 
 
             services.AddSwaggerGen(options =>
@@ -130,7 +132,6 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             services.AddTransient<IBasketRepository, RedisBasketRepository>();
             services.AddTransient<IIdentityService, IdentityService>();
 
-            RegisterEventBus(services);
             services.AddOptions();
 
             var container = new ContainerBuilder();

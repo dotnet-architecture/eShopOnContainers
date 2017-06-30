@@ -29,7 +29,7 @@
                 var content = new StringContent(JsonConvert.SerializeObject(location),
                     Encoding.UTF8, "application/json");
 
-                var userId = new Guid("4611ce3f-380d-4db5-8d76-87a8689058ed");
+                var userId = new Guid("05a98cc6-0559-4011-9e2d-b5df524004b6");
 
 
                 // GIVEN a new location of user is created 
@@ -52,7 +52,7 @@
                 responseBody = await UserLocationCampaignResponse.Content.ReadAsStringAsync();
                 var userLocationCampaigns = JsonConvert.DeserializeObject<PaginatedItemsViewModel<CampaignDTO>>(responseBody);
 
-                Assert.True(userLocationCampaigns.Data != null);
+                Assert.True(userLocationCampaigns.Count > 0);
             }
         }
     }

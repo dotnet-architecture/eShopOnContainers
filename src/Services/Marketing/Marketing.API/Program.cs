@@ -1,4 +1,4 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Marketing.API
+﻿namespace Marketing.API
 {
     using System.IO;
     using Microsoft.AspNetCore.Builder;

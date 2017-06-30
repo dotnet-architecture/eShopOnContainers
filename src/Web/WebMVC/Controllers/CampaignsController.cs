@@ -11,18 +11,28 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
     using System;
     using ViewModels.Pagination;
     using global::WebMVC.ViewModels;
+    using Microsoft.Extensions.Options;
 
     [Authorize]
     public class CampaignsController : Controller
     {
         private readonly ICampaignService _campaignService;
+        private readonly AppSettings _settings;
 
-        public CampaignsController(ICampaignService campaignService) =>
+        public CampaignsController(ICampaignService campaignService, IOptionsSnapshot<AppSettings> settings)
+        {
             _campaignService = campaignService;
+            _settings = settings.Value;
+        }
 
         public async Task<IActionResult> Index(int page = 0, int pageSize = 10)
         {
             var campaignList = await _campaignService.GetCampaigns(pageSize, page);
+
+            if(campaignList is null)
+            {
+                return View();
+            }
 
             var totalPages = (int) Math.Ceiling((decimal) campaignList.Count / pageSize);
 
@@ -39,6 +49,8 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
                     Previous = page == 0 ? "is-disabled" : ""
                 }
             };
+
+            ViewBag.IsCampaignDetailFunctionActive = _settings.ActivateCampaignDetailFunction;
 
             return View(vm);
         }

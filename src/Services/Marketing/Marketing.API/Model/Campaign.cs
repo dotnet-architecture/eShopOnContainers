@@ -15,7 +15,11 @@
 
         public DateTime To { get; set; }
 
+        public string PictureName { get; set; }
+
         public string PictureUri { get; set; }
+
+        public string DetailsUri { get; set; }
 
         public List<Rule> Rules { get; set; }
 

@@ -6,5 +6,6 @@
         public string MongoConnectionString { get; set; }
         public string MongoDatabase { get; set; }
         public string ExternalCatalogBaseUrl { get; set; }
+        public string CampaignDetailFunctionUri { get; set; }
     }
 }

@@ -13,6 +13,7 @@
     using AspNetCore.Authorization;
     using Extensions.Options;
     using Microsoft.eShopOnContainers.Services.Marketing.API.ViewModel;
+    using Microsoft.AspNetCore.Http;
 
     [Route("api/v1/[controller]")]
     [Authorize]
@@ -21,14 +22,16 @@
         private readonly MarketingContext _context;
         private readonly MarketingSettings _settings;
         private readonly IMarketingDataRepository _marketingDataRepository;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
         public CampaignsController(MarketingContext context,
             IMarketingDataRepository marketingDataRepository,
-             IOptionsSnapshot<MarketingSettings> settings)
+             IOptionsSnapshot<MarketingSettings> settings, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
             _marketingDataRepository = marketingDataRepository;
             _settings = settings.Value;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         [HttpGet]
@@ -175,6 +178,7 @@
 
         private CampaignDTO MapCampaignModelToDto(Campaign campaign)
         {
+            var userId = _httpContextAccessor.HttpContext.User.FindFirst("sub").Value;
             return new CampaignDTO
             {
                 Id = campaign.Id,
@@ -182,7 +186,8 @@
                 Description = campaign.Description,
                 From = campaign.From,
                 To = campaign.To,
-                PictureUri = GetUriPlaceholder(campaign.PictureUri)
+                PictureUri = GetUriPlaceholder(campaign.PictureUri),
+                DetailsUri = $"{_settings.CampaignDetailFunctionUri}&campaignId={campaign.Id}$userId{userId}"
             };
         }
 

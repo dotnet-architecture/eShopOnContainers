@@ -8,9 +8,10 @@ using Microsoft.eShopOnContainers.Services.Marketing.API.Infrastructure;
 namespace Microsoft.eShopOnContainers.Services.Marketing.API.Infrastructure.MarketingMigrations
 {
     [DbContext(typeof(MarketingContext))]
-    partial class MarketingContextModelSnapshot : ModelSnapshot
+    [Migration("20170629102516_added-campaign-details")]
+    partial class addedcampaigndetails
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")

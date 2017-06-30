@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Microsoft.eShopOnContainers.Services.Locations.API.Model
+namespace Locations.API.Model
 {
     public class UserLocationDetails
     {

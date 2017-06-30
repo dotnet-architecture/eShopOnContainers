@@ -1,0 +1,16 @@
+{
+  "IsEncrypted": false,
+  "Value": {
+    "APPSETTING_eshop-nosqlez55a72p6wm62_DOCUMENTDB": "AccountEndpoint=https://eshop-nosqlez55a72p6wm62.documents.azure.com:443/;AccountKey=l8jMNoLHFXOijAvaVMjHeCwHK8gAR9SovuK86uCOvwfnMhuhwytPKByOPqrQrlsDz9RPFet2J6SzEbBQXLZokA==;",
+    "APPSETTING_FUNCTIONS_EXTENSION_VERSION": "~1",
+    "APPSETTING_ScmType": "None",
+    "APPSETTING_WEBSITE_AUTH_ENABLED": "False",
+    "APPSETTING_AzureWebJobsDashboard": "DefaultEndpointsProtocol=https;AccountName=marketingfuncti9f5e;AccountKey=BAxvLgEs0pEyVSUgsRV8okXZY6MM/0FSikYoXyk80zhLhzPe3gyHxf9QCKDZ1qa6LsgqYdF8yoSotlg3FoDvTw==",
+    "APPSETTING_WEBSITE_NODE_DEFAULT_VERSION": "6.5.0",
+    "APPSETTING_WEBSITE_CONTENTAZUREFILECONNECTIONSTRING": "DefaultEndpointsProtocol=https;AccountName=marketingfuncti9f5e;AccountKey=BAxvLgEs0pEyVSUgsRV8okXZY6MM/0FSikYoXyk80zhLhzPe3gyHxf9QCKDZ1qa6LsgqYdF8yoSotlg3FoDvTw==",
+    "APPSETTING_WEBSITE_CONTENTSHARE": "marketing-functions9f5e",
+    "APPSETTING_WEBSITE_SLOT_NAME": "Production",
+    "APPSETTING_AzureWebJobsStorage": "DefaultEndpointsProtocol=https;AccountName=marketingfuncti9f5e;AccountKey=BAxvLgEs0pEyVSUgsRV8okXZY6MM/0FSikYoXyk80zhLhzPe3gyHxf9QCKDZ1qa6LsgqYdF8yoSotlg3FoDvTw==",
+    "APPSETTING_WEBSITE_SITE_NAME": "marketing-functions"
+  }
+}
