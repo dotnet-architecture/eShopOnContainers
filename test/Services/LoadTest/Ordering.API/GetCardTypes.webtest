@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WebTest Name="GetAllCampaigns" Id="19336ef5-34ae-4bf8-90df-c8d794558f71" Owner="" Priority="2147483647" Enabled="True" CssProjectStructure="" CssIteration="" Timeout="0" WorkItemIds="" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" Description="" CredentialUserName="" CredentialPassword="" PreAuthenticate="True" Proxy="default" StopOnError="False" RecordedResultFile="" ResultsLocale="">
+<WebTest Name="GetCardTypes" Id="bb2ad65f-7035-45c6-ab02-003376d478f4" Owner="" Priority="2147483647" Enabled="True" CssProjectStructure="" CssIteration="" Timeout="0" WorkItemIds="" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" Description="" CredentialUserName="" CredentialPassword="" PreAuthenticate="True" Proxy="default" StopOnError="False" RecordedResultFile="" ResultsLocale="">
   <Items>
     <Request Method="GET" Guid="6010f193-941a-4a7b-98d4-45be7699a0dc" Version="1.1" Url="{{MvcWebServer}}/Account/SignIn" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="{{IdentityApiServer}}/account/login?returnUrl=%2Fconnect%2Fauthorize%2Flogin%3Fclient_id%3Dmvc%26redirect_uri%3D{{MvcWebServer}}%252Fsignin-oidc%26response_type%3Dcode%20id_token%20token%26scope%3Dopenid%20profile%20orders%20basket%20marketing%26response_mode%3Dform_post%26nonce%3D636343249853641220.YTUyNDUwYmUtMDUwNi00YzViLWI4ZjItZGJhZDMwNmM1YjNlMDNhYjZmOGItZTk5YS00ZGEzLTg1Y2UtMDE3YTFjNWFlNjEw%26state%3DCfDJ8OCCkEVDCp5PrdqHtEgvt_mxNTrlU_psyuqjm9lkemQgTEZ-k_LUyThb4S21qtGcud5ajY1BOwzMlk0uvC0p8CB9hqSKaaDpjvspLXMLHjjsZNqjG3bdvnGSHp08_go1orFXlRLeC-8dNSlLlzynWJp9uK_WC56gjcJAiqQErMBVub5lacO-ph04so9LMkZ5KSFxP0qPlkYidej2RfOYkNFxzZnLVTs5ZB_l7IU3EPgh8geWXtks_bnlnPCq9CMnWKuxlTY4_M44DCp0mMWmK_JqBfGSlnEt5d2iz2QThepUUgIg0XQxZsEPl0rsdpN0AXOXOc9bgTm-ApXmoAyBRC-dM_9k59MdxYAbipZGcwOc" ReportingName="" IgnoreHttpStatusCode="False">
       <Headers>
@@ -65,7 +65,7 @@
         <FormPostParameter Name="session_state" Value="{{$HIDDEN1.session_state}}" RecordedValue="ZxRKRHGaGBxyciYNO7yxXNcHb8MxcvGDfUWuUVaCkNo.5de6fc3970ef99b7b67328e1df0e93ce" CorrelationBinding="" UrlEncode="True" />
       </FormPostHttpBody>
     </Request>
-    <Request Method="GET" Guid="d24fe957-0cbb-46d4-8478-974de57e5cba" Version="1.1" Url="{{MarketingApiServer}}/api/{{ApiVersion}}/Campaigns" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False">
+    <Request Method="GET" Guid="d24fe957-0cbb-46d4-8478-974de57e5cba" Version="1.1" Url="{{OrderingApiServer}}/api/{{ApiVersion}}/Orders/cardtypes" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False">
       <Headers>
         <Header Name="Authorization" Value="Bearer {{$HIDDEN1.access_token}}" />
         <Header Name="Accept" Value="application/json" />
@@ -77,7 +77,7 @@
     <ContextParameter Name="Password" Value="Pass@word1" />
     <ContextParameter Name="MvcWebServer" Value="http://" />
     <ContextParameter Name="IdentityApiServer" Value="http://" />
-    <ContextParameter Name="MarketingApiServer" Value="http://" />
+    <ContextParameter Name="OrderingApiServer" Value="http://" />
     <ContextParameter Name="ApiVersion" Value="v1" />
   </ContextParameters>
   <ValidationRules>

@@ -110,8 +110,8 @@
     </Request>
   </Items>
   <ContextParameters>
-    <ContextParameter Name="MvcWebServer" Value="http://192.168.1.42:5100" />
-    <ContextParameter Name="IdentityApiServer" Value="http://192.168.1.42:5105" />
+    <ContextParameter Name="MvcWebServer" Value="http://" />
+    <ContextParameter Name="IdentityApiServer" Value="http://" />
     <ContextParameter Name="Email" Value="demouser@microsoft.com" />
     <ContextParameter Name="Password" Value="Pass@word1" />
     <ContextParameter Name="i" Value="0" />
