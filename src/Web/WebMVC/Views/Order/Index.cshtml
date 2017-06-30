@@ -19,7 +19,8 @@
             <section class="esh-orders-title col-xs-2">Status</section>
             <section class="esh-orders-title col-xs-2"></section>
         </article>
-
+    @if (Model != null && Model.Any())
+    {
         @foreach (var item in Model)
         {
             <article class="esh-orders-items row">
@@ -38,6 +39,7 @@
                 </section>
             </article>
         }
+    }
     </div>
 </div>
 <script>

@@ -10,14 +10,6 @@
       "name": "$return",
       "type": "http",
       "direction": "out"
-    },
-    {
-      "type": "documentDB",
-      "name": "inputDocument",
-      "databaseName": "MarketingDb",
-      "collectionName": "MarketingReadDataModel",
-      "connection": "eshop-nosqlez55a72p6wm62_DOCUMENTDB",
-      "direction": "in"
     }
   ],
   "disabled": false

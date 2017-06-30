@@ -9,7 +9,7 @@ version: '3'
 services:
   graceperiodmanager:
     environment:
-      - ConnectionString=${ESHOP_AZURE_ORDERING_DB:-Server=sql.data;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word}
+      - ConnectionString=Server=sql.data;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word
       - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
       
   basket.api:
@@ -27,7 +27,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - ConnectionString=${ESHOP_AZURE_CATALOG_DB:-Server=sql.data;Database=Microsoft.eShopOnContainers.Services.CatalogDb;User Id=sa;Password=Pass@word}
-      - PicBaseUrl=${ESHOP_AZURE_STORAGE_ACCOUNT:-http://localhost:5101/api/v1/pic/}   #Local: You need to open your local dev-machine firewall at range 5100-5105.  at range 5100-5105.	  
+      - PicBaseUrl=${ESHOP_AZURE_STORAGE_CATALOG:-http://localhost:5101/api/v1/pic/}   #Local: You need to open your local dev-machine firewall at range 5100-5105.  at range 5100-5105.	  
       - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
     ports:
       - "5101:80"
@@ -64,6 +64,7 @@ services:
       - ExternalCatalogBaseUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5110   #Local: You need to open your local dev-machine firewall at range 5100-5105.  at range 5100-5105.	  
       - identityUrl=http://identity.api              #Local: You need to open your local dev-machine firewall at range 5100-5105.  at range 5100-5105. 
       - CampaignDetailFunctionUri=${ESHOP_AZUREFUNC_CAMPAIGN_DETAILS_URI}
+      - PicBaseUrl=${ESHOP_AZURE_STORAGE_MRKETING:-http://localhost:5110/api/v1/pic/}
     ports:
       - "5110:80"
       

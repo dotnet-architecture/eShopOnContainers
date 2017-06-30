@@ -17,6 +17,12 @@
     <None Update="MarketingDetailsHttpTrigger/function.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="MarketingDetailsHttpTrigger/project.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="MarketingDetailsHttpTrigger/project.lock.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="MarketingDetailsHttpTrigger/run.csx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

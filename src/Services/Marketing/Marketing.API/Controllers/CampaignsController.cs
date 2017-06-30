@@ -186,8 +186,8 @@
                 Description = campaign.Description,
                 From = campaign.From,
                 To = campaign.To,
-                PictureUri = GetUriPlaceholder(campaign.PictureUri),
-                DetailsUri = $"{_settings.CampaignDetailFunctionUri}&campaignId={campaign.Id}$userId{userId}"
+                PictureUri = GetUriPlaceholder(campaign),
+                DetailsUri = $"{_settings.CampaignDetailFunctionUri}&campaignId={campaign.Id}&userId={userId}"
             };
         }
 
@@ -204,13 +204,13 @@
             };
         }
 
-        private string GetUriPlaceholder(string campaignUri)
+        private string GetUriPlaceholder(Campaign campaign)
         {
-            var baseUri = _settings.ExternalCatalogBaseUrl;
+            var baseUri = _settings.PicBaseUrl;
 
-            campaignUri = campaignUri.Replace("http://externalcatalogbaseurltobereplaced", baseUri);
-
-            return campaignUri;
+            return _settings.AzureStorageEnabled
+                    ? baseUri + campaign.PictureName
+                    : baseUri + campaign.Id;
         }
     }
 }

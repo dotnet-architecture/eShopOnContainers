@@ -4,11 +4,11 @@ using System.Configuration;
 using Dapper;
 using System.Data.SqlClient;
 
-public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, dynamic inputDocument, TraceWriter log)
+public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceWriter log)
 {
     log.Info($"Campaign HTTP trigger function processed a request. RequestUri={req.RequestUri}");
 
-    string htmlResponse = string.Empty;
+    string htmlResponse = string.Empty; 
 
     // parse query parameter
     string campaignId = req.GetQueryNameValuePairs()
@@ -31,13 +31,15 @@ public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, dynami
 
     var response = new HttpResponseMessage(HttpStatusCode.OK);
     response.Content = new ByteArrayContent(System.Text.Encoding.UTF8.GetBytes(htmlResponse));
-    response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+    response.Content.Headers.ContentType = new MediaTypeHeaderValue("text/html");
 
     return response;
 }
 
 private static string BuildHtmlResponse(Campaign campaign)
 {
+    var marketingStorageUri = ConfigurationManager.AppSettings["MarketingStorageUri"];
+
     return string.Format(@"
       <html>
       <head>
@@ -50,7 +52,7 @@ private static string BuildHtmlResponse(Campaign campaign)
         <div class='container'>
           </br>
           <div class='card-deck'>
-            <div class='card'>
+            <div class='card text-center'>
               <img class='card-img-top' src='{0}' alt='Card image cap'>
               <div class='card-block'>
                 <h4 class='card-title'>{1}</h4>
@@ -64,13 +66,13 @@ private static string BuildHtmlResponse(Campaign campaign)
         </div>
       </body>
       </html>",
-      campaign.PictureUri,
+      $"{marketingStorageUri}{campaign.PictureName}",
       campaign.Name,
       campaign.Description,
       campaign.From.ToString("MMMM dd, yyyy"),
       campaign.From.ToString("MMMM dd, yyyy"));
 }
-
+ 
 public class Campaign
 {
     public int Id { get; set; }
@@ -84,4 +86,6 @@ public class Campaign
     public DateTime To { get; set; }
 
     public string PictureUri { get; set; }
+
+    public string PictureName { get; set; }
 }
