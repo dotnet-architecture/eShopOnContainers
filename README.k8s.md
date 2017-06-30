@@ -23,6 +23,53 @@ The k8s directory contains Kubernetes configuration for the eShopOnContainers ap
 
 Once the user and password are retrieved, run the following script for deployment. For example:
 >```
->./deploy.ps1 -registry myregistry.azurecr.io -dockerUser User -dockerPassword SecretPassword
+>./deploy.ps1 -registry myregistry.azurecr.io -dockerUser User -dockerPassword SecretPassword -configFile file_with_config.json
 >```
-The script will build the code and corresponding Docker images, push the latter to your registry, and deploy the application to your cluster. You can watch the deployment unfold from the Kubernetes web interface: run `kubectl proxy` and open a browser to [http://localhost:8001/ui](http://localhost:8001/ui)
+
+The parameter `configFile` is important (and mandatory) because it contains the configuration used for the Pods in Kubernetes. This allow deploying Pods that use your own resources in Azure or any other cloud provider. A configuration file `local.json` is provided which configures Pods to use the infrastructure containers (that is sql server, rabbitmq, redis and mongodb must be deployed also in the k8s).
+
+The script will build the code and corresponding Docker images, push the later to your registry, and deploy the application to your cluster. You can watch the deployment unfold from the Kubernetes web interface: run `kubectl proxy` and open a browser to [http://localhost:8001/ui](http://localhost:8001/ui)
+
+### Pods configuration file
+
+When deploying to k8s the script needs the `configFile` with the location of a JSON configuration file. This file contains the configuration of the pods. The file is a JSON file. For reference another configuration file (cloud.json) is provided but without valid values.
+
+If you deploy the infrastructure containers use `local.json` as a value for `configFile` parameter. If you don't deploy the infrastructure containers use your own configuration file with the correct values.
+
+### Parameters of the deploy.ps1 script
+
+The script accepts following parameters:
+
++ `registry`: Name of the Docker registry to use. If not passed DockerHub is assumed
++ `dockerUser`: Login to use for the Docker registry (if needed)
++ `dockerPassword`: Password to use for the Docker registry (if needed)
++ `execPath`: Location of `kubectl` (if not in the path). If passed must finish with the path character.
++ `kubeconfigPath`: Location of the `kubectl` configuration file. **This parameter is used only in the CI pipeline**, so you don't need to pass it when invoking the script using the CLI.
++ `configFile`: Location of the JSON file with the configuration of the pods. **This parameter is mandatory**
++ `imageTag`: Tag of the images to deploy to k8s. If not passed the name of the current branch is used.
++ `externalDns`: External DNS name of the k8s. This is only needed if you have configured a DNS that points to your k8s external IP. If you don't have any DNS configured do not pass this parameter.
++ `deployCI`: If `true` means that script is running under the context of a VSTS Hosted Build Agent. **You should never use this parameter from CLI**
++ `buildBits`: means that the source code of eShopOnContainers will be built. If you have built your code (and have all projects published in `obj/Docker/publish`) do not pass this parameter. Default value is `false`
++ `buildImages`: If `true` (default value) Docker images are built and pushed in the Docker registry. If you set this parameter to `false`, Docker images won't be built nor pushed in the Docker registry (but k8s' deployments and services will be redeployed).
++ `deployInfrastructure`: If `true` infrastructure containers (rabbitmq, mongo, redis, sql) will be deployed in k8s. If `false` those containers (and its related deployments and services in k8s) won't be deployed.
++ `dockerOrg`: Name of the organization in the registry where the images are (or will be pushed). Default value is `eshop` (which has images provided by Microsoft)
+
+### Typical usages of the script:
+
+Build all projects, and deploy all them in k8s including infrastructure containers in a organization called `foo` in Docker Hub. Images will be tagged with my current git branch and containers will use the configuration set in `local.json` file:
+
+```
+./deploy.ps1 -buildBits $true -dockerOrg foo -dockerUser MY_USER -dockerPassword MY_PASSWORD -configFile local.json
+```
+
+Do not build any project and don't rebuild docker images. Create k8s deployments that will pull images from my private repository, in the `foo` organization, using the tag `latest`. Containers will use the configuration set in `cloud.json` file.
+
+```
+./deploy.ps1 -buildImages false -dockerOrg foo -registry MY_REGISTRY_FQDN -dockerUser MY_USER -dockerPassword MY_PASSWORD -configFile cloud.json -imageTag master
+```
+
+Deploy k8s using public images that Microsoft provides:
+
+```
+./deploy.ps1 -buildImages false --configFile local.json -imageTag master
+```

@@ -8,8 +8,10 @@ Param(
     [parameter(Mandatory=$false)][string]$imageTag,
     [parameter(Mandatory=$false)][string]$externalDns,
     [parameter(Mandatory=$false)][bool]$deployCI=$false,
-    [parameter(Mandatory=$false)][bool]$buildImages=$false,
-    [parameter(Mandatory=$false)][bool]$deployInfrastructure=$true
+    [parameter(Mandatory=$false)][bool]$buildImages=$true,
+    [parameter(Mandatory=$false)][bool]$buildBits=$false,
+    [parameter(Mandatory=$false)][bool]$deployInfrastructure=$true,
+    [parameter(Mandatory=$false)][string]$dockerOrg="eshop"
 )
 
 function ExecKube($cmd) {    
@@ -39,6 +41,7 @@ if(-not $deployCI) {
     }
 }
 else {
+    $buildBits = false;
     $buildImages = false;       # Never build images through CI, as they previously built
 }
 
@@ -61,27 +64,38 @@ if ($debugMode) {
 }
 
 # building and publishing docker images if needed
-if($buildImages) {
+if($buildBits) {
     Write-Host "Building and publishing eShopOnContainers..." -ForegroundColor Yellow
     dotnet restore ../eShopOnContainers-ServicesAndWebApps.sln
     dotnet publish -c Release -o obj/Docker/publish ../eShopOnContainers-ServicesAndWebApps.sln
-
+}
+if ($buildImages) {
     Write-Host "Building Docker images tagged with '$imageTag'" -ForegroundColor Yellow
     $env:TAG=$imageTag
     docker-compose -p .. -f ../docker-compose.yml build    
 
-    Write-Host "Pushing images to $registry..." -ForegroundColor Yellow
+    Write-Host "Pushing images to $registry/$dockerOrg..." -ForegroundColor Yellow
     $services = ("basket.api", "catalog.api", "identity.api", "ordering.api", "marketing.api","payment.api","locations.api", "webmvc", "webspa", "webstatus")
+
     foreach ($service in $services) {
-        docker tag eshop/${service}:$imageTag $registry/eshop/${service}:$imageTag
-        docker push $registry/eshop/${service}:$imageTag
+        $imageFqdn = if ($useDockerHub)  {"$dockerOrg/${service}"} else {"$registry/$dockerOrg/${service}"}
+        docker tag eshop/${service}:$imageTag ${imageFqdn}:$imageTag
+        docker push ${imageFqdn}:$imageTag            
     }
 }
 
-# Use ACR instead of DockerHub as image repository
-if(-not $useDockerHub) {
-    Write-Host "Logging in to $registry" -ForegroundColor Yellow
-    docker login -u $dockerUser -p $dockerPassword $registry
+# if we have login/pwd add the secret to k8s
+if (-not [string]::IsNullOrEmpty($dockerUser)) {
+    $registryFDQN =  if (-not $useDockerHub) {$registry} else {"index.docker.io/v1/"}
+
+    Write-Host "Logging in to $registryFDQN as user $dockerUser" -ForegroundColor Yellow
+    if ($useDockerHub) {
+        docker login -u $dockerUser -p $dockerPassword
+    }
+    else {
+        docker login -u $dockerUser -p $dockerPassword $registryFDQN
+    }
+    
     if (-not $LastExitCode -eq 0) {
         Write-Host "Login failed" -ForegroundColor Red
         exit
@@ -89,7 +103,7 @@ if(-not $useDockerHub) {
 
     # create registry key secret
     ExecKube -cmd 'create secret docker-registry registry-key `
-    --docker-server=$registry `
+    --docker-server=$registryFDQN `
     --docker-username=$dockerUser `
     --docker-password=$dockerPassword `
     --docker-email=not@used.com'
@@ -178,22 +192,23 @@ Write-Host "Creating deployments..." -ForegroundColor Yellow
 ExecKube -cmd 'create -f deployments.yaml'
 
 # update deployments with the correct image (with tag and/or registry)
-Write-Host "Update Image containers to use prefix '$registry' and tag '$imageTag'" -ForegroundColor Yellow
 $registryPath = ""
 if (-not [string]::IsNullOrEmpty($registry)) {
     $registryPath = "$registry/"
 }
 
-ExecKube -cmd 'set image deployments/basket basket=${registryPath}eshop/basket.api:$imageTag'
-ExecKube -cmd 'set image deployments/catalog catalog=${registryPath}eshop/catalog.api:$imageTag'
-ExecKube -cmd 'set image deployments/identity identity=${registryPath}eshop/identity.api:$imageTag'
-ExecKube -cmd 'set image deployments/ordering ordering=${registryPath}eshop/ordering.api:$imageTag'
-ExecKube -cmd 'set image deployments/marketing marketing=${registryPath}eshop/marketing.api:$imageTag'
-ExecKube -cmd 'set image deployments/locations locations=${registryPath}eshop/locations.api:$imageTag'
-ExecKube -cmd 'set image deployments/payment payment=${registryPath}eshop/payment.api:$imageTag'
-ExecKube -cmd 'set image deployments/webmvc webmvc=${registryPath}eshop/webmvc:$imageTag'
-ExecKube -cmd 'set image deployments/webstatus webstatus=${registryPath}eshop/webstatus:$imageTag'
-ExecKube -cmd 'set image deployments/webspa webspa=${registryPath}eshop/webspa:$imageTag'
+Write-Host "Update Image containers to use prefix '$registry$dockerOrg' and tag '$imageTag'" -ForegroundColor Yellow
+
+ExecKube -cmd 'set image deployments/basket basket=${registryPath}${dockerOrg}/basket.api:$imageTag'
+ExecKube -cmd 'set image deployments/catalog catalog=${registryPath}${dockerOrg}/catalog.api:$imageTag'
+ExecKube -cmd 'set image deployments/identity identity=${registryPath}${dockerOrg}/identity.api:$imageTag'
+ExecKube -cmd 'set image deployments/ordering ordering=${registryPath}${dockerOrg}/ordering.api:$imageTag'
+ExecKube -cmd 'set image deployments/marketing marketing=${registryPath}${dockerOrg}/marketing.api:$imageTag'
+ExecKube -cmd 'set image deployments/locations locations=${registryPath}${dockerOrg}/locations.api:$imageTag'
+ExecKube -cmd 'set image deployments/payment payment=${registryPath}${dockerOrg}/payment.api:$imageTag'
+ExecKube -cmd 'set image deployments/webmvc webmvc=${registryPath}${dockerOrg}/webmvc:$imageTag'
+ExecKube -cmd 'set image deployments/webstatus webstatus=${registryPath}${dockerOrg}/webstatus:$imageTag'
+ExecKube -cmd 'set image deployments/webspa webspa=${registryPath}${dockerOrg}/webspa:$imageTag'
 
 Write-Host "Execute rollout..." -ForegroundColor Yellow
 ExecKube -cmd 'rollout resume deployments/basket'
