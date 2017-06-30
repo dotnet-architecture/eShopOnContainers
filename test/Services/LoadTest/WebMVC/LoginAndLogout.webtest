@@ -82,7 +82,7 @@
   <ContextParameters>
     <ContextParameter Name="Email" Value="demouser@microsoft.com" />
     <ContextParameter Name="Password" Value="Pass@word1" />
-    <ContextParameter Name="MvcWebServer" Value="http://10.6.2.37:5100" />
-    <ContextParameter Name="IdentityApiServer" Value="http://10.6.2.37:5105" />
+    <ContextParameter Name="MvcWebServer" Value="http://" />
+    <ContextParameter Name="IdentityApiServer" Value="http://" />
   </ContextParameters>
 </WebTest>

@@ -55,6 +55,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="Basket.API\AddBasket.webtest">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Basket.API\Checkout.webtest">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Basket.API\DeleteBasket.webtest">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Basket.API\GetBasket.webtest">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -79,11 +88,25 @@
     <None Include="Catalog.API\GetItems.webtest">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Location.API\GetAllLocations.webtest">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Location.API\CreateOrUpdateUserLocation.webtest">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Location.API\GetUserLocation.webtest">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Location.API\GetLocation.webtest">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Marketing.API\GetCampaign.webtest">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Marketing.API\GetUserCampaigns.webtest">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
     </None>
-    <None Include="Marketing.API\WebTest1.webtest">
+    <None Include="Marketing.API\GetAllCampaigns.webtest">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="WebMVC\AddProducts.webtest">
@@ -103,7 +126,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Location.API\" />
     <Folder Include="Ordering.API\" />
   </ItemGroup>
   <Choose>

@@ -110,11 +110,11 @@
     </Request>
   </Items>
   <ContextParameters>
-    <ContextParameter Name="MvcWebServer" Value="http://10.6.2.37:5100" />
+    <ContextParameter Name="MvcWebServer" Value="http://192.168.1.42:5100" />
+    <ContextParameter Name="IdentityApiServer" Value="http://192.168.1.42:5105" />
     <ContextParameter Name="Email" Value="demouser@microsoft.com" />
     <ContextParameter Name="Password" Value="Pass@word1" />
     <ContextParameter Name="i" Value="0" />
-    <ContextParameter Name="IdentityApiServer" Value="http://10.6.2.37:5105" />
   </ContextParameters>
   <ValidationRules>
     <ValidationRule Classname="Microsoft.VisualStudio.TestTools.WebTesting.Rules.ValidateResponseUrl, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" DisplayName="Response URL" Description="Validates that the response URL after redirects are followed is the same as the recorded response URL.  QueryString parameters are ignored." Level="Low" ExectuionOrder="BeforeDependents" />
