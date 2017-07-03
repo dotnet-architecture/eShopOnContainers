@@ -45,7 +45,7 @@ The script accepts following parameters:
 + `dockerPassword`: Password to use for the Docker registry (if needed)
 + `execPath`: Location of `kubectl` (if not in the path). If passed must finish with the path character.
 + `kubeconfigPath`: Location of the `kubectl` configuration file. **This parameter is used only in the CI pipeline**, so you don't need to pass it when invoking the script using the CLI.
-+ `configFile`: Location of the JSON file with the configuration of the pods. **This parameter is mandatory**
++ `configFile`: Location of the Yaml file with the `externalcfg` configmap to be deployed. This configmap is used to configure the Pod's environment **This parameter is mandatory**
 + `imageTag`: Tag of the images to deploy to k8s. If not passed the name of the current branch is used.
 + `externalDns`: External DNS name of the k8s. This is only needed if you have configured a DNS that points to your k8s external IP. If you don't have any DNS configured do not pass this parameter.
 + `deployCI`: If `true` means that script is running under the context of a VSTS Hosted Build Agent. **You should never use this parameter from CLI**
@@ -56,20 +56,20 @@ The script accepts following parameters:
 
 ### Typical usages of the script:
 
-Build all projects, and deploy all them in k8s including infrastructure containers in a organization called `foo` in Docker Hub. Images will be tagged with my current git branch and containers will use the configuration set in `local.json` file:
+Build all projects, and deploy all them in k8s including infrastructure containers in a organization called `foo` in Docker Hub. Images will be tagged with my current git branch and containers will use the configuration set in `conf_local.yml` file:
 
 ```
-./deploy.ps1 -buildBits $true -dockerOrg foo -dockerUser MY_USER -dockerPassword MY_PASSWORD -configFile local.json
+./deploy.ps1 -buildBits $true -dockerOrg foo -dockerUser MY_USER -dockerPassword MY_PASSWORD -configFile conf_local.yml
 ```
 
-Do not build any project and don't rebuild docker images. Create k8s deployments that will pull images from my private repository, in the `foo` organization, using the tag `latest`. Containers will use the configuration set in `cloud.json` file.
+Do not build any project and don't rebuild docker images. Create k8s deployments that will pull images from my private repository, in the `foo` organization, using the tag `latest`. Containers will use the configuration set in `conf_cloud` file.
 
 ```
-./deploy.ps1 -buildImages false -dockerOrg foo -registry MY_REGISTRY_FQDN -dockerUser MY_USER -dockerPassword MY_PASSWORD -configFile cloud.json -imageTag master
+./deploy.ps1 -buildImages $false -dockerOrg foo -registry MY_REGISTRY_FQDN -dockerUser MY_USER -dockerPassword MY_PASSWORD -configFile conf_cloud.yml -imageTag master
 ```
 
 Deploy k8s using public images that Microsoft provides:
 
 ```
-./deploy.ps1 -buildImages false --configFile local.json -imageTag master
+./deploy.ps1 -buildImages $false -configFile conf_local.yml -imageTag master
 ```

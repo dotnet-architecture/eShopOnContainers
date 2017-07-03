@@ -51,18 +51,6 @@ if ([string]::IsNullOrEmpty($imageTag)) {
 }
 Write-Host "Docker image Tag: $imageTag" -ForegroundColor Yellow
 
-# Read config to use
-$config =  Get-Content -Raw -Path $configFile | ConvertFrom-Json
-if ($debugMode) {
-    Write-Host "[DEBUG]: Using following JSON config: " -ForegroundColor Yellow
-    $json = ConvertTo-Json $config -Depth 5 
-    Write-Host $json 
-    if (-not $deployCI) {
-        Write-Host "[DEBUG]: Press a key " -ForegroundColor Yellow
-        [System.Console]::Read()
-    }
-}
-
 # building and publishing docker images if needed
 if($buildBits) {
     Write-Host "Building and publishing eShopOnContainers..." -ForegroundColor Yellow
@@ -166,27 +154,9 @@ ExecKube -cmd 'create configmap urls `
     
 ExecKube -cmd 'label configmap urls app=eshop'
 
-Write-Host "Applying external configuration from json" -ForegroundColor Yellow
+Write-Host "Deploying configuration from $configFile" -ForegroundColor Yellow
 
-ExecKube -cmd 'create configmap externalcfg `
-    --from-literal=CatalogSqlDb=$($config.sql.catalog) `
-    --from-literal=IdentitySqlDb=$($config.sql.identity) `
-    --from-literal=OrderingSqlDb=$($config.sql.ordering) `
-    --from-literal=MarketingSqlDb=$($config.sql.marketing) `
-    --from-literal=LocationsNoSqlDb=$($config.nosql.locations.constr) `
-    --from-literal=LocationsNoSqlDbName=$($config.nosql.locations.db) `
-    --from-literal=MarketingNoSqlDb=$($config.nosql.marketing.constr) `
-    --from-literal=MarketingNoSqlDbName=$($config.nosql.marketing.db) `
-    --from-literal=BasketRedisConStr=$($config.redis.basket) `
-    --from-literal=LocationsBus=$($config.servicebus.locations) `
-    --from-literal=MarketingBus=$($config.servicebus.marketing) `
-    --from-literal=BasketBus=$($config.servicebus.basket) `
-    --from-literal=OrderingBus=$($config.servicebus.ordering) `
-    --from-literal=CatalogBus=$($config.servicebus.catalog) `
-    --from-literal=PaymentBus=$($config.servicebus.payment) `
-    --from-literal=UseAzureServiceBus=$($config.servicebus.use_azure) `
-    --from-literal=keystore=$($config.redis.keystore) '
-ExecKube -cmd 'label configmap externalcfg app=eshop'
+ExecKube -cmd "create -f $configFile"
 
 Write-Host "Creating deployments..." -ForegroundColor Yellow
 ExecKube -cmd 'create -f deployments.yaml'

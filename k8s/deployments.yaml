@@ -174,6 +174,53 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
+  name: graceperiodmanager
+spec:
+  paused: true
+  template:
+    metadata:
+      labels:
+        app: graceperiodmanager
+        component: ordering
+    spec:
+      containers:
+      - name: graceperiodmanager
+        image: eshop/graceperiodmanager
+        imagePullPolicy: Always
+        env:
+        - name: ConnectionString
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: OrderingSqlDb
+        - name: EventBusConnection
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: GracePeriodManagerBus
+        - name: GracePeriodTime
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: GracePeriodTime
+        - name: CheckUpdateTime
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: GracePeriodCheckUpdateTime                         
+        - name: AzureServiceBusEnabled
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: UseAzureServiceBus
+        ports:
+        - containerPort: 80
+      imagePullSecrets:
+      - name: registry-key
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
   name: locations
 spec:
   paused: true
