@@ -82,6 +82,7 @@ services:
       - OrderingUrlHC=http://ordering.api/hc
       - IdentityUrlHC=http://identity.api/hc     #Local: Use ${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP}, if using external IP or DNS name from browser.          
       - BasketUrlHC=http://basket.api/hc
+      - MarketingUrlHC=http://marketing.api/hc
       - UseCustomizationData=True
     ports:
       - "5104:80"
@@ -119,6 +120,8 @@ services:
       - OrderingUrl=http://ordering.api/hc
       - BasketUrl=http://basket.api/hc
       - IdentityUrl=http://identity.api/hc
+      - LocationsUrl=http://locations.api/hc
+      - MarketingUrl=http://marketing.api/hc
       - mvc=http://webmvc/hc
       - spa=http://webspa/hc
     ports:
