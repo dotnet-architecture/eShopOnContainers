@@ -66,11 +66,16 @@ spec:
            configMapKeyRef:
              name: externalcfg
              key: CatalogSqlDb
-        - name: ExternalCatalogBaseUrl
+        - name: PicBaseUrl
           valueFrom:
            configMapKeyRef:
              name: urls
-             key: CatalogUrl
+             key: PicBaseUrl
+        - name: AzureStorageEnabled
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: CatalogAzureStorageEnabled
         - name: EventBusConnection
           valueFrom:
            configMapKeyRef:

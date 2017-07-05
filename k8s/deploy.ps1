@@ -134,13 +134,14 @@ Write-Host "Using $externalDns as the external DNS/IP of the k8s cluster"
 ExecKube -cmd 'create configmap urls `
     --from-literal=BasketUrl=http://basket `
     --from-literal=BasketHealthCheckUrl=http://basket/hc `
-    --from-literal=CatalogUrl=http://$($frontendUrl)/catalog-api `
+    --from-literal=CatalogUrl=http://$($externalDns)/catalog-api `
     --from-literal=CatalogHealthCheckUrl=http://catalog/hc `
-    --from-literal=IdentityUrl=http://$($frontendUrl)/identity `
+	--from-literal=PicBaseUrl=http://$($externalDns)/catalog-api/api/v1/pic/ `
+    --from-literal=IdentityUrl=http://$($externalDns)/identity `
     --from-literal=IdentityHealthCheckUrl=http://identity/hc `
     --from-literal=OrderingUrl=http://ordering `
     --from-literal=OrderingHealthCheckUrl=http://ordering/hc `
-    --from-literal=MvcClientExternalUrl=http://$($frontendUrl)/webmvc `
+    --from-literal=MvcClientExternalUrl=http://$($externalDns)/webmvc `
     --from-literal=WebMvcHealthCheckUrl=http://webmvc/hc `
     --from-literal=MvcClientOrderingUrl=http://ordering `
     --from-literal=MvcClientCatalogUrl=http://catalog `
@@ -192,5 +193,5 @@ ExecKube -cmd 'rollout resume deployments/webmvc'
 ExecKube -cmd 'rollout resume deployments/webstatus'
 ExecKube -cmd 'rollout resume deployments/webspa'
 
-Write-Host "WebSPA is exposed at http://$frontendUrl, WebMVC at http://$frontendUrl/webmvc, WebStatus at http://$frontendUrl/webstatus" -ForegroundColor Yellow
+Write-Host "WebSPA is exposed at http://$externalDns, WebMVC at http://$externalDns/webmvc, WebStatus at http://$externalDns/webstatus" -ForegroundColor Yellow
 

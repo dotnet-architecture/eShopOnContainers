@@ -9,6 +9,7 @@ data:
   BasketRedisConStr: basket-data
   CatalogBus: rabbitmq
   CatalogSqlDb: Server=sql-data;Initial Catalog=Microsoft.eShopOnContainers.Services.CatalogDb;User Id=sa;Password=Pass@word;
+  CatalogAzureStorageEnabled: "False"
   IdentitySqlDb: Server=sql-data;Initial Catalog=Microsoft.eShopOnContainers.Services.IdentityDb;User Id=sa;Password=Pass@word;
   LocationsBus: rabbitmq
   LocationsNoSqlDb: mongodb://nosql-data
