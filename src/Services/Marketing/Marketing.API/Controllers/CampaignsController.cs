@@ -179,7 +179,7 @@
         private CampaignDTO MapCampaignModelToDto(Campaign campaign)
         {
             var userId = _httpContextAccessor.HttpContext.User.FindFirst("sub").Value;
-            return new CampaignDTO
+            var dto = new CampaignDTO
             {
                 Id = campaign.Id,
                 Name = campaign.Name,
@@ -187,8 +187,14 @@
                 From = campaign.From,
                 To = campaign.To,
                 PictureUri = GetUriPlaceholder(campaign),
-                DetailsUri = $"{_settings.CampaignDetailFunctionUri}&campaignId={campaign.Id}&userId={userId}"
             };
+
+            if (!string.IsNullOrEmpty(_settings.CampaignDetailFunctionUri))
+            {
+                dto.DetailsUri = $"{_settings.CampaignDetailFunctionUri}&campaignId={campaign.Id}&userId={userId}";
+            }
+
+            return dto;
         }
 
         private Campaign MapCampaignDtoToModel(CampaignDTO campaignDto)
