@@ -16,6 +16,8 @@ using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
 using System.Reflection;
 using System;
+using Microsoft.Extensions.HealthChecks;
+using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.Services.Locations.API
 {
@@ -50,6 +52,11 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
             }).AddControllersAsServices();
 
             services.Configure<LocationSettings>(Configuration);
+
+            services.AddHealthChecks(checks => 
+            {
+                checks.AddValueTaskCheck("HTTP Endpoint", () => new ValueTask<IHealthCheckResult>(HealthCheckResult.Healthy("Ok")));
+            });
 
             services.AddSingleton<IRabbitMQPersistentConnection>(sp =>
             {

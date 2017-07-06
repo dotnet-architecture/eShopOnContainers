@@ -26,6 +26,7 @@ namespace Microsoft.eShopOnContainers.Services.Marketing.API
     using Polly;
     using System.Threading.Tasks;
     using System.Data.SqlClient;
+    using Microsoft.Extensions.HealthChecks;
 
     public class Startup
     {
@@ -59,6 +60,11 @@ namespace Microsoft.eShopOnContainers.Services.Marketing.API
             }).AddControllersAsServices();  //Injecting Controllers themselves thru DIFor further info see: http://docs.autofac.org/en/latest/integration/aspnetcore.html#controllers-as-services
 
             services.Configure<MarketingSettings>(Configuration);
+
+            services.AddHealthChecks(checks => 
+            {
+                checks.AddValueTaskCheck("HTTP Endpoint", () => new ValueTask<IHealthCheckResult>(HealthCheckResult.Healthy("Ok")));
+            });
 
             services.AddDbContext<MarketingContext>(options =>
             {

@@ -64,6 +64,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
                 checks.AddUrlCheck(Configuration["OrderingUrl"] + "/hc", TimeSpan.FromMinutes(minutes));
                 checks.AddUrlCheck(Configuration["BasketUrl"] + "/hc", TimeSpan.FromMinutes(minutes));
                 checks.AddUrlCheck(Configuration["IdentityUrl"] + "/hc", TimeSpan.FromMinutes(minutes));
+                checks.AddUrlCheck(Configuration["MarketingUrl"] + "/hc", TimeSpan.FromMinutes(minutes));
             });
 
             // Add application services.
