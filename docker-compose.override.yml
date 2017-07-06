@@ -29,6 +29,8 @@ services:
       - ConnectionString=Server=sql.data;Database=Microsoft.eShopOnContainers.Services.CatalogDb;User Id=sa;Password=Pass@word
       - PicBaseUrl=${ESHOP_AZURE_STORAGE_ACCOUNT:-http://localhost:5101/api/v1/pic/}   #Local: You need to open your local dev-machine firewall at range 5100-5105.  at range 5100-5105.	  
       - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
+      - AzureStorageAccountName=${ESHOP_AZURE_STORAGE_ACCOUNT_NAME}
+      - AzureStorageAccountKey=${ESHOP_AZURE_STORAGE_ACCOUNT_KEY}
       - UseCustomizationData=True
     ports:
       - "5101:80"
@@ -82,6 +84,7 @@ services:
       - OrderingUrlHC=http://ordering.api/hc
       - IdentityUrlHC=http://identity.api/hc     #Local: Use ${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP}, if using external IP or DNS name from browser.          
       - BasketUrlHC=http://basket.api/hc
+      - MarketingUrlHC=http://marketing.api/hc
       - UseCustomizationData=True
     ports:
       - "5104:80"
@@ -119,6 +122,8 @@ services:
       - OrderingUrl=http://ordering.api/hc
       - BasketUrl=http://basket.api/hc
       - IdentityUrl=http://identity.api/hc
+      - LocationsUrl=http://locations.api/hc
+      - MarketingUrl=http://marketing.api/hc
       - mvc=http://webmvc/hc
       - spa=http://webspa/hc
     ports:
