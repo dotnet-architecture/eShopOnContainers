@@ -23,6 +23,8 @@
     using Microsoft.Extensions.HealthChecks;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
+    using Microsoft.WindowsAzure.Storage;
+    using Microsoft.WindowsAzure.Storage.Auth;
     using Polly;
     using RabbitMQ.Client;
     using System;
@@ -64,6 +66,13 @@
                     minutes = minutesParsed;
                 }
                 checks.AddSqlCheck("CatalogDb", Configuration["ConnectionString"], TimeSpan.FromMinutes(minutes));
+
+                var accountName = Configuration.GetValue<string>("AzureStorageAccountName");
+                var accountKey = Configuration.GetValue<string>("AzureStorageAccountKey");
+                if (!string.IsNullOrEmpty(accountName) && !string.IsNullOrEmpty(accountKey))
+                {
+                    checks.AddAzureBlobStorageCheck(accountName, accountKey);
+                }
             });
 
             services.AddMvc(options =>
@@ -148,7 +157,7 @@
             var container = new ContainerBuilder();
             container.Populate(services);
             return new AutofacServiceProvider(container.Build());
-            
+
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
@@ -186,7 +195,7 @@
         private async Task WaitForSqlAvailabilityAsync(CatalogContext ctx, ILoggerFactory loggerFactory, IApplicationBuilder app, IHostingEnvironment env, int retries = 0)
         {
             var logger = loggerFactory.CreateLogger(nameof(Startup));
-            var policy = CreatePolicy(retries, logger, nameof (WaitForSqlAvailabilityAsync));
+            var policy = CreatePolicy(retries, logger, nameof(WaitForSqlAvailabilityAsync));
             await policy.ExecuteAsync(async () =>
             {
                 await CatalogContextSeed.SeedAsync(app, env, loggerFactory);
@@ -222,7 +231,7 @@
                     return new EventBusServiceBus(serviceBusPersisterConnection, logger,
                         eventBusSubcriptionsManager, subscriptionClientName, iLifetimeScope);
                 });
-                
+
             }
             else
             {
