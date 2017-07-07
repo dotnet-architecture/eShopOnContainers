@@ -42,7 +42,7 @@
                 var responseBody = await userLocationCampaignResponse.Content.ReadAsStringAsync();
                 var userLocationCampaigns = JsonConvert.DeserializeObject<PaginatedItemsViewModel<CampaignDTO>>(responseBody);
 
-                Assert.True(userLocationCampaigns.Data != null);
+                Assert.True(userLocationCampaigns.Count > 0);
             }
         }
     }

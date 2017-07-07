@@ -114,6 +114,21 @@ namespace Identity.API.Configuration
                         "locations",
                         "marketing"
                     },
+                },
+                new Client
+                {
+                    ClientId = "swaggerui",
+                    ClientName = "Swagger UI",
+                    AllowedGrantTypes = GrantTypes.Implicit,
+                    AllowAccessTokensViaBrowser = true,
+
+                    RedirectUris = { "http://localhost:5109/swagger/o2c.html" },
+                    PostLogoutRedirectUris = { "http://localhost:5109/swagger/" },
+
+                    AllowedScopes =
+                    {
+                        "locations"
+                    }
                 }
             };
         }

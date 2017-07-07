@@ -46,7 +46,7 @@ namespace Locations.API.Controllers
             var location = await _locationsService.GetLocation(locationId);
             return Ok(location);
         }
-
+         
         //POST api/v1/[controller]/
         [Route("")]
         [HttpPost]

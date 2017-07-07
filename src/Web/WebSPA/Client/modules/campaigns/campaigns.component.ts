@@ -13,6 +13,7 @@ export class CampaignsComponent implements OnInit {
     private interval = null;
     paginationInfo: IPager;
     campaigns: ICampaign;
+    isCampaignDetailFunctionEnabled: boolean = false;
 
     constructor(private service: CampaignsService, private configurationService: ConfigurationService) { }
 
@@ -23,7 +24,9 @@ export class CampaignsComponent implements OnInit {
             this.configurationService.settingsLoaded$.subscribe(x => {
                 this.getCampaigns(9, 0);
             });
-        }                           
+        }
+
+        this.isCampaignDetailFunctionEnabled = this.configurationService.serverSettings.activateCampaignDetailFunction;
     }    
 
     onPageChanged(value: any) {
@@ -44,6 +47,10 @@ export class CampaignsComponent implements OnInit {
                 items: campaigns.pageSize
             };
         });
+    }
+
+    onNavigateToDetails(uri: string) {
+        window.open(uri, "_blank");
     }
 }
 

@@ -3,5 +3,6 @@ export interface IConfiguration {
     orderingUrl: string, 
     identityUrl: string, 
     basketUrl: string,
-    marketingUrl: string
+    marketingUrl: string,
+    activateCampaignDetailFunction: boolean
 }
