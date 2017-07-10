@@ -41,7 +41,6 @@
             {
                 try
                 {
-                    _logger.LogInformation("Order Grace Period Manager is polling/querying to the Ordering database");
                     conn.Open();
                     orderIds = conn.Query<int>(
                         @"SELECT Id FROM [Microsoft.eShopOnContainers.Services.OrderingDb].[ordering].[orders] 
