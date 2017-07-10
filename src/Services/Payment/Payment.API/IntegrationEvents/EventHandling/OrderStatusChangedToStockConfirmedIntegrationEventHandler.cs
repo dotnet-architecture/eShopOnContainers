@@ -22,7 +22,14 @@
         public async Task Handle(OrderStatusChangedToStockConfirmedIntegrationEvent @event)
         {
             IntegrationEvent orderPaymentIntegrationEvent;
-            if(_settings.PaymentSucceded)
+
+            //Business feature comment:
+            // When OrderStatusChangedToStockConfirmed Integration Event is handled.
+            // Here we're simulating that we'd be performing the payment against any payment gateway
+            // Instead of a real payment we just take the env. var to simulate the payment 
+            // The payment can be successful or it can fail
+
+            if (_settings.PaymentSucceded)
             {
                 orderPaymentIntegrationEvent = new OrderPaymentSuccededIntegrationEvent(@event.OrderId);
             }
