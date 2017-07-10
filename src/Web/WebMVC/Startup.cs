@@ -112,21 +112,22 @@ namespace Microsoft.eShopOnContainers.WebMVC
 
             var identityUrl = Configuration.GetValue<string>("IdentityUrl");
             var callBackUrl = Configuration.GetValue<string>("CallBackUrl");
+            var useLoadTest = Configuration.GetValue<bool>("UseLoadTest");
             var log = loggerFactory.CreateLogger("identity");
 
             var oidcOptions = new OpenIdConnectOptions
             {
                 AuthenticationScheme = "oidc",
                 SignInScheme = "Cookies",
-                Authority = identityUrl.ToString(),
-                PostLogoutRedirectUri = callBackUrl.ToString(),
-                ClientId = "mvc",
+                Authority = identityUrl,
+                PostLogoutRedirectUri = callBackUrl,
                 ClientSecret = "secret",
-                ResponseType = "code id_token",
+                ClientId = useLoadTest ? "mvctest" : "mvc",
+                ResponseType = useLoadTest ? "code id_token token" : "code id_token",
                 SaveTokens = true,
                 GetClaimsFromUserInfoEndpoint = true,
                 RequireHttpsMetadata = false,
-                Scope = { "openid", "profile", "orders", "basket", "marketing" }
+                Scope = { "openid", "profile", "orders", "basket", "marketing", "locations" }
             };
 
             //Wait untill identity service is ready on compose. 
