@@ -16,7 +16,7 @@
     using Infrastructure;
     using Infrastructure.Filters;
     using Infrastructure.Repositories;
-    using Locations.API.Infrastructure.Services;
+    using Infrastructure.Services;
     using Extensions.Configuration;
     using Extensions.DependencyInjection;
     using Extensions.Logging;

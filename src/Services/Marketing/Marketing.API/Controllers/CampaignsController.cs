@@ -1,4 +1,4 @@
-﻿using Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure.Services;
+﻿using Microsoft.eShopOnContainers.Services.Marketing.API.Infrastructure.Services;
 
 namespace Microsoft.eShopOnContainers.Services.Marketing.API.Controllers
 {
