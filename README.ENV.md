@@ -62,4 +62,6 @@ For example:
 To enable the Azure Functions in eShop you can add the URI where the functions have been deployed. You can use the ARM files under **deploy/az/azurefunctions** to create the resources in Azure. Once created and available, it is necessary to add to the .env file the `ESHOP_AZUREFUNC_CAMPAIGN_DETAILS_URI` variable.
 
 For example:
- >ESHOP_AZUREFUNC_CAMPAIGN_DETAILS_URI=azurefunctionsuri
+ >ESHOP_AZUREFUNC_CAMPAIGN_DETAILS_URI=https://marketing-functions.azurewebsites.net/api/MarketingDetailsHttpTrigger?code=AzureFunctioncode
+ 
+See Azure Functions deployment Files and Readme for more details [ARM files](deploy/az/azurefunctions/readme.md)
