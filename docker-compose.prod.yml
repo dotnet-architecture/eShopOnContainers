@@ -137,13 +137,13 @@ services:
     ports:
       - "5107:80"
 
-payment.api:
-  environment:
-    - ASPNETCORE_ENVIRONMENT=Production
-    - ASPNETCORE_URLS=http://0.0.0.0:5108
-    - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
-  ports:
-    - "5108:80"
+  payment.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://0.0.0.0:5108
+      - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
+    ports:
+      - "5108:80"
 
   locations.api:
     environment:
