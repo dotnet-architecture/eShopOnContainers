@@ -33,7 +33,7 @@
                 var response = await server.CreateIdempotentClient()
                     .PutAsync(Put.CancelOrder, content);
 
-                Assert.Equal(response.StatusCode, HttpStatusCode.InternalServerError);
+                Assert.Equal(response.StatusCode, HttpStatusCode.BadRequest);
             }
         }
 

@@ -1,7 +1,7 @@
 ﻿{
   "ConnectionString": "Server=tcp:127.0.0.1,5433;Initial Catalog=Microsoft.eShopOnContainers.Services.CatalogDb;User Id=sa;Password=Pass@word",
   "PicBaseUrl": "http://localhost:5101",
-  "UseCustomizationData": true,
+  "UseCustomizationData": false,
   "Logging": {
     "IncludeScopes": false,
     "LogLevel": {
