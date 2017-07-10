@@ -28,8 +28,8 @@
 
     &-drop {
         background: $color-background-brighter;
-        height: 0;
-        min-width: 14rem;
+        height: 10px;
+        width: 10rem;
         overflow: hidden;
         padding: .5rem;
         position: absolute;
@@ -40,7 +40,7 @@
 
     &:hover &-drop {
         border: $border-light solid $color-foreground-bright;
-        height: 7rem;
+        height: 10rem;
         transition: height $animation-speed-default;
     }
 
