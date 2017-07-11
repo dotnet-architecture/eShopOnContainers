@@ -3,6 +3,7 @@ import { CampaignsService }        from './campaigns.service';
 import { ICampaign }               from '../shared/models/campaign.model';
 import { IPager }               from '../shared/models/pager.model';
 import { ConfigurationService } from '../shared/services/configuration.service';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
     selector: 'esh-campaigns',
@@ -14,6 +15,7 @@ export class CampaignsComponent implements OnInit {
     paginationInfo: IPager;
     campaigns: ICampaign;
     isCampaignDetailFunctionEnabled: boolean = false;
+    errorReceived: boolean;
 
     constructor(private service: CampaignsService, private configurationService: ConfigurationService) { }
 
@@ -37,20 +39,28 @@ export class CampaignsComponent implements OnInit {
     }   
 
     getCampaigns(pageSize: number, pageIndex: number) {
-        this.service.getCampaigns(pageIndex, pageSize).subscribe(campaigns => {
-            this.campaigns = campaigns;
-            this.paginationInfo = {
-                actualPage : campaigns.pageIndex,
-                itemsPage : campaigns.pageSize,
-                totalItems : campaigns.count,
-                totalPages: Math.ceil(campaigns.count / campaigns.pageSize),
-                items: campaigns.pageSize
-            };
+        this.errorReceived = false;
+        this.service.getCampaigns(pageIndex, pageSize)
+            .catch((err) => this.handleError(err))
+            .subscribe(campaigns => {
+                this.campaigns = campaigns;
+                this.paginationInfo = {
+                    actualPage : campaigns.pageIndex,
+                    itemsPage : campaigns.pageSize,
+                    totalItems : campaigns.count,
+                    totalPages: Math.ceil(campaigns.count / campaigns.pageSize),
+                    items: campaigns.pageSize
+                };
         });
     }
 
     onNavigateToDetails(uri: string) {
         window.open(uri, "_blank");
     }
+
+    private handleError(error: any) {
+        this.errorReceived = true;
+        return Observable.throw(error);
+    }  
 }
 
