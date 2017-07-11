@@ -232,13 +232,12 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
         private List<CatalogItem> ChangeUriPlaceholder(List<CatalogItem> items)
         {
             var baseUri = _settings.PicBaseUrl;
-            
+
             items.ForEach(catalogItem =>
             {
                 catalogItem.PictureUri = _settings.AzureStorageEnabled
                     ? baseUri + catalogItem.PictureFileName
-                    : baseUri + catalogItem.Id;
-
+                    : baseUri.Replace("[0]", catalogItem.Id.ToString());
             });
 
             return items;
