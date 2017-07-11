@@ -13,10 +13,8 @@
     new Header() { Controller = "Catalog", Text = "Back to catalog" } })
 
 <div class="container">
-    @if (Model.CampaignItems != null && Model.CampaignItems.Any())
+    @if(Model != null && Model.CampaignItems.Any())
     {
-        @Html.Partial("_pagination", Model.PaginationInfo)
-
         <div class="card-group esh-campaigns-items row">
         @foreach (var catalogItem in Model.CampaignItems)
         {

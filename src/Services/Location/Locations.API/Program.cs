@@ -14,6 +14,7 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
         {
             var host = new WebHostBuilder()
                 .UseKestrel()
+                .UseHealthChecks("/hc")
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseStartup<Startup>()
                 .UseApplicationInsights()

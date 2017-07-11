@@ -11,8 +11,8 @@
             public static string CampaignBy(int id)
                 => $"{CampaignsUrlBase}/{id}";
 
-            public static string UserCampaignsByUserId(Guid userId)
-                => $"{CampaignsUrlBase}/user/{userId}";
+            public static string UserCampaignsByUserId()
+                => $"{CampaignsUrlBase}/user";
         }
 
         public static class Post

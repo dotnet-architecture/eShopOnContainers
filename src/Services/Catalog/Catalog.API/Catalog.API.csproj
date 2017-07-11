@@ -19,6 +19,11 @@
     <Content Include="Pics\**\*;">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
+    <Content Include="Setup\**\*;">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Remove="Setup\Catalogitems - Copy.zip" />
+    <None Remove="Setup\Catalogitems - Copy.zip" />
     <Compile Include="IntegrationEvents\EventHandling\AnyFutureIntegrationEventHandler.cs.txt" />
     <Content Update="web.config;">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
@@ -48,6 +53,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.0.0-preview2-final" />
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="1.0.0" />
+    <PackageReference Include="System.IO.Compression.ZipFile" Version="4.3.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -56,8 +62,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\BuildingBlocks\EventBus\EventBusRabbitMQ\EventBusRabbitMQ.csproj" />
+    <ProjectReference Include="..\..\..\BuildingBlocks\EventBus\EventBusServiceBus\EventBusServiceBus.csproj" />
     <ProjectReference Include="..\..\..\BuildingBlocks\EventBus\EventBus\EventBus.csproj" />
     <ProjectReference Include="..\..\..\BuildingBlocks\HealthChecks\src\Microsoft.AspNetCore.HealthChecks\Microsoft.AspNetCore.HealthChecks.csproj" />
+    <ProjectReference Include="..\..\..\BuildingBlocks\HealthChecks\src\Microsoft.Extensions.HealthChecks.AzureStorage\Microsoft.Extensions.HealthChecks.AzureStorage.csproj" />
     <ProjectReference Include="..\..\..\BuildingBlocks\HealthChecks\src\Microsoft.Extensions.HealthChecks.SqlServer\Microsoft.Extensions.HealthChecks.SqlServer.csproj" />
     <ProjectReference Include="..\..\..\BuildingBlocks\HealthChecks\src\Microsoft.Extensions.HealthChecks\Microsoft.Extensions.HealthChecks.csproj" />
     <ProjectReference Include="..\..\..\BuildingBlocks\EventBus\IntegrationEventLogEF\IntegrationEventLogEF.csproj" />
@@ -68,6 +76,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Pics\*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Setup\*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

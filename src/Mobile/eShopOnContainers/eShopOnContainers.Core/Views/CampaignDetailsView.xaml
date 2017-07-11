@@ -3,17 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="eShopOnContainers.Core.Views.CampaignDetailsView"
 			 xmlns:viewModelBase="clr-namespace:eShopOnContainers.Core.ViewModels.Base;assembly=eShopOnContainers.Core"
-             viewModelBase:ViewModelLocator.AutoWireViewModel="true"
+			 viewModelBase:ViewModelLocator.AutoWireViewModel="true"
              Title="Campaign Details">
     <ContentPage.Resources>
         <ResourceDictionary>
-            <Style x:Key="CampaignStyle" 
-                    TargetType="{x:Type StackLayout}">
-                <Setter Property="VerticalOptions"
-                        Value="Center" />
-                <Setter Property="Margin"
-                        Value="0" />
-            </Style>
             <Style x:Key="CampaignTitleStyle" 
                    TargetType="{x:Type Label}">
                 <Setter Property="FontFamily"
@@ -26,6 +19,8 @@
                         Value="Center" />
                 <Setter Property="Margin" 
                         Value="12, 0" />
+                <Setter Property="TextColor" 
+                        Value="{StaticResource GreenColor}" />
             </Style>
 
             <Style x:Key="CampaignDescriptionStyle" 
@@ -33,69 +28,140 @@
                    BasedOn="{StaticResource CampaignTitleStyle}">
                 <Setter Property="FontSize" 
                         Value="{StaticResource LittleSize}" />
+                <Setter Property="TextColor" 
+                        Value="{StaticResource BlackColor}" />
+            </Style>
+
+            <Style x:Key="CampaignImageStyle" 
+                   TargetType="{x:Type Image}">
+                <Setter Property="Aspect" 
+                        Value="AspectFit" />
+                <Setter Property="VerticalOptions" 
+                        Value="Start" />
+                <Setter Property="Margin" 
+                        Value="12" />
+            </Style>
+
+            <Style x:Key="CampaignAvailabilityDescriptionStyle" 
+                   TargetType="{x:Type Label}">
+                <Setter Property="FontFamily"
+                        Value="{StaticResource MontserratRegular}" />
+                <Setter Property="TextColor"
+                        Value="{StaticResource WhiteColor}" />
+                <Setter Property="HorizontalOptions"
+                Value="CenterAndExpand" />
+                <Setter Property="VerticalOptions"
+                        Value="Center" />
+            </Style>
+            
+            <Style x:Key="CampaignViewSiteButtonStyle" 
+                   TargetType="{x:Type Button}">
+                <Setter Property="TextColor"
+                        Value="{StaticResource WhiteColor}" />
+                <Setter Property="BackgroundColor"
+                        Value="{StaticResource LightGreenColor}" />
+            </Style>
+
+            <Style x:Key="CampaignAvailabilityBannerStyle" 
+                   TargetType="{x:Type Grid}">
+                <Setter Property="BackgroundColor"
+                        Value="{StaticResource GrayColor}" />
+                <Setter Property="Padding"
+                        Value="12" />
+                <Setter Property="VerticalOptions"
+                        Value="Center" />
+                <Setter Property="ColumnSpacing"
+                        Value="0" />
+                <Setter Property="RowSpacing"
+                        Value="0" />
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
-    <Grid  
-        ColumnSpacing="0"
-        RowSpacing="0">
+    <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="60" />
         </Grid.RowDefinitions>
-        <!-- CAMPAIGN DETAILS -->
-        <ScrollView>
-            <StackLayout
-                x:Name="Campaign">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="1" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="1" />
-                    </Grid.RowDefinitions>
-                    <Grid 
-                        Grid.Row="0"
-                        Grid.Column="0"
-                        Grid.ColumnSpan="2"
-                        BackgroundColor="Gray"/>
-                    <StackLayout 
-                        Style ="{StaticResource CampaignStyle}"
-                        Grid.Column="0"                       
-                        Grid.Row="1">
+        
+        <StackLayout
+            HeightRequest="50"
+            Grid.Column="0"
+            Grid.Row="0"
+            IsVisible="{Binding Campaign.DetailsUri,
+                                                Converter={StaticResource StringNullOrEmptyBoolConverter}}">
+            <Button
+                BackgroundColor="{StaticResource LightGreenColor}"
+                Command="{Binding EnableDetailsSiteCommand}"
+                Text="VIEW SITE"
+                Style="{StaticResource CampaignViewSiteButtonStyle}">
+            </Button>
+        </StackLayout>
+        <Grid  
+        ColumnSpacing="0"
+        RowSpacing="0"
+        Grid.Row="1" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                
+            </Grid.RowDefinitions>
+            <!-- CAMPAIGN DETAILS -->
+            <ScrollView>
+                <StackLayout>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
                         <Image
-                            Source="{Binding Campaign.PictureUri, Converter={StaticResource ImageConverter}}"        
-                            Aspect="AspectFit"
-                            VerticalOptions="Start"
-                            Margin="12,0,0,0" />
+                        Grid.Row="0"
+                        Source="{Binding Campaign.PictureUri, Converter={StaticResource ImageConverter}}"        
+                        Style="{StaticResource CampaignImageStyle}"/>
                         <Label 
-                            Text="{Binding Campaign.Name}"
-                            TextColor="{StaticResource GreenColor}"
-                            Style="{StaticResource CampaignTitleStyle}"/>
+                        Grid.Row="1"
+                        Text="{Binding Campaign.Name}"
+                        Style="{StaticResource CampaignTitleStyle}"/>
                         <Label
-                            Text="{Binding Campaign.Description}"
-                            Style="{StaticResource CampaignDescriptionStyle}"/>
-                        <StackLayout                
-                            HorizontalOptions="Center"
-                            Margin="12,0,0,0" >
-                            <Label
-                            Text="{Binding Campaign.From, StringFormat='From {0:MMMM dd, yyyy}'}"
-                            Style="{StaticResource CampaignDescriptionStyle}"/>
-                            <Label
-                            Text="{Binding Campaign.To, StringFormat='until {0:MMMM dd, yyyy}'}"
-                            Style="{StaticResource CampaignDescriptionStyle}"/>
-                        </StackLayout>
-                    </StackLayout>
-                </Grid>
-            </StackLayout>
-        </ScrollView>
+                        Grid.Row="2"
+                        Text="{Binding Campaign.Description}"
+                        Style="{StaticResource CampaignDescriptionStyle}"/>
+                    </Grid>
+                </StackLayout>
+            </ScrollView>
+        </Grid>
+        <Grid 
+            Style="{StaticResource CampaignAvailabilityBannerStyle}"
+            Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Label
+                Grid.Row="0" 
+                Text="{Binding Campaign.From, StringFormat='From {0:MMMM dd, yyyy}'}"
+                Style="{StaticResource CampaignAvailabilityDescriptionStyle}"/>
+            <Label
+                Grid.Row="1" 
+                Text="{Binding Campaign.To, StringFormat='until {0:MMMM dd, yyyy}'}"
+                Style="{StaticResource CampaignAvailabilityDescriptionStyle}"/>
+        </Grid>
+        
+        <AbsoluteLayout
+            Grid.Column="0"
+            Grid.Row="0"
+            Grid.RowSpan="3"
+            IsVisible="{Binding IsDetailsSite}">
+            <WebView   
+                Source="{Binding Campaign.DetailsUri}"
+                AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
+                AbsoluteLayout.LayoutFlags="All">
+            </WebView>
+        </AbsoluteLayout>
+
         <!-- INDICATOR -->
         <ActivityIndicator
             Grid.Row="0"
-            Grid.RowSpan="2"
             Color="{StaticResource LightGreenColor}"
             IsRunning="{Binding IsBusy}"  
             IsVisible="{Binding IsBusy}"

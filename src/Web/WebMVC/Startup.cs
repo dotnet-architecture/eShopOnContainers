@@ -14,6 +14,7 @@ using Microsoft.Extensions.HealthChecks;
 using Microsoft.Extensions.Logging;
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using WebMVC.Infrastructure;
 
 namespace Microsoft.eShopOnContainers.WebMVC
 {
@@ -58,6 +59,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
                 checks.AddUrlCheck(Configuration["OrderingUrl"] + "/hc", TimeSpan.FromMinutes(minutes));
                 checks.AddUrlCheck(Configuration["BasketUrl"] + "/hc", TimeSpan.FromMinutes(minutes));
                 checks.AddUrlCheck(Configuration["IdentityUrl"] + "/hc", TimeSpan.FromMinutes(minutes));
+                checks.AddUrlCheck(Configuration["MarketingUrl"] + "/hc", TimeSpan.FromMinutes(minutes));
             });
 
             // Add application services.
@@ -77,8 +79,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
             {
                 services.AddSingleton<IHttpClient, StandardHttpClient>();
             }
-
-
+            var useLoadTest = Configuration.GetValue<bool>("UseLoadTest");
             var identityUrl = Configuration.GetValue<string>("IdentityUrl");
             var callBackUrl = Configuration.GetValue<string>("CallBackUrl");
             // Add Authentication services
@@ -88,9 +89,9 @@ namespace Microsoft.eShopOnContainers.WebMVC
                 options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.Authority = identityUrl.ToString();
                 options.PostLogoutRedirectUri = callBackUrl.ToString();
-                options.ClientId = "mvc";
+                options.ClientId = useLoadTest ? "mvctest" : "mvc";
                 options.ClientSecret = "secret";
-                options.ResponseType = "code id_token";
+                options.ResponseType = useLoadTest ? "code id_token token" : "code id_token";
                 options.SaveTokens = true;
                 options.GetClaimsFromUserInfoEndpoint = true;
                 options.RequireHttpsMetadata = false;
@@ -131,6 +132,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
             app.UseAuthentication();
 
             var log = loggerFactory.CreateLogger("identity");
+	    WebContextSeed.Seed(app, env, loggerFactory);
 
             app.UseMvc(routes =>
             {

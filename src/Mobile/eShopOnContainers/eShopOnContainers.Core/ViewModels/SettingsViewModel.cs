@@ -1,15 +1,15 @@
-﻿using eShopOnContainers.Core.ViewModels.Base;
-using System.Windows.Input;
-using Xamarin.Forms;
-using System.Threading.Tasks;
-using eShopOnContainers.Core.Helpers;
-using eShopOnContainers.Core.Models.User;
-using System;
-using eShopOnContainers.Core.Models.Location;
-using eShopOnContainers.Core.Services.Location;
-
-namespace eShopOnContainers.Core.ViewModels
+﻿namespace eShopOnContainers.Core.ViewModels
 {
+    using System.Windows.Input;
+    using Xamarin.Forms;
+    using System.Threading.Tasks;
+    using Helpers;
+    using Models.User;
+    using Base;
+    using Models.Location;
+    using Services.Location;
+    using Plugin.Geolocator;
+
     public class SettingsViewModel : ViewModelBase
     {
         private string _titleUseAzureServices;
@@ -17,24 +17,33 @@ namespace eShopOnContainers.Core.ViewModels
         private bool _useAzureServices;
         private string _titleUseFakeLocation;
         private string _descriptionUseFakeLocation;
+        private bool _allowGpsLocation;
+        private string _titleAllowGpsLocation;
+        private string _descriptionAllowGpsLocation;
         private bool _useFakeLocation;
         private string _endpoint;
         private double _latitude;
         private double _longitude;
-        private ILocationService _locationService;
+        private string _gpsWarningMessage;
+
+        private readonly ILocationService _locationService;
 
         public SettingsViewModel(ILocationService locationService)
         {
-            UseAzureServices = !Settings.UseMocks;
-            _useFakeLocation = Settings.UseFakeLocation;
+            _locationService = locationService;
+
+            _useAzureServices = !Settings.UseMocks;
+            _endpoint = Settings.UrlBase;
             _latitude = Settings.Latitude;
             _longitude = Settings.Longitude;
-            _locationService = locationService;
+            _useFakeLocation = Settings.UseFakeLocation;
+            _allowGpsLocation = Settings.AllowGpsLocation;
+            _gpsWarningMessage = string.Empty;
         }
 
         public string TitleUseAzureServices
         {
-            get { return _titleUseAzureServices; }
+            get => _titleUseAzureServices;
             set
             {
                 _titleUseAzureServices = value;
@@ -44,7 +53,7 @@ namespace eShopOnContainers.Core.ViewModels
 
         public string DescriptionUseAzureServices
         {
-            get { return _descriptionUseAzureServices; }
+            get => _descriptionUseAzureServices;
             set
             {
                 _descriptionUseAzureServices = value;
@@ -54,20 +63,20 @@ namespace eShopOnContainers.Core.ViewModels
 
         public bool UseAzureServices
         {
-            get { return _useAzureServices; }
+            get => _useAzureServices;
             set
             {
                 _useAzureServices = value;
 
-                // Save use mocks services to local storage
-                Settings.UseMocks = !_useAzureServices;
+                UpdateUseAzureServices();
+                
                 RaisePropertyChanged(() => UseAzureServices);
             }
         }
 
         public string TitleUseFakeLocation
         {
-            get { return _titleUseFakeLocation; }
+            get => _titleUseFakeLocation;
             set
             {
                 _titleUseFakeLocation = value;
@@ -77,7 +86,7 @@ namespace eShopOnContainers.Core.ViewModels
 
         public string DescriptionUseFakeLocation
         {
-            get { return _descriptionUseFakeLocation; }
+            get => _descriptionUseFakeLocation;
             set
             {
                 _descriptionUseFakeLocation = value;
@@ -87,27 +96,57 @@ namespace eShopOnContainers.Core.ViewModels
 
         public bool UseFakeLocation
         {
-            get { return _useFakeLocation; }
+            get => _useFakeLocation;
             set
             {
                 _useFakeLocation = value;
 
-                // Save use fake location services to local storage
-                Settings.UseFakeLocation = _useFakeLocation;
+                UpdateFakeLocation();
+
                 RaisePropertyChanged(() => UseFakeLocation);
+            }
+        }
+
+        public string TitleAllowGpsLocation
+        {
+            get => _titleAllowGpsLocation;
+            set
+            {
+                _titleAllowGpsLocation = value;
+                RaisePropertyChanged(() => TitleAllowGpsLocation);
+            }
+        }
+
+        public string DescriptionAllowGpsLocation
+        {
+            get => _descriptionAllowGpsLocation;
+            set
+            {
+                _descriptionAllowGpsLocation = value;
+                RaisePropertyChanged(() => DescriptionAllowGpsLocation);
+            }
+        }
+
+        public string GpsWarningMessage
+        {
+            get => _gpsWarningMessage;
+            set
+            {
+                _gpsWarningMessage = value;
+                RaisePropertyChanged(() => GpsWarningMessage);
             }
         }
 
         public string Endpoint
         {
-            get { return _endpoint; }
+            get => _endpoint;
             set
             {
                 _endpoint = value;
 
                 if(!string.IsNullOrEmpty(_endpoint))
                 {
-                    UpdateEndpoint(_endpoint);
+                    UpdateEndpoint();
                 }
 
                 RaisePropertyChanged(() => Endpoint);
@@ -116,12 +155,12 @@ namespace eShopOnContainers.Core.ViewModels
 
         public double Latitude
         {
-            get { return _latitude; }
+            get => _latitude;
             set
             {
                 _latitude = value;
 
-                UpdateLatitude(_latitude);
+                UpdateLatitude();
 
                 RaisePropertyChanged(() => Latitude);
             }
@@ -129,14 +168,27 @@ namespace eShopOnContainers.Core.ViewModels
 
         public double Longitude
         {
-            get { return _longitude; }
+            get => _longitude;
             set
             {
                 _longitude = value;
 
-                UpdateLongitude(_longitude);
+                UpdateLongitude();
 
                 RaisePropertyChanged(() => Longitude);
+            }
+        }
+
+        public bool AllowGpsLocation
+        {
+            get => _allowGpsLocation;
+            set
+            {
+                _allowGpsLocation = value;
+
+                UpdateAllowGpsLocation();
+
+                RaisePropertyChanged(() => AllowGpsLocation);
             }
         }
 
@@ -144,26 +196,25 @@ namespace eShopOnContainers.Core.ViewModels
 
         public ICommand ToggleMockServicesCommand => new Command(async () => await ToggleMockServicesAsync());
 
-        public ICommand ToggleFakeLocationCommand => new Command(() => ToggleFakeLocationAsync());
+        public ICommand ToggleFakeLocationCommand => new Command(ToggleFakeLocationAsync);
 
         public ICommand ToggleSendLocationCommand => new Command(async () => await ToggleSendLocationAsync());
 
+        public ICommand ToggleAllowGpsLocationCommand => new Command(ToggleAllowGpsLocation);
+
         public override Task InitializeAsync(object navigationData)
         {
-            UpdateInfo();
+            UpdateInfoUseAzureServices();
             UpdateInfoFakeLocation();
-            
-            Endpoint = Settings.UrlBase;
-            _latitude = Settings.Latitude;
-            _longitude = Settings.Longitude;
-            _useFakeLocation = Settings.UseFakeLocation;
+            UpdateInfoAllowGpsLocation();
+
             return base.InitializeAsync(navigationData);
         }
 
 		private async Task ToggleMockServicesAsync()
 		{
 			ViewModelLocator.RegisterDependencies(!UseAzureServices);
-			UpdateInfo();
+			UpdateInfoUseAzureServices();
 
 			var previousPageViewModel = NavigationService.PreviousPageViewModel;
 			if (previousPageViewModel != null)
@@ -204,7 +255,12 @@ namespace eShopOnContainers.Core.ViewModels
             } 
         }
 
-        private void UpdateInfo()
+        private void ToggleAllowGpsLocation()
+        {
+            UpdateInfoAllowGpsLocation();
+        }
+
+        private void UpdateInfoUseAzureServices()
         {
             if (!UseAzureServices)
             {
@@ -222,32 +278,82 @@ namespace eShopOnContainers.Core.ViewModels
         {
             if (!UseFakeLocation)
             {
-                TitleUseFakeLocation = "Use Fake Location";
-                DescriptionUseFakeLocation = "Fake Location are added for marketing campaign testing.";
+                TitleUseFakeLocation = "Use Real Location";
+                DescriptionUseFakeLocation = "When enabling the use of real location, the app will attempt to use real location from the device.";
+
             }
             else
             {
-                TitleUseFakeLocation = "Use Real Location";
-                DescriptionUseFakeLocation = "When enabling the use of real location, the app will attempt to use real location from the device.";
+                TitleUseFakeLocation = "Use Fake Location";
+                DescriptionUseFakeLocation = "Fake Location are added for marketing campaign testing.";
             }
         }
 
-        private void UpdateEndpoint(string endpoint)
+        private void UpdateInfoAllowGpsLocation()
+        {
+            if (!AllowGpsLocation)
+            {
+                TitleAllowGpsLocation = "GPS location Denied";
+                DescriptionAllowGpsLocation = "When denying the use of device gps you won't get the location campaigns through your real location.";
+            }
+            else
+            {
+                TitleAllowGpsLocation = "GPS location Allowed";
+                DescriptionAllowGpsLocation = "When allowing the use of device gps you will get the location campaigns through your real location.";
+
+            }
+        }
+
+
+        private void UpdateUseAzureServices()
+        {
+            // Save use mocks services to local storage
+            Settings.UseMocks = !_useAzureServices;
+        }
+
+        private void UpdateEndpoint()
         {
             // Update remote endpoint (save to local storage)
-            Settings.UrlBase = endpoint;
+            GlobalSetting.Instance.BaseEndpoint = Settings.UrlBase = _endpoint;
         }
 
-        private void UpdateLatitude(double latitude)
+        private void UpdateFakeLocation()
+        {
+            Settings.UseFakeLocation = _useFakeLocation;
+        }
+
+        private void UpdateLatitude()
         {
             // Update fake latitude (save to local storage)
-            Settings.Latitude = latitude;
+            Settings.Latitude = _latitude;
         }
 
-        private void UpdateLongitude(double longitude)
+        private void UpdateLongitude()
         {
             // Update fake longitude (save to local storage)
-            Settings.Longitude = longitude;
+            Settings.Longitude = _longitude;
+        }
+
+        private void UpdateAllowGpsLocation()
+        {
+            if (_allowGpsLocation)
+            {
+                var locator = CrossGeolocator.Current;
+                if (!locator.IsGeolocationEnabled)
+                {
+                    _allowGpsLocation = false;
+                    GpsWarningMessage = "Enable your GPS system in your device";
+                }
+                else
+                {
+                    Settings.AllowGpsLocation = _allowGpsLocation;
+                    GpsWarningMessage = string.Empty;
+                }
+            }
+            else
+            {
+                Settings.AllowGpsLocation = _allowGpsLocation;
+            }
         }
     }
 }

@@ -32,9 +32,8 @@
 
         public async Task<Campaign> GetCampaigns(int pageSize, int pageIndex)
         {
-            var userId = GetUserIdentity();
             var allCampaignItemsUri = API.Marketing.GetAllCampaigns(_remoteServiceBaseUrl, 
-                userId, pageSize, pageIndex);
+                pageSize, pageIndex);
 
             var authorizationToken = await GetUserTokenAsync();
             var dataString = await _apiClient.GetStringAsync(allCampaignItemsUri, authorizationToken);

@@ -110,6 +110,7 @@
             <converters:ToUpperConverter x:Key="ToUpperConverter" />
             <converters:WebNavigatingEventArgsConverter x:Key="WebNavigatingEventArgsConverter" />
             <converters:WebNavigatedEventArgsConverter x:Key="WebNavigatedEventArgsConverter" />
+            <converters:StringNullOrEmptyBoolConverter x:Key="StringNullOrEmptyBoolConverter" />
 
             <!-- STYLES -->
             <Style x:Key="ValidationErrorLabelStyle"

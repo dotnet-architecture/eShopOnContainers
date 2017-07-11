@@ -50,12 +50,12 @@ namespace eShopOnContainers
                 await InitNavigation();
             }
 
-            if (!Settings.UseFakeLocation)
+            if (Settings.AllowGpsLocation && !Settings.UseFakeLocation)
             {
-                await GetRealLocation();
+                await GetGpsLocation();
             }
 
-            if (!Settings.UseMocks && !string.IsNullOrEmpty(Settings.UserId))
+            if (!Settings.UseMocks && !string.IsNullOrEmpty(Settings.AuthAccessToken))
             {
                 await SendCurrentLocation();
             }
@@ -68,16 +68,24 @@ namespace eShopOnContainers
             // Handle when your app sleeps
         }
 
-        private async Task GetRealLocation()
+        private async Task GetGpsLocation()
         {
             var locator = CrossGeolocator.Current;
-            locator.AllowsBackgroundUpdates = true;
-            locator.DesiredAccuracy = 50;
 
-            var position = await locator.GetPositionAsync(20000);
+            if (locator.IsGeolocationEnabled && locator.IsGeolocationAvailable)
+            { 
+                locator.AllowsBackgroundUpdates = true;
+                locator.DesiredAccuracy = 50;
 
-            Settings.Latitude = position.Latitude;
-            Settings.Longitude = position.Longitude;
+                var position = await locator.GetPositionAsync();
+
+                Settings.Latitude = position.Latitude;
+                Settings.Longitude = position.Longitude;
+            }
+            else
+            {
+                Settings.AllowGpsLocation = false;
+            }
         }
 
         private async Task SendCurrentLocation()

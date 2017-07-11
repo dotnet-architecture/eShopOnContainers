@@ -11,6 +11,7 @@ using Microsoft.Extensions.HealthChecks;
 using Newtonsoft.Json.Serialization;
 using eShopOnContainers.WebSPA;
 using Microsoft.eShopOnContainers.BuildingBlocks;
+using WebSPA.Infrastructure;
 
 namespace eShopConContainers.WebSPA
 {
@@ -50,6 +51,7 @@ namespace eShopConContainers.WebSPA
                 checks.AddUrlCheck(Configuration["OrderingUrlHC"], TimeSpan.FromMinutes(minutes));
                 checks.AddUrlCheck(Configuration["BasketUrlHC"], TimeSpan.FromMinutes(minutes));
                 checks.AddUrlCheck(Configuration["IdentityUrlHC"], TimeSpan.FromMinutes(minutes));
+                checks.AddUrlCheck(Configuration["MarketingUrlHC"], TimeSpan.FromMinutes(minutes));
             });
 
             services.Configure<AppSettings>(Configuration);
@@ -92,6 +94,9 @@ namespace eShopConContainers.WebSPA
             //     }
             //     await next.Invoke();
             // });
+
+            //Seed Data
+            WebContextSeed.Seed(app, env, loggerFactory);
 
             app.Use(async (context, next) =>
             {

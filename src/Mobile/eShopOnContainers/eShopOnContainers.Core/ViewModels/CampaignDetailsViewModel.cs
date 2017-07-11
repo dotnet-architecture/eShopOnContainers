@@ -5,10 +5,13 @@
     using Models.Marketing;
     using Services.Marketing;
     using Base;
+    using System.Windows.Input;
+    using Xamarin.Forms;
 
     public class CampaignDetailsViewModel : ViewModelBase
     {
         private CampaignItem _campaign;
+        private bool _isDetailsSite;
         private readonly ICampaignService _campaignService;
 
         public CampaignDetailsViewModel(ICampaignService campaignService)
@@ -26,6 +29,16 @@
             }
         }
 
+        public bool IsDetailsSite
+        {
+            get => _isDetailsSite;
+            set
+            {
+                _isDetailsSite = value;
+                RaisePropertyChanged(() => IsDetailsSite);
+            }
+        }
+
         public override async Task InitializeAsync(object navigationData)
         {
             if (navigationData is int)
@@ -37,6 +50,13 @@
 
                 IsBusy = false;  
             }
+        }
+
+        public ICommand EnableDetailsSiteCommand => new Command(EnableDetailsSite);
+
+        private void EnableDetailsSite()
+        {
+            IsDetailsSite = true;
         }
     }
 }

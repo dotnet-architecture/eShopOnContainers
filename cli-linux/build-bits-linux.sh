@@ -3,7 +3,8 @@
 declare -x path=$1
 
 if [ -z "$path" ]; then 
-    $path="$(pwd)/../src"; 
+    $path="$(pwd)/../src";
+    echo -e "\e[33mNo path passed. Will use $path"
 fi
 
 declare -a projectList=(
@@ -30,9 +31,9 @@ do
     echo -e "\e[33m\tRemoving old publish output"
     pushd $path/$project
     rm -rf obj/Docker/publish
-    echo -e "\e[33m\tRestoring project"
+    echo -e "\e[33m\tRestoring project $project"
     dotnet restore
-    echo -e "\e[33m\tBuilding and publishing projects"
+    echo -e "\e[33m\tBuilding and publishing $project"
     dotnet publish -o obj/Docker/publish
     popd
 done

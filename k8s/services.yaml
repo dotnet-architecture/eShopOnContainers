@@ -59,6 +59,20 @@ kind: Service
 metadata:
   labels:
     app: eshop
+    component: graceperiodmanager
+  name: graceperiodmanager
+spec:
+  ports:
+  - port: 80
+  selector:
+    app: eshop
+    component: graceperiodmanager
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: eshop
     component: locations
   name: locations
 spec:

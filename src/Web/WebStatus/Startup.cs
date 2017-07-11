@@ -42,8 +42,10 @@ namespace WebStatus
                 checks.AddUrlCheckIfNotNull(Configuration["BasketUrl"], TimeSpan.FromMinutes(minutes));
                 checks.AddUrlCheckIfNotNull(Configuration["CatalogUrl"], TimeSpan.FromMinutes(minutes));
                 checks.AddUrlCheckIfNotNull(Configuration["IdentityUrl"], TimeSpan.FromMinutes(minutes));
+                checks.AddUrlCheckIfNotNull(Configuration["LocationsUrl"], TimeSpan.FromMinutes(minutes)); 
+                checks.AddUrlCheckIfNotNull(Configuration["MarketingUrl"], TimeSpan.FromMinutes(minutes));
                 checks.AddUrlCheckIfNotNull(Configuration["mvc"], TimeSpan.FromMinutes(minutes));
-                checks.AddUrlCheckIfNotNull(Configuration["spa"], TimeSpan.FromMinutes(minutes)); 
+                checks.AddUrlCheckIfNotNull(Configuration["spa"], TimeSpan.FromMinutes(minutes));
             });
             services.AddMvc();
         }

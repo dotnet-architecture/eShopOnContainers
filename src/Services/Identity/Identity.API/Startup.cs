@@ -153,7 +153,7 @@ namespace eShopOnContainers.Identity
 
             //Seed Data
             var hasher = new PasswordHasher<ApplicationUser>();
-            new ApplicationContextSeed(hasher).SeedAsync(app, loggerFactory).Wait();
+            new ApplicationContextSeed(hasher).SeedAsync(app, env, loggerFactory).Wait();
         }
 
         private async Task InitializeGrantStoreAndConfiguration(IApplicationBuilder app)
