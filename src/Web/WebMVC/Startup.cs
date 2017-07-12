@@ -100,6 +100,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
                 options.Scope.Add("orders");
                 options.Scope.Add("basket");
                 options.Scope.Add("marketing");
+                options.Scope.Add("locations");
             });
 
             services.AddAuthentication(options => {

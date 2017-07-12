@@ -96,6 +96,7 @@ namespace Identity.API.Configuration
                     AllowAccessTokensViaBrowser = false,
                     RequireConsent = false,
                     AllowOfflineAccess = true,
+                    AlwaysIncludeUserClaimsInIdToken = true,
                     RedirectUris = new List<string>
                     {
                         $"{clientsUrl["Mvc"]}/signin-oidc"
