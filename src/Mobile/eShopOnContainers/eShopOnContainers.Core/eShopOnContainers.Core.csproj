@@ -49,6 +49,7 @@
     </Compile>
     <Compile Include="Controls\CustomTabbedPage.cs" />
     <Compile Include="Controls\ToggleButton.cs" />
+    <Compile Include="Converters\DoubleConverter.cs" />
     <Compile Include="Converters\StringNullOrEmptyBoolConverter.cs" />
     <Compile Include="Converters\CountToBoolConverter.cs" />
     <Compile Include="Converters\DatetimeConverter.cs" />

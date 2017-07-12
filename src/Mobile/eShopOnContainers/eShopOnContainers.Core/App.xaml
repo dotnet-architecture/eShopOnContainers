@@ -111,6 +111,7 @@
             <converters:WebNavigatingEventArgsConverter x:Key="WebNavigatingEventArgsConverter" />
             <converters:WebNavigatedEventArgsConverter x:Key="WebNavigatedEventArgsConverter" />
             <converters:StringNullOrEmptyBoolConverter x:Key="StringNullOrEmptyBoolConverter" />
+            <converters:DoubleConverter x:Key="DoubleConverter" />
 
             <!-- STYLES -->
             <Style x:Key="ValidationErrorLabelStyle"

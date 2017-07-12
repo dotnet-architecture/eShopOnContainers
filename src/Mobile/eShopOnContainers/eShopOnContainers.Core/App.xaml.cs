@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using eShopOnContainers.Core.Helpers;
 using eShopOnContainers.Services;
 using eShopOnContainers.Core.ViewModels.Base;
@@ -79,8 +80,8 @@ namespace eShopOnContainers
 
                 var position = await locator.GetPositionAsync();
 
-                Settings.Latitude = position.Latitude;
-                Settings.Longitude = position.Longitude;
+                Settings.Latitude = position.Latitude.ToString();
+                Settings.Longitude = position.Longitude.ToString();
             }
             else
             {
@@ -92,8 +93,8 @@ namespace eShopOnContainers
         {
             var location = new Location
             {
-                Latitude = Settings.Latitude,
-                Longitude = Settings.Longitude
+                Latitude = double.Parse(Settings.Latitude, CultureInfo.InvariantCulture),
+                Longitude = double.Parse(Settings.Longitude, CultureInfo.InvariantCulture)
             };
 
             var locationService = ViewModelLocator.Resolve<ILocationService>();
