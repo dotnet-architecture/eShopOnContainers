@@ -28,6 +28,8 @@ using System.Threading.Tasks;
 
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus;
 using Microsoft.Azure.ServiceBus;
+using Swashbuckle.AspNetCore.Swagger;
+using System.Collections.Generic;
 
 namespace Microsoft.eShopOnContainers.Services.Basket.API
 {
@@ -47,18 +49,17 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
-        {
-
-            services.AddHealthChecks(checks =>
-            {
-                checks.AddValueTaskCheck("HTTP Endpoint", () => new ValueTask<IHealthCheckResult>(HealthCheckResult.Healthy("Ok")));
-            });
-
+        {            
             // Add framework services.
             services.AddMvc(options =>
             {
                 options.Filters.Add(typeof(HttpGlobalExceptionFilter));
             }).AddControllersAsServices();
+
+            services.AddHealthChecks(checks =>
+            {
+                checks.AddValueTaskCheck("HTTP Endpoint", () => new ValueTask<IHealthCheckResult>(HealthCheckResult.Healthy("Ok")));
+            });
 
             services.Configure<BasketSettings>(Configuration);
 
@@ -118,6 +119,20 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
                     Description = "The Basket Service HTTP API",
                     TermsOfService = "Terms Of Service"
                 });
+
+                options.AddSecurityDefinition("oauth2", new OAuth2Scheme
+                {
+                    Type = "oauth2",
+                    Flow = "implicit",
+                    AuthorizationUrl = $"{Configuration.GetValue<string>("IdentityUrlExternal")}/connect/authorize",
+                    TokenUrl = $"{Configuration.GetValue<string>("IdentityUrlExternal")}/connect/token",
+                    Scopes = new Dictionary<string, string>()
+                    {
+                        { "basket", "Basket API" }
+                    }
+                });
+
+                options.OperationFilter<AuthorizeCheckOperationFilter>();
             });
 
             services.AddCors(options =>
@@ -185,6 +200,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
                .UseSwaggerUI(c =>
                {
                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                   c.ConfigureOAuth2("basketswaggerui", "", "", "Basket Swagger UI");
                });
 
             ConfigureEventBus(app);

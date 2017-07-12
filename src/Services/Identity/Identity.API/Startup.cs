@@ -163,6 +163,10 @@ namespace eShopOnContainers.Identity
             clientUrls.Add("Mvc", Configuration.GetValue<string>("MvcClient"));
             clientUrls.Add("Spa", Configuration.GetValue<string>("SpaClient"));
             clientUrls.Add("Xamarin", Configuration.GetValue<string>("XamarinCallback"));
+            clientUrls.Add("LocationsApi", Configuration.GetValue<string>("LocationApiClient"));
+            clientUrls.Add("MarketingApi", Configuration.GetValue<string>("MarketingApiClient"));
+            clientUrls.Add("BasketApi", Configuration.GetValue<string>("BasketApiClient"));
+            clientUrls.Add("OrderingApi", Configuration.GetValue<string>("OrderingApiClient"));
 
             using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {

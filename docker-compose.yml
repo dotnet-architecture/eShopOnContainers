@@ -18,6 +18,7 @@ services:
     depends_on:
       - basket.data
       - identity.api
+      - rabbitmq
 
   catalog.api:
     image: eshop/catalog.api:${TAG:-latest}

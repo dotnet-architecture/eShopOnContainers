@@ -146,6 +146,66 @@ namespace Identity.API.Configuration
                         "locations",
                         "marketing"
                     },
+                },
+                new Client
+                {
+                    ClientId = "locationsswaggerui",
+                    ClientName = "Locations Swagger UI",
+                    AllowedGrantTypes = GrantTypes.Implicit,
+                    AllowAccessTokensViaBrowser = true,
+
+                    RedirectUris = { $"{clientsUrl["LocationsApi"]}/swagger/o2c.html" },
+                    PostLogoutRedirectUris = { $"{clientsUrl["LocationsApi"]}/swagger/" },
+
+                    AllowedScopes =
+                    {
+                        "locations"
+                    }
+                },
+                new Client
+                {
+                    ClientId = "marketingswaggerui",
+                    ClientName = "Marketing Swagger UI",
+                    AllowedGrantTypes = GrantTypes.Implicit,
+                    AllowAccessTokensViaBrowser = true,
+
+                    RedirectUris = { $"{clientsUrl["MarketingApi"]}/swagger/o2c.html" },
+                    PostLogoutRedirectUris = { $"{clientsUrl["MarketingApi"]}/swagger/" },
+
+                    AllowedScopes =
+                    {
+                        "marketing"
+                    }
+                },
+                new Client
+                {
+                    ClientId = "basketswaggerui",
+                    ClientName = "Basket Swagger UI",
+                    AllowedGrantTypes = GrantTypes.Implicit,
+                    AllowAccessTokensViaBrowser = true,
+
+                    RedirectUris = { $"{clientsUrl["BasketApi"]}/swagger/o2c.html" },
+                    PostLogoutRedirectUris = { $"{clientsUrl["BasketApi"]}/swagger/" },
+
+                    AllowedScopes =
+                    {
+                        "basket"
+                    }
+                },
+                new Client
+                {
+                    ClientId = "orderingswaggerui",
+                    ClientName = "Ordering Swagger UI",
+                    AllowedGrantTypes = GrantTypes.Implicit,
+                    AllowAccessTokensViaBrowser = true,
+
+                    RedirectUris = { $"{clientsUrl["OrderingApi"]}/swagger/o2c.html" },
+                    PostLogoutRedirectUris = { $"{clientsUrl["OrderingApi"]}/swagger/" },
+
+                    AllowedScopes =
+                    {
+                        "orders"
+                    }
                 }
             };
         }

@@ -28,7 +28,8 @@
     using System.Threading.Tasks;
     using Extensions.HealthChecks;
     using Marketing.API.IntegrationEvents.Handlers;
-
+    using Swashbuckle.AspNetCore.Swagger;
+    using System.Collections.Generic;
 
     public class Startup
     {
@@ -129,6 +130,20 @@
                     Description = "The Marketing Service HTTP API",
                     TermsOfService = "Terms Of Service"
                 });
+
+                options.AddSecurityDefinition("oauth2", new OAuth2Scheme
+                {
+                    Type = "oauth2",
+                    Flow = "implicit",
+                    AuthorizationUrl = $"{Configuration.GetValue<string>("IdentityUrlExternal")}/connect/authorize",
+                    TokenUrl = $"{Configuration.GetValue<string>("IdentityUrlExternal")}/connect/token",
+                    Scopes = new Dictionary<string, string>()
+                    {
+                        { "marketing", "Marketing API" }
+                    }
+                });
+
+                options.OperationFilter<AuthorizeCheckOperationFilter>();
             });
 
             services.AddCors(options =>
@@ -171,6 +186,7 @@
                .UseSwaggerUI(c =>
                {
                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                   c.ConfigureOAuth2("marketingswaggerui", "", "", "Marketing Swagger UI");
                });            
 
             var context = (MarketingContext)app

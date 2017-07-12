@@ -1,13 +1,14 @@
-﻿
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
-namespace Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure.Filters
+namespace Microsoft.eShopOnContainers.Services.Marketing.API.Infrastructure.Filters
 {
-    internal class AuthorizeCheckOperationFilter : IOperationFilter
+    public class AuthorizeCheckOperationFilter : IOperationFilter
     {
         public void Apply(Operation operation, OperationFilterContext context)
         {
@@ -23,7 +24,7 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure.Filt
                 operation.Security = new List<IDictionary<string, IEnumerable<string>>>();
                 operation.Security.Add(new Dictionary<string, IEnumerable<string>>
                 {
-                    { "oauth2", new [] { "locationsapi" } }
+                    { "oauth2", new [] { "marketingapi" } }
                 });
             }
         }
