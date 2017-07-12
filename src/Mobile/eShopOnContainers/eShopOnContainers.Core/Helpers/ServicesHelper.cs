@@ -1,5 +1,6 @@
 ﻿using eShopOnContainers.Core.Models.Basket;
 using eShopOnContainers.Core.Models.Catalog;
+using eShopOnContainers.Core.Models.Marketing;
 using eShopOnContainers.Core.ViewModels.Base;
 using System;
 using System.Collections.Generic;
@@ -67,6 +68,39 @@ namespace eShopOnContainers.Core.Helpers
                             var serviceIp = serverResult[0].Value;
                             var localIp = localResult[0].Value;
                             basketItem.PictureUrl = basketItem.PictureUrl.Replace(serviceIp, localIp);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+        }
+
+        public static void FixCatalogItemPictureUri(IEnumerable<CampaignItem> campaignItems)
+        {
+            if (campaignItems == null)
+            {
+                return;
+            }
+
+            try
+            {
+                if (!ViewModelLocator.UseMockService
+                    && Settings.UrlBase != GlobalSetting.DefaultEndpoint)
+                {
+                    foreach (var catalogItem in campaignItems)
+                    {
+                        MatchCollection serverResult = IpRegex.Matches(catalogItem.PictureUri);
+                        MatchCollection localResult = IpRegex.Matches(Settings.UrlBase);
+
+                        if (serverResult.Count != -1 && localResult.Count != -1)
+                        {
+                            var serviceIp = serverResult[0].Value;
+                            var localIp = localResult[0].Value;
+
+                            catalogItem.PictureUri = catalogItem.PictureUri.Replace(serviceIp, localIp);
                         }
                     }
                 }

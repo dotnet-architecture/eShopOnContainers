@@ -1,0 +1,21 @@
+@import '../../../variables';
+
+.esh-header {
+    $header-height: 4rem;
+
+    background-color: $color-brand;
+    height: $header-height;
+
+    &-back {
+        color: rgba($color-foreground-brighter, .5);
+        line-height: $header-height;
+        text-decoration: none;
+        text-transform: uppercase;
+        transition: color $animation-speed-default;
+
+        &:hover {
+            color: $color-foreground-brighter;
+            transition: color $animation-speed-default;
+        }
+    }
+}

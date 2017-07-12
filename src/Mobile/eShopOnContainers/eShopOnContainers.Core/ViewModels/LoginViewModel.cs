@@ -214,8 +214,10 @@ namespace eShopOnContainers.Core.ViewModels
             if (Settings.UseMocks)
             {
                 Settings.AuthAccessToken = string.Empty;
-                Settings.AuthIdToken = string.Empty;
+                Settings.AuthIdToken = string.Empty; 
             }
+
+            Settings.UseFakeLocation = false;
         }
 
         private async Task NavigateAsync(string url)
@@ -241,7 +243,6 @@ namespace eShopOnContainers.Core.ViewModels
                     {
                         Settings.AuthAccessToken = accessToken;
                         Settings.AuthIdToken = authResponse.IdentityToken;
-
                         await NavigationService.NavigateToAsync<MainViewModel>();
                         await NavigationService.RemoveLastFromBackStackAsync();
                     }

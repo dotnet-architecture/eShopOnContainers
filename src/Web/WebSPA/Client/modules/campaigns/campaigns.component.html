@@ -1,0 +1,34 @@
+﻿<esh-header url="/catalog">Back to catalog</esh-header>
+<div class="container">
+    <div class="alert alert-warning esh-campaign-alert" role="alert" [hidden]="!errorReceived">
+        Error requesting campaigns list, please try later on
+    </div>
+    <div *ngIf="campaigns?.data?.length > 0">
+        <esh-pager [model]="paginationInfo" (changed)="onPageChanged($event)"></esh-pager>        
+        <div class="card-group esh-campaign-items row">
+            <div class="esh-campaign-item col-md-4"
+                 *ngFor="let item of campaigns.data">
+
+                <div class="card-block">
+                    <h4 class="card-title esh-campaign-name">{{item.name}}</h4>
+                    <img class="card-img-top esh-campaign-thumbnail" src="{{item.pictureUri}}" alt="{{item.name}}">
+                    <button *ngIf="isCampaignDetailFunctionEnabled; else showDefaultDetailsLink" [ngClass]="{'esh-campaigns-button': true}" (click)="onNavigateToDetails(item.detailsUri)">More details</button>
+                    <ng-template #showDefaultDetailsLink>
+                        <input [ngClass]="{'esh-campaign-button': true}" type="submit" value="More details" routerLink="/campaigns/{{item.id}}">
+                    </ng-template>
+                </div>
+                <div class="card-footer">                    
+                    <small class="text-muted">
+                        From {{item.from | date }} To {{item.to | date }}
+                    </small>
+                </div>
+            </div>
+        </div>
+
+        <esh-pager [model]="paginationInfo" (changed)="onPageChanged($event)"></esh-pager>
+    </div>
+    <div *ngIf="campaigns?.data?.length == 0">
+        <span>THERE ARE NO RESULTS THAT MATCH YOUR SEARCH</span>
+    </div>
+</div>
+

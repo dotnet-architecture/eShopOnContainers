@@ -189,7 +189,6 @@ ClientBin/
 *~
 *.dbmdl
 *.dbproj.schemaview
-*.pfx
 *.publishsettings
 node_modules/
 orleans.codegen.cs
@@ -259,3 +258,4 @@ pub/
 #Ignore marker-file used to know which docker files we have.
 .eshopdocker_*
 /src/Web/WebMVC/wwwroot/lib
+/src/Web/WebMVC/wwwroot/css/site.min.css

@@ -31,8 +31,8 @@
                 .ForSqlServerUseSequenceHiLo("campaign_hilo")
                 .IsRequired();
 
-            builder.Property(m => m.Description)
-                .HasColumnName("Description")
+            builder.Property(m => m.Name)
+                .HasColumnName("Name")
                 .IsRequired();
 
             builder.Property(m => m.From)
@@ -45,6 +45,10 @@
 
             builder.Property(m => m.Description)
                 .HasColumnName("Description")
+                .IsRequired();
+
+            builder.Property(m => m.PictureUri)
+                .HasColumnName("PictureUri")
                 .IsRequired();
 
             builder.HasMany(m => m.Rules)
@@ -64,9 +68,9 @@
                .IsRequired();
 
             builder.HasDiscriminator<int>("RuleTypeId")
-                .HasValue<UserProfileRule>((int)RuleTypeEnum.UserProfileRule)
-                .HasValue<PurchaseHistoryRule>((int)RuleTypeEnum.PurchaseHistoryRule)
-                .HasValue<UserLocationRule>((int)RuleTypeEnum.UserLocationRule);
+                .HasValue<UserProfileRule>(RuleType.UserProfileRule.Id)
+                .HasValue<PurchaseHistoryRule>(RuleType.PurchaseHistoryRule.Id)
+                .HasValue<UserLocationRule>(RuleType.UserLocationRule.Id);
 
             builder.Property(r => r.Description)
                 .HasColumnName("Description")

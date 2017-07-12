@@ -12,6 +12,7 @@ using Microsoft.Extensions.HealthChecks;
 using Microsoft.Extensions.Logging;
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using WebMVC.Infrastructure;
 
 namespace Microsoft.eShopOnContainers.WebMVC
 {
@@ -63,6 +64,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
                 checks.AddUrlCheck(Configuration["OrderingUrl"] + "/hc", TimeSpan.FromMinutes(minutes));
                 checks.AddUrlCheck(Configuration["BasketUrl"] + "/hc", TimeSpan.FromMinutes(minutes));
                 checks.AddUrlCheck(Configuration["IdentityUrl"] + "/hc", TimeSpan.FromMinutes(minutes));
+                checks.AddUrlCheck(Configuration["MarketingUrl"] + "/hc", TimeSpan.FromMinutes(minutes));
             });
 
             // Add application services.
@@ -70,6 +72,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
             services.AddTransient<ICatalogService, CatalogService>();
             services.AddTransient<IOrderingService, OrderingService>();
             services.AddTransient<IBasketService, BasketService>();
+            services.AddTransient<ICampaignService, CampaignService>();
             services.AddTransient<IIdentityParser<ApplicationUser>, IdentityParser>();
 
             if (Configuration.GetValue<string>("UseResilientHttp") == bool.TrueString)
@@ -111,22 +114,26 @@ namespace Microsoft.eShopOnContainers.WebMVC
 
             var identityUrl = Configuration.GetValue<string>("IdentityUrl");
             var callBackUrl = Configuration.GetValue<string>("CallBackUrl");
+            var useLoadTest = Configuration.GetValue<bool>("UseLoadTest");
             var log = loggerFactory.CreateLogger("identity");
 
             var oidcOptions = new OpenIdConnectOptions
             {
                 AuthenticationScheme = "oidc",
                 SignInScheme = "Cookies",
-                Authority = identityUrl.ToString(),
-                PostLogoutRedirectUri = callBackUrl.ToString(),
-                ClientId = "mvc",
+                Authority = identityUrl,
+                PostLogoutRedirectUri = callBackUrl,
                 ClientSecret = "secret",
-                ResponseType = "code id_token",
+                ClientId = useLoadTest ? "mvctest" : "mvc",
+                ResponseType = useLoadTest ? "code id_token token" : "code id_token",
                 SaveTokens = true,
                 GetClaimsFromUserInfoEndpoint = true,
                 RequireHttpsMetadata = false,
-                Scope = { "openid", "profile", "orders", "basket" }
+                Scope = { "openid", "profile", "orders", "basket", "marketing", "locations" }
             };
+
+            //Seed Data
+            WebContextSeed.Seed(app, env, loggerFactory);
 
             //Wait untill identity service is ready on compose. 
             app.UseOpenIdConnectAuthentication(oidcOptions);

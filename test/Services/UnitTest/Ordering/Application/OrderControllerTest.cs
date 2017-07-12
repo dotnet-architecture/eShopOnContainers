@@ -93,53 +93,7 @@ namespace UnitTest.Ordering.Application
             //Assert
             var viewResult = Assert.IsType<ViewResult>(actionResult);
             Assert.IsAssignableFrom<Order>(viewResult.ViewData.Model);
-        }
-
-        [Fact]
-        public async Task Post_create_order_success()
-        {
-            //Arrange
-            var fakeOrder = GetFakeOrder();
-
-            _basketServiceMock.Setup(x => x.CleanBasket(It.IsAny<ApplicationUser>()))
-                .Returns(Task.FromResult(1));
-
-            _orderServiceMock.Setup(x => x.CreateOrder(It.IsAny<Order>()))
-                .Returns(Task.FromResult(1));
-
-            //Act
-            var orderController = new OrderController(_orderServiceMock.Object, _basketServiceMock.Object, _identityParserMock.Object);
-            orderController.ControllerContext.HttpContext = _contextMock.Object;
-            var actionResult = await orderController.Create(fakeOrder, "fakeAction");
-
-            //Assert
-            var redirectToActionResult = Assert.IsType<RedirectToActionResult>(actionResult);
-            Assert.Null(redirectToActionResult.ControllerName);
-            Assert.Equal("Index", redirectToActionResult.ActionName);
-        }
-
-        [Fact]
-        public async Task Post_create_order_fail()
-        {
-            //Arrange
-            var fakeOrder = GetFakeOrder();
-
-            _basketServiceMock.Setup(x => x.CleanBasket(It.IsAny<ApplicationUser>()))
-                .Returns(Task.FromResult(1));
-
-            _orderServiceMock.Setup(x => x.CreateOrder(It.IsAny<Order>()))
-                .Returns(Task.FromResult(1));
-
-            //Act
-            var orderController = new OrderController(_orderServiceMock.Object, _basketServiceMock.Object, _identityParserMock.Object);
-            orderController.ControllerContext.HttpContext = _contextMock.Object;
-            orderController.ModelState.AddModelError("fakeError", "fakeError");
-            var actionResult = await orderController.Create(fakeOrder, "action");
-
-            //Assert
-            var viewResult = Assert.IsType<ViewResult>(actionResult);
-            Assert.IsAssignableFrom<Order>(viewResult.ViewData.Model);
-        }
+        }        
 
         private BasketModel GetFakeBasket(string buyerId)
         {

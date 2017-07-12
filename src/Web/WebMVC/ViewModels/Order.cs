@@ -1,4 +1,5 @@
-﻿using Microsoft.eShopOnContainers.WebMVC.ViewModels.Annotations;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.eShopOnContainers.WebMVC.ViewModels.Annotations;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -6,6 +7,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using WebMVC.Models;
 
 namespace Microsoft.eShopOnContainers.WebMVC.ViewModels
 {
@@ -18,6 +20,8 @@ namespace Microsoft.eShopOnContainers.WebMVC.ViewModels
         public string Status { get; set; }
 
         public decimal Total {get;set;}
+
+        public string Description { get; set; }
 
         [Required]
         public string City { get; set; }
@@ -49,6 +53,9 @@ namespace Microsoft.eShopOnContainers.WebMVC.ViewModels
 
         public string Buyer { get; set; }
 
+        public List<SelectListItem> ActionCodeSelectList =>
+           GetActionCodesByCurrentState();
+
         // See the property initializer syntax below. This
         // initializes the compiler generated field for this
         // auto-implemented property.
@@ -69,6 +76,25 @@ namespace Microsoft.eShopOnContainers.WebMVC.ViewModels
             var year = $"20{CardExpirationShort.Split('/')[1]}";
 
             CardExpiration = new DateTime(int.Parse(year), int.Parse(month), 1);
+        }
+
+        private List<SelectListItem> GetActionCodesByCurrentState()
+        {
+            var actions = new List<OrderProcessAction>();
+            switch (Status?.ToLower())
+            {
+                case "paid":
+                    actions.Add(OrderProcessAction.Ship);
+                    break;
+            }
+
+            var result = new List<SelectListItem>();
+            actions.ForEach(action =>
+            {
+                result.Add(new SelectListItem { Text = action.Name, Value = action.Code });
+            });
+
+            return result;
         }
     }
 

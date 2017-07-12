@@ -1,8 +1,7 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Marketing.API
 {
     using System.IO;
-    using Microsoft.AspNetCore.Builder;
-    using Microsoft.AspNetCore.Hosting;
+    using AspNetCore.Hosting;
 
     public class Program
     {
@@ -10,8 +9,10 @@
         {
             var host = new WebHostBuilder()
                 .UseKestrel()
+                .UseHealthChecks("/hc")
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseStartup<Startup>()
+                .UseWebRoot("Pics")
                 .Build();
 
             host.Run();

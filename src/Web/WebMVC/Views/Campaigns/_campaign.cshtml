@@ -1,0 +1,21 @@
+﻿@model CampaignItem
+
+    <form asp-controller="Campaigns" asp-action="Details" asp-route-id="@Model.Id">
+        <div class="card-block">
+            <h4 class="card-title esh-campaigns-name">@Model.Name</h4>
+            <img class="card-img-top esh-campaigns-thumbnail" src="@Model.PictureUri" alt="@Model.Name">
+            @if (ViewBag.IsCampaignDetailFunctionActive == true)
+            {
+                <input type="button" value="More Details" class="btn esh-campaigns-button" onClick="window.open('@Model.DetailsUri')">
+            }
+            else
+            {
+                <input class="esh-campaigns-button" type="submit" value="More details">
+            }            
+        </div>
+        <div class="card-footer">
+            <small class="text-muted">
+                From @Model.From.ToString("MMMM dd, yyyy") until @Model.To.ToString("MMMM dd, yyyy")
+            </small>
+        </div>
+    </form>

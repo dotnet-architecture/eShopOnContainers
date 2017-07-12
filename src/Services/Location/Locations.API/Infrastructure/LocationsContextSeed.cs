@@ -24,6 +24,7 @@
             {
                 await SetIndexes();
                 await SetUSLocations();
+                await SetBarcelonaLocations();
             }
         }
 
@@ -32,7 +33,8 @@
             var us = new Locations()
             {
                 Code = "US",
-                Description = "United States"
+                Description = "United States",
+                LocationId = 1
             };
             us.SetLocation(-101.357386, 41.650455);
             us.SetArea(GetUSPoligon());
@@ -46,7 +48,8 @@
             {
                 Parent_Id = parentId,
                 Code = "WHT",
-                Description = "Washington"
+                Description = "Washington",
+                LocationId = 2
             };
             wht.SetLocation(-119.542781, 47.223652);
             wht.SetArea(GetWashingtonPoligon());
@@ -61,7 +64,8 @@
             {
                 Parent_Id = parentId,
                 Code = "SEAT",
-                Description = "Seattle"
+                Description = "Seattle",
+                LocationId = 3
             };
             stl.SetArea(GetSeattlePoligon());
             stl.SetLocation(-122.330747, 47.603111);
@@ -74,12 +78,27 @@
             {
                 Parent_Id = parentId,
                 Code = "REDM",
-                Description = "Redmond"
+                Description = "Redmond",
+                LocationId = 4
             };
             rdm.SetLocation(-122.122887, 47.674961);
             rdm.SetArea(GetRedmondPoligon());
             await ctx.Locations.InsertOneAsync(rdm);
         }
+
+        static async Task SetBarcelonaLocations()
+        {
+            var bcn = new Locations()
+            {
+                Code = "BCN",
+                Description = "Barcelona",
+                LocationId = 5
+            };
+            bcn.SetLocation(2.156453, 41.395226);
+            bcn.SetArea(GetBarcelonaPoligon());
+            await ctx.Locations.InsertOneAsync(bcn);
+        }
+
 
         static async Task SetIndexes()
         {
@@ -140,6 +159,19 @@
                         new GeoJson2DGeographicCoordinates(-116.96912, 49.04282),
                         new GeoJson2DGeographicCoordinates(-124.68633, 48.8943)
                      };
+        }
+
+        static List<GeoJson2DGeographicCoordinates> GetBarcelonaPoligon()
+        {
+            return new List<GeoJson2DGeographicCoordinates>()
+            {
+                new GeoJson2DGeographicCoordinates(2.033879, 41.383858),
+                new GeoJson2DGeographicCoordinates(2.113741, 41.419068),
+                new GeoJson2DGeographicCoordinates(2.188778, 41.451153),
+                new GeoJson2DGeographicCoordinates(2.235266, 41.418033),
+                new GeoJson2DGeographicCoordinates(2.137101, 41.299536),
+                new GeoJson2DGeographicCoordinates(2.033879, 41.383858)
+            };
         }
     }
 }

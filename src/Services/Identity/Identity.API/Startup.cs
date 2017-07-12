@@ -16,6 +16,9 @@ using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.HealthChecks;
+using Identity.API.Certificate;
+using Autofac.Extensions.DependencyInjection;
+using Autofac;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -47,8 +50,9 @@ namespace eShopOnContainers.Identity
         public IConfigurationRoot Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
-        {
+        public IServiceProvider ConfigureServices(IServiceCollection services)
+        {            
+
             // Add framework services.
             services.AddDbContext<ApplicationDbContext>(options =>
              options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
@@ -99,6 +103,10 @@ namespace eShopOnContainers.Identity
                     builder.UseSqlServer(connectionString, options =>
                         options.MigrationsAssembly(migrationsAssembly)))
                 .Services.AddTransient<IProfileService, ProfileService>();
+
+            var container = new ContainerBuilder();
+            container.Populate(services);
+            return new AutofacServiceProvider(container.Build());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -145,7 +153,7 @@ namespace eShopOnContainers.Identity
 
             //Seed Data
             var hasher = new PasswordHasher<ApplicationUser>();
-            new ApplicationContextSeed(hasher).SeedAsync(app, loggerFactory).Wait();
+            new ApplicationContextSeed(hasher).SeedAsync(app, env, loggerFactory).Wait();
         }
 
         private async Task InitializeGrantStoreAndConfiguration(IApplicationBuilder app)
@@ -155,6 +163,10 @@ namespace eShopOnContainers.Identity
             clientUrls.Add("Mvc", Configuration.GetValue<string>("MvcClient"));
             clientUrls.Add("Spa", Configuration.GetValue<string>("SpaClient"));
             clientUrls.Add("Xamarin", Configuration.GetValue<string>("XamarinCallback"));
+            clientUrls.Add("LocationsApi", Configuration.GetValue<string>("LocationApiClient"));
+            clientUrls.Add("MarketingApi", Configuration.GetValue<string>("MarketingApiClient"));
+            clientUrls.Add("BasketApi", Configuration.GetValue<string>("BasketApiClient"));
+            clientUrls.Add("OrderingApi", Configuration.GetValue<string>("OrderingApiClient"));
 
             using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {
