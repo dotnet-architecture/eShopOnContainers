@@ -219,7 +219,7 @@
                             Text="Latitude"
                             Style="{StaticResource HeaderLabelStyle}"/>
                         <Entry
-                            Text="{Binding Latitude, Mode=TwoWay}"
+                            Text="{Binding Latitude, Mode=TwoWay, Converter={StaticResource DoubleConverter}}"
                             Keyboard="Text">
                             <Entry.Style>
                                 <OnPlatform 
@@ -233,7 +233,7 @@
                             Text="Longitude"
                             Style="{StaticResource HeaderLabelStyle}"/>
                         <Entry
-                            Text="{Binding Longitude, Mode=TwoWay}"
+                            Text="{Binding Longitude, Mode=TwoWay, Converter={StaticResource DoubleConverter}}"
                             Keyboard="Text">
                             <Entry.Style>
                                 <OnPlatform 

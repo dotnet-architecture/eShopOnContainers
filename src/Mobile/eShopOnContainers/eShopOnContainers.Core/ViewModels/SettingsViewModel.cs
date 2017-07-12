@@ -1,4 +1,6 @@
-﻿namespace eShopOnContainers.Core.ViewModels
+﻿using System.Globalization;
+
+namespace eShopOnContainers.Core.ViewModels
 {
     using System.Windows.Input;
     using Xamarin.Forms;
@@ -34,8 +36,8 @@
 
             _useAzureServices = !Settings.UseMocks;
             _endpoint = Settings.UrlBase;
-            _latitude = Settings.Latitude;
-            _longitude = Settings.Longitude;
+            _latitude = double.Parse(Settings.Latitude, CultureInfo.CurrentCulture);
+            _longitude = double.Parse(Settings.Longitude, CultureInfo.CurrentCulture);
             _useFakeLocation = Settings.UseFakeLocation;
             _allowGpsLocation = Settings.AllowGpsLocation;
             _gpsWarningMessage = string.Empty;
@@ -325,13 +327,13 @@
         private void UpdateLatitude()
         {
             // Update fake latitude (save to local storage)
-            Settings.Latitude = _latitude;
+            Settings.Latitude = _latitude.ToString();
         }
 
         private void UpdateLongitude()
         {
             // Update fake longitude (save to local storage)
-            Settings.Longitude = _longitude;
+            Settings.Longitude = _longitude.ToString();
         }
 
         private void UpdateAllowGpsLocation()

@@ -69,16 +69,16 @@ namespace eShopOnContainers.Core.Helpers
             set => AppSettings.AddOrUpdateValue<bool>(IdUseFakeLocation, value);
         }
 
-        public static double Latitude
+        public static string Latitude
         {
-            get => AppSettings.GetValueOrDefault<double>(IdLatitude, FakeLatitudeDefault);
-            set => AppSettings.AddOrUpdateValue<double>(IdLatitude, value);
+            get => AppSettings.GetValueOrDefault<string>(IdLatitude, FakeLatitudeDefault.ToString());
+            set => AppSettings.AddOrUpdateValue<string>(IdLatitude, value);
         }
 
-        public static double Longitude
+        public static string Longitude
         {
-            get => AppSettings.GetValueOrDefault<double>(IdLongitude, FakeLongitudeDefault);
-            set => AppSettings.AddOrUpdateValue<double>(IdLongitude, value);
+            get => AppSettings.GetValueOrDefault<string>(IdLongitude, FakeLongitudeDefault.ToString());
+            set => AppSettings.AddOrUpdateValue<string>(IdLongitude, value);
         }
 
         public static bool AllowGpsLocation
