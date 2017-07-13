@@ -1,0 +1,17 @@
+﻿<esh-header url="/campaigns">Back to campaigns</esh-header>
+<div class="container">
+    <div class="esh-campaign_detail">
+        <div class="card esh-campaigns-items">
+            <img class="card-img-top" src="{{campaign.pictureUri}}" alt="{{campaign.name}}">
+            <div class="card-block">
+                <h4 class="card-title">{{campaign.name}}</h4>
+                <p class="card-text">{{campaign.description}}</p>
+                <p class="card-text">
+                    <small class="text-muted">
+                        From {{campaign.from | date}} Until {{campaign.to | date}}
+                    </small>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

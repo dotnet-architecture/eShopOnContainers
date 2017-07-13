@@ -1,10 +1,14 @@
-version: '2'
+version: '2.1'
 
 services:
   ci-build:
     image: microsoft/aspnetcore-build:1.1.2
     volumes:
       - .:/src
+      - ./cli-linux:/cli-linux
     working_dir: /src
-    command: /bin/bash -c "pushd ./src/Web/WebSPA && npm rebuild node-sass && popd && dotnet restore ./eShopOnContainers-ServicesAndWebApps.sln && dotnet publish ./eShopOnContainers-ServicesAndWebApps.sln -c Release -o ./obj/Docker/publish"
+#    DO NOT USE the sln file to compile because msbuild issue (https://github.com/Microsoft/msbuild/issues/2153)
+#    command: /bin/bash -c "pushd ./src/Web/WebSPA && npm rebuild node-sass && popd && dotnet restore ./eShopOnContainers-ServicesAndWebApps.sln && dotnet publish ./eShopOnContainers-ServicesAndWebApps.sln -c Release -o ./obj/Docker/publish"
+#    NOTE: Using build-bits-linux.sh triggers the same MSBUILD error :( (but at least, less frequently)
+    command: /bin/bash -c "pushd ./src/Web/WebSPA && npm rebuild node-sass && popd && pushd /cli-linux && ./build-bits-linux.sh /src"
     

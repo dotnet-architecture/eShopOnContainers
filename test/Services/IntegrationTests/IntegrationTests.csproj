@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp1.1</TargetFramework>
-    <AssemblyName>IntegrationTests</AssemblyName>
+    <AssemblyName>FunctionalTests</AssemblyName>
     <PackageId>FunctionalTests</PackageId>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
     <PackageTargetFallback>$(PackageTargetFallback);netstandard1.6.1;dnxcore50;portable-net451+win8</PackageTargetFallback>
@@ -18,6 +18,9 @@
 
   <ItemGroup>
     <!--<Content Include="settings.json;web.config">-->
+    <Content Include="Services\Basket\appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Services\Catalog\settings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -38,6 +41,7 @@
     <ProjectReference Include="..\..\..\src\Services\Location\Locations.API\Locations.API.csproj" />
     <ProjectReference Include="..\..\..\src\Services\Marketing\Marketing.API\Marketing.API.csproj" />
     <ProjectReference Include="..\..\..\src\Services\Ordering\Ordering.API\Ordering.API.csproj" />
+    <ProjectReference Include="..\..\..\src\Web\WebMVC\WebMVC.csproj" />
   </ItemGroup>
 
   <ItemGroup>

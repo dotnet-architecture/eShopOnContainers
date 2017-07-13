@@ -1,23 +1,40 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Marketing.API.Controllers
+﻿using Microsoft.eShopOnContainers.Services.Marketing.API.Infrastructure.Services;
+
+namespace Microsoft.eShopOnContainers.Services.Marketing.API.Controllers
 {
-    using Microsoft.AspNetCore.Mvc;
-    using Microsoft.eShopOnContainers.Services.Marketing.API.Infrastructure;
-    using System.Threading.Tasks;
-    using Microsoft.eShopOnContainers.Services.Marketing.API.Model;
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.eShopOnContainers.Services.Marketing.API.Dto;
+    using System;
+    using System.Linq;
     using System.Collections.Generic;
-    using Microsoft.AspNetCore.Authorization;
+    using Infrastructure.Repositories;
+    using AspNetCore.Mvc;
+    using Infrastructure;
+    using System.Threading.Tasks;
+    using Model;
+    using EntityFrameworkCore;
+    using Dto;
+    using AspNetCore.Authorization;
+    using Extensions.Options;
+    using Microsoft.eShopOnContainers.Services.Marketing.API.ViewModel;
+    using Microsoft.AspNetCore.Http;
 
     [Route("api/v1/[controller]")]
     [Authorize]
     public class CampaignsController : Controller
     {
         private readonly MarketingContext _context;
+        private readonly MarketingSettings _settings;
+        private readonly IMarketingDataRepository _marketingDataRepository;
+        private readonly IIdentityService _identityService;
 
-        public CampaignsController(MarketingContext context)
+        public CampaignsController(MarketingContext context,
+            IMarketingDataRepository marketingDataRepository,
+             IOptionsSnapshot<MarketingSettings> settings,
+            IIdentityService identityService)
         {
             _context = context;
+            _marketingDataRepository = marketingDataRepository;
+            _settings = settings.Value;
+            _identityService = identityService;
         }
 
         [HttpGet]
@@ -82,10 +99,11 @@
                 return NotFound();
             }
 
+            campaignToUpdate.Name = campaignDto.Name;
             campaignToUpdate.Description = campaignDto.Description;
             campaignToUpdate.From = campaignDto.From;
             campaignToUpdate.To = campaignDto.To;
-            campaignToUpdate.Url = campaignDto.Url;
+            campaignToUpdate.PictureUri = campaignDto.PictureUri;
 
             await _context.SaveChangesAsync();
 
@@ -112,6 +130,45 @@
             return NoContent();
         }
 
+        [HttpGet("user")]
+        public async Task<IActionResult> GetCampaignsByUserId( int pageSize = 10, int pageIndex = 0)
+        {
+            var userId = _identityService.GetUserIdentity();
+
+            var marketingData = await _marketingDataRepository.GetAsync(userId.ToString());
+
+            var campaignDtoList = new List<CampaignDTO>();
+            
+            if (marketingData != null)
+            {
+                var locationIdCandidateList = marketingData.Locations.Select(x => x.LocationId);
+                var userCampaignList = await _context.Rules
+                    .OfType<UserLocationRule>()
+                    .Include(c => c.Campaign)
+                    .Where(c => c.Campaign.From <= DateTime.Now
+                                && c.Campaign.To >= DateTime.Now
+                                && locationIdCandidateList.Contains(c.LocationId))
+                                    .Select(c => c.Campaign)
+                                    .ToListAsync();
+
+                if (userCampaignList != null && userCampaignList.Any())
+                {
+                    var userCampaignDtoList = MapCampaignModelListToDtoList(userCampaignList);
+                    campaignDtoList.AddRange(userCampaignDtoList);
+                }
+                
+            }
+
+            var totalItems = campaignDtoList.Count();
+            campaignDtoList = campaignDtoList
+                .Skip(pageSize * pageIndex)
+                .Take(pageSize).ToList();
+
+            var model = new PaginatedItemsViewModel<CampaignDTO>(
+                pageIndex, pageSize, totalItems, campaignDtoList);
+
+            return Ok(model);
+        }
 
 
         private List<CampaignDTO> MapCampaignModelListToDtoList(List<Campaign> campaignList)
@@ -126,14 +183,23 @@
 
         private CampaignDTO MapCampaignModelToDto(Campaign campaign)
         {
-            return new CampaignDTO
+            var userId = _identityService.GetUserIdentity();
+            var dto = new CampaignDTO
             {
                 Id = campaign.Id,
+                Name = campaign.Name,
                 Description = campaign.Description,
                 From = campaign.From,
                 To = campaign.To,
-                Url = campaign.Url,
+                PictureUri = GetUriPlaceholder(campaign),
             };
+
+            if (!string.IsNullOrEmpty(_settings.CampaignDetailFunctionUri))
+            {
+                dto.DetailsUri = $"{_settings.CampaignDetailFunctionUri}&campaignId={campaign.Id}&userId={userId}";
+            }
+
+            return dto;
         }
 
         private Campaign MapCampaignDtoToModel(CampaignDTO campaignDto)
@@ -141,11 +207,21 @@
             return new Campaign
             {
                 Id = campaignDto.Id,
+                Name = campaignDto.Name,
                 Description = campaignDto.Description,
                 From = campaignDto.From,
                 To = campaignDto.To,
-                Url = campaignDto.Url
+                PictureUri = campaignDto.PictureUri
             };
+        }
+
+        private string GetUriPlaceholder(Campaign campaign)
+        {
+            var baseUri = _settings.PicBaseUrl;
+
+            return _settings.AzureStorageEnabled
+                    ? baseUri + campaign.PictureName
+                    : baseUri.Replace("[0]", campaign.Id.ToString());
         }
     }
 }

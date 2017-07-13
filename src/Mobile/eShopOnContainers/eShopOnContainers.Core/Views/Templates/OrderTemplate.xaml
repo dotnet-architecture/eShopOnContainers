@@ -78,7 +78,7 @@
                     Text="STATUS"
                     Style="{StaticResource OrderTitleStyle}"/>
                 <Label 
-                    Text="{Binding State, Converter={StaticResource ToUpperConverter}}"
+                    Text="{Binding OrderStatus, Converter={StaticResource ToUpperConverter}}"
                     Style="{StaticResource OrderContentStyle}"/>
             </StackLayout>
             <Grid 

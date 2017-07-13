@@ -17,6 +17,16 @@
                 <section class="esh-orders_detail-item col-xs-3">{{order.status}}</section>
             </article>
         </section>
+        
+        <section class="esh-orders_detail-section">
+            <article class="esh-orders_detail-titles row">
+                <section class="esh-orders_detail-title col-xs-12">Description</section>
+            </article>
+
+            <article class="esh-orders_detail-items row">
+                <section class="esh-orders_detail-item col-xs-12">{{order.description}}</section>
+            </article>
+        </section>
 
         <section class="esh-orders_detail-section">
             <article class="esh-orders_detail-titles row">
@@ -47,9 +57,9 @@
                     <img class="esh-orders_detail-image" src="{{item.pictureurl}}">
                 </section>
                 <section class="esh-orders_detail-item esh-orders_detail-item--middle col-xs-4">{{item.productname}}</section>
-                <section class="esh-orders_detail-item esh-orders_detail-item--middle col-xs-1">$ {{item.unitprice}}</section>
+                <section class="esh-orders_detail-item esh-orders_detail-item--middle col-xs-1">$ {{item.unitprice | number:'.2-2'}}</section>
                 <section class="esh-orders_detail-item esh-orders_detail-item--middle col-xs-1">{{item.units}}</section>
-                <section class="esh-orders_detail-item esh-orders_detail-item--middle col-xs-2">$ {{item.units * item.unitprice}}</section>
+                <section class="esh-orders_detail-item esh-orders_detail-item--middle col-xs-2">$ {{(item.units * item.unitprice) | number:'.2-2'}}</section>
             </article>
         </section>
 
@@ -61,7 +71,7 @@
 
             <article class="esh-orders_detail-items row">
                 <section class="esh-orders_detail-item col-xs-9"></section>
-                <section class="esh-orders_detail-item esh-orders_detail-item--mark col-xs-2">$ {{order.total}}</section>
+                <section class="esh-orders_detail-item esh-orders_detail-item--mark col-xs-2">$ {{order.total | number:'.2-2'}}</section>
             </article>
         </section>
     </div>

@@ -7,9 +7,9 @@ namespace Basket.API.IntegrationEvents.Events
     // An Integration Event is an event that can cause side effects to other microsrvices, Bounded-Contexts or external systems.
     public class OrderStartedIntegrationEvent : IntegrationEvent
     {
-        public string UserId { get; }
+        public string UserId { get; set; }
 
-        public OrderStartedIntegrationEvent(string userId) =>
-            UserId = userId;
+        public OrderStartedIntegrationEvent(string userId)
+            => UserId = userId;            
     }
 }

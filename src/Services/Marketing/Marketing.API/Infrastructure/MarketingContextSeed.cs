@@ -9,7 +9,7 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    public class MarketingContextSeed
+    public static class MarketingContextSeed
     {
         public static async Task SeedAsync(IApplicationBuilder applicationBuilder, ILoggerFactory loggerFactory, int? retry = 0)
         {
@@ -33,30 +33,34 @@
             {
                 new Campaign
                 {
-                    Description = "Campaign1",
+                    Name = ".NET Bot Black Hoodie 50% OFF",
+                    Description = "Campaign Description 1",
                     From = DateTime.Now,
                     To = DateTime.Now.AddDays(7),
-                    Url = "http://CampaignUrl.test/12f09ed3cef54187123f500ad",
+                    PictureUri = "http://externalcatalogbaseurltobereplaced/api/v1/campaigns/1/pic",
+                    PictureName = "1.png",
                     Rules = new List<Rule>
                     {
                         new UserLocationRule
                         {
-                            Description = "UserLocationRule1",
+                            Description = "Campaign is only for United States users.",
                             LocationId = 1
                         }
                     }
                 },
                 new Campaign
                 {
-                    Description = "Campaign2",
-                    From = DateTime.Now.AddDays(7),
+                    Name = "Roslyn Red T-Shirt 3x2",
+                    Description = "Campaign Description 2",
+                    From = DateTime.Now.AddDays(-7),
                     To = DateTime.Now.AddDays(14),
-                    Url = "http://CampaignUrl.test/02a59eda65f241871239000ff",
+                    PictureUri = "http://externalcatalogbaseurltobereplaced/api/v1/campaigns/2/pic",
+                    PictureName = "2.png",
                     Rules = new List<Rule>
                     {
                         new UserLocationRule
                         {
-                            Description = "UserLocationRule2",
+                            Description = "Campaign is only for Seattle users.",
                             LocationId = 3
                         }
                     }

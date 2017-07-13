@@ -1,0 +1,35 @@
+@{
+    ViewData["Title"] = "Campaigns";
+@model WebMVC.ViewModels.CampaignViewModel
+}
+
+<section class="esh-campaigns-hero">
+    <div class="container">
+        <img class="esh-campaigns-title" src="~/images/main_banner_text.png" />
+    </div>
+</section>
+
+@Html.Partial("_Header", new List<Header>() {
+    new Header() { Controller = "Catalog", Text = "Back to catalog" } })
+
+<div class="container">
+    @if(Model != null && Model.CampaignItems.Any())
+    {
+        <div class="card-group esh-campaigns-items row">
+        @foreach (var catalogItem in Model.CampaignItems)
+        {
+            <div class="esh-campaigns-item col-md-4">
+                @Html.Partial("_campaign", catalogItem)
+            </div>
+        }
+        </div>
+
+        @Html.Partial("_pagination", Model.PaginationInfo)
+    }
+    else
+    {
+        <div class="esh-campaigns-items row">
+            THERE ARE NO CAMPAIGNS
+        </div>
+    }    
+</div>

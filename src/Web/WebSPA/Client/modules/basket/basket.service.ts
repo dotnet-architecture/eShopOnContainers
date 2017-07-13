@@ -4,7 +4,9 @@ import { Router }                   from '@angular/router';
 
 import { DataService }              from '../shared/services/data.service';
 import { SecurityService }          from '../shared/services/security.service';
-import { IBasket }                  from '../shared/models/basket.model';
+import { IBasket } from '../shared/models/basket.model';
+import { IOrder } from '../shared/models/order.model';
+import { IBasketCheckout } from '../shared/models/basketCheckout.model';
 import { IBasketItem }              from '../shared/models/basketItem.model';
 import { BasketWrapperService }     from '../shared/services/basket.wrapper.service';
 import { ConfigurationService }     from '../shared/services/configuration.service';
@@ -61,25 +63,53 @@ export class BasketService {
     }
 
     setBasket(basket): Observable<boolean> {
+        let url = this.basketUrl + '/api/v1/basket/';
         this.basket = basket;
-        return this.service.post(this.basketUrl + '/', basket).map((response: Response) => {
+        return this.service.post(url, basket).map((response: Response) => {
+            return true;
+        });
+    }
+
+    setBasketCheckout(basketCheckout): Observable<boolean> {
+        let url = this.basketUrl + '/api/v1/basket/checkout';
+        return this.service.postWithId(url, basketCheckout).map((response: Response) => {
+            this.basketEvents.orderCreated();
             return true;
         });
     }
 
     getBasket(): Observable<IBasket> {
-        return this.service.get(this.basketUrl + '/' + this.basket.buyerId).map((response: Response) => {
+        let url = this.basketUrl + '/api/v1/basket/' + this.basket.buyerId;
+        return this.service.get(url).map((response: Response) => {
             if (response.status === 204) {
                 return null;
             }
 
             return response.json();
         });
-    }
+    }    
+
+    mapBasketInfoCheckout(order: IOrder): IBasketCheckout {
+        let basketCheckout = <IBasketCheckout>{};
+
+        basketCheckout.street = order.street
+        basketCheckout.city = order.city;
+        basketCheckout.country = order.country;
+        basketCheckout.state = order.state;
+        basketCheckout.zipcode = order.zipcode;
+        basketCheckout.cardexpiration = order.cardexpiration;
+        basketCheckout.cardnumber = order.cardnumber;
+        basketCheckout.cardsecuritynumber = order.cardsecuritynumber;
+        basketCheckout.cardtypeid = order.cardtypeid;
+        basketCheckout.cardholdername = order.cardholdername;
+        basketCheckout.total = 0;
+        basketCheckout.expiration = order.expiration;
+
+        return basketCheckout;
+    }    
 
     dropBasket() {
-        this.basket.items = [];
-        this.service.delete(this.basketUrl + '/' + this.basket.buyerId);
+        this.basket.items = [];        
         this.basketDropedSource.next();
     }
 
