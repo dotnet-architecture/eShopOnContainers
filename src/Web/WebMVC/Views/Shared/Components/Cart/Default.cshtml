@@ -8,13 +8,21 @@
    asp-area="" 
    asp-controller="Cart" 
    asp-action="Index">
-
     <div class="esh-basketstatus-image">
         <img src="~/images/cart.png" />
     </div>
-    <div class="esh-basketstatus-badge">
-        @Model.ItemsCount
-    </div>
+    @if (ViewBag.IsBasketInoperative == true)
+    {
+        <div class="esh-basketstatus-badge-inoperative">
+            @Model.ItemsCount
+        </div>
+    }
+    else
+    {
+        <div class="esh-basketstatus-badge">
+            @Model.ItemsCount
+        </div>
+    }       
 </a>
 
 

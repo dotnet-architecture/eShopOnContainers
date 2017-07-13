@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Ordering.API.Infrastructure.Middlewares
+namespace Basket.API.Infrastructure.Middlewares
 {
     public class FailingMiddleware
     {
@@ -26,8 +26,7 @@ namespace Ordering.API.Infrastructure.Middlewares
                 return;
             }
 
-
-            if (_mustFail)
+            if (MustFail(context))
             {
                 context.Response.StatusCode = (int)System.Net.HttpStatusCode.InternalServerError;
                 context.Response.ContentType = "text/plain";
@@ -42,7 +41,7 @@ namespace Ordering.API.Infrastructure.Middlewares
         private async Task ProcessConfigRequest(HttpContext context)
         {
             var enable = context.Request.Query.Keys.Any(k => k == "enable");
-            var disable = context.Request.Query.Keys.Any(k => k == "disable");
+            var disable = context.Request.Query.Keys.Any(k => k == "disable");            
 
             if (enable && disable)
             {
@@ -74,5 +73,11 @@ namespace Ordering.API.Infrastructure.Middlewares
             await context.Response.WriteAsync(message);
         }
 
+        private bool MustFail(HttpContext context)
+        {
+            return _mustFail &&
+                (_options.EndpointPaths.Any(x => x == context.Request.Path.Value) 
+                || _options.EndpointPaths.Count == 0);
+        }
     }
 }
