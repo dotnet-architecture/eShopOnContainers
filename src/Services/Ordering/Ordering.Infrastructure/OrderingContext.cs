@@ -45,7 +45,6 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
         {
 
             modelBuilder.Entity<ClientRequest>(ConfigureRequests);
-            modelBuilder.Entity<Address>(ConfigureAddress);
             modelBuilder.Entity<PaymentMethod>(ConfigurePayment);
             modelBuilder.Entity<Order>(ConfigureOrder);
             modelBuilder.Entity<OrderItem>(ConfigureOrderItems);
@@ -62,19 +61,6 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
             requestConfiguration.Property(cr => cr.Time).IsRequired();
         }
 
-        void ConfigureAddress(EntityTypeBuilder<Address> addressConfiguration)
-        {
-            addressConfiguration.ToTable("address", DEFAULT_SCHEMA);
-
-            // DDD Pattern comment: Implementing the Address Id as "Shadow property"
-            // becuase the Address is a Value-Object (VO) and an Id (Identity) is not desired for a VO
-            // EF Core just needs the Id so it is capable to store it in a database table
-            // See: https://docs.microsoft.com/en-us/ef/core/modeling/shadow-properties 
-            addressConfiguration.Property<int>("Id")
-                .IsRequired();
-
-            addressConfiguration.HasKey("Id");
-        }
 
         void ConfigureBuyer(EntityTypeBuilder<Buyer> buyerConfiguration)
         {
@@ -151,6 +137,8 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
 
             orderConfiguration.Property(o => o.Id)
                 .ForSqlServerUseSequenceHiLo("orderseq", DEFAULT_SCHEMA);
+
+            orderConfiguration.OwnsOne(o => o.Address);
 
             orderConfiguration.Property<DateTime>("OrderDate").IsRequired();
             orderConfiguration.Property<int?>("BuyerId").IsRequired(false);
