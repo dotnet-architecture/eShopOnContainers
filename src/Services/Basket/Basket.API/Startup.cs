@@ -58,7 +58,9 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
 
             services.AddHealthChecks(checks =>
             {
-                checks.AddValueTaskCheck("HTTP Endpoint", () => new ValueTask<IHealthCheckResult>(HealthCheckResult.Healthy("Ok")));
+                checks.AddValueTaskCheck("HTTP Endpoint", () => new ValueTask<IHealthCheckResult>(HealthCheckResult.Healthy("Ok")),
+                                         TimeSpan.Zero  //No cache for this HealthCheck, better just for demos
+                                        );
             });
 
             services.Configure<BasketSettings>(Configuration);
