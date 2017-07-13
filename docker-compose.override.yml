@@ -7,12 +7,6 @@ version: '2.1'
 # An external IP or DNS name has to be used (instead localhost and the 10.0.75.1 IP) when testing the Web apps and the Xamarin apps from remote machines/devices using the same WiFi, for instance.
 
 services:
-  graceperiodmanager:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://0.0.0.0:80
-      - ConnectionString=Server=sql.data;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word
-      - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
       
   basket.api:
     environment:
@@ -83,6 +77,13 @@ services:
     ports:
       - "5110:80"
       
+  graceperiodmanager:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - ConnectionString=Server=sql.data;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word
+      - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
+
   webspa:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
