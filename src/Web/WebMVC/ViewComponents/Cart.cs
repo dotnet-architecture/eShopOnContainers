@@ -29,7 +29,6 @@ namespace Microsoft.eShopOnContainers.WebMVC.ViewComponents
             {
                 // Catch error when Basket.api is in circuit-opened mode                 
                 ViewBag.IsBasketInoperative = true;
-                vm.ItemsCount = 0;
             }
 
             return View(vm);

@@ -14,9 +14,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
                 .UseKestrel()
                 .UseFailing(options =>
                 {
-                    options.ConfigPath = "/Failing";
-                    options.EndpointPaths = new List<string>()
-                    { "/api/v1/basket/checkout", "/hc" };
+                    options.ConfigPath = "/Failing";                   
                 })
                 .UseHealthChecks("/hc")
                 .UseContentRoot(Directory.GetCurrentDirectory())
