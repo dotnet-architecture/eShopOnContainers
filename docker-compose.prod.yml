@@ -12,12 +12,6 @@ version: '2.1'
 # docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 
 services:
-  graceperiodmanager:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Production
-      - ASPNETCORE_URLS=http://0.0.0.0:80
-      - ConnectionString=Server=sql.data;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word
-      - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
 
   basket.api:
     environment:
@@ -80,6 +74,13 @@ services:
       - AzureStorageAccountKey=${ESHOP_AZURE_STORAGE_MARKETING_KEY}
     ports:
       - "5110:80"
+
+  graceperiodmanager:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - ConnectionString=Server=sql.data;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word
+      - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
 
   webspa:
     environment:
