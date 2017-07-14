@@ -147,6 +147,7 @@ ExecKube -cmd 'create configmap urls `
     --from-literal=MvcClientCatalogUrl=http://catalog `
     --from-literal=MvcClientBasketUrl=http://basket `
     --from-literal=WebSpaHealthCheckUrl=http://webspa/hc `
+    --from-literal=MarketingHealthCheckUrl=http://marketing/hc `
     --from-literal=SpaClientOrderingExternalUrl=http://$($externalDns)/ordering-api `
     --from-literal=SpaClientCatalogExternalUrl=http://$($externalDns)/catalog-api `
     --from-literal=SpaClientBasketExternalUrl=http://$($externalDns)/basket-api `
