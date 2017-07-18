@@ -185,8 +185,8 @@ spec:
   template:
     metadata:
       labels:
-        app: graceperiodmanager
-        component: ordering
+        app: eshop
+        component: graceperiodmanager
     spec:
       containers:
       - name: graceperiodmanager
@@ -455,6 +455,16 @@ spec:
            configMapKeyRef:
              name: urls
              key: OrderingHealthCheckUrl
+        - name: LocationsUrl
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: LocationsHealthCheckUrl
+        - name: MarketingUrl
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: MarketingHealthCheckUrl
         - name: mvc
           valueFrom:
            configMapKeyRef:
