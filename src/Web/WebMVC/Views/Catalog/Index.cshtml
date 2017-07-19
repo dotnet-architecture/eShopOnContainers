@@ -23,6 +23,15 @@
 </section>
 
 <div class="container">
+    <div class="row">
+        <br />
+        @if(TempData.ContainsKey("BasketInoperativeMsg"))
+        {
+            <div class="alert alert-warning" role="alert">
+                &nbsp;@TempData["BasketInoperativeMsg"]
+            </div>
+        }
+    </div>
 
     @if (Model.CatalogItems.Count() > 0)
     {

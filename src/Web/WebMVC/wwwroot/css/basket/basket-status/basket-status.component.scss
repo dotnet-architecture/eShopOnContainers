@@ -33,6 +33,22 @@
         width: $size;
     }
 
+    &-badge-inoperative {
+        $size: 1.5rem;
+        background-color: $color-warning;
+        border-radius: 50%;
+        color: $color-foreground-brighter;
+        display: block;
+        height: $size;
+        left: 50%;
+        position: absolute;
+        text-align: center;
+        top: 0;
+        transform: translateX(-38%);
+        transition: all $animation-speed-default;
+        width: $size;
+    }
+
     &:hover &-badge {
         background-color: transparent;
         color: $color-secondary-dark;
