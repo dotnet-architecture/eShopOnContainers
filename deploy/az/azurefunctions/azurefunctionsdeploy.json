@@ -13,30 +13,10 @@
 		"SitesEshopfunctionsName": "[parameters('SitesEshopfunctionsName')]",
 		"WebConfigName": "[concat(variables('SitesEshopfunctionsName'), '/web')]",
 		"Location": "[resourceGroup().location]",
-		"EshopAccountsDatabase": "[concat(variables('SitesEshopfunctionsName'), 'db')]",
 		"ServerFarmPlan": "[concat(trim(variables('location')), 'Plan')]",
 		"StorageAccounts": "[concat(variables('SitesEshopfunctionsName'), 'st')]"
     },
     "resources": [
-        {
-            "type": "Microsoft.DocumentDB/databaseAccounts",
-            "kind": "GlobalDocumentDB",
-            "name": "[variables('EshopAccountsDatabase')]",
-            "apiVersion": "2015-04-08",
-            "location": "[variables('Location')]",
-            "tags": {},
-            "scale": null,
-            "properties": {
-                "databaseAccountOfferType": "Standard",
-                "consistencyPolicy": {
-                    "defaultConsistencyLevel": "Session",
-                    "maxIntervalInSeconds": 5,
-                    "maxStalenessPrefix": 100
-                },
-                "name": null
-            },
-            "dependsOn": []
-        },
         {
             "type": "Microsoft.Storage/storageAccounts",
             "sku": {
