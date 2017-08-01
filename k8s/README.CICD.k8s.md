@@ -49,12 +49,13 @@ For k8s CI/CD pipeline delivery a series of tasks must be created in VSTS to dep
 >-deployCI $true -execPath '$(System.DefaultWorkingDirectory)/' -kubeconfigPath '$(System.DefaultWorkingDirectory)/'  -deployInfrastructure $true -imageTag dev -configFile '$(System.DefaultWorkingDirectory)/$(Build.DefinitionName)/docker-compose/conf_local.yml'
 >```
 
-     - deployCI: Must be set to `$true`. This avoids create images (always are pulled from registry) and compile bits.
-     - deployInfrastructure: Can be set to `$false` if don't want to deploy infrastructure containers (like Redis, rabbit, SQL,...).
-     - imageTag: Image tag to pull from k8s.
-     - configFile: Configuration file (refer to [README.k8s.md](./README.k8s.md) for more info). This file is part of the VSTS build output.
-     - execPath: path where the k8s binary is stored
-     - kubeconfigPath: path where the k8s config file is stored
+
+- deployCI: Must be set to `$true`. This avoids create images (always are pulled from registry) and compile bits.
+- deployInfrastructure: Can be set to `$false` if don't want to deploy infrastructure containers (like Redis, rabbit, SQL,...).
+- imageTag: Image tag to pull from k8s.
+- configFile: Configuration file (refer to [README.k8s.md](./README.k8s.md) for more info). This file is part of the VSTS build output.
+- execPath: path where the k8s binary is stored
+- kubeconfigPath: path where the k8s config file is stored
 
  You can use additional parameters (i.e. pass registry and user/password to use custom registry instead of DockerHub. Plase, refer to [README.k8s.md](./README.k8s.md) for more info.
 
