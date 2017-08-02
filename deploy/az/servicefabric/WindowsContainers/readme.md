@@ -1,10 +1,10 @@
 # Deploying Azure Service Fabric
 
-The ARM template `servicefabricdeploy.json` and its parameter file (`servicefabricdeploy.parameters.json`) are used to create a service fabric cluster environment.
+The ARM template `servicefabricdeploy.json` and its parameter file (`servicefabricdeploy.parameters.json`) are used to create a service fabric cluster environment for windows containers.
 
 ## Editing servicefabricdeploy.parameters.json file
 
-You can edit the `servicefabricdeploy.parameters.parameters.json` file to set your values, but is not needed. 
+You can edit the `servicefabricdeploy.parameters.json` file to set your values, but is not needed. 
 
 ## Deploy the template
 
@@ -13,7 +13,7 @@ Once parameter file is edited you can deploy it using [create-resources script](
 i. e. if you are in windows, to deploy sql databases in a new resourcegroup located in westus, go to `deploy\az` folder and type:
 
 ```
-create-resources.cmd servicefabric\servicefabricdeploy newResourceGroup -c westus
+create-resources.cmd servicefabric\WindowsContainers\servicefabricdeploy newResourceGroup -c westus
 ```
 ## Deploy eShopOnServiceFabric with Visual Studio.
 
