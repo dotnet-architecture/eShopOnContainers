@@ -29,12 +29,16 @@ namespace Microsoft.eShopOnContainers.Services.Marketing.API.Infrastructure.Mark
                         .IsRequired()
                         .HasColumnName("Description");
 
+                    b.Property<string>("DetailsUri");
+
                     b.Property<DateTime>("From")
                         .HasColumnName("From");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnName("Name");
+
+                    b.Property<string>("PictureName");
 
                     b.Property<string>("PictureUri")
                         .IsRequired()

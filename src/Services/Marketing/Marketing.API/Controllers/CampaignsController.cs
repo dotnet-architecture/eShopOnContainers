@@ -1,4 +1,4 @@
-﻿using Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure.Services;
+﻿using Microsoft.eShopOnContainers.Services.Marketing.API.Infrastructure.Services;
 
 namespace Microsoft.eShopOnContainers.Services.Marketing.API.Controllers
 {
@@ -15,6 +15,7 @@ namespace Microsoft.eShopOnContainers.Services.Marketing.API.Controllers
     using AspNetCore.Authorization;
     using Extensions.Options;
     using Microsoft.eShopOnContainers.Services.Marketing.API.ViewModel;
+    using Microsoft.AspNetCore.Http;
 
     [Route("api/v1/[controller]")]
     [Authorize]
@@ -182,15 +183,23 @@ namespace Microsoft.eShopOnContainers.Services.Marketing.API.Controllers
 
         private CampaignDTO MapCampaignModelToDto(Campaign campaign)
         {
-            return new CampaignDTO
+            var userId = _identityService.GetUserIdentity();
+            var dto = new CampaignDTO
             {
                 Id = campaign.Id,
                 Name = campaign.Name,
                 Description = campaign.Description,
                 From = campaign.From,
                 To = campaign.To,
-                PictureUri = GetUriPlaceholder(campaign.PictureUri)
+                PictureUri = GetUriPlaceholder(campaign),
             };
+
+            if (!string.IsNullOrEmpty(_settings.CampaignDetailFunctionUri))
+            {
+                dto.DetailsUri = $"{_settings.CampaignDetailFunctionUri}&campaignId={campaign.Id}&userId={userId}";
+            }
+
+            return dto;
         }
 
         private Campaign MapCampaignDtoToModel(CampaignDTO campaignDto)
@@ -206,13 +215,13 @@ namespace Microsoft.eShopOnContainers.Services.Marketing.API.Controllers
             };
         }
 
-        private string GetUriPlaceholder(string campaignUri)
+        private string GetUriPlaceholder(Campaign campaign)
         {
-            var baseUri = _settings.ExternalCatalogBaseUrl;
+            var baseUri = _settings.PicBaseUrl;
 
-            campaignUri = campaignUri.Replace("http://externalcatalogbaseurltobereplaced", baseUri);
-
-            return campaignUri;
+            return _settings.AzureStorageEnabled
+                    ? baseUri + campaign.PictureName
+                    : baseUri.Replace("[0]", campaign.Id.ToString());
         }
     }
 }

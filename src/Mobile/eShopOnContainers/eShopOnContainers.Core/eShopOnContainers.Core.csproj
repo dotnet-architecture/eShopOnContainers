@@ -49,6 +49,8 @@
     </Compile>
     <Compile Include="Controls\CustomTabbedPage.cs" />
     <Compile Include="Controls\ToggleButton.cs" />
+    <Compile Include="Converters\DoubleConverter.cs" />
+    <Compile Include="Converters\StringNullOrEmptyBoolConverter.cs" />
     <Compile Include="Converters\CountToBoolConverter.cs" />
     <Compile Include="Converters\DatetimeConverter.cs" />
     <Compile Include="Converters\ImageConverter.cs" />
@@ -287,11 +289,6 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System.ComponentModel.Annotations">
-      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.6\Profile\Profile44\System.ComponentModel.Annotations.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\CampaignDetailsView.xaml">

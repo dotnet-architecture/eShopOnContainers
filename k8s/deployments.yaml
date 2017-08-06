@@ -66,11 +66,16 @@ spec:
            configMapKeyRef:
              name: externalcfg
              key: CatalogSqlDb
-        - name: ExternalCatalogBaseUrl
+        - name: PicBaseUrl
           valueFrom:
            configMapKeyRef:
              name: urls
-             key: CatalogUrl
+             key: PicBaseUrl
+        - name: AzureStorageEnabled
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: CatalogAzureStorageEnabled
         - name: EventBusConnection
           valueFrom:
            configMapKeyRef:
@@ -122,6 +127,26 @@ spec:
            configMapKeyRef:
              name: urls
              key: SpaClientExternalUrl
+        - name: LocationApiClient
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: LocationApiClient
+        - name: MarketingApiClient
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: MarketingApiClient
+        - name: BasketApiClient
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: BasketApiClient 
+        - name: OrderingApiClient
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: OrderingApiClient                               
         ports:
         - containerPort: 80
       imagePullSecrets:
@@ -174,6 +199,53 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
+  name: graceperiodmanager
+spec:
+  paused: true
+  template:
+    metadata:
+      labels:
+        app: eshop
+        component: graceperiodmanager
+    spec:
+      containers:
+      - name: graceperiodmanager
+        image: eshop/graceperiodmanager
+        imagePullPolicy: Always
+        env:
+        - name: ConnectionString
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: OrderingSqlDb
+        - name: EventBusConnection
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: GracePeriodManagerBus
+        - name: GracePeriodTime
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: GracePeriodTime
+        - name: CheckUpdateTime
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: GracePeriodCheckUpdateTime                         
+        - name: AzureServiceBusEnabled
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: UseAzureServiceBus
+        ports:
+        - containerPort: 80
+      imagePullSecrets:
+      - name: registry-key
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
   name: locations
 spec:
   paused: true
@@ -215,6 +287,11 @@ spec:
            configMapKeyRef:
              name: urls
              key: IdentityUrl
+        - name: IdentityUrlExternal
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: IdentityUrl             
         ports:
         - containerPort: 80
       imagePullSecrets:
@@ -269,6 +346,16 @@ spec:
            configMapKeyRef:
              name: urls
              key: IdentityUrl
+        - name: IdentityUrlExternal
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: IdentityUrl             
+        - name: PicBaseUrl
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: Marketing_PicBaseUrl             
         ports:
         - containerPort: 80
       imagePullSecrets:
@@ -359,6 +446,11 @@ spec:
            configMapKeyRef:
              name: urls
              key: MvcClientOrderingUrl
+        - name: MarketingUrl
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: MvcClientMarketingUrl             
         ports:
         - containerPort: 80
       imagePullSecrets:
@@ -403,6 +495,16 @@ spec:
            configMapKeyRef:
              name: urls
              key: OrderingHealthCheckUrl
+        - name: LocationsUrl
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: LocationsHealthCheckUrl
+        - name: MarketingUrl
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: MarketingHealthCheckUrl
         - name: mvc
           valueFrom:
            configMapKeyRef:
@@ -469,6 +571,11 @@ spec:
            configMapKeyRef:
              name: urls
              key: SpaClientOrderingExternalUrl
+        - name: MarketingUrl
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: SpaClientMarketingExternalUrl             
         - name: BasketUrlHC
           valueFrom:
            configMapKeyRef:
@@ -489,6 +596,11 @@ spec:
            configMapKeyRef:
              name: urls
              key: OrderingHealthCheckUrl
+        - name: MarketingUrlHC
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: MarketingHealthCheckUrl
         ports:
         - containerPort: 80
       imagePullSecrets:

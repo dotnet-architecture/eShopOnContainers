@@ -60,6 +60,8 @@
                    TargetType="{x:Type Button}">
                 <Setter Property="TextColor"
                         Value="{StaticResource WhiteColor}" />
+                <Setter Property="BackgroundColor"
+                        Value="{StaticResource LightGreenColor}" />
 
             </Style>
 
@@ -114,10 +116,9 @@
             Grid.Row="0"
             IsVisible="{Binding IsSubmittedOrder}">
             <Button
-            BackgroundColor="{StaticResource LightGreenColor}"
-            Command="{Binding ToggleCancelOrderCommand}"
-            Text="CANCEL ORDER"
-            Style="{StaticResource CancelOrderButtonStyle}">
+                Command="{Binding ToggleCancelOrderCommand}"
+                Text="CANCEL ORDER"
+                Style="{StaticResource CancelOrderButtonStyle}">
             </Button>
         </StackLayout>
         <ScrollView

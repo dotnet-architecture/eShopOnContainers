@@ -13,7 +13,7 @@ namespace Payment.API.Controllers
         // GET: /<controller>/
         public IActionResult Index()
         {
-            return new RedirectResult("~/swagger/ui");
+            return new RedirectResult("~/swagger");
         }
     }
 }

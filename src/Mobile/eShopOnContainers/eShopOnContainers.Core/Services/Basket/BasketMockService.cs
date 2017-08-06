@@ -61,7 +61,17 @@ namespace eShopOnContainers.Core.Services.Basket
 
         public Task CheckoutAsync(BasketCheckout basketCheckout, string token)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(token))
+            {
+                return Task.FromResult(0);
+            }
+
+            if (basketCheckout != null)
+            {
+                MockCustomBasket.Items.Clear();
+            }
+
+            return Task.FromResult(0);
         }
     }
 }

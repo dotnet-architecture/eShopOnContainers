@@ -1,12 +1,13 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Marketing.API.IntegrationEvents.Handlers
 {
-    using BuildingBlocks.EventBus.Abstractions;
-    using System.Threading.Tasks;
-    using Events;
+    using Marketing.API.IntegrationEvents.Events;
+    using Marketing.API.Model;
+    using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
+    using Microsoft.eShopOnContainers.Services.Marketing.API.Infrastructure.Repositories;
+    using Microsoft.eShopOnContainers.Services.Marketing.API.Model;
     using System;
-    using Infrastructure.Repositories;
-    using Model;
     using System.Collections.Generic;
+    using System.Threading.Tasks;
 
     public class UserLocationUpdatedIntegrationEventHandler 
         : IIntegrationEventHandler<UserLocationUpdatedIntegrationEvent>
