@@ -41,7 +41,6 @@
             {
                 try
                 {
-                    _logger.LogInformation("Grace Period Manager Client is trying to connect to database server");
                     conn.Open();
                     orderIds = conn.Query<int>(
                         @"SELECT Id FROM [Microsoft.eShopOnContainers.Services.OrderingDb].[ordering].[orders] 

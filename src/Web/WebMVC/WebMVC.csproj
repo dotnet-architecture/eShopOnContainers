@@ -10,14 +10,23 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="wwwroot/css\campaigns\catalog.component.css" />
+    <Compile Remove="Extensions\LinqSelectExtensions.cs" />
+    <Compile Remove="Services\CustomUIService.cs" />
+    <Compile Remove="Services\ICustomUIService.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="wwwroot\css\campaigns\campaigns.component.css" />
-    <Content Include="wwwroot\css\campaigns\orders.component.css" />
-    <Content Include="wwwroot\css\catalog\orders.component.css">
+    <Content Remove="Views\Shared\_Footer.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Setup\images.zip">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Setup\override.css">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 
@@ -34,6 +43,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="1.1.3" />
     <PackageReference Include="Microsoft.AspNetCore.Server.IISIntegration" Version="1.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="1.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Session" Version="1.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="1.1.2" />
     <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="1.1.2" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="1.1.2" />

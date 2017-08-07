@@ -48,6 +48,8 @@
 
         public string LocationEndpoint { get; set; }
 
+        public string MarketingEndpoint { get; set; }
+
         public string UserInfoEndpoint { get; set; }
 
         public string TokenEndpoint { get; set; }
@@ -60,17 +62,18 @@
 
         private void UpdateEndpoint(string baseEndpoint)
         {
-            RegisterWebsite = string.Format("{0}:5105/Account/Register", baseEndpoint);
-            CatalogEndpoint = string.Format("{0}:5101", baseEndpoint);
-            OrdersEndpoint = string.Format("{0}:5102", baseEndpoint);
-            BasketEndpoint = string.Format("{0}:5103", baseEndpoint);
-            IdentityEndpoint = string.Format("{0}:5105/connect/authorize", baseEndpoint);
-            UserInfoEndpoint = string.Format("{0}:5105/connect/userinfo", baseEndpoint);
-            TokenEndpoint = string.Format("{0}:5105/connect/token", baseEndpoint);
-            LogoutEndpoint = string.Format("{0}:5105/connect/endsession", baseEndpoint);
-            IdentityCallback = string.Format("{0}:5105/xamarincallback", baseEndpoint);
-            LogoutCallback = string.Format("{0}:5105/Account/Redirecting", baseEndpoint);
-            LocationEndpoint = string.Format("{0}:5109", baseEndpoint);
+            RegisterWebsite = $"{baseEndpoint}:5105/Account/Register";
+            CatalogEndpoint = $"{baseEndpoint}:5101";
+            OrdersEndpoint = $"{baseEndpoint}:5102";
+            BasketEndpoint = $"{baseEndpoint}:5103";
+            IdentityEndpoint = $"{baseEndpoint}:5105/connect/authorize";
+            UserInfoEndpoint = $"{baseEndpoint}:5105/connect/userinfo";
+            TokenEndpoint = $"{baseEndpoint}:5105/connect/token";
+            LogoutEndpoint = $"{baseEndpoint}:5105/connect/endsession";
+            IdentityCallback = $"{baseEndpoint}:5105/xamarincallback";
+            LogoutCallback = $"{baseEndpoint}:5105/Account/Redirecting";
+            LocationEndpoint = $"{baseEndpoint}:5109";
+            MarketingEndpoint = $"{baseEndpoint}:5110";
         }
     }
 }

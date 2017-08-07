@@ -49,6 +49,8 @@
     </Compile>
     <Compile Include="Controls\CustomTabbedPage.cs" />
     <Compile Include="Controls\ToggleButton.cs" />
+    <Compile Include="Converters\DoubleConverter.cs" />
+    <Compile Include="Converters\StringNullOrEmptyBoolConverter.cs" />
     <Compile Include="Converters\CountToBoolConverter.cs" />
     <Compile Include="Converters\DatetimeConverter.cs" />
     <Compile Include="Converters\ImageConverter.cs" />
@@ -71,12 +73,15 @@
     <Compile Include="Models\Catalog\CatalogItem.cs" />
     <Compile Include="Models\Catalog\CatalogRoot.cs" />
     <Compile Include="Models\Catalog\CatalogType.cs" />
-    <Compile Include="Models\Location\LocationRequest.cs" />
+    <Compile Include="Models\Location\Location.cs" />
+    <Compile Include="Models\Marketing\CampaignItem.cs" />
+    <Compile Include="Models\Marketing\CampaignRoot.cs" />
     <Compile Include="Models\Navigation\TabParameter.cs" />
+    <Compile Include="Models\Orders\CancelOrderCommand.cs" />
     <Compile Include="Models\Orders\CardType.CS" />
     <Compile Include="Models\Orders\Order.cs" />
     <Compile Include="Models\Orders\OrderItem.cs" />
-    <Compile Include="Models\Orders\OrderState.cs" />
+    <Compile Include="Models\Orders\OrderStatus.cs" />
     <Compile Include="Models\User\Address.cs" />
     <Compile Include="Models\User\LogoutParameter.cs" />
     <Compile Include="Models\User\PaymentInfo.cs" />
@@ -95,6 +100,9 @@
     <Compile Include="Services\Identity\IIdentityService.cs" />
     <Compile Include="Services\Location\ILocationService.cs" />
     <Compile Include="Services\Location\LocationService.cs" />
+    <Compile Include="Services\Marketing\ICampaignService.cs" />
+    <Compile Include="Services\Marketing\CampaignMockService.cs" />
+    <Compile Include="Services\Marketing\CampaignService.cs" />
     <Compile Include="Services\Navigation\INavigationService.cs" />
     <Compile Include="Services\Navigation\NavigationService.cs" />
     <Compile Include="Services\OpenUrl\IOpenUrlService.cs" />
@@ -102,6 +110,7 @@
     <Compile Include="Services\Order\IOrderService.cs" />
     <Compile Include="Services\Order\OrderMockService.cs" />
     <Compile Include="Services\Order\OrderService.cs" />
+    <Compile Include="Services\RequestProvider\HttpRequestExceptionEx.cs" />
     <Compile Include="Services\RequestProvider\IRequestProvider.cs" />
     <Compile Include="Services\RequestProvider\RequestProvider.cs" />
     <Compile Include="Services\User\IUserService.cs" />
@@ -117,6 +126,8 @@
     <Compile Include="ViewModels\Base\ViewModelBase.cs" />
     <Compile Include="ViewModels\Base\ViewModelLocator.cs" />
     <Compile Include="ViewModels\BasketViewModel.cs" />
+    <Compile Include="ViewModels\CampaignDetailsViewModel.cs" />
+    <Compile Include="ViewModels\CampaignViewModel.cs" />
     <Compile Include="ViewModels\CatalogViewModel.cs" />
     <Compile Include="ViewModels\CheckoutViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
@@ -127,8 +138,14 @@
     <Compile Include="Views\BasketView.xaml.cs">
       <DependentUpon>BasketView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\CampaignView.xaml.cs">
+      <DependentUpon>CampaignView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\CatalogView.xaml.cs">
       <DependentUpon>CatalogView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CampaignDetailsView.xaml.cs">
+      <DependentUpon>CampaignDetailsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\CheckoutView.xaml.cs">
       <DependentUpon>CheckoutView.xaml</DependentUpon>
@@ -162,6 +179,9 @@
     </Compile>
     <Compile Include="Views\Templates\OrderTemplate.xaml.cs">
       <DependentUpon>OrderTemplate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Templates\CampaignTemplate.xaml.cs">
+      <DependentUpon>CampaignTemplate.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Templates\ProductTemplate.xaml.cs">
       <DependentUpon>ProductTemplate.xaml</DependentUpon>
@@ -265,12 +285,22 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Models\Token\" />
+    <EmbeddedResource Include="Views\CampaignView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="System.ComponentModel.Annotations">
-      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.6\Profile\Profile44\System.ComponentModel.Annotations.dll</HintPath>
-    </Reference>
+    <EmbeddedResource Include="Views\CampaignDetailsView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Templates\CampaignTemplate.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

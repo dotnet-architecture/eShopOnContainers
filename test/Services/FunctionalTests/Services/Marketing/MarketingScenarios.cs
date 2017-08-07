@@ -11,6 +11,7 @@
     using Xunit;
     using System.Collections.Generic;
     using Microsoft.eShopOnContainers.Services.Marketing.API.Dto;
+    using Microsoft.eShopOnContainers.Services.Catalog.API.ViewModel;
 
     public class MarketingScenarios : MarketingScenariosBase
     {
@@ -28,28 +29,18 @@
                 var content = new StringContent(JsonConvert.SerializeObject(location),
                     Encoding.UTF8, "application/json");
 
-                var userId = new Guid("4611ce3f-380d-4db5-8d76-87a8689058ed");
-
-
                 // GIVEN a new location of user is created 
-                var response = await locationsServer.CreateClient()
+                await locationsServer.CreateClient()
                     .PostAsync(LocationsScenariosBase.Post.AddNewLocation, content);
-
-                //Get location user from Location.API
-                var userLocationResponse = await locationsServer.CreateClient()
-                    .GetAsync(LocationsScenariosBase.Get.UserLocationBy(userId));
-
-                var responseBody = await userLocationResponse.Content.ReadAsStringAsync();
-                var userLocation = JsonConvert.DeserializeObject<UserLocation>(responseBody);
 
                 await Task.Delay(300);
 
                 //Get campaing from Marketing.API given a userId
-                var UserLocationCampaignResponse = await marketingServer.CreateClient()
-                    .GetAsync(CampaignScenariosBase.Get.UserCampaignsByUserId(userId));
+                var userLocationCampaignResponse = await marketingServer.CreateClient()
+                    .GetAsync(CampaignScenariosBase.Get.UserCampaignsByUserId());
 
-                responseBody = await UserLocationCampaignResponse.Content.ReadAsStringAsync();
-                var userLocationCampaigns = JsonConvert.DeserializeObject<List<CampaignDTO>>(responseBody);
+                var responseBody = await userLocationCampaignResponse.Content.ReadAsStringAsync();
+                var userLocationCampaigns = JsonConvert.DeserializeObject<PaginatedItemsViewModel<CampaignDTO>>(responseBody);
 
                 Assert.True(userLocationCampaigns.Count > 0);
             }

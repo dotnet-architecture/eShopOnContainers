@@ -1,27 +1,19 @@
-version: '2'
-
+version: '2.1'
 
 services:
-  graceperiodmanager:
-    image: eshop/graceperiodmanager
-    build:
-      context: ./src/Services/GracePeriod/GracePeriodManager
-      dockerfile: Dockerfile
-    depends_on:
-      - sql.data
-      - rabbitmq
 
   basket.api:
-    image: eshop/basket.api
+    image: eshop/basket.api:${TAG:-latest}
     build:
       context: ./src/Services/Basket/Basket.API
       dockerfile: Dockerfile    
     depends_on:
       - basket.data
       - identity.api
+      - rabbitmq
 
   catalog.api:
-    image: eshop/catalog.api
+    image: eshop/catalog.api:${TAG:-latest}
     build:
       context: ./src/Services/Catalog/Catalog.API
       dockerfile: Dockerfile    
@@ -30,7 +22,7 @@ services:
       - rabbitmq
 
   identity.api:
-    image: eshop/identity.api
+    image: eshop/identity.api:${TAG:-latest}
     build:
       context: ./src/Services/Identity/Identity.API
       dockerfile: Dockerfile    
@@ -38,7 +30,7 @@ services:
       - sql.data
 
   ordering.api:
-    image: eshop/ordering.api
+    image: eshop/ordering.api:${TAG:-latest}
     build:
       context: ./src/Services/Ordering/Ordering.API
       dockerfile: Dockerfile    
@@ -47,7 +39,7 @@ services:
       - rabbitmq
 
   marketing.api:
-    image: eshop/marketing.api
+    image: eshop/marketing.api:${TAG:-latest}
     build:
       context: ./src/Services/Marketing/Marketing.API
       dockerfile: Dockerfile    
@@ -57,8 +49,17 @@ services:
       - identity.api
       - rabbitmq
 
+  graceperiodmanager:
+    image: eshop/graceperiodmanager:${TAG:-latest}
+    build:
+      context: ./src/Services/GracePeriod/GracePeriodManager
+      dockerfile: Dockerfile
+    depends_on:
+      - sql.data
+      - rabbitmq
+
   webspa:
-    image: eshop/webspa
+    image: eshop/webspa:${TAG:-latest}
     build:
       context: ./src/Web/WebSPA
       dockerfile: Dockerfile    
@@ -67,7 +68,7 @@ services:
       - basket.api
 
   webmvc:
-    image: eshop/webmvc
+    image: eshop/webmvc:${TAG:-latest}
     build:
       context: ./src/Web/WebMVC
       dockerfile: Dockerfile    
@@ -95,13 +96,13 @@ services:
       - "5672:5672"
 
   webstatus:
-    image: eshop/webstatus
+    image: eshop/webstatus:${TAG:-latest}
     build:
       context: ./src/Web/WebStatus
       dockerfile: Dockerfile
 
   payment.api:
-    image: eshop/payment.api
+    image: eshop/payment.api:${TAG:-latest}
     build:
       context: ./src/Services/Payment/Payment.API
       dockerfile: Dockerfile
@@ -109,7 +110,7 @@ services:
       - rabbitmq    
     
   locations.api:
-    image: eshop/locations.api
+    image: eshop/locations.api:${TAG:-latest}
     build:
       context: ./src/Services/Location/Locations.API
       dockerfile: Dockerfile

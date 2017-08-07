@@ -13,7 +13,7 @@ using Basket.API.Model;
 
 namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
 {
-    [Route("/")]
+    [Route("api/v1/[controller]")]
     [Authorize]
     public class BasketController : Controller
     {

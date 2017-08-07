@@ -10,7 +10,6 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API
         {
             var host = new WebHostBuilder()
                 .UseKestrel()
-                .UseFailing("/Failing")
                 .UseHealthChecks("/hc")
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseIISIntegration()

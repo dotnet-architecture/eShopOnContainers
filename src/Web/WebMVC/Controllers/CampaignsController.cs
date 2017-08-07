@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore.Query.Internal;
+using WebMVC.ViewModels;
+
 namespace Microsoft.eShopOnContainers.WebMVC.Controllers
 {
     using AspNetCore.Authorization;
@@ -8,33 +11,46 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
     using System;
     using ViewModels.Pagination;
     using global::WebMVC.ViewModels;
+    using Microsoft.Extensions.Options;
 
     [Authorize]
     public class CampaignsController : Controller
     {
         private readonly ICampaignService _campaignService;
+        private readonly AppSettings _settings;
 
-        public CampaignsController(ICampaignService campaignService) =>
+        public CampaignsController(ICampaignService campaignService, IOptionsSnapshot<AppSettings> settings)
+        {
             _campaignService = campaignService;
+            _settings = settings.Value;
+        }
 
         public async Task<IActionResult> Index(int page = 0, int pageSize = 10)
         {
             var campaignList = await _campaignService.GetCampaigns(pageSize, page);
 
-            var vm = new CampaignViewModel()
+            if(campaignList is null)
+            {
+                return View();
+            }
+
+            var totalPages = (int) Math.Ceiling((decimal) campaignList.Count / pageSize);
+
+            var vm = new CampaignViewModel
             {
                 CampaignItems = campaignList.Data,
-                PaginationInfo = new PaginationInfo()
+                PaginationInfo = new PaginationInfo
                 {
                     ActualPage = page,
-                    ItemsPerPage = pageSize,
+                    ItemsPerPage = campaignList.Data.Count,
                     TotalItems = campaignList.Count,
-                    TotalPages = (int)Math.Ceiling(((decimal)campaignList.Count / pageSize))
+                    TotalPages = totalPages,
+                    Next = page == totalPages - 1 ? "is-disabled" : "",
+                    Previous = page == 0 ? "is-disabled" : ""
                 }
             };
 
-            vm.PaginationInfo.Next = (vm.PaginationInfo.ActualPage == vm.PaginationInfo.TotalPages - 1) ? "is-disabled" : "";
-            vm.PaginationInfo.Previous = (vm.PaginationInfo.ActualPage == 0) ? "is-disabled" : "";
+            ViewBag.IsCampaignDetailFunctionActive = _settings.ActivateCampaignDetailFunction;
 
             return View(vm);
         }

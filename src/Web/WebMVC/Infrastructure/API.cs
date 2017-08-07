@@ -84,9 +84,9 @@ namespace WebMVC.Infrastructure
 
         public static class Marketing
         {
-            public static string GetAllCampaigns(string baseUri, string userId, int take, int page)
+            public static string GetAllCampaigns(string baseUri, int take, int page)
             {
-                return $"{baseUri}user/{userId}?pageSize={take}&pageIndex={page}";
+                return $"{baseUri}user?pageSize={take}&pageIndex={page}";
             }
 
             public static string GetAllCampaignById(string baseUri, int id)

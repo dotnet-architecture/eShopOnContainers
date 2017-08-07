@@ -214,7 +214,7 @@ namespace eShopOnContainers.Core.ViewModels
             if (Settings.UseMocks)
             {
                 Settings.AuthAccessToken = string.Empty;
-                Settings.AuthIdToken = string.Empty;     
+                Settings.AuthIdToken = string.Empty; 
             }
 
             Settings.UseFakeLocation = false;
@@ -243,7 +243,6 @@ namespace eShopOnContainers.Core.ViewModels
                     {
                         Settings.AuthAccessToken = accessToken;
                         Settings.AuthIdToken = authResponse.IdentityToken;
-
                         await NavigationService.NavigateToAsync<MainViewModel>();
                         await NavigationService.RemoveLastFromBackStackAsync();
                     }
