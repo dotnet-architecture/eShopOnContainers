@@ -1,0 +1,69 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "clusterName": {
+            "value": "eshopsflin"
+        },
+        "clusterLocation": {
+            "value": "westeurope"
+        },
+        "computeLocation": {
+            "value": "westeurope"
+        },
+        "adminUserName": {
+            "value": "eshop"
+        },
+        "adminPassword": {
+            "value": "YourPwd876776788"
+        },
+        "nicName": {
+            "value": "NIC-eshopsflin"
+        },
+        "publicIPAddressName": {
+            "value": "eshopsflin-PubIP"
+        },
+        "dnsName": {
+            "value": "eshopsflin"
+        },
+        "virtualNetworkName": {
+            "value": "VNet-eshopsflin"
+        },
+        "lbName": {
+            "value": "LB-eshopsflin"
+        },
+        "lbIPName": {
+            "value": "LBIP-eshopsflin"
+        },
+        "applicationDiagnosticsStorageAccountName": {
+            "value": "sfdgeshopsflin4470"
+        },
+        "supportLogStorageAccountName": {
+            "value": "sflogseshopsflin7625"
+        },
+        "vmImageSku": {
+            "value": "16.04"
+        },
+        "vmImageVersion": {
+            "value": "6.0.12"
+        },
+        "nt0ephemeralStartPort": {
+            "value": 49152
+        },
+        "nt0ephemeralEndPort": {
+            "value": 65534
+        },
+        "nt0applicationStartPort": {
+            "value": 20000
+        },
+        "nt0applicationEndPort": {
+            "value": 30000
+        },
+        "nt0fabricTcpGatewayPort": {
+            "value": 19000
+        },
+        "nt0fabricHttpGatewayPort": {
+            "value": 19080
+        }
+    }
+}

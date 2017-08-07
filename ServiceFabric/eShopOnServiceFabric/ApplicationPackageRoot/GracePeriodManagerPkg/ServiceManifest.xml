@@ -20,8 +20,8 @@
     </EntryPoint>
     <!-- Pass environment variables to your container: -->
     <EnvironmentVariables>
-      <EnvironmentVariable Name="ConnectionString" Value="sql.data;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word"/>
-      <EnvironmentVariable Name="EventBusConnection" Value="rabbitmq"/>     
+      <EnvironmentVariable Name="ConnectionString" Value=""/>
+      <EnvironmentVariable Name="EventBusConnection" Value=""/>     
     </EnvironmentVariables>
   </CodePackage>
 

@@ -23,9 +23,9 @@
     <EnvironmentVariables>
       <EnvironmentVariable Name="ASPNETCORE_ENVIRONMENT" Value="Development"/>
       <EnvironmentVariable Name="ASPNETCORE_URLS" Value="http://0.0.0.0:80"/>
-      <EnvironmentVariable Name="ConnectionString" Value="Server=sql.data;Database=Microsoft.eShopOnContainers.Services.CatalogDb;User Id=sa;Password=Pass@word"/>
+      <EnvironmentVariable Name="ConnectionString" Value=""/>
       <EnvironmentVariable Name="ExternalCatalogBaseUrl" Value=""/>
-      <EnvironmentVariable Name="EventBusConnection" Value="rabbitmq"/>
+      <EnvironmentVariable Name="EventBusConnection" Value=""/>
     </EnvironmentVariables>
   </CodePackage>
 

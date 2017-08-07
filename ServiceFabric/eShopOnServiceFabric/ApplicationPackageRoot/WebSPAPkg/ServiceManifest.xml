@@ -23,11 +23,11 @@
     <EnvironmentVariables>
       <EnvironmentVariable Name="ASPNETCORE_ENVIRONMENT" Value="Development"/>
       <EnvironmentVariable Name="ASPNETCORE_URLS" Value="http://0.0.0.0:80"/>
-      <EnvironmentVariable Name="CatalogUrl" Value="http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5101"/>
-      <EnvironmentVariable Name="OrderingUrl" Value="http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5102"/>
-      <EnvironmentVariable Name="IdentityUrl" Value="http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105"/>
-      <EnvironmentVariable Name="BasketUrl" Value="http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5103"/>
-      <EnvironmentVariable Name="MarketingUrl" Value="http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5110"/>
+      <EnvironmentVariable Name="CatalogUrl" Value=""/>
+      <EnvironmentVariable Name="OrderingUrl" Value=""/>
+      <EnvironmentVariable Name="IdentityUrl" Value=""/>
+      <EnvironmentVariable Name="BasketUrl" Value=""/>
+      <EnvironmentVariable Name="MarketingUrl" Value=""/>
     </EnvironmentVariables>
   </CodePackage>
 
