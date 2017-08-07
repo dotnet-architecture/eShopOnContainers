@@ -14,7 +14,6 @@
 		"SitesEshopfunctionsName": "[parameters('SitesEshopfunctionsName')]",
 		"WebConfigName": "[concat(variables('SitesEshopfunctionsName'), '/web')]",
 		"Location": "[resourceGroup().location]",
-		"EshopAccountsDatabase": "[concat(variables('SitesEshopfunctionsName'), 'db')]",
 		"ServerFarmPlan": "[concat(trim(variables('location')), 'Plan')]",
 		"StorageAccounts": "[concat(variables('SitesEshopfunctionsName'), 'st')]"
     },

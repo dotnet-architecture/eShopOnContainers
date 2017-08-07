@@ -8,7 +8,7 @@
         public static string MockCatalogItemId04 = "4";
         public static string MockCatalogItemId05 = "5";
 
-        public static int MockCampaignd01 = 1;
-        public static int MockCampaignd02 = 2;
+        public static int MockCampaignId01 = 1;
+        public static int MockCampaignId02 = 2;
     }
 }

@@ -2,6 +2,8 @@
 Sample .NET Core reference application, powered by Microsoft, based on a simplified microservices architecture and Docker containers. <p>
 **Note for Pull Requests**: We accept pull request from the community. When doing it, please do it onto the DEV branch which is the consolidated work-in-progress branch. Do not request it onto Master, if possible.
 
+>**PLEASE** Read our [branch guide](./branch-guide.md) to know about our branching policy
+
 > ### DISCLAIMER
 > **IMPORTANT:** The current state of this sample application is **BETA**, consider it version a 0.1 foundational version, therefore, many areas could be improved and change significantly while refactoring current code and implementing new features. **Feedback with improvements and pull requests from the community will be highly appreciated and accepted.**
 >
@@ -41,7 +43,7 @@ You can download them and start reviewing these Guides/eBooks here:
 | Architecting & Developing | Containers Lifecycle & CI/CD | App patterns with Xamarin.Forms |
 | ------------ | ------------|  ------------|
 | <a href='https://aka.ms/microservicesebook'><img src="img/ebook_arch_dev_microservices_containers_cover.png"> </a> | <a href='https://aka.ms/dockerlifecycleebook'> <img src="img/ebook_containers_lifecycle.png"> </a> | <a href='https://aka.ms/xamarinpatternsebook'> <img src="img/xamarin-enterprise-patterns-ebook-cover-small.png"> </a> |
-| <sup> <a href='https://aka.ms/microservicesebook'>**Download** (First Edition)</a> </sup>  | <sup> <a href='https://aka.ms/dockerlifecycleebook'>**Download** (First Edition from late 2016) </a>  </sup> | <sup> <a href='https://aka.ms/xamarinpatternsebook'>**Download** (First Edition) </a>  </sup> |
+| <sup> <a href='https://aka.ms/microservicesebook'>**Download** (First Edition)</a> </sup>  | <sup> <a href='https://aka.ms/dockerlifecycleebook'>**Download** (First Edition) </a>  </sup> | <sup> <a href='https://aka.ms/xamarinpatternsebook'>**Download** (First Edition) </a>  </sup> |
 
 Send feedback to [dotnet-architecture-ebooks-feedback@service.microsoft.com](dotnet-architecture-ebooks-feedback@service.microsoft.com)
 <p>
