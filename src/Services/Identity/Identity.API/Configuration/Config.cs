@@ -67,6 +67,7 @@ namespace Identity.API.Configuration
                     },
                     RedirectUris = { clientsUrl["Xamarin"] },
                     RequireConsent = false,
+                    RequirePkce = true,
                     PostLogoutRedirectUris = { $"{clientsUrl["Xamarin"]}/Account/Redirecting" },
                     AllowedCorsOrigins = { "http://eshopxamarin" },
                     AllowedScopes = new List<string>
