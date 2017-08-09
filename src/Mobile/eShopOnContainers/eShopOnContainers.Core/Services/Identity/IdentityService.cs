@@ -5,8 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using eShopOnContainers.Core.Services.RequestProvider;
 using eShopOnContainers.Core.Models.Token;
+using eShopOnContainers.Core.Helpers;
+using IdentityModel;
 using IdentityModel.Client;
 using PCLCrypto;
+using static PCLCrypto.WinRTCrypto;
 
 namespace eShopOnContainers.Core.Services.Identity
 {
@@ -25,9 +28,6 @@ namespace eShopOnContainers.Core.Services.Identity
             // Create URI to authorization endpoint
             var authorizeRequest = new AuthorizeRequest(GlobalSetting.Instance.IdentityEndpoint);
 
-            // Create code verifier for PKCE
-            _codeVerifier = RandomDataBase64Url(32);
-
             // Dictionary with values for the authorize request
             var dic = new Dictionary<string, string>();
             dic.Add("client_id", GlobalSetting.Instance.ClientId);
@@ -36,7 +36,7 @@ namespace eShopOnContainers.Core.Services.Identity
             dic.Add("scope", "openid profile basket orders locations marketing offline_access");
             dic.Add("redirect_uri", GlobalSetting.Instance.IdentityCallback);
             dic.Add("nonce", Guid.NewGuid().ToString("N"));
-            dic.Add("code_challenge", Base64UrlEncodeNoPadding(Sha256(_codeVerifier)));
+            dic.Add("code_challenge", CreateCodeChallenge());
             dic.Add("code_challenge_method", "S256");
 
             // Add CSRF token to protect against cross-site request forgery attacks.
@@ -67,26 +67,14 @@ namespace eShopOnContainers.Core.Services.Identity
 			return token;
 		}
 
-        private string RandomDataBase64Url(int length)
+        private string CreateCodeChallenge()
         {
-            byte[] bytes = WinRTCrypto.CryptographicBuffer.GenerateRandom(length);
-            return Base64UrlEncodeNoPadding(bytes);
-        }
-
-        private byte[] Sha256(string input)
-        {
-            byte[] bytes = Encoding.UTF8.GetBytes(input);
-            var sha256 = WinRTCrypto.HashAlgorithmProvider.OpenAlgorithm(HashAlgorithm.Sha256);
-            return sha256.HashData(bytes);
-        }
-
-        private string Base64UrlEncodeNoPadding(byte[] buffer)
-        {
-            string base64 = Convert.ToBase64String(buffer);
-            base64 = base64.Replace("+", "-");
-            base64 = base64.Replace("/", "_");
-            base64 = base64.Replace("=", string.Empty);
-            return base64;
+            _codeVerifier = RandomNumberGenerator.CreateUniqueId();
+            var sha256 = HashAlgorithmProvider.OpenAlgorithm(HashAlgorithm.Sha256);
+            var challengeBuffer = sha256.HashData(CryptographicBuffer.CreateFromByteArray(Encoding.UTF8.GetBytes(_codeVerifier)));
+            byte[] challengeBytes;
+            CryptographicBuffer.CopyToByteArray(challengeBuffer, out challengeBytes);
+            return Base64Url.Encode(challengeBytes);
         }
     }
 }
