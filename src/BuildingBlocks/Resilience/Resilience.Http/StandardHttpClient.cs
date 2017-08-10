@@ -43,7 +43,7 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http
             // a new StringContent must be created for each retry 
             // as it is disposed after each call
 
-            var requestMessage = new HttpRequestMessage(HttpMethod.Post, uri);
+            var requestMessage = new HttpRequestMessage(method, uri);
 
             requestMessage.Content = new StringContent(JsonConvert.SerializeObject(item), System.Text.Encoding.UTF8, "application/json");
 

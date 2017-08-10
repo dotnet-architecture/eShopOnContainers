@@ -22,6 +22,7 @@
         private readonly SubscriptionClient _subscriptionClient;
         private readonly ILifetimeScope _autofac;
         private readonly string AUTOFAC_SCOPE_NAME = "eshop_event_bus";
+        private const string INTEGRATION_EVENT_SUFIX = "IntegrationEvent";
 
         public EventBusServiceBus(IServiceBusPersisterConnection serviceBusPersisterConnection, 
             ILogger<EventBusServiceBus> logger, IEventBusSubscriptionsManager subsManager, string subscriptionClientName,
@@ -41,7 +42,7 @@
 
         public void Publish(IntegrationEvent @event)
         {
-            var eventName = @event.GetType().Name;
+            var eventName = @event.GetType().Name.Replace(INTEGRATION_EVENT_SUFIX, "");
             var jsonMessage = JsonConvert.SerializeObject(@event);
             var body = Encoding.UTF8.GetBytes(jsonMessage);
 
@@ -69,7 +70,8 @@
             where T : IntegrationEvent
             where TH : IIntegrationEventHandler<T>
         {
-            var eventName = typeof(T).Name;
+            var eventName =  typeof(T).Name.Replace(INTEGRATION_EVENT_SUFIX, "");
+
             var containsKey = _subsManager.HasSubscriptionsForEvent<T>();
             if (!containsKey)
             {
@@ -94,7 +96,7 @@
             where T : IntegrationEvent
             where TH : IIntegrationEventHandler<T>
         {
-            var eventName = typeof(T).Name;
+            var eventName = typeof(T).Name.Replace(INTEGRATION_EVENT_SUFIX, "");
 
             try
             {

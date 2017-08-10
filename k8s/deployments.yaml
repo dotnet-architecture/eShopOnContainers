@@ -127,6 +127,26 @@ spec:
            configMapKeyRef:
              name: urls
              key: SpaClientExternalUrl
+        - name: LocationApiClient
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: LocationApiClient
+        - name: MarketingApiClient
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: MarketingApiClient
+        - name: BasketApiClient
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: BasketApiClient 
+        - name: OrderingApiClient
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: OrderingApiClient                               
         ports:
         - containerPort: 80
       imagePullSecrets:
@@ -267,6 +287,11 @@ spec:
            configMapKeyRef:
              name: urls
              key: IdentityUrl
+        - name: IdentityUrlExternal
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: IdentityUrl             
         ports:
         - containerPort: 80
       imagePullSecrets:
@@ -321,6 +346,16 @@ spec:
            configMapKeyRef:
              name: urls
              key: IdentityUrl
+        - name: IdentityUrlExternal
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: IdentityUrl             
+        - name: PicBaseUrl
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: Marketing_PicBaseUrl             
         ports:
         - containerPort: 80
       imagePullSecrets:
@@ -411,6 +446,11 @@ spec:
            configMapKeyRef:
              name: urls
              key: MvcClientOrderingUrl
+        - name: MarketingUrl
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: MvcClientMarketingUrl             
         ports:
         - containerPort: 80
       imagePullSecrets:
@@ -531,6 +571,11 @@ spec:
            configMapKeyRef:
              name: urls
              key: SpaClientOrderingExternalUrl
+        - name: MarketingUrl
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: SpaClientMarketingExternalUrl             
         - name: BasketUrlHC
           valueFrom:
            configMapKeyRef:
