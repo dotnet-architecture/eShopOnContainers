@@ -151,11 +151,6 @@
                     <Label
                         Text="REGISTER"
                         TextColor="Gray"/>
-                    <Grid.GestureRecognizers>
-                        <TapGestureRecognizer
-                          Command="{Binding RegisterCommand}"
-                          NumberOfTapsRequired="1" />
-                    </Grid.GestureRecognizers>
                 </Grid>
                 <StackLayout  
                   Grid.Column="2"
