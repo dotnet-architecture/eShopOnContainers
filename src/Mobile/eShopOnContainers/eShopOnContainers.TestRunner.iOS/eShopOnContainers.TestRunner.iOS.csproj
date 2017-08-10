@@ -139,9 +139,6 @@
     <Reference Include="Xamarin.Forms.Core, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\..\..\packages\Xamarin.Forms.2.3.4.231\lib\Xamarin.iOS10\Xamarin.Forms.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Xamarin.Forms.Pages, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\packages\Xamarin.Forms.Pages.2.3.4.231\lib\Xamarin.iOS10\Xamarin.Forms.Pages.dll</HintPath>
-    </Reference>
     <Reference Include="Xamarin.Forms.Platform, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\..\..\packages\Xamarin.Forms.2.3.4.231\lib\Xamarin.iOS10\Xamarin.Forms.Platform.dll</HintPath>
     </Reference>
@@ -222,15 +219,6 @@
     </Reference>
     <Reference Include="ModernHttpClient">
       <HintPath>..\..\..\..\packages\modernhttpclient.2.4.2\lib\Xamarin.iOS10\ModernHttpClient.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.Forms.Theme.Base">
-      <HintPath>..\..\..\..\packages\Xamarin.Forms.Theme.Base.1.0.0.43-pre1\lib\Xamarin.iOS10\Xamarin.Forms.Theme.Base.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.Forms.Theme.iOS">
-      <HintPath>..\..\..\..\packages\Xamarin.Forms.Theme.Base.1.0.0.43-pre1\lib\Xamarin.iOS10\Xamarin.Forms.Theme.iOS.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.Forms.Theme.Light">
-      <HintPath>..\..\..\..\packages\Xamarin.Forms.Theme.Light.1.0.0.43-pre1\lib\Xamarin.iOS10\Xamarin.Forms.Theme.Light.dll</HintPath>
     </Reference>
     <Reference Include="Plugin.Geolocator.Abstractions">
       <HintPath>..\..\..\..\packages\Xam.Plugin.Geolocator.3.0.4\lib\Xamarin.iOS10\Plugin.Geolocator.Abstractions.dll</HintPath>
