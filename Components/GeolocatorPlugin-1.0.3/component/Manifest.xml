@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<component format="1" id="GeolocatorPlugin" is-shell="true">
+  <name>Geolocator Plugin</name>
+  <publisher>James Montemagno</publisher>
+  <publisher-url>http://www.github.com/jamesmontemagno/Xamarin.Plugins</publisher-url>
+  <version>1.0.3</version>
+  <summary>Simple cross platform plugin to get GPS location including heading, speed, and more.</summary>
+  <packages>
+    <package id="Xam.Plugin.Geolocator" version="1.0.3" framework="winphone-8.1" />
+    <package id="Xam.Plugin.Geolocator" version="1.0.3" framework="ios-unified" />
+    <package id="Xam.Plugin.Geolocator" version="1.0.3" framework="android" />
+    <package id="Xam.Plugin.Geolocator" version="1.0.3" framework="winphone-8.0" />
+    <package id="Xam.Plugin.Geolocator" version="1.0.3" framework="ios" />
+  </packages>
+  <samples>
+    <sample id="GeolocatorSample">
+      <name>Android Sample</name>
+      <summary>Android Sample</summary>
+    </sample>
+    <sample id="GeolocatorSample">
+      <name>WindowsPhone Sample</name>
+      <summary>WindowsPhone Sample</summary>
+    </sample>
+    <sample id="GeolocatorSample">
+      <name>iOS Sample</name>
+      <summary>iOS Sample</summary>
+    </sample>
+  </samples>
+</component>

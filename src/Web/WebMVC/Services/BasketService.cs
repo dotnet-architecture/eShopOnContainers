@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using WebMVC.Infrastructure;
+using WebMVC.Models;
 
 namespace Microsoft.eShopOnContainers.WebMVC.Services
 {
@@ -20,7 +21,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
         public BasketService(IOptionsSnapshot<AppSettings> settings, IHttpContextAccessor httpContextAccesor, IHttpClient httpClient)
         {
             _settings = settings;
-            _remoteServiceBaseUrl = _settings.Value.BasketUrl;
+            _remoteServiceBaseUrl = $"{_settings.Value.BasketUrl}/api/v1/basket";
             _httpContextAccesor = httpContextAccesor;
             _apiClient = httpClient;
         }
@@ -52,6 +53,16 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
             response.EnsureSuccessStatusCode();
 
             return basket;
+        }
+
+        public async Task Checkout(BasketDTO basket)
+        {
+            var token = await GetUserTokenAsync();
+            var updateBasketUri = API.Basket.CheckoutBasket(_remoteServiceBaseUrl);
+
+            var response = await _apiClient.PostAsync(updateBasketUri, basket, token);
+
+            response.EnsureSuccessStatusCode();
         }
 
         public async Task<Basket> SetQuantities(ApplicationUser user, Dictionary<string, int> quantities)
@@ -109,18 +120,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
             basket.Items.Add(product);
 
             await UpdateBasket(basket);
-        }
-
-        public async Task CleanBasket(ApplicationUser user)
-        {
-            var token = await GetUserTokenAsync();
-            var cleanBasketUri = API.Basket.CleanBasket(_remoteServiceBaseUrl, user.Id);
-
-            var response = await _apiClient.DeleteAsync(cleanBasketUri, token);
-
-            //CCE: response status code...
-
-        }
+        }        
 
         async Task<string> GetUserTokenAsync()
         {

@@ -10,6 +10,7 @@ import { ICatalogBrand }        from '../shared/models/catalogBrand.model';
 import { IPager }               from '../shared/models/pager.model';
 import { BasketWrapperService}  from '../shared/services/basket.wrapper.service';
 import { SecurityService }      from '../shared/services/security.service';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
     selector: 'esh-catalog .esh-catalog',
@@ -25,6 +26,7 @@ export class CatalogComponent implements OnInit {
     paginationInfo: IPager;
     authenticated: boolean = false;
     authSubscription: Subscription;
+    errorReceived: boolean;
 
     constructor(private service: CatalogService, private basketService: BasketWrapperService, private configurationService: ConfigurationService, private securityService: SecurityService) {
         this.authenticated = securityService.IsAuthorized;
@@ -79,17 +81,18 @@ export class CatalogComponent implements OnInit {
     }
 
     getCatalog(pageSize: number, pageIndex: number, brand?: number, type?: number) {
-        this.service.getCatalog(pageIndex, pageSize, brand, type).subscribe(catalog => {
-            this.catalog = catalog;
-
-            this.paginationInfo = {
-                actualPage : catalog.pageIndex,
-                itemsPage : catalog.pageSize,
-                totalItems : catalog.count,
-                totalPages: Math.ceil(catalog.count / catalog.pageSize),
-                items: catalog.pageSize
-            };
-
+        this.errorReceived = false;
+        this.service.getCatalog(pageIndex, pageSize, brand, type)
+            .catch((err) => this.handleError(err))
+            .subscribe(catalog => {
+                this.catalog = catalog;
+                this.paginationInfo = {
+                    actualPage : catalog.pageIndex,
+                    itemsPage : catalog.pageSize,
+                    totalItems : catalog.count,
+                    totalPages: Math.ceil(catalog.count / catalog.pageSize),
+                    items: catalog.pageSize
+                };
         });
     }
 
@@ -107,6 +110,11 @@ export class CatalogComponent implements OnInit {
             let allBrands = { id: null, brand: 'All' };
             this.brands.unshift(allBrands);
         });
+    }
+
+    private handleError(error: any) {
+        this.errorReceived = true;
+        return Observable.throw(error);
     }
 }
 

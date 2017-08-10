@@ -42,19 +42,27 @@ namespace Catalog.API.Infrastructure.Migrations
                         .HasAnnotation("SqlServer:HiLoSequenceName", "catalog_hilo")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.SequenceHiLo);
 
+                    b.Property<int>("AvailableStock");
+
                     b.Property<int>("CatalogBrandId");
 
                     b.Property<int>("CatalogTypeId");
 
                     b.Property<string>("Description");
 
+                    b.Property<int>("MaxStockThreshold");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50);
 
+                    b.Property<bool>("OnReorder");
+
                     b.Property<string>("PictureUri");
 
                     b.Property<decimal>("Price");
+
+                    b.Property<int>("RestockThreshold");
 
                     b.HasKey("Id");
 

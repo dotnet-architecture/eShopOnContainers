@@ -83,6 +83,28 @@ namespace eShopOnContainers.Core.Services.RequestProvider
 			return result;
         }
 
+        public async Task<TResult> PutAsync<TResult>(string uri, TResult data, string token = "", string header = "")
+        {
+            HttpClient httpClient = CreateHttpClient(token);
+
+            if (!string.IsNullOrEmpty(header))
+            {
+                AddHeaderParameter(httpClient, header);
+            }
+
+            var content = new StringContent(JsonConvert.SerializeObject(data));
+            content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            HttpResponseMessage response = await httpClient.PutAsync(uri, content);
+
+            await HandleResponse(response);
+            string serialized = await response.Content.ReadAsStringAsync();
+
+            TResult result = await Task.Run(() =>
+                JsonConvert.DeserializeObject<TResult>(serialized, _serializerSettings));
+
+            return result;
+        }
+
         public async Task DeleteAsync(string uri, string token = "")
         {
             HttpClient httpClient = CreateHttpClient(token);
@@ -135,7 +157,7 @@ namespace eShopOnContainers.Core.Services.RequestProvider
                     throw new ServiceAuthenticationException(content);
                 }
 
-                throw new HttpRequestException(content);
+                throw new HttpRequestExceptionEx(response.StatusCode, content);
             }
         }
     }

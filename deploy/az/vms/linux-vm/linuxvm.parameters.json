@@ -1,0 +1,7 @@
+{
+  "newStorageAccountName": { "value": "eshopsrvmvstorage" },
+  "adminUsername": { "value": "eshop" },
+  "adminPassword": { "value": "Pass@word" },
+  "dnsNameForPublicIP": { "value": "eshop-srv" },
+  "VMName": {"value": "MyDockerVM2"}
+}

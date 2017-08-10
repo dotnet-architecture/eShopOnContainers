@@ -9,6 +9,7 @@ using Android.Content;
 using Android.Runtime;
 using FFImageLoading;
 using System;
+using Plugin.Permissions;
 
 namespace eShopOnContainers.Droid.Activities
 {
@@ -55,6 +56,11 @@ namespace eShopOnContainers.Droid.Activities
             ImageService.Instance.InvalidateMemoryCache();
             GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
             base.OnTrimMemory(level);
+        }
+
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
+        {
+            PermissionsImplementation.Current.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
 }

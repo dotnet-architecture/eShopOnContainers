@@ -10,6 +10,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.HealthChecks;
 using Newtonsoft.Json.Serialization;
 using eShopOnContainers.WebSPA;
+using Microsoft.eShopOnContainers.BuildingBlocks;
+using WebSPA.Infrastructure;
 
 namespace eShopConContainers.WebSPA
 {
@@ -55,14 +57,19 @@ namespace eShopConContainers.WebSPA
                 checks.AddUrlCheck(Configuration["OrderingUrlHC"], TimeSpan.FromMinutes(minutes));
                 checks.AddUrlCheck(Configuration["BasketUrlHC"], TimeSpan.FromMinutes(minutes));
                 checks.AddUrlCheck(Configuration["IdentityUrlHC"], TimeSpan.FromMinutes(minutes));
+                checks.AddUrlCheck(Configuration["MarketingUrlHC"], TimeSpan.FromMinutes(minutes));
             });
 
             services.Configure<AppSettings>(Configuration);
 
-            services.AddDataProtection(opts =>
+            if (Configuration.GetValue<string>("IsClusterEnv") == bool.TrueString)
             {
-                opts.ApplicationDiscriminator = "eshop.webspa";
-            });
+                services.AddDataProtection(opts =>
+                {
+                    opts.ApplicationDiscriminator = "eshop.webspa";
+                })
+                .PersistKeysToRedis(Configuration["DPConnectionString"]);
+            }
 
             services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
 
@@ -93,6 +100,9 @@ namespace eShopConContainers.WebSPA
             //     }
             //     await next.Invoke();
             // });
+
+            //Seed Data
+            WebContextSeed.Seed(app, env, loggerFactory);
 
             app.Use(async (context, next) =>
             {

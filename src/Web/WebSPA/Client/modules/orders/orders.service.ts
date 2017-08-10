@@ -44,13 +44,7 @@ export class OrdersService {
         });
     }
 
-    postOrder(item): Observable<boolean> {
-        return this.service.postWithId(this.ordersUrl + '/api/v1/orders/new', item).map((response: Response) => {
-            return true;
-        });
-    }
-
-    mapBasketAndIdentityInfoNewOrder(): IOrder {
+    mapOrderAndIdentityInfoNewOrder(): IOrder {
         let order = <IOrder>{};
         let basket = this.basketService.basket;
         let identityInfo = this.identityService.UserData;

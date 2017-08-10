@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: eshop
+    component: nosql-data
+  name: nosql-data
+spec:
+  ports:
+  - port: 27017
+  selector:
+    app: eshop
+    component: nosql-data
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: nosql-data
+spec:
+  template:
+    metadata:
+      labels:
+        app: eshop
+        component: nosql-data
+    spec:
+      containers:
+      - name: nosql-data
+        image: mongo
+        ports:
+        - containerPort: 27017

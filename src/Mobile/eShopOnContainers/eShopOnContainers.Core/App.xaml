@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <Application xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"  
              xmlns:light="clr-namespace:Xamarin.Forms.Themes;assembly=Xamarin.Forms.Theme.Light"
@@ -101,15 +101,12 @@
             <!-- CONVERTERS -->
             <converters:CountToBoolConverter x:Key="CountToBoolConverter" />
             <converters:DatetimeConverter x:Key="DatetimeConverter" />
-			<converters:FirstValidationErrorConverter x:Key="FirstValidationErrorConverter" />
             <converters:ImageConverter x:Key="ImageConverter" />
             <converters:ItemTappedEventArgsConverter x:Key="ItemTappedEventArgsConverter" />
             <converters:InverseCountToBoolConverter x:Key="InverseCountToBoolConverter" />
             <converters:InverseBoolConverter x:Key="InverseBoolConverter" />
             <converters:ItemsToHeightConverter x:Key="ItemsToHeightConverter" />
             <converters:ToUpperConverter x:Key="ToUpperConverter" />
-            <converters:WebNavigatingEventArgsConverter x:Key="WebNavigatingEventArgsConverter" />
-            <converters:WebNavigatedEventArgsConverter x:Key="WebNavigatedEventArgsConverter" />
 
             <!-- STYLES -->
             <Style x:Key="ValidationErrorLabelStyle"

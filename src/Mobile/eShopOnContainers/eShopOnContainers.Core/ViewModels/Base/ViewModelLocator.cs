@@ -8,10 +8,11 @@ using eShopOnContainers.Core.Services.OpenUrl;
 using eShopOnContainers.Core.Services.RequestProvider;
 using eShopOnContainers.Core.Services.Basket;
 using eShopOnContainers.Core.Services.Identity;
-using eShopOnContainers.Core.Services.Token;
 using eShopOnContainers.Core.Services.Order;
 using eShopOnContainers.Core.Services.User;
 using Xamarin.Forms;
+using eShopOnContainers.Core.Services.Location;
+using eShopOnContainers.Core.Services.Marketing;
 
 namespace eShopOnContainers.Core.ViewModels.Base
 {
@@ -47,23 +48,26 @@ namespace eShopOnContainers.Core.ViewModels.Base
 			builder.RegisterType<OrderDetailViewModel>();
 			builder.RegisterType<ProfileViewModel>();
 			builder.RegisterType<SettingsViewModel>();
+		    builder.RegisterType<CampaignViewModel>();
+		    builder.RegisterType<CampaignDetailsViewModel>();
 
-			// Services
-			builder.RegisterType<NavigationService>().As<INavigationService>().SingleInstance();
+            // Services
+            builder.RegisterType<NavigationService>().As<INavigationService>().SingleInstance();
 			builder.RegisterType<DialogService>().As<IDialogService>();
 			builder.RegisterType<OpenUrlService>().As<IOpenUrlService>();
 			builder.RegisterType<IdentityService>().As<IIdentityService>();
-            builder.RegisterType<TokenService>().As<ITokenService>();
 			builder.RegisterType<RequestProvider>().As<IRequestProvider>();
+            builder.RegisterType<LocationService>().As<ILocationService>().SingleInstance();
 
-			if (useMockServices)
+            if (useMockServices)
 			{
 				builder.RegisterInstance(new CatalogMockService()).As<ICatalogService>();
 				builder.RegisterInstance(new BasketMockService()).As<IBasketService>();
 				builder.RegisterInstance(new OrderMockService()).As<IOrderService>();
 				builder.RegisterInstance(new UserMockService()).As<IUserService>();
+			    builder.RegisterInstance(new CampaignMockService()).As<ICampaignService>();
 
-				UseMockService = true;
+                UseMockService = true;
 			}
 			else
 			{
@@ -71,8 +75,9 @@ namespace eShopOnContainers.Core.ViewModels.Base
 				builder.RegisterType<BasketService>().As<IBasketService>().SingleInstance();
 				builder.RegisterType<OrderService>().As<IOrderService>().SingleInstance();
 				builder.RegisterType<UserService>().As<IUserService>().SingleInstance();
+			    builder.RegisterType<CampaignService>().As<ICampaignService>().SingleInstance();
 
-				UseMockService = false;
+                UseMockService = false;
 			}
 
 			if (_container != null)

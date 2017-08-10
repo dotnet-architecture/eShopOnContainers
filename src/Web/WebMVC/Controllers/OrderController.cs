@@ -8,6 +8,7 @@ using Microsoft.eShopOnContainers.WebMVC.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using System.Net.Http;
 using Polly.CircuitBreaker;
+using WebMVC.Models;
 
 namespace Microsoft.eShopOnContainers.WebMVC.Controllers
 {
@@ -36,14 +37,16 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Order model, string action)
+        public async Task<IActionResult> Checkout(Order model)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
                     var user = _appUserParser.Parse(HttpContext.User);
-                    await _orderSvc.CreateOrder(model);
+                    var basket = _orderSvc.MapOrderToBasket(model);
+
+                    await _basketSvc.Checkout(basket);
 
                     //Redirect to historic list.
                     return RedirectToAction("Index");
@@ -53,7 +56,15 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
             {
                 ModelState.AddModelError("Error", "It was not possible to create a new order, please try later on. (Business Msg Due to Circuit-Breaker)");
             }
-            return View(model);
+            return View("Create",  model);
+        }
+
+        public async Task<IActionResult> Cancel(string orderId)
+        {
+            await _orderSvc.CancelOrder(orderId);
+
+            //Redirect to historic list.
+            return RedirectToAction("Index");
         }
 
         public async Task<IActionResult> Detail(string orderId)
