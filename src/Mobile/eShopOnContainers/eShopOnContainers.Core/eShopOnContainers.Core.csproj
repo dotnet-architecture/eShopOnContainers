@@ -64,6 +64,7 @@
     <Compile Include="Extensions\ObservableExtension.cs" />
     <Compile Include="GlobalSettings.cs" />
     <Compile Include="Helpers\EasingHelper.cs" />
+    <Compile Include="Helpers\RandomNumberGenerator.cs" />
     <Compile Include="Helpers\ServicesHelper.cs" />
     <Compile Include="Helpers\Settings.cs" />
     <Compile Include="Models\Basket\BasketCheckout.cs" />
