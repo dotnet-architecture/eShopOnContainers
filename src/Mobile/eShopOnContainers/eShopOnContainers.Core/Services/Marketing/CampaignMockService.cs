@@ -13,7 +13,7 @@
         {
             new CampaignItem
             {
-                Id = Common.Common.MockCampaignd01,
+                Id = Common.Common.MockCampaignId01,
                 PictureUri = Device.RuntimePlatform != Device.Windows
                     ? "fake_campaign_01.png"
                     : "Assets/fake_campaign_01.png",
@@ -25,7 +25,7 @@
 
             new CampaignItem
             {
-                Id = Common.Common.MockCampaignd02,
+                Id = Common.Common.MockCampaignId02,
                 PictureUri = Device.RuntimePlatform != Device.Windows
                     ? "fake_campaign_02.png"
                     : "Assets/fake_campaign_02.png",

@@ -3,11 +3,9 @@ using Autofac.Core;
 using FluentValidation;
 using MediatR;
 using Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands;
-using Microsoft.eShopOnContainers.Services.Ordering.API.Application.Decorators;
-using Ordering.API.Application.Decorators;
 using Ordering.API.Application.DomainEventHandlers.OrderStartedEvent;
 using Ordering.API.Application.Validations;
-using Ordering.Domain.Events;
+using Ordering.API.Infrastructure.Behaviors;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -33,7 +31,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure.Autof
                     .Where(i => i.IsClosedTypeOf(typeof(IAsyncNotificationHandler<>)))
                     .Select(i => new KeyedService("IAsyncNotificationHandler", i)))
                     .AsImplementedInterfaces();
-                    
+
 
             builder
                 .RegisterAssemblyTypes(typeof(CreateOrderCommandValidator).GetTypeInfo().Assembly)
@@ -45,25 +43,22 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure.Autof
             {
                 var componentContext = context.Resolve<IComponentContext>();
                 return t => { object o; return componentContext.TryResolve(t, out o) ? o : null; };
-            });          
+            });
 
             builder.Register<MultiInstanceFactory>(context =>
             {
                 var componentContext = context.Resolve<IComponentContext>();
 
-                return t => (IEnumerable<object>)componentContext.Resolve(typeof(IEnumerable<>).MakeGenericType(t));
+                return t =>
+                {
+                    var resolved = (IEnumerable<object>)componentContext.Resolve(typeof(IEnumerable<>).MakeGenericType(t));
+                    return resolved;
+                };
             });
 
-            
+            builder.RegisterGeneric(typeof(LoggingBehavior<,>)).As(typeof(IPipelineBehavior<,>));
+            builder.RegisterGeneric(typeof(ValidatorBehavior<,>)).As(typeof(IPipelineBehavior<,>));
 
-            builder.RegisterGenericDecorator(typeof(LogDecorator<,>),
-                    typeof(IAsyncRequestHandler<,>),
-                    "IAsyncRequestHandler")
-                    .Keyed("handlerDecorator", typeof(IAsyncRequestHandler<,>));
-
-            builder.RegisterGenericDecorator(typeof(ValidatorDecorator<,>),
-                    typeof(IAsyncRequestHandler<,>),
-                    fromKey: "handlerDecorator");
         }
     }
 }

@@ -16,6 +16,7 @@ services:
       - identityUrl=http://identity.api              #Local: You need to open your local dev-machine firewall at range 5100-5110.
       - IdentityUrlExternal=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
       - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
+      - AzureServiceBusEnabled=False
     ports:
       - "5103:80"
 
@@ -29,6 +30,7 @@ services:
       - AzureStorageAccountName=${ESHOP_AZURE_STORAGE_CATALOG_NAME}
       - AzureStorageAccountKey=${ESHOP_AZURE_STORAGE_CATALOG_KEY}
       - UseCustomizationData=True
+      - AzureServiceBusEnabled=False
     ports:
       - "5101:80"
 
@@ -57,6 +59,7 @@ services:
       - IdentityUrlExternal=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
       - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
       - UseCustomizationData=True
+      - AzureServiceBusEnabled=False
     ports:
       - "5102:80"
 
@@ -74,6 +77,7 @@ services:
       - PicBaseUrl=${ESHOP_AZURE_STORAGE_MARKETING:-http://localhost:5110/api/v1/campaigns/[0]/pic/}
       - AzureStorageAccountName=${ESHOP_AZURE_STORAGE_MARKETING_NAME}
       - AzureStorageAccountKey=${ESHOP_AZURE_STORAGE_MARKETING_KEY}
+      - AzureServiceBusEnabled=False
     ports:
       - "5110:80"
       
@@ -83,6 +87,7 @@ services:
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - ConnectionString=Server=sql.data;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word
       - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
+      - AzureServiceBusEnabled=False
 
   webspa:
     environment:
@@ -147,6 +152,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
+      - AzureServiceBusEnabled=False
     ports:
       - "5108:80"
 
@@ -159,5 +165,6 @@ services:
       - identityUrl=http://identity.api              #Local: You need to open your local dev-machine firewall at range 5100-5110. 
       - IdentityUrlExternal=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
       - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
+      - AzureServiceBusEnabled=False
     ports:
       - "5109:80"

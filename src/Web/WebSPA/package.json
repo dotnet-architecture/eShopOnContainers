@@ -46,12 +46,12 @@
     "zone.js": "^0.8.4"
   },
   "devDependencies": {
-    "@angular/cli": "1.0.0",
+    "@angular/cli": "^1.3.0",
     "@angular/compiler-cli": "^4.0.0",
-    "@types/jasmine": "2.5.38",
-    "@types/node": "~6.0.60",
     "@types/core-js": "0.9.34",
     "@types/hammerjs": "2.0.33",
+    "@types/jasmine": "2.5.38",
+    "@types/node": "~6.0.60",
     "@types/protractor": "1.5.20",
     "@types/selenium-webdriver": "2.44.26",
     "codelyzer": "~2.0.0",

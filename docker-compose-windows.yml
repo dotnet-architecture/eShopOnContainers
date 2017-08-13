@@ -9,6 +9,7 @@ services:
     depends_on:
       - basket.data
       - identity.api
+      - rabbitmq
 
   catalog.api:
     image: eshop/catalog.api-win:${TAG:-latest}
@@ -17,6 +18,7 @@ services:
       dockerfile: Dockerfile.nanowin
     depends_on:
       - sql.data
+      - rabbitmq
 
   identity.api:
     image: eshop/identity.api-win:${TAG:-latest}
@@ -33,6 +35,7 @@ services:
       dockerfile: Dockerfile.nanowin
     depends_on:
       - sql.data
+      - rabbitmq
 
   webspa:
     image: eshop/webspa-win:${TAG:-latest}
@@ -53,12 +56,19 @@ services:
       - ordering.api
       - identity.api
       - basket.api
+      - marketing.api
   
+  webstatus:
+    image: eshop/webstatus:${TAG:-latest}
+    build:
+      context: ./src/Web/WebStatus
+      dockerfile: Dockerfile.nanowin
+
   locations.api:
     image: eshop/locations.api:${TAG:-latest}
     build:
       context: ./src/Services/Location/Locations.API
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.nanowin
     depends_on:
       - nosql.data
       - rabbitmq
@@ -67,7 +77,7 @@ services:
     image: eshop/marketing.api:${TAG:-latest}
     build:
       context: ./src/Services/Marketing/Marketing.API
-      dockerfile: Dockerfile    
+      dockerfile: Dockerfile.nanowin    
     depends_on:
       - sql.data
       - nosql.data
@@ -95,7 +105,24 @@ services:
 #      dockerfile: Dockerfile.nanowin  
     ports:
         - "5672:5672"
-  
+
+  graceperiodmanager:
+    image: eshop/graceperiodmanager:${TAG:-latest}
+    build:
+      context: ./src/Services/GracePeriod/GracePeriodManager
+      dockerfile: Dockerfile.nanowin
+    depends_on:
+      - sql.data
+      - rabbitmq
+
+  payment.api:
+    image: eshop/payment.api:${TAG:-latest}
+    build:
+      context: ./src/Services/Payment/Payment.API
+      dockerfile: Dockerfile.nanowin
+    depends_on:
+      - rabbitmq   
+
 networks:
   default:
     external:
