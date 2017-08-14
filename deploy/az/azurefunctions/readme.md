@@ -17,7 +17,7 @@ create-resources.cmd azurefunctions\azurefunctionsdeploy newResourceGroup -c wes
 ```
 ## Deploy Marketing azure function with Visual Studio.
 
-Alternatively, instead of using ARM templates, you can deploy Marketing azure function directly by publishing the project Marketing-functions in eShopOnContainers-AzureFunctions.sln with Visual Studio publish tool.
+You need to deploy the Marketing azure function from Visual Studio 2017 15.3 from the the Marketing-functions project in the solution  eShopOnContainers-AzureFunctions.sln (Visual Studio publish tool).
 
 ## Setting Azure function configurations
 
