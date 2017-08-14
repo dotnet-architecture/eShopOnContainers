@@ -15,7 +15,7 @@ be set is:
 
 Once parameter file is edited you can deploy it using [create-resources script](../readme.md).
 
-i. e. if you are in windows, to deploy sql databases in a new resourcegroup located in westus, go to `deploy\az` folder and type:
+i. e. if you are in windows, to deploy a Redis cache in a new Azure Resource Group located in westus, go to `deploy\az` folder and type:
 
 ```
 create-resources.cmd redis\redisdeploy newResourceGroup -c westus
