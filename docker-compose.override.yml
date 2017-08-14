@@ -31,6 +31,7 @@ services:
       - AzureStorageAccountKey=${ESHOP_AZURE_STORAGE_CATALOG_KEY}
       - UseCustomizationData=True
       - AzureServiceBusEnabled=False
+      - AzureStorageEnabled=False
     ports:
       - "5101:80"
 
@@ -78,6 +79,7 @@ services:
       - AzureStorageAccountName=${ESHOP_AZURE_STORAGE_MARKETING_NAME}
       - AzureStorageAccountKey=${ESHOP_AZURE_STORAGE_MARKETING_KEY}
       - AzureServiceBusEnabled=False
+      - AzureStorageEnabled=False
     ports:
       - "5110:80"
       
