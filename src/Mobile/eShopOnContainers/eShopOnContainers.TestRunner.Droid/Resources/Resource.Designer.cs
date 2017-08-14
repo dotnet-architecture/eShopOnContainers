@@ -64,6 +64,8 @@ namespace eShopOnContainers.TestRunner.Droid
 			global::AndroidHUD.Resource.Styleable.ProgressWheel_ahTextColor = global::eShopOnContainers.TestRunner.Droid.Resource.Styleable.ProgressWheel_ahTextColor;
 			global::AndroidHUD.Resource.Styleable.ProgressWheel_ahTextSize = global::eShopOnContainers.TestRunner.Droid.Resource.Styleable.ProgressWheel_ahTextSize;
 			global::ModernHttpClient.Resource.String.library_name = global::eShopOnContainers.TestRunner.Droid.Resource.String.library_name;
+			global::PCLCrypto.Resource.String.ApplicationName = global::eShopOnContainers.TestRunner.Droid.Resource.String.ApplicationName;
+			global::PCLCrypto.Resource.String.Hello = global::eShopOnContainers.TestRunner.Droid.Resource.String.Hello;
 			global::Splat.Resource.String.library_name = global::eShopOnContainers.TestRunner.Droid.Resource.String.library_name;
 			global::Xamarin.Forms.Platform.Android.Resource.Attribute.actionBarSize = global::eShopOnContainers.TestRunner.Droid.Resource.Attribute.actionBarSize;
 		}
