@@ -14,7 +14,7 @@ using Plugin.Permissions;
 namespace eShopOnContainers.Droid.Activities
 {
     [Activity(
-        Label = "eShopOnContainers", 
+        Label = "eShopOnContainers",
         Icon = "@drawable/icon",
         Theme = "@style/MainTheme",
         MainLauncher = true,
@@ -37,9 +37,6 @@ namespace eShopOnContainers.Droid.Activities
             UserDialogs.Init(this);
             CachedImageRenderer.Init();
             LoadApplication(new App());
-
-            var x = typeof(Xamarin.Forms.Themes.LightThemeResources);
-            x = typeof(Xamarin.Forms.Themes.Android.UnderlineEffect);
 
             Window window = this.Window;
             window.ClearFlags(WindowManagerFlags.TranslucentStatus);
