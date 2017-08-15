@@ -123,17 +123,6 @@ services:
     ports:
       - "5100:80"
 
-  sql.data:
-    environment:
-      - SA_PASSWORD=Pass@word
-      - ACCEPT_EULA=Y
-    ports:
-      - "5433:1433"
-
-  nosql.data:
-    ports:
-      - "27017:27017"
-
   webstatus:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
@@ -170,3 +159,14 @@ services:
       - AzureServiceBusEnabled=False
     ports:
       - "5109:80"
+
+  sql.data:
+    environment:
+      - SA_PASSWORD=Pass@word
+      - ACCEPT_EULA=Y
+    ports:
+      - "5433:1433"
+
+  nosql.data:
+    ports:
+      - "27017:27017"
