@@ -4,7 +4,9 @@ The ARM template `azurefunctionsdeploy.json` and its parameter file (`azurefunct
 
 ## Editing azurefunctionsdeploy.parameters.json file
 
-You can edit the `azurefunctionsdeploy.parameters.parameters.json` file to set your values, but is not needed. 
+You can edit the `azurefunctionsdeploy.parameters.parameters.json` file to set your values, but is not needed. The only parameter that can be set is:
+
+1. `SitesEshopfunctionsName` is a string that is used to create the Azure function app name. 
 
 ## Deploy the template
 
