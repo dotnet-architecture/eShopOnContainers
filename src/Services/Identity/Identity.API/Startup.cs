@@ -16,7 +16,6 @@ using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.HealthChecks;
-using Identity.API.Certificate;
 using Autofac.Extensions.DependencyInjection;
 using Autofac;
 using Microsoft.Extensions.Logging;
