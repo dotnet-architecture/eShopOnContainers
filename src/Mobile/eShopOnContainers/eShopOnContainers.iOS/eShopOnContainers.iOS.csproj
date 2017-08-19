@@ -123,6 +123,7 @@
     <ITunesArtwork Include="iTunesArtwork" />
     <ITunesArtwork Include="iTunesArtwork@2x" />
     <None Include="packages.config" />
+    <Compile Include="Effects\CircleEffect.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Icon-60%403x.png" />
@@ -219,18 +220,6 @@
     <Reference Include="WebP.Touch, Version=1.0.6230.37678, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\..\..\packages\WebP.Touch.1.0.3\lib\Xamarin.iOS10\WebP.Touch.dll</HintPath>
     </Reference>
-    <Reference Include="Xamarin.Forms.Theme.Base, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\packages\Xamarin.Forms.Theme.Base.1.0.0.43-pre1\lib\Xamarin.iOS10\Xamarin.Forms.Theme.Base.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Xamarin.Forms.Theme.iOS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\packages\Xamarin.Forms.Theme.Base.1.0.0.43-pre1\lib\Xamarin.iOS10\Xamarin.Forms.Theme.iOS.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Xamarin.Forms.Theme.Light, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\packages\Xamarin.Forms.Theme.Light.1.0.0.43-pre1\lib\Xamarin.iOS10\Xamarin.Forms.Theme.Light.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Xamarin.iOS" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.Net.Http" />
@@ -248,9 +237,6 @@
     </Reference>
     <Reference Include="Xamarin.Forms.Xaml">
       <HintPath>..\..\..\..\packages\Xamarin.Forms.2.3.4.231\lib\Xamarin.iOS10\Xamarin.Forms.Xaml.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.Forms.Pages">
-      <HintPath>..\..\..\..\packages\Xamarin.Forms.Pages.2.3.4.231\lib\Xamarin.iOS10\Xamarin.Forms.Pages.dll</HintPath>
     </Reference>
     <Reference Include="Plugin.Geolocator.Abstractions">
       <HintPath>..\..\..\..\packages\Xam.Plugin.Geolocator.3.0.4\lib\Xamarin.iOS10\Plugin.Geolocator.Abstractions.dll</HintPath>

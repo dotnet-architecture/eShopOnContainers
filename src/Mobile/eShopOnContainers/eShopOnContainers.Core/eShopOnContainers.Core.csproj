@@ -192,6 +192,7 @@
     <Compile Include="Effects\EntryLineColorEffect.cs" />
     <Compile Include="Behaviors\LineColorBehavior.cs" />
     <Compile Include="Models\Token\UserToken.cs" />
+    <Compile Include="Effects\ThemeEffects.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
