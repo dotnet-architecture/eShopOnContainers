@@ -9,7 +9,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
 {
     [Authorize]
     public class AccountController : Controller
-    {   
+    {
         [Authorize]
         public async Task<IActionResult> SignIn(string returnUrl)
         {
