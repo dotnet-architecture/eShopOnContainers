@@ -1,18 +1,17 @@
 ﻿namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus
 {
-    using System;
+    using Autofac;
+    using Microsoft.Azure.ServiceBus;
+    using Microsoft.eShopOnContainers.BuildingBlocks.EventBus;
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
     using Microsoft.Extensions.Logging;
-    using Microsoft.Azure.ServiceBus;
     using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
+    using System;
+    using System.Reflection;
     using System.Text;
     using System.Threading.Tasks;
-    using Microsoft.eShopOnContainers.BuildingBlocks.EventBus;
-    using System.Reflection;
-    using Microsoft.Azure.ServiceBus.Filters;
-    using Autofac;
-    using Newtonsoft.Json.Linq;
 
     public class EventBusServiceBus : IEventBus
     {
@@ -22,6 +21,7 @@
         private readonly SubscriptionClient _subscriptionClient;
         private readonly ILifetimeScope _autofac;
         private readonly string AUTOFAC_SCOPE_NAME = "eshop_event_bus";
+        private const string INTEGRATION_EVENT_SUFIX = "IntegrationEvent";
 
         public EventBusServiceBus(IServiceBusPersisterConnection serviceBusPersisterConnection, 
             ILogger<EventBusServiceBus> logger, IEventBusSubscriptionsManager subsManager, string subscriptionClientName,
@@ -41,7 +41,7 @@
 
         public void Publish(IntegrationEvent @event)
         {
-            var eventName = @event.GetType().Name;
+            var eventName = @event.GetType().Name.Replace(INTEGRATION_EVENT_SUFIX, "");
             var jsonMessage = JsonConvert.SerializeObject(@event);
             var body = Encoding.UTF8.GetBytes(jsonMessage);
 
@@ -69,7 +69,8 @@
             where T : IntegrationEvent
             where TH : IIntegrationEventHandler<T>
         {
-            var eventName = typeof(T).Name;
+            var eventName =  typeof(T).Name.Replace(INTEGRATION_EVENT_SUFIX, "");
+
             var containsKey = _subsManager.HasSubscriptionsForEvent<T>();
             if (!containsKey)
             {
@@ -94,7 +95,7 @@
             where T : IntegrationEvent
             where TH : IIntegrationEventHandler<T>
         {
-            var eventName = typeof(T).Name;
+            var eventName = typeof(T).Name.Replace(INTEGRATION_EVENT_SUFIX, "");
 
             try
             {
@@ -127,11 +128,25 @@
             _subscriptionClient.RegisterMessageHandler(
                 async (message, token) =>
                 {
-                    var eventName = message.Label;
+                    var eventName = $"{message.Label}{INTEGRATION_EVENT_SUFIX}";
                     var messageData = Encoding.UTF8.GetString(message.Body);
                     await ProcessEvent(eventName, messageData);
+                    
+                    // Complete the message so that it is not received again.
+                    await _subscriptionClient.CompleteAsync(message.SystemProperties.LockToken);
                 },
-               new MessageHandlerOptions() { MaxConcurrentCalls = 10, AutoComplete = true });
+               new MessageHandlerOptions(ExceptionReceivedHandler) { MaxConcurrentCalls = 10, AutoComplete = false });
+        }
+
+        private Task ExceptionReceivedHandler(ExceptionReceivedEventArgs exceptionReceivedEventArgs)
+        {
+            Console.WriteLine($"Message handler encountered an exception {exceptionReceivedEventArgs.Exception}.");
+            var context = exceptionReceivedEventArgs.ExceptionReceivedContext;
+            Console.WriteLine("Exception context for troubleshooting:");
+            Console.WriteLine($"- Endpoint: {context.Endpoint}");
+            Console.WriteLine($"- Entity Path: {context.EntityPath}");
+            Console.WriteLine($"- Executing Action: {context.Action}");
+            return Task.CompletedTask;
         }
 
         private async Task ProcessEvent(string eventName, string message)
@@ -167,13 +182,13 @@
             try
             {
                 _subscriptionClient
-                 .RemoveRuleAsync(SubscriptionClient.DefaultRule)
+                 .RemoveRuleAsync(RuleDescription.DefaultRuleName)
                  .GetAwaiter()
                  .GetResult();
             }
             catch (MessagingEntityNotFoundException)
             {
-                _logger.LogInformation($"The messaging entity {SubscriptionClient.DefaultRule} Could not be found.");
+                _logger.LogInformation($"The messaging entity { RuleDescription.DefaultRuleName } Could not be found.");
             }
         }
     }

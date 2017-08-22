@@ -30,7 +30,7 @@
 
             if (campaign?.Data != null)
             {
-                ServicesHelper.FixCatalogItemPictureUri(campaign?.Data);
+                ServicesHelper.FixCampaignItemPictureUri(campaign?.Data);
 
                 return campaign?.Data.ToObservableCollection();
             }

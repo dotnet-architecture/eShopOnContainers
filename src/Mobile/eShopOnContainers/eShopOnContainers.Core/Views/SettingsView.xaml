@@ -3,14 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="eShopOnContainers.Core.Views.SettingsView"
 			 xmlns:viewModelBase="clr-namespace:eShopOnContainers.Core.ViewModels.Base;assembly=eShopOnContainers.Core"
-             xmlns:controls="clr-namespace:eShopOnContainers.Core.Controls;assembly=eShopOnContainers.Core"    
+             xmlns:controls="clr-namespace:eShopOnContainers.Core.Controls;assembly=eShopOnContainers.Core"
+             xmlns:converters="clr-namespace:eShopOnContainers.Core.Converters;assembly=eShopOnContainers.Core"
              xmlns:animations="clr-namespace:eShopOnContainers.Core.Animations;assembly=eShopOnContainers.Core"
              xmlns:triggers="clr-namespace:eShopOnContainers.Core.Triggers;assembly=eShopOnContainers.Core"
 			 viewModelBase:ViewModelLocator.AutoWireViewModel="true"
              Title="Settings">
     <ContentPage.Resources>
         <ResourceDictionary>
-
+            <converters:DoubleConverter x:Key="DoubleConverter" />
+            
             <Style x:Key="SettingsStackLayoutStyle" TargetType="{x:Type StackLayout}">
                 <Setter Property="Margin" 
                         Value="6" />
@@ -219,7 +221,7 @@
                             Text="Latitude"
                             Style="{StaticResource HeaderLabelStyle}"/>
                         <Entry
-                            Text="{Binding Latitude, Mode=TwoWay}"
+                            Text="{Binding Latitude, Mode=TwoWay, Converter={StaticResource DoubleConverter}}"
                             Keyboard="Text">
                             <Entry.Style>
                                 <OnPlatform 
@@ -233,7 +235,7 @@
                             Text="Longitude"
                             Style="{StaticResource HeaderLabelStyle}"/>
                         <Entry
-                            Text="{Binding Longitude, Mode=TwoWay}"
+                            Text="{Binding Longitude, Mode=TwoWay, Converter={StaticResource DoubleConverter}}"
                             Keyboard="Text">
                             <Entry.Style>
                                 <OnPlatform 

@@ -221,7 +221,7 @@ namespace Microsoft.eShopOnContainers.Services.Marketing.API.Controllers
 
             return _settings.AzureStorageEnabled
                     ? baseUri + campaign.PictureName
-                    : baseUri + campaign.Id;
+                    : baseUri.Replace("[0]", campaign.Id.ToString());
         }
     }
 }

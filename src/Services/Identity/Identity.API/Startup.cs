@@ -40,7 +40,7 @@ namespace eShopOnContainers.Identity
             if (env.IsDevelopment())
             {
                 // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
-                builder.AddUserSecrets();
+                builder.AddUserSecrets<Startup>();
             }
 
             builder.AddEnvironmentVariables();
@@ -163,6 +163,10 @@ namespace eShopOnContainers.Identity
             clientUrls.Add("Mvc", Configuration.GetValue<string>("MvcClient"));
             clientUrls.Add("Spa", Configuration.GetValue<string>("SpaClient"));
             clientUrls.Add("Xamarin", Configuration.GetValue<string>("XamarinCallback"));
+            clientUrls.Add("LocationsApi", Configuration.GetValue<string>("LocationApiClient"));
+            clientUrls.Add("MarketingApi", Configuration.GetValue<string>("MarketingApiClient"));
+            clientUrls.Add("BasketApi", Configuration.GetValue<string>("BasketApiClient"));
+            clientUrls.Add("OrderingApi", Configuration.GetValue<string>("OrderingApiClient"));
 
             using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {

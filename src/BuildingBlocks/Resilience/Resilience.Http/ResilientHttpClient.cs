@@ -81,6 +81,14 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http
 
                 var response = await _client.SendAsync(requestMessage);
 
+                // raise exception if HttpResponseCode 500 
+                // needed for circuit breaker to track fails
+
+                if (response.StatusCode == HttpStatusCode.InternalServerError)
+                {
+                    throw new HttpRequestException();
+                }
+
                 return await response.Content.ReadAsStringAsync();
             });
         }

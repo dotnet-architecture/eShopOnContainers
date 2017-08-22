@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
 {
-    [Route("api/v1/[controller]")]
     public class PicController : Controller
     {
         private readonly IHostingEnvironment _env;
@@ -22,17 +21,18 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
             _catalogContext = catalogContext;
         }
 
-        [HttpGet("{id}")]
+        [HttpGet]
+        [Route("api/v1/catalog/items/{catalogItemId:int}/pic")]
         // GET: /<controller>/
-        public async Task<IActionResult> GetImage(int id)
+        public async Task<IActionResult> GetImage(int catalogItemId)
         {
-            if (id <= 0)
+            if (catalogItemId <= 0)
             {
                 return BadRequest();
             }
 
             var item = await _catalogContext.CatalogItems
-                .SingleOrDefaultAsync(ci => ci.Id == id);
+                .SingleOrDefaultAsync(ci => ci.Id == catalogItemId);
 
             if (item != null)
             {

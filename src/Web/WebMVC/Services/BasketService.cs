@@ -21,7 +21,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
         public BasketService(IOptionsSnapshot<AppSettings> settings, IHttpContextAccessor httpContextAccesor, IHttpClient httpClient)
         {
             _settings = settings;
-            _remoteServiceBaseUrl = _settings.Value.BasketUrl;
+            _remoteServiceBaseUrl = $"{_settings.Value.BasketUrl}/api/v1/basket";
             _httpContextAccesor = httpContextAccesor;
             _apiClient = httpClient;
         }

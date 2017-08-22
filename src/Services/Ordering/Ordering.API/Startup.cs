@@ -5,6 +5,7 @@
     using Autofac.Extensions.DependencyInjection;
     using global::Ordering.API.Application.IntegrationEvents;
     using global::Ordering.API.Application.IntegrationEvents.Events;
+    using global::Ordering.API.Infrastructure.Filters;
     using Infrastructure;
     using Infrastructure.AutofacModules;
     using Infrastructure.Filters;
@@ -27,7 +28,9 @@
     using Ordering.Infrastructure;
     using Polly;
     using RabbitMQ.Client;
+    using Swashbuckle.AspNetCore.Swagger;
     using System;
+    using System.Collections.Generic;
     using System.Data.Common;
     using System.Data.SqlClient;
     using System.Reflection;
@@ -98,6 +101,20 @@
                     Description = "The Ordering Service HTTP API",
                     TermsOfService = "Terms Of Service"
                 });
+
+                options.AddSecurityDefinition("oauth2", new OAuth2Scheme
+                {
+                    Type = "oauth2",
+                    Flow = "implicit",
+                    AuthorizationUrl = $"{Configuration.GetValue<string>("IdentityUrlExternal")}/connect/authorize",
+                    TokenUrl = $"{Configuration.GetValue<string>("IdentityUrlExternal")}/connect/token",
+                    Scopes = new Dictionary<string, string>()
+                    {
+                        { "orders", "Ordering API" }
+                    }
+                });
+
+                options.OperationFilter<AuthorizeCheckOperationFilter>();
             });
 
             services.AddCors(options =>
@@ -174,6 +191,7 @@
                .UseSwaggerUI(c =>
                {
                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                   c.ConfigureOAuth2("orderingswaggerui", "", "", "Ordering Swagger UI");
                });
 
             WaitForSqlAvailabilityAsync(loggerFactory, app, env).Wait();

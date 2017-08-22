@@ -1,5 +1,8 @@
 ﻿<esh-header url="/catalog">Back to catalog</esh-header>
 <div class="container">
+    <div class="alert alert-warning esh-campaign-alert" role="alert" [hidden]="!errorReceived">
+        Error requesting campaigns list, please try later on
+    </div>
     <div *ngIf="campaigns?.data?.length > 0">
         <esh-pager [model]="paginationInfo" (changed)="onPageChanged($event)"></esh-pager>        
         <div class="card-group esh-campaign-items row">

@@ -23,7 +23,7 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure.Filt
                 operation.Security = new List<IDictionary<string, IEnumerable<string>>>();
                 operation.Security.Add(new Dictionary<string, IEnumerable<string>>
                 {
-                    { "oauth2", new [] { "api1" } }
+                    { "oauth2", new [] { "locationsapi" } }
                 });
             }
         }

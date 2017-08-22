@@ -107,8 +107,8 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
                 {
                     Type = "oauth2",
                     Flow = "implicit",
-                    AuthorizationUrl = "http://localhost:5105/connect/authorize",
-                    TokenUrl = "http://localhost:5105/connect/token",
+                    AuthorizationUrl = $"{Configuration.GetValue<string>("IdentityUrlExternal")}/connect/authorize",
+                    TokenUrl = $"{Configuration.GetValue<string>("IdentityUrlExternal")}/connect/token",
                     Scopes = new Dictionary<string, string>()
                     {
                         { "locations", "Locations API" }
@@ -158,7 +158,7 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
               .UseSwaggerUI(c =>
               {
                   c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-                  c.ConfigureOAuth2("swaggerui", "", "", "Swagger UI");
+                  c.ConfigureOAuth2("locationsswaggerui", "", "", "Locations Swagger UI");
               });
 
             LocationsContextSeed.SeedAsync(app, loggerFactory)
