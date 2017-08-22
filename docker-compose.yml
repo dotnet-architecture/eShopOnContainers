@@ -49,15 +49,6 @@ services:
       - identity.api
       - rabbitmq
 
-  graceperiodmanager:
-    image: eshop/graceperiodmanager:${TAG:-latest}
-    build:
-      context: ./src/Services/GracePeriod/GracePeriodManager
-      dockerfile: Dockerfile
-    depends_on:
-      - sql.data
-      - rabbitmq
-
   webspa:
     image: eshop/webspa:${TAG:-latest}
     build:

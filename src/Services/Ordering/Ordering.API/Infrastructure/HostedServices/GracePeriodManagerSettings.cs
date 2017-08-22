@@ -1,6 +1,6 @@
-﻿namespace GracePeriodManager
+﻿namespace Ordering.API.Infrastructure.HostedServices
 {
-    public class ManagerSettings
+    public class GracePeriodManagerSettings
     {
         public string ConnectionString { get; set; }
 
@@ -9,5 +9,6 @@
         public int GracePeriodTime { get; set; }
 
         public int CheckUpdateTime { get; set; }
+
     }
 }

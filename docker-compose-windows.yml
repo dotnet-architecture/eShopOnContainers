@@ -106,15 +106,6 @@ services:
     ports:
         - "5672:5672"
 
-  graceperiodmanager:
-    image: eshop/graceperiodmanager:${TAG:-latest}
-    build:
-      context: ./src/Services/GracePeriod/GracePeriodManager
-      dockerfile: Dockerfile.nanowin
-    depends_on:
-      - sql.data
-      - rabbitmq
-
   payment.api:
     image: eshop/payment.api:${TAG:-latest}
     build:

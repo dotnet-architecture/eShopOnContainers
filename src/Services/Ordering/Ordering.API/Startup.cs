@@ -6,6 +6,7 @@
     using global::Ordering.API.Application.IntegrationEvents;
     using global::Ordering.API.Application.IntegrationEvents.Events;
     using global::Ordering.API.Infrastructure.Filters;
+    using global::Ordering.API.Infrastructure.HostedServices;
     using Infrastructure;
     using Infrastructure.AutofacModules;
     using Infrastructure.Filters;
@@ -14,7 +15,6 @@
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Azure.ServiceBus;
     using Microsoft.EntityFrameworkCore;
-    using Microsoft.EntityFrameworkCore.Design;
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBus;
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ;
@@ -24,6 +24,7 @@
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.HealthChecks;
+    using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Logging;
     using Ordering.Infrastructure;
     using Polly;
@@ -43,6 +44,7 @@
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("settings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile("graceperiodsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"settings.{env.EnvironmentName}.json", optional: true);
 
             if (env.IsDevelopment())
@@ -65,6 +67,10 @@
                 options.Filters.Add(typeof(HttpGlobalExceptionFilter));
             }).AddControllersAsServices();  //Injecting Controllers themselves thru DI
                                             //For further info see: http://docs.autofac.org/en/latest/integration/aspnetcore.html#controllers-as-services
+            
+            // Configure GracePeriodManager Hosted Service
+            services.AddSingleton<IHostedService, GracePeriodManagerService>();
+            services.Configure<GracePeriodManagerSettings>(Configuration);
 
             services.AddHealthChecks(checks =>
             {
@@ -207,7 +213,7 @@
 
         private void ConfigureEventBus(IApplicationBuilder app)
         {
-            var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
+            var eventBus = app.ApplicationServices.GetRequiredService<BuildingBlocks.EventBus.Abstractions.IEventBus>();
 
             eventBus.Subscribe<UserCheckoutAcceptedIntegrationEvent, IIntegrationEventHandler<UserCheckoutAcceptedIntegrationEvent>>();
             eventBus.Subscribe<GracePeriodConfirmedIntegrationEvent, IIntegrationEventHandler<GracePeriodConfirmedIntegrationEvent>>();
@@ -232,7 +238,7 @@
         {
             if (Configuration.GetValue<bool>("AzureServiceBusEnabled"))
             {
-                services.AddSingleton<IEventBus, EventBusServiceBus>(sp =>
+                services.AddSingleton<BuildingBlocks.EventBus.Abstractions.IEventBus, EventBusServiceBus>(sp =>
                 {
                     var serviceBusPersisterConnection = sp.GetRequiredService<IServiceBusPersisterConnection>();
                     var iLifetimeScope = sp.GetRequiredService<ILifetimeScope>();
@@ -246,7 +252,7 @@
             }
             else
             {
-                services.AddSingleton<IEventBus, EventBusRabbitMQ>();
+                services.AddSingleton<BuildingBlocks.EventBus.Abstractions.IEventBus, EventBusRabbitMQ>();
             }
 
             services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
