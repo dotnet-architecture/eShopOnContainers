@@ -20,7 +20,7 @@ export class OrdersComponent implements OnInit {
 
     ngOnInit() {
         if (this.configurationService.isReady) {
-            this.getOrders()
+            this.getOrders();
         } else {
             this.configurationService.settingsLoaded$.subscribe(x => {
                 this.getOrders();
@@ -31,7 +31,7 @@ export class OrdersComponent implements OnInit {
         this.interval = setTimeout(() => {
             this.service.getOrders().subscribe(orders => {
                 this.orders = orders;
-                if (this.orders.length != this.oldOrders.length) {
+                if (this.orders.length !== this.oldOrders.length) {
                     clearInterval(this.interval);
                 }
             });

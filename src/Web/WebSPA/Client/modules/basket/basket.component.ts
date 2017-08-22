@@ -1,6 +1,10 @@
 import { Component, OnInit }    from '@angular/core';
 import { Router }               from '@angular/router';
 
+import 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/throw';
+
 import { BasketService }        from './basket.service';
 import { IBasket }              from '../shared/models/basket.model';
 import { IBasketItem }          from '../shared/models/basketItem.model';
@@ -12,6 +16,7 @@ import { BasketWrapperService } from '../shared/services/basket.wrapper.service'
     templateUrl: './basket.component.html'
 })
 export class BasketComponent implements OnInit {
+    errorMessages: any;
     basket: IBasket;
     totalPrice: number = 0;
 
@@ -30,7 +35,10 @@ export class BasketComponent implements OnInit {
     }
 
     update(event: any) {
-        this.service.setBasket(this.basket).subscribe(x => console.log('basket updated: ' + x));
+        this.service.setBasket(this.basket).catch((errMessage) => {
+            this.errorMessages = errMessage.messages;
+            return Observable.throw(errMessage);
+        }).subscribe(x => console.log('basket updated: ' + x));
     }
 
     checkOut(event: any) {
