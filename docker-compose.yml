@@ -115,8 +115,9 @@ services:
     image: redis
     ports:
       - "6379:6379"
-
+      
   rabbitmq:
-    image: rabbitmq
+    image: rabbitmq:3-management
     ports:
+      - "15672:15672"
       - "5672:5672"

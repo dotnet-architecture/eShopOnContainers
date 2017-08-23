@@ -102,7 +102,7 @@ export class DataService {
         if (error instanceof Response) {
             let errMessage = '';
             try {
-                errMessage = error.json().error;
+                errMessage = error.json();
             } catch (err) {
                 errMessage = error.statusText;
             }
