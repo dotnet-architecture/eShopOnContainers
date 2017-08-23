@@ -86,30 +86,28 @@ namespace Microsoft.eShopOnContainers.WebMVC
             
             // Add Authentication services          
             
-            services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
-                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddOpenIdConnect(options => {
-                    options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                    options.Authority = identityUrl.ToString();
-                    options.SignedOutRedirectUri = callBackUrl.ToString();
-                    options.ClientId = useLoadTest ? "mvctest" : "mvc";
-                    options.ClientSecret = "secret";
-                    options.ResponseType = useLoadTest ? "code id_token token" : "code id_token";
-                    options.SaveTokens = true;
-                    options.GetClaimsFromUserInfoEndpoint = true;
-                    options.RequireHttpsMetadata = false;
-                    options.Scope.Add("openid");
-                    options.Scope.Add("profile");
-                    options.Scope.Add("orders");
-                    options.Scope.Add("basket");
-                    options.Scope.Add("marketing");
-                    options.Scope.Add("locations");
-                });
-
             services.AddAuthentication(options => {
                 options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
                 options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            })
+            .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
+            .AddOpenIdConnect(options => {
+                options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.Authority = identityUrl.ToString();
+                options.SignedOutRedirectUri = callBackUrl.ToString();
+                options.ClientId = useLoadTest ? "mvctest" : "mvc";
+                options.ClientSecret = "secret";
+                options.ResponseType = useLoadTest ? "code id_token token" : "code id_token";
+                options.SaveTokens = true;
+                options.GetClaimsFromUserInfoEndpoint = true;
+                options.RequireHttpsMetadata = false;
+                options.Scope.Add("openid");
+                options.Scope.Add("profile");
+                options.Scope.Add("orders");
+                options.Scope.Add("basket");
+                options.Scope.Add("marketing");
+                options.Scope.Add("locations");
             });
         }
 
