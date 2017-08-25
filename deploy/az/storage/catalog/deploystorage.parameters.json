@@ -7,6 +7,9 @@
     },
     "profileName":{
       "value": "eshopcatalog"
+    },
+   "endpointName":{
+      "value": "catalog-endpoint"
     }
   }
 }

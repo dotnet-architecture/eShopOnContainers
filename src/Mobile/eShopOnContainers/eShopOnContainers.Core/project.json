@@ -16,10 +16,7 @@
     "Xam.Plugins.Settings": "2.6.0.12-beta",
     "Xamarin.FFImageLoading": "2.2.9",
     "Xamarin.FFImageLoading.Forms": "2.2.9",
-    "Xamarin.Forms": "2.3.4.231",
-    "Xamarin.Forms.Pages": "2.3.4.231",
-    "Xamarin.Forms.Theme.Base": "1.0.0.43-pre1",
-    "Xamarin.Forms.Theme.Light": "1.0.0.43-pre1"
+    "Xamarin.Forms": "2.3.4.231"
   },
   "frameworks": {
     ".NETPortable,Version=v4.5,Profile=Profile111": {}

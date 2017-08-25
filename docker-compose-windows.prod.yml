@@ -21,6 +21,7 @@ services:
       - identityUrl=http://identity.api              #Local: You need to open your local dev-machine firewall at range 5100-5110.
       - IdentityUrlExternal=http://${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP}:5105
       - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
+      - AzureServiceBusEnabled=False
     ports:
       - "5103:5103"
 
@@ -29,11 +30,13 @@ services:
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - ConnectionString=${ESHOP_AZURE_CATALOG_DB:-Server=sql.data;Database=Microsoft.eShopOnContainers.Services.CatalogDb;User Id=sa;Password=Pass@word}
-      - PicBaseUrl=${ESHOP_AZURE_STORAGE_CATALOG}   #Local: You need to open your local dev-machine firewall at range 5100-5110.  
+      - PicBaseUrl=${ESHOP_AZURE_STORAGE_CATALOG:-http://localhost:5101/api/v1/catalog/items/[0]/pic/}   #Local: You need to open your local dev-machine firewall at range 5100-5110.  
       - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
       - AzureStorageAccountName=${ESHOP_AZURE_STORAGE_CATALOG_NAME}
       - AzureStorageAccountKey=${ESHOP_AZURE_STORAGE_CATALOG_KEY}
       - UseCustomizationData=True
+      - AzureServiceBusEnabled=False
+      - AzureStorageEnabled=False
     ports:
       - "5101:80"
 
@@ -62,6 +65,7 @@ services:
       - IdentityUrlExternal=http://${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP}:5105
       - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
       - UseCustomizationData=True
+      - AzureServiceBusEnabled=False
     ports:
       - "5102:80"
 
@@ -92,6 +96,7 @@ services:
       - IdentityUrl=http://${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP}:5105     #Local: Use ${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP}, if using external IP or DNS name from browser.          
       - BasketUrl=http://basket.api
       - MarketingUrl=http://marketing.api
+      - UseCustomizationData=True   #Remote: Use ${ESHOP_EXTERNAL_DNS_NAME_OR_IP} if using external IP or DNS name from browser. 
     ports:
       - "5100:80"
   
@@ -106,9 +111,11 @@ services:
       - identityUrl=http://identity.api              #Local: You need to open your local dev-machine firewall at range 5100-5110. 
       - IdentityUrlExternal=http://${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP}:5105
       - CampaignDetailFunctionUri=${ESHOP_AZUREFUNC_CAMPAIGN_DETAILS_URI}
-      - PicBaseUrl=${ESHOP_AZURE_STORAGE_MARKETING}
+      - PicBaseUrl=${ESHOP_AZURE_STORAGE_MARKETING:-http://localhost:5110/api/v1/campaigns/[0]/pic/}
       - AzureStorageAccountName=${ESHOP_AZURE_STORAGE_MARKETING_NAME}
       - AzureStorageAccountKey=${ESHOP_AZURE_STORAGE_MARKETING_KEY}
+      - AzureServiceBusEnabled=False
+      - AzureStorageEnabled=False
     ports:
       - "5110:80"
   
@@ -116,7 +123,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://0.0.0.0:80
-      - ConnectionString=Server=sql.data;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word
+      - ConnectionString=${ESHOP_AZURE_ORDERING_DB:-Server=sql.data;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word}
       - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
 
   sql.data:
@@ -151,6 +158,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://0.0.0.0:5108
       - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
+      - AzureServiceBusEnabled=False
     ports:
       - "5108:80"
 
@@ -163,5 +171,6 @@ services:
       - identityUrl=http://identity.api              #Local: You need to open your local dev-machine firewall at range 5100-5110. 
       - IdentityUrlExternal=http://${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP}:5105
       - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
+      - AzureServiceBusEnabled=False
     ports:
       - "5109:80"

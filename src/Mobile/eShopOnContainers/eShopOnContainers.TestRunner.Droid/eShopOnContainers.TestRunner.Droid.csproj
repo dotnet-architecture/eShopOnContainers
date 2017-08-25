@@ -129,9 +129,6 @@
     <Reference Include="Xamarin.Forms.Core, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\..\..\packages\Xamarin.Forms.2.3.4.231\lib\MonoAndroid10\Xamarin.Forms.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Xamarin.Forms.Pages, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\packages\Xamarin.Forms.Pages.2.3.4.231\lib\MonoAndroid10\Xamarin.Forms.Pages.dll</HintPath>
-    </Reference>
     <Reference Include="Xamarin.Forms.Platform, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\..\..\packages\Xamarin.Forms.2.3.4.231\lib\MonoAndroid10\Xamarin.Forms.Platform.dll</HintPath>
     </Reference>
@@ -214,15 +211,6 @@
     </Reference>
     <Reference Include="OkHttp">
       <HintPath>..\..\..\..\packages\modernhttpclient.2.4.2\lib\MonoAndroid\OkHttp.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.Forms.Theme.Android">
-      <HintPath>..\..\..\..\packages\Xamarin.Forms.Theme.Base.1.0.0.43-pre1\lib\MonoAndroid10\Xamarin.Forms.Theme.Android.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.Forms.Theme.Base">
-      <HintPath>..\..\..\..\packages\Xamarin.Forms.Theme.Base.1.0.0.43-pre1\lib\MonoAndroid10\Xamarin.Forms.Theme.Base.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.Forms.Theme.Light">
-      <HintPath>..\..\..\..\packages\Xamarin.Forms.Theme.Light.1.0.0.43-pre1\lib\MonoAndroid10\Xamarin.Forms.Theme.Light.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

@@ -1,8 +1,6 @@
 ﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.eShopOnContainers.WebMVC.ViewModels;
-using Microsoft.eShopOnContainers.WebMVC.Services;
 using Microsoft.AspNetCore.Http.Authentication;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
@@ -12,12 +10,6 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
     [Authorize]
     public class AccountController : Controller
     {
-        private readonly IIdentityParser<ApplicationUser> _identityParser;
-        public AccountController(IIdentityParser<ApplicationUser> identityParser) => 
-            _identityParser = identityParser;
-
-        public ActionResult Index() => View();
-        
         [Authorize]
         public async Task<IActionResult> SignIn(string returnUrl)
         {

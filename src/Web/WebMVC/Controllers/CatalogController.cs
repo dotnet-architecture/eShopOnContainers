@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.eShopOnContainers.WebMVC.ViewModels.Pagination;
 using Microsoft.eShopOnContainers.WebMVC.Services;
 using Microsoft.eShopOnContainers.WebMVC.ViewModels.CatalogViewModels;
-
 
 namespace Microsoft.eShopOnContainers.WebMVC.Controllers
 {
@@ -42,8 +39,5 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
 
             return View(vm);
         }
-
-        public IActionResult Error() => View();
     }
 }
-

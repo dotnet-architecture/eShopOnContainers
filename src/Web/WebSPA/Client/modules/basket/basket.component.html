@@ -1,7 +1,13 @@
 <div class="esh-basket">
     <esh-header url="/catalog">Back to catalog</esh-header>
-
+    
     <div class="container">
+        <div *ngFor="let errorMessage of errorMessages">
+            <div class="esh-basket-items-margin-left1 row">
+                <div class="alert alert-warning" role="alert">&nbsp;{{errorMessage}}</div>
+            </div>
+        </div>
+ 
         <article class="esh-basket-titles row">
             <section class="esh-basket-title col-xs-3">Product</section>
             <section class="esh-basket-title col-xs-3 hidden-lg-down"></section>
@@ -14,16 +20,17 @@
             <article class="esh-basket-items row">
 
                 <section class="esh-basket-item esh-basket-item--middle col-lg-3 hidden-lg-down">
-                    <img class="esh-basket-image" src="{{item.pictureUrl}}" />
+                    <img class="esh-basket-image" src="{{item.pictureUrl}}"/>
                 </section>
                 <section class="esh-basket-item esh-basket-item--middle col-xs-3">{{item.productName}}</section>
                 <section class="esh-basket-item esh-basket-item--middle col-xs-2">$ {{item.unitPrice | number:'.2-2'}}</section>
                 <section class="esh-basket-item esh-basket-item--middle col-xs-2">
-                    <input class="esh-basket-input"
+                    <input id="quantity"
+                           class="esh-basket-input"
                            type="number"
                            min="1"
                            [(ngModel)]="item.quantity"
-                           (change)="itemQuantityChanged(item)" />
+                           (change)="itemQuantityChanged(item)"/>
                 </section>
                 <section class="esh-basket-item esh-basket-item--middle esh-basket-item--mark col-xs-2">$ {{(item.unitPrice * item.quantity) | number:'.2-2'}}</section>
             </article>
