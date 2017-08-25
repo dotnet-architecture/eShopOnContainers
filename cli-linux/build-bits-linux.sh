@@ -51,3 +51,4 @@ done
 # No need to build the images, docker build or docker compose will
 # do that using the images and containers defined in the docker-compose.yml file.
 #
+#
