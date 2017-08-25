@@ -32,9 +32,9 @@ do
     pushd $path/$project
     rm -rf obj/Docker/publish
     echo -e "\e[33m\tRestoring project $project"
-    dotnet restore
+    dotnet restore --verbosity minimal
     echo -e "\e[33m\tBuilding and publishing $project"
-    dotnet publish -o obj/Docker/publish
+    dotnet publish -c Release -o obj/Docker/publish --verbosity minimal 
     popd
 done
 
