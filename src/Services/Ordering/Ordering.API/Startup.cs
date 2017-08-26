@@ -67,10 +67,12 @@
                 options.Filters.Add(typeof(HttpGlobalExceptionFilter));
             }).AddControllersAsServices();  //Injecting Controllers themselves thru DI
                                             //For further info see: http://docs.autofac.org/en/latest/integration/aspnetcore.html#controllers-as-services
-            
+
             // Configure GracePeriodManager Hosted Service
             services.AddSingleton<IHostedService, GracePeriodManagerService>();
             services.Configure<GracePeriodManagerSettings>(Configuration);
+
+            services.AddTransient<IOrderingIntegrationEventService, OrderingIntegrationEventService>();
 
             services.AddHealthChecks(checks =>
             {
