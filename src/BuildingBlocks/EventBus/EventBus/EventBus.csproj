@@ -1,13 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.5</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>Microsoft.eShopOnContainers.BuildingBlocks.EventBus</RootNamespace>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Folder Include="Abstractions\" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />

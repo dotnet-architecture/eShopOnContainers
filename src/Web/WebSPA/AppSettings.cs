@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace eShopOnContainers.WebSPA
+﻿namespace eShopOnContainers.WebSPA
 {
     public class AppSettings
     {
@@ -14,6 +9,6 @@ namespace eShopOnContainers.WebSPA
         public string BasketUrl { get; set; }
         public string MarketingUrl { get; set; }
         public string ActivateCampaignDetailFunction { get; set; }
-	public bool UseCustomizationData { get; set; }
+        public bool UseCustomizationData { get; set; }
     }
 }

@@ -184,7 +184,7 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
             };
 
             channel.BasicConsume(queue: _queueName,
-                                 noAck: true,
+                                 autoAck: true,
                                  consumer: consumer);
 
             channel.CallbackException += (sender, ea) =>

@@ -17,7 +17,7 @@
     <Folder Include="Infrastructure\MarketingMigrations\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.1.0" />
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.2.0" />
     <PackageReference Include="IdentityServer4.AccessTokenValidation" Version="1.2.1" />
     <PackageReference Include="Microsoft.AspNetCore" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.0.0" />
@@ -26,7 +26,6 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.Design" Version="2.0.0-preview1-final" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="2.0.0" />

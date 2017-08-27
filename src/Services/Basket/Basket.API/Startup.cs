@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ;
-using Microsoft.eShopOnContainers.Services.Basket.API.Auth.Server;
 using Microsoft.eShopOnContainers.Services.Basket.API.IntegrationEvents.EventHandling;
 using Microsoft.eShopOnContainers.Services.Basket.API.IntegrationEvents.Events;
 using Microsoft.eShopOnContainers.Services.Basket.API.Model;
@@ -22,8 +21,6 @@ using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
 using StackExchange.Redis;
 using System;
-using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus;

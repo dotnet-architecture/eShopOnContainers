@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.HealthChecks;
+using System.Threading.Tasks;
 using WebStatus.Viewmodels;
 
 namespace WebStatus.Controllers

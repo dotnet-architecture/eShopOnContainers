@@ -5,8 +5,6 @@ using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
 using System.IO;
 using System.Threading.Tasks;
 
-// For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
 {
     public class PicController : Controller
@@ -23,7 +21,6 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
 
         [HttpGet]
         [Route("api/v1/catalog/items/{catalogItemId:int}/pic")]
-        // GET: /<controller>/
         public async Task<IActionResult> GetImage(int catalogItemId)
         {
             if (catalogItemId <= 0)

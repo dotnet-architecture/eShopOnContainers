@@ -9,7 +9,6 @@
     using Microsoft.Azure.ServiceBus;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Diagnostics;
-    using Microsoft.EntityFrameworkCore.Infrastructure;
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBus;
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ;
@@ -24,8 +23,6 @@
     using Microsoft.Extensions.HealthChecks;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
-    using Microsoft.WindowsAzure.Storage;
-    using Microsoft.WindowsAzure.Storage.Auth;
     using Polly;
     using RabbitMQ.Client;
     using System;

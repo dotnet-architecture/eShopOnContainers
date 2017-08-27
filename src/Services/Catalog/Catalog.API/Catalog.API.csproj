@@ -32,7 +32,7 @@
 
 
   <ItemGroup>
-    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.1.0" />
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.Abstractions" Version="2.0.0" />

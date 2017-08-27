@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.eShopOnContainers.Services.Basket.API.Model;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
 using Basket.API.IntegrationEvents.Events;
 using Microsoft.eShopOnContainers.Services.Basket.API.Services;
