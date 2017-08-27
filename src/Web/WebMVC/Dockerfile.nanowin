@@ -1,4 +1,4 @@
-FROM microsoft/dotnet:1.1-runtime-nanoserver
+FROM microsoft/dotnet:2.0-runtime-nanoserver
 SHELL ["powershell"]
 ARG source
 WORKDIR /app

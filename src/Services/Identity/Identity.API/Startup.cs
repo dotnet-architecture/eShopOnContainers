@@ -16,7 +16,6 @@ using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.HealthChecks;
-using Identity.API.Certificate;
 using Autofac.Extensions.DependencyInjection;
 using Autofac;
 using Microsoft.Extensions.Logging;
@@ -159,14 +158,16 @@ namespace eShopOnContainers.Identity
         private async Task InitializeGrantStoreAndConfiguration(IApplicationBuilder app)
         {
             //callbacks urls from config:
-            Dictionary<string, string> clientUrls = new Dictionary<string, string>();
-            clientUrls.Add("Mvc", Configuration.GetValue<string>("MvcClient"));
-            clientUrls.Add("Spa", Configuration.GetValue<string>("SpaClient"));
-            clientUrls.Add("Xamarin", Configuration.GetValue<string>("XamarinCallback"));
-            clientUrls.Add("LocationsApi", Configuration.GetValue<string>("LocationApiClient"));
-            clientUrls.Add("MarketingApi", Configuration.GetValue<string>("MarketingApiClient"));
-            clientUrls.Add("BasketApi", Configuration.GetValue<string>("BasketApiClient"));
-            clientUrls.Add("OrderingApi", Configuration.GetValue<string>("OrderingApiClient"));
+            Dictionary<string, string> clientUrls = new Dictionary<string, string>
+            {
+                { "Mvc", Configuration.GetValue<string>("MvcClient") },
+                { "Spa", Configuration.GetValue<string>("SpaClient") },
+                { "Xamarin", Configuration.GetValue<string>("XamarinCallback") },
+                { "LocationsApi", Configuration.GetValue<string>("LocationApiClient") },
+                { "MarketingApi", Configuration.GetValue<string>("MarketingApiClient") },
+                { "BasketApi", Configuration.GetValue<string>("BasketApiClient") },
+                { "OrderingApi", Configuration.GetValue<string>("OrderingApiClient") }
+            };
 
             using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {

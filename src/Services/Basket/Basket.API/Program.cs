@@ -1,7 +1,6 @@
 ﻿using Basket.API.Infrastructure.Middlewares;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using System.Collections.Generic;
 using System.IO;
 
 namespace Microsoft.eShopOnContainers.Services.Basket.API
