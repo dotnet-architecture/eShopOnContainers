@@ -59,13 +59,13 @@ services:
       - marketing.api
   
   webstatus:
-    image: eshop/webstatus:${TAG:-latest}
+    image: eshop/webstatus-win:${TAG:-latest}
     build:
       context: ./src/Web/WebStatus
       dockerfile: Dockerfile.nanowin
 
   locations.api:
-    image: eshop/locations.api:${TAG:-latest}
+    image: eshop/locations.api-win:${TAG:-latest}
     build:
       context: ./src/Services/Location/Locations.API
       dockerfile: Dockerfile.nanowin
@@ -74,7 +74,7 @@ services:
       - rabbitmq
 
   marketing.api:
-    image: eshop/marketing.api:${TAG:-latest}
+    image: eshop/marketing.api-win:${TAG:-latest}
     build:
       context: ./src/Services/Marketing/Marketing.API
       dockerfile: Dockerfile.nanowin    
@@ -116,7 +116,7 @@ services:
       - rabbitmq
 
   payment.api:
-    image: eshop/payment.api:${TAG:-latest}
+    image: eshop/payment.api-win:${TAG:-latest}
     build:
       context: ./src/Services/Payment/Payment.API
       dockerfile: Dockerfile.nanowin
