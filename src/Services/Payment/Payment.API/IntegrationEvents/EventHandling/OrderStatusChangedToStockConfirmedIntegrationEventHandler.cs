@@ -1,10 +1,10 @@
 ﻿namespace Payment.API.IntegrationEvents.EventHandling
 {
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
-    using System.Threading.Tasks;
-    using Payment.API.IntegrationEvents.Events;
-    using Microsoft.Extensions.Options;
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
+    using Microsoft.Extensions.Options;
+    using Payment.API.IntegrationEvents.Events;
+    using System.Threading.Tasks;
 
     public class OrderStatusChangedToStockConfirmedIntegrationEventHandler : 
         IIntegrationEventHandler<OrderStatusChangedToStockConfirmedIntegrationEvent>
@@ -39,6 +39,8 @@
             }
 
             _eventBus.Publish(orderPaymentIntegrationEvent);
+
+            await Task.CompletedTask;
         }
     }
 }
