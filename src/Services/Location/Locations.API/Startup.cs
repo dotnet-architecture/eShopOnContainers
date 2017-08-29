@@ -20,6 +20,7 @@ using RabbitMQ.Client;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.Services.Locations.API
@@ -40,13 +41,7 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
                 options.Filters.Add(typeof(HttpGlobalExceptionFilter));
             }).AddControllersAsServices();
 
-            services.AddAuthentication()
-                .AddJwtBearer(options =>
-                {
-                    options.Authority = Configuration.GetValue<string>("IdentityUrl");
-                    options.Audience = "locations";
-                    options.RequireHttpsMetadata = false;
-                });
+            ConfigureAuthService(services);
 
             services.Configure<LocationSettings>(Configuration);
 
@@ -138,7 +133,7 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
         {
             app.UseCors("CorsPolicy");
 
-            app.UseAuthentication();
+            ConfigureAuth(app);
 
             app.UseMvcWithDefaultRoute();
 
@@ -151,6 +146,25 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
 
             LocationsContextSeed.SeedAsync(app, loggerFactory)
                 .Wait();
+        }
+
+        private void ConfigureAuthService(IServiceCollection services)
+        {
+            // prevent from mapping "sub" claim to nameidentifier.
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+
+            services.AddAuthentication()
+                .AddJwtBearer(options =>
+                {
+                    options.Authority = Configuration.GetValue<string>("IdentityUrl");
+                    options.Audience = "locations";
+                    options.RequireHttpsMetadata = false;
+                });
+        }
+
+        protected virtual void ConfigureAuth(IApplicationBuilder app)
+        {
+            app.UseAuthentication();
         }
 
         private void RegisterEventBus(IServiceCollection services)

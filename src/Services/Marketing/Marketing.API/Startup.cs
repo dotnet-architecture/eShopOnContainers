@@ -28,6 +28,7 @@
     using System;
     using System.Collections.Generic;
     using System.Data.SqlClient;
+    using System.IdentityModel.Tokens.Jwt;
     using System.Reflection;
     using System.Threading.Tasks;
 
@@ -52,13 +53,7 @@
 
             services.Configure<MarketingSettings>(Configuration);
 
-            services.AddAuthentication()
-                .AddJwtBearer(options =>
-                {
-                    options.Authority = Configuration.GetValue<string>("IdentityUrl");
-                    options.Audience = "marketing";
-                    options.RequireHttpsMetadata = false;
-                });
+            ConfigureAuthService(services);            
 
             services.AddHealthChecks(checks => 
             {
@@ -171,7 +166,7 @@
         {
             app.UseCors("CorsPolicy");
 
-            app.UseAuthentication();
+            ConfigureAuth(app);
 
             app.UseMvcWithDefaultRoute();
 
@@ -190,7 +185,21 @@
             ConfigureEventBus(app);
         }
 
-        private void RegisterEventBus(IServiceCollection services)
+        private void ConfigureAuthService(IServiceCollection services)
+        {
+            // prevent from mapping "sub" claim to nameidentifier.
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+
+            services.AddAuthentication()
+                .AddJwtBearer(options =>
+                {
+                    options.Authority = Configuration.GetValue<string>("IdentityUrl");
+                    options.Audience = "marketing";
+                    options.RequireHttpsMetadata = false;
+                });
+        }
+
+            private void RegisterEventBus(IServiceCollection services)
         {
             if (Configuration.GetValue<bool>("AzureServiceBusEnabled"))
             {
@@ -219,6 +228,11 @@
         {
             var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
             eventBus.Subscribe<UserLocationUpdatedIntegrationEvent, UserLocationUpdatedIntegrationEventHandler>();
+        }
+
+        protected virtual void ConfigureAuth(IApplicationBuilder app)
+        {
+            app.UseAuthentication();
         }
 
         private async Task WaitForSqlAvailabilityAsync(MarketingContext ctx, ILoggerFactory loggerFactory, IApplicationBuilder app, int retries = 0)

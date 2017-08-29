@@ -2,24 +2,26 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
-using Identity.API.Models;
-using Identity.API.Models.AccountViewModels;
-using Identity.API.Services;
 using IdentityModel;
-using IdentityServer4.Models;
+using IdentityServer4.Quickstart.UI.Models;
 using IdentityServer4.Services;
-using IdentityServer4.Stores;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
-
+using IdentityServer4.Models;
+using IdentityServer4.Stores;
+using Identity.API.Services;
+using Identity.API.Models;
+using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authorization;
+using Identity.API.Models.AccountViewModels;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication;
 
 namespace IdentityServer4.Quickstart.UI.Controllers
 {
@@ -38,12 +40,12 @@ namespace IdentityServer4.Quickstart.UI.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
 
         public AccountController(
-            
+
             //InMemoryUserLoginService loginService,
             ILoginService<ApplicationUser> loginService,
             IIdentityServerInteractionService interaction,
             IClientStore clientStore,
-            ILoggerFactory loggerFactory, 
+            ILoggerFactory loggerFactory,
             UserManager<ApplicationUser> userManager)
         {
             _loginService = loginService;
@@ -84,7 +86,7 @@ namespace IdentityServer4.Quickstart.UI.Controllers
                 var user = await _loginService.FindByUsername(model.Email);
                 if (await _loginService.ValidateCredentials(user, model.Password))
                 {
-                     AuthenticationProperties props = null;
+                    AuthenticationProperties props = null;
                     if (model.RememberMe)
                     {
                         props = new AuthenticationProperties
@@ -192,16 +194,16 @@ namespace IdentityServer4.Quickstart.UI.Controllers
                 try
                 {
                     // hack: try/catch to handle social providers that throw
-                    await HttpContext.SignOutAsync(idp, new AuthenticationProperties { RedirectUri = url });
+                    await HttpContext.Authentication.SignOutAsync(idp, new AuthenticationProperties { RedirectUri = url });
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     _logger.LogCritical(ex.Message);
                 }
             }
 
             // delete authentication cookie
-            await HttpContext.SignOutAsync();
+            await HttpContext.Authentication.SignOutAsync();
 
             // set this so UI rendering sees an anonymous user
             HttpContext.User = new ClaimsPrincipal(new ClaimsIdentity());
@@ -215,7 +217,7 @@ namespace IdentityServer4.Quickstart.UI.Controllers
         public async Task<IActionResult> DeviceLogOut(string redirectUrl)
         {
             // delete authentication cookie
-            await HttpContext.SignOutAsync();
+            await HttpContext.Authentication.SignOutAsync();
 
             // set this so UI rendering sees an anonymous user
             HttpContext.User = new ClaimsPrincipal(new ClaimsIdentity());
@@ -238,7 +240,7 @@ namespace IdentityServer4.Quickstart.UI.Controllers
             // start challenge and roundtrip the return URL
             var props = new AuthenticationProperties
             {
-                RedirectUri = returnUrl, 
+                RedirectUri = returnUrl,
                 Items = { { "scheme", provider } }
             };
             return new ChallengeResult(provider, props);
@@ -291,7 +293,8 @@ namespace IdentityServer4.Quickstart.UI.Controllers
                 }
             }
 
-            if (returnUrl != null) {
+            if (returnUrl != null)
+            {
                 if (HttpContext.User.Identity.IsAuthenticated)
                     return Redirect(returnUrl);
                 else

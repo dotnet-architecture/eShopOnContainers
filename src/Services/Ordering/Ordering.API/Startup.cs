@@ -35,30 +35,18 @@
     using System.Collections.Generic;
     using System.Data.Common;
     using System.Data.SqlClient;
+    using System.IdentityModel.Tokens.Jwt;
     using System.Reflection;
     using System.Threading.Tasks;
 
     public class Startup
     {
-        public Startup(IHostingEnvironment env)
+        public Startup(IConfiguration configuration)
         {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("settings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile("graceperiodsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"settings.{env.EnvironmentName}.json", optional: true);
-
-            if (env.IsDevelopment())
-            {
-                builder.AddUserSecrets(typeof(Startup).GetTypeInfo().Assembly);
-            }
-
-            builder.AddEnvironmentVariables();
-
-            Configuration = builder.Build();
+            Configuration = configuration;
         }
 
-        public IConfigurationRoot Configuration { get; }
+        public IConfiguration Configuration { get; }
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
@@ -71,7 +59,6 @@
 
             // Configure GracePeriodManager Hosted Service
             services.AddSingleton<IHostedService, GracePeriodManagerService>();
-            services.Configure<GracePeriodManagerSettings>(Configuration);
 
             services.AddTransient<IOrderingIntegrationEventService, OrderingIntegrationEventService>();
 
@@ -228,6 +215,9 @@
 
         private void ConfigureAuthService(IServiceCollection services)
         {
+            // prevent from mapping "sub" claim to nameidentifier.
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+
             var identityUrl = Configuration.GetValue<string>("IdentityUrl");
 
             services.AddAuthentication(options =>

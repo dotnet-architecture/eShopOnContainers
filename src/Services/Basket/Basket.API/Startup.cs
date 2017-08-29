@@ -3,6 +3,7 @@ using Autofac.Extensions.DependencyInjection;
 using Basket.API.Infrastructure.Filters;
 using Basket.API.IntegrationEvents.EventHandling;
 using Basket.API.IntegrationEvents.Events;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -25,6 +26,7 @@ using StackExchange.Redis;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.Services.Basket.API
@@ -50,6 +52,8 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
 
             }).AddControllersAsServices();
 
+            ConfigureAuthService(services);
+
             services.AddHealthChecks(checks =>
             {
                 checks.AddValueTaskCheck("HTTP Endpoint", () => new ValueTask<IHealthCheckResult>(HealthCheckResult.Healthy("Ok")),
@@ -57,16 +61,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
                                         );
             });
 
-            services.Configure<BasketSettings>(Configuration);
-
-            services.AddAuthentication()
-                .AddJwtBearer(options =>
-                {
-                    options.Authority = Configuration.GetValue<string>("IdentityUrl");
-                    options.Audience = "basket";
-                    options.RequireHttpsMetadata = false;
-
-                });
+            services.Configure<BasketSettings>(Configuration);           
 
             //By connecting here we are making sure that our service
             //cannot start until redis is ready. This might slow down startup,
@@ -151,7 +146,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IBasketRepository, RedisBasketRepository>();
             services.AddTransient<IIdentityService, IdentityService>();
-
+            
             services.AddOptions();
 
             var container = new ContainerBuilder();
@@ -167,7 +162,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
         {
             app.UseStaticFiles();          
             app.UseCors("CorsPolicy");
-            app.UseAuthentication();
+            ConfigureAuth(app);
             app.UseMvcWithDefaultRoute();
 
             app.UseSwagger()
@@ -181,6 +176,30 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
 
         }
 
+        private void ConfigureAuthService(IServiceCollection services)
+        {
+            // prevent from mapping "sub" claim to nameidentifier.
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+
+            var identityUrl = Configuration.GetValue<string>("IdentityUrl");
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
+            }).AddJwtBearer(options =>
+            {
+                options.Authority = identityUrl;
+                options.RequireHttpsMetadata = false;
+                options.Audience = "basket";
+            });
+        }
+
+        protected virtual void ConfigureAuth(IApplicationBuilder app)
+        {
+            app.UseAuthentication();
+        }
 
         private void RegisterEventBus(IServiceCollection services)
         {

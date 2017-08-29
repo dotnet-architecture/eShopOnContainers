@@ -2,6 +2,7 @@
 {
     using Dapper;
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
+    using Microsoft.eShopOnContainers.Services.Ordering.API;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
     using Ordering.API.Application.IntegrationEvents.Events;
@@ -14,11 +15,11 @@
     public class GracePeriodManagerService
         : HostedService
     {
-        private readonly GracePeriodManagerSettings _settings;
+        private readonly OrderingSettings _settings;
         private readonly ILogger<GracePeriodManagerService> _logger;
         private readonly IEventBus _eventBus;
 
-        public GracePeriodManagerService(IOptions<GracePeriodManagerSettings> settings,
+        public GracePeriodManagerService(IOptions<OrderingSettings> settings,
             IEventBus eventBus,
             ILogger<GracePeriodManagerService> logger)
         {
