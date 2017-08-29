@@ -138,7 +138,7 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
         {
             app.UseCors("CorsPolicy");
 
-            app.UseAuthentication();
+            ConfigureAuth(app);
 
             app.UseMvcWithDefaultRoute();
 
@@ -175,6 +175,11 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
             }
 
             services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
+        }
+
+        protected virtual void ConfigureAuth(IApplicationBuilder app)
+        {
+            app.UseAuthentication();
         }
     }
 }
