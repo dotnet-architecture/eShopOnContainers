@@ -1,9 +1,9 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Locations.API.Model
 {
     using MongoDB.Bson;
+    using MongoDB.Bson.Serialization.Attributes;
     using MongoDB.Driver.GeoJsonObjectModel;
     using System.Collections.Generic;
-    using MongoDB.Bson.Serialization.Attributes;
 
     public class Locations
     {
