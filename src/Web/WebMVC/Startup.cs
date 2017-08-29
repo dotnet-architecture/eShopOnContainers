@@ -20,17 +20,12 @@ namespace Microsoft.eShopOnContainers.WebMVC
 {
     public class Startup
     {
-        public Startup(IHostingEnvironment env)
+        public Startup(IConfiguration configuration)
         {
-            var builder = new ConfigurationBuilder()
-                      .SetBasePath(env.ContentRootPath)
-                      .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)  // Settings for the application
-                      .AddEnvironmentVariables();                                              // override settings with environment variables set in compose.   
-
-            Configuration = builder.Build();
+            Configuration = configuration;
         }
 
-        public IConfigurationRoot Configuration { get; }
+        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -135,7 +130,8 @@ namespace Microsoft.eShopOnContainers.WebMVC
             app.UseAuthentication();
 
             var log = loggerFactory.CreateLogger("identity");
-	    WebContextSeed.Seed(app, env, loggerFactory);
+
+            WebContextSeed.Seed(app, env, loggerFactory);
 
             app.UseMvc(routes =>
             {
