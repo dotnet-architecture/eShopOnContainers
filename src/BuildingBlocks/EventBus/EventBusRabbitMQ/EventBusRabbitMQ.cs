@@ -11,10 +11,7 @@ using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using RabbitMQ.Client.Exceptions;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Sockets;
-using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -184,7 +181,7 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
             };
 
             channel.BasicConsume(queue: _queueName,
-                                 noAck: true,
+                                 autoAck: false,
                                  consumer: consumer);
 
             channel.CallbackException += (sender, ea) =>

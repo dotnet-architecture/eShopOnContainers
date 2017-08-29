@@ -1,58 +1,45 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Marketing.API
 {
-    using Autofac;
-    using Autofac.Extensions.DependencyInjection;
-    using IntegrationEvents.Events;
     using AspNetCore.Builder;
     using AspNetCore.Hosting;
     using AspNetCore.Http;
+    using Autofac;
+    using Autofac.Extensions.DependencyInjection;
     using Azure.ServiceBus;
-    using EntityFrameworkCore;
-    using EntityFrameworkCore.Infrastructure;
     using BuildingBlocks.EventBus;
     using BuildingBlocks.EventBus.Abstractions;
     using BuildingBlocks.EventBusRabbitMQ;
     using BuildingBlocks.EventBusServiceBus;
+    using EntityFrameworkCore;
+    using Extensions.Configuration;
+    using Extensions.DependencyInjection;
+    using Extensions.HealthChecks;
+    using Extensions.Logging;
     using Infrastructure;
     using Infrastructure.Filters;
     using Infrastructure.Repositories;
     using Infrastructure.Services;
-    using Extensions.Configuration;
-    using Extensions.DependencyInjection;
-    using Extensions.Logging;
+    using IntegrationEvents.Events;
+    using Marketing.API.IntegrationEvents.Handlers;
+    using Microsoft.EntityFrameworkCore.Diagnostics;
     using Polly;
     using RabbitMQ.Client;
+    using Swashbuckle.AspNetCore.Swagger;
     using System;
+    using System.Collections.Generic;
     using System.Data.SqlClient;
     using System.Reflection;
     using System.Threading.Tasks;
-    using Extensions.HealthChecks;
-    using Marketing.API.IntegrationEvents.Handlers;
-    using Microsoft.EntityFrameworkCore.Diagnostics;
-    using Swashbuckle.AspNetCore.Swagger;
-    using System.Collections.Generic;
 
     public class Startup
     {
-        public Startup(IHostingEnvironment env)
+        public Startup(IConfiguration configuration)
         {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-                .AddEnvironmentVariables();
-
-            if (env.IsDevelopment())
-            {
-                builder.AddUserSecrets(typeof(Startup).GetTypeInfo().Assembly);
-            }
-
-            builder.AddEnvironmentVariables();
-
-            Configuration = builder.Build();
+            Configuration = configuration;
         }
 
-        public IConfigurationRoot Configuration { get; }
+        public IConfiguration Configuration { get; }
+
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
@@ -64,6 +51,14 @@
             }).AddControllersAsServices();  //Injecting Controllers themselves thru DIFor further info see: http://docs.autofac.org/en/latest/integration/aspnetcore.html#controllers-as-services
 
             services.Configure<MarketingSettings>(Configuration);
+
+            services.AddAuthentication()
+                .AddJwtBearer(options =>
+                {
+                    options.Authority = Configuration.GetValue<string>("IdentityUrl");
+                    options.Audience = "marketing";
+                    options.RequireHttpsMetadata = false;
+                });
 
             services.AddHealthChecks(checks => 
             {
@@ -179,7 +174,7 @@
 
             app.UseCors("CorsPolicy");
 
-            ConfigureAuth(app);
+            app.UseAuthentication();
 
             app.UseMvcWithDefaultRoute();
 
@@ -196,17 +191,6 @@
             WaitForSqlAvailabilityAsync(context, loggerFactory, app).Wait();
 
             ConfigureEventBus(app);
-        }
-
-        protected virtual void ConfigureAuth(IApplicationBuilder app)
-        {
-            var identityUrl = Configuration.GetValue<string>("IdentityUrl");
-            app.UseIdentityServerAuthentication(new IdentityServerAuthenticationOptions
-            {
-                Authority = identityUrl.ToString(),
-                ApiName = "marketing",
-                RequireHttpsMetadata = false
-            });
         }
 
         private void RegisterEventBus(IServiceCollection services)
