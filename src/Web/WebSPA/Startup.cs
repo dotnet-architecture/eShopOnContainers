@@ -1,16 +1,15 @@
-﻿using System;
-using System.IO;
+﻿using eShopOnContainers.WebSPA;
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
+using Microsoft.eShopOnContainers.BuildingBlocks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.HealthChecks;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Serialization;
-using eShopOnContainers.WebSPA;
-using Microsoft.eShopOnContainers.BuildingBlocks;
+using System;
+using System.IO;
 using WebSPA.Infrastructure;
 
 namespace eShopConContainers.WebSPA
