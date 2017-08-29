@@ -1,19 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.5</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>Microsoft.eShopOnContainers.BuildingBlocks</RootNamespace>
-    <!--
-    <NetStandardImplicitPackageVersion>2.0.0-preview1-25301-01</NetStandardImplicitPackageVersion>
-    -->
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.DataProtection" Version="1.1.2" />
-    <!--
-    <PackageReference Include="Microsoft.AspNetCore.DataProtection" Version="2.0.0-preview2-final" />
-    -->
-    <PackageReference Include="StackExchange.Redis" Version="1.2.3" />
+    <PackageReference Include="StackExchange.Redis.StrongName" Version="1.2.4" />
   </ItemGroup>
-
+  
 </Project>

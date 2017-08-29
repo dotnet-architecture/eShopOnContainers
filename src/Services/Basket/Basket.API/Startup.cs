@@ -6,10 +6,11 @@ using Basket.API.IntegrationEvents.Events;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Azure.ServiceBus;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ;
-using Microsoft.eShopOnContainers.Services.Basket.API.Auth.Server;
+using Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus;
 using Microsoft.eShopOnContainers.Services.Basket.API.IntegrationEvents.EventHandling;
 using Microsoft.eShopOnContainers.Services.Basket.API.IntegrationEvents.Events;
 using Microsoft.eShopOnContainers.Services.Basket.API.Model;
@@ -21,31 +22,22 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
 using StackExchange.Redis;
-using System;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
-
-using Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus;
-using Microsoft.Azure.ServiceBus;
 using Swashbuckle.AspNetCore.Swagger;
+using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.Services.Basket.API
 {
     public class Startup
     {
-        public Startup(IHostingEnvironment env)
+        public Startup(IConfiguration configuration)
         {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-                .AddEnvironmentVariables();
-            Configuration = builder.Build();
+            Configuration = configuration;
         }
 
-        public IConfigurationRoot Configuration { get; }
+        public IConfiguration Configuration { get; }
+
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
@@ -55,6 +47,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             {
                 options.Filters.Add(typeof(HttpGlobalExceptionFilter));
                 options.Filters.Add(typeof(ValidateModelStateFilter));
+
             }).AddControllersAsServices();
 
             services.AddHealthChecks(checks =>
@@ -66,6 +59,15 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
 
             services.Configure<BasketSettings>(Configuration);
 
+            services.AddAuthentication()
+                .AddJwtBearer(options =>
+                {
+                    options.Authority = Configuration.GetValue<string>("IdentityUrl");
+                    options.Audience = "basket";
+                    options.RequireHttpsMetadata = false;
+
+                });
+
             //By connecting here we are making sure that our service
             //cannot start until redis is ready. This might slow down startup,
             //but given that there is a delay on resolving the ip address
@@ -75,7 +77,8 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             services.AddSingleton<ConnectionMultiplexer>(sp =>
             {
                 var settings = sp.GetRequiredService<IOptions<BasketSettings>>().Value;
-                ConfigurationOptions configuration = ConfigurationOptions.Parse(settings.ConnectionString, true);           
+                var configuration = ConfigurationOptions.Parse(settings.ConnectionString, true);           
+
                 configuration.ResolveDns = true;
 
                 return ConnectionMultiplexer.Connect(configuration);
@@ -111,11 +114,10 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
 
             RegisterEventBus(services);
 
-
             services.AddSwaggerGen(options =>
             {
                 options.DescribeAllEnumsAsStrings();
-                options.SwaggerDoc("v1", new Swashbuckle.AspNetCore.Swagger.Info
+                options.SwaggerDoc("v1", new Info
                 {
                     Title = "Basket HTTP API",
                     Version = "v1",
@@ -154,8 +156,31 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
 
             var container = new ContainerBuilder();
             container.Populate(services);
+
             return new AutofacServiceProvider(container.Build());
         }
+
+      
+
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        {
+            app.UseStaticFiles();          
+            app.UseCors("CorsPolicy");
+            app.UseAuthentication();
+            app.UseMvcWithDefaultRoute();
+
+            app.UseSwagger()
+               .UseSwaggerUI(c =>
+               {
+                   c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                   c.ConfigureOAuth2("basketswaggerui", "", "", "Basket Swagger UI");
+               });
+
+            ConfigureEventBus(app);
+
+        }
+
 
         private void RegisterEventBus(IServiceCollection services)
         {
@@ -169,7 +194,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
                     var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
                     var subscriptionClientName = Configuration["SubscriptionClientName"];
 
-                    return new EventBusServiceBus(serviceBusPersisterConnection, logger, 
+                    return new EventBusServiceBus(serviceBusPersisterConnection, logger,
                         eventBusSubcriptionsManager, subscriptionClientName, iLifetimeScope);
                 });
             }
@@ -184,46 +209,10 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             services.AddTransient<OrderStartedIntegrationEventHandler>();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
-        {
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
-
-            app.UseStaticFiles();
-
-            // Use frameworks
-            app.UseCors("CorsPolicy");
-
-            ConfigureAuth(app);
-
-            app.UseMvcWithDefaultRoute();
-
-            app.UseSwagger()
-               .UseSwaggerUI(c =>
-               {
-                   c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-                   c.ConfigureOAuth2("basketswaggerui", "", "", "Basket Swagger UI");
-               });
-
-            ConfigureEventBus(app);
-
-        }
-
-        protected virtual void ConfigureAuth(IApplicationBuilder app)
-        {
-            var identityUrl = Configuration.GetValue<string>("IdentityUrl");
-            app.UseIdentityServerAuthentication(new IdentityServerAuthenticationOptions
-            {
-                Authority = identityUrl.ToString(),
-                ApiName = "basket",
-                RequireHttpsMetadata = false
-            });
-        }
-
-        protected virtual void ConfigureEventBus(IApplicationBuilder app)
+        private void ConfigureEventBus(IApplicationBuilder app)
         {
             var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
+
             eventBus.Subscribe<ProductPriceChangedIntegrationEvent, ProductPriceChangedIntegrationEventHandler>();
             eventBus.Subscribe<OrderStartedIntegrationEvent, OrderStartedIntegrationEventHandler>();
         }
