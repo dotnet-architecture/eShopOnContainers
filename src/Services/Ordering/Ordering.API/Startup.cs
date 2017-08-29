@@ -11,6 +11,7 @@
     using Infrastructure.AutofacModules;
     using Infrastructure.Filters;
     using Infrastructure.Services;
+    using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Azure.ServiceBus;
@@ -170,7 +171,7 @@
             }
 
             RegisterEventBus(services);
-
+            ConfigureAuthService(services);
             services.AddOptions();
 
             //configure autofac
@@ -225,22 +226,33 @@
             eventBus.Subscribe<OrderPaymentSuccededIntegrationEvent, IIntegrationEventHandler<OrderPaymentSuccededIntegrationEvent>>();
         }
 
-        protected virtual void ConfigureAuth(IApplicationBuilder app)
+        private void ConfigureAuthService(IServiceCollection services)
         {
             var identityUrl = Configuration.GetValue<string>("IdentityUrl");
-            app.UseIdentityServerAuthentication(new IdentityServerAuthenticationOptions
+
+            services.AddAuthentication(options =>
             {
-                Authority = identityUrl.ToString(),
-                ApiName = "orders",
-                RequireHttpsMetadata = false
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
+            }).AddJwtBearer(options =>
+            {
+                options.Authority = identityUrl;
+                options.RequireHttpsMetadata = false;
+                options.Audience = "orders";
             });
+        }
+
+        protected virtual void ConfigureAuth(IApplicationBuilder app)
+        {
+            app.UseAuthentication();
         }
 
         private void RegisterEventBus(IServiceCollection services)
         {
             if (Configuration.GetValue<bool>("AzureServiceBusEnabled"))
             {
-                services.AddSingleton<BuildingBlocks.EventBus.Abstractions.IEventBus, EventBusServiceBus>(sp =>
+                services.AddSingleton<IEventBus, EventBusServiceBus>(sp =>
                 {
                     var serviceBusPersisterConnection = sp.GetRequiredService<IServiceBusPersisterConnection>();
                     var iLifetimeScope = sp.GetRequiredService<ILifetimeScope>();
@@ -254,7 +266,7 @@
             }
             else
             {
-                services.AddSingleton<BuildingBlocks.EventBus.Abstractions.IEventBus, EventBusRabbitMQ>();
+                services.AddSingleton<IEventBus, EventBusRabbitMQ>();
             }
 
             services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();

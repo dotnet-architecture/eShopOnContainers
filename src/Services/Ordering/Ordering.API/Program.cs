@@ -1,6 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using System.IO;
 
 namespace Microsoft.eShopOnContainers.Services.Ordering.API
 {
@@ -8,15 +7,12 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API
     {
         public static void Main(string[] args)
         {
-            var host = new WebHostBuilder()
-                .UseKestrel()
-                .UseHealthChecks("/hc")
-                .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseIISIntegration()
+            BuildWebHost(args).Run();
+        }
+
+        public static IWebHost BuildWebHost(string[] args) =>
+            WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
                 .Build();
-
-            host.Run();
-        }
     }
 }
