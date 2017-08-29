@@ -1,4 +1,6 @@
-﻿using Identity.API.Certificate;
+﻿using Autofac;
+using Autofac.Extensions.DependencyInjection;
+using Identity.API.Certificate;
 using Identity.API.Configuration;
 using Identity.API.Data;
 using Identity.API.Models;
@@ -9,16 +11,12 @@ using IdentityServer4.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.eShopOnContainers.BuildingBlocks;
 using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.HealthChecks;
-using Identity.API.Certificate;
-using Autofac.Extensions.DependencyInjection;
-using Autofac;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -30,24 +28,13 @@ namespace eShopOnContainers.Identity
 {
     public class Startup
     {
-        public Startup(IHostingEnvironment env)
+        public Startup(IConfiguration configuration)
         {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
-
-            if (env.IsDevelopment())
-            {
-                // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
-                builder.AddUserSecrets<Startup>();
-            }
-
-            builder.AddEnvironmentVariables();
-            Configuration = builder.Build();
+            Configuration = configuration;
         }
 
-        public IConfigurationRoot Configuration { get; }
+        public IConfiguration Configuration { get; }
+
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
@@ -136,9 +123,11 @@ namespace eShopOnContainers.Identity
                 await next();
             });
 
-            app.UseIdentity();
+
 
             // Adds IdentityServer
+            app.UseAuthentication();
+
             app.UseIdentityServer();
 
             app.UseMvc(routes =>
