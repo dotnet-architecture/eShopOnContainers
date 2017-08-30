@@ -32,10 +32,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentValidation.AspNetCore" Version="7.0.3" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="7.1.1" />
     <PackageReference Include="FluentValidation.MVC6" Version="6.4.0" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="3.0.0" />
-    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.1.0" />
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
     <PackageReference Include="MediatR" Version="3.0.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="1.0.0" />

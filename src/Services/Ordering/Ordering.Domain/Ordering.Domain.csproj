@@ -1,9 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.4</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>Ordering.Domain</AssemblyName>
-    <NetStandardImplicitPackageVersion>2.0.0-preview1-25301-01</NetStandardImplicitPackageVersion>
     <PackageId>Ordering.Domain</PackageId>
     <AssetTargetFallback>$(AssetTargetFallback);dnxcore50;</AssetTargetFallback>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
@@ -14,7 +13,7 @@
   <ItemGroup>
     <PackageReference Include="MediatR" Version="3.0.1" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="2.0.0" />
-    <PackageReference Include="System.Reflection.TypeExtensions" Version="4.4.0-preview2-25405-01" />
+    <PackageReference Include="System.Reflection.TypeExtensions" Version="4.4.0" />
   </ItemGroup>
 
 </Project>
