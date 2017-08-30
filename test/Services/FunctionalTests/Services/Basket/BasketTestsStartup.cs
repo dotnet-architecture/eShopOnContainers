@@ -8,7 +8,7 @@ namespace FunctionalTests.Services.Basket
 {
     public class BasketTestsStartup : Startup
     {
-        public BasketTestsStartup(IConfiguration env) : base(env)
+        public BasketTestsStartup(IConfiguration configuration) : base(configuration)
         {
         }
 

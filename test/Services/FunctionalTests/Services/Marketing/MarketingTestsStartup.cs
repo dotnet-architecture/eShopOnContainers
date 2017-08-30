@@ -1,14 +1,13 @@
 ﻿namespace FunctionalTests.Services.Marketing
 {
-    using Microsoft.eShopOnContainers.Services.Marketing.API;
-    using Microsoft.AspNetCore.Hosting;
-    using Microsoft.AspNetCore.Builder;
     using FunctionalTests.Middleware;
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.eShopOnContainers.Services.Marketing.API;
     using Microsoft.Extensions.Configuration;
 
     public class MarketingTestsStartup : Startup
     {
-        public MarketingTestsStartup(IConfiguration env) : base(env)
+        public MarketingTestsStartup(IConfiguration configuration) : base(configuration)
         {
         }
 

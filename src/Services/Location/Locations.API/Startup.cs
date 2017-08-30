@@ -190,5 +190,10 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
 
             services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
         }
+
+        protected virtual void ConfigureAuth(IApplicationBuilder app)
+        {
+            app.UseAuthentication();
+        }
     }
 }

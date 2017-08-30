@@ -162,7 +162,9 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
         {
             app.UseStaticFiles();          
             app.UseCors("CorsPolicy");
+
             ConfigureAuth(app);
+
             app.UseMvcWithDefaultRoute();
 
             app.UseSwagger()
@@ -234,6 +236,11 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
 
             eventBus.Subscribe<ProductPriceChangedIntegrationEvent, ProductPriceChangedIntegrationEventHandler>();
             eventBus.Subscribe<OrderStartedIntegrationEvent, OrderStartedIntegrationEventHandler>();
+        }
+
+        protected virtual void ConfigureAuth(IApplicationBuilder app)
+        {
+            app.UseAuthentication();
         }
     }
 }

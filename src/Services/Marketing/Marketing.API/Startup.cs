@@ -257,5 +257,10 @@
                     }
                 );
         }
+
+        protected virtual void ConfigureAuth(IApplicationBuilder app)
+        {
+            app.UseAuthentication();
+        }
     }
 }
