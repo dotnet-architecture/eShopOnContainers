@@ -1,8 +1,6 @@
 ﻿namespace IntegrationTests.Services.Locations
 {
-    using IntegrationTests.Middleware;
     using Microsoft.AspNetCore.Builder;
-    using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
     using Microsoft.eShopOnContainers.Services.Locations.API;
     using Microsoft.Extensions.Configuration;
