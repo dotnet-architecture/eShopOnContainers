@@ -21,6 +21,3 @@ namespace Basket.API.IntegrationEvents.EventHandling
         }
     }
 }
-
-
-

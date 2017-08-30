@@ -3,7 +3,6 @@
     using EntityFrameworkCore.Metadata.Builders;
     using Microsoft.EntityFrameworkCore;
     using Model;
-    using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF;
 
     public class CatalogContext : DbContext
     {
