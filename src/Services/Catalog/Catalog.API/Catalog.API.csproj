@@ -12,6 +12,9 @@
 
 
   <ItemGroup>
+    <Content Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Update="wwwroot;">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
