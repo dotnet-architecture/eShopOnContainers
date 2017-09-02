@@ -1,4 +1,6 @@
 ﻿
+using StackExchange.Redis;
+
 namespace IntegrationTests.Services.Basket
 {
     using Microsoft.eShopOnContainers.Services.Basket.API;
@@ -57,10 +59,9 @@ namespace IntegrationTests.Services.Basket
         RedisBasketRepository BuildBasketRepository()
         {
             var loggerFactory = new LoggerFactory();            
-            var basketSettings = new BasketSettings() { ConnectionString = "127.0.0.1" };
-            _optionsMock.Setup(x => x.Value).Returns(basketSettings);
-            
-            return new RedisBasketRepository(_optionsMock.Object, loggerFactory);
+            var configuration = ConfigurationOptions.Parse("127.0.0.1", true);
+            configuration.ResolveDns = true;
+            return new RedisBasketRepository(loggerFactory, ConnectionMultiplexer.Connect(configuration));
         }
 
         List<BasketItem> BuildBasketItems()
