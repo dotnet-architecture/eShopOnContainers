@@ -25,7 +25,7 @@ spec:
     spec:
       containers:
       - name: sql-data
-        image: microsoft/mssql-server-linux:ctp1-3
+        image: microsoft/mssql-server-linux:rc2
         env:
         - name: ACCEPT_EULA
           value: "Y"
