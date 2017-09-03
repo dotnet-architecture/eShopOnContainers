@@ -31,7 +31,7 @@ $projectPaths | foreach {
     Write-Host "Publishing $projectPathAndFile to $outPath" -ForegroundColor Yellow
     dotnet restore $projectPathAndFile
     dotnet build $projectPathAndFile
-    dotnet publish $projectPathAndFile -o $outPath
+    dotnet publish $projectPathAndFile -o $outPath -c Release
 }
 
 
