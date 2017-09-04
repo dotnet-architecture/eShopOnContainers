@@ -25,7 +25,7 @@ do
     echo -e "\e[33m\tRestoring project"
     dotnet restore
     echo -e "\e[33m\tBuilding and publishing projects"
-    dotnet publish -o obj/Docker/publish
+    dotnet publish -o obj/Docker/publish -c Release
     popd
 done
 
