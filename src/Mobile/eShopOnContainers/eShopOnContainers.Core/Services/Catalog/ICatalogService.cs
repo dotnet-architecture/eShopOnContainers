@@ -10,5 +10,9 @@ namespace eShopOnContainers.Core.Services.Catalog
         Task<ObservableCollection<CatalogItem>> FilterAsync(int catalogBrandId, int catalogTypeId);
         Task<ObservableCollection<CatalogType>> GetCatalogTypeAsync();
         Task<ObservableCollection<CatalogItem>> GetCatalogAsync();
+        Task<CatalogItem> GetCatalogItemAsync(string id);
+        Task DeleteCatalogItemAsync(string catalogItemId);
+        Task<CatalogItem> UpdateCatalogItemAsync(CatalogItem item);
+        Task<CatalogItem> CreateCatalogItemAsync(CatalogItem item);
     }
 }

@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  catalog.webforms:
+    image: eshop/catalog.webforms
+    build:
+      context: .\Catalog.WebForms
+      dockerfile: Dockerfile
+    depends_on:
+      - catalog.api
+
+  catalog.api:
+    image: eshop/catalog.api-win
+    build:
+      context: ../../Services/Catalog/Catalog.API
+      dockerfile: Dockerfile.nanowin
+    depends_on:
+      - sql.data
+      - rabbitmq
+
+  rabbitmq:
+    image: eshop/rabbitmq-win
+    ports:
+        - "5672:5672"
+    
+  sql.data:
+    image: microsoft/mssql-server-windows
+
+networks:
+  default:
+    external:
+      name: nat

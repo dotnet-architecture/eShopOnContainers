@@ -6,3 +6,4 @@ RUN set-itemproperty -path 'HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\Par
 EXPOSE 80
 COPY ${source:-obj/Docker/publish} .
 ENTRYPOINT ["dotnet", "Catalog.API.dll"]
+
