@@ -132,10 +132,21 @@
                 {
                     var settings = sp.GetRequiredService<IOptions<CatalogSettings>>().Value;
                     var logger = sp.GetRequiredService<ILogger<DefaultRabbitMQPersistentConnection>>();
+
                     var factory = new ConnectionFactory()
                     {
-                        HostName = settings.EventBusConnection
+                        HostName = Configuration["EventBusConnection"]
                     };
+
+                    if (!string.IsNullOrEmpty(Configuration["EventBusUserName"]))
+                    {
+                        factory.UserName = Configuration["EventBusUserName"];
+                    }
+
+                    if (!string.IsNullOrEmpty(Configuration["EventBusPassword"]))
+                    {
+                        factory.Password = Configuration["EventBusPassword"];
+                    }
 
                     return new DefaultRabbitMQPersistentConnection(factory, logger);
                 });
