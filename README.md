@@ -2,8 +2,13 @@
 Sample .NET Core reference application, powered by Microsoft, based on a simplified microservices architecture and Docker containers. <p>
 **Note for Pull Requests**: We accept pull request from the community. When doing it, please do it onto the DEV branch which is the consolidated work-in-progress branch. Do not request it onto Master, if possible.
 
-## Moving to .NET Core 2.0 "wave"
-NOTE: During August/September 2017 we'll be moving the solution to .NET Core "wave". Not just compilation but also new recommended code in EF Core 2.0, ASP.NET Core 2.0, and other new related versions.
+## Moved to .NET Core 2.0 "wave"
+We have moved to .NET Core 2.0!
+
+* Branch `dev` is in .NET Core 2.0.
+* Branch `master` is *still* in .NET Core 1.1 (but it will be updated soon)
+
+To access the .NET Core 1.1 version you can use the `netcore1.1` tag ([https://github.com/dotnet-architecture/eShopOnContainers/tree/netcore1.1](https://github.com/dotnet-architecture/eShopOnContainers/tree/netcore1.1))
 
 >**PLEASE** Read our [branch guide](./branch-guide.md) to know about our branching policy
 
