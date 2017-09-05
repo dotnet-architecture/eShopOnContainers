@@ -32,7 +32,7 @@ $projectPaths =
         remove-item -path $outPath -Force -Recurse -ErrorAction SilentlyContinue
         #Write-Host "Publishing $projectPathAndFile to $outPath" -ForegroundColor Yellow
         dotnet build $projectPathAndFile
-        dotnet publish $projectPathAndFile -o $outPath 
+        dotnet publish $projectPathAndFile -o $outPath -c Release
     }
 }
 
