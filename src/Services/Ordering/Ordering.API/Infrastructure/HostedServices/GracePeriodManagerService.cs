@@ -1,30 +1,57 @@
-﻿namespace GracePeriodManager.Services
+﻿namespace Ordering.API.Infrastructure.HostedServices
 {
     using Dapper;
-    using GracePeriodManager.IntegrationEvents.Events;
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
+    using Microsoft.eShopOnContainers.Services.Ordering.API;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
+    using Ordering.API.Application.IntegrationEvents.Events;
+    using System;
     using System.Collections.Generic;
     using System.Data.SqlClient;
+    using System.Threading;
+    using System.Threading.Tasks;
 
-    public class ManagerService : IManagerService
+    public class GracePeriodManagerService
+        : HostedService
     {
-        private readonly ManagerSettings _settings;
+        private readonly OrderingSettings _settings;
+        private readonly ILogger<GracePeriodManagerService> _logger;
         private readonly IEventBus _eventBus;
-        private readonly ILogger<ManagerService> _logger;
 
-        public ManagerService(IOptions<ManagerSettings> settings,
+        public GracePeriodManagerService(IOptions<OrderingSettings> settings,
             IEventBus eventBus,
-            ILogger<ManagerService> logger)
+            ILogger<GracePeriodManagerService> logger)
         {
-            _settings = settings.Value;
-            _eventBus = eventBus;
-            _logger = logger;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _eventBus = eventBus ?? throw new ArgumentNullException(nameof(eventBus));
+
+            _settings = settings?.Value ?? throw new ArgumentNullException(nameof(settings));
         }
 
-        public void CheckConfirmedGracePeriodOrders()
+        protected override async Task ExecuteAsync(CancellationToken cancellationToken)
         {
+            while (true)
+            {
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    break;
+                }
+
+                CheckConfirmedGracePeriodOrders();
+
+                await Task.Delay(_settings.CheckUpdateTime, cancellationToken);
+
+                continue;
+            }
+
+            await Task.CompletedTask;
+        }
+
+        private void CheckConfirmedGracePeriodOrders()
+        {
+            _logger.LogDebug($"Checking confirmed grace period orders");
+
             var orderIds = GetConfirmedGracePeriodOrders();
 
             foreach (var orderId in orderIds)
@@ -37,6 +64,7 @@
         private IEnumerable<int> GetConfirmedGracePeriodOrders()
         {
             IEnumerable<int> orderIds = new List<int>();
+
             using (var conn = new SqlConnection(_settings.ConnectionString))
             {
                 try
@@ -46,13 +74,13 @@
                         @"SELECT Id FROM [Microsoft.eShopOnContainers.Services.OrderingDb].[ordering].[orders] 
                             WHERE DATEDIFF(minute, [OrderDate], GETDATE()) >= @GracePeriodTime
                             AND [OrderStatusId] = 1",
-                        new { GracePeriodTime = _settings.GracePeriodTime });  
+                        new { GracePeriodTime = _settings.GracePeriodTime });
                 }
                 catch (SqlException exception)
                 {
                     _logger.LogCritical($"FATAL ERROR: Database connections could not be opened: {exception.Message}");
                 }
-                
+
             }
 
             return orderIds;

@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.eShopOnContainers.BuildingBlocks;
@@ -18,24 +20,12 @@ namespace Microsoft.eShopOnContainers.WebMVC
 {
     public class Startup
     {
-        public Startup(IHostingEnvironment env)
+        public Startup(IConfiguration configuration)
         {
-            var builder = new ConfigurationBuilder()
-                      .SetBasePath(env.ContentRootPath)
-                      .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)  // Settings for the application
-                      .AddEnvironmentVariables();                                              // override settings with environment variables set in compose.   
-
-
-            if (env.IsDevelopment())
-            {
-                // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
-                builder.AddUserSecrets<Startup>();
-            }
-
-            Configuration = builder.Build();
+            Configuration = configuration;
         }
 
-        public IConfigurationRoot Configuration { get; }
+        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -85,6 +75,34 @@ namespace Microsoft.eShopOnContainers.WebMVC
             {
                 services.AddSingleton<IHttpClient, StandardHttpClient>();
             }
+            var useLoadTest = Configuration.GetValue<bool>("UseLoadTest");
+            var identityUrl = Configuration.GetValue<string>("IdentityUrl");
+            var callBackUrl = Configuration.GetValue<string>("CallBackUrl");
+            
+            // Add Authentication services          
+            
+            services.AddAuthentication(options => {
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+            })
+            .AddCookie()
+            .AddOpenIdConnect(options => {
+                options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.Authority = identityUrl.ToString();
+                options.SignedOutRedirectUri = callBackUrl.ToString();
+                options.ClientId = useLoadTest ? "mvctest" : "mvc";
+                options.ClientSecret = "secret";
+                options.ResponseType = useLoadTest ? "code id_token token" : "code id_token";
+                options.SaveTokens = true;
+                options.GetClaimsFromUserInfoEndpoint = true;
+                options.RequireHttpsMetadata = false;
+                options.Scope.Add("openid");
+                options.Scope.Add("profile");
+                options.Scope.Add("orders");
+                options.Scope.Add("basket");
+                options.Scope.Add("marketing");
+                options.Scope.Add("locations");
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -108,37 +126,11 @@ namespace Microsoft.eShopOnContainers.WebMVC
             app.UseSession();
             app.UseStaticFiles();
 
-            app.UseCookieAuthentication(new CookieAuthenticationOptions
-            {
-                AuthenticationScheme = "Cookies",
-                AutomaticAuthenticate = true,
-            });
+            app.UseAuthentication();
 
-            var identityUrl = Configuration.GetValue<string>("IdentityUrl");
-            var callBackUrl = Configuration.GetValue<string>("CallBackUrl");
-            var useLoadTest = Configuration.GetValue<bool>("UseLoadTest");
             var log = loggerFactory.CreateLogger("identity");
 
-            var oidcOptions = new OpenIdConnectOptions
-            {
-                AuthenticationScheme = "oidc",
-                SignInScheme = "Cookies",
-                Authority = identityUrl,
-                PostLogoutRedirectUri = callBackUrl,
-                ClientSecret = "secret",
-                ClientId = useLoadTest ? "mvctest" : "mvc",
-                ResponseType = useLoadTest ? "code id_token token" : "code id_token",
-                SaveTokens = true,
-                GetClaimsFromUserInfoEndpoint = true,
-                RequireHttpsMetadata = false,
-                Scope = { "openid", "profile", "orders", "basket", "marketing", "locations" }
-            };
-
-            //Seed Data
             WebContextSeed.Seed(app, env, loggerFactory);
-
-            //Wait untill identity service is ready on compose. 
-            app.UseOpenIdConnectAuthentication(oidcOptions);
 
             app.UseMvc(routes =>
             {
