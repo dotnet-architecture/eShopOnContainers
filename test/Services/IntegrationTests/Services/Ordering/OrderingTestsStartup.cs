@@ -5,12 +5,13 @@ using System.Text;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Builder;
 using IntegrationTests.Middleware;
+using Microsoft.Extensions.Configuration;
 
 namespace IntegrationTests.Services.Ordering
 {
     public class OrderingTestsStartup : Startup
     {
-        public OrderingTestsStartup(IHostingEnvironment env) : base(env)
+        public OrderingTestsStartup(IConfiguration env) : base(env)
         {
         }
 

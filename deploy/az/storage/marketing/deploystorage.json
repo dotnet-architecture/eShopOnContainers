@@ -7,11 +7,14 @@
     },
     "profileName" : {
       "type": "string"
+    },
+        "endpointName" : {
+      "type": "string"
     }
   },
   "variables": {
     "marketingstorage": "[concat(parameters('marketingstorage'), uniqueString(resourceGroup().id))]",
-    "endpointName": "[concat('endpoint-', uniqueString(resourceGroup().id))]",
+    "endpointName": "[concat(parameters('endpointName'), uniqueString(resourceGroup().id))]",
     "profileName": "[parameters('profileName')]"
   },
   "resources": [

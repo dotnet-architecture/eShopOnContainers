@@ -20,6 +20,10 @@ Using `docker-machine` is the recommended way to create a VM with docker install
 1. [Deploying SQL Server and databases](az/sql/readme.md)
 2. [Deploying Azure Service Bus](az/servicebus/readme.md)
 3. [Deploying Redis Cache](az/redis/readme.md)
+4. [Deploying Cosmosdb](az/cosmos/readme.md)
+5. [Deploying Catalog Storage](az/storage/catalog/readme.md)
+6. [Deploying Marketing Storage](az/storage/marketing/readme.md)
+7. [Deploying Marketing Azure functions](az/azurefunctions/readme.md)
 
 
 

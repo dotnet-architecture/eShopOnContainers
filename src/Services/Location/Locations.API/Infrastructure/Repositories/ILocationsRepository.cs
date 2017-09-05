@@ -1,9 +1,9 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure.Repositories
 {
     using Microsoft.eShopOnContainers.Services.Locations.API.Model;
-    using ViewModel;
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using ViewModel;
 
     public interface ILocationsRepository
     {        

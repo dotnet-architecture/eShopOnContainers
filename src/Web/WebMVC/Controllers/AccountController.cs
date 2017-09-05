@@ -1,28 +1,23 @@
 ﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.eShopOnContainers.WebMVC.ViewModels;
-using Microsoft.eShopOnContainers.WebMVC.Services;
 using Microsoft.AspNetCore.Http.Authentication;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace Microsoft.eShopOnContainers.WebMVC.Controllers
 {
     [Authorize]
     public class AccountController : Controller
     {
-        private readonly IIdentityParser<ApplicationUser> _identityParser;
-        public AccountController(IIdentityParser<ApplicationUser> identityParser) => 
-            _identityParser = identityParser;
-
-        public ActionResult Index() => View();
-        
         [Authorize]
         public async Task<IActionResult> SignIn(string returnUrl)
         {
             var user = User as ClaimsPrincipal;
-            var token = await HttpContext.Authentication.GetTokenAsync("access_token");
+            
+            var token = await HttpContext.GetTokenAsync("access_token");
 
             if (token != null)
             {
@@ -34,15 +29,16 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
             return RedirectToAction(nameof(CatalogController.Index), "Catalog");
         }
 
-        public IActionResult Signout()
+        public async Task<IActionResult> Signout()
         {
-            HttpContext.Authentication.SignOutAsync("Cookies");
-            HttpContext.Authentication.SignOutAsync("oidc");
-
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            await HttpContext.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
+            
             // "Catalog" because UrlHelper doesn't support nameof() for controllers
             // https://github.com/aspnet/Mvc/issues/5853
             var homeUrl = Url.Action(nameof(CatalogController.Index), "Catalog");
-            return new SignOutResult("oidc", new AuthenticationProperties { RedirectUri = homeUrl });
+            return new SignOutResult(OpenIdConnectDefaults.AuthenticationScheme, 
+                new AspNetCore.Authentication.AuthenticationProperties { RedirectUri = homeUrl });
         }
     }
 }

@@ -2,6 +2,9 @@
 Sample .NET Core reference application, powered by Microsoft, based on a simplified microservices architecture and Docker containers. <p>
 **Note for Pull Requests**: We accept pull request from the community. When doing it, please do it onto the DEV branch which is the consolidated work-in-progress branch. Do not request it onto Master, if possible.
 
+## Moving to .NET Core 2.0 "wave"
+NOTE: During August/September 2017 we'll be moving the solution to .NET Core "wave". Not just compilation but also new recommended code in EF Core 2.0, ASP.NET Core 2.0, and other new related versions.
+
 >**PLEASE** Read our [branch guide](./branch-guide.md) to know about our branching policy
 
 > ### DISCLAIMER

@@ -4,10 +4,11 @@
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Builder;
     using IntegrationTests.Middleware;
+    using Microsoft.Extensions.Configuration;
 
     public class MarketingTestsStartup : Startup
     {
-        public MarketingTestsStartup(IHostingEnvironment env) : base(env)
+        public MarketingTestsStartup(IConfiguration env) : base(env)
         {
         }
 

@@ -58,6 +58,12 @@ The script accepts following parameters:
 + `deployInfrastructure`: If `true` infrastructure containers (rabbitmq, mongo, redis, sql) will be deployed in k8s. If `false` those containers (and its related deployments and services in k8s) won't be deployed.
 + `dockerOrg`: Name of the organization in the registry where the images are (or will be pushed). Default value is `eshop` (which has images provided by Microsoft)
 
+**Important:** If you **don't pass the `-buildBits $true` the script won't build and publish the projects** to their `obj/Docker/publish` folder. If any project is not published, you'll be receiving errors like:
+
+```
+ERROR: Service 'xxxxxxx' failed to build: COPY failed: stat /var/lib/docker/tmp/docker-builder123456789/obj/Docker/publish: no such file or directory
+```
+
 ### Typical usages of the script:
 
 Build all projects, and deploy all them in k8s including infrastructure containers in a organization called `foo` in Docker Hub. Images will be tagged with my current git branch and containers will use the configuration set in `conf_local.yml` file:

@@ -281,13 +281,13 @@ namespace eShopOnContainers.Core.ViewModels
             if (!UseFakeLocation)
             {
                 TitleUseFakeLocation = "Use Real Location";
-                DescriptionUseFakeLocation = "When enabling the use of real location, the app will attempt to use real location from the device.";
+                DescriptionUseFakeLocation = "When enabling location, the app will attempt to use the location from the device.";
 
             }
             else
             {
                 TitleUseFakeLocation = "Use Fake Location";
-                DescriptionUseFakeLocation = "Fake Location are added for marketing campaign testing.";
+                DescriptionUseFakeLocation = "Fake Location data is added for marketing campaign testing.";
             }
         }
 
@@ -295,13 +295,13 @@ namespace eShopOnContainers.Core.ViewModels
         {
             if (!AllowGpsLocation)
             {
-                TitleAllowGpsLocation = "GPS location Denied";
-                DescriptionAllowGpsLocation = "When denying the use of device gps you won't get the location campaigns through your real location.";
+                TitleAllowGpsLocation = "GPS Location Disabled";
+                DescriptionAllowGpsLocation = "When disabling location, you won't receive location campaigns based upon your location.";
             }
             else
             {
-                TitleAllowGpsLocation = "GPS location Allowed";
-                DescriptionAllowGpsLocation = "When allowing the use of device gps you will get the location campaigns through your real location.";
+                TitleAllowGpsLocation = "GPS Location Enabled";
+                DescriptionAllowGpsLocation = "When enabling location, you'll receive location campaigns based upon your location.";
 
             }
         }
@@ -344,7 +344,7 @@ namespace eShopOnContainers.Core.ViewModels
                 if (!locator.IsGeolocationEnabled)
                 {
                     _allowGpsLocation = false;
-                    GpsWarningMessage = "Enable your GPS system in your device";
+                    GpsWarningMessage = "Enable the GPS sensor on your device";
                 }
                 else
                 {

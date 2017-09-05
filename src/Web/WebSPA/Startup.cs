@@ -1,46 +1,37 @@
-﻿using System;
-using System.IO;
+﻿using eShopOnContainers.WebSPA;
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
+using Microsoft.eShopOnContainers.BuildingBlocks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.HealthChecks;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Serialization;
-using eShopOnContainers.WebSPA;
-using Microsoft.eShopOnContainers.BuildingBlocks;
+using System;
+using System.IO;
 using WebSPA.Infrastructure;
 
 namespace eShopConContainers.WebSPA
 {
     public class Startup
     {
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
+        public IConfiguration Configuration { get; }
+
         private IHostingEnvironment _hostingEnv;
         public Startup(IHostingEnvironment env)
         {
             _hostingEnv = env;
 
-            var builder = new ConfigurationBuilder()
-                           .SetBasePath(env.ContentRootPath)
-                           .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                           .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-                           .AddEnvironmentVariables();
-
-            if (env.IsDevelopment())
-            {
-                // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
-                builder.AddUserSecrets();
-            }
-
-            Configuration = builder.Build();
-
             var localPath = new Uri(Configuration["ASPNETCORE_URLS"])?.LocalPath ?? "/";
             Configuration["BaseUrl"] = localPath;
         }
 
-        public static IConfigurationRoot Configuration { get; set;}
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit http://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)

@@ -29,7 +29,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.SeedWork
         public static IEnumerable<T> GetAll<T>() where T : Enumeration, new()
         {
             var type = typeof(T);
-            var fields = type.GetTypeInfo().GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly);
+            var fields = type.GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly);
 
             foreach (var info in fields)
             {
