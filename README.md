@@ -1,4 +1,4 @@
-# eShopOnContainers - Microservices Architecture and Containers based Reference Application (**BETA state** - Visual Studio 2017 and CLI environments compatible)
+ # eShopOnContainers - Microservices Architecture and Containers based Reference Application (Visual Studio 2017 and CLI environments compatible)
 Sample .NET Core reference application, powered by Microsoft, based on a simplified microservices architecture and Docker containers. <p>
 **Note for Pull Requests**: We accept pull request from the community. When doing it, please do it onto the DEV branch which is the consolidated work-in-progress branch. Do not request it onto Master, if possible.
 
@@ -13,7 +13,7 @@ To access the .NET Core 1.1 version you can use the `netcore1.1` tag ([https://g
 >**PLEASE** Read our [branch guide](./branch-guide.md) to know about our branching policy
 
 > ### DISCLAIMER
-> **IMPORTANT:** The current state of this sample application is **BETA**, consider it version a 0.1 foundational version, therefore, many areas could be improved and change significantly while refactoring current code and implementing new features. **Feedback with improvements and pull requests from the community will be highly appreciated and accepted.**
+> **IMPORTANT:** The current state of this sample application is **BETA** for the .NET Core 2.0 version, and v1.0 for the .NET Core 1.1.2 version tagged ([https://github.com/dotnet-architecture/eShopOnContainers/tree/netcore1.1](https://github.com/dotnet-architecture/eShopOnContainers/tree/netcore1.1))
 >
 > This reference application proposes a simplified microservice oriented architecture implementation to introduce technologies like .NET Core with Docker containers through a comprehensive application. The chosen domain is an eShop/eCommerce but simply because it is a well-know domain by most people/developers.
 However, this sample application should not be considered as an "eCommerce reference model", at all. The implemented business domain might not be ideal from an eCommerce business point of view. It is neither trying to solve all the problems in a large, scalable and mission-critical distributed system. It is just a bootstrap for developers to easily get started in the world of Docker containers and microservices with .NET Core.
