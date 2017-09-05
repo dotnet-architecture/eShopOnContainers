@@ -25,9 +25,11 @@ spec:
     spec:
       containers:
       - name: sql-data
-        image: microsoft/mssql-server-linux:rc2
+        image: microsoft/mssql-server-linux:latest
         env:
         - name: ACCEPT_EULA
           value: "Y"
+        - name: MSSQL_PID
+          value: Developer
         - name: SA_PASSWORD
           value: Pass@word

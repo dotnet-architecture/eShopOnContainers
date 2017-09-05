@@ -170,6 +170,7 @@ services:
     environment:
       - SA_PASSWORD=Pass@word
       - ACCEPT_EULA=Y
+      - MSSQL_PID=Developer
     ports:
       - "5433:1433"
 
