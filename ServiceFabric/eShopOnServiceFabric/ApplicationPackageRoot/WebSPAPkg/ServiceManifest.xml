@@ -22,11 +22,17 @@
     <EnvironmentVariables>
       <EnvironmentVariable Name="ASPNETCORE_ENVIRONMENT" Value="Development"/>
       <EnvironmentVariable Name="ASPNETCORE_URLS" Value="http://0.0.0.0:80"/>
-      <EnvironmentVariable Name="CatalogUrl" Value=""/>
-      <EnvironmentVariable Name="OrderingUrl" Value=""/>
-      <EnvironmentVariable Name="IdentityUrl" Value=""/>
-      <EnvironmentVariable Name="BasketUrl" Value=""/>
+      <EnvironmentVariable Name="CatalogUrl" Value="http://your_servicefabric_dns:19081/eShopOnServiceFabric/CatalogApi"/>
+      <EnvironmentVariable Name="OrderingUrl" Value="http://your_servicefabric_dns:19081/eShopOnServiceFabric/OrderingApi"/>
+      <EnvironmentVariable Name="IdentityUrl" Value="http://your_servicefabric_dns:19081/eShopOnServiceFabric/IdentityApi"/>
+      <EnvironmentVariable Name="BasketUrl" Value="http://your_servicefabric_dns:19081/eShopOnServiceFabric/BasketApi"/>
       <EnvironmentVariable Name="MarketingUrl" Value=""/>
+      <EnvironmentVariable Name="CatalogUrlHC" Value="http://catalogapi.eshoponservicefabric:5101/hc"/>
+      <EnvironmentVariable Name="OrderingUrlHC" Value="http://orderingapi.eshoponservicefabric:5102/hc"/>
+      <EnvironmentVariable Name="IdentityUrlHC" Value="http://identityapi.eshoponservicefabric:5105/hc"/>
+      <EnvironmentVariable Name="BasketUrlHC" Value="http://basketapi.eshoponservicefabric:5103/hc"/>
+      <EnvironmentVariable Name="MarketingUrlHC" Value="http://marketingapi.eshoponservicefabric:5110/hc"/>
+      <EnvironmentVariable Name="UseCustomizationData" Value="True"/>
     </EnvironmentVariables>
   </CodePackage>
 
