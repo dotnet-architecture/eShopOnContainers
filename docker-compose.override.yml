@@ -137,6 +137,7 @@ services:
       - IdentityUrl=http://identity.api/hc
       - LocationsUrl=http://locations.api/hc
       - MarketingUrl=http://marketing.api/hc
+      - PaymentUrl=http://payment.api/hc
       - mvc=http://webmvc/hc
       - spa=http://webspa/hc
     ports:

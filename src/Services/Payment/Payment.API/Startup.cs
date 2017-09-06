@@ -9,11 +9,13 @@ using Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.HealthChecks;
 using Microsoft.Extensions.Logging;
 using Payment.API.IntegrationEvents.EventHandling;
 using Payment.API.IntegrationEvents.Events;
 using RabbitMQ.Client;
 using System;
+using System.Threading.Tasks;
 
 namespace Payment.API
 {
@@ -69,6 +71,11 @@ namespace Payment.API
                     return new DefaultRabbitMQPersistentConnection(factory, logger);
                 });
             }
+
+            services.AddHealthChecks(checks =>
+            {
+                checks.AddValueTaskCheck("HTTP Endpoint", () => new ValueTask<IHealthCheckResult>(HealthCheckResult.Healthy("Ok")));
+            });
 
             RegisterEventBus(services);
 
