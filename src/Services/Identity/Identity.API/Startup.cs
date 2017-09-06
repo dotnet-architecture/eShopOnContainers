@@ -1,4 +1,6 @@
-﻿using Identity.API.Certificate;
+﻿using Autofac;
+using Autofac.Extensions.DependencyInjection;
+using Identity.API.Certificate;
 using Identity.API.Configuration;
 using Identity.API.Data;
 using Identity.API.Models;
@@ -16,9 +18,6 @@ using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.HealthChecks;
-using Identity.API.Certificate;
-using Autofac.Extensions.DependencyInjection;
-using Autofac;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
