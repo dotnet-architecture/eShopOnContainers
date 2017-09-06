@@ -154,6 +154,24 @@
                 "description": "Name for the storage account that contains support logs from the cluster"
             }
         },
+        "applicationDiagnosticsStorageAccountType": {
+            "type": "string",
+            "allowedValues": [
+                "Standard_LRS",
+                "Standard_GRS"
+            ],
+            "defaultValue": "Standard_LRS",
+            "metadata": {
+                "description": "Replication option for the application diagnostics storage account"
+            }
+        },
+        "applicationDiagnosticsStorageAccountName": {
+            "type": "string",
+            "defaultValue": "[toLower(concat(uniqueString(resourceGroup().id), '3' ))]",
+            "metadata": {
+                "description": "Name for the storage account that contains application diagnostics data from the cluster"
+            }
+        },
         "nt0InstanceCount": {
             "type": "int",
             "defaultValue": 1,
@@ -168,14 +186,7 @@
         },
         "vmNodeType0Size": {
             "type": "string",
-            "defaultValue": "Standard_D1_v2"
-        },
-        "SFReverseProxyPort": {
-            "type": "int",
-            "defaultValue": 19081,
-            "metadata": {
-                "description": "Endpoint for Service Fabric Reverse proxy"
-            }
+            "defaultValue": "Standard_D2_v2"
         }
     },
     "variables": {
@@ -212,6 +223,22 @@
             "kind": "Storage",
             "sku": {
                 "name": "[parameters('supportLogStorageAccountType')]"
+            },
+            "tags": {
+                "resourceType": "Service Fabric",
+                "clusterName": "[parameters('clusterName')]"
+            }
+        },
+        {
+            "apiVersion": "[variables('storageApiVersion')]",
+            "type": "Microsoft.Storage/storageAccounts",
+            "name": "[parameters('applicationDiagnosticsStorageAccountName')]",
+            "location": "[parameters('computeLocation')]",
+            "dependsOn": [],
+            "properties": {},
+            "kind": "Storage",
+            "sku": {
+                "name": "[parameters('applicationDiagnosticsStorageAccountType')]"
             },
             "tags": {
                 "resourceType": "Service Fabric",
@@ -323,25 +350,6 @@
                             },
                             "protocol": "tcp"
                         }
-                    },
-                    {
-                        "name": "LBSFReverseProxyRule",
-                        "properties": {
-                            "backendAddressPool": {
-                                "id": "[variables('lbPoolID0')]"
-                            },
-                            "backendPort": "[parameters('SFReverseProxyPort')]",
-                            "enableFloatingIP": "false",
-                            "frontendIPConfiguration": {
-                                "id": "[variables('lbIPConfig0')]"
-                            },
-                            "frontendPort": "[parameters('SFReverseProxyPort')]",
-                            "idleTimeoutInMinutes": "5",
-                            "probe": {
-                                "id": "[concat(variables('lbID0'),'/probes/SFReverseProxyProbe')]"
-                            },
-                            "protocol": "tcp"
-                        }
                     }
                 ],
                 "probes": [
@@ -362,16 +370,7 @@
                             "port": "[parameters('nt0fabricHttpGatewayPort')]",
                             "protocol": "tcp"
                         }
-                    },
-                    {
-                        "name": "SFReverseProxyProbe",
-                        "properties": {
-                            "intervalInSeconds": 5,
-                            "numberOfProbes": 2,
-                            "port":     "[parameters('SFReverseProxyPort')]",
-                            "protocol": "tcp"
-                        }
-                    }  
+                    }
                 ],
                 "inboundNatPools": [
                     {
@@ -426,7 +425,8 @@
                 "[concat('Microsoft.Storage/storageAccounts/', variables('uniqueStringArray0')[3])]",
                 "[concat('Microsoft.Storage/storageAccounts/', variables('uniqueStringArray0')[4])]",
                 "[concat('Microsoft.Network/loadBalancers/', concat('LB','-', parameters('clusterName'),'-',parameters('vmNodeType0Name')))]",
-                "[concat('Microsoft.Storage/storageAccounts/', parameters('supportLogStorageAccountName'))]"
+                "[concat('Microsoft.Storage/storageAccounts/', parameters('supportLogStorageAccountName'))]",
+                "[concat('Microsoft.Storage/storageAccounts/', parameters('applicationDiagnosticsStorageAccountName'))]"
             ],
             "properties": {
                 "overprovision": "[parameters('overProvision')]",
@@ -455,6 +455,58 @@
                                         "nicPrefixOverride": "[parameters('subnet0Prefix')]"
                                     },
                                     "typeHandlerVersion": "1.0"
+                                }
+                            },
+                            {
+                                "name": "[concat('VMDiagnosticsVmExt','_vmNodeType0Name')]",
+                                "properties": {
+                                    "type": "IaaSDiagnostics",
+                                    "autoUpgradeMinorVersion": true,
+                                    "protectedSettings": {
+                                        "storageAccountName": "[parameters('applicationDiagnosticsStorageAccountName')]",
+                                        "storageAccountKey": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('applicationDiagnosticsStorageAccountName')),'2015-05-01-preview').key1]",
+                                        "storageAccountEndPoint": "https://core.windows.net/"
+                                    },
+                                    "publisher": "Microsoft.Azure.Diagnostics",
+                                    "settings": {
+                                        "WadCfg": {
+                                            "DiagnosticMonitorConfiguration": {
+                                                "overallQuotaInMB": "50000",
+                                                "EtwProviders": {
+                                                    "EtwEventSourceProviderConfiguration": [
+                                                        {
+                                                            "provider": "Microsoft-ServiceFabric-Actors",
+                                                            "scheduledTransferKeywordFilter": "1",
+                                                            "scheduledTransferPeriod": "PT5M",
+                                                            "DefaultEvents": {
+                                                                "eventDestination": "ServiceFabricReliableActorEventTable"
+                                                            }
+                                                        },
+                                                        {
+                                                            "provider": "Microsoft-ServiceFabric-Services",
+                                                            "scheduledTransferPeriod": "PT5M",
+                                                            "DefaultEvents": {
+                                                                "eventDestination": "ServiceFabricReliableServiceEventTable"
+                                                            }
+                                                        }
+                                                    ],
+                                                    "EtwManifestProviderConfiguration": [
+                                                        {
+                                                            "provider": "cbd93bc2-71e5-4566-b3a7-595d8eeca6e8",
+                                                            "scheduledTransferLogLevelFilter": "Information",
+                                                            "scheduledTransferKeywordFilter": "4611686018427387904",
+                                                            "scheduledTransferPeriod": "PT5M",
+                                                            "DefaultEvents": {
+                                                                "eventDestination": "ServiceFabricSystemEventTable"
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            }
+                                        },
+                                        "StorageAccount": "[parameters('applicationDiagnosticsStorageAccountName')]"
+                                    },
+                                    "typeHandlerVersion": "1.5"
                                 }
                             }
                         ]
@@ -535,9 +587,12 @@
                 "[concat('Microsoft.Storage/storageAccounts/', parameters('supportLogStorageAccountName'))]"
             ],
             "properties": {
+                "addonFeatures": [
+                    "DnsService"
+                ],
                 "clientCertificateCommonNames": [],
                 "clientCertificateThumbprints": [],
-                "clusterCodeVersion": "5.6.231.9494",
+                "clusterCodeVersion": "5.7.207.9494",
                 "clusterState": "Default",
                 "diagnosticsStorageAccountConfig": {
                     "blobEndpoint": "[reference(concat('Microsoft.Storage/storageAccounts/', parameters('supportLogStorageAccountName')), variables('storageApiVersion')).primaryEndpoints.blob]",
@@ -547,9 +602,6 @@
                     "tableEndpoint": "[reference(concat('Microsoft.Storage/storageAccounts/', parameters('supportLogStorageAccountName')), variables('storageApiVersion')).primaryEndpoints.table]"
                 },
                 "fabricSettings": [],
-                "addonFeatures": [
-                    "DnsService"
-                ],
                 "managementEndpoint": "[concat('http://',reference(concat(parameters('lbIPName'),'-','0')).dnsSettings.fqdn,':',parameters('nt0fabricHttpGatewayPort'))]",
                 "nodeTypes": [
                     {

@@ -18,25 +18,28 @@
             "value": "YourPassword"
         },
         "nicName": {
-            "value": "NIC-eshoponservicefabric"
+            "value": "NIC-eshopsfwin"
         },
         "publicIPAddressName": {
-            "value": "eshoponservicefabric-PubIP"
+            "value": "eshopsfwin-PubIP"
         },
         "dnsName": {
-            "value": "eshoponservicefabric"
+            "value": "eshopsfwin"
         },
         "virtualNetworkName": {
-            "value": "VNet-eshoponservicefabric"
+            "value": "VNet-eshopsfwin"
         },
         "lbName": {
-            "value": "LB-eshoponservicefabric"
+            "value": "LB-eshopsfwin"
         },
         "lbIPName": {
-            "value": "LBIP-eshoponservicefabric"
+            "value": "LBIP-eshopsfwin"
+        },
+        "applicationDiagnosticsStorageAccountName": {
+            "value": "sfdgeshopsfwin6744"
         },
         "supportLogStorageAccountName": {
-            "value": "sflogseshoponservice3296"
+            "value": "sflogseshopsfwin3480"
         },
         "vmImageSku": {
             "value": "2016-Datacenter-with-Containers"
