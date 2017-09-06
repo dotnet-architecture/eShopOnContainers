@@ -67,7 +67,6 @@ services:
       - EventBusPassword=${ESHOP_SERVICE_BUS_PASSWORD}          
       - UseCustomizationData=True
       - AzureServiceBusEnabled=False
-      - GracePeriodTime=1
       - CheckUpdateTime=30000
     ports:
       - "5102:80"
