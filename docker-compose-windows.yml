@@ -38,7 +38,7 @@ services:
       - rabbitmq
 
   marketing.api:
-    image: eshop/marketing.api:${TAG:-latest}
+    image: eshop/marketing.api-win:${TAG:-latest}
     build:
       context: ./src/Services/Marketing/Marketing.API
       dockerfile: Dockerfile    
@@ -73,13 +73,13 @@ services:
       - marketing.api
   
   webstatus:
-    image: eshop/webstatus:${TAG:-latest}
+    image: eshop/webstatus-win:${TAG:-latest}
     build:
       context: ./src/Web/WebStatus
       dockerfile: Dockerfile
 
   payment.api:
-    image: eshop/payment.api:${TAG:-latest}
+    image: eshop/payment.api-win:${TAG:-latest}
     build:
       context: ./src/Services/Payment/Payment.API
       dockerfile: Dockerfile
@@ -87,7 +87,7 @@ services:
       - rabbitmq         
 
   locations.api:
-    image: eshop/locations.api:${TAG:-latest}
+    image: eshop/locations.api-win:${TAG:-latest}
     build:
       context: ./src/Services/Location/Locations.API
       dockerfile: Dockerfile
@@ -103,17 +103,11 @@ services:
 
   basket.data:
     image: redis:nanoserver
-#    build:
-#      context: ./_docker/redis
-#      dockerfile: Dockerfile
     ports:
         - "6379:6379"
 
   rabbitmq:
     image: spring2/rabbitmq
-#    build:
-#      context: ./_docker/rabbitmq
-#      dockerfile: Dockerfile  
     ports:
       - "15672:15672"    
       - "5672:5672"

@@ -106,6 +106,15 @@
                         HostName = Configuration["EventBusConnection"]
                     };
 
+                    if (!string.IsNullOrEmpty(Configuration["EventBusUserName"]))
+                    {
+                        factory.UserName = Configuration["EventBusUserName"];
+                    }
+
+                    if (!string.IsNullOrEmpty(Configuration["EventBusPassword"]))
+                    {
+                        factory.Password = Configuration["EventBusPassword"];
+                    }
                     return new DefaultRabbitMQPersistentConnection(factory, logger);
                 });
             }            

@@ -62,11 +62,21 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
                 services.AddSingleton<IRabbitMQPersistentConnection>(sp =>
                 {
                     var logger = sp.GetRequiredService<ILogger<DefaultRabbitMQPersistentConnection>>();
-          
-                    var factory = new ConnectionFactory
+
+                    var factory = new ConnectionFactory()
                     {
                         HostName = Configuration["EventBusConnection"]
                     };
+
+                    if (!string.IsNullOrEmpty(Configuration["EventBusUserName"]))
+                    {
+                        factory.UserName = Configuration["EventBusUserName"];
+                    }
+
+                    if (!string.IsNullOrEmpty(Configuration["EventBusPassword"]))
+                    {
+                        factory.Password = Configuration["EventBusPassword"];
+                    }
 
                     return new DefaultRabbitMQPersistentConnection(factory, logger);
                 });
