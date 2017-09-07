@@ -124,8 +124,10 @@ namespace Microsoft.eShopOnContainers.WebMVC
             }
 
 
-            if (!string.IsNullOrEmpty(Configuration["PATH_BASE"]))
+            var pathBase = Configuration["PATH_BASE"];
+            if (!string.IsNullOrEmpty(pathBase))
             {
+                loggerFactory.CreateLogger("init").LogDebug($"Using PATH BASE '{pathBase}'");
                 app.UsePathBase(Configuration["PATH_BASE"]);
             }
 
