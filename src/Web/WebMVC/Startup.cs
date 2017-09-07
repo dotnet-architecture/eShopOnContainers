@@ -123,6 +123,13 @@ namespace Microsoft.eShopOnContainers.WebMVC
                 app.UseExceptionHandler("/Error");
             }
 
+
+            if (!string.IsNullOrEmpty(Configuration["PATH_BASE"]))
+            {
+                app.UsePathBase(Configuration["PATH_BASE"]);
+            }
+
+
             app.UseSession();
             app.UseStaticFiles();
 
