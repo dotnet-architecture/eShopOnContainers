@@ -60,6 +60,12 @@ namespace WebStatus
                 app.UseExceptionHandler("/Home/Error");
             }
 
+            var pathBase = Configuration["PATH_BASE"];
+            if (!string.IsNullOrEmpty(pathBase))
+            {
+                app.UsePathBase(pathBase);
+            }            
+
             app.UseStaticFiles();
 
             app.UseMvc(routes =>

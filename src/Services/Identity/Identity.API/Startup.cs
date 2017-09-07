@@ -125,6 +125,13 @@ namespace eShopOnContainers.Identity
                 app.UseExceptionHandler("/Home/Error");
             }
 
+            var pathBase = Configuration["PATH_BASE"];
+            if (!string.IsNullOrEmpty(pathBase))
+            {
+                loggerFactory.CreateLogger("init").LogDebug($"Using PATH BASE '{pathBase}'");
+                app.UsePathBase(pathBase);
+            }            
+
             app.UseStaticFiles();
 
 
