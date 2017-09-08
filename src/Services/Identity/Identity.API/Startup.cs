@@ -55,7 +55,7 @@ namespace eShopOnContainers.Identity
 
             // Add framework services.
             services.AddDbContext<ApplicationDbContext>(options =>
-             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+             options.UseSqlServer(Configuration["ConnectionString"]));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -81,7 +81,7 @@ namespace eShopOnContainers.Identity
                 {
                     minutes = minutesParsed;
                 }
-                checks.AddSqlCheck("Identity_Db", Configuration.GetConnectionString("DefaultConnection"), TimeSpan.FromMinutes(minutes));
+                checks.AddSqlCheck("Identity_Db", Configuration["ConnectionString"], TimeSpan.FromMinutes(minutes));
             });
 
             services.AddTransient<IEmailSender, AuthMessageSender>();
@@ -89,7 +89,7 @@ namespace eShopOnContainers.Identity
             services.AddTransient<ILoginService<ApplicationUser>, EFLoginService>();
             services.AddTransient<IRedirectService, RedirectService>();
 
-            var connectionString = Configuration.GetConnectionString("DefaultConnection");
+            var connectionString = Configuration["ConnectionString"];
             var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
 
             // Adds IdentityServer
@@ -114,7 +114,7 @@ namespace eShopOnContainers.Identity
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
-
+           
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

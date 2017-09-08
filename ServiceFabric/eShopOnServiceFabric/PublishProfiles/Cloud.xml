@@ -20,6 +20,6 @@
                                     AzureActiveDirectory="true"
                                     ServerCertThumbprint="0123456789012345678901234567890123456789" />
   -->
-  <ClusterConnectionParameters ConnectionEndpoint="eshopsfwin.westeurope.cloudapp.azure.com:19000" />
+  <ClusterConnectionParameters ConnectionEndpoint="your_servicefabric_dns:19000" />
   <ApplicationParameterFile Path="..\ApplicationParameters\Cloud.xml" />
 </PublishProfile>

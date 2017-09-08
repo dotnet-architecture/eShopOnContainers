@@ -22,9 +22,10 @@
     <EnvironmentVariables>
       <EnvironmentVariable Name="ASPNETCORE_ENVIRONMENT" Value="Development"/>
       <EnvironmentVariable Name="ASPNETCORE_URLS" Value="http://0.0.0.0:80"/>
+      <EnvironmentVariable Name="PATH_BASE" Value="/eShopOnServiceFabric/IdentityApi"/>
       <EnvironmentVariable Name="SpaClient" Value="http://your_servicefabric_dns:19081/eShopOnServiceFabric/WebSPA"/>
       <EnvironmentVariable Name="XamarinCallback" Value="http://your_servicefabric_dns:19081/eShopOnServiceFabric/IdentityApi/xamarincallback"/>      
-      <EnvironmentVariable Name="ConnectionStrings__DefaultConnection" Value="Data Source=sqlserver.eshoponservicefabric,5433;Database=Microsoft.eShopOnContainers.Services.IdentityDb;User Id=sa;Password=Pass@word"/>
+      <EnvironmentVariable Name="ConnectionString" Value="Data Source=sqlserver.eshoponservicefabric,5433;Database=Microsoft.eShopOnContainers.Services.IdentityDb;User Id=sa;Password=Pass@word"/>
       <EnvironmentVariable Name="MvcClient" Value="http://your_servicefabric_dns:19081/eShopOnServiceFabric/WebMVC"/>
       <EnvironmentVariable Name="LocationApiClient" Value=""/>
       <EnvironmentVariable Name="MarketingApiClient" Value=""/>
@@ -43,7 +44,7 @@
       <!-- This endpoint is used by the communication listener to obtain the port on which to 
            listen. Please note that if your service is partitioned, this port is shared with 
            replicas of different partitions that are placed in your code. -->
-      <Endpoint Name="IdentityApiTypeEndpoint" Port="5105" UriScheme="http" Protocol="http" Type="Input" PathSuffix="eShopOnServiceFabric/IdentityApi"/>
+      <Endpoint Name="IdentityApiTypeEndpoint" Port="5105" UriScheme="http" PathSuffix="eShopOnServiceFabric/IdentityApi"/>
     </Endpoints>
   </Resources>
 </ServiceManifest>

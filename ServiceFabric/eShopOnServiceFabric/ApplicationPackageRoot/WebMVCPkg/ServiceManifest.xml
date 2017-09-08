@@ -26,7 +26,7 @@
       <EnvironmentVariable Name="CatalogUrl" Value="http://catalogapi.eshoponservicefabric:5101"/>
       <EnvironmentVariable Name="OrderingUrl" Value="http://orderingapi.eshoponservicefabric:5102"/>
       <EnvironmentVariable Name="BasketUrl" Value="http://basketapi.eshoponservicefabric:5103"/>
-      <EnvironmentVariable Name="IdentityUrl" Value="http://your_servicefabric_dns:19081/eShopOnServiceFabric/IdentityApi"/>
+      <EnvironmentVariable Name="IdentityUrl" Value="http://eshopservicefabricwin:19081/eShopOnServiceFabric/IdentityApi"/>
       <EnvironmentVariable Name="MarketingUrl" Value=""/>
     </EnvironmentVariables>
   </CodePackage>
@@ -40,7 +40,7 @@
       <!-- This endpoint is used by the communication listener to obtain the port on which to 
            listen. Please note that if your service is partitioned, this port is shared with 
            replicas of different partitions that are placed in your code. -->
-      <Endpoint Name="WebMVCTypeEndpoint" UriScheme="http" Port="5100"/>
+      <Endpoint Name="WebMVCTypeEndpoint" UriScheme="http" Port="5100" PathSuffix="eShopOnServiceFabric/WebMVC"/>
     </Endpoints>
   </Resources>
 </ServiceManifest>
