@@ -37,7 +37,7 @@
     <ConfigOverrides />
     <Policies>
     <ContainerHostPolicies CodePackageRef="Code">
-      <PortBinding ContainerPort="5110" EndpointRef="MarketingApiTypeEndpoint"/>
+      <PortBinding ContainerPort="80" EndpointRef="MarketingApiTypeEndpoint"/>
     </ContainerHostPolicies>
       </Policies>
   </ServiceManifestImport>
@@ -55,7 +55,7 @@
     <ConfigOverrides />
     <Policies>
       <ContainerHostPolicies CodePackageRef="Code">
-        <PortBinding ContainerPort="5109" EndpointRef="LocationsApiTypeEndpoint"/>
+        <PortBinding ContainerPort="80" EndpointRef="LocationsApiTypeEndpoint"/>
       </ContainerHostPolicies>
     </Policies>
   </ServiceManifestImport>
@@ -64,7 +64,7 @@
     <ConfigOverrides />
     <Policies>
       <ContainerHostPolicies CodePackageRef="Code">
-        <PortBinding ContainerPort="5108" EndpointRef="PaymentApiTypeEndpoint"/>
+        <PortBinding ContainerPort="80" EndpointRef="PaymentApiTypeEndpoint"/>
       </ContainerHostPolicies>
     </Policies>
   </ServiceManifestImport>

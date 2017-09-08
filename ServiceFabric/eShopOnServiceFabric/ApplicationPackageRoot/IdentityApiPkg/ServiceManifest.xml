@@ -23,10 +23,10 @@
       <EnvironmentVariable Name="ASPNETCORE_ENVIRONMENT" Value="Development"/>
       <EnvironmentVariable Name="ASPNETCORE_URLS" Value="http://0.0.0.0:80"/>
       <EnvironmentVariable Name="PATH_BASE" Value="/eShopOnServiceFabric/IdentityApi"/>
-      <EnvironmentVariable Name="SpaClient" Value="http://your_servicefabric_dns:19081/eShopOnServiceFabric/WebSPA"/>
-      <EnvironmentVariable Name="XamarinCallback" Value="http://your_servicefabric_dns:19081/eShopOnServiceFabric/IdentityApi/xamarincallback"/>      
-      <EnvironmentVariable Name="ConnectionString" Value="Data Source=sqlserver.eshoponservicefabric,5433;Database=Microsoft.eShopOnContainers.Services.IdentityDb;User Id=sa;Password=Pass@word"/>
-      <EnvironmentVariable Name="MvcClient" Value="http://your_servicefabric_dns:19081/eShopOnServiceFabric/WebMVC"/>
+      <EnvironmentVariable Name="SpaClient" Value="http://your_dns_servicefabric:19081/eShopOnServiceFabric/WebSPA"/>
+      <EnvironmentVariable Name="XamarinCallback" Value="http://your_dns_servicefabric:19081/eShopOnServiceFabric/IdentityApi/xamarincallback"/>      
+      <EnvironmentVariable Name="ConnectionString" Value="Data Source=sqlserver.eshoponservicefabric,5433;Database=Microsoft.eShopOnContainers.Service.IdentityDb;User Id=sa;Password=Pass@word"/>
+      <EnvironmentVariable Name="MvcClient" Value="http://your_dns_servicefabric:19081/eShopOnServiceFabric/WebMVC"/>
       <EnvironmentVariable Name="LocationApiClient" Value=""/>
       <EnvironmentVariable Name="MarketingApiClient" Value=""/>
       <EnvironmentVariable Name="BasketApiClient" Value=""/>

@@ -22,9 +22,8 @@
     <EnvironmentVariables>
       <EnvironmentVariable Name="ASPNETCORE_ENVIRONMENT" Value="Development"/>
       <EnvironmentVariable Name="ASPNETCORE_URLS" Value="http://0.0.0.0:80"/>
-      <EnvironmentVariable Name="ConnectionString" Value="Data Source=sqlserver.eshoponservicefabric,5433;Database=Microsoft.eShopOnContainers.Services.MarketingDb;User Id=sa;Password=Pass@word"/>
-      <EnvironmentVariable Name="identityUrl" Value="http://identityapi.eshoponservicefabric"/>
-      <EnvironmentVariable Name="IdentityUrlExternal" Value="http://your_servicefabric_dns:19081/eShopOnServiceFabric/IdentityApi"/>
+      <EnvironmentVariable Name="ConnectionString" Value="Data Source=sqlserver.eshoponservicefabric,5433;Database=Microsoft.eShopOnContainers.Services.MarketingDb;User Id=sa;Password=Pass@word
+      <EnvironmentVariable Name="IdentityUrlExternal" Value="http://your_dns_servicefabric:19081/eShopOnServiceFabric/IdentityApi"/>
       <EnvironmentVariable Name="EventBusConnection" Value="rabbitmq.eshoponservicefabric"/>
       <EnvironmentVariable Name="AzureServiceBusEnabled" Value="False"/>
       <EnvironmentVariable Name="CampaignDetailFunctionUri" Value=""/>
@@ -34,6 +33,7 @@
       <EnvironmentVariable Name="AzureStorageEnabled" Value="False"/>
       <EnvironmentVariable Name="EventBusUserName" Value="admin"/>
       <EnvironmentVariable Name="EventBusPassword" Value="password"/>
+      <EnvironmentVariable Name="PATH_BASE" Value="/eShopOnServiceFabric/MarketingApi"/>
     </EnvironmentVariables>
   </CodePackage>
 
@@ -46,7 +46,7 @@
       <!-- This endpoint is used by the communication listener to obtain the port on which to 
            listen. Please note that if your service is partitioned, this port is shared with 
            replicas of different partitions that are placed in your code. -->
-      <Endpoint Name="MarketingApiTypeEndpoint" Port="5110"/>
+      <Endpoint Name="MarketingApiTypeEndpoint" Port="5110" PathSuffix="eShopOnServiceFabric/MarketingApi"/>
     </Endpoints>
   </Resources>
 </ServiceManifest>

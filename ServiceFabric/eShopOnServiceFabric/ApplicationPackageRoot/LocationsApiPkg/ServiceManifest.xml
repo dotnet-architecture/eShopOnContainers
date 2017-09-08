@@ -25,11 +25,12 @@
       <EnvironmentVariable Name="ConnectionString" Value="mongodb://mongodb.eshoponservicefabric"/>
       <EnvironmentVariable Name="Database" Value="LocationsDb"/>
       <EnvironmentVariable Name="identityUrl" Value="http://identityapi.eshoponservicefabric:5105"/>
-      <EnvironmentVariable Name="IdentityUrlExternal" Value="http://your_servicefabric_dns:19081/eShopOnServiceFabric/IdentityApi"/>
+      <EnvironmentVariable Name="IdentityUrlExternal" Value="http://your_dns_servicefabric:19081/eShopOnServiceFabric/IdentityApi"/>
       <EnvironmentVariable Name="EventBusConnection" Value="rabbitmq.eshoponservicefabric"/>
       <EnvironmentVariable Name="AzureServiceBusEnabled" Value="False"/>      
       <EnvironmentVariable Name="EventBusUserName" Value="admin"/>
       <EnvironmentVariable Name="EventBusPassword" Value="password"/>
+      <EnvironmentVariable Name="PATH_BASE" Value="/eShopOnServiceFabric/LocationsApi"/>
     </EnvironmentVariables>
   </CodePackage>
 
@@ -42,7 +43,7 @@
       <!-- This endpoint is used by the communication listener to obtain the port on which to 
            listen. Please note that if your service is partitioned, this port is shared with 
            replicas of different partitions that are placed in your code. -->
-      <Endpoint Name="LocationsApiTypeEndpoint" Port="5109"/>
+      <Endpoint Name="LocationsApiTypeEndpoint" Port="5109" PathSuffix="eShopOnServiceFabric/LocationsApi"/>
     </Endpoints>
   </Resources>
 </ServiceManifest>

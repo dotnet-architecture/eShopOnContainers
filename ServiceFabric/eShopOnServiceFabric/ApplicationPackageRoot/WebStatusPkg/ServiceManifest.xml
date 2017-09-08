@@ -30,6 +30,7 @@
       <EnvironmentVariable Name="LocationsUrl" Value="http://locationsapi.eshoponservicefabric:5109"/>
       <EnvironmentVariable Name="mvc" Value="http://webmvc.eshoponservicefabric:5100"/>
       <EnvironmentVariable Name="spa" Value="http://webspa.eshoponservicefabric:5104"/>
+      <EnvironmentVariable Name="PATH_BASE" Value="/eShopOnServiceFabric/WebStatus"/>
     </EnvironmentVariables>
   </CodePackage>
 
@@ -42,7 +43,7 @@
       <!-- This endpoint is used by the communication listener to obtain the port on which to 
            listen. Please note that if your service is partitioned, this port is shared with 
            replicas of different partitions that are placed in your code. -->
-      <Endpoint Name="WebStatusTypeEndpoint" Port="5107" UriScheme="http" />
+      <Endpoint Name="WebStatusTypeEndpoint" Port="5107" UriScheme="http" PathSuffix="eShopOnServiceFabric/WebStatus"/>
     </Endpoints>
   </Resources>
 </ServiceManifest>

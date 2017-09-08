@@ -22,10 +22,10 @@
     <EnvironmentVariables>
       <EnvironmentVariable Name="ASPNETCORE_ENVIRONMENT" Value="Development"/>
       <EnvironmentVariable Name="ASPNETCORE_URLS" Value="http://0.0.0.0:80"/>
-      <EnvironmentVariable Name="CatalogUrl" Value="http://your_servicefabric_dns:19081/eShopOnServiceFabric/CatalogApi"/>
-      <EnvironmentVariable Name="OrderingUrl" Value="http://your_servicefabric_dns:19081/eShopOnServiceFabric/OrderingApi"/>
-      <EnvironmentVariable Name="IdentityUrl" Value="http://your_servicefabric_dns:19081/eShopOnServiceFabric/IdentityApi"/>
-      <EnvironmentVariable Name="BasketUrl" Value="http://your_servicefabric_dns:19081/eShopOnServiceFabric/BasketApi"/>
+      <EnvironmentVariable Name="CatalogUrl" Value="http://your_dns_servicefabric:19081/eShopOnServiceFabric/CatalogApi"/>
+      <EnvironmentVariable Name="OrderingUrl" Value="http://your_dns_servicefabric:19081/eShopOnServiceFabric/OrderingApi"/>
+      <EnvironmentVariable Name="IdentityUrl" Value="http://your_dns_servicefabric:19081/eShopOnServiceFabric/IdentityApi"/>
+      <EnvironmentVariable Name="BasketUrl" Value="http://your_dns_servicefabric:19081/eShopOnServiceFabric/BasketApi"/>
       <EnvironmentVariable Name="MarketingUrl" Value=""/>
       <EnvironmentVariable Name="CatalogUrlHC" Value="http://catalogapi.eshoponservicefabric:5101/hc"/>
       <EnvironmentVariable Name="OrderingUrlHC" Value="http://orderingapi.eshoponservicefabric:5102/hc"/>
@@ -33,6 +33,7 @@
       <EnvironmentVariable Name="BasketUrlHC" Value="http://basketapi.eshoponservicefabric:5103/hc"/>
       <EnvironmentVariable Name="MarketingUrlHC" Value="http://marketingapi.eshoponservicefabric:5110/hc"/>
       <EnvironmentVariable Name="UseCustomizationData" Value="True"/>
+      <EnvironmentVariable Name="PATH_BASE" Value="/eShopOnServiceFabric/WebSPA"/>
     </EnvironmentVariables>
   </CodePackage>
 
@@ -45,7 +46,7 @@
       <!-- This endpoint is used by the communication listener to obtain the port on which to 
            listen. Please note that if your service is partitioned, this port is shared with 
            replicas of different partitions that are placed in your code. -->
-      <Endpoint Name="WebSPATypeEndpoint" Port="5104" UriScheme="http" />
+      <Endpoint Name="WebSPATypeEndpoint" Port="5104" UriScheme="http" PathSuffix="eShopOnServiceFabric/WebSPA"/>
     </Endpoints>
   </Resources>
 </ServiceManifest>
