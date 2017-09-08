@@ -1,4 +1,6 @@
-﻿using Identity.API.Certificate;
+﻿using Autofac;
+using Autofac.Extensions.DependencyInjection;
+using Identity.API.Certificate;
 using Identity.API.Configuration;
 using Identity.API.Data;
 using Identity.API.Models;
@@ -16,9 +18,6 @@ using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.HealthChecks;
-using Identity.API.Certificate;
-using Autofac.Extensions.DependencyInjection;
-using Autofac;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -51,7 +50,7 @@ namespace eShopOnContainers.Identity
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
-        {            
+        {
 
             // Add framework services.
             services.AddDbContext<ApplicationDbContext>(options =>
@@ -94,7 +93,7 @@ namespace eShopOnContainers.Identity
 
             // Adds IdentityServer
             services.AddIdentityServer(x => x.IssuerUri = "null")
-                .AddSigningCredential(Certificate.Get())               
+                .AddSigningCredential(Certificate.Get())
                 .AddAspNetIdentity<ApplicationUser>()
                 .AddConfigurationStore(builder =>
                     builder.UseSqlServer(connectionString, options =>
@@ -125,6 +124,13 @@ namespace eShopOnContainers.Identity
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
+            var pathBase = Configuration["PATH_BASE"];
+            if (!string.IsNullOrEmpty(pathBase))
+            {
+                loggerFactory.CreateLogger("init").LogDebug($"Using PATH BASE '{pathBase}'");
+                app.UsePathBase(pathBase);
+            }            
 
             app.UseStaticFiles();
 

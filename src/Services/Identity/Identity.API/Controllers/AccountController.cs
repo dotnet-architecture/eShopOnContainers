@@ -40,12 +40,12 @@ namespace IdentityServer4.Quickstart.UI.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
 
         public AccountController(
-            
+
             //InMemoryUserLoginService loginService,
             ILoginService<ApplicationUser> loginService,
             IIdentityServerInteractionService interaction,
             IClientStore clientStore,
-            ILoggerFactory loggerFactory, 
+            ILoggerFactory loggerFactory,
             UserManager<ApplicationUser> userManager)
         {
             _loginService = loginService;
@@ -86,7 +86,7 @@ namespace IdentityServer4.Quickstart.UI.Controllers
                 var user = await _loginService.FindByUsername(model.Email);
                 if (await _loginService.ValidateCredentials(user, model.Password))
                 {
-                     AuthenticationProperties props = null;
+                    AuthenticationProperties props = null;
                     if (model.RememberMe)
                     {
                         props = new AuthenticationProperties
@@ -196,7 +196,7 @@ namespace IdentityServer4.Quickstart.UI.Controllers
                     // hack: try/catch to handle social providers that throw
                     await HttpContext.Authentication.SignOutAsync(idp, new AuthenticationProperties { RedirectUri = url });
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     _logger.LogCritical(ex.Message);
                 }
@@ -240,7 +240,7 @@ namespace IdentityServer4.Quickstart.UI.Controllers
             // start challenge and roundtrip the return URL
             var props = new AuthenticationProperties
             {
-                RedirectUri = returnUrl, 
+                RedirectUri = returnUrl,
                 Items = { { "scheme", provider } }
             };
             return new ChallengeResult(provider, props);
@@ -293,7 +293,8 @@ namespace IdentityServer4.Quickstart.UI.Controllers
                 }
             }
 
-            if (returnUrl != null) {
+            if (returnUrl != null)
+            {
                 if (HttpContext.User.Identity.IsAuthenticated)
                     return Redirect(returnUrl);
                 else

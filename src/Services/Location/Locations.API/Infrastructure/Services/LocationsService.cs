@@ -1,9 +1,9 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure.Services
 {
-    using Microsoft.eShopOnContainers.Services.Locations.API.IntegrationEvents.Events;
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
     using Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure.Exceptions;
     using Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure.Repositories;
+    using Microsoft.eShopOnContainers.Services.Locations.API.IntegrationEvents.Events;
     using Microsoft.eShopOnContainers.Services.Locations.API.Model;
     using Microsoft.eShopOnContainers.Services.Locations.API.ViewModel;
     using System;

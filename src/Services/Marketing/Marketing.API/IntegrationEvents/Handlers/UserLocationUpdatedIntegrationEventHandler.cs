@@ -4,7 +4,6 @@
     using Marketing.API.Model;
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
     using Microsoft.eShopOnContainers.Services.Marketing.API.Infrastructure.Repositories;
-    using Microsoft.eShopOnContainers.Services.Marketing.API.Model;
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;

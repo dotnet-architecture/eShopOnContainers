@@ -1,16 +1,15 @@
 ﻿namespace IntegrationTests.Services.Locations
 {
-    using IntegrationTests.Middleware;
     using Microsoft.AspNetCore.Builder;
-    using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
     using Microsoft.eShopOnContainers.Services.Locations.API;
+    using Microsoft.Extensions.Configuration;
     using System.Security.Claims;
     using System.Threading.Tasks;
 
     public class LocationsTestsStartup : Startup
     {
-        public LocationsTestsStartup(IHostingEnvironment env) : base(env)
+        public LocationsTestsStartup(IConfiguration env) : base(env)
         {
         }
 

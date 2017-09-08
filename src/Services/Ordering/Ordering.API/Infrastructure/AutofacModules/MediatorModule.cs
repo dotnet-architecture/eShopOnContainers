@@ -21,16 +21,11 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure.Autof
 
             // Register all the Command classes (they implement IAsyncRequestHandler) in assembly holding the Commands
             builder.RegisterAssemblyTypes(typeof(CreateOrderCommand).GetTypeInfo().Assembly)
-                .As(o => o.GetInterfaces()
-                    .Where(i => i.IsClosedTypeOf(typeof(IAsyncRequestHandler<,>)))
-                    .Select(i => new KeyedService("IAsyncRequestHandler", i)));
+                .AsClosedTypesOf(typeof(IAsyncRequestHandler<,>));
 
             // Register all the event classes (they implement IAsyncNotificationHandler) in assembly holding the Commands
             builder.RegisterAssemblyTypes(typeof(ValidateOrAddBuyerAggregateWhenOrderStartedDomainEventHandler).GetTypeInfo().Assembly)
-                .As(o => o.GetInterfaces()
-                    .Where(i => i.IsClosedTypeOf(typeof(IAsyncNotificationHandler<>)))
-                    .Select(i => new KeyedService("IAsyncNotificationHandler", i)))
-                    .AsImplementedInterfaces();
+                .AsClosedTypesOf(typeof(IAsyncNotificationHandler<>));
 
 
             builder
