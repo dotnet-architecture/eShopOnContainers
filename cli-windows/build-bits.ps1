@@ -31,7 +31,6 @@ $projectPaths =
         #Write-Host "Deleting old publish files in $outPath" -ForegroundColor Yellow
         remove-item -path $outPath -Force -Recurse -ErrorAction SilentlyContinue
         #Write-Host "Publishing $projectPathAndFile to $outPath" -ForegroundColor Yellow
-        dotnet build $projectPathAndFile
         dotnet publish $projectPathAndFile -o $outPath -c Release
     }
 }

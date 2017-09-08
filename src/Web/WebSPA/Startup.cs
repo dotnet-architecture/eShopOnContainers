@@ -95,6 +95,13 @@ namespace eShopConContainers.WebSPA
             //Seed Data
             WebContextSeed.Seed(app, env, loggerFactory);
 
+            var pathBase = Configuration["PATH_BASE"];
+            if (!string.IsNullOrEmpty(pathBase))
+            {
+                loggerFactory.CreateLogger("init").LogDebug($"Using PATH BASE '{pathBase}'");
+                app.UsePathBase(pathBase);
+            }            
+
             app.Use(async (context, next) =>
             {
                 await next();

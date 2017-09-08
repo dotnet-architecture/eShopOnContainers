@@ -15,8 +15,8 @@ spec:
         image: eshop/basket.api
         imagePullPolicy: Always
         env:
-        - name: ASPNETCORE_URLS
-          value: http://0.0.0.0:80/basket-api
+        - name: PATH_BASE
+          value: /basket-api
         - name: ConnectionString
           valueFrom:
            configMapKeyRef:
@@ -59,8 +59,8 @@ spec:
         image: eshop/catalog.api
         imagePullPolicy: Always
         env:
-        - name: ASPNETCORE_URLS
-          value: http://0.0.0.0:80/catalog-api
+        - name: PATH_BASE
+          value: /catalog-api
         - name: ConnectionString
           valueFrom:
            configMapKeyRef:
@@ -103,8 +103,8 @@ spec:
         image: eshop/identity.api
         imagePullPolicy: Always
         env:
-        - name: ASPNETCORE_URLS
-          value: http://0.0.0.0:80/identity
+        - name: PATH_BASE
+          value: /identity
         - name: ConnectionStrings__DefaultConnection
           valueFrom:
            configMapKeyRef:
@@ -169,8 +169,8 @@ spec:
         image: eshop/ordering.api
         imagePullPolicy: Always
         env:
-        - name: ASPNETCORE_URLS
-          value: http://0.0.0.0:80/ordering-api
+        - name: PATH_BASE
+          value: /ordering-api
         - name: ConnectionString
           valueFrom:
            configMapKeyRef:
@@ -199,53 +199,6 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: graceperiodmanager
-spec:
-  paused: true
-  template:
-    metadata:
-      labels:
-        app: eshop
-        component: graceperiodmanager
-    spec:
-      containers:
-      - name: graceperiodmanager
-        image: eshop/graceperiodmanager
-        imagePullPolicy: Always
-        env:
-        - name: ConnectionString
-          valueFrom:
-           configMapKeyRef:
-             name: externalcfg
-             key: OrderingSqlDb
-        - name: EventBusConnection
-          valueFrom:
-           configMapKeyRef:
-             name: externalcfg
-             key: GracePeriodManagerBus
-        - name: GracePeriodTime
-          valueFrom:
-           configMapKeyRef:
-             name: externalcfg
-             key: GracePeriodTime
-        - name: CheckUpdateTime
-          valueFrom:
-           configMapKeyRef:
-             name: externalcfg
-             key: GracePeriodCheckUpdateTime                         
-        - name: AzureServiceBusEnabled
-          valueFrom:
-           configMapKeyRef:
-             name: externalcfg
-             key: UseAzureServiceBus
-        ports:
-        - containerPort: 80
-      imagePullSecrets:
-      - name: registry-key
----
-apiVersion: extensions/v1beta1
-kind: Deployment
-metadata:
   name: locations
 spec:
   paused: true
@@ -260,8 +213,8 @@ spec:
         image: eshop/locations.api
         imagePullPolicy: Always
         env:
-        - name: ASPNETCORE_URLS
-          value: http://0.0.0.0:80/locations-api
+        - name: PATH_BASE
+          value: /locations-api
         - name: ConnectionString
           valueFrom:
            configMapKeyRef:
@@ -314,8 +267,8 @@ spec:
         image: eshop/marketing.api
         imagePullPolicy: Always
         env:
-        - name: ASPNETCORE_URLS
-          value: http://0.0.0.0:80/marketing-api
+        - name: PATH_BASE
+          value: /marketing-api
         - name: ConnectionString
           valueFrom:
            configMapKeyRef:
@@ -378,8 +331,8 @@ spec:
         image: eshop/payment.api
         imagePullPolicy: Always
         env:
-        - name: ASPNETCORE_URLS
-          value: http://0.0.0.0:80/payment-api
+        - name: PATH_BASE
+          value: /payment-api
         - name: AzureServiceBusEnabled
           valueFrom:
            configMapKeyRef:
@@ -412,8 +365,8 @@ spec:
         image: eshop/webmvc
         imagePullPolicy: Always
         env:
-        - name: ASPNETCORE_URLS
-          value: http://0.0.0.0:80/webmvc
+        - name: PATH_BASE
+          value: /webmvc
         - name: DPConnectionString
           valueFrom:
            configMapKeyRef:
@@ -473,8 +426,8 @@ spec:
         image: eshop/webstatus
         imagePullPolicy: Always
         env:
-        - name: ASPNETCORE_URLS
-          value: http://0.0.0.0:80/webstatus
+        - name: PATH_BASE
+          value: /webstatus
         - name: BasketUrl
           valueFrom:
            configMapKeyRef:

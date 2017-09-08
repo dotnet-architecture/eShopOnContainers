@@ -30,10 +30,8 @@ do
     echo -e "\e[33m\tRemoving old publish output"
     pushd $path/$project
     rm -rf obj/Docker/publish
-    echo -e "\e[33m\tRestoring project $project"
-    dotnet restore --verbosity minimal
     echo -e "\e[33m\tBuilding and publishing $project"
-    dotnet publish -c Release -o obj/Docker/publish --verbosity minimal
+    dotnet publish -c Release -o obj/Docker/publish --verbosity quiet
     popd
 done
 
@@ -49,4 +47,5 @@ done
 
 # No need to build the images, docker build or docker compose will
 # do that using the images and containers defined in the docker-compose.yml file.
+#
 #

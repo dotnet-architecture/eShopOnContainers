@@ -54,7 +54,6 @@ Write-Host "Docker image Tag: $imageTag" -ForegroundColor Yellow
 # building and publishing docker images if needed
 if($buildBits) {
     Write-Host "Building and publishing eShopOnContainers..." -ForegroundColor Yellow
-    dotnet restore ../eShopOnContainers-ServicesAndWebApps.sln
     dotnet publish -c Release -o obj/Docker/publish ../eShopOnContainers-ServicesAndWebApps.sln
 }
 if ($buildImages) {

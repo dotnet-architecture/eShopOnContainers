@@ -22,8 +22,6 @@ do
     echo -e "\e[33m\tRemoving old publish output"
     pushd $(pwd)/$project
     rm -rf obj/Docker/publish
-    echo -e "\e[33m\tRestoring project"
-    dotnet restore
     echo -e "\e[33m\tBuilding and publishing projects"
     dotnet publish -o obj/Docker/publish -c Release
     popd

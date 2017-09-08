@@ -27,10 +27,6 @@ data:
   OrderingSqlDb: Ordering SQL SERVER CONNECTION STRING (Server=xxxx;Intial Catalog=yyy;....)
 # Payment.API entries
   PaymentBus: CONNECTION_STRING (NAME OF RABBITMQ CONTAINER OR Endpoint=sb://XXXX in case of using Azure)
-# GracePeriodManager entries
-  GracePeriodTime: "5"  # Grace period duration (time when you can cancel order) in minutes
-  GracePeriodCheckUpdateTime: "60000"   # Interval time to check new Order status (in milliseconds)
-  GracePeriodManagerBus: CONNECTION_STRING (NAME OF RABBITMQ CONTAINER OR Endpoint=sb://XXXX in case of using Azure)
 # Global entries
   UseAzureServiceBus: "TRUE" IF USE AZURE SB ("FALSE" FOR USING RABBITMQ)
   keystore: REDIS CONNECTION STRING FOR KEYSTORE

@@ -123,14 +123,12 @@ namespace Microsoft.eShopOnContainers.WebMVC
                 app.UseExceptionHandler("/Error");
             }
 
-
             var pathBase = Configuration["PATH_BASE"];
             if (!string.IsNullOrEmpty(pathBase))
             {
                 loggerFactory.CreateLogger("init").LogDebug($"Using PATH BASE '{pathBase}'");
-                app.UsePathBase(Configuration["PATH_BASE"]);
+                app.UsePathBase(pathBase);
             }
-
 
             app.UseSession();
             app.UseStaticFiles();
