@@ -24,7 +24,7 @@
       <EnvironmentVariable Name="ASPNETCORE_URLS" Value="http://0.0.0.0:80"/>
       <EnvironmentVariable Name="ConnectionString" Value="Data Source=sqlserver.eshoponservicefabric,5433;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word"/>
       <EnvironmentVariable Name="identityUrl" Value="http://identityapi.eshoponservicefabric:5105"/>
-      <EnvironmentVariable Name="IdentityUrlExternal" Value="http://your_dns_servicefabric:19081/eShopOnServiceFabric/IdentityApi"/>
+      <EnvironmentVariable Name="IdentityUrlExternal" Value="http://your_sf_dns:5105"/>
       <EnvironmentVariable Name="EventBusConnection" Value="rabbitmq.eshoponservicefabric"/>
       <EnvironmentVariable Name="AzureServiceBusEnabled" Value="False"/>
       <EnvironmentVariable Name="UseCustomizationData" Value="True"/>
@@ -45,7 +45,7 @@
       <!-- This endpoint is used by the communication listener to obtain the port on which to 
            listen. Please note that if your service is partitioned, this port is shared with 
            replicas of different partitions that are placed in your code. -->
-      <Endpoint Name="OrderingApiTypeEndpoint" Port="80" UriScheme="http" PathSuffix="eShopOnServiceFabric/OrderingApi"/>
+      <Endpoint Name="OrderingApiTypeEndpoint" Port="5102" UriScheme="http" PathSuffix="eShopOnServiceFabric/OrderingApi"/>
     </Endpoints>
   </Resources>
 </ServiceManifest>

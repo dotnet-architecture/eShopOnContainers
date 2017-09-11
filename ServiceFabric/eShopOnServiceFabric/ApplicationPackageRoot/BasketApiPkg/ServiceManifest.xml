@@ -24,7 +24,7 @@
       <EnvironmentVariable Name="ASPNETCORE_URLS" Value="http://0.0.0.0:80"/>
       <EnvironmentVariable Name="ConnectionString" Value="basketdata.eshoponservicefabric"/>
       <EnvironmentVariable Name="identityUrl" Value="http://identityapi.eshoponservicefabric:5105"/>
-      <EnvironmentVariable Name="IdentityUrlExternal" Value="http://your_dns_servicefabric:19081/eShopOnServiceFabric/IdentityApi"/>
+      <EnvironmentVariable Name="IdentityUrlExternal" Value="http://your_sf_dns:5105"/>
       <EnvironmentVariable Name="EventBusConnection" Value="rabbitmq.eshoponservicefabric"/>
       <EnvironmentVariable Name="AzureServiceBusEnabled" Value="False"/>
       <EnvironmentVariable Name="EventBusUserName" Value="admin"/>

@@ -16,7 +16,6 @@
     <Parameter Name="WebSPA_InstanceCount" DefaultValue="-1" />
     <Parameter Name="WebMVC_InstanceCount" DefaultValue="-1" />
     <Parameter Name="OrderingApi_InstanceCount" DefaultValue="-1" />
-    <Parameter Name="IdentityApi_InstanceCount" DefaultValue="1" />
     <Parameter Name="CatalogApi_InstanceCount" DefaultValue="-1" />
     <Parameter Name="BasketApi_InstanceCount" DefaultValue="-1" />
   </Parameters>
@@ -87,47 +86,11 @@
     </Policies>
   </ServiceManifestImport>
   <ServiceManifestImport>
-    <ServiceManifestRef ServiceManifestName="WebStatusPkg" ServiceManifestVersion="1.0.0" />
-    <ConfigOverrides />
-    <Policies>
-      <ContainerHostPolicies CodePackageRef="Code">
-        <PortBinding ContainerPort="80" EndpointRef="WebStatusTypeEndpoint"/>
-      </ContainerHostPolicies>
-    </Policies>
-  </ServiceManifestImport>
-  <ServiceManifestImport>
-    <ServiceManifestRef ServiceManifestName="WebSPAPkg" ServiceManifestVersion="1.0.0" />
-    <ConfigOverrides />
-    <Policies>
-      <ContainerHostPolicies CodePackageRef="Code">
-        <PortBinding ContainerPort="80" EndpointRef="WebSPATypeEndpoint"/>
-      </ContainerHostPolicies>
-    </Policies>
-  </ServiceManifestImport>
-  <ServiceManifestImport>
-    <ServiceManifestRef ServiceManifestName="WebMVCPkg" ServiceManifestVersion="1.0.0" />
-    <ConfigOverrides />
-    <Policies>
-      <ContainerHostPolicies CodePackageRef="Code">
-        <PortBinding ContainerPort="80" EndpointRef="WebMVCTypeEndpoint"/>
-      </ContainerHostPolicies>
-    </Policies>
-  </ServiceManifestImport>
-  <ServiceManifestImport>
     <ServiceManifestRef ServiceManifestName="OrderingApiPkg" ServiceManifestVersion="1.0.0" />
     <ConfigOverrides />
     <Policies>
       <ContainerHostPolicies CodePackageRef="Code">
         <PortBinding ContainerPort="80" EndpointRef="OrderingApiTypeEndpoint"/>
-      </ContainerHostPolicies>
-    </Policies>
-  </ServiceManifestImport>
-  <ServiceManifestImport>
-    <ServiceManifestRef ServiceManifestName="IdentityApiPkg" ServiceManifestVersion="1.0.0" />
-    <ConfigOverrides />
-    <Policies>
-      <ContainerHostPolicies CodePackageRef="Code">
-        <PortBinding ContainerPort="80" EndpointRef="IdentityApiTypeEndpoint"/>
       </ContainerHostPolicies>
     </Policies>
   </ServiceManifestImport>
@@ -190,29 +153,8 @@
         <SingletonPartition />
       </StatelessService>
     </Service>
-   
-    <Service Name="WebStatus" ServiceDnsName="webstatus.eshoponservicefabric" ServicePackageActivationMode="ExclusiveProcess">
-      <StatelessService ServiceTypeName="WebStatusType" InstanceCount="[WebStatus_InstanceCount]">
-        <SingletonPartition />
-      </StatelessService>
-    </Service>
-    <Service Name="WebSPA" ServiceDnsName="webspa.eshoponservicefabric" ServicePackageActivationMode="ExclusiveProcess">
-      <StatelessService ServiceTypeName="WebSPAType" InstanceCount="[WebSPA_InstanceCount]">
-        <SingletonPartition />
-      </StatelessService>
-    </Service>
-    <Service Name="WebMVC" ServiceDnsName="webmvc.eshoponservicefabric" ServicePackageActivationMode="ExclusiveProcess">
-      <StatelessService ServiceTypeName="WebMVCType" InstanceCount="[WebMVC_InstanceCount]">
-        <SingletonPartition />
-      </StatelessService>
-    </Service>
     <Service Name="OrderingApi" ServiceDnsName="orderingapi.eshoponservicefabric" ServicePackageActivationMode="ExclusiveProcess">
       <StatelessService ServiceTypeName="OrderingApiType" InstanceCount="[OrderingApi_InstanceCount]">
-        <SingletonPartition />
-      </StatelessService>
-    </Service>
-    <Service Name="IdentityApi" ServiceDnsName="identityapi.eshoponservicefabric" ServicePackageActivationMode="ExclusiveProcess">
-      <StatelessService ServiceTypeName="IdentityApiType" InstanceCount="[IdentityApi_InstanceCount]">
         <SingletonPartition />
       </StatelessService>
     </Service>

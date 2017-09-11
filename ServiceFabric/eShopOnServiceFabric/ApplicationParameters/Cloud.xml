@@ -8,12 +8,8 @@
     <Parameter Name="PaymentApi_InstanceCount" Value="-1" />
     <Parameter Name="RabbitMQ_InstanceCount" Value="-1" />
     <Parameter Name="SqlServer_InstanceCount" Value="-1" />
-    <Parameter Name="WebStatus_InstanceCount" Value="-1" />
-    <Parameter Name="WebSPA_InstanceCount" Value="-1" />
-    <Parameter Name="WebMVC_InstanceCount" Value="-1" />
     <Parameter Name="SqlServer_InstanceCount" Value="-1" />
     <Parameter Name="OrderingApi_InstanceCount" Value="-1" />
-    <Parameter Name="IdentityApi_InstanceCount" Value="-1" />
     <Parameter Name="CatalogApi_InstanceCount" Value="-1" />
     <Parameter Name="BasketApi_InstanceCount" Value="-1" />
   </Parameters>

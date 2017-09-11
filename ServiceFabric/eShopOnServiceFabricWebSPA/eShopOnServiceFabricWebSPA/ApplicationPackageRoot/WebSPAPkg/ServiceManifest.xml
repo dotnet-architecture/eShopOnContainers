@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ServiceManifest Name="IdentityApiPkg"
+<ServiceManifest Name="WebSPAPkg"
                  Version="1.0.0"
                  xmlns="http://schemas.microsoft.com/2011/01/fabric"
                  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
@@ -7,7 +7,7 @@
   <ServiceTypes>
     <!-- This is the name of your ServiceType.
          The UseImplicitHost attribute indicates this is a guest service. -->
-    <StatelessServiceType ServiceTypeName="IdentityApiType" UseImplicitHost="true" />
+    <StatelessServiceType ServiceTypeName="WebSPAType" UseImplicitHost="true" />
   </ServiceTypes>
 
   <!-- Code package is your service executable. -->
@@ -15,22 +15,23 @@
     <EntryPoint>
       <!-- Follow this link for more information about deploying Windows containers to Service Fabric: https://aka.ms/sfguestcontainers -->
       <ContainerHost>
-        <ImageName>eshop/identity.api-win</ImageName>
+        <ImageName>eshop/webspa-win</ImageName>
       </ContainerHost>
     </EntryPoint>
     <!-- Pass environment variables to your container: -->
     <EnvironmentVariables>
       <EnvironmentVariable Name="ASPNETCORE_ENVIRONMENT" Value="Development"/>
       <EnvironmentVariable Name="ASPNETCORE_URLS" Value="http://0.0.0.0:80"/>
-      <EnvironmentVariable Name="PATH_BASE" Value="/eShopOnServiceFabric/IdentityApi"/>
-      <EnvironmentVariable Name="SpaClient" Value="http://your_dns_servicefabric:19081/eShopOnServiceFabric/WebSPA"/>
-      <EnvironmentVariable Name="XamarinCallback" Value="http://your_dns_servicefabric:19081/eShopOnServiceFabric/IdentityApi/xamarincallback"/>      
-      <EnvironmentVariable Name="ConnectionString" Value="Data Source=sqlserver.eshoponservicefabric,5433;Database=Microsoft.eShopOnContainers.Service.IdentityDb;User Id=sa;Password=Pass@word"/>
-      <EnvironmentVariable Name="MvcClient" Value="http://your_dns_servicefabric:19081/eShopOnServiceFabric/WebMVC"/>
-      <EnvironmentVariable Name="LocationApiClient" Value=""/>
-      <EnvironmentVariable Name="MarketingApiClient" Value=""/>
-      <EnvironmentVariable Name="BasketApiClient" Value=""/>
-      <EnvironmentVariable Name="OrderingApiClient" Value=""/>
+      <EnvironmentVariable Name="CatalogUrl" Value="http://your_sf_dns:19081/eShopOnServiceFabric/CatalogApi"/>
+      <EnvironmentVariable Name="OrderingUrl" Value="http://your_sf_dns:19081/eShopOnServiceFabric/OrderingApi"/>
+      <EnvironmentVariable Name="BasketUrl" Value="http://your_sf_dns:19081/eShopOnServiceFabric/BasketApi"/>
+      <EnvironmentVariable Name="MarketingUrl" Value="http://your_sf_dns:19081/eShopOnServiceFabric/MarketingApi"/>
+      <EnvironmentVariable Name="IdentityUrl" Value="http://your_sf_dns:5105"/>
+      <EnvironmentVariable Name="CatalogUrlHC" Value="http://catalogapi.eshoponservicefabric:5101/hc"/>
+      <EnvironmentVariable Name="OrderingUrlHC" Value="http://orderingapi.eshoponservicefabric:5102/hc"/>
+      <EnvironmentVariable Name="IdentityUrlHC" Value="http://identityapi.eshoponservicefabric:5105/hc"/>
+      <EnvironmentVariable Name="BasketUrlHC" Value="http://basketapi.eshoponservicefabric:5103/hc"/>
+      <EnvironmentVariable Name="MarketingUrlHC" Value="http://marketingapi.eshoponservicefabric:5110/hc"/>
       <EnvironmentVariable Name="UseCustomizationData" Value="True"/>
     </EnvironmentVariables>
   </CodePackage>
@@ -44,7 +45,7 @@
       <!-- This endpoint is used by the communication listener to obtain the port on which to 
            listen. Please note that if your service is partitioned, this port is shared with 
            replicas of different partitions that are placed in your code. -->
-      <Endpoint Name="IdentityApiTypeEndpoint" Port="5105" UriScheme="http" PathSuffix="eShopOnServiceFabric/IdentityApi"/>
+      <Endpoint Name="WebSPATypeEndpoint" Port="5104" UriScheme="http"/>
     </Endpoints>
   </Resources>
 </ServiceManifest>
