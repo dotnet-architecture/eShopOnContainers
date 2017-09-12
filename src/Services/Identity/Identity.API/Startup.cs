@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using eShopOnContainers.Identity;
 using Identity.API.Certificate;
 using Identity.API.Configuration;
 using Identity.API.Data;
@@ -24,7 +25,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace eShopOnContainers.Identity
+namespace Microsoft.eShopOnContainers.Services.Identity
 {
     public class Startup
     {

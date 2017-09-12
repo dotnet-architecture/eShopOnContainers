@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.eShopOnContainers.Services.Identity;
 using Microsoft.Extensions.Logging;
 using System.IO;
 
@@ -28,3 +29,4 @@ namespace eShopOnContainers.Identity
                 .Build();
     }
 }
+
