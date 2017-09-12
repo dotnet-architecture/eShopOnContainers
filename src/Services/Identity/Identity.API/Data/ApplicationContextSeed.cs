@@ -5,8 +5,8 @@
     using Extensions.Logging;
     using global::eShopOnContainers.Identity;
     using global::Identity.API.Data;
+    using global::Identity.API.Extensions;
     using global::Identity.API.Models;
-    using Identity.API.Extensions;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.DependencyInjection;
@@ -16,7 +16,6 @@
     using System.IO;
     using System.IO.Compression;
     using System.Linq;
-    using System.Security.Cryptography;
     using System.Text.RegularExpressions;
     using System.Threading.Tasks;
 

@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using eShopOnContainers.Identity;
 using Identity.API.Certificate;
 using Identity.API.Configuration;
 using Identity.API.Data;
@@ -11,7 +12,6 @@ using IdentityServer4.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.eShopOnContainers.BuildingBlocks;
 using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
@@ -25,28 +25,16 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace eShopOnContainers.Identity
+namespace Microsoft.eShopOnContainers.Services.Identity
 {
     public class Startup
     {
-        public Startup(IHostingEnvironment env)
+        public Startup(IConfiguration configuration)
         {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
-
-            if (env.IsDevelopment())
-            {
-                // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
-                builder.AddUserSecrets<Startup>();
-            }
-
-            builder.AddEnvironmentVariables();
-            Configuration = builder.Build();
+            Configuration = configuration;
         }
 
-        public IConfigurationRoot Configuration { get; }
+        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
@@ -95,16 +83,21 @@ namespace eShopOnContainers.Identity
             services.AddIdentityServer(x => x.IssuerUri = "null")
                 .AddSigningCredential(Certificate.Get())
                 .AddAspNetIdentity<ApplicationUser>()
-                .AddConfigurationStore(builder =>
-                    builder.UseSqlServer(connectionString, options =>
-                        options.MigrationsAssembly(migrationsAssembly)))
-                .AddOperationalStore(builder =>
-                    builder.UseSqlServer(connectionString, options =>
-                        options.MigrationsAssembly(migrationsAssembly)))
+                .AddConfigurationStore(options =>
+                {
+                    options.ConfigureDbContext = builder => builder.UseSqlServer(connectionString, opts =>
+                        opts.MigrationsAssembly(migrationsAssembly));
+                })
+                .AddOperationalStore(options =>
+                 {
+                     options.ConfigureDbContext = builder => builder.UseSqlServer(connectionString, opts =>
+                          opts.MigrationsAssembly(migrationsAssembly));
+                 })
                 .Services.AddTransient<IProfileService, ProfileService>();
 
             var container = new ContainerBuilder();
             container.Populate(services);
+
             return new AutofacServiceProvider(container.Build());
         }
 
@@ -118,7 +111,6 @@ namespace eShopOnContainers.Identity
             {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
-                app.UseBrowserLink();
             }
             else
             {
@@ -142,7 +134,7 @@ namespace eShopOnContainers.Identity
                 await next();
             });
 
-            app.UseIdentity();
+            app.UseAuthentication();
 
             // Adds IdentityServer
             app.UseIdentityServer();
@@ -176,7 +168,10 @@ namespace eShopOnContainers.Identity
 
             using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {
-                serviceScope.ServiceProvider.GetRequiredService<PersistedGrantDbContext>().Database.Migrate();
+                serviceScope.ServiceProvider.GetRequiredService<PersistedGrantDbContext>()
+                    .Database
+                    .Migrate();
+
                 var context = serviceScope.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
                 context.Database.Migrate();
 
