@@ -22,8 +22,8 @@
     <EnvironmentVariables>
       <EnvironmentVariable Name="ASPNETCORE_ENVIRONMENT" Value="Development"/>
       <EnvironmentVariable Name="ASPNETCORE_URLS" Value="http://0.0.0.0:80"/>
-      <EnvironmentVariable Name="ConnectionString" Value="Data Source=sqlserver.eshoponservicefabric,5433;Database=Microsoft.eShopOnContainers.Services.MarketingDb;User Id=sa;Password=Pass@word
-      <EnvironmentVariable Name="IdentityUrlExternal" Value="http://your_dns_servicefabric:19081/eShopOnServiceFabric/IdentityApi"/>
+      <EnvironmentVariable Name="ConnectionString" Value="Data Source=sqlserver.eshoponservicefabric,5433;Database=Microsoft.eShopOnContainers.Services.MarketingDb;User Id=sa;Password=Pass@word"/>
+      <EnvironmentVariable Name="IdentityUrlExternal" Value="http://your_sf_dns:5105"/>
       <EnvironmentVariable Name="EventBusConnection" Value="rabbitmq.eshoponservicefabric"/>
       <EnvironmentVariable Name="AzureServiceBusEnabled" Value="False"/>
       <EnvironmentVariable Name="CampaignDetailFunctionUri" Value=""/>

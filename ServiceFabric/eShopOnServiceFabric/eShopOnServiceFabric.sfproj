@@ -34,8 +34,6 @@
     <Content Include="ApplicationPackageRoot\BasketDataPkg\ServiceManifest.xml" />
     <Content Include="ApplicationPackageRoot\CatalogApiPkg\Config\Settings.xml" />
     <Content Include="ApplicationPackageRoot\CatalogApiPkg\ServiceManifest.xml" />
-    <Content Include="ApplicationPackageRoot\IdentityApiPkg\Config\Settings.xml" />
-    <Content Include="ApplicationPackageRoot\IdentityApiPkg\ServiceManifest.xml" />
     <Content Include="ApplicationPackageRoot\LocationsApiPkg\Config\Settings.xml" />
     <Content Include="ApplicationPackageRoot\LocationsApiPkg\ServiceManifest.xml" />
     <Content Include="ApplicationPackageRoot\MarketingApiPkg\Config\Settings.xml" />
@@ -50,12 +48,6 @@
     <Content Include="ApplicationPackageRoot\RabbitMQPkg\ServiceManifest.xml" />
     <Content Include="ApplicationPackageRoot\SqlServerPkg\Config\Settings.xml" />
     <Content Include="ApplicationPackageRoot\SqlServerPkg\ServiceManifest.xml" />
-    <Content Include="ApplicationPackageRoot\WebMVCPkg\Config\Settings.xml" />
-    <Content Include="ApplicationPackageRoot\WebMVCPkg\ServiceManifest.xml" />
-    <Content Include="ApplicationPackageRoot\WebSPAPkg\Config\Settings.xml" />
-    <Content Include="ApplicationPackageRoot\WebSPAPkg\ServiceManifest.xml" />
-    <Content Include="ApplicationPackageRoot\WebStatusPkg\Config\Settings.xml" />
-    <Content Include="ApplicationPackageRoot\WebStatusPkg\ServiceManifest.xml" />
     <Content Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />
