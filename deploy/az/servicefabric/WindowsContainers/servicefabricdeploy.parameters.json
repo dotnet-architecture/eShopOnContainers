@@ -15,7 +15,7 @@
             "value": "eshop"
         },
         "adminPassword": {
-            "value": "YourPassword"
+            "value": "your_password"
         },
         "nicName": {
             "value": "NIC-eshopsfwin"
@@ -24,7 +24,7 @@
             "value": "eshopsfwin-PubIP"
         },
         "dnsName": {
-            "value": "eshopsfwin"
+            "value": "eshoponservicefabric"
         },
         "virtualNetworkName": {
             "value": "VNet-eshopsfwin"
@@ -64,6 +64,19 @@
         },
         "nt0reverseProxyEndpointPort": {
             "value": 19081
+        },
+        "webMvcHttpPort": {
+            "value": 5100
+        },
+        "webSpaHttpPort": {
+            "value": 5104
+        },
+        "webStatusHttpPort": {
+            "value": 5107
+        },
+        "IdSrvHttpRule": {
+            "value": 5105
         }
     }
 }
+

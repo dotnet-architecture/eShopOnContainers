@@ -39,9 +39,25 @@
             "type": "int",
             "defaultValue": 19080
         },
-        "nt0reverseProxyEndpointPort": {
+        "nt0reverseProxyEndpointPort": { 
             "type": "int",
             "defaultValue": 19081
+        },
+        "webMvcHttpPort": { 
+            "type": "int",
+            "defaultValue": 5100
+        },
+        "webSpaHttpPort": { 
+            "type": "int",
+            "defaultValue": 5104
+        },
+        "webStatusHttpPort": { 
+            "type": "int",
+            "defaultValue": 5107
+        },
+        "IdSrvHttpRule": { 
+            "type": "int",
+            "defaultValue": 5105
         },
         "subnet0Name": {
             "type": "string",
@@ -344,6 +360,82 @@
                                 "id": "[variables('lbIPConfig0')]"
                             },
                             "frontendPort": "[parameters('nt0fabricHttpGatewayPort')]",
+                            "idleTimeoutInMinutes": "5",
+                            "probe": {
+                                "id": "[variables('lbHttpProbeID0')]"
+                            },
+                            "protocol": "tcp"
+                        }
+                    },
+                    {
+                        "name": "WebMVCHttpRule",
+                        "properties": {
+                            "backendAddressPool": {
+                                "id": "[variables('lbPoolID0')]"
+                            },
+                            "backendPort": "[parameters('webMvcHttpPort')]",
+                            "enableFloatingIP": "false",
+                            "frontendIPConfiguration": {
+                                "id": "[variables('lbIPConfig0')]"
+                            },
+                            "frontendPort": "[parameters('webMvcHttpPort')]",
+                            "idleTimeoutInMinutes": "5",
+                            "probe": {
+                                "id": "[variables('lbHttpProbeID0')]"
+                            },
+                            "protocol": "tcp"
+                        }
+                    },
+                    {
+                        "name": "WebSPAHttpRule",
+                        "properties": {
+                            "backendAddressPool": {
+                                "id": "[variables('lbPoolID0')]"
+                            },
+                            "backendPort": "[parameters('webSpaHttpPort')]",
+                            "enableFloatingIP": "false",
+                            "frontendIPConfiguration": {
+                                "id": "[variables('lbIPConfig0')]"
+                            },
+                            "frontendPort": "[parameters('webSpaHttpPort')]",
+                            "idleTimeoutInMinutes": "5",
+                            "probe": {
+                                "id": "[variables('lbHttpProbeID0')]"
+                            },
+                            "protocol": "tcp"
+                        }
+                    },
+                    {
+                        "name": "WebStatusHttpRule",
+                        "properties": {
+                            "backendAddressPool": {
+                                "id": "[variables('lbPoolID0')]"
+                            },
+                            "backendPort": "[parameters('webStatusHttpPort')]",
+                            "enableFloatingIP": "false",
+                            "frontendIPConfiguration": {
+                                "id": "[variables('lbIPConfig0')]"
+                            },
+                            "frontendPort": "[parameters('webStatusHttpPort')]",
+                            "idleTimeoutInMinutes": "5",
+                            "probe": {
+                                "id": "[variables('lbHttpProbeID0')]"
+                            },
+                            "protocol": "tcp"
+                        }
+                    },
+                    {
+                        "name": "IdSrvHttpRule",
+                        "properties": {
+                            "backendAddressPool": {
+                                "id": "[variables('lbPoolID0')]"
+                            },
+                            "backendPort": "[parameters('IdSrvHttpRule')]",
+                            "enableFloatingIP": "false",
+                            "frontendIPConfiguration": {
+                                "id": "[variables('lbIPConfig0')]"
+                            },
+                            "frontendPort": "[parameters('IdSrvHttpRule')]",
                             "idleTimeoutInMinutes": "5",
                             "probe": {
                                 "id": "[variables('lbHttpProbeID0')]"

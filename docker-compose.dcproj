@@ -5,7 +5,7 @@
     <DockerLaunchBrowser>True</DockerLaunchBrowser>
     <DockerServiceUrl>http://localhost:5100</DockerServiceUrl>
     <DockerServiceName>webmvc</DockerServiceName>
-    <DockerTargetOS>Linux</DockerTargetOS>
+    <DockerTargetOS>Windows</DockerTargetOS>
     <ProjectVersion>2.0</ProjectVersion>
   </PropertyGroup>
   <ItemGroup>
