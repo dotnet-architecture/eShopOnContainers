@@ -4,7 +4,19 @@ The ARM template `servicefabricdeploy.json` and its parameter file (`servicefabr
 
 ## Editing servicefabricdeploy.parameters.json file
 
-You can edit the `servicefabricdeploy.parameters.json` file to set your values, but is not needed. 
+Edit the following params in `servicefabricdeploy.parameters.json` file to set your values:
+
+- clusterName: Name of your SF cluster
+- dnsName: Name assigned to your SF dns
+- adminUserName: user name for administration
+- adminPassword: user password for administration
+
+Optionally, you can modify which ports are opened in the LoadBalancer for accessing externally to the apps:
+
+- webMvcHttpPort: port externally exposed for the WebMVC app
+- webSpaHttpPort: port externally exposed for the WebSPA app
+- webStatusHttpPort: port externally exposed for the WebStatus app
+- IdSrvHttpRule: port externally exposed for the Identity app
 
 ## Deploy the template
 
