@@ -23,7 +23,7 @@
       <EnvironmentVariable Name="ASPNETCORE_ENVIRONMENT" Value="Development"/>
       <EnvironmentVariable Name="ASPNETCORE_URLS" Value="http://0.0.0.0:80"/>
       <EnvironmentVariable Name="ConnectionString" Value="Data Source=sqlserver.eshoponservicefabric,5433;Database=Microsoft.eShopOnContainers.Services.CatalogDb;User Id=sa;Password=Pass@word"/>
-      <EnvironmentVariable Name="PicBaseUrl" Value="http://your_sf_dns:19081/eShopOnServiceFabric/CatalogApi/api/v1/catalog/items/[0]/pic/"/>
+      <EnvironmentVariable Name="PicBaseUrl" Value="http://catalogapi.eshoponservicefabric:5101/api/v1/catalog/items/[0]/pic/"/>
       <EnvironmentVariable Name="AzureStorageAccountName" Value=""/>
       <EnvironmentVariable Name="AzureStorageAccountKey" Value=""/>
       <EnvironmentVariable Name="UseCustomizationData" Value="True"/>

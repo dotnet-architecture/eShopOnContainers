@@ -25,7 +25,7 @@
       <EnvironmentVariable Name="ConnectionString" Value="mongodb://mongodb.eshoponservicefabric"/>
       <EnvironmentVariable Name="Database" Value="LocationsDb"/>
       <EnvironmentVariable Name="identityUrl" Value="http://identityapi.eshoponservicefabric:5105"/>
-      <EnvironmentVariable Name="IdentityUrlExternal" Value="http://your_sf_dns:5105"/>
+      <EnvironmentVariable Name="IdentityUrlExternal" Value=""/>
       <EnvironmentVariable Name="EventBusConnection" Value="rabbitmq.eshoponservicefabric"/>
       <EnvironmentVariable Name="AzureServiceBusEnabled" Value="False"/>      
       <EnvironmentVariable Name="EventBusUserName" Value="admin"/>

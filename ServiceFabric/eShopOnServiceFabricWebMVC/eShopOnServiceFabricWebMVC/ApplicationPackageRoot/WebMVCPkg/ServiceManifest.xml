@@ -25,7 +25,7 @@
       <EnvironmentVariable Name="CatalogUrl" Value="http://catalogapi.eshoponservicefabric:5101"/>
       <EnvironmentVariable Name="OrderingUrl" Value="http://orderingapi.eshoponservicefabric:5102"/>
       <EnvironmentVariable Name="BasketUrl" Value="http://basketapi.eshoponservicefabric:5103"/>
-      <EnvironmentVariable Name="IdentityUrl" Value="http://your_sf_dns:5105"/>
+      <EnvironmentVariable Name="IdentityUrl" Value=""/>
       <EnvironmentVariable Name="MarketingUrl" Value="http://marketingapi.eshoponservicefabric:5110"/>
     </EnvironmentVariables>
   </CodePackage>

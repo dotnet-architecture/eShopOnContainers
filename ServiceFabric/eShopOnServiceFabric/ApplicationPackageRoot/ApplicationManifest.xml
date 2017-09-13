@@ -18,6 +18,7 @@
     <Parameter Name="OrderingApi_InstanceCount" DefaultValue="-1" />
     <Parameter Name="CatalogApi_InstanceCount" DefaultValue="-1" />
     <Parameter Name="BasketApi_InstanceCount" DefaultValue="-1" />
+    <Parameter Name="IdentityUrlExternal" DefaultValue="" />
   </Parameters>
   <!-- Import the ServiceManifest from the ServicePackage. The ServiceManifestName and ServiceManifestVersion 
        should match the Name and Version attributes of the ServiceManifest element defined in the 
@@ -33,7 +34,10 @@
   </ServiceManifestImport>
   <ServiceManifestImport>
     <ServiceManifestRef ServiceManifestName="MarketingApiPkg" ServiceManifestVersion="1.0.0" />
-    <ConfigOverrides />
+    <!-- Override external urls depending on environment -->
+    <EnvironmentOverrides CodePackageRef="Code">
+      <EnvironmentVariable Name="IdentityUrlExternal" Value="[IdentityUrlExternal]"/>
+    </EnvironmentOverrides>
     <Policies>
     <ContainerHostPolicies CodePackageRef="Code">
       <PortBinding ContainerPort="80" EndpointRef="MarketingApiTypeEndpoint"/>
@@ -51,7 +55,9 @@
   </ServiceManifestImport>
   <ServiceManifestImport>
     <ServiceManifestRef ServiceManifestName="LocationsApiPkg" ServiceManifestVersion="1.0.0" />
-    <ConfigOverrides />
+    <EnvironmentOverrides CodePackageRef="Code">
+      <EnvironmentVariable Name="IdentityUrlExternal" Value="[IdentityUrlExternal]"/>
+    </EnvironmentOverrides>
     <Policies>
       <ContainerHostPolicies CodePackageRef="Code">
         <PortBinding ContainerPort="80" EndpointRef="LocationsApiTypeEndpoint"/>
@@ -87,7 +93,9 @@
   </ServiceManifestImport>
   <ServiceManifestImport>
     <ServiceManifestRef ServiceManifestName="OrderingApiPkg" ServiceManifestVersion="1.0.0" />
-    <ConfigOverrides />
+    <EnvironmentOverrides CodePackageRef="Code">
+      <EnvironmentVariable Name="IdentityUrlExternal" Value="[IdentityUrlExternal]"/>
+    </EnvironmentOverrides>
     <Policies>
       <ContainerHostPolicies CodePackageRef="Code">
         <PortBinding ContainerPort="80" EndpointRef="OrderingApiTypeEndpoint"/>
@@ -105,7 +113,9 @@
   </ServiceManifestImport>
   <ServiceManifestImport>
     <ServiceManifestRef ServiceManifestName="BasketApiPkg" ServiceManifestVersion="1.0.0" />
-    <ConfigOverrides />
+    <EnvironmentOverrides CodePackageRef="Code">
+      <EnvironmentVariable Name="IdentityUrlExternal" Value="[IdentityUrlExternal]"/>
+    </EnvironmentOverrides>
     <Policies>
       <ContainerHostPolicies CodePackageRef="Code">
         <PortBinding ContainerPort="80" EndpointRef="BasketApiTypeEndpoint"/>

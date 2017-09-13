@@ -19,21 +19,21 @@
       </ContainerHost>
     </EntryPoint>
     <!-- Pass environment variables to your container: -->
-    
+
     <EnvironmentVariables>
       <EnvironmentVariable Name="ASPNETCORE_ENVIRONMENT" Value="Development"/>
       <EnvironmentVariable Name="ASPNETCORE_URLS" Value="http://0.0.0.0:80"/>
-      <EnvironmentVariable Name="SpaClient" Value="http://your_sf_dns:5104"/>
-      <EnvironmentVariable Name="XamarinCallback" Value="http://your_sf_dns:5105/xamarincallback"/>
+      <EnvironmentVariable Name="SpaClient" Value=""/>
+      <EnvironmentVariable Name="XamarinCallback" Value=""/>
       <EnvironmentVariable Name="ConnectionString" Value="Data Source=sqlserver.eshoponservicefabric,5433;Database=Microsoft.eShopOnContainers.Service.IdentityDb;User Id=sa;Password=Pass@word"/>
-      <EnvironmentVariable Name="MvcClient" Value="http://your_sf_dns:5100"/>
+      <EnvironmentVariable Name="MvcClient" Value=""/>
       <EnvironmentVariable Name="LocationApiClient" Value=""/>
       <EnvironmentVariable Name="MarketingApiClient" Value=""/>
       <EnvironmentVariable Name="BasketApiClient" Value=""/>
       <EnvironmentVariable Name="OrderingApiClient" Value=""/>
       <EnvironmentVariable Name="UseCustomizationData" Value="True"/>
     </EnvironmentVariables>
-    
+
   </CodePackage>
 
   <!-- Config package is the contents of the Config directoy under PackageRoot that contains an 

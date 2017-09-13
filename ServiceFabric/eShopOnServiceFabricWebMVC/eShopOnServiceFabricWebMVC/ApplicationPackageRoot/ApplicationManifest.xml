@@ -6,13 +6,17 @@
                      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <Parameters>
     <Parameter Name="WebMVC_InstanceCount" DefaultValue="-1" />
+    <Parameter Name="IdentityUrl" DefaultValue="" />
   </Parameters>
   <!-- Import the ServiceManifest from the ServicePackage. The ServiceManifestName and ServiceManifestVersion 
        should match the Name and Version attributes of the ServiceManifest element defined in the 
        ServiceManifest.xml file. -->
   <ServiceManifestImport>
     <ServiceManifestRef ServiceManifestName="WebMVCPkg" ServiceManifestVersion="1.0.0" />
-    <ConfigOverrides />
+    <!-- Override external urls depending on environment -->
+    <EnvironmentOverrides CodePackageRef="Code">
+      <EnvironmentVariable Name="IdentityUrl" Value="[IdentityUrl]"/>      
+    </EnvironmentOverrides>
     <Policies>
       <ContainerHostPolicies CodePackageRef="Code">
         <PortBinding ContainerPort="80" EndpointRef="WebMVCTypeEndpoint"/>
