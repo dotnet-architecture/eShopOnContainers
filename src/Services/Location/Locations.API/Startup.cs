@@ -3,57 +3,45 @@ using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Azure.ServiceBus;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ;
+using Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus;
 using Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure;
 using Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure.Filters;
 using Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure.Repositories;
 using Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.HealthChecks;
 using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
-using System.Reflection;
-using System;
-using Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus;
-using Microsoft.Azure.ServiceBus;
-using System.Collections.Generic;
 using Swashbuckle.AspNetCore.Swagger;
-using Microsoft.Extensions.HealthChecks;
+using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.Services.Locations.API
 {
     public class Startup
     {
-        public IConfigurationRoot Configuration { get; }
-
-        public Startup(IHostingEnvironment env)
+        public Startup(IConfiguration configuration)
         {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
-
-            if (env.IsDevelopment())
-            {
-                builder.AddUserSecrets(typeof(Startup).GetTypeInfo().Assembly);
-            }
-
-            builder.AddEnvironmentVariables();
-
-            Configuration = builder.Build();
+            Configuration = configuration;
         }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        public IConfiguration Configuration { get; }
+
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            // Add framework services.
             services.AddMvc(options =>
             {
                 options.Filters.Add(typeof(HttpGlobalExceptionFilter));
             }).AddControllersAsServices();
+
+            ConfigureAuthService(services);
 
             services.Configure<LocationSettings>(Configuration);
 
@@ -74,11 +62,21 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
                 services.AddSingleton<IRabbitMQPersistentConnection>(sp =>
                 {
                     var logger = sp.GetRequiredService<ILogger<DefaultRabbitMQPersistentConnection>>();
-          
-                    var factory = new ConnectionFactory
+
+                    var factory = new ConnectionFactory()
                     {
                         HostName = Configuration["EventBusConnection"]
                     };
+
+                    if (!string.IsNullOrEmpty(Configuration["EventBusUserName"]))
+                    {
+                        factory.UserName = Configuration["EventBusUserName"];
+                    }
+
+                    if (!string.IsNullOrEmpty(Configuration["EventBusPassword"]))
+                    {
+                        factory.Password = Configuration["EventBusPassword"];
+                    }
 
                     return new DefaultRabbitMQPersistentConnection(factory, logger);
                 });
@@ -143,10 +141,11 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            //Configure logs
-
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
+            var pathBase = Configuration["PATH_BASE"];
+            if (!string.IsNullOrEmpty(pathBase))
+            {
+                app.UsePathBase(pathBase);
+            }
 
             app.UseCors("CorsPolicy");
 
@@ -165,15 +164,23 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
                 .Wait();
         }
 
+        private void ConfigureAuthService(IServiceCollection services)
+        {
+            // prevent from mapping "sub" claim to nameidentifier.
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+
+            services.AddAuthentication()
+                .AddJwtBearer(options =>
+                {
+                    options.Authority = Configuration.GetValue<string>("IdentityUrl");
+                    options.Audience = "locations";
+                    options.RequireHttpsMetadata = false;
+                });
+        }
+
         protected virtual void ConfigureAuth(IApplicationBuilder app)
         {
-            var identityUrl = Configuration.GetValue<string>("IdentityUrl");
-            app.UseIdentityServerAuthentication(new IdentityServerAuthenticationOptions
-            {
-                Authority = identityUrl.ToString(),
-                ApiName = "locations",
-                RequireHttpsMetadata = false
-            });
+            app.UseAuthentication();
         }
 
         private void RegisterEventBus(IServiceCollection services)
