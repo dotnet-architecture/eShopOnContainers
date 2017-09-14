@@ -3,6 +3,7 @@
     using Microsoft.EntityFrameworkCore;
     using EntityConfigurations;
     using Model;
+    using Microsoft.EntityFrameworkCore.Design;
 
     public class CatalogContext : DbContext
     {
@@ -19,5 +20,17 @@
             builder.ApplyConfiguration(new CatalogTypeEntityTypeConfiguration());
             builder.ApplyConfiguration(new CatalogItemEntityTypeConfiguration());
         }     
+    }
+
+
+    public class CatalogContextDesignFactory : IDesignTimeDbContextFactory<CatalogContext>
+    {
+        public CatalogContext CreateDbContext(string[] args)
+        {
+            var optionsBuilder =  new DbContextOptionsBuilder<CatalogContext>()
+                .UseSqlServer("Server=.;Initial Catalog=Microsoft.eShopOnContainers.Services.CatalogDb;Integrated Security=true");
+
+            return new CatalogContext(optionsBuilder.Options);
+        }
     }
 }
