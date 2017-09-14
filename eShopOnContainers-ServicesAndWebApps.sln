@@ -99,17 +99,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Extensions.Health
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoadTest", "test\Services\LoadTest\LoadTest.csproj", "{969E793C-C413-490E-9C9D-B2B46DA5AF32}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ServiceFabric", "ServiceFabric", "{0D1E7D4E-12DD-4B67-9595-7C0BD347F8C8}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ServiceFabricLinux", "ServiceFabricLinux", "{0D1E7D4E-12DD-4B67-9595-7C0BD347F8C8}"
 EndProject
-Project("{A07B5EB6-E848-4116-A8D0-A826331D98C6}") = "eShopOnServiceFabric", "ServiceFabric\eShopOnServiceFabric\eShopOnServiceFabric.sfproj", "{983EAB84-65C5-4793-A300-08F97C791A15}"
+Project("{A07B5EB6-E848-4116-A8D0-A826331D98C6}") = "eShopOnServiceFabric", "ServiceFabricLinux\eShopOnServiceFabric\eShopOnServiceFabric.sfproj", "{983EAB84-65C5-4793-A300-08F97C791A15}"
 EndProject
-Project("{A07B5EB6-E848-4116-A8D0-A826331D98C6}") = "eShopOnServiceFabricIdSrv", "ServiceFabric\eShopOnServiceFabricIdSrv\eShopOnServiceFabricIdSrv\eShopOnServiceFabricIdSrv.sfproj", "{39B54901-D57D-416E-B51E-33C4017CA464}"
+Project("{A07B5EB6-E848-4116-A8D0-A826331D98C6}") = "eShopOnServiceFabricIdSrv", "ServiceFabricLinux\eShopOnServiceFabricIdSrv\eShopOnServiceFabricIdSrv\eShopOnServiceFabricIdSrv.sfproj", "{39B54901-D57D-416E-B51E-33C4017CA464}"
 EndProject
-Project("{A07B5EB6-E848-4116-A8D0-A826331D98C6}") = "eShopOnServiceFabricWebMVC", "ServiceFabric\eShopOnServiceFabricWebMVC\eShopOnServiceFabricWebMVC\eShopOnServiceFabricWebMVC.sfproj", "{0CF895FF-3616-4D1F-8D2E-5D856CDF3612}"
+Project("{A07B5EB6-E848-4116-A8D0-A826331D98C6}") = "eShopOnServiceFabricWebMVC", "ServiceFabricLinux\eShopOnServiceFabricWebMVC\eShopOnServiceFabricWebMVC\eShopOnServiceFabricWebMVC.sfproj", "{0CF895FF-3616-4D1F-8D2E-5D856CDF3612}"
 EndProject
-Project("{A07B5EB6-E848-4116-A8D0-A826331D98C6}") = "eShopOnServiceFabricWebSPA", "ServiceFabric\eShopOnServiceFabricWebSPA\eShopOnServiceFabricWebSPA\eShopOnServiceFabricWebSPA.sfproj", "{1670DE10-5626-429D-A74A-2DD8281CC0C9}"
+Project("{A07B5EB6-E848-4116-A8D0-A826331D98C6}") = "eShopOnServiceFabricWebSPA", "ServiceFabricLinux\eShopOnServiceFabricWebSPA\eShopOnServiceFabricWebSPA\eShopOnServiceFabricWebSPA.sfproj", "{1670DE10-5626-429D-A74A-2DD8281CC0C9}"
 EndProject
-Project("{A07B5EB6-E848-4116-A8D0-A826331D98C6}") = "eShopOnServiceFabricWebStatus", "ServiceFabric\eShopOnServiceFabricWebStatus\eShopOnServiceFabricWebStatus\eShopOnServiceFabricWebStatus.sfproj", "{25F73FD9-B32F-401A-80E8-17C72606A7E1}"
+Project("{A07B5EB6-E848-4116-A8D0-A826331D98C6}") = "eShopOnServiceFabricWebStatus", "ServiceFabricLinux\eShopOnServiceFabricWebStatus\eShopOnServiceFabricWebStatus\eShopOnServiceFabricWebStatus.sfproj", "{25F73FD9-B32F-401A-80E8-17C72606A7E1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebHost", "WebHost", "{1815B651-941C-466B-AE33-D1D7EEB8F77F}"
 EndProject
