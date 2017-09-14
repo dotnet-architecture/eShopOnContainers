@@ -2,6 +2,7 @@
 {
     using EntityConfigurations;
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.Design;
     using Microsoft.eShopOnContainers.Services.Marketing.API.Model;
 
     public class MarketingContext : DbContext
@@ -19,6 +20,17 @@
             builder.ApplyConfiguration(new CampaignEntityTypeConfiguration());
             builder.ApplyConfiguration(new RuleEntityTypeConfiguration());
             builder.ApplyConfiguration(new UserLocationRuleEntityTypeConfiguration());
+        }
+    }
+
+    public class MarketingContextDesignFactory : IDesignTimeDbContextFactory<MarketingContext>
+    {
+        public MarketingContext CreateDbContext(string[] args)
+        {
+            var optionsBuilder = new DbContextOptionsBuilder<MarketingContext>()
+                .UseSqlServer("Server=.;Initial Catalog=Microsoft.eShopOnContainers.Services.MarketingDb;Integrated Security=true");
+
+            return new MarketingContext(optionsBuilder.Options);
         }
     }
 }

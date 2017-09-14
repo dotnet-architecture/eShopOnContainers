@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.8
+VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{FEA0C318-FFED-4D39-8781-265718CA43DD}"
 EndProject
@@ -110,6 +110,10 @@ EndProject
 Project("{A07B5EB6-E848-4116-A8D0-A826331D98C6}") = "eShopOnServiceFabricWebSPA", "ServiceFabric\eShopOnServiceFabricWebSPA\eShopOnServiceFabricWebSPA\eShopOnServiceFabricWebSPA.sfproj", "{1670DE10-5626-429D-A74A-2DD8281CC0C9}"
 EndProject
 Project("{A07B5EB6-E848-4116-A8D0-A826331D98C6}") = "eShopOnServiceFabricWebStatus", "ServiceFabric\eShopOnServiceFabricWebStatus\eShopOnServiceFabricWebStatus\eShopOnServiceFabricWebStatus.sfproj", "{25F73FD9-B32F-401A-80E8-17C72606A7E1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebHost", "WebHost", "{1815B651-941C-466B-AE33-D1D7EEB8F77F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebHost.Customization", "src\BuildingBlocks\WebHostCustomization\WebHost.Customization\WebHost.Customization.csproj", "{15F4B3AA-89B6-4A0D-9051-414305974781}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1685,6 +1689,8 @@ Global
 		{0CF895FF-3616-4D1F-8D2E-5D856CDF3612} = {0D1E7D4E-12DD-4B67-9595-7C0BD347F8C8}
 		{1670DE10-5626-429D-A74A-2DD8281CC0C9} = {0D1E7D4E-12DD-4B67-9595-7C0BD347F8C8}
 		{25F73FD9-B32F-401A-80E8-17C72606A7E1} = {0D1E7D4E-12DD-4B67-9595-7C0BD347F8C8}
+		{1815B651-941C-466B-AE33-D1D7EEB8F77F} = {DB0EFB20-B024-4E5E-A75C-52143C131D25}
+		{15F4B3AA-89B6-4A0D-9051-414305974781} = {1815B651-941C-466B-AE33-D1D7EEB8F77F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {25728519-5F0F-4973-8A64-0A81EB4EA8D9}
