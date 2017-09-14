@@ -31,15 +31,9 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
 
         private readonly IMediator _mediator;
 
-       
-        public static OrderingContext CreateForEFDesignTools(DbContextOptions options)
-        {
-            return new OrderingContext(options);
-        }
+        private OrderingContext(DbContextOptions<OrderingContext> options) : base (options) { }
 
-        private OrderingContext(DbContextOptions options) : base (options) { }
-
-        public OrderingContext(DbContextOptions options, IMediator mediator) : base(options)
+        public OrderingContext(DbContextOptions<OrderingContext> options, IMediator mediator) : base(options)
         {
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
 

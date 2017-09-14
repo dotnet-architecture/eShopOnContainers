@@ -7,7 +7,6 @@
     using global::Ordering.API.Application.IntegrationEvents.Events;
     using global::Ordering.API.Infrastructure.Filters;
     using global::Ordering.API.Infrastructure.HostedServices;
-    using Infrastructure;
     using Infrastructure.AutofacModules;
     using Infrastructure.Filters;
     using Infrastructure.Services;
@@ -28,16 +27,13 @@
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Logging;
     using Ordering.Infrastructure;
-    using Polly;
     using RabbitMQ.Client;
     using Swashbuckle.AspNetCore.Swagger;
     using System;
     using System.Collections.Generic;
     using System.Data.Common;
-    using System.Data.SqlClient;
     using System.IdentityModel.Tokens.Jwt;
     using System.Reflection;
-    using System.Threading.Tasks;
 
     public class Startup
     {
@@ -84,6 +80,15 @@
                     },
                         ServiceLifetime.Scoped  //Showing explicitly that the DbContext is shared across the HTTP request scope (graph of objects started in the HTTP request)
                     );
+
+            services.AddDbContext<IntegrationEventLogContext>(options =>
+            {
+                options.UseSqlServer(Configuration["ConnectionString"], opts =>
+                 {
+                     opts.MigrationsAssembly("Ordering.API");
+                 });
+            });
+           
 
             services.Configure<OrderingSettings>(Configuration);
 
@@ -208,14 +213,6 @@
                    c.ConfigureOAuth2("orderingswaggerui", "", "", "Ordering Swagger UI");
                });
 
-            WaitForSqlAvailabilityAsync(loggerFactory, app, env).Wait();
-
-            var integrationEventLogContext = new IntegrationEventLogContext(
-                new DbContextOptionsBuilder<IntegrationEventLogContext>()
-                .UseSqlServer(Configuration["ConnectionString"], b => b.MigrationsAssembly("Ordering.API"))
-                .Options);
-            integrationEventLogContext.Database.Migrate();
-
             ConfigureEventBus(app);
         }
 
@@ -278,30 +275,6 @@
             }
 
             services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
-        }
-
-        private async Task WaitForSqlAvailabilityAsync(ILoggerFactory loggerFactory, IApplicationBuilder app, IHostingEnvironment env, int retries = 0)
-        {
-            var logger = loggerFactory.CreateLogger(nameof(Startup));
-            var policy = CreatePolicy(retries, logger, nameof(WaitForSqlAvailabilityAsync));
-            await policy.ExecuteAsync(async () =>
-            {
-                await OrderingContextSeed.SeedAsync(app, env, loggerFactory);
-            });
-
-        }
-
-        private Policy CreatePolicy(int retries, ILogger logger, string prefix)
-        {
-            return Policy.Handle<SqlException>().
-                WaitAndRetryAsync(
-                    retryCount: retries,
-                    sleepDurationProvider: retry => TimeSpan.FromSeconds(5),
-                    onRetry: (exception, timeSpan, retry, ctx) =>
-                    {
-                        logger.LogTrace($"[{prefix}] Exception {exception.GetType().Name} with message ${exception.Message} detected on attempt {retry} of {retries}");
-                    }
-                );
         }
     }
 }

@@ -2,6 +2,8 @@
 {
     using AspNetCore.Hosting;
     using Microsoft.AspNetCore;
+    using Microsoft.eShopOnContainers.Services.Marketing.API.Infrastructure;
+    using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
     using System.IO;
 
@@ -9,7 +11,16 @@
     {
         public static void Main(string[] args)
         {
-            BuildWebHost(args).Run();
+            BuildWebHost(args)
+            .MigrateDbContext<MarketingContext>((context, services) =>
+            {
+                var logger = services.GetService<ILogger<MarketingContextSeed>>();
+
+                new MarketingContextSeed()
+                    .SeedAsync(context,logger)
+                    .Wait();
+
+            }).Run();
         }
 
         public static IWebHost BuildWebHost(string[] args) =>
