@@ -21,6 +21,7 @@
     using Infrastructure.Services;
     using IntegrationEvents.Events;
     using Marketing.API.IntegrationEvents.Handlers;
+    using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.EntityFrameworkCore.Diagnostics;
     using RabbitMQ.Client;
     using Swashbuckle.AspNetCore.Swagger;
@@ -199,8 +200,12 @@
             // prevent from mapping "sub" claim to nameidentifier.
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
-            services.AddAuthentication()
-                .AddJwtBearer(options =>
+            services.AddAuthentication(options=>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
+            }).AddJwtBearer(options =>
                 {
                     options.Authority = Configuration.GetValue<string>("IdentityUrl");
                     options.Audience = "marketing";
