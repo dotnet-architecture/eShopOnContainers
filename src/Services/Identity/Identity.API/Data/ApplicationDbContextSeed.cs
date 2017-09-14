@@ -1,57 +1,40 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.eShopOnContainers.Services.Identity.API.Extensions;
+using Microsoft.eShopOnContainers.Services.Identity.API.Models;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.IO.Compression;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+
+namespace Microsoft.eShopOnContainers.Services.Identity.API.Data
 {
-    using AspNetCore.Identity;
-    using EntityFrameworkCore;
-    using Extensions.Logging;
-    using global::eShopOnContainers.Identity;
-    using global::Identity.API.Data;
-    using global::Identity.API.Models;
-    using Identity.API.Extensions;
-    using Microsoft.AspNetCore.Builder;
-    using Microsoft.AspNetCore.Hosting;
-    using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Options;
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.IO.Compression;
-    using System.Linq;
-    using System.Security.Cryptography;
-    using System.Text.RegularExpressions;
-    using System.Threading.Tasks;
 
-    public class ApplicationContextSeed
+
+    public class ApplicationDbContextSeed
     {
-        private readonly IPasswordHasher<ApplicationUser> _passwordHasher;
+        private readonly IPasswordHasher<ApplicationUser> _passwordHasher = new PasswordHasher<ApplicationUser>();
 
-        public ApplicationContextSeed(IPasswordHasher<ApplicationUser> passwordHasher)
-        {
-            _passwordHasher = passwordHasher;
-        }
-
-        public async Task SeedAsync(IApplicationBuilder applicationBuilder, IHostingEnvironment env, ILoggerFactory loggerFactory, int? retry = 0)
+        public async Task SeedAsync(ApplicationDbContext context,IHostingEnvironment env,
+            ILogger<ApplicationDbContextSeed> logger, IOptions<AppSettings> settings,int? retry = 0)
         {
             int retryForAvaiability = retry.Value;
+
             try
             {
-                var log = loggerFactory.CreateLogger("application seed");
-
-                var context = (ApplicationDbContext)applicationBuilder
-                    .ApplicationServices.GetService(typeof(ApplicationDbContext));
-
-                context.Database.Migrate();
-
-                var settings = (AppSettings)applicationBuilder
-                    .ApplicationServices.GetRequiredService<IOptions<AppSettings>>().Value;
-
-                var useCustomizationData = settings.UseCustomizationData;
+                var useCustomizationData = settings.Value.UseCustomizationData;
                 var contentRootPath = env.ContentRootPath;
                 var webroot = env.WebRootPath;
 
                 if (!context.Users.Any())
                 {
                     context.Users.AddRange(useCustomizationData
-                        ? GetUsersFromFile(contentRootPath, log)
+                        ? GetUsersFromFile(contentRootPath, logger)
                         : GetDefaultUser());
 
                     await context.SaveChangesAsync();
@@ -59,7 +42,7 @@
 
                 if (useCustomizationData)
                 {
-                    GetPreconfiguredImages(contentRootPath, webroot, log);
+                    GetPreconfiguredImages(contentRootPath, webroot, logger);
                 }
             }
             catch (Exception ex)
@@ -67,14 +50,15 @@
                 if (retryForAvaiability < 10)
                 {
                     retryForAvaiability++;
-                    var log = loggerFactory.CreateLogger("catalog seed");
-                    log.LogError(ex.Message);
-                    await SeedAsync(applicationBuilder, env, loggerFactory, retryForAvaiability);
+                    
+                    logger.LogError(ex.Message,$"There is an error migrating data for ApplicationDbContext");
+
+                    await SeedAsync(context,env,logger,settings, retryForAvaiability);
                 }
             }
         }
 
-        private IEnumerable<ApplicationUser> GetUsersFromFile(string contentRootPath, ILogger log)
+        private IEnumerable<ApplicationUser> GetUsersFromFile(string contentRootPath, ILogger logger)
         {
             string csvFileUsers = Path.Combine(contentRootPath, "Setup", "Users.csv");
 
@@ -96,7 +80,8 @@
             }
             catch (Exception ex)
             {
-                log.LogError(ex.Message);
+                logger.LogError(ex.Message);
+
                 return GetDefaultUser();
             }
 
@@ -104,7 +89,7 @@
                         .Skip(1) // skip header column
                         .Select(row => Regex.Split(row, ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)") )
                         .SelectTry(column => CreateApplicationUser(column, csvheaders))
-                        .OnCaughtException(ex => { log.LogError(ex.Message); return null; })
+                        .OnCaughtException(ex => { logger.LogError(ex.Message); return null; })
                         .Where(x => x != null)
                         .ToList();
 
@@ -207,14 +192,14 @@
             return csvheaders;
         }
 
-        static void GetPreconfiguredImages(string contentRootPath, string webroot, ILogger log)
+        static void GetPreconfiguredImages(string contentRootPath, string webroot, ILogger logger)
         {
             try
             {
                 string imagesZipFile = Path.Combine(contentRootPath, "Setup", "images.zip");
                 if (!File.Exists(imagesZipFile))
                 {
-                    log.LogError($" zip file '{imagesZipFile}' does not exists.");
+                    logger.LogError($" zip file '{imagesZipFile}' does not exists.");
                     return;
                 }
 
@@ -236,14 +221,14 @@
                         }
                         else
                         {
-                            log.LogWarning($"Skip file '{entry.Name}' in zipfile '{imagesZipFile}'");
+                            logger.LogWarning($"Skip file '{entry.Name}' in zipfile '{imagesZipFile}'");
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                log.LogError($"Exception in method GetPreconfiguredImages WebMVC. Exception Message={ex.Message}");
+                logger.LogError($"Exception in method GetPreconfiguredImages WebMVC. Exception Message={ex.Message}");
             }
         }
     }

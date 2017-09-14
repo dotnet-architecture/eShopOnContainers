@@ -9,7 +9,6 @@
     using Microsoft.Azure.ServiceBus;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Diagnostics;
-    using Microsoft.EntityFrameworkCore.Infrastructure;
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBus;
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ;
@@ -24,15 +23,10 @@
     using Microsoft.Extensions.HealthChecks;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
-    using Microsoft.WindowsAzure.Storage;
-    using Microsoft.WindowsAzure.Storage.Auth;
-    using Polly;
     using RabbitMQ.Client;
     using System;
     using System.Data.Common;
-    using System.Data.SqlClient;
     using System.Reflection;
-    using System.Threading.Tasks;
 
     public class Startup
     {
@@ -84,6 +78,13 @@
                 options.ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning));
                 //Check Client vs. Server evaluation: https://docs.microsoft.com/en-us/ef/core/querying/client-eval
             });
+
+            services.AddDbContext<IntegrationEventLogContext>(options =>
+            {
+                options.UseSqlServer(Configuration["ConnectionString"], opts =>
+                     opts.MigrationsAssembly("Catalog.API"));
+            });
+
 
             services.Configure<CatalogSettings>(Configuration);
 
@@ -184,43 +185,7 @@
                   c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
               });
 
-            var context = (CatalogContext)app
-                        .ApplicationServices.GetService(typeof(CatalogContext));
-
-            WaitForSqlAvailabilityAsync(context, loggerFactory, app, env).Wait();
-
             ConfigureEventBus(app);
-
-            var integrationEventLogContext = new IntegrationEventLogContext(
-                new DbContextOptionsBuilder<IntegrationEventLogContext>()
-                .UseSqlServer(Configuration["ConnectionString"], b => b.MigrationsAssembly("Catalog.API"))
-                .Options);
-
-            integrationEventLogContext.Database.Migrate();
-        }
-
-        private async Task WaitForSqlAvailabilityAsync(CatalogContext ctx, ILoggerFactory loggerFactory, IApplicationBuilder app, IHostingEnvironment env, int retries = 0)
-        {
-            var logger = loggerFactory.CreateLogger(nameof(Startup));
-            var policy = CreatePolicy(retries, logger, nameof(WaitForSqlAvailabilityAsync));
-            await policy.ExecuteAsync(async () =>
-            {
-                await CatalogContextSeed.SeedAsync(app, env, loggerFactory);
-            });
-
-        }
-
-        private Policy CreatePolicy(int retries, ILogger logger, string prefix)
-        {
-            return Policy.Handle<SqlException>().
-                WaitAndRetryAsync(
-                    retryCount: retries,
-                    sleepDurationProvider: retry => TimeSpan.FromSeconds(5),
-                    onRetry: (exception, timeSpan, retry, ctx) =>
-                    {
-                        logger.LogTrace($"[{prefix}] Exception {exception.GetType().Name} with message ${exception.Message} detected on attempt {retry} of {retries}");
-                    }
-                );
         }
 
         private void RegisterEventBus(IServiceCollection services)
