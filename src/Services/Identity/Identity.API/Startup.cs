@@ -1,31 +1,23 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using eShopOnContainers.Identity;
-using Identity.API.Certificate;
-using Identity.API.Configuration;
-using Identity.API.Data;
-using Identity.API.Models;
-using Identity.API.Services;
-using IdentityServer4.EntityFramework.DbContexts;
-using IdentityServer4.EntityFramework.Mappers;
 using IdentityServer4.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.eShopOnContainers.BuildingBlocks;
-using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
+using Microsoft.eShopOnContainers.Services.Identity.API.Certificates;
+using Microsoft.eShopOnContainers.Services.Identity.API.Data;
+using Microsoft.eShopOnContainers.Services.Identity.API.Models;
+using Microsoft.eShopOnContainers.Services.Identity.API.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.HealthChecks;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 
-namespace Microsoft.eShopOnContainers.Services.Identity
+namespace Microsoft.eShopOnContainers.Services.Identity.API
 {
     public class Startup
     {
@@ -39,7 +31,6 @@ namespace Microsoft.eShopOnContainers.Services.Identity
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-
             // Add framework services.
             services.AddDbContext<ApplicationDbContext>(options =>
              options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
@@ -146,63 +137,6 @@ namespace Microsoft.eShopOnContainers.Services.Identity
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
-
-            // Store idsrv grant config into db
-            InitializeGrantStoreAndConfiguration(app).Wait();
-
-            //Seed Data
-            var hasher = new PasswordHasher<ApplicationUser>();
-            new ApplicationContextSeed(hasher).SeedAsync(app, env, loggerFactory).Wait();
-        }
-
-        private async Task InitializeGrantStoreAndConfiguration(IApplicationBuilder app)
-        {
-            //callbacks urls from config:
-            Dictionary<string, string> clientUrls = new Dictionary<string, string>();
-            clientUrls.Add("Mvc", Configuration.GetValue<string>("MvcClient"));
-            clientUrls.Add("Spa", Configuration.GetValue<string>("SpaClient"));
-            clientUrls.Add("Xamarin", Configuration.GetValue<string>("XamarinCallback"));
-            clientUrls.Add("LocationsApi", Configuration.GetValue<string>("LocationApiClient"));
-            clientUrls.Add("MarketingApi", Configuration.GetValue<string>("MarketingApiClient"));
-            clientUrls.Add("BasketApi", Configuration.GetValue<string>("BasketApiClient"));
-            clientUrls.Add("OrderingApi", Configuration.GetValue<string>("OrderingApiClient"));
-
-            using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
-            {
-                serviceScope.ServiceProvider.GetRequiredService<PersistedGrantDbContext>()
-                    .Database
-                    .Migrate();
-
-                var context = serviceScope.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
-                context.Database.Migrate();
-
-                if (!context.Clients.Any())
-                {
-                    foreach (var client in Config.GetClients(clientUrls))
-                    {
-                        await context.Clients.AddAsync(client.ToEntity());
-                    }
-                    await context.SaveChangesAsync();
-                }
-
-                if (!context.IdentityResources.Any())
-                {
-                    foreach (var resource in Config.GetResources())
-                    {
-                        await context.IdentityResources.AddAsync(resource.ToEntity());
-                    }
-                    await context.SaveChangesAsync();
-                }
-
-                if (!context.ApiResources.Any())
-                {
-                    foreach (var api in Config.GetApis())
-                    {
-                        await context.ApiResources.AddAsync(api.ToEntity());
-                    }
-                    await context.SaveChangesAsync();
-                }
-            }
         }
     }
 }
