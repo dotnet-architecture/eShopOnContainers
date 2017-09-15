@@ -19,6 +19,7 @@
     <Parameter Name="CatalogApi_InstanceCount" DefaultValue="-1" />
     <Parameter Name="BasketApi_InstanceCount" DefaultValue="-1" />
     <Parameter Name="IdentityUrlExternal" DefaultValue="" />
+    <Parameter Name="PicBaseUrl" DefaultValue="" />
   </Parameters>
   <!-- Import the ServiceManifest from the ServicePackage. The ServiceManifestName and ServiceManifestVersion 
        should match the Name and Version attributes of the ServiceManifest element defined in the 
@@ -104,7 +105,9 @@
   </ServiceManifestImport>
   <ServiceManifestImport>
     <ServiceManifestRef ServiceManifestName="CatalogApiPkg" ServiceManifestVersion="1.0.0" />
-    <ConfigOverrides />
+    <EnvironmentOverrides CodePackageRef="Code">
+      <EnvironmentVariable Name="PicBaseUrl" Value="[PicBaseUrl]"/>
+    </EnvironmentOverrides>
     <Policies>
       <ContainerHostPolicies CodePackageRef="Code">
         <PortBinding ContainerPort="80" EndpointRef="CatalogApiTypeEndpoint"/>

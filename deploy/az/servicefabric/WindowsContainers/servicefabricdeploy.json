@@ -368,6 +368,25 @@
                         }
                     },
                     {
+                        "name": "ReverseProxyHttpRule",
+                        "properties": {
+                            "backendAddressPool": {
+                                "id": "[variables('lbPoolID0')]"
+                            },
+                            "backendPort": "[parameters('nt0reverseProxyEndpointPort')]",
+                            "enableFloatingIP": "false",
+                            "frontendIPConfiguration": {
+                                "id": "[variables('lbIPConfig0')]"
+                            },
+                            "frontendPort": "[parameters('nt0reverseProxyEndpointPort')]",
+                            "idleTimeoutInMinutes": "5",
+                            "probe": {
+                                "id": "[variables('lbHttpProbeID0')]"
+                            },
+                            "protocol": "tcp"
+                        }
+                    },
+                    {
                         "name": "WebMVCHttpRule",
                         "properties": {
                             "backendAddressPool": {

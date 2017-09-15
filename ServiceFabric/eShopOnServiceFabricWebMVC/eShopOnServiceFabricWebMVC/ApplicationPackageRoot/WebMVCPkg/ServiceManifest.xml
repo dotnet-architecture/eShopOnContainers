@@ -27,6 +27,7 @@
       <EnvironmentVariable Name="BasketUrl" Value="http://basketapi.eshoponservicefabric:5103"/>
       <EnvironmentVariable Name="IdentityUrl" Value=""/>
       <EnvironmentVariable Name="MarketingUrl" Value="http://marketingapi.eshoponservicefabric:5110"/>
+      <EnvironmentVariable Name="LocationsUrl" Value="http://locationsapi.eshoponservicefabric:5109"/>
     </EnvironmentVariables>
   </CodePackage>
 

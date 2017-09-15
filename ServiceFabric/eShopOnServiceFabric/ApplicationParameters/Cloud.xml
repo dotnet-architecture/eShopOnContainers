@@ -13,5 +13,6 @@
     <Parameter Name="CatalogApi_InstanceCount" Value="-1" />
     <Parameter Name="BasketApi_InstanceCount" Value="-1" />
     <Parameter Name="IdentityUrlExternal" Value="http://your_sf_dns:5105" />
+    <Parameter Name="PicBaseUrl" Value="http://your_sf_dns:19081/eShopOnServiceFabric/CatalogApi/api/v1/catalog/items/[0]/pic/" />
   </Parameters>
 </Application>
