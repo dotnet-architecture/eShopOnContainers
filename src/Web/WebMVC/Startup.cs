@@ -15,6 +15,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using WebMVC.Infrastructure;
+using WebMVC.Services;
 
 namespace Microsoft.eShopOnContainers.WebMVC
 {
@@ -64,6 +65,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
             services.AddTransient<IOrderingService, OrderingService>();
             services.AddTransient<IBasketService, BasketService>();
             services.AddTransient<ICampaignService, CampaignService>();
+            services.AddTransient<ILocationService, LocationService>();
             services.AddTransient<IIdentityParser<ApplicationUser>, IdentityParser>();
 
             if (Configuration.GetValue<string>("UseResilientHttp") == bool.TrueString)
