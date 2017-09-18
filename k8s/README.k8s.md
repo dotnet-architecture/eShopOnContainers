@@ -6,7 +6,7 @@ The k8s directory contains Kubernetes configuration for the eShopOnContainers ap
 * A private Docker registry. Follow Azure Container Registry's [guide](https://docs.microsoft.com/en-us/azure/container-registry/container-registry-get-started-portal) to create one.
 * Optionally, previous steps can be skipped if you run gen-k8s-env.ps1 script to automatically create the azure environment needed for kubernetes deployment. Azure cli 2.0 must be previously installed [installation guide](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli). For example:
 
-    **Important**: Note the parameter "-createAcr true". If you are re-creating the K8s cluster but you want to re-use and existing ACR, say "-createAcr false".
+    **Important**: Note the parameter "-createAcr true". If you are creating the K8s cluster but you want to re-use and existing ACR, say "-createAcr false".
 
 >```
 >./gen-k8s-env -resourceGroupName k8sGroup -location westeurope -registryName k8sregistry -createAcr true -orchestratorName k8s-cluster -dnsName k8s-dns
