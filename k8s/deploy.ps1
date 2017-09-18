@@ -62,7 +62,7 @@ if ($buildImages) {
     docker-compose -p .. -f ../docker-compose.yml build    
 
     Write-Host "Pushing images to $registry/$dockerOrg..." -ForegroundColor Yellow
-    $services = ("basket.api", "catalog.api", "identity.api", "ordering.api", "marketing.api","payment.api","locations.api", "webmvc", "webspa", "webstatus", "graceperiodmanager")
+    $services = ("basket.api", "catalog.api", "identity.api", "ordering.api", "marketing.api","payment.api","locations.api", "webmvc", "webspa", "webstatus")
 
     foreach ($service in $services) {
         $imageFqdn = if ($useDockerHub)  {"$dockerOrg/${service}"} else {"$registry/$dockerOrg/${service}"}
@@ -188,7 +188,6 @@ ExecKube -cmd 'set image deployments/payment payment=${registryPath}${dockerOrg}
 ExecKube -cmd 'set image deployments/webmvc webmvc=${registryPath}${dockerOrg}/webmvc:$imageTag'
 ExecKube -cmd 'set image deployments/webstatus webstatus=${registryPath}${dockerOrg}/webstatus:$imageTag'
 ExecKube -cmd 'set image deployments/webspa webspa=${registryPath}${dockerOrg}/webspa:$imageTag'
-ExecKube -cmd 'set image deployments/graceperiodmanager graceperiodmanager=${registryPath}${dockerOrg}/graceperiodmanager:$imageTag'
 
 Write-Host "Execute rollout..." -ForegroundColor Yellow
 ExecKube -cmd 'rollout resume deployments/basket'
@@ -201,7 +200,6 @@ ExecKube -cmd 'rollout resume deployments/payment'
 ExecKube -cmd 'rollout resume deployments/webmvc'
 ExecKube -cmd 'rollout resume deployments/webstatus'
 ExecKube -cmd 'rollout resume deployments/webspa'
-ExecKube -cmd 'rollout resume deployments/graceperiodmanager'
 
 Write-Host "WebSPA is exposed at http://$externalDns, WebMVC at http://$externalDns/webmvc, WebStatus at http://$externalDns/webstatus" -ForegroundColor Yellow
 
