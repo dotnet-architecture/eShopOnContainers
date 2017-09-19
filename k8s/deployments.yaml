@@ -384,6 +384,11 @@ spec:
            configMapKeyRef:
              name: urls
              key: MvcClientExternalUrl
+        - name: LocationsUrl
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: MvcClientLocationsUrl
         - name: CatalogUrl
           valueFrom:
            configMapKeyRef:
@@ -528,7 +533,12 @@ spec:
           valueFrom:
            configMapKeyRef:
              name: urls
-             key: SpaClientMarketingExternalUrl             
+             key: SpaClientMarketingExternalUrl
+        - name: LocationsUrl
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: SpaClientLocationsUrl
         - name: BasketUrlHC
           valueFrom:
            configMapKeyRef:
