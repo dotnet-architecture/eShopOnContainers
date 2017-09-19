@@ -25,6 +25,8 @@ data:
 # Ordering.API entries
   OrderingBus: CONNECTION_STRING (NAME OF RABBITMQ CONTAINER OR Endpoint=sb://XXXX in case of using Azure)
   OrderingSqlDb: Ordering SQL SERVER CONNECTION STRING (Server=xxxx;Intial Catalog=yyy;....)
+  GracePeriodManager_GracePeriodTime: "1"
+  GracePeriodManager_CheckUpdateTime: "15000"
 # Payment.API entries
   PaymentBus: CONNECTION_STRING (NAME OF RABBITMQ CONTAINER OR Endpoint=sb://XXXX in case of using Azure)
 # Global entries
