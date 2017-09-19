@@ -191,6 +191,16 @@ spec:
            configMapKeyRef:
              name: urls
              key: IdentityUrl
+        - name: CheckUpdateTime
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: GracePeriodManager_CheckUpdateTime
+        - name: GracePeriodTime
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: GracePeriodManager_GracePeriodTime             
         ports:
         - containerPort: 80
       imagePullSecrets:
