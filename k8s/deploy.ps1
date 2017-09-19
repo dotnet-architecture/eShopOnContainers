@@ -109,11 +109,11 @@ ExecKube -cmd 'create configmap config-files --from-file=nginx-conf=nginx.conf'
 ExecKube -cmd 'label configmap config-files app=eshop'
 
 if ($deployInfrastructure) {
-    Write-Host 'Deploying infrastructure deployments (databases, redis, ...)' -ForegroundColor Yellow
+    Write-Host 'Deploying infrastructure deployments (databases, redis, RabbitMQ...)' -ForegroundColor Yellow
     ExecKube -cmd 'create -f sql-data.yaml -f basket-data.yaml -f keystore-data.yaml -f rabbitmq.yaml -f nosql-data.yaml'
 }
 
-Write-Host 'Deploying code deployments (databases, redis, ...)' -ForegroundColor Yellow
+Write-Host 'Deploying code deployments (Web APIs, Web apps, ...)' -ForegroundColor Yellow
 ExecKube -cmd 'create -f services.yaml -f frontend.yaml'
 
 if ([string]::IsNullOrEmpty($externalDns)) {
