@@ -194,12 +194,12 @@ spec:
         - name: CheckUpdateTime
           valueFrom:
            configMapKeyRef:
-             name: urls
+             name: externalcfg
              key: GracePeriodManager_CheckUpdateTime
         - name: GracePeriodTime
           valueFrom:
            configMapKeyRef:
-             name: urls
+             name: externalcfg
              key: GracePeriodManager_GracePeriodTime             
         ports:
         - containerPort: 80

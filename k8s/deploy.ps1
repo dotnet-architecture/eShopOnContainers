@@ -147,7 +147,7 @@ ExecKube -cmd 'create configmap urls `
     --from-literal=MvcClientCatalogUrl=http://catalog `
     --from-literal=MvcClientBasketUrl=http://basket `
     --from-literal=MvcClientMarketingUrl=http://marketing `
-	--from-literal=MvcClientLocationsUrl=http://locations'
+	--from-literal=MvcClientLocationsUrl=http://locations `
     --from-literal=MarketingHealthCheckUrl=http://marketing/hc `
     --from-literal=WebSpaHealthCheckUrl=http://webspa/hc `
     --from-literal=SpaClientMarketingExternalUrl=http://$($externalDns)/marketing-api `
@@ -155,7 +155,7 @@ ExecKube -cmd 'create configmap urls `
     --from-literal=SpaClientCatalogExternalUrl=http://$($externalDns)/catalog-api `
     --from-literal=SpaClientBasketExternalUrl=http://$($externalDns)/basket-api `
     --from-literal=SpaClientIdentityExternalUrl=http://$($externalDns)/identity `
-	--from-literal=SpaClientLocationsUrl=http://$($externalDns)/locations-api'
+	--from-literal=SpaClientLocationsUrl=http://$($externalDns)/locations-api `
     --from-literal=LocationsHealthCheckUrl=http://locations/hc `
     --from-literal=SpaClientExternalUrl=http://$($externalDns) `
     --from-literal=LocationApiClient=http://$($externalDns)/locations-api `
