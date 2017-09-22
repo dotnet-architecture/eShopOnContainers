@@ -45,6 +45,8 @@
 
         public async Task<CampaignItem> GetCampaignByIdAsync(int campaignId, string token)
         {
+            await Task.Delay(500);
+
             return _mockCampaign.SingleOrDefault(c => c.Id == campaignId);
         }
     }
