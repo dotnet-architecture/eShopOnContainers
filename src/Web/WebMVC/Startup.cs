@@ -54,7 +54,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
                 }
                 checks.AddUrlCheck(Configuration["CatalogUrl"] + "/hc", TimeSpan.FromMinutes(minutes));
                 checks.AddUrlCheck(Configuration["OrderingUrl"] + "/hc", TimeSpan.FromMinutes(minutes));
-                checks.AddUrlCheck(Configuration["BasketUrl"] + "/hc", TimeSpan.FromMinutes(minutes));
+                checks.AddUrlCheck(Configuration["BasketUrl"] + "/hc", TimeSpan.Zero);  //No cache for this HealthCheck, better just for demos
                 checks.AddUrlCheck(Configuration["IdentityUrl"] + "/hc", TimeSpan.FromMinutes(minutes));
                 checks.AddUrlCheck(Configuration["MarketingUrl"] + "/hc", TimeSpan.FromMinutes(minutes));
             });
