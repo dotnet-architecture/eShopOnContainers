@@ -1,12 +1,12 @@
-﻿namespace eShopOnContainers.Core.Services.Marketing
-{
-    using System;
-    using System.Collections.ObjectModel;
-    using System.Threading.Tasks;
-    using Models.Marketing;
-    using Xamarin.Forms;
-    using System.Linq;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Threading.Tasks;
+using System.Linq;
+using Xamarin.Forms;
+using eShopOnContainers.Core.Models.Marketing;
 
+namespace eShopOnContainers.Core.Services.Marketing
+{
     public class CampaignMockService : ICampaignService
     {
         private readonly ObservableCollection<CampaignItem> _mockCampaign = new ObservableCollection<CampaignItem>
@@ -39,14 +39,12 @@
         public async Task<ObservableCollection<CampaignItem>> GetAllCampaignsAsync(string token)
         {
             await Task.Delay(500);
-
             return _mockCampaign;
         }
 
         public async Task<CampaignItem> GetCampaignByIdAsync(int campaignId, string token)
         {
             await Task.Delay(500);
-
             return _mockCampaign.SingleOrDefault(c => c.Id == campaignId);
         }
     }

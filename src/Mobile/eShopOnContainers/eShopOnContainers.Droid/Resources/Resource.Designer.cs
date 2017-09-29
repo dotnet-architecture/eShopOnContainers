@@ -2340,8 +2340,8 @@ namespace eShopOnContainers.Droid
 			// aapt resource value: 0x7f0200b4
 			public const int noimage = 2130837684;
 			
-			// aapt resource value: 0x7f0200bb
-			public const int notification_template_icon_bg = 2130837691;
+			// aapt resource value: 0x7f0200ba
+			public const int notification_template_icon_bg = 2130837690;
 			
 			// aapt resource value: 0x7f0200b5
 			public const int product_add = 2130837685;
@@ -2353,13 +2353,10 @@ namespace eShopOnContainers.Droid
 			public const int roundedbgdark = 2130837687;
 			
 			// aapt resource value: 0x7f0200b8
-			public const int splash_drawable = 2130837688;
+			public const int switch_off = 2130837688;
 			
 			// aapt resource value: 0x7f0200b9
-			public const int switch_off = 2130837689;
-			
-			// aapt resource value: 0x7f0200ba
-			public const int switch_on = 2130837690;
+			public const int switch_on = 2130837689;
 			
 			static Drawable()
 			{

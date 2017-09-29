@@ -17,7 +17,6 @@ namespace eShopOnContainers.Droid.Activities
         Label = "eShopOnContainers",
         Icon = "@drawable/icon",
         Theme = "@style/MainTheme",
-        MainLauncher = true,
         ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : FormsAppCompatActivity
     {
