@@ -4,7 +4,10 @@
     [parameter(Mandatory=$false)][string]$registryName,
     [parameter(Mandatory=$true)][string]$orchestratorName,
     [parameter(Mandatory=$true)][string]$dnsName,
-    [parameter(Mandatory=$true)][string]$createAcr=$true
+    [parameter(Mandatory=$true)][string]$createAcr=$true,
+    [parameter(Mandatory=$false)][int]$agentCount=2,
+    [parameter(Mandatory=$false)][string]$agentVMSize="Standard_D2_v2",
+    [parameter(Mandatory=$false)][int]$masterCount=1
 )
 
 # Create resource group
@@ -19,7 +22,7 @@ if ($createAcr -eq $true) {
 
 # Create kubernetes orchestrator
 Write-Host "Creating kubernetes orchestrator..." -ForegroundColor Yellow
-az acs create --orchestrator-type=kubernetes --resource-group $resourceGroupName --name=$orchestratorName --dns-prefix=$dnsName --generate-ssh-keys
+az acs create --orchestrator-type=kubernetes --resource-group $resourceGroupName --name=$orchestratorName --dns-prefix=$dnsName --generate-ssh-keys --agent-count=$agentCount --agent-vm-size=$agentVMSize --master-count=$masterCount
 
 # Retrieve kubernetes cluster configuration and save it under ~/.kube/config 
 az acs kubernetes get-credentials --resource-group=$resourceGroupName --name=$orchestratorName
