@@ -418,7 +418,37 @@ spec:
           valueFrom:
            configMapKeyRef:
              name: urls
-             key: MvcClientMarketingUrl             
+             key: MvcClientMarketingUrl 
+        - name: BasketUrlHC
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: BasketHealthCheckUrl        
+        - name: CatalogUrlHC
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: CatalogHealthCheckUrl
+        - name: IdentityUrlHC
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: IdentityHealthCheckUrl
+        - name: OrderingUrlHC
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: OrderingHealthCheckUrl
+        - name: MarketingUrlHC
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: MarketingHealthCheckUrl  
+        - name: PaymentUrlHC
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: PaymentHealthCheckUrl          
         ports:
         - containerPort: 80
       imagePullSecrets:
@@ -482,7 +512,12 @@ spec:
           valueFrom:
            configMapKeyRef:
              name: urls
-             key: WebSpaHealthCheckUrl             
+             key: WebSpaHealthCheckUrl   
+        - name: PaymentUrl
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: PaymentHealthCheckUrl          
         ports:
         - containerPort: 80
       imagePullSecrets:
@@ -574,6 +609,11 @@ spec:
            configMapKeyRef:
              name: urls
              key: MarketingHealthCheckUrl
+        - name: PaymentUrlHC
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: PaymentHealthCheckUrl
         ports:
         - containerPort: 80
       imagePullSecrets:

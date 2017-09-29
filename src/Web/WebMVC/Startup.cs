@@ -52,11 +52,12 @@ namespace Microsoft.eShopOnContainers.WebMVC
                 {
                     minutes = minutesParsed;
                 }
-                checks.AddUrlCheck(Configuration["CatalogUrl"] + "/hc", TimeSpan.FromMinutes(minutes));
-                checks.AddUrlCheck(Configuration["OrderingUrl"] + "/hc", TimeSpan.FromMinutes(minutes));
-                checks.AddUrlCheck(Configuration["BasketUrl"] + "/hc", TimeSpan.Zero);  //No cache for this HealthCheck, better just for demos
-                checks.AddUrlCheck(Configuration["IdentityUrl"] + "/hc", TimeSpan.FromMinutes(minutes));
-                checks.AddUrlCheck(Configuration["MarketingUrl"] + "/hc", TimeSpan.FromMinutes(minutes));
+
+                checks.AddUrlCheck(Configuration["CatalogUrlHC"], TimeSpan.FromMinutes(minutes));
+                checks.AddUrlCheck(Configuration["OrderingUrlHC"], TimeSpan.FromMinutes(minutes));
+                checks.AddUrlCheck(Configuration["BasketUrlHC"], TimeSpan.Zero); //No cache for this HealthCheck, better just for demos 
+                checks.AddUrlCheck(Configuration["IdentityUrlHC"], TimeSpan.FromMinutes(minutes));
+                checks.AddUrlCheck(Configuration["MarketingUrlHC"], TimeSpan.FromMinutes(minutes));
             });
 
             // Add application services.
