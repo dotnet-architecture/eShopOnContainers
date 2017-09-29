@@ -260,6 +260,12 @@
     <AndroidResource Include="Resources\layout\TabLayout.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\menu_campaigns.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\menu_campaigns.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\menu_campaigns.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\menu_filter.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\menu_filter.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\menu_filter.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\icon.png" />
@@ -284,15 +290,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\fake_product_02.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-hdpi\menu_filter.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xhdpi\menu_filter.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\menu_filter.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\menu_profile.png" />
@@ -380,7 +377,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\eShopOnContainers.Core\eShopOnContainers.Core.csproj">
-      <Project>{67f9d3a8-f71e-4428-913f-c37ae82cdb24}</Project>
+      <Project>{BA96A12C-4EE3-46C4-BB3F-F811B554CD01}</Project>
       <Name>eShopOnContainers.Core</Name>
     </ProjectReference>
   </ItemGroup>
