@@ -9,11 +9,13 @@ using Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.HealthChecks;
 using Microsoft.Extensions.Logging;
 using Payment.API.IntegrationEvents.EventHandling;
 using Payment.API.IntegrationEvents.Events;
 using RabbitMQ.Client;
 using System;
+using System.Threading.Tasks;
 
 namespace Payment.API
 {
@@ -29,8 +31,6 @@ namespace Payment.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            // Add framework services.
-            services.AddMvc();
 
             services.Configure<PaymentSettings>(Configuration);
 
@@ -70,19 +70,12 @@ namespace Payment.API
                 });
             }
 
-            RegisterEventBus(services);
-
-            services.AddSwaggerGen(options =>
+            services.AddHealthChecks(checks =>
             {
-                options.DescribeAllEnumsAsStrings();
-                options.SwaggerDoc("v1", new Swashbuckle.AspNetCore.Swagger.Info
-                {
-                    Title = "eShopOnContainers - Payment HTTP API",
-                    Version = "v1",
-                    Description = "The Payment Microservice HTTP API. This is a Data-Driven/CRUD microservice sample",
-                    TermsOfService = "Terms Of Service"
-                });
+                checks.AddValueTaskCheck("HTTP Endpoint", () => new ValueTask<IHealthCheckResult>(HealthCheckResult.Healthy("Ok")));
             });
+
+            RegisterEventBus(services);
 
             var container = new ContainerBuilder();
             container.Populate(services);
@@ -97,14 +90,6 @@ namespace Payment.API
             {
                 app.UsePathBase(pathBase);
             }
-
-            app.UseMvcWithDefaultRoute();
-
-            app.UseSwagger()
-               .UseSwaggerUI(c =>
-               {
-                   c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-               });
 
             ConfigureEventBus(app);
         }

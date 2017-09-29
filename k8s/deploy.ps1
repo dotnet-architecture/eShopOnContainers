@@ -62,7 +62,7 @@ if ($buildImages) {
     docker-compose -p .. -f ../docker-compose.yml build    
 
     Write-Host "Pushing images to $registry/$dockerOrg..." -ForegroundColor Yellow
-    $services = ("basket.api", "catalog.api", "identity.api", "ordering.api", "marketing.api","payment.api","locations.api", "webmvc", "webspa", "webstatus", "graceperiodmanager")
+    $services = ("basket.api", "catalog.api", "identity.api", "ordering.api", "marketing.api","payment.api","locations.api", "webmvc", "webspa", "webstatus")
 
     foreach ($service in $services) {
         $imageFqdn = if ($useDockerHub)  {"$dockerOrg/${service}"} else {"$registry/$dockerOrg/${service}"}
@@ -109,11 +109,11 @@ ExecKube -cmd 'create configmap config-files --from-file=nginx-conf=nginx.conf'
 ExecKube -cmd 'label configmap config-files app=eshop'
 
 if ($deployInfrastructure) {
-    Write-Host 'Deploying infrastructure deployments (databases, redis, ...)' -ForegroundColor Yellow
+    Write-Host 'Deploying infrastructure deployments (databases, redis, RabbitMQ...)' -ForegroundColor Yellow
     ExecKube -cmd 'create -f sql-data.yaml -f basket-data.yaml -f keystore-data.yaml -f rabbitmq.yaml -f nosql-data.yaml'
 }
 
-Write-Host 'Deploying code deployments (databases, redis, ...)' -ForegroundColor Yellow
+Write-Host 'Deploying code deployments (Web APIs, Web apps, ...)' -ForegroundColor Yellow
 ExecKube -cmd 'create -f services.yaml -f frontend.yaml'
 
 if ([string]::IsNullOrEmpty($externalDns)) {
@@ -147,6 +147,7 @@ ExecKube -cmd 'create configmap urls `
     --from-literal=MvcClientCatalogUrl=http://catalog `
     --from-literal=MvcClientBasketUrl=http://basket `
     --from-literal=MvcClientMarketingUrl=http://marketing `
+	--from-literal=MvcClientLocationsUrl=http://locations `
     --from-literal=MarketingHealthCheckUrl=http://marketing/hc `
     --from-literal=WebSpaHealthCheckUrl=http://webspa/hc `
     --from-literal=SpaClientMarketingExternalUrl=http://$($externalDns)/marketing-api `
@@ -154,12 +155,14 @@ ExecKube -cmd 'create configmap urls `
     --from-literal=SpaClientCatalogExternalUrl=http://$($externalDns)/catalog-api `
     --from-literal=SpaClientBasketExternalUrl=http://$($externalDns)/basket-api `
     --from-literal=SpaClientIdentityExternalUrl=http://$($externalDns)/identity `
+	--from-literal=SpaClientLocationsUrl=http://$($externalDns)/locations-api `
     --from-literal=LocationsHealthCheckUrl=http://locations/hc `
     --from-literal=SpaClientExternalUrl=http://$($externalDns) `
     --from-literal=LocationApiClient=http://$($externalDns)/locations-api `
     --from-literal=MarketingApiClient=http://$($externalDns)/marketing-api `
     --from-literal=BasketApiClient=http://$($externalDns)/basket-api `
     --from-literal=OrderingApiClient=http://$($externalDns)/ordering-api'
+	
 
 ExecKube -cmd 'label configmap urls app=eshop'
 
@@ -188,7 +191,6 @@ ExecKube -cmd 'set image deployments/payment payment=${registryPath}${dockerOrg}
 ExecKube -cmd 'set image deployments/webmvc webmvc=${registryPath}${dockerOrg}/webmvc:$imageTag'
 ExecKube -cmd 'set image deployments/webstatus webstatus=${registryPath}${dockerOrg}/webstatus:$imageTag'
 ExecKube -cmd 'set image deployments/webspa webspa=${registryPath}${dockerOrg}/webspa:$imageTag'
-ExecKube -cmd 'set image deployments/graceperiodmanager graceperiodmanager=${registryPath}${dockerOrg}/graceperiodmanager:$imageTag'
 
 Write-Host "Execute rollout..." -ForegroundColor Yellow
 ExecKube -cmd 'rollout resume deployments/basket'
@@ -201,7 +203,6 @@ ExecKube -cmd 'rollout resume deployments/payment'
 ExecKube -cmd 'rollout resume deployments/webmvc'
 ExecKube -cmd 'rollout resume deployments/webstatus'
 ExecKube -cmd 'rollout resume deployments/webspa'
-ExecKube -cmd 'rollout resume deployments/graceperiodmanager'
 
 Write-Host "WebSPA is exposed at http://$externalDns, WebMVC at http://$externalDns/webmvc, WebStatus at http://$externalDns/webstatus" -ForegroundColor Yellow
 

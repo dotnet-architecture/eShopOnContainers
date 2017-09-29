@@ -191,6 +191,16 @@ spec:
            configMapKeyRef:
              name: urls
              key: IdentityUrl
+        - name: CheckUpdateTime
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: GracePeriodManager_CheckUpdateTime
+        - name: GracePeriodTime
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: GracePeriodManager_GracePeriodTime             
         ports:
         - containerPort: 80
       imagePullSecrets:
@@ -384,6 +394,11 @@ spec:
            configMapKeyRef:
              name: urls
              key: MvcClientExternalUrl
+        - name: LocationsUrl
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: MvcClientLocationsUrl
         - name: CatalogUrl
           valueFrom:
            configMapKeyRef:
@@ -528,7 +543,12 @@ spec:
           valueFrom:
            configMapKeyRef:
              name: urls
-             key: SpaClientMarketingExternalUrl             
+             key: SpaClientMarketingExternalUrl
+        - name: LocationsUrl
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: SpaClientLocationsUrl
         - name: BasketUrlHC
           valueFrom:
            configMapKeyRef:
