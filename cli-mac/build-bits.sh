@@ -1,5 +1,7 @@
 #!/bin/sh
 
+# List of microservices here needs to be updated to include all the new microservices (Marketing, etc.)
+
 projectList=(
     "../src/Services/Catalog/Catalog.API"
     "../src/Services/Basket/Basket.API"
