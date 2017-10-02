@@ -38,7 +38,21 @@ spec:
              name: urls
              key: IdentityUrl
         ports:
-        - containerPort: 80      
+        - containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 5
+          periodSeconds: 10 
+        livenessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 60
+          periodSeconds: 10                 
       imagePullSecrets:
       - name: registry-key
 ---
@@ -83,6 +97,20 @@ spec:
              key: CatalogBus
         ports:
         - containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 5
+          periodSeconds: 10 
+        livenessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 60
+          periodSeconds: 10      
       imagePullSecrets:
       - name: registry-key
 ---
@@ -149,6 +177,20 @@ spec:
              key: OrderingApiClient                               
         ports:
         - containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 5
+          periodSeconds: 10 
+        livenessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 60
+          periodSeconds: 10      
       imagePullSecrets:
       - name: registry-key
 ---
@@ -203,6 +245,20 @@ spec:
              key: GracePeriodManager_GracePeriodTime             
         ports:
         - containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 5
+          periodSeconds: 10 
+        livenessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 60
+          periodSeconds: 10      
       imagePullSecrets:
       - name: registry-key
 ---
@@ -257,6 +313,20 @@ spec:
              key: IdentityUrl             
         ports:
         - containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 5
+          periodSeconds: 10 
+        livenessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 60
+          periodSeconds: 10      
       imagePullSecrets:
       - name: registry-key
 ---
@@ -321,6 +391,20 @@ spec:
              key: Marketing_PicBaseUrl             
         ports:
         - containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 5
+          periodSeconds: 10 
+        livenessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 60
+          periodSeconds: 10      
       imagePullSecrets:
       - name: registry-key
 ---
@@ -355,6 +439,20 @@ spec:
              key: PaymentBus
         ports:
         - containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 5
+          periodSeconds: 10 
+        livenessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 60
+          periodSeconds: 10       
       imagePullSecrets:
       - name: registry-key      
 ---
@@ -451,6 +549,20 @@ spec:
              key: PaymentHealthCheckUrl          
         ports:
         - containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 5
+          periodSeconds: 10 
+        livenessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 60
+          periodSeconds: 10      
       imagePullSecrets:
       - name: registry-key
 ---
@@ -616,5 +728,19 @@ spec:
              key: PaymentHealthCheckUrl
         ports:
         - containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 5
+          periodSeconds: 10 
+        livenessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 60
+          periodSeconds: 10      
       imagePullSecrets:
       - name: registry-key
