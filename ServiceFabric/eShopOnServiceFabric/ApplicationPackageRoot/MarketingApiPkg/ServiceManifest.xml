@@ -34,9 +34,11 @@
       <EnvironmentVariable Name="EventBusUserName" Value="admin"/>
       <EnvironmentVariable Name="EventBusPassword" Value="password"/>
       <EnvironmentVariable Name="PATH_BASE" Value="/eShopOnServiceFabric/MarketingApi"/>
+      <EnvironmentVariable Name="MongoConnectionString" Value="mongodb://mongodb.eshoponservicefabric"/>
+      <EnvironmentVariable Name="MongoDatabase" Value="MarketingDb"/>
     </EnvironmentVariables>
   </CodePackage>
-
+  
   <!-- Config package is the contents of the Config directoy under PackageRoot that contains an 
        independently-updateable and versioned set of custom configuration settings for your service. -->
   <ConfigPackage Name="Config" Version="1.0.0" />
