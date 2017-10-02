@@ -66,6 +66,8 @@ services:
       - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
       - UseCustomizationData=True
       - AzureServiceBusEnabled=False
+      - CheckUpdateTime=30000
+      - GracePeriodTime=1      
     ports:
       - "5102:80"
 

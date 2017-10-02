@@ -17,9 +17,13 @@ namespace eShopOnContainers.Core.Services.Order
             _requestProvider = requestProvider;
         }
 
+        public Task CreateOrderAsync(Models.Orders.Order newOrder, string token)
+        {
+            throw new Exception("Only available in Mock Services!");
+        }
+
         public async Task<ObservableCollection<Models.Orders.Order>> GetOrdersAsync(string token)
         {
-        
             UriBuilder builder = new UriBuilder(GlobalSetting.Instance.OrdersEndpoint);
 
             builder.Path = "api/v1/orders";

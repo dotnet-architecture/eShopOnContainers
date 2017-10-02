@@ -30,14 +30,15 @@
 
             <form class="form-inline" asp-action="CreateNewUserLocation" method="post">                       
             <label class="sr-only" for="longitudeInput">Name</label>
-            <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-                <div class="input-group-addon">Lon</div>
-                <input type="text" class="form-control mb-2 mr-sm-2 mb-sm-0" id="longitudeInput" asp-for="Lon" placeholder="Longitude">                
-            </div>
-
+           
             <div class="input-group mb-2 mr-sm-2 mb-sm-0">
                 <div class="input-group-addon">Lat</div>
                 <input type="text" class="form-control mb-2 mr-sm-2 mb-sm-0" id="latitudeInput" asp-for="Lat" placeholder="Latitude">                
+            </div>
+
+            <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                <div class="input-group-addon">Lon</div>
+                <input type="text" class="form-control mb-2 mr-sm-2 mb-sm-0" id="longitudeInput" asp-for="Lon" placeholder="Longitude">
             </div>
             
             <div class="input-group mb-2 mr-sm-2 mb-sm-0 col-md-2">

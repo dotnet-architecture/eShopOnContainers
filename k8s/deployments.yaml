@@ -38,7 +38,21 @@ spec:
              name: urls
              key: IdentityUrl
         ports:
-        - containerPort: 80      
+        - containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 5
+          periodSeconds: 10 
+        livenessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 60
+          periodSeconds: 10                 
       imagePullSecrets:
       - name: registry-key
 ---
@@ -83,6 +97,20 @@ spec:
              key: CatalogBus
         ports:
         - containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 5
+          periodSeconds: 10 
+        livenessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 60
+          periodSeconds: 10      
       imagePullSecrets:
       - name: registry-key
 ---
@@ -149,6 +177,20 @@ spec:
              key: OrderingApiClient                               
         ports:
         - containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 5
+          periodSeconds: 10 
+        livenessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 60
+          periodSeconds: 10      
       imagePullSecrets:
       - name: registry-key
 ---
@@ -191,8 +233,32 @@ spec:
            configMapKeyRef:
              name: urls
              key: IdentityUrl
+        - name: CheckUpdateTime
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: GracePeriodManager_CheckUpdateTime
+        - name: GracePeriodTime
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: GracePeriodManager_GracePeriodTime             
         ports:
         - containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 5
+          periodSeconds: 10 
+        livenessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 60
+          periodSeconds: 10      
       imagePullSecrets:
       - name: registry-key
 ---
@@ -247,6 +313,20 @@ spec:
              key: IdentityUrl             
         ports:
         - containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 5
+          periodSeconds: 10 
+        livenessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 60
+          periodSeconds: 10      
       imagePullSecrets:
       - name: registry-key
 ---
@@ -311,6 +391,20 @@ spec:
              key: Marketing_PicBaseUrl             
         ports:
         - containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 5
+          periodSeconds: 10 
+        livenessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 60
+          periodSeconds: 10      
       imagePullSecrets:
       - name: registry-key
 ---
@@ -345,6 +439,20 @@ spec:
              key: PaymentBus
         ports:
         - containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 5
+          periodSeconds: 10 
+        livenessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 60
+          periodSeconds: 10       
       imagePullSecrets:
       - name: registry-key      
 ---
@@ -384,6 +492,11 @@ spec:
            configMapKeyRef:
              name: urls
              key: MvcClientExternalUrl
+        - name: LocationsUrl
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: MvcClientLocationsUrl
         - name: CatalogUrl
           valueFrom:
            configMapKeyRef:
@@ -403,9 +516,53 @@ spec:
           valueFrom:
            configMapKeyRef:
              name: urls
-             key: MvcClientMarketingUrl             
+             key: MvcClientMarketingUrl 
+        - name: BasketUrlHC
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: BasketHealthCheckUrl        
+        - name: CatalogUrlHC
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: CatalogHealthCheckUrl
+        - name: IdentityUrlHC
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: IdentityHealthCheckUrl
+        - name: OrderingUrlHC
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: OrderingHealthCheckUrl
+        - name: MarketingUrlHC
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: MarketingHealthCheckUrl  
+        - name: PaymentUrlHC
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: PaymentHealthCheckUrl          
         ports:
         - containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 5
+          periodSeconds: 10 
+        livenessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 60
+          periodSeconds: 10      
       imagePullSecrets:
       - name: registry-key
 ---
@@ -467,7 +624,12 @@ spec:
           valueFrom:
            configMapKeyRef:
              name: urls
-             key: WebSpaHealthCheckUrl             
+             key: WebSpaHealthCheckUrl   
+        - name: PaymentUrl
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: PaymentHealthCheckUrl          
         ports:
         - containerPort: 80
       imagePullSecrets:
@@ -528,7 +690,12 @@ spec:
           valueFrom:
            configMapKeyRef:
              name: urls
-             key: SpaClientMarketingExternalUrl             
+             key: SpaClientMarketingExternalUrl
+        - name: LocationsUrl
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: SpaClientLocationsUrl
         - name: BasketUrlHC
           valueFrom:
            configMapKeyRef:
@@ -554,7 +721,26 @@ spec:
            configMapKeyRef:
              name: urls
              key: MarketingHealthCheckUrl
+        - name: PaymentUrlHC
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: PaymentHealthCheckUrl
         ports:
         - containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 5
+          periodSeconds: 10 
+        livenessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 60
+          periodSeconds: 10      
       imagePullSecrets:
       - name: registry-key

@@ -11,16 +11,14 @@
     <AssemblyName>eShopOnContainers.Windows</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
-    <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.16267.0</TargetPlatformVersion>
-    <TargetPlatformMinVersion>10.0.16267.0</TargetPlatformMinVersion>
+    <TargetPlatformVersion>10.0.10586.0</TargetPlatformVersion>
+    <TargetPlatformMinVersion>10.0.10586.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <EnableDotNetNativeCompatibleProfile>true</EnableDotNetNativeCompatibleProfile>
-    <WindowsXamlEnableOverview>true</WindowsXamlEnableOverview>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <PackageCertificateKeyFile>Windows_TemporaryKey.pfx</PackageCertificateKeyFile>
     <SkipValidatePackageReferences>true</SkipValidatePackageReferences>
-    <RuntimeIdentifiers>win10-arm;win10-arm-aot;win10-x86;win10-x86-aot;win10-x64;win10-x64-aot</RuntimeIdentifiers>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
     <DebugSymbols>true</DebugSymbols>
@@ -102,6 +100,7 @@
     <Content Include="..\CommonResources\Fonts\SourceSansPro-Regular.ttf">
       <Link>Assets\Fonts\SourceSansPro-Regular.ttf</Link>
     </Content>
+    <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -142,6 +141,7 @@
     <Content Include="Assets\fake_product_03.png" />
     <Content Include="Assets\fake_product_04.png" />
     <Content Include="Assets\fake_product_05.png" />
+    <Content Include="Assets\menu_campaigns.png" />
     <Content Include="Assets\menu_cart.png" />
     <Content Include="Assets\menu_filter.png" />
     <Content Include="Assets\menu_profile.png" />
@@ -173,51 +173,17 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <SDKReference Include="WindowsMobile, Version=10.0.10586.0">
+      <Name>Windows Mobile Extensions for the UWP</Name>
+    </SDKReference>
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\eShopOnContainers.Core\eShopOnContainers.Core.csproj">
       <Project>{67f9d3a8-f71e-4428-913f-c37ae82cdb24}</Project>
       <Name>eShopOnContainers.Core</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Acr.UserDialogs">
-      <Version>6.3.3</Version>
-    </PackageReference>
-    <PackageReference Include="IdentityModel">
-      <Version>2.10.0</Version>
-    </PackageReference>
-    <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
-      <Version>6.0.0-preview1-25611-03</Version>
-    </PackageReference>
-    <PackageReference Include="Newtonsoft.Json">
-      <Version>10.0.3</Version>
-    </PackageReference>
-    <PackageReference Include="PCLCrypto">
-      <Version>2.0.147</Version>
-    </PackageReference>
-    <PackageReference Include="SlideOverKit">
-      <Version>2.1.4</Version>
-    </PackageReference>
-    <PackageReference Include="Xam.Plugin.Geolocator">
-      <Version>3.0.4</Version>
-    </PackageReference>
-    <PackageReference Include="Xam.Plugins.Settings">
-      <Version>2.6.0.12-beta</Version>
-    </PackageReference>
-    <PackageReference Include="Xamarin.FFImageLoading">
-      <Version>2.2.9</Version>
-    </PackageReference>
-    <PackageReference Include="Xamarin.FFImageLoading.Forms">
-      <Version>2.2.9</Version>
-    </PackageReference>
-    <PackageReference Include="Xamarin.Forms">
-      <Version>2.3.4.231</Version>
-    </PackageReference>
-  </ItemGroup>
-  <ItemGroup>
-    <SDKReference Include="WindowsMobile, Version=10.0.16267.0">
-      <Name>Windows Mobile Extensions for the UWP</Name>
-    </SDKReference>
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
