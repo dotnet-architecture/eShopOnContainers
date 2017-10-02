@@ -1,13 +1,13 @@
-﻿namespace eShopOnContainers.Core.ViewModels
-{
-    using System.Threading.Tasks;
-    using Helpers;
-    using Models.Marketing;
-    using Services.Marketing;
-    using Base;
-    using System.Windows.Input;
-    using Xamarin.Forms;
+﻿using System.Threading.Tasks;
+using System.Windows.Input;
+using Xamarin.Forms;
+using eShopOnContainers.Core.ViewModels.Base;
+using eShopOnContainers.Core.Helpers;
+using eShopOnContainers.Core.Models.Marketing;
+using eShopOnContainers.Core.Services.Marketing;
 
+namespace eShopOnContainers.Core.ViewModels
+{
     public class CampaignDetailsViewModel : ViewModelBase
     {
         private CampaignItem _campaign;
@@ -46,9 +46,9 @@
                 IsBusy = true;
 
                 // Get campaign by id
-                Campaign = await _campaignService.GetCampaignByIdAsync((int) navigationData, Settings.AuthAccessToken);
+                Campaign = await _campaignService.GetCampaignByIdAsync((int)navigationData, Settings.AuthAccessToken);
 
-                IsBusy = false;  
+                IsBusy = false;
             }
         }
 

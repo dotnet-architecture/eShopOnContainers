@@ -104,6 +104,16 @@ namespace eShopOnContainers.Core.Services.Order
                 return new Models.Orders.Order();
         }
 
+        public async Task CreateOrderAsync(Models.Orders.Order newOrder, string token)
+        {
+            await Task.Delay(500);
+
+            if (!string.IsNullOrEmpty(token))
+            {
+                MockOrders.Add(newOrder);
+            }
+        }
+
         public async Task<ObservableCollection<CardType>> GetCardTypesAsync(string token)
         {
             await Task.Delay(500);

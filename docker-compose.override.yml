@@ -67,8 +67,8 @@ services:
       - EventBusPassword=${ESHOP_SERVICE_BUS_PASSWORD}          
       - UseCustomizationData=True
       - AzureServiceBusEnabled=False
-      - GracePeriodTime=1
       - CheckUpdateTime=30000
+      - GracePeriodTime=1
     ports:
       - "5102:80"
 
@@ -102,11 +102,13 @@ services:
       - IdentityUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105              #Local: You need to open your local dev-machine firewall at range 5100-5105.  at range 5100-5105. 
       - BasketUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5103
       - MarketingUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5110
+      - LocationsUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5109
       - CatalogUrlHC=http://catalog.api/hc
       - OrderingUrlHC=http://ordering.api/hc
       - IdentityUrlHC=http://identity.api/hc     #Local: Use ${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP}, if using external IP or DNS name from browser.          
       - BasketUrlHC=http://basket.api/hc
       - MarketingUrlHC=http://marketing.api/hc
+      - PaymentUrlHC=http://payment.api/hc
       - UseCustomizationData=True
     ports:
       - "5104:80"
@@ -118,9 +120,15 @@ services:
       - CatalogUrl=http://catalog.api
       - OrderingUrl=http://ordering.api
       - BasketUrl=http://basket.api
+      - LocationsUrl=http://locations.api
       - IdentityUrl=http://10.0.75.1:5105
-      - MarketingUrl=http://marketing.api  #Local:  Use 10.0.75.1 in a "Docker for Windows" environment, if using "localhost" from browser. 
-                                                 #Remote: Use ${ESHOP_EXTERNAL_DNS_NAME_OR_IP} if using external IP or DNS name from browser. 
+      - MarketingUrl=http://marketing.api  #Local:  Use 10.0.75.1 in a "Docker for Windows" environment, if using "localhost" from browser. #Remote: Use ${ESHOP_EXTERNAL_DNS_NAME_OR_IP} if using external IP or DNS name from browser.                                                  
+      - CatalogUrlHC=http://catalog.api/hc
+      - OrderingUrlHC=http://ordering.api/hc
+      - IdentityUrlHC=http://identity.api/hc     #Local: Use ${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP}, if using external IP or DNS name from browser.          
+      - BasketUrlHC=http://basket.api/hc
+      - MarketingUrlHC=http://marketing.api/hc
+      - PaymentUrlHC=http://payment.api/hc
       - UseCustomizationData=True
     ports:
       - "5100:80"
@@ -135,6 +143,7 @@ services:
       - IdentityUrl=http://identity.api/hc
       - LocationsUrl=http://locations.api/hc
       - MarketingUrl=http://marketing.api/hc
+      - PaymentUrl=http://payment.api/hc
       - mvc=http://webmvc/hc
       - spa=http://webspa/hc
     ports:

@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.BuyerAggregate;
 using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
 using Microsoft.eShopOnContainers.Services.Ordering.Domain.Seedwork;
@@ -31,15 +32,9 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
 
         private readonly IMediator _mediator;
 
-       
-        public static OrderingContext CreateForEFDesignTools(DbContextOptions options)
-        {
-            return new OrderingContext(options);
-        }
+        private OrderingContext(DbContextOptions<OrderingContext> options) : base (options) { }
 
-        private OrderingContext(DbContextOptions options) : base (options) { }
-
-        public OrderingContext(DbContextOptions options, IMediator mediator) : base(options)
+        public OrderingContext(DbContextOptions<OrderingContext> options, IMediator mediator) : base(options)
         {
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
 
@@ -75,5 +70,34 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
 
             return true;
         }        
+    }
+
+    public class OrderingContextDesignFactory : IDesignTimeDbContextFactory<OrderingContext>
+    {
+        public OrderingContext CreateDbContext(string[] args)
+        {
+            var optionsBuilder = new DbContextOptionsBuilder<OrderingContext>()
+                .UseSqlServer("Server=.;Initial Catalog=Microsoft.eShopOnContainers.Services.OrderingDb;Integrated Security=true");
+
+            return new OrderingContext(optionsBuilder.Options,new NoMediator());
+        }
+
+        class NoMediator : IMediator
+        {
+            public Task Publish<TNotification>(TNotification notification, CancellationToken cancellationToken = default(CancellationToken)) where TNotification : INotification
+            {
+                return Task.CompletedTask;
+            }
+
+            public Task<TResponse> Send<TResponse>(IRequest<TResponse> request, CancellationToken cancellationToken = default(CancellationToken))
+            {
+                return Task.FromResult<TResponse>(default(TResponse));
+            }
+
+            public Task Send(IRequest request, CancellationToken cancellationToken = default(CancellationToken))
+            {
+                return Task.CompletedTask;
+            }
+        }
     }
 }

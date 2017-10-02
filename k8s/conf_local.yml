@@ -23,3 +23,7 @@ data:
   PaymentBus: rabbitmq
   UseAzureServiceBus: "False"
   keystore: keystore-data
+  GracePeriodManager_GracePeriodTime: "1"
+  GracePeriodManager_CheckUpdateTime: "15000"
+
+

@@ -21,13 +21,12 @@
     using Infrastructure.Services;
     using IntegrationEvents.Events;
     using Marketing.API.IntegrationEvents.Handlers;
+    using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.EntityFrameworkCore.Diagnostics;
-    using Polly;
     using RabbitMQ.Client;
     using Swashbuckle.AspNetCore.Swagger;
     using System;
     using System.Collections.Generic;
-    using System.Data.SqlClient;
     using System.IdentityModel.Tokens.Jwt;
     using System.Reflection;
     using System.Threading.Tasks;
@@ -174,6 +173,7 @@
         public void Configure(IApplicationBuilder app, IHostingEnvironment env,ILoggerFactory loggerFactory)
         {
             var pathBase = Configuration["PATH_BASE"];
+
             if (!string.IsNullOrEmpty(pathBase))
             {
                 app.UsePathBase(pathBase);
@@ -192,11 +192,6 @@
                    c.ConfigureOAuth2("marketingswaggerui", "", "", "Marketing Swagger UI");
                });            
 
-            var context = (MarketingContext)app
-                        .ApplicationServices.GetService(typeof(MarketingContext));
-
-            WaitForSqlAvailabilityAsync(context, loggerFactory, app).Wait();
-
             ConfigureEventBus(app);
         }
 
@@ -205,8 +200,12 @@
             // prevent from mapping "sub" claim to nameidentifier.
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
-            services.AddAuthentication()
-                .AddJwtBearer(options =>
+            services.AddAuthentication(options=>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
+            }).AddJwtBearer(options =>
                 {
                     options.Authority = Configuration.GetValue<string>("IdentityUrl");
                     options.Audience = "marketing";
@@ -249,28 +248,5 @@
         {
             app.UseAuthentication();
         }
-
-        private async Task WaitForSqlAvailabilityAsync(MarketingContext ctx, ILoggerFactory loggerFactory, IApplicationBuilder app, int retries = 0)
-        {
-            var logger = loggerFactory.CreateLogger(nameof(Startup));
-            var policy = CreatePolicy(retries, logger, nameof(WaitForSqlAvailabilityAsync));
-            await policy.ExecuteAsync(async () =>
-            {
-                await MarketingContextSeed.SeedAsync(app, loggerFactory);
-            });
-        }
-
-        private Policy CreatePolicy(int retries, ILogger logger, string prefix)
-        {
-            return Policy.Handle<SqlException>().
-                WaitAndRetryAsync(
-                    retryCount: retries,
-                    sleepDurationProvider: retry => TimeSpan.FromSeconds(5),
-                    onRetry: (exception, timeSpan, retry, ctx) =>
-                    {
-                        logger.LogTrace($"[{prefix}] Exception {exception.GetType().Name} with message ${exception.Message} detected on attempt {retry} of {retries}");
-                    }
-                );
-        }       
     }
 }

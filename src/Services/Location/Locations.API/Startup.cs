@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -169,13 +170,17 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
             // prevent from mapping "sub" claim to nameidentifier.
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
-            services.AddAuthentication()
-                .AddJwtBearer(options =>
-                {
-                    options.Authority = Configuration.GetValue<string>("IdentityUrl");
-                    options.Audience = "locations";
-                    options.RequireHttpsMetadata = false;
-                });
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.Authority = Configuration.GetValue<string>("IdentityUrl");
+                options.Audience = "locations";
+                options.RequireHttpsMetadata = false;
+            });
         }
 
         protected virtual void ConfigureAuth(IApplicationBuilder app)
