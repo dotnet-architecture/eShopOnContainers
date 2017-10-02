@@ -36,6 +36,7 @@
       <EnvironmentVariable Name="PATH_BASE" Value="/eShopOnServiceFabric/MarketingApi"/>
       <EnvironmentVariable Name="MongoConnectionString" Value="mongodb://mongodb.eshoponservicefabric"/>
       <EnvironmentVariable Name="MongoDatabase" Value="MarketingDb"/>
+      <EnvironmentVariable Name="identityUrl" Value="http://identityapi.eshoponservicefabric:5105"/>
     </EnvironmentVariables>
   </CodePackage>
   
