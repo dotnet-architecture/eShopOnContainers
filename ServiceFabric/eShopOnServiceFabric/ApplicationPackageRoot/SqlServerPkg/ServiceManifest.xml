@@ -20,7 +20,7 @@
     </EntryPoint>
     <!-- Pass environment variables to your container: -->
     <EnvironmentVariables>
-      <EnvironmentVariable Name="SA_PASSWORD" Value="Pass@word"/>
+      <EnvironmentVariable Name="MSSQL_SA_PASSWORD" Value="Pass@word"/>
       <EnvironmentVariable Name="ACCEPT_EULA" Value="Y"/>
     </EnvironmentVariables>
   </CodePackage>
