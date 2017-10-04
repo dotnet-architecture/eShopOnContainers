@@ -97,7 +97,7 @@ services:
       - rabbitmq
 
   sql.data:
-    image: microsoft/mssql-server-linux:2017-latest
+    image: microsoft/mssql-server-linux:latest
 
   nosql.data:
     image: mongo
