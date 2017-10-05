@@ -50,7 +50,11 @@ You can download them and start reviewing these Guides/eBooks here:
 | Architecting & Developing | Containers Lifecycle & CI/CD | App patterns with Xamarin.Forms |
 | ------------ | ------------|  ------------|
 | <a href='https://aka.ms/microservicesebook'><img src="img/ebook_arch_dev_microservices_containers_cover.png"> </a> | <a href='https://aka.ms/dockerlifecycleebook'> <img src="img/ebook_containers_lifecycle.png"> </a> | <a href='https://aka.ms/xamarinpatternsebook'> <img src="img/xamarin-enterprise-patterns-ebook-cover-small.png"> </a> |
-| <sup> <a href='https://aka.ms/microservicesebook'>**Download** (First Edition)</a> </sup>  | <sup> <a href='https://aka.ms/dockerlifecycleebook'>**Download** (First Edition) </a>  </sup> | <sup> <a href='https://aka.ms/xamarinpatternsebook'>**Download** (First Edition) </a>  </sup> |
+| 
+<sup> <a href='https://aka.ms/microservicesebook'>**Download .PDF** (First Edition)</a> </sup> <br>
+<sup> <a href='https://aka.ms/microservicesebookMOBI'>**Download .MOBI/Kindle** (First Edition)</a> </sup> <br>
+<sup> <a href='https://aka.ms/microservicesebookEPUB'>**Download .EPUB** (First Edition)</a> </sup> <br>
+| <sup> <a href='https://aka.ms/dockerlifecycleebook'>**Download** (First Edition) </a>  </sup> | <sup> <a href='https://aka.ms/xamarinpatternsebook'>**Download** (First Edition) </a>  </sup> |
 
 Send feedback to [dotnet-architecture-ebooks-feedback@service.microsoft.com](dotnet-architecture-ebooks-feedback@service.microsoft.com)
 <p>
