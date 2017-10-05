@@ -4,7 +4,7 @@ Sample .NET Core reference application, powered by Microsoft, based on a simplif
 
 ## Moved to .NET Core 2.0 "wave"
 We have moved to .NET Core 2.0 already!
-
+ 
 * Branch `dev` is in .NET Core 2.0.
 * Branch `master` is *still* in .NET Core 1.1 (but it will be updated soon)
 
@@ -14,21 +14,22 @@ To access the .NET Core 1.1 version you can use the `netcore1.1` tag ([https://g
 
 > ### DISCLAIMER
 > **IMPORTANT:** The current state of this sample application is **BETA** for the .NET Core 2.0 version, and v1.0 for the .NET Core 1.1.2 version tagged ([https://github.com/dotnet-architecture/eShopOnContainers/tree/netcore1.1](https://github.com/dotnet-architecture/eShopOnContainers/tree/netcore1.1))
->
+P>
 > This reference application proposes a simplified microservice oriented architecture implementation to introduce technologies like .NET Core with Docker containers through a comprehensive application. The chosen domain is an eShop/eCommerce but simply because it is a well-know domain by most people/developers.
 However, this sample application should not be considered as an "eCommerce reference model", at all. The implemented business domain might not be ideal from an eCommerce business point of view. It is neither trying to solve all the problems in a large, scalable and mission-critical distributed system. It is just a bootstrap for developers to easily get started in the world of Docker containers and microservices with .NET Core.
 > <p>The next step after understanding Docker containers and microservices development with .NET Core, is to select a microservice cluster/orchestrator like Azure Service Fabric or Kubernetes, DC/OS or Docker Swarm (in Azure Container Service). Kubernetes and Service Fabric are being tested with eShopOnContainer.
+
 > Additional steps already tested in eShopOnContainers are about moving your databases to HA cloud services (like Azure SQL DB), to implement your EventBus with Azure Service Bus or any other production ready Service Bus in the market.
  <img src="img/exploring-to-production-ready.png">
 > Read the planned <a href='https://github.com/dotnet/eShopOnContainers/wiki/01.-Roadmap-and-Milestones-for-future-releases'>Roadmap and Milestones for future releases of eShopOnContainers</a> within the Wiki for further info about possible new implementations and provide feedback at the  <a href='https://github.com/dotnet/eShopOnContainers/issues'>ISSUES section</a> if you'd like to see any specific scenario implemented or improved. Also, feel free to discuss on any current issue.
 
 **Architecture overview**: This reference application is cross-platform either at the server and client side, thanks to .NET Core services capable of running on Linux or Windows containers depending on your Docker host, and to Xamarin for mobile apps running on Android, iOS or Windows/UWP plus any browser for the client web apps.
 The architecture proposes a simplified microservice oriented architecture implementation with multiple autonomous microservices (each one owning its own data/db) and implementing different approaches within each microservice (simple CRUD vs. DDD/CQRS patterns) using Http as the communication protocol between the client apps and the microservices and supports asynchronous communication for data updates propagation across multiple services based on Integration Events and an Event Bus (a light message broker, to choose between RabbitMQ or Azure Service Bus, underneath) plus other features defined at the <a href='https://github.com/dotnet/eShopOnContainers/wiki/01.-Roadmap-and-Milestones-for-future-releases'>roadmap</a>.
-<p>
+ <p>
 <img src="img/eshop_logo.png">
 <img src="img/eShopOnContainers_Architecture_Diagram.png">
 <p>
-The microservices are different in type, meaning different internal architecture patterns approaches depending on it purpose, as shown in the image below.
+ The microservices are different in type, meaning different internal architecture patterns approaches depending on it purpose, as shown in the image below.
 <p>
 <img src="img/eShopOnContainers_Types_Of_Microservices.png">
 <p>
@@ -51,8 +52,14 @@ You can download them and start reviewing these Guides/eBooks here:
 | ------------ | ------------|  ------------|
 | <a href='https://aka.ms/microservicesebook'><img src="img/ebook_arch_dev_microservices_containers_cover.png"> </a> | <a href='https://aka.ms/dockerlifecycleebook'> <img src="img/ebook_containers_lifecycle.png"> </a> | <a href='https://aka.ms/xamarinpatternsebook'> <img src="img/xamarin-enterprise-patterns-ebook-cover-small.png"> </a> |
 | <sup> <a href='https://aka.ms/microservicesebook'>**Download .PDF** (First Edition)</a> </sup> 
+<sup> <a href='https://docs.microsoft.com/en-us/dotnet/standard/microservices-architecture/'>**Online pages** (First Edition)</a> </sup> 
 <sup> <a href='https://aka.ms/microservicesebookMOBI'>**Download .MOBI/Kindle** (First Edition)</a> </sup> 
-<sup> <a href='https://aka.ms/microservicesebookEPUB'>**Download .EPUB** (First Edition)</a> </sup> | <sup> <a href='https://aka.ms/dockerlifecycleebook'>**Download** (First Edition) </a>  </sup> | <sup> <a href='https://aka.ms/xamarinpatternsebook'>**Download** (First Edition) </a>  </sup> |
+<sup> <a href='https://aka.ms/microservicesebookEPUB'>**Download .EPUB** (First Edition)</a> </sup> | <sup> <a href='https://aka.ms/dockerlifecycleebook'>**Download .PDF** (First Edition) </a>  </sup> 
+| <sup> <a href='https://aka.ms/xamarinpatternsebook'>**Download .PDF** (First Edition) </a>  </sup>
+<sup> <a href='https://docs.microsoft.com/en-us/dotnet/standard/microservices-architecture/'>**Online pages** (First Edition)</a> </sup>
+<sup> --- </sup>
+<sup> --- </sup>
+|
 
 Send feedback to [dotnet-architecture-ebooks-feedback@service.microsoft.com](dotnet-architecture-ebooks-feedback@service.microsoft.com)
 <p>
