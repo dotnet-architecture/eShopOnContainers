@@ -55,7 +55,9 @@ You can download them and start reviewing these Guides/eBooks here:
 <sup> <a href='https://docs.microsoft.com/en-us/dotnet/standard/microservices-architecture/'>**Online pages** (First Edition)</a> </sup> 
 <sup> <a href='https://aka.ms/microservicesebookMOBI'>**Download .MOBI/Kindle** (First Edition)</a> </sup> 
 <sup> <a href='https://aka.ms/microservicesebookEPUB'>**Download .EPUB** (First Edition)</a> </sup> | <sup> <a href='https://aka.ms/dockerlifecycleebook'>**Download .PDF** (First Edition) </a>  </sup> 
-| <sup> <a href='https://aka.ms/xamarinpatternsebook'>**Download .PDF** (First Edition) </a>  </sup>
+<sup> --- </sup> 
+<sup> --- </sup> 
+<sup> --- </sup> | <sup> <a href='https://aka.ms/xamarinpatternsebook'>**Download .PDF** (First Edition) </a>  </sup>
 <sup> <a href='https://docs.microsoft.com/en-us/dotnet/standard/microservices-architecture/'>**Online pages** (First Edition)</a> </sup>
 <sup> --- </sup>
 <sup> --- </sup>
