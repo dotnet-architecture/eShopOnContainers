@@ -71,7 +71,7 @@
                 {
                     conn.Open();
                     orderIds = conn.Query<int>(
-                        @"SELECT Id FROM [Microsoft.eShopOnContainers.Services.OrderingDb].[ordering].[orders] 
+                        @"SELECT Id FROM [ordering].[orders] 
                             WHERE DATEDIFF(minute, [OrderDate], GETDATE()) >= @GracePeriodTime
                             AND [OrderStatusId] = 1",
                         new { GracePeriodTime = _settings.GracePeriodTime });
