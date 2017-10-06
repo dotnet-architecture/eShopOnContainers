@@ -51,7 +51,7 @@ namespace Ordering.API.Application.IntegrationEvents.EventHandling
             }            
 
             _logger.CreateLogger(nameof(UserCheckoutAcceptedIntegrationEventHandler))
-                .LogTrace(result ? $"UserCheckoutAccepted integration event has been received and a create new order process is started with requestId: {eventMsg.RequestId}" : 
+                .LogInformation(result ? $"UserCheckoutAccepted integration event has been received and a create new order process is started with requestId: {eventMsg.RequestId}" : 
                     $"UserCheckoutAccepted integration event has been received but a new order process has failed with requestId: {eventMsg.RequestId}");
         }
     }

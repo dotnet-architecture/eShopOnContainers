@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Diagnostics.EventFlow;
+using Microsoft.Diagnostics.EventFlow.Inputs;
 using Microsoft.eShopOnContainers.BuildingBlocks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -78,8 +80,10 @@ namespace eShopConContainers.WebSPA
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                app.UseDeveloperExceptionPage();                
             }
+
+            loggerFactory.AddEventFlow(DiagnosticPipelineFactory.CreatePipeline(Configuration));
 
             // Configure XSRF middleware, This pattern is for SPA style applications where XSRF token is added on Index page 
             // load and passed back token on every subsequent async request            

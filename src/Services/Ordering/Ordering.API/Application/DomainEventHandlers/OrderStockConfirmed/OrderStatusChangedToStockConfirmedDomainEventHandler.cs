@@ -28,7 +28,7 @@
         public async Task Handle(OrderStatusChangedToStockConfirmedDomainEvent orderStatusChangedToStockConfirmedDomainEvent)
         {
             _logger.CreateLogger(nameof(OrderStatusChangedToStockConfirmedDomainEventHandler))
-                .LogTrace($"Order with Id: {orderStatusChangedToStockConfirmedDomainEvent.OrderId} has been successfully updated with " +
+                .LogInformation($"Order with Id: {orderStatusChangedToStockConfirmedDomainEvent.OrderId} has been successfully updated with " +
                           $"a status order id: {OrderStatus.StockConfirmed.Id}");
 
             var orderStatusChangedToStockConfirmedIntegrationEvent = new OrderStatusChangedToStockConfirmedIntegrationEvent(orderStatusChangedToStockConfirmedDomainEvent.OrderId);

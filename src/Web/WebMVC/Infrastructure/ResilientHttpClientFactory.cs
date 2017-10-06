@@ -44,12 +44,12 @@ namespace Microsoft.eShopOnContainers.WebMVC.Infrastructure
                    (exception, duration) =>
                    {
                         // on circuit opened
-                        _logger.LogTrace("Circuit breaker opened");
+                        _logger.LogInformation("Circuit breaker opened");
                    },
                    () =>
                    {
                         // on circuit closed
-                        _logger.LogTrace("Circuit breaker reset");
+                        _logger.LogInformation("Circuit breaker reset");
                    })
             };        
     }

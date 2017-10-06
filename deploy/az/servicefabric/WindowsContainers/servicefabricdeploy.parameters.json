@@ -15,7 +15,7 @@
             "value": "eshop"
         },
         "adminPassword": {
-            "value": "your_password"
+            "value": "eshopEshop<<<"
         },
         "nicName": {
             "value": "NIC-eshopsfwin"
@@ -24,7 +24,7 @@
             "value": "eshopsfwin-PubIP"
         },
         "dnsName": {
-            "value": "eshoponservicefabric"
+            "value": "eshoponsfwinsec"
         },
         "virtualNetworkName": {
             "value": "VNet-eshopsfwin"

@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Diagnostics.EventFlow;
+using Microsoft.Diagnostics.EventFlow.Inputs;
 using Microsoft.eShopOnContainers.BuildingBlocks;
 using Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http;
 using Microsoft.eShopOnContainers.WebMVC.Infrastructure;
@@ -115,6 +117,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
 
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+            loggerFactory.AddEventFlow(DiagnosticPipelineFactory.CreatePipeline(Configuration));
 
             if (env.IsDevelopment())
             {

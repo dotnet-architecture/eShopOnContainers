@@ -29,7 +29,7 @@
         public async Task Handle(OrderStatusChangedToPaidDomainEvent orderStatusChangedToPaidDomainEvent)
         {
             _logger.CreateLogger(nameof(OrderStatusChangedToPaidDomainEventHandler))
-                .LogTrace($"Order with Id: {orderStatusChangedToPaidDomainEvent.OrderId} has been successfully updated with " +
+                .LogInformation($"Order with Id: {orderStatusChangedToPaidDomainEvent.OrderId} has been successfully updated with " +
                           $"a status order id: {OrderStatus.Paid.Id}");
 
             var orderStockList = orderStatusChangedToPaidDomainEvent.OrderItems

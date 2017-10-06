@@ -3,6 +3,7 @@
     using AspNetCore.Hosting;
     using Microsoft.AspNetCore;
     using Microsoft.eShopOnContainers.Services.Marketing.API.Infrastructure;
+    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
     using System.IO;
@@ -29,6 +30,11 @@
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseStartup<Startup>()
                 .UseWebRoot("Pics")
+                .ConfigureAppConfiguration((builderContext, config) =>
+                {
+                    config.AddJsonFile("eventFlowConfig.json", optional: true, reloadOnChange: true);
+                    config.AddEnvironmentVariables();
+                })
                 .ConfigureLogging((hostingContext, builder) =>
                 {
                     builder.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));

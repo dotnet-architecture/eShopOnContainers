@@ -3,6 +3,8 @@ using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Azure.ServiceBus;
+using Microsoft.Diagnostics.EventFlow;
+using Microsoft.Diagnostics.EventFlow.Inputs;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ;
@@ -16,7 +18,6 @@ using Payment.API.IntegrationEvents.Events;
 using RabbitMQ.Client;
 using System;
 using System.Threading.Tasks;
-using Swashbuckle.AspNetCore.Swagger;
 
 namespace Payment.API
 {
@@ -75,20 +76,7 @@ namespace Payment.API
             {
                 checks.AddValueTaskCheck("HTTP Endpoint", () => new ValueTask<IHealthCheckResult>(HealthCheckResult.Healthy("Ok")));
             });
-
-            // Add framework services.
-            services.AddSwaggerGen(options =>
-            {
-                options.DescribeAllEnumsAsStrings();
-                options.SwaggerDoc("v1", new Swashbuckle.AspNetCore.Swagger.Info
-                {
-                    Title = "eShopOnContainers - Payment HTTP API",
-                    Version = "v1",
-                    Description = "The Payment Microservice HTTP API. This is a Data-Driven/CRUD microservice sample",
-                    TermsOfService = "Terms Of Service"
-                });               
-            });
-
+           
             RegisterEventBus(services);
 
             var container = new ContainerBuilder();
@@ -97,21 +85,15 @@ namespace Payment.API
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-        {  
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        {
+            loggerFactory.AddEventFlow(DiagnosticPipelineFactory.CreatePipeline(Configuration));
+
             var pathBase = Configuration["PATH_BASE"];
             if (!string.IsNullOrEmpty(pathBase))
             {
                 app.UsePathBase(pathBase);
             }
-
-            app.UseMvcWithDefaultRoute();
-
-            app.UseSwagger()
-               .UseSwaggerUI(c =>
-               {
-                   c.SwaggerEndpoint($"{ (!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty) }/swagger/v1/swagger.json", "My API V1");
-               });
 
             ConfigureEventBus(app);
         }

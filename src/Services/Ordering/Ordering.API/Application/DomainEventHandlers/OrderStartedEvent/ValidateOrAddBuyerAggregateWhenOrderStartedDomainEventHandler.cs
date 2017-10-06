@@ -47,7 +47,7 @@ namespace Ordering.API.Application.DomainEventHandlers.OrderStartedEvent
             await _buyerRepository.UnitOfWork
                 .SaveEntitiesAsync();
 
-            _logger.CreateLogger(nameof(ValidateOrAddBuyerAggregateWhenOrderStartedDomainEventHandler)).LogTrace($"Buyer {buyerUpdated.Id} and related payment method were validated or updated for orderId: {orderStartedEvent.Order.Id}.");
+            _logger.CreateLogger(nameof(ValidateOrAddBuyerAggregateWhenOrderStartedDomainEventHandler)).LogInformation($"Buyer {buyerUpdated.Id} and related payment method were validated or updated for orderId: {orderStartedEvent.Order.Id}.");
         }
     }
 }

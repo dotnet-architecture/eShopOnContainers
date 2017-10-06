@@ -29,7 +29,7 @@
         public async Task Handle(OrderStatusChangedToAwaitingValidationDomainEvent orderStatusChangedToAwaitingValidationDomainEvent)
         {
             _logger.CreateLogger(nameof(OrderStatusChangedToAwaitingValidationDomainEvent))
-                .LogTrace($"Order with Id: {orderStatusChangedToAwaitingValidationDomainEvent.OrderId} has been successfully updated with " +
+                .LogInformation($"Order with Id: {orderStatusChangedToAwaitingValidationDomainEvent.OrderId} has been successfully updated with " +
                           $"a status order id: {OrderStatus.AwaitingValidation.Id}");
 
             var orderStockList = orderStatusChangedToAwaitingValidationDomainEvent.OrderItems

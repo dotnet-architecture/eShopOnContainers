@@ -14,6 +14,8 @@
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Azure.ServiceBus;
+    using Microsoft.Diagnostics.EventFlow;
+    using Microsoft.Diagnostics.EventFlow.Inputs;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBus;
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
@@ -88,7 +90,7 @@
                      opts.MigrationsAssembly("Ordering.API");
                  });
             });
-           
+
 
             services.Configure<OrderingSettings>(Configuration);
 
@@ -193,6 +195,7 @@
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+            loggerFactory.AddEventFlow(DiagnosticPipelineFactory.CreatePipeline(Configuration));
 
             var pathBase = Configuration["PATH_BASE"];
             if (!string.IsNullOrEmpty(pathBase))

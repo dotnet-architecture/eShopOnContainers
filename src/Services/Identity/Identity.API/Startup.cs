@@ -4,6 +4,8 @@ using IdentityServer4.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Diagnostics.EventFlow;
+using Microsoft.Diagnostics.EventFlow.Inputs;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.eShopOnContainers.BuildingBlocks;
 using Microsoft.eShopOnContainers.Services.Identity.API.Certificates;
@@ -98,7 +100,8 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
-           
+            loggerFactory.AddEventFlow(DiagnosticPipelineFactory.CreatePipeline(Configuration));
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

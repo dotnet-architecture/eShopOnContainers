@@ -12,10 +12,15 @@
   <ItemGroup>
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Diagnostics.EventFlow" Version="1.1.0" />
+    <PackageReference Include="Microsoft.Diagnostics.EventFlow.Inputs.MicrosoftLogging" Version="1.1.3" />
+    <PackageReference Include="Microsoft.Diagnostics.EventFlow.Outputs.ApplicationInsights" Version="1.2.0" />
+    <PackageReference Include="Microsoft.Diagnostics.EventFlow.Outputs.StdOutput" Version="1.1.0" />
     <PackageReference Include="mongocsharpdriver" Version="2.4.4" />
     <PackageReference Include="MongoDB.Bson" Version="2.4.4" />
     <PackageReference Include="MongoDB.Driver" Version="2.4.4" />
     <PackageReference Include="MongoDB.Driver.Core" Version="2.4.4" />
+    <PackageReference Include="NEST" Version="5.5.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="1.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUi" Version="1.0.0" />
   </ItemGroup>

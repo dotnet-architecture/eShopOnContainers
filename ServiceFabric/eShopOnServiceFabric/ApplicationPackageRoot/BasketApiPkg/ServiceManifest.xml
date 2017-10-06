@@ -30,6 +30,7 @@
       <EnvironmentVariable Name="EventBusUserName" Value="admin"/>
       <EnvironmentVariable Name="EventBusPassword" Value="password"/>
       <EnvironmentVariable Name="PATH_BASE" Value="/eShopOnServiceFabric/BasketApi"/>
+      <EnvironmentVariable Name="outputs:0:instrumentationKey" Value=""/>
     </EnvironmentVariables>
   </CodePackage>
 

@@ -1,0 +1,24 @@
+﻿{
+  "inputs": [
+    {
+      "type": "Microsoft.Extensions.Logging"
+    }
+  ],
+  "filters": [
+  ],
+  "outputs": [
+    {
+      "type": "ApplicationInsights",
+      "instrumentationKey": ""
+    },
+    {
+      "type": "StdOutput"
+    }
+  ],
+  "schemaVersion": "2016-08-11",
+  "extensions": [],
+  "healthReporter": {
+    "type": "CsvHealthReporter",
+    "logFileFolder": "/app/log"
+  }
+}

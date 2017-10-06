@@ -25,5 +25,6 @@ data:
   keystore: keystore-data
   GracePeriodManager_GracePeriodTime: "1"
   GracePeriodManager_CheckUpdateTime: "15000"
+  Instrumentation_Key: ""
 
 

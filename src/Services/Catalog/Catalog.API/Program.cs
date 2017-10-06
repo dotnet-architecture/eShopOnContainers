@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF;
 using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -34,6 +35,11 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
                 .UseHealthChecks("/hc")
                 .UseContentRoot(Directory.GetCurrentDirectory())               
                 .UseWebRoot("Pics")
+                .ConfigureAppConfiguration((builderContext, config) =>
+                {
+                    config.AddJsonFile("eventFlowConfig.json", optional: true, reloadOnChange: true);
+                    config.AddEnvironmentVariables();
+                })
                 .ConfigureLogging((hostingContext, builder) =>
                 {
                     builder.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));

@@ -22,6 +22,8 @@
     using IntegrationEvents.Events;
     using Marketing.API.IntegrationEvents.Handlers;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
+    using Microsoft.Diagnostics.EventFlow;
+    using Microsoft.Diagnostics.EventFlow.Inputs;
     using Microsoft.EntityFrameworkCore.Diagnostics;
     using RabbitMQ.Client;
     using Swashbuckle.AspNetCore.Swagger;
@@ -172,6 +174,8 @@
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env,ILoggerFactory loggerFactory)
         {
+            loggerFactory.AddEventFlow(DiagnosticPipelineFactory.CreatePipeline(Configuration));
+
             var pathBase = Configuration["PATH_BASE"];
 
             if (!string.IsNullOrEmpty(pathBase))

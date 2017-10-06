@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF;
 using Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure;
 using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -25,7 +26,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API
                         .SeedAsync(context, env, settings, logger)
                         .Wait();
                 })
-                .MigrateDbContext<IntegrationEventLogContext>((_,__)=>{})
+                .MigrateDbContext<IntegrationEventLogContext>((_,__)=>{})                
                 .Run();
         }
 
@@ -34,11 +35,16 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API
                 .UseStartup<Startup>()
                 .UseHealthChecks("/hc")
                 .UseContentRoot(Directory.GetCurrentDirectory())
+                .ConfigureAppConfiguration((builderContext, config) =>
+                {
+                    config.AddJsonFile("eventFlowConfig.json", optional: true, reloadOnChange: true);
+                    config.AddEnvironmentVariables();
+                })
                 .ConfigureLogging((hostingContext, builder) =>
                 {
                     builder.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
                     builder.AddConsole();
-                    builder.AddDebug();
+                    builder.AddDebug();                   
                 })
                 .Build();
     }

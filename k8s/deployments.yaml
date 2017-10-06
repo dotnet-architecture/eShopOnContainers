@@ -37,6 +37,11 @@ spec:
            configMapKeyRef:
              name: urls
              key: IdentityUrl
+        - name: outputs__0__instrumentationKey
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: Instrumentation_Key
         ports:
         - containerPort: 80
         readinessProbe:
@@ -95,6 +100,11 @@ spec:
            configMapKeyRef:
              name: externalcfg
              key: CatalogBus
+        - name: outputs__0__instrumentationKey
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: Instrumentation_Key
         ports:
         - containerPort: 80
         readinessProbe:
@@ -133,7 +143,7 @@ spec:
         env:
         - name: PATH_BASE
           value: /identity
-        - name: ConnectionStrings__DefaultConnection
+        - name: ConnectionString
           valueFrom:
            configMapKeyRef:
              name: externalcfg
@@ -174,7 +184,12 @@ spec:
           valueFrom:
            configMapKeyRef:
              name: urls
-             key: OrderingApiClient                               
+             key: OrderingApiClient  
+        - name: outputs__0__instrumentationKey
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: Instrumentation_Key                             
         ports:
         - containerPort: 80
         readinessProbe:
@@ -242,7 +257,12 @@ spec:
           valueFrom:
            configMapKeyRef:
              name: externalcfg
-             key: GracePeriodManager_GracePeriodTime             
+             key: GracePeriodManager_GracePeriodTime  
+        - name: outputs__0__instrumentationKey
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: Instrumentation_Key           
         ports:
         - containerPort: 80
         readinessProbe:
@@ -310,7 +330,12 @@ spec:
           valueFrom:
            configMapKeyRef:
              name: urls
-             key: IdentityUrl             
+             key: IdentityUrl  
+        - name: outputs__0__instrumentationKey
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: Instrumentation_Key           
         ports:
         - containerPort: 80
         readinessProbe:
@@ -388,7 +413,12 @@ spec:
           valueFrom:
            configMapKeyRef:
              name: urls
-             key: Marketing_PicBaseUrl             
+             key: Marketing_PicBaseUrl  
+        - name: outputs__0__instrumentationKey
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: Instrumentation_Key           
         ports:
         - containerPort: 80
         readinessProbe:
@@ -437,6 +467,11 @@ spec:
            configMapKeyRef:
              name: externalcfg
              key: PaymentBus
+        - name: outputs__0__instrumentationKey
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: Instrumentation_Key
         ports:
         - containerPort: 80
         readinessProbe:
@@ -546,7 +581,12 @@ spec:
           valueFrom:
            configMapKeyRef:
              name: urls
-             key: PaymentHealthCheckUrl          
+             key: PaymentHealthCheckUrl 
+        - name: outputs__0__instrumentationKey
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: Instrumentation_Key         
         ports:
         - containerPort: 80
         readinessProbe:
@@ -726,6 +766,11 @@ spec:
            configMapKeyRef:
              name: urls
              key: PaymentHealthCheckUrl
+        - name: outputs__0__instrumentationKey
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: Instrumentation_Key
         ports:
         - containerPort: 80
         readinessProbe:

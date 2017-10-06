@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Configuration;
 
 namespace eShopConContainers.WebSPA
 {
@@ -17,6 +18,11 @@ namespace eShopConContainers.WebSPA
              .UseStartup<Startup>()
                 .UseHealthChecks("/hc")
                 .UseContentRoot(Directory.GetCurrentDirectory())
+                .ConfigureAppConfiguration((builderContext, config) =>
+                {
+                    config.AddJsonFile("eventFlowConfig.json", optional: true, reloadOnChange: true);
+                    config.AddEnvironmentVariables();
+                })
                 .ConfigureLogging((hostingContext, builder) =>
                 {
                     builder.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
