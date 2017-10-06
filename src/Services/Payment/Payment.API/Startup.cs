@@ -76,19 +76,6 @@ namespace Payment.API
                 checks.AddValueTaskCheck("HTTP Endpoint", () => new ValueTask<IHealthCheckResult>(HealthCheckResult.Healthy("Ok")));
             });
 
-            // Add framework services.
-            services.AddSwaggerGen(options =>
-            {
-                options.DescribeAllEnumsAsStrings();
-                options.SwaggerDoc("v1", new Swashbuckle.AspNetCore.Swagger.Info
-                {
-                    Title = "eShopOnContainers - Payment HTTP API",
-                    Version = "v1",
-                    Description = "The Payment Microservice HTTP API. This is a Data-Driven/CRUD microservice sample",
-                    TermsOfService = "Terms Of Service"
-                });               
-            });
-
             RegisterEventBus(services);
 
             var container = new ContainerBuilder();
@@ -104,14 +91,6 @@ namespace Payment.API
             {
                 app.UsePathBase(pathBase);
             }
-
-            app.UseMvcWithDefaultRoute();
-
-            app.UseSwagger()
-               .UseSwaggerUI(c =>
-               {
-                   c.SwaggerEndpoint($"{ (!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty) }/swagger/v1/swagger.json", "My API V1");
-               });
 
             ConfigureEventBus(app);
         }
