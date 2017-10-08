@@ -10,8 +10,8 @@ using System;
 namespace Identity.API.Migrations.PersistedGrantDb
 {
     [DbContext(typeof(PersistedGrantDbContext))]
-    [Migration("20170912114120_Initial")]
-    partial class Initial
+    [Migration("20170927170423_Grants")]
+    partial class Grants
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
