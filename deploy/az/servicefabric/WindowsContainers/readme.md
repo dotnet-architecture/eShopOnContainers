@@ -50,7 +50,7 @@ Execute the gen-keyvaultcert.ps1 script to generate and download a certificate f
 ## Install the certificate
 Install the certificate under 'Current User' store location and check it as exportable.
 
-<img src="../../../../img/sf/install-cert.png">
+<img src="../../../../img/sf/install-cert.PNG">
 
 ## Editing servicefabricdeploysecured.parameters.json file
 
@@ -82,7 +82,7 @@ create-resources.cmd servicefabric\WindowsContainers\servicefabricdeploysecured 
 
 Modify the cloud.xml file of each Service Fabric application in PublishProfile directory and set  your certificate settings to be able to deploy eshopOnContainers in the secured cluster:
 
-<img src="../../../../img/sf/cloud_publishProfile.png">
+<img src="../../../../img/sf/cloud_publishProfile.PNG">
 
 
 
