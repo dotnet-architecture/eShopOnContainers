@@ -25,7 +25,7 @@
       <EnvironmentVariable Name="ASPNETCORE_URLS" Value="http://0.0.0.0:80"/>
       <EnvironmentVariable Name="SpaClient" Value=""/>
       <EnvironmentVariable Name="XamarinCallback" Value=""/>
-      <EnvironmentVariable Name="ConnectionString" Value="Data Source=sqlserver.eshoponservicefabric,5433;Database=Microsoft.eShopOnContainers.Service.IdentityDb;User Id=sa;Password=Pass@word"/>
+      <EnvironmentVariable Name="ConnectionString" Value="Data Source=sqlserver.eshoponservicefabricsql,5433;Database=Microsoft.eShopOnContainers.Service.IdentityDb;User Id=sa;Password=Pass@word"/>
       <EnvironmentVariable Name="MvcClient" Value=""/>
       <EnvironmentVariable Name="LocationApiClient" Value=""/>
       <EnvironmentVariable Name="MarketingApiClient" Value=""/>

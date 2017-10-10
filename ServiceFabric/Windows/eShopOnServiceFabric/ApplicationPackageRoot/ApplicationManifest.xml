@@ -5,16 +5,9 @@
                      xmlns:xsd="http://www.w3.org/2001/XMLSchema"
                      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <Parameters>
-    <Parameter Name="BasketData_InstanceCount" DefaultValue="-1" />
     <Parameter Name="MarketingApi_InstanceCount" DefaultValue="-1" />
-    <Parameter Name="MongoDB_InstanceCount" DefaultValue="-1" />
     <Parameter Name="LocationsApi_InstanceCount" DefaultValue="-1" />
-    <Parameter Name="PaymentApi_InstanceCount" DefaultValue="-1" />
-    <Parameter Name="RabbitMQ_InstanceCount" DefaultValue="-1" />
-    <Parameter Name="SqlServer_InstanceCount" DefaultValue="-1" />
-    <Parameter Name="WebStatus_InstanceCount" DefaultValue="-1" />
-    <Parameter Name="WebSPA_InstanceCount" DefaultValue="-1" />
-    <Parameter Name="WebMVC_InstanceCount" DefaultValue="-1" />
+    <Parameter Name="PaymentApi_InstanceCount" DefaultValue="-1" />   
     <Parameter Name="OrderingApi_InstanceCount" DefaultValue="-1" />
     <Parameter Name="CatalogApi_InstanceCount" DefaultValue="-1" />
     <Parameter Name="BasketApi_InstanceCount" DefaultValue="-1" />
@@ -24,15 +17,7 @@
   <!-- Import the ServiceManifest from the ServicePackage. The ServiceManifestName and ServiceManifestVersion 
        should match the Name and Version attributes of the ServiceManifest element defined in the 
        ServiceManifest.xml file. -->
-  <ServiceManifestImport>
-    <ServiceManifestRef ServiceManifestName="BasketDataPkg" ServiceManifestVersion="1.0.0" />
-    <ConfigOverrides />
-    <Policies>
-      <ContainerHostPolicies CodePackageRef="Code">
-        <PortBinding ContainerPort="6379" EndpointRef="BasketDataTypeEndpoint"/>
-      </ContainerHostPolicies>
-    </Policies>
-  </ServiceManifestImport>
+  
   <ServiceManifestImport>
     <ServiceManifestRef ServiceManifestName="MarketingApiPkg" ServiceManifestVersion="1.0.0" />
     <!-- Override external urls depending on environment -->
@@ -42,15 +27,6 @@
     <Policies>
     <ContainerHostPolicies CodePackageRef="Code">
       <PortBinding ContainerPort="80" EndpointRef="MarketingApiTypeEndpoint"/>
-    </ContainerHostPolicies>
-      </Policies>
-  </ServiceManifestImport>
-  <ServiceManifestImport>
-    <ServiceManifestRef ServiceManifestName="MongoDBPkg" ServiceManifestVersion="1.0.0" />
-    <ConfigOverrides />
-    <Policies>
-    <ContainerHostPolicies CodePackageRef="Code">
-      <PortBinding ContainerPort="27017" EndpointRef="MongoDBTypeEndpoint"/>
     </ContainerHostPolicies>
       </Policies>
   </ServiceManifestImport>
@@ -71,24 +47,6 @@
     <Policies>
       <ContainerHostPolicies CodePackageRef="Code">
         <PortBinding ContainerPort="80" EndpointRef="PaymentApiTypeEndpoint"/>
-      </ContainerHostPolicies>
-    </Policies>
-  </ServiceManifestImport>
-  <ServiceManifestImport>
-    <ServiceManifestRef ServiceManifestName="RabbitMQPkg" ServiceManifestVersion="1.0.0" />
-    <ConfigOverrides />
-    <Policies>
-      <ContainerHostPolicies CodePackageRef="Code">
-        <PortBinding ContainerPort="5672" EndpointRef="RabbitMQTypeEndpoint"/>
-      </ContainerHostPolicies>
-    </Policies>
-  </ServiceManifestImport>
-  <ServiceManifestImport>
-    <ServiceManifestRef ServiceManifestName="SqlServerPkg" ServiceManifestVersion="1.0.0" />
-    <ConfigOverrides />
-    <Policies>
-      <ContainerHostPolicies CodePackageRef="Code">
-        <PortBinding ContainerPort="1433" EndpointRef="SqlServerTypeEndpoint"/>
       </ContainerHostPolicies>
     </Policies>
   </ServiceManifestImport>
@@ -131,18 +89,9 @@
          ServiceFabric PowerShell module.
          
          The attribute ServiceTypeName below must match the name defined in the imported ServiceManifest.xml file. -->
-    <Service Name="BasketData" ServiceDnsName="basketdata.eshoponservicefabric" ServicePackageActivationMode="ExclusiveProcess">
-      <StatelessService ServiceTypeName="BasketDataType" InstanceCount="[BasketData_InstanceCount]">
-        <SingletonPartition />
-      </StatelessService>
-    </Service>
+   
     <Service Name="MarketingApi" ServiceDnsName="marketingapi.eshoponservicefabric" ServicePackageActivationMode="ExclusiveProcess">
       <StatelessService ServiceTypeName="MarketingApiType" InstanceCount="[MarketingApi_InstanceCount]">
-        <SingletonPartition />
-      </StatelessService>
-    </Service>
-    <Service Name="MongoDB" ServiceDnsName="mongodb.eshoponservicefabric" ServicePackageActivationMode="ExclusiveProcess">
-      <StatelessService ServiceTypeName="MongoDBType" InstanceCount="[MongoDB_InstanceCount]">
         <SingletonPartition />
       </StatelessService>
     </Service>
@@ -155,17 +104,7 @@
       <StatelessService ServiceTypeName="PaymentApiType" InstanceCount="[PaymentApi_InstanceCount]">
         <SingletonPartition />
       </StatelessService>
-    </Service>
-    <Service Name="RabbitMQ" ServiceDnsName="rabbitmq.eshoponservicefabric" ServicePackageActivationMode="ExclusiveProcess">
-      <StatelessService ServiceTypeName="RabbitMQType" InstanceCount="[RabbitMQ_InstanceCount]">
-        <SingletonPartition />
-      </StatelessService>
-    </Service>
-    <Service Name="SqlServer" ServiceDnsName="sqlserver.eshoponservicefabric" ServicePackageActivationMode="ExclusiveProcess">
-      <StatelessService ServiceTypeName="SqlServerType" InstanceCount="[SqlServer_InstanceCount]">
-        <SingletonPartition />
-      </StatelessService>
-    </Service>
+    </Service>    
     <Service Name="OrderingApi" ServiceDnsName="orderingapi.eshoponservicefabric" ServicePackageActivationMode="ExclusiveProcess">
       <StatelessService ServiceTypeName="OrderingApiType" InstanceCount="[OrderingApi_InstanceCount]">
         <SingletonPartition />

@@ -22,14 +22,13 @@
     <EnvironmentVariables>
       <EnvironmentVariable Name="ASPNETCORE_ENVIRONMENT" Value="Development"/>
       <EnvironmentVariable Name="ASPNETCORE_URLS" Value="http://0.0.0.0:80"/>
-      <EnvironmentVariable Name="ConnectionString" Value="basketdata.eshoponservicefabric"/>
+      <EnvironmentVariable Name="ConnectionString" Value="basketdata.eshoponservicefabricredis"/>
       <EnvironmentVariable Name="identityUrl" Value="http://identityapi.eshoponservicefabric:5105"/>
       <EnvironmentVariable Name="IdentityUrlExternal" Value="http://#{your_sf_dns}#:5105"/>
-      <EnvironmentVariable Name="EventBusConnection" Value="rabbitmq.eshoponservicefabric"/>
+      <EnvironmentVariable Name="EventBusConnection" Value="rabbitmq.eshoponservicefabricbus"/>
       <EnvironmentVariable Name="AzureServiceBusEnabled" Value="False"/>
       <EnvironmentVariable Name="EventBusUserName" Value="admin"/>
       <EnvironmentVariable Name="EventBusPassword" Value="password"/>
-      <EnvironmentVariable Name="PATH_BASE" Value="/eShopOnServiceFabric/BasketApi"/>
     </EnvironmentVariables>
   </CodePackage>
 

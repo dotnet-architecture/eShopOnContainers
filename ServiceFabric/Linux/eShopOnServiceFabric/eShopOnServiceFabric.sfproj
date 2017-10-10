@@ -30,24 +30,16 @@
   <ItemGroup>
     <Content Include="ApplicationPackageRoot\BasketApiPkg\Config\Settings.xml" />
     <Content Include="ApplicationPackageRoot\BasketApiPkg\ServiceManifest.xml" />
-    <Content Include="ApplicationPackageRoot\BasketDataPkg\Config\Settings.xml" />
-    <Content Include="ApplicationPackageRoot\BasketDataPkg\ServiceManifest.xml" />
     <Content Include="ApplicationPackageRoot\CatalogApiPkg\Config\Settings.xml" />
     <Content Include="ApplicationPackageRoot\CatalogApiPkg\ServiceManifest.xml" />
     <Content Include="ApplicationPackageRoot\LocationsApiPkg\Config\Settings.xml" />
     <Content Include="ApplicationPackageRoot\LocationsApiPkg\ServiceManifest.xml" />
     <Content Include="ApplicationPackageRoot\MarketingApiPkg\Config\Settings.xml" />
     <Content Include="ApplicationPackageRoot\MarketingApiPkg\ServiceManifest.xml" />
-    <Content Include="ApplicationPackageRoot\MongoDBPkg\Config\Settings.xml" />
-    <Content Include="ApplicationPackageRoot\MongoDBPkg\ServiceManifest.xml" />
     <Content Include="ApplicationPackageRoot\OrderingApiPkg\Config\Settings.xml" />
     <Content Include="ApplicationPackageRoot\OrderingApiPkg\ServiceManifest.xml" />
     <Content Include="ApplicationPackageRoot\PaymentApiPkg\Config\Settings.xml" />
     <Content Include="ApplicationPackageRoot\PaymentApiPkg\ServiceManifest.xml" />
-    <Content Include="ApplicationPackageRoot\RabbitMQPkg\Config\Settings.xml" />
-    <Content Include="ApplicationPackageRoot\RabbitMQPkg\ServiceManifest.xml" />
-    <Content Include="ApplicationPackageRoot\SqlServerPkg\Config\Settings.xml" />
-    <Content Include="ApplicationPackageRoot\SqlServerPkg\ServiceManifest.xml" />
     <Content Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />
