@@ -161,6 +161,46 @@
             "type": "string",
             "defaultValue": "latest"
         },
+        "clusterProtectionLevel": {
+            "type": "string",
+            "allowedValues": [
+                "None",
+                "Sign",
+                "EncryptAndSign"
+            ],
+            "defaultValue": "EncryptAndSign",
+            "metadata": {
+                "description": "Protection level.Three values are allowed - EncryptAndSign, Sign, None. It is best to keep the default of EncryptAndSign, unless you have a need not to"
+            }
+        },
+        "certificateStoreValue": {
+            "type": "string",
+            "allowedValues": [
+                "My"
+            ],
+            "defaultValue": "My",
+            "metadata": {
+                "description": "The store name where the cert will be deployed in the virtual machine"
+            }
+        },
+        "certificateThumbprint": {
+            "type": "string",
+            "metadata": {
+                "description": "Certificate Thumbprint"
+            }
+        },
+        "sourceVaultValue": {
+            "type": "string",
+            "metadata": {
+                "description": "Resource Id of the key vault, is should be in the format of /subscriptions/<Sub ID>/resourceGroups/<Resource group name>/providers/Microsoft.KeyVault/vaults/<vault name>"
+            }
+        },
+        "certificateUrlValue": {
+            "type": "string",
+            "metadata": {
+                "description": "Refers to the location URL in your key vault where the certificate was uploaded, it is should be in the format of https://<name of the vault>.vault.azure.net:443/secrets/<exact location>"
+            }
+        },
         "storageAccountType": {
             "type": "string",
             "allowedValues": [
@@ -210,7 +250,7 @@
         },
         "nt0InstanceCount": {
             "type": "int",
-            "defaultValue": 1,
+            "defaultValue": 5,
             "metadata": {
                 "description": "Instance count for node type"
             }
@@ -663,7 +703,11 @@
                                         "dataPath": "D:\\\\SvcFab",
                                         "durabilityLevel": "Bronze",
                                         "enableParallelJobs": true,
-                                        "nicPrefixOverride": "[parameters('subnet0Prefix')]"
+                                        "nicPrefixOverride": "[parameters('subnet0Prefix')]",
+                                        "certificate": {
+                                            "thumbprint": "[parameters('certificateThumbprint')]",
+                                            "x509StoreName": "[parameters('certificateStoreValue')]"
+                                        }
                                     },
                                     "typeHandlerVersion": "1.0"
                                 }
@@ -755,7 +799,20 @@
                     "osProfile": {
                         "adminPassword": "[parameters('adminPassword')]",
                         "adminUsername": "[parameters('adminUsername')]",
-                        "computernamePrefix": "[parameters('vmNodeType0Name')]"
+                        "computernamePrefix": "[parameters('vmNodeType0Name')]",
+                        "secrets": [
+                            {
+                                "sourceVault": {
+                                    "id": "[parameters('sourceVaultValue')]"
+                                },
+                                "vaultCertificates": [
+                                    {
+                                        "certificateStore": "[parameters('certificateStoreValue')]",
+                                        "certificateUrl": "[parameters('certificateUrlValue')]"
+                                    }
+                                ]
+                            }
+                        ]
                     },
                     "storageProfile": {
                         "imageReference": {
@@ -801,6 +858,10 @@
                 "addonFeatures": [
                     "DnsService"
                 ],
+                "certificate": {
+                    "thumbprint": "[parameters('certificateThumbprint')]",
+                    "x509StoreName": "[parameters('certificateStoreValue')]"
+                },
                 "clientCertificateCommonNames": [],
                 "clientCertificateThumbprints": [],
                 "clusterCodeVersion": "5.7.207.9494",
@@ -812,8 +873,18 @@
                     "storageAccountName": "[parameters('supportLogStorageAccountName')]",
                     "tableEndpoint": "[reference(concat('Microsoft.Storage/storageAccounts/', parameters('supportLogStorageAccountName')), variables('storageApiVersion')).primaryEndpoints.table]"
                 },
-                "fabricSettings": [],
-                "managementEndpoint": "[concat('http://',reference(concat(parameters('lbIPName'),'-','0')).dnsSettings.fqdn,':',parameters('nt0fabricHttpGatewayPort'))]",
+                "fabricSettings": [
+                    {
+                        "parameters": [
+                            {
+                                "name": "ClusterProtectionLevel",
+                                "value": "[parameters('clusterProtectionLevel')]"
+                            }
+                        ],
+                        "name": "Security"
+                    }
+                ],
+                "managementEndpoint": "[concat('https://',reference(concat(parameters('lbIPName'),'-','0')).dnsSettings.fqdn,':',parameters('nt0fabricHttpGatewayPort'))]",
                 "nodeTypes": [
                     {
                         "name": "[parameters('vmNodeType0Name')]",
@@ -834,7 +905,7 @@
                     }
                 ],
                 "provisioningState": "Default",
-                "reliabilityLevel": "None",
+                "reliabilityLevel": "Silver",
                 "upgradeMode": "Manual",
                 "vmImage": "Windows"
             },

@@ -1,6 +1,6 @@
 # Deploying Azure Service Fabric (No Secured)
 
-The ARM template `servicefabricdeploy.json` and its parameter file (`servicefabricdeploy.parameters.json`) are used to create a service fabric cluster environment for windows containers.
+The ARM template `servicefabricdeploy.json` and its parameter file (`servicefabricdeploy.parameters.json`) are used to create a service fabric cluster environment for linux containers.
 
 ## Editing servicefabricdeploy.parameters.json file
 
@@ -25,7 +25,7 @@ Once parameter file is edited you can deploy it using [create-resources script](
 i. e. if you are in windows, to deploy sql databases in a new resourcegroup located in westus, go to `deploy\az` folder and type:
 
 ```
-create-resources.cmd servicefabric\WindowsContainers\servicefabricdeploy newResourceGroup -c westus
+create-resources.cmd servicefabric\LinuxContainers\servicefabricdeploy newResourceGroup -c westus
 ```
 ## Deploy eShopOnServiceFabric with Visual Studio.
 
@@ -33,7 +33,7 @@ Alternatively, instead of using ARM templates, you can deploy eShop on service f
 
 # Deploying Azure Service Fabric (Secured)
 
-The ARM template `servicefabricdeploysecured.json` and its parameter file (`servicefabricdeploysecured.parameters.json`) are used to create a service fabric cluster environment for windows containers secured with a certificate.
+The ARM template `servicefabricdeploysecured.json` and its parameter file (`servicefabricdeploysecured.parameters.json`) are used to create a service fabric cluster environment for linux containers secured with a certificate.
 
 ## Create Azure Keyvault service
 Go to PortalAzure and create a Keyvault service. Make sure Enable access for deployment checkboxes are selected.
@@ -76,7 +76,7 @@ Optionally, you can modify which ports are opened in the LoadBalancer for access
 Once parameter file is edited you can deploy it using [create-resources script](../readme.md).
 
 ```
-create-resources.cmd servicefabric\WindowsContainers\servicefabricdeploysecured newResourceGroup -c westus
+create-resources.cmd servicefabric\LinuxContainers\servicefabricdeploysecured newResourceGroup -c westus
 ```
 ## Deploy eShopOnServiceFabric with Visual Studio.
 

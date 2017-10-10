@@ -42,10 +42,10 @@
             "value": "sflogseshopsfwin3480"
         },
         "sourceVaultValue": {
-            "value": "/subscriptions/6c22bb55-0221-4ce4-9bf1-3c4a10a7294c/resourceGroups/eshop-sf-win/providers/Microsoft.KeyVault/vaults/eshoponsfkeyvault"
+            "value": ""
         },
         "certificateUrlValue": {
-            "value": "https://eshoponsfkeyvault.vault.azure.net:443/secrets/eshopsfwincert/b4ae55e3a549448c96088cd8dd96c369"
+            "value": ""
         },
         "certificateThumbprint": {
             "value": ""
@@ -85,6 +85,21 @@
         },
         "IdSrvHttpRule": {
             "value": 5105
+        },
+        "BasketApiHttpRule": {
+            "value": 5103
+        },
+        "CatalogApiHttpRule": {
+            "value": 5101
+        },
+        "OrderingApiHttpRule": {
+            "value": 5102
+        },
+        "MarketingApiHttpRule": {
+            "value": 5110
+        },
+        "LocationsApiHttpRule": {
+            "value": 5109
         }
     }
 }

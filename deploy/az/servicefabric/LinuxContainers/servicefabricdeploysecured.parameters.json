@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "clusterName": {
-            "value": "eshoponservicefabric"
+            "value": "your_sf_name"
         },
         "clusterLocation": {
             "value": "westeurope"
@@ -15,34 +15,43 @@
             "value": "eshop"
         },
         "adminPassword": {
-            "value": "your_password"
+            "value": "your_admin_password"
         },
         "nicName": {
-            "value": "NIC-eshopsfwin"
+            "value": "NIC-eshopsflinsec"
         },
         "publicIPAddressName": {
-            "value": "eshopsfwin-PubIP"
+            "value": "eshopsflinsec-PubIP"
         },
         "dnsName": {
-            "value": "eshoponservicefabric"
+            "value": "your_sf_dns"
         },
         "virtualNetworkName": {
-            "value": "VNet-eshopsfwin"
+            "value": "VNet-eshopsflinsec"
         },
         "lbName": {
-            "value": "LB-eshopsfwin"
+            "value": "LB-eshopsflinsec"
         },
         "lbIPName": {
-            "value": "LBIP-eshopsfwin"
+            "value": "LBIP-eshopsflinsec"
+        },       
+        "sourceVaultValue": {
+            "value": ""
         },
-        "applicationDiagnosticsStorageAccountName": {
-            "value": "sfdgeshopsfwin6744"
+        "certificateUrlValue": {
+            "value": ""
         },
-        "supportLogStorageAccountName": {
-            "value": "sflogseshopsfwin3480"
+        "certificateThumbprint": {
+            "value": ""
         },
         "vmImageSku": {
-            "value": "2016-Datacenter-with-Containers"
+            "value": "16.04-LTS"
+        },
+        "vmImageVersion": {
+            "value": "latest"
+        },
+        "vmImagePublisher": {
+            "value": "Canonical"
         },
         "nt0ephemeralStartPort": {
             "value": 49152
@@ -61,9 +70,6 @@
         },
         "nt0fabricHttpGatewayPort": {
             "value": 19080
-        },
-        "nt0reverseProxyEndpointPort": {
-            "value": 19081
         },
         "webMvcHttpPort": {
             "value": 5100
@@ -94,4 +100,3 @@
         }
     }
 }
-
