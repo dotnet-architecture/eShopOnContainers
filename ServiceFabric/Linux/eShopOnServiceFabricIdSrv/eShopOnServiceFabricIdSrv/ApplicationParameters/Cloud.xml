@@ -5,9 +5,9 @@
     <Parameter Name="SpaClient" Value="http://#{your_sf_dns}#:5104" />
     <Parameter Name="XamarinCallback" Value="http://#{your_sf_dns}#:5105/xamarincallback" />
     <Parameter Name="MvcClient" Value="http://#{your_sf_dns}#:5100" />
-    <Parameter Name="LocationApiClient" Value="http://#{your_sf_dns}#:19081/eShopOnServiceFabric/LocationsApi" />
-    <Parameter Name="MarketingApiClient" Value="http://#{your_sf_dns}#:19081/eShopOnServiceFabric/MarketingApi" />
-    <Parameter Name="BasketApiClient" Value="http://#{your_sf_dns}#:19081/eShopOnServiceFabric/BasketApi" />
-    <Parameter Name="OrderingApiClient" Value="http://#{your_sf_dns}#:19081/eShopOnServiceFabric/OrderingApi" />
+    <Parameter Name="LocationApiClient" Value="http://#{your_sf_dns}#:5109" />
+    <Parameter Name="MarketingApiClient" Value="http://#{your_sf_dns}#:5110" />
+    <Parameter Name="BasketApiClient" Value="http://#{your_sf_dns}#:5103" />
+    <Parameter Name="OrderingApiClient" Value="http://#{your_sf_dns}#:5102" />
   </Parameters>
 </Application>
