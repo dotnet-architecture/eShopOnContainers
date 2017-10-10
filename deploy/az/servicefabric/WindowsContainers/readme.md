@@ -38,7 +38,7 @@ The ARM template `servicefabricdeploysecured.json` and its parameter file (`serv
 ## Create Azure Keyvault service
 Go to PortalAzure and create a Keyvault service. Make sure Enable access for deployment checkboxes are selected.
 
-<img src="../../../../img/sf/create-kv.png">
+<img src="../../../../img/sf/create-kv.PNG">
 
 ## Generate a certificate in Azure Keyvault
 Execute the gen-keyvaultcert.ps1 script to generate and download a certificate from Keyvault.
