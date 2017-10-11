@@ -25,8 +25,8 @@ The architecture proposes a simplified microservice oriented architecture implem
 <img src="img/eShopOnContainers_Architecture_Diagram.png">
 <p>
 
-> ### Important Note on AP Gateways and published microservice APIs
-> Note that the previous architecture is a how you deploy it in a local Docker development machine. For a production-ready architecture we recommend to keep evolving your architecture with additional features like API Gateways based on AzureAPI Management or any other approach for API Gateways explained in the related documentation/eBook.
+> ### Important Note on API Gateways and published APIs
+> Note that the previous architecture diagram is a how you deploy it in a local Docker development machine. For a production-ready architecture we recommend to keep evolving your architecture with additional features like API Gateways based on AzureAPI Management or any other approach for API Gateways explained in the related documentation/eBook, so you can filter APIs and apply security in a single tier.
 <p>
 <img src="img/eShopOnContainers-Architecture-With-Azure-API-Management.png">
 <p>
