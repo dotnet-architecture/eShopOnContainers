@@ -206,7 +206,7 @@
             ConfigureEventBus(app);
         }
 
-        private void ConfigureAuthService(IServiceCollection services, ILoggerFactory loggerFactory)
+        private void ConfigureAuthService(IServiceCollection services)
         {
             // prevent from mapping "sub" claim to nameidentifier.
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
