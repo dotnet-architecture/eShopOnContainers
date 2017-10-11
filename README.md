@@ -8,7 +8,7 @@ NOTE: During August/September 2017 we'll be moving the solution to .NET Core "wa
 >**PLEASE** Read our [branch guide](./branch-guide.md) to know about our branching policy
 
 > ### DISCLAIMER
-> **IMPORTANT:** The current state of this sample application is **BETA**, consider it version a 0.1 foundational version, therefore, many areas could be improved and change significantly while refactoring current code and implementing new features. **Feedback with improvements and pull requests from the community will be highly appreciated and accepted.**
+> **IMPORTANT:** The current state of this sample application is **BETA**, consider it version a 0.1 foundational version, therefore, many areas could be improved and change significantly while refactoring current code and implementing new features. Feedback with improvements and pull requests from the community will be highly appreciated and accepted.
 >
 > This reference application proposes a simplified microservice oriented architecture implementation to introduce technologies like .NET Core with Docker containers through a comprehensive application. The chosen domain is an eShop/eCommerce but simply because it is a well-know domain by most people/developers.
 However, this sample application should not be considered as an "eCommerce reference model", at all. The implemented business domain might not be ideal from an eCommerce business point of view. It is neither trying to solve all the problems in a large, scalable and mission-critical distributed system. It is just a bootstrap for developers to easily get started in the world of Docker containers and microservices with .NET Core.
@@ -24,6 +24,15 @@ The architecture proposes a simplified microservice oriented architecture implem
 <img src="img/eshop_logo.png">
 <img src="img/eShopOnContainers_Architecture_Diagram.png">
 <p>
+
+> ### Important Note on AP Gateways and published microservice APIs
+> Note that the previous architecture is a how you deploy it in a local Docker development machine. For a production-ready architecture we recommend to keep evolving your architecture with additional features like API Gateways based on AzureAPI Management or any other approach for API Gateways explained in the related documentation/eBook.
+<p>
+<img src="img/eShopOnContainers-Architecture-With-Azure-API-Management.png">
+<p>
+
+> The sample code in this repo is NOT making use of Azure API Management in order to be able to provide an "F5 experience" in Visual Studio (or CLI) of the sample with no up-front dependencies in Azure. But you should evaluate API Gateways alternatives when building for production.
+
 The microservices are different in type, meaning different internal architecture patterns approaches depending on it purpose, as shown in the image below.
 <p>
 <img src="img/eShopOnContainers_Types_Of_Microservices.png">
