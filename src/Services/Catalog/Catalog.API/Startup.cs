@@ -13,7 +13,6 @@
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ;
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus;
-    using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF;
     using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF.Services;
     using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
     using Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationEvents.EventHandling;
@@ -40,6 +39,14 @@
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
+
+            services.AddApplicationInsightsTelemetry(Configuration);
+
+            if (Configuration.GetValue<string>("OrchestratorType").Equals("K8S"))
+            {
+                // Enable K8s telemetry initializer
+                services.EnableKubernetes();
+            }
 
             services.AddHealthChecks(checks =>
             {
@@ -171,6 +178,8 @@
 
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+            loggerFactory.AddAzureWebAppDiagnostics();
+            loggerFactory.AddApplicationInsights(app.ApplicationServices, LogLevel.Trace);
 
             var pathBase = Configuration["PATH_BASE"];
             if (!string.IsNullOrEmpty(pathBase))

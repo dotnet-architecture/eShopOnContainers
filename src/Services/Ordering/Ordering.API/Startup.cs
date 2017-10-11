@@ -46,6 +46,14 @@
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            services.AddApplicationInsightsTelemetry(Configuration);
+
+            if (Configuration.GetValue<string>("OrchestratorType").Equals("K8S"))
+            {
+                // Enable K8s telemetry initializer
+                services.EnableKubernetes();
+            }
+
             // Add framework services.
             services.AddMvc(options =>
             {
@@ -196,6 +204,8 @@
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+            loggerFactory.AddAzureWebAppDiagnostics();
+            loggerFactory.AddApplicationInsights(app.ApplicationServices, LogLevel.Trace);
 
             var pathBase = Configuration["PATH_BASE"];
             if (!string.IsNullOrEmpty(pathBase))
@@ -203,7 +213,7 @@
                 loggerFactory.CreateLogger("init").LogDebug($"Using PATH BASE '{pathBase}'");
                 app.UsePathBase(pathBase);
             }            
-
+            
             app.UseCors("CorsPolicy");
 
             ConfigureAuth(app);
