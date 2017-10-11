@@ -19,6 +19,7 @@ services:
       - EventBusUserName=${ESHOP_SERVICE_BUS_USERNAME}
       - EventBusPassword=${ESHOP_SERVICE_BUS_PASSWORD}      
       - AzureServiceBusEnabled=False
+      - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
     ports:
       - "5103:80"
 
@@ -36,6 +37,7 @@ services:
       - UseCustomizationData=True
       - AzureServiceBusEnabled=False
       - AzureStorageEnabled=False
+      - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
     ports:
       - "5101:80"
 
@@ -51,7 +53,8 @@ services:
       - MarketingApiClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5110
       - BasketApiClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5103
       - OrderingApiClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5102
-      - UseCustomizationData=True    
+      - UseCustomizationData=True  
+      - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
     ports:
       - "5105:80"
 
@@ -69,6 +72,7 @@ services:
       - AzureServiceBusEnabled=False
       - CheckUpdateTime=30000
       - GracePeriodTime=1
+      - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
     ports:
       - "5102:80"
 
@@ -90,6 +94,7 @@ services:
       - AzureStorageAccountKey=${ESHOP_AZURE_STORAGE_MARKETING_KEY}
       - AzureServiceBusEnabled=False
       - AzureStorageEnabled=False
+      - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
     ports:
       - "5110:80"
 
@@ -110,6 +115,7 @@ services:
       - MarketingUrlHC=http://marketing.api/hc
       - PaymentUrlHC=http://payment.api/hc
       - UseCustomizationData=True
+      - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
     ports:
       - "5104:80"
 
@@ -130,6 +136,7 @@ services:
       - MarketingUrlHC=http://marketing.api/hc
       - PaymentUrlHC=http://payment.api/hc
       - UseCustomizationData=True
+      - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
     ports:
       - "5100:80"
 
@@ -146,6 +153,7 @@ services:
       - PaymentUrl=http://payment.api/hc
       - mvc=http://webmvc/hc
       - spa=http://webspa/hc
+      - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
     ports:
       - "5107:80"
 
@@ -157,6 +165,7 @@ services:
       - EventBusUserName=${ESHOP_SERVICE_BUS_USERNAME}
       - EventBusPassword=${ESHOP_SERVICE_BUS_PASSWORD}          
       - AzureServiceBusEnabled=False
+      - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
     ports:
       - "5108:80"
 
@@ -172,6 +181,7 @@ services:
       - EventBusUserName=${ESHOP_SERVICE_BUS_USERNAME}
       - EventBusPassword=${ESHOP_SERVICE_BUS_PASSWORD}          
       - AzureServiceBusEnabled=False
+      - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
     ports:
       - "5109:80"
 

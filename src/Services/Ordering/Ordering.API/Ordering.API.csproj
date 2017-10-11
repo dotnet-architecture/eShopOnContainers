@@ -37,6 +37,7 @@
     <PackageReference Include="FluentValidation.MVC6" Version="6.4.0" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="3.0.0" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.1.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
     <PackageReference Include="MediatR" Version="3.0.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="1.0.0" />

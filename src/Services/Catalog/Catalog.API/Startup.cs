@@ -41,6 +41,8 @@
         {
             // Add framework services.
 
+            services.AddApplicationInsightsTelemetry(Configuration);
+
             services.AddHealthChecks(checks =>
             {
                 var minutes = 1;
@@ -160,6 +162,8 @@
 
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+            loggerFactory.AddAzureWebAppDiagnostics();
+            loggerFactory.AddApplicationInsights(app.ApplicationServices, LogLevel.Trace);
 
             var pathBase = Configuration["PATH_BASE"];
             if (!string.IsNullOrEmpty(pathBase))
