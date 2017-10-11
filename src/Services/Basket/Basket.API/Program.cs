@@ -34,6 +34,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
                     builder.AddConsole();
                     builder.AddDebug();
                 })
+                .UseApplicationInsights()
                 .Build();
     }
 }

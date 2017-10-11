@@ -47,7 +47,13 @@
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddApplicationInsightsTelemetry(Configuration);
-            
+
+            if (Configuration.GetValue<string>("OrchestratorType").Equals("K8S"))
+            {
+                // Enable K8s telemetry initializer
+                services.EnableKubernetes();
+            }
+
             // Add framework services.
             services.AddMvc(options =>
             {

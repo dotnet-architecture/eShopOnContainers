@@ -65,6 +65,12 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
 
             services.Configure<BasketSettings>(Configuration);           
 
+            if(Configuration.GetValue<string>("OrchestratorType").Equals("K8S"))
+            {
+                // Enable K8s telemetry initializer
+                services.EnableKubernetes();
+            }
+
             //By connecting here we are making sure that our service
             //cannot start until redis is ready. This might slow down startup,
             //but given that there is a delay on resolving the ip address
@@ -203,8 +209,8 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             // prevent from mapping "sub" claim to nameidentifier.
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
-            var identityUrl = Configuration.GetValue<string>("IdentityUrl");
-
+            var identityUrl = Configuration.GetValue<string>("IdentityUrl"); 
+                
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

@@ -20,6 +20,7 @@ services:
       - EventBusPassword=${ESHOP_SERVICE_BUS_PASSWORD}      
       - AzureServiceBusEnabled=False
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
+      - OrchestratorType=${ORCHESTRATOR_TYPE}
     ports:
       - "5103:80"
 
@@ -38,6 +39,7 @@ services:
       - AzureServiceBusEnabled=False
       - AzureStorageEnabled=False
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
+      - OrchestratorType=${ORCHESTRATOR_TYPE}
     ports:
       - "5101:80"
 
@@ -55,6 +57,7 @@ services:
       - OrderingApiClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5102
       - UseCustomizationData=True  
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
+      - OrchestratorType=${ORCHESTRATOR_TYPE}
     ports:
       - "5105:80"
 
@@ -73,6 +76,7 @@ services:
       - CheckUpdateTime=30000
       - GracePeriodTime=1
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
+      - OrchestratorType=${ORCHESTRATOR_TYPE}
     ports:
       - "5102:80"
 
@@ -95,6 +99,7 @@ services:
       - AzureServiceBusEnabled=False
       - AzureStorageEnabled=False
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
+      - OrchestratorType=${ORCHESTRATOR_TYPE}
     ports:
       - "5110:80"
 
@@ -116,6 +121,7 @@ services:
       - PaymentUrlHC=http://payment.api/hc
       - UseCustomizationData=True
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
+      - OrchestratorType=${ORCHESTRATOR_TYPE}
     ports:
       - "5104:80"
 
@@ -137,6 +143,7 @@ services:
       - PaymentUrlHC=http://payment.api/hc
       - UseCustomizationData=True
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
+      - OrchestratorType=${ORCHESTRATOR_TYPE}
     ports:
       - "5100:80"
 
@@ -154,6 +161,7 @@ services:
       - mvc=http://webmvc/hc
       - spa=http://webspa/hc
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
+      - OrchestratorType=${ORCHESTRATOR_TYPE}
     ports:
       - "5107:80"
 
@@ -182,6 +190,7 @@ services:
       - EventBusPassword=${ESHOP_SERVICE_BUS_PASSWORD}          
       - AzureServiceBusEnabled=False
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
+      - OrchestratorType=${ORCHESTRATOR_TYPE}
     ports:
       - "5109:80"
 

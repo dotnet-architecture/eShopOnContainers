@@ -32,11 +32,18 @@ spec:
            configMapKeyRef:
              name: externalcfg
              key: UseAzureServiceBus
+        - name: ApplicationInsights__InstrumentationKey
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: Instrumentation_Key
         - name: IdentityUrl
           valueFrom:
            configMapKeyRef:
              name: urls
              key: IdentityUrl
+        - name: OrchestratorType
+          value: 'K8S'
         ports:
         - containerPort: 80
         readinessProbe:
@@ -95,6 +102,13 @@ spec:
            configMapKeyRef:
              name: externalcfg
              key: CatalogBus
+        - name: ApplicationInsights__InstrumentationKey
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: Instrumentation_Key
+        - name: OrchestratorType
+          value: 'K8S' 
         ports:
         - containerPort: 80
         readinessProbe:
@@ -133,7 +147,7 @@ spec:
         env:
         - name: PATH_BASE
           value: /identity
-        - name: ConnectionStrings__DefaultConnection
+        - name: ConnectionString
           valueFrom:
            configMapKeyRef:
              name: externalcfg
@@ -174,7 +188,14 @@ spec:
           valueFrom:
            configMapKeyRef:
              name: urls
-             key: OrderingApiClient                               
+             key: OrderingApiClient  
+        - name: ApplicationInsights__InstrumentationKey
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: Instrumentation_Key 
+        - name: OrchestratorType
+          value: 'K8S'                            
         ports:
         - containerPort: 80
         readinessProbe:
@@ -242,7 +263,14 @@ spec:
           valueFrom:
            configMapKeyRef:
              name: externalcfg
-             key: GracePeriodManager_GracePeriodTime             
+             key: GracePeriodManager_GracePeriodTime  
+        - name: ApplicationInsights__InstrumentationKey
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: Instrumentation_Key
+        - name: OrchestratorType
+          value: 'K8S'           
         ports:
         - containerPort: 80
         readinessProbe:
@@ -310,7 +338,14 @@ spec:
           valueFrom:
            configMapKeyRef:
              name: urls
-             key: IdentityUrl             
+             key: IdentityUrl   
+        - name: ApplicationInsights__InstrumentationKey
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: Instrumentation_Key
+        - name: OrchestratorType
+          value: 'K8S'          
         ports:
         - containerPort: 80
         readinessProbe:
@@ -388,7 +423,14 @@ spec:
           valueFrom:
            configMapKeyRef:
              name: urls
-             key: Marketing_PicBaseUrl             
+             key: Marketing_PicBaseUrl 
+        - name: ApplicationInsights__InstrumentationKey
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: Instrumentation_Key
+        - name: OrchestratorType
+          value: 'K8S'            
         ports:
         - containerPort: 80
         readinessProbe:
@@ -437,6 +479,13 @@ spec:
            configMapKeyRef:
              name: externalcfg
              key: PaymentBus
+        - name: ApplicationInsights__InstrumentationKey
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: Instrumentation_Key
+        - name: OrchestratorType
+          value: 'K8S'
         ports:
         - containerPort: 80
         readinessProbe:
@@ -546,7 +595,14 @@ spec:
           valueFrom:
            configMapKeyRef:
              name: urls
-             key: PaymentHealthCheckUrl          
+             key: PaymentHealthCheckUrl  
+        - name: ApplicationInsights__InstrumentationKey
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: Instrumentation_Key
+        - name: OrchestratorType
+          value: 'K8S'        
         ports:
         - containerPort: 80
         readinessProbe:
@@ -629,7 +685,14 @@ spec:
           valueFrom:
            configMapKeyRef:
              name: urls
-             key: PaymentHealthCheckUrl          
+             key: PaymentHealthCheckUrl 
+        - name: ApplicationInsights__InstrumentationKey
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: Instrumentation_Key  
+        - name: OrchestratorType
+          value: 'K8S'       
         ports:
         - containerPort: 80
       imagePullSecrets:
@@ -726,6 +789,13 @@ spec:
            configMapKeyRef:
              name: urls
              key: PaymentHealthCheckUrl
+        - name: ApplicationInsights__InstrumentationKey
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: Instrumentation_Key
+        - name: OrchestratorType
+          value: 'K8S'
         ports:
         - containerPort: 80
         readinessProbe:

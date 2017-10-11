@@ -33,6 +33,12 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API
         {
             services.AddApplicationInsightsTelemetry(Configuration);
 
+            if (Configuration.GetValue<string>("OrchestratorType").Equals("K8S"))
+            {
+                // Enable K8s telemetry initializer
+                services.EnableKubernetes();
+            }
+
             // Add framework services.
             services.AddDbContext<ApplicationDbContext>(options =>
              options.UseSqlServer(Configuration["ConnectionString"],

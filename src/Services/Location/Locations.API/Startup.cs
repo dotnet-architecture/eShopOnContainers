@@ -39,6 +39,12 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
         {
             services.AddApplicationInsightsTelemetry(Configuration);
 
+            if (Configuration.GetValue<string>("OrchestratorType").Equals("K8S"))
+            {
+                // Enable K8s telemetry initializer
+                services.EnableKubernetes();
+            }
+
             services.AddMvc(options =>
             {
                 options.Filters.Add(typeof(HttpGlobalExceptionFilter));

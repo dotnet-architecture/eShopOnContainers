@@ -38,6 +38,12 @@ namespace eShopConContainers.WebSPA
         {
             services.AddApplicationInsightsTelemetry(Configuration);
 
+            if (Configuration.GetValue<string>("OrchestratorType").Equals("K8S"))
+            {
+                // Enable K8s telemetry initializer
+                services.EnableKubernetes();
+            }
+
             services.AddHealthChecks(checks =>
             {
                 var minutes = 1;

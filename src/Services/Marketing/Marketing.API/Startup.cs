@@ -46,6 +46,12 @@
         {
             services.AddApplicationInsightsTelemetry(Configuration);
 
+            if (Configuration.GetValue<string>("OrchestratorType").Equals("K8S"))
+            {
+                // Enable K8s telemetry initializer
+                services.EnableKubernetes();
+            }
+
             // Add framework services.
             services.AddMvc(options =>
             {
@@ -200,7 +206,7 @@
             ConfigureEventBus(app);
         }
 
-        private void ConfigureAuthService(IServiceCollection services)
+        private void ConfigureAuthService(IServiceCollection services, ILoggerFactory loggerFactory)
         {
             // prevent from mapping "sub" claim to nameidentifier.
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();

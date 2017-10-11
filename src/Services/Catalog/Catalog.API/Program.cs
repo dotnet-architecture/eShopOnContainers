@@ -32,6 +32,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
              .UseStartup<Startup>()
+                .UseApplicationInsights()
                 .UseHealthChecks("/hc")
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseWebRoot("Pics")
@@ -44,8 +45,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
                     builder.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
                     builder.AddConsole();
                     builder.AddDebug();
-                })
-                .UseApplicationInsights()
+                })                
                 .Build();    
     }
 }

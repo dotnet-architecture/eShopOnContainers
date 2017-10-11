@@ -33,6 +33,12 @@ namespace Microsoft.eShopOnContainers.WebMVC
         {
             services.AddApplicationInsightsTelemetry(Configuration);
 
+            if (Configuration.GetValue<string>("OrchestratorType").Equals("K8S"))
+            {
+                // Enable K8s telemetry initializer
+                services.EnableKubernetes();
+            }
+
             services.AddMvc();            
             services.AddSession();
 
