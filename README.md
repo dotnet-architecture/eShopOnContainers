@@ -14,9 +14,9 @@ To access the .NET Core 1.1 version you can use the `netcore1.1` tag ([https://g
 
 > ### DISCLAIMER
 > **IMPORTANT:** The current state of this sample application is **BETA** for the .NET Core 2.0 version, and v1.0 for the .NET Core 1.1.2 version tagged ([https://github.com/dotnet-architecture/eShopOnContainers/tree/netcore1.1](https://github.com/dotnet-architecture/eShopOnContainers/tree/netcore1.1))
-P>
+<P>
 > This reference application proposes a simplified microservice oriented architecture implementation to introduce technologies like .NET Core with Docker containers through a comprehensive application. The chosen domain is an eShop/eCommerce but simply because it is a well-know domain by most people/developers.
-However, this sample application should not be considered as an "eCommerce reference model", at all. The implemented business domain might not be ideal from an eCommerce business point of view. It is neither trying to solve all the problems in a large, scalable and mission-critical distributed system. It is just a bootstrap for developers to easily get started in the world of Docker containers and microservices with .NET Core.
+However, this sample application should not be considered as an "eCommerce reference model", at all. The implemented business domain might not be perfect from an eCommerce business point of view. It is neither trying to solve all the problems in a large, scalable and mission-critical distributed system, like hyper-scale or production-ready security. It is just a bootstrap for developers to easily get started in the world of Docker containers and microservices with .NET Core.
 > <p>The next step after understanding Docker containers and microservices development with .NET Core, is to select a microservice cluster/orchestrator like Azure Service Fabric or Kubernetes, DC/OS or Docker Swarm (in Azure Container Service). Kubernetes and Service Fabric are being tested with eShopOnContainer.
 
 > Additional steps already tested in eShopOnContainers are about moving your databases to HA cloud services (like Azure SQL DB), to implement your EventBus with Azure Service Bus or any other production ready Service Bus in the market.
