@@ -79,6 +79,17 @@
                 //Check Client vs. Server evaluation: https://docs.microsoft.com/en-us/ef/core/querying/client-eval
             });
 
+            services.AddDbContext<IntegrationEventLogContext>(options =>
+            {
+                options.UseSqlServer(Configuration["ConnectionString"],
+                                     sqlServerOptionsAction: sqlOptions =>
+                                     {
+                                         sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
+                                         //Configuring Connection Resiliency: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency 
+                                         sqlOptions.EnableRetryOnFailure(maxRetryCount: 10, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
+                                     });
+            });
+
             services.Configure<CatalogSettings>(Configuration);
 
             // Add framework services.
