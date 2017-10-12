@@ -16,5 +16,6 @@
   "CheckUpdateTime": "30000",
   "ApplicationInsights": {
     "InstrumentationKey": ""
-  }
+  },
+  "EventBusRetryCount": 5
 }

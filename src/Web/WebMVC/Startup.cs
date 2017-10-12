@@ -79,7 +79,24 @@ namespace Microsoft.eShopOnContainers.WebMVC
 
             if (Configuration.GetValue<string>("UseResilientHttp") == bool.TrueString)
             {
-                services.AddSingleton<IResilientHttpClientFactory, ResilientHttpClientFactory>();
+                services.AddSingleton<IResilientHttpClientFactory, ResilientHttpClientFactory>(sp =>
+                {
+                    var logger = sp.GetRequiredService<ILogger<ResilientHttpClient>>();
+
+                    var retryCount = 6;
+                    if (!string.IsNullOrEmpty(Configuration["HttpClientRetryCount"]))
+                    {
+                        retryCount = int.Parse(Configuration["HttpClientRetryCount"]);
+                    }
+
+                    var exceptionsAllowedBeforeBreaking = 5;
+                    if (!string.IsNullOrEmpty(Configuration["HttpClientExceptionsAllowedBeforeBreaking"]))
+                    {
+                        exceptionsAllowedBeforeBreaking = int.Parse(Configuration["HttpClientExceptionsAllowedBeforeBreaking"]);
+                    }
+
+                    return new ResilientHttpClientFactory(logger, exceptionsAllowedBeforeBreaking, retryCount);
+                });
                 services.AddSingleton<IHttpClient, ResilientHttpClient>(sp => sp.GetService<IResilientHttpClientFactory>().CreateResilientHttpClient());
             }
             else
