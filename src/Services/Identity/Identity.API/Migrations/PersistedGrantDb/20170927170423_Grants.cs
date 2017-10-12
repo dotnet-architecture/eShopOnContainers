@@ -1,10 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 using System;
-using System.Collections.Generic;
 
 namespace Identity.API.Migrations.PersistedGrantDb
 {
-    public partial class Initial : Migration
+    public partial class Grants : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
