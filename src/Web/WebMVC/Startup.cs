@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
+﻿using Microsoft.ApplicationInsights.Extensibility;
+using Microsoft.ApplicationInsights.ServiceFabric;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -31,13 +33,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddApplicationInsightsTelemetry(Configuration);
-
-            if (Configuration.GetValue<string>("OrchestratorType").Equals("K8S"))
-            {
-                // Enable K8s telemetry initializer
-                services.EnableKubernetes();
-            }
+            RegisterAppInsights(services);
 
             services.AddMvc();            
             services.AddSession();
@@ -179,6 +175,23 @@ namespace Microsoft.eShopOnContainers.WebMVC
                     name: "defaultError",
                     template: "{controller=Error}/{action=Error}");
             });
+        }
+
+        private void RegisterAppInsights(IServiceCollection services)
+        {
+            services.AddApplicationInsightsTelemetry(Configuration);
+
+            if (Configuration.GetValue<string>("OrchestratorType").Equals("K8S"))
+            {
+                // Enable K8s telemetry initializer
+                services.EnableKubernetes();
+            }
+            if (Configuration.GetValue<string>("OrchestratorType").Equals("SF"))
+            {
+                // Enable SF telemetry initializer
+                services.AddSingleton<ITelemetryInitializer>((serviceProvider) =>
+                    new FabricTelemetryInitializer());
+            }
         }
     }
 }

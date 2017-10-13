@@ -32,6 +32,8 @@
       <EnvironmentVariable Name="BasketApiClient" Value=""/>
       <EnvironmentVariable Name="OrderingApiClient" Value=""/>
       <EnvironmentVariable Name="UseCustomizationData" Value="True"/>
+      <EnvironmentVariable Name="ApplicationInsights__InstrumentationKey" Value=""/>
+      <EnvironmentVariable Name="OrchestratorType" Value="SF"/>
     </EnvironmentVariables>
 
   </CodePackage>

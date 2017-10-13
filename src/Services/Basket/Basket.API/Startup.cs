@@ -3,6 +3,8 @@ using Autofac.Extensions.DependencyInjection;
 using Basket.API.Infrastructure.Filters;
 using Basket.API.IntegrationEvents.EventHandling;
 using Basket.API.IntegrationEvents.Events;
+using Microsoft.ApplicationInsights.Extensibility;
+using Microsoft.ApplicationInsights.ServiceFabric;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -44,7 +46,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            services.AddApplicationInsightsTelemetry(Configuration);
+            RegisterAppInsights(services);            
 
             // Add framework services.
             services.AddMvc(options =>
@@ -63,13 +65,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
                                         );
             });
 
-            services.Configure<BasketSettings>(Configuration);           
-
-            if(Configuration.GetValue<string>("OrchestratorType").Equals("K8S"))
-            {
-                // Enable K8s telemetry initializer
-                services.EnableKubernetes();
-            }
+            services.Configure<BasketSettings>(Configuration);            
 
             //By connecting here we are making sure that our service
             //cannot start until redis is ready. This might slow down startup,
@@ -80,7 +76,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             services.AddSingleton<ConnectionMultiplexer>(sp =>
             {
                 var settings = sp.GetRequiredService<IOptions<BasketSettings>>().Value;
-                var configuration = ConfigurationOptions.Parse(settings.ConnectionString, true);           
+                var configuration = ConfigurationOptions.Parse(settings.ConnectionString, true);
 
                 configuration.ResolveDns = true;
 
@@ -111,7 +107,8 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
                         HostName = Configuration["EventBusConnection"]
                     };
 
-                    if (!string.IsNullOrEmpty(Configuration["EventBusUserName"])) {
+                    if (!string.IsNullOrEmpty(Configuration["EventBusUserName"]))
+                    {
                         factory.UserName = Configuration["EventBusUserName"];
                     }
 
@@ -169,7 +166,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IBasketRepository, RedisBasketRepository>();
             services.AddTransient<IIdentityService, IdentityService>();
-            
+
             services.AddOptions();
 
             var container = new ContainerBuilder();
@@ -177,8 +174,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
 
             return new AutofacServiceProvider(container.Build());
         }
-
-      
+    
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
@@ -208,6 +204,23 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
 
             ConfigureEventBus(app);
 
+        }
+
+        private void RegisterAppInsights(IServiceCollection services)
+        {
+            services.AddApplicationInsightsTelemetry(Configuration);
+
+            if (Configuration.GetValue<string>("OrchestratorType").Equals("K8S"))
+            {
+                // Enable K8s telemetry initializer
+                services.EnableKubernetes();
+            }
+            if (Configuration.GetValue<string>("OrchestratorType").Equals("SF"))
+            {
+                // Enable SF telemetry initializer
+                services.AddSingleton<ITelemetryInitializer>((serviceProvider) =>
+                    new FabricTelemetryInitializer());
+            }
         }
 
         private void ConfigureAuthService(IServiceCollection services)

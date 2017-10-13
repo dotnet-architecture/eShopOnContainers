@@ -33,6 +33,8 @@
       <EnvironmentVariable Name="BasketUrlHC" Value="http://basketapi.eshoponservicefabric:5103/hc"/>
       <EnvironmentVariable Name="MarketingUrlHC" Value="http://marketingapi.eshoponservicefabric:5110/hc"/>
       <EnvironmentVariable Name="UseCustomizationData" Value="True"/>
+      <EnvironmentVariable Name="ApplicationInsights__InstrumentationKey" Value=""/>
+      <EnvironmentVariable Name="OrchestratorType" Value="SF"/>
     </EnvironmentVariables>
   </CodePackage>
 

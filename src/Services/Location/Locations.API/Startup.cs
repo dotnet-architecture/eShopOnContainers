@@ -1,5 +1,7 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Microsoft.ApplicationInsights.Extensibility;
+using Microsoft.ApplicationInsights.ServiceFabric;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -37,13 +39,7 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            services.AddApplicationInsightsTelemetry(Configuration);
-
-            if (Configuration.GetValue<string>("OrchestratorType").Equals("K8S"))
-            {
-                // Enable K8s telemetry initializer
-                services.EnableKubernetes();
-            }
+            RegisterAppInsights(services);
 
             services.AddMvc(options =>
             {
@@ -180,6 +176,23 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
 
             LocationsContextSeed.SeedAsync(app, loggerFactory)
                 .Wait();
+        }
+
+        private void RegisterAppInsights(IServiceCollection services)
+        {
+            services.AddApplicationInsightsTelemetry(Configuration);
+
+            if (Configuration.GetValue<string>("OrchestratorType").Equals("K8S"))
+            {
+                // Enable K8s telemetry initializer
+                services.EnableKubernetes();
+            }
+            if (Configuration.GetValue<string>("OrchestratorType").Equals("SF"))
+            {
+                // Enable SF telemetry initializer
+                services.AddSingleton<ITelemetryInitializer>((serviceProvider) =>
+                    new FabricTelemetryInitializer());
+            }
         }
 
         private void ConfigureAuthService(IServiceCollection services)

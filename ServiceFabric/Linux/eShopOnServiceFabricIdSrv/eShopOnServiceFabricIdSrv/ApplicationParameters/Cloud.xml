@@ -9,5 +9,6 @@
     <Parameter Name="MarketingApiClient" Value="http://#{your_sf_dns}#:5110" />
     <Parameter Name="BasketApiClient" Value="http://#{your_sf_dns}#:5103" />
     <Parameter Name="OrderingApiClient" Value="http://#{your_sf_dns}#:5102" />
+    <Parameter Name="InstrumentationKey" Value="" />
   </Parameters>
 </Application>

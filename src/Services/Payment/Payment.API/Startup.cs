@@ -17,6 +17,8 @@ using RabbitMQ.Client;
 using System;
 using System.Threading.Tasks;
 using Swashbuckle.AspNetCore.Swagger;
+using Microsoft.ApplicationInsights.Extensibility;
+using Microsoft.ApplicationInsights.ServiceFabric;
 
 namespace Payment.API
 {
@@ -31,16 +33,10 @@ namespace Payment.API
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
-        {
-            services.AddApplicationInsightsTelemetry(Configuration);
-
+        {            
             services.Configure<PaymentSettings>(Configuration);
 
-            if (Configuration.GetValue<string>("OrchestratorType").Equals("K8S"))
-            {
-                // Enable K8s telemetry initializer
-                services.EnableKubernetes();
-            }
+            RegisterAppInsights(services);
 
             if (Configuration.GetValue<bool>("AzureServiceBusEnabled"))
             {
@@ -109,6 +105,23 @@ namespace Payment.API
             }
 
             ConfigureEventBus(app);
+        }
+
+        private void RegisterAppInsights(IServiceCollection services)
+        {
+            services.AddApplicationInsightsTelemetry(Configuration);
+
+            if (Configuration.GetValue<string>("OrchestratorType").Equals("K8S"))
+            {
+                // Enable K8s telemetry initializer
+                services.EnableKubernetes();
+            }
+            if (Configuration.GetValue<string>("OrchestratorType").Equals("SF"))
+            {
+                // Enable SF telemetry initializer
+                services.AddSingleton<ITelemetryInitializer>((serviceProvider) =>
+                    new FabricTelemetryInitializer());
+            }
         }
 
         private void RegisterEventBus(IServiceCollection services)

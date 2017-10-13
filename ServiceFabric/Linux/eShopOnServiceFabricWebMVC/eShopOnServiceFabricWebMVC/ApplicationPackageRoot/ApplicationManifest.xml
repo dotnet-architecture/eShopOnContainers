@@ -7,6 +7,7 @@
   <Parameters>
     <Parameter Name="WebMVC_InstanceCount" DefaultValue="-1" />
     <Parameter Name="IdentityUrl" DefaultValue="" />
+    <Parameter Name="InstrumentationKey" DefaultValue="" />
   </Parameters>
   <!-- Import the ServiceManifest from the ServicePackage. The ServiceManifestName and ServiceManifestVersion 
        should match the Name and Version attributes of the ServiceManifest element defined in the 
@@ -15,7 +16,8 @@
     <ServiceManifestRef ServiceManifestName="WebMVCPkg" ServiceManifestVersion="1.0.0" />
     <!-- Override external urls depending on environment -->
     <EnvironmentOverrides CodePackageRef="Code">
-      <EnvironmentVariable Name="IdentityUrl" Value="[IdentityUrl]"/>      
+      <EnvironmentVariable Name="IdentityUrl" Value="[IdentityUrl]"/>
+      <EnvironmentVariable Name="ApplicationInsights__InstrumentationKey" Value="[InstrumentationKey]"/>
     </EnvironmentOverrides>
     <Policies>
       <ContainerHostPolicies CodePackageRef="Code">

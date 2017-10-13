@@ -30,6 +30,8 @@
       <EnvironmentVariable Name="AzureStorageEnabled" Value="False"/>
       <EnvironmentVariable Name="EventBusConnection" Value="rabbitmq.eshoponservicefabricbus"/>
       <EnvironmentVariable Name="AzureServiceBusEnabled" Value="False"/>
+      <EnvironmentVariable Name="ApplicationInsights__InstrumentationKey" Value=""/>
+      <EnvironmentVariable Name="OrchestratorType" Value="SF"/>
     </EnvironmentVariables>
   </CodePackage>
 

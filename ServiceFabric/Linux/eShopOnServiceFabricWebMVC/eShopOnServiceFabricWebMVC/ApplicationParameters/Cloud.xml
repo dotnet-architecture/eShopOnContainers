@@ -3,5 +3,6 @@
   <Parameters>
     <Parameter Name="WebMVC_InstanceCount" Value="-1" />
     <Parameter Name="IdentityUrl" Value="http://#{your_sf_dns}#:5105" />
+    <Parameter Name="InstrumentationKey" Value="" />
   </Parameters>
 </Application>

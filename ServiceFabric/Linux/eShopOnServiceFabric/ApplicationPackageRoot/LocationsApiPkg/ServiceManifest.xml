@@ -27,7 +27,9 @@
       <EnvironmentVariable Name="identityUrl" Value="http://identityapi.eshoponservicefabric:5105"/>
       <EnvironmentVariable Name="IdentityUrlExternal" Value=""/>
       <EnvironmentVariable Name="EventBusConnection" Value="rabbitmq.eshoponservicefabricbus"/>
-      <EnvironmentVariable Name="AzureServiceBusEnabled" Value="False"/>      
+      <EnvironmentVariable Name="AzureServiceBusEnabled" Value="False"/>
+      <EnvironmentVariable Name="ApplicationInsights__InstrumentationKey" Value=""/>
+      <EnvironmentVariable Name="OrchestratorType" Value="SF"/>
     </EnvironmentVariables>
   </CodePackage>
 

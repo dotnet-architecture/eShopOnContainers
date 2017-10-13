@@ -30,6 +30,8 @@
       <EnvironmentVariable Name="LocationsUrl" Value="http://locationsapi.eshoponservicefabric:5109"/>
       <EnvironmentVariable Name="mvc" Value="http://webmvc.eshoponservicefabric:5100"/>
       <EnvironmentVariable Name="spa" Value="http://webspa.eshoponservicefabric:5104"/>
+      <EnvironmentVariable Name="ApplicationInsights__InstrumentationKey" Value=""/>
+      <EnvironmentVariable Name="OrchestratorType" Value="SF"/>
     </EnvironmentVariables>
   </CodePackage>
 

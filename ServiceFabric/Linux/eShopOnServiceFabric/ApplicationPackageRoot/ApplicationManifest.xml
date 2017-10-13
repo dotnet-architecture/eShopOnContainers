@@ -13,6 +13,7 @@
     <Parameter Name="BasketApi_InstanceCount" DefaultValue="-1" />
     <Parameter Name="IdentityUrlExternal" DefaultValue="" />
     <Parameter Name="PicBaseUrl" DefaultValue="" />
+    <Parameter Name="InstrumentationKey" DefaultValue="" />
   </Parameters>
   <!-- Import the ServiceManifest from the ServicePackage. The ServiceManifestName and ServiceManifestVersion 
        should match the Name and Version attributes of the ServiceManifest element defined in the 
@@ -23,6 +24,7 @@
     <!-- Override external urls depending on environment -->
     <EnvironmentOverrides CodePackageRef="Code">
       <EnvironmentVariable Name="IdentityUrlExternal" Value="[IdentityUrlExternal]"/>
+      <EnvironmentVariable Name="ApplicationInsights__InstrumentationKey" Value="[InstrumentationKey]"/>
     </EnvironmentOverrides>
     <Policies>
     <ContainerHostPolicies CodePackageRef="Code">
@@ -34,6 +36,7 @@
     <ServiceManifestRef ServiceManifestName="LocationsApiPkg" ServiceManifestVersion="1.0.0" />
     <EnvironmentOverrides CodePackageRef="Code">
       <EnvironmentVariable Name="IdentityUrlExternal" Value="[IdentityUrlExternal]"/>
+      <EnvironmentVariable Name="ApplicationInsights__InstrumentationKey" Value="[InstrumentationKey]"/>
     </EnvironmentOverrides>
     <Policies>
       <ContainerHostPolicies CodePackageRef="Code">
@@ -43,7 +46,9 @@
   </ServiceManifestImport>
   <ServiceManifestImport>
     <ServiceManifestRef ServiceManifestName="PaymentApiPkg" ServiceManifestVersion="1.0.0" />
-    <ConfigOverrides />
+    <EnvironmentOverrides CodePackageRef="Code">
+      <EnvironmentVariable Name="ApplicationInsights__InstrumentationKey" Value="[InstrumentationKey]"/>
+    </EnvironmentOverrides>
     <Policies>
       <ContainerHostPolicies CodePackageRef="Code">
         <PortBinding ContainerPort="80" EndpointRef="PaymentApiTypeEndpoint"/>
@@ -54,6 +59,7 @@
     <ServiceManifestRef ServiceManifestName="OrderingApiPkg" ServiceManifestVersion="1.0.0" />
     <EnvironmentOverrides CodePackageRef="Code">
       <EnvironmentVariable Name="IdentityUrlExternal" Value="[IdentityUrlExternal]"/>
+      <EnvironmentVariable Name="ApplicationInsights__InstrumentationKey" Value="[InstrumentationKey]"/>
     </EnvironmentOverrides>
     <Policies>
       <ContainerHostPolicies CodePackageRef="Code">
@@ -65,6 +71,7 @@
     <ServiceManifestRef ServiceManifestName="CatalogApiPkg" ServiceManifestVersion="1.0.0" />
     <EnvironmentOverrides CodePackageRef="Code">
       <EnvironmentVariable Name="PicBaseUrl" Value="[PicBaseUrl]"/>
+      <EnvironmentVariable Name="ApplicationInsights__InstrumentationKey" Value="[InstrumentationKey]"/>
     </EnvironmentOverrides>
     <Policies>
       <ContainerHostPolicies CodePackageRef="Code">
@@ -76,6 +83,7 @@
     <ServiceManifestRef ServiceManifestName="BasketApiPkg" ServiceManifestVersion="1.0.0" />
     <EnvironmentOverrides CodePackageRef="Code">
       <EnvironmentVariable Name="IdentityUrlExternal" Value="[IdentityUrlExternal]"/>
+      <EnvironmentVariable Name="ApplicationInsights__InstrumentationKey" Value="[InstrumentationKey]"/>
     </EnvironmentOverrides>
     <Policies>
       <ContainerHostPolicies CodePackageRef="Code">

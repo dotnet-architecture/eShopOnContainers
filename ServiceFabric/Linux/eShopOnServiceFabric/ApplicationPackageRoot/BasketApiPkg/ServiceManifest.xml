@@ -27,6 +27,8 @@
       <EnvironmentVariable Name="IdentityUrlExternal" Value="http://#{your_sf_dns}#:5105"/>
       <EnvironmentVariable Name="EventBusConnection" Value="rabbitmq.eshoponservicefabricbus"/>
       <EnvironmentVariable Name="AzureServiceBusEnabled" Value="False"/>
+      <EnvironmentVariable Name="ApplicationInsights__InstrumentationKey" Value=""/>
+      <EnvironmentVariable Name="OrchestratorType" Value="SF"/>
     </EnvironmentVariables>
   </CodePackage>
 
@@ -43,3 +45,4 @@
     </Endpoints>
   </Resources>
 </ServiceManifest>
+

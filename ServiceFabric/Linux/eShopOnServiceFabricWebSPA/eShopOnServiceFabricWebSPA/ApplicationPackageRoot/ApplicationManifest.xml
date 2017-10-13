@@ -11,6 +11,7 @@
     <Parameter Name="BasketUrl" DefaultValue="" />
     <Parameter Name="MarketingUrl" DefaultValue="" />
     <Parameter Name="IdentityUrl" DefaultValue="" />
+    <Parameter Name="InstrumentationKey" DefaultValue="" />
   </Parameters>
   <!-- Import the ServiceManifest from the ServicePackage. The ServiceManifestName and ServiceManifestVersion 
        should match the Name and Version attributes of the ServiceManifest element defined in the 
@@ -24,6 +25,7 @@
       <EnvironmentVariable Name="BasketUrl" Value="[BasketUrl]"/>
       <EnvironmentVariable Name="MarketingUrl" Value="[MarketingUrl]"/>
       <EnvironmentVariable Name="IdentityUrl" Value="[IdentityUrl]"/>
+      <EnvironmentVariable Name="ApplicationInsights__InstrumentationKey" Value="[InstrumentationKey]"/>
     </EnvironmentOverrides>
     <Policies>
       <ContainerHostPolicies CodePackageRef="Code">
