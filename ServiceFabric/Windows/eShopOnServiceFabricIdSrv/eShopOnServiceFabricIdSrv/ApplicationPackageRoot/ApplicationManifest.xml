@@ -13,6 +13,7 @@
     <Parameter Name="MarketingApiClient" DefaultValue="" />
     <Parameter Name="BasketApiClient" DefaultValue="" />
     <Parameter Name="OrderingApiClient" DefaultValue="" />
+    <Parameter Name="InstrumentationKey" DefaultValue="" />
   </Parameters>
   <!-- Import the ServiceManifest from the ServicePackage. The ServiceManifestName and ServiceManifestVersion 
        should match the Name and Version attributes of the ServiceManifest element defined in the 
@@ -28,6 +29,7 @@
       <EnvironmentVariable Name="MarketingApiClient" Value="[MarketingApiClient]"/>
       <EnvironmentVariable Name="BasketApiClient" Value="[BasketApiClient]"/>
       <EnvironmentVariable Name="OrderingApiClient" Value="[OrderingApiClient]"/>
+      <EnvironmentVariable Name="ApplicationInsights:InstrumentationKey" Value="[InstrumentationKey]"/>
     </EnvironmentOverrides>
     <Policies>
       <ContainerHostPolicies CodePackageRef="Code">

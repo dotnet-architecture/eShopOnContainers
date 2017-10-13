@@ -7,5 +7,6 @@
     <Parameter Name="BasketUrl" Value="http://#{your_sf_dns}#:5103" />
     <Parameter Name="MarketingUrl" Value="http://#{your_sf_dns}#:5110" />
     <Parameter Name="IdentityUrl" Value="http://#{your_sf_dns}#:5105" />
+    <Parameter Name="InstrumentationKey" Value="" />
   </Parameters>
 </Application>

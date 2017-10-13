@@ -32,6 +32,8 @@
       <EnvironmentVariable Name="CheckUpdateTime" Value="30000"/>
       <EnvironmentVariable Name="EventBusUserName" Value="admin"/>
       <EnvironmentVariable Name="EventBusPassword" Value="password"/>
+      <EnvironmentVariable Name="ApplicationInsights:InstrumentationKey" Value=""/>
+      <EnvironmentVariable Name="OrchestratorType" Value="SF"/>
     </EnvironmentVariables>
   </CodePackage>
 

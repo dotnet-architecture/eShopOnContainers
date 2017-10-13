@@ -36,6 +36,8 @@
       <EnvironmentVariable Name="MongoConnectionString" Value="mongodb://mongodb.eshoponservicefabricnosql"/>
       <EnvironmentVariable Name="MongoDatabase" Value="MarketingDb"/>
       <EnvironmentVariable Name="identityUrl" Value="http://identityapi.eshoponservicefabric:5105"/>
+      <EnvironmentVariable Name="ApplicationInsights:InstrumentationKey" Value=""/>
+      <EnvironmentVariable Name="OrchestratorType" Value="SF"/>
     </EnvironmentVariables>
   </CodePackage>
   
