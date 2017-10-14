@@ -1,5 +1,7 @@
 #!/bin/sh
 
+# List of microservices here needs to be updated to include all the new microservices (Marketing, etc.)
+
 projectList=(
     "../src/Services/Catalog/Catalog.API"
     "../src/Services/Basket/Basket.API"
@@ -38,3 +40,5 @@ fi
 
 # No need to build the images, docker build or docker compose will
 # do that using the images and containers defined in the docker-compose.yml file.
+#
+#

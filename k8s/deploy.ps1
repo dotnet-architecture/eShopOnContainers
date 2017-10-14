@@ -161,7 +161,8 @@ ExecKube -cmd 'create configmap urls `
     --from-literal=LocationApiClient=http://$($externalDns)/locations-api `
     --from-literal=MarketingApiClient=http://$($externalDns)/marketing-api `
     --from-literal=BasketApiClient=http://$($externalDns)/basket-api `
-    --from-literal=OrderingApiClient=http://$($externalDns)/ordering-api'
+    --from-literal=OrderingApiClient=http://$($externalDns)/ordering-api `
+    --from-literal=PaymentHealthCheckUrl=http://payment/hc'
 	
 
 ExecKube -cmd 'label configmap urls app=eshop'

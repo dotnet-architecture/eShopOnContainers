@@ -32,13 +32,34 @@ spec:
            configMapKeyRef:
              name: externalcfg
              key: UseAzureServiceBus
+        - name: ApplicationInsights__InstrumentationKey
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: Instrumentation_Key
         - name: IdentityUrl
           valueFrom:
            configMapKeyRef:
              name: urls
              key: IdentityUrl
+        - name: OrchestratorType
+          value: 'K8S'
         ports:
-        - containerPort: 80      
+        - containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 5
+          periodSeconds: 10 
+        livenessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 60
+          periodSeconds: 10                 
       imagePullSecrets:
       - name: registry-key
 ---
@@ -81,8 +102,29 @@ spec:
            configMapKeyRef:
              name: externalcfg
              key: CatalogBus
+        - name: ApplicationInsights__InstrumentationKey
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: Instrumentation_Key
+        - name: OrchestratorType
+          value: 'K8S' 
         ports:
         - containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 5
+          periodSeconds: 10 
+        livenessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 60
+          periodSeconds: 10      
       imagePullSecrets:
       - name: registry-key
 ---
@@ -105,7 +147,7 @@ spec:
         env:
         - name: PATH_BASE
           value: /identity
-        - name: ConnectionStrings__DefaultConnection
+        - name: ConnectionString
           valueFrom:
            configMapKeyRef:
              name: externalcfg
@@ -146,9 +188,30 @@ spec:
           valueFrom:
            configMapKeyRef:
              name: urls
-             key: OrderingApiClient                               
+             key: OrderingApiClient  
+        - name: ApplicationInsights__InstrumentationKey
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: Instrumentation_Key 
+        - name: OrchestratorType
+          value: 'K8S'                            
         ports:
         - containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 5
+          periodSeconds: 10 
+        livenessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 60
+          periodSeconds: 10      
       imagePullSecrets:
       - name: registry-key
 ---
@@ -200,9 +263,30 @@ spec:
           valueFrom:
            configMapKeyRef:
              name: externalcfg
-             key: GracePeriodManager_GracePeriodTime             
+             key: GracePeriodManager_GracePeriodTime  
+        - name: ApplicationInsights__InstrumentationKey
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: Instrumentation_Key
+        - name: OrchestratorType
+          value: 'K8S'           
         ports:
         - containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 5
+          periodSeconds: 10 
+        livenessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 60
+          periodSeconds: 10      
       imagePullSecrets:
       - name: registry-key
 ---
@@ -254,9 +338,30 @@ spec:
           valueFrom:
            configMapKeyRef:
              name: urls
-             key: IdentityUrl             
+             key: IdentityUrl   
+        - name: ApplicationInsights__InstrumentationKey
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: Instrumentation_Key
+        - name: OrchestratorType
+          value: 'K8S'          
         ports:
         - containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 5
+          periodSeconds: 10 
+        livenessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 60
+          periodSeconds: 10      
       imagePullSecrets:
       - name: registry-key
 ---
@@ -318,9 +423,30 @@ spec:
           valueFrom:
            configMapKeyRef:
              name: urls
-             key: Marketing_PicBaseUrl             
+             key: Marketing_PicBaseUrl 
+        - name: ApplicationInsights__InstrumentationKey
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: Instrumentation_Key
+        - name: OrchestratorType
+          value: 'K8S'            
         ports:
         - containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 5
+          periodSeconds: 10 
+        livenessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 60
+          periodSeconds: 10      
       imagePullSecrets:
       - name: registry-key
 ---
@@ -353,8 +479,29 @@ spec:
            configMapKeyRef:
              name: externalcfg
              key: PaymentBus
+        - name: ApplicationInsights__InstrumentationKey
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: Instrumentation_Key
+        - name: OrchestratorType
+          value: 'K8S'
         ports:
         - containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 5
+          periodSeconds: 10 
+        livenessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 60
+          periodSeconds: 10       
       imagePullSecrets:
       - name: registry-key      
 ---
@@ -418,9 +565,60 @@ spec:
           valueFrom:
            configMapKeyRef:
              name: urls
-             key: MvcClientMarketingUrl             
+             key: MvcClientMarketingUrl 
+        - name: BasketUrlHC
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: BasketHealthCheckUrl        
+        - name: CatalogUrlHC
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: CatalogHealthCheckUrl
+        - name: IdentityUrlHC
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: IdentityHealthCheckUrl
+        - name: OrderingUrlHC
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: OrderingHealthCheckUrl
+        - name: MarketingUrlHC
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: MarketingHealthCheckUrl  
+        - name: PaymentUrlHC
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: PaymentHealthCheckUrl  
+        - name: ApplicationInsights__InstrumentationKey
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: Instrumentation_Key
+        - name: OrchestratorType
+          value: 'K8S'        
         ports:
         - containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 5
+          periodSeconds: 10 
+        livenessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 60
+          periodSeconds: 10      
       imagePullSecrets:
       - name: registry-key
 ---
@@ -482,7 +680,19 @@ spec:
           valueFrom:
            configMapKeyRef:
              name: urls
-             key: WebSpaHealthCheckUrl             
+             key: WebSpaHealthCheckUrl   
+        - name: PaymentUrl
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: PaymentHealthCheckUrl 
+        - name: ApplicationInsights__InstrumentationKey
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: Instrumentation_Key  
+        - name: OrchestratorType
+          value: 'K8S'       
         ports:
         - containerPort: 80
       imagePullSecrets:
@@ -574,7 +784,33 @@ spec:
            configMapKeyRef:
              name: urls
              key: MarketingHealthCheckUrl
+        - name: PaymentUrlHC
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: PaymentHealthCheckUrl
+        - name: ApplicationInsights__InstrumentationKey
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: Instrumentation_Key
+        - name: OrchestratorType
+          value: 'K8S'
         ports:
         - containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 5
+          periodSeconds: 10 
+        livenessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 60
+          periodSeconds: 10      
       imagePullSecrets:
       - name: registry-key

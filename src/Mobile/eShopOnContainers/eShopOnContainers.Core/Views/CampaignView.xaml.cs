@@ -1,8 +1,8 @@
-﻿namespace eShopOnContainers.Core.Views
-{
-    using Xamarin.Forms;
+﻿using Xamarin.Forms;
 
-    public partial class CampaignView: ContentPage
+namespace eShopOnContainers.Core.Views
+{
+    public partial class CampaignView : ContentPage
     {
 
         public CampaignView()

@@ -6,7 +6,8 @@
             "type": "string",
             "metadata": {
                 "description": "Name of the Azure Functions namespace"
-            }
+            },
+            "defaultValue": "mktfunctionsdemo"
         }
     },
     "variables": {
@@ -16,7 +17,7 @@
 		"ServerFarmPlan": "[concat(trim(variables('location')), 'Plan')]",
 		"StorageAccounts": "[concat(variables('SitesEshopfunctionsName'), 'st')]"
     },
-    "resources": [
+    "resources": [        
         {
             "type": "Microsoft.Storage/storageAccounts",
             "sku": {

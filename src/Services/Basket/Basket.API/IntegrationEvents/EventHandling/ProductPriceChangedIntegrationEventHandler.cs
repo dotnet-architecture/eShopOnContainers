@@ -18,7 +18,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.IntegrationEvents.Even
 
         public async Task Handle(ProductPriceChangedIntegrationEvent @event)
         {
-            var userIds = await _repository.GetUsersAsync();
+            var userIds = _repository.GetUsers();
             
             foreach (var id in userIds)
             {
