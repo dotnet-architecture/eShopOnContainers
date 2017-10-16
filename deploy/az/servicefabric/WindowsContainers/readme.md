@@ -9,7 +9,7 @@ However, when creating a cluster, there are quite a few configurations to take i
 
 Because of those reasons, we have created a set of ARM templates and scripts so you can create, re-create and configure the SF clusters much faster, as explained below: 
 
-Within eShopOnContainers root folder, at the folder [..\deploy\az\servicefabric\WindowsContainers](https://github.com/dotnet-architecture/eShopOnContainers/tree/dev/deploy/az/servicefabric/WindowsContainers), you can find the ARM template `servicefabricdeploy.json` and its parameters file (`servicefabricdeploy.parameters.json`) to create a Service Fabric cluster environment for Windows Containers.
+Within eShopOnContainers root folder, at the folder [..\deploy\az\servicefabric\WindowsContainers](https://github.com/dotnet-architecture/eShopOnContainers/tree/dev/deploy/az/servicefabric/WindowsContainers), you can find the ARM template `servicefabricdeploy.json` and its parameters file (`servicefabricdeploy.parameters.json`) to create a Service Fabric cluster environment for Windows Containers (NOT SECURED CLUSTER).
 
 ## Edit the servicefabricdeploy.parameters.json file
 
@@ -44,11 +44,18 @@ create-resources.cmd servicefabric\WindowsContainers\servicefabricdeploy qa-esho
 ```
 
 You should see a similar execution to the following:
+++++++++++++ IMAGE TBD ++++++++++++++
+
+Now, if you go to your subscription in Azure, you should be able to see the SF cluster already created and available, like in the following image:
+
+++++++++++++ IMAGE TBD ++++++++++++++
+
+In this case, this is an unsecured SF cluster with a single Windows node, good for initial tests and getting started with SF.
 
 
 ## B. Secured cluster (SF Windows cluster)
 
-The ARM template `servicefabricdeploysecured.json` and its parameter file (`servicefabricdeploysecured.parameters.json`) are used to create a service fabric cluster environment for windows containers secured with a certificate.
+Within eShopOnContainers root folder, at the folder [..\deploy\az\servicefabric\WindowsContainers](https://github.com/dotnet-architecture/eShopOnContainers/tree/dev/deploy/az/servicefabric/WindowsContainers), you can find the ARM template `servicefabricdeploysecured.json` and its parameter file (`servicefabricdeploysecured.parameters.json`) to create a secured Service Fabric cluster environment for Windows Containers (IN THIS CASE, IT IS A SECURED CLUSTER USING A CERTIFICATE).
 
 ## Create Azure Keyvault service
 Go to PortalAzure and create a Keyvault service. Make sure Enable access for deployment checkboxes are selected.
