@@ -1,32 +1,45 @@
-# Deploying Azure Service Fabric (No Secured)
+# Deploying a Service Fabric cluster based on Linux nodes (No Secured)
+You can always deploy a SF cluster through the Azure portal, as explained in this article: https://docs.microsoft.com/en-us/azure/service-fabric/service-fabric-get-started-azure-cluster
 
-The ARM template `servicefabricdeploy.json` and its parameter file (`servicefabricdeploy.parameters.json`) are used to create a service fabric cluster environment for linux containers.
+However, when creating a cluster, there are quite a few configurations to take into account, like enabling the internal DNS service or Reverse Proxy service, choosing between Linux/Windows, open/publish your application ports in the load-balancer and most of all (the most complex setup) how to create a secure cluster.
 
-## Editing servicefabricdeploy.parameters.json file
+Because of those reasons, we have created a set of ARM templates and scripts so you can create, re-create and configure the SF clusters much faster, as explained below: 
+
+Within eShopOnContainers root folder, at the folder [..\deploy\az\servicefabric\LinuxContainers](https://github.com/dotnet-architecture/eShopOnContainers/tree/dev/deploy/az/servicefabric/LinuxContainers), you can find the ARM template `servicefabricdeploy.json` and its parameters file (`servicefabricdeploy.parameters.json`) to create a Service Fabric cluster environment for Linux Containers.
+
+## Edit the servicefabricdeploy.parameters.json file
 
 Edit the following params in `servicefabricdeploy.parameters.json` file to set your values:
 
 - clusterName: Name of your SF cluster
+- clusterLocation: Datacenter location, like westus or westeurope
+- computeLocation: Datacenter location, like westus or westeurope
+- adminUserName: user-name for VMs administration
+- adminPassword: user-password for VMs administration
 - dnsName: Name assigned to your SF dns
-- adminUserName: user name for administration
-- adminPassword: user password for administration
 
-Optionally, you can modify which ports are opened in the LoadBalancer for accessing externally to the apps:
-
-- webMvcHttpPort: port externally exposed for the WebMVC app
-- webSpaHttpPort: port externally exposed for the WebSPA app
-- webStatusHttpPort: port externally exposed for the WebStatus app
-- IdSrvHttpRule: port externally exposed for the Identity app
+Optionally, you could modify which ports are opened in the LoadBalancer for the multiple eShopOnContainer apps and API services.
+By default, they are setup as:
+- webMvcHttpPort:       5100
+- webSpaHttpPort:       5104
+- webStatusHttpPort:    5107
+- IdSrvHttpRule:        5105
+- BasketApiHttpRule:    5103
+- CatalogApiHttpRule:   5101
+- OrderingApiHttpRule:  5102
+- MarketingApiHttpRule: 5110
+- LocationsApiHttpRule: 5109
 
 ## Deploy the template
 
 Once parameter file is edited you can deploy it using [create-resources script](../readme.md).
 
-i. e. if you are in windows, to deploy sql databases in a new resourcegroup located in westus, go to `deploy\az` folder and type:
+For example, to deploy the cluster to a new resourcegroup located in westus, go to `deploy\az` folder and type:
 
 ```
 create-resources.cmd servicefabric\LinuxContainers\servicefabricdeploy newResourceGroup -c westus
 ```
+
 ## Deploy eShopOnServiceFabric with Visual Studio.
 
 Alternatively, instead of using ARM templates, you can deploy eShop on service fabric directly by publishing the project eShopOnServiceFabric in eShopOnContainers-ServicesAndWebApps.sln with Visual Studio publish tool.
