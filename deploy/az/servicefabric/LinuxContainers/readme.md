@@ -51,6 +51,8 @@ Now, if you go to your subscription in Azure, you should be able to see the SF c
 
 ![image](https://user-images.githubusercontent.com/1712635/31638398-3fc08ad8-b288-11e7-879b-fc4df0daad2b.png)
 
+In this case, this is an unsecured SF cluster with a single node, good for initial tests and getting started with SF.
+
 ## B. Secured cluster (SF Linux cluster)
 
 The ARM template `servicefabricdeploysecured.json` and its parameter file (`servicefabricdeploysecured.parameters.json`) are used to create a service fabric cluster environment for linux containers secured with a certificate.
