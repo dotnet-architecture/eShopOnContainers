@@ -36,10 +36,10 @@
             "value": "LBIP-eshopsfwin"
         },
         "applicationDiagnosticsStorageAccountName": {
-            "value": "sfdgeshopsfwin6744"
+            "value": "sfdgqaeshopsfwin"
         },
         "supportLogStorageAccountName": {
-            "value": "sflogseshopsfwin3480"
+            "value": "sflogsqaeshopsfwin"
         },
         "vmImageSku": {
             "value": "2016-Datacenter-with-Containers"
