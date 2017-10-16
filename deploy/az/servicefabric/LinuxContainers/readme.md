@@ -47,9 +47,6 @@ create-resources.cmd servicefabric\LinuxContainers\servicefabricdeploy qa-eshop-
 You should see a similar execution to the following:
 ![image](https://user-images.githubusercontent.com/1712635/31638180-15da9f84-b287-11e7-9d4e-604f33690198.png)
 
-## Deploy eShopOnServiceFabric with Visual Studio.
-
-Alternatively, instead of using ARM templates, you can deploy eShop on service fabric directly by publishing the project eShopOnServiceFabric in eShopOnContainers-ServicesAndWebApps.sln with Visual Studio publish tool.
 
 ## B. Secured cluster (SF Linux cluster)
 
