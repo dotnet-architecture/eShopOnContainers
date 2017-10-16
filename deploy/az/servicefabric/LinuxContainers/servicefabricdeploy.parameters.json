@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "clusterName": {
-            "value": "eshopsflinux"
+            "value": "qa-eshop-sflinux-cluster"
         },
         "clusterLocation": {
             "value": "westus"
@@ -24,7 +24,7 @@
             "value": "eshoponsflin-PubIP"
         },
         "dnsName": {
-            "value": "eshopsflinux"
+            "value": "qa-eshop-sflinux-cluster"
         },
         "virtualNetworkName": {
             "value": "VNet-eshoponsflin"
