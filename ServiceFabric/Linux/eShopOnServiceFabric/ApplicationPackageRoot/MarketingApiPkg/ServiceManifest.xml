@@ -27,7 +27,7 @@
       <EnvironmentVariable Name="EventBusConnection" Value="rabbitmq.eshoponservicefabricbus"/>
       <EnvironmentVariable Name="AzureServiceBusEnabled" Value="False"/>
       <EnvironmentVariable Name="CampaignDetailFunctionUri" Value=""/>
-      <EnvironmentVariable Name="PicBaseUrl" Value="http://marketingapi.eshoponservicefabric:5110/api/v1/campaigns/[0]/pic/"/>
+      <EnvironmentVariable Name="PicBaseUrl" Value=""/>
       <EnvironmentVariable Name="AzureStorageAccountName" Value=""/>
       <EnvironmentVariable Name="AzureStorageAccountKey" Value=""/>
       <EnvironmentVariable Name="AzureStorageEnabled" Value="False"/>

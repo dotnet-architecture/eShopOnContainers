@@ -22,14 +22,15 @@
     <EnvironmentVariables>
       <EnvironmentVariable Name="ASPNETCORE_ENVIRONMENT" Value="Development"/>
       <EnvironmentVariable Name="ASPNETCORE_URLS" Value="http://0.0.0.0:80"/>
-      <EnvironmentVariable Name="CatalogUrl" Value="http://catalogapi.eshoponservicefabric:5101"/>
-      <EnvironmentVariable Name="OrderingUrl" Value="http://orderingapi.eshoponservicefabric:5102"/>
-      <EnvironmentVariable Name="BasketUrl" Value="http://basketapi.eshoponservicefabric:5103"/>
-      <EnvironmentVariable Name="IdentityUrl" Value="http://identityapi.eshoponservicefabric:5105"/>
-      <EnvironmentVariable Name="MarketingUrl" Value="http://marketingapi.eshoponservicefabric:5110"/>
-      <EnvironmentVariable Name="LocationsUrl" Value="http://locationsapi.eshoponservicefabric:5109"/>
-      <EnvironmentVariable Name="mvc" Value="http://webmvc.eshoponservicefabric:5100"/>
-      <EnvironmentVariable Name="spa" Value="http://webspa.eshoponservicefabric:5104"/>
+      <EnvironmentVariable Name="CatalogUrl" Value="http://catalogapi.eshoponservicefabric:5101/hc"/>
+      <EnvironmentVariable Name="OrderingUrl" Value="http://orderingapi.eshoponservicefabric:5102/hc"/>
+      <EnvironmentVariable Name="BasketUrl" Value="http://basketapi.eshoponservicefabric:5103/hc"/>
+      <EnvironmentVariable Name="IdentityUrl" Value="http://identityapi.eshoponservicefabric:5105/hc"/>
+      <EnvironmentVariable Name="MarketingUrl" Value="http://marketingapi.eshoponservicefabric:5110/hc"/>
+      <EnvironmentVariable Name="LocationsUrl" Value="http://locationsapi.eshoponservicefabric:5109/hc"/>
+      <EnvironmentVariable Name="PaymentUrl" Value="http://paymentapi.eshoponservicefabric:5108/hc"/>
+      <EnvironmentVariable Name="mvc" Value="http://webmvc.eshoponservicefabric:5100/hc"/>
+      <EnvironmentVariable Name="spa" Value="http://webspa.eshoponservicefabric:5104/hc"/>
       <EnvironmentVariable Name="ApplicationInsights__InstrumentationKey" Value=""/>
       <EnvironmentVariable Name="OrchestratorType" Value="SF"/>
     </EnvironmentVariables>

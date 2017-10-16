@@ -209,13 +209,17 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
         private void RegisterAppInsights(IServiceCollection services)
         {
             services.AddApplicationInsightsTelemetry(Configuration);
-
-            if (Configuration.GetValue<string>("OrchestratorType").Equals("K8S"))
+            var orchestratorType = Configuration.GetValue<string>("OrchestratorType");
+            if (string.IsNullOrEmpty(orchestratorType))
+            {
+                return;
+            }
+            if (orchestratorType.ToUpper().Equals("K8S"))
             {
                 // Enable K8s telemetry initializer
                 services.EnableKubernetes();
             }
-            if (Configuration.GetValue<string>("OrchestratorType").Equals("SF"))
+            if (orchestratorType.ToUpper().Equals("SF"))
             {
                 // Enable SF telemetry initializer
                 services.AddSingleton<ITelemetryInitializer>((serviceProvider) =>

@@ -12,7 +12,8 @@
     <Parameter Name="CatalogApi_InstanceCount" DefaultValue="-1" />
     <Parameter Name="BasketApi_InstanceCount" DefaultValue="-1" />
     <Parameter Name="IdentityUrlExternal" DefaultValue="" />
-    <Parameter Name="PicBaseUrl" DefaultValue="" />
+    <Parameter Name="PicBaseUrlCatalog" DefaultValue="" />
+    <Parameter Name="PicBaseUrlMarketing" DefaultValue="" />
     <Parameter Name="InstrumentationKey" DefaultValue="" />
   </Parameters>
   <!-- Import the ServiceManifest from the ServicePackage. The ServiceManifestName and ServiceManifestVersion 
@@ -25,6 +26,7 @@
     <EnvironmentOverrides CodePackageRef="Code">
       <EnvironmentVariable Name="IdentityUrlExternal" Value="[IdentityUrlExternal]"/>
       <EnvironmentVariable Name="ApplicationInsights__InstrumentationKey" Value="[InstrumentationKey]"/>
+      <EnvironmentVariable Name="PicBaseUrl" Value="[PicBaseUrlMarketing]"/>
     </EnvironmentOverrides>
     <Policies>
     <ContainerHostPolicies CodePackageRef="Code">
@@ -70,7 +72,7 @@
   <ServiceManifestImport>
     <ServiceManifestRef ServiceManifestName="CatalogApiPkg" ServiceManifestVersion="1.0.0" />
     <EnvironmentOverrides CodePackageRef="Code">
-      <EnvironmentVariable Name="PicBaseUrl" Value="[PicBaseUrl]"/>
+      <EnvironmentVariable Name="PicBaseUrl" Value="[PicBaseUrlCatalog]"/>
       <EnvironmentVariable Name="ApplicationInsights__InstrumentationKey" Value="[InstrumentationKey]"/>
     </EnvironmentOverrides>
     <Policies>
