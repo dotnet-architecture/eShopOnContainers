@@ -2,6 +2,7 @@
 
 ## A. Not secured cluster (SF Windows cluster)
 For a secured cluster, see option B. below.
+
 You can always deploy a SF cluster through the Azure portal, as explained in this article: https://docs.microsoft.com/en-us/azure/service-fabric/service-fabric-get-started-azure-cluster
 
 However, when creating a cluster, there are quite a few configurations to take into account, like enabling the internal DNS service or Reverse Proxy service, choosing between Linux/Windows, open/publish your application ports in the load-balancer and most of all (the most complex setup) how to create a secure cluster.
@@ -42,9 +43,8 @@ For example, to deploy the cluster to a new resourcegroup located in westus, usi
 create-resources.cmd servicefabric\WindowsContainers\servicefabricdeploy qa-eshop-sfwin-resgrp -c westus
 ```
 
-## Deploy eShopOnServiceFabric with Visual Studio.
+You should see a similar execution to the following:
 
-Alternatively, instead of using ARM templates, you can deploy eShop on service fabric directly by publishing the project eShopOnServiceFabric in eShopOnContainers-ServicesAndWebApps.sln with Visual Studio publish tool.
 
 ## B. Secured cluster (SF Windows cluster)
 
