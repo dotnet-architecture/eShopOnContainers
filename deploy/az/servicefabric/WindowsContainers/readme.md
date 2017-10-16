@@ -85,8 +85,7 @@ You might need to authenticate from the browser when running this PowerShell scr
 
 ```
 You should see a similar execution to the following:
-
-![image](https://user-images.githubusercontent.com/1712635/31639818-a50ab63c-b28f-11e7-8791-bcfadeed5a56.png)
+![image](https://user-images.githubusercontent.com/1712635/31640172-93efcca0-b291-11e7-970e-5b5e6bf07042.png)
 
 IMPORTANT: At this point, copy/cut the .PFX certifiacte file saved in the downloads forlder and save it in a secure place.
 
