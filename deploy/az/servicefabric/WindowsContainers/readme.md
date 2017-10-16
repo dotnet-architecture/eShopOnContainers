@@ -30,13 +30,13 @@ By default, they are setup as:
 - MarketingApiHttpRule: 5110
 - LocationsApiHttpRule: 5109
 
-## Deploy the template
+## Deploy the Service Fabric cluster using the script and ARM templates
 
 Once parameter file is edited you can deploy it using [create-resources script](../readme.md).
 
-For example, to deploy the cluster to a new resourcegroup located in westus, go to `deploy\az` folder and type:
+For example, to deploy the cluster to a new resourcegroup located in westus, using the Command Prompt, go to `deploy\az` folder and type:
 ```
-create-resources.cmd servicefabric\WindowsContainers\servicefabricdeploy newResourceGroup -c westus
+create-resources.cmd servicefabric\WindowsContainers\servicefabricdeploy qa-eshop-sfwin-resgrp -c westus
 ```
 
 ## Deploy eShopOnServiceFabric with Visual Studio.
