@@ -2,6 +2,7 @@
 
 ## A. Not secured cluster (SF Linux cluster)
 For a secured cluster, see option B. below.
+
 You can always deploy a SF cluster through the Azure portal, as explained in this article: https://docs.microsoft.com/en-us/azure/service-fabric/service-fabric-get-started-azure-cluster
 
 However, when creating a cluster, there are quite a few configurations to take into account, like enabling the internal DNS service or Reverse Proxy service, choosing between Linux/Windows, open/publish your application ports in the load-balancer and most of all (the most complex setup) how to create a secure cluster.
@@ -42,6 +43,9 @@ For example, to deploy the cluster to a new resourcegroup located in westus, go 
 ```
 create-resources.cmd servicefabric\LinuxContainers\servicefabricdeploy qa-eshop-sflinux-resgrp -c westus
 ```
+
+You should see a similar execution to the following:
+![image](https://user-images.githubusercontent.com/1712635/31638180-15da9f84-b287-11e7-9d4e-604f33690198.png)
 
 ## Deploy eShopOnServiceFabric with Visual Studio.
 
