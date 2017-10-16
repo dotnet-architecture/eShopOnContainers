@@ -3,19 +3,19 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "clusterName": {
-            "value": "your_sf_name"
+            "value": "eshopsflinux"
         },
         "clusterLocation": {
-            "value": "westeurope"
+            "value": "westus"
         },
         "computeLocation": {
-            "value": "westeurope"
+            "value": "westus"
         },
         "adminUserName": {
             "value": "eshop"
         },
         "adminPassword": {
-            "value": "your_admin_password"
+            "value": "your_password"
         },
         "nicName": {
             "value": "NIC-eshoponsflin"
@@ -24,7 +24,7 @@
             "value": "eshoponsflin-PubIP"
         },
         "dnsName": {
-            "value": "your_sf_dns"
+            "value": "eshopsflinux"
         },
         "virtualNetworkName": {
             "value": "VNet-eshoponsflin"

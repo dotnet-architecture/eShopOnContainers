@@ -3,13 +3,13 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "clusterName": {
-            "value": "eshoponservicefabric"
+            "value": "eshopsfwindows"
         },
         "clusterLocation": {
-            "value": "westeurope"
+            "value": "westus"
         },
         "computeLocation": {
-            "value": "westeurope"
+            "value": "westus"
         },
         "adminUserName": {
             "value": "eshop"
@@ -24,7 +24,7 @@
             "value": "eshopsfwin-PubIP"
         },
         "dnsName": {
-            "value": "eshoponservicefabric"
+            "value": "eshopsfwindows"
         },
         "virtualNetworkName": {
             "value": "VNet-eshopsfwin"
