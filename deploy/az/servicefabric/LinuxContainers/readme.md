@@ -55,6 +55,8 @@ In this case, this is an unsecured SF cluster with a single Linux node, good for
 
 ## B. Secured cluster (SF Linux cluster)
 
+Within eShopOnContainers root folder, at the folder [..\deploy\az\servicefabric\LinuxContainers](https://github.com/dotnet-architecture/eShopOnContainers/tree/dev/deploy/az/servicefabric/LinuxContainers), you can find the ARM template `servicefabricdeploysecured.json` and its parameter file (`servicefabricdeploysecured.parameters.json`) to create a secured Service Fabric cluster environment for Linux Containers (IN THIS CASE, IT IS A SECURED CLUSTER USING A CERTIFICATE).
+
 The ARM template `servicefabricdeploysecured.json` and its parameter file (`servicefabricdeploysecured.parameters.json`) are used to create a service fabric cluster environment for linux containers secured with a certificate.
 
 ## Create Azure Keyvault service
