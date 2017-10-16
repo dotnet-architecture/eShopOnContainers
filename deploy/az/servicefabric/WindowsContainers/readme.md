@@ -44,11 +44,11 @@ create-resources.cmd servicefabric\WindowsContainers\servicefabricdeploy qa-esho
 ```
 
 You should see a similar execution to the following:
-++++++++++++ IMAGE TBD ++++++++++++++
+![image](https://user-images.githubusercontent.com/1712635/31638979-4881d7aa-b28b-11e7-873c-e1185043a9eb.png)
 
 Now, if you go to your subscription in Azure, you should be able to see the SF cluster already created and available, like in the following image:
 
-++++++++++++ IMAGE TBD ++++++++++++++
+![image](https://user-images.githubusercontent.com/1712635/31639043-9b26c786-b28b-11e7-8d59-eeea97f74176.png)
 
 In this case, this is an unsecured SF cluster with a single Windows node, good for initial tests and getting started with SF.
 
