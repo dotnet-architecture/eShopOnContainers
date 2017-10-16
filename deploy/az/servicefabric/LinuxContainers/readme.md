@@ -1,6 +1,6 @@
 # Deploying a Service Fabric cluster based on Linux nodes
 
-## A. Not secured cluster (SF Linux cluster)
+## A. Unsecured cluster (SF Linux cluster)
 For a secured cluster, see option B. below.
 
 You can always deploy a SF cluster through the Azure portal, as explained in this article: https://docs.microsoft.com/en-us/azure/service-fabric/service-fabric-get-started-azure-cluster
