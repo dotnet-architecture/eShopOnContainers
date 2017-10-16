@@ -47,6 +47,9 @@ create-resources.cmd servicefabric\LinuxContainers\servicefabricdeploy qa-eshop-
 You should see a similar execution to the following:
 ![image](https://user-images.githubusercontent.com/1712635/31638180-15da9f84-b287-11e7-9d4e-604f33690198.png)
 
+Now, if you go to your subscription in Azure, you should be able to see the SF cluster already created and available, like in the following image:
+
+![image](https://user-images.githubusercontent.com/1712635/31638398-3fc08ad8-b288-11e7-879b-fc4df0daad2b.png)
 
 ## B. Secured cluster (SF Linux cluster)
 
