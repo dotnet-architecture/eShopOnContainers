@@ -63,12 +63,33 @@ Go to PortalAzure and create a Keyvault service. Make sure Enable access for dep
 ![image](https://user-images.githubusercontent.com/1712635/31638848-9b266530-b28a-11e7-953b-1e3ec1a54f77.png)
 
 ## Generate a certificate in Azure Keyvault
-Execute the gen-keyvaultcert.ps1 script to generate and download a certificate from Keyvault.
+In a POWER-SHELL window, move to the folder [..\deploy\az\servicefabric\WindowsContainers](https://github.com/dotnet-architecture/eShopOnContainers/tree/dev/deploy/az/servicefabric/WindowsContainers).
+
+**Select your Azure subscription** You might have [several Azure subscriptions](https://docs.microsoft.com/en-us/cli/azure/account#set) as shown if you type the following.
+
+    >```
+    >az account list
+    >```
+    If you have multiple subscription accounts, you first need to select the Azure subscription account you want to target. Type the following:
+    >```
+    >az account set --subscription "Your Azure Subscription Name or ID"
+    >```
+
+**Execute the gen-keyvaultcert.ps1 script** to generate and download a certificate from Keyvault.
+Make sure you're going to run it against the Azure subscription you mean it.
+
+You might need to authenticate from the browser when running this PowerShell script.
 
 ```
-.\gen-keyvaultcert.ps1 -vaultName <your_keyvault_service> -certName <your_cert_name> -certPwd <your_cert_pwd> -subjectName CN=<your_sf_dns_name>.westeurope.cloudapp.azure.com -saveDir C:\Users\<user>\Downloads
+.\gen-keyvaultcert.ps1 -vaultName <your_keyvault_service> -certName <your_cert_name> -certPwd <your_cert_pwd> -subjectName CN=<your_sf_dns_name>.westus.cloudapp.azure.com -saveDir C:\Users\<your-user>\Downloads
 
 ```
+You should see a similar execution to the following:
+
+![image](https://user-images.githubusercontent.com/1712635/31639818-a50ab63c-b28f-11e7-8791-bcfadeed5a56.png)
+
+IMPORTANT: At this point, copy/cut the .PFX certifiacte file saved in the downloads forlder and save it in a secure place.
+
 ## Install the certificate
 Install the certificate under 'Current User' store location and check it as exportable.
 
