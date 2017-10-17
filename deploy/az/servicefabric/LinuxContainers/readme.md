@@ -109,7 +109,7 @@ https://eshopkeyvault.vault.azure.net/secrets/pro-eshop-sflinux-cluster-cert/fd4
 
 - certificateThumbprint: certificate thumbprint (check azure Keyvault certificate thumbprint, something like 69JK453486D55A6818577Z0699100365HDK70FCE)
 
-## Deploy the template
+## Deploy the secured SF Linux cluster
 
 Once parameters file is edited you can deploy it using [create-resources script](../readme.md).
 Use a command prompt window positioned into the deploy\az folder.
@@ -122,6 +122,7 @@ The execution should be something like the following:
 
 Once the cluster is created you can explore it with Azure's portal, like in the following image:
 
+![image](https://user-images.githubusercontent.com/1712635/31642956-b7cfc8d0-b2a2-11e7-8ede-a141ec190eb4.png)
 
 ## Deploy eShopOnServiceFabric with Visual Studio.
 
