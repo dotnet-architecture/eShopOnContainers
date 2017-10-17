@@ -15,7 +15,7 @@
             "value": "eshop"
         },
         "adminPassword": {
-            "value": "Your_complex_Pass@word1"
+            "value": "Pass@word1"
         },
         "nicName": {
             "value": "NIC-eshopsflinsec"
@@ -27,13 +27,13 @@
             "value": "pro-eshop-sflinux-cluster"
         },
         "virtualNetworkName": {
-            "value": "VNet-eshopsflinsec"
+            "value": "VNet-eshopsflin"
         },
         "lbName": {
-            "value": "LB-eshopsflinsec"
+            "value": "LB-eshopsflin"
         },
         "lbIPName": {
-            "value": "LBIP-eshopsflinsec"
+            "value": "LBIP-eshopsflin"
         },       
         "sourceVaultValue": {
             "value": "your-value-check-keyvault-at-azure"
