@@ -87,7 +87,7 @@ Execute the gen-keyvaultcert.ps1 script to generate and download a certificate f
 You should see a similar execution to the following:
 ![image](https://user-images.githubusercontent.com/1712635/31640172-93efcca0-b291-11e7-970e-5b5e6bf07042.png)
 
-IMPORTANT: At this point, copy/cut the .PFX certifiacte file saved in the downloads forlder and save it in a secure place.
+IMPORTANT: At this point, copy/cut the .PFX certificate file saved in the downloads forlder and save it in a secure place.
 
 ## Install the certificate
 Install the certificate (by double-clicking on the .PFX file) under 'Current User' store location (by default location) and check it as exportable.
@@ -96,22 +96,11 @@ Install the certificate (by double-clicking on the .PFX file) under 'Current Use
 
 ## Editing servicefabricdeploysecured.parameters.json file
 
-Edit the following params in `servicefabricdeploysecured.parameters.json` file to set your values:
+Edit the parameters in `servicefabricdeploysecured.parameters.json` in a similar way you can do with tthe unsecured .json file shown above (clusterName, dnsName, etc.), plus edit the following values:
 
-- clusterName: Name of your SF cluster
-- dnsName: Name assigned to your SF dns
-- adminUserName: user name for administration
-- adminPassword: user password for administration
 - sourceVaultValue: keyvault resource id (check azure keyvault properties)
 - certificateUrlValue: certificate url (check azure Keyvault certificate properties)
 - certificateThumbprint: certificate thumbprint (check azure Keyvault certificate properties)
-
-Optionally, you can modify which ports are opened in the LoadBalancer for accessing externally to the apps:
-
-- webMvcHttpPort: port externally exposed for the WebMVC app
-- webSpaHttpPort: port externally exposed for the WebSPA app
-- webStatusHttpPort: port externally exposed for the WebStatus app
-- IdSrvHttpRule: port externally exposed for the Identity app
 
 ## Deploy the template
 
