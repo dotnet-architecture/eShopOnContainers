@@ -3,19 +3,19 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "clusterName": {
-            "value": "eshoponservicefabric"
+            "value": "qa-eshop-sfwin-cluster"
         },
         "clusterLocation": {
-            "value": "westeurope"
+            "value": "westus"
         },
         "computeLocation": {
-            "value": "westeurope"
+            "value": "westus"
         },
         "adminUserName": {
             "value": "eshop"
         },
         "adminPassword": {
-            "value": "your_password"
+            "value": "Your_complex_Pass@word1"
         },
         "nicName": {
             "value": "NIC-eshopsfwin"
@@ -24,7 +24,7 @@
             "value": "eshopsfwin-PubIP"
         },
         "dnsName": {
-            "value": "eshoponservicefabric"
+            "value": "qa-eshop-sfwin-cluster"
         },
         "virtualNetworkName": {
             "value": "VNet-eshopsfwin"
@@ -36,10 +36,10 @@
             "value": "LBIP-eshopsfwin"
         },
         "applicationDiagnosticsStorageAccountName": {
-            "value": "sfdgeshopsfwin6744"
+            "value": "sfdgqaeshopsfwin"
         },
         "supportLogStorageAccountName": {
-            "value": "sflogseshopsfwin3480"
+            "value": "sflogsqaeshopsfwin"
         },
         "vmImageSku": {
             "value": "2016-Datacenter-with-Containers"
