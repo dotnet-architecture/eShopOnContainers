@@ -91,8 +91,11 @@ IMPORTANT: At this point, copy/cut the .PFX certificate file saved in the downlo
 
 ## Install the certificate
 Install the certificate (by double-clicking on the .PFX file) under 'Current User' store location (by default location) and check it as exportable.
+Also, install the same certificate as CA (Certificate Authority) under Current User, too.
 
 <img src="../../../../img/sf/install-cert.PNG">
+
+![image](https://user-images.githubusercontent.com/1712635/31642795-c6ffa434-b2a1-11e7-8ff8-2a63549a780e.png)
 
 ## Editing servicefabricdeploysecured.parameters.json file
 
