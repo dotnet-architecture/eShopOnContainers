@@ -21,7 +21,7 @@
     <!-- Pass environment variables to your container: -->
     <EnvironmentVariables>
       <EnvironmentVariable Name="ASPNETCORE_ENVIRONMENT" Value="Development"/>
-      <EnvironmentVariable Name="ASPNETCORE_URLS" Value="http://0.0.0.0:80"/>
+      <EnvironmentVariable Name="ASPNETCORE_URLS" Value="http://0.0.0.0:80"/> 
       <EnvironmentVariable Name="ConnectionString" Value="Data Source=sqlserver.eshoponservicefabricsql,5433;Database=Microsoft.eShopOnContainers.Services.CatalogDb;User Id=sa;Password=Pass@word"/>
       <EnvironmentVariable Name="PicBaseUrl" Value="http://catalogapi.eshoponservicefabric:5101/api/v1/catalog/items/[0]/pic/"/>
       <EnvironmentVariable Name="AzureStorageAccountName" Value=""/>

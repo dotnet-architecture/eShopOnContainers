@@ -15,12 +15,12 @@
     <EntryPoint>
       <!-- Follow this link for more information about deploying Windows containers to Service Fabric: https://aka.ms/sfguestcontainers -->
       <ContainerHost>
-        <ImageName>microsoft/mssql-server-windows-developer:2016-sp1-windowsservercore-10.0.14393.1480</ImageName>
+        <ImageName>microsoft/mssql-server-windows-developer:2017</ImageName>
       </ContainerHost>
     </EntryPoint>
     <!-- Pass environment variables to your container: -->
     <EnvironmentVariables>
-      <EnvironmentVariable Name="MSSQL_SA_PASSWORD" Value="Pass@word"/>
+      <EnvironmentVariable Name="SA_PASSWORD" Value="Pass@word"/>
       <EnvironmentVariable Name="ACCEPT_EULA" Value="Y"/>
     </EnvironmentVariables>
   </CodePackage>
