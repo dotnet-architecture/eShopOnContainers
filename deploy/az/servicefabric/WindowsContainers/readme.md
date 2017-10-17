@@ -104,14 +104,20 @@ Edit the parameters in `servicefabricdeploysecured.parameters.json` in a similar
 
 - certificateThumbprint: certificate thumbprint (check azure Keyvault certificate thumbprint, something like 69JK453486D55A6818577Z0699100365HDK70FCE)
 
-## Deploy the template
+## Deploy the secured SF cluster (Windows nodes)
 
 Once parameter file is edited you can deploy it using [create-resources script](../readme.md).
 
+Use a command prompt window positioned into the deploy\az folder.
 ```
-create-resources.cmd servicefabric\WindowsContainers\servicefabricdeploysecured newResourceGroup -c westus
+create-resources.cmd servicefabric\WindowsContainers\servicefabricdeploysecured pro-eshop-sfwin-resgrp -c westus
 ```
-## Deploy eShopOnServiceFabric with Visual Studio.
+The execution should be something like the following:
+
+![image](https://user-images.githubusercontent.com/1712635/31641955-0bc9d59e-b29d-11e7-9230-5ba02843d98a.png)
+
+
+# Deploy eShopOnServiceFabric with Visual Studio.
 
 Modify the cloud.xml file of each Service Fabric application in PublishProfile directory and set  your certificate settings to be able to deploy eshopOnContainers in the secured cluster:
 
