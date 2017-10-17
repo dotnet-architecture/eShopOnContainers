@@ -96,22 +96,13 @@ Install the certificate (by double-clicking on the .PFX file) under 'Current Use
 
 ## Editing servicefabricdeploysecured.parameters.json file
 
-Edit the following params in `servicefabricdeploysecured.parameters.json` file to set your values:
+Edit the parameters in `servicefabricdeploysecured.parameters.json` in a similar way you can do with tthe unsecured .json file shown above (clusterName, dnsName, etc.), plus edit the following values:
 
-- clusterName: Name of your SF cluster
-- dnsName: Name assigned to your SF dns
-- adminUserName: user name for administration
-- adminPassword: user password for administration
-- sourceVaultValue: keyvault resource id (check azure keyvault properties)
-- certificateUrlValue: certificate url (check azure Keyvault certificate properties)
-- certificateThumbprint: certificate thumbprint (check azure Keyvault certificate properties)
+- sourceVaultValue: Your Azure Keyvault's RESOURCE ID (check Azure keyvault properties, similar to: /subscriptions/e1234ac1-c09c-3jaf-6767-98b3c5f1f246/resourceGroups/eshop-global-resgrp/providers/Microsoft.KeyVault/vaults/eshopkeyvault")
 
-Optionally, you can modify which ports are opened in the LoadBalancer for accessing externally to the apps:
+- certificateUrlValue: Your certificate Secret Identifier (check Azure Keyvault secret certificate properties, should be in the format of https://<name of the vault>.vault.azure.net:443/secrets/<exact location>, similar to: https://eshopkeyvault.vault.azure.net/secrets/pro-eshop-sfwin-cluster-cert/4d087088df974e869f1c0978cb100e47)
 
-- webMvcHttpPort: port externally exposed for the WebMVC app
-- webSpaHttpPort: port externally exposed for the WebSPA app
-- webStatusHttpPort: port externally exposed for the WebStatus app
-- IdSrvHttpRule: port externally exposed for the Identity app
+- certificateThumbprint: certificate thumbprint (check azure Keyvault certificate thumbprint, something like 69JK453486D55A6818577Z0699100365HDK70FCE)
 
 ## Deploy the template
 
