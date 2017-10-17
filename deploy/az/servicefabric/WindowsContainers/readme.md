@@ -90,7 +90,7 @@ You should see a similar execution to the following:
 IMPORTANT: At this point, copy/cut the .PFX certifiacte file saved in the downloads forlder and save it in a secure place.
 
 ## Install the certificate
-Install the certificate under 'Current User' store location and check it as exportable.
+Install the certificate (by double-clicking on the .PFX file) under 'Current User' store location (by default location) and check it as exportable.
 
 <img src="../../../../img/sf/install-cert.PNG">
 
