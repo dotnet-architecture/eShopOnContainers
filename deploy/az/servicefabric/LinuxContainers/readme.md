@@ -65,14 +65,32 @@ Go to PortalAzure and create a Keyvault service. Make sure Enable access for dep
 ![image](https://user-images.githubusercontent.com/1712635/31638848-9b266530-b28a-11e7-953b-1e3ec1a54f77.png)
 
 ## Generate a certificate in Azure Keyvault
+In a POWER-SHELL window, move to the folder [..\deploy\az\servicefabric\LinuxContainers](https://github.com/dotnet-architecture/eShopOnContainers/tree/dev/deploy/az/servicefabric/LinuxContainers).
+
+**Select your Azure subscription** You might have [several Azure subscriptions](https://docs.microsoft.com/en-us/cli/azure/account#set) as shown if you type the following.
+
+    >```
+    >az account list
+    >```
+    If you have multiple subscription accounts, you first need to select the Azure subscription account you want to target. Type the following:
+    >```
+    >az account set --subscription "Your Azure Subscription Name or ID"
+    >```
+
 Execute the gen-keyvaultcert.ps1 script to generate and download a certificate from Keyvault.
 
 ```
 .\gen-keyvaultcert.ps1 -vaultName <your_keyvault_service> -certName <your_cert_name> -certPwd <your_cert_pwd> -subjectName CN=<your_sf_dns_name>.westeurope.cloudapp.azure.com -saveDir C:\Users\<user>\Downloads
 
 ```
+
+You should see a similar execution to the following:
+![image](https://user-images.githubusercontent.com/1712635/31640172-93efcca0-b291-11e7-970e-5b5e6bf07042.png)
+
+IMPORTANT: At this point, copy/cut the .PFX certifiacte file saved in the downloads forlder and save it in a secure place.
+
 ## Install the certificate
-Install the certificate under 'Current User' store location and check it as exportable.
+Install the certificate (by double-clicking on the .PFX file) under 'Current User' store location (by default location) and check it as exportable.
 
 <img src="../../../../img/sf/install-cert.png">
 
