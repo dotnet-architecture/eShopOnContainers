@@ -3,19 +3,19 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "clusterName": {
-            "value": "your_sf_name"
+            "value": "pro-eshop-sfwin-cluster"
         },
         "clusterLocation": {
-            "value": "westeurope"
+            "value": "westus"
         },
         "computeLocation": {
-            "value": "westeurope"
+            "value": "westus"
         },
         "adminUserName": {
             "value": "eshop"
         },
         "adminPassword": {
-            "value": "your_admin_password"
+            "value": "Your_complex_Pass@word1"
         },
         "nicName": {
             "value": "NIC-eshopsfwin"
@@ -24,7 +24,7 @@
             "value": "eshopsfwin-PubIP"
         },
         "dnsName": {
-            "value": "your_sf_dns"
+            "value": "pro-eshop-sfwin-cluster"
         },
         "virtualNetworkName": {
             "value": "VNet-eshopsfwin"
@@ -36,19 +36,19 @@
             "value": "LBIP-eshopsfwin"
         },
         "applicationDiagnosticsStorageAccountName": {
-            "value": "sfdgeshopsfwin6744"
+            "value": "sfdgqaeshopsfwinsec"
         },
         "supportLogStorageAccountName": {
-            "value": "sflogseshopsfwin3480"
+            "value": "sflogsqaeshopsfwinsec"
         },
         "sourceVaultValue": {
-            "value": ""
+            "value": "your-value-check-keyvault-at-azure"
         },
         "certificateUrlValue": {
-            "value": ""
+            "value": "your-value-check-keyvault-at-azure"
         },
         "certificateThumbprint": {
-            "value": ""
+            "value": "your-value-check-keyvault-at-azure"
         },
         "vmImageSku": {
             "value": "2016-Datacenter-with-Containers"
