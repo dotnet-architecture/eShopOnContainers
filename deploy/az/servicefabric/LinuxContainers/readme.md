@@ -92,7 +92,7 @@ IMPORTANT: At this point, copy/cut the .PFX certifiacte file saved in the downlo
 ## Install the certificate
 Install the certificate (by double-clicking on the .PFX file) under 'Current User' store location (by default location) and check it as exportable.
 
-<img src="../../../../img/sf/install-cert.png">
+<img src="https://github.com/dotnet-architecture/eShopOnContainers/blob/dev/img/sf/install-cert.PNG">
 
 ## Editing servicefabricdeploysecured.parameters.json file
 
