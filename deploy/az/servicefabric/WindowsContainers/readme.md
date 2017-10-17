@@ -96,25 +96,32 @@ Install the certificate (by double-clicking on the .PFX file) under 'Current Use
 
 ## Editing servicefabricdeploysecured.parameters.json file
 
-Edit the parameters in `servicefabricdeploysecured.parameters.json` in a similar way you can do with tthe unsecured .json file shown above (clusterName, dnsName, etc.), plus edit the following values:
+Edit the parameters in `servicefabricdeploysecured.parameters.json` in a similar way you can do with the unsecured .json file shown above (clusterName, dnsName, etc.), plus edit the following values:
 
 - sourceVaultValue: Your Azure Keyvault's RESOURCE ID (check Azure keyvault properties, similar to: /subscriptions/e1234ac1-c09c-3jaf-6767-98b3c5f1f246/resourceGroups/eshop-global-resgrp/providers/Microsoft.KeyVault/vaults/eshopkeyvault")
 
-- certificateUrlValue: Your certificate Secret Identifier (check Azure Keyvault secret certificate properties, should be in the format of https://<name of the vault>.vault.azure.net:443/secrets/<exact location>, similar to: https://eshopkeyvault.vault.azure.net/secrets/pro-eshop-sfwin-cluster-cert/4d087088df974e869f1c0978cb100e47)
+- certificateUrlValue: Your certificate Secret Identifier (check Azure Keyvault secret certificate properties, should be in the format of https://<name of the vault>.vault.azure.net:443/secrets/<exact location>, similar to: 
+https://eshopkeyvault.vault.azure.net/secrets/pro-eshop-sfwin-cluster-cert/w647684642cGE2sj83b3hfe4h8e08963)
 
-- certificateThumbprint: certificate thumbprint (check azure Keyvault certificate thumbprint, something like 69JK453486D55A6818577Z0699100365HDK70FCE)
+- certificateThumbprint: certificate thumbprint (check azure Keyvault certificate thumbprint, something like 88JK453486D55A6818573G0DW9100365HDK70HDK)
 
 ## Deploy the secured SF cluster (Windows nodes)
 
-Once parameter file is edited you can deploy it using [create-resources script](../readme.md).
+Once parameters file is edited you can deploy it using [create-resources script](../readme.md).
 
 Use a command prompt window positioned into the deploy\az folder.
+
 ```
 create-resources.cmd servicefabric\WindowsContainers\servicefabricdeploysecured pro-eshop-sfwin-resgrp -c westus
 ```
 The execution should be something like the following:
 
 ![image](https://user-images.githubusercontent.com/1712635/31641955-0bc9d59e-b29d-11e7-9230-5ba02843d98a.png)
+
+Once the cluster is created you can explore it with Azure's portal, like in the following image:
+![image](https://user-images.githubusercontent.com/1712635/31642431-bf1c409e-b29f-11e7-980f-a7685a45108c.png)
+
+In this case, the ARM template is creating a 5 node cluster when creating a SECURE cluster for "production".
 
 
 # Deploy eShopOnServiceFabric with Visual Studio.
