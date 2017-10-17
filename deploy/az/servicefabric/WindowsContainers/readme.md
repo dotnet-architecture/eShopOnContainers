@@ -1,14 +1,15 @@
 # Deploying a Service Fabric cluster based on Windows nodes 
 
-## A. Not secured cluster (SF Windows cluster)
+## A. Unsecured cluster (SF Windows cluster)
 For a secured cluster, see option B. below.
+
 You can always deploy a SF cluster through the Azure portal, as explained in this article: https://docs.microsoft.com/en-us/azure/service-fabric/service-fabric-get-started-azure-cluster
 
 However, when creating a cluster, there are quite a few configurations to take into account, like enabling the internal DNS service or Reverse Proxy service, choosing between Linux/Windows, open/publish your application ports in the load-balancer and most of all (the most complex setup) how to create a secure cluster.
 
 Because of those reasons, we have created a set of ARM templates and scripts so you can create, re-create and configure the SF clusters much faster, as explained below: 
 
-Within eShopOnContainers root folder, at the folder [..\deploy\az\servicefabric\WindowsContainers](https://github.com/dotnet-architecture/eShopOnContainers/tree/dev/deploy/az/servicefabric/WindowsContainers), you can find the ARM template `servicefabricdeploy.json` and its parameters file (`servicefabricdeploy.parameters.json`) to create a Service Fabric cluster environment for Windows Containers.
+Within eShopOnContainers root folder, at the folder [..\deploy\az\servicefabric\WindowsContainers](https://github.com/dotnet-architecture/eShopOnContainers/tree/dev/deploy/az/servicefabric/WindowsContainers), you can find the ARM template `servicefabricdeploy.json` and its parameters file (`servicefabricdeploy.parameters.json`) to create a Service Fabric cluster environment for Windows Containers (NOT SECURED CLUSTER).
 
 ## Edit the servicefabricdeploy.parameters.json file
 
@@ -42,28 +43,54 @@ For example, to deploy the cluster to a new resourcegroup located in westus, usi
 create-resources.cmd servicefabric\WindowsContainers\servicefabricdeploy qa-eshop-sfwin-resgrp -c westus
 ```
 
-## Deploy eShopOnServiceFabric with Visual Studio.
+You should see a similar execution to the following:
+![image](https://user-images.githubusercontent.com/1712635/31638979-4881d7aa-b28b-11e7-873c-e1185043a9eb.png)
 
-Alternatively, instead of using ARM templates, you can deploy eShop on service fabric directly by publishing the project eShopOnServiceFabric in eShopOnContainers-ServicesAndWebApps.sln with Visual Studio publish tool.
+Now, if you go to your subscription in Azure, you should be able to see the SF cluster already created and available, like in the following image:
+
+![image](https://user-images.githubusercontent.com/1712635/31639043-9b26c786-b28b-11e7-8d59-eeea97f74176.png)
+
+In this case, this is an unsecured SF cluster with a single Windows node, good for initial tests and getting started with SF.
+
 
 ## B. Secured cluster (SF Windows cluster)
 
-The ARM template `servicefabricdeploysecured.json` and its parameter file (`servicefabricdeploysecured.parameters.json`) are used to create a service fabric cluster environment for windows containers secured with a certificate.
+Within eShopOnContainers root folder, at the folder [..\deploy\az\servicefabric\WindowsContainers](https://github.com/dotnet-architecture/eShopOnContainers/tree/dev/deploy/az/servicefabric/WindowsContainers), you can find the ARM template `servicefabricdeploysecured.json` and its parameter file (`servicefabricdeploysecured.parameters.json`) to create a secured Service Fabric cluster environment for Windows Containers (IN THIS CASE, IT IS A SECURED CLUSTER USING A CERTIFICATE).
 
 ## Create Azure Keyvault service
 Go to PortalAzure and create a Keyvault service. Make sure Enable access for deployment checkboxes are selected.
 
-<img src="../../../../img/sf/create-kv.PNG">
+![image](https://user-images.githubusercontent.com/1712635/31638848-9b266530-b28a-11e7-953b-1e3ec1a54f77.png)
 
 ## Generate a certificate in Azure Keyvault
-Execute the gen-keyvaultcert.ps1 script to generate and download a certificate from Keyvault.
+In a POWER-SHELL window, move to the folder [..\deploy\az\servicefabric\WindowsContainers](https://github.com/dotnet-architecture/eShopOnContainers/tree/dev/deploy/az/servicefabric/WindowsContainers).
+
+**Select your Azure subscription** You might have [several Azure subscriptions](https://docs.microsoft.com/en-us/cli/azure/account#set) as shown if you type the following.
+
+    >```
+    >az account list
+    >```
+    If you have multiple subscription accounts, you first need to select the Azure subscription account you want to target. Type the following:
+    >```
+    >az account set --subscription "Your Azure Subscription Name or ID"
+    >```
+
+**Execute the gen-keyvaultcert.ps1 script** to generate and download a certificate from Keyvault.
+Make sure you're going to run it against the Azure subscription you mean it.
+
+You might need to authenticate from the browser when running this PowerShell script.
 
 ```
-.\gen-keyvaultcert.ps1 -vaultName <your_keyvault_service> -certName <your_cert_name> -certPwd <your_cert_pwd> -subjectName CN=<your_sf_dns_name>.westeurope.cloudapp.azure.com -saveDir C:\Users\<user>\Downloads
+.\gen-keyvaultcert.ps1 -vaultName <your_keyvault_service> -certName <your_cert_name> -certPwd <your_cert_pwd> -subjectName CN=<your_sf_dns_name>.westus.cloudapp.azure.com -saveDir C:\Users\<your-user>\Downloads
 
 ```
+You should see a similar execution to the following:
+![image](https://user-images.githubusercontent.com/1712635/31640172-93efcca0-b291-11e7-970e-5b5e6bf07042.png)
+
+IMPORTANT: At this point, copy/cut the .PFX certifiacte file saved in the downloads forlder and save it in a secure place.
+
 ## Install the certificate
-Install the certificate under 'Current User' store location and check it as exportable.
+Install the certificate (by double-clicking on the .PFX file) under 'Current User' store location (by default location) and check it as exportable.
 
 <img src="../../../../img/sf/install-cert.PNG">
 
