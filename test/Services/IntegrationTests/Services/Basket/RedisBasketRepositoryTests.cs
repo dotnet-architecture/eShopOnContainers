@@ -1,7 +1,4 @@
-﻿
-using StackExchange.Redis;
-
-namespace IntegrationTests.Services.Basket
+﻿namespace IntegrationTests.Services.Basket
 {
     using Microsoft.eShopOnContainers.Services.Basket.API;
     using Microsoft.eShopOnContainers.Services.Basket.API.Model;
@@ -11,7 +8,7 @@ namespace IntegrationTests.Services.Basket
     using System.Threading.Tasks;
     using Xunit;
     using Moq;
-
+    using StackExchange.Redis;
 
     public class RedisBasketRepositoryTests
     {

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using System.IO;
 
@@ -10,9 +11,9 @@ namespace IntegrationTests.Services.Basket
 
         public TestServer CreateServer()
         {
-            var webHostBuilder = new WebHostBuilder();
+            var webHostBuilder = WebHost.CreateDefaultBuilder();
             webHostBuilder.UseContentRoot(Directory.GetCurrentDirectory() + "\\Services\\basket");
-            webHostBuilder.UseStartup<BasketTestsStartup>();
+            webHostBuilder.UseStartup<BasketTestsStartup>();           
 
             return new TestServer(webHostBuilder);
         }

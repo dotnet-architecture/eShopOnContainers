@@ -25,7 +25,7 @@
         }
 
         [Fact]
-        public async Task Cancel_order_no_order_created_response_bad_status_code()
+        public async Task Cancel_order_no_order_created_response_500_status_code()
         {
             using (var server = CreateServer())
             {
@@ -33,12 +33,12 @@
                 var response = await server.CreateIdempotentClient()
                     .PutAsync(Put.CancelOrder, content);
 
-                Assert.Equal(response.StatusCode, HttpStatusCode.BadRequest);
+                Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
             }
         }
 
         [Fact]
-        public async Task Ship_order_no_order_created_response_bad_status_code()
+        public async Task Ship_order_no_order_created_response_500_status_code()
         {
             using (var server = CreateServer())
             {
@@ -46,7 +46,7 @@
                 var response = await server.CreateIdempotentClient()
                     .PutAsync(Put.ShipOrder, content);
 
-                Assert.Equal(response.StatusCode, HttpStatusCode.InternalServerError);
+                Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
             }
         }
 
@@ -54,7 +54,7 @@
         {
             var order = new OrderDTO()
             {
-                OrderNumber = "1"
+                OrderNumber = "-1"
             };
             return JsonConvert.SerializeObject(order);
         }        

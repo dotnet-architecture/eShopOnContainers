@@ -65,7 +65,7 @@
         /// <exception cref="System.ArgumentNullException">
         /// Thrown if <paramref name="connectionString" /> or <paramref name="logger" /> is <see langword="null" />.
         /// </exception>
-        public RedisXmlRepository(string connectionString, ILogger<RedisXmlRepository> logger)
+        public RedisXmlRepository(ConfigurationOptions connectionString, ILogger<RedisXmlRepository> logger)
             : this(ConnectionMultiplexer.Connect(connectionString), logger)
         {
         }
