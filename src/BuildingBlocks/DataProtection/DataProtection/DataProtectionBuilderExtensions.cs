@@ -4,6 +4,7 @@
     using Microsoft.AspNetCore.DataProtection.Repositories;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
+    using StackExchange.Redis;
     using System;
     using System.Linq;
     using System.Net;
@@ -45,10 +46,11 @@
                 throw new ArgumentException("Redis connection string may not be empty.", nameof(redisConnectionString));
             }
 
-            var ips = Dns.GetHostAddressesAsync(redisConnectionString).Result;
+            var configuration = ConfigurationOptions.Parse(redisConnectionString, true);
+            configuration.ResolveDns = true;
 
             return builder.Use(ServiceDescriptor.Singleton<IXmlRepository>(services =>
-                new RedisXmlRepository(ips.First().ToString(), services.GetRequiredService<ILogger<RedisXmlRepository>>())));
+                new RedisXmlRepository(configuration, services.GetRequiredService<ILogger<RedisXmlRepository>>())));
         }
 
         /// <summary>

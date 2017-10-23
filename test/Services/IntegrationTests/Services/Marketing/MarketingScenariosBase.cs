@@ -1,5 +1,6 @@
 ﻿namespace IntegrationTests.Services.Marketing
 {
+    using Microsoft.AspNetCore;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.TestHost;
     using System.IO;
@@ -10,7 +11,7 @@
 
         public TestServer CreateServer()
         {
-            var webHostBuilder = new WebHostBuilder();
+            var webHostBuilder = WebHost.CreateDefaultBuilder();
             webHostBuilder.UseContentRoot(Directory.GetCurrentDirectory() + "\\Services\\Marketing");
             webHostBuilder.UseStartup<MarketingTestsStartup>();
 
