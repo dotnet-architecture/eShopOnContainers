@@ -1,4 +1,5 @@
-﻿using Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http;
 using Microsoft.Extensions.Logging;
 using Polly;
 using System;
@@ -11,17 +12,19 @@ namespace Microsoft.eShopOnContainers.WebMVC.Infrastructure
         private readonly ILogger<ResilientHttpClient> _logger;
         private readonly int _retryCount;
         private readonly int _exceptionsAllowedBeforeBreaking;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public ResilientHttpClientFactory(ILogger<ResilientHttpClient> logger, int exceptionsAllowedBeforeBreaking = 5, int retryCount = 6)
+        public ResilientHttpClientFactory(ILogger<ResilientHttpClient> logger, IHttpContextAccessor httpContextAccessor, int exceptionsAllowedBeforeBreaking = 5, int retryCount = 6)
         {
             _logger = logger;
             _exceptionsAllowedBeforeBreaking = exceptionsAllowedBeforeBreaking;
             _retryCount = retryCount;
+            _httpContextAccessor = httpContextAccessor;
         }
 
 
         public ResilientHttpClient CreateResilientHttpClient()
-            => new ResilientHttpClient((origin) => CreatePolicies(), _logger);
+            => new ResilientHttpClient((origin) => CreatePolicies(), _logger, _httpContextAccessor);
 
         private Policy[] CreatePolicies()
             => new Policy[]

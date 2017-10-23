@@ -208,16 +208,13 @@
         {
             services.AddApplicationInsightsTelemetry(Configuration);
             var orchestratorType = Configuration.GetValue<string>("OrchestratorType");
-            if (string.IsNullOrEmpty(orchestratorType))
-            {
-                return;
-            }
-            if (orchestratorType.ToUpper().Equals("K8S"))
+
+            if (orchestratorType?.ToUpper() == "K8S")
             {
                 // Enable K8s telemetry initializer
                 services.EnableKubernetes();
             }
-            if (orchestratorType.ToUpper().Equals("SF"))
+            if (orchestratorType?.ToUpper() == "SF")
             {
                 // Enable SF telemetry initializer
                 services.AddSingleton<ITelemetryInitializer>((serviceProvider) =>

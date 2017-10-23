@@ -13,6 +13,7 @@ using Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus;
 using Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure;
 using Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure.Filters;
+using Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure.Middlewares;
 using Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure.Repositories;
 using Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure.Services;
 using Microsoft.Extensions.Configuration;
@@ -182,16 +183,13 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
         {
             services.AddApplicationInsightsTelemetry(Configuration);
             var orchestratorType = Configuration.GetValue<string>("OrchestratorType");
-            if (string.IsNullOrEmpty(orchestratorType))
-            {
-                return;
-            }
-            if (orchestratorType.ToUpper().Equals("K8S"))
+
+            if (orchestratorType?.ToUpper() == "K8S")
             {
                 // Enable K8s telemetry initializer
                 services.EnableKubernetes();
             }
-            if (orchestratorType.ToUpper().Equals("SF"))
+            if (orchestratorType?.ToUpper() == "SF")
             {
                 // Enable SF telemetry initializer
                 services.AddSingleton<ITelemetryInitializer>((serviceProvider) =>
@@ -219,6 +217,11 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
 
         protected virtual void ConfigureAuth(IApplicationBuilder app)
         {
+            if (Configuration.GetValue<bool>("UseLoadTest"))
+            {
+                app.UseMiddleware<ByPassAuthMiddleware>();
+            }
+
             app.UseAuthentication();
         }
 
