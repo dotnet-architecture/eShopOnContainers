@@ -14,7 +14,7 @@
         <FormPostParameter Name="description" Value=".NET Black &amp; White Mug" RecordedValue=".NET Black &amp; White Mug" CorrelationBinding="" UrlEncode="True" />
         <FormPostParameter Name="id" Value="2" RecordedValue="2" CorrelationBinding="" UrlEncode="True" />
         <FormPostParameter Name="name" Value=".NET Black &amp; White Mug" RecordedValue=".NET Black &amp; White Mug" CorrelationBinding="" UrlEncode="True" />
-        <FormPostParameter Name="pictureUri" Value="{{LocalTestSettings.CatalogApiServer.url}}" RecordedValue="{{CatalogApiServer}}/api/v1/catalog/items/2/pic/" CorrelationBinding="" UrlEncode="True" />
+        <FormPostParameter Name="pictureUri" Value="{{LocalTestSettings.CatalogApiServer.url}}/api/v1/catalog/items/2/pic/" RecordedValue="{{LocalTestSettings.CatalogApiServer.url}}/api/v1/catalog/items/2/pic/" CorrelationBinding="" UrlEncode="True" />
         <FormPostParameter Name="price" Value="8.5" RecordedValue="8.5" CorrelationBinding="" UrlEncode="True" />
       </FormPostHttpBody>
     </Request>
@@ -157,7 +157,7 @@
         <FormPostParameter Name="CardHolderName" Value="DemoUser" RecordedValue="DemoUser" CorrelationBinding="{{FormPostParam6.CardHolderName}}" UrlEncode="True" />
         <FormPostParameter Name="CardExpirationShort" Value="12/20" RecordedValue="12/20" CorrelationBinding="{{FormPostParam7.CardExpirationShort}}" UrlEncode="True" />
         <FormPostParameter Name="CardSecurityNumber" Value="535" RecordedValue="535" CorrelationBinding="{{FormPostParam8.CardSecurityNumber}}" UrlEncode="True" />
-        <FormPostParameter Name="orderitems[0].PictureUrl" Value="{{LocalTestSettings.CatalogApiServer.url}}/api/v1/catalog/items/2/pic/" RecordedValue="{{CatalogApiServer}}/api/v1/catalog/items/2/pic/" CorrelationBinding="" UrlEncode="True" />
+        <FormPostParameter Name="orderitems[0].PictureUrl" Value="{{LocalTestSettings.CatalogApiServer.url}}/api/v1/catalog/items/2/pic/" RecordedValue="{{LocalTestSettings.CatalogApiServer.url}}/api/v1/catalog/items/2/pic/" CorrelationBinding="" UrlEncode="True" />
         <FormPostParameter Name="orderitems[0].ProductName" Value=".NET Black &amp; White Mug" RecordedValue=".NET Black &amp; White Mug" CorrelationBinding="" UrlEncode="True" />
         <FormPostParameter Name="orderitems[0].UnitPrice" Value="8.5" RecordedValue="8.5" CorrelationBinding="" UrlEncode="True" />
         <FormPostParameter Name="orderitems[0].Units" Value="1" RecordedValue="1" CorrelationBinding="" UrlEncode="True" />
