@@ -16,6 +16,7 @@ namespace Microsoft.eShopOnContainers.Services.Marketing.API.Controllers
     using Extensions.Options;
     using Microsoft.eShopOnContainers.Services.Marketing.API.ViewModel;
     using Microsoft.AspNetCore.Http;
+    using System.Net;
 
     [Route("api/v1/[controller]")]
     [Authorize]
@@ -38,6 +39,7 @@ namespace Microsoft.eShopOnContainers.Services.Marketing.API.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(typeof(List<CampaignDTO>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetAllCampaigns()
         {
             var campaignList = await _context.Campaigns
@@ -54,6 +56,8 @@ namespace Microsoft.eShopOnContainers.Services.Marketing.API.Controllers
         }
 
         [HttpGet("{id:int}")]
+        [ProducesResponseType(typeof(CampaignDTO), (int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public async Task<IActionResult> GetCampaignById(int id)
         {
             var campaign = await _context.Campaigns
@@ -70,6 +74,8 @@ namespace Microsoft.eShopOnContainers.Services.Marketing.API.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.Created)]
         public async Task<IActionResult> CreateCampaign([FromBody] CampaignDTO campaignDto)
         {
             if (campaignDto is null)
@@ -86,6 +92,9 @@ namespace Microsoft.eShopOnContainers.Services.Marketing.API.Controllers
         }
 
         [HttpPut("{id:int}")]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)HttpStatusCode.Created)]
         public async Task<IActionResult> UpdateCampaign(int id, [FromBody] CampaignDTO campaignDto)
         {
             if (id < 1 || campaignDto is null)
@@ -111,6 +120,9 @@ namespace Microsoft.eShopOnContainers.Services.Marketing.API.Controllers
         }
 
         [HttpDelete("{id:int}")]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)HttpStatusCode.NoContent)]
         public async Task<IActionResult> Delete(int id)
         {
             if (id < 1)
@@ -131,6 +143,7 @@ namespace Microsoft.eShopOnContainers.Services.Marketing.API.Controllers
         }
 
         [HttpGet("user")]
+        [ProducesResponseType(typeof(PaginatedItemsViewModel<CampaignDTO>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetCampaignsByUserId( int pageSize = 10, int pageIndex = 0)
         {
             var userId = _identityService.GetUserIdentity();

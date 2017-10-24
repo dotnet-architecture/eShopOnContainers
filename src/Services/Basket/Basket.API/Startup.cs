@@ -1,8 +1,11 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Basket.API.Infrastructure.Filters;
+using Basket.API.Infrastructure.Middlewares;
 using Basket.API.IntegrationEvents.EventHandling;
 using Basket.API.IntegrationEvents.Events;
+using Microsoft.ApplicationInsights.Extensibility;
+using Microsoft.ApplicationInsights.ServiceFabric;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -43,7 +46,9 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
-        {            
+        {
+            RegisterAppInsights(services);            
+
             // Add framework services.
             services.AddMvc(options =>
             {
@@ -61,7 +66,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
                                         );
             });
 
-            services.Configure<BasketSettings>(Configuration);           
+            services.Configure<BasketSettings>(Configuration);            
 
             //By connecting here we are making sure that our service
             //cannot start until redis is ready. This might slow down startup,
@@ -72,7 +77,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             services.AddSingleton<ConnectionMultiplexer>(sp =>
             {
                 var settings = sp.GetRequiredService<IOptions<BasketSettings>>().Value;
-                var configuration = ConfigurationOptions.Parse(settings.ConnectionString, true);           
+                var configuration = ConfigurationOptions.Parse(settings.ConnectionString, true);
 
                 configuration.ResolveDns = true;
 
@@ -103,7 +108,8 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
                         HostName = Configuration["EventBusConnection"]
                     };
 
-                    if (!string.IsNullOrEmpty(Configuration["EventBusUserName"])) {
+                    if (!string.IsNullOrEmpty(Configuration["EventBusUserName"]))
+                    {
                         factory.UserName = Configuration["EventBusUserName"];
                     }
 
@@ -112,7 +118,13 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
                         factory.Password = Configuration["EventBusPassword"];
                     }
 
-                    return new DefaultRabbitMQPersistentConnection(factory, logger);
+                    var retryCount = 5;
+                    if (!string.IsNullOrEmpty(Configuration["EventBusRetryCount"]))
+                    {
+                        retryCount = int.Parse(Configuration["EventBusRetryCount"]);
+                    }
+
+                    return new DefaultRabbitMQPersistentConnection(factory, logger, retryCount);
                 });
             }
 
@@ -155,7 +167,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IBasketRepository, RedisBasketRepository>();
             services.AddTransient<IIdentityService, IdentityService>();
-            
+
             services.AddOptions();
 
             var container = new ContainerBuilder();
@@ -163,18 +175,20 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
 
             return new AutofacServiceProvider(container.Build());
         }
-
-      
+    
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            loggerFactory.AddAzureWebAppDiagnostics();
+            loggerFactory.AddApplicationInsights(app.ApplicationServices, LogLevel.Trace);
 
             var pathBase = Configuration["PATH_BASE"];
             if (!string.IsNullOrEmpty(pathBase))
             {
                 app.UsePathBase(pathBase);
-            }            
+            }
+            
             app.UseStaticFiles();          
             app.UseCors("CorsPolicy");
 
@@ -185,7 +199,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             app.UseSwagger()
                .UseSwaggerUI(c =>
                {
-                   c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                   c.SwaggerEndpoint($"{ (!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty) }/swagger/v1/swagger.json", "My API V1");
                    c.ConfigureOAuth2("basketswaggerui", "", "", "Basket Swagger UI");
                });
 
@@ -193,13 +207,31 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
 
         }
 
+        private void RegisterAppInsights(IServiceCollection services)
+        {
+            services.AddApplicationInsightsTelemetry(Configuration);
+            var orchestratorType = Configuration.GetValue<string>("OrchestratorType");
+            
+            if (orchestratorType?.ToUpper() == "K8S")
+            {
+                // Enable K8s telemetry initializer
+                services.EnableKubernetes();
+            }
+            if (orchestratorType?.ToUpper() == "SF")
+            {
+                // Enable SF telemetry initializer
+                services.AddSingleton<ITelemetryInitializer>((serviceProvider) =>
+                    new FabricTelemetryInitializer());
+            }
+        }
+
         private void ConfigureAuthService(IServiceCollection services)
         {
             // prevent from mapping "sub" claim to nameidentifier.
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
-            var identityUrl = Configuration.GetValue<string>("IdentityUrl");
-
+            var identityUrl = Configuration.GetValue<string>("IdentityUrl"); 
+                
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -215,6 +247,11 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
 
         protected virtual void ConfigureAuth(IApplicationBuilder app)
         {
+            if (Configuration.GetValue<bool>("UseLoadTest"))
+            {
+                app.UseMiddleware<ByPassAuthMiddleware>();
+            }
+
             app.UseAuthentication();
         }
 
@@ -236,7 +273,21 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             }
             else
             {
-                services.AddSingleton<IEventBus, EventBusRabbitMQ>();
+                services.AddSingleton<IEventBus, EventBusRabbitMQ>(sp =>
+                {
+                    var rabbitMQPersistentConnection = sp.GetRequiredService<IRabbitMQPersistentConnection>();
+                    var iLifetimeScope = sp.GetRequiredService<ILifetimeScope>();
+                    var logger = sp.GetRequiredService<ILogger<EventBusRabbitMQ>>();
+                    var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
+
+                    var retryCount = 5;
+                    if (!string.IsNullOrEmpty(Configuration["EventBusRetryCount"]))
+                    {
+                        retryCount = int.Parse(Configuration["EventBusRetryCount"]);
+                    }
+
+                    return new EventBusRabbitMQ(rabbitMQPersistentConnection, logger, iLifetimeScope, eventBusSubcriptionsManager, retryCount);
+                });
             }
 
             services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();

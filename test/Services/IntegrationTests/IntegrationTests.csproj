@@ -12,7 +12,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Services\Catalog\settings.json" />
     <None Remove="Services\Locations\appsettings.json" />
   </ItemGroup>
 
@@ -21,7 +20,7 @@
     <Content Include="Services\Basket\appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Services\Catalog\settings.json">
+    <Content Include="Services\Catalog\appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Services\Marketing\appsettings.json">
@@ -46,11 +45,12 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.3.0" />
-    <PackageReference Include="Moq" Version="4.7.10" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.2.0" />
+    <PackageReference Include="Moq" Version="4.7.142" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="2.0.0" />
     <PackageReference Include="Microsoft.DotNet.InternalAbstractions" Version="1.0.0" />
-    <PackageReference Include="xunit" Version="2.2.0" />
+    <PackageReference Include="xunit" Version="2.3.0" />
+    <PackageReference Include="StackExchange.Redis.strongname" Version="1.2.4" />
   </ItemGroup>
 
   <ItemGroup>

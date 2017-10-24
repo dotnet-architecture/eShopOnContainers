@@ -1,7 +1,9 @@
 ﻿namespace FunctionalTests.Services.Marketing
 {
+    using Microsoft.AspNetCore;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.TestHost;
+    using Microsoft.Extensions.Configuration;
     using System.IO;
 
     public class MarketingScenariosBase
@@ -10,9 +12,9 @@
 
         public TestServer CreateServer()
         {
-            var webHostBuilder = new WebHostBuilder();
+            var webHostBuilder = WebHost.CreateDefaultBuilder();
             webHostBuilder.UseContentRoot(Directory.GetCurrentDirectory() + "\\Services\\Marketing");
-            webHostBuilder.UseStartup<MarketingTestsStartup>();
+            webHostBuilder.UseStartup<MarketingTestsStartup>();                  
 
             return new TestServer(webHostBuilder);
         }

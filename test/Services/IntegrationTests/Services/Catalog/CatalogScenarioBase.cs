@@ -1,5 +1,6 @@
 ﻿namespace IntegrationTests.Services.Catalog
 {
+    using Microsoft.AspNetCore;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.TestHost;
     using Microsoft.eShopOnContainers.Services.Catalog.API;
@@ -9,7 +10,7 @@
     {
         public TestServer CreateServer()
         {
-            var webHostBuilder = new WebHostBuilder();
+            var webHostBuilder = WebHost.CreateDefaultBuilder();
             webHostBuilder.UseContentRoot(Directory.GetCurrentDirectory() + "\\Services\\Catalog");
             webHostBuilder.UseStartup<Startup>();
 

@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,9 +13,14 @@ namespace FunctionalTests.Services.Ordering
     {
         public TestServer CreateServer()
         {
-            var webHostBuilder = new WebHostBuilder();
+            var webHostBuilder = WebHost.CreateDefaultBuilder();
             webHostBuilder.UseContentRoot(Directory.GetCurrentDirectory() + "\\Services\\Ordering");
             webHostBuilder.UseStartup<OrderingTestsStartup>();
+            webHostBuilder.ConfigureAppConfiguration((builderContext, config) =>
+             {
+                 config.AddJsonFile("settings.json");
+             });
+
 
             return new TestServer(webHostBuilder);
         }

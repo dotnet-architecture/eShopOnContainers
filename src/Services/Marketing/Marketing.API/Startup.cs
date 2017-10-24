@@ -21,8 +21,11 @@
     using Infrastructure.Services;
     using IntegrationEvents.Events;
     using Marketing.API.IntegrationEvents.Handlers;
+    using Microsoft.ApplicationInsights.Extensibility;
+    using Microsoft.ApplicationInsights.ServiceFabric;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.EntityFrameworkCore.Diagnostics;
+    using Microsoft.eShopOnContainers.Services.Marketing.API.Infrastructure.Middlewares;
     using RabbitMQ.Client;
     using Swashbuckle.AspNetCore.Swagger;
     using System;
@@ -44,6 +47,8 @@
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            RegisterAppInsights(services);
+
             // Add framework services.
             services.AddMvc(options =>
             {
@@ -73,7 +78,7 @@
                                      {
                                          sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
                                          //Configuring Connection Resiliency: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency 
-                                         sqlOptions.EnableRetryOnFailure(maxRetryCount: 5, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
+                                         sqlOptions.EnableRetryOnFailure(maxRetryCount: 10, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
                                      });
 
                 // Changing default behavior when client evaluation occurs to throw. 
@@ -114,7 +119,14 @@
                     {
                         factory.Password = Configuration["EventBusPassword"];
                     }
-                    return new DefaultRabbitMQPersistentConnection(factory, logger);
+
+                    var retryCount = 5;
+                    if (!string.IsNullOrEmpty(Configuration["EventBusRetryCount"]))
+                    {
+                        retryCount = int.Parse(Configuration["EventBusRetryCount"]);
+                    }
+
+                    return new DefaultRabbitMQPersistentConnection(factory, logger, retryCount);
                 });
             }            
 
@@ -172,6 +184,9 @@
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env,ILoggerFactory loggerFactory)
         {
+            loggerFactory.AddAzureWebAppDiagnostics();
+            loggerFactory.AddApplicationInsights(app.ApplicationServices, LogLevel.Trace);
+
             var pathBase = Configuration["PATH_BASE"];
 
             if (!string.IsNullOrEmpty(pathBase))
@@ -188,11 +203,29 @@
             app.UseSwagger()
                .UseSwaggerUI(c =>
                {
-                   c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                   c.SwaggerEndpoint($"{ (!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty) }/swagger/v1/swagger.json", "My API V1");
                    c.ConfigureOAuth2("marketingswaggerui", "", "", "Marketing Swagger UI");
                });            
 
             ConfigureEventBus(app);
+        }
+
+        private void RegisterAppInsights(IServiceCollection services)
+        {
+            services.AddApplicationInsightsTelemetry(Configuration);
+            var orchestratorType = Configuration.GetValue<string>("OrchestratorType");
+
+            if (orchestratorType?.ToUpper() == "K8S")
+            {
+                // Enable K8s telemetry initializer
+                services.EnableKubernetes();
+            }
+            if (orchestratorType?.ToUpper() == "SF")
+            {
+                // Enable SF telemetry initializer
+                services.AddSingleton<ITelemetryInitializer>((serviceProvider) =>
+                    new FabricTelemetryInitializer());
+            }
         }
 
         private void ConfigureAuthService(IServiceCollection services)
@@ -231,7 +264,21 @@
             }
             else
             {
-                services.AddSingleton<IEventBus, EventBusRabbitMQ>();
+                services.AddSingleton<IEventBus, EventBusRabbitMQ>(sp =>
+                {
+                    var rabbitMQPersistentConnection = sp.GetRequiredService<IRabbitMQPersistentConnection>();
+                    var iLifetimeScope = sp.GetRequiredService<ILifetimeScope>();
+                    var logger = sp.GetRequiredService<ILogger<EventBusRabbitMQ>>();
+                    var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
+
+                    var retryCount = 5;
+                    if (!string.IsNullOrEmpty(Configuration["EventBusRetryCount"]))
+                    {
+                        retryCount = int.Parse(Configuration["EventBusRetryCount"]);
+                    }
+
+                    return new EventBusRabbitMQ(rabbitMQPersistentConnection, logger, iLifetimeScope, eventBusSubcriptionsManager, retryCount);
+                });
             }
 
             services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
@@ -246,6 +293,11 @@
 
         protected virtual void ConfigureAuth(IApplicationBuilder app)
         {
+            if (Configuration.GetValue<bool>("UseLoadTest"))
+            {
+                app.UseMiddleware<ByPassAuthMiddleware>();
+            }
+
             app.UseAuthentication();
         }
     }

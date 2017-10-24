@@ -8,6 +8,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using WebStatus.Extensions;
+using Microsoft.ApplicationInsights.Extensibility;
+using Microsoft.ApplicationInsights.ServiceFabric;
 
 namespace WebStatus
 {
@@ -23,6 +25,8 @@ namespace WebStatus
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            RegisterAppInsights(services);
+
             services.AddOptions();
 
             // Add framework services.
@@ -49,8 +53,11 @@ namespace WebStatus
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            loggerFactory.AddAzureWebAppDiagnostics();
+            loggerFactory.AddApplicationInsights(app.ApplicationServices, LogLevel.Trace);
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -75,6 +82,24 @@ namespace WebStatus
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+        }
+
+        private void RegisterAppInsights(IServiceCollection services)
+        {
+            services.AddApplicationInsightsTelemetry(Configuration);
+            var orchestratorType = Configuration.GetValue<string>("OrchestratorType");
+
+            if (orchestratorType?.ToUpper() == "K8S")
+            {
+                // Enable K8s telemetry initializer
+                services.EnableKubernetes();
+            }
+            if (orchestratorType?.ToUpper() == "SF")
+            {
+                // Enable SF telemetry initializer
+                services.AddSingleton<ITelemetryInitializer>((serviceProvider) =>
+                    new FabricTelemetryInitializer());
+            }
         }
     }
 }

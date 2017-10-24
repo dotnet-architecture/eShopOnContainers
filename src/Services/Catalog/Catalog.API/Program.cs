@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF;
 using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -31,15 +32,20 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
              .UseStartup<Startup>()
+                .UseApplicationInsights()
                 .UseHealthChecks("/hc")
-                .UseContentRoot(Directory.GetCurrentDirectory())               
+                .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseWebRoot("Pics")
+                .ConfigureAppConfiguration((builderContext, config) =>
+                {
+                    config.AddEnvironmentVariables();
+                })
                 .ConfigureLogging((hostingContext, builder) =>
                 {
                     builder.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
                     builder.AddConsole();
                     builder.AddDebug();
-                })
+                })                
                 .Build();    
     }
 }

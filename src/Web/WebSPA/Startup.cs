@@ -1,4 +1,6 @@
 ﻿using eShopOnContainers.WebSPA;
+using Microsoft.ApplicationInsights.Extensibility;
+using Microsoft.ApplicationInsights.ServiceFabric;
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -36,6 +38,8 @@ namespace eShopConContainers.WebSPA
         // For more information on how to configure your application, visit http://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            RegisterAppInsights(services);
+
             services.AddHealthChecks(checks =>
             {
                 var minutes = 1;
@@ -76,6 +80,10 @@ namespace eShopConContainers.WebSPA
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IAntiforgery antiforgery)
         {
+
+            loggerFactory.AddAzureWebAppDiagnostics();
+            loggerFactory.AddApplicationInsights(app.ApplicationServices, LogLevel.Trace);
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -116,11 +124,29 @@ namespace eShopConContainers.WebSPA
                     await next();
                 }
             });
-
+            
             app.UseDefaultFiles();
             app.UseStaticFiles();
 
             app.UseMvcWithDefaultRoute();
+        }
+
+        private void RegisterAppInsights(IServiceCollection services)
+        {
+            services.AddApplicationInsightsTelemetry(Configuration);
+            var orchestratorType = Configuration.GetValue<string>("OrchestratorType");
+
+            if (orchestratorType?.ToUpper() == "K8S")
+            {
+                // Enable K8s telemetry initializer
+                services.EnableKubernetes();
+            }
+            if (orchestratorType?.ToUpper() == "SF")
+            {
+                // Enable SF telemetry initializer
+                services.AddSingleton<ITelemetryInitializer>((serviceProvider) =>
+                    new FabricTelemetryInitializer());
+            }
         }
     }
 }
