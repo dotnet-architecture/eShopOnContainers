@@ -3,12 +3,15 @@
 # List of microservices here needs to be updated to include all the new microservices (Marketing, etc.)
 
 projectList=(
-    "../src/Services/Catalog/Catalog.API"
-    "../src/Services/Basket/Basket.API"
-    "../src/Services/Ordering/Ordering.API"
-    "../src/Services/Identity/Identity.API"
     "../src/Web/WebMVC"
     "../src/Web/WebSPA"
+    "../src/Services/Identity/Identity.API"
+    "../src/Services/Catalog/Catalog.API"
+    "../src/Services/Ordering/Ordering.API"
+    "../src/Services/Basket/Basket.API"
+    "../src/Services/Location/Locations.API"
+    "../src/Services/Marketing/Marketing.API"
+    "../src/Services/Payment/Payment.API"
     "../src/Web/WebStatus"
 )
 
