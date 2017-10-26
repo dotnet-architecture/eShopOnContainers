@@ -38,7 +38,7 @@
       <!-- This endpoint is used by the communication listener to obtain the port on which to 
            listen. Please note that if your service is partitioned, this port is shared with 
            replicas of different partitions that are placed in your code. -->
-      <Endpoint Name="PaymentApiTypeEndpoint" Port="5108" PathSuffix="eShopOnServiceFabric/PaymentApi"/>
+      <Endpoint Name="PaymentApiTypeEndpoint" Port="5108"/>
     </Endpoints>
   </Resources>
 </ServiceManifest>

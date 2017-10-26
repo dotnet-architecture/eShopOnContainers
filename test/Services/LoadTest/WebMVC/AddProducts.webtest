@@ -25,7 +25,7 @@
             <FormPostParameter Name="description" Value=".NET Black &amp; White Mug" RecordedValue=".NET Black &amp; White Mug" CorrelationBinding="" UrlEncode="True" />
             <FormPostParameter Name="id" Value="2" RecordedValue="2" CorrelationBinding="" UrlEncode="True" />
             <FormPostParameter Name="name" Value=".NET Black &amp; White Mug" RecordedValue=".NET Black &amp; White Mug" CorrelationBinding="" UrlEncode="True" />
-            <FormPostParameter Name="pictureUri" Value="http://192.168.1.64:5101/api/v1/pic/2" RecordedValue="http://192.168.1.64:5101/api/v1/pic/2" CorrelationBinding="" UrlEncode="True" />
+            <FormPostParameter Name="pictureUri" Value="{{LocalTestSettings.CatalogApiServer.url}}/api/v1/catalog/items/2/pic/" RecordedValue="{{LocalTestSettings.CatalogApiServer.url}}/api/v1/catalog/items/2/pic/" CorrelationBinding="" UrlEncode="True" />
             <FormPostParameter Name="price" Value="8.5" RecordedValue="8.5" CorrelationBinding="" UrlEncode="True" />
           </FormPostHttpBody>
         </Request>
@@ -37,6 +37,7 @@
       <Tables>
         <DataSourceTable Name="MvcWebServer" SelectColumns="SelectAllColumns" AccessMethod="Sequential" />
         <DataSourceTable Name="IdentityApiServer" SelectColumns="SelectAllColumns" AccessMethod="Sequential" />
+        <DataSourceTable Name="CatalogApiServer" SelectColumns="SelectAllColumns" AccessMethod="Sequential" />
         <DataSourceTable Name="User" SelectColumns="SelectAllColumns" AccessMethod="Sequential" />
       </Tables>
     </DataSource>
@@ -45,7 +46,6 @@
     <ContextParameter Name="i" Value="0" />
   </ContextParameters>
   <ValidationRules>
-    <ValidationRule Classname="Microsoft.VisualStudio.TestTools.WebTesting.Rules.ValidateResponseUrl, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" DisplayName="Response URL" Description="Validates that the response URL after redirects are followed is the same as the recorded response URL.  QueryString parameters are ignored." Level="Low" ExectuionOrder="BeforeDependents" />
     <ValidationRule Classname="Microsoft.VisualStudio.TestTools.WebTesting.Rules.ValidationRuleResponseTimeGoal, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" DisplayName="Response Time Goal" Description="Validates that the response time for the request is less than or equal to the response time goal as specified on the request.  Response time goals of zero will be ignored." Level="Low" ExectuionOrder="AfterDependents">
       <RuleParameters>
         <RuleParameter Name="Tolerance" Value="0" />
