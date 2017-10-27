@@ -24,7 +24,7 @@
                 var location = new LocationRequest
                 {
                     Longitude = -122.315752,
-                    Latitude = 47.604610
+                    Latitude = 47.60461
                 };
                 var content = new StringContent(JsonConvert.SerializeObject(location),
                     Encoding.UTF8, "application/json");
@@ -35,14 +35,14 @@
 
                 await Task.Delay(300);
 
-                //Get campaing from Marketing.API given a userId
-                var userLocationCampaignResponse = await marketingServer.CreateClient()
-                    .GetAsync(CampaignScenariosBase.Get.UserCampaignsByUserId());
+                //Get campaing from Marketing.API
+                var campaignsResponse = await marketingServer.CreateClient()
+                    .GetAsync(CampaignScenariosBase.Get.Campaigns);
 
-                var responseBody = await userLocationCampaignResponse.Content.ReadAsStringAsync();
-                var userLocationCampaigns = JsonConvert.DeserializeObject<PaginatedItemsViewModel<CampaignDTO>>(responseBody);
+                var responseBody = await campaignsResponse.Content.ReadAsStringAsync();
+                var campaigns = JsonConvert.DeserializeObject<List<CampaignDTO>>(responseBody);
 
-                Assert.True(userLocationCampaigns.Count > 0);
+                Assert.True(campaigns.Count > 0);
             }
         }
     }

@@ -13,10 +13,10 @@
   <DataSources>
     <DataSource Name="LocalTestSettings" Provider="Microsoft.VisualStudio.TestTools.DataSource.XML" Connection="|DataDirectory|\..\app.config">
       <Tables>
-        <DataSourceTable Name="MvcWebServer" SelectColumns="SelectAllColumns" AccessMethod="Unique" />
-        <DataSourceTable Name="IdentityApiServer" SelectColumns="SelectAllColumns" AccessMethod="Unique" />
-        <DataSourceTable Name="User" SelectColumns="SelectAllColumns" AccessMethod="Unique" />
-        <DataSourceTable Name="ClientId" SelectColumns="SelectAllColumns" AccessMethod="Unique" />
+        <DataSourceTable Name="MvcWebServer" SelectColumns="SelectAllColumns" AccessMethod="Sequential" />
+        <DataSourceTable Name="IdentityApiServer" SelectColumns="SelectAllColumns" AccessMethod="Sequential" />
+        <DataSourceTable Name="User" SelectColumns="SelectAllColumns" AccessMethod="Sequential" />
+        <DataSourceTable Name="ClientId" SelectColumns="SelectAllColumns" AccessMethod="Sequential" />
       </Tables>
     </DataSource>
   </DataSources>

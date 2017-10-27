@@ -1,13 +1,13 @@
-﻿namespace eShopOnContainers.Core.Services.Marketing
-{
-    using System;
-    using System.Collections.ObjectModel;
-    using System.Threading.Tasks;
-    using Models.Marketing;
-    using RequestProvider;
-    using Extensions;
-    using Helpers;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Threading.Tasks;
+using eShopOnContainers.Core.Models.Marketing;
+using eShopOnContainers.Core.Services.RequestProvider;
+using eShopOnContainers.Core.Extensions;
+using eShopOnContainers.Core.Helpers;
 
+namespace eShopOnContainers.Core.Services.Marketing
+{
     public class CampaignService : ICampaignService
     {
         private readonly IRequestProvider _requestProvider;

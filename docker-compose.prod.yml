@@ -1,4 +1,4 @@
-version: '2.1'
+version: '3'
 
 # The Production docker-compose file has to have the external/real IPs or DNS names for the services 
 # The ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP environment variable is taken, by default, from the ".env" file defined like: 
@@ -66,6 +66,8 @@ services:
       - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
       - UseCustomizationData=True
       - AzureServiceBusEnabled=False
+      - CheckUpdateTime=30000
+      - GracePeriodTime=1      
     ports:
       - "5102:80"
 
@@ -87,14 +89,6 @@ services:
       - AzureStorageEnabled=False
     ports:
       - "5110:80"
-
-  graceperiodmanager:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Production
-      - ASPNETCORE_URLS=http://0.0.0.0:80
-      - ConnectionString=${ESHOP_AZURE_ORDERING_DB:-Server=sql.data;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word}
-      - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
-      - AzureServiceBusEnabled=False
 
   webspa:
     environment:
@@ -130,8 +124,9 @@ services:
 
   sql.data:
     environment:
-      - SA_PASSWORD=Pass@word
+      - MSSQL_SA_PASSWORD=Pass@word
       - ACCEPT_EULA=Y
+      - MSSQL_PID=Developer
     ports:
       - "5433:1433"
 

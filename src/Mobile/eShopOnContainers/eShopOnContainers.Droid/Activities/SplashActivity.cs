@@ -11,6 +11,7 @@ namespace eShopOnContainers.Droid.Activities
          Icon = "@drawable/icon",
          Theme = "@style/Theme.Splash",
          NoHistory = true,
+         MainLauncher = true,
          ScreenOrientation = ScreenOrientation.Portrait)]
     public class SplashActivity : AppCompatActivity
     {
@@ -23,8 +24,7 @@ namespace eShopOnContainers.Droid.Activities
 
         private void InvokeMainActivity()
         {
-            var mainActivityIntent = new Intent(this, typeof(MainActivity));
-            StartActivity(mainActivityIntent);
+            StartActivity(new Intent(this, typeof(MainActivity)));
         }
     }
 }

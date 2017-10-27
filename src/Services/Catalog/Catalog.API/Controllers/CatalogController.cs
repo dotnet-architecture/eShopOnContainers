@@ -9,6 +9,7 @@ using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
@@ -32,6 +33,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
         // GET api/v1/[controller]/items[?pageSize=3&pageIndex=10]
         [HttpGet]
         [Route("[action]")]
+        [ProducesResponseType(typeof(PaginatedItemsViewModel<CatalogItem>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> Items([FromQuery]int pageSize = 10, [FromQuery]int pageIndex = 0)
 
         {
@@ -54,6 +56,8 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
 
         [HttpGet]
         [Route("items/{id:int}")]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(CatalogItem),(int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetItemById(int id)
         {
             if (id <= 0)
@@ -73,6 +77,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
         // GET api/v1/[controller]/items/withname/samplename[?pageSize=3&pageIndex=10]
         [HttpGet]
         [Route("[action]/withname/{name:minlength(1)}")]
+        [ProducesResponseType(typeof(PaginatedItemsViewModel<CatalogItem>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> Items(string name, [FromQuery]int pageSize = 10, [FromQuery]int pageIndex = 0)
         {
 
@@ -97,6 +102,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
         // GET api/v1/[controller]/items/type/1/brand/null[?pageSize=3&pageIndex=10]
         [HttpGet]
         [Route("[action]/type/{catalogTypeId}/brand/{catalogBrandId}")]
+        [ProducesResponseType(typeof(PaginatedItemsViewModel<CatalogItem>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> Items(int? catalogTypeId, int? catalogBrandId, [FromQuery]int pageSize = 10, [FromQuery]int pageIndex = 0)
         {
             var root = (IQueryable<CatalogItem>)_catalogContext.CatalogItems;
@@ -130,6 +136,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
         // GET api/v1/[controller]/CatalogTypes
         [HttpGet]
         [Route("[action]")]
+        [ProducesResponseType(typeof(List<CatalogItem>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> CatalogTypes()
         {
             var items = await _catalogContext.CatalogTypes
@@ -141,6 +148,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
         // GET api/v1/[controller]/CatalogBrands
         [HttpGet]
         [Route("[action]")]
+        [ProducesResponseType(typeof(List<CatalogItem>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> CatalogBrands()
         {
             var items = await _catalogContext.CatalogBrands
@@ -152,6 +160,8 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
         //PUT api/v1/[controller]/items
         [Route("items")]
         [HttpPut]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)HttpStatusCode.Created)]
         public async Task<IActionResult> UpdateProduct([FromBody]CatalogItem productToUpdate)
         {
             var catalogItem = await _catalogContext.CatalogItems
@@ -192,6 +202,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
         //POST api/v1/[controller]/items
         [Route("items")]
         [HttpPost]
+        [ProducesResponseType((int)HttpStatusCode.Created)]
         public async Task<IActionResult> CreateProduct([FromBody]CatalogItem product)
         {
             var item = new CatalogItem
@@ -213,6 +224,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
         //DELETE api/v1/[controller]/id
         [Route("{id}")]
         [HttpDelete]
+        [ProducesResponseType((int)HttpStatusCode.NoContent)]
         public async Task<IActionResult> DeleteProduct(int id)
         {
             var product = _catalogContext.CatalogItems.SingleOrDefault(x => x.Id == id);

@@ -15,8 +15,8 @@ spec:
         image: eshop/basket.api
         imagePullPolicy: Always
         env:
-        - name: ASPNETCORE_URLS
-          value: http://0.0.0.0:80/basket-api
+        - name: PATH_BASE
+          value: /basket-api
         - name: ConnectionString
           valueFrom:
            configMapKeyRef:
@@ -32,13 +32,39 @@ spec:
            configMapKeyRef:
              name: externalcfg
              key: UseAzureServiceBus
+        - name: ApplicationInsights__InstrumentationKey
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: Instrumentation_Key
         - name: IdentityUrl
           valueFrom:
            configMapKeyRef:
              name: urls
              key: IdentityUrl
+        - name: UseLoadTest
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: EnableLoadTest
+        - name: OrchestratorType
+          value: 'K8S'
         ports:
-        - containerPort: 80      
+        - containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 5
+          periodSeconds: 10 
+        livenessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 60
+          periodSeconds: 10                 
       imagePullSecrets:
       - name: registry-key
 ---
@@ -59,8 +85,8 @@ spec:
         image: eshop/catalog.api
         imagePullPolicy: Always
         env:
-        - name: ASPNETCORE_URLS
-          value: http://0.0.0.0:80/catalog-api
+        - name: PATH_BASE
+          value: /catalog-api
         - name: ConnectionString
           valueFrom:
            configMapKeyRef:
@@ -81,8 +107,29 @@ spec:
            configMapKeyRef:
              name: externalcfg
              key: CatalogBus
+        - name: ApplicationInsights__InstrumentationKey
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: Instrumentation_Key
+        - name: OrchestratorType
+          value: 'K8S' 
         ports:
         - containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 5
+          periodSeconds: 10 
+        livenessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 60
+          periodSeconds: 10      
       imagePullSecrets:
       - name: registry-key
 ---
@@ -103,9 +150,9 @@ spec:
         image: eshop/identity.api
         imagePullPolicy: Always
         env:
-        - name: ASPNETCORE_URLS
-          value: http://0.0.0.0:80/identity
-        - name: ConnectionStrings__DefaultConnection
+        - name: PATH_BASE
+          value: /identity
+        - name: ConnectionString
           valueFrom:
            configMapKeyRef:
              name: externalcfg
@@ -146,9 +193,30 @@ spec:
           valueFrom:
            configMapKeyRef:
              name: urls
-             key: OrderingApiClient                               
+             key: OrderingApiClient  
+        - name: ApplicationInsights__InstrumentationKey
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: Instrumentation_Key 
+        - name: OrchestratorType
+          value: 'K8S'                            
         ports:
         - containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 5
+          periodSeconds: 10 
+        livenessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 60
+          periodSeconds: 10      
       imagePullSecrets:
       - name: registry-key
 ---
@@ -169,8 +237,8 @@ spec:
         image: eshop/ordering.api
         imagePullPolicy: Always
         env:
-        - name: ASPNETCORE_URLS
-          value: http://0.0.0.0:80/ordering-api
+        - name: PATH_BASE
+          value: /ordering-api
         - name: ConnectionString
           valueFrom:
            configMapKeyRef:
@@ -191,55 +259,44 @@ spec:
            configMapKeyRef:
              name: urls
              key: IdentityUrl
-        ports:
-        - containerPort: 80
-      imagePullSecrets:
-      - name: registry-key
----
-apiVersion: extensions/v1beta1
-kind: Deployment
-metadata:
-  name: graceperiodmanager
-spec:
-  paused: true
-  template:
-    metadata:
-      labels:
-        app: eshop
-        component: graceperiodmanager
-    spec:
-      containers:
-      - name: graceperiodmanager
-        image: eshop/graceperiodmanager
-        imagePullPolicy: Always
-        env:
-        - name: ConnectionString
-          valueFrom:
-           configMapKeyRef:
-             name: externalcfg
-             key: OrderingSqlDb
-        - name: EventBusConnection
-          valueFrom:
-           configMapKeyRef:
-             name: externalcfg
-             key: GracePeriodManagerBus
-        - name: GracePeriodTime
-          valueFrom:
-           configMapKeyRef:
-             name: externalcfg
-             key: GracePeriodTime
         - name: CheckUpdateTime
           valueFrom:
            configMapKeyRef:
              name: externalcfg
-             key: GracePeriodCheckUpdateTime                         
-        - name: AzureServiceBusEnabled
+             key: GracePeriodManager_CheckUpdateTime
+        - name: GracePeriodTime
           valueFrom:
            configMapKeyRef:
              name: externalcfg
-             key: UseAzureServiceBus
+             key: GracePeriodManager_GracePeriodTime  
+        - name: ApplicationInsights__InstrumentationKey
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: Instrumentation_Key
+        - name: UseLoadTest
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: EnableLoadTest
+        - name: OrchestratorType
+          value: 'K8S'           
         ports:
         - containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 5
+          periodSeconds: 10 
+        livenessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 60
+          periodSeconds: 10      
       imagePullSecrets:
       - name: registry-key
 ---
@@ -260,8 +317,8 @@ spec:
         image: eshop/locations.api
         imagePullPolicy: Always
         env:
-        - name: ASPNETCORE_URLS
-          value: http://0.0.0.0:80/locations-api
+        - name: PATH_BASE
+          value: /locations-api
         - name: ConnectionString
           valueFrom:
            configMapKeyRef:
@@ -291,9 +348,35 @@ spec:
           valueFrom:
            configMapKeyRef:
              name: urls
-             key: IdentityUrl             
+             key: IdentityUrl   
+        - name: ApplicationInsights__InstrumentationKey
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: Instrumentation_Key
+        - name: UseLoadTest
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: EnableLoadTest
+        - name: OrchestratorType
+          value: 'K8S'          
         ports:
         - containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 5
+          periodSeconds: 10 
+        livenessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 60
+          periodSeconds: 10      
       imagePullSecrets:
       - name: registry-key
 ---
@@ -314,8 +397,8 @@ spec:
         image: eshop/marketing.api
         imagePullPolicy: Always
         env:
-        - name: ASPNETCORE_URLS
-          value: http://0.0.0.0:80/marketing-api
+        - name: PATH_BASE
+          value: /marketing-api
         - name: ConnectionString
           valueFrom:
            configMapKeyRef:
@@ -355,9 +438,35 @@ spec:
           valueFrom:
            configMapKeyRef:
              name: urls
-             key: Marketing_PicBaseUrl             
+             key: Marketing_PicBaseUrl 
+        - name: ApplicationInsights__InstrumentationKey
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: Instrumentation_Key
+        - name: UseLoadTest
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: EnableLoadTest
+        - name: OrchestratorType
+          value: 'K8S'            
         ports:
         - containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 5
+          periodSeconds: 10 
+        livenessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 60
+          periodSeconds: 10      
       imagePullSecrets:
       - name: registry-key
 ---
@@ -378,8 +487,8 @@ spec:
         image: eshop/payment.api
         imagePullPolicy: Always
         env:
-        - name: ASPNETCORE_URLS
-          value: http://0.0.0.0:80/payment-api
+        - name: PATH_BASE
+          value: /payment-api
         - name: AzureServiceBusEnabled
           valueFrom:
            configMapKeyRef:
@@ -390,8 +499,29 @@ spec:
            configMapKeyRef:
              name: externalcfg
              key: PaymentBus
+        - name: ApplicationInsights__InstrumentationKey
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: Instrumentation_Key
+        - name: OrchestratorType
+          value: 'K8S'
         ports:
         - containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 5
+          periodSeconds: 10 
+        livenessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 60
+          periodSeconds: 10       
       imagePullSecrets:
       - name: registry-key      
 ---
@@ -412,8 +542,8 @@ spec:
         image: eshop/webmvc
         imagePullPolicy: Always
         env:
-        - name: ASPNETCORE_URLS
-          value: http://0.0.0.0:80/webmvc
+        - name: PATH_BASE
+          value: /webmvc
         - name: DPConnectionString
           valueFrom:
            configMapKeyRef:
@@ -431,6 +561,11 @@ spec:
            configMapKeyRef:
              name: urls
              key: MvcClientExternalUrl
+        - name: LocationsUrl
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: MvcClientLocationsUrl
         - name: CatalogUrl
           valueFrom:
            configMapKeyRef:
@@ -450,9 +585,65 @@ spec:
           valueFrom:
            configMapKeyRef:
              name: urls
-             key: MvcClientMarketingUrl             
+             key: MvcClientMarketingUrl 
+        - name: BasketUrlHC
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: BasketHealthCheckUrl        
+        - name: CatalogUrlHC
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: CatalogHealthCheckUrl
+        - name: IdentityUrlHC
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: IdentityHealthCheckUrl
+        - name: OrderingUrlHC
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: OrderingHealthCheckUrl
+        - name: MarketingUrlHC
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: MarketingHealthCheckUrl  
+        - name: PaymentUrlHC
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: PaymentHealthCheckUrl  
+        - name: ApplicationInsights__InstrumentationKey
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: Instrumentation_Key
+        - name: UseLoadTest
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: EnableLoadTest
+        - name: OrchestratorType
+          value: 'K8S'        
         ports:
         - containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 5
+          periodSeconds: 10 
+        livenessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 60
+          periodSeconds: 10      
       imagePullSecrets:
       - name: registry-key
 ---
@@ -473,8 +664,8 @@ spec:
         image: eshop/webstatus
         imagePullPolicy: Always
         env:
-        - name: ASPNETCORE_URLS
-          value: http://0.0.0.0:80/webstatus
+        - name: PATH_BASE
+          value: /webstatus
         - name: BasketUrl
           valueFrom:
            configMapKeyRef:
@@ -514,7 +705,19 @@ spec:
           valueFrom:
            configMapKeyRef:
              name: urls
-             key: WebSpaHealthCheckUrl             
+             key: WebSpaHealthCheckUrl   
+        - name: PaymentUrl
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: PaymentHealthCheckUrl 
+        - name: ApplicationInsights__InstrumentationKey
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: Instrumentation_Key  
+        - name: OrchestratorType
+          value: 'K8S'       
         ports:
         - containerPort: 80
       imagePullSecrets:
@@ -575,7 +778,12 @@ spec:
           valueFrom:
            configMapKeyRef:
              name: urls
-             key: SpaClientMarketingExternalUrl             
+             key: SpaClientMarketingExternalUrl
+        - name: LocationsUrl
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: SpaClientLocationsUrl
         - name: BasketUrlHC
           valueFrom:
            configMapKeyRef:
@@ -601,7 +809,33 @@ spec:
            configMapKeyRef:
              name: urls
              key: MarketingHealthCheckUrl
+        - name: PaymentUrlHC
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: PaymentHealthCheckUrl
+        - name: ApplicationInsights__InstrumentationKey
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: Instrumentation_Key
+        - name: OrchestratorType
+          value: 'K8S'
         ports:
         - containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 5
+          periodSeconds: 10 
+        livenessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 60
+          periodSeconds: 10      
       imagePullSecrets:
       - name: registry-key

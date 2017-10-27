@@ -1,11 +1,8 @@
-﻿using Identity.API.Models;
-using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.eShopOnContainers.Services.Identity.API.Models;
 using System.Threading.Tasks;
 
-namespace Identity.API.Services
+namespace Microsoft.eShopOnContainers.Services.Identity.API.Services
 {
     public class EFLoginService : ILoginService<ApplicationUser>
     {
