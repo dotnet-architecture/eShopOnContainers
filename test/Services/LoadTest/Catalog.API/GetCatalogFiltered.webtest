@@ -6,8 +6,8 @@
   <DataSources>
     <DataSource Name="LocalTestSettings" Provider="Microsoft.VisualStudio.TestTools.DataSource.XML" Connection="|DataDirectory|\..\app.config">
       <Tables>
-        <DataSourceTable Name="CatalogApiServer" SelectColumns="SelectOnlyBoundColumns" AccessMethod="Unique" />
-        <DataSourceTable Name="ApiVersion" SelectColumns="SelectOnlyBoundColumns" AccessMethod="Unique" />
+        <DataSourceTable Name="CatalogApiServer" SelectColumns="SelectOnlyBoundColumns" AccessMethod="Sequential" />
+        <DataSourceTable Name="ApiVersion" SelectColumns="SelectOnlyBoundColumns" AccessMethod="Sequential" />
       </Tables>
     </DataSource>
   </DataSources>

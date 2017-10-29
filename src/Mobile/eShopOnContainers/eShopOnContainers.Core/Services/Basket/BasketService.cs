@@ -28,7 +28,7 @@ namespace eShopOnContainers.Core.Services.Basket
             CustomerBasket basket =
                     await _requestProvider.GetAsync<CustomerBasket>(uri, token);
 
-                ServicesHelper.FixBasketItemPictureUri(basket?.Items);
+            ServicesHelper.FixBasketItemPictureUri(basket?.Items);
 
             return basket;
         }

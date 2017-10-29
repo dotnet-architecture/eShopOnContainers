@@ -110,13 +110,14 @@ namespace Payment.API
         private void RegisterAppInsights(IServiceCollection services)
         {
             services.AddApplicationInsightsTelemetry(Configuration);
+            var orchestratorType = Configuration.GetValue<string>("OrchestratorType");
 
-            if (Configuration.GetValue<string>("OrchestratorType").Equals("K8S"))
+            if (orchestratorType?.ToUpper() == "K8S")
             {
                 // Enable K8s telemetry initializer
                 services.EnableKubernetes();
             }
-            if (Configuration.GetValue<string>("OrchestratorType").Equals("SF"))
+            if (orchestratorType?.ToUpper() == "SF")
             {
                 // Enable SF telemetry initializer
                 services.AddSingleton<ITelemetryInitializer>((serviceProvider) =>

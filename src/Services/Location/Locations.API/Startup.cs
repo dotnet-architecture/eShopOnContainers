@@ -13,6 +13,7 @@ using Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus;
 using Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure;
 using Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure.Filters;
+using Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure.Middlewares;
 using Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure.Repositories;
 using Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure.Services;
 using Microsoft.Extensions.Configuration;
@@ -170,7 +171,7 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
             app.UseSwagger()
               .UseSwaggerUI(c =>
               {
-                  c.SwaggerEndpoint($"{ (!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty) }/swagger/v1/swagger.json", "My API V1");
+                  c.SwaggerEndpoint($"{ (!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty) }/swagger/v1/swagger.json", "Locations.API V1");
                   c.ConfigureOAuth2("locationsswaggerui", "", "", "Locations Swagger UI");
               });
 
@@ -181,13 +182,14 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
         private void RegisterAppInsights(IServiceCollection services)
         {
             services.AddApplicationInsightsTelemetry(Configuration);
+            var orchestratorType = Configuration.GetValue<string>("OrchestratorType");
 
-            if (Configuration.GetValue<string>("OrchestratorType").Equals("K8S"))
+            if (orchestratorType?.ToUpper() == "K8S")
             {
                 // Enable K8s telemetry initializer
                 services.EnableKubernetes();
             }
-            if (Configuration.GetValue<string>("OrchestratorType").Equals("SF"))
+            if (orchestratorType?.ToUpper() == "SF")
             {
                 // Enable SF telemetry initializer
                 services.AddSingleton<ITelemetryInitializer>((serviceProvider) =>
@@ -215,6 +217,11 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
 
         protected virtual void ConfigureAuth(IApplicationBuilder app)
         {
+            if (Configuration.GetValue<bool>("UseLoadTest"))
+            {
+                app.UseMiddleware<ByPassAuthMiddleware>();
+            }
+
             app.UseAuthentication();
         }
 

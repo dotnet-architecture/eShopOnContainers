@@ -25,6 +25,7 @@
     using Microsoft.ApplicationInsights.ServiceFabric;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.EntityFrameworkCore.Diagnostics;
+    using Microsoft.eShopOnContainers.Services.Marketing.API.Infrastructure.Middlewares;
     using RabbitMQ.Client;
     using Swashbuckle.AspNetCore.Swagger;
     using System;
@@ -202,7 +203,7 @@
             app.UseSwagger()
                .UseSwaggerUI(c =>
                {
-                   c.SwaggerEndpoint($"{ (!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty) }/swagger/v1/swagger.json", "My API V1");
+                   c.SwaggerEndpoint($"{ (!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty) }/swagger/v1/swagger.json", "Marketing.API V1");
                    c.ConfigureOAuth2("marketingswaggerui", "", "", "Marketing Swagger UI");
                });            
 
@@ -212,13 +213,14 @@
         private void RegisterAppInsights(IServiceCollection services)
         {
             services.AddApplicationInsightsTelemetry(Configuration);
+            var orchestratorType = Configuration.GetValue<string>("OrchestratorType");
 
-            if (Configuration.GetValue<string>("OrchestratorType").Equals("K8S"))
+            if (orchestratorType?.ToUpper() == "K8S")
             {
                 // Enable K8s telemetry initializer
                 services.EnableKubernetes();
             }
-            if (Configuration.GetValue<string>("OrchestratorType").Equals("SF"))
+            if (orchestratorType?.ToUpper() == "SF")
             {
                 // Enable SF telemetry initializer
                 services.AddSingleton<ITelemetryInitializer>((serviceProvider) =>
@@ -291,6 +293,11 @@
 
         protected virtual void ConfigureAuth(IApplicationBuilder app)
         {
+            if (Configuration.GetValue<bool>("UseLoadTest"))
+            {
+                app.UseMiddleware<ByPassAuthMiddleware>();
+            }
+
             app.UseAuthentication();
         }
     }

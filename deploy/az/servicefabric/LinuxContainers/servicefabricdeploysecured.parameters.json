@@ -3,19 +3,19 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "clusterName": {
-            "value": "your_sf_name"
+            "value": "pro-eshop-sflinux-cluster"
         },
         "clusterLocation": {
-            "value": "westeurope"
+            "value": "westus"
         },
         "computeLocation": {
-            "value": "westeurope"
+            "value": "westus"
         },
         "adminUserName": {
             "value": "eshop"
         },
         "adminPassword": {
-            "value": "your_admin_password"
+            "value": "Pass@word1"
         },
         "nicName": {
             "value": "NIC-eshopsflinsec"
@@ -24,25 +24,25 @@
             "value": "eshopsflinsec-PubIP"
         },
         "dnsName": {
-            "value": "your_sf_dns"
+            "value": "pro-eshop-sflinux-cluster"
         },
         "virtualNetworkName": {
-            "value": "VNet-eshopsflinsec"
+            "value": "VNet-eshopsflin"
         },
         "lbName": {
-            "value": "LB-eshopsflinsec"
+            "value": "LB-eshopsflin"
         },
         "lbIPName": {
-            "value": "LBIP-eshopsflinsec"
+            "value": "LBIP-eshopsflin"
         },       
         "sourceVaultValue": {
-            "value": ""
+            "value": "your-value-check-keyvault-at-azure"
         },
         "certificateUrlValue": {
-            "value": ""
+            "value": "your-value-check-keyvault-at-azure"
         },
         "certificateThumbprint": {
-            "value": ""
+            "value": "your-value-check-keyvault-at-azure"
         },
         "vmImageSku": {
             "value": "16.04-LTS"

@@ -17,6 +17,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using WebMVC.Infrastructure;
+using WebMVC.Infrastructure.Middlewares;
 using WebMVC.Services;
 
 namespace Microsoft.eShopOnContainers.WebMVC
@@ -78,6 +79,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
                 services.AddSingleton<IResilientHttpClientFactory, ResilientHttpClientFactory>(sp =>
                 {
                     var logger = sp.GetRequiredService<ILogger<ResilientHttpClient>>();
+                    var httpContextAccessor = sp.GetRequiredService<IHttpContextAccessor>();
 
                     var retryCount = 6;
                     if (!string.IsNullOrEmpty(Configuration["HttpClientRetryCount"]))
@@ -91,7 +93,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
                         exceptionsAllowedBeforeBreaking = int.Parse(Configuration["HttpClientExceptionsAllowedBeforeBreaking"]);
                     }
 
-                    return new ResilientHttpClientFactory(logger, exceptionsAllowedBeforeBreaking, retryCount);
+                    return new ResilientHttpClientFactory(logger, httpContextAccessor, exceptionsAllowedBeforeBreaking, retryCount);
                 });
                 services.AddSingleton<IHttpClient, ResilientHttpClient>(sp => sp.GetService<IResilientHttpClientFactory>().CreateResilientHttpClient());
             }
@@ -159,6 +161,11 @@ namespace Microsoft.eShopOnContainers.WebMVC
             app.UseSession();
             app.UseStaticFiles();
 
+            if (Configuration.GetValue<bool>("UseLoadTest"))
+            {
+                app.UseMiddleware<ByPassAuthMiddleware>();
+            }
+            
             app.UseAuthentication();
 
             var log = loggerFactory.CreateLogger("identity");
@@ -180,13 +187,14 @@ namespace Microsoft.eShopOnContainers.WebMVC
         private void RegisterAppInsights(IServiceCollection services)
         {
             services.AddApplicationInsightsTelemetry(Configuration);
+            var orchestratorType = Configuration.GetValue<string>("OrchestratorType");
 
-            if (Configuration.GetValue<string>("OrchestratorType").Equals("K8S"))
+            if (orchestratorType?.ToUpper() == "K8S")
             {
                 // Enable K8s telemetry initializer
                 services.EnableKubernetes();
             }
-            if (Configuration.GetValue<string>("OrchestratorType").Equals("SF"))
+            if (orchestratorType?.ToUpper() == "SF")
             {
                 // Enable SF telemetry initializer
                 services.AddSingleton<ITelemetryInitializer>((serviceProvider) =>

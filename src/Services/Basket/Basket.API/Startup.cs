@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Basket.API.Infrastructure.Filters;
+using Basket.API.Infrastructure.Middlewares;
 using Basket.API.IntegrationEvents.EventHandling;
 using Basket.API.IntegrationEvents.Events;
 using Microsoft.ApplicationInsights.Extensibility;
@@ -198,7 +199,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             app.UseSwagger()
                .UseSwaggerUI(c =>
                {
-                   c.SwaggerEndpoint($"{ (!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty) }/swagger/v1/swagger.json", "My API V1");
+                   c.SwaggerEndpoint($"{ (!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty) }/swagger/v1/swagger.json", "Basket.API V1");
                    c.ConfigureOAuth2("basketswaggerui", "", "", "Basket Swagger UI");
                });
 
@@ -209,13 +210,14 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
         private void RegisterAppInsights(IServiceCollection services)
         {
             services.AddApplicationInsightsTelemetry(Configuration);
-
-            if (Configuration.GetValue<string>("OrchestratorType").Equals("K8S"))
+            var orchestratorType = Configuration.GetValue<string>("OrchestratorType");
+            
+            if (orchestratorType?.ToUpper() == "K8S")
             {
                 // Enable K8s telemetry initializer
                 services.EnableKubernetes();
             }
-            if (Configuration.GetValue<string>("OrchestratorType").Equals("SF"))
+            if (orchestratorType?.ToUpper() == "SF")
             {
                 // Enable SF telemetry initializer
                 services.AddSingleton<ITelemetryInitializer>((serviceProvider) =>
@@ -245,6 +247,11 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
 
         protected virtual void ConfigureAuth(IApplicationBuilder app)
         {
+            if (Configuration.GetValue<bool>("UseLoadTest"))
+            {
+                app.UseMiddleware<ByPassAuthMiddleware>();
+            }
+
             app.UseAuthentication();
         }
 

@@ -1,6 +1,8 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -12,16 +14,20 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http
     {
         private HttpClient _client;
         private ILogger<StandardHttpClient> _logger;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public StandardHttpClient(ILogger<StandardHttpClient> logger)
+        public StandardHttpClient(ILogger<StandardHttpClient> logger, IHttpContextAccessor httpContextAccessor)
         {
             _client = new HttpClient();
             _logger = logger;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<string> GetStringAsync(string uri, string authorizationToken = null, string authorizationMethod = "Bearer")
         {
             var requestMessage = new HttpRequestMessage(HttpMethod.Get, uri);
+
+            SetAuthorizationHeader(requestMessage);
 
             if (authorizationToken != null)
             {
@@ -44,6 +50,8 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http
             // as it is disposed after each call
 
             var requestMessage = new HttpRequestMessage(method, uri);
+
+            SetAuthorizationHeader(requestMessage);
 
             requestMessage.Content = new StringContent(JsonConvert.SerializeObject(item), System.Text.Encoding.UTF8, "application/json");
 
@@ -84,6 +92,8 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http
         {
             var requestMessage = new HttpRequestMessage(HttpMethod.Delete, uri);
 
+            SetAuthorizationHeader(requestMessage);
+
             if (authorizationToken != null)
             {
                 requestMessage.Headers.Authorization = new AuthenticationHeaderValue(authorizationMethod, authorizationToken);
@@ -95,6 +105,15 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http
             }
 
             return await _client.SendAsync(requestMessage);
+        }
+
+        private void SetAuthorizationHeader(HttpRequestMessage requestMessage)
+        {
+            var authorizationHeader = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+            if (!string.IsNullOrEmpty(authorizationHeader))
+            {
+                requestMessage.Headers.Add("Authorization", new List<string>() { authorizationHeader });
+            }
         }
     }
 }

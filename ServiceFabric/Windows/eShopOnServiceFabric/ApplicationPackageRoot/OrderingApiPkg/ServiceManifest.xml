@@ -15,7 +15,7 @@
     <EntryPoint>
       <!-- Follow this link for more information about deploying Windows containers to Service Fabric: https://aka.ms/sfguestcontainers -->
       <ContainerHost>
-        <ImageName>eshop/ordering.api-win</ImageName>
+        <ImageName>eshop/ordering.api-win:#{tag}#</ImageName>
       </ContainerHost>
     </EntryPoint>
     <!-- Pass environment variables to your container: -->
@@ -34,6 +34,7 @@
       <EnvironmentVariable Name="EventBusPassword" Value="password"/>
       <EnvironmentVariable Name="ApplicationInsights:InstrumentationKey" Value=""/>
       <EnvironmentVariable Name="OrchestratorType" Value="SF"/>
+      <EnvironmentVariable Name="UseLoadTest" Value="False"/>
     </EnvironmentVariables>
   </CodePackage>
 

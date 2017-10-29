@@ -42,6 +42,11 @@ spec:
            configMapKeyRef:
              name: urls
              key: IdentityUrl
+        - name: UseLoadTest
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: EnableLoadTest
         - name: OrchestratorType
           value: 'K8S'
         ports:
@@ -269,6 +274,11 @@ spec:
            configMapKeyRef:
              name: externalcfg
              key: Instrumentation_Key
+        - name: UseLoadTest
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: EnableLoadTest
         - name: OrchestratorType
           value: 'K8S'           
         ports:
@@ -344,6 +354,11 @@ spec:
            configMapKeyRef:
              name: externalcfg
              key: Instrumentation_Key
+        - name: UseLoadTest
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: EnableLoadTest
         - name: OrchestratorType
           value: 'K8S'          
         ports:
@@ -429,6 +444,11 @@ spec:
            configMapKeyRef:
              name: externalcfg
              key: Instrumentation_Key
+        - name: UseLoadTest
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: EnableLoadTest
         - name: OrchestratorType
           value: 'K8S'            
         ports:
@@ -601,6 +621,11 @@ spec:
            configMapKeyRef:
              name: externalcfg
              key: Instrumentation_Key
+        - name: UseLoadTest
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: EnableLoadTest
         - name: OrchestratorType
           value: 'K8S'        
         ports:

@@ -1,94 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <WebTest Name="GetCardTypes" Id="5ad800ae-aa9a-4e40-844e-fab746fc966d" Owner="" Priority="2147483647" Enabled="True" CssProjectStructure="" CssIteration="" Timeout="0" WorkItemIds="" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" Description="" CredentialUserName="" CredentialPassword="" PreAuthenticate="True" Proxy="default" StopOnError="False" RecordedResultFile="" ResultsLocale="">
   <Items>
-    <Request Method="GET" Guid="6010f193-941a-4a7b-98d4-45be7699a0dc" Version="1.1" Url="{{LocalTestSettings.MvcWebServer.url}}/Account/SignIn" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="{{LocalTestSettings.IdentityApiServer.url}}/account/login?returnUrl=%2Fconnect%2Fauthorize%2Flogin%3Fclient_id%3D{{LocalTestSettings.ClientId.value}}%26redirect_uri%3D{{LocalTestSettings.MvcWebServer.url}}%252Fsignin-oidc%26response_type%3Dcode%20id_token%20token%26scope%3Dopenid%20profile%20orders%20basket%20marketing%26response_mode%3Dform_post%26nonce%3D636343249853641220.YTUyNDUwYmUtMDUwNi00YzViLWI4ZjItZGJhZDMwNmM1YjNlMDNhYjZmOGItZTk5YS00ZGEzLTg1Y2UtMDE3YTFjNWFlNjEw%26state%3DCfDJ8OCCkEVDCp5PrdqHtEgvt_mxNTrlU_psyuqjm9lkemQgTEZ-k_LUyThb4S21qtGcud5ajY1BOwzMlk0uvC0p8CB9hqSKaaDpjvspLXMLHjjsZNqjG3bdvnGSHp08_go1orFXlRLeC-8dNSlLlzynWJp9uK_WC56gjcJAiqQErMBVub5lacO-ph04so9LMkZ5KSFxP0qPlkYidej2RfOYkNFxzZnLVTs5ZB_l7IU3EPgh8geWXtks_bnlnPCq9CMnWKuxlTY4_M44DCp0mMWmK_JqBfGSlnEt5d2iz2QThepUUgIg0XQxZsEPl0rsdpN0AXOXOc9bgTm-ApXmoAyBRC-dM_9k59MdxYAbipZGcwOc" ReportingName="" IgnoreHttpStatusCode="False">
-      <Headers>
-        <Header Name="Referer" Value="{{LocalTestSettings.MvcWebServer.url}}" />
-      </Headers>
-      <ExtractionRules>
-        <ExtractionRule Classname="Microsoft.VisualStudio.TestTools.WebTesting.Rules.ExtractHiddenFields, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" VariableName="1" DisplayName="Extract Hidden Fields" Description="Extract all hidden fields from the response and place them into the test context.">
-          <RuleParameters>
-            <RuleParameter Name="Required" Value="True" />
-            <RuleParameter Name="HtmlDecode" Value="True" />
-          </RuleParameters>
-        </ExtractionRule>
-      </ExtractionRules>
-      <CorrelationExtractionRules>
-        <ExtractionRule Classname="Microsoft.VisualStudio.TestTools.WebTesting.Rules.ExtractText, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" VariableName="QueryStringParam1.returnurl" DisplayName="" Description="">
-          <RuleParameters>
-            <RuleParameter Name="StartsWith" Value="?returnurl=" />
-            <RuleParameter Name="EndsWith" Value="&quot;" />
-            <RuleParameter Name="Index" Value="0" />
-            <RuleParameter Name="IgnoreCase" Value="False" />
-            <RuleParameter Name="UseRegularExpression" Value="False" />
-            <RuleParameter Name="HtmlDecode" Value="True" />
-            <RuleParameter Name="Required" Value="False" />
-          </RuleParameters>
-        </ExtractionRule>
-      </CorrelationExtractionRules>
-    </Request>
-    <Request Method="POST" Guid="ec0952d9-c4c9-4cb9-beec-5a6fbd37a49e" Version="1.1" Url="{{LocalTestSettings.IdentityApiServer.url}}/Account/Login" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="{{LocalTestSettings.IdentityApiServer.url}}/connect/authorize/login?client_id={{LocalTestSettings.ClientId.value}}&amp;redirect_uri={{LocalTestSettings.MvcWebServer.url}}%2Fsignin-oidc&amp;response_type=code%20id_token&amp;scope=openid%20profile%20orders%20basket%20marketing&amp;response_mode=form_post&amp;nonce=636343249853641220.YTUyNDUwYmUtMDUwNi00YzViLWI4ZjItZGJhZDMwNmM1YjNlMDNhYjZmOGItZTk5YS00ZGEzLTg1Y2UtMDE3YTFjNWFlNjEw&amp;state=CfDJ8OCCkEVDCp5PrdqHtEgvt_mxNTrlU_psyuqjm9lkemQgTEZ-k_LUyThb4S21qtGcud5ajY1BOwzMlk0uvC0p8CB9hqSKaaDpjvspLXMLHjjsZNqjG3bdvnGSHp08_go1orFXlRLeC-8dNSlLlzynWJp9uK_WC56gjcJAiqQErMBVub5lacO-ph04so9LMkZ5KSFxP0qPlkYidej2RfOYkNFxzZnLVTs5ZB_l7IU3EPgh8geWXtks_bnlnPCq9CMnWKuxlTY4_M44DCp0mMWmK_JqBfGSlnEt5d2iz2QThepUUgIg0XQxZsEPl0rsdpN0AXOXOc9bgTm-ApXmoAyBRC-dM_9k59MdxYAbipZGcwOc" ReportingName="" IgnoreHttpStatusCode="False">
-      <Headers>
-        <Header Name="Referer" Value="{{LocalTestSettings.IdentityApiServer.url}}/account/login?returnUrl=%2Fconnect%2Fauthorize%2Flogin%3Fclient_id%3D{{LocalTestSettings.ClientId.value}}%26redirect_uri%3D{{LocalTestSettings.MvcWebServer.url}}%252Fsignin-oidc%26response_type%3Dcode%20id_token%20token%26scope%3Dopenid%20profile%20orders%20basket%20marketing%26response_mode%3Dform_post%26nonce%3D636343249853641220.YTUyNDUwYmUtMDUwNi00YzViLWI4ZjItZGJhZDMwNmM1YjNlMDNhYjZmOGItZTk5YS00ZGEzLTg1Y2UtMDE3YTFjNWFlNjEw%26state%3DCfDJ8OCCkEVDCp5PrdqHtEgvt_mxNTrlU_psyuqjm9lkemQgTEZ-k_LUyThb4S21qtGcud5ajY1BOwzMlk0uvC0p8CB9hqSKaaDpjvspLXMLHjjsZNqjG3bdvnGSHp08_go1orFXlRLeC-8dNSlLlzynWJp9uK_WC56gjcJAiqQErMBVub5lacO-ph04so9LMkZ5KSFxP0qPlkYidej2RfOYkNFxzZnLVTs5ZB_l7IU3EPgh8geWXtks_bnlnPCq9CMnWKuxlTY4_M44DCp0mMWmK_JqBfGSlnEt5d2iz2QThepUUgIg0XQxZsEPl0rsdpN0AXOXOc9bgTm-ApXmoAyBRC-dM_9k59MdxYAbipZGcwOc" />
-      </Headers>
-      <ExtractionRules>
-        <ExtractionRule Classname="Microsoft.VisualStudio.TestTools.WebTesting.Rules.ExtractHiddenFields, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" VariableName="1" DisplayName="Extract Hidden Fields" Description="Extract all hidden fields from the response and place them into the test context.">
-          <RuleParameters>
-            <RuleParameter Name="Required" Value="True" />
-            <RuleParameter Name="HtmlDecode" Value="True" />
-          </RuleParameters>
-        </ExtractionRule>
-      </ExtractionRules>
-      <QueryStringParameters>
-        <QueryStringParameter Name="returnurl" Value="%2Fconnect%2Fauthorize%2Flogin%3Fclient_id%3D{{LocalTestSettings.ClientId.value}}%26redirect_uri%3D{{LocalTestSettings.MvcWebServer.url}}%252Fsignin-oidc%26response_type%3Dcode%20id_token%20token%26scope%3Dopenid%20profile%20orders%20basket%20marketing%26response_mode%3Dform_post%26nonce%3D636343249853641220.YTUyNDUwYmUtMDUwNi00YzViLWI4ZjItZGJhZDMwNmM1YjNlMDNhYjZmOGItZTk5YS00ZGEzLTg1Y2UtMDE3YTFjNWFlNjEw%26state%3DCfDJ8OCCkEVDCp5PrdqHtEgvt_mxNTrlU_psyuqjm9lkemQgTEZ-k_LUyThb4S21qtGcud5ajY1BOwzMlk0uvC0p8CB9hqSKaaDpjvspLXMLHjjsZNqjG3bdvnGSHp08_go1orFXlRLeC-8dNSlLlzynWJp9uK_WC56gjcJAiqQErMBVub5lacO-ph04so9LMkZ5KSFxP0qPlkYidej2RfOYkNFxzZnLVTs5ZB_l7IU3EPgh8geWXtks_bnlnPCq9CMnWKuxlTY4_M44DCp0mMWmK_JqBfGSlnEt5d2iz2QThepUUgIg0XQxZsEPl0rsdpN0AXOXOc9bgTm-ApXmoAyBRC-dM_9k59MdxYAbipZGcwOc" RecordedValue="%2Fconnect%2Fauthorize%2Flogin%3Fclient_id%3D{{LocalTestSettings.ClientId.value}}%26redirect_uri%3D{{LocalTestSettings.MvcWebServer.url}}%252Fsignin-oidc%26response_type%3Dcode%20id_token%26scope%3Dopenid%20profile%20orders%20basket%20marketing%26response_mode%3Dform_post%26nonce%3D636343249853641220.YTUyNDUwYmUtMDUwNi00YzViLWI4ZjItZGJhZDMwNmM1YjNlMDNhYjZmOGItZTk5YS00ZGEzLTg1Y2UtMDE3YTFjNWFlNjEw%26state%3DCfDJ8OCCkEVDCp5PrdqHtEgvt_mxNTrlU_psyuqjm9lkemQgTEZ-k_LUyThb4S21qtGcud5ajY1BOwzMlk0uvC0p8CB9hqSKaaDpjvspLXMLHjjsZNqjG3bdvnGSHp08_go1orFXlRLeC-8dNSlLlzynWJp9uK_WC56gjcJAiqQErMBVub5lacO-ph04so9LMkZ5KSFxP0qPlkYidej2RfOYkNFxzZnLVTs5ZB_l7IU3EPgh8geWXtks_bnlnPCq9CMnWKuxlTY4_M44DCp0mMWmK_JqBfGSlnEt5d2iz2QThepUUgIg0XQxZsEPl0rsdpN0AXOXOc9bgTm-ApXmoAyBRC-dM_9k59MdxYAbipZGcwOc" CorrelationBinding="{{QueryStringParam1.returnurl}}" UrlEncode="False" UseToGroupResults="False" />
-      </QueryStringParameters>
-      <FormPostHttpBody>
-        <FormPostParameter Name="ReturnUrl" Value="{{$HIDDEN1.ReturnUrl}}" RecordedValue="/connect/authorize/login?client_id={{LocalTestSettings.ClientId.value}}&amp;redirect_uri={{LocalTestSettings.MvcWebServer.url}}%2Fsignin-oidc&amp;response_type=code%20id_token%20token&amp;scope=openid%20profile%20orders%20basket%20marketing&amp;response_mode=form_post&amp;nonce=636343249853641220.YTUyNDUwYmUtMDUwNi00YzViLWI4ZjItZGJhZDMwNmM1YjNlMDNhYjZmOGItZTk5YS00ZGEzLTg1Y2UtMDE3YTFjNWFlNjEw&amp;state=CfDJ8OCCkEVDCp5PrdqHtEgvt_mxNTrlU_psyuqjm9lkemQgTEZ-k_LUyThb4S21qtGcud5ajY1BOwzMlk0uvC0p8CB9hqSKaaDpjvspLXMLHjjsZNqjG3bdvnGSHp08_go1orFXlRLeC-8dNSlLlzynWJp9uK_WC56gjcJAiqQErMBVub5lacO-ph04so9LMkZ5KSFxP0qPlkYidej2RfOYkNFxzZnLVTs5ZB_l7IU3EPgh8geWXtks_bnlnPCq9CMnWKuxlTY4_M44DCp0mMWmK_JqBfGSlnEt5d2iz2QThepUUgIg0XQxZsEPl0rsdpN0AXOXOc9bgTm-ApXmoAyBRC-dM_9k59MdxYAbipZGcwOc" CorrelationBinding="" UrlEncode="True" />
-        <FormPostParameter Name="Email" Value="{{LocalTestSettings.User.email}}" RecordedValue="demouser@microsoft.com" CorrelationBinding="" UrlEncode="True" />
-        <FormPostParameter Name="Password" Value="{{LocalTestSettings.User.password}}" RecordedValue="Pass@word1" CorrelationBinding="" UrlEncode="True" />
-        <FormPostParameter Name="__RequestVerificationToken" Value="{{$HIDDEN1.__RequestVerificationToken}}" RecordedValue="CfDJ8E45n9W-gMZBokgVWyQR_08Qeq0ca2d9G9yE1z_b-QeMrlEjNz483ZRTkeAN5GAkwdOJTGGhV8leGrhDbzsHrv6vEOhH5z96Q-VR7z1UX6RqYZTrwFqAiNyVxZORBlZojN-qEldZm0MqnvKFdE_S_qE" CorrelationBinding="" UrlEncode="True" />
-        <FormPostParameter Name="RememberMe" Value="{{$HIDDEN1.RememberMe}}" RecordedValue="false" CorrelationBinding="" UrlEncode="True" />
-      </FormPostHttpBody>
-    </Request>
-    <Request Method="POST" Guid="c1f83fb4-bf3c-47ad-83c2-58213bb9f6ba" Version="1.1" Url="{{LocalTestSettings.MvcWebServer.url}}/signin-oidc" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="{{LocalTestSettings.MvcWebServer.url}}/" ReportingName="" IgnoreHttpStatusCode="False">
-      <Headers>
-        <Header Name="Referer" Value="{{LocalTestSettings.IdentityApiServer.url}}/connect/authorize/login?client_id={{LocalTestSettings.ClientId.value}}&amp;redirect_uri={{LocalTestSettings.MvcWebServer.url}}%2Fsignin-oidc&amp;response_type=code%20id_token%20token&amp;scope=openid%20profile%20orders%20basket%20marketing&amp;response_mode=form_post&amp;nonce=636344129030307120.Y2I4YmNlZmItNjUwYS00M2YxLWFhODUtYTdiNDdhNDRkOWYwZTNiZjE0MGUtMTk5MC00NjI5LWEzODMtMDI1Y2NlMGIyMjBm&amp;state=CfDJ8DtgHndgZhNLjl9P4BCY6yXTjZ6KvBPKjjlJMOezuLmABc0yH8oO4524WPo9gRyTwYU9W_BdKvSeQFarb3Ym-vFBO281Lu0cMRJww2yg9LXp0AJVkBAX24XHvBLlIyp6lNU_zN-qsp9hqR7JxbeIeXZpmsfnKQof-a1vSJPy3SAzwws6lBHINnaFnOB10lJn88ltr4xvDkn8NmNBIlfuHZJWnCIOvP_mmkO4knEYgVNVpMtUShKDWa1h8dSiVpW6ZHkqPrLpW4LNjk_XZPddpz2vfr9WBoQC9_fPwou_wAAGtWUMCGkxcsOYklycMy4uZgnHojcBk6TlrtG6qSkDkJnURK2qyKIfKhZgQsm1oyQu" />
-      </Headers>
-      <FormPostHttpBody>
-        <FormPostParameter Name="code" Value="{{$HIDDEN1.code}}" RecordedValue="0bca4116acc6c7f6e5f711ff2b8bf544abdd75dcede4a3bd28adf35c1c3dceb5" CorrelationBinding="" UrlEncode="True" />
-        <FormPostParameter Name="id_token" Value="{{$HIDDEN1.id_token}}" RecordedValue="eyJhbGciOiJSUzI1NiIsImtpZCI6IjZCN0FDQzUyMDMwNUJGREI0RjcyNTJEQUVCMjE3N0NDMDkxRkFBRTEiLCJ0eXAiOiJKV1QiLCJ4NXQiOiJhM3JNVWdNRnY5dFBjbExhNnlGM3pBa2ZxdUUifQ.eyJuYmYiOjE0OTg4MTYxMjEsImV4cCI6MTQ5ODgxNjQyMSwiaXNzIjoibnVsbCIsImF1ZCI6Im12YyIsIm5vbmNlIjoiNjM2MzQ0MTI5MDMwMzA3MTIwLlkySTRZbU5sWm1JdE5qVXdZUzAwTTJZeExXRmhPRFV0WVRkaU5EZGhORFJrT1dZd1pUTmlaakUwTUdVdE1UazVNQzAwTmpJNUxXRXpPRE10TURJMVkyTmxNR0l5TWpCbSIsImlhdCI6MTQ5ODgxNjEyMSwiYXRfaGFzaCI6InhHTUpTMWhnUzZmOFBwbkktUlVqdUEiLCJjX2hhc2giOiJHOHRPSnJYeXJObFpvXzhRTUdVU0NnIiwic2lkIjoiNjM3YTIwNTQwZjMzY2NlOWI1ODY3MjdhNDVhMjI0NDQiLCJzdWIiOiIwMjJjOWVkZC0zODI1LTQ3ZmQtYWUwZi0wZDFhNzI0ZjJmMmYiLCJhdXRoX3RpbWUiOjE0OTg4MTYxMjAsImlkcCI6ImxvY2FsIiwiYW1yIjpbInB3ZCJdfQ.NTaCoOFusMTAebqweugCwdwP1JgX-PwDWCRTSooV1jHu83hk5-O69AklsyswW9xV4rhr__3zUjlh7yry5YxfbvpR_K44xzeFjsFHinPWdpqEj11N4m5Hd8bDatxiC6g3KQaQGrn4uRlRhZz25apa9vtwcTTmPXsfKb6HdulCzerXyOf7DXg3q769Dgz2KaVkOenXnDLYR5sI-rmRxWHcVBBb7_sPoAE4GHKnVrgqi1vzki6Ttjh6WxgZPVTQrFJAnA9EZDMtT3Hp8HPq2Gj6Z-ifWVUziY2-0iLSA_hYxvgvQW0clRD_341XS5YkfM26q4ZTJG3C6ntqqcTqkdlJSw" CorrelationBinding="" UrlEncode="True" />
-        <FormPostParameter Name="access_token" Value="{{$HIDDEN1.access_token}}" RecordedValue="eyJhbGciOiJSUzI1NiIsImtpZCI6IjZCN0FDQzUyMDMwNUJGREI0RjcyNTJEQUVCMjE3N0NDMDkxRkFBRTEiLCJ0eXAiOiJKV1QiLCJ4NXQiOiJhM3JNVWdNRnY5dFBjbExhNnlGM3pBa2ZxdUUifQ.eyJuYmYiOjE0OTg4MTYxMjEsImV4cCI6MTQ5ODgxOTcyMSwiaXNzIjoibnVsbCIsImF1ZCI6WyJudWxsL3Jlc291cmNlcyIsIm9yZGVycyIsImJhc2tldCIsIm1hcmtldGluZyJdLCJjbGllbnRfaWQiOiJtdmMiLCJzdWIiOiIwMjJjOWVkZC0zODI1LTQ3ZmQtYWUwZi0wZDFhNzI0ZjJmMmYiLCJhdXRoX3RpbWUiOjE0OTg4MTYxMjAsImlkcCI6ImxvY2FsIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiZGVtb3VzZXJAbWljcm9zb2Z0LmNvbSIsIm5hbWUiOiJEZW1vVXNlciIsImxhc3RfbmFtZSI6IkRlbW9MYXN0TmFtZSIsImNhcmRfbnVtYmVyIjoiNDAxMjg4ODg4ODg4MTg4MSIsImNhcmRfaG9sZGVyIjoiRGVtb1VzZXIiLCJjYXJkX3NlY3VyaXR5X251bWJlciI6IjUzNSIsImNhcmRfZXhwaXJhdGlvbiI6IjEyLzIwIiwiYWRkcmVzc19jaXR5IjoiUmVkbW9uZCIsImFkZHJlc3NfY291bnRyeSI6IlUuUy4iLCJhZGRyZXNzX3N0YXRlIjoiV0EiLCJhZGRyZXNzX3N0cmVldCI6IjE1NzAzIE5FIDYxc3QgQ3QiLCJhZGRyZXNzX3ppcF9jb2RlIjoiOTgwNTIiLCJlbWFpbCI6ImRlbW91c2VyQG1pY3Jvc29mdC5jb20iLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsInBob25lX251bWJlciI6IjEyMzQ1Njc4OTAiLCJwaG9uZV9udW1iZXJfdmVyaWZpZWQiOmZhbHNlLCJzY29wZSI6WyJvcGVuaWQiLCJwcm9maWxlIiwib3JkZXJzIiwiYmFza2V0IiwibWFya2V0aW5nIl0sImFtciI6WyJwd2QiXX0.PbnwWJdsgeQ6OPBRlzlqYvkjNBUoLM9KlOC0X_82ZJP2s45PdBfMnpFyXBx73kFPyYxnMkkXZ_uCzuXX5POg_Hk_aNukQMaHuI1KKbhAulFPEVFvqSgFOELjh-XJ3lcsTbsLGfd4sW6b91xHAaSrYjkdM5_o-18_biGWFPTWhNfzcHXhN-mpRB4Um5XYvLM_W9qrb6dpcfXSi_Q-pwr_p62Ts4NC38UUurZrtkouJf0YAYlUDLhzN9m-bjjQ1UPoNU3y81aMAcg57_wzCmU28y4LMkYx45c3MSpJHUSskcckgeac9IBhIxHOEdC7-5qVkEsoQuaUaTbHNf0lUdL33g" CorrelationBinding="" UrlEncode="True" />
-        <FormPostParameter Name="token_type" Value="{{$HIDDEN1.token_type}}" RecordedValue="Bearer" CorrelationBinding="" UrlEncode="True" />
-        <FormPostParameter Name="expires_in" Value="{{$HIDDEN1.expires_in}}" RecordedValue="3600" CorrelationBinding="" UrlEncode="True" />
-        <FormPostParameter Name="scope" Value="{{$HIDDEN1.scope}}" RecordedValue="openid profile orders basket marketing" CorrelationBinding="" UrlEncode="True" />
-        <FormPostParameter Name="state" Value="{{$HIDDEN1.state}}" RecordedValue="CfDJ8DtgHndgZhNLjl9P4BCY6yXTjZ6KvBPKjjlJMOezuLmABc0yH8oO4524WPo9gRyTwYU9W_BdKvSeQFarb3Ym-vFBO281Lu0cMRJww2yg9LXp0AJVkBAX24XHvBLlIyp6lNU_zN-qsp9hqR7JxbeIeXZpmsfnKQof-a1vSJPy3SAzwws6lBHINnaFnOB10lJn88ltr4xvDkn8NmNBIlfuHZJWnCIOvP_mmkO4knEYgVNVpMtUShKDWa1h8dSiVpW6ZHkqPrLpW4LNjk_XZPddpz2vfr9WBoQC9_fPwou_wAAGtWUMCGkxcsOYklycMy4uZgnHojcBk6TlrtG6qSkDkJnURK2qyKIfKhZgQsm1oyQu" CorrelationBinding="" UrlEncode="True" />
-        <FormPostParameter Name="session_state" Value="{{$HIDDEN1.session_state}}" RecordedValue="ZxRKRHGaGBxyciYNO7yxXNcHb8MxcvGDfUWuUVaCkNo.5de6fc3970ef99b7b67328e1df0e93ce" CorrelationBinding="" UrlEncode="True" />
-      </FormPostHttpBody>
-    </Request>
     <Request Method="GET" Guid="d24fe957-0cbb-46d4-8478-974de57e5cba" Version="1.1" Url="{{LocalTestSettings.OrderingApiServer.url}}/api/{{LocalTestSettings.ApiVersion.value}}/Orders/cardtypes" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False">
       <Headers>
-        <Header Name="Authorization" Value="Bearer {{$HIDDEN1.access_token}}" />
         <Header Name="Accept" Value="application/json" />
+        <Header Name="Authorization" Value="Email demouser@microsoft.com" />
       </Headers>
-    </Request>
-    <Request Method="POST" Guid="845ebdbb-7277-41e4-bf6d-bc2b2096ca31" Version="1.1" Url="{{LocalTestSettings.MvcWebServer.url}}/Account/SignOut" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="{{LocalTestSettings.MvcWebServer.url}}/" ReportingName="" IgnoreHttpStatusCode="False">
-      <Headers>
-        <Header Name="Referer" Value="{{LocalTestSettings.MvcWebServer.url}}" />
-      </Headers>
-      <FormPostHttpBody>
-        <FormPostParameter Name="__RequestVerificationToken" Value="{{$HIDDEN1.__RequestVerificationToken}}" RecordedValue="CfDJ8KF1l9jrGGVBqwjqh6oMtEsKFpdQ8gAgwS0typ2jiVDZ8oX6tuiVLv-FVrtg8FOlWcbEIsUO4xeajrDnhuizGQptXRa0AHTH7_sqyud4BovXbU2GJgNRGU8-_5Czw3cd9yp9NewqnmUq3K0eawmjpTH782CbPZ5ON4Zzoo9g7slSYCR9X9eK_CcL7zDFt-aYUA" CorrelationBinding="" UrlEncode="True" />
-      </FormPostHttpBody>
     </Request>
   </Items>
   <DataSources>
     <DataSource Name="LocalTestSettings" Provider="Microsoft.VisualStudio.TestTools.DataSource.XML" Connection="|DataDirectory|\..\app.config">
       <Tables>
-        <DataSourceTable Name="MvcWebServer" SelectColumns="SelectAllColumns" AccessMethod="Unique" />
-        <DataSourceTable Name="OrderingApiServer" SelectColumns="SelectAllColumns" AccessMethod="Unique" />
-        <DataSourceTable Name="IdentityApiServer" SelectColumns="SelectAllColumns" AccessMethod="Unique" />
-        <DataSourceTable Name="ApiVersion" SelectColumns="SelectAllColumns" AccessMethod="Unique" />
-        <DataSourceTable Name="User" SelectColumns="SelectAllColumns" AccessMethod="Unique" />
-        <DataSourceTable Name="ClientId" SelectColumns="SelectAllColumns" AccessMethod="Unique" />
+        <DataSourceTable Name="MvcWebServer" SelectColumns="SelectAllColumns" AccessMethod="Sequential" />
+        <DataSourceTable Name="OrderingApiServer" SelectColumns="SelectAllColumns" AccessMethod="Sequential" />
+        <DataSourceTable Name="IdentityApiServer" SelectColumns="SelectAllColumns" AccessMethod="Sequential" />
+        <DataSourceTable Name="ApiVersion" SelectColumns="SelectAllColumns" AccessMethod="Sequential" />
+        <DataSourceTable Name="User" SelectColumns="SelectAllColumns" AccessMethod="Sequential" />
+        <DataSourceTable Name="ClientId" SelectColumns="SelectAllColumns" AccessMethod="Sequential" />
       </Tables>
     </DataSource>
   </DataSources>
