@@ -3,7 +3,7 @@
   <Scenarios>
     <Scenario Name="Basket" DelayBetweenIterations="0" PercentNewUsers="0" IPSwitching="false" TestMixType="PercentageOfTestsStarted" ApplyDistributionToPacingDelay="true" MaxTestIterations="0" DisableDuringWarmup="false" DelayStartTime="0" AllowedAgents="">
       <ThinkProfile Value="0.2" Pattern="NormalDistribution" />
-      <LoadProfile Pattern="Step" InitialUsers="1" MaxUsers="50" StepUsers="10" StepDuration="10" StepRampTime="10" />
+      <LoadProfile Pattern="Step" InitialUsers="1" MaxUsers="50" StepUsers="2" StepDuration="10" StepRampTime="10" />
       <TestMix>
         <TestProfile Name="GetBasket" Path="basket.api\getbasket.webtest" Id="59f41ad4-349f-4383-8858-0005321e3a68" Percentage="59" Type="Microsoft.VisualStudio.TestTools.WebStress.DeclarativeWebTestElement, Microsoft.VisualStudio.QualityTools.LoadTest, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
         <TestProfile Name="AddBasket" Path="basket.api\addbasket.webtest" Id="b50574ad-a2bf-4ecd-923d-bf007eb02d90" Percentage="32" Type="Microsoft.VisualStudio.TestTools.WebStress.DeclarativeWebTestElement, Microsoft.VisualStudio.QualityTools.LoadTest, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />

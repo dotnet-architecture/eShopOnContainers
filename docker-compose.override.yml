@@ -212,3 +212,12 @@ services:
   nosql.data:
     ports:
       - "27017:27017"
+
+  basket.data:
+    ports:
+      - "6379:6379"
+      
+  rabbitmq:
+    ports:
+      - "15672:15672"
+      - "5672:5672"

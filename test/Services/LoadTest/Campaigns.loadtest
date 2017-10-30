@@ -3,7 +3,7 @@
   <Scenarios>
     <Scenario Name="Campaigns" DelayBetweenIterations="0" PercentNewUsers="0" IPSwitching="false" TestMixType="PercentageOfTestsStarted" ApplyDistributionToPacingDelay="true" MaxTestIterations="0" DisableDuringWarmup="false" DelayStartTime="0" AllowedAgents="">
       <ThinkProfile Value="0.2" Pattern="NormalDistribution" />
-      <LoadProfile Pattern="Step" InitialUsers="1" MaxUsers="50" StepUsers="10" StepDuration="10" StepRampTime="10" />
+      <LoadProfile Pattern="Step" InitialUsers="1" MaxUsers="50" StepUsers="2" StepDuration="10" StepRampTime="10" />
       <TestMix>
         <TestProfile Name="GetAllCampaigns" Path="marketing.api\getallcampaigns.webtest" Id="19336ef5-34ae-4bf8-90df-c8d794558f71" Percentage="34" Type="Microsoft.VisualStudio.TestTools.WebStress.DeclarativeWebTestElement, Microsoft.VisualStudio.QualityTools.LoadTest, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
         <TestProfile Name="GetUserCampaigns" Path="marketing.api\getusercampaigns.webtest" Id="735da61b-a88b-4f23-9d16-c232a540471a" Percentage="33" Type="Microsoft.VisualStudio.TestTools.WebStress.DeclarativeWebTestElement, Microsoft.VisualStudio.QualityTools.LoadTest, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
@@ -45,7 +45,7 @@
       </BrowserMix>
       <NetworkMix>
         <NetworkProfile Percentage="100">
-          <Network Name="LAN" BandwidthInKbps="0" NetworkProfileConfigurationXml="" />
+          <Network Name="LAN" BandwidthInKbps="0" NetworkProfileConfigurationXml="&lt;Emulation&gt;&lt;VirtualChannel name=&quot;defaultChannel&quot;&gt;&lt;FilterList/&gt;&lt;VirtualLink instances=&quot;1&quot; name=&quot;defaultLink&quot;&gt;&lt;LinkRule dir=&quot;upstream&quot;&gt;&lt;Bandwidth&gt;&lt;Speed unit=&quot;kbps&quot;&gt;0&lt;/Speed&gt;&lt;/Bandwidth&gt;&lt;/LinkRule&gt;&lt;LinkRule dir=&quot;downstream&quot;&gt;&lt;Bandwidth&gt;&lt;Speed unit=&quot;kbps&quot;&gt;0&lt;/Speed&gt;&lt;/Bandwidth&gt;&lt;/LinkRule&gt;&lt;/VirtualLink&gt;&lt;/VirtualChannel&gt;&lt;/Emulation&gt;" />
         </NetworkProfile>
       </NetworkMix>
     </Scenario>

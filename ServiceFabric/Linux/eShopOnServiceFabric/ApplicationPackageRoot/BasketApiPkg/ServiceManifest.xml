@@ -15,7 +15,7 @@
     <EntryPoint>
       <!-- Follow this link for more information about deploying Windows containers to Service Fabric: https://aka.ms/sfguestcontainers -->
       <ContainerHost>
-        <ImageName>eshop/basket.api:latest</ImageName>
+        <ImageName>eshop/basket.api:#{tag}#</ImageName>
       </ContainerHost>
     </EntryPoint>
     <!-- Pass environment variables to your container: -->
@@ -29,6 +29,7 @@
       <EnvironmentVariable Name="AzureServiceBusEnabled" Value="False"/>
       <EnvironmentVariable Name="ApplicationInsights__InstrumentationKey" Value=""/>
       <EnvironmentVariable Name="OrchestratorType" Value="SF"/>
+      <EnvironmentVariable Name="UseLoadTest" Value="True"/>
     </EnvironmentVariables>
   </CodePackage>
 
@@ -41,7 +42,7 @@
       <!-- This endpoint is used by the communication listener to obtain the port on which to 
            listen. Please note that if your service is partitioned, this port is shared with 
            replicas of different partitions that are placed in your code. -->
-      <Endpoint Name="BasketApiTypeEndpoint" Port="5103" UriScheme="http" PathSuffix="eShopOnServiceFabric/BasketApi"/>
+      <Endpoint Name="BasketApiTypeEndpoint" Port="5103" UriScheme="http"/>
     </Endpoints>
   </Resources>
 </ServiceManifest>

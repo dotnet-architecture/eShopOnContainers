@@ -15,7 +15,7 @@
     <EntryPoint>
       <!-- Follow this link for more information about deploying Windows containers to Service Fabric: https://aka.ms/sfguestcontainers -->
       <ContainerHost>
-        <ImageName>eshop/marketing.api:latest</ImageName>
+        <ImageName>eshop/marketing.api:#{tag}#</ImageName>
       </ContainerHost>
     </EntryPoint>
     <!-- Pass environment variables to your container: -->
@@ -36,6 +36,7 @@
       <EnvironmentVariable Name="identityUrl" Value="http://identityapi.eshoponservicefabric:5105"/>
       <EnvironmentVariable Name="ApplicationInsights__InstrumentationKey" Value=""/>
       <EnvironmentVariable Name="OrchestratorType" Value="SF"/>
+      <EnvironmentVariable Name="UseLoadTest" Value="True"/>
     </EnvironmentVariables>
   </CodePackage>
   
@@ -48,7 +49,7 @@
       <!-- This endpoint is used by the communication listener to obtain the port on which to 
            listen. Please note that if your service is partitioned, this port is shared with 
            replicas of different partitions that are placed in your code. -->
-      <Endpoint Name="MarketingApiTypeEndpoint" Port="5110" PathSuffix="eShopOnServiceFabric/MarketingApi"/>
+      <Endpoint Name="MarketingApiTypeEndpoint" Port="5110"/>
     </Endpoints>
   </Resources>
 </ServiceManifest>
