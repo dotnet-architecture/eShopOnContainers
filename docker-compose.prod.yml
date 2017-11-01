@@ -126,7 +126,7 @@ services:
       - LocationsUrl=http://${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP}:5109
       - CatalogUrlHC=http://catalog.api/hc
       - OrderingUrlHC=http://ordering.api/hc
-      - IdentityUrlHC=http://identity.api/hc     #Local: Use ${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP}, if using external IP or DNS name from browser.          
+      - IdentityUrlHC=http://identity.api/hc           
       - BasketUrlHC=http://basket.api/hc
       - MarketingUrlHC=http://marketing.api/hc
       - PaymentUrlHC=http://payment.api/hc
@@ -144,11 +144,11 @@ services:
       - OrderingUrl=http://ordering.api
       - BasketUrl=http://basket.api
       - LocationsUrl=http://locations.api
-      - IdentityUrl=http://ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP:5105   #Local:  Use 10.0.75.1 in a "Docker for Windows" environment, if using "localhost" from browser. #Remote: Use ${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP} if using external IP or DNS name from browser.  
+      - IdentityUrl=http://${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP}:5105   #Local:  Use 10.0.75.1 in a "Docker for Windows" environment, if using "localhost" from browser. #Remote: Use ${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP} if using external IP or DNS name from browser.  
       - MarketingUrl=http://marketing.api                                                  
       - CatalogUrlHC=http://catalog.api/hc
       - OrderingUrlHC=http://ordering.api/hc
-      - IdentityUrlHC=http://ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP/hc     #Local: Use ${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP}, if using external IP or DNS name from browser.          
+      - IdentityUrlHC=http://identity.api/hc             
       - BasketUrlHC=http://basket.api/hc
       - MarketingUrlHC=http://marketing.api/hc
       - PaymentUrlHC=http://payment.api/hc
