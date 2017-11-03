@@ -111,7 +111,6 @@ public class OrderAggregateTest
     public void Add_new_Order_raises_new_event()
     {
         //Arrange
-        var userId = new Guid();
         var street = "fakeStreet";
         var city = "FakeCity";
         var state = "fakeState";
@@ -135,7 +134,6 @@ public class OrderAggregateTest
     public void Add_event_Order_explicitly_raises_new_event()
     {
         //Arrange   
-        var userId = new Guid();
         var street = "fakeStreet";
         var city = "FakeCity";
         var state = "fakeState";
@@ -159,7 +157,6 @@ public class OrderAggregateTest
     public void Remove_event_Order_explicitly()
     {
         //Arrange    
-        var userId = new Guid();
         var street = "fakeStreet";
         var city = "FakeCity";
         var state = "fakeState";
