@@ -93,7 +93,7 @@ namespace UnitTest.Ordering.Application
         public async Task Get_orders_success()
         {
             //Arrange
-            var fakeDynamicResult = Enumerable.Empty<object>();
+            var fakeDynamicResult = Enumerable.Empty<OrderSummary>();
             _orderQueriesMock.Setup(x => x.GetOrdersAsync())
                 .Returns(Task.FromResult(fakeDynamicResult));
 
@@ -110,7 +110,7 @@ namespace UnitTest.Ordering.Application
         {
             //Arrange
             var fakeOrderId = 123;
-            var fakeDynamicResult = new Object();
+            var fakeDynamicResult = new Order();
             _orderQueriesMock.Setup(x => x.GetOrderAsync(It.IsAny<int>()))
                 .Returns(Task.FromResult(fakeDynamicResult));
 
@@ -126,7 +126,7 @@ namespace UnitTest.Ordering.Application
         public async Task Get_cardTypes_success()
         {
             //Arrange
-            var fakeDynamicResult = Enumerable.Empty<object>();
+            var fakeDynamicResult = Enumerable.Empty<CardType>();
             _orderQueriesMock.Setup(x => x.GetCardTypesAsync())
                 .Returns(Task.FromResult(fakeDynamicResult));
 
