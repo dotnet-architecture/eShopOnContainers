@@ -41,7 +41,7 @@ namespace IntegrationTests.Services.Catalog
                 var response = await server.CreateClient()
                     .GetAsync(Get.ItemById(int.MinValue));
 
-                Assert.Equal(response.StatusCode, HttpStatusCode.BadRequest);
+                Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
             }
         }
 
@@ -53,7 +53,7 @@ namespace IntegrationTests.Services.Catalog
                 var response = await server.CreateClient()
                     .GetAsync(Get.ItemById(int.MaxValue));
 
-                Assert.Equal(response.StatusCode, HttpStatusCode.NotFound);
+                Assert.Equal( HttpStatusCode.NotFound, response.StatusCode);
             }
         }
 
