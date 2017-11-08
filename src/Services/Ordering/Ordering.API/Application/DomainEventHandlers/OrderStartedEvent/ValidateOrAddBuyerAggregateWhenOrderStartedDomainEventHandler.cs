@@ -25,7 +25,6 @@ namespace Ordering.API.Application.DomainEventHandlers.OrderStartedEvent
         public async Task Handle(OrderStartedDomainEvent orderStartedEvent)
         {
             var cardTypeId = (orderStartedEvent.CardTypeId != 0) ? orderStartedEvent.CardTypeId : 1;
-
             var buyer = await _buyerRepository.FindAsync(orderStartedEvent.UserId);
             bool buyerOriginallyExisted = (buyer == null) ? false : true;
 
