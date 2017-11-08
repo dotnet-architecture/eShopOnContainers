@@ -21,7 +21,8 @@
         }
 
         private List<INotification> _domainEvents;
-        public List<INotification> DomainEvents => _domainEvents;        
+        public List<INotification> DomainEvents => _domainEvents;       
+        
         public void AddDomainEvent(INotification eventItem)
         {
             _domainEvents = _domainEvents ?? new List<INotification>();

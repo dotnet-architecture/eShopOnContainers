@@ -9,8 +9,7 @@ namespace Ordering.Domain.Events
     /// <summary>
     /// Event used when an order is created
     /// </summary>
-    public class OrderStartedDomainEvent
-        : INotification
+    public class OrderStartedDomainEvent : INotification
     {
         public string UserId { get; private set; }
         public int CardTypeId { get; private set; }
@@ -21,9 +20,9 @@ namespace Ordering.Domain.Events
         public Order Order { get; private set; }
 
         public OrderStartedDomainEvent(Order order, string userId,
-            int cardTypeId, string cardNumber, 
-            string cardSecurityNumber, string cardHolderName, 
-            DateTime cardExpiration)
+                                       int cardTypeId, string cardNumber, 
+                                       string cardSecurityNumber, string cardHolderName, 
+                                       DateTime cardExpiration)
         {
             Order = order;
             UserId = userId;

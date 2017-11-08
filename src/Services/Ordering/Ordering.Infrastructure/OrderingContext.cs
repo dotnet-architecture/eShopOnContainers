@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
 {
-    public class OrderingContext : DbContext,IUnitOfWork
+    public class OrderingContext : DbContext, IUnitOfWork
     {
         public const string DEFAULT_SCHEMA = "ordering";
         public DbSet<Order> Orders { get; set; }
