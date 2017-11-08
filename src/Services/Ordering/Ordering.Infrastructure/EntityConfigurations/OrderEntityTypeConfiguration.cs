@@ -7,8 +7,7 @@ using System;
 
 namespace Ordering.Infrastructure.EntityConfigurations
 {
-    class OrderEntityTypeConfiguration
-        : IEntityTypeConfiguration<Order>
+    class OrderEntityTypeConfiguration : IEntityTypeConfiguration<Order>
     {
         public void Configure(EntityTypeBuilder<Order> orderConfiguration)
         {
@@ -21,6 +20,7 @@ namespace Ordering.Infrastructure.EntityConfigurations
             orderConfiguration.Property(o => o.Id)
                 .ForSqlServerUseSequenceHiLo("orderseq", OrderingContext.DEFAULT_SCHEMA);
 
+            //Address value object persisted as owned entity type supported since EF Core 2.0
             orderConfiguration.OwnsOne(o => o.Address);
 
             orderConfiguration.Property<DateTime>("OrderDate").IsRequired();
@@ -32,7 +32,7 @@ namespace Ordering.Infrastructure.EntityConfigurations
             var navigation = orderConfiguration.Metadata.FindNavigation(nameof(Order.OrderItems));
             
             // DDD Patterns comment:
-            //Set as Field (New since EF 1.1) to access the OrderItem collection property through its field
+            //Set as field (New since EF 1.1) to access the OrderItem collection property through its field
             navigation.SetPropertyAccessMode(PropertyAccessMode.Field);
 
             orderConfiguration.HasOne<PaymentMethod>()

@@ -12,22 +12,14 @@ using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
 {
-    public class OrderingContext
-      : DbContext,IUnitOfWork
-
+    public class OrderingContext : DbContext, IUnitOfWork
     {
         public const string DEFAULT_SCHEMA = "ordering";
-
         public DbSet<Order> Orders { get; set; }
-
         public DbSet<OrderItem> OrderItems { get; set; }
-
         public DbSet<PaymentMethod> Payments { get; set; }
-
         public DbSet<Buyer> Buyers { get; set; }
-
         public DbSet<CardType> CardTypes { get; set; }
-
         public DbSet<OrderStatus> OrderStatus { get; set; }
 
         private readonly IMediator _mediator;
@@ -62,7 +54,6 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
             // B) Right AFTER committing data (EF SaveChanges) into the DB will make multiple transactions. 
             // You will need to handle eventual consistency and compensatory actions in case of failures in any of the Handlers. 
             await _mediator.DispatchDomainEventsAsync(this);
-
 
             // After executing this line all the changes (from the Command Handler and Domain Event Handlers) 
             // performed throught the DbContext will be commited

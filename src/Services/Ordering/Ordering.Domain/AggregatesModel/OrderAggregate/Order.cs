@@ -15,6 +15,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
         // aligned with DDD Aggregates and Domain Entities (Instead of properties and property collections)
         private DateTime _orderDate;
 
+        // Address is a Value Object pattern example persisted as EF Core 2.0 owned entity
         public Address Address { get; private set; }
 
         private int? _buyerId;
@@ -177,16 +178,16 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
         private void AddOrderStartedDomainEvent(string userId, int cardTypeId, string cardNumber,
                 string cardSecurityNumber, string cardHolderName, DateTime cardExpiration)
         {
-            var orderStartedDomainEvent = new OrderStartedDomainEvent(
-                this, userId, cardTypeId, cardNumber, cardSecurityNumber,
-                cardHolderName, cardExpiration);
+            var orderStartedDomainEvent = new OrderStartedDomainEvent(this, userId, cardTypeId, 
+                                                                      cardNumber, cardSecurityNumber,
+                                                                      cardHolderName, cardExpiration);
 
             this.AddDomainEvent(orderStartedDomainEvent);
         }
 
         private void StatusChangeException(OrderStatus orderStatusToChange)
         {
-            throw new OrderingDomainException($"Not possible to change order status from {OrderStatus.Name} to {orderStatusToChange.Name}.");
+            throw new OrderingDomainException($"Is not possible to change the order status from {OrderStatus.Name} to {orderStatusToChange.Name}.");
         }
 
         public decimal GetTotal()
