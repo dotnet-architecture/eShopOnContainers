@@ -22,7 +22,7 @@
         </article>
     @if (Model != null && Model.Any())
     {
-        @foreach (var item in Model)
+        foreach (var item in Model)
         {
             <article class="esh-orders-items row">
                 <section class="esh-orders-item col-xs-2">@Html.DisplayFor(modelItem => item.OrderNumber)</section>
