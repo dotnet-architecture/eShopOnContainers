@@ -8,7 +8,7 @@ This folder contains files needed to run load tests locally or on a Kubernetes /
 
 ## Set a local environment
 
-Modify the **app.config** file and set the following service urls.
+Modify the **app.config** file in the LoadTest project directory and set the following service urls.
 
 ```
 <Servers>
@@ -29,7 +29,7 @@ USE_LOADTEST=True
 ```
 ## Set a Service Fabric environment
 
-Modify the **app.config** file and set the following service urls.
+Modify the **app.config** file in the LoadTest project directory and set the following service urls.
 
 ```
 <Servers>
@@ -53,17 +53,17 @@ Deploy the SF services. **PLEASE** Read our [SF deployment guide for Linux](./..
 
 ## Set a Kubernetes environment
 
-Modify the **app.config** file and set the following service urls.
+Modify the **app.config** file in the LoadTest project directory and set the following service urls.
 
 ```
 <Servers>
-    <MvcWebServer url="http://<target_k8s_dns>:5100" />
-    <CatalogApiServer url="http://<target_k8s_dns>:5101" />
-    <OrderingApiServer url="http://<target_k8s_dns>:5102" />
-    <BasketApiServer url="http://<target_k8s_dns>:5103" />
-    <IdentityApiServer url="http://<target_k8s_dns>:5105" />
-    <LocationsApiServer url="http://<target_k8s_dns>:5109" />
-    <MarketingApiServer url="http://<target_k8s_dns>:5110" />
+    <MvcWebServer url="http://<public_ip_k8s>/webmvc" />
+    <CatalogApiServer url="http://<public_ip_k8s>/catalog-api" />
+    <OrderingApiServer url="http://<public_ip_k8s>/ordering-api" />
+    <BasketApiServer url="http://<public_ip_k8s>/basket-api" />
+    <IdentityApiServer url="http://<public_ip_k8s>/identity" />
+    <LocationsApiServer url="http://<public_ip_k8s>/locations-api" />
+    <MarketingApiServer url="http://<public_ip_k8s>/marketing-api" />
   </Servers>
 ```
 
