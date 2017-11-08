@@ -23,11 +23,11 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure.Autof
             builder.RegisterAssemblyTypes(typeof(CreateOrderCommand).GetTypeInfo().Assembly)
                 .AsClosedTypesOf(typeof(IAsyncRequestHandler<,>));
 
-            // Register all the event classes (they implement IAsyncNotificationHandler) in assembly holding the Commands
+            // Register the DomainEventHandler classes (they implement IAsyncNotificationHandler<>) in assembly holding the Domain Events
             builder.RegisterAssemblyTypes(typeof(ValidateOrAddBuyerAggregateWhenOrderStartedDomainEventHandler).GetTypeInfo().Assembly)
                 .AsClosedTypesOf(typeof(IAsyncNotificationHandler<>));
 
-
+            // Register the Command's Validators (Validators based on FluentValidation library)
             builder
                 .RegisterAssemblyTypes(typeof(CreateOrderCommandValidator).GetTypeInfo().Assembly)
                 .Where(t => t.IsClosedTypeOf(typeof(IValidator<>)))
