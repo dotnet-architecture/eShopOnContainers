@@ -99,11 +99,10 @@
                 <animations:FadeInAnimation 
                     Direction="Up">
                     <animations:FadeInAnimation.Duration>
-                        <OnPlatform 
-                            x:TypeArguments="x:String" 
-                            Android="500"
-                            iOS="0"
-                            WinPhone="500"/>
+                        <OnPlatform x:TypeArguments="x:String">
+                            <On Platform="iOS" Value="0" />
+                            <On Platform="Android, UWP, WinRT, WinPhone" Value="500" />
+                        </OnPlatform>
                     </animations:FadeInAnimation.Duration>
                 </animations:FadeInAnimation>
             </animations:StoryBoard>
@@ -156,16 +155,18 @@
                         Command="{Binding ToggleMockServicesCommand}"
                         Style="{StaticResource SettingsToggleButtonStyle}">
                         <controls:ToggleButton.CheckedImage>
-                            <OnPlatform x:TypeArguments="ImageSource"
-                              Android="switch_on.png"
-                              iOS="switchOn.png"
-                              WinPhone="Assets/switchOn.png"/>
+                            <OnPlatform x:TypeArguments="ImageSource">
+                                <On Platform="iOS" Value="switchOn.png" />
+                                <On Platform="Android" Value="switch_on.png" />
+                                <On Platform="UWP, WinRT, WinPhone" Value="Assets/switchOn.png" />
+                            </OnPlatform>
                         </controls:ToggleButton.CheckedImage>
                         <controls:ToggleButton.UnCheckedImage>
-                            <OnPlatform x:TypeArguments="ImageSource"
-                              Android="switch_off.png"
-                              iOS="switchOff.png"
-                              WinPhone="Assets/switchOff.png"/>
+                            <OnPlatform x:TypeArguments="ImageSource">
+                                <On Platform="iOS" Value="switchOff.png" />
+                                <On Platform="Android" Value="switch_off.png" />
+                                <On Platform="UWP, WinRT, WinPhone" Value="Assets/switchOff.png" />
+                            </OnPlatform>
                         </controls:ToggleButton.UnCheckedImage>
                     </controls:ToggleButton>
                     <!-- ENDPOINT -->
@@ -181,11 +182,10 @@
                         <Entry
                             Text="{Binding Endpoint, Mode=TwoWay}">
                             <Entry.Style>
-                                <OnPlatform 
-                                    x:TypeArguments="Style"
-                                    iOS="{StaticResource SettingsEntryStyle}"
-                                    Android="{StaticResource SettingsEntryStyle}"
-                                    WinPhone="{StaticResource SettingsUwpEntryStyle}"/>
+                                <OnPlatform x:TypeArguments="Style">
+                                    <On Platform="iOS, Android" Value="{StaticResource SettingsEntryStyle}" />
+                                    <On Platform="UWP, WinRT, WinPhone" Value="{StaticResource SettingsUwpEntryStyle}" />
+                                </OnPlatform>
                             </Entry.Style>
                         </Entry>
                     </StackLayout>
@@ -212,16 +212,18 @@
                         Style="{StaticResource SettingsToggleButtonStyle}"
                         IsVisible="{Binding UserIsLogged}">
                         <controls:ToggleButton.CheckedImage>
-                            <OnPlatform x:TypeArguments="ImageSource"
-                              Android="switch_on.png"
-                              iOS="switchOn.png"
-                              WinPhone="Assets/switchOn.png"/>
+                            <OnPlatform x:TypeArguments="ImageSource">
+                                <On Platform="iOS" Value="switchOn.png" />
+                                <On Platform="Android" Value="switch_on.png" />
+                                <On Platform="UWP, WinRT, WinPhone" Value="Assets/switchOn.png" />
+                            </OnPlatform>
                         </controls:ToggleButton.CheckedImage>
                         <controls:ToggleButton.UnCheckedImage>
-                            <OnPlatform x:TypeArguments="ImageSource"
-                              Android="switch_off.png"
-                              iOS="switchOff.png"
-                              WinPhone="Assets/switchOff.png"/>
+                            <OnPlatform x:TypeArguments="ImageSource">
+                                <On Platform="iOS" Value="switchOff.png" />
+                                <On Platform="Android" Value="switch_off.png" />
+                                <On Platform="UWP, WinRT, WinPhone" Value="Assets/switchOff.png" />
+                            </OnPlatform>
                         </controls:ToggleButton.UnCheckedImage>
                     </controls:ToggleButton>
                     <!-- FAKE LOCATIONS -->
@@ -238,11 +240,10 @@
                             Text="{Binding Latitude, Mode=TwoWay, Converter={StaticResource DoubleConverter}}"
                             Keyboard="Text">
                             <Entry.Style>
-                                <OnPlatform 
-                                    x:TypeArguments="Style"
-                                    iOS="{StaticResource SettingsEntryStyle}"
-                                    Android="{StaticResource SettingsEntryStyle}"
-                                    WinPhone="{StaticResource SettingsUwpEntryStyle}"/>
+                                <OnPlatform x:TypeArguments="Style">
+                                    <On Platform="iOS, Android" Value="{StaticResource SettingsEntryStyle}" />
+                                    <On Platform="UWP, WinRT, WinPhone" Value="{StaticResource SettingsUwpEntryStyle}" />
+                                </OnPlatform>
                             </Entry.Style>
                         </Entry>
                         <Label
@@ -252,11 +253,10 @@
                             Text="{Binding Longitude, Mode=TwoWay, Converter={StaticResource DoubleConverter}}"
                             Keyboard="Text">
                             <Entry.Style>
-                                <OnPlatform 
-                                    x:TypeArguments="Style"
-                                    iOS="{StaticResource SettingsEntryStyle}"
-                                    Android="{StaticResource SettingsEntryStyle}"
-                                    WinPhone="{StaticResource SettingsUwpEntryStyle}"/>
+                                <OnPlatform x:TypeArguments="Style">
+                                    <On Platform="iOS, Android" Value="{StaticResource SettingsEntryStyle}" />
+                                    <On Platform="UWP, WinRT, WinPhone" Value="{StaticResource SettingsUwpEntryStyle}" />
+                                </OnPlatform>
                             </Entry.Style>
                         </Entry>
                         <Button 
@@ -289,16 +289,18 @@
                         Style="{StaticResource SettingsToggleButtonStyle}"
                         IsVisible="{Binding UseFakeLocation, Converter={StaticResource InverseBoolConverter}}">
                         <controls:ToggleButton.CheckedImage>
-                            <OnPlatform x:TypeArguments="ImageSource"
-                                        Android="switch_on.png"
-                                        iOS="switchOn.png"
-                                        WinPhone="Assets/switchOn.png"/>
+                            <OnPlatform x:TypeArguments="ImageSource">
+                                <On Platform="iOS" Value="switchOn.png" />
+                                <On Platform="Android" Value="switch_on.png" />
+                                <On Platform="UWP, WinRT, WinPhone" Value="Assets/switchOn.png" />
+                            </OnPlatform>
                         </controls:ToggleButton.CheckedImage>
                         <controls:ToggleButton.UnCheckedImage>
-                            <OnPlatform x:TypeArguments="ImageSource"
-                                        Android="switch_off.png"
-                                        iOS="switchOff.png"
-                                        WinPhone="Assets/switchOff.png"/>
+                            <OnPlatform x:TypeArguments="ImageSource">
+                                <On Platform="iOS" Value="switchOff.png" />
+                                <On Platform="Android" Value="switch_off.png" />
+                                <On Platform="UWP, WinRT, WinPhone" Value="Assets/switchOff.png" />
+                            </OnPlatform>
                         </controls:ToggleButton.UnCheckedImage>
                     </controls:ToggleButton>
                 </Grid>
