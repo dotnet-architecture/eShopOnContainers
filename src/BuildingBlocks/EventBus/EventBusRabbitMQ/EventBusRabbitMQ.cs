@@ -148,7 +148,6 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
             _subsManager.RemoveDynamicSubscription<TH>(eventName);
         }
 
-
         public void Dispose()
         {
             if (_consumerChannel != null)
@@ -202,8 +201,6 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
 
         private async Task ProcessEvent(string eventName, string message)
         {
-
-
             if (_subsManager.HasSubscriptionsForEvent(eventName))
             {
                 using (var scope = _autofac.BeginLifetimeScope(AUTOFAC_SCOPE_NAME))
