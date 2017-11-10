@@ -32,11 +32,12 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
         private string _queueName;
 
         public EventBusRabbitMQ(IRabbitMQPersistentConnection persistentConnection, ILogger<EventBusRabbitMQ> logger,
-            ILifetimeScope autofac, IEventBusSubscriptionsManager subsManager, int retryCount = 5)
+            ILifetimeScope autofac, IEventBusSubscriptionsManager subsManager, string queueName = null, int retryCount = 5)
         {
             _persistentConnection = persistentConnection ?? throw new ArgumentNullException(nameof(persistentConnection));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _subsManager = subsManager ?? new InMemoryEventBusSubscriptionsManager();
+            _queueName = queueName;
             _consumerChannel = CreateConsumerChannel();
             _autofac = autofac;
             _retryCount = retryCount;
@@ -170,7 +171,12 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
             channel.ExchangeDeclare(exchange: BROKER_NAME,
                                  type: "direct");
 
-            _queueName = channel.QueueDeclare().QueueName;
+            channel.QueueDeclare(queue: _queueName,
+                                 durable: true,
+                                 exclusive: false,
+                                 autoDelete: false,
+                                 arguments: null);
+
 
             var consumer = new EventingBasicConsumer(channel);
             consumer.Received += async (model, ea) =>
