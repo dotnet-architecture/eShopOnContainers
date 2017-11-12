@@ -7,10 +7,10 @@
     using System;
     using System.Threading.Tasks;
 
-
-    public class CreateOrderCommandIdentifiedHandler : IdentifierCommandHandler<CreateOrderCommand, bool>
+    // Use for Idempotency in Command process
+    public class CreateOrderCommandIdempotentHandler : IdentifiedCommandHandler<CreateOrderCommand, bool>
     {
-        public CreateOrderCommandIdentifiedHandler(IMediator mediator, IRequestManager requestManager) : base(mediator, requestManager)
+        public CreateOrderCommandIdempotentHandler(IMediator mediator, IRequestManager requestManager) : base(mediator, requestManager)
         {
         }
 
@@ -20,6 +20,7 @@
         }
     }
 
+    // Regular CommandHandler
     public class CreateOrderCommandHandler
         : IAsyncRequestHandler<CreateOrderCommand, bool>
     {

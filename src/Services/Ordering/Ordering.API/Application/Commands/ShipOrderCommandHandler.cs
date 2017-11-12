@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace Ordering.API.Application.Commands
 {
-    public class ShipOrderCommandIdentifiedHandler : IdentifierCommandHandler<ShipOrderCommand, bool>
+    // Use for Idempotency in Command process
+    public class ShipOrderCommandIdempotentHandler : IdentifiedCommandHandler<ShipOrderCommand, bool>
     {
-        public ShipOrderCommandIdentifiedHandler(IMediator mediator, IRequestManager requestManager) : base(mediator, requestManager)
+        public ShipOrderCommandIdempotentHandler(IMediator mediator, IRequestManager requestManager) : base(mediator, requestManager)
         {
         }
 
@@ -18,6 +19,7 @@ namespace Ordering.API.Application.Commands
         }
     }
 
+    // Regular CommandHandler
     public class ShipOrderCommandHandler : IAsyncRequestHandler<ShipOrderCommand, bool>
     {        
         private readonly IOrderRepository _orderRepository;

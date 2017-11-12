@@ -3,9 +3,9 @@ using Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands;
 
 namespace Ordering.API.Application.Validations
 {
-    public class IdentifierCommandValidator : AbstractValidator<IdentifiedCommand<CreateOrderCommand,bool>>
+    public class IdentifiedCommandValidator : AbstractValidator<IdentifiedCommand<CreateOrderCommand,bool>>
     {
-        public IdentifierCommandValidator()
+        public IdentifiedCommandValidator()
         {
             RuleFor(command => command.Id).NotEmpty();    
         }

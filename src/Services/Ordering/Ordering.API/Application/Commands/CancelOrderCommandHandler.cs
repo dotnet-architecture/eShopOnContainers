@@ -9,9 +9,10 @@ using System.Threading.Tasks;
 
 namespace Ordering.API.Application.Commands
 {
-    public class CancelOrderCommandIdentifiedHandler : IdentifierCommandHandler<CancelOrderCommand, bool>
+    // Use for Idempotency in Command process
+    public class CancelOrderCommandIdempotentHandler : IdentifiedCommandHandler<CancelOrderCommand, bool>
     {
-        public CancelOrderCommandIdentifiedHandler(IMediator mediator, IRequestManager requestManager) : base(mediator, requestManager)
+        public CancelOrderCommandIdempotentHandler(IMediator mediator, IRequestManager requestManager) : base(mediator, requestManager)
         {
         }
 
@@ -21,6 +22,7 @@ namespace Ordering.API.Application.Commands
         }
     }
 
+    // Regular CommandHandler
     public class CancelOrderCommandHandler : IAsyncRequestHandler<CancelOrderCommand, bool>
     {
         private readonly IOrderRepository _orderRepository;
