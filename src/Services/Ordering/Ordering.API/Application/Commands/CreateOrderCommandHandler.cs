@@ -7,19 +7,6 @@
     using System;
     using System.Threading.Tasks;
 
-    // Use for Idempotency in Command process
-    public class CreateOrderCommandIdempotentHandler : IdentifiedCommandHandler<CreateOrderCommand, bool>
-    {
-        public CreateOrderCommandIdempotentHandler(IMediator mediator, IRequestManager requestManager) : base(mediator, requestManager)
-        {
-        }
-
-        protected override bool CreateResultForDuplicateRequest()
-        {
-            return true;                // Ignore duplicate requests for creating order.
-        }
-    }
-
     // Regular CommandHandler
     public class CreateOrderCommandHandler
         : IAsyncRequestHandler<CreateOrderCommand, bool>
@@ -54,6 +41,20 @@
 
             return await _orderRepository.UnitOfWork
                 .SaveEntitiesAsync();
+        }
+    }
+
+
+    // Use for Idempotency in Command process
+    public class CreateOrderIdentifiedCommandHandler : IdentifiedCommandHandler<CreateOrderCommand, bool>
+    {
+        public CreateOrderIdentifiedCommandHandler(IMediator mediator, IRequestManager requestManager) : base(mediator, requestManager)
+        {
+        }
+
+        protected override bool CreateResultForDuplicateRequest()
+        {
+            return true;                // Ignore duplicate requests for creating order.
         }
     }
 }
