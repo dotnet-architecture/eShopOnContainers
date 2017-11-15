@@ -164,7 +164,7 @@
         <FormPostParameter Name="Total" Value="8.5" RecordedValue="8.5" CorrelationBinding="" UrlEncode="True" />
         <FormPostParameter Name="action" Value="[ Place Order ]" RecordedValue="[ Place Order ]" CorrelationBinding="{{FormPostParam9.action}}" UrlEncode="True" />
         <FormPostParameter Name="ZipCode" Value="98052" RecordedValue="98052" CorrelationBinding="" UrlEncode="True" />
-        <FormPostParameter Name="RequestId" Value="{{GenGuid}} " RecordedValue="f58b9345-ea25-4125-a8bf-b0992233af6c" CorrelationBinding="" UrlEncode="True" />
+        <FormPostParameter Name="RequestId" Value="{{GenGuid}}" RecordedValue="{{GenGuid}}" CorrelationBinding="" UrlEncode="True" />
         <FormPostParameter Name="CardTypeId" Value="1" RecordedValue="" CorrelationBinding="" UrlEncode="True" />
       </FormPostHttpBody>
     </Request>

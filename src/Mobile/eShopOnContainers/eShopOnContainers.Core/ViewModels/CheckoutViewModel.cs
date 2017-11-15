@@ -165,7 +165,7 @@ namespace eShopOnContainers.Core.ViewModels
                 await NavigationService.RemoveLastFromBackStackAsync();
 
                 // Show Dialog
-                await DialogService.ShowAlertAsync("Order sent successfully!", string.Format("Order {0}", Order.OrderNumber), "Ok");
+                await DialogService.ShowAlertAsync("Order sent successfully!", "Checkout", "Ok");
                 await NavigationService.RemoveLastFromBackStackAsync();
             }
             catch

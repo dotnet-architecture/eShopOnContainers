@@ -14,15 +14,12 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.SeedWork
             return ReferenceEquals(left, null) || left.Equals(right);
         }
 
-
         protected static bool NotEqualOperator(ValueObject left, ValueObject right)
         {
             return !(EqualOperator(left, right));
         }
 
-
         protected abstract IEnumerable<object> GetAtomicValues();
-
 
         public override bool Equals(object obj)
         {
@@ -46,7 +43,6 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.SeedWork
             }
             return !thisValues.MoveNext() && !otherValues.MoveNext();
         }
-
 
         public override int GetHashCode()
         {
