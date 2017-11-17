@@ -96,6 +96,12 @@ services:
       - nosql.data
       - rabbitmq
 
+  ordering.backgroundtaskswebhost:
+    image: eshop/ordering.backgroundtaskswebhost:${TAG:-latest}
+    build:
+      context: ./src/Services/Ordering/Ordering.BackgroundTasksWebHost
+      dockerfile: Dockerfile
+
   sql.data:
     image: microsoft/mssql-server-linux:2017-latest
 
@@ -107,3 +113,6 @@ services:
       
   rabbitmq:
     image: rabbitmq:3-management
+
+
+
