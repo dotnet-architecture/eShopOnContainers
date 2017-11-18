@@ -12,8 +12,7 @@
     using System.Threading;
     using System.Threading.Tasks;
 
-    public class GracePeriodManagerService
-        : HostedService
+    public class GracePeriodManagerService : BackgroundService
     {
         private readonly OrderingSettings _settings;
         private readonly ILogger<GracePeriodManagerService> _logger;
@@ -25,25 +24,27 @@
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _eventBus = eventBus ?? throw new ArgumentNullException(nameof(eventBus));
-
             _settings = settings?.Value ?? throw new ArgumentNullException(nameof(settings));
         }
 
-        protected override async Task ExecuteAsync(CancellationToken cancellationToken)
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            while (true)
+            _logger.LogDebug($"GracePeriod background task is starting.");
+
+            stoppingToken.Register(() => _logger.LogDebug($"#1 GracePeriod background task is stopping."));
+
+            while (!stoppingToken.IsCancellationRequested)
             {
-                if (cancellationToken.IsCancellationRequested)
-                {
-                    break;
-                }
+                _logger.LogDebug($"GracePeriod background task is doing background work.");
 
                 CheckConfirmedGracePeriodOrders();
 
-                await Task.Delay(_settings.CheckUpdateTime, cancellationToken);
+                await Task.Delay(_settings.CheckUpdateTime, stoppingToken);
 
                 continue;
             }
+
+            _logger.LogDebug($"GracePeriod background task is stopping.");
 
             await Task.CompletedTask;
         }
@@ -54,10 +55,11 @@
 
             var orderIds = GetConfirmedGracePeriodOrders();
 
+            _logger.LogDebug($"GracePeriod sent a .");
             foreach (var orderId in orderIds)
             {
-                var confirmGracePeriodEvent = new GracePeriodConfirmedIntegrationEvent(orderId);
-                _eventBus.Publish(confirmGracePeriodEvent);
+                var gracePeriodConfirmedEvent = new GracePeriodConfirmedIntegrationEvent(orderId);
+                _eventBus.Publish(gracePeriodConfirmedEvent);
             }
         }
 
