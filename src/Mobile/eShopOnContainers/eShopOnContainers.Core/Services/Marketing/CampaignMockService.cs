@@ -14,7 +14,7 @@ namespace eShopOnContainers.Core.Services.Marketing
             new CampaignItem
             {
                 Id = Common.Common.MockCampaignId01,
-                PictureUri = Device.RuntimePlatform != Device.Windows
+                PictureUri = Device.RuntimePlatform != Device.UWP
                     ? "fake_campaign_01.png"
                     : "Assets/fake_campaign_01.png",
                 Name = ".NET Bot Black Hoodie 50% OFF",
@@ -26,7 +26,7 @@ namespace eShopOnContainers.Core.Services.Marketing
             new CampaignItem
             {
                 Id = Common.Common.MockCampaignId02,
-                PictureUri = Device.RuntimePlatform != Device.Windows
+                PictureUri = Device.RuntimePlatform != Device.UWP
                     ? "fake_campaign_02.png"
                     : "Assets/fake_campaign_02.png",
                 Name = "Roslyn Red T-Shirt 3x2",
