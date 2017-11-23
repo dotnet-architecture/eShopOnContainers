@@ -45,8 +45,7 @@
             }
 
             _logger.LogDebug($"GracePeriod background task is stopping.");
-
-            await Task.CompletedTask;
+            
         }
 
         private void CheckConfirmedGracePeriodOrders()
