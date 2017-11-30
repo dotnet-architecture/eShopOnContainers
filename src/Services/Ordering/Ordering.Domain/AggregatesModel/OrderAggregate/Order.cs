@@ -92,42 +92,34 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
         }
 
         public void SetAwaitingValidationStatus()
-        {
-            if (_orderStatusId == OrderStatus.Cancelled.Id ||
-                _orderStatusId != OrderStatus.Submitted.Id)
+        {           
+            if (_orderStatusId == OrderStatus.Submitted.Id)
             {
-                StatusChangeException(OrderStatus.AwaitingValidation);
-            }  
-
-            AddDomainEvent(new OrderStatusChangedToAwaitingValidationDomainEvent(Id, _orderItems));
-
-            _orderStatusId = OrderStatus.AwaitingValidation.Id;
+                AddDomainEvent(new OrderStatusChangedToAwaitingValidationDomainEvent(Id, _orderItems));
+                _orderStatusId = OrderStatus.AwaitingValidation.Id;
+            }            
         }
 
         public void SetStockConfirmedStatus()
         {
-            if (_orderStatusId != OrderStatus.AwaitingValidation.Id)
+            if (_orderStatusId == OrderStatus.AwaitingValidation.Id)
             {
-                StatusChangeException(OrderStatus.StockConfirmed);
-            }
+                AddDomainEvent(new OrderStatusChangedToStockConfirmedDomainEvent(Id));
 
-            AddDomainEvent(new OrderStatusChangedToStockConfirmedDomainEvent(Id));
-
-            _orderStatusId = OrderStatus.StockConfirmed.Id;
-            _description = "All the items were confirmed with available stock.";
+                _orderStatusId = OrderStatus.StockConfirmed.Id;
+                _description = "All the items were confirmed with available stock.";
+            }           
         }
 
         public void SetPaidStatus()
         {
-            if (_orderStatusId != OrderStatus.StockConfirmed.Id)
+            if (_orderStatusId == OrderStatus.StockConfirmed.Id)
             {
-                StatusChangeException(OrderStatus.Paid);
-            }
+                AddDomainEvent(new OrderStatusChangedToPaidDomainEvent(Id, OrderItems));
 
-            AddDomainEvent(new OrderStatusChangedToPaidDomainEvent(Id, OrderItems));
-
-            _orderStatusId = OrderStatus.Paid.Id;
-            _description = "The payment was performed at a simulated \"American Bank checking bank account endinf on XX35071\"";
+                _orderStatusId = OrderStatus.Paid.Id;
+                _description = "The payment was performed at a simulated \"American Bank checking bank account endinf on XX35071\"";
+            }            
         }
 
         public void SetShippedStatus()
@@ -155,19 +147,17 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
 
         public void SetCancelledStatusWhenStockIsRejected(IEnumerable<int> orderStockRejectedItems)
         {
-            if (_orderStatusId != OrderStatus.AwaitingValidation.Id)
+            if (_orderStatusId == OrderStatus.AwaitingValidation.Id)
             {
-                StatusChangeException(OrderStatus.Cancelled);
-            }
+                _orderStatusId = OrderStatus.Cancelled.Id;
 
-            _orderStatusId = OrderStatus.Cancelled.Id;
+                var itemsStockRejectedProductNames = OrderItems
+                    .Where(c => orderStockRejectedItems.Contains(c.ProductId))
+                    .Select(c => c.GetOrderItemProductName());
 
-            var itemsStockRejectedProductNames = OrderItems
-                .Where(c => orderStockRejectedItems.Contains(c.ProductId))
-                .Select(c => c.GetOrderItemProductName());
-
-            var itemsStockRejectedDescription = string.Join(", ", itemsStockRejectedProductNames);
-            _description = $"The product items don't have stock: ({itemsStockRejectedDescription}).";
+                var itemsStockRejectedDescription = string.Join(", ", itemsStockRejectedProductNames);
+                _description = $"The product items don't have stock: ({itemsStockRejectedDescription}).";
+            }           
         }
 
         private void AddOrderStartedDomainEvent(string userId, int cardTypeId, string cardNumber,
