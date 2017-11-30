@@ -9,18 +9,7 @@ using System.Threading.Tasks;
 
 namespace Ordering.API.Application.Commands
 {
-    public class CancelOrderCommandIdentifiedHandler : IdentifierCommandHandler<CancelOrderCommand, bool>
-    {
-        public CancelOrderCommandIdentifiedHandler(IMediator mediator, IRequestManager requestManager) : base(mediator, requestManager)
-        {
-        }
-
-        protected override bool CreateResultForDuplicateRequest()
-        {
-            return true;                // Ignore duplicate requests for processing order.
-        }
-    }
-
+    // Regular CommandHandler
     public class CancelOrderCommandHandler : IAsyncRequestHandler<CancelOrderCommand, bool>
     {
         private readonly IOrderRepository _orderRepository;
@@ -41,6 +30,20 @@ namespace Ordering.API.Application.Commands
             var orderToUpdate = await _orderRepository.GetAsync(command.OrderNumber);
             orderToUpdate.SetCancelledStatus();
             return await _orderRepository.UnitOfWork.SaveEntitiesAsync();
+        }
+    }
+
+
+    // Use for Idempotency in Command process
+    public class CancelOrderIdentifiedCommandHandler : IdentifiedCommandHandler<CancelOrderCommand, bool>
+    {
+        public CancelOrderIdentifiedCommandHandler(IMediator mediator, IRequestManager requestManager) : base(mediator, requestManager)
+        {
+        }
+
+        protected override bool CreateResultForDuplicateRequest()
+        {
+            return true;                // Ignore duplicate requests for processing order.
         }
     }
 }

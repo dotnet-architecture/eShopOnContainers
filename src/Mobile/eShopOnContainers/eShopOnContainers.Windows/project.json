@@ -10,10 +10,10 @@
     "Xam.Plugins.Settings": "2.6.0.12-beta",
     "Xamarin.FFImageLoading": "2.2.9",
     "Xamarin.FFImageLoading.Forms": "2.2.9",
-    "Xamarin.Forms": "2.3.4.231"
+    "Xamarin.Forms": "2.5.0.91635"
   },
   "frameworks": {
-    "uap10.0": {}
+    "uap10.0.10586": {}
   },
   "runtimes": {
     "win10-arm": {},

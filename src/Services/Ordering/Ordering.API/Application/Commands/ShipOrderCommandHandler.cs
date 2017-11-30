@@ -6,18 +6,7 @@ using System.Threading.Tasks;
 
 namespace Ordering.API.Application.Commands
 {
-    public class ShipOrderCommandIdentifiedHandler : IdentifierCommandHandler<ShipOrderCommand, bool>
-    {
-        public ShipOrderCommandIdentifiedHandler(IMediator mediator, IRequestManager requestManager) : base(mediator, requestManager)
-        {
-        }
-
-        protected override bool CreateResultForDuplicateRequest()
-        {
-            return true;                // Ignore duplicate requests for processing order.
-        }
-    }
-
+    // Regular CommandHandler
     public class ShipOrderCommandHandler : IAsyncRequestHandler<ShipOrderCommand, bool>
     {        
         private readonly IOrderRepository _orderRepository;
@@ -38,6 +27,20 @@ namespace Ordering.API.Application.Commands
             var orderToUpdate = await _orderRepository.GetAsync(command.OrderNumber);
             orderToUpdate.SetShippedStatus();
             return await _orderRepository.UnitOfWork.SaveEntitiesAsync();
+        }
+    }
+
+
+    // Use for Idempotency in Command process
+    public class ShipOrderIdentifiedCommandHandler : IdentifiedCommandHandler<ShipOrderCommand, bool>
+    {
+        public ShipOrderIdentifiedCommandHandler(IMediator mediator, IRequestManager requestManager) : base(mediator, requestManager)
+        {
+        }
+
+        protected override bool CreateResultForDuplicateRequest()
+        {
+            return true;                // Ignore duplicate requests for processing order.
         }
     }
 }
