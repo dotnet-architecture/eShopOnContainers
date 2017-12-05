@@ -86,9 +86,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Controllers
         [ProducesResponseType(typeof(IEnumerable<OrderSummary>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetOrders()
         {
-            var orderTask = _orderQueries.GetOrdersAsync();
-
-            var orders = await orderTask;
+            var orders = await _orderQueries.GetOrdersAsync();
 
             return Ok(orders);
         }

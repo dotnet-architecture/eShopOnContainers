@@ -5,21 +5,21 @@
 }
 
 <div class="container">
-    @if (TempData.ContainsKey("BasketInoperativeMsg"))
+    @if (ViewBag.BasketInoperativeMsg != null)
     {
         <br />
         <div class="alert alert-warning" role="alert">
-            &nbsp;@TempData["BasketInoperativeMsg"]
+            &nbsp;@ViewBag.BasketInoperativeMsg
         </div>
     }
     else
     {
         <article class="esh-basket-titles row">
             <br />
-            @if (TempData.ContainsKey("BasketInoperativeMsg"))
+            @if (ViewBag.BasketInoperativeMsg != null)
             {
                 <div class="alert alert-warning" role="alert">
-                    &nbsp;@TempData["BasketInoperativeMsg"]
+                    &nbsp;@ViewBag.BasketInoperativeMsg
                 </div>
             }
 
