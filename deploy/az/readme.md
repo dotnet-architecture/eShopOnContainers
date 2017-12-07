@@ -3,7 +3,7 @@
 
 The `create-resources.cmd ` script is a basic script to allow easy deployment of one ARM template in one resource group. You can deploy to an existing resource group or to create one.
 
-NOTE: Alternatively, you can also use the `createresources.sh` bash script which was created as a second option, convenient if you are using a Mac or Linux machine, or simply, bash on Windows, instead of CMD/CommandPrompt in Windows.
+**NOTE**: Alternatively, you can also use the `createresources.sh` bash script which was created as a second option, convenient if you are using the Azure Cloud Bash Shell, a Mac or Linux machine, or simply, bash on Windows, instead of CMD/CommandPrompt in a local Windows.
 
 ## Deploying to a existing resource group
 
