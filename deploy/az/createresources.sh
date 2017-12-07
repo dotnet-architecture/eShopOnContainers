@@ -73,7 +73,6 @@ if [ "$3" == "-c" ]; then
 	fi
 	
 fi
-# if NOT $3.==-c. GOTO deployresources
 deployresources
 
 echo "all finished successfully"
