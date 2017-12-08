@@ -2,6 +2,8 @@
 using Ordering.Domain.Events;
 using Ordering.Domain.Exceptions;
 using System;
+using System.Linq;
+using UnitTest.Ordering;
 using Xunit;
 
 public class OrderAggregateTest
@@ -91,6 +93,18 @@ public class OrderAggregateTest
 
         //Assert
         Assert.Throws<OrderingDomainException>(() => fakeOrderItem.AddUnits(-1));
+    }
+
+    [Fact]
+    public void when_add_two_times_on_the_same_item_then_the_total_of_order_should_be_the_sum_of_the_two_items()
+    {
+        var address = new AddressBuilder().Build();
+        var order = new OrderBuilder(address)
+            .AddOne(1,"cup",10.0m,0,string.Empty)
+            .AddOne(1,"cup",10.0m,0,string.Empty)
+            .Build();
+
+        Assert.Equal(20.0m, order.GetTotal());
     }
 
     [Fact]

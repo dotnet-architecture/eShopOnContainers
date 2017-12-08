@@ -1,7 +1,9 @@
 ﻿namespace FunctionalTests.Services.Locations
 {
+    using Microsoft.AspNetCore;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.TestHost;
+    using Microsoft.Extensions.Configuration;
     using System;
     using System.IO;
 
@@ -9,10 +11,10 @@
     {
         public TestServer CreateServer()
         {
-            var webHostBuilder = new WebHostBuilder();
+            var webHostBuilder = WebHost.CreateDefaultBuilder();
             webHostBuilder.UseContentRoot(Directory.GetCurrentDirectory() + "\\Services\\Location");
             webHostBuilder.UseStartup<LocationsTestsStartup>();
-
+           
             return new TestServer(webHostBuilder);
         }
 

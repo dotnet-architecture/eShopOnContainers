@@ -1,7 +1,6 @@
 ﻿using Microsoft.Azure.ServiceBus;
 using Microsoft.Extensions.Logging;
 using System;
-using System.IO;
 
 namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus
 {

@@ -6,6 +6,7 @@ using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
 using System;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF.Services
 {

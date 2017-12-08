@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using System.IO;
 
@@ -8,7 +9,7 @@ namespace IntegrationTests.Services.Locations
     {
         public TestServer CreateServer()
         {
-            var webHostBuilder = new WebHostBuilder();
+            var webHostBuilder = WebHost.CreateDefaultBuilder();
             webHostBuilder.UseContentRoot(Directory.GetCurrentDirectory() + "\\Services\\Locations");
             webHostBuilder.UseStartup<LocationsTestsStartup>();
 

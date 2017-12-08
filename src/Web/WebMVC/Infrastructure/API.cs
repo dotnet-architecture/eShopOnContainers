@@ -94,5 +94,13 @@ namespace WebMVC.Infrastructure
                 return $"{baseUri}{id}";
             }
         }
+
+        public static class Locations
+        {
+            public static string CreateOrUpdateUserLocation(string baseUri)
+            {
+                return baseUri;
+            }           
+        }
     }
 }

@@ -9,4 +9,4 @@ services:
     depends_on:
       - sql.data
   sql.data:
-    image: microsoft/mssql-server-linux
+    image: microsoft/mssql-server-linux:2017-latest

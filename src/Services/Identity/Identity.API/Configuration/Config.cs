@@ -2,7 +2,7 @@
 using IdentityServer4.Models;
 using System.Collections.Generic;
 
-namespace Identity.API.Configuration
+namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
 {
     public class Config
     {
@@ -67,6 +67,7 @@ namespace Identity.API.Configuration
                     },
                     RedirectUris = { clientsUrl["Xamarin"] },
                     RequireConsent = false,
+                    RequirePkce = true,
                     PostLogoutRedirectUris = { $"{clientsUrl["Xamarin"]}/Account/Redirecting" },
                     AllowedCorsOrigins = { "http://eshopxamarin" },
                     AllowedScopes = new List<string>
@@ -96,6 +97,7 @@ namespace Identity.API.Configuration
                     AllowAccessTokensViaBrowser = false,
                     RequireConsent = false,
                     AllowOfflineAccess = true,
+                    AlwaysIncludeUserClaimsInIdToken = true,
                     RedirectUris = new List<string>
                     {
                         $"{clientsUrl["Mvc"]}/signin-oidc"

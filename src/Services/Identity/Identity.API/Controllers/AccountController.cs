@@ -1,29 +1,23 @@
-﻿// Copyright (c) Brock Allen & Dominick Baier. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
-
-
-using IdentityModel;
-using IdentityServer4.Quickstart.UI.Models;
+﻿using IdentityModel;
+using IdentityServer4;
+using IdentityServer4.Models;
 using IdentityServer4.Services;
-using Microsoft.AspNetCore.Http.Authentication;
+using IdentityServer4.Stores;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.eShopOnContainers.Services.Identity.API.Models;
+using Microsoft.eShopOnContainers.Services.Identity.API.Models.AccountViewModels;
+using Microsoft.eShopOnContainers.Services.Identity.API.Services;
+using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
-using IdentityServer4.Models;
-using IdentityServer4.Stores;
-using Identity.API.Services;
-using Identity.API.Models;
-using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Authorization;
-using Identity.API.Models.AccountViewModels;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Authentication;
 
-namespace IdentityServer4.Quickstart.UI.Controllers
+namespace Microsoft.eShopOnContainers.Services.Identity.API.Controllers
 {
     /// <summary>
     /// This sample controller implements a typical login/logout/provision workflow for local and external accounts.
@@ -36,22 +30,22 @@ namespace IdentityServer4.Quickstart.UI.Controllers
         private readonly ILoginService<ApplicationUser> _loginService;
         private readonly IIdentityServerInteractionService _interaction;
         private readonly IClientStore _clientStore;
-        private readonly ILogger _logger;
+        private readonly ILogger<AccountController> _logger;
         private readonly UserManager<ApplicationUser> _userManager;
 
         public AccountController(
-            
+
             //InMemoryUserLoginService loginService,
             ILoginService<ApplicationUser> loginService,
             IIdentityServerInteractionService interaction,
             IClientStore clientStore,
-            ILoggerFactory loggerFactory, 
+            ILogger<AccountController> logger,
             UserManager<ApplicationUser> userManager)
         {
             _loginService = loginService;
             _interaction = interaction;
             _clientStore = clientStore;
-            _logger = loggerFactory.CreateLogger<AccountController>();
+            _logger = logger;
             _userManager = userManager;
         }
 
@@ -69,6 +63,7 @@ namespace IdentityServer4.Quickstart.UI.Controllers
             }
 
             var vm = await BuildLoginViewModelAsync(returnUrl, context);
+
             ViewData["ReturnUrl"] = returnUrl;
 
             return View(vm);
@@ -86,7 +81,7 @@ namespace IdentityServer4.Quickstart.UI.Controllers
                 var user = await _loginService.FindByUsername(model.Email);
                 if (await _loginService.ValidateCredentials(user, model.Password))
                 {
-                     AuthenticationProperties props = null;
+                    AuthenticationProperties props = null;
                     if (model.RememberMe)
                     {
                         props = new AuthenticationProperties
@@ -97,6 +92,7 @@ namespace IdentityServer4.Quickstart.UI.Controllers
                     };
 
                     await _loginService.SignIn(user);
+                   
                     // make sure the returnUrl is still valid, and if yes - redirect back to authorize endpoint
                     if (_interaction.IsValidReturnUrl(model.ReturnUrl))
                     {
@@ -111,7 +107,9 @@ namespace IdentityServer4.Quickstart.UI.Controllers
 
             // something went wrong, show form with error
             var vm = await BuildLoginViewModelAsync(model);
+
             ViewData["ReturnUrl"] = model.ReturnUrl;
+
             return View(vm);
         }
 
@@ -180,6 +178,7 @@ namespace IdentityServer4.Quickstart.UI.Controllers
         public async Task<IActionResult> Logout(LogoutViewModel model)
         {
             var idp = User?.FindFirst(JwtClaimTypes.IdentityProvider)?.Value;
+
             if (idp != null && idp != IdentityServerConstants.LocalIdentityProvider)
             {
                 if (model.LogoutId == null)
@@ -191,19 +190,24 @@ namespace IdentityServer4.Quickstart.UI.Controllers
                 }
 
                 string url = "/Account/Logout?logoutId=" + model.LogoutId;
+
                 try
                 {
+                    
                     // hack: try/catch to handle social providers that throw
-                    await HttpContext.Authentication.SignOutAsync(idp, new AuthenticationProperties { RedirectUri = url });
+                    await HttpContext.SignOutAsync(idp, new AuthenticationProperties
+                    {
+                        RedirectUri = url
+                    });
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     _logger.LogCritical(ex.Message);
                 }
             }
 
             // delete authentication cookie
-            await HttpContext.Authentication.SignOutAsync();
+            await HttpContext.SignOutAsync();
 
             // set this so UI rendering sees an anonymous user
             HttpContext.User = new ClaimsPrincipal(new ClaimsIdentity());
@@ -217,7 +221,7 @@ namespace IdentityServer4.Quickstart.UI.Controllers
         public async Task<IActionResult> DeviceLogOut(string redirectUrl)
         {
             // delete authentication cookie
-            await HttpContext.Authentication.SignOutAsync();
+            await HttpContext.SignOutAsync();
 
             // set this so UI rendering sees an anonymous user
             HttpContext.User = new ClaimsPrincipal(new ClaimsIdentity());
@@ -240,7 +244,7 @@ namespace IdentityServer4.Quickstart.UI.Controllers
             // start challenge and roundtrip the return URL
             var props = new AuthenticationProperties
             {
-                RedirectUri = returnUrl, 
+                RedirectUri = returnUrl,
                 Items = { { "scheme", provider } }
             };
             return new ChallengeResult(provider, props);
@@ -293,7 +297,8 @@ namespace IdentityServer4.Quickstart.UI.Controllers
                 }
             }
 
-            if (returnUrl != null) {
+            if (returnUrl != null)
+            {
                 if (HttpContext.User.Identity.IsAuthenticated)
                     return Redirect(returnUrl);
                 else

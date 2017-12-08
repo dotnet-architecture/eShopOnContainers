@@ -21,7 +21,12 @@ data:
   OrderingBus: rabbitmq
   OrderingSqlDb: Server=sql-data;Initial Catalog=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word;
   PaymentBus: rabbitmq
-  GracePeriodTime: "1"
-  GracePeriodCheckUpdateTime: "60000"
   UseAzureServiceBus: "False"
+  EnableLoadTest: "False"
   keystore: keystore-data
+  GracePeriodManager_GracePeriodTime: "1"
+  GracePeriodManager_CheckUpdateTime: "15000"
+  Instrumentation_Key: ""
+
+
+

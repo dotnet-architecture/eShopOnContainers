@@ -17,9 +17,13 @@ namespace eShopOnContainers.Core.Services.Order
             _requestProvider = requestProvider;
         }
 
+        public Task CreateOrderAsync(Models.Orders.Order newOrder, string token)
+        {
+            throw new Exception("Only available in Mock Services!");
+        }
+
         public async Task<ObservableCollection<Models.Orders.Order>> GetOrdersAsync(string token)
         {
-        
             UriBuilder builder = new UriBuilder(GlobalSetting.Instance.OrdersEndpoint);
 
             builder.Path = "api/v1/orders";
@@ -30,7 +34,7 @@ namespace eShopOnContainers.Core.Services.Order
                 await _requestProvider.GetAsync<ObservableCollection<Models.Orders.Order>>(uri, token);
 
             return orders;
-            
+
         }
 
         public async Task<Models.Orders.Order> GetOrderAsync(int orderId, string token)
@@ -51,27 +55,6 @@ namespace eShopOnContainers.Core.Services.Order
             catch
             {
                 return new Models.Orders.Order();
-            }
-        }
-
-        public async Task<ObservableCollection<Models.Orders.CardType>> GetCardTypesAsync(string token)
-        {
-            try
-            {
-                UriBuilder builder = new UriBuilder(GlobalSetting.Instance.OrdersEndpoint);
-
-                builder.Path = "api/v1/orders/cardtypes";
-
-                string uri = builder.ToString();
-
-                ObservableCollection<Models.Orders.CardType> cardTypes =
-                    await _requestProvider.GetAsync<ObservableCollection<Models.Orders.CardType>>(uri, token);
-
-                return cardTypes;
-            }
-            catch
-            {
-                return new ObservableCollection<Models.Orders.CardType>();
             }
         }
 

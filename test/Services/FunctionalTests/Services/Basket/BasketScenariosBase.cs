@@ -1,7 +1,9 @@
 ﻿namespace FunctionalTests.Services.Basket
 {
+    using Microsoft.AspNetCore;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.TestHost;
+    using Microsoft.Extensions.Configuration;
     using System.IO;
 
     public class BasketScenariosBase
@@ -10,10 +12,10 @@
 
         public TestServer CreateServer()
         {
-            var webHostBuilder = new WebHostBuilder();
-            webHostBuilder.UseContentRoot(Directory.GetCurrentDirectory());
+            var webHostBuilder = WebHost.CreateDefaultBuilder();
+            webHostBuilder.UseContentRoot(Directory.GetCurrentDirectory() + "\\Services\\Basket");
             webHostBuilder.UseStartup<BasketTestsStartup>();
-
+           
             return new TestServer(webHostBuilder);
         }
 

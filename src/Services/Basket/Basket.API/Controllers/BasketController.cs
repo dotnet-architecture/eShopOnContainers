@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.eShopOnContainers.Services.Basket.API.Model;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
-using Basket.API.IntegrationEvents.Events;
-using Microsoft.eShopOnContainers.Services.Basket.API.Services;
+﻿using Basket.API.IntegrationEvents.Events;
 using Basket.API.Model;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
+using Microsoft.eShopOnContainers.Services.Basket.API.Model;
+using Microsoft.eShopOnContainers.Services.Basket.API.Services;
+using System;
+using System.Net;
+using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
 {
@@ -21,7 +19,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
         private readonly IIdentityService _identitySvc;
         private readonly IEventBus _eventBus;
 
-        public BasketController(IBasketRepository repository, 
+        public BasketController(IBasketRepository repository,
             IIdentityService identityService,
             IEventBus eventBus)
         {
@@ -29,8 +27,10 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
             _identitySvc = identityService;
             _eventBus = eventBus;
         }
+
         // GET /id
         [HttpGet("{id}")]
+        [ProducesResponseType(typeof(CustomerBasket), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> Get(string id)
         {
             var basket = await _repository.GetBasketAsync(id);
@@ -40,6 +40,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
 
         // POST /value
         [HttpPost]
+        [ProducesResponseType(typeof(CustomerBasket), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> Post([FromBody]CustomerBasket value)
         {
             var basket = await _repository.UpdateBasketAsync(value);
@@ -49,6 +50,8 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
 
         [Route("checkout")]
         [HttpPost]
+        [ProducesResponseType((int)HttpStatusCode.Accepted)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> Checkout([FromBody]BasketCheckout basketCheckout, [FromHeader(Name = "x-requestid")] string requestId)
         {
             var userId = _identitySvc.GetUserIdentity();
