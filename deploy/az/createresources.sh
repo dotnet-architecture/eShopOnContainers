@@ -4,7 +4,7 @@ CreateGroup()
 {
 	echo Creating resource group $resource_group in '$location'
 	az group create --name $resource_group --location $location
-}   # end of system_info
+}   # end of CreateGroup()
 
 
 
@@ -12,7 +12,7 @@ deployresources()
 {
 	echo Deploying ARM template '$path_and_filename.json' in resource group $resource_group
 	az group deployment create --resource-group $resource_group --parameters @$path_and_filename.parameters.json --template-file $path_and_filename.json
-}
+}   # end of deployresources
 
 Error_Usage()
 {
@@ -75,4 +75,4 @@ if [ "$3" == "-c" ]; then
 fi
 deployresources
 
-echo "all finished successfully"
+echo "all resources finished successfully"
