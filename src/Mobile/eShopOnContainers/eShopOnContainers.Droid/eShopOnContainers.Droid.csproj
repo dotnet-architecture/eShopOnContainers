@@ -100,6 +100,21 @@
       <HintPath>..\..\..\..\packages\modernhttpclient.2.4.2\lib\MonoAndroid\OkHttp.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="PCLCrypto, Version=2.0.0.0, Culture=neutral, PublicKeyToken=d4421c8a4786956c, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\packages\PCLCrypto.2.0.147\lib\MonoAndroid23\PCLCrypto.dll</HintPath>
+    </Reference>
+    <Reference Include="PInvoke.BCrypt, Version=0.3.0.0, Culture=neutral, PublicKeyToken=9e300f9f87f04a7a, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\packages\PInvoke.BCrypt.0.3.2\lib\portable-net45+win+wpa81+MonoAndroid10+xamarinios10+MonoTouch10\PInvoke.BCrypt.dll</HintPath>
+    </Reference>
+    <Reference Include="PInvoke.Kernel32, Version=0.3.0.0, Culture=neutral, PublicKeyToken=9e300f9f87f04a7a, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\packages\PInvoke.Kernel32.0.3.2\lib\portable-net45+win+wpa81+MonoAndroid10+xamarinios10+MonoTouch10\PInvoke.Kernel32.dll</HintPath>
+    </Reference>
+    <Reference Include="PInvoke.NCrypt, Version=0.3.0.0, Culture=neutral, PublicKeyToken=9e300f9f87f04a7a, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\packages\PInvoke.NCrypt.0.3.2\lib\portable-net45+win+wpa81+MonoAndroid10+xamarinios10+MonoTouch10\PInvoke.NCrypt.dll</HintPath>
+    </Reference>
+    <Reference Include="PInvoke.Windows.Core, Version=0.3.0.0, Culture=neutral, PublicKeyToken=9e300f9f87f04a7a, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\packages\PInvoke.Windows.Core.0.3.2\lib\portable-net45+win+wpa81+MonoAndroid10+xamarinios10+MonoTouch10\PInvoke.Windows.Core.dll</HintPath>
+    </Reference>
     <Reference Include="Plugin.CurrentActivity, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\..\..\packages\Plugin.CurrentActivity.1.0.1\lib\MonoAndroid10\Plugin.CurrentActivity.dll</HintPath>
     </Reference>
@@ -146,9 +161,11 @@
       <HintPath>..\..\..\..\packages\Microsoft.Net.Http.2.2.29\lib\monoandroid\System.Net.Http.Primitives.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.ObjectModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
+    <Reference Include="Validation, Version=2.2.0.0, Culture=neutral, PublicKeyToken=2fc06f0d701809a7, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\packages\Validation.2.2.8\lib\dotnet\Validation.dll</HintPath>
+    </Reference>
     <Reference Include="Xamarin.Android.Support.Animated.Vector.Drawable, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\..\..\packages\Xamarin.Android.Support.Animated.Vector.Drawable.23.3.0\lib\MonoAndroid403\Xamarin.Android.Support.Animated.Vector.Drawable.dll</HintPath>
       <Private>True</Private>
@@ -181,18 +198,6 @@
       <HintPath>..\..\..\..\packages\Xamarin.Android.Support.Vector.Drawable.23.3.0\lib\MonoAndroid403\Xamarin.Android.Support.Vector.Drawable.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Xamarin.Forms.Theme.Android">
-      <HintPath>..\..\..\..\packages\Xamarin.Forms.Theme.Base.1.0.0.43-pre1\lib\MonoAndroid10\Xamarin.Forms.Theme.Android.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Xamarin.Forms.Theme.Base">
-      <HintPath>..\..\..\..\packages\Xamarin.Forms.Theme.Base.1.0.0.43-pre1\lib\MonoAndroid10\Xamarin.Forms.Theme.Base.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Xamarin.Forms.Theme.Light">
-      <HintPath>..\..\..\..\packages\Xamarin.Forms.Theme.Light.1.0.0.43-pre1\lib\MonoAndroid10\Xamarin.Forms.Theme.Light.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="FormsViewGroup">
       <HintPath>..\..\..\..\packages\Xamarin.Forms.2.3.4.231\lib\MonoAndroid10\FormsViewGroup.dll</HintPath>
     </Reference>
@@ -208,9 +213,6 @@
     <Reference Include="Xamarin.Forms.Xaml">
       <HintPath>..\..\..\..\packages\Xamarin.Forms.2.3.4.231\lib\MonoAndroid10\Xamarin.Forms.Xaml.dll</HintPath>
     </Reference>
-    <Reference Include="Xamarin.Forms.Pages">
-      <HintPath>..\..\..\..\packages\Xamarin.Forms.Pages.2.3.4.231\lib\MonoAndroid10\Xamarin.Forms.Pages.dll</HintPath>
-    </Reference>
     <Reference Include="System.IO.Compression" />
     <Reference Include="Autofac">
       <HintPath>..\..\..\..\packages\Autofac.4.5.0\lib\netstandard1.1\Autofac.dll</HintPath>
@@ -218,7 +220,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activities\MainActivity.cs" />
-    <Compile Include="Activities\SplashActivity.cs" />
     <Compile Include="Effects\EntryLineColorEffect.cs" />
     <Compile Include="Extensions\ViewExtensions.cs" />
     <Compile Include="Helpers\Settings.cs" />
@@ -229,6 +230,9 @@
     <Compile Include="Renderers\SlideDownMenuPageRenderer.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Effects\CircleEffect.cs" />
+    <Compile Include="Effects\BaseContainerEffect.cs" />
+    <Compile Include="Activities\SplashActivity.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="..\CommonResources\Fonts\Montserrat-Bold.ttf">
@@ -255,6 +259,12 @@
     <AndroidResource Include="Resources\layout\TabLayout.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\menu_campaigns.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\menu_campaigns.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\menu_campaigns.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\menu_filter.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\menu_filter.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\menu_filter.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\icon.png" />
@@ -269,9 +279,6 @@
     <AndroidResource Include="Resources\values\styles.xml" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\splash_drawable.xml" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable\fake_product_01.png" />
   </ItemGroup>
   <ItemGroup>
@@ -279,15 +286,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\fake_product_02.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-hdpi\menu_filter.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xhdpi\menu_filter.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\menu_filter.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\menu_profile.png" />
@@ -375,7 +373,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\eShopOnContainers.Core\eShopOnContainers.Core.csproj">
-      <Project>{67f9d3a8-f71e-4428-913f-c37ae82cdb24}</Project>
+      <Project>{BA96A12C-4EE3-46C4-BB3F-F811B554CD01}</Project>
       <Name>eShopOnContainers.Core</Name>
     </ProjectReference>
   </ItemGroup>

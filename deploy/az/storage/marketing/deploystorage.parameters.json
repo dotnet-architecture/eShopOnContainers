@@ -7,6 +7,9 @@
     },
     "profileName":{
       "value": "eshopmarketing"
+    },
+   "endpointName":{
+      "value": "marketing-endpoint"
     }
   }
 }

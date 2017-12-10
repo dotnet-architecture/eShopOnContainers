@@ -69,9 +69,9 @@
         <views:CampaignView.Icon>
             <OnPlatform        
                 x:TypeArguments="FileImageSource"
-                Android="menu_filter"
-                iOS="menu_filter"
-                WinPhone="Assets\menu_filter.png"/>
+                Android="menu_campaigns"
+                iOS="menu_campaigns"
+                WinPhone="Assets\menu_campaigns.png"/>
         </views:CampaignView.Icon>
     </views:CampaignView>
 </TabbedPage>

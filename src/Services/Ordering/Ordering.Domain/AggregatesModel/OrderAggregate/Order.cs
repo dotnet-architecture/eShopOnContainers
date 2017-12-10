@@ -72,8 +72,9 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
                 if (discount > existingOrderForProduct.GetCurrentDiscount())
                 {
                     existingOrderForProduct.SetNewDiscount(discount);
-                    existingOrderForProduct.AddUnits(units);
                 }
+
+                existingOrderForProduct.AddUnits(units);
             }
             else
             {
@@ -186,6 +187,11 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
         private void StatusChangeException(OrderStatus orderStatusToChange)
         {
             throw new OrderingDomainException($"Not possible to change order status from {OrderStatus.Name} to {orderStatusToChange.Name}.");
+        }
+
+        public decimal GetTotal()
+        {
+            return _orderItems.Sum(o => o.GetUnits() * o.GetUnitPrice());
         }
     }
 }

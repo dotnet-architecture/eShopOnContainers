@@ -78,7 +78,7 @@ namespace eShopOnContainers.Core.Helpers
             }
         }
 
-        public static void FixCatalogItemPictureUri(IEnumerable<CampaignItem> campaignItems)
+        public static void FixCampaignItemPictureUri(IEnumerable<CampaignItem> campaignItems)
         {
             if (campaignItems == null)
             {
@@ -90,9 +90,9 @@ namespace eShopOnContainers.Core.Helpers
                 if (!ViewModelLocator.UseMockService
                     && Settings.UrlBase != GlobalSetting.DefaultEndpoint)
                 {
-                    foreach (var catalogItem in campaignItems)
+                    foreach (var campaignItem in campaignItems)
                     {
-                        MatchCollection serverResult = IpRegex.Matches(catalogItem.PictureUri);
+                        MatchCollection serverResult = IpRegex.Matches(campaignItem.PictureUri);
                         MatchCollection localResult = IpRegex.Matches(Settings.UrlBase);
 
                         if (serverResult.Count != -1 && localResult.Count != -1)
@@ -100,7 +100,7 @@ namespace eShopOnContainers.Core.Helpers
                             var serviceIp = serverResult[0].Value;
                             var localIp = localResult[0].Value;
 
-                            catalogItem.PictureUri = catalogItem.PictureUri.Replace(serviceIp, localIp);
+                            campaignItem.PictureUri = campaignItem.PictureUri.Replace(serviceIp, localIp);
                         }
                     }
                 }

@@ -1,15 +1,15 @@
-﻿using IdentityServer4.Services;
+﻿using IdentityModel;
+using IdentityServer4.Models;
+using IdentityServer4.Services;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.eShopOnContainers.Services.Identity.API.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using IdentityServer4.Models;
-using Microsoft.AspNetCore.Identity;
-using Identity.API.Models;
 using System.Security.Claims;
-using IdentityModel;
+using System.Threading.Tasks;
 
-namespace Identity.API.Services
+namespace Microsoft.eShopOnContainers.Services.Identity.API.Services
 {
     public class ProfileService : IProfileService
     {

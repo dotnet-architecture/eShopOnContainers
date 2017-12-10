@@ -16,7 +16,6 @@ declare -a projectList=(
     "$path/Services/Location/Locations.API"
     "$path/Services/Marketing/Marketing.API"
     "$path/Services/Payment/Payment.API"
-    "$path/Services/GracePeriod/GracePeriodManager"
     "$path/Web/WebMVC"
     "$path/Web/WebStatus"
 )
@@ -31,10 +30,8 @@ do
     echo -e "\e[33m\tRemoving old publish output"
     pushd $path/$project
     rm -rf obj/Docker/publish
-    echo -e "\e[33m\tRestoring project $project"
-    dotnet restore
     echo -e "\e[33m\tBuilding and publishing $project"
-    dotnet publish -o obj/Docker/publish
+    dotnet publish -c Release -o obj/Docker/publish --verbosity quiet
     popd
 done
 
@@ -50,3 +47,5 @@ done
 
 # No need to build the images, docker build or docker compose will
 # do that using the images and containers defined in the docker-compose.yml file.
+#
+#

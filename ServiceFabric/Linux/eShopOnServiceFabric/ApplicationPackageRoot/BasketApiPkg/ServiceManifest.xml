@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ServiceManifest Name="BasketApiPkg"
+                 Version="1.0.0"
+                 xmlns="http://schemas.microsoft.com/2011/01/fabric"
+                 xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ServiceTypes>
+    <!-- This is the name of your ServiceType.
+         The UseImplicitHost attribute indicates this is a guest service. -->
+    <StatelessServiceType ServiceTypeName="BasketApiType" UseImplicitHost="true" />
+  </ServiceTypes>
+
+  <!-- Code package is your service executable. -->
+  <CodePackage Name="Code" Version="1.0.0">
+    <EntryPoint>
+      <!-- Follow this link for more information about deploying Windows containers to Service Fabric: https://aka.ms/sfguestcontainers -->
+      <ContainerHost>
+        <ImageName>eshop/basket.api:#{tag}#</ImageName>
+      </ContainerHost>
+    </EntryPoint>
+    <!-- Pass environment variables to your container: -->
+    <EnvironmentVariables>
+      <EnvironmentVariable Name="ASPNETCORE_ENVIRONMENT" Value="Development"/>
+      <EnvironmentVariable Name="ASPNETCORE_URLS" Value="http://0.0.0.0:80"/>
+      <EnvironmentVariable Name="ConnectionString" Value="basketdata.eshoponservicefabricredis"/>
+      <EnvironmentVariable Name="identityUrl" Value="http://identityapi.eshoponservicefabric:5105"/>
+      <EnvironmentVariable Name="IdentityUrlExternal" Value="http://#{your_sf_dns}#:5105"/>
+      <EnvironmentVariable Name="EventBusConnection" Value="rabbitmq.eshoponservicefabricbus"/>
+      <EnvironmentVariable Name="AzureServiceBusEnabled" Value="False"/>
+      <EnvironmentVariable Name="ApplicationInsights__InstrumentationKey" Value=""/>
+      <EnvironmentVariable Name="OrchestratorType" Value="SF"/>
+      <EnvironmentVariable Name="UseLoadTest" Value="True"/>
+    </EnvironmentVariables>
+  </CodePackage>
+
+  <!-- Config package is the contents of the Config directoy under PackageRoot that contains an 
+       independently-updateable and versioned set of custom configuration settings for your service. -->
+  <ConfigPackage Name="Config" Version="1.0.0" />
+
+  <Resources>
+    <Endpoints>
+      <!-- This endpoint is used by the communication listener to obtain the port on which to 
+           listen. Please note that if your service is partitioned, this port is shared with 
+           replicas of different partitions that are placed in your code. -->
+      <Endpoint Name="BasketApiTypeEndpoint" Port="5103" UriScheme="http"/>
+    </Endpoints>
+  </Resources>
+</ServiceManifest>
+
