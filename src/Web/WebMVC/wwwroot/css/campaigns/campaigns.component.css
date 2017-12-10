@@ -72,6 +72,17 @@
     transition: all 0.35s;
     width: 80%;
 }
+
+.esh-campaigns-form-button {
+    background-color: #83D01B;
+    border: none;
+    color: #FFFFFF;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.35s;
+    width: 80%;
+}
+
     .esh-campaigns-button.is-disabled {
         opacity: .5;
         pointer-events: none;

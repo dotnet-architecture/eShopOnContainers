@@ -7,14 +7,25 @@
 <a class="esh-basketstatus @Model.Disabled"
    asp-area="" 
    asp-controller="Cart" 
-   asp-action="Index">
-
-    <div class="esh-basketstatus-image">
-        <img src="~/images/cart.png" />
-    </div>
-    <div class="esh-basketstatus-badge">
-        @Model.ItemsCount
-    </div>
+   asp-action="Index">    
+    @if (ViewBag.IsBasketInoperative == true)
+    {
+        <div class="esh-basketstatus-image">
+            <img src="~/images/cart-inoperative.png" />            
+        </div>
+        <div class="esh-basketstatus-badge-inoperative">
+            X           
+        </div>        
+    }
+    else
+    {
+        <div class="esh-basketstatus-image">
+            <img src="~/images/cart.png" />
+        </div>
+        <div class="esh-basketstatus-badge">
+            @Model.ItemsCount
+        </div>
+    }       
 </a>
 
 

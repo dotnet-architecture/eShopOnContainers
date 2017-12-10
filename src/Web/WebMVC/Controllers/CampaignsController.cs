@@ -1,28 +1,29 @@
-using Microsoft.EntityFrameworkCore.Query.Internal;
-using WebMVC.ViewModels;
-
 namespace Microsoft.eShopOnContainers.WebMVC.Controllers
 {
     using AspNetCore.Authorization;
     using AspNetCore.Mvc;
-    using Services;
-    using ViewModels;
-    using System.Threading.Tasks;
-    using System;
-    using ViewModels.Pagination;
+    using global::WebMVC.Models;
+    using global::WebMVC.Services;
     using global::WebMVC.ViewModels;
     using Microsoft.Extensions.Options;
+    using Services;
+    using System;
+    using System.Threading.Tasks;
+    using ViewModels;
+    using ViewModels.Pagination;
 
     [Authorize]
     public class CampaignsController : Controller
     {
         private readonly ICampaignService _campaignService;
+        private readonly ILocationService _locationService;
         private readonly AppSettings _settings;
 
-        public CampaignsController(ICampaignService campaignService, IOptionsSnapshot<AppSettings> settings)
+        public CampaignsController(ICampaignService campaignService, ILocationService locationService, IOptionsSnapshot<AppSettings> settings)
         {
             _campaignService = campaignService;
             _settings = settings.Value;
+            _locationService = locationService;
         }
 
         public async Task<IActionResult> Index(int page = 0, int pageSize = 10)
@@ -75,6 +76,24 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
             };
 
             return View(campaign);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateNewUserLocation(CampaignViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var location = new LocationDTO()
+                {
+                    Longitude = model.Lon,
+                    Latitude = model.Lat
+                };
+                await _locationService.CreateOrUpdateUserLocation(location);
+
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(nameof(Index), model);
         }
     }
 }

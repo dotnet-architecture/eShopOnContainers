@@ -54,7 +54,6 @@ Write-Host "Docker image Tag: $imageTag" -ForegroundColor Yellow
 # building and publishing docker images if needed
 if($buildBits) {
     Write-Host "Building and publishing eShopOnContainers..." -ForegroundColor Yellow
-    dotnet restore ../eShopOnContainers-ServicesAndWebApps.sln
     dotnet publish -c Release -o obj/Docker/publish ../eShopOnContainers-ServicesAndWebApps.sln
 }
 if ($buildImages) {
@@ -110,11 +109,11 @@ ExecKube -cmd 'create configmap config-files --from-file=nginx-conf=nginx.conf'
 ExecKube -cmd 'label configmap config-files app=eshop'
 
 if ($deployInfrastructure) {
-    Write-Host 'Deploying infrastructure deployments (databases, redis, ...)' -ForegroundColor Yellow
+    Write-Host 'Deploying infrastructure deployments (databases, redis, RabbitMQ...)' -ForegroundColor Yellow
     ExecKube -cmd 'create -f sql-data.yaml -f basket-data.yaml -f keystore-data.yaml -f rabbitmq.yaml -f nosql-data.yaml'
 }
 
-Write-Host 'Deploying code deployments (databases, redis, ...)' -ForegroundColor Yellow
+Write-Host 'Deploying code deployments (Web APIs, Web apps, ...)' -ForegroundColor Yellow
 ExecKube -cmd 'create -f services.yaml -f frontend.yaml'
 
 if ([string]::IsNullOrEmpty($externalDns)) {
@@ -136,7 +135,8 @@ ExecKube -cmd 'create configmap urls `
     --from-literal=BasketHealthCheckUrl=http://basket/hc `
     --from-literal=CatalogUrl=http://$($externalDns)/catalog-api `
     --from-literal=CatalogHealthCheckUrl=http://catalog/hc `
-	--from-literal=PicBaseUrl=http://$($externalDns)/catalog-api/api/v1/pic/ `
+    --from-literal=PicBaseUrl=http://$($externalDns)/catalog-api/api/v1/catalog/items/[0]/pic/ `
+    --from-literal=Marketing_PicBaseUrl=http://$($externalDns)/marketing-api/api/v1/campaigns/[0]/pic/ `
     --from-literal=IdentityUrl=http://$($externalDns)/identity `
     --from-literal=IdentityHealthCheckUrl=http://identity/hc `
     --from-literal=OrderingUrl=http://ordering `
@@ -146,13 +146,25 @@ ExecKube -cmd 'create configmap urls `
     --from-literal=MvcClientOrderingUrl=http://ordering `
     --from-literal=MvcClientCatalogUrl=http://catalog `
     --from-literal=MvcClientBasketUrl=http://basket `
+    --from-literal=MvcClientMarketingUrl=http://marketing `
+	--from-literal=MvcClientLocationsUrl=http://locations `
+    --from-literal=MarketingHealthCheckUrl=http://marketing/hc `
     --from-literal=WebSpaHealthCheckUrl=http://webspa/hc `
+    --from-literal=SpaClientMarketingExternalUrl=http://$($externalDns)/marketing-api `
     --from-literal=SpaClientOrderingExternalUrl=http://$($externalDns)/ordering-api `
     --from-literal=SpaClientCatalogExternalUrl=http://$($externalDns)/catalog-api `
     --from-literal=SpaClientBasketExternalUrl=http://$($externalDns)/basket-api `
     --from-literal=SpaClientIdentityExternalUrl=http://$($externalDns)/identity `
-    --from-literal=SpaClientExternalUrl=http://$($externalDns)'
-    
+	--from-literal=SpaClientLocationsUrl=http://$($externalDns)/locations-api `
+    --from-literal=LocationsHealthCheckUrl=http://locations/hc `
+    --from-literal=SpaClientExternalUrl=http://$($externalDns) `
+    --from-literal=LocationApiClient=http://$($externalDns)/locations-api `
+    --from-literal=MarketingApiClient=http://$($externalDns)/marketing-api `
+    --from-literal=BasketApiClient=http://$($externalDns)/basket-api `
+    --from-literal=OrderingApiClient=http://$($externalDns)/ordering-api `
+    --from-literal=PaymentHealthCheckUrl=http://payment/hc'
+	
+
 ExecKube -cmd 'label configmap urls app=eshop'
 
 Write-Host "Deploying configuration from $configFile" -ForegroundColor Yellow

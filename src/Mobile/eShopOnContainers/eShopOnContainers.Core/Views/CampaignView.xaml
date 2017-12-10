@@ -8,7 +8,7 @@
              xmlns:triggers="clr-namespace:eShopOnContainers.Core.Triggers;assembly=eShopOnContainers.Core"
              xmlns:behaviors="clr-namespace:eShopOnContainers.Core.Behaviors;assembly=eShopOnContainers.Core"
 			 viewModelBase:ViewModelLocator.AutoWireViewModel="true"
-             Title="Catalog">
+             Title="Campaigns">
     <ContentPage.Resources>
         <ResourceDictionary>
 

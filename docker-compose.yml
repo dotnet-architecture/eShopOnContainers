@@ -1,14 +1,6 @@
-version: '2.1'
+version: '3'
 
 services:
-  graceperiodmanager:
-    image: eshop/graceperiodmanager:${TAG:-latest}
-    build:
-      context: ./src/Services/GracePeriod/GracePeriodManager
-      dockerfile: Dockerfile
-    depends_on:
-      - sql.data
-      - rabbitmq
 
   basket.api:
     image: eshop/basket.api:${TAG:-latest}
@@ -63,8 +55,11 @@ services:
       context: ./src/Web/WebSPA
       dockerfile: Dockerfile    
     depends_on:
+      - catalog.api
+      - ordering.api
       - identity.api
       - basket.api
+      - marketing.api
 
   webmvc:
     image: eshop/webmvc:${TAG:-latest}
@@ -77,22 +72,6 @@ services:
       - identity.api
       - basket.api
       - marketing.api
-
-  sql.data:
-    image: microsoft/mssql-server-linux
-
-  nosql.data:
-    image: mongo
-
-  basket.data:
-    image: redis
-    ports:
-      - "6379:6379"
-
-  rabbitmq:
-    image: rabbitmq
-    ports:
-      - "5672:5672"
 
   webstatus:
     image: eshop/webstatus:${TAG:-latest}
@@ -116,3 +95,20 @@ services:
     depends_on:
       - nosql.data
       - rabbitmq
+
+  sql.data:
+    image: microsoft/mssql-server-linux:2017-latest
+
+  nosql.data:
+    image: mongo
+
+  basket.data:
+    image: redis
+    ports:
+      - "6379:6379"
+      
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "15672:15672"
+      - "5672:5672"
