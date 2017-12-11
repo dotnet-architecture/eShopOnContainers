@@ -4,10 +4,14 @@ For k8s CI/CD pipeline delivery a series of tasks must be created in VSTS to dep
 ## Prerequisites
 * A Kubernetes cluster. Follow Azure Container Service's [walkthrough](https://docs.microsoft.com/en-us/azure/container-service/container-service-kubernetes-walkthrough) to create one. 
 * A private Docker registry. Follow Azure Container Registry's [guide](https://docs.microsoft.com/en-us/azure/container-registry/container-registry-get-started-portal) to create one.
-* Optionally, previous steps can be skipped if you run gen-k8s-env.ps1 script to automatically create the azure environment needed for kubernetes deployment. Azure cli 2.0 must be previously installed [installation guide](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli). For example:
+* Optionally, previous steps can be skipped if you run gen-k8s-env.ps1 (or gen-k8s-env-aks.ps1 if you would like to use AKS instead of ACS) script to automatically create the azure environment needed for kubernetes deployment. Azure cli 2.0 must be previously installed [installation guide](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli). For example:
 
 >```
 >./gen-k8s-env -resourceGroupName k8sGroup -location westeurope -registryName k8sregistry -orchestratorName k8s-cluster -dnsName k8s-dns
+>```
+or using AKS instead of ACS
+>```
+>./gen-k8s-env-aks -resourceGroupName k8sGroup -location westeurope -registryName k8sregistry -dnsName k8s-dns -serviceName k8s-cluster -createAcr true -nodeCount 3 -nodeVMSize Standard_D2_v2
 >```
 * An `Azure Blob storage`. It is needed for storing the kubernetes config file used by the hosted agent to access to Kubernetes cluster. Example:
 
@@ -23,7 +27,7 @@ For k8s CI/CD pipeline delivery a series of tasks must be created in VSTS to dep
 1. Create a `Download File` task to download the kubernetes binary `kubectl` to the hosted agent. For example:
 
 >```
->https://storage.googleapis.com/kubernetes-release/release/v0.0.1.7.0-alpha.0/bin/windows/386/kubectl.exe
+>https://storage.googleapis.com/kubernetes-release/release/v1.8.5/bin/windows/386/kubectl.exe
 >```
 
 <img src="./img/get_kubectlbin_task.png">
