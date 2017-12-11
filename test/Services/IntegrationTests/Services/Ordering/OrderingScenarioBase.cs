@@ -4,8 +4,14 @@
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.TestHost;
     using Microsoft.eShopOnContainers.Services.Ordering.API;
+    using Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure;
+    using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure;
+    using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Options;
     using System.IO;
+    using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF;
 
     public class OrderingScenarioBase
     {
@@ -19,7 +25,22 @@
                 config.AddJsonFile("settings.json");
             });
 
-            return new TestServer(webHostBuilder);
+            var testServer = new TestServer(webHostBuilder);
+
+            testServer.Host
+                .MigrateDbContext<OrderingContext>((context, services) =>
+                {
+                    var env = services.GetService<IHostingEnvironment>();
+                    var settings = services.GetService<IOptions<OrderingSettings>>();
+                    var logger = services.GetService<ILogger<OrderingContextSeed>>();
+
+                    new OrderingContextSeed()
+                        .SeedAsync(context, env, settings, logger)
+                        .Wait();
+                })
+                .MigrateDbContext<IntegrationEventLogContext>((_, __) => { });
+
+            return testServer;
         }
 
         public static class Get
