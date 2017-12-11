@@ -104,7 +104,8 @@ ExecKube -cmd 'delete configmap config-files'
 ExecKube -cmd 'delete configmap urls'
 ExecKube -cmd 'delete configmap externalcfg'
 
-# start sql, rabbitmq, frontend deploymentsExecKube -cmd 'delete configmap config-files'
+# start sql, rabbitmq, frontend deployments
+ExecKube -cmd 'delete configmap config-files'
 ExecKube -cmd 'create configmap config-files --from-file=nginx-conf=nginx.conf'
 ExecKube -cmd 'label configmap config-files app=eshop'
 
