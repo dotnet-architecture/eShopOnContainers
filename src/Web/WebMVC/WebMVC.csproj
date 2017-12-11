@@ -24,6 +24,7 @@
     <PackageReference Include="Microsoft.ApplicationInsights.Kubernetes" Version="1.0.0-beta1" />
     <PackageReference Include="Microsoft.ApplicationInsights.ServiceFabric" Version="2.0.0-beta1" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.DataProtection.Redis" Version="0.3.1" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Fabric.MSBuild" Version="1.6.2" />
   </ItemGroup>
 
@@ -39,7 +40,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\BuildingBlocks\DataProtection\DataProtection\DataProtection.csproj" />
     <ProjectReference Include="..\..\BuildingBlocks\HealthChecks\src\Microsoft.AspNetCore.HealthChecks\Microsoft.AspNetCore.HealthChecks.csproj" />
     <ProjectReference Include="..\..\BuildingBlocks\HealthChecks\src\Microsoft.Extensions.HealthChecks\Microsoft.Extensions.HealthChecks.csproj" />
     <ProjectReference Include="..\..\BuildingBlocks\Resilience\Resilience.Http\Resilience.Http.csproj" />

@@ -3,13 +3,14 @@ using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.ApplicationInsights.ServiceFabric;
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.eShopOnContainers.BuildingBlocks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.HealthChecks;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Serialization;
+using StackExchange.Redis;
 using System;
 using System.IO;
 using WebSPA.Infrastructure;
@@ -64,7 +65,7 @@ namespace eShopConContainers.WebSPA
                 {
                     opts.ApplicationDiscriminator = "eshop.webspa";
                 })
-                .PersistKeysToRedis(Configuration["DPConnectionString"]);
+                .PersistKeysToRedis(ConnectionMultiplexer.Connect(Configuration["DPConnectionString"]), "DataProtection-Keys");
             }
 
             services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
