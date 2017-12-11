@@ -1,10 +1,9 @@
 ﻿using FluentValidation;
 using MediatR;
-using Microsoft.Extensions.Logging;
 using Ordering.Domain.Exceptions;
 using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Ordering.API.Infrastructure.Behaviors
@@ -14,7 +13,7 @@ namespace Ordering.API.Infrastructure.Behaviors
         private readonly IValidator<TRequest>[] _validators;
         public ValidatorBehavior(IValidator<TRequest>[] validators) => _validators = validators;
 
-        public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next)
+        public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
         {
             var failures = _validators
                 .Select(v => v.Validate(request))
