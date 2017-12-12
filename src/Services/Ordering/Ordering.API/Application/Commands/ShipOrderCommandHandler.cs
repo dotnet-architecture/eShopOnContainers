@@ -25,6 +25,11 @@ namespace Ordering.API.Application.Commands
         public async Task<bool> Handle(ShipOrderCommand command)
         {
             var orderToUpdate = await _orderRepository.GetAsync(command.OrderNumber);
+            if(orderToUpdate == null)
+            {
+                return false;
+            }
+
             orderToUpdate.SetShippedStatus();
             return await _orderRepository.UnitOfWork.SaveEntitiesAsync();
         }

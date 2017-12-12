@@ -4,12 +4,16 @@ The k8s directory contains Kubernetes configuration for the eShopOnContainers ap
 ## Prerequisites
 * A Kubernetes cluster. Follow Azure Container Service's [walkthrough](https://docs.microsoft.com/en-us/azure/container-service/container-service-kubernetes-walkthrough) to create one. 
 * A private Docker registry. Follow Azure Container Registry's [guide](https://docs.microsoft.com/en-us/azure/container-registry/container-registry-get-started-portal) to create one.
-* Optionally, previous steps can be skipped if you run gen-k8s-env.ps1 script to automatically create the azure environment needed for kubernetes deployment. Azure cli 2.0 must be previously installed [installation guide](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli). For example:
+* Optionally, previous steps can be skipped if you run gen-k8s-env.ps1 (or gen-k8s-env-aks.ps1 if you would like to use AKS instead of ACS) script to automatically create the azure environment needed for kubernetes deployment. Azure cli 2.0 must be previously installed [installation guide](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli). For example:
 
     **Important**: Note the parameter "-createAcr true". If you are creating the K8s cluster but you want to re-use and existing ACR, say "-createAcr false".
 
 >```
 >./gen-k8s-env -resourceGroupName k8sGroup -location westeurope -registryName k8sregistry -createAcr true -orchestratorName k8s-cluster -dnsName k8s-dns
+>```
+or using AKS instead of ACS
+>```
+>./gen-k8s-env-aks -resourceGroupName k8sGroup -location westeurope -registryName k8sregistry -dnsName k8s-dns -serviceName k8s-cluster -createAcr true -nodeCount 3 -nodeVMSize Standard_D2_v2
 >```
 
 * A Docker development environment with `docker` and `docker-compose`.
