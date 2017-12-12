@@ -16,7 +16,6 @@ using Payment.API.IntegrationEvents.Events;
 using RabbitMQ.Client;
 using System;
 using System.Threading.Tasks;
-using Swashbuckle.AspNetCore.Swagger;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.ApplicationInsights.ServiceFabric;
 
