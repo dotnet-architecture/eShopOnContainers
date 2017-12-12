@@ -28,10 +28,10 @@
     <PackageReference Include="Microsoft.VisualStudio.Azure.Fabric.MSBuild" Version="1.6.2" />
   </ItemGroup>
 
-  <Target Name="PrepublishScript" BeforeTargets="PrepareForPublish">
-    <Exec Command="bower install --allow-root" />
+  <!--<Target Name="PrepublishScript" BeforeTargets="PrepareForPublish">
+    <Exec Command="bower install - -allow-root" />
     <Exec Command="dotnet bundle" Condition="'$(ASPNETCORE_ENVIRONMENT)'!='Development'" />
-  </Target>
+  </Target>-->
 
   <ItemGroup>
     <DotNetCliToolReference Include="BundlerMinifier.Core" Version="2.5.357" />
@@ -43,12 +43,6 @@
     <ProjectReference Include="..\..\BuildingBlocks\HealthChecks\src\Microsoft.AspNetCore.HealthChecks\Microsoft.AspNetCore.HealthChecks.csproj" />
     <ProjectReference Include="..\..\BuildingBlocks\HealthChecks\src\Microsoft.Extensions.HealthChecks\Microsoft.Extensions.HealthChecks.csproj" />
     <ProjectReference Include="..\..\BuildingBlocks\Resilience\Resilience.Http\Resilience.Http.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="Dockerfile">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
   <ItemGroup>

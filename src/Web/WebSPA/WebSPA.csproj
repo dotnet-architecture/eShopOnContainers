@@ -37,14 +37,14 @@
   </ItemGroup>
 
   <!-- workaround for https://github.com/aspnet/websdk/issues/114 -->
-  <Target Name="PrepublishScript" BeforeTargets="PrepareForPublish">
+  <!--<Target Name="PrepublishScript" BeforeTargets="PrepareForPublish">
     <Exec Command="npm install" />
     <Exec Command="npm run build:prod" />
     <ItemGroup>
       <_GeneratedFiles Include="$(GeneratedItemPatterns)" />
       <ContentWithTargetPath Include="@(_GeneratedFiles)" TargetPath="%(Identity)" CopyToPublishDirectory="PreserveNewest" />
     </ItemGroup>
-  </Target>
+  </Target>-->
 
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.DotNet.Watcher.Tools" Version="2.0.0" />
@@ -64,12 +64,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\BuildingBlocks\HealthChecks\src\Microsoft.AspNetCore.HealthChecks\Microsoft.AspNetCore.HealthChecks.csproj" />
     <ProjectReference Include="..\..\BuildingBlocks\HealthChecks\src\Microsoft.Extensions.HealthChecks\Microsoft.Extensions.HealthChecks.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="Dockerfile">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
   <ItemGroup>
