@@ -2,7 +2,7 @@ version: '3'
 
 services:
   ci-build:
-    image: microsoft/aspnetcore-build:2.0.2    #Depending on the bug below, you can also try this other SDK image: microsoft/aspnetcore-build:1.0-2.0-2017-10 or microsoft/aspnetcore-build:1.0-2.0
+    image: microsoft/aspnetcore-build:2.0.2.2    #Depending on the bug below, you can also try this other SDK image: microsoft/aspnetcore-build:1.0-2.0-2017-10 or microsoft/aspnetcore-build:1.0-2.0
     volumes:
       - .:/src
       - ./cli-linux:/cli-linux

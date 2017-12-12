@@ -2,7 +2,7 @@ FROM microsoft/aspnetcore:2.0 AS base
 WORKDIR /app
 EXPOSE 80
 
-FROM microsoft/aspnetcore-build:2.0 AS build
+FROM microsoft/aspnetcore-build:2.0.2 AS build
 WORKDIR /src
 COPY eShopOnContainers-ServicesAndWebApps.sln ./
 COPY src/Services/Ordering/Ordering.API/Ordering.API.csproj src/Services/Ordering/Ordering.API/
