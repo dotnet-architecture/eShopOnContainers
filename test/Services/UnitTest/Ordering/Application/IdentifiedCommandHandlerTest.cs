@@ -39,7 +39,8 @@ namespace UnitTest.Ordering.Application
 
             //Act
             var handler = new IdentifiedCommandHandler<CreateOrderCommand, bool>(_mediator.Object, _requestManager.Object);
-            var result = await handler.Handle(fakeOrderCmd);
+            var cltToken = new System.Threading.CancellationToken();
+            var result = await handler.Handle(fakeOrderCmd, cltToken);
 
             //Assert
             Assert.True(result);
@@ -61,7 +62,8 @@ namespace UnitTest.Ordering.Application
 
             //Act
             var handler = new IdentifiedCommandHandler<CreateOrderCommand, bool>(_mediator.Object, _requestManager.Object);
-            var result = await handler.Handle(fakeOrderCmd);
+            var cltToken = new System.Threading.CancellationToken();
+            var result = await handler.Handle(fakeOrderCmd, cltToken);
 
             //Assert
             Assert.False(result);
