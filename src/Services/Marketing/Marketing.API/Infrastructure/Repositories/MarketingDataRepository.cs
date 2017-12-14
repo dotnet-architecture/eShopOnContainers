@@ -1,10 +1,6 @@
 ﻿using Microsoft.eShopOnContainers.Services.Marketing.API.Model;
 using Microsoft.Extensions.Options;
-using MongoDB.Bson;
 using MongoDB.Driver;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.Services.Marketing.API.Infrastructure.Repositories
