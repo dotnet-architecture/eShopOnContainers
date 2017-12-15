@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Microsoft.eShopOnContainers.Services.Marketing.API.Infrastructure.MarketingMigrations
 {
