@@ -22,3 +22,4 @@ cli-linux
 **/obj/
 **/node_modules/
 **/bower_components/
+global.json
