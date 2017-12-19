@@ -1,29 +1,22 @@
-version: '2.1'
+version: '3'
 
 services:
-  graceperiodmanager:
-    image: eshop/graceperiodmanager:${TAG:-latest}
-    build:
-      context: ./src/Services/GracePeriod/GracePeriodManager
-      dockerfile: Dockerfile
-    depends_on:
-      - sql.data
-      - rabbitmq
 
   basket.api:
     image: eshop/basket.api:${TAG:-latest}
     build:
-      context: ./src/Services/Basket/Basket.API
-      dockerfile: Dockerfile    
+      context: .
+      dockerfile: ./src/Services/Basket/Basket.API/Dockerfile    
     depends_on:
       - basket.data
       - identity.api
+      - rabbitmq
 
   catalog.api:
     image: eshop/catalog.api:${TAG:-latest}
     build:
-      context: ./src/Services/Catalog/Catalog.API
-      dockerfile: Dockerfile    
+      context: .
+      dockerfile: ./src/Services/Catalog/Catalog.API/Dockerfile
     depends_on:
       - sql.data
       - rabbitmq
@@ -31,16 +24,16 @@ services:
   identity.api:
     image: eshop/identity.api:${TAG:-latest}
     build:
-      context: ./src/Services/Identity/Identity.API
-      dockerfile: Dockerfile    
+      context: .
+      dockerfile: ./src/Services/Identity/Identity.API/Dockerfile    
     depends_on:
       - sql.data
 
   ordering.api:
     image: eshop/ordering.api:${TAG:-latest}
     build:
-      context: ./src/Services/Ordering/Ordering.API
-      dockerfile: Dockerfile    
+      context: .
+      dockerfile: ./src/Services/Ordering/Ordering.API/Dockerfile    
     depends_on:
       - sql.data
       - rabbitmq
@@ -48,8 +41,8 @@ services:
   marketing.api:
     image: eshop/marketing.api:${TAG:-latest}
     build:
-      context: ./src/Services/Marketing/Marketing.API
-      dockerfile: Dockerfile    
+      context: .
+      dockerfile: ./src/Services/Marketing/Marketing.API/Dockerfile    
     depends_on:
       - sql.data
       - nosql.data
@@ -59,17 +52,8 @@ services:
   webspa:
     image: eshop/webspa:${TAG:-latest}
     build:
-      context: ./src/Web/WebSPA
-      dockerfile: Dockerfile    
-    depends_on:
-      - identity.api
-      - basket.api
-
-  webmvc:
-    image: eshop/webmvc:${TAG:-latest}
-    build:
-      context: ./src/Web/WebMVC
-      dockerfile: Dockerfile    
+      context: .
+      dockerfile: ./src/Web/WebSPA/Dockerfile    
     depends_on:
       - catalog.api
       - ordering.api
@@ -77,41 +61,49 @@ services:
       - basket.api
       - marketing.api
 
-  sql.data:
-    image: microsoft/mssql-server-linux
-
-  nosql.data:
-    image: mongo
-
-  basket.data:
-    image: redis
-    ports:
-      - "6379:6379"
-
-  rabbitmq:
-    image: rabbitmq
-    ports:
-      - "5672:5672"
+  webmvc:
+    image: eshop/webmvc:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: ./src/Web/WebMVC/Dockerfile    
+    depends_on:
+      - catalog.api
+      - ordering.api
+      - identity.api
+      - basket.api
+      - marketing.api
 
   webstatus:
     image: eshop/webstatus:${TAG:-latest}
     build:
-      context: ./src/Web/WebStatus
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./src/Web/WebStatus/Dockerfile
 
   payment.api:
     image: eshop/payment.api:${TAG:-latest}
     build:
-      context: ./src/Services/Payment/Payment.API
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./src/Services/Payment/Payment.API/Dockerfile
     depends_on:
       - rabbitmq    
     
   locations.api:
     image: eshop/locations.api:${TAG:-latest}
     build:
-      context: ./src/Services/Location/Locations.API
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./src/Services/Location/Locations.API/Dockerfile
     depends_on:
       - nosql.data
       - rabbitmq
+
+  sql.data:
+    image: microsoft/mssql-server-linux:2017-latest
+
+  nosql.data:
+    image: mongo
+
+  basket.data:
+    image: redis:alpine
+      
+  rabbitmq:
+    image: rabbitmq:3-management-alpine

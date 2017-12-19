@@ -5,4 +5,5 @@
     from: Date;
     to: Date;
     pictureUri: string;
+    detailsUri: string;
 }

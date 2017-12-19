@@ -141,6 +141,7 @@
     <Content Include="Assets\fake_product_03.png" />
     <Content Include="Assets\fake_product_04.png" />
     <Content Include="Assets\fake_product_05.png" />
+    <Content Include="Assets\menu_campaigns.png" />
     <Content Include="Assets\menu_cart.png" />
     <Content Include="Assets\menu_filter.png" />
     <Content Include="Assets\menu_profile.png" />

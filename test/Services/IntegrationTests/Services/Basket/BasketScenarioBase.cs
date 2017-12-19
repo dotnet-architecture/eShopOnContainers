@@ -1,20 +1,19 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
-using Microsoft.eShopOnContainers.Services.Basket.API;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace IntegrationTests.Services.Basket
 {
     public class BasketScenarioBase
     {
+        private const string ApiUrlBase = "api/v1/basket";
+
         public TestServer CreateServer()
         {
-            var webHostBuilder = new WebHostBuilder();
+            var webHostBuilder = WebHost.CreateDefaultBuilder();
             webHostBuilder.UseContentRoot(Directory.GetCurrentDirectory() + "\\Services\\basket");
-            webHostBuilder.UseStartup<BasketTestsStartup>();
+            webHostBuilder.UseStartup<BasketTestsStartup>();           
 
             return new TestServer(webHostBuilder);
         }
@@ -23,14 +22,14 @@ namespace IntegrationTests.Services.Basket
         {
             public static string GetBasket(int id)
             {
-                return $"{id}";
+                return $"{ApiUrlBase}/{id}";
             }
         }
 
         public static class Post
         {
-            public static string Basket = "";
-            public static string CheckoutOrder = "checkout";
+            public static string Basket = $"{ApiUrlBase}/";
+            public static string CheckoutOrder = $"{ApiUrlBase}/checkout";
         }
     }
 }

@@ -2,7 +2,7 @@
 using IdentityServer4.Models;
 using System.Collections.Generic;
 
-namespace Identity.API.Configuration
+namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
 {
     public class Config
     {
@@ -67,6 +67,7 @@ namespace Identity.API.Configuration
                     },
                     RedirectUris = { clientsUrl["Xamarin"] },
                     RequireConsent = false,
+                    RequirePkce = true,
                     PostLogoutRedirectUris = { $"{clientsUrl["Xamarin"]}/Account/Redirecting" },
                     AllowedCorsOrigins = { "http://eshopxamarin" },
                     AllowedScopes = new List<string>
@@ -96,6 +97,7 @@ namespace Identity.API.Configuration
                     AllowAccessTokensViaBrowser = false,
                     RequireConsent = false,
                     AllowOfflineAccess = true,
+                    AlwaysIncludeUserClaimsInIdToken = true,
                     RedirectUris = new List<string>
                     {
                         $"{clientsUrl["Mvc"]}/signin-oidc"
@@ -114,6 +116,98 @@ namespace Identity.API.Configuration
                         "locations",
                         "marketing"
                     },
+                },
+                new Client
+                {
+                    ClientId = "mvctest",
+                    ClientName = "MVC Client Test",
+                    ClientSecrets = new List<Secret>
+                    {
+                        new Secret("secret".Sha256())
+                    },
+                    ClientUri = $"{clientsUrl["Mvc"]}",                             // public uri of the client
+                    AllowedGrantTypes = GrantTypes.Hybrid,
+                    AllowAccessTokensViaBrowser = true,
+                    RequireConsent = false,
+                    AllowOfflineAccess = true,
+                    RedirectUris = new List<string>
+                    {
+                        $"{clientsUrl["Mvc"]}/signin-oidc"
+                    },
+                    PostLogoutRedirectUris = new List<string>
+                    {
+                        $"{clientsUrl["Mvc"]}/signout-callback-oidc"
+                    },
+                    AllowedScopes = new List<string>
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServerConstants.StandardScopes.OfflineAccess,
+                        "orders",
+                        "basket",
+                        "locations",
+                        "marketing"
+                    },
+                },
+                new Client
+                {
+                    ClientId = "locationsswaggerui",
+                    ClientName = "Locations Swagger UI",
+                    AllowedGrantTypes = GrantTypes.Implicit,
+                    AllowAccessTokensViaBrowser = true,
+
+                    RedirectUris = { $"{clientsUrl["LocationsApi"]}/swagger/o2c.html" },
+                    PostLogoutRedirectUris = { $"{clientsUrl["LocationsApi"]}/swagger/" },
+
+                    AllowedScopes =
+                    {
+                        "locations"
+                    }
+                },
+                new Client
+                {
+                    ClientId = "marketingswaggerui",
+                    ClientName = "Marketing Swagger UI",
+                    AllowedGrantTypes = GrantTypes.Implicit,
+                    AllowAccessTokensViaBrowser = true,
+
+                    RedirectUris = { $"{clientsUrl["MarketingApi"]}/swagger/o2c.html" },
+                    PostLogoutRedirectUris = { $"{clientsUrl["MarketingApi"]}/swagger/" },
+
+                    AllowedScopes =
+                    {
+                        "marketing"
+                    }
+                },
+                new Client
+                {
+                    ClientId = "basketswaggerui",
+                    ClientName = "Basket Swagger UI",
+                    AllowedGrantTypes = GrantTypes.Implicit,
+                    AllowAccessTokensViaBrowser = true,
+
+                    RedirectUris = { $"{clientsUrl["BasketApi"]}/swagger/o2c.html" },
+                    PostLogoutRedirectUris = { $"{clientsUrl["BasketApi"]}/swagger/" },
+
+                    AllowedScopes =
+                    {
+                        "basket"
+                    }
+                },
+                new Client
+                {
+                    ClientId = "orderingswaggerui",
+                    ClientName = "Ordering Swagger UI",
+                    AllowedGrantTypes = GrantTypes.Implicit,
+                    AllowAccessTokensViaBrowser = true,
+
+                    RedirectUris = { $"{clientsUrl["OrderingApi"]}/swagger/o2c.html" },
+                    PostLogoutRedirectUris = { $"{clientsUrl["OrderingApi"]}/swagger/" },
+
+                    AllowedScopes =
+                    {
+                        "orders"
+                    }
                 }
             };
         }

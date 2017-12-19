@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Application Name="fabric:/eShopOnServiceFabricWebMVC" xmlns="http://schemas.microsoft.com/2011/01/fabric" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Parameters>
+    <Parameter Name="WebMVC_InstanceCount" Value="1" />
+    <Parameter Name="IdentityUrl" Value="http://#{your_sf_dns}#:5105" />
+    <Parameter Name="InstrumentationKey" Value="" />
+  </Parameters>
+</Application>

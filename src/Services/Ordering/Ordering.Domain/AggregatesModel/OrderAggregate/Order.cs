@@ -15,6 +15,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
         // aligned with DDD Aggregates and Domain Entities (Instead of properties and property collections)
         private DateTime _orderDate;
 
+        // Address is a Value Object pattern example persisted as EF Core 2.0 owned entity
         public Address Address { get; private set; }
 
         private int? _buyerId;
@@ -29,12 +30,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
         // so OrderItems cannot be added from "outside the AggregateRoot" directly to the collection,
         // but only through the method OrderAggrergateRoot.AddOrderItem() which includes behaviour.
         private readonly List<OrderItem> _orderItems;
-
         public IReadOnlyCollection<OrderItem> OrderItems => _orderItems;
-        // Using List<>.AsReadOnly() 
-        // This will create a read only wrapper around the private list so is protected against "external updates".
-        // It's much cheaper than .ToList() because it will not have to copy all items in a new collection. (Just one heap alloc for the wrapper instance)
-        //https://msdn.microsoft.com/en-us/library/e78dcd75(v=vs.110).aspx 
 
         private int? _paymentMethodId;
 
@@ -72,8 +68,9 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
                 if (discount > existingOrderForProduct.GetCurrentDiscount())
                 {
                     existingOrderForProduct.SetNewDiscount(discount);
-                    existingOrderForProduct.AddUnits(units);
                 }
+
+                existingOrderForProduct.AddUnits(units);
             }
             else
             {
@@ -95,42 +92,34 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
         }
 
         public void SetAwaitingValidationStatus()
-        {
-            if (_orderStatusId == OrderStatus.Cancelled.Id ||
-                _orderStatusId != OrderStatus.Submitted.Id)
+        {           
+            if (_orderStatusId == OrderStatus.Submitted.Id)
             {
-                StatusChangeException(OrderStatus.AwaitingValidation);
-            }  
-
-            AddDomainEvent(new OrderStatusChangedToAwaitingValidationDomainEvent(Id, _orderItems));
-
-            _orderStatusId = OrderStatus.AwaitingValidation.Id;
+                AddDomainEvent(new OrderStatusChangedToAwaitingValidationDomainEvent(Id, _orderItems));
+                _orderStatusId = OrderStatus.AwaitingValidation.Id;
+            }            
         }
 
         public void SetStockConfirmedStatus()
         {
-            if (_orderStatusId != OrderStatus.AwaitingValidation.Id)
+            if (_orderStatusId == OrderStatus.AwaitingValidation.Id)
             {
-                StatusChangeException(OrderStatus.StockConfirmed);
-            }
+                AddDomainEvent(new OrderStatusChangedToStockConfirmedDomainEvent(Id));
 
-            AddDomainEvent(new OrderStatusChangedToStockConfirmedDomainEvent(Id));
-
-            _orderStatusId = OrderStatus.StockConfirmed.Id;
-            _description = "All the items were confirmed with available stock.";
+                _orderStatusId = OrderStatus.StockConfirmed.Id;
+                _description = "All the items were confirmed with available stock.";
+            }           
         }
 
         public void SetPaidStatus()
         {
-            if (_orderStatusId != OrderStatus.StockConfirmed.Id)
+            if (_orderStatusId == OrderStatus.StockConfirmed.Id)
             {
-                StatusChangeException(OrderStatus.Paid);
-            }
+                AddDomainEvent(new OrderStatusChangedToPaidDomainEvent(Id, OrderItems));
 
-            AddDomainEvent(new OrderStatusChangedToPaidDomainEvent(Id, OrderItems));
-
-            _orderStatusId = OrderStatus.Paid.Id;
-            _description = "The payment was performed at a simulated \"American Bank checking bank account endinf on XX35071\"";
+                _orderStatusId = OrderStatus.Paid.Id;
+                _description = "The payment was performed at a simulated \"American Bank checking bank account endinf on XX35071\"";
+            }            
         }
 
         public void SetShippedStatus()
@@ -158,34 +147,37 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
 
         public void SetCancelledStatusWhenStockIsRejected(IEnumerable<int> orderStockRejectedItems)
         {
-            if (_orderStatusId != OrderStatus.AwaitingValidation.Id)
+            if (_orderStatusId == OrderStatus.AwaitingValidation.Id)
             {
-                StatusChangeException(OrderStatus.Cancelled);
-            }
+                _orderStatusId = OrderStatus.Cancelled.Id;
 
-            _orderStatusId = OrderStatus.Cancelled.Id;
+                var itemsStockRejectedProductNames = OrderItems
+                    .Where(c => orderStockRejectedItems.Contains(c.ProductId))
+                    .Select(c => c.GetOrderItemProductName());
 
-            var itemsStockRejectedProductNames = OrderItems
-                .Where(c => orderStockRejectedItems.Contains(c.ProductId))
-                .Select(c => c.GetOrderItemProductName());
-
-            var itemsStockRejectedDescription = string.Join(", ", itemsStockRejectedProductNames);
-            _description = $"The product items don't have stock: ({itemsStockRejectedDescription}).";
+                var itemsStockRejectedDescription = string.Join(", ", itemsStockRejectedProductNames);
+                _description = $"The product items don't have stock: ({itemsStockRejectedDescription}).";
+            }           
         }
 
         private void AddOrderStartedDomainEvent(string userId, int cardTypeId, string cardNumber,
                 string cardSecurityNumber, string cardHolderName, DateTime cardExpiration)
         {
-            var orderStartedDomainEvent = new OrderStartedDomainEvent(
-                this, userId, cardTypeId, cardNumber, cardSecurityNumber,
-                cardHolderName, cardExpiration);
+            var orderStartedDomainEvent = new OrderStartedDomainEvent(this, userId, cardTypeId, 
+                                                                      cardNumber, cardSecurityNumber,
+                                                                      cardHolderName, cardExpiration);
 
             this.AddDomainEvent(orderStartedDomainEvent);
         }
 
         private void StatusChangeException(OrderStatus orderStatusToChange)
         {
-            throw new OrderingDomainException($"Not possible to change order status from {OrderStatus.Name} to {orderStatusToChange.Name}.");
+            throw new OrderingDomainException($"Is not possible to change the order status from {OrderStatus.Name} to {orderStatusToChange.Name}.");
+        }
+
+        public decimal GetTotal()
+        {
+            return _orderItems.Sum(o => o.GetUnits() * o.GetUnitPrice());
         }
     }
 }

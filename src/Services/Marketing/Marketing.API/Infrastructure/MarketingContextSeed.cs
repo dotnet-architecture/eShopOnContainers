@@ -1,33 +1,33 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Marketing.API.Infrastructure
 {
-    using Microsoft.AspNetCore.Builder;
-    using Microsoft.EntityFrameworkCore;
     using Microsoft.eShopOnContainers.Services.Marketing.API.Model;
     using Microsoft.Extensions.Logging;
+    using Polly;
     using System;
     using System.Collections.Generic;
+    using System.Data.SqlClient;
     using System.Linq;
     using System.Threading.Tasks;
 
-    public static class MarketingContextSeed
+    public class MarketingContextSeed
     {
-        public static async Task SeedAsync(IApplicationBuilder applicationBuilder, ILoggerFactory loggerFactory, int? retry = 0)
+        public async Task SeedAsync(MarketingContext context,ILogger<MarketingContextSeed> logger,int retries = 3)
         {
-            var context = (MarketingContext)applicationBuilder
-                .ApplicationServices.GetService(typeof(MarketingContext));
+            var policy = CreatePolicy(retries, logger, nameof(MarketingContextSeed));
 
-            context.Database.Migrate();
-
-            if (!context.Campaigns.Any())
+            await policy.ExecuteAsync(async () =>
             {
-                context.Campaigns.AddRange(
-                    GetPreconfiguredMarketings());
+                if (!context.Campaigns.Any())
+                {
+                    context.Campaigns.AddRange(
+                        GetPreconfiguredMarketings());
 
-                await context.SaveChangesAsync();
-            }
+                    await context.SaveChangesAsync();
+                }
+            });
         }
 
-        static List<Campaign> GetPreconfiguredMarketings()
+        private List<Campaign> GetPreconfiguredMarketings()
         {
             return new List<Campaign>
             {
@@ -38,6 +38,7 @@
                     From = DateTime.Now,
                     To = DateTime.Now.AddDays(7),
                     PictureUri = "http://externalcatalogbaseurltobereplaced/api/v1/campaigns/1/pic",
+                    PictureName = "1.png",
                     Rules = new List<Rule>
                     {
                         new UserLocationRule
@@ -54,6 +55,7 @@
                     From = DateTime.Now.AddDays(-7),
                     To = DateTime.Now.AddDays(14),
                     PictureUri = "http://externalcatalogbaseurltobereplaced/api/v1/campaigns/2/pic",
+                    PictureName = "2.png",
                     Rules = new List<Rule>
                     {
                         new UserLocationRule
@@ -64,6 +66,19 @@
                     }
                 }
             };
+        }
+     
+        private Policy CreatePolicy(int retries, ILogger<MarketingContextSeed> logger, string prefix)
+        {
+            return Policy.Handle<SqlException>().
+                WaitAndRetryAsync(
+                    retryCount: retries,
+                    sleepDurationProvider: retry => TimeSpan.FromSeconds(5),
+                    onRetry: (exception, timeSpan, retry, ctx) =>
+                    {
+                        logger.LogTrace($"[{prefix}] Exception {exception.GetType().Name} with message ${exception.Message} detected on attempt {retry} of {retries}");
+                    }
+                );
         }
     }
 }

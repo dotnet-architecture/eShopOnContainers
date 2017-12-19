@@ -1,20 +1,20 @@
-﻿namespace eShopOnContainers.Core.Services.Marketing
-{
-    using System;
-    using System.Collections.ObjectModel;
-    using System.Threading.Tasks;
-    using Models.Marketing;
-    using Xamarin.Forms;
-    using System.Linq;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Threading.Tasks;
+using System.Linq;
+using Xamarin.Forms;
+using eShopOnContainers.Core.Models.Marketing;
 
+namespace eShopOnContainers.Core.Services.Marketing
+{
     public class CampaignMockService : ICampaignService
     {
         private readonly ObservableCollection<CampaignItem> _mockCampaign = new ObservableCollection<CampaignItem>
         {
             new CampaignItem
             {
-                Id = Common.Common.MockCampaignd01,
-                PictureUri = Device.RuntimePlatform != Device.Windows
+                Id = Common.Common.MockCampaignId01,
+                PictureUri = Device.RuntimePlatform != Device.UWP
                     ? "fake_campaign_01.png"
                     : "Assets/fake_campaign_01.png",
                 Name = ".NET Bot Black Hoodie 50% OFF",
@@ -25,8 +25,8 @@
 
             new CampaignItem
             {
-                Id = Common.Common.MockCampaignd02,
-                PictureUri = Device.RuntimePlatform != Device.Windows
+                Id = Common.Common.MockCampaignId02,
+                PictureUri = Device.RuntimePlatform != Device.UWP
                     ? "fake_campaign_02.png"
                     : "Assets/fake_campaign_02.png",
                 Name = "Roslyn Red T-Shirt 3x2",
@@ -39,12 +39,12 @@
         public async Task<ObservableCollection<CampaignItem>> GetAllCampaignsAsync(string token)
         {
             await Task.Delay(500);
-
             return _mockCampaign;
         }
 
         public async Task<CampaignItem> GetCampaignByIdAsync(int campaignId, string token)
         {
+            await Task.Delay(500);
             return _mockCampaign.SingleOrDefault(c => c.Id == campaignId);
         }
     }

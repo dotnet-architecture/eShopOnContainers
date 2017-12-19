@@ -1,6 +1,6 @@
 ﻿{
   "dependencies": {
-    "Xamarin.Forms": "2.3.4.231",
+    "Xamarin.Forms": "2.5.0.91635",
     "xunit": "2.2.0",
     "xunit.runner.console": "2.2.0"
   },

@@ -2,6 +2,8 @@
 using Ordering.Domain.Events;
 using Ordering.Domain.Exceptions;
 using System;
+using System.Linq;
+using UnitTest.Ordering;
 using Xunit;
 
 public class OrderAggregateTest
@@ -94,10 +96,21 @@ public class OrderAggregateTest
     }
 
     [Fact]
+    public void when_add_two_times_on_the_same_item_then_the_total_of_order_should_be_the_sum_of_the_two_items()
+    {
+        var address = new AddressBuilder().Build();
+        var order = new OrderBuilder(address)
+            .AddOne(1,"cup",10.0m,0,string.Empty)
+            .AddOne(1,"cup",10.0m,0,string.Empty)
+            .Build();
+
+        Assert.Equal(20.0m, order.GetTotal());
+    }
+
+    [Fact]
     public void Add_new_Order_raises_new_event()
     {
         //Arrange
-        var userId = new Guid();
         var street = "fakeStreet";
         var city = "FakeCity";
         var state = "fakeState";
@@ -121,7 +134,6 @@ public class OrderAggregateTest
     public void Add_event_Order_explicitly_raises_new_event()
     {
         //Arrange   
-        var userId = new Guid();
         var street = "fakeStreet";
         var city = "FakeCity";
         var state = "fakeState";
@@ -145,7 +157,6 @@ public class OrderAggregateTest
     public void Remove_event_Order_explicitly()
     {
         //Arrange    
-        var userId = new Guid();
         var street = "fakeStreet";
         var city = "FakeCity";
         var state = "fakeState";

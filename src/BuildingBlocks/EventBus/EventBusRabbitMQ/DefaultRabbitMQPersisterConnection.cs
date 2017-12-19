@@ -15,16 +15,17 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
     {
         private readonly IConnectionFactory _connectionFactory;
         private readonly ILogger<DefaultRabbitMQPersistentConnection> _logger;
-
+        private readonly int _retryCount;
         IConnection _connection;
         bool _disposed;
 
         object sync_root = new object();
 
-        public DefaultRabbitMQPersistentConnection(IConnectionFactory connectionFactory,ILogger<DefaultRabbitMQPersistentConnection> logger)
+        public DefaultRabbitMQPersistentConnection(IConnectionFactory connectionFactory, ILogger<DefaultRabbitMQPersistentConnection> logger, int retryCount = 5)
         {
             _connectionFactory = connectionFactory ?? throw new ArgumentNullException(nameof(connectionFactory));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _retryCount = retryCount;
         }
 
         public bool IsConnected
@@ -69,7 +70,7 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
             {
                 var policy = RetryPolicy.Handle<SocketException>()
                     .Or<BrokerUnreachableException>()
-                    .WaitAndRetry(5, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)), (ex, time) =>
+                    .WaitAndRetry(_retryCount, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)), (ex, time) =>
                     {
                         _logger.LogWarning(ex.ToString());
                     }
@@ -88,7 +89,7 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
                     _connection.ConnectionBlocked += OnConnectionBlocked;
 
                     _logger.LogInformation($"RabbitMQ persistent connection acquired a connection {_connection.Endpoint.HostName} and is subscribed to failure events");
-                 
+
                     return true;
                 }
                 else

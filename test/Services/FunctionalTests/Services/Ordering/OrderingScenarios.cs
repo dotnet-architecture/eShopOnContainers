@@ -121,10 +121,10 @@ namespace FunctionalTests.Services.Ordering
                 State = "state",
                 Country = "coutry",
                 ZipCode = "zipcode",
-                CardNumber = "CardNumber",
+                CardNumber = "1111111111111",
                 CardHolderName = "CardHolderName",
                 CardExpiration = DateTime.Now.AddYears(1),
-                CardSecurityNumber = "1234",
+                CardSecurityNumber = "123",
                 CardTypeId = 1,
                 Buyer = "Buyer",                
                 RequestId = Guid.NewGuid()
@@ -134,3 +134,4 @@ namespace FunctionalTests.Services.Ordering
         }
     }
 }
+ 

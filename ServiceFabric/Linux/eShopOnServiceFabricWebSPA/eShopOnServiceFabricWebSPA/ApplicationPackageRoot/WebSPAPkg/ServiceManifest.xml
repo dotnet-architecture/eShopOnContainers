@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ServiceManifest Name="WebSPAPkg"
+                 Version="1.0.0"
+                 xmlns="http://schemas.microsoft.com/2011/01/fabric"
+                 xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ServiceTypes>
+    <!-- This is the name of your ServiceType.
+         The UseImplicitHost attribute indicates this is a guest service. -->
+    <StatelessServiceType ServiceTypeName="WebSPAType" UseImplicitHost="true" />
+  </ServiceTypes>
+
+  <!-- Code package is your service executable. -->
+  <CodePackage Name="Code" Version="1.0.0">
+    <EntryPoint>
+      <!-- Follow this link for more information about deploying Windows containers to Service Fabric: https://aka.ms/sfguestcontainers -->
+      <ContainerHost>
+        <ImageName>eshop/webspa:#{tag}#</ImageName>
+      </ContainerHost>
+    </EntryPoint>
+    <!-- Pass environment variables to your container: -->
+    <EnvironmentVariables>
+      <EnvironmentVariable Name="ASPNETCORE_ENVIRONMENT" Value="Development"/>
+      <EnvironmentVariable Name="ASPNETCORE_URLS" Value="http://0.0.0.0:80"/>
+      <EnvironmentVariable Name="CatalogUrl" Value=""/>
+      <EnvironmentVariable Name="OrderingUrl" Value=""/>
+      <EnvironmentVariable Name="BasketUrl" Value=""/>
+      <EnvironmentVariable Name="MarketingUrl" Value=""/>
+      <EnvironmentVariable Name="IdentityUrl" Value="http://#{your_sf_dns}#:5105"/>
+      <EnvironmentVariable Name="CatalogUrlHC" Value="http://catalogapi.eshoponservicefabric:5101/hc"/>
+      <EnvironmentVariable Name="OrderingUrlHC" Value="http://orderingapi.eshoponservicefabric:5102/hc"/>
+      <EnvironmentVariable Name="IdentityUrlHC" Value="http://identityapi.eshoponservicefabric:5105/hc"/>
+      <EnvironmentVariable Name="BasketUrlHC" Value="http://basketapi.eshoponservicefabric:5103/hc"/>
+      <EnvironmentVariable Name="MarketingUrlHC" Value="http://marketingapi.eshoponservicefabric:5110/hc"/>
+      <EnvironmentVariable Name="UseCustomizationData" Value="True"/>
+      <EnvironmentVariable Name="ApplicationInsights__InstrumentationKey" Value=""/>
+      <EnvironmentVariable Name="OrchestratorType" Value="SF"/>
+    </EnvironmentVariables>
+  </CodePackage>
+
+  <!-- Config package is the contents of the Config directoy under PackageRoot that contains an 
+       independently-updateable and versioned set of custom configuration settings for your service. -->
+  <ConfigPackage Name="Config" Version="1.0.0" />
+
+  <Resources>
+    <Endpoints>
+      <!-- This endpoint is used by the communication listener to obtain the port on which to 
+           listen. Please note that if your service is partitioned, this port is shared with 
+           replicas of different partitions that are placed in your code. -->
+      <Endpoint Name="WebSPATypeEndpoint" Port="5104" UriScheme="http"/>
+    </Endpoints>
+  </Resources>
+</ServiceManifest>

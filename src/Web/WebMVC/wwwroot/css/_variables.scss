@@ -11,6 +11,13 @@ $color-secondary-darker: darken($color-secondary, 20%);
 $color-secondary-bright: lighten($color-secondary, 10%);
 $color-secondary-brighter: lighten($color-secondary, 20%);
 
+$color-warning: #ff0000;
+$color-warning-dark: darken($color-warning, 5%);
+$color-warning-darker: darken($color-warning, 20%);
+$color-warning-bright: lighten($color-warning, 10%);
+$color-warning-brighter: lighten($color-warning, 20%);
+
+
 $color-background-dark: #333333;
 $color-background-darker: #000000;
 $color-background-bright: #EEEEFF;

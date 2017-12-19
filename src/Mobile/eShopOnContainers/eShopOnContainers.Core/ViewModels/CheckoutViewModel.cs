@@ -122,6 +122,16 @@ namespace eShopOnContainers.Core.ViewModels
                     Total = CalculateTotal(CreateOrderItems(orderItems))
                 };
 
+                if (Settings.UseMocks)
+                {
+                    // Get number of orders
+                    var orders = await _orderService.GetOrdersAsync(authToken);
+
+                    // Create the OrderNumber
+                    Order.OrderNumber = orders.Count + 1;
+                    RaisePropertyChanged(() => Order);
+                }
+
                 IsBusy = false;
             }
         }
@@ -138,6 +148,11 @@ namespace eShopOnContainers.Core.ViewModels
                 // Create basket checkout
                 await _basketService.CheckoutAsync(basket, authToken);
 
+                if (Settings.UseMocks)
+                {
+                    await _orderService.CreateOrderAsync(Order, authToken);
+                }
+
                 // Clean Basket
                 await _basketService.ClearBasketAsync(_shippingAddress.Id.ToString(), authToken);
 
@@ -150,7 +165,7 @@ namespace eShopOnContainers.Core.ViewModels
                 await NavigationService.RemoveLastFromBackStackAsync();
 
                 // Show Dialog
-                await DialogService.ShowAlertAsync("Order sent successfully!", string.Format("Order {0}", Order.OrderNumber), "Ok");
+                await DialogService.ShowAlertAsync("Order sent successfully!", "Checkout", "Ok");
                 await NavigationService.RemoveLastFromBackStackAsync();
             }
             catch

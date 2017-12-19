@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Microsoft.eShopOnContainers.Services.Locations.API.ViewModel
+﻿namespace Microsoft.eShopOnContainers.Services.Locations.API.ViewModel
 {
     public class LocationRequest
     {

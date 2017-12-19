@@ -8,7 +8,7 @@ using System.Net;
 
 namespace Basket.API.Infrastructure.Filters
 {
-    public class HttpGlobalExceptionFilter : IExceptionFilter
+    public partial class HttpGlobalExceptionFilter : IExceptionFilter
     {
         private readonly IHostingEnvironment env;
         private readonly ILogger<HttpGlobalExceptionFilter> logger;
@@ -51,13 +51,6 @@ namespace Basket.API.Infrastructure.Filters
                 context.HttpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
             }
             context.ExceptionHandled = true;
-        }
-
-        private class JsonErrorResponse
-        {
-            public string[] Messages { get; set; }
-
-            public object DeveloperMessage { get; set; }
         }
     }
 }

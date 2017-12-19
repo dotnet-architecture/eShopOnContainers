@@ -1,57 +1,54 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure.Services;
-
-namespace Microsoft.eShopOnContainers.Services.Marketing.API
+﻿namespace Microsoft.eShopOnContainers.Services.Marketing.API
 {
-    using Microsoft.AspNetCore.Builder;
-    using Microsoft.AspNetCore.Hosting;
-    using Microsoft.EntityFrameworkCore.Infrastructure;
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.eShopOnContainers.Services.Marketing.API.Infrastructure;
-    using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Logging;
-    using System.Reflection;
-    using System;
-    using Microsoft.eShopOnContainers.Services.Marketing.API.Infrastructure.Filters;
-    using Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ;
-    using RabbitMQ.Client;
-    using BuildingBlocks.EventBus.Abstractions;
-    using BuildingBlocks.EventBus;
-    using IntegrationEvents.Events;
-    using IntegrationEvents.Handlers;
-    using Infrastructure.Repositories;
+    using AspNetCore.Builder;
+    using AspNetCore.Hosting;
+    using AspNetCore.Http;
     using Autofac;
     using Autofac.Extensions.DependencyInjection;
-    using Polly;
+    using Azure.ServiceBus;
+    using BuildingBlocks.EventBus;
+    using BuildingBlocks.EventBus.Abstractions;
+    using BuildingBlocks.EventBusRabbitMQ;
+    using BuildingBlocks.EventBusServiceBus;
+    using EntityFrameworkCore;
+    using Extensions.Configuration;
+    using Extensions.DependencyInjection;
+    using Extensions.HealthChecks;
+    using Extensions.Logging;
+    using Infrastructure;
+    using Infrastructure.Filters;
+    using Infrastructure.Repositories;
+    using Infrastructure.Services;
+    using IntegrationEvents.Events;
+    using Marketing.API.IntegrationEvents.Handlers;
+    using Microsoft.ApplicationInsights.Extensibility;
+    using Microsoft.ApplicationInsights.ServiceFabric;
+    using Microsoft.AspNetCore.Authentication.JwtBearer;
+    using Microsoft.EntityFrameworkCore.Diagnostics;
+    using Microsoft.eShopOnContainers.Services.Marketing.API.Infrastructure.Middlewares;
+    using RabbitMQ.Client;
+    using Swashbuckle.AspNetCore.Swagger;
+    using System;
+    using System.Collections.Generic;
+    using System.IdentityModel.Tokens.Jwt;
+    using System.Reflection;
     using System.Threading.Tasks;
-    using System.Data.SqlClient;
 
     public class Startup
     {
-        public Startup(IHostingEnvironment env)
+        public Startup(IConfiguration configuration)
         {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-                .AddEnvironmentVariables();
-
-            if (env.IsDevelopment())
-            {
-                builder.AddUserSecrets(typeof(Startup).GetTypeInfo().Assembly);
-            }
-
-            builder.AddEnvironmentVariables();
-
-            Configuration = builder.Build();
+            Configuration = configuration;
         }
 
-        public IConfigurationRoot Configuration { get; }
+        public IConfiguration Configuration { get; }
+
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            RegisterAppInsights(services);
+
             // Add framework services.
             services.AddMvc(options =>
             {
@@ -60,6 +57,20 @@ namespace Microsoft.eShopOnContainers.Services.Marketing.API
 
             services.Configure<MarketingSettings>(Configuration);
 
+            ConfigureAuthService(services);            
+
+            services.AddHealthChecks(checks => 
+            {
+                checks.AddValueTaskCheck("HTTP Endpoint", () => new ValueTask<IHealthCheckResult>(HealthCheckResult.Healthy("Ok")));
+
+                var accountName = Configuration.GetValue<string>("AzureStorageAccountName");
+                var accountKey = Configuration.GetValue<string>("AzureStorageAccountKey");
+                if (!string.IsNullOrEmpty(accountName) && !string.IsNullOrEmpty(accountKey))
+                {
+                    checks.AddAzureBlobStorageCheck(accountName, accountKey);
+                }
+            });
+
             services.AddDbContext<MarketingContext>(options =>
             {
                 options.UseSqlServer(Configuration["ConnectionString"],
@@ -67,7 +78,7 @@ namespace Microsoft.eShopOnContainers.Services.Marketing.API
                                      {
                                          sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
                                          //Configuring Connection Resiliency: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency 
-                                         sqlOptions.EnableRetryOnFailure(maxRetryCount: 5, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
+                                         sqlOptions.EnableRetryOnFailure(maxRetryCount: 10, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
                                      });
 
                 // Changing default behavior when client evaluation occurs to throw. 
@@ -76,19 +87,48 @@ namespace Microsoft.eShopOnContainers.Services.Marketing.API
                 //Check Client vs. Server evaluation: https://docs.microsoft.com/en-us/ef/core/querying/client-eval
             });
 
-            services.AddSingleton<IRabbitMQPersistentConnection>(sp =>
+            if (Configuration.GetValue<bool>("AzureServiceBusEnabled"))
             {
-                var logger = sp.GetRequiredService<ILogger<DefaultRabbitMQPersistentConnection>>();
-
-                var factory = new ConnectionFactory()
+                services.AddSingleton<IServiceBusPersisterConnection>(sp =>
                 {
-                    HostName = Configuration["EventBusConnection"]
-                };
+                    var logger = sp.GetRequiredService<ILogger<DefaultServiceBusPersisterConnection>>();
 
-                return new DefaultRabbitMQPersistentConnection(factory, logger);
-            });
+                    var serviceBusConnectionString = Configuration["EventBusConnection"];
+                    var serviceBusConnection = new ServiceBusConnectionStringBuilder(serviceBusConnectionString);
 
-            RegisterServiceBus(services);
+                    return new DefaultServiceBusPersisterConnection(serviceBusConnection, logger);
+                });
+            }
+            else
+            {
+                services.AddSingleton<IRabbitMQPersistentConnection>(sp =>
+                {
+                    var logger = sp.GetRequiredService<ILogger<DefaultRabbitMQPersistentConnection>>();
+
+                    var factory = new ConnectionFactory()
+                    {
+                        HostName = Configuration["EventBusConnection"]
+                    };
+
+                    if (!string.IsNullOrEmpty(Configuration["EventBusUserName"]))
+                    {
+                        factory.UserName = Configuration["EventBusUserName"];
+                    }
+
+                    if (!string.IsNullOrEmpty(Configuration["EventBusPassword"]))
+                    {
+                        factory.Password = Configuration["EventBusPassword"];
+                    }
+
+                    var retryCount = 5;
+                    if (!string.IsNullOrEmpty(Configuration["EventBusRetryCount"]))
+                    {
+                        retryCount = int.Parse(Configuration["EventBusRetryCount"]);
+                    }
+
+                    return new DefaultRabbitMQPersistentConnection(factory, logger, retryCount);
+                });
+            }            
 
             // Add framework services.
             services.AddSwaggerGen(options =>
@@ -101,6 +141,20 @@ namespace Microsoft.eShopOnContainers.Services.Marketing.API
                     Description = "The Marketing Service HTTP API",
                     TermsOfService = "Terms Of Service"
                 });
+
+                options.AddSecurityDefinition("oauth2", new OAuth2Scheme
+                {
+                    Type = "oauth2",
+                    Flow = "implicit",
+                    AuthorizationUrl = $"{Configuration.GetValue<string>("IdentityUrlExternal")}/connect/authorize",
+                    TokenUrl = $"{Configuration.GetValue<string>("IdentityUrlExternal")}/connect/token",
+                    Scopes = new Dictionary<string, string>()
+                    {
+                        { "marketing", "Marketing API" }
+                    }
+                });
+
+                options.OperationFilter<AuthorizeCheckOperationFilter>();
             });
 
             services.AddCors(options =>
@@ -112,9 +166,13 @@ namespace Microsoft.eShopOnContainers.Services.Marketing.API
                     .AllowCredentials());
             });
 
+            RegisterEventBus(services);
+
             services.AddTransient<IMarketingDataRepository, MarketingDataRepository>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IIdentityService, IdentityService>();
+
+            services.AddOptions();
 
             //configure autofac
             var container = new ContainerBuilder();
@@ -124,11 +182,18 @@ namespace Microsoft.eShopOnContainers.Services.Marketing.API
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env,ILoggerFactory loggerFactory)
         {
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
+            loggerFactory.AddAzureWebAppDiagnostics();
+            loggerFactory.AddApplicationInsights(app.ApplicationServices, LogLevel.Trace);
 
+            var pathBase = Configuration["PATH_BASE"];
+
+            if (!string.IsNullOrEmpty(pathBase))
+            {
+                app.UsePathBase(pathBase);
+            }    
+            
             app.UseCors("CorsPolicy");
 
             ConfigureAuth(app);
@@ -138,66 +203,103 @@ namespace Microsoft.eShopOnContainers.Services.Marketing.API
             app.UseSwagger()
                .UseSwaggerUI(c =>
                {
-                   c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-               });
-
-            var context = (MarketingContext)app
-                        .ApplicationServices.GetService(typeof(MarketingContext));
-
-            WaitForSqlAvailabilityAsync(context, loggerFactory, app).Wait();
+                   c.SwaggerEndpoint($"{ (!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty) }/swagger/v1/swagger.json", "Marketing.API V1");
+                   c.ConfigureOAuth2("marketingswaggerui", "", "", "Marketing Swagger UI");
+               });            
 
             ConfigureEventBus(app);
         }
 
-        protected virtual void ConfigureAuth(IApplicationBuilder app)
+        private void RegisterAppInsights(IServiceCollection services)
         {
-            var identityUrl = Configuration.GetValue<string>("IdentityUrl");
-            app.UseIdentityServerAuthentication(new IdentityServerAuthenticationOptions
+            services.AddApplicationInsightsTelemetry(Configuration);
+            var orchestratorType = Configuration.GetValue<string>("OrchestratorType");
+
+            if (orchestratorType?.ToUpper() == "K8S")
             {
-                Authority = identityUrl.ToString(),
-                ApiName = "marketing",
-                RequireHttpsMetadata = false
-            });
+                // Enable K8s telemetry initializer
+                services.EnableKubernetes();
+            }
+            if (orchestratorType?.ToUpper() == "SF")
+            {
+                // Enable SF telemetry initializer
+                services.AddSingleton<ITelemetryInitializer>((serviceProvider) =>
+                    new FabricTelemetryInitializer());
+            }
         }
 
-        private void RegisterServiceBus(IServiceCollection services)
+        private void ConfigureAuthService(IServiceCollection services)
         {
-            services.AddSingleton<IEventBus, EventBusRabbitMQ>();
-            services.AddSingleton<IEventBusSubscriptionsManager, 
-                InMemoryEventBusSubscriptionsManager>();
+            // prevent from mapping "sub" claim to nameidentifier.
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
-            services.AddTransient<IIntegrationEventHandler<UserLocationUpdatedIntegrationEvent>,
-                UserLocationUpdatedIntegrationEventHandler>();
+            services.AddAuthentication(options=>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
+            }).AddJwtBearer(options =>
+                {
+                    options.Authority = Configuration.GetValue<string>("IdentityUrl");
+                    options.Audience = "marketing";
+                    options.RequireHttpsMetadata = false;
+                });
+        }
+
+        private void RegisterEventBus(IServiceCollection services)
+        {
+            var subscriptionClientName = Configuration["SubscriptionClientName"];
+
+            if (Configuration.GetValue<bool>("AzureServiceBusEnabled"))
+            {
+                services.AddSingleton<IEventBus, EventBusServiceBus>(sp =>
+                {
+                    var serviceBusPersisterConnection = sp.GetRequiredService<IServiceBusPersisterConnection>();
+                    var iLifetimeScope = sp.GetRequiredService<ILifetimeScope>();
+                    var logger = sp.GetRequiredService<ILogger<EventBusServiceBus>>();
+                    var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();                    
+
+                    return new EventBusServiceBus(serviceBusPersisterConnection, logger,
+                        eventBusSubcriptionsManager, subscriptionClientName, iLifetimeScope);
+                });
+            }
+            else
+            {
+                services.AddSingleton<IEventBus, EventBusRabbitMQ>(sp =>
+                {
+                    var rabbitMQPersistentConnection = sp.GetRequiredService<IRabbitMQPersistentConnection>();
+                    var iLifetimeScope = sp.GetRequiredService<ILifetimeScope>();
+                    var logger = sp.GetRequiredService<ILogger<EventBusRabbitMQ>>();
+                    var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
+
+                    var retryCount = 5;
+                    if (!string.IsNullOrEmpty(Configuration["EventBusRetryCount"]))
+                    {
+                        retryCount = int.Parse(Configuration["EventBusRetryCount"]);
+                    }
+
+                    return new EventBusRabbitMQ(rabbitMQPersistentConnection, logger, iLifetimeScope, eventBusSubcriptionsManager, subscriptionClientName, retryCount);
+                });
+            }
+
+            services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
+            services.AddTransient<UserLocationUpdatedIntegrationEventHandler>();
         }
 
         private void ConfigureEventBus(IApplicationBuilder app)
         {
             var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
-            eventBus.Subscribe<UserLocationUpdatedIntegrationEvent, 
-                IIntegrationEventHandler<UserLocationUpdatedIntegrationEvent>>();
+            eventBus.Subscribe<UserLocationUpdatedIntegrationEvent, UserLocationUpdatedIntegrationEventHandler>();
         }
 
-        private async Task WaitForSqlAvailabilityAsync(MarketingContext ctx, ILoggerFactory loggerFactory, IApplicationBuilder app, int retries = 0)
+        protected virtual void ConfigureAuth(IApplicationBuilder app)
         {
-            var logger = loggerFactory.CreateLogger(nameof(Startup));
-            var policy = CreatePolicy(retries, logger, nameof(WaitForSqlAvailabilityAsync));
-            await policy.ExecuteAsync(async () =>
+            if (Configuration.GetValue<bool>("UseLoadTest"))
             {
-                await MarketingContextSeed.SeedAsync(app, loggerFactory);
-            });
-        }
+                app.UseMiddleware<ByPassAuthMiddleware>();
+            }
 
-        private Policy CreatePolicy(int retries, ILogger logger, string prefix)
-        {
-            return Policy.Handle<SqlException>().
-                WaitAndRetryAsync(
-                    retryCount: retries,
-                    sleepDurationProvider: retry => TimeSpan.FromSeconds(5),
-                    onRetry: (exception, timeSpan, retry, ctx) =>
-                    {
-                        logger.LogTrace($"[{prefix}] Exception {exception.GetType().Name} with message ${exception.Message} detected on attempt {retry} of {retries}");
-                    }
-                );
+            app.UseAuthentication();
         }
     }
 }

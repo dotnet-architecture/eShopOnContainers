@@ -3,5 +3,8 @@
   "ExternalCatalogBaseUrl": "http://localhost:5101",
   "IdentityUrl": "http://localhost:5105",
   "isTest": "true",
-  "EventBusConnection": "localhost"
+  "EventBusConnection": "localhost",
+  "CheckUpdateTime": "30000",
+  "GracePeriodTime": "1",
+  "SubscriptionClientName": "Ordering"
 }
