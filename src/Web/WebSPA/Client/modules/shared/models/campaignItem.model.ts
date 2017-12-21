@@ -1,4 +1,4 @@
-﻿export interface ICampaignItem {    
+﻿export interface ICampaignItem {
     id: number;
     name: string;
     description: string;

@@ -1,12 +1,12 @@
-﻿import { Injectable }                   from '@angular/core';
-import { Http, Response, Headers }      from '@angular/http';
+﻿import { Injectable } from '@angular/core';
+import { Http, Response, Headers } from '@angular/http';
 import 'rxjs/add/operator/map';
-import { Observable }                   from 'rxjs/Observable';
-import { Subject }                      from 'rxjs/Subject';
-import { Router }                       from '@angular/router';
-import { ActivatedRoute }               from '@angular/router';
-import { ConfigurationService }         from './configuration.service';
-import { StorageService }               from './storage.service';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
+import { ConfigurationService } from './configuration.service';
+import { StorageService } from './storage.service';
 
 @Injectable()
 export class SecurityService {
@@ -25,7 +25,7 @@ export class SecurityService {
         this.storage = _storageService;
 
         this._configurationService.settingsLoaded$.subscribe(x => {
-            this.authorityUrl = this._configurationService.serverSettings.identityUrl
+            this.authorityUrl = this._configurationService.serverSettings.identityUrl;
             this.storage.store('IdentityUrl', this.authorityUrl);
         });
 
@@ -205,7 +205,7 @@ export class SecurityService {
         return data;
     }
 
-    //private retrieve(key: string): any {
+    // private retrieve(key: string): any {
     //    let item = this.storage.getItem(key);
 
     //    if (item && item !== 'undefined') {
@@ -213,11 +213,11 @@ export class SecurityService {
     //    }
 
     //    return;
-    //}
+    // }
 
-    //private store(key: string, value: any) {
+    // private store(key: string, value: any) {
     //    this.storage.setItem(key, JSON.stringify(value));
-    //}
+    // }
 
     private getUserData = (): Observable<string[]> => {
         this.setHeaders();

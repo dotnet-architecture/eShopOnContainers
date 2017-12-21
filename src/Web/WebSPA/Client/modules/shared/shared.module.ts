@@ -7,7 +7,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // Services
 import { DataService } from './services/data.service';
-import { BasketWrapperService} from './services/basket.wrapper.service';
+import { BasketWrapperService } from './services/basket.wrapper.service';
 import { SecurityService } from './services/security.service';
 import { ConfigurationService } from './services/configuration.service';
 import { StorageService } from './services/storage.service';
@@ -62,8 +62,8 @@ export class SharedModule {
                 // Providers
                 DataService,
                 BasketWrapperService,
-                SecurityService, 
-                ConfigurationService, 
+                SecurityService,
+                ConfigurationService,
                 StorageService
             ]
         };

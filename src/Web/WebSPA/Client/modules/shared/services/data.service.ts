@@ -11,7 +11,7 @@ import 'rxjs/add/operator/catch';
 import { SecurityService } from './security.service';
 import { Guid } from '../../../guid';
 
-// Implementing a Retry-Circuit breaker policy 
+// Implementing a Retry-Circuit breaker policy
 // is pending to do for the SPA app
 @Injectable()
 export class DataService {
@@ -27,8 +27,8 @@ export class DataService {
 
         return this.http.get(url, options).map(
             (res: Response) => {
-            return res;
-        }).catch(this.handleError);
+                return res;
+            }).catch(this.handleError);
     }
 
     postWithId(url: string, data: any, params?: any): Observable<Response> {

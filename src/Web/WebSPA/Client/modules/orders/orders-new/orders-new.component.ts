@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { OrdersService } from '../orders.service';
 import { BasketService } from '../../basket/basket.service';
-import { IOrder }                                   from '../../shared/models/order.model';
-import { BasketWrapperService }                     from '../../shared/services/basket.wrapper.service';
+import { IOrder } from '../../shared/models/order.model';
+import { BasketWrapperService } from '../../shared/services/basket.wrapper.service';
 
-import { FormGroup, FormBuilder, Validators  }      from '@angular/forms';
-import { Router }                                   from '@angular/router';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'esh-orders_new',
@@ -37,7 +37,7 @@ export class OrdersNewComponent implements OnInit {
     ngOnInit() {
     }
 
-    submitForm(value: any) {        
+    submitForm(value: any) {
         this.order.street = this.newOrderForm.controls['street'].value;
         this.order.city = this.newOrderForm.controls['city'].value;
         this.order.state = this.newOrderForm.controls['state'].value;
@@ -52,7 +52,7 @@ export class OrdersNewComponent implements OnInit {
             .catch((errMessage) => {
                 this.errorReceived = true;
                 this.isOrderProcessing = false;
-                return Observable.throw(errMessage); 
+                return Observable.throw(errMessage);
             })
             .subscribe(res => {
                 this.router.navigate(['orders']);

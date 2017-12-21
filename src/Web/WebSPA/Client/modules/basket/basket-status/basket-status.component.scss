@@ -1,22 +1,18 @@
 @import '../../variables';
-
 .esh-basketstatus {
     cursor: pointer;
     display: inline-block;
     float: right;
     position: relative;
     transition: all $animation-speed-default;
-
     &.is-disabled {
         opacity: .5;
         pointer-events: none;
     }
-
     &-image {
         height: 36px;
         margin-top: .5rem;
     }
-
     &-badge {
         $size: 1.5rem;
         background-color: $color-secondary;
@@ -32,7 +28,6 @@
         transition: all $animation-speed-default;
         width: $size;
     }
-
     &:hover &-badge {
         background-color: transparent;
         color: $color-secondary-dark;

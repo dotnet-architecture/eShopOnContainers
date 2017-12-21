@@ -1,4 +1,4 @@
-import {IOrderItem} from './orderItem.model';
+import { IOrderItem } from './orderItem.model';
 
 export interface IOrderDetail {
     ordernumber: string;

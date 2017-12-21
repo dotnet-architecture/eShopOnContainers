@@ -7,7 +7,7 @@ import { IPager } from '../../models/pager.model';
     templateUrl: './pager.html',
     styleUrls: ['./pager.scss']
 })
-export class Pager implements OnInit, OnChanges  {
+export class Pager implements OnInit, OnChanges {
 
     @Output()
     changed: EventEmitter<number> = new EventEmitter<number>();

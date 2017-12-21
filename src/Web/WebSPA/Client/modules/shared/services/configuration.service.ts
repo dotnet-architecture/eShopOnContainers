@@ -1,14 +1,14 @@
-﻿import { Injectable }       from '@angular/core';
+﻿import { Injectable } from '@angular/core';
 import { Http, Response, RequestOptionsArgs, RequestMethod, Headers } from '@angular/http';
-import { IConfiguration }   from '../models/configuration.model';
-import { StorageService }   from './storage.service';
+import { IConfiguration } from '../models/configuration.model';
+import { StorageService } from './storage.service';
 
 import 'rxjs/Rx';
-import { Observable }       from 'rxjs/Observable';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/throw';
-import { Observer }         from 'rxjs/Observer';
+import { Observer } from 'rxjs/Observer';
 import 'rxjs/add/operator/map';
-import { Subject }          from 'rxjs/Subject';
+import { Subject } from 'rxjs/Subject';
 
 
 @Injectable()
@@ -20,7 +20,7 @@ export class ConfigurationService {
     isReady: boolean = false;
 
     constructor(private http: Http, private storageService: StorageService) { }
-    
+
     load() {
         const baseURI = document.baseURI.endsWith('/') ? document.baseURI : `${document.baseURI}/`;
         let url = `${baseURI}Home/Configuration`;

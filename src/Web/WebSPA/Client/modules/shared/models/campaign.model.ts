@@ -1,7 +1,7 @@
-﻿import {ICampaignItem} from './campaignItem.model';
+﻿import { ICampaignItem } from './campaignItem.model';
 
 export interface ICampaign {
-    data: ICampaignItem[];    
+    data: ICampaignItem[];
     pageIndex: number;
     pageSize: number;
     count: number;

@@ -1,24 +1,24 @@
-import { Injectable }               from '@angular/core';
-import { Response, Headers }        from '@angular/http';
-import { Router }                   from '@angular/router';
+import { Injectable } from '@angular/core';
+import { Response, Headers } from '@angular/http';
+import { Router } from '@angular/router';
 
-import { DataService }              from '../shared/services/data.service';
-import { SecurityService }          from '../shared/services/security.service';
+import { DataService } from '../shared/services/data.service';
+import { SecurityService } from '../shared/services/security.service';
 import { IBasket } from '../shared/models/basket.model';
 import { IOrder } from '../shared/models/order.model';
 import { IBasketCheckout } from '../shared/models/basketCheckout.model';
-import { IBasketItem }              from '../shared/models/basketItem.model';
-import { BasketWrapperService }     from '../shared/services/basket.wrapper.service';
-import { ConfigurationService }     from '../shared/services/configuration.service';
-import { StorageService }           from '../shared/services/storage.service';
+import { IBasketItem } from '../shared/models/basketItem.model';
+import { BasketWrapperService } from '../shared/services/basket.wrapper.service';
+import { ConfigurationService } from '../shared/services/configuration.service';
+import { StorageService } from '../shared/services/storage.service';
 
 import 'rxjs/Rx';
-import { Observable }               from 'rxjs/Observable';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/throw';
-import { Observer }                 from 'rxjs/Observer';
+import { Observer } from 'rxjs/Observer';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
-import { Subject }                  from 'rxjs/Subject';
+import { Subject } from 'rxjs/Subject';
 
 @Injectable()
 export class BasketService {
@@ -28,13 +28,13 @@ export class BasketService {
         items: []
     };
 
-    //observable that is fired when the basket is dropped
+    // observable that is fired when the basket is dropped
     private basketDropedSource = new Subject();
     basketDroped$ = this.basketDropedSource.asObservable();
-    
+
     constructor(private service: DataService, private authService: SecurityService, private basketEvents: BasketWrapperService, private router: Router, private configurationService: ConfigurationService, private storageService: StorageService) {
         this.basket.items = [];
-        
+
         // Init:
         if (this.authService.IsAuthorized) {
             if (this.authService.UserData) {
@@ -56,7 +56,7 @@ export class BasketService {
             this.dropBasket();
         });
     }
-    
+
     addItemToBasket(item): Observable<boolean> {
         this.basket.items.push(item);
         return this.setBasket(this.basket);
@@ -87,12 +87,12 @@ export class BasketService {
 
             return response.json();
         });
-    }    
+    }
 
     mapBasketInfoCheckout(order: IOrder): IBasketCheckout {
         let basketCheckout = <IBasketCheckout>{};
 
-        basketCheckout.street = order.street
+        basketCheckout.street = order.street;
         basketCheckout.city = order.city;
         basketCheckout.country = order.country;
         basketCheckout.state = order.state;
@@ -106,10 +106,10 @@ export class BasketService {
         basketCheckout.expiration = order.expiration;
 
         return basketCheckout;
-    }    
+    }
 
     dropBasket() {
-        this.basket.items = [];        
+        this.basket.items = [];
         this.basketDropedSource.next();
     }
 

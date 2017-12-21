@@ -4,7 +4,7 @@ import { Response } from '@angular/http';
 import { DataService } from '../shared/services/data.service';
 import { IOrder } from '../shared/models/order.model';
 import { IOrderItem } from '../shared/models/orderItem.model';
-import { IOrderDetail } from "../shared/models/order-detail.model";
+import { IOrderDetail } from '../shared/models/order-detail.model';
 import { SecurityService } from '../shared/services/security.service';
 import { ConfigurationService } from '../shared/services/configuration.service';
 import { BasketWrapperService } from '../shared/services/basket.wrapper.service';
@@ -71,7 +71,7 @@ export class OrdersService {
         basket.items.forEach(x => {
             let item: IOrderItem = <IOrderItem>{};
             item.pictureurl = x.pictureUrl;
-            item.productId =  +x.productId;
+            item.productId = +x.productId;
             item.productname = x.productName;
             item.unitprice = x.unitPrice;
             item.units = x.quantity;

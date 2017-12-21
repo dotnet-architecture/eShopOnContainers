@@ -28,8 +28,7 @@
         <esh-pager [model]="paginationInfo" (changed)="onPageChanged($event)"></esh-pager>
 
         <div class="esh-catalog-items row">
-            <div class="esh-catalog-item col-md-4"
-                 *ngFor="let item of catalog?.data">
+            <div class="esh-catalog-item col-md-4" *ngFor="let item of catalog?.data">
 
                 <img class="esh-catalog-thumbnail" src="{{item.pictureUri}}" />
                 <button [ngClass]="{'esh-catalog-button': true, 'is-disabled': !authenticated}" (click)="addToCart(item)">
@@ -51,4 +50,3 @@
         <span>THERE ARE NO RESULTS THAT MATCH YOUR SEARCH</span>
     </div>
 </div>
-

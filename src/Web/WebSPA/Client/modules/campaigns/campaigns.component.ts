@@ -1,7 +1,7 @@
-﻿import { Component, OnInit }    from '@angular/core';
-import { CampaignsService }        from './campaigns.service';
-import { ICampaign }               from '../shared/models/campaign.model';
-import { IPager }               from '../shared/models/pager.model';
+﻿import { Component, OnInit } from '@angular/core';
+import { CampaignsService } from './campaigns.service';
+import { ICampaign } from '../shared/models/campaign.model';
+import { IPager } from '../shared/models/pager.model';
 import { ConfigurationService } from '../shared/services/configuration.service';
 import { Observable } from 'rxjs/Observable';
 
@@ -21,7 +21,7 @@ export class CampaignsComponent implements OnInit {
 
     ngOnInit() {
         if (this.configurationService.isReady) {
-            this.getCampaigns(9, 0)
+            this.getCampaigns(9, 0);
         } else {
             this.configurationService.settingsLoaded$.subscribe(x => {
                 this.getCampaigns(9, 0);
@@ -29,14 +29,14 @@ export class CampaignsComponent implements OnInit {
         }
 
         this.isCampaignDetailFunctionEnabled = this.configurationService.serverSettings.activateCampaignDetailFunction;
-    }    
+    }
 
     onPageChanged(value: any) {
-        console.log('campaigns pager event fired' + value);
-        //event.preventDefault();
+        console.log(`campaigns pager event fired` + value);
+        // event.preventDefault();
         this.paginationInfo.actualPage = value;
         this.getCampaigns(this.paginationInfo.itemsPage, value);
-    }   
+    }
 
     getCampaigns(pageSize: number, pageIndex: number) {
         this.errorReceived = false;
@@ -45,22 +45,22 @@ export class CampaignsComponent implements OnInit {
             .subscribe(campaigns => {
                 this.campaigns = campaigns;
                 this.paginationInfo = {
-                    actualPage : campaigns.pageIndex,
-                    itemsPage : campaigns.pageSize,
-                    totalItems : campaigns.count,
+                    actualPage: campaigns.pageIndex,
+                    itemsPage: campaigns.pageSize,
+                    totalItems: campaigns.count,
                     totalPages: Math.ceil(campaigns.count / campaigns.pageSize),
                     items: campaigns.pageSize
                 };
-        });
+            });
     }
 
     onNavigateToDetails(uri: string) {
-        window.open(uri, "_blank");
+        window.open(uri, `_blank`);
     }
 
     private handleError(error: any) {
         this.errorReceived = true;
         return Observable.throw(error);
-    }  
+    }
 }
 

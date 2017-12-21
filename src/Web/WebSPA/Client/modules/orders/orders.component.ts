@@ -1,6 +1,6 @@
-import { Component, OnInit }    from '@angular/core';
-import { OrdersService }        from './orders.service';
-import { IOrder }               from '../shared/models/order.model';
+import { Component, OnInit } from '@angular/core';
+import { OrdersService } from './orders.service';
+import { IOrder } from '../shared/models/order.model';
 import { ConfigurationService } from '../shared/services/configuration.service';
 import { Observable } from 'rxjs/Observable';
 
@@ -46,12 +46,12 @@ export class OrdersComponent implements OnInit {
                 this.orders = orders;
                 this.oldOrders = this.orders;
                 console.log('orders items retrieved: ' + orders.length);
-        });
+            });
     }
 
     private handleError(error: any) {
         this.errorReceived = true;
         return Observable.throw(error);
-    }  
+    }
 }
 

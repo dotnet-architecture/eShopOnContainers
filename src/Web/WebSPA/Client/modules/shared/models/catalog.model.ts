@@ -1,4 +1,4 @@
-import {ICatalogItem} from './catalogItem.model';
+import { ICatalogItem } from './catalogItem.model';
 
 export interface ICatalog {
     pageIndex: number;

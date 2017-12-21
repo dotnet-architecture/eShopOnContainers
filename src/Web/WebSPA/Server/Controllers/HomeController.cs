@@ -20,6 +20,6 @@ namespace eShopConContainers.WebSPA.Server.Controllers
         public IActionResult Configuration()
         {
             return Json(_settings.Value);
-        } 
+        }
     }
 }

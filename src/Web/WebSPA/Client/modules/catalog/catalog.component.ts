@@ -1,15 +1,15 @@
-import { Component, OnInit }    from '@angular/core';
-import { Subscription }         from 'rxjs/Subscription';
+import { Component, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs/Subscription';
 
-import { CatalogService }       from './catalog.service';
+import { CatalogService } from './catalog.service';
 import { ConfigurationService } from '../shared/services/configuration.service';
-import { ICatalog }             from '../shared/models/catalog.model';
-import { ICatalogItem }         from '../shared/models/catalogItem.model';
-import { ICatalogType }         from '../shared/models/catalogType.model';
-import { ICatalogBrand }        from '../shared/models/catalogBrand.model';
-import { IPager }               from '../shared/models/pager.model';
-import { BasketWrapperService}  from '../shared/services/basket.wrapper.service';
-import { SecurityService }      from '../shared/services/security.service';
+import { ICatalog } from '../shared/models/catalog.model';
+import { ICatalogItem } from '../shared/models/catalogItem.model';
+import { ICatalogType } from '../shared/models/catalogType.model';
+import { ICatalogBrand } from '../shared/models/catalogBrand.model';
+import { IPager } from '../shared/models/pager.model';
+import { BasketWrapperService } from '../shared/services/basket.wrapper.service';
+import { SecurityService } from '../shared/services/security.service';
 import { Observable } from 'rxjs/Observable';
 
 @Component({
@@ -35,7 +35,7 @@ export class CatalogComponent implements OnInit {
     ngOnInit() {
 
         // Configuration Settings:
-        if (this.configurationService.isReady) 
+        if (this.configurationService.isReady)
             this.loadData();
         else
             this.configurationService.settingsLoaded$.subscribe(x => {
@@ -87,13 +87,13 @@ export class CatalogComponent implements OnInit {
             .subscribe(catalog => {
                 this.catalog = catalog;
                 this.paginationInfo = {
-                    actualPage : catalog.pageIndex,
-                    itemsPage : catalog.pageSize,
-                    totalItems : catalog.count,
+                    actualPage: catalog.pageIndex,
+                    itemsPage: catalog.pageSize,
+                    totalItems: catalog.count,
                     totalPages: Math.ceil(catalog.count / catalog.pageSize),
                     items: catalog.pageSize
                 };
-        });
+            });
     }
 
     getTypes() {

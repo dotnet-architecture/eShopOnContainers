@@ -1,7 +1,7 @@
 import { Title } from '@angular/platform-browser';
 import { Component, ViewEncapsulation, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { Subscription }   from 'rxjs/Subscription';
+import { Subscription } from 'rxjs/Subscription';
 
 import { DataService } from './shared/services/data.service';
 import { SecurityService } from './shared/services/security.service';
@@ -21,7 +21,10 @@ export class AppComponent implements OnInit {
     Authenticated: boolean = false;
     subscription: Subscription;
 
-    constructor(private titleService: Title, private securityService: SecurityService, private configurationService: ConfigurationService) {
+    constructor(
+        private titleService: Title,
+        private securityService: SecurityService,
+        private configurationService: ConfigurationService) {
         this.Authenticated = this.securityService.IsAuthorized;
     }
 
@@ -29,7 +32,7 @@ export class AppComponent implements OnInit {
         console.log('app on init');
         this.subscription = this.securityService.authenticationChallenge$.subscribe(res => this.Authenticated = res);
 
-        //Get configuration from server environment variables:
+        // Get configuration from server environment variables:
         console.log('configuration');
         this.configurationService.load();
     }

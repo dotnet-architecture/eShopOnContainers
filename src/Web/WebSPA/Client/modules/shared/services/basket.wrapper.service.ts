@@ -1,9 +1,9 @@
-﻿import { Injectable }       from '@angular/core';
-import { Subject }          from 'rxjs/Subject';
+﻿import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs/Subject';
 
-import { ICatalogItem }     from '../models/catalogItem.model';
-import { IBasketItem }      from '../models/basketItem.model';
-import { IBasket }          from '../models/basket.model';
+import { ICatalogItem } from '../models/catalogItem.model';
+import { IBasketItem } from '../models/basketItem.model';
+import { IBasket } from '../models/basket.model';
 import { SecurityService } from '../services/security.service';
 import { Guid } from '../../../guid';
 

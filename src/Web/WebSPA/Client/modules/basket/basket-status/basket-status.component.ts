@@ -1,10 +1,10 @@
-import { Component, OnInit }    from '@angular/core';
-import { Subscription }         from 'rxjs/Subscription';
+import { Component, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs/Subscription';
 
-import { BasketService }        from '../basket.service';
+import { BasketService } from '../basket.service';
 import { BasketWrapperService } from '../../shared/services/basket.wrapper.service';
-import { SecurityService }      from '../../shared/services/security.service';
-import { ConfigurationService }      from '../../shared/services/configuration.service';
+import { SecurityService } from '../../shared/services/security.service';
+import { ConfigurationService } from '../../shared/services/configuration.service';
 
 @Component({
     selector: 'esh-basket-status',
@@ -32,7 +32,7 @@ export class BasketStatusComponent implements OnInit {
                 });
             });
 
-        // Subscribe to Drop Basket Observable: 
+        // Subscribe to Drop Basket Observable:
         this.basketDroppedSubscription = this.service.basketDroped$.subscribe(res => {
             this.badge = 0;
         });

@@ -5,7 +5,7 @@
 </div>
 
 <div class="container">
-    <div  class="alert alert-warning esh-orders_new-alert" role="alert" [hidden]="!errorReceived">
+    <div class="alert alert-warning esh-orders_new-alert" role="alert" [hidden]="!errorReceived">
         Not possible to create a new order, please try later on
     </div>
     <form [formGroup]="newOrderForm" (ngSubmit)="submitForm(newOrderForm.value)">
@@ -80,8 +80,7 @@
                 <section class="esh-orders_new-title col-xs-12">Order details</section>
             </article>
 
-            <article class="esh-orders_new-items esh-orders_new-items--border row"
-                     *ngFor="let item of order.orderItems">
+            <article class="esh-orders_new-items esh-orders_new-items--border row" *ngFor="let item of order.orderItems">
                 <section class="esh-orders_new-item col-md-4 hidden-md-down">
                     <img class="esh-orders_new-image" src="{{item.pictureurl}}">
                 </section>

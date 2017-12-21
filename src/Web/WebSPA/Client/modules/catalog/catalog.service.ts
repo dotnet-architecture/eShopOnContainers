@@ -50,5 +50,5 @@ export class CatalogService {
         return this.service.get(this.typesUrl).map((response: Response) => {
             return response.json();
         });
-    };
+    }
 }

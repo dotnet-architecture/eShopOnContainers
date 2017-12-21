@@ -49,12 +49,11 @@ export class BasketComponent implements OnInit {
     checkOut(event: any) {
         this.update(event)
             .subscribe(
-                x => {
-                    this.errorMessages = [];
-                    this.basketwrapper.basket = this.basket;
-                    this.router.navigate(['order'],
-                errMessage => this.errorMessages = errMessage.messages);
-        });
+            x => {
+                this.errorMessages = [];
+                this.basketwrapper.basket = this.basket;
+                this.router.navigate(['order']);
+            });
     }
 
     private calculateTotalPrice() {

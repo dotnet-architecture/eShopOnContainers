@@ -1,8 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
+
 @import './modules/variables';
-
 $dist: './fonts/Montserrat-Regular';
-
 @font-face {
     font-family: Montserrat;
     font-weight: 400;
@@ -74,4 +73,3 @@ select::-ms-expand {
     color: #FB0D0D;
     font-size: 12px;
 }
-

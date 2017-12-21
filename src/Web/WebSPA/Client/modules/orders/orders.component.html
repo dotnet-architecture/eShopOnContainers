@@ -13,8 +13,7 @@
             <section class="esh-orders-title col-xs-2"></section>
         </article>
 
-        <article class="esh-orders-items row"
-                 *ngFor="let order of orders">
+        <article class="esh-orders-items row" *ngFor="let order of orders">
             <section class="esh-orders-item col-xs-2">{{order.ordernumber}}</section>
             <section class="esh-orders-item col-xs-4">{{order.date | date:'short'}}</section>
             <section class="esh-orders-item col-xs-2">$ {{order.total}}</section>

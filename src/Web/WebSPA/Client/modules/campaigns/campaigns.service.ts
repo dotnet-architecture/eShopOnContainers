@@ -47,6 +47,6 @@ export class CampaignsService {
         return this.service.get(url).map((response: Response) => {
             return response.json();
         });
-    }    
+    }
 }
 

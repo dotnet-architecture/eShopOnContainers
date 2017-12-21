@@ -2,14 +2,14 @@ import { Component, OnInit, OnChanges, Output, Input, EventEmitter } from '@angu
 import { Subscription } from 'rxjs/Subscription';
 
 import { IIdentity } from '../../models/identity.model';
-import { SecurityService } from  '../../services/security.service';
+import { SecurityService } from '../../services/security.service';
 
 @Component({
     selector: 'esh-identity',
     templateUrl: './identity.html',
     styleUrls: ['./identity.scss']
 })
-export class Identity implements OnInit  {
+export class Identity implements OnInit {
     authenticated: boolean = false;
     private subscription: Subscription;
     private userName: string = '';
@@ -49,5 +49,9 @@ export class Identity implements OnInit  {
 
     logout() {
         this.service.Logoff();
+    }
+
+    getUserName() {
+        return this.userName;
     }
 }
