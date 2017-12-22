@@ -103,7 +103,7 @@ services:
     image: mongo
 
   basket.data:
-    image: redis
+    image: redis:alpine
       
   rabbitmq:
-    image: rabbitmq:3-management
+    image: rabbitmq:3-management-alpine

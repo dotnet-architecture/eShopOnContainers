@@ -5,11 +5,12 @@
     using Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure.Services;
     using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Idempotency;
     using System;
+    using System.Threading;
     using System.Threading.Tasks;
 
     // Regular CommandHandler
     public class CreateOrderCommandHandler
-        : IAsyncRequestHandler<CreateOrderCommand, bool>
+        : IRequestHandler<CreateOrderCommand, bool>
     {
         private readonly IOrderRepository _orderRepository;
         private readonly IIdentityService _identityService;
@@ -23,7 +24,7 @@
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
 
-        public async Task<bool> Handle(CreateOrderCommand message)
+        public async Task<bool> Handle(CreateOrderCommand message, CancellationToken cancellationToken)
         {
             // Add/Update the Buyer AggregateRoot
             // DDD patterns comment: Add child entities and value-objects through the Order Aggregate-Root

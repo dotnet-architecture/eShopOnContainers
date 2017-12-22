@@ -23,7 +23,7 @@
     <PackageReference Include="Microsoft.DotNet.InternalAbstractions" Version="1.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.3.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.3.0" />
-    <PackageReference Include="MediatR" Version="3.0.1" />
+    <PackageReference Include="MediatR" Version="4.0.1" />
     <PackageReference Include="Moq" Version="4.7.142" />
     <PackageReference Include="xunit" Version="2.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="2.0.0" />

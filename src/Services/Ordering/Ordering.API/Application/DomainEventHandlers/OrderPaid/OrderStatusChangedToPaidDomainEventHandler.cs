@@ -9,9 +9,10 @@
     using Ordering.API.Application.IntegrationEvents;
     using System.Linq;
     using Ordering.API.Application.IntegrationEvents.Events;
+    using System.Threading;
 
     public class OrderStatusChangedToPaidDomainEventHandler
-                   : IAsyncNotificationHandler<OrderStatusChangedToPaidDomainEvent>
+                   : INotificationHandler<OrderStatusChangedToPaidDomainEvent>
     {
         private readonly IOrderRepository _orderRepository;
         private readonly ILoggerFactory _logger;
@@ -26,11 +27,11 @@
             _orderingIntegrationEventService = orderingIntegrationEventService;
         }
 
-        public async Task Handle(OrderStatusChangedToPaidDomainEvent orderStatusChangedToPaidDomainEvent)
+        public async Task Handle(OrderStatusChangedToPaidDomainEvent orderStatusChangedToPaidDomainEvent, CancellationToken cancellationToken)
         {
             _logger.CreateLogger(nameof(OrderStatusChangedToPaidDomainEventHandler))
-                .LogTrace($"Order with Id: {orderStatusChangedToPaidDomainEvent.OrderId} has been successfully updated with " +
-                          $"a status order id: {OrderStatus.Paid.Id}");
+             .LogTrace($"Order with Id: {orderStatusChangedToPaidDomainEvent.OrderId} has been successfully updated with " +
+                       $"a status order id: {OrderStatus.Paid.Id}");
 
             var orderStockList = orderStatusChangedToPaidDomainEvent.OrderItems
                 .Select(orderItem => new OrderStockItem(orderItem.ProductId, orderItem.GetUnits()));
