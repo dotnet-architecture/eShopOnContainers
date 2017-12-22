@@ -13,10 +13,18 @@
             padding-top: 0;
         }
     }
+    &-titles {
+        justify-content: space-between;
+        align-items: right;
+    }
     &-title {
         text-transform: uppercase;
+        justify-content: space-between;
+        align-items: right;
     }
     &-items {
+        justify-content: space-between;
+        align-items: right;
         &--border {
             border-bottom: $border-light solid $color-foreground-bright;
             padding: .5rem 0;

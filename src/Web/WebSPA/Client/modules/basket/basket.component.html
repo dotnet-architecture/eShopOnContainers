@@ -21,8 +21,8 @@
 
                 <section class="esh-basket-item esh-basket-item--middle col-lg-3 hidden-lg-down">
                     <img class="esh-basket-image" src="{{item.pictureUrl}}" />
+                    <div>{{item.productName}}</div>
                 </section>
-                <section class="esh-basket-item esh-basket-item--middle col-xs-3">{{item.productName}}</section>
                 <section class="esh-basket-item esh-basket-item--middle col-xs-2">$ {{item.unitPrice | number:'.2-2'}}</section>
                 <section class="esh-basket-item esh-basket-item--middle col-xs-2">
                     <input id="quantity" class="esh-basket-input" type="number" min="1" [(ngModel)]="item.quantity" (change)="itemQuantityChanged(item)" />
