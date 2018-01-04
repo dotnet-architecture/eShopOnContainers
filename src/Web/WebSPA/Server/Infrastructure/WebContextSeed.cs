@@ -17,7 +17,7 @@ namespace WebSPA.Infrastructure
         {
             var log = loggerFactory.CreateLogger("WebSPA seed");
 
-            var settings = (AppSettings)applicationBuilder
+            var settings = applicationBuilder
                 .ApplicationServices.GetRequiredService<IOptions<AppSettings>>().Value;
 
             var useCustomizationData = settings.UseCustomizationData;
