@@ -51,11 +51,5 @@
     <Folder Include="ViewModels\" />
     <Folder Include="Behaviors\" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\eShopOnContainers.Core\eShopOnContainers.Core.csproj">
-      <Project>{BA96A12C-4EE3-46C4-BB3F-F811B554CD01}</Project>
-      <Name>eShopOnContainers.Core</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
 </Project>

@@ -37,8 +37,8 @@
     <Compile Include="Animations\Base\AnimationBase.cs" />
     <Compile Include="Animations\Base\EasingType.cs" />
     <Compile Include="Controls\AddBasketButton.xaml.cs">
-		<DependentUpon>AddBasketButton.xaml</DependentUpon>
-	</Compile>
+      <DependentUpon>AddBasketButton.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\CustomTabbedPage.cs" />
     <Compile Include="Controls\ToggleButton.cs" />
     <Compile Include="Behaviors\EventToCommandBehavior.cs" />
@@ -62,56 +62,56 @@
     <Compile Include="Helpers\ServicesHelper.cs" />
     <Compile Include="Helpers\Settings.cs" />
     <Compile Include="Views\Templates\BasketItemTemplate.xaml.cs">
-		<DependentUpon>BasketItemTemplate.xaml</DependentUpon>
-	</Compile>
+      <DependentUpon>BasketItemTemplate.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Templates\CampaignTemplate.xaml.cs">
-		<DependentUpon>CampaignTemplate.xaml</DependentUpon>
-	</Compile>
+      <DependentUpon>CampaignTemplate.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Templates\OrderItemTemplate.xaml.cs">
-		<DependentUpon>OrderItemTemplate.xaml</DependentUpon>
-	</Compile>
+      <DependentUpon>OrderItemTemplate.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Templates\OrderTemplate.xaml.cs">
-		<DependentUpon>OrderTemplate.xaml</DependentUpon>
-	</Compile>
+      <DependentUpon>OrderTemplate.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Templates\ProductTemplate.xaml.cs">
-		<DependentUpon>ProductTemplate.xaml</DependentUpon>
-	</Compile>
+      <DependentUpon>ProductTemplate.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\BasketView.xaml.cs">
-		<DependentUpon>BasketView.xaml</DependentUpon>
-	</Compile>
+      <DependentUpon>BasketView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\CampaignDetailsView.xaml.cs">
-		<DependentUpon>CampaignDetailsView.xaml</DependentUpon>
-	</Compile>
+      <DependentUpon>CampaignDetailsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\CampaignView.xaml.cs">
-		<DependentUpon>CampaignView.xaml</DependentUpon>
-	</Compile>
+      <DependentUpon>CampaignView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\CatalogView.xaml.cs">
-		<DependentUpon>CatalogView.xaml</DependentUpon>
-	</Compile>
+      <DependentUpon>CatalogView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\CheckoutView.xaml.cs">
-		<DependentUpon>CheckoutView.xaml</DependentUpon>
-	</Compile>
+      <DependentUpon>CheckoutView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\CustomNavigationView.xaml.cs">
-		<DependentUpon>CustomNavigationView.xaml</DependentUpon>
-	</Compile>
+      <DependentUpon>CustomNavigationView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\FiltersView.xaml.cs">
-		<DependentUpon>FiltersView.xaml</DependentUpon>
-	</Compile>
+      <DependentUpon>FiltersView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\LoginView.xaml.cs">
-		<DependentUpon>LoginView.xaml</DependentUpon>
-	</Compile>
+      <DependentUpon>LoginView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MainView.xaml.cs">
-		<DependentUpon>MainView.xaml</DependentUpon>
-	</Compile>
+      <DependentUpon>MainView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\OrderDetailView.xaml.cs">
-		<DependentUpon>OrderDetailView.xaml</DependentUpon>
-	</Compile>
+      <DependentUpon>OrderDetailView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ProfileView.xaml.cs">
-		<DependentUpon>ProfileView.xaml</DependentUpon>
-	</Compile>
+      <DependentUpon>ProfileView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SettingsView.xaml.cs">
-		<DependentUpon>SettingsView.xaml</DependentUpon>
-	</Compile>
+      <DependentUpon>SettingsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Extensions\ObservableExtension.cs" />
     <Compile Include="Exceptions\ServiceAuthenticationException.cs" />
     <Compile Include="Models\Basket\BasketCheckout.cs" />
@@ -199,74 +199,74 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\AddBasketButton.xaml">
       <SubType>Designer</SubType>
-	  <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Templates\BasketItemTemplate.xaml">
       <SubType>Designer</SubType>
-	  <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Templates\CampaignTemplate.xaml">
       <SubType>Designer</SubType>
-	  <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Templates\OrderItemTemplate.xaml">
       <SubType>Designer</SubType>
-	  <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Templates\OrderTemplate.xaml">
       <SubType>Designer</SubType>
-	  <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Templates\ProductTemplate.xaml">
       <SubType>Designer</SubType>
-	  <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\BasketView.xaml">
       <SubType>Designer</SubType>
-	  <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\CampaignDetailsView.xaml">
       <SubType>Designer</SubType>
-	  <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\CampaignView.xaml">
       <SubType>Designer</SubType>
-	  <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\CatalogView.xaml">
       <SubType>Designer</SubType>
-	  <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\SettingsView.xaml">
       <SubType>Designer</SubType>
-	  <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\ProfileView.xaml">
       <SubType>Designer</SubType>
-	  <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\OrderDetailView.xaml">
       <SubType>Designer</SubType>
-	  <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\MainView.xaml">
       <SubType>Designer</SubType>
-	  <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\LoginView.xaml">
       <SubType>Designer</SubType>
-	  <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\FiltersView.xaml">
-	  <SubType>Designer</SubType>
+      <SubType>Designer</SubType>
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\CustomNavigationView.xaml">
-	  <SubType>Designer</SubType>
+      <SubType>Designer</SubType>
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\CheckoutView.xaml">
-	  <SubType>Designer</SubType>
+      <SubType>Designer</SubType>
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>
