@@ -4,8 +4,14 @@
 .gitignore
 .vs
 .vscode
-docker-compose.yml
-docker-compose.*.yml
+docker-compose*.yml
+docker-compose.dcproj
+*.sln
+!eShopOnContainers-ServicesAndWebApps-MultiStageBuild.sln
+*.md
+hosts
+LICENSE
+*.testsettings
 vsts-docs
 test
 ServiceFabric
@@ -22,4 +28,5 @@ cli-linux
 **/obj/
 **/node_modules/
 **/bower_components/
+**/wwwroot/lib/
 global.json
