@@ -7,7 +7,7 @@
 docker-compose*.yml
 docker-compose.dcproj
 *.sln
-!eShopOnContainers-ServicesAndWebApps-MultiStageBuild.sln
+!eShopOnContainers-ServicesAndWebApps.sln
 *.md
 hosts
 LICENSE
