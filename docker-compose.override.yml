@@ -203,9 +203,8 @@ services:
 
   sql.data:
     environment:
-      - MSSQL_SA_PASSWORD=Pass@word
+      - sa_password=Pass@word
       - ACCEPT_EULA=Y
-      - MSSQL_PID=Developer
     ports:
       - "5433:1433"
 
