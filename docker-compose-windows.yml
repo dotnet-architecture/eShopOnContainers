@@ -63,8 +63,8 @@ services:
   webmvc:
     image: eshop/webmvc-win:${TAG:-latest}
     build:
-      context: src/Web/WebMVC
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: src/Web/WebMVC/Dockerfile
     depends_on:
       - catalog.api
       - ordering.api
