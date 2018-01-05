@@ -10,8 +10,6 @@ WORKDIR /src/src/Web/WebMVC
 RUN dotnet build --no-restore -c Release -o /app
 
 FROM build AS publish
-RUN bower install --allow-root
-RUN dotnet bundle
 RUN dotnet publish --no-restore -c Release -o /app
 
 FROM base AS final
