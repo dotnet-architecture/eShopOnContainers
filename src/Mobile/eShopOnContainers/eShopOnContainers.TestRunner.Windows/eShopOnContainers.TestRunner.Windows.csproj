@@ -121,6 +121,10 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\eShopOnContainers.Core\eShopOnContainers.Core.csproj">
+      <Project>{ba96a12c-4ee3-46c4-bb3f-f811b554cd01}</Project>
+      <Name>eShopOnContainers.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\eShopOnContainers.UnitTests\eShopOnContainers.UnitTests.csproj">
       <Project>{f7b6a162-bc4d-4924-b16a-713f9b0344e7}</Project>
       <Name>eShopOnContainers.UnitTests</Name>

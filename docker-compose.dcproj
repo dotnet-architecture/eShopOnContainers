@@ -6,7 +6,7 @@
     <DockerServiceUrl>http://localhost:5100</DockerServiceUrl>
     <DockerServiceName>webmvc</DockerServiceName>
     <DockerTargetOS>Linux</DockerTargetOS>
-    <ProjectVersion>2.0</ProjectVersion>
+    <ProjectVersion>2.1</ProjectVersion>
   </PropertyGroup>
   <ItemGroup>
     <None Include=".dockerignore" />
