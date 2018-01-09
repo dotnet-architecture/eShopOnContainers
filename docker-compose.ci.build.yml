@@ -8,6 +8,7 @@ services:
       - ./cli-linux:/cli-linux
     working_dir: /src
 
+
 #   Next line is using the .sln file to compile all the projects. 
 #   Sometime there is an issue in msbuild exits the process before finishing building the bits: (https://github.com/Microsoft/msbuild/issues/2153)
 #   Random error: error MSB4017: The build stopped unexpectedly be cause of an unexpected logger failure.
