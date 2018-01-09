@@ -201,9 +201,9 @@ services:
     ports:
       - "5109:80"
 
-  sql.data:		    
-    environment:		      
-      - MSSQL_SA_PASSWORD=Pass@word		 
+  sql.data:
+    environment:
+      - MSSQL_SA_PASSWORD=Pass@word
       - ACCEPT_EULA=Y
     ports:
       - "5433:1433"
