@@ -30,7 +30,7 @@ namespace eShopOnContainers.Core.Helpers
         private const string IdAllowGpsLocation = "allow_gps_location";
         private static readonly string AccessTokenDefault = string.Empty;
         private static readonly string IdTokenDefault = string.Empty;
-		private static readonly bool UseMocksDefault = true;
+        private static readonly bool UseMocksDefault = true;
         private static readonly bool UseFakeLocationDefault = false;
         private static readonly bool AllowGpsLocationDefault = false;
         private static readonly double FakeLatitudeDefault = 47.604610d;
@@ -41,50 +41,50 @@ namespace eShopOnContainers.Core.Helpers
 
         public static string AuthAccessToken
         {
-            get => AppSettings.GetValueOrDefault<string>(AccessToken, AccessTokenDefault);
-            set => AppSettings.AddOrUpdateValue<string>(AccessToken, value);
+            get => AppSettings.GetValueOrDefault(AccessToken, AccessTokenDefault);
+            set => AppSettings.AddOrUpdateValue(AccessToken, value);
         }
 
         public static string AuthIdToken
         {
-            get => AppSettings.GetValueOrDefault<string>(IdToken, IdTokenDefault);
-            set => AppSettings.AddOrUpdateValue<string>(IdToken, value);
+            get => AppSettings.GetValueOrDefault(IdToken, IdTokenDefault);
+            set => AppSettings.AddOrUpdateValue(IdToken, value);
         }
 
         public static bool UseMocks
         {
-            get => AppSettings.GetValueOrDefault<bool>(IdUseMocks, UseMocksDefault);
-            set => AppSettings.AddOrUpdateValue<bool>(IdUseMocks, value);
+            get => AppSettings.GetValueOrDefault(IdUseMocks, UseMocksDefault);
+            set => AppSettings.AddOrUpdateValue(IdUseMocks, value);
         }
 
         public static string UrlBase
         {
-            get => AppSettings.GetValueOrDefault<string>(IdUrlBase, UrlBaseDefault);
-            set => AppSettings.AddOrUpdateValue<string>(IdUrlBase, value);
+            get => AppSettings.GetValueOrDefault(IdUrlBase, UrlBaseDefault);
+            set => AppSettings.AddOrUpdateValue(IdUrlBase, value);
         }
 
         public static bool UseFakeLocation
         {
-            get => AppSettings.GetValueOrDefault<bool>(IdUseFakeLocation, UseFakeLocationDefault);
-            set => AppSettings.AddOrUpdateValue<bool>(IdUseFakeLocation, value);
+            get => AppSettings.GetValueOrDefault(IdUseFakeLocation, UseFakeLocationDefault);
+            set => AppSettings.AddOrUpdateValue(IdUseFakeLocation, value);
         }
 
         public static string Latitude
         {
-            get => AppSettings.GetValueOrDefault<string>(IdLatitude, FakeLatitudeDefault.ToString());
-            set => AppSettings.AddOrUpdateValue<string>(IdLatitude, value);
+            get => AppSettings.GetValueOrDefault(IdLatitude, FakeLatitudeDefault.ToString());
+            set => AppSettings.AddOrUpdateValue(IdLatitude, value);
         }
 
         public static string Longitude
         {
-            get => AppSettings.GetValueOrDefault<string>(IdLongitude, FakeLongitudeDefault.ToString());
-            set => AppSettings.AddOrUpdateValue<string>(IdLongitude, value);
+            get => AppSettings.GetValueOrDefault(IdLongitude, FakeLongitudeDefault.ToString());
+            set => AppSettings.AddOrUpdateValue(IdLongitude, value);
         }
 
         public static bool AllowGpsLocation
         {
-            get => AppSettings.GetValueOrDefault<bool>(IdAllowGpsLocation, AllowGpsLocationDefault);
-            set => AppSettings.AddOrUpdateValue<bool>(IdAllowGpsLocation, value);
+            get => AppSettings.GetValueOrDefault(IdAllowGpsLocation, AllowGpsLocationDefault);
+            set => AppSettings.AddOrUpdateValue(IdAllowGpsLocation, value);
         }
     }
 }

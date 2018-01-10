@@ -1,5 +1,4 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
 using eShopOnContainers.Core.Helpers;
 using eShopOnContainers.Services;
 using eShopOnContainers.Core.ViewModels.Base;
@@ -23,7 +22,7 @@ namespace eShopOnContainers
 
             InitApp();
 
-			if (Device.RuntimePlatform == Device.UWP)
+            if (Device.RuntimePlatform == Device.UWP)
             {
                 InitNavigation();
             }
@@ -41,12 +40,11 @@ namespace eShopOnContainers
             return navigationService.InitializeAsync();
         }
 
-
         protected override async void OnStart()
         {
             base.OnStart();
 
-			if (Device.RuntimePlatform != Device.UWP)
+            if (Device.RuntimePlatform != Device.UWP)
             {
                 await InitNavigation();
             }
@@ -74,7 +72,7 @@ namespace eShopOnContainers
             var locator = CrossGeolocator.Current;
 
             if (locator.IsGeolocationEnabled && locator.IsGeolocationAvailable)
-            { 
+            {
                 locator.AllowsBackgroundUpdates = true;
                 locator.DesiredAccuracy = 50;
 
