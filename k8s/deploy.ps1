@@ -6,7 +6,6 @@ Param(
     [parameter(Mandatory=$false)][string]$kubeconfigPath,
     [parameter(Mandatory=$true)][string]$configFile,
     [parameter(Mandatory=$false)][string]$imageTag,
-    [parameter(Mandatory=$false)][string]$externalDns,
     [parameter(Mandatory=$false)][bool]$deployCI=$false,
     [parameter(Mandatory=$false)][bool]$buildImages=$true,
     [parameter(Mandatory=$false)][bool]$buildBits=$false,
@@ -29,6 +28,16 @@ function ExecKube($cmd) {
 # Initialization
 $debugMode = $PSCmdlet.MyInvocation.BoundParameters["Debug"].IsPresent
 $useDockerHub = [string]::IsNullOrEmpty($registry)
+
+$externalDns = & ExecKube -cmd 'get svc ingress-nginx -n ingress-nginx -o=jsonpath="{.status.loadBalancer.ingress[0].ip}"'
+Write-Host "Ingress ip detected: $externalDns" -ForegroundColor Yellow 
+
+if (-not [bool]($externalDns -as [ipaddress])) {
+    Write-Host "Must install ingress first" -ForegroundColor Red
+    Write-Host "Run deploy-ingress.ps1 and  deploy-ingress-azure.ps1" -ForegroundColor Red
+    exit
+}
+
 
 # Check required commands (only if not in CI environment)
 if(-not $deployCI) {
@@ -100,35 +109,18 @@ if (-not [string]::IsNullOrEmpty($dockerUser)) {
 Write-Host "Removing existing services & deployments.." -ForegroundColor Yellow
 ExecKube -cmd 'delete deployments --all'
 ExecKube -cmd 'delete services --all'
-ExecKube -cmd 'delete configmap config-files'
 ExecKube -cmd 'delete configmap urls'
 ExecKube -cmd 'delete configmap externalcfg'
 
 # start sql, rabbitmq, frontend deployments
-ExecKube -cmd 'create configmap config-files --from-file=nginx-conf=nginx.conf'
-ExecKube -cmd 'label configmap config-files app=eshop'
-
 if ($deployInfrastructure) {
     Write-Host 'Deploying infrastructure deployments (databases, redis, RabbitMQ...)' -ForegroundColor Yellow
     ExecKube -cmd 'create -f sql-data.yaml -f basket-data.yaml -f keystore-data.yaml -f rabbitmq.yaml -f nosql-data.yaml'
 }
 
+
 Write-Host 'Deploying code deployments (Web APIs, Web apps, ...)' -ForegroundColor Yellow
-ExecKube -cmd 'create -f services.yaml -f frontend.yaml'
-
-if ([string]::IsNullOrEmpty($externalDns)) {
-        Write-Host "Waiting for frontend's external ip..." -ForegroundColor Yellow
-        while ($true) {
-            $frontendUrl = & ExecKube -cmd 'get svc frontend -o=jsonpath="{.status.loadBalancer.ingress[0].ip}"'
-            if ([bool]($frontendUrl -as [ipaddress])) {
-                break
-            }
-            Start-Sleep -s 15
-        }
-        $externalDns = $frontendUrl
-}
-
-Write-Host "Using $externalDns as the external DNS/IP of the k8s cluster"
+ExecKube -cmd 'create -f services.yaml'
 
 ExecKube -cmd 'create configmap urls `
     --from-literal=BasketUrl=http://basket `
