@@ -4,9 +4,8 @@ EXPOSE 80
 
 FROM microsoft/aspnetcore-build:2.0 AS build
 WORKDIR /src
-COPY *.sln ./
 COPY src/Apigw/OcelotApiGw/OcelotApiGw.csproj src/Apigw/OcelotApiGw/
-RUN dotnet restore
+RUN dotnet restore src/Apigw/OcelotApiGw/
 COPY . .
 WORKDIR /src/src/Apigw/OcelotApiGw
 RUN dotnet build -c Release -o /app

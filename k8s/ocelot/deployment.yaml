@@ -1,0 +1,31 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ocelot
+spec:
+  paused: true
+  template:
+    metadata:
+      labels:
+        app: eshop
+        component: ocelot
+    spec:
+      containers:
+      - name: ocelot
+        image: eshop/ocelotapigw
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80   
+        volumeMounts:
+        - name: config
+          mountPath: /app/configuration            
+      volumes:
+      - name: config
+        configMap:
+          name: ocelot
+          items:
+          - key: configuration.json
+            path: configuration.json
+      imagePullSecrets:
+      - name: registry-key
+

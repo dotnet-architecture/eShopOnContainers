@@ -105,6 +105,7 @@ ExecKube -cmd 'delete deployments --all'
 ExecKube -cmd 'delete services --all'
 ExecKube -cmd 'delete configmap urls'
 ExecKube -cmd 'delete configmap externalcfg'
+ExecKube -cmd 'delete configmap ocelot'
 
 # start sql, rabbitmq, frontend deployments
 if ($deployInfrastructure) {
@@ -112,6 +113,12 @@ if ($deployInfrastructure) {
     ExecKube -cmd 'create -f sql-data.yaml -f basket-data.yaml -f keystore-data.yaml -f rabbitmq.yaml -f nosql-data.yaml'
 }
 
+
+Write-Host 'Deploying ocelot APIGW' -ForegroundColor Yellow
+
+ExecKube "create configmap ocelot --from-file=ocelot/configuration.json"
+ExecKube -cmd "apply -f ocelot/deployment.yaml"
+ExecKube -cmd "apply -f ocelot/service.yaml"
 
 Write-Host 'Deploying code deployments (Web APIs, Web apps, ...)' -ForegroundColor Yellow
 ExecKube -cmd 'create -f services.yaml'
@@ -154,7 +161,6 @@ ExecKube -cmd 'create configmap urls `
 ExecKube -cmd 'label configmap urls app=eshop'
 
 Write-Host "Deploying configuration from $configFile" -ForegroundColor Yellow
-
 ExecKube -cmd "create -f $configFile"
 
 Write-Host "Creating deployments..." -ForegroundColor Yellow
@@ -178,6 +184,7 @@ ExecKube -cmd 'set image deployments/payment payment=${registryPath}${dockerOrg}
 ExecKube -cmd 'set image deployments/webmvc webmvc=${registryPath}${dockerOrg}/webmvc:$imageTag'
 ExecKube -cmd 'set image deployments/webstatus webstatus=${registryPath}${dockerOrg}/webstatus:$imageTag'
 ExecKube -cmd 'set image deployments/webspa webspa=${registryPath}${dockerOrg}/webspa:$imageTag'
+ExecKube -cmd 'set image deployments/ocelot ocelot=${registryPath}${dockerOrg}/ocelotapigw:$imageTag'
 
 Write-Host "Execute rollout..." -ForegroundColor Yellow
 ExecKube -cmd 'rollout resume deployments/basket'
@@ -190,6 +197,7 @@ ExecKube -cmd 'rollout resume deployments/payment'
 ExecKube -cmd 'rollout resume deployments/webmvc'
 ExecKube -cmd 'rollout resume deployments/webstatus'
 ExecKube -cmd 'rollout resume deployments/webspa'
+ExecKube -cmd 'rollout resume deployments/ocelot'
 
 Write-Host "WebSPA is exposed at http://$externalDns, WebMVC at http://$externalDns/webmvc, WebStatus at http://$externalDns/webstatus" -ForegroundColor Yellow
 

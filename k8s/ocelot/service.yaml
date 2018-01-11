@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: eshop
+    component: ocelot
+  name: ocelot
+spec:
+  ports:
+  - port: 80
+  selector:
+    app: eshop
+    component: ocelot

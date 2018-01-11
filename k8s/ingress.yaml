@@ -13,11 +13,11 @@ spec:
       paths:
       - path: /basket-api 
         backend:
-          serviceName: basket
+          serviceName: ocelot
           servicePort: 80
       - path: /catalog-api 
         backend:
-          serviceName: catalog
+          serviceName: ocelot
           servicePort: 80
       - path: /identity
         backend:
@@ -25,7 +25,7 @@ spec:
           servicePort: 80
       - path: /ordering-api
         backend:
-          serviceName: ordering
+          serviceName: ocelot
           servicePort: 80
       - path: /webmvc
         backend:
@@ -41,11 +41,11 @@ spec:
           servicePort: 80
       - path: /payment-api
         backend:
-          serviceName: payment
+          serviceName: ocelot
           servicePort: 80
       - path: /locations-api
         backend:
-          serviceName: locations
+          serviceName: ocelot
           servicePort: 80
       - path: /
         backend:

@@ -19,6 +19,7 @@ namespace OcelotApiGw
 
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .ConfigureAppConfiguration(ic => ic.AddJsonFile(Path.Combine("configuration", "configuration.json")))
                 .UseStartup<Startup>()
                 .Build();
     }
