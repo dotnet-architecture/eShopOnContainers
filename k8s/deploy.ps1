@@ -8,7 +8,6 @@ Param(
     [parameter(Mandatory=$false)][string]$imageTag,
     [parameter(Mandatory=$false)][bool]$deployCI=$false,
     [parameter(Mandatory=$false)][bool]$buildImages=$true,
-    [parameter(Mandatory=$false)][bool]$buildBits=$false,
     [parameter(Mandatory=$false)][bool]$deployInfrastructure=$true,
     [parameter(Mandatory=$false)][string]$dockerOrg="eshop"
 )
@@ -50,7 +49,6 @@ if(-not $deployCI) {
     }
 }
 else {
-    $buildBits = false;
     $buildImages = false;       # Never build images through CI, as they previously built
 }
 
@@ -60,11 +58,7 @@ if ([string]::IsNullOrEmpty($imageTag)) {
 }
 Write-Host "Docker image Tag: $imageTag" -ForegroundColor Yellow
 
-# building and publishing docker images if needed
-if($buildBits) {
-    Write-Host "Building and publishing eShopOnContainers..." -ForegroundColor Yellow
-    dotnet publish -c Release -o obj/Docker/publish ../eShopOnContainers-ServicesAndWebApps.sln
-}
+# building  docker images if needed
 if ($buildImages) {
     Write-Host "Building Docker images tagged with '$imageTag'" -ForegroundColor Yellow
     $env:TAG=$imageTag
