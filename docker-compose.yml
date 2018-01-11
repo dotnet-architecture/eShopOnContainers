@@ -107,3 +107,10 @@ services:
       
   rabbitmq:
     image: rabbitmq:3-management-alpine
+
+  ocelotapigw:
+    image: ocelotapigw
+    build:
+      context: .
+      dockerfile: src/Apigw/OcelotApiGw/Dockerfile
+
