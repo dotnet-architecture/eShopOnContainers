@@ -373,8 +373,8 @@
     <AndroidResource Include="Resources\default_campaign.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\eShopOnContainers.Core\eShopOnContainers.Core.csproj">
-      <Project>{42527749-70D5-4A44-85B4-33C4E34C7C53}</Project>
+    <ProjectReference Include="..\eShopOnContainers.Core\eShopOnContainers.Core.csproj">
+      <Project>{76C5F2A7-6CD5-49EA-9F33-EC44DE6539C7}</Project>
       <Name>eShopOnContainers.Core</Name>
     </ProjectReference>
   </ItemGroup>

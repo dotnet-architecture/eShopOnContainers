@@ -17,8 +17,4 @@
     <PackageReference Include="Autofac" Version="4.6.2" />
     <PackageReference Include="IdentityModel" Version="3.0.0" />
   </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="Models\Orders\CardType.CS" />
-  </ItemGroup>
 </Project>
