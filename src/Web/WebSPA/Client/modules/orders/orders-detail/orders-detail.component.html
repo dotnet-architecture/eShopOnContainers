@@ -2,21 +2,43 @@
     <esh-header url="/orders">Back to list</esh-header>
 
     <div class="container">
-        <section class="esh-orders_detail-section">
-            <article class="esh-orders_detail-titles row">
-                <section class="esh-orders_detail-title col-xs-3">Order number</section>
-                <section class="esh-orders_detail-title col-xs-3">Date</section>
-                <section class="esh-orders_detail-title col-xs-3">Total</section>
-                <section class="esh-orders_detail-title col-xs-3">Status</section>
-            </article>
 
-            <article class="esh-orders_detail-items row">
-                <section class="esh-orders_detail-item col-xs-3">{{order.ordernumber}}</section>
-                <section class="esh-orders_detail-item col-xs-3">{{order.date | date:'short'}}</section>
-                <section class="esh-orders_detail-item col-xs-3">$ {{order.total}}</section>
-                <section class="esh-orders_detail-item col-xs-3">{{order.status}}</section>
-            </article>
-        </section>
+        <div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">
+                            <section class="esh-orders_detail-title col-xs-3">Order number</section>
+                        </th>
+                        <th scope="col">
+                            <section class="esh-orders_detail-title col-xs-3">Date</section>
+                        </th>
+                        <th scope="col">
+                            <section class="esh-orders_detail-title col-xs-3">Total</section>
+                        </th>
+                        <th scope="col">
+                            <section class="esh-orders_detail-title col-xs-3">Status</section>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">
+                            <section class="esh-orders_detail-item col-xs-3">{{order.ordernumber}}</section>
+                        </th>
+                        <td>
+                            <section class="esh-orders_detail-item col-xs-3">{{order.date | date:'short'}}</section>
+                        </td>
+                        <td>
+                            <section class="esh-orders_detail-item col-xs-3">$ {{order.total}}</section>
+                        </td>
+                        <td>
+                            <section class="esh-orders_detail-item col-xs-3">{{order.status}}</section>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
         <section class="esh-orders_detail-section">
             <article class="esh-orders_detail-titles row">

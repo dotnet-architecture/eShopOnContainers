@@ -80,36 +80,82 @@
                 <section class="esh-orders_new-title col-xs-12">Order details</section>
             </article>
 
-            <article class="esh-orders_new-items esh-orders_new-items--border row" *ngFor="let item of order.orderItems">
-                <section class="esh-orders_new-item col-md-4 hidden-md-down">
-                    <img class="esh-orders_new-image" src="{{item.pictureurl}}">
-                </section>
-                <section class="esh-orders_new-item esh-orders_new-item--middle col-xs-4">{{item.productname}}</section>
-                <section class="esh-orders_new-item esh-orders_new-item--middle col-xs-1">$ {{item.unitprice | number:'.2-2'}}</section>
-                <section class="esh-orders_new-item esh-orders_new-item--middle col-xs-1">{{item.units}}</section>
-                <section class="esh-orders_new-item esh-orders_new-item--middle col-xs-2">$ {{(item.units * item.unitprice) | number:'.2-2'}}</section>
-            </article>
-        </section>
-
-        <section class="esh-orders_new-section esh-orders_new-section--right">
-            <article class="esh-orders_new-titles row">
-                <section class="esh-orders_new-title col-xs-9"></section>
-                <section class="esh-orders_new-title col-xs-2">Total</section>
-            </article>
-
-            <article class="esh-orders_new-items row">
-                <section class="esh-orders_new-item col-xs-9"></section>
-                <section class="esh-orders_new-item esh-orders_new-item--mark col-xs-2">$ {{order.total | number:'.2-2'}}</section>
-            </article>
-        </section>
-        <section class="esh-orders_new-section">
-            <div class="form-group">
-                <div class="col-md-9">
-                </div>
-                <div class="col-md-2">
-                    <button type="submit" class="btn esh-orders_new-placeOrder" [disabled]="!newOrderForm.valid || isOrderProcessing">[ Place Order ]</button>
-                </div>
-            </div>
+            <table>
+                <tbody>
+                    <tr *ngFor="let item of order.orderItems">
+                        <th scope="row">
+                            <section class="esh-orders_new-item col-md-4 hidden-md-down">
+                                <img class="esh-orders_new-image" src="{{item.pictureurl}}">
+                            </section>
+                        </th>
+                        <td>
+                            <section class="esh-orders_new-item esh-orders_new-item--middle col-xs-3">{{item.productname}}</section>
+                        </td>
+                        <td>
+                            <section class="esh-orders_new-item esh-orders_new-item--middle col-xs-2">$ {{item.unitprice | number:'.2-2'}}</section>
+                        </td>
+                        <td>
+                            <section class="esh-orders_new-item esh-orders_new-item--middle col-xs-1">{{item.units}}</section>
+                        </td>
+                        <td>
+                            <section class="esh-orders_new-item esh-orders_new-item--middle col-xs-2">$ {{(item.units * item.unitprice) | number:'.2-2'}}</section>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">
+                            <section class="esh-orders_new-item col-md-4 hidden-md-down"></section>
+                        </th>
+                        <td>
+                            <section class="esh-orders_new-item esh-orders_new-item--middle col-xs-3"></section>
+                        </td>
+                        <td>
+                            <section class="esh-orders_new-item esh-orders_new-item--middle col-xs-2"></section>
+                        </td>
+                        <td>
+                            <section class="esh-orders_new-item esh-orders_new-item--middle col-xs-1"></section>
+                        </td>
+                        <td>
+                            <section class="esh-orders_new-title col-xs-2">Total</section>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">
+                            <section class="esh-orders_new-item col-md-4 hidden-md-down"></section>
+                        </th>
+                        <td>
+                            <section class="esh-orders_new-item esh-orders_new-item--middle col-xs-3"></section>
+                        </td>
+                        <td>
+                            <section class="esh-orders_new-item esh-orders_new-item--middle col-xs-2"></section>
+                        </td>
+                        <td>
+                            <section class="esh-orders_new-item esh-orders_new-item--middle col-xs-1"></section>
+                        </td>
+                        <td>
+                            <section class="esh-orders_new-item esh-orders_new-item--mark col-xs-2">$ {{order.total | number:'.2-2'}}</section>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">
+                            <section class="esh-orders_new-item col-md-4 hidden-md-down"></section>
+                        </th>
+                        <td>
+                            <section class="esh-orders_new-item esh-orders_new-item--middle col-xs-2"></section>
+                        </td>
+                        <td colspan="2">
+                            <section class="esh-orders_new-section">
+                                <div class="form-group">
+                                    <div class="col-md-9">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="submit" class="btn esh-orders_new-placeOrder" [disabled]="!newOrderForm.valid || isOrderProcessing">[ Place Order ]</button>
+                                    </div>
+                                </div>
+                            </section>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </section>
     </form>
 </div>

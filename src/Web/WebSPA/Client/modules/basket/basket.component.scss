@@ -8,14 +8,12 @@
     &-titles {
         padding-bottom: 1rem;
         padding-top: 2rem;
+        justify-content: space-between;
+        align-items: right;
         &--clean {
             padding-bottom: 0;
             padding-top: 0;
         }
-    }
-    &-titles {
-        justify-content: space-between;
-        align-items: right;
     }
     &-title {
         text-transform: uppercase;
