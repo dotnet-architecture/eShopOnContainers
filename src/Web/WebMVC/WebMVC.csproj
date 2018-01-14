@@ -27,10 +27,10 @@
     <PackageReference Include="Microsoft.VisualStudio.Azure.Fabric.MSBuild" Version="1.6.3" />
   </ItemGroup>
 
-  <!--<Target Name="PrepublishScript" BeforeTargets="PrepareForPublish">
-    <Exec Command="bower install - -allow-root" />
+  <Target Name="PrepublishScript" BeforeTargets="PrepareForPublish">
+    <Exec Command="bower install --allow-root" />
     <Exec Command="dotnet bundle" Condition="'$(ASPNETCORE_ENVIRONMENT)'!='Development'" />
-  </Target>-->
+  </Target>
 
   <ItemGroup>
     <DotNetCliToolReference Include="BundlerMinifier.Core" Version="2.5.357" />
