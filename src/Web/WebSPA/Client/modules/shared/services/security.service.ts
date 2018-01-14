@@ -1,5 +1,6 @@
 ﻿import { Injectable } from '@angular/core';
 import { Http, Response, Headers } from '@angular/http';
+
 import 'rxjs/add/operator/map';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
@@ -18,7 +19,12 @@ export class SecurityService {
     authenticationChallenge$ = this.authenticationSource.asObservable();
     private authorityUrl = '';
 
-    constructor(private _http: Http, private _router: Router, private route: ActivatedRoute, private _configurationService: ConfigurationService, private _storageService: StorageService) {
+    constructor(
+        private _http: Http,
+        private _router: Router,
+        private route: ActivatedRoute,
+        private _configurationService: ConfigurationService,
+        private _storageService: StorageService) {
         this.headers = new Headers();
         this.headers.append('Content-Type', 'application/json');
         this.headers.append('Accept', 'application/json');

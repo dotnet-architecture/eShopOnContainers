@@ -1,8 +1,8 @@
 ﻿import { Injectable } from '@angular/core';
 import { Http, Response, RequestOptionsArgs, RequestMethod, Headers } from '@angular/http';
+
 import { IConfiguration } from '../models/configuration.model';
 import { StorageService } from './storage.service';
-
 import 'rxjs/Rx';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/throw';
@@ -19,7 +19,9 @@ export class ConfigurationService {
     settingsLoaded$ = this.settingsLoadedSource.asObservable();
     isReady: boolean = false;
 
-    constructor(private http: Http, private storageService: StorageService) { }
+    constructor(
+        private http: Http,
+        private storageService: StorageService) { }
 
     load() {
         const baseURI = document.baseURI.endsWith('/') ? document.baseURI : `${document.baseURI}/`;

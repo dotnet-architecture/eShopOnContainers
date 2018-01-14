@@ -32,7 +32,13 @@ export class BasketService {
     private basketDropedSource = new Subject();
     basketDroped$ = this.basketDropedSource.asObservable();
 
-    constructor(private service: DataService, private authService: SecurityService, private basketEvents: BasketWrapperService, private router: Router, private configurationService: ConfigurationService, private storageService: StorageService) {
+    constructor(
+        private service: DataService,
+        private authService: SecurityService,
+        private basketEvents: BasketWrapperService,
+        private router: Router,
+        private configurationService: ConfigurationService,
+        private storageService: StorageService) {
         this.basket.items = [];
 
         // Init:
@@ -65,28 +71,36 @@ export class BasketService {
     setBasket(basket): Observable<boolean> {
         let url = this.basketUrl + '/api/v1/basket/';
         this.basket = basket;
-        return this.service.post(url, basket).map((response: Response) => {
-            return true;
-        });
+        return this
+            .service
+            .post(url, basket)
+            .map((response: Response) => {
+                return true;
+            });
     }
 
     setBasketCheckout(basketCheckout): Observable<boolean> {
         let url = this.basketUrl + '/api/v1/basket/checkout';
-        return this.service.postWithId(url, basketCheckout).map((response: Response) => {
-            this.basketEvents.orderCreated();
-            return true;
-        });
+        return this
+            .service
+            .postWithId(url, basketCheckout)
+            .map((response: Response) => {
+                this.basketEvents.orderCreated();
+                return true;
+            });
     }
 
     getBasket(): Observable<IBasket> {
         let url = this.basketUrl + '/api/v1/basket/' + this.basket.buyerId;
-        return this.service.get(url).map((response: Response) => {
-            if (response.status === 204) {
-                return null;
-            }
-
-            return response.json();
-        });
+        return this
+            .service
+            .get(url)
+            .map((response: Response) => {
+                if (response.status === 204) {
+                    return null;
+                }
+                return response.json();
+            });
     }
 
     mapBasketInfoCheckout(order: IOrder): IBasketCheckout {
@@ -114,9 +128,11 @@ export class BasketService {
     }
 
     private loadData() {
-        this.getBasket().subscribe(basket => {
-            if (basket != null)
-                this.basket.items = basket.items;
-        });
+        this
+            .getBasket()
+            .subscribe(basket => {
+                if (basket != null)
+                    this.basket.items = basket.items;
+            });
     }
 }

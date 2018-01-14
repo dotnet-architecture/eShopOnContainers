@@ -15,7 +15,9 @@ import { Guid } from '../../../guid';
 // is pending to do for the SPA app
 @Injectable()
 export class DataService {
-    constructor(private http: Http, private securityService: SecurityService) { }
+    constructor(
+        private http: Http,
+        private securityService: SecurityService) { }
 
     get(url: string, params?: any): Observable<Response> {
         let options: RequestOptionsArgs = {};

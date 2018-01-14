@@ -19,12 +19,17 @@ export class CatalogService {
     private brandUrl: string = '';
     private typesUrl: string = '';
 
-    constructor(private service: DataService, private configurationService: ConfigurationService) {
-        this.configurationService.settingsLoaded$.subscribe(x => {
-            this.catalogUrl = this.configurationService.serverSettings.catalogUrl + '/api/v1/catalog/items';
-            this.brandUrl = this.configurationService.serverSettings.catalogUrl + '/api/v1/catalog/catalogbrands';
-            this.typesUrl = this.configurationService.serverSettings.catalogUrl + '/api/v1/catalog/catalogtypes';
-        });
+    constructor(
+        private service: DataService,
+        private configurationService: ConfigurationService) {
+        this
+            .configurationService
+            .settingsLoaded$
+            .subscribe(x => {
+                this.catalogUrl = this.configurationService.serverSettings.catalogUrl + '/api/v1/catalog/items';
+                this.brandUrl = this.configurationService.serverSettings.catalogUrl + '/api/v1/catalog/catalogbrands';
+                this.typesUrl = this.configurationService.serverSettings.catalogUrl + '/api/v1/catalog/catalogtypes';
+            });
     }
 
     getCatalog(pageIndex: number, pageSize: number, brand: number, type: number): Observable<ICatalog> {

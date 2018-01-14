@@ -18,7 +18,10 @@ import 'rxjs/add/operator/map';
 export class CampaignsService {
     private marketingUrl: string = '';
     private buyerId: string = '';
-    constructor(private service: DataService, private identityService: SecurityService, private configurationService: ConfigurationService) {
+    constructor(
+        private service: DataService,
+        private identityService: SecurityService,
+        private configurationService: ConfigurationService) {
         if (this.identityService.IsAuthorized) {
             if (this.identityService.UserData) {
                 this.buyerId = this.identityService.UserData.sub;
@@ -28,7 +31,10 @@ export class CampaignsService {
         if (this.configurationService.isReady)
             this.marketingUrl = this.configurationService.serverSettings.marketingUrl;
         else
-            this.configurationService.settingsLoaded$.subscribe(x => this.marketingUrl = this.configurationService.serverSettings.marketingUrl);
+            this
+                .configurationService
+                .settingsLoaded$
+                .subscribe(x => this.marketingUrl = this.configurationService.serverSettings.marketingUrl);
 
     }
 

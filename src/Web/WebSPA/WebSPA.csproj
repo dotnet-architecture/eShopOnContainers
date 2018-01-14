@@ -1,5 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
-
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <UserSecretsId>aspnetcorespa-c23d27a4-eb88-4b18-9b77-2a93f3b15119</UserSecretsId>
@@ -8,8 +7,8 @@
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
     <GeneratedItemPatterns>wwwroot/dist/**</GeneratedItemPatterns>
     <DefaultItemExcludes>$(DefaultItemExcludes);$(GeneratedItemPatterns)</DefaultItemExcludes>
+    <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
   </PropertyGroup>
-
   <ItemGroup>
     <Compile Remove="node_modules\**\*;Client\**\*" />
     <Content Include="Setup\images.zip">
@@ -25,7 +24,6 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
   </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.1.1" />
     <PackageReference Include="Microsoft.ApplicationInsights.DependencyCollector" Version="2.4.1" />
@@ -35,41 +33,34 @@
     <PackageReference Include="Microsoft.AspNetCore.DataProtection.Redis" Version="0.3.1" />
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
   </ItemGroup>
-
   <!-- workaround for https://github.com/aspnet/websdk/issues/114 -->
-  <!--<Target Name="PrepublishScript" BeforeTargets="PrepareForPublish">
+  <Target Name="PrepublishScript" BeforeTargets="PrepareForPublish">
     <Exec Command="npm install" />
     <Exec Command="npm run build:prod" />
     <ItemGroup>
       <_GeneratedFiles Include="$(GeneratedItemPatterns)" />
       <ContentWithTargetPath Include="@(_GeneratedFiles)" TargetPath="%(Identity)" CopyToPublishDirectory="PreserveNewest" />
     </ItemGroup>
-  </Target>-->
-
+  </Target>
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.DotNet.Watcher.Tools" Version="2.0.0" />
     <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="2.0.0" />
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.1" />
   </ItemGroup>
-
   <!-- workaround for https://github.com/aspnet/websdk/issues/114 -->
   <!--
-  <Target Name="AddGeneratedContentItems" BeforeTargets="AssignTargetPaths" DependsOnTargets="PrepareForPublish">
-      <ItemGroup>
-          <Content Include="wwwroot/**" CopyToPublishDirectory="PreserveNewest" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder);@(Content)" />
-      </ItemGroup>
-  </Target>
+  <Target Name="AddGeneratedContentItems" BeforeTargets="AssignTargetPaths" DependsOnTargets="PrepareForPublish"><ItemGroup><Content Include="wwwroot/**" CopyToPublishDirectory="PreserveNewest" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder);@(Content)" /></ItemGroup></Target>
   -->
-    
   <ItemGroup>
     <ProjectReference Include="..\..\BuildingBlocks\HealthChecks\src\Microsoft.AspNetCore.HealthChecks\Microsoft.AspNetCore.HealthChecks.csproj" />
     <ProjectReference Include="..\..\BuildingBlocks\HealthChecks\src\Microsoft.Extensions.HealthChecks\Microsoft.Extensions.HealthChecks.csproj" />
   </ItemGroup>
-
   <ItemGroup>
     <Folder Include="wwwroot\assets\" />
   </ItemGroup>
-
-  <ProjectExtensions><VisualStudio><UserProperties package-lock_1json__JSONSchema="http://json.schemastore.org/bower" /></VisualStudio></ProjectExtensions>
-
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties package-lock_1json__JSONSchema="http://json.schemastore.org/bower" />
+    </VisualStudio>
+  </ProjectExtensions>
 </Project>
