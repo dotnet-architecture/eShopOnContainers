@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-	<AssertTargetFallback>$(AssertTargetFallback);portable-win+net45+wp8+win81</AssertTargetFallback>
   </PropertyGroup>
 
   <ItemGroup>
