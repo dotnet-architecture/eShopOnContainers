@@ -1,113 +1,121 @@
 ﻿using Xunit;
 using eShopOnContainers.Core.ViewModels.Base;
+using eShopOnContainers.UnitTests.Helpers;
+using System.ComponentModel;
 
 namespace eShopOnContainers.UnitTests
 {
-	public class MockViewModelTests
-	{
-		public MockViewModelTests()
-		{
-			ViewModelLocator.RegisterDependencies(true);
-		}
+    public class MockViewModelTests
+    {
+        public MockViewModelTests()
+        {
+            ViewModelLocator.RegisterDependencies(true);
+        }
 
-		[Fact]
-		public void CheckValidationFailsWhenPropertiesAreEmptyTest()
-		{
-			var mockViewModel = new MockViewModel();
+        [Fact]
+        public void CheckValidationFailsWhenPropertiesAreEmptyTest()
+        {
+            var mockViewModel = new MockViewModel();
 
-			bool isValid = mockViewModel.Validate();
+            bool isValid = mockViewModel.Validate();
 
-			Assert.False(isValid);
-			Assert.Null(mockViewModel.Forename.Value);
-			Assert.Null(mockViewModel.Surname.Value);
-			Assert.False(mockViewModel.Forename.IsValid);
-			Assert.False(mockViewModel.Surname.IsValid);
-			Assert.NotEmpty(mockViewModel.Forename.Errors);
+            Assert.False(isValid);
+            Assert.Null(mockViewModel.Forename.Value);
+            Assert.Null(mockViewModel.Surname.Value);
+            Assert.False(mockViewModel.Forename.IsValid);
+            Assert.False(mockViewModel.Surname.IsValid);
+            Assert.NotEmpty(mockViewModel.Forename.Errors);
             Assert.NotEmpty(mockViewModel.Surname.Errors);
-		}
+        }
 
-		[Fact]
-		public void CheckValidationFailsWhenOnlyForenameHasDataTest()
-		{
-			var mockViewModel = new MockViewModel();
-			mockViewModel.Forename.Value = "John";
+        [Fact]
+        public void CheckValidationFailsWhenOnlyForenameHasDataTest()
+        {
+            var mockViewModel = new MockViewModel();
+            mockViewModel.Forename.Value = "John";
 
-			bool isValid = mockViewModel.Validate();
+            bool isValid = mockViewModel.Validate();
 
-			Assert.False(isValid);
-			Assert.NotNull(mockViewModel.Forename.Value);
-			Assert.Null(mockViewModel.Surname.Value);
-			Assert.True(mockViewModel.Forename.IsValid);
-			Assert.False(mockViewModel.Surname.IsValid);
-			Assert.Empty(mockViewModel.Forename.Errors);
-			Assert.NotEmpty(mockViewModel.Surname.Errors);
-		}
+            Assert.False(isValid);
+            Assert.NotNull(mockViewModel.Forename.Value);
+            Assert.Null(mockViewModel.Surname.Value);
+            Assert.True(mockViewModel.Forename.IsValid);
+            Assert.False(mockViewModel.Surname.IsValid);
+            Assert.Empty(mockViewModel.Forename.Errors);
+            Assert.NotEmpty(mockViewModel.Surname.Errors);
+        }
 
-		[Fact]
-		public void CheckValidationPassesWhenOnlySurnameHasDataTest()
-		{
-			var mockViewModel = new MockViewModel();
-			mockViewModel.Surname.Value = "Smith";
+        [Fact]
+        public void CheckValidationPassesWhenOnlySurnameHasDataTest()
+        {
+            var mockViewModel = new MockViewModel();
+            mockViewModel.Surname.Value = "Smith";
 
-			bool isValid = mockViewModel.Validate();
+            bool isValid = mockViewModel.Validate();
 
-			Assert.False(isValid);
-			Assert.Null(mockViewModel.Forename.Value);
-			Assert.NotNull(mockViewModel.Surname.Value);
-			Assert.False(mockViewModel.Forename.IsValid);
-			Assert.True(mockViewModel.Surname.IsValid);
-			Assert.NotEmpty(mockViewModel.Forename.Errors);
-			Assert.Empty(mockViewModel.Surname.Errors);
-		}
+            Assert.False(isValid);
+            Assert.Null(mockViewModel.Forename.Value);
+            Assert.NotNull(mockViewModel.Surname.Value);
+            Assert.False(mockViewModel.Forename.IsValid);
+            Assert.True(mockViewModel.Surname.IsValid);
+            Assert.NotEmpty(mockViewModel.Forename.Errors);
+            Assert.Empty(mockViewModel.Surname.Errors);
+        }
 
-		[Fact]
-		public void CheckValidationPassesWhenBothPropertiesHaveDataTest()
-		{
-			var mockViewModel = new MockViewModel();
-			mockViewModel.Forename.Value = "John";
-			mockViewModel.Surname.Value = "Smith";
+        [Fact]
+        public void CheckValidationPassesWhenBothPropertiesHaveDataTest()
+        {
+            var mockViewModel = new MockViewModel();
+            mockViewModel.Forename.Value = "John";
+            mockViewModel.Surname.Value = "Smith";
 
-			bool isValid = mockViewModel.Validate();
+            bool isValid = mockViewModel.Validate();
 
-			Assert.True(isValid);
-			Assert.NotNull(mockViewModel.Forename.Value);
-			Assert.NotNull(mockViewModel.Surname.Value);
-			Assert.True(mockViewModel.Forename.IsValid);
-			Assert.True(mockViewModel.Surname.IsValid);
-			Assert.Empty(mockViewModel.Forename.Errors);
-			Assert.Empty(mockViewModel.Surname.Errors);
-		}
+            Assert.True(isValid);
+            Assert.NotNull(mockViewModel.Forename.Value);
+            Assert.NotNull(mockViewModel.Surname.Value);
+            Assert.True(mockViewModel.Forename.IsValid);
+            Assert.True(mockViewModel.Surname.IsValid);
+            Assert.Empty(mockViewModel.Forename.Errors);
+            Assert.Empty(mockViewModel.Surname.Errors);
+        }
 
-		[Fact]
-		public void SettingForenamePropertyShouldRaisePropertyChanged()
-		{
-			bool invoked = false;
-			var mockViewModel = new MockViewModel();
+        [Fact]
+        public void SettingForenamePropertyShouldRaisePropertyChanged()
+        {
+            bool invoked = false;
+            var mockViewModel = new MockViewModel();
 
-			mockViewModel.Forename.PropertyChanged += (sender, e) =>
-			{
-				if (e.PropertyName.Equals("Value"))
-					invoked = true;
-			};
-			mockViewModel.Forename.Value = "John";
+            PropertyChangedEventHandler handler = (sender, e) =>
+            {
+                if (e.PropertyName.Equals("Value"))
+                    invoked = true;
+            };
 
-			Assert.True(invoked);
-		}
+            mockViewModel.Forename.PropertyChanged += handler;
+            mockViewModel.Forename.Value = "John";
+            mockViewModel.Forename.PropertyChanged -= handler;
 
-		[Fact]
-		public void SettingSurnamePropertyShouldRaisePropertyChanged()
-		{
-			bool invoked = false;
-			var mockViewModel = new MockViewModel();
+            Assert.True(invoked);
+        }
 
-			mockViewModel.Surname.PropertyChanged += (sender, e) =>
-			{
-				if (e.PropertyName.Equals("Value"))
-					invoked = true;
-			};
-			mockViewModel.Surname.Value = "Smith";
+        [Fact]
+        public void SettingSurnamePropertyShouldRaisePropertyChanged()
+        {
+            bool invoked = false;
+            var mockViewModel = new MockViewModel();
 
-			Assert.True(invoked);
-		}
-	}
+            PropertyChangedEventHandler handler = (sender, e) =>
+            {
+                if (e.PropertyName.Equals("Value"))
+                    invoked = true;
+            };
+
+            mockViewModel.Surname.PropertyChanged += handler;
+            mockViewModel.Surname.Value = "Smith";
+            mockViewModel.Surname.PropertyChanged -= handler;
+
+            Assert.True(invoked);
+        }
+    }
 }

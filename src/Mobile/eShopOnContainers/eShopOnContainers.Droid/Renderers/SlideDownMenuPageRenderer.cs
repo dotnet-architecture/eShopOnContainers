@@ -1,3 +1,4 @@
+using Android.Content;
 using SlideOverKit.Droid;
 using eShopOnContainers.Core.Views;
 using eShopOnContainers.Droid.Renderers;
@@ -16,7 +17,7 @@ namespace eShopOnContainers.Droid.Renderers
 
         public Action<int, int, int, int> OnSizeChangedEvent { get; set; }
 
-        public SlideDownMenuPageRenderer()
+        public SlideDownMenuPageRenderer(Context context) : base(context)
         {
             new SlideOverKitDroidHandler().Init(this);
         }

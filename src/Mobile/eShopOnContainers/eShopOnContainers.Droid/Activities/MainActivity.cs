@@ -34,7 +34,7 @@ namespace eShopOnContainers.Droid.Activities
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
             UserDialogs.Init(this);
-            CachedImageRenderer.Init();
+            CachedImageRenderer.Init(false);
             LoadApplication(new App());
 
             Window window = this.Window;
@@ -56,6 +56,7 @@ namespace eShopOnContainers.Droid.Activities
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
         {
+            base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
             PermissionsImplementation.Current.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }

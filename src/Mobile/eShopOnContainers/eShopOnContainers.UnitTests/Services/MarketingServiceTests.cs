@@ -23,7 +23,7 @@
             var campaignMockService = new CampaignMockService();
             var result = await campaignMockService.GetAllCampaignsAsync(GlobalSetting.Instance.AuthToken);
 
-            Assert.NotEqual(0, result.Count);
+            Assert.NotEmpty(result);
         }
     }
 }
