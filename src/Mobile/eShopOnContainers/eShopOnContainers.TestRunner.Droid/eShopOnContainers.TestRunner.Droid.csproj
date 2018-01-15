@@ -145,7 +145,6 @@
     <Reference Include="SlideOverKit.Droid">
       <HintPath>..\..\..\..\packages\SlideOverKit.2.1.5\lib\MonoAndroid10\SlideOverKit.Droid.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\..\..\packages\Newtonsoft.Json.10.0.3\lib\netstandard1.3\Newtonsoft.Json.dll</HintPath>
     </Reference>
