@@ -7,7 +7,6 @@ using eShopOnContainers.Core.Services.RequestProvider;
 using eShopOnContainers.Core.Models.Token;
 using eShopOnContainers.Core.Helpers;
 using IdentityModel;
-using IdentityModel.Client;
 using PCLCrypto;
 using static PCLCrypto.WinRTCrypto;
 
@@ -26,26 +25,25 @@ namespace eShopOnContainers.Core.Services.Identity
         public string CreateAuthorizationRequest()
         {
             // Create URI to authorization endpoint
-            //var authorizeRequest = new AuthorizeRequest(GlobalSetting.Instance.IdentityEndpoint);
+            var authorizeRequest = new AuthorizeRequest(GlobalSetting.Instance.IdentityEndpoint);
 
-            //// Dictionary with values for the authorize request
-            //var dic = new Dictionary<string, string>();
-            //dic.Add("client_id", GlobalSetting.Instance.ClientId);
-            //dic.Add("client_secret", GlobalSetting.Instance.ClientSecret);
-            //dic.Add("response_type", "code id_token");
-            //dic.Add("scope", "openid profile basket orders locations marketing offline_access");
-            //dic.Add("redirect_uri", GlobalSetting.Instance.IdentityCallback);
-            //dic.Add("nonce", Guid.NewGuid().ToString("N"));
-            //dic.Add("code_challenge", CreateCodeChallenge());
-            //dic.Add("code_challenge_method", "S256");
+            // Dictionary with values for the authorize request
+            var dic = new Dictionary<string, string>();
+            dic.Add("client_id", GlobalSetting.Instance.ClientId);
+            dic.Add("client_secret", GlobalSetting.Instance.ClientSecret);
+            dic.Add("response_type", "code id_token");
+            dic.Add("scope", "openid profile basket orders locations marketing offline_access");
+            dic.Add("redirect_uri", GlobalSetting.Instance.IdentityCallback);
+            dic.Add("nonce", Guid.NewGuid().ToString("N"));
+            dic.Add("code_challenge", CreateCodeChallenge());
+            dic.Add("code_challenge_method", "S256");
 
-            //// Add CSRF token to protect against cross-site request forgery attacks.
-            //var currentCSRFToken = Guid.NewGuid().ToString("N");
-            //dic.Add("state", currentCSRFToken);
+            // Add CSRF token to protect against cross-site request forgery attacks.
+            var currentCSRFToken = Guid.NewGuid().ToString("N");
+            dic.Add("state", currentCSRFToken);
 
-            //var authorizeUri = authorizeRequest.Create(dic);
-            //return authorizeUri;
-            return string.Empty;
+            var authorizeUri = authorizeRequest.Create(dic);
+            return authorizeUri;
         }
 
         public string CreateLogoutRequest(string token)
