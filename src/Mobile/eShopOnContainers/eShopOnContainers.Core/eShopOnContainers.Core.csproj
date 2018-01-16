@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Xam.Plugins.Settings" Version="3.1.1" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="4.4.1" />
     <PackageReference Include="Acr.UserDialogs" Version="6.5.1" />
     <PackageReference Include="SlideOverKit" Version="2.1.5" />
@@ -16,5 +15,10 @@
     <PackageReference Include="Xamarin.Forms" Version="2.5.0.122203" />
     <PackageReference Include="Autofac" Version="4.6.2" />
     <PackageReference Include="IdentityModel" Version="3.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Services\Settings\" />
+    <Folder Include="Services\Dependency\" />
+    <Folder Include="Services\FixUri\" />
   </ItemGroup>
 </Project>

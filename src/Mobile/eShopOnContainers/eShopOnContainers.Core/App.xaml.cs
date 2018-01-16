@@ -1,5 +1,4 @@
 ﻿using System.Globalization;
-using eShopOnContainers.Core.Helpers;
 using eShopOnContainers.Services;
 using eShopOnContainers.Core.ViewModels.Base;
 using System.Threading.Tasks;
@@ -8,20 +7,21 @@ using eShopOnContainers.Core.Services.Location;
 using Plugin.Geolocator;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using eShopOnContainers.Core.Services.Settings;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace eShopOnContainers
 {
     public partial class App : Application
     {
-        public bool UseMockServices { get; set; }
+        ISettingsService _settingsService;
+        bool _useMockServices;
 
         public App()
         {
             InitializeComponent();
 
             InitApp();
-
             if (Device.RuntimePlatform == Device.UWP)
             {
                 InitNavigation();
@@ -30,8 +30,9 @@ namespace eShopOnContainers
 
         private void InitApp()
         {
-            UseMockServices = Settings.UseMocks;
-            ViewModelLocator.RegisterDependencies(UseMockServices);
+            _useMockServices = true;//_settingsService.UseMocks;
+            ViewModelLocator.RegisterDependencies(_useMockServices);
+            _settingsService = ViewModelLocator.Resolve<ISettingsService>();
         }
 
         private Task InitNavigation()
@@ -49,12 +50,12 @@ namespace eShopOnContainers
                 await InitNavigation();
             }
 
-            if (Settings.AllowGpsLocation && !Settings.UseFakeLocation)
+            if (_settingsService.AllowGpsLocation && !_settingsService.UseFakeLocation)
             {
                 await GetGpsLocation();
             }
 
-            if (!Settings.UseMocks && !string.IsNullOrEmpty(Settings.AuthAccessToken))
+            if (!_settingsService.UseMocks && !string.IsNullOrEmpty(_settingsService.AuthAccessToken))
             {
                 await SendCurrentLocation();
             }
@@ -78,12 +79,12 @@ namespace eShopOnContainers
 
                 var position = await locator.GetPositionAsync();
 
-                Settings.Latitude = position.Latitude.ToString();
-                Settings.Longitude = position.Longitude.ToString();
+                _settingsService.Latitude = position.Latitude.ToString();
+                _settingsService.Longitude = position.Longitude.ToString();
             }
             else
             {
-                Settings.AllowGpsLocation = false;
+                _settingsService.AllowGpsLocation = false;
             }
         }
 
@@ -91,13 +92,12 @@ namespace eShopOnContainers
         {
             var location = new Location
             {
-                Latitude = double.Parse(Settings.Latitude, CultureInfo.InvariantCulture),
-                Longitude = double.Parse(Settings.Longitude, CultureInfo.InvariantCulture)
+                Latitude = double.Parse(_settingsService.Latitude, CultureInfo.InvariantCulture),
+                Longitude = double.Parse(_settingsService.Longitude, CultureInfo.InvariantCulture)
             };
 
             var locationService = ViewModelLocator.Resolve<ILocationService>();
-            await locationService.UpdateUserLocation(location,
-                Settings.AuthAccessToken);
+            await locationService.UpdateUserLocation(location, _settingsService.AuthAccessToken);
         }
     }
 }

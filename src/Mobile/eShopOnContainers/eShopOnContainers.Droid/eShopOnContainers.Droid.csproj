@@ -166,12 +166,6 @@
     <Reference Include="Plugin.Geolocator">
       <HintPath>..\..\..\..\packages\Xam.Plugin.Geolocator.3.0.4\lib\MonoAndroid10\Plugin.Geolocator.dll</HintPath>
     </Reference>
-    <Reference Include="Plugin.Settings.Abstractions">
-      <HintPath>..\..\..\..\packages\Xam.Plugins.Settings.3.1.1\lib\MonoAndroid10\Plugin.Settings.Abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="Plugin.Settings">
-      <HintPath>..\..\..\..\packages\Xam.Plugins.Settings.3.1.1\lib\MonoAndroid10\Plugin.Settings.dll</HintPath>
-    </Reference>
     <Reference Include="System.Net.Http.Extensions">
       <HintPath>..\..\..\..\packages\Microsoft.Net.Http.2.2.28\lib\monoandroid\System.Net.Http.Extensions.dll</HintPath>
     </Reference>
@@ -235,7 +229,6 @@
     <Compile Include="Effects\CircleEffect.cs" />
     <Compile Include="Effects\BaseContainerEffect.cs" />
     <Compile Include="Activities\SplashActivity.cs" />
-    <Compile Include="Helpers\Settings.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="..\CommonResources\Fonts\Montserrat-Bold.ttf">

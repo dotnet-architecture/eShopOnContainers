@@ -1,6 +1,7 @@
 ﻿using eShopOnContainers.Core.Helpers;
 using eShopOnContainers.Services;
 using System.Threading.Tasks;
+using eShopOnContainers.Core.Services.Settings;
 
 namespace eShopOnContainers.Core.ViewModels.Base
 {
@@ -29,7 +30,7 @@ namespace eShopOnContainers.Core.ViewModels.Base
         {
             DialogService = ViewModelLocator.Resolve<IDialogService>();
             NavigationService = ViewModelLocator.Resolve<INavigationService>();
-            GlobalSetting.Instance.BaseEndpoint = Settings.UrlBase;
+            GlobalSetting.Instance.BaseEndpoint = ViewModelLocator.Resolve<ISettingsService>().UrlBase;
         }
 
         public virtual Task InitializeAsync(object navigationData)
