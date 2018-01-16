@@ -11,7 +11,7 @@ namespace eShopOnContainers.UnitTests
 	{
 		public OrderViewModelTests()
 		{
-			ViewModelLocator.RegisterDependencies(true);
+			ViewModelLocator.UpdateDependencies(true);
 		}
 
 		[Fact]
