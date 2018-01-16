@@ -216,7 +216,7 @@ namespace eShopOnContainers.Core.ViewModels
 
         private async Task ToggleMockServicesAsync()
         {
-            ViewModelLocator.RegisterDependencies(!UseAzureServices);
+            ViewModelLocator.UpdateDependencies(!UseAzureServices);
             UpdateInfoUseAzureServices();
 
             var previousPageViewModel = NavigationService.PreviousPageViewModel;
@@ -230,6 +230,7 @@ namespace eShopOnContainers.Core.ViewModels
                     {
                         _settingsService.AuthAccessToken = string.Empty;
                         _settingsService.AuthIdToken = string.Empty;
+
                         await NavigationService.NavigateToAsync<LoginViewModel>(new LogoutParameter { Logout = true });
                         await NavigationService.RemoveBackStackAsync();
                     }
@@ -239,7 +240,7 @@ namespace eShopOnContainers.Core.ViewModels
 
         private void ToggleFakeLocationAsync()
         {
-            ViewModelLocator.RegisterDependencies(!UseAzureServices);
+            ViewModelLocator.UpdateDependencies(!UseAzureServices);
             UpdateInfoFakeLocation();
         }
 

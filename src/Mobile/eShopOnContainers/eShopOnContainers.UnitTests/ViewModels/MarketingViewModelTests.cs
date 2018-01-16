@@ -10,7 +10,7 @@
     {
         public MarketingViewModelTests()
         {
-            ViewModelLocator.RegisterDependencies(true);
+            ViewModelLocator.UpdateDependencies(true);
         }
 
         [Fact]

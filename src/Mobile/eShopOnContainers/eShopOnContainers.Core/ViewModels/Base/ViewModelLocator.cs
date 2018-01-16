@@ -1,5 +1,4 @@
-﻿using Autofac;
-using eShopOnContainers.Services;
+﻿using eShopOnContainers.Services;
 using System;
 using System.Globalization;
 using System.Reflection;
@@ -16,12 +15,13 @@ using eShopOnContainers.Core.Services.Dependency;
 using eShopOnContainers.Core.Services.Settings;
 using eShopOnContainers.Core.Services.FixUri;
 using Xamarin.Forms;
+using TinyIoC;
 
 namespace eShopOnContainers.Core.ViewModels.Base
 {
     public static class ViewModelLocator
     {
-        private static IContainer _container;
+        private static TinyIoCContainer _container;
 
         public static readonly BindableProperty AutoWireViewModelProperty =
             BindableProperty.CreateAttached("AutoWireViewModel", typeof(bool), typeof(ViewModelLocator), default(bool), propertyChanged: OnAutoWireViewModelChanged);
@@ -38,62 +38,62 @@ namespace eShopOnContainers.Core.ViewModels.Base
 
         public static bool UseMockService { get; set; }
 
-        public static void RegisterDependencies(bool useMockServices)
+        static ViewModelLocator()
         {
-            var builder = new ContainerBuilder();
+            _container = new TinyIoCContainer();
 
             // View models
-            builder.RegisterType<BasketViewModel>();
-            builder.RegisterType<CatalogViewModel>();
-            builder.RegisterType<CheckoutViewModel>();
-            builder.RegisterType<LoginViewModel>();
-            builder.RegisterType<MainViewModel>();
-            builder.RegisterType<OrderDetailViewModel>();
-            builder.RegisterType<ProfileViewModel>();
-            builder.RegisterType<SettingsViewModel>();
-            builder.RegisterType<CampaignViewModel>();
-            builder.RegisterType<CampaignDetailsViewModel>();
+            _container.Register<BasketViewModel>();
+            _container.Register<CatalogViewModel>();
+            _container.Register<CheckoutViewModel>();
+            _container.Register<LoginViewModel>();
+            _container.Register<MainViewModel>();
+            _container.Register<OrderDetailViewModel>();
+            _container.Register<ProfileViewModel>();
+            _container.Register<SettingsViewModel>();
+            _container.Register<CampaignViewModel>();
+            _container.Register<CampaignDetailsViewModel>();
 
             // Services
-            builder.RegisterType<NavigationService>().As<INavigationService>().SingleInstance();
-            builder.RegisterType<DialogService>().As<IDialogService>();
-            builder.RegisterType<OpenUrlService>().As<IOpenUrlService>();
-            builder.RegisterType<IdentityService>().As<IIdentityService>();
-            builder.RegisterType<RequestProvider>().As<IRequestProvider>();
-            builder.RegisterType<LocationService>().As<ILocationService>().SingleInstance();
-            builder.RegisterType<Services.Dependency.DependencyService>().As<IDependencyService>();
-            builder.RegisterType<SettingsService>().As<ISettingsService>().SingleInstance();
-            builder.RegisterType<FixUriService>().As<FixUriService>().SingleInstance();
+            _container.Register<INavigationService, NavigationService>().AsSingleton();
+            _container.Register<IDialogService, DialogService>();
+            _container.Register<IOpenUrlService, OpenUrlService>();
+            _container.Register<IIdentityService, IdentityService>();
+            _container.Register<IRequestProvider, RequestProvider>();
+            _container.Register<ILocationService, LocationService>().AsSingleton();
+            _container.Register<ICatalogService, CatalogMockService>().AsSingleton();
+            _container.Register<IBasketService, BasketMockService>().AsSingleton();
+            _container.Register<IOrderService, OrderMockService>().AsSingleton();
+            _container.Register<IUserService, UserMockService>().AsSingleton();
+            _container.Register<ICampaignService, CampaignMockService>().AsSingleton();
+        }
 
+        public static void UpdateDependencies(bool useMockServices)
+        {
+            // Change injected dependencies
             if (useMockServices)
             {
-                builder.RegisterInstance(new CatalogMockService()).As<ICatalogService>();
-                builder.RegisterInstance(new BasketMockService()).As<IBasketService>();
-                builder.RegisterInstance(new OrderMockService()).As<IOrderService>();
-                builder.RegisterInstance(new UserMockService()).As<IUserService>();
-                builder.RegisterInstance(new CampaignMockService()).As<ICampaignService>();
+                _container.Register<ICatalogService, CatalogMockService>().AsSingleton();
+                _container.Register<IBasketService, BasketMockService>().AsSingleton();
+                _container.Register<IOrderService, OrderMockService>().AsSingleton();
+                _container.Register<IUserService, UserMockService>().AsSingleton();
+                _container.Register<ICampaignService, CampaignMockService>().AsSingleton();
 
                 UseMockService = true;
             }
             else
             {
-                builder.RegisterType<CatalogService>().As<ICatalogService>().SingleInstance();
-                builder.RegisterType<BasketService>().As<IBasketService>().SingleInstance();
-                builder.RegisterType<OrderService>().As<IOrderService>().SingleInstance();
-                builder.RegisterType<UserService>().As<IUserService>().SingleInstance();
-                builder.RegisterType<CampaignService>().As<ICampaignService>().SingleInstance();
+                _container.Register<ICatalogService, CatalogService>().AsSingleton();
+                _container.Register<IBasketService, BasketService>().AsSingleton();
+                _container.Register<IOrderService, OrderService>().AsSingleton();
+                _container.Register<IUserService, UserService>().AsSingleton();
+                _container.Register<ICampaignService, CampaignService>().AsSingleton();
 
                 UseMockService = false;
             }
-
-            if (_container != null)
-            {
-                _container.Dispose();
-            }
-            _container = builder.Build();
         }
 
-        public static T Resolve<T>()
+        public static T Resolve<T>() where T : class
         {
             return _container.Resolve<T>();
         }

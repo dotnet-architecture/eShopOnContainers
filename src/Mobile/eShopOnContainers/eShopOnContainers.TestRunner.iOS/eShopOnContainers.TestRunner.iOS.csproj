@@ -143,9 +143,6 @@
     <Reference Include="xunit.execution.dotnet">
       <HintPath>..\..\..\..\packages\xunit.extensibility.execution.2.3.1\lib\netstandard1.1\xunit.execution.dotnet.dll</HintPath>
     </Reference>
-    <Reference Include="Autofac">
-      <HintPath>..\..\..\..\packages\Autofac.4.6.2\lib\netstandard1.1\Autofac.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\..\..\packages\Newtonsoft.Json.10.0.3\lib\netstandard1.3\Newtonsoft.Json.dll</HintPath>
