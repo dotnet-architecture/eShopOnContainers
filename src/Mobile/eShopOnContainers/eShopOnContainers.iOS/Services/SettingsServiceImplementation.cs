@@ -8,7 +8,7 @@ namespace eShopOnContainers.iOS.Services
 {
     public class SettingsServiceImplementation : ISettingsServiceImplementation
     {
-        readonly object locker = new object();
+        readonly object _locker = new object();
 
         NSUserDefaults GetUserDefaults() => NSUserDefaults.StandardUserDefaults;
 
@@ -27,7 +27,7 @@ namespace eShopOnContainers.iOS.Services
             }
             var typeCode = Type.GetTypeCode(type);
 
-            lock (locker)
+            lock (_locker)
             {
                 var defaults = GetUserDefaults();
                 switch (typeCode)
@@ -56,7 +56,7 @@ namespace eShopOnContainers.iOS.Services
 
         T GetValueOrDefaultInternal<T>(string key, T defaultValue = default(T))
         {
-            lock (locker)
+            lock (_locker)
             {
                 var defaults = GetUserDefaults();
 
@@ -89,7 +89,7 @@ namespace eShopOnContainers.iOS.Services
             }
         }
 
-        #region ISettingsService Implementation
+        #region ISettingsServiceImplementation
 
         public bool AddOrUpdateValue(string key, bool value) => AddOrUpdateValueInternal(key, value);
 
@@ -101,7 +101,7 @@ namespace eShopOnContainers.iOS.Services
 
         public void Remove(string key)
         {
-            lock (locker)
+            lock (_locker)
             {
                 var defaults = GetUserDefaults();
                 try
@@ -116,48 +116,6 @@ namespace eShopOnContainers.iOS.Services
                 {
                     Console.WriteLine("Unable to remove: " + key, " Message: " + ex.Message);
                 }
-            }
-        }
-
-        public void Clear()
-        {
-            lock (locker)
-            {
-                var defaults = GetUserDefaults();
-                try
-                {
-                    var items = defaults.ToDictionary();
-                    foreach (var item in items.Keys)
-                    {
-                        if (item is NSString nsString)
-                        {
-                            defaults.RemoveObject(nsString);
-                        }
-                    }
-                    defaults.Synchronize();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("Unable to clear all defaults. Message: " + ex.Message);
-                }
-            }
-        }
-
-        public bool Contains(string key)
-        {
-            lock (locker)
-            {
-                var defaults = GetUserDefaults();
-                try
-                {
-                    var setting = defaults[key];
-                    return setting != null;
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("Unable to clear all defaults. Message: " + ex.Message);
-                }
-                return false;
             }
         }
 

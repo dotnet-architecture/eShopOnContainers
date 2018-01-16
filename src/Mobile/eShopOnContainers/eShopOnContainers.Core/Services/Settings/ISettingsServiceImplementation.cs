@@ -9,7 +9,5 @@
         bool AddOrUpdateValue(string key, string value);
 
         void Remove(string key);
-        void Clear();
-        bool Contains(string key);
     }
 }
