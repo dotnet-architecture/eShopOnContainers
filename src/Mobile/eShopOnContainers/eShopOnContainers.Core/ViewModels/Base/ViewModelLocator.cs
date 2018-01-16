@@ -60,6 +60,9 @@ namespace eShopOnContainers.Core.ViewModels.Base
             _container.Register<IOpenUrlService, OpenUrlService>();
             _container.Register<IIdentityService, IdentityService>();
             _container.Register<IRequestProvider, RequestProvider>();
+            _container.Register<IDependencyService, Services.Dependency.DependencyService>();
+            _container.Register<ISettingsService, SettingsService>().AsSingleton();
+            _container.Register<IFixUriService, FixUriService>().AsSingleton();
             _container.Register<ILocationService, LocationService>().AsSingleton();
             _container.Register<ICatalogService, CatalogMockService>().AsSingleton();
             _container.Register<IBasketService, BasketMockService>().AsSingleton();

@@ -2,7 +2,6 @@
 using Foundation;
 using eShopOnContainers.Core.Services.Settings;
 using eShopOnContainers.iOS.Services;
-using System.Globalization;
 
 [assembly: Xamarin.Forms.Dependency(typeof(SettingsServiceImplementation))]
 namespace eShopOnContainers.iOS.Services
@@ -34,7 +33,7 @@ namespace eShopOnContainers.iOS.Services
                 switch (typeCode)
                 {
                     case TypeCode.Boolean:
-                        defaults.SetString(Convert.ToString(value, CultureInfo.InvariantCulture), key);
+                        defaults.SetBool(Convert.ToBoolean(value), key);
                         break;
                     case TypeCode.String:
                         defaults.SetString(Convert.ToString(value), key);
@@ -57,34 +56,37 @@ namespace eShopOnContainers.iOS.Services
 
         T GetValueOrDefaultInternal<T>(string key, T defaultValue = default(T))
         {
-            var defaults = GetUserDefaults();
-
-            if (defaults[key] == null)
+            lock (locker)
             {
-                return defaultValue;
-            }
+                var defaults = GetUserDefaults();
 
-            var type = typeof(T);
-            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
-            {
-                type = Nullable.GetUnderlyingType(type);
-            }
+                if (defaults[key] == null)
+                {
+                    return defaultValue;
+                }
 
-            object value = null;
-            var typeCode = Type.GetTypeCode(type);
-            switch (typeCode)
-            {
-                case TypeCode.Boolean:
-                    value = defaults.BoolForKey(key);
-                    break;
-                case TypeCode.String:
-                    value = defaults.StringForKey(key);
-                    break;
-                default:
-                    throw new ArgumentException($"Value of type {typeCode} is unsupported.");
-            }
+                var type = typeof(T);
+                if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
+                {
+                    type = Nullable.GetUnderlyingType(type);
+                }
 
-            return null != value ? (T)value : defaultValue;
+                object value = null;
+                var typeCode = Type.GetTypeCode(type);
+                switch (typeCode)
+                {
+                    case TypeCode.Boolean:
+                        value = defaults.BoolForKey(key);
+                        break;
+                    case TypeCode.String:
+                        value = defaults.StringForKey(key);
+                        break;
+                    default:
+                        throw new ArgumentException($"Value of type {typeCode} is unsupported.");
+                }
+
+                return null != value ? (T)value : defaultValue;
+            }
         }
 
         #region ISettingsService Implementation

@@ -15,7 +15,6 @@ namespace eShopOnContainers
     public partial class App : Application
     {
         ISettingsService _settingsService;
-        bool _useMockServices;
 
         public App()
         {
@@ -30,9 +29,9 @@ namespace eShopOnContainers
 
         private void InitApp()
         {
-            _useMockServices = true;//_settingsService.UseMocks;
-            ViewModelLocator.RegisterDependencies(_useMockServices);
             _settingsService = ViewModelLocator.Resolve<ISettingsService>();
+            if (!_settingsService.UseMocks)
+                ViewModelLocator.UpdateDependencies(_settingsService.UseMocks);
         }
 
         private Task InitNavigation()

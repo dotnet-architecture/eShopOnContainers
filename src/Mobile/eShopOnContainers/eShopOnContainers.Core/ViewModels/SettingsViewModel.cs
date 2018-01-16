@@ -35,7 +35,7 @@ namespace eShopOnContainers.Core.ViewModels
             _settingsService = settingsService;
             _locationService = locationService;
 
-            _useAzureServices = _settingsService.UseMocks;
+            _useAzureServices = !_settingsService.UseMocks;
             _endpoint = _settingsService.UrlBase;
             _latitude = double.Parse(_settingsService.Latitude, CultureInfo.CurrentCulture);
             _longitude = double.Parse(_settingsService.Longitude, CultureInfo.CurrentCulture);
