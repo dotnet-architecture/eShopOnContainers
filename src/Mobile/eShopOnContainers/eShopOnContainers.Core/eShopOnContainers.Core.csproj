@@ -14,7 +14,9 @@
     <PackageReference Include="Xam.Plugin.Geolocator" Version="3.0.4" />
     <PackageReference Include="Xamarin.FFImageLoading.Forms" Version="2.3.4" />
     <PackageReference Include="Xamarin.Forms" Version="2.5.0.122203" />
-    <PackageReference Include="Autofac" Version="4.6.2" />
     <PackageReference Include="IdentityModel" Version="3.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="TinyIoC\" />
   </ItemGroup>
 </Project>

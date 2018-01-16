@@ -71,7 +71,7 @@ namespace eShopOnContainers.Core.ViewModels
                 _useAzureServices = value;
 
                 UpdateUseAzureServices();
-                
+
                 RaisePropertyChanged(() => UseAzureServices);
             }
         }
@@ -146,7 +146,7 @@ namespace eShopOnContainers.Core.ViewModels
             {
                 _endpoint = value;
 
-                if(!string.IsNullOrEmpty(_endpoint))
+                if (!string.IsNullOrEmpty(_endpoint))
                 {
                     UpdateEndpoint();
                 }
@@ -213,32 +213,32 @@ namespace eShopOnContainers.Core.ViewModels
             return base.InitializeAsync(navigationData);
         }
 
-		private async Task ToggleMockServicesAsync()
-		{
-			ViewModelLocator.RegisterDependencies(!UseAzureServices);
-			UpdateInfoUseAzureServices();
+        private async Task ToggleMockServicesAsync()
+        {
+            ViewModelLocator.UpdateDependencies(!UseAzureServices);
+            UpdateInfoUseAzureServices();
 
-			var previousPageViewModel = NavigationService.PreviousPageViewModel;
-			if (previousPageViewModel != null)
-			{
-				if (previousPageViewModel is MainViewModel)
-				{
-					// Slight delay so that page navigation isn't instantaneous
-					await Task.Delay(1000);
-					if (UseAzureServices)
-					{
-						Settings.AuthAccessToken = string.Empty;
-						Settings.AuthIdToken = string.Empty;
-						await NavigationService.NavigateToAsync<LoginViewModel>(new LogoutParameter { Logout = true });
-						await NavigationService.RemoveBackStackAsync();
-					}
-				}
-			}
-		}
+            var previousPageViewModel = NavigationService.PreviousPageViewModel;
+            if (previousPageViewModel != null)
+            {
+                if (previousPageViewModel is MainViewModel)
+                {
+                    // Slight delay so that page navigation isn't instantaneous
+                    await Task.Delay(1000);
+                    if (UseAzureServices)
+                    {
+                        Settings.AuthAccessToken = string.Empty;
+                        Settings.AuthIdToken = string.Empty;
+                        await NavigationService.NavigateToAsync<LoginViewModel>(new LogoutParameter { Logout = true });
+                        await NavigationService.RemoveBackStackAsync();
+                    }
+                }
+            }
+        }
 
         private void ToggleFakeLocationAsync()
         {
-            ViewModelLocator.RegisterDependencies(!UseAzureServices);
+            ViewModelLocator.UpdateDependencies(!UseAzureServices);
             UpdateInfoFakeLocation();
         }
 
@@ -254,7 +254,7 @@ namespace eShopOnContainers.Core.ViewModels
                 var authToken = Settings.AuthAccessToken;
 
                 await _locationService.UpdateUserLocation(locationRequest, authToken);
-            } 
+            }
         }
 
         private void ToggleAllowGpsLocation()

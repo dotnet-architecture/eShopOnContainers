@@ -14,14 +14,11 @@ namespace eShopOnContainers
 {
     public partial class App : Application
     {
-        public bool UseMockServices { get; set; }
-
         public App()
         {
             InitializeComponent();
 
             InitApp();
-
             if (Device.RuntimePlatform == Device.UWP)
             {
                 InitNavigation();
@@ -30,8 +27,9 @@ namespace eShopOnContainers
 
         private void InitApp()
         {
-            UseMockServices = Settings.UseMocks;
-            ViewModelLocator.RegisterDependencies(UseMockServices);
+            bool useMockServices = Settings.UseMocks;
+            if (!useMockServices)
+                ViewModelLocator.UpdateDependencies(useMockServices);
         }
 
         private Task InitNavigation()

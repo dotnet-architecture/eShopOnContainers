@@ -9,7 +9,7 @@ namespace eShopOnContainers.UnitTests
     {
         public MockViewModelTests()
         {
-            ViewModelLocator.RegisterDependencies(true);
+            ViewModelLocator.UpdateDependencies(true);
         }
 
         [Fact]

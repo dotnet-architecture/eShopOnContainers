@@ -12,7 +12,7 @@ namespace eShopOnContainers.UnitTests
     {
         public CatalogViewModelTests()
         {
-            ViewModelLocator.RegisterDependencies(true);
+            ViewModelLocator.UpdateDependencies(true);
         }
 
         [Fact]
