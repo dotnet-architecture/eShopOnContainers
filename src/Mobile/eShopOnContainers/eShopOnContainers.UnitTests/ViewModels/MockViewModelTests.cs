@@ -1,7 +1,5 @@
 ﻿using Xunit;
 using eShopOnContainers.Core.ViewModels.Base;
-using eShopOnContainers.UnitTests.Helpers;
-using System.ComponentModel;
 
 namespace eShopOnContainers.UnitTests
 {
@@ -86,15 +84,12 @@ namespace eShopOnContainers.UnitTests
             bool invoked = false;
             var mockViewModel = new MockViewModel();
 
-            PropertyChangedEventHandler handler = (sender, e) =>
+            mockViewModel.Forename.PropertyChanged += (sender, e) =>
             {
                 if (e.PropertyName.Equals("Value"))
                     invoked = true;
             };
-
-            mockViewModel.Forename.PropertyChanged += handler;
             mockViewModel.Forename.Value = "John";
-            mockViewModel.Forename.PropertyChanged -= handler;
 
             Assert.True(invoked);
         }
@@ -105,15 +100,12 @@ namespace eShopOnContainers.UnitTests
             bool invoked = false;
             var mockViewModel = new MockViewModel();
 
-            PropertyChangedEventHandler handler = (sender, e) =>
+            mockViewModel.Surname.PropertyChanged += (sender, e) =>
             {
                 if (e.PropertyName.Equals("Value"))
                     invoked = true;
             };
-
-            mockViewModel.Surname.PropertyChanged += handler;
             mockViewModel.Surname.Value = "Smith";
-            mockViewModel.Surname.PropertyChanged -= handler;
 
             Assert.True(invoked);
         }

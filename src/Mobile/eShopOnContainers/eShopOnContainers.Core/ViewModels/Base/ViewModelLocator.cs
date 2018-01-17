@@ -96,6 +96,11 @@ namespace eShopOnContainers.Core.ViewModels.Base
             }
         }
 
+        public static void RegisterSingleton<TInterface, T>() where TInterface : class where T : class, TInterface
+        {
+            _container.Register<TInterface, T>().AsSingleton();
+        }
+
         public static T Resolve<T>() where T : class
         {
             return _container.Resolve<T>();
