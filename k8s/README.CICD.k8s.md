@@ -15,7 +15,7 @@ or using AKS instead of ACS
 >```
 * An `Azure Blob storage`. It is needed for storing the kubernetes config file used by the hosted agent to access to Kubernetes cluster. Example:
 
-<img src="https://github.com/dotnet-architecture/eShopOnContainers/raw/dev/k8s/img/blob_creation.png">
+<img src="https://github.com/dotnet-architecture/eShopOnContainers/blob/dev/k8s/img/blob_creation.png">
 
 * Upload the `kubernetes config file` to the blob storage previously created. Execute the following command which will download the config file into the directory `c:\Users\<User>\.kube\` and then, upload it to your blob storage: 
 
