@@ -2,7 +2,6 @@
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
-
 namespace eShopOnContainers.Core.Services.Order
 {
     public interface IOrderService

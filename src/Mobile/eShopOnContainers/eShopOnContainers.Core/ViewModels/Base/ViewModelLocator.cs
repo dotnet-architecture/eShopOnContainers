@@ -1,18 +1,21 @@
-﻿using eShopOnContainers.Services;
+﻿using eShopOnContainers.Core.Services.Basket;
+using eShopOnContainers.Core.Services.Catalog;
+using eShopOnContainers.Core.Services.Dependency;
+using eShopOnContainers.Core.Services.FixUri;
+using eShopOnContainers.Core.Services.Identity;
+using eShopOnContainers.Core.Services.Location;
+using eShopOnContainers.Core.Services.Marketing;
+using eShopOnContainers.Core.Services.OpenUrl;
+using eShopOnContainers.Core.Services.Order;
+using eShopOnContainers.Core.Services.RequestProvider;
+using eShopOnContainers.Core.Services.Settings;
+using eShopOnContainers.Core.Services.User;
+using eShopOnContainers.Services;
 using System;
 using System.Globalization;
 using System.Reflection;
-using eShopOnContainers.Core.Services.Catalog;
-using eShopOnContainers.Core.Services.OpenUrl;
-using eShopOnContainers.Core.Services.RequestProvider;
-using eShopOnContainers.Core.Services.Basket;
-using eShopOnContainers.Core.Services.Identity;
-using eShopOnContainers.Core.Services.Order;
-using eShopOnContainers.Core.Services.User;
-using Xamarin.Forms;
-using eShopOnContainers.Core.Services.Location;
-using eShopOnContainers.Core.Services.Marketing;
 using TinyIoC;
+using Xamarin.Forms;
 
 namespace eShopOnContainers.Core.ViewModels.Base
 {
@@ -57,6 +60,9 @@ namespace eShopOnContainers.Core.ViewModels.Base
             _container.Register<IOpenUrlService, OpenUrlService>();
             _container.Register<IIdentityService, IdentityService>();
             _container.Register<IRequestProvider, RequestProvider>();
+            _container.Register<IDependencyService, Services.Dependency.DependencyService>();
+            _container.Register<ISettingsService, SettingsService>().AsSingleton();
+            _container.Register<IFixUriService, FixUriService>().AsSingleton();
             _container.Register<ILocationService, LocationService>().AsSingleton();
             _container.Register<ICatalogService, CatalogMockService>().AsSingleton();
             _container.Register<IBasketService, BasketMockService>().AsSingleton();
@@ -88,6 +94,11 @@ namespace eShopOnContainers.Core.ViewModels.Base
 
                 UseMockService = false;
             }
+        }
+
+        public static void RegisterSingleton<TInterface, T>() where TInterface : class where T : class, TInterface
+        {
+            _container.Register<TInterface, T>().AsSingleton();
         }
 
         public static T Resolve<T>() where T : class

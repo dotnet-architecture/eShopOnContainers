@@ -1,11 +1,10 @@
-﻿namespace eShopOnContainers.UnitTests.Services
-{
-    using System.Threading.Tasks;
-    using Core;
-    using Core.Helpers;
-    using Core.Services.Marketing;
-    using Xunit;
+﻿using eShopOnContainers.Core;
+using eShopOnContainers.Core.Services.Marketing;
+using System.Threading.Tasks;
+using Xunit;
 
+namespace eShopOnContainers.UnitTests.Services
+{
     public class MarketingServiceTests
     {
         [Fact]

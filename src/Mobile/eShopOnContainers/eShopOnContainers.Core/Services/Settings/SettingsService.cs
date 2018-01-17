@@ -1,21 +1,19 @@
-using Plugin.Settings;
-using Plugin.Settings.Abstractions;
+using eShopOnContainers.Core.Services.Dependency;
 
-namespace eShopOnContainers.Core.Helpers
+namespace eShopOnContainers.Core.Services.Settings
 {
-    /// <summary>
-    /// This is the Settings static class that can be used in your Core solution or in any
-    /// of your client applications. All settings are laid out the same exact way with getters
-    /// and setters. 
-    /// </summary>
-    public static class Settings
+    public class SettingsService : ISettingsService
     {
-        private static ISettings AppSettings
+        private readonly ISettingsServiceImplementation _settingsService;
+
+        ISettingsServiceImplementation AppSettings
         {
-            get
-            {
-                return CrossSettings.Current;
-            }
+            get { return _settingsService; }
+        }
+
+        public SettingsService(IDependencyService dependencyService)
+        {
+            _settingsService = dependencyService.Get<ISettingsServiceImplementation>();
         }
 
         #region Setting Constants
@@ -28,60 +26,60 @@ namespace eShopOnContainers.Core.Helpers
         private const string IdLatitude = "latitude";
         private const string IdLongitude = "longitude";
         private const string IdAllowGpsLocation = "allow_gps_location";
-        private static readonly string AccessTokenDefault = string.Empty;
-        private static readonly string IdTokenDefault = string.Empty;
-        private static readonly bool UseMocksDefault = true;
-        private static readonly bool UseFakeLocationDefault = false;
-        private static readonly bool AllowGpsLocationDefault = false;
-        private static readonly double FakeLatitudeDefault = 47.604610d;
-        private static readonly double FakeLongitudeDefault = -122.315752d;
-        private static readonly string UrlBaseDefault = GlobalSetting.Instance.BaseEndpoint;
+        private readonly string AccessTokenDefault = string.Empty;
+        private readonly string IdTokenDefault = string.Empty;
+        private readonly bool UseMocksDefault = true;
+        private readonly bool UseFakeLocationDefault = false;
+        private readonly bool AllowGpsLocationDefault = false;
+        private readonly double FakeLatitudeDefault = 47.604610d;
+        private readonly double FakeLongitudeDefault = -122.315752d;
+        private readonly string UrlBaseDefault = GlobalSetting.Instance.BaseEndpoint;
 
         #endregion
 
-        public static string AuthAccessToken
+        public string AuthAccessToken
         {
             get => AppSettings.GetValueOrDefault(AccessToken, AccessTokenDefault);
             set => AppSettings.AddOrUpdateValue(AccessToken, value);
         }
 
-        public static string AuthIdToken
+        public string AuthIdToken
         {
             get => AppSettings.GetValueOrDefault(IdToken, IdTokenDefault);
             set => AppSettings.AddOrUpdateValue(IdToken, value);
         }
 
-        public static bool UseMocks
+        public bool UseMocks
         {
             get => AppSettings.GetValueOrDefault(IdUseMocks, UseMocksDefault);
             set => AppSettings.AddOrUpdateValue(IdUseMocks, value);
         }
 
-        public static string UrlBase
+        public string UrlBase
         {
             get => AppSettings.GetValueOrDefault(IdUrlBase, UrlBaseDefault);
             set => AppSettings.AddOrUpdateValue(IdUrlBase, value);
         }
 
-        public static bool UseFakeLocation
+        public bool UseFakeLocation
         {
             get => AppSettings.GetValueOrDefault(IdUseFakeLocation, UseFakeLocationDefault);
             set => AppSettings.AddOrUpdateValue(IdUseFakeLocation, value);
         }
 
-        public static string Latitude
+        public string Latitude
         {
             get => AppSettings.GetValueOrDefault(IdLatitude, FakeLatitudeDefault.ToString());
             set => AppSettings.AddOrUpdateValue(IdLatitude, value);
         }
 
-        public static string Longitude
+        public string Longitude
         {
             get => AppSettings.GetValueOrDefault(IdLongitude, FakeLongitudeDefault.ToString());
             set => AppSettings.AddOrUpdateValue(IdLongitude, value);
         }
 
-        public static bool AllowGpsLocation
+        public bool AllowGpsLocation
         {
             get => AppSettings.GetValueOrDefault(IdAllowGpsLocation, AllowGpsLocationDefault);
             set => AppSettings.AddOrUpdateValue(IdAllowGpsLocation, value);

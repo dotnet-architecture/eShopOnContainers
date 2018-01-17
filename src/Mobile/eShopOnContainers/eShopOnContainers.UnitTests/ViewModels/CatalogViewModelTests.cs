@@ -1,10 +1,12 @@
-﻿using Xunit;
+﻿using eShopOnContainers.Core.Models.Catalog;
+using eShopOnContainers.Core.Services.Catalog;
+using eShopOnContainers.Core.Services.Settings;
 using eShopOnContainers.Core.ViewModels;
 using eShopOnContainers.Core.ViewModels.Base;
-using eShopOnContainers.Core.Services.Catalog;
-using eShopOnContainers.Core.Models.Catalog;
-using System.Threading.Tasks;
+using eShopOnContainers.UnitTests.Mocks;
 using System.Linq;
+using System.Threading.Tasks;
+using Xunit;
 
 namespace eShopOnContainers.UnitTests
 {
@@ -13,6 +15,7 @@ namespace eShopOnContainers.UnitTests
         public CatalogViewModelTests()
         {
             ViewModelLocator.UpdateDependencies(true);
+            ViewModelLocator.RegisterSingleton<ISettingsService, MockSettingsService>();
         }
 
         [Fact]

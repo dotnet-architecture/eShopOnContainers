@@ -10,9 +10,6 @@
     <PackageReference Include="xunit.runner.console" Version="2.3.1" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Helpers\" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\eShopOnContainers.Core\eShopOnContainers.Core.csproj" />
   </ItemGroup>
 </Project>

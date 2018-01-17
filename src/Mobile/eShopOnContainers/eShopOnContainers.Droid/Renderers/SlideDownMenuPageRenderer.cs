@@ -1,7 +1,7 @@
 using Android.Content;
-using SlideOverKit.Droid;
 using eShopOnContainers.Core.Views;
 using eShopOnContainers.Droid.Renderers;
+using SlideOverKit.Droid;
 using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;

@@ -1,21 +1,26 @@
-﻿using System.Threading.Tasks;
+﻿using eShopOnContainers.Core.Models.Marketing;
+using eShopOnContainers.Core.Services.Marketing;
+using eShopOnContainers.Core.Services.Settings;
+using eShopOnContainers.Core.ViewModels.Base;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
-using eShopOnContainers.Core.ViewModels.Base;
-using eShopOnContainers.Core.Helpers;
-using eShopOnContainers.Core.Models.Marketing;
-using eShopOnContainers.Core.Services.Marketing;
 
 namespace eShopOnContainers.Core.ViewModels
 {
     public class CampaignDetailsViewModel : ViewModelBase
     {
-        private CampaignItem _campaign;
-        private bool _isDetailsSite;
+        private readonly ISettingsService _settingsService;
         private readonly ICampaignService _campaignService;
 
-        public CampaignDetailsViewModel(ICampaignService campaignService)
+        private CampaignItem _campaign;
+        private bool _isDetailsSite;
+
+        public ICommand EnableDetailsSiteCommand => new Command(EnableDetailsSite);
+
+        public CampaignDetailsViewModel(ISettingsService settingsService, ICampaignService campaignService)
         {
+            _settingsService = settingsService;
             _campaignService = campaignService;
         }
 
@@ -44,15 +49,11 @@ namespace eShopOnContainers.Core.ViewModels
             if (navigationData is int)
             {
                 IsBusy = true;
-
                 // Get campaign by id
-                Campaign = await _campaignService.GetCampaignByIdAsync((int)navigationData, Settings.AuthAccessToken);
-
+                Campaign = await _campaignService.GetCampaignByIdAsync((int)navigationData, _settingsService.AuthAccessToken);
                 IsBusy = false;
             }
         }
-
-        public ICommand EnableDetailsSiteCommand => new Command(EnableDetailsSite);
 
         private void EnableDetailsSite()
         {

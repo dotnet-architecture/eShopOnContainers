@@ -1,21 +1,24 @@
-﻿using System.Threading.Tasks;
+﻿using eShopOnContainers.Core.Models.Marketing;
+using eShopOnContainers.Core.Services.Marketing;
+using eShopOnContainers.Core.Services.Settings;
+using eShopOnContainers.Core.ViewModels.Base;
+using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
-using System.Collections.ObjectModel;
-using eShopOnContainers.Core.Models.Marketing;
-using eShopOnContainers.Core.Services.Marketing;
-using eShopOnContainers.Core.ViewModels.Base;
-using eShopOnContainers.Core.Helpers;
 
 namespace eShopOnContainers.Core.ViewModels
 {
     public class CampaignViewModel : ViewModelBase
     {
-        private ObservableCollection<CampaignItem> _campaigns;
+        private readonly ISettingsService _settingsService;
         private readonly ICampaignService _campaignService;
 
-        public CampaignViewModel(ICampaignService campaignService)
+        private ObservableCollection<CampaignItem> _campaigns;
+
+        public CampaignViewModel(ISettingsService settingsService, ICampaignService campaignService)
         {
+            _settingsService = settingsService;
             _campaignService = campaignService;
         }
 
@@ -34,10 +37,8 @@ namespace eShopOnContainers.Core.ViewModels
         public override async Task InitializeAsync(object navigationData)
         {
             IsBusy = true;
-
             // Get campaigns by user
-            Campaigns = await _campaignService.GetAllCampaignsAsync(Settings.AuthAccessToken);
-
+            Campaigns = await _campaignService.GetAllCampaignsAsync(_settingsService.AuthAccessToken);
             IsBusy = false;
         }
 
