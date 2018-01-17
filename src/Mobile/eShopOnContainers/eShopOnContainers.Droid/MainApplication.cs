@@ -1,8 +1,8 @@
-using System;
 using Android.App;
 using Android.OS;
 using Android.Runtime;
 using Plugin.CurrentActivity;
+using System;
 
 namespace eShopOnContainers.Droid
 {

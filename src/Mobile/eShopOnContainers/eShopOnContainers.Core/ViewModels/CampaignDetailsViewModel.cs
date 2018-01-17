@@ -1,10 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using eShopOnContainers.Core.Models.Marketing;
+using eShopOnContainers.Core.Services.Marketing;
+using eShopOnContainers.Core.Services.Settings;
+using eShopOnContainers.Core.ViewModels.Base;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
-using eShopOnContainers.Core.ViewModels.Base;
-using eShopOnContainers.Core.Services.Settings;
-using eShopOnContainers.Core.Models.Marketing;
-using eShopOnContainers.Core.Services.Marketing;
 
 namespace eShopOnContainers.Core.ViewModels
 {

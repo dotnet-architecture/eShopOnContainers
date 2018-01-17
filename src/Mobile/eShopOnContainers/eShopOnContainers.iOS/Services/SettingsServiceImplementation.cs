@@ -1,7 +1,7 @@
-﻿using System;
-using Foundation;
-using eShopOnContainers.Core.Services.Settings;
+﻿using eShopOnContainers.Core.Services.Settings;
 using eShopOnContainers.iOS.Services;
+using Foundation;
+using System;
 
 [assembly: Xamarin.Forms.Dependency(typeof(SettingsServiceImplementation))]
 namespace eShopOnContainers.iOS.Services

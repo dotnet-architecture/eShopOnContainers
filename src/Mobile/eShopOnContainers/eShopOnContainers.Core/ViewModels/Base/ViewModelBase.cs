@@ -1,7 +1,6 @@
-﻿using eShopOnContainers.Core.Helpers;
+﻿using eShopOnContainers.Core.Services.Settings;
 using eShopOnContainers.Services;
 using System.Threading.Tasks;
-using eShopOnContainers.Core.Services.Settings;
 
 namespace eShopOnContainers.Core.ViewModels.Base
 {

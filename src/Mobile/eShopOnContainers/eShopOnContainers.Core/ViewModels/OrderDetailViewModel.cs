@@ -1,10 +1,9 @@
-﻿using System.Threading.Tasks;
-using eShopOnContainers.Core.Models.Orders;
-using eShopOnContainers.Core.ViewModels.Base;
+﻿using eShopOnContainers.Core.Models.Orders;
 using eShopOnContainers.Core.Services.Order;
-using System;
-using System.Windows.Input;
 using eShopOnContainers.Core.Services.Settings;
+using eShopOnContainers.Core.ViewModels.Base;
+using System.Threading.Tasks;
+using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace eShopOnContainers.Core.ViewModels

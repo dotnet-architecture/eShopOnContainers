@@ -1,6 +1,6 @@
-﻿using System.Collections.ObjectModel;
+﻿using eShopOnContainers.Core.Models.Marketing;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using eShopOnContainers.Core.Models.Marketing;
 
 namespace eShopOnContainers.Core.Services.Marketing
 {

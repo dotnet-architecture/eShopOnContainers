@@ -1,13 +1,13 @@
-﻿using System.Globalization;
-using eShopOnContainers.Services;
-using eShopOnContainers.Core.ViewModels.Base;
-using System.Threading.Tasks;
-using eShopOnContainers.Core.Models.Location;
+﻿using eShopOnContainers.Core.Models.Location;
 using eShopOnContainers.Core.Services.Location;
+using eShopOnContainers.Core.Services.Settings;
+using eShopOnContainers.Core.ViewModels.Base;
+using eShopOnContainers.Services;
 using Plugin.Geolocator;
+using System.Globalization;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using eShopOnContainers.Core.Services.Settings;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace eShopOnContainers

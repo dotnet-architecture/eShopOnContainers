@@ -1,10 +1,10 @@
-﻿using System.Threading.Tasks;
-using Xunit;
-using eShopOnContainers.Core.ViewModels.Base;
-using eShopOnContainers.Core.Services.Marketing;
-using eShopOnContainers.Core.ViewModels;
-using eShopOnContainers.UnitTests.Mocks;
+﻿using eShopOnContainers.Core.Services.Marketing;
 using eShopOnContainers.Core.Services.Settings;
+using eShopOnContainers.Core.ViewModels;
+using eShopOnContainers.Core.ViewModels.Base;
+using eShopOnContainers.UnitTests.Mocks;
+using System.Threading.Tasks;
+using Xunit;
 
 namespace eShopOnContainers.UnitTests.ViewModels
 {

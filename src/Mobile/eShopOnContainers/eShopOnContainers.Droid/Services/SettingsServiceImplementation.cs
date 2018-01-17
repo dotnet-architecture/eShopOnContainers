@@ -1,9 +1,9 @@
-﻿using System;
-using eShopOnContainers.Core.Services.Settings;
-using Android.App;
+﻿using Android.App;
 using Android.Content;
 using Android.Preferences;
+using eShopOnContainers.Core.Services.Settings;
 using eShopOnContainers.Droid.Services;
+using System;
 
 [assembly: Xamarin.Forms.Dependency(typeof(SettingsServiceImplementation))]
 namespace eShopOnContainers.Droid.Services

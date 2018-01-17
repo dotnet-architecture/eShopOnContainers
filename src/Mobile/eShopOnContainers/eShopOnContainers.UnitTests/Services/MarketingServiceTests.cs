@@ -1,6 +1,6 @@
-﻿using System.Threading.Tasks;
-using eShopOnContainers.Core;
+﻿using eShopOnContainers.Core;
 using eShopOnContainers.Core.Services.Marketing;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace eShopOnContainers.UnitTests.Services

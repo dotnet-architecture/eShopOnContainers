@@ -1,5 +1,5 @@
-﻿using System;
-using eShopOnContainers.Core.Services.Settings;
+﻿using eShopOnContainers.Core.Services.Settings;
+using System;
 
 namespace eShopOnContainers.UnitTests.Mocks
 {

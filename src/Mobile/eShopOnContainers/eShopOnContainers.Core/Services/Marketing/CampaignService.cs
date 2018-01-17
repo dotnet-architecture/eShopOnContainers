@@ -1,10 +1,10 @@
-﻿using System;
+﻿using eShopOnContainers.Core.Extensions;
+using eShopOnContainers.Core.Models.Marketing;
+using eShopOnContainers.Core.Services.FixUri;
+using eShopOnContainers.Core.Services.RequestProvider;
+using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using eShopOnContainers.Core.Models.Marketing;
-using eShopOnContainers.Core.Services.RequestProvider;
-using eShopOnContainers.Core.Extensions;
-using eShopOnContainers.Core.Services.FixUri;
 
 namespace eShopOnContainers.Core.Services.Marketing
 {

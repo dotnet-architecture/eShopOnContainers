@@ -1,7 +1,7 @@
-﻿using eShopOnContainers.Core.Services.Settings;
-using eShopOnContainers.Core.Models.User;
+﻿using eShopOnContainers.Core.Models.User;
 using eShopOnContainers.Core.Services.Identity;
 using eShopOnContainers.Core.Services.OpenUrl;
+using eShopOnContainers.Core.Services.Settings;
 using eShopOnContainers.Core.Validations;
 using eShopOnContainers.Core.ViewModels.Base;
 using IdentityModel.Client;

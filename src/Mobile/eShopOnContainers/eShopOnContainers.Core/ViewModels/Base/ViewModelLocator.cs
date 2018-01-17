@@ -1,21 +1,21 @@
-﻿using eShopOnContainers.Services;
+﻿using eShopOnContainers.Core.Services.Basket;
+using eShopOnContainers.Core.Services.Catalog;
+using eShopOnContainers.Core.Services.Dependency;
+using eShopOnContainers.Core.Services.FixUri;
+using eShopOnContainers.Core.Services.Identity;
+using eShopOnContainers.Core.Services.Location;
+using eShopOnContainers.Core.Services.Marketing;
+using eShopOnContainers.Core.Services.OpenUrl;
+using eShopOnContainers.Core.Services.Order;
+using eShopOnContainers.Core.Services.RequestProvider;
+using eShopOnContainers.Core.Services.Settings;
+using eShopOnContainers.Core.Services.User;
+using eShopOnContainers.Services;
 using System;
 using System.Globalization;
 using System.Reflection;
-using eShopOnContainers.Core.Services.Catalog;
-using eShopOnContainers.Core.Services.OpenUrl;
-using eShopOnContainers.Core.Services.RequestProvider;
-using eShopOnContainers.Core.Services.Basket;
-using eShopOnContainers.Core.Services.Identity;
-using eShopOnContainers.Core.Services.Order;
-using eShopOnContainers.Core.Services.User;
-using eShopOnContainers.Core.Services.Location;
-using eShopOnContainers.Core.Services.Marketing;
-using eShopOnContainers.Core.Services.Dependency;
-using eShopOnContainers.Core.Services.Settings;
-using eShopOnContainers.Core.Services.FixUri;
-using Xamarin.Forms;
 using TinyIoC;
+using Xamarin.Forms;
 
 namespace eShopOnContainers.Core.ViewModels.Base
 {

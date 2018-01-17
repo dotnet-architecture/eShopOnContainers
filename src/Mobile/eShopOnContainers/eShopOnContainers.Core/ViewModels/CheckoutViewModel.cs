@@ -1,18 +1,18 @@
-﻿using eShopOnContainers.Core.Models.Navigation;
-using eShopOnContainers.Core.ViewModels.Base;
-using System.Windows.Input;
-using Xamarin.Forms;
-using System.Threading.Tasks;
+﻿using eShopOnContainers.Core.Models.Basket;
+using eShopOnContainers.Core.Models.Navigation;
 using eShopOnContainers.Core.Models.Orders;
-using System;
-using System.Collections.ObjectModel;
-using eShopOnContainers.Core.Models.Basket;
-using System.Collections.Generic;
+using eShopOnContainers.Core.Models.User;
 using eShopOnContainers.Core.Services.Basket;
 using eShopOnContainers.Core.Services.Order;
 using eShopOnContainers.Core.Services.Settings;
 using eShopOnContainers.Core.Services.User;
-using eShopOnContainers.Core.Models.User;
+using eShopOnContainers.Core.ViewModels.Base;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using Xamarin.Forms;
 
 namespace eShopOnContainers.Core.ViewModels
 {

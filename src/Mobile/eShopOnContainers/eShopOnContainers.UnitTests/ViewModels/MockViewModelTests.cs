@@ -1,5 +1,5 @@
-﻿using Xunit;
-using eShopOnContainers.Core.ViewModels.Base;
+﻿using eShopOnContainers.Core.ViewModels.Base;
+using Xunit;
 
 namespace eShopOnContainers.UnitTests
 {

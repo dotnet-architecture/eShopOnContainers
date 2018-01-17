@@ -1,15 +1,15 @@
-using Android.App;
-using Android.OS;
-using Android.Content.PM;
-using Android.Views;
-using Xamarin.Forms.Platform.Android;
-using FFImageLoading.Forms.Droid;
 using Acr.UserDialogs;
+using Android.App;
 using Android.Content;
+using Android.Content.PM;
+using Android.OS;
 using Android.Runtime;
+using Android.Views;
 using FFImageLoading;
-using System;
+using FFImageLoading.Forms.Droid;
 using Plugin.Permissions;
+using System;
+using Xamarin.Forms.Platform.Android;
 
 namespace eShopOnContainers.Droid.Activities
 {

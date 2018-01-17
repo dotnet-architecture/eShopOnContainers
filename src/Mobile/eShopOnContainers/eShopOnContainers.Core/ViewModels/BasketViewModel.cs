@@ -1,7 +1,7 @@
-﻿using eShopOnContainers.Core.Services.Settings;
-using eShopOnContainers.Core.Models.Basket;
+﻿using eShopOnContainers.Core.Models.Basket;
 using eShopOnContainers.Core.Models.Catalog;
 using eShopOnContainers.Core.Services.Basket;
+using eShopOnContainers.Core.Services.Settings;
 using eShopOnContainers.Core.Services.User;
 using eShopOnContainers.Core.ViewModels.Base;
 using System.Collections.ObjectModel;

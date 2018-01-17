@@ -1,5 +1,4 @@
-﻿using System;
-using System.Reflection;
+﻿using System.Reflection;
 using Windows.ApplicationModel.Activation;
 using Xunit.Runners.UI;
 

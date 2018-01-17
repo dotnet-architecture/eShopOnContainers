@@ -1,13 +1,12 @@
-﻿using eShopOnContainers.Core.Helpers;
+﻿using eShopOnContainers.Core.Services.Settings;
 using eShopOnContainers.Core.ViewModels;
-using eShopOnContainers.Core.Views;
 using eShopOnContainers.Core.ViewModels.Base;
+using eShopOnContainers.Core.Views;
 using System;
 using System.Globalization;
 using System.Reflection;
 using System.Threading.Tasks;
 using Xamarin.Forms;
-using eShopOnContainers.Core.Services.Settings;
 
 namespace eShopOnContainers.Services
 {
