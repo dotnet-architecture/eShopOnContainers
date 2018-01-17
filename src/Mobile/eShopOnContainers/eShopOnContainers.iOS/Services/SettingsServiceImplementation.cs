@@ -8,6 +8,8 @@ namespace eShopOnContainers.iOS.Services
 {
     public class SettingsServiceImplementation : ISettingsServiceImplementation
     {
+        #region Internal Implementation
+
         readonly object _locker = new object();
 
         NSUserDefaults GetUserDefaults() => NSUserDefaults.StandardUserDefaults;
@@ -88,6 +90,8 @@ namespace eShopOnContainers.iOS.Services
                 return null != value ? (T)value : defaultValue;
             }
         }
+
+        #endregion
 
         #region ISettingsServiceImplementation
 

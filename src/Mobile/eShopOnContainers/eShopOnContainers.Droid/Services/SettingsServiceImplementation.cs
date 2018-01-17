@@ -10,6 +10,8 @@ namespace eShopOnContainers.Droid.Services
 {
     public class SettingsServiceImplementation : ISettingsServiceImplementation
     {
+        #region Internal Implementation
+
         readonly object _locker = new object();
 
         ISharedPreferences GetSharedPreference()
@@ -111,6 +113,8 @@ namespace eShopOnContainers.Droid.Services
                 }
             }
         }
+
+        #endregion
 
         #region ISettingsServiceImplementation
 
