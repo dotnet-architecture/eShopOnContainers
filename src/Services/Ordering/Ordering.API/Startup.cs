@@ -6,7 +6,6 @@
     using global::Ordering.API.Application.IntegrationEvents;
     using global::Ordering.API.Application.IntegrationEvents.Events;
     using global::Ordering.API.Infrastructure.Filters;
-    using global::Ordering.API.Infrastructure.HostedServices;
     using global::Ordering.API.Infrastructure.Middlewares;
     using Infrastructure.AutofacModules;
     using Infrastructure.Filters;
@@ -57,9 +56,6 @@
                 options.Filters.Add(typeof(HttpGlobalExceptionFilter));
             }).AddControllersAsServices();  //Injecting Controllers themselves thru DI
                                             //For further info see: http://docs.autofac.org/en/latest/integration/aspnetcore.html#controllers-as-services
-
-            //// Configure GracePeriodManager Hosted Service
-            //services.AddSingleton<IHostedService, GracePeriodManagerService>();
 
             services.AddTransient<IOrderingIntegrationEventService, OrderingIntegrationEventService>();
 
