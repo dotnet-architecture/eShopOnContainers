@@ -3,6 +3,17 @@
 # http://redsymbol.net/articles/unofficial-bash-strict-mode/
 set -euo pipefail
 
+# This script is comparable to the PowerShell script deploy.ps1 but to be used from a Mac bash environment.
+# There are, however, the following few differences/limitations:
+ 
+# It assumes docker/container registry login was already performed
+# It assumes K8s was given access to the registry—does not create any K8s secrets
+# It does not support explicit kubectl config file (relies on kubectl config use-context to point kubectl at the right cluster/namespace)
+# It always deploys infrastructure bits (redis, SQL Server etc)
+# The script was tested only with Azure Container Registry (not Docker Hub, although it is expected to work with Docker Hub too)
+ 
+# Feel free to submit a PR in order to improve it.
+
 usage()
 {
     cat <<END
@@ -11,7 +22,7 @@ Parameters:
   -r | --registry <container registry> 
     Specifies container registry (ACR) to use (required), e.g. myregistry.azurecr.io
   -t | --tag <docker image tag> 
-    Default: current timestamp, with 1-minute resolution
+    Default: newly created, date-based timestamp, with 1-minute resolution
   -b | --build-solution
     Force solution build before deployment (default: false)
   --skip-image-build
@@ -31,6 +42,7 @@ FROM THE CURRENT CONFIGURATION CONTEXT.
 It is recommended that you create a separate namespace and confguration context
 for the eShopOnContainers application, to isolate it from other applications on the cluster.
 For more information see https://kubernetes.io/docs/tasks/administer-cluster/namespaces/
+You can use eshop-namespace.yaml file (in the same directory) to create the namespace.
 
 END
 }
