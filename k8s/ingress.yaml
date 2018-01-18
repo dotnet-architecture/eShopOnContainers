@@ -37,7 +37,7 @@ spec:
           servicePort: 80
       - path: /marketing-api
         backend:
-          serviceName: marketing
+          serviceName: ocelot
           servicePort: 80
       - path: /payment-api
         backend:
@@ -51,5 +51,9 @@ spec:
         backend:
           serviceName: webspa
           servicePort: 80
-          
+      - path: /ocelot
+        backend:
+          serviceName: ocelot
+          servicePort: 80
+      
 
