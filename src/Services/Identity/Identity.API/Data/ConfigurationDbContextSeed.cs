@@ -10,19 +10,19 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Data
 {
     public class ConfigurationDbContextSeed
     {
-        public async Task SeedAsync(ConfigurationDbContext context,IConfiguration configuration)
+        public async Task SeedAsync(ConfigurationDbContext context, IConfiguration configuration)
         {
-           
             //callbacks urls from config:
-            var clientUrls = new Dictionary<string, string>();
-
-            clientUrls.Add("Mvc", configuration.GetValue<string>("MvcClient"));
-            clientUrls.Add("Spa", configuration.GetValue<string>("SpaClient"));
-            clientUrls.Add("Xamarin", configuration.GetValue<string>("XamarinCallback"));
-            clientUrls.Add("LocationsApi", configuration.GetValue<string>("LocationApiClient"));
-            clientUrls.Add("MarketingApi", configuration.GetValue<string>("MarketingApiClient"));
-            clientUrls.Add("BasketApi", configuration.GetValue<string>("BasketApiClient"));
-            clientUrls.Add("OrderingApi", configuration.GetValue<string>("OrderingApiClient"));
+            var clientUrls = new Dictionary<string, string>
+            {
+                {"Mvc", configuration.GetValue<string>("MvcClient")},
+                {"Spa", configuration.GetValue<string>("SpaClient")},
+                {"Xamarin", configuration.GetValue<string>("XamarinCallback")},
+                {"LocationsApi", configuration.GetValue<string>("LocationApiClient")},
+                {"MarketingApi", configuration.GetValue<string>("MarketingApiClient")},
+                {"BasketApi", configuration.GetValue<string>("BasketApiClient")},
+                {"OrderingApi", configuration.GetValue<string>("OrderingApiClient")}
+            };
 
             if (!context.Clients.Any())
             {
