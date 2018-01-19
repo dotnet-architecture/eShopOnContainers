@@ -1,6 +1,7 @@
 ﻿using IdentityServer4.EntityFramework.DbContexts;
 using IdentityServer4.EntityFramework.Mappers;
 using Microsoft.eShopOnContainers.Services.Identity.API.Configuration;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,33 +25,22 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Data
                 {"OrderingApi", configuration.GetValue<string>("OrderingApiClient")}
             };
 
-            if (!context.Clients.Any())
+            if (!await context.Clients.AnyAsync())
             {
-                foreach (var client in Config.GetClients(clientUrls))
-                {
-                    await context.Clients.AddAsync(client.ToEntity());
-                }
-                await context.SaveChangesAsync();
+                context.Clients.AddRange(Config.GetClients(clientUrls).Select(client => client.ToEntity()));
             }
 
-            if (!context.IdentityResources.Any())
+            if (!await context.IdentityResources.AnyAsync())
             {
-                foreach (var resource in Config.GetResources())
-                {
-                    await context.IdentityResources.AddAsync(resource.ToEntity());
-                }
-                await context.SaveChangesAsync();
+                context.IdentityResources.AddRange(Config.GetResources().Select(resource => resource.ToEntity()));
             }
 
-            if (!context.ApiResources.Any())
+            if (!await context.ApiResources.AnyAsync())
             {
-                foreach (var api in Config.GetApis())
-                {
-                    await context.ApiResources.AddAsync(api.ToEntity());
-                }
-
-                await context.SaveChangesAsync();
+                context.ApiResources.AddRange(Config.GetApis().Select(api => api.ToEntity()));
             }
+
+            await context.SaveChangesAsync();
         }
     }
 }
