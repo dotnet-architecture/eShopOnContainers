@@ -56,15 +56,15 @@ spec:
             path: /hc
             port: 80
             scheme: HTTP 
-          initialDelaySeconds: 5
-          periodSeconds: 10 
+          initialDelaySeconds: 60
+          periodSeconds: 60 
         livenessProbe:
           httpGet:
             path: /hc
             port: 80
             scheme: HTTP 
-          initialDelaySeconds: 60
-          periodSeconds: 10                 
+          initialDelaySeconds: 120
+          periodSeconds: 60                 
       imagePullSecrets:
       - name: registry-key
 ---
@@ -121,15 +121,15 @@ spec:
             path: /hc
             port: 80
             scheme: HTTP 
-          initialDelaySeconds: 5
-          periodSeconds: 10 
+          initialDelaySeconds: 60
+          periodSeconds: 60
         livenessProbe:
           httpGet:
             path: /hc
             port: 80
             scheme: HTTP 
-          initialDelaySeconds: 60
-          periodSeconds: 10      
+          initialDelaySeconds: 120
+          periodSeconds: 60
       imagePullSecrets:
       - name: registry-key
 ---
@@ -208,15 +208,15 @@ spec:
             path: /hc
             port: 80
             scheme: HTTP 
-          initialDelaySeconds: 5
-          periodSeconds: 10 
+          initialDelaySeconds: 60
+          periodSeconds: 60
         livenessProbe:
           httpGet:
             path: /hc
             port: 80
             scheme: HTTP 
-          initialDelaySeconds: 60
-          periodSeconds: 10      
+          initialDelaySeconds: 120
+          periodSeconds: 60
       imagePullSecrets:
       - name: registry-key
 ---
@@ -278,22 +278,22 @@ spec:
             path: /hc
             port: 80
             scheme: HTTP 
-          initialDelaySeconds: 5
-          periodSeconds: 10 
+          initialDelaySeconds: 60
+          periodSeconds: 60
         livenessProbe:
           httpGet:
             path: /hc
             port: 80
             scheme: HTTP 
-          initialDelaySeconds: 60
-          periodSeconds: 10      
+          initialDelaySeconds: 120
+          periodSeconds: 60
       imagePullSecrets:
       - name: registry-key
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: ordering.backgroundtasks
+  name: orderingbackground
 spec:
   paused: true
   template:
@@ -303,7 +303,7 @@ spec:
         component: orderingbackground
     spec:
       containers:
-      - name: ordering
+      - name: orderingbackground
         image: eshop/ordering.backgroundtasks
         imagePullPolicy: Always
         env:
@@ -353,15 +353,15 @@ spec:
             path: /hc
             port: 80
             scheme: HTTP 
-          initialDelaySeconds: 5
-          periodSeconds: 10 
+          initialDelaySeconds: 60
+          periodSeconds: 60
         livenessProbe:
           httpGet:
             path: /hc
             port: 80
             scheme: HTTP 
-          initialDelaySeconds: 60
-          periodSeconds: 10      
+          initialDelaySeconds: 120
+          periodSeconds: 60
       imagePullSecrets:
       - name: registry-key
 ---
@@ -433,15 +433,15 @@ spec:
             path: /hc
             port: 80
             scheme: HTTP 
-          initialDelaySeconds: 5
-          periodSeconds: 10 
+          initialDelaySeconds: 50
+          periodSeconds: 60
         livenessProbe:
           httpGet:
             path: /hc
             port: 80
             scheme: HTTP 
-          initialDelaySeconds: 60
-          periodSeconds: 10      
+          initialDelaySeconds: 120
+          periodSeconds: 60
       imagePullSecrets:
       - name: registry-key
 ---
@@ -523,15 +523,15 @@ spec:
             path: /hc
             port: 80
             scheme: HTTP 
-          initialDelaySeconds: 5
-          periodSeconds: 10 
+          initialDelaySeconds: 60
+          periodSeconds: 60
         livenessProbe:
           httpGet:
             path: /hc
             port: 80
             scheme: HTTP 
-          initialDelaySeconds: 60
-          periodSeconds: 10      
+          initialDelaySeconds: 120
+          periodSeconds: 60
       imagePullSecrets:
       - name: registry-key
 ---
@@ -578,15 +578,15 @@ spec:
             path: /hc
             port: 80
             scheme: HTTP 
-          initialDelaySeconds: 5
-          periodSeconds: 10 
+          initialDelaySeconds: 60
+          periodSeconds: 60
         livenessProbe:
           httpGet:
             path: /hc
             port: 80
             scheme: HTTP 
-          initialDelaySeconds: 60
-          periodSeconds: 10       
+          initialDelaySeconds: 120
+          periodSeconds: 60
       imagePullSecrets:
       - name: registry-key      
 ---
@@ -700,15 +700,15 @@ spec:
             path: /hc
             port: 80
             scheme: HTTP 
-          initialDelaySeconds: 5
-          periodSeconds: 10 
+          initialDelaySeconds: 60
+          periodSeconds: 60
         livenessProbe:
           httpGet:
             path: /hc
             port: 80
             scheme: HTTP 
-          initialDelaySeconds: 60
-          periodSeconds: 10      
+          initialDelaySeconds: 120
+          periodSeconds: 60
       imagePullSecrets:
       - name: registry-key
 ---
@@ -893,14 +893,14 @@ spec:
             path: /hc
             port: 80
             scheme: HTTP 
-          initialDelaySeconds: 5
-          periodSeconds: 10 
+          initialDelaySeconds: 60
+          periodSeconds: 60
         livenessProbe:
           httpGet:
             path: /hc
             port: 80
             scheme: HTTP 
-          initialDelaySeconds: 60
-          periodSeconds: 10      
+          initialDelaySeconds: 120
+          periodSeconds: 60
       imagePullSecrets:
       - name: registry-key
