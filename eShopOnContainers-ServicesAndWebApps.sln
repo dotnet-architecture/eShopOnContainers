@@ -97,7 +97,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebHost", "WebHost", "{1815
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebHost.Customization", "src\BuildingBlocks\WebHostCustomization\WebHost.Customization\WebHost.Customization.csproj", "{15F4B3AA-89B6-4A0D-9051-414305974781}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ordering.BackgroundTasks", "src\Services\Ordering\Ordering.BackgroundTasks\Ordering.BackgroundTasks.csproj", "{2FF56999-0266-48B2-ACC1-FEBC482A5105}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ordering.BackgroundTasks", "src\Services\Ordering\Ordering.BackgroundTasks\Ordering.BackgroundTasks.csproj", "{2FF56999-0266-48B2-ACC1-FEBC482A5105}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

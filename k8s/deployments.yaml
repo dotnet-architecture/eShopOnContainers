@@ -259,6 +259,71 @@ spec:
            configMapKeyRef:
              name: urls
              key: IdentityUrl
+        - name: ApplicationInsights__InstrumentationKey
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: Instrumentation_Key
+        - name: UseLoadTest
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: EnableLoadTest
+        - name: OrchestratorType
+          value: 'K8S'           
+        ports:
+        - containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 5
+          periodSeconds: 10 
+        livenessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 60
+          periodSeconds: 10      
+      imagePullSecrets:
+      - name: registry-key
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ordering.backgroundtasks
+spec:
+  paused: true
+  template:
+    metadata:
+      labels:
+        app: eshop
+        component: orderingbackground
+    spec:
+      containers:
+      - name: ordering
+        image: eshop/ordering.backgroundtasks
+        imagePullPolicy: Always
+        env:
+        - name: PATH_BASE
+          value: /ordering-backgroundtasks
+        - name: ConnectionString
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: OrderingSqlDb
+        - name: EventBusConnection
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: OrderingBus
+        - name: AzureServiceBusEnabled
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: UseAzureServiceBus
         - name: CheckUpdateTime
           valueFrom:
            configMapKeyRef:
