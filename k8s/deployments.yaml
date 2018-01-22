@@ -60,7 +60,7 @@ spec:
           periodSeconds: 60 
         livenessProbe:
           httpGet:
-            path: /hc
+            path: /liveness
             port: 80
             scheme: HTTP 
           initialDelaySeconds: 120
@@ -125,7 +125,7 @@ spec:
           periodSeconds: 60
         livenessProbe:
           httpGet:
-            path: /hc
+            path: /liveness
             port: 80
             scheme: HTTP 
           initialDelaySeconds: 120
@@ -212,7 +212,7 @@ spec:
           periodSeconds: 60
         livenessProbe:
           httpGet:
-            path: /hc
+            path: /liveness
             port: 80
             scheme: HTTP 
           initialDelaySeconds: 120
@@ -282,7 +282,7 @@ spec:
           periodSeconds: 60
         livenessProbe:
           httpGet:
-            path: /hc
+            path: /liveness
             port: 80
             scheme: HTTP 
           initialDelaySeconds: 120
@@ -357,7 +357,7 @@ spec:
           periodSeconds: 60
         livenessProbe:
           httpGet:
-            path: /hc
+            path: /liveness
             port: 80
             scheme: HTTP 
           initialDelaySeconds: 120
@@ -437,7 +437,7 @@ spec:
           periodSeconds: 60
         livenessProbe:
           httpGet:
-            path: /hc
+            path: /liveness
             port: 80
             scheme: HTTP 
           initialDelaySeconds: 120
@@ -527,7 +527,7 @@ spec:
           periodSeconds: 60
         livenessProbe:
           httpGet:
-            path: /hc
+            path: /liveness
             port: 80
             scheme: HTTP 
           initialDelaySeconds: 120
@@ -582,7 +582,7 @@ spec:
           periodSeconds: 60
         livenessProbe:
           httpGet:
-            path: /hc
+            path: /liveness
             port: 80
             scheme: HTTP 
           initialDelaySeconds: 120
@@ -704,7 +704,7 @@ spec:
           periodSeconds: 60
         livenessProbe:
           httpGet:
-            path: /hc
+            path: /liveness
             port: 80
             scheme: HTTP 
           initialDelaySeconds: 120
@@ -897,7 +897,7 @@ spec:
           periodSeconds: 60
         livenessProbe:
           httpGet:
-            path: /hc
+            path: /liveness
             port: 80
             scheme: HTTP 
           initialDelaySeconds: 120
