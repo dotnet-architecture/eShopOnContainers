@@ -1,15 +1,15 @@
-using Android.App;
-using Android.OS;
-using Android.Content.PM;
-using Android.Views;
-using Xamarin.Forms.Platform.Android;
-using FFImageLoading.Forms.Droid;
 using Acr.UserDialogs;
+using Android.App;
 using Android.Content;
+using Android.Content.PM;
+using Android.OS;
 using Android.Runtime;
+using Android.Views;
 using FFImageLoading;
-using System;
+using FFImageLoading.Forms.Droid;
 using Plugin.Permissions;
+using System;
+using Xamarin.Forms.Platform.Android;
 
 namespace eShopOnContainers.Droid.Activities
 {
@@ -34,7 +34,7 @@ namespace eShopOnContainers.Droid.Activities
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
             UserDialogs.Init(this);
-            CachedImageRenderer.Init();
+            CachedImageRenderer.Init(false);
             LoadApplication(new App());
 
             Window window = this.Window;
@@ -56,6 +56,7 @@ namespace eShopOnContainers.Droid.Activities
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
         {
+            base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
             PermissionsImplementation.Current.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }

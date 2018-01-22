@@ -6,14 +6,22 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
+using eShopOnContainers.Core.Services.Settings;
 
-namespace eShopOnContainers.Core.Helpers
+namespace eShopOnContainers.Core.Services.FixUri
 {
-    public static class ServicesHelper
+    public class FixUriService : IFixUriService
     {
-        private static Regex IpRegex = new Regex(@"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b");
+        private readonly ISettingsService _settingsService;
 
-        public static void FixCatalogItemPictureUri(IEnumerable<CatalogItem> catalogItems)
+        private Regex IpRegex = new Regex(@"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b");
+
+        public FixUriService(ISettingsService settingsService)
+        {
+            _settingsService = settingsService;
+        }
+
+        public void FixCatalogItemPictureUri(IEnumerable<CatalogItem> catalogItems)
         {
             if (catalogItems == null)
             {
@@ -23,12 +31,12 @@ namespace eShopOnContainers.Core.Helpers
             try
             {
                 if (!ViewModelLocator.UseMockService
-                    && Settings.UrlBase != GlobalSetting.DefaultEndpoint)
+                    && _settingsService.UrlBase != GlobalSetting.DefaultEndpoint)
                 {
                     foreach (var catalogItem in catalogItems)
                     {
                         MatchCollection serverResult = IpRegex.Matches(catalogItem.PictureUri);
-                        MatchCollection localResult = IpRegex.Matches(Settings.UrlBase);
+                        MatchCollection localResult = IpRegex.Matches(_settingsService.UrlBase);
 
                         if (serverResult.Count != -1 && localResult.Count != -1)
                         {
@@ -46,7 +54,7 @@ namespace eShopOnContainers.Core.Helpers
             }
         }
 
-        public static void FixBasketItemPictureUri(IEnumerable<BasketItem> basketItems)
+        public void FixBasketItemPictureUri(IEnumerable<BasketItem> basketItems)
         {
             if (basketItems == null)
             {
@@ -56,12 +64,12 @@ namespace eShopOnContainers.Core.Helpers
             try
             {
                 if (!ViewModelLocator.UseMockService
-                    && Settings.UrlBase != GlobalSetting.DefaultEndpoint)
+                    && _settingsService.UrlBase != GlobalSetting.DefaultEndpoint)
                 {
                     foreach (var basketItem in basketItems)
                     {
                         MatchCollection serverResult = IpRegex.Matches(basketItem.PictureUrl);
-                        MatchCollection localResult = IpRegex.Matches(Settings.UrlBase);
+                        MatchCollection localResult = IpRegex.Matches(_settingsService.UrlBase);
 
                         if (serverResult.Count != -1 && localResult.Count != -1)
                         {
@@ -78,7 +86,7 @@ namespace eShopOnContainers.Core.Helpers
             }
         }
 
-        public static void FixCampaignItemPictureUri(IEnumerable<CampaignItem> campaignItems)
+        public void FixCampaignItemPictureUri(IEnumerable<CampaignItem> campaignItems)
         {
             if (campaignItems == null)
             {
@@ -88,12 +96,12 @@ namespace eShopOnContainers.Core.Helpers
             try
             {
                 if (!ViewModelLocator.UseMockService
-                    && Settings.UrlBase != GlobalSetting.DefaultEndpoint)
+                    && _settingsService.UrlBase != GlobalSetting.DefaultEndpoint)
                 {
                     foreach (var campaignItem in campaignItems)
                     {
                         MatchCollection serverResult = IpRegex.Matches(campaignItem.PictureUri);
-                        MatchCollection localResult = IpRegex.Matches(Settings.UrlBase);
+                        MatchCollection localResult = IpRegex.Matches(_settingsService.UrlBase);
 
                         if (serverResult.Count != -1 && localResult.Count != -1)
                         {
