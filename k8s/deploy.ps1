@@ -65,7 +65,7 @@ if ($buildImages) {
     docker-compose -p .. -f ../docker-compose.yml build    
 
     Write-Host "Pushing images to $registry/$dockerOrg..." -ForegroundColor Yellow
-    $services = ("basket.api", "catalog.api", "identity.api", "ordering.api", "marketing.api","payment.api","locations.api", "webmvc", "webspa", "webstatus")
+    $services = ("basket.api", "catalog.api", "identity.api", "ordering.api", "marketing.api","payment.api","locations.api", "webmvc", "webspa", "webstatus", "ocelotapigw")
 
     foreach ($service in $services) {
         $imageFqdn = if ($useDockerHub)  {"$dockerOrg/${service}"} else {"$registry/$dockerOrg/${service}"}
