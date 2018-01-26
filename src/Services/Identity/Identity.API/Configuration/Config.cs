@@ -14,7 +14,8 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                 new ApiResource("orders", "Orders Service"),
                 new ApiResource("basket", "Basket Service"),
                 new ApiResource("marketing", "Marketing Service"),
-                new ApiResource("locations", "Locations Service")
+                new ApiResource("locations", "Locations Service"),
+                new ApiResource("purchasebff", "Purchase BFF")
             };
         }
 
@@ -52,7 +53,8 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                         "orders",
                         "basket",
                         "locations",
-                        "marketing"
+                        "marketing",
+                        "purchasebff"
                     }
                 },
                 new Client
@@ -78,7 +80,8 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                         "orders",
                         "basket",
                         "locations",
-                        "marketing"
+                        "marketing",
+                        "purchasebff"
                     },
                     //Allow requesting refresh tokens for long lived API access
                     AllowOfflineAccess = true,
@@ -114,7 +117,8 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                         "orders",
                         "basket",
                         "locations",
-                        "marketing"
+                        "marketing",
+                        "purchasebff"
                     },
                 },
                 new Client
@@ -146,7 +150,8 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                         "orders",
                         "basket",
                         "locations",
-                        "marketing"
+                        "marketing",
+                        "purchasebff"
                     },
                 },
                 new Client
@@ -208,7 +213,23 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                     {
                         "orders"
                     }
+                },
+                new Client
+                {
+                    ClientId = "purchasebffwaggerui",
+                    ClientName = "Purchase BFF Swagger UI",
+                    AllowedGrantTypes = GrantTypes.Implicit,
+                    AllowAccessTokensViaBrowser = true,
+
+                    RedirectUris = { $"{clientsUrl["PurchaseBFF"]}/swagger/o2c.html" },
+                    PostLogoutRedirectUris = { $"{clientsUrl["PurchaseBFF"]}/swagger/" },
+
+                    AllowedScopes =
+                    {
+                        "purchasebff"
+                    }
                 }
+
             };
         }
     }

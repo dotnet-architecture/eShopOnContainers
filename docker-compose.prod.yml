@@ -64,6 +64,7 @@ services:
       - MarketingApiClient=http://${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP}:5110
       - BasketApiClient=http://${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP}:5103
       - OrderingApiClient=http://${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP}:5102
+      - PurchaseBFFClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5120
       - UseCustomizationData=True  
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
       - OrchestratorType=${ORCHESTRATOR_TYPE}

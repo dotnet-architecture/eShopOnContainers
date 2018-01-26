@@ -57,6 +57,7 @@ services:
       - MarketingApiClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5110
       - BasketApiClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5103
       - OrderingApiClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5102
+      - PurchaseBFFClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5120
       - UseCustomizationData=True  
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
       - OrchestratorType=${ORCHESTRATOR_TYPE}
@@ -203,7 +204,7 @@ services:
 
   sql.data:
     environment:
-      - sa_password=Pass@word
+      - SA_PASSWORD=Pass@word
       - ACCEPT_EULA=Y
     ports:
       - "5433:1433"
@@ -226,4 +227,10 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
     ports:
       - "5200:80"
+
+  purchasebff:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "5120:80"
 

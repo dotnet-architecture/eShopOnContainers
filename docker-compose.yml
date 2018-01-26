@@ -113,3 +113,10 @@ services:
     build:
       context: .
       dockerfile: src/Apigw/OcelotApiGw/Dockerfile
+
+  purchasebff:
+    image: eshop/purchasebff
+    build:
+      context: .
+      dockerfile: src/BFFs/PurchaseBff/Dockerfile
+

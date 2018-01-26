@@ -23,6 +23,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Data
             clientUrls.Add("MarketingApi", configuration.GetValue<string>("MarketingApiClient"));
             clientUrls.Add("BasketApi", configuration.GetValue<string>("BasketApiClient"));
             clientUrls.Add("OrderingApi", configuration.GetValue<string>("OrderingApiClient"));
+            clientUrls.Add("PurchaseBFF", configuration.GetValue<string>("PurchaseBFFClient"));
 
             if (!context.Clients.Any())
             {

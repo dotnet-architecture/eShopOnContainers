@@ -3,6 +3,14 @@
     {
       "DownstreamPathTemplate": "/{everything}",
       "DownstreamScheme": "http",
+      "DownstreamHost": "catalog.api",
+      "DownstreamPort": 80,
+      "UpstreamPathTemplate": "/purchase-bff/catalog/{everything}",
+      "UpstreamHttpMethod": [ "GET" ]
+    },
+    {
+      "DownstreamPathTemplate": "/{everything}",
+      "DownstreamScheme": "http",
       "DownstreamHost": "ordering.api",
       "DownstreamPort": 80,
       "UpstreamPathTemplate": "/orders-api/{everything}",
