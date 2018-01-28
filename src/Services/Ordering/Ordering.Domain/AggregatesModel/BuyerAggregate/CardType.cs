@@ -5,20 +5,18 @@ using System.Linq;
 
 namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.BuyerAggregate
 {
-
     public class CardType
         : Enumeration
     {
-        public static CardType Amex = new CardType(1, "Amex");
-        public static CardType Visa = new CardType(2, "Visa");
-        public static CardType MasterCard = new CardType(3, "MasterCard");
+        public static readonly CardType Amex = new CardType(1, "Amex");
+        public static readonly CardType Visa = new CardType(2, "Visa");
+        public static readonly CardType MasterCard = new CardType(3, "MasterCard");
 
         protected CardType() { }
 
         public CardType(int id, string name)
             : base(id, name)
         {
-
         }
 
         public static IEnumerable<CardType> List()
@@ -33,7 +31,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.B
 
             if (state == null)
             {
-                throw new ArgumentException($"Possible values for CardType: {String.Join(",", List().Select(s => s.Name))}");
+                throw new ArgumentException($"Possible values for CardType: {string.Join(",", List().Select(s => s.Name))}");
             }
 
             return state;

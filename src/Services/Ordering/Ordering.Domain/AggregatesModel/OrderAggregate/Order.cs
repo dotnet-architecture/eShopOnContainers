@@ -34,10 +34,13 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
 
         private int? _paymentMethodId;
 
-        protected Order() { _orderItems = new List<OrderItem>(); }
+        protected Order()
+        {
+            _orderItems = new List<OrderItem>();
+        }
 
         public Order(string userId, Address address, int cardTypeId, string cardNumber, string cardSecurityNumber,
-                string cardHolderName, DateTime cardExpiration, int? buyerId = null, int? paymentMethodId = null)
+            string cardHolderName, DateTime cardExpiration, int? buyerId = null, int? paymentMethodId = null)
         {
             _orderItems = new List<OrderItem>();
             _buyerId = buyerId;
@@ -58,8 +61,8 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
         // in order to maintain consistency between the whole Aggregate. 
         public void AddOrderItem(int productId, string productName, decimal unitPrice, decimal discount, string pictureUrl, int units = 1)
         {
-            var existingOrderForProduct = _orderItems.Where(o => o.ProductId == productId)
-                .SingleOrDefault();
+            var existingOrderForProduct = _orderItems
+                .SingleOrDefault(o => o.ProductId == productId);
 
             if (existingOrderForProduct != null)
             {
@@ -92,12 +95,12 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
         }
 
         public void SetAwaitingValidationStatus()
-        {           
+        {
             if (_orderStatusId == OrderStatus.Submitted.Id)
             {
                 AddDomainEvent(new OrderStatusChangedToAwaitingValidationDomainEvent(Id, _orderItems));
                 _orderStatusId = OrderStatus.AwaitingValidation.Id;
-            }            
+            }
         }
 
         public void SetStockConfirmedStatus()
@@ -157,11 +160,11 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
 
                 var itemsStockRejectedDescription = string.Join(", ", itemsStockRejectedProductNames);
                 _description = $"The product items don't have stock: ({itemsStockRejectedDescription}).";
-            }           
+            }
         }
 
         private void AddOrderStartedDomainEvent(string userId, int cardTypeId, string cardNumber,
-                string cardSecurityNumber, string cardHolderName, DateTime cardExpiration)
+            string cardSecurityNumber, string cardHolderName, DateTime cardExpiration)
         {
             var orderStartedDomainEvent = new OrderStartedDomainEvent(this, userId, cardTypeId, 
                                                                       cardNumber, cardSecurityNumber,
@@ -181,4 +184,3 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
         }
     }
 }
-

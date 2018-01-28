@@ -1,6 +1,5 @@
 ﻿using Microsoft.eShopOnContainers.Services.Ordering.Domain.Seedwork;
 using Ordering.Domain.Exceptions;
-using System;
 
 namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate
 {
@@ -20,7 +19,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
 
         protected OrderItem() { }
 
-        public OrderItem(int productId, string productName, decimal unitPrice, decimal discount, string PictureUrl, int units = 1)
+        public OrderItem(int productId, string productName, decimal unitPrice, decimal discount, string pictureUrl, int units = 1)
         {
             if (units <= 0)
             {
@@ -38,12 +37,12 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
             _unitPrice = unitPrice;
             _discount = discount;
             _units = units;
-            _pictureUrl = PictureUrl;
+            _pictureUrl = pictureUrl;
         }
 
         public void SetPictureUri(string pictureUri)
         {
-            if (!String.IsNullOrWhiteSpace(pictureUri))
+            if (!string.IsNullOrWhiteSpace(pictureUri))
             {
                 _pictureUrl = pictureUri;
             }

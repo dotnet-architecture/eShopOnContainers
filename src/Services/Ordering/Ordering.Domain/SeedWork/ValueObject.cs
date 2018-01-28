@@ -27,6 +27,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.SeedWork
             {
                 return false;
             }
+
             ValueObject other = (ValueObject)obj;
             IEnumerator<object> thisValues = GetAtomicValues().GetEnumerator();
             IEnumerator<object> otherValues = other.GetAtomicValues().GetEnumerator();

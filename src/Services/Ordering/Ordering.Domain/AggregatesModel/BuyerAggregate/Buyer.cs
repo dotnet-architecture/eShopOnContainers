@@ -7,16 +7,16 @@ using System.Linq;
 namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.BuyerAggregate
 {
     public class Buyer
-      : Entity, IAggregateRoot
+        : Entity, IAggregateRoot
     {
         public string IdentityGuid { get; private set; }
 
-        private List<PaymentMethod> _paymentMethods;        
+        private List<PaymentMethod> _paymentMethods;
 
         public IEnumerable<PaymentMethod> PaymentMethods => _paymentMethods.AsReadOnly();
 
-        protected Buyer() {
-
+        protected Buyer()
+        {
             _paymentMethods = new List<PaymentMethod>();
         }
 
@@ -29,8 +29,8 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.B
             int cardTypeId, string alias, string cardNumber, 
             string securityNumber, string cardHolderName, DateTime expiration, int orderId)
         {
-            var existingPayment = _paymentMethods.Where(p => p.IsEqualTo(cardTypeId, cardNumber, expiration))
-                .SingleOrDefault();
+            var existingPayment = _paymentMethods
+                .SingleOrDefault(p => p.IsEqualTo(cardTypeId, cardNumber, expiration));
 
             if (existingPayment != null)
             {

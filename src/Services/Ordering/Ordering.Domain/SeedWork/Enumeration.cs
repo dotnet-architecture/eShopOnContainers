@@ -5,15 +5,14 @@ using System.Reflection;
 
 namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.SeedWork
 {
-    public abstract class Enumeration : IComparable
+    public abstract class Enumeration
+        : IComparable
     {
         public string Name { get; private set; }
 
         public int Id { get; private set; }
 
-        protected Enumeration()
-        {
-        }
+        protected Enumeration() { }
 
         protected Enumeration(int id, string name)
         {
@@ -34,9 +33,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.SeedWork
             foreach (var info in fields)
             {
                 var instance = new T();
-                var locatedValue = info.GetValue(instance) as T;
-
-                if (locatedValue != null)
+                if (info.GetValue(instance) is T locatedValue)
                 {
                     yield return locatedValue;
                 }
@@ -45,9 +42,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.SeedWork
 
         public override bool Equals(object obj)
         {
-            var otherValue = obj as Enumeration;
-
-            if (otherValue == null)
+            if (!(obj is Enumeration otherValue))
             {
                 return false;
             }
