@@ -4,7 +4,8 @@ using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Idempotency
 {
-    public class RequestManager : IRequestManager
+    public class RequestManager
+        : IRequestManager
     {
         private readonly OrderingContext _context;
 

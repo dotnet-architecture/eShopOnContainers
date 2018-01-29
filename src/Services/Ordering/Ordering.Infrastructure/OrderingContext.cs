@@ -12,7 +12,8 @@ using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
 {
-    public class OrderingContext : DbContext, IUnitOfWork
+    public class OrderingContext
+        : DbContext, IUnitOfWork
     {
         public const string DEFAULT_SCHEMA = "ordering";
         public DbSet<Order> Orders { get; set; }
@@ -24,12 +25,13 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
 
         private readonly IMediator _mediator;
 
-        private OrderingContext(DbContextOptions<OrderingContext> options) : base (options) { }
+        private OrderingContext(DbContextOptions<OrderingContext> options)
+            : base (options) { }
 
-        public OrderingContext(DbContextOptions<OrderingContext> options, IMediator mediator) : base(options)
+        public OrderingContext(DbContextOptions<OrderingContext> options, IMediator mediator)
+            : base(options)
         {
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
-
 
             System.Diagnostics.Debug.WriteLine("OrderingContext::ctor ->" + this.GetHashCode());
         }
@@ -57,13 +59,14 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
 
             // After executing this line all the changes (from the Command Handler and Domain Event Handlers) 
             // performed throught the DbContext will be commited
-            var result = await base.SaveChangesAsync();
+            var result = await base.SaveChangesAsync(cancellationToken);
 
             return true;
-        }        
+        }
     }
 
-    public class OrderingContextDesignFactory : IDesignTimeDbContextFactory<OrderingContext>
+    public class OrderingContextDesignFactory
+        : IDesignTimeDbContextFactory<OrderingContext>
     {
         public OrderingContext CreateDbContext(string[] args)
         {
@@ -73,9 +76,11 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
             return new OrderingContext(optionsBuilder.Options,new NoMediator());
         }
 
-        class NoMediator : IMediator
+        class NoMediator
+            : IMediator
         {
-            public Task Publish<TNotification>(TNotification notification, CancellationToken cancellationToken = default(CancellationToken)) where TNotification : INotification
+            public Task Publish<TNotification>(TNotification notification, CancellationToken cancellationToken = default(CancellationToken))
+                where TNotification : INotification
             {
                 return Task.CompletedTask;
             }

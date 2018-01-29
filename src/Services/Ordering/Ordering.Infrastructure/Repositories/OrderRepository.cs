@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
 using Microsoft.eShopOnContainers.Services.Ordering.Domain.Seedwork;
-using Ordering.Domain.Exceptions;
 using System;
 using System.Threading.Tasks;
 
@@ -12,13 +11,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Repositor
     {
         private readonly OrderingContext _context;
 
-        public IUnitOfWork UnitOfWork
-        {
-            get
-            {
-                return _context;
-            }
-        }
+        public IUnitOfWork UnitOfWork => _context;
 
         public OrderRepository(OrderingContext context)
         {

@@ -11,13 +11,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Repositor
         : IBuyerRepository
     {
         private readonly OrderingContext _context;
-        public IUnitOfWork UnitOfWork
-        {
-            get
-            {
-                return _context;
-            }
-        }
+        public IUnitOfWork UnitOfWork => _context;
 
         public BuyerRepository(OrderingContext context)
         {
@@ -35,14 +29,14 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Repositor
             else
             {
                 return buyer;
-            }           
+            }
         }
 
         public Buyer Update(Buyer buyer)
         {
             return _context.Buyers
-                    .Update(buyer)
-                    .Entity;
+                .Update(buyer)
+                .Entity;
         }
 
         public async Task<Buyer> FindAsync(string identity)

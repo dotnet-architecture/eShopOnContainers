@@ -1,7 +1,6 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate
 {
     using global::Ordering.Domain.Exceptions;
-    using Seedwork;
     using SeedWork;
     using System;
     using System.Collections.Generic;
@@ -17,9 +16,7 @@
         public static OrderStatus Shipped = new OrderStatus(5, nameof(Shipped).ToLowerInvariant());
         public static OrderStatus Cancelled = new OrderStatus(6, nameof(Cancelled).ToLowerInvariant());
 
-        protected OrderStatus()
-        {
-        }
+        protected OrderStatus() { }
 
         public OrderStatus(int id, string name)
             : base(id, name)
@@ -32,11 +29,11 @@
         public static OrderStatus FromName(string name)
         {
             var state = List()
-                .SingleOrDefault(s => String.Equals(s.Name, name, StringComparison.CurrentCultureIgnoreCase));
+                .SingleOrDefault(s => string.Equals(s.Name, name, StringComparison.CurrentCultureIgnoreCase));
 
             if (state == null)
             {
-                throw new OrderingDomainException($"Possible values for OrderStatus: {String.Join(",", List().Select(s => s.Name))}");
+                throw new OrderingDomainException($"Possible values for OrderStatus: {string.Join(",", List().Select(s => s.Name))}");
             }
 
             return state;
@@ -48,7 +45,7 @@
 
             if (state == null)
             {
-                throw new OrderingDomainException($"Possible values for OrderStatus: {String.Join(",", List().Select(s => s.Name))}");
+                throw new OrderingDomainException($"Possible values for OrderStatus: {string.Join(",", List().Select(s => s.Name))}");
             }
 
             return state;

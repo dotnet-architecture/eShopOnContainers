@@ -24,7 +24,7 @@ namespace Ordering.Infrastructure.EntityConfigurations
                 .IsRequired();
 
             buyerConfiguration.HasIndex("IdentityGuid")
-              .IsUnique(true);
+              .IsUnique();
 
             buyerConfiguration.HasMany(b => b.PaymentMethods)
                .WithOne()
