@@ -1,0 +1,34 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
+using PurchaseBff.Config;
+using PurchaseBff.Models;
+
+namespace PurchaseBff.Services
+{
+    public class BasketService : IBasketService
+    {
+
+        private readonly IHttpClient _apiClient;
+        private readonly ILogger<BasketService> _logger;
+        private readonly UrlsConfig _urls;
+        public BasketService(IHttpClient httpClient, ILogger<BasketService> logger, IOptionsSnapshot<UrlsConfig> config)
+        {
+            _apiClient = httpClient;
+            _logger = logger;
+            _urls = config.Value;
+        }
+
+        public async Task<BasketData> GetById(string id)
+        {
+            var data = await _apiClient.GetStringAsync(_urls.Basket +  UrlsConfig.BasketOperations.GetItemById(id));
+            var basket = JsonConvert.DeserializeObject<BasketData>(data);
+            return basket;
+        }
+    }
+}

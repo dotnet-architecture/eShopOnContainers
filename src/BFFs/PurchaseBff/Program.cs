@@ -20,6 +20,10 @@ namespace PurchaseBff
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
+                .ConfigureAppConfiguration(cb =>
+                {
+                    cb.AddJsonFile("appsettings.localhost.json", optional: true);
+                })
                 .Build();
     }
 }

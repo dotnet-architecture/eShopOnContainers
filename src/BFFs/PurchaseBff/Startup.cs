@@ -5,11 +5,14 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using PurchaseBff.Config;
 using PurchaseBff.Filters.Basket.API.Infrastructure.Filters;
+using PurchaseBff.Services;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace PurchaseBff
@@ -26,6 +29,14 @@ namespace PurchaseBff
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSingleton<IHttpClient, StandardHttpClient>();
+            services.AddTransient<ICatalogService, CatalogService>();
+            services.AddTransient<IBasketService, BasketService>();
+
+            services.AddOptions();
+            services.Configure<UrlsConfig>(Configuration.GetSection("urls"));
+
             services.AddMvc();
 
             services.AddSwaggerGen(options =>

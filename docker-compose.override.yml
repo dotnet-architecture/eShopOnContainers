@@ -231,6 +231,8 @@ services:
   purchasebff:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - urls__basket=http://basket.api
+      - urls__catalog=http://catalog.api
     ports:
       - "5120:80"
 
