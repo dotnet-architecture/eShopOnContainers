@@ -19,7 +19,7 @@
             {
                 if (!context.Campaigns.Any())
                 {
-                    context.Campaigns.AddRange(
+                    await context.Campaigns.AddRangeAsync(
                         GetPreconfiguredMarketings());
 
                     await context.SaveChangesAsync();
