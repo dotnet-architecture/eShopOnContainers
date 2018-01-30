@@ -37,7 +37,12 @@ services:
       - EventBusUserName=admin
       - EventBusPassword=password
 
-  marketing.api:
+  ordering.api:
+    environment:
+      - EventBusUserName=admin
+      - EventBusPassword=password
+  
+  ordering.backgroundtasks:
     environment:
       - EventBusUserName=admin
       - EventBusPassword=password

@@ -1,12 +1,11 @@
-﻿using System;
+﻿using Microsoft.Extensions.Hosting;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-using Microsoft.Extensions.Hosting;
-
-namespace Ordering.API.Infrastructure.HostedServices
+namespace Ordering.BackgroundTasks.Tasks.Base
 {
-    // Copyright (c) .NET Foundation. All rights reserved.
+    // Copyright(c) .NET Foundation.All rights reserved.
     // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
     /// <summary>
@@ -19,6 +18,7 @@ namespace Ordering.API.Infrastructure.HostedServices
     public abstract class BackgroundService : IHostedService, IDisposable
     {
         private Task _executingTask;
+
         private readonly CancellationTokenSource _stoppingCts = new CancellationTokenSource();
 
         /// <summary>
@@ -78,6 +78,4 @@ namespace Ordering.API.Infrastructure.HostedServices
             _stoppingCts.Cancel();
         }
     }
-
-
 }

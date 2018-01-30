@@ -1,51 +1,53 @@
-﻿namespace Ordering.API.Infrastructure.HostedServices
-{
-    using Dapper;
-    using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
-    using Microsoft.eShopOnContainers.Services.Ordering.API;
-    using Microsoft.Extensions.Logging;
-    using Microsoft.Extensions.Options;
-    using Ordering.API.Application.IntegrationEvents.Events;
-    using System;
-    using System.Collections.Generic;
-    using System.Data.SqlClient;
-    using System.Threading;
-    using System.Threading.Tasks;
+﻿using Dapper;
+using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Ordering.BackgroundTasks.Configuration;
+using Ordering.BackgroundTasks.IntegrationEvents;
+using Ordering.BackgroundTasks.Tasks.Base;
+using System;
+using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Threading;
+using System.Threading.Tasks;
 
-    public class GracePeriodManagerService : BackgroundService
+namespace Ordering.BackgroundTasks.Tasks
+{
+    public class GracePeriodManagerService
+         : BackgroundService
     {
-        private readonly OrderingSettings _settings;
         private readonly ILogger<GracePeriodManagerService> _logger;
+        private readonly BackgroundTaskSettings _settings;
         private readonly IEventBus _eventBus;
 
-        public GracePeriodManagerService(IOptions<OrderingSettings> settings,
-            IEventBus eventBus,
-            ILogger<GracePeriodManagerService> logger)
+        public GracePeriodManagerService(IOptions<BackgroundTaskSettings> settings,
+                                         IEventBus eventBus,
+                                         ILogger<GracePeriodManagerService> logger)
         {
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _eventBus = eventBus ?? throw new ArgumentNullException(nameof(eventBus));
             _settings = settings?.Value ?? throw new ArgumentNullException(nameof(settings));
+            _eventBus = eventBus ?? throw new ArgumentNullException(nameof(eventBus));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            _logger.LogDebug($"GracePeriod background task is starting.");
+            _logger.LogDebug($"GracePeriodManagerService is starting.");
 
-            stoppingToken.Register(() => _logger.LogDebug($"#1 GracePeriod background task is stopping."));
+            stoppingToken.Register(() => _logger.LogDebug($"#1 GracePeriodManagerService background task is stopping."));
 
             while (!stoppingToken.IsCancellationRequested)
             {
-                _logger.LogDebug($"GracePeriod background task is doing background work.");
+                _logger.LogDebug($"GracePeriodManagerService background task is doing background work.");
 
                 CheckConfirmedGracePeriodOrders();
 
                 await Task.Delay(_settings.CheckUpdateTime, stoppingToken);
-
-                continue;
             }
 
-            _logger.LogDebug($"GracePeriod background task is stopping.");
-            
+            _logger.LogDebug($"GracePeriodManagerService background task is stopping.");
+
+            await Task.CompletedTask;
         }
 
         private void CheckConfirmedGracePeriodOrders()
@@ -54,11 +56,11 @@
 
             var orderIds = GetConfirmedGracePeriodOrders();
 
-            _logger.LogDebug($"GracePeriod sent a .");
             foreach (var orderId in orderIds)
             {
-                var gracePeriodConfirmedEvent = new GracePeriodConfirmedIntegrationEvent(orderId);
-                _eventBus.Publish(gracePeriodConfirmedEvent);
+                var confirmGracePeriodEvent = new GracePeriodConfirmedIntegrationEvent(orderId);
+
+                _eventBus.Publish(confirmGracePeriodEvent);
             }
         }
 

@@ -56,15 +56,15 @@ spec:
             path: /hc
             port: 80
             scheme: HTTP 
-          initialDelaySeconds: 5
-          periodSeconds: 10 
+          initialDelaySeconds: 60
+          periodSeconds: 60 
         livenessProbe:
           httpGet:
-            path: /hc
+            path: /liveness
             port: 80
             scheme: HTTP 
-          initialDelaySeconds: 60
-          periodSeconds: 10                 
+          initialDelaySeconds: 120
+          periodSeconds: 60                 
       imagePullSecrets:
       - name: registry-key
 ---
@@ -121,15 +121,15 @@ spec:
             path: /hc
             port: 80
             scheme: HTTP 
-          initialDelaySeconds: 5
-          periodSeconds: 10 
+          initialDelaySeconds: 60
+          periodSeconds: 60
         livenessProbe:
           httpGet:
-            path: /hc
+            path: /liveness
             port: 80
             scheme: HTTP 
-          initialDelaySeconds: 60
-          periodSeconds: 10      
+          initialDelaySeconds: 120
+          periodSeconds: 60
       imagePullSecrets:
       - name: registry-key
 ---
@@ -208,15 +208,15 @@ spec:
             path: /hc
             port: 80
             scheme: HTTP 
-          initialDelaySeconds: 5
-          periodSeconds: 10 
+          initialDelaySeconds: 60
+          periodSeconds: 60
         livenessProbe:
           httpGet:
-            path: /hc
+            path: /liveness
             port: 80
             scheme: HTTP 
-          initialDelaySeconds: 60
-          periodSeconds: 10      
+          initialDelaySeconds: 120
+          periodSeconds: 60
       imagePullSecrets:
       - name: registry-key
 ---
@@ -259,6 +259,71 @@ spec:
            configMapKeyRef:
              name: urls
              key: IdentityUrl
+        - name: ApplicationInsights__InstrumentationKey
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: Instrumentation_Key
+        - name: UseLoadTest
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: EnableLoadTest
+        - name: OrchestratorType
+          value: 'K8S'           
+        ports:
+        - containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 60
+          periodSeconds: 60
+        livenessProbe:
+          httpGet:
+            path: /liveness
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 120
+          periodSeconds: 60
+      imagePullSecrets:
+      - name: registry-key
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: orderingbackground
+spec:
+  paused: true
+  template:
+    metadata:
+      labels:
+        app: eshop
+        component: orderingbackground
+    spec:
+      containers:
+      - name: orderingbackground
+        image: eshop/ordering.backgroundtasks
+        imagePullPolicy: Always
+        env:
+        - name: PATH_BASE
+          value: /ordering-backgroundtasks
+        - name: ConnectionString
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: OrderingSqlDb
+        - name: EventBusConnection
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: OrderingBus
+        - name: AzureServiceBusEnabled
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: UseAzureServiceBus
         - name: CheckUpdateTime
           valueFrom:
            configMapKeyRef:
@@ -288,15 +353,15 @@ spec:
             path: /hc
             port: 80
             scheme: HTTP 
-          initialDelaySeconds: 5
-          periodSeconds: 10 
+          initialDelaySeconds: 60
+          periodSeconds: 60
         livenessProbe:
           httpGet:
-            path: /hc
+            path: /liveness
             port: 80
             scheme: HTTP 
-          initialDelaySeconds: 60
-          periodSeconds: 10      
+          initialDelaySeconds: 120
+          periodSeconds: 60
       imagePullSecrets:
       - name: registry-key
 ---
@@ -368,15 +433,15 @@ spec:
             path: /hc
             port: 80
             scheme: HTTP 
-          initialDelaySeconds: 5
-          periodSeconds: 10 
+          initialDelaySeconds: 50
+          periodSeconds: 60
         livenessProbe:
           httpGet:
-            path: /hc
+            path: /liveness
             port: 80
             scheme: HTTP 
-          initialDelaySeconds: 60
-          periodSeconds: 10      
+          initialDelaySeconds: 120
+          periodSeconds: 60
       imagePullSecrets:
       - name: registry-key
 ---
@@ -458,15 +523,15 @@ spec:
             path: /hc
             port: 80
             scheme: HTTP 
-          initialDelaySeconds: 5
-          periodSeconds: 10 
+          initialDelaySeconds: 60
+          periodSeconds: 60
         livenessProbe:
           httpGet:
-            path: /hc
+            path: /liveness
             port: 80
             scheme: HTTP 
-          initialDelaySeconds: 60
-          periodSeconds: 10      
+          initialDelaySeconds: 120
+          periodSeconds: 60
       imagePullSecrets:
       - name: registry-key
 ---
@@ -513,15 +578,15 @@ spec:
             path: /hc
             port: 80
             scheme: HTTP 
-          initialDelaySeconds: 5
-          periodSeconds: 10 
+          initialDelaySeconds: 60
+          periodSeconds: 60
         livenessProbe:
           httpGet:
-            path: /hc
+            path: /liveness
             port: 80
             scheme: HTTP 
-          initialDelaySeconds: 60
-          periodSeconds: 10       
+          initialDelaySeconds: 120
+          periodSeconds: 60
       imagePullSecrets:
       - name: registry-key      
 ---
@@ -635,15 +700,15 @@ spec:
             path: /hc
             port: 80
             scheme: HTTP 
-          initialDelaySeconds: 5
-          periodSeconds: 10 
+          initialDelaySeconds: 60
+          periodSeconds: 60
         livenessProbe:
           httpGet:
-            path: /hc
+            path: /liveness
             port: 80
             scheme: HTTP 
-          initialDelaySeconds: 60
-          periodSeconds: 10      
+          initialDelaySeconds: 120
+          periodSeconds: 60
       imagePullSecrets:
       - name: registry-key
 ---
@@ -828,14 +893,14 @@ spec:
             path: /hc
             port: 80
             scheme: HTTP 
-          initialDelaySeconds: 5
-          periodSeconds: 10 
+          initialDelaySeconds: 60
+          periodSeconds: 60
         livenessProbe:
           httpGet:
-            path: /hc
+            path: /liveness
             port: 80
             scheme: HTTP 
-          initialDelaySeconds: 60
-          periodSeconds: 10      
+          initialDelaySeconds: 120
+          periodSeconds: 60
       imagePullSecrets:
       - name: registry-key

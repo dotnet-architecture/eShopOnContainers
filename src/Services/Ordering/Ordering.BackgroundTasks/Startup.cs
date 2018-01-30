@@ -10,16 +10,14 @@ using Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.HealthChecks;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Payment.API.IntegrationEvents.EventHandling;
-using Payment.API.IntegrationEvents.Events;
+using Ordering.BackgroundTasks.Configuration;
+using Ordering.BackgroundTasks.Tasks;
 using RabbitMQ.Client;
 using System;
-using System.Threading.Tasks;
-using Microsoft.ApplicationInsights.Extensibility;
-using Microsoft.ApplicationInsights.ServiceFabric;
 
-namespace Payment.API
+namespace Ordering.BackgroundTasks
 {
     public class Startup
     {
@@ -32,10 +30,29 @@ namespace Payment.API
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
-        {            
-            services.Configure<PaymentSettings>(Configuration);
+        {
+            //add health check for this service
+            services.AddHealthChecks(checks =>
+            {
+                var minutes = 1;
 
-            RegisterAppInsights(services);
+                if (int.TryParse(Configuration["HealthCheck:Timeout"], out var minutesParsed))
+                {
+                    minutes = minutesParsed;
+                }
+                checks.AddSqlCheck("OrderingDb", Configuration["ConnectionString"], TimeSpan.FromMinutes(minutes));
+            });
+
+            //configure settings
+
+            services.Configure<BackgroundTaskSettings>(Configuration);
+            services.AddOptions();
+
+            //configure background task
+
+            services.AddSingleton<IHostedService, GracePeriodManagerService>();
+
+            //configure event bus related services
 
             if (Configuration.GetValue<bool>("AzureServiceBusEnabled"))
             {
@@ -54,6 +71,8 @@ namespace Payment.API
                 services.AddSingleton<IRabbitMQPersistentConnection>(sp =>
                 {
                     var logger = sp.GetRequiredService<ILogger<DefaultRabbitMQPersistentConnection>>();
+
+
                     var factory = new ConnectionFactory()
                     {
                         HostName = Configuration["EventBusConnection"]
@@ -79,54 +98,26 @@ namespace Payment.API
                 });
             }
 
-            services.AddHealthChecks(checks =>
-            {
-                checks.AddValueTaskCheck("HTTP Endpoint", () => new ValueTask<IHealthCheckResult>(HealthCheckResult.Healthy("Ok")));
-            });
-
             RegisterEventBus(services);
 
+            //create autofac based service provider
             var container = new ContainerBuilder();
             container.Populate(services);
+
+
             return new AutofacServiceProvider(container.Build());
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
-        {
-            loggerFactory.AddAzureWebAppDiagnostics();
-            loggerFactory.AddApplicationInsights(app.ApplicationServices, LogLevel.Trace);
 
-            var pathBase = Configuration["PATH_BASE"];
-            if (!string.IsNullOrEmpty(pathBase))
-            {
-                app.UsePathBase(pathBase);
-            }
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        {
 
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
             app.Map("/liveness", lapp => lapp.Run(async ctx => ctx.Response.StatusCode = 200));
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
-
-            ConfigureEventBus(app);
         }
 
-        private void RegisterAppInsights(IServiceCollection services)
-        {
-            services.AddApplicationInsightsTelemetry(Configuration);
-            var orchestratorType = Configuration.GetValue<string>("OrchestratorType");
-
-            if (orchestratorType?.ToUpper() == "K8S")
-            {
-                // Enable K8s telemetry initializer
-                services.EnableKubernetes();
-            }
-            if (orchestratorType?.ToUpper() == "SF")
-            {
-                // Enable SF telemetry initializer
-                services.AddSingleton<ITelemetryInitializer>((serviceProvider) =>
-                    new FabricTelemetryInitializer());
-            }
-        }
 
         private void RegisterEventBus(IServiceCollection services)
         {
@@ -139,7 +130,7 @@ namespace Payment.API
                     var serviceBusPersisterConnection = sp.GetRequiredService<IServiceBusPersisterConnection>();
                     var iLifetimeScope = sp.GetRequiredService<ILifetimeScope>();
                     var logger = sp.GetRequiredService<ILogger<EventBusServiceBus>>();
-                    var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();                    
+                    var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
 
                     return new EventBusServiceBus(serviceBusPersisterConnection, logger,
                         eventBusSubcriptionsManager, subscriptionClientName, iLifetimeScope);
@@ -164,14 +155,7 @@ namespace Payment.API
                 });
             }
 
-            services.AddTransient<OrderStatusChangedToStockConfirmedIntegrationEventHandler>();
             services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
-        }
-
-        private void ConfigureEventBus(IApplicationBuilder app)
-        {
-            var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
-            eventBus.Subscribe<OrderStatusChangedToStockConfirmedIntegrationEvent, OrderStatusChangedToStockConfirmedIntegrationEventHandler>();
         }
     }
 }
