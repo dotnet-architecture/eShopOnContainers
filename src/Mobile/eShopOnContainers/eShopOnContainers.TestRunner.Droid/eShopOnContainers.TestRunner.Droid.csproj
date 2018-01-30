@@ -284,8 +284,8 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\..\..\..\packages\Xamarin.Android.Support.Exif.25.4.0.2\build\MonoAndroid70\Xamarin.Android.Support.Exif.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages\Xamarin.Android.Support.Exif.25.4.0.2\build\MonoAndroid70\Xamarin.Android.Support.Exif.targets'))" />
-    <Error Condition="!Exists('..\..\..\..\packages\NETStandard.Library.2.0.0\build\netstandard2.0\NETStandard.Library.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages\NETStandard.Library.2.0.0\build\netstandard2.0\NETStandard.Library.targets'))" />
+    <Error Condition="!Exists('..\..\..\..\packages\NETStandard.Library.2.0.1\build\netstandard2.0\NETStandard.Library.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages\NETStandard.Library.2.0.1\build\netstandard2.0\NETStandard.Library.targets'))" />
   </Target>
   <Import Project="..\..\..\..\packages\Xamarin.Forms.2.5.0.122203\build\netstandard1.0\Xamarin.Forms.targets" Condition="Exists('..\..\..\..\packages\Xamarin.Forms.2.5.0.122203\build\netstandard1.0\Xamarin.Forms.targets')" />
-  <Import Project="..\..\..\..\packages\NETStandard.Library.2.0.0\build\netstandard2.0\NETStandard.Library.targets" Condition="Exists('..\..\..\..\packages\NETStandard.Library.2.0.0\build\netstandard2.0\NETStandard.Library.targets')" />
+  <Import Project="..\..\..\..\packages\NETStandard.Library.2.0.1\build\netstandard2.0\NETStandard.Library.targets" Condition="Exists('..\..\..\..\packages\NETStandard.Library.2.0.1\build\netstandard2.0\NETStandard.Library.targets')" />
 </Project>
