@@ -11,6 +11,18 @@
     {
       "DownstreamPathTemplate": "/{everything}",
       "DownstreamScheme": "http",
+      "DownstreamHost": "purchase-bff",
+      "DownstreamPort": 80,
+      "UpstreamPathTemplate": "/purchase-bff/{everything}",
+      "UpstreamHttpMethod": [],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "IdentityApiKey",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/{everything}",
+      "DownstreamScheme": "http",
       "DownstreamHost": "ordering.api",
       "DownstreamPort": 80,
       "UpstreamPathTemplate": "/orders-api/{everything}",

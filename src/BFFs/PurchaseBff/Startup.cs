@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -72,6 +74,28 @@ namespace PurchaseBff
                     .AllowAnyMethod()
                     .AllowAnyHeader()
                     .AllowCredentials());
+            });
+
+
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+            var identityUrl = Configuration.GetValue<string>("urls:identity");
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
+            }).AddJwtBearer(options =>
+            {
+                options.Authority = identityUrl;
+                options.RequireHttpsMetadata = false;
+                options.Audience = "ocelot";
+                options.Events = new JwtBearerEvents()
+                {
+                    OnAuthenticationFailed = async ctx =>
+                    {
+                        int i = 0;
+                    }
+                };
             });
         }
 

@@ -225,6 +225,7 @@ services:
   apigw:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - identityUrl=http://identity.api              #Local: You need to open your local dev-machine firewall at range 5100-5110.
     ports:
       - "5200:80"
 
@@ -233,6 +234,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - urls__basket=http://basket.api
       - urls__catalog=http://catalog.api
+      - urls__identity=http://identity.api              #Local: You need to open your local dev-machine firewall at range 5100-5110.
     ports:
       - "5120:80"
 
