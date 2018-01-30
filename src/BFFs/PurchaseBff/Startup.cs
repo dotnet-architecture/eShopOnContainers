@@ -88,7 +88,7 @@ namespace PurchaseBff
             {
                 options.Authority = identityUrl;
                 options.RequireHttpsMetadata = false;
-                options.Audience = "ocelot";
+                options.Audience = "purchasebff";
                 options.Events = new JwtBearerEvents()
                 {
                     OnAuthenticationFailed = async ctx =>

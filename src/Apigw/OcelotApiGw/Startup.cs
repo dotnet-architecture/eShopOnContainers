@@ -34,7 +34,17 @@ namespace OcelotApiGw
                 {
                     x.Authority = identityUrl;
                     x.RequireHttpsMetadata = false;
-                    x.Audience = "ocelot";
+                    x.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
+                    {
+                        ValidAudiences = new[] { "orders", "basket", "locations", "marketing", "purchasebff" }
+                    };
+                    x.Events = new Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerEvents()
+                    {
+                        OnAuthenticationFailed = async ctx =>
+                        {
+                            int i = 0;
+                        }
+                    };
                 });
 
             services.AddOcelot(_cfg);

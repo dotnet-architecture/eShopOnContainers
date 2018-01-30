@@ -11,7 +11,7 @@
     {
       "DownstreamPathTemplate": "/{everything}",
       "DownstreamScheme": "http",
-      "DownstreamHost": "purchase-bff",
+      "DownstreamHost": "purchasebff",
       "DownstreamPort": 80,
       "UpstreamPathTemplate": "/purchase-bff/{everything}",
       "UpstreamHttpMethod": [],

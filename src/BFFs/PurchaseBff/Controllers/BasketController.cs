@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PurchaseBff.Models;
 using PurchaseBff.Services;
 using System;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 namespace PurchaseBff.Controllers
 {
     [Route("api/v1/[controller]")]
+    [Authorize]
     public class BasketController : Controller
     {
         private readonly ICatalogService _catalog;
