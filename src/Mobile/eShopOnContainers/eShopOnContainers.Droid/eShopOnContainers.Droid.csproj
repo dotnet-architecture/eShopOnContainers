@@ -258,7 +258,9 @@
     <AndroidResource Include="Resources\drawable-hdpi\menu_filter.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\menu_filter.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\menu_filter.png" />
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\icon.png" />
