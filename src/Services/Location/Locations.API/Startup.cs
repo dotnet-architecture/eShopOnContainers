@@ -11,9 +11,10 @@ using Microsoft.eShopOnContainers.BuildingBlocks.EventBus;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus;
+using Microsoft.eShopOnContainers.BuildingBlocks.Infrastructure.Filters;
+using Microsoft.eShopOnContainers.BuildingBlocks.Infrastructure.Middlewares;
 using Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure;
-using Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure.Filters;
-using Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure.Middlewares;
+using Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure.Exceptions;
 using Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure.Repositories;
 using Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure.Services;
 using Microsoft.Extensions.Configuration;
@@ -44,7 +45,7 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
 
             services.AddMvc(options =>
             {
-                options.Filters.Add(typeof(HttpGlobalExceptionFilter));
+                options.Filters.Add(typeof(HttpGlobalExceptionFilter<LocationDomainException>));
             }).AddControllersAsServices();
 
             ConfigureAuthService(services);

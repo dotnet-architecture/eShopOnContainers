@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.eShopOnContainers.Services.Identity.API.Extensions;
+using Microsoft.Extensions.Linq;
 using Microsoft.eShopOnContainers.Services.Identity.API.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;

@@ -8,7 +8,8 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
     using Microsoft.Extensions.Options;
     using Services;
     using System;
-    using System.Threading.Tasks;
+	using System.Linq;
+	using System.Threading.Tasks;
     using ViewModels;
     using ViewModels.Pagination;
 
@@ -43,7 +44,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
                 PaginationInfo = new PaginationInfo
                 {
                     ActualPage = page,
-                    ItemsPerPage = campaignList.Data.Count,
+                    ItemsPerPage = campaignList.Data.Count(),
                     TotalItems = campaignList.Count,
                     TotalPages = totalPages,
                     Next = page == totalPages - 1 ? "is-disabled" : "",

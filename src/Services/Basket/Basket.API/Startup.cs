@@ -1,6 +1,6 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using Basket.API.Infrastructure.Filters;
+using Basket.API.Infrastructure.Exceptions;
 using Basket.API.Infrastructure.Middlewares;
 using Basket.API.IntegrationEvents.EventHandling;
 using Basket.API.IntegrationEvents.Events;
@@ -15,6 +15,8 @@ using Microsoft.eShopOnContainers.BuildingBlocks.EventBus;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus;
+using Microsoft.eShopOnContainers.BuildingBlocks.Infrastructure.Filters;
+using Microsoft.eShopOnContainers.BuildingBlocks.Infrastructure.Middlewares;
 using Microsoft.eShopOnContainers.Services.Basket.API.IntegrationEvents.EventHandling;
 using Microsoft.eShopOnContainers.Services.Basket.API.IntegrationEvents.Events;
 using Microsoft.eShopOnContainers.Services.Basket.API.Model;
@@ -52,7 +54,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             // Add framework services.
             services.AddMvc(options =>
             {
-                options.Filters.Add(typeof(HttpGlobalExceptionFilter));
+                options.Filters.Add(typeof(HttpGlobalExceptionFilter<BasketDomainException>));
                 options.Filters.Add(typeof(ValidateModelStateFilter));
 
             }).AddControllersAsServices();

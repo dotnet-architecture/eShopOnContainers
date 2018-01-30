@@ -1,14 +1,13 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace Ordering.API.Infrastructure.Middlewares
+namespace Microsoft.eShopOnContainers.BuildingBlocks.Infrastructure.Middlewares
 {
-    class ByPassAuthMiddleware
+    public class ByPassAuthMiddleware
     {
         private readonly RequestDelegate _next;
         private string _currentUserId;

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.eShopOnContainers.Services.Common.API;
 using Microsoft.eShopOnContainers.WebMVC.Controllers;
 using Microsoft.eShopOnContainers.WebMVC.Services;
 using Microsoft.eShopOnContainers.WebMVC.ViewModels;
@@ -7,7 +8,7 @@ using Moq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;
-using CatalogModel = Microsoft.eShopOnContainers.WebMVC.ViewModels.Catalog;
+using CatalogModel = Microsoft.eShopOnContainers.Services.Common.API.PaginatedItemsViewModel<Microsoft.eShopOnContainers.WebMVC.ViewModels.CatalogItem>;
 
 namespace UnitTest.Catalog.Application
 {
@@ -56,35 +57,29 @@ namespace UnitTest.Catalog.Application
             Assert.Empty(model.PaginationInfo.Previous);
         }   
         
-        private CatalogModel GetFakeCatalog()
+        private PaginatedItemsViewModel<CatalogItem> GetFakeCatalog()
         {
-            return new CatalogModel()
-            {
-                PageSize = 10,
-                Count = 50,
-                PageIndex = 2,
-                Data = new List<CatalogItem>()
-                {
-                    new CatalogItem()
-                    {
-                        Id = "1",
-                        Name = "fakeItemA",
-                        CatalogTypeId = 1
-                    },
-                    new CatalogItem()
-                    {
-                        Id = "2",
-                        Name = "fakeItemB",
-                        CatalogTypeId = 1
-                    },
-                    new CatalogItem()
-                    {
-                        Id = "3",
-                        Name = "fakeItemC",
-                        CatalogTypeId = 1
-                    }
-                }
-            };
+			return new PaginatedItemsViewModel<CatalogItem>(2, 10, 50, new List<CatalogItem>
+			{
+					new CatalogItem()
+					{
+						Id = "1",
+						Name = "fakeItemA",
+						CatalogTypeId = 1
+					},
+					new CatalogItem()
+					{
+						Id = "2",
+						Name = "fakeItemB",
+						CatalogTypeId = 1
+					},
+					new CatalogItem()
+					{
+						Id = "3",
+						Name = "fakeItemC",
+						CatalogTypeId = 1
+					}
+			});
         }
     }
 }

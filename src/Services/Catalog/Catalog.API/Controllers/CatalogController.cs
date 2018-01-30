@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
 using Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationEvents.Events;
 using Microsoft.eShopOnContainers.Services.Catalog.API.Model;
-using Microsoft.eShopOnContainers.Services.Catalog.API.ViewModel;
+using Microsoft.eShopOnContainers.Services.Common.API;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
