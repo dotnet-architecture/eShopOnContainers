@@ -49,7 +49,6 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
             {
                 var user = _appUserParser.Parse(HttpContext.User);
                 var basket = await _basketSvc.SetQuantities(user, quantities);
-                var vm = await _basketSvc.UpdateBasket(basket);
 
                 if (action == "[ Checkout ]")
                 {

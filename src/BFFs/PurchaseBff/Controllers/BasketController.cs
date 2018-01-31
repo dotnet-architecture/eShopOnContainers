@@ -21,7 +21,40 @@ namespace PurchaseBff.Controllers
             _basket = basketService;
         }
 
-        [HttpPost("items")]
+        [HttpPut]
+        [Route("items")]
+        public async Task<IActionResult> UpdateQuantities([FromBody] UpdateBasketItemsRequest data)
+        {
+            if (!data.Updates.Any())
+            {
+                return BadRequest("No updates sent");
+            }
+
+            // Retrieve the current basket
+            var currentBasket = await _basket.GetById(data.BasketId);
+            if (currentBasket == null)
+            {
+                return BadRequest($"Basket with id {data.BasketId} not found.");
+            }
+
+            // Update with new quantities
+            foreach (var update in data.Updates)
+            {
+                var basketItem = currentBasket.Items.SingleOrDefault(bitem => bitem.Id == update.BasketItemId);
+                if (basketItem == null)
+                {
+                    return BadRequest($"Basket item with id {update.BasketItemId} not found");
+                }
+                basketItem.Quantity = update.NewQty;
+            }
+
+            // Save the updated basket
+            await _basket.Update(currentBasket);
+            return Ok(currentBasket);
+        }
+
+        [HttpPost]
+        [Route("items")]
         public async Task<IActionResult> AddBasketItem([FromBody] AddBasketItemRequest data)
         {
             if (data == null || data.Quantity == 0)

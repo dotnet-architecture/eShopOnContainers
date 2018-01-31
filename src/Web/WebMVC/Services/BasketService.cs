@@ -5,6 +5,7 @@ using Microsoft.eShopOnContainers.WebMVC.ViewModels;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using WebMVC.Infrastructure;
 using WebMVC.Models;
@@ -72,19 +73,24 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
 
         public async Task<Basket> SetQuantities(ApplicationUser user, Dictionary<string, int> quantities)
         {
-            var basket = await GetBasket(user);
 
-            basket.Items.ForEach(x =>
+            var token = await GetUserTokenAsync();
+            var updateBasketUri = API.Purchase.UpdateBasketItem(_purchaseUrl);
+            var userId = user.Id;
+
+            var response = await _apiClient.PutAsync(updateBasketUri, new
             {
-                // Simplify this logic by using the
-                // new out variable initializer.
-                if (quantities.TryGetValue(x.Id, out var quantity))
+                BasketId = userId,
+                Updates = quantities.Select(kvp => new
                 {
-                    x.Quantity = quantity;
-                }
-            });
+                    BasketItemId = kvp.Key,
+                    NewQty = kvp.Value
+                }).ToArray()
+            }, token);
 
-            return basket;
+            response.EnsureSuccessStatusCode();
+            var jsonResponse = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<Basket>(jsonResponse);
         }
 
         public Order MapBasketToOrder(Basket basket)
