@@ -11,10 +11,22 @@
     {
       "DownstreamPathTemplate": "/{everything}",
       "DownstreamScheme": "http",
+      "DownstreamHost": "basket.api",
+      "DownstreamPort": 80,
+      "UpstreamPathTemplate": "/purchase-bff/basket/{everything}",
+      "UpstreamHttpMethod": [ "GET" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "IdentityApiKey",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/{everything}",
+      "DownstreamScheme": "http",
       "DownstreamHost": "purchasebff",
       "DownstreamPort": 80,
       "UpstreamPathTemplate": "/purchase-bff/{everything}",
-      "UpstreamHttpMethod": [],
+      "UpstreamHttpMethod": ["POST"],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "IdentityApiKey",
         "AllowedScopes": []

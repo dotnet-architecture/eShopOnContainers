@@ -4,27 +4,18 @@ namespace WebMVC.Infrastructure
 {
     public static class API
     {
+
+        public static class Purchase
+        {
+            public static string AddItemToBasket(string baseUri) => $"{baseUri}/basket/items";
+        }
+
         public static class Basket
         {
-            public static string GetBasket(string baseUri, string basketId)
-            {
-                return $"{baseUri}/{basketId}";
-            }
-
-            public static string UpdateBasket(string baseUri)
-            {
-                return baseUri;
-            }
-
-            public static string CheckoutBasket(string baseUri)
-            {
-                return $"{baseUri}/checkout";
-            }
-
-            public static string CleanBasket(string baseUri, string basketId)
-            {
-                return $"{baseUri}/{basketId}";
-            }
+            public static string GetBasket(string baseUri, string basketId) => $"{baseUri}/{basketId}";
+            public static string UpdateBasket(string baseUri) => baseUri;
+            public static string CheckoutBasket(string baseUri) => $"{baseUri}/checkout";
+            public static string CleanBasket(string baseUri, string basketId) => $"{baseUri}/{basketId}";
         }
 
         public static class Order
@@ -100,7 +91,7 @@ namespace WebMVC.Infrastructure
             public static string CreateOrUpdateUserLocation(string baseUri)
             {
                 return baseUri;
-            }           
+            }
         }
     }
 }

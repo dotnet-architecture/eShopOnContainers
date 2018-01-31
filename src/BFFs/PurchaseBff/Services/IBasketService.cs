@@ -9,5 +9,6 @@ namespace PurchaseBff.Services
     public interface IBasketService
     {
         Task<BasketData> GetById(string id);
+        Task Update(BasketData currentBasket);
     }
 }

@@ -32,20 +32,21 @@ namespace PurchaseBff.Controllers
             // Step 1: Get the item from catalog
             var item = await _catalog.GetCatalogItem(data.CatalogItemId);
             // Step 2: Get current basket status
-            var currentBasket = await _basket.GetById(data.BasketId);
+            var currentBasket = (await _basket.GetById(data.BasketId)) ?? new BasketData(data.BasketId);
             // Step 3: Merge current status with new product
             currentBasket.Items.Add(new BasketDataItem()
             {
-                OldUnitPrice = item.Price,
                 UnitPrice = item.Price,
                 PictureUrl = item.PictureUri,
                 ProductId = item.Id.ToString(),
                 ProductName = item.Name,
                 Quantity = data.Quantity,
-                Id = item.Id.ToString()
+                Id = Guid.NewGuid().ToString()
             });
 
             // Step 4: Update basket
+            await _basket.Update(currentBasket);
+
 
             return Ok();
         }

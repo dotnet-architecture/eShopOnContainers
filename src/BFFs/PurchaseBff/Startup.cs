@@ -94,6 +94,10 @@ namespace PurchaseBff
                     OnAuthenticationFailed = async ctx =>
                     {
                         int i = 0;
+                    },
+                    OnTokenValidated = async ctx =>
+                    {
+                        int i = 0;
                     }
                 };
             });
@@ -116,6 +120,8 @@ namespace PurchaseBff
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseAuthentication();
 
             app.UseMvc();
 

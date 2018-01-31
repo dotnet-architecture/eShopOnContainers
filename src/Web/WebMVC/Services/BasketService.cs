@@ -14,14 +14,19 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
     public class BasketService : IBasketService
     {
         private readonly IOptionsSnapshot<AppSettings> _settings;
-        private IHttpClient _apiClient;
+        private readonly IHttpClient _apiClient;
         private readonly string _remoteServiceBaseUrl;
-        private IHttpContextAccessor _httpContextAccesor;
+        private readonly string _purchaseUrl;
+        private readonly IHttpContextAccessor _httpContextAccesor;
 
-        public BasketService(IOptionsSnapshot<AppSettings> settings, IHttpContextAccessor httpContextAccesor, IHttpClient httpClient)
+        private readonly string _bffUrl;
+
+        public BasketService(IOptionsSnapshot<AppSettings> settings,
+            IHttpContextAccessor httpContextAccesor, IHttpClient httpClient)
         {
             _settings = settings;
             _remoteServiceBaseUrl = $"{_settings.Value.BasketUrl}/api/v1/basket";
+            _purchaseUrl = $"{_settings.Value.PurchaseUrl}/api/v1";
             _httpContextAccesor = httpContextAccesor;
             _apiClient = httpClient;
         }
@@ -104,23 +109,20 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
             return order;
         }
 
-        public async Task AddItemToBasket(ApplicationUser user, BasketItem product)
+        public async Task AddItemToBasket(ApplicationUser user, int productId)
         {
-            var basket = await GetBasket(user);
+            var token = await GetUserTokenAsync();
+            var updateBasketUri = API.Purchase.AddItemToBasket(_purchaseUrl);
+            var userId = user.Id;
 
-            if (basket == null)
+            var response = await _apiClient.PostAsync(updateBasketUri, new
             {
-                basket = new Basket()
-                {
-                    BuyerId = user.Id,
-                    Items = new List<BasketItem>()
-                };
-            }
+                CatalogItemId = productId,
+                BasketId = userId,
+                Quantity = 1
+            }, token);
 
-            basket.Items.Add(product);
-
-            await UpdateBasket(basket);
-        }        
+        }
 
         async Task<string> GetUserTokenAsync()
         {
