@@ -134,7 +134,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
-      - CatalogUrl=http://catalog.api
+      - CatalogUrl=http://apigw/purchase-bff/catalog
       - OrderingUrl=http://ordering.api
       - BasketUrl=http://basket.api
       - PurchaseUrl=http://apigw/purchase-bff
