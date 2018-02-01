@@ -9,6 +9,8 @@ namespace WebMVC.Infrastructure
         {
             public static string AddItemToBasket(string baseUri) => $"{baseUri}/basket/items";
             public static string UpdateBasketItem(string baseUri) => $"{baseUri}/basket/items";
+
+            public static string GetOrderDraft(string baseUri, string basketId) => $"{baseUri}/order/draft/{basketId}";
         }
 
         public static class Basket

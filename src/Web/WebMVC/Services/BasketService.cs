@@ -93,27 +93,15 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
             return JsonConvert.DeserializeObject<Basket>(jsonResponse);
         }
 
-        public Order MapBasketToOrder(Basket basket)
+        public async Task<Order> GetOrderDraft(string basketId)
         {
-            var order = new Order();
-            order.Total = 0;
-
-            basket.Items.ForEach(x =>
-            {
-                order.OrderItems.Add(new OrderItem()
-                {
-                    ProductId = int.Parse(x.ProductId),
-
-                    PictureUrl = x.PictureUrl,
-                    ProductName = x.ProductName,
-                    Units = x.Quantity,
-                    UnitPrice = x.UnitPrice
-                });
-                order.Total += (x.Quantity * x.UnitPrice);
-            });
-
-            return order;
+            var token = await GetUserTokenAsync();
+            var draftOrderUri = API.Purchase.GetOrderDraft(_purchaseUrl, basketId);
+            var json = await _apiClient.GetStringAsync(draftOrderUri, token);
+            return JsonConvert.DeserializeObject<Order>(json);
         }
+
+
 
         public async Task AddItemToBasket(ApplicationUser user, int productId)
         {

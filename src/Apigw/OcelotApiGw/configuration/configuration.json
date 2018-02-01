@@ -26,7 +26,7 @@
       "DownstreamHost": "purchasebff",
       "DownstreamPort": 80,
       "UpstreamPathTemplate": "/purchase-bff/{everything}",
-      "UpstreamHttpMethod": [ "POST", "PUT" ],
+      "UpstreamHttpMethod": [ "POST", "PUT", "GET" ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "IdentityApiKey",
         "AllowedScopes": []

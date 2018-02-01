@@ -10,5 +10,7 @@ namespace PurchaseBff.Services
     {
         Task<BasketData> GetById(string id);
         Task Update(BasketData currentBasket);
+
+        OrderData MapBasketToOrder(BasketData basket, bool isDraft);
     }
 }
