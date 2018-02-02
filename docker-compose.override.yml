@@ -134,9 +134,6 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
-      - CatalogUrl=http://apigw/purchase-bff/catalog
-      - OrderingUrl=http://ordering.api
-      - BasketUrl=http://basket.api
       - PurchaseUrl=http://apigw/purchase-bff
       - LocationsUrl=http://locations.api
       - IdentityUrl=http://10.0.75.1:5105  # Local Mac: Use http://docker.for.mac.localhost:5105 || Local Windows:  Use 10.0.75.1 in a "Docker for Windows" environment, if using "localhost" from browser. || #Remote access: Use ${ESHOP_EXTERNAL_DNS_NAME_OR_IP} if using external IP or DNS name from browser.

@@ -1,20 +1,44 @@
 ﻿{
   "ReRoutes": [
     {
-      "DownstreamPathTemplate": "/{everything}",
+      "DownstreamPathTemplate": "/api/{version}/{everything}",
       "DownstreamScheme": "http",
-      "DownstreamHost": "catalog.api",
-      "DownstreamPort": 80,
-      "UpstreamPathTemplate": "/purchase-bff/catalog/{everything}",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "catalog.api",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/purchase-bff/api/{version}/c/{everything}",
       "UpstreamHttpMethod": [ "GET" ]
     },
     {
-      "DownstreamPathTemplate": "/{everything}",
+      "DownstreamPathTemplate": "/api/{version}/{everything}",
       "DownstreamScheme": "http",
-      "DownstreamHost": "basket.api",
-      "DownstreamPort": 80,
-      "UpstreamPathTemplate": "/purchase-bff/basket/{everything}",
-      "UpstreamHttpMethod": [ "GET" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "basket.api",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/purchase-bff/api/{version}/b/{everything}",
+      "UpstreamHttpMethod": [],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "IdentityApiKey",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/{version}/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "ordering.api",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/purchase-bff/api/{version}/o/{everything}",
+      "UpstreamHttpMethod": [],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "IdentityApiKey",
         "AllowedScopes": []
@@ -23,8 +47,12 @@
     {
       "DownstreamPathTemplate": "/{everything}",
       "DownstreamScheme": "http",
-      "DownstreamHost": "purchasebff",
-      "DownstreamPort": 80,
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "purchasebff",
+          "Port": 80
+        }
+      ],
       "UpstreamPathTemplate": "/purchase-bff/{everything}",
       "UpstreamHttpMethod": [ "POST", "PUT", "GET" ],
       "AuthenticationOptions": {
@@ -35,48 +63,72 @@
     {
       "DownstreamPathTemplate": "/{everything}",
       "DownstreamScheme": "http",
-      "DownstreamHost": "ordering.api",
-      "DownstreamPort": 80,
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "ordering.api",
+          "Port": 80
+        }
+      ],
       "UpstreamPathTemplate": "/orders-api/{everything}",
       "UpstreamHttpMethod": []
     },
     {
       "DownstreamPathTemplate": "/{everything}",
       "DownstreamScheme": "http",
-      "DownstreamHost": "basket.api",
-      "DownstreamPort": 80,
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "basket.api",
+          "Port": 80
+        }
+      ],
       "UpstreamPathTemplate": "/basket-api/{everything}",
       "UpstreamHttpMethod": []
     },
     {
       "DownstreamPathTemplate": "/{everything}",
       "DownstreamScheme": "http",
-      "DownstreamHost": "catalog.api",
-      "DownstreamPort": 80,
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "catalog.api",
+          "Port": 80
+        }
+      ],
       "UpstreamPathTemplate": "/catalog-api/{everything}",
       "UpstreamHttpMethod": []
     },
     {
       "DownstreamPathTemplate": "/{everything}",
       "DownstreamScheme": "http",
-      "DownstreamHost": "marketing.api",
-      "DownstreamPort": 80,
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "marketing.api",
+          "Port": 80
+        }
+      ],
       "UpstreamPathTemplate": "/marketing-api/{everything}",
       "UpstreamHttpMethod": []
     },
     {
       "DownstreamPathTemplate": "/{everything}",
       "DownstreamScheme": "http",
-      "DownstreamHost": "payment.api",
-      "DownstreamPort": 80,
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "payment.api",
+          "Port": 80
+        }
+      ],
       "UpstreamPathTemplate": "/payment-api/{everything}",
       "UpstreamHttpMethod": []
     },
     {
       "DownstreamPathTemplate": "/{everything}",
       "DownstreamScheme": "http",
-      "DownstreamHost": "locations.api",
-      "DownstreamPort": 80,
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "locations.api",
+          "Port": 80
+        }
+      ],
       "UpstreamPathTemplate": "/location-api/{everything}",
       "UpstreamHttpMethod": []
     }

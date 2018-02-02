@@ -16,7 +16,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
     {
         private readonly IOptionsSnapshot<AppSettings> _settings;
         private readonly IHttpClient _apiClient;
-        private readonly string _remoteServiceBaseUrl;
+        private readonly string _basketByPassUrl;
         private readonly string _purchaseUrl;
         private readonly IHttpContextAccessor _httpContextAccesor;
 
@@ -26,7 +26,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
             IHttpContextAccessor httpContextAccesor, IHttpClient httpClient)
         {
             _settings = settings;
-            _remoteServiceBaseUrl = $"{_settings.Value.BasketUrl}/api/v1/basket";
+            _basketByPassUrl = $"{_settings.Value.PurchaseUrl}/api/v1/b/basket";
             _purchaseUrl = $"{_settings.Value.PurchaseUrl}/api/v1";
             _httpContextAccesor = httpContextAccesor;
             _apiClient = httpClient;
@@ -35,24 +35,19 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
         public async Task<Basket> GetBasket(ApplicationUser user)
         {
             var token = await GetUserTokenAsync();
-            var getBasketUri = API.Basket.GetBasket(_remoteServiceBaseUrl, user.Id);
+            var getBasketUri = API.Basket.GetBasket(_basketByPassUrl, user.Id);
 
             var dataString = await _apiClient.GetStringAsync(getBasketUri, token);
 
-            // Use the ?? Null conditional operator to simplify the initialization of response
-            var response = JsonConvert.DeserializeObject<Basket>(dataString) ??
-                new Basket()
-                {
-                    BuyerId = user.Id
-                };
-
-            return response;
+            return string.IsNullOrEmpty(dataString) ? 
+                new Basket() {  BuyerId = user.Id} :
+                JsonConvert.DeserializeObject<Basket>(dataString);
         }
 
         public async Task<Basket> UpdateBasket(Basket basket)
         {
             var token = await GetUserTokenAsync();
-            var updateBasketUri = API.Basket.UpdateBasket(_remoteServiceBaseUrl);
+            var updateBasketUri = API.Basket.UpdateBasket(_basketByPassUrl);
 
             var response = await _apiClient.PostAsync(updateBasketUri, basket, token);
 
@@ -64,7 +59,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
         public async Task Checkout(BasketDTO basket)
         {
             var token = await GetUserTokenAsync();
-            var updateBasketUri = API.Basket.CheckoutBasket(_remoteServiceBaseUrl);
+            var updateBasketUri = API.Basket.CheckoutBasket(_basketByPassUrl);
 
             var response = await _apiClient.PostAsync(updateBasketUri, basket, token);
 
