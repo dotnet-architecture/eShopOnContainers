@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace PurchaseBff.Services
 {
-    public interface IBasketService
+    public interface IOrderApiClient
     {
-        Task<BasketData> GetById(string id);
-        Task Update(BasketData currentBasket);
-
+        Task<OrderData> GetOrderDraftFromBasket(BasketData basket);
     }
 }

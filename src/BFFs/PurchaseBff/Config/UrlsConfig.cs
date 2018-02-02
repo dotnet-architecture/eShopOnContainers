@@ -15,10 +15,16 @@ namespace PurchaseBff.Config
         public class BasketOperations
         {
             public static string GetItemById(string id) => $"/api/v1/basket/{id}";
-            public static string UpdateBasket() => $"/api/v1/basket";
+            public static string UpdateBasket() => "/api/v1/basket";
+        }
+
+        public class OrdersOperations
+        {
+            public static string GetOrderDraft() => "/api/v1/orders/draft";
         }
 
         public string Basket { get; set; }
         public string Catalog { get; set; }
+        public string Orders { get; set; }
     }
 }

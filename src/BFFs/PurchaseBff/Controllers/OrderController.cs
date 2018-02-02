@@ -13,9 +13,11 @@ namespace PurchaseBff.Controllers
     public class OrderController : Controller
     {
         private readonly IBasketService _basketService;
-        public OrderController(IBasketService basketService)
+        private readonly IOrderApiClient _orderClient;
+        public OrderController(IBasketService basketService, IOrderApiClient orderClient)
         {
             _basketService = basketService;
+            _orderClient = orderClient;
         }
 
         [Route("draft/{basketId}")]
@@ -33,8 +35,8 @@ namespace PurchaseBff.Controllers
                 return BadRequest($"No basket found for id {basketId}");
             }
 
-            var order = _basketService.MapBasketToOrder(basket, isDraft: true);
-            return Ok(order);
+            var orderDraft = await _orderClient.GetOrderDraftFromBasket(basket);
+            return Ok(orderDraft);
         }
     }
 }

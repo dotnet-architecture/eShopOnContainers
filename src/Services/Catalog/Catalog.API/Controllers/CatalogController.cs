@@ -66,6 +66,11 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
             }
 
             var item = await _catalogContext.CatalogItems.SingleOrDefaultAsync(ci => ci.Id == id);
+
+            var baseUri = _settings.PicBaseUrl;
+            var azureStorageEnabled = _settings.AzureStorageEnabled;
+            item.FillProductUrl(baseUri, azureStorageEnabled: azureStorageEnabled);
+
             if (item != null)
             {
                 return Ok(item);
@@ -244,13 +249,12 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
         private List<CatalogItem> ChangeUriPlaceholder(List<CatalogItem> items)
         {
             var baseUri = _settings.PicBaseUrl;
+            var azureStorageEnabled = _settings.AzureStorageEnabled;
 
-            items.ForEach(catalogItem =>
+            foreach (var item in items)
             {
-                catalogItem.PictureUri = _settings.AzureStorageEnabled
-                    ? baseUri + catalogItem.PictureFileName
-                    : baseUri.Replace("[0]", catalogItem.Id.ToString());
-            });
+                item.FillProductUrl(baseUri, azureStorageEnabled: azureStorageEnabled);
+            }
 
             return items;
         }

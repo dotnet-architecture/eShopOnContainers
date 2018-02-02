@@ -44,31 +44,6 @@ namespace PurchaseBff.Services
             int i = 0;
         }
 
-        public OrderData MapBasketToOrder(BasketData basket, bool isDraft)
-        {
-            var order = new OrderData
-            {
-                Total = 0,
-                IsDraft = isDraft
-            };
-
-            basket.Items.ForEach(x =>
-            {
-                order.OrderItems.Add(new OrderItemData()
-                {
-                    ProductId = int.Parse(x.ProductId),
-
-                    PictureUrl = x.PictureUrl,
-                    ProductName = x.ProductName,
-                    Units = x.Quantity,
-                    UnitPrice = x.UnitPrice
-                });
-                order.Total += (x.Quantity * x.UnitPrice);
-            });
-
-            return order;
-        }
-
         async Task<string> GetUserTokenAsync()
         {
             var context = _httpContextAccessor.HttpContext;

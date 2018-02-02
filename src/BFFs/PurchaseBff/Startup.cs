@@ -35,6 +35,7 @@ namespace PurchaseBff
             services.AddSingleton<IHttpClient, StandardHttpClient>();
             services.AddTransient<ICatalogService, CatalogService>();
             services.AddTransient<IBasketService, BasketService>();
+            services.AddTransient<IOrderApiClient, OrderApiClient>();
 
             services.AddOptions();
             services.Configure<UrlsConfig>(Configuration.GetSection("urls"));
