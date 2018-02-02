@@ -33,7 +33,7 @@ namespace PurchaseBff.Services
         {
             var token = await GetUserTokenAsync();
             var data = await _apiClient.GetStringAsync(_urls.Basket +  UrlsConfig.BasketOperations.GetItemById(id), token);
-            var basket = JsonConvert.DeserializeObject<BasketData>(data);
+            var basket = !string.IsNullOrEmpty(data) ? JsonConvert.DeserializeObject<BasketData>(data) : null;
             return basket;
         }
 
