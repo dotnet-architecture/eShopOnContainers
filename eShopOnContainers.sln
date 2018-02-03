@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2010
+VisualStudioVersion = 15.0.27130.2024
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{FEA0C318-FFED-4D39-8781-265718CA43DD}"
 EndProject
@@ -103,7 +103,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared Code", "Shared Code"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Targets", "Targets", "{2BB81612-8D04-49CD-B17F-38DAB176E583}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eShopOnContainers.Core", "src\Mobile\eShopOnContainers\eShopOnContainers.Core\eShopOnContainers.Core.csproj", "{BA96A12C-4EE3-46C4-BB3F-F811B554CD01}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eShopOnContainers.Core", "src\Mobile\eShopOnContainers\eShopOnContainers.Core\eShopOnContainers.Core.csproj", "{BA96A12C-4EE3-46C4-BB3F-F811B554CD01}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eShopOnContainers.Droid", "src\Mobile\eShopOnContainers\eShopOnContainers.Droid\eShopOnContainers.Droid.csproj", "{62DBB163-9CA9-4818-B48B-13233DF37C24}"
 EndProject
@@ -113,13 +113,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eShopOnContainers.Windows",
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mobile Apps", "Mobile Apps", "{0AAED9FF-3260-43BB-B586-9AAF1E010A90}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eShopOnContainers.UnitTests", "src\Mobile\eShopOnContainers\eShopOnContainers.UnitTests\eShopOnContainers.UnitTests.csproj", "{6E4285E7-7611-4440-A1B5-3513EBB13807}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eShopOnContainers.UnitTests", "src\Mobile\eShopOnContainers\eShopOnContainers.UnitTests\eShopOnContainers.UnitTests.csproj", "{6E4285E7-7611-4440-A1B5-3513EBB13807}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eShopOnContainers.TestRunner.Droid", "src\Mobile\eShopOnContainers\eShopOnContainers.TestRunner.Droid\eShopOnContainers.TestRunner.Droid.csproj", "{A289A7F0-ACD8-42AE-87B6-AB1AFD310BF1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eShopOnContainers.TestRunner.iOS", "src\Mobile\eShopOnContainers\eShopOnContainers.TestRunner.iOS\eShopOnContainers.TestRunner.iOS.csproj", "{B68C2B56-7581-46AE-B55D-D25DDFD3BFE3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eShopOnContainers.TestRunner.Windows", "src\Mobile\eShopOnContainers\eShopOnContainers.TestRunner.Windows\eShopOnContainers.TestRunner.Windows.csproj", "{A7337243-33B8-463A-87AD-944B75EFD820}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ordering.BackgroundTasks", "src\Services\Ordering\Ordering.BackgroundTasks\Ordering.BackgroundTasks.csproj", "{16CDE5D2-2DDE-4AF2-B902-AD9CC42DE480}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1759,6 +1761,54 @@ Global
 		{A7337243-33B8-463A-87AD-944B75EFD820}.Release|x86.ActiveCfg = Release|x86
 		{A7337243-33B8-463A-87AD-944B75EFD820}.Release|x86.Build.0 = Release|x86
 		{A7337243-33B8-463A-87AD-944B75EFD820}.Release|x86.Deploy.0 = Release|x86
+		{16CDE5D2-2DDE-4AF2-B902-AD9CC42DE480}.Ad-Hoc|Any CPU.ActiveCfg = Debug|Any CPU
+		{16CDE5D2-2DDE-4AF2-B902-AD9CC42DE480}.Ad-Hoc|Any CPU.Build.0 = Debug|Any CPU
+		{16CDE5D2-2DDE-4AF2-B902-AD9CC42DE480}.Ad-Hoc|ARM.ActiveCfg = Debug|Any CPU
+		{16CDE5D2-2DDE-4AF2-B902-AD9CC42DE480}.Ad-Hoc|ARM.Build.0 = Debug|Any CPU
+		{16CDE5D2-2DDE-4AF2-B902-AD9CC42DE480}.Ad-Hoc|iPhone.ActiveCfg = Debug|Any CPU
+		{16CDE5D2-2DDE-4AF2-B902-AD9CC42DE480}.Ad-Hoc|iPhone.Build.0 = Debug|Any CPU
+		{16CDE5D2-2DDE-4AF2-B902-AD9CC42DE480}.Ad-Hoc|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{16CDE5D2-2DDE-4AF2-B902-AD9CC42DE480}.Ad-Hoc|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{16CDE5D2-2DDE-4AF2-B902-AD9CC42DE480}.Ad-Hoc|x64.ActiveCfg = Debug|Any CPU
+		{16CDE5D2-2DDE-4AF2-B902-AD9CC42DE480}.Ad-Hoc|x64.Build.0 = Debug|Any CPU
+		{16CDE5D2-2DDE-4AF2-B902-AD9CC42DE480}.Ad-Hoc|x86.ActiveCfg = Debug|Any CPU
+		{16CDE5D2-2DDE-4AF2-B902-AD9CC42DE480}.Ad-Hoc|x86.Build.0 = Debug|Any CPU
+		{16CDE5D2-2DDE-4AF2-B902-AD9CC42DE480}.AppStore|Any CPU.ActiveCfg = Debug|Any CPU
+		{16CDE5D2-2DDE-4AF2-B902-AD9CC42DE480}.AppStore|Any CPU.Build.0 = Debug|Any CPU
+		{16CDE5D2-2DDE-4AF2-B902-AD9CC42DE480}.AppStore|ARM.ActiveCfg = Debug|Any CPU
+		{16CDE5D2-2DDE-4AF2-B902-AD9CC42DE480}.AppStore|ARM.Build.0 = Debug|Any CPU
+		{16CDE5D2-2DDE-4AF2-B902-AD9CC42DE480}.AppStore|iPhone.ActiveCfg = Debug|Any CPU
+		{16CDE5D2-2DDE-4AF2-B902-AD9CC42DE480}.AppStore|iPhone.Build.0 = Debug|Any CPU
+		{16CDE5D2-2DDE-4AF2-B902-AD9CC42DE480}.AppStore|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{16CDE5D2-2DDE-4AF2-B902-AD9CC42DE480}.AppStore|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{16CDE5D2-2DDE-4AF2-B902-AD9CC42DE480}.AppStore|x64.ActiveCfg = Debug|Any CPU
+		{16CDE5D2-2DDE-4AF2-B902-AD9CC42DE480}.AppStore|x64.Build.0 = Debug|Any CPU
+		{16CDE5D2-2DDE-4AF2-B902-AD9CC42DE480}.AppStore|x86.ActiveCfg = Debug|Any CPU
+		{16CDE5D2-2DDE-4AF2-B902-AD9CC42DE480}.AppStore|x86.Build.0 = Debug|Any CPU
+		{16CDE5D2-2DDE-4AF2-B902-AD9CC42DE480}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16CDE5D2-2DDE-4AF2-B902-AD9CC42DE480}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16CDE5D2-2DDE-4AF2-B902-AD9CC42DE480}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{16CDE5D2-2DDE-4AF2-B902-AD9CC42DE480}.Debug|ARM.Build.0 = Debug|Any CPU
+		{16CDE5D2-2DDE-4AF2-B902-AD9CC42DE480}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{16CDE5D2-2DDE-4AF2-B902-AD9CC42DE480}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{16CDE5D2-2DDE-4AF2-B902-AD9CC42DE480}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{16CDE5D2-2DDE-4AF2-B902-AD9CC42DE480}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{16CDE5D2-2DDE-4AF2-B902-AD9CC42DE480}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{16CDE5D2-2DDE-4AF2-B902-AD9CC42DE480}.Debug|x64.Build.0 = Debug|Any CPU
+		{16CDE5D2-2DDE-4AF2-B902-AD9CC42DE480}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{16CDE5D2-2DDE-4AF2-B902-AD9CC42DE480}.Debug|x86.Build.0 = Debug|Any CPU
+		{16CDE5D2-2DDE-4AF2-B902-AD9CC42DE480}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16CDE5D2-2DDE-4AF2-B902-AD9CC42DE480}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16CDE5D2-2DDE-4AF2-B902-AD9CC42DE480}.Release|ARM.ActiveCfg = Release|Any CPU
+		{16CDE5D2-2DDE-4AF2-B902-AD9CC42DE480}.Release|ARM.Build.0 = Release|Any CPU
+		{16CDE5D2-2DDE-4AF2-B902-AD9CC42DE480}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{16CDE5D2-2DDE-4AF2-B902-AD9CC42DE480}.Release|iPhone.Build.0 = Release|Any CPU
+		{16CDE5D2-2DDE-4AF2-B902-AD9CC42DE480}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{16CDE5D2-2DDE-4AF2-B902-AD9CC42DE480}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{16CDE5D2-2DDE-4AF2-B902-AD9CC42DE480}.Release|x64.ActiveCfg = Release|Any CPU
+		{16CDE5D2-2DDE-4AF2-B902-AD9CC42DE480}.Release|x64.Build.0 = Release|Any CPU
+		{16CDE5D2-2DDE-4AF2-B902-AD9CC42DE480}.Release|x86.ActiveCfg = Release|Any CPU
+		{16CDE5D2-2DDE-4AF2-B902-AD9CC42DE480}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1817,6 +1867,7 @@ Global
 		{A289A7F0-ACD8-42AE-87B6-AB1AFD310BF1} = {0AAED9FF-3260-43BB-B586-9AAF1E010A90}
 		{B68C2B56-7581-46AE-B55D-D25DDFD3BFE3} = {0AAED9FF-3260-43BB-B586-9AAF1E010A90}
 		{A7337243-33B8-463A-87AD-944B75EFD820} = {0AAED9FF-3260-43BB-B586-9AAF1E010A90}
+		{16CDE5D2-2DDE-4AF2-B902-AD9CC42DE480} = {0BD0DB92-2D98-44D9-9AC0-C59186D59B0B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {25728519-5F0F-4973-8A64-0A81EB4EA8D9}

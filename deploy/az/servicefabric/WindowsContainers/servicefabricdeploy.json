@@ -2,6 +2,9 @@
     "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json",
     "contentVersion": "1.0.0.0",
     "parameters": {
+        "prefix": {
+            "type": "string"
+        },
         "clusterLocation": {
             "type": "string",
             "metadata": {
@@ -233,13 +236,16 @@
         "publicIPApiVersion": "2015-06-15",
         "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',parameters('virtualNetworkName'))]",
         "subnet0Ref": "[concat(variables('vnetID'),'/subnets/',parameters('subnet0Name'))]",
-        "lbID0": "[resourceId('Microsoft.Network/loadBalancers', concat('LB','-', parameters('clusterName'),'-',parameters('vmNodeType0Name')))]",
+        "lbID0": "[resourceId('Microsoft.Network/loadBalancers', concat('LB','-', variables('clusterName'),'-',parameters('vmNodeType0Name')))]",
         "lbIPConfig0": "[concat(variables('lbID0'),'/frontendIPConfigurations/LoadBalancerIPConfig')]",
         "lbPoolID0": "[concat(variables('lbID0'),'/backendAddressPools/LoadBalancerBEAddressPool')]",
         "lbProbeID0": "[concat(variables('lbID0'),'/probes/FabricGatewayProbe')]",
         "lbHttpProbeID0": "[concat(variables('lbID0'),'/probes/FabricHttpGatewayProbe')]",
         "lbNatPoolID0": "[concat(variables('lbID0'),'/inboundNatPools/LoadBalancerBEAddressNatPool')]",
         "vmStorageAccountName0": "[toLower(concat(uniqueString(resourceGroup().id), '1', '0' ))]",
+        "supportLogStorageAccountName": "[take(concat(parameters('prefix'), parameters('supportLogStorageAccountName')),22)]",
+        "applicationDiagnosticsStorageAccountName" : "[take(concat(parameters('prefix'), parameters('applicationDiagnosticsStorageAccountName')),22)]",
+        "clusterName": "[concat(parameters('prefix'), parameters('clusterName'))]",
         "uniqueStringArray0": [
             "[concat(variables('vmStorageAccountName0'), '0')]",
             "[concat(variables('vmStorageAccountName0'), '1')]",
@@ -252,7 +258,7 @@
         {
             "apiVersion": "[variables('storageApiVersion')]",
             "type": "Microsoft.Storage/storageAccounts",
-            "name": "[parameters('supportLogStorageAccountName')]",
+            "name": "[variables('supportLogStorageAccountName')]",
             "location": "[parameters('computeLocation')]",
             "dependsOn": [],
             "properties": {},
@@ -262,13 +268,13 @@
             },
             "tags": {
                 "resourceType": "Service Fabric",
-                "clusterName": "[parameters('clusterName')]"
+                "clusterName": "[variables('clusterName')]"
             }
         },
         {
             "apiVersion": "[variables('storageApiVersion')]",
             "type": "Microsoft.Storage/storageAccounts",
-            "name": "[parameters('applicationDiagnosticsStorageAccountName')]",
+            "name": "[variables('applicationDiagnosticsStorageAccountName')]",
             "location": "[parameters('computeLocation')]",
             "dependsOn": [],
             "properties": {},
@@ -278,7 +284,7 @@
             },
             "tags": {
                 "resourceType": "Service Fabric",
-                "clusterName": "[parameters('clusterName')]"
+                "clusterName": "[variables('clusterName')]"
             }
         },
         {
@@ -304,7 +310,7 @@
             },
             "tags": {
                 "resourceType": "Service Fabric",
-                "clusterName": "[parameters('clusterName')]"
+                "clusterName": "[variables('clusterName')]"
             }
         },
         {
@@ -320,13 +326,13 @@
             },
             "tags": {
                 "resourceType": "Service Fabric",
-                "clusterName": "[parameters('clusterName')]"
+                "clusterName": "[variables('clusterName')]"
             }
         },
         {
             "apiVersion": "[variables('lbApiVersion')]",
             "type": "Microsoft.Network/loadBalancers",
-            "name": "[concat('LB','-', parameters('clusterName'),'-',parameters('vmNodeType0Name'))]",
+            "name": "[concat('LB','-', variables('clusterName'),'-',parameters('vmNodeType0Name'))]",
             "location": "[parameters('computeLocation')]",
             "dependsOn": [
                 "[concat('Microsoft.Network/publicIPAddresses/',concat(parameters('lbIPName'),'-','0'))]"
@@ -600,7 +606,7 @@
             },
             "tags": {
                 "resourceType": "Service Fabric",
-                "clusterName": "[parameters('clusterName')]"
+                "clusterName": "[variables('clusterName')]"
             }
         },
         {
@@ -620,7 +626,7 @@
             },
             "tags": {
                 "resourceType": "Service Fabric",
-                "clusterName": "[parameters('clusterName')]"
+                "clusterName": "[variables('clusterName')]"
             }
         },
         {
@@ -635,9 +641,9 @@
                 "[concat('Microsoft.Storage/storageAccounts/', variables('uniqueStringArray0')[2])]",
                 "[concat('Microsoft.Storage/storageAccounts/', variables('uniqueStringArray0')[3])]",
                 "[concat('Microsoft.Storage/storageAccounts/', variables('uniqueStringArray0')[4])]",
-                "[concat('Microsoft.Network/loadBalancers/', concat('LB','-', parameters('clusterName'),'-',parameters('vmNodeType0Name')))]",
-                "[concat('Microsoft.Storage/storageAccounts/', parameters('supportLogStorageAccountName'))]",
-                "[concat('Microsoft.Storage/storageAccounts/', parameters('applicationDiagnosticsStorageAccountName'))]"
+                "[concat('Microsoft.Network/loadBalancers/', concat('LB','-', variables('clusterName'),'-',parameters('vmNodeType0Name')))]",
+                "[concat('Microsoft.Storage/storageAccounts/', variables('supportLogStorageAccountName'))]",
+                "[concat('Microsoft.Storage/storageAccounts/', variables('applicationDiagnosticsStorageAccountName'))]"
             ],
             "properties": {
                 "overprovision": "[parameters('overProvision')]",
@@ -653,12 +659,12 @@
                                     "type": "ServiceFabricNode",
                                     "autoUpgradeMinorVersion": true,
                                     "protectedSettings": {
-                                        "StorageAccountKey1": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('supportLogStorageAccountName')),'2015-05-01-preview').key1]",
-                                        "StorageAccountKey2": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('supportLogStorageAccountName')),'2015-05-01-preview').key2]"
+                                        "StorageAccountKey1": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('supportLogStorageAccountName')),'2015-05-01-preview').key1]",
+                                        "StorageAccountKey2": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('supportLogStorageAccountName')),'2015-05-01-preview').key2]"
                                     },
                                     "publisher": "Microsoft.Azure.ServiceFabric",
                                     "settings": {
-                                        "clusterEndpoint": "[reference(parameters('clusterName')).clusterEndpoint]",
+                                        "clusterEndpoint": "[reference(variables('clusterName')).clusterEndpoint]",
                                         "nodeTypeRef": "[parameters('vmNodeType0Name')]",
                                         "dataPath": "D:\\\\SvcFab",
                                         "durabilityLevel": "Bronze",
@@ -674,8 +680,8 @@
                                     "type": "IaaSDiagnostics",
                                     "autoUpgradeMinorVersion": true,
                                     "protectedSettings": {
-                                        "storageAccountName": "[parameters('applicationDiagnosticsStorageAccountName')]",
-                                        "storageAccountKey": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('applicationDiagnosticsStorageAccountName')),'2015-05-01-preview').key1]",
+                                        "storageAccountName": "[variables('applicationDiagnosticsStorageAccountName')]",
+                                        "storageAccountKey": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('applicationDiagnosticsStorageAccountName')),'2015-05-01-preview').key1]",
                                         "storageAccountEndPoint": "https://core.windows.net/"
                                     },
                                     "publisher": "Microsoft.Azure.Diagnostics",
@@ -715,7 +721,7 @@
                                                 }
                                             }
                                         },
-                                        "StorageAccount": "[parameters('applicationDiagnosticsStorageAccountName')]"
+                                        "StorageAccount": "[variables('applicationDiagnosticsStorageAccountName')]"
                                     },
                                     "typeHandlerVersion": "1.5"
                                 }
@@ -786,16 +792,16 @@
             },
             "tags": {
                 "resourceType": "Service Fabric",
-                "clusterName": "[parameters('clusterName')]"
+                "clusterName": "[variables('clusterName')]"
             }
         },
         {
             "apiVersion": "2017-07-01-preview",
             "type": "Microsoft.ServiceFabric/clusters",
-            "name": "[parameters('clusterName')]",
+            "name": "[variables('clusterName')]",
             "location": "[parameters('clusterLocation')]",
             "dependsOn": [
-                "[concat('Microsoft.Storage/storageAccounts/', parameters('supportLogStorageAccountName'))]"
+                "[concat('Microsoft.Storage/storageAccounts/', variables('supportLogStorageAccountName'))]"
             ],
             "properties": {
                 "addonFeatures": [
@@ -803,14 +809,14 @@
                 ],
                 "clientCertificateCommonNames": [],
                 "clientCertificateThumbprints": [],
-                "clusterCodeVersion": "5.7.207.9494",
+                "clusterCodeVersion": "6.0.232.9494",
                 "clusterState": "Default",
                 "diagnosticsStorageAccountConfig": {
-                    "blobEndpoint": "[reference(concat('Microsoft.Storage/storageAccounts/', parameters('supportLogStorageAccountName')), variables('storageApiVersion')).primaryEndpoints.blob]",
+                    "blobEndpoint": "[reference(concat('Microsoft.Storage/storageAccounts/', variables('supportLogStorageAccountName')), variables('storageApiVersion')).primaryEndpoints.blob]",
                     "protectedAccountKeyName": "StorageAccountKey1",
-                    "queueEndpoint": "[reference(concat('Microsoft.Storage/storageAccounts/', parameters('supportLogStorageAccountName')), variables('storageApiVersion')).primaryEndpoints.queue]",
-                    "storageAccountName": "[parameters('supportLogStorageAccountName')]",
-                    "tableEndpoint": "[reference(concat('Microsoft.Storage/storageAccounts/', parameters('supportLogStorageAccountName')), variables('storageApiVersion')).primaryEndpoints.table]"
+                    "queueEndpoint": "[reference(concat('Microsoft.Storage/storageAccounts/', variables('supportLogStorageAccountName')), variables('storageApiVersion')).primaryEndpoints.queue]",
+                    "storageAccountName": "[variables('supportLogStorageAccountName')]",
+                    "tableEndpoint": "[reference(concat('Microsoft.Storage/storageAccounts/', variables('supportLogStorageAccountName')), variables('storageApiVersion')).primaryEndpoints.table]"
                 },
                 "fabricSettings": [],
                 "managementEndpoint": "[concat('http://',reference(concat(parameters('lbIPName'),'-','0')).dnsSettings.fqdn,':',parameters('nt0fabricHttpGatewayPort'))]",
@@ -840,13 +846,13 @@
             },
             "tags": {
                 "resourceType": "Service Fabric",
-                "clusterName": "[parameters('clusterName')]"
+                "clusterName": "[variables('clusterName')]"
             }
         }
     ],
     "outputs": {
         "clusterProperties": {
-            "value": "[reference(parameters('clusterName'))]",
+            "value": "[reference(variables('clusterName'))]",
             "type": "object"
         }
     }

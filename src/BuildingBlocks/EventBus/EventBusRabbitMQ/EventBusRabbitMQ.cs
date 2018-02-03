@@ -92,9 +92,13 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
 
                 policy.Execute(() =>
                 {
+                    var properties = channel.CreateBasicProperties();
+                    properties.DeliveryMode = 2; // persistent
+
                     channel.BasicPublish(exchange: BROKER_NAME,
                                      routingKey: eventName,
-                                     basicProperties: null,
+                                     mandatory:true,
+                                     basicProperties: properties,
                                      body: body);
                 });
             }
@@ -184,6 +188,8 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
                 var message = Encoding.UTF8.GetString(ea.Body);
 
                 await ProcessEvent(eventName, message);
+
+                channel.BasicAck(ea.DeliveryTag,multiple:false);
             };
 
             channel.BasicConsume(queue: _queueName,

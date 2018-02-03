@@ -38,6 +38,15 @@ services:
       - sql.data
       - rabbitmq
 
+  ordering.backgroundtasks:
+    image: eshop/ordering.backgroundtasks:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/Services/Ordering/Ordering.BackgroundTasks/Dockerfile    
+    depends_on:
+      - sql.data
+      - rabbitmq
+
   marketing.api:
     image: eshop/marketing.api:${TAG:-latest}
     build:
