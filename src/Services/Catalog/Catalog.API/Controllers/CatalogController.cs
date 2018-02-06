@@ -32,11 +32,16 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
 
         // GET api/v1/[controller]/items[?pageSize=3&pageIndex=10]
         [HttpGet]
-        [Route("[action]")]
+        [Route("items")]
         [ProducesResponseType(typeof(PaginatedItemsViewModel<CatalogItem>), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> Items([FromQuery]int pageSize = 10, [FromQuery]int pageIndex = 0)
-
+        [ProducesResponseType(typeof(IEnumerable<CatalogItem>), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> Items([FromQuery]int pageSize = 10, [FromQuery]int pageIndex = 0, [FromQuery] string ids = null)
         {
+            if (!string.IsNullOrEmpty(ids))
+            {
+                return GetItemsByIds(ids);
+            }
+
             var totalItems = await _catalogContext.CatalogItems
                 .LongCountAsync();
 
@@ -52,6 +57,23 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
                 pageIndex, pageSize, totalItems, itemsOnPage);
 
             return Ok(model);
+        }
+
+        private IActionResult GetItemsByIds(string ids)
+        {
+            var numIds = ids.Split(',')
+                .Select(id => (Ok: int.TryParse(id, out int x), Value: x));
+            if (!numIds.All(nid => nid.Ok))
+            {
+                return BadRequest("ids value invalid. Must be comma-separated list of numbers");
+            }
+
+            var idsToSelect = numIds.Select(id => id.Value);
+            var items = _catalogContext.CatalogItems.Where(ci => idsToSelect.Contains(ci.Id)).ToList();
+
+            items = ChangeUriPlaceholder(items);
+            return Ok(items);
+
         }
 
         [HttpGet]

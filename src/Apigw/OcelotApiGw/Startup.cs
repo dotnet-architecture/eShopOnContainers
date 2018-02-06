@@ -29,6 +29,15 @@ namespace OcelotApiGw
             var identityUrl = _cfg.GetValue<string>("IdentityUrl");
             var authenticationProviderKey = "IdentityApiKey";
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials());
+            });
+
             services.AddAuthentication()
                 .AddJwtBearer(authenticationProviderKey, x =>
                 {
@@ -67,6 +76,8 @@ namespace OcelotApiGw
             }
 
             loggerFactory.AddConsole(_cfg.GetSection("Logging"));
+
+            app.UseCors("CorsPolicy");
 
             app.UseOcelot().Wait();
         }

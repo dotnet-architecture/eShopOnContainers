@@ -31,5 +31,13 @@ namespace PurchaseBff.Services
             var item = JsonConvert.DeserializeObject<CatalogItem>(data);
             return item;
         }
+
+        public async Task<IEnumerable<CatalogItem>> GetCatalogItems(IEnumerable<int> ids)
+        {
+            var data = await _apiClient.GetStringAsync(_urls.Catalog + UrlsConfig.CatalogOperations.GetItemsById(ids));
+            var item = JsonConvert.DeserializeObject<CatalogItem[]>(data);
+            return item;
+
+        }
     }
 }

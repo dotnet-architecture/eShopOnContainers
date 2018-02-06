@@ -9,5 +9,6 @@ namespace PurchaseBff.Services
     public interface ICatalogService
     {
         Task<CatalogItem> GetCatalogItem(int id);
+        Task<IEnumerable<CatalogItem>> GetCatalogItems(IEnumerable<int> ids);
     }
 }

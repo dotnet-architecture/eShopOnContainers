@@ -21,6 +21,49 @@ namespace PurchaseBff.Controllers
             _basket = basketService;
         }
 
+        [HttpPost]
+        [HttpPut]
+        public async Task<IActionResult> UpdateAllBasket([FromBody] UpdateBasketRequest data)
+        {
+
+            if (data.Items == null || !data.Items.Any())
+            {
+                return BadRequest("Need to pass at least one basket line");
+            }
+
+            // Retrieve the current basket
+            var currentBasket = await _basket.GetById(data.BuyerId);
+            if (currentBasket == null)
+            {
+                currentBasket = new BasketData(data.BuyerId);
+            }
+
+            var catalogItems = await _catalog.GetCatalogItems(data.Items.Select(x => x.ProductId));
+            var newBasket = new BasketData(data.BuyerId);
+
+            foreach (var bitem in data.Items)
+            {
+                var catalogItem = catalogItems.SingleOrDefault(ci => ci.Id == bitem.ProductId);
+                if (catalogItem == null)
+                {
+                    return BadRequest($"Basket refers to a non-existing catalog item ({bitem.ProductId})");
+                }
+
+                newBasket.Items.Add(new BasketDataItem()
+                {
+                    Id = bitem.Id,
+                    ProductId = catalogItem.Id.ToString(),
+                    ProductName = catalogItem.Name,
+                    PictureUrl = catalogItem.PictureUri,
+                    UnitPrice = catalogItem.Price,
+                    Quantity = bitem.Quantity
+                });
+            }
+
+            await _basket.Update(newBasket);
+            return Ok(newBasket);
+        }
+
         [HttpPut]
         [Route("items")]
         public async Task<IActionResult> UpdateQuantities([FromBody] UpdateBasketItemsRequest data)
