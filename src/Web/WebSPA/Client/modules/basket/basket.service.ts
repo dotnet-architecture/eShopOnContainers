@@ -82,7 +82,7 @@ export class BasketService {
     }
 
     getBasket(): Observable<IBasket> {
-        let url = this.basketUrl + '/api/v1/b/basket/' + this.basket.buyerId;
+        let url = this.basketUrl + '/purchase-bff/api/v1/b/basket/' + this.basket.buyerId;
         return this.service.get(url).map((response: Response) => {
             if (response.status === 204) {
                 return null;
