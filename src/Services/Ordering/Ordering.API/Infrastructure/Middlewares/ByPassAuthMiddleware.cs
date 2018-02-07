@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -12,12 +11,12 @@ namespace Ordering.API.Infrastructure.Middlewares
     {
         private readonly RequestDelegate _next;
         private string _currentUserId;
+
         public ByPassAuthMiddleware(RequestDelegate next)
         {
             _next = next;
             _currentUserId = null;
         }
-
 
         public async Task Invoke(HttpContext context)
         {
@@ -54,7 +53,6 @@ namespace Ordering.API.Infrastructure.Middlewares
                         currentUserId = header.Substring("Email ".Length);
                     }
                 }
-
 
                 if (!string.IsNullOrEmpty(currentUserId))
                 {

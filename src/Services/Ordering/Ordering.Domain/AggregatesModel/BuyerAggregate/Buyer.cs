@@ -11,7 +11,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.B
     {
         public string IdentityGuid { get; private set; }
 
-        private List<PaymentMethod> _paymentMethods;
+        private readonly List<PaymentMethod> _paymentMethods;
 
         public IEnumerable<PaymentMethod> PaymentMethods => _paymentMethods.AsReadOnly();
 
@@ -48,6 +48,6 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.B
 
                 return payment;
             }
-        }       
+        }
     }
 }

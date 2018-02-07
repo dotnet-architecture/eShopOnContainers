@@ -1,14 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Ordering.API.Infrastructure.Filters
 {
-    public class AuthorizeCheckOperationFilter : IOperationFilter
+    public class AuthorizeCheckOperationFilter
+        : IOperationFilter
     {
         public void Apply(Operation operation, OperationFilterContext context)
         {

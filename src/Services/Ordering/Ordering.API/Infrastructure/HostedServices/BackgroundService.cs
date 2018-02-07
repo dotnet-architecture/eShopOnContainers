@@ -1,8 +1,7 @@
-﻿using System;
+﻿using Microsoft.Extensions.Hosting;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
-
-using Microsoft.Extensions.Hosting;
 
 namespace Ordering.API.Infrastructure.HostedServices
 {
@@ -16,7 +15,8 @@ namespace Ordering.API.Infrastructure.HostedServices
     /// https://github.com/aspnet/Hosting/blob/712c992ca827576c05923e6a134ca0bec87af4df/src/Microsoft.Extensions.Hosting.Abstractions/BackgroundService.cs
     /// 
     /// </summary>
-    public abstract class BackgroundService : IHostedService, IDisposable
+    public abstract class BackgroundService
+        : IHostedService, IDisposable
     {
         private Task _executingTask;
         private readonly CancellationTokenSource _stoppingCts = new CancellationTokenSource();

@@ -8,16 +8,16 @@ using System.Threading.Tasks;
 
 namespace Ordering.API.Application.DomainEventHandlers.BuyerAndPaymentMethodVerified
 {
-    public class UpdateOrderWhenBuyerAndPaymentMethodVerifiedDomainEventHandler 
-                   : INotificationHandler<BuyerAndPaymentMethodVerifiedDomainEvent>
+    public class UpdateOrderWhenBuyerAndPaymentMethodVerifiedDomainEventHandler
+        : INotificationHandler<BuyerAndPaymentMethodVerifiedDomainEvent>
     {
-        private readonly IOrderRepository _orderRepository;        
-        private readonly ILoggerFactory _logger;        
+        private readonly IOrderRepository _orderRepository;
+        private readonly ILoggerFactory _logger;
 
         public UpdateOrderWhenBuyerAndPaymentMethodVerifiedDomainEventHandler(
-            IOrderRepository orderRepository, ILoggerFactory logger)            
+            IOrderRepository orderRepository, ILoggerFactory logger)
         {
-            _orderRepository = orderRepository ?? throw new ArgumentNullException(nameof(orderRepository));            
+            _orderRepository = orderRepository ?? throw new ArgumentNullException(nameof(orderRepository));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 

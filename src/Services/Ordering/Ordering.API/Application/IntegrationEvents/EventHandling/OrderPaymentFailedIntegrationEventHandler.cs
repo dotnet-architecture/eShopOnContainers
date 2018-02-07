@@ -1,12 +1,12 @@
 ﻿namespace Ordering.API.Application.IntegrationEvents.EventHandling
 {
+    using Events;
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
     using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
-    using Ordering.API.Application.IntegrationEvents.Events;
     using System.Threading.Tasks;
 
-    public class OrderPaymentFailedIntegrationEventHandler : 
-        IIntegrationEventHandler<OrderPaymentFailedIntegrationEvent>
+    public class OrderPaymentFailedIntegrationEventHandler
+        : IIntegrationEventHandler<OrderPaymentFailedIntegrationEvent>
     {
         private readonly IOrderRepository _orderRepository;
 

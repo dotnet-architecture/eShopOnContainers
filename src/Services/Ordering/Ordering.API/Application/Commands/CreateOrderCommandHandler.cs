@@ -1,9 +1,9 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands
 {
     using Domain.AggregatesModel.OrderAggregate;
+    using Infrastructure.Services;
     using MediatR;
-    using Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure.Services;
-    using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Idempotency;
+    using Ordering.Infrastructure.Idempotency;
     using System;
     using System.Threading;
     using System.Threading.Tasks;
@@ -24,7 +24,7 @@
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
 
-        public async Task<bool> Handle(CreateOrderCommand message, CancellationToken cancellationToken)
+        public Task<bool> Handle(CreateOrderCommand message, CancellationToken cancellationToken)
         {
             // Add/Update the Buyer AggregateRoot
             // DDD patterns comment: Add child entities and value-objects through the Order Aggregate-Root
@@ -40,11 +40,10 @@
 
              _orderRepository.Add(order);
 
-            return await _orderRepository.UnitOfWork
-                .SaveEntitiesAsync();
+            return _orderRepository.UnitOfWork
+                .SaveEntitiesAsync(cancellationToken);
         }
     }
-
 
     // Use for Idempotency in Command process
     public class CreateOrderIdentifiedCommandHandler : IdentifiedCommandHandler<CreateOrderCommand, bool>
@@ -55,7 +54,7 @@
 
         protected override bool CreateResultForDuplicateRequest()
         {
-            return true;                // Ignore duplicate requests for creating order.
+            return true; // Ignore duplicate requests for creating order.
         }
     }
 }

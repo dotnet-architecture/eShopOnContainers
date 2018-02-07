@@ -1,9 +1,8 @@
-﻿using System;
-using MediatR;
+﻿using MediatR;
+using Ordering.API.Application.Models;
+using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
-using System.Collections;
-using Ordering.API.Application.Models;
 
 namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands
 {
@@ -92,7 +91,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands
                     ProductName = item.ProductName,
                     PictureUrl = item.PictureUrl,
                     UnitPrice = item.UnitPrice,
-                    Units = item.Quantity                 
+                    Units = item.Quantity
                 });
             });
             return result;

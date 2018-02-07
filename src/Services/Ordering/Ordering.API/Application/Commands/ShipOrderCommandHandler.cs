@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 namespace Ordering.API.Application.Commands
 {
     // Regular CommandHandler
-    public class ShipOrderCommandHandler : IRequestHandler<ShipOrderCommand, bool>
-    {        
+    public class ShipOrderCommandHandler
+        : IRequestHandler<ShipOrderCommand, bool>
+    {
         private readonly IOrderRepository _orderRepository;
 
         public ShipOrderCommandHandler(IOrderRepository orderRepository)
@@ -22,6 +23,7 @@ namespace Ordering.API.Application.Commands
         /// administrator executes ship order from app
         /// </summary>
         /// <param name="command"></param>
+        /// <param name="cancellationToken"></param>
         /// <returns></returns>
         public async Task<bool> Handle(ShipOrderCommand command, CancellationToken cancellationToken)
         {
@@ -32,10 +34,9 @@ namespace Ordering.API.Application.Commands
             }
 
             orderToUpdate.SetShippedStatus();
-            return await _orderRepository.UnitOfWork.SaveEntitiesAsync();
+            return await _orderRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
         }
     }
-
 
     // Use for Idempotency in Command process
     public class ShipOrderIdentifiedCommandHandler : IdentifiedCommandHandler<ShipOrderCommand, bool>
@@ -46,7 +47,7 @@ namespace Ordering.API.Application.Commands
 
         protected override bool CreateResultForDuplicateRequest()
         {
-            return true;                // Ignore duplicate requests for processing order.
+            return true; // Ignore duplicate requests for processing order.
         }
     }
 }

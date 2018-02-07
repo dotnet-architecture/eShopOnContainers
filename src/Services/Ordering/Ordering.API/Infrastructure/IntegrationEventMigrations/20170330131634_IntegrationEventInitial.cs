@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
+using System;
 
 namespace Ordering.API.Infrastructure.IntegrationEventMigrations
 {
-    public partial class IntegrationEventInitial : Migration
+    public partial class IntegrationEventInitial
+        : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

@@ -7,14 +7,13 @@ using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF.Utilities
 using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure;
 using System;
 using System.Data.Common;
-using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace Ordering.API.Application.IntegrationEvents
 {
-    public class OrderingIntegrationEventService : IOrderingIntegrationEventService
+    public class OrderingIntegrationEventService
+        : IOrderingIntegrationEventService
     {
-        private readonly Func<DbConnection, IIntegrationEventLogService> _integrationEventLogServiceFactory;
         private readonly IEventBus _eventBus;
         private readonly OrderingContext _orderingContext;
         private readonly IIntegrationEventLogService _eventLogService;
@@ -23,9 +22,9 @@ namespace Ordering.API.Application.IntegrationEvents
         Func<DbConnection, IIntegrationEventLogService> integrationEventLogServiceFactory)
         {
             _orderingContext = orderingContext ?? throw new ArgumentNullException(nameof(orderingContext));
-            _integrationEventLogServiceFactory = integrationEventLogServiceFactory ?? throw new ArgumentNullException(nameof(integrationEventLogServiceFactory));
+            var integrationEventLogServiceFactory1 = integrationEventLogServiceFactory ?? throw new ArgumentNullException(nameof(integrationEventLogServiceFactory));
             _eventBus = eventBus ?? throw new ArgumentNullException(nameof(eventBus));
-            _eventLogService = _integrationEventLogServiceFactory(_orderingContext.Database.GetDbConnection());
+            _eventLogService = integrationEventLogServiceFactory1(_orderingContext.Database.GetDbConnection());
         }
 
         public async Task PublishThroughEventBusAsync(IntegrationEvent evt)

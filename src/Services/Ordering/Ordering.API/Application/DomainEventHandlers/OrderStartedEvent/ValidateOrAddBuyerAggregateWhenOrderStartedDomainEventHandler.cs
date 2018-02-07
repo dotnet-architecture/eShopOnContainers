@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 
 namespace Ordering.API.Application.DomainEventHandlers.OrderStartedEvent
 {
-    public class ValidateOrAddBuyerAggregateWhenOrderStartedDomainEventHandler 
-                        : INotificationHandler<OrderStartedDomainEvent>
+    public class ValidateOrAddBuyerAggregateWhenOrderStartedDomainEventHandler
+        : INotificationHandler<OrderStartedDomainEvent>
     {
         private readonly ILoggerFactory _logger;
         private readonly IBuyerRepository _buyerRepository;
@@ -27,7 +27,7 @@ namespace Ordering.API.Application.DomainEventHandlers.OrderStartedEvent
         {
             var cardTypeId = (orderStartedEvent.CardTypeId != 0) ? orderStartedEvent.CardTypeId : 1;
             var buyer = await _buyerRepository.FindAsync(orderStartedEvent.UserId);
-            bool buyerOriginallyExisted = (buyer == null) ? false : true;
+            bool buyerOriginallyExisted = (buyer != null);
 
             if (!buyerOriginallyExisted)
             {                
@@ -45,7 +45,7 @@ namespace Ordering.API.Application.DomainEventHandlers.OrderStartedEvent
             var buyerUpdated = buyerOriginallyExisted ? _buyerRepository.Update(buyer) : _buyerRepository.Add(buyer);
 
             await _buyerRepository.UnitOfWork
-                .SaveEntitiesAsync();
+                .SaveEntitiesAsync(cancellationToken);
 
             _logger.CreateLogger(nameof(ValidateOrAddBuyerAggregateWhenOrderStartedDomainEventHandler)).LogTrace($"Buyer {buyerUpdated.Id} and related payment method were validated or updated for orderId: {orderStartedEvent.Order.Id}.");
         }

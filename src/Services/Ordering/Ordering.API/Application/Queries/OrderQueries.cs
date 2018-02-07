@@ -1,15 +1,15 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.Queries
 {
     using Dapper;
-    using System.Data.SqlClient;
-    using System.Threading.Tasks;
     using System;
     using System.Collections.Generic;
+    using System.Data.SqlClient;
+    using System.Threading.Tasks;
 
     public class OrderQueries
         :IOrderQueries
     {
-        private string _connectionString = string.Empty;
+        private readonly string _connectionString = string.Empty;
 
         public OrderQueries(string constr)
         {
@@ -21,7 +21,7 @@
         {
             using (var connection = new SqlConnection(_connectionString))
             {
-                connection.Open();
+                await connection.OpenAsync();
 
                 var result = await connection.QueryAsync<dynamic>(
                    @"select o.[Id] as ordernumber,o.OrderDate as date, o.Description as description,
@@ -46,7 +46,7 @@
         {
             using (var connection = new SqlConnection(_connectionString))
             {
-                connection.Open();
+                await connection.OpenAsync();
 
                 return await connection.QueryAsync<OrderSummary>(@"SELECT o.[Id] as ordernumber,o.[OrderDate] as [date],os.[Name] as [status],SUM(oi.units*oi.unitprice) as total
                      FROM [ordering].[Orders] o
@@ -61,7 +61,7 @@
         {
             using (var connection = new SqlConnection(_connectionString))
             {
-                connection.Open();
+                await connection.OpenAsync();
 
                 return await connection.QueryAsync<CardType>("SELECT * FROM ordering.cardtypes");
             }

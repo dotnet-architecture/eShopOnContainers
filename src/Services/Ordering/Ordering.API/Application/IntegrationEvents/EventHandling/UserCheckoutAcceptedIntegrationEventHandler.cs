@@ -1,14 +1,15 @@
-﻿using System;
-using MediatR;
+﻿using MediatR;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
-using System.Threading.Tasks;
 using Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands;
 using Microsoft.Extensions.Logging;
 using Ordering.API.Application.IntegrationEvents.Events;
+using System;
+using System.Threading.Tasks;
 
 namespace Ordering.API.Application.IntegrationEvents.EventHandling
 {
-    public class UserCheckoutAcceptedIntegrationEventHandler : IIntegrationEventHandler<UserCheckoutAcceptedIntegrationEvent>
+    public class UserCheckoutAcceptedIntegrationEventHandler
+        : IIntegrationEventHandler<UserCheckoutAcceptedIntegrationEvent>
     {
         private readonly IMediator _mediator;
         private readonly ILoggerFactory _logger;
@@ -27,7 +28,7 @@ namespace Ordering.API.Application.IntegrationEvents.EventHandling
         /// </summary>
         /// <param name="eventMsg">
         /// Integration event message which is sent by the
-        /// basket.api once it has successfully process the 
+        /// basket.api once it has successfully process the
         /// order items.
         /// </param>
         /// <returns></returns>
@@ -48,7 +49,7 @@ namespace Ordering.API.Application.IntegrationEvents.EventHandling
 
                 var requestCreateOrder = new IdentifiedCommand<CreateOrderCommand, bool>(createOrderCommand, eventMsg.RequestId);
                 result = await _mediator.Send(requestCreateOrder);
-            }            
+            }
 
             _logger.CreateLogger(nameof(UserCheckoutAcceptedIntegrationEventHandler))
                 .LogTrace(result ? $"UserCheckoutAccepted integration event has been received and a create new order process is started with requestId: {eventMsg.RequestId}" : 

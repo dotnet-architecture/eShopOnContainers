@@ -1,18 +1,18 @@
 ﻿namespace Ordering.API.Application.DomainEventHandlers.OrderGracePeriodConfirmed
 {
+    using Domain.Events;
+    using IntegrationEvents;
+    using IntegrationEvents.Events;
     using MediatR;
     using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
     using Microsoft.Extensions.Logging;
-    using Domain.Events;
     using System;
-    using System.Threading.Tasks;
-    using Ordering.API.Application.IntegrationEvents;
     using System.Linq;
-    using Ordering.API.Application.IntegrationEvents.Events;
     using System.Threading;
+    using System.Threading.Tasks;
 
     public class OrderStatusChangedToAwaitingValidationDomainEventHandler
-                   : INotificationHandler<OrderStatusChangedToAwaitingValidationDomainEvent>
+        : INotificationHandler<OrderStatusChangedToAwaitingValidationDomainEvent>
     {
         private readonly IOrderRepository _orderRepository;
         private readonly ILoggerFactory _logger;
@@ -27,7 +27,7 @@
             _orderingIntegrationEventService = orderingIntegrationEventService;
         }
 
-        public async Task Handle(OrderStatusChangedToAwaitingValidationDomainEvent orderStatusChangedToAwaitingValidationDomainEvent, CancellationToken cancellationToken)
+        public Task Handle(OrderStatusChangedToAwaitingValidationDomainEvent orderStatusChangedToAwaitingValidationDomainEvent, CancellationToken cancellationToken)
         {
             _logger.CreateLogger(nameof(OrderStatusChangedToAwaitingValidationDomainEvent))
                   .LogTrace($"Order with Id: {orderStatusChangedToAwaitingValidationDomainEvent.OrderId} has been successfully updated with " +
@@ -38,7 +38,7 @@
 
             var orderStatusChangedToAwaitingValidationIntegrationEvent = new OrderStatusChangedToAwaitingValidationIntegrationEvent(
                 orderStatusChangedToAwaitingValidationDomainEvent.OrderId, orderStockList);
-            await _orderingIntegrationEventService.PublishThroughEventBusAsync(orderStatusChangedToAwaitingValidationIntegrationEvent);
+            return _orderingIntegrationEventService.PublishThroughEventBusAsync(orderStatusChangedToAwaitingValidationIntegrationEvent);
         }
-    }  
+    }
 }

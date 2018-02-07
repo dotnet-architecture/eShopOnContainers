@@ -1,12 +1,13 @@
 ﻿namespace Ordering.API.Application.IntegrationEvents.EventHandling
 {
-    using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
-    using System.Threading.Tasks;
     using Events;
-    using System.Linq;
+    using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
     using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
+    using System.Linq;
+    using System.Threading.Tasks;
 
-    public class OrderStockRejectedIntegrationEventHandler : IIntegrationEventHandler<OrderStockRejectedIntegrationEvent>
+    public class OrderStockRejectedIntegrationEventHandler
+        : IIntegrationEventHandler<OrderStockRejectedIntegrationEvent>
     {
         private readonly IOrderRepository _orderRepository;
 

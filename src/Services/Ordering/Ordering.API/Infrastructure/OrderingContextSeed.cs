@@ -1,14 +1,12 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure
 {
-    using AspNetCore.Builder;
+    using AspNetCore.Hosting;
+    using Domain.AggregatesModel.BuyerAggregate;
+    using Domain.AggregatesModel.OrderAggregate;
+    using EntityFrameworkCore;
+    using Extensions.Logging;
+    using Extensions.Options;
     using global::Ordering.API.Extensions;
-    using Microsoft.AspNetCore.Hosting;
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.BuyerAggregate;
-    using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
-    using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Logging;
-    using Microsoft.Extensions.Options;
     using Ordering.Infrastructure;
     using Polly;
     using System;
@@ -97,7 +95,7 @@
 
         private  IEnumerable<CardType> GetPredefinedCardTypes()
         {
-            return new List<CardType>()
+            return new List<CardType>
             {
                 CardType.Amex,
                 CardType.Visa,
@@ -146,7 +144,7 @@
 
         private IEnumerable<OrderStatus> GetPredefinedOrderStatus()
         {
-            return new List<OrderStatus>()
+            return new List<OrderStatus>
             {
                 OrderStatus.Submitted,
                 OrderStatus.AwaitingValidation,

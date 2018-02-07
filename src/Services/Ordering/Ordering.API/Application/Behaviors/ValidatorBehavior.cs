@@ -1,14 +1,14 @@
 ﻿using FluentValidation;
 using MediatR;
 using Ordering.Domain.Exceptions;
-using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Ordering.API.Infrastructure.Behaviors
 {
-    public class ValidatorBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+    public class ValidatorBehavior<TRequest, TResponse>
+        : IPipelineBehavior<TRequest, TResponse>
     {
         private readonly IValidator<TRequest>[] _validators;
         public ValidatorBehavior(IValidator<TRequest>[] validators) => _validators = validators;

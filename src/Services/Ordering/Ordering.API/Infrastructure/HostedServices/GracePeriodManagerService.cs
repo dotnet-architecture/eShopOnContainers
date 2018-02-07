@@ -1,18 +1,19 @@
 ﻿namespace Ordering.API.Infrastructure.HostedServices
 {
+    using Application.IntegrationEvents.Events;
     using Dapper;
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
     using Microsoft.eShopOnContainers.Services.Ordering.API;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
-    using Ordering.API.Application.IntegrationEvents.Events;
     using System;
     using System.Collections.Generic;
     using System.Data.SqlClient;
     using System.Threading;
     using System.Threading.Tasks;
 
-    public class GracePeriodManagerService : BackgroundService
+    public class GracePeriodManagerService
+        : BackgroundService
     {
         private readonly OrderingSettings _settings;
         private readonly ILogger<GracePeriodManagerService> _logger;
@@ -40,12 +41,9 @@
                 CheckConfirmedGracePeriodOrders();
 
                 await Task.Delay(_settings.CheckUpdateTime, stoppingToken);
-
-                continue;
             }
 
             _logger.LogDebug($"GracePeriod background task is stopping.");
-            
         }
 
         private void CheckConfirmedGracePeriodOrders()

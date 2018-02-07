@@ -4,7 +4,8 @@ using System;
 
 namespace Ordering.API.Application.IntegrationEvents.Events
 {
-    public class UserCheckoutAcceptedIntegrationEvent : IntegrationEvent
+    public class UserCheckoutAcceptedIntegrationEvent
+        : IntegrationEvent
     {
         public string UserId { get; }
 

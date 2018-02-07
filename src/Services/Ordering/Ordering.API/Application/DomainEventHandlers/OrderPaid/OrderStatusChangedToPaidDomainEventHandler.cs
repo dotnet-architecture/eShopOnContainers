@@ -1,18 +1,18 @@
 ﻿namespace Ordering.API.Application.DomainEventHandlers.OrderPaid
 {
+    using Domain.Events;
+    using IntegrationEvents;
+    using IntegrationEvents.Events;
     using MediatR;
     using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
     using Microsoft.Extensions.Logging;
-    using Domain.Events;
     using System;
-    using System.Threading.Tasks;
-    using Ordering.API.Application.IntegrationEvents;
     using System.Linq;
-    using Ordering.API.Application.IntegrationEvents.Events;
     using System.Threading;
+    using System.Threading.Tasks;
 
     public class OrderStatusChangedToPaidDomainEventHandler
-                   : INotificationHandler<OrderStatusChangedToPaidDomainEvent>
+        : INotificationHandler<OrderStatusChangedToPaidDomainEvent>
     {
         private readonly IOrderRepository _orderRepository;
         private readonly ILoggerFactory _logger;
@@ -27,7 +27,7 @@
             _orderingIntegrationEventService = orderingIntegrationEventService;
         }
 
-        public async Task Handle(OrderStatusChangedToPaidDomainEvent orderStatusChangedToPaidDomainEvent, CancellationToken cancellationToken)
+        public Task Handle(OrderStatusChangedToPaidDomainEvent orderStatusChangedToPaidDomainEvent, CancellationToken cancellationToken)
         {
             _logger.CreateLogger(nameof(OrderStatusChangedToPaidDomainEventHandler))
              .LogTrace($"Order with Id: {orderStatusChangedToPaidDomainEvent.OrderId} has been successfully updated with " +
@@ -38,7 +38,7 @@
 
             var orderStatusChangedToPaidIntegrationEvent = new OrderStatusChangedToPaidIntegrationEvent(orderStatusChangedToPaidDomainEvent.OrderId,
                 orderStockList);
-            await _orderingIntegrationEventService.PublishThroughEventBusAsync(orderStatusChangedToPaidIntegrationEvent);
+            return _orderingIntegrationEventService.PublishThroughEventBusAsync(orderStatusChangedToPaidIntegrationEvent);
         }
     }  
 }

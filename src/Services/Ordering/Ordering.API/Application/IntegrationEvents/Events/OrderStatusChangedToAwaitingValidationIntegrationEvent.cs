@@ -3,7 +3,8 @@
     using System.Collections.Generic;
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
 
-    public class OrderStatusChangedToAwaitingValidationIntegrationEvent : IntegrationEvent
+    public class OrderStatusChangedToAwaitingValidationIntegrationEvent
+        : IntegrationEvent
     {
         public int OrderId { get; }
         public IEnumerable<OrderStockItem> OrderStockItems { get; }

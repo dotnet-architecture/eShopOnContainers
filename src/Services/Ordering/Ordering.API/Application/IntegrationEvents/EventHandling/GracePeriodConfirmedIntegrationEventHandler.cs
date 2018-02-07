@@ -5,7 +5,8 @@ using System.Threading.Tasks;
 
 namespace Ordering.API.Application.IntegrationEvents.EventHandling
 {
-    public class GracePeriodConfirmedIntegrationEventHandler : IIntegrationEventHandler<GracePeriodConfirmedIntegrationEvent>
+    public class GracePeriodConfirmedIntegrationEventHandler
+        : IIntegrationEventHandler<GracePeriodConfirmedIntegrationEvent>
     {
         private readonly IOrderRepository _orderRepository;
 
@@ -19,7 +20,7 @@ namespace Ordering.API.Application.IntegrationEvents.EventHandling
         /// has been completed and order will not initially be cancelled.
         /// Therefore, the order process continues for validation. 
         /// </summary>
-        /// <param name="event">       
+        /// <param name="event">
         /// </param>
         /// <returns></returns>
         public async Task Handle(GracePeriodConfirmedIntegrationEvent @event)

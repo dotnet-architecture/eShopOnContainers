@@ -6,7 +6,8 @@ using System.Linq;
 
 namespace Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure.Auth
 {
-    public class AuthorizationHeaderParameterOperationFilter : IOperationFilter
+    public class AuthorizationHeaderParameterOperationFilter
+        : IOperationFilter
     {
         public void Apply(Operation operation, OperationFilterContext context)
         {

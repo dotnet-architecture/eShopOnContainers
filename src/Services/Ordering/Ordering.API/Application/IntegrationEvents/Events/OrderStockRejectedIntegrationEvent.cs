@@ -3,7 +3,8 @@
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
     using System.Collections.Generic;
 
-    public class OrderStockRejectedIntegrationEvent : IntegrationEvent
+    public class OrderStockRejectedIntegrationEvent
+        : IntegrationEvent
     {
         public int OrderId { get; }
 

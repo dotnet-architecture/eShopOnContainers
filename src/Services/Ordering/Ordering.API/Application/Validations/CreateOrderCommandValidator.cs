@@ -7,7 +7,8 @@ using static Microsoft.eShopOnContainers.Services.Ordering.API.Application.Comma
 
 namespace Ordering.API.Application.Validations
 {
-    public class CreateOrderCommandValidator : AbstractValidator<CreateOrderCommand>
+    public class CreateOrderCommandValidator
+        : AbstractValidator<CreateOrderCommand>
     {
         public CreateOrderCommandValidator()
         {

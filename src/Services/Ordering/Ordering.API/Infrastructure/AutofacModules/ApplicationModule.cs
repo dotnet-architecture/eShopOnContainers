@@ -10,22 +10,18 @@ using System.Reflection;
 
 namespace Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure.AutofacModules
 {
-
     public class ApplicationModule
-        :Autofac.Module
+        : Autofac.Module
     {
-
         public string QueriesConnectionString { get; }
 
         public ApplicationModule(string qconstr)
         {
             QueriesConnectionString = qconstr;
-
         }
 
         protected override void Load(ContainerBuilder builder)
         {
-
             builder.Register(c => new OrderQueries(QueriesConnectionString))
                 .As<IOrderQueries>()
                 .InstancePerLifetimeScope();
@@ -44,7 +40,6 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure.Autof
 
             builder.RegisterAssemblyTypes(typeof(CreateOrderCommandHandler).GetTypeInfo().Assembly)
                 .AsClosedTypesOf(typeof(IIntegrationEventHandler<>));
-
         }
     }
 }

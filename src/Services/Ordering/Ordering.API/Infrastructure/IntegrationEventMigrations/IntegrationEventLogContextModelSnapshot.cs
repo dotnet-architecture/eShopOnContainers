@@ -1,14 +1,14 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF;
+using System;
 
 namespace Ordering.API.Infrastructure.IntegrationEventMigrations
 {
     [DbContext(typeof(IntegrationEventLogContext))]
-    partial class IntegrationEventLogContextModelSnapshot : ModelSnapshot
+    partial class IntegrationEventLogContextModelSnapshot
+        : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
