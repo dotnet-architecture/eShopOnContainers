@@ -46,7 +46,7 @@
 
             var message = new Message
             {
-                MessageId = new Guid().ToString(),
+                MessageId = Guid.NewGuid().ToString(),
                 Body = Encoding.UTF8.GetBytes(jsonMessage),
                 Label = eventName,
             };
