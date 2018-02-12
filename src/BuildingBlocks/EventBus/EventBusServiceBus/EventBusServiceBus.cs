@@ -21,6 +21,7 @@
         private readonly ILifetimeScope _autofac;
         private readonly string AUTOFAC_SCOPE_NAME = "eshop_event_bus";
         private const string INTEGRATION_EVENT_SUFIX = "IntegrationEvent";
+        private const string CONTENT_TYPE_JSON = "application/json";
 
         public EventBusServiceBus(IServiceBusPersisterConnection serviceBusPersisterConnection, 
             ILogger<EventBusServiceBus> logger, IEventBusSubscriptionsManager subsManager, string subscriptionClientName,
@@ -47,8 +48,9 @@
             var message = new Message
             {
                 MessageId = Guid.NewGuid().ToString(),
-                Body = Encoding.UTF8.GetBytes(jsonMessage),
+                Body = body,
                 Label = eventName,
+                ContentType = CONTENT_TYPE_JSON
             };
 
             var topicClient = _serviceBusPersisterConnection.CreateModel();
@@ -127,6 +129,9 @@
             _subscriptionClient.RegisterMessageHandler(
                 async (message, token) =>
                 {
+                    if (message.ContentType != CONTENT_TYPE_JSON)
+                      throw new ArgumentException("Invalid ContentType.", nameof(message.ContentType));
+
                     var eventName = $"{message.Label}{INTEGRATION_EVENT_SUFIX}";
                     var messageData = Encoding.UTF8.GetString(message.Body);
                     await ProcessEvent(eventName, messageData);
