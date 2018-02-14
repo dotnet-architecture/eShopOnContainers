@@ -1,0 +1,58 @@
+﻿{
+  "ReRoutes": [
+    {
+      "DownstreamPathTemplate": "/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHost": "ordering.api",
+      "DownstreamPort": 80,
+      "UpstreamPathTemplate": "/orders-api/{everything}",
+      "UpstreamHttpMethod": []
+    },
+    {
+      "DownstreamPathTemplate": "/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHost": "basket.api",
+      "DownstreamPort": 80,
+      "UpstreamPathTemplate": "/basket-api/{everything}",
+      "UpstreamHttpMethod": []
+    },
+    {
+      "DownstreamPathTemplate": "/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHost": "catalog.api",
+      "DownstreamPort": 80,
+      "UpstreamPathTemplate": "/catalog-api/{everything}",
+      "UpstreamHttpMethod": []
+    },
+    {
+      "DownstreamPathTemplate": "/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHost": "marketing.api",
+      "DownstreamPort": 80,
+      "UpstreamPathTemplate": "/marketing-api/{everything}",
+      "UpstreamHttpMethod": []
+    },
+    {
+      "DownstreamPathTemplate": "/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHost": "payment.api",
+      "DownstreamPort": 80,
+      "UpstreamPathTemplate": "/payment-api/{everything}",
+      "UpstreamHttpMethod": []
+    },
+    {
+      "DownstreamPathTemplate": "/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHost": "locations.api",
+      "DownstreamPort": 80,
+      "UpstreamPathTemplate": "/location-api/{everything}",
+      "UpstreamHttpMethod": []
+    }
+
+  ],
+    "GlobalConfiguration": {
+      "RequestIdKey": "OcRequestId",
+      "AdministrationPath": "/administration"
+    }
+  }
+  

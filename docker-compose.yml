@@ -113,3 +113,55 @@ services:
     build:
       context: .
       dockerfile: src/Apigw/OcelotApiGw/Dockerfile
+
+#  mobilebff.marketing.apigw:
+#    image: eshop/ocelotapigw
+#    build:
+#      context: .
+#      dockerfile: src/Apigw/OcelotApiGw/Dockerfile
+
+#  mobilebff.shopping.apigw:
+#    image: eshop/ocelotapigw
+#    build:
+#      context: .
+#      dockerfile: src/Apigw/OcelotApiGw/Dockerfile
+
+#  webbff.marketing.apigw:
+#    image: eshop/ocelotapigw
+#    build:
+#      context: .
+#      dockerfile: src/Apigw/OcelotApiGw/Dockerfile
+
+#  webbff.shopping.apigw:
+#    image: eshop/ocelotapigw
+#    build:
+#      context: .
+#      dockerfile: src/Apigw/OcelotApiGw/Dockerfile
+
+  mobilebff.marketing.httpaggregator:
+    image: mobilebff.marketing.httpaggregator
+    build:
+      context: .
+      dockerfile: src/ApiGateways/MobileBff.Marketing/MobileBff.Marketing.HttpAggregator/Dockerfile
+
+
+  mobilebff.shopping.httpaggregator:
+    image: mobilebff.shopping.httpaggregator
+    build:
+      context: .
+      dockerfile: src/ApiGateways/MobileBff.Shopping/MobileBff.Shopping.HttpAggregator/Dockerfile
+
+
+  webbff.marketing.httpaggregator:
+    image: webbff.marketing.httpaggregator
+    build:
+      context: .
+      dockerfile: src/ApiGateways/WebBff.Marketing/WebBff.Marketing.HttpAggregator/Dockerfile
+
+
+  webbff.shopping.httpaggregator:
+    image: webbff.shopping.httpaggregator
+    build:
+      context: .
+      dockerfile: src/ApiGateways/WebBff.Shopping/WebBff.Shopping.HttpAggregator/Dockerfile
+
