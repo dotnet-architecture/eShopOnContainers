@@ -6,7 +6,7 @@ FROM microsoft/aspnetcore-build:2.0 AS build
 WORKDIR /src
 COPY . .
 RUN dotnet restore -nowarn:msb3202,nu1503
-WORKDIR /src/src/BFFs/PurchaseBff
+WORKDIR /src/src/Aggregators/Mobile.Shopping.HttpAggregator
 RUN dotnet build --no-restore -c Release -o /app
 
 FROM build AS publish
@@ -15,4 +15,4 @@ RUN dotnet publish --no-restore -c Release -o /app
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
-ENTRYPOINT ["dotnet", "PurchaseBff.dll"]
+ENTRYPOINT ["dotnet", "Mobile.Shopping.HttpAggregator.dll"]

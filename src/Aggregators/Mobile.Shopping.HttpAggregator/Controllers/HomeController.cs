@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PurchaseBff.Controllers
+namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Controllers
 {
     [Route("")]
     public class HomeController : Controller

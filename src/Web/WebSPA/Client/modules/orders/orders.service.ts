@@ -29,7 +29,7 @@ export class OrdersService {
     }
 
     getOrders(): Observable<IOrder[]> {
-        let url = this.ordersUrl + '/purchase-bff/api/v1/o/orders';
+        let url = this.ordersUrl + '/shopping/api/v1/o/orders';
 
         return this.service.get(url).map((response: Response) => {
             return response.json();
@@ -37,7 +37,7 @@ export class OrdersService {
     }
 
     getOrder(id: number): Observable<IOrderDetail> {
-        let url = this.ordersUrl + '/purchase-bff/api/v1/o/orders/' + id;
+        let url = this.ordersUrl + '/shopping/api/v1/o/orders/' + id;
 
         return this.service.get(url).map((response: Response) => {
             return response.json();

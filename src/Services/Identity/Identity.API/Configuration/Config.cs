@@ -15,7 +15,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                 new ApiResource("basket", "Basket Service"),
                 new ApiResource("marketing", "Marketing Service"),
                 new ApiResource("locations", "Locations Service"),
-                new ApiResource("purchasebff", "Purchase BFF")
+                new ApiResource("mobileshoppingagg", "Mobile Shopping Aggregator")
             };
         }
 
@@ -54,7 +54,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                         "basket",
                         "locations",
                         "marketing",
-                        "purchasebff"
+                        "mobileshoppingagg"
                     }
                 },
                 new Client
@@ -81,7 +81,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                         "basket",
                         "locations",
                         "marketing",
-                        "purchasebff"
+                        "mobileshoppingagg"
                     },
                     //Allow requesting refresh tokens for long lived API access
                     AllowOfflineAccess = true,
@@ -118,7 +118,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                         "basket",
                         "locations",
                         "marketing",
-                        "purchasebff"
+                        "mobileshoppingagg"
                     },
                 },
                 new Client
@@ -151,7 +151,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                         "basket",
                         "locations",
                         "marketing",
-                        "purchasebff"
+                        "mobileshoppingagg"
                     },
                 },
                 new Client
@@ -216,17 +216,17 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                 },
                 new Client
                 {
-                    ClientId = "purchasebffwaggerui",
-                    ClientName = "Purchase BFF Swagger UI",
+                    ClientId = "mobileshoppingaggswaggerui",
+                    ClientName = "Mobile Shopping Aggregattor Swagger UI",
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
 
-                    RedirectUris = { $"{clientsUrl["PurchaseBFF"]}/swagger/o2c.html" },
-                    PostLogoutRedirectUris = { $"{clientsUrl["PurchaseBFF"]}/swagger/" },
+                    RedirectUris = { $"{clientsUrl["MobileShoppingAgg"]}/swagger/o2c.html" },
+                    PostLogoutRedirectUris = { $"{clientsUrl["MobileShoppingAgg"]}/swagger/" },
 
                     AllowedScopes =
                     {
-                        "purchasebff"
+                        "mobileshoppingagg"
                     }
                 }
 

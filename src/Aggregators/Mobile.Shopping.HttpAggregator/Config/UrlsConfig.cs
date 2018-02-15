@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PurchaseBff.Config
+namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Config
 {
     public class UrlsConfig
     {

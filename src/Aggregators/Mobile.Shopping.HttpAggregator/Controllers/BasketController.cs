@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PurchaseBff.Models;
-using PurchaseBff.Services;
+using Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Models;
+using Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PurchaseBff.Controllers
+namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Controllers
 {
     [Route("api/v1/[controller]")]
     [Authorize]

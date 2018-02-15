@@ -66,7 +66,7 @@ export class BasketService {
     }
 
     setBasket(basket): Observable<boolean> {
-        let url = this.purchaseUrl + '/purchase-bff/api/v1/basket/';
+        let url = this.purchaseUrl + '/shopping/api/v1/basket/';
         this.basket = basket;
         return this.service.post(url, basket).map((response: Response) => {
             return true;
@@ -74,7 +74,7 @@ export class BasketService {
     }
 
     setBasketCheckout(basketCheckout): Observable<boolean> {
-        let url = this.basketUrl + '/purchase-bff/api/v1/b/basket/checkout';
+        let url = this.basketUrl + '/shopping/api/v1/b/basket/checkout';
         return this.service.postWithId(url, basketCheckout).map((response: Response) => {
             this.basketEvents.orderCreated();
             return true;
@@ -82,7 +82,7 @@ export class BasketService {
     }
 
     getBasket(): Observable<IBasket> {
-        let url = this.basketUrl + '/purchase-bff/api/v1/b/basket/' + this.basket.buyerId;
+        let url = this.basketUrl + '/shopping/api/v1/b/basket/' + this.basket.buyerId;
         return this.service.get(url).map((response: Response) => {
             if (response.status === 204) {
                 return null;

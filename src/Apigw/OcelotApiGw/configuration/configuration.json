@@ -9,7 +9,7 @@
           "Port": 80
         }
       ],
-      "UpstreamPathTemplate": "/purchase-bff/api/{version}/c/{everything}",
+      "UpstreamPathTemplate": "/shopping/api/{version}/c/{everything}",
       "UpstreamHttpMethod": [ "GET" ]
     },
     {
@@ -21,7 +21,7 @@
           "Port": 80
         }
       ],
-      "UpstreamPathTemplate": "/purchase-bff/api/{version}/b/{everything}",
+      "UpstreamPathTemplate": "/shopping/api/{version}/b/{everything}",
       "UpstreamHttpMethod": [],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "IdentityApiKey",
@@ -37,7 +37,7 @@
           "Port": 80
         }
       ],
-      "UpstreamPathTemplate": "/purchase-bff/api/{version}/o/{everything}",
+      "UpstreamPathTemplate": "/shopping/api/{version}/o/{everything}",
       "UpstreamHttpMethod": [],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "IdentityApiKey",
@@ -49,11 +49,11 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "purchasebff",
+          "Host": "mobileshoppingagg",
           "Port": 80
         }
       ],
-      "UpstreamPathTemplate": "/purchase-bff/{everything}",
+      "UpstreamPathTemplate": "/shopping/{everything}",
       "UpstreamHttpMethod": [ "POST", "PUT", "GET" ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "IdentityApiKey",

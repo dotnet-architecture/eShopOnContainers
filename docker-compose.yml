@@ -114,9 +114,9 @@ services:
       context: .
       dockerfile: src/Apigw/OcelotApiGw/Dockerfile
 
-  purchasebff:
-    image: eshop/purchasebff
+  mobileshoppingagg:
+    image: eshop/mobileshoppingagg
     build:
       context: .
-      dockerfile: src/BFFs/PurchaseBff/Dockerfile
+      dockerfile: src/Aggregators/Mobile.Shopping.HttpAggregator/Dockerfile
 

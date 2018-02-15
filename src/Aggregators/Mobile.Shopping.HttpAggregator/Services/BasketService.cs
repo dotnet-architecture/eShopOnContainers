@@ -8,10 +8,10 @@ using Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using PurchaseBff.Config;
-using PurchaseBff.Models;
+using Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Config;
+using Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Models;
 
-namespace PurchaseBff.Services
+namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Services
 {
     public class BasketService : IBasketService
     {

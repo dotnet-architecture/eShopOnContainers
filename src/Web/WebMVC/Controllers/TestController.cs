@@ -32,7 +32,7 @@ namespace WebMVC.Controllers
 
         public async Task<IActionResult> Ocelot()
         {
-            var url = "http://apigw/purchase-bff/api/v1/basket/items";
+            var url = "http://apigw/shopping/api/v1/basket/items";
             var payload = new TestPayload()
             {
                 CatalogItemId = 1,

@@ -1,4 +1,4 @@
-﻿namespace PurchaseBff.Filters
+﻿namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Filters
 {
     using Microsoft.AspNetCore.Authorization;
     using Swashbuckle.AspNetCore.Swagger;
@@ -24,7 +24,7 @@
                     operation.Security = new List<IDictionary<string, IEnumerable<string>>>();
                     operation.Security.Add(new Dictionary<string, IEnumerable<string>>
                 {
-                    { "oauth2", new [] { "purchasebff" } }
+                    { "oauth2", new [] { "Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator" } }
                 });
                 }
             }

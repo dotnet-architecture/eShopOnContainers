@@ -12,12 +12,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using PurchaseBff.Config;
-using PurchaseBff.Filters.Basket.API.Infrastructure.Filters;
-using PurchaseBff.Services;
+using Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Config;
+using Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Filters.Basket.API.Infrastructure.Filters;
+using Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Services;
 using Swashbuckle.AspNetCore.Swagger;
 
-namespace PurchaseBff
+namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator
 {
     public class Startup
     {
@@ -61,7 +61,7 @@ namespace PurchaseBff
                     TokenUrl = $"{Configuration.GetValue<string>("IdentityUrlExternal")}/connect/token",
                     Scopes = new Dictionary<string, string>()
                     {
-                        { "purchasebff", "Purchase BFF API Gateway" }
+                        { "mobileshoppingagg", "Purchase BFF API Gateway" }
                     }
                 });
 
@@ -89,7 +89,7 @@ namespace PurchaseBff
             {
                 options.Authority = identityUrl;
                 options.RequireHttpsMetadata = false;
-                options.Audience = "purchasebff";
+                options.Audience = "mobileshoppingagg";
                 options.Events = new JwtBearerEvents()
                 {
                     OnAuthenticationFailed = async ctx =>
@@ -129,7 +129,7 @@ namespace PurchaseBff
             app.UseSwagger().UseSwaggerUI(c =>
            {
                c.SwaggerEndpoint($"{ (!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty) }/swagger/v1/swagger.json", "Purchase BFF V1");
-               c.ConfigureOAuth2("purchasebffwaggerui", "", "", "Purchase BFF Swagger UI");
+               c.ConfigureOAuth2("Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregatorwaggerui", "", "", "Purchase BFF Swagger UI");
            });
 
 

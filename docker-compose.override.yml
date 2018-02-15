@@ -57,7 +57,7 @@ services:
       - MarketingApiClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5110
       - BasketApiClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5103
       - OrderingApiClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5102
-      - PurchaseBFFClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5120
+      - MobileShoppingAggClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5120
       - UseCustomizationData=True  
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
       - OrchestratorType=${ORCHESTRATOR_TYPE}
@@ -132,7 +132,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
-      - PurchaseUrl=http://apigw/purchase-bff
+      - PurchaseUrl=http://apigw/shopping
       - LocationsUrl=http://locations.api
       - IdentityUrl=http://10.0.75.1:5105  # Local Mac: Use http://docker.for.mac.localhost:5105 || Local Windows:  Use 10.0.75.1 in a "Docker for Windows" environment, if using "localhost" from browser. || #Remote access: Use ${ESHOP_EXTERNAL_DNS_NAME_OR_IP} if using external IP or DNS name from browser.
       - MarketingUrl=http://marketing.api                                                    
@@ -225,7 +225,7 @@ services:
     ports:
       - "5200:80"
 
-  purchasebff:
+  mobileshoppingagg:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - urls__basket=http://basket.api
