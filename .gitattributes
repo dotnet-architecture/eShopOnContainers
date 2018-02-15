@@ -69,3 +69,15 @@
 ###############################################################################
 *.pfx binary
 
+################################################################################
+# Ocelot config files are shared via volumes, so its EOL are important
+################################################################################
+/src/Apigw/configs/linux/mobilemarketingapigw/configuration.json text eol=lf
+/src/Apigw/configs/linux/mobileshoppingapigw/configuration.json text eol=lf
+/src/Apigw/configs/linux/webmarketingapigw/configuration.json text eol=lf
+/src/Apigw/configs/linux/webshoppingapigw/configuration.json text eol=lf
+
+/src/Apigw/configs/windows/mobilemarketingapigw/configuration.json text eol=crlf
+/src/Apigw/configs/windows/mobileshoppingapigw/configuration.json text eol=crlf
+/src/Apigw/configs/windows/webmarketingapigw/configuration.json text eol=crlf
+/src/Apigw/configs/windows/webshoppingapigw/configuration.json text eol=crlf

@@ -108,7 +108,25 @@ services:
   rabbitmq:
     image: rabbitmq:3-management-alpine
 
-  apigw:
+  mobileshoppingapigw:
+    image: eshop/ocelotapigw
+    build:
+      context: .
+      dockerfile: src/Apigw/OcelotApiGw/Dockerfile
+
+  mobilemarketingapigw:
+    image: eshop/ocelotapigw
+    build:
+      context: .
+      dockerfile: src/Apigw/OcelotApiGw/Dockerfile
+
+  webshoppingapigw:
+    image: eshop/ocelotapigw
+    build:
+      context: .
+      dockerfile: src/Apigw/OcelotApiGw/Dockerfile
+
+  webmarketingapigw:
     image: eshop/ocelotapigw
     build:
       context: .
