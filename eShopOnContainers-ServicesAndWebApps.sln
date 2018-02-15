@@ -105,18 +105,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Aggregators", "Aggregators"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mobile.Shopping.HttpAggregator", "src\Aggregators\Mobile.Shopping.HttpAggregator\Mobile.Shopping.HttpAggregator.csproj", "{6E99F232-1536-424F-A28C-91692C8FD325}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "configs", "configs", "{D8D24753-8421-40EE-8FE5-B8BE06A07AC5}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MobileBff.Shopping.ApiGw", "MobileBff.Shopping.ApiGw", "{DAEA3807-1578-4B43-9033-E400FAF1DC49}"
-	ProjectSection(SolutionItems) = preProject
-		src\Apigw\configs\mobileshoppingapigw\configuration.json = src\Apigw\configs\mobileshoppingapigw\configuration.json
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MobileBff.Marketing.ApiGw", "MobileBff.Marketing.ApiGw", "{AC3EDABD-8EB0-4045-BC12-39865490A79D}"
-	ProjectSection(SolutionItems) = preProject
-		src\Apigw\configs\mobilemarketingapigw\configuration.json = src\Apigw\configs\mobilemarketingapigw\configuration.json
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Ad-Hoc|Any CPU = Ad-Hoc|Any CPU
@@ -1477,9 +1465,6 @@ Global
 		{E0C5162E-DF26-4341-9E51-14AE800D7505} = {7A58AA20-67F3-48F3-88C8-24EBFE621792}
 		{EA378316-9D49-4A6B-858E-D4A25F948A74} = {932D8224-11F6-4D07-B109-DA28AD288A63}
 		{6E99F232-1536-424F-A28C-91692C8FD325} = {EA378316-9D49-4A6B-858E-D4A25F948A74}
-		{D8D24753-8421-40EE-8FE5-B8BE06A07AC5} = {7A58AA20-67F3-48F3-88C8-24EBFE621792}
-		{DAEA3807-1578-4B43-9033-E400FAF1DC49} = {D8D24753-8421-40EE-8FE5-B8BE06A07AC5}
-		{AC3EDABD-8EB0-4045-BC12-39865490A79D} = {D8D24753-8421-40EE-8FE5-B8BE06A07AC5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {25728519-5F0F-4973-8A64-0A81EB4EA8D9}
