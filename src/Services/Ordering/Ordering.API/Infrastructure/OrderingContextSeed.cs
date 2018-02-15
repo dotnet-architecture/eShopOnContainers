@@ -39,7 +39,7 @@
 
                     if (!context.CardTypes.Any())
                     {
-                        context.CardTypes.AddRange(useCustomizationData
+                        await context.CardTypes.AddRangeAsync(useCustomizationData
                                                 ? GetCardTypesFromFile(contentRootPath, logger)
                                                 : GetPredefinedCardTypes());
 
@@ -48,7 +48,7 @@
 
                     if (!context.OrderStatus.Any())
                     {
-                        context.OrderStatus.AddRange(useCustomizationData
+                        await context.OrderStatus.AddRangeAsync(useCustomizationData
                                                 ? GetOrderStatusFromFile(contentRootPath, logger)
                                                 : GetPredefinedOrderStatus());
                     }
