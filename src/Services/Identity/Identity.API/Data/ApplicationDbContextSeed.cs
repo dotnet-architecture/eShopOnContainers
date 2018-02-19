@@ -33,7 +33,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Data
 
                 if (!context.Users.Any())
                 {
-                    context.Users.AddRange(useCustomizationData
+                    await context.Users.AddRangeAsync(useCustomizationData
                         ? GetUsersFromFile(contentRootPath, logger)
                         : GetDefaultUser());
 
