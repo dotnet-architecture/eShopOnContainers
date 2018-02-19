@@ -1,6 +1,7 @@
 ﻿using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.BuyerAggregate;
 using Ordering.Domain.Exceptions;
 using System;
+using System.Linq;
 using Xunit;
 
 public class BuyerAggregateTest
@@ -123,6 +124,6 @@ public class BuyerAggregateTest
         fakeBuyer.VerifyOrAddPaymentMethod(cardTypeId, alias, cardNumber, cardSecurityNumber, cardHolderName, cardExpiration, orderId);
 
         //Assert
-        Assert.Equal(fakeBuyer.DomainEvents.Count, expectedResult);
+        Assert.Equal(fakeBuyer.DomainEvents.Count(), expectedResult);
     }
 }

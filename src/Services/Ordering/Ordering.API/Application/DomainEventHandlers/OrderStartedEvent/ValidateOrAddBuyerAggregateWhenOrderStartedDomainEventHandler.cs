@@ -6,11 +6,12 @@ using Ordering.Domain.Events;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure;
 
 namespace Ordering.API.Application.DomainEventHandlers.OrderStartedEvent
 {
     public class ValidateOrAddBuyerAggregateWhenOrderStartedDomainEventHandler 
-                        : INotificationHandler<OrderStartedDomainEvent>
+                        : INotificationHandler<DomainEventNotification<OrderStartedDomainEvent>>
     {
         private readonly ILoggerFactory _logger;
         private readonly IBuyerRepository _buyerRepository;
@@ -23,31 +24,31 @@ namespace Ordering.API.Application.DomainEventHandlers.OrderStartedEvent
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public async Task Handle(OrderStartedDomainEvent orderStartedEvent, CancellationToken cancellationToken)
+        public async Task Handle(DomainEventNotification<OrderStartedDomainEvent> orderStartedEventNotification, CancellationToken cancellationToken)
         {
-            var cardTypeId = (orderStartedEvent.CardTypeId != 0) ? orderStartedEvent.CardTypeId : 1;
-            var buyer = await _buyerRepository.FindAsync(orderStartedEvent.UserId);
+            var cardTypeId = (orderStartedEventNotification.Event.CardTypeId != 0) ? orderStartedEventNotification.Event.CardTypeId : 1;
+            var buyer = await _buyerRepository.FindAsync(orderStartedEventNotification.Event.UserId);
             bool buyerOriginallyExisted = (buyer == null) ? false : true;
 
             if (!buyerOriginallyExisted)
             {                
-                buyer = new Buyer(orderStartedEvent.UserId);
+                buyer = new Buyer(orderStartedEventNotification.Event.UserId);
             }
 
             buyer.VerifyOrAddPaymentMethod(cardTypeId,
                                            $"Payment Method on {DateTime.UtcNow}",
-                                           orderStartedEvent.CardNumber,
-                                           orderStartedEvent.CardSecurityNumber,
-                                           orderStartedEvent.CardHolderName,
-                                           orderStartedEvent.CardExpiration,
-                                           orderStartedEvent.Order.Id);
+                                           orderStartedEventNotification.Event.CardNumber,
+                                           orderStartedEventNotification.Event.CardSecurityNumber,
+                                           orderStartedEventNotification.Event.CardHolderName,
+                                           orderStartedEventNotification.Event.CardExpiration,
+                                           orderStartedEventNotification.Event.Order.Id);
 
             var buyerUpdated = buyerOriginallyExisted ? _buyerRepository.Update(buyer) : _buyerRepository.Add(buyer);
 
             await _buyerRepository.UnitOfWork
                 .SaveEntitiesAsync();
 
-            _logger.CreateLogger(nameof(ValidateOrAddBuyerAggregateWhenOrderStartedDomainEventHandler)).LogTrace($"Buyer {buyerUpdated.Id} and related payment method were validated or updated for orderId: {orderStartedEvent.Order.Id}.");
+            _logger.CreateLogger(nameof(ValidateOrAddBuyerAggregateWhenOrderStartedDomainEventHandler)).LogTrace($"Buyer {buyerUpdated.Id} and related payment method were validated or updated for orderId: {orderStartedEventNotification.Event.Order.Id}.");
         }
     }
 }

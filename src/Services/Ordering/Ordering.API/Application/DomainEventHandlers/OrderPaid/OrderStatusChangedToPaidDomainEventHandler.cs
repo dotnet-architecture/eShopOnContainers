@@ -1,4 +1,6 @@
-﻿namespace Ordering.API.Application.DomainEventHandlers.OrderPaid
+﻿using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure;
+
+namespace Ordering.API.Application.DomainEventHandlers.OrderPaid
 {
     using MediatR;
     using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
@@ -12,7 +14,7 @@
     using System.Threading;
 
     public class OrderStatusChangedToPaidDomainEventHandler
-                   : INotificationHandler<OrderStatusChangedToPaidDomainEvent>
+                   : INotificationHandler<DomainEventNotification<OrderStatusChangedToPaidDomainEvent>>
     {
         private readonly IOrderRepository _orderRepository;
         private readonly ILoggerFactory _logger;
@@ -27,16 +29,16 @@
             _orderingIntegrationEventService = orderingIntegrationEventService;
         }
 
-        public async Task Handle(OrderStatusChangedToPaidDomainEvent orderStatusChangedToPaidDomainEvent, CancellationToken cancellationToken)
+        public async Task Handle(DomainEventNotification<OrderStatusChangedToPaidDomainEvent> orderStatusChangedToPaidDomainEventNotification, CancellationToken cancellationToken)
         {
             _logger.CreateLogger(nameof(OrderStatusChangedToPaidDomainEventHandler))
-             .LogTrace($"Order with Id: {orderStatusChangedToPaidDomainEvent.OrderId} has been successfully updated with " +
+             .LogTrace($"Order with Id: {orderStatusChangedToPaidDomainEventNotification.Event.OrderId} has been successfully updated with " +
                        $"a status order id: {OrderStatus.Paid.Id}");
 
-            var orderStockList = orderStatusChangedToPaidDomainEvent.OrderItems
+            var orderStockList = orderStatusChangedToPaidDomainEventNotification.Event.OrderItems
                 .Select(orderItem => new OrderStockItem(orderItem.ProductId, orderItem.GetUnits()));
 
-            var orderStatusChangedToPaidIntegrationEvent = new OrderStatusChangedToPaidIntegrationEvent(orderStatusChangedToPaidDomainEvent.OrderId,
+            var orderStatusChangedToPaidIntegrationEvent = new OrderStatusChangedToPaidIntegrationEvent(orderStatusChangedToPaidDomainEventNotification.Event.OrderId,
                 orderStockList);
             await _orderingIntegrationEventService.PublishThroughEventBusAsync(orderStatusChangedToPaidIntegrationEvent);
         }

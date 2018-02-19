@@ -1,6 +1,7 @@
-﻿namespace Ordering.Domain.Events
+﻿using Ordering.Domain.SeedWork;
+
+namespace Ordering.Domain.Events
 {
-    using MediatR;
     using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
     using System.Collections.Generic;
 
@@ -8,7 +9,7 @@
     /// Event used when the grace period order is confirmed
     /// </summary>
     public class OrderStatusChangedToAwaitingValidationDomainEvent
-         : INotification
+         : IDomainEvent
     {
         public int OrderId { get; }
         public IEnumerable<OrderItem> OrderItems { get; }

@@ -1,4 +1,6 @@
-﻿namespace Ordering.API.Application.DomainEventHandlers.OrderStockConfirmed
+﻿using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure;
+
+namespace Ordering.API.Application.DomainEventHandlers.OrderStockConfirmed
 {
     using MediatR;
     using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
@@ -11,7 +13,7 @@
     using System.Threading;
 
     public class OrderStatusChangedToStockConfirmedDomainEventHandler
-                   : INotificationHandler<OrderStatusChangedToStockConfirmedDomainEvent>
+                   : INotificationHandler<DomainEventNotification<OrderStatusChangedToStockConfirmedDomainEvent>>
     {
         private readonly IOrderRepository _orderRepository;
         private readonly ILoggerFactory _logger;
@@ -26,13 +28,13 @@
             _orderingIntegrationEventService = orderingIntegrationEventService;
         }
 
-        public async Task Handle(OrderStatusChangedToStockConfirmedDomainEvent orderStatusChangedToStockConfirmedDomainEvent, CancellationToken cancellationToken)
+        public async Task Handle(DomainEventNotification<OrderStatusChangedToStockConfirmedDomainEvent> orderStatusChangedToStockConfirmedDomainEventNotification, CancellationToken cancellationToken)
         {
             _logger.CreateLogger(nameof(OrderStatusChangedToStockConfirmedDomainEventHandler))
-                .LogTrace($"Order with Id: {orderStatusChangedToStockConfirmedDomainEvent.OrderId} has been successfully updated with " +
+                .LogTrace($"Order with Id: {orderStatusChangedToStockConfirmedDomainEventNotification.Event.OrderId} has been successfully updated with " +
                           $"a status order id: {OrderStatus.StockConfirmed.Id}");
 
-            var orderStatusChangedToStockConfirmedIntegrationEvent = new OrderStatusChangedToStockConfirmedIntegrationEvent(orderStatusChangedToStockConfirmedDomainEvent.OrderId);
+            var orderStatusChangedToStockConfirmedIntegrationEvent = new OrderStatusChangedToStockConfirmedIntegrationEvent(orderStatusChangedToStockConfirmedDomainEventNotification.Event.OrderId);
             await _orderingIntegrationEventService.PublishThroughEventBusAsync(orderStatusChangedToStockConfirmedIntegrationEvent);
         }
     }  

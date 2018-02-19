@@ -1,4 +1,6 @@
-﻿namespace Ordering.API.Application.DomainEventHandlers.OrderGracePeriodConfirmed
+﻿using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure;
+
+namespace Ordering.API.Application.DomainEventHandlers.OrderGracePeriodConfirmed
 {
     using MediatR;
     using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
@@ -12,7 +14,7 @@
     using System.Threading;
 
     public class OrderStatusChangedToAwaitingValidationDomainEventHandler
-                   : INotificationHandler<OrderStatusChangedToAwaitingValidationDomainEvent>
+                   : INotificationHandler<DomainEventNotification<OrderStatusChangedToAwaitingValidationDomainEvent>>
     {
         private readonly IOrderRepository _orderRepository;
         private readonly ILoggerFactory _logger;
@@ -27,17 +29,17 @@
             _orderingIntegrationEventService = orderingIntegrationEventService;
         }
 
-        public async Task Handle(OrderStatusChangedToAwaitingValidationDomainEvent orderStatusChangedToAwaitingValidationDomainEvent, CancellationToken cancellationToken)
+        public async Task Handle(DomainEventNotification<OrderStatusChangedToAwaitingValidationDomainEvent> orderStatusChangedToAwaitingValidationDomainEventNotification, CancellationToken cancellationToken)
         {
             _logger.CreateLogger(nameof(OrderStatusChangedToAwaitingValidationDomainEvent))
-                  .LogTrace($"Order with Id: {orderStatusChangedToAwaitingValidationDomainEvent.OrderId} has been successfully updated with " +
+                  .LogTrace($"Order with Id: {orderStatusChangedToAwaitingValidationDomainEventNotification.Event.OrderId} has been successfully updated with " +
                             $"a status order id: {OrderStatus.AwaitingValidation.Id}");
 
-            var orderStockList = orderStatusChangedToAwaitingValidationDomainEvent.OrderItems
+            var orderStockList = orderStatusChangedToAwaitingValidationDomainEventNotification.Event.OrderItems
                 .Select(orderItem => new OrderStockItem(orderItem.ProductId, orderItem.GetUnits()));
 
             var orderStatusChangedToAwaitingValidationIntegrationEvent = new OrderStatusChangedToAwaitingValidationIntegrationEvent(
-                orderStatusChangedToAwaitingValidationDomainEvent.OrderId, orderStockList);
+                orderStatusChangedToAwaitingValidationDomainEventNotification.Event.OrderId, orderStockList);
             await _orderingIntegrationEventService.PublishThroughEventBusAsync(orderStatusChangedToAwaitingValidationIntegrationEvent);
         }
     }  

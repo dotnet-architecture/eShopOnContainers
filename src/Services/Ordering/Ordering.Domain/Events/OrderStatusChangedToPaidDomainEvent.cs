@@ -1,6 +1,7 @@
-﻿namespace Ordering.Domain.Events
+﻿using Ordering.Domain.SeedWork;
+
+namespace Ordering.Domain.Events
 {
-    using MediatR;
     using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
     using System.Collections.Generic;
 
@@ -8,7 +9,7 @@
     /// Event used when the order is paid
     /// </summary>
     public class OrderStatusChangedToPaidDomainEvent
-        : INotification
+        : IDomainEvent
     {
         public int OrderId { get; }
         public IEnumerable<OrderItem> OrderItems { get; }

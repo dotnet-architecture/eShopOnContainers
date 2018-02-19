@@ -1,7 +1,8 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.Seedwork
+﻿using Ordering.Domain.SeedWork;
+
+namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.Seedwork
 {
     using System;
-    using MediatR;
     using System.Collections.Generic;
 
     public abstract class Entity
@@ -20,18 +21,22 @@
             }
         }
 
-        private List<INotification> _domainEvents;
-        public List<INotification> DomainEvents => _domainEvents;       
+        private List<IDomainEvent> _domainEvents;
+        public IEnumerable<IDomainEvent> DomainEvents => _domainEvents?.AsReadOnly();       
         
-        public void AddDomainEvent(INotification eventItem)
+        public void AddDomainEvent(IDomainEvent eventItem)
         {
-            _domainEvents = _domainEvents ?? new List<INotification>();
+            _domainEvents = _domainEvents ?? new List<IDomainEvent>();
             _domainEvents.Add(eventItem);
         }
-        public void RemoveDomainEvent(INotification eventItem)
+        public void RemoveDomainEvent(IDomainEvent eventItem)
         {
-            if (_domainEvents is null) return;
-            _domainEvents.Remove(eventItem);
+            _domainEvents?.Remove(eventItem);
+        }
+
+        public void ClearDomainEvents()
+        {
+            _domainEvents?.Clear();
         }
 
         public bool IsTransient()
