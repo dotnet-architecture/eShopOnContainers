@@ -42,11 +42,11 @@ namespace eShopOnContainers.Core.ViewModels.Base
         {
             _container = new TinyIoCContainer();
 
-            // View models
+            // View models - by default, TinyIoC will register concrete classes as multi-instance.
             _container.Register<BasketViewModel>();
             _container.Register<CatalogViewModel>();
             _container.Register<CheckoutViewModel>();
-            _container.Register<LoginViewModel>();
+            _container.Register<LoginViewModel>().AsSingleton();
             _container.Register<MainViewModel>();
             _container.Register<OrderDetailViewModel>();
             _container.Register<ProfileViewModel>();
@@ -54,21 +54,21 @@ namespace eShopOnContainers.Core.ViewModels.Base
             _container.Register<CampaignViewModel>();
             _container.Register<CampaignDetailsViewModel>();
 
-            // Services
-            _container.Register<INavigationService, NavigationService>().AsSingleton();
+            // Services - by default, TinyIoC will register interface registrations as singletons.
+            _container.Register<INavigationService, NavigationService>();
             _container.Register<IDialogService, DialogService>();
             _container.Register<IOpenUrlService, OpenUrlService>();
             _container.Register<IIdentityService, IdentityService>();
-            _container.Register<IRequestProvider, RequestProvider>();
+            _container.Register<IRequestProvider, RequestProvider>().AsMultiInstance();
             _container.Register<IDependencyService, Services.Dependency.DependencyService>();
-            _container.Register<ISettingsService, SettingsService>().AsSingleton();
-            _container.Register<IFixUriService, FixUriService>().AsSingleton();
-            _container.Register<ILocationService, LocationService>().AsSingleton();
-            _container.Register<ICatalogService, CatalogMockService>().AsSingleton();
-            _container.Register<IBasketService, BasketMockService>().AsSingleton();
-            _container.Register<IOrderService, OrderMockService>().AsSingleton();
-            _container.Register<IUserService, UserMockService>().AsSingleton();
-            _container.Register<ICampaignService, CampaignMockService>().AsSingleton();
+            _container.Register<ISettingsService, SettingsService>();
+            _container.Register<IFixUriService, FixUriService>();
+            _container.Register<ILocationService, LocationService>();
+            _container.Register<ICatalogService, CatalogMockService>();
+            _container.Register<IBasketService, BasketMockService>();
+            _container.Register<IOrderService, OrderMockService>();
+            _container.Register<IUserService, UserMockService>();
+            _container.Register<ICampaignService, CampaignMockService>();
         }
 
         public static void UpdateDependencies(bool useMockServices)
@@ -76,21 +76,21 @@ namespace eShopOnContainers.Core.ViewModels.Base
             // Change injected dependencies
             if (useMockServices)
             {
-                _container.Register<ICatalogService, CatalogMockService>().AsSingleton();
-                _container.Register<IBasketService, BasketMockService>().AsSingleton();
-                _container.Register<IOrderService, OrderMockService>().AsSingleton();
-                _container.Register<IUserService, UserMockService>().AsSingleton();
-                _container.Register<ICampaignService, CampaignMockService>().AsSingleton();
+                _container.Register<ICatalogService, CatalogMockService>();
+                _container.Register<IBasketService, BasketMockService>();
+                _container.Register<IOrderService, OrderMockService>();
+                _container.Register<IUserService, UserMockService>();
+                _container.Register<ICampaignService, CampaignMockService>();
 
                 UseMockService = true;
             }
             else
             {
-                _container.Register<ICatalogService, CatalogService>().AsSingleton();
-                _container.Register<IBasketService, BasketService>().AsSingleton();
-                _container.Register<IOrderService, OrderService>().AsSingleton();
-                _container.Register<IUserService, UserService>().AsSingleton();
-                _container.Register<ICampaignService, CampaignService>().AsSingleton();
+                _container.Register<ICatalogService, CatalogService>();
+                _container.Register<IBasketService, BasketService>();
+                _container.Register<IOrderService, OrderService>();
+                _container.Register<IUserService, UserService>();
+                _container.Register<ICampaignService, CampaignService>();
 
                 UseMockService = false;
             }
