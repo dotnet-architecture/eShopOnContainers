@@ -26,7 +26,6 @@ namespace eShopOnContainers.Droid.Services
         {
             _desiredAccuracy = desiredAccuracy;
             _finishedCallback = finishedCallback;
-
             _activeProviders = new HashSet<string>(activeProviders);
 
             foreach (var provider in activeProviders)
@@ -35,7 +34,6 @@ namespace eShopOnContainers.Droid.Services
                 if (location != null && location.IsBetterLocation(_bestLocation))
                     _bestLocation = location;
             }
-
 
             if (timeout != Timeout.Infinite)
                 _timer = new Timer(TimesUp, null, timeout, 0);

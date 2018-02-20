@@ -59,7 +59,6 @@ namespace eShopOnContainers.Droid.Extensions
             var isLessAccurate = accuracyDelta > 0;
             var isMoreAccurate = accuracyDelta < 0;
             var isSignificantlyLessAccurage = accuracyDelta > 200;
-
             var isFromSameProvider = IsSameProvider(location.Provider, bestLocation.Provider);
 
             if (isMoreAccurate)

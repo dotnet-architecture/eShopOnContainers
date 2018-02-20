@@ -20,8 +20,6 @@ namespace eShopOnContainers.Droid.Services
         Dictionary<Permission, PermissionStatus> _results;
         IList<string> _requestedPermissions;
 
-        internal static PermissionsService Instance;
-
         #region Internal Implementation
 
         List<string> GetManifestNames(Permission permission)
@@ -83,7 +81,7 @@ namespace eShopOnContainers.Droid.Services
             return false;
         }
 
-        static Permission GetPermissionForManifestName(string permission)
+        Permission GetPermissionForManifestName(string permission)
         {
             switch (permission)
             {
@@ -94,7 +92,6 @@ namespace eShopOnContainers.Droid.Services
 
             return Permission.Unknown;
         }
-
 
         public void OnRequestPermissionResult(int requestCode, string[] permissions, Android.Content.PM.Permission[] grantResults)
         {
@@ -135,8 +132,6 @@ namespace eShopOnContainers.Droid.Services
 
         public Task<PermissionStatus> CheckPermissionStatusAsync(Permission permission)
         {
-            Instance = this;
-
             var names = GetManifestNames(permission);
             if (names == null)
             {

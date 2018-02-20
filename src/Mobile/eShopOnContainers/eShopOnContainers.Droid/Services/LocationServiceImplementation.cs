@@ -4,7 +4,6 @@ using eShopOnContainers.Droid.Services;
 using System;
 using eShopOnContainers.Core.Services.Location;
 using eShopOnContainers.Core.Models.Location;
-using eShopOnContainers.Core.Services.Permissions;
 using eShopOnContainers.Core.Models.Permissions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,6 +11,7 @@ using Android.Locations;
 using System.Linq;
 using System.Collections.Generic;
 using Android.OS;
+using eShopOnContainers.Droid.Activities;
 
 [assembly: Xamarin.Forms.Dependency(typeof(LocationServiceImplementation))]
 namespace eShopOnContainers.Droid.Services
@@ -45,20 +45,18 @@ namespace eShopOnContainers.Droid.Services
 
         async Task<bool> CheckPermissionsAsync()
         {
-            IPermissionsService permissionsService = new PermissionsService();
-            var status = await permissionsService.CheckPermissionStatusAsync(Permission.Location);
+            var status = await MainActivity.PermissionsService.CheckPermissionStatusAsync(Permission.Location);
             if (status != PermissionStatus.Granted)
             {
-                Console.WriteLine("Currently do not have Location permissions, requesting permissions");
+                Console.WriteLine("Currently do not have Location permissions, requesting permissions.");
 
-                var request = await permissionsService.RequestPermissionsAsync(Permission.Location);
+                var request = await MainActivity.PermissionsService.RequestPermissionsAsync(Permission.Location);
                 if (request[Permission.Location] != PermissionStatus.Granted)
                 {
                     Console.WriteLine("Location permission denied.");
                     return false;
                 }
             }
-
             return true;
         }
 
@@ -72,7 +70,7 @@ namespace eShopOnContainers.Droid.Services
 
         public bool IsGeolocationEnabled => Providers.Any(p => !IgnoredProviders.Contains(p) && Manager.IsProviderEnabled(p));
 
-        public async Task<Position> GetPositionAsync(TimeSpan? timeout = null, CancellationToken? cancelToken = null, bool includeHeading = false)
+        public async Task<Position> GetPositionAsync(TimeSpan? timeout = null, CancellationToken? cancelToken = null)
         {
             var timeoutMilliseconds = timeout.HasValue ? (int)timeout.Value.TotalMilliseconds : Timeout.Infinite;
             if (timeoutMilliseconds <= 0 && timeoutMilliseconds != Timeout.Infinite)

@@ -11,6 +11,6 @@ namespace eShopOnContainers.Core.Services.Location
         bool IsGeolocationAvailable { get; }
         bool IsGeolocationEnabled { get; }
 
-        Task<Position> GetPositionAsync(TimeSpan? timeout = null, CancellationToken? token = null, bool includeHeading = false);
+        Task<Position> GetPositionAsync(TimeSpan? timeout = null, CancellationToken? token = null);
     }
 }
