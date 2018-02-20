@@ -3,11 +3,11 @@ using eShopOnContainers.Core.Services.Location;
 using eShopOnContainers.Core.Services.Settings;
 using eShopOnContainers.Core.ViewModels.Base;
 using eShopOnContainers.Services;
-using Plugin.Geolocator;
 using System.Globalization;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using eShopOnContainers.Core.Services.Dependency;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace eShopOnContainers
@@ -69,12 +69,15 @@ namespace eShopOnContainers
 
         private async Task GetGpsLocation()
         {
-            var locator = CrossGeolocator.Current;
+            var dependencyService = ViewModelLocator.Resolve<IDependencyService>();
+            var locator = dependencyService.Get<ILocationServiceImplementation>();
 
             if (locator.IsGeolocationEnabled && locator.IsGeolocationAvailable)
             {
-                locator.AllowsBackgroundUpdates = true;
+                //locationService.AllowsBackgroundUpdates = true;
                 locator.DesiredAccuracy = 50;
+
+                await Task.Delay(5000);
 
                 var position = await locator.GetPositionAsync();
 

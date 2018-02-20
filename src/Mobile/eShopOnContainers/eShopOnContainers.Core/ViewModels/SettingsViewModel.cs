@@ -3,11 +3,11 @@ using eShopOnContainers.Core.Models.User;
 using eShopOnContainers.Core.Services.Location;
 using eShopOnContainers.Core.Services.Settings;
 using eShopOnContainers.Core.ViewModels.Base;
-using Plugin.Geolocator;
 using System.Globalization;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
+using eShopOnContainers.Core.Services.Dependency;
 
 namespace eShopOnContainers.Core.ViewModels
 {
@@ -29,11 +29,13 @@ namespace eShopOnContainers.Core.ViewModels
 
         private readonly ISettingsService _settingsService;
         private readonly ILocationService _locationService;
+        private readonly IDependencyService _dependencyService;
 
-        public SettingsViewModel(ISettingsService settingsService, ILocationService locationService)
+        public SettingsViewModel(ISettingsService settingsService, ILocationService locationService, IDependencyService dependencyService)
         {
             _settingsService = settingsService;
             _locationService = locationService;
+            _dependencyService = dependencyService;
 
             _useAzureServices = !_settingsService.UseMocks;
             _endpoint = _settingsService.UrlBase;
@@ -342,7 +344,7 @@ namespace eShopOnContainers.Core.ViewModels
         {
             if (_allowGpsLocation)
             {
-                var locator = CrossGeolocator.Current;
+                var locator = _dependencyService.Get<ILocationServiceImplementation>();
                 if (!locator.IsGeolocationEnabled)
                 {
                     _allowGpsLocation = false;
