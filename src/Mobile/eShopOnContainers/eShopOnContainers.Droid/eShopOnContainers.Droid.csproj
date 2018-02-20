@@ -212,7 +212,10 @@
     <Compile Include="Effects\BaseContainerEffect.cs" />
     <Compile Include="Activities\SplashActivity.cs" />
     <Compile Include="Services\SettingsServiceImplementation.cs" />
-    <Compile Include="Services\PermissionService.cs" />
+    <Compile Include="Services\PermissionsService.cs" />
+    <Compile Include="Services\LocationServiceImplementation.cs" />
+    <Compile Include="Services\GeolocationSingleListener.cs" />
+    <Compile Include="Extensions\LocationExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="..\CommonResources\Fonts\Montserrat-Bold.ttf">

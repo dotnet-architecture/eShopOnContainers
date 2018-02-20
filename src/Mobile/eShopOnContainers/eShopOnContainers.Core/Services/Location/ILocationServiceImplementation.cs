@@ -7,9 +7,6 @@ namespace eShopOnContainers.Core.Services.Location
 {
     public interface ILocationServiceImplementation
     {
-        event EventHandler<PositionErrorEventArgs> PositionError;
-        event EventHandler<PositionEventArgs> PositionChanged;
-
         double DesiredAccuracy { get; set; }
         bool IsGeolocationAvailable { get; }
         bool IsGeolocationEnabled { get; }

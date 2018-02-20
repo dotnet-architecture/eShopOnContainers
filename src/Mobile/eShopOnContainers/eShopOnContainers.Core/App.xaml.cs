@@ -77,8 +77,6 @@ namespace eShopOnContainers
                 //locationService.AllowsBackgroundUpdates = true;
                 locator.DesiredAccuracy = 50;
 
-                await Task.Delay(5000);
-
                 var position = await locator.GetPositionAsync();
 
                 _settingsService.Latitude = position.Latitude.ToString();

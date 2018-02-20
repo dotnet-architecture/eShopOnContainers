@@ -9,17 +9,18 @@ using Android.App;
 using Android.Support.V4.App;
 using Android.Support.V4.Content;
 using System.Diagnostics;
-using Android.Icu.Text;
 
 namespace eShopOnContainers.Droid.Services
 {
-    public class PermissionService : IPermissionsService
+    public class PermissionsService : IPermissionsService
     {
         const int _permissionCode = 25;
         object _locker = new object();
         TaskCompletionSource<Dictionary<Permission, PermissionStatus>> _tcs;
         Dictionary<Permission, PermissionStatus> _results;
         IList<string> _requestedPermissions;
+
+        internal static PermissionsService Instance;
 
         #region Internal Implementation
 
@@ -134,6 +135,8 @@ namespace eShopOnContainers.Droid.Services
 
         public Task<PermissionStatus> CheckPermissionStatusAsync(Permission permission)
         {
+            Instance = this;
+
             var names = GetManifestNames(permission);
             if (names == null)
             {
