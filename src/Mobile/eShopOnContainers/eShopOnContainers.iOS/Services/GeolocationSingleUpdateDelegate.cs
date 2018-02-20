@@ -10,24 +10,19 @@ namespace eShopOnContainers.iOS.Services
 {
     internal class GeolocationSingleUpdateDelegate : CLLocationManagerDelegate
     {
-        bool _haveHeading;
         bool _haveLocation;
         readonly Position _position = new Position();
-        CLHeading _bestHeading;
-
         readonly double _desiredAccuracy;
-        readonly bool _includeHeading;
         readonly TaskCompletionSource<Position> _tcs;
         readonly CLLocationManager _manager;
 
         public Task<Position> Task => _tcs?.Task;
 
-        public GeolocationSingleUpdateDelegate(CLLocationManager manager, double desiredAccuracy, bool includeHeading, int timeout, CancellationToken cancelToken)
+        public GeolocationSingleUpdateDelegate(CLLocationManager manager, double desiredAccuracy, int timeout, CancellationToken cancelToken)
         {
             _manager = manager;
             _tcs = new TaskCompletionSource<Position>(manager);
             _desiredAccuracy = desiredAccuracy;
-            _includeHeading = includeHeading;
 
             if (timeout != Timeout.Infinite)
             {
@@ -76,8 +71,6 @@ namespace eShopOnContainers.iOS.Services
             }
         }
 
-        public override bool ShouldDisplayHeadingCalibration(CLLocationManager manager) => true;
-
         public override void UpdatedLocation(CLLocationManager manager, CLLocation newLocation, CLLocation oldLocation)
         {
             if (newLocation.HorizontalAccuracy < 0)
@@ -97,31 +90,13 @@ namespace eShopOnContainers.iOS.Services
             {
                 _position.Timestamp = new DateTimeOffset((DateTime)newLocation.Timestamp);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 _position.Timestamp = DateTimeOffset.UtcNow;
             }
             _haveLocation = true;
 
-            if ((!_includeHeading || _haveHeading) && _position.Accuracy <= _desiredAccuracy)
-            {
-                _tcs.TrySetResult(new Position(_position));
-                StopListening();
-            }
-        }
-
-        public override void UpdatedHeading(CLLocationManager manager, CLHeading newHeading)
-        {
-            if (newHeading.HeadingAccuracy < 0)
-                return;
-            if (_bestHeading != null && newHeading.HeadingAccuracy >= _bestHeading.HeadingAccuracy)
-                return;
-
-            _bestHeading = newHeading;
-            _position.Heading = newHeading.TrueHeading;
-            _haveHeading = true;
-
-            if (_haveLocation && _position.Accuracy <= _desiredAccuracy)
+            if (_position.Accuracy <= _desiredAccuracy)
             {
                 _tcs.TrySetResult(new Position(_position));
                 StopListening();
@@ -130,9 +105,6 @@ namespace eShopOnContainers.iOS.Services
 
         private void StopListening()
         {
-            if (CLLocationManager.HeadingAvailable)
-                _manager.StopUpdatingHeading();
-
             _manager.StopUpdatingLocation();
         }
     }

@@ -48,12 +48,10 @@ namespace eShopOnContainers
             {
                 await InitNavigation();
             }
-
             if (_settingsService.AllowGpsLocation && !_settingsService.UseFakeLocation)
             {
                 await GetGpsLocation();
             }
-
             if (!_settingsService.UseMocks && !string.IsNullOrEmpty(_settingsService.AuthAccessToken))
             {
                 await SendCurrentLocation();
@@ -74,9 +72,10 @@ namespace eShopOnContainers
 
             if (locator.IsGeolocationEnabled && locator.IsGeolocationAvailable)
             {
-                //locationService.AllowsBackgroundUpdates = true;
                 locator.DesiredAccuracy = 50;
 
+                // Delay getting the position to ensure that the UI has finished updating
+                await Task.Delay(2000);
                 var position = await locator.GetPositionAsync();
 
                 _settingsService.Latitude = position.Latitude.ToString();

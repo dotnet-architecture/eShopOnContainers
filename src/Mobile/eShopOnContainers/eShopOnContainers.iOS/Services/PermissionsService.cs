@@ -19,7 +19,6 @@ namespace eShopOnContainers.iOS.Services
                 return PermissionStatus.Disabled;
 
             var status = CLLocationManager.Status;
-
             if (UIDevice.CurrentDevice.CheckSystemVersion(8, 0))
             {
                 switch (status)
@@ -77,22 +76,6 @@ namespace eShopOnContainers.iOS.Services
             locationManager.AuthorizationChanged += authCallback;
 
             var info = NSBundle.MainBundle.InfoDictionary;
-            //if (permission == Permission.Location)
-            //{
-            //    if (info.ContainsKey(new NSString("NSLocationAlwaysUsageDescription")))
-            //        locationManager.RequestAlwaysAuthorization();
-            //    else if (info.ContainsKey(new NSString("NSLocationWhenInUseUsageDescription")))
-            //        locationManager.RequestWhenInUseAuthorization();
-            //    else
-            //        throw new UnauthorizedAccessException("On iOS 8.0 and higher you must set either NSLocationWhenInUseUsageDescription or NSLocationAlwaysUsageDescription in your Info.plist file to enable Authorization Requests for Location updates!");
-            //}
-            //else if (permission == Permission.LocationAlways)
-            //{
-            //    if (info.ContainsKey(new NSString("NSLocationAlwaysUsageDescription")))
-            //        locationManager.RequestAlwaysAuthorization();
-            //    else
-            //        throw new UnauthorizedAccessException("On iOS 8.0 and higher you must set either NSLocationWhenInUseUsageDescription or NSLocationAlwaysUsageDescription in your Info.plist file to enable Authorization Requests for Location updates!");
-            //}
             if (permission == Permission.LocationWhenInUse)
             {
                 if (info.ContainsKey(new NSString("NSLocationWhenInUseUsageDescription")))
