@@ -1,13 +1,15 @@
 ﻿using eShopOnContainers.Core.Models.Location;
+using eShopOnContainers.Core.Services.Dependency;
 using eShopOnContainers.Core.Services.Location;
 using eShopOnContainers.Core.Services.Settings;
 using eShopOnContainers.Core.ViewModels.Base;
 using eShopOnContainers.Services;
+using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using eShopOnContainers.Core.Services.Dependency;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace eShopOnContainers
@@ -76,10 +78,17 @@ namespace eShopOnContainers
 
                 // Delay getting the position to ensure that the UI has finished updating
                 await Task.Delay(2000);
-                var position = await locator.GetPositionAsync();
+                try
+                {
+                    var position = await locator.GetPositionAsync();
 
-                _settingsService.Latitude = position.Latitude.ToString();
-                _settingsService.Longitude = position.Longitude.ToString();
+                    _settingsService.Latitude = position.Latitude.ToString();
+                    _settingsService.Longitude = position.Longitude.ToString();
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex);
+                }
             }
             else
             {
