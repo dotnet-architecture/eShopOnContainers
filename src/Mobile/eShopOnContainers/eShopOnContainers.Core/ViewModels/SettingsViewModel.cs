@@ -309,8 +309,7 @@ namespace eShopOnContainers.Core.ViewModels
 
             }
         }
-
-
+        
         private void UpdateUseAzureServices()
         {
             // Save use mocks services to local storage

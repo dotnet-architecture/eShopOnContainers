@@ -1,12 +1,13 @@
 ﻿using eShopOnContainers.Core.Models.Location;
 using eShopOnContainers.Core.Services.Location;
+using eShopOnContainers.Windows.Services;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.Devices.Geolocation;
 using Windows.Foundation;
 
-[assembly: Xamarin.Forms.Dependency(typeof(ILocationServiceImplementation))]
+[assembly: Xamarin.Forms.Dependency(typeof(LocationServiceImplementation))]
 namespace eShopOnContainers.Windows.Services
 {
     public class LocationServiceImplementation : ILocationServiceImplementation
