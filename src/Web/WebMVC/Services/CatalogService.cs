@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http;
+using Microsoft.eShopOnContainers.Services.Common.API;
 using Microsoft.eShopOnContainers.WebMVC.ViewModels;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -28,13 +29,13 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
             _remoteServiceBaseUrl = $"{_settings.Value.CatalogUrl}/api/v1/catalog/";
         }
 
-        public async Task<Catalog> GetCatalogItems(int page, int take, int? brand, int? type)
+        public async Task<PaginatedItemsViewModel<CatalogItem>> GetCatalogItems(int page, int take, int? brand, int? type)
         {
             var allcatalogItemsUri = API.Catalog.GetAllCatalogItems(_remoteServiceBaseUrl, page, take, brand, type);
 
             var dataString = await _apiClient.GetStringAsync(allcatalogItemsUri);
 
-            var response = JsonConvert.DeserializeObject<Catalog>(dataString);
+            var response = JsonConvert.DeserializeObject<PaginatedItemsViewModel<CatalogItem>>(dataString);
 
             return response;
         }

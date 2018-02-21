@@ -11,7 +11,6 @@
     using Xunit;
     using System.Collections.Generic;
     using Microsoft.eShopOnContainers.Services.Marketing.API.Dto;
-    using Microsoft.eShopOnContainers.Services.Catalog.API.ViewModel;
 
     public class MarketingScenarios : MarketingScenariosBase
     {

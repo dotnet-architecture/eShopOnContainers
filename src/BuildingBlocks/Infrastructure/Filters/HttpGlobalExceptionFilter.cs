@@ -1,19 +1,19 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Marketing.API.Infrastructure.Filters
-{
-    using AspNetCore.Mvc;
-    using global::Microsoft.eShopOnContainers.Services.Marketing.API.Infrastructure.Exceptions;
-    using Microsoft.AspNetCore.Hosting;
-    using Microsoft.AspNetCore.Mvc.Filters;
-    using Microsoft.eShopOnContainers.Services.Marketing.API.Infrastructure.ActionResults;
-    using Microsoft.Extensions.Logging;
-    using System.Net;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.eShopOnContainers.BuildingBlocks.Infrastructure.ActionResults;
+using Microsoft.Extensions.Logging;
+using System.Net;
 
-    public class HttpGlobalExceptionFilter : IExceptionFilter
+namespace Microsoft.eShopOnContainers.BuildingBlocks.Infrastructure.Filters
+{
+
+    public class HttpGlobalExceptionFilter<T> : IExceptionFilter
     {
         private readonly IHostingEnvironment env;
-        private readonly ILogger<HttpGlobalExceptionFilter> logger;
+        private readonly ILogger<HttpGlobalExceptionFilter<T>> logger;
 
-        public HttpGlobalExceptionFilter(IHostingEnvironment env, ILogger<HttpGlobalExceptionFilter> logger)
+        public HttpGlobalExceptionFilter(IHostingEnvironment env, ILogger<HttpGlobalExceptionFilter<T>> logger)
         {
             this.env = env;
             this.logger = logger;
@@ -25,7 +25,7 @@
                 context.Exception,
                 context.Exception.Message);
 
-            if (context.Exception.GetType() == typeof(MarketingDomainException)) 
+            if (context.Exception.GetType() == typeof(T)) 
             {
                 var json = new JsonErrorResponse
                 {
@@ -57,11 +57,5 @@
             context.ExceptionHandled = true;
         }
 
-        private class JsonErrorResponse
-        {
-            public string[] Messages { get; set; }
-
-            public object DeveloperMessage { get; set; }
-        }
     }
 }

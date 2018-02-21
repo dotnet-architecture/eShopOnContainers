@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.eShopOnContainers.Services.Common.API;
 using Microsoft.eShopOnContainers.WebMVC.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
 {
     public interface ICatalogService
     {
-        Task<Catalog> GetCatalogItems(int page, int take, int? brand, int? type);
+        Task<PaginatedItemsViewModel<CatalogItem>> GetCatalogItems(int page, int take, int? brand, int? type);
         Task<IEnumerable<SelectListItem>> GetBrands();
         Task<IEnumerable<SelectListItem>> GetTypes();
     }

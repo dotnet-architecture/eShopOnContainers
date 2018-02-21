@@ -18,7 +18,6 @@ using StackExchange.Redis;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using WebMVC.Infrastructure;
-using WebMVC.Infrastructure.Middlewares;
 using WebMVC.Services;
 
 namespace Microsoft.eShopOnContainers.WebMVC

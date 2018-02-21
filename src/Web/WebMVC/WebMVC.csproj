@@ -42,10 +42,15 @@
     <ProjectReference Include="..\..\BuildingBlocks\HealthChecks\src\Microsoft.AspNetCore.HealthChecks\Microsoft.AspNetCore.HealthChecks.csproj" />
     <ProjectReference Include="..\..\BuildingBlocks\HealthChecks\src\Microsoft.Extensions.HealthChecks\Microsoft.Extensions.HealthChecks.csproj" />
     <ProjectReference Include="..\..\BuildingBlocks\Resilience\Resilience.Http\Resilience.Http.csproj" />
+    <ProjectReference Include="..\..\Services\Common\Common.API\Common.API.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="ViewModels\CampaignItem.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Infrastructure\Middlewares\" />
   </ItemGroup>
 
 </Project>

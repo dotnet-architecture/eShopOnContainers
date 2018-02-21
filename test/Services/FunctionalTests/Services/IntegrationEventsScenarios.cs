@@ -2,7 +2,6 @@
 using FunctionalTests.Services.Catalog;
 using Microsoft.eShopOnContainers.Services.Basket.API.Model;
 using Microsoft.eShopOnContainers.Services.Catalog.API.Model;
-using Microsoft.eShopOnContainers.Services.Catalog.API.ViewModel;
 using Newtonsoft.Json;
 using System;
 using System.Linq;
@@ -12,6 +11,7 @@ using System.Threading.Tasks;
 using Xunit;
 using System.Net.Http;
 using System.Threading;
+using Microsoft.eShopOnContainers.Services.Common.API;
 
 namespace FunctionalTests.Services
 {

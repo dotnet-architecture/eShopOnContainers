@@ -5,6 +5,7 @@ using Microsoft.eShopOnContainers.WebMVC.ViewModels.Pagination;
 using Microsoft.eShopOnContainers.WebMVC.Services;
 using Microsoft.eShopOnContainers.WebMVC.ViewModels.CatalogViewModels;
 using Microsoft.AspNetCore.Http;
+using System.Linq;
 
 namespace Microsoft.eShopOnContainers.WebMVC.Controllers
 {
@@ -29,7 +30,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
                 PaginationInfo = new PaginationInfo()
                 {
                     ActualPage = page ?? 0,
-                    ItemsPerPage = catalog.Data.Count,
+                    ItemsPerPage = catalog.Data.Count(),
                     TotalItems = catalog.Count, 
                     TotalPages = (int)Math.Ceiling(((decimal)catalog.Count / itemsPage))
                 }

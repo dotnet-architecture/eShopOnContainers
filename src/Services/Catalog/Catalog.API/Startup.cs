@@ -1,35 +1,36 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Catalog.API
-{
-    using Autofac;
-    using Autofac.Extensions.DependencyInjection;
-    using global::Catalog.API.Infrastructure.Filters;
-    using global::Catalog.API.IntegrationEvents;
-    using Microsoft.ApplicationInsights.Extensibility;
-    using Microsoft.ApplicationInsights.ServiceFabric;
-    using Microsoft.AspNetCore.Builder;
-    using Microsoft.AspNetCore.Hosting;
-    using Microsoft.Azure.ServiceBus;
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.EntityFrameworkCore.Diagnostics;
-    using Microsoft.eShopOnContainers.BuildingBlocks.EventBus;
-    using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
-    using Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ;
-    using Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus;
-    using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF;
-    using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF.Services;
-    using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
-    using Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationEvents.EventHandling;
-    using Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationEvents.Events;
-    using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.HealthChecks;
-    using Microsoft.Extensions.Logging;
-    using Microsoft.Extensions.Options;
-    using RabbitMQ.Client;
-    using System;
-    using System.Data.Common;
-    using System.Reflection;
+﻿using Autofac;
+using Autofac.Extensions.DependencyInjection;
+using Catalog.API.Infrastructure.Exceptions;
+using Catalog.API.IntegrationEvents;
+using Microsoft.ApplicationInsights.Extensibility;
+using Microsoft.ApplicationInsights.ServiceFabric;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Azure.ServiceBus;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.eShopOnContainers.BuildingBlocks.EventBus;
+using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
+using Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ;
+using Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus;
+using Microsoft.eShopOnContainers.BuildingBlocks.Infrastructure.Filters;
+using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF;
+using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF.Services;
+using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
+using Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationEvents.EventHandling;
+using Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationEvents.Events;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.HealthChecks;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using RabbitMQ.Client;
+using System;
+using System.Data.Common;
+using System.Reflection;
 
+namespace Microsoft.eShopOnContainers.Services.Catalog.API
+{
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -64,7 +65,7 @@
 
             services.AddMvc(options =>
             {
-                options.Filters.Add(typeof(HttpGlobalExceptionFilter));
+                options.Filters.Add(typeof(HttpGlobalExceptionFilter<CatalogDomainException>));
             }).AddControllersAsServices();
 
             services.AddDbContext<CatalogContext>(options =>

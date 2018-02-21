@@ -1,39 +1,40 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Marketing.API
-{
-    using AspNetCore.Builder;
-    using AspNetCore.Hosting;
-    using AspNetCore.Http;
-    using Autofac;
-    using Autofac.Extensions.DependencyInjection;
-    using Azure.ServiceBus;
-    using BuildingBlocks.EventBus;
-    using BuildingBlocks.EventBus.Abstractions;
-    using BuildingBlocks.EventBusRabbitMQ;
-    using BuildingBlocks.EventBusServiceBus;
-    using EntityFrameworkCore;
-    using Extensions.Configuration;
-    using Extensions.DependencyInjection;
-    using Extensions.HealthChecks;
-    using Extensions.Logging;
-    using Infrastructure;
-    using Infrastructure.Filters;
-    using Infrastructure.Repositories;
-    using Infrastructure.Services;
-    using IntegrationEvents.Events;
-    using Marketing.API.IntegrationEvents.Handlers;
-    using Microsoft.ApplicationInsights.Extensibility;
-    using Microsoft.ApplicationInsights.ServiceFabric;
-    using Microsoft.AspNetCore.Authentication.JwtBearer;
-    using Microsoft.EntityFrameworkCore.Diagnostics;
-    using Microsoft.eShopOnContainers.Services.Marketing.API.Infrastructure.Middlewares;
-    using RabbitMQ.Client;
-    using Swashbuckle.AspNetCore.Swagger;
-    using System;
-    using System.Collections.Generic;
-    using System.IdentityModel.Tokens.Jwt;
-    using System.Reflection;
-    using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
+using Microsoft.Azure.ServiceBus;
+using Microsoft.eShopOnContainers.BuildingBlocks.EventBus;
+using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
+using Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ;
+using Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.ApplicationInsights.Extensibility;
+using Microsoft.ApplicationInsights.ServiceFabric;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.eShopOnContainers.BuildingBlocks.Infrastructure.Filters;
+using Microsoft.eShopOnContainers.Services.Marketing.API.Infrastructure.Exceptions;
+using RabbitMQ.Client;
+using Swashbuckle.AspNetCore.Swagger;
+using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Reflection;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.eShopOnContainers.Services.Marketing.API.Infrastructure;
+using Microsoft.Extensions.Logging;
+using Microsoft.eShopOnContainers.Services.Marketing.API.Infrastructure.Repositories;
+using Microsoft.eShopOnContainers.Services.Marketing.API.Infrastructure.Services;
+using Microsoft.eShopOnContainers.Services.Marketing.API.IntegrationEvents.Handlers;
+using Microsoft.eShopOnContainers.Services.Marketing.API.IntegrationEvents.Events;
+using Microsoft.Extensions.HealthChecks;
+using Microsoft.eShopOnContainers.BuildingBlocks.Infrastructure.Middlewares;
 
+namespace Microsoft.eShopOnContainers.Services.Marketing.API
+{
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -52,7 +53,7 @@
             // Add framework services.
             services.AddMvc(options =>
             {
-                options.Filters.Add(typeof(HttpGlobalExceptionFilter));
+                options.Filters.Add(typeof(HttpGlobalExceptionFilter<MarketingDomainException>));
             }).AddControllersAsServices();  //Injecting Controllers themselves thru DIFor further info see: http://docs.autofac.org/en/latest/integration/aspnetcore.html#controllers-as-services
 
             services.Configure<MarketingSettings>(Configuration);

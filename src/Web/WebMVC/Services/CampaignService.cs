@@ -10,8 +10,9 @@
     using Newtonsoft.Json;
     using System;
     using System.Threading.Tasks;
+	using Microsoft.eShopOnContainers.Services.Common.API;
 
-    public class CampaignService : ICampaignService
+	public class CampaignService : ICampaignService
     {
         private readonly IOptionsSnapshot<AppSettings> _settings;
         private readonly IHttpClient _apiClient;
@@ -30,7 +31,7 @@
             _httpContextAccesor = httpContextAccesor ?? throw new ArgumentNullException(nameof(httpContextAccesor));
         }
 
-        public async Task<Campaign> GetCampaigns(int pageSize, int pageIndex)
+        public async Task<PaginatedItemsViewModel<CampaignItem>> GetCampaigns(int pageSize, int pageIndex)
         {
             var allCampaignItemsUri = API.Marketing.GetAllCampaigns(_remoteServiceBaseUrl, 
                 pageSize, pageIndex);
@@ -38,7 +39,7 @@
             var authorizationToken = await GetUserTokenAsync();
             var dataString = await _apiClient.GetStringAsync(allCampaignItemsUri, authorizationToken);
 
-            var response = JsonConvert.DeserializeObject<Campaign>(dataString);
+            var response = JsonConvert.DeserializeObject<PaginatedItemsViewModel<CampaignItem>>(dataString);
 
             return response;
         }

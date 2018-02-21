@@ -4,7 +4,7 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Microsoft.eShopOnContainers.Services.Marketing.API.Infrastructure.Filters
+namespace Microsoft.eShopOnContainers.BuildingBlocks.Infrastructure.Filters
 {
     public class AuthorizeCheckOperationFilter : IOperationFilter
     {
@@ -19,13 +19,11 @@ namespace Microsoft.eShopOnContainers.Services.Marketing.API.Infrastructure.Filt
                 operation.Responses.Add("401", new Response { Description = "Unauthorized" });
                 operation.Responses.Add("403", new Response { Description = "Forbidden" });
 
-                operation.Security = new List<IDictionary<string, IEnumerable<string>>>
+                operation.Security = new List<IDictionary<string, IEnumerable<string>>>();
+                operation.Security.Add(new Dictionary<string, IEnumerable<string>>
                 {
-                    new Dictionary<string, IEnumerable<string>>
-                    {
-                        { "oauth2", new [] { "marketingapi" } }
-                    }
-                };
+                    { "oauth2", new [] { "basketapi" } }
+                });
             }
         }
     }
