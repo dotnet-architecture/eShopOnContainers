@@ -35,13 +35,12 @@ namespace eShopOnContainers.iOS.Services
 
         async Task<bool> CheckPermissions(Permission permission)
         {
-            IPermissionsService permissionsService = new PermissionsService();
-            var status = await permissionsService.CheckPermissionStatusAsync(permission);
+            var status = await PermissionsService.Current.CheckPermissionStatusAsync(permission);
             if (status != PermissionStatus.Granted)
             {
                 Console.WriteLine("Currently do not have Location permissions, requesting permissions");
 
-                var request = await permissionsService.RequestPermissionsAsync(permission);
+                var request = await PermissionsService.Current.RequestPermissionsAsync(permission);
                 if (request[permission] != PermissionStatus.Granted)
                 {
                     Console.WriteLine("Location permission denied, can not get positions async.");

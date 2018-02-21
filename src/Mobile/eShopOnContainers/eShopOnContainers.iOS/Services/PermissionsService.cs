@@ -11,6 +11,22 @@ namespace eShopOnContainers.iOS.Services
 {
     public class PermissionsService : IPermissionsService
     {
+        CLLocationManager _locationManager;
+
+        static Lazy<IPermissionsService> implementation = new Lazy<IPermissionsService>(CreatePermissions, System.Threading.LazyThreadSafetyMode.PublicationOnly);
+        static IPermissionsService CreatePermissions()
+        {
+            return new PermissionsService();
+        }
+
+        public static IPermissionsService Current
+        {
+            get
+            {
+                return implementation.Value;
+            }
+        }
+
         #region Internal Implementation
 
         PermissionStatus GetLocationPermissionStatus(Permission permission)
@@ -64,22 +80,22 @@ namespace eShopOnContainers.iOS.Services
 
             EventHandler<CLAuthorizationChangedEventArgs> authCallback = null;
             var tcs = new TaskCompletionSource<PermissionStatus>();
-            var locationManager = new CLLocationManager();
+            _locationManager = new CLLocationManager();
 
             authCallback = (sender, e) =>
             {
                 if (e.Status == CLAuthorizationStatus.NotDetermined)
                     return;
-                locationManager.AuthorizationChanged -= authCallback;
+                _locationManager.AuthorizationChanged -= authCallback;
                 tcs.TrySetResult(GetLocationPermissionStatus(permission));
             };
-            locationManager.AuthorizationChanged += authCallback;
+            _locationManager.AuthorizationChanged += authCallback;
 
             var info = NSBundle.MainBundle.InfoDictionary;
             if (permission == Permission.LocationWhenInUse)
             {
                 if (info.ContainsKey(new NSString("NSLocationWhenInUseUsageDescription")))
-                    locationManager.RequestWhenInUseAuthorization();
+                    _locationManager.RequestWhenInUseAuthorization();
                 else
                     throw new UnauthorizedAccessException("On iOS 8.0 and higher you must set either NSLocationWhenInUseUsageDescription or NSLocationAlwaysUsageDescription in your Info.plist file to enable Authorization Requests for Location updates.");
             }
