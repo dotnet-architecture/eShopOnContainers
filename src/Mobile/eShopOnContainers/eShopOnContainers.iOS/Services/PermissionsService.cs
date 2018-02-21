@@ -13,20 +13,6 @@ namespace eShopOnContainers.iOS.Services
     {
         CLLocationManager _locationManager;
 
-        static Lazy<IPermissionsService> implementation = new Lazy<IPermissionsService>(CreatePermissions, System.Threading.LazyThreadSafetyMode.PublicationOnly);
-        static IPermissionsService CreatePermissions()
-        {
-            return new PermissionsService();
-        }
-
-        public static IPermissionsService Current
-        {
-            get
-            {
-                return implementation.Value;
-            }
-        }
-
         #region Internal Implementation
 
         PermissionStatus GetLocationPermissionStatus(Permission permission)

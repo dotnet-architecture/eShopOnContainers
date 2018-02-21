@@ -15,32 +15,24 @@ namespace eShopOnContainers.iOS.Services
 {
     public class LocationServiceImplementation : ILocationServiceImplementation
     {
-        public double DesiredAccuracy { get; set; }
-        public bool IsGeolocationAvailable => true;
-        public bool IsGeolocationEnabled
-        {
-            get
-            {
-                var status = CLLocationManager.Status;
-                return CLLocationManager.LocationServicesEnabled;
-            }
-        }
+        Lazy<IPermissionsService> _permissionsService;
 
         public LocationServiceImplementation()
         {
             DesiredAccuracy = 100;
+            _permissionsService = new Lazy<IPermissionsService>(() => new PermissionsService(), LazyThreadSafetyMode.PublicationOnly);
         }
 
         #region Internal Implementation
 
         async Task<bool> CheckPermissions(Permission permission)
         {
-            var status = await PermissionsService.Current.CheckPermissionStatusAsync(permission);
+            var status = await _permissionsService.Value.CheckPermissionStatusAsync(permission);
             if (status != PermissionStatus.Granted)
             {
                 Console.WriteLine("Currently do not have Location permissions, requesting permissions");
 
-                var request = await PermissionsService.Current.RequestPermissionsAsync(permission);
+                var request = await _permissionsService.Value.RequestPermissionsAsync(permission);
                 if (request[permission] != PermissionStatus.Granted)
                 {
                     Console.WriteLine("Location permission denied, can not get positions async.");
@@ -60,6 +52,17 @@ namespace eShopOnContainers.iOS.Services
         #endregion
 
         #region ILocationServiceImplementation
+
+        public double DesiredAccuracy { get; set; }
+        public bool IsGeolocationAvailable => true;
+        public bool IsGeolocationEnabled
+        {
+            get
+            {
+                var status = CLLocationManager.Status;
+                return CLLocationManager.LocationServicesEnabled;
+            }
+        }
 
         public async Task<Position> GetPositionAsync(TimeSpan? timeout, CancellationToken? cancelToken = null)
         {
