@@ -1,7 +1,7 @@
 using Android.App;
+using Android.Content;
 using Android.OS;
 using Android.Runtime;
-using Plugin.CurrentActivity;
 using System;
 
 namespace eShopOnContainers.TestRunner.Droid
@@ -10,8 +10,10 @@ namespace eShopOnContainers.TestRunner.Droid
     [Application]
     public class MainApplication : Application, Application.IActivityLifecycleCallbacks
     {
+        internal static Context CurrentContext { get; private set; }
+
         public MainApplication(IntPtr handle, JniHandleOwnership transer)
-          :base(handle, transer)
+          : base(handle, transer)
         {
         }
 
@@ -30,7 +32,7 @@ namespace eShopOnContainers.TestRunner.Droid
 
         public void OnActivityCreated(Activity activity, Bundle savedInstanceState)
         {
-            CrossCurrentActivity.Current.Activity = activity;
+            CurrentContext = activity;
         }
 
         public void OnActivityDestroyed(Activity activity)
@@ -43,7 +45,7 @@ namespace eShopOnContainers.TestRunner.Droid
 
         public void OnActivityResumed(Activity activity)
         {
-            CrossCurrentActivity.Current.Activity = activity;
+            CurrentContext = activity;
         }
 
         public void OnActivitySaveInstanceState(Activity activity, Bundle outState)
@@ -52,7 +54,7 @@ namespace eShopOnContainers.TestRunner.Droid
 
         public void OnActivityStarted(Activity activity)
         {
-            CrossCurrentActivity.Current.Activity = activity;
+            CurrentContext = activity;
         }
 
         public void OnActivityStopped(Activity activity)
