@@ -1,10 +1,9 @@
-﻿using System;
-using CoreLocation;
-using Foundation;
-using System.Threading.Tasks;
-using System.Threading;
-using System.Linq;
+﻿using CoreLocation;
 using eShopOnContainers.Core.Models.Location;
+using Foundation;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace eShopOnContainers.iOS.Services
 {

@@ -1,7 +1,7 @@
-﻿using System;
+﻿using eShopOnContainers.Core.Models.Location;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
-using eShopOnContainers.Core.Models.Location;
 
 namespace eShopOnContainers.Core.Services.Location
 {

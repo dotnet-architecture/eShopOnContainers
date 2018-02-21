@@ -1,17 +1,17 @@
 ﻿using Android.App;
 using Android.Content;
-using eShopOnContainers.Droid.Services;
-using System;
-using eShopOnContainers.Core.Services.Location;
+using Android.Locations;
+using Android.OS;
 using eShopOnContainers.Core.Models.Location;
 using eShopOnContainers.Core.Models.Permissions;
+using eShopOnContainers.Core.Services.Location;
+using eShopOnContainers.Droid.Activities;
+using eShopOnContainers.Droid.Services;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Android.Locations;
-using System.Linq;
-using System.Collections.Generic;
-using Android.OS;
-using eShopOnContainers.Droid.Activities;
 
 [assembly: Xamarin.Forms.Dependency(typeof(LocationServiceImplementation))]
 namespace eShopOnContainers.Droid.Services

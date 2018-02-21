@@ -1,14 +1,14 @@
-﻿using eShopOnContainers.iOS.Services;
-using eShopOnContainers.Core.Services.Location;
-using CoreLocation;
+﻿using CoreLocation;
 using eShopOnContainers.Core.Models.Location;
+using eShopOnContainers.Core.Models.Permissions;
+using eShopOnContainers.Core.Services.Location;
+using eShopOnContainers.Core.Services.Permissions;
+using eShopOnContainers.iOS.Services;
 using Foundation;
 using System;
-using System.Threading.Tasks;
 using System.Threading;
+using System.Threading.Tasks;
 using UIKit;
-using eShopOnContainers.Core.Models.Permissions;
-using eShopOnContainers.Core.Services.Permissions;
 
 [assembly: Xamarin.Forms.Dependency(typeof(LocationServiceImplementation))]
 namespace eShopOnContainers.iOS.Services

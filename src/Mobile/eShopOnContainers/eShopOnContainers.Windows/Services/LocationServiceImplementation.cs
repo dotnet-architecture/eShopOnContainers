@@ -21,24 +21,6 @@ namespace eShopOnContainers.Windows.Services
 
         #region Internal Implementation
 
-        Geolocator GetGeolocator()
-        {
-            var loc = _locator;
-            if (loc == null)
-            {
-                _locator = new Geolocator();
-                _locator.StatusChanged += OnLocatorStatusChanged;
-                loc = _locator;
-            }
-            return loc;
-        }
-
-        PositionStatus GetGeolocatorStatus()
-        {
-            var loc = GetGeolocator();
-            return loc.LocationStatus;
-        }
-
         static Position GetPosition(Geoposition position)
         {
             var pos = new Position
@@ -60,24 +42,6 @@ namespace eShopOnContainers.Windows.Services
             return pos;
         }
 
-        async void OnLocatorStatusChanged(Geolocator sender, StatusChangedEventArgs e)
-        {
-            GeolocationError error;
-
-            switch (e.Status)
-            {
-                case PositionStatus.Disabled:
-                    error = GeolocationError.Unauthorized;
-                    break;
-                case PositionStatus.NoData:
-                    error = GeolocationError.PositionUnavailable;
-                    break;
-                default:
-                    return;
-            }
-            _locator = null;
-        }
-
         #endregion
 
         #region ILocationServiceImplementation
@@ -88,22 +52,19 @@ namespace eShopOnContainers.Windows.Services
             set
             {
                 _desiredAccuracy = value;
-                GetGeolocator().DesiredAccuracy = (value < 100) ? PositionAccuracy.High : PositionAccuracy.Default;
+                _locator.DesiredAccuracy = (value < 100) ? PositionAccuracy.High : PositionAccuracy.Default;
             }
         }
-
-        public event EventHandler<PositionErrorEventArgs> PositionError;
-        public event EventHandler<PositionEventArgs> PositionChanged;
 
         public bool IsGeolocationAvailable
         {
             get
             {
-                var status = GetGeolocatorStatus();
+                var status = _locator.LocationStatus;
                 while (status == PositionStatus.Initializing)
                 {
                     Task.Delay(10).Wait();
-                    status = GetGeolocatorStatus();
+                    status = _locator.LocationStatus;
                 }
                 return status != PositionStatus.NotAvailable;
             }
@@ -113,17 +74,17 @@ namespace eShopOnContainers.Windows.Services
         {
             get
             {
-                var status = GetGeolocatorStatus();
+                var status = _locator.LocationStatus;
                 while (status == PositionStatus.Initializing)
                 {
                     Task.Delay(10).Wait();
-                    status = GetGeolocatorStatus();
+                    status = _locator.LocationStatus;
                 }
                 return status != PositionStatus.Disabled && status != PositionStatus.NotAvailable;
             }
         }
 
-        public Task<Position> GetPositionAsync(TimeSpan? timeout = null, CancellationToken? cancelToken = null, bool includeHeading = false)
+        public Task<Position> GetPositionAsync(TimeSpan? timeout = null, CancellationToken? cancelToken = null)
         {
             var timeoutMilliseconds = timeout.HasValue ? (int)timeout.Value.TotalMilliseconds : eShopOnContainers.Windows.Helpers.Timeout.Infinite;
             if (timeoutMilliseconds < 0 && timeoutMilliseconds != eShopOnContainers.Windows.Helpers.Timeout.Infinite)
@@ -132,7 +93,7 @@ namespace eShopOnContainers.Windows.Services
             if (!cancelToken.HasValue)
                 cancelToken = CancellationToken.None;
 
-            var pos = GetGeolocator().GetGeopositionAsync(TimeSpan.FromTicks(0), TimeSpan.FromDays(365));
+            var pos = _locator.GetGeopositionAsync(TimeSpan.FromTicks(0), TimeSpan.FromDays(365));
             cancelToken.Value.Register(o => ((IAsyncOperation<Geoposition>)o).Cancel(), pos);
             var timer = new eShopOnContainers.Windows.Helpers.Timeout(timeoutMilliseconds, pos.Cancel);
             var tcs = new TaskCompletionSource<Position>();
@@ -140,7 +101,6 @@ namespace eShopOnContainers.Windows.Services
             pos.Completed = (op, s) =>
             {
                 timer.Cancel();
-
                 switch (s)
                 {
                     case AsyncStatus.Canceled:

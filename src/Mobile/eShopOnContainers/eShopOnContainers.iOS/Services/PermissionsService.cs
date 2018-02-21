@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using CoreLocation;
 using eShopOnContainers.Core.Models.Permissions;
 using eShopOnContainers.Core.Services.Permissions;
-using CoreLocation;
-using UIKit;
 using Foundation;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using UIKit;
 
 namespace eShopOnContainers.iOS.Services
 {

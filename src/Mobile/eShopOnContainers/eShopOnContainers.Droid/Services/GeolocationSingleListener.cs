@@ -1,12 +1,12 @@
-﻿using System;
-using System.Threading.Tasks;
-using Android.Locations;
+﻿using Android.Locations;
 using Android.OS;
-using System.Threading;
-using System.Collections.Generic;
 using Android.Runtime;
 using eShopOnContainers.Core.Models.Location;
 using eShopOnContainers.Droid.Extensions;
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace eShopOnContainers.Droid.Services
 {
