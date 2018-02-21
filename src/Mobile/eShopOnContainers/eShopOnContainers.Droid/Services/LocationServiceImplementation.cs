@@ -5,7 +5,6 @@ using Android.OS;
 using eShopOnContainers.Core.Models.Location;
 using eShopOnContainers.Core.Models.Permissions;
 using eShopOnContainers.Core.Services.Location;
-using eShopOnContainers.Droid.Activities;
 using eShopOnContainers.Droid.Services;
 using System;
 using System.Collections.Generic;
@@ -45,12 +44,12 @@ namespace eShopOnContainers.Droid.Services
 
         async Task<bool> CheckPermissionsAsync()
         {
-            var status = await MainActivity.PermissionsService.CheckPermissionStatusAsync(Permission.Location);
+            var status = await PermissionsService.Current.Value.CheckPermissionStatusAsync(Permission.Location);
             if (status != PermissionStatus.Granted)
             {
                 Console.WriteLine("Currently do not have Location permissions, requesting permissions.");
 
-                var request = await MainActivity.PermissionsService.RequestPermissionsAsync(Permission.Location);
+                var request = await PermissionsService.Current.Value.RequestPermissionsAsync(Permission.Location);
                 if (request[Permission.Location] != PermissionStatus.Granted)
                 {
                     Console.WriteLine("Location permission denied.");

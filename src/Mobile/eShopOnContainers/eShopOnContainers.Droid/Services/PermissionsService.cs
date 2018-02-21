@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace eShopOnContainers.Droid.Services
@@ -19,6 +20,8 @@ namespace eShopOnContainers.Droid.Services
         TaskCompletionSource<Dictionary<Permission, PermissionStatus>> _tcs;
         Dictionary<Permission, PermissionStatus> _results;
         IList<string> _requestedPermissions;
+
+        public static Lazy<IPermissionsService> Current = new Lazy<IPermissionsService>(() => new PermissionsService(), LazyThreadSafetyMode.PublicationOnly);
 
         #region Internal Implementation
 

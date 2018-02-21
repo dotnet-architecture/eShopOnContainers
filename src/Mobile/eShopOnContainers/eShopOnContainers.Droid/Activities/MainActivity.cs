@@ -10,7 +10,6 @@ using FFImageLoading.Forms.Droid;
 using System;
 using Xamarin.Forms.Platform.Android;
 using eShopOnContainers.Droid.Services;
-using eShopOnContainers.Core.Services.Permissions;
 
 namespace eShopOnContainers.Droid.Activities
 {
@@ -21,8 +20,6 @@ namespace eShopOnContainers.Droid.Activities
         ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : FormsAppCompatActivity
     {
-        public static IPermissionsService PermissionsService = new PermissionsService();
-
         protected override void OnCreate(Bundle bundle)
         {
             FormsAppCompatActivity.ToolbarResource = Resource.Layout.Toolbar;
@@ -60,7 +57,7 @@ namespace eShopOnContainers.Droid.Activities
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
         {
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
-            ((PermissionsService)PermissionsService).OnRequestPermissionResult(requestCode, permissions, grantResults);
+            ((PermissionsService)PermissionsService.Current.Value).OnRequestPermissionResult(requestCode, permissions, grantResults);
         }
     }
 }

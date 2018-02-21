@@ -79,7 +79,6 @@ namespace eShopOnContainers
                 try
                 {
                     var position = await locator.GetPositionAsync();
-
                     _settingsService.Latitude = position.Latitude.ToString();
                     _settingsService.Longitude = position.Longitude.ToString();
                 }
