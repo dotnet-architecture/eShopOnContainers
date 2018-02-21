@@ -76,8 +76,6 @@ namespace eShopOnContainers
             {
                 locator.DesiredAccuracy = 50;
 
-                // Delay getting the position to ensure that the UI has finished updating
-                await Task.Delay(2000);
                 try
                 {
                     var position = await locator.GetPositionAsync();
