@@ -57,7 +57,7 @@ namespace eShopOnContainers.Droid.Activities
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
         {
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
-            ((PermissionsService)PermissionsService.Current.Value).OnRequestPermissionResult(requestCode, permissions, grantResults);
+            ((PermissionsService)PermissionsService.Instance).OnRequestPermissionResult(requestCode, permissions, grantResults);
         }
     }
 }

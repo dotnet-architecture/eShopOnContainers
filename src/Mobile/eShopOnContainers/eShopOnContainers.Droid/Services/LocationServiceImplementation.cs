@@ -44,12 +44,12 @@ namespace eShopOnContainers.Droid.Services
 
         async Task<bool> CheckPermissionsAsync()
         {
-            var status = await PermissionsService.Current.Value.CheckPermissionStatusAsync(Permission.Location);
+            var status = await PermissionsService.Instance.CheckPermissionStatusAsync(Permission.Location);
             if (status != PermissionStatus.Granted)
             {
                 Console.WriteLine("Currently do not have Location permissions, requesting permissions.");
 
-                var request = await PermissionsService.Current.Value.RequestPermissionsAsync(Permission.Location);
+                var request = await PermissionsService.Instance.RequestPermissionsAsync(Permission.Location);
                 if (request[Permission.Location] != PermissionStatus.Granted)
                 {
                     Console.WriteLine("Location permission denied.");
