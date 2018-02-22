@@ -15,24 +15,24 @@ namespace eShopOnContainers.iOS.Services
 {
     public class LocationServiceImplementation : ILocationServiceImplementation
     {
-        Lazy<IPermissionsService> _permissionsService;
+        IPermissionsService _permissionsService;
 
         public LocationServiceImplementation()
         {
             DesiredAccuracy = 100;
-            _permissionsService = new Lazy<IPermissionsService>(() => new PermissionsService(), LazyThreadSafetyMode.PublicationOnly);
+            _permissionsService = new PermissionsService();
         }
 
         #region Internal Implementation
 
         async Task<bool> CheckPermissions(Permission permission)
         {
-            var status = await _permissionsService.Value.CheckPermissionStatusAsync(permission);
+            var status = await _permissionsService.CheckPermissionStatusAsync(permission);
             if (status != PermissionStatus.Granted)
             {
                 Console.WriteLine("Currently do not have Location permissions, requesting permissions");
 
-                var request = await _permissionsService.Value.RequestPermissionsAsync(permission);
+                var request = await _permissionsService.RequestPermissionsAsync(permission);
                 if (request[permission] != PermissionStatus.Granted)
                 {
                     Console.WriteLine("Location permission denied, can not get positions async.");
