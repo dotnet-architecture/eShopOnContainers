@@ -10,9 +10,12 @@
     <PackageReference Include="SlideOverKit" Version="2.1.5" />
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
     <PackageReference Include="PCLCrypto" Version="2.0.147" />
-    <PackageReference Include="Xam.Plugin.Geolocator" Version="3.0.4" />
     <PackageReference Include="Xamarin.FFImageLoading.Forms" Version="2.3.4" />
     <PackageReference Include="Xamarin.Forms" Version="2.5.0.122203" />
     <PackageReference Include="IdentityModel" Version="3.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Services\Permissions\" />
+    <Folder Include="Models\Permissions\" />
   </ItemGroup>
 </Project>

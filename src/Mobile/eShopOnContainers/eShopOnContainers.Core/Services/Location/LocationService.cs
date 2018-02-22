@@ -16,11 +16,8 @@ namespace eShopOnContainers.Core.Services.Location
         public async Task UpdateUserLocation(eShopOnContainers.Core.Models.Location.Location newLocReq, string token)
         {
             UriBuilder builder = new UriBuilder(GlobalSetting.Instance.LocationEndpoint);
-
             builder.Path = "api/v1/locations";
-
             string uri = builder.ToString();
-
             await _requestProvider.PostAsync(uri, newLocReq, token);
         }
     }
