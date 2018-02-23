@@ -1,9 +1,11 @@
 ﻿using eShopOnContainers.Core.Models.Location;
+using eShopOnContainers.Core.Services.Dependency;
 using eShopOnContainers.Core.Services.Location;
 using eShopOnContainers.Core.Services.Settings;
 using eShopOnContainers.Core.ViewModels.Base;
 using eShopOnContainers.Services;
-using Plugin.Geolocator;
+using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -48,12 +50,10 @@ namespace eShopOnContainers
             {
                 await InitNavigation();
             }
-
             if (_settingsService.AllowGpsLocation && !_settingsService.UseFakeLocation)
             {
                 await GetGpsLocation();
             }
-
             if (!_settingsService.UseMocks && !string.IsNullOrEmpty(_settingsService.AuthAccessToken))
             {
                 await SendCurrentLocation();
@@ -69,17 +69,23 @@ namespace eShopOnContainers
 
         private async Task GetGpsLocation()
         {
-            var locator = CrossGeolocator.Current;
+            var dependencyService = ViewModelLocator.Resolve<IDependencyService>();
+            var locator = dependencyService.Get<ILocationServiceImplementation>();
 
             if (locator.IsGeolocationEnabled && locator.IsGeolocationAvailable)
             {
-                locator.AllowsBackgroundUpdates = true;
                 locator.DesiredAccuracy = 50;
 
-                var position = await locator.GetPositionAsync();
-
-                _settingsService.Latitude = position.Latitude.ToString();
-                _settingsService.Longitude = position.Longitude.ToString();
+                try
+                {
+                    var position = await locator.GetPositionAsync();
+                    _settingsService.Latitude = position.Latitude.ToString();
+                    _settingsService.Longitude = position.Longitude.ToString();
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex);
+                }
             }
             else
             {
