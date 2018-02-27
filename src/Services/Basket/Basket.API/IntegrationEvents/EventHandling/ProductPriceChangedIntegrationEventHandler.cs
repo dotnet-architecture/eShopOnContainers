@@ -30,10 +30,10 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.IntegrationEvents.Even
 
         private async Task UpdatePriceInBasketItems(int productId, decimal newPrice, decimal oldPrice, CustomerBasket basket)
         {
-			string match = productId.ToString();
-			var itemsToUpdate = basket?.Items?.Where(x => x.ProductId == match).ToList();
+            string match = productId.ToString();
+            var itemsToUpdate = basket?.Items?.Where(x => x.ProductId == match).ToList();
 
-			if (itemsToUpdate != null)
+            if (itemsToUpdate != null)
             {
                 foreach (var item in itemsToUpdate)
                 {
