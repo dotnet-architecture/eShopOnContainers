@@ -16,7 +16,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                 new ApiResource("marketing", "Marketing Service"),
                 new ApiResource("locations", "Locations Service"),
                 new ApiResource("mobileshoppingagg", "Mobile Shopping Aggregator"),
-                new ApiResource("Webshoppingagg", "Web Shopping Aggregator")
+                new ApiResource("webshoppingagg", "Web Shopping Aggregator")
             };
         }
 

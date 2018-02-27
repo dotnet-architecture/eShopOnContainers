@@ -142,5 +142,5 @@ services:
     image: eshop/webshoppingagg
     build:
       context: .
-      dockerfile: src/Aggregators/Mobile.Shopping.HttpAggregator/Dockerfile
+      dockerfile: src/Aggregators/Web.Shopping.HttpAggregator/Dockerfile
 

@@ -47,9 +47,9 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator
                 options.DescribeAllEnumsAsStrings();
                 options.SwaggerDoc("v1", new Swashbuckle.AspNetCore.Swagger.Info
                 {
-                    Title = "Purchase BFF API Gateway",
+                    Title = "Shopping Aggregator for Web Clients",
                     Version = "v1",
-                    Description = "BFF API Gateway for Purchase features",
+                    Description = "Shopping Aggregator for Web Clients",
                     TermsOfService = "Terms Of Service"
                 });
 
@@ -61,7 +61,7 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator
                     TokenUrl = $"{Configuration.GetValue<string>("IdentityUrlExternal")}/connect/token",
                     Scopes = new Dictionary<string, string>()
                     {
-                        { "webshoppingagg", "Purchase BFF API Gateway" }
+                        { "webshoppingagg", "Shopping Aggregator for Web Clients" }
                     }
                 });
 

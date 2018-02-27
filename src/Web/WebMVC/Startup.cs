@@ -130,7 +130,6 @@ namespace Microsoft.eShopOnContainers.WebMVC
                 options.Scope.Add("basket");
                 options.Scope.Add("marketing");
                 options.Scope.Add("locations");
-                options.Scope.Add("mobileshoppingagg");
                 options.Scope.Add("webshoppingagg");
             });
         }
