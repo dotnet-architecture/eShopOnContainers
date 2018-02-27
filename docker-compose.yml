@@ -138,3 +138,9 @@ services:
       context: .
       dockerfile: src/Aggregators/Mobile.Shopping.HttpAggregator/Dockerfile
 
+  webshoppingagg:
+    image: eshop/webshoppingagg
+    build:
+      context: .
+      dockerfile: src/Aggregators/Mobile.Shopping.HttpAggregator/Dockerfile
+

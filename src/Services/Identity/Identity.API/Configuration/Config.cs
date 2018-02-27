@@ -15,7 +15,8 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                 new ApiResource("basket", "Basket Service"),
                 new ApiResource("marketing", "Marketing Service"),
                 new ApiResource("locations", "Locations Service"),
-                new ApiResource("mobileshoppingagg", "Mobile Shopping Aggregator")
+                new ApiResource("mobileshoppingagg", "Mobile Shopping Aggregator"),
+                new ApiResource("Webshoppingagg", "Web Shopping Aggregator")
             };
         }
 
@@ -54,7 +55,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                         "basket",
                         "locations",
                         "marketing",
-                        "mobileshoppingagg"
+                        "webshoppingagg"
                     }
                 },
                 new Client
@@ -118,7 +119,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                         "basket",
                         "locations",
                         "marketing",
-                        "mobileshoppingagg"
+                        "webshoppingagg"
                     },
                 },
                 new Client
@@ -151,7 +152,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                         "basket",
                         "locations",
                         "marketing",
-                        "mobileshoppingagg"
+                        "webshoppingagg"
                     },
                 },
                 new Client
@@ -227,6 +228,21 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                     AllowedScopes =
                     {
                         "mobileshoppingagg"
+                    }
+                },
+                new Client
+                {
+                    ClientId = "webshoppingaggswaggerui",
+                    ClientName = "Web Shopping Aggregattor Swagger UI",
+                    AllowedGrantTypes = GrantTypes.Implicit,
+                    AllowAccessTokensViaBrowser = true,
+
+                    RedirectUris = { $"{clientsUrl["WebShoppingAgg"]}/swagger/o2c.html" },
+                    PostLogoutRedirectUris = { $"{clientsUrl["WebShoppingAgg"]}/swagger/" },
+
+                    AllowedScopes =
+                    {
+                        "webshoppingagg"
                     }
                 }
 

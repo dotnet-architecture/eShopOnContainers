@@ -49,7 +49,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "mobileshoppingagg",
+          "Host": "webshoppingagg",
           "Port": 80
         }
       ],
