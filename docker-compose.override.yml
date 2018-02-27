@@ -115,7 +115,7 @@ services:
       - IdentityUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105              #Local: You need to open your local dev-machine firewall at range 5100-5105.  at range 5100-5105. 
       - MarketingUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5110
       - LocationsUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5109
-      - PurchaseUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5200
+      - PurchaseUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5202
       - CatalogUrlHC=http://catalog.api/hc
       - OrderingUrlHC=http://ordering.api/hc
       - IdentityUrlHC=http://identity.api/hc     #Local: Use ${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP}, if using external IP or DNS name from browser.          
@@ -132,7 +132,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
-      - PurchaseUrl=http://apigw/shopping
+      - PurchaseUrl=http://webshoppingapigw
       - LocationsUrl=http://locations.api
       - IdentityUrl=http://10.0.75.1:5105  # Local Mac: Use http://docker.for.mac.localhost:5105 || Local Windows:  Use 10.0.75.1 in a "Docker for Windows" environment, if using "localhost" from browser. || #Remote access: Use ${ESHOP_EXTERNAL_DNS_NAME_OR_IP} if using external IP or DNS name from browser.
       - MarketingUrl=http://marketing.api                                                    
@@ -218,23 +218,23 @@ services:
       - "15672:15672"
       - "5672:5672"
 
-  mobileshoppingapigw:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - IdentityUrl=http://identity.api              #Local: You need to open your local dev-machine firewall at range 5100-5110.
-    ports:
-      - "5200:80"
-    volumes:
-      - ./src/Apigw/configs/mobileshoppingapigw:/app/configuration
-
-  mobilemarketingapigw:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - IdentityUrl=http://identity.api              #Local: You need to open your local dev-machine firewall at range 5100-5110.
-    ports:
-      - "5201:80"
-    volumes:
-      - ./src/Apigw/configs/mobilemarketingapigw:/app/configuration
+# mobileshoppingapigw:
+#   environment:
+#     - ASPNETCORE_ENVIRONMENT=Development
+#     - IdentityUrl=http://identity.api              #Local: You need to open your local dev-machine firewall at range 5100-5110.
+#   ports:
+#     - "5200:80"
+#   volumes:
+#     - ./src/Apigw/configs/mobileshoppingapigw:/app/configuration
+#
+# mobilemarketingapigw:
+#   environment:
+#     - ASPNETCORE_ENVIRONMENT=Development
+#     - IdentityUrl=http://identity.api              #Local: You need to open your local dev-machine firewall at range 5100-5110.
+#   ports:
+#     - "5201:80"
+#   volumes:
+#     - ./src/Apigw/configs/mobilemarketingapigw:/app/configuration
 
   webshoppingapigw:
     environment:
@@ -245,14 +245,14 @@ services:
     volumes:
       - ./src/Apigw/configs/webshoppingapigw:/app/configuration
 
-  webmarketingapigw:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - IdentityUrl=http://identity.api              #Local: You need to open your local dev-machine firewall at range 5100-5110.
-    ports:
-      - "5203:80"
-    volumes:
-      - ./src/Apigw/configs/webmarketingapigw:/app/configuration
+# webmarketingapigw:
+#   environment:
+#     - ASPNETCORE_ENVIRONMENT=Development
+#     - IdentityUrl=http://identity.api              #Local: You need to open your local dev-machine firewall at range 5100-5110.
+#   ports:
+#     - "5203:80"
+#   volumes:
+#     - ./src/Apigw/configs/webmarketingapigw:/app/configuration
 
   mobileshoppingagg:
     environment:
@@ -263,4 +263,3 @@ services:
       - urls__identity=http://identity.api              #Local: You need to open your local dev-machine firewall at range 5100-5110.
     ports:
       - "5120:80"
-

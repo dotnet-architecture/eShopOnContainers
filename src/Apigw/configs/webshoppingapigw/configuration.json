@@ -9,7 +9,7 @@
           "Port": 80
         }
       ],
-      "UpstreamPathTemplate": "/shopping/api/{version}/c/{everything}",
+      "UpstreamPathTemplate": "/api/{version}/c/{everything}",
       "UpstreamHttpMethod": [ "GET" ]
     },
     {
@@ -21,7 +21,7 @@
           "Port": 80
         }
       ],
-      "UpstreamPathTemplate": "/shopping/api/{version}/b/{everything}",
+      "UpstreamPathTemplate": "/api/{version}/b/{everything}",
       "UpstreamHttpMethod": [],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "IdentityApiKey",
@@ -37,7 +37,7 @@
           "Port": 80
         }
       ],
-      "UpstreamPathTemplate": "/shopping/api/{version}/o/{everything}",
+      "UpstreamPathTemplate": "/api/{version}/o/{everything}",
       "UpstreamHttpMethod": [],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "IdentityApiKey",
@@ -53,7 +53,7 @@
           "Port": 80
         }
       ],
-      "UpstreamPathTemplate": "/shopping/{everything}",
+      "UpstreamPathTemplate": "/{everything}",
       "UpstreamHttpMethod": [ "POST", "PUT", "GET" ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "IdentityApiKey",
