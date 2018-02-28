@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
-    <AssemblyName>Mobile.Shopping.HttpAggregator</AssemblyName>
-    <RootNamespace>Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator</RootNamespace>
+    <AssemblyName>Web.Shopping.HttpAggregator</AssemblyName>
+    <RootNamespace>Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator</RootNamespace>
     <DockerComposeProjectPath>..\..\..\docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
 
@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\BuildingBlocks\Resilience\Resilience.Http\Resilience.Http.csproj" />
+    <ProjectReference Include="..\..\..\BuildingBlocks\Resilience\Resilience.Http\Resilience.Http.csproj" />
   </ItemGroup>
 
 </Project>

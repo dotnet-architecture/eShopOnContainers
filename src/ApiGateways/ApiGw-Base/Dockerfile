@@ -1,13 +1,14 @@
 FROM microsoft/aspnetcore:2.0 AS base
 WORKDIR /app
+ENV ESHOP_API_GW  Mobile_Bff_Shopping_ApiGw
 EXPOSE 80
 
 FROM microsoft/aspnetcore-build:2.0 AS build
 WORKDIR /src
-COPY src/Apigw/OcelotApiGw/OcelotApiGw.csproj src/Apigw/OcelotApiGw/
-RUN dotnet restore src/Apigw/OcelotApiGw/
+COPY src/ApiGateways/ApiGw-Base/OcelotApiGw.csproj src/ApiGateways/ApiGw-Base/
+RUN dotnet restore src/ApiGateways/ApiGw-Base/
 COPY . .
-WORKDIR /src/src/Apigw/OcelotApiGw
+WORKDIR /src/src/ApiGateways/ApiGw-Base/
 RUN dotnet build -c Release -o /app
 
 FROM build AS publish
