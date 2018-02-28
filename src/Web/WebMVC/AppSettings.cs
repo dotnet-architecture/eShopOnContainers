@@ -9,7 +9,6 @@ namespace Microsoft.eShopOnContainers.WebMVC
     {
         public Connectionstrings ConnectionStrings { get; set; }
         public string MarketingUrl { get; set; }
-        public string LocationsUrl { get; set; }
 
         public string PurchaseUrl { get; set; }
         public bool ActivateCampaignDetailFunction { get; set; }
