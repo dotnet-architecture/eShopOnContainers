@@ -177,4 +177,32 @@ public class OrderAggregateTest
         //Assert
         Assert.Equal(fakeOrder.DomainEvents.Count, expectedResult);
     }
+    
+    
+    [Theory]
+    [InlineData(null,"87321","CityValue","StateValue","CountryValue")]
+    [InlineData("Street, 2 Int-3", "8", "CityValue", "StateValue", "CountryValue")]
+    [InlineData("Street, 34 ", "828394", "CityValue", "S", "CountryValue")]
+    [InlineData("Street,34", "12312", "CityValue", "State", "C")]
+    public void Create_Address_Throws(string street, string zipcode, string city, string state, string country)
+    {
+        Assert.Throws<InvalidOperationException>(()=> new Address(street,zipcode,city,state,country));
+    }
+
+    [Theory]
+    [InlineData("Street_82345_City_OnlyCountry")]
+    [InlineData("Street_82345_City_OnlyState")]
+    public void Create_AddressFromString_Throws(string address)
+    {
+        Assert.Throws<InvalidOperationException>(() => Address.fromString(address));
+    }
+
+    [Theory]
+    [InlineData("Street, 2_82345_City_State_Country")]
+    [InlineData("Street, 35_82345_City_State2_Country2")]
+    public void Create_AddressFromString_Success(string address)
+    {
+        Address copyAddressFromString = Address.fromString(address);
+        Assert.NotNull(copyAddressFromString);
+    }
 }
