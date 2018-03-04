@@ -11,6 +11,7 @@ data:
 # Catalog.API entries
   CatalogBus: CONNECTION_STRING (NAME OF RABBITMQ CONTAINER OR Endpoint=sb://XXXX for topic in case of using Azure)
   CatalogSqlDb: Catalog SQL SERVER CONNECTION STRING (Server=xxxx;Intial Catalog=yyy;....)
+  CatalogAzureStorageEnabled : "TRUE"
 # Identity.API entries
   IdentitySqlDb: Identity SQL SERVER CONNECTION STRING (Server=xxxx;Intial Catalog=yyy;....)
 # Locations.API entries
@@ -32,3 +33,4 @@ data:
 # Global entries
   UseAzureServiceBus: "TRUE" IF USE AZURE SB ("FALSE" FOR USING RABBITMQ)
   keystore: REDIS CONNECTION STRING FOR KEYSTORE
+  EnableLoadTest: "False"
