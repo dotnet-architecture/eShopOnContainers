@@ -226,7 +226,8 @@
                .UseSwaggerUI(c =>
                {
                    c.SwaggerEndpoint($"{ (!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty) }/swagger/v1/swagger.json", "Ordering.API V1");
-                   c.ConfigureOAuth2("orderingswaggerui", "", "", "Ordering Swagger UI");
+                   c.OAuthClientId("orderingswaggerui");
+                   c.OAuthAppName("Ordering Swagger UI");
                });
 
             ConfigureEventBus(app);
