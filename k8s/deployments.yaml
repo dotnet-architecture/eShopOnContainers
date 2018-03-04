@@ -97,11 +97,6 @@ spec:
            configMapKeyRef:
              name: urls
              key: PicBaseUrl
-        - name: AzureStorageEnabled
-          valueFrom:
-           configMapKeyRef:
-             name: externalcfg
-             key: CatalogAzureStorageEnabled
         - name: EventBusConnection
           valueFrom:
            configMapKeyRef:
