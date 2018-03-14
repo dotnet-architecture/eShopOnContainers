@@ -1,19 +1,27 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: ocelot
+  name: apigwmm
 spec:
   paused: true
   template:
     metadata:
       labels:
         app: eshop
-        component: ocelot
+        component: apigwmm
     spec:
       containers:
-      - name: ocelot
-        image: eshop/ocelotapigw
+      - name: apigwmm
+        image: eshop/ocelotapigw-mm
         imagePullPolicy: Always
+        env:
+        - name: PATH_BASE
+          value: /mobilemarketingapigw
+        - name: IdentityUrl
+          valueFrom:
+           configMapKeyRef:
+             name: internalurls
+             key: identity            
         ports:
         - containerPort: 80   
         volumeMounts:
@@ -24,8 +32,124 @@ spec:
         configMap:
           name: ocelot
           items:
-          - key: configuration.json
+          - key: mm
             path: configuration.json
       imagePullSecrets:
       - name: registry-key
-
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: apigwms
+spec:
+  paused: true
+  template:
+    metadata:
+      labels:
+        app: eshop
+        component: apigwms
+    spec:
+      containers:
+      - name: apigwms
+        image: eshop/ocelotapigw-ms
+        imagePullPolicy: Always
+        env:
+        - name: PATH_BASE
+          value: /mobileshoppingapigw        
+        - name: IdentityUrl
+          valueFrom:
+           configMapKeyRef:
+             name: internalurls
+             key: identity                
+        ports:
+        - containerPort: 80   
+        volumeMounts:
+        - name: config
+          mountPath: /app/configuration            
+      volumes:
+      - name: config
+        configMap:
+          name: ocelot
+          items:
+          - key: ms
+            path: configuration.json
+      imagePullSecrets:
+      - name: registry-key
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: apigwwm
+spec:
+  paused: true
+  template:
+    metadata:
+      labels:
+        app: eshop
+        component: apigwwm
+    spec:
+      containers:
+      - name: apigwwm
+        image: eshop/ocelotapigw-wm
+        imagePullPolicy: Always
+        env:
+        - name: PATH_BASE
+          value: /webmarketingapigw    
+        - name: IdentityUrl
+          valueFrom:
+           configMapKeyRef:
+             name: internalurls
+             key: identity                          
+        ports:
+        - containerPort: 80   
+        volumeMounts:
+        - name: config
+          mountPath: /app/configuration            
+      volumes:
+      - name: config
+        configMap:
+          name: ocelot
+          items:
+          - key: wm
+            path: configuration.json
+      imagePullSecrets:
+      - name: registry-key
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: apigwws
+spec:
+  paused: true
+  template:
+    metadata:
+      labels:
+        app: eshop
+        component: apigwws
+    spec:
+      containers:
+      - name: apigwws
+        image: eshop/ocelotapigw-ws
+        imagePullPolicy: Always
+        env:
+        - name: PATH_BASE
+          value: /webshoppingapigw 
+        - name: IdentityUrl
+          valueFrom:
+           configMapKeyRef:
+             name: internalurls
+             key: identity                         
+        ports:
+        - containerPort: 80   
+        volumeMounts:
+        - name: config
+          mountPath: /app/configuration            
+      volumes:
+      - name: config
+        configMap:
+          name: ocelot
+          items:
+          - key: ws
+            path: configuration.json
+      imagePullSecrets:
+      - name: registry-key

@@ -1,11 +1,11 @@
-﻿{
+{
     "ReRoutes": [
       {
         "DownstreamPathTemplate": "/api/{version}/{everything}",
         "DownstreamScheme": "http",
         "DownstreamHostAndPorts": [
           {
-            "Host": "catalog.api",
+            "Host": "catalog",
             "Port": 80
           }
         ],
@@ -17,7 +17,7 @@
         "DownstreamScheme": "http",
         "DownstreamHostAndPorts": [
           {
-            "Host": "basket.api",
+            "Host": "basket",
             "Port": 80
           }
         ],
@@ -33,7 +33,7 @@
         "DownstreamScheme": "http",
         "DownstreamHostAndPorts": [
           {
-            "Host": "ordering.api",
+            "Host": "ordering",
             "Port": 80
           }
         ],
@@ -65,7 +65,7 @@
         "DownstreamScheme": "http",
         "DownstreamHostAndPorts": [
           {
-            "Host": "ordering.api",
+            "Host": "ordering",
             "Port": 80
           }
         ],
@@ -77,7 +77,7 @@
         "DownstreamScheme": "http",
         "DownstreamHostAndPorts": [
           {
-            "Host": "basket.api",
+            "Host": "basket",
             "Port": 80
           }
         ],
@@ -89,7 +89,7 @@
         "DownstreamScheme": "http",
         "DownstreamHostAndPorts": [
           {
-            "Host": "catalog.api",
+            "Host": "catalog",
             "Port": 80
           }
         ],
@@ -101,7 +101,7 @@
         "DownstreamScheme": "http",
         "DownstreamHostAndPorts": [
           {
-            "Host": "marketing.api",
+            "Host": "marketing",
             "Port": 80
           }
         ],
@@ -113,7 +113,7 @@
         "DownstreamScheme": "http",
         "DownstreamHostAndPorts": [
           {
-            "Host": "payment.api",
+            "Host": "payment",
             "Port": 80
           }
         ],

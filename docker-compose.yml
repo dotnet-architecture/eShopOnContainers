@@ -109,37 +109,37 @@ services:
     image: rabbitmq:3-management-alpine
 
   mobileshoppingapigw:
-    image: eshop/ocelotapigw-ms
+    image: eshop/ocelotapigw-ms:${TAG:-latest}
     build:
       context: .
       dockerfile: src/ApiGateways/ApiGw-Base/Dockerfile
  
   mobilemarketingapigw:
-    image: eshop/ocelotapigw-mm
+    image: eshop/ocelotapigw-mm:${TAG:-latest}
     build:
       context: .
       dockerfile: src/ApiGateways/ApiGw-Base/Dockerfile2
  
   webshoppingapigw:
-    image: eshop/ocelotapigw-ws
+    image: eshop/ocelotapigw-ws:${TAG:-latest}
     build:
       context: .
       dockerfile: src/ApiGateways/ApiGw-Base/Dockerfile3
 
   webmarketingapigw:
-    image: eshop/ocelotapigw-wm
+    image: eshop/ocelotapigw-wm:${TAG:-latest}
     build:
       context: .
       dockerfile: src/ApiGateways/ApiGw-Base/Dockerfile
 
   mobileshoppingagg:
-    image: eshop/mobileshoppingagg
+    image: eshop/mobileshoppingagg:${TAG:-latest}
     build:
       context: .
       dockerfile: src/ApiGateways/Mobile.Bff.Shopping/aggregator/Dockerfile
 
   webshoppingagg:
-    image: eshop/webshoppingagg
+    image: eshop/webshoppingagg:${TAG:-latest}
     build:
       context: .
       dockerfile: src/ApiGateways/Web.Bff.Shopping/aggregator/Dockerfile
