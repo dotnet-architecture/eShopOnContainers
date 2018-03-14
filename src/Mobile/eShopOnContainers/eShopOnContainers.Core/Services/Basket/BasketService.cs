@@ -2,18 +2,21 @@
 using System.Threading.Tasks;
 using eShopOnContainers.Core.Services.RequestProvider;
 using eShopOnContainers.Core.Models.Basket;
-using eShopOnContainers.Core.Helpers;
+using eShopOnContainers.Core.Services.FixUri;
 
 namespace eShopOnContainers.Core.Services.Basket
 {
     public class BasketService : IBasketService
     {
         private readonly IRequestProvider _requestProvider;
+        private readonly IFixUriService _fixUriService;
+
         private const string ApiUrlBase = "api/v1/basket";
 
-        public BasketService(IRequestProvider requestProvider)
+        public BasketService(IRequestProvider requestProvider, IFixUriService fixUriService)
         {
             _requestProvider = requestProvider;
+            _fixUriService = fixUriService;
         }
 
         public async Task<CustomerBasket> GetBasketAsync(string guidUser, string token)
@@ -28,8 +31,7 @@ namespace eShopOnContainers.Core.Services.Basket
             CustomerBasket basket =
                     await _requestProvider.GetAsync<CustomerBasket>(uri, token);
 
-            ServicesHelper.FixBasketItemPictureUri(basket?.Items);
-
+            _fixUriService.FixBasketItemPictureUri(basket?.Items);
             return basket;
         }
 
@@ -41,9 +43,7 @@ namespace eShopOnContainers.Core.Services.Basket
             };
 
             var uri = builder.ToString();
-
             var result = await _requestProvider.PostAsync(uri, customerBasket, token);
-
             return result;
         }
 
@@ -55,7 +55,6 @@ namespace eShopOnContainers.Core.Services.Basket
             };
 
             var uri = builder.ToString();
-
             await _requestProvider.PostAsync(uri, basketCheckout, token);
         }
 
@@ -67,7 +66,6 @@ namespace eShopOnContainers.Core.Services.Basket
             };
 
             var uri = builder.ToString();
-
             await _requestProvider.DeleteAsync(uri, token);
         }
     }

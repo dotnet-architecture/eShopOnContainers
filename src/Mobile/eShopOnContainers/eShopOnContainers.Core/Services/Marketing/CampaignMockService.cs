@@ -1,9 +1,9 @@
-﻿using System;
+﻿using eShopOnContainers.Core.Models.Marketing;
+using System;
 using System.Collections.ObjectModel;
-using System.Threading.Tasks;
 using System.Linq;
+using System.Threading.Tasks;
 using Xamarin.Forms;
-using eShopOnContainers.Core.Models.Marketing;
 
 namespace eShopOnContainers.Core.Services.Marketing
 {
@@ -38,13 +38,13 @@ namespace eShopOnContainers.Core.Services.Marketing
 
         public async Task<ObservableCollection<CampaignItem>> GetAllCampaignsAsync(string token)
         {
-            await Task.Delay(500);
+            await Task.Delay(10);
             return _mockCampaign;
         }
 
         public async Task<CampaignItem> GetCampaignByIdAsync(int campaignId, string token)
         {
-            await Task.Delay(500);
+            await Task.Delay(10);
             return _mockCampaign.SingleOrDefault(c => c.Id == campaignId);
         }
     }

@@ -3,7 +3,6 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <UserSecretsId>aspnet-Microsoft.eShopOnContainers-946ae052-8305-4a99-965b-ec8636ddbae3</UserSecretsId>
-    <AssetTargetFallback>$(AssetTargetFallback);portable-net45+win8+wp8+wpa81;</AssetTargetFallback>
     <DockerComposeProjectPath>..\..\..\docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
 
@@ -21,22 +20,22 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.1.1" />
     <PackageReference Include="Microsoft.ApplicationInsights.DependencyCollector" Version="2.4.1" />
-    <PackageReference Include="Microsoft.ApplicationInsights.Kubernetes" Version="1.0.0-beta1" />
-    <PackageReference Include="Microsoft.ApplicationInsights.ServiceFabric" Version="2.0.0-beta1" />
-    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights.Kubernetes" Version="1.0.0-beta3" />
+    <PackageReference Include="Microsoft.ApplicationInsights.ServiceFabric" Version="2.0.1-beta1" />
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.DataProtection.Redis" Version="0.3.1" />
-    <PackageReference Include="Microsoft.VisualStudio.Azure.Fabric.MSBuild" Version="1.6.2" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Fabric.MSBuild" Version="1.6.3" />
   </ItemGroup>
 
-  <!--<Target Name="PrepublishScript" BeforeTargets="PrepareForPublish">
-    <Exec Command="bower install - -allow-root" />
+  <Target Name="PrepublishScript" BeforeTargets="PrepareForPublish">
+    <Exec Command="bower install --allow-root" />
     <Exec Command="dotnet bundle" Condition="'$(ASPNETCORE_ENVIRONMENT)'!='Development'" />
-  </Target>-->
+  </Target>
 
   <ItemGroup>
     <DotNetCliToolReference Include="BundlerMinifier.Core" Version="2.5.357" />
     <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="2.0.0" />
-    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.0" />
+    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.1" />
   </ItemGroup>
 
   <ItemGroup>

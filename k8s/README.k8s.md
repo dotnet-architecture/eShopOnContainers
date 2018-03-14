@@ -33,18 +33,18 @@ or using AKS instead of ACS
 Once the user and password are retrieved, run the following script for deployment. For example:
 
 >```
->./deploy.ps1 -registry myregistry.azurecr.io -dockerUser User -dockerPassword SecretPassword -configFile file_with_config.json
+>./deploy.ps1 -registry myregistry.azurecr.io -dockerUser User -dockerPassword SecretPassword -configFile file_with_config.yaml
 >```
 
-The parameter `configFile` is important (and mandatory) because it contains the configuration used for the Pods in Kubernetes. This allow deploying Pods that use your own resources in Azure or any other cloud provider. A configuration file `local.json` is provided which configures Pods to use the infrastructure containers (that is sql server, rabbitmq, redis and mongodb must be deployed also in the k8s).
+The parameter `configFile` is important (and mandatory) because it contains the configuration used for the Pods in Kubernetes. This allow deploying Pods that use your own resources in Azure or any other cloud provider. A configuration file `conf_local.yaml` is provided which configures Pods to use the infrastructure containers (that is sql server, rabbitmq, redis and mongodb must be deployed also in the k8s).
 
 The script will build the code and corresponding Docker images, push the later to your registry, and deploy the application to your cluster. You can watch the deployment unfold from the Kubernetes web interface: run `kubectl proxy` and open a browser to [http://localhost:8001/ui](http://localhost:8001/ui)
 
 ### Pods configuration file
 
-When deploying to k8s the script needs the `configFile` with the location of a JSON configuration file. This file contains the configuration of the pods. The file is a JSON file. For reference another configuration file (cloud.json) is provided but without valid values.
+When deploying to k8s the script needs the `configFile` parameter with the location of the YAML configuration file. This file contains the configuration of the pods. The file is a .YAML file. For reference another configuration file (conf_cloud.yaml) is provided but without valid values.
 
-If you deploy the infrastructure containers use `local.json` as a value for `configFile` parameter. If you don't deploy the infrastructure containers use your own configuration file with the correct values.
+If you deploy the infrastructure containers use `conf_local.yaml` as a value for `configFile` parameter. If you don't deploy the infrastructure containers use your own configuration file with the correct values.
 
 ### Parameters of the deploy.ps1 script
 

@@ -58,6 +58,15 @@ namespace IntegrationTests.Services.Basket
         string BuildBasket()
         {
             var order = new CustomerBasket("1234");            
+
+            order.Items.Add(new BasketItem
+            {
+                ProductId = "1",
+                ProductName = ".NET Bot Black Hoodie",
+                UnitPrice = 10,
+                Quantity = 1
+            });
+
             return JsonConvert.SerializeObject(order);
         }
 
@@ -70,10 +79,10 @@ namespace IntegrationTests.Services.Basket
                 State = "state",
                 Country = "coutry",
                 ZipCode = "zipcode",
-                CardNumber = "CardNumber",
+                CardNumber = "1234567890123456",
                 CardHolderName = "CardHolderName",
-                CardExpiration = DateTime.UtcNow,
-                CardSecurityNumber = "1234",
+                CardExpiration = DateTime.UtcNow.AddDays(1),
+                CardSecurityNumber = "123",
                 CardTypeId = 1,
                 Buyer = "Buyer",
                 RequestId = Guid.NewGuid()

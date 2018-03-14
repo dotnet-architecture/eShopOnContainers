@@ -12,7 +12,7 @@ namespace eShopOnContainers.UnitTests
             var catalogMockService = new CatalogMockService();
             var catalog = await catalogMockService.GetCatalogAsync();
 
-            Assert.NotEqual(0, catalog.Count);
+            Assert.NotEmpty(catalog);
         }
 
         [Fact]
@@ -21,7 +21,7 @@ namespace eShopOnContainers.UnitTests
             var catalogMockService = new CatalogMockService();
             var catalogBrand = await catalogMockService.GetCatalogBrandAsync();
 
-            Assert.NotEqual(0, catalogBrand.Count);
+            Assert.NotEmpty(catalogBrand);
         }
 
         [Fact]
@@ -30,7 +30,7 @@ namespace eShopOnContainers.UnitTests
             var catalogMockService = new CatalogMockService();
             var catalogType = await catalogMockService.GetCatalogTypeAsync();
 
-            Assert.NotEqual(0, catalogType.Count);
+            Assert.NotEmpty(catalogType);
         }
     }
 }

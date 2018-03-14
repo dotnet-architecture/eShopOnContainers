@@ -2,8 +2,11 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
+        "prefix": {
+            "value": "qa"
+        },
         "clusterName": {
-            "value": "qa-eshop-sfwin-cluster"
+            "value": "-eshop-sfwin-cluster"
         },
         "clusterLocation": {
             "value": "westus"
@@ -12,10 +15,10 @@
             "value": "westus"
         },
         "adminUserName": {
-            "value": "eshop"
+            "value": "testedu"
         },
         "adminPassword": {
-            "value": "Your_complex_Pass@word1"
+            "value": "testedu1234!"
         },
         "nicName": {
             "value": "NIC-eshopsfwin"
@@ -24,7 +27,7 @@
             "value": "eshopsfwin-PubIP"
         },
         "dnsName": {
-            "value": "qa-eshop-sfwin-cluster"
+            "value": "testedu-eshop-sfwin-cluster"
         },
         "virtualNetworkName": {
             "value": "VNet-eshopsfwin"
@@ -36,10 +39,10 @@
             "value": "LBIP-eshopsfwin"
         },
         "applicationDiagnosticsStorageAccountName": {
-            "value": "sfdgqaeshopsfwin"
+            "value": "sfdiageshopw"
         },
         "supportLogStorageAccountName": {
-            "value": "sflogsqaeshopsfwin"
+            "value": "sflogeshopw"
         },
         "vmImageSku": {
             "value": "2016-Datacenter-with-Containers"

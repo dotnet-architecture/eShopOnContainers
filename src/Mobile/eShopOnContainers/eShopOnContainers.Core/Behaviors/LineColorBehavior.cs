@@ -1,6 +1,6 @@
-﻿using System.Linq;
+﻿using eShopOnContainers.Core.Effects;
+using System.Linq;
 using Xamarin.Forms;
-using eShopOnContainers.Core.Effects;
 
 namespace eShopOnContainers.Core.Behaviors
 {

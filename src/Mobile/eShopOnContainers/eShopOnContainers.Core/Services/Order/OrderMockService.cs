@@ -74,7 +74,7 @@ namespace eShopOnContainers.Core.Services.Order
 
         public async Task<ObservableCollection<Models.Orders.Order>> GetOrdersAsync(string token)
         {
-            await Task.Delay(500);
+            await Task.Delay(10);
 
             if (!string.IsNullOrEmpty(token))
             {
@@ -88,7 +88,7 @@ namespace eShopOnContainers.Core.Services.Order
 
         public async Task<Models.Orders.Order> GetOrderAsync(int orderId, string token)
         {
-            await Task.Delay(500);
+            await Task.Delay(10);
 
             if (!string.IsNullOrEmpty(token))
                 return MockOrders
@@ -99,7 +99,7 @@ namespace eShopOnContainers.Core.Services.Order
 
         public async Task CreateOrderAsync(Models.Orders.Order newOrder, string token)
         {
-            await Task.Delay(500);
+            await Task.Delay(10);
 
             if (!string.IsNullOrEmpty(token))
             {

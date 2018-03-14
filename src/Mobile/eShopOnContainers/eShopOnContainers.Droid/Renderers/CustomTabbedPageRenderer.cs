@@ -1,17 +1,18 @@
+using Android.Content;
+using Android.Graphics;
+using Android.Support.Design.Widget;
+using Android.Support.V4.View;
+using Android.Views;
+using Android.Widget;
+using eShopOnContainers.Core.Controls;
+using eShopOnContainers.Droid.Extensions;
+using eShopOnContainers.Droid.Renderers;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Xamarin.Forms.Platform.Android.AppCompat;
 using Xamarin.Forms;
-using Android.Support.Design.Widget;
-using Android.Views;
-using Android.Widget;
 using Xamarin.Forms.Platform.Android;
-using eShopOnContainers.Droid.Extensions;
-using eShopOnContainers.Core.Controls;
-using eShopOnContainers.Droid.Renderers;
-using Android.Support.V4.View;
-using Android.Graphics;
+using Xamarin.Forms.Platform.Android.AppCompat;
 
 [assembly: ExportRenderer(typeof(TabbedPage), typeof(CustomTabbedPageRenderer))]
 namespace eShopOnContainers.Droid.Renderers
@@ -25,6 +26,10 @@ namespace eShopOnContainers.Droid.Renderers
         private ViewPager _viewPager;
         private TabbedPage _tabbedPage;
         private bool _firstTime = true;
+
+        public CustomTabbedPageRenderer(Context context) : base(context)
+        {
+        }
 
         protected override void OnElementChanged(ElementChangedEventArgs<TabbedPage> e)
         {

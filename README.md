@@ -1,14 +1,18 @@
 # eShopOnContainers - Microservices Architecture and Containers based Reference Application (**BETA state** - Visual Studio 2017 and CLI environments compatible)
 Sample .NET Core reference application, powered by Microsoft, based on a simplified microservices architecture and Docker containers. <p>
-**Note Visual Studio 2017 version required**: This is important as of November 2017. For working with Docker and docker-compose files (needed with eShopOnContainers), do not migrate to VS 2017 15.4 as it has a bug when using TAGs in the docker-compose files. 
-Please, either use VS 2017 15.35 or VS 2017 15.5 Preview (bug is fixed here) or later. 
-VS Preview installs next to your stable Visual Studio IDE, allowing you to use either independently.
-Download of Preview here: https://www.visualstudio.com/vs/preview/
+
+**NEWS / ANNOUNCEMENTS**
+Do you want to be up-to-date on .NET Architecture guidance and reference apps like eShopOnContainers? --> Subscribe by "WATCHING" this new GitHub repo: https://github.com/dotnet-architecture/News 
+
+**Note Visual Studio 2017 version required**: Please, use VS 2017 15.5 or later. 
 
 **Note for Pull Requests**: We accept pull request from the community. When doing it, please do it onto the DEV branch which is the consolidated work-in-progress branch. Do not request it onto Master, if possible.
 
 ## Updated for .NET Core 2.0 "wave" of technologies
-NOTE: We have migrated the whole solution to .NET Core 2.0 "wave". Not just compilation but also new recommended code in EF Core 2.0, ASP.NET Core 2.0, and other new related versions.
+NOTE: We have migrated the whole server-side solution to .NET Core 2.0 "wave". Not just compilation but also new recommended code in EF Core 2.0, ASP.NET Core 2.0, and other new related versions.
+
+The **dockerfiles** in the solution have also been updated and now support [**Docker Multi-Stage**](https://blogs.msdn.microsoft.com/stevelasker/2017/09/11/net-and-multistage-dockerfiles/) since mid-December 2017.
+
 For a list on the new .NET Core 2.0 related implemented features, see this [blog post](https://blogs.msdn.microsoft.com/dotnet/2017/08/02/microservices-and-docker-containers-architecture-patterns-and-development-guidance/).
 
 >**PLEASE** Read our [branch guide](./branch-guide.md) to know about our branching policy
@@ -60,9 +64,9 @@ You can download them and start reviewing these Guides/eBooks here:
 | Architecting & Developing | Containers Lifecycle & CI/CD | App patterns with Xamarin.Forms |
 | ------------ | ------------|  ------------|
 | <a href='https://aka.ms/microservicesebook'><img src="img/ebook_arch_dev_microservices_containers_cover.png"> </a> | <a href='https://aka.ms/dockerlifecycleebook'> <img src="img/ebook_containers_lifecycle.png"> </a> | <a href='https://aka.ms/xamarinpatternsebook'> <img src="img/xamarin-enterprise-patterns-ebook-cover-small.png"> </a> |
-| <sup> <a href='https://aka.ms/microservicesebook'>**Download .PDF** (2nd Edition)</a> </sup>  | <sup> <a href='https://aka.ms/dockerlifecycleebook'>**Download** (First Edition) </a>  </sup> | <sup> <a href='https://aka.ms/xamarinpatternsebook'>**Download** (First Edition) </a>  </sup> |
+| <sup> <a href='https://aka.ms/microservicesebook'>**Download .PDF** (2nd Edition)</a> </sup>  | <sup> <a href='https://aka.ms/dockerlifecycleebook'>**Download** </a>  </sup> | <sup> <a href='https://aka.ms/xamarinpatternsebook'>**Download**  </a>  </sup> |
 
-Download in other formats (**eReaders** like **MOBI**, **EPUB**) and other eBooks at the [.NET Architecture center](dot.net/architecture).
+Download in other formats (**eReaders** like **MOBI**, **EPUB**) and other eBooks at the [.NET Architecture center](http://dot.net/architecture).
 
 Send feedback to [dotnet-architecture-ebooks-feedback@service.microsoft.com](dotnet-architecture-ebooks-feedback@service.microsoft.com)
 
