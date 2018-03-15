@@ -27,17 +27,17 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Data
 
             if (!await context.Clients.AnyAsync())
             {
-                await context.Clients.AddRangeAsync(Config.GetClients(clientUrls).Select(client => client.ToEntity()));
+                context.Clients.AddRange(Config.GetClients(clientUrls).Select(client => client.ToEntity()));
             }
 
             if (!await context.IdentityResources.AnyAsync())
             {
-                await context.IdentityResources.AddRangeAsync(Config.GetResources().Select(resource => resource.ToEntity()));
+                context.IdentityResources.AddRange(Config.GetResources().Select(resource => resource.ToEntity()));
             }
 
             if (!await context.ApiResources.AnyAsync())
             {
-                await context.ApiResources.AddRangeAsync(Config.GetApis().Select(api => api.ToEntity()));
+                context.ApiResources.AddRange(Config.GetApis().Select(api => api.ToEntity()));
             }
 
             await context.SaveChangesAsync();

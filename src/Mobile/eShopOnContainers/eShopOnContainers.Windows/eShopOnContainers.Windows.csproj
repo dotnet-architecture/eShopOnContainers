@@ -115,12 +115,14 @@
     <Compile Include="Effects\EntryLineColorEffect.cs" />
     <Compile Include="Extensions\VisualTreeExtensions.cs" />
     <Compile Include="Helpers\ColorHelper.cs" />
+    <Compile Include="Helpers\Timeout.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Renderers\CustomTabbedPageRenderer.cs" />
     <Compile Include="Renderers\SlideDownMenuPageRenderer.cs" />
+    <Compile Include="Services\LocationServiceImplementation.cs" />
     <Compile Include="Services\SettingsServiceImplementation.cs" />
   </ItemGroup>
   <ItemGroup>

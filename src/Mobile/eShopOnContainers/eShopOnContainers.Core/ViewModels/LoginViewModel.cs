@@ -160,7 +160,7 @@ namespace eShopOnContainers.Core.ViewModels
             {
                 try
                 {
-                    await Task.Delay(1000);
+                    await Task.Delay(10);
 
                     isAuthenticated = true;
                 }
@@ -189,7 +189,7 @@ namespace eShopOnContainers.Core.ViewModels
         {
             IsBusy = true;
 
-            await Task.Delay(500);
+            await Task.Delay(10);
 
             LoginUrl = _identityService.CreateAuthorizationRequest();
 

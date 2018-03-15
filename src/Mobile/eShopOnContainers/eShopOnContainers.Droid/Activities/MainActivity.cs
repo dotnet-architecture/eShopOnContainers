@@ -7,9 +7,9 @@ using Android.Runtime;
 using Android.Views;
 using FFImageLoading;
 using FFImageLoading.Forms.Droid;
-using Plugin.Permissions;
 using System;
 using Xamarin.Forms.Platform.Android;
+using eShopOnContainers.Droid.Services;
 
 namespace eShopOnContainers.Droid.Activities
 {
@@ -57,7 +57,7 @@ namespace eShopOnContainers.Droid.Activities
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
         {
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
-            PermissionsImplementation.Current.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+            ((PermissionsService)PermissionsService.Instance).OnRequestPermissionResult(requestCode, permissions, grantResults);
         }
     }
 }
