@@ -176,7 +176,8 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
               .UseSwaggerUI(c =>
               {
                   c.SwaggerEndpoint($"{ (!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty) }/swagger/v1/swagger.json", "Locations.API V1");
-                  c.ConfigureOAuth2("locationsswaggerui", "", "", "Locations Swagger UI");
+                  c.OAuthClientId("locationsswaggerui");
+                  c.OAuthAppName("Locations Swagger UI");
               });
 
             LocationsContextSeed.SeedAsync(app, loggerFactory)
