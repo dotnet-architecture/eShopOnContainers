@@ -48,11 +48,16 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands
             else
             {
                 await _requestManager.CreateRequestForCommandAsync<T>(message.Id);
-
-                // Send the embeded business command to mediator so it runs its related CommandHandler 
-                var result = await _mediator.Send(message.Command);
-                
-                return result;
+				try
+				{
+					// Send the embeded business command to mediator so it runs its related CommandHandler 
+					var result = await _mediator.Send(message.Command);
+					return result;
+				}
+				catch
+				{
+					return default(R);
+				}
             }
         }
     }
