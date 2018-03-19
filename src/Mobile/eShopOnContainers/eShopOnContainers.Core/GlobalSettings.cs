@@ -4,7 +4,7 @@
     {
         public const string AzureTag = "Azure";
         public const string MockTag = "Mock";
-        public const string DefaultEndpoint = "http://13.88.8.119";
+        public const string DefaultEndpoint = "http://52.170.199.82";
 
         private string _baseEndpoint;
         private static readonly GlobalSetting _instance = new GlobalSetting();
@@ -62,16 +62,21 @@
 
         private void UpdateEndpoint(string baseEndpoint)
         {
-            RegisterWebsite = $"{baseEndpoint}:5105/Account/Register";
+            var identityBaseEndpoint = $"{baseEndpoint}/identity";
+            RegisterWebsite = $"{identityBaseEndpoint}/Account/Register";
+            LogoutCallback = $"{identityBaseEndpoint}/Account/Redirecting";
+
+            var connectBaseEndpoint = $"{identityBaseEndpoint}/connect";
+            IdentityEndpoint = $"{connectBaseEndpoint}/authorize";
+            UserInfoEndpoint = $"{connectBaseEndpoint}/userinfo";
+            TokenEndpoint = $"{connectBaseEndpoint}/token";
+            LogoutEndpoint = $"{connectBaseEndpoint}/endsession";
+			
+            IdentityCallback = $"{baseEndpoint}/xamarincallback";
+
             CatalogEndpoint = $"{baseEndpoint}:5101";
             OrdersEndpoint = $"{baseEndpoint}:5102";
             BasketEndpoint = $"{baseEndpoint}:5103";
-            IdentityEndpoint = $"{baseEndpoint}:5105/connect/authorize";
-            UserInfoEndpoint = $"{baseEndpoint}:5105/connect/userinfo";
-            TokenEndpoint = $"{baseEndpoint}:5105/connect/token";
-            LogoutEndpoint = $"{baseEndpoint}:5105/connect/endsession";
-            IdentityCallback = $"{baseEndpoint}:5105/xamarincallback";
-            LogoutCallback = $"{baseEndpoint}:5105/Account/Redirecting";
             LocationEndpoint = $"{baseEndpoint}:5109";
             MarketingEndpoint = $"{baseEndpoint}:5110";
         }
