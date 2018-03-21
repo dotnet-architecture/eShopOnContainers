@@ -189,7 +189,12 @@ spec:
           valueFrom:
            configMapKeyRef:
              name: urls
-             key: webshoppingagg_e                        
+             key: webshoppingagg_e      
+        - name: XamarinCallback
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: xamarin_callback_e                                        
         - name: ApplicationInsights__InstrumentationKey
           valueFrom:
            configMapKeyRef:

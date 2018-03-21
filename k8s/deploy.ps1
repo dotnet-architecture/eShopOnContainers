@@ -138,7 +138,8 @@ ExecKube -cmd 'create configmap urls `
     --from-literal=locations_e=http://$($externalDns)/locations-api `
     --from-literal=marketing_e=http://$($externalDns)/marketing-api `
     --from-literal=basket_e=http://$($externalDns)/basket-api `
-    --from-literal=ordering_e=http://$($externalDns)/ordering-api '
+    --from-literal=ordering_e=http://$($externalDns)/ordering-api `
+    --from-literal=xamarin_callback_e=http://$($externalDns)/xamarincallback' 
 
 ExecKube -cmd 'label configmap urls app=eshop'
 
