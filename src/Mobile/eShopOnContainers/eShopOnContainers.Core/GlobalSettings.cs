@@ -38,17 +38,7 @@
 
         public string RegisterWebsite { get; set; }
 
-        public string CatalogEndpoint { get; set; }
-
-        public string OrdersEndpoint { get; set; }
-
-        public string BasketEndpoint { get; set; }
-
         public string IdentityEndpoint { get; set; }
-
-        public string LocationEndpoint { get; set; }
-
-        public string MarketingEndpoint { get; set; }
 
         public string UserInfoEndpoint { get; set; }
 
@@ -73,12 +63,6 @@
             LogoutEndpoint = $"{connectBaseEndpoint}/endsession";
 			
             IdentityCallback = $"{baseEndpoint}/xamarincallback";
-
-            CatalogEndpoint = $"{baseEndpoint}:5101";
-            OrdersEndpoint = $"{baseEndpoint}:5102";
-            BasketEndpoint = $"{baseEndpoint}:5103";
-            LocationEndpoint = $"{baseEndpoint}:5109";
-            MarketingEndpoint = $"{baseEndpoint}:5110";
         }
     }
 }
