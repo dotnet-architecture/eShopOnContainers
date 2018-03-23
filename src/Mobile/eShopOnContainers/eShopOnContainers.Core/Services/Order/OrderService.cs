@@ -44,7 +44,7 @@ namespace eShopOnContainers.Core.Services.Order
             {
                 UriBuilder builder = new UriBuilder(GlobalSetting.Instance.BaseEndpoint);
 
-                builder.Path = string.Format($"{ApiUrlBase}/{0}", orderId);
+                builder.Path = $"{ApiUrlBase}/{orderId}";
 
                 string uri = builder.ToString();
 
