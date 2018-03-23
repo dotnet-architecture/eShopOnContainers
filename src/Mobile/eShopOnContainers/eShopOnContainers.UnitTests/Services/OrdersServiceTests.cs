@@ -22,7 +22,7 @@ namespace eShopOnContainers.UnitTests
             var ordersMockService = new OrderMockService();
             var result = await ordersMockService.GetOrdersAsync(GlobalSetting.Instance.AuthToken);
 
-            Assert.NotEqual(0, result.Count);
+            Assert.NotEmpty(result);
         }
     }
 }

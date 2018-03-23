@@ -1,11 +1,10 @@
-using Xamarin.Forms;
-using eShopOnContainers.Droid.Effects;
-using Xamarin.Forms.Platform.Android;
-using System;
 using Android.Widget;
 using eShopOnContainers.Core.Behaviors;
+using eShopOnContainers.Droid.Effects;
+using System;
 using System.ComponentModel;
-using System.Diagnostics;
+using Xamarin.Forms;
+using Xamarin.Forms.Platform.Android;
 
 [assembly: ResolutionGroupName("eShopOnContainers")]
 [assembly: ExportEffect(typeof(EntryLineColorEffect), "EntryLineColorEffect")]
@@ -52,7 +51,7 @@ namespace eShopOnContainers.Droid.Effects
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex.Message);
+                Console.WriteLine(ex.Message);
             }
         }
     }

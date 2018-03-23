@@ -31,3 +31,4 @@ cli-linux
 **/wwwroot/lib/
 global.json
 **/appsettings.localhost.json
+src/Web/WebSPA/wwwroot/

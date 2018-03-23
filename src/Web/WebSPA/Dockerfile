@@ -10,9 +10,6 @@ WORKDIR /src/src/Web/WebSPA
 RUN dotnet build --no-restore -c Release -o /app
 
 FROM build AS publish
-RUN npm rebuild node-sass
-RUN npm install
-RUN npm run build:prod
 RUN dotnet publish --no-restore -c Release -o /app
 
 FROM base AS final

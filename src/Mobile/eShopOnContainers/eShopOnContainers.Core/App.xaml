@@ -180,13 +180,13 @@
 
             <!-- EXPLICIT STYLES -->
             <Style x:Key="ValidationErrorLabelStyle"
-				   TargetType="{x:Type Label}">
-				   <Setter Property="TextColor"
-						   Value="{StaticResource ErrorColor}" />
-				   <Setter Property="FontSize"
-					       Value="{StaticResource LittleSize}" />
- 			</Style>
-			
+                   TargetType="{x:Type Label}">
+                   <Setter Property="TextColor"
+                           Value="{StaticResource ErrorColor}" />
+                   <Setter Property="FontSize"
+                           Value="{StaticResource LittleSize}" />
+            </Style>
+            
             <Style x:Key="EntryStyle"
                    TargetType="{x:Type Entry}">
                 <Setter Property="FontFamily"
@@ -201,7 +201,7 @@
                         Value="FillAndExpand" />
                 <Setter Property="FontAttributes"
                         Value="Bold" />
-				<Setter Property="BackgroundColor" 
+                <Setter Property="BackgroundColor" 
                         Value="Transparent" />
                 <Setter Property="Opacity"
                         Value="0.6" />

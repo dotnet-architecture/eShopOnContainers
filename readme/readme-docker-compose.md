@@ -2,10 +2,6 @@
 
 In the root folder of the repo are all docker-compose files (`docker-compose*.yml`). Here is a list of all of them and what is their purpose:
 
-## Container build
-
-* `docker-compose.ci.build.yml`: This file is for starting the build container to build the project using a container that has all needed prerequisites. Refer to [corresponding wiki section](https://github.com/dotnet-architecture/eShopOnContainers/wiki/03.-Setting-the-eShopOnContainers-solution-up-in-a-Windows-CLI-environment-(dotnet-CLI,-Docker-CLI-and-VS-Code)#build-the-bits-through-the-build-container-image) for more information.
-
 ## Files needed to run eShopOnContainers locally 
 
 * `docker-compose.yml`: This file contains **the definition of all images needed for running eShopOnContainers**.
@@ -46,6 +42,17 @@ PicBaseUrl=${ESHOP_AZURE_STORAGE_CATALOG:-http://${ESHOP_PROD_EXTERNAL_DNS_NAME_
 ```
 
 So, use `ESHOP_AZURE_STORAGE_CATALOG` if set, and if not use `http://${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP}:5101/api/v1/catalog/items/[0]/pic/}`. Unfortunately seems that docker-compose do not substitute variables inside variables, so the value that `PicBaseUrl` gets if `ESHOP_AZURE_STORAGE_CATALOG` is not set is literally `http://${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP}:5101/api/v1/catalog/items/[0]/pic/}` without any substitution.
+
+## Build container (DEPRECATED)
+
+NOTE that since we support Docker MULTI-STAGE builds (support in VS 2017 since December 2017), the build container is no loger needed in CI/CD pipelines as a similar process is done by Docker itself under the covers with the multi-stage builds.
+For more info on Docker Multi-Stage, read: 
+
+https://docs.docker.com/develop/develop-images/multistage-build/
+
+https://blogs.msdn.microsoft.com/stevelasker/2017/09/11/net-and-multistage-dockerfiles/
+
+* `docker-compose.ci.build.yml`: This file is for starting the build container to build the project using a container that has all needed prerequisites. Refer to [corresponding wiki section](https://github.com/dotnet-architecture/eShopOnContainers/wiki/03.-Setting-the-eShopOnContainers-solution-up-in-a-Windows-CLI-environment-(dotnet-CLI,-Docker-CLI-and-VS-Code)#build-the-bits-through-the-build-container-image) for more information.
 
 **For more information** about docker-compose variable substitution read the [compose docs](https://docs.docker.com/compose/compose-file/#variable-substitution).
 

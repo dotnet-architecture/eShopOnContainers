@@ -1,9 +1,9 @@
-﻿using System;
+﻿using CoreAnimation;
+using CoreGraphics;
+using eShopOnContainers.iOS.Effects;
+using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
-using eShopOnContainers.iOS.Effects;
-using CoreGraphics;
-using CoreAnimation;
 
 [assembly: ExportEffect(typeof(CircleEffect), "CircleEffect")]
 namespace eShopOnContainers.iOS.Effects
