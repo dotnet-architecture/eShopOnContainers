@@ -7,9 +7,9 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.SeedWork
 {
     public abstract class Enumeration : IComparable
     {
-        public string Name { get; private set; }
+        public string Name { get; }
 
-        public int Id { get; private set; }
+        public int Id { get; }
 
         protected Enumeration()
         {
