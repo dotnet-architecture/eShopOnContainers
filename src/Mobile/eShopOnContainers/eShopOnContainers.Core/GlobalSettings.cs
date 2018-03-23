@@ -4,7 +4,7 @@
     {
         public const string AzureTag = "Azure";
         public const string MockTag = "Mock";
-        public const string DefaultEndpoint = "http://YOUR_IP_OR_DNS_NAME";
+        public const string DefaultEndpoint = "http://YOUR_IP_OR_DNS_NAME"; // i.e.: "http://YOUR_IP" or "http://YOUR_DNS_NAME"
 
         private string _baseEndpoint;
         private static readonly GlobalSetting _instance = new GlobalSetting();
