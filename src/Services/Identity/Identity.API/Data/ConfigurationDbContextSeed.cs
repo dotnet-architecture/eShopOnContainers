@@ -1,7 +1,6 @@
 ﻿using IdentityServer4.EntityFramework.DbContexts;
 using IdentityServer4.EntityFramework.Mappers;
 using Microsoft.eShopOnContainers.Services.Identity.API.Configuration;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,36 +10,49 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Data
 {
     public class ConfigurationDbContextSeed
     {
-        public async Task SeedAsync(ConfigurationDbContext context, IConfiguration configuration)
+        public async Task SeedAsync(ConfigurationDbContext context,IConfiguration configuration)
         {
+           
             //callbacks urls from config:
-            var clientUrls = new Dictionary<string, string>
-            {
-                {"Mvc", configuration.GetValue<string>("MvcClient")},
-                {"Spa", configuration.GetValue<string>("SpaClient")},
-                {"Xamarin", configuration.GetValue<string>("XamarinCallback")},
-                {"LocationsApi", configuration.GetValue<string>("LocationApiClient")},
-                {"MarketingApi", configuration.GetValue<string>("MarketingApiClient")},
-                {"BasketApi", configuration.GetValue<string>("BasketApiClient")},
-                {"OrderingApi", configuration.GetValue<string>("OrderingApiClient")}
-            };
+            var clientUrls = new Dictionary<string, string>();
 
-            if (!await context.Clients.AnyAsync())
+            clientUrls.Add("Mvc", configuration.GetValue<string>("MvcClient"));
+            clientUrls.Add("Spa", configuration.GetValue<string>("SpaClient"));
+            clientUrls.Add("Xamarin", configuration.GetValue<string>("XamarinCallback"));
+            clientUrls.Add("LocationsApi", configuration.GetValue<string>("LocationApiClient"));
+            clientUrls.Add("MarketingApi", configuration.GetValue<string>("MarketingApiClient"));
+            clientUrls.Add("BasketApi", configuration.GetValue<string>("BasketApiClient"));
+            clientUrls.Add("OrderingApi", configuration.GetValue<string>("OrderingApiClient"));
+            clientUrls.Add("MobileShoppingAgg", configuration.GetValue<string>("MobileShoppingAggClient"));
+            clientUrls.Add("WebShoppingAgg", configuration.GetValue<string>("WebShoppingAggClient"));
+
+            if (!context.Clients.Any())
             {
-                context.Clients.AddRange(Config.GetClients(clientUrls).Select(client => client.ToEntity()));
+                foreach (var client in Config.GetClients(clientUrls))
+                {
+                    await context.Clients.AddAsync(client.ToEntity());
+                }
+                await context.SaveChangesAsync();
             }
 
-            if (!await context.IdentityResources.AnyAsync())
+            if (!context.IdentityResources.Any())
             {
-                context.IdentityResources.AddRange(Config.GetResources().Select(resource => resource.ToEntity()));
+                foreach (var resource in Config.GetResources())
+                {
+                    await context.IdentityResources.AddAsync(resource.ToEntity());
+                }
+                await context.SaveChangesAsync();
             }
 
-            if (!await context.ApiResources.AnyAsync())
+            if (!context.ApiResources.Any())
             {
-                context.ApiResources.AddRange(Config.GetApis().Select(api => api.ToEntity()));
-            }
+                foreach (var api in Config.GetApis())
+                {
+                    await context.ApiResources.AddAsync(api.ToEntity());
+                }
 
-            await context.SaveChangesAsync();
+                await context.SaveChangesAsync();
+            }
         }
     }
 }

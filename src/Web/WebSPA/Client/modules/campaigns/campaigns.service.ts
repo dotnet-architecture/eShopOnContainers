@@ -33,7 +33,7 @@ export class CampaignsService {
     }
 
     getCampaigns(pageIndex: number, pageSize: number): Observable<ICampaign> {
-        let url = this.marketingUrl + '/api/v1/campaigns/user';
+        let url = this.marketingUrl + '/api/v1/m/campaigns/user';
         url = url + '?pageIndex=' + pageIndex + '&pageSize=' + pageSize;
 
         return this.service.get(url).map((response: Response) => {
@@ -42,7 +42,7 @@ export class CampaignsService {
     }
 
     getCampaign(id: number): Observable<ICampaignItem> {
-        let url = this.marketingUrl + '/api/v1/campaigns/' + id;
+        let url = this.marketingUrl + '/api/v1/m/campaigns/' + id;
 
         return this.service.get(url).map((response: Response) => {
             return response.json();

@@ -27,9 +27,9 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
 
         public async Task<IActionResult> Create()
         {
+
             var user = _appUserParser.Parse(HttpContext.User);
-            var basket = await _basketSvc.GetBasket(user);
-            var order = _basketSvc.MapBasketToOrder(basket);
+            var order = await _basketSvc.GetOrderDraft(user.Id);
             var vm = _orderSvc.MapUserInfoIntoOrder(user, order);
             vm.CardExpirationShortFormat();
 

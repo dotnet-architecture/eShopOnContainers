@@ -7,6 +7,7 @@
     <DockerServiceName>webmvc</DockerServiceName>
     <DockerTargetOS>Linux</DockerTargetOS>
     <ProjectVersion>2.1</ProjectVersion>
+    <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
   </PropertyGroup>
   <ItemGroup>
     <None Include=".dockerignore" />
