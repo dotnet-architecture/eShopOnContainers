@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Basket.API.Infrastructure.Middlewares
 {
-    class ByPassAuthMiddleware
+    internal class ByPassAuthMiddleware
     {
         private readonly RequestDelegate _next;
         private string _currentUserId;

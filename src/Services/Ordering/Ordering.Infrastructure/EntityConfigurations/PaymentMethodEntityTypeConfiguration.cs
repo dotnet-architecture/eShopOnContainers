@@ -6,7 +6,7 @@ using System;
 
 namespace Ordering.Infrastructure.EntityConfigurations
 {
-    class PaymentMethodEntityTypeConfiguration
+    internal class PaymentMethodEntityTypeConfiguration
         : IEntityTypeConfiguration<PaymentMethod>
     {
         public void Configure(EntityTypeBuilder<PaymentMethod> paymentConfiguration)

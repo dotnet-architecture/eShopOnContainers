@@ -4,7 +4,7 @@ using Microsoft.eShopOnContainers.Services.Marketing.API.Model;
 
 namespace Microsoft.eShopOnContainers.Services.Marketing.API.Infrastructure.EntityConfigurations
 {
-    class CampaignEntityTypeConfiguration
+    internal class CampaignEntityTypeConfiguration
         : IEntityTypeConfiguration<Campaign>
     {
         public void Configure(EntityTypeBuilder<Campaign> builder)

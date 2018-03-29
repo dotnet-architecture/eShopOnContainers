@@ -85,7 +85,7 @@ namespace Microsoft.Extensions.HealthChecks
             return new TypeOrHealthCheck_Type(name, cacheDuration, healthCheckType);
         }
 
-        class TypeOrHealthCheck_HealthCheck : CachedHealthCheck
+        private class TypeOrHealthCheck_HealthCheck : CachedHealthCheck
         {
             private readonly IHealthCheck _healthCheck;
 
@@ -95,7 +95,7 @@ namespace Microsoft.Extensions.HealthChecks
             protected override IHealthCheck Resolve(IServiceProvider serviceProvider) => _healthCheck;
         }
 
-        class TypeOrHealthCheck_Type : CachedHealthCheck
+        private class TypeOrHealthCheck_Type : CachedHealthCheck
         {
             private readonly Type _healthCheckType;
 

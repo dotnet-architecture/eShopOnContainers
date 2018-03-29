@@ -4,7 +4,7 @@ using Microsoft.eShopOnContainers.Services.Catalog.API.Model;
 
 namespace Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure.EntityConfigurations
 {
-    class CatalogItemEntityTypeConfiguration
+    internal class CatalogItemEntityTypeConfiguration
         : IEntityTypeConfiguration<CatalogItem>
     {
         public void Configure(EntityTypeBuilder<CatalogItem> builder)

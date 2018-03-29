@@ -25,7 +25,7 @@
             }
         }
 
-        class LocationAuthorizeMiddleware
+        private class LocationAuthorizeMiddleware
         {
             private readonly RequestDelegate _next;
             public LocationAuthorizeMiddleware(RequestDelegate rd)

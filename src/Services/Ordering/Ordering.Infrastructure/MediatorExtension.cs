@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Ordering.Infrastructure
 {
-    static class MediatorExtension
+    internal static class MediatorExtension
     {
         public static async Task DispatchDomainEventsAsync(this IMediator mediator, OrderingContext ctx)
         {
