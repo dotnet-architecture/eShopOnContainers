@@ -30,7 +30,6 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
         {
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
 
-
             System.Diagnostics.Debug.WriteLine("OrderingContext::ctor ->" + this.GetHashCode());
         }
 
@@ -57,7 +56,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
 
             // After executing this line all the changes (from the Command Handler and Domain Event Handlers) 
             // performed throught the DbContext will be commited
-            var result = await base.SaveChangesAsync();
+            var result = await base.SaveChangesAsync(cancellationToken);
 
             return true;
         }        
@@ -70,7 +69,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
             var optionsBuilder = new DbContextOptionsBuilder<OrderingContext>()
                 .UseSqlServer("Server=.;Initial Catalog=Microsoft.eShopOnContainers.Services.OrderingDb;Integrated Security=true");
 
-            return new OrderingContext(optionsBuilder.Options,new NoMediator());
+            return new OrderingContext(optionsBuilder.Options, new NoMediator());
         }
 
         class NoMediator : IMediator

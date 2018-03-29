@@ -22,6 +22,7 @@ namespace Ordering.API.Application.Commands
         /// administrator executes ship order from app
         /// </summary>
         /// <param name="command"></param>
+        /// <param name="cancellationToken"></param>
         /// <returns></returns>
         public async Task<bool> Handle(ShipOrderCommand command, CancellationToken cancellationToken)
         {
@@ -32,7 +33,7 @@ namespace Ordering.API.Application.Commands
             }
 
             orderToUpdate.SetShippedStatus();
-            return await _orderRepository.UnitOfWork.SaveEntitiesAsync();
+            return await _orderRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
         }
     }
 
@@ -46,7 +47,7 @@ namespace Ordering.API.Application.Commands
 
         protected override bool CreateResultForDuplicateRequest()
         {
-            return true;                // Ignore duplicate requests for processing order.
+            return true; // Ignore duplicate requests for processing order.
         }
     }
 }
