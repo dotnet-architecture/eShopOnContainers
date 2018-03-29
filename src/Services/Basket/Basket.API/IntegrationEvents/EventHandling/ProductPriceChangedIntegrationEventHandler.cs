@@ -24,11 +24,11 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.IntegrationEvents.Even
             {
                 var basket = await _repository.GetBasketAsync(id);
 
-                await UpdatePriceInBasketItems(@event.ProductId, @event.NewPrice, @event.OldPrice, basket);                      
+                await UpdatePriceInBasketItemsAsync(@event.ProductId, @event.NewPrice, @event.OldPrice, basket);                      
             }
         }
 
-        private async Task UpdatePriceInBasketItems(int productId, decimal newPrice, decimal oldPrice, CustomerBasket basket)
+        private async Task UpdatePriceInBasketItemsAsync(int productId, decimal newPrice, decimal oldPrice, CustomerBasket basket)
         {
             string match = productId.ToString();
             var itemsToUpdate = basket?.Items?.Where(x => x.ProductId == match).ToList();
