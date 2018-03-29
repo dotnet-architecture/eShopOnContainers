@@ -15,22 +15,22 @@ namespace Microsoft.eShopOnContainers.Services.Marketing.API.Infrastructure.Repo
             _context = new MarketingReadDataContext(settings);
         }
 
-        public async Task<MarketingData> GetAsync(string userId)
+        public Task<MarketingData> GetAsync(string userId)
         {
             var filter = Builders<MarketingData>.Filter.Eq("UserId", userId);
-            return await _context.MarketingData
+            return _context.MarketingData
                                  .Find(filter)
                                  .FirstOrDefaultAsync();
         }
 
-        public async Task UpdateLocationAsync(MarketingData marketingData)
+        public Task UpdateLocationAsync(MarketingData marketingData)
         {
             var filter = Builders<MarketingData>.Filter.Eq("UserId", marketingData.UserId);
             var update = Builders<MarketingData>.Update
                 .Set("Locations", marketingData.Locations)
                 .CurrentDate("UpdateDate");
 
-            await _context.MarketingData
+            return _context.MarketingData
                 .UpdateOneAsync(filter, update, new UpdateOptions { IsUpsert = true });
         }
     }

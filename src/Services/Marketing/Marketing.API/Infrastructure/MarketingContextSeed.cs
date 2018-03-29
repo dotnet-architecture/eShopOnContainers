@@ -11,11 +11,11 @@
 
     public class MarketingContextSeed
     {
-        public async Task SeedAsync(MarketingContext context,ILogger<MarketingContextSeed> logger,int retries = 3)
+        public Task SeedAsync(MarketingContext context,ILogger<MarketingContextSeed> logger,int retries = 3)
         {
             var policy = CreatePolicy(retries, logger, nameof(MarketingContextSeed));
 
-            await policy.ExecuteAsync(async () =>
+            return policy.ExecuteAsync(async () =>
             {
                 if (!context.Campaigns.Any())
                 {
