@@ -20,7 +20,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Services
             _userManager = userManager;
         }
 
-        async public Task GetProfileDataAsync(ProfileDataRequestContext context)
+        public async Task GetProfileDataAsync(ProfileDataRequestContext context)
         {
             var subject = context.Subject ?? throw new ArgumentNullException(nameof(context.Subject));
 
@@ -34,7 +34,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Services
             context.IssuedClaims = claims.ToList();
         }
 
-        async public Task IsActiveAsync(IsActiveContext context)
+        public async Task IsActiveAsync(IsActiveContext context)
         {
             var subject = context.Subject ?? throw new ArgumentNullException(nameof(context.Subject));
 
