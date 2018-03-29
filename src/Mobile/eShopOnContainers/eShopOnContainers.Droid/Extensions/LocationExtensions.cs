@@ -32,7 +32,7 @@ namespace eShopOnContainers.Droid.Extensions
             {
                 return new DateTimeOffset(Epoch.AddMilliseconds(location.Time));
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 return new DateTimeOffset(Epoch);
             }

@@ -13,8 +13,6 @@ namespace eShopOnContainers.Core.Services.Marketing
         private readonly IRequestProvider _requestProvider;
         private readonly IFixUriService _fixUriService;
 
-        private const string ApiUrlBase = "mobilemarketingapigw/api/v1/m/campaigns";
-
         public CampaignService(IRequestProvider requestProvider, IFixUriService fixUriService)
         {
             _requestProvider = requestProvider;
@@ -23,8 +21,8 @@ namespace eShopOnContainers.Core.Services.Marketing
 
         public async Task<ObservableCollection<CampaignItem>> GetAllCampaignsAsync(string token)
         {
-            UriBuilder builder = new UriBuilder(GlobalSetting.Instance.BaseEndpoint);
-            builder.Path = $"{ApiUrlBase}/user";
+            UriBuilder builder = new UriBuilder(GlobalSetting.Instance.MarketingEndpoint);
+            builder.Path = "api/v1/campaigns/user";
             string uri = builder.ToString();
 
             CampaignRoot campaign = await _requestProvider.GetAsync<CampaignRoot>(uri, token);
@@ -40,8 +38,8 @@ namespace eShopOnContainers.Core.Services.Marketing
 
         public async Task<CampaignItem> GetCampaignByIdAsync(int campaignId, string token)
         {
-            UriBuilder builder = new UriBuilder(GlobalSetting.Instance.BaseEndpoint);
-            builder.Path = $"{ApiUrlBase}/{campaignId}";
+            UriBuilder builder = new UriBuilder(GlobalSetting.Instance.MarketingEndpoint);
+            builder.Path = $"api/v1/campaigns/{campaignId}";
             string uri = builder.ToString();
             return await _requestProvider.GetAsync<CampaignItem>(uri, token);
         }

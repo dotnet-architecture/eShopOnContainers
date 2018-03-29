@@ -11,8 +11,6 @@ namespace eShopOnContainers.Core.Services.Order
     {
         private readonly IRequestProvider _requestProvider;
 
-        private const string ApiUrlBase = "mobileshoppingapigw/api/v1/o/orders";
-
         public OrderService(IRequestProvider requestProvider)
         {
             _requestProvider = requestProvider;
@@ -25,9 +23,9 @@ namespace eShopOnContainers.Core.Services.Order
 
         public async Task<ObservableCollection<Models.Orders.Order>> GetOrdersAsync(string token)
         {
-            UriBuilder builder = new UriBuilder(GlobalSetting.Instance.BaseEndpoint);
+            UriBuilder builder = new UriBuilder(GlobalSetting.Instance.OrdersEndpoint);
 
-            builder.Path = ApiUrlBase;
+            builder.Path = "api/v1/orders";
 
             string uri = builder.ToString();
 
@@ -42,9 +40,9 @@ namespace eShopOnContainers.Core.Services.Order
         {
             try
             {
-                UriBuilder builder = new UriBuilder(GlobalSetting.Instance.BaseEndpoint);
+                UriBuilder builder = new UriBuilder(GlobalSetting.Instance.OrdersEndpoint);
 
-                builder.Path = $"{ApiUrlBase}/{orderId}";
+                builder.Path = string.Format("api/v1/orders/{0}", orderId);
 
                 string uri = builder.ToString();
 
@@ -78,9 +76,9 @@ namespace eShopOnContainers.Core.Services.Order
 
         public async Task<bool> CancelOrderAsync(int orderId, string token)
         {
-            UriBuilder builder = new UriBuilder(GlobalSetting.Instance.BaseEndpoint);
+            UriBuilder builder = new UriBuilder(GlobalSetting.Instance.OrdersEndpoint);
 
-            builder.Path = $"{ApiUrlBase}/cancel";
+            builder.Path = "api/v1/orders/cancel";
 
             var cancelOrderCommand = new CancelOrderCommand(orderId);
 

@@ -5,7 +5,6 @@ using Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands;
 using Microsoft.eShopOnContainers.Services.Ordering.API.Application.Queries;
 using Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure.Services;
 using Ordering.API.Application.Commands;
-using Ordering.API.Application.Models;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -102,14 +101,6 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Controllers
 
             return Ok(cardTypes);
         }        
-
-        [Route("draft")]
-        [HttpPost]
-        public async Task<IActionResult> GetOrderDraftFromBasketData([FromBody] CreateOrderDraftCommand createOrderDraftCommand)
-        {
-            var draft  = await _mediator.Send(createOrderDraftCommand);
-            return Ok(draft);
-        }
     }
 }
 

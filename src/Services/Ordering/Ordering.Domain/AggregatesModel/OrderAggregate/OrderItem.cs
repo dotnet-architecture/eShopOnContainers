@@ -41,7 +41,13 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
             _pictureUrl = PictureUrl;
         }
 
-        public string GetPictureUri() => _pictureUrl;
+        public void SetPictureUri(string pictureUri)
+        {
+            if (!String.IsNullOrWhiteSpace(pictureUri))
+            {
+                _pictureUrl = pictureUri;
+            }
+        }
 
         public decimal GetCurrentDiscount()
         {

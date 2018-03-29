@@ -36,11 +36,6 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http
 
             var response = await _client.SendAsync(requestMessage);
 
-            if (!response.IsSuccessStatusCode)
-            {
-                return null;
-            }
-
             return await response.Content.ReadAsStringAsync();
         }
 
