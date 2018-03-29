@@ -35,11 +35,11 @@ namespace Ordering.API.Application.IntegrationEvents
             await _eventLogService.MarkEventAsPublishedAsync(evt);
         }
 
-        private async Task SaveEventAndOrderingContextChangesAsync(IntegrationEvent evt)
+        private Task SaveEventAndOrderingContextChangesAsync(IntegrationEvent evt)
         {
             //Use of an EF Core resiliency strategy when using multiple DbContexts within an explicit BeginTransaction():
             //See: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency            
-            await ResilientTransaction.New(_orderingContext)
+            return ResilientTransaction.New(_orderingContext)
                 .ExecuteAsync(async () => {
                     // Achieving atomicity between original ordering database operation and the IntegrationEventLog thanks to a local transaction
                     await _orderingContext.SaveChangesAsync();

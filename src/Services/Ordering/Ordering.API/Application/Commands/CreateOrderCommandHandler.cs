@@ -24,7 +24,7 @@
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
 
-        public async Task<bool> Handle(CreateOrderCommand message, CancellationToken cancellationToken)
+        public Task<bool> Handle(CreateOrderCommand message, CancellationToken cancellationToken)
         {
             // Add/Update the Buyer AggregateRoot
             // DDD patterns comment: Add child entities and value-objects through the Order Aggregate-Root
@@ -40,8 +40,8 @@
 
              _orderRepository.Add(order);
 
-            return await _orderRepository.UnitOfWork
-                .SaveEntitiesAsync();
+            return _orderRepository.UnitOfWork
+                .SaveEntitiesAsync(cancellationToken);
         }
     }
 
@@ -55,7 +55,7 @@
 
         protected override bool CreateResultForDuplicateRequest()
         {
-            return true;                // Ignore duplicate requests for creating order.
+            return true; // Ignore duplicate requests for creating order.
         }
     }
 }

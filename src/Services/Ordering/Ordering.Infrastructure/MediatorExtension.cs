@@ -8,7 +8,7 @@ namespace Ordering.Infrastructure
 {
     static class MediatorExtension
     {
-        public static async Task DispatchDomainEventsAsync(this IMediator mediator, OrderingContext ctx)
+        public static Task DispatchDomainEventsAsync(this IMediator mediator, OrderingContext ctx)
         {
             var domainEntities = ctx.ChangeTracker
                 .Entries<Entity>()
@@ -26,7 +26,7 @@ namespace Ordering.Infrastructure
                     await mediator.Publish(domainEvent);
                 });
 
-            await Task.WhenAll(tasks);
+            return Task.WhenAll(tasks);
         }
     }
 }
