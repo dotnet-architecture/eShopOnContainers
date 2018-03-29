@@ -28,7 +28,7 @@
 
             foreach (var orderStockItem in command.OrderStockItems)
             {
-                var catalogItem = _catalogContext.CatalogItems.Find(orderStockItem.ProductId);
+                var catalogItem = await _catalogContext.CatalogItems.FindAsync(orderStockItem.ProductId);
                 var hasStock = catalogItem.AvailableStock >= orderStockItem.Units;
                 var confirmedOrderStockItem = new ConfirmedOrderStockItem(catalogItem.Id, hasStock);
 

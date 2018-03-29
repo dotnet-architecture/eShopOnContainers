@@ -15,7 +15,7 @@
             _catalogContext = catalogContext;
         }
 
-        public async Task Handle(OrderStatusChangedToPaidIntegrationEvent command)
+        public Task Handle(OrderStatusChangedToPaidIntegrationEvent command)
         {
             //we're not blocking stock/inventory
             foreach (var orderStockItem in command.OrderStockItems)
@@ -25,7 +25,7 @@
                 catalogItem.RemoveStock(orderStockItem.Units);
             }
 
-            await _catalogContext.SaveChangesAsync();
+            return _catalogContext.SaveChangesAsync();
         }
     }
 }

@@ -18,11 +18,11 @@
 
     public class CatalogContextSeed
     {
-        public async Task SeedAsync(CatalogContext context,IHostingEnvironment env,IOptions<CatalogSettings> settings,ILogger<CatalogContextSeed> logger)
+        public Task SeedAsync(CatalogContext context,IHostingEnvironment env,IOptions<CatalogSettings> settings,ILogger<CatalogContextSeed> logger)
         {
             var policy = CreatePolicy(logger, nameof(CatalogContextSeed));
 
-            await policy.ExecuteAsync(async () =>
+            return policy.ExecuteAsync(async () =>
             {
                 var useCustomizationData = settings.Value.UseCustomizationData;
                 var contentRootPath = env.ContentRootPath;
