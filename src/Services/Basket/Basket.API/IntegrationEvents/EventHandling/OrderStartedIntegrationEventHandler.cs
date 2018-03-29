@@ -15,9 +15,9 @@ namespace Basket.API.IntegrationEvents.EventHandling
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
-        public async Task Handle(OrderStartedIntegrationEvent @event)
+        public Task Handle(OrderStartedIntegrationEvent @event)
         {
-            await _repository.DeleteBasketAsync(@event.UserId.ToString());
+            return _repository.DeleteBasketAsync(@event.UserId);
         }
     }
 }
