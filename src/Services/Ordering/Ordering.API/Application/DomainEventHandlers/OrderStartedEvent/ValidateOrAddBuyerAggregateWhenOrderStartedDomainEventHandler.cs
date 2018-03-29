@@ -45,7 +45,7 @@ namespace Ordering.API.Application.DomainEventHandlers.OrderStartedEvent
             var buyerUpdated = buyerOriginallyExisted ? _buyerRepository.Update(buyer) : _buyerRepository.Add(buyer);
 
             await _buyerRepository.UnitOfWork
-                .SaveEntitiesAsync();
+                .SaveEntitiesAsync(cancellationToken);
 
             _logger.CreateLogger(nameof(ValidateOrAddBuyerAggregateWhenOrderStartedDomainEventHandler)).LogTrace($"Buyer {buyerUpdated.Id} and related payment method were validated or updated for orderId: {orderStartedEvent.Order.Id}.");
         }

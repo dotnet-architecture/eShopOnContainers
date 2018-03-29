@@ -20,15 +20,15 @@
 
     public class OrderingContextSeed
     {
-        public  async Task SeedAsync(OrderingContext context, IHostingEnvironment env,IOptions<OrderingSettings> settings, ILogger<OrderingContextSeed> logger)
+        public Task SeedAsync(OrderingContext context, IHostingEnvironment env,IOptions<OrderingSettings> settings, ILogger<OrderingContextSeed> logger)
         {
             var policy = CreatePolicy(logger, nameof(OrderingContextSeed));
 
-            await policy.ExecuteAsync(async () =>
+            return policy.ExecuteAsync(async () =>
             {
 
                 var useCustomizationData = settings.Value
-                .UseCustomizationData;
+                    .UseCustomizationData;
 
                 var contentRootPath = env.ContentRootPath;
 
@@ -39,18 +39,18 @@
 
                     if (!context.CardTypes.Any())
                     {
-                        context.CardTypes.AddRange(useCustomizationData
-                                                ? GetCardTypesFromFile(contentRootPath, logger)
-                                                : GetPredefinedCardTypes());
+                        await context.CardTypes.AddRangeAsync(useCustomizationData
+                            ? GetCardTypesFromFile(contentRootPath, logger)
+                            : GetPredefinedCardTypes());
 
                         await context.SaveChangesAsync();
                     }
 
                     if (!context.OrderStatus.Any())
                     {
-                        context.OrderStatus.AddRange(useCustomizationData
-                                                ? GetOrderStatusFromFile(contentRootPath, logger)
-                                                : GetPredefinedOrderStatus());
+                        await context.OrderStatus.AddRangeAsync(useCustomizationData
+                            ? GetOrderStatusFromFile(contentRootPath, logger)
+                            : GetPredefinedOrderStatus());
                     }
 
                     await context.SaveChangesAsync();
