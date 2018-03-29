@@ -22,7 +22,7 @@ if ($createAcr -eq $true) {
 Write-Host "Creating kubernetes orchestrator..." -ForegroundColor Yellow
 az aks create --resource-group=$resourceGroupName --name=$serviceName --generate-ssh-keys --node-count=$nodeCount --node-vm-size=$nodeVMSize
 
-# Retrieve kubernetes cluster configuration and save it under ~/.kube/config 
+# Retrieve kubernetes cluster configuration and save it under ~/.kube/config
 az aks get-credentials --resource-group=$resourceGroupName --name=$serviceName
 
 if ($createAcr -eq $true) {
