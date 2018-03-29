@@ -64,8 +64,6 @@ services:
       - MarketingApiClient=http://${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP}:5110
       - BasketApiClient=http://${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP}:5103
       - OrderingApiClient=http://${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP}:5102
-      - MobileShoppingAggClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5120
-      - WebShoppingAggClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5120
       - UseCustomizationData=True  
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
       - OrchestratorType=${ORCHESTRATOR_TYPE}
@@ -158,16 +156,17 @@ services:
 
   webmvc:
     environment:
-
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
-      - PurchaseUrl=http://webshoppingapigw/shopping
+      - CatalogUrl=http://catalog.api
+      - OrderingUrl=http://ordering.api
+      - BasketUrl=http://basket.api
       - LocationsUrl=http://locations.api
-      - IdentityUrl=http://${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP}:5105  # Local Mac: Use http://docker.for.mac.localhost:5105 || Local Windows:  Use 10.0.75.1 in a "Docker for Windows" environment, if using "localhost" from browser. || #Remote access: Use ${ESHOP_EXTERNAL_DNS_NAME_OR_IP} if using external IP or DNS name from browser.
-      - MarketingUrl=http://marketing.api                                                    
+      - IdentityUrl=http://${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP}:5105   #Local:  Use 10.0.75.1 in a "Docker for Windows" environment, if using "localhost" from browser. #Remote: Use ${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP} if using external IP or DNS name from browser.  
+      - MarketingUrl=http://marketing.api                                                  
       - CatalogUrlHC=http://catalog.api/hc
       - OrderingUrlHC=http://ordering.api/hc
-      - IdentityUrlHC=http://identity.api/hc     #Local: Use ${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP}, if using external IP or DNS name from browser.          
+      - IdentityUrlHC=http://identity.api/hc             
       - BasketUrlHC=http://basket.api/hc
       - MarketingUrlHC=http://marketing.api/hc
       - PaymentUrlHC=http://payment.api/hc

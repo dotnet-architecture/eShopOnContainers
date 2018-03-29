@@ -13,8 +13,6 @@ namespace eShopOnContainers.Core.Services.Catalog
     {
         private readonly IRequestProvider _requestProvider;
         private readonly IFixUriService _fixUriService;
-		
-        private const string ApiUrlBase = "mobileshoppingapigw/api/v1/c/catalog";
 
         public CatalogService(IRequestProvider requestProvider, IFixUriService fixUriService)
         {
@@ -24,8 +22,8 @@ namespace eShopOnContainers.Core.Services.Catalog
 
         public async Task<ObservableCollection<CatalogItem>> FilterAsync(int catalogBrandId, int catalogTypeId)
         {
-            UriBuilder builder = new UriBuilder(GlobalSetting.Instance.BaseEndpoint);
-            builder.Path = $"{ApiUrlBase}/items/type/{catalogTypeId}/brand/{catalogBrandId}";
+            UriBuilder builder = new UriBuilder(GlobalSetting.Instance.CatalogEndpoint);
+            builder.Path = string.Format("api/v1/catalog/items/type/{0}/brand/{1}", catalogTypeId, catalogBrandId);
             string uri = builder.ToString();
 
             CatalogRoot catalog = await _requestProvider.GetAsync<CatalogRoot>(uri);
@@ -38,8 +36,8 @@ namespace eShopOnContainers.Core.Services.Catalog
 
         public async Task<ObservableCollection<CatalogItem>> GetCatalogAsync()
         {
-            UriBuilder builder = new UriBuilder(GlobalSetting.Instance.BaseEndpoint);
-            builder.Path = $"{ApiUrlBase}/items";
+            UriBuilder builder = new UriBuilder(GlobalSetting.Instance.CatalogEndpoint);
+            builder.Path = "api/v1/catalog/items";
             string uri = builder.ToString();
 
             CatalogRoot catalog = await _requestProvider.GetAsync<CatalogRoot>(uri);
@@ -55,8 +53,8 @@ namespace eShopOnContainers.Core.Services.Catalog
 
         public async Task<ObservableCollection<CatalogBrand>> GetCatalogBrandAsync()
         {
-            UriBuilder builder = new UriBuilder(GlobalSetting.Instance.BaseEndpoint);
-            builder.Path = $"{ApiUrlBase}/catalogbrands";
+            UriBuilder builder = new UriBuilder(GlobalSetting.Instance.CatalogEndpoint);
+            builder.Path = "api/v1/catalog/catalogbrands";
             string uri = builder.ToString();
 
             IEnumerable<CatalogBrand> brands = await _requestProvider.GetAsync<IEnumerable<CatalogBrand>>(uri);
@@ -69,8 +67,8 @@ namespace eShopOnContainers.Core.Services.Catalog
 
         public async Task<ObservableCollection<CatalogType>> GetCatalogTypeAsync()
         {
-            UriBuilder builder = new UriBuilder(GlobalSetting.Instance.BaseEndpoint);
-            builder.Path = $"{ApiUrlBase}/catalogtypes";
+            UriBuilder builder = new UriBuilder(GlobalSetting.Instance.CatalogEndpoint);
+            builder.Path = "api/v1/catalog/catalogtypes";
             string uri = builder.ToString();
 
             IEnumerable<CatalogType> types = await _requestProvider.GetAsync<IEnumerable<CatalogType>>(uri);

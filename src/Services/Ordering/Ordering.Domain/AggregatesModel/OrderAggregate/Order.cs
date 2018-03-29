@@ -25,10 +25,6 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
 
         private string _description;
 
-       
-        // Draft orders have this set to true. Currently we don't check anywhere the draft status of an Order, but we could do it if needed
-        private bool _isDraft;
-
         // DDD Patterns comment
         // Using a private collection field, better for DDD Aggregate's encapsulation
         // so OrderItems cannot be added from "outside the AggregateRoot" directly to the collection,
@@ -38,21 +34,12 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
 
         private int? _paymentMethodId;
 
-        public static Order NewDraft()
-        {
-            var order = new Order();
-            order._isDraft = true;
-            return order;
-        }
-
-        protected Order() {
-            _orderItems = new List<OrderItem>();
-            _isDraft = false;
-        }
+        protected Order() { _orderItems = new List<OrderItem>(); }
 
         public Order(string userId, Address address, int cardTypeId, string cardNumber, string cardSecurityNumber,
-                string cardHolderName, DateTime cardExpiration, int? buyerId = null, int? paymentMethodId = null) : this()
+                string cardHolderName, DateTime cardExpiration, int? buyerId = null, int? paymentMethodId = null)
         {
+            _orderItems = new List<OrderItem>();
             _buyerId = buyerId;
             _paymentMethodId = paymentMethodId;
             _orderStatusId = OrderStatus.Submitted.Id;
@@ -105,34 +92,35 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
         }
 
         public void SetAwaitingValidationStatus()
-        {
+        {           
             if (_orderStatusId == OrderStatus.Submitted.Id)
             {
-                AddDomainEvent(new OrderStatusChangedToAwaitingValidationDomainEvent(Id, _orderItems));
                 _orderStatusId = OrderStatus.AwaitingValidation.Id;
-            }
+
+                AddDomainEvent(new OrderStatusChangedToAwaitingValidationDomainEvent(Id, _orderItems));
+            }            
         }
 
         public void SetStockConfirmedStatus()
         {
             if (_orderStatusId == OrderStatus.AwaitingValidation.Id)
             {
-                AddDomainEvent(new OrderStatusChangedToStockConfirmedDomainEvent(Id));
-
                 _orderStatusId = OrderStatus.StockConfirmed.Id;
                 _description = "All the items were confirmed with available stock.";
-            }
+
+                AddDomainEvent(new OrderStatusChangedToStockConfirmedDomainEvent(Id));
+            }           
         }
 
         public void SetPaidStatus()
         {
             if (_orderStatusId == OrderStatus.StockConfirmed.Id)
             {
-                AddDomainEvent(new OrderStatusChangedToPaidDomainEvent(Id, OrderItems));
-
                 _orderStatusId = OrderStatus.Paid.Id;
                 _description = "The payment was performed at a simulated \"American Bank checking bank account endinf on XX35071\"";
-            }
+
+                AddDomainEvent(new OrderStatusChangedToPaidDomainEvent(Id, OrderItems));
+            }            
         }
 
         public void SetShippedStatus()
@@ -170,13 +158,13 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
 
                 var itemsStockRejectedDescription = string.Join(", ", itemsStockRejectedProductNames);
                 _description = $"The product items don't have stock: ({itemsStockRejectedDescription}).";
-            }
+            }           
         }
 
         private void AddOrderStartedDomainEvent(string userId, int cardTypeId, string cardNumber,
                 string cardSecurityNumber, string cardHolderName, DateTime cardExpiration)
         {
-            var orderStartedDomainEvent = new OrderStartedDomainEvent(this, userId, cardTypeId,
+            var orderStartedDomainEvent = new OrderStartedDomainEvent(this, userId, cardTypeId, 
                                                                       cardNumber, cardSecurityNumber,
                                                                       cardHolderName, cardExpiration);
 

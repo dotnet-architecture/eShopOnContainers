@@ -38,6 +38,15 @@ services:
       - sql.data
       - rabbitmq
 
+  ordering.backgroundtasks:
+    image: eshop/ordering.backgroundtasks:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/Services/Ordering/Ordering.BackgroundTasks/Dockerfile    
+    depends_on:
+      - sql.data
+      - rabbitmq
+
   marketing.api:
     image: eshop/marketing.api:${TAG:-latest}
     build:
@@ -107,40 +116,3 @@ services:
       
   rabbitmq:
     image: rabbitmq:3-management-alpine
-
-  mobileshoppingapigw:
-    image: eshop/ocelotapigw-ms:${TAG:-latest}
-    build:
-      context: .
-      dockerfile: src/ApiGateways/ApiGw-Base/Dockerfile
- 
-  mobilemarketingapigw:
-    image: eshop/ocelotapigw-mm:${TAG:-latest}
-    build:
-      context: .
-      dockerfile: src/ApiGateways/ApiGw-Base/Dockerfile2
- 
-  webshoppingapigw:
-    image: eshop/ocelotapigw-ws:${TAG:-latest}
-    build:
-      context: .
-      dockerfile: src/ApiGateways/ApiGw-Base/Dockerfile3
-
-  webmarketingapigw:
-    image: eshop/ocelotapigw-wm:${TAG:-latest}
-    build:
-      context: .
-      dockerfile: src/ApiGateways/ApiGw-Base/Dockerfile
-
-  mobileshoppingagg:
-    image: eshop/mobileshoppingagg:${TAG:-latest}
-    build:
-      context: .
-      dockerfile: src/ApiGateways/Mobile.Bff.Shopping/aggregator/Dockerfile
-
-  webshoppingagg:
-    image: eshop/webshoppingagg:${TAG:-latest}
-    build:
-      context: .
-      dockerfile: src/ApiGateways/Web.Bff.Shopping/aggregator/Dockerfile
-

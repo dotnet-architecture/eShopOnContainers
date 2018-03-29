@@ -22,14 +22,14 @@ export class OrdersService {
 
     constructor(private service: DataService, private basketService: BasketWrapperService, private identityService: SecurityService, private configurationService: ConfigurationService) {
         if (this.configurationService.isReady)
-            this.ordersUrl = this.configurationService.serverSettings.purchaseUrl;
+            this.ordersUrl = this.configurationService.serverSettings.orderingUrl;
         else
-            this.configurationService.settingsLoaded$.subscribe(x => this.ordersUrl = this.configurationService.serverSettings.purchaseUrl);
+            this.configurationService.settingsLoaded$.subscribe(x => this.ordersUrl = this.configurationService.serverSettings.orderingUrl);
 
     }
 
     getOrders(): Observable<IOrder[]> {
-        let url = this.ordersUrl + '/api/v1/o/orders';
+        let url = this.ordersUrl + '/api/v1/orders';
 
         return this.service.get(url).map((response: Response) => {
             return response.json();
@@ -37,7 +37,7 @@ export class OrdersService {
     }
 
     getOrder(id: number): Observable<IOrderDetail> {
-        let url = this.ordersUrl + '/api/v1/o/orders/' + id;
+        let url = this.ordersUrl + '/api/v1/orders/' + id;
 
         return this.service.get(url).map((response: Response) => {
             return response.json();

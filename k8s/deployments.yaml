@@ -21,32 +21,32 @@ spec:
           valueFrom:
            configMapKeyRef:
              name: externalcfg
-             key: basket__ConnectionString
+             key: BasketRedisConStr
         - name: EventBusConnection
           valueFrom:
            configMapKeyRef:
              name: externalcfg
-             key: all__EventBusConnection
+             key: BasketBus
         - name: AzureServiceBusEnabled
           valueFrom:
            configMapKeyRef:
              name: externalcfg
-             key: all__UseAzureServiceBus
+             key: UseAzureServiceBus
         - name: ApplicationInsights__InstrumentationKey
           valueFrom:
            configMapKeyRef:
              name: externalcfg
-             key: all__InstrumentationKey
+             key: Instrumentation_Key
         - name: IdentityUrl
           valueFrom:
            configMapKeyRef:
              name: urls
-             key: identity_e
+             key: IdentityUrl
         - name: UseLoadTest
           valueFrom:
            configMapKeyRef:
              name: externalcfg
-             key: all__EnableLoadTest
+             key: EnableLoadTest
         - name: OrchestratorType
           value: 'K8S'
         ports:
@@ -56,8 +56,15 @@ spec:
             path: /hc
             port: 80
             scheme: HTTP 
-          initialDelaySeconds: 300
-          periodSeconds: 240         
+          initialDelaySeconds: 60
+          periodSeconds: 60 
+        livenessProbe:
+          httpGet:
+            path: /liveness
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 120
+          periodSeconds: 60                 
       imagePullSecrets:
       - name: registry-key
 ---
@@ -84,7 +91,7 @@ spec:
           valueFrom:
            configMapKeyRef:
              name: externalcfg
-             key: catalog__ConnectionString
+             key: CatalogSqlDb
         - name: PicBaseUrl
           valueFrom:
            configMapKeyRef:
@@ -94,17 +101,17 @@ spec:
           valueFrom:
            configMapKeyRef:
              name: externalcfg
-             key: catalog__AzureStorageEnabled
+             key: CatalogAzureStorageEnabled
         - name: EventBusConnection
           valueFrom:
            configMapKeyRef:
              name: externalcfg
-             key: all__EventBusConnection
+             key: CatalogBus
         - name: ApplicationInsights__InstrumentationKey
           valueFrom:
            configMapKeyRef:
              name: externalcfg
-             key: all__InstrumentationKey
+             key: Instrumentation_Key
         - name: OrchestratorType
           value: 'K8S' 
         ports:
@@ -114,8 +121,15 @@ spec:
             path: /hc
             port: 80
             scheme: HTTP 
-          initialDelaySeconds: 300
-          periodSeconds: 240
+          initialDelaySeconds: 60
+          periodSeconds: 60
+        livenessProbe:
+          httpGet:
+            path: /liveness
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 120
+          periodSeconds: 60
       imagePullSecrets:
       - name: registry-key
 ---
@@ -142,7 +156,7 @@ spec:
           valueFrom:
            configMapKeyRef:
              name: externalcfg
-             key: identity__ConnectionString
+             key: IdentitySqlDb
         - name: DPConnectionString
           valueFrom:
            configMapKeyRef:
@@ -154,52 +168,37 @@ spec:
           valueFrom:
            configMapKeyRef:
              name: urls
-             key: mvc_e
+             key: MvcClientExternalUrl
         - name: SpaClient
           valueFrom:
            configMapKeyRef:
              name: urls
-             key: spa_e
+             key: SpaClientExternalUrl
         - name: LocationApiClient
           valueFrom:
            configMapKeyRef:
              name: urls
-             key: locations_e
+             key: LocationApiClient
         - name: MarketingApiClient
           valueFrom:
            configMapKeyRef:
              name: urls
-             key: marketing_e
+             key: MarketingApiClient
         - name: BasketApiClient
           valueFrom:
            configMapKeyRef:
              name: urls
-             key: basket_e 
+             key: BasketApiClient 
         - name: OrderingApiClient
           valueFrom:
            configMapKeyRef:
              name: urls
-             key: ordering_e  
-        - name: MobileShoppingAggClient
-          valueFrom:
-           configMapKeyRef:
-             name: urls
-             key: mobileshoppingagg_e       
-        - name: WebShoppingAggClient
-          valueFrom:
-           configMapKeyRef:
-             name: urls
-             key: webshoppingagg_e      
-        - name: XamarinCallback
-          valueFrom:
-           configMapKeyRef:
-             name: urls
-             key: xamarin_callback_e                                        
+             key: OrderingApiClient  
         - name: ApplicationInsights__InstrumentationKey
           valueFrom:
            configMapKeyRef:
              name: externalcfg
-             key: all__InstrumentationKey 
+             key: Instrumentation_Key 
         - name: OrchestratorType
           value: 'K8S'                            
         ports:
@@ -209,8 +208,15 @@ spec:
             path: /hc
             port: 80
             scheme: HTTP 
-          initialDelaySeconds: 300
-          periodSeconds: 240
+          initialDelaySeconds: 60
+          periodSeconds: 60
+        livenessProbe:
+          httpGet:
+            path: /liveness
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 120
+          periodSeconds: 60
       imagePullSecrets:
       - name: registry-key
 ---
@@ -237,42 +243,32 @@ spec:
           valueFrom:
            configMapKeyRef:
              name: externalcfg
-             key: ordering__ConnectionString
+             key: OrderingSqlDb
         - name: EventBusConnection
           valueFrom:
            configMapKeyRef:
              name: externalcfg
-             key: all__EventBusConnection
+             key: OrderingBus
         - name: AzureServiceBusEnabled
           valueFrom:
            configMapKeyRef:
              name: externalcfg
-             key: all__UseAzureServiceBus
+             key: UseAzureServiceBus
         - name: IdentityUrl
           valueFrom:
            configMapKeyRef:
              name: urls
-             key: identity_e
-        - name: CheckUpdateTime
-          valueFrom:
-           configMapKeyRef:
-             name: externalcfg
-             key: GracePeriodManager__CheckUpdateTime
-        - name: GracePeriodTime
-          valueFrom:
-           configMapKeyRef:
-             name: externalcfg
-             key: GracePeriodManager__GracePeriodTime  
+             key: IdentityUrl
         - name: ApplicationInsights__InstrumentationKey
           valueFrom:
            configMapKeyRef:
              name: externalcfg
-             key: all__InstrumentationKey
+             key: Instrumentation_Key
         - name: UseLoadTest
           valueFrom:
            configMapKeyRef:
              name: externalcfg
-             key: all__EnableLoadTest
+             key: EnableLoadTest
         - name: OrchestratorType
           value: 'K8S'           
         ports:
@@ -282,8 +278,90 @@ spec:
             path: /hc
             port: 80
             scheme: HTTP 
-          initialDelaySeconds: 300
-          periodSeconds: 240
+          initialDelaySeconds: 60
+          periodSeconds: 60
+        livenessProbe:
+          httpGet:
+            path: /liveness
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 120
+          periodSeconds: 60
+      imagePullSecrets:
+      - name: registry-key
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: orderingbackground
+spec:
+  paused: true
+  template:
+    metadata:
+      labels:
+        app: eshop
+        component: orderingbackground
+    spec:
+      containers:
+      - name: orderingbackground
+        image: eshop/ordering.backgroundtasks
+        imagePullPolicy: Always
+        env:
+        - name: PATH_BASE
+          value: /ordering-backgroundtasks
+        - name: ConnectionString
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: OrderingSqlDb
+        - name: EventBusConnection
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: OrderingBus
+        - name: AzureServiceBusEnabled
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: UseAzureServiceBus
+        - name: CheckUpdateTime
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: GracePeriodManager_CheckUpdateTime
+        - name: GracePeriodTime
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: GracePeriodManager_GracePeriodTime  
+        - name: ApplicationInsights__InstrumentationKey
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: Instrumentation_Key
+        - name: UseLoadTest
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: EnableLoadTest
+        - name: OrchestratorType
+          value: 'K8S'           
+        ports:
+        - containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 60
+          periodSeconds: 60
+        livenessProbe:
+          httpGet:
+            path: /liveness
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 120
+          periodSeconds: 60
       imagePullSecrets:
       - name: registry-key
 ---
@@ -310,42 +388,42 @@ spec:
           valueFrom:
            configMapKeyRef:
              name: externalcfg
-             key: locations__ConnectionString
+             key: LocationsNoSqlDb
         - name: Database
           valueFrom:
            configMapKeyRef:
              name: externalcfg
-             key: locations__Database
+             key: LocationsNoSqlDbName
         - name: AzureServiceBusEnabled
           valueFrom:
            configMapKeyRef:
              name: externalcfg
-             key: all__UseAzureServiceBus
+             key: UseAzureServiceBus
         - name: EventBusConnection
           valueFrom:
            configMapKeyRef:
              name: externalcfg
-             key: all__EventBusConnection
+             key: LocationsBus
         - name: IdentityUrl
           valueFrom:
            configMapKeyRef:
-             name: internalurls
-             key: identity
+             name: urls
+             key: IdentityUrl
         - name: IdentityUrlExternal
           valueFrom:
            configMapKeyRef:
              name: urls
-             key: identity_e
+             key: IdentityUrl   
         - name: ApplicationInsights__InstrumentationKey
           valueFrom:
            configMapKeyRef:
              name: externalcfg
-             key: all__InstrumentationKey
+             key: Instrumentation_Key
         - name: UseLoadTest
           valueFrom:
            configMapKeyRef:
              name: externalcfg
-             key: all__EnableLoadTest
+             key: EnableLoadTest
         - name: OrchestratorType
           value: 'K8S'          
         ports:
@@ -355,8 +433,15 @@ spec:
             path: /hc
             port: 80
             scheme: HTTP 
-          initialDelaySeconds: 300
-          periodSeconds: 240 
+          initialDelaySeconds: 50
+          periodSeconds: 60
+        livenessProbe:
+          httpGet:
+            path: /liveness
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 120
+          periodSeconds: 60
       imagePullSecrets:
       - name: registry-key
 ---
@@ -383,37 +468,37 @@ spec:
           valueFrom:
            configMapKeyRef:
              name: externalcfg
-             key: marketing__ConnectionString
+             key: MarketingSqlDb
         - name: MongoConnectionString
           valueFrom:
            configMapKeyRef:
              name: externalcfg
-             key: marketing__MongoConnectionString
+             key: MarketingNoSqlDb
         - name: MongoDatabase
           valueFrom:
            configMapKeyRef:
              name: externalcfg
-             key: marketing__MongoDatabase 
+             key: MarketingNoSqlDbName 
         - name: AzureServiceBusEnabled
           valueFrom:
            configMapKeyRef:
              name: externalcfg
-             key: all__UseAzureServiceBus
+             key: UseAzureServiceBus
         - name: EventBusConnection
           valueFrom:
            configMapKeyRef:
              name: externalcfg
-             key: all__EventBusConnection
+             key: MarketingBus
         - name: IdentityUrl
           valueFrom:
            configMapKeyRef:
-             name: internalurls
-             key: identity
+             name: urls
+             key: IdentityUrl
         - name: IdentityUrlExternal
           valueFrom:
            configMapKeyRef:
              name: urls
-             key: identity_e             
+             key: IdentityUrl             
         - name: PicBaseUrl
           valueFrom:
            configMapKeyRef:
@@ -423,12 +508,12 @@ spec:
           valueFrom:
            configMapKeyRef:
              name: externalcfg
-             key: all__InstrumentationKey
+             key: Instrumentation_Key
         - name: UseLoadTest
           valueFrom:
            configMapKeyRef:
              name: externalcfg
-             key: all__EnableLoadTest
+             key: EnableLoadTest
         - name: OrchestratorType
           value: 'K8S'            
         ports:
@@ -438,8 +523,15 @@ spec:
             path: /hc
             port: 80
             scheme: HTTP 
-          initialDelaySeconds: 300
-          periodSeconds: 240
+          initialDelaySeconds: 60
+          periodSeconds: 60
+        livenessProbe:
+          httpGet:
+            path: /liveness
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 120
+          periodSeconds: 60
       imagePullSecrets:
       - name: registry-key
 ---
@@ -466,17 +558,17 @@ spec:
           valueFrom:
            configMapKeyRef:
              name: externalcfg
-             key: all__UseAzureServiceBus
+             key: UseAzureServiceBus
         - name: EventBusConnection
           valueFrom:
            configMapKeyRef:
              name: externalcfg
-             key: all__EventBusConnection
+             key: PaymentBus
         - name: ApplicationInsights__InstrumentationKey
           valueFrom:
            configMapKeyRef:
              name: externalcfg
-             key: all__InstrumentationKey
+             key: Instrumentation_Key
         - name: OrchestratorType
           value: 'K8S'
         ports:
@@ -486,8 +578,15 @@ spec:
             path: /hc
             port: 80
             scheme: HTTP 
-          initialDelaySeconds: 300
-          periodSeconds: 240
+          initialDelaySeconds: 60
+          periodSeconds: 60
+        livenessProbe:
+          httpGet:
+            path: /liveness
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 120
+          periodSeconds: 60
       imagePullSecrets:
       - name: registry-key      
 ---
@@ -517,66 +616,81 @@ spec:
              key: keystore
         - name: IsClusterEnv
           value: 'True'
-        - name: PurchaseUrl
+        - name: BasketUrl
           valueFrom:
            configMapKeyRef:
-             name: internalurls
-             key: apigwws          
+             name: urls
+             key: MvcClientBasketUrl
         - name: CallBackUrl
           valueFrom:
            configMapKeyRef:
              name: urls
-             key: mvc_e
+             key: MvcClientExternalUrl
+        - name: LocationsUrl
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: MvcClientLocationsUrl
+        - name: CatalogUrl
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: MvcClientCatalogUrl
         - name: IdentityUrl
           valueFrom:
            configMapKeyRef:
              name: urls
-             key: identity_e
+             key: IdentityUrl
+        - name: OrderingUrl
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: MvcClientOrderingUrl
         - name: MarketingUrl
           valueFrom:
            configMapKeyRef:
-             name: internalurls
-             key: apigwwm 
+             name: urls
+             key: MvcClientMarketingUrl 
         - name: BasketUrlHC
           valueFrom:
            configMapKeyRef:
-             name: internalurls
-             key: basket__hc        
+             name: urls
+             key: BasketHealthCheckUrl        
         - name: CatalogUrlHC
           valueFrom:
            configMapKeyRef:
-             name: internalurls
-             key: catalog__hc
+             name: urls
+             key: CatalogHealthCheckUrl
         - name: IdentityUrlHC
           valueFrom:
            configMapKeyRef:
-             name: internalurls
-             key: identity__hc
+             name: urls
+             key: IdentityHealthCheckUrl
         - name: OrderingUrlHC
           valueFrom:
            configMapKeyRef:
-             name: internalurls
-             key: ordering__hc
+             name: urls
+             key: OrderingHealthCheckUrl
         - name: MarketingUrlHC
           valueFrom:
            configMapKeyRef:
-             name: internalurls
-             key: marketing__hc  
+             name: urls
+             key: MarketingHealthCheckUrl  
         - name: PaymentUrlHC
           valueFrom:
            configMapKeyRef:
-             name: internalurls
-             key: payment__hc  
+             name: urls
+             key: PaymentHealthCheckUrl  
         - name: ApplicationInsights__InstrumentationKey
           valueFrom:
            configMapKeyRef:
              name: externalcfg
-             key: all__InstrumentationKey
+             key: Instrumentation_Key
         - name: UseLoadTest
           valueFrom:
            configMapKeyRef:
              name: externalcfg
-             key: all__EnableLoadTest
+             key: EnableLoadTest
         - name: OrchestratorType
           value: 'K8S'        
         ports:
@@ -586,8 +700,15 @@ spec:
             path: /hc
             port: 80
             scheme: HTTP 
-          initialDelaySeconds: 300
-          periodSeconds: 240
+          initialDelaySeconds: 60
+          periodSeconds: 60
+        livenessProbe:
+          httpGet:
+            path: /liveness
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 120
+          periodSeconds: 60
       imagePullSecrets:
       - name: registry-key
 ---
@@ -613,53 +734,53 @@ spec:
         - name: BasketUrl
           valueFrom:
            configMapKeyRef:
-             name: internalurls
-             key: basket__hc
+             name: urls
+             key: BasketHealthCheckUrl
         - name: CatalogUrl
           valueFrom:
            configMapKeyRef:
-             name: internalurls
-             key: catalog__hc
+             name: urls
+             key: CatalogHealthCheckUrl
         - name: IdentityUrl
           valueFrom:
            configMapKeyRef:
-             name: internalurls
-             key: identity__hc
+             name: urls
+             key: IdentityHealthCheckUrl
         - name: OrderingUrl
           valueFrom:
            configMapKeyRef:
-             name: internalurls
-             key: ordering__hc
+             name: urls
+             key: OrderingHealthCheckUrl
         - name: LocationsUrl
           valueFrom:
            configMapKeyRef:
-             name: internalurls
-             key: locations__hc
+             name: urls
+             key: LocationsHealthCheckUrl
         - name: MarketingUrl
           valueFrom:
            configMapKeyRef:
-             name: internalurls
-             key: marketing__hc
+             name: urls
+             key: MarketingHealthCheckUrl
         - name: mvc
           valueFrom:
            configMapKeyRef:
-             name: internalurls
-             key: mvc__hc
+             name: urls
+             key: WebMvcHealthCheckUrl
         - name: spa
           valueFrom:
            configMapKeyRef:
-             name: internalurls
-             key: spa__hc
+             name: urls
+             key: WebSpaHealthCheckUrl   
         - name: PaymentUrl
           valueFrom:
            configMapKeyRef:
-             name: internalurls
-             key: payment__hc 
+             name: urls
+             key: PaymentHealthCheckUrl 
         - name: ApplicationInsights__InstrumentationKey
           valueFrom:
            configMapKeyRef:
              name: externalcfg
-             key: all__InstrumentationKey  
+             key: Instrumentation_Key  
         - name: OrchestratorType
           value: 'K8S'       
         ports:
@@ -693,61 +814,76 @@ spec:
              key: keystore
         - name: IsClusterEnv
           value: 'True'
-        - name: PurchaseUrl
+        - name: BasketUrl
           valueFrom:
            configMapKeyRef:
              name: urls
-             key: webshoppingapigw_e
+             key: SpaClientBasketExternalUrl
         - name: CallBackUrl
           valueFrom:
            configMapKeyRef:
              name: urls
-             key: spa_e
+             key: SpaClientExternalUrl
+        - name: CatalogUrl
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: SpaClientCatalogExternalUrl
         - name: IdentityUrl
           valueFrom:
            configMapKeyRef:
              name: urls
-             key: identity_e
+             key: SpaClientIdentityExternalUrl
+        - name: OrderingUrl
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: SpaClientOrderingExternalUrl
         - name: MarketingUrl
           valueFrom:
            configMapKeyRef:
              name: urls
-             key: marketingapigw_e
+             key: SpaClientMarketingExternalUrl
+        - name: LocationsUrl
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: SpaClientLocationsUrl
         - name: BasketUrlHC
           valueFrom:
            configMapKeyRef:
-             name: internalurls
-             key: basket__hc        
+             name: urls
+             key: BasketHealthCheckUrl        
         - name: CatalogUrlHC
           valueFrom:
            configMapKeyRef:
-             name: internalurls
-             key: catalog__hc
+             name: urls
+             key: CatalogHealthCheckUrl
         - name: IdentityUrlHC
           valueFrom:
            configMapKeyRef:
-             name: internalurls
-             key: identity__hc
+             name: urls
+             key: IdentityHealthCheckUrl
         - name: OrderingUrlHC
           valueFrom:
            configMapKeyRef:
-             name: internalurls
-             key: ordering__hc
+             name: urls
+             key: OrderingHealthCheckUrl
         - name: MarketingUrlHC
           valueFrom:
            configMapKeyRef:
-             name: internalurls
-             key: marketing__hc
+             name: urls
+             key: MarketingHealthCheckUrl
         - name: PaymentUrlHC
           valueFrom:
            configMapKeyRef:
-             name: internalurls
-             key: payment__hc
+             name: urls
+             key: PaymentHealthCheckUrl
         - name: ApplicationInsights__InstrumentationKey
           valueFrom:
            configMapKeyRef:
              name: externalcfg
-             key: all__InstrumentationKey
+             key: Instrumentation_Key
         - name: OrchestratorType
           value: 'K8S'
         ports:
@@ -757,96 +893,14 @@ spec:
             path: /hc
             port: 80
             scheme: HTTP 
-          initialDelaySeconds: 300
-          periodSeconds: 240
+          initialDelaySeconds: 60
+          periodSeconds: 60
+        livenessProbe:
+          httpGet:
+            path: /liveness
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 120
+          periodSeconds: 60
       imagePullSecrets:
       - name: registry-key
----
-apiVersion: extensions/v1beta1
-kind: Deployment
-metadata:
-  name: webshoppingagg
-spec:
-  paused: true
-  template:
-    metadata:
-      labels:
-        app: eshop
-        component: webshoppingagg
-    spec:
-      containers:
-      - name: webshoppingagg
-        image: eshop/webshoppingagg
-        imagePullPolicy: Always
-        env:
-        - name: ASPNETCORE_URLS
-          value: http://0.0.0.0:80
-        - name: urls__basket
-          valueFrom:
-           configMapKeyRef:
-             name: internalurls
-             key: basket
-        - name: urls__catalog
-          valueFrom:
-           configMapKeyRef:
-             name: internalurls
-             key: catalog
-        - name: urls__orders
-          valueFrom:
-           configMapKeyRef:
-             name: internalurls
-             key: ordering             
-        - name: urls__identity
-          valueFrom:
-           configMapKeyRef:
-             name: internalurls
-             key: identity        
-        ports:
-        - containerPort: 80
-      imagePullSecrets:
-      - name: registry-key
----
-apiVersion: extensions/v1beta1
-kind: Deployment
-metadata:
-  name: mobileshoppingagg
-spec:
-  paused: true
-  template:
-    metadata:
-      labels:
-        app: eshop
-        component: mobileshoppingagg
-    spec:
-      containers:
-      - name: mobileshoppingagg
-        image: eshop/mobileshoppingagg
-        imagePullPolicy: Always
-        env:
-        - name: ASPNETCORE_URLS
-          value: http://0.0.0.0:80
-        - name: urls__basket
-          valueFrom:
-           configMapKeyRef:
-             name: internalurls
-             key: basket
-        - name: urls__catalog
-          valueFrom:
-           configMapKeyRef:
-             name: internalurls
-             key: catalog
-        - name: urls__orders
-          valueFrom:
-           configMapKeyRef:
-             name: internalurls
-             key: ordering             
-        - name: urls__identity
-          valueFrom:
-           configMapKeyRef:
-             name: internalurls
-             key: identity        
-        ports:
-        - containerPort: 80
-      imagePullSecrets:
-      - name: registry-key
----

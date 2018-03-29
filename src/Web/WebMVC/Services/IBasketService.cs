@@ -10,10 +10,10 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
     public interface IBasketService
     {
         Task<Basket> GetBasket(ApplicationUser user);
-        Task AddItemToBasket(ApplicationUser user, int productId);
+        Task AddItemToBasket(ApplicationUser user, BasketItem product);
         Task<Basket> UpdateBasket(Basket basket);
         Task Checkout(BasketDTO basket);
         Task<Basket> SetQuantities(ApplicationUser user, Dictionary<string, int> quantities);
-        Task<Order> GetOrderDraft(string basketId);
+        Order MapBasketToOrder(Basket basket);
     }
 }

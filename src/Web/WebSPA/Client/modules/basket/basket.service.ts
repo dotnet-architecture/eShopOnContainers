@@ -23,7 +23,6 @@ import { Subject }                  from 'rxjs/Subject';
 @Injectable()
 export class BasketService {
     private basketUrl: string = '';
-    private purchaseUrl: string = '';
     basket: IBasket = {
         buyerId: '',
         items: []
@@ -41,14 +40,12 @@ export class BasketService {
             if (this.authService.UserData) {
                 this.basket.buyerId = this.authService.UserData.sub;
                 if (this.configurationService.isReady) {
-                    this.basketUrl = this.configurationService.serverSettings.purchaseUrl; 
-                    this.purchaseUrl = this.configurationService.serverSettings.purchaseUrl;
+                    this.basketUrl = this.configurationService.serverSettings.basketUrl;
                     this.loadData();
                 }
                 else {
                     this.configurationService.settingsLoaded$.subscribe(x => {
-                        this.basketUrl = this.configurationService.serverSettings.purchaseUrl;
-                        this.purchaseUrl = this.configurationService.serverSettings.purchaseUrl;
+                        this.basketUrl = this.configurationService.serverSettings.basketUrl;
                         this.loadData();
                     });
                 }
@@ -66,7 +63,7 @@ export class BasketService {
     }
 
     setBasket(basket): Observable<boolean> {
-        let url = this.purchaseUrl + '/api/v1/basket/';
+        let url = this.basketUrl + '/api/v1/basket/';
         this.basket = basket;
         return this.service.post(url, basket).map((response: Response) => {
             return true;
@@ -74,7 +71,7 @@ export class BasketService {
     }
 
     setBasketCheckout(basketCheckout): Observable<boolean> {
-        let url = this.basketUrl + '/api/v1/b/basket/checkout';
+        let url = this.basketUrl + '/api/v1/basket/checkout';
         return this.service.postWithId(url, basketCheckout).map((response: Response) => {
             this.basketEvents.orderCreated();
             return true;
@@ -82,7 +79,7 @@ export class BasketService {
     }
 
     getBasket(): Observable<IBasket> {
-        let url = this.basketUrl + '/api/v1/b/basket/' + this.basket.buyerId;
+        let url = this.basketUrl + '/api/v1/basket/' + this.basket.buyerId;
         return this.service.get(url).map((response: Response) => {
             if (response.status === 204) {
                 return null;

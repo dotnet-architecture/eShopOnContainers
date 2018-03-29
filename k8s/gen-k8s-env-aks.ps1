@@ -3,9 +3,11 @@
     [parameter(Mandatory=$true)][string]$location,
     [parameter(Mandatory=$false)][string]$registryName,
     [parameter(Mandatory=$true)][string]$serviceName,
+    [parameter(Mandatory=$true)][string]$dnsName,
     [parameter(Mandatory=$true)][string]$createAcr=$true,
-    [parameter(Mandatory=$false)][int]$nodeCount=3,
-    [parameter(Mandatory=$false)][string]$nodeVMSize="Standard_D2_v2"
+    [parameter(Mandatory=$false)][int]$nodeCount=2,
+    [parameter(Mandatory=$false)][string]$nodeVMSize="Standard_D2_v2",
+	[parameter(Mandatory=$false)][string]$kubernetesVersion="1.7.7"
 )
 
 # Create resource group
@@ -20,9 +22,9 @@ if ($createAcr -eq $true) {
 
 # Create kubernetes orchestrator
 Write-Host "Creating kubernetes orchestrator..." -ForegroundColor Yellow
-az aks create --resource-group=$resourceGroupName --name=$serviceName --generate-ssh-keys --node-count=$nodeCount --node-vm-size=$nodeVMSize
+az aks create --resource-group=$resourceGroupName --name=$serviceName --dns-name-prefix=$dnsName --generate-ssh-keys --node-count=$nodeCount --node-vm-size=$nodeVMSize --kubernetes-version $kubernetesVersion
 
-# Retrieve kubernetes cluster configuration and save it under ~/.kube/config
+# Retrieve kubernetes cluster configuration and save it under ~/.kube/config 
 az aks get-credentials --resource-group=$resourceGroupName --name=$serviceName
 
 if ($createAcr -eq $true) {
