@@ -4,7 +4,7 @@
     {
         public const string AzureTag = "Azure";
         public const string MockTag = "Mock";
-        public const string DefaultEndpoint = "http://13.88.8.119";
+        public const string DefaultEndpoint = "http://YOUR_IP_OR_DNS_NAME"; // i.e.: "http://YOUR_IP" or "http://YOUR_DNS_NAME"
 
         private string _baseEndpoint;
         private static readonly GlobalSetting _instance = new GlobalSetting();
@@ -38,17 +38,7 @@
 
         public string RegisterWebsite { get; set; }
 
-        public string CatalogEndpoint { get; set; }
-
-        public string OrdersEndpoint { get; set; }
-
-        public string BasketEndpoint { get; set; }
-
         public string IdentityEndpoint { get; set; }
-
-        public string LocationEndpoint { get; set; }
-
-        public string MarketingEndpoint { get; set; }
 
         public string UserInfoEndpoint { get; set; }
 
@@ -62,18 +52,17 @@
 
         private void UpdateEndpoint(string baseEndpoint)
         {
-            RegisterWebsite = $"{baseEndpoint}:5105/Account/Register";
-            CatalogEndpoint = $"{baseEndpoint}:5101";
-            OrdersEndpoint = $"{baseEndpoint}:5102";
-            BasketEndpoint = $"{baseEndpoint}:5103";
-            IdentityEndpoint = $"{baseEndpoint}:5105/connect/authorize";
-            UserInfoEndpoint = $"{baseEndpoint}:5105/connect/userinfo";
-            TokenEndpoint = $"{baseEndpoint}:5105/connect/token";
-            LogoutEndpoint = $"{baseEndpoint}:5105/connect/endsession";
-            IdentityCallback = $"{baseEndpoint}:5105/xamarincallback";
-            LogoutCallback = $"{baseEndpoint}:5105/Account/Redirecting";
-            LocationEndpoint = $"{baseEndpoint}:5109";
-            MarketingEndpoint = $"{baseEndpoint}:5110";
+            var identityBaseEndpoint = $"{baseEndpoint}/identity";
+            RegisterWebsite = $"{identityBaseEndpoint}/Account/Register";
+            LogoutCallback = $"{identityBaseEndpoint}/Account/Redirecting";
+
+            var connectBaseEndpoint = $"{identityBaseEndpoint}/connect";
+            IdentityEndpoint = $"{connectBaseEndpoint}/authorize";
+            UserInfoEndpoint = $"{connectBaseEndpoint}/userinfo";
+            TokenEndpoint = $"{connectBaseEndpoint}/token";
+            LogoutEndpoint = $"{connectBaseEndpoint}/endsession";
+			
+            IdentityCallback = $"{baseEndpoint}/xamarincallback";
         }
     }
 }

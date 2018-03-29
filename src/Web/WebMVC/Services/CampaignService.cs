@@ -26,7 +26,7 @@
             _apiClient = httpClient;
             _logger = logger;
 
-            _remoteServiceBaseUrl = $"{_settings.Value.MarketingUrl}/api/v1/campaigns/";
+            _remoteServiceBaseUrl = $"{_settings.Value.MarketingUrl}/api/v1/m/campaigns/";
             _httpContextAccesor = httpContextAccesor ?? throw new ArgumentNullException(nameof(httpContextAccesor));
         }
 
