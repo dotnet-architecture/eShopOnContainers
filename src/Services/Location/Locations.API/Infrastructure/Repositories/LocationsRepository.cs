@@ -19,44 +19,44 @@
             _context = new LocationsContext(settings);
         }        
         
-        public async Task<Locations> GetAsync(int locationId)
+        public Task<Locations> GetAsync(int locationId)
         {
             var filter = Builders<Locations>.Filter.Eq("LocationId", locationId);
-            return await _context.Locations
-                                 .Find(filter)
-                                 .FirstOrDefaultAsync();
+            return _context.Locations
+                .Find(filter)
+                .FirstOrDefaultAsync();
         }
 
-        public async Task<UserLocation> GetUserLocationAsync(string userId)
+        public Task<UserLocation> GetUserLocationAsync(string userId)
         {
             var filter = Builders<UserLocation>.Filter.Eq("UserId", userId);
-            return await _context.UserLocation
-                                 .Find(filter)
-                                 .FirstOrDefaultAsync();
+            return _context.UserLocation
+                .Find(filter)
+                .FirstOrDefaultAsync();
         }
 
-        public async Task<List<Locations>> GetLocationListAsync()
+        public Task<List<Locations>> GetLocationListAsync()
         {
-            return await _context.Locations.Find(new BsonDocument()).ToListAsync();
+            return _context.Locations.Find(new BsonDocument()).ToListAsync();
         }       
 
-        public async Task<List<Locations>> GetCurrentUserRegionsListAsync(LocationRequest currentPosition)
+        public Task<List<Locations>> GetCurrentUserRegionsListAsync(LocationRequest currentPosition)
         {
             var point = GeoJson.Point(GeoJson.Geographic(currentPosition.Longitude, currentPosition.Latitude));
             var orderByDistanceQuery = new FilterDefinitionBuilder<Locations>().Near(x => x.Location, point);
             var withinAreaQuery = new FilterDefinitionBuilder<Locations>().GeoIntersects("Polygon", point);
             var filter = Builders<Locations>.Filter.And(orderByDistanceQuery, withinAreaQuery);
-            return await _context.Locations.Find(filter).ToListAsync(); 
+            return _context.Locations.Find(filter).ToListAsync(); 
         }        
 
-        public async Task AddUserLocationAsync(UserLocation location)
+        public Task AddUserLocationAsync(UserLocation location)
         {
-            await _context.UserLocation.InsertOneAsync(location);
+            return _context.UserLocation.InsertOneAsync(location);
         }
 
-        public async Task UpdateUserLocationAsync(UserLocation userLocation)
+        public Task UpdateUserLocationAsync(UserLocation userLocation)
         {
-            await _context.UserLocation.ReplaceOneAsync(
+            return _context.UserLocation.ReplaceOneAsync(
                 doc => doc.UserId == userLocation.UserId,
                 userLocation,
                 new UpdateOptions { IsUpsert = true });

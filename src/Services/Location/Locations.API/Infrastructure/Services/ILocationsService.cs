@@ -7,12 +7,12 @@
 
     public interface ILocationsService
     {
-        Task<Locations> GetLocation(int locationId);
+        Task<Locations> GetLocationAsync(int locationId);
 
-        Task<UserLocation> GetUserLocation(string id);
+        Task<UserLocation> GetUserLocationAsync(string id);
 
-        Task<List<Locations>> GetAllLocation();
+        Task<List<Locations>> GetAllLocationAsync();
 
-        Task<bool> AddOrUpdateUserLocation(string userId, LocationRequest locRequest);
+        Task<bool> AddOrUpdateUserLocationAsync(string userId, LocationRequest locRequest);
     }
 }
