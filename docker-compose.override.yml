@@ -228,8 +228,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - IdentityUrl=http://identity.api              #Local: You need to open your local dev-machine firewall at range 5100-5110.
     ports:
-      - "5200:80"   # Important: In a production environment your should remove the external port (5200) kept here for microservice debugging purposes. 
-                    # The API Gateway redirects and access through the internal port (80).
+      - "5200:80"   
     volumes:
       - ./src/ApiGateways/Mobile.Bff.Shopping/apigw:/app/configuration
  
@@ -238,8 +237,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - IdentityUrl=http://identity.api              #Local: You need to open your local dev-machine firewall at range 5100-5110.
     ports:
-      - "5201:80"   # Important: In a production environment your should remove the external port (5201) kept here for microservice debugging purposes. 
-                    # The API Gateway redirects and access through the internal port (80).
+      - "5201:80"   
     volumes:
       - ./src/ApiGateways/Mobile.Bff.Marketing/apigw:/app/configuration
 
@@ -248,8 +246,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - IdentityUrl=http://identity.api              #Local: You need to open your local dev-machine firewall at range 5100-5110.
     ports:
-      - "5202:80"   # Important: In a production environment your should remove the external port (5202) kept here for microservice debugging purposes. 
-                    # The API Gateway redirects and access through the internal port (80).
+      - "5202:80"   
     volumes:
       - ./src/ApiGateways/Web.Bff.Shopping/apigw:/app/configuration
 
@@ -258,8 +255,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - IdentityUrl=http://identity.api              #Local: You need to open your local dev-machine firewall at range 5100-5110.
     ports:
-      - "5203:80"   # Important: In a production environment your should remove the external port (5203) kept here for microservice debugging purposes. 
-                    # The API Gateway redirects and access through the internal port (80).
+      - "5203:80"   
     volumes:
       - ./src/ApiGateways/Web.Bff.Marketing/apigw:/app/configuration
 
