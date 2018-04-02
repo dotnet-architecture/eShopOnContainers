@@ -65,8 +65,7 @@ services:
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
       - OrchestratorType=${ORCHESTRATOR_TYPE}
     ports:
-      - "5105:80"   # Important: In a production environment your should remove the external port (5105) kept here for microservice debugging purposes. 
-                    # The API Gateway redirects and access through the internal port (80).
+      - "5105:80"   
 
   ordering.api:
     environment:
