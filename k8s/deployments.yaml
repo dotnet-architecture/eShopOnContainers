@@ -107,6 +107,11 @@ spec:
            configMapKeyRef:
              name: externalcfg
              key: CatalogBus
+        - name: AzureServiceBusEnabled
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: UseAzureServiceBus
         - name: ApplicationInsights__InstrumentationKey
           valueFrom:
            configMapKeyRef:
