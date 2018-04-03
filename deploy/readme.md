@@ -24,7 +24,7 @@ Using `docker-machine` is the recommended way to create a VM with docker install
 5. [Deploying Catalog Storage](az/storage/catalog/readme.md)
 6. [Deploying Marketing Storage](az/storage/marketing/readme.md)
 7. [Deploying Marketing Azure functions](az/azurefunctions/readme.md)
-
+8. [Deploying Azure Application Insights](az/applicationinsights/readme.md) 
 
 
 

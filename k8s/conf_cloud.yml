@@ -32,3 +32,4 @@ data:
 # Global entries
   UseAzureServiceBus: "TRUE" IF USE AZURE SB ("FALSE" FOR USING RABBITMQ)
   keystore: REDIS CONNECTION STRING FOR KEYSTORE
+  Instrumentation_Key: ""
