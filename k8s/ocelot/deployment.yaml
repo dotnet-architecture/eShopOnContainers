@@ -12,7 +12,7 @@ spec:
     spec:
       containers:
       - name: apigwmm
-        image: eshop/ocelotapigw-mm
+        image: eshop/ocelotapigw
         imagePullPolicy: Always
         env:
         - name: PATH_BASE
@@ -51,7 +51,7 @@ spec:
     spec:
       containers:
       - name: apigwms
-        image: eshop/ocelotapigw-ms
+        image: eshop/ocelotapigw
         imagePullPolicy: Always
         env:
         - name: PATH_BASE
@@ -90,7 +90,7 @@ spec:
     spec:
       containers:
       - name: apigwwm
-        image: eshop/ocelotapigw-wm
+        image: eshop/ocelotapigw
         imagePullPolicy: Always
         env:
         - name: PATH_BASE
@@ -129,7 +129,7 @@ spec:
     spec:
       containers:
       - name: apigwws
-        image: eshop/ocelotapigw-ws
+        image: eshop/ocelotapigw
         imagePullPolicy: Always
         env:
         - name: PATH_BASE
