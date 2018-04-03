@@ -1,4 +1,4 @@
-version: '3.3'
+version: '3.4'
 
 # The Production docker-compose file has to have the external/real IPs or DNS names for the services 
 # The ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP environment variable is taken, by default, from the ".env" file defined like: 

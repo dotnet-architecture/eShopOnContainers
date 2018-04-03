@@ -205,7 +205,8 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
                .UseSwaggerUI(c =>
                {
                    c.SwaggerEndpoint($"{ (!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty) }/swagger/v1/swagger.json", "Basket.API V1");
-                   c.ConfigureOAuth2("basketswaggerui", "", "", "Basket Swagger UI");
+                   c.OAuthClientId ("basketswaggerui");
+                   c.OAuthAppName("Basket Swagger UI");
                });
 
             ConfigureEventBus(app);

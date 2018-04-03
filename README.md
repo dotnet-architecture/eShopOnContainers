@@ -4,8 +4,6 @@ Sample .NET Core reference application, powered by Microsoft, based on a simplif
 **NEWS / ANNOUNCEMENTS**
 Do you want to be up-to-date on .NET Architecture guidance and reference apps like eShopOnContainers? --> Subscribe by "WATCHING" this new GitHub repo: https://github.com/dotnet-architecture/News 
 
-**Note Visual Studio 2017 version required**: Please, use VS 2017 15.5 or later. 
-
 **Note for Pull Requests**: We accept pull request from the community. When doing it, please do it onto the DEV branch which is the consolidated work-in-progress branch. Do not request it onto Master, if possible.
 
 ## Updated for .NET Core 2.0 "wave" of technologies
