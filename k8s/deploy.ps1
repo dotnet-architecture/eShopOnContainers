@@ -65,7 +65,7 @@ if ($buildImages) {
     docker-compose -p .. -f ../docker-compose.yml build    
 
     Write-Host "Pushing images to $registry/$dockerOrg..." -ForegroundColor Yellow
-    $services = ("basket.api", "catalog.api", "identity.api", "ordering.api", "marketing.api","payment.api","locations.api", "webmvc", "webspa", "webstatus", "ocelotapigw-mm", "ocelotapigw-ms", "ocelotapigw-wm", "ocelotapigw-ws", "mobileshoppingagg", "webshoppingagg")
+    $services = ("basket.api", "catalog.api", "identity.api", "ordering.api", "marketing.api","payment.api","locations.api", "webmvc", "webspa", "webstatus", "ocelotapigw", "mobileshoppingagg", "webshoppingagg")
 
     foreach ($service in $services) {
         $imageFqdn = if ($useDockerHub)  {"$dockerOrg/${service}"} else {"$registry/$dockerOrg/${service}"}
@@ -171,10 +171,10 @@ ExecKube -cmd 'set image deployments/webspa webspa=${registryPath}${dockerOrg}/w
 ExecKube -cmd 'set image deployments/mobileshoppingagg mobileshoppingagg=${registryPath}${dockerOrg}/mobileshoppingagg:$imageTag'
 ExecKube -cmd 'set image deployments/webshoppingagg webshoppingagg=${registryPath}${dockerOrg}/webshoppingagg:$imageTag'
 
-ExecKube -cmd 'set image deployments/apigwmm apigwmm=${registryPath}${dockerOrg}/ocelotapigw-mm:$imageTag'
-ExecKube -cmd 'set image deployments/apigwms apigwms=${registryPath}${dockerOrg}/ocelotapigw-ms:$imageTag'
-ExecKube -cmd 'set image deployments/apigwwm apigwwm=${registryPath}${dockerOrg}/ocelotapigw-wm:$imageTag'
-ExecKube -cmd 'set image deployments/apigwws apigwws=${registryPath}${dockerOrg}/ocelotapigw-ws:$imageTag'
+ExecKube -cmd 'set image deployments/apigwmm apigwmm=${registryPath}${dockerOrg}/ocelotapigw:$imageTag'
+ExecKube -cmd 'set image deployments/apigwms apigwms=${registryPath}${dockerOrg}/ocelotapigw:$imageTag'
+ExecKube -cmd 'set image deployments/apigwwm apigwwm=${registryPath}${dockerOrg}/ocelotapigw:$imageTag'
+ExecKube -cmd 'set image deployments/apigwws apigwws=${registryPath}${dockerOrg}/ocelotapigw:$imageTag'
 
 Write-Host "Execute rollout..." -ForegroundColor Yellow
 ExecKube -cmd 'rollout resume deployments/basket'
