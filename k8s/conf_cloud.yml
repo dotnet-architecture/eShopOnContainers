@@ -3,14 +3,12 @@ kind: ConfigMap
 metadata:
   name: externalcfg
   labels:
-    app: eshop  
+    app: eshop
 data:
 # Basket.API entries
-  BasketBus: CONNECTION_STRING (NAME OF RABBITMQ CONTAINER OR Endpoint=sb://XXXX for topic in case of using Azure)
-  BasketRedisConStr: REDIS CONNECTION STRING FOR BASKET
+  basket__ConnectionString: REDIS CONNECTION STRING FOR BASKET
 # Catalog.API entries
-  CatalogBus: CONNECTION_STRING (NAME OF RABBITMQ CONTAINER OR Endpoint=sb://XXXX for topic in case of using Azure)
-  CatalogSqlDb: Catalog SQL SERVER CONNECTION STRING (Server=xxxx;Intial Catalog=yyy;....)
+  catalog__ConnectionString: Catalog SQL SERVER CONNECTION STRING (Server=xxxx;Intial Catalog=yyy;....)
 # Identity.API entries
   IdentitySqlDb: Identity SQL SERVER CONNECTION STRING (Server=xxxx;Intial Catalog=yyy;....)
 # Locations.API entries
@@ -30,5 +28,7 @@ data:
 # Payment.API entries
   PaymentBus: CONNECTION_STRING (NAME OF RABBITMQ CONTAINER OR Endpoint=sb://XXXX for topic in case of using Azure)
 # Global entries
-  UseAzureServiceBus: "TRUE" IF USE AZURE SB ("FALSE" FOR USING RABBITMQ)
+  all_UseAzureServiceBus: "TRUE" IF USE AZURE SB ("FALSE" FOR USING RABBITMQ)
   keystore: REDIS CONNECTION STRING FOR KEYSTORE
+  all_EventBusConnection: CONNECTION_STRING (NAME OF RABBITMQ CONTAINER OR Endpoint=sb://XXXX in case of using Azure)
+  all_InstrumentationKey: APPINSIGHTS KEY

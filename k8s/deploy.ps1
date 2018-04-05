@@ -65,7 +65,7 @@ if ($buildImages) {
     docker-compose -p .. -f ../docker-compose.yml build    
 
     Write-Host "Pushing images to $registry/$dockerOrg..." -ForegroundColor Yellow
-    $services = ("basket.api", "catalog.api", "identity.api", "ordering.api", "ordering.backgroundtasks", "marketing.api","payment.api","locations.api", "webmvc", "webspa", "webstatus")
+    $services = ("basket.api", "catalog.api", "identity.api", "ordering.api", "marketing.api","payment.api","locations.api", "webmvc", "webspa", "webstatus", "ocelotapigw", "mobileshoppingagg", "webshoppingagg")
 
     foreach ($service in $services) {
         $imageFqdn = if ($useDockerHub)  {"$dockerOrg/${service}"} else {"$registry/$dockerOrg/${service}"}
@@ -103,8 +103,10 @@ if (-not [string]::IsNullOrEmpty($dockerUser)) {
 Write-Host "Removing existing services & deployments.." -ForegroundColor Yellow
 ExecKube -cmd 'delete deployments --all'
 ExecKube -cmd 'delete services --all'
+ExecKube -cmd 'delete configmap internalurls'
 ExecKube -cmd 'delete configmap urls'
 ExecKube -cmd 'delete configmap externalcfg'
+ExecKube -cmd 'delete configmap ocelot'
 
 # start sql, rabbitmq, frontend deployments
 if ($deployInfrastructure) {
@@ -113,48 +115,35 @@ if ($deployInfrastructure) {
 }
 
 
+Write-Host 'Deploying ocelot APIGW' -ForegroundColor Yellow
+
+ExecKube "create configmap ocelot --from-file=mm=ocelot/configuration-mobile-marketing.json --from-file=ms=ocelot/configuration-mobile-shopping.json --from-file=wm=ocelot/configuration-web-marketing.json --from-file=ws=ocelot/configuration-web-shopping.json "
+ExecKube -cmd "apply -f ocelot/deployment.yaml"
+ExecKube -cmd "apply -f ocelot/service.yaml"
+
 Write-Host 'Deploying code deployments (Web APIs, Web apps, ...)' -ForegroundColor Yellow
 ExecKube -cmd 'create -f services.yaml'
 
+ExecKube -cmd 'create -f internalurls.yaml'
 ExecKube -cmd 'create configmap urls `
-    --from-literal=BasketUrl=http://basket `
-    --from-literal=BasketHealthCheckUrl=http://basket/hc `
-    --from-literal=CatalogUrl=http://$($externalDns)/catalog-api `
-    --from-literal=CatalogHealthCheckUrl=http://catalog/hc `
-    --from-literal=PicBaseUrl=http://$($externalDns)/catalog-api/api/v1/catalog/items/[0]/pic/ `
-    --from-literal=Marketing_PicBaseUrl=http://$($externalDns)/marketing-api/api/v1/campaigns/[0]/pic/ `
-    --from-literal=IdentityUrl=http://$($externalDns)/identity `
-    --from-literal=IdentityHealthCheckUrl=http://identity/hc `
-    --from-literal=OrderingUrl=http://ordering `
-    --from-literal=OrderingHealthCheckUrl=http://ordering/hc `
-    --from-literal=MvcClientExternalUrl=http://$($externalDns)/webmvc `
-    --from-literal=WebMvcHealthCheckUrl=http://webmvc/hc `
-    --from-literal=MvcClientOrderingUrl=http://ordering `
-    --from-literal=MvcClientCatalogUrl=http://catalog `
-    --from-literal=MvcClientBasketUrl=http://basket `
-    --from-literal=MvcClientMarketingUrl=http://marketing `
-	--from-literal=MvcClientLocationsUrl=http://locations `
-    --from-literal=MarketingHealthCheckUrl=http://marketing/hc `
-    --from-literal=WebSpaHealthCheckUrl=http://webspa/hc `
-    --from-literal=SpaClientMarketingExternalUrl=http://$($externalDns)/marketing-api `
-    --from-literal=SpaClientOrderingExternalUrl=http://$($externalDns)/ordering-api `
-    --from-literal=SpaClientCatalogExternalUrl=http://$($externalDns)/catalog-api `
-    --from-literal=SpaClientBasketExternalUrl=http://$($externalDns)/basket-api `
-    --from-literal=SpaClientIdentityExternalUrl=http://$($externalDns)/identity `
-	--from-literal=SpaClientLocationsUrl=http://$($externalDns)/locations-api `
-    --from-literal=LocationsHealthCheckUrl=http://locations/hc `
-    --from-literal=SpaClientExternalUrl=http://$($externalDns) `
-    --from-literal=LocationApiClient=http://$($externalDns)/locations-api `
-    --from-literal=MarketingApiClient=http://$($externalDns)/marketing-api `
-    --from-literal=BasketApiClient=http://$($externalDns)/basket-api `
-    --from-literal=OrderingApiClient=http://$($externalDns)/ordering-api `
-    --from-literal=PaymentHealthCheckUrl=http://payment/hc'
-	
+    --from-literal=PicBaseUrl=http://$($externalDns)/webshoppingapigw/api/v1/c/catalog/items/[0]/pic/ `
+    --from-literal=Marketing_PicBaseUrl=http://$($externalDns)/webmarketingapigw/api/v1/m/campaigns/[0]/pic/ `
+    --from-literal=mvc_e=http://$($externalDns)/webmvc `
+    --from-literal=marketingapigw_e=http://$($externalDns)/webmarketingapigw `
+    --from-literal=webshoppingapigw_e=http://$($externalDns)/webshoppingapigw `
+    --from-literal=mobileshoppingagg_e=http://$($externalDns)/mobileshoppingagg `
+    --from-literal=webshoppingagg_e=http://$($externalDns)/webshoppingagg `
+    --from-literal=identity_e=http://$($externalDns)/identity `
+    --from-literal=spa_e=http://$($externalDns) `
+    --from-literal=locations_e=http://$($externalDns)/locations-api `
+    --from-literal=marketing_e=http://$($externalDns)/marketing-api `
+    --from-literal=basket_e=http://$($externalDns)/basket-api `
+    --from-literal=ordering_e=http://$($externalDns)/ordering-api `
+    --from-literal=xamarin_callback_e=http://$($externalDns)/xamarincallback' 
 
 ExecKube -cmd 'label configmap urls app=eshop'
 
 Write-Host "Deploying configuration from $configFile" -ForegroundColor Yellow
-
 ExecKube -cmd "create -f $configFile"
 
 Write-Host "Creating deployments..." -ForegroundColor Yellow
@@ -178,8 +167,14 @@ ExecKube -cmd 'set image deployments/payment payment=${registryPath}${dockerOrg}
 ExecKube -cmd 'set image deployments/webmvc webmvc=${registryPath}${dockerOrg}/webmvc:$imageTag'
 ExecKube -cmd 'set image deployments/webstatus webstatus=${registryPath}${dockerOrg}/webstatus:$imageTag'
 ExecKube -cmd 'set image deployments/webspa webspa=${registryPath}${dockerOrg}/webspa:$imageTag'
-ExecKube -cmd 'set image deployments/orderingbackground orderingbackground=${registryPath}${dockerOrg}/ordering.backgroundtasks:$imageTag'
 
+ExecKube -cmd 'set image deployments/mobileshoppingagg mobileshoppingagg=${registryPath}${dockerOrg}/mobileshoppingagg:$imageTag'
+ExecKube -cmd 'set image deployments/webshoppingagg webshoppingagg=${registryPath}${dockerOrg}/webshoppingagg:$imageTag'
+
+ExecKube -cmd 'set image deployments/apigwmm apigwmm=${registryPath}${dockerOrg}/ocelotapigw:$imageTag'
+ExecKube -cmd 'set image deployments/apigwms apigwms=${registryPath}${dockerOrg}/ocelotapigw:$imageTag'
+ExecKube -cmd 'set image deployments/apigwwm apigwwm=${registryPath}${dockerOrg}/ocelotapigw:$imageTag'
+ExecKube -cmd 'set image deployments/apigwws apigwws=${registryPath}${dockerOrg}/ocelotapigw:$imageTag'
 
 Write-Host "Execute rollout..." -ForegroundColor Yellow
 ExecKube -cmd 'rollout resume deployments/basket'
@@ -192,7 +187,12 @@ ExecKube -cmd 'rollout resume deployments/payment'
 ExecKube -cmd 'rollout resume deployments/webmvc'
 ExecKube -cmd 'rollout resume deployments/webstatus'
 ExecKube -cmd 'rollout resume deployments/webspa'
-ExecKube -cmd 'rollout resume deployments/orderingbackground'
+ExecKube -cmd 'rollout resume deployments/mobileshoppingagg'
+ExecKube -cmd 'rollout resume deployments/webshoppingagg'
+ExecKube -cmd 'rollout resume deployments/apigwmm'
+ExecKube -cmd 'rollout resume deployments/apigwms'
+ExecKube -cmd 'rollout resume deployments/apigwwm'
+ExecKube -cmd 'rollout resume deployments/apigwws'
 
 Write-Host "WebSPA is exposed at http://$externalDns, WebMVC at http://$externalDns/webmvc, WebStatus at http://$externalDns/webstatus" -ForegroundColor Yellow
 

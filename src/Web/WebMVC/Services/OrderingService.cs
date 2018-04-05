@@ -21,7 +21,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
 
         public OrderingService(IOptionsSnapshot<AppSettings> settings, IHttpContextAccessor httpContextAccesor, IHttpClient httpClient)
         {
-            _remoteServiceBaseUrl = $"{settings.Value.OrderingUrl}/api/v1/orders";
+            _remoteServiceBaseUrl = $"{settings.Value.PurchaseUrl}/api/v1/o/orders";
             _settings = settings;
             _httpContextAccesor = httpContextAccesor;
             _apiClient = httpClient;

@@ -19,7 +19,7 @@
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
     <AndroidUseLatestPlatformSdk>true</AndroidUseLatestPlatformSdk>
-    <TargetFrameworkVersion>v8.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v8.1</TargetFrameworkVersion>
     <AndroidSupportedAbis>armeabi,armeabi-v7a,x86</AndroidSupportedAbis>
     <AndroidStoreUncompressedFileExtensions />
     <MandroidI18n />
@@ -211,7 +211,6 @@
     <Compile Include="Effects\CircleEffect.cs" />
     <Compile Include="Effects\BaseContainerEffect.cs" />
     <Compile Include="Activities\SplashActivity.cs" />
-    <Compile Include="Services\SettingsServiceImplementation.cs" />
     <Compile Include="Services\PermissionsService.cs" />
     <Compile Include="Services\LocationServiceImplementation.cs" />
     <Compile Include="Services\GeolocationSingleListener.cs" />

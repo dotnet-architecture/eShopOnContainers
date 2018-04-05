@@ -337,28 +337,14 @@
                 Grid.RowSpan="2"
                 IsVisible="{Binding IsLogin}">
                 <WebView     
-                  Source="{Binding LoginUrl}"
-                  AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
-                  AbsoluteLayout.LayoutFlags="All">
+                    Source="{Binding LoginUrl}"
+                    AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
+                    AbsoluteLayout.LayoutFlags="All">
                     <WebView.Behaviors>
-                        <OnPlatform x:TypeArguments="Behavior">
-                            <On Platform="iOS, Android">
-                                <On.Value>
-                                    <behaviors:EventToCommandBehavior 
-                                        EventName="Navigating"
-                                        EventArgsConverter="{StaticResource WebNavigatingEventArgsConverter}"
-                                        Command="{Binding NavigateCommand}" />
-                                </On.Value>
-                            </On>
-                            <On Platform="UWP">
-                                <On.Value>
-                                    <behaviors:EventToCommandBehavior 
-                                        EventName="Navigated"
-                                        EventArgsConverter="{StaticResource WebNavigatedEventArgsConverter}"
-                                        Command="{Binding NavigateCommand}" />
-                                </On.Value>
-                            </On>
-                        </OnPlatform>
+                        <behaviors:EventToCommandBehavior 
+                            EventName="Navigating"
+                            EventArgsConverter="{StaticResource WebNavigatingEventArgsConverter}"
+                            Command="{Binding NavigateCommand}" />
                     </WebView.Behaviors>
                 </WebView>
             </AbsoluteLayout>

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Collections;
 using Ordering.API.Application.Models;
+using System.Linq;
 
 namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands
 {
@@ -68,7 +69,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands
             string cardNumber, string cardHolderName, DateTime cardExpiration,
             string cardSecurityNumber, int cardTypeId) : this()
         {
-            _orderItems = MapToOrderItems(basketItems);
+            _orderItems = basketItems.ToOrderItemsDTO().ToList();
             UserId = userId;
             City = city;
             Street = street;
@@ -83,20 +84,6 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands
             CardExpiration = cardExpiration;
         }
 
-        private List<OrderItemDTO> MapToOrderItems(List<BasketItem> basketItems)
-        {
-            var result = new List<OrderItemDTO>();
-            basketItems.ForEach((item) => {
-                result.Add(new OrderItemDTO() {
-                    ProductId = int.TryParse(item.ProductId, out int id) ? id : -1,
-                    ProductName = item.ProductName,
-                    PictureUrl = item.PictureUrl,
-                    UnitPrice = item.UnitPrice,
-                    Units = item.Quantity                 
-                });
-            });
-            return result;
-        }
 
         public class OrderItemDTO
         {

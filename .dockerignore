@@ -13,6 +13,7 @@ hosts
 LICENSE
 *.testsettings
 vsts-docs
+test
 ServiceFabric
 readme
 k8s
@@ -29,4 +30,5 @@ cli-linux
 **/bower_components/
 **/wwwroot/lib/
 global.json
+**/appsettings.localhost.json
 src/Web/WebSPA/wwwroot/

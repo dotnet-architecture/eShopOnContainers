@@ -115,6 +115,34 @@ kind: Service
 metadata:
   labels:
     app: eshop
+    component: webshoppingagg
+  name: webshoppingagg
+spec:
+  ports:
+  - port: 80
+  selector:
+    app: eshop
+    component: webshoppingagg
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: eshop
+    component: mobileshoppingagg
+  name: mobileshoppingagg
+spec:
+  ports:
+  - port: 80
+  selector:
+    app: eshop
+    component: mobileshoppingagg
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: eshop
     component: webmvc
   name: webmvc
 spec:
