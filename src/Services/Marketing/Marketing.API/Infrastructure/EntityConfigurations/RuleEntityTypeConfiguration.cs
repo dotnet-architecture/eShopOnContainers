@@ -4,7 +4,7 @@ using Microsoft.eShopOnContainers.Services.Marketing.API.Model;
 
 namespace Microsoft.eShopOnContainers.Services.Marketing.API.Infrastructure.EntityConfigurations
 {
-    class RuleEntityTypeConfiguration
+    internal class RuleEntityTypeConfiguration
        : IEntityTypeConfiguration<Rule>
     {
         public void Configure(EntityTypeBuilder<Rule> builder)

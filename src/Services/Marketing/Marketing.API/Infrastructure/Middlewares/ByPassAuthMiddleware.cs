@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.Services.Marketing.API.Infrastructure.Middlewares
 {
-    class ByPassAuthMiddleware
+    internal class ByPassAuthMiddleware
     {
         private readonly RequestDelegate _next;
         private string _currentUserId;

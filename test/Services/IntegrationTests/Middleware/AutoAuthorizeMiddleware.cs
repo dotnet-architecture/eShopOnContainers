@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace IntegrationTests.Middleware
 {
-    class AutoAuthorizeMiddleware
+    internal class AutoAuthorizeMiddleware
     {
         private readonly RequestDelegate _next;
         public AutoAuthorizeMiddleware(RequestDelegate rd)

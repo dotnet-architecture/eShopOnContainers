@@ -5,7 +5,7 @@ using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure;
 
 namespace Ordering.Infrastructure.EntityConfigurations
 {
-    class CardTypeEntityTypeConfiguration
+    internal class CardTypeEntityTypeConfiguration
         : IEntityTypeConfiguration<CardType>
     {
         public void Configure(EntityTypeBuilder<CardType> cardTypesConfiguration)

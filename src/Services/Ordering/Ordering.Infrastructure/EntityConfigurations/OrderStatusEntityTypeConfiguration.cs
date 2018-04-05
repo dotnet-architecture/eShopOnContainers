@@ -5,7 +5,7 @@ using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure;
 
 namespace Ordering.Infrastructure.EntityConfigurations
 {
-    class OrderStatusEntityTypeConfiguration
+    internal class OrderStatusEntityTypeConfiguration
         : IEntityTypeConfiguration<OrderStatus>
     {
         public void Configure(EntityTypeBuilder<OrderStatus> orderStatusConfiguration)

@@ -5,7 +5,7 @@ using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Idempotency;
 
 namespace Ordering.Infrastructure.EntityConfigurations
 {
-    class ClientRequestEntityTypeConfiguration
+    internal class ClientRequestEntityTypeConfiguration
         : IEntityTypeConfiguration<ClientRequest>
     {
         public void Configure(EntityTypeBuilder<ClientRequest> requestConfiguration)
