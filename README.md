@@ -2,15 +2,17 @@
 Sample .NET Core reference application, powered by Microsoft, based on a simplified microservices architecture and Docker containers.
 
 ## IMPORTANT NOTE!
-**Visual Studio 2017 15.7 Preview 2.0 or later is needed to run the solution** Due to the configuration used in `docker-compose.yml` file, VS15.7 (currently in Preview 2) is needed to run the solution. Trying to run the solution in VS15.6 (current RTM of Visual Studio 2017) will generate errors (complaining about invalid values in docker-compose file).
+**Visual Studio 2017 15.7 Preview 2.0 or later is needed to run the solution from the DEV branch (current evolving code) which now includes API Gateways features** Due to the configuration used in `docker-compose.yml` file, VS 15.7 (currently in Preview 2) is needed to run the solution or you can also run eShopOnContainers (DEV branch) with Docker CLI with "docker-compose up". Trying to run the solution in VS15.6 (current RTM of Visual Studio 2017) will generate errors (complaining about invalid values in docker-compose file).
+
+If you want/need to run eShopOnContainers in **Visual Studio 2017 15.6 RTM** or previous, you'll need to use the code at the **MASTER branch** which is the previous stable version of eShopOnContainers.
+
+**Note for Pull Requests**: We accept pull request from the community. When doing it, please do it onto the **DEV branch** which is the consolidated work-in-progress branch. Do not request it onto Master branch, if possible.
 
 **NEWS / ANNOUNCEMENTS**
 Do you want to be up-to-date on .NET Architecture guidance and reference apps like eShopOnContainers? --> Subscribe by "WATCHING" this new GitHub repo: https://github.com/dotnet-architecture/News 
 
-**Note for Pull Requests**: We accept pull request from the community. When doing it, please do it onto the DEV branch which is the consolidated work-in-progress branch. Do not request it onto Master, if possible.
-
 ## Updated for .NET Core 2.0 "wave" of technologies
-NOTE: We have migrated the whole server-side solution to .NET Core 2.0 "wave". Not just compilation but also new recommended code in EF Core 2.0, ASP.NET Core 2.0, and other new related versions.
+eShopOnContainers is updated to .NET Core 2.0 "wave". Not just compilation but also new recommended code in EF Core 2.0, ASP.NET Core 2.0, and other new related versions.
 
 The **dockerfiles** in the solution have also been updated and now support [**Docker Multi-Stage**](https://blogs.msdn.microsoft.com/stevelasker/2017/09/11/net-and-multistage-dockerfiles/) since mid-December 2017.
 
