@@ -19,7 +19,7 @@
             _settings = settings.Value;
         }         
 
-        public async Task Handle(OrderStatusChangedToStockConfirmedIntegrationEvent @event)
+        public Task Handle(OrderStatusChangedToStockConfirmedIntegrationEvent @event)
         {
             IntegrationEvent orderPaymentIntegrationEvent;
 
@@ -40,7 +40,7 @@
 
             _eventBus.Publish(orderPaymentIntegrationEvent);
 
-            await Task.CompletedTask;
+            return Task.CompletedTask;
         }
     }
 }
