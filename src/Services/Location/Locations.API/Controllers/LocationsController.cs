@@ -29,7 +29,7 @@ namespace Locations.API.Controllers
         [ProducesResponseType(typeof(UserLocation), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetUserLocation(Guid userId)
         {
-            var userLocation = await _locationsService.GetUserLocation(userId.ToString());
+            var userLocation = await _locationsService.GetUserLocationAsync(userId.ToString());
             return Ok(userLocation);
         }
 
@@ -39,7 +39,7 @@ namespace Locations.API.Controllers
         //[ProducesResponseType(typeof(List<Locations>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetAllLocations()
         {
-            var locations = await _locationsService.GetAllLocation();
+            var locations = await _locationsService.GetAllLocationAsync();
             return Ok(locations);
         }
 
@@ -49,7 +49,7 @@ namespace Locations.API.Controllers
         //[ProducesResponseType(typeof(List<Locations>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetLocation(int locationId)
         {
-            var location = await _locationsService.GetLocation(locationId);
+            var location = await _locationsService.GetLocationAsync(locationId);
             return Ok(location);
         }
          
@@ -61,7 +61,7 @@ namespace Locations.API.Controllers
         public async Task<IActionResult> CreateOrUpdateUserLocation([FromBody]LocationRequest newLocReq)
         {
             var userId = _identityService.GetUserIdentity();
-            var result = await _locationsService.AddOrUpdateUserLocation(userId, newLocReq);
+            var result = await _locationsService.AddOrUpdateUserLocationAsync(userId, newLocReq);
            
             return result ? 
                 (IActionResult)Ok() : 
