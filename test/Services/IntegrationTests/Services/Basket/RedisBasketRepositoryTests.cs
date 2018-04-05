@@ -31,7 +31,7 @@
             });
 
             Assert.NotNull(basket);
-            Assert.Equal(1, basket.Items.Count);
+            Assert.Single(basket.Items);
         }
 
         [Fact]

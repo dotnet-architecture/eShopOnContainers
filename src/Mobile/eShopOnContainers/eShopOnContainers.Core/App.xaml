@@ -34,148 +34,139 @@
             <Color x:Key="AndroidListViewBackgroundColor">Transparent</Color>
             <Color x:Key="iOSListViewBackgroundColor">Transparent</Color>
 
-            <OnPlatform 
-                x:TypeArguments="Color"
-                x:Key="ActivityIndicatorColor"
-                iOS="{ StaticResource iOSDefaultTintColor }" />
+            <OnPlatform x:TypeArguments="Color"
+                        x:Key="ActivityIndicatorColor">
+                <On Platform="iOS" Value="{ StaticResource iOSDefaultTintColor }" />
+            </OnPlatform>
 
-            <OnPlatform
-                x:TypeArguments="Color"
-                x:Key="DefaultButtonClassBackgroundColor"
-                Android="{ StaticResource AndroidDefaultButtonClassBackgroundColor }"
-                iOS="{ StaticResource iOSDefaultButtonClassBackgroundColor }" />
+            <OnPlatform x:TypeArguments="Color"
+                        x:Key="DefaultButtonClassBackgroundColor">
+                <On Platform="iOS" Value="{ StaticResource iOSDefaultButtonClassBackgroundColor }" />
+                <On Platform="Android" Value="{ StaticResource AndroidDefaultButtonClassBackgroundColor }" />
+            </OnPlatform>
 
-            <OnPlatform
-                x:TypeArguments="Color"
-                x:Key="DefaultButtonClassBorderColor"
-                Android="{ StaticResource AndroidDefaultButtonClassBorderColor }"
-                iOS="{ StaticResource iOSDefaultButtonClassBorderColor }" />
+            <OnPlatform x:TypeArguments="Color"
+                        x:Key="DefaultButtonClassBorderColor">
+                <On Platform="iOS" Value="{ StaticResource iOSDefaultButtonClassBorderColor }" />
+                <On Platform="Android" Value="{ StaticResource AndroidDefaultButtonClassBorderColor }" />
+            </OnPlatform>
 
-            <OnPlatform
-                x:TypeArguments="Color"
-                x:Key="DefaultButtonClassTextColor"
-                Android="{ StaticResource AndroidDefaultButtonClassTextColor }"
-                iOS="{ StaticResource iOSDefaultButtonClassTextColor }" />
+            <OnPlatform x:TypeArguments="Color"
+                        x:Key="DefaultButtonClassTextColor">
+                <On Platform="iOS" Value="{ StaticResource iOSDefaultButtonClassTextColor }" />
+                <On Platform="Android" Value="{ StaticResource AndroidDefaultButtonClassTextColor }" />
+            </OnPlatform>
 
-            <OnPlatform
-                x:TypeArguments="Color"
-                x:Key="EntryBackgroundColor"
-                Android="{ StaticResource AndroidEntryBackgroundColor }"
-                iOS="{ StaticResource iOSEntryBackgroundColor }" />
+            <OnPlatform x:TypeArguments="Color"
+                        x:Key="EntryBackgroundColor">
+                <On Platform="iOS" Value="{ StaticResource iOSEntryBackgroundColor }" />
+                <On Platform="Android" Value="{ StaticResource AndroidEntryBackgroundColor }" />
+            </OnPlatform>
 
-            <OnPlatform
-                x:TypeArguments="Color"
-                x:Key="ThemeListViewBackgroundColor"
-                Android="{ StaticResource AndroidListViewBackgroundColor }"
-                iOS="{ StaticResource iOSListViewBackgroundColor }" />
+            <OnPlatform x:TypeArguments="Color"
+                        x:Key="ThemeListViewBackgroundColor">
+                <On Platform="iOS" Value="{ StaticResource iOSListViewBackgroundColor }" />
+                <On Platform="Android" Value="{ StaticResource AndroidListViewBackgroundColor }" />
+            </OnPlatform>
 
             <!-- SIZES -->
-            <OnPlatform 
-                x:TypeArguments="x:Double"
-                x:Key="BaseButtonBorderRadius"
-                iOS="6" />
+            <OnPlatform x:TypeArguments="x:Double"
+                        x:Key="BaseButtonBorderRadius">
+                <On Platform="iOS" Value="6" />
+            </OnPlatform>
 
-            <OnPlatform 
-                x:TypeArguments="x:Double"
-                x:Key="BaseButtonBorderWidth"
-                Android="0"
-                iOS="0" />
+            <OnPlatform x:TypeArguments="x:Double"
+                        x:Key="BaseButtonBorderWidth">
+                <On Platform="iOS, Android" Value="0" />
+            </OnPlatform>
             
             <!-- FONTS -->
-            <OnPlatform 
-                x:Key="MontserratRegular"
-                x:TypeArguments="x:String"
-                iOS="Montserrat-Regular"
-                Android="Montserrat-Regular.ttf#Montserrat"
-                WinPhone="Assets/Fonts/Montserrat-Regular.ttf#Montserrat"/>
+            <OnPlatform x:Key="MontserratRegular"
+                        x:TypeArguments="x:String">
+                <On Platform="iOS" Value="Montserrat-Regular" />
+                <On Platform="Android" Value="Montserrat-Regular.ttf#Montserrat" />
+                <On Platform="UWP, WinRT, WinPhone" Value="Assets/Fonts/Montserrat-Regular.ttf#Montserrat" />
+            </OnPlatform>
 
-            <OnPlatform 
-                x:Key="MontserratBold"
-                x:TypeArguments="x:String"
-                iOS="Montserrat-Bold"
-                Android="Montserrat-Bold.ttf#Montserrat"
-                WinPhone="Assets/Fonts/Montserrat-Bold.ttf#Montserrat"/>
+            <OnPlatform x:Key="MontserratBold"
+                        x:TypeArguments="x:String">
+                <On Platform="iOS" Value="Montserrat-Bold" />
+                <On Platform="Android" Value="Montserrat-Bold.ttf#Montserrat" />
+                <On Platform="UWP, WinRT, WinPhone" Value="Assets/Fonts/Montserrat-Bold.ttf#Montserrat" />
+            </OnPlatform>
 
-            <OnPlatform 
-                x:Key="SourceSansProRegular"
-                x:TypeArguments="x:String"
-                iOS="SourceSansPro-Regular"
-                Android="SourceSansPro-Regular.ttf#Source Sans Pro"
-                WinPhone="Assets/Fonts/SourceSansPro-Regular.ttf#Source Sans Pro"/>
+            <OnPlatform x:Key="SourceSansProRegular"
+                        x:TypeArguments="x:String">
+                <On Platform="iOS" Value="SourceSansPro-Regular" />
+                <On Platform="Android" Value="SourceSansPro-Regular.ttf#Source Sans Pro" />
+                <On Platform="UWP, WinRT, WinPhone" Value="Assets/Fonts/SourceSansPro-Regular.ttf#Source Sans Pro" />
+            </OnPlatform>
             
-            <OnPlatform
-                x:TypeArguments="x:Double"
-                x:Key="BaseButtonFontSize"
-                Android="16"
-                iOS="18" />
+            <OnPlatform x:TypeArguments="x:Double"
+                        x:Key="BaseButtonFontSize">
+                <On Platform="iOS" Value="18" />
+                <On Platform="Android" Value="16" />
+            </OnPlatform>
 
-            <OnPlatform
-                x:TypeArguments="x:Double"
-                x:Key="BaseFontSize"
-                Android="15"
-                iOS="16" />
+            <OnPlatform x:TypeArguments="x:Double"
+                        x:Key="BaseFontSize">
+                <On Platform="iOS" Value="16" />
+                <On Platform="Android" Value="15" />
+            </OnPlatform>
             
-            <OnPlatform 
-                x:Key="LittleSize"
-                x:TypeArguments="x:Double"
-                iOS="11"
-                Android="12"
-                WinPhone="12"/>
+            <OnPlatform x:Key="LittleSize"
+                        x:TypeArguments="x:Double">
+                <On Platform="iOS" Value="11" />
+                <On Platform="Android, UWP, WinRT, WinPhone" Value="12" />
+            </OnPlatform>
 
-            <OnPlatform 
-                x:Key="MidMediumSize"
-                x:TypeArguments="x:Double"
-                iOS="12"
-                Android="14"
-                WinPhone="14"/>
+            <OnPlatform x:Key="MidMediumSize"
+                        x:TypeArguments="x:Double">
+                <On Platform="iOS" Value="12" />
+                <On Platform="Android, UWP, WinRT, WinPhone" Value="14" />
+            </OnPlatform>
 
-            <OnPlatform 
-                x:Key="MediumSize"
-                x:TypeArguments="x:Double"
-                iOS="14"
-                Android="16"
-                WinPhone="16"/>
+            <OnPlatform x:Key="MediumSize"
+                        x:TypeArguments="x:Double">
+                <On Platform="iOS" Value="14" />
+                <On Platform="Android, UWP, WinRT, WinPhone" Value="16" />
+            </OnPlatform>
 
-            <OnPlatform 
-                x:Key="LargeSize"
-                x:TypeArguments="x:Double"
-                iOS="16"
-                Android="18"
-                WinPhone="18"/>
+            <OnPlatform x:Key="LargeSize"
+                        x:TypeArguments="x:Double">
+                <On Platform="iOS" Value="16" />
+                <On Platform="Android, UWP, WinRT, WinPhone" Value="18" />
+            </OnPlatform>
 
-            <OnPlatform 
-                x:Key="LargerSize"
-                x:TypeArguments="x:Double"
-                iOS="18"
-                Android="20"
-                WinPhone="20"/>
+            <OnPlatform x:Key="LargerSize"
+                        x:TypeArguments="x:Double">
+                <On Platform="iOS" Value="18" />
+                <On Platform="Android, UWP, WinRT, WinPhone" Value="20" />
+            </OnPlatform>
 
-            <OnPlatform 
-                x:Key="BigSize"
-                x:TypeArguments="x:Double"
-                iOS="20"
-                Android="24"
-                WinPhone="24"/>
+            <OnPlatform x:Key="BigSize"
+                        x:TypeArguments="x:Double">
+                <On Platform="iOS" Value="20" />
+                <On Platform="Android, UWP, WinRT, WinPhone" Value="24" />
+            </OnPlatform>
 
-            <OnPlatform 
-                x:Key="ExtraBigSize"
-                x:TypeArguments="x:Double"
-                iOS="24"
-                Android="32"
-                WinPhone="32"/>
+            <OnPlatform x:Key="ExtraBigSize"
+                        x:TypeArguments="x:Double">
+                <On Platform="iOS" Value="24" />
+                <On Platform="Android, UWP, WinRT, WinPhone" Value="32" />
+            </OnPlatform>
 
-            <OnPlatform 
-                x:Key="HugeSize"
-                x:TypeArguments="x:Double"
-                iOS="32"
-                Android="48"
-                WinPhone="48"/>
+            <OnPlatform x:Key="HugeSize"
+                        x:TypeArguments="x:Double">
+                <On Platform="iOS" Value="32" />
+                <On Platform="Android, UWP, WinRT, WinPhone" Value="48" />
+            </OnPlatform>
 
-            <OnPlatform
-                x:TypeArguments="FontAttributes"
-                x:Key="BaseButtonFontAttributes"
-                Android="None"
-                iOS="Bold" />
+            <OnPlatform x:TypeArguments="FontAttributes"
+                        x:Key="BaseButtonFontAttributes">
+                <On Platform="iOS" Value="Bold" />
+                <On Platform="Android" Value="None" />
+            </OnPlatform>
             
             <!-- CONVERTERS -->
             <converters:CountToBoolConverter x:Key="CountToBoolConverter" />
@@ -189,13 +180,13 @@
 
             <!-- EXPLICIT STYLES -->
             <Style x:Key="ValidationErrorLabelStyle"
-				   TargetType="{x:Type Label}">
-				   <Setter Property="TextColor"
-						   Value="{StaticResource ErrorColor}" />
-				   <Setter Property="FontSize"
-					       Value="{StaticResource LittleSize}" />
- 			</Style>
-			
+                   TargetType="{x:Type Label}">
+                   <Setter Property="TextColor"
+                           Value="{StaticResource ErrorColor}" />
+                   <Setter Property="FontSize"
+                           Value="{StaticResource LittleSize}" />
+            </Style>
+            
             <Style x:Key="EntryStyle"
                    TargetType="{x:Type Entry}">
                 <Setter Property="FontFamily"
@@ -210,7 +201,7 @@
                         Value="FillAndExpand" />
                 <Setter Property="FontAttributes"
                         Value="Bold" />
-				<Setter Property="BackgroundColor" 
+                <Setter Property="BackgroundColor" 
                         Value="Transparent" />
                 <Setter Property="Opacity"
                         Value="0.6" />

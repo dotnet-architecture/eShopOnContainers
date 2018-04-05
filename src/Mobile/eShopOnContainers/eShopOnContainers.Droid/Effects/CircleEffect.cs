@@ -1,8 +1,8 @@
-﻿using System;
-using Xamarin.Forms;
-using eShopOnContainers.Droid.Effects;
+﻿using Android.Graphics;
 using Android.Views;
-using Android.Graphics;
+using eShopOnContainers.Droid.Effects;
+using System;
+using Xamarin.Forms;
 
 [assembly: ExportEffect(typeof(CircleEffect), "CircleEffect")]
 namespace eShopOnContainers.Droid.Effects

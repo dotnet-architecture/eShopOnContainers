@@ -55,8 +55,8 @@ namespace eShopOnContainers.Core.Services.Order
 
         private static List<OrderItem> MockOrderItems = new List<OrderItem>()
         {
-            new OrderItem { OrderId = Guid.NewGuid(), ProductId = Common.Common.MockCatalogItemId01, Discount = 15, ProductName = ".NET Bot Blue Sweatshirt (M)", Quantity = 1, UnitPrice = 16.50M, PictureUrl = Device.RuntimePlatform != Device.Windows ? "fake_product_01.png" : "Assets/fake_product_01.png" },
-            new OrderItem { OrderId = Guid.NewGuid(), ProductId = Common.Common.MockCatalogItemId03, Discount = 0, ProductName = ".NET Bot Black Sweatshirt (M)", Quantity = 2, UnitPrice = 19.95M, PictureUrl = Device.RuntimePlatform != Device.Windows ? "fake_product_03.png" : "Assets/fake_product_03.png" }
+            new OrderItem { OrderId = Guid.NewGuid(), ProductId = Common.Common.MockCatalogItemId01, Discount = 15, ProductName = ".NET Bot Blue Sweatshirt (M)", Quantity = 1, UnitPrice = 16.50M, PictureUrl = Device.RuntimePlatform != Device.UWP ? "fake_product_01.png" : "Assets/fake_product_01.png" },
+            new OrderItem { OrderId = Guid.NewGuid(), ProductId = Common.Common.MockCatalogItemId03, Discount = 0, ProductName = ".NET Bot Black Sweatshirt (M)", Quantity = 2, UnitPrice = 19.95M, PictureUrl = Device.RuntimePlatform != Device.UWP ? "fake_product_03.png" : "Assets/fake_product_03.png" }
         };
 
         private static BasketCheckout MockBasketCheckout = new BasketCheckout()
@@ -74,7 +74,7 @@ namespace eShopOnContainers.Core.Services.Order
 
         public async Task<ObservableCollection<Models.Orders.Order>> GetOrdersAsync(string token)
         {
-            await Task.Delay(500);
+            await Task.Delay(10);
 
             if (!string.IsNullOrEmpty(token))
             {
@@ -88,7 +88,7 @@ namespace eShopOnContainers.Core.Services.Order
 
         public async Task<Models.Orders.Order> GetOrderAsync(int orderId, string token)
         {
-            await Task.Delay(500);
+            await Task.Delay(10);
 
             if (!string.IsNullOrEmpty(token))
                 return MockOrders
@@ -99,7 +99,7 @@ namespace eShopOnContainers.Core.Services.Order
 
         public async Task CreateOrderAsync(Models.Orders.Order newOrder, string token)
         {
-            await Task.Delay(500);
+            await Task.Delay(10);
 
             if (!string.IsNullOrEmpty(token))
             {

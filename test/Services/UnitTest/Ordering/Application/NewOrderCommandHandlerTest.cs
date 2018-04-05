@@ -49,7 +49,8 @@ namespace UnitTest.Ordering.Application
 
             //Act
             var handler = new CreateOrderCommandHandler(_mediator.Object, _orderRepositoryMock.Object, _identityServiceMock.Object);
-            var result = await handler.Handle(fakeOrderCmd);
+            var cltToken = new System.Threading.CancellationToken();
+            var result = await handler.Handle(fakeOrderCmd, cltToken);
 
             //Assert
             Assert.False(result);

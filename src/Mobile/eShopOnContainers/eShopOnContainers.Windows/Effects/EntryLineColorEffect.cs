@@ -1,14 +1,14 @@
-﻿using System;
+﻿using eShopOnContainers.Core.Behaviors;
+using eShopOnContainers.Windows.Effects;
+using System;
 using System.ComponentModel;
 using System.Diagnostics;
-using UI = Windows.UI;
-using Xaml = Windows.UI.Xaml;
-using Media = Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Controls;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.UWP;
-using Windows.UI.Xaml.Controls;
-using eShopOnContainers.Windows.Effects;
-using eShopOnContainers.Core.Behaviors;
+using Media = Windows.UI.Xaml.Media;
+using UI = Windows.UI;
+using Xaml = Windows.UI.Xaml;
 
 [assembly: ResolutionGroupName("eShopOnContainers")]
 [assembly: ExportEffect(typeof(EntryLineColorEffect), "EntryLineColorEffect")]

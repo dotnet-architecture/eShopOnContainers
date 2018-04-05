@@ -6,7 +6,6 @@
     using global::Ordering.API.Application.IntegrationEvents;
     using global::Ordering.API.Application.IntegrationEvents.Events;
     using global::Ordering.API.Infrastructure.Filters;
-    using global::Ordering.API.Infrastructure.HostedServices;
     using global::Ordering.API.Infrastructure.Middlewares;
     using Infrastructure.AutofacModules;
     using Infrastructure.Filters;
@@ -57,9 +56,6 @@
                 options.Filters.Add(typeof(HttpGlobalExceptionFilter));
             }).AddControllersAsServices();  //Injecting Controllers themselves thru DI
                                             //For further info see: http://docs.autofac.org/en/latest/integration/aspnetcore.html#controllers-as-services
-
-            // Configure GracePeriodManager Hosted Service
-            services.AddSingleton<IHostedService, GracePeriodManagerService>();
 
             services.AddTransient<IOrderingIntegrationEventService, OrderingIntegrationEventService>();
 
@@ -215,8 +211,12 @@
             {
                 loggerFactory.CreateLogger("init").LogDebug($"Using PATH BASE '{pathBase}'");
                 app.UsePathBase(pathBase);
-            }            
-            
+            }
+
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+            app.Map("/liveness", lapp => lapp.Run(async ctx => ctx.Response.StatusCode = 200));
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+
             app.UseCors("CorsPolicy");
 
             ConfigureAuth(app);
@@ -225,8 +225,9 @@
             app.UseSwagger()
                .UseSwaggerUI(c =>
                {
-                   c.SwaggerEndpoint($"{ (!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty) }/swagger/v1/swagger.json", "My API V1");
-                   c.ConfigureOAuth2("orderingswaggerui", "", "", "Ordering Swagger UI");
+                   c.SwaggerEndpoint($"{ (!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty) }/swagger/v1/swagger.json", "Ordering.API V1");
+                   c.OAuthClientId("orderingswaggerui");
+                   c.OAuthAppName("Ordering Swagger UI");
                });
 
             ConfigureEventBus(app);
@@ -294,6 +295,8 @@
 
         private void RegisterEventBus(IServiceCollection services)
         {
+            var subscriptionClientName = Configuration["SubscriptionClientName"];
+
             if (Configuration.GetValue<bool>("AzureServiceBusEnabled"))
             {
                 services.AddSingleton<IEventBus, EventBusServiceBus>(sp =>
@@ -301,8 +304,7 @@
                     var serviceBusPersisterConnection = sp.GetRequiredService<IServiceBusPersisterConnection>();
                     var iLifetimeScope = sp.GetRequiredService<ILifetimeScope>();
                     var logger = sp.GetRequiredService<ILogger<EventBusServiceBus>>();
-                    var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
-                    var subscriptionClientName = Configuration["SubscriptionClientName"];
+                    var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();                    
 
                     return new EventBusServiceBus(serviceBusPersisterConnection, logger,
                         eventBusSubcriptionsManager, subscriptionClientName, iLifetimeScope);
@@ -323,7 +325,7 @@
                         retryCount = int.Parse(Configuration["EventBusRetryCount"]);
                     }
 
-                    return new EventBusRabbitMQ(rabbitMQPersistentConnection, logger, iLifetimeScope, eventBusSubcriptionsManager, retryCount);
+                    return new EventBusRabbitMQ(rabbitMQPersistentConnection, logger, iLifetimeScope, eventBusSubcriptionsManager, subscriptionClientName, retryCount);
                 });
             }
 

@@ -3,7 +3,10 @@
   <Scenarios>
     <Scenario Name="OrderProductsLoadTest" DelayBetweenIterations="0" PercentNewUsers="0" IPSwitching="false" TestMixType="PercentageOfTestsStarted" ApplyDistributionToPacingDelay="true" MaxTestIterations="0" DisableDuringWarmup="false" DelayStartTime="0" AllowedAgents="">
       <ThinkProfile Value="0.2" Pattern="NormalDistribution" />
-      <LoadProfile Pattern="Step" InitialUsers="1" MaxUsers="50" StepUsers="2" StepDuration="10" StepRampTime="10" />
+      <LoadProfile Pattern="Step" InitialUsers="1" MaxUsers="1000" StepUsers="50" StepDuration="10" StepRampTime="10" />
+      <InitializeTest>
+        <TestProfile Name="AddProducts" Path="webmvc\addproducts.webtest" Id="2c9d53ae-0237-47bd-a5d2-6500ef5d8fcb" Percentage="0.0" Type="Microsoft.VisualStudio.TestTools.WebStress.DeclarativeWebTestElement, Microsoft.VisualStudio.QualityTools.LoadTest, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+      </InitializeTest>
       <TestMix>
         <TestProfile Name="GetItems" Path="catalog.api\getitems.webtest" Id="e527de7e-beff-4824-af52-dda763fd5e6c" Percentage="19" Type="Microsoft.VisualStudio.TestTools.WebStress.DeclarativeWebTestElement, Microsoft.VisualStudio.QualityTools.LoadTest, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
         <TestProfile Name="GetCatalogTypes" Path="catalog.api\getcatalogtypes.webtest" Id="7df20b29-d5c3-447b-b73d-95c63e9c4061" Percentage="15" Type="Microsoft.VisualStudio.TestTools.WebStress.DeclarativeWebTestElement, Microsoft.VisualStudio.QualityTools.LoadTest, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />

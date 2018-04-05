@@ -1,13 +1,13 @@
-﻿using FunctionalTests.Middleware;
-using Microsoft.AspNetCore;
+﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
+using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF;
 using Microsoft.eShopOnContainers.Services.Catalog.API;
-using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
+using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System.IO;
-using System.Text;
 
 namespace FunctionalTests.Services.Catalog
 {
@@ -18,8 +18,23 @@ namespace FunctionalTests.Services.Catalog
             var webHostBuilder = WebHost.CreateDefaultBuilder();
             webHostBuilder.UseContentRoot(Directory.GetCurrentDirectory() + "\\Services\\Catalog");
             webHostBuilder.UseStartup<Startup>();
-            
-            return new TestServer(webHostBuilder);
+
+            var testServer = new TestServer(webHostBuilder);
+
+            testServer.Host
+                .MigrateDbContext<CatalogContext>((context, services) =>
+                {
+                    var env = services.GetService<IHostingEnvironment>();
+                    var settings = services.GetService<IOptions<CatalogSettings>>();
+                    var logger = services.GetService<ILogger<CatalogContextSeed>>();
+
+                    new CatalogContextSeed()
+                    .SeedAsync(context, env, settings, logger)
+                    .Wait();
+                })
+                .MigrateDbContext<IntegrationEventLogContext>((_, __) => { });
+
+            return testServer;
         }
 
         public static class Get

@@ -5,7 +5,7 @@
 Param(
     [parameter(Mandatory=$false)][string] $rootPath,
     [parameter(Mandatory=$false)][bool] $customEventBusLoginPassword=$false,
-    [parameter(Mandatory=$false)][bool]$buildBits=$true
+    [parameter(Mandatory=$false)][bool]$buildBits=$false
 )
 
 $scriptPath = Split-Path $script:MyInvocation.MyCommand.Path

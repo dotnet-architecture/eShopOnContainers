@@ -1,7 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Polly;
+using Polly.Retry;
 using System;
+using System.Data.SqlClient;
 
 namespace Microsoft.AspNetCore.Hosting
 {
@@ -21,10 +24,26 @@ namespace Microsoft.AspNetCore.Hosting
                 {
                     logger.LogInformation($"Migrating database associated with context {typeof(TContext).Name}");
 
-                    context.Database
+                    var retry = Policy.Handle<SqlException>()
+                         .WaitAndRetry(new TimeSpan[]
+                         {
+                             TimeSpan.FromSeconds(5),
+                             TimeSpan.FromSeconds(10),
+                             TimeSpan.FromSeconds(15),
+                         });
+
+                    retry.Execute(() =>
+                    {
+                        //if the sql server container is not created on run docker compose this
+                        //migration can't fail for network related exception. The retry options for DbContext only 
+                        //apply to transient exceptions.
+
+                        context.Database
                         .Migrate();
 
-                    seeder(context,services);
+                        seeder(context, services);
+                    });
+                  
 
                     logger.LogInformation($"Migrated database associated with context {typeof(TContext).Name}");
                 }

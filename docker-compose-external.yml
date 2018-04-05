@@ -1,4 +1,4 @@
-version: '3'
+version: '3.4'
 
 services:
   sql.data:
@@ -13,3 +13,6 @@ services:
     image: rabbitmq
     ports:
       - "5672:5672"
+  
+  nosql.data:
+    image: mongo

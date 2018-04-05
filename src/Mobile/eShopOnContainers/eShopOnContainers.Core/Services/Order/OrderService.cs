@@ -1,10 +1,9 @@
 ﻿using eShopOnContainers.Core.Models.Basket;
+using eShopOnContainers.Core.Models.Orders;
 using eShopOnContainers.Core.Services.RequestProvider;
 using System;
 using System.Collections.ObjectModel;
-using System.Net.Http;
 using System.Threading.Tasks;
-using eShopOnContainers.Core.Models.Orders;
 
 namespace eShopOnContainers.Core.Services.Order
 {
@@ -68,6 +67,7 @@ namespace eShopOnContainers.Core.Services.Order
                 CardSecurityNumber = order.CardSecurityNumber,
                 CardTypeId = order.CardTypeId,
                 City = order.ShippingCity,
+                State = order.ShippingState,
                 Country = order.ShippingCountry,
                 ZipCode = order.ShippingZipCode,
                 Street = order.ShippingStreet

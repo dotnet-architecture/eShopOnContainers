@@ -24,9 +24,9 @@ namespace Microsoft.eShopOnContainers.WebMVC.ViewComponents
                 return View(vm);
             }
             catch (BrokenCircuitException)
-            {               
+            {
                 // Catch error when Basket.api is in circuit-opened mode                 
-                TempData["BasketInoperativeMsg"] = "Basket Service is inoperative, please try later on. (Business Msg Due to Circuit-Breaker)";
+                ViewBag.BasketInoperativeMsg = "Basket Service is inoperative, please try later on. (Business Msg Due to Circuit-Breaker)";
             }
 
             return View(vm);

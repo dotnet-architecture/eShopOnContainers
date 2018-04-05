@@ -1,4 +1,4 @@
-version: '3'
+version: '3.4'
 
 # ONLY NEEDED WHEN RUNNING WINDOWS CONTAINERS
 #
@@ -37,7 +37,12 @@ services:
       - EventBusUserName=admin
       - EventBusPassword=password
 
-  marketing.api:
+  ordering.api:
+    environment:
+      - EventBusUserName=admin
+      - EventBusPassword=password
+  
+  ordering.backgroundtasks:
     environment:
       - EventBusUserName=admin
       - EventBusPassword=password

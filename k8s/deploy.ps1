@@ -6,10 +6,8 @@ Param(
     [parameter(Mandatory=$false)][string]$kubeconfigPath,
     [parameter(Mandatory=$true)][string]$configFile,
     [parameter(Mandatory=$false)][string]$imageTag,
-    [parameter(Mandatory=$false)][string]$externalDns,
     [parameter(Mandatory=$false)][bool]$deployCI=$false,
     [parameter(Mandatory=$false)][bool]$buildImages=$true,
-    [parameter(Mandatory=$false)][bool]$buildBits=$false,
     [parameter(Mandatory=$false)][bool]$deployInfrastructure=$true,
     [parameter(Mandatory=$false)][string]$dockerOrg="eshop"
 )
@@ -30,6 +28,16 @@ function ExecKube($cmd) {
 $debugMode = $PSCmdlet.MyInvocation.BoundParameters["Debug"].IsPresent
 $useDockerHub = [string]::IsNullOrEmpty($registry)
 
+$externalDns = & ExecKube -cmd 'get svc ingress-nginx -n ingress-nginx -o=jsonpath="{.status.loadBalancer.ingress[0].ip}"'
+Write-Host "Ingress ip detected: $externalDns" -ForegroundColor Yellow 
+
+if (-not [bool]($externalDns -as [ipaddress])) {
+    Write-Host "Must install ingress first" -ForegroundColor Red
+    Write-Host "Run deploy-ingress.ps1 and  deploy-ingress-azure.ps1" -ForegroundColor Red
+    exit
+}
+
+
 # Check required commands (only if not in CI environment)
 if(-not $deployCI) {
         $requiredCommands = ("docker", "docker-compose", "kubectl")
@@ -41,7 +49,6 @@ if(-not $deployCI) {
     }
 }
 else {
-    $buildBits = false;
     $buildImages = false;       # Never build images through CI, as they previously built
 }
 
@@ -51,18 +58,14 @@ if ([string]::IsNullOrEmpty($imageTag)) {
 }
 Write-Host "Docker image Tag: $imageTag" -ForegroundColor Yellow
 
-# building and publishing docker images if needed
-if($buildBits) {
-    Write-Host "Building and publishing eShopOnContainers..." -ForegroundColor Yellow
-    dotnet publish -c Release -o obj/Docker/publish ../eShopOnContainers-ServicesAndWebApps.sln
-}
+# building  docker images if needed
 if ($buildImages) {
     Write-Host "Building Docker images tagged with '$imageTag'" -ForegroundColor Yellow
     $env:TAG=$imageTag
     docker-compose -p .. -f ../docker-compose.yml build    
 
     Write-Host "Pushing images to $registry/$dockerOrg..." -ForegroundColor Yellow
-    $services = ("basket.api", "catalog.api", "identity.api", "ordering.api", "marketing.api","payment.api","locations.api", "webmvc", "webspa", "webstatus")
+    $services = ("basket.api", "catalog.api", "identity.api", "ordering.api", "ordering.backgroundtasks", "marketing.api","payment.api","locations.api", "webmvc", "webspa", "webstatus")
 
     foreach ($service in $services) {
         $imageFqdn = if ($useDockerHub)  {"$dockerOrg/${service}"} else {"$registry/$dockerOrg/${service}"}
@@ -100,35 +103,18 @@ if (-not [string]::IsNullOrEmpty($dockerUser)) {
 Write-Host "Removing existing services & deployments.." -ForegroundColor Yellow
 ExecKube -cmd 'delete deployments --all'
 ExecKube -cmd 'delete services --all'
-ExecKube -cmd 'delete configmap config-files'
 ExecKube -cmd 'delete configmap urls'
 ExecKube -cmd 'delete configmap externalcfg'
 
-# start sql, rabbitmq, frontend deploymentsExecKube -cmd 'delete configmap config-files'
-ExecKube -cmd 'create configmap config-files --from-file=nginx-conf=nginx.conf'
-ExecKube -cmd 'label configmap config-files app=eshop'
-
+# start sql, rabbitmq, frontend deployments
 if ($deployInfrastructure) {
     Write-Host 'Deploying infrastructure deployments (databases, redis, RabbitMQ...)' -ForegroundColor Yellow
     ExecKube -cmd 'create -f sql-data.yaml -f basket-data.yaml -f keystore-data.yaml -f rabbitmq.yaml -f nosql-data.yaml'
 }
 
+
 Write-Host 'Deploying code deployments (Web APIs, Web apps, ...)' -ForegroundColor Yellow
-ExecKube -cmd 'create -f services.yaml -f frontend.yaml'
-
-if ([string]::IsNullOrEmpty($externalDns)) {
-        Write-Host "Waiting for frontend's external ip..." -ForegroundColor Yellow
-        while ($true) {
-            $frontendUrl = & ExecKube -cmd 'get svc frontend -o=jsonpath="{.status.loadBalancer.ingress[0].ip}"'
-            if ([bool]($frontendUrl -as [ipaddress])) {
-                break
-            }
-            Start-Sleep -s 15
-        }
-        $externalDns = $frontendUrl
-}
-
-Write-Host "Using $externalDns as the external DNS/IP of the k8s cluster"
+ExecKube -cmd 'create -f services.yaml'
 
 ExecKube -cmd 'create configmap urls `
     --from-literal=BasketUrl=http://basket `
@@ -192,6 +178,8 @@ ExecKube -cmd 'set image deployments/payment payment=${registryPath}${dockerOrg}
 ExecKube -cmd 'set image deployments/webmvc webmvc=${registryPath}${dockerOrg}/webmvc:$imageTag'
 ExecKube -cmd 'set image deployments/webstatus webstatus=${registryPath}${dockerOrg}/webstatus:$imageTag'
 ExecKube -cmd 'set image deployments/webspa webspa=${registryPath}${dockerOrg}/webspa:$imageTag'
+ExecKube -cmd 'set image deployments/orderingbackground orderingbackground=${registryPath}${dockerOrg}/ordering.backgroundtasks:$imageTag'
+
 
 Write-Host "Execute rollout..." -ForegroundColor Yellow
 ExecKube -cmd 'rollout resume deployments/basket'
@@ -204,6 +192,7 @@ ExecKube -cmd 'rollout resume deployments/payment'
 ExecKube -cmd 'rollout resume deployments/webmvc'
 ExecKube -cmd 'rollout resume deployments/webstatus'
 ExecKube -cmd 'rollout resume deployments/webspa'
+ExecKube -cmd 'rollout resume deployments/orderingbackground'
 
 Write-Host "WebSPA is exposed at http://$externalDns, WebMVC at http://$externalDns/webmvc, WebStatus at http://$externalDns/webstatus" -ForegroundColor Yellow
 

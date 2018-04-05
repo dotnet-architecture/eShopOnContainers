@@ -1,8 +1,8 @@
-﻿using System;
-using SlideOverKit;
-using Xamarin.Forms;
+﻿using eShopOnContainers.Core.ViewModels;
 using eShopOnContainers.Core.ViewModels.Base;
-using eShopOnContainers.Core.ViewModels;
+using SlideOverKit;
+using System;
+using Xamarin.Forms;
 
 namespace eShopOnContainers.Core.Views
 {

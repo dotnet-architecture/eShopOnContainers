@@ -1,4 +1,4 @@
-version: '3'
+version: '3.4'
 
 # The default docker-compose.override file can use the "localhost" as the external name for testing web apps within the same dev machine. 
 # The ESHOP_EXTERNAL_DNS_NAME_OR_IP environment variable is taken, by default, from the ".env" file defined like: 
@@ -83,6 +83,24 @@ services:
     ports:
       - "5102:80"
 
+  ordering.backgroundtasks:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - ConnectionString=${ESHOP_AZURE_ORDERING_DB:-Server=sql.data;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word}
+      - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
+      - EventBusUserName=${ESHOP_SERVICE_BUS_USERNAME}
+      - EventBusPassword=${ESHOP_SERVICE_BUS_PASSWORD}          
+      - UseCustomizationData=True
+      - AzureServiceBusEnabled=False
+      - CheckUpdateTime=30000
+      - GracePeriodTime=1
+      - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
+      - OrchestratorType=${ORCHESTRATOR_TYPE}
+      - UseLoadTest=${USE_LOADTEST:-False}
+    ports:
+      - "5111:80"
+
   marketing.api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
@@ -137,8 +155,8 @@ services:
       - OrderingUrl=http://ordering.api
       - BasketUrl=http://basket.api
       - LocationsUrl=http://locations.api
-      - IdentityUrl=http://10.0.75.1:5105
-      - MarketingUrl=http://marketing.api  #Local:  Use 10.0.75.1 in a "Docker for Windows" environment, if using "localhost" from browser. #Remote: Use ${ESHOP_EXTERNAL_DNS_NAME_OR_IP} if using external IP or DNS name from browser.                                                  
+      - IdentityUrl=http://10.0.75.1:5105  # Local Mac: Use http://docker.for.mac.localhost:5105 || Local Windows:  Use 10.0.75.1 in a "Docker for Windows" environment, if using "localhost" from browser. || #Remote access: Use ${ESHOP_EXTERNAL_DNS_NAME_OR_IP} if using external IP or DNS name from browser.
+      - MarketingUrl=http://marketing.api                                                    
       - CatalogUrlHC=http://catalog.api/hc
       - OrderingUrlHC=http://ordering.api/hc
       - IdentityUrlHC=http://identity.api/hc     #Local: Use ${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP}, if using external IP or DNS name from browser.          
@@ -203,12 +221,21 @@ services:
 
   sql.data:
     environment:
-      - MSSQL_SA_PASSWORD=Pass@word
+      - SA_PASSWORD=Pass@word
       - ACCEPT_EULA=Y
-      - MSSQL_PID=Developer
     ports:
       - "5433:1433"
 
   nosql.data:
     ports:
       - "27017:27017"
+
+  basket.data:
+    ports:
+      - "6379:6379"
+      
+  rabbitmq:
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+

@@ -1,8 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using eShopOnContainers.Core.Models.Navigation;
 using eShopOnContainers.Core.ViewModels.Base;
-using eShopOnContainers.Core.Models.Navigation;
-using Xamarin.Forms;
+using System.Threading.Tasks;
 using System.Windows.Input;
+using Xamarin.Forms;
 
 namespace eShopOnContainers.Core.ViewModels
 {

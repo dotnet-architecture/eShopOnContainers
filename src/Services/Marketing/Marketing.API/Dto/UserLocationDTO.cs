@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 namespace Microsoft.eShopOnContainers.Services.Marketing.API.Dto
 {
     public class UserLocationDTO

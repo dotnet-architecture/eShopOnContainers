@@ -64,7 +64,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Controllers
 
         [Route("{orderId:int}")]
         [HttpGet]
-        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(Order),(int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public async Task<IActionResult> GetOrder(int orderId)
         {
@@ -83,17 +83,17 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Controllers
 
         [Route("")]
         [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<OrderSummary>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetOrders()
         {
-            var orderTask = _orderQueries.GetOrdersAsync();
-
-            var orders = await orderTask;
+            var orders = await _orderQueries.GetOrdersAsync();
 
             return Ok(orders);
         }
 
         [Route("cardtypes")]
         [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<CardType>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetCardTypes()
         {
             var cardTypes = await _orderQueries

@@ -8,9 +8,10 @@
     using System.Threading.Tasks;
     using Ordering.API.Application.IntegrationEvents;
     using Ordering.API.Application.IntegrationEvents.Events;
+    using System.Threading;
 
     public class OrderStatusChangedToStockConfirmedDomainEventHandler
-                   : IAsyncNotificationHandler<OrderStatusChangedToStockConfirmedDomainEvent>
+                   : INotificationHandler<OrderStatusChangedToStockConfirmedDomainEvent>
     {
         private readonly IOrderRepository _orderRepository;
         private readonly ILoggerFactory _logger;
@@ -25,7 +26,7 @@
             _orderingIntegrationEventService = orderingIntegrationEventService;
         }
 
-        public async Task Handle(OrderStatusChangedToStockConfirmedDomainEvent orderStatusChangedToStockConfirmedDomainEvent)
+        public async Task Handle(OrderStatusChangedToStockConfirmedDomainEvent orderStatusChangedToStockConfirmedDomainEvent, CancellationToken cancellationToken)
         {
             _logger.CreateLogger(nameof(OrderStatusChangedToStockConfirmedDomainEventHandler))
                 .LogTrace($"Order with Id: {orderStatusChangedToStockConfirmedDomainEvent.OrderId} has been successfully updated with " +
