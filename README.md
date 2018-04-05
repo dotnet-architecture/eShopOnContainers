@@ -2,7 +2,7 @@
 Sample .NET Core reference application, powered by Microsoft, based on a simplified microservices architecture and Docker containers.
 
 ## IMPORTANT NOTE!
-**Visual Studio 2017 15.7 Preview 2.0 or later is needed to run the solution from the DEV branch (current evolving code) which now includes API Gateways features** Due to the configuration used in `docker-compose.yml` file, VS 15.7 (currently in Preview 2) is needed to run the solution or you can also run eShopOnContainers (DEV branch) with Docker CLI with "docker-compose up". Trying to run the solution in VS15.6 (current RTM of Visual Studio 2017) will generate errors (complaining about invalid values in docker-compose file).
+**Visual Studio 2017 15.7 Preview 2.0 or later is needed to run the solution from the DEV branch (current evolving code) which now includes API Gateways features**. Due to the configuration used in `docker-compose.yml` file, VS 15.7 (currently in Preview 2) is needed to run the solution at DEV branch or you can also run eShopOnContainers with Docker CLI with "docker-compose up" or deploying to Kubernetes/AKS. Trying to run the solution in VS15.6 (current RTM of Visual Studio 2017) will generate errors (complaining about invalid values in docker-compose file).
 
 If you want/need to run eShopOnContainers in **Visual Studio 2017 15.6 RTM** or previous, you'll need to use the code at the **MASTER branch** which is the previous stable version of eShopOnContainers.
 
