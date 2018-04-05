@@ -40,7 +40,10 @@ The architecture proposes a microservice oriented architecture implementation wi
 <p>
 
 > ### Important Note on API Gateways and published APIs
-> Note that the previous architecture diagram shows how you deploy eShopOnContainers in a local Docker development machine. For a production-ready architecture we recommend to keep evolving your architecture with additional features like API Gateways based on AzureAPI Management or any other approach for API Gateways explained in the related documentation/eBook, so you can filter APIs and apply security in a single tier while hiding/securing the internal microservices to the client apps or outside consumers.
+> Since April 2018, we have introduced the implementation of the [API Gateway and BFF (Backend-For-Front) patterns](http://microservices.io/patterns/apigateway.html) in eShopOnContainers architecture, so you can filter and publish simplified APIs and URIs and apply additional security in that tier while hiding/securing the internal microservices to the client apps or outside consumers. These sample API Gateways in eShopOnContainers are based on [Ocelot](https://github.com/ThreeMammals/Ocelot), an OSS lightweight API Gateway solution explained [here](http://threemammals.com/ocelot). The deployed API Gateways are autonomous and can be deployed as your own custom microservices/containers, as it is currently done in eShopOnContainers, so you can test it even in a simple development environment with just Docker engine or deploy it into orchestrators like Kubernetes in AKS or Service Fabric. 
+
+For your production-ready architecture you can either keep using [Ocelot](https://github.com/ThreeMammals/Ocelot) which is simple and easy to use and used in production by significant companies or if you need further functionality and a much richer set of features suittable for commercial APIs, you can also substitute those API Gateways and use [Azure API Management](https://azure.microsoft.com/en-us/services/api-management/) or any other commercial API Gateway, as shown in the following image.
+
 <p>
 <img src="img/eShopOnContainers-Architecture-With-Azure-API-Management.png">
 <p>
