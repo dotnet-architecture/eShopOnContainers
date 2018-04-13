@@ -37,7 +37,7 @@ This reference application is cross-platform at the server and client side, than
 The architecture proposes a microservice oriented architecture implementation with multiple autonomous microservices (each one owning its own data/db) and implementing different approaches within each microservice (simple CRUD vs. DDD/CQRS patterns) using Http as the communication protocol between the client apps and the microservices and supports asynchronous communication for data updates propagation across multiple services based on Integration Events and an Event Bus (a light message broker, to choose between RabbitMQ or Azure Service Bus, underneath) plus other features defined at the <a href='https://github.com/dotnet/eShopOnContainers/wiki/01.-Roadmap-and-Milestones-for-future-releases'>roadmap</a>.
 <p>
 <img src="img/eshop_logo.png">
-<img src="https://user-images.githubusercontent.com/1712635/38390055-0af248c2-38d5-11e8-8c82-45b01ae798be.png">
+<img src="https://user-images.githubusercontent.com/1712635/38758862-d4b42498-3f27-11e8-8dad-db60b0fa05d3.png">
 <p>
 
 > ### Important Note on API Gateways and published APIs
