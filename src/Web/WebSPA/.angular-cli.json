@@ -20,7 +20,8 @@
       "prefix": "app",
       "styles": [
         "globals.scss",
-        "../node_modules/bootstrap/scss/bootstrap.scss"
+        "../node_modules/bootstrap/scss/bootstrap.scss",
+        "../node_modules/ng2-toastr/bundles/ng2-toastr.min.css"
       ],
       "scripts": [],
       "environmentSource": "environments/environment.ts",

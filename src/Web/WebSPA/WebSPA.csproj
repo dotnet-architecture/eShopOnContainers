@@ -63,6 +63,7 @@
     <None Remove="Client\modules\shared\services\data.service.ts" />
     <None Remove="Client\modules\shared\services\notification.service.ts" />
     <None Remove="Client\modules\shared\services\security.service.ts" />
+    <None Remove="Client\modules\shared\services\signalr.service.ts" />
     <None Remove="Client\modules\shared\services\storage.service.ts" />
     <None Remove="Client\modules\shared\shared.module.ts" />
     <None Remove="Client\polyfills.ts" />
@@ -178,6 +179,7 @@
     <TypeScriptCompile Include="Client\modules\shared\services\data.service.ts" />
     <TypeScriptCompile Include="Client\modules\shared\services\notification.service.ts" />
     <TypeScriptCompile Include="Client\modules\shared\services\security.service.ts" />
+    <TypeScriptCompile Include="Client\modules\shared\services\signalr.service.ts" />
     <TypeScriptCompile Include="Client\modules\shared\services\storage.service.ts" />
     <TypeScriptCompile Include="Client\modules\shared\shared.module.ts" />
     <TypeScriptCompile Include="Client\polyfills.ts" />
