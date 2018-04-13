@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure.Services;
 using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.BuyerAggregate;
 using Microsoft.Extensions.Logging;
@@ -24,14 +25,14 @@ namespace Ordering.API.Application.DomainEventHandlers.OrderStartedEvent
         }
 
         public async Task Handle(OrderStartedDomainEvent orderStartedEvent, CancellationToken cancellationToken)
-        {
+        {            
             var cardTypeId = (orderStartedEvent.CardTypeId != 0) ? orderStartedEvent.CardTypeId : 1;
             var buyer = await _buyerRepository.FindAsync(orderStartedEvent.UserId);
             bool buyerOriginallyExisted = (buyer == null) ? false : true;
 
             if (!buyerOriginallyExisted)
             {                
-                buyer = new Buyer(orderStartedEvent.UserId);
+                buyer = new Buyer(orderStartedEvent.UserId, orderStartedEvent.UserName);
             }
 
             buyer.VerifyOrAddPaymentMethod(cardTypeId,
@@ -42,7 +43,9 @@ namespace Ordering.API.Application.DomainEventHandlers.OrderStartedEvent
                                            orderStartedEvent.CardExpiration,
                                            orderStartedEvent.Order.Id);
 
-            var buyerUpdated = buyerOriginallyExisted ? _buyerRepository.Update(buyer) : _buyerRepository.Add(buyer);
+            var buyerUpdated = buyerOriginallyExisted ? 
+                _buyerRepository.Update(buyer) : 
+                _buyerRepository.Add(buyer);
 
             await _buyerRepository.UnitOfWork
                 .SaveEntitiesAsync();

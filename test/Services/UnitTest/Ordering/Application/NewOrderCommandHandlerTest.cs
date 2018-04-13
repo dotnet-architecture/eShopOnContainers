@@ -60,12 +60,12 @@ namespace UnitTest.Ordering.Application
         public void Handle_throws_exception_when_no_buyerId()
         {
             //Assert
-            Assert.Throws<ArgumentNullException>(() => new Buyer(string.Empty));
+            Assert.Throws<ArgumentNullException>(() => new Buyer(string.Empty, string.Empty));
         }
 
         private Buyer FakeBuyer()
         {
-            return new Buyer(Guid.NewGuid().ToString());
+            return new Buyer(Guid.NewGuid().ToString(), "1");
         }
 
         private Order FakeOrder()

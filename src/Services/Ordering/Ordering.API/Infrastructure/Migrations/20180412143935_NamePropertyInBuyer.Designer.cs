@@ -8,12 +8,13 @@ using Microsoft.EntityFrameworkCore.Storage.Internal;
 using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure;
 using System;
 
-namespace Ordering.API.Migrations
+namespace Ordering.API.Infrastructure.Migrations
 {
     [DbContext(typeof(OrderingContext))]
-    partial class OrderingContextModelSnapshot : ModelSnapshot
+    [Migration("20180412143935_NamePropertyInBuyer")]
+    partial class NamePropertyInBuyer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
