@@ -129,10 +129,13 @@
                 {
                     var eventName = $"{message.Label}{INTEGRATION_EVENT_SUFIX}";
                     var messageData = Encoding.UTF8.GetString(message.Body);
-                    await ProcessEvent(eventName, messageData);
+                    var processed = await ProcessEvent(eventName, messageData);
                     
                     // Complete the message so that it is not received again.
-                    await _subscriptionClient.CompleteAsync(message.SystemProperties.LockToken);
+                    if (processed)
+                    {
+                        await _subscriptionClient.CompleteAsync(message.SystemProperties.LockToken);
+                    }
                 },
                new MessageHandlerOptions(ExceptionReceivedHandler) { MaxConcurrentCalls = 10, AutoComplete = false });
         }
@@ -148,8 +151,9 @@
             return Task.CompletedTask;
         }
 
-        private async Task ProcessEvent(string eventName, string message)
+        private async Task<bool> ProcessEvent(string eventName, string message)
         {
+            var processed = false;
             if (_subsManager.HasSubscriptionsForEvent(eventName))
             {
                 using (var scope = _autofac.BeginLifetimeScope(AUTOFAC_SCOPE_NAME))
@@ -173,7 +177,9 @@
                         }
                     }
                 }
+                processed = true;
             }
+            return processed
         }
 
         private void RemoveDefaultRule()
