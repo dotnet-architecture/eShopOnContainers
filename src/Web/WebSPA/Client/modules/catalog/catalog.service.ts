@@ -21,9 +21,9 @@ export class CatalogService {
 
     constructor(private service: DataService, private configurationService: ConfigurationService) {
         this.configurationService.settingsLoaded$.subscribe(x => {
-            this.catalogUrl = this.configurationService.serverSettings.catalogUrl + '/api/v1/catalog/items';
-            this.brandUrl = this.configurationService.serverSettings.catalogUrl + '/api/v1/catalog/catalogbrands';
-            this.typesUrl = this.configurationService.serverSettings.catalogUrl + '/api/v1/catalog/catalogtypes';
+            this.catalogUrl = this.configurationService.serverSettings.purchaseUrl + '/api/v1/c/catalog/items';
+            this.brandUrl = this.configurationService.serverSettings.purchaseUrl + '/api/v1/c/catalog/catalogbrands';
+            this.typesUrl = this.configurationService.serverSettings.purchaseUrl + '/api/v1/c/catalog/catalogtypes';
         });
     }
 

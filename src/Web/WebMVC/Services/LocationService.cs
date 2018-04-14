@@ -27,7 +27,7 @@ namespace WebMVC.Services
             _apiClient = httpClient;
             _logger = logger;
 
-            _remoteServiceBaseUrl = $"{_settings.Value.LocationsUrl}/api/v1/locations/";
+            _remoteServiceBaseUrl = $"{_settings.Value.MarketingUrl}/api/v1/l/locations/";
             _httpContextAccesor = httpContextAccesor ?? throw new ArgumentNullException(nameof(httpContextAccesor));
         }
 

@@ -34,6 +34,10 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
         public async Task<IActionResult> Get(string id)
         {
             var basket = await _repository.GetBasketAsync(id);
+            if (basket == null)
+            {
+                return NotFound();
+            }
 
             return Ok(basket);
         }
