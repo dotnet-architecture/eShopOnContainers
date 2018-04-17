@@ -28,8 +28,6 @@
       <EnvironmentVariable Name="EventBusConnection" Value="rabbitmq.eshoponservicefabricbus"/>
       <EnvironmentVariable Name="AzureServiceBusEnabled" Value="False"/>
       <EnvironmentVariable Name="UseCustomizationData" Value="True"/>
-      <EnvironmentVariable Name="GracePeriodTime" Value="1"/>
-      <EnvironmentVariable Name="CheckUpdateTime" Value="30000"/>
       <EnvironmentVariable Name="EventBusUserName" Value="admin"/>
       <EnvironmentVariable Name="EventBusPassword" Value="password"/>
       <EnvironmentVariable Name="ApplicationInsights:InstrumentationKey" Value=""/>

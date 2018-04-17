@@ -15,7 +15,7 @@ or using AKS instead of ACS
 >```
 * An `Azure Blob storage`. It is needed for storing the kubernetes config file used by the hosted agent to access to Kubernetes cluster. Example:
 
-<img src="./img/k8s/blob_creation.png">
+<img src="./img/blob_creation.png">
 
 * Upload the `kubernetes config file` to the blob storage previously created. Execute the following command which will download the config file into the directory `c:\Users\<User>\.kube\` and then, upload it to your blob storage: 
 
@@ -37,7 +37,7 @@ or using AKS instead of ACS
 >```
 >https://eshopk8s.blob.core.windows.net/k8s-config/config
 >```
-<img src="./img/k8s/get_kubectlconfig_task.png">
+<img src="./img/get_kubectlconfig_task.png">
 
 3. Create a powershell task to execute the k8s deployment script. For example:
 
@@ -63,4 +63,4 @@ or using AKS instead of ACS
 
  You can use additional parameters (i.e. pass registry and user/password to use custom registry instead of DockerHub. Plase, refer to [README.k8s.md](./README.k8s.md) for more info.
 
-<img src="./img/k8s/deploy_script_task.png">
+<img src="./img/deploy_script_task.png">

@@ -192,8 +192,12 @@
             if (!string.IsNullOrEmpty(pathBase))
             {
                 app.UsePathBase(pathBase);
-            }    
-            
+            }
+
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+            app.Map("/liveness", lapp => lapp.Run(async ctx => ctx.Response.StatusCode = 200));
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+
             app.UseCors("CorsPolicy");
 
             ConfigureAuth(app);
@@ -204,7 +208,8 @@
                .UseSwaggerUI(c =>
                {
                    c.SwaggerEndpoint($"{ (!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty) }/swagger/v1/swagger.json", "Marketing.API V1");
-                   c.ConfigureOAuth2("marketingswaggerui", "", "", "Marketing Swagger UI");
+                   c.OAuthClientId("marketingswaggerui");
+                   c.OAuthAppName("Marketing Swagger UI");
                });            
 
             ConfigureEventBus(app);

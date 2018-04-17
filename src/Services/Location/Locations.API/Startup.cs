@@ -162,6 +162,10 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
                 app.UsePathBase(pathBase);
             }
 
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+            app.Map("/liveness", lapp => lapp.Run(async ctx => ctx.Response.StatusCode = 200));
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+
             app.UseCors("CorsPolicy");
 
             ConfigureAuth(app);
@@ -172,7 +176,8 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
               .UseSwaggerUI(c =>
               {
                   c.SwaggerEndpoint($"{ (!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty) }/swagger/v1/swagger.json", "Locations.API V1");
-                  c.ConfigureOAuth2("locationsswaggerui", "", "", "Locations Swagger UI");
+                  c.OAuthClientId("locationsswaggerui");
+                  c.OAuthAppName("Locations Swagger UI");
               });
 
             LocationsContextSeed.SeedAsync(app, loggerFactory)

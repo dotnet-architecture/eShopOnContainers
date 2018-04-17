@@ -4,10 +4,15 @@
 .gitignore
 .vs
 .vscode
-docker-compose.yml
-docker-compose.*.yml
+docker-compose*.yml
+docker-compose.dcproj
+*.sln
+!eShopOnContainers-ServicesAndWebApps.sln
+*.md
+hosts
+LICENSE
+*.testsettings
 vsts-docs
-test
 ServiceFabric
 readme
 k8s
@@ -22,3 +27,6 @@ cli-linux
 **/obj/
 **/node_modules/
 **/bower_components/
+**/wwwroot/lib/
+global.json
+src/Web/WebSPA/wwwroot/

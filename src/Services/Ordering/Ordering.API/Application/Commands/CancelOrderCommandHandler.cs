@@ -2,15 +2,13 @@
 using Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands;
 using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
 using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Idempotency;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Ordering.API.Application.Commands
 {
     // Regular CommandHandler
-    public class CancelOrderCommandHandler : IAsyncRequestHandler<CancelOrderCommand, bool>
+    public class CancelOrderCommandHandler : IRequestHandler<CancelOrderCommand, bool>
     {
         private readonly IOrderRepository _orderRepository;
 
@@ -25,7 +23,7 @@ namespace Ordering.API.Application.Commands
         /// </summary>
         /// <param name="command"></param>
         /// <returns></returns>
-        public async Task<bool> Handle(CancelOrderCommand command)
+        public async Task<bool> Handle(CancelOrderCommand command, CancellationToken cancellationToken)
         {
             var orderToUpdate = await _orderRepository.GetAsync(command.OrderNumber);
             if(orderToUpdate == null)

@@ -1,14 +1,24 @@
 # eShopOnContainers - Microservices Architecture and Containers based Reference Application (**BETA state** - Visual Studio 2017 and CLI environments compatible)
 Sample .NET Core reference application, powered by Microsoft, based on a simplified microservices architecture and Docker containers. <p>
-**Note Visual Studio 2017 version required**: This is important as of November 2017. For working with Docker and docker-compose files (needed with eShopOnContainers), do not migrate to VS 2017 15.4 as it has a bug when using TAGs in the docker-compose files. 
-Please, either use VS 2017 15.35 or VS 2017 15.5 Preview (bug is fixed here) or later. 
-VS Preview installs next to your stable Visual Studio IDE, allowing you to use either independently.
-Download of Preview here: https://www.visualstudio.com/vs/preview/
 
-**Note for Pull Requests**: We accept pull request from the community. When doing it, please do it onto the DEV branch which is the consolidated work-in-progress branch. Do not request it onto Master, if possible.
+**NOTE ON VS 2017 VERSION NEEDED**
+
+For the code at the MASTER branch (this one), you can use VS 2017 RTM v 15.6.
+
+For the code at the DEV branch, you need use VS 2017 RTM v 15.7 (Currently in PREVIEW state).
+
+For both branches, you can also use Docker CLI (docker-compose up)
+
+**Note for Pull Requests (PRs)**: We accept pull request from the community. When doing it, please do it onto the **DEV branch** which is the consolidated work-in-progress branch. **Do not request it onto Master branch**, if possible.
+
+**NEWS / ANNOUNCEMENTS**
+Do you want to be up-to-date on .NET Architecture guidance and reference apps like eShopOnContainers? --> Subscribe by "WATCHING" this new GitHub repo: https://github.com/dotnet-architecture/News 
 
 ## Updated for .NET Core 2.0 "wave" of technologies
-NOTE: We have migrated the whole solution to .NET Core 2.0 "wave". Not just compilation but also new recommended code in EF Core 2.0, ASP.NET Core 2.0, and other new related versions.
+NOTE: We have migrated the whole server-side solution to .NET Core 2.0 "wave". Not just compilation but also new recommended code in EF Core 2.0, ASP.NET Core 2.0, and other new related versions.
+
+The **dockerfiles** in the solution have also been updated and now support [**Docker Multi-Stage**](https://blogs.msdn.microsoft.com/stevelasker/2017/09/11/net-and-multistage-dockerfiles/) since mid-December 2017.
+
 For a list on the new .NET Core 2.0 related implemented features, see this [blog post](https://blogs.msdn.microsoft.com/dotnet/2017/08/02/microservices-and-docker-containers-architecture-patterns-and-development-guidance/).
 
 >**PLEASE** Read our [branch guide](./branch-guide.md) to know about our branching policy
@@ -31,8 +41,15 @@ The architecture proposes a simplified microservice oriented architecture implem
 <img src="img/eShopOnContainers_Architecture_Diagram.png">
 <p>
 
-> ### Important Note on API Gateways and published APIs
-> Note that the previous architecture diagram shows how you deploy eShopOnContainers in a local Docker development machine. For a production-ready architecture we recommend to keep evolving your architecture with additional features like API Gateways based on AzureAPI Management or any other approach for API Gateways explained in the related documentation/eBook, so you can filter APIs and apply security in a single tier while hiding/securing the internal microservices to the client apps or outside consumers.
+> ### Important Note on AP Gateways and published microservice APIs
+> Note that the previous architecture is a how you deploy it in a local Docker development machine. For a production-ready architecture we recommend to keep evolving your architecture with additional features like API Gateways based on AzureAPI Management or any other approach for API Gateways explained in the related documentation/eBook.
+<p>
+<img src="img/eShopOnContainers-Architecture-With-Azure-API-Management.png">
+<p>
+
+> The sample code in this repo is NOT making use of Azure API Management in order to be able to provide an "F5 experience" in Visual Studio (or CLI) of the sample with no up-front dependencies in Azure. But you should evaluate API Gateways alternatives when building for production.
+
+The microservices are different in type, meaning different internal architecture patterns approaches depending on it purpose, as shown in the image below.
 <p>
 <img src="img/eShopOnContainers-Architecture-With-Azure-API-Management.png">
 <p>
@@ -60,9 +77,9 @@ You can download them and start reviewing these Guides/eBooks here:
 | Architecting & Developing | Containers Lifecycle & CI/CD | App patterns with Xamarin.Forms |
 | ------------ | ------------|  ------------|
 | <a href='https://aka.ms/microservicesebook'><img src="img/ebook_arch_dev_microservices_containers_cover.png"> </a> | <a href='https://aka.ms/dockerlifecycleebook'> <img src="img/ebook_containers_lifecycle.png"> </a> | <a href='https://aka.ms/xamarinpatternsebook'> <img src="img/xamarin-enterprise-patterns-ebook-cover-small.png"> </a> |
-| <sup> <a href='https://aka.ms/microservicesebook'>**Download .PDF** (2nd Edition)</a> </sup>  | <sup> <a href='https://aka.ms/dockerlifecycleebook'>**Download** (First Edition) </a>  </sup> | <sup> <a href='https://aka.ms/xamarinpatternsebook'>**Download** (First Edition) </a>  </sup> |
+| <sup> <a href='https://aka.ms/microservicesebook'>**Download .PDF** (2nd Edition)</a> </sup>  | <sup> <a href='https://aka.ms/dockerlifecycleebook'>**Download** </a>  </sup> | <sup> <a href='https://aka.ms/xamarinpatternsebook'>**Download**  </a>  </sup> |
 
-Download in other formats (**eReaders** like **MOBI**, **EPUB**) and other eBooks at the [.NET Architecture center](dot.net/architecture).
+Download in other formats (**eReaders** like **MOBI**, **EPUB**) and other eBooks at the [.NET Architecture center](http://dot.net/architecture).
 
 Send feedback to [dotnet-architecture-ebooks-feedback@service.microsoft.com](dotnet-architecture-ebooks-feedback@service.microsoft.com)
 

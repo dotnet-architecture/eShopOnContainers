@@ -16,7 +16,6 @@ using Payment.API.IntegrationEvents.Events;
 using RabbitMQ.Client;
 using System;
 using System.Threading.Tasks;
-using Swashbuckle.AspNetCore.Swagger;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.ApplicationInsights.ServiceFabric;
 
@@ -103,6 +102,10 @@ namespace Payment.API
             {
                 app.UsePathBase(pathBase);
             }
+
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+            app.Map("/liveness", lapp => lapp.Run(async ctx => ctx.Response.StatusCode = 200));
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
 
             ConfigureEventBus(app);
         }

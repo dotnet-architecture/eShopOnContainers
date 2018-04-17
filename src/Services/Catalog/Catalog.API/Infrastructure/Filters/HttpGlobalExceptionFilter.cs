@@ -39,7 +39,7 @@ namespace Catalog.API.Infrastructure.Filters
             {
                 var json = new JsonErrorResponse
                 {
-                    Messages = new[] { "An error ocurr.Try it again." }
+                    Messages = new[] { "An error ocurred." }
                 };
 
                 if (env.IsDevelopment())

@@ -1,7 +1,7 @@
-﻿using eShopOnContainers.Core.Helpers;
+﻿using eShopOnContainers.Core.Services.Settings;
 using eShopOnContainers.Core.ViewModels;
-using eShopOnContainers.Core.Views;
 using eShopOnContainers.Core.ViewModels.Base;
+using eShopOnContainers.Core.Views;
 using System;
 using System.Globalization;
 using System.Reflection;
@@ -12,19 +12,26 @@ namespace eShopOnContainers.Services
 {
     public class NavigationService : INavigationService
     {
-		public ViewModelBase PreviousPageViewModel
-		{
-			get
-			{
-				var mainPage = Application.Current.MainPage as CustomNavigationView;
-				var viewModel = mainPage.Navigation.NavigationStack[mainPage.Navigation.NavigationStack.Count - 2].BindingContext;
-				return viewModel as ViewModelBase;
-			}
-		}
+        private readonly ISettingsService _settingsService;
+
+        public ViewModelBase PreviousPageViewModel
+        {
+            get
+            {
+                var mainPage = Application.Current.MainPage as CustomNavigationView;
+                var viewModel = mainPage.Navigation.NavigationStack[mainPage.Navigation.NavigationStack.Count - 2].BindingContext;
+                return viewModel as ViewModelBase;
+            }
+        }
+
+        public NavigationService(ISettingsService settingsService)
+        {
+            _settingsService = settingsService;
+        }
 
         public Task InitializeAsync()
         {
-            if(string.IsNullOrEmpty(Settings.AuthAccessToken))
+            if (string.IsNullOrEmpty(_settingsService.AuthAccessToken))
                 return NavigateToAsync<LoginViewModel>();
             else
                 return NavigateToAsync<MainViewModel>();
@@ -78,7 +85,7 @@ namespace eShopOnContainers.Services
                 Application.Current.MainPage = new CustomNavigationView(page);
             }
             else
-			{
+            {
                 var navigationPage = Application.Current.MainPage as CustomNavigationView;
                 if (navigationPage != null)
                 {
@@ -93,25 +100,25 @@ namespace eShopOnContainers.Services
             await (page.BindingContext as ViewModelBase).InitializeAsync(parameter);
         }
 
-		private Type GetPageTypeForViewModel(Type viewModelType)
-		{
-			var viewName = viewModelType.FullName.Replace("Model", string.Empty);
-			var viewModelAssemblyName = viewModelType.GetTypeInfo().Assembly.FullName;
-			var viewAssemblyName = string.Format(CultureInfo.InvariantCulture, "{0}, {1}", viewName, viewModelAssemblyName);
-			var viewType = Type.GetType(viewAssemblyName);
-			return viewType;
-		}
+        private Type GetPageTypeForViewModel(Type viewModelType)
+        {
+            var viewName = viewModelType.FullName.Replace("Model", string.Empty);
+            var viewModelAssemblyName = viewModelType.GetTypeInfo().Assembly.FullName;
+            var viewAssemblyName = string.Format(CultureInfo.InvariantCulture, "{0}, {1}", viewName, viewModelAssemblyName);
+            var viewType = Type.GetType(viewAssemblyName);
+            return viewType;
+        }
 
-		private Page CreatePage(Type viewModelType, object parameter)
-		{
-			Type pageType = GetPageTypeForViewModel(viewModelType);
-			if (pageType == null)
-			{
-				throw new Exception($"Cannot locate page type for {viewModelType}");
-			}
+        private Page CreatePage(Type viewModelType, object parameter)
+        {
+            Type pageType = GetPageTypeForViewModel(viewModelType);
+            if (pageType == null)
+            {
+                throw new Exception($"Cannot locate page type for {viewModelType}");
+            }
 
-			Page page = Activator.CreateInstance(pageType) as Page;
-			return page;
-		}
+            Page page = Activator.CreateInstance(pageType) as Page;
+            return page;
+        }
     }
 }

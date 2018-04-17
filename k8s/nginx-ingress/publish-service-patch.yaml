@@ -1,0 +1,7 @@
+[
+  {
+    'op': 'add',
+    'path': '/spec/template/spec/containers/0/args/-',
+    'value': '--publish-service=$(POD_NAMESPACE)/ingress-nginx'
+  }
+]
