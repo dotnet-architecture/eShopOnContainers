@@ -1,7 +1,7 @@
-﻿namespace Ordering.API.Application.IntegrationEvents.Events
-{
-    using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
+﻿using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
 
+namespace Ordering.SignalrHub.IntegrationEvents.Events
+{
     public class OrderStatusChangedToStockConfirmedIntegrationEvent : IntegrationEvent
     {
         public int OrderId { get; }

@@ -12,6 +12,7 @@ namespace eShopOnContainers.WebSPA
         public string MarketingUrl { get; set; }
 
         public string PurchaseUrl { get; set; }
+        public string SignalrHubUrl { get; set; }
 
         public string ActivateCampaignDetailFunction { get; set; }
         public bool UseCustomizationData { get; set; }

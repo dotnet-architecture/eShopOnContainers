@@ -106,7 +106,7 @@
         }
 
         function stablishConnection() {
-            let hubHttpConnection = new signalR.HttpConnection('@settings.Value.ExternalPurchaseUrl/orders-api/notificationhub', {
+            let hubHttpConnection = new signalR.HttpConnection('@settings.Value.SignalrHubUrl/hub/notificationhub', {
             transport: signalR.TransportType.LongPolling,
                 accessTokenFactory: () => {
                     return "Authorization", getToken();

@@ -1,20 +1,16 @@
 ﻿namespace Ordering.API.Application.DomainEventHandlers.OrderGracePeriodConfirmed
 {
+    using Domain.Events;
     using MediatR;
+    using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.BuyerAggregate;
     using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
     using Microsoft.Extensions.Logging;
-    using Domain.Events;
-    using System;
-    using System.Threading.Tasks;
     using Ordering.API.Application.IntegrationEvents;
-    using System.Linq;
     using Ordering.API.Application.IntegrationEvents.Events;
+    using System;
+    using System.Linq;
     using System.Threading;
-    using Microsoft.AspNetCore.SignalR;
-    using Ordering.API.Infrastructure.Hubs;
-    using Microsoft.AspNetCore.Http;
-    using Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure.Services;
-    using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.BuyerAggregate;
+    using System.Threading.Tasks;
 
     public class OrderStatusChangedToAwaitingValidationDomainEventHandler
                    : INotificationHandler<OrderStatusChangedToAwaitingValidationDomainEvent>
@@ -23,19 +19,16 @@
         private readonly ILoggerFactory _logger;
         private readonly IBuyerRepository _buyerRepository;
         private readonly IOrderingIntegrationEventService _orderingIntegrationEventService;
-        private readonly IHubContext<NotificationsHub> _hubContext;
 
         public OrderStatusChangedToAwaitingValidationDomainEventHandler(
             IOrderRepository orderRepository, ILoggerFactory logger,
             IBuyerRepository buyerRepository,
-            IOrderingIntegrationEventService orderingIntegrationEventService,
-            IHubContext<NotificationsHub> hubContext)
+            IOrderingIntegrationEventService orderingIntegrationEventService)
         {
             _orderRepository = orderRepository ?? throw new ArgumentNullException(nameof(orderRepository));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _buyerRepository = buyerRepository;
-            _orderingIntegrationEventService = orderingIntegrationEventService;
-            _hubContext = hubContext ?? throw new ArgumentNullException(nameof(hubContext));
+            _orderingIntegrationEventService = orderingIntegrationEventService;           
         }
 
         public async Task Handle(OrderStatusChangedToAwaitingValidationDomainEvent orderStatusChangedToAwaitingValidationDomainEvent, CancellationToken cancellationToken)
@@ -52,12 +45,8 @@
                 .Select(orderItem => new OrderStockItem(orderItem.ProductId, orderItem.GetUnits()));
 
             var orderStatusChangedToAwaitingValidationIntegrationEvent = new OrderStatusChangedToAwaitingValidationIntegrationEvent(
-                orderStatusChangedToAwaitingValidationDomainEvent.OrderId, orderStockList);
+                order.Id, order.OrderStatus.Name, buyer.Name, orderStockList);
             await _orderingIntegrationEventService.PublishThroughEventBusAsync(orderStatusChangedToAwaitingValidationIntegrationEvent);
-           
-            await _hubContext.Clients
-                .Group(buyer.Name)
-                .SendAsync("UpdatedOrderState", new { OrderId = order.Id, Status = order.OrderStatus.Name });
         }
     }  
 }

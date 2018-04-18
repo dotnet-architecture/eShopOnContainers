@@ -39,7 +39,6 @@
     <PackageReference Include="Microsoft.ApplicationInsights.ServiceFabric" Version="2.0.1-beta1" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.5" />
     <PackageReference Include="MediatR" Version="4.0.1" />
-    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.0.0-preview2-final" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="2.2.0" />
     <PackageReference Include="System.Reflection" Version="4.3.0" />
     <PackageReference Include="Dapper" Version="1.50.4" />

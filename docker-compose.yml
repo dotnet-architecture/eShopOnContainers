@@ -152,3 +152,9 @@ services:
     depends_on:
       - sql.data
       - rabbitmq 
+  ordering.signalrhub:
+    image: eshop/orderingsignalrhub:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/Services/Ordering/Ordering.SignalrHub/Dockerfile
+

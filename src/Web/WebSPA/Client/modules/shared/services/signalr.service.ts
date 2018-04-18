@@ -10,7 +10,7 @@ export class SignalrService {
 
     private _hubConnection: HubConnection;
     private _httpConnection: HttpConnection;
-    private orderApiUrl: string = '';
+    private SignalrHubUrl: string = '';
     private msgSignalrSource = new Subject();
     msgReceived$ = this.msgSignalrSource.asObservable();
 
@@ -19,12 +19,12 @@ export class SignalrService {
         private configurationService: ConfigurationService, private toastr: ToastsManager,
     ) {
         if (this.configurationService.isReady) {
-            this.orderApiUrl = this.configurationService.serverSettings.purchaseUrl;
+            this.SignalrHubUrl = this.configurationService.serverSettings.signalrHubUrl;
             this.init();
         }
         else {
             this.configurationService.settingsLoaded$.subscribe(x => {
-                this.orderApiUrl = this.configurationService.serverSettings.purchaseUrl;
+                this.SignalrHubUrl = this.configurationService.serverSettings.signalrHubUrl;
                 this.init();
             });
         }            
@@ -43,7 +43,7 @@ export class SignalrService {
     }
 
     private register() {
-        this._httpConnection = new HttpConnection(this.orderApiUrl + '/orders-api/notificationhub', {
+        this._httpConnection = new HttpConnection(this.SignalrHubUrl + '/hub/notificationhub', {
             transport: TransportType.LongPolling,
             accessTokenFactory: () => this.securityService.GetToken()
         });

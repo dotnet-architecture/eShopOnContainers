@@ -6,7 +6,6 @@
     using global::Ordering.API.Application.IntegrationEvents;
     using global::Ordering.API.Application.IntegrationEvents.Events;
     using global::Ordering.API.Infrastructure.Filters;
-    using global::Ordering.API.Infrastructure.Hubs;
     using global::Ordering.API.Infrastructure.Middlewares;
     using Infrastructure.AutofacModules;
     using Infrastructure.Filters;
@@ -27,10 +26,7 @@
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.HealthChecks;
-    using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Logging;
-    using Microsoft.Extensions.Primitives;
-    using Microsoft.IdentityModel.Tokens;
     using Ordering.Infrastructure;
     using RabbitMQ.Client;
     using Swashbuckle.AspNetCore.Swagger;
@@ -39,7 +35,6 @@
     using System.Data.Common;
     using System.IdentityModel.Tokens.Jwt;
     using System.Reflection;
-    using System.Threading.Tasks;
 
     public class Startup
     {
@@ -190,7 +185,6 @@
             RegisterEventBus(services);
             ConfigureAuthService(services);
             services.AddOptions();
-            services.AddSignalR();
 
             //configure autofac
 
@@ -225,12 +219,6 @@
             app.UseCors("CorsPolicy");
 
             ConfigureAuth(app);
-
-            app.UseSignalR(routes =>
-            {
-                routes.MapHub<NotificationsHub>("/notificationhub", options => 
-                    options.Transports = AspNetCore.Http.Connections.TransportType.All);
-            });
             
             app.UseMvcWithDefaultRoute();
 
