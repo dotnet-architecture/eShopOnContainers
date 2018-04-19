@@ -46,6 +46,16 @@ services:
       - sql.data
       - rabbitmq
 
+  ordering.signalrhub:
+    image: eshop/ordering.signalrhub:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/Services/Ordering/Ordering.SignalrHub/Dockerfile 
+    depends_on:
+      - sql.data
+      - identity.api
+      - rabbitmq
+
   marketing.api:
     image: eshop/marketing.api-win:${TAG:-latest}
     build:

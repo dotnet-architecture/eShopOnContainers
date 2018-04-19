@@ -15,6 +15,7 @@ using Ordering.SignalrHub.IntegrationEvents;
 using Ordering.SignalrHub.IntegrationEvents.EventHandling;
 using Ordering.SignalrHub.IntegrationEvents.Events;
 using RabbitMQ.Client;
+using StackExchange.Redis;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 
@@ -40,7 +41,23 @@ namespace Ordering.SignalrHub
                     .AllowCredentials());
             });
 
-            services.AddSignalR();
+            if (Configuration.GetValue<string>("IsClusterEnv") == bool.TrueString)
+            {
+                services
+                    .AddSignalR()
+                    .AddRedis(Configuration["SignalrStoreConnectionString"]);
+
+                //services
+                //    .AddSignalR()
+                //    .AddRedis(options => options.Factory = writer =>
+                //    {
+                //        return ConnectionMultiplexer.Connect(Configuration["SignalrStoreConnectionString"], writer);
+                //    });
+            }
+            else
+            {
+                services.AddSignalR();
+            }
 
             if (Configuration.GetValue<bool>("AzureServiceBusEnabled"))
             {

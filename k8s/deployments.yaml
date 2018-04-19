@@ -51,13 +51,7 @@ spec:
           value: 'K8S'
         ports:
         - containerPort: 80
-        readinessProbe:
-          httpGet:
-            path: /hc
-            port: 80
-            scheme: HTTP 
-          initialDelaySeconds: 300
-          periodSeconds: 240         
+        
       imagePullSecrets:
       - name: registry-key
 ---
@@ -109,13 +103,7 @@ spec:
           value: 'K8S' 
         ports:
         - containerPort: 80
-        readinessProbe:
-          httpGet:
-            path: /hc
-            port: 80
-            scheme: HTTP 
-          initialDelaySeconds: 300
-          periodSeconds: 240
+        
       imagePullSecrets:
       - name: registry-key
 ---
@@ -204,13 +192,7 @@ spec:
           value: 'K8S'                            
         ports:
         - containerPort: 80
-        readinessProbe:
-          httpGet:
-            path: /hc
-            port: 80
-            scheme: HTTP 
-          initialDelaySeconds: 300
-          periodSeconds: 240
+        
       imagePullSecrets:
       - name: registry-key
 ---
@@ -277,13 +259,7 @@ spec:
           value: 'K8S'           
         ports:
         - containerPort: 80
-        readinessProbe:
-          httpGet:
-            path: /hc
-            port: 80
-            scheme: HTTP 
-          initialDelaySeconds: 300
-          periodSeconds: 240
+        
       imagePullSecrets:
       - name: registry-key
 ---
@@ -341,6 +317,57 @@ spec:
              key: all__EnableLoadTest
         - name: OrchestratorType
           value: 'K8S'     
+        ports:
+        - containerPort: 80
+      imagePullSecrets:
+      - name: registry-key
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ordering-signalrhub
+spec:
+  paused: true
+  template:
+    metadata:
+      labels:
+        app: eshop
+        component: ordering-signalrhub
+    spec:
+      containers:
+      - name: ordering-signalrhub
+        image: eshop/ordering.signalrhub
+        imagePullPolicy: Always
+        env:                
+        - name: EventBusConnection
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: all__EventBusConnection
+        - name: IdentityUrl
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: identity_e
+        - name: AzureServiceBusEnabled
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: all__UseAzureServiceBus                
+        - name: ApplicationInsights__InstrumentationKey
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: all__InstrumentationKey        
+        - name: OrchestratorType
+          value: 'K8S'  
+        - name: IsClusterEnv
+          value: 'True'  
+        - name: SignalrStoreConnectionString
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: keystore 
         ports:
         - containerPort: 80
       imagePullSecrets:
@@ -409,13 +436,7 @@ spec:
           value: 'K8S'          
         ports:
         - containerPort: 80
-        readinessProbe:
-          httpGet:
-            path: /hc
-            port: 80
-            scheme: HTTP 
-          initialDelaySeconds: 300
-          periodSeconds: 240 
+        
       imagePullSecrets:
       - name: registry-key
 ---
@@ -492,13 +513,7 @@ spec:
           value: 'K8S'            
         ports:
         - containerPort: 80
-        readinessProbe:
-          httpGet:
-            path: /hc
-            port: 80
-            scheme: HTTP 
-          initialDelaySeconds: 300
-          periodSeconds: 240
+        
       imagePullSecrets:
       - name: registry-key
 ---
@@ -540,13 +555,7 @@ spec:
           value: 'K8S'
         ports:
         - containerPort: 80
-        readinessProbe:
-          httpGet:
-            path: /hc
-            port: 80
-            scheme: HTTP 
-          initialDelaySeconds: 300
-          periodSeconds: 240
+        
       imagePullSecrets:
       - name: registry-key      
 ---
@@ -642,16 +651,15 @@ spec:
              name: externalcfg
              key: all__EnableLoadTest
         - name: OrchestratorType
-          value: 'K8S'        
+          value: 'K8S'    
+        - name: SignalrHubUrl
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: webshoppingapigw_e    
         ports:
         - containerPort: 80
-        readinessProbe:
-          httpGet:
-            path: /hc
-            port: 80
-            scheme: HTTP 
-          initialDelaySeconds: 300
-          periodSeconds: 240
+        
       imagePullSecrets:
       - name: registry-key
 ---
@@ -814,15 +822,14 @@ spec:
              key: all__InstrumentationKey
         - name: OrchestratorType
           value: 'K8S'
+        - name: SignalrHubUrl
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: webshoppingapigw_e
         ports:
         - containerPort: 80
-        readinessProbe:
-          httpGet:
-            path: /hc
-            port: 80
-            scheme: HTTP 
-          initialDelaySeconds: 300
-          periodSeconds: 240
+        
       imagePullSecrets:
       - name: registry-key
 ---

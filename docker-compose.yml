@@ -153,7 +153,7 @@ services:
       - sql.data
       - rabbitmq 
   ordering.signalrhub:
-    image: eshop/orderingsignalrhub:${TAG:-latest}
+    image: eshop/ordering.signalrhub:${TAG:-latest}
     build:
       context: .
       dockerfile: src/Services/Ordering/Ordering.SignalrHub/Dockerfile

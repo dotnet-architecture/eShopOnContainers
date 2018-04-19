@@ -1,13 +1,11 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands;
 using Microsoft.eShopOnContainers.Services.Ordering.API.Application.Queries;
 using Microsoft.eShopOnContainers.Services.Ordering.API.Controllers;
 using Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure.Services;
 using Moq;
 using Ordering.API.Application.Commands;
-using Ordering.API.Infrastructure.Hubs;
 using System;
 using System.Linq;
 using System.Threading;
