@@ -118,7 +118,7 @@
         function registerNotificationHandlers(connection) {
             connection.on("UpdatedOrderState", (message) => {
             toastr.success('Updated to status: ' + message.status, 'Order Id: ' + message.orderId);
-                if (window.location.pathname === '/Order') {
+                if (window.location.pathname.split("/").pop() === 'Order') {
                     refreshOrderList();
                 }
             });
@@ -132,7 +132,7 @@
             clearTimeout(timerId);
             timerId = setTimeout(function () {
                 window.location.reload();
-            }, 5000);
+            }, 1000);
         }
     </script>
 </body>
