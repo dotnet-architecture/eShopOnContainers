@@ -162,7 +162,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
 
-                    RedirectUris = { $"{clientsUrl["LocationsApi"]}/swagger/o2c.html" },
+                    RedirectUris = { $"{clientsUrl["LocationsApi"]}/swagger/oauth2-redirect.html" },
                     PostLogoutRedirectUris = { $"{clientsUrl["LocationsApi"]}/swagger/" },
 
                     AllowedScopes =
@@ -177,7 +177,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
 
-                    RedirectUris = { $"{clientsUrl["MarketingApi"]}/swagger/o2c.html" },
+                    RedirectUris = { $"{clientsUrl["MarketingApi"]}/swagger/oauth2-redirect.html" },
                     PostLogoutRedirectUris = { $"{clientsUrl["MarketingApi"]}/swagger/" },
 
                     AllowedScopes =
@@ -192,7 +192,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
 
-                    RedirectUris = { $"{clientsUrl["BasketApi"]}/swagger/o2c.html" },
+                    RedirectUris = { $"{clientsUrl["BasketApi"]}/swagger/oauth2-redirect.html" },
                     PostLogoutRedirectUris = { $"{clientsUrl["BasketApi"]}/swagger/" },
 
                     AllowedScopes =
@@ -207,7 +207,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
 
-                    RedirectUris = { $"{clientsUrl["OrderingApi"]}/swagger/o2c.html" },
+                    RedirectUris = { $"{clientsUrl["OrderingApi"]}/swagger/oauth2-redirect.html" },
                     PostLogoutRedirectUris = { $"{clientsUrl["OrderingApi"]}/swagger/" },
 
                     AllowedScopes =
@@ -222,7 +222,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
 
-                    RedirectUris = { $"{clientsUrl["MobileShoppingAgg"]}/swagger/o2c.html" },
+                    RedirectUris = { $"{clientsUrl["MobileShoppingAgg"]}/swagger/oauth2-redirect.html" },
                     PostLogoutRedirectUris = { $"{clientsUrl["MobileShoppingAgg"]}/swagger/" },
 
                     AllowedScopes =
@@ -237,7 +237,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
 
-                    RedirectUris = { $"{clientsUrl["WebShoppingAgg"]}/swagger/o2c.html" },
+                    RedirectUris = { $"{clientsUrl["WebShoppingAgg"]}/swagger/oauth2-redirect.html" },
                     PostLogoutRedirectUris = { $"{clientsUrl["WebShoppingAgg"]}/swagger/" },
 
                     AllowedScopes =
