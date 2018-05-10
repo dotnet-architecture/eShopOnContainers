@@ -1,13 +1,29 @@
-﻿@model WebStatus.Viewmodels.HealthStatusViewModel
+﻿@using Microsoft.AspNetCore.Html
+@using Microsoft.Extensions.HealthChecks
+@model WebStatus.Viewmodels.HealthStatusViewModel
 
 @{
     ViewData["Title"] = "System Status";
+
 }
+
+@functions
+{
+    static readonly string[] LabelClass = new[] { "default", "danger", "success", "warning" };
+
+    public HtmlString StatusLabel(CheckStatus status)
+    {
+        return new HtmlString($@"<span class=""label label-{LabelClass[(int) status]}"">{status}</span>");
+    }
+
+}
+
+<style>.label {font-size: 100%}</style>
 
 
 <div class="row">
     <div class="col-md-12">
-        <h2 class="overall-status-title">Overall Status: @Model.OverallStatus</h2>
+        <h2 class="overall-status-title">Overall Status: @StatusLabel(Model.OverallStatus)</h2>
     </div>
 </div>
 
@@ -15,33 +31,21 @@
     @foreach (var result in Model.Results)
     {
         <div class="row list-group-status-item">
-            <div class="col-md-10">
+            <div class="col-md-9">
                 <h4 class="list-group-status-item-title">@result.Name</h4>
                 <p class="list-group-item-text">
-                    @if (result.Result.Data.ContainsKey("url")) {
-                        <p>@result.Result.Data["url"]</p>
+                    @if (result.Result.Data.ContainsKey("url"))
+                    {
+                    <p>@result.Result.Data["url"]</p>
                     }
-                @result.Result.Description
+                    <p class="text-@(LabelClass[(int)result.Result.CheckStatus])" style="font-weight:bold">
+                        @result.Result.Description
+                    </p>
                 </p>
             </div>
-            <div class="col-md-2 list-group-status-item-label">
-                @if (@result.Result.CheckStatus == Microsoft.Extensions.HealthChecks.CheckStatus.Healthy)
-                {
-                    <span class="label label-success">@result.Result.CheckStatus</span>
-                }
-                else if (@result.Result.CheckStatus == Microsoft.Extensions.HealthChecks.CheckStatus.Unhealthy)
-                {
-                    <span class="label label-danger">@result.Result.CheckStatus</span>
-                }
-                else if (@result.Result.CheckStatus == Microsoft.Extensions.HealthChecks.CheckStatus.Warning)
-                {
-                    <span class="label label-warning">@result.Result.CheckStatus</span>
-                }
-                else
-                {
-                    <span class="label label-default">@result.Result.CheckStatus</span>
-                }
+            <div class="col-md-3">
+                <h3>@StatusLabel(result.Result.CheckStatus)</h3>
             </div>
-        </div>        
+        </div>
     }
 </div>
