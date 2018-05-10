@@ -177,6 +177,7 @@ services:
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - CatalogUrl=http://catalog.api/hc
       - OrderingUrl=http://ordering.api/hc
+      - OrderingBackgroundTasksUrl=http://ordering.backgroundtasks/hc
       - BasketUrl=http://basket.api/hc
       - IdentityUrl=http://identity.api/hc
       - LocationsUrl=http://locations.api/hc
