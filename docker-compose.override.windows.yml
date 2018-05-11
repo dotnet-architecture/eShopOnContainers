@@ -56,3 +56,8 @@ services:
     environment:
       - EventBusUserName=admin
       - EventBusPassword=password
+
+  ordering.signalrhub:
+  environment:
+      - EventBusUserName=admin
+      - EventBusPassword=password

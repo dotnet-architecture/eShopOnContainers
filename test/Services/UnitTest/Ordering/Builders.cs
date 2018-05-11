@@ -19,6 +19,7 @@ namespace UnitTest.Ordering
         {
             order = new Order(
                 "userId",
+                "fakeName",
                 address,
                 cardTypeId:5,
                 cardNumber:"12",
