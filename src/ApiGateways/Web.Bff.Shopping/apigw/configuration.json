@@ -101,35 +101,11 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "marketing.api",
-          "Port": 80
-        }
-      ],
-      "UpstreamPathTemplate": "/marketing-api/{everything}",
-      "UpstreamHttpMethod": []
-    },
-    {
-      "DownstreamPathTemplate": "/{everything}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
           "Host": "payment.api",
           "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/payment-api/{everything}",
-      "UpstreamHttpMethod": []
-    },
-    {
-      "DownstreamPathTemplate": "/{everything}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "locations.api",
-          "Port": 80
-        }
-      ],
-      "UpstreamPathTemplate": "/location-api/{everything}",
       "UpstreamHttpMethod": []
     }
 
