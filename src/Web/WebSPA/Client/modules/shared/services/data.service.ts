@@ -1,12 +1,9 @@
-﻿import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 
-import 'rxjs/Rx';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/throw';
-import { Observer } from 'rxjs/Observer';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
+import {throwError as observableThrowError,  Observable ,  Observer } from 'rxjs';
+
+import {map, catchError} from 'rxjs/operators';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 
 import { SecurityService } from './security.service';
 import { Guid } from '../../../guid';
@@ -24,8 +21,8 @@ export class DataService {
             headers = headers.set('Authorization', 'Bearer ' + this.securityService.GetToken());
         }
 
-        return this.http.get(url, {headers: headers, observe: "response"}).map(
-            (res: HttpResponse<T>) => res).catch(this.handleError);
+        return this.http.get(url, {headers: headers, observe: "response"}).pipe(map(
+            (res: HttpResponse<T>) => res),catchError(this.handleError),);
     }
 
     postWithId<T>(url: string, data: any, params?: any): Observable<HttpResponse<T>> {
@@ -51,10 +48,10 @@ export class DataService {
             headers = headers.set('x-requestid', guid);
         }
 
-        return this.http.post(url, data, {headers: headers, observe:'response'}).map(
+        return this.http.post(url, data, {headers: headers, observe:'response'}).pipe(map(
             (res: HttpResponse<T>) => {
                 return res;
-            }).catch(this.handleError);
+            }),catchError(this.handleError),);
     }
 
     private doPut<T>(url: string, data: any, needId: boolean, params?: any): Observable<HttpResponse<T>> {
@@ -67,10 +64,10 @@ export class DataService {
             headers = headers.set('x-requestid', guid);
         }
 
-        return this.http.put(url, data, {headers: headers, observe: 'response'}).map(
+        return this.http.put(url, data, {headers: headers, observe: 'response'}).pipe(map(
             (res: HttpResponse<T>) => {
                 return res;
-            }).catch(this.handleError);
+            }),catchError(this.handleError),);
     }
 
     delete(url: string, params?: any) {
@@ -99,8 +96,8 @@ export class DataService {
             {
                 errMessage = error.status.toString();
             }
-            return Observable.throw(errMessage);
+            return observableThrowError(errMessage);
         }
-        return Observable.throw(error || 'server error');
+        return observableThrowError(error || 'server error');
     }
 }

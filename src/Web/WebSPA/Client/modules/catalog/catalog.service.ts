@@ -1,3 +1,5 @@
+
+import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 
@@ -7,11 +9,8 @@ import { ICatalog } from '../shared/models/catalog.model';
 import { ICatalogBrand } from '../shared/models/catalogBrand.model';
 import { ICatalogType } from '../shared/models/catalogType.model';
 
-import 'rxjs/Rx';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/throw';
-import { Observer } from 'rxjs/Observer';
-import 'rxjs/add/operator/map';
+import { Observable ,  Observer } from 'rxjs';
+
 
 @Injectable()
 export class CatalogService {
@@ -35,20 +34,20 @@ export class CatalogService {
 
         url = url + '?pageIndex=' + pageIndex + '&pageSize=' + pageSize;
 
-        return this.service.get<ICatalog>(url).map((response: HttpResponse<ICatalog>) => {
+        return this.service.get<ICatalog>(url).pipe(map((response: HttpResponse<ICatalog>) => {
             return response.body;
-        });
+        }));
     }
 
     getBrands(): Observable<ICatalogBrand[]> {
-        return this.service.get<ICatalogBrand[]>(this.brandUrl).map((response: HttpResponse<ICatalogBrand[]>) => {
+        return this.service.get<ICatalogBrand[]>(this.brandUrl).pipe(map((response: HttpResponse<ICatalogBrand[]>) => {
             return response.body;
-        });
+        }));
     }
 
     getTypes(): Observable<ICatalogType[]> {
-        return this.service.get<ICatalogType[]>(this.typesUrl).map((response: HttpResponse<ICatalogType[]>) => {
+        return this.service.get<ICatalogType[]>(this.typesUrl).pipe(map((response: HttpResponse<ICatalogType[]>) => {
             return response.body;
-        });
+        }));
     };
 }

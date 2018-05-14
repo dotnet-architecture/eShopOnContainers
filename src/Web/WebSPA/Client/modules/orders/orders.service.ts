@@ -1,3 +1,5 @@
+
+import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 
@@ -9,11 +11,8 @@ import { SecurityService } from '../shared/services/security.service';
 import { ConfigurationService } from '../shared/services/configuration.service';
 import { BasketWrapperService } from '../shared/services/basket.wrapper.service';
 
-import 'rxjs/Rx';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/throw';
-import { Observer } from 'rxjs/Observer';
-import 'rxjs/add/operator/map';
+import { Observable ,  Observer } from 'rxjs';
+
 
 
 @Injectable()
@@ -31,17 +30,17 @@ export class OrdersService {
     getOrders(): Observable<IOrder[]> {
         let url = this.ordersUrl + '/api/v1/o/orders';
 
-        return this.service.get<IOrder[]>(url).map((response: HttpResponse<IOrder[]>) => {
+        return this.service.get<IOrder[]>(url).pipe(map((response: HttpResponse<IOrder[]>) => {
             return response.body;
-        });
+        }));
     }
 
     getOrder(id: number): Observable<IOrderDetail> {
         let url = this.ordersUrl + '/api/v1/o/orders/' + id;
 
-        return this.service.get<IOrderDetail>(url).map((response: HttpResponse<IOrderDetail>) => {
+        return this.service.get<IOrderDetail>(url).pipe(map((response: HttpResponse<IOrderDetail>) => {
             return response.body;
-        });
+        }));
     }
 
     mapOrderAndIdentityInfoNewOrder(): IOrder {

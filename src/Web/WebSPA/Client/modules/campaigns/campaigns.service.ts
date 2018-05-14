@@ -1,4 +1,6 @@
-﻿import { Injectable } from '@angular/core';
+
+import {map} from 'rxjs/operators';
+import { Injectable } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 
 import { DataService } from '../shared/services/data.service';
@@ -7,11 +9,8 @@ import { ICampaignItem } from '../shared/models/campaignItem.model';
 import { SecurityService } from '../shared/services/security.service';
 import { ConfigurationService } from '../shared/services/configuration.service';
 
-import 'rxjs/Rx';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/throw';
-import { Observer } from 'rxjs/Observer';
-import 'rxjs/add/operator/map';
+import { Observable ,  Observer } from 'rxjs';
+
 
 
 @Injectable()
@@ -36,17 +35,17 @@ export class CampaignsService {
         let url = this.marketingUrl + '/api/v1/m/campaigns/user';
         url = url + '?pageIndex=' + pageIndex + '&pageSize=' + pageSize;
 
-        return this.service.get<ICampaign>(url).map((response: HttpResponse<ICampaign>) => {
+        return this.service.get<ICampaign>(url).pipe(map((response: HttpResponse<ICampaign>) => {
             return response.body;
-        });
+        }));
     }
 
     getCampaign(id: number): Observable<ICampaignItem> {
         let url = this.marketingUrl + '/api/v1/m/campaigns/' + id;
 
-        return this.service.get<ICampaignItem>(url).map((response: HttpResponse<ICampaignItem>) => {
+        return this.service.get<ICampaignItem>(url).pipe(map((response: HttpResponse<ICampaignItem>) => {
             return response.body;
-        });
+        }));
     }    
 }
 

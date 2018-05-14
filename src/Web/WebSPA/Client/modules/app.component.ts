@@ -1,7 +1,7 @@
 import { Title } from '@angular/platform-browser';
 import { Component, ViewEncapsulation, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { Subscription }   from 'rxjs/Subscription';
+import { Subscription }   from 'rxjs';
 
 import { DataService } from './shared/services/data.service';
 import { SecurityService } from './shared/services/security.service';

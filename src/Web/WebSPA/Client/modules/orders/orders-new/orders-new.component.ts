@@ -1,5 +1,8 @@
+
+import {throwError as observableThrowError,  Observable } from 'rxjs';
+
+import {catchError} from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
 import { OrdersService } from '../orders.service';
 import { BasketService } from '../../basket/basket.service';
 import { IOrder }                                   from '../../shared/models/order.model';
@@ -48,12 +51,12 @@ export class OrdersNewComponent implements OnInit {
         this.order.cardexpiration = new Date(20 + this.newOrderForm.controls['expirationdate'].value.split('/')[1], this.newOrderForm.controls['expirationdate'].value.split('/')[0]);
         this.order.cardsecuritynumber = this.newOrderForm.controls['securitycode'].value;
         let basketCheckout = this.basketService.mapBasketInfoCheckout(this.order);
-        this.basketService.setBasketCheckout(basketCheckout)
-            .catch((errMessage) => {
+        this.basketService.setBasketCheckout(basketCheckout).pipe(
+            catchError((errMessage) => {
                 this.errorReceived = true;
                 this.isOrderProcessing = false;
-                return Observable.throw(errMessage); 
-            })
+                return observableThrowError(errMessage); 
+            }))
             .subscribe(res => {
                 this.router.navigate(['orders']);
             });
