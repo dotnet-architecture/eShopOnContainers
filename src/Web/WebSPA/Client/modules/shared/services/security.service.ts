@@ -1,5 +1,5 @@
 ﻿import { Injectable }                   from '@angular/core';
-import { Http, Response, Headers }      from '@angular/http';
+import { HttpClient, HttpResponse, HttpHeaders }      from '@angular/common/http';
 import 'rxjs/add/operator/map';
 import { Observable }                   from 'rxjs/Observable';
 import { Subject }                      from 'rxjs/Subject';
@@ -12,16 +12,16 @@ import { StorageService }               from './storage.service';
 export class SecurityService {
 
     private actionUrl: string;
-    private headers: Headers;
+    private headers: HttpHeaders;
     private storage: StorageService;
     private authenticationSource = new Subject<boolean>();
     authenticationChallenge$ = this.authenticationSource.asObservable();
     private authorityUrl = '';
 
-    constructor(private _http: Http, private _router: Router, private route: ActivatedRoute, private _configurationService: ConfigurationService, private _storageService: StorageService) {
-        this.headers = new Headers();
-        this.headers.append('Content-Type', 'application/json');
-        this.headers.append('Accept', 'application/json');
+    constructor(private _http: HttpClient, private _router: Router, private route: ActivatedRoute, private _configurationService: ConfigurationService, private _storageService: StorageService) {
+        this.headers = new HttpHeaders();
+        this.headers = this.headers.set('Content-Type', 'application/json');
+        this.headers = this.headers.set('Accept', 'application/json');
         this.storage = _storageService;
 
         this._configurationService.settingsLoaded$.subscribe(x => {
@@ -224,21 +224,20 @@ export class SecurityService {
         if (this.authorityUrl === '')
             this.authorityUrl = this.storage.retrieve('IdentityUrl');
 
-        return this._http.get(this.authorityUrl + '/connect/userinfo', {
+        return this._http.get<string[]>(this.authorityUrl + '/connect/userinfo', {
             headers: this.headers,
-            body: ''
-        }).map(res => res.json());
+        }).map(res => res);
     }
 
     private setHeaders() {
-        this.headers = new Headers();
-        this.headers.append('Content-Type', 'application/json');
-        this.headers.append('Accept', 'application/json');
+        this.headers = new HttpHeaders();
+        this.headers = this.headers.set('Content-Type', 'application/json');
+        this.headers = this.headers.set('Accept', 'application/json');
 
         let token = this.GetToken();
 
         if (token !== '') {
-            this.headers.append('Authorization', 'Bearer ' + token);
+            this.headers = this.headers.set('Authorization', 'Bearer ' + token);
         }
     }
 }

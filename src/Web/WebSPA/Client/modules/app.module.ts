@@ -1,7 +1,7 @@
 import { NgModule, NgModuleFactoryLoader }       from '@angular/core';
 import { BrowserModule  } from '@angular/platform-browser';
 // import { FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
 import { routing }        from './app.routes';
@@ -18,7 +18,7 @@ import { CampaignsModule } from './campaigns/campaigns.module';
     imports: [
         BrowserModule,
         routing,
-        HttpModule,
+        HttpClientModule,
         // Only module that app module loads
         SharedModule.forRoot(),
         CatalogModule,

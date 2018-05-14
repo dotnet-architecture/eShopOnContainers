@@ -1,5 +1,5 @@
 ﻿import { Injectable } from '@angular/core';
-import { Response } from '@angular/http';
+import { HttpResponse } from '@angular/common/http';
 
 import { DataService } from '../shared/services/data.service';
 import { ICampaign } from '../shared/models/campaign.model';
@@ -36,16 +36,16 @@ export class CampaignsService {
         let url = this.marketingUrl + '/api/v1/m/campaigns/user';
         url = url + '?pageIndex=' + pageIndex + '&pageSize=' + pageSize;
 
-        return this.service.get(url).map((response: Response) => {
-            return response.json();
+        return this.service.get<ICampaign>(url).map((response: HttpResponse<ICampaign>) => {
+            return response.body;
         });
     }
 
     getCampaign(id: number): Observable<ICampaignItem> {
         let url = this.marketingUrl + '/api/v1/m/campaigns/' + id;
 
-        return this.service.get(url).map((response: Response) => {
-            return response.json();
+        return this.service.get<ICampaignItem>(url).map((response: HttpResponse<ICampaignItem>) => {
+            return response.body;
         });
     }    
 }

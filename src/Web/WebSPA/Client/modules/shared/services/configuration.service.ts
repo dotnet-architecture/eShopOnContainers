@@ -1,5 +1,5 @@
 ﻿import { Injectable }       from '@angular/core';
-import { Http, Response, RequestOptionsArgs, RequestMethod, Headers } from '@angular/http';
+import { HttpClient, HttpResponse, HttpHeaders } from '@angular/common/http';
 import { IConfiguration }   from '../models/configuration.model';
 import { StorageService }   from './storage.service';
 
@@ -19,14 +19,14 @@ export class ConfigurationService {
     settingsLoaded$ = this.settingsLoadedSource.asObservable();
     isReady: boolean = false;
 
-    constructor(private http: Http, private storageService: StorageService) { }
+    constructor(private http: HttpClient, private storageService: StorageService) { }
     
     load() {
         const baseURI = document.baseURI.endsWith('/') ? document.baseURI : `${document.baseURI}/`;
         let url = `${baseURI}Home/Configuration`;
-        this.http.get(url).subscribe((response: Response) => {
+        this.http.get(url).subscribe((data: IConfiguration) => {
             console.log('server settings loaded');
-            this.serverSettings = response.json();
+            this.serverSettings = data;
             console.log(this.serverSettings);
             this.storageService.store('identityUrl', this.serverSettings.identityUrl);
             this.storageService.store('marketingUrl', this.serverSettings.marketingUrl);

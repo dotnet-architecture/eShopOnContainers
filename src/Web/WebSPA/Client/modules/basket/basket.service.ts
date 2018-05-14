@@ -1,5 +1,5 @@
 import { Injectable }               from '@angular/core';
-import { Response, Headers }        from '@angular/http';
+import { HttpResponse, HttpHeaders }        from '@angular/common/http';
 import { Router }                   from '@angular/router';
 
 import { DataService }              from '../shared/services/data.service';
@@ -68,14 +68,14 @@ export class BasketService {
     setBasket(basket): Observable<boolean> {
         let url = this.purchaseUrl + '/api/v1/basket/';
         this.basket = basket;
-        return this.service.post(url, basket).map((response: Response) => {
+        return this.service.post<Object>(url, basket).map((response: HttpResponse<Object>) => {
             return true;
         });
     }
 
     setBasketCheckout(basketCheckout): Observable<boolean> {
         let url = this.basketUrl + '/api/v1/b/basket/checkout';
-        return this.service.postWithId(url, basketCheckout).map((response: Response) => {
+        return this.service.postWithId<Object>(url, basketCheckout).map((response: HttpResponse<Object>) => {
             this.basketEvents.orderCreated();
             return true;
         });
@@ -83,12 +83,12 @@ export class BasketService {
 
     getBasket(): Observable<IBasket> {
         let url = this.basketUrl + '/api/v1/b/basket/' + this.basket.buyerId;
-        return this.service.get(url).map((response: Response) => {
+        return this.service.get<IBasket>(url).map((response: HttpResponse<IBasket>) => {
             if (response.status === 204) {
                 return null;
             }
 
-            return response.json();
+            return response.body;
         });
     }    
 

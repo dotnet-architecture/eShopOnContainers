@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Response } from '@angular/http';
+import { HttpResponse } from '@angular/common/http';
 
 import { DataService } from '../shared/services/data.service';
 import { IOrder } from '../shared/models/order.model';
@@ -31,16 +31,16 @@ export class OrdersService {
     getOrders(): Observable<IOrder[]> {
         let url = this.ordersUrl + '/api/v1/o/orders';
 
-        return this.service.get(url).map((response: Response) => {
-            return response.json();
+        return this.service.get<IOrder[]>(url).map((response: HttpResponse<IOrder[]>) => {
+            return response.body;
         });
     }
 
     getOrder(id: number): Observable<IOrderDetail> {
         let url = this.ordersUrl + '/api/v1/o/orders/' + id;
 
-        return this.service.get(url).map((response: Response) => {
-            return response.json();
+        return this.service.get<IOrderDetail>(url).map((response: HttpResponse<IOrderDetail>) => {
+            return response.body;
         });
     }
 

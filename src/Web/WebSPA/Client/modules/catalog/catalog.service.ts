@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Response } from '@angular/http';
+import { HttpResponse } from '@angular/common/http';
 
 import { DataService } from '../shared/services/data.service';
 import { ConfigurationService } from '../shared/services/configuration.service';
@@ -35,20 +35,20 @@ export class CatalogService {
 
         url = url + '?pageIndex=' + pageIndex + '&pageSize=' + pageSize;
 
-        return this.service.get(url).map((response: Response) => {
-            return response.json();
+        return this.service.get<ICatalog>(url).map((response: HttpResponse<ICatalog>) => {
+            return response.body;
         });
     }
 
     getBrands(): Observable<ICatalogBrand[]> {
-        return this.service.get(this.brandUrl).map((response: Response) => {
-            return response.json();
+        return this.service.get<ICatalogBrand[]>(this.brandUrl).map((response: HttpResponse<ICatalogBrand[]>) => {
+            return response.body;
         });
     }
 
     getTypes(): Observable<ICatalogType[]> {
-        return this.service.get(this.typesUrl).map((response: Response) => {
-            return response.json();
+        return this.service.get<ICatalogType[]>(this.typesUrl).map((response: HttpResponse<ICatalogType[]>) => {
+            return response.body;
         });
     };
 }
