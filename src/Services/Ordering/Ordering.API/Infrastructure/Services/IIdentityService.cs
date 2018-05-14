@@ -8,5 +8,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure.Servi
     public interface IIdentityService
     {
         string GetUserIdentity();
+
+        string GetUserName();
     }
 }

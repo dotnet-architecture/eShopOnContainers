@@ -17,7 +17,7 @@ namespace Ordering.API.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.0.0-preview2-25794")
+                .HasAnnotation("ProductVersion", "2.0.1-rtm-125")
                 .HasAnnotation("Relational:Sequence:.orderitemseq", "'orderitemseq', '', '1', '10', '', '', 'Int64', 'False'")
                 .HasAnnotation("Relational:Sequence:ordering.buyerseq", "'buyerseq', 'ordering', '1', '10', '', '', 'Int64', 'False'")
                 .HasAnnotation("Relational:Sequence:ordering.orderseq", "'orderseq', 'ordering', '1', '10', '', '', 'Int64', 'False'")
@@ -35,6 +35,8 @@ namespace Ordering.API.Migrations
                     b.Property<string>("IdentityGuid")
                         .IsRequired()
                         .HasMaxLength(200);
+
+                    b.Property<string>("Name");
 
                     b.HasKey("Id");
 
@@ -180,25 +182,6 @@ namespace Ordering.API.Migrations
                     b.ToTable("requests","ordering");
                 });
 
-            modelBuilder.Entity("Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate.Address", b =>
-                {
-                    b.Property<int?>("OrderId");
-
-                    b.Property<string>("City");
-
-                    b.Property<string>("Country");
-
-                    b.Property<string>("State");
-
-                    b.Property<string>("Street");
-
-                    b.Property<string>("ZipCode");
-
-                    b.HasKey("OrderId");
-
-                    b.ToTable("orders","ordering");
-                });
-
             modelBuilder.Entity("Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.BuyerAggregate.PaymentMethod", b =>
                 {
                     b.HasOne("Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.BuyerAggregate.Buyer")
@@ -227,6 +210,18 @@ namespace Ordering.API.Migrations
                         .WithMany()
                         .HasForeignKey("PaymentMethodId")
                         .OnDelete(DeleteBehavior.Restrict);
+
+                    b.OwnsOne("Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate.Address", "Address", b1 =>
+                        {
+                            b1.Property<int>("OrderId");
+
+                            b1.ToTable("orders","ordering");
+
+                            b1.HasOne("Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate.Order")
+                                .WithOne("Address")
+                                .HasForeignKey("Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate.Address", "OrderId")
+                                .OnDelete(DeleteBehavior.Cascade);
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate.OrderItem", b =>
@@ -234,14 +229,6 @@ namespace Ordering.API.Migrations
                     b.HasOne("Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate.Order")
                         .WithMany("OrderItems")
                         .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate.Address", b =>
-                {
-                    b.HasOne("Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate.Order")
-                        .WithOne("Address")
-                        .HasForeignKey("Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate.Address", "OrderId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

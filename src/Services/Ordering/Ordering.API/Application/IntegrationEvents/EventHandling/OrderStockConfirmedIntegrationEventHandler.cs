@@ -17,6 +17,9 @@
 
         public async Task Handle(OrderStockConfirmedIntegrationEvent @event)
         {
+            // Simulate a work time for confirming the stock
+            await Task.Delay(10000);
+
             var orderToUpdate = await _orderRepository.GetAsync(@event.OrderId);
 
             orderToUpdate.SetStockConfirmedStatus();
