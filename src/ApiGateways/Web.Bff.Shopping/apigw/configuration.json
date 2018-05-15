@@ -77,6 +77,18 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
+          "Host": "ordering.signalrhub",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/hub/{everything}",
+      "UpstreamHttpMethod": []
+    },
+    {
+      "DownstreamPathTemplate": "/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
           "Host": "basket.api",
           "Port": 80
         }

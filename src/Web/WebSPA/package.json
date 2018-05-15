@@ -21,6 +21,7 @@
     "clean": "npm cache clean && npm run rimraf -- node_modules doc typings coverage wwwroot",
     "start": "ng serve",
     "build:dev": "ng build",
+    "build:dev:watch": "npm run build:dev -- -w",
     "build:prod": "ng build --prod --aot --extract-css",
     "lint:sass": "sass-lint -c .sass-lint.yml Client/**/*.scss --verbose",
     "lint:ts": "tslint -c tslint.json Client/**/*.ts"
@@ -34,12 +35,14 @@
     "@angular/platform-browser": "^6.0.1",
     "@angular/platform-browser-dynamic": "^6.0.1",
     "@angular/router": "^6.0.1",
+    "@aspnet/signalr": "1.0.0-preview2-final",
     "@ng-bootstrap/ng-bootstrap": "^2.0.0",
     "bootstrap": "^4.1.1",
     "core-js": "^2.4.1",
     "file-loader": "0.9.0",
     "font-awesome": "4.6.3",
     "isomorphic-fetch": "2.2.1",
+    "ng2-toastr": "^4.1.2",
     "normalize.css": "5.0.0",
     "preboot": "4.5.2",
     "rxjs": "^6.1.0",
@@ -61,7 +64,7 @@
     "ts-node": "~2.0.0",
     "tslint": "~4.5.0",
     "typedoc": "0.5.0",
-    "typescript": "^2.7.2",
+    "typescript": "^2.7.1",
     "url-loader": "0.5.7"
   }
 }

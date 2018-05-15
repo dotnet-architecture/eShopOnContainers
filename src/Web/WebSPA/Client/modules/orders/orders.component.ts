@@ -6,6 +6,7 @@ import { Component, OnInit }    from '@angular/core';
 import { OrdersService }        from './orders.service';
 import { IOrder }               from '../shared/models/order.model';
 import { ConfigurationService } from '../shared/services/configuration.service';
+import { SignalrService } from '../shared/services/signalr.service';
 
 @Component({
     selector: 'esh-orders',
@@ -19,7 +20,7 @@ export class OrdersComponent implements OnInit {
 
     orders: IOrder[];
 
-    constructor(private service: OrdersService, private configurationService: ConfigurationService) { }
+    constructor(private service: OrdersService, private configurationService: ConfigurationService, private signalrService: SignalrService) { }
 
     ngOnInit() {
         if (this.configurationService.isReady) {
@@ -30,15 +31,8 @@ export class OrdersComponent implements OnInit {
             });
         }
 
-        // call orders until new order is retrieved
-        this.interval = setTimeout(() => {
-            this.service.getOrders().subscribe(orders => {
-                this.orders = orders;
-                if (this.orders.length !== this.oldOrders.length) {
-                    clearInterval(this.interval);
-                }
-            });
-        }, 1000);
+        this.signalrService.msgReceived$
+            .subscribe(x => this.getOrders());
     }
 
     getOrders() {

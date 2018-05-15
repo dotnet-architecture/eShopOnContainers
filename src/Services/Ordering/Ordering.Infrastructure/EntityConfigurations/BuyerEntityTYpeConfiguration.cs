@@ -26,6 +26,8 @@ namespace Ordering.Infrastructure.EntityConfigurations
             buyerConfiguration.HasIndex("IdentityGuid")
               .IsUnique(true);
 
+            buyerConfiguration.Property(b => b.Name);
+
             buyerConfiguration.HasMany(b => b.PaymentMethods)
                .WithOne()
                .HasForeignKey("BuyerId")

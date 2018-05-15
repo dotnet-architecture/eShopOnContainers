@@ -153,3 +153,9 @@ services:
       context: .
       dockerfile: src/ApiGateways/Web.Bff.Shopping/aggregator/Dockerfile
 
+  ordering.signalrhub:
+    image: eshop/ordering.signalrhub:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/Services/Ordering/Ordering.SignalrHub/Dockerfile
+

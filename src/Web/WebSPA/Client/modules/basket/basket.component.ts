@@ -51,11 +51,8 @@ export class BasketComponent implements OnInit {
                 x => {
                     this.errorMessages = [];
                     this.basketwrapper.basket = this.basket;
-                    this.router.navigate(['order'])
-                },
-                errMessage => this.errorMessages = errMessage.messages
-            );
-        
+                    this.router.navigate(['order']);
+        });
     }
 
     private calculateTotalPrice() {

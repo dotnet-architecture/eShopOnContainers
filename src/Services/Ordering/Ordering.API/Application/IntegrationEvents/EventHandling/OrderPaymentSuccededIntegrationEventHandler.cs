@@ -17,6 +17,9 @@
 
         public async Task Handle(OrderPaymentSuccededIntegrationEvent @event)
         {
+            // Simulate a work time for validating the payment
+            await Task.Delay(10000);
+
             var orderToUpdate = await _orderRepository.GetAsync(@event.OrderId);
 
             orderToUpdate.SetPaidStatus();
