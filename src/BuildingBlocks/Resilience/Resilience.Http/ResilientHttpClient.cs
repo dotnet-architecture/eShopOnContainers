@@ -51,7 +51,7 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http
         {
             var origin = GetOriginFromUri(uri);
 
-            return HttpInvoker(origin, async () =>
+            return HttpInvoker(origin, async (_) =>
             {
                 var requestMessage = new HttpRequestMessage(HttpMethod.Delete, uri);
 
@@ -75,8 +75,8 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http
         public Task<string> GetStringAsync(string uri, string authorizationToken = null, string authorizationMethod = "Bearer")
         {
             var origin = GetOriginFromUri(uri);
-
-            return HttpInvoker(origin, async () =>
+            
+            return HttpInvoker(origin, async (_) =>
             {
                 var requestMessage = new HttpRequestMessage(HttpMethod.Get, uri);
 
@@ -117,7 +117,7 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http
             // as it is disposed after each call
             var origin = GetOriginFromUri(uri);
 
-            return HttpInvoker(origin, async () =>
+            return HttpInvoker(origin, async (_) =>
            {
                var requestMessage = new HttpRequestMessage(method, uri);
 
@@ -149,7 +149,7 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http
            });
         }
 
-        private async Task<T> HttpInvoker<T>(string origin, Func<Task<T>> action)
+        private async Task<T> HttpInvoker<T>(string origin, Func<Context,Task<T>> action)
         {
             var normalizedOrigin = NormalizeOrigin(origin);
 
@@ -161,7 +161,7 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http
 
             // Executes the action applying all 
             // the policies defined in the wrapper
-            return await policyWrap.ExecuteAsync(action, new Context(normalizedOrigin));
+            return await policyWrap.ExecuteAsync<T>(action, new Context(normalizedOrigin));
         }
 
 
