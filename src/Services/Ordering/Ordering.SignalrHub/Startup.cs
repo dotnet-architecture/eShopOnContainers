@@ -46,13 +46,6 @@ namespace Ordering.SignalrHub
                 services
                     .AddSignalR()
                     .AddRedis(Configuration["SignalrStoreConnectionString"]);
-
-                //services
-                //    .AddSignalR()
-                //    .AddRedis(options => options.Factory = writer =>
-                //    {
-                //        return ConnectionMultiplexer.Connect(Configuration["SignalrStoreConnectionString"], writer);
-                //    });
             }
             else
             {
