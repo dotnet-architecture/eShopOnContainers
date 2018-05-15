@@ -7,8 +7,12 @@
         text-align: center;
     }
 
+    nav {
+        flex-grow: 1;
+    }
+
     &-item {
-        $margin: 5vw;
+        $margin: 3vw;
         margin: 0 $margin;
 
         &.is-disabled {

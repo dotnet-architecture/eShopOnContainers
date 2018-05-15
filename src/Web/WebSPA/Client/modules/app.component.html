@@ -1,22 +1,18 @@
 <header class="navbar navbar-light navbar-static-top">
     <div class="container">
-        <article class="row">
+        <section class="col-lg-7 col-md-6 col-12">
+            <a class="navbar-brand" routerLink="catalog">
+                <img src="assets/images/brand.png" />
+            </a>
+        </section>
 
-            <section class="col-lg-7 col-md-6 col-xs-12">
-                <a class="navbar-brand" routerLink="catalog">
-                    <img src="assets/images/brand.png" />
-                </a>
-            </section>
+        <section class="col-lg-4 col-md-5 col-12">
+            <esh-identity></esh-identity>
+        </section>
 
-            <section class="col-lg-4 col-md-5 col-xs-12">
-                <esh-identity></esh-identity>
-            </section>
-
-            <section class="col-lg-1 col-xs-12">
-                <esh-basket-status *ngIf="Authenticated"></esh-basket-status>
-            </section>
-
-        </article>
+        <section class="col-lg-1 col-12">
+            <esh-basket-status *ngIf="Authenticated"></esh-basket-status>
+        </section>
     </div>
 </header>
 
@@ -32,10 +28,10 @@
             </section>
 
             <section class="col-sm-6">
-                <img class="esh-app-footer-text hidden-xs" src="assets/images/main_footer_text.png" width="335" height="26" alt="footer text image" />
+                <img class="esh-app-footer-text hidden-xs" src="assets/images/main_footer_text.png" width="335" height="26" alt="footer text image"
+                />
             </section>
 
         </article>
     </div>
 </footer>
-
