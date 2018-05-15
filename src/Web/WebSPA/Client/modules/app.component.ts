@@ -7,7 +7,7 @@ import { DataService } from './shared/services/data.service';
 import { SecurityService } from './shared/services/security.service';
 import { ConfigurationService } from './shared/services/configuration.service';
 import { SignalrService } from './shared/services/signalr.service';
-import { ToastsManager } from 'ng2-toastr';
+import { ToastrService } from 'ngx-toastr';
 
 /*
  * App Component
@@ -27,10 +27,8 @@ export class AppComponent implements OnInit {
         private securityService: SecurityService,
         private configurationService: ConfigurationService,
         private signalrService: SignalrService,
-        private toastr: ToastsManager,
-        vcr: ViewContainerRef
+        private toastr: ToastrService
     ) {
-        this.toastr.setRootViewContainerRef(vcr);
         this.Authenticated = this.securityService.IsAuthorized;
     }
 

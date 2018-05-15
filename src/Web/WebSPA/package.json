@@ -27,6 +27,7 @@
     "lint:ts": "tslint -c tslint.json Client/**/*.ts"
   },
   "dependencies": {
+    "@angular/animations": "^6.0.1",
     "@angular/common": "^6.0.1",
     "@angular/compiler": "^6.0.1",
     "@angular/core": "^6.0.1",
@@ -42,14 +43,14 @@
     "file-loader": "0.9.0",
     "font-awesome": "4.6.3",
     "isomorphic-fetch": "2.2.1",
-    "ng2-toastr": "^4.1.2",
+    "ngx-toastr": "^8.6.0",
     "normalize.css": "5.0.0",
     "preboot": "4.5.2",
     "rxjs": "^6.1.0",
     "zone.js": "^0.8.26"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~0.6.1",
+    "@angular-devkit/build-angular": "^0.6.1",
     "@angular/cli": "^6.0.1",
     "@angular/compiler-cli": "^6.0.1",
     "@types/core-js": "0.9.34",

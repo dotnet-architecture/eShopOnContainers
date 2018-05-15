@@ -2,7 +2,7 @@
 import { SecurityService } from './security.service';
 import { ConfigurationService } from './configuration.service';
 import { HubConnection, HttpConnection, TransportType } from '@aspnet/signalr';
-import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
 
 @Injectable()
@@ -16,7 +16,7 @@ export class SignalrService {
 
     constructor(
         private securityService: SecurityService,
-        private configurationService: ConfigurationService, private toastr: ToastsManager,
+        private configurationService: ConfigurationService, private toastr: ToastrService,
     ) {
         if (this.configurationService.isReady) {
             this.SignalrHubUrl = this.configurationService.serverSettings.signalrHubUrl;

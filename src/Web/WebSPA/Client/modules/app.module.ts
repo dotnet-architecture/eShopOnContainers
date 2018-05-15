@@ -13,7 +13,7 @@ import { CatalogModule }  from './catalog/catalog.module';
 import { OrdersModule }  from './orders/orders.module';
 import { BasketModule } from './basket/basket.module';
 import { CampaignsModule } from './campaigns/campaigns.module';
-import { ToastModule } from 'ng2-toastr/ng2-toastr';
+import { ToastrModule } from 'ngx-toastr';
 
 
 @NgModule({
@@ -21,7 +21,7 @@ import { ToastModule } from 'ng2-toastr/ng2-toastr';
     imports: [
         BrowserAnimationsModule,
         BrowserModule,
-        ToastModule.forRoot(),
+        ToastrModule.forRoot(),
         routing,
         HttpClientModule,
         // Only module that app module loads
