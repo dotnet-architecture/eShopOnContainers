@@ -134,7 +134,7 @@ namespace Ordering.SignalrHub
             app.UseSignalR(routes =>
             {
                 routes.MapHub<NotificationsHub>("/notificationhub", options =>
-                    options.Transports = Microsoft.AspNetCore.Http.Connections.HttpTransportType.WebSockets);
+                    options.Transports = Microsoft.AspNetCore.Http.Connections.HttpTransports.All);
             });
 
             ConfigureEventBus(app);

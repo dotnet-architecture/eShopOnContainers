@@ -47,6 +47,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
                 .AddCustomMVC(Configuration)
                 .AddCustomDbContext(Configuration)
                 .AddCustomOptions(Configuration)
+                .AddIntegrationServices(Configuration)
                 .AddEventBus(Configuration)
                 .AddSwagger();
 
@@ -228,7 +229,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
 
         }
 
-        public static IServiceCollection AddIntegrationServices(IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddIntegrationServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddTransient<Func<DbConnection, IIntegrationEventLogService>>(
                sp => (DbConnection c) => new IntegrationEventLogService(c));
