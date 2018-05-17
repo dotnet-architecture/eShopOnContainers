@@ -13,7 +13,7 @@ The k8s directory contains Kubernetes configuration for the eShopOnContainers ap
 >```
 or using AKS instead of ACS
 >```
->./gen-k8s-env-aks -resourceGroupName k8sGroup -location westeurope -registryName k8sregistry -dnsName k8s-dns -serviceName k8s-cluster -createAcr true -nodeCount 3 -nodeVMSize Standard_D2_v2
+>./gen-k8s-env-aks -resourceGroupName YoureShopAksResgroup -location centralus -serviceName YoureShopAksCluster -dnsNamePrefix youreshopaks -registryName YoureShopAcrRegistry -createAcr true -nodeCount 3 -nodeVMSize Standard_D2_v2
 >```
 
 * A Docker development environment with `docker` and `docker-compose`.
