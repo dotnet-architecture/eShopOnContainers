@@ -15,7 +15,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.HealthChecks;
 using Microsoft.Extensions.Logging;
 using Polly;
+using Polly.CircuitBreaker;
+using Polly.Extensions.Http;
 using Polly.Registry;
+using Polly.Retry;
+using Polly.Timeout;
 using StackExchange.Redis;
 using System;
 using System.IdentityModel.Tokens.Jwt;
@@ -35,13 +39,13 @@ namespace Microsoft.eShopOnContainers.WebMVC
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        // This method gets called by the runtime. Use this method to add services to the IoC container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddAppInsight(Configuration)
                 .AddHealthChecks(Configuration)
                 .AddCustomMvc(Configuration)
-                .AddCustomApplicationServices(Configuration)
+                .AddHttpClientServices(Configuration)
                 .AddCustomAuthentication(Configuration);
         }
 
@@ -165,28 +169,89 @@ namespace Microsoft.eShopOnContainers.WebMVC
             return services;
         }
 
-        public static IServiceCollection AddCustomApplicationServices(this IServiceCollection services, IConfiguration configuration)
+        // Adds all Http client services (like Service-Agents) using resilient Http requests based on HttpClient factory and Polly's policies 
+        public static IServiceCollection AddHttpClientServices(this IServiceCollection services, IConfiguration configuration)
         {
+            // (CDLTLL) TEMPORAL COMMENT: Do we need this line of code if using HttpClient factory?
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            // (CDLTLL) I don't think we need this HttpClientDefaultPolicies if using fluent configuration ,as below... 
+            // Create a singleton object with the by default policies
             services.AddSingleton<HttpClientDefaultPolicies>();
             var defaultPolicies = services.BuildServiceProvider().GetService<HttpClientDefaultPolicies>();
 
-            var registry = services.AddPolicyRegistry();
-            registry.Add("WaitAndRetry", defaultPolicies.GetWaitAndRetryPolicy());
-            registry.Add("CircuitBreaker", defaultPolicies.GetCircuitBreakerPolicy());
+            // Create a Polly-Policy-Registry with the by default policies for resilient Http requests
+            var pollyPolicyRegistry = services.AddPolicyRegistry();
 
+
+            //Using fluent client configuration of Polly policies
+
+            var retriesWithExponentialBackoff = HttpPolicyExtensions
+                                                        .HandleTransientHttpError()
+                                                        .WaitAndRetryAsync(7,
+                                                                           retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt))
+                                                                          );
+            //(CDLTLL) Instead of hardcoded values, use: configuration["HttpClientMaxNumberRetries"], configuration["SecondsBaseForExponentialBackoff"]
+
+            var circuitBreaker = HttpPolicyExtensions
+                                            .HandleTransientHttpError()
+                                            .CircuitBreakerAsync(6, 
+                                                                 TimeSpan.FromSeconds(30)
+                                                                );
+            //(CDLTLL) Instead of hardcoded values, use: configuration["HttpClientExceptionsAllowedBeforeBreaking"], configuration["DurationOfBreakInMinutes"]
+
+
+            pollyPolicyRegistry.Add("DefaultRetriesWithExponentialBackoff", retriesWithExponentialBackoff);
+            pollyPolicyRegistry.Add("DefaultCircuitBreaker", circuitBreaker);
+
+
+            // (CDLTLL) Using "OLD" policies. I don't like it much...
+            //pollyPolicyRegistry.Add("DefaultRetriesWithExponentialBackoff", defaultPolicies.GetWaitAndRetryPolicy());  // (CDLTLL) TEMPORAL COMMENT: Arguments here would be a good place to propagate the configuration values --> GetWaitAndRetryPolicy(configuration["HttpClientMaxNumberRetries"], configuration["SecondsBaseForExponentialBackoff"])   
+            //pollyPolicyRegistry.Add("DefaultCircuitBreaker", defaultPolicies.GetCircuitBreakerPolicy());     // (CDLTLL) TEMPORAL COMMENT: Arguments here would be a good place to propagate the configuration values --> GetCircuitBreakerPolicy(configuration["HttpClientExceptionsAllowedBeforeBreaking"], configuration["DurationOfBreakInMinutes"])
+
+
+
+            // (CDLTLL) Handlers need to be transient. //(CDLTLL) TEMPORAL COMMENT: This registration was missing, hence the error "InvalidOperationException: No service for type 'WebMVC.Infrastructure.HttpClientAuthorizationDelegatingHandler' has been registered"
+            services.AddTransient<HttpClientAuthorizationDelegatingHandler>();
+
+            //Add all Typed-Clients (Service-Agents) through the HttpClient factory to implement Resilient Http requests 
+            //
+
+            //Add BasketService typed client (Service Agent)
             services.AddHttpClient<IBasketService, BasketService>()
-                .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
-                .AddPolicyHandlerFromRegistry("WaitAndRetry")
-                .AddPolicyHandlerFromRegistry("CircuitBreaker");
+                    .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>() //Additional Authentication-Delegating-Handler to add the OAuth-Bearer-token to the Http headers
+                    .AddPolicyHandlerFromRegistry("DefaultRetriesWithExponentialBackoff")
+                    .AddPolicyHandlerFromRegistry("DefaultCircuitBreaker");
 
+            //Add CatalogService typed client (Service Agent)
+            //services.AddHttpClient<ICatalogService, CatalogService>() ...
+
+            //Add OrderingService typed client (Service Agent)
+            //services.AddHttpClient<IOrderingService, OrderingService>() ...
+
+            //Add CampaignService typed client (Service Agent)
+            //services.AddHttpClient<ICampaignService, CampaignService>() ...
+
+            //Add LocationService typed client (Service Agent)
+            //services.AddHttpClient<ILocationService, LocationService>() ...
+
+            //Add IdentityParser typed client (Service Agent)
+            //services.AddHttpClient<IIdentityParser, IdentityParser>() ...
+
+
+            //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            // (CDLTLL) TEMPORAL COMMENT: The following Typed-Clients (Service-Agents) have to be coded as BasketService by using AddHttpClient<>(), right? 
+            // This code will be deleted
             services.AddTransient<ICatalogService, CatalogService>();
             services.AddTransient<IOrderingService, OrderingService>();
 
             services.AddTransient<ICampaignService, CampaignService>();
             services.AddTransient<ILocationService, LocationService>();
             services.AddTransient<IIdentityParser<ApplicationUser>, IdentityParser>();
+            //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+            //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            // TEMPORAL COMMENT: This code will be deleted when using HttpClientFactory, right?
             if (configuration.GetValue<string>("UseResilientHttp") == bool.TrueString)
             {
                 services.AddSingleton<IResilientHttpClientFactory, ResilientHttpClientFactory>(sp =>
@@ -214,6 +279,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
             {
                 services.AddSingleton<IHttpClient, StandardHttpClient>();
             }
+            //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
             return services;
         }
