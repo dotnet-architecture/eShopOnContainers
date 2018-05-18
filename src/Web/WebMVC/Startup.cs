@@ -6,8 +6,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http;
-using Microsoft.eShopOnContainers.WebMVC.Infrastructure;
 using Microsoft.eShopOnContainers.WebMVC.Services;
 using Microsoft.eShopOnContainers.WebMVC.ViewModels;
 using Microsoft.Extensions.Configuration;
@@ -15,15 +13,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.HealthChecks;
 using Microsoft.Extensions.Logging;
 using Polly;
-using Polly.CircuitBreaker;
 using Polly.Extensions.Http;
-using Polly.Registry;
-using Polly.Retry;
-using Polly.Timeout;
 using StackExchange.Redis;
 using System;
 using System.IdentityModel.Tokens.Jwt;
-using System.Net.Http;
 using WebMVC.Infrastructure;
 using WebMVC.Infrastructure.Middlewares;
 using WebMVC.Services;
@@ -151,6 +144,9 @@ namespace Microsoft.eShopOnContainers.WebMVC
 
         public static IServiceCollection AddCustomMvc(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddOptions();
+            services.Configure<AppSettings>(configuration);
+
             services.AddMvc();
 
             services.AddSession();
@@ -163,124 +159,58 @@ namespace Microsoft.eShopOnContainers.WebMVC
                 })
                 .PersistKeysToRedis(ConnectionMultiplexer.Connect(configuration["DPConnectionString"]), "DataProtection-Keys");
             }
-
-            services.Configure<AppSettings>(configuration);
-
             return services;
         }
 
         // Adds all Http client services (like Service-Agents) using resilient Http requests based on HttpClient factory and Polly's policies 
         public static IServiceCollection AddHttpClientServices(this IServiceCollection services, IConfiguration configuration)
         {
-            // (CDLTLL) TEMPORAL COMMENT: Do we need this line of code if using HttpClient factory?
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-            // (CDLTLL) I don't think we need this HttpClientDefaultPolicies if using fluent configuration ,as below... 
-            // Create a singleton object with the by default policies
-            services.AddSingleton<HttpClientDefaultPolicies>();
-            var defaultPolicies = services.BuildServiceProvider().GetService<HttpClientDefaultPolicies>();
-
-            // Create a Polly-Policy-Registry with the by default policies for resilient Http requests
-            var pollyPolicyRegistry = services.AddPolicyRegistry();
-
-
             //Using fluent client configuration of Polly policies
-
-            var retriesWithExponentialBackoff = HttpPolicyExtensions
-                                                        .HandleTransientHttpError()
-                                                        .WaitAndRetryAsync(7,
-                                                                           retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt))
-                                                                          );
             //(CDLTLL) Instead of hardcoded values, use: configuration["HttpClientMaxNumberRetries"], configuration["SecondsBaseForExponentialBackoff"]
 
+            var retriesWithExponentialBackoff = HttpPolicyExtensions
+                .HandleTransientHttpError()
+                .WaitAndRetryAsync(7,retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
+            
             var circuitBreaker = HttpPolicyExtensions
-                                            .HandleTransientHttpError()
-                                            .CircuitBreakerAsync(6, 
-                                                                 TimeSpan.FromSeconds(30)
-                                                                );
-            //(CDLTLL) Instead of hardcoded values, use: configuration["HttpClientExceptionsAllowedBeforeBreaking"], configuration["DurationOfBreakInMinutes"]
+                .HandleTransientHttpError()
+                .CircuitBreakerAsync(6, TimeSpan.FromSeconds(30));
 
-
-            pollyPolicyRegistry.Add("DefaultRetriesWithExponentialBackoff", retriesWithExponentialBackoff);
-            pollyPolicyRegistry.Add("DefaultCircuitBreaker", circuitBreaker);
-
-
-            // (CDLTLL) Using "OLD" policies. I don't like it much...
-            //pollyPolicyRegistry.Add("DefaultRetriesWithExponentialBackoff", defaultPolicies.GetWaitAndRetryPolicy());  // (CDLTLL) TEMPORAL COMMENT: Arguments here would be a good place to propagate the configuration values --> GetWaitAndRetryPolicy(configuration["HttpClientMaxNumberRetries"], configuration["SecondsBaseForExponentialBackoff"])   
-            //pollyPolicyRegistry.Add("DefaultCircuitBreaker", defaultPolicies.GetCircuitBreakerPolicy());     // (CDLTLL) TEMPORAL COMMENT: Arguments here would be a good place to propagate the configuration values --> GetCircuitBreakerPolicy(configuration["HttpClientExceptionsAllowedBeforeBreaking"], configuration["DurationOfBreakInMinutes"])
-
-
-
-            // (CDLTLL) Handlers need to be transient. //(CDLTLL) TEMPORAL COMMENT: This registration was missing, hence the error "InvalidOperationException: No service for type 'WebMVC.Infrastructure.HttpClientAuthorizationDelegatingHandler' has been registered"
+            //register delegating handlers
             services.AddTransient<HttpClientAuthorizationDelegatingHandler>();
+            services.AddTransient<HttpClientRequestIdDelegatingHandler>();
 
-            //Add all Typed-Clients (Service-Agents) through the HttpClient factory to implement Resilient Http requests 
-            //
-
-            //Add BasketService typed client (Service Agent)
+            //add http client servicse
             services.AddHttpClient<IBasketService, BasketService>()
-                    .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>() //Additional Authentication-Delegating-Handler to add the OAuth-Bearer-token to the Http headers
-                    .AddPolicyHandlerFromRegistry("DefaultRetriesWithExponentialBackoff")
-                    .AddPolicyHandlerFromRegistry("DefaultCircuitBreaker");
+                   .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
+                   .AddPolicyHandler(retriesWithExponentialBackoff)
+                   .AddPolicyHandler(circuitBreaker);
 
-            //Add CatalogService typed client (Service Agent)
-            //services.AddHttpClient<ICatalogService, CatalogService>() ...
+            services.AddHttpClient<ICatalogService, CatalogService>()
+                   .AddPolicyHandler(retriesWithExponentialBackoff)
+                   .AddPolicyHandler(circuitBreaker);
 
-            //Add OrderingService typed client (Service Agent)
-            //services.AddHttpClient<IOrderingService, OrderingService>() ...
+            services.AddHttpClient<IOrderingService, OrderingService>()
+                 .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
+                 .AddHttpMessageHandler<HttpClientRequestIdDelegatingHandler>()
+                 .AddPolicyHandler(retriesWithExponentialBackoff)
+                 .AddPolicyHandler(circuitBreaker);
 
-            //Add CampaignService typed client (Service Agent)
-            //services.AddHttpClient<ICampaignService, CampaignService>() ...
+            services.AddHttpClient<ICampaignService, CampaignService>()
+                .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
+                .AddPolicyHandler(retriesWithExponentialBackoff)
+                .AddPolicyHandler(circuitBreaker);
 
-            //Add LocationService typed client (Service Agent)
-            //services.AddHttpClient<ILocationService, LocationService>() ...
+            services.AddHttpClient<ILocationService, LocationService>()
+               .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
+               .AddPolicyHandler(retriesWithExponentialBackoff)
+               .AddPolicyHandler(circuitBreaker);
 
-            //Add IdentityParser typed client (Service Agent)
-            //services.AddHttpClient<IIdentityParser, IdentityParser>() ...
-
-
-            //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            // (CDLTLL) TEMPORAL COMMENT: The following Typed-Clients (Service-Agents) have to be coded as BasketService by using AddHttpClient<>(), right? 
-            // This code will be deleted
-            services.AddTransient<ICatalogService, CatalogService>();
-            services.AddTransient<IOrderingService, OrderingService>();
-
-            services.AddTransient<ICampaignService, CampaignService>();
-            services.AddTransient<ILocationService, LocationService>();
+            //add custom application services
             services.AddTransient<IIdentityParser<ApplicationUser>, IdentityParser>();
-            //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-            //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            // TEMPORAL COMMENT: This code will be deleted when using HttpClientFactory, right?
-            if (configuration.GetValue<string>("UseResilientHttp") == bool.TrueString)
-            {
-                services.AddSingleton<IResilientHttpClientFactory, ResilientHttpClientFactory>(sp =>
-                {
-                    var logger = sp.GetRequiredService<ILogger<ResilientHttpClient>>();
-                    var httpContextAccessor = sp.GetRequiredService<IHttpContextAccessor>();
-
-                    var retryCount = 6;
-                    if (!string.IsNullOrEmpty(configuration["HttpClientRetryCount"]))
-                    {
-                        retryCount = int.Parse(configuration["HttpClientRetryCount"]);
-                    }
-
-                    var exceptionsAllowedBeforeBreaking = 5;
-                    if (!string.IsNullOrEmpty(configuration["HttpClientExceptionsAllowedBeforeBreaking"]))
-                    {
-                        exceptionsAllowedBeforeBreaking = int.Parse(configuration["HttpClientExceptionsAllowedBeforeBreaking"]);
-                    }
-
-                    return new ResilientHttpClientFactory(logger, httpContextAccessor, exceptionsAllowedBeforeBreaking, retryCount);
-                });
-                services.AddSingleton<IHttpClient, ResilientHttpClient>(sp => sp.GetService<IResilientHttpClientFactory>().CreateResilientHttpClient());
-            }
-            else
-            {
-                services.AddSingleton<IHttpClient, StandardHttpClient>();
-            }
-            //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+            
             return services;
         }
         public static IServiceCollection AddCustomAuthentication(this IServiceCollection services, IConfiguration configuration)

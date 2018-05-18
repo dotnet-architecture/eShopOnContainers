@@ -3,8 +3,8 @@ using System;
 
 namespace Microsoft.eShopOnContainers.WebMVC.Infrastructure
 {
-    public interface IResilientHttpClientFactory
-    {
-        ResilientHttpClient CreateResilientHttpClient();
-    }
+    //public interface IResilientHttpClientFactory
+    //{
+    //    ResilientHttpClient CreateResilientHttpClient();
+    //}
 }
