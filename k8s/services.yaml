@@ -59,14 +59,14 @@ kind: Service
 metadata:
   labels:
     app: eshop
-    component: ordering-background
+    component: ordering-backgroundtasks
   name: ordering-background
 spec:
   ports:
   - port: 80
   selector:
     app: eshop
-    component: ordering-background
+    component: ordering-backgroundtasks
 ---
 apiVersion: v1
 kind: Service

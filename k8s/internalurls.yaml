@@ -14,6 +14,8 @@ data:
   identity__hc: http://identity/hc
   ordering: http://ordering
   ordering__hc: http://ordering/hc
+  ordering-background: http://ordering-background
+  ordering-background__hc: http://ordering-background/hc
   marketing: http://marketing
   marketing__hc: http://marketing/hc
   locations: http://locations
