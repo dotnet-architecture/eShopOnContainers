@@ -1,24 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http;
+using Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Config;
+using Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Filters.Basket.API.Infrastructure.Filters;
+using Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Infrastructure;
+using Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Config;
-using Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Filters.Basket.API.Infrastructure.Filters;
-using Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Services;
-using Swashbuckle.AspNetCore.Swagger;
-using Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Infrastructure;
-using Polly.Extensions.Http;
 using Polly;
+using Polly.Extensions.Http;
+using Swashbuckle.AspNetCore.Swagger;
+using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator
 {
