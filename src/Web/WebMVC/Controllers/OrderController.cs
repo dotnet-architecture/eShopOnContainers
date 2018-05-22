@@ -56,10 +56,8 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
             {
                 ModelState.AddModelError("Error", "It was not possible to create a new order, please try later on. (Business Msg Due to Circuit-Breaker)");
             }
-            catch (Exception ex)
-            {
-            }
-            return View("Create",  model);
+
+            return View("Create", model);
         }
 
         public async Task<IActionResult> Cancel(string orderId)
