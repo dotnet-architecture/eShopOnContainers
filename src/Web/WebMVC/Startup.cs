@@ -36,10 +36,11 @@ namespace Microsoft.eShopOnContainers.WebMVC
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddAppInsight(Configuration)
-                .AddHealthChecks(Configuration)
-                .AddCustomMvc(Configuration)
-                .AddHttpClientServices(Configuration)
-                .AddCustomAuthentication(Configuration);
+                    .AddHealthChecks(Configuration)
+                    .AddCustomMvc(Configuration)
+                    .AddHttpClientServices(Configuration)
+                    //.AddHttpClientLogging(Configuration)  //Opt-in HttpClientLogging config
+                    .AddCustomAuthentication(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -183,8 +184,11 @@ namespace Microsoft.eShopOnContainers.WebMVC
             services.AddTransient<HttpClientAuthorizationDelegatingHandler>();
             services.AddTransient<HttpClientRequestIdDelegatingHandler>();
 
-            //add http client servicse
+            services.AddHttpClient("extendedhandlerlifetime").SetHandlerLifetime(TimeSpan.FromMinutes(5));
+
+            //add http client services
             services.AddHttpClient<IBasketService, BasketService>()
+                   .SetHandlerLifetime(TimeSpan.FromMinutes(5))  //Sample. Default lifetime is 2 minutes
                    .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
                    .AddPolicyHandler(retriesWithExponentialBackoff)
                    .AddPolicyHandler(circuitBreaker);
@@ -214,6 +218,23 @@ namespace Microsoft.eShopOnContainers.WebMVC
             
             return services;
         }
+
+        public static IServiceCollection AddHttpClientLogging(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddLogging(b =>
+            {
+                b.AddFilter((category, level) => true); // Spam the world with logs.
+
+                // Add console logger so we can see all the logging produced by the client by default.
+                b.AddConsole(c => c.IncludeScopes = true);
+
+                // Add console logger
+                b.AddDebug();
+            });
+
+            return services;
+        }
+
         public static IServiceCollection AddCustomAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
             var useLoadTest = configuration.GetValue<bool>("UseLoadTest");
