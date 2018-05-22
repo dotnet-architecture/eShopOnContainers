@@ -173,7 +173,8 @@ namespace Microsoft.eShopOnContainers.WebMVC
 
             var retriesWithExponentialBackoff = HttpPolicyExtensions
                 .HandleTransientHttpError()
-                .WaitAndRetryAsync(7,retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
+                .OrResult(msg=>msg.StatusCode == System.Net.HttpStatusCode.NotFound)
+                .WaitAndRetryAsync(5,retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
             
             var circuitBreaker = HttpPolicyExtensions
                 .HandleTransientHttpError()

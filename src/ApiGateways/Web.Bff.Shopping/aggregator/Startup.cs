@@ -11,10 +11,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Polly;
 using Polly.Extensions.Http;
+using Polly.Timeout;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http;
 
 namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator
 {
@@ -148,9 +150,12 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             //register http services
+          
             var retriesWithExponentialBackoff = HttpPolicyExtensions
-               .HandleTransientHttpError()
-               .WaitAndRetryAsync(7, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
+                .HandleTransientHttpError()
+                .Or<TimeoutRejectedException>()
+                .OrResult(message => message.StatusCode == System.Net.HttpStatusCode.NotFound)
+                .WaitAndRetryAsync(7, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
 
             var circuitBreaker = HttpPolicyExtensions
                 .HandleTransientHttpError()

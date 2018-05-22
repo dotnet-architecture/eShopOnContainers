@@ -52,11 +52,12 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
                     return RedirectToAction("Index");
                 }
             }
-            catch(BrokenCircuitException)
+            catch (BrokenCircuitException)
             {
                 ModelState.AddModelError("Error", "It was not possible to create a new order, please try later on. (Business Msg Due to Circuit-Breaker)");
             }
-            return View("Create",  model);
+
+            return View("Create", model);
         }
 
         public async Task<IActionResult> Cancel(string orderId)
