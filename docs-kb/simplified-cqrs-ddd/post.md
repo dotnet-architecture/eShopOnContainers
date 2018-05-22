@@ -21,6 +21,15 @@ Why the separation? because the rules for **changing** the model can impose unne
 
 In this simplified CQRS approach both the DDD model and the query model use the same database.
 
+**Commands** and **Queries** are located in the Application layer, because:
+
+1. It's where the composition of domain root aggregates occur (commands) and
+2. It's close to the UI requirements and has access to the whole database of the microservice (queries).
+ 
+Ideally, root aggregates are ignorant of each other and it's the Application layer's responsibility to compose coordinated actions by means of domain events, because it knows about all root aggregates.
+
+Regarding **queries**, in a similar analysis, the Application layer knows about all entities and relationships in the database, beyond the restrictions of the root aggregates.
+
 Code
 ----
 
