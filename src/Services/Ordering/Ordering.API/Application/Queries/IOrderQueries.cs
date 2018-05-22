@@ -1,5 +1,6 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.Queries
 {
+    using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
@@ -7,7 +8,7 @@
     {
         Task<Order> GetOrderAsync(int id);
 
-        Task<IEnumerable<OrderSummary>> GetOrdersAsync();
+        Task<IEnumerable<OrderSummary>> GetOrdersFromUserAsync(Guid userId);
 
         Task<IEnumerable<CardType>> GetCardTypesAsync();
     }
