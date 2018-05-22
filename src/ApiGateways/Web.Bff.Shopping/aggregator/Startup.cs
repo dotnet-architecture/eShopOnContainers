@@ -154,11 +154,11 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator
                 .HandleTransientHttpError()
                 .Or<TimeoutRejectedException>()
                 .OrResult(message => message.StatusCode == System.Net.HttpStatusCode.NotFound)
-                .WaitAndRetryAsync(7, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
+                .WaitAndRetryAsync(6, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
 
             var circuitBreaker = HttpPolicyExtensions
                 .HandleTransientHttpError()
-                .CircuitBreakerAsync(6, TimeSpan.FromSeconds(30));
+                .CircuitBreakerAsync(5, TimeSpan.FromSeconds(30));
 
             services.AddHttpClient<IBasketService, BasketService>()
                 .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
