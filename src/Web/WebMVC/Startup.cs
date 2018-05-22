@@ -187,8 +187,8 @@ namespace Microsoft.eShopOnContainers.WebMVC
 
             //add http client services
             services.AddHttpClient<IBasketService, BasketService>()
-                   .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
                    .SetHandlerLifetime(TimeSpan.FromMinutes(5))  //Sample. Default lifetime is 2 minutes
+                   .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
                    .AddPolicyHandler(retriesWithExponentialBackoff)
                    .AddPolicyHandler(circuitBreaker);
 
