@@ -1,14 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.eShopOnContainers.WebMVC.Services;
 using Microsoft.eShopOnContainers.WebMVC.ViewModels;
-using Microsoft.AspNetCore.Authorization;
-using System.Net.Http;
 using Polly.CircuitBreaker;
-using WebMVC.Models;
+using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.WebMVC.Controllers
 {
