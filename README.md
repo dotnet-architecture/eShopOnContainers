@@ -26,7 +26,7 @@ However, this sample application should not be considered as an "eCommerce refer
 > <p>For example, the next step after running the solution in the local dev PC and understanding Docker containers and microservices development with .NET Core, is to select a microservice cluster/orchestrator like Kubernetes in Azure (AKS) or Azure Service Fabric, both environments tested and supported by this solution.
 > Additional steps would be to move your databases to HA cloud services (like Azure SQL Database), or switch your EventBus to use Azure Service Bus (instead of bare-bone RabbitMQ) or any other production ready Service Bus in the market.
 > <p> 
-> <img src="img/exploring-to-production-ready.png">
+> ![image](https://user-images.githubusercontent.com/1712635/40397210-3f7befea-5de6-11e8-86ce-a6d1830b46de.png)
 > Read the planned <a href='https://github.com/dotnet/eShopOnContainers/wiki/01.-Roadmap-and-Milestones-for-future-releases'>Roadmap and Milestones for future releases of eShopOnContainers</a> within the Wiki for further info about possible new implementations and provide feedback at the  <a href='https://github.com/dotnet/eShopOnContainers/issues'>ISSUES section</a> if you'd like to see any specific scenario implemented or improved. Also, feel free to discuss on any current issue.
 
 ### Architecture overview 
