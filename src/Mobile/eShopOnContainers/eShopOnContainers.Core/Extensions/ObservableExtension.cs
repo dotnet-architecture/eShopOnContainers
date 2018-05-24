@@ -15,6 +15,7 @@ namespace eShopOnContainers.Core.Extensions
             }
 
             return collection;
+
         }
     }
 }

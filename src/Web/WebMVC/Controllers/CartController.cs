@@ -49,8 +49,11 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
             {
                 var user = _appUserParser.Parse(HttpContext.User);
                 var basket = await _basketSvc.SetQuantities(user, quantities);
+                var vm = await _basketSvc.UpdateBasket(basket);
+
                 if (action == "[ Checkout ]")
                 {
+                    var order = _basketSvc.MapBasketToOrder(basket);
                     return RedirectToAction("Create", "Order");
                 }
             }
@@ -67,11 +70,19 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
         {
             try
             {
-                if (productDetails?.Id != null)
+                if (productDetails.Id != null)
                 {
                     var user = _appUserParser.Parse(HttpContext.User);
-                    await _basketSvc.AddItemToBasket(user, productDetails.Id);
-                    //await _basketSvc.AddItemToBasket(user, product);
+                    var product = new BasketItem()
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        Quantity = 1,
+                        ProductName = productDetails.Name,
+                        PictureUrl = productDetails.PictureUri,
+                        UnitPrice = productDetails.Price,
+                        ProductId = productDetails.Id
+                    };
+                    await _basketSvc.AddItemToBasket(user, product);
                 }
                 return RedirectToAction("Index", "Catalog");            
             }

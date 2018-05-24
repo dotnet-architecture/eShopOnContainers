@@ -32,16 +32,11 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
 
         // GET api/v1/[controller]/items[?pageSize=3&pageIndex=10]
         [HttpGet]
-        [Route("items")]
+        [Route("[action]")]
         [ProducesResponseType(typeof(PaginatedItemsViewModel<CatalogItem>), (int)HttpStatusCode.OK)]
-        [ProducesResponseType(typeof(IEnumerable<CatalogItem>), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> Items([FromQuery]int pageSize = 10, [FromQuery]int pageIndex = 0, [FromQuery] string ids = null)
-        {
-            if (!string.IsNullOrEmpty(ids))
-            {
-                return GetItemsByIds(ids);
-            }
+        public async Task<IActionResult> Items([FromQuery]int pageSize = 10, [FromQuery]int pageIndex = 0)
 
+        {
             var totalItems = await _catalogContext.CatalogItems
                 .LongCountAsync();
 
@@ -59,23 +54,6 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
             return Ok(model);
         }
 
-        private IActionResult GetItemsByIds(string ids)
-        {
-            var numIds = ids.Split(',')
-                .Select(id => (Ok: int.TryParse(id, out int x), Value: x));
-            if (!numIds.All(nid => nid.Ok))
-            {
-                return BadRequest("ids value invalid. Must be comma-separated list of numbers");
-            }
-
-            var idsToSelect = numIds.Select(id => id.Value);
-            var items = _catalogContext.CatalogItems.Where(ci => idsToSelect.Contains(ci.Id)).ToList();
-
-            items = ChangeUriPlaceholder(items);
-            return Ok(items);
-
-        }
-
         [HttpGet]
         [Route("items/{id:int}")]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
@@ -88,11 +66,6 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
             }
 
             var item = await _catalogContext.CatalogItems.SingleOrDefaultAsync(ci => ci.Id == id);
-
-            var baseUri = _settings.PicBaseUrl;
-            var azureStorageEnabled = _settings.AzureStorageEnabled;
-            item.FillProductUrl(baseUri, azureStorageEnabled: azureStorageEnabled);
-
             if (item != null)
             {
                 return Ok(item);
@@ -271,12 +244,13 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
         private List<CatalogItem> ChangeUriPlaceholder(List<CatalogItem> items)
         {
             var baseUri = _settings.PicBaseUrl;
-            var azureStorageEnabled = _settings.AzureStorageEnabled;
 
-            foreach (var item in items)
+            items.ForEach(catalogItem =>
             {
-                item.FillProductUrl(baseUri, azureStorageEnabled: azureStorageEnabled);
-            }
+                catalogItem.PictureUri = _settings.AzureStorageEnabled
+                    ? baseUri + catalogItem.PictureFileName
+                    : baseUri.Replace("[0]", catalogItem.Id.ToString());
+            });
 
             return items;
         }

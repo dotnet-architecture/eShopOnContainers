@@ -13,7 +13,6 @@ hosts
 LICENSE
 *.testsettings
 vsts-docs
-test
 ServiceFabric
 readme
 k8s
@@ -32,5 +31,4 @@ cli-linux
 !**/wwwroot/lib/signalr/*
 !**/wwwroot/lib/toastr/*
 global.json
-**/appsettings.localhost.json
 src/Web/WebSPA/wwwroot/

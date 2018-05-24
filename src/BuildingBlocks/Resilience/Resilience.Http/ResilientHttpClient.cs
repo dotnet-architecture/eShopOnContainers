@@ -97,11 +97,6 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http
                     throw new HttpRequestException();
                 }
 
-                if (!response.IsSuccessStatusCode)
-                {
-                    return null;
-                }
-
                 return await response.Content.ReadAsStringAsync();
             });
         }
