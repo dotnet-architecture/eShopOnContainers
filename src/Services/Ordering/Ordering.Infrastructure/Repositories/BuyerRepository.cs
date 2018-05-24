@@ -54,5 +54,15 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Repositor
 
             return buyer;
         }
+
+        public async Task<Buyer> FindByIdAsync(string id)
+        {
+            var buyer = await _context.Buyers
+                .Include(b => b.PaymentMethods)
+                .Where(b => b.Id == int.Parse(id))
+                .SingleOrDefaultAsync();
+
+            return buyer;
+        }
     }
 }

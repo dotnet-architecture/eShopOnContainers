@@ -27,6 +27,9 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands
         public string UserId { get; private set; }
 
         [DataMember]
+        public string UserName { get; private set; }
+
+        [DataMember]
         public string City { get; private set; }
 
         [DataMember]
@@ -64,12 +67,13 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands
             _orderItems = new List<OrderItemDTO>();
         }
 
-        public CreateOrderCommand(List<BasketItem> basketItems, string userId, string city, string street, string state, string country, string zipcode,
+        public CreateOrderCommand(List<BasketItem> basketItems, string userId, string userName, string city, string street, string state, string country, string zipcode,
             string cardNumber, string cardHolderName, DateTime cardExpiration,
             string cardSecurityNumber, int cardTypeId) : this()
         {
             _orderItems = MapToOrderItems(basketItems);
             UserId = userId;
+            UserName = userName;
             City = city;
             Street = street;
             State = state;

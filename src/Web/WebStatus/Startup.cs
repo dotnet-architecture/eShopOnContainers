@@ -39,6 +39,7 @@ namespace WebStatus
                 }
 
                 checks.AddUrlCheckIfNotNull(Configuration["OrderingUrl"], TimeSpan.FromMinutes(minutes)); 
+                checks.AddUrlCheckIfNotNull(Configuration["OrderingBackgroundTasksUrl"], TimeSpan.FromMinutes(minutes));
                 checks.AddUrlCheckIfNotNull(Configuration["BasketUrl"], TimeSpan.Zero); //No cache for this HealthCheck, better just for demos                  
                 checks.AddUrlCheckIfNotNull(Configuration["CatalogUrl"], TimeSpan.FromMinutes(minutes)); 
                 checks.AddUrlCheckIfNotNull(Configuration["IdentityUrl"], TimeSpan.FromMinutes(minutes)); 

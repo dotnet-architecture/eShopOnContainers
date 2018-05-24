@@ -60,17 +60,17 @@ namespace UnitTest.Ordering.Application
         public void Handle_throws_exception_when_no_buyerId()
         {
             //Assert
-            Assert.Throws<ArgumentNullException>(() => new Buyer(string.Empty));
+            Assert.Throws<ArgumentNullException>(() => new Buyer(string.Empty, string.Empty));
         }
 
         private Buyer FakeBuyer()
         {
-            return new Buyer(Guid.NewGuid().ToString());
+            return new Buyer(Guid.NewGuid().ToString(), "1");
         }
 
         private Order FakeOrder()
         {
-            return new Order("1", new Address("street", "city", "state", "country", "zipcode"), 1, "12", "111", "fakeName", DateTime.Now.AddYears(1));
+            return new Order("1", "fakeName", new Address("street", "city", "state", "country", "zipcode"), 1, "12", "111", "fakeName", DateTime.Now.AddYears(1));
         }
 
         private CreateOrderCommand FakeOrderRequestWithBuyer(Dictionary<string, object> args = null)
@@ -78,6 +78,7 @@ namespace UnitTest.Ordering.Application
             return new CreateOrderCommand(
                 new List<BasketItem>(),
                 userId: args != null && args.ContainsKey("userId") ? (string)args["userId"] : null,
+                userName: args != null && args.ContainsKey("userName") ? (string)args["userName"] : null,
                 city: args != null && args.ContainsKey("city") ? (string)args["city"] : null,
                 street: args != null && args.ContainsKey("street") ? (string)args["street"] : null,
                 state: args != null && args.ContainsKey("state") ? (string)args["state"] : null,

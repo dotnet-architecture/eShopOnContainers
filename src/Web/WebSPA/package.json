@@ -21,11 +21,13 @@
     "clean": "npm cache clean && npm run rimraf -- node_modules doc typings coverage wwwroot",
     "start": "ng serve",
     "build:dev": "ng build",
+    "build:dev:watch": "npm run build:dev -- -w",
     "build:prod": "ng build --prod --aot --extract-css",
     "lint:sass": "sass-lint -c .sass-lint.yml Client/**/*.scss --verbose",
     "lint:ts": "tslint -c tslint.json Client/**/*.ts"
   },
   "dependencies": {
+    "@angular/animations": "^4.2.9",
     "@angular/common": "^4.0.0",
     "@angular/compiler": "^4.0.0",
     "@angular/core": "^4.0.0",
@@ -34,12 +36,14 @@
     "@angular/platform-browser": "^4.0.0",
     "@angular/platform-browser-dynamic": "^4.0.0",
     "@angular/router": "^4.0.0",
+    "@aspnet/signalr": "1.0.0-preview2-final",
     "@ng-bootstrap/ng-bootstrap": "1.0.0-alpha.22",
     "bootstrap": "4.0.0-alpha.5",
     "core-js": "^2.4.1",
     "file-loader": "0.9.0",
     "font-awesome": "4.6.3",
     "isomorphic-fetch": "2.2.1",
+    "ng2-toastr": "^4.1.2",
     "normalize.css": "5.0.0",
     "preboot": "4.5.2",
     "rxjs": "^5.1.0",
@@ -60,7 +64,7 @@
     "ts-node": "~2.0.0",
     "tslint": "~4.5.0",
     "typedoc": "0.5.0",
-    "typescript": "~2.2.0",
+    "typescript": "^2.7.1",
     "url-loader": "0.5.7"
   }
 }

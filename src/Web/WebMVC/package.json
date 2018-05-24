@@ -1,0 +1,10 @@
+{
+  "version": "1.0.0",
+  "name": "asp.net",
+  "private": true,
+  "devDependencies": {},
+  "dependencies": {
+    "@aspnet/signalr": "^1.0.0-preview2-final",
+    "toastr": "^2.1.4"
+  }
+}

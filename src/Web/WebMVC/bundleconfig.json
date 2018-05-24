@@ -9,6 +9,20 @@
     ]
   },
   {
+    "outputFileName": "wwwroot/js/site.js",
+    "inputFiles": [
+      "wwwroot/lib/signalr/signalr.js",
+      "wwwroot/lib/toastr/toastr.js"
+    ],
+    // Optionally specify minification options
+    "minify": {
+      "enabled": false,
+      "renameLocals": true
+    },
+    // Optinally generate .map file
+    "sourceMap": false
+  },
+  {
     "outputFileName": "wwwroot/js/site.min.js",
     "inputFiles": [
       "wwwroot/js/site.js"

@@ -17,5 +17,6 @@
   "ApplicationInsights": {
     "InstrumentationKey": ""
   },
-  "EventBusRetryCount": 5
+  "EventBusRetryCount": 5,
+  "EventBusConnection": "localhost"
 }
