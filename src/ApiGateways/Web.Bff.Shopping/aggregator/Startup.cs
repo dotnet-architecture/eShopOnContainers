@@ -16,6 +16,7 @@ using Swashbuckle.AspNetCore.Swagger;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http;
 
 namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator
 {
@@ -150,32 +151,37 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator
 
             //register http services
           
-            var retriesWithExponentialBackoff = HttpPolicyExtensions
-                .HandleTransientHttpError()
-                .Or<TimeoutRejectedException>()
-                .OrResult(message => message.StatusCode == System.Net.HttpStatusCode.NotFound)
-                .WaitAndRetryAsync(6, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
-
-            var circuitBreaker = HttpPolicyExtensions
-                .HandleTransientHttpError()
-                .CircuitBreakerAsync(5, TimeSpan.FromSeconds(30));
-
             services.AddHttpClient<IBasketService, BasketService>()
                 .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
-                .AddPolicyHandler(retriesWithExponentialBackoff)
-                .AddPolicyHandler(circuitBreaker);
+                .AddPolicyHandler(GetRetryPolicy())
+                .AddPolicyHandler(GetCircuitBreakerPolicy());
 
             services.AddHttpClient<ICatalogService, CatalogService>()
-                .AddPolicyHandler(retriesWithExponentialBackoff)
-                .AddPolicyHandler(circuitBreaker);
+                .AddPolicyHandler(GetRetryPolicy())
+                .AddPolicyHandler(GetCircuitBreakerPolicy());
 
             services.AddHttpClient<IOrderApiClient, OrderApiClient>()
                 .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
-                .AddPolicyHandler(retriesWithExponentialBackoff)
-                .AddPolicyHandler(circuitBreaker);
+                .AddPolicyHandler(GetRetryPolicy())
+                .AddPolicyHandler(GetCircuitBreakerPolicy());
 
 
             return services;
+        }
+
+        static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy()
+        {
+            return HttpPolicyExtensions
+              .HandleTransientHttpError()
+              .OrResult(msg => msg.StatusCode == System.Net.HttpStatusCode.NotFound)
+              .WaitAndRetryAsync(6, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
+
+        }
+        static IAsyncPolicy<HttpResponseMessage> GetCircuitBreakerPolicy()
+        {
+            return HttpPolicyExtensions
+                .HandleTransientHttpError()
+                .CircuitBreakerAsync(5, TimeSpan.FromSeconds(30));
         }
     }
 }

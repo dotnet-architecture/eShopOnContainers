@@ -17,6 +17,7 @@ using Polly.Extensions.Http;
 using StackExchange.Redis;
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http;
 using WebMVC.Infrastructure;
 using WebMVC.Infrastructure.Middlewares;
 using WebMVC.Services;
@@ -168,18 +169,6 @@ namespace Microsoft.eShopOnContainers.WebMVC
         {
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-            //Using fluent client configuration of Polly policies
-            //(CDLTLL) Instead of hardcoded values, use: configuration["HttpClientMaxNumberRetries"], configuration["SecondsBaseForExponentialBackoff"]
-
-            var retriesWithExponentialBackoff = HttpPolicyExtensions
-                .HandleTransientHttpError()
-                .OrResult(msg=>msg.StatusCode == System.Net.HttpStatusCode.NotFound)
-                .WaitAndRetryAsync(6,retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
-            
-            var circuitBreaker = HttpPolicyExtensions
-                .HandleTransientHttpError()
-                .CircuitBreakerAsync(5, TimeSpan.FromSeconds(30));
-
             //register delegating handlers
             services.AddTransient<HttpClientAuthorizationDelegatingHandler>();
             services.AddTransient<HttpClientRequestIdDelegatingHandler>();
@@ -190,32 +179,32 @@ namespace Microsoft.eShopOnContainers.WebMVC
             services.AddHttpClient<IBasketService, BasketService>()
                    .SetHandlerLifetime(TimeSpan.FromMinutes(5))  //Sample. Default lifetime is 2 minutes
                    .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
-                   .AddPolicyHandler(retriesWithExponentialBackoff)
-                   .AddPolicyHandler(circuitBreaker);
+                   .AddPolicyHandler(GetRetryPolicy())
+                   .AddPolicyHandler(GetCircuitBreakerPolicy());
 
             services.AddHttpClient<ICatalogService, CatalogService>()
-                   .AddPolicyHandler(retriesWithExponentialBackoff)
-                   .AddPolicyHandler(circuitBreaker);
+                   .AddPolicyHandler(GetRetryPolicy())
+                   .AddPolicyHandler(GetCircuitBreakerPolicy());
 
             services.AddHttpClient<IOrderingService, OrderingService>()
                  .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
                  .AddHttpMessageHandler<HttpClientRequestIdDelegatingHandler>()
-                 .AddPolicyHandler(retriesWithExponentialBackoff)
-                 .AddPolicyHandler(circuitBreaker);
+                 .AddPolicyHandler(GetRetryPolicy())
+                 .AddPolicyHandler(GetCircuitBreakerPolicy());
 
             services.AddHttpClient<ICampaignService, CampaignService>()
                 .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
-                .AddPolicyHandler(retriesWithExponentialBackoff)
-                .AddPolicyHandler(circuitBreaker);
+                .AddPolicyHandler(GetRetryPolicy())
+                .AddPolicyHandler(GetCircuitBreakerPolicy());
 
             services.AddHttpClient<ILocationService, LocationService>()
                .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
-               .AddPolicyHandler(retriesWithExponentialBackoff)
-               .AddPolicyHandler(circuitBreaker);
+               .AddPolicyHandler(GetRetryPolicy())
+               .AddPolicyHandler(GetCircuitBreakerPolicy());
 
             //add custom application services
             services.AddTransient<IIdentityParser<ApplicationUser>, IdentityParser>();
-            
+
             return services;
         }
 
@@ -273,6 +262,19 @@ namespace Microsoft.eShopOnContainers.WebMVC
             return services;
         }
 
-    }
+        static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy()
+        {
+            return HttpPolicyExtensions
+              .HandleTransientHttpError()
+              .OrResult(msg => msg.StatusCode == System.Net.HttpStatusCode.NotFound)
+              .WaitAndRetryAsync(6, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
 
+        }
+        static IAsyncPolicy<HttpResponseMessage> GetCircuitBreakerPolicy()
+        {
+            return HttpPolicyExtensions
+                .HandleTransientHttpError()
+                .CircuitBreakerAsync(5, TimeSpan.FromSeconds(30));
+        }
+    }
 }
