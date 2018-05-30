@@ -178,7 +178,7 @@
                 }
                 processed = true;
             }
-            return processed
+            return processed;
         }
 
         private void RemoveDefaultRule()
