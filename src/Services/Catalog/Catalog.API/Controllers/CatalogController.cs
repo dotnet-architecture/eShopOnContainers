@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
 {
     [Route("api/v1/[controller]")]
+    [ApiController]
     public class CatalogController : ControllerBase
     {
         private readonly CatalogContext _catalogContext;
@@ -25,8 +26,8 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
         {
             _catalogContext = context ?? throw new ArgumentNullException(nameof(context));
             _catalogIntegrationEventService = catalogIntegrationEventService ?? throw new ArgumentNullException(nameof(catalogIntegrationEventService));
-
             _settings = settings.Value;
+
             ((DbContext)context).ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
