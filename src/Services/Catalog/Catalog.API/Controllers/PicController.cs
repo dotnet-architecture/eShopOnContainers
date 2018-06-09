@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
-{
+{ 
     public class PicController : Controller
     {
         private readonly IHostingEnvironment _env;
