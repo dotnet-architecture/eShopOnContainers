@@ -202,10 +202,10 @@ services:
     build:
       context: .
       dockerfile: src/Web/WebSPA/Dockerfile    
-    depends_on:
-      - webshoppingagg
-      - webshoppingapigw
-      - webmarketingapigw
+#    depends_on:
+#      - webshoppingagg
+#      - webshoppingapigw
+#      - webmarketingapigw
 
 
   webmvc:
