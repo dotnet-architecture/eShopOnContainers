@@ -4,10 +4,14 @@
 inf:
   sql:                      # inf.sql defines the sql server databases & logins
 #    host:  my-sql-server   # Uncomment to specify a custom sql-server to be used. By default "sql-data-<appname>" will be used
-    catalog:                # sql settings for the catalog-api sql (user, pwd, db)
+    catalog:                # inf.sql.catalog: settings for the catalog-api sql (user, pwd, db)
       user: sa              # Catalog API SQL user
       pwd: Pass@word        # Catalog API SQL pwd
       db: CatalogDb         # Catalog API SQL db name
+    ordering:               # inf.sql.ordering: settings for the ordering-api sql (user, pwd, db)
+      user: sa              # Ordering API SQL user
+      pwd: Pass@word        # Ordering API SQL pwd
+      db: OrderingDb        # Ordering API SQL db name
   redis:                    # inf.redis defines the redis' connection strings
     basket:                 
       constr: basket-data   # Connection string to Redis used by Basket API
