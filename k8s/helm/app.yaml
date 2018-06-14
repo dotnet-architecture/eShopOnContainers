@@ -1,0 +1,7 @@
+# This heml values file defines app-based settings
+# Charts use those values, so this file must be included in all chart releases
+
+app:
+  name: "my-eshop"          # Override for custom application names.
+  ingress:
+    suffix: false            # if true ingress endpoints are suffixed with .Values.appName value (or .Release.Name if the 1st do not exist)

@@ -1,0 +1,23 @@
+# This heml values file defines all infrastructure used by eShopOnContainers.
+# Any chart redefines its needed part, but this file allows an easy override of the whole infrastructure settings
+
+inf:
+  sql:                      # inf.sql defines the sql server databases & logins
+#    host:  my-sql-server   # Uncomment to specify a custom sql-server to be used. By default "sql-data-<appname>" will be used
+    catalog:                # sql settings for the catalog-api sql (user, pwd, db)
+      user: sa              # Catalog API SQL user
+      pwd: Pass@word        # Catalog API SQL pwd
+      db: CatalogDb         # Catalog API SQL db name
+  redis:                    # inf.redis defines the redis' connection strings
+    basket:                 
+      constr: basket-data   # Connection string to Redis used by Basket API
+  eventbus:
+    constr: rabbitmq        # Event bus connection strin g
+    useAzure: false         # true if use Azure Service Bus. False if RabbitMQ
+  appinsights:
+      key: ""               # App insights to use
+  k8s:                      # inf.k8s defines Kubernetes cluster global config
+    dns:  ""                # k8s external IP or DNS. Value MUST BE PROVIDED using --set (--set inf.k8s.dns=my-cluster-dns)
+  misc:                     # inf.misc contains miscellaneous configuration related to infrastructure
+    useLoadTest: false      # If running under loading test or not
+    useAzureStorage: false  # If catalog api uses azure storage or not
