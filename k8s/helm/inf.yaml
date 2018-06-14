@@ -1,5 +1,5 @@
 # This heml values file defines all infrastructure used by eShopOnContainers.
-# Any chart redefines its needed part, but this file allows an easy override of the whole infrastructure settings
+# It is used on all charts, so ** MUST BE INCLUDED ** on every deployment
 
 inf:
   sql:                      # inf.sql defines the sql server databases & logins
@@ -12,9 +12,15 @@ inf:
       user: sa              # Ordering API SQL user
       pwd: Pass@word        # Ordering API SQL pwd
       db: OrderingDb        # Ordering API SQL db name
+    identity:
+      user: sa              # Ordering API SQL user
+      pwd: Pass@word        # Ordering API SQL pwd
+      db: IdentityDb        # Ordering API SQL db name
   redis:                    # inf.redis defines the redis' connection strings
     basket:                 
       constr: basket-data   # Connection string to Redis used by Basket API
+    keystore:
+      constr: keystore-data # Connection string to Redis used as a Keystore (by Identity API)
   eventbus:
     constr: rabbitmq        # Event bus connection strin g
     useAzure: false         # true if use Azure Service Bus. False if RabbitMQ

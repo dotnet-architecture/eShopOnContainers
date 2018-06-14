@@ -1,7 +1,25 @@
 # This heml values file defines app-based settings
-# Charts use those values, so this file must be included in all chart releases
+# Charts use those values, so this file **MUST** be included in all chart releases
 
-app:
-  name: "my-eshop"          # Override for custom application names.
-  ingress:
-    suffix: false            # if true ingress endpoints are suffixed with .Values.appName value (or .Release.Name if the 1st do not exist)
+
+app:                                                  # app global settings
+  name: "my-eshop"                                    # Override for custom app name
+  ingress:                                            # ingress related settings
+    suffix: false                                     # if true ingress endpoints are suffixed with .Values.appName value (or .Release.Name if the 1st do not exist)
+    entries:
+      basket: basket-api                              # ingress entry for basket api
+      catalog: catalog-api                            # ingress entry for catalog api
+      ordering: ordering-api                          # ingress entry for ordering api
+      identity: identity                              # ingress entry for identity api
+      mvc: webmvc                                     # ingress entry for web mvc
+      spa: webspa                                     # ingress entry for web spa
+      status: webstatus                               # ingress entry for web status
+      webshoppingapigw: webshoppingapigw              # ingress entry for web shopping Agw
+      webmarketingapigw: webmarketingapigw            # ingress entry for web mkg Agw
+      mobilemarketingapigw: mobilemarketingapigw      # ingress entry for mobile mkg Agw
+      mobileshoppingapigw: mobileshoppingapigw        # ingress entry for mobile shopping Agw
+      webshoppingagg: webshoppingagg                  # ingress entry for web shopping aggregator
+      mobileshoppingagg: mobileshoppingagg            # ingress entry for mobile shopping aggregator
+      payment: payment-api                            # ingress entry for payment api
+      locations: locations-api                        # ingress entry for locations api
+      marketing: marketing-api                        # ingress entry for marketing api
