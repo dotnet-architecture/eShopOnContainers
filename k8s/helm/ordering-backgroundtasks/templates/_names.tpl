@@ -14,14 +14,18 @@
 {{- end -}}
 {{- end -}}
 
-{{- define "url-identity" -}}
-{{- if .Values.app.ingress.suffix -}}
-{{- $suffix := include "suffix-name" . -}}
-{{- printf "%s/identity-api-%s" .Values.inf.k8s.dns $suffix -}}
+{{- define "url-of" -}}
+{{- $name := first .}}
+{{- $ctx := last .}}
+{{- if $ctx.Values.app.ingress.suffix -}}
+{{- $suffix := include "suffix-name" $ctx -}}
+{{- printf "%s/%s-%s" $ctx.Values.inf.k8s.dns $name $suffix -}}
 {{- else -}}
-{{- printf "%s/identity-api" .Values.inf.k8s.dns -}}
+{{- printf "%s/%s" $ctx.Values.inf.k8s.dns $name -}}
 {{- end -}}
 {{- end -}}
+
+
 
 {{ define "pathBase" -}}
 {{- if .Values.app.ingress.suffix -}}

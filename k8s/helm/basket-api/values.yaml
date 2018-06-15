@@ -18,20 +18,6 @@ ingress:
     - chart-example.local
   tls: []
 
-inf:            # inf - see comments in ../inf.yaml file for info
-  redis:
-    basket:
-      constr: basket-data
-  eventbus:
-    constr: rabbitmq
-    useAzure: false
-  appinsights:
-      key: ""
-  k8s:
-    dns:  ""
-  misc:
-    useLoadTest: false
-
 resources: {}
 
 

@@ -1,5 +1,5 @@
 {{- $name := include "basket-api.fullname" . -}}
-{{- $identity := include "url-identity" . -}}
+{{- $identity := include "url-of" (list .Values.app.ingress.entries.identity .) -}}
 
 apiVersion: v1
 kind: ConfigMap

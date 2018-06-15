@@ -1,6 +1,6 @@
 {{- $name := include "ordering-api.fullname" . -}}
 {{- $sqlsrv := include "sql-name" . -}}
-{{- $identity := include "url-identity" . -}}
+{{- $identity := include "url-of" (list .Values.app.ingress.entries.identity .) -}}
 
 apiVersion: v1
 kind: ConfigMap

@@ -18,23 +18,6 @@ ingress:
     - chart-example.local
   tls: []
 
-inf:
-  sql: 
-    catalog:
-      user: sa
-      pwd: Pass@word
-      db: CatalogDb
-  eventbus:
-    constr: rabbitmq
-    useAzure: false
-  appinsights:
-      key: ""
-  k8s:
-    dns:  ""
-  misc:
-    useAzureStorage: false
-
-
 resources: {}
 
 

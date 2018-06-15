@@ -10,7 +10,6 @@
 {{- $webhoppingagg := include "url-of" (list .Values.app.ingress.entries.webshoppingagg .) -}}
 {{- $xamarincallback := include "url-of" (list "xamarincallback" .) -}}
 
-
 apiVersion: v1
 kind: ConfigMap
 metadata:
