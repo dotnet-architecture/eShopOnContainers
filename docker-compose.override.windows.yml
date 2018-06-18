@@ -37,11 +37,6 @@ services:
       - EventBusUserName=admin
       - EventBusPassword=password
 
-  ordering.api:
-    environment:
-      - EventBusUserName=admin
-      - EventBusPassword=password
-  
   ordering.backgroundtasks:
     environment:
       - EventBusUserName=admin
@@ -58,6 +53,6 @@ services:
       - EventBusPassword=password
 
   ordering.signalrhub:
-  environment:
+    environment:
       - EventBusUserName=admin
       - EventBusPassword=password

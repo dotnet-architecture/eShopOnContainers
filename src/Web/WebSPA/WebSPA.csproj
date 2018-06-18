@@ -94,16 +94,6 @@
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
   </ItemGroup>
 
-  <!-- workaround for https://github.com/aspnet/websdk/issues/114 -->
-  <Target Name="PrepublishScript" BeforeTargets="PrepareForPublish">
-    <Exec Command="npm install" />
-    <Exec Command="npm run build:prod" />
-    <ItemGroup>
-      <_GeneratedFiles Include="$(GeneratedItemPatterns)" />
-      <ContentWithTargetPath Include="@(_GeneratedFiles)" TargetPath="%(Identity)" CopyToPublishDirectory="PreserveNewest" />
-    </ItemGroup>
-  </Target>
-
 
   <!-- workaround for https://github.com/aspnet/websdk/issues/114 -->
   <!--
