@@ -1,6 +1,6 @@
 {{- if .Values.ingress.enabled -}}
 {{- $fullName := include "apigwws.fullname" . -}}
-{{- $ingressPath := include "pathBase" . -}}
+{{- $ingressPath := include "pathBase" (list .Values.app.ingress.entries.webshoppingapigw  .) -}}
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
