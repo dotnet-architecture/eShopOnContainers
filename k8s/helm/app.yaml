@@ -5,7 +5,6 @@
 app:                                                  # app global settings
   name: "my-eshop"                                    # Override for custom app name
   ingress:                                            # ingress related settings
-    suffix: false                                     # if true ingress endpoints are suffixed with .Values.appName value (or .Release.Name if the 1st do not exist)
     entries:
       basket: basket-api                              # ingress entry for basket api
       catalog: catalog-api                            # ingress entry for catalog api

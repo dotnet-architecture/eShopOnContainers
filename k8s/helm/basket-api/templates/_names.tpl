@@ -17,18 +17,22 @@
 {{- define "url-of" -}}
 {{- $name := first .}}
 {{- $ctx := last .}}
-{{- if $ctx.Values.app.ingress.suffix -}}
 {{- $suffix := include "suffix-name" $ctx -}}
-{{- printf "%s/%s-%s" $ctx.Values.inf.k8s.dns $name $suffix -}}
+{{- if $ctx.Values.inf.k8s.dnsprefix -}}
+{{- printf "%s.%s/%s" $suffix $ctx.Values.inf.k8s.dns $name -}}     # Value is <prefix>.<dns>/<name>
 {{- else -}}
-{{- printf "%s/%s" $ctx.Values.inf.k8s.dns $name -}}
+{{- if $ctx.Values.inf.k8s.suffix -}}
+{{- printf "%s/%s-%s" $ctx.Values.inf.k8s.dns $name $suffix -}}     # Value is <dns>/<name>-<sufix>
+{{- else -}}
+{{- printf "%s/%s" $ctx.Values.inf.k8s.dns $name -}}                # Value is just <dns>/<name>
+{{- end -}}
 {{- end -}}
 {{- end -}}
 
 
 
 {{ define "pathBase" -}}
-{{- if .Values.app.ingress.suffix -}}
+{{- if .Values.inf.k8s.suffix -}}
 {{- $suffix := include "suffix-name" . -}}
 {{- printf "%s-%s"  .Values.pathBase $suffix -}}
 {{- else -}}
