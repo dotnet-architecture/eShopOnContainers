@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "ordering-signalrhub.fullname" . }}
+  name: {{ .Values.app.svc.orderingsignalrhub }}
   labels:
     app: {{ template "ordering-signalrhub.name" . }}
     chart: {{ template "ordering-signalrhub.chart" . }}

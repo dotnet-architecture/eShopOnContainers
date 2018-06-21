@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "ordering-api.fullname" . }}
+  name: {{ .Values.app.svc.ordering }}
   labels:
     app: {{ template "ordering-api.name" . }}
     chart: {{ template "ordering-api.chart" . }}

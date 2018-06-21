@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "ordering-backgroundtasks.fullname" . }}
+  name: {{ .Values.app.svc.orderingbackgroundtasks }}
   labels:
     app: {{ template "ordering-backgroundtasks.name" . }}
     chart: {{ template "ordering-backgroundtasks.chart" . }}
