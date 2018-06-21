@@ -46,6 +46,8 @@ env:
       key: marketing__ConnectionString
     - name: Database
       key: marketing__Database
+    - name: PicBaseUrl
+      key: marketing__PicBaseUrl
       # values define environment variables with a fixed value (no configmap involved) (name is name of var, and value is its value)
   values:
     - name: ASPNETCORE_ENVIRONMENT

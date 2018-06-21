@@ -27,12 +27,12 @@
 {{- $ctx := last .}}
 {{- $suffix := include "suffix-name" $ctx -}}
 {{- if $ctx.Values.inf.k8s.dnsprefix -}}
-{{- printf "%s.%s/%s" $suffix $ctx.Values.inf.k8s.dns $name -}}     # Value is <prefix>.<dns>/<name>
+{{- printf "%s.%s/%s" $suffix $ctx.Values.inf.k8s.dns $name -}}     {{/* Value is <prefix>.<dns>/<name> */}}
 {{- else -}}
 {{- if $ctx.Values.inf.k8s.suffix -}}
-{{- printf "%s/%s-%s" $ctx.Values.inf.k8s.dns $name $suffix -}}     # Value is <dns>/<name>-<sufix>
+{{- printf "%s/%s-%s" $ctx.Values.inf.k8s.dns $name $suffix -}}     {{/*Value is <dns>/<name>-<sufix> */}}
 {{- else -}}
-{{- printf "%s/%s" $ctx.Values.inf.k8s.dns $name -}}                # Value is just <dns>/<name>
+{{- printf "%s/%s" $ctx.Values.inf.k8s.dns $name -}}                {{/*Value is just <dns>/<name> */}}
 {{- end -}}
 {{- end -}}
 {{- end -}}

@@ -1,5 +1,6 @@
 {{- $name := include "marketing-api.fullname" . -}}
 {{- $identity := include "url-of" (list .Values.app.ingress.entries.identity .) -}}
+{{- $webshoppingapigw := include "url-of" (list .Values.app.ingress.entries.webshoppingapigw .) -}}
 {{- $mongo := include "mongo-name" . -}}
 
 apiVersion: v1
@@ -19,4 +20,5 @@ data:
   internalurls__IdentityUrl: http://{{ .Values.app.svc.identity }}
   urls__IdentityUrl: {{ $identity }}
   marketing__ConnectionString: mongodb://{{ $mongo }}
-  marketing__Database: {{ .Values.inf.mongo.marketing.database }}
+  marketing__Database: {{ .Values.inf.mongo.marketing.database }} 
+  marketing__PicBaseUrl: http://{{ $webshoppingapigw }}/api/v1/c/catalog/items/[0]/pic/
