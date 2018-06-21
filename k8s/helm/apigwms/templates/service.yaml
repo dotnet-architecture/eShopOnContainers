@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Values.app.svc.mobilemarketingapigw }}
+  name: {{ .Values.app.svc.mobileshoppingapigw }}
   labels:
-    app: {{ template "apigwmm.name" . }}
-    chart: {{ template "apigwmm.chart" . }}
+    app: {{ template "apigwms.name" . }}
+    chart: {{ template "apigwms.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
@@ -15,5 +15,5 @@ spec:
       protocol: TCP
       name: http
   selector:
-    app: {{ template "apigwmm.name" . }}
+    app: {{ template "apigwms.name" . }}
     release: {{ .Release.Name }}
