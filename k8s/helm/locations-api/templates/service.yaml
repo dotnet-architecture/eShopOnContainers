@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Values.app.svc.identity }}
+  name: {{ .Values.app.svc.locations }}
   labels:
-    app: {{ template "identity-api.name" . }}
-    chart: {{ template "identity-api.chart" . }}
+    app: {{ template "locations-api.name" . }}
+    chart: {{ template "locations-api.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
@@ -15,5 +15,5 @@ spec:
       protocol: TCP
       name: http
   selector:
-    app: {{ template "identity-api.name" . }}
+    app: {{ template "locations-api.name" . }}
     release: {{ .Release.Name }}
