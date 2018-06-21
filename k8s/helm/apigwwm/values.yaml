@@ -1,6 +1,6 @@
 replicaCount: 1
 clusterName: eshop-aks
-pathBase: /mobilemarketingapigw
+pathBase: /webmarketingapigw
 
 image:
   repository: eshop/ocelotapigw

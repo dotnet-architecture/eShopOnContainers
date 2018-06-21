@@ -1,0 +1,15 @@
+{{- $name := include "apigwwm.fullname" . -}}
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "ocelot-{{ $name }}"
+  labels:
+    app: {{ template "apigwwm.name" . }}
+    chart: {{ template "apigwwm.chart" .}}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+data:
+  wm: |-
+    {{ (.Files.Glob "configuration-web-marketing.json").AsConfig }}
+

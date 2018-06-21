@@ -1,6 +1,6 @@
 replicaCount: 1
 clusterName: eshop-aks
-pathBase: /apigwms
+pathBase: /mobileshoppingapigw
 
 image:
   repository: eshop/ocelotapigw
