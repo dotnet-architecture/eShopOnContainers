@@ -81,6 +81,16 @@ namespace UnitTest.Basket.Application
             var basketController = new BasketController(
                 _basketRepositoryMock.Object, _identityServiceMock.Object, _serviceBusMock.Object);
 
+             // Fix to init user claim
+            basketController.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext
+                {
+                    User = new ClaimsPrincipal(
+                        new ClaimsIdentity(GetTestingUserClaim()))
+                }
+            };
+            
             var result = await basketController.Checkout(new BasketCheckout(), Guid.NewGuid().ToString()) as BadRequestResult;
             Assert.NotNull(result);
         }
@@ -97,6 +107,16 @@ namespace UnitTest.Basket.Application
             var basketController = new BasketController(
                 _basketRepositoryMock.Object, _identityServiceMock.Object, _serviceBusMock.Object);
 
+             // Fix to init user claim
+            basketController.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext
+                {
+                    User = new ClaimsPrincipal(
+                        new ClaimsIdentity(GetTestingUserClaim()))
+                }
+            };
+            
             var result = await basketController.Checkout(new BasketCheckout(), Guid.NewGuid().ToString()) as AcceptedResult;
             _serviceBusMock.Verify(mock => mock.Publish(It.IsAny<UserCheckoutAcceptedIntegrationEvent>()), Times.Once);
             Assert.NotNull(result);
@@ -110,6 +130,20 @@ namespace UnitTest.Basket.Application
                 {
                     new BasketItem()
                 }
+            };
+        }
+        
+        /// <summary>
+        /// Provide Test User Claims
+        /// </summary>
+        /// <returns>
+        /// List of claims
+        /// </returns>
+        private IEnumerable<Claim> GetTestingUserClaim()
+        {
+            return new List<Claim>
+            {
+                new Claim("unique_name", "test")
             };
         }
     }
