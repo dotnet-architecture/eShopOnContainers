@@ -14,7 +14,7 @@ namespace eShopOnContainers.Core.Services.Catalog
         private readonly IRequestProvider _requestProvider;
         private readonly IFixUriService _fixUriService;
 		
-        private const string ApiUrlBase = "mobileshoppingapigw/api/v1/c/catalog";
+        private const string ApiUrlBase = "api/v1/c/catalog";
 
         public CatalogService(IRequestProvider requestProvider, IFixUriService fixUriService)
         {
@@ -24,7 +24,7 @@ namespace eShopOnContainers.Core.Services.Catalog
 
         public async Task<ObservableCollection<CatalogItem>> FilterAsync(int catalogBrandId, int catalogTypeId)
         {
-            UriBuilder builder = new UriBuilder(GlobalSetting.Instance.BaseEndpoint);
+            UriBuilder builder = new UriBuilder(GlobalSetting.Instance.GatewayShoppingEndpoint);
             builder.Path = $"{ApiUrlBase}/items/type/{catalogTypeId}/brand/{catalogBrandId}";
             string uri = builder.ToString();
 
@@ -38,7 +38,7 @@ namespace eShopOnContainers.Core.Services.Catalog
 
         public async Task<ObservableCollection<CatalogItem>> GetCatalogAsync()
         {
-            UriBuilder builder = new UriBuilder(GlobalSetting.Instance.BaseEndpoint);
+            UriBuilder builder = new UriBuilder(GlobalSetting.Instance.GatewayShoppingEndpoint);
             builder.Path = $"{ApiUrlBase}/items";
             string uri = builder.ToString();
 
@@ -55,7 +55,7 @@ namespace eShopOnContainers.Core.Services.Catalog
 
         public async Task<ObservableCollection<CatalogBrand>> GetCatalogBrandAsync()
         {
-            UriBuilder builder = new UriBuilder(GlobalSetting.Instance.BaseEndpoint);
+            UriBuilder builder = new UriBuilder(GlobalSetting.Instance.GatewayShoppingEndpoint);
             builder.Path = $"{ApiUrlBase}/catalogbrands";
             string uri = builder.ToString();
 
@@ -69,7 +69,7 @@ namespace eShopOnContainers.Core.Services.Catalog
 
         public async Task<ObservableCollection<CatalogType>> GetCatalogTypeAsync()
         {
-            UriBuilder builder = new UriBuilder(GlobalSetting.Instance.BaseEndpoint);
+            UriBuilder builder = new UriBuilder(GlobalSetting.Instance.GatewayShoppingEndpoint);
             builder.Path = $"{ApiUrlBase}/catalogtypes";
             string uri = builder.ToString();
 

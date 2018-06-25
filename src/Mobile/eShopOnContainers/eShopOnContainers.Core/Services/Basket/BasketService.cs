@@ -11,7 +11,7 @@ namespace eShopOnContainers.Core.Services.Basket
         private readonly IRequestProvider _requestProvider;
         private readonly IFixUriService _fixUriService;
 
-        private const string ApiUrlBase = "mobileshoppingapigw/api/v1/b/basket";
+        private const string ApiUrlBase = "api/v1/b/basket";
 
         public BasketService(IRequestProvider requestProvider, IFixUriService fixUriService)
         {
@@ -21,7 +21,7 @@ namespace eShopOnContainers.Core.Services.Basket
 
         public async Task<CustomerBasket> GetBasketAsync(string guidUser, string token)
         {
-            var builder = new UriBuilder(GlobalSetting.Instance.BaseEndpoint)
+            var builder = new UriBuilder(GlobalSetting.Instance.GatewayShoppingEndpoint)
             {
                 Path = $"{ApiUrlBase}/{guidUser}"
             };
@@ -45,7 +45,7 @@ namespace eShopOnContainers.Core.Services.Basket
 
         public async Task<CustomerBasket> UpdateBasketAsync(CustomerBasket customerBasket, string token)
         {
-            var builder = new UriBuilder(GlobalSetting.Instance.BaseEndpoint)
+            var builder = new UriBuilder(GlobalSetting.Instance.GatewayShoppingEndpoint)
             {
                 Path = ApiUrlBase
             };
@@ -57,7 +57,7 @@ namespace eShopOnContainers.Core.Services.Basket
 
         public async Task CheckoutAsync(BasketCheckout basketCheckout, string token)
         {
-            var builder = new UriBuilder(GlobalSetting.Instance.BaseEndpoint)
+            var builder = new UriBuilder(GlobalSetting.Instance.GatewayShoppingEndpoint)
             {
                 Path = $"{ApiUrlBase}/checkout"
             };
@@ -68,7 +68,7 @@ namespace eShopOnContainers.Core.Services.Basket
 
         public async Task ClearBasketAsync(string guidUser, string token)
         {
-            var builder = new UriBuilder(GlobalSetting.Instance.BaseEndpoint)
+            var builder = new UriBuilder(GlobalSetting.Instance.GatewayShoppingEndpoint)
             {
                 Path = $"{ApiUrlBase}/{guidUser}"
             };

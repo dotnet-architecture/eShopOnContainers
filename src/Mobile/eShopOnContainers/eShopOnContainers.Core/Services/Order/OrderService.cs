@@ -11,7 +11,7 @@ namespace eShopOnContainers.Core.Services.Order
     {
         private readonly IRequestProvider _requestProvider;
 
-        private const string ApiUrlBase = "mobileshoppingapigw/api/v1/o/orders";
+        private const string ApiUrlBase = "api/v1/o/orders";
 
         public OrderService(IRequestProvider requestProvider)
         {
@@ -25,7 +25,7 @@ namespace eShopOnContainers.Core.Services.Order
 
         public async Task<ObservableCollection<Models.Orders.Order>> GetOrdersAsync(string token)
         {
-            UriBuilder builder = new UriBuilder(GlobalSetting.Instance.BaseEndpoint);
+            UriBuilder builder = new UriBuilder(GlobalSetting.Instance.GatewayShoppingEndpoint);
 
             builder.Path = ApiUrlBase;
 
@@ -42,7 +42,7 @@ namespace eShopOnContainers.Core.Services.Order
         {
             try
             {
-                UriBuilder builder = new UriBuilder(GlobalSetting.Instance.BaseEndpoint);
+                UriBuilder builder = new UriBuilder(GlobalSetting.Instance.GatewayShoppingEndpoint);
 
                 builder.Path = $"{ApiUrlBase}/{orderId}";
 
@@ -78,7 +78,7 @@ namespace eShopOnContainers.Core.Services.Order
 
         public async Task<bool> CancelOrderAsync(int orderId, string token)
         {
-            UriBuilder builder = new UriBuilder(GlobalSetting.Instance.BaseEndpoint);
+            UriBuilder builder = new UriBuilder(GlobalSetting.Instance.GatewayShoppingEndpoint);
 
             builder.Path = $"{ApiUrlBase}/cancel";
 
