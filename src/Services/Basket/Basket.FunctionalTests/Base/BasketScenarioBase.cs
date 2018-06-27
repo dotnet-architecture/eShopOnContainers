@@ -4,23 +4,22 @@ using Microsoft.Extensions.Configuration;
 using System.IO;
 using System.Reflection;
 
-namespace FunctionalTests.Services.Basket
+namespace Basket.FunctionalTests.Base
 {
-    public class BasketScenariosBase
+    public class BasketScenarioBase
     {
         private const string ApiUrlBase = "api/v1/basket";
 
-
         public TestServer CreateServer()
         {
-            var path = Assembly.GetAssembly(typeof(BasketScenariosBase))
+            var path = Assembly.GetAssembly(typeof(BasketScenarioBase))
                .Location;
 
             var hostBuilder = new WebHostBuilder()
                 .UseContentRoot(Path.GetDirectoryName(path))
                 .ConfigureAppConfiguration(cb =>
                 {
-                    cb.AddJsonFile("Services/Basket/appsettings.json", optional: false)
+                    cb.AddJsonFile("appsettings.json", optional: false)
                     .AddEnvironmentVariables();
                 }).UseStartup<BasketTestsStartup>();
 
@@ -33,16 +32,11 @@ namespace FunctionalTests.Services.Basket
             {
                 return $"{ApiUrlBase}/{id}";
             }
-
-            public static string GetBasketByCustomer(string customerId)
-            {
-                return $"{ApiUrlBase}/{customerId}";
-            }
         }
 
         public static class Post
         {
-            public static string CreateBasket = $"{ApiUrlBase}/";
+            public static string Basket = $"{ApiUrlBase}/";
             public static string CheckoutOrder = $"{ApiUrlBase}/checkout";
         }
     }

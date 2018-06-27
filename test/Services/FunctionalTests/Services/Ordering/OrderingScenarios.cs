@@ -34,7 +34,7 @@ namespace FunctionalTests.Services.Ordering
                 await basketClient.PostAsync(BasketScenariosBase.Post.CreateBasket, contentBasket);
 
                 // AND basket checkout is sent
-                await basketClient.PostAsync(BasketScenariosBase.Post.Checkout, new StringContent(BuildCheckout(cityExpected), UTF8Encoding.UTF8, "application/json"));
+                await basketClient.PostAsync(BasketScenariosBase.Post.CheckoutOrder, new StringContent(BuildCheckout(cityExpected), UTF8Encoding.UTF8, "application/json"));
 
                 // WHEN Order is created in Ordering.api
                 var newOrder = await TryGetNewOrderCreated(cityExpected, orderClient);
@@ -43,11 +43,19 @@ namespace FunctionalTests.Services.Ordering
                 await orderClient.PutAsync(OrderingScenariosBase.Put.CancelOrder, new StringContent(BuildCancelOrder(newOrder.OrderNumber), UTF8Encoding.UTF8, "application/json"));
 
                 // AND the requested order is retrieved
-                var order = await TryGetNewOrderCreated(cityExpected, orderClient);
+                var order = await TryGetOrder(newOrder.OrderNumber, orderClient);
 
                 // THEN check status
                 Assert.Equal(orderStatusExpected, order.Status);
             }
+        }
+
+        async Task<Order> TryGetOrder(string orderNumber, HttpClient orderClient)
+        {
+            var ordersGetResponse = await orderClient.GetStringAsync(OrderingScenariosBase.Get.Orders);
+            var orders = JsonConvert.DeserializeObject<List<Order>>(ordersGetResponse);
+
+            return orders.Single(o => o.OrderNumber == orderNumber);
         }
 
         private async Task<Order> TryGetNewOrderCreated(string city, HttpClient orderClient)
@@ -71,6 +79,7 @@ namespace FunctionalTests.Services.Ordering
                 int.TryParse(lastOrder.OrderNumber, out int id);
                 var orderDetails = await orderClient.GetStringAsync(OrderingScenariosBase.Get.OrderBy(id));
                 order = JsonConvert.DeserializeObject<Order>(orderDetails);
+                order.City = city;
 
                 if (IsOrderCreated(order, city))
                 {

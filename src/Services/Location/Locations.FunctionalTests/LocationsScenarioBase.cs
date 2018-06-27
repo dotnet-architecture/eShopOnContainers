@@ -1,43 +1,39 @@
-﻿namespace FunctionalTests.Services.Locations
-{
-    using Microsoft.AspNetCore;
-    using Microsoft.AspNetCore.Hosting;
-    using Microsoft.AspNetCore.TestHost;
-    using Microsoft.Extensions.Configuration;
-    using System;
-    using System.IO;
-    using System.Reflection;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.Configuration;
+using System.IO;
+using System.Reflection;
 
-    public class LocationsScenariosBase
+namespace Locations.FunctionalTests
+{
+    public class LocationsScenarioBase
     {
         public TestServer CreateServer()
         {
-            var path = Assembly.GetAssembly(typeof(LocationsScenariosBase))
-                .Location;
+            var path = Assembly.GetAssembly(typeof(LocationsScenarioBase))
+             .Location;
 
             var hostBuilder = new WebHostBuilder()
                 .UseContentRoot(Path.GetDirectoryName(path))
                 .ConfigureAppConfiguration(cb =>
                 {
-                    cb.AddJsonFile("Services/Locations/appsettings.json", optional: false)
+                    cb.AddJsonFile("appsettings.json", optional: false)
                     .AddEnvironmentVariables();
                 }).UseStartup<LocationsTestsStartup>();
 
-            var testServer = new TestServer(hostBuilder);
-
-            return testServer;
+            return new TestServer(hostBuilder);
         }
 
         public static class Get
         {
             public static string Locations = "api/v1/locations";
 
-            public static string LocationBy(string id)
+            public static string LocationBy(int id)
             {
                 return $"api/v1/locations/{id}";
             }
 
-            public static string UserLocationBy(Guid id)
+            public static string UserLocationBy(string id)
             {
                 return $"api/v1/locations/user/{id}";
             }

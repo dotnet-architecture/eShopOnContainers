@@ -8,6 +8,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.IO;
+using System.Reflection;
+using Microsoft.Extensions.Configuration;
 
 namespace FunctionalTests.Services.Catalog
 {
@@ -15,11 +17,18 @@ namespace FunctionalTests.Services.Catalog
     {
         public TestServer CreateServer()
         {
-            var webHostBuilder = WebHost.CreateDefaultBuilder();
-            webHostBuilder.UseContentRoot(Directory.GetCurrentDirectory() + "\\Services\\Catalog");
-            webHostBuilder.UseStartup<Startup>();
+            var path = Assembly.GetAssembly(typeof(CatalogScenariosBase))
+              .Location;
 
-            var testServer = new TestServer(webHostBuilder);
+            var hostBuilder = new WebHostBuilder()
+                .UseContentRoot(Path.GetDirectoryName(path))
+                .ConfigureAppConfiguration(cb =>
+                {
+                    cb.AddJsonFile("Services/Catalog/appsettings.json", optional: false)
+                    .AddEnvironmentVariables();
+                }).UseStartup<Startup>();
+
+            var testServer =  new TestServer(hostBuilder);
 
             testServer.Host
                 .MigrateDbContext<CatalogContext>((context, services) =>

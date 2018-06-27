@@ -18,6 +18,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Services\Basket\appsettings.json" />
+    <None Remove="Setup\CatalogBrands.csv" />
+    <None Remove="Setup\CatalogItems.csv" />
+    <None Remove="Setup\CatalogItems.zip" />
+    <None Remove="Setup\CatalogTypes.csv" />
+    <None Remove="Services\Ordering\appsettings.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Include="Services\Location\LocationsScenariosBase.cs" />
     <Compile Include="Services\Location\LocationsTestsStartup.cs" />
     <Compile Include="Services\Marketing\CampaignScenariosBase.cs" />
@@ -34,10 +43,25 @@
     <Content Include="Services\Catalog\appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Setup\CatalogBrands.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Setup\CatalogItems.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Setup\CatalogItems.zip">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Setup\CatalogTypes.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Services\Location\appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Services\Marketing\appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Services\Ordering\appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -59,13 +83,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="appsettings.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Update="Services\Locations\appsettings.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Services\Ordering\settings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

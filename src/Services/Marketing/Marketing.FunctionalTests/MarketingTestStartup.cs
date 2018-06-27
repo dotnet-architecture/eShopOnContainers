@@ -1,13 +1,12 @@
-﻿using FunctionalTests.Middleware;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.eShopOnContainers.Services.Basket.API;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.eShopOnContainers.Services.Marketing.API;
 using Microsoft.Extensions.Configuration;
 
-namespace FunctionalTests.Services.Basket
+namespace Marketing.FunctionalTests
 {
-    class BasketTestsStartup : Startup
+    public class MarketingTestsStartup : Startup
     {
-        public BasketTestsStartup(IConfiguration env) : base(env)
+        public MarketingTestsStartup(IConfiguration env) : base(env)
         {
         }
 
