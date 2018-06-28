@@ -1,4 +1,6 @@
-﻿namespace eShopOnContainers.Core
+﻿using System;
+
+namespace eShopOnContainers.Core
 {
     public class GlobalSetting
     {
@@ -59,7 +61,7 @@
 
         public string RegisterWebsite { get; set; }
 
-        public string IdentityEndpoint { get; set; }
+        public string AuthorizeEndpoint { get; set; }
 
         public string UserInfoEndpoint { get; set; }
 
@@ -67,7 +69,7 @@
 
         public string LogoutEndpoint { get; set; }
 
-        public string IdentityCallback { get; set; }
+        public string Callback { get; set; }
 
         public string LogoutCallback { get; set; }
 
@@ -77,27 +79,35 @@
 
         private void UpdateEndpoint(string endpoint)
         {
-            var identityBaseEndpoint = $"{endpoint}/identity";
-            RegisterWebsite = $"{identityBaseEndpoint}/Account/Register";
-            LogoutCallback = $"{identityBaseEndpoint}/Account/Redirecting";
+            RegisterWebsite = $"{endpoint}/Account/Register";
+            LogoutCallback = $"{endpoint}/Account/Redirecting";
 
-            var connectBaseEndpoint = $"{identityBaseEndpoint}/connect";
-            IdentityEndpoint = $"{connectBaseEndpoint}/authorize";
+            var connectBaseEndpoint = $"{endpoint}/connect";
+            AuthorizeEndpoint = $"{connectBaseEndpoint}/authorize";
             UserInfoEndpoint = $"{connectBaseEndpoint}/userinfo";
             TokenEndpoint = $"{connectBaseEndpoint}/token";
             LogoutEndpoint = $"{connectBaseEndpoint}/endsession";
 
-            IdentityCallback = $"{endpoint}/xamarincallback";
+            var baseUri = ExtractBaseUri(endpoint);
+            Callback = $"{baseUri}/xamarincallback";
         }
 
         private void UpdateGatewayShoppingEndpoint(string endpoint)
         {
-            GatewayShoppingEndpoint = $"{endpoint}/mobileshoppingapigw";
+            GatewayShoppingEndpoint = $"{endpoint}";
         }
 
         private void UpdateGatewayMarketingEndpoint(string endpoint)
         {
-            GatewayMarketingEndpoint = $"{endpoint}/mobilemarketingapigw";
+            GatewayMarketingEndpoint = $"{endpoint}";
+        }
+
+        private string ExtractBaseUri(string endpoint)
+        {
+            var uri = new Uri(endpoint);
+            var baseUri = uri.GetLeftPart(System.UriPartial.Authority);
+
+            return baseUri;
         }
     }
 }

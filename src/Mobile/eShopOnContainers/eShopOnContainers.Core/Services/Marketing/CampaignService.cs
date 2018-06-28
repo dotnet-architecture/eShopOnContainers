@@ -1,4 +1,5 @@
 ﻿using eShopOnContainers.Core.Extensions;
+using eShopOnContainers.Core.Helpers;
 using eShopOnContainers.Core.Models.Marketing;
 using eShopOnContainers.Core.Services.FixUri;
 using eShopOnContainers.Core.Services.RequestProvider;
@@ -23,9 +24,7 @@ namespace eShopOnContainers.Core.Services.Marketing
 
         public async Task<ObservableCollection<CampaignItem>> GetAllCampaignsAsync(string token)
         {
-            UriBuilder builder = new UriBuilder(GlobalSetting.Instance.GatewayMarketingEndpoint);
-            builder.Path = $"{ApiUrlBase}/user";
-            string uri = builder.ToString();
+            var uri = UriHelper.CombineUri(GlobalSetting.Instance.GatewayMarketingEndpoint, $"{ApiUrlBase}/user");
 
             CampaignRoot campaign = await _requestProvider.GetAsync<CampaignRoot>(uri, token);
 
@@ -40,9 +39,8 @@ namespace eShopOnContainers.Core.Services.Marketing
 
         public async Task<CampaignItem> GetCampaignByIdAsync(int campaignId, string token)
         {
-            UriBuilder builder = new UriBuilder(GlobalSetting.Instance.GatewayMarketingEndpoint);
-            builder.Path = $"{ApiUrlBase}/{campaignId}";
-            string uri = builder.ToString();
+            var uri = UriHelper.CombineUri(GlobalSetting.Instance.GatewayMarketingEndpoint, $"{ApiUrlBase}/{campaignId}");
+
             return await _requestProvider.GetAsync<CampaignItem>(uri, token);
         }
     }
