@@ -86,7 +86,7 @@ namespace eShopOnContainers.UnitTests.Mocks
             }
 
             _settings[key] = value;
-            return Task.Delay(10);
+            return Task.FromResult(false);
         }
 
         T GetValueOrDefaultInternal<T>(string key, T defaultValue = default(T))
