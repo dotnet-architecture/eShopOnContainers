@@ -1,12 +1,11 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure
 {
-    using AspNetCore.Builder;
     using global::Ordering.API.Extensions;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.BuyerAggregate;
     using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
-    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.eShopOnContainers.Services.Ordering.Domain.SeedWork;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
     using Ordering.Infrastructure;
@@ -97,14 +96,9 @@
             return new CardType(id++, value.Trim('"').Trim());
         }
 
-        private  IEnumerable<CardType> GetPredefinedCardTypes()
+        private IEnumerable<CardType> GetPredefinedCardTypes()
         {
-            return new List<CardType>()
-            {
-                CardType.Amex,
-                CardType.Visa,
-                CardType.MasterCard
-            };
+            return Enumeration.GetAll<CardType>();
         }
 
         private IEnumerable<OrderStatus> GetOrderStatusFromFile(string contentRootPath, ILogger<OrderingContextSeed> log)
