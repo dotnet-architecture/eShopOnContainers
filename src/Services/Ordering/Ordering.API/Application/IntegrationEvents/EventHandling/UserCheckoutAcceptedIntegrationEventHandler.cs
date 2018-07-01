@@ -41,13 +41,13 @@ namespace Ordering.API.Application.IntegrationEvents.EventHandling
 
             if (eventMsg.RequestId != Guid.Empty)
             {
-                var createOrderCommand = new CreateOrderCommand(eventMsg.Basket.Items, eventMsg.UserId, eventMsg.UserName, eventMsg.City, eventMsg.Street, 
+                var createOrderCommand = new CreateOrderCommand(eventMsg.RequestId, eventMsg.Basket.Items, eventMsg.UserId, eventMsg.UserName, eventMsg.City, eventMsg.Street, 
                     eventMsg.State, eventMsg.Country, eventMsg.ZipCode,
                     eventMsg.CardNumber, eventMsg.CardHolderName, eventMsg.CardExpiration,
                     eventMsg.CardSecurityNumber, eventMsg.CardTypeId);
 
-                var requestCreateOrder = new IdentifiedCommand<CreateOrderCommand, bool>(createOrderCommand, eventMsg.RequestId);
-                result = await _mediator.Send(requestCreateOrder);
+                //var requestCreateOrder = new IdentifiedCommand<CreateOrderCommand, bool>(createOrderCommand, eventMsg.RequestId);
+                result = await _mediator.Send(createOrderCommand);
             }            
 
             _logger.CreateLogger(nameof(UserCheckoutAcceptedIntegrationEventHandler))

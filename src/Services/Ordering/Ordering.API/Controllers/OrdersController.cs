@@ -38,8 +38,9 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Controllers
             bool commandResult = false;
             if (Guid.TryParse(requestId, out Guid guid) && guid != Guid.Empty)
             {
-                var requestCancelOrder = new IdentifiedCommand<CancelOrderCommand, bool>(command, guid);
-                commandResult = await _mediator.Send(requestCancelOrder);
+                command.CommandId = guid;
+                //var requestCancelOrder = new IdentifiedCommand<CancelOrderCommand, bool>(command, guid);
+                commandResult = await _mediator.Send(command);
             }
            
             return commandResult ? (IActionResult)Ok() : (IActionResult)BadRequest();
@@ -55,8 +56,9 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Controllers
             bool commandResult = false;
             if (Guid.TryParse(requestId, out Guid guid) && guid != Guid.Empty)
             {
-                var requestShipOrder = new IdentifiedCommand<ShipOrderCommand, bool>(command, guid);
-                commandResult = await _mediator.Send(requestShipOrder);
+                command.CommandId = guid;
+                //var requestShipOrder = new IdentifiedCommand<ShipOrderCommand, bool>(command, guid);
+                commandResult = await _mediator.Send(command);
             }
 
             return commandResult ? (IActionResult)Ok() : (IActionResult)BadRequest();

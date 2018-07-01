@@ -76,6 +76,7 @@ namespace UnitTest.Ordering.Application
         private CreateOrderCommand FakeOrderRequestWithBuyer(Dictionary<string, object> args = null)
         {
             return new CreateOrderCommand(
+                Guid.NewGuid(),
                 new List<BasketItem>(),
                 userId: args != null && args.ContainsKey("userId") ? (string)args["userId"] : null,
                 userName: args != null && args.ContainsKey("userName") ? (string)args["userName"] : null,

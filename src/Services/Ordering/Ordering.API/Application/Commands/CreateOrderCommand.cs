@@ -18,9 +18,12 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands
     // https://msdn.microsoft.com/en-us/library/bb383979.aspx
 
     [DataContract]
-    public class CreateOrderCommand
-        : IRequest<bool>
+    public class CreateOrderCommand : ICommand, IRequest<bool>
     {
+        
+        [DataMember]
+        public Guid CommandId { get; private set; }
+
         [DataMember]
         private readonly List<OrderItemDTO> _orderItems;
 
@@ -68,10 +71,11 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands
             _orderItems = new List<OrderItemDTO>();
         }
 
-        public CreateOrderCommand(List<BasketItem> basketItems, string userId, string userName, string city, string street, string state, string country, string zipcode,
+        public CreateOrderCommand(Guid id, List<BasketItem> basketItems, string userId, string userName, string city, string street, string state, string country, string zipcode,
             string cardNumber, string cardHolderName, DateTime cardExpiration,
             string cardSecurityNumber, int cardTypeId) : this()
         {
+            CommandId = id;
             _orderItems = basketItems.ToOrderItemsDTO().ToList();
             UserId = userId;
             UserName = userName;

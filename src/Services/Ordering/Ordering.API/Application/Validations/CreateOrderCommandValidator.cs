@@ -11,6 +11,7 @@ namespace Ordering.API.Application.Validations
     {
         public CreateOrderCommandValidator()
         {
+            RuleFor(command => command.CommandId).NotEmpty();
             RuleFor(command => command.City).NotEmpty();
             RuleFor(command => command.Street).NotEmpty();
             RuleFor(command => command.State).NotEmpty();

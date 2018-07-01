@@ -38,15 +38,12 @@ namespace Ordering.API.Application.Commands
 
 
     // Use for Idempotency in Command process
-    public class ShipOrderIdentifiedCommandHandler : IdentifiedCommandHandler<ShipOrderCommand, bool>
+    public class ShipOrderDuplicateCommand : DuplicateCommandResponse<ShipOrderCommand, bool>
     {
-        public ShipOrderIdentifiedCommandHandler(IMediator mediator, IRequestManager requestManager) : base(mediator, requestManager)
+        protected override Task<bool> CreateResponseForDuplicateCommand(ShipOrderCommand command)
         {
-        }
-
-        protected override bool CreateResultForDuplicateRequest()
-        {
-            return true;                // Ignore duplicate requests for processing order.
+            // Ignore duplicate requests for creating order.
+            return Task.FromResult(true);
         }
     }
 }

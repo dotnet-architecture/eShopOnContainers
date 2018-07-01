@@ -10,15 +10,17 @@ using static Microsoft.eShopOnContainers.Services.Ordering.API.Application.Comma
 
 namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands
 {
-    public class CreateOrderDraftCommand :  IRequest<OrderDraftDTO>
+    public class CreateOrderDraftCommand : ICommand, IRequest<OrderDraftDTO>
     {
-       
+        public Guid CommandId { get; }
+
         public string BuyerId { get; private set; }
 
         public IEnumerable<BasketItem> Items { get; private set; }
 
-        public CreateOrderDraftCommand(string buyerId, IEnumerable<BasketItem> items)
+        public CreateOrderDraftCommand(Guid id, string buyerId, IEnumerable<BasketItem> items)
         {
+            CommandId = id;
             BuyerId = buyerId;
             Items = items;
         }

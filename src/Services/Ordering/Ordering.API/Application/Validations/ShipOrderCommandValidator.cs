@@ -11,6 +11,7 @@ namespace Ordering.API.Application.Validations
     {
         public ShipOrderCommandValidator()
         {
+            RuleFor(command => command.CommandId).NotEmpty();
             RuleFor(order => order.OrderNumber).NotEmpty().WithMessage("No orderId found");
         }
     }
