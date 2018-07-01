@@ -34,21 +34,10 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure.Autof
                 .AsImplementedInterfaces();
 
 
-            builder.Register<SingleInstanceFactory>(context =>
+            builder.Register<ServiceFactory>(context =>
             {
                 var componentContext = context.Resolve<IComponentContext>();
                 return t => { object o; return componentContext.TryResolve(t, out o) ? o : null; };
-            });
-
-            builder.Register<MultiInstanceFactory>(context =>
-            {
-                var componentContext = context.Resolve<IComponentContext>();
-
-                return t =>
-                {
-                    var resolved = (IEnumerable<object>)componentContext.Resolve(typeof(IEnumerable<>).MakeGenericType(t));
-                    return resolved;
-                };
             });
 
             builder.RegisterGeneric(typeof(LoggingBehavior<,>)).As(typeof(IPipelineBehavior<,>));
