@@ -10,6 +10,7 @@
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
+    using static Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands.CreateOrderCommand;
 
     // Regular CommandHandler
     public class CreateOrderDraftCommandHandler
@@ -43,14 +44,14 @@
 
     public class OrderDraftDTO
     {
-        public IEnumerable<CreateOrderCommand.OrderItemDTO> OrderItems { get; set; }
+        public IEnumerable<OrderItemDTO> OrderItems { get; set; }
         public decimal Total { get; set; }
 
         public static OrderDraftDTO FromOrder(Order order)
         {
             return new OrderDraftDTO()
             {
-                OrderItems = order.OrderItems.Select(oi => new CreateOrderCommand.OrderItemDTO
+                OrderItems = order.OrderItems.Select(oi => new OrderItemDTO
                 {
                     Discount = oi.GetCurrentDiscount(),
                     ProductId = oi.ProductId,

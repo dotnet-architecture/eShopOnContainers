@@ -38,12 +38,15 @@ namespace Ordering.API.Application.Commands
 
 
     // Use for Idempotency in Command process
-    public class CancelOrderDuplicateCommand : DuplicateCommandResponse<CancelOrderCommand, bool>
+    public class CancelOrderIdentifiedCommandHandler : IdentifiedCommandHandler<CancelOrderCommand, bool>
     {
-        protected override Task<bool> CreateResponseForDuplicateCommand(CancelOrderCommand command)
+        public CancelOrderIdentifiedCommandHandler(IMediator mediator, IRequestManager requestManager) : base(mediator, requestManager)
         {
-            // Ignore duplicate requests for processing order.
-            return Task.FromResult(true);
+        }
+
+        protected override bool CreateResultForDuplicateRequest()
+        {
+            return true;                // Ignore duplicate requests for processing order.
         }
     }
 }

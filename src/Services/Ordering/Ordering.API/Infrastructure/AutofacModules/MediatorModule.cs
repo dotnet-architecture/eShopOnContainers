@@ -42,7 +42,6 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure.Autof
 
             builder.RegisterGeneric(typeof(LoggingBehavior<,>)).As(typeof(IPipelineBehavior<,>));
             builder.RegisterGeneric(typeof(ValidatorBehavior<,>)).As(typeof(IPipelineBehavior<,>));
-            builder.RegisterGeneric(typeof(DuplicateCommandBehavior<,>)).As(typeof(IPipelineBehavior<,>));
 
         }
     }

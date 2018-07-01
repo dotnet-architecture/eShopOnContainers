@@ -31,7 +31,7 @@ namespace UnitTest.Ordering.Application
         public async Task Create_order_with_requestId_success()
         {
             //Arrange
-            _mediatorMock.Setup(x => x.Send(It.IsAny<CancelOrderCommand>(), default(CancellationToken)))
+            _mediatorMock.Setup(x => x.Send(It.IsAny<IdentifiedCommand<CancelOrderCommand, bool>>(), default(CancellationToken)))
                 .Returns(Task.FromResult(true));
 
             //Act
@@ -47,7 +47,7 @@ namespace UnitTest.Ordering.Application
         public async Task Cancel_order_bad_request()
         {
             //Arrange
-            _mediatorMock.Setup(x => x.Send(It.IsAny<CancelOrderCommand>(), default(CancellationToken)))
+            _mediatorMock.Setup(x => x.Send(It.IsAny<IdentifiedCommand<CancelOrderCommand, bool>>(), default(CancellationToken)))
                 .Returns(Task.FromResult(true));
 
             //Act
@@ -62,7 +62,7 @@ namespace UnitTest.Ordering.Application
         public async Task Ship_order_with_requestId_success()
         {
             //Arrange
-            _mediatorMock.Setup(x => x.Send(It.IsAny<ShipOrderCommand>(), default(System.Threading.CancellationToken)))
+            _mediatorMock.Setup(x => x.Send(It.IsAny<IdentifiedCommand<ShipOrderCommand, bool>>(), default(System.Threading.CancellationToken)))
                 .Returns(Task.FromResult(true));
 
             //Act
@@ -78,7 +78,7 @@ namespace UnitTest.Ordering.Application
         public async Task Ship_order_bad_request()
         {
             //Arrange
-            _mediatorMock.Setup(x => x.Send(It.IsAny<CreateOrderCommand>(), default(System.Threading.CancellationToken)))
+            _mediatorMock.Setup(x => x.Send(It.IsAny<IdentifiedCommand<CreateOrderCommand, bool>>(), default(System.Threading.CancellationToken)))
                 .Returns(Task.FromResult(true));
 
             //Act
