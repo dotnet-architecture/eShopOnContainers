@@ -8,7 +8,7 @@ using Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands;
 
 namespace Ordering.API.Application.Commands
 {
-    public class ShipOrderCommand : ICommand, IRequest<bool>
+    public class ShipOrderCommand : ICommand<bool>
     {
         public Guid CommandId { get; set; }
 

@@ -10,7 +10,7 @@ using static Microsoft.eShopOnContainers.Services.Ordering.API.Application.Comma
 
 namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands
 {
-    public class CreateOrderDraftCommand : ICommand, IRequest<OrderDraftDTO>
+    public class CreateOrderDraftCommand : ICommand<OrderDraftDTO>
     {
         public Guid CommandId { get; }
 

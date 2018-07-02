@@ -18,7 +18,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands
     // https://msdn.microsoft.com/en-us/library/bb383979.aspx
 
     [DataContract]
-    public class CreateOrderCommand : ICommand, IRequest<bool>
+    public class CreateOrderCommand : ICommand<bool>
     {
         
         [DataMember]
