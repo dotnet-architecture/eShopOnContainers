@@ -38,9 +38,9 @@ namespace Ordering.API.Application.Commands
 
 
     // Use for Idempotency in Command process
-    public class ShipOrderDuplicateCommand : DuplicateCommandResponse<ShipOrderCommand, bool>
+    public class ShipOrderExistingCommand : ExistingCommandResponse<ShipOrderCommand, bool>
     {
-        protected override Task<bool> CreateResponseForDuplicateCommand(ShipOrderCommand command)
+        protected override Task<bool> CreateResponseForExistingCommand(ShipOrderCommand command)
         {
             // Ignore duplicate requests for creating order.
             return Task.FromResult(true);

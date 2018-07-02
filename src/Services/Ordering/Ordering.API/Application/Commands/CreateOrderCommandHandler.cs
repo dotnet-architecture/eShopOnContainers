@@ -47,9 +47,9 @@
 
 
     // Use for Idempotency in Command process
-    public class CreateOrderDuplicateCommand : DuplicateCommandResponse<CreateOrderCommand, bool>
+    public class CreateOrderExistingCommand : ExistingCommandResponse<CreateOrderCommand, bool>
     {
-        protected override Task<bool> CreateResponseForDuplicateCommand(CreateOrderCommand command)
+        protected override Task<bool> CreateResponseForExistingCommand(CreateOrderCommand command)
         {
             // Ignore duplicate requests for creating order.
             return Task.FromResult(true);

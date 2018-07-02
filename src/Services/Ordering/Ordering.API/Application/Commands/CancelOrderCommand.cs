@@ -8,7 +8,7 @@ using Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands;
 
 namespace Ordering.API.Application.Commands
 {
-    public class CancelOrderCommand : ICommand, IRequest<bool>
+    public class CancelOrderCommand : ICommand<bool>
     {
         public Guid CommandId { get; set; }
 

@@ -38,9 +38,9 @@ namespace Ordering.API.Application.Commands
 
 
     // Use for Idempotency in Command process
-    public class CancelOrderDuplicateCommand : DuplicateCommandResponse<CancelOrderCommand, bool>
+    public class CancelOrderExistingCommand : ExistingCommandResponse<CancelOrderCommand, bool>
     {
-        protected override Task<bool> CreateResponseForDuplicateCommand(CancelOrderCommand command)
+        protected override Task<bool> CreateResponseForExistingCommand(CancelOrderCommand command)
         {
             // Ignore duplicate requests for processing order.
             return Task.FromResult(true);

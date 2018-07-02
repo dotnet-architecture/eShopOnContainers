@@ -7,13 +7,13 @@ using Microsoft.Extensions.Logging;
 
 namespace Ordering.API.Infrastructure.Behaviors
 {
-    public class DuplicateCommandBehavior<TCommand, TResponse> : IPipelineBehavior<TCommand, TResponse>
+    public class ExistingCommandBehavior<TCommand, TResponse> : IPipelineBehavior<TCommand, TResponse>
         where TCommand : ICommand
     {
         private readonly IMediator _mediator;
         private readonly IRequestManager _requestManager;
 
-        public DuplicateCommandBehavior(IMediator mediator, IRequestManager requestManager)
+        public ExistingCommandBehavior(IMediator mediator, IRequestManager requestManager)
         {
             _mediator = mediator;
             _requestManager = requestManager;
@@ -24,8 +24,8 @@ namespace Ordering.API.Infrastructure.Behaviors
             var alreadyExists = await _requestManager.ExistAsync(command.CommandId);
             if (alreadyExists)
             {
-                var duplicateCommand = new DuplicateCommandResponse<TCommand, TResponse>.DuplicateCommand<TCommand>(command);
-                return await _mediator.Send(duplicateCommand, cancellationToken);
+                var existingCommand = new ExistingCommandResponse<TCommand, TResponse>.ExistingCommand(command);
+                return await _mediator.Send(existingCommand, cancellationToken);
             }
 
             await _requestManager.CreateRequestForCommandAsync<TCommand>(command.CommandId);
