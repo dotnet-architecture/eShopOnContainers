@@ -1,5 +1,6 @@
 ﻿using Basket.API.IntegrationEvents.Events;
 using Basket.API.Model;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
 using Microsoft.eShopOnContainers.Services.Basket.API.Controllers;
@@ -7,6 +8,7 @@ using Microsoft.eShopOnContainers.Services.Basket.API.Model;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Xunit;
 using IBasketIdentityService = Microsoft.eShopOnContainers.Services.Basket.API.Services.IIdentityService;
@@ -93,15 +95,29 @@ namespace UnitTest.Basket.Application
         {
             var fakeCustomerId = "1";
             var fakeCustomerBasket = GetCustomerBasketFake(fakeCustomerId);
+
             _basketRepositoryMock.Setup(x => x.GetBasketAsync(It.IsAny<string>()))
                  .Returns(Task.FromResult(fakeCustomerBasket));
+
             _identityServiceMock.Setup(x => x.GetUserIdentity()).Returns(fakeCustomerId);
-            //Act
+
             var basketController = new BasketController(
                 _basketRepositoryMock.Object, _identityServiceMock.Object, _serviceBusMock.Object);
 
+            basketController.ControllerContext = new ControllerContext()
+            {
+                HttpContext = new DefaultHttpContext()
+                {
+                    User = new ClaimsPrincipal(
+                        new ClaimsIdentity(new Claim[] { new Claim("unique_name", "testuser") }))
+                }
+            };
+
+            //Act
             var result = await basketController.Checkout(new BasketCheckout(), Guid.NewGuid().ToString()) as AcceptedResult;
+
             _serviceBusMock.Verify(mock => mock.Publish(It.IsAny<UserCheckoutAcceptedIntegrationEvent>()), Times.Once);
+
             Assert.NotNull(result);
         }
 
