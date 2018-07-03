@@ -20,7 +20,7 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 data:
-  identity__ConnectionString: Server={{ $sqlsrv }};Initial Catalog={{ .Values.inf.sql.identity.db }};User Id={{ .Values.inf.sql.identity.user }};Password={{ .Values.inf.sql.identity.pwd }};
+  identity__ConnectionString: Server={{ $sqlsrv }};Initial Catalog={{ .Values.inf.sql.identity.db }};User Id={{ .Values.inf.sql.common.user }};Password={{ .Values.inf.sql.common.pwd }};
   identity__keystore: http://{{ .Values.inf.redis.keystore.constr }}
   all__InstrumentationKey: http://{{ .Values.inf.appinsights.key }}
   mvc_e: http://{{ $mvc_url }}

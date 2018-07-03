@@ -10,6 +10,5 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 data:
-  wm: |-
-    {{ (.Files.Glob "configuration-web-marketing.json").AsConfig }}
+  {{ (.Files.Glob "configuration-web-marketing.json").AsConfig | indent 2 -}} 
 

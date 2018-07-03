@@ -34,15 +34,15 @@ spec:
         configMap:
           name: {{ $ocelotcfgname }}
           items:
-          - key: ms
+          - key: configuration-mobile-shopping.json
             path: configuration.json      
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-        volumeMounts:
-        - name: config
-          mountPath: /app/configuration          
+          volumeMounts:
+          - name: config
+            mountPath: /app/configuration          
           env:
             - name: PATH_BASE
               value: {{ include "pathBase" (list .Values.app.ingress.entries.mobileshoppingapigw  .) }}

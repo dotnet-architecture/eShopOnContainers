@@ -3,7 +3,7 @@ clusterName: eshop-aks
 pathBase: /payment-api
 
 image:
-  repository: eshop/locations.api
+  repository: eshop/payment.api
   tag: latest
   pullPolicy: IfNotPresent
 

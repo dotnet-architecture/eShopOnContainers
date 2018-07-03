@@ -11,12 +11,6 @@ service:
   type: ClusterIP
   port: 80
 
-ingress:
-  enabled: false
-  annotations: {}
-  hosts:
-    - chart-example.local
-  tls: []
 
 resources: {}
 

@@ -1,10 +1,9 @@
 {{- if .Values.ingress.enabled -}}
-{{- $fullName := include "webmvc.fullname" . -}}
 {{- $ingressPath := include "pathBase" . -}}
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: {{ $fullName }}
+  name: {{ template "webmvc.fullname" . }}
   labels:
     app: {{ template "webmvc.name" . }}
     chart: {{ template "webmvc.chart" . }}
@@ -29,6 +28,6 @@ spec:
         paths:
           - path: {{ $ingressPath }}
             backend:
-              serviceName: {{ $fullName }}
+              serviceName: {{  .Values.app.svc.mvc }}
               servicePort: http
 {{- end }}

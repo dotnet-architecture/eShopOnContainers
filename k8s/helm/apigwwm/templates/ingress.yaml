@@ -1,10 +1,9 @@
 {{- if .Values.ingress.enabled -}}
-{{- $fullName := include "apigwwm.fullname" . -}}
 {{- $ingressPath := include "pathBase" (list .Values.app.ingress.entries.webmarketingapigw  .) -}}
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: {{ $fullName }}
+  name: {{ template "apigwwm.fullname" . }}
   labels:
     app: {{ template "apigwwm.name" . }}
     chart: {{ template "apigwwm.chart" . }}
@@ -29,6 +28,6 @@ spec:
         paths:
           - path: {{ $ingressPath }}
             backend:
-              serviceName: {{ $fullName }}
+              serviceName: {{ .Values.app.svc.webmarketingapigw }}
               servicePort: http
 {{- end }}

@@ -1,10 +1,9 @@
 {{- if .Values.ingress.enabled -}}
-{{- $fullName := include "webspa.fullname" . -}}
 {{- $ingressPath := include "pathBase" . -}}
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: {{ $fullName }}
+  name: {{ template "webspa.fullname" . }}
   labels:
     app: {{ template "webspa.name" . }}
     chart: {{ template "webspa.chart" . }}
@@ -29,6 +28,6 @@ spec:
         paths:
           - path: {{ $ingressPath }}
             backend:
-              serviceName: {{ $fullName }}
+              serviceName: {{ .Values.app.svc.spa }}
               servicePort: http
 {{- end }}

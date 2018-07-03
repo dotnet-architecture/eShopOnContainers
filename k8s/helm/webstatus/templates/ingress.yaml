@@ -4,7 +4,7 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: {{ $fullName }}
+  name: {{ template "webstatus.fullname" . }}
   labels:
     app: {{ template "webstatus.name" . }}
     chart: {{ template "webstatus.chart" . }}
@@ -29,6 +29,6 @@ spec:
         paths:
           - path: {{ $ingressPath }}
             backend:
-              serviceName: {{ $fullName }}
+              serviceName: {{ .Values.app.svc.status }}
               servicePort: http
 {{- end }}

@@ -1,10 +1,9 @@
 {{- if .Values.ingress.enabled -}}
-{{- $fullName := include "apigwws.fullname" . -}}
 {{- $ingressPath := include "pathBase" (list .Values.app.ingress.entries.webshoppingapigw  .) -}}
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: {{ $fullName }}
+  name: {{ template "apigwws.fullname" . }}
   labels:
     app: {{ template "apigwws.name" . }}
     chart: {{ template "apigwws.chart" . }}
@@ -29,6 +28,6 @@ spec:
         paths:
           - path: {{ $ingressPath }}
             backend:
-              serviceName: {{ $fullName }}
+              serviceName: {{ .Values.app.svc.webshoppingapigw }}
               servicePort: http
 {{- end }}

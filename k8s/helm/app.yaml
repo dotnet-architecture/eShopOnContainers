@@ -40,4 +40,4 @@ app:                                                  # app global settings
       mobileshoppingagg: mobileshoppingagg              # service name for mobile shopping aggregator
       payment: payment                                  # service name for payment api
       locations: locations                              # service name for locations api
-      marketing: marketing                              # service name for marketing api
+      marketing: marketing                              # service name for marketing ap

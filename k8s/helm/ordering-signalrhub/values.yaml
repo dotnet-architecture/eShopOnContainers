@@ -3,7 +3,7 @@ clusterName: eshop-aks
 pathBase: /ordering-signalrhub
 
 image:
-  repository: eshop/ordering-signalrhub
+  repository: eshop/ordering.signalrhub
   tag: latest
   pullPolicy: IfNotPresent
 

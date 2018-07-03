@@ -3,7 +3,7 @@ clusterName: eshop-aks
 pathBase: /identity
 
 image:
-  repository: eshop/ordering.backgroundtasks
+  repository: eshop/identity.api
   tag: latest
   pullPolicy: IfNotPresent
 
@@ -12,7 +12,7 @@ service:
   port: 80
 
 ingress:
-  enabled: false
+  enabled: true
   annotations: {}
   hosts:
     - chart-example.local

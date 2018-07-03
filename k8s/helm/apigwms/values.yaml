@@ -12,7 +12,7 @@ service:
   port: 80
 
 ingress:
-  enabled: false
+  enabled: true
   annotations: {}
   tls: []
 

@@ -12,7 +12,7 @@ service:
   port: 80
 
 ingress:
-  enabled: false
+  enabled: true
   annotations: {}
   tls: []
 
@@ -37,7 +37,7 @@ env:
     - name: CatalogUrl
       key: internalurls__catalog__hc
     - name: IdentityUrl
-      key: internalurls__IdentityUrl 
+      key: internalurls__identity__hc
     - name: OrderingUrl
       key: internalurls__ordering__hc      
     - name: OrderingBackgroundTasksUrl
