@@ -11,7 +11,7 @@ app:                                                  # app global settings
       ordering: ordering-api                          # ingress entry for ordering api
       identity: identity                              # ingress entry for identity api
       mvc: webmvc                                     # ingress entry for web mvc
-      spa: webspa                                     # ingress entry for web spa
+      spa: ""                                         # ingress entry for web spa
       status: webstatus                               # ingress entry for web status
       webshoppingapigw: webshoppingapigw              # ingress entry for web shopping Agw
       webmarketingapigw: webmarketingapigw            # ingress entry for web mkg Agw

@@ -45,18 +45,18 @@ $useDockerHub = [string]::IsNullOrEmpty($registry)
 Write-Host "Begin eShopOnContainers installation using Helm" -ForegroundColor Green
 
 $infras = ("sql-data", "nosql-data", "rabbitmq", "keystore-data", "basket-data")
-$charts = ("eshop-common", "apigwmm", "apigwms", "apigwwm", "apigwws", "basket-api","catalog-api", "-api", "locations-api", "marketing-api", "mobileshoppingagg","ordering-api","ordering-backgroundtasks","ordering-signalrhub", "payment-api", "webmvc", "webshoppingagg", "webspa", "webstatus")
+$charts = ("eshop-common", "apigwmm", "apigwms", "apigwwm", "apigwws", "basket-api","catalog-api", "identity-api", "locations-api", "marketing-api", "mobileshoppingagg","ordering-api","ordering-backgroundtasks","ordering-signalrhub", "payment-api", "webmvc", "webshoppingagg", "webspa", "webstatus")
 
 if ($deployInfrastructure) {
     foreach ($infra in $infras) {
         Write-Host "Installing infrastructure: $infra" -ForegroundColor Green
-        helm install --values app.yaml --values inf.yaml --values ingress_values.yaml --set appName=$appName --set inf.k8s.dns=$dns --name="$appName-$infra" $infra     
+        helm install --values app.yaml --values inf.yaml --values ingress_values.yaml --set app.name=$appName --set inf.k8s.dns=$dns --name="$appName-$infra" $infra     
     }
 }
 
 foreach ($chart in $charts) {
     Write-Host "Installing: $chart" -ForegroundColor Green
-    helm install --values app.yaml --values inf.yaml --values ingress_values.yaml --set appName=$appName --set inf.k8s.dns=$dns --set image.tag=$imageTag --name="$appName-$chart" $chart 
+    helm install --values app.yaml --values inf.yaml --values ingress_values.yaml --set app.name=$appName --set inf.k8s.dns=$dns --set image.tag=$imageTag --name="$appName-$chart" $chart 
 }
 
 Write-Host "helm charts installed." -ForegroundColor Green

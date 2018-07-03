@@ -1,6 +1,6 @@
 replicaCount: 1
 clusterName: eshop-aks
-pathBase: /webspa
+pathBase: /
 
 image:
   repository: eshop/webspa

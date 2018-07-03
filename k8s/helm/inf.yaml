@@ -35,7 +35,7 @@ inf:
       key: ""               # App insights to use
   k8s:                      # inf.k8s defines Kubernetes cluster global config
     dns:  ""                # k8s external IP or DNS. Value MUST BE PROVIDED using --set (--set inf.k8s.dns=my-cluster-dns)
-    dnsprefix: true         # If 'true' DNS values in ingress are prefixed using values.app.name. Note that this requires "externalDNS" to be running in k8s cluster. If true "inf.k8s.suffix" is ignored.
+    dnsprefix: false        # If 'true' DNS values in ingress are prefixed using values.app.name. Note that this requires "externalDNS" to be running in k8s cluster. If true "inf.k8s.suffix" is ignored.
     suffix: false           # If 'true' URL values in ingress are suffixed using values.app.name. That do not require anything special in cluster and still allows many apps using same ingress controller. Ignored if inf.k8s.dnsprefix is true
   misc:                     # inf.misc contains miscellaneous configuration related to infrastructure
     useLoadTest: false      # If running under loading test or not
