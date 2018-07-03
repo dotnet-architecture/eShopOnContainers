@@ -45,7 +45,7 @@ spec:
           mountPath: /app/configuration          
           env:
             - name: PATH_BASE
-              value: {{ include "pathBase" . }}
+              value: {{ include "pathBase" (list .Values.app.ingress.entries.mobilemarketingapigw  .) }}
             - name: k8sname
               value: {{ .Values.clusterName }}
           {{- if .Values.env.values -}}
