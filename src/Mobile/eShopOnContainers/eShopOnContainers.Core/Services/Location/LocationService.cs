@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using eShopOnContainers.Core.Helpers;
 using eShopOnContainers.Core.Services.RequestProvider;
 
 namespace eShopOnContainers.Core.Services.Location
@@ -8,6 +9,8 @@ namespace eShopOnContainers.Core.Services.Location
     {
         private readonly IRequestProvider _requestProvider;
 
+        private const string ApiUrlBase = "api/v1/l/locations";
+
         public LocationService(IRequestProvider requestProvider)
         {
             _requestProvider = requestProvider;
@@ -15,9 +18,8 @@ namespace eShopOnContainers.Core.Services.Location
 
         public async Task UpdateUserLocation(eShopOnContainers.Core.Models.Location.Location newLocReq, string token)
         {
-            UriBuilder builder = new UriBuilder(GlobalSetting.Instance.BaseEndpoint);
-            builder.Path = "/mobilemarketingapigw/api/v1/l/locations";
-            string uri = builder.ToString();
+            var uri = UriHelper.CombineUri(GlobalSetting.Instance.GatewayMarketingEndpoint, ApiUrlBase);
+
             await _requestProvider.PostAsync(uri, newLocReq, token);
         }
     }
