@@ -39,7 +39,6 @@ Then you can run all or selected tests, like in the following image:
 These Unit Tests have no any dependency with any external infrastructure or any other microservice and that's why you don't need to spin-up additional infrastructure (Database server or additional containers).
 
 
-
 ## Running Functional/Integration Tests for specific microservices
 
 In this case, the Functional Tests do have dependencies with additional infrastructure. For instance, they might have dependencies with the microservices's database in the SQL Server container, the messaging broker (RabbitMQ container), etc.
