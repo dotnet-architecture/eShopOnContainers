@@ -9,7 +9,7 @@ services:
 
   basket.data:
     image: redis:alpine
-      
+
   rabbitmq:
     image: rabbitmq:3-management-alpine
 
@@ -76,7 +76,7 @@ services:
       dockerfile: src/Services/Payment/Payment.API/Dockerfile
     depends_on:
       - rabbitmq    
-    
+
   locations.api:
     image: eshop/locations.api:${TAG:-latest}
     build:
@@ -100,7 +100,7 @@ services:
       - marketing.api
       - catalog.api
       - basket.api
- 
+
   mobilemarketingapigw:
     image: eshop/ocelotapigw:${TAG:-latest}
     build:
@@ -115,7 +115,7 @@ services:
       - marketing.api
       - catalog.api
       - basket.api
- 
+
   webshoppingapigw:
     image: eshop/ocelotapigw:${TAG:-latest}
     build:
@@ -206,7 +206,6 @@ services:
 #      - webshoppingagg
 #      - webshoppingapigw
 #      - webmarketingapigw
-
 
   webmvc:
     image: eshop/webmvc:${TAG:-latest}
