@@ -25,25 +25,28 @@
 {{- define "url-of" -}}
 {{- $name := first .}}
 {{- $ctx := last .}}
-{{- $suffix := include "suffix-name" $ctx -}}
-{{- if $ctx.Values.inf.k8s.dnsprefix -}}
-{{- printf "%s.%s/%s" $suffix $ctx.Values.inf.k8s.dns $name -}}     {{/* Value is <prefix>.<dns>/<name> */}}
-{{- else -}}
-{{- if $ctx.Values.inf.k8s.suffix -}}
-{{- printf "%s/%s-%s" $ctx.Values.inf.k8s.dns $name $suffix -}}     {{/*Value is <dns>/<name>-<sufix> */}}
+{{- if eq $name "" -}}
+{{- $ctx.Values.inf.k8s.dns -}}
 {{- else -}}
 {{- printf "%s/%s" $ctx.Values.inf.k8s.dns $name -}}                {{/*Value is just <dns>/<name> */}}
 {{- end -}}
 {{- end -}}
-{{- end -}}
 
 
 
-{{ define "pathBase" -}}
+{{- define "pathBase" -}}
 {{- if .Values.inf.k8s.suffix -}}
 {{- $suffix := include "suffix-name" . -}}
 {{- printf "%s-%s"  .Values.pathBase $suffix -}}
 {{- else -}}
 {{- .Values.pathBase -}}
+{{- end -}}
+{{- end -}}
+
+{{- define "fqdn-image" -}}
+{{- if .Values.inf.registry -}}
+{{- printf "%s/%s" .Values.inf.registry.server .Values.image.repository -}}
+{{- else -}}
+{{- .Values.image.repository -}}
 {{- end -}}
 {{- end -}}

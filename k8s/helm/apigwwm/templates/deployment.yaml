@@ -23,11 +23,9 @@ spec:
         app: {{ template "apigwwm.name" . }}
         release: {{ .Release.Name }}
     spec:
-      {{ if .Values.imagePullSecrets -}}
+      {{ if .Values.inf.registry -}}
       imagePullSecrets:
-      {{ range .Values.imagePullSecrets -}}
-        - name: {{ .name }}
-      {{- end -}}
+      - name: {{ .Values.inf.registry.secretName }}
       {{- end }}
       volumes:
       - name: config
@@ -38,7 +36,7 @@ spec:
             path: configuration.json      
       containers:
         - name: {{ .Chart.Name }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          image: "{{ template "fqdn-image" . }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           volumeMounts:
           - name: config

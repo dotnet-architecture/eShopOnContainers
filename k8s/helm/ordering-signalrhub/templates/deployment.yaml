@@ -5,7 +5,6 @@ kind: Deployment
 metadata:
   name: {{ template "ordering-signalrhub.fullname" . }}
   labels:
-    ufo: {{ $cfgname}}
     app: {{ template "ordering-signalrhub.name" . }}
     chart: {{ template "ordering-signalrhub.chart" . }}
     release: {{ .Release.Name }}
@@ -22,15 +21,13 @@ spec:
         app: {{ template "ordering-signalrhub.name" . }}
         release: {{ .Release.Name }}
     spec:
-      {{ if .Values.imagePullSecrets -}}
+      {{ if .Values.inf.registry -}}
       imagePullSecrets:
-      {{ range .Values.imagePullSecrets -}}
-        - name: {{ .name }}
-      {{- end -}}
+      - name: {{ .Values.inf.registry.secretName }}
       {{- end }}
       containers:
         - name: {{ .Chart.Name }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          image: "{{ template "fqdn-image" . }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: PATH_BASE

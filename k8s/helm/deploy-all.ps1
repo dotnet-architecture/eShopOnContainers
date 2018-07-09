@@ -40,7 +40,15 @@ if ($clean) {
     Write-Host "Previous releases deleted" -ForegroundColor Green
 }
 
-$useDockerHub = [string]::IsNullOrEmpty($registry)
+$useCustomRegistry=$false
+
+if (-not [string]::IsNullOrEmpty($registry)) {
+    $useCustomRegistry=$true
+    if ([string]::IsNullOrEmpty($dockerUser) -or [string]::IsNullOrEmpty($dockerPassword)) {
+        Write-Host "Error: Must use -dockerUser AND -dockerPassword if specifying custom registry" -ForegroundColor Red
+        exit 1
+    }
+}
 
 Write-Host "Begin eShopOnContainers installation using Helm" -ForegroundColor Green
 
@@ -56,7 +64,14 @@ if ($deployInfrastructure) {
 
 foreach ($chart in $charts) {
     Write-Host "Installing: $chart" -ForegroundColor Green
-    helm install --values app.yaml --values inf.yaml --values ingress_values.yaml --set app.name=$appName --set inf.k8s.dns=$dns --set image.tag=$imageTag --name="$appName-$chart" $chart 
+    if ($useCustomRegistry) {
+        helm install --set inf.registry.server=$registry --set inf.registry.login=$dockerUser --set inf.registry.pwd=$dockerPassword --set inf.registry.secretName=eshop-docker-scret --values app.yaml --values inf.yaml --values ingress_values.yaml --set app.name=$appName --set inf.k8s.dns=$dns --set image.tag=$imageTag --set image.pullPolicy=Always --name="$appName-$chart" $chart 
+    }
+    else {
+        if ($chart -ne "eshop-common")  {       # eshop-common is ignored when no secret must be deployed
+            helm install --values app.yaml --values inf.yaml --values ingress_values.yaml --set app.name=$appName --set inf.k8s.dns=$dns --set image.tag=$imageTag --set image.pullPolicy=Always --name="$appName-$chart" $chart 
+        }
+    }
 }
 
 Write-Host "helm charts installed." -ForegroundColor Green
