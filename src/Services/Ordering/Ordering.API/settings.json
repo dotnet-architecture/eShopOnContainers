@@ -17,5 +17,11 @@
     "InstrumentationKey": ""
   },
   "EventBusRetryCount": 5,
-  "EventBusConnection": "localhost"
+  "EventBusConnection": "localhost",
+  "UseVault": false,
+  "Vault": {
+    "Name": "eshop",
+    "ClientId": "your-clien-id",
+    "ClientSecret": "your-client-secret"
+  }
 }
