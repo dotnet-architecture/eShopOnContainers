@@ -1,0 +1,14 @@
+{{- $name := include "apigwws.fullname" . -}}
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "cfg-{{ $name }}"
+  labels:
+    app: {{ template "apigwws.name" . }}
+    chart: {{ template "apigwws.chart" .}}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+data:
+  internalurls__identity: http://{{ .Values.app.svc.identity }}
+
