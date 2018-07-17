@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: eshop
+    component: basket-data
+  name: basket-data
+spec:
+  ports:
+  - port: 6379
+  selector:
+    app: eshop
+    component: basket-data
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: basket-data
+spec:
+  template:
+    metadata:
+      labels:
+        app: eshop
+        component: basket-data
+    spec:
+      containers:
+      - name: basket-data
+        image: redis
+

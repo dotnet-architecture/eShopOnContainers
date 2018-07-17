@@ -1,6 +1,6 @@
-import { Component, OnInit }    from '@angular/core';
-import { OrdersService }        from '../orders.service';
-import { IOrder }               from '../../shared/models/order.model';
+import { Component, OnInit } from '@angular/core';
+import { OrdersService } from '../orders.service';
+import { IOrderDetail } from '../../shared/models/order-detail.model';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -9,7 +9,7 @@ import { ActivatedRoute } from '@angular/router';
     templateUrl: './orders-detail.component.html'
 })
 export class OrdersDetailComponent implements OnInit {
-    order = {}; // new order
+    public order: IOrderDetail = <IOrderDetail>{};
 
     constructor(private service: OrdersService, private route: ActivatedRoute) { }
 
@@ -28,4 +28,3 @@ export class OrdersDetailComponent implements OnInit {
         });
     }
 }
-

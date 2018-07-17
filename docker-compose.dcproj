@@ -6,10 +6,11 @@
     <DockerServiceUrl>http://localhost:5100</DockerServiceUrl>
     <DockerServiceName>webmvc</DockerServiceName>
     <DockerTargetOS>Linux</DockerTargetOS>
-    <ProjectVersion>2.0</ProjectVersion>
+    <ProjectVersion>2.1</ProjectVersion>
+    <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="docker-compose.ci.build.yml" />
+    <None Include=".dockerignore" />
     <None Include="docker-compose.override.yml">
       <DependentUpon>docker-compose.yml</DependentUpon>
     </None>

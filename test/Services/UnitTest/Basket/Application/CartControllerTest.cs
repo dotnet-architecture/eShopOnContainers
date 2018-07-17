@@ -48,13 +48,12 @@ namespace UnitTest.Basket.Application
                 .Returns(Task.FromResult(fakeBasket));
 
             //Act
-            var orderController = new CartController(_basketServiceMock.Object, _catalogServiceMock.Object, _identityParserMock.Object);
-            orderController.ControllerContext.HttpContext = _contextMock.Object;
-            var actionResult = await orderController.Index(fakeQuantities, action);
+            var cartController = new CartController(_basketServiceMock.Object, _catalogServiceMock.Object, _identityParserMock.Object);
+            cartController.ControllerContext.HttpContext = _contextMock.Object;
+            var actionResult = await cartController.Index(fakeQuantities, action);
 
             //Assert
             var viewResult = Assert.IsType<ViewResult>(actionResult);
-            var model = Assert.IsAssignableFrom<BasketModel>(viewResult.ViewData.Model);
         }
 
         [Fact]
@@ -93,7 +92,7 @@ namespace UnitTest.Basket.Application
             //Arrange
             var fakeCatalogItem = GetFakeCatalogItem();
 
-            _basketServiceMock.Setup(x => x.AddItemToBasket(It.IsAny<ApplicationUser>(), It.IsAny<BasketItem>()))
+            _basketServiceMock.Setup(x => x.AddItemToBasket(It.IsAny<ApplicationUser>(), It.IsAny<Int32>()))
                 .Returns(Task.FromResult(1));
 
             //Act
@@ -119,7 +118,7 @@ namespace UnitTest.Basket.Application
         {
             return new CatalogItem()
             {
-                Id = "1",
+                Id = 1,
                 Name = "fakeName",
                 CatalogBrand = "fakeBrand",
                 CatalogType = "fakeType",

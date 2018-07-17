@@ -6,6 +6,9 @@
 
 <section class="esh-catalog-filters">
     <div class="container">
+        <div class="alert alert-warning esh-catalog-alert" role="alert" [hidden]="!errorReceived">
+            Error requesting catalog products, please try later on
+        </div>
         <label class="esh-catalog-label" data-title="brand">
             <select class="esh-catalog-filter" (change)="onBrandFilterChanged($event, $event.target.value)">
                 <option *ngFor="let brand of brands" [value]="brand.id">{{brand.brand}}</option>
@@ -16,7 +19,7 @@
                 <option *ngFor="let type of types" [value]="type.id">{{type.type}}</option>
             </select>
         </label>
-        <img class="esh-catalog-send" (click)="onFilterApplied($event)" src="../../images/arrow-right.svg" />
+        <img class="esh-catalog-send" (click)="onFilterApplied($event)" src="/assets/images/arrow-right.svg" />
     </div>
 </section>
 
@@ -37,7 +40,7 @@
                     <span>{{item.name}}</span>
                 </div>
                 <div class="esh-catalog-price">
-                    <span>{{item.price}}</span>
+                    <span>{{item.price | number:'.2-2'}}</span>
                 </div>
             </div>
         </div>

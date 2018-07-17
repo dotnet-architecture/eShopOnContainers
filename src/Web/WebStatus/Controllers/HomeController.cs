@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.HealthChecks;
+using System.Threading.Tasks;
 using WebStatus.Viewmodels;
 
 namespace WebStatus.Controllers
@@ -25,8 +21,10 @@ namespace WebStatus.Controllers
 
             foreach (var checkResult in result.Results)
             {
-                data.AddResult(checkResult.Value);
+                data.AddResult(checkResult.Key, checkResult.Value);
             }
+
+            ViewBag.RefreshSeconds = 60;
 
             return View(data);
         }

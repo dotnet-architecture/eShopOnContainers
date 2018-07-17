@@ -6,12 +6,8 @@
 
     public abstract class Entity
     {
-
         int? _requestedHashCode;
-        int _Id;
-
-        private List<IAsyncNotification> _domainEvents;
-
+        int _Id;        
         public virtual  int Id 
         {
             get
@@ -24,17 +20,23 @@
             }
         }
 
-        public List<IAsyncNotification> DomainEvents => _domainEvents;        
-        public void AddDomainEvent(IAsyncNotification eventItem)
+        private List<INotification> _domainEvents;
+        public IReadOnlyCollection<INotification> DomainEvents => _domainEvents?.AsReadOnly();
+
+        public void AddDomainEvent(INotification eventItem)
         {
-            _domainEvents = _domainEvents ?? new List<IAsyncNotification>();
+            _domainEvents = _domainEvents ?? new List<INotification>();
             _domainEvents.Add(eventItem);
         }
 
-        public void RemoveDomainEvent(IAsyncNotification eventItem)
+        public void RemoveDomainEvent(INotification eventItem)
         {
-            if (_domainEvents is null) return;
-            _domainEvents.Remove(eventItem);
+            _domainEvents?.Remove(eventItem);
+        }
+
+        public void ClearDomainEvents()
+        {
+            _domainEvents?.Clear();
         }
 
         public bool IsTransient()
@@ -49,6 +51,9 @@
 
             if (Object.ReferenceEquals(this, obj))
                 return true;
+
+            if (this.GetType() != obj.GetType())
+                return false;
 
             Entity item = (Entity)obj;
 
@@ -71,7 +76,6 @@
                 return base.GetHashCode();
 
         }
-
         public static bool operator ==(Entity left, Entity right)
         {
             if (Object.Equals(left, null))

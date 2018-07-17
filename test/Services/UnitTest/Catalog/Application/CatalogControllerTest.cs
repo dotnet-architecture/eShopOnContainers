@@ -44,7 +44,7 @@ namespace UnitTest.Catalog.Application
 
             //Act
             var orderController = new CatalogController(_catalogServiceMock.Object);
-            var actionResult = await orderController.Index(fakeBrandFilterApplied, fakeTypesFilterApplied, fakePage);
+            var actionResult = await orderController.Index(fakeBrandFilterApplied, fakeTypesFilterApplied, fakePage, null);
 
             //Assert
             var viewResult = Assert.IsType<ViewResult>(actionResult);
@@ -67,19 +67,19 @@ namespace UnitTest.Catalog.Application
                 {
                     new CatalogItem()
                     {
-                        Id = "1",
+                        Id = 1,
                         Name = "fakeItemA",
                         CatalogTypeId = 1
                     },
                     new CatalogItem()
                     {
-                        Id = "2",
+                        Id = 2,
                         Name = "fakeItemB",
                         CatalogTypeId = 1
                     },
                     new CatalogItem()
                     {
-                        Id = "3",
+                        Id = 3,
                         Name = "fakeItemC",
                         CatalogTypeId = 1
                     }

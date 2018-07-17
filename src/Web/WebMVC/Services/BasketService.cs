@@ -1,132 +1,122 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
+using Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http;
 using Microsoft.eShopOnContainers.WebMVC.ViewModels;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
-using WebMVC.Services.Utilities;
+using WebMVC.Infrastructure;
+using WebMVC.Models;
 
 namespace Microsoft.eShopOnContainers.WebMVC.Services
 {
     public class BasketService : IBasketService
     {
         private readonly IOptionsSnapshot<AppSettings> _settings;
-        private IHttpClient _apiClient;
-        private readonly string _remoteServiceBaseUrl;
-        private IHttpContextAccessor _httpContextAccesor;
+        private readonly IHttpClient _apiClient;
+        private readonly string _basketByPassUrl;
+        private readonly string _purchaseUrl;
+        private readonly IHttpContextAccessor _httpContextAccesor;
 
-        public BasketService(IOptionsSnapshot<AppSettings> settings, IHttpContextAccessor httpContextAccesor, IHttpClient httpClient)
+        private readonly string _bffUrl;
+
+        public BasketService(IOptionsSnapshot<AppSettings> settings,
+            IHttpContextAccessor httpContextAccesor, IHttpClient httpClient)
         {
             _settings = settings;
-            _remoteServiceBaseUrl = _settings.Value.BasketUrl;
+            _basketByPassUrl = $"{_settings.Value.PurchaseUrl}/api/v1/b/basket";
+            _purchaseUrl = $"{_settings.Value.PurchaseUrl}/api/v1";
             _httpContextAccesor = httpContextAccesor;
             _apiClient = httpClient;
         }
 
         public async Task<Basket> GetBasket(ApplicationUser user)
         {
-            var context = _httpContextAccesor.HttpContext;
-            var token = await context.Authentication.GetTokenAsync("access_token");
+            var token = await GetUserTokenAsync();
+            var getBasketUri = API.Basket.GetBasket(_basketByPassUrl, user.Id);
 
-            _apiClient.Inst.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+            var dataString = await _apiClient.GetStringAsync(getBasketUri, token);
 
-            var basketUrl = $"{_remoteServiceBaseUrl}/{user.Id}";
-            var dataString = await _apiClient.GetStringAsync(basketUrl);
-            // Use the ?? Null conditional operator to simplify the initialization of response
-            var response = JsonConvert.DeserializeObject<Basket>(dataString) ?? 
-                new Basket()
-                {
-                    BuyerId = user.Id
-                };
-
-            return response;
+            return string.IsNullOrEmpty(dataString) ? 
+                new Basket() {  BuyerId = user.Id} :
+                JsonConvert.DeserializeObject<Basket>(dataString);
         }
 
         public async Task<Basket> UpdateBasket(Basket basket)
         {
-            var context = _httpContextAccesor.HttpContext;
-            var token = await context.Authentication.GetTokenAsync("access_token");
-           
-            _apiClient.Inst.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+            var token = await GetUserTokenAsync();
+            var updateBasketUri = API.Basket.UpdateBasket(_basketByPassUrl);
 
-            var basketUrl = _remoteServiceBaseUrl;
-            
-            var response = await _apiClient.PostAsync(basketUrl, basket);
+            var response = await _apiClient.PostAsync(updateBasketUri, basket, token);
 
             response.EnsureSuccessStatusCode();
 
             return basket;
         }
 
+        public async Task Checkout(BasketDTO basket)
+        {
+            var token = await GetUserTokenAsync();
+            var updateBasketUri = API.Basket.CheckoutBasket(_basketByPassUrl);
+
+            var response = await _apiClient.PostAsync(updateBasketUri, basket, token);
+
+            response.EnsureSuccessStatusCode();
+        }
+
         public async Task<Basket> SetQuantities(ApplicationUser user, Dictionary<string, int> quantities)
         {
-            var basket = await GetBasket(user);
 
-            basket.Items.ForEach(x =>
+            var token = await GetUserTokenAsync();
+            var updateBasketUri = API.Purchase.UpdateBasketItem(_purchaseUrl);
+            var userId = user.Id;
+
+            var response = await _apiClient.PutAsync(updateBasketUri, new
             {
-                // Simplify this logic by using the
-                // new out variable initializer.
-                if (quantities.TryGetValue(x.Id, out var quantity))
+                BasketId = userId,
+                Updates = quantities.Select(kvp => new
                 {
-                    x.Quantity = quantity;
-                }
-            });
+                    BasketItemId = kvp.Key,
+                    NewQty = kvp.Value
+                }).ToArray()
+            }, token);
 
-            return basket;
+            response.EnsureSuccessStatusCode();
+            var jsonResponse = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<Basket>(jsonResponse);
         }
 
-        public Order MapBasketToOrder(Basket basket)
+        public async Task<Order> GetOrderDraft(string basketId)
         {
-            var order = new Order();
-            order.Total = 0;
-
-            basket.Items.ForEach(x =>
-            {
-                order.OrderItems.Add(new OrderItem()
-                {
-                    ProductId = int.Parse(x.ProductId),
-                    
-                    PictureUrl = x.PictureUrl,
-                    ProductName = x.ProductName,
-                    Units = x.Quantity,
-                    UnitPrice = x.UnitPrice
-                });
-                order.Total += (x.Quantity * x.UnitPrice);
-            });
-
-            return order;
+            var token = await GetUserTokenAsync();
+            var draftOrderUri = API.Purchase.GetOrderDraft(_purchaseUrl, basketId);
+            var json = await _apiClient.GetStringAsync(draftOrderUri, token);
+            return JsonConvert.DeserializeObject<Order>(json);
         }
 
-        public async Task AddItemToBasket(ApplicationUser user, BasketItem product)
+
+
+        public async Task AddItemToBasket(ApplicationUser user, int productId)
         {
-            Basket basket = await GetBasket(user);
-            if (basket == null)
-            {
-                basket = new Basket()
-                {
-                    BuyerId = user.Id,
-                    Items = new List<BasketItem>()
-                };
-            }
+            var token = await GetUserTokenAsync();
+            var updateBasketUri = API.Purchase.AddItemToBasket(_purchaseUrl);
+            var userId = user.Id;
 
-            basket.Items.Add(product);
-            await UpdateBasket(basket);
+            var response = await _apiClient.PostAsync(updateBasketUri, new
+            {
+                CatalogItemId = productId,
+                BasketId = userId,
+                Quantity = 1
+            }, token);
+
         }
 
-        public async Task CleanBasket(ApplicationUser user)
+        async Task<string> GetUserTokenAsync()
         {
             var context = _httpContextAccesor.HttpContext;
-            var token = await context.Authentication.GetTokenAsync("access_token");
-
-            _apiClient.Inst.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
-            var basketUrl = $"{_remoteServiceBaseUrl}/{user.Id}";
-            var response = await _apiClient.DeleteAsync(basketUrl);
-            
-            //CCE: response status code...
-
+            return await context.GetTokenAsync("access_token");
         }
     }
 }

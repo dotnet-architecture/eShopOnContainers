@@ -9,9 +9,9 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
     public interface IOrderRepository : IRepository<Order>
     {
         Order Add(Order order);
+        
+        void Update(Order order);
 
         Task<Order> GetAsync(int orderId);
-
-        void Update(Order order);
     }
 }

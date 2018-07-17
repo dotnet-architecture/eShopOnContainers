@@ -5,6 +5,8 @@ namespace eShopOnContainers.Services
 {
     public interface INavigationService
     {
+		ViewModelBase PreviousPageViewModel { get; }
+
         Task InitializeAsync();
 
         Task NavigateToAsync<TViewModel>() where TViewModel : ViewModelBase;

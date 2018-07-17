@@ -21,6 +21,6 @@ try {
   Write-Host "Rule found"
 }
   catch [Exception] {
-  New-NetFirewallRule -DisplayName eShopOnContainers-Inbound -Confirm -Description "eShopOnContainers Inbound Rule for port range 5100-5105" -LocalAddress Any -LocalPort 5100-5105 -Protocol tcp -RemoteAddress Any -RemotePort Any -Direction Inbound
-  New-NetFirewallRule -DisplayName eShopOnContainers-Outbound -Confirm -Description "eShopOnContainers Outbound Rule for port range 5100-5105" -LocalAddress Any -LocalPort 5100-5105 -Protocol tcp -RemoteAddress Any -RemotePort Any -Direction Outbound
+  New-NetFirewallRule -DisplayName eShopOnContainers-Inbound -Confirm -Description "eShopOnContainers Inbound Rule for port range 5100-5150" -LocalAddress Any -LocalPort 5100-5150 -Protocol tcp -RemoteAddress Any -RemotePort Any -Direction Inbound
+  New-NetFirewallRule -DisplayName eShopOnContainers-Outbound -Confirm -Description "eShopOnContainers Outbound Rule for port range 5100-5150" -LocalAddress Any -LocalPort 5100-5150 -Protocol tcp -RemoteAddress Any -RemotePort Any -Direction Outbound
 }

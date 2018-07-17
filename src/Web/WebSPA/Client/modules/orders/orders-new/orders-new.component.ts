@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { OrdersService }                            from '../orders.service';
+import { OrdersService } from '../orders.service';
+import { BasketService } from '../../basket/basket.service';
 import { IOrder }                                   from '../../shared/models/order.model';
 import { BasketWrapperService }                     from '../../shared/services/basket.wrapper.service';
 
@@ -13,14 +14,14 @@ import { Router }                                   from '@angular/router';
     templateUrl: './orders-new.component.html'
 })
 export class OrdersNewComponent implements OnInit {
-    private newOrderForm: FormGroup;  // new order form
-    private isOrderProcessing: Boolean;
-    private errorReceived: Boolean;
-    private order: IOrder;
+    newOrderForm: FormGroup;  // new order form
+    isOrderProcessing: boolean;
+    errorReceived: boolean;
+    order: IOrder;
 
-    constructor(private service: OrdersService, fb: FormBuilder, private router: Router, private basketEvents: BasketWrapperService) {
+    constructor(private orderService: OrdersService, private basketService: BasketService, fb: FormBuilder, private router: Router) {
         // Obtain user profile information
-        this.order = service.mapBasketAndIdentityInfoNewOrder();
+        this.order = orderService.mapOrderAndIdentityInfoNewOrder();
         this.newOrderForm = fb.group({
             'street': [this.order.street, Validators.required],
             'city': [this.order.city, Validators.required],
@@ -36,7 +37,7 @@ export class OrdersNewComponent implements OnInit {
     ngOnInit() {
     }
 
-    submitForm(value: any) {
+    submitForm(value: any) {        
         this.order.street = this.newOrderForm.controls['street'].value;
         this.order.city = this.newOrderForm.controls['city'].value;
         this.order.state = this.newOrderForm.controls['state'].value;
@@ -46,18 +47,15 @@ export class OrdersNewComponent implements OnInit {
         this.order.cardholdername = this.newOrderForm.controls['cardholdername'].value;
         this.order.cardexpiration = new Date(20 + this.newOrderForm.controls['expirationdate'].value.split('/')[1], this.newOrderForm.controls['expirationdate'].value.split('/')[0]);
         this.order.cardsecuritynumber = this.newOrderForm.controls['securitycode'].value;
-
-        this.service.postOrder(this.order)
+        let basketCheckout = this.basketService.mapBasketInfoCheckout(this.order);
+        this.basketService.setBasketCheckout(basketCheckout)
             .catch((errMessage) => {
                 this.errorReceived = true;
                 this.isOrderProcessing = false;
                 return Observable.throw(errMessage); 
             })
             .subscribe(res => {
-            // this will emit an observable. Basket service is subscribed to this observable, and will react deleting the basket for the current user. 
-            this.basketEvents.orderCreated();
-            
-            this.router.navigate(['orders']);
+                this.router.navigate(['orders']);
             });
         this.errorReceived = false;
         this.isOrderProcessing = true;

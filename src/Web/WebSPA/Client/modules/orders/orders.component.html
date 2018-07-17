@@ -2,6 +2,9 @@
     <esh-header url="/catalog">Back to catalog</esh-header>
 
     <div class="container">
+        <div class="alert alert-warning esh-orders-alert" role="alert" [hidden]="!errorReceived">
+            Error requesting order list, please try later on
+        </div>
         <article class="esh-orders-titles row">
             <section class="esh-orders-title col-xs-2">Order number</section>
             <section class="esh-orders-title col-xs-4">Date</section>

@@ -2,7 +2,8 @@ import { Component, OnInit, OnChanges, Output, Input, EventEmitter } from '@angu
 import { Subscription } from 'rxjs/Subscription';
 
 import { IIdentity } from '../../models/identity.model';
-import { SecurityService } from  '../../services/security.service';
+import { SecurityService } from '../../services/security.service';
+import { SignalrService } from '../../services/signalr.service';
 
 @Component({
     selector: 'esh-identity',
@@ -10,11 +11,11 @@ import { SecurityService } from  '../../services/security.service';
     styleUrls: ['./identity.scss']
 })
 export class Identity implements OnInit  {
-    private authenticated: boolean = false;
+    authenticated: boolean = false;
     private subscription: Subscription;
     private userName: string = '';
 
-    constructor(private service: SecurityService) {
+    constructor(private service: SecurityService, private signalrService: SignalrService) {
 
     }
 
@@ -48,6 +49,7 @@ export class Identity implements OnInit  {
     }
 
     logout() {
+        this.signalrService.stop();
         this.service.Logoff();
     }
 }

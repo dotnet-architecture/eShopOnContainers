@@ -60,8 +60,7 @@
         </Grid.RowDefinitions>
         <!-- FILTERS -->
         <Grid
-            BackgroundColor="{StaticResource LightGreenColor}"                       
-            IsEnabled="{Binding Products.Count, Converter={StaticResource CountToBoolConverter}}">
+            BackgroundColor="{StaticResource LightGreenColor}">
             <Label 
                 Text="FILTER"
                 Style="{StaticResource FilterLabelStyle}"/>
@@ -115,11 +114,10 @@
             VerticalOptions="Center"
             HorizontalOptions="Center">
             <ActivityIndicator.WidthRequest>
-                <OnPlatform 
-                    x:TypeArguments="x:Double" 
-                    iOS="100" 
-                    Android="100"
-                    WinPhone="400" />
+                <OnPlatform x:TypeArguments="x:Double">
+                    <On Platform="iOS, Android" Value="100" />
+                    <On Platform="UWP, WinRT, WinPhone" Value="400" />
+                </OnPlatform>
             </ActivityIndicator.WidthRequest>
         </ActivityIndicator>
     </Grid>

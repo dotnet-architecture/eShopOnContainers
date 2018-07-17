@@ -1,12 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using eShopOnContainers.Core.Models.Catalog;
+using eShopOnContainers.Core.Services.Catalog;
 using eShopOnContainers.Core.ViewModels.Base;
 using System.Collections.ObjectModel;
-using Xamarin.Forms;
-using eShopOnContainers.Core.Models.Catalog;
-using eShopOnContainers.Core.Services.Catalog;
+using System.Threading.Tasks;
 using System.Windows.Input;
-using eShopOnContainers.Core.Services.Basket;
-using eShopOnContainers.Core.Services.User;
+using Xamarin.Forms;
 
 namespace eShopOnContainers.Core.ViewModels
 {
@@ -104,7 +102,7 @@ namespace eShopOnContainers.Core.ViewModels
 
         private async Task FilterAsync()
         {
-            if (Brand == null && Type == null)
+            if (Brand == null || Type == null)
             {
                 return;
             }

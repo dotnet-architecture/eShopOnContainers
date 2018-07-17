@@ -4,8 +4,7 @@
     {
         public const string AzureTag = "Azure";
         public const string MockTag = "Mock";
-        public const string DefaultEndpoint = "http://13.88.8.119";
-
+        public const string DefaultEndpoint = "http://YOUR_IP_OR_DNS_NAME"; // i.e.: "http://YOUR_IP" or "http://YOUR_DNS_NAME"
 
         private string _baseEndpoint;
         private static readonly GlobalSetting _instance = new GlobalSetting();
@@ -31,19 +30,19 @@
             }
         }
 
+        public string ClientId { get { return "xamarin"; }}
+
+        public string ClientSecret { get { return "secret"; }}
+
         public string AuthToken { get; set; }
 
         public string RegisterWebsite { get; set; }
 
-        public string CatalogEndpoint { get; set; }
-
-        public string OrdersEndpoint { get; set; }
-
-        public string BasketEndpoint { get; set; }
-
         public string IdentityEndpoint { get; set; }
 
         public string UserInfoEndpoint { get; set; }
+
+        public string TokenEndpoint { get; set; }
 
         public string LogoutEndpoint { get; set; }
 
@@ -53,15 +52,17 @@
 
         private void UpdateEndpoint(string baseEndpoint)
         {
-            RegisterWebsite = string.Format("{0}:5105/Account/Register", baseEndpoint);
-            CatalogEndpoint = string.Format("{0}:5101", baseEndpoint);
-            OrdersEndpoint = string.Format("{0}:5102", baseEndpoint);
-            BasketEndpoint = string.Format("{0}:5103", baseEndpoint);
-            IdentityEndpoint = string.Format("{0}:5105/connect/authorize", baseEndpoint);
-            UserInfoEndpoint = string.Format("{0}:5105/connect/userinfo", baseEndpoint);
-            LogoutEndpoint = string.Format("{0}:5105/connect/endsession", baseEndpoint);
-            IdentityCallback = "http://eshopxamarin/callback.html";
-            LogoutCallback = string.Format("{0}:5105/Account/Redirecting", baseEndpoint);
+            var identityBaseEndpoint = $"{baseEndpoint}/identity";
+            RegisterWebsite = $"{identityBaseEndpoint}/Account/Register";
+            LogoutCallback = $"{identityBaseEndpoint}/Account/Redirecting";
+
+            var connectBaseEndpoint = $"{identityBaseEndpoint}/connect";
+            IdentityEndpoint = $"{connectBaseEndpoint}/authorize";
+            UserInfoEndpoint = $"{connectBaseEndpoint}/userinfo";
+            TokenEndpoint = $"{connectBaseEndpoint}/token";
+            LogoutEndpoint = $"{connectBaseEndpoint}/endsession";
+			
+            IdentityCallback = $"{baseEndpoint}/xamarincallback";
         }
     }
 }

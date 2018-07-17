@@ -12,7 +12,6 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
         // aligned with DDD Aggregates and Domain Entities (Instead of properties and property collections)
         private string  _productName;
         private string  _pictureUrl;
-        private int     _orderId;
         private decimal _unitPrice;
         private decimal _discount;
         private int     _units;
@@ -42,18 +41,24 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
             _pictureUrl = PictureUrl;
         }
 
-        public void SetPictureUri(string pictureUri)
-        {
-            if (!String.IsNullOrWhiteSpace(pictureUri))
-            {
-                _pictureUrl = pictureUri;
-            }
-        }
+        public string GetPictureUri() => _pictureUrl;
 
         public decimal GetCurrentDiscount()
         {
             return _discount;
         }
+
+        public int GetUnits()
+        {
+            return _units;
+        }
+
+        public decimal GetUnitPrice()
+        {
+            return _unitPrice;
+        }
+
+        public string GetOrderItemProductName() => _productName;
 
         public void SetNewDiscount(decimal discount)
         {

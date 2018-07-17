@@ -177,10 +177,7 @@ ClientBin/
 *.publishsettings
 node_modules/
 bower_components/
-**/wwwroot/tmp/
-**/wwwroot/*.bundle.map
-**/wwwroot/*.js
-/wwwroot/dist/
+wwwroot/
 
 
 orleans.codegen.cs

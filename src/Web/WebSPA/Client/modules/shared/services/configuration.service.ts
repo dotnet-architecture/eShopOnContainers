@@ -22,15 +22,17 @@ export class ConfigurationService {
     constructor(private http: Http, private storageService: StorageService) { }
     
     load() {
-        let url = "/Home/Configuration";
+        const baseURI = document.baseURI.endsWith('/') ? document.baseURI : `${document.baseURI}/`;
+        let url = `${baseURI}Home/Configuration`;
         this.http.get(url).subscribe((response: Response) => {
             console.log('server settings loaded');
             this.serverSettings = response.json();
             console.log(this.serverSettings);
-            this.storageService.store('basketUrl', this.serverSettings.basketUrl);
-            this.storageService.store('catalogUrl', this.serverSettings.catalogUrl);
             this.storageService.store('identityUrl', this.serverSettings.identityUrl);
-            this.storageService.store('orderingUrl', this.serverSettings.orderingUrl);
+            this.storageService.store('marketingUrl', this.serverSettings.marketingUrl);
+            this.storageService.store('purchaseUrl', this.serverSettings.purchaseUrl);
+            this.storageService.store('signalrHubUrl', this.serverSettings.signalrHubUrl);
+            this.storageService.store('activateCampaignDetailFunction', this.serverSettings.activateCampaignDetailFunction);
             this.isReady = true;
             this.settingsLoadedSource.next();
         });

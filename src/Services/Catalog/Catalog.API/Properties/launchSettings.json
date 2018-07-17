@@ -3,7 +3,7 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:5101",
+      "applicationUrl": "http://localhost:57424/",
       "sslPort": 0
     }
   },
@@ -11,7 +11,7 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "/swagger/ui",
+      "launchUrl": "/swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
@@ -19,6 +19,7 @@
     "Microsoft.eShopOnContainers.Services.Catalog.API": {
       "commandName": "Project",
       "launchBrowser": true,
+      "launchUrl": "http://localhost:55101/",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

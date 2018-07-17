@@ -1,11 +1,9 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.Queries
 {
     using Dapper;
-    using Microsoft.Extensions.Configuration;
     using System.Data.SqlClient;
     using System.Threading.Tasks;
     using System;
-    using System.Dynamic;
     using System.Collections.Generic;
 
     public class OrderQueries
@@ -19,18 +17,18 @@
         }
 
 
-        public async Task<dynamic> GetOrder(int id)
+        public async Task<Order> GetOrderAsync(int id)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
                 connection.Open();
 
                 var result = await connection.QueryAsync<dynamic>(
-                   @"select o.[Id] as ordernumber,o.OrderDate as date, os.Name as status, 
-                        oi.ProductName as productname, oi.Units as units, oi.UnitPrice as unitprice, oi.PictureUrl as pictureurl, 
-						a.Street as street, a.City as city, a.Country as country, a.State as state, a.ZipCode as zipcode
+                   @"select o.[Id] as ordernumber,o.OrderDate as date, o.Description as description,
+                        o.Address_City as city, o.Address_Country as country, o.Address_State as state, o.Address_Street as street, o.Address_ZipCode as zipcode,
+                        os.Name as status, 
+                        oi.ProductName as productname, oi.Units as units, oi.UnitPrice as unitprice, oi.PictureUrl as pictureurl
                         FROM ordering.Orders o
-                        INNER JOIN ordering.Address a ON o.AddressId = a.Id 
                         LEFT JOIN ordering.Orderitems oi ON o.Id = oi.orderid 
                         LEFT JOIN ordering.orderstatus os on o.OrderStatusId = os.Id
                         WHERE o.Id=@id"
@@ -44,52 +42,56 @@
             }
         }
 
-        public async Task<dynamic> GetOrders()
+        public async Task<IEnumerable<OrderSummary>> GetOrdersAsync()
         {
             using (var connection = new SqlConnection(_connectionString))
             {
                 connection.Open();
 
-                return await connection.QueryAsync<dynamic>(@"SELECT o.[Id] as ordernumber,o.[OrderDate] as [date],os.[Name] as [status],SUM(oi.units*oi.unitprice) as total
+                return await connection.QueryAsync<OrderSummary>(@"SELECT o.[Id] as ordernumber,o.[OrderDate] as [date],os.[Name] as [status],SUM(oi.units*oi.unitprice) as total
                      FROM [ordering].[Orders] o
                      LEFT JOIN[ordering].[orderitems] oi ON  o.Id = oi.orderid 
-                     LEFT JOIN[ordering].[orderstatus] os on o.OrderStatusId = os.Id
-                     GROUP BY o.[Id], o.[OrderDate], os.[Name]");
+                     LEFT JOIN[ordering].[orderstatus] os on o.OrderStatusId = os.Id                     
+                     GROUP BY o.[Id], o.[OrderDate], os.[Name] 
+                     ORDER BY o.[Id]");
             }
         }
 
-        public async Task<dynamic> GetCardTypes()
+        public async Task<IEnumerable<CardType>> GetCardTypesAsync()
         {
             using (var connection = new SqlConnection(_connectionString))
             {
                 connection.Open();
 
-                return await connection.QueryAsync<dynamic>("SELECT * FROM ordering.cardtypes");
+                return await connection.QueryAsync<CardType>("SELECT * FROM ordering.cardtypes");
             }
         }
 
-        private dynamic MapOrderItems(dynamic result)
+        private Order MapOrderItems(dynamic result)
         {
-            dynamic order = new ExpandoObject();
-
-            order.ordernumber = result[0].ordernumber;
-            order.date = result[0].date;
-            order.status = result[0].status;
-            order.street = result[0].street;
-            order.city = result[0].city;
-            order.zipcode = result[0].zipcode;
-            order.country = result[0].country;
-
-            order.orderitems = new List<dynamic>();
-            order.total = 0;
+            var order = new Order
+            {
+                ordernumber = result[0].ordernumber,
+                date = result[0].date,
+                status = result[0].status,
+                description = result[0].description,
+                street = result[0].street,
+                city = result[0].city,
+                zipcode = result[0].zipcode,
+                country = result[0].country,
+                orderitems = new List<Orderitem>(),
+                total = 0
+            };
 
             foreach (dynamic item in result)
             {
-                dynamic orderitem = new ExpandoObject();
-                orderitem.productname = item.productname;
-                orderitem.units = item.units;
-                orderitem.unitprice = item.unitprice;
-                orderitem.pictureurl = item.pictureurl;
+                var orderitem = new Orderitem
+                {
+                    productname = item.productname,
+                    units = item.units,
+                    unitprice = (double)item.unitprice,
+                    pictureurl = item.pictureurl
+                };
 
                 order.total += item.units * item.unitprice;
                 order.orderitems.Add(orderitem);

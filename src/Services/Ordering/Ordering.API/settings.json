@@ -1,12 +1,22 @@
 ﻿{
   "ConnectionString": "Server=tcp:127.0.0.1,5433;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word;",
   "IdentityUrl": "http://localhost:5105",
+  "UseCustomizationData": false,
   "Logging": {
     "IncludeScopes": false,
     "LogLevel": {
-      "Default": "Debug",
+      "Default": "Trace",
       "System": "Information",
       "Microsoft": "Information"
     }
-  }
+  },
+  "AzureServiceBusEnabled": false,
+  "SubscriptionClientName": "Ordering",
+  "GracePeriodTime": "1",
+  "CheckUpdateTime": "30000",
+  "ApplicationInsights": {
+    "InstrumentationKey": ""
+  },
+  "EventBusRetryCount": 5,
+  "EventBusConnection": "localhost"
 }

@@ -1,0 +1,63 @@
+version: '3.4'
+
+# ONLY NEEDED WHEN RUNNING WINDOWS CONTAINERS
+#
+# This file sets the containers' environment variables:
+#
+#  - EventBusUerName
+#  - EventBusPassword
+#
+# To the default username & password used in the spring2/rabbitmq image.
+#
+# If you are using any other rabbitmq image with any other username/pwd then you can:
+#
+#  Set your shell environment variables:
+#   - ESHOP_SERVICE_BUS_USERNAME
+#   - ESHOP_SERVICE_BUS_PASSWORD
+#
+# With the appropiate values (note that you can use .env file also) AND DO NOT USE THIS FILE when launching windows container:
+#
+# docker-compose -f docker-compose-windows.yml -f docker-compose.override.yml up
+# INSTEAD OF
+# docker-compose -f docker-compose-windows.yml -f docker-compose.override.yml -f docker-compose.override.windows.yml up
+
+services:      
+  basket.api:
+    environment:
+      - EventBusUserName=admin
+      - EventBusPassword=password
+
+  catalog.api:
+    environment:
+      - EventBusUserName=admin
+      - EventBusPassword=password
+
+  ordering.api:
+    environment:
+      - EventBusUserName=admin
+      - EventBusPassword=password
+
+  ordering.api:
+    environment:
+      - EventBusUserName=admin
+      - EventBusPassword=password
+  
+  ordering.backgroundtasks:
+    environment:
+      - EventBusUserName=admin
+      - EventBusPassword=password
+
+  payment.api:
+    environment:
+      - EventBusUserName=admin
+      - EventBusPassword=password
+
+  locations.api:
+    environment:
+      - EventBusUserName=admin
+      - EventBusPassword=password
+
+  ordering.signalrhub:
+  environment:
+      - EventBusUserName=admin
+      - EventBusPassword=password

@@ -1,0 +1,94 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "catalogstorage": {
+      "type": "string"
+    },
+    "profileName" : {
+      "type": "string"
+    },
+    "endpointName" : {
+      "type": "string"
+    }
+  },
+  "variables": {
+    "catalogstorage": "[concat(parameters('catalogstorage'), uniqueString(resourceGroup().id))]",
+    "endpointName": "[concat(parameters('endpointName'), uniqueString(resourceGroup().id))]",
+    "profileName": "[parameters('profileName')]"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "name": "[variables('catalogstorage')]",
+      "apiVersion": "2016-01-01",
+      "location": "[resourceGroup().location]",
+      "tags": {
+        "displayName": "[variables('catalogstorage')]"
+      },
+      "sku": {
+        "name": "Standard_LRS"
+      },
+      "kind": "Storage"
+    },
+    {
+      "name": "[variables('profileName')]",
+      "type": "Microsoft.Cdn/profiles",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2016-04-02",
+      "tags": {
+        "displayName": "[variables('profileName')]"
+      },
+      "sku": {
+        "name": "Standard_Verizon"
+      },
+      "resources": [
+        {
+          "apiVersion": "2016-04-02",
+          "name": "[variables('endpointName')]",
+          "type": "endpoints",
+          "dependsOn": [
+            "[variables('profileName')]",
+            "[variables('catalogstorage')]"
+          ],
+          "location": "[resourceGroup().location]",
+          "tags": {
+            "displayName": "[variables('endpointName')]"
+          },
+          "properties": {
+            "originHostHeader": "[replace(replace(reference(resourceId('Microsoft.Storage/storageAccounts', variables('catalogstorage')),'2015-06-15' ).primaryEndpoints.blob,'https://',''),'/','')]",
+            "isHttpAllowed": true,
+            "isHttpsAllowed": true,
+            "queryStringCachingBehavior": "IgnoreQueryString",
+            "contentTypesToCompress": [
+              "text/plain",
+              "text/html",
+              "text/css",
+              "application/x-javascript",
+              "text/javascript"
+            ],
+            "isCompressionEnabled": "True",
+            "origins": [
+              {
+                "name": "origin1",
+                "properties": {
+                  "hostName": "[replace(replace(reference(resourceId('Microsoft.Storage/storageAccounts', variables('catalogstorage')),'2015-06-15' ).primaryEndpoints.blob,'https://',''),'/','')]"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "outputs": {
+    "hostName": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.cdn/profiles/endpoints', variables('profileName'), variables('endpointName'))).hostName]"
+    },
+    "originHostHeader": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.cdn/profiles/endpoints', variables('profileName'), variables('endpointName'))).originHostHeader]"
+    }
+  }
+}

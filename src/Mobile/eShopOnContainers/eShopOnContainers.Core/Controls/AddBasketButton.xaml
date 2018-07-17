@@ -1,11 +1,20 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <ContentView
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+    xmlns:effects="clr-namespace:eShopOnContainers.Core.Effects"
     x:Class="eShopOnContainers.Core.Controls.AddBasketButton">
     <ContentView.Resources>
         <ResourceDictionary>
 
+            <Style TargetType="BoxView" Class="Circle">
+                <Setter Property="BackgroundColor" Value="{ StaticResource AccentColor }" />
+                <Setter Property="WidthRequest" Value="34" />
+                <Setter Property="HeightRequest" Value="34" />
+                <Setter Property="HorizontalOptions" Value="Start" />
+                <Setter Property="effects:ThemeEffects.Circle" Value="True" />
+            </Style>
+            
             <Style x:Key="AddBackgroundImageStyle" 
                TargetType="{x:Type Image}">
                 <Setter Property="HorizontalOptions"
@@ -35,11 +44,10 @@
             <!-- ANDROID -->
             <Grid>
                 <Grid.IsVisible>
-                    <OnPlatform         
-                        x:TypeArguments="x:Boolean"
-                        Android="True"
-                        iOS="True"
-                        WinPhone="False"/>
+                    <OnPlatform x:TypeArguments="x:Boolean">
+                        <On Platform="iOS, Android" Value="True" />
+                        <On Platform="UWP, WinRT, WinPhone" Value="False" />
+                    </OnPlatform>
                 </Grid.IsVisible>
                 <BoxView  
                     BackgroundColor="{StaticResource LightGreenColor}"
@@ -55,11 +63,10 @@
             <!-- IOS & UWP -->
             <Grid>
                 <Grid.IsVisible>
-                    <OnPlatform         
-                        x:TypeArguments="x:Boolean"
-                        Android="False"
-                        iOS="False"
-                        WinPhone="True"/>
+                    <OnPlatform x:TypeArguments="x:Boolean">
+                        <On Platform="iOS, Android" Value="False" />
+                        <On Platform="UWP, WinRT, WinPhone" Value="True" />
+                    </OnPlatform>
                 </Grid.IsVisible>
                 <Image
                     Source="Assets\circle_button_background.png"

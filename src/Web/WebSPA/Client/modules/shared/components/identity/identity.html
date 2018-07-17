@@ -12,7 +12,7 @@
          *ngIf="authenticated">
 
         <div class="esh-identity-name">{{userName}}</div>
-        <img class="esh-identity-image" src="../../../../images/arrow-down.png">
+        <img class="esh-identity-image" src="assets/images/arrow-down.png">
     </section>
 
     <section class="esh-identity-drop"
@@ -22,14 +22,21 @@
              [routerLink]="['orders']">
 
             <div class="esh-identity-name esh-identity-name--upper">My orders</div>
-            <img class="esh-identity-image" src="../../../../images/my_orders.png">
+            <img class="esh-identity-image" src="assets/images/my_orders.png">
+        </div>
+
+        <div class="esh-identity-item"
+             [routerLink]="['campaigns']">
+
+            <div class="esh-identity-name esh-identity-name--upper">My campaigns</div>
+            <img class="esh-identity-image" src="assets/images/my_orders.png">
         </div>
 
         <div class="esh-identity-item"
              (click)="logoutClicked($event)">
 
             <div class="esh-identity-name esh-identity-name--upper">Log Out</div>
-            <img class="esh-identity-image" src="../../../../images/logout.png">
+            <img class="esh-identity-image" src="assets/images/logout.png">
         </div>
     </section>
 </div>

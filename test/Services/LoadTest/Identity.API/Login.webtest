@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WebTest Name="Login" Id="3629399e-314d-4812-bc44-3ece254b7858" Owner="" Priority="2147483647" Enabled="True" CssProjectStructure="" CssIteration="" Timeout="0" WorkItemIds="" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" Description="" CredentialUserName="demouser@microsoft.com" CredentialPassword="ph1JKNO2Juq7bNVv9gnOBw==" PreAuthenticate="True" Proxy="default" StopOnError="False" RecordedResultFile="" ResultsLocale="">
+  <Items>
+    <Request Method="GET" Guid="6010f193-941a-4a7b-98d4-45be7699a0dc" Version="1.1" Url="{{LocalTestSettings.MvcWebServer.url}}/Account/SignIn" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="{{LocalTestSettings.IdentityApiServer.url}}/account/login?returnUrl=%2Fconnect%2Fauthorize%2Flogin%3Fclient_id%3D{{LocalTestSettings.ClientId.value}}%26redirect_uri%3D{{LocalTestSettings.MvcWebServer.url}}%252Fsignin-oidc%26response_type%3Dcode%2520id_token%26scope%3Dopenid%2520profile%2520orders%2520basket%2520marketing%26response_mode%3Dform_post%26nonce%3D636343249853641220.YTUyNDUwYmUtMDUwNi00YzViLWI4ZjItZGJhZDMwNmM1YjNlMDNhYjZmOGItZTk5YS00ZGEzLTg1Y2UtMDE3YTFjNWFlNjEw%26state%3DCfDJ8OCCkEVDCp5PrdqHtEgvt_mxNTrlU_psyuqjm9lkemQgTEZ-k_LUyThb4S21qtGcud5ajY1BOwzMlk0uvC0p8CB9hqSKaaDpjvspLXMLHjjsZNqjG3bdvnGSHp08_go1orFXlRLeC-8dNSlLlzynWJp9uK_WC56gjcJAiqQErMBVub5lacO-ph04so9LMkZ5KSFxP0qPlkYidej2RfOYkNFxzZnLVTs5ZB_l7IU3EPgh8geWXtks_bnlnPCq9CMnWKuxlTY4_M44DCp0mMWmK_JqBfGSlnEt5d2iz2QThepUUgIg0XQxZsEPl0rsdpN0AXOXOc9bgTm-ApXmoAyBRC-dM_9k59MdxYAbipZGcwOc" ReportingName="" IgnoreHttpStatusCode="False">
+      <Headers>
+        <Header Name="Referer" Value="{{LocalTestSettings.MvcWebServer.url}}/" />
+      </Headers>
+      <ExtractionRules>
+        <ExtractionRule Classname="Microsoft.VisualStudio.TestTools.WebTesting.Rules.ExtractHiddenFields, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" VariableName="1" DisplayName="Extract Hidden Fields" Description="Extract all hidden fields from the response and place them into the test context.">
+          <RuleParameters>
+            <RuleParameter Name="Required" Value="True" />
+            <RuleParameter Name="HtmlDecode" Value="True" />
+          </RuleParameters>
+        </ExtractionRule>
+      </ExtractionRules>
+      <CorrelationExtractionRules>
+        <ExtractionRule Classname="Microsoft.VisualStudio.TestTools.WebTesting.Rules.ExtractText, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" VariableName="QueryStringParam1.returnurl" DisplayName="" Description="">
+          <RuleParameters>
+            <RuleParameter Name="StartsWith" Value="?returnurl=" />
+            <RuleParameter Name="EndsWith" Value="&quot;" />
+            <RuleParameter Name="Index" Value="0" />
+            <RuleParameter Name="IgnoreCase" Value="False" />
+            <RuleParameter Name="UseRegularExpression" Value="False" />
+            <RuleParameter Name="HtmlDecode" Value="True" />
+            <RuleParameter Name="Required" Value="False" />
+          </RuleParameters>
+        </ExtractionRule>
+      </CorrelationExtractionRules>
+    </Request>
+    <Request Method="POST" Guid="ec0952d9-c4c9-4cb9-beec-5a6fbd37a49e" Version="1.1" Url="{{LocalTestSettings.IdentityApiServer.url}}/Account/Login" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="{{LocalTestSettings.IdentityApiServer.url}}/connect/authorize/login?client_id={{LocalTestSettings.ClientId.value}}&amp;redirect_uri={{LocalTestSettings.MvcWebServer.url}}%2Fsignin-oidc&amp;response_type=code%20id_token&amp;scope=openid%20profile%20orders%20basket%20marketing&amp;response_mode=form_post&amp;nonce=636343249853641220.YTUyNDUwYmUtMDUwNi00YzViLWI4ZjItZGJhZDMwNmM1YjNlMDNhYjZmOGItZTk5YS00ZGEzLTg1Y2UtMDE3YTFjNWFlNjEw&amp;state=CfDJ8OCCkEVDCp5PrdqHtEgvt_mxNTrlU_psyuqjm9lkemQgTEZ-k_LUyThb4S21qtGcud5ajY1BOwzMlk0uvC0p8CB9hqSKaaDpjvspLXMLHjjsZNqjG3bdvnGSHp08_go1orFXlRLeC-8dNSlLlzynWJp9uK_WC56gjcJAiqQErMBVub5lacO-ph04so9LMkZ5KSFxP0qPlkYidej2RfOYkNFxzZnLVTs5ZB_l7IU3EPgh8geWXtks_bnlnPCq9CMnWKuxlTY4_M44DCp0mMWmK_JqBfGSlnEt5d2iz2QThepUUgIg0XQxZsEPl0rsdpN0AXOXOc9bgTm-ApXmoAyBRC-dM_9k59MdxYAbipZGcwOc" ReportingName="" IgnoreHttpStatusCode="False">
+      <Headers>
+        <Header Name="Referer" Value="{{LocalTestSettings.IdentityApiServer.url}}/account/login?returnUrl=%2Fconnect%2Fauthorize%2Flogin%3Fclient_id%3D{{LocalTestSettings.ClientId.value}}%26redirect_uri%3D{{LocalTestSettings.MvcWebServer.url}}%252Fsignin-oidc%26response_type%3Dcode%2520id_token%26scope%3Dopenid%2520profile%2520orders%2520basket%2520marketing%26response_mode%3Dform_post%26nonce%3D636343249853641220.YTUyNDUwYmUtMDUwNi00YzViLWI4ZjItZGJhZDMwNmM1YjNlMDNhYjZmOGItZTk5YS00ZGEzLTg1Y2UtMDE3YTFjNWFlNjEw%26state%3DCfDJ8OCCkEVDCp5PrdqHtEgvt_mxNTrlU_psyuqjm9lkemQgTEZ-k_LUyThb4S21qtGcud5ajY1BOwzMlk0uvC0p8CB9hqSKaaDpjvspLXMLHjjsZNqjG3bdvnGSHp08_go1orFXlRLeC-8dNSlLlzynWJp9uK_WC56gjcJAiqQErMBVub5lacO-ph04so9LMkZ5KSFxP0qPlkYidej2RfOYkNFxzZnLVTs5ZB_l7IU3EPgh8geWXtks_bnlnPCq9CMnWKuxlTY4_M44DCp0mMWmK_JqBfGSlnEt5d2iz2QThepUUgIg0XQxZsEPl0rsdpN0AXOXOc9bgTm-ApXmoAyBRC-dM_9k59MdxYAbipZGcwOc" />
+      </Headers>
+      <ExtractionRules>
+        <ExtractionRule Classname="Microsoft.VisualStudio.TestTools.WebTesting.Rules.ExtractHiddenFields, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" VariableName="1" DisplayName="Extract Hidden Fields" Description="Extract all hidden fields from the response and place them into the test context.">
+          <RuleParameters>
+            <RuleParameter Name="Required" Value="True" />
+            <RuleParameter Name="HtmlDecode" Value="True" />
+          </RuleParameters>
+        </ExtractionRule>
+      </ExtractionRules>
+      <QueryStringParameters>
+        <QueryStringParameter Name="returnurl" Value="%2Fconnect%2Fauthorize%2Flogin%3Fclient_id%3D{{LocalTestSettings.ClientId.value}}%26redirect_uri%3D{{LocalTestSettings.MvcWebServer.url}}%252Fsignin-oidc%26response_type%3Dcode%2520id_token%26scope%3Dopenid%2520profile%2520orders%2520basket%2520marketing%26response_mode%3Dform_post%26nonce%3D636343249853641220.YTUyNDUwYmUtMDUwNi00YzViLWI4ZjItZGJhZDMwNmM1YjNlMDNhYjZmOGItZTk5YS00ZGEzLTg1Y2UtMDE3YTFjNWFlNjEw%26state%3DCfDJ8OCCkEVDCp5PrdqHtEgvt_mxNTrlU_psyuqjm9lkemQgTEZ-k_LUyThb4S21qtGcud5ajY1BOwzMlk0uvC0p8CB9hqSKaaDpjvspLXMLHjjsZNqjG3bdvnGSHp08_go1orFXlRLeC-8dNSlLlzynWJp9uK_WC56gjcJAiqQErMBVub5lacO-ph04so9LMkZ5KSFxP0qPlkYidej2RfOYkNFxzZnLVTs5ZB_l7IU3EPgh8geWXtks_bnlnPCq9CMnWKuxlTY4_M44DCp0mMWmK_JqBfGSlnEt5d2iz2QThepUUgIg0XQxZsEPl0rsdpN0AXOXOc9bgTm-ApXmoAyBRC-dM_9k59MdxYAbipZGcwOc" RecordedValue="%2Fconnect%2Fauthorize%2Flogin%3Fclient_id%3D{{LocalTestSettings.ClientId.value}}%26redirect_uri%3D{{LocalTestSettings.MvcWebServer.url}}%252Fsignin-oidc%26response_type%3Dcode%2520id_token%26scope%3Dopenid%2520profile%2520orders%2520basket%2520marketing%26response_mode%3Dform_post%26nonce%3D636343249853641220.YTUyNDUwYmUtMDUwNi00YzViLWI4ZjItZGJhZDMwNmM1YjNlMDNhYjZmOGItZTk5YS00ZGEzLTg1Y2UtMDE3YTFjNWFlNjEw%26state%3DCfDJ8OCCkEVDCp5PrdqHtEgvt_mxNTrlU_psyuqjm9lkemQgTEZ-k_LUyThb4S21qtGcud5ajY1BOwzMlk0uvC0p8CB9hqSKaaDpjvspLXMLHjjsZNqjG3bdvnGSHp08_go1orFXlRLeC-8dNSlLlzynWJp9uK_WC56gjcJAiqQErMBVub5lacO-ph04so9LMkZ5KSFxP0qPlkYidej2RfOYkNFxzZnLVTs5ZB_l7IU3EPgh8geWXtks_bnlnPCq9CMnWKuxlTY4_M44DCp0mMWmK_JqBfGSlnEt5d2iz2QThepUUgIg0XQxZsEPl0rsdpN0AXOXOc9bgTm-ApXmoAyBRC-dM_9k59MdxYAbipZGcwOc" CorrelationBinding="{{QueryStringParam1.returnurl}}" UrlEncode="False" UseToGroupResults="False" />
+      </QueryStringParameters>
+      <FormPostHttpBody>
+        <FormPostParameter Name="ReturnUrl" Value="{{$HIDDEN1.ReturnUrl}}" RecordedValue="/connect/authorize/login?client_id={{LocalTestSettings.ClientId.value}}&amp;redirect_uri={{LocalTestSettings.MvcWebServer.url}}%2Fsignin-oidc&amp;response_type=code%20id_token&amp;scope=openid%20profile%20orders%20basket%20marketing&amp;response_mode=form_post&amp;nonce=636343249853641220.YTUyNDUwYmUtMDUwNi00YzViLWI4ZjItZGJhZDMwNmM1YjNlMDNhYjZmOGItZTk5YS00ZGEzLTg1Y2UtMDE3YTFjNWFlNjEw&amp;state=CfDJ8OCCkEVDCp5PrdqHtEgvt_mxNTrlU_psyuqjm9lkemQgTEZ-k_LUyThb4S21qtGcud5ajY1BOwzMlk0uvC0p8CB9hqSKaaDpjvspLXMLHjjsZNqjG3bdvnGSHp08_go1orFXlRLeC-8dNSlLlzynWJp9uK_WC56gjcJAiqQErMBVub5lacO-ph04so9LMkZ5KSFxP0qPlkYidej2RfOYkNFxzZnLVTs5ZB_l7IU3EPgh8geWXtks_bnlnPCq9CMnWKuxlTY4_M44DCp0mMWmK_JqBfGSlnEt5d2iz2QThepUUgIg0XQxZsEPl0rsdpN0AXOXOc9bgTm-ApXmoAyBRC-dM_9k59MdxYAbipZGcwOc" CorrelationBinding="" UrlEncode="True" />
+        <FormPostParameter Name="Email" Value="{{LocalTestSettings.User.email}}" RecordedValue="demouser@microsoft.com" CorrelationBinding="" UrlEncode="True" />
+        <FormPostParameter Name="Password" Value="{{LocalTestSettings.User.password}}" RecordedValue="Pass@word1" CorrelationBinding="" UrlEncode="True" />
+        <FormPostParameter Name="__RequestVerificationToken" Value="{{$HIDDEN1.__RequestVerificationToken}}" RecordedValue="CfDJ8E45n9W-gMZBokgVWyQR_08Qeq0ca2d9G9yE1z_b-QeMrlEjNz483ZRTkeAN5GAkwdOJTGGhV8leGrhDbzsHrv6vEOhH5z96Q-VR7z1UX6RqYZTrwFqAiNyVxZORBlZojN-qEldZm0MqnvKFdE_S_qE" CorrelationBinding="" UrlEncode="True" />
+        <FormPostParameter Name="RememberMe" Value="{{$HIDDEN1.RememberMe}}" RecordedValue="false" CorrelationBinding="" UrlEncode="True" />
+      </FormPostHttpBody>
+    </Request>
+    <Request Method="POST" Guid="74f12fc6-ad38-444b-89e1-2641b74e75d5" Version="1.1" Url="{{LocalTestSettings.MvcWebServer.url}}/signin-oidc" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="{{LocalTestSettings.MvcWebServer.url}}/" ReportingName="" IgnoreHttpStatusCode="False">
+      <Headers>
+        <Header Name="Referer" Value="{{LocalTestSettings.IdentityApiServer.url}}/connect/authorize/login?client_id={{LocalTestSettings.ClientId.value}}&amp;redirect_uri={{LocalTestSettings.MvcWebServer.url}}%2Fsignin-oidc&amp;response_type=code%20id_token&amp;scope=openid%20profile%20orders%20basket%20marketing&amp;response_mode=form_post&amp;nonce=636343249853641220.YTUyNDUwYmUtMDUwNi00YzViLWI4ZjItZGJhZDMwNmM1YjNlMDNhYjZmOGItZTk5YS00ZGEzLTg1Y2UtMDE3YTFjNWFlNjEw&amp;state=CfDJ8OCCkEVDCp5PrdqHtEgvt_mxNTrlU_psyuqjm9lkemQgTEZ-k_LUyThb4S21qtGcud5ajY1BOwzMlk0uvC0p8CB9hqSKaaDpjvspLXMLHjjsZNqjG3bdvnGSHp08_go1orFXlRLeC-8dNSlLlzynWJp9uK_WC56gjcJAiqQErMBVub5lacO-ph04so9LMkZ5KSFxP0qPlkYidej2RfOYkNFxzZnLVTs5ZB_l7IU3EPgh8geWXtks_bnlnPCq9CMnWKuxlTY4_M44DCp0mMWmK_JqBfGSlnEt5d2iz2QThepUUgIg0XQxZsEPl0rsdpN0AXOXOc9bgTm-ApXmoAyBRC-dM_9k59MdxYAbipZGcwOc" />
+      </Headers>
+      <ExtractionRules>
+        <ExtractionRule Classname="Microsoft.VisualStudio.TestTools.WebTesting.Rules.ExtractHiddenFields, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" VariableName="1" DisplayName="Extract Hidden Fields" Description="Extract all hidden fields from the response and place them into the test context.">
+          <RuleParameters>
+            <RuleParameter Name="Required" Value="True" />
+            <RuleParameter Name="HtmlDecode" Value="True" />
+          </RuleParameters>
+        </ExtractionRule>
+      </ExtractionRules>
+      <FormPostHttpBody>
+        <FormPostParameter Name="code" Value="{{$HIDDEN1.code}}" RecordedValue="f1f14999bc37425d1c0b23988ba9ce3bad0768ab1bc485a6691f90f6405baf8b" CorrelationBinding="" UrlEncode="True" />
+        <FormPostParameter Name="id_token" Value="{{$HIDDEN1.id_token}}" RecordedValue="eyJhbGciOiJSUzI1NiIsImtpZCI6IjZCN0FDQzUyMDMwNUJGREI0RjcyNTJEQUVCMjE3N0NDMDkxRkFBRTEiLCJ0eXAiOiJKV1QiLCJ4NXQiOiJhM3JNVWdNRnY5dFBjbExhNnlGM3pBa2ZxdUUifQ.eyJuYmYiOjE0OTg3MjgxOTgsImV4cCI6MTQ5ODcyODQ5OCwiaXNzIjoibnVsbCIsImF1ZCI6Im12YyIsIm5vbmNlIjoiNjM2MzQzMjQ5ODUzNjQxMjIwLllUVXlORFV3WW1VdE1EVXdOaTAwWXpWaUxXSTRaakl0WkdKaFpETXdObU0xWWpObE1ETmhZalptT0dJdFpUazVZUzAwWkdFekxUZzFZMlV0TURFM1lURmpOV0ZsTmpFdyIsImlhdCI6MTQ5ODcyODE5OCwiY19oYXNoIjoiOFlHS0VoVWExQTBpWm94bE5XS254USIsInNpZCI6ImZlODA0ZmFjZTJkZmUxYzFjOGMyZDNhN2RhZjQxNzY3Iiwic3ViIjoiNjNmZGY4YzktYmNjNS00NjJmLThjOGUtZDMwODM3OGNmNmUxIiwiYXV0aF90aW1lIjoxNDk4NzI4MTk4LCJpZHAiOiJsb2NhbCIsImFtciI6WyJwd2QiXX0.dAE9O5kK5pAULXbZD3y3_FQlpRdk5NOYirRWjlUCWHZPO_cX3hV4wnczmL4OFTPshFTOpYV3V-4QZcaKG2hibxTYBs9NescqqbymZMAm6Wj0UTlfv9BwbxlxDrCLJyAsbPbw78DsP1FWlYhNv6QL5sdSanzjhW-1bsjwGqRSPTFkWdfVQetjK0IL2TkIeeTtOvIR_HR6is2KfY90yBzWThA1p8OnrZCcYwRmp0B7E4QdrkG8sRxe3jKwPRUJVo2tzyqelOQQU1SFQrPERyssdtQXyAHwLvTwsumiMELDNagTaXS57LZD4h38MxDbGub5uqH3ZI_bsgxccVpfT9dNtg" CorrelationBinding="" UrlEncode="True" />
+        <FormPostParameter Name="scope" Value="{{$HIDDEN1.scope}}" RecordedValue="openid profile orders basket marketing" CorrelationBinding="" UrlEncode="True" />
+        <FormPostParameter Name="state" Value="{{$HIDDEN1.state}}" RecordedValue="CfDJ8OCCkEVDCp5PrdqHtEgvt_mxNTrlU_psyuqjm9lkemQgTEZ-k_LUyThb4S21qtGcud5ajY1BOwzMlk0uvC0p8CB9hqSKaaDpjvspLXMLHjjsZNqjG3bdvnGSHp08_go1orFXlRLeC-8dNSlLlzynWJp9uK_WC56gjcJAiqQErMBVub5lacO-ph04so9LMkZ5KSFxP0qPlkYidej2RfOYkNFxzZnLVTs5ZB_l7IU3EPgh8geWXtks_bnlnPCq9CMnWKuxlTY4_M44DCp0mMWmK_JqBfGSlnEt5d2iz2QThepUUgIg0XQxZsEPl0rsdpN0AXOXOc9bgTm-ApXmoAyBRC-dM_9k59MdxYAbipZGcwOc" CorrelationBinding="" UrlEncode="True" />
+        <FormPostParameter Name="session_state" Value="{{$HIDDEN1.session_state}}" RecordedValue="PmZd-SAqxZ0h6PKNWeRJUC16-NBFsf3VpywSaWV_gt8.09a9ea23704b3fe7c0fe1f4234a2c92b" CorrelationBinding="" UrlEncode="True" />
+      </FormPostHttpBody>
+    </Request>
+  </Items>
+  <DataSources>
+    <DataSource Name="LocalTestSettings" Provider="Microsoft.VisualStudio.TestTools.DataSource.XML" Connection="|DataDirectory|\..\app.config">
+      <Tables>
+        <DataSourceTable Name="MvcWebServer" SelectColumns="SelectAllColumns" AccessMethod="Sequential" />
+        <DataSourceTable Name="IdentityApiServer" SelectColumns="SelectAllColumns" AccessMethod="Sequential" />
+        <DataSourceTable Name="User" SelectColumns="SelectAllColumns" AccessMethod="Sequential" />
+        <DataSourceTable Name="ClientId" SelectColumns="SelectAllColumns" AccessMethod="Sequential" />
+      </Tables>
+    </DataSource>
+  </DataSources>
+</WebTest>

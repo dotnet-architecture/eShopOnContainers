@@ -1,53 +1,41 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using StackExchange.Redis;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using StackExchange.Redis;
-using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
-using Microsoft.Extensions.Logging;
-using System.Net;
 
 namespace Microsoft.eShopOnContainers.Services.Basket.API.Model
 {
     public class RedisBasketRepository : IBasketRepository
     {
-        private ILogger<RedisBasketRepository> _logger;
-        private BasketSettings _settings;
+        private readonly ILogger<RedisBasketRepository> _logger;
 
-        private ConnectionMultiplexer _redis;
+        private readonly ConnectionMultiplexer _redis;
+        private readonly IDatabase _database;
 
-
-        public RedisBasketRepository(IOptionsSnapshot<BasketSettings> options, ILoggerFactory loggerFactory)
+        public RedisBasketRepository(ILoggerFactory loggerFactory, ConnectionMultiplexer redis)
         {
-            _settings = options.Value;
             _logger = loggerFactory.CreateLogger<RedisBasketRepository>();
-
+            _redis = redis;
+            _database = redis.GetDatabase();
         }
 
         public async Task<bool> DeleteBasketAsync(string id)
         {
-            var database = await GetDatabase();
-            return await database.KeyDeleteAsync(id.ToString());
+            return await _database.KeyDeleteAsync(id);
         }
 
-        public async Task<IEnumerable<string>> GetUsers()
+        public IEnumerable<string> GetUsers()
         {
-            var server = await GetServer();
-            
-            IEnumerable<RedisKey> data = server.Keys();
-            if (data == null)
-            {
-                return null;
-            }
-            return data.Select(k => k.ToString());
+            var server = GetServer();          
+            var data = server.Keys();
+            return data?.Select(k => k.ToString());
         }
 
         public async Task<CustomerBasket> GetBasketAsync(string customerId)
         {
-            var database = await GetDatabase();
-
-            var data = await database.StringGetAsync(customerId.ToString());
+            var data = await _database.StringGetAsync(customerId);
             if (data.IsNullOrEmpty)
             {
                 return null;
@@ -58,49 +46,22 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Model
 
         public async Task<CustomerBasket> UpdateBasketAsync(CustomerBasket basket)
         {
-            var database = await GetDatabase();
-
-            var created = await database.StringSetAsync(basket.BuyerId, JsonConvert.SerializeObject(basket));
+            var created = await _database.StringSetAsync(basket.BuyerId, JsonConvert.SerializeObject(basket));
             if (!created)
             {
-                _logger.LogInformation("Problem persisting the item");
+                _logger.LogInformation("Problem occur persisting the item.");
                 return null;
             }
 
-            _logger.LogInformation("basket item persisted succesfully");
+            _logger.LogInformation("Basket item persisted succesfully.");
+
             return await GetBasketAsync(basket.BuyerId);
         }
 
-        private async Task<IDatabase> GetDatabase()
+        private IServer GetServer()
         {
-            if (_redis == null)
-            {
-                await ConnectToRedisAsync();
-            }
-
-            return _redis.GetDatabase();
-        }
-
-        private async Task<IServer> GetServer()
-        {
-            if (_redis == null)
-            {
-                await ConnectToRedisAsync();
-            }
             var endpoint = _redis.GetEndPoints();
-
             return _redis.GetServer(endpoint.First());
         }
-
-        private async Task ConnectToRedisAsync()
-        {
-            //TODO: Need to make this more robust. Also want to understand why the static connection method cannot accept dns names.
-            var ips = await Dns.GetHostAddressesAsync(_settings.ConnectionString);
-            _logger.LogInformation($"Connecting to database {_settings.ConnectionString} at IP {ips.First().ToString()}");
-            _redis = await ConnectionMultiplexer.ConnectAsync(ips.First().ToString());
-        }
-
-        
     }
 }
-

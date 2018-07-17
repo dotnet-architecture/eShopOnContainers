@@ -1,4 +1,6 @@
-﻿using eShopOnContainers.Core.Services.RequestProvider;
+﻿using eShopOnContainers.Core.Models.Basket;
+using eShopOnContainers.Core.Models.Orders;
+using eShopOnContainers.Core.Services.RequestProvider;
 using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
@@ -9,28 +11,23 @@ namespace eShopOnContainers.Core.Services.Order
     {
         private readonly IRequestProvider _requestProvider;
 
+        private const string ApiUrlBase = "mobileshoppingapigw/api/v1/o/orders";
+
         public OrderService(IRequestProvider requestProvider)
         {
             _requestProvider = requestProvider;
         }
 
-        public async Task CreateOrderAsync(Models.Orders.Order newOrder, string token)
+        public Task CreateOrderAsync(Models.Orders.Order newOrder, string token)
         {
-            UriBuilder builder = new UriBuilder(GlobalSetting.Instance.OrdersEndpoint);
-
-            builder.Path = "api/v1/orders/new";
-
-            string uri = builder.ToString();
-
-            await _requestProvider.PostAsync(uri, newOrder, token, "x-requestid");
+            throw new Exception("Only available in Mock Services!");
         }
 
         public async Task<ObservableCollection<Models.Orders.Order>> GetOrdersAsync(string token)
         {
-        
-            UriBuilder builder = new UriBuilder(GlobalSetting.Instance.OrdersEndpoint);
+            UriBuilder builder = new UriBuilder(GlobalSetting.Instance.BaseEndpoint);
 
-            builder.Path = "api/v1/orders";
+            builder.Path = ApiUrlBase;
 
             string uri = builder.ToString();
 
@@ -38,16 +35,16 @@ namespace eShopOnContainers.Core.Services.Order
                 await _requestProvider.GetAsync<ObservableCollection<Models.Orders.Order>>(uri, token);
 
             return orders;
-            
+
         }
 
         public async Task<Models.Orders.Order> GetOrderAsync(int orderId, string token)
         {
             try
             {
-                UriBuilder builder = new UriBuilder(GlobalSetting.Instance.OrdersEndpoint);
+                UriBuilder builder = new UriBuilder(GlobalSetting.Instance.BaseEndpoint);
 
-                builder.Path = string.Format("api/v1/orders/{0}", orderId);
+                builder.Path = $"{ApiUrlBase}/{orderId}";
 
                 string uri = builder.ToString();
 
@@ -62,25 +59,46 @@ namespace eShopOnContainers.Core.Services.Order
             }
         }
 
-        public async Task<ObservableCollection<Models.Orders.CardType>> GetCardTypesAsync(string token)
+        public BasketCheckout MapOrderToBasket(Models.Orders.Order order)
         {
+            return new BasketCheckout()
+            {
+                CardExpiration = order.CardExpiration,
+                CardHolderName = order.CardHolderName,
+                CardNumber = order.CardNumber,
+                CardSecurityNumber = order.CardSecurityNumber,
+                CardTypeId = order.CardTypeId,
+                City = order.ShippingCity,
+                State = order.ShippingState,
+                Country = order.ShippingCountry,
+                ZipCode = order.ShippingZipCode,
+                Street = order.ShippingStreet
+            };
+        }
+
+        public async Task<bool> CancelOrderAsync(int orderId, string token)
+        {
+            UriBuilder builder = new UriBuilder(GlobalSetting.Instance.BaseEndpoint);
+
+            builder.Path = $"{ApiUrlBase}/cancel";
+
+            var cancelOrderCommand = new CancelOrderCommand(orderId);
+
+            string uri = builder.ToString();
+            var header = "x-requestid";
+
             try
             {
-                UriBuilder builder = new UriBuilder(GlobalSetting.Instance.OrdersEndpoint);
-
-                builder.Path = "api/v1/orders/cardtypes";
-
-                string uri = builder.ToString();
-
-                ObservableCollection<Models.Orders.CardType> cardTypes =
-                    await _requestProvider.GetAsync<ObservableCollection<Models.Orders.CardType>>(uri, token);
-
-                return cardTypes;
+                await _requestProvider.PutAsync(uri, cancelOrderCommand, token, header);
             }
-            catch
+            //If the status of the order has changed before to click cancel button, we will get
+            //a BadRequest HttpStatus
+            catch (HttpRequestExceptionEx ex) when (ex.HttpCode == System.Net.HttpStatusCode.BadRequest)
             {
-                return new ObservableCollection<Models.Orders.CardType>();
+                return false;
             }
+
+            return true;
         }
     }
 }

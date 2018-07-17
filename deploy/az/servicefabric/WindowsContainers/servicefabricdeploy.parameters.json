@@ -1,0 +1,100 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "prefix": {
+            "value": "qa"
+        },
+        "clusterName": {
+            "value": "-eshop-sfwin-cluster"
+        },
+        "clusterLocation": {
+            "value": "westus"
+        },
+        "computeLocation": {
+            "value": "westus"
+        },
+        "adminUserName": {
+            "value": "testedu"
+        },
+        "adminPassword": {
+            "value": "testedu1234!"
+        },
+        "nicName": {
+            "value": "NIC-eshopsfwin"
+        },
+        "publicIPAddressName": {
+            "value": "eshopsfwin-PubIP"
+        },
+        "dnsName": {
+            "value": "testedu-eshop-sfwin-cluster"
+        },
+        "virtualNetworkName": {
+            "value": "VNet-eshopsfwin"
+        },
+        "lbName": {
+            "value": "LB-eshopsfwin"
+        },
+        "lbIPName": {
+            "value": "LBIP-eshopsfwin"
+        },
+        "applicationDiagnosticsStorageAccountName": {
+            "value": "sfdiageshopw"
+        },
+        "supportLogStorageAccountName": {
+            "value": "sflogeshopw"
+        },
+        "vmImageSku": {
+            "value": "2016-Datacenter-with-Containers"
+        },
+        "nt0ephemeralStartPort": {
+            "value": 49152
+        },
+        "nt0ephemeralEndPort": {
+            "value": 65534
+        },
+        "nt0applicationStartPort": {
+            "value": 20000
+        },
+        "nt0applicationEndPort": {
+            "value": 30000
+        },
+        "nt0fabricTcpGatewayPort": {
+            "value": 19000
+        },
+        "nt0fabricHttpGatewayPort": {
+            "value": 19080
+        },
+        "nt0reverseProxyEndpointPort": {
+            "value": 19081
+        },
+        "webMvcHttpPort": {
+            "value": 5100
+        },
+        "webSpaHttpPort": {
+            "value": 5104
+        },
+        "webStatusHttpPort": {
+            "value": 5107
+        },
+        "IdSrvHttpRule": {
+            "value": 5105
+        },
+        "BasketApiHttpRule": {
+            "value": 5103
+        },
+        "CatalogApiHttpRule": {
+            "value": 5101
+        },
+        "OrderingApiHttpRule": {
+            "value": 5102
+        },
+        "MarketingApiHttpRule": {
+            "value": 5110
+        },
+        "LocationsApiHttpRule": {
+            "value": 5109
+        }
+    }
+}
+

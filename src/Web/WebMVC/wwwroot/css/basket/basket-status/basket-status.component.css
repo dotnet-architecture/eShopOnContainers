@@ -1,38 +1,54 @@
-.esh-basketstatus {
-    cursor: pointer;
-    display: inline-block;
-    float: right;
-    position: relative;
-    transition: all 0.35s;
+﻿.esh-basketstatus {
+  cursor: pointer;
+  display: inline-block;
+  float: right;
+  position: relative;
+  transition: all 0.35s;
 }
 
-    .esh-basketstatus.is-disabled {
-        opacity: .5;
-        pointer-events: none;
-    }
+.esh-basketstatus.is-disabled {
+  opacity: .5;
+  pointer-events: none;
+}
 
 .esh-basketstatus-image {
-    height: 36px;
-    margin-top: .5rem;
+  height: 36px;
+  margin-top: .5rem;
 }
 
 .esh-basketstatus-badge {
-    background-color: #83D01B;
-    border-radius: 50%;
-    color: #FFFFFF;
-    display: block;
-    height: 1.5rem;
-    left: 50%;
-    position: absolute;
-    text-align: center;
-    top: 0;
-    transform: translateX(-38%);
-    transition: all 0.35s;
-    width: 1.5rem;
+  background-color: #83D01B;
+  border-radius: 50%;
+  color: #FFFFFF;
+  display: block;
+  height: 1.5rem;
+  left: 50%;
+  position: absolute;
+  text-align: center;
+  top: 0;
+  transform: translateX(-38%);
+  transition: all 0.35s;
+  width: 1.5rem;
+}
+
+.esh-basketstatus-badge-inoperative {
+  background-color: #ff0000;
+  border-radius: 50%;
+  color: #FFFFFF;
+  display: block;
+  height: 1.5rem;
+  left: 50%;
+  position: absolute;
+  text-align: center;
+  top: 0;
+  transform: translateX(-38%);
+  transition: all 0.35s;
+  width: 1.5rem;
 }
 
 .esh-basketstatus:hover .esh-basketstatus-badge {
-    background-color: transparent;
-    color: #75b918;
-    transition: all 0.35s;
+  background-color: transparent;
+  color: #75b918;
+  transition: all 0.35s;
 }
+

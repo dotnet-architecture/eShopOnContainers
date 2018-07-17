@@ -1,0 +1,83 @@
+version: '3.4'
+
+services:
+  basket.api:
+    image: eshop/basket.api
+    depends_on:
+      - basket.data
+      - identity.api
+      - rabbitmq
+
+  catalog.api:
+    image: eshop/catalog.api
+    depends_on:
+      - sql.data
+      - rabbitmq
+
+  identity.api:
+    image: eshop/identity.api
+    depends_on:
+      - sql.data
+
+  ordering.api:
+    image: eshop/ordering.api
+    depends_on:
+      - sql.data
+      - rabbitmq
+
+  marketing.api:
+    image: eshop/marketing.api   
+    depends_on:
+      - sql.data
+      - nosql.data
+      - identity.api
+      - rabbitmq      
+
+  webspa:
+    image: eshop/webspa
+    depends_on:
+      - catalog.api
+      - ordering.api
+      - identity.api
+      - basket.api
+      - marketing.api
+
+  webmvc:
+    image: eshop/webmvc  
+    depends_on:
+      - catalog.api
+      - ordering.api
+      - identity.api
+      - basket.api
+      - marketing.api
+
+  webstatus:
+    image: eshop/webstatus
+    
+  payment.api:
+    image: eshop/payment.api
+    depends_on:
+      - rabbitmq         
+
+  locations.api:
+    image: eshop/locations.api
+    depends_on:
+      - nosql.data
+      - rabbitmq
+
+  sql.data:
+    image: microsoft/mssql-server-linux:2017-latest
+  
+  nosql.data:
+    image: mongo
+  
+  basket.data:
+    image: redis
+    ports:
+      - "6379:6379"
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+

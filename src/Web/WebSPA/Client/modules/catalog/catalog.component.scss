@@ -4,7 +4,7 @@
     $banner-height: 260px;
 
     &-hero {
-        background-image: url('../../images/main_banner.png');
+        background-image: url($image-main_banner);
         background-size: cover;
         height: $banner-height;
         width: 100%;
@@ -61,7 +61,7 @@
         }
 
         &::after {
-            background-image: url('../../images/arrow-down.png');
+            background-image: url($image-arrow_down);
             content: '';
             height: 7px; //png height
             position: absolute;
@@ -150,5 +150,9 @@
         &::before {
             content: '$';
         }
+    }
+
+    &-alert {
+        margin-top: 10px;
     }
 }

@@ -4,6 +4,7 @@ import { Response } from '@angular/http';
 import { DataService } from '../shared/services/data.service';
 import { IOrder } from '../shared/models/order.model';
 import { IOrderItem } from '../shared/models/orderItem.model';
+import { IOrderDetail } from "../shared/models/order-detail.model";
 import { SecurityService } from '../shared/services/security.service';
 import { ConfigurationService } from '../shared/services/configuration.service';
 import { BasketWrapperService } from '../shared/services/basket.wrapper.service';
@@ -21,35 +22,29 @@ export class OrdersService {
 
     constructor(private service: DataService, private basketService: BasketWrapperService, private identityService: SecurityService, private configurationService: ConfigurationService) {
         if (this.configurationService.isReady)
-            this.ordersUrl = this.configurationService.serverSettings.orderingUrl;
+            this.ordersUrl = this.configurationService.serverSettings.purchaseUrl;
         else
-            this.configurationService.settingsLoaded$.subscribe(x => this.ordersUrl = this.configurationService.serverSettings.orderingUrl);
+            this.configurationService.settingsLoaded$.subscribe(x => this.ordersUrl = this.configurationService.serverSettings.purchaseUrl);
 
     }
 
     getOrders(): Observable<IOrder[]> {
-        let url = this.ordersUrl + '/api/v1/orders';
+        let url = this.ordersUrl + '/api/v1/o/orders';
 
         return this.service.get(url).map((response: Response) => {
             return response.json();
         });
     }
 
-    getOrder(id: number): Observable<IOrder> {
-        let url = this.ordersUrl + '/api/v1/orders/' + id;
+    getOrder(id: number): Observable<IOrderDetail> {
+        let url = this.ordersUrl + '/api/v1/o/orders/' + id;
 
         return this.service.get(url).map((response: Response) => {
             return response.json();
         });
     }
 
-    postOrder(item): Observable<boolean> {
-        return this.service.postWithId(this.ordersUrl + '/api/v1/orders/new', item).map((response: Response) => {
-            return true;
-        });
-    }
-
-    mapBasketAndIdentityInfoNewOrder(): IOrder {
+    mapOrderAndIdentityInfoNewOrder(): IOrder {
         let order = <IOrder>{};
         let basket = this.basketService.basket;
         let identityInfo = this.identityService.UserData;

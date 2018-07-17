@@ -20,5 +20,10 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure.Servi
         {
             return _context.HttpContext.User.FindFirst("sub").Value;
         }
+
+        public string GetUserName()
+        {
+            return _context.HttpContext.User.Identity.Name;
+        }
     }
 }

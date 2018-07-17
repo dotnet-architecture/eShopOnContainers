@@ -7,7 +7,10 @@
 }
 
 <div class="esh-orders">
-    @Html.Partial("_Header", new Header() { Controller = "Catalog", Text = "Back to catalog" })
+    @Html.Partial("_Header", new List<Header>() {
+new Header() { Controller = "Catalog", Text = "Back to catalog" },
+new Header() { Text = " / " },
+new Header() { Controller = "OrderManagement", Text = "Orders Management" } })
 
     <div class="container">
         <article class="esh-orders-titles row">
@@ -17,18 +20,30 @@
             <section class="esh-orders-title col-xs-2">Status</section>
             <section class="esh-orders-title col-xs-2"></section>
         </article>
-
-        @foreach (var item in Model)
+        @if (Model != null && Model.Any())
         {
-            <article class="esh-orders-items row">
-                <section class="esh-orders-item col-xs-2">@Html.DisplayFor(modelItem => item.OrderNumber)</section>
-                <section class="esh-orders-item col-xs-4">@Html.DisplayFor(modelItem => item.Date)</section>
-                <section class="esh-orders-item col-xs-2">$ @Html.DisplayFor(modelItem => item.Total)</section>
-                <section class="esh-orders-item col-xs-2">@Html.DisplayFor(modelItem => item.Status)</section>
-                <section class="esh-orders-item col-xs-2">
-                    <a class="esh-orders-link" asp-controller="Order" asp-action="Detail" asp-route-orderId="@item.OrderNumber">Detail</a>
-                </section>
-            </article>
+            foreach (var item in Model)
+            {
+                <article class="esh-orders-items row">
+                    <section class="esh-orders-item col-xs-2">@Html.DisplayFor(modelItem => item.OrderNumber)</section>
+                    <section class="esh-orders-item col-xs-4">@Html.DisplayFor(modelItem => item.Date)</section>
+                    <section class="esh-orders-item col-xs-2">$ @Html.DisplayFor(modelItem => item.Total)</section>
+                    <section class="esh-orders-item col-xs-2">@Html.DisplayFor(modelItem => item.Status)</section>
+                    <section class="esh-orders-item col-xs-1">
+                        <a class="esh-orders-link" asp-controller="Order" asp-action="Detail" asp-route-orderId="@item.OrderNumber">Detail</a>
+                    </section>
+                    <section class="esh-orders-item col-xs-1">
+                        @if (item.Status.ToLower() == "submitted")
+                        {
+                            <a class="esh-orders-link" asp-controller="Order" asp-action="cancel" asp-route-orderId="@item.OrderNumber">Cancel</a>
+                        }
+                    </section>
+                </article>
+            }
         }
     </div>
 </div>
+
+
+
+
