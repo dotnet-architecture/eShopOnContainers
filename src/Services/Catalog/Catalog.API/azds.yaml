@@ -1,0 +1,36 @@
+kind: helm-release
+apiVersion: 1.0
+build:
+  context: ..\..\..\..
+  dockerfile: Dockerfile
+install:
+  chart: charts/catalogapi
+  values:
+  - values.dev.yaml?
+  - secrets.dev.yaml?
+  set:
+    image:
+      tag: $(tag)
+      pullPolicy: Never
+    disableProbes: true
+    ingress:
+      hosts:
+      # This expands to [space.s.]catalogapi.<guid>.<region>.aksapp.io
+      - $(spacePrefix)catalogapi$(hostSuffix)
+configurations:
+  develop:
+    build:
+      dockerfile: Dockerfile.develop
+      useGitIgnore: true
+    container:
+      syncTarget: /src
+      sync:
+      - "**/Pages/**"
+      - "**/Views/**"
+      - "**/wwwroot/**"
+      - "!**/*.{sln,csproj}"
+      command:  [dotnet, run, --no-restore, --no-build, --no-launch-profile, -c, "${Configuration:-Debug}"]
+      iterate:
+        processesToKill: [dotnet, vsdbg]
+        buildCommands:
+        - [dotnet, build, --no-restore, -c, "${Configuration:-Debug}"]

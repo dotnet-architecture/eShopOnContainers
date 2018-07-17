@@ -1,0 +1,16 @@
+FROM microsoft/dotnet:2.1-sdk
+ENV ASPNETCORE_ENVIRONMENT=Development
+ENV DOTNET_USE_POLLING_FILE_WATCHER=true
+
+EXPOSE 80
+
+WORKDIR /src
+COPY ["eShopOnContainers-ServicesAndWebApps.sln", "./"]
+COPY ["src/ApiGateways/Mobile.Bff.Shopping/aggregator/Mobile.Shopping.HttpAggregator.csproj", "src/ApiGateways/Mobile.Bff.Shopping/aggregator/"]
+
+RUN dotnet restore -nowarn:msb3202,nu1503
+COPY . .
+WORKDIR "/src/src/ApiGateways/Mobile.Bff.Shopping/aggregator"
+RUN dotnet build "Mobile.Shopping.HttpAggregator.csproj"
+
+CMD ["dotnet", "run", "--no-restore", "--no-build", "--no-launch-profile"]
