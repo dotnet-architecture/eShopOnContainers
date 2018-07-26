@@ -1,4 +1,4 @@
-# This heml values file defines app-based settings
+# This helm values file defines app-based settings
 # Charts use those values, so this file **MUST** be included in all chart releases
 
 
