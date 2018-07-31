@@ -29,10 +29,14 @@ export class CatalogService {
 
     getCatalog(pageIndex: number, pageSize: number, brand: number, type: number): Observable<ICatalog> {
         let url = this.catalogUrl;
-        if (brand || type) {
-            url = this.catalogUrl + '/type/' + ((type) ? type.toString() : 'null') + '/brand/' + ((brand) ? brand.toString() : 'null');
-        }
 
+        if (type) {
+            url = this.catalogUrl + '/type/' + type.toString() + '/brand/' + ((brand) ? brand.toString() : '');
+        }
+        else if (brand) {
+            url = this.catalogUrl + '/type/all' + '/brand/' + ((brand) ? brand.toString() : '');
+        }
+      
         url = url + '?pageIndex=' + pageIndex + '&pageSize=' + pageSize;
 
         return this.service.get(url).map((response: Response) => {
