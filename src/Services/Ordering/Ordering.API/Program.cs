@@ -38,12 +38,10 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .ConfigureAppConfiguration((builderContext, config) =>
                 {
-                    config.AddJsonFile("settings.json");
-
                     var builtConfig = config.Build();
 
                     var configurationBuilder = new ConfigurationBuilder();
-
+                    
                     if (Convert.ToBoolean(builtConfig["UseVault"]))
                     {
                         configurationBuilder.AddAzureKeyVault(
