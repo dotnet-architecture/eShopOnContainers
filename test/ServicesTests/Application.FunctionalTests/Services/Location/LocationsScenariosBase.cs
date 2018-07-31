@@ -19,7 +19,7 @@
                 .UseContentRoot(Path.GetDirectoryName(path))
                 .ConfigureAppConfiguration(cb =>
                 {
-                    cb.AddJsonFile("Services/Locations/appsettings.json", optional: false)
+                    cb.AddJsonFile("Services/Location/appsettings.json", optional: false)
                     .AddEnvironmentVariables();
                 }).UseStartup<LocationsTestsStartup>();
 
