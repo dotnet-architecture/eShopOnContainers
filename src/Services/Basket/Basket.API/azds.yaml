@@ -4,38 +4,36 @@ build:
   context: ..\..\..\..
   dockerfile: Dockerfile
 install:
-  chart: ../../../../k8s/helm/catalog-api
+  chart: ../../../../k8s/helm/basket-api
   values:
   - values.dev.yaml?
   - secrets.dev.yaml?
   - inf.yaml
   - app.yaml
   set:
+    replicaCount: 1
     image:
       tag: $(tag)
       pullPolicy: Never
-    inf:
-      k8s:
-        dns: "$(spacePrefix)basketapi$(hostSuffix)"
-    disableProbes: true
     ingress:
       hosts:
-      # This expands to [space.s.]catalogapi.<guid>.<region>.aksapp.io
+      # This expands to [space.s.]basketapi.<guid>.<region>.aksapp.io
       - $(spacePrefix)basketapi$(hostSuffix)
 configurations:
   develop:
     build:
       dockerfile: Dockerfile.develop
       useGitIgnore: true
+      args:
+        BUILD_CONFIGURATION: ${BUILD_CONFIGURATION:-Debug}
     container:
-      syncTarget: /src
       sync:
       - "**/Pages/**"
       - "**/Views/**"
       - "**/wwwroot/**"
       - "!**/*.{sln,csproj}"
-      command:  [dotnet, run, --no-restore, --no-build, --no-launch-profile, -c, "${Configuration:-Debug}"]
+      command: [dotnet, run, --no-restore, --no-build, --no-launch-profile, -c, "${BUILD_CONFIGURATION:-Debug}"]
       iterate:
         processesToKill: [dotnet, vsdbg]
         buildCommands:
-        - [dotnet, build, --no-restore, -c, "${Configuration:-Debug}"]
+        - [dotnet, build, --no-restore, -c, "${BUILD_CONFIGURATION:-Debug}"]

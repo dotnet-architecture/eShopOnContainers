@@ -1,0 +1,17 @@
+FROM microsoft/dotnet:2.1-sdk
+ARG BUILD_CONFIGURATION=Debug
+ENV ASPNETCORE_ENVIRONMENT=Development
+ENV DOTNET_USE_POLLING_FILE_WATCHER=true
+EXPOSE 80
+
+WORKDIR /src
+COPY ["src/Services/Identity/Identity.API/Identity.API.csproj", "src/Services/Identity/Identity.API/"]
+COPY ["src/BuildingBlocks/HealthChecks/src/Microsoft.AspNetCore.HealthChecks/Microsoft.AspNetCore.HealthChecks.csproj", "src/BuildingBlocks/HealthChecks/src/Microsoft.AspNetCore.HealthChecks/"]
+COPY ["src/BuildingBlocks/HealthChecks/src/Microsoft.Extensions.HealthChecks.SqlServer/Microsoft.Extensions.HealthChecks.SqlServer.csproj", "src/BuildingBlocks/HealthChecks/src/Microsoft.Extensions.HealthChecks.SqlServer/"]
+COPY ["src/BuildingBlocks/WebHostCustomization/WebHost.Customization/WebHost.Customization.csproj", "src/BuildingBlocks/WebHostCustomization/WebHost.Customization/"]
+RUN dotnet restore src/Services/Identity/Identity.API/Identity.API.csproj
+COPY . .
+WORKDIR "/src/src/Services/Identity/Identity.API"
+RUN dotnet build "Identity.API.csproj"
+
+CMD ["dotnet", "run", "--no-restore", "--no-build", "--no-launch-profile"]
