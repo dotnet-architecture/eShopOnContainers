@@ -2,8 +2,12 @@
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
+    "iis": {
+      "applicationUrl": "http://localhost/WebSPA",
+      "sslPort": 0
+    },
     "iisExpress": {
-      "applicationUrl": "http://localhost:58018/",
+      "applicationUrl": "http://localhost:5104",
       "sslPort": 0
     }
   },
@@ -11,8 +15,9 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Production"
-      }
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "use64Bit": true
     }
   }
 }
