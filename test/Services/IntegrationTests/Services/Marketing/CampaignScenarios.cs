@@ -1,128 +1,131 @@
 ﻿namespace IntegrationTests.Services.Marketing
 {
-    using System.Net.Http;
-    using System.Text;
-    using System.Threading.Tasks;
-    using Xunit;
-    using System;
-    using Newtonsoft.Json;
-    using System.Net;
-    using Microsoft.eShopOnContainers.Services.Marketing.API.Dto;
+	using System.Net.Http;
+	using System.Text;
+	using System.Threading.Tasks;
+	using Xunit;
+	using System;
+	using Newtonsoft.Json;
+	using System.Net;
+	using Microsoft.eShopOnContainers.Services.Marketing.API.Dto;
 
-    public class CampaignScenarios
-        : CampaignScenarioBase
-    {
-        [Fact]
-        public async Task Get_get_all_campaigns_and_response_ok_status_code()
-        {
-            using (var server = CreateServer())
-            {
-                var response = await server.CreateClient()
-                    .GetAsync(Get.Campaigns);
+	public class CampaignScenarios
+	    : CampaignScenarioBase
+	{
+		[Fact]
+		public async Task Get_get_all_campaigns_and_response_ok_status_code()
+		{
+			using (var server = CreateServer())
+			{
+				var response = await server.CreateClient()
+				    .GetAsync(Get.Campaigns);
 
-                response.EnsureSuccessStatusCode();
-            }
-        }
+				response.EnsureSuccessStatusCode();
+				Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
-        [Fact]
-        public async Task Get_get_campaign_by_id_and_response_ok_status_code()
-        {
-            var campaignId = 1;
-            using (var server = CreateServer())
-            {
-                var response = await server.CreateClient()
-                    .GetAsync(Get.CampaignBy(campaignId));
+			}
+		}
 
-                response.EnsureSuccessStatusCode();
-            }
-        }
+		[Fact]
+		public async Task Get_get_campaign_by_id_and_response_ok_status_code()
+		{
+			var campaignId = 1;
+			using (var server = CreateServer())
+			{
+				var response = await server.CreateClient()
+				    .GetAsync(Get.CampaignBy(campaignId));
 
-        [Fact]
-        public async Task Get_get_campaign_by_id_and_response_not_found_status_code()
-        {
-            using (var server = CreateServer())
-            {
-                var response = await server.CreateClient()
-                    .GetAsync(Get.CampaignBy(int.MaxValue));
+				response.EnsureSuccessStatusCode();
+			}
+		}
 
-                Assert.True(response.StatusCode == HttpStatusCode.NotFound);
-            }
-        }
+		[Fact]
+		public async Task Get_get_campaign_by_id_and_response_not_found_status_code()
+		{
+			using (var server = CreateServer())
+			{
+				var response = await server.CreateClient()
+				    .GetAsync(Get.CampaignBy(int.MaxValue));
 
-        [Fact]
-        public async Task Post_add_new_campaign_and_response_ok_status_code()
-        {
-            using (var server = CreateServer())
-            {
-                var fakeCampaignDto = GetFakeCampaignDto();
-                var content = new StringContent(JsonConvert.SerializeObject(fakeCampaignDto), Encoding.UTF8, "application/json");
-                var response = await server.CreateClient()
-                    .PostAsync(Post.AddNewCampaign, content);
+				Assert.True(response.StatusCode == HttpStatusCode.NotFound);
+			}
+		}
 
-                response.EnsureSuccessStatusCode();
-            }
-        }
+		[Fact]
+		public async Task Post_add_new_campaign_and_response_ok_status_code()
+		{
+			using (var server = CreateServer())
+			{
+				var fakeCampaignDto = GetFakeCampaignDto();
+				var content = new StringContent(JsonConvert.SerializeObject(fakeCampaignDto), Encoding.UTF8, "application/json");
+				var response = await server.CreateClient()
+				    .PostAsync(Post.AddNewCampaign, content);
 
-        [Fact]
-        public async Task Delete_delete_campaign_and_response_not_content_status_code()
-        {
-            using (var server = CreateServer())
-            {
-                var fakeCampaignDto = GetFakeCampaignDto();
-                var content = new StringContent(JsonConvert.SerializeObject(fakeCampaignDto), Encoding.UTF8, "application/json");
+				response.EnsureSuccessStatusCode();
+			}
+		}
 
-                //add campaign
-                var campaignResponse = await server.CreateClient()
-                    .PostAsync(Post.AddNewCampaign, content);
+		[Fact]
+		public async Task Delete_delete_campaign_and_response_not_content_status_code()
+		{
+			using (var server = CreateServer())
+			{
+				var fakeCampaignDto = GetFakeCampaignDto();
+				var content = new StringContent(JsonConvert.SerializeObject(fakeCampaignDto), Encoding.UTF8, "application/json");
 
-                if (int.TryParse(campaignResponse.Headers.Location.Segments[4], out int id))
-                {
-                    var response = await server.CreateClient()
-                    .DeleteAsync(Delete.CampaignBy(id));
+				//add campaign
+				var campaignResponse = await server.CreateClient()
+				    .PostAsync(Post.AddNewCampaign, content);
 
-                    Assert.True(response.StatusCode == HttpStatusCode.NoContent);
-                }
+				if (int.TryParse(campaignResponse?.Headers.Location.Segments[4], out int id))
+				{
+					var response = await server.CreateClient()
+					.DeleteAsync(Delete.CampaignBy(id));
 
-                campaignResponse.EnsureSuccessStatusCode();
-            }
-        }
+					Assert.True(response.StatusCode == HttpStatusCode.NoContent);
+				}
 
-        [Fact]
-        public async Task Put_update_campaign_and_response_not_content_status_code()
-        {
-            using (var server = CreateServer())
-            {
-                var fakeCampaignDto = GetFakeCampaignDto();
-                var content = new StringContent(JsonConvert.SerializeObject(fakeCampaignDto), Encoding.UTF8, "application/json");
+				campaignResponse.EnsureSuccessStatusCode();
+			}
+		}
 
-                //add campaign
-                var campaignResponse = await server.CreateClient()
-                    .PostAsync(Post.AddNewCampaign, content);
+		[Fact]
+		public async Task Put_update_campaign_and_response_not_content_status_code()
+		{
+			using (var server = CreateServer())
+			{
+				var fakeCampaignDto = GetFakeCampaignDto();
+				var content = new StringContent(JsonConvert.SerializeObject(fakeCampaignDto), Encoding.UTF8, "application/json");
 
-                if (int.TryParse(campaignResponse.Headers.Location.Segments[4], out int id))
-                {
-                    fakeCampaignDto.Description = "FakeCampaignUpdatedDescription";
-                    content = new StringContent(JsonConvert.SerializeObject(fakeCampaignDto), Encoding.UTF8, "application/json");
-                    var response = await server.CreateClient()
-                    .PutAsync(Put.CampaignBy(id), content);
+				//add campaign
+				var campaignResponse = await server.CreateClient()
+				    .PostAsync(Post.AddNewCampaign, content);
 
-                    Assert.True(response.StatusCode == HttpStatusCode.Created);
-                }
+				campaignResponse.EnsureSuccessStatusCode();
+				Assert.Equal(HttpStatusCode.Created, campaignResponse.StatusCode);
 
-                campaignResponse.EnsureSuccessStatusCode();
-            }
-        }
+				if (int.TryParse(campaignResponse.Headers.Location.Segments[4], out int id))
+				{
+					fakeCampaignDto.Description = "FakeCampaignUpdatedDescription";
+					content = new StringContent(JsonConvert.SerializeObject(fakeCampaignDto), Encoding.UTF8, "application/json");
+					var response = await server.CreateClient()
+					.PutAsync(Put.CampaignBy(id), content);
 
-        private static CampaignDTO GetFakeCampaignDto()
-        {
-            return new CampaignDTO()
-            {
-                Name = "FakeCampaignName",
-                Description = "FakeCampaignDescription",
-                From = DateTime.Now,
-                To = DateTime.Now.AddDays(7),
-                PictureUri = "http://externalcatalogbaseurltobereplaced/api/v1/campaigns/0/pic"
-            }; 
-        }
-    }
+					Assert.True(response.StatusCode == HttpStatusCode.NoContent);
+				}
+			}
+		}
+
+		private static CampaignDTO GetFakeCampaignDto()
+		{
+			return new CampaignDTO()
+			{
+				Name = "FakeCampaignName",
+				Description = "FakeCampaignDescription",
+				From = DateTime.Now,
+				To = DateTime.Now.AddDays(7),
+				PictureUri = "http://externalcatalogbaseurltobereplaced/api/v1/campaigns/0/pic"
+			};
+		}
+	}
 }

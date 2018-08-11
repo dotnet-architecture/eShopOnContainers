@@ -29,7 +29,7 @@
         {
             using (var server = CreateServer())
             {
-                var content = new StringContent(BuildOrder(), UTF8Encoding.UTF8, "application/json");
+                var content = new StringContent(BuildOrder(), Encoding.UTF8, "application/json");
                 var response = await server.CreateIdempotentClient()
                     .PutAsync(Put.CancelOrder, content);
 
@@ -42,7 +42,7 @@
         {
             using (var server = CreateServer())
             {
-                var content = new StringContent(BuildOrder(), UTF8Encoding.UTF8, "application/json");
+                var content = new StringContent(BuildOrder(), Encoding.UTF8, "application/json");
                 var response = await server.CreateIdempotentClient()
                     .PutAsync(Put.ShipOrder, content);
 
