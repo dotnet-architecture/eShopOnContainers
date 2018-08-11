@@ -55,7 +55,9 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
                 options.Filters.Add(typeof(HttpGlobalExceptionFilter));
                 options.Filters.Add(typeof(ValidateModelStateFilter));
 
-            }).AddControllersAsServices();
+            })
+		  .SetCompatibilityVersion(AspNetCore.Mvc.CompatibilityVersion.Version_2_1)
+		  .AddControllersAsServices();
 
             ConfigureAuthService(services);
 

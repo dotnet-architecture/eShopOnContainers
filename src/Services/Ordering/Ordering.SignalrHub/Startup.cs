@@ -46,13 +46,6 @@ namespace Ordering.SignalrHub
                 services
                     .AddSignalR()
                     .AddRedis(Configuration["SignalrStoreConnectionString"]);
-
-                //services
-                //    .AddSignalR()
-                //    .AddRedis(options => options.Factory = writer =>
-                //    {
-                //        return ConnectionMultiplexer.Connect(Configuration["SignalrStoreConnectionString"], writer);
-                //    });
             }
             else
             {
@@ -141,7 +134,7 @@ namespace Ordering.SignalrHub
             app.UseSignalR(routes =>
             {
                 routes.MapHub<NotificationsHub>("/notificationhub", options =>
-                    options.Transports = Microsoft.AspNetCore.Http.Connections.TransportType.All);
+                    options.Transports = Microsoft.AspNetCore.Http.Connections.HttpTransports.All);
             });
 
             ConfigureEventBus(app);
