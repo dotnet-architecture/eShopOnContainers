@@ -7,12 +7,9 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.SeedWork
 {
     public abstract class Enumeration : IComparable
     {
-        public string Name { get; private set; }
+        public string Name { get; }
 
-        public int Id { get; private set; }
-
-        protected Enumeration()
-        { }
+        public int Id { get; }
 
         protected Enumeration(int id, string name)
         {
@@ -36,8 +33,8 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.SeedWork
             if (otherValue == null)
                 return false;
 
-            var typeMatches = GetType().Equals(obj.GetType());
-            var valueMatches = Id.Equals(otherValue.Id);
+            var typeMatches = GetType() == obj.GetType();
+            var valueMatches = Id == otherValue.Id;
 
             return typeMatches && valueMatches;
         }
