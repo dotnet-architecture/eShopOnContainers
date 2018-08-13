@@ -1,0 +1,8 @@
+{
+	"version": "1.0.0",
+	"name": "asp.net",
+	"private": true,
+	"devDependencies": {
+		"bower": "^1.8.4"
+	}
+}
