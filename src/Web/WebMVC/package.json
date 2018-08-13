@@ -1,11 +1,12 @@
 {
-  "dependencies": {
-    "bower": "^1.0.8"
-    "@aspnet/signalr": "^1.0.2",
-    "toastr": "^2.1.4"
-  },
-  "devDependencies": {},
-  "name": "asp.net",
-  "private": true,
-  "version": "1.0.0"
+	"dependencies": {
+		"@aspnet/signalr": "^1.0.2",
+		"toastr": "^2.1.4"
+	},
+	"devDependencies": {
+		"bower": "^1.0.8"
+	},
+	"name": "asp.net",
+	"private": true,
+	"version": "1.0.0"
 }
