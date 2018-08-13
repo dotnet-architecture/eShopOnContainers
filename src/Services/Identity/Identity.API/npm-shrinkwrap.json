@@ -1,0 +1,14 @@
+{
+	"name": "asp.net",
+	"version": "1.0.0",
+	"lockfileVersion": 1,
+	"requires": true,
+	"dependencies": {
+		"bower": {
+			"version": "1.8.4",
+			"resolved": "https://registry.npmjs.org/bower/-/bower-1.8.4.tgz",
+			"integrity": "sha1-54dqB23rgTf30GUl3F6MZtuC8oo=",
+			"dev": true
+		}
+	}
+}

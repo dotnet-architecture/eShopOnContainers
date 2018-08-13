@@ -5,9 +5,15 @@
   "requires": true,
   "dependencies": {
     "@aspnet/signalr": {
-      "version": "1.0.0-preview2-final",
-      "resolved": "https://registry.npmjs.org/@aspnet/signalr/-/signalr-1.0.0-preview2-final.tgz",
-      "integrity": "sha512-XbqGbAG9Ow4L5Sc4n81A2S8lHSlxBNTjFm3WZQA94cIolPnW0bPK2u14UMooXRXxzjBtJViJMN/aoxWRwTWxig=="
+      "version": "1.0.2",
+      "resolved": "https://registry.npmjs.org/@aspnet/signalr/-/signalr-1.0.2.tgz",
+      "integrity": "sha512-sXleqUCCbodCOqUA8MjLSvtAgDTvDhEq6j3JyAq/w4RMJhpZ+dXK9+6xEMbzag2hisq5e/8vDC82JYutkcOISQ=="
+    },
+    "bower": {
+      "version": "1.8.4",
+      "resolved": "https://registry.npmjs.org/bower/-/bower-1.8.4.tgz",
+      "integrity": "sha1-54dqB23rgTf30GUl3F6MZtuC8oo=",
+      "dev": true
     },
     "jquery": {
       "version": "3.3.1",
