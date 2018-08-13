@@ -94,7 +94,7 @@ namespace UnitTest.Ordering.Application
         {
             //Arrange
             var fakeDynamicResult = Enumerable.Empty<OrderSummary>();
-            _orderQueriesMock.Setup(x => x.GetOrdersAsync())
+            _orderQueriesMock.Setup(x => x.GetOrdersFromUserAsync(Guid.NewGuid()))
                 .Returns(Task.FromResult(fakeDynamicResult));
 
             //Act

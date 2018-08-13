@@ -27,9 +27,9 @@ namespace Microsoft.AspNetCore.Hosting
                     var retry = Policy.Handle<SqlException>()
                          .WaitAndRetry(new TimeSpan[]
                          {
+                             TimeSpan.FromSeconds(3),
                              TimeSpan.FromSeconds(5),
-                             TimeSpan.FromSeconds(10),
-                             TimeSpan.FromSeconds(15),
+                             TimeSpan.FromSeconds(8),
                          });
 
                     retry.Execute(() =>

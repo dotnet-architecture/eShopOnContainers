@@ -36,7 +36,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
             var basket = await _repository.GetBasketAsync(id);
             if (basket == null)
             {
-                return NotFound();
+                return Ok(new CustomerBasket(id) { });
             }
 
             return Ok(basket);

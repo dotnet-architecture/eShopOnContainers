@@ -45,7 +45,9 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
             services.AddMvc(options =>
             {
                 options.Filters.Add(typeof(HttpGlobalExceptionFilter));
-            }).AddControllersAsServices();
+            })
+		  .SetCompatibilityVersion(AspNetCore.Mvc.CompatibilityVersion.Version_2_1)
+		  .AddControllersAsServices();
 
             ConfigureAuthService(services);
 

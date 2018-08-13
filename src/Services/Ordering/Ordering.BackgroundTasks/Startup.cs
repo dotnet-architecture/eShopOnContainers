@@ -110,7 +110,7 @@ namespace Ordering.BackgroundTasks
 
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, Microsoft.AspNetCore.Hosting.IHostingEnvironment env)
         {
 
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously

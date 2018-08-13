@@ -53,7 +53,9 @@
             services.AddMvc(options =>
             {
                 options.Filters.Add(typeof(HttpGlobalExceptionFilter));
-            }).AddControllersAsServices();  //Injecting Controllers themselves thru DIFor further info see: http://docs.autofac.org/en/latest/integration/aspnetcore.html#controllers-as-services
+            })
+		  .SetCompatibilityVersion(AspNetCore.Mvc.CompatibilityVersion.Version_2_1)
+		  .AddControllersAsServices();  //Injecting Controllers themselves thru DIFor further info see: http://docs.autofac.org/en/latest/integration/aspnetcore.html#controllers-as-services
 
             services.Configure<MarketingSettings>(Configuration);
 

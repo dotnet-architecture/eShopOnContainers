@@ -12,7 +12,8 @@
       "commandName": "IISExpress",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "use64Bit": true
     },
     "Microsoft.eShopOnContainers.WebMVC": {
       "commandName": "Project",

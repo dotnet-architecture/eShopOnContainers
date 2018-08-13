@@ -17,8 +17,8 @@ namespace WebMVC.Infrastructure
         {
             var log = loggerFactory.CreateLogger("WebMVC seed");
 
-            var settings = (AppSettings)applicationBuilder
-                .ApplicationServices.GetRequiredService<IOptions<AppSettings>>().Value;
+            var settings = applicationBuilder
+			 .ApplicationServices.GetRequiredService<IOptions<AppSettings>>().Value;
 
             var useCustomizationData = settings.UseCustomizationData;
             var contentRootPath = env.ContentRootPath;
@@ -66,9 +66,9 @@ namespace WebMVC.Infrastructure
                 string imagePath = Path.Combine(webroot, "images");
                 string[] imageFiles = Directory.GetFiles(imagePath).Select(file => Path.GetFileName(file)).ToArray();
 
-                using (ZipArchive zip = ZipFile.Open(imagesZipFile, ZipArchiveMode.Read))
+                using (var zip = ZipFile.Open(imagesZipFile, ZipArchiveMode.Read))
                 {
-                    foreach (ZipArchiveEntry entry in zip.Entries)
+                    foreach (var entry in zip.Entries)
                     {
                         if (imageFiles.Contains(entry.Name))
                         {
