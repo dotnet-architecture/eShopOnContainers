@@ -24,13 +24,12 @@ namespace Catalog.API.IntegrationEvents
             _catalogContext = catalogContext ?? throw new ArgumentNullException(nameof(catalogContext));
             _integrationEventLogServiceFactory = integrationEventLogServiceFactory ?? throw new ArgumentNullException(nameof(integrationEventLogServiceFactory));
             _eventBus = eventBus ?? throw new ArgumentNullException(nameof(eventBus));
-            _eventLogService = _integrationEventLogServiceFactory(_catalogContext.Database.GetDbConnection());
         }
 
         public async Task PublishThroughEventBusAsync(IntegrationEvent evt)
         {
             _eventBus.Publish(evt);
-
+            var _eventLogService = _integrationEventLogServiceFactory(_catalogContext.Database.GetDbConnection());
             await _eventLogService.MarkEventAsPublishedAsync(evt);
         }
 
@@ -42,6 +41,7 @@ namespace Catalog.API.IntegrationEvents
                 .ExecuteAsync(async () => {
                     // Achieving atomicity between original catalog database operation and the IntegrationEventLog thanks to a local transaction
                     await _catalogContext.SaveChangesAsync();
+                    var _eventLogService = _integrationEventLogServiceFactory(_catalogContext.Database.GetDbConnection());
                     await _eventLogService.SaveEventAsync(evt, _catalogContext.Database.CurrentTransaction.GetDbTransaction());
                 });
         }
