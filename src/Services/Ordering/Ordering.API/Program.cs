@@ -60,7 +60,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API
                     builder.AddConsole();
                     builder.AddDebug();
                 })
-                .UseApplicationInsights()
+                //.UseApplicationInsights()
                 .Build();
     }
 }

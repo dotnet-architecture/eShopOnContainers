@@ -27,7 +27,7 @@ namespace WebStatus
                     builder.AddConsole();
                     builder.AddDebug();
                 })
-                .UseApplicationInsights()
+                //.UseApplicationInsights()
                 .Build();
     }
 }

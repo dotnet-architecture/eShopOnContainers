@@ -165,7 +165,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API
 
         private void RegisterAppInsights(IServiceCollection services)
         {
-            services.AddApplicationInsightsTelemetry(Configuration);
+            //services.AddApplicationInsightsTelemetry(Configuration);
             var orchestratorType = Configuration.GetValue<string>("OrchestratorType");
 
             if (orchestratorType?.ToUpper() == "K8S")

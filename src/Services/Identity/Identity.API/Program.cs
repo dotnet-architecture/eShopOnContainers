@@ -68,7 +68,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API
                     builder.AddConsole();
                     builder.AddDebug();
                 })
-                .UseApplicationInsights()
+                //.UseApplicationInsights()
                 .Build();
     }
 }

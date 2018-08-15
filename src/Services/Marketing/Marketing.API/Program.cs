@@ -27,7 +27,7 @@
 
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseApplicationInsights()
+                //.UseApplicationInsights()
                 .UseHealthChecks("/hc")
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseStartup<Startup>()
@@ -56,7 +56,7 @@
                     builder.AddConsole();
                     builder.AddDebug();
                 })
-                .UseApplicationInsights()
+                //.UseApplicationInsights()
                 .Build();
     }
 }

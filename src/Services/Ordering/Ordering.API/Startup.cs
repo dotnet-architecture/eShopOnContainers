@@ -132,7 +132,7 @@
     {
         public static IServiceCollection AddApplicationInsights(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddApplicationInsightsTelemetry(configuration);
+            //services.AddApplicationInsightsTelemetry(configuration);
             var orchestratorType = configuration.GetValue<string>("OrchestratorType");
 
             if (orchestratorType?.ToUpper() == "K8S")

@@ -28,7 +28,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
                     builder.AddConsole();
                     builder.AddDebug();
                 })
-                .UseApplicationInsights()
+                //.UseApplicationInsights()
                 .Build();
     }
 }
