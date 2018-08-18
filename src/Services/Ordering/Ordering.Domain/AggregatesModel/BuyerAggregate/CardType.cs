@@ -9,31 +9,13 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.B
     public class CardType
         : Enumeration
     {
-        public static CardType Amex = new AmexCardType();
-        public static CardType Visa = new VisaCardType();
-        public static CardType MasterCard = new MasterCardType();
+        public static CardType Amex = new CardType(1, "Amex");
+        public static CardType Visa = new CardType(2, "Visa");
+        public static CardType MasterCard = new CardType(3, "MasterCard");
 
         public CardType(int id, string name)
             : base(id, name)
         {
-        }
-
-        private class AmexCardType : CardType
-        {
-            public AmexCardType() : base(1, "Amex")
-            { }
-        }
-
-        private class VisaCardType : CardType
-        {
-            public VisaCardType() : base(2, "Visa")
-            { }
-        }
-
-        private class MasterCardType : CardType
-        {
-            public MasterCardType() : base(3, "MasterCard")
-            { }
         }
     }
 }
