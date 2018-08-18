@@ -40,7 +40,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
         {
             if (!string.IsNullOrEmpty(ids))
             {
-                return GetItemsByIds(ids);
+                return await GetItemsByIdsAsync(ids);
             }
 
             var totalItems = await _catalogContext.CatalogItems
@@ -60,7 +60,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
             return Ok(model);
         }
 
-        private IActionResult GetItemsByIds(string ids)
+        private async Task<IActionResult> GetItemsByIdsAsync(string ids)
         {
             var numIds = ids.Split(',')
                 .Select(id => (Ok: int.TryParse(id, out int x), Value: x));
@@ -73,7 +73,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
             var idsToSelect = numIds
                 .Select(id => id.Value);
 
-            var items = _catalogContext.CatalogItems.Where(ci => idsToSelect.Contains(ci.Id)).ToList();
+            var items = await _catalogContext.CatalogItems.Where(ci => idsToSelect.Contains(ci.Id)).ToListAsync();
 
             items = ChangeUriPlaceholder(items);
 
