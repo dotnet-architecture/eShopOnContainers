@@ -28,6 +28,7 @@
     <PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.DataProtection.Redis" Version="0.3.3" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Fabric.MSBuild" Version="1.6.5" />
+    <PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="1.0.113" />
   </ItemGroup>
 
   <Target Name="PrepublishScript" BeforeTargets="PrepareForPublish">
