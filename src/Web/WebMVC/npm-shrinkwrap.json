@@ -9,17 +9,23 @@
       "resolved": "https://registry.npmjs.org/@aspnet/signalr/-/signalr-1.0.0-preview2-final.tgz",
       "integrity": "sha512-XbqGbAG9Ow4L5Sc4n81A2S8lHSlxBNTjFm3WZQA94cIolPnW0bPK2u14UMooXRXxzjBtJViJMN/aoxWRwTWxig=="
     },
+    "bower": {
+      "version": "1.8.4",
+      "resolved": "https://registry.npmjs.org/bower/-/bower-1.8.4.tgz",
+      "integrity": "sha1-54dqB23rgTf30GUl3F6MZtuC8oo=",
+      "dev": true
+    },
     "jquery": {
       "version": "3.3.1",
       "resolved": "https://registry.npmjs.org/jquery/-/jquery-3.3.1.tgz",
-      "integrity": "sha512-Ubldcmxp5np52/ENotGxlLe6aGMvmF4R8S6tZjsP6Knsaxd/xp3Zrh50cG93lR6nPXyUFwzN3ZSOQI0wRJNdGg=="
+      "integrity": "sha1-lYzinoHJeQ8xvneS311NlfxX+8o="
     },
     "toastr": {
       "version": "2.1.4",
       "resolved": "https://registry.npmjs.org/toastr/-/toastr-2.1.4.tgz",
       "integrity": "sha1-i0O+ZPudDEFIcURvLbjoyk6V8YE=",
       "requires": {
-        "jquery": "3.3.1"
+        "jquery": ">=1.12.0"
       }
     }
   }
