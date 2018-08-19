@@ -54,7 +54,6 @@
 
   <ItemGroup>
     <Folder Include="Extensions\" />
-    <Folder Include="wwwroot\lib\" />
   </ItemGroup>
 
 </Project>
