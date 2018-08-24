@@ -44,7 +44,7 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
                     builder.AddConsole();
                     builder.AddDebug();
                 })
-                //.UseApplicationInsights()
+                .UseApplicationInsights()
                 .Build();
     }
 }

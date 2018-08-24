@@ -101,7 +101,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
     {
         public static IServiceCollection AddAppInsight(this IServiceCollection services, IConfiguration configuration)
         {
-            //services.AddApplicationInsightsTelemetry(configuration);
+            services.AddApplicationInsightsTelemetry(configuration);
             var orchestratorType = configuration.GetValue<string>("OrchestratorType");
 
             if (orchestratorType?.ToUpper() == "K8S")

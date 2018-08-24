@@ -28,7 +28,7 @@ namespace eShopConContainers.WebSPA
                     builder.AddConsole();
                     builder.AddDebug();
                 })
-                //.UseApplicationInsights()                
+                .UseApplicationInsights()                
                 .Build();       
     }
 }

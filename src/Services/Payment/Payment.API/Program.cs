@@ -29,7 +29,7 @@ namespace Payment.API
                     builder.AddConsole();
                     builder.AddDebug();
                 })
-                //.UseApplicationInsights()
+                .UseApplicationInsights()
                 .Build();
     }
 }

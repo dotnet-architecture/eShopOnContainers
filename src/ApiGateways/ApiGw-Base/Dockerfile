@@ -1,8 +1,8 @@
-FROM microsoft/dotnet-nightly:2.1.3-aspnetcore-runtime AS base
+FROM microsoft/dotnet:2.1.3-aspnetcore-runtime AS base
 WORKDIR /app
 EXPOSE 80
 
-FROM microsoft/dotnet-nightly:2.1.401-sdk AS build
+FROM microsoft/dotnet:2.1.401-sdk AS build
 WORKDIR /src
 COPY src/ApiGateways/ApiGw-Base/OcelotApiGw.csproj src/ApiGateways/ApiGw-Base/
 RUN dotnet restore src/ApiGateways/ApiGw-Base/
