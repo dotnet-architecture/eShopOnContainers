@@ -3,13 +3,7 @@ import { Http, Response, RequestOptionsArgs, RequestMethod, Headers } from '@ang
 import { IConfiguration }   from '../models/configuration.model';
 import { StorageService }   from './storage.service';
 
-import 'rxjs/Rx';
-import { Observable }       from 'rxjs/Observable';
-import 'rxjs/add/observable/throw';
-import { Observer }         from 'rxjs/Observer';
-import 'rxjs/add/operator/map';
-import { Subject }          from 'rxjs/Subject';
-
+import { Observable, Subject } from 'rxjs';
 
 @Injectable()
 export class ConfigurationService {
