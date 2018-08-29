@@ -2,7 +2,6 @@
 {{- $identity := include "url-of" (list .Values.app.ingress.entries.identity .) -}}
 {{- $webshoppingapigw := include "url-of" (list .Values.app.ingress.entries.webshoppingapigw .) -}}
 {{- $mvc := include "url-of" (list .Values.app.ingress.entries.mvc .) -}}
-{{- $mongo := include "mongo-name" . -}}
 
 
 apiVersion: v1
