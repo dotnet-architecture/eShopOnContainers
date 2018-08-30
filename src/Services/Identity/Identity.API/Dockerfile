@@ -1,5 +1,5 @@
 ARG NODE_IMAGE=node:8.11
-FROM microsoft/dotnet:2.1.3-aspnetcore-runtime AS base
+FROM microsoft/dotnet:2.1-aspnetcore-runtime AS base
 WORKDIR /app
 EXPOSE 80
 
