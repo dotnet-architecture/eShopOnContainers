@@ -14,7 +14,8 @@
       "launchUrl": "/swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "use64Bit": true
     },
     "Microsoft.eShopOnContainers.Services.Ordering.API": {
       "commandName": "Project",

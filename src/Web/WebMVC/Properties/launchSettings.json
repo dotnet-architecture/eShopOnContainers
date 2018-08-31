@@ -4,7 +4,7 @@
     "anonymousAuthentication": true,
     "iisExpress": {
       "applicationUrl": "http://localhost:5100",
-      "sslPort": 0
+      "sslPort": 4100
     }
   },
   "profiles": {
@@ -12,15 +12,16 @@
       "commandName": "IISExpress",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "use64Bit": true
     },
-    "Microsoft.eShopOnContainers.WebMVC": {
-      "commandName": "Project",
-      "launchBrowser": true,
-      "launchUrl": "http://localhost:5000",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
-    }
+			"Microsoft.eShopOnContainers.WebMVC": {
+				"commandName": "Project",
+				"launchUrl": "http://localhost:4001",
+				"environmentVariables": {
+					"ASPNETCORE_ENVIRONMENT": "Development"
+				},
+				"applicationUrl": "https://localhost:4001;http://localhost:5001"
+			}
   }
 }
