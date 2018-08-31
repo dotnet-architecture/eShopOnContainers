@@ -1,5 +1,5 @@
 ARG NODE_IMAGE=node:8.11
-FROM microsoft/dotnet:2.1-aspnetcore-runtime AS base
+FROM microsoft/dotnet:2.1.3-aspnetcore-runtime AS base
 WORKDIR /app
 EXPOSE 80
 EXPOSE 443
@@ -17,7 +17,7 @@ FROM dotnet-build as build
 WORKDIR /src/src/Web/WebMVC/wwwroot
 COPY --from=node-build /web/wwwroot .
 WORKDIR /src
-COPY src/Web/WebMVC/synergydev.pfx /root/.aspnet/https/
+COPY Certificates/eShopOnContainers.pfx /root/.aspnet/https/
 COPY . .
 WORKDIR /src/src/Web/WebMVC
 RUN dotnet restore -nowarn:msb3202,nu1503
