@@ -30,11 +30,11 @@ services:
   identity.api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://0.0.0.0:80
-      - SpaClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5104
+      - ASPNETCORE_URLS=http://0.0.0.0:80;https://+:443
+      - SpaClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5104;https://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:4104
       - XamarinCallback=http://${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP}:5105/xamarincallback      #localhost do not work for UWP login, so we have to use "external" IP always
       - ConnectionString=${ESHOP_AZURE_IDENTITY_DB:-Server=sql.data;Database=Microsoft.eShopOnContainers.Service.IdentityDb;User Id=sa;Password=Pass@word} 
-      - MvcClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5100              #Local: You need to open your local dev-machine firewall at range 5100-5110. 
+      - MvcClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5100;https://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:4100              #Local: You need to open your local dev-machine firewall at range 5100-5110. 
       - LocationApiClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5109
       - MarketingApiClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5110
       - BasketApiClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5103
@@ -45,7 +45,11 @@ services:
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
       - OrchestratorType=${ORCHESTRATOR_TYPE}
     ports:
-      - "5105:80"   
+      - "5105:80"  
+      - "4105:443"
+    volumes:
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:rw
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:rw
 
   basket.api:
     environment:
@@ -186,42 +190,59 @@ services:
   mobileshoppingapigw:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:80
       - IdentityUrl=http://identity.api              #Local: You need to open your local dev-machine firewall at range 5100-5110.
     ports:
-      - "5200:80"   
+      - "5200:80"
     volumes:
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ./src/ApiGateways/Mobile.Bff.Shopping/apigw:${ESHOP_OCELOT_VOLUME_SPEC:-/app/configuration}
 
   mobilemarketingapigw:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:80
       - IdentityUrl=http://identity.api              #Local: You need to open your local dev-machine firewall at range 5100-5110.
     ports:
       - "5201:80"   
     volumes:
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ./src/ApiGateways/Mobile.Bff.Marketing/apigw:${ESHOP_OCELOT_VOLUME_SPEC:-/app/configuration}
 
   webshoppingapigw:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80;https://+:443
+      #- ASPNETCORE_URLS=http://0.0.0.0:80
+      - ASPNETCORE_HTTPS_PORT=4202
+      - ASPNETCORE_Kestrel__Certificates__Development__Password="RH@ssl2018"
       - IdentityUrl=http://identity.api              #Local: You need to open your local dev-machine firewall at range 5100-5110.
     ports:
-      - "5202:80"   
+      - "5202:80"  
+      - "4202:443"
     volumes:
-      - ./src/ApiGateways/Web.Bff.Shopping/apigw:${ESHOP_OCELOT_VOLUME_SPEC:-/app/configuration}
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:rw
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:rw
+      - ./src/ApiGateways/Web.Bff.Shopping/apigw:${ESHOP_OCELOT_VOLUME_SPEC:-/app/configuration}:rw
 
   webmarketingapigw:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:80
       - IdentityUrl=http://identity.api              #Local: You need to open your local dev-machine firewall at range 5100-5110.
     ports:
       - "5203:80"   
     volumes:
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:rw
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ./src/ApiGateways/Web.Bff.Marketing/apigw:${ESHOP_OCELOT_VOLUME_SPEC:-/app/configuration}
 
   mobileshoppingagg:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:80
       - urls__basket=http://basket.api
       - urls__catalog=http://catalog.api
       - urls__orders=http://ordering.api
@@ -233,6 +254,7 @@ services:
   webshoppingagg:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:80
       - urls__basket=http://basket.api
       - urls__catalog=http://catalog.api
       - urls__orders=http://ordering.api
@@ -277,7 +299,7 @@ services:
   webspa:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - ASPNETCORE_URLS=http://+:80;https://+:443
       - IdentityUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105              #Local: You need to open your local dev-machine firewall at range 5100-5105.  at range 5100-5105. 
       - PurchaseUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5202
       - MarketingUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5203   
@@ -293,11 +315,15 @@ services:
       - SignalrHubUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5202
     ports:
       - "5104:80"
+      - "4104:443"
+    volumes:
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:rw
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:rw
 
   webmvc:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - ASPNETCORE_URLS=http://+:80;https://+:443
       - PurchaseUrl=http://webshoppingapigw
       - IdentityUrl=http://10.0.75.1:5105  # Local Mac: Use http://docker.for.mac.localhost:5105 || Local Windows:  Use 10.0.75.1 in a "Docker for Windows" environment, if using "localhost" from browser. || #Remote access: Use ${ESHOP_EXTERNAL_DNS_NAME_OR_IP} if using external IP or DNS name from browser.
       - MarketingUrl=http://webmarketingapigw                                                    
@@ -314,4 +340,7 @@ services:
       - UseLoadTest=${USE_LOADTEST:-False}
     ports:
       - "5100:80"
-
+      - "4100:443"
+    volumes:
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:rw
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:rw
