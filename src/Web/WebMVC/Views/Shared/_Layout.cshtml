@@ -32,72 +32,73 @@
     </environment>
 </head>
 <body>
-    <header class="navbar navbar-light navbar-static-top">
-        <div class="container">
-            <article class="row">
+	<header class="navbar navbar-light navbar-static-top">
+		<div class="container">
+			<article class="row">
 
-                <section class="col-lg-7 col-md-6 col-xs-12">
-                    <a class="navbar-brand" routerLink="catalog">
-                        <a asp-area="" asp-controller="Catalog" asp-action="Index">
-                            <img src="~/images/brand.png" />
-                        </a>
-                    </a>
-                </section>
-
-                @await Html.PartialAsync("_LoginPartial")
-            </article>
-        </div>
-    </header>
-
-    @RenderBody()
+				<section class="col-lg-7 col-md-6 col-xs-12">
+					<a class="navbar-brand" routerLink="catalog">
+						<a asp-area="" asp-controller="Catalog" asp-action="Index">
+							<img src="~/images/brand.png" />
+						</a>
+					</a>
+				</section>
+				
+				<partial name="_LoginPartial" />
+			</article>
+		</div>
+	</header>
 
 
-    <footer class="esh-app-footer">
-        <div class="container">
-            <article class="row">
-
-                <section class="col-sm-6">
-                    <img class="esh-app-footer-brand" src="~/images/brand_dark.png" />
-                </section>
-
-                <section class="col-sm-6">
-                    <img class="esh-app-footer-text hidden-xs" src="~/images/main_footer_text.png" width="335" height="26" alt="footer text image" />
-                </section>
-
-            </article>
-        </div>
-    </footer>
-
-    <environment names="Development">
-        <script src="~/lib/jquery/dist/jquery.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-        <script src="~/js/site.js" asp-append-version="true"></script>
-    </environment>
-    <environment names="Staging,Production">
-        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
-                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
-                asp-fallback-test="window.jQuery">
-        </script>
-        <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
-                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
-                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal">
-        </script>
-        <script src="~/js/site.min.js" asp-append-version="true"></script>
-    </environment>
-
-    @RenderSection("scripts", required: false)
+	@RenderBody()
 
 
-    @using Microsoft.AspNetCore.Authentication;
-    @using Microsoft.Extensions.Options
-    @inject IOptions<AppSettings> settings
+	<footer class="esh-app-footer">
+		<div class="container">
+			<article class="row">
 
-    <script type="text/javascript">
+				<section class="col-sm-6">
+					<img class="esh-app-footer-brand" src="~/images/brand_dark.png" />
+				</section>
+
+				<section class="col-sm-6">
+					<img class="esh-app-footer-text hidden-xs" src="~/images/main_footer_text.png" width="335" height="26" alt="footer text image" />
+				</section>
+
+			</article>
+		</div>
+	</footer>
+
+	<environment names="Development">
+		<script src="~/lib/jquery/jquery.js"></script>
+		<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+		<script src="~/js/site.js" asp-append-version="true"></script>
+	</environment>
+	<environment names="Staging,Production">
+		<script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
+			   asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+			   asp-fallback-test="window.jQuery">
+		</script>
+		<script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
+			   asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+			   asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal">
+		</script>
+		<script src="~/js/site.min.js" asp-append-version="true"></script>
+	</environment>
+
+	@RenderSection("scripts", required: false)
+
+
+	@using Microsoft.AspNetCore.Authentication;
+	@using Microsoft.Extensions.Options
+	@inject IOptions<AppSettings> settings
+
+	<script type="text/javascript">
         if ('@User.Identity.IsAuthenticated' === 'True') {
             var timerId;
 
             let connection = stablishConnection();
-            
+
             connection.start().then(function () {
                 console.log('User Registered to Signalr Hub');
             });
@@ -134,6 +135,6 @@
                 window.location.reload();
             }, 1000);
         }
-    </script>
+	</script>
 </body>
 </html>
