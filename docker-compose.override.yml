@@ -190,59 +190,42 @@ services:
   mobileshoppingapigw:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://0.0.0.0:80
       - IdentityUrl=http://identity.api              #Local: You need to open your local dev-machine firewall at range 5100-5110.
     ports:
       - "5200:80"
     volumes:
-      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
-      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ./src/ApiGateways/Mobile.Bff.Shopping/apigw:${ESHOP_OCELOT_VOLUME_SPEC:-/app/configuration}
 
   mobilemarketingapigw:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://0.0.0.0:80
       - IdentityUrl=http://identity.api              #Local: You need to open your local dev-machine firewall at range 5100-5110.
     ports:
       - "5201:80"   
     volumes:
-      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
-      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ./src/ApiGateways/Mobile.Bff.Marketing/apigw:${ESHOP_OCELOT_VOLUME_SPEC:-/app/configuration}
 
   webshoppingapigw:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://+:80;https://+:443
-      #- ASPNETCORE_URLS=http://0.0.0.0:80
-      - ASPNETCORE_HTTPS_PORT=4202
-      - ASPNETCORE_Kestrel__Certificates__Development__Password="RH@ssl2018"
       - IdentityUrl=http://identity.api              #Local: You need to open your local dev-machine firewall at range 5100-5110.
     ports:
       - "5202:80"  
-      - "4202:443"
     volumes:
-      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:rw
-      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:rw
-      - ./src/ApiGateways/Web.Bff.Shopping/apigw:${ESHOP_OCELOT_VOLUME_SPEC:-/app/configuration}:rw
+      - ./src/ApiGateways/Web.Bff.Shopping/apigw:${ESHOP_OCELOT_VOLUME_SPEC:-/app/configuration}
 
   webmarketingapigw:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://0.0.0.0:80
       - IdentityUrl=http://identity.api              #Local: You need to open your local dev-machine firewall at range 5100-5110.
     ports:
       - "5203:80"   
     volumes:
-      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:rw
-      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ./src/ApiGateways/Web.Bff.Marketing/apigw:${ESHOP_OCELOT_VOLUME_SPEC:-/app/configuration}
 
   mobileshoppingagg:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://0.0.0.0:80
       - urls__basket=http://basket.api
       - urls__catalog=http://catalog.api
       - urls__orders=http://ordering.api
@@ -254,7 +237,6 @@ services:
   webshoppingagg:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://0.0.0.0:80
       - urls__basket=http://basket.api
       - urls__catalog=http://catalog.api
       - urls__orders=http://ordering.api
