@@ -10,19 +10,18 @@
   "profiles": {
     "IIS Express": {
       "commandName": "IISExpress",
-      "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "use64Bit": true
     },
-    "Microsoft.eShopOnContainers.WebMVC": {
-      "commandName": "Project",
-      "launchUrl": "/",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      },
-      "applicationUrl": "https://localhost:4001;http://localhost:5001"
-    }
+			"Microsoft.eShopOnContainers.WebMVC": {
+				"commandName": "Project",
+				"launchUrl": "http://localhost:4001",
+				"environmentVariables": {
+					"ASPNETCORE_ENVIRONMENT": "Development"
+				},
+				"applicationUrl": "https://localhost:4001;http://localhost:5001"
+			}
   }
 }
