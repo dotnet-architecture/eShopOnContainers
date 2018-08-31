@@ -13,8 +13,7 @@
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      },
-      "use64Bit": true
+      }
     },
     "Ordering.SignalrHub": {
       "commandName": "Project",

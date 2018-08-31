@@ -19,176 +19,166 @@ using System.Net.Http;
 
 namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator
 {
-	public class Startup
-	{
-		public Startup(IConfiguration configuration)
-		{
-			Configuration = configuration;
-		}
+    public class Startup
+    {
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
 
-		public IConfiguration Configuration { get; }
+        public IConfiguration Configuration { get; }
 
-		// This method gets called by the runtime. Use this method to add services to the container.
-		public void ConfigureServices(IServiceCollection services)
-		{
-			services
-				.AddCustomMvc(Configuration)
-				.AddCustomAuthentication(Configuration)
-				.AddHttpServices();
-			//services.AddHttpsRedirection(opts =>
-			//{
-			//	opts.HttpsPort = 4120;
-			//});
-		}
+        // This method gets called by the runtime. Use this method to add services to the container.
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddCustomMvc(Configuration)
+                 .AddCustomAuthentication(Configuration)
+                 .AddHttpServices();
+        }
 
-		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
-		{
-			string pathBase = Configuration["PATH_BASE"];
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        {
+            var pathBase = Configuration["PATH_BASE"];
 
-			if (!string.IsNullOrEmpty(pathBase))
-			{
-				loggerFactory.CreateLogger("init").LogDebug($"Using PATH BASE '{pathBase}'");
-				app.UsePathBase(pathBase);
-			}
+            if (!string.IsNullOrEmpty(pathBase))
+            {
+                loggerFactory.CreateLogger("init").LogDebug($"Using PATH BASE '{pathBase}'");
+                app.UsePathBase(pathBase);
+            }
 
-			app.UseCors("CorsPolicy");
+            app.UseCors("CorsPolicy");
 
-			if (env.IsDevelopment())
-			{
-				app.UseDeveloperExceptionPage();
-			}
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
 
-			app.UseAuthentication();
+            app.UseAuthentication();
 
-			app.UseMvc();
+            app.UseMvc();
 
-			app.UseSwagger().UseSwaggerUI(c =>
-		    {
-			    c.SwaggerEndpoint($"{ (!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty) }/swagger/v1/swagger.json", "Purchase BFF V1");
-			    c.ConfigureOAuth2("Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregatorwaggerui", "", "", "Purchase BFF Swagger UI");
-		    });
-		}
-	}
+            app.UseSwagger().UseSwaggerUI(c =>
+           {
+               c.SwaggerEndpoint($"{ (!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty) }/swagger/v1/swagger.json", "Purchase BFF V1");
+               c.ConfigureOAuth2("Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregatorwaggerui", "", "", "Purchase BFF Swagger UI");
+           });
+        }
+    }
 
-	public static class ServiceCollectionExtensions
-	{
-		public static IServiceCollection AddCustomMvc(this IServiceCollection services, IConfiguration configuration)
-		{
-			services.AddOptions();
-			services.Configure<UrlsConfig>(configuration.GetSection("urls"));
+    public static class ServiceCollectionExtensions
+    {
+        public static IServiceCollection AddCustomMvc(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddOptions();
+            services.Configure<UrlsConfig>(configuration.GetSection("urls"));
 
-			services
-				   .AddMvc()
-				   .SetCompatibilityVersion(AspNetCore.Mvc.CompatibilityVersion.Version_2_1)
-				   ;
+            services.AddMvc();
 
-			services.AddSwaggerGen(options =>
-			{
-				options.DescribeAllEnumsAsStrings();
-				options.SwaggerDoc("v1", new Swashbuckle.AspNetCore.Swagger.Info
-				{
-					Title = "Shopping Aggregator for Mobile Clients",
-					Version = "v1",
-					Description = "Shopping Aggregator for Mobile Clients",
-					TermsOfService = "Terms Of Service"
-				});
+            services.AddSwaggerGen(options =>
+            {
+                options.DescribeAllEnumsAsStrings();
+                options.SwaggerDoc("v1", new Swashbuckle.AspNetCore.Swagger.Info
+                {
+                    Title = "Shopping Aggregator for Mobile Clients",
+                    Version = "v1",
+                    Description = "Shopping Aggregator for Mobile Clients",
+                    TermsOfService = "Terms Of Service"
+                });
 
-				options.AddSecurityDefinition("oauth2", new OAuth2Scheme
-				{
-					Type = "oauth2",
-					Flow = "implicit",
-					AuthorizationUrl = $"{configuration.GetValue<string>("IdentityUrlExternal")}/connect/authorize",
-					TokenUrl = $"{configuration.GetValue<string>("IdentityUrlExternal")}/connect/token",
-					Scopes = new Dictionary<string, string>()
-				   {
-				    { "mobileshoppingagg", "Shopping Aggregator for Mobile Clients" }
-				   }
-				});
+                options.AddSecurityDefinition("oauth2", new OAuth2Scheme
+                {
+                    Type = "oauth2",
+                    Flow = "implicit",
+                    AuthorizationUrl = $"{configuration.GetValue<string>("IdentityUrlExternal")}/connect/authorize",
+                    TokenUrl = $"{configuration.GetValue<string>("IdentityUrlExternal")}/connect/token",
+                    Scopes = new Dictionary<string, string>()
+                    {
+                        { "mobileshoppingagg", "Shopping Aggregator for Mobile Clients" }
+                    }
+                });
 
-				options.OperationFilter<AuthorizeCheckOperationFilter>();
-			});
+                options.OperationFilter<AuthorizeCheckOperationFilter>();
+            });
 
-			services.AddCors(options =>
-			{
-				options.AddPolicy("CorsPolicy",
-				 builder => builder.AllowAnyOrigin()
-				 .AllowAnyMethod()
-				 .AllowAnyHeader()
-				 .AllowCredentials());
-			});
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials());
+            });
 
-			return services;
-		}
-		public static IServiceCollection AddCustomAuthentication(this IServiceCollection services, IConfiguration configuration)
-		{
-			JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
-			var identityUrl = configuration.GetValue<string>("urls:identity");
-			services.AddAuthentication(options =>
-			{
-				options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-				options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            return services;
+        }
+        public static IServiceCollection AddCustomAuthentication(this IServiceCollection services, IConfiguration configuration)
+        {
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+            var identityUrl = configuration.GetValue<string>("urls:identity");
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 
-			}).AddJwtBearer(options =>
-			{
-				options.Authority = identityUrl;
-				options.RequireHttpsMetadata = false;
-				options.Audience = "mobileshoppingagg";
-				options.Events = new JwtBearerEvents()
-				{
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-					OnAuthenticationFailed = async ctx =>
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
-					{
-					},
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-					OnTokenValidated = async ctx =>
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
-					{
-					}
-				};
-			});
+            }).AddJwtBearer(options =>
+            {
+                options.Authority = identityUrl;
+                options.RequireHttpsMetadata = false;
+                options.Audience = "mobileshoppingagg";
+                options.Events = new JwtBearerEvents()
+                {
+                    OnAuthenticationFailed = async ctx =>
+                    {
+                        int i = 0;
+                    },
+                    OnTokenValidated = async ctx =>
+                    {
+                        int i = 0;
+                    }
+                };
+            });
 
-			return services;
-		}
-		public static IServiceCollection AddHttpServices(this IServiceCollection services)
-		{
-			//register delegating handlers
-			services.AddTransient<HttpClientAuthorizationDelegatingHandler>();
-			services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            return services;
+        }
+        public static IServiceCollection AddHttpServices(this IServiceCollection services)
+        {
+            //register delegating handlers
+            services.AddTransient<HttpClientAuthorizationDelegatingHandler>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-			//register http services
-			services.AddHttpClient<IBasketService, BasketService>()
-			    .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
-			    .AddPolicyHandler(GetRetryPolicy())
-			    .AddPolicyHandler(GetCircuitBreakerPolicy());
+            //register http services
+            services.AddHttpClient<IBasketService, BasketService>()
+                .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
+                .AddPolicyHandler(GetRetryPolicy())
+                .AddPolicyHandler(GetCircuitBreakerPolicy());
 
-			services.AddHttpClient<ICatalogService, CatalogService>()
-				  .AddPolicyHandler(GetRetryPolicy())
-				  .AddPolicyHandler(GetCircuitBreakerPolicy());
+            services.AddHttpClient<ICatalogService, CatalogService>()
+                   .AddPolicyHandler(GetRetryPolicy())
+                   .AddPolicyHandler(GetCircuitBreakerPolicy());
 
-			services.AddHttpClient<IOrderApiClient, OrderApiClient>()
-				  .AddPolicyHandler(GetRetryPolicy())
-				  .AddPolicyHandler(GetCircuitBreakerPolicy());
+            services.AddHttpClient<IOrderApiClient, OrderApiClient>()
+                   .AddPolicyHandler(GetRetryPolicy())
+                   .AddPolicyHandler(GetCircuitBreakerPolicy());
 
 
 
-			return services;
-		}
+            return services;
+        }
 
-		static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy()
-		{
-			return HttpPolicyExtensions
-			  .HandleTransientHttpError()
-			  .OrResult(msg => msg.StatusCode == System.Net.HttpStatusCode.NotFound)
-			  .WaitAndRetryAsync(6, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
+        static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy()
+        {
+            return HttpPolicyExtensions
+              .HandleTransientHttpError()
+              .OrResult(msg => msg.StatusCode == System.Net.HttpStatusCode.NotFound)
+              .WaitAndRetryAsync(6, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
 
-		}
-		static IAsyncPolicy<HttpResponseMessage> GetCircuitBreakerPolicy()
-		{
-			return HttpPolicyExtensions
-			    .HandleTransientHttpError()
-			    .CircuitBreakerAsync(5, TimeSpan.FromSeconds(30));
-		}
-	}
+        }
+        static IAsyncPolicy<HttpResponseMessage> GetCircuitBreakerPolicy()
+        {
+            return HttpPolicyExtensions
+                .HandleTransientHttpError()
+                .CircuitBreakerAsync(5, TimeSpan.FromSeconds(30));
+        }
+    }
 }

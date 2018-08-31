@@ -3,8 +3,8 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:5105/",
-      "sslPort": 4105
+      "applicationUrl": "http://localhost:54010/",
+      "sslPort": 0
     }
   },
   "profiles": {
@@ -14,8 +14,7 @@
       "launchUrl": "http://localhost:55105",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      },
-      "use64Bit": true
+      }
     },
     "eShopOnContainers.Identity": {
       "commandName": "Project",
