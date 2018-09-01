@@ -17,6 +17,7 @@ FROM dotnet-build as build
 WORKDIR /src/src/Services/Identity/Identity.API/wwwroot
 COPY --from=node-build /web/wwwroot .
 WORKDIR /src
+COPY ./Certificates/eShopOnContainers.pfx /root/.aspnet/https/
 COPY . .
 WORKDIR /src/src/Services/Identity/Identity.API
 RUN dotnet restore -nowarn:msb3202,nu1503

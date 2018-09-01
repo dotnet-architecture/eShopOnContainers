@@ -17,6 +17,7 @@ FROM dotnet-build as publish
 WORKDIR /src/src/Web/WebSPA/wwwroot
 COPY --from=node-build /web/wwwroot .
 WORKDIR /src
+COPY ./Certificates/eShopOnContainers.pfx /root/.aspnet/https/
 COPY . .
 WORKDIR /src/src/Web/WebSPA
 RUN dotnet publish -c Release -o /app
