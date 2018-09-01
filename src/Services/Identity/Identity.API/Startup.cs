@@ -119,6 +119,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API
 			else
 			{
 				app.UseExceptionHandler("/Home/Error");
+				app.UseHsts();
 			}
 
 			app.UseHttpsRedirection();

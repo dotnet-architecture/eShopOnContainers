@@ -68,6 +68,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
 			else
 			{
 				app.UseExceptionHandler("/Error");
+				app.UseHsts();
 			}
 
 			var pathBase = Configuration["PATH_BASE"];

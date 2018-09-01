@@ -85,6 +85,10 @@ namespace eShopConContainers.WebSPA
 			{
 				app.UseDeveloperExceptionPage();
 			}
+			else
+			{
+				app.UseHsts();
+			}
 
 			app.UseHttpsRedirection();
 
