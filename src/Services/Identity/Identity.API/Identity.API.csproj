@@ -33,10 +33,6 @@
 	</Target>
 
 	<ItemGroup>
-		<DotNetCliToolReference Include="BundlerMinifier.Core" Version="2.7.385" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<EmbeddedResource Include="Certificate\idsrv3test.pfx" />
 	</ItemGroup>
 
