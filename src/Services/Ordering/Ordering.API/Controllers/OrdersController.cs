@@ -5,7 +5,6 @@ using Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands;
 using Microsoft.eShopOnContainers.Services.Ordering.API.Application.Queries;
 using Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure.Services;
 using Ordering.API.Application.Commands;
-using Ordering.API.Application.Models;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -15,6 +14,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Controllers
 {
     [Route("api/v1/[controller]")]
     [Authorize]
+    [ApiController]
     public class OrdersController : Controller
     {
         private readonly IMediator _mediator;
@@ -87,8 +87,8 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Controllers
         [ProducesResponseType(typeof(IEnumerable<OrderSummary>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetOrders()
         {
-            var orders = await _orderQueries.GetOrdersAsync();
-
+            var userid = _identityService.GetUserIdentity();
+            var orders = await _orderQueries.GetOrdersFromUserAsync(Guid.Parse(userid));
             return Ok(orders);
         }
 

@@ -1,54 +1,39 @@
 ﻿using Microsoft.eShopOnContainers.Services.Ordering.Domain.SeedWork;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.BuyerAggregate
 {
-
+    /// <remarks> 
+    /// Card type class should be marked as abstract with protected constructor to encapsulate known enum types
+    /// this is currently not possible as OrderingContextSeed uses this constructor to load cardTypes from csv file
+    /// </remarks>
     public class CardType
         : Enumeration
     {
-        public static CardType Amex = new CardType(1, "Amex");
-        public static CardType Visa = new CardType(2, "Visa");
-        public static CardType MasterCard = new CardType(3, "MasterCard");
-
-        protected CardType() { }
+        public static CardType Amex = new AmexCardType();
+        public static CardType Visa = new VisaCardType();
+        public static CardType MasterCard = new MasterCardType();
 
         public CardType(int id, string name)
             : base(id, name)
         {
-
         }
 
-        public static IEnumerable<CardType> List()
+        private class AmexCardType : CardType
         {
-            return new[] { Amex, Visa, MasterCard };
+            public AmexCardType() : base(1, "Amex")
+            { }
         }
 
-        public static CardType FromName(string name)
+        private class VisaCardType : CardType
         {
-            var state = List()
-                .SingleOrDefault(s => String.Equals(s.Name, name, StringComparison.CurrentCultureIgnoreCase));
-
-            if (state == null)
-            {
-                throw new ArgumentException($"Possible values for CardType: {String.Join(",", List().Select(s => s.Name))}");
-            }
-
-            return state;
+            public VisaCardType() : base(2, "Visa")
+            { }
         }
 
-        public static CardType From(int id)
+        private class MasterCardType : CardType
         {
-            var state = List().SingleOrDefault(s => s.Id == id);
-
-            if (state == null)
-            {
-                throw new ArgumentException($"Possible values for CardType: {String.Join(",", List().Select(s => s.Name))}");
-            }
-
-            return state;
+            public MasterCardType() : base(3, "MasterCard")
+            { }
         }
     }
 }

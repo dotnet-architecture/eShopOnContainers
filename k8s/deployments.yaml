@@ -702,6 +702,11 @@ spec:
            configMapKeyRef:
              name: internalurls
              key: ordering__hc
+        - name: OrderingBackgroundTasksUrl
+          valueFrom:
+           configMapKeyRef:
+             name: internalurls
+             key: ordering-background__hc
         - name: LocationsUrl
           valueFrom:
            configMapKeyRef:

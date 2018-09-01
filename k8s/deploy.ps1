@@ -8,6 +8,7 @@ Param(
     [parameter(Mandatory=$false)][string]$imageTag,
     [parameter(Mandatory=$false)][bool]$deployCI=$false,
     [parameter(Mandatory=$false)][bool]$buildImages=$true,
+    [parameter(Mandatory=$false)][bool]$pushImages=$true,
     [parameter(Mandatory=$false)][bool]$deployInfrastructure=$true,
     [parameter(Mandatory=$false)][string]$dockerOrg="eshop"
 )
@@ -63,7 +64,9 @@ if ($buildImages) {
     Write-Host "Building Docker images tagged with '$imageTag'" -ForegroundColor Yellow
     $env:TAG=$imageTag
     docker-compose -p .. -f ../docker-compose.yml build    
+}
 
+if ($pushImages) {
     Write-Host "Pushing images to $registry/$dockerOrg..." -ForegroundColor Yellow
     $services = ("basket.api", "catalog.api", "identity.api", "ordering.api", "ordering.backgroundtasks", "marketing.api","payment.api","locations.api", "webmvc", "webspa", "webstatus", "ocelotapigw", "mobileshoppingagg", "webshoppingagg", "ordering.signalrhub")
 
@@ -91,7 +94,10 @@ if (-not [string]::IsNullOrEmpty($dockerUser)) {
         exit
     }
 
-    # create registry key secret
+    # Try to delete the Docker registry key secret
+    ExecKube -cmd 'delete secret docker-registry registry-key'
+
+    # Create the Docker registry key secret
     ExecKube -cmd 'create secret docker-registry registry-key `
     --docker-server=$registryFDQN `
     --docker-username=$dockerUser `

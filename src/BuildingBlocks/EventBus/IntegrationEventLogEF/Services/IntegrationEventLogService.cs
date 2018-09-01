@@ -1,12 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
+using System;
 using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
-using System;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF.Services
 {
@@ -17,7 +15,7 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF.Servi
 
         public IntegrationEventLogService(DbConnection dbConnection)
         {
-            _dbConnection = dbConnection?? throw new ArgumentNullException("dbConnection");
+            _dbConnection = dbConnection ?? throw new ArgumentNullException(nameof(dbConnection));
             _integrationEventLogContext = new IntegrationEventLogContext(
                 new DbContextOptionsBuilder<IntegrationEventLogContext>()
                     .UseSqlServer(_dbConnection)
@@ -27,13 +25,13 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF.Servi
 
         public Task SaveEventAsync(IntegrationEvent @event, DbTransaction transaction)
         {
-            if(transaction == null)
+            if (transaction == null)
             {
-                throw new ArgumentNullException("transaction", $"A {typeof(DbTransaction).FullName} is required as a pre-requisite to save the event.");
+                throw new ArgumentNullException(nameof(transaction), $"A {typeof(DbTransaction).FullName} is required as a pre-requisite to save the event.");
             }
-            
+
             var eventLogEntry = new IntegrationEventLogEntry(@event);
-            
+
             _integrationEventLogContext.Database.UseTransaction(transaction);
             _integrationEventLogContext.IntegrationEventLogs.Add(eventLogEntry);
 

@@ -1,12 +1,9 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http;
 using Microsoft.eShopOnContainers.WebMVC.Services;
 using Microsoft.eShopOnContainers.WebMVC.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using Newtonsoft.Json;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace WebMVC.Controllers
@@ -14,6 +11,7 @@ namespace WebMVC.Controllers
     class TestPayload
     {
         public int CatalogItemId { get; set; }
+
         public string BasketId { get; set; }
 
         public int Quantity { get; set; }
@@ -22,9 +20,10 @@ namespace WebMVC.Controllers
     [Authorize]
     public class TestController : Controller
     {
-        private readonly IHttpClient _client;
+        private readonly IHttpClientFactory _client;
         private readonly IIdentityParser<ApplicationUser> _appUserParser;
-        public TestController(IHttpClient client, IIdentityParser<ApplicationUser> identityParser)
+
+        public TestController(IHttpClientFactory client, IIdentityParser<ApplicationUser> identityParser)
         {
             _client = client;
             _appUserParser = identityParser;
@@ -33,18 +32,24 @@ namespace WebMVC.Controllers
         public async Task<IActionResult> Ocelot()
         {
             var url = "http://apigw/shopping/api/v1/basket/items";
+
             var payload = new TestPayload()
             {
                 CatalogItemId = 1,
                 Quantity = 1,
                 BasketId = _appUserParser.Parse(User).Id
             };
-            var token = await HttpContext.GetTokenAsync("access_token");
-            var response = await _client.PostAsync<TestPayload>(url, payload, token);
-            
+
+            var content = new StringContent(JsonConvert.SerializeObject(payload), System.Text.Encoding.UTF8, "application/json");
+
+
+            var response = await _client.CreateClient(nameof(IBasketService))
+                .PostAsync(url, content);
+
             if (response.IsSuccessStatusCode)
             {
                 var str =  await response.Content.ReadAsStringAsync();
+
                 return Ok(str);
             }
             else

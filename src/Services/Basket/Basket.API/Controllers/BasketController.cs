@@ -36,7 +36,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
             var basket = await _repository.GetBasketAsync(id);
             if (basket == null)
             {
-                return NotFound();
+                return Ok(new CustomerBasket(id) { });
             }
 
             return Ok(basket);
@@ -59,7 +59,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
         public async Task<IActionResult> Checkout([FromBody]BasketCheckout basketCheckout, [FromHeader(Name = "x-requestid")] string requestId)
         {
             var userId = _identitySvc.GetUserIdentity();
-            var userName = User.FindFirst(x => x.Type == "unique_name").Value;
+            
 
             basketCheckout.RequestId = (Guid.TryParse(requestId, out Guid guid) && guid != Guid.Empty) ?
                 guid : basketCheckout.RequestId;
@@ -70,6 +70,8 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
             {
                 return BadRequest();
             }
+
+            var userName = User.FindFirst(x => x.Type == "unique_name").Value;
 
             var eventMessage = new UserCheckoutAcceptedIntegrationEvent(userId, userName, basketCheckout.City, basketCheckout.Street,
                 basketCheckout.State, basketCheckout.Country, basketCheckout.ZipCode, basketCheckout.CardNumber, basketCheckout.CardHolderName,
