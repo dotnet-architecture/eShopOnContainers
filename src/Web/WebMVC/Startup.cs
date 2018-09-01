@@ -1,8 +1,26 @@
-﻿using Microsoft.eShopOnContainers.WebMVC.Services;
+﻿using Microsoft.ApplicationInsights.Extensibility;
+using Microsoft.ApplicationInsights.ServiceFabric;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.eShopOnContainers.WebMVC.Services;
 using Microsoft.eShopOnContainers.WebMVC.ViewModels;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.HealthChecks;
+using Polly;
+using Polly.Extensions.Http;
+using StackExchange.Redis;
+using System;
+using System.Net.Http;
 using WebMVC.Infrastructure;
-using WebMVC.Infrastructure.Middlewares;
 using WebMVC.Services;
+using System.IdentityModel.Tokens.Jwt;
+using WebMVC.Infrastructure.Middlewares;
 
 namespace Microsoft.eShopOnContainers.WebMVC
 {
@@ -54,7 +72,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
 				loggerFactory.CreateLogger("init").LogDebug($"Using PATH BASE '{pathBase}'");
 				app.UsePathBase(pathBase);
 			}
-			
+
 			app.UseCookiePolicy();
 
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
@@ -71,7 +89,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
 
 			app.UseAuthentication();
 
-			ILogger log = loggerFactory.CreateLogger("identity");
+			var log = loggerFactory.CreateLogger("identity");
 
 			WebContextSeed.Seed(app, env, loggerFactory);
 
@@ -94,7 +112,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
 		public static IServiceCollection AddAppInsight(this IServiceCollection services, IConfiguration configuration)
 		{
 			services.AddApplicationInsightsTelemetry(configuration);
-			string orchestratorType = configuration.GetValue<string>("OrchestratorType");
+			var orchestratorType = configuration.GetValue<string>("OrchestratorType");
 
 			if (orchestratorType?.ToUpper() == "K8S")
 			{
@@ -125,7 +143,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
 				checks.AddUrlCheck(configuration["CatalogUrlHC"], TimeSpan.FromMinutes(minutes));
 				checks.AddUrlCheck(configuration["OrderingUrlHC"], TimeSpan.FromMinutes(minutes));
 				checks.AddUrlCheck(configuration["BasketUrlHC"], TimeSpan.Zero); //No cache for this HealthCheck, better just for demos 
-			  checks.AddUrlCheck(configuration["IdentityUrlHC"], TimeSpan.FromMinutes(minutes));
+				checks.AddUrlCheck(configuration["IdentityUrlHC"], TimeSpan.FromMinutes(minutes));
 				checks.AddUrlCheck(configuration["MarketingUrlHC"], TimeSpan.FromMinutes(minutes));
 			});
 
@@ -203,11 +221,11 @@ namespace Microsoft.eShopOnContainers.WebMVC
 			{
 				b.AddFilter((category, level) => true); // Spam the world with logs.
 
-			  // Add console logger so we can see all the logging produced by the client by default.
-			  b.AddConsole(c => c.IncludeScopes = true);
+				// Add console logger so we can see all the logging produced by the client by default.
+				b.AddConsole(c => c.IncludeScopes = true);
 
-			  // Add console logger
-			  b.AddDebug();
+				// Add console logger
+				b.AddDebug();
 			});
 
 			return services;
