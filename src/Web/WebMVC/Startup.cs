@@ -1,23 +1,5 @@
-﻿using Microsoft.ApplicationInsights.Extensibility;
-using Microsoft.ApplicationInsights.ServiceFabric;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.DataProtection;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.eShopOnContainers.WebMVC.Services;
+﻿using Microsoft.eShopOnContainers.WebMVC.Services;
 using Microsoft.eShopOnContainers.WebMVC.ViewModels;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.HealthChecks;
-using Microsoft.Extensions.Logging;
-using Polly;
-using Polly.Extensions.Http;
-using StackExchange.Redis;
-using System;
-using System.IdentityModel.Tokens.Jwt;
-using System.Net.Http;
 using WebMVC.Infrastructure;
 using WebMVC.Infrastructure.Middlewares;
 using WebMVC.Services;
@@ -40,10 +22,6 @@ namespace Microsoft.eShopOnContainers.WebMVC
 			{
 				opts.CheckConsentNeeded = context => true;
 				opts.MinimumSameSitePolicy = SameSiteMode.None;
-			});
-			services.AddHttpsRedirection(opts=>
-			{
-				opts.HttpsPort = 4100;
 			});
 			services.AddAppInsight(Configuration)
 				   .AddHealthChecks(Configuration)
@@ -68,7 +46,6 @@ namespace Microsoft.eShopOnContainers.WebMVC
 			else
 			{
 				app.UseExceptionHandler("/Error");
-				app.UseHsts();
 			}
 
 			var pathBase = Configuration["PATH_BASE"];
@@ -77,8 +54,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
 				loggerFactory.CreateLogger("init").LogDebug($"Using PATH BASE '{pathBase}'");
 				app.UsePathBase(pathBase);
 			}
-
-			app.UseHttpsRedirection();
+			
 			app.UseCookiePolicy();
 
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
@@ -161,11 +137,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
 			services.AddOptions();
 			services.Configure<AppSettings>(configuration);
 
-			services.AddMvc(opts=>
-			{
-				opts.SslPort = 4100;
-				opts.RequireHttpsPermanent = true;
-			});
+			services.AddMvc();
 
 			services.AddSession();
 

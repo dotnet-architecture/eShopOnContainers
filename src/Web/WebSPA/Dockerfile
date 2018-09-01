@@ -2,7 +2,6 @@ ARG NODE_IMAGE=node:8.11
 FROM microsoft/dotnet:2.1-aspnetcore-runtime AS base
 WORKDIR /app
 EXPOSE 80
-EXPOSE 443
 
 FROM microsoft/dotnet:2.1-sdk as dotnet-build
 WORKDIR /src
@@ -17,7 +16,6 @@ FROM dotnet-build as publish
 WORKDIR /src/src/Web/WebSPA/wwwroot
 COPY --from=node-build /web/wwwroot .
 WORKDIR /src
-COPY ./Certificates/eShopOnContainers.pfx /root/.aspnet/https/
 COPY . .
 WORKDIR /src/src/Web/WebSPA
 RUN dotnet publish -c Release -o /app

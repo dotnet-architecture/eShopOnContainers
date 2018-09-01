@@ -57,20 +57,11 @@ namespace eShopConContainers.WebSPA
 			services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
 
 			services
-				.AddMvc(opts =>
+				.AddMvc()
+				.AddJsonOptions(options =>
 				{
-					opts.SslPort = 4104;
-					opts.RequireHttpsPermanent = true;
-				})
-			    .AddJsonOptions(options =>
-			    {
-				    options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-			    });
-
-			services.AddHttpsRedirection(opts =>
-			{
-				opts.HttpsPort = 4104;
-			});
+					options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+				});
 		}
 
 
@@ -85,12 +76,8 @@ namespace eShopConContainers.WebSPA
 			{
 				app.UseDeveloperExceptionPage();
 			}
-			else
-			{
-				app.UseHsts();
-			}
 
-			app.UseHttpsRedirection();
+			app.UseCookiePolicy();
 
 			// Configure XSRF middleware, This pattern is for SPA style applications where XSRF token is added on Index page 
 			// load and passed back token on every subsequent async request            

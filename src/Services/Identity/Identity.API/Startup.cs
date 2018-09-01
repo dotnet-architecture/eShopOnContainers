@@ -35,16 +35,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API
 
 			services.Configure<AppSettings>(Configuration);
 
-			services.AddMvc(opts =>
-			{
-				opts.SslPort = 4105;
-				opts.RequireHttpsPermanent = true;
-			});
-
-			services.AddHttpsRedirection(opts =>
-			{
-				opts.HttpsPort = 4105;
-			});
+			services.AddMvc();
 
 			if (Configuration.GetValue<string>("IsClusterEnv") == bool.TrueString)
 			{
@@ -119,10 +110,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API
 			else
 			{
 				app.UseExceptionHandler("/Home/Error");
-				app.UseHsts();
 			}
-
-			app.UseHttpsRedirection();
 
 			var pathBase = Configuration["PATH_BASE"];
 			if (!string.IsNullOrEmpty(pathBase))
