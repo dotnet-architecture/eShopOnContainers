@@ -45,7 +45,7 @@ services:
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
       - OrchestratorType=${ORCHESTRATOR_TYPE}
     ports:
-      - "5105:80"   
+      - "5105:80"
 
   basket.api:
     environment:
