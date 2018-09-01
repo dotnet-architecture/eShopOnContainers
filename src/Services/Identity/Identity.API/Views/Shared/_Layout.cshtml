@@ -18,38 +18,54 @@
     </environment>
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top es-header">
-        <div class="container">
-            <div class="row">
-                <div class="navbar-header col-sm-6 col-xs-8">
-                    <a asp-controller="home" asp-action="ReturnToOriginalApplication" asp-route-returnUrl="@ViewData["ReturnUrl"]">
-                        <div class="navbar-brand"></div>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
+	<div class="navbar navbar-inverse navbar-fixed-top es-header">
+		<div class="container">
+			<div class="row">
+				<div class="navbar-header col-sm-6 col-xs-8">
+					<a asp-controller="home" asp-action="ReturnToOriginalApplication" asp-route-returnUrl="@ViewData["ReturnUrl"]">
+						<div class="navbar-brand"></div>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
 
-    <div>
-        @RenderBody()
-        <br /><br />
-        <footer>
-            <div class="container">
-                <div class="row">
-                    <div class="col-sm-6">
-                        <br><div class="brand"></div>
-                    </div>
-                    <div class="col-sm-6">
-                        <img class="text hidden-xs" src="~/images/main_footer_text.PNG" width="335" height="26" alt="footer text image" />
-                    </div>
-                </div>
-            </div>
-        </footer>
-    </div>
+	<div>
+		@RenderBody()
+		<br /><br />
+		<footer>
+			<div class="container">
+				<div class="row">
+					<div class="col-sm-6">
+						<br><div class="brand"></div>
+					</div>
+					<div class="col-sm-6">
+						<img class="text hidden-xs" src="~/images/main_footer_text.PNG" width="335" height="26" alt="footer text image" />
+					</div>
+				</div>
+			</div>
+		</footer>
+	</div>
 
 
-    <script src="~/lib/jquery/jquery.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-    @RenderSection("scripts", required: false)
+	<environment names="Development">
+		<script src="~/lib/jquery/jquery.js"></script>
+		<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+	</environment>
+	<environment names="Staging,Production">
+		<script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
+			   asp-fallback-src="~/lib/jquery/jquery.min.js"
+			   asp-fallback-test="window.jQuery"
+			   crossorigin="anonymous"
+			   integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
+		</script>
+		<script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
+			   asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+			   asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+			   crossorigin="anonymous"
+			   integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
+		</script>
+	</environment>
+	@RenderSection("scripts", required: false)
 </body>
 </html>
