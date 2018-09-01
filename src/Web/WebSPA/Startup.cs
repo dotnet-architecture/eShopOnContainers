@@ -1,4 +1,15 @@
-﻿using eShopOnContainers.WebSPA;
+using eShopOnContainers.WebSPA;
+using Microsoft.ApplicationInsights.Extensibility;
+using Microsoft.ApplicationInsights.ServiceFabric;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.HealthChecks;
+using Newtonsoft.Json.Serialization;
+using StackExchange.Redis;
+using System;
 using WebSPA.Infrastructure;
 
 namespace eShopConContainers.WebSPA
