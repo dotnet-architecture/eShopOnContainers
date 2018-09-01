@@ -41,6 +41,10 @@ namespace Microsoft.eShopOnContainers.WebMVC
 				opts.CheckConsentNeeded = context => true;
 				opts.MinimumSameSitePolicy = SameSiteMode.None;
 			});
+			services.AddHttpsRedirection(opts=>
+			{
+				opts.HttpsPort = 4100;
+			});
 			services.AddAppInsight(Configuration)
 				   .AddHealthChecks(Configuration)
 				   .AddCustomMvc(Configuration)
@@ -73,7 +77,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
 				app.UsePathBase(pathBase);
 			}
 
-
+			app.UseHttpsRedirection();
 			app.UseCookiePolicy();
 
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
@@ -156,7 +160,11 @@ namespace Microsoft.eShopOnContainers.WebMVC
 			services.AddOptions();
 			services.Configure<AppSettings>(configuration);
 
-			services.AddMvc();
+			services.AddMvc(opts=>
+			{
+				opts.SslPort = 4100;
+				opts.RequireHttpsPermanent = true;
+			});
 
 			services.AddSession();
 
