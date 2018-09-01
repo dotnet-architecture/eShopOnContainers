@@ -1,12 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>netcoreapp2.1</TargetFramework>
+		<RuntimeFrameworkVersion>2.1.3</RuntimeFrameworkVersion>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Polly" Version="6.0.1" />
-    <PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Polly" Version="6.0.1" />
+		<PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.3" />
+	</ItemGroup>
 
 </Project>
