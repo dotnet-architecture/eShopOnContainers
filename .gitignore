@@ -260,6 +260,15 @@ pub/
 #Ignore marker-file used to know which docker files we have.
 .eshopdocker_*
 /src/Web/WebMVC/wwwroot/lib
-/src/Web/WebMVC/wwwroot/css/site.min.css
+/src/Web/WebMVC/wwwroot/css/**
 **/.kube/**
 .mfractor
+src/Web/WebMVC/wwwroot/js/**
+src/Web/WebMVC/wwwroot/lib/**
+src/Web/WebSPA/wwwroot/js/**
+src/Web/WebSPA/wwwroot/lib/**
+src/Services/Identity/Identity.API/wwwroot/js/**
+src/Services/Identity/Identity.API/wwwroot/lib/**
+src/Web/WebMVC/node_modules/**
+src/Web/WebSPA/node_modules/**
+src/Services/Identity/Identity.API/node_modules/**
