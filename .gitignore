@@ -193,12 +193,12 @@ ClientBin/
 *.dbproj.schemaview
 *.publishsettings
 node_modules/
+/src/Web/WebMVC/wwwroot/css/**
 src/Web/WebMVC/wwwroot/js/**
 src/Web/WebSPA/wwwroot/js/**/**
 /src/Web/WebMVC/wwwroot/lib
 src/Web/WebMVC/wwwroot/lib/**
 /src/Web/WebMVC/wwwroot/lib/**/**
-/src/Web/WebMVC/wwwroot/css/**
 src/Services/Identity/Identity.API/wwwroot/js/**
 src/Services/Identity/Identity.API/wwwroot/js/**/**
 src/Services/Identity/Identity.API/wwwroot/lib/**
