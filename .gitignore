@@ -185,6 +185,10 @@ _pkginfo.txt
 # but keep track of directories ending in .cache
 !*.[Cc]ache/
 
+#Node.js
+src/Web/WebSPA/node_modules/**
+src/Services/Identity/Identity.API/node_modules/**
+
 # Others
 ClientBin/
 ~$*
@@ -205,8 +209,6 @@ src/Services/Identity/Identity.API/wwwroot/lib
 src/Services/Identity/Identity.API/wwwroot/lib/**
 src/Services/Identity/Identity.API/wwwroot/lib/**/**
 src/Web/WebMVC/node_modules/**
-src/Web/WebSPA/node_modules/**
-src/Services/Identity/Identity.API/node_modules/**
 
 # Since there are multiple workflows, uncomment next line to ignore bower_components
 # (https://github.com/github/gitignore/pull/1529#issuecomment-104372622)
