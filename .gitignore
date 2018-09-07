@@ -193,7 +193,17 @@ ClientBin/
 *.dbproj.schemaview
 *.publishsettings
 node_modules/
-orleans.codegen.cs
+/src/Web/WebMVC/wwwroot/lib
+/src/Web/WebMVC/wwwroot/css/**
+src/Web/WebMVC/wwwroot/js/**
+src/Web/WebMVC/wwwroot/lib/**
+src/Web/WebSPA/wwwroot/js/**
+src/Web/WebSPA/wwwroot/lib/**
+src/Services/Identity/Identity.API/wwwroot/js/**
+src/Services/Identity/Identity.API/wwwroot/lib/**
+src/Web/WebMVC/node_modules/**
+src/Web/WebSPA/node_modules/**
+src/Services/Identity/Identity.API/node_modules/**
 
 # Since there are multiple workflows, uncomment next line to ignore bower_components
 # (https://github.com/github/gitignore/pull/1529#issuecomment-104372622)
@@ -253,22 +263,10 @@ paket-files/
 .idea/
 *.sln.iml
 pub/
-/src/Web/WebMVC/Properties/PublishProfiles/eShopOnContainersWebMVC2016 - Web Deploy-publish.ps1
-/src/Web/WebMVC/Properties/PublishProfiles/publish-module.psm1
-/src/Services/Identity/eShopOnContainers.Identity/Properties/launchSettings.json
 
 #Ignore marker-file used to know which docker files we have.
 .eshopdocker_*
-/src/Web/WebMVC/wwwroot/lib
-/src/Web/WebMVC/wwwroot/css/**
+
 **/.kube/**
 .mfractor
-src/Web/WebMVC/wwwroot/js/**
-src/Web/WebMVC/wwwroot/lib/**
-src/Web/WebSPA/wwwroot/js/**
-src/Web/WebSPA/wwwroot/lib/**
-src/Services/Identity/Identity.API/wwwroot/js/**
-src/Services/Identity/Identity.API/wwwroot/lib/**
-src/Web/WebMVC/node_modules/**
-src/Web/WebSPA/node_modules/**
-src/Services/Identity/Identity.API/node_modules/**
+orleans.codegen.cs
