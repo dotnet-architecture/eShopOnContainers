@@ -1,7 +1,7 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate
 {
     using global::Ordering.Domain.Exceptions;
-    using Seedwork;
+    using Microsoft.eShopOnContainers.Services.Ordering.Domain.SeedWork;
     using System;
     using System.Collections.Generic;
     using System.Linq;
