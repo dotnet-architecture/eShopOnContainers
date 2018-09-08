@@ -1,12 +1,14 @@
-﻿namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus
+﻿using IDisposable = System.IDisposable;
+
+namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus
 {
-    using Microsoft.Azure.ServiceBus;
-    using System;
+	using ITopicClient = Azure.ServiceBus.ITopicClient;
+	using ServiceBusConnectionStringBuilder = Azure.ServiceBus.ServiceBusConnectionStringBuilder;
 
-    public interface IServiceBusPersisterConnection : IDisposable
-    {
-        ServiceBusConnectionStringBuilder ServiceBusConnectionStringBuilder { get; }
+	public interface IServiceBusPersisterConnection : IDisposable
+	{
+		ServiceBusConnectionStringBuilder ServiceBusConnectionStringBuilder { get; }
 
-        ITopicClient CreateModel();
-    }
+		ITopicClient CreateModel();
+	}
 }
