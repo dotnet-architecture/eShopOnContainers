@@ -205,7 +205,7 @@ node_modules/
 /src/Web/WebMVC/wwwroot/lib/**/**
 /src/Services/Identity/Identity.API/wwwroot/js/**
 /src/Services/Identity/Identity.API/wwwroot/js/**/**
-src/Services/Identity/Identity.API/wwwroot/lib
+/src/Services/Identity/Identity.API/wwwroot/lib
 src/Services/Identity/Identity.API/wwwroot/lib/**
 src/Services/Identity/Identity.API/wwwroot/lib/**/**
 src/Web/WebMVC/node_modules/**
