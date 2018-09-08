@@ -1,15 +1,13 @@
-﻿using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
-using System;
-using System.Collections.Generic;
-using System.Data.Common;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using DbTransaction = System.Data.Common.DbTransaction;
+using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF.Services
 {
-    public interface IIntegrationEventLogService
-    {
-        Task SaveEventAsync(IntegrationEvent @event, DbTransaction transaction);
-        Task MarkEventAsPublishedAsync(IntegrationEvent @event);
-    }
+	using IntegrationEvent = EventBus.Events.IntegrationEvent;
+
+	public interface IIntegrationEventLogService
+	{
+		Task SaveEventAsync(IntegrationEvent @event, DbTransaction transaction);
+		Task MarkEventAsPublishedAsync(IntegrationEvent @event);
+	}
 }
