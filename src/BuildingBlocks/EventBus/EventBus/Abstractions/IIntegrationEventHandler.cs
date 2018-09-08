@@ -1,15 +1,16 @@
-﻿using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
-using System.Threading.Tasks;
+﻿using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions
 {
-    public interface IIntegrationEventHandler<in TIntegrationEvent> : IIntegrationEventHandler 
-        where TIntegrationEvent: IntegrationEvent
-    {
-        Task Handle(TIntegrationEvent @event);
-    }
+	using IntegrationEvent = Events.IntegrationEvent;
 
-    public interface IIntegrationEventHandler
-    {
-    }
+	public interface IIntegrationEventHandler<in TIntegrationEvent> : IIntegrationEventHandler
+	   where TIntegrationEvent : IntegrationEvent
+	{
+		Task Handle(TIntegrationEvent @event);
+	}
+
+	public interface IIntegrationEventHandler
+	{
+	}
 }

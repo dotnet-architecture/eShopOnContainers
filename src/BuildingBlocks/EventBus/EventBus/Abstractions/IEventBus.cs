@@ -1,24 +1,23 @@
-﻿using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
-using System;
-
-namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions
+﻿namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions
 {
-    public interface IEventBus
-    {
-        void Publish(IntegrationEvent @event);
+	using IntegrationEvent = Events.IntegrationEvent;
 
-        void Subscribe<T, TH>()
-            where T : IntegrationEvent
-            where TH : IIntegrationEventHandler<T>;
+	public interface IEventBus
+	{
+		void Publish(IntegrationEvent @event);
 
-        void SubscribeDynamic<TH>(string eventName)
-            where TH : IDynamicIntegrationEventHandler;
+		void Subscribe<T, TH>()
+		    where T : IntegrationEvent
+		    where TH : IIntegrationEventHandler<T>;
 
-        void UnsubscribeDynamic<TH>(string eventName)
-            where TH : IDynamicIntegrationEventHandler;
+		void SubscribeDynamic<TH>(string eventName)
+		    where TH : IDynamicIntegrationEventHandler;
 
-        void Unsubscribe<T, TH>()
-            where TH : IIntegrationEventHandler<T>
-            where T : IntegrationEvent;
-    }
+		void UnsubscribeDynamic<TH>(string eventName)
+		    where TH : IDynamicIntegrationEventHandler;
+
+		void Unsubscribe<T, TH>()
+		    where TH : IIntegrationEventHandler<T>
+		    where T : IntegrationEvent;
+	}
 }
