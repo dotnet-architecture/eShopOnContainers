@@ -1,31 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Models
 {
-    public class UpdateBasketItemsRequest
-    {
-        
-        public string BasketId { get; set; }
+	public class UpdateBasketItemsRequest
+	{
 
-        public ICollection<UpdateBasketItemData> Updates { get; set; }
+		public string BasketId { get; set; }
 
-        public UpdateBasketItemsRequest()
-        {
-            Updates = new List<UpdateBasketItemData>();
-        }
-    }
+		public ICollection<UpdateBasketItemData> Updates { get; set; }
 
-    public class UpdateBasketItemData
-    {
-        public string BasketItemId { get; set; }
-        public int NewQty { get; set; }
+		public UpdateBasketItemsRequest()
+		{
+			Updates = new List<UpdateBasketItemData>();
+		}
+	}
 
-        public UpdateBasketItemData()
-        {
-            NewQty = 0;
-        }
-    }
+	public class UpdateBasketItemData
+	{
+		public string BasketItemId { get; set; }
+		public int NewQty { get; set; }
+
+		public UpdateBasketItemData()
+		{
+			NewQty = 0;
+		}
+	}
 }

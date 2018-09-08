@@ -1,36 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
+﻿using static Microsoft.AspNetCore.Hosting.WebHostBuilderExtensions;
+using static Microsoft.AspNetCore.Hosting.WebHostExtensions;
+using IWebHost = Microsoft.AspNetCore.Hosting.IWebHost;
+using WebHost = Microsoft.AspNetCore.WebHost;
 
 namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator
 {
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            BuildWebHost(args).Run();
-        }
+	public class Program
+	{
+		public static void Main(string[] args)
+		{
+			BuildWebHost(args).Run();
+		}
 
-        public static IWebHost BuildWebHost(string[] args) =>
-            WebHost
-                .CreateDefaultBuilder(args)
-                .ConfigureAppConfiguration(cb =>
-                {
-                    var sources = cb.Sources;
-                    sources.Insert(3, new Microsoft.Extensions.Configuration.Json.JsonConfigurationSource()
-                    {
-                        Optional = true,
-                        Path = "appsettings.localhost.json",
-                        ReloadOnChange = false
-                    });
-                })
-                .UseStartup<Startup>()
-                .Build();
-    }
+		public static IWebHost BuildWebHost(string[] args) =>
+		    WebHost
+			   .CreateDefaultBuilder(args)
+			   .ConfigureAppConfiguration(cb =>
+			   {
+				   var sources = cb.Sources;
+				   sources.Insert(3, new Extensions.Configuration.Json.JsonConfigurationSource()
+				   {
+					   Optional = true,
+					   Path = "appsettings.localhost.json",
+					   ReloadOnChange = false
+				   });
+			   })
+			   .UseStartup<Startup>()
+			   .Build();
+	}
 }

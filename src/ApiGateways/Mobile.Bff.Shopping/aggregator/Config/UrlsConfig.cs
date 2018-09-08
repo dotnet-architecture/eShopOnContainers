@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Config
 {
-    public class UrlsConfig
+	public class UrlsConfig
     {
         public class CatalogOperations
         {
