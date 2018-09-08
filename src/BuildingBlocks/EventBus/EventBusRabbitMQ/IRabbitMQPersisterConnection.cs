@@ -3,13 +3,13 @@ using System;
 
 namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
 {
-    public interface IRabbitMQPersistentConnection
-        : IDisposable
-    {
-        bool IsConnected { get; }
+	public interface IRabbitMQPersistentConnection
+	   : IDisposable
+	{
+		bool IsConnected { get; }
 
-        bool TryConnect();
+		bool TryConnect();
 
-        IModel CreateModel();
-    }
+		IModel CreateModel();
+	}
 }
