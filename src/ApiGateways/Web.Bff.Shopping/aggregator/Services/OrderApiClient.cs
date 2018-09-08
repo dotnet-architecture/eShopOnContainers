@@ -1,38 +1,41 @@
-﻿using Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Config;
-using Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Models;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
-using System.Net.Http;
 using System.Threading.Tasks;
+using HttpClient = System.Net.Http.HttpClient;
+using JsonConvert = Newtonsoft.Json.JsonConvert;
+using StringContent = System.Net.Http.StringContent;
 
 namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Services
 {
-    public class OrderApiClient : IOrderApiClient
-    {
+	using BasketData = Models.BasketData;
+	using OrderData = Models.OrderData;
+	using UrlsConfig = Config.UrlsConfig;
 
-        private readonly HttpClient _apiClient;
-        private readonly ILogger<OrderApiClient> _logger;
-        private readonly UrlsConfig _urls;
+	public class OrderApiClient : IOrderApiClient
+	{
 
-        public OrderApiClient(HttpClient httpClient, ILogger<OrderApiClient> logger, IOptions<UrlsConfig> config)
-        {
-            _apiClient = httpClient;
-            _logger = logger;
-            _urls = config.Value;
-        }
+		private readonly HttpClient _apiClient;
+		private readonly ILogger<OrderApiClient> _logger;
+		private readonly UrlsConfig _urls;
 
-        public async Task<OrderData> GetOrderDraftFromBasket(BasketData basket)
-        {
-            var url = _urls.Orders + UrlsConfig.OrdersOperations.GetOrderDraft();
-            var content = new StringContent(JsonConvert.SerializeObject(basket), System.Text.Encoding.UTF8, "application/json");
-            var response = await _apiClient.PostAsync(url, content);
+		public OrderApiClient(HttpClient httpClient, ILogger<OrderApiClient> logger, IOptions<UrlsConfig> config)
+		{
+			_apiClient = httpClient;
+			_logger = logger;
+			_urls = config.Value;
+		}
 
-            response.EnsureSuccessStatusCode();
+		public async Task<OrderData> GetOrderDraftFromBasket(BasketData basket)
+		{
+			var url = _urls.Orders + UrlsConfig.OrdersOperations.GetOrderDraft();
+			var content = new StringContent(JsonConvert.SerializeObject(basket), System.Text.Encoding.UTF8, "application/json");
+			var response = await _apiClient.PostAsync(url, content);
 
-            var ordersDraftResponse = await response.Content.ReadAsStringAsync();
+			response.EnsureSuccessStatusCode();
 
-            return JsonConvert.DeserializeObject<OrderData>(ordersDraftResponse);
-        }
-    }
+			var ordersDraftResponse = await response.Content.ReadAsStringAsync();
+
+			return JsonConvert.DeserializeObject<OrderData>(ordersDraftResponse);
+		}
+	}
 }
