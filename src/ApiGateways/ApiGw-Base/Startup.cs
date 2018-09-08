@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using CacheManager.Core;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -14,78 +8,90 @@ using Ocelot.Middleware;
 
 namespace OcelotApiGw
 {
-    public class Startup
-    {
+	public class Startup
+	{
 
-        private readonly IConfiguration _cfg;
+		private readonly IConfiguration _cfg;
 
-        public Startup(IConfiguration configuration)
-        {
-            _cfg = configuration;
-        }
+		public Startup(IConfiguration configuration)
+		{
+			_cfg = configuration;
+		}
 
-        public void ConfigureServices(IServiceCollection services)
-        {
-            var identityUrl = _cfg.GetValue<string>("IdentityUrl");
-            var authenticationProviderKey = "IdentityApiKey";
+		public void ConfigureServices(IServiceCollection services)
+		{
+			var identityUrl = _cfg.GetValue<string>("IdentityUrl");
+			var authenticationProviderKey = "IdentityApiKey";
 
-            services.AddCors(options =>
-            {
-                options.AddPolicy("CorsPolicy",
-                    builder => builder.AllowAnyOrigin()
-                    .AllowAnyMethod()
-                    .AllowAnyHeader()
-                    .AllowCredentials());
-            });
+			services
+				.AddCors(options =>
+				{
+					options
+						.AddPolicy(
+							"CorsPolicy",
+							builder => 
+								builder
+									.AllowAnyOrigin()
+									.AllowAnyMethod()
+									.AllowAnyHeader()
+									.AllowCredentials()
+						);
+				});
 
-            services.AddAuthentication()
-                .AddJwtBearer(authenticationProviderKey, x =>
-                {
-                    x.Authority = identityUrl;
-                    x.RequireHttpsMetadata = false;
-                    x.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
-                    {
-                        ValidAudiences = new[] { "orders", "basket", "locations", "marketing", "mobileshoppingagg", "webshoppingagg" }
-                    };
-                    x.Events = new Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerEvents()
-                    {
-                        OnAuthenticationFailed = async ctx =>
-                        {
-                            int i = 0;
-                        },
-                        OnTokenValidated = async ctx =>
-                        {
-                            int i = 0;
-                        },
+			services
+				.AddAuthentication()
+				.AddJwtBearer(
+					authenticationProviderKey, 
+					x =>
+					{
+						x.Authority = identityUrl;
+						x.RequireHttpsMetadata = false;
+						x.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
+						{
+							ValidAudiences = new[] { "orders", "basket", "locations", "marketing", "mobileshoppingagg", "webshoppingagg" }
+						};
+						x.Events = new Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerEvents()
+						{
+	#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+							OnAuthenticationFailed = async ctx =>
+	#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+							{
+							},
+	#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+							OnTokenValidated = async ctx =>
+	#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+							{
+							},
 
-                        OnMessageReceived = async ctx =>
-                        {
-                            int i = 0;
-                        }
-                    };
-                });
+	#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+							OnMessageReceived = async ctx =>
+	#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+							{
+							}
+						};
+					});
 
-            services.AddOcelot(_cfg);
-        }
+			services.AddOcelot(_cfg);
+		}
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
-        {
-            var pathBase = _cfg["PATH_BASE"];
-            if (!string.IsNullOrEmpty(pathBase))
-            {
-                app.UsePathBase(pathBase);
-            }
+		public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+		{
+			var pathBase = _cfg["PATH_BASE"];
+			if (!string.IsNullOrEmpty(pathBase))
+			{
+				app.UsePathBase(pathBase);
+			}
 
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+			if (env.IsDevelopment())
+			{
+				app.UseDeveloperExceptionPage();
+			}
 
-            loggerFactory.AddConsole(_cfg.GetSection("Logging"));
+			loggerFactory.AddConsole(_cfg.GetSection("Logging"));
 
-            app.UseCors("CorsPolicy");
+			app.UseCors("CorsPolicy");
 
-            app.UseOcelot().Wait();
-        }
-    }
+			app.UseOcelot().Wait();
+		}
+	}
 }

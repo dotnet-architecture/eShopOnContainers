@@ -1,31 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using static Microsoft.AspNetCore.Hosting.WebHostBuilderExtensions;
+using static Microsoft.AspNetCore.Hosting.WebHostExtensions;
+using IWebHost = Microsoft.AspNetCore.Hosting.IWebHost;
+using Path = System.IO.Path;
+using WebHost = Microsoft.AspNetCore.WebHost;
 
 namespace OcelotApiGw
 {
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            BuildWebHost(args).Run();
-        }
+	public class Program
+	{
+		public static void Main(string[] args)
+		{
+			BuildWebHost(args).Run();
+		}
 
-        public static IWebHost BuildWebHost(string[] args)
-        {
-            IWebHostBuilder builder = WebHost.CreateDefaultBuilder(args);
-            builder.ConfigureServices(s => s.AddSingleton(builder))
-                .ConfigureAppConfiguration(ic => ic.AddJsonFile(Path.Combine("configuration", "configuration.json")))
-                .UseStartup<Startup>();
-            IWebHost host = builder.Build();
-            return host;
-        }
-    }
+		public static IWebHost BuildWebHost(string[] args)
+		{
+			var builder = WebHost.CreateDefaultBuilder(args);
+			builder
+				.ConfigureServices(s => s.AddSingleton(builder))
+				.ConfigureAppConfiguration(ic => ic.AddJsonFile(Path.Combine("configuration", "configuration.json")))
+				.UseStartup<Startup>();
+			var host = builder.Build();
+			return host;
+		}
+	}
 }
