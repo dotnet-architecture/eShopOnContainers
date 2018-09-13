@@ -38,7 +38,7 @@ We'll all be learning in the process so we'll figure it out somehow.
 
 ## Tests
 
-There's not a tests policy in the project at this moment, but it'll be greatly appreciated if you include them within the [updated test structure](./test/readme).
+There's not a tests policy in the project at this moment, but it'll be greatly appreciated if you include them within the [updated test structure](./test/readme.md).
 
 ## Forks and Branches
 
