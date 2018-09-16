@@ -238,7 +238,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
                 options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
             })
-            .AddCookie()
+            .AddCookie(setup=>setup.ExpireTimeSpan = TimeSpan.FromHours(2))
             .AddOpenIdConnect(options =>
             {
                 options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -257,7 +257,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
                 options.Scope.Add("marketing");
                 options.Scope.Add("locations");
                 options.Scope.Add("webshoppingagg");
-                options.Scope.Add("orders.signalrhub");
+                options.Scope.Add("orders.signalrhub");       
             });
 
             return services;
