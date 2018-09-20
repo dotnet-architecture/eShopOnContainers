@@ -14,6 +14,27 @@
     {
       "library": "jquery-validation-unobtrusive@3.2.10",
       "destination": "wwwroot/lib/jquery-validation-unobtrusive/"
-    } 
+    },
+    {
+      "library": "jquery-validate@1.17.0",
+      "destination": "wwwroot/lib/jquery-validate/",
+      "files": [
+        "jquery.validate.min.js",
+        "jquery.validate.js"
+      ]
+    },
+    {
+      "library": "toastr.js@2.1.4",
+      "destination": "wwwroot/lib/toastr/"
+    },
+    {
+      "provider": "unpkg",
+      "library": "@aspnet/signalr@1.0.3",
+      "files": [    
+        "dist/browser/signalr.js",
+        "dist/browser/signalr.min.js"
+      ],
+      "destination": "wwwroot/lib/@aspnet/signalr/"
+    }
   ]
 }
