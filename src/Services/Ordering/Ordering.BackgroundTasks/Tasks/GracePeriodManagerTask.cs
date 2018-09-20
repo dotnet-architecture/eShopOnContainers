@@ -1,10 +1,10 @@
 ﻿using Dapper;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Ordering.BackgroundTasks.Configuration;
 using Ordering.BackgroundTasks.IntegrationEvents;
-using Ordering.BackgroundTasks.Tasks.Base;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;

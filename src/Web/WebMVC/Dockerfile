@@ -4,6 +4,10 @@ EXPOSE 80
 
 FROM microsoft/dotnet:2.1-sdk as dotnet-build
 WORKDIR /src
+
+FROM dotnet-build as build
+WORKDIR /src
+
 COPY . .
 WORKDIR /src/src/Web/WebMVC
 RUN dotnet restore -nowarn:msb3202,nu1503 
