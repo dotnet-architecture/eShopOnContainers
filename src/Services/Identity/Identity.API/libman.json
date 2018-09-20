@@ -1,4 +1,4 @@
-
+{
 	"defaultProvider": "cdnjs",
 	"libraries": [
 		{
@@ -222,32 +222,6 @@
 			"destination": "wwwroot/lib/jquery-validation-unobtrusive",
 			"files": [ "jquery.validate.unobtrusive.js", "jquery.validate.unobtrusive.min.js" ],
 			"library": "jquery-validation-unobtrusive@3.2.6"
-		},
-		{
-			"destination": "wwwroot/lib/signalr",
-			"files": [ "jquery.signalR.js", "jquery.signalR.min.js" ],
-			"library": "signalr.js@2.3.0"
-		},
-		{
-			"destination": "wwwroot/lib/tether",
-			"files": [
-				"css/tether.css",
-				"css/tether.min.css",
-				"css/tether-theme-arrows-dark.css",
-				"css/tether-theme-arrows-dark.min.css",
-				"css/tether-theme-arrows.css",
-				"css/tether-theme-arrows.min.css",
-				"css/tether-theme-basic.css",
-				"css/tether-theme-basic.min.css",
-				"js/tether.js",
-				"js/tether.min.js"
-			],
-			"library": "tether@1.4.4"
-		},
-		{
-			"destination": "wwwroot/lib/toastr",
-			"files": [ "toastr.css", "toastr.min.css", "toastr.min.js", "toastr.js.map" ],
-			"library": "toastr.js@2.1.4"
 		}
 	],
 	"version": "1.0"
