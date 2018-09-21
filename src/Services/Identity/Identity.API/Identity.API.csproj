@@ -25,6 +25,7 @@
     <PackageReference Include="IdentityServer4.EntityFramework" Version="2.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.DataProtection.Redis" Version="0.3.3" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="2.4.0" />
+    <PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="1.0.163" />
   </ItemGroup>
 
   <Target Name="PrepublishScript" BeforeTargets="PrepareForPublish">
@@ -54,6 +55,7 @@
 
   <ItemGroup>
     <Folder Include="Extensions\" />
+    <Folder Include="wwwroot\lib\" />
   </ItemGroup>
 
 </Project>
