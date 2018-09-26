@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <PackageReference Include="BuildBundlerMinifier" Version="2.6.375" />
+    <PackageReference Include="BuildWebCompiler" Version="1.11.326" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.2.1" />
     <PackageReference Include="Microsoft.ApplicationInsights.DependencyCollector" Version="2.6.1" />
     <PackageReference Include="Microsoft.ApplicationInsights.Kubernetes" Version="1.0.0-beta8" />
