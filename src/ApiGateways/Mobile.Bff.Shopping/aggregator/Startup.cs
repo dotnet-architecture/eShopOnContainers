@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -12,10 +16,6 @@ using Microsoft.Extensions.Logging;
 using Polly;
 using Polly.Extensions.Http;
 using Swashbuckle.AspNetCore.Swagger;
-using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Net.Http;
 
 namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator
 {
@@ -61,7 +61,11 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator
             app.UseSwagger().UseSwaggerUI(c =>
            {
                c.SwaggerEndpoint($"{ (!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty) }/swagger/v1/swagger.json", "Purchase BFF V1");
-               c.ConfigureOAuth2("Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregatorwaggerui", "", "", "Purchase BFF Swagger UI");
+
+               c.OAuthClientId("Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregatorwaggerui");
+               c.OAuthClientSecret(string.Empty);
+               c.OAuthRealm(string.Empty);
+               c.OAuthAppName("Purchase BFF Swagger UI");
            });
         }
     }
@@ -130,11 +134,9 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator
                 {
                     OnAuthenticationFailed = async ctx =>
                     {
-                        int i = 0;
                     },
                     OnTokenValidated = async ctx =>
                     {
-                        int i = 0;
                     }
                 };
             });
@@ -166,7 +168,7 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator
             return services;
         }
 
-        static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy()
+        private static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy()
         {
             return HttpPolicyExtensions
               .HandleTransientHttpError()
@@ -174,7 +176,8 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator
               .WaitAndRetryAsync(6, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
 
         }
-        static IAsyncPolicy<HttpResponseMessage> GetCircuitBreakerPolicy()
+
+        private static IAsyncPolicy<HttpResponseMessage> GetCircuitBreakerPolicy()
         {
             return HttpPolicyExtensions
                 .HandleTransientHttpError()

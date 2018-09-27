@@ -80,6 +80,7 @@
         margin-top: -$filter-padding * 3;
         padding: $filter-padding;
         transition: all $animation-speed-default;
+        margin-bottom: -6px;
 
         &:hover {
             background-color: $color-secondary-darker;
