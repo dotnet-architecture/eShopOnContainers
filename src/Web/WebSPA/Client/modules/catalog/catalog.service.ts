@@ -7,11 +7,8 @@ import { ICatalog } from '../shared/models/catalog.model';
 import { ICatalogBrand } from '../shared/models/catalogBrand.model';
 import { ICatalogType } from '../shared/models/catalogType.model';
 
-import 'rxjs/Rx';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/throw';
-import { Observer } from 'rxjs/Observer';
-import 'rxjs/add/operator/map';
+import { Observable } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 
 @Injectable()
 export class CatalogService {
@@ -39,20 +36,29 @@ export class CatalogService {
       
         url = url + '?pageIndex=' + pageIndex + '&pageSize=' + pageSize;
 
-        return this.service.get(url).map((response: Response) => {
-            return response.json();
-        });
+        return this.service.get(url)
+            .pipe(
+                map((response: Response) => {
+                    return response;
+                })
+            );
     }
 
     getBrands(): Observable<ICatalogBrand[]> {
-        return this.service.get(this.brandUrl).map((response: Response) => {
-            return response.json();
-        });
+        return this.service.get(this.brandUrl)
+            .pipe(
+                map((response: Response) => {
+                    return response;
+                })
+            );
     }
 
     getTypes(): Observable<ICatalogType[]> {
-        return this.service.get(this.typesUrl).map((response: Response) => {
-            return response.json();
-        });
+        return this.service.get(this.typesUrl)
+            .pipe(
+                map((response: Response) => {
+                    return response;
+                })
+            );
     };
 }
