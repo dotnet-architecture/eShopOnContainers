@@ -28,7 +28,7 @@ export class OrdersService {
         let url = this.ordersUrl + '/api/v1/o/orders';
 
         return this.service.get(url).pipe(map((response: Response) => {
-            return response.json();
+            return response;
         }));
     }
 
@@ -36,7 +36,7 @@ export class OrdersService {
         let url = this.ordersUrl + '/api/v1/o/orders/' + id;
 
         return this.service.get(url).pipe(map((response: Response) => {
-            return response.json();
+            return response;
         }));
     }
 

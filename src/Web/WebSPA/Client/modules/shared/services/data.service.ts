@@ -14,13 +14,9 @@ export class DataService {
     constructor(private http: HttpClient, private securityService: SecurityService) { }
 
     get(url: string, params?: any): Observable<Response> {
-        let options = {};
-
-        if (this.securityService) {
-            options["headers"] = new HttpHeaders();
-            options["headers"].append('Authorization', 'Bearer ' + this.securityService.GetToken());
-        }
-
+        let options = { };
+        this.setHeaders(options);
+        
         return this.http.get(url, options)
             .pipe(
                 // retry(3), // retry a failed request up to 3 times
@@ -44,16 +40,8 @@ export class DataService {
     }
 
     private doPost(url: string, data: any, needId: boolean, params?: any): Observable<Response> {
-        let options = {};
-
-        options["headers"] = new HttpHeaders();
-        if (this.securityService) {
-            options["headers"].append('Authorization', 'Bearer ' + this.securityService.GetToken());
-        }
-        if (needId) {
-            let guid = Guid.newGuid();
-            options["headers"].append('x-requestid', guid);
-        }
+        let options = { };
+        this.setHeaders(options, needId);
 
         return this.http.post(url, data, options)
             .pipe(
@@ -63,35 +51,10 @@ export class DataService {
                 catchError(this.handleError)
             );
     }
-
-    private doPut(url: string, data: any, needId: boolean, params?: any): Observable<Response> {
-        let options = {};
-
-        options["headers"] = new HttpHeaders();
-        if (this.securityService) {
-            options["headers"].append('Authorization', 'Bearer ' + this.securityService.GetToken());
-        }
-        if (needId) {
-            let guid = Guid.newGuid();
-            options["headers"].append('x-requestid', guid);
-        }
-
-        return this.http.put(url, data, options)
-            .pipe(
-                map((res: Response) => {
-                    return res;
-                }),
-                catchError(this.handleError)
-            );
-    }
-
+    
     delete(url: string, params?: any) {
-        let options = {};
-
-        if (this.securityService) {
-            options["headers"] = new HttpHeaders();
-            options["headers"].append('Authorization', 'Bearer ' + this.securityService.GetToken());
-        }
+        let options = { };
+        this.setHeaders(options);
 
         console.log('data.service deleting');
 
@@ -103,17 +66,42 @@ export class DataService {
     private handleError(error: any) {
         if (error.error instanceof ErrorEvent) {
             // A client-side or network error occurred. Handle it accordingly.
-            console.error('Client side network error occurred:', error.message);
+            console.error('Client side network error occurred:', error.error.message);
         } else {
             // The backend returned an unsuccessful response code.
             // The response body may contain clues as to what went wrong,
             console.error('Backend - ' +
                 `status: ${error.status}, ` +
                 `statusText: ${error.statusText}, ` +
-                `message: ${error.message}`);
+                `message: ${error.error.message}`);
         }
 
         // return an observable with a user-facing error message
         return throwError(error || 'server error');
+    }
+
+    private doPut(url: string, data: any, needId: boolean, params?: any): Observable<Response> {
+        let options = { };
+        this.setHeaders(options, needId);
+       
+        return this.http.put(url, data, options)
+            .pipe(
+                map((res: Response) => {
+                    return res;
+                }),
+                catchError(this.handleError)
+            );
+    }
+
+    private setHeaders(options: any, needId?: boolean){
+        if (needId && this.securityService) {            
+            options["headers"] = new HttpHeaders()
+                .append('authorization', 'Bearer ' + this.securityService.GetToken())
+                .append('x-requestid', Guid.newGuid());
+        }
+        else if (this.securityService) {            
+            options["headers"] = new HttpHeaders()
+                .append('authorization', 'Bearer ' + this.securityService.GetToken());
+        }
     }
 }
