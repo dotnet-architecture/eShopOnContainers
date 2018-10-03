@@ -9,6 +9,7 @@ using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure;
 using System;
 using System.Data.Common;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Ordering.API.Application.IntegrationEvents
@@ -35,15 +36,21 @@ namespace Ordering.API.Application.IntegrationEvents
 
         public async Task PublishThroughEventBusAsync(IntegrationEvent evt)
         {
-            await SaveEventAndOrderingContextChangesAsync(evt);
+            await SaveEventAsync(evt);
             _eventBus.Publish(evt);
             await _eventLogService.MarkEventAsPublishedAsync(evt);
         }
 
-        private async Task SaveEventAndOrderingContextChangesAsync(IntegrationEvent evt)
+        private async Task SaveEventAsync(IntegrationEvent evt)
         {
-            await _orderingContext.SaveChangesAsync();
-            await _eventLogContext.SaveChangesAsync();
+            var strategy = _orderingContext.Database.CreateExecutionStrategy();
+            await strategy.ExecuteAsync(async () =>
+            {
+                await _orderingContext.BeginTransactionAsync();
+                await _eventLogService.SaveEventAsync(evt, _orderingContext.GetCurrentTransaction.GetDbTransaction());
+                await _orderingContext.CommitTransactionAsync();
+            });
+            
         }
     }
 }
