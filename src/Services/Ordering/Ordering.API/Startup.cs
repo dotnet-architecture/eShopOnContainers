@@ -114,6 +114,13 @@
             eventBus.Subscribe<OrderStockRejectedIntegrationEvent, IIntegrationEventHandler<OrderStockRejectedIntegrationEvent>>();
             eventBus.Subscribe<OrderPaymentFailedIntegrationEvent, IIntegrationEventHandler<OrderPaymentFailedIntegrationEvent>>();
             eventBus.Subscribe<OrderPaymentSuccededIntegrationEvent, IIntegrationEventHandler<OrderPaymentSuccededIntegrationEvent>>();
+            eventBus.Subscribe<OrderStartedIntegrationEvent, IIntegrationEventHandler<OrderStartedIntegrationEvent>>();
+            eventBus.Subscribe<OrderStatusChangedToAwaitingValidationIntegrationEvent, IIntegrationEventHandler<OrderStatusChangedToAwaitingValidationIntegrationEvent>>();
+            eventBus.Subscribe<OrderStatusChangedToCancelledIntegrationEvent, IIntegrationEventHandler<OrderStatusChangedToCancelledIntegrationEvent>>();
+            eventBus.Subscribe<OrderStatusChangedToPaidIntegrationEvent, IIntegrationEventHandler<OrderStatusChangedToPaidIntegrationEvent>>();
+            eventBus.Subscribe<OrderStatusChangedToShippedIntegrationEvent, IIntegrationEventHandler<OrderStatusChangedToShippedIntegrationEvent>>();
+            eventBus.Subscribe<OrderStatusChangedToSubmittedIntegrationEvent, IIntegrationEventHandler<OrderStatusChangedToSubmittedIntegrationEvent>>();
+            eventBus.Subscribe<OrderStatusChangedToStockConfirmedIntegrationEvent, IIntegrationEventHandler<OrderStatusChangedToStockConfirmedIntegrationEvent>>();
         }
 
 
@@ -251,7 +258,11 @@
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IIdentityService, IdentityService>();
             services.AddTransient<Func<DbConnection, IIntegrationEventLogService>>(
-                sp => (DbConnection c) => new IntegrationEventLogService(c));
+               sp =>
+               {
+                   var busMgr = sp.GetRequiredService<IEventBusSubscriptionsManager>();
+                   return (DbConnection c) => new IntegrationEventLogService(busMgr, c);
+               });
 
             services.AddTransient<IOrderingIntegrationEventService, OrderingIntegrationEventService>();
 

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure;
 using Microsoft.Extensions.Logging;
+using Ordering.API.Application.IntegrationEvents;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,10 +15,14 @@ namespace Ordering.API.Application.Behaviors
     {
         private readonly ILogger<TransactionBehaviour<TRequest, TResponse>> _logger;
         private readonly OrderingContext _dbContext;
+        private readonly IOrderingIntegrationEventService _orderingIntegrationEventService;
 
-        public TransactionBehaviour(OrderingContext dbContext, ILogger<TransactionBehaviour<TRequest, TResponse>> logger)
+        public TransactionBehaviour(OrderingContext dbContext,
+            IOrderingIntegrationEventService orderingIntegrationEventService,
+            ILogger<TransactionBehaviour<TRequest, TResponse>> logger)
         {
             _dbContext = dbContext ?? throw new ArgumentException(nameof(OrderingContext));
+            _orderingIntegrationEventService = orderingIntegrationEventService ?? throw new ArgumentException(nameof(orderingIntegrationEventService));
             _logger = logger ?? throw new ArgumentException(nameof(ILogger));
         }
 
@@ -39,6 +44,8 @@ namespace Ordering.API.Application.Behaviors
                     await _dbContext.CommitTransactionAsync();
 
                     _logger.LogInformation($"Committed transaction {typeof(TRequest).Name}");
+
+                    await _orderingIntegrationEventService.PublishEventsThroughEventBusAsync();
                 });
 
                 return response;

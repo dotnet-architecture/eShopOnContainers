@@ -34,23 +34,27 @@ namespace Ordering.API.Application.IntegrationEvents
             _eventLogService = _integrationEventLogServiceFactory(_orderingContext.Database.GetDbConnection());
         }
 
-        public async Task PublishThroughEventBusAsync(IntegrationEvent evt)
+        public async Task PublishEventsThroughEventBusAsync()
         {
-            await SaveEventAsync(evt);
-            _eventBus.Publish(evt);
-            await _eventLogService.MarkEventAsPublishedAsync(evt);
+            var pendindLogEvents = await _eventLogService.RetrieveEventLogsPendingToPublishAsync();
+            foreach (var logEvt in pendindLogEvents)
+            {
+                try
+                {
+                    await _eventLogService.MarkEventAsInProgressAsync(logEvt.EventId);
+                    _eventBus.Publish(logEvt.IntegrationEvent);
+                    await _eventLogService.MarkEventAsPublishedAsync(logEvt.EventId);
+                }
+                catch (Exception)
+                {
+                    await _eventLogService.MarkEventAsFailedAsync(logEvt.EventId);
+                }                
+            }
         }
 
-        private async Task SaveEventAsync(IntegrationEvent evt)
+        public async Task AddAndSaveEventAsync(IntegrationEvent evt)
         {
-            var strategy = _orderingContext.Database.CreateExecutionStrategy();
-            await strategy.ExecuteAsync(async () =>
-            {
-                await _orderingContext.BeginTransactionAsync();
-                await _eventLogService.SaveEventAsync(evt, _orderingContext.GetCurrentTransaction.GetDbTransaction());
-                await _orderingContext.CommitTransactionAsync();
-            });
-            
+            await _eventLogService.SaveEventAsync(evt, _orderingContext.GetCurrentTransaction.GetDbTransaction());
         }
     }
 }
