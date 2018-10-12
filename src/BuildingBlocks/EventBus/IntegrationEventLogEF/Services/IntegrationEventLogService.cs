@@ -8,39 +8,39 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF.Services
 {
     public class IntegrationEventLogService : IIntegrationEventLogService
     {
-        private readonly IEventBusSubscriptionsManager _subsManager;
         private readonly IntegrationEventLogContext _integrationEventLogContext;
         private readonly DbConnection _dbConnection;
+        private readonly List<Type> _eventTypes;
 
-        public IntegrationEventLogService(IEventBusSubscriptionsManager subsManager, 
-            DbConnection dbConnection)
+        public IntegrationEventLogService(DbConnection dbConnection)
         {
             _dbConnection = dbConnection ?? throw new ArgumentNullException(nameof(dbConnection));
-            _subsManager = subsManager ?? throw new ArgumentNullException(nameof(subsManager));
             _integrationEventLogContext = new IntegrationEventLogContext(
                 new DbContextOptionsBuilder<IntegrationEventLogContext>()
                     .UseSqlServer(_dbConnection)
                     .ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning))
                     .Options);
+
+            _eventTypes = Assembly.Load(Assembly.GetEntryAssembly().FullName)
+                .GetTypes()
+                .Where(t => t.Name.EndsWith(nameof(IntegrationEvent)))
+                .ToList();
         }
 
         public async Task<IEnumerable<IntegrationEventLogEntry>> RetrieveEventLogsPendingToPublishAsync()
         {
-            var eventLogsPendingToPublish = await _integrationEventLogContext.IntegrationEventLogs
+            return await _integrationEventLogContext.IntegrationEventLogs
                 .Where(e => e.State == EventStateEnum.NotPublished)
                 .OrderBy(o => o.CreationTime)
-                .ToListAsync();
-
-            eventLogsPendingToPublish.ForEach(evtLog => 
-                evtLog.DeserializeJsonContent(_subsManager.GetEventTypeByName(evtLog.EventTypeShortName)));                
-
-          return eventLogsPendingToPublish;
+                .Select(e => e.DeserializeJsonContent(_eventTypes.Find(t=> t.Name == e.EventTypeShortName)))
+                .ToListAsync();              
         }
 
         public Task SaveEventAsync(IntegrationEvent @event, DbTransaction transaction)

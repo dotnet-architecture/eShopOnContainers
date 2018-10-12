@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
 using System.Linq;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Reflection;
 
 namespace Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF
 {
@@ -31,9 +32,10 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF
         public DateTime CreationTime { get; private set; }
         public string Content { get; private set; }
 
-        public void DeserializeJsonContent(Type type)
+        public IntegrationEventLogEntry DeserializeJsonContent(Type type)
         {
             IntegrationEvent = JsonConvert.DeserializeObject(Content, type) as IntegrationEvent;
+            return this;
         }
     }
 }
