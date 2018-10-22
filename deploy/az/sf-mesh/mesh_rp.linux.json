@@ -1,0 +1,781 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "location": {
+        "type": "string",
+        "metadata": {
+          "description": "Location of the resources."
+        },
+        "defaultValue": "eastus"
+      }
+    },
+    "resources": [
+      {
+        "apiVersion": "2018-07-01-preview",
+        "name": "eShopNetwork",
+        "type": "Microsoft.ServiceFabricMesh/networks",
+        "location": "[parameters('location')]",
+        "dependsOn": [],
+        "properties": {
+          "addressPrefix": "10.0.0.4/22",
+          "ingressConfig": {
+            "layer4": [
+              {
+                "name": "catalogapiIngress",
+                "publicPort": "5001",
+                "applicationName": "eShopOnMesh",
+                "serviceName": "catalogapi-svc",
+                "endpointName": "catalogListener"
+              },
+			  {
+                "name": "basketapiIngress",
+                "publicPort": "5002",
+                "applicationName": "eShopOnMesh",
+                "serviceName": "basketapi-svc",
+                "endpointName": "basketListener"
+              },
+			  {
+                "name": "orderingapiIngress",
+                "publicPort": "5004",
+                "applicationName": "eShopOnMesh",
+                "serviceName": "orderingapi-svc",
+                "endpointName": "orderingListener"
+              },
+			  {
+                "name": "marketingapiIngress",
+                "publicPort": "5005",
+                "applicationName": "eShopOnMesh",
+                "serviceName": "marketingapi-svc",
+                "endpointName": "marketingListener"
+              },
+			  {
+                "name": "locationsapiIngress",
+                "publicPort": "5007",
+                "applicationName": "eShopOnMesh",
+                "serviceName": "locationsapi-svc",
+                "endpointName": "locationsListener"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "apiVersion": "2018-07-01-preview",
+        "name": "eShopOnMesh",
+        "type": "Microsoft.ServiceFabricMesh/applications",
+        "location": "[parameters('location')]",
+        "dependsOn": [
+          "Microsoft.ServiceFabricMesh/networks/eShopNetwork"
+        ],
+        "properties": {
+          "description": "eShopOnContainers on mesh",
+          "services": [
+            {
+              "type": "Microsoft.ServiceFabricMesh/services",
+              "location": "[parameters('location')]",
+              "name": "sqldata-svc",
+              "properties": {
+                "description": "SQL Server (sql-data svc)",
+                "osType": "linux",
+                "codePackages": [
+                  {
+                    "name": "sqldata",
+                    "image": "microsoft/mssql-server-linux:latest",
+                    "endpoints": [
+                      {
+                        "name": "sqldataListener",
+                        "port": "1433"
+                      }
+                    ],
+                    "environmentVariables": [
+                      {
+                        "name": "ACCEPT_EULA",
+                        "value": "Y"
+                      },
+                      {
+                        "name": "SA_PASSWORD",
+                        "value": "Pass@word"
+                      }
+                    ],                    
+                    "resources": {
+                      "requests": {
+                        "cpu": "1",
+                        "memoryInGB": "4"
+                      }
+                    }
+                  }
+                ],
+                "replicaCount": "1",
+                "networkRefs": [
+                  {
+                    "name": "[resourceId('Microsoft.ServiceFabricMesh/networks', 'eShopNetwork')]"
+                  }
+                ]
+              }
+            },
+            {
+              "type": "Microsoft.ServiceFabricMesh/services",
+              "location": "[parameters('location')]",
+              "name": "rabbitmq-svc",
+              "properties": {
+                "description": "rabbitmq",
+                "osType": "linux",
+                "codePackages": [
+                  {
+                    "name": "rabbitmq",
+                    "image": "rabbitmq:3-management-alpine",
+                    "endpoints": [
+                      {
+                        "name": "rabbitmqListener",
+                        "port": "5672"
+                      },
+                      {
+                        "name": "rabbitManagementListener",
+                        "port": "15672"
+                      }                      
+                    ],
+                    "environmentVariables": [
+                      {
+                        "name": "ACCEPT_EULA",
+                        "value": "Y"
+                      },
+                      {
+                        "name": "SA_PASSWORD",
+                        "value": "Pass@word"
+                      }
+                    ],                    
+                    "resources": {
+                      "requests": {
+                        "cpu": "1",
+                        "memoryInGB": "1"
+                      }
+                    }
+                  }
+                ],
+                "replicaCount": "1",
+                "networkRefs": [
+                  {
+                    "name": "[resourceId('Microsoft.ServiceFabricMesh/networks', 'eShopNetwork')]"
+                  }
+                ]
+              }
+            },
+			{
+              "type": "Microsoft.ServiceFabricMesh/services",
+              "location": "[parameters('location')]",
+              "name": "mongo-svc",
+              "properties": {
+                "description": "mongo",
+                "osType": "linux",
+                "codePackages": [
+                  {
+                    "name": "mongo",
+                    "image": "mongo:3.4.17",
+					"endpoints": [
+                      {
+                        "name": "mongoListener",
+                        "port": "27017"
+                      }                     
+                    ],					
+                    "resources": {
+                      "requests": {
+                        "cpu": "1",
+                        "memoryInGB": "1"
+                      }
+                    }
+                  }
+                ],
+                "replicaCount": "1",
+                "networkRefs": [
+                  {
+                    "name": "[resourceId('Microsoft.ServiceFabricMesh/networks', 'eShopNetwork')]"
+                  }
+                ]
+              }
+            },
+			{
+              "type": "Microsoft.ServiceFabricMesh/services",
+              "location": "[parameters('location')]",
+              "name": "identityapi-svc",
+              "properties": {
+                "description": "Identity API Service.",
+                "osType": "linux",
+                "codePackages": [
+                  {
+                    "name": "identity-api",
+                    "image": "eshop/identity.api:dev",
+                    "endpoints": [
+                      {
+                        "name": "identityListener",
+                        "port": "80"
+                      }
+                    ],
+                    "environmentVariables": [
+                      {
+                        "name": "ASPNETCORE_ENVIRONMENT",
+                        "value": "Development"
+                      },
+                      {
+                        "name": "ASPNETCORE_URLS",
+                        "value": "http://0.0.0.0:80"
+                      },
+                      {
+                        "name": "ConnectionString",
+                        "value": "Server=sqldata-svc;Database=Microsoft.eShopOnContainers.Services.IdentityDb;User Id=sa;Password=Pass@word"
+                      },
+					  {
+                        "name": "SpaClient",
+                        "value": "http://0.0.0.0:5104"
+                      },
+					  {
+                        "name": "XamarinCallback",
+                        "value": "http://0.0.0.0:5105/xamarincallback"
+                      },
+                      {
+                        "name": "MvcClient",
+                        "value": "http://0.0.0.0:5100"
+                      },
+                      {
+                        "name": "LocationApiClient",
+                        "value": "http://0.0.0.0:5109"
+                      },
+					  {
+                        "name": "MarketingApiClient",
+                        "value": "http://0.0.0.0:5110"
+                      },
+					  {
+                        "name": "BasketApiClient",
+                        "value": "http://0.0.0.0:5103"
+                      },
+					  {
+                        "name": "OrderingApiClient",
+                        "value": "http://0.0.0.0:5102"
+                      },
+					  {
+                        "name": "MobileShoppingAggClient",
+                        "value": "http://0.0.0.0:5120"
+                      },
+					  {
+                        "name": "WebShoppingAggClient",
+                        "value": "http://0.0.0.0:5121"
+                      },
+                      {
+                        "name": "UseCustomizationData",
+                        "value": "True"
+                      },
+                      {
+                        "name": "OrchestratorType",
+                        "value": "SF"
+                      }
+                    ],                    
+                    "resources": {
+                      "requests": {
+                        "cpu": "0.5",
+                        "memoryInGB": "1"
+                      }
+                    }
+                  }
+                ],
+                "replicaCount": "1",
+                "networkRefs": [
+                  {
+                    "name": "[resourceId('Microsoft.ServiceFabricMesh/networks', 'eShopNetwork')]"
+                  }
+                ]
+              }
+            },
+            {
+              "type": "Microsoft.ServiceFabricMesh/services",
+              "location": "[parameters('location')]",
+              "name": "catalogapi-svc",
+              "properties": {
+                "description": "Catalog API Service.",
+                "osType": "linux",
+                "codePackages": [
+                  {
+                    "name": "catalog-api",
+                    "image": "eshop/catalog.api:dev",
+                    "endpoints": [
+                      {
+                        "name": "catalogListener",
+                        "port": "81"
+                      }
+                    ],
+                    "environmentVariables": [
+                      {
+                        "name": "ASPNETCORE_ENVIRONMENT",
+                        "value": "Development"
+                      },
+                      {
+                        "name": "ASPNETCORE_URLS",
+                        "value": "http://0.0.0.0:81"
+                      },
+                      {
+                        "name": "ConnectionString",
+                        "value": "Server=sqldata-svc;Database=Microsoft.eShopOnContainers.Services.CatalogDb;User Id=sa;Password=Pass@word"
+                      },
+                      {
+                        "name": "PicBaseUrl",
+                        "value": "http://0.0.0.0:5202/api/v1/c/catalog/items/[0]/pic/"
+                      },
+                      {
+                        "name": "EventBusConnection",
+                        "value": "rabbitmq-svc"
+                      },
+                      {
+                        "name": "AzureStorageEnabled",
+                        "value": "False"
+                      },
+                      {
+                        "name": "AzureServiceBusEnabled",
+                        "value": "False"
+                      }
+                    ],                    
+                    "resources": {
+                      "requests": {
+                        "cpu": "0.5",
+                        "memoryInGB": "1"
+                      }
+                    }
+                  }
+                ],
+                "replicaCount": "1",
+                "networkRefs": [
+                  {
+                    "name": "[resourceId('Microsoft.ServiceFabricMesh/networks', 'eShopNetwork')]"
+                  }
+                ]
+              }
+            },
+			{
+              "type": "Microsoft.ServiceFabricMesh/services",
+              "location": "[parameters('location')]",
+              "name": "basketapi-svc",
+              "properties": {
+                "description": "Basket API Service.",
+                "osType": "linux",
+                "codePackages": [
+                  {
+                    "name": "basket-api",
+                    "image": "eshop/basket.api:dev",
+                    "endpoints": [
+                      {
+                        "name": "basketListener",
+                        "port": "82"
+                      }
+                    ],
+                    "environmentVariables": [
+                      {
+                        "name": "ASPNETCORE_ENVIRONMENT",
+                        "value": "Development"
+                      },
+                      {
+                        "name": "ASPNETCORE_URLS",
+                        "value": "http://0.0.0.0:82"
+                      },
+                      {
+                        "name": "ConnectionString",
+                        "value": "Server=sqldata-svc;Database=Microsoft.eShopOnContainers.Services.BasketDb;User Id=sa;Password=Pass@word"
+                      },
+                      {
+                        "name": "identityUrl",
+                        "value": "http://identity.api"
+                      },
+					  {
+                        "name": "IdentityUrlExternal",
+                        "value": "http://10.121.122.162:5105"
+                      },
+                      {
+                        "name": "EventBusConnection",
+                        "value": "rabbitmq-svc"
+                      },
+                      {
+                        "name": "AzureStorageEnabled",
+                        "value": "False"
+                      },
+                      {
+                        "name": "AzureServiceBusEnabled",
+                        "value": "False"
+                      }
+                    ],                    
+                    "resources": {
+                      "requests": {
+                        "cpu": "0.5",
+                        "memoryInGB": "1"
+                      }
+                    }
+                  }
+                ],
+                "replicaCount": "1",
+                "networkRefs": [
+                  {
+                    "name": "[resourceId('Microsoft.ServiceFabricMesh/networks', 'eShopNetwork')]"
+                  }
+                ]
+              }
+            },
+			{
+              "type": "Microsoft.ServiceFabricMesh/services",
+              "location": "[parameters('location')]",
+              "name": "orderingapi-svc",
+              "properties": {
+                "description": "Ordering API Service.",
+                "osType": "linux",
+                "codePackages": [
+                  {
+                    "name": "ordering-api",
+                    "image": "eshop/ordering.api:dev",
+                    "endpoints": [
+                      {
+                        "name": "orderingListener",
+                        "port": "83"
+                      }
+                    ],
+                    "environmentVariables": [
+                      {
+                        "name": "ASPNETCORE_ENVIRONMENT",
+                        "value": "Development"
+                      },
+                      {
+                        "name": "ASPNETCORE_URLS",
+                        "value": "http://0.0.0.0:83"
+                      },
+                      {
+                        "name": "ConnectionString",
+                        "value": "Server=sqldata-svc;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word"
+                      },
+                      {
+                        "name": "identityUrl",
+                        "value": "http://identity.api"
+                      },
+					  {
+                        "name": "IdentityUrlExternal",
+                        "value": "http://10.121.122.162:5105"
+                      },
+					  {
+                        "name": "CheckUpdateTime",
+                        "value": "30000"
+                      },
+                      {
+                        "name": "EventBusConnection",
+                        "value": "rabbitmq-svc"
+                      },
+                      {
+                        "name": "AzureStorageEnabled",
+                        "value": "False"
+                      },
+                      {
+                        "name": "AzureServiceBusEnabled",
+                        "value": "False"
+                      }
+                    ],                    
+                    "resources": {
+                      "requests": {
+                        "cpu": "0.5",
+                        "memoryInGB": "1"
+                      }
+                    }
+                  }
+                ],
+                "replicaCount": "1",
+                "networkRefs": [
+                  {
+                    "name": "[resourceId('Microsoft.ServiceFabricMesh/networks', 'eShopNetwork')]"
+                  }
+                ]
+              }
+            },
+			{
+              "type": "Microsoft.ServiceFabricMesh/services",
+              "location": "[parameters('location')]",
+              "name": "orderingbackgroundtasks-svc",
+              "properties": {
+                "description": "Ordering backgroundtasks API Service.",
+                "osType": "linux",
+                "codePackages": [
+                  {
+                    "name": "ordering-backgroundtasks",
+                    "image": "eshop/ordering.backgroundtasks:dev",
+                    "endpoints": [
+                      {
+                        "name": "orderingbackgroundtasksListener",
+                        "port": "84"
+                      }
+                    ],
+                    "environmentVariables": [
+                      {
+                        "name": "ASPNETCORE_ENVIRONMENT",
+                        "value": "Development"
+                      },
+                      {
+                        "name": "ASPNETCORE_URLS",
+                        "value": "http://0.0.0.0:84"
+                      },
+                      {
+                        "name": "ConnectionString",
+                        "value": "Server=sqldata-svc;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word"
+                      },
+					  {
+                        "name": "CheckUpdateTime",
+                        "value": "30000"
+                      },
+					  {
+                        "name": "GracePeriodTime",
+                        "value": "1"
+                      },
+                      {
+                        "name": "EventBusConnection",
+                        "value": "rabbitmq-svc"
+                      },
+                      {
+                        "name": "AzureStorageEnabled",
+                        "value": "False"
+                      },
+					  {
+                        "name": "UseCustomizationData",
+                        "value": "True"
+                      },
+                      {
+                        "name": "AzureServiceBusEnabled",
+                        "value": "False"
+                      },
+					  {
+                        "name": "OrchestratorType",
+                        "value": "SF"
+                      }
+                    ],                    
+                    "resources": {
+                      "requests": {
+                        "cpu": "0.5",
+                        "memoryInGB": "1"
+                      }
+                    }
+                  }
+                ],
+                "replicaCount": "1",
+                "networkRefs": [
+                  {
+                    "name": "[resourceId('Microsoft.ServiceFabricMesh/networks', 'eShopNetwork')]"
+                  }
+                ]
+              }
+            },
+			{
+              "type": "Microsoft.ServiceFabricMesh/services",
+              "location": "[parameters('location')]",
+              "name": "marketingapi-svc",
+              "properties": {
+                "description": "Marketing API Service.",
+                "osType": "linux",
+                "codePackages": [
+                  {
+                    "name": "marketing-api",
+                    "image": "eshop/marketing.api:dev",
+                    "endpoints": [
+                      {
+                        "name": "marketingListener",
+                        "port": "85"
+                      }
+                    ],
+                    "environmentVariables": [
+                      {
+                        "name": "ASPNETCORE_ENVIRONMENT",
+                        "value": "Development"
+                      },
+                      {
+                        "name": "ASPNETCORE_URLS",
+                        "value": "http://0.0.0.0:85"
+                      },
+                      {
+                        "name": "ConnectionString",
+                        "value": "Server=sqldata-svc;Database=Microsoft.eShopOnContainers.Services.MarketingDb;User Id=sa;Password=Pass@word"
+                      },
+					  {
+                        "name": "MongoConnectionString",
+                        "value": "mongo-svc"
+                      },
+					  {
+                        "name": "MongoDatabase",
+                        "value": "MarketingDb"
+                      },
+					  {
+                        "name": "PicBaseUrl",
+                        "value": "http://0.0.0.0:5110/api/v1/campaigns/[0]/pic/"
+                      },
+					  {
+                        "name": "identityUrl",
+                        "value": "http://identity.api"
+                      },
+					  {
+                        "name": "IdentityUrlExternal",
+                        "value": "http://10.121.122.162:5105"
+                      },
+                      {
+                        "name": "EventBusConnection",
+                        "value": "rabbitmq-svc"
+                      },
+                      {
+                        "name": "AzureStorageEnabled",
+                        "value": "False"
+                      },
+					  {
+                        "name": "UseCustomizationData",
+                        "value": "True"
+                      },
+                      {
+                        "name": "AzureServiceBusEnabled",
+                        "value": "False"
+                      },
+					  {
+                        "name": "OrchestratorType",
+                        "value": "SF"
+                      }
+                    ],                    
+                    "resources": {
+                      "requests": {
+                        "cpu": "0.5",
+                        "memoryInGB": "1"
+                      }
+                    }
+                  }
+                ],
+                "replicaCount": "1",
+                "networkRefs": [
+                  {
+                    "name": "[resourceId('Microsoft.ServiceFabricMesh/networks', 'eShopNetwork')]"
+                  }
+                ]
+              }
+            },
+			{
+              "type": "Microsoft.ServiceFabricMesh/services",
+              "location": "[parameters('location')]",
+              "name": "paymentapi-svc",
+              "properties": {
+                "description": "Payment API Service.",
+                "osType": "linux",
+                "codePackages": [
+                  {
+                    "name": "payment-api",
+                    "image": "eshop/payment.api:dev",
+                    "endpoints": [
+                      {
+                        "name": "paymentListener",
+                        "port": "86"
+                      }
+                    ],
+                    "environmentVariables": [
+                      {
+                        "name": "ASPNETCORE_ENVIRONMENT",
+                        "value": "Development"
+                      },
+                      {
+                        "name": "ASPNETCORE_URLS",
+                        "value": "http://0.0.0.0:86"
+                      },
+                      {
+                        "name": "EventBusConnection",
+                        "value": "rabbitmq-svc"
+                      },
+                      {
+                        "name": "AzureServiceBusEnabled",
+                        "value": "False"
+                      },
+					  {
+                        "name": "OrchestratorType",
+                        "value": "SF"
+                      }
+                    ],                    
+                    "resources": {
+                      "requests": {
+                        "cpu": "0.5",
+                        "memoryInGB": "1"
+                      }
+                    }
+                  }
+                ],
+                "replicaCount": "1",
+                "networkRefs": [
+                  {
+                    "name": "[resourceId('Microsoft.ServiceFabricMesh/networks', 'eShopNetwork')]"
+                  }
+                ]
+              }
+            },
+			{
+              "type": "Microsoft.ServiceFabricMesh/services",
+              "location": "[parameters('location')]",
+              "name": "locationsapi-svc",
+              "properties": {
+                "description": "Locations API Service.",
+                "osType": "linux",
+                "codePackages": [
+                  {
+                    "name": "locations-api",
+                    "image": "eshop/locations.api:dev",
+                    "endpoints": [
+                      {
+                        "name": "locationsListener",
+                        "port": "87"
+                      }
+                    ],
+                    "environmentVariables": [
+                      {
+                        "name": "ASPNETCORE_ENVIRONMENT",
+                        "value": "Development"
+                      },
+                      {
+                        "name": "ASPNETCORE_URLS",
+                        "value": "http://0.0.0.0:87"
+                      },
+					  {
+                        "name": "ConnectionString",
+                        "value": "mongo-svc"
+                      },
+					  {
+                        "name": "Database",
+                        "value": "LocationsDb"
+                      },
+					  {
+                        "name": "identityUrl",
+                        "value": "http://identity.api"
+                      },
+					  {
+                        "name": "IdentityUrlExternal",
+                        "value": "http://10.121.122.162:5105"
+                      },
+                      {
+                        "name": "EventBusConnection",
+                        "value": "rabbitmq-svc"
+                      },
+                      {
+                        "name": "AzureServiceBusEnabled",
+                        "value": "False"
+                      },
+					  {
+                        "name": "OrchestratorType",
+                        "value": "SF"
+                      }
+                    ],                    
+                    "resources": {
+                      "requests": {
+                        "cpu": "0.5",
+                        "memoryInGB": "1"
+                      }
+                    }
+                  }
+                ],
+                "replicaCount": "1",
+                "networkRefs": [
+                  {
+                    "name": "[resourceId('Microsoft.ServiceFabricMesh/networks', 'eShopNetwork')]"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }    
+    ]
+  }
