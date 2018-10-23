@@ -24,6 +24,13 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "applicationUrl": "http://localhost:3331"
+    },
+    "Azure Dev Spaces": {
+      "commandName": "AzureDevSpaces",
+      "launchBrowser": true,
+      "resourceGroup": "shopErikRG",
+      "aksName": "shopErik",
+      "subscriptionId": "c9138ae8-a61d-4ac9-82ab-d827f6182575"
     }
   }
 }

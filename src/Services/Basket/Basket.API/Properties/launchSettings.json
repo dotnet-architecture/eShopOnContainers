@@ -7,22 +7,29 @@
       "sslPort": 0
     }
   },
-  "profiles": {
-    "IIS Express": {
-      "commandName": "IISExpress",
-      "launchBrowser": true,
-      "launchUrl": "swagger",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
-    },
-    "Microsoft.eShopOnContainers.Services.Basket.API": {
-      "commandName": "Project",
-      "launchBrowser": true,
-      "launchUrl": "http://localhost:55103/",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+    "profiles": {
+        "IIS Express": {
+            "commandName": "IISExpress",
+            "launchBrowser": true,
+            "launchUrl": "swagger",
+            "environmentVariables": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            }
+        },
+        "Microsoft.eShopOnContainers.Services.Basket.API": {
+            "commandName": "Project",
+            "launchBrowser": true,
+            "launchUrl": "http://localhost:55103/",
+            "environmentVariables": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            }
+        },
+        "Azure Dev Spaces": {
+            "commandName": "AzureDevSpaces",
+            "launchBrowser": true,
+            "resourceGroup": "shopErikRG",
+            "aksName": "shopErik",
+            "subscriptionId": "c9138ae8-a61d-4ac9-82ab-d827f6182575"
+        }
     }
-  }
 }
