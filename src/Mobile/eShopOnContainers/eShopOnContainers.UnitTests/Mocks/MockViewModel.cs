@@ -1,9 +1,9 @@
-﻿using eShopOnContainers.Core.ViewModels.Base;
-using eShopOnContainers.Core.Validations;
+﻿using eShopOnContainers.Core.Validations;
+using eShopOnContainers.Core.ViewModels.Base;
 
 namespace eShopOnContainers.UnitTests
 {
-	public class MockViewModel : ViewModelBase
+    public class MockViewModel : ViewModelBase
 	{
 		private ValidatableObject<string> _forename;
 		private ValidatableObject<string> _surname;

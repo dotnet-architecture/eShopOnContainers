@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure.Services;
+using Microsoft.eShopOnContainers.Services.Locations.API.Model;
 using Microsoft.eShopOnContainers.Services.Locations.API.ViewModel;
 using System;
+using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace Locations.API.Controllers
@@ -23,6 +26,7 @@ namespace Locations.API.Controllers
         //GET api/v1/[controller]/user/1
         [Route("user/{userId:guid}")]
         [HttpGet]
+        [ProducesResponseType(typeof(UserLocation), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetUserLocation(Guid userId)
         {
             var userLocation = await _locationsService.GetUserLocation(userId.ToString());
@@ -32,6 +36,7 @@ namespace Locations.API.Controllers
         //GET api/v1/[controller]/
         [Route("")]
         [HttpGet]
+        //[ProducesResponseType(typeof(List<Locations>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetAllLocations()
         {
             var locations = await _locationsService.GetAllLocation();
@@ -41,6 +46,7 @@ namespace Locations.API.Controllers
         //GET api/v1/[controller]/1
         [Route("{locationId}")]
         [HttpGet]
+        //[ProducesResponseType(typeof(List<Locations>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetLocation(int locationId)
         {
             var location = await _locationsService.GetLocation(locationId);
@@ -50,6 +56,8 @@ namespace Locations.API.Controllers
         //POST api/v1/[controller]/
         [Route("")]
         [HttpPost]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> CreateOrUpdateUserLocation([FromBody]LocationRequest newLocReq)
         {
             var userId = _identityService.GetUserIdentity();

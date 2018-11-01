@@ -4,14 +4,18 @@ For k8s CI/CD pipeline delivery a series of tasks must be created in VSTS to dep
 ## Prerequisites
 * A Kubernetes cluster. Follow Azure Container Service's [walkthrough](https://docs.microsoft.com/en-us/azure/container-service/container-service-kubernetes-walkthrough) to create one. 
 * A private Docker registry. Follow Azure Container Registry's [guide](https://docs.microsoft.com/en-us/azure/container-registry/container-registry-get-started-portal) to create one.
-* Optionally, previous steps can be skipped if you run gen-k8s-env.ps1 script to automatically create the azure environment needed for kubernetes deployment. Azure cli 2.0 must be previously installed [installation guide](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli). For example:
+* Optionally, previous steps can be skipped if you run gen-k8s-env.ps1 (or gen-k8s-env-aks.ps1 if you would like to use AKS instead of ACS) script to automatically create the azure environment needed for kubernetes deployment. Azure cli 2.0 must be previously installed [installation guide](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli). For example:
 
 >```
 >./gen-k8s-env -resourceGroupName k8sGroup -location westeurope -registryName k8sregistry -orchestratorName k8s-cluster -dnsName k8s-dns
 >```
+or using AKS instead of ACS
+>```
+>./gen-k8s-env-aks -resourceGroupName k8sGroup -location westeurope -registryName k8sregistry -dnsName k8s-dns -serviceName k8s-cluster -createAcr true -nodeCount 3 -nodeVMSize Standard_D2_v2
+>```
 * An `Azure Blob storage`. It is needed for storing the kubernetes config file used by the hosted agent to access to Kubernetes cluster. Example:
 
-<img src="./img/k8s/blob_creation.png">
+<img src="./img/blob_creation.png">
 
 * Upload the `kubernetes config file` to the blob storage previously created. Execute the following command which will download the config file into the directory `c:\Users\<User>\.kube\` and then, upload it to your blob storage: 
 
@@ -23,7 +27,7 @@ For k8s CI/CD pipeline delivery a series of tasks must be created in VSTS to dep
 1. Create a `Download File` task to download the kubernetes binary `kubectl` to the hosted agent. For example:
 
 >```
->https://storage.googleapis.com/kubernetes-release/release/v0.0.1.7.0-alpha.0/bin/windows/386/kubectl.exe
+>https://storage.googleapis.com/kubernetes-release/release/v1.8.5/bin/windows/386/kubectl.exe
 >```
 
 <img src="./img/get_kubectlbin_task.png">
@@ -33,7 +37,7 @@ For k8s CI/CD pipeline delivery a series of tasks must be created in VSTS to dep
 >```
 >https://eshopk8s.blob.core.windows.net/k8s-config/config
 >```
-<img src="./img/k8s/get_kubectlconfig_task.png">
+<img src="./img/get_kubectlconfig_task.png">
 
 3. Create a powershell task to execute the k8s deployment script. For example:
 
@@ -59,4 +63,4 @@ For k8s CI/CD pipeline delivery a series of tasks must be created in VSTS to dep
 
  You can use additional parameters (i.e. pass registry and user/password to use custom registry instead of DockerHub. Plase, refer to [README.k8s.md](./README.k8s.md) for more info.
 
-<img src="./img/k8s/deploy_script_task.png">
+<img src="./img/deploy_script_task.png">

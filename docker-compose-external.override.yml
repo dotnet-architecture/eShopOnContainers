@@ -1,9 +1,14 @@
-version: '2'
+version: '3.4'
 
 services:
   sql.data:
     environment:
-      - SA_PASSWORD=Pass@word
+      - MSSQL_SA_PASSWORD=Pass@word
       - ACCEPT_EULA=Y
+      - MSSQL_PID=Developer
     ports:
       - "5433:1433"
+  
+  nosql.data:
+    ports:
+      - "27017:27017"

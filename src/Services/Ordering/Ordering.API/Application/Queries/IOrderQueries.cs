@@ -1,14 +1,15 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.Queries
 {
+    using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
     public interface IOrderQueries
     {
-        Task<dynamic> GetOrderAsync(int id);
+        Task<Order> GetOrderAsync(int id);
 
-        Task<IEnumerable<dynamic>> GetOrdersAsync();
+        Task<IEnumerable<OrderSummary>> GetOrdersFromUserAsync(Guid userId);
 
-        Task<IEnumerable<dynamic>> GetCardTypesAsync();
+        Task<IEnumerable<CardType>> GetCardTypesAsync();
     }
 }

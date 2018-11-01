@@ -1,13 +1,16 @@
 ﻿using eShopOnContainers.WebSPA;
+using Microsoft.ApplicationInsights.Extensibility;
+using Microsoft.ApplicationInsights.ServiceFabric;
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.eShopOnContainers.BuildingBlocks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.HealthChecks;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Serialization;
+using StackExchange.Redis;
 using System;
 using System.IO;
 using WebSPA.Infrastructure;
@@ -36,6 +39,8 @@ namespace eShopConContainers.WebSPA
         // For more information on how to configure your application, visit http://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            RegisterAppInsights(services);
+
             services.AddHealthChecks(checks =>
             {
                 var minutes = 1;
@@ -46,10 +51,11 @@ namespace eShopConContainers.WebSPA
 
                 checks.AddUrlCheck(Configuration["CatalogUrlHC"], TimeSpan.FromMinutes(minutes));
                 checks.AddUrlCheck(Configuration["OrderingUrlHC"], TimeSpan.FromMinutes(minutes));
-                checks.AddUrlCheck(Configuration["BasketUrlHC"], TimeSpan.FromMinutes(minutes));
+                checks.AddUrlCheck(Configuration["BasketUrlHC"], TimeSpan.Zero); //No cache for this HealthCheck, better just for demos 
                 checks.AddUrlCheck(Configuration["IdentityUrlHC"], TimeSpan.FromMinutes(minutes));
                 checks.AddUrlCheck(Configuration["MarketingUrlHC"], TimeSpan.FromMinutes(minutes));
-            });
+            
+        });
 
             services.Configure<AppSettings>(Configuration);
 
@@ -59,7 +65,7 @@ namespace eShopConContainers.WebSPA
                 {
                     opts.ApplicationDiscriminator = "eshop.webspa";
                 })
-                .PersistKeysToRedis(Configuration["DPConnectionString"]);
+                .PersistKeysToRedis(ConnectionMultiplexer.Connect(Configuration["DPConnectionString"]), "DataProtection-Keys");
             }
 
             services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
@@ -75,6 +81,10 @@ namespace eShopConContainers.WebSPA
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IAntiforgery antiforgery)
         {
+
+            loggerFactory.AddAzureWebAppDiagnostics();
+            loggerFactory.AddApplicationInsights(app.ApplicationServices, LogLevel.Trace);
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -100,7 +110,12 @@ namespace eShopConContainers.WebSPA
             {
                 loggerFactory.CreateLogger("init").LogDebug($"Using PATH BASE '{pathBase}'");
                 app.UsePathBase(pathBase);
-            }            
+            }
+
+
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+            app.Map("/liveness", lapp => lapp.Run(async ctx => ctx.Response.StatusCode = 200));
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
 
             app.Use(async (context, next) =>
             {
@@ -115,11 +130,29 @@ namespace eShopConContainers.WebSPA
                     await next();
                 }
             });
-
+            
             app.UseDefaultFiles();
             app.UseStaticFiles();
 
             app.UseMvcWithDefaultRoute();
+        }
+
+        private void RegisterAppInsights(IServiceCollection services)
+        {
+            services.AddApplicationInsightsTelemetry(Configuration);
+            var orchestratorType = Configuration.GetValue<string>("OrchestratorType");
+
+            if (orchestratorType?.ToUpper() == "K8S")
+            {
+                // Enable K8s telemetry initializer
+                services.EnableKubernetes();
+            }
+            if (orchestratorType?.ToUpper() == "SF")
+            {
+                // Enable SF telemetry initializer
+                services.AddSingleton<ITelemetryInitializer>((serviceProvider) =>
+                    new FabricTelemetryInitializer());
+            }
         }
     }
 }

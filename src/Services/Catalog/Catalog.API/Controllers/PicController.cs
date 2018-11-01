@@ -3,12 +3,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
 using System.IO;
+using System.Net;
 using System.Threading.Tasks;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
-{
+{ 
     public class PicController : Controller
     {
         private readonly IHostingEnvironment _env;
@@ -23,6 +24,8 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
 
         [HttpGet]
         [Route("api/v1/catalog/items/{catalogItemId:int}/pic")]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         // GET: /<controller>/
         public async Task<IActionResult> GetImage(int catalogItemId)
         {

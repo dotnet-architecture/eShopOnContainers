@@ -11,12 +11,14 @@ import { BasketWrapperService} from './services/basket.wrapper.service';
 import { SecurityService } from './services/security.service';
 import { ConfigurationService } from './services/configuration.service';
 import { StorageService } from './services/storage.service';
+import { SignalrService } from './services/signalr.service';
 
 // Components:
 import { Pager } from './components/pager/pager';
 import { Header } from './components/header/header';
 import { Identity } from './components/identity/identity';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
+
 
 // Pipes:
 import { UppercasePipe } from './pipes/uppercase.pipe';
@@ -64,7 +66,8 @@ export class SharedModule {
                 BasketWrapperService,
                 SecurityService, 
                 ConfigurationService, 
-                StorageService
+                StorageService,
+                SignalrService
             ]
         };
     }

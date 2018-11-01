@@ -30,7 +30,7 @@
 
                 if (!context.CatalogBrands.Any())
                 {
-                    context.CatalogBrands.AddRange(useCustomizationData
+                    await context.CatalogBrands.AddRangeAsync(useCustomizationData
                         ? GetCatalogBrandsFromFile(contentRootPath, logger)
                         : GetPreconfiguredCatalogBrands());
 
@@ -39,7 +39,7 @@
 
                 if (!context.CatalogTypes.Any())
                 {
-                    context.CatalogTypes.AddRange(useCustomizationData
+                    await context.CatalogTypes.AddRangeAsync(useCustomizationData
                         ? GetCatalogTypesFromFile(contentRootPath, logger)
                         : GetPreconfiguredCatalogTypes());
 
@@ -48,7 +48,7 @@
 
                 if (!context.CatalogItems.Any())
                 {
-                    context.CatalogItems.AddRange(useCustomizationData
+                    await context.CatalogItems.AddRangeAsync(useCustomizationData
                         ? GetCatalogItemsFromFile(contentRootPath, context, logger)
                         : GetPreconfiguredItems());
 
@@ -356,14 +356,17 @@
 
         private void GetCatalogItemPictures(string contentRootPath, string picturePath)
         {
-            DirectoryInfo directory = new DirectoryInfo(picturePath);
-            foreach (FileInfo file in directory.GetFiles())
+            if (picturePath != null)
             {
-                file.Delete();
-            }
+                DirectoryInfo directory = new DirectoryInfo(picturePath);
+                foreach (FileInfo file in directory.GetFiles())
+                {
+                    file.Delete();
+                }
 
-            string zipFileCatalogItemPictures = Path.Combine(contentRootPath, "Setup", "CatalogItems.zip");
-            ZipFile.ExtractToDirectory(zipFileCatalogItemPictures, picturePath);
+                string zipFileCatalogItemPictures = Path.Combine(contentRootPath, "Setup", "CatalogItems.zip");
+                ZipFile.ExtractToDirectory(zipFileCatalogItemPictures, picturePath);
+            }
         }
 
         private Policy CreatePolicy( ILogger<CatalogContextSeed> logger, string prefix,int retries = 3)

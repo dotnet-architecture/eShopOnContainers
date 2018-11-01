@@ -20,6 +20,8 @@
         <link rel="stylesheet" href="~/css/orders/orders-detail/orders-detail.component.css" />
         <link rel="stylesheet" href="~/css/orders/orders-new/orders-new.component.css" />
         <link rel="stylesheet" href="~/css/override.css" type="text/css" />
+        <link rel="stylesheet" href="~/css/site.min.css" type="text/css" />
+
     </environment>
     <environment names="Staging,Production">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -30,15 +32,16 @@
     </environment>
 </head>
 <body>
-    <header class="navbar navbar-light navbar-static-top">
+    <header class="esh-app-header">
         <div class="container">
             <article class="row">
 
-                <section class="col-lg-7 col-md-6 col-xs-12">
+                <section class="col-lg-7 col-md-6 col-12">
                     <a class="navbar-brand" routerLink="catalog">
                         <a asp-area="" asp-controller="Catalog" asp-action="Index">
                             <img src="~/images/brand.png" />
                         </a>
+                    </a>
                 </section>
 
                 @await Html.PartialAsync("_LoginPartial")
@@ -66,13 +69,13 @@
     </footer>
 
     <environment names="Development">
-        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/jquery/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
     </environment>
     <environment names="Staging,Production">
         <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
-                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                asp-fallback-src="~/lib/jquery/jquery.min.js"
                 asp-fallback-test="window.jQuery">
         </script>
         <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
@@ -83,5 +86,54 @@
     </environment>
 
     @RenderSection("scripts", required: false)
+
+
+    @using Microsoft.AspNetCore.Authentication;
+    @using Microsoft.Extensions.Options
+    @inject IOptions<AppSettings> settings
+
+    <script type="text/javascript">
+        if ('@User.Identity.IsAuthenticated' === 'True') {
+            var timerId;
+
+            stablishConnection((conn) => registerNotificationHandlers(conn));                                  
+        }
+
+        function stablishConnection(cb) {
+            let connection = new signalR.HubConnectionBuilder()
+                .withUrl('@settings.Value.SignalrHubUrl/hub/notificationhub', {
+                    transport: signalR.HttpTransportType.LongPolling,
+                    accessTokenFactory: () => {
+                        return "Authorization", getToken();
+                    }
+                })
+                .build(); 
+            
+            connection.start().then(function () {
+                console.log('User Registered to Signalr Hub');
+                cb(connection);
+            });       
+        }
+
+        function registerNotificationHandlers(connection) {
+            connection.on("UpdatedOrderState", (message) => {
+                toastr.success('Updated to status: ' + message.status, 'Order Id: ' + message.orderId);
+                if (window.location.pathname.split("/").pop() === 'Order') {
+                    refreshOrderList();
+                }
+            });
+        }
+
+        function getToken() {
+            return '@Context.GetTokenAsync("access_token").Result';
+        }
+
+        function refreshOrderList() {
+            clearTimeout(timerId);
+            timerId = setTimeout(function () {
+                window.location.reload();
+            }, 1000);
+        }
+    </script>
 </body>
 </html>

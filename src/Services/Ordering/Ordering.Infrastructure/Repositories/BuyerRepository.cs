@@ -11,7 +11,6 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Repositor
         : IBuyerRepository
     {
         private readonly OrderingContext _context;
-
         public IUnitOfWork UnitOfWork
         {
             get
@@ -29,7 +28,6 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Repositor
         {
             if (buyer.IsTransient())
             {
-                //TODO: when migrating to ef core 1.1.1 change Add by AddAsync-. A bug in ef core 1.1.0 does not allow to do it https://github.com/aspnet/EntityFramework/issues/7298 
                 return _context.Buyers
                     .Add(buyer)
                     .Entity;
@@ -37,8 +35,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Repositor
             else
             {
                 return buyer;
-            }
-            
+            }           
         }
 
         public Buyer Update(Buyer buyer)
@@ -53,6 +50,16 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Repositor
             var buyer = await _context.Buyers
                 .Include(b => b.PaymentMethods)
                 .Where(b => b.IdentityGuid == identity)
+                .SingleOrDefaultAsync();
+
+            return buyer;
+        }
+
+        public async Task<Buyer> FindByIdAsync(string id)
+        {
+            var buyer = await _context.Buyers
+                .Include(b => b.PaymentMethods)
+                .Where(b => b.Id == int.Parse(id))
                 .SingleOrDefaultAsync();
 
             return buyer;

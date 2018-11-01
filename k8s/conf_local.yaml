@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: externalcfg
+  labels:
+    app: eshop  
+data:
+  basket__ConnectionString: basket-data
+  catalog__ConnectionString: Server=sql-data;Initial Catalog=Microsoft.eShopOnContainers.Services.CatalogDb;User Id=sa;Password=Pass@word;
+  catalog__AzureStorageEnabled: "False"
+  identity__ConnectionString: Server=sql-data;Initial Catalog=Microsoft.eShopOnContainers.Services.IdentityDb;User Id=sa;Password=Pass@word;
+  locations__ConnectionString: mongodb://nosql-data
+  locations__Database: LocationsDb
+  marketing__MongoConnectionString: mongodb://nosql-data
+  marketing__MongoDatabase: MarketingDb
+  marketing__ConnectionString: Server=sql-data;Initial Catalog=Microsoft.eShopOnContainers.Services.MarketingDb;User Id=sa;Password=Pass@word;
+  ordering__ConnectionString: Server=sql-data;Initial Catalog=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word;
+  keystore: keystore-data
+  GracePeriodManager__GracePeriodTime: "1"
+  GracePeriodManager__CheckUpdateTime: "15000"
+  all__EventBusConnection: rabbitmq
+  all__InstrumentationKey: ""
+  all__EnableLoadTest: "False"
+  all__UseAzureServiceBus: "False"
+
+
+

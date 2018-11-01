@@ -55,15 +55,8 @@ namespace eShopOnContainers.Core.Services.Order
 
         private static List<OrderItem> MockOrderItems = new List<OrderItem>()
         {
-			new OrderItem { OrderId = Guid.NewGuid(), ProductId = Common.Common.MockCatalogItemId01, Discount = 15, ProductName = ".NET Bot Blue Sweatshirt (M)", Quantity = 1, UnitPrice = 16.50M, PictureUrl = Device.RuntimePlatform != Device.Windows ? "fake_product_01.png" : "Assets/fake_product_01.png" },
-			new OrderItem { OrderId = Guid.NewGuid(), ProductId = Common.Common.MockCatalogItemId03, Discount = 0, ProductName = ".NET Bot Black Sweatshirt (M)", Quantity = 2, UnitPrice = 19.95M, PictureUrl = Device.RuntimePlatform != Device.Windows ? "fake_product_03.png" : "Assets/fake_product_03.png" }
-        };
-
-        private static List<CardType> MockCardTypes = new List<CardType>()
-        {
-            new CardType { Id = 1, Name = "Amex" },
-            new CardType { Id = 2, Name = "Visa" },
-            new CardType { Id = 3, Name = "MasterCard" },
+            new OrderItem { OrderId = Guid.NewGuid(), ProductId = Common.Common.MockCatalogItemId01, Discount = 15, ProductName = ".NET Bot Blue Sweatshirt (M)", Quantity = 1, UnitPrice = 16.50M, PictureUrl = Device.RuntimePlatform != Device.UWP ? "fake_product_01.png" : "Assets/fake_product_01.png" },
+            new OrderItem { OrderId = Guid.NewGuid(), ProductId = Common.Common.MockCatalogItemId03, Discount = 0, ProductName = ".NET Bot Black Sweatshirt (M)", Quantity = 2, UnitPrice = 19.95M, PictureUrl = Device.RuntimePlatform != Device.UWP ? "fake_product_03.png" : "Assets/fake_product_03.png" }
         };
 
         private static BasketCheckout MockBasketCheckout = new BasketCheckout()
@@ -81,7 +74,7 @@ namespace eShopOnContainers.Core.Services.Order
 
         public async Task<ObservableCollection<Models.Orders.Order>> GetOrdersAsync(string token)
         {
-            await Task.Delay(500);
+            await Task.Delay(10);
 
             if (!string.IsNullOrEmpty(token))
             {
@@ -95,7 +88,7 @@ namespace eShopOnContainers.Core.Services.Order
 
         public async Task<Models.Orders.Order> GetOrderAsync(int orderId, string token)
         {
-            await Task.Delay(500);
+            await Task.Delay(10);
 
             if (!string.IsNullOrEmpty(token))
                 return MockOrders
@@ -104,19 +97,19 @@ namespace eShopOnContainers.Core.Services.Order
                 return new Models.Orders.Order();
         }
 
-        public async Task<ObservableCollection<CardType>> GetCardTypesAsync(string token)
+        public async Task CreateOrderAsync(Models.Orders.Order newOrder, string token)
         {
-            await Task.Delay(500);
+            await Task.Delay(10);
 
             if (!string.IsNullOrEmpty(token))
-                return MockCardTypes.ToObservableCollection();
-            else
-                return new ObservableCollection<CardType>();
+            {
+                MockOrders.Add(newOrder);
+            }
         }
 
         public BasketCheckout MapOrderToBasket(Models.Orders.Order order)
         {
-            return MockBasketCheckout;            
+            return MockBasketCheckout;
         }
 
         public Task<bool> CancelOrderAsync(int orderId, string token)

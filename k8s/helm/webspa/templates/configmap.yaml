@@ -1,0 +1,32 @@
+{{- $name := include "webspa.fullname" . -}}
+{{- $identity := include "url-of" (list .Values.app.ingress.entries.identity .) -}}
+{{- $webshoppingapigw := include "url-of" (list .Values.app.ingress.entries.webshoppingapigw .) -}}
+{{- $webmarketingapigw := include "url-of" (list .Values.app.ingress.entries.webmarketingapigw .) -}}
+{{- $spa := include "url-of" (list .Values.app.ingress.entries.spa .) -}}
+{{- $mongo := include "mongo-name" . -}}
+
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "cfg-{{ $name }}"
+  labels:
+    app: {{ template "webspa.name" . }}
+    chart: {{ template "webspa.chart" .}}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+data:
+  all__InstrumentationKey: {{ .Values.inf.appinsights.key }}
+  all_EnableLoadTest: "{{ .Values.inf.misc.useLoadTest }}"
+  webspa__keystore: {{ .Values.inf.redis.keystore.constr }}
+  internalurls__apigwws: http://{{ .Values.app.svc.webshoppingapigw }}
+  internalurls__basket__hc: http://{{ .Values.app.svc.basket }}/hc
+  internalurls__catalog__hc: http://{{ .Values.app.svc.catalog }}/hc
+  internalurls__identity__hc: http://{{ .Values.app.svc.identity }}/hc
+  internalurls__ordering__hc: http://{{ .Values.app.svc.ordering }}/hc
+  internalurls__marketing__hc: http://{{ .Values.app.svc.marketing }}/hc
+  internalurls__payment__hc: http://{{ .Values.app.svc.payment }}/hc
+  urls__apigwws: http://{{ $webshoppingapigw }}
+  urls__spa: http://{{ $spa }}
+  urls__IdentityUrl: http://{{ $identity }}
+  urls__apigwwm: http://{{ $webmarketingapigw }}

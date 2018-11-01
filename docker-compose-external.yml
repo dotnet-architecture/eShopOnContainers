@@ -1,8 +1,8 @@
-version: '2.1'
+version: '3.4'
 
 services:
   sql.data:
-    image: microsoft/mssql-server-linux
+    image: microsoft/mssql-server-linux:2017-latest
 
   basket.data:
     image: redis
@@ -13,3 +13,6 @@ services:
     image: rabbitmq
     ports:
       - "5672:5672"
+  
+  nosql.data:
+    image: mongo

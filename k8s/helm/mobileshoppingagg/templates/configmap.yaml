@@ -1,0 +1,19 @@
+{{- $name := include "mobileshoppingagg.fullname" . -}}
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "cfg-{{ $name }}"
+  labels:
+    app: {{ template "mobileshoppingagg.name" . }}
+    chart: {{ template "mobileshoppingagg.chart" .}}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+data:
+  all__InstrumentationKey: {{ .Values.inf.appinsights.key }}
+  all_EnableLoadTest: "{{ .Values.inf.misc.useLoadTest }}"
+  mobileshoppingagg__keystore: {{ .Values.inf.redis.keystore.constr }}
+  internalurls__basket: http://{{ .Values.app.svc.basket }}
+  internalurls__catalog: http://{{ .Values.app.svc.catalog }}
+  internalurls__identity: http://{{ .Values.app.svc.identity }}
+  internalurls__ordering: http://{{ .Values.app.svc.ordering }}

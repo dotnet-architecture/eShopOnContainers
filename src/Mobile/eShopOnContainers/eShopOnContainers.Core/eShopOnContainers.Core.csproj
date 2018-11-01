@@ -2,33 +2,20 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <PackageTargetFallback>portable-net45+win8+wpa81+wp8</PackageTargetFallback>
-    <DebugType>full</DebugType>
-	<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Acr.UserDialogs" Version="6.3.3" />
-    <PackageReference Include="Autofac" Version="4.5.0" />
-    <PackageReference Include="IdentityModel" Version="2.10.0" />
-    <PackageReference Include="Microsoft.NETCore.Platforms" Version="2.0.0" />
+    <PackageReference Include="System.ComponentModel.Annotations" Version="4.4.1" />
+    <PackageReference Include="Acr.UserDialogs" Version="6.5.1" />
+    <PackageReference Include="SlideOverKit" Version="2.1.5" />
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
     <PackageReference Include="PCLCrypto" Version="2.0.147" />
-    <PackageReference Include="SlideOverKit" Version="2.1.4" />
-    <PackageReference Include="Splat" Version="1.6.2" />
-    <PackageReference Include="System.ComponentModel.Annotations" Version="4.4.0" />
-    <PackageReference Include="Xam.Plugin.Geolocator" Version="3.0.4" />
-    <PackageReference Include="Xam.Plugins.Settings" Version="2.6.0.12-beta" />
-    <PackageReference Include="Xamarin.FFImageLoading.Forms" Version="2.2.9" />
-    <PackageReference Include="Xamarin.Forms" Version="2.3.4.231" />
+    <PackageReference Include="Xamarin.FFImageLoading.Forms" Version="2.3.4" />
+    <PackageReference Include="Xamarin.Forms" Version="3.0.0.482510" />
+    <PackageReference Include="IdentityModel" Version="3.0.0" />
   </ItemGroup>
-
   <ItemGroup>
-    <!-- https://bugzilla.xamarin.com/show_bug.cgi?id=55591 -->
-    <None Remove="**\*.xaml" />
-
-    <Compile Update="**\*.xaml.cs" DependentUpon="%(Filename)" />
-    <EmbeddedResource Include="**\*.xaml" SubType="Designer" Generator="MSBuild:UpdateDesignTimeXaml" />
+    <Folder Include="Services\Permissions\" />
+    <Folder Include="Models\Permissions\" />
   </ItemGroup>
-  
 </Project>

@@ -1,23 +1,25 @@
-﻿using System.Threading.Tasks;
-using eShopOnContainers.Core.Models.Orders;
-using eShopOnContainers.Core.ViewModels.Base;
+﻿using eShopOnContainers.Core.Models.Orders;
 using eShopOnContainers.Core.Services.Order;
-using System;
+using eShopOnContainers.Core.Services.Settings;
+using eShopOnContainers.Core.ViewModels.Base;
+using System.Threading.Tasks;
 using System.Windows.Input;
-using eShopOnContainers.Core.Helpers;
 using Xamarin.Forms;
 
 namespace eShopOnContainers.Core.ViewModels
 {
     public class OrderDetailViewModel : ViewModelBase
     {
+        private readonly ISettingsService _settingsService;
         private readonly IOrderService _ordersService;
-		private Order _order;
+
+        private Order _order;
         private bool _isSubmittedOrder;
         private string _orderStatusText;
 
-        public OrderDetailViewModel(IOrderService ordersService)
+        public OrderDetailViewModel(ISettingsService settingsService, IOrderService ordersService)
         {
+            _settingsService = settingsService;
             _ordersService = ordersService;
         }
 
@@ -63,7 +65,7 @@ namespace eShopOnContainers.Core.ViewModels
                 var order = navigationData as Order;
 
                 // Get order detail info
-                var authToken = Settings.AuthAccessToken;
+                var authToken = _settingsService.AuthAccessToken;
                 Order = await _ordersService.GetOrderAsync(order.OrderNumber, authToken);
                 IsSubmittedOrder = Order.OrderStatus == OrderStatus.Submitted;
                 OrderStatusText = Order.OrderStatus.ToString().ToUpper();
@@ -74,13 +76,13 @@ namespace eShopOnContainers.Core.ViewModels
 
         private async Task ToggleCancelOrderAsync()
         {
-            var authToken = Settings.AuthAccessToken;
+            var authToken = _settingsService.AuthAccessToken;
 
             var result = await _ordersService.CancelOrderAsync(_order.OrderNumber, authToken);
 
             if (result)
             {
-                OrderStatusText = OrderStatus.Cancelled.ToString().ToUpper();  
+                OrderStatusText = OrderStatus.Cancelled.ToString().ToUpper();
             }
             else
             {

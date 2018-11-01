@@ -24,7 +24,7 @@ Once parameter file is edited you can deploy it using [create-resources script](
 i. e. if you are in windows, to deploy a Storage account in a new resourcegroup located in westus, go to `deploy\az` folder and type:
 
 ```
-create-resources.cmd marketing\deploystorage newResourceGroup -c westus
+create-resources.cmd storage\marketing\deploystorage newResourceGroup -c westus
 ```
 
 

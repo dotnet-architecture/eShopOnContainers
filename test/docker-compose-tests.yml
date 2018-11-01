@@ -1,0 +1,10 @@
+version: '3'
+services:
+  redis.data:
+    image: redis:alpine
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+  sql.data:
+    image: microsoft/mssql-server-linux:2017-latest
+  nosql.data:
+    image: mongo

@@ -1,7 +1,7 @@
-﻿namespace eShopOnContainers.Core.Models.Marketing
-{
-    using System;
+﻿using System;
 
+namespace eShopOnContainers.Core.Models.Marketing
+{
     public class CampaignItem
     {
         public int Id { get; set; }

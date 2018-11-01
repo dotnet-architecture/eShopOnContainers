@@ -1,35 +1,40 @@
+using Android.Content;
+using Android.Graphics;
+using Android.Support.Design.Widget;
+using Android.Support.V4.View;
+using Android.Views;
+using Android.Widget;
+using eShopOnContainers.Core.Controls;
+using eShopOnContainers.Droid.Extensions;
+using eShopOnContainers.Droid.Renderers;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Xamarin.Forms.Platform.Android.AppCompat;
 using Xamarin.Forms;
-using Android.Support.Design.Widget;
-using Android.Views;
-using Android.Widget;
 using Xamarin.Forms.Platform.Android;
-using eShopOnContainers.Droid.Extensions;
-using eShopOnContainers.Core.Controls;
-using eShopOnContainers.Droid.Renderers;
-using Android.Support.V4.View;
-using Android.Graphics;
+using Xamarin.Forms.Platform.Android.AppCompat;
 
 [assembly: ExportRenderer(typeof(TabbedPage), typeof(CustomTabbedPageRenderer))]
 namespace eShopOnContainers.Droid.Renderers
 {
     public class CustomTabbedPageRenderer : TabbedPageRenderer
     {
-        private const int DeleayBeforeTabAdded = 10;
+        private const int DelayBeforeTabAdded = 10;
         protected readonly Dictionary<Element, BadgeView> BadgeViews = new Dictionary<Element, BadgeView>();
         private TabLayout _tabLayout;
-        private TabLayout.SlidingTabStrip _tabStrip;
+        private LinearLayout _tabStrip;
         private ViewPager _viewPager;
         private TabbedPage _tabbedPage;
         private bool _firstTime = true;
 
+        public CustomTabbedPageRenderer(Context context) : base(context)
+        {
+        }
+
         protected override void OnElementChanged(ElementChangedEventArgs<TabbedPage> e)
         {
             base.OnElementChanged(e);
-                        
+
             _tabLayout = ViewGroup.FindChildOfType<TabLayout>();
 
             if (_tabLayout == null)
@@ -37,34 +42,18 @@ namespace eShopOnContainers.Droid.Renderers
                 Console.WriteLine("No TabLayout found. Badge not added.");
                 return;
             }
-       
+
             _tabbedPage = e.NewElement as TabbedPage;
             _viewPager = (ViewPager)GetChildAt(0);
 
-            _tabLayout.TabSelected += (s, a) => 
+            _tabLayout.TabSelected += (s, a) =>
             {
                 var page = _tabbedPage.Children[a.Tab.Position];
-
-                if (page is TabbedPage)
-                {
-                    var tabPage = (TabbedPage)page;
-                    SetTab(a.Tab, tabPage.Icon.File);
-                }
-
+                SetTab(a.Tab, page.Icon.File);
                 _viewPager.SetCurrentItem(a.Tab.Position, false);
             };
 
-            _tabLayout.TabUnselected += (s, a) => 
-            {
-                var page = _tabbedPage.Children[a.Tab.Position];
-
-                if (page is TabbedPage)
-                {
-                    SetTab(a.Tab, page.Icon.File);
-                }
-            };
-
-            _tabStrip = _tabLayout.FindChildOfType<TabLayout.SlidingTabStrip>();
+            _tabStrip = _tabLayout.FindChildOfType<LinearLayout>();
 
             for (var i = 0; i < _tabLayout.TabCount; i++)
             {
@@ -81,7 +70,7 @@ namespace eShopOnContainers.Droid.Renderers
             {
                 int id = Resources.GetIdentifier(name, "drawable", Context.PackageName);
                 tab.SetIcon(null);
-            
+
                 LinearLayout.LayoutParams linearLayoutParams = new LinearLayout.LayoutParams(LayoutParams.MatchParent, LayoutParams.MatchParent);
                 linearLayoutParams.SetMargins(0, -48, 0, 0);
 
@@ -89,7 +78,7 @@ namespace eShopOnContainers.Droid.Renderers
                 img.LayoutParameters = linearLayoutParams;
                 img.SetPadding(0, 0, 0, 48);
                 img.SetImageResource(id);
-            
+
                 tab.SetCustomView(img);
             }
             catch (Exception ex)
@@ -115,7 +104,6 @@ namespace eShopOnContainers.Droid.Renderers
                 if (page is TabbedPage)
                 {
                     var tabbedPage = (TabbedPage)page;
-
                     SetTab(tab, tabbedPage.Icon.File);
                 }
                 else
@@ -164,7 +152,7 @@ namespace eShopOnContainers.Droid.Renderers
             {
                 badgeView.BadgeColor = tabColor.ToAndroid();
             }
-            
+
             element.PropertyChanged += OnTabbedPagePropertyChanged;
         }
 
@@ -200,7 +188,7 @@ namespace eShopOnContainers.Droid.Renderers
 
         private async void OnTabAdded(object sender, ElementEventArgs e)
         {
-            await Task.Delay(DeleayBeforeTabAdded);
+            await Task.Delay(DelayBeforeTabAdded);
 
             var page = e.Element as Page;
 

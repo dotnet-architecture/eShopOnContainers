@@ -10,7 +10,7 @@ eShopOnContainers is a reference app whose imagined purpose is to serve the mobi
   1. A Xamarin.Forms mobile app for iOS, Android and Windows.
   2. Several .NET Web API microservices deployed as Docker containers.
 
-##Xamarin.Forms App (eShopOnContainers)
+### Xamarin.Forms App (eShopOnContainers)
 
 This project exercises the following platforms, frameworks or features:
 

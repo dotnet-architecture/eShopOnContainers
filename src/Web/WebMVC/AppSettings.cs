@@ -7,12 +7,10 @@ namespace Microsoft.eShopOnContainers.WebMVC
 {
     public class AppSettings
     {
-        public Connectionstrings ConnectionStrings { get; set; }
-        public string CatalogUrl { get; set; }
-        public string OrderingUrl { get; set; }
-        public string BasketUrl { get; set; }
+        //public Connectionstrings ConnectionStrings { get; set; }
         public string MarketingUrl { get; set; }
-        public string LocationsUrl { get; set; }
+        public string PurchaseUrl { get; set; }
+        public string SignalrHubUrl { get; set; }
         public bool ActivateCampaignDetailFunction { get; set; }
         public Logging Logging { get; set; }
         public bool UseCustomizationData { get; set; }

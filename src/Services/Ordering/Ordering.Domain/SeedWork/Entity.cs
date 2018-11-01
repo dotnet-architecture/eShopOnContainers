@@ -6,12 +6,8 @@
 
     public abstract class Entity
     {
-
         int? _requestedHashCode;
-        int _Id;
-        
-        private List<INotification> _domainEvents;
-
+        int _Id;        
         public virtual  int Id 
         {
             get
@@ -24,7 +20,9 @@
             }
         }
 
-        public List<INotification> DomainEvents => _domainEvents;        
+        private List<INotification> _domainEvents;
+        public IReadOnlyCollection<INotification> DomainEvents => _domainEvents?.AsReadOnly();
+
         public void AddDomainEvent(INotification eventItem)
         {
             _domainEvents = _domainEvents ?? new List<INotification>();
@@ -33,8 +31,12 @@
 
         public void RemoveDomainEvent(INotification eventItem)
         {
-            if (_domainEvents is null) return;
-            _domainEvents.Remove(eventItem);
+            _domainEvents?.Remove(eventItem);
+        }
+
+        public void ClearDomainEvents()
+        {
+            _domainEvents?.Clear();
         }
 
         public bool IsTransient()
@@ -74,7 +76,6 @@
                 return base.GetHashCode();
 
         }
-
         public static bool operator ==(Entity left, Entity right)
         {
             if (Object.Equals(left, null))

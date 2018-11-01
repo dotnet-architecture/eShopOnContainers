@@ -4,17 +4,12 @@ using System.Collections.Generic;
 
 namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate
 {
-    public class Address
-        :ValueObject
+    public class Address : ValueObject
     {
         public String Street { get; private set; }
-
         public String City { get; private set; }
-
         public String State { get; private set; }
-
         public String Country { get; private set; }
-
         public String ZipCode { get; private set; }
 
         private Address() { }
@@ -30,6 +25,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
 
         protected override IEnumerable<object> GetAtomicValues()
         {
+            // Using a yield return statement to return each element one at a time
             yield return Street;
             yield return City;
             yield return State;

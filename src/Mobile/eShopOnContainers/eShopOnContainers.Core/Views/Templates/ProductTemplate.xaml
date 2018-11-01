@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <ContentView 
     xmlns="http://xamarin.com/schemas/2014/forms" 
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"    
@@ -76,18 +76,16 @@
                 Source="{Binding PictureUri}"     
                 Aspect="AspectFill">
                 <ffimageloading:CachedImage.LoadingPlaceholder>
-                    <OnPlatform   
-                        x:TypeArguments="ImageSource"
-                        iOS="default_product"
-                        Android="default_product"
-                        WinPhone="Assets/default_product.png"/>
+                    <OnPlatform x:TypeArguments="ImageSource">
+                        <On Platform="iOS, Android" Value="default_product" />
+                        <On Platform="UWP, WinRT, WinPhone" Value="Assets/default_product.png" />
+                    </OnPlatform>
                 </ffimageloading:CachedImage.LoadingPlaceholder>
                 <ffimageloading:CachedImage.ErrorPlaceholder>
-                    <OnPlatform   
-                        x:TypeArguments="ImageSource"
-                        iOS="noimage"
-                        Android="noimage"
-                        WinPhone="Assets/noimage.png"/>
+                    <OnPlatform x:TypeArguments="ImageSource">
+                        <On Platform="iOS, Android" Value="noimage" />
+                        <On Platform="UWP, WinRT, WinPhone" Value="Assets/noimage.png" />
+                    </OnPlatform>
                 </ffimageloading:CachedImage.ErrorPlaceholder>
             </ffimageloading:CachedImage>
             <Grid

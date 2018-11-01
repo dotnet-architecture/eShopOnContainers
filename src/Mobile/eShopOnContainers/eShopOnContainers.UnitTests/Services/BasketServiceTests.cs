@@ -11,7 +11,7 @@ namespace eShopOnContainers.UnitTests
         {
             var catalogMockService = new CatalogMockService();       
             var result  = await catalogMockService.GetCatalogAsync();
-            Assert.NotEqual(0, result.Count);
+            Assert.NotEmpty(result);
         }
     }
 }

@@ -6,10 +6,9 @@ Param(
     [parameter(Mandatory=$false)][string]$kubeconfigPath,
     [parameter(Mandatory=$true)][string]$configFile,
     [parameter(Mandatory=$false)][string]$imageTag,
-    [parameter(Mandatory=$false)][string]$externalDns,
     [parameter(Mandatory=$false)][bool]$deployCI=$false,
     [parameter(Mandatory=$false)][bool]$buildImages=$true,
-    [parameter(Mandatory=$false)][bool]$buildBits=$false,
+    [parameter(Mandatory=$false)][bool]$pushImages=$true,
     [parameter(Mandatory=$false)][bool]$deployInfrastructure=$true,
     [parameter(Mandatory=$false)][string]$dockerOrg="eshop"
 )
@@ -30,6 +29,16 @@ function ExecKube($cmd) {
 $debugMode = $PSCmdlet.MyInvocation.BoundParameters["Debug"].IsPresent
 $useDockerHub = [string]::IsNullOrEmpty($registry)
 
+$externalDns = & ExecKube -cmd 'get svc ingress-nginx -n ingress-nginx -o=jsonpath="{.status.loadBalancer.ingress[0].ip}"'
+Write-Host "Ingress ip detected: $externalDns" -ForegroundColor Yellow 
+
+if (-not [bool]($externalDns -as [ipaddress])) {
+    Write-Host "Must install ingress first" -ForegroundColor Red
+    Write-Host "Run deploy-ingress.ps1 and  deploy-ingress-azure.ps1" -ForegroundColor Red
+    exit
+}
+
+
 # Check required commands (only if not in CI environment)
 if(-not $deployCI) {
         $requiredCommands = ("docker", "docker-compose", "kubectl")
@@ -41,7 +50,6 @@ if(-not $deployCI) {
     }
 }
 else {
-    $buildBits = false;
     $buildImages = false;       # Never build images through CI, as they previously built
 }
 
@@ -51,18 +59,16 @@ if ([string]::IsNullOrEmpty($imageTag)) {
 }
 Write-Host "Docker image Tag: $imageTag" -ForegroundColor Yellow
 
-# building and publishing docker images if needed
-if($buildBits) {
-    Write-Host "Building and publishing eShopOnContainers..." -ForegroundColor Yellow
-    dotnet publish -c Release -o obj/Docker/publish ../eShopOnContainers-ServicesAndWebApps.sln
-}
+# building  docker images if needed
 if ($buildImages) {
     Write-Host "Building Docker images tagged with '$imageTag'" -ForegroundColor Yellow
     $env:TAG=$imageTag
     docker-compose -p .. -f ../docker-compose.yml build    
+}
 
+if ($pushImages) {
     Write-Host "Pushing images to $registry/$dockerOrg..." -ForegroundColor Yellow
-    $services = ("basket.api", "catalog.api", "identity.api", "ordering.api", "marketing.api","payment.api","locations.api", "webmvc", "webspa", "webstatus")
+    $services = ("basket.api", "catalog.api", "identity.api", "ordering.api", "ordering.backgroundtasks", "marketing.api","payment.api","locations.api", "webmvc", "webspa", "webstatus", "ocelotapigw", "mobileshoppingagg", "webshoppingagg", "ordering.signalrhub")
 
     foreach ($service in $services) {
         $imageFqdn = if ($useDockerHub)  {"$dockerOrg/${service}"} else {"$registry/$dockerOrg/${service}"}
@@ -88,7 +94,10 @@ if (-not [string]::IsNullOrEmpty($dockerUser)) {
         exit
     }
 
-    # create registry key secret
+    # Try to delete the Docker registry key secret
+    ExecKube -cmd 'delete secret docker-registry registry-key'
+
+    # Create the Docker registry key secret
     ExecKube -cmd 'create secret docker-registry registry-key `
     --docker-server=$registryFDQN `
     --docker-username=$dockerUser `
@@ -100,74 +109,47 @@ if (-not [string]::IsNullOrEmpty($dockerUser)) {
 Write-Host "Removing existing services & deployments.." -ForegroundColor Yellow
 ExecKube -cmd 'delete deployments --all'
 ExecKube -cmd 'delete services --all'
-ExecKube -cmd 'delete configmap config-files'
+ExecKube -cmd 'delete configmap internalurls'
 ExecKube -cmd 'delete configmap urls'
 ExecKube -cmd 'delete configmap externalcfg'
+ExecKube -cmd 'delete configmap ocelot'
 
-# start sql, rabbitmq, frontend deploymentsExecKube -cmd 'delete configmap config-files'
-ExecKube -cmd 'create configmap config-files --from-file=nginx-conf=nginx.conf'
-ExecKube -cmd 'label configmap config-files app=eshop'
-
+# start sql, rabbitmq, frontend deployments
 if ($deployInfrastructure) {
     Write-Host 'Deploying infrastructure deployments (databases, redis, RabbitMQ...)' -ForegroundColor Yellow
     ExecKube -cmd 'create -f sql-data.yaml -f basket-data.yaml -f keystore-data.yaml -f rabbitmq.yaml -f nosql-data.yaml'
 }
 
+
+Write-Host 'Deploying ocelot APIGW' -ForegroundColor Yellow
+
+ExecKube "create configmap ocelot --from-file=mm=ocelot/configuration-mobile-marketing.json --from-file=ms=ocelot/configuration-mobile-shopping.json --from-file=wm=ocelot/configuration-web-marketing.json --from-file=ws=ocelot/configuration-web-shopping.json "
+ExecKube -cmd "apply -f ocelot/deployment.yaml"
+ExecKube -cmd "apply -f ocelot/service.yaml"
+
 Write-Host 'Deploying code deployments (Web APIs, Web apps, ...)' -ForegroundColor Yellow
-ExecKube -cmd 'create -f services.yaml -f frontend.yaml'
+ExecKube -cmd 'create -f services.yaml'
 
-if ([string]::IsNullOrEmpty($externalDns)) {
-        Write-Host "Waiting for frontend's external ip..." -ForegroundColor Yellow
-        while ($true) {
-            $frontendUrl = & ExecKube -cmd 'get svc frontend -o=jsonpath="{.status.loadBalancer.ingress[0].ip}"'
-            if ([bool]($frontendUrl -as [ipaddress])) {
-                break
-            }
-            Start-Sleep -s 15
-        }
-        $externalDns = $frontendUrl
-}
-
-Write-Host "Using $externalDns as the external DNS/IP of the k8s cluster"
-
+ExecKube -cmd 'create -f internalurls.yaml'
 ExecKube -cmd 'create configmap urls `
-    --from-literal=BasketUrl=http://basket `
-    --from-literal=BasketHealthCheckUrl=http://basket/hc `
-    --from-literal=CatalogUrl=http://$($externalDns)/catalog-api `
-    --from-literal=CatalogHealthCheckUrl=http://catalog/hc `
-    --from-literal=PicBaseUrl=http://$($externalDns)/catalog-api/api/v1/catalog/items/[0]/pic/ `
-    --from-literal=Marketing_PicBaseUrl=http://$($externalDns)/marketing-api/api/v1/campaigns/[0]/pic/ `
-    --from-literal=IdentityUrl=http://$($externalDns)/identity `
-    --from-literal=IdentityHealthCheckUrl=http://identity/hc `
-    --from-literal=OrderingUrl=http://ordering `
-    --from-literal=OrderingHealthCheckUrl=http://ordering/hc `
-    --from-literal=MvcClientExternalUrl=http://$($externalDns)/webmvc `
-    --from-literal=WebMvcHealthCheckUrl=http://webmvc/hc `
-    --from-literal=MvcClientOrderingUrl=http://ordering `
-    --from-literal=MvcClientCatalogUrl=http://catalog `
-    --from-literal=MvcClientBasketUrl=http://basket `
-    --from-literal=MvcClientMarketingUrl=http://marketing `
-	--from-literal=MvcClientLocationsUrl=http://locations `
-    --from-literal=MarketingHealthCheckUrl=http://marketing/hc `
-    --from-literal=WebSpaHealthCheckUrl=http://webspa/hc `
-    --from-literal=SpaClientMarketingExternalUrl=http://$($externalDns)/marketing-api `
-    --from-literal=SpaClientOrderingExternalUrl=http://$($externalDns)/ordering-api `
-    --from-literal=SpaClientCatalogExternalUrl=http://$($externalDns)/catalog-api `
-    --from-literal=SpaClientBasketExternalUrl=http://$($externalDns)/basket-api `
-    --from-literal=SpaClientIdentityExternalUrl=http://$($externalDns)/identity `
-	--from-literal=SpaClientLocationsUrl=http://$($externalDns)/locations-api `
-    --from-literal=LocationsHealthCheckUrl=http://locations/hc `
-    --from-literal=SpaClientExternalUrl=http://$($externalDns) `
-    --from-literal=LocationApiClient=http://$($externalDns)/locations-api `
-    --from-literal=MarketingApiClient=http://$($externalDns)/marketing-api `
-    --from-literal=BasketApiClient=http://$($externalDns)/basket-api `
-    --from-literal=OrderingApiClient=http://$($externalDns)/ordering-api'
-	
+    --from-literal=PicBaseUrl=http://$($externalDns)/webshoppingapigw/api/v1/c/catalog/items/[0]/pic/ `
+    --from-literal=Marketing_PicBaseUrl=http://$($externalDns)/webmarketingapigw/api/v1/m/campaigns/[0]/pic/ `
+    --from-literal=mvc_e=http://$($externalDns)/webmvc `
+    --from-literal=marketingapigw_e=http://$($externalDns)/webmarketingapigw `
+    --from-literal=webshoppingapigw_e=http://$($externalDns)/webshoppingapigw `
+    --from-literal=mobileshoppingagg_e=http://$($externalDns)/mobileshoppingagg `
+    --from-literal=webshoppingagg_e=http://$($externalDns)/webshoppingagg `
+    --from-literal=identity_e=http://$($externalDns)/identity `
+    --from-literal=spa_e=http://$($externalDns) `
+    --from-literal=locations_e=http://$($externalDns)/locations-api `
+    --from-literal=marketing_e=http://$($externalDns)/marketing-api `
+    --from-literal=basket_e=http://$($externalDns)/basket-api `
+    --from-literal=ordering_e=http://$($externalDns)/ordering-api `
+    --from-literal=xamarin_callback_e=http://$($externalDns)/xamarincallback' 
 
 ExecKube -cmd 'label configmap urls app=eshop'
 
 Write-Host "Deploying configuration from $configFile" -ForegroundColor Yellow
-
 ExecKube -cmd "create -f $configFile"
 
 Write-Host "Creating deployments..." -ForegroundColor Yellow
@@ -185,24 +167,42 @@ ExecKube -cmd 'set image deployments/basket basket=${registryPath}${dockerOrg}/b
 ExecKube -cmd 'set image deployments/catalog catalog=${registryPath}${dockerOrg}/catalog.api:$imageTag'
 ExecKube -cmd 'set image deployments/identity identity=${registryPath}${dockerOrg}/identity.api:$imageTag'
 ExecKube -cmd 'set image deployments/ordering ordering=${registryPath}${dockerOrg}/ordering.api:$imageTag'
+ExecKube -cmd 'set image deployments/ordering-backgroundtasks ordering-backgroundtasks=${registryPath}${dockerOrg}/ordering.backgroundtasks:$imageTag'
 ExecKube -cmd 'set image deployments/marketing marketing=${registryPath}${dockerOrg}/marketing.api:$imageTag'
 ExecKube -cmd 'set image deployments/locations locations=${registryPath}${dockerOrg}/locations.api:$imageTag'
 ExecKube -cmd 'set image deployments/payment payment=${registryPath}${dockerOrg}/payment.api:$imageTag'
 ExecKube -cmd 'set image deployments/webmvc webmvc=${registryPath}${dockerOrg}/webmvc:$imageTag'
 ExecKube -cmd 'set image deployments/webstatus webstatus=${registryPath}${dockerOrg}/webstatus:$imageTag'
 ExecKube -cmd 'set image deployments/webspa webspa=${registryPath}${dockerOrg}/webspa:$imageTag'
+ExecKube -cmd 'set image deployments/ordering-signalrhub ordering-signalrhub=${registryPath}${dockerOrg}/ordering.signalrhub:$imageTag'
+
+ExecKube -cmd 'set image deployments/mobileshoppingagg mobileshoppingagg=${registryPath}${dockerOrg}/mobileshoppingagg:$imageTag'
+ExecKube -cmd 'set image deployments/webshoppingagg webshoppingagg=${registryPath}${dockerOrg}/webshoppingagg:$imageTag'
+
+ExecKube -cmd 'set image deployments/apigwmm apigwmm=${registryPath}${dockerOrg}/ocelotapigw:$imageTag'
+ExecKube -cmd 'set image deployments/apigwms apigwms=${registryPath}${dockerOrg}/ocelotapigw:$imageTag'
+ExecKube -cmd 'set image deployments/apigwwm apigwwm=${registryPath}${dockerOrg}/ocelotapigw:$imageTag'
+ExecKube -cmd 'set image deployments/apigwws apigwws=${registryPath}${dockerOrg}/ocelotapigw:$imageTag'
 
 Write-Host "Execute rollout..." -ForegroundColor Yellow
 ExecKube -cmd 'rollout resume deployments/basket'
 ExecKube -cmd 'rollout resume deployments/catalog'
 ExecKube -cmd 'rollout resume deployments/identity'
 ExecKube -cmd 'rollout resume deployments/ordering'
+ExecKube -cmd 'rollout resume deployments/ordering-backgroundtasks'
 ExecKube -cmd 'rollout resume deployments/marketing'
 ExecKube -cmd 'rollout resume deployments/locations'
 ExecKube -cmd 'rollout resume deployments/payment'
 ExecKube -cmd 'rollout resume deployments/webmvc'
 ExecKube -cmd 'rollout resume deployments/webstatus'
 ExecKube -cmd 'rollout resume deployments/webspa'
+ExecKube -cmd 'rollout resume deployments/mobileshoppingagg'
+ExecKube -cmd 'rollout resume deployments/webshoppingagg'
+ExecKube -cmd 'rollout resume deployments/apigwmm'
+ExecKube -cmd 'rollout resume deployments/apigwms'
+ExecKube -cmd 'rollout resume deployments/apigwwm'
+ExecKube -cmd 'rollout resume deployments/apigwws'
+ExecKube -cmd 'rollout resume deployments/ordering-signalrhub'
 
 Write-Host "WebSPA is exposed at http://$externalDns, WebMVC at http://$externalDns/webmvc, WebStatus at http://$externalDns/webstatus" -ForegroundColor Yellow
 

@@ -1,0 +1,102 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "clusterName": {
+            "value": "pro-eshop-sflinux-cluster"
+        },
+        "clusterLocation": {
+            "value": "westus"
+        },
+        "computeLocation": {
+            "value": "westus"
+        },
+        "adminUserName": {
+            "value": "eshop"
+        },
+        "adminPassword": {
+            "value": "Pass@word1"
+        },
+        "nicName": {
+            "value": "NIC-eshopsflinsec"
+        },
+        "publicIPAddressName": {
+            "value": "eshopsflinsec-PubIP"
+        },
+        "dnsName": {
+            "value": "pro-eshop-sflinux-cluster"
+        },
+        "virtualNetworkName": {
+            "value": "VNet-eshopsflin"
+        },
+        "lbName": {
+            "value": "LB-eshopsflin"
+        },
+        "lbIPName": {
+            "value": "LBIP-eshopsflin"
+        },       
+        "sourceVaultValue": {
+            "value": "your-value-check-keyvault-at-azure"
+        },
+        "certificateUrlValue": {
+            "value": "your-value-check-keyvault-at-azure"
+        },
+        "certificateThumbprint": {
+            "value": "your-value-check-keyvault-at-azure"
+        },
+        "vmImageSku": {
+            "value": "16.04-LTS"
+        },
+        "vmImageVersion": {
+            "value": "latest"
+        },
+        "vmImagePublisher": {
+            "value": "Canonical"
+        },
+        "nt0ephemeralStartPort": {
+            "value": 49152
+        },
+        "nt0ephemeralEndPort": {
+            "value": 65534
+        },
+        "nt0applicationStartPort": {
+            "value": 20000
+        },
+        "nt0applicationEndPort": {
+            "value": 30000
+        },
+        "nt0fabricTcpGatewayPort": {
+            "value": 19000
+        },
+        "nt0fabricHttpGatewayPort": {
+            "value": 19080
+        },
+        "webMvcHttpPort": {
+            "value": 5100
+        },
+        "webSpaHttpPort": {
+            "value": 5104
+        },
+        "webStatusHttpPort": {
+            "value": 5107
+        },
+        "IdSrvHttpRule": {
+            "value": 5105
+        },
+        "BasketApiHttpRule": {
+            "value": 5103
+        },
+        "CatalogApiHttpRule": {
+            "value": 5101
+        },
+        "OrderingApiHttpRule": {
+            "value": 5102
+        },
+        "MarketingApiHttpRule": {
+            "value": 5110
+        },
+        "LocationsApiHttpRule": {
+            "value": 5109
+        }
+    }
+}
