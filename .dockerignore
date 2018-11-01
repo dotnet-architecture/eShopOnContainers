@@ -28,9 +28,7 @@ cli-linux
 **/obj/
 **/node_modules/
 **/bower_components/
-**/wwwroot/lib/
-!**/wwwroot/lib/signalr/*
-!**/wwwroot/lib/toastr/*
+**/wwwroot/lib/*
 global.json
 **/appsettings.localhost.json
 src/Web/WebSPA/wwwroot/

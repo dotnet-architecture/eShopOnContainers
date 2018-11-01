@@ -31,7 +31,7 @@
 
   <ItemGroup>
     <PackageReference Include="FluentValidation.AspNetCore" Version="7.5.0" />
-    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="4.1.0" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="5.1.0" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.2.1" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.2.1" />
     <PackageReference Include="Microsoft.ApplicationInsights.DependencyCollector" Version="2.6.1" />
@@ -40,8 +40,8 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.AzureKeyVault" Version="2.1.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.AzureAppServices" Version="2.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.0" />
-    <PackageReference Include="MediatR" Version="4.1.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="2.4.0" />
+    <PackageReference Include="MediatR" Version="5.1.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="3.0.0" />
     <PackageReference Include="System.Reflection" Version="4.3.0" />
     <PackageReference Include="Dapper" Version="1.50.4" />
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />

@@ -58,7 +58,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                         "marketing",
                         "webshoppingagg",
                         "orders.signalrhub"
-                    }
+                    },
                 },
                 new Client
                 {
@@ -124,6 +124,8 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                         "webshoppingagg",
                         "orders.signalrhub"
                     },
+                    AccessTokenLifetime = 60*60*2, // 2 hours
+                    IdentityTokenLifetime= 60*60*2 // 2 hours
                 },
                 new Client
                 {
@@ -248,7 +250,6 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                         "webshoppingagg"
                     }
                 }
-
             };
         }
     }
