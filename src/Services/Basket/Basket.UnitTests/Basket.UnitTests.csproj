@@ -11,7 +11,7 @@
     <PackageReference Include="xunit" Version="2.3.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
     <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.1" />
-    <PackageReference Include="MediatR" Version="4.1.0" />
+    <PackageReference Include="MediatR" Version="5.1.0" />
     <PackageReference Include="Moq" Version="4.8.1" />
   </ItemGroup>
 
