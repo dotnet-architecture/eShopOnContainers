@@ -8,10 +8,18 @@ Param(
     [parameter(Mandatory=$false)][bool]$clean=$true,
     [parameter(Mandatory=$false)][string]$aksName="",
     [parameter(Mandatory=$false)][string]$aksRg="",
-    [parameter(Mandatory=$false)][string]$imageTag="latest"
-)
+    [parameter(Mandatory=$false)][string]$imageTag="latest",
+    [parameter(Mandatory=$false)][bool]$useLocalk8s=$false
+    )
 
 $dns = $externalDns
+
+$ingressValuesFile="ingress_values.yaml"
+
+if ($ingressValuesFile) {
+    $ingressValuesFile="ingress_values_dockerk8s.yaml"
+    $dns="localhost"
+}
 
 if ($externalDns -eq "aks") {
     if  ([string]::IsNullOrEmpty($aksName) -or [string]::IsNullOrEmpty($aksRg)) {
@@ -58,18 +66,18 @@ $charts = ("eshop-common", "apigwmm", "apigwms", "apigwwm", "apigwws", "basket-a
 if ($deployInfrastructure) {
     foreach ($infra in $infras) {
         Write-Host "Installing infrastructure: $infra" -ForegroundColor Green
-        helm install --values app.yaml --values inf.yaml --values ingress_values.yaml --set app.name=$appName --set inf.k8s.dns=$dns --name="$appName-$infra" $infra     
+        helm install --values app.yaml --values inf.yaml --values $ingressValuesFile --set app.name=$appName --set inf.k8s.dns=$dns --name="$appName-$infra" $infra     
     }
 }
 
 foreach ($chart in $charts) {
     Write-Host "Installing: $chart" -ForegroundColor Green
     if ($useCustomRegistry) {
-        helm install --set inf.registry.server=$registry --set inf.registry.login=$dockerUser --set inf.registry.pwd=$dockerPassword --set inf.registry.secretName=eshop-docker-scret --values app.yaml --values inf.yaml --values ingress_values.yaml --set app.name=$appName --set inf.k8s.dns=$dns --set image.tag=$imageTag --set image.pullPolicy=Always --name="$appName-$chart" $chart 
+        helm install --set inf.registry.server=$registry --set inf.registry.login=$dockerUser --set inf.registry.pwd=$dockerPassword --set inf.registry.secretName=eshop-docker-scret --values app.yaml --values inf.yaml --values $ingressValuesFile --set app.name=$appName --set inf.k8s.dns=$dns --set image.tag=$imageTag --set image.pullPolicy=Always --name="$appName-$chart" $chart 
     }
     else {
         if ($chart -ne "eshop-common")  {       # eshop-common is ignored when no secret must be deployed
-            helm install --values app.yaml --values inf.yaml --values ingress_values.yaml --set app.name=$appName --set inf.k8s.dns=$dns --set image.tag=$imageTag --set image.pullPolicy=Always --name="$appName-$chart" $chart 
+            helm install --values app.yaml --values inf.yaml --values $ingressValuesFile --set app.name=$appName --set inf.k8s.dns=$dns --set image.tag=$imageTag --set image.pullPolicy=Always --name="$appName-$chart" $chart 
         }
     }
 }
