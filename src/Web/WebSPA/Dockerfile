@@ -3,7 +3,7 @@ FROM microsoft/dotnet:2.2.0-preview3-aspnetcore-runtime AS base
 WORKDIR /app
 EXPOSE 80
 
-FROM microsoft/dotnet:2.2.100-preview3-sdk AS build
+FROM microsoft/dotnet:2.2.100-preview3-sdk AS dotnet-build
 WORKDIR /src
 
 FROM ${NODE_IMAGE} as node-build
