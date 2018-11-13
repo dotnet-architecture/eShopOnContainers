@@ -9,11 +9,11 @@
         </div>
  
         <article class="esh-basket-titles row">
-            <section class="esh-basket-title col-xs-3">Product</section>
-            <section class="esh-basket-title col-xs-3 hidden-lg-down"></section>
-            <section class="esh-basket-title col-xs-2">Price</section>
-            <section class="esh-basket-title col-xs-2">Quantity</section>
-            <section class="esh-basket-title col-xs-2">Cost</section>
+            <section class="esh-basket-title col-3">Product</section>
+            <section class="esh-basket-title col-3 hidden-lg-down"></section>
+            <section class="esh-basket-title col-2">Price</section>
+            <section class="esh-basket-title col-2">Quantity</section>
+            <section class="esh-basket-title col-2">Cost</section>
         </article>
 
         <div *ngFor="let item of basket?.items" class="esh-basket-items--border">
@@ -22,9 +22,9 @@
                 <section class="esh-basket-item esh-basket-item--middle col-lg-3 hidden-lg-down">
                     <img class="esh-basket-image" src="{{item.pictureUrl}}"/>
                 </section>
-                <section class="esh-basket-item esh-basket-item--middle col-xs-3">{{item.productName}}</section>
-                <section class="esh-basket-item esh-basket-item--middle col-xs-2">$ {{item.unitPrice | number:'.2-2'}}</section>
-                <section class="esh-basket-item esh-basket-item--middle col-xs-2">
+                <section class="esh-basket-item esh-basket-item--middle col-3">{{item.productName}}</section>
+                <section class="esh-basket-item esh-basket-item--middle col-2">$ {{item.unitPrice | number:'.2-2'}}</section>
+                <section class="esh-basket-item esh-basket-item--middle col-2">
                     <input id="quantity"
                            class="esh-basket-input"
                            type="number"
@@ -32,7 +32,7 @@
                            [(ngModel)]="item.quantity"
                            (change)="itemQuantityChanged(item)"/>
                 </section>
-                <section class="esh-basket-item esh-basket-item--middle esh-basket-item--mark col-xs-2">$ {{(item.unitPrice * item.quantity) | number:'.2-2'}}</section>
+                <section class="esh-basket-item esh-basket-item--middle esh-basket-item--mark col-2">$ {{(item.unitPrice * item.quantity) | number:'.2-2'}}</section>
             </article>
             <br/>
             <div class="esh-basket-items-margin-left1 row">
@@ -43,21 +43,21 @@
 
     <div class="container">
         <article class="esh-basket-titles esh-basket-titles--clean row">
-            <section class="esh-basket-title col-xs-9"></section>
-            <section class="esh-basket-title col-xs-2">Total</section>
+            <section class="esh-basket-title col-9"></section>
+            <section class="esh-basket-title col-2">Total</section>
         </article>
 
         <article class="esh-basket-items row">
-            <section class="esh-basket-item col-xs-9"></section>
-            <section class="esh-basket-item esh-basket-item--mark col-xs-2">$ {{totalPrice | number:'.2-2'}}</section>
+            <section class="esh-basket-item col-9"></section>
+            <section class="esh-basket-item esh-basket-item--mark col-2">$ {{totalPrice | number:'.2-2'}}</section>
         </article>
 
         <article class="esh-basket-items row">
-            <section class="esh-basket-item col-xs-7"></section>
-            <section class="esh-basket-item col-xs-2">
+            <section class="esh-basket-item col-7"></section>
+            <section class="esh-basket-item col-2">
                 <button class="btn esh-basket-checkout" (click)="update($event)">[ Update ]</button>
             </section>
-            <section class="esh-basket-item col-xs-3">
+            <section class="esh-basket-item col-3">
                 <div (click)="checkOut($event)" class="btn esh-basket-checkout">[ Checkout ]</div>
             </section>
         </article>

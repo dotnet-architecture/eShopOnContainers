@@ -51,7 +51,7 @@
                 buyer.Name,
                 orderStockList);
 
-            await _orderingIntegrationEventService.PublishThroughEventBusAsync(orderStatusChangedToPaidIntegrationEvent);         
+            await _orderingIntegrationEventService.AddAndSaveEventAsync(orderStatusChangedToPaidIntegrationEvent);         
         }
     }  
 }

@@ -232,7 +232,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
         public static IServiceCollection AddIntegrationServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddTransient<Func<DbConnection, IIntegrationEventLogService>>(
-               sp => (DbConnection c) => new IntegrationEventLogService(c));
+                sp => (DbConnection c) => new IntegrationEventLogService(c));
 
             services.AddTransient<ICatalogIntegrationEventService, CatalogIntegrationEventService>();
 

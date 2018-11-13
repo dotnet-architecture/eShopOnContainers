@@ -1,8 +1,7 @@
 ﻿import { Injectable }                   from '@angular/core';
 import { Http, Response, Headers }      from '@angular/http';
-import 'rxjs/add/operator/map';
-import { Observable }                   from 'rxjs/Observable';
-import { Subject }                      from 'rxjs/Subject';
+import { Observable, Subject }          from 'rxjs';
+import { map }                          from 'rxjs/operators';
 import { Router }                       from '@angular/router';
 import { ActivatedRoute }               from '@angular/router';
 import { ConfigurationService }         from './configuration.service';
@@ -227,7 +226,7 @@ export class SecurityService {
         return this._http.get(this.authorityUrl + '/connect/userinfo', {
             headers: this.headers,
             body: ''
-        }).map(res => res.json());
+        }).pipe(map(res => res.json()));
     }
 
     private setHeaders() {
