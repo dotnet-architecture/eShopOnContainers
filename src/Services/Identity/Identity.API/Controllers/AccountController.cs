@@ -216,6 +216,8 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Controllers
             // delete authentication cookie
             await HttpContext.SignOutAsync();
 
+            await HttpContext.SignOutAsync(IdentityConstants.ApplicationScheme);
+
             // set this so UI rendering sees an anonymous user
             HttpContext.User = new ClaimsPrincipal(new ClaimsIdentity());
 
