@@ -79,9 +79,16 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Controllers
             if (ModelState.IsValid)
             {
                 var user = await _loginService.FindByUsername(model.Email);
+
                 if (await _loginService.ValidateCredentials(user, model.Password))
                 {
-                    AuthenticationProperties props = null;
+                    var props = new AuthenticationProperties
+                    {
+                        ExpiresUtc = DateTimeOffset.UtcNow.AddHours(2),
+                        AllowRefresh = true,
+                        RedirectUri = model.ReturnUrl
+                    };
+
                     if (model.RememberMe)
                     {
                         props = new AuthenticationProperties
@@ -91,7 +98,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Controllers
                         };
                     };
 
-                    await _loginService.SignIn(user);
+                    await _loginService.SignInAsync(user, props);
 
                     // make sure the returnUrl is still valid, and if yes - redirect back to authorize endpoint
                     if (_interaction.IsValidReturnUrl(model.ReturnUrl))
