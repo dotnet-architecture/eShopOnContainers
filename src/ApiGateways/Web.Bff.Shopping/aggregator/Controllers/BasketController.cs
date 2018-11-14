@@ -11,7 +11,8 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Controllers
 {
     [Route("api/v1/[controller]")]
     [Authorize]
-    public class BasketController : Controller
+    [ApiController]
+    public class BasketController : ControllerBase
     {
         private readonly ICatalogService _catalog;
         private readonly IBasketService _basket;
@@ -23,7 +24,7 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Controllers
 
         [HttpPost]
         [HttpPut]
-        public async Task<IActionResult> UpdateAllBasket([FromBody] UpdateBasketRequest data)
+        public async Task<ActionResult<BasketData>> UpdateAllBasket([FromBody] UpdateBasketRequest data)
         {
 
             if (data.Items == null || !data.Items.Any())
@@ -61,12 +62,13 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Controllers
             }
 
             await _basket.Update(newBasket);
-            return Ok(newBasket);
+
+            return newBasket;
         }
 
         [HttpPut]
         [Route("items")]
-        public async Task<IActionResult> UpdateQuantities([FromBody] UpdateBasketItemsRequest data)
+        public async Task<ActionResult<BasketData>> UpdateQuantities([FromBody] UpdateBasketItemsRequest data)
         {
             if (!data.Updates.Any())
             {
@@ -93,12 +95,13 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Controllers
 
             // Save the updated basket
             await _basket.Update(currentBasket);
-            return Ok(currentBasket);
+
+            return currentBasket;
         }
 
         [HttpPost]
         [Route("items")]
-        public async Task<IActionResult> AddBasketItem([FromBody] AddBasketItemRequest data)
+        public async Task<ActionResult> AddBasketItem([FromBody] AddBasketItemRequest data)
         {
             if (data == null || data.Quantity == 0)
             {

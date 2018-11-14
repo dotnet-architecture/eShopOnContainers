@@ -84,7 +84,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
         [Route("items/{id:int}")]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType(typeof(CatalogItem), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> GetItemById(int id)
+        public async Task<ActionResult<CatalogItem>> GetItemById(int id)
         {
             if (id <= 0)
             {
@@ -99,7 +99,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
 
             if (item != null)
             {
-                return Ok(item);
+                return item;
             }
 
             return NotFound();
@@ -109,9 +109,8 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
         [HttpGet]
         [Route("[action]/withname/{name:minlength(1)}")]
         [ProducesResponseType(typeof(PaginatedItemsViewModel<CatalogItem>), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> Items(string name, [FromQuery]int pageSize = 10, [FromQuery]int pageIndex = 0)
+        public async Task<ActionResult<PaginatedItemsViewModel<CatalogItem>>> Items(string name, [FromQuery]int pageSize = 10, [FromQuery]int pageIndex = 0)
         {
-
             var totalItems = await _catalogContext.CatalogItems
                 .Where(c => c.Name.StartsWith(name))
                 .LongCountAsync();
@@ -124,17 +123,14 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
 
             itemsOnPage = ChangeUriPlaceholder(itemsOnPage);
 
-            var model = new PaginatedItemsViewModel<CatalogItem>(
-                pageIndex, pageSize, totalItems, itemsOnPage);
-
-            return Ok(model);
+            return new PaginatedItemsViewModel<CatalogItem>(pageIndex, pageSize, totalItems, itemsOnPage);           
         }
 
         // GET api/v1/[controller]/items/type/1/brand[?pageSize=3&pageIndex=10]
         [HttpGet]
         [Route("[action]/type/{catalogTypeId}/brand/{catalogBrandId:int?}")]
         [ProducesResponseType(typeof(PaginatedItemsViewModel<CatalogItem>), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> Items(int catalogTypeId, int? catalogBrandId, [FromQuery]int pageSize = 10, [FromQuery]int pageIndex = 0)
+        public async Task<ActionResult<PaginatedItemsViewModel<CatalogItem>>> Items(int catalogTypeId, int? catalogBrandId, [FromQuery]int pageSize = 10, [FromQuery]int pageIndex = 0)
         {
             var root = (IQueryable<CatalogItem>)_catalogContext.CatalogItems;
 
@@ -155,16 +151,13 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
 
             itemsOnPage = ChangeUriPlaceholder(itemsOnPage);
 
-            var model = new PaginatedItemsViewModel<CatalogItem>(
-                pageIndex, pageSize, totalItems, itemsOnPage);
-
-            return Ok(model);
+            return new PaginatedItemsViewModel<CatalogItem>(pageIndex, pageSize, totalItems, itemsOnPage);
         }
         // GET api/v1/[controller]/items/type/all/brand[?pageSize=3&pageIndex=10]
         [HttpGet]
         [Route("[action]/type/all/brand/{catalogBrandId:int?}")]
         [ProducesResponseType(typeof(PaginatedItemsViewModel<CatalogItem>), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> Items(int? catalogBrandId, [FromQuery]int pageSize = 10, [FromQuery]int pageIndex = 0)
+        public async Task<ActionResult<PaginatedItemsViewModel<CatalogItem>>> Items(int? catalogBrandId, [FromQuery]int pageSize = 10, [FromQuery]int pageIndex = 0)
         {
             var root = (IQueryable<CatalogItem>)_catalogContext.CatalogItems;
 
@@ -183,34 +176,25 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
 
             itemsOnPage = ChangeUriPlaceholder(itemsOnPage);
 
-            var model = new PaginatedItemsViewModel<CatalogItem>(
-                pageIndex, pageSize, totalItems, itemsOnPage);
-
-            return Ok(model);
+            return new PaginatedItemsViewModel<CatalogItem>(pageIndex, pageSize, totalItems, itemsOnPage);
         }
 
         // GET api/v1/[controller]/CatalogTypes
         [HttpGet]
         [Route("[action]")]
-        [ProducesResponseType(typeof(List<CatalogItem>), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> CatalogTypes()
+        [ProducesResponseType(typeof(List<CatalogType>), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult<List<CatalogType>>> CatalogTypes()
         {
-            var items = await _catalogContext.CatalogTypes
-                .ToListAsync();
-
-            return Ok(items);
+            return await _catalogContext.CatalogTypes.ToListAsync();
         }
 
         // GET api/v1/[controller]/CatalogBrands
         [HttpGet]
         [Route("[action]")]
-        [ProducesResponseType(typeof(List<CatalogItem>), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> CatalogBrands()
+        [ProducesResponseType(typeof(List<CatalogBrand>), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult<List<CatalogBrand>>> CatalogBrands()
         {
-            var items = await _catalogContext.CatalogBrands
-                .ToListAsync();
-
-            return Ok(items);
+            return await _catalogContext.CatalogBrands.ToListAsync();
         }
 
         //PUT api/v1/[controller]/items
@@ -218,7 +202,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
         [HttpPut]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.Created)]
-        public async Task<IActionResult> UpdateProduct([FromBody]CatalogItem productToUpdate)
+        public async Task<ActionResult> UpdateProduct([FromBody]CatalogItem productToUpdate)
         {
             var catalogItem = await _catalogContext.CatalogItems
                 .SingleOrDefaultAsync(i => i.Id == productToUpdate.Id);
@@ -259,7 +243,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
         [Route("items")]
         [HttpPost]
         [ProducesResponseType((int)HttpStatusCode.Created)]
-        public async Task<IActionResult> CreateProduct([FromBody]CatalogItem product)
+        public async Task<ActionResult> CreateProduct([FromBody]CatalogItem product)
         {
             var item = new CatalogItem
             {
@@ -281,7 +265,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
         [Route("{id}")]
         [HttpDelete]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
-        public async Task<IActionResult> DeleteProduct(int id)
+        public async Task<ActionResult> DeleteProduct(int id)
         {
             var product = _catalogContext.CatalogItems.SingleOrDefault(x => x.Id == id);
 

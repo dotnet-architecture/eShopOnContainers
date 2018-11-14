@@ -15,7 +15,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Controllers
     [Route("api/v1/[controller]")]
     [Authorize]
     [ApiController]
-    public class OrdersController : Controller
+    public class OrdersController : ControllerBase
     {
         private readonly IMediator _mediator;
         private readonly IOrderQueries _orderQueries;
@@ -67,12 +67,11 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Controllers
         [HttpGet]
         [ProducesResponseType(typeof(Order),(int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public async Task<IActionResult> GetOrder(int orderId)
+        public async Task<ActionResult> GetOrder(int orderId)
         {
             try
             {
-                var order = await _orderQueries
-                    .GetOrderAsync(orderId);
+                var order = await _orderQueries.GetOrderAsync(orderId);
 
                 return Ok(order);
             }
@@ -85,7 +84,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Controllers
         [Route("")]
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<OrderSummary>), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> GetOrders()
+        public async Task<ActionResult<IEnumerable<OrderSummary>>> GetOrders()
         {
             var userid = _identityService.GetUserIdentity();
             var orders = await _orderQueries.GetOrdersFromUserAsync(Guid.Parse(userid));
@@ -95,7 +94,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Controllers
         [Route("cardtypes")]
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<CardType>), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> GetCardTypes()
+        public async Task<ActionResult<IEnumerable<CardType>>> GetCardTypes()
         {
             var cardTypes = await _orderQueries
                 .GetCardTypesAsync();
@@ -105,10 +104,9 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Controllers
 
         [Route("draft")]
         [HttpPost]
-        public async Task<IActionResult> GetOrderDraftFromBasketData([FromBody] CreateOrderDraftCommand createOrderDraftCommand)
+        public async Task<ActionResult<OrderDraftDTO>> GetOrderDraftFromBasketData([FromBody] CreateOrderDraftCommand createOrderDraftCommand)
         {
-            var draft  = await _mediator.Send(createOrderDraftCommand);
-            return Ok(draft);
+            return await _mediator.Send(createOrderDraftCommand);
         }
     }
 }

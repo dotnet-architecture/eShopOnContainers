@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.eShopOnContainers.WebMVC.Services;
 using Microsoft.eShopOnContainers.WebMVC.ViewModels;
 using Microsoft.Extensions.Configuration;
@@ -59,6 +60,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
             else
             {
                 app.UseExceptionHandler("/Error");
+                app.UseHsts();
             }
 
             var pathBase = Configuration["PATH_BASE"];
@@ -87,6 +89,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
 
             WebContextSeed.Seed(app, env, loggerFactory);
 
+            app.UseHttpsRedirection();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
@@ -149,7 +152,8 @@ namespace Microsoft.eShopOnContainers.WebMVC
             services.AddOptions();
             services.Configure<AppSettings>(configuration);
 
-            services.AddMvc();
+            services.AddMvc()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddSession();
 

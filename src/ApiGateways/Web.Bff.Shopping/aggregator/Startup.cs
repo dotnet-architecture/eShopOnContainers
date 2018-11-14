@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Config;
 using Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Filters.Basket.API.Infrastructure.Filters;
 using Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Infrastructure;
@@ -53,9 +54,14 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseHsts();
+            }
 
             app.UseAuthentication();
-
+            app.UseHttpsRedirection();
             app.UseMvc();
 
             app.UseSwagger().UseSwaggerUI(c =>
@@ -104,7 +110,8 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator
             services.AddOptions();
             services.Configure<UrlsConfig>(configuration.GetSection("urls"));
 
-            services.AddMvc();
+            services.AddMvc()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddSwaggerGen(options =>
             {

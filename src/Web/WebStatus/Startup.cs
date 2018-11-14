@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using WebStatus.Extensions;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.ApplicationInsights.ServiceFabric;
+using Microsoft.AspNetCore.Mvc;
 
 namespace WebStatus
 {
@@ -50,7 +51,8 @@ namespace WebStatus
                 checks.AddUrlCheckIfNotNull(Configuration["spa"], TimeSpan.Zero); //No cache for this HealthCheck, better just for demos 
             });
 
-            services.AddMvc();
+            services.AddMvc()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -66,6 +68,8 @@ namespace WebStatus
             else
             {
                 app.UseExceptionHandler("/Home/Error");
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseHsts();
             }
 
             var pathBase = Configuration["PATH_BASE"];
@@ -74,12 +78,13 @@ namespace WebStatus
                 app.UsePathBase(pathBase);
             }
 
-
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
             app.Map("/liveness", lapp => lapp.Run(async ctx => ctx.Response.StatusCode = 200));
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
 
             app.UseStaticFiles();
+
+            app.UseHttpsRedirection();
 
             app.UseMvc(routes =>
             {

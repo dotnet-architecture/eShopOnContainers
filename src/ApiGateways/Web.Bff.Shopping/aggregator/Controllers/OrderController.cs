@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Models;
 using Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Services;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,8 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Controllers
 {
     [Route("api/v1/[controller]")]
     [Authorize]
-    public class OrderController : Controller
+    [ApiController]
+    public class OrderController : ControllerBase
     {
         private readonly IBasketService _basketService;
         private readonly IOrderApiClient _orderClient;
@@ -22,7 +24,7 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Controllers
 
         [Route("draft/{basketId}")]
         [HttpGet]
-        public async Task<IActionResult> GetOrderDraft(string basketId)
+        public async Task<ActionResult<OrderData>> GetOrderDraft(string basketId)
         {
             if (string.IsNullOrEmpty(basketId))
             {
@@ -35,8 +37,7 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Controllers
                 return BadRequest($"No basket found for id {basketId}");
             }
 
-            var orderDraft = await _orderClient.GetOrderDraftFromBasket(basket);
-            return Ok(orderDraft);
+            return await _orderClient.GetOrderDraftFromBasket(basket);
         }
     }
 }

@@ -103,10 +103,10 @@ namespace UnitTest.Ordering.Application
 
             //Act
             var orderController = new OrdersController(_mediatorMock.Object, _orderQueriesMock.Object, _identityServiceMock.Object);
-            var actionResult = await orderController.GetOrders() as OkObjectResult;
+            var actionResult = await orderController.GetOrders();
 
             //Assert
-            Assert.Equal(actionResult.StatusCode, (int)System.Net.HttpStatusCode.OK);
+            Assert.Equal((actionResult.Result as OkObjectResult).StatusCode, (int)System.Net.HttpStatusCode.OK);
         }
 
         [Fact]
@@ -136,10 +136,10 @@ namespace UnitTest.Ordering.Application
 
             //Act
             var orderController = new OrdersController(_mediatorMock.Object, _orderQueriesMock.Object, _identityServiceMock.Object);
-            var actionResult = await orderController.GetCardTypes() as OkObjectResult;
+            var actionResult = await orderController.GetCardTypes();
 
             //Assert
-            Assert.Equal(actionResult.StatusCode, (int)System.Net.HttpStatusCode.OK);
+            Assert.Equal((actionResult.Result as OkObjectResult).StatusCode, (int)System.Net.HttpStatusCode.OK);
         }
     }
 }

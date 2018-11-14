@@ -44,10 +44,10 @@ namespace UnitTest.Basket.Application
             //Act
             var basketController = new BasketController(
                 _basketRepositoryMock.Object, _identityServiceMock.Object, _serviceBusMock.Object);
-            var actionResult = await basketController.Get(fakeCustomerId) as OkObjectResult;
+            var actionResult = await basketController.Get(fakeCustomerId);
 
             //Assert
-            Assert.Equal(actionResult.StatusCode, (int)System.Net.HttpStatusCode.OK);
+            Assert.Equal((actionResult.Result as OkObjectResult).StatusCode, (int)System.Net.HttpStatusCode.OK);
             Assert.Equal(((CustomerBasket)actionResult.Value).BuyerId, fakeCustomerId);
         }
 
@@ -67,10 +67,10 @@ namespace UnitTest.Basket.Application
             var basketController = new BasketController(
                 _basketRepositoryMock.Object, _identityServiceMock.Object, _serviceBusMock.Object);
 
-            var actionResult = await basketController.Post(fakeCustomerBasket) as OkObjectResult;
+            var actionResult = await basketController.Post(fakeCustomerBasket);
 
             //Assert
-            Assert.Equal(actionResult.StatusCode, (int)System.Net.HttpStatusCode.OK);
+            Assert.Equal((actionResult.Result as OkObjectResult).StatusCode, (int)System.Net.HttpStatusCode.OK);
             Assert.Equal(((CustomerBasket)actionResult.Value).BuyerId, fakeCustomerId);
         }        
 

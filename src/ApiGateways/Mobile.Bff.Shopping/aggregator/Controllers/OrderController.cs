@@ -1,16 +1,14 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Controllers
 {
     [Route("api/v1/[controller]")]
     [Authorize]
-    public class OrderController : Controller
+    [ApiController]
+    public class OrderController : ControllerBase
     {
         private readonly IBasketService _basketService;
         private readonly IOrderApiClient _orderClient;

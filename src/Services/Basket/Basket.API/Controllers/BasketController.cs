@@ -13,7 +13,8 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
 {
     [Route("api/v1/[controller]")]
     [Authorize]
-    public class BasketController : Controller
+    [ApiController]
+    public class BasketController : ControllerBase
     {
         private readonly IBasketRepository _repository;
         private readonly IIdentityService _identitySvc;
@@ -31,32 +32,31 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
         // GET /id
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(CustomerBasket), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> Get(string id)
+        public async Task<ActionResult<CustomerBasket>> Get(string id)
         {
             var basket = await _repository.GetBasketAsync(id);
+
             if (basket == null)
             {
-                return Ok(new CustomerBasket(id) { });
+                return new CustomerBasket(id);
             }
 
-            return Ok(basket);
+            return basket;
         }
 
         // POST /value
         [HttpPost]
         [ProducesResponseType(typeof(CustomerBasket), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> Post([FromBody]CustomerBasket value)
+        public async Task<ActionResult<CustomerBasket>> Post([FromBody]CustomerBasket value)
         {
-            var basket = await _repository.UpdateBasketAsync(value);
-
-            return Ok(basket);
+            return await _repository.UpdateBasketAsync(value);
         }
 
         [Route("checkout")]
         [HttpPost]
         [ProducesResponseType((int)HttpStatusCode.Accepted)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> Checkout([FromBody]BasketCheckout basketCheckout, [FromHeader(Name = "x-requestid")] string requestId)
+        public async Task<ActionResult> Checkout([FromBody]BasketCheckout basketCheckout, [FromHeader(Name = "x-requestid")] string requestId)
         {
             var userId = _identitySvc.GetUserIdentity();
             
@@ -91,6 +91,5 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
         {
             _repository.DeleteBasketAsync(id);
         }
-
     }
 }
