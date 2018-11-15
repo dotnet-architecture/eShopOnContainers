@@ -17,37 +17,28 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
     public class BasketController : ControllerBase
     {
         private readonly IBasketRepository _repository;
-        private readonly IIdentityService _identitySvc;
+        private readonly IIdentityService _identityService;
         private readonly IEventBus _eventBus;
 
-        public BasketController(IBasketRepository repository,
-            IIdentityService identityService,
-            IEventBus eventBus)
+        public BasketController(IBasketRepository repository, IIdentityService identityService, IEventBus eventBus)
         {
             _repository = repository;
-            _identitySvc = identityService;
+            _identityService = identityService;
             _eventBus = eventBus;
         }
 
-        // GET /id
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(CustomerBasket), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult<CustomerBasket>> Get(string id)
+        public async Task<ActionResult<CustomerBasket>> GetBasketByIdAsync(string id)
         {
             var basket = await _repository.GetBasketAsync(id);
 
-            if (basket == null)
-            {
-                return new CustomerBasket(id);
-            }
-
-            return basket;
+            return basket ?? new CustomerBasket(id);
         }
 
-        // POST /value
         [HttpPost]
         [ProducesResponseType(typeof(CustomerBasket), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult<CustomerBasket>> Post([FromBody]CustomerBasket value)
+        public async Task<ActionResult<CustomerBasket>> UpdateBasketAsync([FromBody]CustomerBasket value)
         {
             return await _repository.UpdateBasketAsync(value);
         }
@@ -56,11 +47,10 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
         [HttpPost]
         [ProducesResponseType((int)HttpStatusCode.Accepted)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<ActionResult> Checkout([FromBody]BasketCheckout basketCheckout, [FromHeader(Name = "x-requestid")] string requestId)
+        public async Task<ActionResult> CheckoutAsync([FromBody]BasketCheckout basketCheckout, [FromHeader(Name = "x-requestid")] string requestId)
         {
-            var userId = _identitySvc.GetUserIdentity();
+            var userId = _identityService.GetUserIdentity();
             
-
             basketCheckout.RequestId = (Guid.TryParse(requestId, out Guid guid) && guid != Guid.Empty) ?
                 guid : basketCheckout.RequestId;
 
@@ -80,16 +70,17 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
             // Once basket is checkout, sends an integration event to
             // ordering.api to convert basket to order and proceeds with
             // order creation process
-            _eventBus.Publish(eventMessage);            
+            _eventBus.Publish(eventMessage);
 
             return Accepted();
         }
 
         // DELETE api/values/5
         [HttpDelete("{id}")]
-        public void Delete(string id)
+        [ProducesResponseType(typeof(void), (int)HttpStatusCode.OK)]
+        public async Task DeleteBasketByIdAsync(string id)
         {
-            _repository.DeleteBasketAsync(id);
+            await _repository.DeleteBasketAsync(id);
         }
     }
 }

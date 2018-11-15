@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Models;
 using Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Services;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Controllers
@@ -12,6 +14,7 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Controllers
     {
         private readonly IBasketService _basketService;
         private readonly IOrderApiClient _orderClient;
+
         public OrderController(IBasketService basketService, IOrderApiClient orderClient)
         {
             _basketService = basketService;
@@ -20,21 +23,23 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Controllers
 
         [Route("draft/{basketId}")]
         [HttpGet]
-        public async Task<IActionResult> GetOrderDraft(string basketId)
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(OrderData), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult<OrderData>> GetOrderDraftAsync(string basketId)
         {
             if (string.IsNullOrEmpty(basketId))
             {
                 return BadRequest("Need a valid basketid");
             }
             // Get the basket data and build a order draft based on it
-            var basket = await _basketService.GetById(basketId);
+            var basket = await _basketService.GetByIdAsync(basketId);
+
             if (basket == null)
             {
                 return BadRequest($"No basket found for id {basketId}");
             }
 
-            var orderDraft = await _orderClient.GetOrderDraftFromBasket(basket);
-            return Ok(orderDraft);
+            return await _orderClient.GetOrderDraftFromBasketAsync(basket);
         }
     }
 }

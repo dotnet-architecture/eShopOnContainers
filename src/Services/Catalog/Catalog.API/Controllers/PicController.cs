@@ -28,7 +28,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         // GET: /<controller>/
-        public async Task<ActionResult> GetImage(int catalogItemId)
+        public async Task<ActionResult> GetImageAsync(int catalogItemId)
         {
             if (catalogItemId <= 0)
             {

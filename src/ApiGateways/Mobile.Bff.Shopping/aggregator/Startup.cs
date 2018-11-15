@@ -127,12 +127,14 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator
         {
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
             var identityUrl = configuration.GetValue<string>("urls:identity");
+
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 
-            }).AddJwtBearer(options =>
+            })
+            .AddJwtBearer(options =>
             {
                 options.Authority = identityUrl;
                 options.RequireHttpsMetadata = false;
@@ -150,6 +152,7 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator
 
             return services;
         }
+
         public static IServiceCollection AddHttpServices(this IServiceCollection services)
         {
             //register delegating handlers
@@ -170,8 +173,6 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator
                    .AddPolicyHandler(GetRetryPolicy())
                    .AddPolicyHandler(GetCircuitBreakerPolicy());
 
-
-
             return services;
         }
 
@@ -181,7 +182,6 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator
               .HandleTransientHttpError()
               .OrResult(msg => msg.StatusCode == System.Net.HttpStatusCode.NotFound)
               .WaitAndRetryAsync(6, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
-
         }
 
         private static IAsyncPolicy<HttpResponseMessage> GetCircuitBreakerPolicy()

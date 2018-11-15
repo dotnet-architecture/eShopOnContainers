@@ -75,7 +75,7 @@ namespace Microsoft.eShopOnContainers.Services.Marketing.API.Controllers
         [Route("api/v1/campaigns/{campaignId:int}/locations")]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.Created)]
-        public async Task<ActionResult> CreateLocation(int campaignId, [FromBody] UserLocationRuleDTO locationRuleDto)
+        public async Task<ActionResult> CreateLocationAsync(int campaignId, [FromBody] UserLocationRuleDTO locationRuleDto)
         {
             if (campaignId < 1 || locationRuleDto is null)
             {
@@ -96,7 +96,7 @@ namespace Microsoft.eShopOnContainers.Services.Marketing.API.Controllers
         [Route("api/v1/campaigns/{campaignId:int}/locations/{userLocationRuleId:int}")]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public async Task<ActionResult> DeleteLocationById(int campaignId, int userLocationRuleId)
+        public async Task<ActionResult> DeleteLocationByIdAsync(int campaignId, int userLocationRuleId)
         {
             if (campaignId < 1 || userLocationRuleId < 1)
             {
@@ -117,8 +117,6 @@ namespace Microsoft.eShopOnContainers.Services.Marketing.API.Controllers
 
             return NoContent();
         }
-
-
 
         private List<UserLocationRuleDTO> MapUserLocationRuleModelListToDtoList(List<UserLocationRule> userLocationRuleList)
         {

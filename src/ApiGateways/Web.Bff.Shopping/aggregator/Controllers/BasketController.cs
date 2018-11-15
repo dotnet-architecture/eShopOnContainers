@@ -5,6 +5,7 @@ using Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Controllers
@@ -16,6 +17,7 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Controllers
     {
         private readonly ICatalogService _catalog;
         private readonly IBasketService _basket;
+
         public BasketController(ICatalogService catalogService, IBasketService basketService)
         {
             _catalog = catalogService;
@@ -24,22 +26,23 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Controllers
 
         [HttpPost]
         [HttpPut]
-        public async Task<ActionResult<BasketData>> UpdateAllBasket([FromBody] UpdateBasketRequest data)
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(BasketData), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult<BasketData>> UpdateAllBasketAsync([FromBody] UpdateBasketRequest data)
         {
-
             if (data.Items == null || !data.Items.Any())
             {
                 return BadRequest("Need to pass at least one basket line");
             }
 
             // Retrieve the current basket
-            var currentBasket = await _basket.GetById(data.BuyerId);
+            var currentBasket = await _basket.GetByIdAsync(data.BuyerId);
             if (currentBasket == null)
             {
                 currentBasket = new BasketData(data.BuyerId);
             }
 
-            var catalogItems = await _catalog.GetCatalogItems(data.Items.Select(x => x.ProductId));
+            var catalogItems = await _catalog.GetCatalogItemsAsync(data.Items.Select(x => x.ProductId));
             var newBasket = new BasketData(data.BuyerId);
 
             foreach (var bitem in data.Items)
@@ -61,14 +64,16 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Controllers
                 });
             }
 
-            await _basket.Update(newBasket);
+            await _basket.UpdateAsync(newBasket);
 
             return newBasket;
         }
 
         [HttpPut]
         [Route("items")]
-        public async Task<ActionResult<BasketData>> UpdateQuantities([FromBody] UpdateBasketItemsRequest data)
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(BasketData), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult<BasketData>> UpdateQuantitiesAsync([FromBody] UpdateBasketItemsRequest data)
         {
             if (!data.Updates.Any())
             {
@@ -76,7 +81,7 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Controllers
             }
 
             // Retrieve the current basket
-            var currentBasket = await _basket.GetById(data.BasketId);
+            var currentBasket = await _basket.GetByIdAsync(data.BasketId);
             if (currentBasket == null)
             {
                 return BadRequest($"Basket with id {data.BasketId} not found.");
@@ -94,14 +99,16 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Controllers
             }
 
             // Save the updated basket
-            await _basket.Update(currentBasket);
+            await _basket.UpdateAsync(currentBasket);
 
             return currentBasket;
         }
 
         [HttpPost]
         [Route("items")]
-        public async Task<ActionResult> AddBasketItem([FromBody] AddBasketItemRequest data)
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        public async Task<ActionResult> AddBasketItemAsync([FromBody] AddBasketItemRequest data)
         {
             if (data == null || data.Quantity == 0)
             {
@@ -109,12 +116,12 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Controllers
             }
 
             // Step 1: Get the item from catalog
-            var item = await _catalog.GetCatalogItem(data.CatalogItemId);
+            var item = await _catalog.GetCatalogItemAsync(data.CatalogItemId);
 
             //item.PictureUri = 
 
             // Step 2: Get current basket status
-            var currentBasket = (await _basket.GetById(data.BasketId)) ?? new BasketData(data.BasketId);
+            var currentBasket = (await _basket.GetByIdAsync(data.BasketId)) ?? new BasketData(data.BasketId);
             // Step 3: Merge current status with new product
             currentBasket.Items.Add(new BasketDataItem()
             {
@@ -127,8 +134,7 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Controllers
             });
 
             // Step 4: Update basket
-            await _basket.Update(currentBasket);
-
+            await _basket.UpdateAsync(currentBasket);
 
             return Ok();
         }
