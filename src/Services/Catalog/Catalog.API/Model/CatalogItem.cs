@@ -64,7 +64,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Model
 
             if (quantityDesired <= 0)
             {
-                throw new CatalogDomainException($"Item units desired should be greater than cero");
+                throw new CatalogDomainException($"Item units desired should be greater than zero");
             }
 
             int removed = Math.Min(quantityDesired, this.AvailableStock);
