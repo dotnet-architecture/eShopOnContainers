@@ -9,6 +9,8 @@ WORKDIR /src/src/Services/Ordering/Ordering.SignalrHub
 RUN dotnet restore -nowarn:msb3202,nu1503
 RUN dotnet build  --no-restore  Ordering.SignalrHub.csproj -c Release -o /app
 
+FROM build as functionaltest
+
 FROM build AS publish
 RUN dotnet publish  --no-restore  Ordering.SignalrHub.csproj -c Release -o /app
 
