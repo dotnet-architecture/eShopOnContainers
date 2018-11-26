@@ -139,9 +139,11 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
             });
 
             services.AddMvc(options =>
-            {
-                options.Filters.Add(typeof(HttpGlobalExceptionFilter));
-            }).AddControllersAsServices();
+                {
+                    options.Filters.Add(typeof(HttpGlobalExceptionFilter));
+                })
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+                .AddControllersAsServices();
 
             services.AddCors(options =>
             {

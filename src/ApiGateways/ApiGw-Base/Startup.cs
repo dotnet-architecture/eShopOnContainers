@@ -10,7 +10,6 @@ namespace OcelotApiGw
 {
     public class Startup
     {
-
         private readonly IConfiguration _cfg;
 
         public Startup(IConfiguration configuration)
@@ -65,6 +64,7 @@ namespace OcelotApiGw
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             var pathBase = _cfg["PATH_BASE"];
+
             if (!string.IsNullOrEmpty(pathBase))
             {
                 app.UsePathBase(pathBase);
