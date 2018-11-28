@@ -113,6 +113,7 @@ ExecKube -cmd 'delete configmap internalurls'
 ExecKube -cmd 'delete configmap urls'
 ExecKube -cmd 'delete configmap externalcfg'
 ExecKube -cmd 'delete configmap ocelot'
+ExecKube -cmd 'delete -f ingress.yaml'
 
 # start sql, rabbitmq, frontend deployments
 if ($deployInfrastructure) {
@@ -203,6 +204,9 @@ ExecKube -cmd 'rollout resume deployments/apigwms'
 ExecKube -cmd 'rollout resume deployments/apigwwm'
 ExecKube -cmd 'rollout resume deployments/apigwws'
 ExecKube -cmd 'rollout resume deployments/ordering-signalrhub'
+
+Write-Host "Adding/Updating ingress resource..." -ForegroundColor Yellow
+ExecKube -cmd 'apply -f ingress.yaml'
 
 Write-Host "WebSPA is exposed at http://$externalDns, WebMVC at http://$externalDns/webmvc, WebStatus at http://$externalDns/webstatus" -ForegroundColor Yellow
 
