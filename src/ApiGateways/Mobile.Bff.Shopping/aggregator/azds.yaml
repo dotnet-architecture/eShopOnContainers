@@ -1,13 +1,15 @@
 kind: helm-release
 apiVersion: 1.0
 build:
-  context: ..\..\..\..
-  dockerfile: Dockerfile
+  context: ../../../../
+  dockerfile: src/ApiGateways/Mobile.Bff.Shopping/aggregator/Dockerfile
 install:
   chart: charts/aggregator
   values:
   - values.dev.yaml?
   - secrets.dev.yaml?
+  - ../../../../k8s/helm/app.yaml?
+  - ../../../../k8s/helm/inf.yaml?
   set:
     image:
       tag: $(tag)
