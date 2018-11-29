@@ -6,9 +6,9 @@ Param(
     [parameter(Mandatory=$false)][string]$appName="eshop",
     [parameter(Mandatory=$false)][bool]$deployInfrastructure=$true,
     [parameter(Mandatory=$false)][bool]$clean=$true,
-    [parameter(Mandatory=$false)][string]$aksName="eshop-test-aks",
-    [parameter(Mandatory=$false)][string]$aksRg="eshop-test",
-    [parameter(Mandatory=$false)][string]$imageTag="dev"
+    [parameter(Mandatory=$false)][string]$aksName="",
+    [parameter(Mandatory=$false)][string]$aksRg="",
+    [parameter(Mandatory=$false)][string]$imageTag="latest"
 )
 
 $dns = $externalDns
