@@ -61,7 +61,29 @@ services:
         - dotnet
         - test
         - --logger
-        - trx;LogFileName=basket-test-results.xml
+        - trx;LogFileName=/tests/basket-test-results.xml
+
+  basket-api-unit-test:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - ConnectionString=${ESHOP_AZURE_REDIS_BASKET_DB:-basket-data-test}
+      - identityUrl=http://identity-api
+      - IdentityUrlExternal=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
+      - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq-test}
+      - EventBusUserName=${ESHOP_SERVICE_BUS_USERNAME}
+      - EventBusPassword=${ESHOP_SERVICE_BUS_PASSWORD}
+      - AzureServiceBusEnabled=False
+      - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
+      - OrchestratorType=${ORCHESTRATOR_TYPE}
+      - UseLoadTest=${USE_LOADTEST:-False}
+    ports:
+      - "5113:80"
+    entrypoint:
+        - dotnet
+        - test
+        - --logger
+        - trx;LogFileName=/tests/basket-unit-test-results.xml
 
   catalog-api-test:
     environment:
@@ -85,7 +107,31 @@ services:
         - dotnet
         - test
         - --logger
-        - trx;LogFileName=catalog-test-results.xml
+        - trx;LogFileName=/tests/catalog-test-results.xml
+
+  catalog-api-unit-test:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - ConnectionString=${ESHOP_AZURE_CATALOG_DB:-Server=sql-data-test;Database=Microsoft.eShopOnContainers.Services.CatalogDb;User Id=sa;Password=Pass@word}
+      - PicBaseUrl=${ESHOP_AZURE_STORAGE_CATALOG_URL:-http://localhost:5202/api/v1/c/catalog/items/[0]/pic/}
+      - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq-test}
+      - EventBusUserName=${ESHOP_SERVICE_BUS_USERNAME}
+      - EventBusPassword=${ESHOP_SERVICE_BUS_PASSWORD}
+      - AzureStorageAccountName=${ESHOP_AZURE_STORAGE_CATALOG_NAME}
+      - AzureStorageAccountKey=${ESHOP_AZURE_STORAGE_CATALOG_KEY}
+      - UseCustomizationData=True
+      - AzureServiceBusEnabled=False
+      - AzureStorageEnabled=False
+      - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
+      - OrchestratorType=${ORCHESTRATOR_TYPE}
+    ports:
+      - "5191:80"
+    entrypoint:
+        - dotnet
+        - test
+        - --logger
+        - trx;LogFileName=/tests/catalog-unit-test-results.xml
 
   ordering-api-test:
     environment:
@@ -109,7 +155,31 @@ services:
         - dotnet
         - test
         - --logger
-        - trx;LogFileName=ordering-test-results.xml
+        - trx;LogFileName=/tests/ordering-test-results.xml
+
+  ordering-api-unit-test:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - ConnectionString=${ESHOP_AZURE_ORDERING_DB:-Server=sql-data-test;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word}
+      - identityUrl=http://identity-api
+      - IdentityUrlExternal=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
+      - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq-test}
+      - EventBusUserName=${ESHOP_SERVICE_BUS_USERNAME}
+      - EventBusPassword=${ESHOP_SERVICE_BUS_PASSWORD}
+      - UseCustomizationData=True
+      - AzureServiceBusEnabled=False
+      - CheckUpdateTime=30000
+      - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
+      - OrchestratorType=${ORCHESTRATOR_TYPE}
+      - UseLoadTest=${USE_LOADTEST:-False}
+    ports:
+      - "5112:80"
+    entrypoint:
+        - dotnet
+        - test
+        - --logger
+        - trx;LogFileName=/tests/ordering-unit-test-results.xml
 
   ordering-backgroundtasks-test:
     environment:
@@ -155,7 +225,8 @@ services:
     entrypoint:
         - dotnet
         - test
-        - --logger:trx;LogFileName=marketing-test-results.xml
+        - --logger
+        - trx;LogFileName=/tests/marketing-test-results.xml
 
   payment-api-test:
     environment:
@@ -190,4 +261,5 @@ services:
     entrypoint:
       - dotnet
       - test
-      - --logger:trx;LogFileName=locations-test-results.xml
+      - --logger
+      - trx;LogFileName=/tests/locations-test-results.xml
