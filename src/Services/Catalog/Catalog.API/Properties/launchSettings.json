@@ -27,9 +27,9 @@
     "Azure Dev Spaces": {
       "commandName": "AzureDevSpaces",
       "launchBrowser": true,
-      "resourceGroup": "edu-devspaces3",
-      "aksName": "edu-devspaces3",
-      "subscriptionId": "e3035ac1-c06c-4daf-8939-57b3c5f1f759"
+      "resourceGroup": "eshop-test",
+      "aksName": "eshop-test-aks",
+      "subscriptionId": "6c22bb55-0221-4ce4-9bf1-3c4a10a7294c"
     }
   }
 }

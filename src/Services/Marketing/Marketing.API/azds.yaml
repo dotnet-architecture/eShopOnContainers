@@ -1,15 +1,15 @@
 kind: helm-release
 apiVersion: 1.0
 build:
-  context: ..\..\..\..
-  dockerfile: Dockerfile
+  context: ../../../../
+  dockerfile: src/Services/Marketing/Marketing.API/Dockerfile
 install:
   chart: ../../../../k8s/helm/marketing-api
   values:
   - values.dev.yaml?
   - secrets.dev.yaml?
-  - ..\..\..\..\k8s\helm\app.yaml?
-  - ..\..\..\..\k8s\helm\inf.yaml?
+  - ../../../../k8s/helm/app.yaml?
+  - ../../../../k8s/helm/inf.yaml?
   set:
     replicaCount: 1
     image:
