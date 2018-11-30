@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using HealthChecks.UI.Client;
+using Microsoft.ApplicationInsights.Extensibility;
+using Microsoft.ApplicationInsights.ServiceFabric;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using WebStatus.Extensions;
-using Microsoft.ApplicationInsights.Extensibility;
-using Microsoft.ApplicationInsights.ServiceFabric;
-using Microsoft.AspNetCore.Mvc;
 
 namespace WebStatus
 {
@@ -29,28 +26,9 @@ namespace WebStatus
             RegisterAppInsights(services);
 
             services.AddOptions();
-
-            // Add framework services.
-            services.AddHealthChecks(checks =>
-            {
-                var minutes = 1;
-                if (int.TryParse(Configuration["HealthCheck:Timeout"], out var minutesParsed))
-                {
-                    minutes = minutesParsed;
-                }
-
-                checks.AddUrlCheckIfNotNull(Configuration["OrderingUrl"], TimeSpan.FromMinutes(minutes)); 
-                checks.AddUrlCheckIfNotNull(Configuration["OrderingBackgroundTasksUrl"], TimeSpan.FromMinutes(minutes));
-                checks.AddUrlCheckIfNotNull(Configuration["BasketUrl"], TimeSpan.Zero); //No cache for this HealthCheck, better just for demos                  
-                checks.AddUrlCheckIfNotNull(Configuration["CatalogUrl"], TimeSpan.FromMinutes(minutes)); 
-                checks.AddUrlCheckIfNotNull(Configuration["IdentityUrl"], TimeSpan.FromMinutes(minutes)); 
-                checks.AddUrlCheckIfNotNull(Configuration["LocationsUrl"], TimeSpan.FromMinutes(minutes)); 
-                checks.AddUrlCheckIfNotNull(Configuration["MarketingUrl"], TimeSpan.FromMinutes(minutes)); 
-                checks.AddUrlCheckIfNotNull(Configuration["PaymentUrl"], TimeSpan.FromMinutes(minutes)); 
-                checks.AddUrlCheckIfNotNull(Configuration["mvc"], TimeSpan.Zero); //No cache for this HealthCheck, better just for demos 
-                checks.AddUrlCheckIfNotNull(Configuration["spa"], TimeSpan.Zero); //No cache for this HealthCheck, better just for demos 
-            });
-
+            services.AddHealthChecks();
+            services.AddHealthChecksUI();
+            
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
@@ -82,6 +60,8 @@ namespace WebStatus
             app.Map("/liveness", lapp => lapp.Run(async ctx => ctx.Response.StatusCode = 200));
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
 
+            app.UseHealthChecksUI(config => config.UIPath = "/hc-ui");
+            
             app.UseStaticFiles();
 
             app.UseHttpsRedirection();

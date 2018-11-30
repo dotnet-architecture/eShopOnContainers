@@ -19,11 +19,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="2.2.0" />
+    <PackageReference Include="AspNetCore.HealthChecks.Uris" Version="2.2.0" />
+    <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="2.2.0" />
     <PackageReference Include="BuildBundlerMinifier" Version="2.6.375" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.2.1" />
     <PackageReference Include="Microsoft.ApplicationInsights.DependencyCollector" Version="2.6.1" />
     <PackageReference Include="Microsoft.ApplicationInsights.Kubernetes" Version="1.0.0-beta8" />
     <PackageReference Include="Microsoft.ApplicationInsights.ServiceFabric" Version="2.1.1-beta1" />
+    <PackageReference Include="Microsoft.AspNetCore.HealthChecks" Version="1.0.0" />
     <PackageReference Include="Microsoft.Extensions.Http.Polly" Version="2.2.0-preview3-35497" />
     <PackageReference Include="Microsoft.Extensions.Logging.AzureAppServices" Version="2.2.0-preview3-35497" />
     <PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.0-preview3-35497" />
@@ -39,12 +43,6 @@
 
   <ItemGroup>
      <DotNetCliToolReference Include="BundlerMinifier.Core" Version="2.7.385" />
-  </ItemGroup>
-
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\BuildingBlocks\HealthChecks\src\Microsoft.AspNetCore.HealthChecks\Microsoft.AspNetCore.HealthChecks.csproj" />
-    <ProjectReference Include="..\..\BuildingBlocks\HealthChecks\src\Microsoft.Extensions.HealthChecks\Microsoft.Extensions.HealthChecks.csproj" />
   </ItemGroup>
 
   <ItemGroup>

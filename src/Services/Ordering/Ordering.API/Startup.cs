@@ -26,7 +26,6 @@
     using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF.Services;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.HealthChecks;
     using Microsoft.Extensions.Logging;
     using Ordering.Infrastructure;
     using RabbitMQ.Client;
@@ -36,6 +35,8 @@
     using System.Data.Common;
     using System.IdentityModel.Tokens.Jwt;
     using System.Reflection;
+    using HealthChecks.UI.Client;
+    using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
     public class Startup
     {
@@ -87,6 +88,13 @@
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
 
             app.UseCors("CorsPolicy");
+
+
+            app.UseHealthChecks("/hc", new HealthCheckOptions()
+            {
+                Predicate = _ => true,
+                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+            });
 
             ConfigureAuth(app);
 
@@ -175,15 +183,31 @@
 
         public static IServiceCollection AddHealthChecks(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddHealthChecks(checks =>
+            var hcBuilder = services.AddHealthChecks();
+
+            hcBuilder
+                .AddSqlServer(
+                    configuration["ConnectionString"],
+                    name: "OrderingDB-check",
+                    tags: new string[] { "orderingdb" });
+
+            if (configuration.GetValue<bool>("AzureServiceBusEnabled"))
             {
-                var minutes = 1;
-                if (int.TryParse(configuration["HealthCheck:Timeout"], out var minutesParsed))
-                {
-                    minutes = minutesParsed;
-                }
-                checks.AddSqlCheck("OrderingDb", configuration["ConnectionString"], TimeSpan.FromMinutes(minutes));
-            });
+                hcBuilder
+                    .AddAzureServiceBusTopic(
+                        configuration["EventBusConnection"],
+                        topicName: "eshop_event_bus",
+                        name: "ordering-servicebus-check",
+                        tags: new string[] { "servicebus" });
+            }
+            else
+            {
+                hcBuilder
+                    .AddRabbitMQ(
+                        $"amqp://{configuration["EventBusConnection"]}",
+                        name: "ordering-rabbitmqbus-check",
+                        tags: new string[] { "rabbitmqbus" });
+            }
 
             return services;
         }

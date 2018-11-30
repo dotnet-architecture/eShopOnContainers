@@ -1,9 +1,11 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using HealthChecks.UI.Client;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.ApplicationInsights.ServiceFabric;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -19,14 +21,12 @@ using Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure.Reposito
 using Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.HealthChecks;
 using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.Services.Locations.API
 {
@@ -43,7 +43,9 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
         {
             RegisterAppInsights(services);
 
-            services.AddMvc(options =>
+            services
+                .AddCustomHealthCheck(Configuration)
+                .AddMvc(options =>
                 {
                     options.Filters.Add(typeof(HttpGlobalExceptionFilter));
                 })
@@ -95,12 +97,7 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
 
                     return new DefaultRabbitMQPersistentConnection(factory, logger, retryCount);
                 });
-            }
-
-            services.AddHealthChecks(checks =>
-            {
-                checks.AddValueTaskCheck("HTTP Endpoint", () => new ValueTask<IHealthCheckResult>(HealthCheckResult.Healthy("Ok")));
-            });
+            }            
 
             RegisterEventBus(services);
 
@@ -168,6 +165,12 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
             app.Map("/liveness", lapp => lapp.Run(async ctx => ctx.Response.StatusCode = 200));
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+
+            app.UseHealthChecks("/hc", new HealthCheckOptions()
+            {
+                Predicate = _ => true,
+                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+            });
 
             app.UseCors("CorsPolicy");
 
@@ -270,6 +273,40 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
             }
 
             services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
+        }
+    }
+
+    public static class CustomExtensionMethods
+    {
+        public static IServiceCollection AddCustomHealthCheck(this IServiceCollection services, IConfiguration configuration)
+        {
+            var hcBuilder = services.AddHealthChecks();
+
+            hcBuilder
+                .AddMongoDb(
+                    configuration["ConnectionString"],
+                    name: "locations-mongodb-check",
+                    tags: new string[] { "mongodb" });
+
+            if (configuration.GetValue<bool>("AzureServiceBusEnabled"))
+            {
+                hcBuilder
+                    .AddAzureServiceBusTopic(
+                        configuration["EventBusConnection"],
+                        topicName: "eshop_event_bus",
+                        name: "locations-servicebus-check",
+                        tags: new string[] { "servicebus" });
+            }
+            else
+            {
+                hcBuilder
+                    .AddRabbitMQ(
+                        $"amqp://{configuration["EventBusConnection"]}",
+                        name: "locations-rabbitmqbus-check",
+                        tags: new string[] { "rabbitmqbus" });
+            }
+
+            return services;
         }
     }
 }

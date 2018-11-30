@@ -1,9 +1,11 @@
-﻿using Microsoft.ApplicationInsights.Extensibility;
+﻿using HealthChecks.UI.Client;
+using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.ApplicationInsights.ServiceFabric;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -52,6 +54,12 @@ namespace Microsoft.eShopOnContainers.WebMVC
 
             loggerFactory.AddAzureWebAppDiagnostics();
             loggerFactory.AddApplicationInsights(app.ApplicationServices, LogLevel.Trace);
+
+            app.UseHealthChecks("/hc", new HealthCheckOptions()
+            {
+                Predicate = _ => true,
+                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+            });
 
             if (env.IsDevelopment())
             {
@@ -129,21 +137,11 @@ namespace Microsoft.eShopOnContainers.WebMVC
 
         public static IServiceCollection AddHealthChecks(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddHealthChecks(checks =>
-            {
-                var minutes = 1;
-                if (int.TryParse(configuration["HealthCheck:Timeout"], out var minutesParsed))
-                {
-                    minutes = minutesParsed;
-                }
-
-                checks.AddUrlCheck(configuration["CatalogUrlHC"], TimeSpan.FromMinutes(minutes));
-                checks.AddUrlCheck(configuration["OrderingUrlHC"], TimeSpan.FromMinutes(minutes));
-                checks.AddUrlCheck(configuration["BasketUrlHC"], TimeSpan.Zero); //No cache for this HealthCheck, better just for demos 
-                checks.AddUrlCheck(configuration["IdentityUrlHC"], TimeSpan.FromMinutes(minutes));
-                checks.AddUrlCheck(configuration["MarketingUrlHC"], TimeSpan.FromMinutes(minutes));
-            });
-
+            services.AddHealthChecks()
+                .AddUrlGroup(new Uri(configuration["PurchaseUrlHC"]), name: "purchaseapigw-check", tags: new string[] { "purchaseapigw" })
+                .AddUrlGroup(new Uri(configuration["MarketingUrlHC"]), name: "marketingapigw-check", tags: new string[] { "marketingapigw" })
+                .AddUrlGroup(new Uri(configuration["IdentityUrlHC"]), name: "identityapi-check", tags: new string[] { "identityapi" });                
+            
             return services;
         }
 

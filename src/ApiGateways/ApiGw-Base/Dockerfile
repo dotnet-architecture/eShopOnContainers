@@ -4,10 +4,9 @@ EXPOSE 80
 
 FROM microsoft/dotnet:2.2.100-preview3-sdk AS build
 WORKDIR /src
-COPY src/ApiGateways/ApiGw-Base/OcelotApiGw.csproj src/ApiGateways/ApiGw-Base/
-RUN dotnet restore src/ApiGateways/ApiGw-Base/
 COPY . .
 WORKDIR /src/src/ApiGateways/ApiGw-Base/
+RUN dotnet restore -nowarn:msb3202,nu1503
 RUN dotnet build -c Release -o /app
 
 FROM build AS publish

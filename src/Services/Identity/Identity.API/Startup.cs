@@ -15,11 +15,12 @@ using Microsoft.eShopOnContainers.Services.Identity.API.Models;
 using Microsoft.eShopOnContainers.Services.Identity.API.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.HealthChecks;
 using Microsoft.Extensions.Logging;
 using StackExchange.Redis;
 using System;
 using System.Reflection;
+using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
 namespace Microsoft.eShopOnContainers.Services.Identity.API
 {
@@ -65,16 +66,11 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API
                 .PersistKeysToRedis(ConnectionMultiplexer.Connect(Configuration["DPConnectionString"]), "DataProtection-Keys");
             }
 
-            services.AddHealthChecks(checks =>
-            {
-                var minutes = 1;
-                if (int.TryParse(Configuration["HealthCheck:Timeout"], out var minutesParsed))
-                {
-                    minutes = minutesParsed;
-                }
-                checks.AddSqlCheck("Identity_Db", Configuration["ConnectionString"], TimeSpan.FromMinutes(minutes));
-            });
-
+            services.AddHealthChecks()
+                .AddSqlServer(Configuration["ConnectionString"],
+                    name: "IdentityDB-check",
+                    tags: new string[] { "IdentityDB" });
+            
             services.AddTransient<ILoginService<ApplicationUser>, EFLoginService>();
             services.AddTransient<IRedirectService, RedirectService>();
 
@@ -142,6 +138,12 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API
                 app.UsePathBase(pathBase);
             }
 
+
+            app.UseHealthChecks("/hc", new HealthCheckOptions()
+            {
+                Predicate = _ => true,
+                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+            });
 
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
             app.Map("/liveness", lapp => lapp.Run(async ctx => ctx.Response.StatusCode = 200));

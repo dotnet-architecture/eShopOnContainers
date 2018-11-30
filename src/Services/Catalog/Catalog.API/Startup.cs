@@ -22,13 +22,14 @@ using Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationEvents.EventHa
 using Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationEvents.Events;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.HealthChecks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
 using System;
 using System.Data.Common;
 using System.Reflection;
+using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
 namespace Microsoft.eShopOnContainers.Services.Catalog.API
 {
@@ -49,7 +50,8 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
                 .AddCustomOptions(Configuration)
                 .AddIntegrationServices(Configuration)
                 .AddEventBus(Configuration)
-                .AddSwagger();
+                .AddSwagger()
+                .AddCustomHealthCheck(Configuration);
 
             var container = new ContainerBuilder();
             container.Populate(services);
@@ -71,6 +73,12 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
                 loggerFactory.CreateLogger("init").LogDebug($"Using PATH BASE '{pathBase}'");
                 app.UsePathBase(pathBase);
             }
+
+            app.UseHealthChecks("/hc", new HealthCheckOptions()
+            {
+                Predicate = _ => true,
+                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+            });
 
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
             app.Map("/liveness", lapp => lapp.Run(async ctx => ctx.Response.StatusCode = 200));
@@ -120,24 +128,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
         }
 
         public static IServiceCollection AddCustomMVC(this IServiceCollection services, IConfiguration configuration)
-        {
-            services.AddHealthChecks(checks =>
-            {
-                var minutes = 1;
-                if (int.TryParse(configuration["HealthCheck:Timeout"], out var minutesParsed))
-                {
-                    minutes = minutesParsed;
-                }
-                checks.AddSqlCheck("CatalogDb", configuration["ConnectionString"], TimeSpan.FromMinutes(minutes));
-
-                var accountName = configuration.GetValue<string>("AzureStorageAccountName");
-                var accountKey = configuration.GetValue<string>("AzureStorageAccountKey");
-                if (!string.IsNullOrEmpty(accountName) && !string.IsNullOrEmpty(accountKey))
-                {
-                    checks.AddAzureBlobStorageCheck(accountName, accountKey);
-                }
-            });
-
+        {                                        
             services.AddMvc(options =>
                 {
                     options.Filters.Add(typeof(HttpGlobalExceptionFilter));
@@ -153,6 +144,49 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
                     .AllowAnyHeader()
                     .AllowCredentials());
             });
+
+            return services;
+        }
+
+        public static IServiceCollection AddCustomHealthCheck(this IServiceCollection services, IConfiguration configuration)
+        {
+            var accountName = configuration.GetValue<string>("AzureStorageAccountName");
+            var accountKey = configuration.GetValue<string>("AzureStorageAccountKey");
+
+            var hcBuilder = services.AddHealthChecks();
+
+            hcBuilder
+                .AddSqlServer(
+                    configuration["ConnectionString"],
+                    name: "CatalogDB-check",
+                    tags: new string[] { "catalogdb" });
+
+            if (!string.IsNullOrEmpty(accountName) && !string.IsNullOrEmpty(accountKey))
+            {                
+                hcBuilder
+                    .AddAzureBlobStorage(
+                        $"DefaultEndpointsProtocol=https;AccountName={accountName};AccountKey={accountKey};EndpointSuffix=core.windows.net",
+                        name: "catalog-storage-check",
+                        tags: new string[] { "catalogstorage" });
+            }
+
+            if (configuration.GetValue<bool>("AzureServiceBusEnabled"))
+            {
+                hcBuilder
+                    .AddAzureServiceBusTopic(
+                        configuration["EventBusConnection"],
+                        topicName: "eshop_event_bus",
+                        name: "catalog-servicebus-check",
+                        tags: new string[] { "servicebus" });
+            }
+            else
+            {
+                hcBuilder
+                    .AddRabbitMQ(
+                        $"amqp://{configuration["EventBusConnection"]}",
+                        name: "catalog-rabbitmqbus-check",
+                        tags: new string[] { "rabbitmqbus" });
+            }
 
             return services;
         }
