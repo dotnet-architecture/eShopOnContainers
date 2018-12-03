@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="cf5c20e4-2051-4234-a39c-2e0996778846" name="@5f4578973c8e 2018-11-29 08:58:02" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2018-11-29T08:58:02.8239128+00:00" queuing="2018-11-29T08:58:02.8239135+00:00" start="2018-11-29T08:57:55.7695398+00:00" finish="2018-11-29T08:58:06.0311890+00:00" />
+  <TestSettings name="default" id="7ef8a97f-c488-475e-91c1-99c21756f37a">
+    <Deployment runDeploymentRoot="_5f4578973c8e_2018-11-29_08_58_02" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="d142eebd-ca1c-45b5-bb31-daeac3709e54" testId="16b9f040-e19c-b3a6-4c75-1aefae952b0c" testName="Basket.FunctionalTests.BasketScenarios.Get_basket_and_response_ok_status_code" computerName="5f4578973c8e" duration="00:00:00.0850000" startTime="2018-11-29T08:58:05.7192918+00:00" endTime="2018-11-29T08:58:05.7192942+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d142eebd-ca1c-45b5-bb31-daeac3709e54" />
+    <UnitTestResult executionId="471716fb-430b-4df9-8822-18748781ce0f" testId="677133ae-7942-5e52-9ac4-742796901910" testName="Basket.FunctionalTests.RedisBasketRepositoryTests.UpdateBasket_return_and_add_basket" computerName="5f4578973c8e" duration="00:00:00.2780000" startTime="2018-11-29T08:58:01.6230430+00:00" endTime="2018-11-29T08:58:01.6230470+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="471716fb-430b-4df9-8822-18748781ce0f">
+      <Output>
+        <ErrorInfo>
+          <Message>System.AggregateException : One or more errors occurred. (Connection refused)
+---- System.Net.Sockets.SocketException : Connection refused</Message>
+          <StackTrace>   at System.Threading.Tasks.Task.Wait(Int32 millisecondsTimeout, CancellationToken cancellationToken)
+   at StackExchange.Redis.ConnectionMultiplexer.ConnectImpl(Func`1 multiplexerFactory, TextWriter log) in c:\code\StackExchange.Redis\StackExchange.Redis\StackExchange\Redis\ConnectionMultiplexer.cs:line 874
+   at Basket.FunctionalTests.RedisBasketRepositoryTests.BuildBasketRepository() in /src/src/Services/Basket/Basket.FunctionalTests/RedisBasketRepositoryTests.cs:line 63
+   at Basket.FunctionalTests.RedisBasketRepositoryTests.UpdateBasket_return_and_add_basket() in /src/src/Services/Basket/Basket.FunctionalTests/RedisBasketRepositoryTests.cs:line 27
+--- End of stack trace from previous location where exception was thrown ---
+----- Inner Stack Trace -----
+   at System.Net.Sockets.Socket.BeginConnectEx(EndPoint remoteEP, Boolean flowContext, AsyncCallback callback, Object state)
+   at System.Net.Sockets.Socket.UnsafeBeginConnect(EndPoint remoteEP, AsyncCallback callback, Object state, Boolean flowContext)
+   at System.Net.Sockets.Socket.BeginConnect(EndPoint remoteEP, AsyncCallback callback, Object state)
+   at System.Net.Sockets.Socket.ConnectAsync(EndPoint remoteEP)
+   at StackExchange.Redis.SocketManager.BeginConnect(EndPoint endpoint, ISocketCallback callback, ConnectionMultiplexer multiplexer, TextWriter log) in c:\code\StackExchange.Redis\StackExchange.Redis\StackExchange\Redis\SocketManager.cs:line 217
+   at StackExchange.Redis.PhysicalConnection.BeginConnect(TextWriter log) in c:\code\StackExchange.Redis\StackExchange.Redis\StackExchange\Redis\PhysicalConnection.cs:line 121
+   at StackExchange.Redis.PhysicalBridge.GetConnection(TextWriter log) in c:\code\StackExchange.Redis\StackExchange.Redis\StackExchange\Redis\PhysicalBridge.cs:line 699
+   at StackExchange.Redis.ServerEndPoint..ctor(ConnectionMultiplexer multiplexer, EndPoint endpoint, TextWriter log) in c:\code\StackExchange.Redis\StackExchange.Redis\StackExchange\Redis\ServerEndPoint.cs:line 67
+   at StackExchange.Redis.ConnectionMultiplexer.ReconfigureAsync(Boolean first, Boolean reconfigureAll, TextWriter log, EndPoint blame, String cause, Boolean publishReconfigure, CommandFlags publishReconfigureFlags) in c:\code\StackExchange.Redis\StackExchange.Redis\StackExchange\Redis\ConnectionMultiplexer.cs:line 1285</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="f16ee9d5-72fb-4044-a696-53a104828d1b" testId="3cca60b4-ce1c-3e2c-0078-fd7c0093db40" testName="Basket.FunctionalTests.BasketScenarios.Send_Checkout_basket_and_response_ok_status_code" computerName="5f4578973c8e" duration="00:00:00.1270000" startTime="2018-11-29T08:58:05.8462091+00:00" endTime="2018-11-29T08:58:05.8462110+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f16ee9d5-72fb-4044-a696-53a104828d1b" />
+    <UnitTestResult executionId="3570e8d3-23e4-47e5-bf15-32a0601047c3" testId="4e0ed4ff-8956-5cda-185e-0318658b0dd7" testName="Basket.FunctionalTests.BasketScenarios.Post_basket_and_response_ok_status_code" computerName="5f4578973c8e" duration="00:00:04.4310000" startTime="2018-11-29T08:58:05.6315651+00:00" endTime="2018-11-29T08:58:05.6315674+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3570e8d3-23e4-47e5-bf15-32a0601047c3" />
+    <UnitTestResult executionId="4df0e6b0-5550-40c6-827a-765ecb50bf2c" testId="97e33593-b04a-43a0-c39d-89e03642b9a2" testName="Basket.FunctionalTests.RedisBasketRepositoryTests.Delete_Basket_return_null" computerName="5f4578973c8e" duration="00:00:00.0100000" startTime="2018-11-29T08:58:01.6444569+00:00" endTime="2018-11-29T08:58:01.6444628+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4df0e6b0-5550-40c6-827a-765ecb50bf2c">
+      <Output>
+        <ErrorInfo>
+          <Message>System.AggregateException : One or more errors occurred. (Connection refused)
+---- System.Net.Sockets.SocketException : Connection refused</Message>
+          <StackTrace>   at System.Threading.Tasks.Task.Wait(Int32 millisecondsTimeout, CancellationToken cancellationToken)
+   at StackExchange.Redis.ConnectionMultiplexer.ConnectImpl(Func`1 multiplexerFactory, TextWriter log) in c:\code\StackExchange.Redis\StackExchange.Redis\StackExchange\Redis\ConnectionMultiplexer.cs:line 874
+   at Basket.FunctionalTests.RedisBasketRepositoryTests.BuildBasketRepository() in /src/src/Services/Basket/Basket.FunctionalTests/RedisBasketRepositoryTests.cs:line 63
+   at Basket.FunctionalTests.RedisBasketRepositoryTests.Delete_Basket_return_null() in /src/src/Services/Basket/Basket.FunctionalTests/RedisBasketRepositoryTests.cs:line 42
+--- End of stack trace from previous location where exception was thrown ---
+----- Inner Stack Trace -----
+   at System.Net.Sockets.Socket.BeginConnectEx(EndPoint remoteEP, Boolean flowContext, AsyncCallback callback, Object state)
+   at System.Net.Sockets.Socket.UnsafeBeginConnect(EndPoint remoteEP, AsyncCallback callback, Object state, Boolean flowContext)
+   at System.Net.Sockets.Socket.BeginConnect(EndPoint remoteEP, AsyncCallback callback, Object state)
+   at System.Net.Sockets.Socket.ConnectAsync(EndPoint remoteEP)
+   at StackExchange.Redis.SocketManager.BeginConnect(EndPoint endpoint, ISocketCallback callback, ConnectionMultiplexer multiplexer, TextWriter log) in c:\code\StackExchange.Redis\StackExchange.Redis\StackExchange\Redis\SocketManager.cs:line 217
+   at StackExchange.Redis.PhysicalConnection.BeginConnect(TextWriter log) in c:\code\StackExchange.Redis\StackExchange.Redis\StackExchange\Redis\PhysicalConnection.cs:line 121
+   at StackExchange.Redis.PhysicalBridge.GetConnection(TextWriter log) in c:\code\StackExchange.Redis\StackExchange.Redis\StackExchange\Redis\PhysicalBridge.cs:line 699
+   at StackExchange.Redis.ServerEndPoint..ctor(ConnectionMultiplexer multiplexer, EndPoint endpoint, TextWriter log) in c:\code\StackExchange.Redis\StackExchange.Redis\StackExchange\Redis\ServerEndPoint.cs:line 67
+   at StackExchange.Redis.ConnectionMultiplexer.ReconfigureAsync(Boolean first, Boolean reconfigureAll, TextWriter log, EndPoint blame, String cause, Boolean publishReconfigure, CommandFlags publishReconfigureFlags) in c:\code\StackExchange.Redis\StackExchange.Redis\StackExchange\Redis\ConnectionMultiplexer.cs:line 1285</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="Basket.FunctionalTests.BasketScenarios.Post_basket_and_response_ok_status_code" storage="/src/src/services/basket/basket.functionaltests/bin/debug/netcoreapp2.1/basket.functionaltests.dll" id="4e0ed4ff-8956-5cda-185e-0318658b0dd7">
+      <Execution id="3570e8d3-23e4-47e5-bf15-32a0601047c3" />
+      <TestMethod codeBase="/src/src/Services/Basket/Basket.FunctionalTests/bin/Debug/netcoreapp2.1/Basket.FunctionalTests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Basket.FunctionalTests" name="Basket.FunctionalTests.BasketScenarios.Post_basket_and_response_ok_status_code" />
+    </UnitTest>
+    <UnitTest name="Basket.FunctionalTests.RedisBasketRepositoryTests.UpdateBasket_return_and_add_basket" storage="/src/src/services/basket/basket.functionaltests/bin/debug/netcoreapp2.1/basket.functionaltests.dll" id="677133ae-7942-5e52-9ac4-742796901910">
+      <Execution id="471716fb-430b-4df9-8822-18748781ce0f" />
+      <TestMethod codeBase="/src/src/Services/Basket/Basket.FunctionalTests/bin/Debug/netcoreapp2.1/Basket.FunctionalTests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Basket.FunctionalTests" name="Basket.FunctionalTests.RedisBasketRepositoryTests.UpdateBasket_return_and_add_basket" />
+    </UnitTest>
+    <UnitTest name="Basket.FunctionalTests.BasketScenarios.Get_basket_and_response_ok_status_code" storage="/src/src/services/basket/basket.functionaltests/bin/debug/netcoreapp2.1/basket.functionaltests.dll" id="16b9f040-e19c-b3a6-4c75-1aefae952b0c">
+      <Execution id="d142eebd-ca1c-45b5-bb31-daeac3709e54" />
+      <TestMethod codeBase="/src/src/Services/Basket/Basket.FunctionalTests/bin/Debug/netcoreapp2.1/Basket.FunctionalTests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Basket.FunctionalTests" name="Basket.FunctionalTests.BasketScenarios.Get_basket_and_response_ok_status_code" />
+    </UnitTest>
+    <UnitTest name="Basket.FunctionalTests.RedisBasketRepositoryTests.Delete_Basket_return_null" storage="/src/src/services/basket/basket.functionaltests/bin/debug/netcoreapp2.1/basket.functionaltests.dll" id="97e33593-b04a-43a0-c39d-89e03642b9a2">
+      <Execution id="4df0e6b0-5550-40c6-827a-765ecb50bf2c" />
+      <TestMethod codeBase="/src/src/Services/Basket/Basket.FunctionalTests/bin/Debug/netcoreapp2.1/Basket.FunctionalTests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Basket.FunctionalTests" name="Basket.FunctionalTests.RedisBasketRepositoryTests.Delete_Basket_return_null" />
+    </UnitTest>
+    <UnitTest name="Basket.FunctionalTests.BasketScenarios.Send_Checkout_basket_and_response_ok_status_code" storage="/src/src/services/basket/basket.functionaltests/bin/debug/netcoreapp2.1/basket.functionaltests.dll" id="3cca60b4-ce1c-3e2c-0078-fd7c0093db40">
+      <Execution id="f16ee9d5-72fb-4044-a696-53a104828d1b" />
+      <TestMethod codeBase="/src/src/Services/Basket/Basket.FunctionalTests/bin/Debug/netcoreapp2.1/Basket.FunctionalTests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Basket.FunctionalTests" name="Basket.FunctionalTests.BasketScenarios.Send_Checkout_basket_and_response_ok_status_code" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="16b9f040-e19c-b3a6-4c75-1aefae952b0c" executionId="d142eebd-ca1c-45b5-bb31-daeac3709e54" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="677133ae-7942-5e52-9ac4-742796901910" executionId="471716fb-430b-4df9-8822-18748781ce0f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3cca60b4-ce1c-3e2c-0078-fd7c0093db40" executionId="f16ee9d5-72fb-4044-a696-53a104828d1b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4e0ed4ff-8956-5cda-185e-0318658b0dd7" executionId="3570e8d3-23e4-47e5-bf15-32a0601047c3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="97e33593-b04a-43a0-c39d-89e03642b9a2" executionId="4df0e6b0-5550-40c6-827a-765ecb50bf2c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="5" executed="5" passed="3" failed="2" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:02.4742360]   Discovering: Basket.FunctionalTests[xUnit.net 00:00:02.5727110]   Discovered:  Basket.FunctionalTests[xUnit.net 00:00:02.5783146]   Starting:    Basket.FunctionalTests[xUnit.net 00:00:03.2222534]       System.AggregateException : One or more errors occurred. (Connection refused)[xUnit.net 00:00:03.2223840]       ---- System.Net.Sockets.SocketException : Connection refused[xUnit.net 00:00:03.2253023]       Stack Trace:[xUnit.net 00:00:03.2265453]            at System.Threading.Tasks.Task.Wait(Int32 millisecondsTimeout, CancellationToken cancellationToken)[xUnit.net 00:00:03.2266545]         c:\code\StackExchange.Redis\StackExchange.Redis\StackExchange\Redis\ConnectionMultiplexer.cs(874,0): at StackExchange.Redis.ConnectionMultiplexer.ConnectImpl(Func`1 multiplexerFactory, TextWriter log)[xUnit.net 00:00:03.2269067]         /src/src/Services/Basket/Basket.FunctionalTests/RedisBasketRepositoryTests.cs(63,0): at Basket.FunctionalTests.RedisBasketRepositoryTests.BuildBasketRepository()[xUnit.net 00:00:03.2269908]         /src/src/Services/Basket/Basket.FunctionalTests/RedisBasketRepositoryTests.cs(27,0): at Basket.FunctionalTests.RedisBasketRepositoryTests.UpdateBasket_return_and_add_basket()[xUnit.net 00:00:03.2270384]         --- End of stack trace from previous location where exception was thrown ---[xUnit.net 00:00:03.2329249]         ----- Inner Stack Trace -----[xUnit.net 00:00:03.2330124]            at System.Net.Sockets.Socket.BeginConnectEx(EndPoint remoteEP, Boolean flowContext, AsyncCallback callback, Object state)[xUnit.net 00:00:03.2330637]            at System.Net.Sockets.Socket.UnsafeBeginConnect(EndPoint remoteEP, AsyncCallback callback, Object state, Boolean flowContext)[xUnit.net 00:00:03.2331065]            at System.Net.Sockets.Socket.BeginConnect(EndPoint remoteEP, AsyncCallback callback, Object state)[xUnit.net 00:00:03.2331416]            at System.Net.Sockets.Socket.ConnectAsync(EndPoint remoteEP)[xUnit.net 00:00:03.2331914]         c:\code\StackExchange.Redis\StackExchange.Redis\StackExchange\Redis\SocketManager.cs(217,0): at StackExchange.Redis.SocketManager.BeginConnect(EndPoint endpoint, ISocketCallback callback, ConnectionMultiplexer multiplexer, TextWriter log)[xUnit.net 00:00:03.2332449]         c:\code\StackExchange.Redis\StackExchange.Redis\StackExchange\Redis\PhysicalConnection.cs(121,0): at StackExchange.Redis.PhysicalConnection.BeginConnect(TextWriter log)[xUnit.net 00:00:03.2332942]         c:\code\StackExchange.Redis\StackExchange.Redis\StackExchange\Redis\PhysicalBridge.cs(699,0): at StackExchange.Redis.PhysicalBridge.GetConnection(TextWriter log)[xUnit.net 00:00:03.2333421]         c:\code\StackExchange.Redis\StackExchange.Redis\StackExchange\Redis\ServerEndPoint.cs(67,0): at StackExchange.Redis.ServerEndPoint..ctor(ConnectionMultiplexer multiplexer, EndPoint endpoint, TextWriter log)[xUnit.net 00:00:03.2334035]         c:\code\StackExchange.Redis\StackExchange.Redis\StackExchange\Redis\ConnectionMultiplexer.cs(1285,0): at StackExchange.Redis.ConnectionMultiplexer.ReconfigureAsync(Boolean first, Boolean reconfigureAll, TextWriter log, EndPoint blame, String cause, Boolean publishReconfigure, CommandFlags publishReconfigureFlags)[xUnit.net 00:00:03.2597410]       System.AggregateException : One or more errors occurred. (Connection refused)[xUnit.net 00:00:03.2602061]       ---- System.Net.Sockets.SocketException : Connection refused[xUnit.net 00:00:03.2611373]       Stack Trace:[xUnit.net 00:00:03.2612811]            at System.Threading.Tasks.Task.Wait(Int32 millisecondsTimeout, CancellationToken cancellationToken)[xUnit.net 00:00:03.2613456]         c:\code\StackExchange.Redis\StackExchange.Redis\StackExchange\Redis\ConnectionMultiplexer.cs(874,0): at StackExchange.Redis.ConnectionMultiplexer.ConnectImpl(Func`1 multiplexerFactory, TextWriter log)[xUnit.net 00:00:03.2614004]         /src/src/Services/Basket/Basket.FunctionalTests/RedisBasketRepositoryTests.cs(63,0): at Basket.FunctionalTests.RedisBasketRepositoryTests.BuildBasketRepository()[xUnit.net 00:00:03.2614553]         /src/src/Services/Basket/Basket.FunctionalTests/RedisBasketRepositoryTests.cs(42,0): at Basket.FunctionalTests.RedisBasketRepositoryTests.Delete_Basket_return_null()[xUnit.net 00:00:03.2639601]         --- End of stack trace from previous location where exception was thrown ---[xUnit.net 00:00:03.2641794]         ----- Inner Stack Trace -----[xUnit.net 00:00:03.2642424]            at System.Net.Sockets.Socket.BeginConnectEx(EndPoint remoteEP, Boolean flowContext, AsyncCallback callback, Object state)[xUnit.net 00:00:03.2642850]            at System.Net.Sockets.Socket.UnsafeBeginConnect(EndPoint remoteEP, AsyncCallback callback, Object state, Boolean flowContext)[xUnit.net 00:00:03.2643282]            at System.Net.Sockets.Socket.BeginConnect(EndPoint remoteEP, AsyncCallback callback, Object state)[xUnit.net 00:00:03.2643613]            at System.Net.Sockets.Socket.ConnectAsync(EndPoint remoteEP)[xUnit.net 00:00:03.2644095]         c:\code\StackExchange.Redis\StackExchange.Redis\StackExchange\Redis\SocketManager.cs(217,0): at StackExchange.Redis.SocketManager.BeginConnect(EndPoint endpoint, ISocketCallback callback, ConnectionMultiplexer multiplexer, TextWriter log)[xUnit.net 00:00:03.2644721]         c:\code\StackExchange.Redis\StackExchange.Redis\StackExchange\Redis\PhysicalConnection.cs(121,0): at StackExchange.Redis.PhysicalConnection.BeginConnect(TextWriter log)[xUnit.net 00:00:03.2645212]         c:\code\StackExchange.Redis\StackExchange.Redis\StackExchange\Redis\PhysicalBridge.cs(699,0): at StackExchange.Redis.PhysicalBridge.GetConnection(TextWriter log)[xUnit.net 00:00:03.2645704]         c:\code\StackExchange.Redis\StackExchange.Redis\StackExchange\Redis\ServerEndPoint.cs(67,0): at StackExchange.Redis.ServerEndPoint..ctor(ConnectionMultiplexer multiplexer, EndPoint endpoint, TextWriter log)[xUnit.net 00:00:03.2646199]         c:\code\StackExchange.Redis\StackExchange.Redis\StackExchange\Redis\ConnectionMultiplexer.cs(1285,0): at StackExchange.Redis.ConnectionMultiplexer.ReconfigureAsync(Boolean first, Boolean reconfigureAll, TextWriter log, EndPoint blame, String cause, Boolean publishReconfigure, CommandFlags publishReconfigureFlags)[xUnit.net 00:00:07.4722285]   Finished:    Basket.FunctionalTests</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="5f4578973c8e" outcome="Error" timestamp="2018-11-29T08:58:01.5996117+00:00">
+        <Text>[xUnit.net 00:00:03.2180801]     Basket.FunctionalTests.RedisBasketRepositoryTests.UpdateBasket_return_and_add_basket [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="5f4578973c8e" outcome="Error" timestamp="2018-11-29T08:58:01.6394245+00:00">
+        <Text>[xUnit.net 00:00:03.2591737]     Basket.FunctionalTests.RedisBasketRepositoryTests.Delete_Basket_return_null [FAIL]</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

@@ -18,7 +18,6 @@ services:
     build:
       context: .
       dockerfile: src/Services/Identity/Identity.API/Dockerfile
-      target: functionaltest
     depends_on:
       - sql-data-test
 
@@ -28,6 +27,19 @@ services:
       context: .
       dockerfile: src/Services/Basket/Basket.API/Dockerfile
       target: functionaltest
+    depends_on:
+      - basket-data-test
+      - identity-api-test
+      - rabbitmq-test
+    volumes: 
+      - ${BUILD_ARTIFACTSTAGINGDIRECTORY:-./tests-results/}:/tests
+
+  basket-api-unit-test:
+    image: eshop/basket-api-test:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/Services/Basket/Basket.API/Dockerfile
+      target: unittest
     depends_on:
       - basket-data-test
       - identity-api-test
@@ -47,12 +59,36 @@ services:
     volumes: 
       - ${BUILD_ARTIFACTSTAGINGDIRECTORY:-./tests-results/}:/tests
 
+  catalog-api-unit-test:
+    image: eshop/catalog-api-test:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/Services/Catalog/Catalog.API/Dockerfile
+      target: unittest
+    depends_on:
+      - sql-data-test
+      - rabbitmq-test
+    volumes: 
+      - ${BUILD_ARTIFACTSTAGINGDIRECTORY:-./tests-results/}:/tests
+
   ordering-api-test:
     image: eshop/ordering-api-test:${TAG:-latest}
     build:
       context: .
       dockerfile: src/Services/Ordering/Ordering.API/Dockerfile
       target: functionaltest
+    depends_on:
+      - sql-data-test
+      - rabbitmq-test
+    volumes: 
+      - ${BUILD_ARTIFACTSTAGINGDIRECTORY:-./tests-results/}:/tests
+
+  ordering-api-unit-test:
+    image: eshop/ordering-api-test:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/Services/Ordering/Ordering.API/Dockerfile
+      target: unittest
     depends_on:
       - sql-data-test
       - rabbitmq-test
@@ -88,7 +124,6 @@ services:
     build:
       context: .
       dockerfile: src/Services/Payment/Payment.API/Dockerfile
-      target: functionaltest
     depends_on:
       - rabbitmq-test
 

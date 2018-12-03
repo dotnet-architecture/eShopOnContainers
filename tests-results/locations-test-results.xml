@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="c7c2563b-9fa3-4ca7-9bbd-aed166a5b118" name="@bb21f69fa0fb 2018-11-29 09:07:33" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2018-11-29T09:07:33.6207649+00:00" queuing="2018-11-29T09:07:33.6207657+00:00" start="2018-11-29T09:07:27.0294976+00:00" finish="2018-11-29T09:07:34.7848465+00:00" />
+  <TestSettings name="default" id="3e565f4e-bca0-4231-a886-b87efa7f9637">
+    <Deployment runDeploymentRoot="_bb21f69fa0fb_2018-11-29_09_07_33" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="ef7039c3-ad98-45ce-8086-80037a31b4c0" testId="0a4f15a8-74cd-fd17-7e39-b261ab50b0e3" testName="Locations.FunctionalTests.LocationsScenarios.Get_all_locations_response_ok_status_code" computerName="bb21f69fa0fb" duration="00:00:00.0990000" startTime="2018-11-29T09:07:34.5707419+00:00" endTime="2018-11-29T09:07:34.5707442+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ef7039c3-ad98-45ce-8086-80037a31b4c0" />
+    <UnitTestResult executionId="141a45d6-25de-4bf0-a42f-fe2372d35daa" testId="adcf9752-4680-18b6-26e1-869d93a37efb" testName="Locations.FunctionalTests.LocationsScenarios.Set_new_user_readmond_location_response_ok_status_code" computerName="bb21f69fa0fb" duration="00:00:00.7690000" startTime="2018-11-29T09:07:34.3577934+00:00" endTime="2018-11-29T09:07:34.3577978+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="141a45d6-25de-4bf0-a42f-fe2372d35daa" />
+    <UnitTestResult executionId="646d0e9f-0410-4195-89c5-94dad4f777b8" testId="78effe18-892e-ff71-3706-701d8f4770b2" testName="Locations.FunctionalTests.LocationsScenarios.Set_new_user_seattle_location_response_ok_status_code" computerName="bb21f69fa0fb" duration="00:00:00.1150000" startTime="2018-11-29T09:07:34.4726937+00:00" endTime="2018-11-29T09:07:34.4726961+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="646d0e9f-0410-4195-89c5-94dad4f777b8" />
+    <UnitTestResult executionId="4b9b793f-6d4b-4fd3-95a6-e9c4e6d793f3" testId="9f640d81-acae-dd4a-697b-85843aab785c" testName="Locations.FunctionalTests.LocationsScenarios.Set_new_user_Washington_location_response_ok_status_code" computerName="bb21f69fa0fb" duration="00:00:03.2560000" startTime="2018-11-29T09:07:33.5779726+00:00" endTime="2018-11-29T09:07:33.5779757+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4b9b793f-6d4b-4fd3-95a6-e9c4e6d793f3" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="Locations.FunctionalTests.LocationsScenarios.Set_new_user_Washington_location_response_ok_status_code" storage="/src/src/services/location/locations.functionaltests/bin/debug/netcoreapp2.1/locations.functionaltests.dll" id="9f640d81-acae-dd4a-697b-85843aab785c">
+      <Execution id="4b9b793f-6d4b-4fd3-95a6-e9c4e6d793f3" />
+      <TestMethod codeBase="/src/src/Services/Location/Locations.FunctionalTests/bin/Debug/netcoreapp2.1/Locations.FunctionalTests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Locations.FunctionalTests" name="Locations.FunctionalTests.LocationsScenarios.Set_new_user_Washington_location_response_ok_status_code" />
+    </UnitTest>
+    <UnitTest name="Locations.FunctionalTests.LocationsScenarios.Set_new_user_seattle_location_response_ok_status_code" storage="/src/src/services/location/locations.functionaltests/bin/debug/netcoreapp2.1/locations.functionaltests.dll" id="78effe18-892e-ff71-3706-701d8f4770b2">
+      <Execution id="646d0e9f-0410-4195-89c5-94dad4f777b8" />
+      <TestMethod codeBase="/src/src/Services/Location/Locations.FunctionalTests/bin/Debug/netcoreapp2.1/Locations.FunctionalTests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Locations.FunctionalTests" name="Locations.FunctionalTests.LocationsScenarios.Set_new_user_seattle_location_response_ok_status_code" />
+    </UnitTest>
+    <UnitTest name="Locations.FunctionalTests.LocationsScenarios.Set_new_user_readmond_location_response_ok_status_code" storage="/src/src/services/location/locations.functionaltests/bin/debug/netcoreapp2.1/locations.functionaltests.dll" id="adcf9752-4680-18b6-26e1-869d93a37efb">
+      <Execution id="141a45d6-25de-4bf0-a42f-fe2372d35daa" />
+      <TestMethod codeBase="/src/src/Services/Location/Locations.FunctionalTests/bin/Debug/netcoreapp2.1/Locations.FunctionalTests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Locations.FunctionalTests" name="Locations.FunctionalTests.LocationsScenarios.Set_new_user_readmond_location_response_ok_status_code" />
+    </UnitTest>
+    <UnitTest name="Locations.FunctionalTests.LocationsScenarios.Get_all_locations_response_ok_status_code" storage="/src/src/services/location/locations.functionaltests/bin/debug/netcoreapp2.1/locations.functionaltests.dll" id="0a4f15a8-74cd-fd17-7e39-b261ab50b0e3">
+      <Execution id="ef7039c3-ad98-45ce-8086-80037a31b4c0" />
+      <TestMethod codeBase="/src/src/Services/Location/Locations.FunctionalTests/bin/Debug/netcoreapp2.1/Locations.FunctionalTests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Locations.FunctionalTests" name="Locations.FunctionalTests.LocationsScenarios.Get_all_locations_response_ok_status_code" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="0a4f15a8-74cd-fd17-7e39-b261ab50b0e3" executionId="ef7039c3-ad98-45ce-8086-80037a31b4c0" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="adcf9752-4680-18b6-26e1-869d93a37efb" executionId="141a45d6-25de-4bf0-a42f-fe2372d35daa" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="78effe18-892e-ff71-3706-701d8f4770b2" executionId="646d0e9f-0410-4195-89c5-94dad4f777b8" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9f640d81-acae-dd4a-697b-85843aab785c" executionId="4b9b793f-6d4b-4fd3-95a6-e9c4e6d793f3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="4" executed="4" passed="4" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:01.5159078]   Discovering: Locations.FunctionalTests[xUnit.net 00:00:01.5714633]   Discovered:  Locations.FunctionalTests[xUnit.net 00:00:01.5764524]   Starting:    Locations.FunctionalTests[xUnit.net 00:00:06.0049609]   Finished:    Locations.FunctionalTests</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

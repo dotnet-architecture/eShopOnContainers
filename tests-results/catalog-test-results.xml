@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="4ddf02bb-84e1-4e90-91ac-e112c488cfd5" name="@bef76d65db05 2018-11-29 09:01:17" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2018-11-29T09:01:17.4087015+00:00" queuing="2018-11-29T09:01:17.4087023+00:00" start="2018-11-29T09:01:13.2001990+00:00" finish="2018-11-29T09:01:17.4407721+00:00" />
+  <TestSettings name="default" id="2d5bffda-6410-4fc3-bb60-6c4594b3b7c2">
+    <Deployment runDeploymentRoot="_bef76d65db05_2018-11-29_09_01_17" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="80ad29ce-3d9a-49c6-93af-cc5a0c02155d" testId="409883a9-e303-a44e-98c9-245811af9fa2" testName="UnitTest.Catalog.Application.CatalogControllerTest.Get_catalog_items_success" computerName="bef76d65db05" duration="00:00:00.3010000" startTime="2018-11-29T09:01:17.2873298+00:00" endTime="2018-11-29T09:01:17.2873338+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="80ad29ce-3d9a-49c6-93af-cc5a0c02155d" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="UnitTest.Catalog.Application.CatalogControllerTest.Get_catalog_items_success" storage="/src/src/services/catalog/catalog.unittests/bin/debug/netcoreapp2.1/catalog.unittests.dll" id="409883a9-e303-a44e-98c9-245811af9fa2">
+      <Execution id="80ad29ce-3d9a-49c6-93af-cc5a0c02155d" />
+      <TestMethod codeBase="/src/src/Services/Catalog/Catalog.UnitTests/bin/Debug/netcoreapp2.1/Catalog.UnitTests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Catalog.UnitTests" name="UnitTest.Catalog.Application.CatalogControllerTest.Get_catalog_items_success" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="409883a9-e303-a44e-98c9-245811af9fa2" executionId="80ad29ce-3d9a-49c6-93af-cc5a0c02155d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="1" executed="1" passed="1" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:01.8996469]   Discovering: Catalog.UnitTests[xUnit.net 00:00:01.9932494]   Discovered:  Catalog.UnitTests[xUnit.net 00:00:02.0007385]   Starting:    Catalog.UnitTests[xUnit.net 00:00:02.5315257]   Finished:    Catalog.UnitTests</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>
