@@ -29,9 +29,16 @@ namespace Catalog.API.IntegrationEvents
 
         public async Task PublishThroughEventBusAsync(IntegrationEvent evt)
         {
-            _eventBus.Publish(evt);
-
-            await _eventLogService.MarkEventAsPublishedAsync(evt);
+            try
+            {
+                await _eventLogService.MarkEventAsInProgressAsync(evt.Id);
+                _eventBus.Publish(evt);
+                await _eventLogService.MarkEventAsPublishedAsync(evt.Id);
+            }
+            catch (Exception)
+            {
+                await _eventLogService.MarkEventAsFailedAsync(evt.Id);
+            }            
         }
 
         public async Task SaveEventAndCatalogContextChangesAsync(IntegrationEvent evt)

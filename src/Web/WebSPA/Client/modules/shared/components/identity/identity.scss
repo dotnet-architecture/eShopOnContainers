@@ -12,6 +12,7 @@
 
     &-name {
         display: inline-block;
+        margin-right: 10px;
 
         &--upper {
             text-transform: uppercase;
@@ -34,7 +35,7 @@
         padding: .3rem;
         position: absolute;
         right: 0;
-        top: 2.5rem;
+        top: 2.8rem;
         transition: height $animation-speed-default;
     }
 
