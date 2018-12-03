@@ -5,24 +5,9 @@
 version: '3.4'
 
 services:
-  identity.api:
-    build:
-      args:
-        NODE_IMAGE: stefanscherer/node-windows:8.11
-
-  webmvc:
-    build:
-      args:
-        NODE_IMAGE: stefanscherer/node-windows:8.11
-  
-  webspa:
-    build:
-      args:
-        NODE_IMAGE: stefanscherer/node-windows:8.11
-
   sql.data:
     image: microsoft/mssql-server-windows-developer
-  
+
   nosql.data:
     image: mongo:windowsservercore
 
@@ -31,6 +16,21 @@ services:
 
   rabbitmq:
     image: spring2/rabbitmq
+
+  identity.api:
+    build:
+      args:
+        NODE_IMAGE: stefanscherer/node-windows:8.11
+
+  webspa:
+    build:
+      args:
+        NODE_IMAGE: stefanscherer/node-windows:8.11
+
+  webmvc:
+    build:
+      args:
+        NODE_IMAGE: stefanscherer/node-windows:8.11
 
 
 networks:

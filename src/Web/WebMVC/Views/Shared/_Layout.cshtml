@@ -32,11 +32,11 @@
     </environment>
 </head>
 <body>
-    <header class="navbar navbar-light navbar-static-top">
+    <header class="esh-app-header">
         <div class="container">
             <article class="row">
 
-                <section class="col-lg-7 col-md-6 col-xs-12">
+                <section class="col-lg-7 col-md-6 col-12">
                     <a class="navbar-brand" routerLink="catalog">
                         <a asp-area="" asp-controller="Catalog" asp-action="Index">
                             <img src="~/images/brand.png" />
@@ -69,13 +69,13 @@
     </footer>
 
     <environment names="Development">
-        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/jquery/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
     </environment>
     <environment names="Staging,Production">
         <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
-                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                asp-fallback-src="~/lib/jquery/jquery.min.js"
                 asp-fallback-test="window.jQuery">
         </script>
         <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
@@ -96,28 +96,28 @@
         if ('@User.Identity.IsAuthenticated' === 'True') {
             var timerId;
 
-            let connection = stablishConnection();
+            stablishConnection((conn) => registerNotificationHandlers(conn));                                  
+        }
+
+        function stablishConnection(cb) {
+            let connection = new signalR.HubConnectionBuilder()
+                .withUrl('@settings.Value.SignalrHubUrl/hub/notificationhub', {
+                    transport: signalR.HttpTransportType.LongPolling,
+                    accessTokenFactory: () => {
+                        return "Authorization", getToken();
+                    }
+                })
+                .build(); 
             
             connection.start().then(function () {
                 console.log('User Registered to Signalr Hub');
-            });
-
-            registerNotificationHandlers(connection);
-        }
-
-        function stablishConnection() {
-            let hubHttpConnection = new signalR.HttpConnection('@settings.Value.SignalrHubUrl/hub/notificationhub', {
-            transport: signalR.TransportType.LongPolling,
-                accessTokenFactory: () => {
-                    return "Authorization", getToken();
-                }
-            });
-            return new signalR.HubConnection(hubHttpConnection);
+                cb(connection);
+            });       
         }
 
         function registerNotificationHandlers(connection) {
             connection.on("UpdatedOrderState", (message) => {
-            toastr.success('Updated to status: ' + message.status, 'Order Id: ' + message.orderId);
+                toastr.success('Updated to status: ' + message.status, 'Order Id: ' + message.orderId);
                 if (window.location.pathname.split("/").pop() === 'Order') {
                     refreshOrderList();
                 }

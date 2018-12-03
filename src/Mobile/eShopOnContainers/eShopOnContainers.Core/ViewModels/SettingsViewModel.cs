@@ -16,7 +16,9 @@ namespace eShopOnContainers.Core.ViewModels
         private bool _useAzureServices;
         private bool _allowGpsLocation;
         private bool _useFakeLocation;
-        private string _endpoint;
+        private string _identityEndpoint;
+        private string _gatewayShoppingEndpoint;
+        private string _gatewayMarketingEndpoint;
         private double _latitude;
         private double _longitude;
         private string _gpsWarningMessage;
@@ -32,7 +34,9 @@ namespace eShopOnContainers.Core.ViewModels
             _dependencyService = dependencyService;
 
             _useAzureServices = !_settingsService.UseMocks;
-            _endpoint = _settingsService.UrlBase;
+            _identityEndpoint = _settingsService.IdentityEndpointBase;
+            _gatewayShoppingEndpoint = _settingsService.GatewayShoppingEndpointBase;
+            _gatewayMarketingEndpoint = _settingsService.GatewayMarketingEndpointBase;
             _latitude = double.Parse(_settingsService.Latitude, CultureInfo.CurrentCulture);
             _longitude = double.Parse(_settingsService.Longitude, CultureInfo.CurrentCulture);
             _useFakeLocation = _settingsService.UseFakeLocation;
@@ -51,7 +55,7 @@ namespace eShopOnContainers.Core.ViewModels
             {
                 return !UseAzureServices
                     ? "Mock Services are simulated objects that mimic the behavior of real services using a controlled approach."
-                        : "When enabling the use of microservices/containers, the app will attempt to use real services deployed as Docker containers at the specified base endpoint, which will must be reachable through the network.";
+                        : "When enabling the use of microservices/containers, the app will attempt to use real services deployed as Docker/Kubernetes containers at the specified base endpoint, which will must be reachable through the network.";
             }
         }
 
@@ -117,17 +121,45 @@ namespace eShopOnContainers.Core.ViewModels
             }
         }
 
-        public string Endpoint
+        public string IdentityEndpoint
         {
-            get => _endpoint;
+            get => _identityEndpoint;
             set
             {
-                _endpoint = value;
-                if (!string.IsNullOrEmpty(_endpoint))
+                _identityEndpoint = value;
+                if (!string.IsNullOrEmpty(_identityEndpoint))
                 {
-                    UpdateEndpoint();
+                    UpdateIdentityEndpoint();
                 }
-                RaisePropertyChanged(() => Endpoint);
+                RaisePropertyChanged(() => IdentityEndpoint);
+            }
+        }
+
+        public string GatewayShoppingEndpoint
+        {
+            get => _gatewayShoppingEndpoint;
+            set
+            {
+                _gatewayShoppingEndpoint = value;
+                if (!string.IsNullOrEmpty(_gatewayShoppingEndpoint))
+                {
+                    UpdateGatewayShoppingEndpoint();
+                }
+                RaisePropertyChanged(() => GatewayShoppingEndpoint);
+            }
+        }
+
+        public string GatewayMarketingEndpoint
+        {
+            get => _gatewayMarketingEndpoint;
+            set
+            {
+                _gatewayMarketingEndpoint = value;
+                if (!string.IsNullOrEmpty(_gatewayMarketingEndpoint))
+                {
+                    UpdateGatewayMarketingEndpoint();
+                }
+                RaisePropertyChanged(() => GatewayMarketingEndpoint);
             }
         }
 
@@ -233,10 +265,20 @@ namespace eShopOnContainers.Core.ViewModels
             _settingsService.UseMocks = !_useAzureServices;
         }
 
-        private void UpdateEndpoint()
+        private void UpdateIdentityEndpoint()
         {
             // Update remote endpoint (save to local storage)
-            GlobalSetting.Instance.BaseEndpoint = _settingsService.UrlBase = _endpoint;
+            GlobalSetting.Instance.BaseIdentityEndpoint = _settingsService.IdentityEndpointBase = _identityEndpoint;
+        }
+
+        private void UpdateGatewayShoppingEndpoint()
+        {
+            GlobalSetting.Instance.BaseGatewayShoppingEndpoint = _settingsService.GatewayShoppingEndpointBase = _gatewayShoppingEndpoint;
+        }
+
+        private void UpdateGatewayMarketingEndpoint()
+        {
+            GlobalSetting.Instance.BaseGatewayMarketingEndpoint = _settingsService.GatewayMarketingEndpointBase = _gatewayMarketingEndpoint;
         }
 
         private void UpdateFakeLocation()

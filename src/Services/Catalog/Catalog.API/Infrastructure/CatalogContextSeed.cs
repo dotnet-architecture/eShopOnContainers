@@ -356,14 +356,17 @@
 
         private void GetCatalogItemPictures(string contentRootPath, string picturePath)
         {
-            DirectoryInfo directory = new DirectoryInfo(picturePath);
-            foreach (FileInfo file in directory.GetFiles())
+            if (picturePath != null)
             {
-                file.Delete();
-            }
+                DirectoryInfo directory = new DirectoryInfo(picturePath);
+                foreach (FileInfo file in directory.GetFiles())
+                {
+                    file.Delete();
+                }
 
-            string zipFileCatalogItemPictures = Path.Combine(contentRootPath, "Setup", "CatalogItems.zip");
-            ZipFile.ExtractToDirectory(zipFileCatalogItemPictures, picturePath);
+                string zipFileCatalogItemPictures = Path.Combine(contentRootPath, "Setup", "CatalogItems.zip");
+                ZipFile.ExtractToDirectory(zipFileCatalogItemPictures, picturePath);
+            }
         }
 
         private Policy CreatePolicy( ILogger<CatalogContextSeed> logger, string prefix,int retries = 3)

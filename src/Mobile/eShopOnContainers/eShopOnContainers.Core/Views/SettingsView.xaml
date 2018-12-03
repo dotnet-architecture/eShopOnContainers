@@ -168,10 +168,36 @@
             Style="{StaticResource SettingsStackLayoutStyle}"
             IsVisible="{Binding UseAzureServices}">
             <Label
-                Text="Endpoint"
+                Text="Identity Url"
                 Style="{StaticResource HeaderLabelStyle}"/>
             <Entry
-                Text="{Binding Endpoint, Mode=TwoWay}">
+                Text="{Binding IdentityEndpoint, Mode=TwoWay}">
+                <Entry.Style>
+                    <OnPlatform x:TypeArguments="Style">
+                        <On Platform="iOS, Android" Value="{StaticResource SettingsEntryStyle}" />
+                        <On Platform="UWP, WinRT, WinPhone" Value="{StaticResource SettingsUwpEntryStyle}" />
+                    </OnPlatform>
+                </Entry.Style>
+            </Entry>
+
+            <Label
+                Text="Gateway Shopping Url"
+                Style="{StaticResource HeaderLabelStyle}"/>
+            <Entry
+                Text="{Binding GatewayShoppingEndpoint, Mode=TwoWay}">
+                <Entry.Style>
+                    <OnPlatform x:TypeArguments="Style">
+                        <On Platform="iOS, Android" Value="{StaticResource SettingsEntryStyle}" />
+                        <On Platform="UWP, WinRT, WinPhone" Value="{StaticResource SettingsUwpEntryStyle}" />
+                    </OnPlatform>
+                </Entry.Style>
+            </Entry>
+
+            <Label
+                Text="Gateway Marketing Url"
+                Style="{StaticResource HeaderLabelStyle}"/>
+            <Entry
+                Text="{Binding GatewayMarketingEndpoint, Mode=TwoWay}">
                 <Entry.Style>
                     <OnPlatform x:TypeArguments="Style">
                         <On Platform="iOS, Android" Value="{StaticResource SettingsEntryStyle}" />

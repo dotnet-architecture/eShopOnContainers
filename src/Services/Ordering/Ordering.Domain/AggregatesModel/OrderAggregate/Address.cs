@@ -6,11 +6,11 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
 {
     public class Address : ValueObject
     {
-        public String Street { get; }
-        public String City { get; }
-        public String State { get; }
-        public String Country { get; }
-        public String ZipCode { get; }
+        public String Street { get; private set; }
+        public String City { get; private set; }
+        public String State { get; private set; }
+        public String Country { get; private set; }
+        public String ZipCode { get; private set; }
 
         private Address() { }
 

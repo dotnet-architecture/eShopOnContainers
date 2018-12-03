@@ -3,7 +3,7 @@
 
 <section class="esh-orders_new-section">
     <article class="esh-orders_new-titles row">
-        <section class="esh-orders_new-title col-xs-12">Order details</section>
+        <section class="esh-orders_new-title col-12">Order details</section>
     </article>
 
     @for (int i = 0; i < Model.OrderItems.Count; i++)
@@ -15,32 +15,32 @@
                 <img class="esh-orders_new-image" src="@item.PictureUrl">
                 <input type="hidden" value="@item.PictureUrl" name=@("orderitems[" + i + "].PictureUrl") />
             </section>
-            <section class="esh-orders_new-item esh-orders_new-item--middle col-xs-4">
+            <section class="esh-orders_new-item esh-orders_new-item--middle col-4">
                 @item.ProductName
                 <input type="hidden" value="@item.ProductName" name=@("orderitems[" + i + "].ProductName") />
             </section>
-            <section class="esh-orders_new-item esh-orders_new-item--middle col-xs-1">
+            <section class="esh-orders_new-item esh-orders_new-item--middle col-1">
                 $ @item.UnitPrice.ToString("N2")
                 <input type="hidden" value="@item.UnitPrice" name=@("orderitems[" + i + "].UnitPrice") />
             </section>
-            <section class="esh-orders_new-item esh-orders_new-item--middle col-xs-1">
+            <section class="esh-orders_new-item esh-orders_new-item--middle col-1">
                 @item.Units
                 <input type="hidden" value="@item.Units" name=@("orderitems[" + i + "].Units") />
             </section>
-            <section class="esh-orders_new-item esh-orders_new-item--middle col-xs-2">$ @Math.Round(item.Units * item.UnitPrice, 2).ToString("N2")</section>
+            <section class="esh-orders_new-item esh-orders_new-item--middle col-2">$ @Math.Round(item.Units * item.UnitPrice, 2).ToString("N2")</section>
         </article>
     }
 </section>
 
 <section class="esh-orders_new-section esh-orders_new-section--right">
     <article class="esh-orders_new-titles row">
-        <section class="esh-orders_new-title col-xs-9"></section>
-        <section class="esh-orders_new-title col-xs-2">Total</section>
+        <section class="esh-orders_new-title col-9"></section>
+        <section class="esh-orders_new-title col-2">Total</section>
     </article>
 
     <article class="esh-orders_new-items row">
-        <section class="esh-orders_new-item col-xs-9"></section>
-        <section class="esh-orders_new-item esh-orders_new-item--mark col-xs-2">
+        <section class="esh-orders_new-item col-9"></section>
+        <section class="esh-orders_new-item esh-orders_new-item--mark col-2">
             $ @Model.Total.ToString("N2")
             <input type="hidden" value="@Model.Total" name="Total"/>
         </section>
