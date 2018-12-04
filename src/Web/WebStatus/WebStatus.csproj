@@ -15,5 +15,8 @@
     <PackageReference Include="Microsoft.Extensions.Logging.AzureAppServices" Version="2.2.0-preview3-35497" />
     <PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.0-preview3-35497" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Views\" />
+  </ItemGroup>
 
 </Project>

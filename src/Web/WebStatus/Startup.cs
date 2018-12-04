@@ -26,7 +26,6 @@ namespace WebStatus
             RegisterAppInsights(services);
 
             services.AddOptions();
-            services.AddHealthChecks();
             services.AddHealthChecksUI();
             
             services.AddMvc()
