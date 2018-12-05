@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="38518ece-89c2-4acd-a0fd-656b1e307ada" name="@e469457725ad 2018-11-29 09:07:47" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2018-11-29T09:07:47.0107904+00:00" queuing="2018-11-29T09:07:47.0107911+00:00" start="2018-11-29T09:07:40.0471464+00:00" finish="2018-11-29T09:07:48.5378505+00:00" />
+  <TestSettings name="default" id="65290455-25be-41ac-ae76-614d242990ab">
+    <Deployment runDeploymentRoot="_e469457725ad_2018-11-29_09_07_47" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="9079d887-1d03-4651-bbad-465e5ecbe247" testId="e0c885da-83ce-b300-fe65-41c3a5c5e28f" testName="Marketing.FunctionalTests.CampaignScenarios.Post_add_new_campaign_and_response_ok_status_code" computerName="e469457725ad" duration="00:00:00.2420000" startTime="2018-11-29T09:07:47.7537302+00:00" endTime="2018-11-29T09:07:47.7537324+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9079d887-1d03-4651-bbad-465e5ecbe247" />
+    <UnitTestResult executionId="bac3bbc1-e916-4001-bfc1-4a2b4d578faf" testId="6d91b76f-00a6-9e69-4202-48e6be1280e9" testName="Marketing.FunctionalTests.CampaignScenarios.Delete_delete_campaign_and_response_not_content_status_code" computerName="e469457725ad" duration="00:00:00.5630000" startTime="2018-11-29T09:07:47.5120976+00:00" endTime="2018-11-29T09:07:47.5120997+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="bac3bbc1-e916-4001-bfc1-4a2b4d578faf" />
+    <UnitTestResult executionId="89f0c88d-f352-4fd5-85cd-4dc346996fea" testId="348d43c5-3f68-e1a0-fd14-f5a7c75fe894" testName="Marketing.FunctionalTests.CampaignScenarios.Put_update_campaign_and_response_not_content_status_code" computerName="e469457725ad" duration="00:00:00.2430000" startTime="2018-11-29T09:07:48.3667923+00:00" endTime="2018-11-29T09:07:48.3667945+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="89f0c88d-f352-4fd5-85cd-4dc346996fea" />
+    <UnitTestResult executionId="e4910f38-9f2b-4de5-a3cf-cdefde7af357" testId="b465ea84-27b5-101d-9b64-ecc018001e3e" testName="Marketing.FunctionalTests.UserLocationRoleScenarios.Post_add_new_user_location_rule_and_response_ok_status_code" computerName="e469457725ad" duration="00:00:04.2610000" startTime="2018-11-29T09:07:46.9693733+00:00" endTime="2018-11-29T09:07:46.9693747+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e4910f38-9f2b-4de5-a3cf-cdefde7af357" />
+    <UnitTestResult executionId="a4d3c593-a9cb-4f37-a5b4-3404d5496594" testId="ac8ded60-54fb-4bef-36a0-5ca98eec474b" testName="Marketing.FunctionalTests.UserLocationRoleScenarios.Delete_delete_user_location_role_and_response_not_content_status_code" computerName="e469457725ad" duration="00:00:00.3710000" startTime="2018-11-29T09:07:47.3200667+00:00" endTime="2018-11-29T09:07:47.3200687+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a4d3c593-a9cb-4f37-a5b4-3404d5496594" />
+    <UnitTestResult executionId="d66b1878-5d11-4e5e-a78b-0ab518db2f52" testId="fe5e0cf5-7915-7cc0-9822-1ea6a9002829" testName="Marketing.FunctionalTests.CampaignScenarios.Get_get_campaign_by_id_and_response_ok_status_code" computerName="e469457725ad" duration="00:00:00.1260000" startTime="2018-11-29T09:07:48.1241966+00:00" endTime="2018-11-29T09:07:48.1241985+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d66b1878-5d11-4e5e-a78b-0ab518db2f52" />
+    <UnitTestResult executionId="9eacbc3d-b815-4fd8-a2cf-c9e173057a86" testId="b65e6fb5-507d-2399-aedb-c39bbd53dd13" testName="Marketing.FunctionalTests.CampaignScenarios.Get_get_all_campaigns_and_response_ok_status_code" computerName="e469457725ad" duration="00:00:00.2440000" startTime="2018-11-29T09:07:47.9976626+00:00" endTime="2018-11-29T09:07:47.9976648+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9eacbc3d-b815-4fd8-a2cf-c9e173057a86" />
+    <UnitTestResult executionId="559fc908-d6b4-45c0-b2cc-1ec5ebf98a10" testId="42f7ecfc-c654-ab9c-0945-cfba3b51b47e" testName="Marketing.FunctionalTests.UserLocationRoleScenarios.Get_get_all_user_location_rules_by_campaignId_and_response_ok_status_code" computerName="e469457725ad" duration="00:00:00.4090000" startTime="2018-11-29T09:07:47.7294469+00:00" endTime="2018-11-29T09:07:47.7294490+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="559fc908-d6b4-45c0-b2cc-1ec5ebf98a10" />
+    <UnitTestResult executionId="3d7664b0-c660-41c2-bd10-6241c8bf48bb" testId="cc442a4b-50c1-22da-f021-97ab6639da3e" testName="Marketing.FunctionalTests.CampaignScenarios.Get_get_campaign_by_id_and_response_not_found_status_code" computerName="e469457725ad" duration="00:00:04.2610000" startTime="2018-11-29T09:07:46.9468875+00:00" endTime="2018-11-29T09:07:46.9468901+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3d7664b0-c660-41c2-bd10-6241c8bf48bb" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="Marketing.FunctionalTests.UserLocationRoleScenarios.Get_get_all_user_location_rules_by_campaignId_and_response_ok_status_code" storage="/src/src/services/marketing/marketing.functionaltests/bin/debug/netcoreapp2.1/marketing.functionaltests.dll" id="42f7ecfc-c654-ab9c-0945-cfba3b51b47e">
+      <Execution id="559fc908-d6b4-45c0-b2cc-1ec5ebf98a10" />
+      <TestMethod codeBase="/src/src/Services/Marketing/Marketing.FunctionalTests/bin/Debug/netcoreapp2.1/Marketing.FunctionalTests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Marketing.FunctionalTests" name="Marketing.FunctionalTests.UserLocationRoleScenarios.Get_get_all_user_location_rules_by_campaignId_and_response_ok_status_code" />
+    </UnitTest>
+    <UnitTest name="Marketing.FunctionalTests.CampaignScenarios.Get_get_all_campaigns_and_response_ok_status_code" storage="/src/src/services/marketing/marketing.functionaltests/bin/debug/netcoreapp2.1/marketing.functionaltests.dll" id="b65e6fb5-507d-2399-aedb-c39bbd53dd13">
+      <Execution id="9eacbc3d-b815-4fd8-a2cf-c9e173057a86" />
+      <TestMethod codeBase="/src/src/Services/Marketing/Marketing.FunctionalTests/bin/Debug/netcoreapp2.1/Marketing.FunctionalTests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Marketing.FunctionalTests" name="Marketing.FunctionalTests.CampaignScenarios.Get_get_all_campaigns_and_response_ok_status_code" />
+    </UnitTest>
+    <UnitTest name="Marketing.FunctionalTests.CampaignScenarios.Post_add_new_campaign_and_response_ok_status_code" storage="/src/src/services/marketing/marketing.functionaltests/bin/debug/netcoreapp2.1/marketing.functionaltests.dll" id="e0c885da-83ce-b300-fe65-41c3a5c5e28f">
+      <Execution id="9079d887-1d03-4651-bbad-465e5ecbe247" />
+      <TestMethod codeBase="/src/src/Services/Marketing/Marketing.FunctionalTests/bin/Debug/netcoreapp2.1/Marketing.FunctionalTests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Marketing.FunctionalTests" name="Marketing.FunctionalTests.CampaignScenarios.Post_add_new_campaign_and_response_ok_status_code" />
+    </UnitTest>
+    <UnitTest name="Marketing.FunctionalTests.CampaignScenarios.Get_get_campaign_by_id_and_response_not_found_status_code" storage="/src/src/services/marketing/marketing.functionaltests/bin/debug/netcoreapp2.1/marketing.functionaltests.dll" id="cc442a4b-50c1-22da-f021-97ab6639da3e">
+      <Execution id="3d7664b0-c660-41c2-bd10-6241c8bf48bb" />
+      <TestMethod codeBase="/src/src/Services/Marketing/Marketing.FunctionalTests/bin/Debug/netcoreapp2.1/Marketing.FunctionalTests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Marketing.FunctionalTests" name="Marketing.FunctionalTests.CampaignScenarios.Get_get_campaign_by_id_and_response_not_found_status_code" />
+    </UnitTest>
+    <UnitTest name="Marketing.FunctionalTests.UserLocationRoleScenarios.Post_add_new_user_location_rule_and_response_ok_status_code" storage="/src/src/services/marketing/marketing.functionaltests/bin/debug/netcoreapp2.1/marketing.functionaltests.dll" id="b465ea84-27b5-101d-9b64-ecc018001e3e">
+      <Execution id="e4910f38-9f2b-4de5-a3cf-cdefde7af357" />
+      <TestMethod codeBase="/src/src/Services/Marketing/Marketing.FunctionalTests/bin/Debug/netcoreapp2.1/Marketing.FunctionalTests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Marketing.FunctionalTests" name="Marketing.FunctionalTests.UserLocationRoleScenarios.Post_add_new_user_location_rule_and_response_ok_status_code" />
+    </UnitTest>
+    <UnitTest name="Marketing.FunctionalTests.CampaignScenarios.Get_get_campaign_by_id_and_response_ok_status_code" storage="/src/src/services/marketing/marketing.functionaltests/bin/debug/netcoreapp2.1/marketing.functionaltests.dll" id="fe5e0cf5-7915-7cc0-9822-1ea6a9002829">
+      <Execution id="d66b1878-5d11-4e5e-a78b-0ab518db2f52" />
+      <TestMethod codeBase="/src/src/Services/Marketing/Marketing.FunctionalTests/bin/Debug/netcoreapp2.1/Marketing.FunctionalTests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Marketing.FunctionalTests" name="Marketing.FunctionalTests.CampaignScenarios.Get_get_campaign_by_id_and_response_ok_status_code" />
+    </UnitTest>
+    <UnitTest name="Marketing.FunctionalTests.UserLocationRoleScenarios.Delete_delete_user_location_role_and_response_not_content_status_code" storage="/src/src/services/marketing/marketing.functionaltests/bin/debug/netcoreapp2.1/marketing.functionaltests.dll" id="ac8ded60-54fb-4bef-36a0-5ca98eec474b">
+      <Execution id="a4d3c593-a9cb-4f37-a5b4-3404d5496594" />
+      <TestMethod codeBase="/src/src/Services/Marketing/Marketing.FunctionalTests/bin/Debug/netcoreapp2.1/Marketing.FunctionalTests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Marketing.FunctionalTests" name="Marketing.FunctionalTests.UserLocationRoleScenarios.Delete_delete_user_location_role_and_response_not_content_status_code" />
+    </UnitTest>
+    <UnitTest name="Marketing.FunctionalTests.CampaignScenarios.Put_update_campaign_and_response_not_content_status_code" storage="/src/src/services/marketing/marketing.functionaltests/bin/debug/netcoreapp2.1/marketing.functionaltests.dll" id="348d43c5-3f68-e1a0-fd14-f5a7c75fe894">
+      <Execution id="89f0c88d-f352-4fd5-85cd-4dc346996fea" />
+      <TestMethod codeBase="/src/src/Services/Marketing/Marketing.FunctionalTests/bin/Debug/netcoreapp2.1/Marketing.FunctionalTests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Marketing.FunctionalTests" name="Marketing.FunctionalTests.CampaignScenarios.Put_update_campaign_and_response_not_content_status_code" />
+    </UnitTest>
+    <UnitTest name="Marketing.FunctionalTests.CampaignScenarios.Delete_delete_campaign_and_response_not_content_status_code" storage="/src/src/services/marketing/marketing.functionaltests/bin/debug/netcoreapp2.1/marketing.functionaltests.dll" id="6d91b76f-00a6-9e69-4202-48e6be1280e9">
+      <Execution id="bac3bbc1-e916-4001-bfc1-4a2b4d578faf" />
+      <TestMethod codeBase="/src/src/Services/Marketing/Marketing.FunctionalTests/bin/Debug/netcoreapp2.1/Marketing.FunctionalTests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Marketing.FunctionalTests" name="Marketing.FunctionalTests.CampaignScenarios.Delete_delete_campaign_and_response_not_content_status_code" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="e0c885da-83ce-b300-fe65-41c3a5c5e28f" executionId="9079d887-1d03-4651-bbad-465e5ecbe247" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="6d91b76f-00a6-9e69-4202-48e6be1280e9" executionId="bac3bbc1-e916-4001-bfc1-4a2b4d578faf" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="348d43c5-3f68-e1a0-fd14-f5a7c75fe894" executionId="89f0c88d-f352-4fd5-85cd-4dc346996fea" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b465ea84-27b5-101d-9b64-ecc018001e3e" executionId="e4910f38-9f2b-4de5-a3cf-cdefde7af357" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ac8ded60-54fb-4bef-36a0-5ca98eec474b" executionId="a4d3c593-a9cb-4f37-a5b4-3404d5496594" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="fe5e0cf5-7915-7cc0-9822-1ea6a9002829" executionId="d66b1878-5d11-4e5e-a78b-0ab518db2f52" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b65e6fb5-507d-2399-aedb-c39bbd53dd13" executionId="9eacbc3d-b815-4fd8-a2cf-c9e173057a86" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="42f7ecfc-c654-ab9c-0945-cfba3b51b47e" executionId="559fc908-d6b4-45c0-b2cc-1ec5ebf98a10" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="cc442a4b-50c1-22da-f021-97ab6639da3e" executionId="3d7664b0-c660-41c2-bd10-6241c8bf48bb" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="9" executed="9" passed="9" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:01.0963036]   Discovering: Marketing.FunctionalTests[xUnit.net 00:00:01.1452772]   Discovered:  Marketing.FunctionalTests[xUnit.net 00:00:01.1494340]   Starting:    Marketing.FunctionalTests[xUnit.net 00:00:06.9663675]   Finished:    Marketing.FunctionalTests</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>
