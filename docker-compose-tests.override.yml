@@ -179,25 +179,7 @@ services:
         - dotnet
         - test
         - --logger
-        - trx;LogFileName=/tests/ordering-unit-test-results.xml
-
-  ordering-backgroundtasks-test:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://0.0.0.0:80
-      - ConnectionString=${ESHOP_AZURE_ORDERING_DB:-Server=sql-data-test;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word}
-      - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq-test}
-      - EventBusUserName=${ESHOP_SERVICE_BUS_USERNAME}
-      - EventBusPassword=${ESHOP_SERVICE_BUS_PASSWORD}
-      - UseCustomizationData=True
-      - AzureServiceBusEnabled=False
-      - CheckUpdateTime=30000
-      - GracePeriodTime=1
-      - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
-      - OrchestratorType=${ORCHESTRATOR_TYPE}
-      - UseLoadTest=${USE_LOADTEST:-False}
-    ports:
-      - "5111:80"
+        - trx;LogFileName=/tests/ordering-unit-test-results.xml  
 
   marketing-api-test:
     environment:

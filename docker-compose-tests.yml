@@ -93,17 +93,7 @@ services:
       - sql-data-test
       - rabbitmq-test
     volumes: 
-      - ${BUILD_ARTIFACTSTAGINGDIRECTORY:-./tests-results/}:/tests
-
-  ordering-backgroundtasks-test:
-    image: eshop/ordering-backgroundtasks-test:${TAG:-latest}
-    build:
-      context: .
-      dockerfile: src/Services/Ordering/Ordering.BackgroundTasks/Dockerfile
-      target: functionaltest
-    depends_on:
-      - sql-data-test
-      - rabbitmq-test
+      - ${BUILD_ARTIFACTSTAGINGDIRECTORY:-./tests-results/}:/tests  
 
   marketing-api-test:
     image: eshop/marketing-api-test:${TAG:-latest}
