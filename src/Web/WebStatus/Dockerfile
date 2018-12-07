@@ -1,12 +1,12 @@
-FROM microsoft/aspnetcore:2.0.3 AS base
+FROM microsoft/dotnet:2.1-aspnetcore-runtime AS base
 WORKDIR /app
 EXPOSE 80
 
-FROM microsoft/aspnetcore-build:2.0 AS build
+FROM microsoft/dotnet:2.1-sdk AS build
 WORKDIR /src
 COPY . .
-RUN dotnet restore -nowarn:msb3202,nu1503
 WORKDIR /src/src/Web/WebStatus
+RUN dotnet restore -nowarn:msb3202,nu1503
 RUN dotnet build --no-restore -c Release -o /app
 
 FROM build AS publish
@@ -16,3 +16,4 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
 ENTRYPOINT ["dotnet", "WebStatus.dll"]
+

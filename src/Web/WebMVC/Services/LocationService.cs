@@ -1,11 +1,9 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Http;
-using Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http;
-using Microsoft.eShopOnContainers.WebMVC;
+﻿using Microsoft.eShopOnContainers.WebMVC;
 using Microsoft.eShopOnContainers.WebMVC.Services;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using System;
+using Newtonsoft.Json;
+using System.Net.Http;
 using System.Threading.Tasks;
 using WebMVC.Infrastructure;
 using WebMVC.Models;
@@ -14,36 +12,27 @@ namespace WebMVC.Services
 {
     public class LocationService : ILocationService
     {
-        private readonly IOptionsSnapshot<AppSettings> _settings;
-        private readonly IHttpClient _apiClient;
+        private readonly IOptions<AppSettings> _settings;
+        private readonly HttpClient _httpClient;
         private readonly ILogger<CampaignService> _logger;
         private readonly string _remoteServiceBaseUrl;
-        private readonly IHttpContextAccessor _httpContextAccesor;
 
-        public LocationService(IOptionsSnapshot<AppSettings> settings, IHttpClient httpClient,
-            ILogger<CampaignService> logger, IHttpContextAccessor httpContextAccesor)
+        public LocationService(HttpClient httpClient, IOptions<AppSettings> settings, ILogger<CampaignService> logger)
         {
+            _httpClient = httpClient;
             _settings = settings;
-            _apiClient = httpClient;
             _logger = logger;
 
-            _remoteServiceBaseUrl = $"{_settings.Value.LocationsUrl}/api/v1/locations/";
-            _httpContextAccesor = httpContextAccesor ?? throw new ArgumentNullException(nameof(httpContextAccesor));
+            _remoteServiceBaseUrl = $"{_settings.Value.MarketingUrl}/api/v1/l/locations/";
         }
 
         public async Task CreateOrUpdateUserLocation(LocationDTO location)
         {
-            var createOrUpdateUserLocationUri = API.Locations.CreateOrUpdateUserLocation(_remoteServiceBaseUrl);
+            var uri = API.Locations.CreateOrUpdateUserLocation(_remoteServiceBaseUrl);
+            var locationContent = new StringContent(JsonConvert.SerializeObject(location), System.Text.Encoding.UTF8, "application/json");
 
-            var authorizationToken = await GetUserTokenAsync();
-            var response = await _apiClient.PostAsync(createOrUpdateUserLocationUri, location, authorizationToken);
+            var response = await _httpClient.PostAsync(uri, locationContent);
             response.EnsureSuccessStatusCode();
-        }      
-
-        private async Task<string> GetUserTokenAsync()
-        {
-            var context = _httpContextAccesor.HttpContext;
-            return await context.GetTokenAsync("access_token");
         }
     }
 }

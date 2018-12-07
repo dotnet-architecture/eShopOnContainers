@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using System;
 using System.IO;
 namespace Microsoft.eShopOnContainers.Services.Catalog.API
 {
@@ -38,7 +39,21 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
                 .UseWebRoot("Pics")
                 .ConfigureAppConfiguration((builderContext, config) =>
                 {
-                    config.AddEnvironmentVariables();
+                    var builtConfig = config.Build();
+
+                    var configurationBuilder = new ConfigurationBuilder();
+
+                    if (Convert.ToBoolean(builtConfig["UseVault"]))
+                    {
+                        configurationBuilder.AddAzureKeyVault(
+                            $"https://{builtConfig["Vault:Name"]}.vault.azure.net/",
+                            builtConfig["Vault:ClientId"],
+                            builtConfig["Vault:ClientSecret"]);
+                    }
+
+                    configurationBuilder.AddEnvironmentVariables();
+
+                    config.AddConfiguration(configurationBuilder.Build());
                 })
                 .ConfigureLogging((hostingContext, builder) =>
                 {

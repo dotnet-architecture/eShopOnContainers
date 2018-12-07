@@ -11,5 +11,6 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.B
         Buyer Add(Buyer buyer);
         Buyer Update(Buyer buyer);
         Task<Buyer> FindAsync(string BuyerIdentityGuid);
+        Task<Buyer> FindByIdAsync(string id);
     }
 }

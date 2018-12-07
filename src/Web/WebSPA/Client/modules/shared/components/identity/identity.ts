@@ -1,8 +1,9 @@
 import { Component, OnInit, OnChanges, Output, Input, EventEmitter } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 
 import { IIdentity } from '../../models/identity.model';
-import { SecurityService } from  '../../services/security.service';
+import { SecurityService } from '../../services/security.service';
+import { SignalrService } from '../../services/signalr.service';
 
 @Component({
     selector: 'esh-identity',
@@ -14,7 +15,7 @@ export class Identity implements OnInit  {
     private subscription: Subscription;
     private userName: string = '';
 
-    constructor(private service: SecurityService) {
+    constructor(private service: SecurityService, private signalrService: SignalrService) {
 
     }
 
@@ -48,6 +49,7 @@ export class Identity implements OnInit  {
     }
 
     logout() {
+        this.signalrService.stop();
         this.service.Logoff();
     }
 }

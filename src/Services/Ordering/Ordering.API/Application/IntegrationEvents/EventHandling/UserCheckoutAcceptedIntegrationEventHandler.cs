@@ -11,15 +11,13 @@ namespace Ordering.API.Application.IntegrationEvents.EventHandling
     public class UserCheckoutAcceptedIntegrationEventHandler : IIntegrationEventHandler<UserCheckoutAcceptedIntegrationEvent>
     {
         private readonly IMediator _mediator;
-        private readonly ILoggerFactory _logger;
-        private readonly IOrderingIntegrationEventService _orderingIntegrationEventService;
+        private readonly ILoggerFactory _logger;        
 
         public UserCheckoutAcceptedIntegrationEventHandler(IMediator mediator,
-            ILoggerFactory logger, IOrderingIntegrationEventService orderingIntegrationEventService)
+            ILoggerFactory logger)
         {
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _orderingIntegrationEventService = orderingIntegrationEventService ?? throw new ArgumentNullException(nameof(orderingIntegrationEventService));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));          
         }
 
         /// <summary>
@@ -34,14 +32,10 @@ namespace Ordering.API.Application.IntegrationEvents.EventHandling
         public async Task Handle(UserCheckoutAcceptedIntegrationEvent eventMsg)
         {
             var result = false;
-
-            // Send Integration event to clean basket once basket is converted to Order and before starting with the order creation process
-            var orderStartedIntegrationEvent = new OrderStartedIntegrationEvent(eventMsg.UserId);
-            await _orderingIntegrationEventService.PublishThroughEventBusAsync(orderStartedIntegrationEvent);
-
+           
             if (eventMsg.RequestId != Guid.Empty)
             {
-                var createOrderCommand = new CreateOrderCommand(eventMsg.Basket.Items, eventMsg.UserId, eventMsg.City, eventMsg.Street, 
+                var createOrderCommand = new CreateOrderCommand(eventMsg.Basket.Items, eventMsg.UserId, eventMsg.UserName, eventMsg.City, eventMsg.Street, 
                     eventMsg.State, eventMsg.Country, eventMsg.ZipCode,
                     eventMsg.CardNumber, eventMsg.CardHolderName, eventMsg.CardExpiration,
                     eventMsg.CardSecurityNumber, eventMsg.CardTypeId);

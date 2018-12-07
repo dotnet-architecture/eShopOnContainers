@@ -4,24 +4,24 @@
     using System.Threading.Tasks;
     using Events;
     using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
+    using MediatR;
+    using System;
+    using Ordering.API.Application.Commands;
 
     public class OrderStockConfirmedIntegrationEventHandler : 
         IIntegrationEventHandler<OrderStockConfirmedIntegrationEvent>
     {
-        private readonly IOrderRepository _orderRepository;
+        private readonly IMediator _mediator;
 
-        public OrderStockConfirmedIntegrationEventHandler(IOrderRepository orderRepository)
+        public OrderStockConfirmedIntegrationEventHandler(IMediator mediator)
         {
-            _orderRepository = orderRepository;
+            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
 
         public async Task Handle(OrderStockConfirmedIntegrationEvent @event)
         {
-            var orderToUpdate = await _orderRepository.GetAsync(@event.OrderId);
-
-            orderToUpdate.SetStockConfirmedStatus();
-
-            await _orderRepository.UnitOfWork.SaveEntitiesAsync();
+            var command = new SetStockConfirmedOrderStatusCommand(@event.OrderId);
+            await _mediator.Send(command);
         }
     }
 }

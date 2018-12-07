@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace EventBus.Tests
 {
-    public class TestIntegrationOtherEventHandler : IIntegrationEventHandler<TestIntegrationEvent>
+    public class TestIntegrationEventHandler : IIntegrationEventHandler<TestIntegrationEvent>
     {
         public bool Handled { get; private set; }
 
-        public TestIntegrationOtherEventHandler()
+        public TestIntegrationEventHandler()
         {
             Handled = false;
         }

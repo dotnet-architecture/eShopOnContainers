@@ -1,13 +1,15 @@
-FROM microsoft/aspnetcore:2.0.3 AS base
+FROM microsoft/dotnet:2.1-aspnetcore-runtime AS base
 WORKDIR /app
 EXPOSE 80
 
-FROM microsoft/aspnetcore-build:2.0 AS build
+FROM microsoft/dotnet:2.1-sdk as dotnet-build
+WORKDIR /src
+
+FROM dotnet-build as build
 WORKDIR /src
 COPY . .
-RUN dotnet restore -nowarn:msb3202,nu1503
 WORKDIR /src/src/Web/WebMVC
-RUN dotnet build --no-restore -c Release -o /app
+RUN dotnet restore -nowarn:msb3202,nu1503
 
 FROM build AS publish
 RUN dotnet publish --no-restore -c Release -o /app

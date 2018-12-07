@@ -9,12 +9,8 @@ import { SecurityService } from '../shared/services/security.service';
 import { ConfigurationService } from '../shared/services/configuration.service';
 import { BasketWrapperService } from '../shared/services/basket.wrapper.service';
 
-import 'rxjs/Rx';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/throw';
-import { Observer } from 'rxjs/Observer';
-import 'rxjs/add/operator/map';
-
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class OrdersService {
@@ -22,26 +18,26 @@ export class OrdersService {
 
     constructor(private service: DataService, private basketService: BasketWrapperService, private identityService: SecurityService, private configurationService: ConfigurationService) {
         if (this.configurationService.isReady)
-            this.ordersUrl = this.configurationService.serverSettings.orderingUrl;
+            this.ordersUrl = this.configurationService.serverSettings.purchaseUrl;
         else
-            this.configurationService.settingsLoaded$.subscribe(x => this.ordersUrl = this.configurationService.serverSettings.orderingUrl);
+            this.configurationService.settingsLoaded$.subscribe(x => this.ordersUrl = this.configurationService.serverSettings.purchaseUrl);
 
     }
 
     getOrders(): Observable<IOrder[]> {
-        let url = this.ordersUrl + '/api/v1/orders';
+        let url = this.ordersUrl + '/api/v1/o/orders';
 
-        return this.service.get(url).map((response: Response) => {
-            return response.json();
-        });
+        return this.service.get(url).pipe(map((response: Response) => {
+            return response;
+        }));
     }
 
     getOrder(id: number): Observable<IOrderDetail> {
-        let url = this.ordersUrl + '/api/v1/orders/' + id;
+        let url = this.ordersUrl + '/api/v1/o/orders/' + id;
 
-        return this.service.get(url).map((response: Response) => {
-            return response.json();
-        });
+        return this.service.get(url).pipe(map((response: Response) => {
+            return response;
+        }));
     }
 
     mapOrderAndIdentityInfoNewOrder(): IOrder {

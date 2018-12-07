@@ -1,11 +1,9 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Http;
-using Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http;
-using Microsoft.eShopOnContainers.WebMVC.ViewModels;
+﻿using Microsoft.eShopOnContainers.WebMVC.ViewModels;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
 using WebMVC.Infrastructure;
 using WebMVC.Models;
@@ -14,69 +12,54 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
 {
     public class OrderingService : IOrderingService
     {
-        private IHttpClient _apiClient;
+        private HttpClient _httpClient;
         private readonly string _remoteServiceBaseUrl;
-        private readonly IOptionsSnapshot<AppSettings> _settings;
-        private readonly IHttpContextAccessor _httpContextAccesor;
+        private readonly IOptions<AppSettings> _settings;
 
-        public OrderingService(IOptionsSnapshot<AppSettings> settings, IHttpContextAccessor httpContextAccesor, IHttpClient httpClient)
+
+        public OrderingService(HttpClient httpClient, IOptions<AppSettings> settings)
         {
-            _remoteServiceBaseUrl = $"{settings.Value.OrderingUrl}/api/v1/orders";
+            _httpClient = httpClient;
             _settings = settings;
-            _httpContextAccesor = httpContextAccesor;
-            _apiClient = httpClient;
+
+            _remoteServiceBaseUrl = $"{settings.Value.PurchaseUrl}/api/v1/o/orders";
         }
 
         async public Task<Order> GetOrder(ApplicationUser user, string id)
         {
-            var token = await GetUserTokenAsync();
-            var getOrderUri = API.Order.GetOrder(_remoteServiceBaseUrl, id);
+            var uri = API.Order.GetOrder(_remoteServiceBaseUrl, id);
 
-            var dataString = await _apiClient.GetStringAsync(getOrderUri, token);
+            var responseString = await _httpClient.GetStringAsync(uri);
 
-            var response = JsonConvert.DeserializeObject<Order>(dataString);
+            var response = JsonConvert.DeserializeObject<Order>(responseString);
 
             return response;
         }
 
         async public Task<List<Order>> GetMyOrders(ApplicationUser user)
         {
-            var token = await GetUserTokenAsync();
-            var allMyOrdersUri = API.Order.GetAllMyOrders(_remoteServiceBaseUrl);
+            var uri = API.Order.GetAllMyOrders(_remoteServiceBaseUrl);
 
-            var dataString = await _apiClient.GetStringAsync(allMyOrdersUri, token);
-            var response = JsonConvert.DeserializeObject<List<Order>>(dataString);
+            var responseString = await _httpClient.GetStringAsync(uri);
+
+            var response = JsonConvert.DeserializeObject<List<Order>>(responseString);
 
             return response;
         }
 
-        public Order MapUserInfoIntoOrder(ApplicationUser user, Order order)
-        {
-            order.City = user.City;
-            order.Street = user.Street;
-            order.State = user.State;
-            order.Country = user.Country;
-            order.ZipCode = user.ZipCode;
 
-            order.CardNumber = user.CardNumber;
-            order.CardHolderName = user.CardHolderName;
-            order.CardExpiration = new DateTime(int.Parse("20" + user.Expiration.Split('/')[1]), int.Parse(user.Expiration.Split('/')[0]), 1);
-            order.CardSecurityNumber = user.SecurityNumber;
-
-            return order;
-        }
 
         async public Task CancelOrder(string orderId)
         {
-            var token = await GetUserTokenAsync();
             var order = new OrderDTO()
             {
                 OrderNumber = orderId
             };
 
-            var cancelOrderUri = API.Order.CancelOrder(_remoteServiceBaseUrl);
-            
-            var response = await _apiClient.PutAsync(cancelOrderUri, order, token, Guid.NewGuid().ToString());
+            var uri = API.Order.CancelOrder(_remoteServiceBaseUrl);
+            var orderContent = new StringContent(JsonConvert.SerializeObject(order), System.Text.Encoding.UTF8, "application/json");
+
+            var response = await _httpClient.PutAsync(uri, orderContent);
 
             if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
             {
@@ -88,15 +71,15 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
 
         async public Task ShipOrder(string orderId)
         {
-            var token = await GetUserTokenAsync();
             var order = new OrderDTO()
             {
                 OrderNumber = orderId
             };
 
-            var shipOrderUri = API.Order.ShipOrder(_remoteServiceBaseUrl);
+            var uri = API.Order.ShipOrder(_remoteServiceBaseUrl);
+            var orderContent = new StringContent(JsonConvert.SerializeObject(order), System.Text.Encoding.UTF8, "application/json");
 
-            var response = await _apiClient.PutAsync(shipOrderUri, order, token, Guid.NewGuid().ToString());
+            var response = await _httpClient.PutAsync(uri, orderContent);
 
             if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
             {
@@ -120,6 +103,22 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
             destination.CardSecurityNumber = original.CardSecurityNumber;
         }
 
+        public Order MapUserInfoIntoOrder(ApplicationUser user, Order order)
+        {
+            order.City = user.City;
+            order.Street = user.Street;
+            order.State = user.State;
+            order.Country = user.Country;
+            order.ZipCode = user.ZipCode;
+
+            order.CardNumber = user.CardNumber;
+            order.CardHolderName = user.CardHolderName;
+            order.CardExpiration = new DateTime(int.Parse("20" + user.Expiration.Split('/')[1]), int.Parse(user.Expiration.Split('/')[0]), 1);
+            order.CardSecurityNumber = user.SecurityNumber;
+
+            return order;
+        }
+
         public BasketDTO MapOrderToBasket(Order order)
         {
             order.CardExpirationApiFormat();
@@ -140,18 +139,5 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
                 RequestId = order.RequestId
             };
         }
-
-        void SetFakeIdToProducts(Order order)
-        {
-            var id = 1;
-            order.OrderItems.ForEach(x => { x.ProductId = id; id++; });
-        }
-
-        async Task<string> GetUserTokenAsync()
-        {
-            var context = _httpContextAccesor.HttpContext;
-
-            return await context.GetTokenAsync("access_token");
-        }        
     }
 }

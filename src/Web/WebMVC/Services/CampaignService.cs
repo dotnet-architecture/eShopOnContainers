@@ -1,69 +1,49 @@
 ﻿namespace Microsoft.eShopOnContainers.WebMVC.Services
 {
     using global::WebMVC.Infrastructure;
-    using AspNetCore.Authentication;
-    using AspNetCore.Http;
-    using BuildingBlocks.Resilience.Http;
-    using ViewModels;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
     using Newtonsoft.Json;
-    using System;
+    using System.Net.Http;
     using System.Threading.Tasks;
+    using ViewModels;
 
     public class CampaignService : ICampaignService
     {
-        private readonly IOptionsSnapshot<AppSettings> _settings;
-        private readonly IHttpClient _apiClient;
+        private readonly IOptions<AppSettings> _settings;
+        private readonly HttpClient _httpClient;
         private readonly ILogger<CampaignService> _logger;
         private readonly string _remoteServiceBaseUrl;
-        private readonly IHttpContextAccessor _httpContextAccesor;
 
-        public CampaignService(IOptionsSnapshot<AppSettings> settings, IHttpClient httpClient,
-            ILogger<CampaignService> logger, IHttpContextAccessor httpContextAccesor)
+        public CampaignService(IOptions<AppSettings> settings, HttpClient httpClient, ILogger<CampaignService> logger)
         {
             _settings = settings;
-            _apiClient = httpClient;
+            _httpClient = httpClient;
             _logger = logger;
 
-            _remoteServiceBaseUrl = $"{_settings.Value.MarketingUrl}/api/v1/campaigns/";
-            _httpContextAccesor = httpContextAccesor ?? throw new ArgumentNullException(nameof(httpContextAccesor));
+            _remoteServiceBaseUrl = $"{_settings.Value.MarketingUrl}/api/v1/m/campaigns/";
         }
 
         public async Task<Campaign> GetCampaigns(int pageSize, int pageIndex)
         {
-            var allCampaignItemsUri = API.Marketing.GetAllCampaigns(_remoteServiceBaseUrl, 
-                pageSize, pageIndex);
+            var uri = API.Marketing.GetAllCampaigns(_remoteServiceBaseUrl, pageSize, pageIndex);
 
-            var authorizationToken = await GetUserTokenAsync();
-            var dataString = await _apiClient.GetStringAsync(allCampaignItemsUri, authorizationToken);
+            var responseString = await _httpClient.GetStringAsync(uri);
 
-            var response = JsonConvert.DeserializeObject<Campaign>(dataString);
+            var response = JsonConvert.DeserializeObject<Campaign>(responseString);
 
             return response;
         }
 
         public async Task<CampaignItem> GetCampaignById(int id)
         {
-            var campaignByIdItemUri = API.Marketing.GetAllCampaignById(_remoteServiceBaseUrl, id);
+            var uri = API.Marketing.GetAllCampaignById(_remoteServiceBaseUrl, id);
 
-            var authorizationToken = await GetUserTokenAsync();
-            var dataString = await _apiClient.GetStringAsync(campaignByIdItemUri, authorizationToken);
+            var responseString = await _httpClient.GetStringAsync(uri);
 
-            var response = JsonConvert.DeserializeObject<CampaignItem>(dataString);
+            var response = JsonConvert.DeserializeObject<CampaignItem>(responseString);
 
             return response;
-        }
-
-        private string GetUserIdentity()
-        {
-            return _httpContextAccesor.HttpContext.User.FindFirst("sub").Value;
-        }
-
-        private async Task<string> GetUserTokenAsync()
-        {
-            var context = _httpContextAccesor.HttpContext;
-            return await context.GetTokenAsync("access_token");
         }
     }
 }

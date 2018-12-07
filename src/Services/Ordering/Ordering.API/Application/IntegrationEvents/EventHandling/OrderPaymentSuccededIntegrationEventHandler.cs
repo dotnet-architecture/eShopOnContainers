@@ -1,27 +1,27 @@
 ﻿namespace Ordering.API.Application.IntegrationEvents.EventHandling
 {
+    using MediatR;
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
     using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
+    using Ordering.API.Application.Commands;
     using Ordering.API.Application.IntegrationEvents.Events;
+    using System;
     using System.Threading.Tasks;
 
     public class OrderPaymentSuccededIntegrationEventHandler : 
         IIntegrationEventHandler<OrderPaymentSuccededIntegrationEvent>
     {
-        private readonly IOrderRepository _orderRepository;
+        private readonly IMediator _mediator;
 
-        public OrderPaymentSuccededIntegrationEventHandler(IOrderRepository orderRepository)
+        public OrderPaymentSuccededIntegrationEventHandler(IMediator mediator)
         {
-            _orderRepository = orderRepository;
+            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
 
         public async Task Handle(OrderPaymentSuccededIntegrationEvent @event)
         {
-            var orderToUpdate = await _orderRepository.GetAsync(@event.OrderId);
-
-            orderToUpdate.SetPaidStatus();
-
-            await _orderRepository.UnitOfWork.SaveEntitiesAsync();
+            var command = new SetPaidOrderStatusCommand(@event.OrderId);
+            await _mediator.Send(command);
         }
     }
 }

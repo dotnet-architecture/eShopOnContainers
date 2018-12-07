@@ -1,5 +1,5 @@
 import { Injectable }               from '@angular/core';
-import { Response, Headers }        from '@angular/http';
+import { Response }                 from '@angular/http';
 import { Router }                   from '@angular/router';
 
 import { DataService }              from '../shared/services/data.service';
@@ -7,22 +7,17 @@ import { SecurityService }          from '../shared/services/security.service';
 import { IBasket } from '../shared/models/basket.model';
 import { IOrder } from '../shared/models/order.model';
 import { IBasketCheckout } from '../shared/models/basketCheckout.model';
-import { IBasketItem }              from '../shared/models/basketItem.model';
 import { BasketWrapperService }     from '../shared/services/basket.wrapper.service';
 import { ConfigurationService }     from '../shared/services/configuration.service';
 import { StorageService }           from '../shared/services/storage.service';
 
-import 'rxjs/Rx';
-import { Observable }               from 'rxjs/Observable';
-import 'rxjs/add/observable/throw';
-import { Observer }                 from 'rxjs/Observer';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
-import { Subject }                  from 'rxjs/Subject';
+import { Observable, Observer, Subject }      from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 
 @Injectable()
 export class BasketService {
     private basketUrl: string = '';
+    private purchaseUrl: string = '';
     basket: IBasket = {
         buyerId: '',
         items: []
@@ -40,12 +35,14 @@ export class BasketService {
             if (this.authService.UserData) {
                 this.basket.buyerId = this.authService.UserData.sub;
                 if (this.configurationService.isReady) {
-                    this.basketUrl = this.configurationService.serverSettings.basketUrl;
+                    this.basketUrl = this.configurationService.serverSettings.purchaseUrl; 
+                    this.purchaseUrl = this.configurationService.serverSettings.purchaseUrl;
                     this.loadData();
                 }
                 else {
                     this.configurationService.settingsLoaded$.subscribe(x => {
-                        this.basketUrl = this.configurationService.serverSettings.basketUrl;
+                        this.basketUrl = this.configurationService.serverSettings.purchaseUrl;
+                        this.purchaseUrl = this.configurationService.serverSettings.purchaseUrl;
                         this.loadData();
                     });
                 }
@@ -63,30 +60,29 @@ export class BasketService {
     }
 
     setBasket(basket): Observable<boolean> {
-        let url = this.basketUrl + '/api/v1/basket/';
+        let url = this.purchaseUrl + '/api/v1/basket/';
         this.basket = basket;
-        return this.service.post(url, basket).map((response: Response) => {
+        return this.service.post(url, basket).pipe(map((response: Response) => {
             return true;
-        });
+        }));
     }
 
     setBasketCheckout(basketCheckout): Observable<boolean> {
-        let url = this.basketUrl + '/api/v1/basket/checkout';
-        return this.service.postWithId(url, basketCheckout).map((response: Response) => {
+        let url = this.basketUrl + '/api/v1/b/basket/checkout';
+        return this.service.postWithId(url, basketCheckout).pipe(map((response: Response) => {
             this.basketEvents.orderCreated();
             return true;
-        });
+        }));
     }
 
     getBasket(): Observable<IBasket> {
-        let url = this.basketUrl + '/api/v1/basket/' + this.basket.buyerId;
-        return this.service.get(url).map((response: Response) => {
+        let url = this.basketUrl + '/api/v1/b/basket/' + this.basket.buyerId;
+        return this.service.get(url).pipe(map((response: Response) => {
             if (response.status === 204) {
                 return null;
             }
-
-            return response.json();
-        });
+            return response;
+        }));
     }    
 
     mapBasketInfoCheckout(order: IOrder): IBasketCheckout {

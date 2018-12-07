@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-import 'rxjs/Rx';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/throw';
+import { Observable } from 'rxjs';
 
 import { BasketService } from './basket.service';
 import { IBasket } from '../shared/models/basket.model';
@@ -52,8 +50,7 @@ export class BasketComponent implements OnInit {
                 x => {
                     this.errorMessages = [];
                     this.basketwrapper.basket = this.basket;
-                    this.router.navigate(['order'],
-                errMessage => this.errorMessages = errMessage.messages);
+                    this.router.navigate(['order']);
         });
     }
 

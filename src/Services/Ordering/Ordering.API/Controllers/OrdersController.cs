@@ -14,6 +14,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Controllers
 {
     [Route("api/v1/[controller]")]
     [Authorize]
+    [ApiController]
     public class OrdersController : Controller
     {
         private readonly IMediator _mediator;
@@ -86,8 +87,8 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Controllers
         [ProducesResponseType(typeof(IEnumerable<OrderSummary>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetOrders()
         {
-            var orders = await _orderQueries.GetOrdersAsync();
-
+            var userid = _identityService.GetUserIdentity();
+            var orders = await _orderQueries.GetOrdersFromUserAsync(Guid.Parse(userid));
             return Ok(orders);
         }
 
@@ -101,6 +102,14 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Controllers
 
             return Ok(cardTypes);
         }        
+
+        [Route("draft")]
+        [HttpPost]
+        public async Task<IActionResult> GetOrderDraftFromBasketData([FromBody] CreateOrderDraftCommand createOrderDraftCommand)
+        {
+            var draft  = await _mediator.Send(createOrderDraftCommand);
+            return Ok(draft);
+        }
     }
 }
 

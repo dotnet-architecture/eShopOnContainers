@@ -11,21 +11,9 @@ spec:
   rules:
   - http:
       paths:
-      - path: /basket-api 
-        backend:
-          serviceName: basket
-          servicePort: 80
-      - path: /catalog-api 
-        backend:
-          serviceName: catalog
-          servicePort: 80
       - path: /identity
         backend:
           serviceName: identity
-          servicePort: 80
-      - path: /ordering-api
-        backend:
-          serviceName: ordering
           servicePort: 80
       - path: /webmvc
         backend:
@@ -35,21 +23,37 @@ spec:
         backend:
           serviceName: webstatus
           servicePort: 80
-      - path: /marketing-api
+      - path: /webshoppingapigw 
         backend:
-          serviceName: marketing
+          serviceName: ocelotapigw-ws
+          servicePort: 80          
+      - path: /webmarketingapigw
+        backend:
+          serviceName: ocelotapigw-wm
+          servicePort: 80
+      - path: /mobilemarketingapigw
+        backend:
+          serviceName: ocelotapigw-mm
+          servicePort: 80                    
+      - path: /mobileshoppingapigw
+        backend:
+          serviceName: ocelotapigw-ms
+          servicePort: 80          
+      - path: /webshoppingagg
+        backend:
+          serviceName: webshoppingagg
+          servicePort: 80
+      - path: /mobileshoppingagg
+        backend:
+          serviceName: mobileshoppingagg
           servicePort: 80
       - path: /payment-api
         backend:
           serviceName: payment
-          servicePort: 80
-      - path: /locations-api
-        backend:
-          serviceName: locations
-          servicePort: 80
+          servicePort: 80                      
       - path: /
         backend:
           serviceName: webspa
           servicePort: 80
-          
+                    
 
