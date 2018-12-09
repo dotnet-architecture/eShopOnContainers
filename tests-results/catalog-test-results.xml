@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="e380625d-16e5-49cd-944f-9ec6dea3a534" name="@3773afd31eec 2018-12-05 11:24:03" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2018-12-05T11:24:03.2781261+00:00" queuing="2018-12-05T11:24:03.2781270+00:00" start="2018-12-05T11:23:32.0461930+00:00" finish="2018-12-05T11:24:11.2871593+00:00" />
+  <TestSettings name="default" id="f4f579f9-05a0-4097-a3f3-f9dfa1c5fc22">
+    <Deployment runDeploymentRoot="_3773afd31eec_2018-12-05_11_24_03" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="7627e97a-ef37-4a9b-b3bf-831d462fd492" testId="5eb4d579-2cb5-5f78-2e18-16e03c3f7383" testName="Catalog.FunctionalTests.CatalogScenarios.Get_get_paginated_filtered_catalog_items_and_response_ok_status_code" computerName="3773afd31eec" duration="00:00:00.8630000" startTime="2018-12-05T11:24:07.1639284+00:00" endTime="2018-12-05T11:24:07.1639318+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7627e97a-ef37-4a9b-b3bf-831d462fd492" />
+    <UnitTestResult executionId="0fee9d77-1650-4141-8ee6-d928accb140f" testId="2098f087-bc1f-3220-4cc1-67f39aa69a42" testName="Catalog.FunctionalTests.CatalogScenarios.Get_get_catalogitem_by_id_and_response_bad_request_status_code" computerName="3773afd31eec" duration="00:00:00.6480000" startTime="2018-12-05T11:24:08.3220470+00:00" endTime="2018-12-05T11:24:08.3220496+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0fee9d77-1650-4141-8ee6-d928accb140f" />
+    <UnitTestResult executionId="3de0a499-cded-43da-a582-2c4cf5e16ca9" testId="95c21500-9ed5-4391-9d7f-aebfd9190a11" testName="Catalog.FunctionalTests.CatalogScenarios.Get_get_filtered_catalog_items_and_response_ok_status_code" computerName="3773afd31eec" duration="00:00:00.8980000" startTime="2018-12-05T11:24:06.2955434+00:00" endTime="2018-12-05T11:24:06.2955469+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3de0a499-cded-43da-a582-2c4cf5e16ca9" />
+    <UnitTestResult executionId="267805fc-cddd-41f9-a16b-7188226aae18" testId="54a38b91-4242-ca21-909c-b632c74bc378" testName="Catalog.FunctionalTests.CatalogScenarios.Get_get_catalogitem_by_name_and_response_ok_status_code" computerName="3773afd31eec" duration="00:00:00.8000000" startTime="2018-12-05T11:24:10.3388056+00:00" endTime="2018-12-05T11:24:10.3388081+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="267805fc-cddd-41f9-a16b-7188226aae18" />
+    <UnitTestResult executionId="a65654f5-92c9-4819-96d1-8d20e6448c22" testId="8b3ccbdd-cacd-e530-8e30-2c496c5b54d7" testName="Catalog.FunctionalTests.CatalogScenarios.Get_catalog_brands_response_ok_status_code" computerName="3773afd31eec" duration="00:00:00.4300000" startTime="2018-12-05T11:24:10.7713399+00:00" endTime="2018-12-05T11:24:10.7713434+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a65654f5-92c9-4819-96d1-8d20e6448c22" />
+    <UnitTestResult executionId="7ba54f92-cc72-4be8-85d1-8b04a12b7c57" testId="0606c0fc-b6b0-1185-6890-3ad909738a66" testName="Catalog.FunctionalTests.CatalogScenarios.Get_catalog_types_response_ok_status_code" computerName="3773afd31eec" duration="00:00:00.5540000" startTime="2018-12-05T11:24:09.5410174+00:00" endTime="2018-12-05T11:24:09.5410203+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7ba54f92-cc72-4be8-85d1-8b04a12b7c57" />
+    <UnitTestResult executionId="127defdc-eead-4b18-98e8-bb4a80f6d9a5" testId="78871366-7f13-cf9e-a618-4298c2fb3e63" testName="Catalog.FunctionalTests.CatalogScenarios.Get_get_catalogitem_by_id_and_response_ok_status_code" computerName="3773afd31eec" duration="00:00:19.2330000" startTime="2018-12-05T11:24:03.0044366+00:00" endTime="2018-12-05T11:24:03.0044408+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="127defdc-eead-4b18-98e8-bb4a80f6d9a5" />
+    <UnitTestResult executionId="1ed13bda-347c-40c8-b22d-bf148423331a" testId="5ddae08d-62ee-6680-a77c-640b5af2e809" testName="Catalog.FunctionalTests.CatalogScenarios.Get_get_paginated_catalog_items_and_response_ok_status_code" computerName="3773afd31eec" duration="00:00:00.6640000" startTime="2018-12-05T11:24:08.9852118+00:00" endTime="2018-12-05T11:24:08.9852149+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1ed13bda-347c-40c8-b22d-bf148423331a" />
+    <UnitTestResult executionId="44e01d30-5f3a-42de-8671-1b0e542043de" testId="73afd2bb-85ac-239d-a889-a35ecbb96b02" testName="Catalog.FunctionalTests.CatalogScenarios.Get_get_catalogitem_by_id_and_response_not_found_status_code" computerName="3773afd31eec" duration="00:00:00.7330000" startTime="2018-12-05T11:24:05.4140150+00:00" endTime="2018-12-05T11:24:05.4140190+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="44e01d30-5f3a-42de-8671-1b0e542043de" />
+    <UnitTestResult executionId="c24ac03b-44a6-44eb-8e62-e77254199297" testId="1b373321-94b2-88eb-53a2-36d186286a1f" testName="Catalog.FunctionalTests.CatalogScenarios.Get_get_all_catalogitems_and_response_ok_status_code" computerName="3773afd31eec" duration="00:00:00.5140000" startTime="2018-12-05T11:24:07.6804365+00:00" endTime="2018-12-05T11:24:07.6804402+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c24ac03b-44a6-44eb-8e62-e77254199297" />
+    <UnitTestResult executionId="188a98f4-e551-46b5-8954-81ec68261133" testId="c61af54f-3a98-9867-2720-4af9bf810653" testName="Catalog.FunctionalTests.CatalogScenarios.Get_get_paginated_catalogitem_by_name_and_response_ok_status_code" computerName="3773afd31eec" duration="00:00:01.5720000" startTime="2018-12-05T11:24:04.6656166+00:00" endTime="2018-12-05T11:24:04.6656202+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="188a98f4-e551-46b5-8954-81ec68261133" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="Catalog.FunctionalTests.CatalogScenarios.Get_get_catalogitem_by_id_and_response_bad_request_status_code" storage="/src/src/services/catalog/catalog.functionaltests/bin/debug/netcoreapp2.1/catalog.functionaltests.dll" id="2098f087-bc1f-3220-4cc1-67f39aa69a42">
+      <Execution id="0fee9d77-1650-4141-8ee6-d928accb140f" />
+      <TestMethod codeBase="/src/src/Services/Catalog/Catalog.FunctionalTests/bin/Debug/netcoreapp2.1/Catalog.FunctionalTests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Catalog.FunctionalTests" name="Catalog.FunctionalTests.CatalogScenarios.Get_get_catalogitem_by_id_and_response_bad_request_status_code" />
+    </UnitTest>
+    <UnitTest name="Catalog.FunctionalTests.CatalogScenarios.Get_get_all_catalogitems_and_response_ok_status_code" storage="/src/src/services/catalog/catalog.functionaltests/bin/debug/netcoreapp2.1/catalog.functionaltests.dll" id="1b373321-94b2-88eb-53a2-36d186286a1f">
+      <Execution id="c24ac03b-44a6-44eb-8e62-e77254199297" />
+      <TestMethod codeBase="/src/src/Services/Catalog/Catalog.FunctionalTests/bin/Debug/netcoreapp2.1/Catalog.FunctionalTests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Catalog.FunctionalTests" name="Catalog.FunctionalTests.CatalogScenarios.Get_get_all_catalogitems_and_response_ok_status_code" />
+    </UnitTest>
+    <UnitTest name="Catalog.FunctionalTests.CatalogScenarios.Get_get_catalogitem_by_id_and_response_ok_status_code" storage="/src/src/services/catalog/catalog.functionaltests/bin/debug/netcoreapp2.1/catalog.functionaltests.dll" id="78871366-7f13-cf9e-a618-4298c2fb3e63">
+      <Execution id="127defdc-eead-4b18-98e8-bb4a80f6d9a5" />
+      <TestMethod codeBase="/src/src/Services/Catalog/Catalog.FunctionalTests/bin/Debug/netcoreapp2.1/Catalog.FunctionalTests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Catalog.FunctionalTests" name="Catalog.FunctionalTests.CatalogScenarios.Get_get_catalogitem_by_id_and_response_ok_status_code" />
+    </UnitTest>
+    <UnitTest name="Catalog.FunctionalTests.CatalogScenarios.Get_get_catalogitem_by_name_and_response_ok_status_code" storage="/src/src/services/catalog/catalog.functionaltests/bin/debug/netcoreapp2.1/catalog.functionaltests.dll" id="54a38b91-4242-ca21-909c-b632c74bc378">
+      <Execution id="267805fc-cddd-41f9-a16b-7188226aae18" />
+      <TestMethod codeBase="/src/src/Services/Catalog/Catalog.FunctionalTests/bin/Debug/netcoreapp2.1/Catalog.FunctionalTests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Catalog.FunctionalTests" name="Catalog.FunctionalTests.CatalogScenarios.Get_get_catalogitem_by_name_and_response_ok_status_code" />
+    </UnitTest>
+    <UnitTest name="Catalog.FunctionalTests.CatalogScenarios.Get_get_paginated_catalog_items_and_response_ok_status_code" storage="/src/src/services/catalog/catalog.functionaltests/bin/debug/netcoreapp2.1/catalog.functionaltests.dll" id="5ddae08d-62ee-6680-a77c-640b5af2e809">
+      <Execution id="1ed13bda-347c-40c8-b22d-bf148423331a" />
+      <TestMethod codeBase="/src/src/Services/Catalog/Catalog.FunctionalTests/bin/Debug/netcoreapp2.1/Catalog.FunctionalTests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Catalog.FunctionalTests" name="Catalog.FunctionalTests.CatalogScenarios.Get_get_paginated_catalog_items_and_response_ok_status_code" />
+    </UnitTest>
+    <UnitTest name="Catalog.FunctionalTests.CatalogScenarios.Get_catalog_brands_response_ok_status_code" storage="/src/src/services/catalog/catalog.functionaltests/bin/debug/netcoreapp2.1/catalog.functionaltests.dll" id="8b3ccbdd-cacd-e530-8e30-2c496c5b54d7">
+      <Execution id="a65654f5-92c9-4819-96d1-8d20e6448c22" />
+      <TestMethod codeBase="/src/src/Services/Catalog/Catalog.FunctionalTests/bin/Debug/netcoreapp2.1/Catalog.FunctionalTests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Catalog.FunctionalTests" name="Catalog.FunctionalTests.CatalogScenarios.Get_catalog_brands_response_ok_status_code" />
+    </UnitTest>
+    <UnitTest name="Catalog.FunctionalTests.CatalogScenarios.Get_get_catalogitem_by_id_and_response_not_found_status_code" storage="/src/src/services/catalog/catalog.functionaltests/bin/debug/netcoreapp2.1/catalog.functionaltests.dll" id="73afd2bb-85ac-239d-a889-a35ecbb96b02">
+      <Execution id="44e01d30-5f3a-42de-8671-1b0e542043de" />
+      <TestMethod codeBase="/src/src/Services/Catalog/Catalog.FunctionalTests/bin/Debug/netcoreapp2.1/Catalog.FunctionalTests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Catalog.FunctionalTests" name="Catalog.FunctionalTests.CatalogScenarios.Get_get_catalogitem_by_id_and_response_not_found_status_code" />
+    </UnitTest>
+    <UnitTest name="Catalog.FunctionalTests.CatalogScenarios.Get_get_filtered_catalog_items_and_response_ok_status_code" storage="/src/src/services/catalog/catalog.functionaltests/bin/debug/netcoreapp2.1/catalog.functionaltests.dll" id="95c21500-9ed5-4391-9d7f-aebfd9190a11">
+      <Execution id="3de0a499-cded-43da-a582-2c4cf5e16ca9" />
+      <TestMethod codeBase="/src/src/Services/Catalog/Catalog.FunctionalTests/bin/Debug/netcoreapp2.1/Catalog.FunctionalTests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Catalog.FunctionalTests" name="Catalog.FunctionalTests.CatalogScenarios.Get_get_filtered_catalog_items_and_response_ok_status_code" />
+    </UnitTest>
+    <UnitTest name="Catalog.FunctionalTests.CatalogScenarios.Get_catalog_types_response_ok_status_code" storage="/src/src/services/catalog/catalog.functionaltests/bin/debug/netcoreapp2.1/catalog.functionaltests.dll" id="0606c0fc-b6b0-1185-6890-3ad909738a66">
+      <Execution id="7ba54f92-cc72-4be8-85d1-8b04a12b7c57" />
+      <TestMethod codeBase="/src/src/Services/Catalog/Catalog.FunctionalTests/bin/Debug/netcoreapp2.1/Catalog.FunctionalTests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Catalog.FunctionalTests" name="Catalog.FunctionalTests.CatalogScenarios.Get_catalog_types_response_ok_status_code" />
+    </UnitTest>
+    <UnitTest name="Catalog.FunctionalTests.CatalogScenarios.Get_get_paginated_filtered_catalog_items_and_response_ok_status_code" storage="/src/src/services/catalog/catalog.functionaltests/bin/debug/netcoreapp2.1/catalog.functionaltests.dll" id="5eb4d579-2cb5-5f78-2e18-16e03c3f7383">
+      <Execution id="7627e97a-ef37-4a9b-b3bf-831d462fd492" />
+      <TestMethod codeBase="/src/src/Services/Catalog/Catalog.FunctionalTests/bin/Debug/netcoreapp2.1/Catalog.FunctionalTests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Catalog.FunctionalTests" name="Catalog.FunctionalTests.CatalogScenarios.Get_get_paginated_filtered_catalog_items_and_response_ok_status_code" />
+    </UnitTest>
+    <UnitTest name="Catalog.FunctionalTests.CatalogScenarios.Get_get_paginated_catalogitem_by_name_and_response_ok_status_code" storage="/src/src/services/catalog/catalog.functionaltests/bin/debug/netcoreapp2.1/catalog.functionaltests.dll" id="c61af54f-3a98-9867-2720-4af9bf810653">
+      <Execution id="188a98f4-e551-46b5-8954-81ec68261133" />
+      <TestMethod codeBase="/src/src/Services/Catalog/Catalog.FunctionalTests/bin/Debug/netcoreapp2.1/Catalog.FunctionalTests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Catalog.FunctionalTests" name="Catalog.FunctionalTests.CatalogScenarios.Get_get_paginated_catalogitem_by_name_and_response_ok_status_code" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="5eb4d579-2cb5-5f78-2e18-16e03c3f7383" executionId="7627e97a-ef37-4a9b-b3bf-831d462fd492" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="2098f087-bc1f-3220-4cc1-67f39aa69a42" executionId="0fee9d77-1650-4141-8ee6-d928accb140f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="95c21500-9ed5-4391-9d7f-aebfd9190a11" executionId="3de0a499-cded-43da-a582-2c4cf5e16ca9" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="54a38b91-4242-ca21-909c-b632c74bc378" executionId="267805fc-cddd-41f9-a16b-7188226aae18" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="8b3ccbdd-cacd-e530-8e30-2c496c5b54d7" executionId="a65654f5-92c9-4819-96d1-8d20e6448c22" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0606c0fc-b6b0-1185-6890-3ad909738a66" executionId="7ba54f92-cc72-4be8-85d1-8b04a12b7c57" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="78871366-7f13-cf9e-a618-4298c2fb3e63" executionId="127defdc-eead-4b18-98e8-bb4a80f6d9a5" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5ddae08d-62ee-6680-a77c-640b5af2e809" executionId="1ed13bda-347c-40c8-b22d-bf148423331a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="73afd2bb-85ac-239d-a889-a35ecbb96b02" executionId="44e01d30-5f3a-42de-8671-1b0e542043de" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1b373321-94b2-88eb-53a2-36d186286a1f" executionId="c24ac03b-44a6-44eb-8e62-e77254199297" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c61af54f-3a98-9867-2720-4af9bf810653" executionId="188a98f4-e551-46b5-8954-81ec68261133" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="11" executed="11" passed="11" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:06.0723374]   Discovering: Catalog.FunctionalTests[xUnit.net 00:00:06.4361995]   Discovered:  Catalog.FunctionalTests[xUnit.net 00:00:06.4447894]   Starting:    Catalog.FunctionalTests[xUnit.net 00:00:34.5834045]   Finished:    Catalog.FunctionalTests</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>
