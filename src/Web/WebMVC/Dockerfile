@@ -1,11 +1,8 @@
-FROM microsoft/dotnet:2.2.0-preview3-aspnetcore-runtime AS base
+FROM microsoft/dotnet:2.2.0-aspnetcore-runtime AS base
 WORKDIR /app
 EXPOSE 80
 
-FROM microsoft/dotnet:2.2.100-preview3-sdk AS dotnet-build
-WORKDIR /src
-
-FROM dotnet-build as build
+FROM microsoft/dotnet:2.2.100-sdk AS build
 WORKDIR /src
 COPY . .
 WORKDIR /src/src/Web/WebMVC

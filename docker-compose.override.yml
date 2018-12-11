@@ -187,6 +187,10 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - IdentityUrl=http://identity.api              #Local: You need to open your local dev-machine firewall at range 5100-5110.
+      - urls__basket=http://basket.api
+      - urls__catalog=http://catalog.api
+      - urls__orders=http://ordering.api
+      - urls__identity=http://identity.api
       - CatalogUrlHC=http://catalog.api/hc
       - OrderingUrlHC=http://ordering.api/hc
       - IdentityUrlHC=http://identity.api/hc             
