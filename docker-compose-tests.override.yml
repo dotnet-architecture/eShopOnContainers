@@ -46,7 +46,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - ConnectionString=${ESHOP_AZURE_REDIS_BASKET_DB:-basket-data-test}
-      - identityUrl=http://identity-api
+      - identityUrl=http://identity-api-test
       - IdentityUrlExternal=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
       - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq-test}
       - EventBusUserName=${ESHOP_SERVICE_BUS_USERNAME}
@@ -68,7 +68,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - ConnectionString=${ESHOP_AZURE_REDIS_BASKET_DB:-basket-data-test}
-      - identityUrl=http://identity-api
+      - identityUrl=http://identity-api-test
       - IdentityUrlExternal=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
       - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq-test}
       - EventBusUserName=${ESHOP_SERVICE_BUS_USERNAME}
@@ -138,7 +138,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - ConnectionString=${ESHOP_AZURE_ORDERING_DB:-Server=sql-data-test;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word}
-      - identityUrl=http://identity-api
+      - identityUrl=http://identity-api-test
       - IdentityUrlExternal=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
       - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq-test}
       - EventBusUserName=${ESHOP_SERVICE_BUS_USERNAME}
@@ -162,7 +162,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - ConnectionString=${ESHOP_AZURE_ORDERING_DB:-Server=sql-data-test;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word}
-      - identityUrl=http://identity-api
+      - identityUrl=http://identity-api-test
       - IdentityUrlExternal=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
       - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq-test}
       - EventBusUserName=${ESHOP_SERVICE_BUS_USERNAME}
@@ -179,7 +179,7 @@ services:
         - dotnet
         - test
         - --logger
-        - trx;LogFileName=/tests/ordering-unit-test-results.xml  
+        - trx;LogFileName=/tests/ordering-unit-test-results.xml
 
   marketing-api-test:
     environment:
@@ -191,7 +191,7 @@ services:
       - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq-test}
       - EventBusUserName=${ESHOP_SERVICE_BUS_USERNAME}
       - EventBusPassword=${ESHOP_SERVICE_BUS_PASSWORD}
-      - identityUrl=http://identity-api
+      - identityUrl=http://identity-api-test
       - IdentityUrlExternal=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
       - CampaignDetailFunctionUri=${ESHOP_AZUREFUNC_CAMPAIGN_DETAILS_URI}
       - PicBaseUrl=${ESHOP_AZURE_STORAGE_MARKETING_URL:-http://localhost:5110/api/v1/campaigns/[0]/pic/}
@@ -229,7 +229,7 @@ services:
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - ConnectionString=${ESHOP_AZURE_COSMOSDB:-mongodb://nosql-data-test}
       - Database=LocationsDb
-      - identityUrl=http://identity-api
+      - identityUrl=http://identity-api-test
       - IdentityUrlExternal=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
       - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq-test}
       - EventBusUserName=${ESHOP_SERVICE_BUS_USERNAME}
