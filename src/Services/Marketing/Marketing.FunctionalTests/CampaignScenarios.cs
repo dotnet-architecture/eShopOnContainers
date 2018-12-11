@@ -27,7 +27,7 @@ namespace Marketing.FunctionalTests
         [Fact]
         public async Task Get_get_campaign_by_id_and_response_ok_status_code()
         {
-            var campaignId = 21;
+            var campaignId = 1;
             using (var server = CreateServer())
             {
                 var response = await server.CreateClient()
