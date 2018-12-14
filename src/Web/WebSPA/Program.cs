@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
+using Serilog;
 
 namespace eShopConContainers.WebSPA
 {
@@ -28,7 +29,14 @@ namespace eShopConContainers.WebSPA
                     builder.AddConsole();
                     builder.AddDebug();
                 })
-                .UseApplicationInsights()                
+                .UseApplicationInsights()
+                .UseSerilog((builderContext, config) =>
+                {
+                    config
+                        .MinimumLevel.Information()
+                        .Enrich.FromLogContext()
+                        .WriteTo.Console();
+                })
                 .Build();       
     }
 }

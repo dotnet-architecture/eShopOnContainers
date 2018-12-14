@@ -7,6 +7,7 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator
 {
@@ -31,6 +32,13 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator
                     });
                 })
                 .UseStartup<Startup>()
+                .UseSerilog((builderContext, config) =>
+                {
+                    config
+                        .MinimumLevel.Information()
+                        .Enrich.FromLogContext()
+                        .WriteTo.Console();
+                })
                 .Build();
     }
 }

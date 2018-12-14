@@ -31,6 +31,8 @@
     <PackageReference Include="Microsoft.VisualStudio.Azure.Fabric.MSBuild" Version="1.6.5" />
     <PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="1.0.163" />
     <PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.5.180" />
+    <PackageReference Include="Serilog.AspNetCore" Version="2.1.1" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
   </ItemGroup>
 
   <Target Name="PrepublishScript" BeforeTargets="PrepareForPublish">

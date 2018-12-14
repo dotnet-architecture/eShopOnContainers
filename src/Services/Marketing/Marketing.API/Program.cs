@@ -6,6 +6,7 @@
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
+    using Serilog;
     using System;
     using System.IO;
 
@@ -57,6 +58,13 @@
                     builder.AddDebug();
                 })
                 .UseApplicationInsights()
+                .UseSerilog((builderContext, config) =>
+                {
+                    config
+                        .MinimumLevel.Information()
+                        .Enrich.FromLogContext()
+                        .WriteTo.Console();
+                })
                 .Build();
     }
 }
