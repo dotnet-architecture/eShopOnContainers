@@ -16,7 +16,7 @@ $dns = $externalDns
 
 $ingressValuesFile="ingress_values.yaml"
 
-if ($ingressValuesFile) {
+if ($useLocalk8s -eq $true) {
     $ingressValuesFile="ingress_values_dockerk8s.yaml"
     $dns="localhost"
 }
