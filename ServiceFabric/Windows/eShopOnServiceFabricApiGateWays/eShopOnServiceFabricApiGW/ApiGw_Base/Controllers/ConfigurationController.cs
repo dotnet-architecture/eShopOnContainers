@@ -24,25 +24,18 @@ namespace ApiGw_Base.Controllers
 
         private IActionResult ReadConfigurationFile(ConfigurationType configurationType, ConfigurationBffType configurationBffType)
         {
-            try
-            {
-                var path = $"{AppDomain.CurrentDomain.BaseDirectory}/Configurations/configuration.{configurationType}.Bff.{configurationBffType}.json";
+            var path = $"{AppDomain.CurrentDomain.BaseDirectory}/Configurations/configuration.{configurationType}.Bff.{configurationBffType}.json";
 
-                using (var streamReader = new StreamReader(path, Encoding.UTF8))
+            using (var streamReader = new StreamReader(path, Encoding.UTF8))
+            {
+                var jsonString = streamReader.ReadToEnd();
+
+                if (string.IsNullOrWhiteSpace(jsonString))
                 {
-                    var jsonString = streamReader.ReadToEnd();
-
-                    if (string.IsNullOrWhiteSpace(jsonString))
-                    {
-                        return BadRequest($"Configuration file 'configuration.{configurationType}.Bff.{configurationBffType}.json' not found");
-                    }
-
-                    return Ok(jsonString);
+                    return BadRequest($"Configuration file 'configuration.{configurationType}.Bff.{configurationBffType}.json' not found");
                 }
-            }
-            catch (Exception exception)
-            {
-                return BadRequest(exception.Message);
+
+                return Ok(jsonString);
             }
         }
     }
