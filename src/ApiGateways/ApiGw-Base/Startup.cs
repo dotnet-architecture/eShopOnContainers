@@ -2,11 +2,14 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 using OcelotApiGw.Enums;
+using OcelotApiGw.Models;
 using OcelotApiGw.Orchestrators;
+using OcelotApiGw.Providers;
 using OcelotApiGw.Services;
 using System.Linq;
 
@@ -36,6 +39,7 @@ namespace OcelotApiGw
             })
             .AddTransient<IOrchestratorStrategy, Kubernetes>()
             .AddTransient<IOrchestratorStrategy, ServiceFabric>()
+            .AddTransient<IFileProvider, InMemoryFileProvider>()
             .AddAuthentication()
             .AddJwtBearer(authenticationProviderKey, options =>
             {
@@ -47,6 +51,7 @@ namespace OcelotApiGw
                 };
             });
 
+            services.Configure<ServiceFabricSettings>(_configuration);
             services.AddHttpClient<ISettingService, SettingService>();
 
             var orchestratorType = _configuration.GetValue<OrchestratorType>("OrchestratorType");

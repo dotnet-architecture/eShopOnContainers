@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Options;
+using OcelotApiGw.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,12 +11,12 @@ namespace OcelotApiGw.Services
     public class SettingService : ISettingService
     {
         private readonly HttpClient _httpClient;
-        private readonly IConfiguration _configuration;
+        private readonly ServiceFabricSettings _serviceFabricSettings;
 
-        public SettingService(HttpClient httpClient, IConfiguration configuration)
+        public SettingService(HttpClient httpClient, IOptions<ServiceFabricSettings> serviceFabricSettings)
         {
             _httpClient = httpClient;
-            _configuration = configuration;
+            _serviceFabricSettings = serviceFabricSettings.Value;
         }
 
         public string GetConfiguration()
@@ -25,20 +26,20 @@ namespace OcelotApiGw.Services
             var tasks = new Func<Task>[]
             {
                async () => {
-                   var res = await _httpClient.GetStringAsync(_configuration.GetValue<string>("MobilMarketing"));
-                   strings.Add(res);
+                   var configuration = await _httpClient.GetStringAsync(_serviceFabricSettings.UrlMobilMarketing);
+                   strings.Add(configuration);
                },
                async () => {
-                   var res = await _httpClient.GetStringAsync(_configuration.GetValue<string>("MobilShopping"));
-                   strings.Add(res);
+                   var configuration = await _httpClient.GetStringAsync(_serviceFabricSettings.UrlMobilShopping);
+                   strings.Add(configuration);
                },
                async () => {
-                   var res = await _httpClient.GetStringAsync(_configuration.GetValue<string>("WebMarketing"));
-                   strings.Add(res);
+                   var configuration = await _httpClient.GetStringAsync(_serviceFabricSettings.UrlWebMarketing);
+                   strings.Add(configuration);
                },
                async () => {
-                   var res = await _httpClient.GetStringAsync(_configuration.GetValue<string>("WebShopping"));
-                   strings.Add(res);
+                   var configuration = await _httpClient.GetStringAsync(_serviceFabricSettings.UrlWebShopping);
+                   strings.Add(configuration);
                }
             };
 

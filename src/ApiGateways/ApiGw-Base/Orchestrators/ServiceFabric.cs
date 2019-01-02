@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using OcelotApiGw.Enums;
+using OcelotApiGw.Providers;
 using OcelotApiGw.Services;
 
 namespace OcelotApiGw.Orchestrators
@@ -18,6 +19,10 @@ namespace OcelotApiGw.Orchestrators
         public IConfigurationBuilder ConfigureOrchestrator(IConfigurationBuilder builder)
         {
             var config = _settingService.GetConfiguration();
+
+            var memoryFileProvider = new InMemoryFileProvider(config);
+
+            builder.AddJsonFile(memoryFileProvider, string.Empty, false, false);
 
             return builder;
         }
