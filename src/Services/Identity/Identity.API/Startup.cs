@@ -21,6 +21,7 @@ using System;
 using System.Reflection;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace Microsoft.eShopOnContainers.Services.Identity.API
 {
@@ -67,6 +68,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API
             }
 
             services.AddHealthChecks()
+                .AddCheck("self", () => HealthCheckResult.Healthy())
                 .AddSqlServer(Configuration["ConnectionString"],
                     name: "IdentityDB-check",
                     tags: new string[] { "IdentityDB" });
@@ -138,16 +140,16 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API
                 app.UsePathBase(pathBase);
             }
 
-
             app.UseHealthChecks("/hc", new HealthCheckOptions()
             {
                 Predicate = _ => true,
                 ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
             });
 
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-            app.Map("/liveness", lapp => lapp.Run(async ctx => ctx.Response.StatusCode = 200));
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+            app.UseHealthChecks("/liveness", new HealthCheckOptions
+            {
+                Predicate = r => r.Name.Contains("self")
+            });
 
             app.UseStaticFiles();
 

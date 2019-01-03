@@ -17,6 +17,7 @@ using RabbitMQ.Client;
 using System;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace Ordering.BackgroundTasks
 {
@@ -110,9 +111,10 @@ namespace Ordering.BackgroundTasks
                 ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
             });
 
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-            app.Map("/liveness", lapp => lapp.Run(async ctx => ctx.Response.StatusCode = 200));
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+            app.UseHealthChecks("/liveness", new HealthCheckOptions
+            {
+                Predicate = r => r.Name.Contains("self")
+            });
         }
 
 
@@ -161,6 +163,8 @@ namespace Ordering.BackgroundTasks
         public static IServiceCollection AddCustomHealthCheck(this IServiceCollection services, IConfiguration configuration)
         {
             var hcBuilder = services.AddHealthChecks();
+
+            hcBuilder.AddCheck("self", () => HealthCheckResult.Healthy());
 
             hcBuilder
                 .AddSqlServer(

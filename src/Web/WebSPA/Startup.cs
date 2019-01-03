@@ -16,6 +16,7 @@ using System.IO;
 using WebSPA.Infrastructure;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace eShopConContainers.WebSPA
 {
@@ -44,6 +45,7 @@ namespace eShopConContainers.WebSPA
             RegisterAppInsights(services);
 
             services.AddHealthChecks()
+                .AddCheck("self", () => HealthCheckResult.Healthy())
                 .AddUrlGroup(new Uri(Configuration["PurchaseUrlHC"]), name: "purchaseapigw-check", tags: new string[] { "purchaseapigw" })
                 .AddUrlGroup(new Uri(Configuration["MarketingUrlHC"]), name: "marketingapigw-check", tags: new string[] { "marketingapigw" })
                 .AddUrlGroup(new Uri(Configuration["IdentityUrlHC"]), name: "identityapi-check", tags: new string[] { "identityapi" });                        
@@ -87,6 +89,11 @@ namespace eShopConContainers.WebSPA
                 app.UseHsts();
             }
 
+            app.UseHealthChecks("/liveness", new HealthCheckOptions
+            {
+                Predicate = r => r.Name.Contains("self")
+            });
+
             app.UseHealthChecks("/hc", new HealthCheckOptions()
             {
                 Predicate = _ => true,
@@ -114,11 +121,6 @@ namespace eShopConContainers.WebSPA
                 loggerFactory.CreateLogger("init").LogDebug($"Using PATH BASE '{pathBase}'");
                 app.UsePathBase(pathBase);
             }
-
-
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-            app.Map("/liveness", lapp => lapp.Run(async ctx => ctx.Response.StatusCode = 200));
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
 
             app.Use(async (context, next) =>
             {

@@ -19,6 +19,7 @@ using System;
 using System.IdentityModel.Tokens.Jwt;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace Ordering.SignalrHub
 {
@@ -136,6 +137,11 @@ namespace Ordering.SignalrHub
                 ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
             });
 
+            app.UseHealthChecks("/liveness", new HealthCheckOptions
+            {
+                Predicate = r => r.Name.Contains("self")
+            });
+
             app.UseCors("CorsPolicy");
 
             app.UseAuthentication();
@@ -226,6 +232,8 @@ namespace Ordering.SignalrHub
         public static IServiceCollection AddCustomHealthCheck(this IServiceCollection services, IConfiguration configuration)
         {
             var hcBuilder = services.AddHealthChecks();
+
+            hcBuilder.AddCheck("self", () => HealthCheckResult.Healthy());
 
             if (configuration.GetValue<bool>("AzureServiceBusEnabled"))
             {

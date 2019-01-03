@@ -20,6 +20,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator
 {
@@ -36,6 +37,7 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddHealthChecks()
+                .AddCheck("self", () => HealthCheckResult.Healthy())
                 .AddUrlGroup(new Uri(Configuration["CatalogUrlHC"]), name: "catalogapi-check", tags: new string[] { "catalogapi" })
                 .AddUrlGroup(new Uri(Configuration["OrderingUrlHC"]), name: "orderingapi-check", tags: new string[] { "orderingapi" })
                 .AddUrlGroup(new Uri(Configuration["BasketUrlHC"]), name: "basketapi-check", tags: new string[] { "basketapi" })
@@ -63,6 +65,11 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator
             {
                 Predicate = _ => true,
                 ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+            });
+
+            app.UseHealthChecks("/liveness", new HealthCheckOptions
+            {
+                Predicate = r => r.Name.Contains("self")
             });
 
             app.UseCors("CorsPolicy");

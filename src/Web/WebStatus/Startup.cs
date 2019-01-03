@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
 
 namespace WebStatus
@@ -26,6 +27,9 @@ namespace WebStatus
             RegisterAppInsights(services);
 
             services.AddOptions();
+            services.AddHealthChecks()
+                .AddCheck("self", () => HealthCheckResult.Healthy());
+
             services.AddHealthChecksUI();
             
             services.AddMvc()
@@ -55,11 +59,15 @@ namespace WebStatus
                 app.UsePathBase(pathBase);
             }
 
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-            app.Map("/liveness", lapp => lapp.Run(async ctx => ctx.Response.StatusCode = 200));
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+            app.UseHealthChecks("/liveness", new HealthCheckOptions
+            {
+                Predicate = r => r.Name.Contains("self")
+            });
 
-            app.UseHealthChecksUI(config => config.UIPath = "/hc-ui");
+            app.UseHealthChecksUI(config => {
+                config.ResourcesPath = string.IsNullOrEmpty(pathBase) ? "/ui/resources" : $"{pathBase}/ui/resources";
+                config.UIPath = "/hc-ui"; 
+            });
             
             app.UseStaticFiles();
 

@@ -18,6 +18,7 @@ using RabbitMQ.Client;
 using System;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace Payment.API
 {
@@ -106,9 +107,10 @@ namespace Payment.API
                 ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
             });
 
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-            app.Map("/liveness", lapp => lapp.Run(async ctx => ctx.Response.StatusCode = 200));
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+            app.UseHealthChecks("/liveness", new HealthCheckOptions
+            {
+                Predicate = r => r.Name.Contains("self")
+            });
 
             ConfigureEventBus(app);
         }
@@ -183,6 +185,8 @@ namespace Payment.API
         public static IServiceCollection AddCustomHealthCheck(this IServiceCollection services, IConfiguration configuration)
         {
             var hcBuilder = services.AddHealthChecks();
+
+            hcBuilder.AddCheck("self", () => HealthCheckResult.Healthy());
 
             if (configuration.GetValue<bool>("AzureServiceBusEnabled"))
             {

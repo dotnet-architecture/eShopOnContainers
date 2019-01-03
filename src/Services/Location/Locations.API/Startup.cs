@@ -21,6 +21,7 @@ using Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure.Reposito
 using Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
 using Swashbuckle.AspNetCore.Swagger;
@@ -162,9 +163,10 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
                 app.UsePathBase(pathBase);
             }
 
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-            app.Map("/liveness", lapp => lapp.Run(async ctx => ctx.Response.StatusCode = 200));
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+            app.UseHealthChecks("/liveness", new HealthCheckOptions
+            {
+                Predicate = r => r.Name.Contains("self")
+            });
 
             app.UseHealthChecks("/hc", new HealthCheckOptions()
             {
@@ -281,6 +283,8 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
         public static IServiceCollection AddCustomHealthCheck(this IServiceCollection services, IConfiguration configuration)
         {
             var hcBuilder = services.AddHealthChecks();
+
+            hcBuilder.AddCheck("self", () => HealthCheckResult.Healthy());
 
             hcBuilder
                 .AddMongoDb(

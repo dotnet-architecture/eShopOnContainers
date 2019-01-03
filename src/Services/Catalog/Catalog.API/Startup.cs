@@ -30,6 +30,7 @@ using System.Data.Common;
 using System.Reflection;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace Microsoft.eShopOnContainers.Services.Catalog.API
 {
@@ -80,9 +81,10 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
                 ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
             });
 
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-            app.Map("/liveness", lapp => lapp.Run(async ctx => ctx.Response.StatusCode = 200));
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+            app.UseHealthChecks("/liveness", new HealthCheckOptions
+            {
+                Predicate = r => r.Name.Contains("self")
+            });
 
             app.UseCors("CorsPolicy");
 
@@ -156,6 +158,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
             var hcBuilder = services.AddHealthChecks();
 
             hcBuilder
+                .AddCheck("self", () => HealthCheckResult.Healthy())
                 .AddSqlServer(
                     configuration["ConnectionString"],
                     name: "CatalogDB-check",

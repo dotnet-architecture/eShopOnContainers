@@ -8,6 +8,7 @@ using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 using System;
 using HealthChecks.UI.Client;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace OcelotApiGw
 {
@@ -26,6 +27,7 @@ namespace OcelotApiGw
             var authenticationProviderKey = "IdentityApiKey";
 
             services.AddHealthChecks()
+                .AddCheck("self", () => HealthCheckResult.Healthy())
                 .AddUrlGroup(new Uri(_cfg["CatalogUrlHC"]), name: "catalogapi-check", tags: new string[] { "catalogapi" })
                 .AddUrlGroup(new Uri(_cfg["OrderingUrlHC"]), name: "orderingapi-check", tags: new string[] { "orderingapi" })
                 .AddUrlGroup(new Uri(_cfg["BasketUrlHC"]), name: "basketapi-check", tags: new string[] { "basketapi" })
@@ -91,6 +93,11 @@ namespace OcelotApiGw
             {
                 Predicate = _ => true,
                 ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+            });
+
+            app.UseHealthChecks("/liveness", new HealthCheckOptions
+            {
+                Predicate = r => r.Name.Contains("self")
             });
 
             loggerFactory.AddConsole(_cfg.GetSection("Logging"));

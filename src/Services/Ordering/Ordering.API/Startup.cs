@@ -37,6 +37,7 @@
     using System.Reflection;
     using HealthChecks.UI.Client;
     using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+    using Microsoft.Extensions.Diagnostics.HealthChecks;
 
     public class Startup
     {
@@ -81,14 +82,14 @@
             {
                 loggerFactory.CreateLogger("init").LogDebug($"Using PATH BASE '{pathBase}'");
                 app.UsePathBase(pathBase);
-            }
-
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-            app.Map("/liveness", lapp => lapp.Run(async ctx => ctx.Response.StatusCode = 200));
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+            }            
 
             app.UseCors("CorsPolicy");
 
+            app.UseHealthChecks("/liveness", new HealthCheckOptions
+            {
+                Predicate = r => r.Name.Contains("self")
+            });
 
             app.UseHealthChecks("/hc", new HealthCheckOptions()
             {
@@ -184,6 +185,8 @@
         public static IServiceCollection AddHealthChecks(this IServiceCollection services, IConfiguration configuration)
         {
             var hcBuilder = services.AddHealthChecks();
+
+            hcBuilder.AddCheck("self", () => HealthCheckResult.Healthy());
 
             hcBuilder
                 .AddSqlServer(

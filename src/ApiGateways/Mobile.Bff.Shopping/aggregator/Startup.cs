@@ -19,6 +19,7 @@ using Polly.Extensions.Http;
 using Swashbuckle.AspNetCore.Swagger;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator
 {
@@ -35,6 +36,7 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddHealthChecks()
+                .AddCheck("self", () => HealthCheckResult.Healthy())
                 .AddUrlGroup(new Uri(Configuration["CatalogUrlHC"]), name: "catalogapi-check", tags: new string[] { "catalogapi" })
                 .AddUrlGroup(new Uri(Configuration["OrderingUrlHC"]), name: "orderingapi-check", tags: new string[] { "orderingapi" })
                 .AddUrlGroup(new Uri(Configuration["BasketUrlHC"]), name: "basketapi-check", tags: new string[] { "basketapi" })
@@ -63,6 +65,11 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator
             {
                 Predicate = _ => true,
                 ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+            });
+
+            app.UseHealthChecks("/liveness", new HealthCheckOptions
+            {
+                Predicate = r => r.Name.Contains("self")
             });
 
             app.UseCors("CorsPolicy");

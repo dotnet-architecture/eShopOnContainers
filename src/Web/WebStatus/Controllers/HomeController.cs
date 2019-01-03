@@ -1,17 +1,22 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System.Threading.Tasks;
 
 namespace WebStatus.Controllers
 {
     public class HomeController : Controller
     {
-        public HomeController()
+        private IConfiguration _configuration;
+
+        public HomeController(IConfiguration configuration)
         {
+            _configuration = configuration;
         }
 
         public IActionResult Index()
         {
-            return Redirect("/hc-ui");
+            var basePath = _configuration["PATH_BASE"];
+            return Redirect($"{basePath}/hc-ui");
         }
 
         public IActionResult Error()
