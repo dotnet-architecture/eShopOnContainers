@@ -22,7 +22,7 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Services
             _urls = config.Value;
         }
 
-        public async Task<CatalogItem> GetCatalogItem(int id)
+        public async Task<CatalogItem> GetCatalogItemAsync(int id)
         {
             var stringContent = await _httpClient.GetStringAsync(_urls.Catalog + UrlsConfig.CatalogOperations.GetItemById(id));
             var catalogItem = JsonConvert.DeserializeObject<CatalogItem>(stringContent);
@@ -30,7 +30,7 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Services
             return catalogItem;
         }
 
-        public async Task<IEnumerable<CatalogItem>> GetCatalogItems(IEnumerable<int> ids)
+        public async Task<IEnumerable<CatalogItem>> GetCatalogItemsAsync(IEnumerable<int> ids)
         {
             var stringContent = await _httpClient.GetStringAsync(_urls.Catalog + UrlsConfig.CatalogOperations.GetItemsById(ids));
             var catalogItems = JsonConvert.DeserializeObject<CatalogItem[]>(stringContent);

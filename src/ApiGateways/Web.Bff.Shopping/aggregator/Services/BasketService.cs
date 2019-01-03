@@ -10,7 +10,6 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Services
 {
     public class BasketService : IBasketService
     {
-
         private readonly HttpClient _apiClient;
         private readonly ILogger<BasketService> _logger;
         private readonly UrlsConfig _urls;
@@ -22,18 +21,19 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Services
             _urls = config.Value;
         }
 
-        public async Task<BasketData> GetById(string id)
+        public async Task<BasketData> GetByIdAsync(string id)
         {
             var data = await _apiClient.GetStringAsync(_urls.Basket +  UrlsConfig.BasketOperations.GetItemById(id));
             var basket = !string.IsNullOrEmpty(data) ? JsonConvert.DeserializeObject<BasketData>(data) : null;
+
             return basket;
         }
 
-        public async Task Update(BasketData currentBasket)
+        public async Task UpdateAsync(BasketData currentBasket)
         {
             var basketContent = new StringContent(JsonConvert.SerializeObject(currentBasket), System.Text.Encoding.UTF8, "application/json");
 
-            var data = await _apiClient.PostAsync(_urls.Basket + UrlsConfig.BasketOperations.UpdateBasket(), basketContent);
+            await _apiClient.PostAsync(_urls.Basket + UrlsConfig.BasketOperations.UpdateBasket(), basketContent);
         }
     }
 }

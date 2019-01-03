@@ -21,12 +21,9 @@ data:
   webmvc__keystore: {{ .Values.inf.redis.keystore.constr }}
   internalurls__apigwws: http://{{ .Values.app.svc.webshoppingapigw }}
   internalurls__apigwwm: http://{{ .Values.app.svc.webmarketingapigw }}
-  internalurls__basket__hc: http://{{ .Values.app.svc.basket }}/hc
-  internalurls__catalog__hc: http://{{ .Values.app.svc.catalog }}/hc
+  internalurls__apigwws__hc: http://{{ .Values.app.svc.webshoppingapigw }}/hc
   internalurls__identity__hc: http://{{ .Values.app.svc.identity }}/hc
-  internalurls__ordering__hc: http://{{ .Values.app.svc.ordering }}/hc
-  internalurls__marketing__hc: http://{{ .Values.app.svc.marketing }}/hc
-  internalurls__payment__hc: http://{{ .Values.app.svc.payment }}/hc
+  internalurls__apigwwm__hc: http://{{ .Values.app.svc.webmarketingapigw }}/hc
   urls__apigwws: http://{{ $webshoppingapigw }}
   urls__mvc: http://{{ $mvc }}
   urls__IdentityUrl: http://{{ $identity }}

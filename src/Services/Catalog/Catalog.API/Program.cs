@@ -35,7 +35,6 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
             WebHost.CreateDefaultBuilder(args)
              .UseStartup<Startup>()
                 .UseApplicationInsights()
-                .UseHealthChecks("/hc")
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseWebRoot("Pics")
                 .ConfigureAppConfiguration((builderContext, config) =>

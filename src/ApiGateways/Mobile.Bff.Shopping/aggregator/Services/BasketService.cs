@@ -22,7 +22,7 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Services
             _urls = config.Value;
         }
 
-        public async Task<BasketData> GetById(string id)
+        public async Task<BasketData> GetByIdAsync(string id)
         {
             var data = await _httpClient.GetStringAsync(_urls.Basket + UrlsConfig.BasketOperations.GetItemById(id));
 
@@ -31,7 +31,7 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Services
             return basket;
         }
 
-        public async Task Update(BasketData currentBasket)
+        public async Task UpdateAsync(BasketData currentBasket)
         {
             var basketContent = new StringContent(JsonConvert.SerializeObject(currentBasket), System.Text.Encoding.UTF8, "application/json");
 

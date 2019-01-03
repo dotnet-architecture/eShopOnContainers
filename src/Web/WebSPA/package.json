@@ -48,7 +48,7 @@
     "normalize.css": "8.0.0",
     "popper.js": "^1.14.4",
     "preboot": "6.0.0-beta.5",
-    "rxjs": "^6.2.2",
+    "rxjs": "6.2.2",
     "webpack": "^4.17.1",
     "zone.js": "^0.8.26"
   },

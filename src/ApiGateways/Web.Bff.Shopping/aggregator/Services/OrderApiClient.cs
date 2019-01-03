@@ -10,7 +10,6 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Services
 {
     public class OrderApiClient : IOrderApiClient
     {
-
         private readonly HttpClient _apiClient;
         private readonly ILogger<OrderApiClient> _logger;
         private readonly UrlsConfig _urls;
@@ -22,7 +21,7 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Services
             _urls = config.Value;
         }
 
-        public async Task<OrderData> GetOrderDraftFromBasket(BasketData basket)
+        public async Task<OrderData> GetOrderDraftFromBasketAsync(BasketData basket)
         {
             var url = _urls.Orders + UrlsConfig.OrdersOperations.GetOrderDraft();
             var content = new StringContent(JsonConvert.SerializeObject(basket), System.Text.Encoding.UTF8, "application/json");
