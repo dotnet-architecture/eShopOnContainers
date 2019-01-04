@@ -139,9 +139,10 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy",
-                    builder => builder.AllowAnyOrigin()
+                    builder => builder
                     .AllowAnyMethod()
                     .AllowAnyHeader()
+                    .SetIsOriginAllowed((host) => true)
                     .AllowCredentials());
             });
 
