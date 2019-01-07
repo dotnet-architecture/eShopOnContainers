@@ -17,7 +17,7 @@ namespace OcelotApiGw
 {
     public class Startup
     {
-        private readonly IConfiguration _configuration;
+        private IConfiguration _configuration;
 
         public Startup(IConfiguration configuration)
         {
@@ -59,13 +59,13 @@ namespace OcelotApiGw
             var config = new ConfigurationBuilder()
                 .AddConfiguration(_configuration);
 
-            var cfg = services.BuildServiceProvider()
+            _configuration = services.BuildServiceProvider()
                 .GetServices<IOrchestratorStrategy>()
                 .Single(strategy => strategy.OrchestratorType == orchestratorType)
                 .ConfigureOrchestrator(config)
                 .Build();
 
-            services.AddOcelot(cfg);
+            services.AddOcelot(_configuration);
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)

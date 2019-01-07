@@ -216,4 +216,3 @@ services:
       - webshoppingagg
       - webshoppingapigw
       - webmarketingapigw
-

@@ -45,7 +45,7 @@ namespace OcelotApiGw.Services
 
             Task.WaitAll(tasks.Select(task => task()).ToArray());
 
-            return string.Concat(strings);
+            return string.Join(',', strings);
         }
     }
 }

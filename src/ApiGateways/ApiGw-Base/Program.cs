@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using System.IO;
 
 namespace OcelotApiGw
 {
@@ -7,12 +9,16 @@ namespace OcelotApiGw
     {
         public static void Main(string[] args)
         {
-            BuildWebHost(args).Run();
-        }
-
-        public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .ConfigureAppConfiguration((hostingContext, config) =>
+                {
+                    config.SetBasePath(Directory.GetCurrentDirectory());
+                    config.AddJsonFile(Path.Combine("configuration", "configuration.json"));
+                    config.AddCommandLine(args);
+                })
                 .UseStartup<Startup>()
-                .Build();
+                .Build()
+                .Run();
+        }
     }
 }
