@@ -25,6 +25,8 @@ Project("{A07B5EB6-E848-4116-A8D0-A826331D98C6}") = "Redis", "Infrastructure\eSh
 EndProject
 Project("{A07B5EB6-E848-4116-A8D0-A826331D98C6}") = "Sql", "Infrastructure\eShopOnServiceFabricSql\Sql\Sql.sfproj", "{65A83188-79C1-47AD-931D-8E8A87247408}"
 EndProject
+Project("{A07B5EB6-E848-4116-A8D0-A826331D98C6}") = "eShopOnServiceFabricBFF", "eShopOnServiceFabricBFF\eShopOnServiceFabricBFF.sfproj", "{E7CE09DB-6223-4A36-A5A9-AEC2E4FE6833}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -121,6 +123,14 @@ Global
 		{65A83188-79C1-47AD-931D-8E8A87247408}.Release|x64.ActiveCfg = Release|x64
 		{65A83188-79C1-47AD-931D-8E8A87247408}.Release|x64.Build.0 = Release|x64
 		{65A83188-79C1-47AD-931D-8E8A87247408}.Release|x64.Deploy.0 = Release|x64
+		{E7CE09DB-6223-4A36-A5A9-AEC2E4FE6833}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{E7CE09DB-6223-4A36-A5A9-AEC2E4FE6833}.Debug|x64.ActiveCfg = Debug|x64
+		{E7CE09DB-6223-4A36-A5A9-AEC2E4FE6833}.Debug|x64.Build.0 = Debug|x64
+		{E7CE09DB-6223-4A36-A5A9-AEC2E4FE6833}.Debug|x64.Deploy.0 = Debug|x64
+		{E7CE09DB-6223-4A36-A5A9-AEC2E4FE6833}.Release|Any CPU.ActiveCfg = Release|x64
+		{E7CE09DB-6223-4A36-A5A9-AEC2E4FE6833}.Release|x64.ActiveCfg = Release|x64
+		{E7CE09DB-6223-4A36-A5A9-AEC2E4FE6833}.Release|x64.Build.0 = Release|x64
+		{E7CE09DB-6223-4A36-A5A9-AEC2E4FE6833}.Release|x64.Deploy.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

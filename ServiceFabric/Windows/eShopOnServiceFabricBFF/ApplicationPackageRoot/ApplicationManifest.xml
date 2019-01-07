@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ApplicationManifest ApplicationTypeName="eShopOnServiceFabricBFFType"
+                     ApplicationTypeVersion="1.0.0"
+                     xmlns="http://schemas.microsoft.com/2011/01/fabric"
+                     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Parameters>
+    <Parameter Name="webshoppingagg_InstanceCount" DefaultValue="-1" />
+    <Parameter Name="mobileshoppingagg_InstanceCount" DefaultValue="-1" />
+    <Parameter Name="webmarketingapigw_InstanceCount" DefaultValue="-1" />
+    <Parameter Name="mobilemarketingapigw_InstanceCount" DefaultValue="-1" />
+    <Parameter Name="mobileshoppingapigw_InstanceCount" DefaultValue="-1" />
+    <Parameter Name="webshoppingapigw_InstanceCount" DefaultValue="-1" />
+    <Parameter Name="IdentityUrl" DefaultValue="" />
+    <Parameter Name="InstrumentationKey" DefaultValue="" />
+  </Parameters>
+  <!-- Import the ServiceManifest from the ServicePackage. The ServiceManifestName and ServiceManifestVersion 
+       should match the Name and Version attributes of the ServiceManifest element defined in the 
+       ServiceManifest.xml file. -->
+
+  <ServiceManifestImport>
+    <ServiceManifestRef ServiceManifestName="webshoppingaggPkg" ServiceManifestVersion="1.0.0" />
+    <ConfigOverrides />
+    <Policies>
+      <ContainerHostPolicies CodePackageRef="Code">
+        <!-- See https://aka.ms/I7z0p9 for how to encrypt your repository password -->
+        <!--<RepositoryCredentials AccountName="" Password="" PasswordEncrypted="true" />-->
+        <PortBinding ContainerPort="80" EndpointRef="webshoppingaggTypeEndpoint" />
+      </ContainerHostPolicies>
+    </Policies>
+  </ServiceManifestImport>
+  <ServiceManifestImport>
+    <ServiceManifestRef ServiceManifestName="mobileshoppingaggPkg" ServiceManifestVersion="1.0.0" />
+    <ConfigOverrides />
+    <Policies>
+      <ContainerHostPolicies CodePackageRef="Code">
+        <!-- See https://aka.ms/I7z0p9 for how to encrypt your repository password -->
+        <!--<RepositoryCredentials AccountName="" Password="" PasswordEncrypted="true" />-->
+        <PortBinding ContainerPort="80" EndpointRef="mobileshoppingaggTypeEndpoint" />
+      </ContainerHostPolicies>
+    </Policies>
+  </ServiceManifestImport>
+  <ServiceManifestImport>
+    <ServiceManifestRef ServiceManifestName="webmarketingapigwPkg" ServiceManifestVersion="1.0.0" />
+    <EnvironmentOverrides CodePackageRef="Code">
+      <EnvironmentVariable Name="IdentityUrl" Value="[IdentityUrl]"/>
+      <EnvironmentVariable Name="ApplicationInsights__InstrumentationKey" Value="[InstrumentationKey]"/>
+    </EnvironmentOverrides>
+    <Policies>
+      <ContainerHostPolicies CodePackageRef="Code">
+        <!-- See https://aka.ms/I7z0p9 for how to encrypt your repository password -->
+        <!--<RepositoryCredentials AccountName="" Password="" PasswordEncrypted="true" />-->
+        <PortBinding ContainerPort="80" EndpointRef="webmarketingapigwTypeEndpoint" />        
+      </ContainerHostPolicies>
+    </Policies>
+  </ServiceManifestImport>
+  <ServiceManifestImport>
+    <ServiceManifestRef ServiceManifestName="mobilemarketingapigwPkg" ServiceManifestVersion="1.0.0" />
+    <EnvironmentOverrides CodePackageRef="Code">
+      <EnvironmentVariable Name="IdentityUrl" Value="[IdentityUrl]"/>
+      <EnvironmentVariable Name="ApplicationInsights__InstrumentationKey" Value="[InstrumentationKey]"/>
+    </EnvironmentOverrides>
+    <Policies>
+      <ContainerHostPolicies CodePackageRef="Code">
+        <!-- See https://aka.ms/I7z0p9 for how to encrypt your repository password -->
+        <!--<RepositoryCredentials AccountName="" Password="" PasswordEncrypted="true" />-->
+        <PortBinding ContainerPort="80" EndpointRef="mobilemarketingapigwTypeEndpoint" />        
+      </ContainerHostPolicies>
+    </Policies>
+  </ServiceManifestImport>
+  <ServiceManifestImport>
+    <ServiceManifestRef ServiceManifestName="mobileshoppingapigwPkg" ServiceManifestVersion="1.0.0" />
+    <EnvironmentOverrides CodePackageRef="Code">
+      <EnvironmentVariable Name="IdentityUrl" Value="[IdentityUrl]"/>
+      <EnvironmentVariable Name="ApplicationInsights__InstrumentationKey" Value="[InstrumentationKey]"/>
+    </EnvironmentOverrides>
+    <Policies>
+      <ContainerHostPolicies CodePackageRef="Code">
+        <!-- See https://aka.ms/I7z0p9 for how to encrypt your repository password -->
+        <!--<RepositoryCredentials AccountName="" Password="" PasswordEncrypted="true" />-->
+        <PortBinding ContainerPort="80" EndpointRef="mobileshoppingapigwTypeEndpoint" />        
+      </ContainerHostPolicies>
+    </Policies>
+  </ServiceManifestImport>
+  <ServiceManifestImport>
+    <ServiceManifestRef ServiceManifestName="webshoppingapigwPkg" ServiceManifestVersion="1.0.0" />
+    <EnvironmentOverrides CodePackageRef="Code">
+      <EnvironmentVariable Name="IdentityUrl" Value="[IdentityUrl]"/>
+      <EnvironmentVariable Name="ApplicationInsights__InstrumentationKey" Value="[InstrumentationKey]"/>
+    </EnvironmentOverrides>
+    <Policies>
+      <ContainerHostPolicies CodePackageRef="Code">
+        <!-- See https://aka.ms/I7z0p9 for how to encrypt your repository password -->
+        <!--<RepositoryCredentials AccountName="" Password="" PasswordEncrypted="true" />-->
+        <PortBinding ContainerPort="80" EndpointRef="webshoppingapigwTypeEndpoint" />        
+      </ContainerHostPolicies>
+    </Policies>
+  </ServiceManifestImport>
+  <DefaultServices>
+    <!-- The section below creates instances of service types, when an instance of this 
+         application type is created. You can also create one or more instances of service type using the 
+         ServiceFabric PowerShell module.
+         
+         The attribute ServiceTypeName below must match the name defined in the imported ServiceManifest.xml file. -->
+    <Service Name="webshoppingagg" ServiceDnsName="webshoppingagg" ServicePackageActivationMode="ExclusiveProcess">
+      <StatelessService ServiceTypeName="webshoppingaggType" InstanceCount="[webshoppingagg_InstanceCount]">
+        <SingletonPartition />
+      </StatelessService>
+    </Service>
+    <Service Name="mobileshoppingagg" ServiceDnsName="mobileshoppingagg" ServicePackageActivationMode="ExclusiveProcess">
+      <StatelessService ServiceTypeName="mobileshoppingaggType" InstanceCount="[mobileshoppingagg_InstanceCount]">
+        <SingletonPartition />
+      </StatelessService>
+    </Service>
+    <Service Name="webmarketingapigw" ServiceDnsName="webmarketingapigw" ServicePackageActivationMode="ExclusiveProcess">
+      <StatelessService ServiceTypeName="webmarketingapigwType" InstanceCount="[webmarketingapigw_InstanceCount]">
+        <SingletonPartition />
+      </StatelessService>
+    </Service>
+    <Service Name="mobilemarketingapigw"  ServiceDnsName="mobilemarketingapigw" ServicePackageActivationMode="ExclusiveProcess">
+      <StatelessService ServiceTypeName="mobilemarketingapigwType" InstanceCount="[mobilemarketingapigw_InstanceCount]">
+        <SingletonPartition />
+      </StatelessService>
+    </Service>
+    <Service Name="mobileshoppingapigw" ServiceDnsName="mobileshoppingapigw" ServicePackageActivationMode="ExclusiveProcess">
+      <StatelessService ServiceTypeName="mobileshoppingapigwType" InstanceCount="[mobileshoppingapigw_InstanceCount]">
+        <SingletonPartition />
+      </StatelessService>
+    </Service>
+    <Service Name="webshoppingapigw" ServiceDnsName="webshoppingapigw" ServicePackageActivationMode="ExclusiveProcess">
+      <StatelessService ServiceTypeName="webshoppingapigwType" InstanceCount="[webshoppingapigw_InstanceCount]">
+        <SingletonPartition />
+      </StatelessService>
+    </Service>
+  </DefaultServices>
+</ApplicationManifest>

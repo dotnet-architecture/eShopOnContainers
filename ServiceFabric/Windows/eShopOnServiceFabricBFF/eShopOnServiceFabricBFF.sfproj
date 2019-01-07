@@ -2,10 +2,11 @@
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" InitialTargets=";ValidateMSBuildFiles">
   <Import Project="..\..\..\packages\Microsoft.VisualStudio.Azure.Fabric.MSBuild.1.6.7\build\Microsoft.VisualStudio.Azure.Fabric.Application.props" Condition="Exists('..\..\..\packages\Microsoft.VisualStudio.Azure.Fabric.MSBuild.1.6.7\build\Microsoft.VisualStudio.Azure.Fabric.Application.props')" />
   <PropertyGroup Label="Globals">
-    <ProjectGuid>983eab84-65c5-4793-a300-08f97c791a15</ProjectGuid>
-    <ProjectVersion>2.1</ProjectVersion>
+    <ProjectGuid>e7ce09db-6223-4a36-a5a9-aec2e4fe6833</ProjectGuid>
+    <ProjectVersion>2.3</ProjectVersion>
     <MinToolsVersion>1.5</MinToolsVersion>
     <SupportedMSBuildNuGetPackageVersion>1.6.7</SupportedMSBuildNuGetPackageVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
   </PropertyGroup>
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|x64">
@@ -22,29 +23,24 @@
     <None Include="ApplicationParameters\Cloud.xml" />
     <None Include="ApplicationParameters\Local.1Node.xml" />
     <None Include="ApplicationParameters\Local.5Node.xml" />
-    <None Include="packages.config" />
     <None Include="PublishProfiles\Cloud.xml" />
     <None Include="PublishProfiles\Local.1Node.xml" />
     <None Include="PublishProfiles\Local.5Node.xml" />
     <None Include="Scripts\Deploy-FabricApplication.ps1" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ApplicationPackageRoot\BasketApiPkg\Config\Settings.xml" />
-    <Content Include="ApplicationPackageRoot\BasketApiPkg\ServiceManifest.xml" />
-    <Content Include="ApplicationPackageRoot\CatalogApiPkg\Config\Settings.xml" />
-    <Content Include="ApplicationPackageRoot\CatalogApiPkg\ServiceManifest.xml" />
-    <Content Include="ApplicationPackageRoot\LocationsApiPkg\Config\Settings.xml" />
-    <Content Include="ApplicationPackageRoot\LocationsApiPkg\ServiceManifest.xml" />
-    <Content Include="ApplicationPackageRoot\MarketingApiPkg\Config\Settings.xml" />
-    <Content Include="ApplicationPackageRoot\MarketingApiPkg\ServiceManifest.xml" />
-    <Content Include="ApplicationPackageRoot\OrderingApiPkg\Config\Settings.xml" />
-    <Content Include="ApplicationPackageRoot\OrderingApiPkg\ServiceManifest.xml" />
-    <Content Include="ApplicationPackageRoot\OrderingBackgroundPkg\Config\Settings.xml" />
-    <Content Include="ApplicationPackageRoot\OrderingBackgroundPkg\ServiceManifest.xml" />
-    <Content Include="ApplicationPackageRoot\OrderingSignalrhubPkg\Config\Settings.xml" />
-    <Content Include="ApplicationPackageRoot\OrderingSignalrhubPkg\ServiceManifest.xml" />
-    <Content Include="ApplicationPackageRoot\PaymentApiPkg\Config\Settings.xml" />
-    <Content Include="ApplicationPackageRoot\PaymentApiPkg\ServiceManifest.xml" />
+    <Content Include="ApplicationPackageRoot\mobilemarketingapigwPkg\Config\Settings.xml" />
+    <Content Include="ApplicationPackageRoot\mobilemarketingapigwPkg\ServiceManifest.xml" />
+    <Content Include="ApplicationPackageRoot\mobileshoppingaggPkg\Config\Settings.xml" />
+    <Content Include="ApplicationPackageRoot\mobileshoppingaggPkg\ServiceManifest.xml" />
+    <Content Include="ApplicationPackageRoot\mobileshoppingapigwPkg\Config\Settings.xml" />
+    <Content Include="ApplicationPackageRoot\mobileshoppingapigwPkg\ServiceManifest.xml" />
+    <Content Include="ApplicationPackageRoot\webmarketingapigwPkg\Config\Settings.xml" />
+    <Content Include="ApplicationPackageRoot\webmarketingapigwPkg\ServiceManifest.xml" />
+    <Content Include="ApplicationPackageRoot\webshoppingaggPkg\Config\Settings.xml" />
+    <Content Include="ApplicationPackageRoot\webshoppingaggPkg\ServiceManifest.xml" />
+    <Content Include="ApplicationPackageRoot\webshoppingapigwPkg\Config\Settings.xml" />
+    <Content Include="ApplicationPackageRoot\webshoppingapigwPkg\ServiceManifest.xml" />
     <Content Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />

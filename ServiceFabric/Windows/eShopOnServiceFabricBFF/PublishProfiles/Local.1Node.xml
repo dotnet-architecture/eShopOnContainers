@@ -7,8 +7,5 @@
          For example: <ClusterConnectionParameters />
   -->
   <ClusterConnectionParameters />
-  <ApplicationParameterFile Path="..\ApplicationParameters\Local.5Node.xml" />
-  <UpgradeDeployment Mode="UnmonitoredAuto" Enabled="false">
-    <Parameters UpgradeReplicaSetCheckTimeoutSec="1" Force="True" />
-  </UpgradeDeployment>
+  <ApplicationParameterFile Path="..\ApplicationParameters\Local.1Node.xml" />
 </PublishProfile>
