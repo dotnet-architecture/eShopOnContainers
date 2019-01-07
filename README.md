@@ -9,8 +9,8 @@ Sample .NET Core reference application, powered by Microsoft, based on a simplif
 **NEWS / ANNOUNCEMENTS**
 Do you want to be up-to-date on .NET Architecture guidance and reference apps like eShopOnContainers? --> Subscribe by "WATCHING" this new GitHub repo: https://github.com/dotnet-architecture/News 
 
-## Updated for .NET Core 2.0 and 2.1 "wave" of technologies
-eShopOnContainers is updated to .NET Core 2.0 and 2.1 "wave". Not just compilation but also new recommended code in EF Core, ASP.NET Core, and other new related versions.
+## Updated for .NET Core 2.2 "wave" of technologies
+eShopOnContainers is updated to .NET Core 2.0, 2.1 and 2.2 "wave". Not just compilation but also new recommended code in EF Core, ASP.NET Core, and other new related versions.
 
 The **dockerfiles** in the solution have also been updated and now support [**Docker Multi-Stage**](https://blogs.msdn.microsoft.com/stevelasker/2017/09/11/net-and-multistage-dockerfiles/) since mid-December 2017.
 
