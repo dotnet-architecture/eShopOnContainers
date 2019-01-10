@@ -2,7 +2,7 @@
 Sample .NET Core reference application, powered by Microsoft, based on a simplified microservices architecture and Docker containers.
 
 ## IMPORTANT NOTES!
-**The current supported Visual Studio version for eShopOnContainers is Visual Studio 2017 15.7** ([GA/RTM since May 8th 2018](https://docs.microsoft.com/en-us/visualstudio/releasenotes/vs2017-relnotes)) or later version. 
+**You can use either the latest version of Visual Studio or simply Docker CLI and .NET CLI for Windows, Mac and Linux**. 
 
 **Note for Pull Requests (PRs)**: We accept pull request from the community. When doing it, please do it onto the **DEV branch** which is the consolidated work-in-progress branch. Do not request it onto Master branch, if possible.
 
