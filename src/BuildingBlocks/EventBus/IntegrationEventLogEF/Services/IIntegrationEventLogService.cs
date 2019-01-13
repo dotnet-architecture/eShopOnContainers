@@ -9,7 +9,10 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF.Servi
 {
     public interface IIntegrationEventLogService
     {
+        Task<IEnumerable<IntegrationEventLogEntry>> RetrieveEventLogsPendingToPublishAsync();
         Task SaveEventAsync(IntegrationEvent @event, DbTransaction transaction);
-        Task MarkEventAsPublishedAsync(IntegrationEvent @event);
+        Task MarkEventAsPublishedAsync(Guid eventId);
+        Task MarkEventAsInProgressAsync(Guid eventId);
+        Task MarkEventAsFailedAsync(Guid eventId);
     }
 }

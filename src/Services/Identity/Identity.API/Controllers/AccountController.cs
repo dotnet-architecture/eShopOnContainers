@@ -1,4 +1,9 @@
-﻿using IdentityModel;
+﻿using System;
+using System.Linq;
+using System.Security.Claims;
+using System.Text.Encodings.Web;
+using System.Threading.Tasks;
+using IdentityModel;
 using IdentityServer4;
 using IdentityServer4.Models;
 using IdentityServer4.Services;
@@ -11,11 +16,6 @@ using Microsoft.eShopOnContainers.Services.Identity.API.Models;
 using Microsoft.eShopOnContainers.Services.Identity.API.Models.AccountViewModels;
 using Microsoft.eShopOnContainers.Services.Identity.API.Services;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Linq;
-using System.Security.Claims;
-using System.Text.Encodings.Web;
-using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.Services.Identity.API.Controllers
 {
@@ -79,9 +79,16 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Controllers
             if (ModelState.IsValid)
             {
                 var user = await _loginService.FindByUsername(model.Email);
+
                 if (await _loginService.ValidateCredentials(user, model.Password))
                 {
-                    AuthenticationProperties props = null;
+                    var props = new AuthenticationProperties
+                    {
+                        ExpiresUtc = DateTimeOffset.UtcNow.AddHours(2),
+                        AllowRefresh = true,
+                        RedirectUri = model.ReturnUrl
+                    };
+
                     if (model.RememberMe)
                     {
                         props = new AuthenticationProperties
@@ -91,8 +98,8 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Controllers
                         };
                     };
 
-                    await _loginService.SignIn(user);
-                   
+                    await _loginService.SignInAsync(user, props);
+
                     // make sure the returnUrl is still valid, and if yes - redirect back to authorize endpoint
                     if (_interaction.IsValidReturnUrl(model.ReturnUrl))
                     {
@@ -113,7 +120,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Controllers
             return View(vm);
         }
 
-        async Task<LoginViewModel> BuildLoginViewModelAsync(string returnUrl, AuthorizationRequest context)
+        private async Task<LoginViewModel> BuildLoginViewModelAsync(string returnUrl, AuthorizationRequest context)
         {
             var allowLocal = true;
             if (context?.ClientId != null)
@@ -132,7 +139,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Controllers
             };
         }
 
-        async Task<LoginViewModel> BuildLoginViewModelAsync(LoginViewModel model)
+        private async Task<LoginViewModel> BuildLoginViewModelAsync(LoginViewModel model)
         {
             var context = await _interaction.GetAuthorizationContextAsync(model.ReturnUrl);
             var vm = await BuildLoginViewModelAsync(model.ReturnUrl, context);
@@ -193,7 +200,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Controllers
 
                 try
                 {
-                    
+
                     // hack: try/catch to handle social providers that throw
                     await HttpContext.SignOutAsync(idp, new AuthenticationProperties
                     {
@@ -208,6 +215,8 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Controllers
 
             // delete authentication cookie
             await HttpContext.SignOutAsync();
+
+            await HttpContext.SignOutAsync(IdentityConstants.ApplicationScheme);
 
             // set this so UI rendering sees an anonymous user
             HttpContext.User = new ClaimsPrincipal(new ClaimsIdentity());

@@ -13,7 +13,9 @@ service:
 
 ingress:
   enabled: true
-  annotations: {}
+  annotations: {
+
+  }
   tls: []
 
 resources: {}
@@ -32,27 +34,73 @@ env:
   configmap:
     - name: ApplicationInsights__InstrumentationKey
       key: all__InstrumentationKey
-    - name: BasketUrl
-      key: internalurls__basket__hc
-    - name: CatalogUrl
-      key: internalurls__catalog__hc
-    - name: IdentityUrl
-      key: internalurls__identity__hc
-    - name: OrderingUrl
-      key: internalurls__ordering__hc      
-    - name: OrderingBackgroundTasksUrl
-      key: internalurls__orderingbackground__hc
-    - name: LocationsUrl
-      key: internalurls__locations__hc
-    - name: MarketingUrl
-      key: internalurls__marketing__hc
-    - name: IdentityUrlHC
-      key: internalurls__identity__hc      
-    - name: mvc
+    - name: HealthChecks-UI__HealthChecks__0__Name
+      key: name__mvc__hc
+    - name: HealthChecks-UI__HealthChecks__0__Uri
       key: internalurls__mvc__hc
-    - name: spa
+    - name: HealthChecks-UI__HealthChecks__1__Name
+      key: name__spa__hc
+    - name: HealthChecks-UI__HealthChecks__1__Uri
       key: internalurls__spa__hc
-    - name: PaymentUrl
+    - name: HealthChecks-UI__HealthChecks__2__Name
+      key: name__apigwws__hc
+    - name: HealthChecks-UI__HealthChecks__2__Uri
+      key: internalurls__apigwws__hc
+    - name: HealthChecks-UI__HealthChecks__3__Name
+      key: name__apigwwm__hc
+    - name: HealthChecks-UI__HealthChecks__3__Uri
+      key: internalurls__apigwwm__hc
+    - name: HealthChecks-UI__HealthChecks__4__Name
+      key: name__apigwms__hc
+    - name: HealthChecks-UI__HealthChecks__4__Uri
+      key: internalurls__apigwms__hc
+    - name: HealthChecks-UI__HealthChecks__5__Name
+      key: name__apigwmm__hc
+    - name: HealthChecks-UI__HealthChecks__5__Uri
+      key: internalurls__apigwmm__hc
+    - name: HealthChecks-UI__HealthChecks__6__Name
+      key: name__apigwwsagg__hc
+    - name: HealthChecks-UI__HealthChecks__6__Uri
+      key: internalurls__apigwwsagg__hc
+    - name: HealthChecks-UI__HealthChecks__7__Name
+      key: name__apigwmsagg__hc
+    - name: HealthChecks-UI__HealthChecks__7__Uri
+      key: internalurls__apigwmsagg__hc
+    - name: HealthChecks-UI__HealthChecks__8__Name
+      key: name__ordering__hc
+    - name: HealthChecks-UI__HealthChecks__8__Uri
+      key: internalurls__ordering__hc
+    - name: HealthChecks-UI__HealthChecks__9__Name
+      key: name__orderingbackground__hc
+    - name: HealthChecks-UI__HealthChecks__9__Uri
+      key: internalurls__orderingbackground__hc
+    - name: HealthChecks-UI__HealthChecks__10__Name
+      key: name__signalrhub__hc
+    - name: HealthChecks-UI__HealthChecks__10__Uri
+      key: internalurls__signalrhub__hc
+    - name: HealthChecks-UI__HealthChecks__11__Name
+      key: name__basket__hc
+    - name: HealthChecks-UI__HealthChecks__11__Uri
+      key: internalurls__basket__hc
+    - name: HealthChecks-UI__HealthChecks__12__Name
+      key: name__catalog__hc
+    - name: HealthChecks-UI__HealthChecks__12__Uri
+      key: internalurls__catalog__hc
+    - name: HealthChecks-UI__HealthChecks__13__Name
+      key: name__identity__hc
+    - name: HealthChecks-UI__HealthChecks__13__Uri
+      key: internalurls__identity__hc
+    - name: HealthChecks-UI__HealthChecks__14__Name
+      key: name__marketing__hc
+    - name: HealthChecks-UI__HealthChecks__14__Uri
+      key: internalurls__marketing__hc
+    - name: HealthChecks-UI__HealthChecks__15__Name
+      key: name__locations__hc
+    - name: HealthChecks-UI__HealthChecks__15__Uri
+      key: internalurls__locations__hc
+    - name: HealthChecks-UI__HealthChecks__16__Name
+      key: name__payment__hc
+    - name: HealthChecks-UI__HealthChecks__16__Uri
       key: internalurls__payment__hc
       # values define environment variables with a fixed value (no configmap involved) (name is name of var, and value is its value)
   values:
