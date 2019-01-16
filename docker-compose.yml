@@ -86,6 +86,14 @@ services:
       - nosql.data
       - rabbitmq
 
+  webhooks.api:
+    image: eshop/webhooks.api:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/Services/Webhooks/Webhooks.API/Dockerfile
+    depends_on:
+      - sql.data    
+
   mobileshoppingapigw:
     image: eshop/ocelotapigw:${TAG:-latest}
     build:
@@ -217,3 +225,10 @@ services:
       - webshoppingapigw
       - webmarketingapigw
 
+  webhooks.client:
+    image: eshop/webhooks.client:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/Web/WebhookClient/Dockerfile
+    depends_on:
+      - webhooks.api    
