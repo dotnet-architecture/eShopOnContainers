@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,5 +15,16 @@ namespace Webhooks.API.Infrastructure
         {
         }
         public DbSet<WebhookSubscription> Subscriptions { get; set; }
+    }
+
+    public class WebhooksContextDesignFactory : IDesignTimeDbContextFactory<WebhooksContext>
+    {
+        public WebhooksContext CreateDbContext(string[] args)
+        {
+            var optionsBuilder = new DbContextOptionsBuilder<WebhooksContext>()
+                .UseSqlServer("Server=.;Initial Catalog=Microsoft.eShopOnContainers.Services.CatalogDb;Integrated Security=true");
+
+            return new WebhooksContext(optionsBuilder.Options);
+        }
     }
 }

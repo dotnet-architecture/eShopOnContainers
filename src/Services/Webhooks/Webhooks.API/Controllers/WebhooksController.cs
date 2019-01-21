@@ -10,7 +10,7 @@ using Webhooks.API.Infrastructure;
 using Webhooks.API.Model;
 using Webhooks.API.Services;
 
-namespace Webhooks.API.Controller
+namespace Webhooks.API.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]

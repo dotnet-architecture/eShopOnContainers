@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -22,15 +24,9 @@ namespace WebhookClient
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<CookiePolicyOptions>(options =>
-            {
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-                options.CheckConsentNeeded = context => true;
-                options.MinimumSameSitePolicy = SameSiteMode.None;
-            });
-
-
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services
+                .AddCustomAuthentication(Configuration)
+                .AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,8 +42,9 @@ namespace WebhookClient
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-            app.UseHttpsRedirection();
 
+            app.UseAuthentication();
+            app.UseHttpsRedirection();
             app.Map("/check", capp =>
             {
                 capp.Run(async (context) =>
@@ -74,8 +71,41 @@ namespace WebhookClient
             });
 
             app.UseStaticFiles();
-            app.UseCookiePolicy();
-            app.UseMvc();
+            app.UseMvcWithDefaultRoute();
+        }
+    }
+
+    static class ServiceExtensions
+    {
+        public static IServiceCollection AddCustomAuthentication(this IServiceCollection services, IConfiguration configuration)
+        {
+            var identityUrl = configuration.GetValue<string>("IdentityUrl");
+            var callBackUrl = configuration.GetValue<string>("CallBackUrl");
+
+            // Add Authentication services          
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+            })
+            .AddCookie(setup => setup.ExpireTimeSpan = TimeSpan.FromHours(2))
+            .AddOpenIdConnect(options =>
+            {
+                options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.Authority = identityUrl.ToString();
+                options.SignedOutRedirectUri = callBackUrl.ToString();
+                options.ClientId = "webhooksclient";
+                options.ClientSecret = "secret";
+                options.ResponseType = "code id_token";
+                options.SaveTokens = true;
+                options.GetClaimsFromUserInfoEndpoint = true;
+                options.RequireHttpsMetadata = false;
+                options.Scope.Add("openid");
+                options.Scope.Add("webhooks");
+            });
+
+            return services;
         }
     }
 }

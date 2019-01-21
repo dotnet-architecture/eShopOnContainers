@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Webhooks.API.Model;
 
-namespace Webhooks.API.Controller
+namespace Webhooks.API.Controllers
 {
     public class WebhookSubscriptionRequest : IValidatableObject
     {

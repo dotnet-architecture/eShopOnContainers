@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using HealthChecks.UI.Client;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.ApplicationInsights.ServiceFabric;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
@@ -29,6 +32,7 @@ using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
 using Swashbuckle.AspNetCore.Swagger;
 using Webhooks.API.Infrastructure;
+using Webhooks.API.IntegrationEvents;
 using Webhooks.API.Services;
 
 namespace Webhooks.API
@@ -43,7 +47,7 @@ namespace Webhooks.API
         }
 
 
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services
                 .AddAppInsight(Configuration)
@@ -54,8 +58,14 @@ namespace Webhooks.API
                 .AddHttpClientServices(Configuration)
                 .AddIntegrationServices(Configuration)
                 .AddEventBus(Configuration)
+                .AddCustomAuthentication(Configuration)
+                .AddSingleton<IHttpContextAccessor, HttpContextAccessor>()
                 .AddTransient<IIdentityService, IdentityService>()
                 .AddTransient<IGrantUrlTesterService, GrantUrlTesterService>();
+
+            var container = new ContainerBuilder();
+            container.Populate(services);
+            return new AutofacServiceProvider(container.Build());
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
@@ -84,6 +94,8 @@ namespace Webhooks.API
 
             app.UseCors("CorsPolicy");
 
+            ConfigureAuth(app);
+
             app.UseMvcWithDefaultRoute();
 
             app.UseSwagger()
@@ -97,10 +109,22 @@ namespace Webhooks.API
             ConfigureEventBus(app);
         }
 
+        protected virtual void ConfigureAuth(IApplicationBuilder app)
+        {
+            /*
+            if (Configuration.GetValue<bool>("UseLoadTest"))
+            {
+                app.UseMiddleware<ByPassAuthMiddleware>();
+            }
+            */
+
+            app.UseAuthentication();
+        }
+
         protected virtual void ConfigureEventBus(IApplicationBuilder app)
         {
             var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
-            // eventBus.Subscribe<OrderStatusChangedToAwaitingValidationIntegrationEvent, OrderStatusChangedToAwaitingValidationIntegrationEventHandler>();
+            eventBus.Subscribe<ProductPriceChangedIntegrationEvent, ProductPriceChangedIntegrationEventHandler>();
         }
     }
 
@@ -190,13 +214,12 @@ namespace Webhooks.API
                     TokenUrl = $"{configuration.GetValue<string>("IdentityUrlExternal")}/connect/token",
                     Scopes = new Dictionary<string, string>()
                     {
-                        { "webhooks", "Webhooks.API" }
+                        { "webhooks", "Webhooks API" }
                     }
                 });
 
+                options.OperationFilter<AuthorizeCheckOperationFilter>();
             });
-
-
 
             return services;
         }
@@ -326,6 +349,28 @@ namespace Webhooks.API
                     return new DefaultRabbitMQPersistentConnection(factory, logger, retryCount);
                 });
             }
+
+            return services;
+        }
+
+        public static IServiceCollection AddCustomAuthentication(this IServiceCollection services, IConfiguration configuration)
+        {
+            // prevent from mapping "sub" claim to nameidentifier.
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("sub");
+
+            var identityUrl = configuration.GetValue<string>("IdentityUrl");
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
+            }).AddJwtBearer(options =>
+            {
+                options.Authority = identityUrl;
+                options.RequireHttpsMetadata = false;
+                options.Audience = "webhooks";
+            });
 
             return services;
         }
