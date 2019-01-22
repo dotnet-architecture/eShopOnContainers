@@ -23,7 +23,6 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
                 {
                     options.ConfigPath = "/Failing";
                 })
-                .UseHealthChecks("/hc")
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseStartup<Startup>()
                 .ConfigureAppConfiguration((builderContext, config) =>

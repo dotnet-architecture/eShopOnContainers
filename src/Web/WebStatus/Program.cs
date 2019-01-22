@@ -17,11 +17,7 @@ namespace WebStatus
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseStartup<Startup>()
-                .ConfigureAppConfiguration((builderContext, config) =>
-                {
-                    config.AddEnvironmentVariables();
-                })
+                .UseStartup<Startup>()                
                 .ConfigureLogging((hostingContext, builder) =>
                 {
                     builder.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));

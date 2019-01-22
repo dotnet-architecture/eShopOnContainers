@@ -17,7 +17,6 @@ namespace Payment.API
 
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseHealthChecks("/hc")
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseStartup<Startup>()
                 .ConfigureAppConfiguration((builderContext, config) =>

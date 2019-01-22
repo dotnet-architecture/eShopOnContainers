@@ -263,3 +263,6 @@ pub/
 /src/Web/WebMVC/wwwroot/css/site.min.css
 **/.kube/**
 .mfractor
+
+# Ignore HealthCheckdb
+*healthchecksdb*

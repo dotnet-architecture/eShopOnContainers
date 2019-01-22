@@ -35,7 +35,6 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)                
                 .UseStartup<Startup>()
-                .UseHealthChecks("/hc")
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .ConfigureAppConfiguration((builderContext, config) =>
                 {

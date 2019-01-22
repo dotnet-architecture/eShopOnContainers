@@ -17,7 +17,6 @@ namespace Microsoft.eShopOnContainers.WebMVC
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseHealthChecks("/hc")
                 .UseStartup<Startup>()
                 .ConfigureAppConfiguration((builderContext, config) =>
                 {
