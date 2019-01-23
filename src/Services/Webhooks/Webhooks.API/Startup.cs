@@ -61,7 +61,9 @@ namespace Webhooks.API
                 .AddCustomAuthentication(Configuration)
                 .AddSingleton<IHttpContextAccessor, HttpContextAccessor>()
                 .AddTransient<IIdentityService, IdentityService>()
-                .AddTransient<IGrantUrlTesterService, GrantUrlTesterService>();
+                .AddTransient<IGrantUrlTesterService, GrantUrlTesterService>()
+                .AddTransient<IWebhooksRetriever, WebhooksRetriever>()
+                .AddTransient<IWebhooksSender, WebhooksSender>();
 
             var container = new ContainerBuilder();
             container.Populate(services);
@@ -125,6 +127,7 @@ namespace Webhooks.API
         {
             var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
             eventBus.Subscribe<ProductPriceChangedIntegrationEvent, ProductPriceChangedIntegrationEventHandler>();
+            eventBus.Subscribe<OrderStatusChangedToShippedIntegrationEvent, OrderStatusChangedToShippedIntegrationEventHandler>();
         }
     }
 
@@ -287,19 +290,11 @@ namespace Webhooks.API
         public static IServiceCollection AddHttpClientServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
-
-            //register delegating handlers
-            //services.AddTransient<HttpClientAuthorizationDelegatingHandler>();
-
-            //InfinteTimeSpan -> See: https://github.com/aspnet/HttpClientFactory/issues/194
             services.AddHttpClient("extendedhandlerlifetime").SetHandlerLifetime(Timeout.InfiniteTimeSpan);
-
             //add http client services
             services.AddHttpClient("GrantClient")
                    .SetHandlerLifetime(TimeSpan.FromMinutes(5));
                    //.AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>();
-
             return services;
         }
 

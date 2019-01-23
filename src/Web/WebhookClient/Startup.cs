@@ -9,6 +9,8 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
 using System.Net;
+using System.Threading;
+using WebhookClient.Services;
 
 namespace WebhookClient
 {
@@ -25,7 +27,14 @@ namespace WebhookClient
         public void ConfigureServices(IServiceCollection services)
         {
             services
+                .AddSession(opt =>
+                {
+                    opt.Cookie.Name = ".eShopWebhooks.Session";
+                })
+                .AddConfiguration(Configuration)
+                .AddHttpClientServices(Configuration)
                 .AddCustomAuthentication(Configuration)
+                .AddTransient<IWebhooksClient, WebhooksClient>()
                 .AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
@@ -42,7 +51,6 @@ namespace WebhookClient
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
             app.UseAuthentication();
             app.UseHttpsRedirection();
             app.Map("/check", capp =>
@@ -69,14 +77,20 @@ namespace WebhookClient
                     }
                 });
             });
-
             app.UseStaticFiles();
+            app.UseSession();
             app.UseMvcWithDefaultRoute();
         }
     }
 
     static class ServiceExtensions
     {
+        public static IServiceCollection AddConfiguration(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddOptions();
+            services.Configure<Settings>(configuration);
+            return services;
+        }
         public static IServiceCollection AddCustomAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
             var identityUrl = configuration.GetValue<string>("IdentityUrl");
@@ -104,6 +118,20 @@ namespace WebhookClient
                 options.Scope.Add("openid");
                 options.Scope.Add("webhooks");
             });
+
+            return services;
+        }
+
+        public static IServiceCollection AddHttpClientServices(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddTransient<HttpClientAuthorizationDelegatingHandler>();
+            services.AddHttpClient("extendedhandlerlifetime").SetHandlerLifetime(Timeout.InfiniteTimeSpan);
+
+            //add http client services
+            services.AddHttpClient("GrantClient")
+                   .SetHandlerLifetime(TimeSpan.FromMinutes(5))
+                   .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>();
 
             return services;
         }

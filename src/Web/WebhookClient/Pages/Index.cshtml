@@ -7,13 +7,23 @@
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>eShopOnContainers - Webhook client</p>
-    <a class="btn-primary btn" href="@Url.Action("SignIn","Account")>Login</a>
+    <a class="btn-primary btn" href="@Url.Action("SignIn","Account")">Login</a>
     <p>Why I need to login? You only need to login <bold>to setup a new webhook</bold>.</p>
 </div>
 
 @if (User.Identity.IsAuthenticated)
 {
-<div class="row">
-    Your current Webhooks:
-</div>
+
+    <div class="table">
+        <h3>Current webhooks invoked</h3>
+        <table class="table">
+            @foreach (var webhook in Model.WebHooksReceived)
+            {
+                <tr>
+                    <td>@webhook.When</td>
+                    <td><pre>@webhook.Data</pre></td>
+                </tr>
+            }
+        </table>
+    </div>
 }

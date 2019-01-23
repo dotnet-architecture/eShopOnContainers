@@ -1,0 +1,14 @@
+﻿@page
+@model WebhookClient.Pages.RegisterWebhookModel
+@{
+    ViewData["Title"] = "RegisterWebhook";
+}
+
+<h3>Register webhook</h3>
+
+<p>This page registers the "OrderShipped" Webhook by sending a POST to webhooks.</p>
+
+<form method="post">
+    <p>Token: <input type="text" asp-for="Token" /></p>
+    <input type="submit" value="send" />
+</form>

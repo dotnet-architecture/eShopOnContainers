@@ -403,5 +403,6 @@ services:
       - IdentityUrl=http://10.0.75.1:5105
       - CallBackUrl=http://localhost:5114
       - WebhooksUrl=http://webhooks.api
+      - SelfUrl=http://webhooks.client/
     ports:
       - "5114:80"
