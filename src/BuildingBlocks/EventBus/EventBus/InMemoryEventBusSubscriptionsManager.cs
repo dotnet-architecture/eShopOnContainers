@@ -117,7 +117,7 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBus
             var handler = OnEventRemoved;
             if (handler != null)
             {
-                OnEventRemoved(this, eventName);
+                handler(this, eventName);
             }
         }
 
