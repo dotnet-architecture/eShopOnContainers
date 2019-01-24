@@ -399,7 +399,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
-      - Token=6168DB8D-DC58-4094-AF24-483278923590      # You can use any string value here, just be sure to use same value when calling webhooks api to create a webhook
+      - Token=6168DB8D-DC58-4094-AF24-483278923590      # Webhooks are registered with this token (any value is valid) but the client won't check it
       - IdentityUrl=http://10.0.75.1:5105
       - CallBackUrl=http://localhost:5114
       - WebhooksUrl=http://webhooks.api
