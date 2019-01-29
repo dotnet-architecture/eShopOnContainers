@@ -59,9 +59,10 @@ namespace WebhookClient
                 {
                     if ("OPTIONS".Equals(context.Request.Method, StringComparison.InvariantCultureIgnoreCase))
                     {
+                        var validateToken = bool.TrueString.Equals(Configuration["ValidateToken"], StringComparison.InvariantCultureIgnoreCase);
                         var header = context.Request.Headers[HeaderNames.WebHookCheckHeader];
                         var value = header.FirstOrDefault();
-                        if (value == Configuration["Token"])
+                        if (!validateToken ||  value == Configuration["Token"])
                         {
                             context.Response.StatusCode = (int)HttpStatusCode.OK;
                         }

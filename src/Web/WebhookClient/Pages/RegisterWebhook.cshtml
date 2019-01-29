@@ -12,3 +12,8 @@
     <p>Token: <input type="text" asp-for="Token" /></p>
     <input type="submit" value="send" />
 </form>
+
+@if (Model.ResponseCode != (int)System.Net.HttpStatusCode.OK)
+{
+    <p>Error @Model.ResponseCode (@Model.ResponseMessage) when calling the Webhooks API (@Model.RequestUrl) with GrantUrl: @Model.GrantUrl):(</p>
+}

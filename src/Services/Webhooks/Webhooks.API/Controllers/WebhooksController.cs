@@ -38,7 +38,7 @@ namespace Webhooks.API.Controllers
         }
 
         [Authorize]
-        [HttpGet("{id:int}", Name = "Get")]
+        [HttpGet("{id:int}")]
         [ProducesResponseType(typeof(WebhookSubscription), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public async Task<IActionResult> GetByUserAndId(int id)
@@ -82,7 +82,7 @@ namespace Webhooks.API.Controllers
 
                 _dbContext.Add(subscription);
                 await _dbContext.SaveChangesAsync();
-                return CreatedAtAction("Get", new { id = subscription.Id });
+                return CreatedAtAction("GetByUserAndId", new { id = subscription.Id }, subscription);
             }
             else
             {

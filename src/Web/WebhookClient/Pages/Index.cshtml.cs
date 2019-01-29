@@ -17,7 +17,7 @@ namespace WebhookClient.Pages
 
         public void OnGet()
         {
-            WebHooksReceived = HttpContext.Session.Get<IEnumerable<WebHookReceived>>("webhooks.received") ?? Enumerable.Empty<WebHookReceived>();
+            WebHooksReceived = HttpContext.Session.Get<IEnumerable<WebHookReceived>>(SessionKeys.HooksKey) ?? Enumerable.Empty<WebHookReceived>();
         }
     }
 }

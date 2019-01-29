@@ -397,7 +397,6 @@ services:
 
   webhooks.client:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - Token=6168DB8D-DC58-4094-AF24-483278923590      # Webhooks are registered with this token (any value is valid) but the client won't check it
       - IdentityUrl=http://10.0.75.1:5105

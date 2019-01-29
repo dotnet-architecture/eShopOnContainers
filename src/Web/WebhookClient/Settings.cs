@@ -13,5 +13,7 @@ namespace WebhookClient
         public string WebhooksUrl { get; set; }
         public string SelfUrl { get; set; }
 
+        public bool ValidateToken { get; set; }
+
     }
 }
