@@ -61,4 +61,12 @@ env:
       value: 'K8S'
     - name: IsClusterEnv
       value: 'True'
-
+probes:
+  liveness:
+    path: /liveness
+    initialDelaySeconds: 10
+    periodSeconds: 15
+  readiness:
+    path: /hc
+    initialDelaySeconds: 90
+    periodSeconds: 15
