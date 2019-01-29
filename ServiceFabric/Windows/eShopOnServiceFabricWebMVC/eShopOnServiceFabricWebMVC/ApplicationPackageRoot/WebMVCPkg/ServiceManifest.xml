@@ -22,13 +22,11 @@
     <EnvironmentVariables>
       <EnvironmentVariable Name="ASPNETCORE_ENVIRONMENT" Value="Development"/>
       <EnvironmentVariable Name="ASPNETCORE_URLS" Value="http://0.0.0.0:80"/>
-      
       <EnvironmentVariable Name="CatalogUrl" Value="http://catalogapi.eshoponservicefabric:5101"/>
       <EnvironmentVariable Name="OrderingUrl" Value="http://orderingapi.eshoponservicefabric:5102"/>
       <EnvironmentVariable Name="BasketUrl" Value="http://basketapi.eshoponservicefabric:5103"/>
       <EnvironmentVariable Name="PaymentUrl" Value="http://paymentapi.eshoponservicefabric:5108"/>
       <EnvironmentVariable Name="IdentityUrl" Value=""/>
-      
       <EnvironmentVariable Name="MarketingUrl" Value="http://marketingapi.eshoponservicefabric:5110"/>
       <EnvironmentVariable Name="LocationsUrl" Value="http://locationsapi.eshoponservicefabric:5109"/>
       <EnvironmentVariable Name="CatalogUrlHC" Value="http://catalogapi.eshoponservicefabric:5101/hc"/>

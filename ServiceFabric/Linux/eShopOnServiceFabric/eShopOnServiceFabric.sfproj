@@ -41,6 +41,8 @@
     <Content Include="ApplicationPackageRoot\OrderingApiPkg\ServiceManifest.xml" />
     <Content Include="ApplicationPackageRoot\OrderingBackgroundPkg\Config\Settings.xml" />
     <Content Include="ApplicationPackageRoot\OrderingBackgroundPkg\ServiceManifest.xml" />
+    <Content Include="ApplicationPackageRoot\OrderingSignalrHubPkg\Config\Settings.xml" />
+    <Content Include="ApplicationPackageRoot\OrderingSignalrHubPkg\ServiceManifest.xml" />
     <Content Include="ApplicationPackageRoot\PaymentApiPkg\Config\Settings.xml" />
     <Content Include="ApplicationPackageRoot\PaymentApiPkg\ServiceManifest.xml" />
     <Content Include="packages.config" />

@@ -15,7 +15,7 @@
     <EntryPoint>
       <!-- Follow this link for more information about deploying Windows containers to Service Fabric: https://aka.ms/sfguestcontainers -->
       <ContainerHost>
-        <ImageName>eshop/ordering.backgroundtasks</ImageName>
+        <ImageName>eshop/ordering.background:#{tag}#</ImageName>
       </ContainerHost>
     </EntryPoint>
     <!-- Pass environment variables to your container: -->
@@ -42,7 +42,7 @@
       <!-- This endpoint is used by the communication listener to obtain the port on which to 
            listen. Please note that if your service is partitioned, this port is shared with 
            replicas of different partitions that are placed in your code. -->
-      <Endpoint Name="OrderingBackgroundTypeEndpoint" Port="5111" UriScheme="http"/>
+      <Endpoint Name="OrderingBackgroundTypeEndpoint" Port="5111" UriScheme="http" PathSuffix="eShopOnServiceFabric/OrderingBackground" />
     </Endpoints>
   </Resources>
 </ServiceManifest>

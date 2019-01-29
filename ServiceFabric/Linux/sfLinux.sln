@@ -23,7 +23,7 @@ Project("{A07B5EB6-E848-4116-A8D0-A826331D98C6}") = "Sql", "Infrastructure\eShop
 EndProject
 Project("{A07B5EB6-E848-4116-A8D0-A826331D98C6}") = "eShopOnServiceFabricApiGW", "eShopOnServiceFabricApiGateWays\eShopOnServiceFabricApiGW\eShopOnServiceFabricApiGW.sfproj", "{70EAD9E4-3357-4E09-A920-2A819D7D75BB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiGw_Base", "eShopOnServiceFabricApiGateWays\ApiGw_Base\ApiGw_Base.csproj", "{915E300A-B501-45A5-8A21-E39F72937FF1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiGw_Base", "eShopOnServiceFabricApiGateWays\ApiGw_Base\ApiGw_Base.csproj", "{915E300A-B501-45A5-8A21-E39F72937FF1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
