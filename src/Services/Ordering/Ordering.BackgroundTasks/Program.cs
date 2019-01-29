@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace Ordering.BackgroundTasks
 {
@@ -13,13 +14,20 @@ namespace Ordering.BackgroundTasks
 
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>()
-                .UseHealthChecks("/hc")
+                .UseStartup<Startup>()                
                 .ConfigureLogging((hostingContext, builder) =>
                 {
                     builder.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
                     builder.AddDebug();
                     builder.AddConsole();
-                }).Build();
+                })
+                .UseSerilog((builderContext, config) =>
+                {
+                    config
+                        .MinimumLevel.Information()
+                        .Enrich.FromLogContext()
+                        .WriteTo.Console();
+                })
+                .Build();
     }
 }

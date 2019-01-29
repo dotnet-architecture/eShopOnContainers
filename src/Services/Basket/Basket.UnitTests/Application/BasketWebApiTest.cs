@@ -44,10 +44,10 @@ namespace UnitTest.Basket.Application
             //Act
             var basketController = new BasketController(
                 _basketRepositoryMock.Object, _identityServiceMock.Object, _serviceBusMock.Object);
-            var actionResult = await basketController.Get(fakeCustomerId) as OkObjectResult;
+            var actionResult = await basketController.GetBasketByIdAsync(fakeCustomerId);
 
             //Assert
-            Assert.Equal(actionResult.StatusCode, (int)System.Net.HttpStatusCode.OK);
+            Assert.Equal((actionResult.Result as OkObjectResult).StatusCode, (int)System.Net.HttpStatusCode.OK);
             Assert.Equal(((CustomerBasket)actionResult.Value).BuyerId, fakeCustomerId);
         }
 
@@ -67,10 +67,10 @@ namespace UnitTest.Basket.Application
             var basketController = new BasketController(
                 _basketRepositoryMock.Object, _identityServiceMock.Object, _serviceBusMock.Object);
 
-            var actionResult = await basketController.Post(fakeCustomerBasket) as OkObjectResult;
+            var actionResult = await basketController.UpdateBasketAsync(fakeCustomerBasket);
 
             //Assert
-            Assert.Equal(actionResult.StatusCode, (int)System.Net.HttpStatusCode.OK);
+            Assert.Equal((actionResult.Result as OkObjectResult).StatusCode, (int)System.Net.HttpStatusCode.OK);
             Assert.Equal(((CustomerBasket)actionResult.Value).BuyerId, fakeCustomerId);
         }        
 
@@ -86,7 +86,7 @@ namespace UnitTest.Basket.Application
             var basketController = new BasketController(
                 _basketRepositoryMock.Object, _identityServiceMock.Object, _serviceBusMock.Object);
 
-            var result = await basketController.Checkout(new BasketCheckout(), Guid.NewGuid().ToString()) as BadRequestResult;
+            var result = await basketController.CheckoutAsync(new BasketCheckout(), Guid.NewGuid().ToString()) as BadRequestResult;
             Assert.NotNull(result);
         }
 
@@ -114,7 +114,7 @@ namespace UnitTest.Basket.Application
             };
 
             //Act
-            var result = await basketController.Checkout(new BasketCheckout(), Guid.NewGuid().ToString()) as AcceptedResult;
+            var result = await basketController.CheckoutAsync(new BasketCheckout(), Guid.NewGuid().ToString()) as AcceptedResult;
 
             _serviceBusMock.Verify(mock => mock.Publish(It.IsAny<UserCheckoutAcceptedIntegrationEvent>()), Times.Once);
 

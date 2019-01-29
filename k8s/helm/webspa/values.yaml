@@ -44,18 +44,12 @@ env:
       key: urls__IdentityUrl
     - name: MarketingUrl
       key: urls__apigwwm
-    - name: BasketUrlHC
-      key: internalurls__basket__hc
-    - name: CatalogUrlHC
-      key: internalurls__catalog__hc
+    - name: PurchaseUrlHC
+      key: internalurls__apigwws__hc
     - name: IdentityUrlHC
       key: internalurls__identity__hc      
-    - name: OrderingUrlHC
-      key: internalurls__ordering__hc      
     - name: MarketingUrlHC
-      key: internalurls__marketing__hc      
-    - name: PaymentUrlHC
-      key: internalurls__payment__hc
+      key: internalurls__apigwwm__hc      
     - name: SignalrHubUrl
       key: urls__apigwws
       # values define environment variables with a fixed value (no configmap involved) (name is name of var, and value is its value)
