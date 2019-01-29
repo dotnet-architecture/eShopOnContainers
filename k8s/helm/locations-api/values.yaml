@@ -57,7 +57,9 @@ probes:
     path: /liveness
     initialDelaySeconds: 10
     periodSeconds: 15
+    port: 80
   readiness:
     path: /hc
     initialDelaySeconds: 90
     periodSeconds: 15
+    port: 80

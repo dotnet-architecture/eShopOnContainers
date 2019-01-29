@@ -31,7 +31,8 @@ spec:
           {{ if .Values.probes -}}
           {{- if .Values.probes.liveness -}}
           livenessProbe:
-            httpGet:
+            httpGet: 
+              port: {{ .Values.probes.liveness.port }}
               path: {{ .Values.probes.liveness.path }}
               initialDelaySeconds: {{ .Values.probes.liveness.initialDelaySeconds }}
               periodSeconds: {{ .Values.probes.liveness.periodSeconds }}
@@ -41,6 +42,7 @@ spec:
           {{- if .Values.probes.readiness }}
           readinessProbe:
             httpGet:
+              port: {{ .Values.probes.readiness.port }}
               path: {{ .Values.probes.readiness.path }}
               initialDelaySeconds: {{ .Values.probes.readiness.initialDelaySeconds }}
               periodSeconds: {{ .Values.probes.readiness.periodSeconds }}
