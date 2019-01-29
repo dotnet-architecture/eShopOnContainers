@@ -72,6 +72,7 @@ probes:
     port: 80
   readiness:
     path: /hc
+    timeoutSeconds: 5
     initialDelaySeconds: 90
-    periodSeconds: 15
+    periodSeconds: 60
     port: 80
