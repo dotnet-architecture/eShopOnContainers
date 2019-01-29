@@ -11,6 +11,9 @@
     <Parameter Name="BasketUrl" DefaultValue="" />
     <Parameter Name="MarketingUrl" DefaultValue="" />
     <Parameter Name="IdentityUrl" DefaultValue="" />
+    <Parameter Name="OrderingBackgroundUrl" DefaultValue=""/>
+    <Parameter Name="OrderingSignalrHubUrl" DefaultValue=""/>
+    <Parameter Name="PaymentUrl" DefaultValue=""/>
     <Parameter Name="InstrumentationKey" DefaultValue="" />
   </Parameters>
   <!-- Import the ServiceManifest from the ServicePackage. The ServiceManifestName and ServiceManifestVersion 
@@ -21,10 +24,13 @@
     <!-- Override external urls depending on environment -->
     <EnvironmentOverrides CodePackageRef="Code">
       <EnvironmentVariable Name="CatalogUrl" Value="[CatalogUrl]"/>
+      <EnvironmentVariable Name="PaymentUrl" Value="[PaymentUrl]"/>
       <EnvironmentVariable Name="OrderingUrl" Value="[OrderingUrl]"/>
       <EnvironmentVariable Name="BasketUrl" Value="[BasketUrl]"/>
       <EnvironmentVariable Name="MarketingUrl" Value="[MarketingUrl]"/>
       <EnvironmentVariable Name="IdentityUrl" Value="[IdentityUrl]"/>
+      <EnvironmentVariable Name="OrderingBackgroundUrl" Value="[OrderingBackgroundUrl]"/>
+      <EnvironmentVariable Name="OrderingSignalrHubUrl" Value="[OrderingSignalrHubUrl]"/>
       <EnvironmentVariable Name="ApplicationInsights:InstrumentationKey" Value="[InstrumentationKey]"/>
     </EnvironmentOverrides>
     <Policies>

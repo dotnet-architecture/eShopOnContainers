@@ -26,12 +26,19 @@
       <EnvironmentVariable Name="OrderingUrl" Value=""/>
       <EnvironmentVariable Name="BasketUrl" Value=""/>
       <EnvironmentVariable Name="MarketingUrl" Value=""/>
+      <EnvironmentVariable Name="PaymentUrl" Value=""/>
+      <EnvironmentVariable Name="OrderingBackgroundUrl" Value=""/>
+      <EnvironmentVariable Name="OrderingSignalrHubUrl" Value=""/>
       <EnvironmentVariable Name="IdentityUrl" Value="http://#{your_sf_dns}#:5105"/>
       <EnvironmentVariable Name="CatalogUrlHC" Value="http://catalogapi.eshoponservicefabric:5101/hc"/>
       <EnvironmentVariable Name="OrderingUrlHC" Value="http://orderingapi.eshoponservicefabric:5102/hc"/>
-      <EnvironmentVariable Name="IdentityUrlHC" Value="http://identityapi.eshoponservicefabric:5105/hc"/>
+      <EnvironmentVariable Name="OrderingBackgroundUrlHC" Value="http://ordering.backgroundtasks.eshoponservicefabric:5111/hc"/>
+      <EnvironmentVariable Name="OrderingSignalrHubUrlHC" Value="http://ordering.signalrhub.eshoponservicefabric:5112/hc"/>
       <EnvironmentVariable Name="BasketUrlHC" Value="http://basketapi.eshoponservicefabric:5103/hc"/>
+      <EnvironmentVariable Name="IdentityUrlHC" Value="http://identityapi.eshoponservicefabric:5105/hc"/>
       <EnvironmentVariable Name="MarketingUrlHC" Value="http://marketingapi.eshoponservicefabric:5110/hc"/>
+      <EnvironmentVariable Name="LocationsUrlHC" Value="http://locationsapi.eshoponservicefabric:5109/hc"/>
+      <EnvironmentVariable Name="PaymentUrlHC" Value="http://paymentapi.eshoponservicefabric:5108/hc"/>
       <EnvironmentVariable Name="UseCustomizationData" Value="True"/>
       <EnvironmentVariable Name="ApplicationInsights:InstrumentationKey" Value=""/>
       <EnvironmentVariable Name="OrchestratorType" Value="SF"/>

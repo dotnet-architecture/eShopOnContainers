@@ -19,6 +19,7 @@
     <Policies>
       <ContainerHostPolicies CodePackageRef="Code">
         <PortBinding ContainerPort="80" EndpointRef="WebStatusTypeEndpoint"/>
+        <HealthConfig IncludeDockerHealthStatusInSystemHealthReport="true" RestartContainerOnUnhealthyDockerHealthStatus="false" />
       </ContainerHostPolicies>
     </Policies>
   </ServiceManifestImport>
