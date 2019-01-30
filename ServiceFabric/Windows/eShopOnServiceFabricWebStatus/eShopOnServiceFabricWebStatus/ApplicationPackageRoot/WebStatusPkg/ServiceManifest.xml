@@ -41,7 +41,7 @@
       <EnvironmentVariable Name="HealthChecks-UI:HealthChecks:9:Name" Value="Ordering HTTP Check"/>
       <EnvironmentVariable Name="HealthChecks-UI:HealthChecks:9:Uri" Value="http://ordering.api/hc"/>
       <EnvironmentVariable Name="HealthChecks-UI:HealthChecks:10:Name" Value="Ordering HTTP Background Check"/>
-      <EnvironmentVariable Name="HealthChecks-UI:HealthChecks:10:Uri" Value="http://ordering.backgroundtasks/hc"/>
+      <EnvironmentVariable Name="HealthChecks-UI:HealthChecks:10:Uri" Value="http://ordering.background/hc"/>
       <EnvironmentVariable Name="HealthChecks-UI:HealthChecks:11:Name" Value="Basket HTTP Check"/>
       <EnvironmentVariable Name="HealthChecks-UI:HealthChecks:11:Uri" Value="http://basket.api/hc"/>
       <EnvironmentVariable Name="HealthChecks-UI:HealthChecks:12:Name" Value="Catalog HTTP Check"/>
@@ -56,7 +56,7 @@
       <EnvironmentVariable Name="HealthChecks-UI:HealthChecks:16:Uri" Value="http://payment.api/hc"/>
       <EnvironmentVariable Name="HealthChecks-UI:HealthChecks:17:Name" Value="Ordering SignalRHub HTTP Check"/>
       <EnvironmentVariable Name="HealthChecks-UI:HealthChecks:17:Uri" Value="http://ordering.signalrhub/hc"/>
-      <EnvironmentVariable Name="OrderingBackgroundTasksUrl" Value="http://ordering.backgroundtasks/hc"/>
+      <EnvironmentVariable Name="OrderingBackgroundTasksUrl" Value="http://ordering.background/hc"/>
       <EnvironmentVariable Name="ApplicationInsights:InstrumentationKey" Value=""/>
       <EnvironmentVariable Name="OrchestratorType" Value="SF"/>
     </EnvironmentVariables>
