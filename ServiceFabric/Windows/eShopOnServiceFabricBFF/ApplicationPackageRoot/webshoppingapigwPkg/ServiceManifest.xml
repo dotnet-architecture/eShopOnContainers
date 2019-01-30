@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ServiceManifest Name="WebMVCPkg"
+<ServiceManifest Name="webshoppingapigwPkg"
                  Version="1.0.0"
                  xmlns="http://schemas.microsoft.com/2011/01/fabric"
                  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
@@ -7,7 +7,7 @@
   <ServiceTypes>
     <!-- This is the name of your ServiceType.
          The UseImplicitHost attribute indicates this is a guest service. -->
-    <StatelessServiceType ServiceTypeName="WebMVCType" UseImplicitHost="true" />
+    <StatelessServiceType ServiceTypeName="webshoppingapigwType" UseImplicitHost="true" />
   </ServiceTypes>
 
   <!-- Code package is your service executable. -->
@@ -15,24 +15,19 @@
     <EntryPoint>
       <!-- Follow this link for more information about deploying Windows containers to Service Fabric: https://aka.ms/sfguestcontainers -->
       <ContainerHost>
-        <ImageName>eshop/webmvc-win:#{tag}#</ImageName>
+        <ImageName>eshop/ocelotapigw:#{tag}#</ImageName>
       </ContainerHost>
     </EntryPoint>
     <!-- Pass environment variables to your container: -->
     <EnvironmentVariables>
-      <EnvironmentVariable Name="ASPNETCORE_ENVIRONMENT" Value="Development"/>
-      <EnvironmentVariable Name="ASPNETCORE_URLS" Value="http://0.0.0.0:80"/>
-      <EnvironmentVariable Name="PurchaseUrl" Value="http://webshoppingapigw"/>
-      <EnvironmentVariable Name="IdentityUrl" Value="http://10.0.75.1:5105"/>
-      <EnvironmentVariable Name="MarketingUrl" Value="http://webmarketingapigw"/>
-      <EnvironmentVariable Name="SignalrHubUrl" Value="http://#{your_sf_dns}#:5102"/>
-      <EnvironmentVariable Name="IdentityUrlHC" Value="http://identity.api/hc"/>
-      <EnvironmentVariable Name="PurchaseUrlHC" Value="http://webshoppingapigw/hc"/>
-      <EnvironmentVariable Name="MarketingUrlHC" Value="http://webmarketingapigw/hc "/>
-      <EnvironmentVariable Name="UseCustomizationData" Value="True"/>
-      <EnvironmentVariable Name="ApplicationInsights:InstrumentationKey" Value=""/>
-      <EnvironmentVariable Name="OrchestratorType" Value="SF"/>
-      <EnvironmentVariable Name="UseLoadTest" Value="False"/>
+      <EnvironmentVariable Name="ApplicationInsights__InstrumentationKey" Value=""/>
+      <EnvironmentVariable Name="IdentityUrl" Value="http://identity.api"/>
+      <EnvironmentVariable Name="CatalogUrlHC" Value="http://catalog.api/hc"/>
+      <EnvironmentVariable Name="OrderingUrlHC" Value="http://ordering.api/hc"/>
+      <EnvironmentVariable Name="BasketUrlHC" Value="http://basket.api/hc"/>
+      <EnvironmentVariable Name="MarketingUrlHC" Value="http://marketing.api/hc"/>
+      <EnvironmentVariable Name="PaymentUrlHC" Value="http://payment.api/hc"/>
+      <EnvironmentVariable Name="LocationUrlHC" Value="http://locations.api/hc"/>
     </EnvironmentVariables>
   </CodePackage>
 
@@ -45,7 +40,7 @@
       <!-- This endpoint is used by the communication listener to obtain the port on which to 
            listen. Please note that if your service is partitioned, this port is shared with 
            replicas of different partitions that are placed in your code. -->
-      <Endpoint Name="WebMVCTypeEndpoint" UriScheme="http" Port="5100"/>
+      <Endpoint Name="webshoppingapigwTypeEndpoint" Port="5202" />
     </Endpoints>
   </Resources>
 </ServiceManifest>

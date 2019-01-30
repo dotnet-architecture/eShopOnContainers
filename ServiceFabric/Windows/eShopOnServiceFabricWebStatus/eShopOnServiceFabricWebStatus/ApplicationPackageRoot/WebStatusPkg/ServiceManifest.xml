@@ -22,17 +22,41 @@
     <EnvironmentVariables>
       <EnvironmentVariable Name="ASPNETCORE_ENVIRONMENT" Value="Development"/>
       <EnvironmentVariable Name="ASPNETCORE_URLS" Value="http://0.0.0.0:80"/>
-      <EnvironmentVariable Name="CatalogUrl" Value="http://catalogapi.eshoponservicefabric:5101/hc"/>
-      <EnvironmentVariable Name="OrderingUrl" Value="http://orderingapi.eshoponservicefabric:5102/hc"/>
-      <EnvironmentVariable Name="OrderingBackgroundUrl" Value="http://ordering.background.eshoponservicefabric:5111/hc"/>
-      <EnvironmentVariable Name="OrderingSignalrHubUrl" Value="http://ordering.signalrhub.eshoponservicefabric:5112/hc"/>
-      <EnvironmentVariable Name="BasketUrl" Value="http://basketapi.eshoponservicefabric:5103/hc"/>
-      <EnvironmentVariable Name="IdentityUrl" Value="http://identityapi.eshoponservicefabric:5105/hc"/>
-      <EnvironmentVariable Name="MarketingUrl" Value="http://marketingapi.eshoponservicefabric:5110/hc"/>
-      <EnvironmentVariable Name="LocationsUrl" Value="http://locationsapi.eshoponservicefabric:5109/hc"/>
-      <EnvironmentVariable Name="PaymentUrl" Value="http://paymentapi.eshoponservicefabric:5108/hc"/>
-      <EnvironmentVariable Name="mvc" Value="http://webmvc.eshoponservicefabric:5100/hc"/>
-      <EnvironmentVariable Name="spa" Value="http://webspa.eshoponservicefabric:5104/hc"/>
+      <EnvironmentVariable Name="HealthChecks-UI:HealthChecks:1:Name" Value="WebMVC HTTP Check"/>
+      <EnvironmentVariable Name="HealthChecks-UI:HealthChecks:1:Uri" Value="http://webmvc/hc"/>
+      <EnvironmentVariable Name="HealthChecks-UI:HealthChecks:2:Name" Value="WebSPA HTTP Check"/>
+      <EnvironmentVariable Name="HealthChecks-UI:HealthChecks:2:Uri" Value="http://webspa/hc"/>
+      <EnvironmentVariable Name="HealthChecks-UI:HealthChecks:3:Name" Value="Web Shopping Aggregator GW HTTP Check"/>
+      <EnvironmentVariable Name="HealthChecks-UI:HealthChecks:3:Uri" Value="http://webshoppingagg/hc"/>
+      <EnvironmentVariable Name="HealthChecks-UI:HealthChecks:4:Name" Value="Mobile Shopping Aggregator HTTP Check"/>
+      <EnvironmentVariable Name="HealthChecks-UI:HealthChecks:4:Uri" Value="http://mobileshoppingagg/hc"/>
+      <EnvironmentVariable Name="HealthChecks-UI:HealthChecks:5:Name" Value="Mobile Shopping API GW HTTP Check"/>
+      <EnvironmentVariable Name="HealthChecks-UI:HealthChecks:5:Uri" Value="http://mobileshoppingapigw/hc"/>
+      <EnvironmentVariable Name="HealthChecks-UI:HealthChecks:6:Name" Value="Mobile Marketing API GW HTTP Check"/>
+      <EnvironmentVariable Name="HealthChecks-UI:HealthChecks:6:Uri" Value="http://mobilemarketingapigw/hc"/>
+      <EnvironmentVariable Name="HealthChecks-UI:HealthChecks:7:Name" Value="Web Shopping API GW HTTP Check"/>
+      <EnvironmentVariable Name="HealthChecks-UI:HealthChecks:7:Uri" Value="http://webshoppingapigw/hc"/>
+      <EnvironmentVariable Name="HealthChecks-UI:HealthChecks:8:Name" Value="Web Marketing API GW HTTP Check"/>
+      <EnvironmentVariable Name="HealthChecks-UI:HealthChecks:8:Uri" Value="http://webmarketingapigw/hc"/>
+      <EnvironmentVariable Name="HealthChecks-UI:HealthChecks:9:Name" Value="Ordering HTTP Check"/>
+      <EnvironmentVariable Name="HealthChecks-UI:HealthChecks:9:Uri" Value="http://ordering.api/hc"/>
+      <EnvironmentVariable Name="HealthChecks-UI:HealthChecks:10:Name" Value="Ordering HTTP Background Check"/>
+      <EnvironmentVariable Name="HealthChecks-UI:HealthChecks:10:Uri" Value="http://ordering.backgroundtasks/hc"/>
+      <EnvironmentVariable Name="HealthChecks-UI:HealthChecks:11:Name" Value="Basket HTTP Check"/>
+      <EnvironmentVariable Name="HealthChecks-UI:HealthChecks:11:Uri" Value="http://basket.api/hc"/>
+      <EnvironmentVariable Name="HealthChecks-UI:HealthChecks:12:Name" Value="Catalog HTTP Check"/>
+      <EnvironmentVariable Name="HealthChecks-UI:HealthChecks:12:Uri" Value="http://catalog.api/hc"/>
+      <EnvironmentVariable Name="HealthChecks-UI:HealthChecks:13:Name" Value="Identity HTTP Check"/>
+      <EnvironmentVariable Name="HealthChecks-UI:HealthChecks:13:Uri" Value="http://identity.api/hc"/>
+      <EnvironmentVariable Name="HealthChecks-UI:HealthChecks:14:Name" Value="Marketing HTTP Check"/>
+      <EnvironmentVariable Name="HealthChecks-UI:HealthChecks:14:Uri" Value="http://marketing.api/hc"/>
+      <EnvironmentVariable Name="HealthChecks-UI:HealthChecks:15:Name" Value="Locations HTTP Check"/>
+      <EnvironmentVariable Name="HealthChecks-UI:HealthChecks:15:Uri" Value="http://locations.api/hc"/>
+      <EnvironmentVariable Name="HealthChecks-UI:HealthChecks:16:Name" Value="Payments HTTP Check"/>
+      <EnvironmentVariable Name="HealthChecks-UI:HealthChecks:16:Uri" Value="http://payment.api/hc"/>
+      <EnvironmentVariable Name="HealthChecks-UI:HealthChecks:17:Name" Value="Ordering SignalRHub HTTP Check"/>
+      <EnvironmentVariable Name="HealthChecks-UI:HealthChecks:17:Uri" Value="http://ordering.signalrhub/hc"/>
+      <EnvironmentVariable Name="OrderingBackgroundTasksUrl" Value="http://ordering.backgroundtasks/hc"/>
       <EnvironmentVariable Name="ApplicationInsights:InstrumentationKey" Value=""/>
       <EnvironmentVariable Name="OrchestratorType" Value="SF"/>
     </EnvironmentVariables>
