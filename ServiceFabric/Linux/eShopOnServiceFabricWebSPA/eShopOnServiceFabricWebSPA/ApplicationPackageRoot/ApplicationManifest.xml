@@ -6,14 +6,7 @@
                      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <Parameters>
     <Parameter Name="WebSPA_InstanceCount" DefaultValue="-1" />
-    <Parameter Name="CatalogUrl" DefaultValue="" />
-    <Parameter Name="OrderingUrl" DefaultValue="" />
-    <Parameter Name="BasketUrl" DefaultValue="" />
-    <Parameter Name="MarketingUrl" DefaultValue="" />
     <Parameter Name="IdentityUrl" DefaultValue="" />
-    <Parameter Name="OrderingBackgroundUrl" DefaultValue=""/>
-    <Parameter Name="OrderingSignalrHubUrl" DefaultValue=""/>
-    <Parameter Name="PaymentUrl" DefaultValue=""/>
     <Parameter Name="InstrumentationKey" DefaultValue="" />
   </Parameters>
   <!-- Import the ServiceManifest from the ServicePackage. The ServiceManifestName and ServiceManifestVersion 
@@ -23,18 +16,8 @@
     <ServiceManifestRef ServiceManifestName="WebSPAPkg" ServiceManifestVersion="1.0.0" />
     <!-- Override external urls depending on environment -->
     <EnvironmentOverrides CodePackageRef="Code">
-      <EnvironmentVariable Name="ASPNETCORE_ENVIRONMENT" Value="Development"/>
-      <EnvironmentVariable Name="ASPNETCORE_URLS" Value="http://0.0.0.0:80"/>
-      <EnvironmentVariable Name="IdentityUrl" Value="http://#{your_sf_dns}#:5105"/>
-      <EnvironmentVariable Name="PurchaseUrl" Value="http://#{your_sf_dns}#:5202"/>
-      <EnvironmentVariable Name="MarketingUrl" Value="http://#{your_sf_dns}#:5203"/>
-      <EnvironmentVariable Name="PurchaseUrlHC" Value="http://webshoppingapigw/hc"/>
-      <EnvironmentVariable Name="MarketingUrlHC" Value="http://webmarketingapigw/hc"/>
-      <EnvironmentVariable Name="IdentityUrlHC" Value="http://identity.api/hc"/>
-      <EnvironmentVariable Name="UseCustomizationData" Value="True"/>
-      <EnvironmentVariable Name="ApplicationInsights:InstrumentationKey" Value=""/>
-      <EnvironmentVariable Name="OrchestratorType" Value="SF"/>
-      <EnvironmentVariable Name="SignalrHubUrl" Value="http://#{your_sf_dns}#:5202"/>
+      <EnvironmentVariable Name="IdentityUrl" Value="[IdentityUrl]"/>
+      <EnvironmentVariable Name="ApplicationInsights__InstrumentationKey" Value="[InstrumentationKey]"/>
     </EnvironmentOverrides>
     <Policies>
       <ContainerHostPolicies CodePackageRef="Code">
