@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ServiceManifest Name="webshoppingapigwPkg"
+<ServiceManifest Name="mobilemarketingapigwPkg"
                  Version="1.0.0"
                  xmlns="http://schemas.microsoft.com/2011/01/fabric"
                  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
@@ -7,7 +7,7 @@
   <ServiceTypes>
     <!-- This is the name of your ServiceType.
          The UseImplicitHost attribute indicates this is a guest service. -->
-    <StatelessServiceType ServiceTypeName="webshoppingapigwType" UseImplicitHost="true" />
+    <StatelessServiceType ServiceTypeName="mobilemarketingapigwType" UseImplicitHost="true" />
   </ServiceTypes>
 
   <!-- Code package is your service executable. -->
@@ -15,20 +15,22 @@
     <EntryPoint>
       <!-- Follow this link for more information about deploying Windows containers to Service Fabric: https://aka.ms/sfguestcontainers -->
       <ContainerHost>
-        <ImageName>eshop/ocelotapigw-win:#{tag}#</ImageName>
+        <ImageName>eshop/ocelotapigw:#{tag}#</ImageName>
       </ContainerHost>
     </EntryPoint>
     <!-- Pass environment variables to your container: -->
     <EnvironmentVariables>
       <EnvironmentVariable Name="ApplicationInsights__InstrumentationKey" Value=""/>
-      <EnvironmentVariable Name="IdentityUrl" Value="http://identity.api"/>
+      <EnvironmentVariable Name="IdentityUrl" Value="http://identity.api "/>
       <EnvironmentVariable Name="CatalogUrlHC" Value="http://catalog.api/hc"/>
       <EnvironmentVariable Name="OrderingUrlHC" Value="http://ordering.api/hc"/>
+      <EnvironmentVariable Name="IdentityUrlHC" Value="http://identity.api/hc"/>
       <EnvironmentVariable Name="BasketUrlHC" Value="http://basket.api/hc"/>
       <EnvironmentVariable Name="MarketingUrlHC" Value="http://marketing.api/hc"/>
       <EnvironmentVariable Name="PaymentUrlHC" Value="http://payment.api/hc"/>
       <EnvironmentVariable Name="LocationUrlHC" Value="http://locations.api/hc"/>
     </EnvironmentVariables>
+
   </CodePackage>
 
   <!-- Config package is the contents of the Config directoy under PackageRoot that contains an 
@@ -40,7 +42,7 @@
       <!-- This endpoint is used by the communication listener to obtain the port on which to 
            listen. Please note that if your service is partitioned, this port is shared with 
            replicas of different partitions that are placed in your code. -->
-      <Endpoint Name="webshoppingapigwTypeEndpoint" Port="5202" />
+      <Endpoint Name="mobilemarketingapigwTypeEndpoint" Port="5201" />
     </Endpoints>
   </Resources>
 </ServiceManifest>

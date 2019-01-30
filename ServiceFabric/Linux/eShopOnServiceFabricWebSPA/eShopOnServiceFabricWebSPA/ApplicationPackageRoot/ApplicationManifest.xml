@@ -23,15 +23,18 @@
     <ServiceManifestRef ServiceManifestName="WebSPAPkg" ServiceManifestVersion="1.0.0" />
     <!-- Override external urls depending on environment -->
     <EnvironmentOverrides CodePackageRef="Code">
-      <EnvironmentVariable Name="CatalogUrl" Value="[CatalogUrl]"/>
-      <EnvironmentVariable Name="PaymentUrl" Value="[PaymentUrl]"/>
-      <EnvironmentVariable Name="OrderingUrl" Value="[OrderingUrl]"/>
-      <EnvironmentVariable Name="BasketUrl" Value="[BasketUrl]"/>
-      <EnvironmentVariable Name="MarketingUrl" Value="[MarketingUrl]"/>
-      <EnvironmentVariable Name="IdentityUrl" Value="[IdentityUrl]"/>
-      <EnvironmentVariable Name="OrderingBackgroundUrl" Value="[OrderingBackgroundUrl]"/>
-      <EnvironmentVariable Name="OrderingSignalrHubUrl" Value="[OrderingSignalrHubUrl]"/>
-      <EnvironmentVariable Name="ApplicationInsights:InstrumentationKey" Value="[InstrumentationKey]"/>
+      <EnvironmentVariable Name="ASPNETCORE_ENVIRONMENT" Value="Development"/>
+      <EnvironmentVariable Name="ASPNETCORE_URLS" Value="http://0.0.0.0:80"/>
+      <EnvironmentVariable Name="IdentityUrl" Value="http://#{your_sf_dns}#:5105"/>
+      <EnvironmentVariable Name="PurchaseUrl" Value="http://#{your_sf_dns}#:5202"/>
+      <EnvironmentVariable Name="MarketingUrl" Value="http://#{your_sf_dns}#:5203"/>
+      <EnvironmentVariable Name="PurchaseUrlHC" Value="http://webshoppingapigw/hc"/>
+      <EnvironmentVariable Name="MarketingUrlHC" Value="http://webmarketingapigw/hc"/>
+      <EnvironmentVariable Name="IdentityUrlHC" Value="http://identity.api/hc"/>
+      <EnvironmentVariable Name="UseCustomizationData" Value="True"/>
+      <EnvironmentVariable Name="ApplicationInsights:InstrumentationKey" Value=""/>
+      <EnvironmentVariable Name="OrchestratorType" Value="SF"/>
+      <EnvironmentVariable Name="SignalrHubUrl" Value="http://#{your_sf_dns}#:5202"/>
     </EnvironmentOverrides>
     <Policies>
       <ContainerHostPolicies CodePackageRef="Code">
