@@ -8,6 +8,15 @@
     <Parameter Name="WebSPA_InstanceCount" DefaultValue="-1" />
     <Parameter Name="IdentityUrl" DefaultValue="" />
     <Parameter Name="InstrumentationKey" DefaultValue="" />
+    <Parameter Name="CatalogUrl" DefaultValue="" />
+    <Parameter Name="OrderingUrl" DefaultValue="" />
+    <Parameter Name="BasketUrl" DefaultValue="" />
+    <Parameter Name="MarketingUrl" DefaultValue="" />
+    <Parameter Name="IdentityUrl" DefaultValue="" />
+    <Parameter Name="OrderingBackgroundUrl" DefaultValue=""/>
+    <Parameter Name="OrderingSignalrHubUrl" DefaultValue=""/>
+    <Parameter Name="PaymentUrl" DefaultValue=""/>
+    <Parameter Name="InstrumentationKey" DefaultValue="" />
   </Parameters>
   <!-- Import the ServiceManifest from the ServicePackage. The ServiceManifestName and ServiceManifestVersion 
        should match the Name and Version attributes of the ServiceManifest element defined in the 
@@ -18,6 +27,14 @@
     <EnvironmentOverrides CodePackageRef="Code">
       <EnvironmentVariable Name="IdentityUrl" Value="[IdentityUrl]"/>
       <EnvironmentVariable Name="ApplicationInsights__InstrumentationKey" Value="[InstrumentationKey]"/>
+      <EnvironmentVariable Name="CatalogUrl" Value="[CatalogUrl]"/>
+      <EnvironmentVariable Name="PaymentUrl" Value="[PaymentUrl]"/>
+      <EnvironmentVariable Name="OrderingUrl" Value="[OrderingUrl]"/>
+      <EnvironmentVariable Name="BasketUrl" Value="[BasketUrl]"/>
+      <EnvironmentVariable Name="MarketingUrl" Value="[MarketingUrl]"/>
+      <EnvironmentVariable Name="IdentityUrl" Value="[IdentityUrl]"/>
+      <EnvironmentVariable Name="OrderingBackgroundUrl" Value="[OrderingBackgroundUrl]"/>
+      <EnvironmentVariable Name="OrderingSignalrHubUrl" Value="[OrderingSignalrHubUrl]"/>
     </EnvironmentOverrides>
     <Policies>
       <ContainerHostPolicies CodePackageRef="Code">
