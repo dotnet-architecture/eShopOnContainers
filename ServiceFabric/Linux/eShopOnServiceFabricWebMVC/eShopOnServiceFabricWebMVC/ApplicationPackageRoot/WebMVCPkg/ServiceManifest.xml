@@ -30,7 +30,7 @@
       <EnvironmentVariable Name="PurchaseUrlHC" Value="http://webshoppingapigw/hc"/>
       <EnvironmentVariable Name="MarketingUrlHC" Value="http://webmarketingapigw/hc "/>
       <EnvironmentVariable Name="UseCustomizationData" Value="True"/>
-      <EnvironmentVariable Name="ApplicationInsights:InstrumentationKey" Value=""/>
+      <EnvironmentVariable Name="ApplicationInsights__InstrumentationKey" Value=""/>
       <EnvironmentVariable Name="OrchestratorType" Value="SF"/>
       <EnvironmentVariable Name="UseLoadTest" Value="False"/>
     </EnvironmentVariables>

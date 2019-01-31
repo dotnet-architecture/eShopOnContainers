@@ -20,7 +20,7 @@
                                     AzureActiveDirectory="true"
                                     ServerCertThumbprint="0123456789012345678901234567890123456789" />
   -->
-  <ClusterConnectionParameters ConnectionEndpoint="" />
+  <ClusterConnectionParameters ConnectionEndpoint="eshop-sf-linux.southcentralus.cloudapp.azure.com:19000" X509Credential="true" ServerCertThumbprint="97375E52D92CAFE86BACF0ED4197537A8B45CD95" FindType="FindByThumbprint" FindValue="97375E52D92CAFE86BACF0ED4197537A8B45CD95" StoreLocation="CurrentUser" StoreName="My" />
   <ApplicationParameterFile Path="..\ApplicationParameters\Cloud.xml" />
   <CopyPackageParameters CompressPackage="true" />
 </PublishProfile>

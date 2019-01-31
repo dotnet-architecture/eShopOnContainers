@@ -57,7 +57,7 @@
       <EnvironmentVariable Name="HealthChecks-UI__HealthChecks__17__Name" Value="Ordering SignalRHub HTTP Check"/>
       <EnvironmentVariable Name="HealthChecks-UI__HealthChecks__17__Uri" Value="http://ordering.signalrhub/hc"/>
       <EnvironmentVariable Name="OrderingBackgroundTasksUrl" Value="http://ordering.background/hc"/>
-      <EnvironmentVariable Name="ApplicationInsights:InstrumentationKey" Value=""/>
+      <EnvironmentVariable Name="ApplicationInsights__InstrumentationKey" Value=""/>
       <EnvironmentVariable Name="OrchestratorType" Value="SF"/>
     </EnvironmentVariables>
   </CodePackage>
