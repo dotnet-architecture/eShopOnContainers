@@ -6,6 +6,12 @@
        For a local cluster, you would typically not use any parameters.
          For example: <ClusterConnectionParameters />
   -->
-  <ClusterConnectionParameters ConnectionEndpoint="eshopsflin.westeurope.cloudapp.azure.com:19000" X509Credential="true" ServerCertThumbprint="31CF80FDFB8F64D379E3DCF9185032581B8FC080" FindType="FindByThumbprint" FindValue="31CF80FDFB8F64D379E3DCF9185032581B8FC080" StoreLocation="CurrentUser" StoreName="My" />
+  <ClusterConnectionParameters ConnectionEndpoint="eshop-sf-win.southcentralus.cloudapp.azure.com:19000" 
+                               X509Credential="true" 
+                               ServerCertThumbprint="8CB7FD2C7578F51710D4A15A38AB2CDE59103AE8" 
+                               FindType="FindByThumbprint" 
+                               FindValue="8CB7FD2C7578F51710D4A15A38AB2CDE59103AE8" 
+                               StoreLocation="CurrentUser" 
+                               StoreName="My" />
   <ApplicationParameterFile Path="..\ApplicationParameters\Cloud.xml" />
 </PublishProfile>

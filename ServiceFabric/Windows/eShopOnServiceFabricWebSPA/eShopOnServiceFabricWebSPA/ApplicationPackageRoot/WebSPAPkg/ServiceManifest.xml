@@ -25,6 +25,9 @@
       <EnvironmentVariable Name="IdentityUrl" Value="http://#{your_sf_dns}#:5105"/>
       <EnvironmentVariable Name="PurchaseUrl" Value="http://#{your_sf_dns}#:5202"/>
       <EnvironmentVariable Name="MarketingUrl" Value="http://#{your_sf_dns}#:5203"/>
+      <EnvironmentVariable Name="CatalogUrl" Value="http://#{your_sf_dns}#:5101" />
+      <EnvironmentVariable Name="OrderingUrl" Value="http://#{your_sf_dns}#:5102" />
+      <EnvironmentVariable Name="BasketUrl" Value="http://#{your_sf_dns}#:5103" />
       <EnvironmentVariable Name="PurchaseUrlHC" Value="http://webshoppingapigw/hc"/>
       <EnvironmentVariable Name="MarketingUrlHC" Value="http://webmarketingapigw/hc"/>
       <EnvironmentVariable Name="IdentityUrlHC" Value="http://identity.api/hc"/>
