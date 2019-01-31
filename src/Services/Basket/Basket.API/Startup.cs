@@ -50,7 +50,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            RegisterAppInsights(services);            
+            RegisterAppInsights(services);
 
             // Add framework services.
             services.AddMvc(options =>
@@ -66,7 +66,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
 
             services.AddCustomHealthCheck(Configuration);
 
-            services.Configure<BasketSettings>(Configuration);            
+            services.Configure<BasketSettings>(Configuration);
 
             //By connecting here we are making sure that our service
             //cannot start until redis is ready. This might slow down startup,

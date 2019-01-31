@@ -58,7 +58,7 @@ namespace Catalog.API.IntegrationEvents
         {
             using (LogContext.PushProperty("IntegrationEventId", evt.Id))
             {
-                _logger.LogInformation("----- CatalogIntegrationEventService - Saving changes and integrationEvent: {IntegrationEvent}", evt.Id);
+                _logger.LogInformation("----- CatalogIntegrationEventService - Saving changes and integrationEvent: {IntegrationEventId}", evt.Id);
 
                 //Use of an EF Core resiliency strategy when using multiple DbContexts within an explicit BeginTransaction():
                 //See: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency            
