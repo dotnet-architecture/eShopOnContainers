@@ -73,7 +73,6 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
 
             return new LoggerConfiguration()
                 .MinimumLevel.Verbose()
-                .Enrich.WithMachineName()
                 .Enrich.WithProperty("Application", ApplicationName)
                 .Enrich.FromLogContext()
                 .WriteTo.Console()
