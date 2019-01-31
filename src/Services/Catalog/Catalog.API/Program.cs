@@ -9,65 +9,97 @@ using Microsoft.Extensions.Options;
 using Serilog;
 using System;
 using System.IO;
+
 namespace Microsoft.eShopOnContainers.Services.Catalog.API
 {
     public class Program
     {
-        public static void Main(string[] args)
+        private static readonly string ApplicationName = typeof(Program).Namespace;
+
+        public static int Main(string[] args)
         {
-            BuildWebHost(args)
-                .MigrateDbContext<CatalogContext>((context,services)=>
+            var configuration = GetConfiguration();
+
+            Log.Logger = CreateSerilogLogger(configuration);
+
+            try
+            {
+                Log.Information("Configuring web host ({Application})...", ApplicationName);
+                var host = BuildWebHost(configuration, args);
+
+                Log.Information("Applying migrations ({Application})...", ApplicationName);
+                host.MigrateDbContext<CatalogContext>((context, services) =>
                 {
                     var env = services.GetService<IHostingEnvironment>();
                     var settings = services.GetService<IOptions<CatalogSettings>>();
                     var logger = services.GetService<ILogger<CatalogContextSeed>>();
 
                     new CatalogContextSeed()
-                    .SeedAsync(context,env,settings,logger)
+                    .SeedAsync(context, env, settings, logger)
                     .Wait();
-
                 })
-                .MigrateDbContext<IntegrationEventLogContext>((_,__)=> { })
-                .Run();
+                .MigrateDbContext<IntegrationEventLogContext>((_, __) => { });
+
+                Log.Information("Starting web host ({Application})...", ApplicationName);
+                host.Run();
+
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                Log.Fatal(ex, "Program terminated unexpectedly ({Application})!", ApplicationName);
+                return 1;
+            }
+            finally
+            {
+                Log.CloseAndFlush();
+            }
         }
 
-        public static IWebHost BuildWebHost(string[] args) =>
+        private static IWebHost BuildWebHost(IConfiguration configuration, string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-             .UseStartup<Startup>()
+                .CaptureStartupErrors(false)
+                .UseStartup<Startup>()
                 .UseApplicationInsights()
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseWebRoot("Pics")
-                .ConfigureAppConfiguration((builderContext, config) =>
-                {
-                    var builtConfig = config.Build();
+                .UseConfiguration(configuration)
+                .UseSerilog()
+                .Build();
 
-                    var configurationBuilder = new ConfigurationBuilder();
+        private static Serilog.ILogger CreateSerilogLogger(IConfiguration configuration)
+        {
+            var seqServerUrl = configuration["Serilog:SeqServerUrl"];
 
-                    if (Convert.ToBoolean(builtConfig["UseVault"]))
-                    {
-                        configurationBuilder.AddAzureKeyVault(
-                            $"https://{builtConfig["Vault:Name"]}.vault.azure.net/",
-                            builtConfig["Vault:ClientId"],
-                            builtConfig["Vault:ClientSecret"]);
-                    }
+            return new LoggerConfiguration()
+                .MinimumLevel.Verbose()
+                .Enrich.WithMachineName()
+                .Enrich.WithProperty("Application", ApplicationName)
+                .Enrich.FromLogContext()
+                .WriteTo.Console()
+                .WriteTo.Seq(string.IsNullOrWhiteSpace(seqServerUrl) ? "http://seq" : seqServerUrl)
+                .ReadFrom.Configuration(configuration)
+                .CreateLogger();
+        }
 
-                    configurationBuilder.AddEnvironmentVariables();
+        private static IConfiguration GetConfiguration()
+        {
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddEnvironmentVariables();
 
-                    config.AddConfiguration(configurationBuilder.Build());
-                })
-                .ConfigureLogging((hostingContext, builder) =>
-                {
-                    builder.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
-                    builder.AddConsole();
-                    builder.AddDebug();
-                })
-                .UseSerilog((builderContext, config) =>
-                {
-                    config
-                        .MinimumLevel.Information()
-                        .Enrich.FromLogContext()
-                        .WriteTo.Console();
-                })
-                .Build();    
+            var config = builder.Build();
+
+            if (config.GetValue<bool>("UseVault", false))
+            {
+                builder.AddAzureKeyVault(
+                    $"https://{config["Vault:Name"]}.vault.azure.net/",
+                    config["Vault:ClientId"],
+                    config["Vault:ClientSecret"]);
+            }
+
+            return builder.Build();
+        }
     }
 }

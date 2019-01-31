@@ -1,6 +1,9 @@
 version: '3.4'
 
 services:
+  seq:
+    image: datalust/seq:latest
+
   sql.data:
     image: microsoft/mssql-server-linux:2017-latest
 
