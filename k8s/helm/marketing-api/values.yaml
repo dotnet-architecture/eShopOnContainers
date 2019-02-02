@@ -44,8 +44,10 @@ env:
       key: urls__IdentityUrl
     - name: ConnectionString
       key: marketing__ConnectionString
-    - name: Database
-      key: marketing__Database
+    - name: MongoConnectionString
+      key: marketing__MongoConnectionString
+    - name: MongoDatabase
+      key: marketing__MongoDatabase
     - name: PicBaseUrl
       key: marketing__PicBaseUrl
       # values define environment variables with a fixed value (no configmap involved) (name is name of var, and value is its value)
@@ -54,4 +56,15 @@ env:
       value: Development
     - name: OrchestratorType
       value: 'K8S'
-
+probes:
+  liveness:
+    path: /liveness
+    initialDelaySeconds: 10
+    periodSeconds: 15
+    port: 80
+  readiness:
+    path: /hc
+    timeoutSeconds: 5
+    initialDelaySeconds: 90
+    periodSeconds: 60
+    port: 80

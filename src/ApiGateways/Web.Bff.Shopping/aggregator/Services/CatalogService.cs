@@ -11,7 +11,6 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Services
 {
     public class CatalogService : ICatalogService
     {
-
         private readonly HttpClient _httpClient;
         private readonly ILogger<CatalogService> _logger;
         private readonly UrlsConfig _urls;
@@ -23,20 +22,18 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Services
             _urls = config.Value;
         }
 
-        public async Task<CatalogItem> GetCatalogItem(int id)
+        public async Task<CatalogItem> GetCatalogItemAsync(int id)
         {
             var stringContent = await _httpClient.GetStringAsync(_urls.Catalog + UrlsConfig.CatalogOperations.GetItemById(id));
-            var catalogItem = JsonConvert.DeserializeObject<CatalogItem>(stringContent);
 
-            return catalogItem;
+            return JsonConvert.DeserializeObject<CatalogItem>(stringContent);
         }
 
-        public async Task<IEnumerable<CatalogItem>> GetCatalogItems(IEnumerable<int> ids)
+        public async Task<IEnumerable<CatalogItem>> GetCatalogItemsAsync(IEnumerable<int> ids)
         {
             var stringContent = await _httpClient.GetStringAsync(_urls.Catalog + UrlsConfig.CatalogOperations.GetItemsById(ids));
-            var catalogItems = JsonConvert.DeserializeObject<CatalogItem[]>(stringContent);
 
-            return catalogItems;
+            return JsonConvert.DeserializeObject<CatalogItem[]>(stringContent);
         }
     }
 }

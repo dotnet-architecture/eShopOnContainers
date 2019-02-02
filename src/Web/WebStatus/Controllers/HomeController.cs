@@ -1,32 +1,22 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.HealthChecks;
+using Microsoft.Extensions.Configuration;
 using System.Threading.Tasks;
-using WebStatus.Viewmodels;
 
 namespace WebStatus.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IHealthCheckService _healthCheckSvc;
-        public HomeController(IHealthCheckService checkSvc)
+        private IConfiguration _configuration;
+
+        public HomeController(IConfiguration configuration)
         {
-            _healthCheckSvc = checkSvc;
+            _configuration = configuration;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var result = await _healthCheckSvc.CheckHealthAsync();
-
-            var data = new HealthStatusViewModel(result.CheckStatus);
-
-            foreach (var checkResult in result.Results)
-            {
-                data.AddResult(checkResult.Key, checkResult.Value);
-            }
-
-            ViewBag.RefreshSeconds = 60;
-
-            return View(data);
+            var basePath = _configuration["PATH_BASE"];
+            return Redirect($"{basePath}/hc-ui");
         }
 
         public IActionResult Error()
