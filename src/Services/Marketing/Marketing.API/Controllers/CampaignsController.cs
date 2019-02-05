@@ -20,7 +20,8 @@ namespace Microsoft.eShopOnContainers.Services.Marketing.API.Controllers
 
     [Route("api/v1/[controller]")]
     [Authorize]
-    public class CampaignsController : Controller
+    [ApiController]
+    public class CampaignsController : ControllerBase
     {
         private readonly MarketingContext _context;
         private readonly MarketingSettings _settings;
@@ -40,43 +41,37 @@ namespace Microsoft.eShopOnContainers.Services.Marketing.API.Controllers
 
         [HttpGet]
         [ProducesResponseType(typeof(List<CampaignDTO>), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> GetAllCampaigns()
+        public async Task<ActionResult<List<CampaignDTO>>> GetAllCampaignsAsync()
         {
-            var campaignList = await _context.Campaigns
-                .ToListAsync();
+            var campaignList = await _context.Campaigns.ToListAsync();
 
             if (campaignList is null)
             {
                 return Ok();
             }
 
-            var campaignDtoList = MapCampaignModelListToDtoList(campaignList);
-
-            return Ok(campaignDtoList);
+            return MapCampaignModelListToDtoList(campaignList);
         }
 
         [HttpGet("{id:int}")]
         [ProducesResponseType(typeof(CampaignDTO), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public async Task<IActionResult> GetCampaignById(int id)
+        public async Task<ActionResult<CampaignDTO>> GetCampaignByIdAsync(int id)
         {
-            var campaign = await _context.Campaigns
-                .SingleOrDefaultAsync(c => c.Id == id);
+            var campaign = await _context.Campaigns.SingleOrDefaultAsync(c => c.Id == id);
 
             if (campaign is null)
             {
                 return NotFound();
             }
 
-            var campaignDto = MapCampaignModelToDto(campaign);
-
-            return Ok(campaignDto);
+            return MapCampaignModelToDto(campaign);
         }
 
         [HttpPost]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.Created)]
-        public async Task<IActionResult> CreateCampaign([FromBody] CampaignDTO campaignDto)
+        public async Task<ActionResult> CreateCampaignAsync([FromBody] CampaignDTO campaignDto)
         {
             if (campaignDto is null)
             {
@@ -88,14 +83,14 @@ namespace Microsoft.eShopOnContainers.Services.Marketing.API.Controllers
             await _context.Campaigns.AddAsync(campaign);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetCampaignById), new { id = campaign.Id }, null);
+            return CreatedAtAction(nameof(GetCampaignByIdAsync), new { id = campaign.Id }, null);
         }
 
         [HttpPut("{id:int}")]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.Created)]
-        public async Task<IActionResult> UpdateCampaign(int id, [FromBody] CampaignDTO campaignDto)
+        public async Task<ActionResult> UpdateCampaignAsync(int id, [FromBody] CampaignDTO campaignDto)
         {
             if (id < 1 || campaignDto is null)
             {
@@ -116,14 +111,14 @@ namespace Microsoft.eShopOnContainers.Services.Marketing.API.Controllers
 
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetCampaignById), new { id = campaignToUpdate.Id }, null);
+            return CreatedAtAction(nameof(GetCampaignByIdAsync), new { id = campaignToUpdate.Id }, null);
         }
 
         [HttpDelete("{id:int}")]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<ActionResult> DeleteCampaignByIdAsync(int id)
         {
             if (id < 1)
             {
@@ -131,6 +126,7 @@ namespace Microsoft.eShopOnContainers.Services.Marketing.API.Controllers
             }
 
             var campaignToDelete = await _context.Campaigns.FindAsync(id);
+
             if (campaignToDelete is null)
             {
                 return NotFound();
@@ -144,7 +140,7 @@ namespace Microsoft.eShopOnContainers.Services.Marketing.API.Controllers
 
         [HttpGet("user")]
         [ProducesResponseType(typeof(PaginatedItemsViewModel<CampaignDTO>), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> GetCampaignsByUserId( int pageSize = 10, int pageIndex = 0)
+        public async Task<ActionResult<PaginatedItemsViewModel<CampaignDTO>>> GetCampaignsByUserIdAsync( int pageSize = 10, int pageIndex = 0)
         {
             var userId = _identityService.GetUserIdentity();
 
@@ -169,20 +165,16 @@ namespace Microsoft.eShopOnContainers.Services.Marketing.API.Controllers
                     var userCampaignDtoList = MapCampaignModelListToDtoList(userCampaignList);
                     campaignDtoList.AddRange(userCampaignDtoList);
                 }
-                
             }
 
             var totalItems = campaignDtoList.Count();
+
             campaignDtoList = campaignDtoList
                 .Skip(pageSize * pageIndex)
                 .Take(pageSize).ToList();
 
-            var model = new PaginatedItemsViewModel<CampaignDTO>(
-                pageIndex, pageSize, totalItems, campaignDtoList);
-
-            return Ok(model);
+            return new PaginatedItemsViewModel<CampaignDTO>(pageIndex, pageSize, totalItems, campaignDtoList);
         }
-
 
         private List<CampaignDTO> MapCampaignModelListToDtoList(List<Campaign> campaignList)
         {

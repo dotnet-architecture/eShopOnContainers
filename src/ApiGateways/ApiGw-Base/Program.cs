@@ -2,6 +2,9 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using System.IO;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;
+using Serilog;
 
 namespace OcelotApiGw
 {
@@ -17,6 +20,13 @@ namespace OcelotApiGw
                     config.AddCommandLine(args);
                 })
                 .UseStartup<Startup>()
+                .UseSerilog((builderContext, config) =>
+                {
+                    config
+                        .MinimumLevel.Information()
+                        .Enrich.FromLogContext()
+                        .WriteTo.Console();
+                })
                 .Build()
                 .Run();
         }

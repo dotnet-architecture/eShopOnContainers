@@ -9,8 +9,9 @@ using System.Threading.Tasks;
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
-{ 
-    public class PicController : Controller
+{
+    [ApiController]
+    public class PicController : ControllerBase
     {
         private readonly IHostingEnvironment _env;
         private readonly CatalogContext _catalogContext;
@@ -27,7 +28,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         // GET: /<controller>/
-        public async Task<IActionResult> GetImage(int catalogItemId)
+        public async Task<ActionResult> GetImageAsync(int catalogItemId)
         {
             if (catalogItemId <= 0)
             {

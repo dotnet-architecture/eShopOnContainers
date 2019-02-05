@@ -2,6 +2,7 @@
 {{- $identity := include "url-of" (list .Values.app.ingress.entries.identity .) -}}
 {{- $webshoppingapigw := include "url-of" (list .Values.app.ingress.entries.webshoppingapigw .) -}}
 {{- $mongo := include "mongo-name" . -}}
+{{- $sqlsrv := include "sql-name" . -}}
 
 apiVersion: v1
 kind: ConfigMap
@@ -19,6 +20,7 @@ data:
   all_EnableLoadTest: "{{ .Values.inf.misc.useLoadTest }}"
   internalurls__IdentityUrl: http://{{ .Values.app.svc.identity }}
   urls__IdentityUrl: {{ $identity }}
-  marketing__ConnectionString: mongodb://{{ $mongo }}
-  marketing__Database: {{ .Values.inf.mongo.marketing.database }} 
+  marketing__ConnectionString: Server={{ $sqlsrv }};Initial Catalog={{ .Values.inf.sql.marketing.db }};User Id={{ .Values.inf.sql.common.user }};Password={{ .Values.inf.sql.common.pwd }};
+  marketing__MongoConnectionString: mongodb://{{ $mongo }}
+  marketing__MongoDatabase: {{ .Values.inf.mongo.marketing.database }} 
   marketing__PicBaseUrl: http://{{ $webshoppingapigw }}/api/v1/c/catalog/items/[0]/pic/
