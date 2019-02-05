@@ -19,7 +19,6 @@ namespace OcelotApiGw
                     config.AddJsonFile(Path.Combine("configuration", "configuration.json"));
                     config.AddCommandLine(args);
                 })
-                .UseStartup<Startup>()
                 .UseSerilog((builderContext, config) =>
                 {
                     config
