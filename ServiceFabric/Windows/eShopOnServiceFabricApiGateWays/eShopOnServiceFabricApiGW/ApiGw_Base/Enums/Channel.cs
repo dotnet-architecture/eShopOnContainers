@@ -1,6 +1,6 @@
 ﻿namespace ApiGw_Base.Enums
 {
-    public enum ConfigurationType
+    public enum Channel
     {
         Web,
         Mobile

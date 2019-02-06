@@ -1,6 +1,6 @@
 ﻿namespace ApiGw_Base.Enums
 {
-    public enum ConfigurationBffType
+    public enum ChannelType
     {
         Marketing,
         Shopping

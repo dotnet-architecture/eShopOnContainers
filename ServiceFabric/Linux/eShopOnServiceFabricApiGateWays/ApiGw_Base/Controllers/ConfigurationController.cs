@@ -11,20 +11,20 @@ namespace ApiGw_Base.Controllers
     public class ConfigurationController : ControllerBase
     {
         [HttpGet("mobile/marketing")]
-        public IActionResult MobileMarketing() => ReadConfigurationFile(ConfigurationType.Mobile, ConfigurationBffType.Marketing);
+        public IActionResult MobileMarketing() => ReadConfigurationFile(Channel.Mobile, ChannelType.Marketing);
 
         [HttpGet("mobile/shopping")]
-        public IActionResult MobileShopping() => ReadConfigurationFile(ConfigurationType.Mobile, ConfigurationBffType.Shopping);
+        public IActionResult MobileShopping() => ReadConfigurationFile(Channel.Mobile, ChannelType.Shopping);
 
         [HttpGet("web/marketing")]
-        public IActionResult WebMarketing() => ReadConfigurationFile(ConfigurationType.Web, ConfigurationBffType.Marketing);
+        public IActionResult WebMarketing() => ReadConfigurationFile(Channel.Web, ChannelType.Marketing);
 
         [HttpGet("web/shopping")]
-        public IActionResult WebShopping() => ReadConfigurationFile(ConfigurationType.Web, ConfigurationBffType.Shopping);
+        public IActionResult WebShopping() => ReadConfigurationFile(Channel.Web, ChannelType.Shopping);
 
-        private IActionResult ReadConfigurationFile(ConfigurationType configurationType, ConfigurationBffType configurationBffType)
+        private IActionResult ReadConfigurationFile(Channel channel, ChannelType channelType)
         {
-            var path = $"{AppDomain.CurrentDomain.BaseDirectory}/Configurations/configuration.{configurationType}.Bff.{configurationBffType}.json";
+            var path = $"{AppDomain.CurrentDomain.BaseDirectory}/Configurations/configuration.{channel}.Bff.{channelType}.json";
 
             using (var streamReader = new StreamReader(path, Encoding.UTF8))
             {
@@ -32,7 +32,7 @@ namespace ApiGw_Base.Controllers
 
                 if (string.IsNullOrWhiteSpace(jsonString))
                 {
-                    return BadRequest($"Configuration file 'configuration.{configurationType}.Bff.{configurationBffType}.json' not found");
+                    return BadRequest($"Configuration file 'configuration.{channel}.Bff.{channelType}.json' not found");
                 }
 
                 return Ok(jsonString);

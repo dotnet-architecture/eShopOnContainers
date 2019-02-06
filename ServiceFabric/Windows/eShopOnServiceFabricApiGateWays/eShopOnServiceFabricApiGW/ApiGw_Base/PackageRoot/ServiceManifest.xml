@@ -19,7 +19,13 @@
       </ExeHost>
     </EntryPoint>
     <EnvironmentVariables>
-      <EnvironmentVariable Name="ASPNETCORE_ENVIRONMENT" Value=""/>
+      <EnvironmentVariable Name="ASPNETCORE_ENVIRONMENT" Value="Development"/>
+      <EnvironmentVariable Name="ASPNETCORE_URLS" Value="http://0.0.0.0:80"/>
+      <EnvironmentVariable Name="UrlMobilMarketing" Value="http://apigw_base.eshoponservicefabricapigwtype:8949/configuration/mobile/marketing" />
+      <EnvironmentVariable Name="UrlMobilShopping" Value="http://apigw_base.eshoponservicefabricapigwtype:8949/configuration/mobile/shopping" />
+      <EnvironmentVariable Name="UrlWebMarketing" Value="http://apigw_base.eshoponservicefabricapigwtype:8949/configuration/web/marketing" />
+      <EnvironmentVariable Name="UrlWebShopping" Value="http://apigw_base.eshoponservicefabricapigwtype:8949/configuration/web/shopping" />
+      <EnvironmentVariable Name="OrchestratorType" Value="SF"/>
     </EnvironmentVariables>
   </CodePackage>
 

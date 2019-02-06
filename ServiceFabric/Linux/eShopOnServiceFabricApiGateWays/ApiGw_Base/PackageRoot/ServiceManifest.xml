@@ -17,9 +17,18 @@
         <Program>ApiGw_Base.exe</Program>
         <WorkingFolder>CodePackage</WorkingFolder>
       </ExeHost>
+      <!--<ContainerHost>
+        <ImageName>eshop/sf.linux.settings.api:#{tag}#</ImageName>
+      </ContainerHost>-->
     </EntryPoint>
     <EnvironmentVariables>
-      <EnvironmentVariable Name="ASPNETCORE_ENVIRONMENT" Value=""/>
+      <EnvironmentVariable Name="ASPNETCORE_ENVIRONMENT" Value="Development"/>
+      <EnvironmentVariable Name="ASPNETCORE_URLS" Value="http://0.0.0.0:80"/>
+      <EnvironmentVariable Name="UrlMobilMarketing" Value="http://apigw_base.eshoponservicefabricapigwtype/configuration/mobile/marketing" />
+      <EnvironmentVariable Name="UrlMobilShopping" Value="http://apigw_base.eshoponservicefabricapigwtype/configuration/mobile/shopping" />
+      <EnvironmentVariable Name="UrlWebMarketing" Value="http://apigw_base.eshoponservicefabricapigwtype/configuration/web/marketing" />
+      <EnvironmentVariable Name="UrlWebShopping" Value="http://apigw_base.eshoponservicefabricapigwtype/configuration/web/shopping" />
+      <EnvironmentVariable Name="OrchestratorType" Value="SF"/>
     </EnvironmentVariables>
   </CodePackage>
 
@@ -32,6 +41,7 @@
       <!-- This endpoint is used by the communication listener to obtain the port on which to 
            listen. Please note that if your service is partitioned, this port is shared with 
            replicas of different partitions that are placed in your code. -->
+      <!--<Endpoint UriScheme="http" Name="sf.linux.settings.api.endpoint" Port="8912" />-->
       <Endpoint Protocol="https" Name="ServiceEndpoint" Type="Input" Port="8912" />
     </Endpoints>
   </Resources>

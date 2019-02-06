@@ -5,8 +5,8 @@
         "DownstreamScheme": "http",
         "DownstreamHostAndPorts": [
           {
-            "Host": "catalog.api",
-            "Port": 80
+            "Host": "catalogapi.eshoponservicefabric",
+            "Port": 5101
           }
         ],
         "UpstreamPathTemplate": "/api/{version}/c/{everything}",
@@ -17,8 +17,8 @@
         "DownstreamScheme": "http",
         "DownstreamHostAndPorts": [
           {
-            "Host": "basket.api",
-            "Port": 80
+            "Host": "basketapi.eshoponservicefabric",
+            "Port": 5103
           }
         ],
         "UpstreamPathTemplate": "/api/{version}/b/{everything}",
@@ -33,8 +33,8 @@
         "DownstreamScheme": "http",
         "DownstreamHostAndPorts": [
           {
-            "Host": "ordering.api",
-            "Port": 80
+            "Host": "orderingapi.eshoponservicefabric",
+            "Port": 5102
           }
         ],
         "UpstreamPathTemplate": "/api/{version}/o/{everything}",
@@ -49,8 +49,8 @@
         "DownstreamScheme": "http",
         "DownstreamHostAndPorts": [
           {
-            "Host": "mobileshoppingagg",
-            "Port": 80
+            "Host": "mobileshoppingagg.eshoponservicefabric",
+            "Port": 5120
           }
         ],
         "UpstreamPathTemplate": "/{everything}",
@@ -65,8 +65,8 @@
         "DownstreamScheme": "http",
         "DownstreamHostAndPorts": [
           {
-            "Host": "ordering.api",
-            "Port": 80
+            "Host": "orderingapi.eshoponservicefabric",
+            "Port": 5102
           }
         ],
         "UpstreamPathTemplate": "/orders-api/{everything}",
@@ -77,8 +77,8 @@
         "DownstreamScheme": "http",
         "DownstreamHostAndPorts": [
           {
-            "Host": "basket.api",
-            "Port": 80
+            "Host": "basketapi.eshoponservicefabric",
+            "Port": 5103
           }
         ],
         "UpstreamPathTemplate": "/basket-api/{everything}",
@@ -89,8 +89,8 @@
         "DownstreamScheme": "http",
         "DownstreamHostAndPorts": [
           {
-            "Host": "catalog.api",
-            "Port": 80
+            "Host": "catalogapi.eshoponservicefabric",
+            "Port": 5101
           }
         ],
         "UpstreamPathTemplate": "/catalog-api/{everything}",
@@ -101,8 +101,8 @@
         "DownstreamScheme": "http",
         "DownstreamHostAndPorts": [
           {
-            "Host": "payment.api",
-            "Port": 80
+            "Host": "paymentapi.eshoponservicefabric",
+            "Port": 5108
           }
         ],
         "UpstreamPathTemplate": "/payment-api/{everything}",

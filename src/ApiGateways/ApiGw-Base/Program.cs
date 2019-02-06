@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore;
+﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using System.IO;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
@@ -16,24 +12,22 @@ namespace OcelotApiGw
     {
         public static void Main(string[] args)
         {
-            BuildWebHost(args).Run();
-        }
-
-        public static IWebHost BuildWebHost(string[] args)
-        {
-            IWebHostBuilder builder = WebHost.CreateDefaultBuilder(args);
-            builder.ConfigureServices(s => s.AddSingleton(builder))
-                .ConfigureAppConfiguration(ic => ic.AddJsonFile(Path.Combine("configuration", "configuration.json")))
-                .UseStartup<Startup>()
+            WebHost.CreateDefaultBuilder(args)
+                .ConfigureAppConfiguration((hostingContext, config) =>
+                {
+                    config.SetBasePath(Directory.GetCurrentDirectory());
+                    config.AddJsonFile(Path.Combine("configuration", "configuration.json"));
+                    config.AddCommandLine(args);
+                })
                 .UseSerilog((builderContext, config) =>
                 {
                     config
                         .MinimumLevel.Information()
                         .Enrich.FromLogContext()
                         .WriteTo.Console();
-                });
-            IWebHost host = builder.Build();
-            return host;
+                })
+                .Build()
+                .Run();
         }
     }
 }

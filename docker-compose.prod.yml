@@ -304,4 +304,3 @@ services:
     ports:
       - "80"   # Important: In a production environment your should remove the external port (5121) kept here for microservice debugging purposes. 
                     # The API Gateway redirects and access through the internal port (80).
-

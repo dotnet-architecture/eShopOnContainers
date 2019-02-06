@@ -5,8 +5,8 @@
         "DownstreamScheme": "http",
         "DownstreamHostAndPorts": [
           {
-            "Host": "marketing.api",
-            "Port": 80
+            "Host": "marketingapi.eshoponservicefabric",
+            "Port": 5110
           }
         ],
         "UpstreamPathTemplate": "/api/{version}/m/{everything}",
@@ -17,8 +17,8 @@
         "DownstreamScheme": "http",
         "DownstreamHostAndPorts": [
           {
-            "Host": "locations.api",
-            "Port": 80
+            "Host": "locationsapi.eshoponservicefabric",
+            "Port": 5109
           }
         ],
         "UpstreamPathTemplate": "/api/{version}/l/{everything}",
@@ -26,9 +26,9 @@
       }
   
     ],
-    "GlobalConfiguration": {
-      "RequestIdKey": "OcRequestId",
-      "AdministrationPath": "/administration"
-    }
+  "GlobalConfiguration": {
+    "RequestIdKey": "OcRequestId",
+    "AdministrationPath": "/administration"
+  }
   }
     
