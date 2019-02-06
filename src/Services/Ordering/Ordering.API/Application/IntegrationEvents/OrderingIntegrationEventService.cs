@@ -22,7 +22,7 @@ namespace Ordering.API.Application.IntegrationEvents
         private readonly IntegrationEventLogContext _eventLogContext;
         private readonly IIntegrationEventLogService _eventLogService;
 
-        public OrderingIntegrationEventService(IEventBus eventBus, 
+        public OrderingIntegrationEventService(IEventBus eventBus,
             OrderingContext orderingContext,
             IntegrationEventLogContext eventLogContext,
             Func<DbConnection, IIntegrationEventLogService> integrationEventLogServiceFactory)
@@ -48,7 +48,7 @@ namespace Ordering.API.Application.IntegrationEvents
                 catch (Exception)
                 {
                     await _eventLogService.MarkEventAsFailedAsync(logEvt.EventId);
-                }                
+                }
             }
         }
 

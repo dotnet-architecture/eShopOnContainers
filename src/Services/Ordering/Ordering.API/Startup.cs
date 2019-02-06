@@ -125,7 +125,6 @@
             eventBus.Subscribe<OrderPaymentSuccededIntegrationEvent, IIntegrationEventHandler<OrderPaymentSuccededIntegrationEvent>>();
         }
 
-
         protected virtual void ConfigureAuth(IApplicationBuilder app)
         {
             if (Configuration.GetValue<bool>("UseLoadTest"))

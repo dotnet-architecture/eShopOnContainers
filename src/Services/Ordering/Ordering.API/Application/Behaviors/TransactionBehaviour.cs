@@ -4,8 +4,6 @@ using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure;
 using Microsoft.Extensions.Logging;
 using Ordering.API.Application.IntegrationEvents;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -29,13 +27,15 @@ namespace Ordering.API.Application.Behaviors
         public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
         {
             TResponse response = default(TResponse);
+            var typeName = request.GetTypeName();
 
             try
             {
                 var strategy = _dbContext.Database.CreateExecutionStrategy();
-                await strategy.ExecuteAsync(async () => 
+
+                await strategy.ExecuteAsync(async () =>
                 {
-                    _logger.LogInformation($"Begin transaction {typeof(TRequest).Name}");
+                    _logger.LogInformation("----- Begin transaction for {CommandName} ({@Command})", typeName, request);
 
                     await _dbContext.BeginTransactionAsync();
 
@@ -43,16 +43,16 @@ namespace Ordering.API.Application.Behaviors
 
                     await _dbContext.CommitTransactionAsync();
 
-                    _logger.LogInformation($"Committed transaction {typeof(TRequest).Name}");
+                    _logger.LogInformation("----- Transaction commited for {CommandName}", typeName);
 
                     await _orderingIntegrationEventService.PublishEventsThroughEventBusAsync();
                 });
 
                 return response;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                _logger.LogInformation($"Rollback transaction executed {typeof(TRequest).Name}");
+                _logger.LogError(ex, "----- ERROR Handling transaction for {CommandName} ({@Command})", typeName, request);
 
                 _dbContext.RollbackTransaction();
                 throw;

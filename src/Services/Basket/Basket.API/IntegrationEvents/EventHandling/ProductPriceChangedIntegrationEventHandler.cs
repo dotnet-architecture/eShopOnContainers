@@ -26,7 +26,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.IntegrationEvents.Even
         {
             using (LogContext.PushProperty("IntegrationEventId", @event.Id))
             {
-                _logger.LogInformation("----- ProductPriceChangedIntegrationEventHandler - Handling integration event: {IntegrationEventId} ({@IntegrationEvent})", @event.Id, @event);
+                _logger.LogInformation("----- Handling integration event: {IntegrationEventId} at {AppShortName} - ({@IntegrationEvent})", @event.Id, Program.AppShortName, @event);
 
                 var userIds = _repository.GetUsers();
 

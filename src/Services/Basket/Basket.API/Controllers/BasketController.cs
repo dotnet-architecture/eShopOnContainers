@@ -82,13 +82,13 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
             {
                 try
                 {
-                    _logger.LogInformation("----- BasketController - Publishing integration event: {IntegrationEventId} ({@IntegrationEvent})", eventMessage.Id, eventMessage);
+                    _logger.LogInformation("----- Publishing integration event: {IntegrationEventId} at {AppShortName} - ({@IntegrationEvent})", eventMessage.Id, Program.AppShortName, eventMessage);
 
                     _eventBus.Publish(eventMessage);
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, "----- BasketController - ERROR Publishing integration event");
+                    _logger.LogError(ex, "----- ERROR Publishing integration event: {IntegrationEventId} at {AppShortName} - ({@IntegrationEvent})", eventMessage.Id, Program.AppShortName, eventMessage);
 
                     throw;
                 }
