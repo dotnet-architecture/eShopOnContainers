@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ServiceManifest Name="OrderingSignalrhubPkg"
+<ServiceManifest Name="OrderingSignalrHubPkg"
                  Version="1.0.0"
                  xmlns="http://schemas.microsoft.com/2011/01/fabric"
                  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
@@ -7,7 +7,7 @@
   <ServiceTypes>
     <!-- This is the name of your ServiceType.
          The UseImplicitHost attribute indicates this is a guest service. -->
-    <StatelessServiceType ServiceTypeName="OrderingSignalrhubType" UseImplicitHost="true" />
+    <StatelessServiceType ServiceTypeName="OrderingSignalrHubType" UseImplicitHost="true" />
   </ServiceTypes>
 
   <!-- Code package is your service executable. -->
@@ -15,15 +15,20 @@
     <EntryPoint>
       <!-- Follow this link for more information about deploying Windows containers to Service Fabric: https://aka.ms/sfguestcontainers -->
       <ContainerHost>
-        <ImageName>eshop/ordering.signalrhub:#{tag}#</ImageName>
+        <ImageName>eshop/ordering.signalrhub-win:#{tag}#</ImageName>
       </ContainerHost>
     </EntryPoint>
     <!-- Pass environment variables to your container: -->
-    <!--
     <EnvironmentVariables>
-      <EnvironmentVariable Name="VariableName" Value="VariableValue"/>
+      <EnvironmentVariable Name="ASPNETCORE_ENVIRONMEN" Value="Development"/>
+      <EnvironmentVariable Name="ASPNETCORE_URLS" Value="http://0.0.0.0:80"/>
+      <EnvironmentVariable Name="EventBusConnection" Value="rabbitmq.eshoponservicefabricbus"/>
+      <EnvironmentVariable Name="EventBusUserName" Value="admin"/>
+      <EnvironmentVariable Name="EventBusPassword" Value="password"/>
+      <EnvironmentVariable Name="AzureServiceBusEnabled" Value="False"/>
+      <EnvironmentVariable Name="OrchestratorType" Value="SF"/>
+      <EnvironmentVariable Name="identityUrl" Value="http://identityapi.eshoponservicefabric:5105"/>
     </EnvironmentVariables>
-    -->
   </CodePackage>
 
   <!-- Config package is the contents of the Config directoy under PackageRoot that contains an 
@@ -35,7 +40,7 @@
       <!-- This endpoint is used by the communication listener to obtain the port on which to 
            listen. Please note that if your service is partitioned, this port is shared with 
            replicas of different partitions that are placed in your code. -->
-      <Endpoint Name="OrderingSignalrhubTypeEndpoint" Port="5112" />
+      <Endpoint Name="OrderingSignalrHubTypeEndpoint" Port="5112"  UriScheme="http" PathSuffix="eShopOnServiceFabric/OrderingSignalrHub" />
     </Endpoints>
   </Resources>
 </ServiceManifest>
