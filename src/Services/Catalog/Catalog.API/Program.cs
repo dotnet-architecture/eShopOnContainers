@@ -14,7 +14,8 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
 {
     public class Program
     {
-        private static readonly string ApplicationName = typeof(Program).Namespace;
+        public static readonly string AppName = typeof(Program).Namespace;
+        public static readonly string ShortAppName = AppName.Substring(AppName.LastIndexOf('.', AppName.LastIndexOf('.') - 1) + 1);
 
         public static int Main(string[] args)
         {
@@ -24,10 +25,10 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
 
             try
             {
-                Log.Information("Configuring web host ({Application})...", ApplicationName);
+                Log.Information("Configuring web host ({Application})...", AppName);
                 var host = BuildWebHost(configuration, args);
 
-                Log.Information("Applying migrations ({Application})...", ApplicationName);
+                Log.Information("Applying migrations ({Application})...", AppName);
                 host.MigrateDbContext<CatalogContext>((context, services) =>
                 {
                     var env = services.GetService<IHostingEnvironment>();
@@ -35,19 +36,19 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
                     var logger = services.GetService<ILogger<CatalogContextSeed>>();
 
                     new CatalogContextSeed()
-                    .SeedAsync(context, env, settings, logger)
-                    .Wait();
+                        .SeedAsync(context, env, settings, logger)
+                        .Wait();
                 })
                 .MigrateDbContext<IntegrationEventLogContext>((_, __) => { });
 
-                Log.Information("Starting web host ({Application})...", ApplicationName);
+                Log.Information("Starting web host ({Application})...", AppName);
                 host.Run();
 
                 return 0;
             }
             catch (Exception ex)
             {
-                Log.Fatal(ex, "Program terminated unexpectedly ({Application})!", ApplicationName);
+                Log.Fatal(ex, "Program terminated unexpectedly ({Application})!", AppName);
                 return 1;
             }
             finally
@@ -73,7 +74,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
 
             return new LoggerConfiguration()
                 .MinimumLevel.Verbose()
-                .Enrich.WithProperty("Application", ApplicationName)
+                .Enrich.WithProperty("Application", AppName)
                 .Enrich.FromLogContext()
                 .WriteTo.Console()
                 .WriteTo.Seq(string.IsNullOrWhiteSpace(seqServerUrl) ? "http://seq" : seqServerUrl)
