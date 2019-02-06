@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
 using Microsoft.eShopOnContainers.Services.Basket.API.Model;
 using Microsoft.eShopOnContainers.Services.Basket.API.Services;
+using Microsoft.Extensions.Logging;
+using Serilog.Context;
 using System;
 using System.Net;
 using System.Threading.Tasks;
@@ -19,9 +21,15 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
         private readonly IBasketRepository _repository;
         private readonly IIdentityService _identityService;
         private readonly IEventBus _eventBus;
+        private readonly ILogger<BasketController> _logger;
 
-        public BasketController(IBasketRepository repository, IIdentityService identityService, IEventBus eventBus)
+        public BasketController(
+            ILogger<BasketController> logger,
+            IBasketRepository repository, 
+            IIdentityService identityService, 
+            IEventBus eventBus)
         {
+            _logger = logger;
             _repository = repository;
             _identityService = identityService;
             _eventBus = eventBus;
@@ -70,7 +78,21 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
             // Once basket is checkout, sends an integration event to
             // ordering.api to convert basket to order and proceeds with
             // order creation process
-            _eventBus.Publish(eventMessage);
+            using (LogContext.PushProperty("IntegrationEventId", eventMessage.Id))
+            {
+                try
+                {
+                    _logger.LogInformation("----- BasketController - Publishing integration event: {IntegrationEventId} ({@IntegrationEvent})", eventMessage.Id, eventMessage);
+
+                    _eventBus.Publish(eventMessage);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "----- BasketController - ERROR Publishing integration event");
+
+                    throw;
+                }
+            }
 
             return Accepted();
         }
