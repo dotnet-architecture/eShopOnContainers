@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Values.app.svc.ordering }}
+  name: {{ .Values.app.svc.webhooks }}
   labels:
     app: {{ template "webhooks-api.name" . }}
     chart: {{ template "webhooks-api.chart" . }}

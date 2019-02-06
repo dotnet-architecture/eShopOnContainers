@@ -274,7 +274,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
             services.AddTransient<Func<DbConnection, IIntegrationEventLogService>>(
                 sp => (DbConnection c) => new IntegrationEventLogService(c));
 
-            // services.AddTransient<ICatalogIntegrationEventService, CatalogIntegrationEventService>();
+            services.AddTransient<ICatalogIntegrationEventService, CatalogIntegrationEventService>();
 
             if (configuration.GetValue<bool>("AzureServiceBusEnabled"))
             {

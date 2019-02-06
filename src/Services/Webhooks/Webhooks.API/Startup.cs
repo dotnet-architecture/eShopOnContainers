@@ -128,6 +128,7 @@ namespace Webhooks.API
             var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
             eventBus.Subscribe<ProductPriceChangedIntegrationEvent, ProductPriceChangedIntegrationEventHandler>();
             eventBus.Subscribe<OrderStatusChangedToShippedIntegrationEvent, OrderStatusChangedToShippedIntegrationEventHandler>();
+            eventBus.Subscribe<OrderStatusChangedToPaidIntegrationEvent, OrderStatusChangedToPaidIntegrationEventHandler>();
         }
     }
 
@@ -264,9 +265,9 @@ namespace Webhooks.API
             }
 
             services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
-
-            //services.AddTransient<OrderStatusChangedToAwaitingValidationIntegrationEventHandler>();
-
+            services.AddTransient<ProductPriceChangedIntegrationEventHandler>();
+            services.AddTransient<OrderStatusChangedToShippedIntegrationEventHandler>();
+            services.AddTransient<OrderStatusChangedToPaidIntegrationEventHandler>();
             return services;
         }
 
@@ -302,8 +303,6 @@ namespace Webhooks.API
         {
             services.AddTransient<Func<DbConnection, IIntegrationEventLogService>>(
                 sp => (DbConnection c) => new IntegrationEventLogService(c));
-
-            // services.AddTransient<ICatalogIntegrationEventService, CatalogIntegrationEventService>();
 
             if (configuration.GetValue<bool>("AzureServiceBusEnabled"))
             {

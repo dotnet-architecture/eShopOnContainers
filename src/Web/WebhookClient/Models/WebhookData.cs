@@ -7,10 +7,10 @@ namespace WebhookClient.Models
 {
     public class WebhookData
     {
-        public DateTime When { get; }
+        public DateTime When { get; set; }
 
-        public string Payload { get; }
+        public string Payload { get; set; }
 
-        public string Type { get; }
+        public string Type { get; set; }
     }
 }

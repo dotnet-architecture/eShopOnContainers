@@ -54,7 +54,7 @@ namespace WebhookClient.Pages
 
             var payload = new WebhookSubscriptionRequest()
             {
-                Event = "OrderShipped",
+                Event = "OrderPaid",
                 GrantUrl = granturl,
                 Url = url,
                 Token = Token
