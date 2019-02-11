@@ -14,7 +14,7 @@ services:
     image: mongo
 
   identity-api-test:
-    image: eshop/identity-api-test:${TAG:-latest}
+    image: ${REGISTRY:-eshop}/identity-api-test:${TAG:-latest}
     build:
       context: .
       dockerfile: src/Services/Identity/Identity.API/Dockerfile
@@ -22,7 +22,7 @@ services:
       - sql-data-test
 
   basket-api-test:
-    image: eshop/basket-api-test:${TAG:-latest}
+    image: ${REGISTRY:-eshop}/basket-api-test:${TAG:-latest}
     build:
       context: .
       dockerfile: src/Services/Basket/Basket.API/Dockerfile
@@ -35,7 +35,7 @@ services:
       - ${BUILD_ARTIFACTSTAGINGDIRECTORY:-./tests-results/}:/tests
 
   basket-api-unit-test:
-    image: eshop/basket-api-test:${TAG:-latest}
+    image: ${REGISTRY:-eshop}/basket-api-test:${TAG:-latest}
     build:
       context: .
       dockerfile: src/Services/Basket/Basket.API/Dockerfile
@@ -48,7 +48,7 @@ services:
       - ${BUILD_ARTIFACTSTAGINGDIRECTORY:-./tests-results/}:/tests
 
   catalog-api-test:
-    image: eshop/catalog-api-test:${TAG:-latest}
+    image: ${REGISTRY:-eshop}/catalog-api-test:${TAG:-latest}
     build:
       context: .
       dockerfile: src/Services/Catalog/Catalog.API/Dockerfile
@@ -60,7 +60,7 @@ services:
       - ${BUILD_ARTIFACTSTAGINGDIRECTORY:-./tests-results/}:/tests
 
   catalog-api-unit-test:
-    image: eshop/catalog-api-test:${TAG:-latest}
+    image: ${REGISTRY:-eshop}/catalog-api-test:${TAG:-latest}
     build:
       context: .
       dockerfile: src/Services/Catalog/Catalog.API/Dockerfile
@@ -72,7 +72,7 @@ services:
       - ${BUILD_ARTIFACTSTAGINGDIRECTORY:-./tests-results/}:/tests
 
   ordering-api-test:
-    image: eshop/ordering-api-test:${TAG:-latest}
+    image: ${REGISTRY:-eshop}/ordering-api-test:${TAG:-latest}
     build:
       context: .
       dockerfile: src/Services/Ordering/Ordering.API/Dockerfile
@@ -84,7 +84,7 @@ services:
       - ${BUILD_ARTIFACTSTAGINGDIRECTORY:-./tests-results/}:/tests
 
   ordering-api-unit-test:
-    image: eshop/ordering-api-test:${TAG:-latest}
+    image: ${REGISTRY:-eshop}/ordering-api-test:${TAG:-latest}
     build:
       context: .
       dockerfile: src/Services/Ordering/Ordering.API/Dockerfile
@@ -96,7 +96,7 @@ services:
       - ${BUILD_ARTIFACTSTAGINGDIRECTORY:-./tests-results/}:/tests  
 
   marketing-api-test:
-    image: eshop/marketing-api-test:${TAG:-latest}
+    image: ${REGISTRY:-eshop}/marketing-api-test:${TAG:-latest}
     build:
       context: .
       dockerfile: src/Services/Marketing/Marketing.API/Dockerfile
@@ -110,7 +110,7 @@ services:
       - ${BUILD_ARTIFACTSTAGINGDIRECTORY:-./tests-results/}:/tests
 
   payment-api-test:
-    image: eshop/payment-api-test:${TAG:-latest}
+    image: ${REGISTRY:-eshop}/payment-api-test:${TAG:-latest}
     build:
       context: .
       dockerfile: src/Services/Payment/Payment.API/Dockerfile
@@ -118,7 +118,7 @@ services:
       - rabbitmq-test
 
   locations-api-test:
-    image: eshop/locations-api-test:${TAG:-latest}
+    image: ${REGISTRY:-eshop}/locations-api-test:${TAG:-latest}
     build:
       context: .
       dockerfile: src/Services/Location/Locations.API/Dockerfile

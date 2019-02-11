@@ -9,6 +9,8 @@
 {{- $mobileshoppingagg := include "url-of" (list .Values.app.ingress.entries.mobileshoppingagg .) -}}
 {{- $webhoppingagg := include "url-of" (list .Values.app.ingress.entries.webshoppingagg .) -}}
 {{- $xamarincallback := include "url-of" (list "xamarincallback" .) -}}
+{{- $webhooks_url := include "url-of" (list .Values.app.ingress.entries.webhooks .) -}}
+{{- $webhooksweb_url := include "url-of" (list .Values.app.ingress.entries.webhooksweb .) -}}
 
 apiVersion: v1
 kind: ConfigMap
@@ -32,4 +34,7 @@ data:
   mobileshoppingagg_e: http://{{ $mobileshoppingagg }}
   webshoppingagg_e: http://{{ $webhoppingagg }}
   xamarin_callback_e: http://{{ $xamarincallback }}
+  webhooksapi_e:  http://{{ $webhooks_url }}
+  webhooksweb_e: http://{{ $webhooksweb_url }}
+
 
