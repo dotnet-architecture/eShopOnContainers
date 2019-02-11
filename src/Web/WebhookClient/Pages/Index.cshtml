@@ -14,20 +14,18 @@
     }
 </div>
 
-@if (User.Identity.IsAuthenticated)
-{
-    <div class="table">
-        <h3>Current webhooks received</h3>
-        <p>(Data since last time web started up)<p>
-        <table class="table">
-            @foreach (var webhook in Model.WebHooksReceived)
-            {
-                <tr>
-                    <td>@webhook.When</td>
-                    <td><pre>@webhook.Data</pre></td>
-                    <td>@(webhook.Token ?? "--None--")</td>
-                </tr>
-            }
-        </table>
-    </div>
-}
+<div class="table">
+    <h3>Current webhooks received</h3>
+    <p>(Data since last time web started up)<p>
+    <table class="table">
+        @foreach (var webhook in Model.WebHooksReceived)
+        {
+            <tr>
+                <td>@webhook.When</td>
+                <td><pre>@webhook.Data</pre></td>
+                <td>@(webhook.Token ?? "--None--")</td>
+            </tr>
+        }
+    </table>
+</div>
+

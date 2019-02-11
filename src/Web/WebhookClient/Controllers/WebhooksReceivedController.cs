@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebhookClient.Models;
+using WebhookClient.Services;
 
 namespace WebhookClient.Controllers
 {
@@ -17,15 +18,17 @@ namespace WebhookClient.Controllers
 
         private readonly Settings _settings;
         private readonly ILogger _logger;
+        private readonly IHooksRepository _hooksRepository;
         
-        public WebhooksReceivedController(IOptions<Settings> settings, ILogger<WebhooksReceivedController> logger)
+        public WebhooksReceivedController(IOptions<Settings> settings, ILogger<WebhooksReceivedController> logger, IHooksRepository hooksRepository)
         {
             _settings = settings.Value;
             _logger = logger;
+            _hooksRepository = hooksRepository;
         }
 
         [HttpPost]
-        public IActionResult NewWebhook(WebhookData hook)
+        public async Task<IActionResult> NewWebhook(WebhookData hook)
         {
             var header = Request.Headers[HeaderNames.WebHookCheckHeader];
             var token = header.FirstOrDefault();
@@ -34,16 +37,15 @@ namespace WebhookClient.Controllers
 
             if (!_settings.ValidateToken || _settings.Token == token)
             {
-                _logger.LogInformation($"Received hook is processed");
-                var received = HttpContext.Session.Get<IEnumerable<WebHookReceived>>(SessionKeys.HooksKey)?.ToList() ?? new List<WebHookReceived>();
+                _logger.LogInformation($"Received hook is going to be processed");
                 var newHook = new WebHookReceived()
                 {
                     Data = hook.Payload,
                     When = hook.When,
                     Token = token
                 };
-                received.Add(newHook);
-                HttpContext.Session.Set<IEnumerable<WebHookReceived>>(SessionKeys.HooksKey, received);
+                await _hooksRepository.AddNew(newHook);
+                _logger.LogInformation($"Received hook was processed.");
                 return Ok(newHook);
             }
 

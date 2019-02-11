@@ -35,6 +35,7 @@ namespace WebhookClient
                 .AddHttpClientServices(Configuration)
                 .AddCustomAuthentication(Configuration)
                 .AddTransient<IWebhooksClient, WebhooksClient>()
+                .AddSingleton<IHooksRepository, InMemoryHooksRepository>()
                 .AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
@@ -67,8 +68,13 @@ namespace WebhookClient
                         var validateToken = bool.TrueString.Equals(Configuration["ValidateToken"], StringComparison.InvariantCultureIgnoreCase);
                         var header = context.Request.Headers[HeaderNames.WebHookCheckHeader];
                         var value = header.FirstOrDefault();
-                        if (!validateToken ||  value == Configuration["Token"])
+                        var tokenToValidate = Configuration["Token"];
+                        if (!validateToken ||  value == tokenToValidate)
                         {
+                            if (!string.IsNullOrWhiteSpace(tokenToValidate))
+                            {
+                                context.Response.Headers.Add(HeaderNames.WebHookCheckHeader, tokenToValidate);
+                            }
                             context.Response.StatusCode = (int)HttpStatusCode.OK;
                         }
                         else
