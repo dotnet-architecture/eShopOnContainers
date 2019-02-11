@@ -67,7 +67,7 @@ namespace Webhooks.API.Controllers
             var userId = _identityService.GetUserIdentity();
 
 
-            var grantOk = await _grantUrlTester.TestGrantUrl(request.GrantUrl, request.Token ?? string.Empty);
+            var grantOk = await _grantUrlTester.TestGrantUrl(request.Url, request.GrantUrl, request.Token ?? string.Empty);
 
             if (grantOk)
             {

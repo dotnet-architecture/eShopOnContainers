@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -17,8 +16,15 @@ namespace Webhooks.API.Services
             _logger = logger;
         }
 
-        public async Task<bool> TestGrantUrl(string url, string token)
+        public async Task<bool> TestGrantUrl(string urlHook, string url, string token)
         {
+            if (!CheckSameOrigin(urlHook, url))
+            {
+                _logger.LogWarning($"Url of the hook ({urlHook} and the grant url ({url} do not belong to same origin)");
+                return false;
+            }
+
+
             var client = _clientFactory.CreateClient("GrantClient");
             var msg = new HttpRequestMessage(HttpMethod.Options, url);
             msg.Headers.Add("X-eshop-whtoken", token);
@@ -36,6 +42,16 @@ namespace Webhooks.API.Services
                 _logger.LogWarning($"Exception {ex.GetType().Name} when sending OPTIONS request. Url can't be granted.");
                 return false;
             }
+        }
+
+        private bool CheckSameOrigin(string urlHook, string url)
+        {
+            var firstUrl = new Uri(urlHook, UriKind.Absolute);
+            var secondUrl = new Uri(url, UriKind.Absolute);
+
+            return firstUrl.Scheme == secondUrl.Scheme &&
+                firstUrl.Port == secondUrl.Port &&
+                firstUrl.Host == firstUrl.Host;
         }
     }
 }
