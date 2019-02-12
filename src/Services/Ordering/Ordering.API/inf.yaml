@@ -1,0 +1,22 @@
+# This heml values file defines all infrastructure used by eShopOnContainers.
+# It is used on all charts, so ** MUST BE INCLUDED ** on every deployment
+
+inf:
+  sql:                      # inf.sql defines the sql server databases & logins
+#    host:  my-sql-server   # Uncomment to specify a custom sql-server to be used. By default "sql-data-<appname>" will be used  
+    common:
+      user: sa              # SQL user
+      pwd: Pass@word        # SQL pwd
+      pid: Developer
+    ordering:               # inf.sql.ordering: settings for the ordering-api sql (user, pwd, db)
+      db: OrderingDb        # Ordering API SQL db name
+  eventbus:
+    svc: rabbitmq           # Name of k8s svc for rabbitmq
+    constr: rabbitmq        # Event bus connection string
+    useAzure: false         # true if use Azure Service Bus. False if RabbitMQ
+  appinsights:
+      key: ""               # App insights to use
+  k8s: {}
+  misc:                     # inf.misc contains miscellaneous configuration related to infrastructure
+    useLoadTest: false      # If running under loading test or not
+    useAzureStorage: false  # If catalog api uses azure storage or not
