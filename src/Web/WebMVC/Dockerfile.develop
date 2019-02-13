@@ -1,4 +1,4 @@
-FROM microsoft/dotnet:2.1-sdk
+FROM microsoft/dotnet:2.2-sdk
 ARG BUILD_CONFIGURATION=Debug
 ENV ASPNETCORE_ENVIRONMENT=Development
 ENV DOTNET_USE_POLLING_FILE_WATCHER=true
@@ -6,11 +6,9 @@ EXPOSE 80
 
 WORKDIR /src
 COPY ["src/Web/WebMVC/WebMVC.csproj", "src/Web/WebMVC/"]
-COPY ["src/BuildingBlocks/HealthChecks/src/Microsoft.AspNetCore.HealthChecks/Microsoft.AspNetCore.HealthChecks.csproj", "src/BuildingBlocks/HealthChecks/src/Microsoft.AspNetCore.HealthChecks/"]
-COPY ["src/BuildingBlocks/HealthChecks/src/Microsoft.Extensions.HealthChecks/Microsoft.Extensions.HealthChecks.csproj", "src/BuildingBlocks/HealthChecks/src/Microsoft.Extensions.HealthChecks/"]
 RUN dotnet restore "src/Web/WebMVC/WebMVC.csproj"
 COPY . .
 WORKDIR "/src/src/Web/WebMVC"
-RUN dotnet build --no-restore -c $BUILD_CONFIGURATION
+RUN dotnet build --no-restore "WebMVC.csproj" -c $BUILD_CONFIGURATION
 
-ENTRYPOINT ["dotnet", "run", "--no-restore", "--no-build", "--no-launch-profile", "-c", "$BUILD_CONFIGURATION", "--"]
+ENTRYPOINT ["dotnet", "run", "--no-build", "--no-launch-profile", "-c", "$BUILD_CONFIGURATION", "--"]
