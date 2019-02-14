@@ -41,6 +41,8 @@ services:
       - OrderingApiClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5102
       - MobileShoppingAggClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5120
       - WebShoppingAggClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5121
+      - WebhooksApiClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5113
+      - WebhooksWebClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5114
       - UseCustomizationData=True  
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
       - OrchestratorType=${ORCHESTRATOR_TYPE}
@@ -181,6 +183,19 @@ services:
       - UseLoadTest=${USE_LOADTEST:-False}
     ports:
       - "5109:80"   # Important: In a production environment your should remove the external port (5109) kept here for microservice debugging purposes. 
+                    # The API Gateway redirects and access through the internal port (80).
+  webhooks.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - ConnectionString=${ESHOP_AZURE_WEBHOOKS_DB:-Server=sql.data;Database=Microsoft.eShopOnContainers.Services.WebhooksDb;User Id=sa;Password=Pass@word}
+      - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
+      - EventBusUserName=${ESHOP_SERVICE_BUS_USERNAME}
+      - EventBusPassword=${ESHOP_SERVICE_BUS_PASSWORD}    
+      - IdentityUrl=http://identity.api  
+      - IdentityUrlExternal=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
+    ports:
+      - "5113:80"   # Important: In a production environment your should remove the external port (5109) kept here for microservice debugging purposes. 
                     # The API Gateway redirects and access through the internal port (80).
 
   mobileshoppingapigw:
@@ -380,3 +395,13 @@ services:
     ports:
       - "5100:80"
 
+  webhooks.client:
+    environment:
+      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - Token=6168DB8D-DC58-4094-AF24-483278923590      # Webhooks are registered with this token (any value is valid) but the client won't check it
+      - IdentityUrl=http://10.0.75.1:5105
+      - CallBackUrl=http://localhost:5114
+      - WebhooksUrl=http://webhooks.api
+      - SelfUrl=http://webhooks.client/
+    ports:
+      - "5114:80"
