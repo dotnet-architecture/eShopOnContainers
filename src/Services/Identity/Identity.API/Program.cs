@@ -14,69 +14,100 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static readonly string AppName = typeof(Program).Namespace;
+        public static readonly string ShortAppName = AppName.Substring(AppName.LastIndexOf('.', AppName.LastIndexOf('.') - 1) + 1);
+
+        public static int Main(string[] args)
         {
-            BuildWebHost(args)
-                .MigrateDbContext<PersistedGrantDbContext>((_, __) => { })
-                .MigrateDbContext<ApplicationDbContext>((context, services) =>
-                {
-                    var env = services.GetService<IHostingEnvironment>();
-                    var logger = services.GetService<ILogger<ApplicationDbContextSeed>>();
-                    var settings = services.GetService<IOptions<AppSettings>>();
+            var configuration = GetConfiguration();
 
-                    new ApplicationDbContextSeed()
-                        .SeedAsync(context, env, logger, settings)
-                        .Wait();
-                })
-                .MigrateDbContext<ConfigurationDbContext>((context,services)=> 
-                {
-                    var configuration = services.GetService<IConfiguration>();
+            Log.Logger = CreateSerilogLogger(configuration);
 
-                    new ConfigurationDbContextSeed()
-                        .SeedAsync(context, configuration)
-                        .Wait();
-                }).Run();
+            try
+            {
+                Log.Information("Configuring web host ({Application})...", AppName);
+                var host = BuildWebHost(configuration, args);
+
+                Log.Information("Applying migrations ({Application})...", AppName);
+                host.MigrateDbContext<PersistedGrantDbContext>((_, __) => { })
+                    .MigrateDbContext<ApplicationDbContext>((context, services) =>
+                    {
+                        var env = services.GetService<IHostingEnvironment>();
+                        var logger = services.GetService<ILogger<ApplicationDbContextSeed>>();
+                        var settings = services.GetService<IOptions<AppSettings>>();
+
+                        new ApplicationDbContextSeed()
+                            .SeedAsync(context, env, logger, settings)
+                            .Wait();
+                    })
+                    .MigrateDbContext<ConfigurationDbContext>((context, services) =>
+                    {
+                        new ConfigurationDbContextSeed()
+                            .SeedAsync(context, configuration)
+                            .Wait();
+                    });
+
+                Log.Information("Starting web host ({Application})...", AppName);
+                host.Run();
+
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                Log.Fatal(ex, "Program terminated unexpectedly ({Application})!", AppName);
+                return 1;
+            }
+            finally
+            {
+                Log.CloseAndFlush();
+            }
         }
 
-        public static IWebHost BuildWebHost(string[] args) =>
+        private static IWebHost BuildWebHost(IConfiguration configuration, string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseKestrel()
-                .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseIISIntegration()
+                .CaptureStartupErrors(false)
                 .UseStartup<Startup>()
-                .ConfigureAppConfiguration((builderContext, config) =>
-                {
-                    var builtConfig = config.Build();
-
-                    var configurationBuilder = new ConfigurationBuilder();
-
-                    if (Convert.ToBoolean(builtConfig["UseVault"]))
-                    {
-                        configurationBuilder.AddAzureKeyVault(
-                            $"https://{builtConfig["Vault:Name"]}.vault.azure.net/",
-                            builtConfig["Vault:ClientId"],
-                            builtConfig["Vault:ClientSecret"]);
-                    }
-
-                    configurationBuilder.AddEnvironmentVariables();
-
-                    config.AddConfiguration(configurationBuilder.Build());
-                })
-                .ConfigureLogging((hostingContext, builder) =>
-                {
-                    builder.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
-                    builder.AddConsole();
-                    builder.AddDebug();
-                })
                 .UseApplicationInsights()
-                .UseSerilog((builderContext, config) =>
-                {
-                    config
-                        .MinimumLevel.Information()
-                        .Enrich.FromLogContext()
-                        .WriteTo.Console();
-                })
+                .UseContentRoot(Directory.GetCurrentDirectory())
+                .UseWebRoot("Pics")
+                .UseConfiguration(configuration)
+                .UseSerilog()
                 .Build();
+
+        private static Serilog.ILogger CreateSerilogLogger(IConfiguration configuration)
+        {
+            var seqServerUrl = configuration["Serilog:SeqServerUrl"];
+
+            return new LoggerConfiguration()
+                .MinimumLevel.Verbose()
+                .Enrich.WithProperty("Application", AppName)
+                .Enrich.FromLogContext()
+                .WriteTo.Console()
+                .WriteTo.Seq(string.IsNullOrWhiteSpace(seqServerUrl) ? "http://seq" : seqServerUrl)
+                .ReadFrom.Configuration(configuration)
+                .CreateLogger();
+        }
+
+        private static IConfiguration GetConfiguration()
+        {
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddEnvironmentVariables();
+
+            var config = builder.Build();
+
+            if (config.GetValue<bool>("UseVault", false))
+            {
+                builder.AddAzureKeyVault(
+                    $"https://{config["Vault:Name"]}.vault.azure.net/",
+                    config["Vault:ClientId"],
+                    config["Vault:ClientSecret"]);
+            }
+
+            return builder.Build();
+        }
+
     }
 }
 
