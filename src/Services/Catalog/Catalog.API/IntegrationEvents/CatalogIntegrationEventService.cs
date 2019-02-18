@@ -24,7 +24,7 @@ namespace Catalog.API.IntegrationEvents
 
         public CatalogIntegrationEventService(
             ILogger<CatalogIntegrationEventService> logger,
-            IEventBus eventBus, 
+            IEventBus eventBus,
             CatalogContext catalogContext,
             Func<DbConnection, IIntegrationEventLogService> integrationEventLogServiceFactory)
         {
@@ -37,39 +37,33 @@ namespace Catalog.API.IntegrationEvents
 
         public async Task PublishThroughEventBusAsync(IntegrationEvent evt)
         {
-            using (LogContext.PushProperty("IntegrationEventId", evt.Id))
+            try
             {
-                try
-                {
-                    _logger.LogInformation("----- Publishing integration event: {IntegrationEventId} at {AppShortName} - ({@IntegrationEvent})", evt.Id, Program.AppShortName, evt);
+                _logger.LogInformation("----- Publishing integration event: {IntegrationEventId_published} at {AppShortName} - ({@IntegrationEvent})", evt.Id, Program.AppShortName, evt);
 
-                    await _eventLogService.MarkEventAsInProgressAsync(evt.Id);
-                    _eventBus.Publish(evt);
-                    await _eventLogService.MarkEventAsPublishedAsync(evt.Id);
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, "----- ERROR Publishing integration event: {IntegrationEventId} at {AppShortName} - ({@IntegrationEvent})", evt.Id, Program.AppShortName, evt);
-                    await _eventLogService.MarkEventAsFailedAsync(evt.Id);
-                }
+                await _eventLogService.MarkEventAsInProgressAsync(evt.Id);
+                _eventBus.Publish(evt);
+                await _eventLogService.MarkEventAsPublishedAsync(evt.Id);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "----- ERROR Publishing integration event: {IntegrationEventId} at {AppShortName} - ({@IntegrationEvent})", evt.Id, Program.AppShortName, evt);
+                await _eventLogService.MarkEventAsFailedAsync(evt.Id);
             }
         }
 
         public async Task SaveEventAndCatalogContextChangesAsync(IntegrationEvent evt)
         {
-            using (LogContext.PushProperty("IntegrationEventId", evt.Id))
-            {
-                _logger.LogInformation("----- CatalogIntegrationEventService - Saving changes and integrationEvent: {IntegrationEventId}", evt.Id);
+            _logger.LogInformation("----- CatalogIntegrationEventService - Saving changes and integrationEvent: {IntegrationEventId}", evt.Id);
 
-                //Use of an EF Core resiliency strategy when using multiple DbContexts within an explicit BeginTransaction():
-                //See: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency            
-                await ResilientTransaction.New(_catalogContext).ExecuteAsync(async () =>
-                {
-                    // Achieving atomicity between original catalog database operation and the IntegrationEventLog thanks to a local transaction
-                    await _catalogContext.SaveChangesAsync();
-                    await _eventLogService.SaveEventAsync(evt, _catalogContext.Database.CurrentTransaction.GetDbTransaction());
-                });
-            }
+            //Use of an EF Core resiliency strategy when using multiple DbContexts within an explicit BeginTransaction():
+            //See: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency            
+            await ResilientTransaction.New(_catalogContext).ExecuteAsync(async () =>
+            {
+                // Achieving atomicity between original catalog database operation and the IntegrationEventLog thanks to a local transaction
+                await _catalogContext.SaveChangesAsync();
+                await _eventLogService.SaveEventAsync(evt, _catalogContext.Database.CurrentTransaction.GetDbTransaction());
+            });
         }
     }
 }

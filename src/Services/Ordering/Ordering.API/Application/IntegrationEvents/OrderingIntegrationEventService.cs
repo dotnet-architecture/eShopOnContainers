@@ -5,6 +5,7 @@ using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
 using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF;
 using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF.Services;
 using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF.Utilities;
+using Microsoft.eShopOnContainers.Services.Ordering.API;
 using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure;
 using Microsoft.Extensions.Logging;
 using System;
@@ -44,7 +45,7 @@ namespace Ordering.API.Application.IntegrationEvents
 
             foreach (var logEvt in pendindLogEvents)
             {
-                _logger.LogInformation("----- Publishing integration event {IntegrationEventId} ({@IntegrationEvent})", logEvt.EventId, logEvt);
+                _logger.LogInformation("----- Publishing integration event: {IntegrationEventId} at {AppShortName} - ({@IntegrationEvent})", logEvt.EventId, Program.AppShortName, logEvt);
 
                 try
                 {

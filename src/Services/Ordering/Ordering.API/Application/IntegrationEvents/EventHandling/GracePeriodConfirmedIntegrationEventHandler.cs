@@ -1,8 +1,11 @@
 ﻿using MediatR;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
+using Microsoft.eShopOnContainers.Services.Ordering.API;
 using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
+using Microsoft.Extensions.Logging;
 using Ordering.API.Application.Commands;
 using Ordering.API.Application.IntegrationEvents.Events;
+using Serilog.Context;
 using System.Threading.Tasks;
 
 namespace Ordering.API.Application.IntegrationEvents.EventHandling
@@ -10,10 +13,14 @@ namespace Ordering.API.Application.IntegrationEvents.EventHandling
     public class GracePeriodConfirmedIntegrationEventHandler : IIntegrationEventHandler<GracePeriodConfirmedIntegrationEvent>
     {
         private readonly IMediator _mediator;
+        private readonly ILogger<GracePeriodConfirmedIntegrationEventHandler> _logger;
 
-        public GracePeriodConfirmedIntegrationEventHandler(IMediator mediator)
+        public GracePeriodConfirmedIntegrationEventHandler(
+            IMediator mediator,
+            ILogger<GracePeriodConfirmedIntegrationEventHandler> logger)
         {
             _mediator = mediator;
+            _logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
         }
 
         /// <summary>
@@ -26,8 +33,13 @@ namespace Ordering.API.Application.IntegrationEvents.EventHandling
         /// <returns></returns>
         public async Task Handle(GracePeriodConfirmedIntegrationEvent @event)
         {
-            var command = new SetAwaitingValidationOrderStatusCommand(@event.OrderId);
-            await _mediator.Send(command);
+            using (LogContext.PushProperty("IntegrationEventId_Context", @event.Id))
+            {
+                _logger.LogInformation("----- Handling integration event: {IntegrationEventId} at {AppShortName} - ({@IntegrationEvent})", @event.Id, Program.AppShortName, @event);
+
+                var command = new SetAwaitingValidationOrderStatusCommand(@event.OrderId);
+                await _mediator.Send(command);
+            }
         }
     }
 }

@@ -7,7 +7,7 @@ namespace Ordering.API.Application.Behaviors
 {
     internal static class BehaviorsHelperExtensions
     {
-        internal static string GetTypeName(this object @object)
+        internal static string GetGenericTypeName(this object @object)
         {
             var typeName = string.Empty;
             var type = @object.GetType();

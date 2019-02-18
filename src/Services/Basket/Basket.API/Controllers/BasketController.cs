@@ -25,8 +25,8 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
 
         public BasketController(
             ILogger<BasketController> logger,
-            IBasketRepository repository, 
-            IIdentityService identityService, 
+            IBasketRepository repository,
+            IIdentityService identityService,
             IEventBus eventBus)
         {
             _logger = logger;
@@ -58,7 +58,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
         public async Task<ActionResult> CheckoutAsync([FromBody]BasketCheckout basketCheckout, [FromHeader(Name = "x-requestid")] string requestId)
         {
             var userId = _identityService.GetUserIdentity();
-            
+
             basketCheckout.RequestId = (Guid.TryParse(requestId, out Guid guid) && guid != Guid.Empty) ?
                 guid : basketCheckout.RequestId;
 
@@ -78,20 +78,17 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
             // Once basket is checkout, sends an integration event to
             // ordering.api to convert basket to order and proceeds with
             // order creation process
-            using (LogContext.PushProperty("IntegrationEventId", eventMessage.Id))
+            try
             {
-                try
-                {
-                    _logger.LogInformation("----- Publishing integration event: {IntegrationEventId} at {AppShortName} - ({@IntegrationEvent})", eventMessage.Id, Program.AppShortName, eventMessage);
+                _logger.LogInformation("----- Publishing integration event: {IntegrationEventId} at {AppShortName} - ({@IntegrationEvent})", eventMessage.Id, Program.AppShortName, eventMessage);
 
-                    _eventBus.Publish(eventMessage);
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, "----- ERROR Publishing integration event: {IntegrationEventId} at {AppShortName} - ({@IntegrationEvent})", eventMessage.Id, Program.AppShortName, eventMessage);
+                _eventBus.Publish(eventMessage);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "----- ERROR Publishing integration event: {IntegrationEventId} at {AppShortName} - ({@IntegrationEvent})", eventMessage.Id, Program.AppShortName, eventMessage);
 
-                    throw;
-                }
+                throw;
             }
 
             return Accepted();

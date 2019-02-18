@@ -26,30 +26,30 @@ namespace Ordering.API.Application.IntegrationEvents.EventHandling
         /// <summary>
         /// Integration event handler which starts the create order process
         /// </summary>
-        /// <param name="eventMsg">
+        /// <param name="@event">
         /// Integration event message which is sent by the
         /// basket.api once it has successfully process the 
         /// order items.
         /// </param>
         /// <returns></returns>
-        public async Task Handle(UserCheckoutAcceptedIntegrationEvent eventMsg)
+        public async Task Handle(UserCheckoutAcceptedIntegrationEvent @event)
         {
-            using (LogContext.PushProperty("IntegrationEventId", eventMsg.Id))
+            using (LogContext.PushProperty("IntegrationEventId_Context", @event.Id))
             {
-                _logger.LogInformation("----- Handling integration event: {IntegrationEventId} at {AppShortName} - ({@IntegrationEvent})", eventMsg.Id, Program.AppShortName, eventMsg);
+                _logger.LogInformation("----- Handling integration event: {IntegrationEventId} at {AppShortName} - ({@IntegrationEvent})", @event.Id, Program.AppShortName, @event);
 
                 var result = false;
 
-                if (eventMsg.RequestId != Guid.Empty)
+                if (@event.RequestId != Guid.Empty)
                 {
-                    using (LogContext.PushProperty("IdentifiedCommandId", eventMsg.RequestId))
+                    using (LogContext.PushProperty("IdentifiedCommandId", @event.RequestId))
                     {
-                        var createOrderCommand = new CreateOrderCommand(eventMsg.Basket.Items, eventMsg.UserId, eventMsg.UserName, eventMsg.City, eventMsg.Street,
-                            eventMsg.State, eventMsg.Country, eventMsg.ZipCode,
-                            eventMsg.CardNumber, eventMsg.CardHolderName, eventMsg.CardExpiration,
-                            eventMsg.CardSecurityNumber, eventMsg.CardTypeId);
+                        var createOrderCommand = new CreateOrderCommand(@event.Basket.Items, @event.UserId, @event.UserName, @event.City, @event.Street,
+                            @event.State, @event.Country, @event.ZipCode,
+                            @event.CardNumber, @event.CardHolderName, @event.CardExpiration,
+                            @event.CardSecurityNumber, @event.CardTypeId);
 
-                        var requestCreateOrder = new IdentifiedCommand<CreateOrderCommand, bool>(createOrderCommand, eventMsg.RequestId);
+                        var requestCreateOrder = new IdentifiedCommand<CreateOrderCommand, bool>(createOrderCommand, @event.RequestId);
 
                         _logger.LogInformation("----- IdentifiedCreateOrderCommand: {@IdentifiedCreateOrderCommand}", requestCreateOrder);
 
@@ -57,17 +57,17 @@ namespace Ordering.API.Application.IntegrationEvents.EventHandling
 
                         if (result)
                         {
-                            _logger.LogInformation("----- CreateOrderCommand suceeded - RequestId: {RequestId}", eventMsg.RequestId);
+                            _logger.LogInformation("----- CreateOrderCommand suceeded - RequestId: {RequestId}", @event.RequestId);
                         }
                         else
                         {
-                            _logger.LogWarning("----- CreateOrderCommand failed - RequestId: {RequestId}", eventMsg.RequestId);
+                            _logger.LogWarning("----- CreateOrderCommand failed - RequestId: {RequestId}", @event.RequestId);
                         }
                     }
                 }
                 else
                 {
-                    _logger.LogWarning("----- Invalid IntegrationEvent - RequestId is missing - {@IntegrationEvent}", eventMsg);
+                    _logger.LogWarning("----- Invalid IntegrationEvent - RequestId is missing - {@IntegrationEvent}", @event);
                 }
             }
         }
