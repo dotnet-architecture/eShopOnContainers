@@ -24,7 +24,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.IntegrationEvents.Even
 
         public async Task Handle(ProductPriceChangedIntegrationEvent @event)
         {
-            using (LogContext.PushProperty("IntegrationEventId_Context", @event.Id))
+            using (LogContext.PushProperty("IntegrationEventIdContext", @event.Id))
             {
                 _logger.LogInformation("----- Handling integration event: {IntegrationEventId} at {AppShortName} - ({@IntegrationEvent})", @event.Id, Program.AppShortName, @event);
 

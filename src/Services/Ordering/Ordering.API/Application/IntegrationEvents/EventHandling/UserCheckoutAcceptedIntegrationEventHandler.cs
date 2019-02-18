@@ -34,7 +34,7 @@ namespace Ordering.API.Application.IntegrationEvents.EventHandling
         /// <returns></returns>
         public async Task Handle(UserCheckoutAcceptedIntegrationEvent @event)
         {
-            using (LogContext.PushProperty("IntegrationEventId_Context", @event.Id))
+            using (LogContext.PushProperty("IntegrationEventIdContext", @event.Id))
             {
                 _logger.LogInformation("----- Handling integration event: {IntegrationEventId} at {AppShortName} - ({@IntegrationEvent})", @event.Id, Program.AppShortName, @event);
 
