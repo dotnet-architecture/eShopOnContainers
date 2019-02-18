@@ -1,44 +1,81 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore;
+﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Configuration.Json;
 using Serilog;
+using System;
+using System.IO;
 
 namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static readonly string AppName = typeof(Program).Namespace;
+        public static readonly string ShortAppName = AppName.Substring(AppName.LastIndexOf('.', AppName.LastIndexOf('.') - 1) + 1);
+
+        public static int Main(string[] args)
         {
-            BuildWebHost(args).Run();
+            var configuration = GetConfiguration();
+
+            Log.Logger = CreateSerilogLogger(configuration);
+
+            try
+            {
+                Log.Information("Configuring web host ({Application})...", AppName);
+                var host = BuildWebHost(configuration, args);
+
+                Log.Information("Starting web host ({Application})...", AppName);
+                host.Run();
+
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                Log.Fatal(ex, "Program terminated unexpectedly ({Application})!", AppName);
+                return 1;
+            }
+            finally
+            {
+                Log.CloseAndFlush();
+            }
         }
 
-        public static IWebHost BuildWebHost(string[] args) =>
-            WebHost
-                .CreateDefaultBuilder(args)
-                .ConfigureAppConfiguration(cb =>
-                {
-                    var sources = cb.Sources;
-                    sources.Insert(3, new Microsoft.Extensions.Configuration.Json.JsonConfigurationSource()
-                    {
-                        Optional = true,
-                        Path = "appsettings.localhost.json",
-                        ReloadOnChange = false
-                    });
-                })
+        private static IWebHost BuildWebHost(IConfiguration configuration, string[] args) =>
+            WebHost.CreateDefaultBuilder(args)
+                .CaptureStartupErrors(false)
                 .UseStartup<Startup>()
-                .UseSerilog((builderContext, config) =>
-                {
-                    config
-                        .MinimumLevel.Information()
-                        .Enrich.FromLogContext()
-                        .WriteTo.Console();
-                })
+                .UseSerilog()
                 .Build();
+
+        private static Serilog.ILogger CreateSerilogLogger(IConfiguration configuration)
+        {
+            var seqServerUrl = configuration["Serilog:SeqServerUrl"];
+
+            return new LoggerConfiguration()
+                .MinimumLevel.Verbose()
+                .Enrich.WithProperty("Application", AppName)
+                .Enrich.FromLogContext()
+                .WriteTo.Console()
+                .WriteTo.Seq(string.IsNullOrWhiteSpace(seqServerUrl) ? "http://seq" : seqServerUrl)
+                .ReadFrom.Configuration(configuration)
+                .CreateLogger();
+        }
+
+        private static IConfiguration GetConfiguration()
+        {
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddEnvironmentVariables();
+
+            builder.Sources.Insert(3, new JsonConfigurationSource()
+            {
+                Optional = true,
+                Path = "appsettings.localhost.json",
+                ReloadOnChange = false
+            });
+
+            return builder.Build();
+        }
     }
 }
