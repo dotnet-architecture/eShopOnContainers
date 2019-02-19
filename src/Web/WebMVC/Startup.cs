@@ -48,11 +48,11 @@ namespace Microsoft.eShopOnContainers.WebMVC
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, ILoggingBuilder loggerBuilder)
         {
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
-            loggerFactory.AddAzureWebAppDiagnostics();
+            loggerBuilder.AddAzureWebAppDiagnostics();
             loggerFactory.AddApplicationInsights(app.ApplicationServices, LogLevel.Trace);
 
             app.UseHealthChecks("/hc", new HealthCheckOptions()
@@ -122,7 +122,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
             if (orchestratorType?.ToUpper() == "K8S")
             {
                 // Enable K8s telemetry initializer
-                services.EnableKubernetes();
+                services.AddApplicationInsightsKubernetesEnricher();
             }
 
             if (orchestratorType?.ToUpper() == "SF")
