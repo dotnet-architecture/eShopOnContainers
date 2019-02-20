@@ -1,12 +1,14 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.BuyerAggregate;
 using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
 using Microsoft.eShopOnContainers.Services.Ordering.Domain.Seedwork;
 using Ordering.Infrastructure;
 using Ordering.Infrastructure.EntityConfigurations;
 using System;
+using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -23,8 +25,11 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
         public DbSet<OrderStatus> OrderStatus { get; set; }
 
         private readonly IMediator _mediator;
+        private IDbContextTransaction _currentTransaction;
 
         private OrderingContext(DbContextOptions<OrderingContext> options) : base (options) { }
+
+        public IDbContextTransaction GetCurrentTransaction => _currentTransaction;
 
         public OrderingContext(DbContextOptions<OrderingContext> options, IMediator mediator) : base(options)
         {
@@ -60,7 +65,50 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
             var result = await base.SaveChangesAsync();
 
             return true;
-        }        
+        }
+
+        public async Task BeginTransactionAsync()
+        {
+            _currentTransaction = _currentTransaction ?? await Database.BeginTransactionAsync(IsolationLevel.ReadCommitted);
+        }
+
+        public async Task CommitTransactionAsync()
+        {
+            try
+            {
+                await SaveChangesAsync();
+                _currentTransaction?.Commit();
+            }
+            catch
+            {
+                RollbackTransaction();
+                throw;
+            }
+            finally
+            {
+                if (_currentTransaction != null)
+                {
+                    _currentTransaction.Dispose();
+                    _currentTransaction = null;
+                }
+            }
+        }
+
+        public void RollbackTransaction()
+        {
+            try
+            {
+                _currentTransaction?.Rollback();
+            }
+            finally
+            {
+                if (_currentTransaction != null)
+                {
+                    _currentTransaction.Dispose();
+                    _currentTransaction = null;
+                }
+            }
+        }
     }
 
     public class OrderingContextDesignFactory : IDesignTimeDbContextFactory<OrderingContext>

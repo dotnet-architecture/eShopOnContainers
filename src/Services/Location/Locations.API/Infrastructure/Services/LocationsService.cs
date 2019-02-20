@@ -21,22 +21,22 @@
             _eventBus = eventBus ?? throw new ArgumentNullException(nameof(eventBus));
         }
 
-        public async Task<Locations> GetLocation(int locationId)
+        public async Task<Locations> GetLocationAsync(int locationId)
         {
             return await _locationsRepository.GetAsync(locationId);
         }
 
-        public async Task<UserLocation> GetUserLocation(string userId)
+        public async Task<UserLocation> GetUserLocationAsync(string userId)
         {
             return await _locationsRepository.GetUserLocationAsync(userId);
         }
 
-        public async Task<List<Locations>> GetAllLocation()
+        public async Task<List<Locations>> GetAllLocationAsync()
         {
             return await _locationsRepository.GetLocationListAsync();
         }
 
-        public async Task<bool> AddOrUpdateUserLocation(string userId, LocationRequest currentPosition)
+        public async Task<bool> AddOrUpdateUserLocationAsync(string userId, LocationRequest currentPosition)
         {            
             // Get the list of ordered regions the user currently is within
             var currentUserAreaLocationList = await _locationsRepository.GetCurrentUserRegionsListAsync(currentPosition);

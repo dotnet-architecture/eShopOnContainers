@@ -13,51 +13,51 @@
     <div class="container">
         <section class="esh-orders_detail-section">
             <article class="esh-orders_detail-titles row">
-                <section class="esh-orders_detail-title col-xs-3">Order number</section>
-                <section class="esh-orders_detail-title col-xs-3">Date</section>
-                <section class="esh-orders_detail-title col-xs-3">Total</section>
-                <section class="esh-orders_detail-title col-xs-3">Status</section>
+                <section class="esh-orders_detail-title col-3">Order number</section>
+                <section class="esh-orders_detail-title col-3">Date</section>
+                <section class="esh-orders_detail-title col-3">Total</section>
+                <section class="esh-orders_detail-title col-3">Status</section>
             </article>
 
             <article class="esh-orders_detail-items row">
-                <section class="esh-orders_detail-item col-xs-3">@Model.OrderNumber</section>
-                <section class="esh-orders_detail-item col-xs-3">@Model.Date</section>
-                <section class="esh-orders_detail-item col-xs-3">$@Model.Total</section>
-                <section class="esh-orders_detail-title col-xs-3">@Model.Status</section>
+                <section class="esh-orders_detail-item col-3">@Model.OrderNumber</section>
+                <section class="esh-orders_detail-item col-3">@Model.Date</section>
+                <section class="esh-orders_detail-item col-3">$@Model.Total</section>
+                <section class="esh-orders_detail-title col-3">@Model.Status</section>
             </article>
         </section>
         
         <section class="esh-orders_detail-section">
             <article class="esh-orders_detail-titles row">
-                <section class="esh-orders_detail-title col-xs-12">Description</section>
+                <section class="esh-orders_detail-title col-12">Description</section>
             </article>
 
             <article class="esh-orders_detail-items row">
-                <section class="esh-orders_detail-item col-xs-12">@Model.Description</section>
+                <section class="esh-orders_detail-item col-12">@Model.Description</section>
             </article>
         </section>
 
         <section class="esh-orders_detail-section">
             <article class="esh-orders_detail-titles row">
-                <section class="esh-orders_detail-title col-xs-12">Shiping address</section>
+                <section class="esh-orders_detail-title col-12">Shiping address</section>
             </article>
 
             <article class="esh-orders_detail-items row">
-                <section class="esh-orders_detail-item col-xs-12">@Model.Street</section>
+                <section class="esh-orders_detail-item col-12">@Model.Street</section>
             </article>
 
             <article class="esh-orders_detail-items row">
-                <section class="esh-orders_detail-item col-xs-12">@Model.City</section>
+                <section class="esh-orders_detail-item col-12">@Model.City</section>
             </article>
 
             <article class="esh-orders_detail-items row">
-                <section class="esh-orders_detail-item col-xs-12">@Model.Country</section>
+                <section class="esh-orders_detail-item col-12">@Model.Country</section>
             </article>
         </section>
 
         <section class="esh-orders_detail-section">
             <article class="esh-orders_detail-titles row">
-                <section class="esh-orders_detail-title col-xs-12">ORDER DETAILS</section>
+                <section class="esh-orders_detail-title col-12">ORDER DETAILS</section>
             </article>
 
             @for (int i = 0; i < Model.OrderItems.Count; i++)
@@ -67,23 +67,23 @@
                     <section class="esh-orders_detail-item col-md-4 hidden-md-down">
                         <img class="esh-orders_detail-image" src="@item.PictureUrl">
                     </section>
-                    <section class="esh-orders_detail-item esh-orders_detail-item--middle col-xs-4">@item.ProductName</section>
-                    <section class="esh-orders_detail-item esh-orders_detail-item--middle col-xs-1">$ @item.UnitPrice.ToString("N2")</section>
-                    <section class="esh-orders_detail-item esh-orders_detail-item--middle col-xs-1">@item.Units</section>
-                    <section class="esh-orders_detail-item esh-orders_detail-item--middle col-xs-2">$ @Math.Round(item.Units * item.UnitPrice, 2).ToString("N2")</section>
+                    <section class="esh-orders_detail-item esh-orders_detail-item--middle col-4">@item.ProductName</section>
+                    <section class="esh-orders_detail-item esh-orders_detail-item--middle col-1">$ @item.UnitPrice.ToString("N2")</section>
+                    <section class="esh-orders_detail-item esh-orders_detail-item--middle col-1">@item.Units</section>
+                    <section class="esh-orders_detail-item esh-orders_detail-item--middle col-2">$ @Math.Round(item.Units * item.UnitPrice, 2).ToString("N2")</section>
                 </article>
             }
         </section>
 
         <section class="esh-orders_detail-section esh-orders_detail-section--right">
             <article class="esh-orders_detail-titles esh-basket-titles--clean row">
-                <section class="esh-orders_detail-title col-xs-9"></section>
-                <section class="esh-orders_detail-title col-xs-2">TOTAL</section>
+                <section class="esh-orders_detail-title col-9"></section>
+                <section class="esh-orders_detail-title col-2">TOTAL</section>
             </article>
 
             <article class="esh-orders_detail-items row">
-                <section class="esh-orders_detail-item col-xs-9"></section>
-                <section class="esh-orders_detail-item esh-orders_detail-item--mark col-xs-2">$ @Model.Total</section>
+                <section class="esh-orders_detail-item col-9"></section>
+                <section class="esh-orders_detail-item esh-orders_detail-item--mark col-2">$ @Model.Total</section>
             </article>
         </section>
     </div>

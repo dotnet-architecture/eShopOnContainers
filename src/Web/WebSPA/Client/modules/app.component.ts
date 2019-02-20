@@ -1,19 +1,16 @@
 import { Title } from '@angular/platform-browser';
-import { Component, ViewEncapsulation, OnInit, ViewContainerRef } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { Subscription }   from 'rxjs/Subscription';
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
+import { Subscription } from 'rxjs';
 
-import { DataService } from './shared/services/data.service';
 import { SecurityService } from './shared/services/security.service';
 import { ConfigurationService } from './shared/services/configuration.service';
 import { SignalrService } from './shared/services/signalr.service';
-import { ToastsManager } from 'ng2-toastr';
+import { ToastrService } from 'ngx-toastr';
 
 /*
  * App Component
  * Top Level Component
  */
-
 @Component({
     selector: 'esh-app',
     styleUrls: ['./app.component.scss'],
@@ -27,10 +24,11 @@ export class AppComponent implements OnInit {
         private securityService: SecurityService,
         private configurationService: ConfigurationService,
         private signalrService: SignalrService,
-        private toastr: ToastsManager,
+        private toastr: ToastrService,
         vcr: ViewContainerRef
     ) {
-        this.toastr.setRootViewContainerRef(vcr);
+        // TODO: Set Taster Root (Overlay) container
+        //this.toastr.setRootViewContainerRef(vcr);
         this.Authenticated = this.securityService.IsAuthorized;
     }
 

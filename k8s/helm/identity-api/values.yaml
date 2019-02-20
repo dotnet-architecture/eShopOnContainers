@@ -54,6 +54,10 @@ env:
       key: webshoppingagg_e
     - name: XamarinCallback
       key: xamarin_callback_e
+    - name: WebhooksApiClient
+      key: webhooksapi_e
+    - name: WebhooksWebClient
+      key: webhooksweb_e
   values:
     - name: ASPNETCORE_ENVIRONMENT
       value: Development
@@ -61,4 +65,15 @@ env:
       value: 'K8S'
     - name: IsClusterEnv
       value: 'True'
-
+probes:
+  liveness:
+    path: /liveness
+    initialDelaySeconds: 10
+    periodSeconds: 15
+    port: 80
+  readiness:
+    path: /hc
+    timeoutSeconds: 5
+    initialDelaySeconds: 90
+    periodSeconds: 60
+    port: 80

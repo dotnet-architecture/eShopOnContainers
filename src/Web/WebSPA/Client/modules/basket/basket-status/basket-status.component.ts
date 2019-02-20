@@ -1,5 +1,5 @@
 import { Component, OnInit }    from '@angular/core';
-import { Subscription }         from 'rxjs/Subscription';
+import { Subscription }         from 'rxjs';
 
 import { BasketService }        from '../basket.service';
 import { BasketWrapperService } from '../../shared/services/basket.wrapper.service';
