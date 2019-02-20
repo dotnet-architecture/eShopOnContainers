@@ -52,8 +52,8 @@ namespace Microsoft.eShopOnContainers.WebMVC
         {
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
-            loggerFactory.AddAzureWebAppDiagnostics();
-            loggerFactory.AddApplicationInsights(app.ApplicationServices, LogLevel.Trace);
+            //loggerFactory.AddAzureWebAppDiagnostics();
+            //loggerFactory.AddApplicationInsights(app.ApplicationServices, LogLevel.Trace);
 
             app.UseHealthChecks("/hc", new HealthCheckOptions()
             {
