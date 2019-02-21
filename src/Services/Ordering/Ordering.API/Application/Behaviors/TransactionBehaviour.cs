@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure;
 using Microsoft.Extensions.Logging;
 using Ordering.API.Application.IntegrationEvents;
+using Serilog.Context;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -35,15 +36,18 @@ namespace Ordering.API.Application.Behaviors
 
                 await strategy.ExecuteAsync(async () =>
                 {
-                    _logger.LogInformation("----- Begin transaction for {CommandName} ({@Command})", typeName, request);
+                    var transaction = await _dbContext.BeginTransactionAsync();
 
-                    await _dbContext.BeginTransactionAsync();
+                    using (LogContext.PushProperty("TransactionContext", transaction.TransactionId))
+                    {
+                        _logger.LogInformation("----- Begin transaction {TransactionId} for {CommandName} ({@Command})", transaction.TransactionId, typeName, request);
 
-                    response = await next();
+                        response = await next();
 
-                    await _dbContext.CommitTransactionAsync();
+                        await _dbContext.CommitTransactionAsync();
 
-                    _logger.LogInformation("----- Transaction commited for {CommandName}", typeName);
+                        _logger.LogInformation("----- Transaction {TransactionId} committed for {CommandName}", transaction.TransactionId, typeName);
+                    }
 
                     await _orderingIntegrationEventService.PublishEventsThroughEventBusAsync();
                 });
