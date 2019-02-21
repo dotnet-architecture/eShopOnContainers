@@ -67,9 +67,11 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
             return true;
         }
 
-        public async Task BeginTransactionAsync()
+        public async Task<IDbContextTransaction> BeginTransactionAsync()
         {
             _currentTransaction = _currentTransaction ?? await Database.BeginTransactionAsync(IsolationLevel.ReadCommitted);
+
+            return _currentTransaction;
         }
 
         public async Task CommitTransactionAsync()

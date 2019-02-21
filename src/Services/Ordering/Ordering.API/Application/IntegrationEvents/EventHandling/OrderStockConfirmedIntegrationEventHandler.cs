@@ -10,6 +10,7 @@
     using Microsoft.Extensions.Logging;
     using Serilog.Context;
     using Microsoft.eShopOnContainers.Services.Ordering.API;
+    using Ordering.API.Application.Behaviors;
 
     public class OrderStockConfirmedIntegrationEventHandler :
         IIntegrationEventHandler<OrderStockConfirmedIntegrationEvent>
@@ -32,6 +33,14 @@
                 _logger.LogInformation("----- Handling integration event: {IntegrationEventId} at {AppShortName} - ({@IntegrationEvent})", @event.Id, Program.AppShortName, @event);
 
                 var command = new SetStockConfirmedOrderStatusCommand(@event.OrderId);
+
+                _logger.LogInformation(
+                    "----- Sending command: {CommandName} - {IdProperty}: {CommandId} ({@Command})",
+                    command.GetGenericTypeName(),
+                    nameof(command.OrderNumber),
+                    command.OrderNumber,
+                    command);
+
                 await _mediator.Send(command);
             }
         }

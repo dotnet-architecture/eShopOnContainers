@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using Ordering.API.Application.IntegrationEvents.Events;
 using Serilog.Context;
 using Microsoft.eShopOnContainers.Services.Ordering.API;
+using Ordering.API.Application.Behaviors;
 
 namespace Ordering.API.Application.IntegrationEvents.EventHandling
 {
@@ -51,7 +52,12 @@ namespace Ordering.API.Application.IntegrationEvents.EventHandling
 
                         var requestCreateOrder = new IdentifiedCommand<CreateOrderCommand, bool>(createOrderCommand, @event.RequestId);
 
-                        _logger.LogInformation("----- IdentifiedCreateOrderCommand: {@IdentifiedCreateOrderCommand}", requestCreateOrder);
+                        _logger.LogInformation(
+                            "----- Sending command: {CommandName} - {IdProperty}: {CommandId} ({@Command})", 
+                            requestCreateOrder.GetGenericTypeName(),
+                            nameof(requestCreateOrder.Id),
+                            requestCreateOrder.Id,
+                            requestCreateOrder);
 
                         result = await _mediator.Send(requestCreateOrder);
 

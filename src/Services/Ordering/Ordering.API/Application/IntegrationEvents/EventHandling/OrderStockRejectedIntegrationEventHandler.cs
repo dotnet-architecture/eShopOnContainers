@@ -10,6 +10,7 @@
     using Microsoft.Extensions.Logging;
     using Serilog.Context;
     using Microsoft.eShopOnContainers.Services.Ordering.API;
+    using Ordering.API.Application.Behaviors;
 
     public class OrderStockRejectedIntegrationEventHandler : IIntegrationEventHandler<OrderStockRejectedIntegrationEvent>
     {
@@ -36,6 +37,14 @@
                     .ToList();
 
                 var command = new SetStockRejectedOrderStatusCommand(@event.OrderId, orderStockRejectedItems);
+
+                _logger.LogInformation(
+                    "----- Sending command: {CommandName} - {IdProperty}: {CommandId} ({@Command})",
+                    command.GetGenericTypeName(),
+                    nameof(command.OrderNumber),
+                    command.OrderNumber,
+                    command);
+
                 await _mediator.Send(command);
             }
         }

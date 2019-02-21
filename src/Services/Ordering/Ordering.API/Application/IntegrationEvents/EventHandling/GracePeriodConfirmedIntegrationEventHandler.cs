@@ -3,6 +3,7 @@ using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
 using Microsoft.eShopOnContainers.Services.Ordering.API;
 using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
 using Microsoft.Extensions.Logging;
+using Ordering.API.Application.Behaviors;
 using Ordering.API.Application.Commands;
 using Ordering.API.Application.IntegrationEvents.Events;
 using Serilog.Context;
@@ -38,6 +39,14 @@ namespace Ordering.API.Application.IntegrationEvents.EventHandling
                 _logger.LogInformation("----- Handling integration event: {IntegrationEventId} at {AppShortName} - ({@IntegrationEvent})", @event.Id, Program.AppShortName, @event);
 
                 var command = new SetAwaitingValidationOrderStatusCommand(@event.OrderId);
+
+                _logger.LogInformation(
+                    "----- Sending command: {CommandName} - {IdProperty}: {CommandId} ({@Command})",
+                    command.GetGenericTypeName(),
+                    nameof(command.OrderNumber),
+                    command.OrderNumber,
+                    command);
+
                 await _mediator.Send(command);
             }
         }
