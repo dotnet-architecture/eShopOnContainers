@@ -45,7 +45,7 @@ namespace Ordering.API.Application.IntegrationEvents
 
             foreach (var logEvt in pendindLogEvents)
             {
-                _logger.LogInformation("----- Publishing integration event: {IntegrationEventId} at {AppShortName} - ({@IntegrationEvent})", logEvt.EventId, Program.AppShortName, logEvt);
+                _logger.LogInformation("----- Publishing integration event: {IntegrationEventId} from {AppShortName} - ({@IntegrationEvent})", logEvt.EventId, Program.AppShortName, logEvt.IntegrationEvent);
 
                 try
                 {
@@ -53,8 +53,10 @@ namespace Ordering.API.Application.IntegrationEvents
                     _eventBus.Publish(logEvt.IntegrationEvent);
                     await _eventLogService.MarkEventAsPublishedAsync(logEvt.EventId);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    _logger.LogError(ex, "----- ERROR publishing integration event: {IntegrationEventId} from {AppShortName}", logEvt.EventId, Program.AppShortName);
+
                     await _eventLogService.MarkEventAsFailedAsync(logEvt.EventId);
                 }
             }
@@ -62,7 +64,7 @@ namespace Ordering.API.Application.IntegrationEvents
 
         public async Task AddAndSaveEventAsync(IntegrationEvent evt)
         {
-            _logger.LogInformation("----- Saving integration event {IntegrationEventId} to repository ({@IntegrationEvent})", evt.Id, evt);
+            _logger.LogInformation("----- Enqueuing integration event {IntegrationEventId} to repository ({@IntegrationEvent})", evt.Id, evt);
 
             await _eventLogService.SaveEventAsync(evt, _orderingContext.GetCurrentTransaction.GetDbTransaction());
         }

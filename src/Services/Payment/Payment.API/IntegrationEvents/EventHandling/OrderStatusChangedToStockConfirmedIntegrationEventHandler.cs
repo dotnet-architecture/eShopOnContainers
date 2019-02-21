@@ -48,6 +48,8 @@
                     orderPaymentIntegrationEvent = new OrderPaymentFailedIntegrationEvent(@event.OrderId);
                 }
 
+                _logger.LogInformation("----- Publishing integration event: {IntegrationEventId} from {AppShortName} - ({@IntegrationEvent})", orderPaymentIntegrationEvent.Id, Program.AppShortName, orderPaymentIntegrationEvent);
+
                 _eventBus.Publish(orderPaymentIntegrationEvent);
 
                 await Task.CompletedTask;

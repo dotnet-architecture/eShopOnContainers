@@ -20,9 +20,10 @@ namespace Ordering.BackgroundTasks.Tasks
         private readonly BackgroundTaskSettings _settings;
         private readonly IEventBus _eventBus;
 
-        public GracePeriodManagerService(IOptions<BackgroundTaskSettings> settings,
-                                         IEventBus eventBus,
-                                         ILogger<GracePeriodManagerService> logger)
+        public GracePeriodManagerService(
+            IOptions<BackgroundTaskSettings> settings,
+            IEventBus eventBus,
+            ILogger<GracePeriodManagerService> logger)
         {
             _settings = settings?.Value ?? throw new ArgumentNullException(nameof(settings));
             _eventBus = eventBus ?? throw new ArgumentNullException(nameof(eventBus));
@@ -59,6 +60,8 @@ namespace Ordering.BackgroundTasks.Tasks
             foreach (var orderId in orderIds)
             {
                 var confirmGracePeriodEvent = new GracePeriodConfirmedIntegrationEvent(orderId);
+
+                _logger.LogInformation("----- Publishing integration event: {IntegrationEventId} from {AppShortName} - ({@IntegrationEvent})", confirmGracePeriodEvent.Id, Program.ShortAppName, confirmGracePeriodEvent);
 
                 _eventBus.Publish(confirmGracePeriodEvent);
             }
