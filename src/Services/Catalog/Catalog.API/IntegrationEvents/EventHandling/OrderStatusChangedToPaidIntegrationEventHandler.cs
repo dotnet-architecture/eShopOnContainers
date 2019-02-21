@@ -23,7 +23,7 @@
 
         public async Task Handle(OrderStatusChangedToPaidIntegrationEvent @event)
         {
-            using (LogContext.PushProperty("IntegrationEventIdContext", @event.Id))
+            using (LogContext.PushProperty("IntegrationEventContext", $"{@event.Id}-{Program.AppShortName}"))
             {
                 _logger.LogInformation("----- Handling integration event: {IntegrationEventId} at {AppShortName} - ({@IntegrationEvent})", @event.Id, Program.AppShortName, @event);
 
