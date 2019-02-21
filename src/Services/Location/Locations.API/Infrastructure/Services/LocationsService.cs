@@ -73,7 +73,7 @@
             var newUserLocations = MapUserLocationDetails(newLocations);
             var @event = new UserLocationUpdatedIntegrationEvent(userId, newUserLocations);
 
-            _logger.LogInformation("----- Publishing integration event: {IntegrationEventId} from {AppShortName} - ({@IntegrationEvent})", @event.Id, Program.ShortAppName, @event);
+            _logger.LogInformation("----- Publishing integration event: {IntegrationEventId} from {ShortAppName} - ({@IntegrationEvent})", @event.Id, Program.ShortAppName, @event);
 
             _eventBus.Publish(@event);
         }

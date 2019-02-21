@@ -28,9 +28,9 @@
 
         public async Task Handle(OrderPaymentFailedIntegrationEvent @event)
         {
-            using (LogContext.PushProperty("IntegrationEventContext", $"{@event.Id}-{Program.AppShortName}"))
+            using (LogContext.PushProperty("IntegrationEventContext", $"{@event.Id}-{Program.ShortAppName}"))
             {
-                _logger.LogInformation("----- Handling integration event: {IntegrationEventId} at {AppShortName} - ({@IntegrationEvent})", @event.Id, Program.AppShortName, @event);
+                _logger.LogInformation("----- Handling integration event: {IntegrationEventId} at {ShortAppName} - ({@IntegrationEvent})", @event.Id, Program.ShortAppName, @event);
 
                 var command = new CancelOrderCommand(@event.OrderId);
 

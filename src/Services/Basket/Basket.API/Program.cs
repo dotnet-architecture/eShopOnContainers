@@ -13,7 +13,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
     public class Program
     {
         public static readonly string AppName = typeof(Program).Namespace;
-        public static readonly string AppShortName = AppName.Substring(AppName.LastIndexOf('.', AppName.LastIndexOf('.') - 1) + 1);
+        public static readonly string ShortAppName = AppName.Substring(AppName.LastIndexOf('.', AppName.LastIndexOf('.') - 1) + 1);
 
         public static int Main(string[] args)
         {

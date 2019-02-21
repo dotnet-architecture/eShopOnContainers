@@ -39,7 +39,7 @@ namespace Catalog.API.IntegrationEvents
         {
             try
             {
-                _logger.LogInformation("----- Publishing integration event: {IntegrationEventId_published} from {AppShortName} - ({@IntegrationEvent})", evt.Id, Program.AppShortName, evt);
+                _logger.LogInformation("----- Publishing integration event: {IntegrationEventId_published} from {ShortAppName} - ({@IntegrationEvent})", evt.Id, Program.ShortAppName, evt);
 
                 await _eventLogService.MarkEventAsInProgressAsync(evt.Id);
                 _eventBus.Publish(evt);
@@ -47,7 +47,7 @@ namespace Catalog.API.IntegrationEvents
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "----- ERROR Publishing integration event: {IntegrationEventId} from {AppShortName} - ({@IntegrationEvent})", evt.Id, Program.AppShortName, evt);
+                _logger.LogError(ex, "----- ERROR Publishing integration event: {IntegrationEventId} from {ShortAppName} - ({@IntegrationEvent})", evt.Id, Program.ShortAppName, evt);
                 await _eventLogService.MarkEventAsFailedAsync(evt.Id);
             }
         }

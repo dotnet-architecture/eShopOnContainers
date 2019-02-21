@@ -80,13 +80,13 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
             // order creation process
             try
             {
-                _logger.LogInformation("----- Publishing integration event: {IntegrationEventId} from {AppShortName} - ({@IntegrationEvent})", eventMessage.Id, Program.AppShortName, eventMessage);
+                _logger.LogInformation("----- Publishing integration event: {IntegrationEventId} from {ShortAppName} - ({@IntegrationEvent})", eventMessage.Id, Program.ShortAppName, eventMessage);
 
                 _eventBus.Publish(eventMessage);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "----- ERROR Publishing integration event: {IntegrationEventId} from {AppShortName}", eventMessage.Id, Program.AppShortName);
+                _logger.LogError(ex, "----- ERROR Publishing integration event: {IntegrationEventId} from {ShortAppName}", eventMessage.Id, Program.ShortAppName);
 
                 throw;
             }
