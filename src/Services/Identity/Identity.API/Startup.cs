@@ -136,7 +136,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API
             var pathBase = Configuration["PATH_BASE"];
             if (!string.IsNullOrEmpty(pathBase))
             {
-                loggerFactory.CreateLogger("init").LogDebug($"Using PATH BASE '{pathBase}'");
+                loggerFactory.CreateLogger<Startup>().LogDebug("Using PATH BASE '{pathBase}'", pathBase);
                 app.UsePathBase(pathBase);
             }
 

@@ -51,7 +51,7 @@
                 {
                     retryForAvaiability++;
                     var log = loggerFactory.CreateLogger("catalog seed");
-                    log.LogError(ex.Message);
+                    log.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message);
                     await SeedAsync(applicationBuilder, loggerFactory, retryForAvaiability);
                 }
             }
