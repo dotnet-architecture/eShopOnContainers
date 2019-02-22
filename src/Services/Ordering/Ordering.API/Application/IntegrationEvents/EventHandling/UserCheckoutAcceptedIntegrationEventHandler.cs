@@ -67,13 +67,13 @@ namespace Ordering.API.Application.IntegrationEvents.EventHandling
                         }
                         else
                         {
-                            _logger.LogWarning("----- CreateOrderCommand failed - RequestId: {RequestId}", @event.RequestId);
+                            _logger.LogWarning("CreateOrderCommand failed - RequestId: {RequestId}", @event.RequestId);
                         }
                     }
                 }
                 else
                 {
-                    _logger.LogWarning("----- Invalid IntegrationEvent - RequestId is missing - {@IntegrationEvent}", @event);
+                    _logger.LogWarning("Invalid IntegrationEvent - RequestId is missing - {@IntegrationEvent}", @event);
                 }
             }
         }

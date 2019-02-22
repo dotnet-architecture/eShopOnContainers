@@ -55,7 +55,7 @@ namespace Ordering.API.Application.IntegrationEvents
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, "----- ERROR publishing integration event: {IntegrationEventId} from {ShortAppName}", logEvt.EventId, Program.ShortAppName);
+                    _logger.LogError(ex, "ERROR publishing integration event: {IntegrationEventId} from {ShortAppName}", logEvt.EventId, Program.ShortAppName);
 
                     await _eventLogService.MarkEventAsFailedAsync(logEvt.EventId);
                 }

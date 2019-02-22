@@ -60,7 +60,7 @@ namespace Ordering.API.Application.Behaviors
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "----- ERROR Handling transaction for {CommandName} ({@Command})", typeName, request);
+                _logger.LogError(ex, "ERROR Handling transaction for {CommandName} ({@Command})", typeName, request);
 
                 throw;
             }

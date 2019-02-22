@@ -47,7 +47,7 @@ namespace Catalog.API.IntegrationEvents
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "----- ERROR Publishing integration event: {IntegrationEventId} from {ShortAppName} - ({@IntegrationEvent})", evt.Id, Program.ShortAppName, evt);
+                _logger.LogError(ex, "ERROR Publishing integration event: {IntegrationEventId} from {ShortAppName} - ({@IntegrationEvent})", evt.Id, Program.ShortAppName, evt);
                 await _eventLogService.MarkEventAsFailedAsync(evt.Id);
             }
         }

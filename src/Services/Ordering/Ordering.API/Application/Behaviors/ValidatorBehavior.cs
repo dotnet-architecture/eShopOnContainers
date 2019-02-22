@@ -33,7 +33,7 @@ namespace Ordering.API.Application.Behaviors
 
             if (failures.Any())
             {
-                _logger.LogWarning("----- Validation errors - {CommandType} - Command: {@Command} - Errors: {@ValidationErrors}", typeName, request, failures);
+                _logger.LogWarning("Validation errors - {CommandType} - Command: {@Command} - Errors: {@ValidationErrors}", typeName, request, failures);
 
                 throw new OrderingDomainException(
                     $"Command Validation Errors for type {typeof(TRequest).Name}", new ValidationException("Validation exception", failures));

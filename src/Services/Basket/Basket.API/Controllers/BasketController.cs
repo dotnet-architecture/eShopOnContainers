@@ -86,7 +86,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "----- ERROR Publishing integration event: {IntegrationEventId} from {ShortAppName}", eventMessage.Id, Program.ShortAppName);
+                _logger.LogError(ex, "ERROR Publishing integration event: {IntegrationEventId} from {ShortAppName}", eventMessage.Id, Program.ShortAppName);
 
                 throw;
             }
