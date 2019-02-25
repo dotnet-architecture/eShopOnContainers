@@ -4,9 +4,8 @@ build:
   context: ..\..\..\..
   dockerfile: Dockerfile
 install:
-  chart: ../../../../k8s/helm/basket-api
+  chart: ../../../../k8s/helm/webshoppingagg
   set:
-    replicaCount: 1
     image:
       tag: $(tag)
       pullPolicy: Never
@@ -14,21 +13,20 @@ install:
       annotations:
         kubernetes.io/ingress.class: traefik-azds
       hosts:
-      # This expands to [space.s.]basketapi.<guid>.<region>.aksapp.io
-      - $(spacePrefix)basketapi$(hostSuffix)
+      # This expands to [space.s.]apigwms.<guid>.<region>.aksapp.io
+      - $(spacePrefix)webshoppingagg$(hostSuffix)
   values:
   - values.dev.yaml?
   - secrets.dev.yaml?
-  - inf.yaml
   - app.yaml
+  - inf.yaml
 configurations:
   develop:
     build:
       useGitIgnore: true
       dockerfile: Dockerfile.develop
-      args:
-        BUILD_CONFIGURATION: ${BUILD_CONFIGURATION:-Debug}
     container:
+      syncTarget: /src
       sync:
       - '**/Pages/**'
       - '**/Views/**'
@@ -41,7 +39,7 @@ configurations:
       - --no-build
       - --no-launch-profile
       - -c
-      - ${BUILD_CONFIGURATION:-Debug}
+      - ${Configuration:-Debug}
       iterate:
         processesToKill:
         - dotnet
@@ -51,4 +49,4 @@ configurations:
           - build
           - --no-restore
           - -c
-          - ${BUILD_CONFIGURATION:-Debug}
+          - ${Configuration:-Debug}

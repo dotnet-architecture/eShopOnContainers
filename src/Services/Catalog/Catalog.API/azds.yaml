@@ -1,41 +1,52 @@
 kind: helm-release
-apiVersion: 1.0
+apiVersion: 1.1
 build:
   context: ..\..\..\..
   dockerfile: Dockerfile
 install:
   chart: ../../../../k8s/helm/catalog-api
+  set:
+    image:
+      tag: $(tag)
+      pullPolicy: Never
+    ingress:
+      annotations:
+        kubernetes.io/ingress.class: traefik-azds
+      hosts:
+      # This expands to [space.s.]catalogapi.<guid>.<region>.aksapp.io
+      - $(spacePrefix)basketapi$(hostSuffix)
   values:
   - values.dev.yaml?
   - secrets.dev.yaml?
   - inf.yaml
   - app.yaml
-  set:
-    image:
-      tag: $(tag)
-      pullPolicy: Never
-    inf:
-      k8s:
-        dns: "$(spacePrefix)basketapi$(hostSuffix)"
-    disableProbes: true
-    ingress:
-      hosts:
-      # This expands to [space.s.]catalogapi.<guid>.<region>.aksapp.io
-      - $(spacePrefix)basketapi$(hostSuffix)
 configurations:
   develop:
     build:
-      dockerfile: Dockerfile.develop
       useGitIgnore: true
+      dockerfile: Dockerfile.develop
     container:
       syncTarget: /src
       sync:
-      - "**/Pages/**"
-      - "**/Views/**"
-      - "**/wwwroot/**"
-      - "!**/*.{sln,csproj}"
-      command:  [dotnet, run, --no-restore, --no-build, --no-launch-profile, -c, "${Configuration:-Debug}"]
+      - '**/Pages/**'
+      - '**/Views/**'
+      - '**/wwwroot/**'
+      - '!**/*.{sln,csproj}'
+      command:
+      - dotnet
+      - run
+      - --no-restore
+      - --no-build
+      - --no-launch-profile
+      - -c
+      - ${Configuration:-Debug}
       iterate:
-        processesToKill: [dotnet, vsdbg]
+        processesToKill:
+        - dotnet
+        - vsdbg
         buildCommands:
-        - [dotnet, build, --no-restore, -c, "${Configuration:-Debug}"]
+        - - dotnet
+          - build
+          - --no-restore
+          - -c
+          - ${Configuration:-Debug}

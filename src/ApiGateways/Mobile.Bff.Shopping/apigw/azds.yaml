@@ -1,10 +1,10 @@
 kind: helm-release
 apiVersion: 1.1
 build:
-  context: ..\..\..\..
-  dockerfile: Dockerfile
+  context: ..\..\..\..\
+  dockerfile: ..\..\..\..\ApiGateways\ApiGw-Base\Dockerfile
 install:
-  chart: ../../../../k8s/helm/basket-api
+  chart: ../../../../k8s/helm/apigwms
   set:
     replicaCount: 1
     image:
@@ -14,8 +14,8 @@ install:
       annotations:
         kubernetes.io/ingress.class: traefik-azds
       hosts:
-      # This expands to [space.s.]basketapi.<guid>.<region>.aksapp.io
-      - $(spacePrefix)basketapi$(hostSuffix)
+      # This expands to [space.s.]webmvc.<guid>.<region>.aksapp.io
+      - $(spacePrefix)apigwms$(hostSuffix)
   values:
   - values.dev.yaml?
   - secrets.dev.yaml?
@@ -25,7 +25,7 @@ configurations:
   develop:
     build:
       useGitIgnore: true
-      dockerfile: Dockerfile.develop
+      dockerfile: ..\..\..\ApiGateways\ApiGw-Base\Dockerfile.develop
       args:
         BUILD_CONFIGURATION: ${BUILD_CONFIGURATION:-Debug}
     container:
@@ -34,21 +34,8 @@ configurations:
       - '**/Views/**'
       - '**/wwwroot/**'
       - '!**/*.{sln,csproj}'
-      command:
-      - dotnet
-      - run
-      - --no-restore
-      - --no-build
-      - --no-launch-profile
-      - -c
-      - ${BUILD_CONFIGURATION:-Debug}
+      command: [dotnet, run, --no-restore, --no-build, --no-launch-profile, -c, "${BUILD_CONFIGURATION:-Debug}"]
       iterate:
-        processesToKill:
-        - dotnet
-        - vsdbg
+        processesToKill: [dotnet, vsdbg]
         buildCommands:
-        - - dotnet
-          - build
-          - --no-restore
-          - -c
-          - ${BUILD_CONFIGURATION:-Debug}
+        - [dotnet, build, --no-restore, -c, "${BUILD_CONFIGURATION:-Debug}"]
