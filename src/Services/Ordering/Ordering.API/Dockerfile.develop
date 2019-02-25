@@ -1,4 +1,4 @@
-FROM microsoft/dotnet:2.2.100-sdk
+FROM microsoft/dotnet:2.2-sdk
 ARG BUILD_CONFIGURATION=Debug
 ENV ASPNETCORE_ENVIRONMENT=Development
 ENV DOTNET_USE_POLLING_FILE_WATCHER=true
@@ -9,9 +9,6 @@ COPY ["src/BuildingBlocks/EventBus/EventBus/EventBus.csproj", "src/BuildingBlock
 COPY ["src/BuildingBlocks/EventBus/EventBusRabbitMQ/EventBusRabbitMQ.csproj", "src/BuildingBlocks/EventBus/EventBusRabbitMQ/"]
 COPY ["src/BuildingBlocks/EventBus/EventBusServiceBus/EventBusServiceBus.csproj", "src/BuildingBlocks/EventBus/EventBusServiceBus/"]
 COPY ["src/BuildingBlocks/EventBus/IntegrationEventLogEF/IntegrationEventLogEF.csproj", "src/BuildingBlocks/EventBus/IntegrationEventLogEF/"]
-COPY ["src/BuildingBlocks/HealthChecks/src/Microsoft.AspNetCore.HealthChecks/Microsoft.AspNetCore.HealthChecks.csproj", "src/BuildingBlocks/HealthChecks/src/Microsoft.AspNetCore.HealthChecks/"]
-COPY ["src/BuildingBlocks/HealthChecks/src/Microsoft.Extensions.HealthChecks.SqlServer/Microsoft.Extensions.HealthChecks.SqlServer.csproj", "src/BuildingBlocks/HealthChecks/src/Microsoft.Extensions.HealthChecks.SqlServer/"]
-COPY ["src/BuildingBlocks/HealthChecks/src/Microsoft.Extensions.HealthChecks/Microsoft.Extensions.HealthChecks.csproj", "src/BuildingBlocks/HealthChecks/src/Microsoft.Extensions.HealthChecks/"]
 COPY ["src/BuildingBlocks/WebHostCustomization/WebHost.Customization/WebHost.Customization.csproj", "src/BuildingBlocks/WebHostCustomization/WebHost.Customization/"]
 COPY ["src/Services/Ordering/Ordering.Domain/Ordering.Domain.csproj", "src/Services/Ordering/Ordering.Domain/"]
 COPY ["src/Services/Ordering/Ordering.Infrastructure/Ordering.Infrastructure.csproj", "src/Services/Ordering/Ordering.Infrastructure/"]
@@ -22,4 +19,4 @@ COPY . .
 WORKDIR /src/src/Services/Ordering/Ordering.API
 RUN dotnet build --no-restore -c $BUILD_CONFIGURATION
 
-CMD ["dotnet", "run", "--no-restore", "--no-build", "--no-launch-profile"]
+ENTRYPOINT ["dotnet", "run", "--no-build", "--no-launch-profile", "-c", "$BUILD_CONFIGURATION", "--"]
