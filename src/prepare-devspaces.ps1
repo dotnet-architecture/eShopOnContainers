@@ -33,6 +33,10 @@ Write-Host "Copying app.yaml and inf.yaml to Catalog API" -ForegroundColor Yello
 Copy-Item "..\k8s\helm\app.yaml" -Destination ".\Services\Catalog\Catalog.API" -Force
 Copy-Item "..\k8s\helm\inf.yaml" -Destination ".\Services\Catalog\Catalog.API" -Force
 
+Write-Host "Copying app.yaml and inf.yaml to Identity API" -ForegroundColor Yellow
+Copy-Item "..\k8s\helm\app.yaml" -Destination ".\Services\Identity\Identity.API" -Force
+Copy-Item "..\k8s\helm\inf.yaml" -Destination ".\Services\Identity\Identity.API" -Force
+
 Write-Host "Copying app.yaml and inf.yaml to WebMVC" -ForegroundColor Yellow
 Copy-Item "..\k8s\helm\app.yaml" -Destination ".\Web\WebMVC" -Force
 Copy-Item "..\k8s\helm\inf.yaml" -Destination ".\Web\WebMVC" -Force
