@@ -53,6 +53,10 @@ Write-Host "Copying app.yaml and inf.yaml to Payment API" -ForegroundColor Yello
 Copy-Item "..\k8s\helm\app.yaml" -Destination ".\Services\Payment\Payment.API" -Force
 Copy-Item "..\k8s\helm\inf.yaml" -Destination ".\Services\Payment\Payment.API" -Force
 
+Write-Host "Copying app.yaml and inf.yaml to Webhooks API" -ForegroundColor Yellow
+Copy-Item "..\k8s\helm\app.yaml" -Destination ".\Services\Webhooks\Webhooks.API" -Force
+Copy-Item "..\k8s\helm\inf.yaml" -Destination ".\Services\Webhooks\Webhooks.API" -Force
+
 Write-Host "Copying app.yaml and inf.yaml to WebMVC" -ForegroundColor Yellow
 Copy-Item "..\k8s\helm\app.yaml" -Destination ".\Web\WebMVC" -Force
 Copy-Item "..\k8s\helm\inf.yaml" -Destination ".\Web\WebMVC" -Force
