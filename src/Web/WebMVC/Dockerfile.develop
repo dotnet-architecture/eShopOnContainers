@@ -6,6 +6,7 @@ EXPOSE 80
 
 WORKDIR /src
 COPY ["src/Web/WebMVC/WebMVC.csproj", "src/Web/WebMVC/"]
+COPY ["src/BuildingBlocks/Devspaces.Support/Devspaces.Support.csproj", "src/BuildingBlocks/Devspaces.Support/"]
 RUN dotnet restore "src/Web/WebMVC/WebMVC.csproj"
 COPY . .
 WORKDIR "/src/src/Web/WebMVC"
