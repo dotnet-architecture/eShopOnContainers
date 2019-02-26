@@ -24,17 +24,17 @@ namespace Ordering.SignalrHub
 
             try
             {
-                Log.Information("Configuring web host ({Application})...", AppName);
+                Log.Information("Configuring web host ({ApplicationContext})...", AppName);
                 var host = BuildWebHost(configuration, args);
 
-                Log.Information("Starting web host ({Application})...", AppName);
+                Log.Information("Starting web host ({ApplicationContext})...", AppName);
                 host.Run();
 
                 return 0;
             }
             catch (Exception ex)
             {
-                Log.Fatal(ex, "Program terminated unexpectedly ({Application})!", AppName);
+                Log.Fatal(ex, "Program terminated unexpectedly ({ApplicationContext})!", AppName);
                 return 1;
             }
             finally
