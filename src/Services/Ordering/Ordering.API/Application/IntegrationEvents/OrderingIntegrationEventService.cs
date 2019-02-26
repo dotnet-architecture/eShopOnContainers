@@ -45,7 +45,7 @@ namespace Ordering.API.Application.IntegrationEvents
 
             foreach (var logEvt in pendindLogEvents)
             {
-                _logger.LogInformation("----- Publishing integration event: {IntegrationEventId} from {ShortAppName} - ({@IntegrationEvent})", logEvt.EventId, Program.ShortAppName, logEvt.IntegrationEvent);
+                _logger.LogInformation("----- Publishing integration event: {IntegrationEventId} from {AppName} - ({@IntegrationEvent})", logEvt.EventId, Program.AppName, logEvt.IntegrationEvent);
 
                 try
                 {
@@ -55,7 +55,7 @@ namespace Ordering.API.Application.IntegrationEvents
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, "ERROR publishing integration event: {IntegrationEventId} from {ShortAppName}", logEvt.EventId, Program.ShortAppName);
+                    _logger.LogError(ex, "ERROR publishing integration event: {IntegrationEventId} from {AppName}", logEvt.EventId, Program.AppName);
 
                     await _eventLogService.MarkEventAsFailedAsync(logEvt.EventId);
                 }

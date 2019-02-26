@@ -27,9 +27,9 @@
 
         public async Task Handle(OrderStatusChangedToStockConfirmedIntegrationEvent @event)
         {
-            using (LogContext.PushProperty("IntegrationEventContext", $"{@event.Id}-{Program.ShortAppName}"))
+            using (LogContext.PushProperty("IntegrationEventContext", $"{@event.Id}-{Program.AppName}"))
             {
-                _logger.LogInformation("----- Handling integration event: {IntegrationEventId} at {ShortAppName} - ({@IntegrationEvent})", @event.Id, Program.ShortAppName, @event);
+                _logger.LogInformation("----- Handling integration event: {IntegrationEventId} at {AppName} - ({@IntegrationEvent})", @event.Id, Program.AppName, @event);
 
                 IntegrationEvent orderPaymentIntegrationEvent;
 
@@ -48,7 +48,7 @@
                     orderPaymentIntegrationEvent = new OrderPaymentFailedIntegrationEvent(@event.OrderId);
                 }
 
-                _logger.LogInformation("----- Publishing integration event: {IntegrationEventId} from {ShortAppName} - ({@IntegrationEvent})", orderPaymentIntegrationEvent.Id, Program.ShortAppName, orderPaymentIntegrationEvent);
+                _logger.LogInformation("----- Publishing integration event: {IntegrationEventId} from {AppName} - ({@IntegrationEvent})", orderPaymentIntegrationEvent.Id, Program.AppName, orderPaymentIntegrationEvent);
 
                 _eventBus.Publish(orderPaymentIntegrationEvent);
 

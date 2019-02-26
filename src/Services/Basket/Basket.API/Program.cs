@@ -12,8 +12,8 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
 {
     public class Program
     {
-        public static readonly string AppName = typeof(Program).Namespace;
-        public static readonly string ShortAppName = AppName.Substring(AppName.LastIndexOf('.', AppName.LastIndexOf('.') - 1) + 1);
+        public static readonly string Namespace = typeof(Program).Namespace;
+        public static readonly string AppName = Namespace.Substring(Namespace.LastIndexOf('.', Namespace.LastIndexOf('.') - 1) + 1);
 
         public static int Main(string[] args)
         {
@@ -60,7 +60,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
 
             return new LoggerConfiguration()
                 .MinimumLevel.Verbose()
-                .Enrich.WithProperty("Application", AppName)
+                .Enrich.WithProperty("ApplicationContext", AppName)
                 .Enrich.FromLogContext()
                 .WriteTo.Console()
                 .WriteTo.Seq(string.IsNullOrWhiteSpace(seqServerUrl) ? "http://seq" : seqServerUrl)
