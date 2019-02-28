@@ -1,0 +1,19 @@
+﻿@page
+@model WebhookClient.Pages.RegisterWebhookModel
+@{
+    ViewData["Title"] = "RegisterWebhook";
+}
+
+<h3>Register webhook</h3>
+
+<p>This page registers the "OrderPaid" Webhook by sending a POST to webhooks.</p>
+
+<form method="post">
+    <p>Token: <input type="text" asp-for="Token" /></p>
+    <input type="submit" value="send" />
+</form>
+
+@if (Model.ResponseCode != (int)System.Net.HttpStatusCode.OK)
+{
+    <p>Error @Model.ResponseCode (@Model.ResponseMessage) when calling the Webhooks API (@Model.RequestUrl) with GrantUrl: @Model.GrantUrl):(</p>
+}
