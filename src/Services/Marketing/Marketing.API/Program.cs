@@ -55,6 +55,7 @@
                     builder.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
                     builder.AddConsole();
                     builder.AddDebug();
+                    builder.AddAzureWebAppDiagnostics();
                 })
                 .UseApplicationInsights()
                 .UseSerilog((builderContext, config) =>
