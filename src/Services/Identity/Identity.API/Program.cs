@@ -69,7 +69,6 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API
                 .UseStartup<Startup>()
                 .UseApplicationInsights()
                 .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseWebRoot("Pics")
                 .UseConfiguration(configuration)
                 .UseSerilog()
                 .Build();
