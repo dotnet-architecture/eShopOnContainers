@@ -91,7 +91,6 @@ namespace Payment.API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            loggerFactory.AddAzureWebAppDiagnostics();
             loggerFactory.AddApplicationInsights(app.ApplicationServices, LogLevel.Trace);
 
             var pathBase = Configuration["PATH_BASE"];
@@ -123,7 +122,7 @@ namespace Payment.API
             if (orchestratorType?.ToUpper() == "K8S")
             {
                 // Enable K8s telemetry initializer
-                services.EnableKubernetes();
+                services.AddApplicationInsightsKubernetesEnricher();
             }
             if (orchestratorType?.ToUpper() == "SF")
             {

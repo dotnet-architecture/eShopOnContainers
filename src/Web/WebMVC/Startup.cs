@@ -52,7 +52,6 @@ namespace Microsoft.eShopOnContainers.WebMVC
         {
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
-            loggerFactory.AddAzureWebAppDiagnostics();
             loggerFactory.AddApplicationInsights(app.ApplicationServices, LogLevel.Trace);
 
             app.UseHealthChecks("/hc", new HealthCheckOptions()
@@ -122,7 +121,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
             if (orchestratorType?.ToUpper() == "K8S")
             {
                 // Enable K8s telemetry initializer
-                services.EnableKubernetes();
+                services.AddApplicationInsightsKubernetesEnricher();
             }
 
             if (orchestratorType?.ToUpper() == "SF")

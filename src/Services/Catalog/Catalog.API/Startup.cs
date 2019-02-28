@@ -60,11 +60,10 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
 
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
         {
             //Configure logs
 
-            loggerFactory.AddAzureWebAppDiagnostics();
             loggerFactory.AddApplicationInsights(app.ApplicationServices, LogLevel.Trace);
 
             var pathBase = Configuration["PATH_BASE"];
@@ -117,7 +116,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
             if (orchestratorType?.ToUpper() == "K8S")
             {
                 // Enable K8s telemetry initializer
-                services.EnableKubernetes();
+                services.AddApplicationInsightsKubernetesEnricher();
             }
             if (orchestratorType?.ToUpper() == "SF")
             {
