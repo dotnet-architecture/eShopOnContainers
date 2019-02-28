@@ -26,7 +26,7 @@ bld/
 # Visual Studio 2015 cache/options directory
 .vs/
 
-# Files created by bundling and minification on startup
+# .js files created on build:
 src/Web/WebMVC/wwwroot/js/site*
 
 # Uncomment if you have tasks that create the project's static files in wwwroot

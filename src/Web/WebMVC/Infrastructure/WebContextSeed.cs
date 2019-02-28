@@ -15,7 +15,7 @@ namespace WebMVC.Infrastructure
     {
         public static void Seed(IApplicationBuilder applicationBuilder, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            var log = loggerFactory.CreateLogger("WebMVC seed");
+            var log = loggerFactory.CreateLogger<WebContextSeed>();
 
             var settings = (AppSettings)applicationBuilder
                 .ApplicationServices.GetRequiredService<IOptions<AppSettings>>().Value;
@@ -39,7 +39,7 @@ namespace WebMVC.Infrastructure
                 string overrideCssFile = Path.Combine(contentRootPath, "Setup", "override.css");
                 if (!File.Exists(overrideCssFile))
                 {
-                    log.LogError($" override css file '{overrideCssFile}' does not exists.");
+                    log.LogError("Override css file '{FileName}' does not exists.", overrideCssFile);
                     return;
                 }
 
@@ -48,7 +48,7 @@ namespace WebMVC.Infrastructure
             }
             catch (Exception ex)
             {
-                log.LogError($"Exception in method GetPreconfiguredCSS WebMVC. Exception Message={ex.Message}");
+                log.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message);
             }
         }
 
@@ -59,7 +59,7 @@ namespace WebMVC.Infrastructure
                 string imagesZipFile = Path.Combine(contentRootPath, "Setup", "images.zip");
                 if (!File.Exists(imagesZipFile))
                 {
-                    log.LogError($" zip file '{imagesZipFile}' does not exists.");
+                    log.LogError("Zip file '{ZipFileName}' does not exists.", imagesZipFile);
                     return;
                 }
 
@@ -81,14 +81,14 @@ namespace WebMVC.Infrastructure
                         }
                         else
                         {
-                            log.LogWarning($"Skip file '{entry.Name}' in zipfile '{imagesZipFile}'");
+                            log.LogWarning("Skipped file '{FileName}' in zipfile '{ZipFileName}'", entry.Name, imagesZipFile);
                         }
                     }
                 }
             }
             catch ( Exception ex )
             {
-                log.LogError($"Exception in method GetPreconfiguredImages WebMVC. Exception Message={ex.Message}");
+                log.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message);
             }
         }
 

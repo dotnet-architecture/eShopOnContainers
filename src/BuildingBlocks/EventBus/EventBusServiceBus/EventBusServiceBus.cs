@@ -83,7 +83,7 @@
                 }
                 catch (ServiceBusException)
                 {
-                    _logger.LogInformation($"The messaging entity {eventName} already exists.");
+                    _logger.LogWarning("The messaging entity {eventName} already exists.", eventName);
                 }
             }
 
@@ -105,7 +105,7 @@
             }
             catch (MessagingEntityNotFoundException)
             {
-                _logger.LogInformation($"The messaging entity {eventName} Could not be found.");
+                _logger.LogWarning("The messaging entity {eventName} Could not be found.", eventName);
             }
 
             _subsManager.RemoveSubscription<T, TH>();
@@ -194,7 +194,7 @@
             }
             catch (MessagingEntityNotFoundException)
             {
-                _logger.LogInformation($"The messaging entity { RuleDescription.DefaultRuleName } Could not be found.");
+                _logger.LogWarning("The messaging entity {DefaultRuleName} Could not be found.", RuleDescription.DefaultRuleName);
             }
         }
     }
