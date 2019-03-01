@@ -20,7 +20,7 @@ using Microsoft.Extensions.Logging;
 namespace Microsoft.eShopOnContainers.Services.Identity.API.Controllers
 {
     /// <summary>
-    /// This sample controller implements a typical login/logout/provision workflow for local and external accounts.
+    /// This sample controller implements a typical login/logout/provision workflow for local accounts.
     /// The login service encapsulates the interactions with the user data store. This data store is in-memory only and cannot be used for production!
     /// The interaction service provides a way for the UI to communicate with identityserver for validation and context retrieval
     /// </summary>
@@ -58,8 +58,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Controllers
             var context = await _interaction.GetAuthorizationContextAsync(returnUrl);
             if (context?.IdP != null)
             {
-                // if IdP is passed, then bypass showing the login screen
-                return ExternalLogin(context.IdP, returnUrl);
+                throw new NotImplementedException("External login is not implemented!");
             }
 
             var vm = await BuildLoginViewModelAsync(returnUrl, context);
@@ -209,7 +208,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Controllers
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogCritical(ex.Message);
+                    _logger.LogError(ex, "LOGOUT ERROR: {ExceptionMessage}", ex.Message);
                 }
             }
 
@@ -237,28 +236,6 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Controllers
 
             return Redirect(redirectUrl);
         }
-
-        /// <summary>
-        /// initiate roundtrip to external authentication provider
-        /// </summary>
-        [HttpGet]
-        public IActionResult ExternalLogin(string provider, string returnUrl)
-        {
-            if (returnUrl != null)
-            {
-                returnUrl = UrlEncoder.Default.Encode(returnUrl);
-            }
-            returnUrl = "/account/externallogincallback?returnUrl=" + returnUrl;
-
-            // start challenge and roundtrip the return URL
-            var props = new AuthenticationProperties
-            {
-                RedirectUri = returnUrl,
-                Items = { { "scheme", provider } }
-            };
-            return new ChallengeResult(provider, props);
-        }
-
 
         // GET: /Account/Register
         [HttpGet]
