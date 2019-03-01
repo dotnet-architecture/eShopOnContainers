@@ -16,7 +16,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
         public async Task<IActionResult> SignIn(string returnUrl)
         {
             var user = User as ClaimsPrincipal;
-            
+
             var token = await HttpContext.GetTokenAsync("access_token");
 
             if (token != null)
@@ -33,11 +33,11 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             await HttpContext.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
-            
+
             // "Catalog" because UrlHelper doesn't support nameof() for controllers
             // https://github.com/aspnet/Mvc/issues/5853
             var homeUrl = Url.Action(nameof(CatalogController.Index), "Catalog");
-            return new SignOutResult(OpenIdConnectDefaults.AuthenticationScheme, 
+            return new SignOutResult(OpenIdConnectDefaults.AuthenticationScheme,
                 new AspNetCore.Authentication.AuthenticationProperties { RedirectUri = homeUrl });
         }
     }
