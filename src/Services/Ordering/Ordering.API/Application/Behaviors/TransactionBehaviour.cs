@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Extensions;
 using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure;
 using Microsoft.Extensions.Logging;
 using Ordering.API.Application.IntegrationEvents;

@@ -1,13 +1,14 @@
-﻿using System;
-using MediatR;
+﻿using MediatR;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
-using System.Threading.Tasks;
+using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Extensions;
 using Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands;
+using Microsoft.eShopOnContainers.Services.Ordering.API;
 using Microsoft.Extensions.Logging;
+using Ordering.API.Application.Behaviors;
 using Ordering.API.Application.IntegrationEvents.Events;
 using Serilog.Context;
-using Microsoft.eShopOnContainers.Services.Ordering.API;
-using Ordering.API.Application.Behaviors;
+using System.Threading.Tasks;
+using System;
 
 namespace Ordering.API.Application.IntegrationEvents.EventHandling
 {

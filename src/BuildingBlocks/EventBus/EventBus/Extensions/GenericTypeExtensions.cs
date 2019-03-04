@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Ordering.API.Application.Behaviors
+namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Extensions
 {
-    internal static class BehaviorsHelperExtensions
+    public static class GenericTypeExtensions
     {
-        internal static string GetGenericTypeName(this object @object)
+        public static string GetGenericTypeName(this Type type)
         {
             var typeName = string.Empty;
-            var type = @object.GetType();
 
             if (type.IsGenericType)
             {
@@ -25,5 +24,9 @@ namespace Ordering.API.Application.Behaviors
             return typeName;
         }
 
+        public static string GetGenericTypeName(this object @object)
+        {
+            return @object.GetType().GetGenericTypeName();
+        }
     }
 }
