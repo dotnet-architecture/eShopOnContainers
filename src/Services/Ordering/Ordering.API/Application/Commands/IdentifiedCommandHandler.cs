@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Extensions;
 using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Idempotency;
 using Microsoft.Extensions.Logging;
 using Ordering.API.Application.Behaviors;
