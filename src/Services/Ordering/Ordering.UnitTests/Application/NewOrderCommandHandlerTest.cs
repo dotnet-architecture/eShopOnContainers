@@ -10,8 +10,10 @@ using System.Threading.Tasks;
 
 namespace UnitTest.Ordering.Application
 {
+    using global::Ordering.API.Application.IntegrationEvents;
     using global::Ordering.API.Application.Models;
     using MediatR;
+    using Microsoft.Extensions.Logging;
     using System.Collections;
     using System.Collections.Generic;
     using Xunit;
@@ -22,12 +24,14 @@ namespace UnitTest.Ordering.Application
         private readonly Mock<IOrderRepository> _orderRepositoryMock;
         private readonly Mock<IIdentityService> _identityServiceMock;
         private readonly Mock<IMediator> _mediator;
+        private readonly Mock<IOrderingIntegrationEventService> _orderingIntegrationEventService;
 
         public NewOrderRequestHandlerTest()
         {
 
             _orderRepositoryMock = new Mock<IOrderRepository>();
             _identityServiceMock = new Mock<IIdentityService>();
+            _orderingIntegrationEventService = new Mock<IOrderingIntegrationEventService>();
             _mediator = new Mock<IMediator>();
         }
 
@@ -47,8 +51,9 @@ namespace UnitTest.Ordering.Application
 
             _identityServiceMock.Setup(svc => svc.GetUserIdentity()).Returns(buyerId);
 
+            var LoggerMock = new Mock<ILogger<CreateOrderCommandHandler>>();
             //Act
-            var handler = new CreateOrderCommandHandler(_mediator.Object, _orderRepositoryMock.Object, _identityServiceMock.Object);
+            var handler = new CreateOrderCommandHandler(_mediator.Object, _orderingIntegrationEventService.Object, _orderRepositoryMock.Object, _identityServiceMock.Object, LoggerMock.Object);
             var cltToken = new System.Threading.CancellationToken();
             var result = await handler.Handle(fakeOrderCmd, cltToken);
 

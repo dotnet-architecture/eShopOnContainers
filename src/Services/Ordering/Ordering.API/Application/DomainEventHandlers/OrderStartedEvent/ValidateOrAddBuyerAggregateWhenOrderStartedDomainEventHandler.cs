@@ -59,9 +59,11 @@ namespace Ordering.API.Application.DomainEventHandlers.OrderStartedEvent
                 .SaveEntitiesAsync();
 
             var orderStatusChangedTosubmittedIntegrationEvent = new OrderStatusChangedToSubmittedIntegrationEvent(orderStartedEvent.Order.Id, orderStartedEvent.Order.OrderStatus.Name, buyer.Name);
-            await _orderingIntegrationEventService.PublishThroughEventBusAsync(orderStatusChangedTosubmittedIntegrationEvent);
+            await _orderingIntegrationEventService.AddAndSaveEventAsync(orderStatusChangedTosubmittedIntegrationEvent);
 
-            _logger.CreateLogger(nameof(ValidateOrAddBuyerAggregateWhenOrderStartedDomainEventHandler)).LogTrace($"Buyer {buyerUpdated.Id} and related payment method were validated or updated for orderId: {orderStartedEvent.Order.Id}.");
+            _logger.CreateLogger<ValidateOrAddBuyerAggregateWhenOrderStartedDomainEventHandler>()
+                .LogTrace("Buyer {BuyerId} and related payment method were validated or updated for orderId: {OrderId}.",
+                    buyerUpdated.Id, orderStartedEvent.Order.Id);
         }
     }
 }

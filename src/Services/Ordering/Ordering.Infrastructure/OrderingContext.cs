@@ -1,12 +1,14 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.BuyerAggregate;
 using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
 using Microsoft.eShopOnContainers.Services.Ordering.Domain.Seedwork;
 using Ordering.Infrastructure;
 using Ordering.Infrastructure.EntityConfigurations;
 using System;
+using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -23,8 +25,13 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
         public DbSet<OrderStatus> OrderStatus { get; set; }
 
         private readonly IMediator _mediator;
+        private IDbContextTransaction _currentTransaction;
 
-        private OrderingContext(DbContextOptions<OrderingContext> options) : base (options) { }
+        private OrderingContext(DbContextOptions<OrderingContext> options) : base(options) { }
+
+        public IDbContextTransaction GetCurrentTransaction => _currentTransaction;
+
+        public bool HasActiveTransaction => _currentTransaction != null;
 
         public OrderingContext(DbContextOptions<OrderingContext> options, IMediator mediator) : base(options)
         {
@@ -42,7 +49,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
             modelBuilder.ApplyConfiguration(new OrderItemEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new CardTypeEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new OrderStatusEntityTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new BuyerEntityTypeConfiguration()); 
+            modelBuilder.ApplyConfiguration(new BuyerEntityTypeConfiguration());
         }
 
         public async Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken = default(CancellationToken))
@@ -60,7 +67,57 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
             var result = await base.SaveChangesAsync();
 
             return true;
-        }        
+        }
+
+        public async Task<IDbContextTransaction> BeginTransactionAsync()
+        {
+            if (_currentTransaction != null) return null;
+
+            _currentTransaction = await Database.BeginTransactionAsync(IsolationLevel.ReadCommitted);
+
+            return _currentTransaction;
+        }
+
+        public async Task CommitTransactionAsync(IDbContextTransaction transaction)
+        {
+            if (transaction == null) throw new ArgumentNullException(nameof(transaction));
+            if (transaction != _currentTransaction) throw new InvalidOperationException($"Transaction {transaction.TransactionId} is not current");
+
+            try
+            {
+                await SaveChangesAsync();
+                transaction.Commit();
+            }
+            catch
+            {
+                RollbackTransaction();
+                throw;
+            }
+            finally
+            {
+                if (_currentTransaction != null)
+                {
+                    _currentTransaction.Dispose();
+                    _currentTransaction = null;
+                }
+            }
+        }
+
+        public void RollbackTransaction()
+        {
+            try
+            {
+                _currentTransaction?.Rollback();
+            }
+            finally
+            {
+                if (_currentTransaction != null)
+                {
+                    _currentTransaction.Dispose();
+                    _currentTransaction = null;
+                }
+            }
+        }
     }
 
     public class OrderingContextDesignFactory : IDesignTimeDbContextFactory<OrderingContext>
@@ -70,7 +127,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
             var optionsBuilder = new DbContextOptionsBuilder<OrderingContext>()
                 .UseSqlServer("Server=.;Initial Catalog=Microsoft.eShopOnContainers.Services.OrderingDb;Integrated Security=true");
 
-            return new OrderingContext(optionsBuilder.Options,new NoMediator());
+            return new OrderingContext(optionsBuilder.Options, new NoMediator());
         }
 
         class NoMediator : IMediator

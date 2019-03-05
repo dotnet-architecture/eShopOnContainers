@@ -1,30 +1,49 @@
 ﻿namespace Ordering.API.Application.IntegrationEvents.EventHandling
 {
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
+    using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Extensions;
     using System.Threading.Tasks;
     using Events;
     using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
+    using MediatR;
+    using System;
+    using Ordering.API.Application.Commands;
+    using Microsoft.Extensions.Logging;
+    using Serilog.Context;
+    using Microsoft.eShopOnContainers.Services.Ordering.API;
+    using Ordering.API.Application.Behaviors;
 
-    public class OrderStockConfirmedIntegrationEventHandler : 
+    public class OrderStockConfirmedIntegrationEventHandler :
         IIntegrationEventHandler<OrderStockConfirmedIntegrationEvent>
     {
-        private readonly IOrderRepository _orderRepository;
+        private readonly IMediator _mediator;
+        private readonly ILogger<OrderStockConfirmedIntegrationEventHandler> _logger;
 
-        public OrderStockConfirmedIntegrationEventHandler(IOrderRepository orderRepository)
+        public OrderStockConfirmedIntegrationEventHandler(
+            IMediator mediator,
+            ILogger<OrderStockConfirmedIntegrationEventHandler> logger)
         {
-            _orderRepository = orderRepository;
+            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public async Task Handle(OrderStockConfirmedIntegrationEvent @event)
         {
-            // Simulate a work time for confirming the stock
-            await Task.Delay(10000);
+            using (LogContext.PushProperty("IntegrationEventContext", $"{@event.Id}-{Program.AppName}"))
+            {
+                _logger.LogInformation("----- Handling integration event: {IntegrationEventId} at {AppName} - ({@IntegrationEvent})", @event.Id, Program.AppName, @event);
 
-            var orderToUpdate = await _orderRepository.GetAsync(@event.OrderId);
+                var command = new SetStockConfirmedOrderStatusCommand(@event.OrderId);
 
-            orderToUpdate.SetStockConfirmedStatus();
+                _logger.LogInformation(
+                    "----- Sending command: {CommandName} - {IdProperty}: {CommandId} ({@Command})",
+                    command.GetGenericTypeName(),
+                    nameof(command.OrderNumber),
+                    command.OrderNumber,
+                    command);
 
-            await _orderRepository.UnitOfWork.SaveEntitiesAsync();
+                await _mediator.Send(command);
+            }
         }
     }
 }

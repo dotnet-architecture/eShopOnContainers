@@ -74,7 +74,7 @@
             }
             catch (Exception ex)
             {
-                log.LogError(ex.Message);
+                log.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message);
                 return GetPredefinedCardTypes();
             }
 
@@ -82,7 +82,7 @@
             return File.ReadAllLines(csvFileCardTypes)
                                         .Skip(1) // skip header column
                                         .SelectTry(x => CreateCardType(x, ref id))
-                                        .OnCaughtException(ex => { log.LogError(ex.Message); return null; })
+                                        .OnCaughtException(ex => { log.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message); return null; })
                                         .Where(x => x != null);
         }
 
@@ -118,7 +118,7 @@
             }
             catch (Exception ex)
             {
-                log.LogError(ex.Message);
+                log.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message);
                 return GetPredefinedOrderStatus();
             }
 
@@ -126,7 +126,7 @@
             return File.ReadAllLines(csvFileOrderStatus)
                                         .Skip(1) // skip header row
                                         .SelectTry(x => CreateOrderStatus(x, ref id))
-                                        .OnCaughtException(ex => { log.LogError(ex.Message); return null; })
+                                        .OnCaughtException(ex => { log.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message); return null; })
                                         .Where(x => x != null);
         }
 
@@ -182,7 +182,7 @@
                     sleepDurationProvider: retry => TimeSpan.FromSeconds(5),
                     onRetry: (exception, timeSpan, retry, ctx) =>
                     {
-                        logger.LogTrace($"[{prefix}] Exception {exception.GetType().Name} with message ${exception.Message} detected on attempt {retry} of {retries}");
+                        logger.LogWarning(exception, "[{prefix}] Exception {ExceptionType} with message {Message} detected on attempt {retry} of {retries}", prefix, exception.GetType().Name, exception.Message, retry, retries);
                     }
                 );
         }

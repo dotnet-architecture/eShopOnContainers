@@ -14,6 +14,10 @@ inf:
       db: OrderingDb        # Ordering API SQL db name
     identity:
       db: IdentityDb        # Ordering API SQL db name
+    marketing:
+      db: MarketingDb        # Marketing API SQL db name
+    webhooks:
+      db: WebhooksDb            # Webhooks DB
   mongo:
 #    host: my-nosql-data     # Uncomment to use specify custom mongo host. By default nosql-data is used
     locations:

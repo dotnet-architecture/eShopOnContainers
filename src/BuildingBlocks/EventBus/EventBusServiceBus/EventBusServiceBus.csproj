@@ -9,7 +9,7 @@
     <PackageReference Include="Autofac" Version="4.6.2" />
     <PackageReference Include="Microsoft.Azure.ServiceBus" Version="3.0.0" />
     <PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="2.1.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="2.2.0" />
   </ItemGroup>
 
   <ItemGroup>
