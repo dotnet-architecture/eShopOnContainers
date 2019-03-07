@@ -32,5 +32,5 @@ $KIALIUSERNAME = [Convert]::ToBase64String([Text.Encoding]::Unicode.GetBytes($us
 $plainpassword = Get-PlainText $password;
 $KIALIPASSWORD = [Convert]::ToBase64String([Text.Encoding]::Unicode.GetBytes($plainpassword))
 
-Write-Host "setting username [$KIALIUSERNAME] and password [$KIALIPASSWORD]" -ForegroundColor Blue
-kubectl apply -f secrets.yml
+Write-Host "Creating Kiali Secret in namespace [$NAMESPACE]" -ForegroundColor Blue
+kubectl -n $NAMESPACE create secret generic kiali --from-literal=username=$KIALIUSERNAME --from-literal=passphrase=$KIALIPASSWORD
