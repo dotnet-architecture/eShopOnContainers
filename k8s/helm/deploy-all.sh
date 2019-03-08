@@ -118,7 +118,7 @@ export TAG=$image_tag
 
 if [[ $build_images ]]; then
   echo "#################### Building the $app_name Docker images ####################"
-  docker-compose -p .. -f ../../docker-compose.yml build
+  docker-compose -p ../.. -f ../../docker-compose.yml build
 
   # Remove temporary images
   docker rmi $(docker images -qf "dangling=true") 
