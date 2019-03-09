@@ -33,9 +33,9 @@
 
         public async Task Handle(OrderStatusChangedToStockConfirmedDomainEvent orderStatusChangedToStockConfirmedDomainEvent, CancellationToken cancellationToken)
         {
-            _logger.CreateLogger(nameof(OrderStatusChangedToStockConfirmedDomainEventHandler))
-                .LogTrace($"Order with Id: {orderStatusChangedToStockConfirmedDomainEvent.OrderId} has been successfully updated with " +
-                          $"a status order id: {OrderStatus.StockConfirmed.Id}");
+            _logger.CreateLogger<OrderStatusChangedToStockConfirmedDomainEventHandler>()
+                .LogTrace("Order with Id: {OrderId} has been successfully updated to status {Status} ({Id})",
+                    orderStatusChangedToStockConfirmedDomainEvent.OrderId, nameof(OrderStatus.StockConfirmed), OrderStatus.StockConfirmed.Id);
 
             var order = await _orderRepository.GetAsync(orderStatusChangedToStockConfirmedDomainEvent.OrderId);
             var buyer = await _buyerRepository.FindByIdAsync(order.GetBuyerId.Value.ToString());

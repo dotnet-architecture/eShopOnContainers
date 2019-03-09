@@ -17,7 +17,10 @@ namespace WebMVC.Infrastructure
         {
             if (request.Method == HttpMethod.Post || request.Method == HttpMethod.Put)
             {
-                request.Headers.Add("x-requestid", Guid.NewGuid().ToString());
+                if (!request.Headers.Contains("x-requestid"))
+                {
+                    request.Headers.Add("x-requestid", Guid.NewGuid().ToString());
+                }
             }
             
             return await base.SendAsync(request, cancellationToken);

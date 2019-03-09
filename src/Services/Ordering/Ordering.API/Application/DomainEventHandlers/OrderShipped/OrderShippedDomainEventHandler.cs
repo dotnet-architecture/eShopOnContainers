@@ -33,9 +33,9 @@ namespace Ordering.API.Application.DomainEventHandlers.OrderShipped
 
         public async Task Handle(OrderShippedDomainEvent orderShippedDomainEvent, CancellationToken cancellationToken)
         {
-            _logger.CreateLogger(nameof(OrderShippedDomainEvent))
-             .LogTrace($"Order with Id: {orderShippedDomainEvent.Order.Id} has been successfully updated with " +
-                       $"a status order id: {OrderStatus.Shipped.Id}");
+            _logger.CreateLogger<OrderShippedDomainEvent>()
+                .LogTrace("Order with Id: {OrderId} has been successfully updated to status {Status} ({Id})",
+                    orderShippedDomainEvent.Order.Id, nameof(OrderStatus.Shipped), OrderStatus.Shipped.Id);
 
             var order = await _orderRepository.GetAsync(orderShippedDomainEvent.Order.Id);
             var buyer = await _buyerRepository.FindByIdAsync(order.GetBuyerId.Value.ToString());
