@@ -188,7 +188,7 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
                   c.OAuthAppName("Locations Swagger UI");
               });
 
-            LocationsContextSeed.SeedAsync(app, loggerFactory)
+            LocationsContextSeed.SeedAsync(app)
                 .Wait();
         }
 

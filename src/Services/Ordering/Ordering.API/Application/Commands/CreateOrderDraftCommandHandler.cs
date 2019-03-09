@@ -4,7 +4,6 @@
     using global::Ordering.API.Application.Models;
     using MediatR;
     using Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure.Services;
-    using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Idempotency;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -16,7 +15,6 @@
     public class CreateOrderDraftCommandHandler
         : IRequestHandler<CreateOrderDraftCommand, OrderDraftDTO>
     {
-        private readonly IOrderRepository _orderRepository;
         private readonly IIdentityService _identityService;
         private readonly IMediator _mediator;
 

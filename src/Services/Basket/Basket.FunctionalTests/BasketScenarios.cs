@@ -5,7 +5,6 @@ using System;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using WebMVC.Models;
 using Xunit;
 
 namespace Basket.FunctionalTests
@@ -74,7 +73,8 @@ namespace Basket.FunctionalTests
 
         string BuildCheckout()
         {
-            var checkoutBasket = new BasketDTO()
+
+            var checkoutBasket = new 
             {
                 City = "city",
                 Street = "street",

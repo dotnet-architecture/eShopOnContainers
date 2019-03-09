@@ -35,18 +35,18 @@
 
     @if (Model.CatalogItems.Count() > 0)
     {
-        @Html.Partial("_pagination", Model.PaginationInfo)
+        @await Html.PartialAsync("_pagination", Model.PaginationInfo)
 
         <div class="esh-catalog-items row">
             @foreach (var catalogItem in Model.CatalogItems)
             {
                 <div class="esh-catalog-item col-md-4">
-                    @Html.Partial("_product", catalogItem)
+                    @await Html.PartialAsync("_product", catalogItem)
                 </div>
             }
         </div>
 
-        @Html.Partial("_pagination", Model.PaginationInfo)
+        @await Html.PartialAsync("_pagination", Model.PaginationInfo)
     }
     else
     {

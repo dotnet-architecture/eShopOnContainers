@@ -7,10 +7,10 @@
 }
 
 <div class="esh-orders">
-    @Html.Partial("_Header", new List<Header>() {
-new Header() { Controller = "Catalog", Text = "Back to catalog" },
-new Header() { Text = " / " },
-new Header() { Controller = "OrderManagement", Text = "Orders Management" } })
+    @await Html.PartialAsync("_Header", new List<Header>() {
+ new Header() { Controller = "Catalog", Text = "Back to catalog" },
+ new Header() { Text = " / " },
+ new Header() { Controller = "OrderManagement", Text = "Orders Management" } })
 
     <div class="container">
         <article class="esh-orders-titles row">

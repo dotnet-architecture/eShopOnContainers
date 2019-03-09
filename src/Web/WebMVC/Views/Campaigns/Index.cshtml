@@ -1,6 +1,6 @@
 @{
     ViewData["Title"] = "Campaigns";
-@model WebMVC.ViewModels.CampaignViewModel
+    @model WebMVC.ViewModels.CampaignViewModel
 }
 
 <section class="esh-campaigns-hero">
@@ -9,7 +9,7 @@
     </div>
 </section>
 
-@Html.Partial("_Header", new List<Header>() {
+@await Html.PartialAsync("_Header", new List<Header>() {
     new Header() { Controller = "Catalog", Text = "Back to catalog" } })
 
 <div class="container">
@@ -52,25 +52,25 @@
         </div>        
     </div>    
     <br />
-        @if (Model != null && Model.CampaignItems !=null && Model.CampaignItems.Any())
-        {
-            <div class="card-group esh-campaigns-items row">
-                @foreach (var catalogItem in Model.CampaignItems)
-                {
-                    <div class="esh-campaigns-item col-md-4">
-                        @Html.Partial("_campaign", catalogItem)
-                    </div>
-                }
-            </div>
+    @if (Model != null && Model.CampaignItems != null && Model.CampaignItems.Any())
+    {
+        <div class="card-group esh-campaigns-items row">
+            @foreach (var catalogItem in Model.CampaignItems)
+            {
+                <div class="esh-campaigns-item col-md-4">
+                    @await Html.PartialAsync("_campaign", catalogItem)
+                </div>
+            }
+        </div>
 
-            @Html.Partial("_pagination", Model.PaginationInfo)
-        }
-        else
-        {
-            <div class="esh-campaigns-items row">
-                THERE ARE NO CAMPAIGNS
-            </div>
-        }
+        @await Html.PartialAsync("_pagination", Model.PaginationInfo)
+    }
+    else
+    {
+        <div class="esh-campaigns-items row">
+            THERE ARE NO CAMPAIGNS
+        </div>
+    }
 </div>
 
 

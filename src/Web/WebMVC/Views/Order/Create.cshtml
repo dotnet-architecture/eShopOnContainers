@@ -6,7 +6,7 @@
     ViewData["Title"] = "New Order";
 }
 
-@Html.Partial("_Header", new List<Header>() {
+@await Html.PartialAsync("_Header", new List<Header>() {
         new Header() { Controller = "Cart", Text = "Back to cart" } })
 <div class="container">
     <form method="post" asp-controller="Order" asp-action="Checkout">

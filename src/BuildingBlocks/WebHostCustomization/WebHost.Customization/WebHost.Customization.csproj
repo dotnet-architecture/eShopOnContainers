@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Polly" Version="6.0.1" />
+    <PackageReference Include="Polly" Version="7.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 

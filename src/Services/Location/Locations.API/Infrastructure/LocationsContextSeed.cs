@@ -13,7 +13,7 @@
     public class LocationsContextSeed
     {
         private static LocationsContext ctx;
-        public static async Task SeedAsync(IApplicationBuilder applicationBuilder, ILoggerFactory loggerFactory)
+        public static async Task SeedAsync(IApplicationBuilder applicationBuilder)
         {
             var config = applicationBuilder
                 .ApplicationServices.GetRequiredService<IOptions<LocationSettings>>();

@@ -8,7 +8,7 @@
     </div>
 </section>
 
-@Html.Partial("_Header", new List<Header>() {
+@await Html.PartialAsync("_Header", new List<Header>() {
             new Header() { Controller = "Catalog", Text = "Back to catalog" },
         new Header() { Controller = "Campaigns", Text = "Back to Campaigns" } })
 

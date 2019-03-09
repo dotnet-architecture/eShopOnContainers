@@ -10,6 +10,7 @@
     using Microsoft.Extensions.Options;
     using Ordering.Infrastructure;
     using Polly;
+    using Polly.Retry;
     using System;
     using System.Collections.Generic;
     using System.Data.SqlClient;
@@ -174,7 +175,7 @@
         }
 
      
-        private Policy CreatePolicy( ILogger<OrderingContextSeed> logger, string prefix, int retries =3)
+        private AsyncRetryPolicy CreatePolicy( ILogger<OrderingContextSeed> logger, string prefix, int retries =3)
         {
             return Policy.Handle<SqlException>().
                 WaitAndRetryAsync(
