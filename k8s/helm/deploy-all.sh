@@ -173,7 +173,7 @@ if [[ $clean ]]; then
   echo "Previous releases deleted"
 fi
 
-use_custom_registry='yes'
+use_custom_registry=''
 
 if [[ -n $container_registry ]]; then 
   use_custom_registry='yes'
