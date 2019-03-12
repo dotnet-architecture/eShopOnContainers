@@ -65,6 +65,8 @@
     "@types/selenium-webdriver": "3.0.10",
     "codelyzer": "~4.4.4",
     "handlebars": "~4.0.13",
+    "lodash": "4.17.11",
+    "merge": "1.2.1",
     "sass-lint": "1.12.1",
     "ts-helpers": "1.1.2",
     "ts-node": "~7.0.1",
