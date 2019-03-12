@@ -102,7 +102,7 @@ while [[ $# -gt 0 ]]; do
     -u | --docker-username )
       docker_username="$2"; shift 2;;
     --use-local-k8s )
-      use_local_k8s=''; shift ;;
+      use_local_k8s='yes'; shift ;;
     *)
       echo "Unknown option $1"
       usage; exit 2 ;;
