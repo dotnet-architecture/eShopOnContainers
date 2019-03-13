@@ -6,10 +6,11 @@ using Serilog.Context;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using DotNetCore.CAP;
 
 namespace Microsoft.eShopOnContainers.Services.Basket.API.IntegrationEvents.EventHandling
 {
-    public class ProductPriceChangedIntegrationEventHandler : IIntegrationEventHandler<ProductPriceChangedIntegrationEvent>
+    public class ProductPriceChangedIntegrationEventHandler : IIntegrationEventHandler<ProductPriceChangedIntegrationEvent>, ICapSubscribe
     {
         private readonly ILogger<ProductPriceChangedIntegrationEventHandler> _logger;
         private readonly IBasketRepository _repository;
@@ -22,6 +23,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.IntegrationEvents.Even
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
+        //TODO: [CapSubscribe(nameof(ProductPriceChangedIntegrationEvent))]
         public async Task Handle(ProductPriceChangedIntegrationEvent @event)
         {
             using (LogContext.PushProperty("IntegrationEventContext", $"{@event.Id}-{Program.AppName}"))

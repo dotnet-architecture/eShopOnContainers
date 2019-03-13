@@ -6,10 +6,11 @@ using Microsoft.Extensions.Logging;
 using Serilog.Context;
 using System;
 using System.Threading.Tasks;
+using DotNetCore.CAP;
 
 namespace Basket.API.IntegrationEvents.EventHandling
 {
-    public class OrderStartedIntegrationEventHandler : IIntegrationEventHandler<OrderStartedIntegrationEvent>
+    public class OrderStartedIntegrationEventHandler : IIntegrationEventHandler<OrderStartedIntegrationEvent>, ICapSubscribe
     {
         private readonly IBasketRepository _repository;
         private readonly ILogger<OrderStartedIntegrationEventHandler> _logger;
@@ -22,6 +23,7 @@ namespace Basket.API.IntegrationEvents.EventHandling
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
+        //TODO: [CapSubscribe(nameof(OrderStartedIntegrationEvent))] 
         public async Task Handle(OrderStartedIntegrationEvent @event)
         {
             using (LogContext.PushProperty("IntegrationEventContext", $"{@event.Id}-{Program.AppName}"))
@@ -33,6 +35,3 @@ namespace Basket.API.IntegrationEvents.EventHandling
         }
     }
 }
-
-
-
