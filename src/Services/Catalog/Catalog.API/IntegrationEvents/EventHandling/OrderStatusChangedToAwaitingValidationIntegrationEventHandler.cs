@@ -1,39 +1,36 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationEvents.EventHandling
+﻿using DotNetCore.CAP;
+
+namespace Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationEvents.EventHandling
 {
-    using BuildingBlocks.EventBus.Abstractions;
     using System.Threading.Tasks;
-    using BuildingBlocks.EventBus.Events;
     using Infrastructure;
     using System.Collections.Generic;
     using System.Linq;
-    using global::Catalog.API.IntegrationEvents;
-    using IntegrationEvents.Events;
+    using Events;
     using Serilog.Context;
-    using Microsoft.Extensions.Logging;
+    using Extensions.Logging;
 
-    public class OrderStatusChangedToAwaitingValidationIntegrationEventHandler : 
-        IIntegrationEventHandler<OrderStatusChangedToAwaitingValidationIntegrationEvent>
+    public class OrderStatusChangedToAwaitingValidationIntegrationEventHandler : ICapSubscribe
     {
         private readonly CatalogContext _catalogContext;
-        private readonly ICatalogIntegrationEventService _catalogIntegrationEventService;
+        private readonly ICapPublisher _eventBus;
         private readonly ILogger<OrderStatusChangedToAwaitingValidationIntegrationEventHandler> _logger;
 
         public OrderStatusChangedToAwaitingValidationIntegrationEventHandler(
             CatalogContext catalogContext,
-            ICatalogIntegrationEventService catalogIntegrationEventService,
+            ICapPublisher eventBus,
             ILogger<OrderStatusChangedToAwaitingValidationIntegrationEventHandler> logger)
         {
             _catalogContext = catalogContext;
-            _catalogIntegrationEventService = catalogIntegrationEventService;
+            _eventBus = eventBus;
             _logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
         }
 
+        //TODO: [CapSubscribe(nameof(OrderStatusChangedToAwaitingValidationIntegrationEvent))]
         public async Task Handle(OrderStatusChangedToAwaitingValidationIntegrationEvent @event)
         {
-            using (LogContext.PushProperty("IntegrationEventContext", $"{@event.Id}-{Program.AppName}"))
+            using (LogContext.PushProperty("IntegrationEventContext", $"{Program.AppName}"))
             {
-                _logger.LogInformation("----- Handling integration event: {IntegrationEventId} at {AppName} - ({@IntegrationEvent})", @event.Id, Program.AppName, @event);
-
                 var confirmedOrderStockItems = new List<ConfirmedOrderStockItem>();
 
                 foreach (var orderStockItem in @event.OrderStockItems)
@@ -43,15 +40,18 @@
                     var confirmedOrderStockItem = new ConfirmedOrderStockItem(catalogItem.Id, hasStock);
 
                     confirmedOrderStockItems.Add(confirmedOrderStockItem);
+                } 
+
+                if (confirmedOrderStockItems.Any(c => !c.HasStock))
+                {
+                    await _eventBus.PublishAsync(nameof(OrderStockRejectedIntegrationEvent),
+                        new OrderStockRejectedIntegrationEvent(@event.OrderId, confirmedOrderStockItems));
                 }
-
-                var confirmedIntegrationEvent = confirmedOrderStockItems.Any(c => !c.HasStock)
-                    ? (IntegrationEvent)new OrderStockRejectedIntegrationEvent(@event.OrderId, confirmedOrderStockItems)
-                    : new OrderStockConfirmedIntegrationEvent(@event.OrderId);
-
-                await _catalogIntegrationEventService.SaveEventAndCatalogContextChangesAsync(confirmedIntegrationEvent);
-                await _catalogIntegrationEventService.PublishThroughEventBusAsync(confirmedIntegrationEvent);
-
+                else
+                {
+                    await _eventBus.PublishAsync(nameof(OrderStockConfirmedIntegrationEvent),
+                        new OrderStockConfirmedIntegrationEvent(@event.OrderId));
+                } 
             }
         }
     }

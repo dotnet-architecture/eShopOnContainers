@@ -40,6 +40,10 @@
     <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="2.2.0" />
     <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="2.2.2" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.2.1" />
+    <PackageReference Include="DotNetCore.CAP" Version="2.5.0-preview-69210974" />
+    <PackageReference Include="DotNetCore.CAP.AzureServiceBus" Version="2.5.0-preview-69210974" />
+    <PackageReference Include="DotNetCore.CAP.RabbitMQ" Version="2.5.0-preview-69210974" />
+    <PackageReference Include="DotNetCore.CAP.SQLServer" Version="2.5.0-preview-69210974" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.2.1" />
     <PackageReference Include="Microsoft.ApplicationInsights.DependencyCollector" Version="2.6.1" />
     <PackageReference Include="Microsoft.ApplicationInsights.Kubernetes" Version="1.0.2" />
@@ -58,10 +62,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\BuildingBlocks\EventBus\EventBusRabbitMQ\EventBusRabbitMQ.csproj" />
-    <ProjectReference Include="..\..\..\BuildingBlocks\EventBus\EventBusServiceBus\EventBusServiceBus.csproj" />
-    <ProjectReference Include="..\..\..\BuildingBlocks\EventBus\EventBus\EventBus.csproj" />
-    <ProjectReference Include="..\..\..\BuildingBlocks\EventBus\IntegrationEventLogEF\IntegrationEventLogEF.csproj" />
     <ProjectReference Include="..\..\..\BuildingBlocks\WebHostCustomization\WebHost.Customization\WebHost.Customization.csproj" />
   </ItemGroup>
 

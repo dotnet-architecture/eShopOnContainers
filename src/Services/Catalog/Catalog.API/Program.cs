@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF;
 using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -38,8 +37,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
                     new CatalogContextSeed()
                         .SeedAsync(context, env, settings, logger)
                         .Wait();
-                })
-                .MigrateDbContext<IntegrationEventLogContext>((_, __) => { });
+                });
 
                 Log.Information("Starting web host ({ApplicationContext})...", AppName);
                 host.Run();

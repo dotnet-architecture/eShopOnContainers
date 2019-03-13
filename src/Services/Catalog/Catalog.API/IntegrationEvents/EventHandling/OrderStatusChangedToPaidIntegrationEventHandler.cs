@@ -1,14 +1,15 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationEvents.EventHandling
+﻿using DotNetCore.CAP;
+
+namespace Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationEvents.EventHandling
 {
-    using BuildingBlocks.EventBus.Abstractions;
     using System.Threading.Tasks;
     using Infrastructure;
-    using Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationEvents.Events;
-    using Microsoft.Extensions.Logging;
+    using Events;
+    using Extensions.Logging;
     using Serilog.Context;
 
-    public class OrderStatusChangedToPaidIntegrationEventHandler : 
-        IIntegrationEventHandler<OrderStatusChangedToPaidIntegrationEvent>
+    //OrderStatusChangedToPaidIntegrationEvent
+    public class OrderStatusChangedToPaidIntegrationEventHandler : ICapSubscribe
     {
         private readonly CatalogContext _catalogContext;
         private readonly ILogger<OrderStatusChangedToPaidIntegrationEventHandler> _logger;
@@ -21,11 +22,12 @@
             _logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
         }
 
+        //TODO: [CapSubscribe(nameof(OrderStatusChangedToPaidIntegrationEvent))]
         public async Task Handle(OrderStatusChangedToPaidIntegrationEvent @event)
         {
-            using (LogContext.PushProperty("IntegrationEventContext", $"{@event.Id}-{Program.AppName}"))
+            using (LogContext.PushProperty("IntegrationEventContext", $"{Program.AppName}"))
             {
-                _logger.LogInformation("----- Handling integration event: {IntegrationEventId} at {AppName} - ({@IntegrationEvent})", @event.Id, Program.AppName, @event);
+                _logger.LogInformation("----- Handling integration event: {AppName} - ({@IntegrationEvent})", Program.AppName, @event);
 
                 //we're not blocking stock/inventory
                 foreach (var orderStockItem in @event.OrderStockItems)
@@ -36,7 +38,6 @@
                 }
 
                 await _catalogContext.SaveChangesAsync();
-
             }
         }
     }

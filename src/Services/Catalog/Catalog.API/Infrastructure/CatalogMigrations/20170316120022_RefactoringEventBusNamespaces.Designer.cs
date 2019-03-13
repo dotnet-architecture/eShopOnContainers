@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
-using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
 
 namespace Catalog.API.Infrastructure.Migrations
 {
