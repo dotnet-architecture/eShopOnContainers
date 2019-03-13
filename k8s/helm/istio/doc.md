@@ -85,7 +85,7 @@ All steps need to be performed on `/k8s/helm` folder. The easiest way is to use 
 .\deploy-all-istio.ps1 -dnsname eshoptestistio -externalDns aks -aksName eshoptest -aksRg eshoptest -imageTag dev
 ```
 
-This will install all the [eShopOnContainers public images](https://hub.docker.com/u/eshop/) with tag `dev` on the AKS named `eshoptest` in the resource group `eshoptest` and with the dns url: http://**eshoptest**.westus.cloudapp.azure.com/ . By default all infrastructure (sql, mongo, rabbit and redis) is installed also in the cluster.
+This will install all the [eShopOnContainers public images](https://hub.docker.com/u/eshop/) with tag `dev` on the AKS named `eshoptest` in the resource group `eshoptest` and with the dns url: http://**eshoptestistio**.westus.cloudapp.azure.com/ . By default all infrastructure (sql, mongo, rabbit and redis) is installed also in the cluster.
 
 Once the script is run, you should see following output when using `kubectl get deployment`:
 
