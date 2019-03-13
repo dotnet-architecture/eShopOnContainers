@@ -2,7 +2,7 @@ Param(
     [parameter(Mandatory=$false)][string]$registry,
     [parameter(Mandatory=$false)][string]$dockerUser,
     [parameter(Mandatory=$false)][string]$dockerPassword,
-    [parameter(Mandatory=$false)][string]$externalDns,
+    [parameter(Mandatory=$false)][string]$externalDns="eshoptestistio.westus.cloudapp.azure.com",
     [parameter(Mandatory=$false)][string]$appName="eshop",
     [parameter(Mandatory=$false)][bool]$deployInfrastructure=$true,
     [parameter(Mandatory=$false)][bool]$clean=$true,
@@ -66,7 +66,8 @@ $charts = ("eshop-common", "apigwmm", "apigwms", "apigwwm", "apigwws", "basket-a
 if ($deployInfrastructure) {
     foreach ($infra in $infras) {
         Write-Host "Installing infrastructure: $infra" -ForegroundColor Green
-        helm install --values app.yaml --values inf.yaml --values $ingressValuesFile --set app.name=$appName --set inf.k8s.dns=$dns --name="$appName-$infra" $infra     
+        #helm install --values app.yaml --values inf.yaml --values $ingressValuesFile --set app.name=$appName --set inf.k8s.dns=$dns --name="$appName-$infra" $infra     
+        helm install --values app.yaml --values inf.yaml --set app.name=$appName --set inf.k8s.dns=$dns --name="$appName-$infra" $infra     
     }
 }
 
@@ -77,7 +78,8 @@ foreach ($chart in $charts) {
     }
     else {
         if ($chart -ne "eshop-common")  {       # eshop-common is ignored when no secret must be deployed
-            helm install --values app.yaml --values inf.yaml --values $ingressValuesFile --set app.name=$appName --set inf.k8s.dns=$dns --set image.tag=$imageTag --set image.pullPolicy=Always --name="$appName-$chart" $chart 
+            #helm install --values app.yaml --values inf.yaml --values $ingressValuesFile --set app.name=$appName --set inf.k8s.dns=$dns --set image.tag=$imageTag --set image.pullPolicy=Always --name="$appName-$chart" $chart 
+            helm install --values app.yaml --values inf.yaml --set app.name=$appName --set inf.k8s.dns=$dns --set image.tag=$imageTag --set image.pullPolicy=Always --name="$appName-$chart" $chart 
         }
     }
 }
