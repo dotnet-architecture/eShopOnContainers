@@ -37,7 +37,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
                 .AddCustomMVC(Configuration)
                 .AddCustomDbContext(Configuration)
                 .AddCustomOptions(Configuration)
-                .AddIntegrationServices()
+                .AddIntegrationEventHandler()
                 .AddEventBus(Configuration)
                 .AddSwagger()
                 .AddCustomHealthCheck(Configuration);
@@ -237,14 +237,12 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
 
         }
 
-        public static IServiceCollection AddIntegrationServices(this IServiceCollection services)
+        public static IServiceCollection AddIntegrationEventHandler(this IServiceCollection services)
         {
-            //Handlers
             services.AddTransient<OrderStatusChangedToAwaitingValidationIntegrationEventHandler>();  // OrderStatusChangedToAwaitingValidationIntegrationEvent
             services.AddTransient<OrderStatusChangedToPaidIntegrationEventHandler>(); // OrderStatusChangedToPaidIntegrationEvent
-
             return services;
-        }
+        } 
 
         public static IServiceCollection AddEventBus(this IServiceCollection services, IConfiguration configuration)
         {

@@ -75,6 +75,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
                 return ConnectionMultiplexer.Connect(configuration);
             });
 
+            services.AddIntegrationEventHandler();
             services.AddCap(options =>
             {
                 options.UseInMemoryStorage();
@@ -108,9 +109,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
                     options.DefaultGroup = Configuration["SubscriptionClientName"];
                 }
             });
-
-            RegisterEventBus(services);
-
+            
             services.AddSwaggerGen(options =>
             {
                 options.DescribeAllEnumsAsStrings();
@@ -245,16 +244,17 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
 
             app.UseAuthentication();
         }
-
-        private void RegisterEventBus(IServiceCollection services)
-        {
-            services.AddTransient<ProductPriceChangedIntegrationEventHandler>();
-            services.AddTransient<OrderStartedIntegrationEventHandler>();
-        }    
     }
 
     public static class CustomExtensionMethods
     {
+        public static IServiceCollection AddIntegrationEventHandler(this IServiceCollection services)
+        {
+            services.AddTransient<ProductPriceChangedIntegrationEventHandler>();
+            services.AddTransient<OrderStartedIntegrationEventHandler>();
+            return services;
+        }
+
         public static IServiceCollection AddCustomHealthCheck(this IServiceCollection services, IConfiguration configuration)
         {
             var hcBuilder = services.AddHealthChecks();

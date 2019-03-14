@@ -18,7 +18,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
-using RabbitMQ.Client;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
 using System.Collections.Generic;
