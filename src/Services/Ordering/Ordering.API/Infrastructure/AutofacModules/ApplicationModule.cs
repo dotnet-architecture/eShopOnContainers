@@ -1,5 +1,4 @@
 ﻿using Autofac;
-using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
 using Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands;
 using Microsoft.eShopOnContainers.Services.Ordering.API.Application.Queries;
 using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.BuyerAggregate;
@@ -42,8 +41,8 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure.Autof
                .As<IRequestManager>()
                .InstancePerLifetimeScope();
 
-            builder.RegisterAssemblyTypes(typeof(CreateOrderCommandHandler).GetTypeInfo().Assembly)
-                .AsClosedTypesOf(typeof(IIntegrationEventHandler<>));
+            //builder.RegisterAssemblyTypes(typeof(CreateOrderCommandHandler).GetTypeInfo().Assembly)
+            //    .AsClosedTypesOf(typeof(IIntegrationEventHandler<>));
 
         }
     }

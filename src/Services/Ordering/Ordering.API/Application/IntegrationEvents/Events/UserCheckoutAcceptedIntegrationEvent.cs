@@ -1,10 +1,9 @@
-﻿using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
-using Ordering.API.Application.Models;
+﻿using Ordering.API.Application.Models;
 using System;
 
 namespace Ordering.API.Application.IntegrationEvents.Events
 {
-    public class UserCheckoutAcceptedIntegrationEvent : IntegrationEvent
+    public class UserCheckoutAcceptedIntegrationEvent
     {
         public string UserId { get; }
 

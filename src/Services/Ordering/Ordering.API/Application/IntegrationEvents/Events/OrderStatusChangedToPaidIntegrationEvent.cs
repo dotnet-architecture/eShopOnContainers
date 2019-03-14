@@ -1,9 +1,8 @@
 ﻿namespace Ordering.API.Application.IntegrationEvents.Events
 {
     using System.Collections.Generic;
-    using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
 
-    public class OrderStatusChangedToPaidIntegrationEvent : IntegrationEvent
+    public class OrderStatusChangedToPaidIntegrationEvent 
     {
         public int OrderId { get; }
         public string OrderStatus { get; }

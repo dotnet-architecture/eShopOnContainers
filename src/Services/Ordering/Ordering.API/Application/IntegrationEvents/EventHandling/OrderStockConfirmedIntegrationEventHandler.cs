@@ -1,20 +1,17 @@
-﻿namespace Ordering.API.Application.IntegrationEvents.EventHandling
+﻿using DotNetCore.CAP;
+
+namespace Ordering.API.Application.IntegrationEvents.EventHandling
 {
-    using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
-    using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Extensions;
     using System.Threading.Tasks;
     using Events;
-    using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
     using MediatR;
     using System;
     using Ordering.API.Application.Commands;
     using Microsoft.Extensions.Logging;
     using Serilog.Context;
     using Microsoft.eShopOnContainers.Services.Ordering.API;
-    using Ordering.API.Application.Behaviors;
 
-    public class OrderStockConfirmedIntegrationEventHandler :
-        IIntegrationEventHandler<OrderStockConfirmedIntegrationEvent>
+    public class OrderStockConfirmedIntegrationEventHandler :ICapSubscribe
     {
         private readonly IMediator _mediator;
         private readonly ILogger<OrderStockConfirmedIntegrationEventHandler> _logger;
@@ -27,20 +24,14 @@
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
+        //TODO: [CapSubscribe(nameof(OrderStockConfirmedIntegrationEvent))]
         public async Task Handle(OrderStockConfirmedIntegrationEvent @event)
         {
-            using (LogContext.PushProperty("IntegrationEventContext", $"{@event.Id}-{Program.AppName}"))
+            using (LogContext.PushProperty("IntegrationEventContext", $"{Program.AppName}"))
             {
-                _logger.LogInformation("----- Handling integration event: {IntegrationEventId} at {AppName} - ({@IntegrationEvent})", @event.Id, Program.AppName, @event);
+                _logger.LogInformation("----- Handling integration event: {AppName} - ({@IntegrationEvent})", Program.AppName, @event);
 
                 var command = new SetStockConfirmedOrderStatusCommand(@event.OrderId);
-
-                _logger.LogInformation(
-                    "----- Sending command: {CommandName} - {IdProperty}: {CommandId} ({@Command})",
-                    command.GetGenericTypeName(),
-                    nameof(command.OrderNumber),
-                    command.OrderNumber,
-                    command);
 
                 await _mediator.Send(command);
             }

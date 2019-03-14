@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
-using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF;
 using Microsoft.eShopOnContainers.Services.Ordering.API;
 using Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure;
 using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure;
@@ -40,8 +39,7 @@ namespace FunctionalTests.Services.Ordering
                     new OrderingContextSeed()
                         .SeedAsync(context, env, settings, logger)
                         .Wait();
-                })
-                .MigrateDbContext<IntegrationEventLogContext>((_, __) => { });
+                });
 
             return testServer;
         }

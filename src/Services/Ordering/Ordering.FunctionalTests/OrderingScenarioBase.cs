@@ -12,7 +12,6 @@ using Microsoft.eShopOnContainers.Services.Ordering.API;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Logging;
 using Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure;
-using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF;
 
 namespace Ordering.FunctionalTests
 {
@@ -43,8 +42,7 @@ namespace Ordering.FunctionalTests
                     new OrderingContextSeed()
                         .SeedAsync(context, env, settings, logger)
                         .Wait();
-                })
-                .MigrateDbContext<IntegrationEventLogContext>((_, __) => { });
+                });
 
             return testServer;
         }

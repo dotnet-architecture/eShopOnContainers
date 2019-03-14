@@ -1,8 +1,6 @@
 ﻿namespace Ordering.API.Application.IntegrationEvents.Events
 {
-    using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
-
-    public class OrderPaymentFailedIntegrationEvent : IntegrationEvent
+    public class OrderPaymentFailedIntegrationEvent 
     {
         public int OrderId { get; }
 

@@ -56,7 +56,7 @@
             _logger.LogInformation("----- Creating Order - Order: {@Order}", order);
 
             _orderRepository.Add(order);
-
+             
             return await _orderRepository.UnitOfWork
                 .SaveEntitiesAsync();
         }

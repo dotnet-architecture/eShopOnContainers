@@ -18,10 +18,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\BuildingBlocks\EventBus\EventBusRabbitMQ\EventBusRabbitMQ.csproj" />
-    <ProjectReference Include="..\..\..\BuildingBlocks\EventBus\EventBusServiceBus\EventBusServiceBus.csproj" />
-    <ProjectReference Include="..\..\..\BuildingBlocks\EventBus\EventBus\EventBus.csproj" />
-    <ProjectReference Include="..\..\..\BuildingBlocks\EventBus\IntegrationEventLogEF\IntegrationEventLogEF.csproj" />   
     <ProjectReference Include="..\..\..\BuildingBlocks\WebHostCustomization\WebHost.Customization\WebHost.Customization.csproj" />
     <ProjectReference Include="..\Ordering.Domain\Ordering.Domain.csproj" />
     <ProjectReference Include="..\Ordering.Infrastructure\Ordering.Infrastructure.csproj" />
@@ -33,7 +29,11 @@
     <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="2.2.0" />
     <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="2.2.2" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.2.1" />
-    <PackageReference Include="Dapper" Version="1.50.7" />
+    <PackageReference Include="Dapper" Version="1.60.1" />
+    <PackageReference Include="DotNetCore.CAP" Version="2.5.0-preview-69210974" />
+    <PackageReference Include="DotNetCore.CAP.AzureServiceBus" Version="2.5.0-preview-69210974" />
+    <PackageReference Include="DotNetCore.CAP.RabbitMQ" Version="2.5.0-preview-69210974" />
+    <PackageReference Include="DotNetCore.CAP.SQLServer" Version="2.5.0-preview-69210974" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="7.5.0" />
     <PackageReference Include="MediatR" Version="5.1.0" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="5.1.0" />
