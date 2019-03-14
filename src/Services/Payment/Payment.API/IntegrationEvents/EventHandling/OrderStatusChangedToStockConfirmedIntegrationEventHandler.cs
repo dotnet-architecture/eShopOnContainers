@@ -1,22 +1,21 @@
-﻿namespace Payment.API.IntegrationEvents.EventHandling
+﻿using DotNetCore.CAP;
+
+namespace Payment.API.IntegrationEvents.EventHandling
 {
-    using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
-    using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
     using Payment.API.IntegrationEvents.Events;
     using Serilog.Context;
     using System.Threading.Tasks;
 
-    public class OrderStatusChangedToStockConfirmedIntegrationEventHandler :
-        IIntegrationEventHandler<OrderStatusChangedToStockConfirmedIntegrationEvent>
+    public class OrderStatusChangedToStockConfirmedIntegrationEventHandler : ICapSubscribe
     {
-        private readonly IEventBus _eventBus;
+        private readonly ICapPublisher _eventBus;
         private readonly PaymentSettings _settings;
         private readonly ILogger<OrderStatusChangedToStockConfirmedIntegrationEventHandler> _logger;
 
         public OrderStatusChangedToStockConfirmedIntegrationEventHandler(
-            IEventBus eventBus,
+            ICapPublisher eventBus,
             IOptionsSnapshot<PaymentSettings> settings,
             ILogger<OrderStatusChangedToStockConfirmedIntegrationEventHandler> logger)
         {
@@ -25,13 +24,12 @@
             _logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
         }
 
+        //TODO: [CapSubscribe(nameof(OrderStatusChangedToStockConfirmedIntegrationEvent))]
         public async Task Handle(OrderStatusChangedToStockConfirmedIntegrationEvent @event)
         {
-            using (LogContext.PushProperty("IntegrationEventContext", $"{@event.Id}-{Program.AppName}"))
+            using (LogContext.PushProperty("IntegrationEventContext", $"{Program.AppName}"))
             {
-                _logger.LogInformation("----- Handling integration event: {IntegrationEventId} at {AppName} - ({@IntegrationEvent})", @event.Id, Program.AppName, @event);
-
-                IntegrationEvent orderPaymentIntegrationEvent;
+                _logger.LogInformation("----- Handling integration event: {AppName} - ({@IntegrationEvent})", Program.AppName, @event);
 
                 //Business feature comment:
                 // When OrderStatusChangedToStockConfirmed Integration Event is handled.
@@ -41,18 +39,16 @@
 
                 if (_settings.PaymentSucceded)
                 {
-                    orderPaymentIntegrationEvent = new OrderPaymentSuccededIntegrationEvent(@event.OrderId);
+                    var orderPaymentSucceededIntegrationEvent = new OrderPaymentSuccededIntegrationEvent(@event.OrderId);
+                    await _eventBus.PublishAsync(nameof(OrderPaymentSuccededIntegrationEvent), orderPaymentSucceededIntegrationEvent);
+                    _logger.LogInformation("----- Publishing integration event: {AppName} - ({@IntegrationEvent})", Program.AppName, orderPaymentSucceededIntegrationEvent);
                 }
                 else
                 {
-                    orderPaymentIntegrationEvent = new OrderPaymentFailedIntegrationEvent(@event.OrderId);
+                    var orderPaymentFailedIntegrationEvent = new OrderPaymentFailedIntegrationEvent(@event.OrderId);
+                    await _eventBus.PublishAsync(nameof(OrderPaymentFailedIntegrationEvent), orderPaymentFailedIntegrationEvent);
+                    _logger.LogInformation("----- Publishing integration event: {AppName} - ({@IntegrationEvent})", Program.AppName, orderPaymentFailedIntegrationEvent);
                 }
-
-                _logger.LogInformation("----- Publishing integration event: {IntegrationEventId} from {AppName} - ({@IntegrationEvent})", orderPaymentIntegrationEvent.Id, Program.AppName, orderPaymentIntegrationEvent);
-
-                _eventBus.Publish(orderPaymentIntegrationEvent);
-
-                await Task.CompletedTask;
             }
         }
     }

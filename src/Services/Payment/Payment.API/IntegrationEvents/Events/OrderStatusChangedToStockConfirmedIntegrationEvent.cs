@@ -1,8 +1,6 @@
 ﻿namespace Payment.API.IntegrationEvents.Events
 {
-    using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
-
-    public class OrderStatusChangedToStockConfirmedIntegrationEvent : IntegrationEvent
+    public class OrderStatusChangedToStockConfirmedIntegrationEvent 
     {
         public int OrderId { get; }
 
