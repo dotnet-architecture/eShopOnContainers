@@ -30,10 +30,10 @@
     <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="2.2.2" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.2.1" />
     <PackageReference Include="Dapper" Version="1.60.1" />
-    <PackageReference Include="DotNetCore.CAP" Version="2.5.0-preview-69210974" />
-    <PackageReference Include="DotNetCore.CAP.AzureServiceBus" Version="2.5.0-preview-69210974" />
-    <PackageReference Include="DotNetCore.CAP.RabbitMQ" Version="2.5.0-preview-69210974" />
-    <PackageReference Include="DotNetCore.CAP.SQLServer" Version="2.5.0-preview-69210974" />
+    <PackageReference Include="DotNetCore.CAP" Version="2.5.0-preview-69219007" />
+    <PackageReference Include="DotNetCore.CAP.AzureServiceBus" Version="2.5.0-preview-69219007" />
+    <PackageReference Include="DotNetCore.CAP.RabbitMQ" Version="2.5.0-preview-69219007" />
+    <PackageReference Include="DotNetCore.CAP.SQLServer" Version="2.5.0-preview-69219007" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="7.5.0" />
     <PackageReference Include="MediatR" Version="5.1.0" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="5.1.0" />

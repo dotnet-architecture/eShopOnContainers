@@ -21,7 +21,7 @@ namespace Ordering.SignalrHub.IntegrationEvents.EventHandling
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        //TODO [CapSubscribe(nameof(OrderStatusChangedToSubmittedIntegrationEvent))]
+        [CapSubscribe(nameof(OrderStatusChangedToSubmittedIntegrationEvent))]
         public async Task Handle(OrderStatusChangedToSubmittedIntegrationEvent @event)
         {
             using (LogContext.PushProperty("IntegrationEventContext", $"{Program.AppName}"))

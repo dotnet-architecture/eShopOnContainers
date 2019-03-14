@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using Microsoft.eShopOnContainers.Services.Ordering.API;
 using Microsoft.Extensions.Logging;
-using Ordering.API.Application.Behaviors;
 using Ordering.API.Application.Commands;
 using Ordering.API.Application.IntegrationEvents.Events;
 using Serilog.Context;
@@ -28,7 +27,7 @@ namespace Ordering.API.Application.IntegrationEvents.EventHandling
         /// has been completed and order will not initially be cancelled.
         /// Therefore, the order process continues for validation. 
         /// </summary>
-        //TODO: [CapSubscribe(nameof(GracePeriodConfirmedIntegrationEvent))]
+        [CapSubscribe(nameof(GracePeriodConfirmedIntegrationEvent))]
         public async Task Handle(GracePeriodConfirmedIntegrationEvent @event)
         {
             using (LogContext.PushProperty("IntegrationEventContext", $"{Program.AppName}"))

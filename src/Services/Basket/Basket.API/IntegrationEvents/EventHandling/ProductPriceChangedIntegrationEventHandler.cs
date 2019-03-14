@@ -22,7 +22,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.IntegrationEvents.Even
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
-        //TODO: [CapSubscribe(nameof(ProductPriceChangedIntegrationEvent))]
+        [CapSubscribe(nameof(ProductPriceChangedIntegrationEvent))]
         public async Task Handle(ProductPriceChangedIntegrationEvent @event)
         {
             using (LogContext.PushProperty("IntegrationEventContext", $"{Program.AppName}"))

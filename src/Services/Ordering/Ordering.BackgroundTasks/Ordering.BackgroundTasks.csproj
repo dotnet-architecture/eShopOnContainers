@@ -19,10 +19,10 @@
     <PackageReference Include="AspNetCore.HealthChecks.Rabbitmq" Version="2.2.0" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.2.1" />
     <PackageReference Include="Dapper" Version="1.60.1" />
-    <PackageReference Include="DotNetCore.CAP" Version="2.5.0-preview-69210974" />
-    <PackageReference Include="DotNetCore.CAP.AzureServiceBus" Version="2.5.0-preview-69210974" />
-    <PackageReference Include="DotNetCore.CAP.RabbitMQ" Version="2.5.0-preview-69210974" />
-    <PackageReference Include="DotNetCore.CAP.InMemoryStorage" Version="2.5.0-preview-69210974" />
+    <PackageReference Include="DotNetCore.CAP" Version="2.5.0-preview-69219007" />
+    <PackageReference Include="DotNetCore.CAP.AzureServiceBus" Version="2.5.0-preview-69219007" />
+    <PackageReference Include="DotNetCore.CAP.RabbitMQ" Version="2.5.0-preview-69219007" />
+    <PackageReference Include="DotNetCore.CAP.InMemoryStorage" Version="2.5.0-preview-69219007" />
     <PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.HealthChecks" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.HealthChecks" Version="1.0.0" />

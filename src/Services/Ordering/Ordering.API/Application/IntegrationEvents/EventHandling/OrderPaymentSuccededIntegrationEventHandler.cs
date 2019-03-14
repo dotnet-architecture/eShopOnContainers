@@ -24,7 +24,7 @@ namespace Ordering.API.Application.IntegrationEvents.EventHandling
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        //TODO: [CapSubscribe(nameof(OrderPaymentSuccededIntegrationEvent))]
+        [CapSubscribe(nameof(OrderPaymentSuccededIntegrationEvent))]
         public async Task Handle(OrderPaymentSuccededIntegrationEvent @event)
         {
             using (LogContext.PushProperty("IntegrationEventContext", $"{Program.AppName}"))

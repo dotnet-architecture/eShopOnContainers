@@ -31,7 +31,7 @@ namespace Ordering.API.Application.IntegrationEvents.EventHandling
         /// basket.api once it has successfully process the 
         /// order items.
         /// </param>
-        //TODO: [CapSubscribe(nameof(UserCheckoutAcceptedIntegrationEvent))]
+        [CapSubscribe(nameof(UserCheckoutAcceptedIntegrationEvent))]
         public async Task Handle(UserCheckoutAcceptedIntegrationEvent @event)
         {
             using (LogContext.PushProperty("IntegrationEventContext", $"{Program.AppName}"))

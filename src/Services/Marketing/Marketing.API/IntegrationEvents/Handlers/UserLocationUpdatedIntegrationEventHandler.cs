@@ -24,7 +24,7 @@ namespace Microsoft.eShopOnContainers.Services.Marketing.API.IntegrationEvents.H
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        //TODO: [CapSubscribe(nameof(UserLocationUpdatedIntegrationEvent))]
+        [CapSubscribe(nameof(UserLocationUpdatedIntegrationEvent))]
         public async Task Handle(UserLocationUpdatedIntegrationEvent @event)
         {
             using (LogContext.PushProperty("IntegrationEventContext", $"{Program.AppName}"))

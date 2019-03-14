@@ -24,7 +24,7 @@ namespace Payment.API.IntegrationEvents.EventHandling
             _logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
         }
 
-        //TODO: [CapSubscribe(nameof(OrderStatusChangedToStockConfirmedIntegrationEvent))]
+        [CapSubscribe(nameof(OrderStatusChangedToStockConfirmedIntegrationEvent))]
         public async Task Handle(OrderStatusChangedToStockConfirmedIntegrationEvent @event)
         {
             using (LogContext.PushProperty("IntegrationEventContext", $"{Program.AppName}"))

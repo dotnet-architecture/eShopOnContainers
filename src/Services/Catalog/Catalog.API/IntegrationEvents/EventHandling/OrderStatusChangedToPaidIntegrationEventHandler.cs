@@ -22,7 +22,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationEvents.Eve
             _logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
         }
 
-        //TODO: [CapSubscribe(nameof(OrderStatusChangedToPaidIntegrationEvent))]
+        [CapSubscribe(nameof(OrderStatusChangedToPaidIntegrationEvent))]
         public async Task Handle(OrderStatusChangedToPaidIntegrationEvent @event)
         {
             using (LogContext.PushProperty("IntegrationEventContext", $"{Program.AppName}"))

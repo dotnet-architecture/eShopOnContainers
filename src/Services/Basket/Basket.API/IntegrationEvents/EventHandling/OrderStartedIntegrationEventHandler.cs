@@ -22,7 +22,7 @@ namespace Basket.API.IntegrationEvents.EventHandling
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        //TODO: [CapSubscribe(nameof(OrderStartedIntegrationEvent))] 
+        [CapSubscribe(nameof(OrderStartedIntegrationEvent))] 
         public async Task Handle(OrderStartedIntegrationEvent @event)
         {
             using (LogContext.PushProperty("IntegrationEventContext", $"{Program.AppName}"))

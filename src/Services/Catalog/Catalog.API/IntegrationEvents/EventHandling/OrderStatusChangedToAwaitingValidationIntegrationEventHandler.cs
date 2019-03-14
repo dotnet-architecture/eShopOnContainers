@@ -26,7 +26,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationEvents.Eve
             _logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
         }
 
-        //TODO: [CapSubscribe(nameof(OrderStatusChangedToAwaitingValidationIntegrationEvent))]
+        [CapSubscribe(nameof(OrderStatusChangedToAwaitingValidationIntegrationEvent))]
         public async Task Handle(OrderStatusChangedToAwaitingValidationIntegrationEvent @event)
         {
             using (LogContext.PushProperty("IntegrationEventContext", $"{Program.AppName}"))

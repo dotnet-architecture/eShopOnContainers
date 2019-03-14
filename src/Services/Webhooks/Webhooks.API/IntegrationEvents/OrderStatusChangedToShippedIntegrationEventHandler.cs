@@ -19,7 +19,7 @@ namespace Webhooks.API.IntegrationEvents
             _logger = logger;
         }
 
-        //TODO [CapSubscribe(nameof(OrderStatusChangedToShippedIntegrationEvent)))]
+        [CapSubscribe(nameof(OrderStatusChangedToShippedIntegrationEvent))]
         public async Task Handle(OrderStatusChangedToShippedIntegrationEvent @event)
         {
             var subscriptions = await _retriever.GetSubscriptionsOfType(WebhookType.OrderShipped);

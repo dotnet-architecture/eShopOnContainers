@@ -20,7 +20,7 @@ namespace Ordering.SignalrHub.IntegrationEvents
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        //TODO: [CapSubscribe(nameof(OrderStatusChangedToAwaitingValidationIntegrationEvent))]
+        [CapSubscribe(nameof(OrderStatusChangedToAwaitingValidationIntegrationEvent))]
         public async Task Handle(OrderStatusChangedToAwaitingValidationIntegrationEvent @event)
         {
             using (LogContext.PushProperty("IntegrationEventContext", $"{Program.AppName}"))
