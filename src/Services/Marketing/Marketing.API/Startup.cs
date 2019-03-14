@@ -79,12 +79,7 @@
  
             services.AddCap(options =>
             {
-                // using MongoDB as the event storage
-                options.UseMongoDB(configure =>
-                {
-                    configure.DatabaseConnection = Configuration["MongoConnectionString"];
-                    configure.DatabaseName = Configuration["MongoDatabase"];
-                });
+                options.UseInMemoryStorage();
 
                 if (Configuration.GetValue<bool>("AzureServiceBusEnabled"))
                 {

@@ -30,7 +30,7 @@
     <PackageReference Include="DotNetCore.CAP" Version="2.5.0-preview-69219007" />
     <PackageReference Include="DotNetCore.CAP.AzureServiceBus" Version="2.5.0-preview-69219007" />
     <PackageReference Include="DotNetCore.CAP.RabbitMQ" Version="2.5.0-preview-69219007" />
-    <PackageReference Include="DotNetCore.CAP.MongoDB" Version="2.5.0-preview-69219007" />
+    <PackageReference Include="DotNetCore.CAP.InMemoryStorage" Version="2.5.0-preview-69219007" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.2.1" />
     <PackageReference Include="Microsoft.ApplicationInsights.DependencyCollector" Version="2.6.1" />
     <PackageReference Include="Microsoft.ApplicationInsights.Kubernetes" Version="1.0.2" />
