@@ -1,5 +1,4 @@
-﻿using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
-using Microsoft.eShopOnContainers.Services.Basket.API.IntegrationEvents.Events;
+﻿using Microsoft.eShopOnContainers.Services.Basket.API.IntegrationEvents.Events;
 using Microsoft.eShopOnContainers.Services.Basket.API.Model;
 using Microsoft.Extensions.Logging;
 using Serilog.Context;
@@ -10,7 +9,7 @@ using DotNetCore.CAP;
 
 namespace Microsoft.eShopOnContainers.Services.Basket.API.IntegrationEvents.EventHandling
 {
-    public class ProductPriceChangedIntegrationEventHandler : IIntegrationEventHandler<ProductPriceChangedIntegrationEvent>, ICapSubscribe
+    public class ProductPriceChangedIntegrationEventHandler : ICapSubscribe
     {
         private readonly ILogger<ProductPriceChangedIntegrationEventHandler> _logger;
         private readonly IBasketRepository _repository;
@@ -26,9 +25,9 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.IntegrationEvents.Even
         //TODO: [CapSubscribe(nameof(ProductPriceChangedIntegrationEvent))]
         public async Task Handle(ProductPriceChangedIntegrationEvent @event)
         {
-            using (LogContext.PushProperty("IntegrationEventContext", $"{@event.Id}-{Program.AppName}"))
+            using (LogContext.PushProperty("IntegrationEventContext", $"{Program.AppName}"))
             {
-                _logger.LogInformation("----- Handling integration event: {IntegrationEventId} at {AppName} - ({@IntegrationEvent})", @event.Id, Program.AppName, @event);
+                _logger.LogInformation("----- Handling integration event: {AppName} - ({@IntegrationEvent})",  Program.AppName, @event);
 
                 var userIds = _repository.GetUsers();
 

@@ -1,10 +1,9 @@
-﻿using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
-using Microsoft.eShopOnContainers.Services.Basket.API.Model;
+﻿using Microsoft.eShopOnContainers.Services.Basket.API.Model;
 using System;
 
 namespace Basket.API.IntegrationEvents.Events
 {
-    public class UserCheckoutAcceptedIntegrationEvent : IntegrationEvent
+    public class UserCheckoutAcceptedIntegrationEvent 
     {
         public string UserId { get; }
 

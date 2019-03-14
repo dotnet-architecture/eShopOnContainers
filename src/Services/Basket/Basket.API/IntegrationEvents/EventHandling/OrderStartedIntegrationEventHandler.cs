@@ -1,5 +1,4 @@
 ﻿using Basket.API.IntegrationEvents.Events;
-using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
 using Microsoft.eShopOnContainers.Services.Basket.API;
 using Microsoft.eShopOnContainers.Services.Basket.API.Model;
 using Microsoft.Extensions.Logging;
@@ -10,7 +9,7 @@ using DotNetCore.CAP;
 
 namespace Basket.API.IntegrationEvents.EventHandling
 {
-    public class OrderStartedIntegrationEventHandler : IIntegrationEventHandler<OrderStartedIntegrationEvent>, ICapSubscribe
+    public class OrderStartedIntegrationEventHandler : ICapSubscribe
     {
         private readonly IBasketRepository _repository;
         private readonly ILogger<OrderStartedIntegrationEventHandler> _logger;
@@ -26,9 +25,9 @@ namespace Basket.API.IntegrationEvents.EventHandling
         //TODO: [CapSubscribe(nameof(OrderStartedIntegrationEvent))] 
         public async Task Handle(OrderStartedIntegrationEvent @event)
         {
-            using (LogContext.PushProperty("IntegrationEventContext", $"{@event.Id}-{Program.AppName}"))
+            using (LogContext.PushProperty("IntegrationEventContext", $"{Program.AppName}"))
             {
-                _logger.LogInformation("----- Handling integration event: {IntegrationEventId} at {AppName} - ({@IntegrationEvent})", @event.Id, Program.AppName, @event);
+                _logger.LogInformation("----- Handling integration event: {IntegrationEventId} at {AppName} - ({@IntegrationEvent})", Program.AppName, @event);
 
                 await _repository.DeleteBasketAsync(@event.UserId.ToString());
             }

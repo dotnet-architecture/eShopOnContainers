@@ -24,9 +24,9 @@ namespace Ordering.SignalrHub.IntegrationEvents.EventHandling
         //TODO [CapSubscribe(nameof(OrderStatusChangedToShippedIntegrationEvent))]
         public async Task Handle(OrderStatusChangedToShippedIntegrationEvent @event)
         {
-            using (LogContext.PushProperty("IntegrationEventContext", $"{@event.Id}-{Program.AppName}"))
+            using (LogContext.PushProperty("IntegrationEventContext", $"{Program.AppName}"))
             {
-                _logger.LogInformation("----- Handling integration event: {IntegrationEventId} at {AppName} - ({@IntegrationEvent})", @event.Id, Program.AppName, @event);
+                _logger.LogInformation("----- Handling integration event: {AppName} - ({@IntegrationEvent})", Program.AppName, @event);
 
                 await _hubContext.Clients
                     .Group(@event.BuyerName)

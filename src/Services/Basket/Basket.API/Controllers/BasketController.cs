@@ -2,14 +2,13 @@
 using Basket.API.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
 using Microsoft.eShopOnContainers.Services.Basket.API.Model;
 using Microsoft.eShopOnContainers.Services.Basket.API.Services;
 using Microsoft.Extensions.Logging;
-using Serilog.Context;
 using System;
 using System.Net;
 using System.Threading.Tasks;
+using DotNetCore.CAP;
 
 namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
 {
@@ -20,14 +19,14 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
     {
         private readonly IBasketRepository _repository;
         private readonly IIdentityService _identityService;
-        private readonly IEventBus _eventBus;
+        private readonly ICapPublisher _eventBus;
         private readonly ILogger<BasketController> _logger;
 
         public BasketController(
             ILogger<BasketController> logger,
             IBasketRepository repository,
             IIdentityService identityService,
-            IEventBus eventBus)
+            ICapPublisher eventBus)
         {
             _logger = logger;
             _repository = repository;
@@ -78,18 +77,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
             // Once basket is checkout, sends an integration event to
             // ordering.api to convert basket to order and proceeds with
             // order creation process
-            try
-            {
-                _logger.LogInformation("----- Publishing integration event: {IntegrationEventId} from {AppName} - ({@IntegrationEvent})", eventMessage.Id, Program.AppName, eventMessage);
-
-                _eventBus.Publish(eventMessage);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "ERROR Publishing integration event: {IntegrationEventId} from {AppName}", eventMessage.Id, Program.AppName);
-
-                throw;
-            }
+            _eventBus.Publish(nameof(UserCheckoutAcceptedIntegrationEvent), eventMessage);
 
             return Accepted();
         }
