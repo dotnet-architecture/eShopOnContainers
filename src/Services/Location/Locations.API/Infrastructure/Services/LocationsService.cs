@@ -1,6 +1,7 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure.Services
+﻿using DotNetCore.CAP;
+
+namespace Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure.Services
 {
-    using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
     using Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure.Exceptions;
     using Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure.Repositories;
     using Microsoft.eShopOnContainers.Services.Locations.API.IntegrationEvents.Events;
@@ -14,12 +15,12 @@
     public class LocationsService : ILocationsService
     {
         private readonly ILocationsRepository _locationsRepository;
-        private readonly IEventBus _eventBus;
+        private readonly ICapPublisher _eventBus;
         private readonly ILogger<LocationsService> _logger;
 
         public LocationsService(
             ILocationsRepository locationsRepository,
-            IEventBus eventBus,
+            ICapPublisher eventBus,
             ILogger<LocationsService> logger)
         {
             _locationsRepository = locationsRepository ?? throw new ArgumentNullException(nameof(locationsRepository));
@@ -73,9 +74,9 @@
             var newUserLocations = MapUserLocationDetails(newLocations);
             var @event = new UserLocationUpdatedIntegrationEvent(userId, newUserLocations);
 
-            _logger.LogInformation("----- Publishing integration event: {IntegrationEventId} from {AppName} - ({@IntegrationEvent})", @event.Id, Program.AppName, @event);
+            _logger.LogInformation("----- Publishing integration event: {AppName} - ({@IntegrationEvent})", Program.AppName, @event);
 
-            _eventBus.Publish(@event);
+            _eventBus.Publish(nameof(UserLocationUpdatedIntegrationEvent), @event);
         }
 
         private List<UserLocationDetails> MapUserLocationDetails(List<Locations> newLocations)
