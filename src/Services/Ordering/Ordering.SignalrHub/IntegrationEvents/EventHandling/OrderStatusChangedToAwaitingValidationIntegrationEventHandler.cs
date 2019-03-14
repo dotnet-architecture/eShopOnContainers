@@ -1,15 +1,13 @@
 ﻿using Microsoft.AspNetCore.SignalR;
-using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
 using Microsoft.Extensions.Logging;
 using Serilog.Context;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using System; 
 using System.Threading.Tasks;
+using DotNetCore.CAP;
 
 namespace Ordering.SignalrHub.IntegrationEvents
 {
-    public class OrderStatusChangedToAwaitingValidationIntegrationEventHandler : IIntegrationEventHandler<OrderStatusChangedToAwaitingValidationIntegrationEvent>
+    public class OrderStatusChangedToAwaitingValidationIntegrationEventHandler : ICapSubscribe
     {
         private readonly IHubContext<NotificationsHub> _hubContext;
         private readonly ILogger<OrderStatusChangedToAwaitingValidationIntegrationEventHandler> _logger;
@@ -22,12 +20,12 @@ namespace Ordering.SignalrHub.IntegrationEvents
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-
+        //TODO: [CapSubscribe(nameof(OrderStatusChangedToAwaitingValidationIntegrationEvent))]
         public async Task Handle(OrderStatusChangedToAwaitingValidationIntegrationEvent @event)
         {
-            using (LogContext.PushProperty("IntegrationEventContext", $"{@event.Id}-{Program.AppName}"))
+            using (LogContext.PushProperty("IntegrationEventContext", $"{Program.AppName}"))
             {
-                _logger.LogInformation("----- Handling integration event: {IntegrationEventId} at {AppName} - ({@IntegrationEvent})", @event.Id, Program.AppName, @event);
+                _logger.LogInformation("----- Handling integration event:{AppName} - ({@IntegrationEvent})", Program.AppName, @event);
 
                 await _hubContext.Clients
                     .Group(@event.BuyerName)

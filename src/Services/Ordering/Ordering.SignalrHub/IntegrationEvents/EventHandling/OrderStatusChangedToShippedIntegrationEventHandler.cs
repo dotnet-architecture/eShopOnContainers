@@ -1,16 +1,14 @@
 ﻿using Microsoft.AspNetCore.SignalR;
-using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
 using Microsoft.Extensions.Logging;
 using Ordering.SignalrHub.IntegrationEvents.Events;
 using Serilog.Context;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using DotNetCore.CAP;
 
 namespace Ordering.SignalrHub.IntegrationEvents.EventHandling
 {
-    public class OrderStatusChangedToShippedIntegrationEventHandler : IIntegrationEventHandler<OrderStatusChangedToShippedIntegrationEvent>
+    public class OrderStatusChangedToShippedIntegrationEventHandler : ICapSubscribe
     {
         private readonly IHubContext<NotificationsHub> _hubContext;
         private readonly ILogger<OrderStatusChangedToShippedIntegrationEventHandler> _logger;
@@ -23,7 +21,7 @@ namespace Ordering.SignalrHub.IntegrationEvents.EventHandling
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-
+        //TODO [CapSubscribe(nameof(OrderStatusChangedToShippedIntegrationEvent))]
         public async Task Handle(OrderStatusChangedToShippedIntegrationEvent @event)
         {
             using (LogContext.PushProperty("IntegrationEventContext", $"{@event.Id}-{Program.AppName}"))

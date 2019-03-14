@@ -1,8 +1,6 @@
-﻿using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
-
-namespace Ordering.BackgroundTasks.IntegrationEvents
+﻿namespace Ordering.BackgroundTasks.IntegrationEvents
 {
-    public class GracePeriodConfirmedIntegrationEvent : IntegrationEvent
+    public class GracePeriodConfirmedIntegrationEvent 
     {
         public int OrderId { get; }
 

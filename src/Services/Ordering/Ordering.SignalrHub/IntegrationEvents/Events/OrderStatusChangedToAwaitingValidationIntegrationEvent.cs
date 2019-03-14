@@ -1,9 +1,6 @@
-﻿using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
-using System.Collections.Generic;
-
-namespace Ordering.SignalrHub.IntegrationEvents
+﻿namespace Ordering.SignalrHub.IntegrationEvents
 {
-    public class OrderStatusChangedToAwaitingValidationIntegrationEvent : IntegrationEvent
+    public class OrderStatusChangedToAwaitingValidationIntegrationEvent 
     {
         public int OrderId { get; }
         public string OrderStatus { get; }

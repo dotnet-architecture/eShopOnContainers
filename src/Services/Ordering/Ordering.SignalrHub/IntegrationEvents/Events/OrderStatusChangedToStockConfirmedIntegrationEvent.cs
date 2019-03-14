@@ -1,8 +1,6 @@
-﻿using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
-
-namespace Ordering.SignalrHub.IntegrationEvents.Events
+﻿namespace Ordering.SignalrHub.IntegrationEvents.Events
 {
-    public class OrderStatusChangedToStockConfirmedIntegrationEvent : IntegrationEvent
+    public class OrderStatusChangedToStockConfirmedIntegrationEvent
     {
         public int OrderId { get; }
         public string OrderStatus { get; }

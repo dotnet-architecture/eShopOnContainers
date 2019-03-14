@@ -1,5 +1,4 @@
 ﻿using Dapper;
-using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -10,6 +9,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Threading;
 using System.Threading.Tasks;
+using DotNetCore.CAP;
 
 namespace Ordering.BackgroundTasks.Tasks
 {
@@ -18,11 +18,11 @@ namespace Ordering.BackgroundTasks.Tasks
     {
         private readonly ILogger<GracePeriodManagerService> _logger;
         private readonly BackgroundTaskSettings _settings;
-        private readonly IEventBus _eventBus;
+        private readonly ICapPublisher _eventBus;
 
         public GracePeriodManagerService(
             IOptions<BackgroundTaskSettings> settings,
-            IEventBus eventBus,
+            ICapPublisher eventBus,
             ILogger<GracePeriodManagerService> logger)
         {
             _settings = settings?.Value ?? throw new ArgumentNullException(nameof(settings));
@@ -61,9 +61,9 @@ namespace Ordering.BackgroundTasks.Tasks
             {
                 var confirmGracePeriodEvent = new GracePeriodConfirmedIntegrationEvent(orderId);
 
-                _logger.LogInformation("----- Publishing integration event: {IntegrationEventId} from {AppName} - ({@IntegrationEvent})", confirmGracePeriodEvent.Id, Program.AppName, confirmGracePeriodEvent);
+                _logger.LogInformation("----- Publishing integration event: {AppName} - ({@IntegrationEvent})",  Program.AppName, confirmGracePeriodEvent);
 
-                _eventBus.Publish(confirmGracePeriodEvent);
+                _eventBus.Publish(nameof(GracePeriodConfirmedIntegrationEvent), confirmGracePeriodEvent);
             }
         }
 
