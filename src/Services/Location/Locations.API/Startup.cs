@@ -53,12 +53,7 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
 
             services.AddCap(options =>
             {
-                // using MongoDB as the event storage
-                options.UseMongoDB(configure =>
-                {
-                    configure.DatabaseConnection = Configuration["ConnectionString"];
-                    configure.DatabaseName= Configuration["Database"];
-                });
+                options.UseInMemoryStorage();
 
                 if (Configuration.GetValue<bool>("AzureServiceBusEnabled"))
                 {
