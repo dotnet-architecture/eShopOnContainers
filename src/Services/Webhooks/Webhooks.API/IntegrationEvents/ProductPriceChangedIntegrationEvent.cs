@@ -1,12 +1,6 @@
-﻿using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Webhooks.API.IntegrationEvents
+﻿namespace Webhooks.API.IntegrationEvents
 {
-    public class ProductPriceChangedIntegrationEvent : IntegrationEvent
+    public class ProductPriceChangedIntegrationEvent 
     {
         public int ProductId { get; private set; }
 

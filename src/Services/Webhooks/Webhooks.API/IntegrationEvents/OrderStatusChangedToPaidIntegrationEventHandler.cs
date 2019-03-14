@@ -1,15 +1,13 @@
-﻿using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
+using DotNetCore.CAP;
 using Webhooks.API.Model;
 using Webhooks.API.Services;
 using Microsoft.Extensions.Logging;
 
 namespace Webhooks.API.IntegrationEvents
 {
-    public class OrderStatusChangedToPaidIntegrationEventHandler : IIntegrationEventHandler<OrderStatusChangedToPaidIntegrationEvent>
+    public class OrderStatusChangedToPaidIntegrationEventHandler : ICapSubscribe
     {
         private readonly IWebhooksRetriever _retriever;
         private readonly IWebhooksSender _sender;
@@ -21,6 +19,7 @@ namespace Webhooks.API.IntegrationEvents
             _logger = logger;
         }
 
+        //TODO [CapSubscribe(nameof(OrderStatusChangedToPaidIntegrationEvent))]
         public async Task Handle(OrderStatusChangedToPaidIntegrationEvent @event)
         {
             var subscriptions = await _retriever.GetSubscriptionsOfType(WebhookType.OrderPaid);

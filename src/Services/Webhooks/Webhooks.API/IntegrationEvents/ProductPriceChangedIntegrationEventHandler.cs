@@ -1,16 +1,14 @@
-﻿using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using DotNetCore.CAP;
 
 namespace Webhooks.API.IntegrationEvents
 {
-    public class ProductPriceChangedIntegrationEventHandler : IIntegrationEventHandler<ProductPriceChangedIntegrationEvent>
+    public class ProductPriceChangedIntegrationEventHandler : ICapSubscribe
     {
-        public async Task Handle(ProductPriceChangedIntegrationEvent @event)
+        //TODO [CapSubscribe(nameof(ProductPriceChangedIntegrationEvent))]
+        public Task Handle(ProductPriceChangedIntegrationEvent @event)
         {
-            int i = 0;
+            return Task.CompletedTask;
         }
     }
 }
