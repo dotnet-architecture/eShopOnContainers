@@ -1,13 +1,14 @@
 {{- if .Values.ingress.enabled -}}
 {{- $ingressPath := include "pathBase" . -}}
-{{- $serviceName := .Values.app.svc.mobilemarketingapigw -}}
+{{- $serviceName := .Values.app.svc.catalog -}}
+
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: {{ template "apigwmm.fullname" . }}
+  name: {{ template "catalog-api.fullname" . }}
   labels:
-    app: {{ template "apigwmm.name" . }}
-    chart: {{ template "apigwmm.chart" . }}
+    app: {{ template "catalog-api.name" . }}
+    chart: {{ template "catalog-api.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 {{- with .Values.ingress.annotations }}

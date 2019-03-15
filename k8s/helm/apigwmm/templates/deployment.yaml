@@ -64,7 +64,7 @@ spec:
             mountPath: {{ .Values.ocelot.configPath }}          
           env:
             - name: PATH_BASE
-              value: {{ include "pathBase" (list .Values.app.ingress.entries.mobilemarketingapigw  .) }}
+              value: {{ include "pathBase" . }}
             - name: k8sname
               value: {{ .Values.clusterName }}
           {{- if .Values.env.values -}}

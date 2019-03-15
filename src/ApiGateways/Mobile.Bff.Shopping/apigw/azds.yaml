@@ -2,7 +2,7 @@ kind: helm-release
 apiVersion: 1.1
 build:
   context: ..\..\..\..\
-  dockerfile: ..\..\..\..\ApiGateways\ApiGw-Base\Dockerfile
+  dockerfile: ..\..\..\ApiGateways\ApiGw-Base\Dockerfile
 install:
   chart: ../../../../k8s/helm/apigwms
   set:

@@ -2,9 +2,9 @@ kind: helm-release
 apiVersion: 1.1
 build:
   context: ..\..\..\..\
-  dockerfile: ..\..\..\..\ApiGateways\ApiGw-Base\Dockerfile
+  dockerfile: ..\..\..\ApiGateways\ApiGw-Base\Dockerfile
 install:
-  chart: ../../../../k8s/helm/apigwmm
+  chart: ../../../../k8s/helm/apigwwm
   set:
     replicaCount: 1
     image:
@@ -15,7 +15,7 @@ install:
         kubernetes.io/ingress.class: traefik-azds
       hosts:
       # This expands to [space.s.]webmvc.<guid>.<region>.aksapp.io
-      - $(spacePrefix)apigwmm$(hostSuffix)
+      - $(spacePrefix)apigwwm$(hostSuffix)
   values:
   - values.dev.yaml?
   - secrets.dev.yaml?
