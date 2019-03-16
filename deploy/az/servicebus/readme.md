@@ -8,7 +8,7 @@ The ARM template `sbusdeploy.json` and its parameter file (`sbusdeploy.parameter
 
 ## Editing sbusdeploy.parameters.json file
 
-You can edit the `sbusdeploy.parameters.parameters.json` file to set your values, but is not needed. The only parameter than can
+You can edit the `sbusdeploy.parameters.json` file to set your values, but is not needed. The only parameter than can
 be set is:
 
 1. `namespaceprefix` is a string that is used to create the namespace. ARM script creates unique values by appending a unique string to this parameter value, so you can leave the default value.

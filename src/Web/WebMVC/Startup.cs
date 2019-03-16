@@ -52,8 +52,8 @@ namespace Microsoft.eShopOnContainers.WebMVC
         {
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
-            loggerFactory.AddAzureWebAppDiagnostics();
-            loggerFactory.AddApplicationInsights(app.ApplicationServices, LogLevel.Trace);
+            //loggerFactory.AddAzureWebAppDiagnostics();
+            //loggerFactory.AddApplicationInsights(app.ApplicationServices, LogLevel.Trace);
 
             app.UseHealthChecks("/hc", new HealthCheckOptions()
             {
@@ -74,7 +74,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
             var pathBase = Configuration["PATH_BASE"];
             if (!string.IsNullOrEmpty(pathBase))
             {
-                loggerFactory.CreateLogger("init").LogDebug($"Using PATH BASE '{pathBase}'");
+                loggerFactory.CreateLogger<Startup>().LogDebug("Using PATH BASE '{PathBase}'", pathBase);
                 app.UsePathBase(pathBase);
             }
 
@@ -92,8 +92,6 @@ namespace Microsoft.eShopOnContainers.WebMVC
             }
 
             app.UseAuthentication();
-
-            var log = loggerFactory.CreateLogger("identity");
 
             WebContextSeed.Seed(app, env, loggerFactory);
 
@@ -122,7 +120,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
             if (orchestratorType?.ToUpper() == "K8S")
             {
                 // Enable K8s telemetry initializer
-                services.EnableKubernetes();
+                services.AddApplicationInsightsKubernetesEnricher();
             }
 
             if (orchestratorType?.ToUpper() == "SF")

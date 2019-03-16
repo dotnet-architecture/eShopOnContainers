@@ -1,0 +1,31 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>eShopOnContainers - Webhook client</p>
+    @if (!User.Identity.IsAuthenticated)
+    {
+        <a class="btn-primary btn" href="@Url.Action("SignIn", "Account")">Login</a>
+        <p>Why I need to login? You only need to login <bold>to setup a new webhook</bold>.</p>
+    }
+</div>
+
+<div class="table">
+    <h3>Current webhooks received</h3>
+    <p>(Data since last time web started up)<p>
+    <table class="table">
+        @foreach (var webhook in Model.WebHooksReceived)
+        {
+            <tr>
+                <td>@webhook.When</td>
+                <td><pre>@webhook.Data</pre></td>
+                <td>@(webhook.Token ?? "--None--")</td>
+            </tr>
+        }
+    </table>
+</div>
+

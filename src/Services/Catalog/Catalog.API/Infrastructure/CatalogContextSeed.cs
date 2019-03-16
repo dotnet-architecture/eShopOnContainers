@@ -76,14 +76,14 @@
             }
             catch (Exception ex)
             {
-                logger.LogError(ex.Message);
+                logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message);
                 return GetPreconfiguredCatalogBrands();
             }
 
             return File.ReadAllLines(csvFileCatalogBrands)
                                         .Skip(1) // skip header row
                                         .SelectTry(x => CreateCatalogBrand(x))
-                                        .OnCaughtException(ex => { logger.LogError(ex.Message); return null; })
+                                        .OnCaughtException(ex => { logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message); return null; })
                                         .Where(x => x != null);
         }
 
@@ -131,14 +131,14 @@
             }
             catch (Exception ex)
             {
-                logger.LogError(ex.Message);
+                logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message);
                 return GetPreconfiguredCatalogTypes();
             }
 
             return File.ReadAllLines(csvFileCatalogTypes)
                                         .Skip(1) // skip header row
                                         .SelectTry(x => CreateCatalogType(x))
-                                        .OnCaughtException(ex => { logger.LogError(ex.Message); return null; })
+                                        .OnCaughtException(ex => { logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message); return null; })
                                         .Where(x => x != null);
         }
 
@@ -186,7 +186,7 @@
             }
             catch (Exception ex)
             {
-                logger.LogError(ex.Message);
+                logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message);
                 return GetPreconfiguredItems();
             }
 
@@ -197,7 +197,7 @@
                         .Skip(1) // skip header row
                         .Select(row => Regex.Split(row, ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)") )
                         .SelectTry(column => CreateCatalogItem(column, csvheaders, catalogTypeIdLookup, catalogBrandIdLookup))
-                        .OnCaughtException(ex => { logger.LogError(ex.Message); return null; })
+                        .OnCaughtException(ex => { logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message); return null; })
                         .Where(x => x != null);
         }
 
@@ -377,7 +377,7 @@
                     sleepDurationProvider: retry => TimeSpan.FromSeconds(5),
                     onRetry: (exception, timeSpan, retry, ctx) =>
                     {
-                        logger.LogTrace($"[{prefix}] Exception {exception.GetType().Name} with message ${exception.Message} detected on attempt {retry} of {retries}");
+                        logger.LogWarning(exception, "[{prefix}] Exception {ExceptionType} with message {Message} detected on attempt {retry} of {retries}", prefix, exception.GetType().Name, exception.Message, retry, retries);
                     }
                 );
         }

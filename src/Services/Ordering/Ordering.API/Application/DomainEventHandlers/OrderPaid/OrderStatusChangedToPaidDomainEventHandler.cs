@@ -35,9 +35,9 @@
 
         public async Task Handle(OrderStatusChangedToPaidDomainEvent orderStatusChangedToPaidDomainEvent, CancellationToken cancellationToken)
         {
-            _logger.CreateLogger(nameof(OrderStatusChangedToPaidDomainEventHandler))
-             .LogTrace($"Order with Id: {orderStatusChangedToPaidDomainEvent.OrderId} has been successfully updated with " +
-                       $"a status order id: {OrderStatus.Paid.Id}");
+            _logger.CreateLogger<OrderStatusChangedToPaidDomainEventHandler>()
+                .LogTrace("Order with Id: {OrderId} has been successfully updated to status {Status} ({Id})",
+                    orderStatusChangedToPaidDomainEvent.OrderId, nameof(OrderStatus.Paid), OrderStatus.Paid.Id);
 
             var order = await _orderRepository.GetAsync(orderStatusChangedToPaidDomainEvent.OrderId);
             var buyer = await _buyerRepository.FindByIdAsync(order.GetBuyerId.Value.ToString());

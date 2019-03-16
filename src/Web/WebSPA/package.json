@@ -50,10 +50,11 @@
     "preboot": "6.0.0-beta.5",
     "rxjs": "6.2.2",
     "webpack": "^4.17.1",
+    "webpack-dev-server": "3.1.14",
     "zone.js": "^0.8.26"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~0.7.0",
+    "@angular-devkit/build-angular": "~0.7.5",
     "@angular/cli": "^6.1.5",
     "@angular/compiler-cli": "6.1.4",
     "@types/core-js": "2.5.0",
@@ -63,6 +64,9 @@
     "@types/protractor": "4.0.0",
     "@types/selenium-webdriver": "3.0.10",
     "codelyzer": "~4.4.4",
+    "handlebars": "~4.0.13",
+    "lodash": "4.17.11",
+    "merge": "1.2.1",
     "sass-lint": "1.12.1",
     "ts-helpers": "1.1.2",
     "ts-node": "~7.0.1",

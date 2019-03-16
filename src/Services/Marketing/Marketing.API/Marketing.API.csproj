@@ -21,27 +21,30 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AspNetCore.HealthChecks.AzureServiceBus" Version="2.2.0" />
-    <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="2.2.0" />
-    <PackageReference Include="AspNetCore.HealthChecks.Rabbitmq" Version="2.2.0" />
     <PackageReference Include="AspNetCore.HealthChecks.AzureStorage" Version="2.2.0" />
     <PackageReference Include="AspNetCore.HealthChecks.MongoDb" Version="2.2.0" />
+    <PackageReference Include="AspNetCore.HealthChecks.Rabbitmq" Version="2.2.0" />
     <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="2.2.0" />
+    <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="2.2.2" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.2.1" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.2.1" />
     <PackageReference Include="Microsoft.ApplicationInsights.DependencyCollector" Version="2.6.1" />
-    <PackageReference Include="Microsoft.ApplicationInsights.Kubernetes" Version="1.0.0-beta8" />
+    <PackageReference Include="Microsoft.ApplicationInsights.Kubernetes" Version="1.0.2" />
+    <PackageReference Include="Microsoft.ApplicationInsights.ServiceFabric" Version="2.2.2" />
+    <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.HealthChecks" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.HealthChecks" Version="1.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.AzureKeyVault" Version="2.2.0" />
-    <PackageReference Include="Microsoft.ApplicationInsights.ServiceFabric" Version="2.1.1-beta1" />
     <PackageReference Include="Microsoft.Extensions.Logging.AzureAppServices" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.0" />
     <PackageReference Include="mongocsharpdriver" Version="2.5.0" />
     <PackageReference Include="MongoDB.Bson" Version="2.5.0" />
     <PackageReference Include="MongoDB.Driver" Version="2.5.0" />
     <PackageReference Include="MongoDB.Driver.Core" Version="2.5.0" />
     <PackageReference Include="Serilog.AspNetCore" Version="2.1.1" />
+    <PackageReference Include="Serilog.Enrichers.Environment" Version="2.1.2" />
+    <PackageReference Include="Serilog.Settings.Configuration" Version="3.0.1" />
     <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
+    <PackageReference Include="Serilog.Sinks.Seq" Version="4.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="3.0.0" />
   </ItemGroup>
   <ItemGroup>

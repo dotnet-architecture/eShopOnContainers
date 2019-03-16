@@ -54,6 +54,10 @@ env:
       key: webshoppingagg_e
     - name: XamarinCallback
       key: xamarin_callback_e
+    - name: WebhooksApiClient
+      key: webhooksapi_e
+    - name: WebhooksWebClient
+      key: webhooksweb_e
   values:
     - name: ASPNETCORE_ENVIRONMENT
       value: Development
