@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 using Serilog;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 
 namespace WebStatus
 {
@@ -23,6 +25,8 @@ namespace WebStatus
             {
                 Log.Information("Configuring web host ({ApplicationContext})...", AppName);
                 var host = BuildWebHost(configuration, args);
+
+                LogPackagesVersionInfo();
 
                 Log.Information("Starting web host ({ApplicationContext})...", AppName);
                 host.Run();
@@ -82,6 +86,40 @@ namespace WebStatus
             }
 
             return builder.Build();
+        }
+
+        private static string GetVersion(Assembly assembly)
+        {
+            try
+            {
+                return $"{assembly.GetCustomAttribute<AssemblyFileVersionAttribute>()?.Version} ({assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion.Split()[0]})";
+            }
+            catch
+            {
+                return string.Empty;
+            }
+        }
+
+        private static void LogPackagesVersionInfo()
+        {
+            var assemblies = new List<Assembly>();
+
+            foreach (var dependencyName in typeof(Program).Assembly.GetReferencedAssemblies())
+            {
+                try
+                {
+                    // Try to load the referenced assembly...
+                    assemblies.Add(Assembly.Load(dependencyName));
+                }
+                catch
+                {
+                    // Failed to load assembly. Skip it.
+                }
+            }
+
+            var versionList = assemblies.Select(a => $"-{a.GetName().Name} - {GetVersion(a)}").OrderBy(value => value);
+
+            Log.Logger.ForContext("PackageVersions", string.Join("\n", versionList)).Information("Package versions ({ApplicationContext})", AppName);
         }
     }
 }
