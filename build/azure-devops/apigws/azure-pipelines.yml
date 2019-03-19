@@ -15,7 +15,7 @@ steps:
     dockerComposeFileArgs: |
       TAG=dev
 - task: DockerCompose@0
-  displayName: Compose push basket
+  displayName: Compose push apigws
   inputs:
     dockerComposeCommand: 'push mobileshoppingapigw mobilemarketingapigw webshoppingapigw webmarketingapigw'
     containerregistrytype: Container Registry
@@ -24,6 +24,8 @@ steps:
     qualifyImageNames: true
     projectName: ""
     additionalImageTags: 
+    dockerComposeFileArgs: |
+      TAG=dev        
 - task: CopyFiles@2
   inputs:
     sourceFolder: $(Build.SourcesDirectory)/k8s/helm    
