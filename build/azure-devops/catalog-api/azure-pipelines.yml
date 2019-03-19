@@ -1,0 +1,37 @@
+pool:
+  vmImage: 'ubuntu-16.04'
+variables:
+    registryEndpoint: eshop-registry
+steps:
+- task: DockerCompose@0
+  displayName: Compose build catalog
+  inputs:
+    dockerComposeCommand: 'build catalog.api'
+    containerregistrytype: Container Registry
+    dockerRegistryEndpoint: $(registryEndpoint)
+    dockerComposeFile: src/docker-compose.yml
+    qualifyImageNames: true
+    projectName: ""
+    additionalImageTags: |
+     $(Build.BuildId)
+     dev
+- task: DockerCompose@0
+  displayName: Compose push catalog
+  inputs:
+    dockerComposeCommand: 'build catalog.api'
+    containerregistrytype: Container Registry
+    dockerRegistryEndpoint: $(registryEndpoint)
+    dockerComposeFile: src/docker-compose.yml
+    qualifyImageNames: true
+    projectName: ""
+    additionalImageTags: |
+     $(Build.BuildId)
+     dev
+- task: CopyFiles@2
+  inputs:
+    sourceFolder: $(Build.SourcesDirectory)/k8s/helm    
+    targetFolder: $(Build.ArtifactStagingDirectory)/k8s/helm
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathtoPublish: $(Build.ArtifactStagingDirectory)/k8s/helm
+    artifactName: helm
