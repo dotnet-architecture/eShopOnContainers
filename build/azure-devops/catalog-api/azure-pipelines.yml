@@ -9,7 +9,7 @@ steps:
     dockerComposeCommand: 'build catalog.api'
     containerregistrytype: Container Registry
     dockerRegistryEndpoint: $(registryEndpoint)
-    dockerComposeFile: src/docker-compose.yml
+    dockerComposeFile: /docker-compose.yml
     qualifyImageNames: true
     projectName: ""
     additionalImageTags: |
@@ -21,7 +21,7 @@ steps:
     dockerComposeCommand: 'build catalog.api'
     containerregistrytype: Container Registry
     dockerRegistryEndpoint: $(registryEndpoint)
-    dockerComposeFile: src/docker-compose.yml
+    dockerComposeFile: /docker-compose.yml
     qualifyImageNames: true
     projectName: ""
     additionalImageTags: |
