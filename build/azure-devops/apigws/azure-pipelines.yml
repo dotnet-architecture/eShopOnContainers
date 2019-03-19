@@ -12,11 +12,10 @@ steps:
     dockerComposeFile: docker-compose.yml
     qualifyImageNames: true
     projectName: ""
-    additionalImageTags: |
-     $(Build.BuildId)
-     dev
+    dockerComposeFileArgs: |
+      TAG=dev
 - task: DockerCompose@0
-  displayName: Compose push basket
+  displayName: Compose push apigws
   inputs:
     dockerComposeCommand: 'push mobileshoppingapigw mobilemarketingapigw webshoppingapigw webmarketingapigw'
     containerregistrytype: Container Registry
@@ -24,9 +23,9 @@ steps:
     dockerComposeFile: docker-compose.yml
     qualifyImageNames: true
     projectName: ""
-    additionalImageTags: |
-     $(Build.BuildId)
-     dev
+    additionalImageTags: 
+    dockerComposeFileArgs: |
+      TAG=dev        
 - task: CopyFiles@2
   inputs:
     sourceFolder: $(Build.SourcesDirectory)/k8s/helm    
