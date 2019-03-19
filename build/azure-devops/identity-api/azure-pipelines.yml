@@ -4,9 +4,9 @@ variables:
     registryEndpoint: eshop-registry
 steps:
 - task: DockerCompose@0
-  displayName: Compose build catalog
+  displayName: Compose build identity
   inputs:
-    dockerComposeCommand: 'build catalog.api'
+    dockerComposeCommand: 'build identity.api'
     containerregistrytype: Container Registry
     dockerRegistryEndpoint: $(registryEndpoint)
     dockerComposeFile: docker-compose.yml
@@ -16,9 +16,9 @@ steps:
      $(Build.BuildId)
      dev
 - task: DockerCompose@0
-  displayName: Compose push catalog
+  displayName: Compose push identity
   inputs:
-    dockerComposeCommand: 'push catalog.api'
+    dockerComposeCommand: 'push identity.api'
     containerregistrytype: Container Registry
     dockerRegistryEndpoint: $(registryEndpoint)
     dockerComposeFile: docker-compose.yml

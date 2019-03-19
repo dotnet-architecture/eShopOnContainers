@@ -4,9 +4,9 @@ variables:
     registryEndpoint: eshop-registry
 steps:
 - task: DockerCompose@0
-  displayName: Compose build catalog
+  displayName: Compose build ordering 
   inputs:
-    dockerComposeCommand: 'build catalog.api'
+    dockerComposeCommand: 'build ordering.api ordering.backgroundtasks ordering.signalrhub'
     containerregistrytype: Container Registry
     dockerRegistryEndpoint: $(registryEndpoint)
     dockerComposeFile: docker-compose.yml
@@ -16,9 +16,9 @@ steps:
      $(Build.BuildId)
      dev
 - task: DockerCompose@0
-  displayName: Compose push catalog
+  displayName: Compose push ordering
   inputs:
-    dockerComposeCommand: 'push catalog.api'
+    dockerComposeCommand: 'push ordering.api ordering.backgroundtasks ordering.signalrhub'
     containerregistrytype: Container Registry
     dockerRegistryEndpoint: $(registryEndpoint)
     dockerComposeFile: docker-compose.yml

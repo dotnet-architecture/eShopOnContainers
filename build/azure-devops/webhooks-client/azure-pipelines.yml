@@ -4,9 +4,9 @@ variables:
     registryEndpoint: eshop-registry
 steps:
 - task: DockerCompose@0
-  displayName: Compose build catalog
+  displayName: Compose build webhooks.client
   inputs:
-    dockerComposeCommand: 'build catalog.api'
+    dockerComposeCommand: 'build webhooks.client'
     containerregistrytype: Container Registry
     dockerRegistryEndpoint: $(registryEndpoint)
     dockerComposeFile: docker-compose.yml
@@ -16,9 +16,9 @@ steps:
      $(Build.BuildId)
      dev
 - task: DockerCompose@0
-  displayName: Compose push catalog
+  displayName: Compose push webhooks.client
   inputs:
-    dockerComposeCommand: 'push catalog.api'
+    dockerComposeCommand: 'push webhooks.client'
     containerregistrytype: Container Registry
     dockerRegistryEndpoint: $(registryEndpoint)
     dockerComposeFile: docker-compose.yml
