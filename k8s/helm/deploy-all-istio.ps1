@@ -57,6 +57,7 @@ kubectl apply -f ./istio/gateway.yml
 
 if ($useLocalk8s -eq $true) {
     $dns="localhost"
+    $externalDns="localhost"
 } 
 else {
     Write-Host "Resolving DNS to Gateway public IP" -ForegroundColor Green
