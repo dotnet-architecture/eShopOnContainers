@@ -12,9 +12,8 @@ steps:
     dockerComposeFile: docker-compose.yml
     qualifyImageNames: true
     projectName: ""
-    additionalImageTags: |
-     $(Build.BuildId)
-     dev
+    dockerComposeFileArgs: |
+      TAG=dev
 - task: DockerCompose@0
   displayName: Compose push basket
   inputs:
@@ -24,9 +23,7 @@ steps:
     dockerComposeFile: docker-compose.yml
     qualifyImageNames: true
     projectName: ""
-    additionalImageTags: |
-     $(Build.BuildId)
-     dev
+    additionalImageTags: 
 - task: CopyFiles@2
   inputs:
     sourceFolder: $(Build.SourcesDirectory)/k8s/helm    
