@@ -13,7 +13,7 @@ steps:
     qualifyImageNames: true
     projectName: ""
     dockerComposeFileArgs: |
-      TAG=dev
+      TAG=$(Build.SourceBranchName)
 - task: DockerCompose@0
   displayName: Compose push apigws
   inputs:
@@ -23,9 +23,8 @@ steps:
     dockerComposeFile: docker-compose.yml
     qualifyImageNames: true
     projectName: ""
-    additionalImageTags: 
     dockerComposeFileArgs: |
-      TAG=dev        
+      TAG=$(Build.SourceBranchName)        
 - task: CopyFiles@2
   inputs:
     sourceFolder: $(Build.SourcesDirectory)/k8s/helm    
