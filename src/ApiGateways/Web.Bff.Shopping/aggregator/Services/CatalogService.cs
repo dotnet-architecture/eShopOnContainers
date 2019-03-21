@@ -1,43 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http;
+﻿using Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Config;
+using Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Config;
-using Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Models;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Services
 {
     public class CatalogService : ICatalogService
     {
-
-        private readonly IHttpClient _apiClient;
+        private readonly HttpClient _httpClient;
         private readonly ILogger<CatalogService> _logger;
         private readonly UrlsConfig _urls;
 
-        public CatalogService(IHttpClient httpClient, ILogger<CatalogService> logger, IOptionsSnapshot<UrlsConfig> config)
+        public CatalogService(HttpClient httpClient, ILogger<CatalogService> logger, IOptions<UrlsConfig> config)
         {
-            _apiClient = httpClient;
+            _httpClient = httpClient;
             _logger = logger;
             _urls = config.Value;
         }
 
-        public async Task<CatalogItem> GetCatalogItem(int id)
+        public async Task<CatalogItem> GetCatalogItemAsync(int id)
         {
-            var data = await _apiClient.GetStringAsync(_urls.Catalog + UrlsConfig.CatalogOperations.GetItemById(id));
-            var item = JsonConvert.DeserializeObject<CatalogItem>(data);
-            return item;
+            var stringContent = await _httpClient.GetStringAsync(_urls.Catalog + UrlsConfig.CatalogOperations.GetItemById(id));
+
+            return JsonConvert.DeserializeObject<CatalogItem>(stringContent);
         }
 
-        public async Task<IEnumerable<CatalogItem>> GetCatalogItems(IEnumerable<int> ids)
+        public async Task<IEnumerable<CatalogItem>> GetCatalogItemsAsync(IEnumerable<int> ids)
         {
-            var data = await _apiClient.GetStringAsync(_urls.Catalog + UrlsConfig.CatalogOperations.GetItemsById(ids));
-            var item = JsonConvert.DeserializeObject<CatalogItem[]>(data);
-            return item;
+            var stringContent = await _httpClient.GetStringAsync(_urls.Catalog + UrlsConfig.CatalogOperations.GetItemsById(ids));
 
+            return JsonConvert.DeserializeObject<CatalogItem[]>(stringContent);
         }
     }
 }

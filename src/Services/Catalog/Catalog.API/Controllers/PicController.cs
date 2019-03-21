@@ -10,7 +10,8 @@ using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
 {
-    public class PicController : Controller
+    [ApiController]
+    public class PicController : ControllerBase
     {
         private readonly IHostingEnvironment _env;
         private readonly CatalogContext _catalogContext;
@@ -27,7 +28,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         // GET: /<controller>/
-        public async Task<IActionResult> GetImage(int catalogItemId)
+        public async Task<ActionResult> GetImageAsync(int catalogItemId)
         {
             if (catalogItemId <= 0)
             {

@@ -1,53 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Http;
-using Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http;
+﻿using Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Config;
+using Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Config;
-using Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Models;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Services
 {
     public class BasketService : IBasketService
     {
 
-        private readonly IHttpClient _apiClient;
+        private readonly HttpClient _httpClient;
         private readonly ILogger<BasketService> _logger;
         private readonly UrlsConfig _urls;
-        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public BasketService(IHttpClient httpClient, IHttpContextAccessor httpContextAccessor, ILogger<BasketService> logger, IOptionsSnapshot<UrlsConfig> config)
+        public BasketService(HttpClient httpClient, ILogger<BasketService> logger, IOptions<UrlsConfig> config)
         {
-            _apiClient = httpClient;
+            _httpClient = httpClient;
             _logger = logger;
             _urls = config.Value;
-            _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<BasketData> GetById(string id)
+        public async Task<BasketData> GetByIdAsync(string id)
         {
-            var token = await GetUserTokenAsync();
-            var data = await _apiClient.GetStringAsync(_urls.Basket +  UrlsConfig.BasketOperations.GetItemById(id), token);
+            var data = await _httpClient.GetStringAsync(_urls.Basket + UrlsConfig.BasketOperations.GetItemById(id));
+
             var basket = !string.IsNullOrEmpty(data) ? JsonConvert.DeserializeObject<BasketData>(data) : null;
+
             return basket;
         }
 
-        public async Task Update(BasketData currentBasket)
+        public async Task UpdateAsync(BasketData currentBasket)
         {
-            var token = await GetUserTokenAsync();
-            var data = await _apiClient.PostAsync<BasketData>(_urls.Basket + UrlsConfig.BasketOperations.UpdateBasket(), currentBasket, token);
-            int i = 0;
-        }
+            var basketContent = new StringContent(JsonConvert.SerializeObject(currentBasket), System.Text.Encoding.UTF8, "application/json");
 
-        async Task<string> GetUserTokenAsync()
-        {
-            var context = _httpContextAccessor.HttpContext;
-            return await context.GetTokenAsync("access_token");
+            var data = await _httpClient.PostAsync(_urls.Basket + UrlsConfig.BasketOperations.UpdateBasket(), basketContent);
         }
     }
 }

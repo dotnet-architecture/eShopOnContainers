@@ -71,7 +71,6 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
                 {
                     var user = _appUserParser.Parse(HttpContext.User);
                     await _basketSvc.AddItemToBasket(user, productDetails.Id);
-                    //await _basketSvc.AddItemToBasket(user, product);
                 }
                 return RedirectToAction("Index", "Catalog");            
             }

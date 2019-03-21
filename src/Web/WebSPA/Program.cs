@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
+using Serilog;
 
 namespace eShopConContainers.WebSPA
 {
@@ -16,7 +17,6 @@ namespace eShopConContainers.WebSPA
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
              .UseStartup<Startup>()
-                .UseHealthChecks("/hc")
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .ConfigureAppConfiguration((builderContext, config) =>
                 {
@@ -27,8 +27,16 @@ namespace eShopConContainers.WebSPA
                     builder.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
                     builder.AddConsole();
                     builder.AddDebug();
+                    builder.AddAzureWebAppDiagnostics();
                 })
-                .UseApplicationInsights()                
+                .UseApplicationInsights()
+                .UseSerilog((builderContext, config) =>
+                {
+                    config
+                        .MinimumLevel.Information()
+                        .Enrich.FromLogContext()
+                        .WriteTo.Console();
+                })
                 .Build();       
     }
 }

@@ -1,5 +1,5 @@
 ﻿import { Injectable }       from '@angular/core';
-import { Subject }          from 'rxjs/Subject';
+import { Subject }          from 'rxjs';
 
 import { ICatalogItem }     from '../models/catalogItem.model';
 import { IBasketItem }      from '../models/basketItem.model';

@@ -1,21 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Net.Http;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Config;
+using Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Filters.Basket.API.Infrastructure.Filters;
+using Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Infrastructure;
+using Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Config;
-using Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Filters.Basket.API.Infrastructure.Filters;
-using Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Services;
+using Polly;
+using Polly.Extensions.Http;
 using Swashbuckle.AspNetCore.Swagger;
+using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator
 {
@@ -31,16 +35,80 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddSingleton<IHttpClient, StandardHttpClient>();
-            services.AddTransient<ICatalogService, CatalogService>();
-            services.AddTransient<IBasketService, BasketService>();
-            services.AddTransient<IOrderApiClient, OrderApiClient>();
+            services.AddHealthChecks()
+                .AddCheck("self", () => HealthCheckResult.Healthy())
+                .AddUrlGroup(new Uri(Configuration["CatalogUrlHC"]), name: "catalogapi-check", tags: new string[] { "catalogapi" })
+                .AddUrlGroup(new Uri(Configuration["OrderingUrlHC"]), name: "orderingapi-check", tags: new string[] { "orderingapi" })
+                .AddUrlGroup(new Uri(Configuration["BasketUrlHC"]), name: "basketapi-check", tags: new string[] { "basketapi" })
+                .AddUrlGroup(new Uri(Configuration["IdentityUrlHC"]), name: "identityapi-check", tags: new string[] { "identityapi" })
+                .AddUrlGroup(new Uri(Configuration["MarketingUrlHC"]), name: "marketingapi-check", tags: new string[] { "marketingapi" })
+                .AddUrlGroup(new Uri(Configuration["PaymentUrlHC"]), name: "paymentapi-check", tags: new string[] { "paymentapi" })
+                .AddUrlGroup(new Uri(Configuration["LocationUrlHC"]), name: "locationapi-check", tags: new string[] { "locationapi" });
 
+            services.AddCustomMvc(Configuration)
+                 .AddCustomAuthentication(Configuration)
+                 .AddHttpServices();
+        }
+
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        {
+            var pathBase = Configuration["PATH_BASE"];
+
+            if (!string.IsNullOrEmpty(pathBase))
+            {
+                loggerFactory.CreateLogger<Startup>().LogDebug("Using PATH BASE '{pathBase}'", pathBase);
+                app.UsePathBase(pathBase);
+            }
+
+            app.UseHealthChecks("/hc", new HealthCheckOptions()
+            {
+                Predicate = _ => true,
+                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+            });
+
+            app.UseHealthChecks("/liveness", new HealthCheckOptions
+            {
+                Predicate = r => r.Name.Contains("self")
+            });
+
+            app.UseCors("CorsPolicy");
+
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseHsts();
+            }
+
+            app.UseAuthentication();
+            app.UseHttpsRedirection();
+            app.UseMvc();
+
+            app.UseSwagger().UseSwaggerUI(c =>
+           {
+               c.SwaggerEndpoint($"{ (!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty) }/swagger/v1/swagger.json", "Purchase BFF V1");
+
+               c.OAuthClientId("Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregatorwaggerui");
+               c.OAuthClientSecret(string.Empty);
+               c.OAuthRealm(string.Empty);
+               c.OAuthAppName("Purchase BFF Swagger UI");
+           });
+        }
+    }
+
+    public static class ServiceCollectionExtensions
+    {
+        public static IServiceCollection AddCustomMvc(this IServiceCollection services, IConfiguration configuration)
+        {
             services.AddOptions();
-            services.Configure<UrlsConfig>(Configuration.GetSection("urls"));
+            services.Configure<UrlsConfig>(configuration.GetSection("urls"));
 
-            services.AddMvc();
+            services.AddMvc()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddSwaggerGen(options =>
             {
@@ -57,8 +125,8 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator
                 {
                     Type = "oauth2",
                     Flow = "implicit",
-                    AuthorizationUrl = $"{Configuration.GetValue<string>("IdentityUrlExternal")}/connect/authorize",
-                    TokenUrl = $"{Configuration.GetValue<string>("IdentityUrlExternal")}/connect/token",
+                    AuthorizationUrl = $"{configuration.GetValue<string>("IdentityUrlExternal")}/connect/authorize",
+                    TokenUrl = $"{configuration.GetValue<string>("IdentityUrlExternal")}/connect/token",
                     Scopes = new Dictionary<string, string>()
                     {
                         { "mobileshoppingagg", "Shopping Aggregator for Mobile Clients" }
@@ -71,21 +139,27 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy",
-                    builder => builder.AllowAnyOrigin()
+                    builder => builder
                     .AllowAnyMethod()
                     .AllowAnyHeader()
+                    .SetIsOriginAllowed((host) => true)
                     .AllowCredentials());
             });
 
-
+            return services;
+        }
+        public static IServiceCollection AddCustomAuthentication(this IServiceCollection services, IConfiguration configuration)
+        {
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
-            var identityUrl = Configuration.GetValue<string>("urls:identity");
+            var identityUrl = configuration.GetValue<string>("urls:identity");
+
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 
-            }).AddJwtBearer(options =>
+            })
+            .AddJwtBearer(options =>
             {
                 options.Authority = identityUrl;
                 options.RequireHttpsMetadata = false;
@@ -94,45 +168,52 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator
                 {
                     OnAuthenticationFailed = async ctx =>
                     {
-                        int i = 0;
                     },
                     OnTokenValidated = async ctx =>
                     {
-                        int i = 0;
                     }
                 };
             });
+
+            return services;
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public static IServiceCollection AddHttpServices(this IServiceCollection services)
         {
+            //register delegating handlers
+            services.AddTransient<HttpClientAuthorizationDelegatingHandler>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-            var pathBase = Configuration["PATH_BASE"];
-            if (!string.IsNullOrEmpty(pathBase))
-            {
-                loggerFactory.CreateLogger("init").LogDebug($"Using PATH BASE '{pathBase}'");
-                app.UsePathBase(pathBase);
-            }
+            //register http services
+            services.AddHttpClient<IBasketService, BasketService>()
+                .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
+                .AddPolicyHandler(GetRetryPolicy())
+                .AddPolicyHandler(GetCircuitBreakerPolicy());
 
-            app.UseCors("CorsPolicy");
+            services.AddHttpClient<ICatalogService, CatalogService>()
+                   .AddPolicyHandler(GetRetryPolicy())
+                   .AddPolicyHandler(GetCircuitBreakerPolicy());
 
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+            services.AddHttpClient<IOrderApiClient, OrderApiClient>()
+                   .AddPolicyHandler(GetRetryPolicy())
+                   .AddPolicyHandler(GetCircuitBreakerPolicy());
 
-            app.UseAuthentication();
+            return services;
+        }
 
-            app.UseMvc();
+        private static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy()
+        {
+            return HttpPolicyExtensions
+              .HandleTransientHttpError()
+              .OrResult(msg => msg.StatusCode == System.Net.HttpStatusCode.NotFound)
+              .WaitAndRetryAsync(6, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
+        }
 
-            app.UseSwagger().UseSwaggerUI(c =>
-           {
-               c.SwaggerEndpoint($"{ (!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty) }/swagger/v1/swagger.json", "Purchase BFF V1");
-               c.ConfigureOAuth2("Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregatorwaggerui", "", "", "Purchase BFF Swagger UI");
-           });
-
-
+        private static IAsyncPolicy<HttpResponseMessage> GetCircuitBreakerPolicy()
+        {
+            return HttpPolicyExtensions
+                .HandleTransientHttpError()
+                .CircuitBreakerAsync(5, TimeSpan.FromSeconds(30));
         }
     }
 }

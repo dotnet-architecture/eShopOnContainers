@@ -234,7 +234,7 @@ namespace eShopOnContainers.Core.ViewModels
                 IsLogin = false;
                 LoginUrl = _identityService.CreateAuthorizationRequest();
             }
-            else if (unescapedUrl.Contains(GlobalSetting.Instance.IdentityCallback))
+            else if (unescapedUrl.Contains(GlobalSetting.Instance.Callback))
             {
                 var authResponse = new AuthorizeResponse(url);
                 if (!string.IsNullOrWhiteSpace(authResponse.Code))
