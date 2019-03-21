@@ -9,7 +9,9 @@ eshopOnContainers is ready for work with ELK, you only need to setup the configu
 There is another option, a zero-configuration environment for testing the integration launching via ```docker-compose``` command, on the root directory of eshopOnContainers:
 
 ```sh
-docker-compose -f docker-compose.yml -f docker-compose.override.yml -f docker-compose.elk.yml
+docker-compose -f docker-compose.yml -f docker-compose.override.yml -f docker-compose.elk.yml build
+
+docker-compose -f docker-compose.yml -f docker-compose.override.yml -f docker-compose.elk.yml up
 ```
 
 ### Configuring Logstash index on Kibana
