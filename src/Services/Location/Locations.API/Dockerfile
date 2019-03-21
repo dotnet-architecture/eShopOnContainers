@@ -1,8 +1,8 @@
-FROM microsoft/dotnet:2.2.0-aspnetcore-runtime AS base
+FROM mcr.microsoft.com/dotnet/core/aspnet:2.2 AS base
 WORKDIR /app
 EXPOSE 80
 
-FROM microsoft/dotnet:2.2.100-sdk AS build
+FROM mcr.microsoft.com/dotnet/core/sdk:2.2 AS build
 WORKDIR /src
 COPY . .
 WORKDIR /src/src/Services/Location/Locations.API

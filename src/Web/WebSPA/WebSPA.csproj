@@ -85,8 +85,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="2.2.2" />
-    <PackageReference Include="AspNetCore.HealthChecks.Uris" Version="2.2.0" />
+    <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="2.2.3" />
+    <PackageReference Include="AspNetCore.HealthChecks.Uris" Version="2.2.2" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.2.1" />
     <PackageReference Include="Microsoft.ApplicationInsights.DependencyCollector" Version="2.6.1" />
     <PackageReference Include="Microsoft.ApplicationInsights.Kubernetes" Version="1.0.2" />
