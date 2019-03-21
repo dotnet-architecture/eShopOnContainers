@@ -2,6 +2,18 @@ pool:
   vmImage: 'ubuntu-16.04'
 variables:
     registryEndpoint: eshop-registry
+trigger:
+  branches:
+    include:
+    - master
+    - dev
+  paths:
+    include:
+    - src/BuildingBlocks/*
+    - src/Services/Ordering/*
+    - k8s/helm/ordering-api/*  
+    - k8s/helm/ordering-backgroundtasks/*
+    - k8s/helm/ordering-signalrhub/*
 steps:
 - task: DockerCompose@0
   displayName: Compose build ordering 
