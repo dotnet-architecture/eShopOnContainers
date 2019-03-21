@@ -2,6 +2,16 @@ pool:
   vmImage: 'ubuntu-16.04'
 variables:
     registryEndpoint: eshop-registry
+trigger:
+  branches:
+    include:
+    - master
+    - dev
+  paths:
+    include:
+    - src/BuildingBlocks/*
+    - src/Services/Payment/*
+    - k8s/helm/payment-api/*  
 steps:
 - task: DockerCompose@0
   displayName: Compose build payment
