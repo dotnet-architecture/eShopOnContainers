@@ -14,7 +14,7 @@ install:
         kubernetes.io/ingress.class: traefik-azds
       hosts:
       # This expands to [space.s.]catalogapi.<guid>.<region>.aksapp.io
-      - $(spacePrefix)basketapi$(hostSuffix)
+      - $(spacePrefix)catalogapi$(hostSuffix)
   values:
   - values.dev.yaml?
   - secrets.dev.yaml?
