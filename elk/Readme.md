@@ -38,5 +38,51 @@ This options it have a certified preconfigured options (Network, VirtualMachine 
 
 ![](img/elk/create-vm-elk-azure-summary.png)
 
-When you have configured the main aspects of your virtual machine, you will have a review&create last step like this:
+When you have configured the main aspects of your virtual machine, you will have a "review & create" last step like this:
 ![](img/elk/create-vm-elk-azure-last-step.png)
+
+### Configuring the bitnami environment
+
+  This virtual machine has a lot of configuration pipeing done. If you want to change something of the default configuration you can address this documentation:
+  [https://docs.bitnami.com/virtual-machine/apps/elk/get-started/](https://docs.bitnami.com/virtual-machine/apps/elk/get-started/)
+
+  The only thing you have to change is the logstash configuration inside the machine. This configuration is at the file ```/opt/bitnami/logstash/conf/logstash.conf```
+  You must edit the file and overwrite with this configuration:
+  ```conf
+  input {
+	http {	
+		#default host 0.0.0.0:8080
+		codec => json
+	}
+}
+
+## Add your filters / logstash plugins configuration here
+filter {
+ 	split {
+		field => "events"
+		target => "e"
+		remove_field => "events"
+	}
+}
+
+output {
+	elasticsearch {
+		hosts => "elasticsearch:9200"
+		index=>"eshops-%{+xxxx.ww}"
+	}
+}
+```
+
+For doing this you can connect via ssh to the vm and edit the file using the vi editor for example.
+When the file will be edited, check there are Inbound Port Rules created for the logstash service. You can do it going to Networking Menu on your ELK Virtual Machine Resource in Azure.
+
+![](img/elk/azure-nsg-inboundportsConfig.png)
+
+The only thing that remains is to connect to your vm vía browser. And check the bitnami splash page is showing.
+
+![](img/elk/bitnami_splash.png)
+
+You can get the password for accessing going to your virtual machine in azure and check the boot diagnostics, theres a message that shows to you which is your password.
+
+When you have the user and password you can access to the kibana tool, and create the ```eshops-*``` index pattern that is well documented at the beggining of this documentation and then start to discover.
+![](img/elk/)
