@@ -126,7 +126,7 @@ The architecture proposes a microservice oriented architecture implementation wi
 > <p> However, in a real production environment it is recommended to have your databases (SQL Server, Redis, and the NO-SQL database, in this case) in HA (High Available) services like Azure SQL Database, Redis as a service and Azure CosmosDB instead the MongoDB container (as both systems share the same access protocol). If you want to change to a production configuration, you'll just need to change the connection strings once you have set up the servers in an HA cloud or on-premises.
 
 > ### Important Note on EventBus
-> In this solution's current EventBus is mainly used for learning purposes (development and testing), it is good but very incomplete, such as error handling and transactional consistency.  <p> 
+> In this solution's current EventBus is a simplified implementation, mainly used for learning purposes (development and testing), so it doesn't handle all production scenarios, most notably on error handling.  <p> 
 > The following forks provide production environment level implementation examples with eShopOnContainers :
 > * Implementation with [CAP](https://github.com/dotnetcore/CAP) : https://github.com/yang-xiaodong/eShopOnContainers
 > * Implementation with [NServiceBus](https://github.com/Particular/NServiceBus) : https://github.com/Particular/eShopOnContainers
