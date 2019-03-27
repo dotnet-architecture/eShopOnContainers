@@ -32,7 +32,7 @@ export class CampaignsService {
         let url = this.marketingUrl + '/api/v1/m/campaigns/user';
         url = url + '?pageIndex=' + pageIndex + '&pageSize=' + pageSize;
 
-        return this.service.get(url).pipe(map((response: Response) => {
+        return this.service.get(url).pipe(map((response: any) => {
             return response;
         }));
     }
@@ -40,7 +40,7 @@ export class CampaignsService {
     getCampaign(id: number): Observable<ICampaignItem> {
         let url = this.marketingUrl + '/api/v1/m/campaigns/' + id;
 
-        return this.service.get(url).pipe(map((response: Response) => {
+        return this.service.get(url).pipe(map((response: any) => {
             return response;
         }));
     }    
