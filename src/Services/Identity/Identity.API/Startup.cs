@@ -86,7 +86,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API
                 x.IssuerUri = "null";
                 x.Authentication.CookieLifetime = TimeSpan.FromHours(2);
             })
-            .AddDevspacesIfNeeded(Configuration.GetValue("UseDevspaces", false))
+            .AddDevspacesIfNeeded(Configuration.GetValue("EnableDevspaces", false))
             .AddSigningCredential(Certificate.Get())
             .AddAspNetIdentity<ApplicationUser>()
             .AddConfigurationStore(options =>

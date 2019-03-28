@@ -14,8 +14,10 @@ install:
       annotations:
         kubernetes.io/ingress.class: traefik-azds
       hosts:
-      # This expands to [space.s.]paymentapi.<guid>.<region>.aksapp.io
-      - $(spacePrefix)paymentapi$(hostSuffix)
+      - $(spacePrefix)eshop$(hostSuffix)
+    inf:
+      k8s:
+        dns: $(spacePrefix)eshop$(hostSuffix)            
   values:
   - values.dev.yaml?
   - secrets.dev.yaml?

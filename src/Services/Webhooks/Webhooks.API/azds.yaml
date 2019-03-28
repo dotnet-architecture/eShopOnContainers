@@ -13,8 +13,10 @@ install:
       annotations:
         kubernetes.io/ingress.class: traefik-azds
       hosts:
-      # This expands to [space.s.]webhooksapi.<guid>.<region>.aksapp.io
-      - $(spacePrefix)webhooksapi$(hostSuffix)
+      - $(spacePrefix)eshop$(hostSuffix)
+    inf:
+      k8s:
+        dns: $(spacePrefix)eshop$(hostSuffix)      
   values:
   - values.dev.yaml?
   - secrets.dev.yaml?

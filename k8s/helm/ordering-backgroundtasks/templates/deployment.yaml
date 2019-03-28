@@ -1,11 +1,11 @@
 {{- $name := include "ordering-backgroundtasks.fullname" . -}}
-{{- $cfgname := printf "%s-%s" "cfg" $name -}}
+{{- $cfgname :=  printf "cfg-%s" $name | trunc 63  }}
+
 apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
   name: {{ template "ordering-backgroundtasks.fullname" . }}
   labels:
-    ufo: {{ $cfgname}}
     app: {{ template "ordering-backgroundtasks.name" . }}
     chart: {{ template "ordering-backgroundtasks.chart" . }}
     release: {{ .Release.Name }}
