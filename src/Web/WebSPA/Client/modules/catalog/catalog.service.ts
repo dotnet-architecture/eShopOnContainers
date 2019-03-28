@@ -38,7 +38,7 @@ export class CatalogService {
 
         return this.service.get(url)
             .pipe(
-                map((response: Response) => {
+                map((response: any) => {
                     return response;
                 })
             );
@@ -47,7 +47,7 @@ export class CatalogService {
     getBrands(): Observable<ICatalogBrand[]> {
         return this.service.get(this.brandUrl)
             .pipe(
-                map((response: Response) => {
+                map((response: any) => {
                     return response;
                 })
             );
@@ -56,7 +56,7 @@ export class CatalogService {
     getTypes(): Observable<ICatalogType[]> {
         return this.service.get(this.typesUrl)
             .pipe(
-                map((response: Response) => {
+                map((response: any) => {
                     return response;
                 })
             );

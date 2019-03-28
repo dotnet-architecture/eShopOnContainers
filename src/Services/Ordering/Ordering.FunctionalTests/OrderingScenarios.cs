@@ -3,7 +3,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using WebMVC.ServicesModelDTOs;
+using WebMVC.Services.ModelDTOs;
 using Xunit;
 
 namespace Ordering.FunctionalTests
