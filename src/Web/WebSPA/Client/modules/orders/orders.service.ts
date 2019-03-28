@@ -9,12 +9,8 @@ import { SecurityService } from '../shared/services/security.service';
 import { ConfigurationService } from '../shared/services/configuration.service';
 import { BasketWrapperService } from '../shared/services/basket.wrapper.service';
 
-import 'rxjs/Rx';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/throw';
-import { Observer } from 'rxjs/Observer';
-import 'rxjs/add/operator/map';
-
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class OrdersService {
@@ -31,17 +27,17 @@ export class OrdersService {
     getOrders(): Observable<IOrder[]> {
         let url = this.ordersUrl + '/api/v1/o/orders';
 
-        return this.service.get(url).map((response: Response) => {
-            return response.json();
-        });
+        return this.service.get(url).pipe(map((response: any) => {
+            return response;
+        }));
     }
 
     getOrder(id: number): Observable<IOrderDetail> {
         let url = this.ordersUrl + '/api/v1/o/orders/' + id;
 
-        return this.service.get(url).map((response: Response) => {
-            return response.json();
-        });
+        return this.service.get(url).pipe(map((response: any) => {
+            return response;
+        }));
     }
 
     mapOrderAndIdentityInfoNewOrder(): IOrder {

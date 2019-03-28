@@ -1,4 +1,5 @@
-﻿using eShopOnContainers.Core.Models.User;
+﻿using eShopOnContainers.Core.Helpers;
+using eShopOnContainers.Core.Models.User;
 using eShopOnContainers.Core.Services.RequestProvider;
 using System;
 using System.Threading.Tasks;
@@ -16,8 +17,8 @@ namespace eShopOnContainers.Core.Services.User
 
         public async Task<UserInfo> GetUserInfoAsync(string authToken)
         {
-            UriBuilder builder = new UriBuilder(GlobalSetting.Instance.UserInfoEndpoint);
-            string uri = builder.ToString();
+            var uri = UriHelper.CombineUri(GlobalSetting.Instance.UserInfoEndpoint);
+
             var userInfo = await _requestProvider.GetAsync<UserInfo>(uri, authToken);
             return userInfo;
         }

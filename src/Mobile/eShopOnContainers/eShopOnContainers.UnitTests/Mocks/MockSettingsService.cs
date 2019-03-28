@@ -11,7 +11,9 @@ namespace eShopOnContainers.UnitTests.Mocks
         const string AccessToken = "access_token";
         const string IdToken = "id_token";
         const string IdUseMocks = "use_mocks";
-        const string IdUrlBase = "url_base";
+        const string IdIdentityBase = "url_base";
+        const string IdGatewayMarketingBase = "url_marketing";
+        const string IdGatewayShoppingBase = "url_shopping";
         const string IdUseFakeLocation = "use_fake_location";
         const string IdLatitude = "latitude";
         const string IdLongitude = "longitude";
@@ -23,7 +25,9 @@ namespace eShopOnContainers.UnitTests.Mocks
         readonly bool AllowGpsLocationDefault = false;
         readonly double FakeLatitudeDefault = 47.604610d;
         readonly double FakeLongitudeDefault = -122.315752d;
-        readonly string UrlBaseDefault = "https://13.88.8.119";
+        readonly string UrlIdentityDefault = "https://13.88.8.119";
+        readonly string UrlGatewayMarketingDefault = "https://13.88.8.119";
+        readonly string UrlGatewayShoppingDefault = "https://13.88.8.119";
 
         public string AuthAccessToken
         {
@@ -43,10 +47,22 @@ namespace eShopOnContainers.UnitTests.Mocks
             set => AddOrUpdateValue(IdUseMocks, value);
         }
 
-        public string UrlBase
+        public string IdentityEndpointBase
         {
-            get => GetValueOrDefault(IdUrlBase, UrlBaseDefault);
-            set => AddOrUpdateValue(IdUrlBase, value);
+            get => GetValueOrDefault(IdIdentityBase, UrlIdentityDefault);
+            set => AddOrUpdateValue(IdIdentityBase, value);
+        }
+
+        public string GatewayShoppingEndpointBase
+        {
+            get => GetValueOrDefault(IdGatewayShoppingBase, UrlGatewayShoppingDefault);
+            set => AddOrUpdateValue(IdGatewayShoppingBase, value);
+        }
+
+        public string GatewayMarketingEndpointBase
+        {
+            get => GetValueOrDefault(IdGatewayMarketingBase, UrlGatewayMarketingDefault);
+            set => AddOrUpdateValue(IdGatewayMarketingBase, value);
         }
 
         public bool UseFakeLocation

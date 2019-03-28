@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="2c3747dd-fc05-4392-a731-de2f32a62eef" name="@2b67e7387bb9 2018-12-05 11:24:14" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2018-12-05T11:24:14.5102211+00:00" queuing="2018-12-05T11:24:14.5102222+00:00" start="2018-12-05T11:23:50.0598477+00:00" finish="2018-12-05T11:24:15.8957360+00:00" />
+  <TestSettings name="default" id="cda9c3c1-e5e4-4684-8b96-7eed6663bec0">
+    <Deployment runDeploymentRoot="_2b67e7387bb9_2018-12-05_11_24_14" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="1d45c572-59de-4d7f-8f9c-d69b5dadbf02" testId="8c1a2207-d19c-0b78-dd96-df617732922c" testName="Ordering.FunctionalTests.OrderingScenarios.Cancel_order_no_order_created_bad_request_response" computerName="2b67e7387bb9" duration="00:00:13.3130000" startTime="2018-12-05T11:24:14.4257017+00:00" endTime="2018-12-05T11:24:14.4257056+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1d45c572-59de-4d7f-8f9c-d69b5dadbf02" />
+    <UnitTestResult executionId="9e229357-8b76-4569-914b-6030866ee316" testId="37ee8be5-0517-c735-d707-a8dcd6ba7613" testName="Ordering.FunctionalTests.OrderingScenarios.Get_get_all_stored_orders_and_response_ok_status_code" computerName="2b67e7387bb9" duration="00:00:00.6970000" startTime="2018-12-05T11:24:15.1362290+00:00" endTime="2018-12-05T11:24:15.1362337+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9e229357-8b76-4569-914b-6030866ee316" />
+    <UnitTestResult executionId="1e2ff621-c28c-49de-bfe7-d890ac94d9e6" testId="01ee4a4c-4b61-ec68-b1de-10796cc68607" testName="Ordering.FunctionalTests.OrderingScenarios.Ship_order_no_order_created_bad_request_response" computerName="2b67e7387bb9" duration="00:00:00.4950000" startTime="2018-12-05T11:24:15.6429216+00:00" endTime="2018-12-05T11:24:15.6429254+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1e2ff621-c28c-49de-bfe7-d890ac94d9e6" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="Ordering.FunctionalTests.OrderingScenarios.Ship_order_no_order_created_bad_request_response" storage="/src/src/services/ordering/ordering.functionaltests/bin/debug/netcoreapp2.1/ordering.functionaltests.dll" id="01ee4a4c-4b61-ec68-b1de-10796cc68607">
+      <Execution id="1e2ff621-c28c-49de-bfe7-d890ac94d9e6" />
+      <TestMethod codeBase="/src/src/Services/Ordering/Ordering.FunctionalTests/bin/Debug/netcoreapp2.1/Ordering.FunctionalTests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Ordering.FunctionalTests" name="Ordering.FunctionalTests.OrderingScenarios.Ship_order_no_order_created_bad_request_response" />
+    </UnitTest>
+    <UnitTest name="Ordering.FunctionalTests.OrderingScenarios.Cancel_order_no_order_created_bad_request_response" storage="/src/src/services/ordering/ordering.functionaltests/bin/debug/netcoreapp2.1/ordering.functionaltests.dll" id="8c1a2207-d19c-0b78-dd96-df617732922c">
+      <Execution id="1d45c572-59de-4d7f-8f9c-d69b5dadbf02" />
+      <TestMethod codeBase="/src/src/Services/Ordering/Ordering.FunctionalTests/bin/Debug/netcoreapp2.1/Ordering.FunctionalTests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Ordering.FunctionalTests" name="Ordering.FunctionalTests.OrderingScenarios.Cancel_order_no_order_created_bad_request_response" />
+    </UnitTest>
+    <UnitTest name="Ordering.FunctionalTests.OrderingScenarios.Get_get_all_stored_orders_and_response_ok_status_code" storage="/src/src/services/ordering/ordering.functionaltests/bin/debug/netcoreapp2.1/ordering.functionaltests.dll" id="37ee8be5-0517-c735-d707-a8dcd6ba7613">
+      <Execution id="9e229357-8b76-4569-914b-6030866ee316" />
+      <TestMethod codeBase="/src/src/Services/Ordering/Ordering.FunctionalTests/bin/Debug/netcoreapp2.1/Ordering.FunctionalTests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Ordering.FunctionalTests" name="Ordering.FunctionalTests.OrderingScenarios.Get_get_all_stored_orders_and_response_ok_status_code" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="8c1a2207-d19c-0b78-dd96-df617732922c" executionId="1d45c572-59de-4d7f-8f9c-d69b5dadbf02" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="37ee8be5-0517-c735-d707-a8dcd6ba7613" executionId="9e229357-8b76-4569-914b-6030866ee316" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="01ee4a4c-4b61-ec68-b1de-10796cc68607" executionId="1e2ff621-c28c-49de-bfe7-d890ac94d9e6" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="3" executed="3" passed="3" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:05.4257955]   Discovering: Ordering.FunctionalTests[xUnit.net 00:00:05.9560169]   Discovered:  Ordering.FunctionalTests[xUnit.net 00:00:05.9845906]   Starting:    Ordering.FunctionalTests[xUnit.net 00:00:21.2769127]   Finished:    Ordering.FunctionalTests</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

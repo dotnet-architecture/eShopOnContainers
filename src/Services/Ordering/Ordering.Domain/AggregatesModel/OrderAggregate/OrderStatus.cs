@@ -1,8 +1,7 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate
 {
     using global::Ordering.Domain.Exceptions;
-    using Seedwork;
-    using SeedWork;
+    using Microsoft.eShopOnContainers.Services.Ordering.Domain.SeedWork;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -16,10 +15,6 @@
         public static OrderStatus Paid = new OrderStatus(4, nameof(Paid).ToLowerInvariant());
         public static OrderStatus Shipped = new OrderStatus(5, nameof(Shipped).ToLowerInvariant());
         public static OrderStatus Cancelled = new OrderStatus(6, nameof(Cancelled).ToLowerInvariant());
-
-        protected OrderStatus()
-        {
-        }
 
         public OrderStatus(int id, string name)
             : base(id, name)

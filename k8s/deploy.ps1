@@ -8,6 +8,7 @@ Param(
     [parameter(Mandatory=$false)][string]$imageTag,
     [parameter(Mandatory=$false)][bool]$deployCI=$false,
     [parameter(Mandatory=$false)][bool]$buildImages=$true,
+    [parameter(Mandatory=$false)][bool]$pushImages=$true,
     [parameter(Mandatory=$false)][bool]$deployInfrastructure=$true,
     [parameter(Mandatory=$false)][string]$dockerOrg="eshop"
 )
@@ -63,9 +64,11 @@ if ($buildImages) {
     Write-Host "Building Docker images tagged with '$imageTag'" -ForegroundColor Yellow
     $env:TAG=$imageTag
     docker-compose -p .. -f ../docker-compose.yml build    
+}
 
+if ($pushImages) {
     Write-Host "Pushing images to $registry/$dockerOrg..." -ForegroundColor Yellow
-    $services = ("basket.api", "catalog.api", "identity.api", "ordering.api", "marketing.api","payment.api","locations.api", "webmvc", "webspa", "webstatus", "ocelotapigw", "mobileshoppingagg", "webshoppingagg")
+    $services = ("basket.api", "catalog.api", "identity.api", "ordering.api", "ordering.backgroundtasks", "marketing.api","payment.api","locations.api", "webmvc", "webspa", "webstatus", "ocelotapigw", "mobileshoppingagg", "webshoppingagg", "ordering.signalrhub")
 
     foreach ($service in $services) {
         $imageFqdn = if ($useDockerHub)  {"$dockerOrg/${service}"} else {"$registry/$dockerOrg/${service}"}
@@ -91,7 +94,10 @@ if (-not [string]::IsNullOrEmpty($dockerUser)) {
         exit
     }
 
-    # create registry key secret
+    # Try to delete the Docker registry key secret
+    ExecKube -cmd 'delete secret docker-registry registry-key'
+
+    # Create the Docker registry key secret
     ExecKube -cmd 'create secret docker-registry registry-key `
     --docker-server=$registryFDQN `
     --docker-username=$dockerUser `
@@ -107,6 +113,7 @@ ExecKube -cmd 'delete configmap internalurls'
 ExecKube -cmd 'delete configmap urls'
 ExecKube -cmd 'delete configmap externalcfg'
 ExecKube -cmd 'delete configmap ocelot'
+ExecKube -cmd 'delete -f ingress.yaml'
 
 # start sql, rabbitmq, frontend deployments
 if ($deployInfrastructure) {
@@ -161,12 +168,14 @@ ExecKube -cmd 'set image deployments/basket basket=${registryPath}${dockerOrg}/b
 ExecKube -cmd 'set image deployments/catalog catalog=${registryPath}${dockerOrg}/catalog.api:$imageTag'
 ExecKube -cmd 'set image deployments/identity identity=${registryPath}${dockerOrg}/identity.api:$imageTag'
 ExecKube -cmd 'set image deployments/ordering ordering=${registryPath}${dockerOrg}/ordering.api:$imageTag'
+ExecKube -cmd 'set image deployments/ordering-backgroundtasks ordering-backgroundtasks=${registryPath}${dockerOrg}/ordering.backgroundtasks:$imageTag'
 ExecKube -cmd 'set image deployments/marketing marketing=${registryPath}${dockerOrg}/marketing.api:$imageTag'
 ExecKube -cmd 'set image deployments/locations locations=${registryPath}${dockerOrg}/locations.api:$imageTag'
 ExecKube -cmd 'set image deployments/payment payment=${registryPath}${dockerOrg}/payment.api:$imageTag'
 ExecKube -cmd 'set image deployments/webmvc webmvc=${registryPath}${dockerOrg}/webmvc:$imageTag'
 ExecKube -cmd 'set image deployments/webstatus webstatus=${registryPath}${dockerOrg}/webstatus:$imageTag'
 ExecKube -cmd 'set image deployments/webspa webspa=${registryPath}${dockerOrg}/webspa:$imageTag'
+ExecKube -cmd 'set image deployments/ordering-signalrhub ordering-signalrhub=${registryPath}${dockerOrg}/ordering.signalrhub:$imageTag'
 
 ExecKube -cmd 'set image deployments/mobileshoppingagg mobileshoppingagg=${registryPath}${dockerOrg}/mobileshoppingagg:$imageTag'
 ExecKube -cmd 'set image deployments/webshoppingagg webshoppingagg=${registryPath}${dockerOrg}/webshoppingagg:$imageTag'
@@ -181,6 +190,7 @@ ExecKube -cmd 'rollout resume deployments/basket'
 ExecKube -cmd 'rollout resume deployments/catalog'
 ExecKube -cmd 'rollout resume deployments/identity'
 ExecKube -cmd 'rollout resume deployments/ordering'
+ExecKube -cmd 'rollout resume deployments/ordering-backgroundtasks'
 ExecKube -cmd 'rollout resume deployments/marketing'
 ExecKube -cmd 'rollout resume deployments/locations'
 ExecKube -cmd 'rollout resume deployments/payment'
@@ -193,6 +203,10 @@ ExecKube -cmd 'rollout resume deployments/apigwmm'
 ExecKube -cmd 'rollout resume deployments/apigwms'
 ExecKube -cmd 'rollout resume deployments/apigwwm'
 ExecKube -cmd 'rollout resume deployments/apigwws'
+ExecKube -cmd 'rollout resume deployments/ordering-signalrhub'
+
+Write-Host "Adding/Updating ingress resource..." -ForegroundColor Yellow
+ExecKube -cmd 'apply -f ingress.yaml'
 
 Write-Host "WebSPA is exposed at http://$externalDns, WebMVC at http://$externalDns/webmvc, WebStatus at http://$externalDns/webstatus" -ForegroundColor Yellow
 

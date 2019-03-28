@@ -7,18 +7,15 @@ import { ICatalog } from '../shared/models/catalog.model';
 import { ICatalogBrand } from '../shared/models/catalogBrand.model';
 import { ICatalogType } from '../shared/models/catalogType.model';
 
-import 'rxjs/Rx';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/throw';
-import { Observer } from 'rxjs/Observer';
-import 'rxjs/add/operator/map';
+import { Observable } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 
 @Injectable()
 export class CatalogService {
     private catalogUrl: string = '';
     private brandUrl: string = '';
     private typesUrl: string = '';
-
+  
     constructor(private service: DataService, private configurationService: ConfigurationService) {
         this.configurationService.settingsLoaded$.subscribe(x => {
             this.catalogUrl = this.configurationService.serverSettings.purchaseUrl + '/api/v1/c/catalog/items';
@@ -29,26 +26,39 @@ export class CatalogService {
 
     getCatalog(pageIndex: number, pageSize: number, brand: number, type: number): Observable<ICatalog> {
         let url = this.catalogUrl;
-        if (brand || type) {
-            url = this.catalogUrl + '/type/' + ((type) ? type.toString() : 'null') + '/brand/' + ((brand) ? brand.toString() : 'null');
-        }
 
+        if (type) {
+            url = this.catalogUrl + '/type/' + type.toString() + '/brand/' + ((brand) ? brand.toString() : '');
+        }
+        else if (brand) {
+            url = this.catalogUrl + '/type/all' + '/brand/' + ((brand) ? brand.toString() : '');
+        }
+      
         url = url + '?pageIndex=' + pageIndex + '&pageSize=' + pageSize;
 
-        return this.service.get(url).map((response: Response) => {
-            return response.json();
-        });
+        return this.service.get(url)
+            .pipe(
+                map((response: any) => {
+                    return response;
+                })
+            );
     }
 
     getBrands(): Observable<ICatalogBrand[]> {
-        return this.service.get(this.brandUrl).map((response: Response) => {
-            return response.json();
-        });
+        return this.service.get(this.brandUrl)
+            .pipe(
+                map((response: any) => {
+                    return response;
+                })
+            );
     }
 
     getTypes(): Observable<ICatalogType[]> {
-        return this.service.get(this.typesUrl).map((response: Response) => {
-            return response.json();
-        });
+        return this.service.get(this.typesUrl)
+            .pipe(
+                map((response: any) => {
+                    return response;
+                })
+            );
     };
 }

@@ -1,37 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http;
+﻿using Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Config;
+using Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Config;
-using Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Models;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Services
 {
     public class OrderApiClient : IOrderApiClient
     {
-
-        private readonly IHttpClient _apiClient;
+        private readonly HttpClient _apiClient;
         private readonly ILogger<OrderApiClient> _logger;
         private readonly UrlsConfig _urls;
 
-        public OrderApiClient(IHttpClient httpClient, ILogger<OrderApiClient> logger, IOptionsSnapshot<UrlsConfig> config)
+        public OrderApiClient(HttpClient httpClient, ILogger<OrderApiClient> logger, IOptions<UrlsConfig> config)
         {
             _apiClient = httpClient;
             _logger = logger;
             _urls = config.Value;
         }
 
-        public async Task<OrderData> GetOrderDraftFromBasket(BasketData basket)
+        public async Task<OrderData> GetOrderDraftFromBasketAsync(BasketData basket)
         {
             var url = _urls.Orders + UrlsConfig.OrdersOperations.GetOrderDraft();
-            var response = await _apiClient.PostAsync<BasketData>(url, basket);
+            var content = new StringContent(JsonConvert.SerializeObject(basket), System.Text.Encoding.UTF8, "application/json");
+            var response = await _apiClient.PostAsync(url, content);
+
             response.EnsureSuccessStatusCode();
-            var jsonResponse = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<OrderData>(jsonResponse);
+
+            var ordersDraftResponse = await response.Content.ReadAsStringAsync();
+
+            return JsonConvert.DeserializeObject<OrderData>(ordersDraftResponse);
         }
     }
 }
