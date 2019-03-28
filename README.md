@@ -125,6 +125,12 @@ The architecture proposes a microservice oriented architecture implementation wi
 > <p> A similar case is defined in regard to Redis cache running as a container for the development environment. Or a No-SQL database (MongoDB) running as a container.
 > <p> However, in a real production environment it is recommended to have your databases (SQL Server, Redis, and the NO-SQL database, in this case) in HA (High Available) services like Azure SQL Database, Redis as a service and Azure CosmosDB instead the MongoDB container (as both systems share the same access protocol). If you want to change to a production configuration, you'll just need to change the connection strings once you have set up the servers in an HA cloud or on-premises.
 
+> ### Important Note on EventBus
+> In this solution's current EventBus is a simplified implementation, mainly used for learning purposes (development and testing), so it doesn't handle all production scenarios, most notably on error handling.  <p> 
+> The following forks provide production environment level implementation examples with eShopOnContainers :
+> * Implementation with [CAP](https://github.com/dotnetcore/CAP) : https://github.com/yang-xiaodong/eShopOnContainers
+> * Implementation with [NServiceBus](https://github.com/Particular/NServiceBus) : https://github.com/Particular/eShopOnContainers
+
 ## Related documentation and guidance
 While developing this reference application, we've been creating a reference <b>Guide/eBook</b> focusing on <b>architecting and developing containerized and microservice based .NET Applications</b> (download link available below) which explains in detail how to develop this kind of architectural style (microservices, Docker containers, Domain-Driven Design for certain microservices) plus other simpler architectural styles, like monolithic apps that can also live as Docker containers.
 <p>
