@@ -16,10 +16,6 @@
         public static OrderStatus Shipped = new OrderStatus(5, nameof(Shipped).ToLowerInvariant());
         public static OrderStatus Cancelled = new OrderStatus(6, nameof(Cancelled).ToLowerInvariant());
 
-        protected OrderStatus()
-        {
-        }
-
         public OrderStatus(int id, string name)
             : base(id, name)
         {
