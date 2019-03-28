@@ -1,18 +1,16 @@
-FROM microsoft/aspnetcore:2.0 AS base
+FROM mcr.microsoft.com/dotnet/core/aspnet:2.2 AS base
 WORKDIR /app
 EXPOSE 80
 
-FROM microsoft/aspnetcore-build:2.0 AS build
+FROM mcr.microsoft.com/dotnet/core/sdk:2.2 AS build
 WORKDIR /src
-COPY eShopOnContainers-ServicesAndWebApps.sln ./
-COPY src/Services/Ordering/Ordering.SignalrHub/Ordering.SignalrHub.csproj src/Services/Ordering/Ordering.SignalrHub/
-RUN dotnet restore -nowarn:msb3202,nu1503
 COPY . .
 WORKDIR /src/src/Services/Ordering/Ordering.SignalrHub
-RUN dotnet build Ordering.SignalrHub.csproj -c Release -o /app
+RUN dotnet restore -nowarn:msb3202,nu1503
+RUN dotnet build  --no-restore  Ordering.SignalrHub.csproj -c Release -o /app
 
 FROM build AS publish
-RUN dotnet publish Ordering.SignalrHub.csproj -c Release -o /app
+RUN dotnet publish  --no-restore  Ordering.SignalrHub.csproj -c Release -o /app
 
 FROM base AS final
 WORKDIR /app

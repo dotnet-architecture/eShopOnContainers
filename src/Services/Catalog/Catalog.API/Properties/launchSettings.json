@@ -13,7 +13,10 @@
       "launchBrowser": true,
       "launchUrl": "/swagger",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ConnectionString": "server=localhost,5433;Database=Microsoft.eShopOnContainers.Services.CatalogDb;User Id=sa;Password=Pass@word",
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "EventBusConnection": "localhost",
+        "Serilog:SeqServerUrl": "http://locahost:5340"
       }
     },
     "Microsoft.eShopOnContainers.Services.Catalog.API": {

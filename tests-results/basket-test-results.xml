@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="96da8a5c-5309-4e3a-a6ed-89303561a450" name="@cc795b0cf03c 2018-12-05 11:23:58" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2018-12-05T11:23:58.8840432+00:00" queuing="2018-12-05T11:23:58.8840443+00:00" start="2018-12-05T11:23:45.4010507+00:00" finish="2018-12-05T11:23:58.9725825+00:00" />
+  <TestSettings name="default" id="0df98659-1d05-46e8-a58f-e605f0367f36">
+    <Deployment runDeploymentRoot="_cc795b0cf03c_2018-12-05_11_23_58" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="561851a9-f9d7-46a8-a72f-b15d9f881e98" testId="65eb92e5-3f81-c557-7b6a-e31bbb392a30" testName="UnitTest.Basket.Application.CartControllerTest.Add_to_cart_success" computerName="cc795b0cf03c" duration="00:00:00.0520000" startTime="2018-12-05T11:23:58.3708078+00:00" endTime="2018-12-05T11:23:58.3708084+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="561851a9-f9d7-46a8-a72f-b15d9f881e98" />
+    <UnitTestResult executionId="503e5b72-ad5e-47e3-ba7a-e6bdf65fb3c6" testId="f13c87f6-4345-41c1-0ceb-530a37f8c45c" testName="UnitTest.Basket.Application.BasketWebApiTest.Doing_Checkout_Without_Basket_Should_Return_Bad_Request" computerName="cc795b0cf03c" duration="00:00:00.0030000" startTime="2018-12-05T11:23:58.2981843+00:00" endTime="2018-12-05T11:23:58.2981850+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="503e5b72-ad5e-47e3-ba7a-e6bdf65fb3c6" />
+    <UnitTestResult executionId="c94bfac7-b0f7-4c85-88f5-9b6ea39aefc7" testId="1be065ec-8cda-95e2-fd64-2bec276720d6" testName="UnitTest.Basket.Application.BasketWebApiTest.Doing_Checkout_Wit_Basket_Should_Publish_UserCheckoutAccepted_Integration_Event" computerName="cc795b0cf03c" duration="00:00:00.1550000" startTime="2018-12-05T11:23:58.2980829+00:00" endTime="2018-12-05T11:23:58.2980839+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c94bfac7-b0f7-4c85-88f5-9b6ea39aefc7" />
+    <UnitTestResult executionId="0786dbc3-3a84-4d94-ba06-10ef5b44fede" testId="cfb3e0df-fbb0-f11f-f586-af6d36973673" testName="UnitTest.Basket.Application.CartControllerTest.Post_cart_success" computerName="cc795b0cf03c" duration="00:00:00.0970000" startTime="2018-12-05T11:23:58.4478198+00:00" endTime="2018-12-05T11:23:58.4478226+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0786dbc3-3a84-4d94-ba06-10ef5b44fede" />
+    <UnitTestResult executionId="53777076-ea09-481d-acbb-b8b1d85513a9" testId="f7add3c9-26d7-687c-a46e-1e880e36f193" testName="UnitTest.Basket.Application.BasketWebApiTest.Post_customer_basket_success" computerName="cc795b0cf03c" duration="00:00:00.0630000" startTime="2018-12-05T11:23:58.3707805+00:00" endTime="2018-12-05T11:23:58.3707839+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="53777076-ea09-481d-acbb-b8b1d85513a9" />
+    <UnitTestResult executionId="3b321d3b-b42d-4b4b-a1b2-510a96ada515" testId="33fde07d-fd90-8a31-ce7f-73d594f79232" testName="UnitTest.Basket.Application.CartControllerTest.Post_cart_checkout_success" computerName="cc795b0cf03c" duration="00:00:01.4900000" startTime="2018-12-05T11:23:58.2970206+00:00" endTime="2018-12-05T11:23:58.2970240+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3b321d3b-b42d-4b4b-a1b2-510a96ada515" />
+    <UnitTestResult executionId="9de96a13-7c87-4519-9c24-19861f9036e3" testId="ace9ddb6-e897-b915-1e3c-4ae77eb2f0e6" testName="UnitTest.Basket.Application.BasketWebApiTest.Get_customer_basket_success" computerName="cc795b0cf03c" duration="00:00:01.2680000" startTime="2018-12-05T11:23:58.0931351+00:00" endTime="2018-12-05T11:23:58.0931394+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9de96a13-7c87-4519-9c24-19861f9036e3" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="UnitTest.Basket.Application.CartControllerTest.Post_cart_success" storage="/src/src/services/basket/basket.unittests/bin/debug/netcoreapp2.1/basket.unittests.dll" id="cfb3e0df-fbb0-f11f-f586-af6d36973673">
+      <Execution id="0786dbc3-3a84-4d94-ba06-10ef5b44fede" />
+      <TestMethod codeBase="/src/src/Services/Basket/Basket.UnitTests/bin/Debug/netcoreapp2.1/Basket.UnitTests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Basket.UnitTests" name="UnitTest.Basket.Application.CartControllerTest.Post_cart_success" />
+    </UnitTest>
+    <UnitTest name="UnitTest.Basket.Application.CartControllerTest.Add_to_cart_success" storage="/src/src/services/basket/basket.unittests/bin/debug/netcoreapp2.1/basket.unittests.dll" id="65eb92e5-3f81-c557-7b6a-e31bbb392a30">
+      <Execution id="561851a9-f9d7-46a8-a72f-b15d9f881e98" />
+      <TestMethod codeBase="/src/src/Services/Basket/Basket.UnitTests/bin/Debug/netcoreapp2.1/Basket.UnitTests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Basket.UnitTests" name="UnitTest.Basket.Application.CartControllerTest.Add_to_cart_success" />
+    </UnitTest>
+    <UnitTest name="UnitTest.Basket.Application.BasketWebApiTest.Get_customer_basket_success" storage="/src/src/services/basket/basket.unittests/bin/debug/netcoreapp2.1/basket.unittests.dll" id="ace9ddb6-e897-b915-1e3c-4ae77eb2f0e6">
+      <Execution id="9de96a13-7c87-4519-9c24-19861f9036e3" />
+      <TestMethod codeBase="/src/src/Services/Basket/Basket.UnitTests/bin/Debug/netcoreapp2.1/Basket.UnitTests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Basket.UnitTests" name="UnitTest.Basket.Application.BasketWebApiTest.Get_customer_basket_success" />
+    </UnitTest>
+    <UnitTest name="UnitTest.Basket.Application.BasketWebApiTest.Doing_Checkout_Without_Basket_Should_Return_Bad_Request" storage="/src/src/services/basket/basket.unittests/bin/debug/netcoreapp2.1/basket.unittests.dll" id="f13c87f6-4345-41c1-0ceb-530a37f8c45c">
+      <Execution id="503e5b72-ad5e-47e3-ba7a-e6bdf65fb3c6" />
+      <TestMethod codeBase="/src/src/Services/Basket/Basket.UnitTests/bin/Debug/netcoreapp2.1/Basket.UnitTests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Basket.UnitTests" name="UnitTest.Basket.Application.BasketWebApiTest.Doing_Checkout_Without_Basket_Should_Return_Bad_Request" />
+    </UnitTest>
+    <UnitTest name="UnitTest.Basket.Application.BasketWebApiTest.Doing_Checkout_Wit_Basket_Should_Publish_UserCheckoutAccepted_Integration_Event" storage="/src/src/services/basket/basket.unittests/bin/debug/netcoreapp2.1/basket.unittests.dll" id="1be065ec-8cda-95e2-fd64-2bec276720d6">
+      <Execution id="c94bfac7-b0f7-4c85-88f5-9b6ea39aefc7" />
+      <TestMethod codeBase="/src/src/Services/Basket/Basket.UnitTests/bin/Debug/netcoreapp2.1/Basket.UnitTests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Basket.UnitTests" name="UnitTest.Basket.Application.BasketWebApiTest.Doing_Checkout_Wit_Basket_Should_Publish_UserCheckoutAccepted_Integration_Event" />
+    </UnitTest>
+    <UnitTest name="UnitTest.Basket.Application.BasketWebApiTest.Post_customer_basket_success" storage="/src/src/services/basket/basket.unittests/bin/debug/netcoreapp2.1/basket.unittests.dll" id="f7add3c9-26d7-687c-a46e-1e880e36f193">
+      <Execution id="53777076-ea09-481d-acbb-b8b1d85513a9" />
+      <TestMethod codeBase="/src/src/Services/Basket/Basket.UnitTests/bin/Debug/netcoreapp2.1/Basket.UnitTests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Basket.UnitTests" name="UnitTest.Basket.Application.BasketWebApiTest.Post_customer_basket_success" />
+    </UnitTest>
+    <UnitTest name="UnitTest.Basket.Application.CartControllerTest.Post_cart_checkout_success" storage="/src/src/services/basket/basket.unittests/bin/debug/netcoreapp2.1/basket.unittests.dll" id="33fde07d-fd90-8a31-ce7f-73d594f79232">
+      <Execution id="3b321d3b-b42d-4b4b-a1b2-510a96ada515" />
+      <TestMethod codeBase="/src/src/Services/Basket/Basket.UnitTests/bin/Debug/netcoreapp2.1/Basket.UnitTests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Basket.UnitTests" name="UnitTest.Basket.Application.CartControllerTest.Post_cart_checkout_success" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="65eb92e5-3f81-c557-7b6a-e31bbb392a30" executionId="561851a9-f9d7-46a8-a72f-b15d9f881e98" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f13c87f6-4345-41c1-0ceb-530a37f8c45c" executionId="503e5b72-ad5e-47e3-ba7a-e6bdf65fb3c6" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1be065ec-8cda-95e2-fd64-2bec276720d6" executionId="c94bfac7-b0f7-4c85-88f5-9b6ea39aefc7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="cfb3e0df-fbb0-f11f-f586-af6d36973673" executionId="0786dbc3-3a84-4d94-ba06-10ef5b44fede" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f7add3c9-26d7-687c-a46e-1e880e36f193" executionId="53777076-ea09-481d-acbb-b8b1d85513a9" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="33fde07d-fd90-8a31-ce7f-73d594f79232" executionId="3b321d3b-b42d-4b4b-a1b2-510a96ada515" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ace9ddb6-e897-b915-1e3c-4ae77eb2f0e6" executionId="9de96a13-7c87-4519-9c24-19861f9036e3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="7" executed="7" passed="7" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:06.1434181]   Discovering: Basket.UnitTests[xUnit.net 00:00:06.4201662]   Discovered:  Basket.UnitTests[xUnit.net 00:00:06.4258049]   Starting:    Basket.UnitTests[xUnit.net 00:00:09.1721258]   Finished:    Basket.UnitTests</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

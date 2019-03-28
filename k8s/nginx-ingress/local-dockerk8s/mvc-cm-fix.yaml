@@ -1,0 +1,3 @@
+data:
+  urls__IdentityUrl: http://10.0.75.1/identity
+  urls__mvc: http://10.0.75.1/webmvc

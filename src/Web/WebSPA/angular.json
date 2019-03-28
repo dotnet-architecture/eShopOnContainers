@@ -1,0 +1,128 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "WebSPA": {
+      "root": "",
+      "sourceRoot": "Client",
+      "projectType": "application",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "wwwroot",
+            "index": "Client/index.html",
+            "main": "Client/main.ts",
+            "tsConfig": "Client/tsconfig.app.json",
+            "polyfills": "Client/polyfills.ts",
+            "assets": [
+              "Client/assets",
+              "Client/favicon.ico"
+            ],
+            "styles": [
+              "Client/globals.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "fileReplacements": [
+                {
+                  "replace": "Client/environments/environment.ts",
+                  "with": "Client/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "WebSPA:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "WebSPA:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "WebSPA:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "Client/test.ts",
+            "karmaConfig": "./karma.conf.js",
+            "polyfills": "Client/polyfills.ts",
+            "tsConfig": "Client/tsconfig.spec.json",
+            "scripts": [],
+            "styles": [
+              "Client/globals.scss"
+            ],
+            "assets": [
+              "Client/assets",
+              "Client/favicon.ico"
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "Client/tsconfig.app.json",
+              "Client/tsconfig.spec.json"
+            ],
+            "exclude": []
+          }
+        }
+      }
+    },
+    "WebSPA-e2e": {
+      "root": "e2e",
+      "sourceRoot": "e2e",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "./protractor.conf.js",
+            "devServerTarget": "WebSPA:serve"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "e2e/tsconfig.e2e.json"
+            ],
+            "exclude": []
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "WebSPA",
+  "schematics": {
+    "@schematics/angular:component": {
+      "prefix": "app",
+      "styleext": "scss"
+    },
+    "@schematics/angular:directive": {
+      "prefix": "app"
+    }
+  }
+}

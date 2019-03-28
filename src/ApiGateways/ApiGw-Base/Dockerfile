@@ -1,13 +1,12 @@
-FROM microsoft/aspnetcore:2.0 AS base
+FROM mcr.microsoft.com/dotnet/core/aspnet:2.2 AS base
 WORKDIR /app
 EXPOSE 80
 
-FROM microsoft/aspnetcore-build:2.0 AS build
+FROM mcr.microsoft.com/dotnet/core/sdk:2.2 AS build
 WORKDIR /src
-COPY src/ApiGateways/ApiGw-Base/OcelotApiGw.csproj src/ApiGateways/ApiGw-Base/
-RUN dotnet restore src/ApiGateways/ApiGw-Base/
 COPY . .
 WORKDIR /src/src/ApiGateways/ApiGw-Base/
+RUN dotnet restore -nowarn:msb3202,nu1503
 RUN dotnet build -c Release -o /app
 
 FROM build AS publish

@@ -1,0 +1,47 @@
+pool:
+  vmImage: 'ubuntu-16.04'
+variables:
+    registryEndpoint: eshop-registry
+trigger:
+  branches:
+    include:
+    - master
+    - dev
+  paths:
+    include:
+    - src/BuildingBlocks/*
+    - src/Services/Ordering/*
+    - k8s/helm/ordering-api/*  
+    - k8s/helm/ordering-backgroundtasks/*
+    - k8s/helm/ordering-signalrhub/*
+steps:
+- task: DockerCompose@0
+  displayName: Compose build ordering 
+  inputs:
+    dockerComposeCommand: 'build ordering.api ordering.backgroundtasks ordering.signalrhub'
+    containerregistrytype: Container Registry
+    dockerRegistryEndpoint: $(registryEndpoint)
+    dockerComposeFile: docker-compose.yml
+    qualifyImageNames: true
+    projectName: ""
+    dockerComposeFileArgs: |
+      TAG=$(Build.SourceBranchName)
+- task: DockerCompose@0
+  displayName: Compose push ordering
+  inputs:
+    dockerComposeCommand: 'push ordering.api ordering.backgroundtasks ordering.signalrhub'
+    containerregistrytype: Container Registry
+    dockerRegistryEndpoint: $(registryEndpoint)
+    dockerComposeFile: docker-compose.yml
+    qualifyImageNames: true
+    projectName: ""
+    dockerComposeFileArgs: |
+      TAG=$(Build.SourceBranchName)
+- task: CopyFiles@2
+  inputs:
+    sourceFolder: $(Build.SourcesDirectory)/k8s/helm    
+    targetFolder: $(Build.ArtifactStagingDirectory)/k8s/helm
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathtoPublish: $(Build.ArtifactStagingDirectory)/k8s/helm
+    artifactName: helm

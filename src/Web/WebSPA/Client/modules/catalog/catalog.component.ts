@@ -1,5 +1,6 @@
 import { Component, OnInit }    from '@angular/core';
-import { Subscription }         from 'rxjs/Subscription';
+import { Observable, Subscription } from 'rxjs';
+import { catchError }           from 'rxjs/operators';
 
 import { CatalogService }       from './catalog.service';
 import { ConfigurationService } from '../shared/services/configuration.service';
@@ -10,7 +11,6 @@ import { ICatalogBrand }        from '../shared/models/catalogBrand.model';
 import { IPager }               from '../shared/models/pager.model';
 import { BasketWrapperService}  from '../shared/services/basket.wrapper.service';
 import { SecurityService }      from '../shared/services/security.service';
-import { Observable } from 'rxjs/Observable';
 
 @Component({
     selector: 'esh-catalog .esh-catalog',
@@ -83,7 +83,7 @@ export class CatalogComponent implements OnInit {
     getCatalog(pageSize: number, pageIndex: number, brand?: number, type?: number) {
         this.errorReceived = false;
         this.service.getCatalog(pageIndex, pageSize, brand, type)
-            .catch((err) => this.handleError(err))
+            .pipe(catchError((err) => this.handleError(err)))
             .subscribe(catalog => {
                 this.catalog = catalog;
                 this.paginationInfo = {

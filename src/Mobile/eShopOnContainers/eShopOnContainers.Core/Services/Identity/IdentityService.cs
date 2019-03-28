@@ -25,7 +25,7 @@ namespace eShopOnContainers.Core.Services.Identity
         public string CreateAuthorizationRequest()
         {
             // Create URI to authorization endpoint
-            var authorizeRequest = new AuthorizeRequest(GlobalSetting.Instance.IdentityEndpoint);
+            var authorizeRequest = new AuthorizeRequest(GlobalSetting.Instance.AuthorizeEndpoint);
 
             // Dictionary with values for the authorize request
             var dic = new Dictionary<string, string>();
@@ -33,7 +33,7 @@ namespace eShopOnContainers.Core.Services.Identity
             dic.Add("client_secret", GlobalSetting.Instance.ClientSecret);
             dic.Add("response_type", "code id_token");
             dic.Add("scope", "openid profile basket orders locations marketing offline_access");
-            dic.Add("redirect_uri", GlobalSetting.Instance.IdentityCallback);
+            dic.Add("redirect_uri", GlobalSetting.Instance.Callback);
             dic.Add("nonce", Guid.NewGuid().ToString("N"));
             dic.Add("code_challenge", CreateCodeChallenge());
             dic.Add("code_challenge_method", "S256");
@@ -61,7 +61,7 @@ namespace eShopOnContainers.Core.Services.Identity
 
         public async Task<UserToken> GetTokenAsync(string code)
         {
-            string data = string.Format("grant_type=authorization_code&code={0}&redirect_uri={1}&code_verifier={2}", code, WebUtility.UrlEncode(GlobalSetting.Instance.IdentityCallback), _codeVerifier);
+            string data = string.Format("grant_type=authorization_code&code={0}&redirect_uri={1}&code_verifier={2}", code, WebUtility.UrlEncode(GlobalSetting.Instance.Callback), _codeVerifier);
             var token = await _requestProvider.PostAsync<UserToken>(GlobalSetting.Instance.TokenEndpoint, data, GlobalSetting.Instance.ClientId, GlobalSetting.Instance.ClientSecret);
             return token;
         }

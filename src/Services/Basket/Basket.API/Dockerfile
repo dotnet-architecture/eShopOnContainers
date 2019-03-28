@@ -1,13 +1,19 @@
-FROM microsoft/aspnetcore:2.0.5 AS base
+FROM mcr.microsoft.com/dotnet/core/aspnet:2.2 AS base
 WORKDIR /app
 EXPOSE 80
 
-FROM microsoft/aspnetcore-build:2.0.5-2.1.4 AS build
+FROM mcr.microsoft.com/dotnet/core/sdk:2.2 AS build
 WORKDIR /src
 COPY . .
-RUN dotnet restore -nowarn:msb3202,nu1503
 WORKDIR /src/src/Services/Basket/Basket.API
+RUN dotnet restore -nowarn:msb3202,nu1503
 RUN dotnet build --no-restore -c Release -o /app
+
+FROM build as functionaltest
+WORKDIR /src/src/Services/Basket/Basket.FunctionalTests
+
+FROM build as unittest
+WORKDIR /src/src/Services/Basket/Basket.UnitTests
 
 FROM build AS publish
 RUN dotnet publish --no-restore -c Release -o /app

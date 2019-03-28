@@ -33,9 +33,9 @@
 
         public async Task Handle(OrderStatusChangedToAwaitingValidationDomainEvent orderStatusChangedToAwaitingValidationDomainEvent, CancellationToken cancellationToken)
         {
-            _logger.CreateLogger(nameof(OrderStatusChangedToAwaitingValidationDomainEvent))
-                  .LogTrace($"Order with Id: {orderStatusChangedToAwaitingValidationDomainEvent.OrderId} has been successfully updated with " +
-                            $"a status order id: {OrderStatus.AwaitingValidation.Id}");
+            _logger.CreateLogger<OrderStatusChangedToAwaitingValidationDomainEvent>()
+                .LogTrace("Order with Id: {OrderId} has been successfully updated to status {Status} ({Id})",
+                    orderStatusChangedToAwaitingValidationDomainEvent.OrderId, nameof(OrderStatus.AwaitingValidation), OrderStatus.AwaitingValidation.Id);
 
             var order = await _orderRepository.GetAsync(orderStatusChangedToAwaitingValidationDomainEvent.OrderId);
 
@@ -46,7 +46,7 @@
 
             var orderStatusChangedToAwaitingValidationIntegrationEvent = new OrderStatusChangedToAwaitingValidationIntegrationEvent(
                 order.Id, order.OrderStatus.Name, buyer.Name, orderStockList);
-            await _orderingIntegrationEventService.PublishThroughEventBusAsync(orderStatusChangedToAwaitingValidationIntegrationEvent);
+            await _orderingIntegrationEventService.AddAndSaveEventAsync(orderStatusChangedToAwaitingValidationIntegrationEvent);
         }
     }  
 }

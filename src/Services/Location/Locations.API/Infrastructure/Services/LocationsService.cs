@@ -6,6 +6,7 @@
     using Microsoft.eShopOnContainers.Services.Locations.API.IntegrationEvents.Events;
     using Microsoft.eShopOnContainers.Services.Locations.API.Model;
     using Microsoft.eShopOnContainers.Services.Locations.API.ViewModel;
+    using Microsoft.Extensions.Logging;
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -14,34 +15,39 @@
     {
         private readonly ILocationsRepository _locationsRepository;
         private readonly IEventBus _eventBus;
+        private readonly ILogger<LocationsService> _logger;
 
-        public LocationsService(ILocationsRepository locationsRepository, IEventBus eventBus)
+        public LocationsService(
+            ILocationsRepository locationsRepository,
+            IEventBus eventBus,
+            ILogger<LocationsService> logger)
         {
             _locationsRepository = locationsRepository ?? throw new ArgumentNullException(nameof(locationsRepository));
             _eventBus = eventBus ?? throw new ArgumentNullException(nameof(eventBus));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public async Task<Locations> GetLocation(int locationId)
+        public async Task<Locations> GetLocationAsync(int locationId)
         {
             return await _locationsRepository.GetAsync(locationId);
         }
 
-        public async Task<UserLocation> GetUserLocation(string userId)
+        public async Task<UserLocation> GetUserLocationAsync(string userId)
         {
             return await _locationsRepository.GetUserLocationAsync(userId);
         }
 
-        public async Task<List<Locations>> GetAllLocation()
+        public async Task<List<Locations>> GetAllLocationAsync()
         {
             return await _locationsRepository.GetLocationListAsync();
         }
 
-        public async Task<bool> AddOrUpdateUserLocation(string userId, LocationRequest currentPosition)
-        {            
+        public async Task<bool> AddOrUpdateUserLocationAsync(string userId, LocationRequest currentPosition)
+        {
             // Get the list of ordered regions the user currently is within
             var currentUserAreaLocationList = await _locationsRepository.GetCurrentUserRegionsListAsync(currentPosition);
-                      
-            if(currentUserAreaLocationList is null)
+
+            if (currentUserAreaLocationList is null)
             {
                 throw new LocationDomainException("User current area not found");
             }
@@ -66,13 +72,17 @@
         {
             var newUserLocations = MapUserLocationDetails(newLocations);
             var @event = new UserLocationUpdatedIntegrationEvent(userId, newUserLocations);
+
+            _logger.LogInformation("----- Publishing integration event: {IntegrationEventId} from {AppName} - ({@IntegrationEvent})", @event.Id, Program.AppName, @event);
+
             _eventBus.Publish(@event);
         }
 
         private List<UserLocationDetails> MapUserLocationDetails(List<Locations> newLocations)
         {
             var result = new List<UserLocationDetails>();
-            newLocations.ForEach(location => {
+            newLocations.ForEach(location =>
+            {
                 result.Add(new UserLocationDetails()
                 {
                     LocationId = location.LocationId,

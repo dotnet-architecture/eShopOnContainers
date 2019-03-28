@@ -1,4 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
+@import "~bootstrap/scss/bootstrap";
+@import "~ngx-toastr/toastr-bs4-alert.scss";
+
 @import './modules/variables';
 
 $dist: './fonts/Montserrat-Regular';

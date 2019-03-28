@@ -1,6 +1,7 @@
 ﻿using Catalog.API.Infrastructure.ActionResults;
 using Catalog.API.Infrastructure.Exceptions;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
@@ -27,12 +28,16 @@ namespace Catalog.API.Infrastructure.Filters
 
             if (context.Exception.GetType() == typeof(CatalogDomainException))
             {
-                var json = new JsonErrorResponse
+                var problemDetails = new ValidationProblemDetails()
                 {
-                    Messages = new[] { context.Exception.Message }
+                    Instance = context.HttpContext.Request.Path,
+                    Status = StatusCodes.Status400BadRequest,
+                    Detail = "Please refer to the errors property for additional details."
                 };
 
-                context.Result = new BadRequestObjectResult(json);
+                problemDetails.Errors.Add("DomainValidations", new string[] { context.Exception.Message.ToString() });
+
+                context.Result = new BadRequestObjectResult(problemDetails);
                 context.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
             }
             else
@@ -44,7 +49,7 @@ namespace Catalog.API.Infrastructure.Filters
 
                 if (env.IsDevelopment())
                 {
-                    json.DeveloperMeesage = context.Exception;
+                    json.DeveloperMessage = context.Exception;
                 }
 
                 context.Result = new InternalServerErrorObjectResult(json);
@@ -57,7 +62,7 @@ namespace Catalog.API.Infrastructure.Filters
         {
             public string[] Messages { get; set; }
 
-            public object DeveloperMeesage { get; set; }
+            public object DeveloperMessage { get; set; }
         }
     }
 }
