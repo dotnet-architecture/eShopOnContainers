@@ -83,7 +83,3 @@ foreach ($chart in $charts) {
 }
 
 Write-Host "helm charts installed." -ForegroundColor Green
-
-
-
-

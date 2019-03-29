@@ -115,10 +115,7 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBus
         private void RaiseOnEventRemoved(string eventName)
         {
             var handler = OnEventRemoved;
-            if (handler != null)
-            {
-                OnEventRemoved(this, eventName);
-            }
+            handler?.Invoke(this, eventName);
         }
 
 
