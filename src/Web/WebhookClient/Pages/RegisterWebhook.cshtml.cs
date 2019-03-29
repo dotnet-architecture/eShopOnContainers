@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using WebhookClient.Models;
 
 namespace WebhookClient.Pages
@@ -27,7 +28,7 @@ namespace WebhookClient.Pages
         public string RequestUrl { get; set; }
         public string GrantUrl { get; set; }
         public string ResponseMessage { get; set; }
-
+        public string RequestBodyJson { get; set; }
 
         public RegisterWebhookModel(IOptions<Settings> settings, IHttpClientFactory httpClientFactory)
         {
@@ -69,6 +70,7 @@ namespace WebhookClient.Pages
             }
             else
             {
+                RequestBodyJson = JsonConvert.SerializeObject(payload);
                 ResponseCode = (int)response.StatusCode;
                 ResponseMessage = response.ReasonPhrase;
                 GrantUrl = granturl;
