@@ -105,6 +105,8 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Controllers
         {
             try
             {
+                //Todo: It's good idea to take advantage of GetOrderByIdQuery and handle by GetCustomerByIdQueryHandler
+                //var order customer = await _mediator.Send(new GetOrderByIdQuery(orderId));
                 var order = await _orderQueries.GetOrderAsync(orderId);
 
                 return Ok(order);
