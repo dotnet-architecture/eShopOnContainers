@@ -11,9 +11,6 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.SeedWork
 
         public int Id { get; private set; }
 
-        protected Enumeration()
-        { }
-
         protected Enumeration(int id, string name)
         {
             Id = id;

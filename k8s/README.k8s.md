@@ -20,7 +20,7 @@ For AKS:
 For ACS:
 
 >```
->./gen-k8s-env -resourceGroupName k8sGroup -location westeurope -registryName k8sregistry -createAcr true -orchestratorName k8s-cluster -dnsName k8s-dns
+>./gen-k8s-env-aks -resourceGroupName k8sGroup -location westeurope -registryName k8sregistry -serviceName k8s-cluster -createAcr true -nodeCount 3 -nodeVMSize Standard_D2_v2
 >```
 
 * A Docker development environment with `docker` and `docker-compose`.

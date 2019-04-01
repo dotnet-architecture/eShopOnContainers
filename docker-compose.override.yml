@@ -324,7 +324,7 @@ services:
 
   webstatus:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - HealthChecks-UI__HealthChecks__1__Name=WebMVC HTTP Check
       - HealthChecks-UI__HealthChecks__1__Uri=http://webmvc/hc
