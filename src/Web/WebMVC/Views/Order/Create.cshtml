@@ -3,11 +3,12 @@
 @inject IIdentityParser<ApplicationUser> UserManager
 
 @{
-    ViewData["Title"] = "New Order";
+     ViewData["Title"] = "New Order";
+     var headerList= new List<Header>() {
+       new Header() { Controller = "Cart", Text = "Back to cart" } };
 }
 
-@Html.Partial("_Header", new List<Header>() {
-        new Header() { Controller = "Cart", Text = "Back to cart" } })
+<partial name="_Header" model="headerList"/>
 <div class="container">
     <form method="post" asp-controller="Order" asp-action="Checkout">
         <section class="esh-orders_new-section">
