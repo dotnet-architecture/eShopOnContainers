@@ -178,25 +178,44 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
         {
             if (_consumerChannel != null)
             {
-                var consumer = new EventingBasicConsumer(_consumerChannel);
-                consumer.Received += async (model, ea) =>
-                {
-                    var eventName = ea.RoutingKey;
-                    var message = Encoding.UTF8.GetString(ea.Body);
+                var consumer = new AsyncEventingBasicConsumer(_consumerChannel);
 
-                    await ProcessEvent(eventName, message);
+                consumer.Received += Consumer_Received;
 
-                    _consumerChannel.BasicAck(ea.DeliveryTag, multiple: false);
-                };
-
-                _consumerChannel.BasicConsume(queue: _queueName,
-                                     autoAck: false,
-                                     consumer: consumer);
+                _consumerChannel.BasicConsume(
+                    queue: _queueName,
+                    autoAck: false,
+                    consumer: consumer);
             }
             else
             {
-                _logger.LogError("StartBasicConsume can not call on _consumerChannelCreated == false");
+                _logger.LogError("StartBasicConsume can't call on _consumerChannel == null");
             }
+        }
+
+        private async Task Consumer_Received(object sender, BasicDeliverEventArgs eventArgs)
+        {
+            var eventName = eventArgs.RoutingKey;
+            var message = Encoding.UTF8.GetString(eventArgs.Body);
+
+            try
+            {
+                if (message.ToLowerInvariant().Contains("throw-fake-exception"))
+                {
+                    throw new InvalidOperationException($"Fake exception requested: \"{message}\"");
+                }
+
+                await ProcessEvent(eventName, message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "----- ERROR Processing message \"{Message}\"", message);
+            }
+
+            // Even on exception we take the message off the queue.
+            // in a REAL WORLD app this should be handled with a Dead Letter Exchange (DLX). 
+            // For more information see: https://www.rabbitmq.com/dlx.html
+            _consumerChannel.BasicAck(eventArgs.DeliveryTag, multiple: false);
         }
 
         private IModel CreateConsumerChannel()
@@ -209,7 +228,7 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
             var channel = _persistentConnection.CreateModel();
 
             channel.ExchangeDeclare(exchange: BROKER_NAME,
-                                 type: "direct");
+                                    type: "direct");
 
             channel.QueueDeclare(queue: _queueName,
                                  durable: true,
