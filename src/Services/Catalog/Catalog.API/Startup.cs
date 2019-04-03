@@ -297,7 +297,8 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
 
                     var factory = new ConnectionFactory()
                     {
-                        HostName = configuration["EventBusConnection"]
+                        HostName = configuration["EventBusConnection"],
+                        DispatchConsumersAsync = true
                     };
 
                     if (!string.IsNullOrEmpty(configuration["EventBusUserName"]))
