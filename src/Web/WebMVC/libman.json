@@ -9,14 +9,6 @@
     {
       "provider": "unpkg",
       "library": "bootstrap@4.3.1",
-      "files": [
-        "dist/css/bootstrap.css",
-        "dist/css/bootstrap.css.map",
-        "dist/css/bootstrap.min.css",
-        "dist/css/bootstrap.min.css.map",
-        "dist/js/bootstrap.js",
-        "dist/js/bootstrap.min.js"
-      ],
       "destination": "wwwroot/lib/bootstrap/"
     },
     {
@@ -25,11 +17,7 @@
     },
     {
       "library": "jquery-validate@1.19.0",
-      "destination": "wwwroot/lib/jquery-validate/",
-      "files": [
-        "jquery.validate.min.js",
-        "jquery.validate.js"
-      ]
+      "destination": "wwwroot/lib/jquery-validate/"
     },
     {
       "library": "toastr.js@2.1.4",
@@ -38,10 +26,6 @@
     {
       "provider": "unpkg",
       "library": "@aspnet/signalr@1.1.2",
-      "files": [    
-        "dist/browser/signalr.js",
-        "dist/browser/signalr.min.js"
-      ],
       "destination": "wwwroot/lib/@aspnet/signalr/"
     }
   ]
