@@ -20,6 +20,7 @@ using Swashbuckle.AspNetCore.Swagger;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator
 {
@@ -168,9 +169,11 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator
                 {
                     OnAuthenticationFailed = async ctx =>
                     {
+                        await Task.Run(() => { });
                     },
                     OnTokenValidated = async ctx =>
                     {
+                        await Task.Run(() => { });
                     }
                 };
             });

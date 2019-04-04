@@ -21,6 +21,7 @@ using System.Net.Http;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator
 {
@@ -117,11 +118,11 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator
                 {
                     OnAuthenticationFailed = async ctx =>
                     {
-                        int i = 0;
+                        await Task.Run(() => { });
                     },
                     OnTokenValidated = async ctx =>
                     {
-                        int i = 0;
+                        await Task.Run(() => { });
                     }
                 };
             });

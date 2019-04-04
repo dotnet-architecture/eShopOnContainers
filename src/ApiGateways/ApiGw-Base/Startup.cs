@@ -9,6 +9,7 @@ using Ocelot.Middleware;
 using System;
 using HealthChecks.UI.Client;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using System.Threading.Tasks;
 
 namespace OcelotApiGw
 {
@@ -59,16 +60,16 @@ namespace OcelotApiGw
                     {
                         OnAuthenticationFailed = async ctx =>
                         {
-                            int i = 0;
+                            await Task.Run(() => { });
                         },
                         OnTokenValidated = async ctx =>
                         {
-                            int i = 0;
+                            await Task.Run(() => { });
                         },
 
                         OnMessageReceived = async ctx =>
                         {
-                            int i = 0;
+                            await Task.Run(() => { });
                         }
                     };
                 });
