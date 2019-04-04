@@ -17,6 +17,7 @@ using WebSPA.Infrastructure;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Logging.ApplicationInsights;
 
 namespace eShopConContainers.WebSPA
 {
@@ -73,9 +74,9 @@ namespace eShopConContainers.WebSPA
 
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IAntiforgery antiforgery)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, ILoggingBuilder loggingBuilder, IAntiforgery antiforgery)
         {
-            loggerFactory.AddApplicationInsights(app.ApplicationServices, LogLevel.Trace);
+            ApplicationInsightsLoggingBuilderExtensions.AddApplicationInsights(loggingBuilder, options => options.IncludeScopes = true);
 
             if (env.IsDevelopment())
             {

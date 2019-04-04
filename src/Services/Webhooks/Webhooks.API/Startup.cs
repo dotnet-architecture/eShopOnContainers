@@ -70,9 +70,9 @@ namespace Webhooks.API
             return new AutofacServiceProvider(container.Build());
         }
 
-        public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory, ILoggingBuilder loggingBuilder)
         {
-            loggerFactory.AddApplicationInsights(app.ApplicationServices, LogLevel.Trace);
+            ApplicationInsightsLoggingBuilderExtensions.AddApplicationInsights(loggingBuilder, options => options.IncludeScopes = true);
 
             var pathBase = Configuration["PATH_BASE"];
 
