@@ -36,9 +36,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eShopOnContainers.TestRunne
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eShopOnContainers.TestRunner.Windows", "src\Mobile\eShopOnContainers\eShopOnContainers.TestRunner.Windows\eShopOnContainers.TestRunner.Windows.csproj", "{A7337243-33B8-463A-87AD-944B75EFD820}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eShopOnContainers.UnitTests", "src\Mobile\eShopOnContainers\eShopOnContainers.UnitTests\eShopOnContainers.UnitTests.csproj", "{FDD910BC-DF0F-483D-B7D5-C7D831855172}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eShopOnContainers.UnitTests", "src\Mobile\eShopOnContainers\eShopOnContainers.UnitTests\eShopOnContainers.UnitTests.csproj", "{FDD910BC-DF0F-483D-B7D5-C7D831855172}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eShopOnContainers.Core", "src\Mobile\eShopOnContainers\eShopOnContainers.Core\eShopOnContainers.Core.csproj", "{76C5F2A7-6CD5-49EA-9F33-EC44DE6539C7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eShopOnContainers.Core", "src\Mobile\eShopOnContainers\eShopOnContainers.Core\eShopOnContainers.Core.csproj", "{76C5F2A7-6CD5-49EA-9F33-EC44DE6539C7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

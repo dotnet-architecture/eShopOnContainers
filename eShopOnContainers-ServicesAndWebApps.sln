@@ -143,9 +143,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Payment.API", "src\Services
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Webhooks", "Webhooks", "{E0AA11C4-2873-461D-8F82-53392530FB7A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Webhooks.API", "src\Services\Webhooks\Webhooks.API\Webhooks.API.csproj", "{84E2016E-0435-44C6-8020-3D288AA38B2C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Webhooks.API", "src\Services\Webhooks\Webhooks.API\Webhooks.API.csproj", "{84E2016E-0435-44C6-8020-3D288AA38B2C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebhookClient", "src\Web\WebhookClient\WebhookClient.csproj", "{766D7E92-6AF0-476C-ADD5-282BF4D8C576}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebhookClient", "src\Web\WebhookClient\WebhookClient.csproj", "{766D7E92-6AF0-476C-ADD5-282BF4D8C576}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
