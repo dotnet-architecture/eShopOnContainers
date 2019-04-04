@@ -13,8 +13,10 @@ namespace Ordering.API.Infrastructure.Filters
         public void Apply(Operation operation, OperationFilterContext context)
         {
             // Check for authorize attribute
-            var hasAuthorize = context.ApiDescription.ControllerAttributes().OfType<AuthorizeAttribute>().Any() ||
-                               context.ApiDescription.ActionAttributes().OfType<AuthorizeAttribute>().Any();
+            var hasAuthorize = context.MethodInfo.DeclaringType.GetCustomAttributes(true)
+                                      .Union(context.MethodInfo.GetCustomAttributes(true))
+                                      .OfType<AuthorizeAttribute>()
+                                      .Any();
 
             if (hasAuthorize)
             {
