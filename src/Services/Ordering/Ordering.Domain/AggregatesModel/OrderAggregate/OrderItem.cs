@@ -1,83 +1,76 @@
 ﻿using Microsoft.eShopOnContainers.Services.Ordering.Domain.Seedwork;
 using Ordering.Domain.Exceptions;
-using System;
 
 namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate
 {
-    public class OrderItem
-        : Entity
-    {
-        // DDD Patterns comment
-        // Using private fields, allowed since EF Core 1.1, is a much better encapsulation
-        // aligned with DDD Aggregates and Domain Entities (Instead of properties and property collections)
-        private string  _productName;
-        private string  _pictureUrl;
-        private decimal _unitPrice;
-        private decimal _discount;
-        private int     _units;
+	public class OrderItem
+	   : Entity
+	{
+		// DDD Patterns comment
+		// Using private fields, allowed since EF Core 1.1, is a much better encapsulation
+		// aligned with DDD Aggregates and Domain Entities (Instead of properties and property collections)
+		private readonly string  _productName;
+		private readonly string  _pictureUrl;
+		private readonly decimal _unitPrice;
+		private decimal          _discount;
+		private int              _units;
 
-        public int ProductId { get; private set; }
+		public int ProductId { get; private set; }
 
-        protected OrderItem() { }
+		protected OrderItem() { }
 
-        public OrderItem(int productId, string productName, decimal unitPrice, decimal discount, string PictureUrl, int units = 1)
-        {
-            if (units <= 0)
-            {
-                throw new OrderingDomainException("Invalid number of units");
-            }
+		public OrderItem(int productId, string productName, decimal unitPrice, decimal discount, string PictureUrl, int units = 1)
+		{
+			if (units <= 0)
+			{
+				throw new OrderingDomainException("Invalid number of units");
+			}
 
-            if ((unitPrice * units) < discount)
-            {
-                throw new OrderingDomainException("The total of order item is lower than applied discount");
-            }
+			if ((unitPrice * units) < discount)
+			{
+				throw new OrderingDomainException("The total of order item is lower than applied discount");
+			}
 
-            ProductId = productId;
+			ProductId = productId;
 
-            _productName = productName;
-            _unitPrice = unitPrice;
-            _discount = discount;
-            _units = units;
-            _pictureUrl = PictureUrl;
-        }
+			_productName = productName;
+			_unitPrice = unitPrice;
+			_discount = discount;
+			_units = units;
+			_pictureUrl = PictureUrl;
+		}
 
-        public string GetPictureUri() => _pictureUrl;
+		public string GetPictureUri() => _pictureUrl;
 
-        public decimal GetCurrentDiscount()
-        {
-            return _discount;
-        }
+		public decimal GetCurrentDiscount() 
+			=> _discount;
 
-        public int GetUnits()
-        {
-            return _units;
-        }
+		public int GetUnits() 
+			=> _units;
 
-        public decimal GetUnitPrice()
-        {
-            return _unitPrice;
-        }
+		public decimal GetUnitPrice() 
+			=> _unitPrice;
 
-        public string GetOrderItemProductName() => _productName;
+		public string GetOrderItemProductName() => _productName;
 
-        public void SetNewDiscount(decimal discount)
-        {
-            if (discount < 0)
-            {
-                throw new OrderingDomainException("Discount is not valid");
-            }
+		public void SetNewDiscount(decimal discount)
+		{
+			if (discount < 0)
+			{
+				throw new OrderingDomainException("Discount is not valid");
+			}
 
-            _discount = discount;
-        }
+			_discount = discount;
+		}
 
-        public void AddUnits(int units)
-        {
-            if (units < 0)
-            {
-                throw new OrderingDomainException("Invalid units");
-            }
+		public void AddUnits(int units)
+		{
+			if (units < 0)
+			{
+				throw new OrderingDomainException("Invalid units");
+			}
 
-            _units += units;
-        }
-    }
+			_units += units;
+		}
+	}
 }
