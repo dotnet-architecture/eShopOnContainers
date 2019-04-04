@@ -89,9 +89,9 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator
 			app.UseSwagger()
 			    .UseSwaggerUI(c =>
 			    {
-				    c.SwaggerEndpoint($"{ (!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty) }/swagger/v1/swagger.json", "Purchase BFF V1");
-				 //c.ConfigureOAuth2("Microsoft.eShopOnContainers.Web.Shopping.HttpAggregatorwaggerui", "", "", "Purchase BFF Swagger UI");
-			 });
+				c.SwaggerEndpoint($"{ (!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty) }/swagger/v1/swagger.json", "Purchase BFF V1");
+				//c.ConfigureOAuth2("Microsoft.eShopOnContainers.Web.Shopping.HttpAggregatorwaggerui", "", "", "Purchase BFF Swagger UI");
+			    });
 		}
 	}
 
@@ -114,17 +114,17 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator
 				options.Events = new JwtBearerEvents()
 				{
 					OnAuthenticationFailed = async ctx =>
-				  {
-					   await Task.Run(() =>
-					   {
-					   });
-				   },
+				        {
+						await Task.Run(() =>
+					   	{
+					   	});
+				        },
 					OnTokenValidated = async ctx =>
-				  {
-					   await Task.Run(() =>
-					   {
-					   });
-				   }
+				        {
+					   	await Task.Run(() =>
+					   	{
+					   	});
+				        }
 				};
 			});
 
@@ -157,9 +157,9 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator
 					AuthorizationUrl = $"{configuration.GetValue<string>("IdentityUrlExternal")}/connect/authorize",
 					TokenUrl = $"{configuration.GetValue<string>("IdentityUrlExternal")}/connect/token",
 					Scopes = new Dictionary<string, string>()
-				   {
-				    { "webshoppingagg", "Shopping Aggregator for Web Clients" }
-				   }
+					{
+					    { "webshoppingagg", "Shopping Aggregator for Web Clients" }
+					}
 				});
 
 				options.OperationFilter<AuthorizeCheckOperationFilter>();
@@ -167,12 +167,11 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator
 
 			services.AddCors(options =>
 			{
-				options.AddPolicy("CorsPolicy",
-				 builder => builder
-				 .SetIsOriginAllowed((host) => true)
-				 .AllowAnyMethod()
-				 .AllowAnyHeader()
-				 .AllowCredentials());
+				options.AddPolicy("CorsPolicy", builder => builder
+				                                 .SetIsOriginAllowed((host) => true)
+								 .AllowAnyMethod()
+								 .AllowAnyHeader()
+								 .AllowCredentials());
 			});
 
 			return services;
