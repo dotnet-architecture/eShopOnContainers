@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="PInvoke.NCrypt" Version="0.5.184" />
-    <PackageReference Include="System.ComponentModel.Annotations" Version="4.4.1" />
+    <PackageReference Include="System.ComponentModel.Annotations" Version="4.5.0" />
     <PackageReference Include="Acr.UserDialogs" Version="6.5.1" />
     <PackageReference Include="SlideOverKit" Version="2.1.6.2" />
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
