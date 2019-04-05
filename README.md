@@ -1,4 +1,4 @@
-# eShopOnContainers - Microservices Architecture and Containers based Reference Application (**BETA state** - Visual Studio 2017 and CLI environments compatible)
+# eShopOnContainers - Microservices Architecture and Containers based Reference Application (**BETA state** - Visual Studio and CLI environments compatible)
 Sample .NET Core reference application, powered by Microsoft, based on a simplified microservices architecture and Docker containers.
 
 ## Linux Build Status for 'dev' branch
@@ -129,7 +129,7 @@ Finally, those microservices are consumed by multiple client web and mobile apps
 <img src="img/xamarin-mobile-App.png">
 
 ## Setting up your development environment for eShopOnContainers
-### Visual Studio 2017 and Windows based
+### Visual Studio 2017 (or above) and Windows based
 This is the more straightforward way to get started:
 https://github.com/dotnet-architecture/eShopOnContainers/wiki/02.-Setting-eShopOnContainers-in-a-Visual-Studio-2017-environment
 
@@ -149,5 +149,5 @@ As mentioned, we'd appreciate your feedback, improvements and ideas.
 You can create new issues at the issues section, do pull requests and/or send emails to **eshop_feedback@service.microsoft.com**
 
 ## Questions
-[QUESTION] Answer +1 if the solution is working for you (Through VS2017 or CLI environment):
+[QUESTION] Answer +1 if the solution is working for you (Through VS or CLI environment):
 https://github.com/dotnet/eShopOnContainers/issues/107
