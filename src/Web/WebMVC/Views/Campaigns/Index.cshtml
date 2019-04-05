@@ -1,6 +1,8 @@
 @{
     ViewData["Title"] = "Campaigns";
-@model WebMVC.ViewModels.CampaignViewModel
+    @model WebMVC.ViewModels.CampaignViewModel
+    var headerList= new List<Header>() {
+        new Header() { Controller = "Catalog", Text = "Back to catalog" } };
 }
 
 <section class="esh-campaigns-hero">
@@ -9,8 +11,7 @@
     </div>
 </section>
 
-@Html.Partial("_Header", new List<Header>() {
-    new Header() { Controller = "Catalog", Text = "Back to catalog" } })
+<partial name="_Header" model="headerList"/>
 
 <div class="container">
     <br />
@@ -58,12 +59,12 @@
                 @foreach (var catalogItem in Model.CampaignItems)
                 {
                     <div class="esh-campaigns-item col-md-4">
-                        @Html.Partial("_campaign", catalogItem)
+                        <partial name="_campaign" model="catalogItem"/>
                     </div>
                 }
             </div>
 
-            @Html.Partial("_pagination", Model.PaginationInfo)
+            <partial name="_pagination" for="PaginationInfo" />
         }
         else
         {
