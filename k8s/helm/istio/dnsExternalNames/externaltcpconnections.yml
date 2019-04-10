@@ -1,0 +1,96 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
+metadata:
+  name: basket-data
+spec:
+  hosts:
+  - basket-data
+  ports:
+  - name: tcp
+    number: 6379
+    protocol: tcp
+  location: MESH_EXTERNAL
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
+metadata:
+  name: keystore-data
+spec:
+  hosts:
+  - keystore-data
+  ports:
+  - name: tcp
+    number: 6379
+    protocol: tcp
+  location: MESH_EXTERNAL
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
+metadata:
+  name: nosql-data
+spec:
+  hosts:
+  - nosql-data
+  ports:
+  - name: tcp
+    number: 27017
+    protocol: tcp
+  location: MESH_EXTERNAL
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
+metadata:
+  name: rabbitmq
+spec:
+  hosts:
+  - rabbitmq
+  ports:
+  - name: tcp
+    number: 5672
+    protocol: tcp
+  location: MESH_EXTERNAL
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
+metadata:
+  name: sql-data
+spec:
+  hosts:
+  - sql-data
+  ports:
+  - name: tcp
+    number: 1433
+    protocol: tcp
+  location: MESH_EXTERNAL
+---
+apiVersion: "networking.istio.io/v1alpha3"
+kind: "DestinationRule"
+metadata:
+  name: external
+  namespace: default
+spec:
+  host: "*.eshop-infra.svc.cluster.local"
+  trafficPolicy:
+    tls:
+      mode: DISABLE
+---
+apiVersion: "networking.istio.io/v1alpha3"
+kind: "DestinationRule"
+metadata:
+  name: externalsql2
+  namespace: default
+spec:
+  host: "sql-data"
+  trafficPolicy:
+    tls:
+      mode: DISABLE
+---
+apiVersion: "networking.istio.io/v1alpha3"
+kind: DestinationRule
+metadata:
+ name: "disable-tls"
+spec:
+ host: "*"
+ trafficPolicy:
+   tls:
+     mode: DISABLE

@@ -57,3 +57,51 @@ spec:
         port:
           number: 80
         host: identity
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: basket-data-storage-dr
+spec:
+  host: basket-data.default.svc.cluster.local
+  trafficPolicy:
+    tls:
+      mode: ISTIO_MUTUAL
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: keystore-data-dr
+spec:
+  host: keystore-data.default.svc.cluster.local
+  trafficPolicy:
+    tls:
+      mode: ISTIO_MUTUAL
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: basket-data-vs
+spec:
+  hosts:
+  - basket-data
+  tcp:
+    route:
+    - destination:
+        host: basket-data.default.svc.cluster.local
+        port:
+          number: 6379
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: keystore-data-vs
+spec:
+  hosts:
+  - keystore-data
+  tcp:
+    route:
+    - destination:
+        host: keystore-data.default.svc.cluster.local
+        port:
+          number: 6379

@@ -13,3 +13,68 @@ spec:
       protocol: HTTP
     hosts:
     - "*"
+  - port:
+      number: 6379
+      name: redis
+      protocol: TCP
+    hosts:
+    - "*"
+  - port:
+      number: 27017
+      name: mongo
+      protocol: TCP
+    hosts:
+    - "*"
+  - port:
+      number: 5672
+      name: rabbitmq
+      protocol: TCP
+    hosts:
+    - "*"
+  - port:
+      number: 1433
+      name: sql
+      protocol: TCP
+    hosts:
+    - "*"
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: istio-egressgateway
+spec:
+  selector:
+    istio: egressgateway
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "*"
+  - port:
+      number: 6379
+      name: redis
+      protocol: TCP
+    hosts:
+    - "basket-data.default.svc.cluster.local"
+    - "keystore-data.default.svc.cluster.local"
+  - port:
+      number: 27017
+      name: mongo
+      protocol: TCP
+    hosts:
+    -  "nosql-data.default.svc.cluster.local"
+  - port:
+      number: 5672
+      name: rabbitmq
+      protocol: TCP
+    hosts:
+    - "rabbitmq.default.svc.cluster.local"
+  - port:
+      number: 1433
+      name: sql
+      protocol: TCP
+    hosts:
+    - "sql-data.default.svc.cluster.local"
+

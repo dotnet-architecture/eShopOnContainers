@@ -1,0 +1,56 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: basket-data
+  namespace: default
+spec:
+  type: ExternalName
+  externalName: basket-data.eshop-infra.svc.cluster.local
+  ports:
+  - port: 6379
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: keystore-data
+  namespace: default
+spec:
+  type: ExternalName
+  externalName: keystore-data.eshop-infra.svc.cluster.local
+  ports:
+  - port: 6379
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: nosql-data
+  namespace: default
+spec:
+  type: ExternalName
+  externalName: nosql-data.eshop-infra.svc.cluster.local
+  ports:
+  - port: 27017
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: rabbitmq
+  namespace: default
+spec:
+  type: ExternalName
+  externalName: rabbitmq.eshop-infra.svc.cluster.local
+  ports:
+  - port: 5672
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: sql-data
+  namespace: default
+spec:
+  type: ExternalName
+  externalName: sql-data.eshop-infra.svc.cluster.local
+  ports:
+  - port: 1433
+
+

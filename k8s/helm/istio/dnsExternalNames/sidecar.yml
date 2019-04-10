@@ -1,0 +1,20 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Sidecar
+metadata:
+  name: sidecarconf
+  namespace: default
+spec:
+  ingress:
+  - port:
+      number: 6379
+      protocol: TCP
+      name: redisingress
+  egress:
+  - hosts:
+    - "default/*"
+  - port:
+      number: 6379
+      protocol: TCP
+      name: redisegress
+    hosts:
+    - "default/*"
