@@ -58,6 +58,8 @@ env:
       key: webhooksapi_e
     - name: WebhooksWebClient
       key: webhooksweb_e
+    - name: EnableDevspaces
+      key: enableDevspaces
   values:
     - name: ASPNETCORE_ENVIRONMENT
       value: Development
@@ -65,6 +67,7 @@ env:
       value: 'K8S'
     - name: IsClusterEnv
       value: 'True'
+
 probes:
   liveness:
     path: /liveness
@@ -77,3 +80,5 @@ probes:
     initialDelaySeconds: 90
     periodSeconds: 60
     port: 80
+
+enableDevspaces: "false"

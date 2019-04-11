@@ -1,0 +1,37 @@
+{{- if .Values.ingress.enabled -}}
+{{- $ingressPath := include "pathBase" . -}}
+{{- $serviceName := .Values.app.svc.catalog -}}
+
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ template "catalog-api.fullname" . }}
+  labels:
+    app: {{ template "catalog-api.name" . }}
+    chart: {{ template "catalog-api.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+{{- with .Values.ingress.annotations }}
+  annotations:
+{{ toYaml . | indent 4 }}
+{{- end }}
+spec:
+{{- if .Values.ingress.tls }}
+  tls:
+  {{- range .Values.ingress.tls }}
+    - hosts:
+        - {{ .Values.inf.k8s.dns }}
+      secretName: {{ .secretName }}
+  {{- end }}
+{{- end }}
+  rules:
+    {{- range .Values.ingress.hosts }}
+    - host: {{ . }}
+      http:
+        paths:
+          - path: {{ $ingressPath }}
+            backend:
+              serviceName: {{ $serviceName }}
+              servicePort: http
+  {{- end }}
+{{- end }}

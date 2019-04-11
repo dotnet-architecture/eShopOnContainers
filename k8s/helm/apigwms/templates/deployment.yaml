@@ -61,10 +61,10 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           volumeMounts:
           - name: config
-            mountPath: /app/configuration          
+            mountPath: {{ .Values.ocelot.configPath }}         
           env:
             - name: PATH_BASE
-              value: {{ include "pathBase" (list .Values.app.ingress.entries.mobileshoppingapigw  .) }}
+              value: {{ include "pathBase" . }}
             - name: k8sname
               value: {{ .Values.clusterName }}
           {{- if .Values.env.values -}}
