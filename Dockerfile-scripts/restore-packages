@@ -1,3 +1,3 @@
 #!/bin/bash
 
-for f in $(find /src/src -type f -name "*.csproj"); do dotnet restore $f; done
+for f in /src/csproj-files/*.csproj; do dotnet restore $f; done
