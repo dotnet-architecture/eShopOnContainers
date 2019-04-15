@@ -45,6 +45,8 @@ src/Web/WebMVC/wwwroot/js/site*
 *.VisualState.xml
 TestResult.xml
 
+tests-results/
+
 # Build Results of an ATL Project
 [Dd]ebugPS/
 [Rr]eleasePS/
