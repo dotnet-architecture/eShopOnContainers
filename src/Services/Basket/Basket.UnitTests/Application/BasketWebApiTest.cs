@@ -54,7 +54,8 @@ namespace UnitTest.Basket.Application
             var actionResult = await basketController.GetBasketByIdAsync(fakeCustomerId);
 
             //Assert
-            Assert.Equal(((CustomerBasket)actionResult.Value).BuyerId, fakeCustomerId);
+            Assert.Equal((actionResult.Result as OkObjectResult).StatusCode, (int)System.Net.HttpStatusCode.OK);
+            Assert.Equal((((ObjectResult)actionResult.Result).Value as CustomerBasket).BuyerId, fakeCustomerId);
         }
 
         [Fact]
@@ -79,7 +80,8 @@ namespace UnitTest.Basket.Application
             var actionResult = await basketController.UpdateBasketAsync(fakeCustomerBasket);
 
             //Assert
-            Assert.Equal(((CustomerBasket)actionResult.Value).BuyerId, fakeCustomerId);
+            Assert.Equal((actionResult.Result as OkObjectResult).StatusCode, (int)System.Net.HttpStatusCode.OK);
+            Assert.Equal((((ObjectResult)actionResult.Result).Value as CustomerBasket).BuyerId, fakeCustomerId);
         }
 
         [Fact]
