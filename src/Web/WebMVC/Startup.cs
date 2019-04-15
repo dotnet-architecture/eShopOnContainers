@@ -1,4 +1,5 @@
-﻿using HealthChecks.UI.Client;
+﻿using Devspaces.Support;
+using HealthChecks.UI.Client;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.ApplicationInsights.ServiceFabric;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -42,6 +43,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
             services.AddAppInsight(Configuration)
                     .AddHealthChecks(Configuration)
                     .AddCustomMvc(Configuration)
+                    .AddDevspaces()
                     .AddHttpClientServices(Configuration)
                     //.AddHttpClientLogging(Configuration)  //Opt-in HttpClientLogging config
                     .AddCustomAuthentication(Configuration);
@@ -175,34 +177,39 @@ namespace Microsoft.eShopOnContainers.WebMVC
             services.AddTransient<HttpClientRequestIdDelegatingHandler>();
 
             //set 5 min as the lifetime for each HttpMessageHandler int the pool
-            services.AddHttpClient("extendedhandlerlifetime").SetHandlerLifetime(TimeSpan.FromMinutes(5));
+            services.AddHttpClient("extendedhandlerlifetime").SetHandlerLifetime(TimeSpan.FromMinutes(5)).AddDevspacesSupport();
 
             //add http client services
             services.AddHttpClient<IBasketService, BasketService>()
                    .SetHandlerLifetime(TimeSpan.FromMinutes(5))  //Sample. Default lifetime is 2 minutes
                    .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
                    .AddPolicyHandler(GetRetryPolicy())
-                   .AddPolicyHandler(GetCircuitBreakerPolicy());
+                   .AddPolicyHandler(GetCircuitBreakerPolicy())
+                   .AddDevspacesSupport();
 
             services.AddHttpClient<ICatalogService, CatalogService>()
                    .AddPolicyHandler(GetRetryPolicy())
-                   .AddPolicyHandler(GetCircuitBreakerPolicy());
+                   .AddPolicyHandler(GetCircuitBreakerPolicy())
+                   .AddDevspacesSupport();
 
             services.AddHttpClient<IOrderingService, OrderingService>()
                  .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
                  .AddHttpMessageHandler<HttpClientRequestIdDelegatingHandler>()
                  .AddPolicyHandler(GetRetryPolicy())
-                 .AddPolicyHandler(GetCircuitBreakerPolicy());
+                 .AddPolicyHandler(GetCircuitBreakerPolicy())
+                 .AddDevspacesSupport();
 
             services.AddHttpClient<ICampaignService, CampaignService>()
                 .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
                 .AddPolicyHandler(GetRetryPolicy())
-                .AddPolicyHandler(GetCircuitBreakerPolicy());
+                .AddPolicyHandler(GetCircuitBreakerPolicy())
+                .AddDevspacesSupport();
 
             services.AddHttpClient<ILocationService, LocationService>()
                .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
                .AddPolicyHandler(GetRetryPolicy())
-               .AddPolicyHandler(GetCircuitBreakerPolicy());
+               .AddPolicyHandler(GetCircuitBreakerPolicy())
+               .AddDevspacesSupport();
 
             //add custom application services
             services.AddTransient<IIdentityParser<ApplicationUser>, IdentityParser>();
