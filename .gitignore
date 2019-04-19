@@ -270,3 +270,8 @@ pub/
 
 # Ignore HealthCheckdb
 *healthchecksdb*
+
+# Ignores all extra inf.yaml and app.yaml that are copied by prepare-devspaces.ps1
+src/**/app.yaml
+src/**/inf.yaml
+
