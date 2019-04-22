@@ -12,7 +12,7 @@ RUN npm run build:prod
 FROM mcr.microsoft.com/dotnet/core/sdk:2.2 AS build
 WORKDIR /src
 
-COPY Dockerfile-scripts Dockerfile-scripts/
+COPY scripts scripts/
 
 COPY src/ApiGateways/*/*.csproj /src/csproj-files/
 COPY src/ApiGateways/*/*/*.csproj /src/csproj-files/
@@ -20,7 +20,8 @@ COPY src/BuildingBlocks/*/*/*.csproj /src/csproj-files/
 COPY src/Services/*/*/*.csproj /src/csproj-files/
 COPY src/Web/*/*.csproj /src/csproj-files/
 
-RUN Dockerfile-scripts/restore-packages
+ARG RUN=pwd
+RUN ${RUN}
 
 COPY . .
 COPY --from=node-build /web/wwwroot /src/src/Web/WebSPA/wwwroot/
