@@ -50,31 +50,3 @@ jobs:
     inputs:
       pathtoPublish: $(Build.ArtifactStagingDirectory)/k8s/helm
       artifactName: helm
-- job: BuildWindows
-  pool:
-    vmImage: 'vs2017-win2016'
-  steps:
-  - task: DockerCompose@0
-    displayName: Compose build apigws
-    inputs:
-      dockerComposeCommand: 'build mobileshoppingapigw mobilemarketingapigw webshoppingapigw webmarketingapigw'
-      containerregistrytype: Container Registry
-      dockerRegistryEndpoint: $(registryEndpoint)
-      dockerComposeFile: docker-compose.yml
-      qualifyImageNames: true
-      projectName: ""
-      dockerComposeFileArgs: |
-        TAG=$(Build.SourceBranchName)
-        PLATFORM=win
-  - task: DockerCompose@0
-    displayName: Compose push apigws
-    inputs:
-      dockerComposeCommand: 'push mobileshoppingapigw mobilemarketingapigw webshoppingapigw webmarketingapigw'
-      containerregistrytype: Container Registry
-      dockerRegistryEndpoint: $(registryEndpoint)
-      dockerComposeFile: docker-compose.yml
-      qualifyImageNames: true
-      projectName: ""
-      dockerComposeFileArgs: |
-        TAG=$(Build.SourceBranchName)
-        PLATFORM=win
