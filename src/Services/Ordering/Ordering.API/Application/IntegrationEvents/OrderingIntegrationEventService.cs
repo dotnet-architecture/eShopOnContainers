@@ -41,9 +41,9 @@ namespace Ordering.API.Application.IntegrationEvents
 
         public async Task PublishEventsThroughEventBusAsync()
         {
-            var pendindLogEvents = await _eventLogService.RetrieveEventLogsPendingToPublishAsync();
+            var pendingLogEvents = await _eventLogService.RetrieveEventLogsPendingToPublishAsync();
 
-            foreach (var logEvt in pendindLogEvents)
+            foreach (var logEvt in pendingLogEvents)
             {
                 _logger.LogInformation("----- Publishing integration event: {IntegrationEventId} from {AppName} - ({@IntegrationEvent})", logEvt.EventId, Program.AppName, logEvt.IntegrationEvent);
 
