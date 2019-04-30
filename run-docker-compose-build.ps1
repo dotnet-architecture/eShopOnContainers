@@ -1,6 +1,6 @@
 $startTime = $(Get-Date)
 
-docker-compose build
+docker-compose build --build-arg RUN=scripts/restore-packages
 
 $elapsedTime = $(Get-Date) - $startTime
 
