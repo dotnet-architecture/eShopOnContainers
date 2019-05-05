@@ -1,7 +1,7 @@
 ﻿using Basket.API.IntegrationEvents.Events;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
 using Microsoft.eShopOnContainers.Services.Basket.API;
-using Microsoft.eShopOnContainers.Services.Basket.API.Model;
+using Microsoft.eShopOnContainers.Services.Basket.API.Infrastructure.Repositories;
 using Microsoft.Extensions.Logging;
 using Serilog.Context;
 using System;

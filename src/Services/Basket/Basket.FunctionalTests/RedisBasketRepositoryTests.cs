@@ -1,5 +1,6 @@
 ﻿using Basket.FunctionalTests.Base;
 using Microsoft.eShopOnContainers.Services.Basket.API;
+using Microsoft.eShopOnContainers.Services.Basket.API.Infrastructure.Repositories;
 using Microsoft.eShopOnContainers.Services.Basket.API.Model;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
