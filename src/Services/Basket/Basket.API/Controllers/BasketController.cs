@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
 using Microsoft.eShopOnContainers.Services.Basket.API.Model;
 using Microsoft.eShopOnContainers.Services.Basket.API.Services;
+using Microsoft.Extensions.Logging;
+using Serilog.Context;
 using System;
 using System.Net;
 using System.Threading.Tasks;
@@ -19,9 +21,15 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
         private readonly IBasketRepository _repository;
         private readonly IIdentityService _identityService;
         private readonly IEventBus _eventBus;
+        private readonly ILogger<BasketController> _logger;
 
-        public BasketController(IBasketRepository repository, IIdentityService identityService, IEventBus eventBus)
+        public BasketController(
+            ILogger<BasketController> logger,
+            IBasketRepository repository,
+            IIdentityService identityService,
+            IEventBus eventBus)
         {
+            _logger = logger;
             _repository = repository;
             _identityService = identityService;
             _eventBus = eventBus;
@@ -33,14 +41,14 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
         {
             var basket = await _repository.GetBasketAsync(id);
 
-            return basket ?? new CustomerBasket(id);
+            return Ok(basket ?? new CustomerBasket(id));
         }
 
         [HttpPost]
         [ProducesResponseType(typeof(CustomerBasket), (int)HttpStatusCode.OK)]
         public async Task<ActionResult<CustomerBasket>> UpdateBasketAsync([FromBody]CustomerBasket value)
         {
-            return await _repository.UpdateBasketAsync(value);
+            return Ok(await _repository.UpdateBasketAsync(value));
         }
 
         [Route("checkout")]
@@ -50,7 +58,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
         public async Task<ActionResult> CheckoutAsync([FromBody]BasketCheckout basketCheckout, [FromHeader(Name = "x-requestid")] string requestId)
         {
             var userId = _identityService.GetUserIdentity();
-            
+
             basketCheckout.RequestId = (Guid.TryParse(requestId, out Guid guid) && guid != Guid.Empty) ?
                 guid : basketCheckout.RequestId;
 
@@ -70,7 +78,18 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
             // Once basket is checkout, sends an integration event to
             // ordering.api to convert basket to order and proceeds with
             // order creation process
-            _eventBus.Publish(eventMessage);
+            try
+            {
+                _logger.LogInformation("----- Publishing integration event: {IntegrationEventId} from {AppName} - ({@IntegrationEvent})", eventMessage.Id, Program.AppName, eventMessage);
+
+                _eventBus.Publish(eventMessage);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "ERROR Publishing integration event: {IntegrationEventId} from {AppName}", eventMessage.Id, Program.AppName);
+
+                throw;
+            }
 
             return Accepted();
         }

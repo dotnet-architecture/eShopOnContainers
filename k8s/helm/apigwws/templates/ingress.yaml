@@ -1,5 +1,6 @@
 {{- if .Values.ingress.enabled -}}
-{{- $ingressPath := include "pathBase" (list .Values.app.ingress.entries.webshoppingapigw  .) -}}
+{{- $ingressPath := include "pathBase" . -}}
+{{- $serviceName := .Values.app.svc.webshoppingapigw -}}
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
@@ -23,11 +24,13 @@ spec:
   {{- end }}
 {{- end }}
   rules:
-    - host: {{ .Values.inf.k8s.dns }}
+    {{- range .Values.ingress.hosts }}
+    - host: {{ . }}
       http:
         paths:
           - path: {{ $ingressPath }}
             backend:
-              serviceName: {{ .Values.app.svc.webshoppingapigw }}
+              serviceName: {{ $serviceName }}
               servicePort: http
+  {{- end }}
 {{- end }}

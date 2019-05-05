@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Devspaces.Support;
 using HealthChecks.UI.Client;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.ApplicationInsights.ServiceFabric;
@@ -55,6 +56,7 @@ namespace Webhooks.API
                 .AddCustomDbContext(Configuration)
                 .AddSwagger(Configuration)
                 .AddCustomHealthCheck(Configuration)
+                .AddDevspaces()
                 .AddHttpClientServices(Configuration)
                 .AddIntegrationServices(Configuration)
                 .AddEventBus(Configuration)
@@ -70,9 +72,8 @@ namespace Webhooks.API
             return new AutofacServiceProvider(container.Build());
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
         {
-            loggerFactory.AddAzureWebAppDiagnostics();
             loggerFactory.AddApplicationInsights(app.ApplicationServices, LogLevel.Trace);
 
             var pathBase = Configuration["PATH_BASE"];
@@ -142,7 +143,7 @@ namespace Webhooks.API
             if (orchestratorType?.ToUpper() == "K8S")
             {
                 // Enable K8s telemetry initializer
-                services.EnableKubernetes();
+                services.AddApplicationInsightsKubernetesEnricher();
             }
             if (orchestratorType?.ToUpper() == "SF")
             {
@@ -294,8 +295,8 @@ namespace Webhooks.API
             services.AddHttpClient("extendedhandlerlifetime").SetHandlerLifetime(Timeout.InfiniteTimeSpan);
             //add http client services
             services.AddHttpClient("GrantClient")
-                   .SetHandlerLifetime(TimeSpan.FromMinutes(5));
-                   //.AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>();
+                   .SetHandlerLifetime(TimeSpan.FromMinutes(5))
+                   .AddDevspacesSupport();
             return services;
         }
 
@@ -321,7 +322,8 @@ namespace Webhooks.API
 
                     var factory = new ConnectionFactory()
                     {
-                        HostName = configuration["EventBusConnection"]
+                        HostName = configuration["EventBusConnection"],
+                        DispatchConsumersAsync = true
                     };
 
                     if (!string.IsNullOrEmpty(configuration["EventBusUserName"]))

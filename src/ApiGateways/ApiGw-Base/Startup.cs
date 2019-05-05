@@ -76,7 +76,7 @@ namespace OcelotApiGw
             services.AddOcelot(_cfg);
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             var pathBase = _cfg["PATH_BASE"];
 
@@ -100,8 +100,6 @@ namespace OcelotApiGw
             {
                 Predicate = r => r.Name.Contains("self")
             });
-
-            loggerFactory.AddConsole(_cfg.GetSection("Logging"));
 
             app.UseCors("CorsPolicy");
 

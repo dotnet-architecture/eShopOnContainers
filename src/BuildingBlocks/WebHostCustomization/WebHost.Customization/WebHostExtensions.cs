@@ -32,7 +32,7 @@ namespace Microsoft.AspNetCore.Hosting
 
                 try
                 {
-                    logger.LogInformation($"Migrating database associated with context {typeof(TContext).Name}");
+                    logger.LogInformation("Migrating database associated with context {DbContextName}", typeof(TContext).Name);
 
                     if (underK8s)
                     {
@@ -55,11 +55,11 @@ namespace Microsoft.AspNetCore.Hosting
                         retry.Execute(() => InvokeSeeder(seeder, context, services));
                     }
 
-                    logger.LogInformation($"Migrated database associated with context {typeof(TContext).Name}");
+                    logger.LogInformation("Migrated database associated with context {DbContextName}", typeof(TContext).Name);
                 }
                 catch (Exception ex)
                 {
-                    logger.LogError(ex, $"An error occurred while migrating the database used on context {typeof(TContext).Name}");
+                    logger.LogError(ex, "An error occurred while migrating the database used on context {DbContextName}", typeof(TContext).Name);
                     if (underK8s)
                     {
                         throw;          // Rethrow under k8s because we rely on k8s to re-run the pod

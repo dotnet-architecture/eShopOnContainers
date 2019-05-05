@@ -7,6 +7,12 @@ version: '3.4'
 # An external IP or DNS name has to be used (instead localhost and the 10.0.75.1 IP) when testing the Web apps and the Xamarin apps from remote machines/devices using the same WiFi, for instance.
 
 services:
+  seq:
+    environment:
+      - ACCEPT_EULA=Y
+    ports:
+      - "5340:80"
+
   sql.data:
     environment:
       - SA_PASSWORD=Pass@word
@@ -318,7 +324,7 @@ services:
 
   webstatus:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - HealthChecks-UI__HealthChecks__1__Name=WebMVC HTTP Check
       - HealthChecks-UI__HealthChecks__1__Uri=http://webmvc/hc

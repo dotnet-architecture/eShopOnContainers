@@ -1,8 +1,25 @@
-# eShopOnContainers - Microservices Architecture and Containers based Reference Application (**BETA state** - Visual Studio 2017 and CLI environments compatible)
+# eShopOnContainers - Microservices Architecture and Containers based Reference Application (**BETA state** - Visual Studio and CLI environments compatible)
 Sample .NET Core reference application, powered by Microsoft, based on a simplified microservices architecture and Docker containers.
 
-[![Build status (Linux images)](https://msftdevtools.visualstudio.com/eShopOnContainers/_apis/build/status/All%20Microservices%20Linux)](https://msftdevtools.visualstudio.com/eShopOnContainers/_build/latest?definitionId=184)
+## Linux Build Status for 'dev' branch
 
+Dev branch contains the latest "stable" code, and their images are tagged with `:dev` in our [Docker Hub](https://cloud.docker.com/u/eshop/repository/list):
+
+| Basket API   | Catalog API | Identity API | Location API | 
+| ------------- | ------------- | ------------- | ------------- |
+| [![Basket API](https://msftdevtools.visualstudio.com/eShopOnContainers/_apis/build/status/microservices/basket?branchName=dev)](https://msftdevtools.visualstudio.com/eShopOnContainers/_build/latest?definitionId=199&branchName=dev) | [![Catalog API](https://msftdevtools.visualstudio.com/eShopOnContainers/_apis/build/status/microservices/catalog?branchName=dev)](https://msftdevtools.visualstudio.com/eShopOnContainers/_build/latest?definitionId=197&branchName=dev) | [![Identity API](https://msftdevtools.visualstudio.com/eShopOnContainers/_apis/build/status/microservices/identity?branchName=dev)](https://msftdevtools.visualstudio.com/eShopOnContainers/_build/latest?definitionId=200&branchName=dev) | [![Location API](https://msftdevtools.visualstudio.com/eShopOnContainers/_apis/build/status/microservices/location?branchName=dev)](https://msftdevtools.visualstudio.com/eShopOnContainers/_build/latest?definitionId=202&branchName=dev) |
+
+| Marketing API | Ordering API | Payment API | Api Gateways base image |
+| ------------- | ------------- | ------------- | ------------- |
+| [![Marketing API](https://msftdevtools.visualstudio.com/eShopOnContainers/_apis/build/status/microservices/marketing?branchName=dev)](https://msftdevtools.visualstudio.com/eShopOnContainers/_build/latest?definitionId=203&branchName=dev) | [![Ordering API](https://msftdevtools.visualstudio.com/eShopOnContainers/_apis/build/status/microservices/ordering?branchName=dev)](https://msftdevtools.visualstudio.com/eShopOnContainers/_build/latest?definitionId=198&branchName=dev) | [![Payment API](https://msftdevtools.visualstudio.com/eShopOnContainers/_apis/build/status/microservices/payment?branchName=dev)](https://msftdevtools.visualstudio.com/eShopOnContainers/_build/latest?definitionId=205&branchName=dev) | [![Api Gateways base image](https://msftdevtools.visualstudio.com/eShopOnContainers/_apis/build/status/microservices/apigws?branchName=dev)](https://msftdevtools.visualstudio.com/eShopOnContainers/_build/latest?definitionId=201&branchName=dev) 
+
+| Web Shopping Aggregator | Mobile Shopping Aggregator | WebMVC Client | WebSPA Client |
+| ------------- | ------------- | ------------- | ------------- |
+| [![Web Shopping Aggregator](https://msftdevtools.visualstudio.com/eShopOnContainers/_apis/build/status/microservices/web-shopping-agg?branchName=dev)](https://msftdevtools.visualstudio.com/eShopOnContainers/_build/latest?definitionId=206&branchName=dev) | [![Mobile Shopping Aggregator](https://msftdevtools.visualstudio.com/eShopOnContainers/_apis/build/status/microservices/mobile-shopping-agg?branchName=dev)](https://msftdevtools.visualstudio.com/eShopOnContainers/_build/latest?definitionId=204&branchName=dev) | [![WebMVC Client](https://msftdevtools.visualstudio.com/eShopOnContainers/_apis/build/status/microservices/webmvc?branchName=dev)](https://msftdevtools.visualstudio.com/eShopOnContainers/_build/latest?definitionId=209&branchName=dev) | [![WebSPA Client](https://msftdevtools.visualstudio.com/eShopOnContainers/_apis/build/status/microservices/webspa?branchName=dev)](https://msftdevtools.visualstudio.com/eShopOnContainers/_build/latest?definitionId=210&branchName=dev) |
+
+| Web Status | Webhooks API | Webbhooks demo client |
+| ------------- | ------------- | ------------- |
+ [![Web Status](https://msftdevtools.visualstudio.com/eShopOnContainers/_apis/build/status/microservices/webstatus?branchName=dev)](https://msftdevtools.visualstudio.com/eShopOnContainers/_build/latest?definitionId=211&branchName=dev) | [![Webhooks API](https://msftdevtools.visualstudio.com/eShopOnContainers/_apis/build/status/microservices/webhooks?branchName=dev)](https://msftdevtools.visualstudio.com/eShopOnContainers/_build/latest?definitionId=207&branchName=dev) | [![Webhooks demo client](https://msftdevtools.visualstudio.com/eShopOnContainers/_apis/build/status/microservices/webhooks-client?branchName=dev)](https://msftdevtools.visualstudio.com/eShopOnContainers/_build/latest?definitionId=208&branchName=dev) |
 
 ## IMPORTANT NOTES!
 **You can use either the latest version of Visual Studio or simply Docker CLI and .NET CLI for Windows, Mac and Linux**. 
@@ -63,6 +80,12 @@ The architecture proposes a microservice oriented architecture implementation wi
 > <p> A similar case is defined in regard to Redis cache running as a container for the development environment. Or a No-SQL database (MongoDB) running as a container.
 > <p> However, in a real production environment it is recommended to have your databases (SQL Server, Redis, and the NO-SQL database, in this case) in HA (High Available) services like Azure SQL Database, Redis as a service and Azure CosmosDB instead the MongoDB container (as both systems share the same access protocol). If you want to change to a production configuration, you'll just need to change the connection strings once you have set up the servers in an HA cloud or on-premises.
 
+> ### Important Note on EventBus
+> In this solution's current EventBus is a simplified implementation, mainly used for learning purposes (development and testing), so it doesn't handle all production scenarios, most notably on error handling.  <p> 
+> The following forks provide production environment level implementation examples with eShopOnContainers :
+> * Implementation with [CAP](https://github.com/dotnetcore/CAP) : https://github.com/yang-xiaodong/eShopOnContainers
+> * Implementation with [NServiceBus](https://github.com/Particular/NServiceBus) : https://github.com/Particular/eShopOnContainers
+
 ## Related documentation and guidance
 While developing this reference application, we've been creating a reference <b>Guide/eBook</b> focusing on <b>architecting and developing containerized and microservice based .NET Applications</b> (download link available below) which explains in detail how to develop this kind of architectural style (microservices, Docker containers, Domain-Driven Design for certain microservices) plus other simpler architectural styles, like monolithic apps that can also live as Docker containers.
 <p>
@@ -106,7 +129,7 @@ Finally, those microservices are consumed by multiple client web and mobile apps
 <img src="img/xamarin-mobile-App.png">
 
 ## Setting up your development environment for eShopOnContainers
-### Visual Studio 2017 and Windows based
+### Visual Studio 2017 (or above) and Windows based
 This is the more straightforward way to get started:
 https://github.com/dotnet-architecture/eShopOnContainers/wiki/02.-Setting-eShopOnContainers-in-a-Visual-Studio-2017-environment
 
@@ -126,5 +149,5 @@ As mentioned, we'd appreciate your feedback, improvements and ideas.
 You can create new issues at the issues section, do pull requests and/or send emails to **eshop_feedback@service.microsoft.com**
 
 ## Questions
-[QUESTION] Answer +1 if the solution is working for you (Through VS2017 or CLI environment):
+[QUESTION] Answer +1 if the solution is working for you (Through VS or CLI environment):
 https://github.com/dotnet/eShopOnContainers/issues/107

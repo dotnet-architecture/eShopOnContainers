@@ -27,9 +27,11 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
         private readonly IMediator _mediator;
         private IDbContextTransaction _currentTransaction;
 
-        private OrderingContext(DbContextOptions<OrderingContext> options) : base (options) { }
+        private OrderingContext(DbContextOptions<OrderingContext> options) : base(options) { }
 
         public IDbContextTransaction GetCurrentTransaction => _currentTransaction;
+
+        public bool HasActiveTransaction => _currentTransaction != null;
 
         public OrderingContext(DbContextOptions<OrderingContext> options, IMediator mediator) : base(options)
         {
@@ -47,7 +49,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
             modelBuilder.ApplyConfiguration(new OrderItemEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new CardTypeEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new OrderStatusEntityTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new BuyerEntityTypeConfiguration()); 
+            modelBuilder.ApplyConfiguration(new BuyerEntityTypeConfiguration());
         }
 
         public async Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken = default(CancellationToken))
@@ -67,17 +69,24 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
             return true;
         }
 
-        public async Task BeginTransactionAsync()
+        public async Task<IDbContextTransaction> BeginTransactionAsync()
         {
-            _currentTransaction = _currentTransaction ?? await Database.BeginTransactionAsync(IsolationLevel.ReadCommitted);
+            if (_currentTransaction != null) return null;
+
+            _currentTransaction = await Database.BeginTransactionAsync(IsolationLevel.ReadCommitted);
+
+            return _currentTransaction;
         }
 
-        public async Task CommitTransactionAsync()
+        public async Task CommitTransactionAsync(IDbContextTransaction transaction)
         {
+            if (transaction == null) throw new ArgumentNullException(nameof(transaction));
+            if (transaction != _currentTransaction) throw new InvalidOperationException($"Transaction {transaction.TransactionId} is not current");
+
             try
             {
                 await SaveChangesAsync();
-                _currentTransaction?.Commit();
+                transaction.Commit();
             }
             catch
             {
@@ -118,7 +127,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
             var optionsBuilder = new DbContextOptionsBuilder<OrderingContext>()
                 .UseSqlServer("Server=.;Initial Catalog=Microsoft.eShopOnContainers.Services.OrderingDb;Integrated Security=true");
 
-            return new OrderingContext(optionsBuilder.Options,new NoMediator());
+            return new OrderingContext(optionsBuilder.Options, new NoMediator());
         }
 
         class NoMediator : IMediator
