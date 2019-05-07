@@ -39,9 +39,9 @@ namespace Ordering.API.Application.IntegrationEvents
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public async Task PublishEventsThroughEventBusAsync()
+        public async Task PublishEventsThroughEventBusAsync(Guid transactionId)
         {
-            var pendingLogEvents = await _eventLogService.RetrieveEventLogsPendingToPublishAsync();
+            var pendingLogEvents = await _eventLogService.RetrieveEventLogsPendingToPublishAsync(transactionId);
 
             foreach (var logEvt in pendingLogEvents)
             {
@@ -66,7 +66,7 @@ namespace Ordering.API.Application.IntegrationEvents
         {
             _logger.LogInformation("----- Enqueuing integration event {IntegrationEventId} to repository ({@IntegrationEvent})", evt.Id, evt);
 
-            await _eventLogService.SaveEventAsync(evt, _orderingContext.GetCurrentTransaction.GetDbTransaction());
+            await _eventLogService.SaveEventAsync(evt, _orderingContext.GetCurrentTransaction());
         }
     }
 }

@@ -29,7 +29,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
 
         private OrderingContext(DbContextOptions<OrderingContext> options) : base(options) { }
 
-        public IDbContextTransaction GetCurrentTransaction => _currentTransaction;
+        public IDbContextTransaction GetCurrentTransaction() => _currentTransaction;
 
         public bool HasActiveTransaction => _currentTransaction != null;
 
