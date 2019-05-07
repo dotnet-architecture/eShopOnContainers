@@ -238,6 +238,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
             var useLoadTest = configuration.GetValue<bool>("UseLoadTest");
             var identityUrl = configuration.GetValue<string>("IdentityUrl");
             var callBackUrl = configuration.GetValue<string>("CallBackUrl");
+            var sessionCookieLifetime = configuration.GetValue("SessionCookieLifetimeMinutes", 60);
 
             // Add Authentication services          
 
@@ -246,7 +247,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
                 options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
             })
-            .AddCookie(setup=>setup.ExpireTimeSpan = TimeSpan.FromHours(2))
+            .AddCookie(setup=>setup.ExpireTimeSpan = TimeSpan.FromMinutes(sessionCookieLifetime))
             .AddOpenIdConnect(options =>
             {
                 options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
