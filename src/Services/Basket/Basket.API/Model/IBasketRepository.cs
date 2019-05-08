@@ -1,8 +1,7 @@
-﻿using Microsoft.eShopOnContainers.Services.Basket.API.Model;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Microsoft.eShopOnContainers.Services.Basket.API.Infrastructure.Repositories
+namespace Microsoft.eShopOnContainers.Services.Basket.API.Model
 {
     public interface IBasketRepository
     {
