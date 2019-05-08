@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
 using Newtonsoft.Json;
@@ -34,25 +35,24 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF.Servi
                 .ToList();
         }
 
-        public async Task<IEnumerable<IntegrationEventLogEntry>> RetrieveEventLogsPendingToPublishAsync()
+        public async Task<IEnumerable<IntegrationEventLogEntry>> RetrieveEventLogsPendingToPublishAsync(Guid transactionId)
         {
+            var tid = transactionId.ToString();
+
             return await _integrationEventLogContext.IntegrationEventLogs
-                .Where(e => e.State == EventStateEnum.NotPublished)
+                .Where(e => e.TransactionId == tid && e.State == EventStateEnum.NotPublished)
                 .OrderBy(o => o.CreationTime)
                 .Select(e => e.DeserializeJsonContent(_eventTypes.Find(t=> t.Name == e.EventTypeShortName)))
                 .ToListAsync();              
         }
 
-        public Task SaveEventAsync(IntegrationEvent @event, DbTransaction transaction)
+        public Task SaveEventAsync(IntegrationEvent @event, IDbContextTransaction transaction)
         {
-            if (transaction == null)
-            {
-                throw new ArgumentNullException(nameof(transaction), $"A {typeof(DbTransaction).FullName} is required as a pre-requisite to save the event.");
-            }
+            if (transaction == null) throw new ArgumentNullException(nameof(transaction));
 
-            var eventLogEntry = new IntegrationEventLogEntry(@event);
+            var eventLogEntry = new IntegrationEventLogEntry(@event, transaction.TransactionId);
 
-            _integrationEventLogContext.Database.UseTransaction(transaction);
+            _integrationEventLogContext.Database.UseTransaction(transaction.GetDbTransaction());
             _integrationEventLogContext.IntegrationEventLogs.Add(eventLogEntry);
 
             return _integrationEventLogContext.SaveChangesAsync();
