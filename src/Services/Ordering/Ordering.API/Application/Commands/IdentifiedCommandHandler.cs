@@ -96,7 +96,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands
                         command);
 
                     // Send the embeded business command to mediator so it runs its related CommandHandler 
-                    var result = await _mediator.Send(command);
+                    var result = await _mediator.Send(command, cancellationToken);
 
                     _logger.LogInformation(
                         "----- Command result: {@Result} - {CommandName} - {IdProperty}: {CommandId} ({@Command})",
