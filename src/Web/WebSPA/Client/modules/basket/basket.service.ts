@@ -62,14 +62,14 @@ export class BasketService {
     setBasket(basket): Observable<boolean> {
         let url = this.purchaseUrl + '/api/v1/basket/';
         this.basket = basket;
-        return this.service.post(url, basket).pipe(map((response: Response) => {
+        return this.service.post(url, basket).pipe(map((response: any) => {
             return true;
         }));
     }
 
     setBasketCheckout(basketCheckout): Observable<boolean> {
         let url = this.basketUrl + '/api/v1/b/basket/checkout';
-        return this.service.postWithId(url, basketCheckout).pipe(map((response: Response) => {
+        return this.service.postWithId(url, basketCheckout).pipe(map((response: any) => {
             this.basketEvents.orderCreated();
             return true;
         }));
@@ -77,7 +77,7 @@ export class BasketService {
 
     getBasket(): Observable<IBasket> {
         let url = this.basketUrl + '/api/v1/b/basket/' + this.basket.buyerId;
-        return this.service.get(url).pipe(map((response: Response) => {
+        return this.service.get(url).pipe(map((response: any) => {
             if (response.status === 204) {
                 return null;
             }

@@ -49,7 +49,7 @@ namespace Catalog.API.Infrastructure.Filters
 
                 if (env.IsDevelopment())
                 {
-                    json.DeveloperMeesage = context.Exception;
+                    json.DeveloperMessage = context.Exception;
                 }
 
                 context.Result = new InternalServerErrorObjectResult(json);
@@ -62,7 +62,7 @@ namespace Catalog.API.Infrastructure.Filters
         {
             public string[] Messages { get; set; }
 
-            public object DeveloperMeesage { get; set; }
+            public object DeveloperMessage { get; set; }
         }
     }
 }

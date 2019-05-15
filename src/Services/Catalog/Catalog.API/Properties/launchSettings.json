@@ -13,7 +13,11 @@
       "launchBrowser": true,
       "launchUrl": "/swagger",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ConnectionString": "server=localhost,5433;Database=Microsoft.eShopOnContainers.Services.CatalogDb;User Id=sa;Password=Pass@word",
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "EventBusConnection": "localhost",
+        "Serilog:SeqServerUrl": "http://locahost:5340",
+        "Serilog:LogstashgUrl":"http://locahost:8080",
       }
     },
     "Microsoft.eShopOnContainers.Services.Catalog.API": {
@@ -23,6 +27,13 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
+    },
+    "Azure Dev Spaces": {
+      "commandName": "AzureDevSpaces",
+      "launchBrowser": true,
+      "resourceGroup": "edu-devspaces3",
+      "aksName": "edu-devspaces3",
+      "subscriptionId": "e3035ac1-c06c-4daf-8939-57b3c5f1f759"
     }
   }
 }

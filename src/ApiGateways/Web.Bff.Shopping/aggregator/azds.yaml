@@ -1,0 +1,55 @@
+kind: helm-release
+apiVersion: 1.1
+build:
+  context: ..\..\..\..
+  dockerfile: Dockerfile
+install:
+  chart: ../../../../k8s/helm/webshoppingagg
+  set:
+    image:
+      tag: $(tag)
+      pullPolicy: Never
+    ingress:
+      annotations:
+        kubernetes.io/ingress.class: traefik-azds
+      hosts:
+      # This expands to [space.s.]apigwms.<guid>.<region>.aksapp.io
+      - $(spacePrefix)eshop$(hostSuffix)
+    inf:
+      k8s:
+        dns: $(spacePrefix)eshop$(hostSuffix)      
+  values:
+  - values.dev.yaml?
+  - secrets.dev.yaml?
+  - app.yaml
+  - inf.yaml
+configurations:
+  develop:
+    build:
+      useGitIgnore: true
+      dockerfile: Dockerfile.develop
+    container:
+      syncTarget: /src
+      sync:
+      - '**/Pages/**'
+      - '**/Views/**'
+      - '**/wwwroot/**'
+      - '!**/*.{sln,csproj}'
+      command:
+      - dotnet
+      - run
+      - --no-restore
+      - --no-build
+      - --no-launch-profile
+      - -c
+      - ${Configuration:-Debug}
+      iterate:
+        processesToKill:
+        - dotnet
+        - vsdbg
+        buildCommands:
+        - - dotnet
+          - build
+          - --no-restore
+          - -c
+          - ${Configuration:-Debug}

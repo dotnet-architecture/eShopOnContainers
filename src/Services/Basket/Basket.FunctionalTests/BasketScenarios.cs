@@ -5,7 +5,7 @@ using System;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using WebMVC.Models;
+using WebMVC.Services.ModelDTOs;
 using Xunit;
 
 namespace Basket.FunctionalTests

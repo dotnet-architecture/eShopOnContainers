@@ -4,6 +4,7 @@ using Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands;
 using Microsoft.eShopOnContainers.Services.Ordering.API.Application.Queries;
 using Microsoft.eShopOnContainers.Services.Ordering.API.Controllers;
 using Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure.Services;
+using Microsoft.Extensions.Logging;
 using Moq;
 using Ordering.API.Application.Commands;
 using System;
@@ -19,12 +20,14 @@ namespace UnitTest.Ordering.Application
         private readonly Mock<IMediator> _mediatorMock;
         private readonly Mock<IOrderQueries> _orderQueriesMock;
         private readonly Mock<IIdentityService> _identityServiceMock;
+        private readonly Mock<ILogger<OrdersController>> _loggerMock;
 
         public OrdersWebApiTest()
         {
             _mediatorMock = new Mock<IMediator>();
             _orderQueriesMock = new Mock<IOrderQueries>();
             _identityServiceMock = new Mock<IIdentityService>();
+            _loggerMock = new Mock<ILogger<OrdersController>>();
         }
 
         [Fact]
@@ -35,7 +38,7 @@ namespace UnitTest.Ordering.Application
                 .Returns(Task.FromResult(true));
 
             //Act
-            var orderController = new OrdersController(_mediatorMock.Object, _orderQueriesMock.Object, _identityServiceMock.Object);
+            var orderController = new OrdersController(_mediatorMock.Object, _orderQueriesMock.Object, _identityServiceMock.Object, _loggerMock.Object);
             var actionResult = await orderController.CancelOrderAsync(new CancelOrderCommand(1), Guid.NewGuid().ToString()) as OkResult;
 
             //Assert
@@ -51,7 +54,7 @@ namespace UnitTest.Ordering.Application
                 .Returns(Task.FromResult(true));
 
             //Act
-            var orderController = new OrdersController(_mediatorMock.Object, _orderQueriesMock.Object, _identityServiceMock.Object);
+            var orderController = new OrdersController(_mediatorMock.Object, _orderQueriesMock.Object, _identityServiceMock.Object, _loggerMock.Object);
             var actionResult = await orderController.CancelOrderAsync(new CancelOrderCommand(1), String.Empty) as BadRequestResult;
 
             //Assert
@@ -66,7 +69,7 @@ namespace UnitTest.Ordering.Application
                 .Returns(Task.FromResult(true));
 
             //Act
-            var orderController = new OrdersController(_mediatorMock.Object, _orderQueriesMock.Object, _identityServiceMock.Object);
+            var orderController = new OrdersController(_mediatorMock.Object, _orderQueriesMock.Object, _identityServiceMock.Object, _loggerMock.Object);
             var actionResult = await orderController.ShipOrderAsync(new ShipOrderCommand(1), Guid.NewGuid().ToString()) as OkResult;
 
             //Assert
@@ -82,7 +85,7 @@ namespace UnitTest.Ordering.Application
                 .Returns(Task.FromResult(true));
 
             //Act
-            var orderController = new OrdersController(_mediatorMock.Object, _orderQueriesMock.Object, _identityServiceMock.Object);
+            var orderController = new OrdersController(_mediatorMock.Object, _orderQueriesMock.Object, _identityServiceMock.Object, _loggerMock.Object);
             var actionResult = await orderController.ShipOrderAsync(new ShipOrderCommand(1), String.Empty) as BadRequestResult;
 
             //Assert
@@ -102,7 +105,7 @@ namespace UnitTest.Ordering.Application
                 .Returns(Task.FromResult(fakeDynamicResult));
 
             //Act
-            var orderController = new OrdersController(_mediatorMock.Object, _orderQueriesMock.Object, _identityServiceMock.Object);
+            var orderController = new OrdersController(_mediatorMock.Object, _orderQueriesMock.Object, _identityServiceMock.Object, _loggerMock.Object);
             var actionResult = await orderController.GetOrdersAsync();
 
             //Assert
@@ -119,7 +122,7 @@ namespace UnitTest.Ordering.Application
                 .Returns(Task.FromResult(fakeDynamicResult));
 
             //Act
-            var orderController = new OrdersController(_mediatorMock.Object, _orderQueriesMock.Object, _identityServiceMock.Object);
+            var orderController = new OrdersController(_mediatorMock.Object, _orderQueriesMock.Object, _identityServiceMock.Object, _loggerMock.Object);
             var actionResult = await orderController.GetOrderAsync(fakeOrderId) as OkObjectResult;
 
             //Assert
@@ -135,7 +138,7 @@ namespace UnitTest.Ordering.Application
                 .Returns(Task.FromResult(fakeDynamicResult));
 
             //Act
-            var orderController = new OrdersController(_mediatorMock.Object, _orderQueriesMock.Object, _identityServiceMock.Object);
+            var orderController = new OrdersController(_mediatorMock.Object, _orderQueriesMock.Object, _identityServiceMock.Object, _loggerMock.Object);
             var actionResult = await orderController.GetCardTypesAsync();
 
             //Assert

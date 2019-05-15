@@ -132,7 +132,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
                 AddDomainEvent(new OrderStatusChangedToPaidDomainEvent(Id, OrderItems));
 
                 _orderStatusId = OrderStatus.Paid.Id;
-                _description = "The payment was performed at a simulated \"American Bank checking bank account endinf on XX35071\"";
+                _description = "The payment was performed at a simulated \"American Bank checking bank account ending on XX35071\"";
             }
         }
 

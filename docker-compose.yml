@@ -1,6 +1,10 @@
 version: '3.4'
 
 services:
+
+  seq:
+    image: datalust/seq:latest
+
   sql.data:
     image: microsoft/mssql-server-linux:2017-latest
 
@@ -14,7 +18,7 @@ services:
     image: rabbitmq:3-management-alpine
 
   identity.api:
-    image: eshop/identity.api:${TAG:-latest}
+    image: ${REGISTRY:-eshop}/identity.api:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
       dockerfile: src/Services/Identity/Identity.API/Dockerfile    
@@ -22,7 +26,7 @@ services:
       - sql.data
 
   basket.api:
-    image: eshop/basket.api:${TAG:-latest}
+    image: ${REGISTRY:-eshop}/basket.api:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
       dockerfile: src/Services/Basket/Basket.API/Dockerfile    
@@ -32,7 +36,7 @@ services:
       - rabbitmq
 
   catalog.api:
-    image: eshop/catalog.api:${TAG:-latest}
+    image: ${REGISTRY:-eshop}/catalog.api:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
       dockerfile: src/Services/Catalog/Catalog.API/Dockerfile
@@ -41,7 +45,7 @@ services:
       - rabbitmq
 
   ordering.api:
-    image: eshop/ordering.api:${TAG:-latest}
+    image: ${REGISTRY:-eshop}/ordering.api:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
       dockerfile: src/Services/Ordering/Ordering.API/Dockerfile    
@@ -50,7 +54,7 @@ services:
       - rabbitmq
 
   ordering.backgroundtasks:
-    image: eshop/ordering.backgroundtasks:${TAG:-latest}
+    image: ${REGISTRY:-eshop}/ordering.backgroundtasks:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
       dockerfile: src/Services/Ordering/Ordering.BackgroundTasks/Dockerfile    
@@ -59,7 +63,7 @@ services:
       - rabbitmq
 
   marketing.api:
-    image: eshop/marketing.api:${TAG:-latest}
+    image: ${REGISTRY:-eshop}/marketing.api:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
       dockerfile: src/Services/Marketing/Marketing.API/Dockerfile    
@@ -70,7 +74,7 @@ services:
       - rabbitmq
 
   payment.api:
-    image: eshop/payment.api:${TAG:-latest}
+    image: ${REGISTRY:-eshop}/payment.api:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
       dockerfile: src/Services/Payment/Payment.API/Dockerfile
@@ -78,7 +82,7 @@ services:
       - rabbitmq    
 
   locations.api:
-    image: eshop/locations.api:${TAG:-latest}
+    image: ${REGISTRY:-eshop}/locations.api:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
       dockerfile: src/Services/Location/Locations.API/Dockerfile
@@ -86,8 +90,16 @@ services:
       - nosql.data
       - rabbitmq
 
+  webhooks.api:
+    image: ${REGISTRY:-eshop}/webhooks.api:${PLATFORM:-linux}-${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/Services/Webhooks/Webhooks.API/Dockerfile
+    depends_on:
+      - sql.data    
+
   mobileshoppingapigw:
-    image: eshop/ocelotapigw:${TAG:-latest}
+    image: ${REGISTRY:-eshop}/ocelotapigw:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
       dockerfile: src/ApiGateways/ApiGw-Base/Dockerfile
@@ -102,7 +114,7 @@ services:
       - basket.api
 
   mobilemarketingapigw:
-    image: eshop/ocelotapigw:${TAG:-latest}
+    image: ${REGISTRY:-eshop}/ocelotapigw:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
       dockerfile: src/ApiGateways/ApiGw-Base/Dockerfile
@@ -117,7 +129,7 @@ services:
       - basket.api
 
   webshoppingapigw:
-    image: eshop/ocelotapigw:${TAG:-latest}
+    image: ${REGISTRY:-eshop}/ocelotapigw:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
       dockerfile: src/ApiGateways/ApiGw-Base/Dockerfile
@@ -132,7 +144,7 @@ services:
       - basket.api
 
   webmarketingapigw:
-    image: eshop/ocelotapigw:${TAG:-latest}
+    image: ${REGISTRY:-eshop}/ocelotapigw:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
       dockerfile: src/ApiGateways/ApiGw-Base/Dockerfile
@@ -147,7 +159,7 @@ services:
       - basket.api
 
   mobileshoppingagg:
-    image: eshop/mobileshoppingagg:${TAG:-latest}
+    image: ${REGISTRY:-eshop}/mobileshoppingagg:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
       dockerfile: src/ApiGateways/Mobile.Bff.Shopping/aggregator/Dockerfile
@@ -162,7 +174,7 @@ services:
       - basket.api
 
   webshoppingagg:
-    image: eshop/webshoppingagg:${TAG:-latest}
+    image: ${REGISTRY:-eshop}/webshoppingagg:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
       dockerfile: src/ApiGateways/Web.Bff.Shopping/aggregator/Dockerfile
@@ -177,7 +189,7 @@ services:
       - basket.api
 
   ordering.signalrhub:
-    image: eshop/ordering.signalrhub:${TAG:-latest}
+    image: ${REGISTRY:-eshop}/ordering.signalrhub:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
       dockerfile: src/Services/Ordering/Ordering.SignalrHub/Dockerfile
@@ -192,13 +204,13 @@ services:
       - basket.api
 
   webstatus:
-    image: eshop/webstatus:${TAG:-latest}
+    image: ${REGISTRY:-eshop}/webstatus:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
       dockerfile: src/Web/WebStatus/Dockerfile
 
   webspa:
-    image: eshop/webspa:${TAG:-latest}
+    image: ${REGISTRY:-eshop}/webspa:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
       dockerfile: src/Web/WebSPA/Dockerfile    
@@ -208,7 +220,7 @@ services:
 #      - webmarketingapigw
 
   webmvc:
-    image: eshop/webmvc:${TAG:-latest}
+    image: ${REGISTRY:-eshop}/webmvc:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
       dockerfile: src/Web/WebMVC/Dockerfile    
@@ -217,3 +229,10 @@ services:
       - webshoppingapigw
       - webmarketingapigw
 
+  webhooks.client:
+    image: ${REGISTRY:-eshop}/webhooks.client:${PLATFORM:-linux}-${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/Web/WebhookClient/Dockerfile
+    depends_on:
+      - webhooks.api    
