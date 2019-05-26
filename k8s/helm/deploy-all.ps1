@@ -67,7 +67,7 @@ $charts = ("eshop-common", "apigwmm", "apigwms", "apigwwm", "apigwws", "basket-a
 if ($deployInfrastructure) {
     foreach ($infra in $infras) {
         Write-Host "Installing infrastructure: $infra" -ForegroundColor Green
-        helm install --values app.yaml --values inf.yaml --values $ingressValuesFile --set app.name=$appName --set inf.k8s.dns=$dns --set ingress.hosts={$dns} --name="$appName-$infra" $infra     
+        helm install --values app.yaml --values inf.yaml --values $ingressValuesFile --set app.name=$appName --set inf.k8s.dns=$dns --set "ingress.hosts={$dns}" --name="$appName-$infra" $infra     
     }
 }
 else {
@@ -78,11 +78,11 @@ if ($deployCharts) {
     foreach ($chart in $charts) {
         Write-Host "Installing: $chart" -ForegroundColor Green
         if ($useCustomRegistry) {
-            helm install --set inf.registry.server=$registry --set inf.registry.login=$dockerUser --set inf.registry.pwd=$dockerPassword --set inf.registry.secretName=eshop-docker-scret --values app.yaml --values inf.yaml --values $ingressValuesFile --set app.name=$appName --set inf.k8s.dns=$dns --set ingress.hosts={$dns} --set image.tag=$imageTag --set image.pullPolicy=Always --name="$appName-$chart" $chart 
+            helm install --set inf.registry.server=$registry --set inf.registry.login=$dockerUser --set inf.registry.pwd=$dockerPassword --set inf.registry.secretName=eshop-docker-scret --values app.yaml --values inf.yaml --values $ingressValuesFile --set app.name=$appName --set inf.k8s.dns=$dns --set "ingress.hosts={$dns}" --set image.tag=$imageTag --set image.pullPolicy=Always --name="$appName-$chart" $chart 
         }
         else {
             if ($chart -ne "eshop-common")  {       # eshop-common is ignored when no secret must be deployed
-                helm install --values app.yaml --values inf.yaml --values $ingressValuesFile --set app.name=$appName --set inf.k8s.dns=$dns  --set ingress.hosts={$dns} --set image.tag=$imageTag --set image.pullPolicy=Always --name="$appName-$chart" $chart 
+                helm install --values app.yaml --values inf.yaml --values $ingressValuesFile --set app.name=$appName --set inf.k8s.dns=$dns  --set "ingress.hosts={$dns}" --set image.tag=$imageTag --set image.pullPolicy=Always --name="$appName-$chart" $chart 
             }
         }
     }

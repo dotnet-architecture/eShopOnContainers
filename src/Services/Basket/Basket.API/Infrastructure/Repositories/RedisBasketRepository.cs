@@ -1,11 +1,12 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.eShopOnContainers.Services.Basket.API.Model;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using StackExchange.Redis;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Microsoft.eShopOnContainers.Services.Basket.API.Model
+namespace Microsoft.eShopOnContainers.Services.Basket.API.Infrastructure.Repositories
 {
     public class RedisBasketRepository : IBasketRepository
     {
