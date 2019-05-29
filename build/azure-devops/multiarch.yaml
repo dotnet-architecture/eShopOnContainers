@@ -21,3 +21,6 @@ jobs:
      docker --config ~/.docker manifest create eshop/${{ parameters.image }}:${{ parameters.branch }} eshop/${{ parameters.image }}:linux-${{ parameters.branch }} eshop/${{ parameters.image }}:win-${{ parameters.branch }}
      docker --config ~/.docker manifest create eshop/${{ parameters.image }}:latest eshop/${{ parameters.image }}:linux-latest eshop/${{ parameters.image }}:win-latest
     displayName: 'Create Manifest' 
+  dependsOn:
+    - BuildWindows
+    - BuildLinux
