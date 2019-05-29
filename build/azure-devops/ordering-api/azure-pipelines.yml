@@ -75,3 +75,8 @@ jobs:
       dockerComposeFileArgs: |
         TAG=$(Build.SourceBranchName)
         PLATFORM=win
+- template: ../multiarch.yaml
+  parameters:
+    image: ordering.api
+    branch: $(Build.SourceBranchName)
+    registryEndpoint: $(registryEndpoint)

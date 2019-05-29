@@ -72,4 +72,9 @@ jobs:
       dockerComposeFileArgs: |
         TAG=$(Build.SourceBranchName)
         PLATFORM=win
+- template: ../multiarch.yaml
+  parameters:
+    image: mobileshoppingagg
+    branch: $(Build.SourceBranchName)
+    registryEndpoint: $(registryEndpoint)
 

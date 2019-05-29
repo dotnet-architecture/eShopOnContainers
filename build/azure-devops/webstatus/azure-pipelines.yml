@@ -73,3 +73,8 @@ jobs:
       dockerComposeFileArgs: |
         TAG=$(Build.SourceBranchName)
         PLATFORM=win
+- template: ../multiarch.yaml
+  parameters:
+    image: webstatus
+    branch: $(Build.SourceBranchName)
+    registryEndpoint: $(registryEndpoint)

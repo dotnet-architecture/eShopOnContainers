@@ -75,3 +75,8 @@ jobs:
         TAG=$(Build.SourceBranchName)
         PLATFORM=win
         NODE_IMAGE=stefanscherer/node-windows:8.11
+- template: ../multiarch.yaml
+  parameters:
+    image: webspa
+    branch: $(Build.SourceBranchName)
+    registryEndpoint: $(registryEndpoint)
