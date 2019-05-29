@@ -78,3 +78,8 @@ jobs:
       dockerComposeFileArgs: |
         TAG=$(Build.SourceBranchName)
         PLATFORM=win      
+- template: ../multiarch.yaml
+  parameters:
+    image: ocelotapigw
+    branch: $(Build.SourceBranchName)
+    registryEndpoint: $(registryEndpoint)
