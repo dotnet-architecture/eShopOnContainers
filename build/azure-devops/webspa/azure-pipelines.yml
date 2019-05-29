@@ -60,6 +60,7 @@ jobs:
       projectName: ""
       dockerComposeFileArgs: |
         TAG=$(Build.SourceBranchName)
+        NODE_IMAGE=stefanscherer/node-windows:8.11
         PLATFORM=win
   - task: DockerCompose@0
     displayName: Compose push webspa
@@ -73,3 +74,4 @@ jobs:
       dockerComposeFileArgs: |
         TAG=$(Build.SourceBranchName)
         PLATFORM=win
+        NODE_IMAGE=stefanscherer/node-windows:8.11
