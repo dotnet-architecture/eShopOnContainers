@@ -13,11 +13,11 @@ jobs:
     inputs:
       command: login
       containerregistrytype: 'Container Registry'
-      dockerRegistryEndpoint: $(parameters.registryEndpoint)
+      dockerRegistryEndpoint: ${{ parameters.registryEndpoint }}
   - bash: |
      mkdir -p ~/.docker
      echo '{ "experimental": "enabled" }' > ~/.docker/config.json
      docker login -u $(DOCKER_USER) -p $(DOCKER_PASSWORD)
-     docker --config ~/.docker manifest create eshop/$(parameters.image):$(parameters.branch) eshop/$(parameters.image):linux-$(parameters.branch) eshop/$(parameters.image):win-$(parameters.branch)
-     docker --config ~/.docker manifest create eshop/$(parameters.image):latest eshop/$(parameters.image):linux-latest eshop/$(parameters.image):win-latest
+     docker --config ~/.docker manifest create eshop/${{ parameters.image }}:${{ parameters.branch }} eshop/${{ parameters.image }}:linux-${{ parameters.branch }} eshop/${{ parameters.image }}:win-${{ parameters.branch }}
+     docker --config ~/.docker manifest create eshop/${{ parameters.image }}:latest eshop/${{ parameters.image }}:linux-latest eshop/${{ parameters.image }}:win-latest
     displayName: 'Create Manifest' 
