@@ -19,6 +19,8 @@ jobs:
      echo '{ "experimental": "enabled" }' > ~/.docker/config.json
      docker --config ~/.docker manifest create eshop/${{ parameters.image }}:${{ parameters.branch }} eshop/${{ parameters.image }}:linux-${{ parameters.branch }} eshop/${{ parameters.image }}:win-${{ parameters.branch }}
      docker --config ~/.docker manifest create eshop/${{ parameters.image }}:latest eshop/${{ parameters.image }}:linux-latest eshop/${{ parameters.image }}:win-latest
+     docker --config ~/.docker push eshop/${{ parameters.image }}:${{ parameters.branch }}
+     docker --config ~/.docker push eshop/${{ parameters.image }}:latest
     displayName: 'Create Manifest' 
   dependsOn:
     - BuildWindows
