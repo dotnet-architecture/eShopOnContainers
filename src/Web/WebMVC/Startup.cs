@@ -1,4 +1,5 @@
-﻿using Devspaces.Support;
+﻿using Datalust.SerilogMiddlewareExample.Diagnostics;
+using Devspaces.Support;
 using HealthChecks.UI.Client;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.ApplicationInsights.ServiceFabric;
@@ -92,6 +93,8 @@ namespace Microsoft.eShopOnContainers.WebMVC
             {
                 app.UseMiddleware<ByPassAuthMiddleware>();
             }
+
+            app.UseMiddleware<SerilogMiddleware>();
 
             app.UseAuthentication();
 

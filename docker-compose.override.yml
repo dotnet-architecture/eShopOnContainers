@@ -403,6 +403,8 @@ services:
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
       - OrchestratorType=${ORCHESTRATOR_TYPE}
       - UseLoadTest=${USE_LOADTEST:-False}
+      - Serilog__MinimumLevel__Default=Verbose
+      - Serilog__MinimumLevel__Override__Microsoft.eShopOnContainers=Verbose
     ports:
       - "5100:80"
 
