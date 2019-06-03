@@ -17,7 +17,7 @@ exit
 }
 
 try {
-  Get-NetFirewallRule -DisplayName EshopDocker -ErrorAction Stop
+  Get-NetFirewallRule -DisplayName eShopOnContainers-* -ErrorAction Stop
   Write-Host "Rule found"
 }
   catch [Exception] {
