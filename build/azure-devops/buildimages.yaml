@@ -4,7 +4,7 @@ parameters:
 
 jobs:
 - job: BuildContainersForPR_Linux
-  condition: eq(${{ variables['Build.Reason'] }}, 'PullRequest'))
+  condition: eq('${{ variables['Build.Reason'] }}', 'PullRequest'))
   pool:
     vmImage: 'ubuntu-16.04'
   steps:
@@ -13,7 +13,7 @@ jobs:
     env:
       TAG: ${{ variables['Build.SourceBranchName'] }}    
 - job: BuildContainersForPR_Windows
-  condition: eq(${{ variables['Build.Reason'] }}, 'PullRequest'))
+  condition: eq('${{ variables['Build.Reason'] }}', 'PullRequest'))
   pool:
     vmImage: 'windows-2019'
   steps:
@@ -23,7 +23,7 @@ jobs:
       TAG: ${{ variables['Build.SourceBranchName'] }} 
       PLATFORM: win
 - job: BuildLinux
-  condition: ne('${{ variables['Build.Reason'] }}'', 'PullRequest'))
+  condition: ne('${{ variables['Build.Reason'] }}', 'PullRequest'))
   pool:
     vmImage: 'ubuntu-16.04'
   steps:
