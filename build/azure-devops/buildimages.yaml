@@ -1,0 +1,92 @@
+parameters:
+  images: ''
+  registryEndpoint: ''
+
+jobs:
+- job: BuildContainersForPR_Linux
+  condition: eq(${{ variables['Build.Reason'] }}, 'PullRequest'))
+  pool:
+    vmImage: 'ubuntu-16.04'
+  steps:
+  - task: Bash@3
+    displayName: Create multiarch manifest
+    inputs:
+      script: docker-compose build ${{ parameters.images }}
+      env:
+        TAG: ${{ variables['Build.SourceBranchName'] }}
+- job: BuildContainersForPR_Windows
+  condition: eq(${{ variables['Build.Reason'] }}, 'PullRequest'))
+  pool:
+    vmImage: 'windows-2019'
+  steps:
+  - task: Bash@3
+    displayName: Create multiarch manifest
+    inputs:
+      env:
+        TAG: ${{ variables['Build.SourceBranchName'] }}
+        PLATFORM: win
+      script: docker-compose build ${{ parameters.images }}
+- job: BuildLinux
+  condition: ne(${{ variables['Build.Reason'] }}, 'PullRequest'))
+  pool:
+    vmImage: 'ubuntu-16.04'
+  steps:
+  - task: DockerCompose@0
+    displayName: Compose build ${{ parameters.images }}
+    inputs:
+      dockerComposeCommand: 'build ${{ parameters.images }}'
+      containerregistrytype: Container Registry
+      dockerRegistryEndpoint: ${{ parameters.registryEndpoint }}
+      dockerComposeFile: docker-compose.yml
+      qualifyImageNames: true
+      projectName: ""
+      dockerComposeFileArgs: |
+        TAG=${{ variables['Build.SourceBranchName'] }}
+  - task: DockerCompose@0
+    displayName: Compose push apigws
+    inputs:
+      dockerComposeCommand: 'push ${{ parameters.images }}'
+      containerregistrytype: Container Registry
+      dockerRegistryEndpoint: ${{ parameters.registryEndpoint }}
+      dockerComposeFile: docker-compose.yml
+      qualifyImageNames: true
+      projectName: ""
+      dockerComposeFileArgs: |
+        TAG=${{ variables['Build.SourceBranchName'] }} 
+  - task: CopyFiles@2
+    inputs:
+      sourceFolder: ${{ variables.Build.SourcesDirectory }}/k8s/helm    
+      targetFolder: ${{ variables['Build.ArtifactStagingDirectory'] }}/k8s/helm
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathtoPublish: ${{ variables['Build.ArtifactStagingDirectory'] }}/k8s/helm
+      artifactName: helm
+- job: BuildWindows
+  condition: ne(${{ variables['Build.Reason'] }}, 'PullRequest'))
+  pool:
+    vmImage: 'windows-2019'
+  steps:
+  - task: DockerCompose@0
+    displayName: Compose build apigws
+    inputs:
+      dockerComposeCommand: 'build mobileshoppingapigw mobilemarketingapigw webshoppingapigw webmarketingapigw'
+      containerregistrytype: Container Registry
+      dockerRegistryEndpoint: ${{ parameters.registryEndpoint }}
+      dockerComposeFile: docker-compose.yml
+      qualifyImageNames: true
+      projectName: ""
+      dockerComposeFileArgs: |
+        TAG=${{ variables['Build.SourceBranchName'] }}
+        PLATFORM=win      
+  - task: DockerCompose@0
+    displayName: Compose push apigws
+    inputs:
+      dockerComposeCommand: 'push mobileshoppingapigw mobilemarketingapigw webshoppingapigw webmarketingapigw'
+      containerregistrytype: Container Registry
+      dockerRegistryEndpoint: ${{ parameters.registryEndpoint }}
+      dockerComposeFile: docker-compose.yml
+      qualifyImageNames: true
+      projectName: ""
+      dockerComposeFileArgs: |
+        TAG=${{ variables['Build.SourceBranchName'] }}
+        PLATFORM=win      
