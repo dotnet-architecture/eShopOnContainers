@@ -1,5 +1,5 @@
 parameters:
-  images: ''
+  services: ''
   registryEndpoint: ''
 
 jobs:
@@ -8,7 +8,7 @@ jobs:
   pool:
     vmImage: 'ubuntu-16.04'
   steps:
-  - bash: docker-compose build ${{ parameters.images }}
+  - bash: docker-compose build ${{ parameters.services }}
     displayName: Create multiarch manifest
     env:
       TAG: ${{ variables['Build.SourceBranchName'] }}    
@@ -17,7 +17,7 @@ jobs:
   pool:
     vmImage: 'windows-2019'
   steps:
-  - bash: docker-compose build ${{ parameters.images }}
+  - bash: docker-compose build ${{ parameters.services }}
     displayName: Create multiarch manifest
     env:
       TAG: ${{ variables['Build.SourceBranchName'] }} 
@@ -28,9 +28,9 @@ jobs:
     vmImage: 'ubuntu-16.04'
   steps:
   - task: DockerCompose@0
-    displayName: Compose build ${{ parameters.images }}
+    displayName: Compose build ${{ parameters.services }}
     inputs:
-      dockerComposeCommand: 'build ${{ parameters.images }}'
+      dockerComposeCommand: 'build ${{ parameters.services }}'
       containerregistrytype: Container Registry
       dockerRegistryEndpoint: ${{ parameters.registryEndpoint }}
       dockerComposeFile: docker-compose.yml
@@ -39,9 +39,9 @@ jobs:
       dockerComposeFileArgs: |
         TAG=${{ variables['Build.SourceBranchName'] }}
   - task: DockerCompose@0
-    displayName: Compose push apigws
+    displayName: Compose push ${{ parameters.images }}
     inputs:
-      dockerComposeCommand: 'push ${{ parameters.images }}'
+      dockerComposeCommand: 'push ${{ parameters.services }}'
       containerregistrytype: Container Registry
       dockerRegistryEndpoint: ${{ parameters.registryEndpoint }}
       dockerComposeFile: docker-compose.yml
@@ -63,9 +63,9 @@ jobs:
     vmImage: 'windows-2019'
   steps:
   - task: DockerCompose@0
-    displayName: Compose build apigws
+    displayName: Compose build ${{ parameters.services }}
     inputs:
-      dockerComposeCommand: 'build mobileshoppingapigw mobilemarketingapigw webshoppingapigw webmarketingapigw'
+      dockerComposeCommand: 'build ${{ parameters.services }}'
       containerregistrytype: Container Registry
       dockerRegistryEndpoint: ${{ parameters.registryEndpoint }}
       dockerComposeFile: docker-compose.yml
@@ -73,11 +73,12 @@ jobs:
       projectName: ""
       dockerComposeFileArgs: |
         TAG=${{ variables['Build.SourceBranchName'] }}
-        PLATFORM=win      
+        PLATFORM=win
+        NODE_IMAGE=stefanscherer/node-windows:8.11 
   - task: DockerCompose@0
-    displayName: Compose push apigws
+    displayName: Compose push ${{ parameters.services }}
     inputs:
-      dockerComposeCommand: 'push mobileshoppingapigw mobilemarketingapigw webshoppingapigw webmarketingapigw'
+      dockerComposeCommand: 'push ${{ parameters.services }}'
       containerregistrytype: Container Registry
       dockerRegistryEndpoint: ${{ parameters.registryEndpoint }}
       dockerComposeFile: docker-compose.yml
