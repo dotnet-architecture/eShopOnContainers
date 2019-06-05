@@ -6,7 +6,6 @@ using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
 using Microsoft.eShopOnContainers.Services.Basket.API.Model;
 using Microsoft.eShopOnContainers.Services.Basket.API.Services;
 using Microsoft.Extensions.Logging;
-using Serilog.Context;
 using System;
 using System.Net;
 using System.Threading.Tasks;
@@ -41,14 +40,14 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
         {
             var basket = await _repository.GetBasketAsync(id);
 
-            return basket ?? new CustomerBasket(id);
+            return Ok(basket ?? new CustomerBasket(id));
         }
 
         [HttpPost]
         [ProducesResponseType(typeof(CustomerBasket), (int)HttpStatusCode.OK)]
         public async Task<ActionResult<CustomerBasket>> UpdateBasketAsync([FromBody]CustomerBasket value)
         {
-            return await _repository.UpdateBasketAsync(value);
+            return Ok(await _repository.UpdateBasketAsync(value));
         }
 
         [Route("checkout")]

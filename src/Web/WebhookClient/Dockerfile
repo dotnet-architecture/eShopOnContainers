@@ -5,14 +5,20 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/core/sdk:2.2 AS build
 WORKDIR /src
-COPY ["src/Web/WebhookClient/WebhookClient.csproj", "src/Web/WebhookClient/"]
-RUN dotnet restore "src/Web/WebhookClient/WebhookClient.csproj"
+
+COPY scripts scripts/
+
+COPY src/ApiGateways/*/*.csproj /src/csproj-files/
+COPY src/ApiGateways/*/*/*.csproj /src/csproj-files/
+COPY src/BuildingBlocks/*/*/*.csproj /src/csproj-files/
+COPY src/Services/*/*/*.csproj /src/csproj-files/
+COPY src/Web/*/*.csproj /src/csproj-files/
+
 COPY . .
-WORKDIR "/src/src/Web/WebhookClient"
-RUN dotnet build "WebhookClient.csproj" -c Release -o /app
+WORKDIR /src/src/Web/WebhookClient
+RUN dotnet publish -c Release -o /app
 
 FROM build AS publish
-RUN dotnet publish "WebhookClient.csproj" -c Release -o /app
 
 FROM base AS final
 WORKDIR /app

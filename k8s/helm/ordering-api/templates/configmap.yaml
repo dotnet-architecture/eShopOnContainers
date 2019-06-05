@@ -16,5 +16,5 @@ data:
   ordering__EnableLoadTest: "{{ .Values.inf.misc.useLoadTest }}"
   urls__IdentityUrl: http://{{ $identity }}
   all__EventBusConnection: {{ .Values.inf.eventbus.constr }}
-  all__InstrumentationKey: {{ .Values.inf.appinsights.key }}
+  all__InstrumentationKey: "{{ .Values.inf.appinsights.key }}"
   all__UseAzureServiceBus: "{{ .Values.inf.eventbus.useAzure }}"

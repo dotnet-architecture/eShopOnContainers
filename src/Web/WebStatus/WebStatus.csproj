@@ -5,12 +5,6 @@
     <DockerComposeProjectPath>..\..\..\docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Remove="Views\**" />
-    <Content Remove="Views\**" />
-    <EmbeddedResource Remove="Views\**" />
-    <None Remove="Views\**" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="AspNetCore.HealthChecks.UI" Version="2.2.22" />
     <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="2.2.3" />
     <PackageReference Include="AspNetCore.HealthChecks.Uris" Version="2.2.2" />
@@ -28,6 +22,7 @@
     <PackageReference Include="Serilog.Settings.Configuration" Version="3.0.1" />
     <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
     <PackageReference Include="Serilog.Sinks.Seq" Version="4.0.0" />
+    <PackageReference Include="Serilog.Sinks.Http" Version="4.2.1" />
   </ItemGroup>
   <ItemGroup>
     <Content Update="appsettings.Development.json">

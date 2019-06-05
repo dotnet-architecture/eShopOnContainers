@@ -110,6 +110,8 @@ services:
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
       - OrchestratorType=${ORCHESTRATOR_TYPE}
       - UseLoadTest=${USE_LOADTEST:-False}
+      - Serilog__MinimumLevel__Override__Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ=Verbose
+      - Serilog__MinimumLevel__Override__Ordering.API=Verbose
     ports:
       - "5102:80"   # Important: In a production environment your should remove the external port (5102) kept here for microservice debugging purposes. 
                     # The API Gateway redirects and access through the internal port (80).
@@ -130,6 +132,7 @@ services:
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
       - OrchestratorType=${ORCHESTRATOR_TYPE}
       - UseLoadTest=${USE_LOADTEST:-False}
+      - Serilog__MinimumLevel__Override__Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ=Verbose
     ports:
       - "5111:80"
 
@@ -168,6 +171,8 @@ services:
       - AzureServiceBusEnabled=False
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
       - OrchestratorType=${ORCHESTRATOR_TYPE}
+      - Serilog__MinimumLevel__Override__Payment.API.IntegrationEvents.EventHandling=Verbose
+      - Serilog__MinimumLevel__Override__Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ=Verbose
     ports:
       - "5108:80"   # Important: In a production environment your should remove the external port (5108) kept here for microservice debugging purposes. 
                     # The API Gateway redirects and access through the internal port (80).
@@ -326,40 +331,40 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://0.0.0.0:80
-      - HealthChecks-UI__HealthChecks__1__Name=WebMVC HTTP Check
-      - HealthChecks-UI__HealthChecks__1__Uri=http://webmvc/hc
-      - HealthChecks-UI__HealthChecks__2__Name=WebSPA HTTP Check
-      - HealthChecks-UI__HealthChecks__2__Uri=http://webspa/hc
-      - HealthChecks-UI__HealthChecks__3__Name=Web Shopping Aggregator GW HTTP Check
-      - HealthChecks-UI__HealthChecks__3__Uri=http://webshoppingagg/hc
-      - HealthChecks-UI__HealthChecks__4__Name=Mobile Shopping Aggregator HTTP Check
-      - HealthChecks-UI__HealthChecks__4__Uri=http://mobileshoppingagg/hc
-      - HealthChecks-UI__HealthChecks__5__Name=Mobile Shopping API GW HTTP Check
-      - HealthChecks-UI__HealthChecks__5__Uri=http://mobileshoppingapigw/hc
-      - HealthChecks-UI__HealthChecks__6__Name=Mobile Marketing API GW HTTP Check
-      - HealthChecks-UI__HealthChecks__6__Uri=http://mobilemarketingapigw/hc
-      - HealthChecks-UI__HealthChecks__7__Name=Web Shopping API GW HTTP Check
-      - HealthChecks-UI__HealthChecks__7__Uri=http://webshoppingapigw/hc
-      - HealthChecks-UI__HealthChecks__8__Name=Web Marketing API GW HTTP Check
-      - HealthChecks-UI__HealthChecks__8__Uri=http://webmarketingapigw/hc
-      - HealthChecks-UI__HealthChecks__9__Name=Ordering HTTP Check
-      - HealthChecks-UI__HealthChecks__9__Uri=http://ordering.api/hc
-      - HealthChecks-UI__HealthChecks__10__Name=Ordering HTTP Background Check
-      - HealthChecks-UI__HealthChecks__10__Uri=http://ordering.backgroundtasks/hc
-      - HealthChecks-UI__HealthChecks__11__Name=Basket HTTP Check
-      - HealthChecks-UI__HealthChecks__11__Uri=http://basket.api/hc
-      - HealthChecks-UI__HealthChecks__12__Name=Catalog HTTP Check
-      - HealthChecks-UI__HealthChecks__12__Uri=http://catalog.api/hc
-      - HealthChecks-UI__HealthChecks__13__Name=Identity HTTP Check
-      - HealthChecks-UI__HealthChecks__13__Uri=http://identity.api/hc
-      - HealthChecks-UI__HealthChecks__14__Name=Marketing HTTP Check
-      - HealthChecks-UI__HealthChecks__14__Uri=http://marketing.api/hc
-      - HealthChecks-UI__HealthChecks__15__Name=Locations HTTP Check
-      - HealthChecks-UI__HealthChecks__15__Uri=http://locations.api/hc
-      - HealthChecks-UI__HealthChecks__16__Name=Payments HTTP Check
-      - HealthChecks-UI__HealthChecks__16__Uri=http://payment.api/hc
-      - HealthChecks-UI__HealthChecks__17__Name=Ordering SignalRHub HTTP Check
-      - HealthChecks-UI__HealthChecks__17__Uri=http://ordering.signalrhub/hc      
+      - HealthChecks-UI__HealthChecks__0__Name=WebMVC HTTP Check
+      - HealthChecks-UI__HealthChecks__0__Uri=http://webmvc/hc
+      - HealthChecks-UI__HealthChecks__1__Name=WebSPA HTTP Check
+      - HealthChecks-UI__HealthChecks__1__Uri=http://webspa/hc
+      - HealthChecks-UI__HealthChecks__2__Name=Web Shopping Aggregator GW HTTP Check
+      - HealthChecks-UI__HealthChecks__2__Uri=http://webshoppingagg/hc
+      - HealthChecks-UI__HealthChecks__3__Name=Mobile Shopping Aggregator HTTP Check
+      - HealthChecks-UI__HealthChecks__3__Uri=http://mobileshoppingagg/hc
+      - HealthChecks-UI__HealthChecks__4__Name=Mobile Shopping API GW HTTP Check
+      - HealthChecks-UI__HealthChecks__4__Uri=http://mobileshoppingapigw/hc
+      - HealthChecks-UI__HealthChecks__5__Name=Mobile Marketing API GW HTTP Check
+      - HealthChecks-UI__HealthChecks__5__Uri=http://mobilemarketingapigw/hc
+      - HealthChecks-UI__HealthChecks__6__Name=Web Shopping API GW HTTP Check
+      - HealthChecks-UI__HealthChecks__6__Uri=http://webshoppingapigw/hc
+      - HealthChecks-UI__HealthChecks__7__Name=Web Marketing API GW HTTP Check
+      - HealthChecks-UI__HealthChecks__7__Uri=http://webmarketingapigw/hc
+      - HealthChecks-UI__HealthChecks__8__Name=Ordering HTTP Check
+      - HealthChecks-UI__HealthChecks__8__Uri=http://ordering.api/hc
+      - HealthChecks-UI__HealthChecks__9__Name=Ordering HTTP Background Check
+      - HealthChecks-UI__HealthChecks__9__Uri=http://ordering.backgroundtasks/hc
+      - HealthChecks-UI__HealthChecks__10__Name=Basket HTTP Check
+      - HealthChecks-UI__HealthChecks__10__Uri=http://basket.api/hc
+      - HealthChecks-UI__HealthChecks__11__Name=Catalog HTTP Check
+      - HealthChecks-UI__HealthChecks__11__Uri=http://catalog.api/hc
+      - HealthChecks-UI__HealthChecks__12__Name=Identity HTTP Check
+      - HealthChecks-UI__HealthChecks__12__Uri=http://identity.api/hc
+      - HealthChecks-UI__HealthChecks__13__Name=Marketing HTTP Check
+      - HealthChecks-UI__HealthChecks__13__Uri=http://marketing.api/hc
+      - HealthChecks-UI__HealthChecks__14__Name=Locations HTTP Check
+      - HealthChecks-UI__HealthChecks__14__Uri=http://locations.api/hc
+      - HealthChecks-UI__HealthChecks__15__Name=Payments HTTP Check
+      - HealthChecks-UI__HealthChecks__15__Uri=http://payment.api/hc
+      - HealthChecks-UI__HealthChecks__16__Name=Ordering SignalRHub HTTP Check
+      - HealthChecks-UI__HealthChecks__16__Uri=http://ordering.signalrhub/hc      
       - OrderingBackgroundTasksUrl=http://ordering.backgroundtasks/hc
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
       - OrchestratorType=${ORCHESTRATOR_TYPE}

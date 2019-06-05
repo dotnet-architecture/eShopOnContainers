@@ -55,7 +55,7 @@ namespace UnitTest.Basket.Application
 
             //Assert
             Assert.Equal((actionResult.Result as OkObjectResult).StatusCode, (int)System.Net.HttpStatusCode.OK);
-            Assert.Equal(((CustomerBasket)actionResult.Value).BuyerId, fakeCustomerId);
+            Assert.Equal((((ObjectResult)actionResult.Result).Value as CustomerBasket).BuyerId, fakeCustomerId);
         }
 
         [Fact]
@@ -81,7 +81,7 @@ namespace UnitTest.Basket.Application
 
             //Assert
             Assert.Equal((actionResult.Result as OkObjectResult).StatusCode, (int)System.Net.HttpStatusCode.OK);
-            Assert.Equal(((CustomerBasket)actionResult.Value).BuyerId, fakeCustomerId);
+            Assert.Equal((((ObjectResult)actionResult.Result).Value as CustomerBasket).BuyerId, fakeCustomerId);
         }
 
         [Fact]
