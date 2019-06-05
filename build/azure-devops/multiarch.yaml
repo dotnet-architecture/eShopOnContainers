@@ -5,7 +5,7 @@ parameters:
 
 jobs:
 - job: manifest
-  condition: ne(variables['Build.Reason'], 'PullRequest'))
+  condition: ne('${{ variables['Build.Reason'] }}', 'PullRequest'))
   pool: 
     vmImage: 'Ubuntu 16.04'
   steps:
