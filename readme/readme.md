@@ -7,7 +7,7 @@ This file contains links to the documentation of the project.
 ## Documentation included in files
 
 * [Branch Guide](../branch-guide.md): List of branches used and their purpose.
-* [vsts-docs folder](../vsts-docs/readme.md): Information about how to setup a CI/CD procedure using VSTS
+* [vsts-docs folder](../vsts-docs/readme.md): Information about how to setup a CI/CD procedure using Azure DevOps
 * [Kubernetes](../k8s/readme.md): Information about how to deploy eShopOnContainers in a kubernetes cluster, and how to setup a CI/CD for k8s using VSTS
 * [deploy](../deploy/readme.md): Information about how deploy Azure resources using the Azure CLI 2.0.
 * [.env file](./README.ENV.md): What is the `.env` file and how to use it to configure eShopOnContainers to use external resources (like Azure)
