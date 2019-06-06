@@ -5,7 +5,10 @@ parameters:
 
 jobs:
 - job: manifest
-  condition: ne('${{ variables['Build.Reason'] }}', 'PullRequest')
+  condition: and(succeeded(),ne('${{ variables['Build.Reason'] }}', 'PullRequest'))
+  dependsOn:
+    - BuildWindows
+    - BuildLinux  
   pool: 
     vmImage: 'Ubuntu 16.04'
   steps:
@@ -23,7 +26,3 @@ jobs:
       docker --config ~/.docker push eshop/${{ parameters.image }}:${{ parameters.branch }}
       docker --config ~/.docker push eshop/${{ parameters.image }}:latest
     displayName: Create multiarch manifest
-  dependsOn:
-    - BuildWindows
-    - BuildLinux
-  conditions: succeeded()
