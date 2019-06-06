@@ -6,10 +6,10 @@ parameters:
 
 jobs:
 - job: manifest
-#  condition: and(succeeded(),ne('${{ variables['Build.Reason'] }}', 'PullRequest'))
-#  dependsOn:
-#    - BuildWindows
-#    - BuildLinux  
+  condition: and(succeeded(),ne('${{ variables['Build.Reason'] }}', 'PullRequest'))
+  dependsOn:
+    - BuildWindows
+    - BuildLinux  
   pool: 
     vmImage: 'Ubuntu 16.04'
   steps:
