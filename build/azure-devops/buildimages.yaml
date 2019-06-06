@@ -52,11 +52,11 @@ jobs:
         TAG=${{ variables['Build.SourceBranchName'] }} 
   - task: CopyFiles@2
     inputs:
-      sourceFolder: ${{ variables['Build.SourcesDirectory'] }}/k8s/helm    
-      targetFolder: ${{ variables['Build.ArtifactStagingDirectory'] }}/k8s/helm
+      sourceFolder: '${{ variables['Build.SourcesDirectory'] }}/k8s/helm'
+      targetFolder: '${{ variables['Build.ArtifactStagingDirectory'] }}/k8s/helm'
   - task: PublishBuildArtifacts@1
     inputs:
-      pathtoPublish: ${{ variables['Build.ArtifactStagingDirectory'] }}/k8s/helm
+      pathtoPublish: '${{ variables['Build.ArtifactStagingDirectory'] }}/k8s/helm'
       artifactName: helm
 - job: BuildWindows
   condition: ne('${{ variables['Build.Reason'] }}', 'PullRequest')
