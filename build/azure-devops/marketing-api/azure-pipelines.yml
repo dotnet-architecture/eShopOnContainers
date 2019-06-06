@@ -15,6 +15,8 @@ jobs:
   parameters:
     services: marketing.api
     registryEndpoint: $(registryEndpoint)
+    helmfrom: $(Build.SourcesDirectory)/k8s/helm
+    helmto: $(Build.ArtifactStagingDirectory)/k8s/helm    
 - template: ../multiarch.yaml
   parameters:
     image: marketing.api
