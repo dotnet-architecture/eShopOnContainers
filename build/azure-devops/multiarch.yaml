@@ -6,10 +6,10 @@ parameters:
 
 jobs:
 - job: manifest
-  condition: and(succeeded(),ne('${{ variables['Build.Reason'] }}', 'PullRequest'))
-  dependsOn:
-    - BuildWindows
-    - BuildLinux  
+#  condition: and(succeeded(),ne('${{ variables['Build.Reason'] }}', 'PullRequest'))
+#  dependsOn:
+#    - BuildWindows
+#    - BuildLinux  
   pool: 
     vmImage: 'Ubuntu 16.04'
   steps:
@@ -21,7 +21,8 @@ jobs:
       dockerRegistryEndpoint: ${{ parameters.registryEndpoint }}
   - bash: |
       mkdir -p ~/.docker
-      echo '{ "experimental": "enabled" }' > ~/.docker/config.json
+      sed '$ s/.$//' $DOCKER_CONFIG/config.json > ~/.docker/config.json
+      echo ',"experimental": "enabled" }' >> ~/.docker/config.json
       docker --config ~/.docker manifest create ${{ parameters.registry }}/${{ parameters.image }}:${{ parameters.branch }} ${{ parameters.registry }}/${{ parameters.image }}:linux-${{ parameters.branch }} ${{ parameters.registry }}/${{ parameters.image }}:win-${{ parameters.branch }}
       docker --config ~/.docker manifest create ${{ parameters.registry }}/${{ parameters.image }}:latest ${{ parameters.registry }}/${{ parameters.image }}:linux-latest ${{ parameters.registry }}/${{ parameters.image }}:win-latest
       docker --config ~/.docker manifest push ${{ parameters.registry }}/${{ parameters.image }}:${{ parameters.branch }}
