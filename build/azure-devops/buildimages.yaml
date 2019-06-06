@@ -1,6 +1,8 @@
 parameters:
   services: ''
   registryEndpoint: ''
+  helmfrom: ''
+  helmto: ''
 
 jobs:
 - job: BuildContainersForPR_Linux
@@ -52,11 +54,11 @@ jobs:
         TAG=${{ variables['Build.SourceBranchName'] }} 
   - task: CopyFiles@2
     inputs:
-      sourceFolder: "${{ variables['Build.SourcesDirectory'] }}/k8s/helm"
-      targetFolder: "${{ variables['Build.ArtifactStagingDirectory'] }}/k8s/helm"
+      sourceFolder: ${{ parameters.helmfrom }}
+      targetFolder: ${{ parameters.helmto }}
   - task: PublishBuildArtifacts@1
     inputs:
-      pathtoPublish: "${{ variables['Build.ArtifactStagingDirectory'] }}/k8s/helm"
+      pathtoPublish: ${{ parameters.helmto }}
       artifactName: helm
 - job: BuildWindows
   condition: ne('${{ variables['Build.Reason'] }}', 'PullRequest')
