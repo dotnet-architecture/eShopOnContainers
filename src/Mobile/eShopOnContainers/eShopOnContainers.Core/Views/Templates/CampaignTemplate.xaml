@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentView 
+    xmlns="http://xamarin.com/schemas/2014/forms" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"    
+    xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+    xmlns:controls="clr-namespace:eShopOnContainers.Core.Controls;assembly=eShopOnContainers.Core"
+    x:Class="eShopOnContainers.Core.Views.Templates.CampaignTemplate">
+    <ContentView.Resources>
+        <ResourceDictionary>
+            
+            <Style x:Key="CampaignNameStyle" 
+               TargetType="{x:Type Label}">
+                <Setter Property="FontFamily"
+                        Value="{StaticResource MontserratRegular}" />
+                <Setter Property="FontSize"
+                        Value="{StaticResource LargeSize}" />
+                <Setter Property="HorizontalOptions"
+                        Value="Center" />
+                <Setter Property="Margin"
+                        Value="0, 12, 0, 6" />
+            </Style>
+           
+            <Style x:Key="MoreDetailsButtonStyle" 
+               TargetType="{x:Type Grid}">
+                <Setter Property="HeightRequest"
+                        Value="42" />
+                <Setter Property="WidthRequest"
+                        Value="42" />
+                <Setter Property="HorizontalOptions"
+                        Value="Center" />
+                <Setter Property="VerticalOptions"
+                        Value="End" />
+                <Setter Property="Margin"
+                        Value="0,0,0,24" />
+            </Style>
+            
+            <Style x:Key="AddImageStyle" 
+               TargetType="{x:Type Image}">
+                <Setter Property="HeightRequest"
+                        Value="24" />
+                <Setter Property="WidthRequest"
+                        Value="24" />
+            </Style>
+            
+        </ResourceDictionary>
+    </ContentView.Resources>
+    <ContentView.Content>
+        <Grid
+            BackgroundColor="{StaticResource BackgroundColor}"
+            Padding="0"
+            Margin="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="250" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <!-- IMAGE -->
+            <ffimageloading:CachedImage 
+                Grid.Row="0"
+                Source="{Binding PictureUri}"     
+                Aspect="AspectFill">
+                <ffimageloading:CachedImage.LoadingPlaceholder>
+                    <OnPlatform x:TypeArguments="ImageSource">
+                        <On Platform="iOS, Android" Value="default_campaign" />
+                        <On Platform="UWP, WinRT, WinPhone" Value="Assets/default_campaign.png" />
+                    </OnPlatform>
+                </ffimageloading:CachedImage.LoadingPlaceholder>
+                <ffimageloading:CachedImage.ErrorPlaceholder>
+                    <OnPlatform x:TypeArguments="ImageSource">
+                        <On Platform="iOS, Android" Value="noimage" />
+                        <On Platform="UWP, WinRT, WinPhone" Value="Assets/noimage.png" />
+                    </OnPlatform>
+                </ffimageloading:CachedImage.ErrorPlaceholder>
+            </ffimageloading:CachedImage>
+            <!-- NAME -->
+            <Label 
+                Grid.Row="1"
+                Text="{Binding Name, Converter={StaticResource ToUpperConverter}}"
+                Style="{StaticResource CampaignNameStyle}"/>
+        </Grid>
+    </ContentView.Content>
+</ContentView>

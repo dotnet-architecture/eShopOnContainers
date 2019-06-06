@@ -1,0 +1,28 @@
+﻿@page
+@model WebhookClient.Pages.WebhooksListModel
+@{
+    ViewData["Title"] = "WebhooksList";
+}
+
+<h1>List of Webhooks registered by user @User.Identity.Name</h1>
+
+<table class="table">
+    <thead class="thead-light">
+        <tr>
+            <th scope="col">Date</th>
+            <th scope="col">Destination Url</th>
+            <th scope="col">Validation token</th>
+        </tr>
+    </thead>
+
+    @foreach (var whr in Model.Webhooks)
+    {
+        <tr>
+            <td>@whr.Date</td>
+            <td>@whr.DestUrl</td>
+            <td>@whr.Token</td>
+        </tr>
+    }
+
+</table>
+

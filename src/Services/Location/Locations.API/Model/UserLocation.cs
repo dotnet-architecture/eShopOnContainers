@@ -9,9 +9,8 @@
         [BsonIgnoreIfDefault]
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
-        public int UserId { get; set; } = 0;
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string LocationId { get; set; }
+        public string UserId { get; set; }
+        public int LocationId { get; set; }
         public DateTime UpdateDate { get; set; }
     }
 }

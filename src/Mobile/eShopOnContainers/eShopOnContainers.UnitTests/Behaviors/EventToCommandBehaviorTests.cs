@@ -1,11 +1,11 @@
-﻿using Xunit;
-using Xamarin.Forms;
-using System;
+﻿using System;
 using System.Globalization;
+using Xamarin.Forms;
+using Xunit;
 
 namespace eShopOnContainers.UnitTests
 {
-	public class EventToCommandBehaviorTests
+    public class EventToCommandBehaviorTests
 	{
 		[Fact]
 		public void InvalidEventNameShouldThrowArgumentExceptionText()

@@ -1,10 +1,11 @@
 ﻿import { Injectable }       from '@angular/core';
-import { Subject }          from 'rxjs/Subject';
+import { Subject }          from 'rxjs';
 
 import { ICatalogItem }     from '../models/catalogItem.model';
 import { IBasketItem }      from '../models/basketItem.model';
 import { IBasket }          from '../models/basket.model';
-import { SecurityService }  from '../services/security.service';
+import { SecurityService } from '../services/security.service';
+import { Guid } from '../../../guid';
 
 @Injectable()
 export class BasketWrapperService {
@@ -27,7 +28,7 @@ export class BasketWrapperService {
                 productName: item.name,
                 quantity: 1,
                 unitPrice: item.price,
-                id: '',
+                id: Guid.newGuid(),
                 oldUnitPrice: 0
             };
 

@@ -1,6 +1,5 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure.Repositories
 {
-    using Microsoft.EntityFrameworkCore;
     using Microsoft.eShopOnContainers.Services.Locations.API.Model;
     using Microsoft.Extensions.Options;
     using MongoDB.Bson;
@@ -20,15 +19,15 @@
             _context = new LocationsContext(settings);
         }        
         
-        public async Task<Locations> GetAsync(string locationId)
+        public async Task<Locations> GetAsync(int locationId)
         {
-            var filter = Builders<Locations>.Filter.Eq("Id", ObjectId.Parse(locationId));
+            var filter = Builders<Locations>.Filter.Eq("LocationId", locationId);
             return await _context.Locations
                                  .Find(filter)
                                  .FirstOrDefaultAsync();
         }
 
-        public async Task<UserLocation> GetUserLocationAsync(int userId)
+        public async Task<UserLocation> GetUserLocationAsync(string userId)
         {
             var filter = Builders<UserLocation>.Filter.Eq("UserId", userId);
             return await _context.UserLocation

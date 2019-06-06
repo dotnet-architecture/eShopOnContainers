@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Identity.API.Models;
+using Microsoft.eShopOnContainers.Services.Identity.API.Models;
 
-namespace Identity.API.Data
+namespace Microsoft.eShopOnContainers.Services.Identity.API.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {

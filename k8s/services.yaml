@@ -59,6 +59,104 @@ kind: Service
 metadata:
   labels:
     app: eshop
+    component: ordering-backgroundtasks
+  name: ordering-background
+spec:
+  ports:
+  - port: 80
+  selector:
+    app: eshop
+    component: ordering-backgroundtasks
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: eshop
+    component: ordering-signalrhub
+  name: ordering-signalrhub
+spec:
+  ports:
+  - port: 80
+  selector:
+    app: eshop
+    component: ordering-signalrhub
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: eshop
+    component: locations
+  name: locations
+spec:
+  ports:
+  - port: 80
+  selector:
+    app: eshop
+    component: locations
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: eshop
+    component: payment
+  name: payment
+spec:
+  ports:
+  - port: 80
+  selector:
+    app: eshop
+    component: payment
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: eshop
+    component: marketing
+  name: marketing
+spec:
+  ports:
+  - port: 80
+  selector:
+    app: eshop
+    component: marketing
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: eshop
+    component: webshoppingagg
+  name: webshoppingagg
+spec:
+  ports:
+  - port: 80
+  selector:
+    app: eshop
+    component: webshoppingagg
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: eshop
+    component: mobileshoppingagg
+  name: mobileshoppingagg
+spec:
+  ports:
+  - port: 80
+  selector:
+    app: eshop
+    component: mobileshoppingagg
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: eshop
     component: webmvc
   name: webmvc
 spec:

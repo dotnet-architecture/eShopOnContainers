@@ -1,0 +1,2 @@
+CardHolderName,CardNumber,CardType,City,Country,Email,Expiration,LastName,Name,PhoneNumber,UserName,ZipCode,State,Street,SecurityNumber,NormalizedEmail,NormalizedUserName,Password
+DemoUser,4012888888881881,1,Redmond,U.S.,demouser@microsoft.com,12/20,DemoLastName,DemoUser,1234567890,demouser@microsoft.com,98052,WA,15703 NE 61st Ct,535,DEMOUSER@MICROSOFT.COM,DEMOUSER@MICROSOFT.COM,Pass@word1

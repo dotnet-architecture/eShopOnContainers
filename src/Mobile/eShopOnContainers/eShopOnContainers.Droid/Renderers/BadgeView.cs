@@ -1,12 +1,12 @@
-using System;
 using Android.Content;
-using Android.Views;
-using Android.Widget;
+using Android.Graphics;
 using Android.Graphics.Drawables;
-using Android.Views.Animations;
 using Android.Graphics.Drawables.Shapes;
 using Android.Util;
-using Android.Graphics;
+using Android.Views;
+using Android.Views.Animations;
+using Android.Widget;
+using System;
 
 namespace eShopOnContainers.Droid.Renderers
 {

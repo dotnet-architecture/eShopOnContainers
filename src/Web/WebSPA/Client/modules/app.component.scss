@@ -11,6 +11,7 @@
         padding-bottom: $padding;
         padding-top: $padding;
         width: 100%;
+        bottom: 0;
 
         $height: 50px;
 
@@ -18,12 +19,9 @@
             height: $height;
             width: 230px;
         }
+    }
 
-        &-text {
-            color: $color-secondary;
-            line-height: $height;
-            text-align: right;
-            width: 100%;
-        }
+    &-header {
+        margin: 15px;
     }
 }

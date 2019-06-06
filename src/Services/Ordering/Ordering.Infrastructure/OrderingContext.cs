@@ -1,243 +1,55 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.BuyerAggregate;
 using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
 using Microsoft.eShopOnContainers.Services.Ordering.Domain.Seedwork;
-using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Idempotency;
 using Ordering.Infrastructure;
+using Ordering.Infrastructure.EntityConfigurations;
 using System;
+using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
 {
-    public class OrderingContext
-      : DbContext,IUnitOfWork
-
+    public class OrderingContext : DbContext, IUnitOfWork
     {
-        const string DEFAULT_SCHEMA = "ordering";
-
+        public const string DEFAULT_SCHEMA = "ordering";
         public DbSet<Order> Orders { get; set; }
-
         public DbSet<OrderItem> OrderItems { get; set; }
-
         public DbSet<PaymentMethod> Payments { get; set; }
-
         public DbSet<Buyer> Buyers { get; set; }
-
         public DbSet<CardType> CardTypes { get; set; }
-
         public DbSet<OrderStatus> OrderStatus { get; set; }
 
         private readonly IMediator _mediator;
+        private IDbContextTransaction _currentTransaction;
 
-        public OrderingContext(DbContextOptions options, IMediator mediator) : base(options)
+        private OrderingContext(DbContextOptions<OrderingContext> options) : base(options) { }
+
+        public IDbContextTransaction GetCurrentTransaction => _currentTransaction;
+
+        public bool HasActiveTransaction => _currentTransaction != null;
+
+        public OrderingContext(DbContextOptions<OrderingContext> options, IMediator mediator) : base(options)
         {
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+
+
+            System.Diagnostics.Debug.WriteLine("OrderingContext::ctor ->" + this.GetHashCode());
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
-            modelBuilder.Entity<ClientRequest>(ConfigureRequests);
-            modelBuilder.Entity<Address>(ConfigureAddress);
-            modelBuilder.Entity<PaymentMethod>(ConfigurePayment);
-            modelBuilder.Entity<Order>(ConfigureOrder);
-            modelBuilder.Entity<OrderItem>(ConfigureOrderItems);
-            modelBuilder.Entity<CardType>(ConfigureCardTypes);
-            modelBuilder.Entity<OrderStatus>(ConfigureOrderStatus);
-            modelBuilder.Entity<Buyer>(ConfigureBuyer); 
-        }
-
-        private void ConfigureRequests(EntityTypeBuilder<ClientRequest> requestConfiguration)
-        {
-            requestConfiguration.ToTable("requests", DEFAULT_SCHEMA);
-            requestConfiguration.HasKey(cr => cr.Id);
-            requestConfiguration.Property(cr => cr.Name).IsRequired();
-            requestConfiguration.Property(cr => cr.Time).IsRequired();
-        }
-
-        void ConfigureAddress(EntityTypeBuilder<Address> addressConfiguration)
-        {
-            addressConfiguration.ToTable("address", DEFAULT_SCHEMA);
-
-            // DDD Pattern comment: Implementing the Address Id as "Shadow property"
-            // becuase the Address is a Value-Object (VO) and an Id (Identity) is not desired for a VO
-            // EF Core just needs the Id so it is capable to store it in a database table
-            // See: https://docs.microsoft.com/en-us/ef/core/modeling/shadow-properties 
-            addressConfiguration.Property<int>("Id")
-                .IsRequired();
-
-            addressConfiguration.HasKey("Id");
-        }
-
-        void ConfigureBuyer(EntityTypeBuilder<Buyer> buyerConfiguration)
-        {
-            buyerConfiguration.ToTable("buyers", DEFAULT_SCHEMA);
-
-            buyerConfiguration.HasKey(b => b.Id);
-
-            buyerConfiguration.Ignore(b => b.DomainEvents);
-
-            buyerConfiguration.Property(b => b.Id)
-                .ForSqlServerUseSequenceHiLo("buyerseq", DEFAULT_SCHEMA);
-
-            buyerConfiguration.Property(b=>b.IdentityGuid)
-                .HasMaxLength(200)
-                .IsRequired();
-
-            buyerConfiguration.HasIndex("IdentityGuid")
-              .IsUnique(true);
-
-            buyerConfiguration.HasMany(b => b.PaymentMethods)
-               .WithOne()
-               .HasForeignKey("BuyerId")
-               .OnDelete(DeleteBehavior.Cascade);
-
-            var navigation = buyerConfiguration.Metadata.FindNavigation(nameof(Buyer.PaymentMethods));
-
-            navigation.SetPropertyAccessMode(PropertyAccessMode.Field);
-        }
-
-        void ConfigurePayment(EntityTypeBuilder<PaymentMethod> paymentConfiguration)
-        {
-            paymentConfiguration.ToTable("paymentmethods", DEFAULT_SCHEMA);
-
-            paymentConfiguration.HasKey(b => b.Id);
-
-            paymentConfiguration.Ignore(b => b.DomainEvents);
-
-            paymentConfiguration.Property(b => b.Id)
-                .ForSqlServerUseSequenceHiLo("paymentseq", DEFAULT_SCHEMA);
-
-            paymentConfiguration.Property<int>("BuyerId")
-                .IsRequired();
-
-            paymentConfiguration.Property<string>("CardHolderName")
-                .HasMaxLength(200)
-                .IsRequired();
-
-            paymentConfiguration.Property<string>("Alias")
-                .HasMaxLength(200)
-                .IsRequired();
-
-            paymentConfiguration.Property<string>("CardNumber")
-                .HasMaxLength(25)
-                .IsRequired();
-
-            paymentConfiguration.Property<DateTime>("Expiration")
-                .IsRequired();
-
-            paymentConfiguration.Property<int>("CardTypeId")
-                .IsRequired();
-
-            paymentConfiguration.HasOne(p => p.CardType)
-                .WithMany()
-                .HasForeignKey("CardTypeId");
-        }
-
-        void ConfigureOrder(EntityTypeBuilder<Order> orderConfiguration)
-        {
-            orderConfiguration.ToTable("orders", DEFAULT_SCHEMA);
-
-            orderConfiguration.HasKey(o => o.Id);
-
-            orderConfiguration.Ignore(b => b.DomainEvents);
-
-            orderConfiguration.Property(o => o.Id)
-                .ForSqlServerUseSequenceHiLo("orderseq", DEFAULT_SCHEMA);
-
-            orderConfiguration.Property<DateTime>("OrderDate").IsRequired();
-            orderConfiguration.Property<int?>("BuyerId").IsRequired(false);
-            orderConfiguration.Property<int>("OrderStatusId").IsRequired();
-            orderConfiguration.Property<int?>("PaymentMethodId").IsRequired(false);
-
-            var navigation = orderConfiguration.Metadata.FindNavigation(nameof(Order.OrderItems));
-            // DDD Patterns comment:
-            //Set as Field (New since EF 1.1) to access the OrderItem collection property through its field
-            navigation.SetPropertyAccessMode(PropertyAccessMode.Field);
-
-            orderConfiguration.HasOne<PaymentMethod>()
-                .WithMany()
-                .HasForeignKey("PaymentMethodId")
-                .IsRequired(false)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            orderConfiguration.HasOne<Buyer>()
-                .WithMany()
-                .IsRequired(false)
-                .HasForeignKey("BuyerId");
-
-            orderConfiguration.HasOne(o => o.OrderStatus)
-                .WithMany()
-                .HasForeignKey("OrderStatusId");
-        }
-
-        void ConfigureOrderItems(EntityTypeBuilder<OrderItem> orderItemConfiguration)
-        {
-            orderItemConfiguration.ToTable("orderItems", DEFAULT_SCHEMA);
-
-            orderItemConfiguration.HasKey(o => o.Id);
-
-            orderItemConfiguration.Ignore(b => b.DomainEvents);
-
-            orderItemConfiguration.Property(o => o.Id)
-                .ForSqlServerUseSequenceHiLo("orderitemseq");
-
-            orderItemConfiguration.Property<int>("OrderId")
-                .IsRequired();
-
-            orderItemConfiguration.Property<decimal>("Discount")
-                .IsRequired();
-
-            orderItemConfiguration.Property<int>("ProductId")
-                .IsRequired();
-
-            orderItemConfiguration.Property<string>("ProductName")
-                .IsRequired();
-
-            orderItemConfiguration.Property<decimal>("UnitPrice")
-                .IsRequired();
-
-            orderItemConfiguration.Property<int>("Units")
-                .IsRequired();
-
-            orderItemConfiguration.Property<string>("PictureUrl")
-                .IsRequired(false);
-        }
-
-        void ConfigureOrderStatus(EntityTypeBuilder<OrderStatus> orderStatusConfiguration)
-        {
-            orderStatusConfiguration.ToTable("orderstatus", DEFAULT_SCHEMA);
-
-            orderStatusConfiguration.HasKey(o => o.Id);
-
-            orderStatusConfiguration.Property(o => o.Id)
-                .HasDefaultValue(1)
-                .ValueGeneratedNever()
-                .IsRequired();
-
-            orderStatusConfiguration.Property(o => o.Name)
-                .HasMaxLength(200)
-                .IsRequired();
-        }
-
-        void ConfigureCardTypes(EntityTypeBuilder<CardType> cardTypesConfiguration)
-        {
-            cardTypesConfiguration.ToTable("cardtypes", DEFAULT_SCHEMA);
-
-            cardTypesConfiguration.HasKey(ct => ct.Id);
-
-            cardTypesConfiguration.Property(ct => ct.Id)
-                .HasDefaultValue(1)
-                .ValueGeneratedNever()
-                .IsRequired();
-
-            cardTypesConfiguration.Property(ct => ct.Name)
-                .HasMaxLength(200)
-                .IsRequired();
+            modelBuilder.ApplyConfiguration(new ClientRequestEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new PaymentMethodEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new OrderEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new OrderItemEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new CardTypeEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new OrderStatusEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new BuyerEntityTypeConfiguration());
         }
 
         public async Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken = default(CancellationToken))
@@ -250,12 +62,90 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
             // You will need to handle eventual consistency and compensatory actions in case of failures in any of the Handlers. 
             await _mediator.DispatchDomainEventsAsync(this);
 
-
             // After executing this line all the changes (from the Command Handler and Domain Event Handlers) 
-            // performed throught the DbContext will be commited
+            // performed through the DbContext will be committed
             var result = await base.SaveChangesAsync();
 
             return true;
-        }        
+        }
+
+        public async Task<IDbContextTransaction> BeginTransactionAsync()
+        {
+            if (_currentTransaction != null) return null;
+
+            _currentTransaction = await Database.BeginTransactionAsync(IsolationLevel.ReadCommitted);
+
+            return _currentTransaction;
+        }
+
+        public async Task CommitTransactionAsync(IDbContextTransaction transaction)
+        {
+            if (transaction == null) throw new ArgumentNullException(nameof(transaction));
+            if (transaction != _currentTransaction) throw new InvalidOperationException($"Transaction {transaction.TransactionId} is not current");
+
+            try
+            {
+                await SaveChangesAsync();
+                transaction.Commit();
+            }
+            catch
+            {
+                RollbackTransaction();
+                throw;
+            }
+            finally
+            {
+                if (_currentTransaction != null)
+                {
+                    _currentTransaction.Dispose();
+                    _currentTransaction = null;
+                }
+            }
+        }
+
+        public void RollbackTransaction()
+        {
+            try
+            {
+                _currentTransaction?.Rollback();
+            }
+            finally
+            {
+                if (_currentTransaction != null)
+                {
+                    _currentTransaction.Dispose();
+                    _currentTransaction = null;
+                }
+            }
+        }
+    }
+
+    public class OrderingContextDesignFactory : IDesignTimeDbContextFactory<OrderingContext>
+    {
+        public OrderingContext CreateDbContext(string[] args)
+        {
+            var optionsBuilder = new DbContextOptionsBuilder<OrderingContext>()
+                .UseSqlServer("Server=.;Initial Catalog=Microsoft.eShopOnContainers.Services.OrderingDb;Integrated Security=true");
+
+            return new OrderingContext(optionsBuilder.Options, new NoMediator());
+        }
+
+        class NoMediator : IMediator
+        {
+            public Task Publish<TNotification>(TNotification notification, CancellationToken cancellationToken = default(CancellationToken)) where TNotification : INotification
+            {
+                return Task.CompletedTask;
+            }
+
+            public Task<TResponse> Send<TResponse>(IRequest<TResponse> request, CancellationToken cancellationToken = default(CancellationToken))
+            {
+                return Task.FromResult<TResponse>(default(TResponse));
+            }
+
+            public Task Send(IRequest request, CancellationToken cancellationToken = default(CancellationToken))
+            {
+                return Task.CompletedTask;
+            }
+        }
     }
 }

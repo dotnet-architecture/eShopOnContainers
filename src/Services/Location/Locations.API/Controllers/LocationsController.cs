@@ -1,14 +1,18 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure.Services;
+using Microsoft.eShopOnContainers.Services.Locations.API.Model;
 using Microsoft.eShopOnContainers.Services.Locations.API.ViewModel;
 using System;
+using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace Locations.API.Controllers
 {
     [Route("api/v1/[controller]")]
     [Authorize]
+    [ApiController]
     public class LocationsController : ControllerBase
     {
         private readonly ILocationsService _locationsService;
@@ -21,42 +25,48 @@ namespace Locations.API.Controllers
         }
 
         //GET api/v1/[controller]/user/1
-        [Route("user/{userId:int}")]
+        [Route("user/{userId:guid}")]
         [HttpGet]
-        public async Task<IActionResult> GetUserLocation(int userId)
+        [ProducesResponseType(typeof(UserLocation), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult<UserLocation>> GetUserLocationAsync(Guid userId)
         {
-            var userLocation = await _locationsService.GetUserLocation(userId);
-            return Ok(userLocation);
+            return await _locationsService.GetUserLocationAsync(userId.ToString());
         }
 
         //GET api/v1/[controller]/
         [Route("")]
         [HttpGet]
-        public async Task<IActionResult> GetAllLocations()
+        [ProducesResponseType(typeof(List<Microsoft.eShopOnContainers.Services.Locations.API.Model.Locations>), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult<List<Microsoft.eShopOnContainers.Services.Locations.API.Model.Locations>>> GetAllLocationsAsync()
         {
-            var locations = await _locationsService.GetAllLocation();
-            return Ok(locations);
+            return await _locationsService.GetAllLocationAsync();
         }
 
         //GET api/v1/[controller]/1
         [Route("{locationId}")]
         [HttpGet]
-        public async Task<IActionResult> GetLocation(string locationId)
+        [ProducesResponseType(typeof(Microsoft.eShopOnContainers.Services.Locations.API.Model.Locations), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult<Microsoft.eShopOnContainers.Services.Locations.API.Model.Locations>> GetLocationAsync(int locationId)
         {
-            var location = await _locationsService.GetLocation(locationId);
-            return Ok(location);
+            return await _locationsService.GetLocationAsync(locationId);
         }
-
+         
         //POST api/v1/[controller]/
         [Route("")]
         [HttpPost]
-        public async Task<IActionResult> CreateOrUpdateUserLocation([FromBody]LocationRequest newLocReq)
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<ActionResult> CreateOrUpdateUserLocationAsync([FromBody]LocationRequest newLocReq)
         {
             var userId = _identityService.GetUserIdentity();
-            var result = await _locationsService.AddOrUpdateUserLocation(userId, newLocReq);
-            return result ? 
-                (IActionResult)Ok() : 
-                (IActionResult)BadRequest();
+            var result = await _locationsService.AddOrUpdateUserLocationAsync(userId, newLocReq);
+
+            if (!result)
+            {
+                return BadRequest();
+            }
+
+            return Ok();
         }
     }
 }

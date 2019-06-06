@@ -1,0 +1,118 @@
+﻿{
+    "ReRoutes": [
+      {
+        "DownstreamPathTemplate": "/api/{version}/{everything}",
+        "DownstreamScheme": "http",
+        "DownstreamHostAndPorts": [
+          {
+            "Host": "catalog.api",
+            "Port": 80
+          }
+        ],
+        "UpstreamPathTemplate": "/api/{version}/c/{everything}",
+        "UpstreamHttpMethod": [ "GET" ]
+      },
+      {
+        "DownstreamPathTemplate": "/api/{version}/{everything}",
+        "DownstreamScheme": "http",
+        "DownstreamHostAndPorts": [
+          {
+            "Host": "basket.api",
+            "Port": 80
+          }
+        ],
+        "UpstreamPathTemplate": "/api/{version}/b/{everything}",
+        "UpstreamHttpMethod": [],
+        "AuthenticationOptions": {
+          "AuthenticationProviderKey": "IdentityApiKey",
+          "AllowedScopes": []
+        }
+      },
+      {
+        "DownstreamPathTemplate": "/api/{version}/{everything}",
+        "DownstreamScheme": "http",
+        "DownstreamHostAndPorts": [
+          {
+            "Host": "ordering.api",
+            "Port": 80
+          }
+        ],
+        "UpstreamPathTemplate": "/api/{version}/o/{everything}",
+        "UpstreamHttpMethod": [],
+        "AuthenticationOptions": {
+          "AuthenticationProviderKey": "IdentityApiKey",
+          "AllowedScopes": []
+        }
+      },
+      {
+        "DownstreamPathTemplate": "/{everything}",
+        "DownstreamScheme": "http",
+        "DownstreamHostAndPorts": [
+          {
+            "Host": "mobileshoppingagg",
+            "Port": 80
+          }
+        ],
+        "UpstreamPathTemplate": "/{everything}",
+        "UpstreamHttpMethod": [ "POST", "PUT", "GET" ],
+        "AuthenticationOptions": {
+          "AuthenticationProviderKey": "IdentityApiKey",
+          "AllowedScopes": []
+        }
+      },
+      {
+        "DownstreamPathTemplate": "/{everything}",
+        "DownstreamScheme": "http",
+        "DownstreamHostAndPorts": [
+          {
+            "Host": "ordering.api",
+            "Port": 80
+          }
+        ],
+        "UpstreamPathTemplate": "/orders-api/{everything}",
+        "UpstreamHttpMethod": []
+      },
+      {
+        "DownstreamPathTemplate": "/{everything}",
+        "DownstreamScheme": "http",
+        "DownstreamHostAndPorts": [
+          {
+            "Host": "basket.api",
+            "Port": 80
+          }
+        ],
+        "UpstreamPathTemplate": "/basket-api/{everything}",
+        "UpstreamHttpMethod": []
+      },
+      {
+        "DownstreamPathTemplate": "/{everything}",
+        "DownstreamScheme": "http",
+        "DownstreamHostAndPorts": [
+          {
+            "Host": "catalog.api",
+            "Port": 80
+          }
+        ],
+        "UpstreamPathTemplate": "/catalog-api/{everything}",
+        "UpstreamHttpMethod": []
+      },
+      {
+        "DownstreamPathTemplate": "/{everything}",
+        "DownstreamScheme": "http",
+        "DownstreamHostAndPorts": [
+          {
+            "Host": "payment.api",
+            "Port": 80
+          }
+        ],
+        "UpstreamPathTemplate": "/payment-api/{everything}",
+        "UpstreamHttpMethod": []
+      }
+  
+    ],
+      "GlobalConfiguration": {
+        "RequestIdKey": "OcRequestId",
+        "AdministrationPath": "/administration"
+      }
+    }
+    

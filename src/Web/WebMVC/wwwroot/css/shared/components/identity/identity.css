@@ -1,57 +1,57 @@
-.esh-identity {
-    line-height: 3rem;
-    position: relative;
-    text-align: right;
+﻿.esh-identity {
+  line-height: 3rem;
+  position: relative;
+  text-align: right;
 }
 
 .esh-identity-section {
-    display: inline-block;
-    width: 100%;
+  display: inline-block;
+  width: 100%;
 }
 
 .esh-identity-name {
-    display: inline-block;
+  display: inline-block;
 }
 
 .esh-identity-name--upper {
-    text-transform: uppercase;
+  text-transform: uppercase;
 }
 
 @media screen and (max-width: 768px) {
-    .esh-identity-name {
-        font-size: 0.85rem;
-    }
+  .esh-identity-name {
+    font-size: 0.85rem;
+  }
 }
 
 .esh-identity-image {
-    display: inline-block;
+  display: inline-block;
 }
 
 .esh-identity-drop {
-    background: #FFFFFF;
-    height: 0;
-    min-width: 14rem;
-    right: 0;
-    overflow: hidden;
-    padding: .5rem;
-    position: absolute;
-    top: 2.5rem;
-    transition: height 0.35s;
+  background: #FFFFFF;
+  height: 10px;
+  width: 10rem;
+  overflow: hidden;
+  padding: .5rem;
+  position: absolute;
+  right: 0;
+  top: 2.5rem;
+  transition: height 0.35s;
 }
 
 .esh-identity:hover .esh-identity-drop {
-    border: 1px solid #EEEEEE;
-    height: 7rem;
-    transition: height 0.35s;
+  border: 1px solid #EEEEEE;
+  height: 10rem;
+  transition: height 0.35s;
 }
 
 .esh-identity-item {
-    cursor: pointer;
-    display: block;
-    transition: color 0.35s;
+  cursor: pointer;
+  transition: color 0.35s;
 }
 
-    .esh-identity-item:hover {
-        color: #75b918;
-        transition: color 0.35s;
-    }
+.esh-identity-item:hover {
+  color: #75b918;
+  transition: color 0.35s;
+}
+

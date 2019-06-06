@@ -1,0 +1,229 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "namespaceprefix": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the Service Bus namespace"
+            }
+        }
+    },
+    "variables": {
+		"serviceBusTopicName": "eshop_event_bus",
+		"BasketSubscriptionName": "Basket",
+		"CatalogSubscriptionName": "Catalog",
+		"OrderingSubscriptionName": "Ordering",
+		"LocationsSubscriptionName": "Locations",
+		"MarketingSubscriptionName": "Marketing",
+		"GracePeriodSubscriptionName": "GracePeriod",
+		"PaymentSubscriptionName": "Payment",
+        "location": "[resourceGroup().location]",
+        "sbVersion": "2015-08-01",
+        "defaultSASKeyName": "Root",
+        "namespace":"[concat(parameters('namespaceprefix'), uniqueString(resourceGroup().id))]",
+        "authRuleResourceId": "[resourceId('Microsoft.ServiceBus/namespaces/topics/authorizationRules', variables('namespace'), variables('serviceBusTopicName'), variables('defaultSASKeyName'))]"        
+    },
+    "resources": [
+        {
+            "apiVersion": "[variables('sbVersion')]",
+            "name": "[variables('namespace')]",
+            "type": "Microsoft.ServiceBus/Namespaces",
+            "location": "[variables('location')]",
+            "sku": {
+                "name": "Standard",
+                "tier": "Standard"
+            },
+            "resources": [
+                {
+                    "apiVersion": "[variables('sbVersion')]",
+                    "name": "[variables('serviceBusTopicName')]",
+                    "type": "Topics",
+                    "dependsOn": [
+                        "[concat('Microsoft.ServiceBus/namespaces/', variables('namespace'))]"
+                    ],
+                    "properties": {
+                        "path": "[variables('serviceBusTopicName')]",
+						"defaultMessageTimeToLive": "14.00:00:00",
+						"maxSizeInMegabytes": 1024,
+						"requiresDuplicateDetection": false,
+						"enableBatchedOperations": true,
+						"sizeInBytes": 0,
+						"filteringMessagesBeforePublishing": false,
+						"isAnonymousAccessible": false,
+						"status": "Active",
+						"supportOrdering": false,
+						"autoDeleteOnIdle": "10675199.02:48:05.4775807",
+						"enablePartitioning": true,
+						"isExpress": false,
+						"enableSubscriptionPartitioning": false,
+						"enableExpress": false
+                    },
+                    "resources": [
+						{
+							"type": "AuthorizationRules",
+							"name": "[variables('defaultSASKeyName')]",
+							"apiVersion": "[variables('sbVersion')]",
+							"properties": {
+								"rights": [
+									"Manage",
+									"Send",
+									"Listen"
+								]
+							},
+							"dependsOn": [
+								"[variables('serviceBusTopicName')]"
+							]
+						},
+                        {
+                            "apiVersion": "[variables('sbVersion')]",
+                            "name": "[variables('BasketSubscriptionName')]",
+                            "type": "Subscriptions",
+                            "dependsOn": [
+                                "[variables('serviceBusTopicName')]"
+                            ],
+                            "properties": {
+								"lockDuration": "00:00:30",
+								"requiresSession": false,
+								"defaultMessageTimeToLive": "14.00:00:00",
+								"deadLetteringOnMessageExpiration": true,
+								"deadLetteringOnFilterEvaluationExceptions": true,
+								"maxDeliveryCount": 10,
+								"enableBatchedOperations": false,
+								"status": "Active",
+								"autoDeleteOnIdle": "10675199.02:48:05.4775807",
+								"entityAvailabilityStatus": "Available"
+							}
+                        },
+						{
+                            "apiVersion": "[variables('sbVersion')]",
+                            "name": "[variables('OrderingSubscriptionName')]",
+                            "type": "Subscriptions",
+                            "dependsOn": [
+                                "[variables('serviceBusTopicName')]"
+                            ],
+                            "properties": {
+								"lockDuration": "00:00:30",
+								"requiresSession": false,
+								"defaultMessageTimeToLive": "14.00:00:00",
+								"deadLetteringOnMessageExpiration": true,
+								"deadLetteringOnFilterEvaluationExceptions": true,
+								"maxDeliveryCount": 10,
+								"enableBatchedOperations": false,
+								"status": "Active",
+								"autoDeleteOnIdle": "10675199.02:48:05.4775807",
+								"entityAvailabilityStatus": "Available"
+							}
+                        },
+						{
+                            "apiVersion": "[variables('sbVersion')]",
+                            "name": "[variables('CatalogSubscriptionName')]",
+                            "type": "Subscriptions",
+                            "dependsOn": [
+                                "[variables('serviceBusTopicName')]"
+                            ],
+                            "properties": {
+								"lockDuration": "00:00:30",
+								"requiresSession": false,
+								"defaultMessageTimeToLive": "14.00:00:00",
+								"deadLetteringOnMessageExpiration": true,
+								"deadLetteringOnFilterEvaluationExceptions": true,
+								"maxDeliveryCount": 10,
+								"enableBatchedOperations": false,
+								"status": "Active",
+								"autoDeleteOnIdle": "10675199.02:48:05.4775807",
+								"entityAvailabilityStatus": "Available"
+							}
+                        },
+                        {
+                            "apiVersion": "[variables('sbVersion')]",
+                            "name": "[variables('LocationsSubscriptionName')]",
+                            "type": "Subscriptions",
+                            "dependsOn": [
+                                "[variables('serviceBusTopicName')]"
+                            ],
+                            "properties": {
+								"lockDuration": "00:00:30",
+								"requiresSession": false,
+								"defaultMessageTimeToLive": "14.00:00:00",
+								"deadLetteringOnMessageExpiration": true,
+								"deadLetteringOnFilterEvaluationExceptions": true,
+								"maxDeliveryCount": 10,
+								"enableBatchedOperations": false,
+								"status": "Active",
+								"autoDeleteOnIdle": "10675199.02:48:05.4775807",
+								"entityAvailabilityStatus": "Available"
+							}
+                        },
+                        {
+                            "apiVersion": "[variables('sbVersion')]",
+                            "name": "[variables('MarketingSubscriptionName')]",
+                            "type": "Subscriptions",
+                            "dependsOn": [
+                                "[variables('serviceBusTopicName')]"
+                            ],
+                            "properties": {
+								"lockDuration": "00:00:30",
+								"requiresSession": false,
+								"defaultMessageTimeToLive": "14.00:00:00",
+								"deadLetteringOnMessageExpiration": true,
+								"deadLetteringOnFilterEvaluationExceptions": true,
+								"maxDeliveryCount": 10,
+								"enableBatchedOperations": false,
+								"status": "Active",
+								"autoDeleteOnIdle": "10675199.02:48:05.4775807",
+								"entityAvailabilityStatus": "Available"
+							}
+                        },
+                        {
+                            "apiVersion": "[variables('sbVersion')]",
+                            "name": "[variables('GracePeriodSubscriptionName')]",
+                            "type": "Subscriptions",
+                            "dependsOn": [
+                                "[variables('serviceBusTopicName')]"
+                            ],
+                            "properties": {
+								"lockDuration": "00:00:30",
+								"requiresSession": false,
+								"defaultMessageTimeToLive": "14.00:00:00",
+								"deadLetteringOnMessageExpiration": true,
+								"deadLetteringOnFilterEvaluationExceptions": true,
+								"maxDeliveryCount": 10,
+								"enableBatchedOperations": false,
+								"status": "Active",
+								"autoDeleteOnIdle": "10675199.02:48:05.4775807",
+								"entityAvailabilityStatus": "Available"
+							}
+                        },
+                        {
+                            "apiVersion": "[variables('sbVersion')]",
+                            "name": "[variables('PaymentSubscriptionName')]",
+                            "type": "Subscriptions",
+                            "dependsOn": [
+                                "[variables('serviceBusTopicName')]"
+                            ],
+                            "properties": {
+								"lockDuration": "00:00:30",
+								"requiresSession": false,
+								"defaultMessageTimeToLive": "14.00:00:00",
+								"deadLetteringOnMessageExpiration": true,
+								"deadLetteringOnFilterEvaluationExceptions": true,
+								"maxDeliveryCount": 10,
+								"enableBatchedOperations": false,
+								"status": "Active",
+								"autoDeleteOnIdle": "10675199.02:48:05.4775807",
+								"entityAvailabilityStatus": "Available"
+							}
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "outputs": {
+        "NamespaceConnectionString": {
+            "type": "string",
+            "value": "[listkeys(variables('authRuleResourceId'), variables('sbVersion')).primaryConnectionString]"
+        }
+    }
+}

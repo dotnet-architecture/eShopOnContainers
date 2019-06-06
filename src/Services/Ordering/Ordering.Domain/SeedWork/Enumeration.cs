@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -12,8 +12,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.SeedWork
         public int Id { get; private set; }
 
         protected Enumeration()
-        {
-        }
+        { }
 
         protected Enumeration(int id, string name)
         {
@@ -21,26 +20,13 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.SeedWork
             Name = name;
         }
 
-        public override string ToString()
+        public override string ToString() => Name;
+
+        public static IEnumerable<T> GetAll<T>() where T : Enumeration
         {
-            return Name;
-        }
+            var fields = typeof(T).GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly);
 
-        public static IEnumerable<T> GetAll<T>() where T : Enumeration, new()
-        {
-            var type = typeof(T);
-            var fields = type.GetTypeInfo().GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly);
-
-            foreach (var info in fields)
-            {
-                var instance = new T();
-                var locatedValue = info.GetValue(instance) as T;
-
-                if (locatedValue != null)
-                {
-                    yield return locatedValue;
-                }
-            }
+            return fields.Select(f => f.GetValue(null)).Cast<T>();
         }
 
         public override bool Equals(object obj)
@@ -48,9 +34,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.SeedWork
             var otherValue = obj as Enumeration;
 
             if (otherValue == null)
-            {
                 return false;
-            }
 
             var typeMatches = GetType().Equals(obj.GetType());
             var valueMatches = Id.Equals(otherValue.Id);
@@ -58,10 +42,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.SeedWork
             return typeMatches && valueMatches;
         }
 
-        public override int GetHashCode()
-        {
-            return Id.GetHashCode();
-        }
+        public override int GetHashCode() => Id.GetHashCode();
 
         public static int AbsoluteDifference(Enumeration firstValue, Enumeration secondValue)
         {
@@ -69,35 +50,28 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.SeedWork
             return absoluteDifference;
         }
 
-        public static T FromValue<T>(int value) where T : Enumeration, new()
+        public static T FromValue<T>(int value) where T : Enumeration
         {
             var matchingItem = Parse<T, int>(value, "value", item => item.Id == value);
             return matchingItem;
         }
 
-        public static T FromDisplayName<T>(string displayName) where T : Enumeration, new()
+        public static T FromDisplayName<T>(string displayName) where T : Enumeration
         {
             var matchingItem = Parse<T, string>(displayName, "display name", item => item.Name == displayName);
             return matchingItem;
         }
 
-        private static T Parse<T, K>(K value, string description, Func<T, bool> predicate) where T : Enumeration, new()
+        private static T Parse<T, K>(K value, string description, Func<T, bool> predicate) where T : Enumeration
         {
             var matchingItem = GetAll<T>().FirstOrDefault(predicate);
 
             if (matchingItem == null)
-            {
-                var message = string.Format("'{0}' is not a valid {1} in {2}", value, description, typeof(T));
-
-                throw new InvalidOperationException(message);
-            }
+                throw new InvalidOperationException($"'{value}' is not a valid {description} in {typeof(T)}");
 
             return matchingItem;
         }
 
-        public int CompareTo(object other)
-        {
-            return Id.CompareTo(((Enumeration)other).Id);
-        }
+        public int CompareTo(object other) => Id.CompareTo(((Enumeration)other).Id);
     }
 }

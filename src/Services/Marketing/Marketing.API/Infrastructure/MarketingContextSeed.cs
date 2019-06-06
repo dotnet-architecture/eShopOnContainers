@@ -1,67 +1,84 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Marketing.API.Infrastructure
 {
-    using Microsoft.AspNetCore.Builder;
-    using Microsoft.EntityFrameworkCore;
     using Microsoft.eShopOnContainers.Services.Marketing.API.Model;
     using Microsoft.Extensions.Logging;
+    using Polly;
     using System;
     using System.Collections.Generic;
+    using System.Data.SqlClient;
     using System.Linq;
     using System.Threading.Tasks;
 
     public class MarketingContextSeed
     {
-        public static async Task SeedAsync(IApplicationBuilder applicationBuilder, ILoggerFactory loggerFactory, int? retry = 0)
+        public async Task SeedAsync(MarketingContext context,ILogger<MarketingContextSeed> logger,int retries = 3)
         {
-            var context = (MarketingContext)applicationBuilder
-                .ApplicationServices.GetService(typeof(MarketingContext));
+            var policy = CreatePolicy(retries, logger, nameof(MarketingContextSeed));
 
-            context.Database.Migrate();
-
-            if (!context.Campaigns.Any())
+            await policy.ExecuteAsync(async () =>
             {
-                context.Campaigns.AddRange(
-                    GetPreconfiguredMarketings());
+                if (!context.Campaigns.Any())
+                {
+                    await context.Campaigns.AddRangeAsync(
+                        GetPreconfiguredMarketings());
 
-                await context.SaveChangesAsync();
-            }
+                    await context.SaveChangesAsync();
+                }
+            });
         }
 
-        static List<Campaign> GetPreconfiguredMarketings()
+        private List<Campaign> GetPreconfiguredMarketings()
         {
             return new List<Campaign>
             {
                 new Campaign
                 {
-                    Description = "Campaign1",
+                    Name = ".NET Bot Black Hoodie 50% OFF",
+                    Description = "Campaign Description 1",
                     From = DateTime.Now,
                     To = DateTime.Now.AddDays(7),
-                    Url = "http://CampaignUrl.test/12f09ed3cef54187123f500ad",
+                    PictureUri = "http://externalcatalogbaseurltobereplaced/api/v1/campaigns/1/pic",
+                    PictureName = "1.png",
                     Rules = new List<Rule>
                     {
                         new UserLocationRule
                         {
-                            Description = "UserLocationRule1",
+                            Description = "Campaign is only for United States users.",
                             LocationId = 1
                         }
                     }
                 },
                 new Campaign
                 {
-                    Description = "Campaign2",
-                    From = DateTime.Now.AddDays(7),
+                    Name = "Roslyn Red T-Shirt 3x2",
+                    Description = "Campaign Description 2",
+                    From = DateTime.Now.AddDays(-7),
                     To = DateTime.Now.AddDays(14),
-                    Url = "http://CampaignUrl.test/02a59eda65f241871239000ff",
+                    PictureUri = "http://externalcatalogbaseurltobereplaced/api/v1/campaigns/2/pic",
+                    PictureName = "2.png",
                     Rules = new List<Rule>
                     {
                         new UserLocationRule
                         {
-                            Description = "UserLocationRule2",
+                            Description = "Campaign is only for Seattle users.",
                             LocationId = 3
                         }
                     }
                 }
             };
+        }
+     
+        private Policy CreatePolicy(int retries, ILogger<MarketingContextSeed> logger, string prefix)
+        {
+            return Policy.Handle<SqlException>().
+                WaitAndRetryAsync(
+                    retryCount: retries,
+                    sleepDurationProvider: retry => TimeSpan.FromSeconds(5),
+                    onRetry: (exception, timeSpan, retry, ctx) =>
+                    {
+                        logger.LogWarning(exception, "[{prefix}] Exception {ExceptionType} with message {Message} detected on attempt {retry} of {retries}", prefix, exception.GetType().Name, exception.Message, retry, retries);
+                    }
+                );
         }
     }
 }

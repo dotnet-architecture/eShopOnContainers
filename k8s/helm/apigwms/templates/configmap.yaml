@@ -1,0 +1,21 @@
+{{- $name := include "apigwms.fullname" . -}}
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "cfg-{{ $name }}"
+  labels:
+    app: {{ template "apigwms.name" . }}
+    chart: {{ template "apigwms.chart" .}}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+data:
+  internalurls__identity: http://{{ .Values.app.svc.identity }}
+  internalurls__basket__hc: http://{{ .Values.app.svc.basket }}/hc
+  internalurls__catalog__hc: http://{{ .Values.app.svc.catalog }}/hc
+  internalurls__identity__hc: http://{{ .Values.app.svc.identity }}/hc
+  internalurls__ordering__hc: http://{{ .Values.app.svc.ordering }}/hc
+  internalurls__marketing__hc: http://{{ .Values.app.svc.marketing }}/hc
+  internalurls__payment__hc: http://{{ .Values.app.svc.payment }}/hc
+  internalurls__location__hc: http://{{ .Values.app.svc.locations }}/hc
+

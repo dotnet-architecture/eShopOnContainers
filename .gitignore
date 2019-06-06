@@ -25,8 +25,14 @@ bld/
 
 # Visual Studio 2015 cache/options directory
 .vs/
+
+# .js files created on build:
+src/Web/WebMVC/wwwroot/js/site*
+
 # Uncomment if you have tasks that create the project's static files in wwwroot
 **/wwwroot/lib/
+!/wwwroot/lib/signalr
+!/wwwroot/lib/toastr
 
 # MSTest test Results
 [Tt]est[Rr]esult*/
@@ -189,7 +195,6 @@ ClientBin/
 *~
 *.dbmdl
 *.dbproj.schemaview
-*.pfx
 *.publishsettings
 node_modules/
 orleans.codegen.cs
@@ -259,3 +264,9 @@ pub/
 #Ignore marker-file used to know which docker files we have.
 .eshopdocker_*
 /src/Web/WebMVC/wwwroot/lib
+/src/Web/WebMVC/wwwroot/css/site.min.css
+**/.kube/**
+.mfractor
+
+# Ignore HealthCheckdb
+*healthchecksdb*

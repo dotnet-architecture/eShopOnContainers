@@ -1,13 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.eShopOnContainers.WebMVC.Services;
 using Microsoft.eShopOnContainers.WebMVC.ViewModels;
-using Microsoft.AspNetCore.Authorization;
-using System.Net.Http;
 using Polly.CircuitBreaker;
+using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.WebMVC.Controllers
 {
@@ -26,9 +22,9 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
 
         public async Task<IActionResult> Create()
         {
+
             var user = _appUserParser.Parse(HttpContext.User);
-            var basket = await _basketSvc.GetBasket(user);
-            var order = _basketSvc.MapBasketToOrder(basket);
+            var order = await _basketSvc.GetOrderDraft(user.Id);
             var vm = _orderSvc.MapUserInfoIntoOrder(user, order);
             vm.CardExpirationShortFormat();
 
@@ -36,24 +32,35 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Order model, string action)
+        public async Task<IActionResult> Checkout(Order model)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
                     var user = _appUserParser.Parse(HttpContext.User);
-                    await _orderSvc.CreateOrder(model);
+                    var basket = _orderSvc.MapOrderToBasket(model);
+
+                    await _basketSvc.Checkout(basket);
 
                     //Redirect to historic list.
                     return RedirectToAction("Index");
                 }
             }
-            catch(BrokenCircuitException)
+            catch (BrokenCircuitException)
             {
                 ModelState.AddModelError("Error", "It was not possible to create a new order, please try later on. (Business Msg Due to Circuit-Breaker)");
             }
-            return View(model);
+
+            return View("Create", model);
+        }
+
+        public async Task<IActionResult> Cancel(string orderId)
+        {
+            await _orderSvc.CancelOrder(orderId);
+
+            //Redirect to historic list.
+            return RedirectToAction("Index");
         }
 
         public async Task<IActionResult> Detail(string orderId)

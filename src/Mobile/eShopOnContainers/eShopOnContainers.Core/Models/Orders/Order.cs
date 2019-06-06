@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
 
 namespace eShopOnContainers.Core.Models.Orders
 {
@@ -20,7 +20,7 @@ namespace eShopOnContainers.Core.Models.Orders
         public DateTime OrderDate { get; set; }
 
         [JsonProperty("status")]
-        public OrderState State { get; set; }
+        public OrderStatus OrderStatus { get; set; }
 
         [JsonProperty("city")]
         public string ShippingCity { get; set; }
@@ -54,6 +54,6 @@ namespace eShopOnContainers.Core.Models.Orders
         public decimal Total { get; set; }
 
         [JsonProperty("ordernumber")]
-        public string OrderNumber { get; set; }
+        public int OrderNumber { get; set; }
     }
 }

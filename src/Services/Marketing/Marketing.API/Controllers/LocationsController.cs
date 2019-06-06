@@ -7,10 +7,12 @@ namespace Microsoft.eShopOnContainers.Services.Marketing.API.Controllers
     using Microsoft.eShopOnContainers.Services.Marketing.API.Model;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Net;
     using System.Threading.Tasks;
 
     [Authorize]
-    public class LocationsController : Controller
+    [ApiController]
+    public class LocationsController : ControllerBase
     {
         private readonly MarketingContext _context;
 
@@ -21,7 +23,10 @@ namespace Microsoft.eShopOnContainers.Services.Marketing.API.Controllers
 
         [HttpGet]
         [Route("api/v1/campaigns/{campaignId:int}/locations/{userLocationRuleId:int}")]
-        public IActionResult GetLocationByCampaignAndLocationRuleId(int campaignId, 
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(UserLocationRuleDTO),(int)HttpStatusCode.OK)]
+        public ActionResult<UserLocationRuleDTO> GetLocationByCampaignAndLocationRuleId(int campaignId, 
             int userLocationRuleId)
         {
             if (campaignId < 1 || userLocationRuleId < 1)
@@ -38,14 +43,15 @@ namespace Microsoft.eShopOnContainers.Services.Marketing.API.Controllers
                 return NotFound();
             }
 
-            var locationDto = MapUserLocationRuleModelToDto(location);
-
-            return Ok(locationDto);
+            return MapUserLocationRuleModelToDto(location);
         }
 
         [HttpGet]
         [Route("api/v1/campaigns/{campaignId:int}/locations")]
-        public IActionResult GetAllLocationsByCampaignId(int campaignId)
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(List<UserLocationRuleDTO>), (int)HttpStatusCode.OK)]
+        public ActionResult<List<UserLocationRuleDTO>> GetAllLocationsByCampaignId(int campaignId)
         {
             if (campaignId < 1)
             {
@@ -62,15 +68,14 @@ namespace Microsoft.eShopOnContainers.Services.Marketing.API.Controllers
                 return Ok();
             }
 
-            var locationDtoList = MapUserLocationRuleModelListToDtoList(locationList);
-
-            return Ok(locationDtoList);
+            return MapUserLocationRuleModelListToDtoList(locationList);
         }
 
         [HttpPost]
         [Route("api/v1/campaigns/{campaignId:int}/locations")]
-        public async Task<IActionResult> CreateLocation(int campaignId, 
-            [FromBody] UserLocationRuleDTO locationRuleDto)
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.Created)]
+        public async Task<ActionResult> CreateLocationAsync(int campaignId, [FromBody] UserLocationRuleDTO locationRuleDto)
         {
             if (campaignId < 1 || locationRuleDto is null)
             {
@@ -83,13 +88,15 @@ namespace Microsoft.eShopOnContainers.Services.Marketing.API.Controllers
             await _context.Rules.AddAsync(locationRule);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetLocationByCampaignAndLocationRuleId), 
-                new { campaignId = campaignId, locationRuleId = locationRule.Id }, null);
+            return CreatedAtAction(nameof(GetLocationByCampaignAndLocationRuleId),
+                new { campaignId = campaignId, userLocationRuleId = locationRule.Id }, null);
         }
 
         [HttpDelete]
         [Route("api/v1/campaigns/{campaignId:int}/locations/{userLocationRuleId:int}")]
-        public async Task<IActionResult> DeleteLocationById(int campaignId, int userLocationRuleId)
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public async Task<ActionResult> DeleteLocationByIdAsync(int campaignId, int userLocationRuleId)
         {
             if (campaignId < 1 || userLocationRuleId < 1)
             {
@@ -110,8 +117,6 @@ namespace Microsoft.eShopOnContainers.Services.Marketing.API.Controllers
 
             return NoContent();
         }
-
-
 
         private List<UserLocationRuleDTO> MapUserLocationRuleModelListToDtoList(List<UserLocationRule> userLocationRuleList)
         {

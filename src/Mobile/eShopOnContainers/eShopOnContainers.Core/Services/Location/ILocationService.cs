@@ -1,10 +1,9 @@
-﻿namespace eShopOnContainers.Core.Services.Location
-{
-    using System.Threading.Tasks;
-    using eShopOnContainers.Core.Models.Location;
-    
+﻿using System.Threading.Tasks;
+
+namespace eShopOnContainers.Core.Services.Location
+{    
     public interface ILocationService
     {
-        Task UpdateUserLocation(LocationRequest newLocReq);
+        Task UpdateUserLocation(eShopOnContainers.Core.Models.Location.Location newLocReq, string token);
     }
 }

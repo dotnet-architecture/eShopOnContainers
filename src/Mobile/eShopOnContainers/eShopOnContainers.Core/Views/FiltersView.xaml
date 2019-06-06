@@ -76,11 +76,10 @@
       SelectedItem="{Binding Brand, Mode=TwoWay}"
       Style="{StaticResource FilterPickerStyle}">
       <Picker.HeightRequest>   
-        <OnPlatform 
-          x:TypeArguments="x:Double"       
-          Android="48"
-          iOS="48"
-          WinPhone="36"/>
+        <OnPlatform x:TypeArguments="x:Double">
+            <On Platform="iOS, Android" Value="48" />
+            <On Platform="UWP, WinRT, WinPhone" Value="36" />
+        </OnPlatform>
       </Picker.HeightRequest> 
     </Picker>
     <!-- TYPE -->
@@ -91,11 +90,10 @@
       SelectedItem="{Binding Type, Mode=TwoWay}"
       Style="{StaticResource FilterPickerStyle}">    
       <Picker.HeightRequest>   
-        <OnPlatform 
-          x:TypeArguments="x:Double"       
-          Android="48"
-          iOS="48"
-          WinPhone="36"/>
+        <OnPlatform x:TypeArguments="x:Double">
+            <On Platform="iOS, Android" Value="48" />
+            <On Platform="UWP, WinRT, WinPhone" Value="36" />
+        </OnPlatform>
       </Picker.HeightRequest> 
     </Picker>
     <Button 

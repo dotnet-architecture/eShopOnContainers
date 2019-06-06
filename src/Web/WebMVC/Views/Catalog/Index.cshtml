@@ -23,6 +23,15 @@
 </section>
 
 <div class="container">
+    <div class="row">
+        <br />
+        @if(ViewBag.BasketInoperativeMsg != null)
+        {
+            <div class="alert alert-warning" role="alert">
+                &nbsp;@ViewBag.BasketInoperativeMsg
+            </div>
+        }
+    </div>
 
     @if (Model.CatalogItems.Count() > 0)
     {

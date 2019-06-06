@@ -1,28 +1,26 @@
-﻿namespace eShopOnContainers.Core.Services.Location
-{
-    using eShopOnContainers.Core.Models.Location;
-    using eShopOnContainers.Core.Services.RequestProvider;
-    using System;
-    using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
+using eShopOnContainers.Core.Helpers;
+using eShopOnContainers.Core.Services.RequestProvider;
 
+namespace eShopOnContainers.Core.Services.Location
+{
     public class LocationService : ILocationService
     {
         private readonly IRequestProvider _requestProvider;
+
+        private const string ApiUrlBase = "api/v1/l/locations";
 
         public LocationService(IRequestProvider requestProvider)
         {
             _requestProvider = requestProvider;
         }
 
-        public async Task UpdateUserLocation(LocationRequest newLocReq)
+        public async Task UpdateUserLocation(eShopOnContainers.Core.Models.Location.Location newLocReq, string token)
         {
-            UriBuilder builder = new UriBuilder(GlobalSetting.Instance.LocationEndpoint);
+            var uri = UriHelper.CombineUri(GlobalSetting.Instance.GatewayMarketingEndpoint, ApiUrlBase);
 
-            builder.Path = "api/v1/locations";
-
-            string uri = builder.ToString();
-
-            var result = await _requestProvider.PostAsync(uri, newLocReq);
+            await _requestProvider.PostAsync(uri, newLocReq, token);
         }
     }
 }
