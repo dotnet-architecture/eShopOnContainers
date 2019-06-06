@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Config;
 using Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Filters.Basket.API.Infrastructure.Filters;
 using Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Infrastructure;
@@ -17,6 +18,10 @@ using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http;
+using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Devspaces.Support;
 
 namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator
 {
@@ -32,8 +37,19 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHealthChecks()
+                .AddCheck("self", () => HealthCheckResult.Healthy())
+                .AddUrlGroup(new Uri(Configuration["CatalogUrlHC"]), name: "catalogapi-check", tags: new string[] { "catalogapi" })
+                .AddUrlGroup(new Uri(Configuration["OrderingUrlHC"]), name: "orderingapi-check", tags: new string[] { "orderingapi" })
+                .AddUrlGroup(new Uri(Configuration["BasketUrlHC"]), name: "basketapi-check", tags: new string[] { "basketapi" })
+                .AddUrlGroup(new Uri(Configuration["IdentityUrlHC"]), name: "identityapi-check", tags: new string[] { "identityapi" })
+                .AddUrlGroup(new Uri(Configuration["MarketingUrlHC"]), name: "marketingapi-check", tags: new string[] { "marketingapi" })
+                .AddUrlGroup(new Uri(Configuration["PaymentUrlHC"]), name: "paymentapi-check", tags: new string[] { "paymentapi" })
+                .AddUrlGroup(new Uri(Configuration["LocationUrlHC"]), name: "locationapi-check", tags: new string[] { "locationapi" });
+
             services.AddCustomMvc(Configuration)
                 .AddCustomAuthentication(Configuration)
+                .AddDevspaces()
                 .AddApplicationServices();
         }
 
@@ -43,9 +59,20 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator
             var pathBase = Configuration["PATH_BASE"];
             if (!string.IsNullOrEmpty(pathBase))
             {
-                loggerFactory.CreateLogger("init").LogDebug($"Using PATH BASE '{pathBase}'");
+                loggerFactory.CreateLogger<Startup>().LogDebug("Using PATH BASE '{pathBase}'", pathBase);
                 app.UsePathBase(pathBase);
             }
+
+            app.UseHealthChecks("/hc", new HealthCheckOptions()
+            {
+                Predicate = _ => true,
+                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+            });
+
+            app.UseHealthChecks("/liveness", new HealthCheckOptions
+            {
+                Predicate = r => r.Name.Contains("self")
+            });
 
             app.UseCors("CorsPolicy");
 
@@ -53,18 +80,22 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseHsts();
+            }
 
             app.UseAuthentication();
-
+            app.UseHttpsRedirection();
             app.UseMvc();
 
-            app.UseSwagger().UseSwaggerUI(c =>
-           {
-               c.SwaggerEndpoint($"{ (!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty) }/swagger/v1/swagger.json", "Purchase BFF V1");
-               //c.ConfigureOAuth2("Microsoft.eShopOnContainers.Web.Shopping.HttpAggregatorwaggerui", "", "", "Purchase BFF Swagger UI");
-           });
-
-
+            app.UseSwagger()
+                .UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint($"{ (!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty) }/swagger/v1/swagger.json", "Purchase BFF V1");
+                    //c.ConfigureOAuth2("Microsoft.eShopOnContainers.Web.Shopping.HttpAggregatorwaggerui", "", "", "Purchase BFF Swagger UI");
+                });
         }
     }
 
@@ -99,12 +130,14 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator
 
             return services;
         }
+
         public static IServiceCollection AddCustomMvc(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddOptions();
             services.Configure<UrlsConfig>(configuration.GetSection("urls"));
 
-            services.AddMvc();
+            services.AddMvc()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddSwaggerGen(options =>
             {
@@ -135,7 +168,8 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy",
-                    builder => builder.AllowAnyOrigin()
+                    builder => builder
+                    .SetIsOriginAllowed((host) => true)
                     .AllowAnyMethod()
                     .AllowAnyHeader()
                     .AllowCredentials());
@@ -150,21 +184,23 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             //register http services
-          
+
             services.AddHttpClient<IBasketService, BasketService>()
                 .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
                 .AddPolicyHandler(GetRetryPolicy())
-                .AddPolicyHandler(GetCircuitBreakerPolicy());
+                .AddPolicyHandler(GetCircuitBreakerPolicy())
+                .AddDevspacesSupport();
 
             services.AddHttpClient<ICatalogService, CatalogService>()
                 .AddPolicyHandler(GetRetryPolicy())
-                .AddPolicyHandler(GetCircuitBreakerPolicy());
+                .AddPolicyHandler(GetCircuitBreakerPolicy())
+                .AddDevspacesSupport();
 
             services.AddHttpClient<IOrderApiClient, OrderApiClient>()
                 .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
                 .AddPolicyHandler(GetRetryPolicy())
-                .AddPolicyHandler(GetCircuitBreakerPolicy());
-
+                .AddPolicyHandler(GetCircuitBreakerPolicy())
+                .AddDevspacesSupport();
 
             return services;
         }
@@ -177,6 +213,7 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator
               .WaitAndRetryAsync(6, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
 
         }
+
         static IAsyncPolicy<HttpResponseMessage> GetCircuitBreakerPolicy()
         {
             return HttpPolicyExtensions

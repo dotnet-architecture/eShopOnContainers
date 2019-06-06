@@ -1,0 +1,22 @@
+variables:
+    registryEndpoint: eshop-registry
+trigger:
+  branches:
+    include:
+    - master
+    - dev
+  paths:
+    include:
+    - src/BuildingBlocks/*
+    - src/Web/WebSPA/*
+    - k8s/helm/webspa/*            
+jobs:
+- template: ../buildimages.yaml
+  parameters:
+    services: webspa
+    registryEndpoint: $(registryEndpoint)          
+- template: ../multiarch.yaml
+  parameters:
+    image: webspa
+    branch: $(Build.SourceBranchName)
+    registryEndpoint: $(registryEndpoint)

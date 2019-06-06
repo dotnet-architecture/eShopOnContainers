@@ -1,0 +1,30 @@
+parameters:
+  image: ''
+  branch: ''
+  registryEndpoint: ''
+
+jobs:
+- job: manifest
+  condition: ne('${{ variables['Build.Reason'] }}', 'PullRequest')
+  pool: 
+    vmImage: 'Ubuntu 16.04'
+  steps:
+  - task: Docker@1
+    displayName: Docker Login
+    inputs:
+      command: login
+      containerregistrytype: 'Container Registry'
+      dockerRegistryEndpoint: ${{ parameters.registryEndpoint }}
+  - task: Bash@3
+    displayName: Create multiarch manifest
+    inputs:
+      script: |
+        mkdir -p ~/.docker
+        echo '{ "experimental": "enabled" }' > ~/.docker/config.json
+        docker --config ~/.docker manifest create eshop/${{ parameters.image }}:${{ parameters.branch }} eshop/${{ parameters.image }}:linux-${{ parameters.branch }} eshop/${{ parameters.image }}:win-${{ parameters.branch }}
+        docker --config ~/.docker manifest create eshop/${{ parameters.image }}:latest eshop/${{ parameters.image }}:linux-latest eshop/${{ parameters.image }}:win-latest
+        docker --config ~/.docker push eshop/${{ parameters.image }}:${{ parameters.branch }}
+        docker --config ~/.docker push eshop/${{ parameters.image }}:latest
+  dependsOn:
+    - BuildWindows
+    - BuildLinux

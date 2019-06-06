@@ -1,0 +1,22 @@
+variables:
+    registryEndpoint: eshop-registry
+trigger:
+  branches:
+    include:
+    - master
+    - dev
+  paths:
+    include:
+    - src/BuildingBlocks/*
+    - src/Services/Webhooks/*
+    - k8s/helm/webhooks-api/*
+jobs:
+- template: ../buildimages.yaml
+  parameters:
+    services: webhooks.api
+    registryEndpoint: $(registryEndpoint) 
+- template: ../multiarch.yaml
+  parameters:
+    image: webhooks.api
+    branch: $(Build.SourceBranchName)
+    registryEndpoint: $(registryEndpoint)

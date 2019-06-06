@@ -5,13 +5,14 @@
 @inject IIdentityParser<ApplicationUser> UserManager
 
 @{
-    ViewData["Title"] = "My Cart";
+     ViewData["Title"] = "My Cart";
+     var headerList = new List<Header>() {
+          new Header() { Controller = "Catalog", Text = "Back to catalog" }};
 }
 
 <form method="post" id="cartForm">
     <div class="esh-basket">
-        @Html.Partial("_Header", new List<Header>() {
-            new Header() { Controller = "Catalog", Text = "Back to catalog" } })
+        <partial name="_Header" model="headerList"/>
 
         @await Component.InvokeAsync("CartList", new { user = UserManager.Parse(User) })
     </div>

@@ -1,11 +1,11 @@
 ﻿using Microsoft.eShopOnContainers.Services.Ordering.Domain.SeedWork;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.BuyerAggregate
 {
-
+    /// <remarks> 
+    /// Card type class should be marked as abstract with protected constructor to encapsulate known enum types
+    /// this is currently not possible as OrderingContextSeed uses this constructor to load cardTypes from csv file
+    /// </remarks>
     public class CardType
         : Enumeration
     {
@@ -13,42 +13,9 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.B
         public static CardType Visa = new CardType(2, "Visa");
         public static CardType MasterCard = new CardType(3, "MasterCard");
 
-        protected CardType() { }
-
         public CardType(int id, string name)
             : base(id, name)
         {
-
-        }
-
-        public static IEnumerable<CardType> List()
-        {
-            return new[] { Amex, Visa, MasterCard };
-        }
-
-        public static CardType FromName(string name)
-        {
-            var state = List()
-                .SingleOrDefault(s => String.Equals(s.Name, name, StringComparison.CurrentCultureIgnoreCase));
-
-            if (state == null)
-            {
-                throw new ArgumentException($"Possible values for CardType: {String.Join(",", List().Select(s => s.Name))}");
-            }
-
-            return state;
-        }
-
-        public static CardType From(int id)
-        {
-            var state = List().SingleOrDefault(s => s.Id == id);
-
-            if (state == null)
-            {
-                throw new ArgumentException($"Possible values for CardType: {String.Join(",", List().Select(s => s.Name))}");
-            }
-
-            return state;
         }
     }
 }

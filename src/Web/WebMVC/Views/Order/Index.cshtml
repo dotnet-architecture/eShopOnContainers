@@ -3,36 +3,37 @@
 @model IEnumerable<Microsoft.eShopOnContainers.WebMVC.ViewModels.Order>
 
 @{
-    ViewData["Title"] = "My Orders";
+     ViewData["Title"] = "My Orders";
+     var headerList= new List<Header>() {
+        new Header() { Controller = "Catalog", Text = "Back to catalog" },
+        new Header() { Text = " / " },
+        new Header() { Controller = "OrderManagement", Text = "Orders Management" } };
 }
 
 <div class="esh-orders">
-    @Html.Partial("_Header", new List<Header>() {
-new Header() { Controller = "Catalog", Text = "Back to catalog" },
-new Header() { Text = " / " },
-new Header() { Controller = "OrderManagement", Text = "Orders Management" } })
+    <partial name="_Header" model="headerList"/>
 
     <div class="container">
         <article class="esh-orders-titles row">
-            <section class="esh-orders-title col-xs-2">Order number</section>
-            <section class="esh-orders-title col-xs-4">Date</section>
-            <section class="esh-orders-title col-xs-2">Total</section>
-            <section class="esh-orders-title col-xs-2">Status</section>
-            <section class="esh-orders-title col-xs-2"></section>
+            <section class="esh-orders-title col-2">Order number</section>
+            <section class="esh-orders-title col-4">Date</section>
+            <section class="esh-orders-title col-2">Total</section>
+            <section class="esh-orders-title col-2">Status</section>
+            <section class="esh-orders-title col-2"></section>
         </article>
         @if (Model != null && Model.Any())
         {
             foreach (var item in Model)
             {
                 <article class="esh-orders-items row">
-                    <section class="esh-orders-item col-xs-2">@Html.DisplayFor(modelItem => item.OrderNumber)</section>
-                    <section class="esh-orders-item col-xs-4">@Html.DisplayFor(modelItem => item.Date)</section>
-                    <section class="esh-orders-item col-xs-2">$ @Html.DisplayFor(modelItem => item.Total)</section>
-                    <section class="esh-orders-item col-xs-2">@Html.DisplayFor(modelItem => item.Status)</section>
-                    <section class="esh-orders-item col-xs-1">
+                    <section class="esh-orders-item col-2">@Html.DisplayFor(modelItem => item.OrderNumber)</section>
+                    <section class="esh-orders-item col-4">@Html.DisplayFor(modelItem => item.Date)</section>
+                    <section class="esh-orders-item col-2">$ @Html.DisplayFor(modelItem => item.Total)</section>
+                    <section class="esh-orders-item col-2">@Html.DisplayFor(modelItem => item.Status)</section>
+                    <section class="esh-orders-item col-1">
                         <a class="esh-orders-link" asp-controller="Order" asp-action="Detail" asp-route-orderId="@item.OrderNumber">Detail</a>
                     </section>
-                    <section class="esh-orders-item col-xs-1">
+                    <section class="esh-orders-item col-1">
                         @if (item.Status.ToLower() == "submitted")
                         {
                             <a class="esh-orders-link" asp-controller="Order" asp-action="cancel" asp-route-orderId="@item.OrderNumber">Cancel</a>

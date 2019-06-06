@@ -19,7 +19,7 @@ namespace Ordering.SignalrHub
 
         public override async Task OnDisconnectedAsync(Exception ex)
         {
-            await Groups.AddToGroupAsync(Context.ConnectionId, Context.User.Identity.Name);
+            await Groups.RemoveFromGroupAsync(Context.ConnectionId, Context.User.Identity.Name);
             await base.OnDisconnectedAsync(ex);
         }
     }

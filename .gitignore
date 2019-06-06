@@ -25,6 +25,13 @@ bld/
 
 # Visual Studio 2015 cache/options directory
 .vs/
+
+# Dockerfile projects folder for restore-packages script
+csproj-files/
+
+# .js files created on build:
+src/Web/WebMVC/wwwroot/js/site*
+
 # Uncomment if you have tasks that create the project's static files in wwwroot
 **/wwwroot/lib/
 !/wwwroot/lib/signalr
@@ -37,6 +44,8 @@ bld/
 # NUNIT
 *.VisualState.xml
 TestResult.xml
+
+tests-results/
 
 # Build Results of an ATL Project
 [Dd]ebugPS/
@@ -263,3 +272,11 @@ pub/
 /src/Web/WebMVC/wwwroot/css/site.min.css
 **/.kube/**
 .mfractor
+
+# Ignore HealthCheckdb
+*healthchecksdb*
+
+# Ignores all extra inf.yaml and app.yaml that are copied by prepare-devspaces.ps1
+src/**/app.yaml
+src/**/inf.yaml
+

@@ -73,6 +73,12 @@
     width: 80%;
 }
 
+.esh-campaigns-card-footer-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .esh-campaigns-form-button {
     background-color: #83D01B;
     border: none;
@@ -81,6 +87,7 @@
     font-size: 1rem;
     transition: all 0.35s;
     width: 80%;
+    margin-top: -15px;
 }
 
     .esh-campaigns-button.is-disabled {

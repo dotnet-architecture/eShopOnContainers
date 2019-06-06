@@ -71,6 +71,7 @@
   margin-top: -1.5rem;
   padding: 0.5rem;
   transition: all 0.35s;
+  margin-bottom: -6px;
 }
 
 .esh-catalog-send:hover {

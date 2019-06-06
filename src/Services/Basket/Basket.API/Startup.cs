@@ -4,24 +4,29 @@ using Basket.API.Infrastructure.Filters;
 using Basket.API.Infrastructure.Middlewares;
 using Basket.API.IntegrationEvents.EventHandling;
 using Basket.API.IntegrationEvents.Events;
+using HealthChecks.UI.Client;
+
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.ApplicationInsights.ServiceFabric;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.ServiceBus;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus;
+using Microsoft.eShopOnContainers.Services.Basket.API.Infrastructure.Repositories;
 using Microsoft.eShopOnContainers.Services.Basket.API.IntegrationEvents.EventHandling;
 using Microsoft.eShopOnContainers.Services.Basket.API.IntegrationEvents.Events;
 using Microsoft.eShopOnContainers.Services.Basket.API.Model;
 using Microsoft.eShopOnContainers.Services.Basket.API.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.HealthChecks;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
@@ -30,7 +35,6 @@ using Swashbuckle.AspNetCore.Swagger;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.Services.Basket.API
 {
@@ -47,26 +51,23 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            RegisterAppInsights(services);            
+            RegisterAppInsights(services);
 
             // Add framework services.
             services.AddMvc(options =>
-            {
-                options.Filters.Add(typeof(HttpGlobalExceptionFilter));
-                options.Filters.Add(typeof(ValidateModelStateFilter));
+                {
+                    options.Filters.Add(typeof(HttpGlobalExceptionFilter));
+                    options.Filters.Add(typeof(ValidateModelStateFilter));
 
-            }).AddControllersAsServices();
+                })
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+                .AddControllersAsServices();
 
             ConfigureAuthService(services);
 
-            services.AddHealthChecks(checks =>
-            {
-                checks.AddValueTaskCheck("HTTP Endpoint", () => new ValueTask<IHealthCheckResult>(HealthCheckResult.Healthy("Ok")),
-                                         TimeSpan.Zero  //No cache for this HealthCheck, better just for demos
-                                        );
-            });
+            services.AddCustomHealthCheck(Configuration);
 
-            services.Configure<BasketSettings>(Configuration);            
+            services.Configure<BasketSettings>(Configuration);
 
             //By connecting here we are making sure that our service
             //cannot start until redis is ready. This might slow down startup,
@@ -105,7 +106,8 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
 
                     var factory = new ConnectionFactory()
                     {
-                        HostName = Configuration["EventBusConnection"]
+                        HostName = Configuration["EventBusConnection"],
+                        DispatchConsumersAsync = true
                     };
 
                     if (!string.IsNullOrEmpty(Configuration["EventBusUserName"]))
@@ -159,7 +161,8 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy",
-                    builder => builder.AllowAnyOrigin()
+                    builder => builder
+                    .SetIsOriginAllowed((host) => true)
                     .AllowAnyMethod()
                     .AllowAnyHeader()
                     .AllowCredentials());
@@ -180,8 +183,8 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            loggerFactory.AddAzureWebAppDiagnostics();
-            loggerFactory.AddApplicationInsights(app.ApplicationServices, LogLevel.Trace);
+            //loggerFactory.AddAzureWebAppDiagnostics();
+            //loggerFactory.AddApplicationInsights(app.ApplicationServices, LogLevel.Trace);
 
             var pathBase = Configuration["PATH_BASE"];
             if (!string.IsNullOrEmpty(pathBase))
@@ -189,10 +192,16 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
                 app.UsePathBase(pathBase);
             }
 
+            app.UseHealthChecks("/hc", new HealthCheckOptions()
+            {
+                Predicate = _ => true,
+                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+            });
 
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-            app.Map("/liveness", lapp => lapp.Run(async ctx => ctx.Response.StatusCode = 200));
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+            app.UseHealthChecks("/liveness", new HealthCheckOptions
+            {
+                Predicate = r => r.Name.Contains("self")
+            });
 
             app.UseStaticFiles();          
             app.UseCors("CorsPolicy");
@@ -221,7 +230,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             if (orchestratorType?.ToUpper() == "K8S")
             {
                 // Enable K8s telemetry initializer
-                services.EnableKubernetes();
+                services.AddApplicationInsightsKubernetesEnricher();
             }
             if (orchestratorType?.ToUpper() == "SF")
             {
@@ -309,6 +318,42 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
 
             eventBus.Subscribe<ProductPriceChangedIntegrationEvent, ProductPriceChangedIntegrationEventHandler>();
             eventBus.Subscribe<OrderStartedIntegrationEvent, OrderStartedIntegrationEventHandler>();
+        }        
+    }
+
+    public static class CustomExtensionMethods
+    {
+        public static IServiceCollection AddCustomHealthCheck(this IServiceCollection services, IConfiguration configuration)
+        {
+            var hcBuilder = services.AddHealthChecks();
+
+            hcBuilder.AddCheck("self", () => HealthCheckResult.Healthy());
+
+            hcBuilder                
+                .AddRedis(
+                    configuration["ConnectionString"],
+                    name: "redis-check",
+                    tags: new string[] { "redis" });
+
+            if (configuration.GetValue<bool>("AzureServiceBusEnabled"))
+            {
+                hcBuilder
+                    .AddAzureServiceBusTopic(
+                        configuration["EventBusConnection"],
+                        topicName: "eshop_event_bus",
+                        name: "basket-servicebus-check",
+                        tags: new string[] { "servicebus" });
+            }
+            else
+            {
+                hcBuilder
+                    .AddRabbitMQ(
+                        $"amqp://{configuration["EventBusConnection"]}",
+                        name: "basket-rabbitmqbus-check",
+                        tags: new string[] { "rabbitmqbus" });
+            }
+
+            return services;
         }
     }
 }

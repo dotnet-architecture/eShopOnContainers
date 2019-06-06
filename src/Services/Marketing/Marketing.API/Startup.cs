@@ -13,8 +13,8 @@
     using EntityFrameworkCore;
     using Extensions.Configuration;
     using Extensions.DependencyInjection;
-    using Extensions.HealthChecks;
     using Extensions.Logging;
+    using HealthChecks.UI.Client;
     using Infrastructure;
     using Infrastructure.Filters;
     using Infrastructure.Repositories;
@@ -24,15 +24,17 @@
     using Microsoft.ApplicationInsights.Extensibility;
     using Microsoft.ApplicationInsights.ServiceFabric;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
+    using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+    using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore.Diagnostics;
     using Microsoft.eShopOnContainers.Services.Marketing.API.Infrastructure.Middlewares;
+    using Microsoft.Extensions.Diagnostics.HealthChecks;
     using RabbitMQ.Client;
     using Swashbuckle.AspNetCore.Swagger;
     using System;
     using System.Collections.Generic;
     using System.IdentityModel.Tokens.Jwt;
     using System.Reflection;
-    using System.Threading.Tasks;
 
     public class Startup
     {
@@ -50,26 +52,18 @@
             RegisterAppInsights(services);
 
             // Add framework services.
-            services.AddMvc(options =>
-            {
-                options.Filters.Add(typeof(HttpGlobalExceptionFilter));
-            }).AddControllersAsServices();  //Injecting Controllers themselves thru DIFor further info see: http://docs.autofac.org/en/latest/integration/aspnetcore.html#controllers-as-services
+            services
+                .AddCustomHealthCheck(Configuration)
+                .AddMvc(options =>
+                {
+                    options.Filters.Add(typeof(HttpGlobalExceptionFilter));
+                })
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+                .AddControllersAsServices();  //Injecting Controllers themselves thru DIFor further info see: http://docs.autofac.org/en/latest/integration/aspnetcore.html#controllers-as-services
 
             services.Configure<MarketingSettings>(Configuration);
 
             ConfigureAuthService(services);            
-
-            services.AddHealthChecks(checks => 
-            {
-                checks.AddValueTaskCheck("HTTP Endpoint", () => new ValueTask<IHealthCheckResult>(HealthCheckResult.Healthy("Ok")));
-
-                var accountName = Configuration.GetValue<string>("AzureStorageAccountName");
-                var accountKey = Configuration.GetValue<string>("AzureStorageAccountKey");
-                if (!string.IsNullOrEmpty(accountName) && !string.IsNullOrEmpty(accountKey))
-                {
-                    checks.AddAzureBlobStorageCheck(accountName, accountKey);
-                }
-            });
 
             services.AddDbContext<MarketingContext>(options =>
             {
@@ -107,7 +101,8 @@
 
                     var factory = new ConnectionFactory()
                     {
-                        HostName = Configuration["EventBusConnection"]
+                        HostName = Configuration["EventBusConnection"],
+                        DispatchConsumersAsync = true
                     };
 
                     if (!string.IsNullOrEmpty(Configuration["EventBusUserName"]))
@@ -160,7 +155,8 @@
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy",
-                    builder => builder.AllowAnyOrigin()
+                    builder => builder
+                    .SetIsOriginAllowed((host) => true)
                     .AllowAnyMethod()
                     .AllowAnyHeader()
                     .AllowCredentials());
@@ -184,8 +180,8 @@
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env,ILoggerFactory loggerFactory)
         {
-            loggerFactory.AddAzureWebAppDiagnostics();
-            loggerFactory.AddApplicationInsights(app.ApplicationServices, LogLevel.Trace);
+            //loggerFactory.AddAzureWebAppDiagnostics();
+            //loggerFactory.AddApplicationInsights(app.ApplicationServices, LogLevel.Trace);
 
             var pathBase = Configuration["PATH_BASE"];
 
@@ -194,9 +190,16 @@
                 app.UsePathBase(pathBase);
             }
 
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-            app.Map("/liveness", lapp => lapp.Run(async ctx => ctx.Response.StatusCode = 200));
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+            app.UseHealthChecks("/hc", new HealthCheckOptions()
+            {
+                Predicate = _ => true,
+                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+            });
+
+            app.UseHealthChecks("/liveness", new HealthCheckOptions
+            {
+                Predicate = r => r.Name.Contains("self")
+            });
 
             app.UseCors("CorsPolicy");
 
@@ -223,7 +226,7 @@
             if (orchestratorType?.ToUpper() == "K8S")
             {
                 // Enable K8s telemetry initializer
-                services.EnableKubernetes();
+                services.AddApplicationInsightsKubernetesEnricher();
             }
             if (orchestratorType?.ToUpper() == "SF")
             {
@@ -305,6 +308,57 @@
             }
 
             app.UseAuthentication();
+        }
+    }
+
+    public static class CustomExtensionMethods
+    {
+        public static IServiceCollection AddCustomHealthCheck(this IServiceCollection services, IConfiguration configuration)
+        {
+            var hcBuilder = services.AddHealthChecks();
+
+            hcBuilder.AddCheck("self", () => HealthCheckResult.Healthy());
+
+            hcBuilder
+                .AddSqlServer(
+                    configuration["ConnectionString"],
+                    name: "MarketingDB-check",
+                    tags: new string[] { "marketingdb" })
+                .AddMongoDb(
+                    configuration["MongoConnectionString"],
+                    name: "MarketingDB-mongodb-check",
+                    tags: new string[] { "mongodb" });
+
+            var accountName = configuration.GetValue<string>("AzureStorageAccountName");
+            var accountKey = configuration.GetValue<string>("AzureStorageAccountKey");
+            if (!string.IsNullOrEmpty(accountName) && !string.IsNullOrEmpty(accountKey))
+            {
+                hcBuilder
+                    .AddAzureBlobStorage(
+                        $"DefaultEndpointsProtocol=https;AccountName={accountName};AccountKey={accountKey};EndpointSuffix=core.windows.net",
+                        name: "marketing-storage-check",
+                        tags: new string[] { "marketingstorage" });
+            }
+
+            if (configuration.GetValue<bool>("AzureServiceBusEnabled"))
+            {
+                hcBuilder
+                    .AddAzureServiceBusTopic(
+                        configuration["EventBusConnection"],
+                        topicName: "eshop_event_bus",
+                        name: "marketing-servicebus-check",
+                        tags: new string[] { "servicebus" });
+            }
+            else
+            {
+                hcBuilder
+                    .AddRabbitMQ(
+                        $"amqp://{configuration["EventBusConnection"]}",
+                        name: "marketing-rabbitmqbus-check",
+                        tags: new string[] { "rabbitmqbus" });
+            }
+
+            return services;
         }
     }
 }

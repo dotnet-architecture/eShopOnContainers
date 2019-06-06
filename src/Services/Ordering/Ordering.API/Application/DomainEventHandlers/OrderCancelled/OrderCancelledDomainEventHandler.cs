@@ -33,15 +33,15 @@ namespace Ordering.API.Application.DomainEventHandlers.OrderCancelled
 
         public async Task Handle(OrderCancelledDomainEvent orderCancelledDomainEvent, CancellationToken cancellationToken)
         {
-            _logger.CreateLogger(nameof(OrderCancelledDomainEvent))
-             .LogTrace($"Order with Id: {orderCancelledDomainEvent.Order.Id} has been successfully updated with " +
-                       $"a status order id: {OrderStatus.Shipped.Id}");
+            _logger.CreateLogger<OrderCancelledDomainEvent>()
+                .LogTrace("Order with Id: {OrderId} has been successfully updated to status {Status} ({Id})",
+                    orderCancelledDomainEvent.Order.Id, nameof(OrderStatus.Cancelled), OrderStatus.Cancelled.Id);
 
             var order = await _orderRepository.GetAsync(orderCancelledDomainEvent.Order.Id);
             var buyer = await _buyerRepository.FindByIdAsync(order.GetBuyerId.Value.ToString());
 
             var orderStatusChangedToCancelledIntegrationEvent = new OrderStatusChangedToCancelledIntegrationEvent(order.Id, order.OrderStatus.Name, buyer.Name);
-            await _orderingIntegrationEventService.PublishThroughEventBusAsync(orderStatusChangedToCancelledIntegrationEvent);
+            await _orderingIntegrationEventService.AddAndSaveEventAsync(orderStatusChangedToCancelledIntegrationEvent);
         }
     }
 }

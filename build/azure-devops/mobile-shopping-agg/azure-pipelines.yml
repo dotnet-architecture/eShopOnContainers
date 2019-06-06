@@ -1,0 +1,22 @@
+variables:
+    registryEndpoint: eshop-registry
+trigger:
+  branches:
+    include:
+    - master
+    - dev
+  paths:
+    include:
+    - src/ApiGateways/Mobile.Bff.Shopping/aggregator/*
+    - k8s/helm/mobileshoppingagg/*   
+jobs:
+- template: ../buildimages.yaml
+  parameters:
+    services: mobileshoppingagg
+    registryEndpoint: $(registryEndpoint)
+- template: ../multiarch.yaml
+  parameters:
+    image: mobileshoppingagg
+    branch: $(Build.SourceBranchName)
+    registryEndpoint: $(registryEndpoint)
+

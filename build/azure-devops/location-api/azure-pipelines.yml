@@ -1,0 +1,22 @@
+variables:
+    registryEndpoint: eshop-registry
+trigger:
+  branches:
+    include:
+    - master
+    - dev
+  paths:
+    include:
+    - src/BuildingBlocks/*
+    - src/Services/Location/*
+    - k8s/helm/locations-api/*   
+jobs:
+- template: ../buildimages.yaml
+  parameters:
+    services: locations.api
+    registryEndpoint: $(registryEndpoint)
+- template: ../multiarch.yaml
+  parameters:
+    image: locations.api
+    branch: $(Build.SourceBranchName)
+    registryEndpoint: $(registryEndpoint)

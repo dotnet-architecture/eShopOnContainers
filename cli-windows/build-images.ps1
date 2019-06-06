@@ -8,4 +8,4 @@ if ([string]::IsNullOrEmpty($imageTag)) {
 
 Write-Host "Building images with tag $imageTag" -ForegroundColor Yellow
 $env:TAG=$imageTag
-docker-compose -f "$scriptPath\..\docker-compose.yml" build
+docker-compose -f "$scriptPath\..\docker-compose.yml" -f "$scriptPath\..\docker-compose.windows.yml" build
