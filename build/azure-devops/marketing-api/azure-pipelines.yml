@@ -11,68 +11,12 @@ trigger:
     - src/Services/Marketing/*
     - k8s/helm/marketing-api/*  
 jobs:
-- job: BuildLinux     
-  pool:
-    vmImage: 'ubuntu-16.04'     
-  steps:
-  - task: DockerCompose@0
-    displayName: Compose build marketing
-    inputs:
-      dockerComposeCommand: 'build marketing.api'
-      containerregistrytype: Container Registry
-      dockerRegistryEndpoint: $(registryEndpoint)
-      dockerComposeFile: docker-compose.yml
-      qualifyImageNames: true
-      projectName: ""
-      dockerComposeFileArgs: |
-        TAG=$(Build.SourceBranchName)
-  - task: DockerCompose@0
-    displayName: Compose push marketing
-    inputs:
-      dockerComposeCommand: 'push marketing.api'
-      containerregistrytype: Container Registry
-      dockerRegistryEndpoint: $(registryEndpoint)
-      dockerComposeFile: docker-compose.yml
-      qualifyImageNames: true
-      projectName: ""
-      dockerComposeFileArgs: |
-        TAG=$(Build.SourceBranchName)
-  - task: CopyFiles@2
-    inputs:
-      sourceFolder: $(Build.SourcesDirectory)/k8s/helm    
-      targetFolder: $(Build.ArtifactStagingDirectory)/k8s/helm
-  - task: PublishBuildArtifacts@1
-    inputs:
-      pathtoPublish: $(Build.ArtifactStagingDirectory)/k8s/helm
-      artifactName: helm
-- job: BuildWindows
-  pool:
-    vmImage: 'windows-2019'
-  steps:
-  - task: DockerCompose@0
-    displayName: Compose build marketing
-    inputs:
-      dockerComposeCommand: 'build marketing.api'
-      containerregistrytype: Container Registry
-      dockerRegistryEndpoint: $(registryEndpoint)
-      dockerComposeFile: docker-compose.yml
-      qualifyImageNames: true
-      projectName: ""
-      dockerComposeFileArgs: |
-        TAG=$(Build.SourceBranchName)
-        PLATFORM=win
-  - task: DockerCompose@0
-    displayName: Compose push marketing
-    inputs:
-      dockerComposeCommand: 'push marketing.api'
-      containerregistrytype: Container Registry
-      dockerRegistryEndpoint: $(registryEndpoint)
-      dockerComposeFile: docker-compose.yml
-      qualifyImageNames: true
-      projectName: ""
-      dockerComposeFileArgs: |
-        TAG=$(Build.SourceBranchName)
-        PLATFORM=win
+- template: ../buildimages.yaml
+  parameters:
+    services: marketing.api
+    registryEndpoint: $(registryEndpoint)
+    helmfrom: $(Build.SourcesDirectory)/k8s/helm
+    helmto: $(Build.ArtifactStagingDirectory)/k8s/helm    
 - template: ../multiarch.yaml
   parameters:
     image: marketing.api
