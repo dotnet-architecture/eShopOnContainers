@@ -20,9 +20,6 @@ COPY src/BuildingBlocks/*/*/*.csproj /src/csproj-files/
 COPY src/Services/*/*/*.csproj /src/csproj-files/
 COPY src/Web/*/*.csproj /src/csproj-files/
 
-ARG RUN=pwd
-RUN ${RUN}
-
 COPY . .
 COPY --from=node-build /web/wwwroot /src/src/Web/WebSPA/wwwroot/
 WORKDIR /src/src/Web/WebSPA

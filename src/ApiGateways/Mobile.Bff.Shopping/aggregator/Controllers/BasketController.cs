@@ -36,15 +36,9 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Controllers
             }
 
             // Retrieve the current basket
-            var currentBasket = await _basket.GetByIdAsync(data.BuyerId);
-
-            if (currentBasket == null)
-            {
-                currentBasket = new BasketData(data.BuyerId);
-            }
+            var basket = await _basket.GetByIdAsync(data.BuyerId) ?? new BasketData(data.BuyerId);
 
             var catalogItems = await _catalog.GetCatalogItemsAsync(data.Items.Select(x => x.ProductId));
-            var newBasket = new BasketData(data.BuyerId);
 
             foreach (var bitem in data.Items)
             {
@@ -54,7 +48,7 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Controllers
                     return BadRequest($"Basket refers to a non-existing catalog item ({bitem.ProductId})");
                 }
 
-                newBasket.Items.Add(new BasketDataItem()
+                basket.Items.Add(new BasketDataItem()
                 {
                     Id = bitem.Id,
                     ProductId = catalogItem.Id.ToString(),
@@ -65,9 +59,9 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Controllers
                 });
             }
 
-            await _basket.UpdateAsync(newBasket);
+            await _basket.UpdateAsync(basket);
 
-            return newBasket;
+            return basket;
         }
 
         [HttpPut]

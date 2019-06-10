@@ -1,5 +1,3 @@
-pool:
-  vmImage: 'ubuntu-16.04'
 variables:
     registryEndpoint: eshop-registry
 trigger:
@@ -12,34 +10,15 @@ trigger:
     - src/BuildingBlocks/*
     - src/Services/Payment/*
     - k8s/helm/payment-api/*  
-steps:
-- task: DockerCompose@0
-  displayName: Compose build payment
-  inputs:
-    dockerComposeCommand: 'build payment.api'
-    containerregistrytype: Container Registry
-    dockerRegistryEndpoint: $(registryEndpoint)
-    dockerComposeFile: docker-compose.yml
-    qualifyImageNames: true
-    projectName: ""
-    dockerComposeFileArgs: |
-      TAG=$(Build.SourceBranchName)
-- task: DockerCompose@0
-  displayName: Compose push payment
-  inputs:
-    dockerComposeCommand: 'push payment.api'
-    containerregistrytype: Container Registry
-    dockerRegistryEndpoint: $(registryEndpoint)
-    dockerComposeFile: docker-compose.yml
-    qualifyImageNames: true
-    projectName: ""
-    dockerComposeFileArgs: |
-      TAG=$(Build.SourceBranchName)
-- task: CopyFiles@2
-  inputs:
-    sourceFolder: $(Build.SourcesDirectory)/k8s/helm    
-    targetFolder: $(Build.ArtifactStagingDirectory)/k8s/helm
-- task: PublishBuildArtifacts@1
-  inputs:
-    pathtoPublish: $(Build.ArtifactStagingDirectory)/k8s/helm
-    artifactName: helm
+jobs:
+- template: ../buildimages.yaml
+  parameters:
+    services: payment.api
+    registryEndpoint: $(registryEndpoint) 
+    helmfrom: $(Build.SourcesDirectory)/k8s/helm
+    helmto: $(Build.ArtifactStagingDirectory)/k8s/helm    
+- template: ../multiarch.yaml
+  parameters:
+    image: payment.api
+    branch: $(Build.SourceBranchName)
+    registryEndpoint: $(registryEndpoint)
