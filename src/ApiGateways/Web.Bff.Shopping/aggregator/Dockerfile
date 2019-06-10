@@ -13,9 +13,6 @@ COPY src/BuildingBlocks/*/*/*.csproj /src/csproj-files/
 COPY src/Services/*/*/*.csproj /src/csproj-files/
 COPY src/Web/*/*.csproj /src/csproj-files/
 
-ARG RUN=pwd
-RUN ${RUN}
-
 COPY . .
 WORKDIR /src/src/ApiGateways/Web.Bff.Shopping/aggregator
 RUN dotnet publish -c Release -o /app

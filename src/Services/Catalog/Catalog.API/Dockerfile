@@ -13,9 +13,6 @@ COPY src/BuildingBlocks/*/*/*.csproj /src/csproj-files/
 COPY src/Services/*/*/*.csproj /src/csproj-files/
 COPY src/Web/*/*.csproj /src/csproj-files/
 
-ARG RUN=pwd
-RUN ${RUN}
-
 COPY . .
 WORKDIR /src/src/Services/Catalog/Catalog.API
 RUN dotnet publish -c Release -o /app
