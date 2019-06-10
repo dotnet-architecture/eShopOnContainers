@@ -31,7 +31,7 @@ namespace UnitTest.Ordering.Application
         }
 
         [Fact]
-        public async Task Create_order_with_requestId_success()
+        public async Task Cancel_order_with_requestId_success()
         {
             //Arrange
             _mediatorMock.Setup(x => x.Send(It.IsAny<IdentifiedCommand<CancelOrderCommand, bool>>(), default(CancellationToken)))
