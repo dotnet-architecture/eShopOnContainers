@@ -1,14 +1,21 @@
-﻿using Microsoft.AspNetCore;
+﻿using Autofac.Extensions.DependencyInjection;
+using Catalog.API.Extensions;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF;
 using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Serilog;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Net;
 
 namespace Microsoft.eShopOnContainers.Services.Catalog.API
 {
@@ -26,12 +33,12 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
             try
             {
                 Log.Information("Configuring web host ({ApplicationContext})...", AppName);
-                var host = BuildWebHost(configuration, args);
+                var host = CreateHostBuilder(configuration, args).Build();
 
                 Log.Information("Applying migrations ({ApplicationContext})...", AppName);
                 host.MigrateDbContext<CatalogContext>((context, services) =>
                 {
-                    var env = services.GetService<IHostingEnvironment>();
+                    var env = services.GetService<IWebHostEnvironment>();
                     var settings = services.GetService<IOptions<CatalogSettings>>();
                     var logger = services.GetService<ILogger<CatalogContextSeed>>();
 
@@ -57,16 +64,37 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
             }
         }
 
-        private static IWebHost BuildWebHost(IConfiguration configuration, string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                .CaptureStartupErrors(false)
-                .UseStartup<Startup>()
-                .UseApplicationInsights()
-                .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseWebRoot("Pics")
-                .UseConfiguration(configuration)
-                .UseSerilog()
-                .Build();
+
+        private static IHostBuilder CreateHostBuilder(IConfiguration configuration, string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .ConfigureServices(services => services.AddAutofac())
+                .UseServiceProviderFactory(new AutofacServiceProviderFactory())
+                .ConfigureWebHostDefaults(builder =>
+                {
+                    builder.CaptureStartupErrors(false)
+                    .UseConfiguration(configuration)
+                    .ConfigureKestrel(options =>
+                    {
+                        var ports = GetDefinedPorts(configuration);
+                        foreach (var port in ports.Distinct())
+                        {
+                            options.ListenAnyIP(port.portNumber, listenOptions =>
+                            {
+                                Console.WriteLine($"Binding to port {port.portNumber} (https is {port.https})");
+                                if (port.https)
+                                {
+                                    listenOptions.UseHttps("eshop.pfx");
+                                    listenOptions.Protocols = HttpProtocols.Http1AndHttp2;
+                                }
+                            });
+                        }
+                    })
+                    .UseStartup<Startup>()
+                    .UseApplicationInsights()
+                    .UseContentRoot(Directory.GetCurrentDirectory())
+                    .UseWebRoot("Pics")
+                    .UseSerilog();
+                });
 
         private static Serilog.ILogger CreateSerilogLogger(IConfiguration configuration)
         {
@@ -81,6 +109,40 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
                 .WriteTo.Http(string.IsNullOrWhiteSpace(logstashUrl) ? "http://logstash:8080" : logstashUrl)
                 .ReadFrom.Configuration(configuration)
                 .CreateLogger();
+        }
+
+        private static IEnumerable<(int portNumber, bool https)> GetDefinedPorts(IConfiguration config)
+        {
+            const string https = "https://";
+            const string http = "http://";
+            var defport = config.GetValue("ASPNETCORE_HTTPS_PORT", 0);
+            if (defport != 0)
+            {
+                yield return (defport, true);
+            }
+
+            var urls = config.GetValue<string>("ASPNETCORE_URLS", null)?.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+            if (urls?.Any() == true)
+            {
+                foreach (var urlString in urls)
+                {
+                    var uri = urlString.ToLowerInvariant().Trim();
+                    var isHttps = uri.StartsWith(https);
+                    var isHttp = uri.StartsWith(http);
+                    if (!isHttp && !isHttps)
+                    {
+                        throw new ArgumentException($"Url {uri} must start with https:// or http://");
+                    }
+
+                    uri = uri.Substring(isHttps ? https.Length : http.Length);
+                    var lastdots = uri.LastIndexOf(':');
+                    if (lastdots != -1)
+                    {
+                        var sport = uri.Substring(lastdots + 1);
+                        yield return (int.TryParse(sport, out var nport) ? nport : isHttps ? 443 : 80, isHttps);
+                    }
+                }
+            }
         }
 
         private static IConfiguration GetConfiguration()
