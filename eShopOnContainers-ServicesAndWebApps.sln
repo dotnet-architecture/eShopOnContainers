@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2027
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29020.237
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{FEA0C318-FFED-4D39-8781-265718CA43DD}"
 EndProject
@@ -148,7 +148,20 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebhookClient", "src\Web\We
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Devspace.Support", "Devspace.Support", "{68F5041D-51F2-4630-94B6-B49789F5E51A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Devspaces.Support", "src\BuildingBlocks\Devspaces.Support\Devspaces.Support.csproj", "{56C2EF0B-6BF2-41D9-BE07-6E6D08D06B35}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Devspaces.Support", "src\BuildingBlocks\Devspaces.Support\Devspaces.Support.csproj", "{56C2EF0B-6BF2-41D9-BE07-6E6D08D06B35}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Envoy", "Envoy", "{882A8F3A-C61F-4C44-86DD-A5A258714BF2}"
+	ProjectSection(SolutionItems) = preProject
+		src\ApiGateways\Envoy\Dockerfile = src\ApiGateways\Envoy\Dockerfile
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "config", "config", "{3ABEEE8C-35E0-4185-9825-C44326151F5B}"
+	ProjectSection(SolutionItems) = preProject
+		src\ApiGateways\Envoy\config\catalog.proto = src\ApiGateways\Envoy\config\catalog.proto
+		src\ApiGateways\Envoy\config\catalog.proto-descriptor.pb = src\ApiGateways\Envoy\config\catalog.proto-descriptor.pb
+		src\ApiGateways\Envoy\Dockerfile = src\ApiGateways\Envoy\Dockerfile
+		src\ApiGateways\Envoy\config\envoy.yaml = src\ApiGateways\Envoy\config\envoy.yaml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1862,6 +1875,8 @@ Global
 		{766D7E92-6AF0-476C-ADD5-282BF4D8C576} = {E279BF0F-7F66-4F3A-A3AB-2CDA66C1CD04}
 		{68F5041D-51F2-4630-94B6-B49789F5E51A} = {DB0EFB20-B024-4E5E-A75C-52143C131D25}
 		{56C2EF0B-6BF2-41D9-BE07-6E6D08D06B35} = {68F5041D-51F2-4630-94B6-B49789F5E51A}
+		{882A8F3A-C61F-4C44-86DD-A5A258714BF2} = {77849D35-37D4-4802-81DC-9477B2775A40}
+		{3ABEEE8C-35E0-4185-9825-C44326151F5B} = {882A8F3A-C61F-4C44-86DD-A5A258714BF2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {25728519-5F0F-4973-8A64-0A81EB4EA8D9}

@@ -77,7 +77,6 @@ services:
   catalog.api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://0.0.0.0:80;https://0.0.0.0:443;
       - ConnectionString=${ESHOP_AZURE_CATALOG_DB:-Server=sql.data;Database=Microsoft.eShopOnContainers.Services.CatalogDb;User Id=sa;Password=Pass@word}
       - PicBaseUrl=${ESHOP_AZURE_STORAGE_CATALOG_URL:-http://localhost:5202/api/v1/c/catalog/items/[0]/pic/}   #Local: You need to open your local dev-machine firewall at range 5100-5110.  
       - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
@@ -92,7 +91,7 @@ services:
       - OrchestratorType=${ORCHESTRATOR_TYPE}
     ports:
       - "5101:80"
-      - "9101:443"
+      - "9101:81"
 
   ordering.api:
     environment:
@@ -416,3 +415,9 @@ services:
       - SelfUrl=http://webhooks.client/
     ports:
       - "5114:80"
+
+  envoy:
+    volumes:
+      - ./src/ApiGateways/Envoy/config:/etc/envoy      
+    ports:
+    - "51051:51051"

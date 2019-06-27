@@ -75,19 +75,15 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
                     .UseConfiguration(configuration)
                     .ConfigureKestrel(options =>
                     {
-                        var ports = GetDefinedPorts(configuration);
-                        foreach (var port in ports.Distinct())
+                        options.Listen(IPAddress.Any, 80, listenOptions =>
                         {
-                            options.ListenAnyIP(port.portNumber, listenOptions =>
-                            {
-                                Console.WriteLine($"Binding to port {port.portNumber} (https is {port.https})");
-                                if (port.https)
-                                {
-                                    listenOptions.UseHttps("eshop.pfx");
-                                    listenOptions.Protocols = HttpProtocols.Http1AndHttp2;
-                                }
-                            });
-                        }
+                            listenOptions.Protocols = HttpProtocols.Http1;
+                        });
+                        options.Listen(IPAddress.Any, 81, listenOptions =>
+                        {
+                            listenOptions.Protocols = HttpProtocols.Http2;
+                        });
+
                     })
                     .UseStartup<Startup>()
                     .UseApplicationInsights()

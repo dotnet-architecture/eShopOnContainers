@@ -238,3 +238,9 @@ services:
       dockerfile: src/Web/WebhookClient/Dockerfile
     depends_on:
       - webhooks.api    
+
+  envoy:
+    image: envoy:v1
+    build:
+      context: src/ApiGateways/Envoy
+      dockerfile: Dockerfile

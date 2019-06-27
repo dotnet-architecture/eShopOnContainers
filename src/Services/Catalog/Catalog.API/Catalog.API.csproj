@@ -38,7 +38,6 @@
     <None Remove="@(Protobuf)" />
   </ItemGroup>
 
-
   <ItemGroup>
     <PackageReference Include="Grpc.AspNetCore.Server" Version="0.1.21-pre1" />
     <PackageReference Include="Google.Protobuf" Version="3.8.0" />
