@@ -75,11 +75,12 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
                     .UseConfiguration(configuration)
                     .ConfigureKestrel(options =>
                     {
-                        options.Listen(IPAddress.Any, 80, listenOptions =>
+                        var ports = GetDefinedPorts(configuration);
+                        options.Listen(IPAddress.Any, ports.httpPort, listenOptions =>
                         {
-                            listenOptions.Protocols = HttpProtocols.Http1;
+                            listenOptions.Protocols = HttpProtocols.Http1AndHttp2;
                         });
-                        options.Listen(IPAddress.Any, 81, listenOptions =>
+                        options.Listen(IPAddress.Any, ports.grpcPort, listenOptions =>
                         {
                             listenOptions.Protocols = HttpProtocols.Http2;
                         });
@@ -107,38 +108,11 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
                 .CreateLogger();
         }
 
-        private static IEnumerable<(int portNumber, bool https)> GetDefinedPorts(IConfiguration config)
+        private static (int httpPort, int grpcPort) GetDefinedPorts(IConfiguration config)
         {
-            const string https = "https://";
-            const string http = "http://";
-            var defport = config.GetValue("ASPNETCORE_HTTPS_PORT", 0);
-            if (defport != 0)
-            {
-                yield return (defport, true);
-            }
-
-            var urls = config.GetValue<string>("ASPNETCORE_URLS", null)?.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
-            if (urls?.Any() == true)
-            {
-                foreach (var urlString in urls)
-                {
-                    var uri = urlString.ToLowerInvariant().Trim();
-                    var isHttps = uri.StartsWith(https);
-                    var isHttp = uri.StartsWith(http);
-                    if (!isHttp && !isHttps)
-                    {
-                        throw new ArgumentException($"Url {uri} must start with https:// or http://");
-                    }
-
-                    uri = uri.Substring(isHttps ? https.Length : http.Length);
-                    var lastdots = uri.LastIndexOf(':');
-                    if (lastdots != -1)
-                    {
-                        var sport = uri.Substring(lastdots + 1);
-                        yield return (int.TryParse(sport, out var nport) ? nport : isHttps ? 443 : 80, isHttps);
-                    }
-                }
-            }
+            var grpcPort = config.GetValue("GRPC_PORT", 5001);
+            var port = config.GetValue("PORT", 80);
+            return (port, grpcPort);
         }
 
         private static IConfiguration GetConfiguration()

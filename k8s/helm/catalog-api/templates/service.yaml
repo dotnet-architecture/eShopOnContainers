@@ -14,6 +14,14 @@ spec:
       targetPort: http
       protocol: TCP
       name: http
+    - port: {{ .Values.service.grpc }}
+      targetPort: grpc
+      protocol: TCP
+      name: grpc     
+    - port: {{ .Values.service.envoy }}
+      targetPort: envoy
+      protocol: TCP
+      name: envoy      
   selector:
     app: {{ template "catalog-api.name" . }}
     release: {{ .Release.Name }}

@@ -24,7 +24,8 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Services
 
         public async Task<CatalogItem> GetCatalogItemAsync(int id)
         {
-            var stringContent = await _httpClient.GetStringAsync(_urls.Catalog + UrlsConfig.CatalogOperations.GetItemById(id));
+            var uri=_urls.Catalog + UrlsConfig.CatalogOperations.GetItemById(id);
+            var stringContent = await _httpClient.GetStringAsync(uri);
 
             return JsonConvert.DeserializeObject<CatalogItem>(stringContent);
         }

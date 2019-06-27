@@ -1,0 +1,16 @@
+{{- $name := include "catalog-api.fullname" . -}}
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "envoy-{{ $name }}"
+  labels:
+    app: {{ template "catalog-api.name" . }}
+    chart: {{ template "catalog-api.chart" .}}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+data:
+{{ (.Files.Glob "envoycfg/*.yaml").AsConfig | indent 2 }}  
+binaryData:
+  _catalog.proto-descriptor.pb: |-
+    {{ .Files.Get "envoycfg/_catalog.proto-descriptor.pb" | b64enc -}} 

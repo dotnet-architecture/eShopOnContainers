@@ -73,10 +73,23 @@ spec:
           {{- end }}
           ports:
             - name: http
-              containerPort: 80
+              containerPort: 5000
               protocol: TCP
+            - name: grpc
+              containerPort: 5001
+              protocol: TCP              
           resources:
 {{ toYaml .Values.resources | indent 12 }}
+        - name: envoy-proxy
+          image: envoyproxy/envoy
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: envoy
+              containerPort: 51051
+              protocol: TCP
+          volumeMounts:
+            - name: envoy-config
+              mountPath: /etc/envoy
     {{- with .Values.nodeSelector }}
       nodeSelector:
 {{ toYaml . | indent 8 }}
@@ -89,4 +102,13 @@ spec:
       tolerations:
 {{ toYaml . | indent 8 }}
     {{- end }}
+      volumes:
+        - name: envoy-config
+          configMap:
+            name: envoy-{{ $name }}
+            items:
+              - key: _envoy.yaml
+                path: envoy.yaml
+              - key: _catalog.proto-descriptor.pb
+                path: catalog.proto-descriptor.pb
 

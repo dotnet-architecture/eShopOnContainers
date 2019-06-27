@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.eShopOnContainers.Services.Catalog.API;
 using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
 using Microsoft.eShopOnContainers.Services.Catalog.API.Model;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using static CatalogApi.Catalog;
 
@@ -17,15 +18,17 @@ namespace Catalog.API.Grpc
     {
         private readonly CatalogContext _catalogContext;
         private readonly CatalogSettings _settings;
-        public CatalogService(CatalogContext dbContext, IOptions<CatalogSettings> settings)
+        private readonly ILogger _logger;
+        public CatalogService(CatalogContext dbContext, IOptions<CatalogSettings> settings, ILogger<CatalogService> logger)
         {
             _settings = settings.Value;
             _catalogContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
+            _logger = logger;
         }
 
        public override async Task<CatalogItemResponse> GetItemById(CatalogItemRequest request, ServerCallContext context)
         {
-
+            _logger.LogInformation($"Begin grpc call CatalogService.GetItemById for product id {request.Id}");
             if (request.Id <=0)
             {
                 context.Status = new Status(StatusCode.FailedPrecondition, $"Id must be > 0 (received {request.Id})");

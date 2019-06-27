@@ -240,7 +240,4 @@ services:
       - webhooks.api    
 
   envoy:
-    image: envoy:v1
-    build:
-      context: src/ApiGateways/Envoy
-      dockerfile: Dockerfile
+    image: envoyproxy/envoy
