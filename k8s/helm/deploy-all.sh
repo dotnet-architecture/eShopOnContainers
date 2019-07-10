@@ -38,7 +38,7 @@ Parameters:
     This is useful for production environments where infrastructure is hosted outside the Kubernetes cluster.
   -t | --tag <docker image tag>
     The tag used for the newly created docker images. Default: newly created, date-based timestamp, with 1-minute resolution.
-  -u | --docker-user <docker username>
+  -u | --docker-username <docker username>
     The Docker username used to logon to the custom registry, supplied using the -r parameter.
   --use-local-k8s
     Deploy to a locally installed Kubernetes (default: false).
