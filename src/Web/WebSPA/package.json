@@ -74,7 +74,7 @@
     "karma-cli": "^2.0.0",
     "karma-jasmine": "^2.0.1",
     "karma-jasmine-html-reporter": "^1.4.0",
-    "lodash": "4.17.11",
+    "lodash": "4.17.13",
     "merge": "1.2.1",
     "npm-watch": "0.5.0",
     "protractor": "^5.4.2",
