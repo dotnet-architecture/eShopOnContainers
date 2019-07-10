@@ -14,8 +14,9 @@ Parameters:
     The resource group for the AKS cluster. Required when the registry (using the -r parameter) is set to "aks".
   -b | --build-solution
     Force a solution build before deployment (default: false).
-  -d | --dns <dns or ip address>
-    Specifies the external DNS/ IP address of the Kubernetes cluster. 
+  -d | --dns <dns or ip address> | --dns aks
+    Specifies the external DNS/ IP address of the Kubernetes cluster.
+    If 'aks' is set as value, the DNS value is retrieved from the AKS. --aks-name and --aks-rg are needed.
     When --use-local-k8s is specified the external DNS is automatically set to localhost.
   -h | --help
     Displays this help text and exits the script.
@@ -37,7 +38,7 @@ Parameters:
     This is useful for production environments where infrastructure is hosted outside the Kubernetes cluster.
   -t | --tag <docker image tag>
     The tag used for the newly created docker images. Default: newly created, date-based timestamp, with 1-minute resolution.
-  -u | --docker-username <docker username>
+  -u | --docker-user <docker username>
     The Docker username used to logon to the custom registry, supplied using the -r parameter.
   --use-local-k8s
     Deploy to a locally installed Kubernetes (default: false).
@@ -124,6 +125,19 @@ if [[ $build_images ]]; then
   docker rmi $(docker images -qf "dangling=true") 
 fi
 
+use_custom_registry=''
+
+if [[ -n $container_registry ]]; then 
+  echo "################ Log into custom registry $container_registry ##################"
+  use_custom_registry='yes'
+  if [[ -z $docker_username ]] || [[ -z $docker_password ]]; then
+    echo "Error: Must use -u (--docker-username) AND -p (--docker-password) if specifying custom registry"
+    exit 1
+  fi
+  docker login -u $docker_username -p $docker_password $container_registry
+fi
+
+
 if [[ $push_images ]]; then
   echo "#################### Pushing images to the container registry ####################"
   services=(basket.api catalog.api identity.api ordering.api marketing.api payment.api locations.api webmvc webspa webstatus)
@@ -131,6 +145,9 @@ if [[ $push_images ]]; then
   for service in "${services[@]}"
   do
     echo "Pushing image for service $service..."
+    if [[ -z "$(docker image ls -q --filter=reference=eshop/$service:$image_tag)" ]]; then
+      image_tag=linux-$image_tag
+    fi
     docker tag "eshop/$service:$image_tag" "$container_registry/$service:$image_tag"
     docker push "$container_registry/$service:$image_tag"
   done
@@ -171,16 +188,6 @@ if [[ $clean ]]; then
   echo "Cleaning previous helm releases..."
   helm delete --purge $(helm ls -q) 
   echo "Previous releases deleted"
-fi
-
-use_custom_registry=''
-
-if [[ -n $container_registry ]]; then 
-  use_custom_registry='yes'
-  if [[ -z $docker_user ]] || [[ -z $docker_password ]]; then
-    echo "Error: Must use -u (--docker-username) AND -p (--docker-password) if specifying custom registry"
-    exit 1
-  fi
 fi
 
 echo "#################### Begin $app_name installation using Helm ####################"
