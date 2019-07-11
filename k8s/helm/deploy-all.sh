@@ -42,17 +42,18 @@ Parameters:
     The Docker username used to logon to the custom registry, supplied using the -r parameter.
   --use-local-k8s
     Deploy to a locally installed Kubernetes (default: false).
+  --namespace <namespace name>
+    Specifies the namespace name to deploy the app. If it doesn't exists it will be created (default: eshop).
 
 It is assumed that the Kubernetes cluster has been granted access to the container registry.
 If using AKS and ACR see link for more info: 
 https://docs.microsoft.com/en-us/azure/container-registry/container-registry-auth-aks
 
 WARNING! THE SCRIPT WILL COMPLETELY DESTROY ALL DEPLOYMENTS AND SERVICES VISIBLE
-FROM THE CURRENT CONFIGURATION CONTEXT.
-It is recommended that you create a separate namespace and confguration context
-for the $app_name application, to isolate it from other applications on the cluster.
+FROM THE CURRENT CONFIGURATION CONTEXT AND NAMESPACE.
+It is recommended that you check your selected namespace, 'eshop' by default, is already in use.
+Every deployment and service done in the namespace will be deleted.
 For more information see https://kubernetes.io/docs/tasks/administer-cluster/namespaces/
-You can use namespace.yaml file (in the same directory) to create the namespace.
 
 END
 }
@@ -71,6 +72,7 @@ image_tag=$(date '+%Y%m%d%H%M')
 push_images='yes'
 skip_infrastructure=''
 use_local_k8s=''
+namespace='eshop'
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -104,6 +106,8 @@ while [[ $# -gt 0 ]]; do
       docker_username="$2"; shift 2;;
     --use-local-k8s )
       use_local_k8s='yes'; shift ;;
+    --namespace )
+      namespace="$2"; shift 2;;
     *)
       echo "Unknown option $1"
       usage; exit 2 ;;
@@ -169,13 +173,19 @@ if [[ $dns == "aks" ]]; then
     exit 1
   fi
 
-  echo "Getting DNS of AKS of AKS $aks_name (in resource group $aks_rg)"
-  dns="$(az aks show -n $aks_name -g $aks_rg --query addonProfiles.httpApplicationRouting.config.HTTPApplicationRoutingZoneName)"
-  if [[ -z dns ]]; then
+  echo "Getting AKS cluster $aks_name  AKS (in resource group $aks_rg)"
+  # JMESPath queries are case sensitive and httpapplicationrouting can be lowercase sometimes
+  jmespath_dnsqueries=(addonProfiles.httpApplicationRouting.config.HTTPApplicationRoutingZoneName \
+    addonProfiles.httpapplicationrouting.config.HTTPApplicationRoutingZoneName)
+  for q in "${jmespath_dnsqueries[@]}"
+  do
+    dns="$(az aks show -n $aks_name -g $aks_rg --query $q -o tsv)"
+    if [[ -n $dns ]]; then break; fi
+  done
+  if [[ -z $dns ]]; then
     echo "Error: when getting DNS of AKS $aks_name (in resource group $aks_rg). Please ensure AKS has httpRouting enabled AND Azure CLI is logged in and is of version 2.0.37 or higher."
     exit 1
   fi
-  $dns=${dns//[\"]/""}
   echo "DNS base found is $dns. Will use $aks_name.$dns for the app!"
 fi
 
@@ -186,8 +196,12 @@ fi
 
 if [[ $clean ]]; then
   echo "Cleaning previous helm releases..."
-  helm delete --purge $(helm ls -q) 
-  echo "Previous releases deleted"
+  if [[ -z $(helm ls -q --namespace $namespace) ]]; then
+    echo "No previous releases found"
+  else
+    helm delete --purge $(helm ls -q --namespace $namespace) 
+    echo "Previous releases deleted"
+  fi
 fi
 
 echo "#################### Begin $app_name installation using Helm ####################"
@@ -198,7 +212,7 @@ if [[ !$skip_infrastructure ]]; then
   for infra in "${infras[@]}"
   do
     echo "Installing infrastructure: $infra"
-    helm install --values app.yaml --values inf.yaml --values $ingress_values_file --set app.name=$app_name --set inf.k8s.dns=$dns --name="$app_name-$infra" $infra     
+    helm install --namespace $namespace --values app.yaml --values inf.yaml --values $ingress_values_file --set app.name=$app_name --set inf.k8s.dns=$dns --name="$app_name-$infra" $infra     
   done  
 fi
 
@@ -206,9 +220,9 @@ for chart in "${charts[@]}"
 do
     echo "Installing: $chart"
     if [[ $use_custom_registry ]]; then 
-      helm install --set inf.registry.server=$container_registry --set inf.registry.login=$docker_username --set inf.registry.pwd=$docker_password --set inf.registry.secretName=eshop-docker-scret --values app.yaml --values inf.yaml --values $ingress_values_file --set app.name=$app_name --set inf.k8s.dns=$dns --set image.tag=$image_tag --set image.pullPolicy=Always --name="$app_name-$chart" $chart 
+      helm install --namespace $namespace --set ingress.hosts[0]=$dns --set inf.registry.server=$container_registry --set inf.registry.login=$docker_username --set inf.registry.pwd=$docker_password --set inf.registry.secretName=eshop-docker-scret --values app.yaml --values inf.yaml --values $ingress_values_file --set app.name=$app_name --set inf.k8s.dns=$dns --set image.tag=$image_tag --set image.pullPolicy=Always --name="$app_name-$chart" $chart 
     elif [[ $chart != "eshop-common" ]]; then  # eshop-common is ignored when no secret must be deployed
-      helm install --values app.yaml --values inf.yaml --values $ingress_values_file --set app.name=$app_name --set inf.k8s.dns=$dns --set image.tag=$image_tag --set image.pullPolicy=Always --name="$app_name-$chart" $chart 
+      helm install --namespace $namespace --set ingress.hosts[0]=$dns --values app.yaml --values inf.yaml --values $ingress_values_file --set app.name=$app_name --set inf.k8s.dns=$dns --set image.tag=$image_tag --set image.pullPolicy=Always --name="$app_name-$chart" $chart 
     fi
 done
 
