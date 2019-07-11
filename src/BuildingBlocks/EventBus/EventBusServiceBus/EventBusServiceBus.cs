@@ -61,7 +61,7 @@
         public void SubscribeDynamic<TH>(string eventName)
             where TH : IDynamicIntegrationEventHandler
         {
-            _logger.LogInformation("Subscribing to dynamic event {EventName} with {EventHandler}", eventName, nameof(TH));
+            _logger.LogInformation("Subscribing to dynamic event {EventName} with {EventHandler}", eventName, typeof(TH).Name);
 
             _subsManager.AddDynamicSubscription<TH>(eventName);
         }
@@ -89,7 +89,7 @@
                 }
             }
 
-            _logger.LogInformation("Subscribing to event {EventName} with {EventHandler}", eventName, nameof(TH));
+            _logger.LogInformation("Subscribing to event {EventName} with {EventHandler}", eventName, typeof(TH).Name);
 
             _subsManager.AddSubscription<T, TH>();
         }
