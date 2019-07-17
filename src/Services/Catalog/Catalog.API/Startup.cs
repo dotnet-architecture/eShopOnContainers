@@ -95,9 +95,17 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
                 e.MapDefaultControllerRoute();
                 e.MapGet("/_proto/", async ctx =>
                 {
-                    var data = await File.ReadAllTextAsync(Path.Combine(env.ContentRootPath, "Proto", "catalog.proto"));
                     ctx.Response.ContentType = "text/plain";
-                    await ctx.Response.WriteAsync(data);
+                    using var fs = new FileStream(Path.Combine(env.ContentRootPath, "Proto", "catalog.proto"), FileMode.Open, FileAccess.Read);
+                    using var sr = new StreamReader(fs);
+                    while (!sr.EndOfStream)
+                    {
+                        var line = await sr.ReadLineAsync();
+                        if (line != "/* >>" || line != "<< */")
+                        {
+                            await ctx.Response.WriteAsync(line);
+                        }
+                    }
                 });
                 e.MapGrpcService<CatalogService>();
             });

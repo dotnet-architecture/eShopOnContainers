@@ -1,5 +1,10 @@
 ﻿syntax = "proto3";
 
+/* >>
+import "google/api/annotations.proto";
+<< */
+
+
 package CatalogApi;
 
 message CatalogItemRequest {
@@ -32,5 +37,11 @@ message CatalogType {
 }
 
 service Catalog {
-  rpc GetItemById (CatalogItemRequest) returns (CatalogItemResponse) {}
+  rpc GetItemById (CatalogItemRequest) returns (CatalogItemResponse) {
+ /* >>
+  	option (google.api.http) = {
+        get: "/api/v1/catalog/items/{id}"
+      };
+<< */
+  }
 }
