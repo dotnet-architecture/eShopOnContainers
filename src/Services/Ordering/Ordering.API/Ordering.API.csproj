@@ -31,7 +31,7 @@
     <PackageReference Include="AspNetCore.HealthChecks.AzureServiceBus" Version="2.2.0" />
     <PackageReference Include="AspNetCore.HealthChecks.Rabbitmq" Version="2.2.0" />
     <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="2.2.0" />
-    <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="2.2.3" />
+    <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="2.2.4" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.2.1" />
     <PackageReference Include="Dapper" Version="1.50.7" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="7.5.0" />
