@@ -24,12 +24,14 @@
     <AspNetCore_HealthChecks_AzureStorage>2.2.0</AspNetCore_HealthChecks_AzureStorage>
     <AspNetCore_HealthChecks_MongoDb>2.2.0</AspNetCore_HealthChecks_MongoDb>
     <AspNetCore_HealthChecks_Rabbitmq>2.2.0</AspNetCore_HealthChecks_Rabbitmq>
+    <AspNetCore_HealthChecks_Redis>2.2.0</AspNetCore_HealthChecks_Redis>
     <AspNetCore_HealthChecks_SqlServer>2.2.0</AspNetCore_HealthChecks_SqlServer>
     <AspNetCore_HealthChecks_UI>2.2.22</AspNetCore_HealthChecks_UI>
     <AspNetCore_HealthChecks_UI_Client>2.2.3</AspNetCore_HealthChecks_UI_Client>
     <AspNetCore_HealthChecks_Uris>2.2.2</AspNetCore_HealthChecks_Uris>
     <Autofac>4.9.2</Autofac>
     <Autofac_Extensions_DependencyInjection>4.2.1</Autofac_Extensions_DependencyInjection>
+    <MediatR>5.1.0</MediatR>
     <Microsoft_ApplicationInsights_AspNetCore>2.2.1</Microsoft_ApplicationInsights_AspNetCore>
     <Microsoft_ApplicationInsights_DependencyCollector>2.6.1</Microsoft_ApplicationInsights_DependencyCollector>
     <Microsoft_ApplicationInsights_Kubernetes>1.0.2</Microsoft_ApplicationInsights_Kubernetes>
@@ -65,6 +67,7 @@
     <Serilog_Sinks_Console>3.1.1</Serilog_Sinks_Console>
     <Serilog_Sinks_Seq>4.0.0</Serilog_Sinks_Seq>
     <Serilog_Sinks_Http>4.2.1</Serilog_Sinks_Http>
+    <StackExchange_Redis_StrongName>1.2.6</StackExchange_Redis_StrongName>
     <Swashbuckle_AspNetCore>5.0.0-rc2</Swashbuckle_AspNetCore>
     <System_IO_Compression_ZipFile>4.3.0</System_IO_Compression_ZipFile>
     <xunit>2.4.0</xunit>

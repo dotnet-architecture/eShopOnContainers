@@ -11,7 +11,7 @@
     <PackageReference Include="Microsoft.Extensions.Logging" Version="$(Microsoft_Extensions_Logging)" />
     <PackageReference Include="Newtonsoft.Json" Version="$(Newtonsoft_Json)" />
     <PackageReference Include="Polly" Version="$(Polly)" />
-    <PackageReference Include="RabbitMQ.Client" Version="5.0.1" />
+    <PackageReference Include="RabbitMQ.Client" Version="$(RabbitMQ_Client)" />
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
   </ItemGroup>
 

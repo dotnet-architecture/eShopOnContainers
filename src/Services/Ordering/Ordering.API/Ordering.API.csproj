@@ -35,7 +35,7 @@
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="$(Autofac_Extensions_DependencyInjection)" />
     <PackageReference Include="Dapper" Version="1.50.7" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="7.5.0" />
-    <PackageReference Include="MediatR" Version="5.1.0" />
+    <PackageReference Include="MediatR" Version="$(MediatR)" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="5.1.0" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="$(Microsoft_ApplicationInsights_AspNetCore)" />
     <PackageReference Include="Microsoft.ApplicationInsights.DependencyCollector" Version="$(Microsoft_ApplicationInsights_DependencyCollector)" />
