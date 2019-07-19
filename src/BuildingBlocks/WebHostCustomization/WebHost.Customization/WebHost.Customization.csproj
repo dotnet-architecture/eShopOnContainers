@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <PackageReference Include="Polly" Version="$(Polly)" />
-    <PackageReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
 </Project>

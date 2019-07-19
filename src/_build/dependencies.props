@@ -31,19 +31,22 @@
     <AspNetCore_HealthChecks_Uris>2.2.2</AspNetCore_HealthChecks_Uris>
     <Autofac>4.9.2</Autofac>
     <Autofac_Extensions_DependencyInjection>4.2.1</Autofac_Extensions_DependencyInjection>
+    <Dapper>1.50.7</Dapper>
     <MediatR>5.1.0</MediatR>
     <Microsoft_ApplicationInsights_AspNetCore>2.2.1</Microsoft_ApplicationInsights_AspNetCore>
     <Microsoft_ApplicationInsights_DependencyCollector>2.6.1</Microsoft_ApplicationInsights_DependencyCollector>
     <Microsoft_ApplicationInsights_Kubernetes>1.0.2</Microsoft_ApplicationInsights_Kubernetes>
+    <Microsoft_AspNetCore_Authentication_JwtBearer>3.0.0-preview6.19307.2</Microsoft_AspNetCore_Authentication_JwtBearer>
     <Microsoft_AspNetCore_Diagnostics_HealthChecks>2.2.0</Microsoft_AspNetCore_Diagnostics_HealthChecks>
     <Microsoft_AspNetCore_HealthChecks>1.0.0</Microsoft_AspNetCore_HealthChecks>
     <Microsoft_AspNetCore_Http_Abstractions>2.2.0</Microsoft_AspNetCore_Http_Abstractions>
+    <Microsoft_AspNetCore_TestHost>3.0.0-preview6.19307.2</Microsoft_AspNetCore_TestHost>
     <Microsoft_Azure_ServiceBus>3.0.0</Microsoft_Azure_ServiceBus>
-    <Microsoft_CSharp>4.5.0</<Microsoft_CSharp>
+    <Microsoft_CSharp>4.5.0</Microsoft_CSharp>
     <Microsoft_EntityFrameworkCore>2.2.2</Microsoft_EntityFrameworkCore>
     <Microsoft_EntityFrameworkCore_Design>2.2.2</Microsoft_EntityFrameworkCore_Design>
     <Microsoft_EntityFrameworkCore_Relational>2.2.2</Microsoft_EntityFrameworkCore_Relational>
-    <Microsoft_EntityFrameworkCore_SqlServer>2.2.2<Microsoft_EntityFrameworkCore_SqlServer/>
+    <Microsoft_EntityFrameworkCore_SqlServer>2.2.2</Microsoft_EntityFrameworkCore_SqlServer>
     <Microsoft_Extensions_Configuration_AzureKeyVault>2.2.0</Microsoft_Extensions_Configuration_AzureKeyVault>
     <Microsoft_Extensions_DependencyInjection_Abstractions>2.2.0</Microsoft_Extensions_DependencyInjection_Abstractions>
     <Microsoft_Extensions_Diagnostics_HealthChecks>2.2.0</Microsoft_Extensions_Diagnostics_HealthChecks>
