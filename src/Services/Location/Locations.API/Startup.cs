@@ -1,8 +1,6 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using HealthChecks.UI.Client;
-using Microsoft.ApplicationInsights.Extensibility;
-using Microsoft.ApplicationInsights.ServiceFabric;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -23,8 +21,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using RabbitMQ.Client;
-using Swashbuckle.AspNetCore.Swagger;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -50,7 +48,7 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
                 {
                     options.Filters.Add(typeof(HttpGlobalExceptionFilter));
                 })
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
                 .AddControllersAsServices();
 
             ConfigureAuthService(services);
@@ -99,7 +97,7 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
 
                     return new DefaultRabbitMQPersistentConnection(factory, logger, retryCount);
                 });
-            }            
+            }
 
             RegisterEventBus(services);
 
@@ -107,23 +105,27 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
             services.AddSwaggerGen(options =>
             {
                 options.DescribeAllEnumsAsStrings();
-                options.SwaggerDoc("v1", new Swashbuckle.AspNetCore.Swagger.Info
+                options.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Title = "eShopOnContainers - Location HTTP API",
                     Version = "v1",
                     Description = "The Location Microservice HTTP API. This is a Data-Driven/CRUD microservice sample",
-                    TermsOfService = "Terms Of Service"
                 });
 
-                options.AddSecurityDefinition("oauth2", new OAuth2Scheme
+                options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
                 {
-                    Type = "oauth2",
-                    Flow = "implicit",
-                    AuthorizationUrl = $"{Configuration.GetValue<string>("IdentityUrlExternal")}/connect/authorize",
-                    TokenUrl = $"{Configuration.GetValue<string>("IdentityUrlExternal")}/connect/token",
-                    Scopes = new Dictionary<string, string>()
+                    Type = SecuritySchemeType.OAuth2,
+                    Flows = new OpenApiOAuthFlows()
                     {
-                        { "locations", "Locations API" }
+                        Implicit = new OpenApiOAuthFlow()
+                        {
+                            AuthorizationUrl = new Uri($"{Configuration.GetValue<string>("IdentityUrlExternal")}/connect/authorize"),
+                            TokenUrl = new Uri($"{Configuration.GetValue<string>("IdentityUrlExternal")}/connect/token"),
+                            Scopes = new Dictionary<string, string>()
+                            {
+                                { "locations", "Locations API" }
+                            }
+                        }
                     }
                 });
 
@@ -203,12 +205,6 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
             {
                 // Enable K8s telemetry initializer
                 services.AddApplicationInsightsKubernetesEnricher();
-            }
-            if (orchestratorType?.ToUpper() == "SF")
-            {
-                // Enable SF telemetry initializer
-                services.AddSingleton<ITelemetryInitializer>((serviceProvider) =>
-                    new FabricTelemetryInitializer());
             }
         }
 
