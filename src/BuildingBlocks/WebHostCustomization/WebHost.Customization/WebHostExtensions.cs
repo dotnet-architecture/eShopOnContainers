@@ -3,7 +3,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Polly;
-using Polly.Retry;
 using System;
 using System.Data.SqlClient;
 
@@ -18,7 +17,7 @@ namespace Microsoft.AspNetCore.Hosting
             return orchestratorType?.ToUpper() == "K8S";
         }
 
-        public static IWebHost MigrateDbContext<TContext>(this IWebHost webHost, Action<TContext,IServiceProvider> seeder) where TContext : DbContext
+        public static IWebHost MigrateDbContext<TContext>(this IWebHost webHost, Action<TContext, IServiceProvider> seeder) where TContext : DbContext
         {
             var underK8s = webHost.IsInKubernetes();
 
@@ -71,7 +70,7 @@ namespace Microsoft.AspNetCore.Hosting
         }
 
         private static void InvokeSeeder<TContext>(Action<TContext, IServiceProvider> seeder, TContext context, IServiceProvider services)
-            where TContext : DbContext  
+            where TContext : DbContext
         {
             context.Database.Migrate();
             seeder(context, services);

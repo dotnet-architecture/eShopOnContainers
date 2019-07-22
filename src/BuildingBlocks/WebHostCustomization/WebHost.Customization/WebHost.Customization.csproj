@@ -6,6 +6,12 @@
 
   <ItemGroup>
     <PackageReference Include="Polly" Version="$(Polly)" />
+    <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="$(Microsoft_AspNetCore_Hosting_Abstractions)" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="$(Microsoft_EntityFrameworkCore)" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="$(Microsoft_EntityFrameworkCore_Design)" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="$(Microsoft_EntityFrameworkCore_Relational)" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="$(Microsoft_EntityFrameworkCore_SqlServer)" />
+    <PackageReference Include="System.Data.SqlClient" Version="$(System_Data_SqlClient)" />
   </ItemGroup>
 
 </Project>
