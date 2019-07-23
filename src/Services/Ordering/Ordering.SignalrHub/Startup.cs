@@ -148,6 +148,7 @@ namespace Ordering.SignalrHub
 
             app.UseAuthentication();
 
+            app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapHub<NotificationsHub>("/notificationhub", options =>

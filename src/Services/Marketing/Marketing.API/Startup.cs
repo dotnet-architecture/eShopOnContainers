@@ -205,7 +205,8 @@
 
             ConfigureAuth(app);
 
-            app.UseMvcWithDefaultRoute();
+            app.UseRouting();
+            app.UseEndpoints(e => e.MapDefaultControllerRoute());
 
             app.UseSwagger()
                .UseSwaggerUI(c =>

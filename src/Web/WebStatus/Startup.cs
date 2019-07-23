@@ -1,7 +1,4 @@
-﻿using HealthChecks.UI.Client;
-using Microsoft.ApplicationInsights.Extensibility;
-using Microsoft.ApplicationInsights.ServiceFabric;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -31,7 +28,7 @@ namespace WebStatus
                 .AddCheck("self", () => HealthCheckResult.Healthy());
 
             services.AddHealthChecksUI();
-            
+
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
         }
@@ -64,20 +61,19 @@ namespace WebStatus
                 Predicate = r => r.Name.Contains("self")
             });
 
-            app.UseHealthChecksUI(config => {
+            app.UseHealthChecksUI(config =>
+            {
                 config.ResourcesPath = string.IsNullOrEmpty(pathBase) ? "/ui/resources" : $"{pathBase}/ui/resources";
-                config.UIPath = "/hc-ui"; 
+                config.UIPath = "/hc-ui";
             });
-            
+
             app.UseStaticFiles();
 
             app.UseHttpsRedirection();
 
-            app.UseMvc(routes =>
+            app.UseEndpoints(endpoints =>
             {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
             });
         }
 
@@ -90,12 +86,6 @@ namespace WebStatus
             {
                 // Enable K8s telemetry initializer
                 services.AddApplicationInsightsKubernetesEnricher();
-            }
-            if (orchestratorType?.ToUpper() == "SF")
-            {
-                // Enable SF telemetry initializer
-                services.AddSingleton<ITelemetryInitializer>((serviceProvider) =>
-                    new FabricTelemetryInitializer());
             }
         }
     }
