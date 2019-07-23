@@ -32,10 +32,19 @@
     <Autofac>4.9.2</Autofac>
     <Autofac_Extensions_DependencyInjection>4.2.1</Autofac_Extensions_DependencyInjection>
     <Dapper>1.50.7</Dapper>
-    <System_Reflection>4.3.0</System_Reflection>
+   <Microsoft_AspNetCore_Razor_Design>3.0.0-alpha1-10670</Microsoft_AspNetCore_Razor_Design>
+   <Microsoft_VisualStudio_Azure_Containers_Tools_Targets>1.0.2105168</Microsoft_VisualStudio_Azure_Containers_Tools_Targets>
+   <Microsoft_VisualStudio_Web_CodeGeneration_Design>3.0.0-preview6-19319-03</Microsoft_VisualStudio_Web_CodeGeneration_Design>
+   <Microsoft_AspNetCore_Authentication_OpenIdConnect>3.0.0-preview6-19253-01</Microsoft_AspNetCore_Authentication_OpenIdConnect>
+   <System_Reflection>4.3.0</System_Reflection>
     <System_Reflection_TypeExtensions>4.5.1</System_Reflection_TypeExtensions>
     <System_ValueTuple>4.5.0</System_ValueTuple>
     <MediatR>5.1.0</MediatR>
+    <BuildBundlerMinifier>2.6.375</BuildBundlerMinifier>
+    <Microsoft_AspNetCore_DataProtection_Redis>2.2.0-preview2-35157</Microsoft_AspNetCore_DataProtection_Redis>
+   <Microsoft_AspNet_WebApi_Client>5.2.7</Microsoft_AspNet_WebApi_Client>
+    <Microsoft_Build_Utilities_Core>15.9.20</Microsoft_Build_Utilities_Core>
+    <Microsoft_Web_LibraryManager_Build>1.0.172</Microsoft_Web_LibraryManager_Build>
     <Microsoft_AspNetCore_SignalR_Redis>3.0.0-alpha1-34847</Microsoft_AspNetCore_SignalR_Redis>
     <MediatR_Extensions_Microsoft_DependencyInjection>5.1.0</MediatR_Extensions_Microsoft_DependencyInjection>
     <Microsoft_ApplicationInsights_AspNetCore>2.2.1</Microsoft_ApplicationInsights_AspNetCore>

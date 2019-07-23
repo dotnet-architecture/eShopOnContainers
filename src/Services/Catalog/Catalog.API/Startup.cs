@@ -1,8 +1,11 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Catalog.API.Grpc;
 using global::Catalog.API.Infrastructure.Filters;
 using global::Catalog.API.IntegrationEvents;
+using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -20,17 +23,14 @@ using Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationEvents.EventHa
 using Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationEvents.Events;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
 using System;
 using System.Data.Common;
-using System.Reflection;
-using HealthChecks.UI.Client;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
-using Catalog.API.Grpc;
 using System.IO;
+using System.Reflection;
 
 namespace Microsoft.eShopOnContainers.Services.Catalog.API
 {
@@ -89,10 +89,10 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
             app.UseCors("CorsPolicy");
 
             app.UseRouting();
-            app.UseEndpoints(e =>
+            app.UseEndpoints(endpoints =>
             {
-                e.MapDefaultControllerRoute();
-                e.MapGet("/_proto/", async ctx =>
+                endpoints.MapDefaultControllerRoute();
+                endpoints.MapGet("/_proto/", async ctx =>
                 {
                     ctx.Response.ContentType = "text/plain";
                     using var fs = new FileStream(Path.Combine(env.ContentRootPath, "Proto", "catalog.proto"), FileMode.Open, FileAccess.Read);
@@ -106,7 +106,16 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
                         }
                     }
                 });
-                e.MapGrpcService<CatalogService>();
+                endpoints.MapGrpcService<CatalogService>();
+                endpoints.MapHealthChecks("/hc", new HealthCheckOptions()
+                {
+                    Predicate = _ => true,
+                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                });
+                endpoints.MapHealthChecks("/liveness", new HealthCheckOptions
+                {
+                    Predicate = r => r.Name.Contains("self")
+                });
             });
 
             app.UseSwagger()
@@ -131,13 +140,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
         public static IServiceCollection AddAppInsight(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddApplicationInsightsTelemetry(configuration);
-            var orchestratorType = configuration.GetValue<string>("OrchestratorType");
-
-            if (orchestratorType?.ToUpper() == "K8S")
-            {
-                // Enable K8s telemetry initializer
-                services.AddApplicationInsightsKubernetesEnricher();
-            }
+            services.AddApplicationInsightsKubernetesEnricher();
 
             return services;
         }

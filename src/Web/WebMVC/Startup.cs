@@ -1,9 +1,7 @@
 ﻿using Devspaces.Support;
 using HealthChecks.UI.Client;
-using Microsoft.ApplicationInsights.Extensibility;
-using Microsoft.ApplicationInsights.ServiceFabric;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -56,13 +54,6 @@ namespace Microsoft.eShopOnContainers.WebMVC
 
             //loggerFactory.AddAzureWebAppDiagnostics();
             //loggerFactory.AddApplicationInsights(app.ApplicationServices, LogLevel.Trace);
-
-            app.UseHealthChecks("/hc", new HealthCheckOptions()
-            {
-                Predicate = _ => true,
-                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-            });
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -80,11 +71,6 @@ namespace Microsoft.eShopOnContainers.WebMVC
                 app.UsePathBase(pathBase);
             }
 
-            app.UseHealthChecks("/liveness", new HealthCheckOptions
-            {
-                Predicate = r => r.Name.Contains("self")
-            });
-
             app.UseSession();
             app.UseStaticFiles();
 
@@ -98,15 +84,20 @@ namespace Microsoft.eShopOnContainers.WebMVC
             WebContextSeed.Seed(app, env, loggerFactory);
 
             app.UseHttpsRedirection();
-            app.UseMvc(routes =>
+            app.UseRouting();
+            app.UseEndpoints(endpoints =>
             {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Catalog}/{action=Index}/{id?}");
-
-                routes.MapRoute(
-                    name: "defaultError",
-                    template: "{controller=Error}/{action=Error}");
+                endpoints.MapControllerRoute("default", "{controller=Catalog}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute("defaultError", "{controller=Error}/{action=Error}");
+                endpoints.MapHealthChecks("/liveness", new HealthCheckOptions
+                {
+                    Predicate = r => r.Name.Contains("self")
+                });
+                endpoints.MapHealthChecks("/hc", new HealthCheckOptions()
+                {
+                    Predicate = _ => true,
+                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                });
             });
         }
     }
@@ -125,13 +116,6 @@ namespace Microsoft.eShopOnContainers.WebMVC
                 services.AddApplicationInsightsKubernetesEnricher();
             }
 
-            if (orchestratorType?.ToUpper() == "SF")
-            {
-                // Enable SF telemetry initializer
-                services.AddSingleton<ITelemetryInitializer>((serviceProvider) =>
-                    new FabricTelemetryInitializer());
-            }
-
             return services;
         }
 
@@ -141,8 +125,8 @@ namespace Microsoft.eShopOnContainers.WebMVC
                 .AddCheck("self", () => HealthCheckResult.Healthy())
                 .AddUrlGroup(new Uri(configuration["PurchaseUrlHC"]), name: "purchaseapigw-check", tags: new string[] { "purchaseapigw" })
                 .AddUrlGroup(new Uri(configuration["MarketingUrlHC"]), name: "marketingapigw-check", tags: new string[] { "marketingapigw" })
-                .AddUrlGroup(new Uri(configuration["IdentityUrlHC"]), name: "identityapi-check", tags: new string[] { "identityapi" });                
-            
+                .AddUrlGroup(new Uri(configuration["IdentityUrlHC"]), name: "identityapi-check", tags: new string[] { "identityapi" });
+
             return services;
         }
 
@@ -152,7 +136,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
             services.Configure<AppSettings>(configuration);
 
             services.AddMvc()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
             services.AddSession();
 
@@ -245,10 +229,10 @@ namespace Microsoft.eShopOnContainers.WebMVC
             services.AddAuthentication(options =>
             {
                 options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
-            .AddCookie(setup=>setup.ExpireTimeSpan = TimeSpan.FromMinutes(sessionCookieLifetime))
-            .AddOpenIdConnect(options =>
+            .AddCookie(setup => setup.ExpireTimeSpan = TimeSpan.FromMinutes(sessionCookieLifetime))
+            .AddJwtBearer(options =>
             {
                 options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.Authority = identityUrl.ToString();
@@ -266,7 +250,34 @@ namespace Microsoft.eShopOnContainers.WebMVC
                 options.Scope.Add("marketing");
                 options.Scope.Add("locations");
                 options.Scope.Add("webshoppingagg");
-                options.Scope.Add("orders.signalrhub");       
+                options.Scope.Add("orders.signalrhub");
+
+                /*options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.Authority = identityUrl.ToString();
+                options.SignedOutRedirectUri = callBackUrl.ToString();
+                options.ClientId = useLoadTest ? "mvctest" : "mvc";
+                options.ClientSecret = "secret";
+
+                if (useLoadTest)
+                {
+                    options.Configuration.ResponseTypesSupported.Add("code id_token token");
+                }
+                else
+                {
+                    options.Configuration.ResponseTypesSupported.Add("code id_token");
+                }
+
+                options.SaveToken = true;
+                options.GetClaimsFromUserInfoEndpoint = true;
+                options.RequireHttpsMetadata = false;
+                options.Configuration.ScopesSupported.Add("openid");
+                options.Configuration.ScopesSupported.Add("profile");
+                options.Configuration.ScopesSupported.Add("orders");
+                options.Configuration.ScopesSupported.Add("basket");
+                options.Configuration.ScopesSupported.Add("marketing");
+                options.Configuration.ScopesSupported.Add("locations");
+                options.Configuration.ScopesSupported.Add("webshoppingagg");
+                options.Configuration.ScopesSupported.Add("orders.signalrhub");*/
             });
 
             return services;
