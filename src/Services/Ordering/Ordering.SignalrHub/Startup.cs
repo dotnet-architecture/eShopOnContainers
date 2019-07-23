@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Azure.ServiceBus;
@@ -147,9 +148,9 @@ namespace Ordering.SignalrHub
 
             app.UseAuthentication();
 
-            app.UseSignalR(routes =>
+            app.UseEndpoints(endpoints =>
             {
-                routes.MapHub<NotificationsHub>("/notificationhub", options =>
+                endpoints.MapHub<NotificationsHub>("/notificationhub", options =>
                     options.Transports = Microsoft.AspNetCore.Http.Connections.HttpTransports.All);
             });
 

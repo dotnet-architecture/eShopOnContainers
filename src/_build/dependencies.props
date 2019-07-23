@@ -36,8 +36,6 @@
     <System_Reflection_TypeExtensions>4.5.1</System_Reflection_TypeExtensions>
     <System_ValueTuple>4.5.0</System_ValueTuple>
     <MediatR>5.1.0</MediatR>
-    <Microsoft_AspNetCore_SignalR>3.0.0-preview4-19123-01</Microsoft_AspNetCore_SignalR>
-    <Microsoft_AspNetCore_SignalR_Core>3.0.0-preview4-19123-01</Microsoft_AspNetCore_SignalR_Core>
     <Microsoft_AspNetCore_SignalR_Redis>3.0.0-alpha1-34847</Microsoft_AspNetCore_SignalR_Redis>
     <MediatR_Extensions_Microsoft_DependencyInjection>5.1.0</MediatR_Extensions_Microsoft_DependencyInjection>
     <Microsoft_ApplicationInsights_AspNetCore>2.2.1</Microsoft_ApplicationInsights_AspNetCore>
