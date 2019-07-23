@@ -12,5 +12,6 @@
     <PackageReference Include="Ocelot" Version="$(Ocelot)" />
     <PackageReference Include="Serilog.AspNetCore" Version="$(Serilog_AspNetCore)" />
     <PackageReference Include="Serilog.Sinks.Console" Version="$(Serilog_Sinks_Console)" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="$(Microsoft_AspNetCore_Authentication_JwtBearer)" />
   </ItemGroup>
 </Project>
