@@ -5,6 +5,8 @@
     <AssemblyName>Web.Shopping.HttpAggregator</AssemblyName>
     <RootNamespace>Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator</RootNamespace>
     <DockerComposeProjectPath>..\..\..\docker-compose.dcproj</DockerComposeProjectPath>
+    <GenerateErrorForMissingTargetingPacks>false</GenerateErrorForMissingTargetingPacks>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,6 +21,7 @@
     <PackageReference Include="Serilog.Sinks.Console" Version="$(Serilog_Sinks_Console)" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="$(Swashbuckle_AspNetCore)" />
     <PackageReference Include="Microsoft.Extensions.Http.Polly" Version="$(Microsoft_Extensions_Http_Polly)" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="$(Microsoft_AspNetCore_Authentication_JwtBearer)" />
   </ItemGroup>
 
   <ItemGroup>
