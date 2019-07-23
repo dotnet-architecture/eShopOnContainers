@@ -32,7 +32,14 @@
     <Autofac>4.9.2</Autofac>
     <Autofac_Extensions_DependencyInjection>4.2.1</Autofac_Extensions_DependencyInjection>
     <Dapper>1.50.7</Dapper>
+    <System_Reflection>4.3.0</System_Reflection>
+    <System_Reflection_TypeExtensions>4.5.1</System_Reflection_TypeExtensions>
+    <System_ValueTuple>4.5.0</System_ValueTuple>
     <MediatR>5.1.0</MediatR>
+    <Microsoft_AspNetCore_SignalR>3.0.0-preview4-19123-01</Microsoft_AspNetCore_SignalR>
+    <Microsoft_AspNetCore_SignalR_Core>3.0.0-preview4-19123-01</Microsoft_AspNetCore_SignalR_Core>
+    <Microsoft_AspNetCore_SignalR_Redis>3.0.0-alpha1-34847</Microsoft_AspNetCore_SignalR_Redis>
+    <MediatR_Extensions_Microsoft_DependencyInjection>5.1.0</MediatR_Extensions_Microsoft_DependencyInjection>
     <Microsoft_ApplicationInsights_AspNetCore>2.2.1</Microsoft_ApplicationInsights_AspNetCore>
     <Microsoft_ApplicationInsights_DependencyCollector>2.6.1</Microsoft_ApplicationInsights_DependencyCollector>
     <Microsoft_ApplicationInsights_Kubernetes>1.0.2</Microsoft_ApplicationInsights_Kubernetes>
@@ -43,15 +50,13 @@
     <Microsoft_AspNetCore_TestHost>3.0.0-preview6.19307.2</Microsoft_AspNetCore_TestHost>
     <Microsoft_Azure_ServiceBus>3.0.0</Microsoft_Azure_ServiceBus>
     <Microsoft_CSharp>4.5.0</Microsoft_CSharp>
-
     <Microsoft_AspNetCore_Hosting_Abstractions>3.0.0-preview4-19123-01</Microsoft_AspNetCore_Hosting_Abstractions>
     <System_Data_SqlClient>4.7.0-preview6.19303.8</System_Data_SqlClient>
-   
+    <FluentValidation_AspNetCore>7.5.0</FluentValidation_AspNetCore>
     <Microsoft_EntityFrameworkCore>3.0.0-preview6.19304.10</Microsoft_EntityFrameworkCore>
     <Microsoft_EntityFrameworkCore_Design>3.0.0-preview6.19304.10</Microsoft_EntityFrameworkCore_Design>
     <Microsoft_EntityFrameworkCore_Relational>3.0.0-preview6.19304.10</Microsoft_EntityFrameworkCore_Relational>
     <Microsoft_EntityFrameworkCore_SqlServer>3.0.0-preview6.19304.10</Microsoft_EntityFrameworkCore_SqlServer>
-   
     <Microsoft_Extensions_Configuration_AzureKeyVault>2.2.0</Microsoft_Extensions_Configuration_AzureKeyVault>
     <Microsoft_Extensions_DependencyInjection_Abstractions>2.2.0</Microsoft_Extensions_DependencyInjection_Abstractions>
     <Microsoft_Extensions_Diagnostics_HealthChecks>2.2.0</Microsoft_Extensions_Diagnostics_HealthChecks>

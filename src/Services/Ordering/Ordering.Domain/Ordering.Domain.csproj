@@ -6,8 +6,8 @@
 
   <ItemGroup>
     <PackageReference Include="MediatR" Version="$(MediatR)" />
-    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="5.1.0" />
-    <PackageReference Include="System.Reflection.TypeExtensions" Version="4.5.1" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="$(MediatR_Extensions_Microsoft_DependencyInjection)" />
+    <PackageReference Include="System.Reflection.TypeExtensions" Version="$(System_Reflection_TypeExtensions)" />
   </ItemGroup>
 
   <ItemGroup>
