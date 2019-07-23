@@ -15,7 +15,7 @@
     <BundlerMinifier_Core>2.9.406</BundlerMinifier_Core>
   </PropertyGroup>
 
- <PropertyGroup Label="Package Versions">
+  <PropertyGroup Label="Package Versions">
     <Grpc_AspNetCore_Server>0.1.22-pre1</Grpc_AspNetCore_Server>
     <Google_Protobuf>3.9.0-rc1</Google_Protobuf>
     <Grpc_Tools>1.22.0</Grpc_Tools>
@@ -32,24 +32,24 @@
     <Autofac>4.9.2</Autofac>
     <Autofac_Extensions_DependencyInjection>4.2.1</Autofac_Extensions_DependencyInjection>
     <Dapper>1.50.7</Dapper>
-   <Microsoft_AspNetCore_Razor_Design>3.0.0-alpha1-10670</Microsoft_AspNetCore_Razor_Design>
-   <Microsoft_VisualStudio_Azure_Containers_Tools_Targets>1.0.2105168</Microsoft_VisualStudio_Azure_Containers_Tools_Targets>
-   <Microsoft_VisualStudio_Web_CodeGeneration_Design>3.0.0-preview6-19319-03</Microsoft_VisualStudio_Web_CodeGeneration_Design>
-   <Microsoft_AspNetCore_Authentication_OpenIdConnect>3.0.0-preview6-19253-01</Microsoft_AspNetCore_Authentication_OpenIdConnect>
-   <System_Reflection>4.3.0</System_Reflection>
+    <System_Reflection>4.3.0</System_Reflection>
     <System_Reflection_TypeExtensions>4.5.1</System_Reflection_TypeExtensions>
     <System_ValueTuple>4.5.0</System_ValueTuple>
     <MediatR>5.1.0</MediatR>
     <BuildBundlerMinifier>2.6.375</BuildBundlerMinifier>
-    <Microsoft_AspNetCore_DataProtection_Redis>2.2.0-preview2-35157</Microsoft_AspNetCore_DataProtection_Redis>
-   <Microsoft_AspNet_WebApi_Client>5.2.7</Microsoft_AspNet_WebApi_Client>
+    <Microsoft_AspNet_WebApi_Client>5.2.7</Microsoft_AspNet_WebApi_Client>
     <Microsoft_Build_Utilities_Core>15.9.20</Microsoft_Build_Utilities_Core>
     <Microsoft_Web_LibraryManager_Build>1.0.172</Microsoft_Web_LibraryManager_Build>
-    <Microsoft_AspNetCore_SignalR_Redis>3.0.0-alpha1-34847</Microsoft_AspNetCore_SignalR_Redis>
+    <Microsoft_VisualStudio_Azure_Containers_Tools_Targets>1.0.2105168</Microsoft_VisualStudio_Azure_Containers_Tools_Targets>
+    <Microsoft_VisualStudio_Web_CodeGeneration_Design>3.0.0-preview6-19319-03</Microsoft_VisualStudio_Web_CodeGeneration_Design>
     <MediatR_Extensions_Microsoft_DependencyInjection>5.1.0</MediatR_Extensions_Microsoft_DependencyInjection>
     <Microsoft_ApplicationInsights_AspNetCore>2.2.1</Microsoft_ApplicationInsights_AspNetCore>
     <Microsoft_ApplicationInsights_DependencyCollector>2.6.1</Microsoft_ApplicationInsights_DependencyCollector>
     <Microsoft_ApplicationInsights_Kubernetes>1.0.2</Microsoft_ApplicationInsights_Kubernetes>
+    <Microsoft_AspNetCore_Razor_Design>3.0.0-alpha1-10670</Microsoft_AspNetCore_Razor_Design>
+    <Microsoft_AspNetCore_Authentication_OpenIdConnect>3.0.0-preview6-19253-01</Microsoft_AspNetCore_Authentication_OpenIdConnect>
+    <Microsoft_AspNetCore_DataProtection_Redis>2.2.0-preview2-35157</Microsoft_AspNetCore_DataProtection_Redis>
+    <Microsoft_AspNetCore_SignalR_Redis>3.0.0-alpha1-34847</Microsoft_AspNetCore_SignalR_Redis>
     <Microsoft_AspNetCore_Authentication_JwtBearer>3.0.0-preview6.19307.2</Microsoft_AspNetCore_Authentication_JwtBearer>
     <Microsoft_AspNetCore_Authentication_OpenIdConnect>3.0.0-preview6.19307.2</Microsoft_AspNetCore_Authentication_OpenIdConnect>
     <Microsoft_AspNetCore_Diagnostics_HealthChecks>2.2.0</Microsoft_AspNetCore_Diagnostics_HealthChecks>
@@ -57,11 +57,13 @@
     <Microsoft_AspNetCore_Http_Abstractions>2.2.0</Microsoft_AspNetCore_Http_Abstractions>
     <Microsoft_AspNetCore_Mvc_Testing>3.0.0-preview6.19307.2</Microsoft_AspNetCore_Mvc_Testing>
     <Microsoft_AspNetCore_TestHost>3.0.0-preview6.19307.2</Microsoft_AspNetCore_TestHost>
+    <Microsoft_AspNetCore_Identity_EntityFrameworkCore>3.0.0-preview6.19307.2</Microsoft_AspNetCore_Identity_EntityFrameworkCore>
+    <Microsoft_AspNetCore_Diagnostics_EntityFrameworkCore>3.0.0-preview6-19253-01</Microsoft_AspNetCore_Diagnostics_EntityFrameworkCore>
+    <Microsoft_AspNetCore_Hosting_Abstractions>3.0.0-preview4-19123-01</Microsoft_AspNetCore_Hosting_Abstractions>
+    <FluentValidation_AspNetCore>7.5.0</FluentValidation_AspNetCore>
     <Microsoft_Azure_ServiceBus>3.0.0</Microsoft_Azure_ServiceBus>
     <Microsoft_CSharp>4.5.0</Microsoft_CSharp>
-    <Microsoft_AspNetCore_Hosting_Abstractions>3.0.0-preview4-19123-01</Microsoft_AspNetCore_Hosting_Abstractions>
     <System_Data_SqlClient>4.7.0-preview6.19303.8</System_Data_SqlClient>
-    <FluentValidation_AspNetCore>7.5.0</FluentValidation_AspNetCore>
     <Microsoft_EntityFrameworkCore>3.0.0-preview6.19304.10</Microsoft_EntityFrameworkCore>
     <Microsoft_EntityFrameworkCore_Design>3.0.0-preview6.19304.10</Microsoft_EntityFrameworkCore_Design>
     <Microsoft_EntityFrameworkCore_Relational>3.0.0-preview6.19304.10</Microsoft_EntityFrameworkCore_Relational>
@@ -82,6 +84,8 @@
     <Newtonsoft_Json>12.0.2</Newtonsoft_Json>
     <Ocelot>12.0.1</Ocelot>
     <Polly>6.0.1</Polly>
+    <IdentityServer4_AspNetIdentity>3.0.0-preview3.4</IdentityServer4_AspNetIdentity>
+    <IdentityServer4_EntityFramework>3.0.0-preview3.4</IdentityServer4_EntityFramework>
     <RabbitMQ_Client>5.0.1</RabbitMQ_Client>
     <Serilog_AspNetCore>3.0.0-dev-00053</Serilog_AspNetCore>
     <Serilog_Enrichers_Environment>2.1.3 </Serilog_Enrichers_Environment>
@@ -94,7 +98,7 @@
     <System_IO_Compression_ZipFile>4.3.0</System_IO_Compression_ZipFile>
     <xunit>2.4.0</xunit>
     <xunit_runner_visualstudio>2.4.0</xunit_runner_visualstudio>
-  </PropertyGroup>
+</PropertyGroup>
 
   <PropertyGroup Label="Package information">
     <PackageLicenseUrl>https://github.com/dotnet-architecture/eShopOnContainers/blob/master/LICENSE</PackageLicenseUrl>

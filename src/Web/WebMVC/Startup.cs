@@ -234,29 +234,29 @@ namespace Microsoft.eShopOnContainers.WebMVC
             .AddCookie(setup => setup.ExpireTimeSpan = TimeSpan.FromMinutes(sessionCookieLifetime))
             .AddJwtBearer(options =>
             {
-                options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.Authority = identityUrl.ToString();
-                options.SignedOutRedirectUri = callBackUrl.ToString();
-                options.ClientId = useLoadTest ? "mvctest" : "mvc";
-                options.ClientSecret = "secret";
-                options.ResponseType = useLoadTest ? "code id_token token" : "code id_token";
-                options.SaveTokens = true;
-                options.GetClaimsFromUserInfoEndpoint = true;
-                options.RequireHttpsMetadata = false;
-                options.Scope.Add("openid");
-                options.Scope.Add("profile");
-                options.Scope.Add("orders");
-                options.Scope.Add("basket");
-                options.Scope.Add("marketing");
-                options.Scope.Add("locations");
-                options.Scope.Add("webshoppingagg");
-                options.Scope.Add("orders.signalrhub");
+                //options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                //options.Authority = identityUrl.ToString();
+                //options.SignedOutRedirectUri = callBackUrl.ToString();
+                //options.ClientId = useLoadTest ? "mvctest" : "mvc";
+                //options.ClientSecret = "secret";
+                //options.ResponseType = useLoadTest ? "code id_token token" : "code id_token";
+                //options.SaveTokens = true;
+                //options.GetClaimsFromUserInfoEndpoint = true;
+                //options.RequireHttpsMetadata = false;
+                //options.Scope.Add("openid");
+                //options.Scope.Add("profile");
+                //options.Scope.Add("orders");
+                //options.Scope.Add("basket");
+                //options.Scope.Add("marketing");
+                //options.Scope.Add("locations");
+                //options.Scope.Add("webshoppingagg");
+                //options.Scope.Add("orders.signalrhub");
 
-                /*options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                //options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.Authority = identityUrl.ToString();
-                options.SignedOutRedirectUri = callBackUrl.ToString();
-                options.ClientId = useLoadTest ? "mvctest" : "mvc";
-                options.ClientSecret = "secret";
+                options.ForwardSignOut = callBackUrl.ToString();
+                //options.ClientId = useLoadTest ? "mvctest" : "mvc";
+                //options.ClientSecret = "secret";
 
                 if (useLoadTest)
                 {
@@ -268,7 +268,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
                 }
 
                 options.SaveToken = true;
-                options.GetClaimsFromUserInfoEndpoint = true;
+                //options.GetClaimsFromUserInfoEndpoint = true;
                 options.RequireHttpsMetadata = false;
                 options.Configuration.ScopesSupported.Add("openid");
                 options.Configuration.ScopesSupported.Add("profile");
@@ -277,7 +277,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
                 options.Configuration.ScopesSupported.Add("marketing");
                 options.Configuration.ScopesSupported.Add("locations");
                 options.Configuration.ScopesSupported.Add("webshoppingagg");
-                options.Configuration.ScopesSupported.Add("orders.signalrhub");*/
+                options.Configuration.ScopesSupported.Add("orders.signalrhub");
             });
 
             return services;
