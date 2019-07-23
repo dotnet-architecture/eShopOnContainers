@@ -5,7 +5,7 @@
     <UserSecretsId>aspnet-Ordering.API-20161122013547</UserSecretsId>
     <AssetTargetFallback>$(AssetTargetFallback);portable-net45+win8+wp8+wpa81;</AssetTargetFallback>
     <DockerComposeProjectPath>..\..\..\..\docker-compose.dcproj</DockerComposeProjectPath>
-    <LangVersion>latest</LangVersion>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -33,14 +33,13 @@
     <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="$(AspNetCore_HealthChecks_SqlServer)" />
     <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="$(AspNetCore_HealthChecks_UI_Client)" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="$(Autofac_Extensions_DependencyInjection)" />
-    <PackageReference Include="Dapper" Version="1.50.7" />
-    <PackageReference Include="FluentValidation.AspNetCore" Version="7.5.0" />
+    <PackageReference Include="Dapper" Version="$(Dapper)" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="$(FluentValidation_AspNetCore)" />
     <PackageReference Include="MediatR" Version="$(MediatR)" />
-    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="5.1.0" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="$(MediatR_Extensions_Microsoft_DependencyInjection)" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="$(Microsoft_ApplicationInsights_AspNetCore)" />
     <PackageReference Include="Microsoft.ApplicationInsights.DependencyCollector" Version="$(Microsoft_ApplicationInsights_DependencyCollector)" />
     <PackageReference Include="Microsoft.ApplicationInsights.Kubernetes" Version="$(Microsoft_ApplicationInsights_Kubernetes)" />
-    <PackageReference Include="Microsoft.ApplicationInsights.ServiceFabric" Version="2.2.2" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.HealthChecks" Version="$(Microsoft_AspNetCore_Diagnostics_HealthChecks)" />
     <PackageReference Include="Microsoft.AspNetCore.HealthChecks" Version="$(Microsoft_AspNetCore_HealthChecks)" />
     <PackageReference Include="Microsoft.Extensions.Configuration.AzureKeyVault" Version="$(Microsoft_Extensions_Configuration_AzureKeyVault)" />
@@ -53,8 +52,9 @@
     <PackageReference Include="Serilog.Sinks.Seq" Version="$(Serilog_Sinks_Seq)" />
     <PackageReference Include="Serilog.Sinks.Http" Version="$(Serilog_Sinks_Http)" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="$(Swashbuckle_AspNetCore)" />
-    <PackageReference Include="System.Reflection" Version="4.3.0" />
-    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
+    <PackageReference Include="System.Reflection" Version="$(System_Reflection)" />
+    <PackageReference Include="System.ValueTuple" Version="$(System_ValueTuple)" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="$(Microsoft_AspNetCore_Authentication_JwtBearer)" />
   </ItemGroup>
   <ItemGroup>
     <None Update="Setup\*">
