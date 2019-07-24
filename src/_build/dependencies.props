@@ -46,6 +46,7 @@
     <Microsoft_ApplicationInsights_AspNetCore>2.2.1</Microsoft_ApplicationInsights_AspNetCore>
     <Microsoft_ApplicationInsights_DependencyCollector>2.6.1</Microsoft_ApplicationInsights_DependencyCollector>
     <Microsoft_ApplicationInsights_Kubernetes>1.0.2</Microsoft_ApplicationInsights_Kubernetes>
+    <Microsoft_AspNetCore_Mvc_Core>3.0.0-preview4-19123-01</Microsoft_AspNetCore_Mvc_Core>
     <Microsoft_AspNetCore_Razor_Design>3.0.0-alpha1-10670</Microsoft_AspNetCore_Razor_Design>
     <Microsoft_AspNetCore_Authentication_OpenIdConnect>3.0.0-preview6-19253-01</Microsoft_AspNetCore_Authentication_OpenIdConnect>
     <Microsoft_AspNetCore_DataProtection_Redis>2.2.0-preview2-35157</Microsoft_AspNetCore_DataProtection_Redis>
@@ -60,14 +61,17 @@
     <Microsoft_AspNetCore_Identity_EntityFrameworkCore>3.0.0-preview6.19307.2</Microsoft_AspNetCore_Identity_EntityFrameworkCore>
     <Microsoft_AspNetCore_Diagnostics_EntityFrameworkCore>3.0.0-preview6-19253-01</Microsoft_AspNetCore_Diagnostics_EntityFrameworkCore>
     <Microsoft_AspNetCore_Hosting_Abstractions>3.0.0-preview4-19123-01</Microsoft_AspNetCore_Hosting_Abstractions>
+    <Microsoft_AspNetCore_Mvc_ViewFeatures>3.0.0-preview4-19123-01</Microsoft_AspNetCore_Mvc_ViewFeatures>
     <FluentValidation_AspNetCore>7.5.0</FluentValidation_AspNetCore>
     <Microsoft_Azure_ServiceBus>3.0.0</Microsoft_Azure_ServiceBus>
     <Microsoft_CSharp>4.5.0</Microsoft_CSharp>
     <System_Data_SqlClient>4.7.0-preview6.19303.8</System_Data_SqlClient>
+    <Microsoft_NETCore_Platforms>3.0.0-preview6.19303.8</Microsoft_NETCore_Platforms>
     <Microsoft_EntityFrameworkCore>3.0.0-preview6.19304.10</Microsoft_EntityFrameworkCore>
     <Microsoft_EntityFrameworkCore_Design>3.0.0-preview6.19304.10</Microsoft_EntityFrameworkCore_Design>
     <Microsoft_EntityFrameworkCore_Relational>3.0.0-preview6.19304.10</Microsoft_EntityFrameworkCore_Relational>
     <Microsoft_EntityFrameworkCore_SqlServer>3.0.0-preview6.19304.10</Microsoft_EntityFrameworkCore_SqlServer>
+    <Microsoft_Extensions_Identity_Stores>3.0.0-preview7.19365.7</Microsoft_Extensions_Identity_Stores>
     <Microsoft_Extensions_Configuration_AzureKeyVault>2.2.0</Microsoft_Extensions_Configuration_AzureKeyVault>
     <Microsoft_Extensions_DependencyInjection_Abstractions>2.2.0</Microsoft_Extensions_DependencyInjection_Abstractions>
     <Microsoft_Extensions_Diagnostics_HealthChecks>2.2.0</Microsoft_Extensions_Diagnostics_HealthChecks>
