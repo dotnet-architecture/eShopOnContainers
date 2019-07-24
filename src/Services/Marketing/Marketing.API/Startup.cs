@@ -27,6 +27,7 @@
     using Microsoft.EntityFrameworkCore.Diagnostics;
     using Microsoft.eShopOnContainers.Services.Marketing.API.Infrastructure.Middlewares;
     using Microsoft.Extensions.Diagnostics.HealthChecks;
+    using Microsoft.OpenApi.Models;
     using RabbitMQ.Client;
     using System;
     using System.Collections.Generic;
@@ -127,18 +128,19 @@
             services.AddSwaggerGen(options =>
             {
                 options.DescribeAllEnumsAsStrings();
-                options.SwaggerDoc("v1", new OpenApi.Models.OpenApiInfo
+                options.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Title = "Marketing HTTP API",
                     Version = "v1",
                     Description = "The Marketing Service HTTP API"
                 });
 
-                options.AddSecurityDefinition("oauth2", new OpenApi.Models.OpenApiSecurityScheme
+                options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
                 {
-                    Flows = new OpenApi.Models.OpenApiOAuthFlows()
+                    Type = SecuritySchemeType.OAuth2,
+                    Flows = new OpenApiOAuthFlows()
                     {
-                        Implicit = new OpenApi.Models.OpenApiOAuthFlow()
+                        Implicit = new OpenApiOAuthFlow()
                         {
                             AuthorizationUrl = new Uri($"{Configuration.GetValue<string>("IdentityUrlExternal")}/connect/authorize"),
                             TokenUrl = new Uri($"{Configuration.GetValue<string>("IdentityUrlExternal")}/connect/token"),

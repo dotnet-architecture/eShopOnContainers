@@ -14,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using Polly;
 using Polly.Extensions.Http;
 using System;
@@ -142,18 +143,19 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator
             services.AddSwaggerGen(options =>
             {
                 options.DescribeAllEnumsAsStrings();
-                options.SwaggerDoc("v1", new OpenApi.Models.OpenApiInfo
+                options.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Title = "Shopping Aggregator for Web Clients",
                     Version = "v1",
                     Description = "Shopping Aggregator for Web Clients"
                 });
 
-                options.AddSecurityDefinition("oauth2", new OpenApi.Models.OpenApiSecurityScheme
+                options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
                 {
-                    Flows = new OpenApi.Models.OpenApiOAuthFlows()
+                    Type = SecuritySchemeType.OAuth2,
+                    Flows = new OpenApiOAuthFlows()
                     {
-                        Implicit = new OpenApi.Models.OpenApiOAuthFlow()
+                        Implicit = new OpenApiOAuthFlow()
                         {
                             AuthorizationUrl = new Uri($"{configuration.GetValue<string>("IdentityUrlExternal")}/connect/authorize"),
                             TokenUrl = new Uri($"{configuration.GetValue<string>("IdentityUrlExternal")}/connect/token"),
