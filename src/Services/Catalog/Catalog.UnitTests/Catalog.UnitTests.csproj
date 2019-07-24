@@ -7,8 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="$(Microsoft_AspNetCore_Mvc_ViewFeatures)" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="$(Microsoft_AspNetCore_Mvc_Core)" />
+    <PackageReference Include="Microsoft.NETCore.Platforms" Version="$(Microsoft_NETCore_Platforms)" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="$(Microsoft_NET_Test_Sdk)" />
     <PackageReference Include="xunit" Version="$(xunit)" />
     <PackageReference Include="xunit.runner.visualstudio" Version="$(xunit_runner_visualstudio)">
