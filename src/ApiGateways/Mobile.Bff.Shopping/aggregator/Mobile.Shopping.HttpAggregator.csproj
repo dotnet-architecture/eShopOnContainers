@@ -6,7 +6,7 @@
     <RootNamespace>Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator</RootNamespace>
     <DockerComposeProjectPath>..\..\..\docker-compose.dcproj</DockerComposeProjectPath>
     <GenerateErrorForMissingTargetingPacks>false</GenerateErrorForMissingTargetingPacks>
-    <LangVersion>8.0</LangVersion>
+    <LangVersion>$(LangVersion)</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>

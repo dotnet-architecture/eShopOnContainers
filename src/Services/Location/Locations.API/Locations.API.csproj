@@ -4,6 +4,7 @@
     <TargetFramework>$(NetCoreTargetVersion)</TargetFramework>
     <DockerComposeProjectPath>..\..\..\..\docker-compose.dcproj</DockerComposeProjectPath>
     <UserSecretsId>aspnet-Locations.API-20161122013619</UserSecretsId>
+    <GenerateErrorForMissingTargetingPacks>false</GenerateErrorForMissingTargetingPacks>
     <LangVersion>$(LangVersion)</LangVersion>
   </PropertyGroup>
   <ItemGroup>

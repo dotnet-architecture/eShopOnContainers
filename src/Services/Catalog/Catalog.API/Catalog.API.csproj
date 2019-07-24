@@ -8,7 +8,8 @@
     <PackageId>Catalog.API</PackageId>
     <UserSecretsId>aspnet-Catalog.API-20161122013618</UserSecretsId>
     <DockerComposeProjectPath>..\..\..\..\docker-compose.dcproj</DockerComposeProjectPath>
-    <LangVersion>8.0</LangVersion>
+    <GenerateErrorForMissingTargetingPacks>false</GenerateErrorForMissingTargetingPacks>
+    <LangVersion>$(LangVersion)</LangVersion>
   </PropertyGroup>
 
 

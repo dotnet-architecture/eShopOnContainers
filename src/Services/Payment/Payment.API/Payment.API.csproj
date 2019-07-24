@@ -4,6 +4,7 @@
     <TargetFramework>$(NetCoreTargetVersion)</TargetFramework>
     <DockerComposeProjectPath>..\..\..\..\docker-compose.dcproj</DockerComposeProjectPath>
     <AssetTargetFallback>$(AssetTargetFallback);portable-net45+win8+wp8+wpa81;</AssetTargetFallback>
+    <GenerateErrorForMissingTargetingPacks>false</GenerateErrorForMissingTargetingPacks>
     <LangVersion>$(LangVersion)</LangVersion>
   </PropertyGroup>
 

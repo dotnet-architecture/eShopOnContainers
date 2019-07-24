@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>$(NetCoreTargetVersion)</TargetFramework>
+    <LangVersion>$(LangVersion)</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>

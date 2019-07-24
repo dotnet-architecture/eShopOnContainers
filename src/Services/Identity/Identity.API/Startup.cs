@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.eShopOnContainers.Services.Identity.API.Certificates;
 using Microsoft.eShopOnContainers.Services.Identity.API.Data;
@@ -53,9 +52,6 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API
                 .AddDefaultTokenProviders();
 
             services.Configure<AppSettings>(Configuration);
-
-            services.AddMvc()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
             if (Configuration.GetValue<string>("IsClusterEnv") == bool.TrueString)
             {

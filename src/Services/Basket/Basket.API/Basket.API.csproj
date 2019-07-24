@@ -5,7 +5,7 @@
     <AssetTargetFallback>$(AssetTargetFallback);portable-net45+win8+wp8+wpa81;</AssetTargetFallback>
     <DockerComposeProjectPath>..\..\..\..\docker-compose.dcproj</DockerComposeProjectPath>
     <GenerateErrorForMissingTargetingPacks>false</GenerateErrorForMissingTargetingPacks>
-    <LangVersion>8.0</LangVersion>
+    <LangVersion>$(LangVersion)</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>

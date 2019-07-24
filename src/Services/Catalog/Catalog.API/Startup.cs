@@ -202,14 +202,15 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
 
         public static IServiceCollection AddCustomDbContext(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<CatalogContext>(options =>
+            services.AddEntityFrameworkSqlServer()
+                .AddDbContext<CatalogContext>(options =>
             {
                 options.UseSqlServer(configuration["ConnectionString"],
                                      sqlServerOptionsAction: sqlOptions =>
                                      {
                                          sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
                                          //Configuring Connection Resiliency: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency 
-                                         sqlOptions.EnableRetryOnFailure(maxRetryCount: 10, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
+                                         sqlOptions.EnableRetryOnFailure(maxRetryCount: 15, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
                                      });
 
                 // Changing default behavior when client evaluation occurs to throw. 
@@ -225,7 +226,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
                                      {
                                          sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
                                          //Configuring Connection Resiliency: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency 
-                                         sqlOptions.EnableRetryOnFailure(maxRetryCount: 10, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
+                                         sqlOptions.EnableRetryOnFailure(maxRetryCount: 15, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
                                      });
             });
 

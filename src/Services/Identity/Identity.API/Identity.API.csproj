@@ -4,6 +4,8 @@
     <TargetFramework>$(NetCoreTargetVersion)</TargetFramework>
     <UserSecretsId>aspnet-eShopOnContainers.Identity-90487118-103c-4ff0-b9da-e5e26f7ab0c5</UserSecretsId>
     <DockerComposeProjectPath>..\..\..\..\docker-compose.dcproj</DockerComposeProjectPath>
+    <GenerateErrorForMissingTargetingPacks>false</GenerateErrorForMissingTargetingPacks>
+    <LangVersion>$(LangVersion)</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>

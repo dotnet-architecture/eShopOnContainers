@@ -9,7 +9,7 @@
     <GeneratedItemPatterns>wwwroot/dist/**</GeneratedItemPatterns>
     <DefaultItemExcludes>$(DefaultItemExcludes);$(GeneratedItemPatterns)</DefaultItemExcludes>
     <TypeScriptToolsVersion>2.9</TypeScriptToolsVersion>
-    <LangVersion>8.0</LangVersion>
+    <LangVersion>$(LangVersion)</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>

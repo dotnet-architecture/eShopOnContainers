@@ -5,11 +5,12 @@
     <DockerComposeProjectPath>..\..\..\..\docker-compose.dcproj</DockerComposeProjectPath>
     <RootNamespace>Microsoft.eShopOnContainers.Services.Marketing.API</RootNamespace>
     <AssetTargetFallback>$(AssetTargetFallback);portable-net45+win8+wp8+wpa81;</AssetTargetFallback>
+    <GenerateErrorForMissingTargetingPacks>false</GenerateErrorForMissingTargetingPacks>
     <UserSecretsId>aspnet-Marketing.API-20161122013619</UserSecretsId>
     <AssemblyName />
     <ApplicationInsightsResourceId>/subscriptions/6c22bb55-0221-4ce4-9bf1-3c4a10a7294c/resourcegroups/eshop-log/providers/microsoft.insights/components/eshopappinsights</ApplicationInsightsResourceId>
     <ApplicationInsightsAnnotationResourceId>/subscriptions/6c22bb55-0221-4ce4-9bf1-3c4a10a7294c/resourcegroups/eshop-log/providers/microsoft.insights/components/eshopappinsights</ApplicationInsightsAnnotationResourceId>
-    <LangVersion>8.0</LangVersion>
+    <LangVersion>$(LangVersion)</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>

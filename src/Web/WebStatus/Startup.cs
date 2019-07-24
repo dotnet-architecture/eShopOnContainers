@@ -28,7 +28,6 @@ namespace WebStatus
                 .AddCheck("self", () => HealthCheckResult.Healthy());
 
             services.AddHealthChecksUI();
-
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
         }
@@ -65,7 +64,7 @@ namespace WebStatus
             app.UseStaticFiles();
 
             app.UseHttpsRedirection();
-
+            app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
