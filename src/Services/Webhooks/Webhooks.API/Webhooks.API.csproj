@@ -4,21 +4,24 @@
     <TargetFramework>$(NetCoreTargetVersion)</TargetFramework>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <AssetTargetFallback>$(AssetTargetFallback);portable-net45+win8+wp8+wpa81;</AssetTargetFallback>
+    <GenerateErrorForMissingTargetingPacks>false</GenerateErrorForMissingTargetingPacks>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.0.2105168" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="$(Microsoft_AspNetCore_Razor_Design)" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="$(Microsoft_VisualStudio_Azure_Containers_Tools_Targets)" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="$(Autofac_Extensions_DependencyInjection)" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="$(Microsoft_ApplicationInsights_AspNetCore)" />
     <PackageReference Include="Microsoft.ApplicationInsights.DependencyCollector" Version="$(Microsoft_ApplicationInsights_DependencyCollector)" />
     <PackageReference Include="Microsoft.ApplicationInsights.Kubernetes" Version="$(Microsoft_ApplicationInsights_Kubernetes)" />
-    <PackageReference Include="Microsoft.ApplicationInsights.ServiceFabric" Version="2.2.2" />
     <PackageReference Include="Microsoft.Extensions.Logging.AzureAppServices" Version="$(Microsoft_Extensions_Logging_AzureAppServices)" />
     <PackageReference Include="Microsoft.AspNetCore.HealthChecks" Version="$(Microsoft_AspNetCore_HealthChecks)" />
     <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="$(AspNetCore_HealthChecks_UI_Client)" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="$(Swashbuckle_AspNetCore)" />
     <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="$(AspNetCore_HealthChecks_SqlServer)" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="$(Microsoft_AspNetCore_Authentication_JwtBearer)" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\BuildingBlocks\Devspaces.Support\Devspaces.Support.csproj" />

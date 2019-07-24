@@ -5,12 +5,13 @@
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <UserSecretsId>36215d41-f31a-4aa6-9929-bd67d650e7b5</UserSecretsId>
+    <AssetTargetFallback>$(AssetTargetFallback);portable-net45+win8+wp8+wpa81;</AssetTargetFallback>
+    <GenerateErrorForMissingTargetingPacks>false</GenerateErrorForMissingTargetingPacks>
     <LangVersion>8.0</LangVersion>
   </PropertyGroup>
 
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="$(Microsoft_AspNetCore_Razor_Design)" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="$(Microsoft_VisualStudio_Azure_Containers_Tools_Targets)" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="$(Microsoft_VisualStudio_Web_CodeGeneration_Design)" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="$(Microsoft_AspNetCore_Authentication_OpenIdConnect)" />

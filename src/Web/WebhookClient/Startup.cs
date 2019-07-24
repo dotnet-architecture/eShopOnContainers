@@ -36,7 +36,7 @@ namespace WebhookClient
                 .AddCustomAuthentication(Configuration)
                 .AddTransient<IWebhooksClient, WebhooksClient>()
                 .AddSingleton<IHooksRepository, InMemoryHooksRepository>()
-                .AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+                .AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -69,7 +69,7 @@ namespace WebhookClient
                         var header = context.Request.Headers[HeaderNames.WebHookCheckHeader];
                         var value = header.FirstOrDefault();
                         var tokenToValidate = Configuration["Token"];
-                        if (!validateToken ||  value == tokenToValidate)
+                        if (!validateToken || value == tokenToValidate)
                         {
                             if (!string.IsNullOrWhiteSpace(tokenToValidate))
                             {
@@ -91,7 +91,11 @@ namespace WebhookClient
             });
             app.UseStaticFiles();
             app.UseSession();
-            app.UseMvcWithDefaultRoute();
+            app.UseRouting();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapDefaultControllerRoute();
+            });
         }
     }
 

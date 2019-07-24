@@ -89,15 +89,18 @@ namespace OcelotApiGw
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHealthChecks("/hc", new HealthCheckOptions()
+            app.UseRouting();
+            app.UseEndpoints(endpoints =>
             {
-                Predicate = _ => true,
-                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-            });
-
-            app.UseHealthChecks("/liveness", new HealthCheckOptions
-            {
-                Predicate = r => r.Name.Contains("self")
+                endpoints.MapHealthChecks("/hc", new HealthCheckOptions()
+                {
+                    Predicate = _ => true,
+                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                });
+                endpoints.MapHealthChecks("/liveness", new HealthCheckOptions
+                {
+                    Predicate = r => r.Name.Contains("self")
+                });
             });
 
             app.UseCors("CorsPolicy");

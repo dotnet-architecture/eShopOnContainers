@@ -61,17 +61,6 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator
                 app.UsePathBase(pathBase);
             }
 
-            app.UseHealthChecks("/hc", new HealthCheckOptions()
-            {
-                Predicate = _ => true,
-                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-            });
-
-            app.UseHealthChecks("/liveness", new HealthCheckOptions
-            {
-                Predicate = r => r.Name.Contains("self")
-            });
-
             app.UseCors("CorsPolicy");
 
             if (env.IsDevelopment())
@@ -86,7 +75,20 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator
 
             app.UseAuthentication();
             app.UseHttpsRedirection();
-            app.UseMvc();
+            app.UseRouting();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapHealthChecks("/hc", new HealthCheckOptions()
+                {
+                    Predicate = _ => true,
+                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                });
+                endpoints.MapHealthChecks("/liveness", new HealthCheckOptions
+                {
+                    Predicate = r => r.Name.Contains("self")
+                });
+                endpoints.MapDefaultControllerRoute();
+            });
 
             app.UseSwagger()
                 .UseSwaggerUI(c =>
