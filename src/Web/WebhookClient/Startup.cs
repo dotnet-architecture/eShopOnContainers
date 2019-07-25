@@ -26,8 +26,7 @@ namespace WebhookClient
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services
-                .AddSession(opt =>
+            services.AddSession(opt =>
                 {
                     opt.Cookie.Name = ".eShopWebhooks.Session";
                 })
@@ -36,7 +35,10 @@ namespace WebhookClient
                 .AddCustomAuthentication(Configuration)
                 .AddTransient<IWebhooksClient, WebhooksClient>()
                 .AddSingleton<IHooksRepository, InMemoryHooksRepository>()
-                .AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+                .AddMvc()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+
+            services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

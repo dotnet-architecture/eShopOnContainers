@@ -4,6 +4,7 @@
     <TargetFramework>$(NetCoreTargetVersion)</TargetFramework>
     <DockerComposeProjectPath>..\..\..\..\docker-compose.dcproj</DockerComposeProjectPath>
     <GenerateErrorForMissingTargetingPacks>false</GenerateErrorForMissingTargetingPacks>
+    <IsTransformWebConfigDisabled>true</IsTransformWebConfigDisabled>
     <LangVersion>$(LangVersion)</LangVersion>
   </PropertyGroup>
 

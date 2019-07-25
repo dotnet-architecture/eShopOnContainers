@@ -55,6 +55,8 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
                 .AddSwagger()
                 .AddCustomHealthCheck(Configuration);
 
+            services.AddControllers();
+
             var container = new ContainerBuilder();
             container.Populate(services);
 

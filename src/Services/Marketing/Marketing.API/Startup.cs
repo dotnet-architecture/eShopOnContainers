@@ -59,6 +59,7 @@
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
                 .AddControllersAsServices();  //Injecting Controllers themselves thru DIFor further info see: http://docs.autofac.org/en/latest/integration/aspnetcore.html#controllers-as-services
 
+            services.AddControllers();
             services.Configure<MarketingSettings>(Configuration);
 
             ConfigureAuthService(services);
@@ -200,6 +201,7 @@
             app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapDefaultControllerRoute();
                 endpoints.MapHealthChecks("/hc", new HealthCheckOptions()
                 {
                     Predicate = _ => true,
@@ -209,7 +211,6 @@
                 {
                     Predicate = r => r.Name.Contains("self")
                 });
-                endpoints.MapDefaultControllerRoute();
             });
 
             app.UseSwagger()

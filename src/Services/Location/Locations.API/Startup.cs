@@ -51,6 +51,8 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
                 .AddControllersAsServices();
 
+            services.AddControllers();
+
             ConfigureAuthService(services);
 
             services.Configure<LocationSettings>(Configuration);
@@ -174,6 +176,7 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
             app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapDefaultControllerRoute();
                 endpoints.MapHealthChecks("/hc", new HealthCheckOptions()
                 {
                     Predicate = _ => true,

@@ -48,6 +48,8 @@ namespace eShopConContainers.WebSPA
                 .AddUrlGroup(new Uri(Configuration["MarketingUrlHC"]), name: "marketingapigw-check", tags: new string[] { "marketingapigw" })
                 .AddUrlGroup(new Uri(Configuration["IdentityUrlHC"]), name: "identityapi-check", tags: new string[] { "identityapi" });
 
+            services.AddControllers();
+
             services.Configure<AppSettings>(Configuration);
 
             if (Configuration.GetValue<string>("IsClusterEnv") == bool.TrueString)
@@ -125,7 +127,6 @@ namespace eShopConContainers.WebSPA
             app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapDefaultControllerRoute();
                 endpoints.MapHealthChecks("/liveness", new HealthCheckOptions
                 {
                     Predicate = r => r.Name.Contains("self")

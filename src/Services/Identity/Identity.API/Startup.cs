@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.eShopOnContainers.Services.Identity.API.Certificates;
 using Microsoft.eShopOnContainers.Services.Identity.API.Data;
@@ -39,13 +40,13 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API
 
             // Add framework services.
             services.AddDbContext<ApplicationDbContext>(options =>
-             options.UseSqlServer(Configuration["ConnectionString"],
-                sqlServerOptionsAction: sqlOptions =>
-                {
-                    sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
-                    //Configuring Connection Resiliency: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency 
-                    sqlOptions.EnableRetryOnFailure(maxRetryCount: 15, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
-                }));
+                    options.UseSqlServer(Configuration["ConnectionString"],
+                    sqlServerOptionsAction: sqlOptions =>
+                    {
+                        sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
+                        //Configuring Connection Resiliency: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency 
+                        sqlOptions.EnableRetryOnFailure(maxRetryCount: 15, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
+                    }));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -94,16 +95,19 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API
                     });
             })
             .AddOperationalStore(options =>
-                {
-                    options.ConfigureDbContext = builder => builder.UseSqlServer(connectionString,
-                        sqlServerOptionsAction: sqlOptions =>
-                        {
-                            sqlOptions.MigrationsAssembly(migrationsAssembly);
-                            //Configuring Connection Resiliency: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency 
-                            sqlOptions.EnableRetryOnFailure(maxRetryCount: 15, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
-                        });
-                })
+            {
+                options.ConfigureDbContext = builder => builder.UseSqlServer(connectionString,
+                    sqlServerOptionsAction: sqlOptions =>
+                    {
+                        sqlOptions.MigrationsAssembly(migrationsAssembly);
+                        //Configuring Connection Resiliency: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency 
+                        sqlOptions.EnableRetryOnFailure(maxRetryCount: 15, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
+                    });
+            })
             .Services.AddTransient<IProfileService, ProfileService>();
+
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+            services.AddControllers();
 
             var container = new ContainerBuilder();
             container.Populate(services);
@@ -152,6 +156,8 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API
             app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapDefaultControllerRoute();
+                endpoints.MapControllers();
                 endpoints.MapHealthChecks("/hc", new HealthCheckOptions()
                 {
                     Predicate = _ => true,
@@ -161,7 +167,6 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API
                 {
                     Predicate = r => r.Name.Contains("self")
                 });
-                endpoints.MapDefaultControllerRoute();
             });
         }
 

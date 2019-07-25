@@ -50,6 +50,8 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator
                  .AddCustomAuthentication(Configuration)
                  .AddDevspaces()
                  .AddHttpServices();
+
+            services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -80,6 +82,7 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator
             app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapDefaultControllerRoute();
                 endpoints.MapHealthChecks("/hc", new HealthCheckOptions()
                 {
                     Predicate = _ => true,
@@ -89,7 +92,6 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator
                 {
                     Predicate = r => r.Name.Contains("self")
                 });
-                endpoints.MapDefaultControllerRoute();
             });
 
             app.UseSwagger().UseSwaggerUI(c =>

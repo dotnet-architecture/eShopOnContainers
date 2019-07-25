@@ -60,6 +60,8 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
                 .AddControllersAsServices();
 
+            services.AddControllers();
+
             ConfigureAuthService(services);
 
             services.AddCustomHealthCheck(Configuration);
@@ -200,6 +202,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapDefaultControllerRoute();
                 endpoints.MapHealthChecks("/hc", new HealthCheckOptions()
                 {
                     Predicate = _ => true,
@@ -209,7 +212,6 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
                 {
                     Predicate = r => r.Name.Contains("self")
                 });
-                endpoints.MapDefaultControllerRoute();
             });
 
             app.UseSwagger()

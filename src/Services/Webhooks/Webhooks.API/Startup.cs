@@ -62,6 +62,8 @@ namespace Webhooks.API
                 .AddTransient<IWebhooksRetriever, WebhooksRetriever>()
                 .AddTransient<IWebhooksSender, WebhooksSender>();
 
+            services.AddControllers();
+
             var container = new ContainerBuilder();
             container.Populate(services);
             return new AutofacServiceProvider(container.Build());
@@ -86,6 +88,7 @@ namespace Webhooks.API
             app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapDefaultControllerRoute();
                 endpoints.MapHealthChecks("/hc", new HealthCheckOptions()
                 {
                     Predicate = _ => true,
@@ -95,8 +98,6 @@ namespace Webhooks.API
                 {
                     Predicate = r => r.Name.Contains("self")
                 });
-
-                endpoints.MapDefaultControllerRoute();
             });
 
             app.UseSwagger()

@@ -5,6 +5,7 @@
     <UserSecretsId>aspnetcorespa-c23d27a4-eb88-4b18-9b77-2a93f3b15119</UserSecretsId>
     <DockerComposeProjectPath>..\..\..\docker-compose.dcproj</DockerComposeProjectPath>
     <TypeScriptCompileOnSaveEnabled>false</TypeScriptCompileOnSaveEnabled>
+    <IsTransformWebConfigDisabled>true</IsTransformWebConfigDisabled>
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
     <GeneratedItemPatterns>wwwroot/dist/**</GeneratedItemPatterns>
     <DefaultItemExcludes>$(DefaultItemExcludes);$(GeneratedItemPatterns)</DefaultItemExcludes>

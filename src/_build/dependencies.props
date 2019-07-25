@@ -48,29 +48,28 @@
     <Microsoft_ApplicationInsights_Kubernetes>1.0.2</Microsoft_ApplicationInsights_Kubernetes>
     <Microsoft_AspNetCore_Mvc_Core>3.0.0-preview4-19123-01</Microsoft_AspNetCore_Mvc_Core>
     <Microsoft_AspNetCore_Razor_Design>3.0.0-alpha1-10670</Microsoft_AspNetCore_Razor_Design>
-    <Microsoft_AspNetCore_Authentication_OpenIdConnect>3.0.0-preview6-19253-01</Microsoft_AspNetCore_Authentication_OpenIdConnect>
     <Microsoft_AspNetCore_DataProtection_Redis>2.2.0-preview2-35157</Microsoft_AspNetCore_DataProtection_Redis>
     <Microsoft_AspNetCore_SignalR_Redis>3.0.0-alpha1-34847</Microsoft_AspNetCore_SignalR_Redis>
-    <Microsoft_AspNetCore_Authentication_JwtBearer>3.0.0-preview6.19307.2</Microsoft_AspNetCore_Authentication_JwtBearer>
-    <Microsoft_AspNetCore_Authentication_OpenIdConnect>3.0.0-preview6.19307.2</Microsoft_AspNetCore_Authentication_OpenIdConnect>
+    <Microsoft_AspNetCore_Authentication_JwtBearer>3.0.0-preview7.19365.7</Microsoft_AspNetCore_Authentication_JwtBearer>
+    <Microsoft_AspNetCore_Authentication_OpenIdConnect>3.0.0-preview7.19365.7</Microsoft_AspNetCore_Authentication_OpenIdConnect>
     <Microsoft_AspNetCore_Diagnostics_HealthChecks>2.2.0</Microsoft_AspNetCore_Diagnostics_HealthChecks>
     <Microsoft_AspNetCore_HealthChecks>1.0.0</Microsoft_AspNetCore_HealthChecks>
     <Microsoft_AspNetCore_Http_Abstractions>2.2.0</Microsoft_AspNetCore_Http_Abstractions>
     <Microsoft_AspNetCore_Mvc_Testing>3.0.0-preview6.19307.2</Microsoft_AspNetCore_Mvc_Testing>
     <Microsoft_AspNetCore_TestHost>3.0.0-preview6.19307.2</Microsoft_AspNetCore_TestHost>
-    <Microsoft_AspNetCore_Identity_EntityFrameworkCore>3.0.0-preview6.19307.2</Microsoft_AspNetCore_Identity_EntityFrameworkCore>
-    <Microsoft_AspNetCore_Diagnostics_EntityFrameworkCore>3.0.0-preview6-19253-01</Microsoft_AspNetCore_Diagnostics_EntityFrameworkCore>
+    <Microsoft_AspNetCore_Identity_EntityFrameworkCore>3.0.0-preview7.19365.7</Microsoft_AspNetCore_Identity_EntityFrameworkCore>
+    <Microsoft_AspNetCore_Diagnostics_EntityFrameworkCore>3.0.0-preview7.19365.7</Microsoft_AspNetCore_Diagnostics_EntityFrameworkCore>
     <Microsoft_AspNetCore_Hosting_Abstractions>3.0.0-preview4-19123-01</Microsoft_AspNetCore_Hosting_Abstractions>
     <Microsoft_AspNetCore_Mvc_ViewFeatures>3.0.0-preview4-19123-01</Microsoft_AspNetCore_Mvc_ViewFeatures>
     <FluentValidation_AspNetCore>7.5.0</FluentValidation_AspNetCore>
     <Microsoft_Azure_ServiceBus>3.0.0</Microsoft_Azure_ServiceBus>
     <Microsoft_CSharp>4.5.0</Microsoft_CSharp>
-    <System_Data_SqlClient>4.7.0-preview6.19303.8</System_Data_SqlClient>
+    <System_Data_SqlClient>4.7.0-preview7.19362.9</System_Data_SqlClient>
     <Microsoft_NETCore_Platforms>3.0.0-preview6.19303.8</Microsoft_NETCore_Platforms>
-    <Microsoft_EntityFrameworkCore>3.0.0-preview6.19304.10</Microsoft_EntityFrameworkCore>
-    <Microsoft_EntityFrameworkCore_Design>3.0.0-preview6.19304.10</Microsoft_EntityFrameworkCore_Design>
-    <Microsoft_EntityFrameworkCore_Relational>3.0.0-preview6.19304.10</Microsoft_EntityFrameworkCore_Relational>
-    <Microsoft_EntityFrameworkCore_SqlServer>3.0.0-preview6.19304.10</Microsoft_EntityFrameworkCore_SqlServer>
+    <Microsoft_EntityFrameworkCore>3.0.0-preview7.19362.6</Microsoft_EntityFrameworkCore>
+    <Microsoft_EntityFrameworkCore_Design>3.0.0-preview7.19362.6</Microsoft_EntityFrameworkCore_Design>
+    <Microsoft_EntityFrameworkCore_Relational>3.0.0-preview7.19362.6</Microsoft_EntityFrameworkCore_Relational>
+    <Microsoft_EntityFrameworkCore_SqlServer>3.0.0-preview7.19362.6</Microsoft_EntityFrameworkCore_SqlServer>
     <Microsoft_Extensions_Identity_Stores>3.0.0-preview7.19365.7</Microsoft_Extensions_Identity_Stores>
     <Microsoft_Extensions_Configuration_AzureKeyVault>2.2.0</Microsoft_Extensions_Configuration_AzureKeyVault>
     <Microsoft_Extensions_DependencyInjection_Abstractions>2.2.0</Microsoft_Extensions_DependencyInjection_Abstractions>
@@ -78,7 +77,7 @@
     <Microsoft_Extensions_Http>2.2.0</Microsoft_Extensions_Http>
     <Microsoft_Extensions_Http_Polly>2.2.0</Microsoft_Extensions_Http_Polly>
     <Microsoft_Extensions_Logging>2.2.0</Microsoft_Extensions_Logging>
-    <Microsoft_Extensions_Logging_AzureAppServices>3.0.0-preview6.19304.6</Microsoft_Extensions_Logging_AzureAppServices>
+    <Microsoft_Extensions_Logging_AzureAppServices>3.0.0-preview7.19362.4</Microsoft_Extensions_Logging_AzureAppServices>
     <Microsoft_NET_Test_Sdk>16.0.1</Microsoft_NET_Test_Sdk>
     <mongocsharpdriver>2.5.0</mongocsharpdriver>
     <MongoDB_Bson>2.5.0</MongoDB_Bson>

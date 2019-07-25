@@ -56,6 +56,8 @@
                 .AddEventBus(Configuration)
                 .AddCustomAuthentication(Configuration);
 
+            services.AddControllers();
+
             //configure autofac
 
             var container = new ContainerBuilder();
@@ -87,6 +89,7 @@
             app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapDefaultControllerRoute();
                 endpoints.MapHealthChecks("/hc", new HealthCheckOptions()
                 {
                     Predicate = _ => true,
@@ -96,7 +99,6 @@
                 {
                     Predicate = r => r.Name.Contains("self")
                 });
-                endpoints.MapDefaultControllerRoute();
             });
 
             app.UseSwagger()

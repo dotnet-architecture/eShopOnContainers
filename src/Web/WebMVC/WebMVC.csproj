@@ -6,6 +6,7 @@
     <DockerComposeProjectPath>..\..\..\docker-compose.dcproj</DockerComposeProjectPath>
     <TypeScriptToolsVersion>3.0</TypeScriptToolsVersion>
     <GenerateErrorForMissingTargetingPacks>false</GenerateErrorForMissingTargetingPacks>
+    <IsTransformWebConfigDisabled>true</IsTransformWebConfigDisabled>
     <LangVersion>$(LangVersion)</LangVersion>
   </PropertyGroup>
 
@@ -45,13 +46,13 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="$(Microsoft_AspNetCore_Authentication_OpenIdConnect)" />
   </ItemGroup>
 
-  <Target Name="PrepublishScript" BeforeTargets="PrepareForPublish">
+  <!--<Target Name="PrepublishScript" BeforeTargets="PrepareForPublish">
     <Exec Command="dotnet bundle" Condition="'$(ASPNETCORE_ENVIRONMENT)'!='Development'" />
   </Target>
 
   <ItemGroup>
      <DotNetCliToolReference Include="BundlerMinifier.Core" Version="$(BundlerMinifier_Core)" />
-  </ItemGroup>
+  </ItemGroup>-->
 
   <ItemGroup>
     <None Include="ViewModels\CampaignItem.cs" />

@@ -6,6 +6,7 @@
     <RootNamespace>Microsoft.eShopOnContainers.Services.Marketing.API</RootNamespace>
     <AssetTargetFallback>$(AssetTargetFallback);portable-net45+win8+wp8+wpa81;</AssetTargetFallback>
     <GenerateErrorForMissingTargetingPacks>false</GenerateErrorForMissingTargetingPacks>
+    <IsTransformWebConfigDisabled>true</IsTransformWebConfigDisabled>
     <UserSecretsId>aspnet-Marketing.API-20161122013619</UserSecretsId>
     <AssemblyName />
     <ApplicationInsightsResourceId>/subscriptions/6c22bb55-0221-4ce4-9bf1-3c4a10a7294c/resourcegroups/eshop-log/providers/microsoft.insights/components/eshopappinsights</ApplicationInsightsResourceId>

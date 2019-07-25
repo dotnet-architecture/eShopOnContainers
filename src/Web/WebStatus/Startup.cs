@@ -23,6 +23,8 @@ namespace WebStatus
         {
             RegisterAppInsights(services);
 
+            services.AddControllers();
+
             services.AddOptions();
             services.AddHealthChecks()
                 .AddCheck("self", () => HealthCheckResult.Healthy());
@@ -67,7 +69,7 @@ namespace WebStatus
             app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapDefaultControllerRoute();
                 endpoints.MapHealthChecks("/liveness", new HealthCheckOptions
                 {
                     Predicate = r => r.Name.Contains("self")
