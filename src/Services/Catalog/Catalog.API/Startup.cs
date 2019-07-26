@@ -26,10 +26,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.OpenApi.Models;
 using RabbitMQ.Client;
 using System;
-using System.Collections.Generic;
 using System.Data.Common;
 using System.IO;
 using System.Reflection;
@@ -77,8 +75,15 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
                 app.UsePathBase(pathBase);
             }
 
+            app.UseSwagger()
+             .UseSwaggerUI(c =>
+             {
+                 c.SwaggerEndpoint($"{ (!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty) }/swagger/v1/swagger.json", "Catalog.API V1");
+             });
+
             app.UseCors("CorsPolicy");
             app.UseAuthorization();
+            app.UseAuthentication();
             app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
@@ -110,12 +115,6 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
                 });
             });
 
-            app.UseSwagger()
-              .UseSwaggerUI(c =>
-              {
-                  c.SwaggerEndpoint($"{ (!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty) }/swagger/v1/swagger.json", "Catalog.API V1");
-              });
-
             ConfigureEventBus(app);
         }
 
@@ -142,7 +141,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
             services.AddControllers(options =>
             {
                 options.Filters.Add(typeof(HttpGlobalExceptionFilter));
-            });
+            }).AddNewtonsoftJson();
 
             services.AddCors(options =>
             {
@@ -268,22 +267,6 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
                     Title = "eShopOnContainers - Catalog HTTP API",
                     Version = "v1",
                     Description = "The Catalog Microservice HTTP API. This is a Data-Driven/CRUD microservice sample"
-                });
-                options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
-                {
-                    Type = SecuritySchemeType.OAuth2,
-                    Flows = new OpenApiOAuthFlows()
-                    {
-                        Implicit = new OpenApiOAuthFlow()
-                        {
-                            AuthorizationUrl = new Uri($"{configuration.GetValue<string>("IdentityUrlExternal")}/connect/authorize"),
-                            TokenUrl = new Uri($"{configuration.GetValue<string>("IdentityUrlExternal")}/connect/token"),
-                            Scopes = new Dictionary<string, string>()
-                            {
-                                { "catalog", "Catalog API" }
-                            }
-                        }
-                    }
                 });
             });
 
