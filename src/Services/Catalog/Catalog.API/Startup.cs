@@ -55,8 +55,6 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
                 .AddSwagger()
                 .AddCustomHealthCheck(Configuration);
 
-            services.AddControllers();
-
             var container = new ContainerBuilder();
             container.Populate(services);
 
@@ -139,11 +137,13 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
         public static IServiceCollection AddCustomMVC(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddMvc(options =>
-                {
-                    options.Filters.Add(typeof(HttpGlobalExceptionFilter));
-                })
-                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
-                .AddControllersAsServices();
+            {
+                options.Filters.Add(typeof(HttpGlobalExceptionFilter));
+            })
+            .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
+            .AddControllersAsServices();
+
+            services.AddControllers();
 
             services.AddCors(options =>
             {

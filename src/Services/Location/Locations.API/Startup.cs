@@ -51,7 +51,11 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
                 .AddControllersAsServices();
 
-            services.AddControllers();
+            services.AddControllers(options =>
+            {
+                options.Filters.Add(typeof(HttpGlobalExceptionFilter));
+
+            }).AddNewtonsoftJson();
 
             ConfigureAuthService(services);
 

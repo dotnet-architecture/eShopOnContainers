@@ -49,17 +49,6 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
         {
             RegisterAppInsights(services);
 
-            // Add framework services.
-            //services.AddMvc(options =>
-            //    {
-            //        options.Filters.Add(typeof(HttpGlobalExceptionFilter));
-            //        options.Filters.Add(typeof(ValidateModelStateFilter));
-
-            //    })
-            //    .AddNewtonsoftJson()
-            //    .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
-            //    .AddControllersAsServices();
-
             services.AddControllers(options =>
             {
                 options.Filters.Add(typeof(HttpGlobalExceptionFilter));
@@ -204,10 +193,12 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
 
             ConfigureAuth(app);
 
+            app.UseAuthorization();
             app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();
+                endpoints.MapControllers();
                 endpoints.MapHealthChecks("/hc", new HealthCheckOptions()
                 {
                     Predicate = _ => true,

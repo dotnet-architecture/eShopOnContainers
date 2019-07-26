@@ -72,7 +72,7 @@
     <Microsoft_EntityFrameworkCore_SqlServer>3.0.0-preview7.19362.6</Microsoft_EntityFrameworkCore_SqlServer>
     <Microsoft_EntityFrameworkCore_Design>3.0.0-preview7.19362.6</Microsoft_EntityFrameworkCore_Design>
     <Microsoft_Extensions_Identity_Stores>3.0.0-preview7.19365.7</Microsoft_Extensions_Identity_Stores>
-    <Microsoft_Extensions_Configuration_AzureKeyVault>2.2.0</Microsoft_Extensions_Configuration_AzureKeyVault>
+    <Microsoft_Extensions_Configuration_AzureKeyVault>3.0.0-preview7.19362.4</Microsoft_Extensions_Configuration_AzureKeyVault>
     <Microsoft_Extensions_DependencyInjection_Abstractions>2.2.0</Microsoft_Extensions_DependencyInjection_Abstractions>
     <Microsoft_Extensions_Diagnostics_HealthChecks>2.2.0</Microsoft_Extensions_Diagnostics_HealthChecks>
     <Microsoft_Extensions_Http>2.2.0</Microsoft_Extensions_Http>

@@ -23,7 +23,6 @@
     using Marketing.API.IntegrationEvents.Handlers;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-    using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore.Diagnostics;
     using Microsoft.eShopOnContainers.Services.Marketing.API.Infrastructure.Middlewares;
     using Microsoft.Extensions.Diagnostics.HealthChecks;
@@ -50,15 +49,7 @@
             RegisterAppInsights(services);
 
             // Add framework services.
-            services
-                .AddCustomHealthCheck(Configuration)
-                .AddMvc(options =>
-                {
-                    options.Filters.Add(typeof(HttpGlobalExceptionFilter));
-                })
-                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
-                .AddControllersAsServices();  //Injecting Controllers themselves thru DIFor further info see: http://docs.autofac.org/en/latest/integration/aspnetcore.html#controllers-as-services
-
+            services.AddCustomHealthCheck(Configuration);
             services.AddControllers();
             services.Configure<MarketingSettings>(Configuration);
 
@@ -198,10 +189,12 @@
 
             ConfigureAuth(app);
 
+            app.UseAuthorization();
             app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();
+                endpoints.MapControllers();
                 endpoints.MapHealthChecks("/hc", new HealthCheckOptions()
                 {
                     Predicate = _ => true,
