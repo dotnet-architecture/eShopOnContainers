@@ -26,8 +26,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.OpenApi.Models;
 using RabbitMQ.Client;
 using System;
+using System.Collections.Generic;
 using System.Data.Common;
 using System.IO;
 using System.Reflection;
@@ -52,7 +54,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
                 .AddCustomOptions(Configuration)
                 .AddIntegrationServices(Configuration)
                 .AddEventBus(Configuration)
-                .AddSwagger()
+                .AddSwagger(Configuration)
                 .AddCustomHealthCheck(Configuration);
 
             var container = new ContainerBuilder();
@@ -76,11 +78,12 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
             }
 
             app.UseCors("CorsPolicy");
-
+            app.UseAuthorization();
             app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();
+                endpoints.MapControllers();
                 endpoints.MapGet("/_proto/", async ctx =>
                 {
                     ctx.Response.ContentType = "text/plain";
@@ -136,14 +139,10 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
 
         public static IServiceCollection AddCustomMVC(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddMvc(options =>
+            services.AddControllers(options =>
             {
                 options.Filters.Add(typeof(HttpGlobalExceptionFilter));
-            })
-            .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
-            .AddControllersAsServices();
-
-            services.AddControllers();
+            });
 
             services.AddCors(options =>
             {
@@ -259,7 +258,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
             return services;
         }
 
-        public static IServiceCollection AddSwagger(this IServiceCollection services)
+        public static IServiceCollection AddSwagger(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddSwaggerGen(options =>
             {
@@ -269,6 +268,22 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
                     Title = "eShopOnContainers - Catalog HTTP API",
                     Version = "v1",
                     Description = "The Catalog Microservice HTTP API. This is a Data-Driven/CRUD microservice sample"
+                });
+                options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+                {
+                    Type = SecuritySchemeType.OAuth2,
+                    Flows = new OpenApiOAuthFlows()
+                    {
+                        Implicit = new OpenApiOAuthFlow()
+                        {
+                            AuthorizationUrl = new Uri($"{configuration.GetValue<string>("IdentityUrlExternal")}/connect/authorize"),
+                            TokenUrl = new Uri($"{configuration.GetValue<string>("IdentityUrlExternal")}/connect/token"),
+                            Scopes = new Dictionary<string, string>()
+                            {
+                                { "catalog", "Catalog API" }
+                            }
+                        }
+                    }
                 });
             });
 

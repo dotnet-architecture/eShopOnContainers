@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.ServiceBus;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -47,7 +46,7 @@ namespace Webhooks.API
         {
             services
                 .AddAppInsight(Configuration)
-                .AddCustomMVC(Configuration)
+                .AddCustomRouting(Configuration)
                 .AddCustomDbContext(Configuration)
                 .AddSwagger(Configuration)
                 .AddCustomHealthCheck(Configuration)
@@ -61,8 +60,6 @@ namespace Webhooks.API
                 .AddTransient<IGrantUrlTesterService, GrantUrlTesterService>()
                 .AddTransient<IWebhooksRetriever, WebhooksRetriever>()
                 .AddTransient<IWebhooksSender, WebhooksSender>();
-
-            services.AddControllers();
 
             var container = new ContainerBuilder();
             container.Populate(services);
@@ -85,10 +82,12 @@ namespace Webhooks.API
 
             ConfigureAuth(app);
 
+            app.UseAuthorization();
             app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();
+                endpoints.MapControllers();
                 endpoints.MapHealthChecks("/hc", new HealthCheckOptions()
                 {
                     Predicate = _ => true,
@@ -142,14 +141,12 @@ namespace Webhooks.API
             return services;
         }
 
-        public static IServiceCollection AddCustomMVC(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddCustomRouting(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddMvc(options =>
+            services.AddControllers(options =>
             {
                 options.Filters.Add(typeof(HttpGlobalExceptionFilter));
-            })
-                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
-                .AddControllersAsServices();
+            });
 
             services.AddCors(options =>
             {
@@ -209,7 +206,7 @@ namespace Webhooks.API
                             TokenUrl = new Uri($"{configuration.GetValue<string>("IdentityUrlExternal")}/connect/token"),
                             Scopes = new Dictionary<string, string>()
                             {
-                                { "marketing", "Marketing API" }
+                                {  "webhooks", "Webhooks API" }
                             }
                         }
                     }

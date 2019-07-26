@@ -55,9 +55,6 @@
                 .AddCustomConfiguration(Configuration)
                 .AddEventBus(Configuration)
                 .AddCustomAuthentication(Configuration);
-
-            services.AddControllers();
-
             //configure autofac
 
             var container = new ContainerBuilder();
@@ -86,10 +83,12 @@
 
             ConfigureAuth(app);
 
+            app.UseAuthorization();
             app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();
+                endpoints.MapControllers();
                 endpoints.MapHealthChecks("/hc", new HealthCheckOptions()
                 {
                     Predicate = _ => true,
@@ -149,13 +148,17 @@
         public static IServiceCollection AddCustomMvc(this IServiceCollection services)
         {
             // Add framework services.
-            services.AddMvc(options =>
-                {
-                    options.Filters.Add(typeof(HttpGlobalExceptionFilter));
-                })
-                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
-                .AddControllersAsServices();  //Injecting Controllers themselves thru DI
-                                              //For further info see: http://docs.autofac.org/en/latest/integration/aspnetcore.html#controllers-as-services
+            services.AddControllers(options =>
+            {
+                options.Filters.Add(typeof(HttpGlobalExceptionFilter));
+            });
+            //services.AddMvc(options =>
+            //    {
+            //        options.Filters.Add(typeof(HttpGlobalExceptionFilter));
+            //    })
+            //    .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
+            //    .AddControllersAsServices();  //Injecting Controllers themselves thru DI
+            //                                  //For further info see: http://docs.autofac.org/en/latest/integration/aspnetcore.html#controllers-as-services
 
             services.AddCors(options =>
             {
