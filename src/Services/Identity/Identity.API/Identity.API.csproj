@@ -27,6 +27,10 @@
     <PackageReference Include="Microsoft.AspNetCore.DataProtection.Redis" Version="$(Microsoft_AspNetCore_DataProtection_Redis)" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.HealthChecks" Version="$(Microsoft_AspNetCore_Diagnostics_HealthChecks)" />
     <PackageReference Include="Microsoft.AspNetCore.HealthChecks" Version="$(Microsoft_AspNetCore_HealthChecks)" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="$(Microsoft_EntityFrameworkCore_Design)">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Configuration.AzureKeyVault" Version="$(Microsoft_Extensions_Configuration_AzureKeyVault)" />
     <PackageReference Include="Microsoft.Extensions.Logging.AzureAppServices" Version="$(Microsoft_Extensions_Logging_AzureAppServices)" />
     <PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="$(Microsoft_Web_LibraryManager_Build)" />
