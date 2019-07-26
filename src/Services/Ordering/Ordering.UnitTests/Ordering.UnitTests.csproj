@@ -2,12 +2,15 @@
 
   <PropertyGroup>
     <TargetFramework>$(NetCoreTargetVersion)</TargetFramework>
-
+    <GenerateErrorForMissingTargetingPacks>false</GenerateErrorForMissingTargetingPacks>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="$(Microsoft_NET_Test_Sdk)" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="$(Microsoft_AspNetCore_Mvc_ViewFeatures)" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="$(Microsoft_AspNetCore_Mvc_Core)" />
+    <PackageReference Include="Microsoft.NETCore.Platforms" Version="$(Microsoft_NETCore_Platforms)" />
     <PackageReference Include="xunit" Version="$(xunit)" />
     <PackageReference Include="xunit.runner.visualstudio" Version="$(xunit_runner_visualstudio)">
       <PrivateAssets>all</PrivateAssets>

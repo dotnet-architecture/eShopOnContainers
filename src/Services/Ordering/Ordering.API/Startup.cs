@@ -246,11 +246,10 @@
                     Version = "v1",
                     Description = "The Ordering Service HTTP API"
                 });
-
                 options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
                 {
                     Type = SecuritySchemeType.OAuth2,
-                    Flows = new OpenApiOAuthFlows()
+                    Flows = new OpenApi.Models.OpenApiOAuthFlows()
                     {
                         Implicit = new OpenApiOAuthFlow()
                         {

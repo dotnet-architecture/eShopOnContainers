@@ -46,6 +46,7 @@
     <PackageReference Include="Microsoft.AspNetCore.HealthChecks" Version="$(Microsoft_AspNetCore_HealthChecks)" />
     <PackageReference Include="Microsoft.Extensions.Configuration.AzureKeyVault" Version="$(Microsoft_Extensions_Configuration_AzureKeyVault)" />
     <PackageReference Include="Microsoft.Extensions.Logging.AzureAppServices" Version="$(Microsoft_Extensions_Logging_AzureAppServices)" />
+    <PackageReference Include="Microsoft.NETCore.Platforms" Version="$(Microsoft_NETCore_Platforms)" />
     <PackageReference Include="Polly" Version="$(Polly)" />
     <PackageReference Include="Serilog.AspNetCore" Version="$(Serilog_AspNetCore)" />
     <PackageReference Include="Serilog.Enrichers.Environment" Version="$(Serilog_Enrichers_Environment)" />

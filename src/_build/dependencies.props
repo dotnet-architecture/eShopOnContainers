@@ -65,12 +65,12 @@
     <Microsoft_Azure_ServiceBus>3.0.0</Microsoft_Azure_ServiceBus>
     <Microsoft_CSharp>4.5.0</Microsoft_CSharp>
     <System_Data_SqlClient>4.7.0-preview7.19362.9</System_Data_SqlClient>
-    <Microsoft_NETCore_Platforms>3.0.0-preview6.19303.8</Microsoft_NETCore_Platforms>
     <Microsoft_EntityFrameworkCore>3.0.0-preview7.19362.6</Microsoft_EntityFrameworkCore>
     <Microsoft_EntityFrameworkCore_Design>3.0.0-preview7.19362.6</Microsoft_EntityFrameworkCore_Design>
     <Microsoft_EntityFrameworkCore_Relational>3.0.0-preview7.19362.6</Microsoft_EntityFrameworkCore_Relational>
     <Microsoft_EntityFrameworkCore_SqlServer>3.0.0-preview7.19362.6</Microsoft_EntityFrameworkCore_SqlServer>
     <Microsoft_EntityFrameworkCore_Design>3.0.0-preview7.19362.6</Microsoft_EntityFrameworkCore_Design>
+    <Microsoft_NETCore_Platforms>3.0.0-preview7.19362.9</Microsoft_NETCore_Platforms>
     <Microsoft_Extensions_Identity_Stores>3.0.0-preview7.19365.7</Microsoft_Extensions_Identity_Stores>
     <Microsoft_Extensions_Configuration_AzureKeyVault>3.0.0-preview7.19362.4</Microsoft_Extensions_Configuration_AzureKeyVault>
     <Microsoft_Extensions_DependencyInjection_Abstractions>2.2.0</Microsoft_Extensions_DependencyInjection_Abstractions>
