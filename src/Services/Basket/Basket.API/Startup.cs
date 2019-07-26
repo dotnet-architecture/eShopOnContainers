@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.ServiceBus;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
@@ -51,16 +50,22 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             RegisterAppInsights(services);
 
             // Add framework services.
-            services.AddMvc(options =>
-                {
-                    options.Filters.Add(typeof(HttpGlobalExceptionFilter));
-                    options.Filters.Add(typeof(ValidateModelStateFilter));
+            //services.AddMvc(options =>
+            //    {
+            //        options.Filters.Add(typeof(HttpGlobalExceptionFilter));
+            //        options.Filters.Add(typeof(ValidateModelStateFilter));
 
-                })
-                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
-                .AddControllersAsServices();
+            //    })
+            //    .AddNewtonsoftJson()
+            //    .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
+            //    .AddControllersAsServices();
 
-            services.AddControllers();
+            services.AddControllers(options =>
+            {
+                options.Filters.Add(typeof(HttpGlobalExceptionFilter));
+                options.Filters.Add(typeof(ValidateModelStateFilter));
+
+            }).AddNewtonsoftJson();
 
             ConfigureAuthService(services);
 
