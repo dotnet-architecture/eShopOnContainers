@@ -26,6 +26,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.OpenApi.Models;
 using RabbitMQ.Client;
 using System;
 using System.Data.Common;
@@ -82,8 +83,6 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
              });
 
             app.UseCors("CorsPolicy");
-            app.UseAuthorization();
-            app.UseAuthentication();
             app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
@@ -262,7 +261,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
             services.AddSwaggerGen(options =>
             {
                 options.DescribeAllEnumsAsStrings();
-                options.SwaggerDoc("v1", new OpenApi.Models.OpenApiInfo
+                options.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Title = "eShopOnContainers - Catalog HTTP API",
                     Version = "v1",

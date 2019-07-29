@@ -121,7 +121,7 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator
                 options.DescribeAllEnumsAsStrings();
                 options.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Title = "Shopping Aggregator for Mobile Clients",
+                    Title = "eShopOnContainers - Shopping Aggregator for Mobile Clients",
                     Version = "v1",
                     Description = "Shopping Aggregator for Mobile Clients"
                 });

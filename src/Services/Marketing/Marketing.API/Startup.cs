@@ -50,7 +50,7 @@
 
             // Add framework services.
             services.AddCustomHealthCheck(Configuration);
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson();
             services.Configure<MarketingSettings>(Configuration);
 
             ConfigureAuthService(services);
@@ -122,7 +122,7 @@
                 options.DescribeAllEnumsAsStrings();
                 options.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Title = "Marketing HTTP API",
+                    Title = "eShopOnContainers - Marketing HTTP API",
                     Version = "v1",
                     Description = "The Marketing Service HTTP API"
                 });
@@ -189,7 +189,6 @@
 
             ConfigureAuth(app);
 
-            app.UseAuthorization();
             app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
@@ -207,11 +206,11 @@
             });
 
             app.UseSwagger()
-               .UseSwaggerUI(c =>
+               .UseSwaggerUI(setup =>
                {
-                   c.SwaggerEndpoint($"{ (!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty) }/swagger/v1/swagger.json", "Marketing.API V1");
-                   c.OAuthClientId("marketingswaggerui");
-                   c.OAuthAppName("Marketing Swagger UI");
+                   setup.SwaggerEndpoint($"{ (!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty) }/swagger/v1/swagger.json", "Marketing.API V1");
+                   setup.OAuthClientId("marketingswaggerui");
+                   setup.OAuthAppName("Marketing Swagger UI");
                });
 
             ConfigureEventBus(app);
@@ -234,11 +233,11 @@
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 
             }).AddJwtBearer(options =>
-                {
-                    options.Authority = Configuration.GetValue<string>("IdentityUrl");
-                    options.Audience = "marketing";
-                    options.RequireHttpsMetadata = false;
-                });
+            {
+                options.Authority = Configuration.GetValue<string>("IdentityUrl");
+                options.Audience = "marketing";
+                options.RequireHttpsMetadata = false;
+            });
         }
 
         private void RegisterEventBus(IServiceCollection services)
@@ -295,6 +294,7 @@
             }
 
             app.UseAuthentication();
+            app.UseAuthorization();
         }
     }
 

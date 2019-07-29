@@ -82,7 +82,6 @@ namespace Webhooks.API
 
             ConfigureAuth(app);
 
-            app.UseAuthorization();
             app.UseRouting();
             app.UseEndpoints(endpoints =>
             {

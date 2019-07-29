@@ -169,7 +169,6 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
 
             ConfigureAuth(app);
 
-            app.UseAuthorization();
             app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
@@ -230,6 +229,7 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
             }
 
             app.UseAuthentication();
+            app.UseAuthorization();
         }
 
         private void RegisterEventBus(IServiceCollection services)

@@ -83,7 +83,6 @@
 
             ConfigureAuth(app);
 
-            app.UseAuthorization();
             app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
@@ -132,6 +131,7 @@
             }
 
             app.UseAuthentication();
+            app.UseAuthorization();
         }
     }
 
@@ -242,14 +242,14 @@
                 options.DescribeAllEnumsAsStrings();
                 options.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Title = "Ordering HTTP API",
+                    Title = "eShopOnContainers - Ordering HTTP API",
                     Version = "v1",
                     Description = "The Ordering Service HTTP API"
                 });
                 options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
                 {
                     Type = SecuritySchemeType.OAuth2,
-                    Flows = new OpenApi.Models.OpenApiOAuthFlows()
+                    Flows = new OpenApiOAuthFlows()
                     {
                         Implicit = new OpenApiOAuthFlow()
                         {

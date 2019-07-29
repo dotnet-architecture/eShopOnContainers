@@ -43,7 +43,6 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
 
         public IConfiguration Configuration { get; }
 
-
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
@@ -130,7 +129,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
                 options.DescribeAllEnumsAsStrings();
                 options.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Title = "Basket HTTP API",
+                    Title = "eShopOnContainers - Basket HTTP API",
                     Version = "v1",
                     Description = "The Basket Service HTTP API"
                 });
@@ -151,7 +150,6 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
                         }
                     }
                 });
-
             });
 
             services.AddCors(options =>
@@ -175,7 +173,6 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             return new AutofacServiceProvider(container.Build());
         }
 
-
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
@@ -188,12 +185,19 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
                 app.UsePathBase(pathBase);
             }
 
-            app.UseStaticFiles();
-            app.UseCors("CorsPolicy");
-
             ConfigureAuth(app);
 
-            app.UseAuthorization();
+            app.UseStaticFiles();
+
+            app.UseSwagger()
+               .UseSwaggerUI(setup =>
+               {
+                   setup.SwaggerEndpoint($"{ (!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty) }/swagger/v1/swagger.json", "Basket.API V1");
+                   setup.OAuthClientId("basketswaggerui");
+                   setup.OAuthAppName("Basket Swagger UI");
+               });
+
+            app.UseCors("CorsPolicy");
             app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
@@ -210,16 +214,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
                 });
             });
 
-            app.UseSwagger()
-               .UseSwaggerUI(c =>
-               {
-                   c.SwaggerEndpoint($"{ (!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty) }/swagger/v1/swagger.json", "Basket.API V1");
-                   c.OAuthClientId("basketswaggerui");
-                   c.OAuthAppName("Basket Swagger UI");
-               });
-
             ConfigureEventBus(app);
-
         }
 
         private void RegisterAppInsights(IServiceCollection services)
@@ -255,8 +250,8 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
                 app.UseMiddleware<ByPassAuthMiddleware>();
             }
 
-            app.UseAuthentication();
             app.UseAuthorization();
+            app.UseAuthentication();
         }
 
         private void RegisterEventBus(IServiceCollection services)
