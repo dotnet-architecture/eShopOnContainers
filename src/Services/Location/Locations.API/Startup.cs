@@ -154,7 +154,7 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
             //loggerFactory.AddAzureWebAppDiagnostics();
             //loggerFactory.AddApplicationInsights(app.ApplicationServices, LogLevel.Trace);
@@ -167,10 +167,9 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
 
             app.UseCors("CorsPolicy");
 
+            app.UseRouting();
             ConfigureAuth(app);
 
-            app.UseAuthorization();
-            app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();
@@ -230,6 +229,7 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
             }
 
             app.UseAuthentication();
+            app.UseAuthorization();
         }
 
         private void RegisterEventBus(IServiceCollection services)

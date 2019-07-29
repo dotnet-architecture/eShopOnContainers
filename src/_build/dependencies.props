@@ -56,7 +56,7 @@
     <Microsoft_AspNetCore_HealthChecks>1.0.0</Microsoft_AspNetCore_HealthChecks>
     <Microsoft_AspNetCore_Http_Abstractions>2.2.0</Microsoft_AspNetCore_Http_Abstractions>
     <Microsoft_AspNetCore_Mvc_Testing>3.0.0-preview6.19307.2</Microsoft_AspNetCore_Mvc_Testing>
-    <Microsoft_AspNetCore_TestHost>3.0.0-preview6.19307.2</Microsoft_AspNetCore_TestHost>
+    <Microsoft_AspNetCore_TestHost>3.0.0-preview7.19365.7</Microsoft_AspNetCore_TestHost>
     <Microsoft_AspNetCore_Identity_EntityFrameworkCore>3.0.0-preview7.19365.7</Microsoft_AspNetCore_Identity_EntityFrameworkCore>
     <Microsoft_AspNetCore_Diagnostics_EntityFrameworkCore>3.0.0-preview7.19365.7</Microsoft_AspNetCore_Diagnostics_EntityFrameworkCore>
     <Microsoft_AspNetCore_Hosting_Abstractions>3.0.0-preview4-19123-01</Microsoft_AspNetCore_Hosting_Abstractions>
@@ -80,10 +80,10 @@
     <Microsoft_Extensions_Logging>2.2.0</Microsoft_Extensions_Logging>
     <Microsoft_Extensions_Logging_AzureAppServices>3.0.0-preview7.19362.4</Microsoft_Extensions_Logging_AzureAppServices>
     <Microsoft_NET_Test_Sdk>16.0.1</Microsoft_NET_Test_Sdk>
-    <mongocsharpdriver>2.5.0</mongocsharpdriver>
-    <MongoDB_Bson>2.5.0</MongoDB_Bson>
-    <MongoDB_Driver>2.5.0</MongoDB_Driver>
-    <MongoDB_Driver_Core>2.5.0</MongoDB_Driver_Core>
+    <mongocsharpdriver>2.9.0-beta2</mongocsharpdriver>
+    <MongoDB_Bson>2.9.0-beta2</MongoDB_Bson>
+    <MongoDB_Driver>2.9.0-beta2</MongoDB_Driver>
+    <MongoDB_Driver_Core>2.9.0-beta2</MongoDB_Driver_Core>
     <Moq>4.10.1</Moq>
     <Newtonsoft_Json>12.0.2</Newtonsoft_Json>
     <Ocelot>12.0.1</Ocelot>
