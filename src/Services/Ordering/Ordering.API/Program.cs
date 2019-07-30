@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Ordering.API.Infrastructure.Tasks;
 using Serilog;
 using System;
 using System.IO;
@@ -62,13 +63,14 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API
             WebHost.CreateDefaultBuilder(args)
                 .CaptureStartupErrors(false)
                 .UseStartup<Startup>()
+                .ConfigureServices(service => service.AddHostedService<GracePeriodManagerService>())
                 .UseApplicationInsights()
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseConfiguration(configuration)
                 .UseSerilog()
                 .Build();
 
-         private static Serilog.ILogger CreateSerilogLogger(IConfiguration configuration)
+        private static Serilog.ILogger CreateSerilogLogger(IConfiguration configuration)
         {
             var seqServerUrl = configuration["Serilog:SeqServerUrl"];
             var logstashUrl = configuration["Serilog:LogstashgUrl"];
