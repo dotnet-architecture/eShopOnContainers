@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using HealthChecks.UI.Client;
+using Locations.API.Controllers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -37,17 +38,18 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
 
         public IConfiguration Configuration { get; }
 
-        public IServiceProvider ConfigureServices(IServiceCollection services)
+        public virtual IServiceProvider ConfigureServices(IServiceCollection services)
         {
             RegisterAppInsights(services);
 
             services.AddCustomHealthCheck(Configuration);
 
             services.AddControllers(options =>
-            {
-                options.Filters.Add(typeof(HttpGlobalExceptionFilter));
-
-            }).AddNewtonsoftJson();
+                {
+                    options.Filters.Add(typeof(HttpGlobalExceptionFilter));
+                })
+                .AddApplicationPart(typeof(LocationsController).Assembly)
+                .AddNewtonsoftJson();
 
             ConfigureAuthService(services);
 
