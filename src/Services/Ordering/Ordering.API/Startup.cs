@@ -22,6 +22,7 @@
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus;
     using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF;
     using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF.Services;
+    using Microsoft.eShopOnContainers.Services.Ordering.API.Controllers;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Diagnostics.HealthChecks;
@@ -44,7 +45,7 @@
 
         public IConfiguration Configuration { get; }
 
-        public IServiceProvider ConfigureServices(IServiceCollection services)
+        public virtual IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddApplicationInsights(Configuration)
                 .AddCustomMvc()
@@ -81,9 +82,9 @@
 
             app.UseCors("CorsPolicy");
 
+            app.UseRouting();
             ConfigureAuth(app);
 
-            app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();
@@ -149,16 +150,14 @@
         {
             // Add framework services.
             services.AddControllers(options =>
-            {
-                options.Filters.Add(typeof(HttpGlobalExceptionFilter));
-            });
-            //services.AddMvc(options =>
-            //    {
-            //        options.Filters.Add(typeof(HttpGlobalExceptionFilter));
-            //    })
-            //    .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
-            //    .AddControllersAsServices();  //Injecting Controllers themselves thru DI
-            //                                  //For further info see: http://docs.autofac.org/en/latest/integration/aspnetcore.html#controllers-as-services
+                {
+                    options.Filters.Add(typeof(HttpGlobalExceptionFilter));
+                })
+                // Added for functional tests
+                .AddApplicationPart(typeof(OrdersController).Assembly)
+                .AddNewtonsoftJson()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
+            ;
 
             services.AddCors(options =>
             {

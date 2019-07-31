@@ -86,6 +86,7 @@
     <MongoDB_Driver_Core>2.9.0-beta2</MongoDB_Driver_Core>
     <Moq>4.10.1</Moq>
     <Newtonsoft_Json>12.0.2</Newtonsoft_Json>
+    <Microsoft_AspNetCore_Mvc_NewtonsoftJson>3.0.0-preview7.19365.7</Microsoft_AspNetCore_Mvc_NewtonsoftJson>
     <Ocelot>12.0.1</Ocelot>
     <Polly>6.0.1</Polly>
     <IdentityServer4_AspNetIdentity>3.0.0-preview3.4</IdentityServer4_AspNetIdentity>

@@ -30,6 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
+  <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="$(Microsoft_AspNetCore_Mvc_NewtonsoftJson)"/>
     <PackageReference Include="AspNetCore.HealthChecks.AzureServiceBus" Version="$(AspNetCore_HealthChecks_AzureServiceBus)" />
     <PackageReference Include="AspNetCore.HealthChecks.Rabbitmq" Version="$(AspNetCore_HealthChecks_Rabbitmq)" />
     <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="$(AspNetCore_HealthChecks_SqlServer)" />
