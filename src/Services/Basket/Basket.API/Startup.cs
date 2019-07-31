@@ -55,6 +55,37 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
 
             }).AddNewtonsoftJson();
 
+            services.AddSwaggerGen(options =>
+            {
+                options.DescribeAllEnumsAsStrings();
+                options.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "eShopOnContainers - Basket HTTP API",
+                    Version = "v1",
+                    Description = "The Basket Service HTTP API"
+                });
+
+                options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+                {
+                    Type = SecuritySchemeType.OAuth2,
+                    Flows = new OpenApiOAuthFlows()
+                    {
+                        Implicit = new OpenApiOAuthFlow()
+                        {
+                            AuthorizationUrl = new Uri($"{Configuration.GetValue<string>("IdentityUrlExternal")}/connect/authorize"),
+                            TokenUrl = new Uri($"{Configuration.GetValue<string>("IdentityUrlExternal")}/connect/token"),
+                            Scopes = new Dictionary<string, string>()
+                            {
+                                { "basket", "Basket API" }
+                            }
+                        }
+                    }
+                });
+                
+                options.OperationFilter<AuthorizeCheckOperationFilter>();
+            });
+            
+
             ConfigureAuthService(services);
 
             services.AddCustomHealthCheck(Configuration);
@@ -124,33 +155,6 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
 
             RegisterEventBus(services);
 
-            services.AddSwaggerGen(options =>
-            {
-                options.DescribeAllEnumsAsStrings();
-                options.SwaggerDoc("v1", new OpenApiInfo
-                {
-                    Title = "eShopOnContainers - Basket HTTP API",
-                    Version = "v1",
-                    Description = "The Basket Service HTTP API"
-                });
-
-                options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
-                {
-                    Type = SecuritySchemeType.OAuth2,
-                    Flows = new OpenApiOAuthFlows()
-                    {
-                        Implicit = new OpenApiOAuthFlow()
-                        {
-                            AuthorizationUrl = new Uri($"{Configuration.GetValue<string>("IdentityUrlExternal")}/connect/authorize"),
-                            TokenUrl = new Uri($"{Configuration.GetValue<string>("IdentityUrlExternal")}/connect/token"),
-                            Scopes = new Dictionary<string, string>()
-                            {
-                                { "basket", "Basket API" }
-                            }
-                        }
-                    }
-                });
-            });
 
             services.AddCors(options =>
             {
@@ -185,20 +189,12 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
                 app.UsePathBase(pathBase);
             }
 
+            app.UseRouting();
             ConfigureAuth(app);
 
             app.UseStaticFiles();
 
-            app.UseSwagger()
-               .UseSwaggerUI(setup =>
-               {
-                   setup.SwaggerEndpoint($"{ (!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty) }/swagger/v1/swagger.json", "Basket.API V1");
-                   setup.OAuthClientId("basketswaggerui");
-                   setup.OAuthAppName("Basket Swagger UI");
-               });
-
             app.UseCors("CorsPolicy");
-            app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();
@@ -213,6 +209,15 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
                     Predicate = r => r.Name.Contains("self")
                 });
             });
+            
+            app.UseSwagger()
+               .UseSwaggerUI(setup =>
+               {
+                   setup.SwaggerEndpoint($"{ (!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty) }/swagger/v1/swagger.json", "Basket.API V1");
+                   setup.OAuthClientId("basketswaggerui");
+                   setup.OAuthAppName("Basket Swagger UI");
+               });
+
 
             ConfigureEventBus(app);
         }
@@ -226,7 +231,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
         private void ConfigureAuthService(IServiceCollection services)
         {
             // prevent from mapping "sub" claim to nameidentifier.
-            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("sub");
 
             var identityUrl = Configuration.GetValue<string>("IdentityUrl");
 
@@ -250,8 +255,8 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
                 app.UseMiddleware<ByPassAuthMiddleware>();
             }
 
-            app.UseAuthorization();
             app.UseAuthentication();
+            app.UseAuthorization();
         }
 
         private void RegisterEventBus(IServiceCollection services)
