@@ -99,8 +99,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eShopOnContainers.TestRunne
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eShopOnContainers.TestRunner.Windows", "src\Mobile\eShopOnContainers\eShopOnContainers.TestRunner.Windows\eShopOnContainers.TestRunner.Windows.csproj", "{A7337243-33B8-463A-87AD-944B75EFD820}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ordering.BackgroundTasks", "src\Services\Ordering\Ordering.BackgroundTasks\Ordering.BackgroundTasks.csproj", "{16CDE5D2-2DDE-4AF2-B902-AD9CC42DE480}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Basket.FunctionalTests", "src\Services\Basket\Basket.FunctionalTests\Basket.FunctionalTests.csproj", "{9F00E62F-E180-4A9C-8794-98A72AFAC2DB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Basket.UnitTests", "src\Services\Basket\Basket.UnitTests\Basket.UnitTests.csproj", "{63417272-1E6A-406A-AD11-C738558D89C0}"

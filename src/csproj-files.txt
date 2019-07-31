@@ -20,7 +20,6 @@ COPY src/Services/Location/Locations.FunctionalTests/*.csproj /src/src/Services/
 COPY src/Services/Marketing/Marketing.API/*.csproj /src/src/Services/Marketing/Marketing.API/
 COPY src/Services/Marketing/Marketing.FunctionalTests/*.csproj /src/src/Services/Marketing/Marketing.FunctionalTests/
 COPY src/Services/Ordering/Ordering.API/*.csproj /src/src/Services/Ordering/Ordering.API/
-COPY src/Services/Ordering/Ordering.BackgroundTasks/*.csproj /src/src/Services/Ordering/Ordering.BackgroundTasks/
 COPY src/Services/Ordering/Ordering.Domain/*.csproj /src/src/Services/Ordering/Ordering.Domain/
 COPY src/Services/Ordering/Ordering.FunctionalTests/*.csproj /src/src/Services/Ordering/Ordering.FunctionalTests/
 COPY src/Services/Ordering/Ordering.Infrastructure/*.csproj /src/src/Services/Ordering/Ordering.Infrastructure/
