@@ -48,6 +48,7 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
                 {
                     options.Filters.Add(typeof(HttpGlobalExceptionFilter));
                 })
+                // Added for functional tests
                 .AddApplicationPart(typeof(LocationsController).Assembly)
                 .AddNewtonsoftJson();
 
