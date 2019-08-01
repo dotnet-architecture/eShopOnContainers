@@ -82,6 +82,7 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();
+                endpoints.MapControllers();
                 endpoints.MapHealthChecks("/hc", new HealthCheckOptions()
                 {
                     Predicate = _ => true,

@@ -40,6 +40,7 @@
     <Microsoft_AspNet_WebApi_Client>5.2.7</Microsoft_AspNet_WebApi_Client>
     <Microsoft_Build_Utilities_Core>15.9.20</Microsoft_Build_Utilities_Core>
     <Microsoft_Web_LibraryManager_Build>1.0.172</Microsoft_Web_LibraryManager_Build>
+    <Microsoft_AspNetCore_Mvc_Formatters_Json>3.0.0-preview4-19123-01</Microsoft_AspNetCore_Mvc_Formatters_Json>
     <Microsoft_VisualStudio_Azure_Containers_Tools_Targets>1.0.2105168</Microsoft_VisualStudio_Azure_Containers_Tools_Targets>
     <Microsoft_VisualStudio_Web_CodeGeneration_Design>3.0.0-preview6-19319-03</Microsoft_VisualStudio_Web_CodeGeneration_Design>
     <MediatR_Extensions_Microsoft_DependencyInjection>5.1.0</MediatR_Extensions_Microsoft_DependencyInjection>

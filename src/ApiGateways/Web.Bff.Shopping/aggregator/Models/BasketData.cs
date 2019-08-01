@@ -1,14 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Models
 {
     public class BasketData
     {
         public string BuyerId { get; set; }
+
         public List<BasketDataItem> Items { get; set; }
+
+        public BasketData()
+        {
+
+        }
 
         public BasketData(string buyerId)
         {

@@ -10,6 +10,7 @@
     <PackageReference Include="AspNetCore.HealthChecks.Uris" Version="$(AspNetCore_HealthChecks_Uris)" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.HealthChecks" Version="$(Microsoft_AspNetCore_Diagnostics_HealthChecks)" />
     <PackageReference Include="Microsoft.AspNetCore.HealthChecks" Version="$(Microsoft_AspNetCore_HealthChecks)" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Formatters.Json" Version="$(Microsoft_AspNetCore_Mvc_Formatters_Json)" />
     <PackageReference Include="Ocelot" Version="$(Ocelot)" />
     <PackageReference Include="Serilog.AspNetCore" Version="$(Serilog_AspNetCore)" />
     <PackageReference Include="Serilog.Sinks.Console" Version="$(Serilog_Sinks_Console)" />

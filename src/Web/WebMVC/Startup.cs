@@ -81,16 +81,16 @@ namespace Microsoft.eShopOnContainers.WebMVC
                 app.UseMiddleware<ByPassAuthMiddleware>();
             }
 
-            app.UseAuthentication();
-
             WebContextSeed.Seed(app, env, loggerFactory);
 
             app.UseHttpsRedirection();
             app.UseRouting();
+            app.UseAuthentication();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute("default", "{controller=Catalog}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute("defaultError", "{controller=Error}/{action=Error}");
+                endpoints.MapControllers();
                 endpoints.MapHealthChecks("/liveness", new HealthCheckOptions
                 {
                     Predicate = r => r.Name.Contains("self")

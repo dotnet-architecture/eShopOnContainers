@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Config;
 using Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Filters.Basket.API.Infrastructure.Filters;
 using Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Infrastructure;
@@ -46,7 +45,7 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator
                 .AddUrlGroup(new Uri(Configuration["PaymentUrlHC"]), name: "paymentapi-check", tags: new string[] { "paymentapi" })
                 .AddUrlGroup(new Uri(Configuration["LocationUrlHC"]), name: "locationapi-check", tags: new string[] { "locationapi" });
 
-            services.AddCustomMvc(Configuration)
+            services.AddCustomRouting(Configuration)
                  .AddCustomAuthentication(Configuration)
                  .AddDevspaces()
                  .AddHttpServices();
@@ -77,12 +76,13 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator
                 app.UseHsts();
             }
 
-            app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseRouting();
+            app.UseAuthentication();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();
+                endpoints.MapControllers();
                 endpoints.MapHealthChecks("/hc", new HealthCheckOptions()
                 {
                     Predicate = _ => true,
@@ -108,14 +108,11 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator
 
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddCustomMvc(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddCustomRouting(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddOptions();
             services.Configure<UrlsConfig>(configuration.GetSection("urls"));
-
-            services.AddMvc()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
-
+            services.AddControllers().AddNewtonsoftJson();
             services.AddSwaggerGen(options =>
             {
                 options.DescribeAllEnumsAsStrings();
@@ -174,15 +171,6 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator
                 options.Authority = identityUrl;
                 options.RequireHttpsMetadata = false;
                 options.Audience = "mobileshoppingagg";
-                options.Events = new JwtBearerEvents()
-                {
-                    OnAuthenticationFailed = async ctx =>
-                    {
-                    },
-                    OnTokenValidated = async ctx =>
-                    {
-                    }
-                };
             });
 
             return services;
