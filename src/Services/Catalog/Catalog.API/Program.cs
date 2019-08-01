@@ -68,7 +68,6 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
         private static IHostBuilder CreateHostBuilder(IConfiguration configuration, string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureServices(services => services.AddAutofac())
-                .UseServiceProviderFactory(new AutofacServiceProviderFactory())
                 .ConfigureWebHostDefaults(builder =>
                 {
                     builder.CaptureStartupErrors(false)

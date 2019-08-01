@@ -44,7 +44,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
 
         public IConfiguration Configuration { get; }
 
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddAppInsight(Configuration)
                 .AddGrpc().Services
@@ -59,6 +59,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
             var container = new ContainerBuilder();
             container.Populate(services);
 
+            return new AutofacServiceProvider(container.Build());
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
