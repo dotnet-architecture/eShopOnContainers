@@ -50,7 +50,7 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator
                  .AddDevspaces()
                  .AddHttpServices();
 
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -79,6 +79,7 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthentication();
+            app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();
