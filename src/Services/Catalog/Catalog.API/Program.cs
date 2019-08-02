@@ -33,7 +33,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
             try
             {
                 Log.Information("Configuring web host ({ApplicationContext})...", AppName);
-                var host = CreateHostBuilder(configuration, args).Build();
+                var host = CreateHostBuilder(configuration, args);
 
                 Log.Information("Applying migrations ({ApplicationContext})...", AppName);
                 host.MigrateDbContext<CatalogContext>((context, services) =>
@@ -64,33 +64,29 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
             }
         }
 
-
-        private static IHostBuilder CreateHostBuilder(IConfiguration configuration, string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureServices(services => services.AddAutofac())
-                .ConfigureWebHostDefaults(builder =>
+        private static IWebHost CreateHostBuilder(IConfiguration configuration, string[] args) =>
+            WebHost.CreateDefaultBuilder(args)
+                .UseConfiguration(configuration)
+                .CaptureStartupErrors(false)
+                .ConfigureKestrel(options =>
                 {
-                    builder.CaptureStartupErrors(false)
-                    .UseConfiguration(configuration)
-                    .ConfigureKestrel(options =>
+                    var ports = GetDefinedPorts(configuration);
+                    options.Listen(IPAddress.Any, ports.httpPort, listenOptions =>
                     {
-                        var ports = GetDefinedPorts(configuration);
-                        options.Listen(IPAddress.Any, ports.httpPort, listenOptions =>
-                        {
-                            listenOptions.Protocols = HttpProtocols.Http1AndHttp2;
-                        });
-                        options.Listen(IPAddress.Any, ports.grpcPort, listenOptions =>
-                        {
-                            listenOptions.Protocols = HttpProtocols.Http2;
-                        });
+                        listenOptions.Protocols = HttpProtocols.Http1AndHttp2;
+                    });
+                    options.Listen(IPAddress.Any, ports.grpcPort, listenOptions =>
+                    {
+                        listenOptions.Protocols = HttpProtocols.Http2;
+                    });
 
-                    })
-                    .UseStartup<Startup>()
-                    .UseApplicationInsights()
-                    .UseContentRoot(Directory.GetCurrentDirectory())
-                    .UseWebRoot("Pics")
-                    .UseSerilog();
-                });
+                })
+                .UseStartup<Startup>()
+                .UseApplicationInsights()
+                .UseContentRoot(Directory.GetCurrentDirectory())
+                .UseWebRoot("Pics")
+                .UseSerilog()
+                .Build();
 
         private static Serilog.ILogger CreateSerilogLogger(IConfiguration configuration)
         {
