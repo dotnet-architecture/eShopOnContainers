@@ -62,12 +62,12 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Controllers
             ConsentResponse response = null;
 
             // user clicked 'no' - send back the standard 'access_denied' response
-            if (model.Button == "no")
+            if (model != null && model.Button == "no")
             {
                 response = ConsentResponse.Denied;
             }
             // user clicked 'yes' - validate the data
-            else if (model.Button == "yes" && model != null)
+            else if (model != null && model.Button == "yes")
             {
                 // if the user consented to some scope, build the response model
                 if (model.ScopesConsented != null && model.ScopesConsented.Any())
