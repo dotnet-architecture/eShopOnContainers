@@ -38,6 +38,7 @@
             var connectionString = configuration["ConnectionString"];
             Console.WriteLine(" -- Connection string");
             Console.WriteLine(connectionString);
+
             var optionsBuilder = new DbContextOptionsBuilder<MarketingContext>()
                 .UseSqlServer(connectionString);
                 // .UseSqlServer("Server=.;Initial Catalog=Microsoft.eShopOnContainers.Services.MarketingDb;Integrated Security=true");
