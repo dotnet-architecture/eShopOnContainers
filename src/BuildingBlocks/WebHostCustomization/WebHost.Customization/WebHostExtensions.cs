@@ -39,8 +39,15 @@ namespace Microsoft.AspNetCore.Hosting
                     }
                     else
                     {
+                        var retries = 10;
                         var retry = Policy.Handle<SqlException>()
-                            .WaitAndRetry(10, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
+                            .WaitAndRetry(
+                                retryCount: retries,
+                                sleepDurationProvider: retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
+                                onRetry: (exception, timeSpan, retry, ctx) =>
+                                {
+                                    logger.LogWarning(exception, "[{prefix}] Exception {ExceptionType} with message {Message} detected on attempt {retry} of {retries}", nameof(TContext), exception.GetType().Name, exception.Message, retry, retries);
+                                });
 
                         //if the sql server container is not created on run docker compose this
                         //migration can't fail for network related exception. The retry options for DbContext only 
@@ -53,7 +60,64 @@ namespace Microsoft.AspNetCore.Hosting
                 }
                 catch (Exception ex)
                 {
+                    Console.WriteLine(ex.Message.ToString() + "An error occurred while migrating the database used on context {DbContextName}" + typeof(TContext).Name);
                     logger.LogError(ex, "An error occurred while migrating the database used on context {DbContextName}", typeof(TContext).Name);
+                    if (underK8s)
+                    {
+                        throw;          // Rethrow under k8s because we rely on k8s to re-run the pod
+                    }
+                }
+            }
+
+            return webHost;
+        }
+
+        
+        public static IWebHost RemoveDbContext<TContext>(this IWebHost webHost) where TContext : DbContext
+        {
+            var underK8s = webHost.IsInKubernetes();
+
+            using (var scope = webHost.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                var logger = services.GetRequiredService<ILogger<TContext>>();
+                var context = services.GetService<TContext>();
+
+                try
+                {
+                    logger.LogInformation("Deleting the database associated with context {DbContextName}" + typeof(TContext).Name);
+
+                    if (underK8s)
+                    {
+                        InvokeRemover(context);
+                    }
+                    else
+                    {
+                        var retries = 10;
+                        var retry = Policy.Handle<SqlException>()
+                            .WaitAndRetry(
+                                retryCount: retries,
+                                sleepDurationProvider: retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
+                                onRetry: (exception, timeSpan, retry, ctx) =>
+                                {
+                                    Console.WriteLine(" --RETRYING Exception " + exception.Message.ToString());
+                                    logger.LogWarning(exception, "[{prefix}] Exception {ExceptionType} with message {Message} detected on attempt {retry} of {retries}", nameof(TContext), exception.GetType().Name, exception.Message, retry, retries);
+                                });
+
+                        //if the sql server container is not created on run docker compose this
+                        //migration can't fail for network related exception. The retry options for DbContext only 
+                        //apply to transient exceptions
+                        // Note that this is NOT applied when running some orchestrators (let the orchestrator to recreate the failing service)
+                        retry.Execute(() => InvokeRemover(context));
+                    }
+
+                    Console.WriteLine("Deleted database associated with context {DbContextName}", typeof(TContext).Name);
+                    logger.LogInformation("Deleted database associated with context {DbContextName}", typeof(TContext).Name);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message.ToString() + "An error occurred while deleting the database used on context {DbContextName}" + typeof(TContext).Name);
+                    logger.LogError(ex, "An error occurred while deleting the database used on context {DbContextName}", typeof(TContext).Name);
                     if (underK8s)
                     {
                         throw;          // Rethrow under k8s because we rely on k8s to re-run the pod
@@ -69,6 +133,11 @@ namespace Microsoft.AspNetCore.Hosting
         {
             context.Database.Migrate();
             seeder(context, services);
+        }
+        private static void InvokeRemover<TContext>(TContext context)
+            where TContext : DbContext
+        {
+            context.Database.EnsureDeleted();
         }
     }
 }
