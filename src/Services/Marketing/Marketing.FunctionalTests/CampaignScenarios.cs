@@ -9,6 +9,7 @@ using Xunit;
 
 namespace Marketing.FunctionalTests
 {
+    [Collection("Sequential")]
     public class CampaignScenarios
        : CampaignScenarioBase
     {

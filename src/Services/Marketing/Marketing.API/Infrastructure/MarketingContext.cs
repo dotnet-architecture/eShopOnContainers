@@ -35,13 +35,10 @@
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .AddEnvironmentVariables()
                 .Build();
-            var connectionString = configuration["ConnectionString"];
-            Console.WriteLine(" -- Connection string");
-            Console.WriteLine(connectionString);
 
+            var connectionString = configuration["ConnectionString"];
             var optionsBuilder = new DbContextOptionsBuilder<MarketingContext>()
                 .UseSqlServer(connectionString);
-                // .UseSqlServer("Server=.;Initial Catalog=Microsoft.eShopOnContainers.Services.MarketingDb;Integrated Security=true");
             return new MarketingContext(optionsBuilder.Options);
         }
     }
