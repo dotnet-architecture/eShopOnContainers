@@ -14,9 +14,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
-using Microsoft.OpenApi.Models;
 using Polly;
 using Polly.Extensions.Http;
+using Swashbuckle.AspNetCore.Swagger;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -50,8 +50,6 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator
                 .AddCustomAuthentication(Configuration)
                 .AddDevspaces()
                 .AddApplicationServices();
-
-            services.AddControllers().AddNewtonsoftJson();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -63,6 +61,17 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator
                 loggerFactory.CreateLogger<Startup>().LogDebug("Using PATH BASE '{pathBase}'", pathBase);
                 app.UsePathBase(pathBase);
             }
+
+            app.UseHealthChecks("/hc", new HealthCheckOptions()
+            {
+                Predicate = _ => true,
+                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+            });
+
+            app.UseHealthChecks("/liveness", new HealthCheckOptions
+            {
+                Predicate = r => r.Name.Contains("self")
+            });
 
             app.UseCors("CorsPolicy");
 
@@ -77,23 +86,8 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator
             }
 
             app.UseAuthentication();
-            app.UseAuthorization();
             app.UseHttpsRedirection();
-            app.UseRouting();
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapDefaultControllerRoute();
-                endpoints.MapControllers();
-                endpoints.MapHealthChecks("/hc", new HealthCheckOptions()
-                {
-                    Predicate = _ => true,
-                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-                });
-                endpoints.MapHealthChecks("/liveness", new HealthCheckOptions
-                {
-                    Predicate = r => r.Name.Contains("self")
-                });
-            });
+            app.UseMvc();
 
             app.UseSwagger()
                 .UseSwaggerUI(c =>
@@ -142,32 +136,28 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator
             services.Configure<UrlsConfig>(configuration.GetSection("urls"));
 
             services.AddMvc()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddSwaggerGen(options =>
             {
                 options.DescribeAllEnumsAsStrings();
-                options.SwaggerDoc("v1", new OpenApiInfo
+                options.SwaggerDoc("v1", new Swashbuckle.AspNetCore.Swagger.Info
                 {
-                    Title = "eShopOnContainers - Shopping Aggregator for Web Clients",
+                    Title = "Shopping Aggregator for Web Clients",
                     Version = "v1",
-                    Description = "Shopping Aggregator for Web Clients"
+                    Description = "Shopping Aggregator for Web Clients",
+                    TermsOfService = "Terms Of Service"
                 });
 
-                options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+                options.AddSecurityDefinition("oauth2", new OAuth2Scheme
                 {
-                    Type = SecuritySchemeType.OAuth2,
-                    Flows = new OpenApiOAuthFlows()
+                    Type = "oauth2",
+                    Flow = "implicit",
+                    AuthorizationUrl = $"{configuration.GetValue<string>("IdentityUrlExternal")}/connect/authorize",
+                    TokenUrl = $"{configuration.GetValue<string>("IdentityUrlExternal")}/connect/token",
+                    Scopes = new Dictionary<string, string>()
                     {
-                        Implicit = new OpenApiOAuthFlow()
-                        {
-                            AuthorizationUrl = new Uri($"{configuration.GetValue<string>("IdentityUrlExternal")}/connect/authorize"),
-                            TokenUrl = new Uri($"{configuration.GetValue<string>("IdentityUrlExternal")}/connect/token"),
-                            Scopes = new Dictionary<string, string>()
-                            {
-                                { "webshoppingagg", "Shopping Aggregator for Web Clients" }
-                            }
-                        }
+                        { "webshoppingagg", "Shopping Aggregator for Web Clients" }
                     }
                 });
 

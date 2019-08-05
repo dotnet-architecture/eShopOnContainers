@@ -38,21 +38,24 @@ namespace Microsoft.eShopOnContainers.WebMVC
         // This method gets called by the runtime. Use this method to add services to the IoC container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAppInsight(Configuration)
-                    .AddHealthChecks(Configuration)
-                    .AddCustomMvc(Configuration)
-                    .AddDevspaces()
-                    .AddHttpClientServices(Configuration)
-                    //.AddHttpClientLogging(Configuration)  //Opt-in HttpClientLogging config
-                    .AddCustomAuthentication(Configuration);
-
+            services.AddControllersWithViews()
+                .Services
+                .AddAppInsight(Configuration)
+                .AddHealthChecks(Configuration)
+                .AddCustomMvc(Configuration)
+                .AddDevspaces()
+                .AddHttpClientServices(Configuration);
+                //.AddHttpClientLogging(Configuration)  //Opt-in HttpClientLogging config
+                
             services.AddControllers();
+
+            services.AddCustomAuthentication(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("sub");
 
             //loggerFactory.AddAzureWebAppDiagnostics();
             //loggerFactory.AddApplicationInsights(app.ApplicationServices, LogLevel.Trace);
@@ -67,14 +70,15 @@ namespace Microsoft.eShopOnContainers.WebMVC
             }
 
             var pathBase = Configuration["PATH_BASE"];
+
             if (!string.IsNullOrEmpty(pathBase))
             {
                 loggerFactory.CreateLogger<Startup>().LogDebug("Using PATH BASE '{PathBase}'", pathBase);
                 app.UsePathBase(pathBase);
             }
 
-            app.UseSession();
             app.UseStaticFiles();
+            app.UseSession();
 
             if (Configuration.GetValue<bool>("UseLoadTest"))
             {
@@ -85,7 +89,10 @@ namespace Microsoft.eShopOnContainers.WebMVC
 
             app.UseHttpsRedirection();
             app.UseRouting();
+            
             app.UseAuthentication();
+            app.UseAuthorization();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute("default", "{controller=Catalog}/{action=Index}/{id?}");
@@ -130,11 +137,8 @@ namespace Microsoft.eShopOnContainers.WebMVC
         {
             services.AddOptions();
             services.Configure<AppSettings>(configuration);
-
-            services.AddMvc()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
-
             services.AddSession();
+            services.AddDistributedMemoryCache();
 
             if (configuration.GetValue<string>("IsClusterEnv") == bool.TrueString)
             {
@@ -144,6 +148,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
                 })
                 .PersistKeysToRedis(ConnectionMultiplexer.Connect(configuration["DPConnectionString"]), "DataProtection-Keys");
             }
+
             return services;
         }
 
@@ -258,7 +263,6 @@ namespace Microsoft.eShopOnContainers.WebMVC
               .HandleTransientHttpError()
               .OrResult(msg => msg.StatusCode == System.Net.HttpStatusCode.NotFound)
               .WaitAndRetryAsync(6, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
-
         }
         static IAsyncPolicy<HttpResponseMessage> GetCircuitBreakerPolicy()
         {
