@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.WebMVC.Controllers
 {
-    [Authorize]
+    [Authorize(AuthenticationSchemes = "OpenIdConnect")]
     public class CartController : Controller
     {
         private readonly IBasketService _basketSvc;

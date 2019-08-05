@@ -12,7 +12,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
     using ViewModels;
     using ViewModels.Pagination;
 
-    [Authorize]
+    [Authorize(AuthenticationSchemes = "OpenIdConnect")]
     public class CampaignsController : Controller
     {
         private readonly ICampaignService _campaignService;
