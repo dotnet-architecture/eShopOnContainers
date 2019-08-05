@@ -39,8 +39,15 @@ namespace Microsoft.AspNetCore.Hosting
                     }
                     else
                     {
+                        var retries = 10;
                         var retry = Policy.Handle<SqlException>()
-                            .WaitAndRetry(10, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
+                            .WaitAndRetry(
+                                retryCount: retries,
+                                sleepDurationProvider: retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
+                                onRetry: (exception, timeSpan, retry, ctx) =>
+                                {
+                                    logger.LogWarning(exception, "[{prefix}] Exception {ExceptionType} with message {Message} detected on attempt {retry} of {retries}", nameof(TContext), exception.GetType().Name, exception.Message, retry, retries);
+                                });
 
                         //if the sql server container is not created on run docker compose this
                         //migration can't fail for network related exception. The retry options for DbContext only 

@@ -23,7 +23,9 @@
     using Marketing.API.IntegrationEvents.Handlers;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+    using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore.Diagnostics;
+    using Microsoft.eShopOnContainers.Services.Marketing.API.Controllers;
     using Microsoft.eShopOnContainers.Services.Marketing.API.Infrastructure.Middlewares;
     using Microsoft.Extensions.Diagnostics.HealthChecks;
     using Microsoft.OpenApi.Models;
@@ -44,13 +46,18 @@
 
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public IServiceProvider ConfigureServices(IServiceCollection services)
+        public virtual IServiceProvider ConfigureServices(IServiceCollection services)
         {
             RegisterAppInsights(services);
 
             // Add framework services.
             services.AddCustomHealthCheck(Configuration);
-            services.AddControllers().AddNewtonsoftJson();
+            services
+                .AddControllers()
+                // Added for functional tests
+                .AddApplicationPart(typeof(LocationsController).Assembly)
+                .AddNewtonsoftJson()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             services.Configure<MarketingSettings>(Configuration);
 
             ConfigureAuthService(services);
@@ -117,36 +124,8 @@
             }
 
             // Add framework services.
-            services.AddSwaggerGen(options =>
-            {
-                options.DescribeAllEnumsAsStrings();
-                options.SwaggerDoc("v1", new OpenApiInfo
-                {
-                    Title = "eShopOnContainers - Marketing HTTP API",
-                    Version = "v1",
-                    Description = "The Marketing Service HTTP API"
-                });
 
-                options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
-                {
-                    Type = SecuritySchemeType.OAuth2,
-                    Flows = new OpenApiOAuthFlows()
-                    {
-                        Implicit = new OpenApiOAuthFlow()
-                        {
-                            AuthorizationUrl = new Uri($"{Configuration.GetValue<string>("IdentityUrlExternal")}/connect/authorize"),
-                            TokenUrl = new Uri($"{Configuration.GetValue<string>("IdentityUrlExternal")}/connect/token"),
-                            Scopes = new Dictionary<string, string>()
-                            {
-                                { "marketing", "Marketing API" }
-                            }
-                        }
-                    }
-                });
-
-                options.OperationFilter<AuthorizeCheckOperationFilter>();
-            });
-
+            AddCustomSwagger(services);
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy",
@@ -186,10 +165,10 @@
             }
 
             app.UseCors("CorsPolicy");
+            app.UseRouting();
 
             ConfigureAuth(app);
 
-            app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();
@@ -216,6 +195,39 @@
             ConfigureEventBus(app);
         }
 
+        private void AddCustomSwagger(IServiceCollection services)
+        {
+            services.AddSwaggerGen(options =>
+             {
+                 options.DescribeAllEnumsAsStrings();
+                 options.SwaggerDoc("v1", new OpenApiInfo
+                 {
+                     Title = "eShopOnContainers - Marketing HTTP API",
+                     Version = "v1",
+                     Description = "The Marketing Service HTTP API"
+                 });
+
+                 options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+                 {
+                     Type = SecuritySchemeType.OAuth2,
+                     Flows = new OpenApiOAuthFlows()
+                     {
+                         Implicit = new OpenApiOAuthFlow()
+                         {
+                             AuthorizationUrl = new Uri($"{Configuration.GetValue<string>("IdentityUrlExternal")}/connect/authorize"),
+                             TokenUrl = new Uri($"{Configuration.GetValue<string>("IdentityUrlExternal")}/connect/token"),
+                             Scopes = new Dictionary<string, string>()
+                             {
+                                { "marketing", "Marketing API" }
+                             }
+                         }
+                     }
+                 });
+
+                 options.OperationFilter<AuthorizeCheckOperationFilter>();
+             });
+        }
+
         private void RegisterAppInsights(IServiceCollection services)
         {
             services.AddApplicationInsightsTelemetry(Configuration);
@@ -225,7 +237,7 @@
         private void ConfigureAuthService(IServiceCollection services)
         {
             // prevent from mapping "sub" claim to nameidentifier.
-            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("sub");
 
             services.AddAuthentication(options =>
             {
