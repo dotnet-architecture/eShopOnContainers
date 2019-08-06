@@ -32,17 +32,8 @@ namespace Marketing.FunctionalTests
                 })
                 .CaptureStartupErrors(true)
                 .UseStartup<MarketingTestsStartup>();
-            
+
             var testServer =  new TestServer(hostBuilder);
-
-            using (var scope = testServer.Services.CreateScope())
-            {
-                var services = scope.ServiceProvider;
-
-                var logger = services.GetRequiredService<ILogger<MarketingScenarioBase>>();
-                var settings = services.GetRequiredService<IOptions<MarketingSettings>>();
-                logger.LogError("connectionString " + settings.Value.ConnectionString);
-            }
 
             testServer.Host
                .MigrateDbContext<MarketingContext>((context, services) =>
