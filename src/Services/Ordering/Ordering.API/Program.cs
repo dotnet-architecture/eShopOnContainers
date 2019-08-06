@@ -7,7 +7,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Ordering.API.Infrastructure.Tasks;
 using Serilog;
 using System;
 using System.IO;
@@ -63,7 +62,6 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API
             WebHost.CreateDefaultBuilder(args)
                 .CaptureStartupErrors(false)
                 .UseStartup<Startup>()
-                .ConfigureServices(service => service.AddHostedService<GracePeriodManagerService>())
                 .UseApplicationInsights()
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseConfiguration(configuration)

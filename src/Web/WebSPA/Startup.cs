@@ -118,6 +118,7 @@ namespace eShopConContainers.WebSPA
             app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapDefaultControllerRoute();
                 endpoints.MapControllers();
                 endpoints.MapHealthChecks("/liveness", new HealthCheckOptions
                 {

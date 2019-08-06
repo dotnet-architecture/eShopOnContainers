@@ -56,6 +56,8 @@ namespace Ordering.API.Application.Behaviors
                         await _dbContext.CommitTransactionAsync(transaction);
 
                         transactionId = transaction.TransactionId;
+
+                        _logger.LogInformation("----- End transaction {TransactionId} for {CommandName}", transaction.TransactionId, typeName);
                     }
 
                     await _orderingIntegrationEventService.PublishEventsThroughEventBusAsync(transactionId);

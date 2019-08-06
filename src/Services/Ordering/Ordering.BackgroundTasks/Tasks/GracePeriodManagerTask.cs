@@ -1,25 +1,24 @@
 ﻿using Dapper;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
-using Microsoft.eShopOnContainers.Services.Ordering.API;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Ordering.API.Application.IntegrationEvents.Events;
+using Ordering.BackgroundTasks.Events;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Ordering.API.Infrastructure.Tasks
+namespace Ordering.BackgroundTasks.Tasks
 {
     public class GracePeriodManagerService : BackgroundService
     {
         private readonly ILogger<GracePeriodManagerService> _logger;
-        private readonly OrderingSettings _settings;
+        private readonly BackgroundTaskSettings _settings;
         private readonly IEventBus _eventBus;
 
-        public GracePeriodManagerService(IOptions<OrderingSettings> settings, IEventBus eventBus, ILogger<GracePeriodManagerService> logger)
+        public GracePeriodManagerService(IOptions<BackgroundTaskSettings> settings, IEventBus eventBus, ILogger<GracePeriodManagerService> logger)
         {
             _settings = settings?.Value ?? throw new ArgumentNullException(nameof(settings));
             _eventBus = eventBus ?? throw new ArgumentNullException(nameof(eventBus));
@@ -56,7 +55,7 @@ namespace Ordering.API.Infrastructure.Tasks
             {
                 var confirmGracePeriodEvent = new GracePeriodConfirmedIntegrationEvent(orderId);
 
-                _logger.LogInformation("----- Publishing integration event: {IntegrationEventId} from {AppName} - ({@IntegrationEvent})", confirmGracePeriodEvent.Id, Program.AppName, confirmGracePeriodEvent);
+                _logger.LogInformation("----- Publishing integration event: {IntegrationEventId} from {AppName} - ({@IntegrationEvent})", confirmGracePeriodEvent.Id, _settings.SubscriptionClientName, confirmGracePeriodEvent);
 
                 _eventBus.Publish(confirmGracePeriodEvent);
             }

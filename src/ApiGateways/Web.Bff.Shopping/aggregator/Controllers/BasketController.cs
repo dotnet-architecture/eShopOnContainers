@@ -117,18 +117,27 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Controllers
 
             // Step 2: Get current basket status
             var currentBasket = (await _basket.GetByIdAsync(data.BasketId)) ?? new BasketData(data.BasketId);
-            // Step 3: Merge current status with new product
-            currentBasket.Items.Add(new BasketDataItem()
-            {
-                UnitPrice = item.Price,
-                PictureUrl = item.PictureUri,
-                ProductId = item.Id.ToString(),
-                ProductName = item.Name,
-                Quantity = data.Quantity,
-                Id = Guid.NewGuid().ToString()
-            });
-
-            // Step 4: Update basket
+            // Step 3: Search if exist product into basket
+            var product = currentBasket.Items.SingleOrDefault(i => i.ProductId == item.Id.ToString());
+            
+            if(product != null){
+                // Step 4: Update quantity for product
+                product.Quantity += data.Quantity;
+            }
+            else{
+                // Step 4: Merge current status with new product
+                currentBasket.Items.Add(new BasketDataItem()
+                {
+                    UnitPrice = item.Price,
+                    PictureUrl = item.PictureUri,
+                    ProductId = item.Id.ToString(),
+                    ProductName = item.Name,
+                    Quantity = data.Quantity,
+                    Id = Guid.NewGuid().ToString()
+                });
+            }
+            
+            // Step 5: Update basket
             await _basket.UpdateAsync(currentBasket);
 
             return Ok();

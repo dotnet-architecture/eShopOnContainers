@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>$(NetCoreTargetVersion)</TargetFramework>
+    <UserSecretsId>dotnet-Ordering.BackgroundTasks-9D3E1DD6-405B-447F-8AAB-1708B36D260E</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <LangVersion>$(LangVersion)</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="$(Microsoft_Extensions_Hosting)" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="$(Microsoft_VisualStudio_Azure_Containers_Tools_Targets)" />
+    <PackageReference Include="Dapper" Version="$(Dapper)" />
+    <PackageReference Include="Serilog.AspNetCore" Version="$(Serilog_AspNetCore)" />
+    <PackageReference Include="Serilog.Enrichers.Environment" Version="$(Serilog_Enrichers_Environment)" />
+    <PackageReference Include="Serilog.Settings.Configuration" Version="$(Serilog_Settings_Configuration)" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="$(Serilog_Sinks_Console)" />
+    <PackageReference Include="Serilog.Sinks.Seq" Version="$(Serilog_Sinks_Seq)" />
+    <PackageReference Include="Serilog.Sinks.Http" Version="$(Serilog_Sinks_Http)" />
+    <PackageReference Include="Autofac" Version="$(Autofac)" />
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="$(Autofac_Extensions_DependencyInjection)" />
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.HealthChecks" Version="$(Microsoft_AspNetCore_Diagnostics_HealthChecks)" />
+    <PackageReference Include="AspNetCore.HealthChecks.AzureServiceBus" Version="$(AspNetCore_HealthChecks_AzureServiceBus)" />
+    <PackageReference Include="AspNetCore.HealthChecks.Rabbitmq" Version="$(AspNetCore_HealthChecks_Rabbitmq)" />
+    <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="$(AspNetCore_HealthChecks_SqlServer)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\BuildingBlocks\EventBus\EventBusRabbitMQ\EventBusRabbitMQ.csproj" />
+    <ProjectReference Include="..\..\..\BuildingBlocks\EventBus\EventBusServiceBus\EventBusServiceBus.csproj" />
+    <ProjectReference Include="..\..\..\BuildingBlocks\EventBus\EventBus\EventBus.csproj" />
+  </ItemGroup>
+</Project>

@@ -20,6 +20,8 @@
     <Google_Protobuf>3.9.0-rc1</Google_Protobuf>
     <Grpc_Tools>1.22.0</Grpc_Tools>
 
+    <Microsoft_Extensions_Hosting>3.0.0-preview7.19362.4</Microsoft_Extensions_Hosting>
+    <Microsoft_VisualStudio_Azure_Containers_Tools_Targets>1.7.9</Microsoft_VisualStudio_Azure_Containers_Tools_Targets>  
     <AspNetCore_HealthChecks_AzureServiceBus>2.2.0</AspNetCore_HealthChecks_AzureServiceBus>
     <AspNetCore_HealthChecks_AzureStorage>2.2.0</AspNetCore_HealthChecks_AzureStorage>
     <AspNetCore_HealthChecks_MongoDb>2.2.0</AspNetCore_HealthChecks_MongoDb>

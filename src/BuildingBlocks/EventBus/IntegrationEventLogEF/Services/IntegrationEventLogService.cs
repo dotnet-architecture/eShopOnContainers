@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Collections;
@@ -17,11 +18,13 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF.Servi
     public class IntegrationEventLogService : IIntegrationEventLogService
     {
         private readonly IntegrationEventLogContext _integrationEventLogContext;
+        private readonly ILogger<IntegrationEventLogService> _logger;
         private readonly DbConnection _dbConnection;
         private readonly List<Type> _eventTypes;
 
-        public IntegrationEventLogService(DbConnection dbConnection)
+        public IntegrationEventLogService(DbConnection dbConnection, ILogger<IntegrationEventLogService> logger)
         {
+            _logger =logger;
             _dbConnection = dbConnection ?? throw new ArgumentNullException(nameof(dbConnection));
             _integrationEventLogContext = new IntegrationEventLogContext(
                 new DbContextOptionsBuilder<IntegrationEventLogContext>()
@@ -37,12 +40,14 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF.Servi
 
         public async Task<IEnumerable<IntegrationEventLogEntry>> RetrieveEventLogsPendingToPublishAsync(Guid transactionId)
         {
+            _logger.LogInformation("----- RetrieveEventLogsPendingToPublishAsync {TransactionId}", transactionId);
+
             var tid = transactionId.ToString();
 
             return await _integrationEventLogContext.IntegrationEventLogs
                 .Where(e => e.TransactionId == tid && e.State == EventStateEnum.NotPublished)
                 .OrderBy(o => o.CreationTime)
-                .Select(e => e.DeserializeJsonContent(_eventTypes.Find(t=> t.Name == e.EventTypeShortName)))
+                .Select(e => e.DeserializeJsonContent(_eventTypes.Find(t=> t.Name == e.EventTypeShortName), _logger))
                 .ToListAsync();              
         }
 
@@ -50,7 +55,7 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF.Servi
         {
             if (transaction == null) throw new ArgumentNullException(nameof(transaction));
 
-            var eventLogEntry = new IntegrationEventLogEntry(@event, transaction.TransactionId);
+            var eventLogEntry = new IntegrationEventLogEntry(@event, transaction.TransactionId, _logger);
 
             _integrationEventLogContext.Database.UseTransaction(transaction.GetDbTransaction());
             _integrationEventLogContext.IntegrationEventLogs.Add(eventLogEntry);
