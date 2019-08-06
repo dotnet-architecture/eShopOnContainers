@@ -20,12 +20,8 @@ namespace Marketing.FunctionalTests
 
         public TestServer CreateServer()
         {
-            
-            Console.WriteLine(" Creating test server");
             var path = Assembly.GetAssembly(typeof(MarketingScenarioBase))
                 .Location;
-
-            Console.WriteLine(" Creating builder");
 
             var hostBuilder = new WebHostBuilder()
                 .UseContentRoot(Path.GetDirectoryName(path))
@@ -36,38 +32,28 @@ namespace Marketing.FunctionalTests
                 })
                 .CaptureStartupErrors(true)
                 .UseStartup<MarketingTestsStartup>();
-
-            Console.WriteLine(" Created builder");
             
             var testServer =  new TestServer(hostBuilder);
 
-              using (var scope = testServer.Services.CreateScope())
+            using (var scope = testServer.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
 
                 var logger = services.GetRequiredService<ILogger<MarketingScenarioBase>>();
                 var settings = services.GetRequiredService<IOptions<MarketingSettings>>();
                 logger.LogError("connectionString " + settings.Value.ConnectionString);
-            Console.WriteLine("connectionString " + settings.Value.ConnectionString);
             }
 
             testServer.Host
-               .RemoveDbContext<MarketingContext>()
                .MigrateDbContext<MarketingContext>((context, services) =>
                {
                    var logger = services.GetService<ILogger<MarketingContextSeed>>();
 
-                    logger.LogError("Migrating MarketingContextSeed");
+                   logger.LogError("Migrating MarketingContextSeed");
                    new MarketingContextSeed()
                        .SeedAsync(context, logger)
                        .Wait();
-
                });
-            Console.WriteLine(" Thread to sleep");
-
-            Thread.Sleep(5000);
-            Console.WriteLine(" Thread after");
-
 
             return testServer;
         }

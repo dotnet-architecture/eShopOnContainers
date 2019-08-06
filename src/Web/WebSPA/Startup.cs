@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
@@ -26,12 +25,8 @@ namespace eShopConContainers.WebSPA
 
         public IConfiguration Configuration { get; }
 
-        private IHostingEnvironment _hostingEnv;
-
-        public Startup(IHostingEnvironment env)
+        public Startup()
         {
-            _hostingEnv = env;
-
             var localPath = new Uri(Configuration["ASPNETCORE_URLS"])?.LocalPath ?? "/";
             Configuration["BaseUrl"] = localPath;
         }
@@ -48,8 +43,6 @@ namespace eShopConContainers.WebSPA
                 .AddUrlGroup(new Uri(Configuration["MarketingUrlHC"]), name: "marketingapigw-check", tags: new string[] { "marketingapigw" })
                 .AddUrlGroup(new Uri(Configuration["IdentityUrlHC"]), name: "identityapi-check", tags: new string[] { "identityapi" });
 
-            services.AddControllers();
-
             services.Configure<AppSettings>(Configuration);
 
             if (Configuration.GetValue<string>("IsClusterEnv") == bool.TrueString)
@@ -62,15 +55,12 @@ namespace eShopConContainers.WebSPA
             }
 
             services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
-
-            services.AddMvc()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
+            services.AddControllers()
                 .AddJsonOptions(options =>
                 {
                     options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
                 });
         }
-
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IAntiforgery antiforgery)
@@ -102,6 +92,7 @@ namespace eShopConContainers.WebSPA
             WebContextSeed.Seed(app, env, loggerFactory);
 
             var pathBase = Configuration["PATH_BASE"];
+
             if (!string.IsNullOrEmpty(pathBase))
             {
                 loggerFactory.CreateLogger<Startup>().LogDebug("Using PATH BASE '{pathBase}'", pathBase);
@@ -127,6 +118,7 @@ namespace eShopConContainers.WebSPA
             app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllers();
                 endpoints.MapHealthChecks("/liveness", new HealthCheckOptions
                 {
                     Predicate = r => r.Name.Contains("self")
