@@ -58,6 +58,7 @@
     <Microsoft_AspNetCore_Diagnostics_HealthChecks>2.2.0</Microsoft_AspNetCore_Diagnostics_HealthChecks>
     <Microsoft_AspNetCore_HealthChecks>1.0.0</Microsoft_AspNetCore_HealthChecks>
     <Microsoft_AspNetCore_Http_Abstractions>2.2.0</Microsoft_AspNetCore_Http_Abstractions>
+    <Microsoft_AspNetCore_Http_Abstractions_3_0>3.0.0-preview4-19123-01</Microsoft_AspNetCore_Http_Abstractions_3_0>
     <Microsoft_AspNetCore_Mvc_Testing>3.0.0-preview6.19307.2</Microsoft_AspNetCore_Mvc_Testing>
     <Microsoft_AspNetCore_TestHost>3.0.0-preview7.19365.7</Microsoft_AspNetCore_TestHost>
     <Microsoft_AspNetCore_Identity_EntityFrameworkCore>3.0.0-preview7.19365.7</Microsoft_AspNetCore_Identity_EntityFrameworkCore>

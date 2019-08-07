@@ -6,6 +6,8 @@ using Ordering.BackgroundTasks.Extensions;
 using Ordering.BackgroundTasks.Tasks;
 using Serilog;
 using System.IO;
+using Microsoft.AspNetCore;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Ordering.BackgroundTasks
 {
@@ -13,11 +15,11 @@ namespace Ordering.BackgroundTasks
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            CreateHostBuilder(args).Run();
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
+        public static IWebHost CreateHostBuilder(string[] args) =>
+           WebHost.CreateDefaultBuilder(args)
                 .ConfigureAppConfiguration((host, builder) =>
                 {
                     builder.SetBasePath(Directory.GetCurrentDirectory());
@@ -27,15 +29,7 @@ namespace Ordering.BackgroundTasks
                     builder.AddCommandLine(args);
                 })
                 .ConfigureLogging((host, builder) => builder.UseSerilog(host.Configuration).AddSerilog())
-                .ConfigureServices((host, services) =>
-                {
-                    services.AddCustomHealthCheck(host.Configuration);
-                    services.Configure<BackgroundTaskSettings>(host.Configuration);
-                    services.AddOptions();
-                    services.AddHostedService<GracePeriodManagerService>();
-                    services.AddEventBus(host.Configuration);
-                    services.AddAutofac(container => container.Populate(services));
-                })
-                .UseServiceProviderFactory(new AutofacServiceProviderFactory());
+                .UseStartup<Startup>()
+                .Build();
     }
 }

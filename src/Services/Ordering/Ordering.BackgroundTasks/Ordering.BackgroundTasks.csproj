@@ -9,21 +9,25 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AspNetCore.HealthChecks.AzureServiceBus" Version="$(AspNetCore_HealthChecks_AzureServiceBus)" />
+    <PackageReference Include="AspNetCore.HealthChecks.Rabbitmq" Version="$(AspNetCore_HealthChecks_Rabbitmq)" />
+    <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="$(AspNetCore_HealthChecks_SqlServer)" />
+    <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="$(AspNetCore_HealthChecks_UI_Client)" />
+    <PackageReference Include="Autofac" Version="$(Autofac)" />
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="$(Autofac_Extensions_DependencyInjection)" />
+    <PackageReference Include="Dapper" Version="$(Dapper)" />
+    <PackageReference Include="Microsoft.AspNetCore.App" Version="3.0.0-preview7.19365.7" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="$(Microsoft_Extensions_Hosting)" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="$(Microsoft_VisualStudio_Azure_Containers_Tools_Targets)" />
-    <PackageReference Include="Dapper" Version="$(Dapper)" />
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.HealthChecks" Version="$(Microsoft_AspNetCore_Diagnostics_HealthChecks)" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="$(Microsoft_AspNetCore_Http_Abstractions_3_0)" />
+    
     <PackageReference Include="Serilog.AspNetCore" Version="$(Serilog_AspNetCore)" />
     <PackageReference Include="Serilog.Enrichers.Environment" Version="$(Serilog_Enrichers_Environment)" />
     <PackageReference Include="Serilog.Settings.Configuration" Version="$(Serilog_Settings_Configuration)" />
     <PackageReference Include="Serilog.Sinks.Console" Version="$(Serilog_Sinks_Console)" />
     <PackageReference Include="Serilog.Sinks.Seq" Version="$(Serilog_Sinks_Seq)" />
     <PackageReference Include="Serilog.Sinks.Http" Version="$(Serilog_Sinks_Http)" />
-    <PackageReference Include="Autofac" Version="$(Autofac)" />
-    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="$(Autofac_Extensions_DependencyInjection)" />
-    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.HealthChecks" Version="$(Microsoft_AspNetCore_Diagnostics_HealthChecks)" />
-    <PackageReference Include="AspNetCore.HealthChecks.AzureServiceBus" Version="$(AspNetCore_HealthChecks_AzureServiceBus)" />
-    <PackageReference Include="AspNetCore.HealthChecks.Rabbitmq" Version="$(AspNetCore_HealthChecks_Rabbitmq)" />
-    <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="$(AspNetCore_HealthChecks_SqlServer)" />
   </ItemGroup>
 
   <ItemGroup>
