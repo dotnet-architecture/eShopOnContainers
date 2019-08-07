@@ -273,7 +273,7 @@
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IIdentityService, IdentityService>();
             services.AddTransient<Func<DbConnection, IIntegrationEventLogService>>(
-                sp => (DbConnection c) => new IntegrationEventLogService(c, sp.GetService<ILogger<IntegrationEventLogService>>()));
+                sp => (DbConnection c) => new IntegrationEventLogService(c));
 
             services.AddTransient<IOrderingIntegrationEventService, OrderingIntegrationEventService>();
 

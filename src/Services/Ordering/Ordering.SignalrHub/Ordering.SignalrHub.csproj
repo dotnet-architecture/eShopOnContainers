@@ -27,6 +27,7 @@
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Redis" Version="$(Microsoft_AspNetCore_SignalR_Redis)" />
     <PackageReference Include="Microsoft.Extensions.Logging.AzureAppServices" Version="$(Microsoft_Extensions_Logging_AzureAppServices)" />
     <PackageReference Include="Serilog.AspNetCore" Version="$(Serilog_AspNetCore)" />
+    <PackageReference Include="Microsoft.AspNetCore.App" Version="$(Microsoft_AspNetCore_App)" />
     <PackageReference Include="Serilog.Enrichers.Environment" Version="$(Serilog_Enrichers_Environment)" />
     <PackageReference Include="Serilog.Settings.Configuration" Version="$(Serilog_Settings_Configuration)" />
     <PackageReference Include="Serilog.Sinks.Console" Version="$(Serilog_Sinks_Console)" />

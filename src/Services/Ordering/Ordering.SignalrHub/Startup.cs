@@ -109,7 +109,7 @@ namespace Ordering.SignalrHub
             RegisterEventBus(services);
 
             services.AddOptions();
-
+            
             //configure autofac
             var container = new ContainerBuilder();
             container.RegisterModule(new ApplicationModule());
@@ -136,6 +136,10 @@ namespace Ordering.SignalrHub
 
             app.UseCors("CorsPolicy");
             app.UseRouting();
+
+            //app.UseAuthorization();
+            app.UseAutentication();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapHealthChecks("/hc", new HealthCheckOptions()

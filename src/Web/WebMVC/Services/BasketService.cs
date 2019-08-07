@@ -1,4 +1,5 @@
 ﻿using Microsoft.eShopOnContainers.WebMVC.ViewModels;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System.Collections.Generic;
@@ -14,15 +15,17 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
     {
         private readonly IOptions<AppSettings> _settings;
         private readonly HttpClient _apiClient;
+        private readonly ILogger<BasketService> _logger;
         private readonly string _basketByPassUrl;
         private readonly string _purchaseUrl;
 
         private readonly string _bffUrl;
 
-        public BasketService(HttpClient httpClient, IOptions<AppSettings> settings)
+        public BasketService(HttpClient httpClient, IOptions<AppSettings> settings, ILogger<BasketService> logger)
         {
             _apiClient = httpClient;
             _settings = settings;
+            _logger =logger;
 
             _basketByPassUrl = $"{_settings.Value.PurchaseUrl}/api/v1/b/basket";
             _purchaseUrl = $"{_settings.Value.PurchaseUrl}/api/v1";
@@ -56,6 +59,8 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
         {
             var uri = API.Basket.CheckoutBasket(_basketByPassUrl);
             var basketContent = new StringContent(JsonConvert.SerializeObject(basket), System.Text.Encoding.UTF8, "application/json");
+
+            _logger.LogInformation("Uri chechout {uri}", uri);
 
             var response = await _apiClient.PostAsync(uri, basketContent);
 
