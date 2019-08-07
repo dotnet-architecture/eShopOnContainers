@@ -94,6 +94,7 @@ namespace Ordering.BackgroundTasks.Extensions
                     }
 
                     var retryCount = 5;
+
                     if (!string.IsNullOrEmpty(configuration["EventBusRetryCount"]))
                     {
                         retryCount = int.Parse(configuration["EventBusRetryCount"]);

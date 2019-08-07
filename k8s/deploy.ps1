@@ -68,7 +68,7 @@ if ($buildImages) {
 
 if ($pushImages) {
     Write-Host "Pushing images to $registry/$dockerOrg..." -ForegroundColor Yellow
-    $services = ("basket.api", "catalog.api", "identity.api", "ordering.api", "marketing.api","payment.api","locations.api", "webmvc", "webspa", "webstatus", "ocelotapigw", "mobileshoppingagg", "webshoppingagg", "ordering.signalrhub")
+    $services = ("basket.api", "catalog.api", "identity.api", "ordering.api", "ordering.backgroundtasks", "marketing.api","payment.api","locations.api", "webmvc", "webspa", "webstatus", "ocelotapigw", "mobileshoppingagg", "webshoppingagg", "ordering.signalrhub")
 
     foreach ($service in $services) {
         $imageFqdn = if ($useDockerHub)  {"$dockerOrg/${service}"} else {"$registry/$dockerOrg/${service}"}

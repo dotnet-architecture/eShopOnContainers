@@ -185,7 +185,7 @@ fi
 
 echo "#################### Begin $app_name installation using Helm ####################"
 infras=(sql-data nosql-data rabbitmq keystore-data basket-data)
-charts=(eshop-common apigwmm apigwms apigwwm apigwws basket-api catalog-api identity-api locations-api marketing-api mobileshoppingagg ordering-api ordering-signalrhub payment-api webmvc webshoppingagg webspa webstatus webhooks-api webhooks-web)
+charts=(eshop-common apigwmm apigwms apigwwm apigwws basket-api catalog-api identity-api locations-api marketing-api mobileshoppingagg ordering-api ordering-backgroundtasks ordering-signalrhub payment-api webmvc webshoppingagg webspa webstatus webhooks-api webhooks-web)
 
 if [[ !$skip_infrastructure ]]; then
   for infra in "${infras[@]}"

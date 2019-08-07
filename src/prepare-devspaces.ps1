@@ -52,6 +52,9 @@ Copy-Item "..\k8s\helm\inf.yaml" -Destination ".\Services\Ordering\Ordering.API"
 Copy-Item "..\k8s\helm\app.yaml" -Destination ".\Services\Ordering\Ordering.SignalrHub" -Force
 Copy-Item "..\k8s\helm\inf.yaml" -Destination ".\Services\Ordering\Ordering.SignalrHub" -Force
 
+Copy-Item "..\k8s\helm\app.yaml" -Destination ".\Services\Ordering\Ordering.BackgroundTasks" -Force
+Copy-Item "..\k8s\helm\inf.yaml" -Destination ".\Services\Ordering\Ordering.BackgroundTasks" -Force
+
 Write-Host "Copying app.yaml and inf.yaml to Payment API" -ForegroundColor Yellow
 Copy-Item "..\k8s\helm\app.yaml" -Destination ".\Services\Payment\Payment.API" -Force
 Copy-Item "..\k8s\helm\inf.yaml" -Destination ".\Services\Payment\Payment.API" -Force

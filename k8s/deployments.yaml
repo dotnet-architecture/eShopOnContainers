@@ -266,6 +266,65 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
+  name: ordering-backgroundtasks
+spec:
+  paused: true
+  template:
+    metadata:
+      labels:
+        app: eshop
+        component: ordering-backgroundtasks
+    spec:
+      containers:
+      - name: ordering-backgroundtasks
+        image: eshop/ordering.backgroundtasks
+        imagePullPolicy: Always
+        env:        
+        - name: ConnectionString
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: ordering__ConnectionString
+        - name: EventBusConnection
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: all__EventBusConnection
+        - name: AzureServiceBusEnabled
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: all__UseAzureServiceBus        
+        - name: CheckUpdateTime
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: GracePeriodManager__CheckUpdateTime
+        - name: GracePeriodTime
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: GracePeriodManager__GracePeriodTime  
+        - name: ApplicationInsights__InstrumentationKey
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: all__InstrumentationKey
+        - name: UseLoadTest
+          valueFrom:
+           configMapKeyRef:
+             name: externalcfg
+             key: all__EnableLoadTest
+        - name: OrchestratorType
+          value: 'K8S'     
+        ports:
+        - containerPort: 80
+      imagePullSecrets:
+      - name: registry-key
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
   name: ordering-signalrhub
 spec:
   paused: true

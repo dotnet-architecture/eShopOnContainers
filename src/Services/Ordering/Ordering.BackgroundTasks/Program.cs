@@ -18,11 +18,11 @@ namespace Ordering.BackgroundTasks
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                .ConfigureAppConfiguration((hostContext, builder) =>
+                .ConfigureAppConfiguration((host, builder) =>
                 {
                     builder.SetBasePath(Directory.GetCurrentDirectory());
                     builder.AddJsonFile("appsettings.json", optional: true);
-                    builder.AddJsonFile($"appsettings.{hostContext.HostingEnvironment.EnvironmentName}.json", optional: true);
+                    builder.AddJsonFile($"appsettings.{host.HostingEnvironment.EnvironmentName}.json", optional: true);
                     builder.AddEnvironmentVariables();
                     builder.AddCommandLine(args);
                 })
@@ -35,6 +35,7 @@ namespace Ordering.BackgroundTasks
                     services.AddHostedService<GracePeriodManagerService>();
                     services.AddEventBus(host.Configuration);
                     services.AddAutofac(container => container.Populate(services));
-                });
+                })
+                .UseServiceProviderFactory(new AutofacServiceProviderFactory());
     }
 }
