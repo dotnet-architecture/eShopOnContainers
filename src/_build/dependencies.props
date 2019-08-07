@@ -50,6 +50,7 @@
     <Microsoft_ApplicationInsights_DependencyCollector>2.6.1</Microsoft_ApplicationInsights_DependencyCollector>
     <Microsoft_ApplicationInsights_Kubernetes>1.0.2</Microsoft_ApplicationInsights_Kubernetes>
     <Microsoft_AspNetCore_Mvc_Core>3.0.0-preview4-19123-01</Microsoft_AspNetCore_Mvc_Core>
+    <Microsoft_AspNetCore_App>3.0.0-preview7.19365.7</Microsoft_AspNetCore_App>
     <Microsoft_AspNetCore_Razor_Design>3.0.0-alpha1-10670</Microsoft_AspNetCore_Razor_Design>
     <Microsoft_AspNetCore_DataProtection_Redis>2.2.0-preview2-35157</Microsoft_AspNetCore_DataProtection_Redis>
     <Microsoft_AspNetCore_SignalR_Redis>3.0.0-alpha1-34847</Microsoft_AspNetCore_SignalR_Redis>
