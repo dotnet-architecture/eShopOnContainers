@@ -137,8 +137,8 @@ namespace Ordering.SignalrHub
             app.UseCors("CorsPolicy");
             app.UseRouting();
 
-            //app.UseAuthorization();
-            app.UseAutentication();
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
