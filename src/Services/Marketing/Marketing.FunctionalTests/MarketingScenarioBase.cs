@@ -27,8 +27,8 @@ namespace Marketing.FunctionalTests
                 .UseContentRoot(Path.GetDirectoryName(path))
                 .ConfigureAppConfiguration(cb =>
                 {
-                    var h = cb.AddJsonFile("appsettings.json", optional: false)
-                    .AddEnvironmentVariables();
+                    cb.AddJsonFile("appsettings.json", optional: false)
+                      .AddEnvironmentVariables();
                 })
                 .CaptureStartupErrors(true)
                 .UseStartup<MarketingTestsStartup>();
@@ -40,7 +40,6 @@ namespace Marketing.FunctionalTests
                {
                    var logger = services.GetService<ILogger<MarketingContextSeed>>();
 
-                   logger.LogError("Migrating MarketingContextSeed");
                    new MarketingContextSeed()
                        .SeedAsync(context, logger)
                        .Wait();
