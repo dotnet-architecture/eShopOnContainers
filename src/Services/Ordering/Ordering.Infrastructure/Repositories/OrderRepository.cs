@@ -33,15 +33,16 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Repositor
 
         public async Task<Order> GetAsync(int orderId)
         {
-            var order = await _context.Orders.FindAsync(orderId);
+            var order = await _context
+                                .Orders
+                                .Include(x => x.Address)
+                                .FirstOrDefaultAsync(o => o.Id == orderId);
             if (order != null)
             {
                 await _context.Entry(order)
                     .Collection(i => i.OrderItems).LoadAsync();
                 await _context.Entry(order)
                     .Reference(i => i.OrderStatus).LoadAsync();
-                await _context.Entry(order)
-                    .Reference(i => i.Address).LoadAsync();
             }
 
             return order;

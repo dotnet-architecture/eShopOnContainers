@@ -21,7 +21,11 @@ namespace Ordering.Infrastructure.EntityConfigurations
                 .ForSqlServerUseSequenceHiLo("orderseq", OrderingContext.DEFAULT_SCHEMA);
 
             //Address value object persisted as owned entity type supported since EF Core 2.0
-            orderConfiguration.OwnsOne(o => o.Address);
+            orderConfiguration
+                .OwnsOne(o => o.Address, a =>
+                {
+                    a.WithOwner();
+                });
 
             orderConfiguration.Property<DateTime>("OrderDate").IsRequired();
             orderConfiguration.Property<int?>("BuyerId").IsRequired(false);
@@ -30,7 +34,7 @@ namespace Ordering.Infrastructure.EntityConfigurations
             orderConfiguration.Property<string>("Description").IsRequired(false);
 
             var navigation = orderConfiguration.Metadata.FindNavigation(nameof(Order.OrderItems));
-            
+
             // DDD Patterns comment:
             //Set as field (New since EF 1.1) to access the OrderItem collection property through its field
             navigation.SetPropertyAccessMode(PropertyAccessMode.Field);

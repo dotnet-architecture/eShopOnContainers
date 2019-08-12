@@ -27,7 +27,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
         private readonly IMediator _mediator;
         private IDbContextTransaction _currentTransaction;
 
-        private OrderingContext(DbContextOptions<OrderingContext> options) : base(options) { }
+        public OrderingContext(DbContextOptions<OrderingContext> options) : base(options) { }
 
         public IDbContextTransaction GetCurrentTransaction() => _currentTransaction;
 

@@ -63,7 +63,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
             basketCheckout.RequestId = (Guid.TryParse(requestId, out Guid guid) && guid != Guid.Empty) ?
                 guid : basketCheckout.RequestId;
 
-_logger.LogInformation("----- CheckoutAsync userId: {userId} ", userId);
+            _logger.LogInformation("----- CheckoutAsync userId: {userId} ", userId);
 
             var basket = await _repository.GetBasketAsync(userId);
 
@@ -72,9 +72,9 @@ _logger.LogInformation("----- CheckoutAsync userId: {userId} ", userId);
                 return BadRequest();
             }
 
-_logger.LogInformation("----- CheckoutAsync basket: {@basket} ", basket);
+            _logger.LogInformation("----- CheckoutAsync basket: {@basket} ", basket);
 
-_logger.LogInformation("----- CheckoutAsync user identity: {User} ", string.Join(':',  ((ClaimsIdentity)User.Identity).Claims.Select(c => c.Type + " " + c.Value)));
+            _logger.LogInformation("----- CheckoutAsync user identity: {User} ", string.Join(':', ((ClaimsIdentity)User.Identity).Claims.Select(c => c.Type + " " + c.Value)));
 
             var userName = User.FindFirst(x => x.Type == ClaimTypes.Name).Value;
 
