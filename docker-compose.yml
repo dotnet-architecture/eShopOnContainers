@@ -6,7 +6,7 @@ services:
     image: datalust/seq:latest
 
   sql.data:
-    image: microsoft/mssql-server-linux:2017-latest
+    image: mcr.microsoft.com/mssql/server:2017-latest
 
   nosql.data:
     image: mongo
