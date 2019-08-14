@@ -13,21 +13,21 @@
     using System;
     using System.Threading.Tasks;
 
-    public class OrderPaymentSuccededIntegrationEventHandler : 
-        IIntegrationEventHandler<OrderPaymentSuccededIntegrationEvent>
+    public class OrderPaymentSucceededIntegrationEventHandler : 
+        IIntegrationEventHandler<OrderPaymentSucceededIntegrationEvent>
     {
         private readonly IMediator _mediator;
-        private readonly ILogger<OrderPaymentSuccededIntegrationEventHandler> _logger;
+        private readonly ILogger<OrderPaymentSucceededIntegrationEventHandler> _logger;
 
-        public OrderPaymentSuccededIntegrationEventHandler(
+        public OrderPaymentSucceededIntegrationEventHandler(
             IMediator mediator,
-            ILogger<OrderPaymentSuccededIntegrationEventHandler> logger)
+            ILogger<OrderPaymentSucceededIntegrationEventHandler> logger)
         {
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public async Task Handle(OrderPaymentSuccededIntegrationEvent @event)
+        public async Task Handle(OrderPaymentSucceededIntegrationEvent @event)
         {
             using (LogContext.PushProperty("IntegrationEventContext", $"{@event.Id}-{Program.AppName}"))
             {
