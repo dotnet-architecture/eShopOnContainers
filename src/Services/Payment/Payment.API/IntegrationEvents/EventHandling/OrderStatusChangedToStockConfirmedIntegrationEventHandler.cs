@@ -43,7 +43,7 @@
 
                 if (_settings.PaymentSucceded)
                 {
-                    orderPaymentIntegrationEvent = new OrderPaymentSuccededIntegrationEvent(@event.OrderId);
+                    orderPaymentIntegrationEvent = new OrderPaymentSucceededIntegrationEvent(@event.OrderId);
                 }
                 else
                 {
