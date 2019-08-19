@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Config;
 using Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Filters.Basket.API.Infrastructure.Filters;
 using Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Infrastructure;
@@ -14,9 +13,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using Polly;
 using Polly.Extensions.Http;
-using Swashbuckle.AspNetCore.Swagger;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -63,19 +62,6 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator
                 app.UsePathBase(pathBase);
             }
 
-            app.UseHealthChecks("/hc", new HealthCheckOptions()
-            {
-                Predicate = _ => true,
-                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-            });
-
-            app.UseHealthChecks("/liveness", new HealthCheckOptions
-            {
-                Predicate = r => r.Name.Contains("self")
-            });
-
-            app.UseCors("CorsPolicy");
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -86,15 +72,31 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator
                 app.UseHsts();
             }
 
-            app.UseAuthentication();
+            app.UseCors("CorsPolicy");
             app.UseHttpsRedirection();
-            app.UseMvc();
+            app.UseRouting();
+            app.UseAuthentication();
+            app.UseAuthorization();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapDefaultControllerRoute();
+                endpoints.MapControllers();
+                endpoints.MapHealthChecks("/hc", new HealthCheckOptions()
+                {
+                    Predicate = _ => true,
+                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                });
+                endpoints.MapHealthChecks("/liveness", new HealthCheckOptions
+                {
+                    Predicate = r => r.Name.Contains("self")
+                });
+            });
 
             app.UseSwagger().UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint($"{ (!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty) }/swagger/v1/swagger.json", "Purchase BFF V1");
 
-                c.OAuthClientId("Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregatorwaggerui");
+                c.OAuthClientId("mobileshoppingaggswaggerui");
                 c.OAuthClientSecret(string.Empty);
                 c.OAuthRealm(string.Empty);
                 c.OAuthAppName("Purchase BFF Swagger UI");
@@ -109,29 +111,32 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator
             services.AddOptions();
             services.Configure<UrlsConfig>(configuration.GetSection("urls"));
 
-            services.AddMvc()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddControllers()
+                .AddNewtonsoftJson();
 
             services.AddSwaggerGen(options =>
             {
                 options.DescribeAllEnumsAsStrings();
-                options.SwaggerDoc("v1", new Swashbuckle.AspNetCore.Swagger.Info
+                options.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Title = "Shopping Aggregator for Mobile Clients",
                     Version = "v1",
-                    Description = "Shopping Aggregator for Mobile Clients",
-                    TermsOfService = "Terms Of Service"
+                    Description = "Shopping Aggregator for Mobile Clients"
                 });
-
-                options.AddSecurityDefinition("oauth2", new OAuth2Scheme
+                options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
                 {
-                    Type = "oauth2",
-                    Flow = "implicit",
-                    AuthorizationUrl = $"{configuration.GetValue<string>("IdentityUrlExternal")}/connect/authorize",
-                    TokenUrl = $"{configuration.GetValue<string>("IdentityUrlExternal")}/connect/token",
-                    Scopes = new Dictionary<string, string>()
+                    Type = SecuritySchemeType.OAuth2,
+                    Flows = new OpenApiOAuthFlows()
                     {
-                        { "mobileshoppingagg", "Shopping Aggregator for Mobile Clients" }
+                        Implicit = new OpenApiOAuthFlow()
+                        {
+                            AuthorizationUrl = new Uri($"{configuration.GetValue<string>("IdentityUrlExternal")}/connect/authorize"),
+                            TokenUrl = new Uri($"{configuration.GetValue<string>("IdentityUrlExternal")}/connect/token"),
+                            Scopes = new Dictionary<string, string>()
+                            {
+                                { "mobileshoppingagg", "Shopping Aggregator for Mobile Clients" }
+                            }
+                        }
                     }
                 });
 
@@ -152,7 +157,8 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator
         }
         public static IServiceCollection AddCustomAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
-            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("sub");
+
             var identityUrl = configuration.GetValue<string>("urls:identity");
 
             services.AddAuthentication(options =>
@@ -166,15 +172,6 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator
                 options.Authority = identityUrl;
                 options.RequireHttpsMetadata = false;
                 options.Audience = "mobileshoppingagg";
-                options.Events = new JwtBearerEvents()
-                {
-                    OnAuthenticationFailed = async ctx =>
-                    {
-                    },
-                    OnTokenValidated = async ctx =>
-                    {
-                    }
-                };
             });
 
             return services;

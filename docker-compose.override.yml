@@ -219,6 +219,7 @@ services:
       - MarketingUrlHC=http://marketing.api/hc
       - PaymentUrlHC=http://payment.api/hc
       - LocationUrlHC=http://locations.api/hc
+      - IdentityUrlExternal=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
     ports:
       - "5200:80"   
     volumes:
@@ -235,6 +236,7 @@ services:
       - MarketingUrlHC=http://marketing.api/hc
       - PaymentUrlHC=http://payment.api/hc
       - LocationUrlHC=http://locations.api/hc
+      - IdentityUrlExternal=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
     ports:
       - "5201:80"   
     volumes:
@@ -251,6 +253,7 @@ services:
       - MarketingUrlHC=http://marketing.api/hc
       - PaymentUrlHC=http://payment.api/hc
       - LocationUrlHC=http://locations.api/hc
+      - IdentityUrlExternal=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
     ports:
       - "5202:80"   
     volumes:
@@ -267,6 +270,7 @@ services:
       - MarketingUrlHC=http://marketing.api/hc
       - PaymentUrlHC=http://payment.api/hc
       - LocationUrlHC=http://locations.api/hc
+      - IdentityUrlExternal=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
     ports:
       - "5203:80"   
     volumes:
@@ -286,6 +290,7 @@ services:
       - MarketingUrlHC=http://marketing.api/hc
       - PaymentUrlHC=http://payment.api/hc
       - LocationUrlHC=http://locations.api/hc
+      - IdentityUrlExternal=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
     ports:
       - "5120:80"   
 
@@ -303,6 +308,7 @@ services:
       - MarketingUrlHC=http://marketing.api/hc
       - PaymentUrlHC=http://payment.api/hc
       - LocationUrlHC=http://locations.api/hc
+      - IdentityUrlExternal=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
     ports:
       - "5121:80"   
 

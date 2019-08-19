@@ -32,7 +32,7 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Controllers
                 return BadRequest("Need a valid basketid");
             }
             // Get the basket data and build a order draft based on it
-            var basket = await _basketService.GetByIdAsync(basketId);
+            var basket = await _basketService.GetById(basketId);
 
             if (basket == null)
             {

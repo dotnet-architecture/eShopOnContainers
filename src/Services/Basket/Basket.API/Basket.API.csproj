@@ -21,6 +21,9 @@
     <PackageReference Include="AspNetCore.HealthChecks.Redis" Version="$(AspNetCore_HealthChecks_Redis)" />
     <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="$(AspNetCore_HealthChecks_UI_Client)" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="$(Autofac_Extensions_DependencyInjection)" />
+    <PackageReference Include="Grpc.AspNetCore.Server" Version="$(Grpc_AspNetCore_Server)" />
+    <PackageReference Include="Google.Protobuf" Version="$(Google_Protobuf)" />
+    <PackageReference Include="Grpc.Tools" Version="$(Grpc_Tools)" PrivateAssets="All" />   
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="$(Microsoft_ApplicationInsights_AspNetCore)" />
     <PackageReference Include="Microsoft.ApplicationInsights.DependencyCollector" Version="$(Microsoft_ApplicationInsights_DependencyCollector)" />
     <PackageReference Include="Microsoft.ApplicationInsights.Kubernetes" Version="$(Microsoft_ApplicationInsights_Kubernetes)" />
@@ -37,6 +40,12 @@
     <PackageReference Include="Serilog.Sinks.Http" Version="$(Serilog_Sinks_Http)" />
     <PackageReference Include="StackExchange.Redis.StrongName" Version="$(StackExchange_Redis_StrongName)" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="$(Swashbuckle_AspNetCore)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Protobuf Include="Proto\basket.proto" GrpcServices="Server" Generator="MSBuild:Compile" />
+    <Content Include="@(Protobuf)" />
+    <None Remove="@(Protobuf)" />
   </ItemGroup>
 
   <ItemGroup>

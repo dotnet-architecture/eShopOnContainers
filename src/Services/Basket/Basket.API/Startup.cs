@@ -4,6 +4,7 @@ using Basket.API.Infrastructure.Filters;
 using Basket.API.Infrastructure.Middlewares;
 using Basket.API.IntegrationEvents.EventHandling;
 using Basket.API.IntegrationEvents.Events;
+using grpc;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -32,6 +33,7 @@ using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.IO;
 
 namespace Microsoft.eShopOnContainers.Services.Basket.API
 {
@@ -47,6 +49,11 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public virtual IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            services.AddGrpc(options =>
+            {
+                options.EnableDetailedErrors = true;
+            });
+
             RegisterAppInsights(services);
 
             services.AddControllers(options =>
@@ -84,10 +91,9 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
                         }
                     }
                 });
-                
+
                 options.OperationFilter<AuthorizeCheckOperationFilter>();
             });
-            
 
             ConfigureAuthService(services);
 
@@ -192,6 +198,14 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
                 app.UsePathBase(pathBase);
             }
 
+            app.UseSwagger()
+               .UseSwaggerUI(setup =>
+               {
+                   setup.SwaggerEndpoint($"{ (!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty) }/swagger/v1/swagger.json", "Basket.API V1");
+                   setup.OAuthClientId("basketswaggerui");
+                   setup.OAuthAppName("Basket Swagger UI");
+               });
+
             app.UseRouting();
             ConfigureAuth(app);
 
@@ -202,6 +216,21 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             {
                 endpoints.MapDefaultControllerRoute();
                 endpoints.MapControllers();
+                endpoints.MapGet("/_proto/", async ctx =>
+                {
+                    ctx.Response.ContentType = "text/plain";
+                    using var fs = new FileStream(Path.Combine(env.ContentRootPath, "Proto", "basket.proto"), FileMode.Open, FileAccess.Read);
+                    using var sr = new StreamReader(fs);
+                    while (!sr.EndOfStream)
+                    {
+                        var line = await sr.ReadLineAsync();
+                        if (line != "/* >>" || line != "<< */")
+                        {
+                            await ctx.Response.WriteAsync(line);
+                        }
+                    }
+                });
+                endpoints.MapGrpcService<BasketService>();
                 endpoints.MapHealthChecks("/hc", new HealthCheckOptions()
                 {
                     Predicate = _ => true,
@@ -212,15 +241,6 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
                     Predicate = r => r.Name.Contains("self")
                 });
             });
-            
-            app.UseSwagger()
-               .UseSwaggerUI(setup =>
-               {
-                   setup.SwaggerEndpoint($"{ (!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty) }/swagger/v1/swagger.json", "Basket.API V1");
-                   setup.OAuthClientId("basketswaggerui");
-                   setup.OAuthAppName("Basket Swagger UI");
-               });
-
 
             ConfigureEventBus(app);
         }
