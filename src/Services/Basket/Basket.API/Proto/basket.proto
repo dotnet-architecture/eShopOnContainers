@@ -15,10 +15,12 @@ message BasketRequest {
 
 message CustomerBasketRequest {
 	string buyerid = 1;
+	repeated BasketItemResponse items = 2;
 }
 
 message CustomerBasketResponse {
 	string buyerid = 1;
+	repeated BasketItemResponse items = 2;
 }
 
 message BasketItemResponse {

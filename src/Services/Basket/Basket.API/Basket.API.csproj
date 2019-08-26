@@ -27,11 +27,11 @@
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="$(Microsoft_ApplicationInsights_AspNetCore)" />
     <PackageReference Include="Microsoft.ApplicationInsights.DependencyCollector" Version="$(Microsoft_ApplicationInsights_DependencyCollector)" />
     <PackageReference Include="Microsoft.ApplicationInsights.Kubernetes" Version="$(Microsoft_ApplicationInsights_Kubernetes)" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.0.0-preview8.19405.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="$(Microsoft_AspNetCore_Authentication_JwtBearer)" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.HealthChecks" Version="$(Microsoft_AspNetCore_Diagnostics_HealthChecks)" />
     <PackageReference Include="Microsoft.AspNetCore.HealthChecks" Version="$(Microsoft_AspNetCore_HealthChecks)" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.AzureKeyVault" Version="3.0.0-preview8.19405.4" />
-    <PackageReference Include="Microsoft.Extensions.Logging.AzureAppServices" Version="3.0.0-preview8.19405.4" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.AzureKeyVault" Version="$(Microsoft_Extensions_Configuration_AzureKeyVault)" />
+    <PackageReference Include="Microsoft.Extensions.Logging.AzureAppServices" Version="$(Microsoft_Extensions_Logging_AzureAppServices)" />
     <PackageReference Include="Serilog.AspNetCore" Version="$(Serilog_AspNetCore)" />
     <PackageReference Include="Serilog.Enrichers.Environment" Version="$(Serilog_Enrichers_Environment)" />
     <PackageReference Include="Serilog.Settings.Configuration" Version="$(Serilog_Settings_Configuration)" />

@@ -20,46 +20,24 @@ namespace GrpcBasket
         }
 
         [AllowAnonymous]
-        public override Task<CustomerBasketResponse> GetBasketById(BasketRequest request, ServerCallContext context)
+        public override async Task<CustomerBasketResponse> GetBasketById(BasketRequest request, ServerCallContext context)
         {
             _logger.LogInformation($"Begin grpc call from method {context.Method} for basket id {request.Id}");
 
-            //context.ResponseTrailers.Add("grpc-status", "0");
-            //context.Status = Status.DefaultSuccess;
+            var data = await _repository.GetBasketAsync(request.Id);
 
-            return Task.FromResult(new CustomerBasketResponse
+            if (data != null)
             {
-                Buyerid = "55"
-            });
+                context.Status = new Status(StatusCode.OK, $"Basket with id {request.Id} do exist");
 
+                return MapToCustomerBasketResponse(data);
+            }
+            else
+            {
+                context.Status = new Status(StatusCode.NotFound, $"Basket with id {request.Id} do not exist");
+            }
 
-            //    if (!context.Response.SupportsTrailers())
-            //    {
-            //        var headers = new HeaderDictionary();
-            //        headers.Add("grpc-status", "0");
-
-            //        Log.Logger.Information("Custom middleware headers {@headers}", headers);
-            //        context.Features.Set<IHttpResponseTrailersFeature>(new TestHttpResponseTrailersFeature
-            //        {
-            //            Trailers = headers
-            //        });
-            //    }
-
-            //    return next();
-            // var data = await _repository.GetBasketAsync(request.Id);
-
-            // if (data != null)
-            // {
-            //     context.Status = new Status(StatusCode.OK, $"Basket with id {request.Id} do exist");
-
-            //     return MapToCustomerBasketResponse(data);
-            // }
-            // else
-            // {
-            //     context.Status = new Status(StatusCode.NotFound, $"Basket with id {request.Id} do not exist");
-            // }
-
-            // return new CustomerBasketResponse();
+            return new CustomerBasketResponse();
         }
 
         public override async Task<CustomerBasketResponse> UpdateBasket(CustomerBasketRequest request, ServerCallContext context)
@@ -87,16 +65,16 @@ namespace GrpcBasket
                 Buyerid = customerBasket.BuyerId
             };
 
-            // customerBasket.Items.ForEach(item => response.Items.Add(new BasketItemResponse
-            // {
-            //     Id = item.Id,
-            //     Oldunitprice = (double)item.OldUnitPrice,
-            //     Pictureurl = item.PictureUrl,
-            //     Productid = item.ProductId,
-            //     Productname = item.ProductName,
-            //     Quantity = item.Quantity,
-            //     Unitprice = (double)item.UnitPrice
-            // }));
+            customerBasket.Items.ForEach(item => response.Items.Add(new BasketItemResponse
+            {
+                Id = item.Id,
+                Oldunitprice = (double)item.OldUnitPrice,
+                Pictureurl = item.PictureUrl,
+                Productid = item.ProductId,
+                Productname = item.ProductName,
+                Quantity = item.Quantity,
+                Unitprice = (double)item.UnitPrice
+            }));
 
             return response;
         }
@@ -108,16 +86,16 @@ namespace GrpcBasket
                 BuyerId = customerBasketRequest.Buyerid
             };
 
-            // customerBasketRequest.Items.ToList().ForEach(item => response.Items.Add(new BasketItem
-            // {
-            //     Id = item.Id,
-            //     OldUnitPrice = (decimal)item.Oldunitprice,
-            //     PictureUrl = item.Pictureurl,
-            //     ProductId = item.Productid,
-            //     ProductName = item.Productname,
-            //     Quantity = item.Quantity,
-            //     UnitPrice = (decimal)item.Unitprice
-            // }));
+            customerBasketRequest.Items.ToList().ForEach(item => response.Items.Add(new BasketItem
+            {
+                Id = item.Id,
+                OldUnitPrice = (decimal)item.Oldunitprice,
+                PictureUrl = item.Pictureurl,
+                ProductId = item.Productid,
+                ProductName = item.Productname,
+                Quantity = item.Quantity,
+                UnitPrice = (decimal)item.Unitprice
+            }));
 
             return response;
         }
