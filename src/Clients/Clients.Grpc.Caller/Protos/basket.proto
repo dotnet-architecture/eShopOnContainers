@@ -1,12 +1,12 @@
-﻿syntax = "proto3";
+syntax = "proto3";
 
 option csharp_namespace = "GrpcBasket";
 
 package BasketApi;
 
 service Basket {
-	rpc GetBasketById(BasketRequest) returns (CustomerBasketResponse) {}
-	rpc UpdateBasket(CustomerBasketRequest) returns (CustomerBasketResponse) {}
+	rpc GetBasketById(BasketRequest) returns (CustomerBasketResponse);
+	rpc UpdateBasket(CustomerBasketRequest) returns (CustomerBasketResponse);
 }
 
 message BasketRequest {
@@ -15,10 +15,12 @@ message BasketRequest {
 
 message CustomerBasketRequest {
 	string buyerid = 1;
+	repeated BasketItemResponse items = 2;
 }
 
 message CustomerBasketResponse {
 	string buyerid = 1;
+	repeated BasketItemResponse items = 2;
 }
 
 message BasketItemResponse {

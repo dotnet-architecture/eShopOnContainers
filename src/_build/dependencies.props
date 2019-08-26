@@ -16,9 +16,9 @@
   </PropertyGroup>
 
   <PropertyGroup Label="Package Versions">
-    <Grpc_AspNetCore_Server>0.1.22-pre1</Grpc_AspNetCore_Server>
-    <Google_Protobuf>3.9.0-rc1</Google_Protobuf>
-    <Grpc_Tools>1.22.0</Grpc_Tools>
+    <Grpc_AspNetCore_Server>0.1.22-pre3</Grpc_AspNetCore_Server>
+    <Google_Protobuf>3.9.1</Google_Protobuf>
+    <Grpc_Tools>2.23.0</Grpc_Tools>
     <Grpc_AspNetCore_Server_ClientFactory>0.1.22-pre2</Grpc_AspNetCore_Server_ClientFactory>
 
     <Microsoft_Extensions_Hosting>3.0.0-preview7.19362.4</Microsoft_Extensions_Hosting>

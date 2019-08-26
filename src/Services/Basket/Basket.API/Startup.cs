@@ -4,7 +4,6 @@ using Basket.API.Infrastructure.Filters;
 using Basket.API.Infrastructure.Middlewares;
 using Basket.API.IntegrationEvents.EventHandling;
 using Basket.API.IntegrationEvents.Events;
-using grpc;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -34,6 +33,9 @@ using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.IO;
+using GrpcBasket;
+using Microsoft.AspNetCore.Http.Features;
+using Serilog;
 
 namespace Microsoft.eShopOnContainers.Services.Basket.API
 {
@@ -198,39 +200,62 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
                 app.UsePathBase(pathBase);
             }
 
-            app.UseSwagger()
-               .UseSwaggerUI(setup =>
-               {
-                   setup.SwaggerEndpoint($"{ (!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty) }/swagger/v1/swagger.json", "Basket.API V1");
-                   setup.OAuthClientId("basketswaggerui");
-                   setup.OAuthAppName("Basket Swagger UI");
-               });
+
+            //app.Use((context, next) =>
+            //{
+            //    Log.Logger.Information("Custom middleware to avoid trailers");
+            //    Log.Logger.Information("Custom middleware context.Response {@context.Response}", context.Response);
+            //    Log.Logger.Information("Custom middleware context.Response.SupportsTrailers {context.Response.SupportsTrailers}", context.Response.SupportsTrailers());
+            //    if (!context.Response.SupportsTrailers())
+            //    {
+            //        var headers = new HeaderDictionary();
+            //        headers.Add("grpc-status", "0");
+
+            //        Log.Logger.Information("Custom middleware headers {@headers}", headers);
+            //        context.Features.Set<IHttpResponseTrailersFeature>(new TestHttpResponseTrailersFeature
+            //        {
+            //            Trailers = headers
+            //        });
+            //    }
+
+            //    return next();
+
+
+            //});
+
+            //app.UseSwagger()
+            //   .UseSwaggerUI(setup =>
+            //   {
+            //       setup.SwaggerEndpoint($"{ (!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty) }/swagger/v1/swagger.json", "Basket.API V1");
+            //       setup.OAuthClientId("basketswaggerui");
+            //       setup.OAuthAppName("Basket Swagger UI");
+            //   });
 
             app.UseRouting();
-            ConfigureAuth(app);
+            // ConfigureAuth(app);
 
-            app.UseStaticFiles();
+            // app.UseStaticFiles();
 
             app.UseCors("CorsPolicy");
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapGrpcService<BasketService>();
                 endpoints.MapDefaultControllerRoute();
                 endpoints.MapControllers();
-                endpoints.MapGet("/_proto/", async ctx =>
-                {
-                    ctx.Response.ContentType = "text/plain";
-                    using var fs = new FileStream(Path.Combine(env.ContentRootPath, "Proto", "basket.proto"), FileMode.Open, FileAccess.Read);
-                    using var sr = new StreamReader(fs);
-                    while (!sr.EndOfStream)
-                    {
-                        var line = await sr.ReadLineAsync();
-                        if (line != "/* >>" || line != "<< */")
-                        {
-                            await ctx.Response.WriteAsync(line);
-                        }
-                    }
-                });
-                endpoints.MapGrpcService<BasketService>();
+                // endpoints.MapGet("/_proto/", async ctx =>
+                // {
+                //     ctx.Response.ContentType = "text/plain";
+                //     using var fs = new FileStream(Path.Combine(env.ContentRootPath, "Proto", "basket.proto"), FileMode.Open, FileAccess.Read);
+                //     using var sr = new StreamReader(fs);
+                //     while (!sr.EndOfStream)
+                //     {
+                //         var line = await sr.ReadLineAsync();
+                //         if (line != "/* >>" || line != "<< */")
+                //         {
+                //             await ctx.Response.WriteAsync(line);
+                //         }
+                //     }
+                // });
                 endpoints.MapHealthChecks("/hc", new HealthCheckOptions()
                 {
                     Predicate = _ => true,
@@ -254,21 +279,21 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
         private void ConfigureAuthService(IServiceCollection services)
         {
             // prevent from mapping "sub" claim to nameidentifier.
-            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("sub");
+            // JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("sub");
 
-            var identityUrl = Configuration.GetValue<string>("IdentityUrl");
+            // var identityUrl = Configuration.GetValue<string>("IdentityUrl");
 
-            services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            // services.AddAuthentication(options =>
+            // {
+            //     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            //     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 
-            }).AddJwtBearer(options =>
-            {
-                options.Authority = identityUrl;
-                options.RequireHttpsMetadata = false;
-                options.Audience = "basket";
-            });
+            // }).AddJwtBearer(options =>
+            // {
+            //     options.Authority = identityUrl;
+            //     options.RequireHttpsMetadata = false;
+            //     options.Audience = "basket";
+            // });
         }
 
         protected virtual void ConfigureAuth(IApplicationBuilder app)
@@ -278,8 +303,8 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
                 app.UseMiddleware<ByPassAuthMiddleware>();
             }
 
-            app.UseAuthentication();
-            app.UseAuthorization();
+            // app.UseAuthentication();
+            // app.UseAuthorization();
         }
 
         private void RegisterEventBus(IServiceCollection services)

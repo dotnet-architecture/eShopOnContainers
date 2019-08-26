@@ -72,6 +72,7 @@ services:
 
     ports:
       - "5103:80"  
+      - "5580:5001"  
 
   catalog.api:
     environment:

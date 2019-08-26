@@ -49,7 +49,6 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
                 .ConfigureKestrel(options =>
                 {
                     var ports = GetDefinedPorts(configuration);
-
                     options.Listen(IPAddress.Any, ports.httpPort, listenOptions =>
                     {
                         listenOptions.Protocols = HttpProtocols.Http1AndHttp2;
@@ -59,6 +58,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
                     {
                         listenOptions.Protocols = HttpProtocols.Http2;
                     });
+
                 })
                 .UseFailing(options => options.ConfigPath = "/Failing")
                 .UseStartup<Startup>()
