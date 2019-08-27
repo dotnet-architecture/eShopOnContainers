@@ -74,6 +74,17 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator
 
             app.UseCors("CorsPolicy");
             app.UseHttpsRedirection();
+
+            app.UseSwagger().UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint($"{ (!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty) }/swagger/v1/swagger.json", "Purchase BFF V1");
+
+                c.OAuthClientId("mobileshoppingaggswaggerui");
+                c.OAuthClientSecret(string.Empty);
+                c.OAuthRealm(string.Empty);
+                c.OAuthAppName("Purchase BFF Swagger UI");
+            });
+
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
@@ -90,16 +101,6 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator
                 {
                     Predicate = r => r.Name.Contains("self")
                 });
-            });
-
-            app.UseSwagger().UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint($"{ (!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty) }/swagger/v1/swagger.json", "Purchase BFF V1");
-
-                c.OAuthClientId("mobileshoppingaggswaggerui");
-                c.OAuthClientSecret(string.Empty);
-                c.OAuthRealm(string.Empty);
-                c.OAuthAppName("Purchase BFF Swagger UI");
             });
         }
     }
@@ -130,8 +131,11 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator
                     {
                         Implicit = new OpenApiOAuthFlow()
                         {
-                            AuthorizationUrl = new Uri($"{configuration.GetValue<string>("IdentityUrlExternal")}/connect/authorize"),
-                            TokenUrl = new Uri($"{configuration.GetValue<string>("IdentityUrlExternal")}/connect/token"),
+                            // AuthorizationUrl = new Uri($"{configuration.GetValue<string>("IdentityUrlExternal")}/connect/authorize"),
+                            // TokenUrl = new Uri($"{configuration.GetValue<string>("IdentityUrlExternal")}/connect/token"),
+                            
+                            AuthorizationUrl = new Uri($"http://localhost:5105/connect/authorize"),
+                            TokenUrl = new Uri($"http://localhost:5105/connect/token"),
                             Scopes = new Dictionary<string, string>()
                             {
                                 { "mobileshoppingagg", "Shopping Aggregator for Mobile Clients" }

@@ -94,6 +94,8 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator
                 {
                     c.SwaggerEndpoint($"{ (!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty) }/swagger/v1/swagger.json", "Purchase BFF V1");
                     //c.ConfigureOAuth2("Microsoft.eShopOnContainers.Web.Shopping.HttpAggregatorwaggerui", "", "", "Purchase BFF Swagger UI");
+                    c.OAuthClientId("webshoppingaggswaggerui");
+                    c.OAuthAppName("web shopping bff Swagger UI");
                 });
         }
     }
@@ -157,7 +159,8 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator
                     TokenUrl = $"{configuration.GetValue<string>("IdentityUrlExternal")}/connect/token",
                     Scopes = new Dictionary<string, string>()
                     {
-                        { "webshoppingagg", "Shopping Aggregator for Web Clients" }
+                        { "webshoppingagg", "Shopping Aggregator for Web Clients" },
+                        { "basket", "basket api" }
                     }
                 });
 

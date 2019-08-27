@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Serilog;
 
 namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Controllers
 {
@@ -30,13 +31,18 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Controllers
         [ProducesResponseType(typeof(BasketData), (int)HttpStatusCode.OK)]
         public async Task<ActionResult<BasketData>> UpdateAllBasketAsync([FromBody] UpdateBasketRequest data)
         {
+            Log.Information("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ UpdateAllBasketAsync @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+
             if (data.Items == null || !data.Items.Any())
             {
                 return BadRequest("Need to pass at least one basket line");
             }
 
             // Retrieve the current basket
+                        Log.Information("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ GetByIdAsync @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+
             var basket = await _basket.GetByIdAsync(data.BuyerId) ?? new BasketData(data.BuyerId);
+                        Log.Information("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ basket @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 
             var catalogItems = await _catalog.GetCatalogItemsAsync(data.Items.Select(x => x.ProductId));
 

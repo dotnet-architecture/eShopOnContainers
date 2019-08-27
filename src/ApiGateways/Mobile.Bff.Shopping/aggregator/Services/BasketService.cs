@@ -1,5 +1,4 @@
-﻿using grpc;
-using Grpc.Net.Client;
+﻿using Grpc.Net.Client;
 using Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Config;
 using Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Models;
 using Microsoft.Extensions.Logging;
@@ -8,7 +7,8 @@ using System;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using static grpc.Basket;
+using GrpcBasket;
+using Grpc.Core;
 
 namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Services
 {
@@ -27,49 +27,57 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Services
 
         public async Task<BasketData> GetById(string id)
         {
+
             _logger.LogInformation("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ GetById @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 
             AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
+            AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2Support", true);
 
-            _logger.LogInformation("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Http2UnencryptedSupport disable @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+            using (var httpClientHandler = new HttpClientHandler())
+            {
+                httpClientHandler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; };
+                using (var httpClient = new HttpClient(httpClientHandler))
+                {
+                    _logger.LogInformation("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Http2UnencryptedSupport disable @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 
-            _httpClient.BaseAddress = new Uri("http://localhost:5001");
+                    httpClient.BaseAddress = new Uri("http://localhost:5580");
 
-            _logger.LogInformation("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ {_httpClient.BaseAddress} @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@", _httpClient.BaseAddress);
+                    _logger.LogInformation("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ {httpClient.BaseAddress} @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ " + httpClient.BaseAddress, httpClient.BaseAddress);
 
-            var client = GrpcClient.Create<BasketClient>(_httpClient);
+                    var client = GrpcClient.Create<Basket.BasketClient>(httpClient);
 
-            _logger.LogInformation("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ client create @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+                    _logger.LogInformation("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ client create @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 
-            var response = await client.GetBasketByIdAsync(new BasketRequest { Id = id });
+                    try
+                    {
 
-            _logger.LogInformation("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ call grpc server @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+                        var response = await client.GetBasketByIdAsync(new BasketRequest { Id = id });
+                        _logger.LogInformation("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ call grpc server @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 
-            _logger.LogInformation("############## DATA: {@a}", response.Buyerid);
+                        _logger.LogInformation("############## DATA: {@a}", response.Buyerid);
+                        _logger.LogInformation("############## DATA:response {@response}", response);
 
-            //if (streaming.IsCompleted)
-            //{
-            //    _logger.LogInformation("############## DATA: {@a}", streaming.GetResult());
-            //}
-            //var streaming = client.GetBasketById(new BasketRequest { Id = id });
+                        return MapToBasketData(response);
+                    }
+                    catch (RpcException e)
+                    {
+                        _logger.LogError($"Error calling via grpc: {e.Status} - {e.Message}");
+                    }
+                }
+            }
 
+            return null; // temp
+            // var data = await _apiClient.GetStringAsync(_urls.Basket +  UrlsConfig.BasketOperations.GetItemById(id));
+            // var basket = !string.IsNullOrEmpty(data) ? JsonConvert.DeserializeObject<BasketData>(data) : null;
 
-            //var status = streaming.GetStatus();
-
-            //if (status.StatusCode == Grpc.Core.StatusCode.OK)
-            //{
-            //    return null;
-            //}
-
-            return null;
-            //return MapToBasketData(response.ResponseStream);
+            // return basket;
         }
 
         public async Task UpdateAsync(BasketData currentBasket)
         {
             _httpClient.BaseAddress = new Uri(_urls.Basket + UrlsConfig.BasketOperations.UpdateBasket());
 
-            var client = GrpcClient.Create<BasketClient>(_httpClient);
+            var client = GrpcClient.Create<Basket.BasketClient>(_httpClient);
             var request = MapToCustomerBasketRequest(currentBasket);
 
             await client.UpdateBasketAsync(request);
