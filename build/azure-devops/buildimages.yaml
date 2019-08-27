@@ -24,7 +24,7 @@ jobs:
     env:
       TAG: ${{ variables['Build.SourceBranchName'] }} 
       PLATFORM: win
-      NODE_IMAGE: stefanscherer/node-windows:8.11
+      NODE_IMAGE: stefanscherer/node-windows:10
 - job: BuildLinux
   condition: ne('${{ variables['Build.Reason'] }}', 'PullRequest')
   pool:
@@ -77,7 +77,7 @@ jobs:
       dockerComposeFileArgs: |
         TAG=${{ variables['Build.SourceBranchName'] }}
         PLATFORM=win
-        NODE_IMAGE=stefanscherer/node-windows:8.11 
+        NODE_IMAGE=stefanscherer/node-windows:10
   - task: DockerCompose@0
     displayName: Compose push ${{ parameters.services }}
     inputs:

@@ -20,17 +20,17 @@ services:
   identity.api:
     build:
       args:
-        NODE_IMAGE: stefanscherer/node-windows:8.11
+        NODE_IMAGE: stefanscherer/node-windows:10
 
   webspa:
     build:
       args:
-        NODE_IMAGE: stefanscherer/node-windows:8.11
+        NODE_IMAGE: stefanscherer/node-windows:10
 
   webmvc:
     build:
       args:
-        NODE_IMAGE: stefanscherer/node-windows:8.11
+        NODE_IMAGE: stefanscherer/node-windows:10
 
 
 networks:

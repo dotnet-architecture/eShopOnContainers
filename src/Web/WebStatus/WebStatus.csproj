@@ -5,8 +5,8 @@
     <DockerComposeProjectPath>..\..\..\docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="AspNetCore.HealthChecks.UI" Version="2.2.22" />
-    <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="2.2.3" />
+    <PackageReference Include="AspNetCore.HealthChecks.UI" Version="2.2.32" />
+    <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="2.2.4" />
     <PackageReference Include="AspNetCore.HealthChecks.Uris" Version="2.2.2" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.2.1" />
     <PackageReference Include="Microsoft.ApplicationInsights.DependencyCollector" Version="2.6.1" />
@@ -16,6 +16,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.HealthChecks" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.AzureKeyVault" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.AzureAppServices" Version="2.2.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
     <PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="1.0.172" />
     <PackageReference Include="Serilog.AspNetCore" Version="2.1.1" />
     <PackageReference Include="Serilog.Enrichers.Environment" Version="2.1.3" />

@@ -10,7 +10,8 @@ Param(
     [parameter(Mandatory=$false)][string]$aksName="",
     [parameter(Mandatory=$false)][string]$aksRg="",
     [parameter(Mandatory=$false)][string]$imageTag="latest",
-    [parameter(Mandatory=$false)][bool]$useLocalk8s=$false
+    [parameter(Mandatory=$false)][bool]$useLocalk8s=$false,
+    [parameter(Mandatory=$false)][bool]$useLocalImages=$false
     )
 
 $dns = $externalDns
@@ -20,6 +21,12 @@ $ingressValuesFile="ingress_values.yaml"
 if ($useLocalk8s -eq $true) {
     $ingressValuesFile="ingress_values_dockerk8s.yaml"
     $dns="localhost"
+}
+
+$pullPolicy = "Always"
+
+if ($useLocalImages -eq $true) {
+  $pullPolicy = "IfNotPresent"
 }
 
 if ($externalDns -eq "aks") {
@@ -82,7 +89,7 @@ if ($deployCharts) {
         }
         else {
             if ($chart -ne "eshop-common")  {       # eshop-common is ignored when no secret must be deployed
-                helm install --values app.yaml --values inf.yaml --values $ingressValuesFile --set app.name=$appName --set inf.k8s.dns=$dns  --set "ingress.hosts={$dns}" --set image.tag=$imageTag --set image.pullPolicy=Always --name="$appName-$chart" $chart 
+              helm install --values app.yaml --values inf.yaml --values $ingressValuesFile --set app.name=$appName --set inf.k8s.dns=$dns  --set "ingress.hosts={$dns}" --set image.tag=$imageTag --set image.pullPolicy=$pullPolicy --name="$appName-$chart" $chart 
             }
         }
     }
