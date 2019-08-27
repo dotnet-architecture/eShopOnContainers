@@ -32,20 +32,6 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator
                         ReloadOnChange = false
                     });
                 })
-                .ConfigureKestrel(options =>
-                {
-                    var ports = GetDefinedPorts(_configuration);
-
-                    options.Listen(IPAddress.Any, ports.httpPort, listenOptions =>
-                    {
-                        listenOptions.Protocols = HttpProtocols.Http1AndHttp2;
-                    });
-
-                    options.Listen(IPAddress.Any, ports.grpcPort, listenOptions =>
-                    {
-                        listenOptions.Protocols = HttpProtocols.Http2;
-                    });
-                })
                 .UseStartup<Startup>()
                 .UseSerilog((builderContext, config) =>
                 {
@@ -66,13 +52,6 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator
             var config = builder.Build();
 
             return builder.Build();
-        }
-
-        private static (int httpPort, int grpcPort) GetDefinedPorts(IConfiguration config)
-        {
-            var grpcPort = config.GetValue("GRPC_PORT", 5001);
-            var port = config.GetValue("PORT", 80);
-            return (port, grpcPort);
         }
     }
 }

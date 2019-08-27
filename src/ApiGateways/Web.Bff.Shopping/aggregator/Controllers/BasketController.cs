@@ -31,7 +31,7 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Controllers
         [ProducesResponseType(typeof(BasketData), (int)HttpStatusCode.OK)]
         public async Task<ActionResult<BasketData>> UpdateAllBasketAsync([FromBody] UpdateBasketRequest data)
         {
-            Log.Information("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ UpdateAllBasketAsync @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+            Log.Debug("UpdateAllBasketAsync");
 
             if (data.Items == null || !data.Items.Any())
             {
@@ -41,10 +41,12 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Controllers
             // Retrieve the current basket
                         Log.Information("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ GetByIdAsync @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 
-            var basket = await _basket.GetByIdAsync(data.BuyerId) ?? new BasketData(data.BuyerId);
-                        Log.Information("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ basket @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+            var basket = await _basket.GetById(data.BuyerId) ?? new BasketData(data.BuyerId);
+
+            Log.Debug("get basket by id response={@response}", basket);
 
             var catalogItems = await _catalog.GetCatalogItemsAsync(data.Items.Select(x => x.ProductId));
+            Log.Debug("get catalog items response={@response}", catalogItems);
 
             foreach (var bitem in data.Items)
             {
@@ -82,7 +84,7 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Controllers
             }
 
             // Retrieve the current basket
-            var currentBasket = await _basket.GetByIdAsync(data.BasketId);
+            var currentBasket = await _basket.GetById(data.BasketId);
             if (currentBasket == null)
             {
                 return BadRequest($"Basket with id {data.BasketId} not found.");
@@ -122,7 +124,7 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Controllers
             //item.PictureUri = 
 
             // Step 2: Get current basket status
-            var currentBasket = (await _basket.GetByIdAsync(data.BasketId)) ?? new BasketData(data.BasketId);
+            var currentBasket = (await _basket.GetById(data.BasketId)) ?? new BasketData(data.BasketId);
             // Step 3: Search if exist product into basket
             var product = currentBasket.Items.SingleOrDefault(i => i.ProductId == item.Id.ToString());
             

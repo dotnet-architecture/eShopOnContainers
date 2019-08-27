@@ -14,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using Polly;
 using Polly.Extensions.Http;
 using Swashbuckle.AspNetCore.Swagger;
@@ -62,19 +63,6 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator
                 app.UsePathBase(pathBase);
             }
 
-            app.UseHealthChecks("/hc", new HealthCheckOptions()
-            {
-                Predicate = _ => true,
-                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-            });
-
-            app.UseHealthChecks("/liveness", new HealthCheckOptions
-            {
-                Predicate = r => r.Name.Contains("self")
-            });
-
-            app.UseCors("CorsPolicy");
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -85,18 +73,37 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator
                 app.UseHsts();
             }
 
-            app.UseAuthentication();
+            app.UseCors("CorsPolicy");
             app.UseHttpsRedirection();
-            app.UseMvc();
 
-            app.UseSwagger()
-                .UseSwaggerUI(c =>
+            app.UseSwagger().UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint($"{ (!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty) }/swagger/v1/swagger.json", "Purchase BFF V1");
+
+                c.OAuthClientId("webshoppingaggswaggerui");
+                c.OAuthClientSecret(string.Empty);
+                c.OAuthRealm(string.Empty);
+                c.OAuthAppName("web shopping bff Swagger UI");
+            });
+
+            app.UseRouting();
+            app.UseAuthentication();
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapDefaultControllerRoute();
+                endpoints.MapControllers();
+                endpoints.MapHealthChecks("/hc", new HealthCheckOptions()
                 {
-                    c.SwaggerEndpoint($"{ (!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty) }/swagger/v1/swagger.json", "Purchase BFF V1");
-                    //c.ConfigureOAuth2("Microsoft.eShopOnContainers.Web.Shopping.HttpAggregatorwaggerui", "", "", "Purchase BFF Swagger UI");
-                    c.OAuthClientId("webshoppingaggswaggerui");
-                    c.OAuthAppName("web shopping bff Swagger UI");
+                    Predicate = _ => true,
+                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
                 });
+                endpoints.MapHealthChecks("/liveness", new HealthCheckOptions
+                {
+                    Predicate = r => r.Name.Contains("self")
+                });
+            });
         }
     }
 
@@ -104,29 +111,20 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator
     {
         public static IServiceCollection AddCustomAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
-            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("sub");
+
             var identityUrl = configuration.GetValue<string>("urls:identity");
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 
-            }).AddJwtBearer(options =>
+            })
+            .AddJwtBearer(options =>
             {
                 options.Authority = identityUrl;
                 options.RequireHttpsMetadata = false;
                 options.Audience = "webshoppingagg";
-                options.Events = new JwtBearerEvents()
-                {
-                    OnAuthenticationFailed = async ctx =>
-                    {
-                        int i = 0;
-                    },
-                    OnTokenValidated = async ctx =>
-                    {
-                        int i = 0;
-                    }
-                };
             });
 
             return services;
@@ -137,30 +135,35 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator
             services.AddOptions();
             services.Configure<UrlsConfig>(configuration.GetSection("urls"));
 
-            services.AddMvc()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddControllers()
+                .AddNewtonsoftJson();
 
             services.AddSwaggerGen(options =>
             {
                 options.DescribeAllEnumsAsStrings();
-                options.SwaggerDoc("v1", new Swashbuckle.AspNetCore.Swagger.Info
+
+                options.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Title = "Shopping Aggregator for Web Clients",
+                    Title = "Shopping Aggregator for Mobile Clients",
                     Version = "v1",
-                    Description = "Shopping Aggregator for Web Clients",
-                    TermsOfService = "Terms Of Service"
+                    Description = "Shopping Aggregator for Mobile Clients"
                 });
 
-                options.AddSecurityDefinition("oauth2", new OAuth2Scheme
+                options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
                 {
-                    Type = "oauth2",
-                    Flow = "implicit",
-                    AuthorizationUrl = $"{configuration.GetValue<string>("IdentityUrlExternal")}/connect/authorize",
-                    TokenUrl = $"{configuration.GetValue<string>("IdentityUrlExternal")}/connect/token",
-                    Scopes = new Dictionary<string, string>()
+                    Type = SecuritySchemeType.OAuth2,
+                    Flows = new OpenApiOAuthFlows()
                     {
-                        { "webshoppingagg", "Shopping Aggregator for Web Clients" },
-                        { "basket", "basket api" }
+                        Implicit = new OpenApiOAuthFlow()
+                        {
+                            AuthorizationUrl = new Uri($"{configuration.GetValue<string>("IdentityUrlExternal")}/connect/authorize"),
+                            TokenUrl = new Uri($"{configuration.GetValue<string>("IdentityUrlExternal")}/connect/token"),
+
+                            Scopes = new Dictionary<string, string>()
+                            {
+                                { "webshoppingagg", "Shopping Aggregator for Web Clients" }
+                            }
+                        }
                     }
                 });
 
@@ -199,6 +202,12 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator
                 .AddDevspacesSupport();
 
             services.AddHttpClient<IOrderApiClient, OrderApiClient>()
+                .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
+                .AddPolicyHandler(GetRetryPolicy())
+                .AddPolicyHandler(GetCircuitBreakerPolicy())
+                .AddDevspacesSupport();
+
+            services.AddHttpClient<IOrderingService, OrderingService>()
                 .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
                 .AddPolicyHandler(GetRetryPolicy())
                 .AddPolicyHandler(GetCircuitBreakerPolicy())

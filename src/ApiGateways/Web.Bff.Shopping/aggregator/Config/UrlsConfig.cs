@@ -29,5 +29,7 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Config
         public string Basket { get; set; }
         public string Catalog { get; set; }
         public string Orders { get; set; }
+        public string GrpcBasket { get; set; }
+        public string GrpcOrdering { get; set; }
     }
 }

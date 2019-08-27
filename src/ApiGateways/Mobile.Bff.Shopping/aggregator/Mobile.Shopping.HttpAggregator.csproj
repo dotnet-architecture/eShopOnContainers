@@ -19,7 +19,7 @@
     <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="$(AspNetCore_HealthChecks_UI_Client)" />
     <PackageReference Include="Grpc.AspNetCore.Server.ClientFactory" Version="$(Grpc_AspNetCore_Server_ClientFactory)" />
     <PackageReference Include="Google.Protobuf" Version="$(Google_Protobuf)" />
-    <PackageReference Include="Grpc.Core" Version="1.22.0" />
+    <PackageReference Include="Grpc.Core" Version="$(Grpc_Core)" />
     <PackageReference Include="Grpc.Tools" Version="$(Grpc_Tools)" PrivateAssets="All" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.HealthChecks" Version="$(Microsoft_AspNetCore_Diagnostics_HealthChecks)" />
     <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="$(Microsoft_Extensions_Diagnostics_HealthChecks)" />

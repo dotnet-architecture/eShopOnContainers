@@ -6,7 +6,7 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Models
     {
         public string BuyerId { get; set; }
 
-        public List<BasketDataItem> Items { get; set; }
+        public List<BasketDataItem> Items { get; set; } = new List<BasketDataItem>();
 
         public BasketData()
         {
@@ -16,7 +16,6 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Models
         public BasketData(string buyerId)
         {
             BuyerId = buyerId;
-            Items = new List<BasketDataItem>();
         }
     }
 

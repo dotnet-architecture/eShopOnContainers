@@ -3,10 +3,8 @@ using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Services
 {
-    public interface IBasketService
+    public interface IOrderingService
     {
-        Task<BasketData> GetById(string id);
-
-        Task UpdateAsync(BasketData currentBasket);
+        Task<OrderData> GetOrderDraftAsync(BasketData basketData);
     }
 }

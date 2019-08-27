@@ -33,5 +33,6 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator
                         .WriteTo.Console();
                 })
                 .Build();
+
     }
 }
