@@ -27,9 +27,6 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Services
 
         public async Task<BasketData> GetById(string id)
         {
-
-            _logger.LogInformation("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ GetById @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-
             AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
             AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2Support", true);
 
@@ -38,24 +35,21 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Services
                 httpClientHandler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; };
                 using (var httpClient = new HttpClient(httpClientHandler))
                 {
-                    _logger.LogInformation("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Http2UnencryptedSupport disable @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+                    //httpClient.BaseAddress = new Uri("http://10.0.75.1:5580");
+                    httpClient.BaseAddress = new Uri(_urls.GrpcBasket);
 
-                    httpClient.BaseAddress = new Uri("http://localhost:5580");
-
-                    _logger.LogInformation("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ {httpClient.BaseAddress} @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ " + httpClient.BaseAddress, httpClient.BaseAddress);
+                    _logger.LogDebug("Creating grpc client for basket {@httpClient.BaseAddress} ", httpClient.BaseAddress);
 
                     var client = GrpcClient.Create<Basket.BasketClient>(httpClient);
 
-                    _logger.LogInformation("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ client create @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+                    _logger.LogDebug("grpc client created, request = {@id}", id);
 
                     try
                     {
 
                         var response = await client.GetBasketByIdAsync(new BasketRequest { Id = id });
-                        _logger.LogInformation("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ call grpc server @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 
-                        _logger.LogInformation("############## DATA: {@a}", response.Buyerid);
-                        _logger.LogInformation("############## DATA:response {@response}", response);
+                        _logger.LogDebug("grpc response {@response}", response);
 
                         return MapToBasketData(response);
                     }
@@ -66,11 +60,7 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Services
                 }
             }
 
-            return null; // temp
-            // var data = await _apiClient.GetStringAsync(_urls.Basket +  UrlsConfig.BasketOperations.GetItemById(id));
-            // var basket = !string.IsNullOrEmpty(data) ? JsonConvert.DeserializeObject<BasketData>(data) : null;
-
-            // return basket;
+            return null;
         }
 
         public async Task UpdateAsync(BasketData currentBasket)

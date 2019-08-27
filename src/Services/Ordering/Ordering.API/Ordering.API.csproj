@@ -19,6 +19,13 @@
     </Content>
   </ItemGroup>
 
+
+  <ItemGroup>
+    <Protobuf Include="Proto\ordering.proto" GrpcServices="Server" Generator="MSBuild:Compile" />
+    <Content Include="Proto\ordering.proto" />
+    <None Remove="@(Protobuf)" />
+  </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\..\..\BuildingBlocks\EventBus\EventBusRabbitMQ\EventBusRabbitMQ.csproj" />
     <ProjectReference Include="..\..\..\BuildingBlocks\EventBus\EventBusServiceBus\EventBusServiceBus.csproj" />
@@ -30,7 +37,10 @@
   </ItemGroup>
 
   <ItemGroup>
-  <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="$(Microsoft_AspNetCore_Mvc_NewtonsoftJson)"/>
+    <PackageReference Include="Grpc.AspNetCore.Server" Version="$(Grpc_AspNetCore_Server)" />
+    <PackageReference Include="Google.Protobuf" Version="$(Google_Protobuf)" />
+    <PackageReference Include="Grpc.Tools" Version="$(Grpc_Tools)" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="$(Microsoft_AspNetCore_Mvc_NewtonsoftJson)" />
     <PackageReference Include="AspNetCore.HealthChecks.AzureServiceBus" Version="$(AspNetCore_HealthChecks_AzureServiceBus)" />
     <PackageReference Include="AspNetCore.HealthChecks.Rabbitmq" Version="$(AspNetCore_HealthChecks_Rabbitmq)" />
     <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="$(AspNetCore_HealthChecks_SqlServer)" />

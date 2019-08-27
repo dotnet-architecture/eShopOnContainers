@@ -131,11 +131,9 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator
                     {
                         Implicit = new OpenApiOAuthFlow()
                         {
-                            // AuthorizationUrl = new Uri($"{configuration.GetValue<string>("IdentityUrlExternal")}/connect/authorize"),
-                            // TokenUrl = new Uri($"{configuration.GetValue<string>("IdentityUrlExternal")}/connect/token"),
-                            
-                            AuthorizationUrl = new Uri($"http://localhost:5105/connect/authorize"),
-                            TokenUrl = new Uri($"http://localhost:5105/connect/token"),
+                            AuthorizationUrl = new Uri($"{configuration.GetValue<string>("IdentityUrlExternal")}/connect/authorize"),
+                            TokenUrl = new Uri($"{configuration.GetValue<string>("IdentityUrlExternal")}/connect/token"),
+
                             Scopes = new Dictionary<string, string>()
                             {
                                 { "mobileshoppingagg", "Shopping Aggregator for Mobile Clients" }
@@ -188,7 +186,8 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             //register http services
-            services.AddHttpClient<IBasketService, BasketService>()
+            services
+                .AddHttpClient<IBasketService, BasketService>()
                 .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
                 .AddPolicyHandler(GetRetryPolicy())
                 .AddPolicyHandler(GetCircuitBreakerPolicy())
@@ -200,6 +199,11 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator
                    .AddDevspacesSupport();
 
             services.AddHttpClient<IOrderApiClient, OrderApiClient>()
+                   .AddPolicyHandler(GetRetryPolicy())
+                   .AddPolicyHandler(GetCircuitBreakerPolicy())
+                   .AddDevspacesSupport();
+
+            services.AddHttpClient<IOrderingService, OrderingService>()
                    .AddPolicyHandler(GetRetryPolicy())
                    .AddPolicyHandler(GetCircuitBreakerPolicy())
                    .AddDevspacesSupport();

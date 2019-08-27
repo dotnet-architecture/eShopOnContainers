@@ -40,8 +40,6 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Infrastruct
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
             }
 
-            _logger.LogInformation("@@@@@@@@@@@@@@@@@ {@request}", request);
-
             return await base.SendAsync(request, cancellationToken);
         }
 

@@ -115,6 +115,7 @@ services:
       - Serilog__MinimumLevel__Override__Ordering.API=Verbose
     ports:
       - "5102:80" 
+      - "5581:5001"  
       
   ordering.backgroundtasks:
     environment:
@@ -284,6 +285,8 @@ services:
       - urls__catalog=http://catalog.api
       - urls__orders=http://ordering.api
       - urls__identity=http://identity.api
+      - urls__grpcBasket=http://10.0.75.1:5580
+      - urls__grpcOrdering=http://10.0.75.1:5581
       - CatalogUrlHC=http://catalog.api/hc
       - OrderingUrlHC=http://ordering.api/hc
       - IdentityUrlHC=http://identity.api/hc             
@@ -291,7 +294,7 @@ services:
       - MarketingUrlHC=http://marketing.api/hc
       - PaymentUrlHC=http://payment.api/hc
       - LocationUrlHC=http://locations.api/hc
-      - IdentityUrlExternal=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
+      - IdentityUrlExternal=http://10.0.75.1:5105
     ports:
       - "5120:80"   
 

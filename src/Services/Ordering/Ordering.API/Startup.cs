@@ -7,12 +7,14 @@
     using global::Ordering.API.Application.IntegrationEvents.Events;
     using global::Ordering.API.Infrastructure.Filters;
     using global::Ordering.API.Infrastructure.Middlewares;
+    using GrpcOrdering;
     using HealthChecks.UI.Client;
     using Infrastructure.AutofacModules;
     using Infrastructure.Filters;
     using Infrastructure.Services;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+    using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Azure.ServiceBus;
     using Microsoft.EntityFrameworkCore;
@@ -34,6 +36,7 @@
     using System.Collections.Generic;
     using System.Data.Common;
     using System.IdentityModel.Tokens.Jwt;
+    using System.IO;
     using System.Reflection;
 
     public class Startup
@@ -47,7 +50,13 @@
 
         public virtual IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            services.AddApplicationInsights(Configuration)
+            services
+                .AddGrpc(options =>
+                {
+                    options.EnableDetailedErrors = true;
+                })
+                .Services
+                .AddApplicationInsights(Configuration)
                 .AddCustomMvc()
                 .AddHealthChecks(Configuration)
                 .AddCustomDbContext(Configuration)
@@ -68,7 +77,7 @@
         }
 
 
-        public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
             //loggerFactory.AddAzureWebAppDiagnostics();
             //loggerFactory.AddApplicationInsights(app.ApplicationServices, LogLevel.Trace);
@@ -87,8 +96,23 @@
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapGrpcService<OrderingService>();
                 endpoints.MapDefaultControllerRoute();
                 endpoints.MapControllers();
+                endpoints.MapGet("/_proto/", async ctx =>
+                {
+                    ctx.Response.ContentType = "text/plain";
+                    using var fs = new FileStream(Path.Combine(env.ContentRootPath, "Proto", "basket.proto"), FileMode.Open, FileAccess.Read);
+                    using var sr = new StreamReader(fs);
+                    while (!sr.EndOfStream)
+                    {
+                        var line = await sr.ReadLineAsync();
+                        if (line != "/* >>" || line != "<< */")
+                        {
+                            await ctx.Response.WriteAsync(line);
+                        }
+                    }
+                });
                 endpoints.MapHealthChecks("/hc", new HealthCheckOptions()
                 {
                     Predicate = _ => true,
