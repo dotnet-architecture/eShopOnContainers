@@ -96,18 +96,6 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Services
                     }
                 }
             }
-
-
-
-
-            //_httpClient.BaseAddress = new Uri(_urls.Basket + UrlsConfig.BasketOperations.UpdateBasket());
-
-            //var client = GrpcClient.Create<Basket.BasketClient>(_httpClient);
-            //_logger.LogInformation("Grpc update basket currentBasket {@currentBasket}", currentBasket);
-            //var request = MapToCustomerBasketRequest(currentBasket);
-            //_logger.LogInformation("Grpc update basket request {@request}", request);
-
-            //await client.UpdateBasketAsync(request);
         }
 
         private BasketData MapToBasketData(CustomerBasketResponse customerBasketRequest)
@@ -122,16 +110,22 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Services
                 BuyerId = customerBasketRequest.Buyerid
             };
 
-            customerBasketRequest.Items.ToList().ForEach(item => map.Items.Add(new BasketDataItem
+            customerBasketRequest.Items.ToList().ForEach(item =>
             {
-                Id = item.Id,
-                OldUnitPrice = (decimal)item.Oldunitprice,
-                PictureUrl = item.Pictureurl,
-                ProductId = item.Productid,
-                ProductName = item.Productname,
-                Quantity = item.Quantity,
-                UnitPrice = (decimal)item.Unitprice
-            }));
+                if (item.Id != null)
+                {
+                    map.Items.Add(new BasketDataItem
+                    {
+                        Id = item.Id,
+                        OldUnitPrice = (decimal)item.Oldunitprice,
+                        PictureUrl = item.Pictureurl,
+                        ProductId = item.Productid,
+                        ProductName = item.Productname,
+                        Quantity = item.Quantity,
+                        UnitPrice = (decimal)item.Unitprice
+                    });
+                }
+            });
 
             return map;
         }
@@ -148,16 +142,22 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Services
                 Buyerid = basketData.BuyerId
             };
 
-            basketData.Items.ToList().ForEach(item => map.Items.Add(new BasketItemResponse
+            basketData.Items.ToList().ForEach(item =>
             {
-                Id = item.Id,
-                Oldunitprice = (double)item.OldUnitPrice,
-                Pictureurl = item.PictureUrl,
-                Productid = item.ProductId,
-                Productname = item.ProductName,
-                Quantity = item.Quantity,
-                Unitprice = (double)item.UnitPrice
-            }));
+                if (item.Id != null)
+                {
+                    map.Items.Add(new BasketItemResponse
+                    {
+                        Id = item.Id,
+                        Oldunitprice = (double)item.OldUnitPrice,
+                        Pictureurl = item.PictureUrl,
+                        Productid = item.ProductId,
+                        Productname = item.ProductName,
+                        Quantity = item.Quantity,
+                        Unitprice = (double)item.UnitPrice
+                    });
+                }
+            });
 
             return map;
         }
