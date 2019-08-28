@@ -8,27 +8,27 @@ WORKDIR /src
 
 COPY scripts scripts/
 
-COPY src/ApiGateways/*/*.csproj /src/csproj-files/
-COPY src/ApiGateways/*/*/*.csproj /src/csproj-files/
-COPY src/BuildingBlocks/*/*/*.csproj /src/csproj-files/
-COPY src/Services/*/*/*.csproj /src/csproj-files/
-COPY src/Web/*/*.csproj /src/csproj-files/
+COPY ApiGateways/*/*.csproj csproj-files/
+COPY ApiGateways/*/*/*.csproj csproj-files/
+COPY BuildingBlocks/*/*/*.csproj csproj-files/
+COPY Services/*/*/*.csproj csproj-files/
+COPY Web/*/*.csproj csproj-files/
 
 COPY . .
-WORKDIR /src/src/Services/Catalog/Catalog.API
+WORKDIR /src/Services/Catalog/Catalog.API
 RUN dotnet publish -c Release -o /app
 
 FROM build as unittest
-WORKDIR /src/src/Services/Catalog/Catalog.UnitTests
+WORKDIR /src/Services/Catalog/Catalog.UnitTests
 
 FROM build as functionaltest
-WORKDIR /src/src/Services/Catalog/Catalog.FunctionalTests
+WORKDIR /src/Services/Catalog/Catalog.FunctionalTests
 
 FROM build AS publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
-COPY --from=build /src/src/Services/Catalog/Catalog.API/Proto /app/Proto
-COPY --from=build /src/src/Services/Catalog/Catalog.API/eshop.pfx .
+COPY --from=build /src/Services/Catalog/Catalog.API/Proto /app/Proto
+COPY --from=build /src/Services/Catalog/Catalog.API/eshop.pfx .
 ENTRYPOINT ["dotnet", "Catalog.API.dll"]

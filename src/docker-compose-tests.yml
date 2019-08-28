@@ -17,7 +17,7 @@ services:
     image: ${REGISTRY:-eshop}/identity-api-test:${TAG:-latest}
     build:
       context: .
-      dockerfile: src/Services/Identity/Identity.API/Dockerfile
+      dockerfile: Services/Identity/Identity.API/Dockerfile
     depends_on:
       - sql-data-test
 
@@ -25,7 +25,7 @@ services:
     image: ${REGISTRY:-eshop}/basket-api-test:${TAG:-latest}
     build:
       context: .
-      dockerfile: src/Services/Basket/Basket.API/Dockerfile
+      dockerfile: Services/Basket/Basket.API/Dockerfile
       target: functionaltest
     depends_on:
       - basket-data-test
@@ -38,7 +38,7 @@ services:
     image: ${REGISTRY:-eshop}/basket-api-test:${TAG:-latest}
     build:
       context: .
-      dockerfile: src/Services/Basket/Basket.API/Dockerfile
+      dockerfile: Services/Basket/Basket.API/Dockerfile
       target: unittest
     depends_on:
       - basket-data-test
@@ -51,7 +51,7 @@ services:
     image: ${REGISTRY:-eshop}/catalog-api-test:${TAG:-latest}
     build:
       context: .
-      dockerfile: src/Services/Catalog/Catalog.API/Dockerfile
+      dockerfile: Services/Catalog/Catalog.API/Dockerfile
       target: functionaltest
     depends_on:
       - sql-data-test
@@ -63,7 +63,7 @@ services:
     image: ${REGISTRY:-eshop}/catalog-api-test:${TAG:-latest}
     build:
       context: .
-      dockerfile: src/Services/Catalog/Catalog.API/Dockerfile
+      dockerfile: Services/Catalog/Catalog.API/Dockerfile
       target: unittest
     depends_on:
       - sql-data-test
@@ -75,7 +75,7 @@ services:
     image: ${REGISTRY:-eshop}/ordering-api-test:${TAG:-latest}
     build:
       context: .
-      dockerfile: src/Services/Ordering/Ordering.API/Dockerfile
+      dockerfile: Services/Ordering/Ordering.API/Dockerfile
       target: functionaltest
     depends_on:
       - sql-data-test
@@ -87,7 +87,7 @@ services:
     image: ${REGISTRY:-eshop}/ordering-api-test:${TAG:-latest}
     build:
       context: .
-      dockerfile: src/Services/Ordering/Ordering.API/Dockerfile
+      dockerfile: Services/Ordering/Ordering.API/Dockerfile
       target: unittest
     depends_on:
       - sql-data-test
@@ -99,7 +99,7 @@ services:
     image: ${REGISTRY:-eshop}/marketing-api-test:${TAG:-latest}
     build:
       context: .
-      dockerfile: src/Services/Marketing/Marketing.API/Dockerfile
+      dockerfile: Services/Marketing/Marketing.API/Dockerfile
       target: functionaltest
     depends_on:
       - sql-data-test
@@ -113,7 +113,7 @@ services:
     image: ${REGISTRY:-eshop}/payment-api-test:${TAG:-latest}
     build:
       context: .
-      dockerfile: src/Services/Payment/Payment.API/Dockerfile
+      dockerfile: Services/Payment/Payment.API/Dockerfile
     depends_on:
       - rabbitmq-test
 
@@ -121,7 +121,7 @@ services:
     image: ${REGISTRY:-eshop}/locations-api-test:${TAG:-latest}
     build:
       context: .
-      dockerfile: src/Services/Location/Locations.API/Dockerfile
+      dockerfile: Services/Location/Locations.API/Dockerfile
       target: functionaltest
     depends_on:
       - nosql-data-test
