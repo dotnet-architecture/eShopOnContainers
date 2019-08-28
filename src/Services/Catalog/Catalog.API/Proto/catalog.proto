@@ -10,6 +10,11 @@ package CatalogApi;
 message CatalogItemRequest {
 	int32 id = 1;
 }
+message CatalogItemsRequest {
+	string ids = 1;
+	int32 pageSize = 2;
+	int32 pageIndex = 3;
+}
 
 message CatalogItemResponse {
 	int32 id = 1;
@@ -36,12 +41,26 @@ message CatalogType {
 	string type = 2;
 }
 
+message PaginatedItemsResponse {
+	int32 pageIndex = 1;
+	int32 pageSize = 2;
+	int64 count = 3;
+	repeated CatalogItemResponse data = 4;
+}
+
 service Catalog {
   rpc GetItemById (CatalogItemRequest) returns (CatalogItemResponse) {
- /* >>
+   /* >>
   	option (google.api.http) = {
         get: "/api/v1/catalog/items/{id}"
       };
-<< */
-  }
+	<< */
+	}
+  rpc GetItemsByIds (CatalogItemsRequest) returns (PaginatedItemsResponse) {
+   /* >>
+  	option (google.api.http) = {
+        get: "/api/v1/catalog/items/ids/{ids}"
+      };
+	<< */
+	}
 }

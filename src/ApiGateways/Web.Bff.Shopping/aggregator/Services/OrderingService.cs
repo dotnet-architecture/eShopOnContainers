@@ -45,13 +45,12 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Services
 
                     try
                     {
-
                         var command = MapToOrderDraftCommand(basketData);
                         var response = await client.CreateOrderDraftFromBasketDataAsync(command);
 
                         _logger.LogDebug(" grpc response: {@response}", response);
 
-                        return MapToResponse(response);
+                        return MapToResponse(response, basketData);
                     }
                     catch (RpcException e)
                     {
@@ -63,7 +62,7 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Services
             return null;
         }
 
-        private OrderData MapToResponse(GrpcOrdering.OrderDraftDTO orderDraft)
+        private OrderData MapToResponse(GrpcOrdering.OrderDraftDTO orderDraft, BasketData basketData)
         {
             if (orderDraft == null)
             {
@@ -72,6 +71,7 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Services
 
             var data = new OrderData
             {
+                Buyer = basketData.BuyerId,
                 Total = (decimal)orderDraft.Total,
             };
 

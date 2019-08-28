@@ -306,6 +306,7 @@ services:
       - urls__orders=http://ordering.api
       - urls__identity=http://identity.api
       - urls__grpcBasket=http://10.0.75.1:5580
+      - urls__grpcCatalog=http://10.0.75.1:9101
       - urls__grpcOrdering=http://10.0.75.1:5581
       - CatalogUrlHC=http://catalog.api/hc
       - OrderingUrlHC=http://ordering.api/hc
