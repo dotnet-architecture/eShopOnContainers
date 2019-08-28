@@ -28,13 +28,15 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Services
 
         public async Task<CatalogItem> GetCatalogItemAsync(int id)
         {
-            _httpClient.BaseAddress = new Uri(_urls.Catalog + UrlsConfig.CatalogOperations.GetItemById(id));
-
-            var client = GrpcClient.Create<CatalogClient>(_httpClient);
-            var request = new CatalogItemRequest { Id = id };
-            var response = await client.GetItemByIdAsync(request);
-
-            return MapToCatalogItemResponse(response);
+            return await GrpcCallerService.CallService(_urls.GrpcCatalog, async httpClient =>
+            {
+                var client = GrpcClient.Create<CatalogClient>(httpClient);
+                var request = new CatalogItemRequest { Id = id };
+                _logger.LogInformation("grpc client created, request = {@request}", request);
+                var response = await client.GetItemByIdAsync(request);
+                _logger.LogInformation("grpc response {@response}", response);
+                return MapToCatalogItemResponse(response);
+            });
         }
 
         public async Task<IEnumerable<CatalogItem>> GetCatalogItemsAsync(IEnumerable<int> ids)

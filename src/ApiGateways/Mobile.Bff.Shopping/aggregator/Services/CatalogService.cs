@@ -3,9 +3,8 @@ using Grpc.Net.Client;
 using Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Config;
 using Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Models;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using static CatalogApi.Catalog;
@@ -25,21 +24,26 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Services
 
         public async Task<CatalogItem> GetCatalogItemAsync(int id)
         {
-            _httpClient.BaseAddress = new Uri(_urls.Catalog + UrlsConfig.CatalogOperations.GetItemById(id));
 
-            var client = GrpcClient.Create<CatalogClient>(_httpClient);
-            var request = new CatalogItemRequest { Id = id };
-            var response = await client.GetItemByIdAsync(request);
-
-            return MapToCatalogItemResponse(response);
+            return await GrpcCallerService.CallService(_urls.Catalog + UrlsConfig.CatalogOperations.GetItemById(id), async httpClient =>
+            {
+                var client = GrpcClient.Create<CatalogClient>(_httpClient);
+                var request = new CatalogItemRequest { Id = id };
+                var response = await client.GetItemByIdAsync(request);
+                return MapToCatalogItemResponse(response);
+            });
         }
 
         public async Task<IEnumerable<CatalogItem>> GetCatalogItemsAsync(IEnumerable<int> ids)
         {
-            var stringContent = await _httpClient.GetStringAsync(_urls.Catalog + UrlsConfig.CatalogOperations.GetItemsById(ids));
-            var catalogItems = JsonConvert.DeserializeObject<CatalogItem[]>(stringContent);
 
-            return catalogItems;
+            return await GrpcCallerService.CallService(_urls.GrpcCatalog, async httpClient =>
+            {
+                var client = GrpcClient.Create<CatalogClient>(httpClient);
+                var request = new CatalogItemsRequest { Ids = string.Join(",", ids), PageIndex = 1, PageSize = 10 };
+                var response = await client.GetItemsByIdsAsync(request);
+                return response.Data.Select(this.MapToCatalogItemResponse);
+            });
         }
 
         private CatalogItem MapToCatalogItemResponse(CatalogItemResponse catalogItemResponse)

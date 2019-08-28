@@ -28,6 +28,7 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Config
         public string Catalog { get; set; }
         public string Orders { get; set; }
         public string GrpcBasket { get; set; }
+        public string GrpcCatalog { get; set; }
         public string GrpcOrdering { get; set; }
     }
 }
