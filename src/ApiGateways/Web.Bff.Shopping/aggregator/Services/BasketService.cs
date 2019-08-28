@@ -28,74 +28,63 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Services
 
         public async Task<BasketData> GetById(string id)
         {
-            AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
-            AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2Support", true);
-
-            using (var httpClientHandler = new HttpClientHandler())
+            return await GrpcCallerService.CallService(_urls.GrpcBasket, async httpClient =>
             {
-                httpClientHandler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; };
-                using (var httpClient = new HttpClient(httpClientHandler))
-                {
-                    //httpClient.BaseAddress = new Uri("http://10.0.75.1:5580");
-                    httpClient.BaseAddress = new Uri(_urls.GrpcBasket);
+                _logger.LogWarning("######################## grpc client created, request = {@id}", id);
 
-                    _logger.LogDebug("Creating grpc client for basket {@httpClient.BaseAddress} ", httpClient.BaseAddress);
+                var client = GrpcClient.Create<Basket.BasketClient>(httpClient);
 
-                    var client = GrpcClient.Create<Basket.BasketClient>(httpClient);
+                _logger.LogDebug("grpc client created, request = {@id}", id);
+                var response = await client.GetBasketByIdAsync(new BasketRequest { Id = id });
 
-                    _logger.LogDebug("grpc client created, request = {@id}", id);
+                _logger.LogDebug("grpc response {@response}", response);
 
-                    try
-                    {
-
-                        var response = await client.GetBasketByIdAsync(new BasketRequest { Id = id });
-
-                        _logger.LogDebug("grpc response {@response}", response);
-
-                        return MapToBasketData(response);
-                    }
-                    catch (RpcException e)
-                    {
-                        _logger.LogError($"Error calling via grpc: {e.Status} - {e.Message}");
-                    }
-                }
-            }
-
-            return null;
+                return MapToBasketData(response);
+            });
         }
 
         public async Task UpdateAsync(BasketData currentBasket)
         {
-            AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
-            AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2Support", true);
-
-            using (var httpClientHandler = new HttpClientHandler())
+            await GrpcCallerService.CallService(_urls.GrpcBasket, async httpClient =>
             {
-                httpClientHandler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; };
-                using (var httpClient = new HttpClient(httpClientHandler))
-                {
-                    httpClient.BaseAddress = new Uri(_urls.GrpcBasket);
+                var client = GrpcClient.Create<Basket.BasketClient>(httpClient);
+                _logger.LogDebug("Grpc update basket currentBasket {@currentBasket}", currentBasket);
+                var request = MapToCustomerBasketRequest(currentBasket);
+                _logger.LogDebug("Grpc update basket request {@request}", request);
 
-                    _logger.LogDebug("Creating grpc client for basket {@httpClient.BaseAddress} ", httpClient.BaseAddress);
+                return client.UpdateBasketAsync(request);
+            });
 
-                    var client = GrpcClient.Create<Basket.BasketClient>(httpClient);
+            //AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
+            //AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2Support", true);
+
+            //using (var httpClientHandler = new HttpClientHandler())
+            //{
+            //    httpClientHandler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; };
+            //    using (var httpClient = new HttpClient(httpClientHandler))
+            //    {
+            //        httpClient.BaseAddress = new Uri(_urls.GrpcBasket);
+
+            //        _logger.LogDebug("Creating grpc client for basket {@httpClient.BaseAddress} ", httpClient.BaseAddress);
+
+            //        var client = GrpcClient.Create<Basket.BasketClient>(httpClient);
 
 
-                    try
-                    {
+            //        try
+            //        {
 
-                        _logger.LogInformation("Grpc update basket currentBasket {@currentBasket}", currentBasket);
-                        var request = MapToCustomerBasketRequest(currentBasket);
-                        _logger.LogInformation("Grpc update basket request {@request}", request);
+            //            _logger.LogDebug("Grpc update basket currentBasket {@currentBasket}", currentBasket);
+            //            var request = MapToCustomerBasketRequest(currentBasket);
+            //            _logger.LogDebug("Grpc update basket request {@request}", request);
 
-                        await client.UpdateBasketAsync(request);
-                    }
-                    catch (RpcException e)
-                    {
-                        _logger.LogError($"Error calling via grpc: {e.Status} - {e.Message}");
-                    }
-                }
-            }
+            //            await client.UpdateBasketAsync(request);
+            //        }
+            //        catch (RpcException e)
+            //        {
+            //            _logger.LogError($"Error calling via grpc: {e.Status} - {e.Message}");
+            //        }
+            //    }
+            //}
         }
 
         private BasketData MapToBasketData(CustomerBasketResponse customerBasketRequest)

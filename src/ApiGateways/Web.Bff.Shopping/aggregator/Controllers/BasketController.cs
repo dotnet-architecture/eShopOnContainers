@@ -39,8 +39,6 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Controllers
             }
 
             // Retrieve the current basket
-                        Log.Information("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ GetByIdAsync @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-
             var basket = await _basket.GetById(data.BuyerId) ?? new BasketData(data.BuyerId);
 
             Log.Debug("get basket by id response={@response}", basket);
