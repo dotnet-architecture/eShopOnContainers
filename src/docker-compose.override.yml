@@ -225,7 +225,7 @@ services:
     ports:
       - "5200:80"   
     volumes:
-      - ./src/ApiGateways/Mobile.Bff.Shopping/apigw:${ESHOP_OCELOT_VOLUME_SPEC:-/app/configuration}
+      - ./ApiGateways/Mobile.Bff.Shopping/apigw:${ESHOP_OCELOT_VOLUME_SPEC:-/app/configuration}
 
   mobilemarketingapigw:
     environment:
@@ -242,7 +242,7 @@ services:
     ports:
       - "5201:80"   
     volumes:
-      - ./src/ApiGateways/Mobile.Bff.Marketing/apigw:${ESHOP_OCELOT_VOLUME_SPEC:-/app/configuration}
+      - ./ApiGateways/Mobile.Bff.Marketing/apigw:${ESHOP_OCELOT_VOLUME_SPEC:-/app/configuration}
 
   webshoppingapigw:
     environment:
@@ -259,7 +259,7 @@ services:
     ports:
       - "5202:80"   
     volumes:
-      - ./src/ApiGateways/Web.Bff.Shopping/apigw:${ESHOP_OCELOT_VOLUME_SPEC:-/app/configuration}
+      - ./ApiGateways/Web.Bff.Shopping/apigw:${ESHOP_OCELOT_VOLUME_SPEC:-/app/configuration}
 
   webmarketingapigw:
     environment:
@@ -276,7 +276,7 @@ services:
     ports:
       - "5203:80"   
     volumes:
-      - ./src/ApiGateways/Web.Bff.Marketing/apigw:${ESHOP_OCELOT_VOLUME_SPEC:-/app/configuration}
+      - ./ApiGateways/Web.Bff.Marketing/apigw:${ESHOP_OCELOT_VOLUME_SPEC:-/app/configuration}
 
   mobileshoppingagg:
     environment:
@@ -424,6 +424,6 @@ services:
 
   envoy:
     volumes:
-      - ./src/ApiGateways/Envoy/config:/etc/envoy      
+      - ./ApiGateways/Envoy/config:/etc/envoy      
     ports:
     - "51051:51051"

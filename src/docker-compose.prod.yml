@@ -249,7 +249,7 @@ services:
       - "5200:80"   # Important: In a production environment your should remove the external port (5200) kept here for microservice debugging purposes. 
                     # The API Gateway redirects and access through the internal port (80).
     volumes:
-      - ./src/ApiGateways/Mobile.Bff.Shopping/apigw:/app/configuration
+      - ./ApiGateways/Mobile.Bff.Shopping/apigw:/app/configuration
  
   mobilemarketingapigw:
     environment:
@@ -259,7 +259,7 @@ services:
       - "5201:80"   # Important: In a production environment your should remove the external port (5201) kept here for microservice debugging purposes. 
                     # The API Gateway redirects and access through the internal port (80).
     volumes:
-      - ./src/ApiGateways/Mobile.Bff.Marketing/apigw:/app/configuration
+      - ./ApiGateways/Mobile.Bff.Marketing/apigw:/app/configuration
 
   webshoppingapigw:
     environment:
@@ -269,7 +269,7 @@ services:
       - "5202:80"   # Important: In a production environment your should remove the external port (5202) kept here for microservice debugging purposes. 
                     # The API Gateway redirects and access through the internal port (80).
     volumes:
-      - ./src/ApiGateways/Web.Bff.Shopping/apigw:/app/configuration
+      - ./ApiGateways/Web.Bff.Shopping/apigw:/app/configuration
 
   webmarketingapigw:
     environment:
@@ -279,7 +279,7 @@ services:
       - "5203:80"   # Important: In a production environment your should remove the external port (5203) kept here for microservice debugging purposes. 
                     # The API Gateway redirects and access through the internal port (80).
     volumes:
-      - ./src/ApiGateways/Web.Bff.Marketing/apigw:/app/configuration
+      - ./ApiGateways/Web.Bff.Marketing/apigw:/app/configuration
 
   mobileshoppingagg:
     environment:

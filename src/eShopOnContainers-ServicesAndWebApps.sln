@@ -30,47 +30,47 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ServicesTests", "ServicesTe
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Identity", "Identity", "{24CD3B53-141E-4A07-9B0D-796641E1CF78}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Basket.API", "src\Services\Basket\Basket.API\Basket.API.csproj", "{2110CBB0-3B38-4EE4-A743-DF6968D80D90}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Basket.API", "Services\Basket\Basket.API\Basket.API.csproj", "{2110CBB0-3B38-4EE4-A743-DF6968D80D90}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Catalog.API", "src\Services\Catalog\Catalog.API\Catalog.API.csproj", "{42681D9D-750A-4DF7-BD9F-9292CFD5C253}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Catalog.API", "Services\Catalog\Catalog.API\Catalog.API.csproj", "{42681D9D-750A-4DF7-BD9F-9292CFD5C253}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ordering.API", "src\Services\Ordering\Ordering.API\Ordering.API.csproj", "{231226CE-690B-4979-8870-9A79D80928E2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ordering.API", "Services\Ordering\Ordering.API\Ordering.API.csproj", "{231226CE-690B-4979-8870-9A79D80928E2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ordering.Domain", "src\Services\Ordering\Ordering.Domain\Ordering.Domain.csproj", "{F5598DCB-6DDE-4661-AD9D-A55612DA7E76}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ordering.Domain", "Services\Ordering\Ordering.Domain\Ordering.Domain.csproj", "{F5598DCB-6DDE-4661-AD9D-A55612DA7E76}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebMVC", "src\Web\WebMVC\WebMVC.csproj", "{F0333D8E-0B27-42B7-B2C6-78F3657624E2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebMVC", "Web\WebMVC\WebMVC.csproj", "{F0333D8E-0B27-42B7-B2C6-78F3657624E2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ordering.Infrastructure", "src\Services\Ordering\Ordering.Infrastructure\Ordering.Infrastructure.csproj", "{95F1F07C-4D92-4742-BD07-E5B805AAB651}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ordering.Infrastructure", "Services\Ordering\Ordering.Infrastructure\Ordering.Infrastructure.csproj", "{95F1F07C-4D92-4742-BD07-E5B805AAB651}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Identity.API", "src\Services\Identity\Identity.API\Identity.API.csproj", "{A579E108-5445-403D-A407-339AC4D1611B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Identity.API", "Services\Identity\Identity.API\Identity.API.csproj", "{A579E108-5445-403D-A407-339AC4D1611B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebSPA", "src\Web\WebSPA\WebSPA.csproj", "{F16E3C6A-1C94-4EAB-BE91-099618060B68}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebSPA", "Web\WebSPA\WebSPA.csproj", "{F16E3C6A-1C94-4EAB-BE91-099618060B68}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildingBlocks", "BuildingBlocks", "{DB0EFB20-B024-4E5E-A75C-52143C131D25}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EventBus", "EventBus", "{807BB76E-B2BB-47A2-A57B-3D1B20FF5E7F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventBus", "src\BuildingBlocks\EventBus\EventBus\EventBus.csproj", "{0044B293-1DCC-4224-B948-00CF6DC7F510}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventBus", "BuildingBlocks\EventBus\EventBus\EventBus.csproj", "{0044B293-1DCC-4224-B948-00CF6DC7F510}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventBusRabbitMQ", "src\BuildingBlocks\EventBus\EventBusRabbitMQ\EventBusRabbitMQ.csproj", "{8088F3FC-6787-45FA-A924-816EC81CBFAC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventBusRabbitMQ", "BuildingBlocks\EventBus\EventBusRabbitMQ\EventBusRabbitMQ.csproj", "{8088F3FC-6787-45FA-A924-816EC81CBFAC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegrationEventLogEF", "src\BuildingBlocks\EventBus\IntegrationEventLogEF\IntegrationEventLogEF.csproj", "{9EE28E45-1533-472B-8267-56C48855BA0E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegrationEventLogEF", "BuildingBlocks\EventBus\IntegrationEventLogEF\IntegrationEventLogEF.csproj", "{9EE28E45-1533-472B-8267-56C48855BA0E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebStatus", "src\Web\WebStatus\WebStatus.csproj", "{C0A7918D-B4F2-4E7F-8DE2-1E5279EF079F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebStatus", "Web\WebStatus\WebStatus.csproj", "{C0A7918D-B4F2-4E7F-8DE2-1E5279EF079F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Location", "Location", "{41139F64-4046-4F16-96B7-D941D96FA9C6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Locations.API", "src\Services\Location\Locations.API\Locations.API.csproj", "{E7581357-FC34-474C-B8F5-307EE3CE05EF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Locations.API", "Services\Location\Locations.API\Locations.API.csproj", "{E7581357-FC34-474C-B8F5-307EE3CE05EF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Marketing", "Marketing", "{A5260DE0-1FDD-467E-9CC1-A028AB081CEE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Marketing.API", "src\Services\Marketing\Marketing.API\Marketing.API.csproj", "{DF395F85-B010-465D-857A-7EBCC512C0C2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Marketing.API", "Services\Marketing\Marketing.API\Marketing.API.csproj", "{DF395F85-B010-465D-857A-7EBCC512C0C2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventBusServiceBus", "src\BuildingBlocks\EventBus\EventBusServiceBus\EventBusServiceBus.csproj", "{69AF10D3-AA76-4FF7-B187-EC7E8CC5F5B8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventBusServiceBus", "BuildingBlocks\EventBus\EventBusServiceBus\EventBusServiceBus.csproj", "{69AF10D3-AA76-4FF7-B187-EC7E8CC5F5B8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebHost", "WebHost", "{1815B651-941C-466B-AE33-D1D7EEB8F77F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebHost.Customization", "src\BuildingBlocks\WebHostCustomization\WebHost.Customization\WebHost.Customization.csproj", "{15F4B3AA-89B6-4A0D-9051-414305974781}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebHost.Customization", "BuildingBlocks\WebHostCustomization\WebHost.Customization\WebHost.Customization.csproj", "{15F4B3AA-89B6-4A0D-9051-414305974781}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ApiGateways", "ApiGateways", "{77849D35-37D4-4802-81DC-9477B2775A40}"
 EndProject
@@ -78,47 +78,47 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ApiGw-Base", "ApiGw-Base", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mobile.Bff.Marketing", "Mobile.Bff.Marketing", "{DB813A36-11BA-41FE-B258-CA9A7152247B}"
 	ProjectSection(SolutionItems) = preProject
-		src\ApiGateways\Mobile.Bff.Marketing\apigw\configuration.json = src\ApiGateways\Mobile.Bff.Marketing\apigw\configuration.json
+		ApiGateways\Mobile.Bff.Marketing\apigw\configuration.json = ApiGateways\Mobile.Bff.Marketing\apigw\configuration.json
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mobile.Bff.Shopping", "Mobile.Bff.Shopping", "{0189E4FB-6E2B-4F2E-9B1D-5473D23FC6DB}"
 	ProjectSection(SolutionItems) = preProject
-		src\ApiGateways\Mobile.Bff.Shopping\apigw\configuration.json = src\ApiGateways\Mobile.Bff.Shopping\apigw\configuration.json
+		ApiGateways\Mobile.Bff.Shopping\apigw\configuration.json = ApiGateways\Mobile.Bff.Shopping\apigw\configuration.json
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web.Bff.Marketing", "Web.Bff.Marketing", "{F8F0921C-EE5D-4AED-A4D6-5BF5FAE02CB5}"
 	ProjectSection(SolutionItems) = preProject
-		src\ApiGateways\Web.Bff.Marketing\apigw\configuration.json = src\ApiGateways\Web.Bff.Marketing\apigw\configuration.json
+		ApiGateways\Web.Bff.Marketing\apigw\configuration.json = ApiGateways\Web.Bff.Marketing\apigw\configuration.json
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web.Bff.Shopping", "Web.Bff.Shopping", "{28C0F5C8-4849-4035-80AB-45639424E73F}"
 	ProjectSection(SolutionItems) = preProject
-		src\ApiGateways\Web.Bff.Shopping\apigw\configuration.json = src\ApiGateways\Web.Bff.Shopping\apigw\configuration.json
+		ApiGateways\Web.Bff.Shopping\apigw\configuration.json = ApiGateways\Web.Bff.Shopping\apigw\configuration.json
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OcelotApiGw", "src\ApiGateways\ApiGw-Base\OcelotApiGw.csproj", "{3F79558C-485D-49E1-BD3E-E12538D3D308}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OcelotApiGw", "ApiGateways\ApiGw-Base\OcelotApiGw.csproj", "{3F79558C-485D-49E1-BD3E-E12538D3D308}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mobile.Shopping.HttpAggregator", "src\ApiGateways\Mobile.Bff.Shopping\aggregator\Mobile.Shopping.HttpAggregator.csproj", "{BEA37D6D-4CF2-4AE8-9575-72388E54FBD0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mobile.Shopping.HttpAggregator", "ApiGateways\Mobile.Bff.Shopping\aggregator\Mobile.Shopping.HttpAggregator.csproj", "{BEA37D6D-4CF2-4AE8-9575-72388E54FBD0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.Shopping.HttpAggregator", "src\ApiGateways\Web.Bff.Shopping\aggregator\Web.Shopping.HttpAggregator.csproj", "{AF0828DB-8BDD-411A-AEEF-B780FBB8D8C1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.Shopping.HttpAggregator", "ApiGateways\Web.Bff.Shopping\aggregator\Web.Shopping.HttpAggregator.csproj", "{AF0828DB-8BDD-411A-AEEF-B780FBB8D8C1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ordering.SignalrHub", "src\Services\Ordering\Ordering.SignalrHub\Ordering.SignalrHub.csproj", "{E1D2B260-4E7F-4A88-BC13-9910F7C44623}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ordering.SignalrHub", "Services\Ordering\Ordering.SignalrHub\Ordering.SignalrHub.csproj", "{E1D2B260-4E7F-4A88-BC13-9910F7C44623}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Basket.UnitTests", "src\Services\Basket\Basket.UnitTests\Basket.UnitTests.csproj", "{9D9CE4E4-1DD0-4961-861F-219731DE06CE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Basket.UnitTests", "Services\Basket\Basket.UnitTests\Basket.UnitTests.csproj", "{9D9CE4E4-1DD0-4961-861F-219731DE06CE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Catalog.UnitTests", "src\Services\Catalog\Catalog.UnitTests\Catalog.UnitTests.csproj", "{791961C7-3F3E-434E-B2BA-B4D6B5E222B0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Catalog.UnitTests", "Services\Catalog\Catalog.UnitTests\Catalog.UnitTests.csproj", "{791961C7-3F3E-434E-B2BA-B4D6B5E222B0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Basket.FunctionalTests", "src\Services\Basket\Basket.FunctionalTests\Basket.FunctionalTests.csproj", "{3F6202D0-2842-4C2F-98E1-9462709EAFBE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Basket.FunctionalTests", "Services\Basket\Basket.FunctionalTests\Basket.FunctionalTests.csproj", "{3F6202D0-2842-4C2F-98E1-9462709EAFBE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ordering.UnitTests", "src\Services\Ordering\Ordering.UnitTests\Ordering.UnitTests.csproj", "{B1182FD9-C245-4018-8412-C66F290C7F4C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ordering.UnitTests", "Services\Ordering\Ordering.UnitTests\Ordering.UnitTests.csproj", "{B1182FD9-C245-4018-8412-C66F290C7F4C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Catalog.FunctionalTests", "src\Services\Catalog\Catalog.FunctionalTests\Catalog.FunctionalTests.csproj", "{38107691-A437-461D-A85C-ACD3AC7ACFAB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Catalog.FunctionalTests", "Services\Catalog\Catalog.FunctionalTests\Catalog.FunctionalTests.csproj", "{38107691-A437-461D-A85C-ACD3AC7ACFAB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Locations.FunctionalTests", "src\Services\Location\Locations.FunctionalTests\Locations.FunctionalTests.csproj", "{16F463AA-9CF6-44DC-B18C-7310CCF663FF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Locations.FunctionalTests", "Services\Location\Locations.FunctionalTests\Locations.FunctionalTests.csproj", "{16F463AA-9CF6-44DC-B18C-7310CCF663FF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ordering.FunctionalTests", "src\Services\Ordering\Ordering.FunctionalTests\Ordering.FunctionalTests.csproj", "{DA7D3E03-D0B6-4591-8143-779D3E9F3F30}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ordering.FunctionalTests", "Services\Ordering\Ordering.FunctionalTests\Ordering.FunctionalTests.csproj", "{DA7D3E03-D0B6-4591-8143-779D3E9F3F30}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Marketing.FunctionalTests", "src\Services\Marketing\Marketing.FunctionalTests\Marketing.FunctionalTests.csproj", "{94176D9B-9CAA-4762-8D12-1621E240EE34}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Marketing.FunctionalTests", "Services\Marketing\Marketing.FunctionalTests\Marketing.FunctionalTests.csproj", "{94176D9B-9CAA-4762-8D12-1621E240EE34}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoadTest", "test\ServicesTests\LoadTest\LoadTest.csproj", "{969E793C-C413-490E-9C9D-B2B46DA5AF32}"
 EndProject
@@ -136,32 +136,32 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{120CABB3
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Payment", "Payment", "{C61C5CFE-4876-4A46-A96E-5BBF596A984A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Payment.API", "src\Services\Payment\Payment.API\Payment.API.csproj", "{0AB40131-8AD7-436F-9C6B-EDA59CFA3A84}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Payment.API", "Services\Payment\Payment.API\Payment.API.csproj", "{0AB40131-8AD7-436F-9C6B-EDA59CFA3A84}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Webhooks", "Webhooks", "{E0AA11C4-2873-461D-8F82-53392530FB7A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Webhooks.API", "src\Services\Webhooks\Webhooks.API\Webhooks.API.csproj", "{84E2016E-0435-44C6-8020-3D288AA38B2C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Webhooks.API", "Services\Webhooks\Webhooks.API\Webhooks.API.csproj", "{84E2016E-0435-44C6-8020-3D288AA38B2C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebhookClient", "src\Web\WebhookClient\WebhookClient.csproj", "{766D7E92-6AF0-476C-ADD5-282BF4D8C576}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebhookClient", "Web\WebhookClient\WebhookClient.csproj", "{766D7E92-6AF0-476C-ADD5-282BF4D8C576}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Devspace.Support", "Devspace.Support", "{68F5041D-51F2-4630-94B6-B49789F5E51A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Devspaces.Support", "src\BuildingBlocks\Devspaces.Support\Devspaces.Support.csproj", "{56C2EF0B-6BF2-41D9-BE07-6E6D08D06B35}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Devspaces.Support", "BuildingBlocks\Devspaces.Support\Devspaces.Support.csproj", "{56C2EF0B-6BF2-41D9-BE07-6E6D08D06B35}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Envoy", "Envoy", "{882A8F3A-C61F-4C44-86DD-A5A258714BF2}"
 	ProjectSection(SolutionItems) = preProject
-		src\ApiGateways\Envoy\Dockerfile = src\ApiGateways\Envoy\Dockerfile
+		ApiGateways\Envoy\Dockerfile = ApiGateways\Envoy\Dockerfile
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "config", "config", "{3ABEEE8C-35E0-4185-9825-C44326151F5B}"
 	ProjectSection(SolutionItems) = preProject
-		src\ApiGateways\Envoy\config\catalog.proto = src\ApiGateways\Envoy\config\catalog.proto
-		src\ApiGateways\Envoy\config\catalog.proto-descriptor.pb = src\ApiGateways\Envoy\config\catalog.proto-descriptor.pb
-		src\ApiGateways\Envoy\Dockerfile = src\ApiGateways\Envoy\Dockerfile
-		src\ApiGateways\Envoy\config\envoy.yaml = src\ApiGateways\Envoy\config\envoy.yaml
+		ApiGateways\Envoy\config\catalog.proto = ApiGateways\Envoy\config\catalog.proto
+		ApiGateways\Envoy\config\catalog.proto-descriptor.pb = ApiGateways\Envoy\config\catalog.proto-descriptor.pb
+		ApiGateways\Envoy\Dockerfile = ApiGateways\Envoy\Dockerfile
+		ApiGateways\Envoy\config\envoy.yaml = ApiGateways\Envoy\config\envoy.yaml
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ordering.BackgroundTasks", "src\Services\Ordering\Ordering.BackgroundTasks\Ordering.BackgroundTasks.csproj", "{D4DBA4A3-E4A5-4D9D-8ACF-F38F7D506191}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ordering.BackgroundTasks", "Services\Ordering\Ordering.BackgroundTasks\Ordering.BackgroundTasks.csproj", "{D4DBA4A3-E4A5-4D9D-8ACF-F38F7D506191}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
