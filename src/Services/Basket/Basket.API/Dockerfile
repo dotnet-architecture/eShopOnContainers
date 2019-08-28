@@ -7,21 +7,21 @@ WORKDIR /src
 
 COPY scripts scripts/
 
-COPY src/ApiGateways/*/*.csproj /src/csproj-files/
-COPY src/ApiGateways/*/*/*.csproj /src/csproj-files/
-COPY src/BuildingBlocks/*/*/*.csproj /src/csproj-files/
-COPY src/Services/*/*/*.csproj /src/csproj-files/
-COPY src/Web/*/*.csproj /src/csproj-files/
+COPY ApiGateways/*/*.csproj csproj-files/
+COPY ApiGateways/*/*/*.csproj csproj-files/
+COPY BuildingBlocks/*/*/*.csproj csproj-files/
+COPY Services/*/*/*.csproj csproj-files/
+COPY Web/*/*.csproj csproj-files/
 
 COPY . .
-WORKDIR /src/src/Services/Basket/Basket.API
+WORKDIR /src/Services/Basket/Basket.API
 RUN dotnet publish -c Release -o /app
 
 FROM build as unittest
-WORKDIR /src/src/Services/Basket/Basket.UnitTests
+WORKDIR /src/Services/Basket/Basket.UnitTests
 
 FROM build as functionaltest
-WORKDIR /src/src/Services/Basket/Basket.FunctionalTests
+WORKDIR /src/Services/Basket/Basket.FunctionalTests
 
 FROM build AS publish
 
