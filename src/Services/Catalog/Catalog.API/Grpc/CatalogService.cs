@@ -64,10 +64,12 @@ namespace Catalog.API.Grpc
 
         public override async Task<PaginatedItemsResponse> GetItemsByIds(CatalogItemsRequest request, ServerCallContext context)
         {
+            _logger.LogInformation("---------- GetItemsByIds request {@request}", request);
             if (!string.IsNullOrEmpty(request.Ids))
             {
                 var items = await GetItemsByIdsAsync(request.Ids);
 
+                _logger.LogInformation("---------- GetItemsByIds items {@items}", items);
                 if (!items.Any())
                 {
                     context.Status = new Status(StatusCode.NotFound, $"ids value invalid. Must be comma-separated list of numbers");
@@ -76,15 +78,18 @@ namespace Catalog.API.Grpc
                 return this.MapToResponse(items);
             }
 
+            _logger.LogInformation("---------- GetItemsByIds else");
             var totalItems = await _catalogContext.CatalogItems
                 .LongCountAsync();
 
+            _logger.LogInformation("---------- GetItemsByIds totalItems {@totalItems}", totalItems);
             var itemsOnPage = await _catalogContext.CatalogItems
                 .OrderBy(c => c.Name)
                 .Skip(request.PageSize * request.PageIndex)
                 .Take(request.PageSize)
                 .ToListAsync();
 
+            _logger.LogInformation("---------- GetItemsByIds itemsOnPage {@itemsOnPage}", itemsOnPage);
             /* The "awesome" fix for testing Devspaces */
 
             /*
@@ -95,8 +100,10 @@ namespace Catalog.API.Grpc
             */
 
             itemsOnPage = ChangeUriPlaceholder(itemsOnPage);
+            _logger.LogInformation("---------- GetItemsByIds itemsOnPage2 {@itemsOnPage}", itemsOnPage);
 
             var model = this.MapToResponse(itemsOnPage, totalItems, request.PageIndex, request.PageSize);
+            _logger.LogInformation("---------- GetItemsByIds model {@model}", model);
             context.Status = new Status(StatusCode.OK, string.Empty);
 
             return model;
@@ -116,29 +123,39 @@ namespace Catalog.API.Grpc
                 PageSize = pageSize,
             };
 
-            items.ForEach(i => result.Data.Add(new CatalogItemResponse()
+            items.ForEach(i =>
             {
-                AvailableStock = i.AvailableStock,
-                Description = i.Description,
-                Id = i.Id,
-                MaxStockThreshold = i.MaxStockThreshold,
-                Name = i.Name,
-                OnReorder = i.OnReorder,
-                PictureFileName = i.PictureFileName,
-                PictureUri = i.PictureUri,
-                RestockThreshold = i.RestockThreshold,
-                CatalogBrand = new CatalogApi.CatalogBrand()
+                var brand = i.CatalogBrand == null
+                            ? null
+                            : new CatalogApi.CatalogBrand()
+                            {
+                                Id = i.CatalogBrand.Id,
+                                Name = i.CatalogBrand.Brand,
+                            };
+                var catalogType = i.CatalogType == null
+                                  ? null
+                                  : new CatalogApi.CatalogType()
+                                  {
+                                      Id = i.CatalogType.Id,
+                                      Type = i.CatalogType.Type,
+                                  };
+
+                result.Data.Add(new CatalogItemResponse()
                 {
-                    Id = i.CatalogBrand.Id,
-                    Name = i.CatalogBrand.Brand,
-                },
-                CatalogType = new CatalogApi.CatalogType()
-                {
-                    Id = i.CatalogType.Id,
-                    Type = i.CatalogType.Type,
-                },
-                Price = (double)i.Price,
-            }));
+                    AvailableStock = i.AvailableStock,
+                    Description = i.Description,
+                    Id = i.Id,
+                    MaxStockThreshold = i.MaxStockThreshold,
+                    Name = i.Name,
+                    OnReorder = i.OnReorder,
+                    PictureFileName = i.PictureFileName,
+                    PictureUri = i.PictureUri,
+                    RestockThreshold = i.RestockThreshold,
+                    CatalogBrand = brand,
+                    CatalogType = catalogType,
+                    Price = (double)i.Price,
+                });
+            });
 
             return result;
         }

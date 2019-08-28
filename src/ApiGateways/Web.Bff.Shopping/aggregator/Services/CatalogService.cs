@@ -11,6 +11,7 @@ using Grpc.Net.Client;
 using System;
 using static CatalogApi.Catalog;
 using System.Linq;
+using Grpc.Core;
 
 namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Services
 {
@@ -40,16 +41,36 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Services
 
         public async Task<IEnumerable<CatalogItem>> GetCatalogItemsAsync(IEnumerable<int> ids)
         {
-            _httpClient.BaseAddress = new Uri(_urls.Catalog + UrlsConfig.CatalogOperations.GetItemsById(ids));
 
-            var client = GrpcClient.Create<CatalogClient>(_httpClient);
-            var request = new CatalogItemsRequest { Ids = string.Join(",", ids), PageIndex = 1, PageSize = 10 };
-            var response = await client.GetItemsByIdsAsync(request);
-            return response.Data.Select(this.MapToCatalogItemResponse);
-            //var stringContent = await _httpClient.GetStringAsync(_urls.Catalog + UrlsConfig.CatalogOperations.GetItemsById(ids));
-            //var catalogItems = JsonConvert.DeserializeObject<CatalogItem[]>(stringContent);
+            AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
+            AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2Support", true);
 
-            //return catalogItems;
+            using (var httpClientHandler = new HttpClientHandler())
+            {
+                httpClientHandler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; };
+                using (var httpClient = new HttpClient(httpClientHandler))
+                {
+                    httpClient.BaseAddress = new Uri(_urls.GrpcCatalog);
+
+                    _logger.LogInformation("Creating grpc client for CatalogClient {@httpClient.BaseAddress}, {@httpClient} ", httpClient.BaseAddress, httpClient);
+
+                    try
+                    {
+                        var client = GrpcClient.Create<CatalogClient>(httpClient);
+                        var request = new CatalogItemsRequest { Ids = string.Join(",", ids), PageIndex = 1, PageSize = 10 };
+                        _logger.LogInformation("grpc client created, request = {@request}", request);
+                        var response = await client.GetItemsByIdsAsync(request);
+                        _logger.LogInformation("grpc response {@response}", response);
+                        return response.Data.Select(this.MapToCatalogItemResponse);
+                    }
+                    catch (RpcException e)
+                    {
+                        _logger.LogError($"Error calling via grpc: {e.Status} - {e.Message}");
+                    }
+                }
+            }
+
+            return null;
         }
 
         private CatalogItem MapToCatalogItemResponse(CatalogItemResponse catalogItemResponse)

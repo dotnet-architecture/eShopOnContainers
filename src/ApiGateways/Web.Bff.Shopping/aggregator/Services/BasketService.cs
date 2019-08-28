@@ -66,12 +66,48 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Services
 
         public async Task UpdateAsync(BasketData currentBasket)
         {
-            _httpClient.BaseAddress = new Uri(_urls.Basket + UrlsConfig.BasketOperations.UpdateBasket());
+            AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
+            AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2Support", true);
 
-            var client = GrpcClient.Create<Basket.BasketClient>(_httpClient);
-            var request = MapToCustomerBasketRequest(currentBasket);
+            using (var httpClientHandler = new HttpClientHandler())
+            {
+                httpClientHandler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; };
+                using (var httpClient = new HttpClient(httpClientHandler))
+                {
+                    httpClient.BaseAddress = new Uri(_urls.GrpcBasket);
 
-            await client.UpdateBasketAsync(request);
+                    _logger.LogDebug("Creating grpc client for basket {@httpClient.BaseAddress} ", httpClient.BaseAddress);
+
+                    var client = GrpcClient.Create<Basket.BasketClient>(httpClient);
+
+
+                    try
+                    {
+
+                        _logger.LogInformation("Grpc update basket currentBasket {@currentBasket}", currentBasket);
+                        var request = MapToCustomerBasketRequest(currentBasket);
+                        _logger.LogInformation("Grpc update basket request {@request}", request);
+
+                        await client.UpdateBasketAsync(request);
+                    }
+                    catch (RpcException e)
+                    {
+                        _logger.LogError($"Error calling via grpc: {e.Status} - {e.Message}");
+                    }
+                }
+            }
+
+
+
+
+            //_httpClient.BaseAddress = new Uri(_urls.Basket + UrlsConfig.BasketOperations.UpdateBasket());
+
+            //var client = GrpcClient.Create<Basket.BasketClient>(_httpClient);
+            //_logger.LogInformation("Grpc update basket currentBasket {@currentBasket}", currentBasket);
+            //var request = MapToCustomerBasketRequest(currentBasket);
+            //_logger.LogInformation("Grpc update basket request {@request}", request);
+
+            //await client.UpdateBasketAsync(request);
         }
 
         private BasketData MapToBasketData(CustomerBasketResponse customerBasketRequest)
