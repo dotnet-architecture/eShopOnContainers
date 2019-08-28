@@ -2,7 +2,6 @@
 using Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -11,7 +10,6 @@ using Grpc.Net.Client;
 using System;
 using static CatalogApi.Catalog;
 using System.Linq;
-using Grpc.Core;
 
 namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Services
 {
@@ -41,36 +39,15 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Services
 
         public async Task<IEnumerable<CatalogItem>> GetCatalogItemsAsync(IEnumerable<int> ids)
         {
-
-            AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
-            AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2Support", true);
-
-            using (var httpClientHandler = new HttpClientHandler())
+            return await GrpcCallerService.CallService(_urls.GrpcCatalog, async httpClient =>
             {
-                httpClientHandler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; };
-                using (var httpClient = new HttpClient(httpClientHandler))
-                {
-                    httpClient.BaseAddress = new Uri(_urls.GrpcCatalog);
-
-                    _logger.LogInformation("Creating grpc client for CatalogClient {@httpClient.BaseAddress}, {@httpClient} ", httpClient.BaseAddress, httpClient);
-
-                    try
-                    {
-                        var client = GrpcClient.Create<CatalogClient>(httpClient);
-                        var request = new CatalogItemsRequest { Ids = string.Join(",", ids), PageIndex = 1, PageSize = 10 };
-                        _logger.LogInformation("grpc client created, request = {@request}", request);
-                        var response = await client.GetItemsByIdsAsync(request);
-                        _logger.LogInformation("grpc response {@response}", response);
-                        return response.Data.Select(this.MapToCatalogItemResponse);
-                    }
-                    catch (RpcException e)
-                    {
-                        _logger.LogError($"Error calling via grpc: {e.Status} - {e.Message}");
-                    }
-                }
-            }
-
-            return null;
+                var client = GrpcClient.Create<CatalogClient>(httpClient);
+                var request = new CatalogItemsRequest { Ids = string.Join(",", ids), PageIndex = 1, PageSize = 10 };
+                _logger.LogInformation("grpc client created, request = {@request}", request);
+                var response = await client.GetItemsByIdsAsync(request);
+                _logger.LogInformation("grpc response {@response}", response);
+                return response.Data.Select(this.MapToCatalogItemResponse);
+            });
         }
 
         private CatalogItem MapToCatalogItemResponse(CatalogItemResponse catalogItemResponse)
