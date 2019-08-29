@@ -46,7 +46,7 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Services
                 var request = MapToCustomerBasketRequest(currentBasket);
                 _logger.LogDebug("Grpc update basket request {@request}", request);
 
-                return client.UpdateBasketAsync(request);
+                return await client.UpdateBasketAsync(request);
             });
         }
 
