@@ -3,6 +3,7 @@ using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.Order
 using Microsoft.eShopOnContainers.Services.Ordering.Domain.Seedwork;
 using Ordering.Domain.Exceptions;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Repositories
