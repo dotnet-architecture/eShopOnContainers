@@ -64,12 +64,10 @@ namespace Catalog.API.Grpc
 
         public override async Task<PaginatedItemsResponse> GetItemsByIds(CatalogItemsRequest request, ServerCallContext context)
         {
-            _logger.LogInformation("---------- GetItemsByIds request {@request}", request);
             if (!string.IsNullOrEmpty(request.Ids))
             {
                 var items = await GetItemsByIdsAsync(request.Ids);
 
-                _logger.LogInformation("---------- GetItemsByIds items {@items}", items);
                 if (!items.Any())
                 {
                     context.Status = new Status(StatusCode.NotFound, $"ids value invalid. Must be comma-separated list of numbers");
@@ -78,18 +76,15 @@ namespace Catalog.API.Grpc
                 return this.MapToResponse(items);
             }
 
-            _logger.LogInformation("---------- GetItemsByIds else");
             var totalItems = await _catalogContext.CatalogItems
                 .LongCountAsync();
 
-            _logger.LogInformation("---------- GetItemsByIds totalItems {@totalItems}", totalItems);
             var itemsOnPage = await _catalogContext.CatalogItems
                 .OrderBy(c => c.Name)
                 .Skip(request.PageSize * request.PageIndex)
                 .Take(request.PageSize)
                 .ToListAsync();
 
-            _logger.LogInformation("---------- GetItemsByIds itemsOnPage {@itemsOnPage}", itemsOnPage);
             /* The "awesome" fix for testing Devspaces */
 
             /*
@@ -100,10 +95,8 @@ namespace Catalog.API.Grpc
             */
 
             itemsOnPage = ChangeUriPlaceholder(itemsOnPage);
-            _logger.LogInformation("---------- GetItemsByIds itemsOnPage2 {@itemsOnPage}", itemsOnPage);
 
             var model = this.MapToResponse(itemsOnPage, totalItems, request.PageIndex, request.PageSize);
-            _logger.LogInformation("---------- GetItemsByIds model {@model}", model);
             context.Status = new Status(StatusCode.OK, string.Empty);
 
             return model;

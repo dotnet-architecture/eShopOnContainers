@@ -45,8 +45,6 @@ namespace Ordering.API.Application.IntegrationEvents
 
             foreach (var logEvt in pendingLogEvents)
             {
-                _logger.LogInformation("----- Publishing integration event: {IntegrationEventId} from {AppName} - ({@IntegrationEvent})", logEvt.EventId, Program.AppName, logEvt.IntegrationEvent);
-
                 try
                 {
                     await _eventLogService.MarkEventAsInProgressAsync(logEvt.EventId);
@@ -64,8 +62,6 @@ namespace Ordering.API.Application.IntegrationEvents
 
         public async Task AddAndSaveEventAsync(IntegrationEvent evt)
         {
-            _logger.LogInformation("----- Enqueuing integration event {IntegrationEventId} to repository ({@IntegrationEvent})", evt.Id, evt);
-
             await _eventLogService.SaveEventAsync(evt, _orderingContext.GetCurrentTransaction());
         }
     }

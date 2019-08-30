@@ -49,7 +49,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Controllers
             {
                 var requestCancelOrder = new IdentifiedCommand<CancelOrderCommand, bool>(command, guid);
 
-                _logger.LogInformation(
+                _logger.LogTrace(
                     "----- Sending command: {CommandName} - {IdProperty}: {CommandId} ({@Command})",
                     requestCancelOrder.GetGenericTypeName(),
                     nameof(requestCancelOrder.Command.OrderNumber),
@@ -79,7 +79,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Controllers
             {
                 var requestShipOrder = new IdentifiedCommand<ShipOrderCommand, bool>(command, guid);
 
-                _logger.LogInformation(
+                _logger.LogTrace(
                     "----- Sending command: {CommandName} - {IdProperty}: {CommandId} ({@Command})",
                     requestShipOrder.GetGenericTypeName(),
                     nameof(requestShipOrder.Command.OrderNumber),
@@ -141,7 +141,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Controllers
         [HttpPost]
         public async Task<ActionResult<OrderDraftDTO>> CreateOrderDraftFromBasketDataAsync([FromBody] CreateOrderDraftCommand createOrderDraftCommand)
         {
-            _logger.LogInformation(
+            _logger.LogTrace(
                 "----- Sending command: {CommandName} - {IdProperty}: {CommandId} ({@Command})",
                 createOrderDraftCommand.GetGenericTypeName(),
                 nameof(createOrderDraftCommand.BuyerId),

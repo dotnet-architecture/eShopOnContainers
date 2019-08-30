@@ -26,8 +26,6 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.IntegrationEvents.Even
         {
             using (LogContext.PushProperty("IntegrationEventContext", $"{@event.Id}-{Program.AppName}"))
             {
-                _logger.LogInformation("----- Handling integration event: {IntegrationEventId} at {AppName} - ({@IntegrationEvent})", @event.Id, Program.AppName, @event);
-
                 var userIds = _repository.GetUsers();
 
                 foreach (var id in userIds)
@@ -46,8 +44,6 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.IntegrationEvents.Even
 
             if (itemsToUpdate != null)
             {
-                _logger.LogInformation("----- ProductPriceChangedIntegrationEventHandler - Updating items in basket for user: {BuyerId} ({@Items})", basket.BuyerId, itemsToUpdate);
-
                 foreach (var item in itemsToUpdate)
                 {
                     if (item.UnitPrice == oldPrice)

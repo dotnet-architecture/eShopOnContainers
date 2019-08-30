@@ -27,10 +27,31 @@ namespace Ordering.Infrastructure.EntityConfigurations
                     a.WithOwner();
                 });
 
-            orderConfiguration.Property<DateTime>("OrderDate").IsRequired();
-            orderConfiguration.Property<int?>("BuyerId").IsRequired(false);
-            orderConfiguration.Property<int>("OrderStatusId").IsRequired();
-            orderConfiguration.Property<int?>("PaymentMethodId").IsRequired(false);
+            orderConfiguration
+                .Property<int?>("_buyerId")
+                .UsePropertyAccessMode(PropertyAccessMode.Field)
+                .HasColumnName("BuyerId")
+                .IsRequired(false);
+
+            orderConfiguration
+                .Property<DateTime>("_orderDate")
+                .UsePropertyAccessMode(PropertyAccessMode.Field)
+                .HasColumnName("OrderDate")
+                .IsRequired();
+
+            orderConfiguration
+                .Property<int>("_orderStatusId")
+                // .HasField("_orderStatusId")
+                .UsePropertyAccessMode(PropertyAccessMode.Field)
+                .HasColumnName("OrderStatusId")
+                .IsRequired();
+
+            orderConfiguration
+                .Property<int?>("_paymentMethodId")
+                .UsePropertyAccessMode(PropertyAccessMode.Field)
+                .HasColumnName("PaymentMethodId")
+                .IsRequired(false);
+
             orderConfiguration.Property<string>("Description").IsRequired(false);
 
             var navigation = orderConfiguration.Metadata.FindNavigation(nameof(Order.OrderItems));
@@ -41,18 +62,21 @@ namespace Ordering.Infrastructure.EntityConfigurations
 
             orderConfiguration.HasOne<PaymentMethod>()
                 .WithMany()
-                .HasForeignKey("PaymentMethodId")
+                // .HasForeignKey("PaymentMethodId")
+                .HasForeignKey("_paymentMethodId")
                 .IsRequired(false)
                 .OnDelete(DeleteBehavior.Restrict);
 
             orderConfiguration.HasOne<Buyer>()
                 .WithMany()
                 .IsRequired(false)
-                .HasForeignKey("BuyerId");
+                // .HasForeignKey("BuyerId");
+                .HasForeignKey("_buyerId");
 
             orderConfiguration.HasOne(o => o.OrderStatus)
                 .WithMany()
-                .HasForeignKey("OrderStatusId");
+                // .HasForeignKey("OrderStatusId");
+                .HasForeignKey("_orderStatusId");
         }
     }
 }

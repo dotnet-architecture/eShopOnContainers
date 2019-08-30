@@ -40,7 +40,6 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Repositor
                                 .FirstOrDefaultAsync(o => o.Id == orderId);
             if (order == null)
             {
-
                 order = _context
                             .Orders
                             .Local
