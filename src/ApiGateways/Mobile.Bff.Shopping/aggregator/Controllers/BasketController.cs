@@ -38,8 +38,18 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Controllers
             var basket = await _basket.GetById(data.BuyerId) ?? new BasketData(data.BuyerId);
 
             var catalogItems = await _catalog.GetCatalogItemsAsync(data.Items.Select(x => x.ProductId));
+            // group by product id to avoid duplicates
+            var itemsCalculated = data
+                    .Items
+                    .GroupBy(x => x.ProductId, x => x, (k, i) => new { productId = k, items = i })
+                    .Select(groupedItem =>
+                    {
+                        var item = groupedItem.items.First();
+                        item.Quantity = groupedItem.items.Sum(i => i.Quantity);
+                        return item;
+                    });
 
-            foreach (var bitem in data.Items)
+            foreach (var bitem in itemsCalculated)
             {
                 var catalogItem = catalogItems.SingleOrDefault(ci => ci.Id == bitem.ProductId);
                 if (catalogItem == null)
@@ -47,15 +57,23 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Controllers
                     return BadRequest($"Basket refers to a non-existing catalog item ({bitem.ProductId})");
                 }
 
-                basket.Items.Add(new BasketDataItem()
+                var itemInBasket = basket.Items.FirstOrDefault(x => x.ProductId == bitem.ProductId);
+                if (itemInBasket == null)
                 {
-                    Id = bitem.Id,
-                    ProductId = catalogItem.Id.ToString(),
-                    ProductName = catalogItem.Name,
-                    PictureUrl = catalogItem.PictureUri,
-                    UnitPrice = catalogItem.Price,
-                    Quantity = bitem.Quantity
-                });
+                    basket.Items.Add(new BasketDataItem()
+                    {
+                        Id = bitem.Id,
+                        ProductId = catalogItem.Id,
+                        ProductName = catalogItem.Name,
+                        PictureUrl = catalogItem.PictureUri,
+                        UnitPrice = catalogItem.Price,
+                        Quantity = bitem.Quantity
+                    });
+                }
+                else
+                {
+                    itemInBasket.Quantity = bitem.Quantity;
+                }
             }
 
             await _basket.UpdateAsync(basket);
@@ -123,7 +141,7 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Controllers
             {
                 UnitPrice = item.Price,
                 PictureUrl = item.PictureUri,
-                ProductId = item.Id.ToString(),
+                ProductId = item.Id,
                 ProductName = item.Name,
                 Quantity = data.Quantity,
                 Id = Guid.NewGuid().ToString()

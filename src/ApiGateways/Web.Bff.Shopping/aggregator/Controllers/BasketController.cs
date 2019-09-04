@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Serilog;
+using Newtonsoft.Json;
 
 namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Controllers
 {
@@ -31,8 +32,6 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Controllers
         [ProducesResponseType(typeof(BasketData), (int)HttpStatusCode.OK)]
         public async Task<ActionResult<BasketData>> UpdateAllBasketAsync([FromBody] UpdateBasketRequest data)
         {
-            Log.Debug("UpdateAllBasketAsync");
-
             if (data.Items == null || !data.Items.Any())
             {
                 return BadRequest("Need to pass at least one basket line");
@@ -40,13 +39,20 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Controllers
 
             // Retrieve the current basket
             var basket = await _basket.GetById(data.BuyerId) ?? new BasketData(data.BuyerId);
-
-            Log.Debug("get basket by id response={@response}", basket);
-
             var catalogItems = await _catalog.GetCatalogItemsAsync(data.Items.Select(x => x.ProductId));
-            Log.Debug("get catalog items response={@response}", catalogItems);
 
-            foreach (var bitem in data.Items)
+            // group by product id to avoid duplicates
+            var itemsCalculated = data
+                    .Items
+                    .GroupBy(x => x.ProductId, x => x, (k, i) => new { productId = k, items = i })
+                    .Select(groupedItem =>
+                    {
+                        var item = groupedItem.items.First();
+                        item.Quantity = groupedItem.items.Sum(i => i.Quantity);
+                        return item;
+                    });
+
+            foreach (var bitem in itemsCalculated)
             {
                 var catalogItem = catalogItems.SingleOrDefault(ci => ci.Id == bitem.ProductId);
                 if (catalogItem == null)
@@ -54,15 +60,23 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Controllers
                     return BadRequest($"Basket refers to a non-existing catalog item ({bitem.ProductId})");
                 }
 
-                basket.Items.Add(new BasketDataItem()
+                var itemInBasket = basket.Items.FirstOrDefault(x => x.ProductId == bitem.ProductId);
+                if (itemInBasket == null)
                 {
-                    Id = bitem.Id,
-                    ProductId = catalogItem.Id.ToString(),
-                    ProductName = catalogItem.Name,
-                    PictureUrl = catalogItem.PictureUri,
-                    UnitPrice = catalogItem.Price,
-                    Quantity = bitem.Quantity
-                });
+                    basket.Items.Add(new BasketDataItem()
+                    {
+                        Id = bitem.Id,
+                        ProductId = catalogItem.Id,
+                        ProductName = catalogItem.Name,
+                        PictureUrl = catalogItem.PictureUri,
+                        UnitPrice = catalogItem.Price,
+                        Quantity = bitem.Quantity
+                    });
+                }
+                else
+                {
+                    itemInBasket.Quantity = bitem.Quantity;
+                }
             }
 
             await _basket.UpdateAsync(basket);
@@ -124,8 +138,7 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Controllers
             // Step 2: Get current basket status
             var currentBasket = (await _basket.GetById(data.BasketId)) ?? new BasketData(data.BasketId);
             // Step 3: Search if exist product into basket
-            var product = currentBasket.Items.SingleOrDefault(i => i.ProductId == item.Id.ToString());
-
+            var product = currentBasket.Items.SingleOrDefault(i => i.ProductId == item.Id);
             if (product != null)
             {
                 // Step 4: Update quantity for product
@@ -138,7 +151,7 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Controllers
                 {
                     UnitPrice = item.Price,
                     PictureUrl = item.PictureUri,
-                    ProductId = item.Id.ToString(),
+                    ProductId = item.Id,
                     ProductName = item.Name,
                     Quantity = data.Quantity,
                     Id = Guid.NewGuid().ToString()
