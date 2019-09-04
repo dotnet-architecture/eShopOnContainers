@@ -5,8 +5,10 @@ EXPOSE 80
 
 FROM ${NODE_IMAGE} as node-build
 WORKDIR /web
-COPY Web/WebSPA .
+COPY Web/WebSPA/package.json .
+COPY Web/WebSPA/package-lock.json .
 RUN npm install
+COPY Web/WebSPA .
 RUN npm run build:prod
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.0-buster AS build
