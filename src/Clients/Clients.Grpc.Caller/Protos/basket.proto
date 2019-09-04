@@ -25,7 +25,7 @@ message CustomerBasketResponse {
 
 message BasketItemResponse {
 	string id = 1;
-	string productid = 2;
+	int32 productid = 2;
 	string productname = 3;
 	double unitprice = 4;
 	double oldunitprice = 5;

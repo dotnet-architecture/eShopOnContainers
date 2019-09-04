@@ -63,7 +63,7 @@ namespace Basket.FunctionalTests
 
             order.Items.Add(new BasketItem
             {
-                ProductId = "1",
+                ProductId = 1,
                 ProductName = ".NET Bot Black Hoodie",
                 UnitPrice = 10,
                 Quantity = 1

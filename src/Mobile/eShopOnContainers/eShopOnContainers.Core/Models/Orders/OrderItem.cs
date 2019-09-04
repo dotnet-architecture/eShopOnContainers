@@ -5,7 +5,7 @@ namespace eShopOnContainers.Core.Models.Orders
 {
     public class OrderItem
     {
-        public string ProductId { get; set; }
+        public int ProductId { get; set; }
         public Guid? OrderId { get; set; }
 
         [JsonProperty("unitprice")]

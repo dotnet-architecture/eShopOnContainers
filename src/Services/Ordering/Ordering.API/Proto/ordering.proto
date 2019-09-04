@@ -16,7 +16,7 @@ message CreateOrderDraftCommand {
 
 message BasketItem {
     string id = 1;
-    string productId = 2;
+    int32 productId = 2;
     string productName = 3;
     double unitPrice = 4;
     double oldUnitPrice = 5;
