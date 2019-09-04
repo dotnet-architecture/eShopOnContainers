@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using System;
 using Grpc.Core;
 using Serilog;
+using Polly;
 
 namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Services
 {
@@ -27,7 +28,11 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Services
 
             try
             {
-                return await func(httpClient);
+                return await Policy
+                                .Handle<Exception>(ex => true)
+                                .WaitAndRetryAsync(5, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)), (e, t) => Log.Warning("Retrying the call to urlGrpc ={@urlGrpc}, BaseAddress={@BaseAddress}, errorMessage={@message}", urlGrpc, httpClient.BaseAddress,e.Message))
+                                .ExecuteAsync(() => func(httpClient))
+                                ;
             }
             catch (RpcException e)
             {
@@ -59,7 +64,11 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Services
 
             try
             {
-                await func(httpClient);
+                await Policy
+                        .Handle<Exception>(ex => true)
+                        .WaitAndRetryAsync(5, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)), (e, t) => Log.Warning("Retrying the call to urlGrpc ={@urlGrpc}, BaseAddress={@BaseAddress}, errorMessage={@message}", urlGrpc, httpClient.BaseAddress, e.Message))
+                        .ExecuteAsync(() => func(httpClient))
+                        ;
             }
             catch (RpcException e)
             {
