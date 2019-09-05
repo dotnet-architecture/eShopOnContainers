@@ -104,6 +104,7 @@
     <IdentityServer4>3.0.0-preview3.4</IdentityServer4>
     <IdentityServer4_AspNetIdentity>3.0.0-preview3.4</IdentityServer4_AspNetIdentity>
     <IdentityServer4_EntityFramework>3.0.0-preview3.4</IdentityServer4_EntityFramework>
+    <IdentityServer4_EntityFramework_Storage>3.0.0-preview3.4</IdentityServer4_EntityFramework_Storage>
     <IdentityServer4_Storage>3.0.0-preview3.4</IdentityServer4_Storage>
     <RabbitMQ_Client>5.0.1</RabbitMQ_Client>
     <Serilog_AspNetCore>3.0.0-dev-00053</Serilog_AspNetCore>

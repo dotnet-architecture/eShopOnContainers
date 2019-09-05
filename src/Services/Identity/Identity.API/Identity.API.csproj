@@ -23,6 +23,7 @@
     <PackageReference Include="IdentityServer4.Storage" Version="$(IdentityServer4_Storage)" />
     <PackageReference Include="IdentityServer4.AspNetIdentity" Version="$(IdentityServer4_AspNetIdentity)" />
     <PackageReference Include="IdentityServer4.EntityFramework" Version="$(IdentityServer4_EntityFramework)" />
+    <PackageReference Include="IdentityServer4.EntityFramework.Storage" Version="$(IdentityServer4_EntityFramework_Storage)" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="$(Microsoft_ApplicationInsights_AspNetCore)" />
     <PackageReference Include="Microsoft.ApplicationInsights.DependencyCollector" Version="$(Microsoft_ApplicationInsights_DependencyCollector)" />
     <PackageReference Include="Microsoft.ApplicationInsights.Kubernetes" Version="$(Microsoft_ApplicationInsights_Kubernetes)" />
@@ -32,9 +33,6 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="$(Microsoft_EntityFrameworkCore_Design_preview5)" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="$(Microsoft_EntityFrameworkCore_Relational_preview5)" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="$(Microsoft_EntityFrameworkCore_SqlServer_preview5)" />
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Configuration.AzureKeyVault" Version="$(Microsoft_Extensions_Configuration_AzureKeyVault)" />
     <PackageReference Include="Microsoft.Extensions.Logging.AzureAppServices" Version="$(Microsoft_Extensions_Logging_AzureAppServices)" />
     <PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="$(Microsoft_Web_LibraryManager_Build)" />
