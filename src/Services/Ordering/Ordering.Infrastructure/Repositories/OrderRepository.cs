@@ -3,6 +3,7 @@ using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.Order
 using Microsoft.eShopOnContainers.Services.Ordering.Domain.Seedwork;
 using Ordering.Domain.Exceptions;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Repositories
@@ -28,7 +29,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Repositor
         public Order Add(Order order)
         {
             return  _context.Orders.Add(order).Entity;
-               
+
         }
 
         public async Task<Order> GetAsync(int orderId)
@@ -37,6 +38,13 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Repositor
                                 .Orders
                                 .Include(x => x.Address)
                                 .FirstOrDefaultAsync(o => o.Id == orderId);
+            if (order == null)
+            {
+                order = _context
+                            .Orders
+                            .Local
+                            .FirstOrDefault(o => o.Id == orderId);
+            }
             if (order != null)
             {
                 await _context.Entry(order)

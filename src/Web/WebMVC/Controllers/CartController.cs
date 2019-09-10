@@ -41,7 +41,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
             return View();
         }
 
-        
+
         [HttpPost]
         public async Task<IActionResult> Index(Dictionary<string, int> quantities, string action)
         {
@@ -72,7 +72,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
                     var user = _appUserParser.Parse(HttpContext.User);
                     await _basketSvc.AddItemToBasket(user, productDetails.Id);
                 }
-                return RedirectToAction("Index", "Catalog");            
+                return RedirectToAction("Index", "Catalog");
             }
             catch (BrokenCircuitException)
             {

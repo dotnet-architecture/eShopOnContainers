@@ -39,8 +39,6 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Controllers
             }
 
             // Retrieve the current basket
-                        Log.Information("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ GetByIdAsync @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-
             var basket = await _basket.GetById(data.BuyerId) ?? new BasketData(data.BuyerId);
 
             Log.Debug("get basket by id response={@response}", basket);
@@ -127,12 +125,14 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Controllers
             var currentBasket = (await _basket.GetById(data.BasketId)) ?? new BasketData(data.BasketId);
             // Step 3: Search if exist product into basket
             var product = currentBasket.Items.SingleOrDefault(i => i.ProductId == item.Id.ToString());
-            
-            if(product != null){
+
+            if (product != null)
+            {
                 // Step 4: Update quantity for product
                 product.Quantity += data.Quantity;
             }
-            else{
+            else
+            {
                 // Step 4: Merge current status with new product
                 currentBasket.Items.Add(new BasketDataItem()
                 {
@@ -144,7 +144,7 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Controllers
                     Id = Guid.NewGuid().ToString()
                 });
             }
-            
+
             // Step 5: Update basket
             await _basket.UpdateAsync(currentBasket);
 

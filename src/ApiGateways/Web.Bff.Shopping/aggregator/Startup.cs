@@ -144,9 +144,9 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator
 
                 options.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Title = "Shopping Aggregator for Mobile Clients",
+                    Title = "Shopping Aggregator for Web Clients",
                     Version = "v1",
-                    Description = "Shopping Aggregator for Mobile Clients"
+                    Description = "Shopping Aggregator for Web Clients"
                 });
 
                 options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme

@@ -116,29 +116,39 @@ namespace Catalog.API.Grpc
                 PageSize = pageSize,
             };
 
-            items.ForEach(i => result.Data.Add(new CatalogItemResponse()
+            items.ForEach(i =>
             {
-                AvailableStock = i.AvailableStock,
-                Description = i.Description,
-                Id = i.Id,
-                MaxStockThreshold = i.MaxStockThreshold,
-                Name = i.Name,
-                OnReorder = i.OnReorder,
-                PictureFileName = i.PictureFileName,
-                PictureUri = i.PictureUri,
-                RestockThreshold = i.RestockThreshold,
-                CatalogBrand = new CatalogApi.CatalogBrand()
+                var brand = i.CatalogBrand == null
+                            ? null
+                            : new CatalogApi.CatalogBrand()
+                            {
+                                Id = i.CatalogBrand.Id,
+                                Name = i.CatalogBrand.Brand,
+                            };
+                var catalogType = i.CatalogType == null
+                                  ? null
+                                  : new CatalogApi.CatalogType()
+                                  {
+                                      Id = i.CatalogType.Id,
+                                      Type = i.CatalogType.Type,
+                                  };
+
+                result.Data.Add(new CatalogItemResponse()
                 {
-                    Id = i.CatalogBrand.Id,
-                    Name = i.CatalogBrand.Brand,
-                },
-                CatalogType = new CatalogApi.CatalogType()
-                {
-                    Id = i.CatalogType.Id,
-                    Type = i.CatalogType.Type,
-                },
-                Price = (double)i.Price,
-            }));
+                    AvailableStock = i.AvailableStock,
+                    Description = i.Description,
+                    Id = i.Id,
+                    MaxStockThreshold = i.MaxStockThreshold,
+                    Name = i.Name,
+                    OnReorder = i.OnReorder,
+                    PictureFileName = i.PictureFileName,
+                    PictureUri = i.PictureUri,
+                    RestockThreshold = i.RestockThreshold,
+                    CatalogBrand = brand,
+                    CatalogType = catalogType,
+                    Price = (double)i.Price,
+                });
+            });
 
             return result;
         }

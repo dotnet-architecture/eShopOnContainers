@@ -25,8 +25,6 @@
         {
             using (LogContext.PushProperty("IntegrationEventContext", $"{@event.Id}-{Program.AppName}"))
             {
-                _logger.LogInformation("----- Handling integration event: {IntegrationEventId} at {AppName} - ({@IntegrationEvent})", @event.Id, Program.AppName, @event);
-
                 //we're not blocking stock/inventory
                 foreach (var orderStockItem in @event.OrderStockItems)
                 {

@@ -23,27 +23,43 @@ namespace Ordering.Infrastructure.EntityConfigurations
             paymentConfiguration.Property<int>("BuyerId")
                 .IsRequired();
 
-            paymentConfiguration.Property<string>("CardHolderName")
+            paymentConfiguration
+                .Property<string>("_cardHolderName")
+                .UsePropertyAccessMode(PropertyAccessMode.Field)
+                .HasColumnName("CardHolderName")
                 .HasMaxLength(200)
                 .IsRequired();
 
-            paymentConfiguration.Property<string>("Alias")
+            paymentConfiguration
+                .Property<string>("_alias")
+                .UsePropertyAccessMode(PropertyAccessMode.Field)
+                .HasColumnName("Alias")
                 .HasMaxLength(200)
                 .IsRequired();
 
-            paymentConfiguration.Property<string>("CardNumber")
+            paymentConfiguration
+                .Property<string>("_cardNumber")
+                .UsePropertyAccessMode(PropertyAccessMode.Field)
+                .HasColumnName("CardNumber")
                 .HasMaxLength(25)
                 .IsRequired();
 
-            paymentConfiguration.Property<DateTime>("Expiration")
+            paymentConfiguration
+                .Property<DateTime>("_expiration")
+                .UsePropertyAccessMode(PropertyAccessMode.Field)
+                .HasColumnName("Expiration")
+                .HasMaxLength(25)
                 .IsRequired();
 
-            paymentConfiguration.Property<int>("CardTypeId")
+            paymentConfiguration
+                .Property<int>("_cardTypeId")
+                .UsePropertyAccessMode(PropertyAccessMode.Field)
+                .HasColumnName("CardTypeId")
                 .IsRequired();
 
             paymentConfiguration.HasOne(p => p.CardType)
                 .WithMany()
-                .HasForeignKey("CardTypeId");
+                .HasForeignKey("_cardTypeId");
         }
     }
 }

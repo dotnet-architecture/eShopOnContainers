@@ -2,7 +2,6 @@
 using Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -29,27 +28,28 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Services
 
         public async Task<CatalogItem> GetCatalogItemAsync(int id)
         {
-            _httpClient.BaseAddress = new Uri(_urls.Catalog + UrlsConfig.CatalogOperations.GetItemById(id));
-
-            var client = GrpcClient.Create<CatalogClient>(_httpClient);
-            var request = new CatalogItemRequest { Id = id };
-            var response = await client.GetItemByIdAsync(request);
-
-            return MapToCatalogItemResponse(response);
+            return await GrpcCallerService.CallService(_urls.GrpcCatalog, async httpClient =>
+            {
+                var client = GrpcClient.Create<CatalogClient>(httpClient);
+                var request = new CatalogItemRequest { Id = id };
+                _logger.LogInformation("grpc client created, request = {@request}", request);
+                var response = await client.GetItemByIdAsync(request);
+                _logger.LogInformation("grpc response {@response}", response);
+                return MapToCatalogItemResponse(response);
+            });
         }
 
         public async Task<IEnumerable<CatalogItem>> GetCatalogItemsAsync(IEnumerable<int> ids)
         {
-            _httpClient.BaseAddress = new Uri(_urls.Catalog + UrlsConfig.CatalogOperations.GetItemsById(ids));
-
-            var client = GrpcClient.Create<CatalogClient>(_httpClient);
-            var request = new CatalogItemsRequest { Ids = string.Join(",", ids), PageIndex = 1, PageSize = 10 };
-            var response = await client.GetItemsByIdsAsync(request);
-            return response.Data.Select(this.MapToCatalogItemResponse);
-            //var stringContent = await _httpClient.GetStringAsync(_urls.Catalog + UrlsConfig.CatalogOperations.GetItemsById(ids));
-            //var catalogItems = JsonConvert.DeserializeObject<CatalogItem[]>(stringContent);
-
-            //return catalogItems;
+            return await GrpcCallerService.CallService(_urls.GrpcCatalog, async httpClient =>
+            {
+                var client = GrpcClient.Create<CatalogClient>(httpClient);
+                var request = new CatalogItemsRequest { Ids = string.Join(",", ids), PageIndex = 1, PageSize = 10 };
+                _logger.LogInformation("grpc client created, request = {@request}", request);
+                var response = await client.GetItemsByIdsAsync(request);
+                _logger.LogInformation("grpc response {@response}", response);
+                return response.Data.Select(this.MapToCatalogItemResponse);
+            });
         }
 
         private CatalogItem MapToCatalogItemResponse(CatalogItemResponse catalogItemResponse)

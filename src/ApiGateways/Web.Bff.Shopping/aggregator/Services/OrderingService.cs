@@ -14,52 +14,30 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Services
 {
     public class OrderingService : IOrderingService
     {
-        private readonly HttpClient _httpClient;
         private readonly UrlsConfig _urls;
         private readonly ILogger<OrderingService> _logger;
+        public readonly HttpClient _httpClient;
 
         public OrderingService(HttpClient httpClient, IOptions<UrlsConfig> config, ILogger<OrderingService> logger)
         {
-            _httpClient = httpClient;
             _urls = config.Value;
+            _httpClient = httpClient;
             _logger = logger;
         }
 
         public async Task<OrderData> GetOrderDraftAsync(BasketData basketData)
         {
-            AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
-            AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2Support", true);
-
-            using (var httpClientHandler = new HttpClientHandler())
+            return await GrpcCallerService.CallService(_urls.GrpcOrdering, async httpClient =>
             {
-                httpClientHandler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; };
-                using (var httpClient = new HttpClient(httpClientHandler))
-                {
-                    httpClient.BaseAddress = new Uri(_urls.GrpcOrdering);
+                var client = GrpcClient.Create<OrderingGrpc.OrderingGrpcClient>(httpClient);
+                _logger.LogDebug(" grpc client created, basketData={@basketData}", basketData);
 
-                    _logger.LogDebug(" Creating grpc client for ordering {@httpClient.BaseAddress}", httpClient.BaseAddress);
+                var command = MapToOrderDraftCommand(basketData);
+                var response = await client.CreateOrderDraftFromBasketDataAsync(command);
+                _logger.LogDebug(" grpc response: {@response}", response);
 
-                    var client = GrpcClient.Create<OrderingGrpc.OrderingGrpcClient>(httpClient);
-
-                    _logger.LogDebug(" grpc client created, basketData={@basketData}", basketData);
-
-                    try
-                    {
-                        var command = MapToOrderDraftCommand(basketData);
-                        var response = await client.CreateOrderDraftFromBasketDataAsync(command);
-
-                        _logger.LogDebug(" grpc response: {@response}", response);
-
-                        return MapToResponse(response, basketData);
-                    }
-                    catch (RpcException e)
-                    {
-                        _logger.LogError($"Error calling via grpc to ordering: {e.Status} - {e.Message}");
-                    }
-                }
-            }
-
-            return null;
+                return MapToResponse(response, basketData);
+            });
         }
 
         private OrderData MapToResponse(GrpcOrdering.OrderDraftDTO orderDraft, BasketData basketData)

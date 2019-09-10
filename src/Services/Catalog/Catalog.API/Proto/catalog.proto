@@ -56,11 +56,5 @@ service Catalog {
       };
 	<< */
 	}
-  rpc GetItemsByIds (CatalogItemsRequest) returns (PaginatedItemsResponse) {
-   /* >>
-  	option (google.api.http) = {
-        get: "/api/v1/catalog/items/ids/{ids}"
-      };
-	<< */
-	}
+  rpc GetItemsByIds (CatalogItemsRequest) returns (PaginatedItemsResponse) {}
 }

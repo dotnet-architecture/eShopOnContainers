@@ -27,7 +27,6 @@ namespace Ordering.API.Application.DomainEventHandlers.BuyerAndPaymentMethodVeri
         public async Task Handle(BuyerAndPaymentMethodVerifiedDomainEvent buyerPaymentMethodVerifiedEvent, CancellationToken cancellationToken)
         {
             var log = _logger.CreateLogger<UpdateOrderWhenBuyerAndPaymentMethodVerifiedDomainEventHandler>();
-            log.LogInformation("----- Handling BuyerAndPaymentMethodVerifiedDomainEvent - buyerPaymentMethodVerifiedEvent: {@buyerPaymentMethodVerifiedEvent}", buyerPaymentMethodVerifiedEvent);
             var orderToUpdate = await _orderRepository.GetAsync(buyerPaymentMethodVerifiedEvent.OrderId);
             orderToUpdate.SetBuyerId(buyerPaymentMethodVerifiedEvent.Buyer.Id);
             orderToUpdate.SetPaymentId(buyerPaymentMethodVerifiedEvent.Payment.Id);

@@ -3,12 +3,10 @@ using Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Config;
 using Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using System;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using GrpcOrdering;
-using Grpc.Core;
 
 namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Services
 {
@@ -27,43 +25,21 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Services
 
         public async Task<OrderData> GetOrderDraftAsync(BasketData basketData)
         {
-            AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
-            AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2Support", true);
 
-            using (var httpClientHandler = new HttpClientHandler())
+            return await GrpcCallerService.CallService(_urls.GrpcOrdering, async httpClient =>
             {
-                httpClientHandler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; };
-                using (var httpClient = new HttpClient(httpClientHandler))
-                {
-                    httpClient.BaseAddress = new Uri(_urls.GrpcOrdering);
+                var client = GrpcClient.Create<OrderingGrpc.OrderingGrpcClient>(httpClient);
+                _logger.LogDebug(" grpc client created, basketData={@basketData}", basketData);
 
-                    _logger.LogDebug(" Creating grpc client for ordering {@httpClient.BaseAddress}", httpClient.BaseAddress);
+                var command = MapToOrderDraftCommand(basketData);
+                var response = await client.CreateOrderDraftFromBasketDataAsync(command);
+                _logger.LogDebug(" grpc response: {@response}", response);
 
-                    var client = GrpcClient.Create<OrderingGrpc.OrderingGrpcClient>(httpClient);
-
-                    _logger.LogDebug(" grpc client created, basketData={@basketData}", basketData);
-
-                    try
-                    {
-
-                        var command = MapToOrderDraftCommand(basketData);
-                        var response = await client.CreateOrderDraftFromBasketDataAsync(command);
-
-                        _logger.LogDebug(" grpc response: {@response}", response);
-
-                        return MapToResponse(response);
-                    }
-                    catch (RpcException e)
-                    {
-                        _logger.LogError($"Error calling via grpc to ordering: {e.Status} - {e.Message}");
-                    }
-                }
-            }
-
-            return null;
+                return MapToResponse(response, basketData);
+            });
         }
 
-        private OrderData MapToResponse(GrpcOrdering.OrderDraftDTO orderDraft)
+        private OrderData MapToResponse(GrpcOrdering.OrderDraftDTO orderDraft, BasketData basketData)
         {
             if (orderDraft == null)
             {
@@ -72,6 +48,7 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Services
 
             var data = new OrderData
             {
+                Buyer = basketData.BuyerId,
                 Total = (decimal)orderDraft.Total,
             };
 

@@ -63,8 +63,6 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
             basketCheckout.RequestId = (Guid.TryParse(requestId, out Guid guid) && guid != Guid.Empty) ?
                 guid : basketCheckout.RequestId;
 
-            _logger.LogInformation("----- CheckoutAsync userId: {userId} ", userId);
-
             var basket = await _repository.GetBasketAsync(userId);
 
             if (basket == null)
@@ -72,13 +70,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
                 return BadRequest();
             }
 
-            _logger.LogInformation("----- CheckoutAsync basket: {@basket} ", basket);
-
-            _logger.LogInformation("----- CheckoutAsync user identity: {User} ", string.Join(':', ((ClaimsIdentity)User.Identity).Claims.Select(c => c.Type + " " + c.Value)));
-
             var userName = User.FindFirst(x => x.Type == ClaimTypes.Name).Value;
-
-            _logger.LogInformation("----- CheckoutAsync userName: {@userName} ", userName);
 
             var eventMessage = new UserCheckoutAcceptedIntegrationEvent(userId, userName, basketCheckout.City, basketCheckout.Street,
                 basketCheckout.State, basketCheckout.Country, basketCheckout.ZipCode, basketCheckout.CardNumber, basketCheckout.CardHolderName,
@@ -89,8 +81,6 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
             // order creation process
             try
             {
-                _logger.LogInformation("----- Publishing integration event: {IntegrationEventId} from {AppName} - ({@IntegrationEvent})", eventMessage.Id, Program.AppName, eventMessage);
-
                 _eventBus.Publish(eventMessage);
             }
             catch (Exception ex)
