@@ -9,10 +9,8 @@ image:
 
 service:
   type: ClusterIP
-  port: 5000
-  grpc: 5001
-  envoy: 80
-
+  port: 80
+  grpcPort: 81
 
 resources: {}
 
@@ -47,19 +45,19 @@ env:
     - name: OrchestratorType
       value: 'K8S'
     - name: PORT
-      value: "5000"
+      value: "80"
     - name: GRPC_PORT
-      value: "5001"
+      value: "81"
 probes:
   liveness:
     path: /liveness
     initialDelaySeconds: 10
     periodSeconds: 15
-    port: 5000
+    port: 80
   readiness:
     path: /hc
     timeoutSeconds: 5
     initialDelaySeconds: 90
     periodSeconds: 60
-    port: 5000
+    port: 800
 

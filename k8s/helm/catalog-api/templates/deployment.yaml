@@ -73,10 +73,10 @@ spec:
           {{- end }}
           ports:
             - name: http
-              containerPort: 5000
+              containerPort: 80
               protocol: TCP
             - name: grpc
-              containerPort: 5001
+              containerPort: 81
               protocol: TCP              
           resources:
 {{ toYaml .Values.resources | indent 12 }}
