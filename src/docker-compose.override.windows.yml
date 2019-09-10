@@ -22,37 +22,37 @@ version: '3.4'
 # docker-compose -f docker-compose-windows.yml -f docker-compose.override.yml -f docker-compose.override.windows.yml up
 
 services:      
-  basket.api:
+  basket-api:
     environment:
       - EventBusUserName=admin
       - EventBusPassword=password
 
-  catalog.api:
+  catalog-api:
     environment:
       - EventBusUserName=admin
       - EventBusPassword=password
 
-  ordering.api:
+  ordering-api:
     environment:
       - EventBusUserName=admin
       - EventBusPassword=password
 
-  ordering.backgroundtasks:
+  ordering-backgroundtasks:
     environment:
       - EventBusUserName=admin
       - EventBusPassword=password
 
-  payment.api:
+  payment-api:
     environment:
       - EventBusUserName=admin
       - EventBusPassword=password
 
-  locations.api:
+  locations-api:
     environment:
       - EventBusUserName=admin
       - EventBusPassword=password
 
-  ordering.signalrhub:
+  ordering-signalrhub:
     environment:
       - EventBusUserName=admin
       - EventBusPassword=password

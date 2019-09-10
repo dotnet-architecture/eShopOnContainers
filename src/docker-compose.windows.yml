@@ -5,10 +5,10 @@
 version: '3.4'
 
 services:
-  sql.data:
+  sqldata:
     image: microsoft/mssql-server-windows-developer
 
-  nosql.data:
+  nosqldata:
     image: mongo:windowsservercore
 
   basket.data:
@@ -17,7 +17,7 @@ services:
   rabbitmq:
     image: spring2/rabbitmq
 
-  identity.api:
+  identity-api:
     build:
       args:
         NODE_IMAGE: stefanscherer/node-windows:8.11
