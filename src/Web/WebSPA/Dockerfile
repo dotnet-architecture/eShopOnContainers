@@ -16,7 +16,6 @@ WORKDIR /src
 
 COPY scripts scripts/
 
-COPY ApiGateways/*/*.csproj csproj-files/
 COPY ApiGateways/*/*/*.csproj csproj-files/
 COPY BuildingBlocks/*/*/*.csproj csproj-files/
 COPY Services/*/*/*.csproj csproj-files/

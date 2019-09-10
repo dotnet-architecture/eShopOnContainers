@@ -25,12 +25,12 @@ app:                                                  # app global settings
       webhooks: webhooks-api                          # ingress entry for webhooks api
       webhooksweb: webhooks-web                       # ingress entry for webhooks web demo client
   svc:
-      basket: basket                                    # service name for basket api
-      catalog: catalog                                  # service name for catalog api
-      ordering: ordering                                # service name for ordering api
-      orderingbackgroundtasks: orderingbackgroundtasks  # service name for orderingbackgroundtasks
+      basket: basket-apo                                    # service name for basket api
+      catalog: catalog-api                                  # service name for catalog api
+      ordering: ordering-api                               # service name for ordering api
+      orderingbackgroundtasks: ordering-backgroundtasks  # service name for orderingbackgroundtasks
       orderingsignalrhub: ordering-signalrhub           # service name for orderingsignalrhub
-      identity: identity                                # service name for identity api
+      identity: identity-api                                # service name for identity api
       mvc: webmvc                                       # service name for web mvc
       spa: webspa                                       # service name for web spa
       status: webstatus                                 # service name for web status
@@ -40,8 +40,8 @@ app:                                                  # app global settings
       mobileshoppingapigw: mobileshoppingapigw          # service name for mobile shopping Agw
       webshoppingagg: webshoppingagg                    # service name for web shopping aggregator
       mobileshoppingagg: mobileshoppingagg              # service name for mobile shopping aggregator
-      payment: payment                                  # service name for payment api
-      locations: locations                              # service name for locations api
-      marketing: marketing                              # service name for marketing ap
-      webhooks: webhooks                                # service name for webhooks api
-      webhooksweb: webhooksweb                          # service name for webhooks web
+      payment: payment-api                                  # service name for payment api
+      locations: locations-api                              # service name for locations api
+      marketing: marketing-api                          # service name for marketing ap
+      webhooks: webhooks-api                          # service name for webhooks api
+      webhooksweb: webhooks-client                          # service name for webhooks web

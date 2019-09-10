@@ -1,6 +1,6 @@
 {{- $name := include "apigwwm.fullname" . -}}
 {{- $cfgname := printf "%s-%s" "cfg" $name -}}
-{{- $ocelotcfgname := printf "%s-%s" "ocelot" $name -}}
+{{- $envoycfgname := printf "%s-%s" "envoy" $name -}}
 apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
@@ -30,10 +30,10 @@ spec:
       volumes:
       - name: config
         configMap:
-          name: {{ $ocelotcfgname }}
+          name: {{ $envoycfgname }}
           items:
-          - key: configuration-web-marketing.json
-            path: configuration.json      
+          - key: envoy.yaml
+            path: envoy.yaml
       containers:
         - name: {{ .Chart.Name }}
           {{ if .Values.probes -}}
@@ -58,10 +58,10 @@ spec:
           {{- end -}}
           {{- end }}
           image: "{{ template "fqdn-image" . }}:{{ .Values.image.tag }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          imagePullPolicy: IfNotPresent
           volumeMounts:
           - name: config
-            mountPath: {{ .Values.ocelot.configPath }}
+            mountPath: {{ .Values.envoy.configPath }}
           env:
             - name: PATH_BASE
               value: {{ include "pathBase" . }}

@@ -99,34 +99,10 @@ services:
       - sqldata    
 
   mobileshoppingapigw:
-    image: ${REGISTRY:-eshop}/ocelotapigw:${PLATFORM:-linux}-${TAG:-latest}
-    build:
-      context: .
-      dockerfile: ApiGateways/ApiGw-Base/Dockerfile
-    depends_on:
-      - nosqldata
-      - sqldata
-      - identity-api
-      - rabbitmq
-      - ordering-api
-      - marketing-api
-      - catalog-api
-      - basket-api
+    image: envoyproxy/envoy:v1.11.1
 
   mobilemarketingapigw:
-    image: ${REGISTRY:-eshop}/ocelotapigw:${PLATFORM:-linux}-${TAG:-latest}
-    build:
-      context: .
-      dockerfile: ApiGateways/ApiGw-Base/Dockerfile
-    depends_on:
-      - nosqldata
-      - sqldata
-      - identity-api
-      - rabbitmq
-      - ordering-api
-      - marketing-api
-      - catalog-api
-      - basket-api
+    image: envoyproxy/envoy:v1.11.1
 
   mobileshoppingagg:
     image: ${REGISTRY:-eshop}/mobileshoppingagg:${PLATFORM:-linux}-${TAG:-latest}

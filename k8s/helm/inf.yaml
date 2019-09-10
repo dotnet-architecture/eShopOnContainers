@@ -2,6 +2,8 @@
 # It is used on all charts, so ** MUST BE INCLUDED ** on every deployment
 
 inf:
+  mesh:
+    enabled: true
   sql:                      # inf.sql defines the sql server databases & logins
 #    host:  my-sql-server   # Uncomment to specify a custom sql-server to be used. By default "sql-data-<appname>" will be used  
     common:

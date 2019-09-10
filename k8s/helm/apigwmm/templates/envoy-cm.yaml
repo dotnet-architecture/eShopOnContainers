@@ -3,12 +3,12 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: "ocelot-{{ $name }}"
+  name: "envoy-{{ $name }}"
   labels:
     app: {{ template "apigwmm.name" . }}
     chart: {{ template "apigwmm.chart" .}}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 data:
-  {{ (.Files.Glob "configuration-mobile-marketing.json").AsConfig  | indent 2 }}
+  {{ (.Files.Glob "envoy.yaml").AsConfig  | indent 2 }}
 
