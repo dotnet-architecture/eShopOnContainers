@@ -207,75 +207,29 @@ services:
       - "5113:80"   
 
   mobileshoppingapigw:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - IdentityUrl=http://identity-api   
-      - urls__basket=http://basket-api
-      - urls__catalog=http://catalog-api
-      - urls__orders=http://ordering-api
-      - urls__identity=http://identity-api
-      - CatalogUrlHC=http://catalog-api/hc
-      - OrderingUrlHC=http://ordering-api/hc
-      - IdentityUrlHC=http://identity-api/hc             
-      - BasketUrlHC=http://basket-api/hc
-      - MarketingUrlHC=http://marketing-api/hc
-      - PaymentUrlHC=http://payment-api/hc
-      - LocationUrlHC=http://locations-api/hc
-      - IdentityUrlExternal=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
-    ports:
-      - "5200:80"   
     volumes:
-      - ./ApiGateways/Mobile.Bff.Shopping/apigw:${ESHOP_OCELOT_VOLUME_SPEC:-/app/configuration}
+      - ./ApiGateways/Envoy/config/mobilemarketing:/etc/envoy      
+    ports:
+    - "5200:80"
+    - "15200:8001"
 
   mobilemarketingapigw:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - IdentityUrl=http://identity-api   
-      - CatalogUrlHC=http://catalog-api/hc
-      - OrderingUrlHC=http://ordering-api/hc
-      - IdentityUrlHC=http://identity-api/hc             
-      - BasketUrlHC=http://basket-api/hc
-      - MarketingUrlHC=http://marketing-api/hc
-      - PaymentUrlHC=http://payment-api/hc
-      - LocationUrlHC=http://locations-api/hc
-      - IdentityUrlExternal=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
-    ports:
-      - "5201:80"   
     volumes:
-      - ./ApiGateways/Mobile.Bff.Marketing/apigw:${ESHOP_OCELOT_VOLUME_SPEC:-/app/configuration}
+      - ./ApiGateways/Envoy/config/mobileshopping:/etc/envoy      
+    ports:
+    - "5201:80"
+    - "15201:8001"      
 
   webshoppingapigw:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - IdentityUrl=http://identity-api   
-      - CatalogUrlHC=http://catalog-api/hc
-      - OrderingUrlHC=http://ordering-api/hc
-      - IdentityUrlHC=http://identity-api/hc             
-      - BasketUrlHC=http://basket-api/hc
-      - MarketingUrlHC=http://marketing-api/hc
-      - PaymentUrlHC=http://payment-api/hc
-      - LocationUrlHC=http://locations-api/hc
-      - IdentityUrlExternal=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
     volumes:
-      - ./ApiGateways/Envoy/config:/etc/envoy      
+      - ./ApiGateways/Envoy/config/webshopping:/etc/envoy      
     ports:
     - "5202:80"
     - "15202:8001"
 
   webmarketingapigw:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - IdentityUrl=http://identity-api   
-      - CatalogUrlHC=http://catalog-api/hc
-      - OrderingUrlHC=http://ordering-api/hc
-      - IdentityUrlHC=http://identity-api/hc             
-      - BasketUrlHC=http://basket-api/hc
-      - MarketingUrlHC=http://marketing-api/hc
-      - PaymentUrlHC=http://payment-api/hc
-      - LocationUrlHC=http://locations-api/hc
-      - IdentityUrlExternal=http://10.0.75.1:5105
     volumes:
-      - ./ApiGateways/Envoy/config:/etc/envoy      
+      - ./ApiGateways/Envoy/config/webmarketing:/etc/envoy      
     ports:
     - "5203:80"
     - "15203:8001"
@@ -299,7 +253,7 @@ services:
       - LocationUrlHC=http://locations-api/hc
       - IdentityUrlExternal=http://10.0.75.1:5105
     ports:
-      - "5120:80"   
+      - "5120:80"
 
   webshoppingagg:
     environment:
@@ -348,32 +302,24 @@ services:
       - HealthChecks-UI__HealthChecks__2__Uri=http://webshoppingagg/hc
       - HealthChecks-UI__HealthChecks__3__Name=Mobile Shopping Aggregator HTTP Check
       - HealthChecks-UI__HealthChecks__3__Uri=http://mobileshoppingagg/hc
-      - HealthChecks-UI__HealthChecks__4__Name=Mobile Shopping API GW HTTP Check
-      - HealthChecks-UI__HealthChecks__4__Uri=http://mobileshoppingapigw/hc
-      - HealthChecks-UI__HealthChecks__5__Name=Mobile Marketing API GW HTTP Check
-      - HealthChecks-UI__HealthChecks__5__Uri=http://mobilemarketingapigw/hc
-      - HealthChecks-UI__HealthChecks__6__Name=Web Shopping API GW HTTP Check
-      - HealthChecks-UI__HealthChecks__6__Uri=http://webshoppingapigw/hc
-      - HealthChecks-UI__HealthChecks__7__Name=Web Marketing API GW HTTP Check
-      - HealthChecks-UI__HealthChecks__7__Uri=http://webmarketingapigw/hc
-      - HealthChecks-UI__HealthChecks__8__Name=Ordering HTTP Check
-      - HealthChecks-UI__HealthChecks__8__Uri=http://ordering-api/hc
-      - HealthChecks-UI__HealthChecks__9__Name=Basket HTTP Check
-      - HealthChecks-UI__HealthChecks__9__Uri=http://basket-api/hc
-      - HealthChecks-UI__HealthChecks__10__Name=Catalog HTTP Check
-      - HealthChecks-UI__HealthChecks__10__Uri=http://catalog-api/hc
-      - HealthChecks-UI__HealthChecks__11__Name=Identity HTTP Check
-      - HealthChecks-UI__HealthChecks__11__Uri=http://identity-api/hc
-      - HealthChecks-UI__HealthChecks__12__Name=Marketing HTTP Check
-      - HealthChecks-UI__HealthChecks__12__Uri=http://marketing-api/hc
-      - HealthChecks-UI__HealthChecks__13__Name=Locations HTTP Check
-      - HealthChecks-UI__HealthChecks__13__Uri=http://locations-api/hc
-      - HealthChecks-UI__HealthChecks__14__Name=Payments HTTP Check
-      - HealthChecks-UI__HealthChecks__14__Uri=http://payment-api/hc
-      - HealthChecks-UI__HealthChecks__15__Name=Ordering SignalRHub HTTP Check
-      - HealthChecks-UI__HealthChecks__15__Uri=http://ordering-signalrhub/hc    
-      - HealthChecks-UI__HealthChecks__16__Name=Ordering HTTP Background Check
-      - HealthChecks-UI__HealthChecks__16__Uri=http://ordering-backgroundtasks/hc      
+      - HealthChecks-UI__HealthChecks__4__Name=Ordering HTTP Check
+      - HealthChecks-UI__HealthChecks__4__Uri=http://ordering-api/hc
+      - HealthChecks-UI__HealthChecks__5__Name=Basket HTTP Check
+      - HealthChecks-UI__HealthChecks__5__Uri=http://basket-api/hc
+      - HealthChecks-UI__HealthChecks__6__Name=Catalog HTTP Check
+      - HealthChecks-UI__HealthChecks__6__Uri=http://catalog-api/hc
+      - HealthChecks-UI__HealthChecks__7__Name=Identity HTTP Check
+      - HealthChecks-UI__HealthChecks__7__Uri=http://identity-api/hc
+      - HealthChecks-UI__HealthChecks__8__Name=Marketing HTTP Check
+      - HealthChecks-UI__HealthChecks__8__Uri=http://marketing-api/hc
+      - HealthChecks-UI__HealthChecks__9__Name=Locations HTTP Check
+      - HealthChecks-UI__HealthChecks__9__Uri=http://locations-api/hc
+      - HealthChecks-UI__HealthChecks__10__Name=Payments HTTP Check
+      - HealthChecks-UI__HealthChecks__10__Uri=http://payment-api/hc
+      - HealthChecks-UI__HealthChecks__11__Name=Ordering SignalRHub HTTP Check
+      - HealthChecks-UI__HealthChecks__11__Uri=http://ordering-signalrhub/hc    
+      - HealthChecks-UI__HealthChecks__12__Name=Ordering HTTP Background Check
+      - HealthChecks-UI__HealthChecks__12__Uri=http://ordering-backgroundtasks/hc      
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
       - OrchestratorType=${ORCHESTRATOR_TYPE}
     ports:
@@ -386,8 +332,6 @@ services:
       - IdentityUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
       - PurchaseUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5202      
       - MarketingUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5203   
-      - PurchaseUrlHC=http://webshoppingapigw/hc
-      - MarketingUrlHC=http://webmarketingapigw/hc
       - IdentityUrlHC=http://identity-api/hc
       - UseCustomizationData=True
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
@@ -405,8 +349,6 @@ services:
       - MarketingUrl=http://webmarketingapigw                                                          
       - SignalrHubUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5202
       - IdentityUrlHC=http://identity-api/hc
-      - PurchaseUrlHC=http://webshoppingapigw/hc
-      - MarketingUrlHC=http://webmarketingapigw/hc 
       - UseCustomizationData=True
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
       - OrchestratorType=${ORCHESTRATOR_TYPE}
