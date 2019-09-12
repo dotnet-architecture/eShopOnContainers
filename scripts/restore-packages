@@ -1,0 +1,1 @@
+echo RESTORING ALL PACKAGES...; for f in /src/csproj-files/*.csproj; do dotnet restore $f; done

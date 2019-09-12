@@ -12,7 +12,7 @@ The tests in eShopOnContainers are structured in the following structure, per ty
 # Unit and Functional tests per microservice
 
 Within each microservice's folder there are multiple tests (Unit Tests and Functional Tests) available to validate its behaviour.
-The test projects are positioned within each microservice's physical folder because that helps on the goal of maitanining maximum development autonomy per microservice. Doing it this way and in a more advance scenario, you could even move each microservice to a different GitHub repo per microservice, along with its test projects. 
+The test projects are positioned within each microservice's physical folder because that helps on the goal of maintaining maximum development autonomy per microservice. Doing it this way and in a more advance scenario, you could even move each microservice to a different GitHub repo per microservice, along with its test projects.
 
 For instance, this is the way you see the project folders for the *Ordering* microservice, where you also have the *Ordering.FunctionalTests* y *Ordering.UnitTests* within that folder structure.
 
@@ -43,7 +43,7 @@ These Unit Tests have no any dependency with any external infrastructure or any 
 
 In this case, the Functional Tests do have dependencies with additional infrastructure. For instance, they might have dependencies with the microservices's database in the SQL Server container, the messaging broker (RabbitMQ container), etc.
 
-Therefore, in order to run the Functional Tests you first need to have the needed inrastructure, in this case to spin-up the infrastructure containers.
+Therefore, in order to run the Functional Tests you first need to have the needed infrastructure, in this case to spin-up the infrastructure containers.
 
 In order to facilitate how you can have the infrastructure containers up and running, you have certain docker-compose files you can use with `docker-compose up`. These files are available here:
 
@@ -95,7 +95,7 @@ You can, for instance, run the Functional Tests for the Catalog Microservice, wh
 
 So far, we've been focusing on isolated Unit Tests or Functional Tests that were related to single/isolated microservices, although taking into account the infrastructure for the functional tests per microservice.
 
-However, in a microservice-based application you also need how the multiple microservices interact with the whole application. For instance, you might raise an envent from one microservice by publishing it on the Event Bus (based on RabbitMQ) and test/validate that you received that same event into another microservice because it was subscribed to it.
+However, in a microservice-based application you also need how the multiple microservices interact with the whole application. For instance, you might raise an event from one microservice by publishing it on the Event Bus (based on RabbitMQ) and test/validate that you received that same event into another microservice because it was subscribed to it.
 
 These global Functional/Integration tests for the services need to be placed in a common place instead within specific microservice's folders, as it needs to deal with multiple microservices.
 

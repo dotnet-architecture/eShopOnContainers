@@ -1,6 +1,8 @@
+@model CampaignItem
+
 @{
     ViewData["Title"] = "Campaign details";
-    @model CampaignItem
+
     var headerList= new List<Header>() {
         new Header() { Controller = "Catalog", Text = "Back to catalog" },
         new Header() { Controller = "Campaigns", Text = "Back to Campaigns" } };
@@ -18,7 +20,7 @@
         <img class="card-img-top" src="@Model.PictureUri" alt="Card image cap">
         <div class="card-body">
             <h4 class="card-title">@Model.Name</h4>
-            <p class="card-text">@Model.Description</p>            
+            <p class="card-text">@Model.Description</p>
         </div>
         <div class="card-footer">
             <small class="text-muted">

@@ -62,3 +62,5 @@ probes:
     initialDelaySeconds: 90
     periodSeconds: 60
     port: 80
+ocelot:
+  configPath: /app/configuration

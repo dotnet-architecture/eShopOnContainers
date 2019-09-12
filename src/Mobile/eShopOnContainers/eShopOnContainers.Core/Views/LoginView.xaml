@@ -198,7 +198,7 @@
 					</Entry.Triggers>
                 </Entry>
 				<Label 
-					Text="{Binding UserName.Errors, Converter={StaticResource FirstValidationErrorConverter}"
+					Text="{Binding UserName.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
 					Style="{StaticResource ValidationErrorLabelStyle}" />
                 <Label
                   Text="Password"
@@ -227,7 +227,7 @@
 					</Entry.Triggers>
                 </Entry>
 				<Label 
-					Text="{Binding Password.Errors, Converter={StaticResource FirstValidationErrorConverter}"
+					Text="{Binding Password.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
 					Style="{StaticResource ValidationErrorLabelStyle}" />
             </StackLayout>
             <!-- LOGIN BUTTON -->

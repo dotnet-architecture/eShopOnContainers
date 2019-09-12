@@ -29,7 +29,7 @@ app:                                                  # app global settings
       catalog: catalog                                  # service name for catalog api
       ordering: ordering                                # service name for ordering api
       orderingbackgroundtasks: orderingbackgroundtasks  # service name for orderingbackgroundtasks
-      orderingsignalrhub: ordering-signalrhub            # service name for orderingsignalrhub
+      orderingsignalrhub: ordering-signalrhub           # service name for orderingsignalrhub
       identity: identity                                # service name for identity api
       mvc: webmvc                                       # service name for web mvc
       spa: webspa                                       # service name for web spa

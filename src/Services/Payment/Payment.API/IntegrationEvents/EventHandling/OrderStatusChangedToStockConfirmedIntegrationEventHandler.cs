@@ -23,6 +23,8 @@
             _eventBus = eventBus;
             _settings = settings.Value;
             _logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
+
+            _logger.LogTrace("PaymentSettings: {@PaymentSettings}", _settings);
         }
 
         public async Task Handle(OrderStatusChangedToStockConfirmedIntegrationEvent @event)
@@ -41,7 +43,7 @@
 
                 if (_settings.PaymentSucceded)
                 {
-                    orderPaymentIntegrationEvent = new OrderPaymentSuccededIntegrationEvent(@event.OrderId);
+                    orderPaymentIntegrationEvent = new OrderPaymentSucceededIntegrationEvent(@event.OrderId);
                 }
                 else
                 {
