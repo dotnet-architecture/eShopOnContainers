@@ -1,4 +1,4 @@
-# This file contains common annotations when using AKS with Http Application Routing
+# This file contains common ingress annotations when using AKS with Http Application Routing
 
 ingress:
   annotations:
