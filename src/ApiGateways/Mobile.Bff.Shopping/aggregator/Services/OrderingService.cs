@@ -26,9 +26,9 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Services
         public async Task<OrderData> GetOrderDraftAsync(BasketData basketData)
         {
 
-            return await GrpcCallerService.CallService(_urls.GrpcOrdering, async httpClient =>
+            return await GrpcCallerService.CallService(_urls.GrpcOrdering, async channel =>
             {
-                var client = GrpcClient.Create<OrderingGrpc.OrderingGrpcClient>(httpClient);
+                var client = new OrderingGrpc.OrderingGrpcClient(channel);
                 _logger.LogDebug(" grpc client created, basketData={@basketData}", basketData);
 
                 var command = MapToOrderDraftCommand(basketData);

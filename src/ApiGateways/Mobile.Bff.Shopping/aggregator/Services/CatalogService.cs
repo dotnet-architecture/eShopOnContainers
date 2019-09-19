@@ -25,9 +25,9 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Services
         public async Task<CatalogItem> GetCatalogItemAsync(int id)
         {
 
-            return await GrpcCallerService.CallService(_urls.Catalog + UrlsConfig.CatalogOperations.GetItemById(id), async httpClient =>
+            return await GrpcCallerService.CallService(_urls.Catalog + UrlsConfig.CatalogOperations.GetItemById(id), async channel =>
             {
-                var client = GrpcClient.Create<CatalogClient>(_httpClient);
+                var client = new CatalogClient(channel);
                 var request = new CatalogItemRequest { Id = id };
                 var response = await client.GetItemByIdAsync(request);
                 return MapToCatalogItemResponse(response);
@@ -37,9 +37,9 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Services
         public async Task<IEnumerable<CatalogItem>> GetCatalogItemsAsync(IEnumerable<int> ids)
         {
 
-            return await GrpcCallerService.CallService(_urls.GrpcCatalog, async httpClient =>
+            return await GrpcCallerService.CallService(_urls.GrpcCatalog, async channel=>
             {
-                var client = GrpcClient.Create<CatalogClient>(httpClient);
+                var client = new CatalogClient(channel);
                 var request = new CatalogItemsRequest { Ids = string.Join(",", ids), PageIndex = 1, PageSize = 10 };
                 var response = await client.GetItemsByIdsAsync(request);
                 return response.Data.Select(this.MapToCatalogItemResponse);

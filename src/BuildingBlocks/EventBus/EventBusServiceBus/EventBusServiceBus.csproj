@@ -6,10 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Autofac" Version="$(Autofac)" />
-    <PackageReference Include="Microsoft.Azure.ServiceBus" Version="$(Microsoft_Azure_ServiceBus)" />
-    <PackageReference Include="Microsoft.CSharp" Version="$(Microsoft_CSharp)" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="$(Microsoft_Extensions_Logging)" />
+    <PackageReference Include="Autofac" Version="4.9.4" />
+    <PackageReference Include="Microsoft.Azure.ServiceBus" Version="4.0.0" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.6.0-rc1.19456.4" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="3.0.0-rc1.19456.10" />
   </ItemGroup>
 
   <ItemGroup>

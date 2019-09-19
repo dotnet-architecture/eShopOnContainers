@@ -26,9 +26,9 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Services
 
         public async Task<BasketData> GetById(string id)
         {
-            return await GrpcCallerService.CallService(_urls.GrpcBasket, async httpClient =>
+            return await GrpcCallerService.CallService(_urls.GrpcBasket, async channel =>
             {
-                var client = GrpcClient.Create<Basket.BasketClient>(httpClient);
+                var client = new Basket.BasketClient(channel);
                 _logger.LogDebug("grpc client created, request = {@id}", id);
                 var response = await client.GetBasketByIdAsync(new BasketRequest { Id = id });
                 _logger.LogDebug("grpc response {@response}", response);
@@ -39,9 +39,9 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Services
 
         public async Task UpdateAsync(BasketData currentBasket)
         {
-            await GrpcCallerService.CallService(_urls.GrpcBasket, async httpClient =>
+            await GrpcCallerService.CallService(_urls.GrpcBasket, async channel =>
             {
-                var client = GrpcClient.Create<Basket.BasketClient>(httpClient);
+                var client = new Basket.BasketClient(channel);
                 _logger.LogDebug("Grpc update basket currentBasket {@currentBasket}", currentBasket);
                 var request = MapToCustomerBasketRequest(currentBasket);
                 _logger.LogDebug("Grpc update basket request {@request}", request);

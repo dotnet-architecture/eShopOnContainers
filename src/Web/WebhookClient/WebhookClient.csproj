@@ -13,9 +13,9 @@
 
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="$(Microsoft_VisualStudio_Azure_Containers_Tools_Targets)" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="$(Microsoft_VisualStudio_Web_CodeGeneration_Design)" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="$(Microsoft_AspNetCore_Authentication_OpenIdConnect)" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.5" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.0.0-rc1-19462-10" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="3.0.0-rc1.19457.4" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="$(Microsoft_AspNet_WebApi_Client)" />
   </ItemGroup>
 
