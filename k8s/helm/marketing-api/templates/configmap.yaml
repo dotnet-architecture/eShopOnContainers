@@ -23,4 +23,4 @@ data:
   marketing__ConnectionString: Server={{ $sqlsrv }};Initial Catalog={{ .Values.inf.sql.marketing.db }};User Id={{ .Values.inf.sql.common.user }};Password={{ .Values.inf.sql.common.pwd }};
   marketing__MongoConnectionString: mongodb://{{ $mongo }}
   marketing__MongoDatabase: {{ .Values.inf.mongo.marketing.database }} 
-  marketing__PicBaseUrl: http://{{ $webshoppingapigw }}/api/v1/c/catalog/items/[0]/pic/
+  marketing__PicBaseUrl: http://{{ $webshoppingapigw }}/c/api/v1/catalog/items/[0]/pic/

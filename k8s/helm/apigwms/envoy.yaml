@@ -24,20 +24,32 @@ static_resources:
               - "*"
               routes:
               - match:
-                  prefix: "/api/v1/c/"
+                  prefix: "/c/"
                 route:
-                  prefix_rewrite: "/api/v1/"
+                  prefix_rewrite: "/catalog-api/"
                   cluster: catalog
               - match:
-                  prefix: "/api/v1/o/"
+                  prefix: "/catalog-api/"
                 route:
-                  prefix_rewrite: "/api/v1/"
+                  cluster: catalog
+              - match:
+                  prefix: "/o/"
+                route:
+                  prefix_rewrite: "/order-api/"
                   cluster: ordering 
               - match:
-                  prefix: "/api/v1/b/"
+                  prefix: "/order-api/"
                 route:
-                  prefix_rewrite: "/api/v1/"
+                  cluster: catalog                  
+              - match:
+                  prefix: "/b/"
+                route:
+                  prefix_rewrite: "/basket-api/"
                   cluster: basket
+              - match:
+                  prefix: "/basket-api/"
+                route:
+                  cluster: basket                  
               - match:
                   prefix: "/"
                 route:

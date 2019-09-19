@@ -12,7 +12,9 @@ service:
 
 ingress:
   enabled: true
-  annotations: {}
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: "/"
+    ingress.kubernetes.io/rewrite-target: "/"
   tls: []
 
 resources: {}

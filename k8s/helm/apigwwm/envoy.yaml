@@ -24,9 +24,13 @@ static_resources:
               - "*"
               routes:
               - match:
-                  prefix: "/api/v1/m/"
+                  prefix: "/m/"
                 route:
-                  prefix_rewrite: "/api/v1/"
+                  prefix_rewrite: "/marketing-api/"
+                  cluster: marketing
+              - match:
+                  prefix: "/marketing-api/"
+                route:
                   cluster: marketing
           http_filters:
           - name: envoy.router            

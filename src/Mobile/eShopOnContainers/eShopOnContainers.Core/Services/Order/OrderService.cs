@@ -12,7 +12,7 @@ namespace eShopOnContainers.Core.Services.Order
     {
         private readonly IRequestProvider _requestProvider;
 
-        private const string ApiUrlBase = "api/v1/o/orders";
+        private const string ApiUrlBase = "o/api/v1/orders";
 
         public OrderService(IRequestProvider requestProvider)
         {

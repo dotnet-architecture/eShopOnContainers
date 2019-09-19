@@ -173,7 +173,7 @@ The file `inf.yaml` contains the description of the infrastructure used. File is
 Using Azure storage for catalog (and marketing) photos is not directly supported, but you can accomplish it by editing the file `k8s/helm/catalog-api/templates/configmap.yaml`. Search for lines:
 
 ```
-catalog__PicBaseUrl: http://{{ $webshoppingapigw }}/api/v1/c/catalog/items/[0]/pic/
+catalog__PicBaseUrl: http://{{ $webshoppingapigw }}/c/api/v1/catalog/items/[0]/pic/
 ```
 
 And replace it for:
@@ -185,7 +185,7 @@ catalog__PicBaseUrl: http://<url-of-the-storage>/
 In the same way, to use Azure storage for the marketing service, have to edit the file `k8s/helm/marketing-api/templates/configmap.yaml` and replacing the line:
 
 ```
-marketing__PicBaseUrl: http://{{ $webshoppingapigw }}/api/v1/c/catalog/items/[0]/pic/
+marketing__PicBaseUrl: http://{{ $webshoppingapigw }}/c/api/v1/catalog/items/[0]/pic/
 ```
 
 by:

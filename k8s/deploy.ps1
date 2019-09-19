@@ -133,8 +133,8 @@ ExecKube -cmd 'create -f services.yaml'
 
 ExecKube -cmd 'create -f internalurls.yaml'
 ExecKube -cmd 'create configmap urls `
-    --from-literal=PicBaseUrl=http://$($externalDns)/webshoppingapigw/api/v1/c/catalog/items/[0]/pic/ `
-    --from-literal=Marketing_PicBaseUrl=http://$($externalDns)/webmarketingapigw/api/v1/m/campaigns/[0]/pic/ `
+    --from-literal=PicBaseUrl=http://$($externalDns)/webshoppingapigw/c/api/v1/catalog/items/[0]/pic/ `
+    --from-literal=Marketing_PicBaseUrl=http://$($externalDns)/webmarketingapigw/m/api/v1/campaigns/[0]/pic/ `
     --from-literal=mvc_e=http://$($externalDns)/webmvc `
     --from-literal=marketingapigw_e=http://$($externalDns)/webmarketingapigw `
     --from-literal=webshoppingapigw_e=http://$($externalDns)/webshoppingapigw `

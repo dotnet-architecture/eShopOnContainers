@@ -14,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Logging;
 using Polly;
 using Polly.Extensions.Http;
 using StackExchange.Redis;
@@ -46,7 +47,9 @@ namespace Microsoft.eShopOnContainers.WebMVC
                 .AddDevspaces()
                 .AddHttpClientServices(Configuration);
                 //.AddHttpClientLogging(Configuration)  //Opt-in HttpClientLogging config
-                
+
+            IdentityModelEventSource.ShowPII  = true;       // Caution! Do NOT use in production: https://aka.ms/IdentityModel/PII
+            
             services.AddControllers();
 
             services.AddCustomAuthentication(Configuration);
@@ -66,7 +69,6 @@ namespace Microsoft.eShopOnContainers.WebMVC
             else
             {
                 app.UseExceptionHandler("/Error");
-                app.UseHsts();
             }
 
             var pathBase = Configuration["PATH_BASE"];
@@ -87,7 +89,6 @@ namespace Microsoft.eShopOnContainers.WebMVC
 
             WebContextSeed.Seed(app, env, loggerFactory);
 
-            app.UseHttpsRedirection();
             app.UseRouting();
             
             app.UseAuthentication();

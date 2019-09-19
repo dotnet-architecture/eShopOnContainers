@@ -15,7 +15,7 @@ namespace eShopOnContainers.Core.Services.Catalog
         private readonly IRequestProvider _requestProvider;
         private readonly IFixUriService _fixUriService;
 		
-        private const string ApiUrlBase = "api/v1/c/catalog";
+        private const string ApiUrlBase = "c/api/v1/catalog";
 
         public CatalogService(IRequestProvider requestProvider, IFixUriService fixUriService)
         {

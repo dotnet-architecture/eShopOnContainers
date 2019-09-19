@@ -14,7 +14,7 @@ namespace eShopOnContainers.Core.Services.Marketing
         private readonly IRequestProvider _requestProvider;
         private readonly IFixUriService _fixUriService;
 
-        private const string ApiUrlBase = "api/v1/m/campaigns";
+        private const string ApiUrlBase = "m/api/v1/campaigns";
 
         public CampaignService(IRequestProvider requestProvider, IFixUriService fixUriService)
         {

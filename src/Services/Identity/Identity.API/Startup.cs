@@ -153,7 +153,6 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API
             app.UseForwardedHeaders();
             // Adds IdentityServer
             app.UseIdentityServer();
-            app.UseHttpsRedirection();
             app.UseRouting();
             app.UseEndpoints(endpoints =>
             {

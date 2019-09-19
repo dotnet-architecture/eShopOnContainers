@@ -1,3 +1,5 @@
+# This file contains common annotations when using AKS with Http Application Routing
+
 ingress:
   annotations:
     kubernetes.io/ingress.class: addon-http-application-routing

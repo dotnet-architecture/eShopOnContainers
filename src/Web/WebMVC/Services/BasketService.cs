@@ -27,7 +27,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
             _settings = settings;
             _logger =logger;
 
-            _basketByPassUrl = $"{_settings.Value.PurchaseUrl}/api/v1/b/basket";
+            _basketByPassUrl = $"{_settings.Value.PurchaseUrl}/b/api/v1/basket";
             _purchaseUrl = $"{_settings.Value.PurchaseUrl}/api/v1";
         }
 
