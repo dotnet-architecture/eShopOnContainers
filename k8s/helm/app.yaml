@@ -25,7 +25,7 @@ app:                                                  # app global settings
       webhooks: webhooks-api                          # ingress entry for webhooks api
       webhooksweb: webhooks-web                       # ingress entry for webhooks web demo client
   svc:
-      basket: basket-apo                                    # service name for basket api
+      basket: basket-api                                    # service name for basket api
       catalog: catalog-api                                  # service name for catalog api
       ordering: ordering-api                               # service name for ordering api
       orderingbackgroundtasks: ordering-backgroundtasks  # service name for orderingbackgroundtasks

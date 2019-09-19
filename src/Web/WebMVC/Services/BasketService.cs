@@ -34,9 +34,10 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
         public async Task<Basket> GetBasket(ApplicationUser user)
         {
             var uri = API.Basket.GetBasket(_basketByPassUrl, user.Id);
-
-            var responseString = await _apiClient.GetStringAsync(uri);
-
+            _logger.LogDebug($"[GetBasket] -> Calling {uri} to get the basket");
+            var response = await _apiClient.GetAsync(uri);  
+            _logger.LogDebug($"[GetBasket] -> response code {response.StatusCode}");
+            var responseString = await response.Content.ReadAsStringAsync();
             return string.IsNullOrEmpty(responseString) ?
                 new Basket() { BuyerId = user.Id } :
                 JsonConvert.DeserializeObject<Basket>(responseString);

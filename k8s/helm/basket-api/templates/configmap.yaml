@@ -1,5 +1,4 @@
 {{- $name := include "basket-api.fullname" . -}}
-{{- $identity := include "url-of" (list .Values.app.ingress.entries.identity .) -}}
 
 apiVersion: v1
 kind: ConfigMap
@@ -12,7 +11,7 @@ metadata:
     heritage: {{ .Release.Service }}
 data:
   basket__ConnectionString: {{ .Values.inf.redis.basket.constr }}
-  urls__IdentityUrl: http://{{ $identity }}
+  urls__IdentityUrl: http://{{ .Values.app.svc.identity }}
   basket__EnableLoadTest: "{{ .Values.inf.misc.useLoadTest }}"
   all__EventBusConnection: {{ .Values.inf.eventbus.constr }}
   all__InstrumentationKey: "{{ .Values.inf.appinsights.key }}"

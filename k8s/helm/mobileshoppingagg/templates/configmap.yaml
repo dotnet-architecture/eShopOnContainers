@@ -24,3 +24,6 @@ data:
   internalurls__marketing__hc: http://{{ .Values.app.svc.marketing }}/hc
   internalurls__payment__hc: http://{{ .Values.app.svc.payment }}/hc
   internalurls__location__hc: http://{{ .Values.app.svc.locations }}/hc
+  internalurls__grpcBasket: "http://{{ .Values.app.svc.basket }}:{{ .Values.service.grpcPort }}"
+  internalurls__grpcCatalog: "http://{{ .Values.app.svc.catalog }}:{{ .Values.service.grpcPort }}"
+  internalurls__grpcOrdering: "http://{{ .Values.app.svc.ordering }}:{{ .Values.service.grpcPort }}"
