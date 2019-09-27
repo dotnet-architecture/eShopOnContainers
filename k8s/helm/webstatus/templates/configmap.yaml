@@ -24,13 +24,13 @@ data:
   name__spa__hc: WebSPA HTTP Check
   internalurls__spa__hc: http://{{ .Values.app.svc.spa }}/hc
   name__apigwws__hc: Web Shopping API GW HTTP Check
-  internalurls__apigwws__hc: http://{{ .Values.app.svc.webshoppingapigw }}/hc
+  internalurls__apigwws__hc: http://{{ .Values.app.svc.webshoppingapigw }}:8001/ready
   name__apigwwm__hc: Web Marketing API GW HTTP Check
-  internalurls__apigwwm__hc: http://{{ .Values.app.svc.webmarketingapigw }}/hc
+  internalurls__apigwwm__hc: http://{{ .Values.app.svc.webmarketingapigw }}:8001/ready
   name__apigwms__hc: Mobile Shopping API GW HTTP Check
-  internalurls__apigwms__hc: http://{{ .Values.app.svc.mobileshoppingapigw }}/hc
+  internalurls__apigwms__hc: http://{{ .Values.app.svc.mobileshoppingapigw }}:8001/ready
   name__apigwmm__hc: Mobile Marketing API GW HTTP Check
-  internalurls__apigwmm__hc: http://{{ .Values.app.svc.mobilemarketingapigw }}/hc
+  internalurls__apigwmm__hc: http://{{ .Values.app.svc.mobilemarketingapigw }}:8001/ready
   name__apigwwsagg__hc: Web Shopping Aggregator GW HTTP Check
   internalurls__apigwwsagg__hc: http://{{ .Values.app.svc.webshoppingagg }}/hc
   name__apigwmsagg__hc: Mobile Shopping Aggregator HTTP Check

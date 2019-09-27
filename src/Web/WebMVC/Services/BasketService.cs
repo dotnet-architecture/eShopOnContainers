@@ -19,8 +19,6 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
         private readonly string _basketByPassUrl;
         private readonly string _purchaseUrl;
 
-        private readonly string _bffUrl;
-
         public BasketService(HttpClient httpClient, IOptions<AppSettings> settings, ILogger<BasketService> logger)
         {
             _apiClient = httpClient;

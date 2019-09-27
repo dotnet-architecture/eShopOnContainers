@@ -9,6 +9,7 @@ image:
 service:
   type: ClusterIP
   port: 80
+  adminPort: 8001  
 
 ingress:
   enabled: true
@@ -30,3 +31,15 @@ env: {}
 
 envoy:
   configPath: /etc/envoy
+
+probes:
+  liveness:
+    path: /ready
+    initialDelaySeconds: 5
+    periodSeconds: 15
+    port: 8001
+  readiness:
+    path: /ready
+    initialDelaySeconds: 5
+    periodSeconds: 60
+    port: 8001

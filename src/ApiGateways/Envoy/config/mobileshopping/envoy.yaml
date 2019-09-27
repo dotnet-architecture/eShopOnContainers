@@ -35,12 +35,12 @@ static_resources:
               - match:
                   prefix: "/o/"
                 route:
-                  prefix_rewrite: "/order-api/"
+                  prefix_rewrite: "/ordering-api/"
                   cluster: ordering 
               - match:
-                  prefix: "/order-api/"
+                  prefix: "/ordering-api/"
                 route:
-                  cluster: catalog                  
+                  cluster: ordering                  
               - match:
                   prefix: "/b/"
                 route:

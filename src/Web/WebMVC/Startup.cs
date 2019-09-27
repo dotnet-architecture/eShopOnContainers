@@ -46,7 +46,6 @@ namespace Microsoft.eShopOnContainers.WebMVC
                 .AddCustomMvc(Configuration)
                 .AddDevspaces()
                 .AddHttpClientServices(Configuration);
-                //.AddHttpClientLogging(Configuration)  //Opt-in HttpClientLogging config
 
             IdentityModelEventSource.ShowPII  = true;       // Caution! Do NOT use in production: https://aka.ms/IdentityModel/PII
             
@@ -56,12 +55,9 @@ namespace Microsoft.eShopOnContainers.WebMVC
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("sub");
-
-            //loggerFactory.AddAzureWebAppDiagnostics();
-            //loggerFactory.AddApplicationInsights(app.ApplicationServices, LogLevel.Trace);
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -75,7 +71,6 @@ namespace Microsoft.eShopOnContainers.WebMVC
 
             if (!string.IsNullOrEmpty(pathBase))
             {
-                loggerFactory.CreateLogger<Startup>().LogDebug("Using PATH BASE '{PathBase}'", pathBase);
                 app.UsePathBase(pathBase);
             }
 
@@ -87,7 +82,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
                 app.UseMiddleware<ByPassAuthMiddleware>();
             }
 
-            WebContextSeed.Seed(app, env, loggerFactory);
+            WebContextSeed.Seed(app, env);
 
             app.UseRouting();
             
@@ -201,21 +196,6 @@ namespace Microsoft.eShopOnContainers.WebMVC
             return services;
         }
 
-        public static IServiceCollection AddHttpClientLogging(this IServiceCollection services, IConfiguration configuration)
-        {
-            services.AddLogging(b =>
-            {
-                b.AddFilter((category, level) => true); // Spam the world with logs.
-
-                // Add console logger so we can see all the logging produced by the client by default.
-                b.AddConsole(c => c.IncludeScopes = true);
-
-                // Add console logger
-                b.AddDebug();
-            });
-
-            return services;
-        }
 
         public static IServiceCollection AddCustomAuthentication(this IServiceCollection services, IConfiguration configuration)
         {

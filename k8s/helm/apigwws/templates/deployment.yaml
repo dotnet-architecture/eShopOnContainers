@@ -85,6 +85,9 @@ spec:
             - name: http
               containerPort: 80
               protocol: TCP
+            - name: admin
+              containerPort: 8001
+              protocol: TCP
           resources:
 {{ toYaml .Values.resources | indent 12 }}
     {{- with .Values.nodeSelector }}
