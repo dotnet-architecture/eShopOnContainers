@@ -13,7 +13,8 @@ Param(
     [parameter(Mandatory=$false)][bool]$useLocalk8s=$false,
     [parameter(Mandatory=$false)][bool]$useMesh=$true,
     [parameter(Mandatory=$false)][string][ValidateSet('Always','IfNotPresent','Never', IgnoreCase=$false)]$imagePullPolicy="Always",
-    [parameter(Mandatory=$false)][string]$chartsToDeploy="*"
+    [parameter(Mandatory=$false)][string]$chartsToDeploy="*",
+    [parameter(Mandatory=$false)][string]$ingressMeshAnnotationsFile="ingress_values_linkerd.yaml"
     )
 
 $dns = $externalDns
@@ -83,11 +84,11 @@ if ($deployCharts) {
         if ($chartsToDeploy -eq "*" -or $chartsToDeploy.Contains($chart)) {
             Write-Host "Installing: $chart" -ForegroundColor Green
             if ($useCustomRegistry) {
-                helm install --set inf.registry.server=$registry --set inf.registry.login=$dockerUser --set inf.registry.pwd=$dockerPassword --set inf.registry.secretName=eshop-docker-scret --values app.yaml --values inf.yaml --values $ingressValuesFile --set app.name=$appName --set inf.k8s.dns=$dns --set "ingress.hosts={$dns}" --set image.tag=$imageTag --set image.pullPolicy=$imagePullPolicy --set inf.mesh.enabled=$useMesh --set inf.k8s.local=$useLocalk8s --name="$appName-$chart" $chart  
+                helm install --set inf.registry.server=$registry --set inf.registry.login=$dockerUser --set inf.registry.pwd=$dockerPassword --set inf.registry.secretName=eshop-docker-scret --values app.yaml --values inf.yaml --values $ingressValuesFile --values $ingressMeshAnnotationsFile --set app.name=$appName --set inf.k8s.dns=$dns --set "ingress.hosts={$dns}" --set image.tag=$imageTag --set image.pullPolicy=$imagePullPolicy --set inf.mesh.enabled=$useMesh --set inf.k8s.local=$useLocalk8s --name="$appName-$chart" $chart  
             }
             else {
                 if ($chart -ne "eshop-common")  {       # eshop-common is ignored when no secret must be deployed
-                    helm install --values app.yaml --values inf.yaml --values $ingressValuesFile --set app.name=$appName --set inf.k8s.dns=$dns  --set "ingress.hosts={$dns}" --set image.tag=$imageTag --set image.pullPolicy=$imagePullPolicy --set inf.mesh.enabled=$useMesh --set inf.k8s.local=$useLocalk8s --name="$appName-$chart" $chart 
+                    helm install --values app.yaml --values inf.yaml --values $ingressValuesFile --values $ingressMeshAnnotationsFile --set app.name=$appName --set inf.k8s.dns=$dns  --set "ingress.hosts={$dns}" --set image.tag=$imageTag --set image.pullPolicy=$imagePullPolicy --set inf.mesh.enabled=$useMesh --set inf.k8s.local=$useLocalk8s --name="$appName-$chart" $chart 
                 }
             }
         }
@@ -96,7 +97,7 @@ if ($deployCharts) {
     foreach ($chart in $gateways) {
         if ($chartsToDeploy -eq "*" -or $chartsToDeploy.Contains($chart)) {
             Write-Host "Installing Api Gateway Chart: $chart" -ForegroundColor Green
-            helm install --values app.yaml --values inf.yaml --values $ingressValuesFile --set app.name=$appName --set inf.k8s.dns=$dns  --set "ingress.hosts={$dns}" --set image.pullPolicy=$imagePullPolicy --set inf.mesh.enabled=$useMesh --name="$appName-$chart" $chart 
+            helm install --values app.yaml --values inf.yaml --values $ingressValuesFile --values $ingressMeshAnnotationsFile --set app.name=$appName --set inf.k8s.dns=$dns  --set "ingress.hosts={$dns}" --set image.pullPolicy=$imagePullPolicy --set inf.mesh.enabled=$useMesh --name="$appName-$chart" $chart 
         }
     }
 }

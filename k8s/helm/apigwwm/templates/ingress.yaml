@@ -1,4 +1,4 @@
-{{- if .Values.ingress.enabled -}}
+ç{{- if .Values.ingress.enabled -}}
 {{- $ingressPath := include "pathBase" . -}}
 {{- $serviceName := .Values.app.svc.webmarketingapigw -}}
 
@@ -14,6 +14,11 @@ metadata:
 {{- with .Values.ingress.annotations }}
   annotations:
 {{ toYaml . | indent 4 }}
+{{- end }}
+{{- if .Values.inf.mesh.enabled }} 
+{{- with .Values.ingress.mesh.annotations }}
+{{ toYaml . | indent 4 }}
+{{- end }}
 {{- end }}
 spec:
 {{- if .Values.ingress.tls }}

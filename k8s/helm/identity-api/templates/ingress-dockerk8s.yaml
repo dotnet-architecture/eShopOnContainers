@@ -16,6 +16,11 @@ metadata:
   annotations:
 {{ toYaml . | indent 4 }}
 {{- end }}    
+{{- if .Values.inf.mesh.enabled }} 
+{{- with .Values.ingress.mesh.annotations }}
+{{ toYaml . | indent 4 }}
+{{- end }}
+{{- end }}
 spec:
   rules:
   - http:
