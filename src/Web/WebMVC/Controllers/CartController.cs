@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.eShopOnContainers.WebMVC.Services;
 using Microsoft.eShopOnContainers.WebMVC.ViewModels;
-using Polly.CircuitBreaker;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -32,10 +31,9 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
 
                 return View(vm);
             }
-            catch (BrokenCircuitException)
+            catch (Exception ex)
             {
-                // Catch error when Basket.api is in circuit-opened mode                 
-                HandleBrokenCircuitException();
+                HandleException(ex);
             }
 
             return View();
@@ -54,10 +52,9 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
                     return RedirectToAction("Create", "Order");
                 }
             }
-            catch (BrokenCircuitException)
+            catch (Exception ex)
             {
-                // Catch error when Basket.api is in circuit-opened mode                 
-                HandleBrokenCircuitException();
+                HandleException(ex);
             }
 
             return View();
@@ -74,18 +71,18 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
                 }
                 return RedirectToAction("Index", "Catalog");
             }
-            catch (BrokenCircuitException)
+            catch (Exception ex)
             {
                 // Catch error when Basket.api is in circuit-opened mode                 
-                HandleBrokenCircuitException();
+                HandleException(ex);
             }
 
             return RedirectToAction("Index", "Catalog", new { errorMsg = ViewBag.BasketInoperativeMsg });
         }
 
-        private void HandleBrokenCircuitException()
+        private void HandleException(Exception ex)
         {
-            ViewBag.BasketInoperativeMsg = "Basket Service is inoperative, please try later on. (Business Msg Due to Circuit-Breaker)";
+            ViewBag.BasketInoperativeMsg = $"Basket Service is inoperative {ex.GetType().Name} - {ex.Message}";
         }
     }
 }

@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using System;
 using Grpc.Core;
 using Serilog;
-using Polly;
 using Grpc.Net.Client;
 
 namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Services
@@ -30,11 +29,7 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Services
 
             try
             {
-                return await Policy
-                                .Handle<Exception>(ex => true)
-                                .WaitAndRetryAsync(5, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)), (e, t) => Log.Warning("Retrying the call to urlGrpc ={@urlGrpc}, BaseAddress={@BaseAddress}, errorMessage={@message}", urlGrpc, channel.Target, e.Message))
-                                .ExecuteAsync(() => func(channel))
-                                ;
+                return await func(channel);
             }
             catch (RpcException e)
             {
@@ -46,8 +41,6 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Services
                 AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", false);
                 AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2Support", false);
             }
-
-
         }
 
         public static async Task CallService(string urlGrpc, Func<GrpcChannel, Task> func)
@@ -68,11 +61,7 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Services
 
             try
             {
-                await Policy
-                        .Handle<Exception>(ex => true)
-                        .WaitAndRetryAsync(5, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)), (e, t) => Log.Warning("Retrying the call to urlGrpc ={@urlGrpc}, BaseAddress={@BaseAddress}, errorMessage={@message}", urlGrpc, channel.Target, e.Message))
-                        .ExecuteAsync(() => func(channel))
-                        ;
+                await func(channel);
             }
             catch (RpcException e)
             {

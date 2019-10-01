@@ -15,8 +15,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Logging;
-using Polly;
-using Polly.Extensions.Http;
 using StackExchange.Redis;
 using System;
 using System.IdentityModel.Tokens.Jwt;
@@ -146,7 +144,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
             return services;
         }
 
-        // Adds all Http client services (like Service-Agents) using resilient Http requests based on HttpClient factory and Polly's policies 
+        // Adds all Http client services
         public static IServiceCollection AddHttpClientServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -162,32 +160,22 @@ namespace Microsoft.eShopOnContainers.WebMVC
             services.AddHttpClient<IBasketService, BasketService>()
                    .SetHandlerLifetime(TimeSpan.FromMinutes(5))  //Sample. Default lifetime is 2 minutes
                    .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
-                   .AddPolicyHandler(GetRetryPolicy())
-                   .AddPolicyHandler(GetCircuitBreakerPolicy())
                    .AddDevspacesSupport();
 
             services.AddHttpClient<ICatalogService, CatalogService>()
-                   .AddPolicyHandler(GetRetryPolicy())
-                   .AddPolicyHandler(GetCircuitBreakerPolicy())
                    .AddDevspacesSupport();
 
             services.AddHttpClient<IOrderingService, OrderingService>()
                  .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
                  .AddHttpMessageHandler<HttpClientRequestIdDelegatingHandler>()
-                 .AddPolicyHandler(GetRetryPolicy())
-                 .AddPolicyHandler(GetCircuitBreakerPolicy())
                  .AddDevspacesSupport();
 
             services.AddHttpClient<ICampaignService, CampaignService>()
                 .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
-                .AddPolicyHandler(GetRetryPolicy())
-                .AddPolicyHandler(GetCircuitBreakerPolicy())
                 .AddDevspacesSupport();
 
             services.AddHttpClient<ILocationService, LocationService>()
                .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
-               .AddPolicyHandler(GetRetryPolicy())
-               .AddPolicyHandler(GetCircuitBreakerPolicy())
                .AddDevspacesSupport();
 
             //add custom application services
@@ -234,20 +222,6 @@ namespace Microsoft.eShopOnContainers.WebMVC
             });
 
             return services;
-        }
-
-        static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy()
-        {
-            return HttpPolicyExtensions
-              .HandleTransientHttpError()
-              .OrResult(msg => msg.StatusCode == System.Net.HttpStatusCode.NotFound)
-              .WaitAndRetryAsync(6, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
-        }
-        static IAsyncPolicy<HttpResponseMessage> GetCircuitBreakerPolicy()
-        {
-            return HttpPolicyExtensions
-                .HandleTransientHttpError()
-                .CircuitBreakerAsync(5, TimeSpan.FromSeconds(30));
         }
     }
 }

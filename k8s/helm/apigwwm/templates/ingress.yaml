@@ -1,4 +1,4 @@
-ç{{- if .Values.ingress.enabled -}}
+{{- if .Values.ingress.enabled -}}
 {{- $ingressPath := include "pathBase" . -}}
 {{- $serviceName := .Values.app.svc.webmarketingapigw -}}
 

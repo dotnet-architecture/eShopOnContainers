@@ -31,7 +31,6 @@
     <PackageReference Include="Microsoft.ApplicationInsights.Kubernetes" Version="1.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.HealthChecks" Version="$(Microsoft_AspNetCore_Diagnostics_HealthChecks)" />
     <PackageReference Include="Microsoft.AspNetCore.HealthChecks" Version="$(Microsoft_AspNetCore_HealthChecks)" />
-    <PackageReference Include="Microsoft.Extensions.Http.Polly" Version="3.0.0-rc1.19456.10" />
     <PackageReference Include="Microsoft.Extensions.Logging.AzureAppServices" Version="3.0.0-rc1.19456.10" />
     <PackageReference Include="Microsoft.AspNetCore.DataProtection.Redis" Version="2.2.0-preview3-35458" />
     <PackageReference Include="Microsoft.Build.Utilities.Core" Version="16.0.461" />

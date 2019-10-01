@@ -23,44 +23,76 @@ static_resources:
               domains:
               - "*"
               routes:
-              - match:
+              - name: "c-short"
+                match:
                   prefix: "/c/"
                 route:
+                  auto_host_rewrite: true
                   prefix_rewrite: "/catalog-api/"
                   cluster: catalog
-              - match:
+              - name: "c-long"
+                match:
                   prefix: "/catalog-api/"
                 route:
+                  auto_host_rewrite: true
                   cluster: catalog
-              - match:
+              - name: "o-short"
+                match:
                   prefix: "/o/"
                 route:
+                  auto_host_rewrite: true
                   prefix_rewrite: "/ordering-api/"
                   cluster: ordering 
-              - match:
+              - name: "o-long"
+                match:
                   prefix: "/ordering-api/"
                 route:
+                  auto_host_rewrite: true
                   cluster: ordering                  
-              - match:
+              - name: "b-short"
+                match:
                   prefix: "/b/"
                 route:
+                  auto_host_rewrite: true
                   prefix_rewrite: "/basket-api/"
                   cluster: basket
-              - match:
+              - name: "b-long"
+                match:
                   prefix: "/basket-api/"
                 route:
+                  auto_host_rewrite: true
                   cluster: basket                  
-              - match:
+              - name: "agg"
+                match:
                   prefix: "/"
                 route:
+                  auto_host_rewrite: true
                   prefix_rewrite: "/"
                   cluster: shoppingagg
           http_filters:
           - name: envoy.router            
+          access_log:
+          - name: envoy.file_access_log
+            filter:
+              not_health_check_filter: {}          
+            config:
+              json_format:
+                time: "%START_TIME%"
+                protocol: "%PROTOCOL%"
+                duration: "%DURATION%"
+                request_method: "%REQ(:METHOD)%"  
+                request_host: "%REQ(HOST)%"  
+                path: "%REQ(X-ENVOY-ORIGINAL-PATH?:PATH)%" 
+                response_flags: "%RESPONSE_FLAGS%"
+                route_name: "%ROUTE_NAME%"
+                upstream_host: "%UPSTREAM_HOST%"
+                upstream_cluster: "%UPSTREAM_CLUSTER%"
+                upstream_local_address: "%UPSTREAM_LOCAL_ADDRESS%"    
+              path: "/tmp/access.log"         
   clusters:
   - name: shoppingagg
     connect_timeout: 0.25s
-    type: logical_dns
+    type: strict_dns
     lb_policy: round_robin
     hosts:
     - socket_address:
@@ -68,7 +100,7 @@ static_resources:
         port_value: 80
   - name: catalog
     connect_timeout: 0.25s
-    type: logical_dns
+    type: strict_dns
     lb_policy: round_robin
     hosts:
     - socket_address:
@@ -76,7 +108,7 @@ static_resources:
         port_value: 80
   - name: basket
     connect_timeout: 0.25s
-    type: logical_dns
+    type: strict_dns
     lb_policy: round_robin
     hosts:
     - socket_address:
@@ -84,7 +116,7 @@ static_resources:
         port_value: 80        
   - name: ordering
     connect_timeout: 0.25s
-    type: logical_dns
+    type: strict_dns
     lb_policy: round_robin
     hosts:
     - socket_address:

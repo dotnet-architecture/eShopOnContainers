@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Polly.CircuitBreaker;
 
 namespace Microsoft.eShopOnContainers.WebMVC.ViewComponents
 {
@@ -23,10 +22,9 @@ namespace Microsoft.eShopOnContainers.WebMVC.ViewComponents
                 vm = await GetItemsAsync(user);
                 return View(vm);
             }
-            catch (BrokenCircuitException)
+            catch (Exception ex)
             {
-                // Catch error when Basket.api is in circuit-opened mode                 
-                ViewBag.BasketInoperativeMsg = "Basket Service is inoperative, please try later on. (Business Msg Due to Circuit-Breaker)";
+                ViewBag.BasketInoperativeMsg = $"Basket Service is inoperative, please try later on. ({ex.GetType().Name} - {ex.Message}))";
             }
 
             return View(vm);
