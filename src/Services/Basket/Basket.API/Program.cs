@@ -60,7 +60,10 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
                     });
 
                 })
-                .UseFailing(options => options.ConfigPath = "/Failing")
+                .UseFailing(options => {
+                    options.ConfigPath = "/Failing";
+                    options.NotFilteredPaths.AddRange(new[] {"/hc","/liveness"});
+                })
                 .UseStartup<Startup>()
                 .UseApplicationInsights()
                 .UseContentRoot(Directory.GetCurrentDirectory())
