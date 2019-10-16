@@ -19,15 +19,20 @@ services:
       - ACCEPT_EULA=Y
     ports:
       - "5433:1433"    
+    volumes:
+      - eshop-sqldata:/var/opt/mssql
 
   nosqldata:
     ports:
       - "27017:27017"  
+    volumes:
+      - eshop-nosqldata:/data/db
 
   basketdata:
     ports:
       - "6379:6379"    
-
+    volumes:
+      - eshop-basketdata:/data
   rabbitmq:
     ports:
       - "15672:15672"  
@@ -69,10 +74,12 @@ services:
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
       - OrchestratorType=${ORCHESTRATOR_TYPE}
       - UseLoadTest=${USE_LOADTEST:-False}
-
+      - PATH_BASE=/basket-api
+      - GRPC_PORT=81
+      - PORT=80
     ports:
       - "5103:80"  
-      - "5580:5001"  
+      - "9103:81"  
 
   catalog-api:
     environment:
@@ -91,6 +98,7 @@ services:
       - OrchestratorType=${ORCHESTRATOR_TYPE}
       - GRPC_PORT=81
       - PORT=80
+      - PATH_BASE=/catalog-api
     ports:
       - "5101:80"
       - "9101:81"
@@ -113,9 +121,12 @@ services:
       - UseLoadTest=${USE_LOADTEST:-False}
       - Serilog__MinimumLevel__Override__Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ=Verbose
       - Serilog__MinimumLevel__Override__ordering-api=Verbose
+      - PATH_BASE=/ordering-api
+      - GRPC_PORT=81
+      - PORT=80
     ports:
       - "5102:80" 
-      - "5581:5001"  
+      - "9102:81"  
       
   ordering-backgroundtasks:
     environment:
@@ -157,6 +168,7 @@ services:
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
       - OrchestratorType=${ORCHESTRATOR_TYPE}
       - UseLoadTest=${USE_LOADTEST:-False}
+      - PATH_BASE=/marketing-api
     ports:
       - "5110:80"   
 
@@ -190,6 +202,7 @@ services:
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
       - OrchestratorType=${ORCHESTRATOR_TYPE}
       - UseLoadTest=${USE_LOADTEST:-False}
+      - PATH_BASE=/locations-api
     ports:
       - "5109:80"   
 
@@ -241,9 +254,9 @@ services:
       - urls__catalog=http://catalog-api
       - urls__orders=http://ordering-api
       - urls__identity=http://identity-api
-      - urls__grpcBasket=http://10.0.75.1:5580
-      - urls__grpcCatalog=http://10.0.75.1:9101
-      - urls__grpcOrdering=http://10.0.75.1:5581
+      - urls__grpcBasket=http://basket-api:81
+      - urls__grpcCatalog=http://catalog-api:81
+      - urls__grpcOrdering=http://ordering-api:81
       - CatalogUrlHC=http://catalog-api/hc
       - OrderingUrlHC=http://ordering-api/hc
       - IdentityUrlHC=http://identity-api/hc             
@@ -262,9 +275,9 @@ services:
       - urls__catalog=http://catalog-api
       - urls__orders=http://ordering-api
       - urls__identity=http://identity-api
-      - urls__grpcBasket=http://10.0.75.1:5580
-      - urls__grpcCatalog=http://10.0.75.1:9101
-      - urls__grpcOrdering=http://10.0.75.1:5581
+      - urls__grpcBasket=http://basket-api:81
+      - urls__grpcCatalog=http://catalog-api:81
+      - urls__grpcOrdering=http://ordering-api:81
       - CatalogUrlHC=http://catalog-api/hc
       - OrderingUrlHC=http://ordering-api/hc
       - IdentityUrlHC=http://identity-api/hc             
@@ -366,4 +379,11 @@ services:
       - SelfUrl=http://webhooks-client/
     ports:
       - "5114:80"
+volumes:
+  eshop-sqldata:
+    external: false
+  eshop-nosqldata:
+    external: false
+  eshop-basketdata:
+    external: false
 
