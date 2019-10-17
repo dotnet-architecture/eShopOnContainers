@@ -22,6 +22,7 @@ using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Devspaces.Support;
+using Polly.Contrib.WaitAndRetry;
 
 namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator
 {
@@ -207,10 +208,12 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator
 
         static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy()
         {
+            var delay = Backoff.DecorrelatedJitterBackoffV2(TimeSpan.FromSeconds(2), retryCount: 6);
+
             return HttpPolicyExtensions
               .HandleTransientHttpError()
               .OrResult(msg => msg.StatusCode == System.Net.HttpStatusCode.NotFound)
-              .WaitAndRetryAsync(6, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
+              .WaitAndRetryAsync(delay);
 
         }
 

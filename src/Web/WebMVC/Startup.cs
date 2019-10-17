@@ -17,6 +17,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
 using Polly;
+using Polly.Contrib.WaitAndRetry;
 using Polly.Extensions.Http;
 using StackExchange.Redis;
 using System;
@@ -274,10 +275,12 @@ namespace Microsoft.eShopOnContainers.WebMVC
 
         static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy()
         {
+            var delay = Backoff.DecorrelatedJitterBackoffV2(TimeSpan.FromSeconds(2), retryCount: 6);
+
             return HttpPolicyExtensions
               .HandleTransientHttpError()
               .OrResult(msg => msg.StatusCode == System.Net.HttpStatusCode.NotFound)
-              .WaitAndRetryAsync(6, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
+              .WaitAndRetryAsync(delay);
 
         }
         static IAsyncPolicy<HttpResponseMessage> GetCircuitBreakerPolicy()
