@@ -34,7 +34,7 @@ Do you want to be up-to-date on .NET Architecture guidance and reference apps li
 
 > There's currently an update to .NET Core 3 going on in the branch [features/migration-dotnet3](https://github.com/dotnet-architecture/eShopOnContainers/tree/features/migration-dotnet3).
 >
-> You can monitor this branch, but it's begin changed frequently, community contributions will be accepted once it's officially released.
+> You can monitor this branch, but it's being changed frequently, community contributions will be accepted once it's officially released.
 
 ## Updated for .NET Core 2.2 "wave" of technologies
 
