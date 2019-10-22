@@ -12,7 +12,7 @@ RUN npm run build:prod
 FROM mcr.microsoft.com/dotnet/core/sdk:2.2 AS build
 WORKDIR /src
 
-# Keep the project list and command dotnet restore identical in all Dockfiles to maximize image cache utilization
+# Keep the project list and command dotnet restore identical in all Dockerfiles to maximize image cache utilization
 COPY eShopOnContainers-ServicesAndWebApps.sln .
 COPY docker-compose.dcproj /src/
 COPY src/ApiGateways/ApiGw-Base/OcelotApiGw.csproj src/ApiGateways/ApiGw-Base/
