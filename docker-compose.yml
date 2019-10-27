@@ -35,6 +35,14 @@ services:
       - identity.api
       - rabbitmq
 
+  tenantmanager:
+    image:  ${REGISTRY:-eshop}/tenantmanager:${PLATFORM:-linux}-${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/Services/TenantManager/TenantManager/Dockerfile    
+    depends_on:
+      - sql.data
+
   catalog.api:
     image: ${REGISTRY:-eshop}/catalog.api:${PLATFORM:-linux}-${TAG:-latest}
     build:

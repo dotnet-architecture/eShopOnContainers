@@ -49,11 +49,19 @@ services:
       - WebShoppingAggClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5121
       - WebhooksApiClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5113
       - WebhooksWebClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5114
+      - TenantManagerApiClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5115
       - UseCustomizationData=True  
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
       - OrchestratorType=${ORCHESTRATOR_TYPE}
     ports:
       - "5105:80"   
+
+  tenantmanager:
+    environment:
+      - ConnectionString=${ESHOP_AZURE_CATALOG_DB:-Server=sql.data;Database=Microsoft.eShopOnContainers.Services.TenantManagerDb;User Id=sa;Password=Pass@word}
+
+    ports:
+      - "5115:80"
 
   basket.api:
     environment:
