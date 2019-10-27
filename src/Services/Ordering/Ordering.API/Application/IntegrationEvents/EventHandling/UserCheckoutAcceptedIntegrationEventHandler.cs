@@ -12,7 +12,7 @@ using System;
 
 namespace Ordering.API.Application.IntegrationEvents.EventHandling
 {
-    public class UserCheckoutAcceptedIntegrationEventHandler : IIntegrationEventHandler<UserCheckoutAcceptedIntegrationEvent>
+    public class UserCheckoutAcceptedIntegrationEventHandler : AbstractIntegrationEventHandler<UserCheckoutAcceptedIntegrationEvent>, IIntegrationEventHandler<UserCheckoutAcceptedIntegrationEvent>
     {
         private readonly IMediator _mediator;
         private readonly ILogger<UserCheckoutAcceptedIntegrationEventHandler> _logger;
@@ -40,41 +40,45 @@ namespace Ordering.API.Application.IntegrationEvents.EventHandling
             {
                 _logger.LogInformation("----- Handling integration event: {IntegrationEventId} at {AppName} - ({@IntegrationEvent})", @event.Id, Program.AppName, @event);
 
-                var result = false;
-
-                if (@event.RequestId != Guid.Empty)
+                var customised = await CheckIfCustomised(@event);
+                if (!customised)
                 {
-                    using (LogContext.PushProperty("IdentifiedCommandId", @event.RequestId))
+                    var result = false;
+
+                    if (@event.RequestId != Guid.Empty)
                     {
-                        var createOrderCommand = new CreateOrderCommand(@event.Basket.Items, @event.UserId, @event.UserName, @event.City, @event.Street,
-                            @event.State, @event.Country, @event.ZipCode,
-                            @event.CardNumber, @event.CardHolderName, @event.CardExpiration,
-                            @event.CardSecurityNumber, @event.CardTypeId);
-
-                        var requestCreateOrder = new IdentifiedCommand<CreateOrderCommand, bool>(createOrderCommand, @event.RequestId);
-
-                        _logger.LogInformation(
-                            "----- Sending command: {CommandName} - {IdProperty}: {CommandId} ({@Command})", 
-                            requestCreateOrder.GetGenericTypeName(),
-                            nameof(requestCreateOrder.Id),
-                            requestCreateOrder.Id,
-                            requestCreateOrder);
-
-                        result = await _mediator.Send(requestCreateOrder);
-
-                        if (result)
+                        using (LogContext.PushProperty("IdentifiedCommandId", @event.RequestId))
                         {
-                            _logger.LogInformation("----- CreateOrderCommand suceeded - RequestId: {RequestId}", @event.RequestId);
-                        }
-                        else
-                        {
-                            _logger.LogWarning("CreateOrderCommand failed - RequestId: {RequestId}", @event.RequestId);
+                            var createOrderCommand = new CreateOrderCommand(@event.Basket.Items, @event.UserId, @event.UserName, @event.City, @event.Street,
+                                @event.State, @event.Country, @event.ZipCode,
+                                @event.CardNumber, @event.CardHolderName, @event.CardExpiration,
+                                @event.CardSecurityNumber, @event.CardTypeId);
+
+                            var requestCreateOrder = new IdentifiedCommand<CreateOrderCommand, bool>(createOrderCommand, @event.RequestId);
+
+                            _logger.LogInformation(
+                                "----- Sending command: {CommandName} - {IdProperty}: {CommandId} ({@Command})",
+                                requestCreateOrder.GetGenericTypeName(),
+                                nameof(requestCreateOrder.Id),
+                                requestCreateOrder.Id,
+                                requestCreateOrder);
+
+                            result = await _mediator.Send(requestCreateOrder);
+
+                            if (result)
+                            {
+                                _logger.LogInformation("----- CreateOrderCommand suceeded - RequestId: {RequestId}", @event.RequestId);
+                            }
+                            else
+                            {
+                                _logger.LogWarning("CreateOrderCommand failed - RequestId: {RequestId}", @event.RequestId);
+                            }
                         }
                     }
-                }
-                else
-                {
-                    _logger.LogWarning("Invalid IntegrationEvent - RequestId is missing - {@IntegrationEvent}", @event);
+                    else
+                    {
+                        _logger.LogWarning("Invalid IntegrationEvent - RequestId is missing - {@IntegrationEvent}", @event);
+                    }
                 }
             }
         }

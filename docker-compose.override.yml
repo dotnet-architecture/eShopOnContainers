@@ -59,7 +59,6 @@ services:
   tenantmanager:
     environment:
       - ConnectionString=${ESHOP_AZURE_CATALOG_DB:-Server=sql.data;Database=Microsoft.eShopOnContainers.Services.TenantManagerDb;User Id=sa;Password=Pass@word}
-
     ports:
       - "5115:80"
 
