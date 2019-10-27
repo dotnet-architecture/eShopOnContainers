@@ -1,4 +1,4 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Ordering.API
+﻿namespace Microsoft.eShopOnContainers.Services.TenantACustomisations
 {
     using AspNetCore.Http;
     using Autofac;
@@ -30,7 +30,9 @@
     using HealthChecks.UI.Client;
     using Microsoft.AspNetCore.Diagnostics.HealthChecks;
     using Microsoft.Extensions.Diagnostics.HealthChecks;
-    using TenantACustomisations.Infrastructure.Filters;
+    using Infrastructure.AutofacModules;
+    using Microsoft.eShopOnContainers.Services.TenantACustomisations.Infrastructure.Filters;
+    using global::TenantACustomisations.Infrastructure.Filters;
 
     public class Startup
     {
@@ -117,7 +119,8 @@
         {
             if (Configuration.GetValue<bool>("UseLoadTest"))
             {
-                app.UseMiddleware<ByPassAuthMiddleware>();
+                //app.UseMiddleware<ByPassAuthMiddleware>();
+                //TODO
             }
 
             app.UseAuthentication();

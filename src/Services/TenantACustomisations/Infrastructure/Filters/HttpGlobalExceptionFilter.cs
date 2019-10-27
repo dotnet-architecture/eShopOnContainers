@@ -1,11 +1,9 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure.Filters
+﻿namespace Microsoft.eShopOnContainers.Services.TenantACustomisations.Infrastructure.Filters
 {
     using AspNetCore.Mvc;
-    using global::Ordering.Domain.Exceptions;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc.Filters;
-    using Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure.ActionResults;
     using Microsoft.Extensions.Logging;
     using System.Net;
 
@@ -26,7 +24,7 @@
                 context.Exception,
                 context.Exception.Message);
 
-            if (context.Exception.GetType() == typeof(OrderingDomainException))
+            if (1==2)//TODO
             {
                 var problemDetails = new ValidationProblemDetails()
                 {
@@ -54,7 +52,8 @@
 
                 // Result asigned to a result object but in destiny the response is empty. This is a known bug of .net core 1.1
                 // It will be fixed in .net core 1.1.2. See https://github.com/aspnet/Mvc/issues/5594 for more information
-                context.Result = new InternalServerErrorObjectResult(json);
+                //TODO
+                //context.Result = new InternalServerErrorObjectResult(json);
                 context.HttpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
             }
             context.ExceptionHandled = true;
