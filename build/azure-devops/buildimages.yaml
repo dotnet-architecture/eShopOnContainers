@@ -36,7 +36,7 @@ jobs:
       dockerComposeCommand: 'build ${{ parameters.services }}'
       containerregistrytype: Container Registry
       dockerRegistryEndpoint: ${{ parameters.registryEndpoint }}
-      dockerComposeFile: docker-compose.yml
+      dockerComposeFile: src/docker-compose.yml
       qualifyImageNames: true
       projectName: ""
       dockerComposeFileArgs: |
@@ -47,7 +47,7 @@ jobs:
       dockerComposeCommand: 'push ${{ parameters.services }}'
       containerregistrytype: Container Registry
       dockerRegistryEndpoint: ${{ parameters.registryEndpoint }}
-      dockerComposeFile: docker-compose.yml
+      dockerComposeFile: src/docker-compose.yml
       qualifyImageNames: true
       projectName: ""
       dockerComposeFileArgs: |
@@ -71,7 +71,7 @@ jobs:
       dockerComposeCommand: 'build ${{ parameters.services }}'
       containerregistrytype: Container Registry
       dockerRegistryEndpoint: ${{ parameters.registryEndpoint }}
-      dockerComposeFile: docker-compose.yml
+      dockerComposeFile: src/docker-compose.yml
       qualifyImageNames: true
       projectName: ""
       dockerComposeFileArgs: |
@@ -84,7 +84,7 @@ jobs:
       dockerComposeCommand: 'push ${{ parameters.services }}'
       containerregistrytype: Container Registry
       dockerRegistryEndpoint: ${{ parameters.registryEndpoint }}
-      dockerComposeFile: docker-compose.yml
+      dockerComposeFile: src/docker-compose.yml
       qualifyImageNames: true
       projectName: ""
       dockerComposeFileArgs: |
