@@ -29,8 +29,8 @@ Dev branch contains the latest "stable" code, and their images are tagged with `
 **NEWS / ANNOUNCEMENTS**
 Do you want to be up-to-date on .NET Architecture guidance and reference apps like eShopOnContainers? --> Subscribe by "WATCHING" this new GitHub repo: https://github.com/dotnet-architecture/News 
 
-## Updated for .NET Core 2.2 "wave" of technologies
-eShopOnContainers is updated to .NET Core 2.x (currently updated to 2.2) "wave" of technologies. Not just compilation but also new recommended code in EF Core, ASP.NET Core, and other new related versions.
+## Updated for .NET Core 3.0
+eShopOnContainers is updated to .NET Core 3.0  "wave" of technologies. Not just compilation but also new recommended code in EF Core, ASP.NET Core, and other new related versions.
 
 The **dockerfiles** in the solution have also been updated and now support [**Docker Multi-Stage**](https://blogs.msdn.microsoft.com/stevelasker/2017/09/11/net-and-multistage-dockerfiles/) since mid-December 2017.
 
