@@ -10,6 +10,7 @@
     <PackageReference Include="Grpc.Net.Client" Version="0.1.22-pre3" />
     <PackageReference Include="Grpc.Tools" Version="2.23.0" PrivateAssets="All" />
   </ItemGroup>
+
   <ItemGroup>
     <Protobuf Include="Protos\basket.proto" GrpcServices="Client" />
   </ItemGroup>

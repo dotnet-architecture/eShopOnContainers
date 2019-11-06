@@ -15,18 +15,18 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AspNetCore.HealthChecks.Uris" Version="2.2.3" />
     <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="2.2.4" />
-    <PackageReference Include="Grpc.AspNetCore.Server.ClientFactory" Version="0.2.23-pre2" />
+    <PackageReference Include="AspNetCore.HealthChecks.Uris" Version="2.2.3" />
     <PackageReference Include="Google.Protobuf" Version="3.10.0-rc1" />
+    <PackageReference Include="Grpc.AspNetCore.Server.ClientFactory" Version="0.2.23-pre2" />
     <PackageReference Include="Grpc.Core" Version="2.24.0-pre1" />
     <PackageReference Include="Grpc.Tools" Version="2.24.0-pre1" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.0.0-rc1.19457.4" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.HealthChecks" Version="$(Microsoft_AspNetCore_Diagnostics_HealthChecks)" />
     <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="3.0.0-rc1.19456.10" />
     <PackageReference Include="Serilog.AspNetCore" Version="3.0.1-dev-00099" />
     <PackageReference Include="Serilog.Sinks.Console" Version="3.1.2-dev-00824" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="$(Swashbuckle_AspNetCore)" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.0.0-rc1.19457.4" />
     <PackageReference Include="System.Net.Http.WinHttpHandler" Version="4.6.0-rc1.19456.4" />
   </ItemGroup>
 
