@@ -6,6 +6,10 @@ services:
       - "15672:15672"
       - "5672:5672" 
 
+  basket-data-test:
+    ports:
+      - "6379:6379"
+
   sql-data-test:
     environment:
       - SA_PASSWORD=Pass@word
@@ -16,10 +20,6 @@ services:
   nosql-data-test:
     ports:
       - "27017:27017"
-
-  basket-data-test:
-    ports:
-      - "6379:6379"
 
   identity-api-test:
     environment:
