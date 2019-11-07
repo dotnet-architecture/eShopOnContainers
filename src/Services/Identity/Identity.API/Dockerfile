@@ -5,13 +5,6 @@ EXPOSE 80
 FROM mcr.microsoft.com/dotnet/core/sdk:3.0-buster AS build
 WORKDIR /src
 
-COPY scripts scripts/
-
-COPY ApiGateways/*/*/*.csproj csproj-files/
-COPY BuildingBlocks/*/*/*.csproj csproj-files/
-COPY Services/*/*/*.csproj csproj-files/
-COPY Web/*/*.csproj csproj-files/
-
 COPY . .
 WORKDIR /src/Services/Identity/Identity.API
 RUN dotnet publish -c Release -o /app

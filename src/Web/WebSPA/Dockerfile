@@ -14,13 +14,6 @@ RUN npm run build:prod
 FROM mcr.microsoft.com/dotnet/core/sdk:3.0-buster AS build
 WORKDIR /src
 
-COPY scripts scripts/
-
-COPY ApiGateways/*/*/*.csproj csproj-files/
-COPY BuildingBlocks/*/*/*.csproj csproj-files/
-COPY Services/*/*/*.csproj csproj-files/
-COPY Web/*/*.csproj csproj-files/
-
 COPY . .
 COPY --from=node-build /web/wwwroot /src/Web/WebSPA/wwwroot/
 WORKDIR /src/Web/WebSPA
