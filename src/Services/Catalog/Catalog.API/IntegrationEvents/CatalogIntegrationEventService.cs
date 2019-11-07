@@ -39,6 +39,8 @@ namespace Catalog.API.IntegrationEvents
         {
             try
             {
+                _logger.LogInformation("----- Publishing integration event: {IntegrationEventId_published} from {AppName} - ({@IntegrationEvent})", evt.Id, Program.AppName, evt);
+
                 await _eventLogService.MarkEventAsInProgressAsync(evt.Id);
                 _eventBus.Publish(evt);
                 await _eventLogService.MarkEventAsPublishedAsync(evt.Id);
@@ -52,6 +54,8 @@ namespace Catalog.API.IntegrationEvents
 
         public async Task SaveEventAndCatalogContextChangesAsync(IntegrationEvent evt)
         {
+            _logger.LogInformation("----- CatalogIntegrationEventService - Saving changes and integrationEvent: {IntegrationEventId}", evt.Id);
+
             //Use of an EF Core resiliency strategy when using multiple DbContexts within an explicit BeginTransaction():
             //See: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency            
             await ResilientTransaction.New(_catalogContext).ExecuteAsync(async () =>

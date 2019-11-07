@@ -18,7 +18,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
         // Address is a Value Object pattern example persisted as EF Core 2.0 owned entity
         public Address Address { get; private set; }
 
-        public int? GetBuyerId { get { return this._buyerId; } }
+        public int? GetBuyerId => _buyerId;
         private int? _buyerId;
 
         public OrderStatus OrderStatus { get; private set; }

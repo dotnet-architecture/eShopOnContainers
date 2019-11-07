@@ -28,6 +28,8 @@
         {
             using (LogContext.PushProperty("IntegrationEventContext", $"{@event.Id}-{Program.AppName}"))
             {
+                _logger.LogInformation("----- Handling integration event: {IntegrationEventId} at {AppName} - ({@IntegrationEvent})", @event.Id, Program.AppName, @event);
+
                 var userMarketingData = await _marketingDataRepository.GetAsync(@event.UserId);
                 userMarketingData = userMarketingData ??
                     new MarketingData() { UserId = @event.UserId };

@@ -53,6 +53,8 @@
                 order.AddOrderItem(item.ProductId, item.ProductName, item.UnitPrice, item.Discount, item.PictureUrl, item.Units);
             }
 
+            _logger.LogInformation("----- Creating Order - Order: {@Order}", order);
+
             _orderRepository.Add(order);
 
             return await _orderRepository.UnitOfWork

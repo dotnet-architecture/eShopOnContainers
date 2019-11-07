@@ -37,6 +37,8 @@ namespace Ordering.API.Application.IntegrationEvents.EventHandling
         {
             using (LogContext.PushProperty("IntegrationEventContext", $"{@event.Id}-{Program.AppName}"))
             {
+                _logger.LogInformation("----- Handling integration event: {IntegrationEventId} at {AppName} - ({@IntegrationEvent})", @event.Id, Program.AppName, @event);
+
                 var command = new SetAwaitingValidationOrderStatusCommand(@event.OrderId);
 
                 _logger.LogInformation(

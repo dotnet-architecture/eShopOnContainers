@@ -24,6 +24,8 @@ namespace Ordering.API.Application.Behaviors
         {
             var typeName = request.GetGenericTypeName();
 
+            _logger.LogInformation("----- Validating command {CommandType}", typeName);
+
             var failures = _validators
                 .Select(v => v.Validate(request))
                 .SelectMany(result => result.Errors)

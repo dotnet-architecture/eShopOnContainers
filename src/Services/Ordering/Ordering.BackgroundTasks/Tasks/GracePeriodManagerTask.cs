@@ -55,6 +55,8 @@ namespace Ordering.BackgroundTasks.Tasks
             {
                 var confirmGracePeriodEvent = new GracePeriodConfirmedIntegrationEvent(orderId);
 
+                _logger.LogInformation("----- Publishing integration event: {IntegrationEventId} from {AppName} - ({@IntegrationEvent})", confirmGracePeriodEvent.Id, Program.AppName, confirmGracePeriodEvent);
+
                 _eventBus.Publish(confirmGracePeriodEvent);
             }
         }

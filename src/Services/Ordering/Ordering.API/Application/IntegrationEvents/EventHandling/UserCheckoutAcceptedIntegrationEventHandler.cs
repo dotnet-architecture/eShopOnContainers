@@ -35,9 +35,11 @@ namespace Ordering.API.Application.IntegrationEvents.EventHandling
         /// </param>
         /// <returns></returns>
         public async Task Handle(UserCheckoutAcceptedIntegrationEvent @event)
-        {               
+        {
             using (LogContext.PushProperty("IntegrationEventContext", $"{@event.Id}-{Program.AppName}"))
             {
+                _logger.LogInformation("----- Handling integration event: {IntegrationEventId} at {AppName} - ({@IntegrationEvent})", @event.Id, Program.AppName, @event);
+
                 var result = false;
 
                 if (@event.RequestId != Guid.Empty)
@@ -60,7 +62,11 @@ namespace Ordering.API.Application.IntegrationEvents.EventHandling
 
                         result = await _mediator.Send(requestCreateOrder);
 
-                        if (!result)
+                        if (result)
+                        {
+                            _logger.LogInformation("----- CreateOrderCommand suceeded - RequestId: {RequestId}", @event.RequestId);
+                        }
+                        else
                         {
                             _logger.LogWarning("CreateOrderCommand failed - RequestId: {RequestId}", @event.RequestId);
                         }
