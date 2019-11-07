@@ -10,6 +10,7 @@ image:
 service:
   type: ClusterIP
   port: 80
+  grpcPort: 81  
 
 resources: {}
 
@@ -41,6 +42,10 @@ env:
   values:
     - name: OrchestratorType
       value: 'K8S'
+    - name: PORT
+      value: "80"
+    - name: GRPC_PORT
+      value: "81"      
 probes:
   liveness:
     path: /liveness

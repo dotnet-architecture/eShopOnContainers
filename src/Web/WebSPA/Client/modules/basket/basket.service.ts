@@ -1,17 +1,17 @@
-import { Injectable }               from '@angular/core';
-import { Response }                 from '@angular/http';
-import { Router }                   from '@angular/router';
+import { Injectable } from '@angular/core';
+import { Response } from '@angular/http';
+import { Router } from '@angular/router';
 
-import { DataService }              from '../shared/services/data.service';
-import { SecurityService }          from '../shared/services/security.service';
+import { DataService } from '../shared/services/data.service';
+import { SecurityService } from '../shared/services/security.service';
 import { IBasket } from '../shared/models/basket.model';
 import { IOrder } from '../shared/models/order.model';
 import { IBasketCheckout } from '../shared/models/basketCheckout.model';
-import { BasketWrapperService }     from '../shared/services/basket.wrapper.service';
-import { ConfigurationService }     from '../shared/services/configuration.service';
-import { StorageService }           from '../shared/services/storage.service';
+import { BasketWrapperService } from '../shared/services/basket.wrapper.service';
+import { ConfigurationService } from '../shared/services/configuration.service';
+import { StorageService } from '../shared/services/storage.service';
 
-import { Observable, Observer, Subject }      from 'rxjs';
+import { Observable, Observer, Subject } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
 @Injectable()
@@ -26,16 +26,16 @@ export class BasketService {
     //observable that is fired when the basket is dropped
     private basketDropedSource = new Subject();
     basketDroped$ = this.basketDropedSource.asObservable();
-    
+
     constructor(private service: DataService, private authService: SecurityService, private basketEvents: BasketWrapperService, private router: Router, private configurationService: ConfigurationService, private storageService: StorageService) {
         this.basket.items = [];
-        
+
         // Init:
         if (this.authService.IsAuthorized) {
             if (this.authService.UserData) {
                 this.basket.buyerId = this.authService.UserData.sub;
                 if (this.configurationService.isReady) {
-                    this.basketUrl = this.configurationService.serverSettings.purchaseUrl; 
+                    this.basketUrl = this.configurationService.serverSettings.purchaseUrl;
                     this.purchaseUrl = this.configurationService.serverSettings.purchaseUrl;
                     this.loadData();
                 }
@@ -53,7 +53,7 @@ export class BasketService {
             this.dropBasket();
         });
     }
-    
+
     addItemToBasket(item): Observable<boolean> {
         this.basket.items.push(item);
         return this.setBasket(this.basket);
@@ -68,7 +68,7 @@ export class BasketService {
     }
 
     setBasketCheckout(basketCheckout): Observable<boolean> {
-        let url = this.basketUrl + '/api/v1/b/basket/checkout';
+        let url = this.basketUrl + '/b/api/v1/basket/checkout';
         return this.service.postWithId(url, basketCheckout).pipe(map((response: any) => {
             this.basketEvents.orderCreated();
             return true;
@@ -76,14 +76,14 @@ export class BasketService {
     }
 
     getBasket(): Observable<IBasket> {
-        let url = this.basketUrl + '/api/v1/b/basket/' + this.basket.buyerId;
+        let url = this.basketUrl + '/b/api/v1/basket/' + this.basket.buyerId;
         return this.service.get(url).pipe(map((response: any) => {
             if (response.status === 204) {
                 return null;
             }
             return response;
         }));
-    }    
+    }
 
     mapBasketInfoCheckout(order: IOrder): IBasketCheckout {
         let basketCheckout = <IBasketCheckout>{};
@@ -102,10 +102,10 @@ export class BasketService {
         basketCheckout.expiration = order.expiration;
 
         return basketCheckout;
-    }    
+    }
 
     dropBasket() {
-        this.basket.items = [];        
+        this.basket.items = [];
         this.basketDropedSource.next();
     }
 

@@ -3,7 +3,6 @@
 {{- $webshoppingapigw := include "url-of" (list .Values.app.ingress.entries.webshoppingapigw .) -}}
 {{- $mvc := include "url-of" (list .Values.app.ingress.entries.mvc .) -}}
 
-
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -20,9 +19,7 @@ data:
   webmvc__keystore: {{ .Values.inf.redis.keystore.constr }}
   internalurls__apigwws: http://{{ .Values.app.svc.webshoppingapigw }}
   internalurls__apigwwm: http://{{ .Values.app.svc.webmarketingapigw }}
-  internalurls__apigwws__hc: http://{{ .Values.app.svc.webshoppingapigw }}/hc
   internalurls__identity__hc: http://{{ .Values.app.svc.identity }}/hc
-  internalurls__apigwwm__hc: http://{{ .Values.app.svc.webmarketingapigw }}/hc
   urls__apigwws: http://{{ $webshoppingapigw }}
   urls__mvc: http://{{ $mvc }}
   urls__IdentityUrl: http://{{ $identity }}

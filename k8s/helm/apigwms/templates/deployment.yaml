@@ -1,6 +1,6 @@
 {{- $name := include "apigwms.fullname" . -}}
 {{- $cfgname := printf "%s-%s" "cfg" $name -}}
-{{- $ocelotcfgname := printf "%s-%s" "ocelot" $name -}}
+{{- $envoycfgname := printf "%s-%s" "envoy" $name -}}
 apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
@@ -22,6 +22,10 @@ spec:
       labels:
         app: {{ template "apigwms.name" . }}
         release: {{ .Release.Name }}
+      {{ if .Values.inf.mesh.enabled -}}
+      annotations:
+        linkerd.io/inject: enabled
+      {{- end }}           
     spec:
       {{ if .Values.inf.registry -}}
       imagePullSecrets:
@@ -30,10 +34,10 @@ spec:
       volumes:
       - name: config
         configMap:
-          name: {{ $ocelotcfgname }}
+          name: {{ $envoycfgname }}
           items:
-          - key: configuration-mobile-shopping.json
-            path: configuration.json      
+          - key: envoy.yaml
+            path: envoy.yaml
       containers:
         - name: {{ .Chart.Name }}
           {{ if .Values.probes -}}
@@ -58,10 +62,10 @@ spec:
           {{- end -}}
           {{- end }}
           image: "{{ template "fqdn-image" . }}:{{ .Values.image.tag }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          imagePullPolicy: IfNotPresent
           volumeMounts:
           - name: config
-            mountPath: {{ .Values.ocelot.configPath }}         
+            mountPath: {{ .Values.envoy.configPath }}         
           env:
             - name: PATH_BASE
               value: {{ include "pathBase" . }}
@@ -86,6 +90,9 @@ spec:
             - name: http
               containerPort: 80
               protocol: TCP
+            - name: admin
+              containerPort: 8001
+              protocol: TCP              
           resources:
 {{ toYaml .Values.resources | indent 12 }}
     {{- with .Values.nodeSelector }}

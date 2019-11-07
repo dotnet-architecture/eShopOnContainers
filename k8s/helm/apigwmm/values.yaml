@@ -3,17 +3,19 @@ clusterName: eshop-aks
 pathBase: /mobilemarketingapigw
 
 image:
-  repository: eshop/ocelotapigw
-  tag: latest
-  pullPolicy: IfNotPresent
+  repository: envoyproxy/envoy
+  tag: v1.11.1
 
 service:
   type: ClusterIP
   port: 80
+  adminPort: 8001  
 
 ingress:
   enabled: true
-  annotations: {}
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: "/"
+    ingress.kubernetes.io/rewrite-target: "/"
   tls: []
 
 resources: {}
@@ -25,42 +27,19 @@ tolerations: []
 
 affinity: {}
 
-# env defines the environment variables that will be declared in the pod
-env:
-  urls:
-  # configmap declares variables which value is taken from the config map defined in template configmap.yaml (name is name of var and key the key in configmap).
-  configmap:
-    - name: IdentityUrl
-      key: internalurls__identity
-    - name: CatalogUrlHC
-      key: internalurls__catalog__hc
-    - name: BasketUrlHC
-      key: internalurls__basket__hc
-    - name: IdentityUrlHC
-      key: internalurls__identity__hc
-    - name: OrderingUrlHC
-      key: internalurls__ordering__hc
-    - name: MarketingUrlHC
-      key: internalurls__marketing__hc
-    - name: PaymentUrlHC
-      key: internalurls__payment__hc
-    - name: LocationUrlHC
-      key: internalurls__location__hc
-      # values define environment variables with a fixed value (no configmap involved) (name is name of var, and value is its value)
-  values:
-    - name: ASPNETCORE_ENVIRONMENT
-      value: Development
+env: {}
+
+envoy:
+  configPath: /etc/envoy
+
 probes:
   liveness:
-    path: /liveness
-    initialDelaySeconds: 10
+    path: /ready
+    initialDelaySeconds: 5
     periodSeconds: 15
-    port: 80
+    port: 8001
   readiness:
-    path: /hc
-    timeoutSeconds: 5
-    initialDelaySeconds: 90
+    path: /ready
+    initialDelaySeconds: 5
     periodSeconds: 60
-    port: 80
-ocelot:
-  configPath: /app/configuration
+    port: 8001

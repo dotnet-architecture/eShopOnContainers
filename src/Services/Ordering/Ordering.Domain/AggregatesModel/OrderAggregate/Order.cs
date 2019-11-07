@@ -18,7 +18,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
         // Address is a Value Object pattern example persisted as EF Core 2.0 owned entity
         public Address Address { get; private set; }
 
-        public int? GetBuyerId => _buyerId;
+        public int? GetBuyerId { get { return this._buyerId; } }
         private int? _buyerId;
 
         public OrderStatus OrderStatus { get; private set; }
@@ -26,7 +26,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
 
         private string _description;
 
-       
+
         // Draft orders have this set to true. Currently we don't check anywhere the draft status of an Order, but we could do it if needed
         private bool _isDraft;
 
@@ -46,7 +46,8 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
             return order;
         }
 
-        protected Order() {
+        protected Order()
+        {
             _orderItems = new List<OrderItem>();
             _isDraft = false;
         }

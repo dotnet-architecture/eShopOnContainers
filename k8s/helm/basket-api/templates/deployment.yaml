@@ -21,6 +21,10 @@ spec:
       labels:
         app: {{ template "basket-api.name" . }}
         release: {{ .Release.Name }}
+      {{ if .Values.inf.mesh.enabled -}}
+      annotations:
+        linkerd.io/inject: enabled
+      {{- end }}        
     spec:
       {{ if .Values.inf.registry -}}
       imagePullSecrets:
@@ -75,6 +79,9 @@ spec:
             - name: http
               containerPort: 80
               protocol: TCP
+            - name: grpc
+              containerPort: 81
+              protocol: TCP                
           resources:
 {{ toYaml .Values.resources | indent 12 }}
     {{- with .Values.nodeSelector }}

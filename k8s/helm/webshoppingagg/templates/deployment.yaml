@@ -5,11 +5,10 @@ kind: Deployment
 metadata:
   name: {{ template "webshoppingagg.fullname" . }}
   labels:
-    ufo: {{ $cfgname}}
     app: {{ template "webshoppingagg.name" . }}
     chart: {{ template "webshoppingagg.chart" . }}
     release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+    heritage: {{ .Release.Service }}    
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
@@ -21,6 +20,10 @@ spec:
       labels:
         app: {{ template "webshoppingagg.name" . }}
         release: {{ .Release.Name }}
+      {{ if .Values.inf.mesh.enabled -}}
+      annotations:
+        linkerd.io/inject: enabled
+      {{- end }}             
     spec:
       {{ if .Values.inf.registry -}}
       imagePullSecrets:
