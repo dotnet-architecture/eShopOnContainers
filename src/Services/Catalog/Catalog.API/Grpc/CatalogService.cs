@@ -29,7 +29,7 @@ namespace Catalog.API.Grpc
 
         public override async Task<CatalogItemResponse> GetItemById(CatalogItemRequest request, ServerCallContext context)
         {
-            _logger.LogInformation($"Begin grpc call CatalogService.GetItemById for product id {request.Id}");
+            _logger.LogInformation("Begin grpc call CatalogService.GetItemById for product id {Id}", request.Id);
             if (request.Id <= 0)
             {
                 context.Status = new Status(StatusCode.FailedPrecondition, $"Id must be > 0 (received {request.Id})");

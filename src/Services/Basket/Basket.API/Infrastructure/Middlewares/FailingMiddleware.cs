@@ -30,7 +30,7 @@ namespace Basket.API.Infrastructure.Middlewares
 
             if (MustFail(context))
             {
-                _logger.LogInformation($"Response for path {path} will fail.");
+                _logger.LogInformation("Response for path {Path} will fail.", path);
                 context.Response.StatusCode = (int)System.Net.HttpStatusCode.InternalServerError;
                 context.Response.ContentType = "text/plain";
                 await context.Response.WriteAsync("Failed due to FailingMiddleware enabled.");

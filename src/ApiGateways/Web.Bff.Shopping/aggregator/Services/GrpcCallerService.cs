@@ -32,7 +32,7 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Services
             }
             catch (RpcException e)
             {
-                Log.Error($"Error calling via grpc: {e.Status} - {e.Message}");
+                Log.Error("Error calling via grpc: {Status} - {Message}", e.Status, e.Message);
                 return default;
             }
             finally
@@ -66,7 +66,7 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Services
             }
             catch (RpcException e)
             {
-                Log.Error($"Error calling via grpc: {e.Status} - {e.Message}");
+                Log.Error("Error calling via grpc: {Status} - {Message}", e.Status, e.Message);
             }
             finally
             {

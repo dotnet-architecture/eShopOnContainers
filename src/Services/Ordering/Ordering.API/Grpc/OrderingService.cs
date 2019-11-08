@@ -26,7 +26,7 @@ namespace GrpcOrdering
 
         public override async Task<OrderDraftDTO> CreateOrderDraftFromBasketData(CreateOrderDraftCommand createOrderDraftCommand, ServerCallContext context)
         {
-            _logger.LogInformation($"Begin grpc call from method {context.Method} for ordering get order draft {createOrderDraftCommand}");
+            _logger.LogInformation("Begin grpc call from method {Method} for ordering get order draft {CreateOrderDraftCommand}", context.Method, createOrderDraftCommand);
             _logger.LogTrace(
                 "----- Sending command: {CommandName} - {IdProperty}: {CommandId} ({@Command})",
                 createOrderDraftCommand.GetGenericTypeName(),

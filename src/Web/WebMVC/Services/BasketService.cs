@@ -32,9 +32,9 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
         public async Task<Basket> GetBasket(ApplicationUser user)
         {
             var uri = API.Basket.GetBasket(_basketByPassUrl, user.Id);
-            _logger.LogDebug($"[GetBasket] -> Calling {uri} to get the basket");
+            _logger.LogDebug("[GetBasket] -> Calling {Uri} to get the basket", uri);
             var response = await _apiClient.GetAsync(uri);  
-            _logger.LogDebug($"[GetBasket] -> response code {response.StatusCode}");
+            _logger.LogDebug("[GetBasket] -> response code {StatusCode}", response.StatusCode);
             var responseString = await response.Content.ReadAsStringAsync();
             return string.IsNullOrEmpty(responseString) ?
                 new Basket() { BuyerId = user.Id } :
