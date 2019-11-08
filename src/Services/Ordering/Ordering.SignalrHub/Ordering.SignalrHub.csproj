@@ -20,7 +20,6 @@
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.8.0-beta3" />
     <PackageReference Include="Microsoft.ApplicationInsights.DependencyCollector" Version="2.11.0-beta2" />
     <PackageReference Include="Microsoft.ApplicationInsights.Kubernetes" Version="1.1.1" />
-    <PackageReference Include="Microsoft.AspNetCore.App" Version="$(Microsoft_AspNetCore_App)" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.0.0-rc1.19457.4" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="$(Microsoft_AspNetCore_Authentication)" />
     <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="3.0.0-rc1.19457.4" />
