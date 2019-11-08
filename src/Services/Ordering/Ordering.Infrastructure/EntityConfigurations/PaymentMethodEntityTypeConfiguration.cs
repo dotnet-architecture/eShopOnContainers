@@ -18,7 +18,7 @@ namespace Ordering.Infrastructure.EntityConfigurations
             paymentConfiguration.Ignore(b => b.DomainEvents);
 
             paymentConfiguration.Property(b => b.Id)
-                .ForSqlServerUseSequenceHiLo("paymentseq", OrderingContext.DEFAULT_SCHEMA);
+                .UseHiLo("paymentseq", OrderingContext.DEFAULT_SCHEMA);
 
             paymentConfiguration.Property<int>("BuyerId")
                 .IsRequired();

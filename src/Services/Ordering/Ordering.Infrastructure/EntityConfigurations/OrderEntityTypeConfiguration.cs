@@ -18,7 +18,7 @@ namespace Ordering.Infrastructure.EntityConfigurations
             orderConfiguration.Ignore(b => b.DomainEvents);
 
             orderConfiguration.Property(o => o.Id)
-                .ForSqlServerUseSequenceHiLo("orderseq", OrderingContext.DEFAULT_SCHEMA);
+                .UseHiLo("orderseq", OrderingContext.DEFAULT_SCHEMA);
 
             //Address value object persisted as owned entity type supported since EF Core 2.0
             orderConfiguration

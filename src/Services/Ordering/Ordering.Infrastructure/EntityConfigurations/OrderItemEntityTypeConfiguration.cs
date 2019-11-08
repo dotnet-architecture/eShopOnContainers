@@ -17,7 +17,7 @@ namespace Ordering.Infrastructure.EntityConfigurations
             orderItemConfiguration.Ignore(b => b.DomainEvents);
 
             orderItemConfiguration.Property(o => o.Id)
-                .ForSqlServerUseSequenceHiLo("orderitemseq");
+                .UseHiLo("orderitemseq");
 
             orderItemConfiguration.Property<int>("OrderId")
                 .IsRequired();
