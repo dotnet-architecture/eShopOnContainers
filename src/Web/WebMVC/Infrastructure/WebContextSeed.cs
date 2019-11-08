@@ -13,7 +13,7 @@ namespace WebMVC.Infrastructure
 {
     public class WebContextSeed
     {
-        public static void Seed(IApplicationBuilder applicationBuilder, IHostingEnvironment env)
+        public static void Seed(IApplicationBuilder applicationBuilder, IWebHostEnvironment env)
         {
             var log = Serilog.Log.Logger;
 

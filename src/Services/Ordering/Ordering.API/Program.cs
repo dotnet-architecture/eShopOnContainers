@@ -34,7 +34,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API
                 Log.Information("Applying migrations ({ApplicationContext})...", AppName);
                 host.MigrateDbContext<OrderingContext>((context, services) =>
                 {
-                    var env = services.GetService<IHostingEnvironment>();
+                    var env = services.GetService<IWebHostEnvironment>();
                     var settings = services.GetService<IOptions<OrderingSettings>>();
                     var logger = services.GetService<ILogger<OrderingContextSeed>>();
 

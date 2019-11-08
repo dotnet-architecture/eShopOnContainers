@@ -20,7 +20,7 @@
 
     public class OrderingContextSeed
     {
-        public  async Task SeedAsync(OrderingContext context, IHostingEnvironment env,IOptions<OrderingSettings> settings, ILogger<OrderingContextSeed> logger)
+        public  async Task SeedAsync(OrderingContext context, IWebHostEnvironment env,IOptions<OrderingSettings> settings, ILogger<OrderingContextSeed> logger)
         {
             var policy = CreatePolicy(logger, nameof(OrderingContextSeed));
 
