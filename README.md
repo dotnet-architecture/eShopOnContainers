@@ -22,6 +22,7 @@ Dev branch contains the latest "stable" code, and their images are tagged with `
  [![Web Status](https://msftdevtools.visualstudio.com/eShopOnContainers/_apis/build/status/microservices/webstatus?branchName=dev)](https://msftdevtools.visualstudio.com/eShopOnContainers/_build/latest?definitionId=211&branchName=dev) | [![Webhooks API](https://msftdevtools.visualstudio.com/eShopOnContainers/_apis/build/status/microservices/webhooks?branchName=dev)](https://msftdevtools.visualstudio.com/eShopOnContainers/_build/latest?definitionId=207&branchName=dev) | [![Webhooks demo client](https://msftdevtools.visualstudio.com/eShopOnContainers/_apis/build/status/microservices/webhooks-client?branchName=dev)](https://msftdevtools.visualstudio.com/eShopOnContainers/_build/latest?definitionId=208&branchName=dev) |
 
 ## IMPORTANT NOTES!
+
 **You can use either the latest version of Visual Studio or simply Docker CLI and .NET CLI for Windows, Mac and Linux**. 
 
 **Note for Pull Requests (PRs)**: We accept pull request from the community. When doing it, please do it onto the **DEV branch** which is the consolidated work-in-progress branch. Do not request it onto Master branch, if possible.
@@ -29,7 +30,14 @@ Dev branch contains the latest "stable" code, and their images are tagged with `
 **NEWS / ANNOUNCEMENTS**
 Do you want to be up-to-date on .NET Architecture guidance and reference apps like eShopOnContainers? --> Subscribe by "WATCHING" this new GitHub repo: https://github.com/dotnet-architecture/News 
 
+## Update to .NET Core 3
+
+> There's currently an update to .NET Core 3 going on in the branch [features/migration-dotnet3](https://github.com/dotnet-architecture/eShopOnContainers/tree/features/migration-dotnet3).
+>
+> You can monitor this branch, but it's being changed frequently, community contributions will be accepted once it's officially released.
+
 ## Updated for .NET Core 2.2 "wave" of technologies
+
 eShopOnContainers is updated to .NET Core 2.x (currently updated to 2.2) "wave" of technologies. Not just compilation but also new recommended code in EF Core, ASP.NET Core, and other new related versions.
 
 The **dockerfiles** in the solution have also been updated and now support [**Docker Multi-Stage**](https://blogs.msdn.microsoft.com/stevelasker/2017/09/11/net-and-multistage-dockerfiles/) since mid-December 2017.
@@ -37,6 +45,7 @@ The **dockerfiles** in the solution have also been updated and now support [**Do
 >**PLEASE** Read our [branch guide](./branch-guide.md) to know about our branching policy
 
 > ### DISCLAIMER
+>
 > **IMPORTANT:** The current state of this sample application is **BETA**, because we are constantly evolving towards newly released technologies. Therefore, many areas could be improved and change significantly while refactoring the current code and implementing new features. Feedback with improvements and pull requests from the community will be highly appreciated and accepted.
 >
 > This reference application proposes a simplified microservice oriented architecture implementation to introduce technologies like .NET Core with Docker containers through a comprehensive application. The chosen domain is eShop/eCommerce but simply because it is a well-known domain by most people/developers.
