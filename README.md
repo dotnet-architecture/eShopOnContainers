@@ -21,6 +21,30 @@ Dev branch contains the latest "stable" code, and their images are tagged with `
 | ------------- | ------------- | ------------- |
  [![Web Status](https://msftdevtools.visualstudio.com/eShopOnContainers/_apis/build/status/microservices/webstatus?branchName=dev)](https://msftdevtools.visualstudio.com/eShopOnContainers/_build/latest?definitionId=211&branchName=dev) | [![Webhooks API](https://msftdevtools.visualstudio.com/eShopOnContainers/_apis/build/status/microservices/webhooks?branchName=dev)](https://msftdevtools.visualstudio.com/eShopOnContainers/_build/latest?definitionId=207&branchName=dev) | [![Webhooks demo client](https://msftdevtools.visualstudio.com/eShopOnContainers/_apis/build/status/microservices/webhooks-client?branchName=dev)](https://msftdevtools.visualstudio.com/eShopOnContainers/_build/latest?definitionId=208&branchName=dev) |
 
+## Getting Started
+
+eShopOnContainers is provided in "two flavours":
+
+* Basic scenario: Can be run locally using docker compose, and also deployed to a local Kubernetes cluster
+* Production scenario: Can only be deployed on a Kubernetes cluster (local or in the cloud like AKS), and enable production features like the use of a Service Mesh.
+
+### Basic scenario
+
+You can run eShop locally:
+
+* [Using Visual Studio](https://github.com/dotnet-architecture/eShopOnContainers/wiki/Windows-setup)
+* Using CLI or Visual Studio Code
+* Using docker compose
+* Using local Kubernetes
+
+### Advanced scenario
+
+The Advanced scenario can be run only in a Kubernetes cluster. Currently this scenario is the same as basic scenario with the following differences:
+
+* Use of a Service Mesh for Resiliency
+
+In the future more features will be implemented in the advanced scenario.
+
 ## IMPORTANT NOTES!
 
 **You can use either the latest version of Visual Studio or simply Docker CLI and .NET CLI for Windows, Mac and Linux**. 
