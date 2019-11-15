@@ -151,7 +151,7 @@ namespace Ordering.SignalrHub
                 {
                     Predicate = r => r.Name.Contains("self")
                 });
-                endpoints.MapHub<NotificationsHub>("/notificationhub", options => options.Transports = Microsoft.AspNetCore.Http.Connections.HttpTransports.All);
+                endpoints.MapHub<NotificationsHub>("/hub/notificationhub", options => options.Transports = Microsoft.AspNetCore.Http.Connections.HttpTransports.All);
             });
 
             ConfigureEventBus(app);
