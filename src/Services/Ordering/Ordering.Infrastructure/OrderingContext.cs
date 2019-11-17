@@ -29,7 +29,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
 
         private OrderingContext(DbContextOptions<OrderingContext> options) : base(options) { }
 
-        public IDbContextTransaction GetCurrentTransaction => _currentTransaction;
+        public IDbContextTransaction GetCurrentTransaction() => _currentTransaction;
 
         public bool HasActiveTransaction => _currentTransaction != null;
 
@@ -64,7 +64,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
 
             // After executing this line all the changes (from the Command Handler and Domain Event Handlers) 
             // performed through the DbContext will be committed
-            var result = await base.SaveChangesAsync();
+            var result = await base.SaveChangesAsync(cancellationToken);
 
             return true;
         }

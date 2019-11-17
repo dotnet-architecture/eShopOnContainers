@@ -5,14 +5,11 @@
 .vs
 .vscode
 docker-compose*.yml
-docker-compose.dcproj
-*.sln
 *.md
 hosts
 LICENSE
 *.testsettings
 vsts-docs
-test
 ServiceFabric
 readme
 k8s

@@ -1,4 +1,4 @@
-# This heml values file defines all infrastructure used by eShopOnContainers.
+# This helm values file defines all infrastructure used by eShopOnContainers.
 # It is used on all charts, so ** MUST BE INCLUDED ** on every deployment
 
 inf:
@@ -15,11 +15,11 @@ inf:
     identity:
       db: IdentityDb        # Ordering API SQL db name
     marketing:
-      db: MarketingDb        # Marketing API SQL db name
+      db: MarketingDb       # Marketing API SQL db name
     webhooks:
-      db: WebhooksDb            # Webhooks DB
+      db: WebhooksDb        # Webhooks DB
   mongo:
-#    host: my-nosql-data     # Uncomment to use specify custom mongo host. By default nosql-data is used
+#    host: my-nosql-data    # Uncomment to use specify custom mongo host. By default nosql-data is used
     locations:
       database: LocationsDb
     marketing:

@@ -27,7 +27,7 @@ namespace Ordering.API.Application.Commands
         public async Task<bool> Handle(SetPaidOrderStatusCommand command, CancellationToken cancellationToken)
         {
             // Simulate a work time for validating the payment
-            await Task.Delay(10000);
+            await Task.Delay(10000, cancellationToken);
 
             var orderToUpdate = await _orderRepository.GetAsync(command.OrderNumber);
             if(orderToUpdate == null)
@@ -36,7 +36,7 @@ namespace Ordering.API.Application.Commands
             }
 
             orderToUpdate.SetPaidStatus();
-            return await _orderRepository.UnitOfWork.SaveEntitiesAsync();
+            return await _orderRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
         }
     }
 

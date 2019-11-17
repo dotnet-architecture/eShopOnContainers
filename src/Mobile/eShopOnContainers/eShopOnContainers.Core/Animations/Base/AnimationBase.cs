@@ -9,10 +9,8 @@ namespace eShopOnContainers.Core.Animations.Base
     {
         private bool _isRunning = false;
 
-        public static readonly BindableProperty TargetProperty =
-        BindableProperty.Create("Target", typeof(VisualElement), typeof(AnimationBase), null,
-        propertyChanged: (bindable, oldValue, newValue) =>
-        ((AnimationBase)bindable).Target = (VisualElement)newValue);
+        public static readonly BindableProperty TargetProperty = BindableProperty.Create("Target", typeof(VisualElement), typeof(AnimationBase), null,
+            propertyChanged: (bindable, oldValue, newValue) => ((AnimationBase)bindable).Target = (VisualElement)newValue);
 
         public VisualElement Target
         {
@@ -20,10 +18,8 @@ namespace eShopOnContainers.Core.Animations.Base
             set { SetValue(TargetProperty, value); }
         }
 
-        public static readonly BindableProperty DurationProperty =
-            BindableProperty.Create("Duration", typeof(string), typeof(AnimationBase), "1000",
-                propertyChanged: (bindable, oldValue, newValue) =>
-                ((AnimationBase)bindable).Duration = (string)newValue);
+        public static readonly BindableProperty DurationProperty = BindableProperty.Create("Duration", typeof(string), typeof(AnimationBase), "1000",
+            propertyChanged: (bindable, oldValue, newValue) => ((AnimationBase)bindable).Duration = (string)newValue);
 
         public string Duration
         {
@@ -31,10 +27,8 @@ namespace eShopOnContainers.Core.Animations.Base
             set { SetValue(DurationProperty, value); }
         }
 
-        public static readonly BindableProperty EasingProperty =
-            BindableProperty.Create("Easing", typeof(EasingType), typeof(AnimationBase), EasingType.Linear,
-            propertyChanged: (bindable, oldValue, newValue) =>
-            ((AnimationBase)bindable).Easing = (EasingType)newValue);
+        public static readonly BindableProperty EasingProperty = BindableProperty.Create("Easing", typeof(EasingType), typeof(AnimationBase), EasingType.Linear,
+            propertyChanged: (bindable, oldValue, newValue) => ((AnimationBase)bindable).Easing = (EasingType)newValue);
 
         public EasingType Easing
         {
@@ -42,10 +36,8 @@ namespace eShopOnContainers.Core.Animations.Base
             set { SetValue(EasingProperty, value); }
         }
 
-        public static readonly BindableProperty RepeatForeverProperty =
-          BindableProperty.Create("RepeatForever", typeof(bool), typeof(AnimationBase), false,
-              propertyChanged: (bindable, oldValue, newValue) =>
-              ((AnimationBase)bindable).RepeatForever = (bool)newValue);
+        public static readonly BindableProperty RepeatForeverProperty = BindableProperty.Create("RepeatForever", typeof(bool), typeof(AnimationBase), false,
+            propertyChanged: (bindable, oldValue, newValue) => ((AnimationBase)bindable).RepeatForever = (bool)newValue);
 
         public bool RepeatForever
         {
@@ -53,10 +45,8 @@ namespace eShopOnContainers.Core.Animations.Base
             set { SetValue(RepeatForeverProperty, value); }
         }
 
-        public static readonly BindableProperty DelayProperty =
-           BindableProperty.Create("Delay", typeof(int), typeof(AnimationBase), 0,
-               propertyChanged: (bindable, oldValue, newValue) =>
-               ((AnimationBase)bindable).Delay = (int)newValue);
+        public static readonly BindableProperty DelayProperty = BindableProperty.Create("Delay", typeof(int), typeof(AnimationBase), 0,
+            propertyChanged: (bindable, oldValue, newValue) => ((AnimationBase)bindable).Delay = (int)newValue);
 
         public int Delay
         {
@@ -70,7 +60,6 @@ namespace eShopOnContainers.Core.Animations.Base
         {
             try
             {
-
                 if (!_isRunning)
                 {
                     _isRunning = true;
@@ -93,6 +82,7 @@ namespace eShopOnContainers.Core.Animations.Base
 
         public async Task Reset()
         {
+            _isRunning = false;
             await ResetAnimation();
         }
 
