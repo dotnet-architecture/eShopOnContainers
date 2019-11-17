@@ -62,6 +62,10 @@ services:
     ports:
       - "5115:80"
 
+  tenantacustomisation:
+    ports:
+      - "5116:80"
+
   basket.api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development

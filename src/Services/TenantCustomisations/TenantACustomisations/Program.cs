@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.eShopOnContainers.Services.TenantACustomisations;
 using Microsoft.Extensions.Configuration;
 using Serilog;
 using System;

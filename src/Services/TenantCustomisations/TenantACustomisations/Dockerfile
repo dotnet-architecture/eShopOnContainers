@@ -48,7 +48,7 @@ COPY test/ServicesTests/LoadTest/LoadTest.csproj test/ServicesTests/LoadTest/
 RUN dotnet restore eShopOnContainers-ServicesAndWebApps.sln
 
 COPY . .
-WORKDIR /src/src/Services/TenantCustomisations/TenantACustomisations
+WORKDIR /src/src/Services/TenantCustomisations/TenantACustomisations 
 RUN dotnet publish --no-restore -c Release -o /app
 
 FROM build AS publish
