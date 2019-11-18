@@ -1,17 +1,17 @@
 version: '3.4'
 
 services:
-  rabbitmq-test:
-    image: rabbitmq:3-management-alpine
-
-  basket-data-test:
-    image: redis:alpine
-
   sql-data-test:
     image: microsoft/mssql-server-linux:2017-latest
 
   nosql-data-test:
     image: mongo
+
+  basket-data-test:
+    image: redis:alpine
+
+  rabbitmq-test:
+    image: rabbitmq:3-management-alpine
 
   identity-api-test:
     image: ${REGISTRY:-eshop}/identity-api-test:${TAG:-latest}
@@ -31,7 +31,7 @@ services:
       - basket-data-test
       - identity-api-test
       - rabbitmq-test
-    volumes: 
+    volumes:
       - ${BUILD_ARTIFACTSTAGINGDIRECTORY:-./tests-results/}:/tests
 
   basket-api-unit-test:
@@ -44,7 +44,7 @@ services:
       - basket-data-test
       - identity-api-test
       - rabbitmq-test
-    volumes: 
+    volumes:
       - ${BUILD_ARTIFACTSTAGINGDIRECTORY:-./tests-results/}:/tests
 
   catalog-api-test:
@@ -56,7 +56,7 @@ services:
     depends_on:
       - sql-data-test
       - rabbitmq-test
-    volumes: 
+    volumes:
       - ${BUILD_ARTIFACTSTAGINGDIRECTORY:-./tests-results/}:/tests
 
   catalog-api-unit-test:
@@ -68,7 +68,7 @@ services:
     depends_on:
       - sql-data-test
       - rabbitmq-test
-    volumes: 
+    volumes:
       - ${BUILD_ARTIFACTSTAGINGDIRECTORY:-./tests-results/}:/tests
 
   ordering-api-test:
@@ -80,7 +80,7 @@ services:
     depends_on:
       - sql-data-test
       - rabbitmq-test
-    volumes: 
+    volumes:
       - ${BUILD_ARTIFACTSTAGINGDIRECTORY:-./tests-results/}:/tests
 
   ordering-api-unit-test:
@@ -92,8 +92,8 @@ services:
     depends_on:
       - sql-data-test
       - rabbitmq-test
-    volumes: 
-      - ${BUILD_ARTIFACTSTAGINGDIRECTORY:-./tests-results/}:/tests  
+    volumes:
+      - ${BUILD_ARTIFACTSTAGINGDIRECTORY:-./tests-results/}:/tests
 
   marketing-api-test:
     image: ${REGISTRY:-eshop}/marketing-api-test:${TAG:-latest}
@@ -106,7 +106,7 @@ services:
       - nosql-data-test
       - identity-api-test
       - rabbitmq-test
-    volumes: 
+    volumes:
       - ${BUILD_ARTIFACTSTAGINGDIRECTORY:-./tests-results/}:/tests
 
   payment-api-test:
@@ -126,5 +126,5 @@ services:
     depends_on:
       - nosql-data-test
       - rabbitmq-test
-    volumes: 
+    volumes:
       - ${BUILD_ARTIFACTSTAGINGDIRECTORY:-./tests-results/}:/tests

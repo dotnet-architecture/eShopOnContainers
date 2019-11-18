@@ -2,7 +2,7 @@ param (
   [string]$solution = "eShopOnContainers-ServicesAndWebApps.sln"
 )
 
-$outfile = "DockerfileSolutionProjects.txt"
+$outfile = "DockerfileSolutionRestore.txt"
 
 Write-Output "COPY ""$solution"" ""$solution""" > $outfile 
 
