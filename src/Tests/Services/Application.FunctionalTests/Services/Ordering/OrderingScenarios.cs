@@ -104,7 +104,7 @@ namespace FunctionalTests.Services.Ordering
                 {
                     Id = "1",
                     ProductName = "ProductName",
-                    ProductId = "1",
+                    ProductId = 1,
                     UnitPrice = 10,
                     Quantity = 1
                 }

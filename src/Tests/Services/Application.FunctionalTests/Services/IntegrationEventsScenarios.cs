@@ -56,7 +56,7 @@ namespace FunctionalTests.Services
                 else
                 {
                     //THEN the product price changes in the catalog 
-                    Assert.Equal(newPrice, modifiedCatalogProducts.Data.Single(it => it.Id == int.Parse(itemToModify.ProductId)).Price);
+                    Assert.Equal(newPrice, modifiedCatalogProducts.Data.Single(it => it.Id == itemToModify.ProductId).Price);
 
                     // AND the products in the basket reflects the changed priced and the original price
                     Assert.Equal(newPrice, itemUpdated.UnitPrice);
@@ -65,7 +65,7 @@ namespace FunctionalTests.Services
             }
         }
 
-        private async Task<BasketItem> GetUpdatedBasketItem(decimal newPrice, string productId, string userId, HttpClient basketClient)
+        private async Task<BasketItem> GetUpdatedBasketItem(decimal newPrice, int productId, string userId, HttpClient basketClient)
         {
             bool continueLoop = true;
             var counter = 0;
@@ -102,7 +102,7 @@ namespace FunctionalTests.Services
 
         private string ChangePrice(BasketItem itemToModify, decimal newPrice, PaginatedItemsViewModel<CatalogItem> catalogProducts)
         {
-            var catalogProduct = catalogProducts.Data.Single(pr => pr.Id == int.Parse(itemToModify.ProductId));
+            var catalogProduct = catalogProducts.Data.Single(pr => pr.Id == itemToModify.ProductId);
             catalogProduct.Price = newPrice;
             return JsonConvert.SerializeObject(catalogProduct);
         }
@@ -117,7 +117,7 @@ namespace FunctionalTests.Services
                     Id = Guid.NewGuid().ToString(),
                     UnitPrice = item.Price,
                     PictureUrl = item.PictureUri,
-                    ProductId = item.Id.ToString(),
+                    ProductId = item.Id,
                     OldUnitPrice = 0,
                     ProductName = item.Name,
                     Quantity = 1
