@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>$(NetCoreTargetVersion)</TargetFramework>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
@@ -67,22 +67,22 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="$(Microsoft_NET_Test_Sdk)" />
-    <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="$(Microsoft_AspNetCore_TestHost)" />
-    <PackageReference Include="xunit" Version="$(xunit)" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="$(xunit_runner_visualstudio)">
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="3.0.0-preview8.19405.7" />
+    <PackageReference Include="xunit" Version="2.4.0" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\src\Services\Basket\Basket.API\Basket.API.csproj" />
-    <ProjectReference Include="..\..\..\src\Services\Catalog\Catalog.API\Catalog.API.csproj" />
-    <ProjectReference Include="..\..\..\src\Services\Location\Locations.API\Locations.API.csproj" />
-    <ProjectReference Include="..\..\..\src\Services\Marketing\Marketing.API\Marketing.API.csproj" />
-    <ProjectReference Include="..\..\..\src\Services\Ordering\Ordering.API\Ordering.API.csproj" />
-    <ProjectReference Include="..\..\..\src\Web\WebMVC\WebMVC.csproj" />
+    <ProjectReference Include="..\..\..\Services\Basket\Basket.API\Basket.API.csproj" />
+    <ProjectReference Include="..\..\..\Services\Catalog\Catalog.API\Catalog.API.csproj" />
+    <ProjectReference Include="..\..\..\Services\Location\Locations.API\Locations.API.csproj" />
+    <ProjectReference Include="..\..\..\Services\Marketing\Marketing.API\Marketing.API.csproj" />
+    <ProjectReference Include="..\..\..\Services\Ordering\Ordering.API\Ordering.API.csproj" />
+    <ProjectReference Include="..\..\..\Web\WebMVC\WebMVC.csproj" />
   </ItemGroup>
 
   <ItemGroup>
