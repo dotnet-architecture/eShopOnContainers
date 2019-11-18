@@ -47,7 +47,22 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
         [ProducesResponseType(typeof(CustomerBasket), (int)HttpStatusCode.OK)]
         public async Task<ActionResult<CustomerBasket>> UpdateBasketAsync([FromBody]CustomerBasket value)
         {
-            return Ok(await _repository.UpdateBasketAsync(value));
+            var basket = await _repository.UpdateBasketAsync(value);
+            var integrationEvent = new UserAddedCartItemToBasketIntegrationEvent("demouser@microsoft.com", value.Items[value.Items.Count - 1]);
+            try
+            {
+                _logger.LogInformation("----- Publishing integration event: {IntegrationEventId} from {AppName} - ({@IntegrationEvent})", integrationEvent.Id, Program.AppName, integrationEvent);
+
+                _eventBus.Publish(integrationEvent);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "ERROR Publishing integration event: {IntegrationEventId} from {AppName}", integrationEvent.Id, Program.AppName);
+
+                throw;
+            }
+
+            return Ok(basket);
         }
 
         [Route("checkout")]

@@ -122,6 +122,14 @@
                     refreshOrderList();
                 }
             });
+
+            connection.on("UpdateBasketCount", (message) => {
+               // toastr.success('Updated to status: ' + message.status, 'Order Id: ' + message.orderId);
+                //if (window.location.pathname.split("/").pop() === 'Order') {
+                console.log('Inside update basketcount method');
+                    refreshOrderList();
+                //}
+            });
         }
 
         function getToken() {
@@ -129,6 +137,7 @@
         }
 
         function refreshOrderList() {
+            console.log('In refreshOrderList method');
             clearTimeout(timerId);
             timerId = setTimeout(function () {
                 window.location.reload();

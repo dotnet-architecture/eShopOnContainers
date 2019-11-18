@@ -167,6 +167,7 @@ namespace Ordering.SignalrHub
             eventBus.Subscribe<OrderStatusChangedToShippedIntegrationEvent, OrderStatusChangedToShippedIntegrationEventHandler>();
             eventBus.Subscribe<OrderStatusChangedToCancelledIntegrationEvent, OrderStatusChangedToCancelledIntegrationEventHandler>();
             eventBus.Subscribe<OrderStatusChangedToSubmittedIntegrationEvent, OrderStatusChangedToSubmittedIntegrationEventHandler>();
+            eventBus.Subscribe<UserAddedCartItemToBasketIntegrationEvent, UserAddedCartItemToBasketIntegrationEventHandler>();
         }
 
         private void ConfigureAuthService(IServiceCollection services)
