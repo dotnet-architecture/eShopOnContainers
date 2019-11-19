@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using Basket.SignalrHub.IntegrationEvents;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
 using System;
 using System.Collections.Generic;
@@ -24,6 +25,8 @@ namespace Basket.SignalrHub.AutofacModules
 
             // builder.RegisterAssemblyTypes(typeof(NewIntegrationEvent).GetTypeInfo().Assembly)
             //    .AsClosedTypesOf(typeof(IIntegrationEventHandler<>));
+            builder.RegisterAssemblyTypes(typeof(UserAddedCartItemToBasketIntegrationEvent).GetTypeInfo().Assembly)
+             .AsClosedTypesOf(typeof(IIntegrationEventHandler<>));
         }
     }
 }
