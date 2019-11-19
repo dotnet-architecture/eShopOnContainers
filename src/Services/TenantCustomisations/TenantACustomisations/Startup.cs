@@ -33,6 +33,8 @@
     using Infrastructure.AutofacModules;
     using Microsoft.eShopOnContainers.Services.TenantACustomisations.Infrastructure.Filters;
     using global::TenantACustomisations.Infrastructure.Filters;
+    using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
+    using global::TenantACustomisations.IntegrationEvents.EventHandling;
 
     public class Startup
     {
@@ -112,7 +114,7 @@
         {
             var eventBus = app.ApplicationServices.GetRequiredService<BuildingBlocks.EventBus.Abstractions.IEventBus>();
 
-            //eventBus.Subscribe<UserCheckoutAcceptedIntegrationEvent, IIntegrationEventHandler<UserCheckoutAcceptedIntegrationEvent>>();
+            eventBus.Subscribe<CustomisationEvent, CustomisationEventHandler>();
         }
 
         protected virtual void ConfigureAuth(IApplicationBuilder app)
@@ -385,6 +387,7 @@
             }
 
             services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
+            services.AddTransient<CustomisationEventHandler>();
 
             return services;
         }

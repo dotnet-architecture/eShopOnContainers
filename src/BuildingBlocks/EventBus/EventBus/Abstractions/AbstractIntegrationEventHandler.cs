@@ -13,9 +13,19 @@ namespace Ordering.API.Application.IntegrationEvents.EventHandling
     {
         private static String url = @"http://tenantmanager/";
         private readonly IEventBus _eventBus;
+        //private readonly ILogger<AbstractIntegrationEventHandler<IIntegrationEvent>> _logger;
+
+        protected AbstractIntegrationEventHandler(IEventBus eventBus)
+        {
+            _eventBus = eventBus ?? throw new ArgumentNullException(nameof(eventBus));
+        }
 
         public async Task<bool> CheckIfCustomised(IntegrationEvent @event)
         {
+            if (!@event.CheckForCustomisation)
+            {
+                return false;
+            }
             Boolean result = Get(@event);
             if (result)
             {
@@ -23,7 +33,6 @@ namespace Ordering.API.Application.IntegrationEvents.EventHandling
                 try
                 {
                     //_logger.LogInformation("----- Publishing integration event: {IntegrationEventId} from {AppName} - ({@IntegrationEvent})", eventMessage.Id, Program.AppName, eventMessage);
-
                     _eventBus.Publish(customisationEvent);
                 }
                 catch (Exception ex)
@@ -58,7 +67,7 @@ namespace Ordering.API.Application.IntegrationEvents.EventHandling
                 }
 
             }
-            return false;
+            return true;
         }
     }
 

@@ -44,7 +44,6 @@
 
   <ItemGroup>
     <Folder Include="IntegrationEvents\Events\" />
-    <Folder Include="IntegrationEvents\EventHandling\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -52,6 +51,7 @@
     <ProjectReference Include="..\..\..\BuildingBlocks\EventBus\EventBusServiceBus\EventBusServiceBus.csproj" />
     <ProjectReference Include="..\..\..\BuildingBlocks\EventBus\EventBus\EventBus.csproj" />
     <ProjectReference Include="..\..\..\BuildingBlocks\EventBus\IntegrationEventLogEF\IntegrationEventLogEF.csproj" />
+    <ProjectReference Include="..\..\Ordering\Ordering.API\Ordering.API.csproj" />
   </ItemGroup>
 
   <ItemGroup>

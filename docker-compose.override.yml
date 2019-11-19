@@ -63,6 +63,11 @@ services:
       - "5115:80"
 
   tenantacustomisation:
+    environment:
+      - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
+      - EventBusUserName=${ESHOP_SERVICE_BUS_USERNAME}
+      - EventBusPassword=${ESHOP_SERVICE_BUS_PASSWORD}      
+      - AzureServiceBusEnabled=False
     ports:
       - "5116:80"
 

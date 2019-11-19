@@ -9,6 +9,14 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events
         {
             Id = Guid.NewGuid();
             CreationDate = DateTime.UtcNow;
+            CheckForCustomisation = true;
+        }
+
+        public IntegrationEvent(Boolean checkForCustomisation)
+        {
+            Id = Guid.NewGuid();
+            CreationDate = DateTime.UtcNow;
+            CheckForCustomisation = checkForCustomisation;
         }
 
         [JsonConstructor]
@@ -23,5 +31,8 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events
 
         [JsonProperty]
         public DateTime CreationDate { get; private set; }
+
+        [JsonProperty]
+        public Boolean CheckForCustomisation { get; set; }
     }
 }
