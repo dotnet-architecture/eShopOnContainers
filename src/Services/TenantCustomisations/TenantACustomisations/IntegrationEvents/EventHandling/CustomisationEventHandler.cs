@@ -1,6 +1,7 @@
 ﻿using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using Ordering.API.Application.IntegrationEvents.Events;
 using System;
 using System.Collections.Generic;
@@ -39,6 +40,8 @@ namespace TenantACustomisations.IntegrationEvents.EventHandling
                     }
                     break;
                 default:
+                    integrationEvent.CheckForCustomisation = false;
+                    _eventBus.Publish(integrationEvent);
                     break;
             }
         }

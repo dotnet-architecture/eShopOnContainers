@@ -257,7 +257,6 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
 
             return channel;
         }
-
         private async Task ProcessEvent(string eventName, string message)
         {
             _logger.LogWarning("Processing RabbitMQ event: {EventName}", eventName);

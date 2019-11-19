@@ -10,9 +10,11 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events
         {
             TenantId = tenantId;
             this.@event = @event;
+            eventType = @event.GetType().Name;
         }
 
         public int TenantId { get; set; }
         public IntegrationEvent @event { get; set; }
+        public String eventType { get; set; }
     }
 }

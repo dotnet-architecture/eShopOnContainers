@@ -6,7 +6,7 @@ using Serilog;
 using System;
 using System.IO;
 
-namespace Microsoft.eShopOnContainers.Services.Ordering.API
+namespace Microsoft.eShopOnContainers.Services.TenantACustomisations
 {
     public class Program
     {

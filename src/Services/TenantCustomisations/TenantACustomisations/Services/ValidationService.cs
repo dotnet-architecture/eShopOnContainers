@@ -1,9 +1,8 @@
-﻿using System;
+﻿using Ordering.API.Application.IntegrationEvents.Events;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
-using Ordering.API.Application.IntegrationEvents.Events;
 
 namespace TenantACustomisations.Services
 {
