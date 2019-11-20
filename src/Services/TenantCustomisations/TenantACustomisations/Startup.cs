@@ -35,6 +35,7 @@
     using global::TenantACustomisations.Infrastructure.Filters;
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
     using global::TenantACustomisations.IntegrationEvents.EventHandling;
+    using global::TenantACustomisations.IntegrationEvents.Events;
 
     public class Startup
     {
