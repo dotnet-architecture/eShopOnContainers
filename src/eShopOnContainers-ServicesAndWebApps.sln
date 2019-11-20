@@ -138,7 +138,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Webhooks.API", "Services\We
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebhookClient", "Web\WebhookClient\WebhookClient.csproj", "{766D7E92-6AF0-476C-ADD5-282BF4D8C576}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Devspace.Support", "Devspace.Support", "{68F5041D-51F2-4630-94B6-B49789F5E51A}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Devspaces.Support", "Devspaces.Support", "{68F5041D-51F2-4630-94B6-B49789F5E51A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Devspaces.Support", "BuildingBlocks\Devspaces.Support\Devspaces.Support.csproj", "{56C2EF0B-6BF2-41D9-BE07-6E6D08D06B35}"
 EndProject
