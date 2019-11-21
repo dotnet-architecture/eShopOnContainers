@@ -16,11 +16,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mobile Apps", "Mobile Apps"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{A857AD10-40FF-4303-BEC2-FF1C58D5735E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eShopOnContainers.Droid", "src\Mobile\eShopOnContainers\eShopOnContainers.Droid\eShopOnContainers.Droid.csproj", "{62DBB163-9CA9-4818-B48B-13233DF37C24}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eShopOnContainers.Droid", "eShopOnContainers\eShopOnContainers.Droid\eShopOnContainers.Droid.csproj", "{62DBB163-9CA9-4818-B48B-13233DF37C24}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eShopOnContainers.iOS", "src\Mobile\eShopOnContainers\eShopOnContainers.iOS\eShopOnContainers.iOS.csproj", "{6EEB23DC-7063-4444-9AF8-90DF24F549C0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eShopOnContainers.iOS", "eShopOnContainers\eShopOnContainers.iOS\eShopOnContainers.iOS.csproj", "{6EEB23DC-7063-4444-9AF8-90DF24F549C0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eShopOnContainers.Windows", "src\Mobile\eShopOnContainers\eShopOnContainers.Windows\eShopOnContainers.Windows.csproj", "{C3C1E2CF-B1F7-4654-BBDC-50143DB22E0B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eShopOnContainers.Windows", "eShopOnContainers\eShopOnContainers.Windows\eShopOnContainers.Windows.csproj", "{C3C1E2CF-B1F7-4654-BBDC-50143DB22E0B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared Code", "Shared Code", "{778289CA-31F7-4464-8C2A-612EE846F8A7}"
 EndProject
@@ -28,15 +28,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Targets", "Targets", "{9CC7
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mobile Apps", "Mobile Apps", "{B7B1D395-4E06-4036-BE86-C216756B9367}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eShopOnContainers.TestRunner.Droid", "src\Mobile\eShopOnContainers\eShopOnContainers.TestRunner.Droid\eShopOnContainers.TestRunner.Droid.csproj", "{A289A7F0-ACD8-42AE-87B6-AB1AFD310BF1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eShopOnContainers.TestRunner.Droid", "eShopOnContainers\eShopOnContainers.TestRunner.Droid\eShopOnContainers.TestRunner.Droid.csproj", "{A289A7F0-ACD8-42AE-87B6-AB1AFD310BF1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eShopOnContainers.TestRunner.iOS", "src\Mobile\eShopOnContainers\eShopOnContainers.TestRunner.iOS\eShopOnContainers.TestRunner.iOS.csproj", "{B68C2B56-7581-46AE-B55D-D25DDFD3BFE3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eShopOnContainers.TestRunner.iOS", "eShopOnContainers\eShopOnContainers.TestRunner.iOS\eShopOnContainers.TestRunner.iOS.csproj", "{B68C2B56-7581-46AE-B55D-D25DDFD3BFE3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eShopOnContainers.TestRunner.Windows", "src\Mobile\eShopOnContainers\eShopOnContainers.TestRunner.Windows\eShopOnContainers.TestRunner.Windows.csproj", "{A7337243-33B8-463A-87AD-944B75EFD820}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eShopOnContainers.TestRunner.Windows", "eShopOnContainers\eShopOnContainers.TestRunner.Windows\eShopOnContainers.TestRunner.Windows.csproj", "{A7337243-33B8-463A-87AD-944B75EFD820}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eShopOnContainers.UnitTests", "src\Mobile\eShopOnContainers\eShopOnContainers.UnitTests\eShopOnContainers.UnitTests.csproj", "{FDD910BC-DF0F-483D-B7D5-C7D831855172}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eShopOnContainers.UnitTests", "eShopOnContainers\eShopOnContainers.UnitTests\eShopOnContainers.UnitTests.csproj", "{FDD910BC-DF0F-483D-B7D5-C7D831855172}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eShopOnContainers.Core", "src\Mobile\eShopOnContainers\eShopOnContainers.Core\eShopOnContainers.Core.csproj", "{76C5F2A7-6CD5-49EA-9F33-EC44DE6539C7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eShopOnContainers.Core", "eShopOnContainers\eShopOnContainers.Core\eShopOnContainers.Core.csproj", "{76C5F2A7-6CD5-49EA-9F33-EC44DE6539C7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
