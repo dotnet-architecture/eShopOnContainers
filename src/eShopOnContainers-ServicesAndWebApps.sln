@@ -24,9 +24,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Basket", "Basket", "{BF3EF4
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Ordering", "Ordering", "{0BD0DB92-2D98-44D9-9AC0-C59186D59B0B}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{A857AD10-40FF-4303-BEC2-FF1C58D5735E}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{A857AD10-40FF-4303-BEC2-FF1C58D5735E}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ServicesTests", "ServicesTests", "{EF0337F2-ED00-4643-89FD-EE10863F1870}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ServiceTests", "ServiceTests", "{EF0337F2-ED00-4643-89FD-EE10863F1870}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Identity", "Identity", "{24CD3B53-141E-4A07-9B0D-796641E1CF78}"
 EndProject
@@ -116,7 +116,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ordering.FunctionalTests", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Marketing.FunctionalTests", "Services\Marketing\Marketing.FunctionalTests\Marketing.FunctionalTests.csproj", "{94176D9B-9CAA-4762-8D12-1621E240EE34}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.FunctionalTests", "test\ServicesTests\Application.FunctionalTests\Application.FunctionalTests.csproj", "{639BB197-D112-47A7-A44A-471DDB0FA1AE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.FunctionalTests", "Tests\Services\Application.FunctionalTests\Application.FunctionalTests.csproj", "{639BB197-D112-47A7-A44A-471DDB0FA1AE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{2751AC5C-D148-4D7A-AE8F-149B47C9A82D}"
 EndProject
@@ -138,7 +138,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Webhooks.API", "Services\We
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebhookClient", "Web\WebhookClient\WebhookClient.csproj", "{766D7E92-6AF0-476C-ADD5-282BF4D8C576}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Devspace.Support", "Devspace.Support", "{68F5041D-51F2-4630-94B6-B49789F5E51A}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Devspaces.Support", "Devspaces.Support", "{68F5041D-51F2-4630-94B6-B49789F5E51A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Devspaces.Support", "BuildingBlocks\Devspaces.Support\Devspaces.Support.csproj", "{56C2EF0B-6BF2-41D9-BE07-6E6D08D06B35}"
 EndProject

@@ -4,7 +4,7 @@ services:
   rabbitmq-test:
     ports:
       - "15672:15672"
-      - "5672:5672" 
+      - "5672:5672"
 
   basket-data-test:
     ports:
@@ -27,7 +27,7 @@ services:
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - SpaClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5104
       - XamarinCallback=http://${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP}:5105/xamarincallback
-      - ConnectionString=${ESHOP_AZURE_IDENTITY_DB:-Server=sql-data-test;Database=Microsoft.eShopOnContainers.Service.IdentityDb;User Id=sa;Password=Pass@word} 
+      - ConnectionString=${ESHOP_AZURE_IDENTITY_DB:-Server=sql-data-test;Database=Microsoft.eShopOnContainers.Service.IdentityDb;User Id=sa;Password=Pass@word}
       - MvcClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5100
       - LocationApiClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5109
       - MarketingApiClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5110
@@ -35,7 +35,7 @@ services:
       - OrderingApiClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5102
       - MobileShoppingAggClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5120
       - WebShoppingAggClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5121
-      - UseCustomizationData=True  
+      - UseCustomizationData=True
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
       - OrchestratorType=${ORCHESTRATOR_TYPE}
     ports:
@@ -179,7 +179,7 @@ services:
         - dotnet
         - test
         - --logger
-        - trx;LogFileName=/tests/ordering-unit-test-results.xml  
+        - trx;LogFileName=/tests/ordering-unit-test-results.xml
 
   marketing-api-test:
     environment:
