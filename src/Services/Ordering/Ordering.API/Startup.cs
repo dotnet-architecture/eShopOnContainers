@@ -122,7 +122,7 @@
             eventBus.Subscribe<OrderStockConfirmedIntegrationEvent, IIntegrationEventHandler<OrderStockConfirmedIntegrationEvent>>();
             eventBus.Subscribe<OrderStockRejectedIntegrationEvent, IIntegrationEventHandler<OrderStockRejectedIntegrationEvent>>();
             eventBus.Subscribe<OrderPaymentFailedIntegrationEvent, IIntegrationEventHandler<OrderPaymentFailedIntegrationEvent>>();
-            eventBus.Subscribe<OrderPaymentSuccededIntegrationEvent, IIntegrationEventHandler<OrderPaymentSuccededIntegrationEvent>>();
+            eventBus.Subscribe<OrderPaymentSucceededIntegrationEvent, IIntegrationEventHandler<OrderPaymentSucceededIntegrationEvent>>();
         }
 
         protected virtual void ConfigureAuth(IApplicationBuilder app)
@@ -305,7 +305,8 @@
 
                     var factory = new ConnectionFactory()
                     {
-                        HostName = configuration["EventBusConnection"]
+                        HostName = configuration["EventBusConnection"],
+                        DispatchConsumersAsync = true
                     };
 
                     if (!string.IsNullOrEmpty(configuration["EventBusUserName"]))

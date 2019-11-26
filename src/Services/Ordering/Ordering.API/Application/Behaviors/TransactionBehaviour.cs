@@ -42,6 +42,8 @@ namespace Ordering.API.Application.Behaviors
 
                 await strategy.ExecuteAsync(async () =>
                 {
+                    Guid transactionId;
+
                     using (var transaction = await _dbContext.BeginTransactionAsync())
                     using (LogContext.PushProperty("TransactionContext", transaction.TransactionId))
                     {
@@ -52,9 +54,11 @@ namespace Ordering.API.Application.Behaviors
                         _logger.LogInformation("----- Commit transaction {TransactionId} for {CommandName}", transaction.TransactionId, typeName);
 
                         await _dbContext.CommitTransactionAsync(transaction);
+
+                        transactionId = transaction.TransactionId;
                     }
 
-                    await _orderingIntegrationEventService.PublishEventsThroughEventBusAsync();
+                    await _orderingIntegrationEventService.PublishEventsThroughEventBusAsync(transactionId);
                 });
 
                 return response;

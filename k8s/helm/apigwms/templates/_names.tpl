@@ -35,13 +35,11 @@
 
 
 {{- define "pathBase" -}}
-{{- $name := first .}}
-{{- $ctx := last .}}
-{{- if $ctx.Values.inf.k8s.suffix -}}
-{{- $suffix := include "suffix-name" $ctx -}}
-{{- printf "/%s-%s"  $name $suffix -}}
+{{- if .Values.inf.k8s.suffix -}}
+{{- $suffix := include "suffix-name" . -}}
+{{- printf "%s-%s"  .Values.pathBase $suffix -}}
 {{- else -}}
-{{- printf "/%s" $name -}}
+{{- .Values.pathBase -}}
 {{- end -}}
 {{- end -}}
 

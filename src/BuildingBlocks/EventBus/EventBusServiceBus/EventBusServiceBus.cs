@@ -20,7 +20,7 @@
         private readonly SubscriptionClient _subscriptionClient;
         private readonly ILifetimeScope _autofac;
         private readonly string AUTOFAC_SCOPE_NAME = "eshop_event_bus";
-        private const string INTEGRATION_EVENT_SUFIX = "IntegrationEvent";
+        private const string INTEGRATION_EVENT_SUFFIX = "IntegrationEvent";
 
         public EventBusServiceBus(IServiceBusPersisterConnection serviceBusPersisterConnection,
             ILogger<EventBusServiceBus> logger, IEventBusSubscriptionsManager subsManager, string subscriptionClientName,
@@ -40,7 +40,7 @@
 
         public void Publish(IntegrationEvent @event)
         {
-            var eventName = @event.GetType().Name.Replace(INTEGRATION_EVENT_SUFIX, "");
+            var eventName = @event.GetType().Name.Replace(INTEGRATION_EVENT_SUFFIX, "");
             var jsonMessage = JsonConvert.SerializeObject(@event);
             var body = Encoding.UTF8.GetBytes(jsonMessage);
 
@@ -61,7 +61,7 @@
         public void SubscribeDynamic<TH>(string eventName)
             where TH : IDynamicIntegrationEventHandler
         {
-            _logger.LogInformation("Subscribing to dynamic event {EventName} with {EventHandler}", eventName, nameof(TH));
+            _logger.LogInformation("Subscribing to dynamic event {EventName} with {EventHandler}", eventName, typeof(TH).Name);
 
             _subsManager.AddDynamicSubscription<TH>(eventName);
         }
@@ -70,7 +70,7 @@
             where T : IntegrationEvent
             where TH : IIntegrationEventHandler<T>
         {
-            var eventName = typeof(T).Name.Replace(INTEGRATION_EVENT_SUFIX, "");
+            var eventName = typeof(T).Name.Replace(INTEGRATION_EVENT_SUFFIX, "");
 
             var containsKey = _subsManager.HasSubscriptionsForEvent<T>();
             if (!containsKey)
@@ -89,7 +89,7 @@
                 }
             }
 
-            _logger.LogInformation("Subscribing to event {EventName} with {EventHandler}", eventName, nameof(TH));
+            _logger.LogInformation("Subscribing to event {EventName} with {EventHandler}", eventName, typeof(TH).Name);
 
             _subsManager.AddSubscription<T, TH>();
         }
@@ -98,7 +98,7 @@
             where T : IntegrationEvent
             where TH : IIntegrationEventHandler<T>
         {
-            var eventName = typeof(T).Name.Replace(INTEGRATION_EVENT_SUFIX, "");
+            var eventName = typeof(T).Name.Replace(INTEGRATION_EVENT_SUFFIX, "");
 
             try
             {
@@ -135,7 +135,7 @@
             _subscriptionClient.RegisterMessageHandler(
                 async (message, token) =>
                 {
-                    var eventName = $"{message.Label}{INTEGRATION_EVENT_SUFIX}";
+                    var eventName = $"{message.Label}{INTEGRATION_EVENT_SUFFIX}";
                     var messageData = Encoding.UTF8.GetString(message.Body);
 
                     // Complete the message so that it is not received again.
