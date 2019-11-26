@@ -21,7 +21,6 @@ COPY src/BuildingBlocks/WebHostCustomization/WebHost.Customization/WebHost.Custo
 COPY src/Services/Basket/Basket.API/Basket.API.csproj src/Services/Basket/Basket.API/
 COPY src/Services/Basket/Basket.FunctionalTests/Basket.FunctionalTests.csproj src/Services/Basket/Basket.FunctionalTests/
 COPY src/Services/Basket/Basket.UnitTests/Basket.UnitTests.csproj src/Services/Basket/Basket.UnitTests/
-COPY src/Services/Basket/Basket.SignalrHub/Basket.SignalrHub.csproj src/Services/Basket/Basket.SignalrHub/
 COPY src/Services/Catalog/Catalog.API/Catalog.API.csproj src/Services/Catalog/Catalog.API/
 COPY src/Services/Catalog/Catalog.FunctionalTests/Catalog.FunctionalTests.csproj src/Services/Catalog/Catalog.FunctionalTests/
 COPY src/Services/Catalog/Catalog.UnitTests/Catalog.UnitTests.csproj src/Services/Catalog/Catalog.UnitTests/

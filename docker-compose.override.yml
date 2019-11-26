@@ -327,20 +327,6 @@ services:
     ports:
       - "5112:80"
 
-  basket.signalrhub:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://0.0.0.0:80
-      - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
-      - EventBusUserName=${ESHOP_SERVICE_BUS_USERNAME}
-      - EventBusPassword=${ESHOP_SERVICE_BUS_PASSWORD}          
-      - AzureServiceBusEnabled=False
-      - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
-      - OrchestratorType=${ORCHESTRATOR_TYPE}
-      - identityUrl=http://identity.api
-    ports:
-      - "5115:80"
-
   webstatus:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
@@ -379,8 +365,6 @@ services:
       - HealthChecksUI__HealthChecks__15__Uri=http://payment.api/hc
       - HealthChecksUI__HealthChecks__16__Name=Ordering SignalRHub HTTP Check
       - HealthChecksUI__HealthChecks__16__Uri=http://ordering.signalrhub/hc      
-      - HealthChecksUI__HealthChecks__17__Name=Basket SignalRHub HTTP Check
-      - HealthChecksUI__HealthChecks__17__Uri=http://basket.signalrhub/hc      
       - OrderingBackgroundTasksUrl=http://ordering.backgroundtasks/hc
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
       - OrchestratorType=${ORCHESTRATOR_TYPE}

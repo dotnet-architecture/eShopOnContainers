@@ -203,21 +203,6 @@ services:
       - catalog.api
       - basket.api
 
-  basket.signalrhub:
-    image: ${REGISTRY:-eshop}/basket.signalrhub:${PLATFORM:-linux}-${TAG:-latest}
-    build:
-      context: .
-      dockerfile: src/Services/Basket/Basket.SignalrHub/Dockerfile
-    depends_on:
-      - nosql.data
-      - sql.data
-      - identity.api
-      - rabbitmq
-      - ordering.api
-      - marketing.api
-      - catalog.api
-      - basket.api
-
   webstatus:
     image: ${REGISTRY:-eshop}/webstatus:${PLATFORM:-linux}-${TAG:-latest}
     build:

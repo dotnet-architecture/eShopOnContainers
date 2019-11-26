@@ -18,7 +18,6 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                 new ApiResource("mobileshoppingagg", "Mobile Shopping Aggregator"),
                 new ApiResource("webshoppingagg", "Web Shopping Aggregator"),
                 new ApiResource("orders.signalrhub", "Ordering Signalr Hub"),
-                new ApiResource("basket.signalrhub", "Basket Signalr Hub"),
                 new ApiResource("webhooks", "Webhooks registration Service"),
             };
         }
@@ -60,7 +59,6 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                         "marketing",
                         "webshoppingagg",
                         "orders.signalrhub",
-                        "basket.signalrhub",
                         "webhooks"
                     },
                 },
@@ -128,7 +126,6 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                         "marketing",
                         "webshoppingagg",
                         "orders.signalrhub",
-                        "basket.signalrhub",
                         "webhooks"
                     },
                     AccessTokenLifetime = 60*60*2, // 2 hours
