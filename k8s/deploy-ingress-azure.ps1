@@ -1,1 +1,0 @@
-﻿kubectl apply -f nginx-ingress\cloud-generic.yaml

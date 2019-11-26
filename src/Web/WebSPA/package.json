@@ -37,7 +37,7 @@
     "@angular/platform-browser-dynamic": "^7.2.10",
     "@angular/platform-server": "^7.2.10",
     "@angular/router": "^7.2.10",
-    "@aspnet/signalr": "1.0.3",
+    "@aspnet/signalr": "3.0.0-preview6.19307.2",
     "@ng-bootstrap/ng-bootstrap": "3.3.0",
     "bootstrap": "4.3.1",
     "core-js": "^2.5.0",

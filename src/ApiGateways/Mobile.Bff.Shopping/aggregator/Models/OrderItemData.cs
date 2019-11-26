@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Models
+﻿namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Models
 {
     public class OrderItemData
     {

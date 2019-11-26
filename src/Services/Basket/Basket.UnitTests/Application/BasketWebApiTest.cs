@@ -125,7 +125,11 @@ namespace UnitTest.Basket.Application
                 HttpContext = new DefaultHttpContext()
                 {
                     User = new ClaimsPrincipal(
-                        new ClaimsIdentity(new Claim[] { new Claim("unique_name", "testuser") }))
+                        new ClaimsIdentity(new Claim[] {
+                            new Claim("sub", "testuser"),
+                            new Claim("unique_name", "testuser"),
+                            new Claim(ClaimTypes.Name, "testuser")
+                             }))
                 }
             };
 

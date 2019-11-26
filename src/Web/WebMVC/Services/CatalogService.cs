@@ -25,7 +25,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
             _settings = settings;
             _logger = logger;
 
-            _remoteServiceBaseUrl = $"{_settings.Value.PurchaseUrl}/api/v1/c/catalog/";
+            _remoteServiceBaseUrl = $"{_settings.Value.PurchaseUrl}/c/api/v1/catalog/";
         }
 
         public async Task<Catalog> GetCatalogItems(int page, int take, int? brand, int? type)

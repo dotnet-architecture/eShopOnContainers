@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace WebMVC.Controllers
 {
-    [Authorize]
+    [Authorize(AuthenticationSchemes = "OpenIdConnect")]
     public class OrderManagementController : Controller
     {
         private IOrderingService _orderSvc;

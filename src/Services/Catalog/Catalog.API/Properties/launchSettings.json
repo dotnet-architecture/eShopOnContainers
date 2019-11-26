@@ -14,10 +14,10 @@
       "launchUrl": "/swagger",
       "environmentVariables": {
         "ConnectionString": "server=localhost,5433;Database=Microsoft.eShopOnContainers.Services.CatalogDb;User Id=sa;Password=Pass@word",
+        "Serilog:LogstashgUrl": "http://locahost:8080",
         "ASPNETCORE_ENVIRONMENT": "Development",
         "EventBusConnection": "localhost",
-        "Serilog:SeqServerUrl": "http://locahost:5340",
-        "Serilog:LogstashgUrl":"http://locahost:8080",
+        "Serilog:SeqServerUrl": "http://locahost:5340"
       }
     },
     "Microsoft.eShopOnContainers.Services.Catalog.API": {

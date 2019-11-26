@@ -21,7 +21,6 @@ namespace Ordering.API.Application.IntegrationEvents
         private readonly Func<DbConnection, IIntegrationEventLogService> _integrationEventLogServiceFactory;
         private readonly IEventBus _eventBus;
         private readonly OrderingContext _orderingContext;
-        private readonly IntegrationEventLogContext _eventLogContext;
         private readonly IIntegrationEventLogService _eventLogService;
         private readonly ILogger<OrderingIntegrationEventService> _logger;
 
@@ -32,7 +31,6 @@ namespace Ordering.API.Application.IntegrationEvents
             ILogger<OrderingIntegrationEventService> logger)
         {
             _orderingContext = orderingContext ?? throw new ArgumentNullException(nameof(orderingContext));
-            _eventLogContext = eventLogContext ?? throw new ArgumentNullException(nameof(eventLogContext));
             _integrationEventLogServiceFactory = integrationEventLogServiceFactory ?? throw new ArgumentNullException(nameof(integrationEventLogServiceFactory));
             _eventBus = eventBus ?? throw new ArgumentNullException(nameof(eventBus));
             _eventLogService = _integrationEventLogServiceFactory(_orderingContext.Database.GetDbConnection());
