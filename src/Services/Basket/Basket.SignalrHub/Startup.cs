@@ -17,8 +17,6 @@ using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Basket.SignalrHub.AutofacModules;
-using Basket.SignalrHub.IntegrationEvents;
-using Basket.SignalrHub.IntegrationEvents.EventHandling;
 
 namespace Basket.SignalrHub
 {
@@ -162,7 +160,6 @@ namespace Basket.SignalrHub
 
             // Event bus subscribe events goes here
             // eventBus.Subscribe<NewIntegrationEvent, NewIntegrationEventHandler>();
-            eventBus.Subscribe<UserAddedCartItemToBasketIntegrationEvent, UserAddedCartItemToBasketIntegrationEventHandler>();
         }
 
         private void ConfigureAuthService(IServiceCollection services)
