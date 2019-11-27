@@ -1,7 +1,0 @@
-{
-  "newStorageAccountName": { "value": "eshopsrvmvstoragewin" },
-  "adminUsername": { "value": "eshop" },
-  "adminPassword": { "value": "Pass@word" },
-  "dnsNameForPublicIP": { "value": "eshop-srv-win" },
-  "VMName": {"value": "eshop-srv-win"}
-}

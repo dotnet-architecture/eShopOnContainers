@@ -26,7 +26,8 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
 
         private string _description;
 
-       
+
+
         // Draft orders have this set to true. Currently we don't check anywhere the draft status of an Order, but we could do it if needed
         private bool _isDraft;
 
@@ -46,7 +47,8 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
             return order;
         }
 
-        protected Order() {
+        protected Order()
+        {
             _orderItems = new List<OrderItem>();
             _isDraft = false;
         }

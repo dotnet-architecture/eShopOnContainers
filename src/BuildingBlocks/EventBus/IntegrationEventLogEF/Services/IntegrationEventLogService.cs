@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Collections;
@@ -26,7 +27,6 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF.Servi
             _integrationEventLogContext = new IntegrationEventLogContext(
                 new DbContextOptionsBuilder<IntegrationEventLogContext>()
                     .UseSqlServer(_dbConnection)
-                    .ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning))
                     .Options);
 
             _eventTypes = Assembly.Load(Assembly.GetEntryAssembly().FullName)
@@ -39,11 +39,15 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF.Servi
         {
             var tid = transactionId.ToString();
 
-            return await _integrationEventLogContext.IntegrationEventLogs
-                .Where(e => e.TransactionId == tid && e.State == EventStateEnum.NotPublished)
-                .OrderBy(o => o.CreationTime)
-                .Select(e => e.DeserializeJsonContent(_eventTypes.Find(t=> t.Name == e.EventTypeShortName)))
-                .ToListAsync();              
+            var result = await _integrationEventLogContext.IntegrationEventLogs
+                .Where(e => e.TransactionId == tid && e.State == EventStateEnum.NotPublished).ToListAsync();
+
+            if(result != null && result.Any()){
+                return result.OrderBy(o => o.CreationTime)
+                    .Select(e => e.DeserializeJsonContent(_eventTypes.Find(t=> t.Name == e.EventTypeShortName)));
+            }
+            
+            return new List<IntegrationEventLogEntry>();
         }
 
         public Task SaveEventAsync(IntegrationEvent @event, IDbContextTransaction transaction)

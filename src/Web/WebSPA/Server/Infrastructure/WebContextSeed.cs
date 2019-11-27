@@ -13,7 +13,7 @@ namespace WebSPA.Infrastructure
 {
     public class WebContextSeed
     {
-        public static void Seed(IApplicationBuilder applicationBuilder, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public static void Seed(IApplicationBuilder applicationBuilder, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
             var log = loggerFactory.CreateLogger<WebContextSeed>();
 

@@ -5,15 +5,16 @@
     using Microsoft.AspNetCore.Mvc.Filters;
     using Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure.ActionResults;
     using Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure.Exceptions;
+    using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Logging;
     using System.Net;
 
     public class HttpGlobalExceptionFilter : IExceptionFilter
     {
-        private readonly IHostingEnvironment env;
+        private readonly IHostEnvironment env;
         private readonly ILogger<HttpGlobalExceptionFilter> logger;
 
-        public HttpGlobalExceptionFilter(IHostingEnvironment env, ILogger<HttpGlobalExceptionFilter> logger)
+        public HttpGlobalExceptionFilter(IHostEnvironment env, ILogger<HttpGlobalExceptionFilter> logger)
         {
             this.env = env;
             this.logger = logger;
