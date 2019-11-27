@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
 using Microsoft.eShopOnContainers.Services.Basket.API.Model;
 using Microsoft.eShopOnContainers.Services.Basket.API.Services;
+using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.BuyerAggregate;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Net;
@@ -48,7 +49,9 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
         public async Task<ActionResult<CustomerBasket>> UpdateBasketAsync([FromBody]CustomerBasket value)
         {
             var basket = await _repository.UpdateBasketAsync(value);
-            var integrationEvent = new UserAddedCartItemToBasketIntegrationEvent("demouser@microsoft.com", value.Items[value.Items.Count - 1]);
+            var buyerName = _identityService.GetUserName();
+          
+            var integrationEvent = new UserAddedCatalogItemToBasketIntegrationEvent(buyerName, value.Items.Count);
             try
             {
                 _logger.LogInformation("----- Publishing integration event: {IntegrationEventId} from {AppName} - ({@IntegrationEvent})", integrationEvent.Id, Program.AppName, integrationEvent);

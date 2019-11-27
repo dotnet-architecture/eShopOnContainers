@@ -24,6 +24,8 @@ using Microsoft.eShopOnContainers.Services.Basket.API.IntegrationEvents.EventHan
 using Microsoft.eShopOnContainers.Services.Basket.API.IntegrationEvents.Events;
 using Microsoft.eShopOnContainers.Services.Basket.API.Model;
 using Microsoft.eShopOnContainers.Services.Basket.API.Services;
+using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.BuyerAggregate;
+using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Repositories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
@@ -170,6 +172,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IBasketRepository, RedisBasketRepository>();
             services.AddTransient<IIdentityService, IdentityService>();
+            //services.AddTransient<IBuyerRepository, BuyerRepository>();
 
             services.AddOptions();
 

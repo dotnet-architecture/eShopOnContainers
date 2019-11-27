@@ -10,22 +10,22 @@ using System.Threading.Tasks;
 
 namespace Ordering.SignalrHub.IntegrationEvents.EventHandling
 {
-    public class UserAddedCartItemToBasketIntegrationEventHandler :
-        IIntegrationEventHandler<UserAddedCartItemToBasketIntegrationEvent>
+    public class UserAddedCatalogItemToBasketIntegrationEventHandler :
+        IIntegrationEventHandler<UserAddedCatalogItemToBasketIntegrationEvent>
     {
         private readonly IHubContext<NotificationsHub> _hubContext;
-        private readonly ILogger<UserAddedCartItemToBasketIntegrationEventHandler> _logger;
+        private readonly ILogger<UserAddedCatalogItemToBasketIntegrationEventHandler> _logger;
 
-        public UserAddedCartItemToBasketIntegrationEventHandler(
+        public UserAddedCatalogItemToBasketIntegrationEventHandler(
             IHubContext<NotificationsHub> hubContext,
-            ILogger<UserAddedCartItemToBasketIntegrationEventHandler> logger)
+            ILogger<UserAddedCatalogItemToBasketIntegrationEventHandler> logger)
         {
             _hubContext = hubContext ?? throw new ArgumentNullException(nameof(hubContext));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
 
-        public async Task Handle(UserAddedCartItemToBasketIntegrationEvent @event)
+        public async Task Handle(UserAddedCatalogItemToBasketIntegrationEvent @event)
         {
             using (LogContext.PushProperty("IntegrationEventContext", $"{@event.Id}-{Program.AppName}"))
             {
@@ -33,7 +33,7 @@ namespace Ordering.SignalrHub.IntegrationEvents.EventHandling
 
                 await _hubContext.Clients
                     .Group(@event.BuyerName)
-                    .SendAsync("UpdateBasketCount", "test message");
+                    .SendAsync("UpdateBasketCount", new { BasketItemCount  = @event.BasketItemCount});
             }
         }
     }

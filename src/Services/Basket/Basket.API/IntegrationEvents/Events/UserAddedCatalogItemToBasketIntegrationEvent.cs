@@ -4,15 +4,15 @@ using System.Collections.Generic;
 
 namespace Basket.API.IntegrationEvents.Events
 {
-    public class UserAddedCartItemToBasketIntegrationEvent : IntegrationEvent
+    public class UserAddedCatalogItemToBasketIntegrationEvent : IntegrationEvent
     {
         public string BuyerName { get; set; }
-        public BasketItem Item { get; set; }
+        public int BasketItemCount { get; set; }
 
-        public UserAddedCartItemToBasketIntegrationEvent(string buyerName, BasketItem basketItem)
+        public UserAddedCatalogItemToBasketIntegrationEvent(string buyerName, int basketItemCount)
         {
             BuyerName = buyerName;
-            Item = basketItem;
+            BasketItemCount = basketItemCount;
         }
     }
 }

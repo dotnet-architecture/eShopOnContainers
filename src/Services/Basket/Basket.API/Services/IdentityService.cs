@@ -1,6 +1,7 @@
 ﻿
 using Microsoft.AspNetCore.Http;
 using System;
+using System.Security.Claims;
 
 namespace Microsoft.eShopOnContainers.Services.Basket.API.Services
 {
@@ -16,6 +17,11 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Services
         public string GetUserIdentity()
         {
             return _context.HttpContext.User.FindFirst("sub").Value;
+        }
+
+        public string GetUserName()
+        {
+            return _context.HttpContext.User.FindFirst("preferred_username").Value;
         }
     }
 }

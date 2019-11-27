@@ -111,6 +111,7 @@
             
             connection.start().then(function () {
                 console.log('User Registered to Signalr Hub');
+                console.log('@settings.Value.SignalrHubUrl/hub/notificationhub');
                 cb(connection);
             });       
         }
@@ -124,11 +125,8 @@
             });
 
             connection.on("UpdateBasketCount", (message) => {
-               // toastr.success('Updated to status: ' + message.status, 'Order Id: ' + message.orderId);
-                //if (window.location.pathname.split("/").pop() === 'Order') {
-                console.log('Inside update basketcount method');
+                //refresh the page for the latest count to get shown
                     refreshOrderList();
-                //}
             });
         }
 
