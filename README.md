@@ -110,8 +110,6 @@ In the above image you can see that the first folder level contains, basically:
 > ### DISCLAIMER
 >
 > **IMPORTANT:** The current state of this sample application is **BETA**, because we are constantly evolving towards newly released technologies. Therefore, many areas could be improved and change significantly while refactoring the current code and implementing new features. Feedback with improvements and pull requests from the community will be highly appreciated and accepted.
->
-> Read the planned [Roadmap](https://github.com/dotnet-architecture/eShopOnContainers/wiki/Roadmap) within the Wiki for further info about possible new implementations and provide feedback at the [ISSUES section](https://github.com/dotnet/eShopOnContainers/issues) if you'd like to see any specific scenario implemented or improved. Also, feel free to discuss on any current issue.
 
 ### Architecture overview
 
@@ -135,7 +133,7 @@ You can download them and start reviewing these Guides/eBooks here:
 
 Download in other formats (**eReaders** like **MOBI**, **EPUB**) and other eBooks at the [.NET Architecture center](http://dot.net/architecture).
 
-Send feedback to [dotnet-architecture-ebooks-feedback@service.microsoft.com](dotnet-architecture-ebooks-feedback@service.microsoft.com)
+If you've an eBook feedback, create a new issue here: https://github.com/dotnet-architecture/ebooks/issues
 
 However, we encourage you to download and review the [Architecting and Developing Microservices eBook](https://aka.ms/microservicesebook) because the architectural styles and architectural patterns and technologies explained in the guide are using this reference application when explaining many pattern implementations, so you'll understand the context, design and decisions taken in the current architecture and internal designs much better.
 
@@ -146,5 +144,4 @@ However, we encourage you to download and review the [Architecting and Developin
 
 ## Sending feedback and pull requests
 
-As mentioned, we'd appreciate your feedback, improvements and ideas.
-You can create new issues at the issues section, do pull requests and/or send emails to **eshop_feedback@service.microsoft.com**
+Read the planned [Roadmap](https://github.com/dotnet-architecture/eShopOnContainers/wiki/Roadmap) within the Wiki for further info about possible new implementations and provide feedback at the [ISSUES section](https://github.com/dotnet/eShopOnContainers/issues) if you'd like to see any specific scenario implemented or improved. Also, feel free to discuss on any current issue.
