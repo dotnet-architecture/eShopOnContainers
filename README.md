@@ -139,20 +139,10 @@ Send feedback to [dotnet-architecture-ebooks-feedback@service.microsoft.com](dot
 
 However, we encourage you to download and review the [Architecting and Developing Microservices eBook](https://aka.ms/microservicesebook) because the architectural styles and architectural patterns and technologies explained in the guide are using this reference application when explaining many pattern implementations, so you'll understand the context, design and decisions taken in the current architecture and internal designs much better.
 
-## Overview of the application code
+## Read futher
 
-In this repo you can find a sample reference application that will help you to understand how to implement a microservice architecture based application using **.NET Core** and **Docker**.
-
-The example business domain or scenario is based on an eShop or eCommerce which is implemented as a multi-container application. Each container is a microservice deployment (like the basket-microservice, catalog-microservice, ordering-microservice and the identity-microservice) which is developed using ASP.NET Core running on .NET Core so they can run either on Linux Containers and Windows Containers.
-The screenshot below shows the VS Solution structure for those microservices/containers and client apps.
-
-- (*Recommended when getting started*) Open **eShopOnContainers-ServicesAndWebApps.sln** for a solution containing just the server-side projects related to the microservices and web applications.
-- Open <b>eShopOnContainers-MobileApps.sln</b> for a solution containing just the client mobile app projects (Xamarin mobile apps only). It works independently based on mocks, too.
-- Open <b>eShopOnContainers.sln</b> for a solution containing all the projects (All client apps and services).
-
-<img src="img/vs-solution-structure.png">
-
-[Explore the application in detail](https://github.com/dotnet-architecture/eShopOnContainers/wiki/Explore-the-application)
+- [Explore the application](https://github.com/dotnet-architecture/eShopOnContainers/wiki/Explore-the-application)
+- [Explore the code](https://github.com/dotnet-architecture/eShopOnContainers/wiki/Explore-the-code)
 
 ## Sending feedback and pull requests
 
