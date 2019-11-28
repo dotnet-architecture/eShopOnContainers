@@ -19,7 +19,7 @@ Sample .NET Core reference application, powered by Microsoft, based on a simplif
 | Ordering API | [![Ordering API](https://msftdevtools.visualstudio.com/eShopOnContainers/_apis/build/status/microservices/ordering?branchName=dev)](https://msftdevtools.visualstudio.com/eShopOnContainers/_build/latest?definitionId=198&branchName=dev) | Webhooks Client | [![Webhooks demo client](https://msftdevtools.visualstudio.com/eShopOnContainers/_apis/build/status/microservices/webhooks-client?branchName=dev)](https://msftdevtools.visualstudio.com/eShopOnContainers/_build/latest?definitionId=208&branchName=dev) |
 | Payment API | [![Payment API](https://msftdevtools.visualstudio.com/eShopOnContainers/_apis/build/status/microservices/payment?branchName=dev)](https://msftdevtools.visualstudio.com/eShopOnContainers/_build/latest?definitionId=205&branchName=dev) | | |
 
-_**Dev** branch contains the latest **stable** code and their images are tagged with `:dev` in our [Docker Hub](https://hub.docker.com/u/eshop)_
+_**Dev** branch contains the latest **beta** code and their images are tagged with `:dev` in our [Docker Hub](https://hub.docker.com/u/eshop)_
 
 ## Getting Started
 
