@@ -1,11 +1,12 @@
 <a href="https://dot.net/architecture">
-    <img src="https://github.com/dotnet-architecture/eShopOnContainers/raw/dev/img/eshop_logo.png" alt="eShop logo" title="eShopOnContainers" align="right" height="60" />
+   <img src="https://github.com/dotnet-architecture/eShopOnContainers/raw/dev/img/eshop_logo.png" alt="eShop logo" title="eShopOnContainers" align="right" height="60" />
 </a>
 
-# .NET Microservices Reference Application
+# .NET Microservices Sample Reference Application
 
 Sample .NET Core reference application, powered by Microsoft, based on a simplified microservices architecture and Docker containers.
-<img src="img/eshop-webmvc-app-screenshot.png">
+
+![](img/eshop-webmvc-app-screenshot.png)
 
 ## Azure DevOps - Build Status 
 
@@ -28,18 +29,18 @@ eShopOnContainers is provided in two flavors: Basic and Advanced.
 
 ### Basic scenario
 
-Basic scenario cab be run locally using docker compose, and also deployed to a local Kubernetes cluster. Refer these Wiki to Get Started:
+The basic scenario can be run locally using docker compose, and also deployed to a local Kubernetes cluster. Refer these Wiki pages to Get Started:
 
-- [Using Visual Studio](https://github.com/dotnet-architecture/eShopOnContainers/wiki/Windows-setup)
-- Using CLI or Visual Studio Code
-- Using docker compose
-- Using local Kubernetes
+- [CLI or Visual Studio Code](https://github.com/dotnet-architecture/eShopOnContainers/wiki/Windows-setup)
+- [Visual Studio (F5 experience)](https://github.com/dotnet-architecture/eShopOnContainers/wiki/Windows-setup#optional---use-visual-studio)
+- [Docker compose](https://github.com/dotnet-architecture/eShopOnContainers/wiki/Docker-compose-deployment-files)
+- [Local Kubernetes](https://github.com/dotnet-architecture/eShopOnContainers/wiki/Deploy-to-Local-Kubernetes)
 
 ### Advanced scenario
 
 The Advanced scenario can be run only in a Kubernetes cluster. Currently this scenario is the same as basic scenario with the following differences:
 
-- Use of a Service Mesh for Resiliency
+- [Deploy to AKS with a Service Mesh for resiliency](https://github.com/dotnet-architecture/eShopOnContainers/wiki/Deploy-to-Azure-Kubernetes-Service-(AKS))
 
 In the future more features will be implemented in the advanced scenario.
 
@@ -54,56 +55,9 @@ Do you want to be up-to-date on .NET Architecture guidance and reference apps li
 
 ## Updated for .NET Core 3.0
 
-eShopOnContainers is updated to .NET Core 3.0  "wave" of technologies. Not just compilation but also new recommended code in EF Core, ASP.NET Core, and other new related versions.
+eShopOnContainers is updated to .NET Core 3.0  "wave" of technologies. Not just compilation but also new recommended code in EF Core, ASP.NET Core, and other new related versions and a several significant changes.
 
-### Details on the latest mayor release
-
-- Migrate solution from ASP.NET Core 2.2 to 3.0 and update all projects to use the latest .NET Core 3.0 templates.
-
-- Implement the new .NET Core 3.0 WorkerService in Ordering.API and other background processes.
-
-- Improve Ordering.API
-  - Group order items
-  - apply discounts from Marketing.API
-
-- Handle two deployment scenarios
-  - Basic deployment, better for learning:
-    - Docker compose
-    - Local Kubernetes
-    - Visual Studio F5 experience
-
-  - Advanced deployment, complex but more real-life:
-    - Sidecar implementation with Envoy/Linkerd
-    - Improved API Gateway and resilience
-    - gRPC for inter-service communications
-    - Test and Support Azure Dev Spaces
-
-### New folder structure
-
-The repo also has a new, simpler, folder structure, as shown in the following image:
-
-![](img/new-folder-structure.png)
-
-In the above image you can see that the first folder level contains, basically:
-
-- **build**: Scripts for building Docker images.
-- **deploy**: Scripts for deployment.
-- **src**: All source projects, including tests.
-  - **ApiGateways**: Envoy configuration and Aggregators source code.
-  - **BuildBlocks**: Common components used by several projects.
-  - **Mobile**: Mobile apps projects.
-  - **Services**: Backend for all services. Including unit and functional tests for some projects.
-    - Basket
-    - Catalog
-    - Identity
-    - Location
-    - Marketing
-    - Ordering
-    - Payment
-    - Webhooks
-  - **Tests**: General functional application tests.
-  - **test-results**: Test results
-  - **Web**: Web applications
+See more details in the [Release notes](https://github.com/dotnet-architecture/eShopOnContainers/wiki/Release-notes) wiki page.
 
 >**PLEASE** Read our [branch guide](./branch-guide.md) to know about our branching policy
 >
@@ -117,7 +71,7 @@ This reference application is cross-platform at the server and client side, than
 The architecture proposes a microservice oriented architecture implementation with multiple autonomous microservices (each one owning its own data/db) and implementing different approaches within each microservice (simple CRUD vs. DDD/CQRS patterns) using Http as the communication protocol between the client apps and the microservices and supports asynchronous communication for data updates propagation across multiple services based on Integration Events and an Event Bus (a light message broker, to choose between RabbitMQ or Azure Service Bus, underneath) plus other features defined at the [roadmap](https://github.com/dotnet-architecture/eShopOnContainers/wiki/Roadmap).
 
 ![](img/eshop_logo.png)
-![](https://user-images.githubusercontent.com/1712635/38758862-d4b42498-3f27-11e8-8dad-db60b0fa05d3.png)
+![](img/eShopOnContainers-architecture.png)
 
 ## Related documentation and guidance
 
