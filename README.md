@@ -23,14 +23,11 @@ _**Dev** branch contains the latest **beta** code and their images are tagged wi
 
 ## Getting Started
 
-eShopOnContainers is provided in "two flavors":
-
-- Basic scenario: Can be run locally using docker compose, and also deployed to a local Kubernetes cluster
-- Production scenario: Can only be deployed on a Kubernetes cluster (local or in the cloud like AKS), and enable production features like the use of a Service Mesh.
+eShopOnContainers is provided in two flavors: Basic and Advanced.
 
 ### Basic scenario
 
-You can run eShop locally:
+Basic scenario cab be run locally using docker compose, and also deployed to a local Kubernetes cluster. Refer these Wiki to Get Started:
 
 - [Using Visual Studio](https://github.com/dotnet-architecture/eShopOnContainers/wiki/Windows-setup)
 - Using CLI or Visual Studio Code
