@@ -82,16 +82,16 @@ You can download them and start reviewing these Guides/eBooks here:
 
 | Architecting & Developing | Containers Lifecycle & CI/CD | App patterns with Xamarin.Forms |
 | ------------ | ------------|  ------------|
-| <a href='https://aka.ms/microservicesebook'><img src="img/Microservices-cover-small.png"> </a> | <a href='https://aka.ms/dockerlifecycleebook'> <img src="img/DevOps-Cover-small.png"> </a> | <a href='https://aka.ms/xamarinpatternsebook'> <img src="img/xamarin-enterprise-patterns-ebook-cover-small.png"> </a> |
+| [![](img/Microservices-cover-small.png)](https://aka.ms/microservicesebook) | [![](img/DevOps-Cover-small.png)](https://aka.ms/dockerlifecycleebook) | [![](img/xamarin-enterprise-patterns-ebook-cover-small.png)](https://aka.ms/xamarinpatternsebook) |
 | <sup> <a href='https://aka.ms/microservicesebook'>**Download .PDF**</a> </sup>  | <sup> <a href='https://aka.ms/dockerlifecycleebook'>**Download** </a>  </sup> | <sup> <a href='https://aka.ms/xamarinpatternsebook'>**Download**  </a>  </sup> |
 
 Download in other formats (**eReaders** like **MOBI**, **EPUB**) and other eBooks at the [.NET Architecture center](http://dot.net/architecture).
 
-If you've an eBook feedback, create a new issue here: https://github.com/dotnet-architecture/ebooks/issues
+If you have an e-book feedback, create a new issue here: <https://github.com/dotnet-architecture/ebooks/issues>
 
-However, we encourage you to download and review the [Architecting and Developing Microservices eBook](https://aka.ms/microservicesebook) because the architectural styles and architectural patterns and technologies explained in the guide are using this reference application when explaining many pattern implementations, so you'll understand the context, design and decisions taken in the current architecture and internal designs much better.
+However, we encourage you to download and review the [.NET Microservices: Architecture for Containerized .NET Applications e-book](https://aka.ms/microservicesebook) because the architectural styles, patterns, and technologies explained in the guide use this reference application when explaining most implementations, so you'll understand the context, design and decisions taken in the current architecture and internal designs much better.
 
-## Read futher
+## Read further
 
 - [Explore the application](https://github.com/dotnet-architecture/eShopOnContainers/wiki/Explore-the-application)
 - [Explore the code](https://github.com/dotnet-architecture/eShopOnContainers/wiki/Explore-the-code)
