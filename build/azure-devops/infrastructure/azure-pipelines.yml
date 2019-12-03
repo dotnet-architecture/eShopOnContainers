@@ -17,7 +17,7 @@ trigger:
 steps:
 - task: CopyFiles@2
   inputs:
-    sourceFolder: $(Build.SourcesDirectory)/deploy/k8s/helm    
+    sourceFolder: $(Build.SourcesDirectory)/deploy/k8s/helm
     targetFolder: $(Build.ArtifactStagingDirectory)/deploy/k8s/helm
 - task: PublishBuildArtifacts@1
   inputs:

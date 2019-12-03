@@ -9,7 +9,7 @@ trigger:
     include:
     - src/BuildingBlocks/*
     - src/Services/Ordering/*
-    - deploy/k8s/helm/ordering-api/*  
+    - deploy/k8s/helm/ordering-api/*
     - deploy/k8s/helm/ordering-backgroundtasks/*
     - deploy/k8s/helm/ordering-signalrhub/*
 jobs:
@@ -18,7 +18,7 @@ jobs:
     services: ordering.api
     registryEndpoint: $(registryEndpoint)
     helmfrom: $(Build.SourcesDirectory)/deploy/k8s/helm
-    helmto: $(Build.ArtifactStagingDirectory)/deploy/k8s/helm    
+    helmto: $(Build.ArtifactStagingDirectory)/deploy/k8s/helm
 - template: ../multiarch.yaml
   parameters:
     image: ordering.api

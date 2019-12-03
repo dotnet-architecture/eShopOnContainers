@@ -16,7 +16,7 @@ jobs:
     services: basket.api
     registryEndpoint: $(registryEndpoint)
     helmfrom: $(Build.SourcesDirectory)/deploy/k8s/helm
-    helmto: $(Build.ArtifactStagingDirectory)/deploy/k8s/helm    
+    helmto: $(Build.ArtifactStagingDirectory)/deploy/k8s/helm
 - template: ../multiarch.yaml
   parameters:
     image: basket.api

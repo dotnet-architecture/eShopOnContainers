@@ -9,7 +9,7 @@ trigger:
     include:
     - src/BuildingBlocks/*
     - src/Services/Catalog/*
-    - deploy/k8s/helm/catalog-api/*    
+    - deploy/k8s/helm/catalog-api/*
 jobs:
 - template: ../buildimages.yaml
   parameters:

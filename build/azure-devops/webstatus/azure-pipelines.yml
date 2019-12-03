@@ -9,14 +9,14 @@ trigger:
     include:
     - src/BuildingBlocks/*
     - src/Web/WebStatus/*
-    - deploy/k8s/helm/webstatus/* 
+    - deploy/k8s/helm/webstatus/*
 jobs:
 - template: ../buildimages.yaml
   parameters:
     services: webstatus
-    registryEndpoint: $(registryEndpoint)         
+    registryEndpoint: $(registryEndpoint)
     helmfrom: $(Build.SourcesDirectory)/deploy/k8s/helm
-    helmto: $(Build.ArtifactStagingDirectory)/deploy/k8s/helm          
+    helmto: $(Build.ArtifactStagingDirectory)/deploy/k8s/helm
 - template: ../multiarch.yaml
   parameters:
     image: webstatus
