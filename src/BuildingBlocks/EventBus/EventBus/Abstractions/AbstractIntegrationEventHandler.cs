@@ -6,7 +6,6 @@ using System.IO;
 using System.Net.Http;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
 using Microsoft.Extensions.Logging;
-using Ordering.API.Application.IntegrationEvents.Events;
 
 namespace Ordering.API.Application.IntegrationEvents.EventHandling
 {

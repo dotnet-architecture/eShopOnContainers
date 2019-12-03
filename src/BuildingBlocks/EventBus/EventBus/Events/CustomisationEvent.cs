@@ -1,10 +1,8 @@
-﻿using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
-using Ordering.API.Application.IntegrationEvents.Events;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace TenantACustomisations.IntegrationEvents.Events
+namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events
 {
     public class CustomisationEvent : IntegrationEvent
     {
@@ -13,13 +11,10 @@ namespace TenantACustomisations.IntegrationEvents.Events
             TenantId = tenantId;
             this.@event = @event;
             eventType = @event.GetType().Name;
-            //TODO
-            userCheckoutAcceptedIntegrationEvent = (UserCheckoutAcceptedIntegrationEvent)@event;
         }
 
         public int TenantId { get; set; }
         public IntegrationEvent @event { get; set; }
         public String eventType { get; set; }
-        public UserCheckoutAcceptedIntegrationEvent userCheckoutAcceptedIntegrationEvent { get; set; }
     }
 }

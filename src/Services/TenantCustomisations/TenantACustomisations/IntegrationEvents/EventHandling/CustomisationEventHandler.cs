@@ -7,9 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using TenantACustomisations.IntegrationEvents.Events;
 using TenantACustomisations.Services;
-using CustomisationEvent = TenantACustomisations.IntegrationEvents.Events.CustomisationEvent;
 
 namespace TenantACustomisations.IntegrationEvents.EventHandling
 {
