@@ -9,14 +9,14 @@ trigger:
     include:
     - src/BuildingBlocks/*
     - src/Web/WebhookClient/*
-    - k8s/helm/webhooks-web/*  
+    - deploy/k8s/helm/webhooks-web/*
 jobs:
 - template: ../buildimages.yaml
   parameters:
     services: webhooks.client
-    registryEndpoint: $(registryEndpoint) 
-    helmfrom: $(Build.SourcesDirectory)/k8s/helm
-    helmto: $(Build.ArtifactStagingDirectory)/k8s/helm    
+    registryEndpoint: $(registryEndpoint)
+    helmfrom: $(Build.SourcesDirectory)/deploy/k8s/helm
+    helmto: $(Build.ArtifactStagingDirectory)/deploy/k8s/helm
 - template: ../multiarch.yaml
   parameters:
     image: webhooks.client
