@@ -41,7 +41,7 @@ services:
     ports:
       - "5105:80"
 
-  basket-api-test:
+  basket-api-functional-test:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
@@ -61,7 +61,7 @@ services:
         - dotnet
         - test
         - --logger
-        - trx;LogFileName=/tests/basket-test-results.xml
+        - trx;LogFileName=/tests/basket-functional-test-results.xml
 
   basket-api-unit-test:
     environment:
@@ -85,7 +85,7 @@ services:
         - --logger
         - trx;LogFileName=/tests/basket-unit-test-results.xml
 
-  catalog-api-test:
+  catalog-api-functional-test:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
@@ -107,7 +107,7 @@ services:
         - dotnet
         - test
         - --logger
-        - trx;LogFileName=/tests/catalog-test-results.xml
+        - trx;LogFileName=/tests/catalog-functional-test-results.xml
 
   catalog-api-unit-test:
     environment:
@@ -133,7 +133,7 @@ services:
         - --logger
         - trx;LogFileName=/tests/catalog-unit-test-results.xml
 
-  ordering-api-test:
+  ordering-api-functional-test:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
@@ -155,7 +155,7 @@ services:
         - dotnet
         - test
         - --logger
-        - trx;LogFileName=/tests/ordering-test-results.xml
+        - trx;LogFileName=/tests/ordering-functional-test-results.xml
 
   ordering-api-unit-test:
     environment:
@@ -181,7 +181,7 @@ services:
         - --logger
         - trx;LogFileName=/tests/ordering-unit-test-results.xml
 
-  marketing-api-test:
+  marketing-api-functional-test:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
@@ -208,7 +208,7 @@ services:
         - dotnet
         - test
         - --logger
-        - trx;LogFileName=/tests/marketing-test-results.xml
+        - trx;LogFileName=/tests/marketing-functional-test-results.xml
 
   payment-api-test:
     environment:
@@ -223,7 +223,7 @@ services:
     ports:
       - "5108:80"
 
-  locations-api-test:
+  locations-api-functional-test:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
@@ -244,4 +244,4 @@ services:
       - dotnet
       - test
       - --logger
-      - trx;LogFileName=/tests/locations-test-results.xml
+      - trx;LogFileName=/tests/locations-functional-test-results.xml

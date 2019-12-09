@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
   sql-data-test:
-    image: microsoft/mssql-server-linux:2017-latest
+    image: mcr.microsoft.com/mssql/server:2017-latest 
 
   nosql-data-test:
     image: mongo
@@ -21,7 +21,7 @@ services:
     depends_on:
       - sql-data-test
 
-  basket-api-test:
+  basket-api-functional-test:
     image: ${REGISTRY:-eshop}/basket-api-test:${TAG:-latest}
     build:
       context: .
@@ -35,7 +35,7 @@ services:
       - ${BUILD_ARTIFACTSTAGINGDIRECTORY:-./tests-results/}:/tests
 
   basket-api-unit-test:
-    image: ${REGISTRY:-eshop}/basket-api-test:${TAG:-latest}
+    image: ${REGISTRY:-eshop}/basket-api-unit-test:${TAG:-latest}
     build:
       context: .
       dockerfile: Services/Basket/Basket.API/Dockerfile
@@ -47,8 +47,8 @@ services:
     volumes:
       - ${BUILD_ARTIFACTSTAGINGDIRECTORY:-./tests-results/}:/tests
 
-  catalog-api-test:
-    image: ${REGISTRY:-eshop}/catalog-api-test:${TAG:-latest}
+  catalog-api-functional-test:
+    image: ${REGISTRY:-eshop}/catalog-api-functional-test:${TAG:-latest}
     build:
       context: .
       dockerfile: Services/Catalog/Catalog.API/Dockerfile
@@ -60,7 +60,7 @@ services:
       - ${BUILD_ARTIFACTSTAGINGDIRECTORY:-./tests-results/}:/tests
 
   catalog-api-unit-test:
-    image: ${REGISTRY:-eshop}/catalog-api-test:${TAG:-latest}
+    image: ${REGISTRY:-eshop}/catalog-api-unit-test:${TAG:-latest}
     build:
       context: .
       dockerfile: Services/Catalog/Catalog.API/Dockerfile
@@ -71,7 +71,7 @@ services:
     volumes:
       - ${BUILD_ARTIFACTSTAGINGDIRECTORY:-./tests-results/}:/tests
 
-  ordering-api-test:
+  ordering-api-functional-test:
     image: ${REGISTRY:-eshop}/ordering-api-test:${TAG:-latest}
     build:
       context: .
@@ -84,7 +84,7 @@ services:
       - ${BUILD_ARTIFACTSTAGINGDIRECTORY:-./tests-results/}:/tests
 
   ordering-api-unit-test:
-    image: ${REGISTRY:-eshop}/ordering-api-test:${TAG:-latest}
+    image: ${REGISTRY:-eshop}/ordering-api-unit-test:${TAG:-latest}
     build:
       context: .
       dockerfile: Services/Ordering/Ordering.API/Dockerfile
@@ -95,7 +95,7 @@ services:
     volumes:
       - ${BUILD_ARTIFACTSTAGINGDIRECTORY:-./tests-results/}:/tests
 
-  marketing-api-test:
+  marketing-api-functional-test:
     image: ${REGISTRY:-eshop}/marketing-api-test:${TAG:-latest}
     build:
       context: .
@@ -117,7 +117,7 @@ services:
     depends_on:
       - rabbitmq-test
 
-  locations-api-test:
+  locations-api-functional-test:
     image: ${REGISTRY:-eshop}/locations-api-test:${TAG:-latest}
     build:
       context: .
