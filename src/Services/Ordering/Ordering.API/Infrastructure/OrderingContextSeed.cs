@@ -1,16 +1,16 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure
 {
-    using AspNetCore.Builder;
     using global::Ordering.API.Extensions;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.BuyerAggregate;
     using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
-    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.eShopOnContainers.Services.Ordering.Domain.SeedWork;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
     using Ordering.Infrastructure;
     using Polly;
+    using Polly.Retry;
     using System;
     using System.Collections.Generic;
     using System.Data.SqlClient;
@@ -20,7 +20,7 @@
 
     public class OrderingContextSeed
     {
-        public  async Task SeedAsync(OrderingContext context, IHostingEnvironment env,IOptions<OrderingSettings> settings, ILogger<OrderingContextSeed> logger)
+        public  async Task SeedAsync(OrderingContext context, IWebHostEnvironment env,IOptions<OrderingSettings> settings, ILogger<OrderingContextSeed> logger)
         {
             var policy = CreatePolicy(logger, nameof(OrderingContextSeed));
 
@@ -75,7 +75,7 @@
             }
             catch (Exception ex)
             {
-                log.LogError(ex.Message);
+                log.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message);
                 return GetPredefinedCardTypes();
             }
 
@@ -83,7 +83,7 @@
             return File.ReadAllLines(csvFileCardTypes)
                                         .Skip(1) // skip header column
                                         .SelectTry(x => CreateCardType(x, ref id))
-                                        .OnCaughtException(ex => { log.LogError(ex.Message); return null; })
+                                        .OnCaughtException(ex => { log.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message); return null; })
                                         .Where(x => x != null);
         }
 
@@ -97,14 +97,9 @@
             return new CardType(id++, value.Trim('"').Trim());
         }
 
-        private  IEnumerable<CardType> GetPredefinedCardTypes()
+        private IEnumerable<CardType> GetPredefinedCardTypes()
         {
-            return new List<CardType>()
-            {
-                CardType.Amex,
-                CardType.Visa,
-                CardType.MasterCard
-            };
+            return Enumeration.GetAll<CardType>();
         }
 
         private IEnumerable<OrderStatus> GetOrderStatusFromFile(string contentRootPath, ILogger<OrderingContextSeed> log)
@@ -124,7 +119,7 @@
             }
             catch (Exception ex)
             {
-                log.LogError(ex.Message);
+                log.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message);
                 return GetPredefinedOrderStatus();
             }
 
@@ -132,7 +127,7 @@
             return File.ReadAllLines(csvFileOrderStatus)
                                         .Skip(1) // skip header row
                                         .SelectTry(x => CreateOrderStatus(x, ref id))
-                                        .OnCaughtException(ex => { log.LogError(ex.Message); return null; })
+                                        .OnCaughtException(ex => { log.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message); return null; })
                                         .Where(x => x != null);
         }
 
@@ -180,7 +175,7 @@
         }
 
      
-        private Policy CreatePolicy( ILogger<OrderingContextSeed> logger, string prefix, int retries =3)
+        private AsyncRetryPolicy CreatePolicy( ILogger<OrderingContextSeed> logger, string prefix, int retries =3)
         {
             return Policy.Handle<SqlException>().
                 WaitAndRetryAsync(
@@ -188,7 +183,7 @@
                     sleepDurationProvider: retry => TimeSpan.FromSeconds(5),
                     onRetry: (exception, timeSpan, retry, ctx) =>
                     {
-                        logger.LogTrace($"[{prefix}] Exception {exception.GetType().Name} with message ${exception.Message} detected on attempt {retry} of {retries}");
+                        logger.LogWarning(exception, "[{prefix}] Exception {ExceptionType} with message {Message} detected on attempt {retry} of {retries}", prefix, exception.GetType().Name, exception.Message, retry, retries);
                     }
                 );
         }

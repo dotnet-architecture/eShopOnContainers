@@ -19,14 +19,10 @@ namespace Ordering.Infrastructure
                 .ToList();
 
             domainEntities.ToList()
-                .ForEach(entity => entity.Entity.DomainEvents.Clear());
+                .ForEach(entity => entity.Entity.ClearDomainEvents());
 
-            var tasks = domainEvents
-                .Select(async (domainEvent) => {
-                    await mediator.Publish(domainEvent);
-                });
-
-            await Task.WhenAll(tasks);
+            foreach (var domainEvent in domainEvents)
+                await mediator.Publish(domainEvent);
         }
     }
 }

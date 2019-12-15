@@ -1,32 +1,38 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.HealthChecks;
+﻿using HealthChecks.UI.Configuration;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using System.Linq;
 using System.Threading.Tasks;
-using WebStatus.Viewmodels;
 
 namespace WebStatus.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IHealthCheckService _healthCheckSvc;
-        public HomeController(IHealthCheckService checkSvc)
+        private IConfiguration _configuration;
+
+        public HomeController(IConfiguration configuration)
         {
-            _healthCheckSvc = checkSvc;
+            _configuration = configuration;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var result = await _healthCheckSvc.CheckHealthAsync();
+            var basePath = _configuration["PATH_BASE"];
+            return Redirect($"{basePath}/hc-ui");
+        }
 
-            var data = new HealthStatusViewModel(result.CheckStatus);
+        [HttpGet("/Config")]
+        public IActionResult Config()
+        {
+            var configurationValues = _configuration.GetSection("HealthChecksUI:HealthChecks")
+                .GetChildren()
+                .SelectMany(cs => cs.GetChildren())
+                .Union(_configuration.GetSection("HealthChecks-UI:HealthChecks")
+                .GetChildren()
+                .SelectMany(cs => cs.GetChildren()))
+                .ToDictionary(v => v.Path, v => v.Value);
 
-            foreach (var checkResult in result.Results)
-            {
-                data.AddResult(checkResult.Key, checkResult.Value);
-            }
-
-            ViewBag.RefreshSeconds = 60;
-
-            return View(data);
+            return View(configurationValues);
         }
 
         public IActionResult Error()

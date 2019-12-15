@@ -13,9 +13,9 @@ namespace WebSPA.Infrastructure
 {
     public class WebContextSeed
     {
-        public static void Seed(IApplicationBuilder applicationBuilder, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public static void Seed(IApplicationBuilder applicationBuilder, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
-            var log = loggerFactory.CreateLogger("WebSPA seed");
+            var log = loggerFactory.CreateLogger<WebContextSeed>();
 
             var settings = (AppSettings)applicationBuilder
                 .ApplicationServices.GetRequiredService<IOptions<AppSettings>>().Value;
@@ -37,7 +37,7 @@ namespace WebSPA.Infrastructure
                 string imagesZipFile = Path.Combine(contentRootPath, "Setup", "images.zip");
                 if (!File.Exists(imagesZipFile))
                 {
-                    log.LogError($" zip file '{imagesZipFile}' does not exists.");
+                    log.LogError("Zip file '{ZipFileName}' does not exists.", imagesZipFile);
                     return;
                 }
 
@@ -59,14 +59,14 @@ namespace WebSPA.Infrastructure
                         }
                         else
                         {
-                            log.LogWarning($"Skip file '{entry.Name}' in zipfile '{imagesZipFile}'");
+                            log.LogWarning("Skipped file '{FileName}' in zipfile '{ZipFileName}'", entry.Name, imagesZipFile);
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                log.LogError($"Exception in method GetPreconfiguredImages WebSPA. Exception Message={ex.Message}");
+                log.LogError(ex, "ERROR in GetPreconfiguredImages: {Message}", ex.Message);
             }
         }
     }

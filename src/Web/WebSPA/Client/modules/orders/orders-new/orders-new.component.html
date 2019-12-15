@@ -77,7 +77,7 @@
         </section>
         <section class="esh-orders_new-section">
             <article class="esh-orders_new-titles row">
-                <section class="esh-orders_new-title col-xs-12">Order details</section>
+                <section class="esh-orders_new-title col-12">Order details</section>
             </article>
 
             <article class="esh-orders_new-items esh-orders_new-items--border row"
@@ -85,26 +85,26 @@
                 <section class="esh-orders_new-item col-md-4 hidden-md-down">
                     <img class="esh-orders_new-image" src="{{item.pictureurl}}">
                 </section>
-                <section class="esh-orders_new-item esh-orders_new-item--middle col-xs-4">{{item.productname}}</section>
-                <section class="esh-orders_new-item esh-orders_new-item--middle col-xs-1">$ {{item.unitprice | number:'.2-2'}}</section>
-                <section class="esh-orders_new-item esh-orders_new-item--middle col-xs-1">{{item.units}}</section>
-                <section class="esh-orders_new-item esh-orders_new-item--middle col-xs-2">$ {{(item.units * item.unitprice) | number:'.2-2'}}</section>
+                <section class="esh-orders_new-item esh-orders_new-item--middle col-4">{{item.productname}}</section>
+                <section class="esh-orders_new-item esh-orders_new-item--middle col-1">$ {{item.unitprice | number:'.2-2'}}</section>
+                <section class="esh-orders_new-item esh-orders_new-item--middle col-1">{{item.units}}</section>
+                <section class="esh-orders_new-item esh-orders_new-item--middle col-2">$ {{(item.units * item.unitprice) | number:'.2-2'}}</section>
             </article>
         </section>
 
         <section class="esh-orders_new-section esh-orders_new-section--right">
             <article class="esh-orders_new-titles row">
-                <section class="esh-orders_new-title col-xs-9"></section>
-                <section class="esh-orders_new-title col-xs-2">Total</section>
+                <section class="esh-orders_new-title col-9"></section>
+                <section class="esh-orders_new-title col-2">Total</section>
             </article>
 
             <article class="esh-orders_new-items row">
-                <section class="esh-orders_new-item col-xs-9"></section>
-                <section class="esh-orders_new-item esh-orders_new-item--mark col-xs-2">$ {{order.total | number:'.2-2'}}</section>
+                <section class="esh-orders_new-item col-9"></section>
+                <section class="esh-orders_new-item esh-orders_new-item--mark col-2">$ {{order.total | number:'.2-2'}}</section>
             </article>
         </section>
         <section class="esh-orders_new-section">
-            <div class="form-group">
+            <div class="form-group row">
                 <div class="col-md-9">
                 </div>
                 <div class="col-md-2">

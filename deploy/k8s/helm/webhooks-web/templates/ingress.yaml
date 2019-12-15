@@ -1,0 +1,33 @@
+{{- if .Values.ingress.enabled -}}
+{{- $ingressPath := include "pathBase" . -}}
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ template "webhooks-web.fullname" . }}
+  labels:
+    app: {{ template "webhooks-web.name" . }}
+    chart: {{ template "webhooks-web.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+{{- with .Values.ingress.annotations }}
+  annotations:
+{{ toYaml . | indent 4 }}
+{{- end }}
+spec:
+{{- if .Values.ingress.tls }}
+  tls:
+  {{- range .Values.ingress.tls }}
+    - hosts:
+        - {{ .Values.inf.k8s.dns }}
+      secretName: {{ .secretName }}
+  {{- end }}
+{{- end }}
+  rules:
+    - host: {{ .Values.inf.k8s.dns }}
+      http:
+        paths:
+          - path: {{ $ingressPath }}
+            backend:
+              serviceName: {{  .Values.app.svc.webhooksweb }}
+              servicePort: http
+{{- end }}

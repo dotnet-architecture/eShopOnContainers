@@ -1,0 +1,39 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<section class="esh-catalog-hero">
+</section>
+
+<div class="text-center">
+    <p>&nbsp;</p>
+    <img class="esh-app-footer-brand" src="~/images/brand.png" />
+    <h2>eShopOnContainers - Order Management</h2>
+    <p>
+        This is a <bold>sample</bold> web client that uses the Webhooks API to show you all orders that reached the "paid" status. This is accomplished by creating a Webhook
+        that will be called by eShopOnContainers core when the order reached this "paid" status. If not created you can create this webhook going to <a asp-page="RegisterWebhook">webhook registration</a>.
+    </p>
+    @if (!User.Identity.IsAuthenticated)
+    {
+        <a class="btn-primary btn" href="@Url.Action("SignIn", "Account")">Login</a>
+        <p>Why I need to login? You only need to login <bold>to setup a new webhook</bold>.</p>
+    }
+</div>
+
+<div class="table">
+    <h3>Current webhooks received (orders paid)</h3>
+    <p>(Data since last time web started up). <strong>Note: </strong>Must manually refresh this page.<p>
+    <table class="table">
+        @foreach (var webhook in Model.WebHooksReceived)
+        {
+            <tr>
+                <td>@webhook.When</td>
+                <td><pre>@webhook.Data</pre></td>
+                <td>@(webhook.Token ?? "--None--")</td>
+            </tr>
+        }
+    </table>
+</div>
+

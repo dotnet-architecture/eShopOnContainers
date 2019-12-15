@@ -1,4 +1,9 @@
-﻿using IdentityModel;
+﻿using System;
+using System.Linq;
+using System.Security.Claims;
+using System.Text.Encodings.Web;
+using System.Threading.Tasks;
+using IdentityModel;
 using IdentityServer4;
 using IdentityServer4.Models;
 using IdentityServer4.Services;
@@ -10,17 +15,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.eShopOnContainers.Services.Identity.API.Models;
 using Microsoft.eShopOnContainers.Services.Identity.API.Models.AccountViewModels;
 using Microsoft.eShopOnContainers.Services.Identity.API.Services;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Linq;
-using System.Security.Claims;
-using System.Text.Encodings.Web;
-using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.Services.Identity.API.Controllers
 {
     /// <summary>
-    /// This sample controller implements a typical login/logout/provision workflow for local and external accounts.
+    /// This sample controller implements a typical login/logout/provision workflow for local accounts.
     /// The login service encapsulates the interactions with the user data store. This data store is in-memory only and cannot be used for production!
     /// The interaction service provides a way for the UI to communicate with identityserver for validation and context retrieval
     /// </summary>
@@ -32,6 +33,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Controllers
         private readonly IClientStore _clientStore;
         private readonly ILogger<AccountController> _logger;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IConfiguration _configuration;
 
         public AccountController(
 
@@ -40,13 +42,15 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Controllers
             IIdentityServerInteractionService interaction,
             IClientStore clientStore,
             ILogger<AccountController> logger,
-            UserManager<ApplicationUser> userManager)
+            UserManager<ApplicationUser> userManager,
+            IConfiguration configuration)
         {
             _loginService = loginService;
             _interaction = interaction;
             _clientStore = clientStore;
             _logger = logger;
             _userManager = userManager;
+            _configuration = configuration;
         }
 
         /// <summary>
@@ -58,8 +62,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Controllers
             var context = await _interaction.GetAuthorizationContextAsync(returnUrl);
             if (context?.IdP != null)
             {
-                // if IdP is passed, then bypass showing the login screen
-                return ExternalLogin(context.IdP, returnUrl);
+                throw new NotImplementedException("External login is not implemented!");
             }
 
             var vm = await BuildLoginViewModelAsync(returnUrl, context);
@@ -79,20 +82,28 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Controllers
             if (ModelState.IsValid)
             {
                 var user = await _loginService.FindByUsername(model.Email);
+
                 if (await _loginService.ValidateCredentials(user, model.Password))
                 {
-                    AuthenticationProperties props = null;
-                    if (model.RememberMe)
+                    var tokenLifetime = _configuration.GetValue("TokenLifetimeMinutes", 120);
+
+                    var props = new AuthenticationProperties
                     {
-                        props = new AuthenticationProperties
-                        {
-                            IsPersistent = true,
-                            ExpiresUtc = DateTimeOffset.UtcNow.AddYears(10)
-                        };
+                        ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(tokenLifetime),
+                        AllowRefresh = true,
+                        RedirectUri = model.ReturnUrl
                     };
 
-                    await _loginService.SignIn(user);
-                   
+                    if (model.RememberMe)
+                    {
+                        var permanentTokenLifetime = _configuration.GetValue("PermanentTokenLifetimeDays", 365);
+
+                        props.ExpiresUtc = DateTimeOffset.UtcNow.AddDays(permanentTokenLifetime);
+                        props.IsPersistent = true;
+                    };
+
+                    await _loginService.SignInAsync(user, props);
+
                     // make sure the returnUrl is still valid, and if yes - redirect back to authorize endpoint
                     if (_interaction.IsValidReturnUrl(model.ReturnUrl))
                     {
@@ -113,7 +124,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Controllers
             return View(vm);
         }
 
-        async Task<LoginViewModel> BuildLoginViewModelAsync(string returnUrl, AuthorizationRequest context)
+        private async Task<LoginViewModel> BuildLoginViewModelAsync(string returnUrl, AuthorizationRequest context)
         {
             var allowLocal = true;
             if (context?.ClientId != null)
@@ -132,7 +143,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Controllers
             };
         }
 
-        async Task<LoginViewModel> BuildLoginViewModelAsync(LoginViewModel model)
+        private async Task<LoginViewModel> BuildLoginViewModelAsync(LoginViewModel model)
         {
             var context = await _interaction.GetAuthorizationContextAsync(model.ReturnUrl);
             var vm = await BuildLoginViewModelAsync(model.ReturnUrl, context);
@@ -193,7 +204,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Controllers
 
                 try
                 {
-                    
+
                     // hack: try/catch to handle social providers that throw
                     await HttpContext.SignOutAsync(idp, new AuthenticationProperties
                     {
@@ -202,12 +213,14 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Controllers
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogCritical(ex.Message);
+                    _logger.LogError(ex, "LOGOUT ERROR: {ExceptionMessage}", ex.Message);
                 }
             }
 
             // delete authentication cookie
             await HttpContext.SignOutAsync();
+
+            await HttpContext.SignOutAsync(IdentityConstants.ApplicationScheme);
 
             // set this so UI rendering sees an anonymous user
             HttpContext.User = new ClaimsPrincipal(new ClaimsIdentity());
@@ -228,28 +241,6 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Controllers
 
             return Redirect(redirectUrl);
         }
-
-        /// <summary>
-        /// initiate roundtrip to external authentication provider
-        /// </summary>
-        [HttpGet]
-        public IActionResult ExternalLogin(string provider, string returnUrl)
-        {
-            if (returnUrl != null)
-            {
-                returnUrl = UrlEncoder.Default.Encode(returnUrl);
-            }
-            returnUrl = "/account/externallogincallback?returnUrl=" + returnUrl;
-
-            // start challenge and roundtrip the return URL
-            var props = new AuthenticationProperties
-            {
-                RedirectUri = returnUrl,
-                Items = { { "scheme", provider } }
-            };
-            return new ChallengeResult(provider, props);
-        }
-
 
         // GET: /Account/Register
         [HttpGet]

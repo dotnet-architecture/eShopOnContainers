@@ -6,6 +6,7 @@
     using Microsoft.Extensions.Options;
     using Model;
     using Polly;
+    using Polly.Retry;
     using System;
     using System.Collections.Generic;
     using System.Data.SqlClient;
@@ -18,7 +19,7 @@
 
     public class CatalogContextSeed
     {
-        public async Task SeedAsync(CatalogContext context,IHostingEnvironment env,IOptions<CatalogSettings> settings,ILogger<CatalogContextSeed> logger)
+        public async Task SeedAsync(CatalogContext context,IWebHostEnvironment env,IOptions<CatalogSettings> settings,ILogger<CatalogContextSeed> logger)
         {
             var policy = CreatePolicy(logger, nameof(CatalogContextSeed));
 
@@ -76,14 +77,14 @@
             }
             catch (Exception ex)
             {
-                logger.LogError(ex.Message);
+                logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message);
                 return GetPreconfiguredCatalogBrands();
             }
 
             return File.ReadAllLines(csvFileCatalogBrands)
                                         .Skip(1) // skip header row
                                         .SelectTry(x => CreateCatalogBrand(x))
-                                        .OnCaughtException(ex => { logger.LogError(ex.Message); return null; })
+                                        .OnCaughtException(ex => { logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message); return null; })
                                         .Where(x => x != null);
         }
 
@@ -131,14 +132,14 @@
             }
             catch (Exception ex)
             {
-                logger.LogError(ex.Message);
+                logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message);
                 return GetPreconfiguredCatalogTypes();
             }
 
             return File.ReadAllLines(csvFileCatalogTypes)
                                         .Skip(1) // skip header row
                                         .SelectTry(x => CreateCatalogType(x))
-                                        .OnCaughtException(ex => { logger.LogError(ex.Message); return null; })
+                                        .OnCaughtException(ex => { logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message); return null; })
                                         .Where(x => x != null);
         }
 
@@ -186,7 +187,7 @@
             }
             catch (Exception ex)
             {
-                logger.LogError(ex.Message);
+                logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message);
                 return GetPreconfiguredItems();
             }
 
@@ -197,7 +198,7 @@
                         .Skip(1) // skip header row
                         .Select(row => Regex.Split(row, ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)") )
                         .SelectTry(column => CreateCatalogItem(column, csvheaders, catalogTypeIdLookup, catalogBrandIdLookup))
-                        .OnCaughtException(ex => { logger.LogError(ex.Message); return null; })
+                        .OnCaughtException(ex => { logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message); return null; })
                         .Where(x => x != null);
         }
 
@@ -356,17 +357,20 @@
 
         private void GetCatalogItemPictures(string contentRootPath, string picturePath)
         {
-            DirectoryInfo directory = new DirectoryInfo(picturePath);
-            foreach (FileInfo file in directory.GetFiles())
+            if (picturePath != null)
             {
-                file.Delete();
-            }
+                DirectoryInfo directory = new DirectoryInfo(picturePath);
+                foreach (FileInfo file in directory.GetFiles())
+                {
+                    file.Delete();
+                }
 
-            string zipFileCatalogItemPictures = Path.Combine(contentRootPath, "Setup", "CatalogItems.zip");
-            ZipFile.ExtractToDirectory(zipFileCatalogItemPictures, picturePath);
+                string zipFileCatalogItemPictures = Path.Combine(contentRootPath, "Setup", "CatalogItems.zip");
+                ZipFile.ExtractToDirectory(zipFileCatalogItemPictures, picturePath);
+            }
         }
 
-        private Policy CreatePolicy( ILogger<CatalogContextSeed> logger, string prefix,int retries = 3)
+        private AsyncRetryPolicy CreatePolicy( ILogger<CatalogContextSeed> logger, string prefix,int retries = 3)
         {
             return Policy.Handle<SqlException>().
                 WaitAndRetryAsync(
@@ -374,7 +378,7 @@
                     sleepDurationProvider: retry => TimeSpan.FromSeconds(5),
                     onRetry: (exception, timeSpan, retry, ctx) =>
                     {
-                        logger.LogTrace($"[{prefix}] Exception {exception.GetType().Name} with message ${exception.Message} detected on attempt {retry} of {retries}");
+                        logger.LogWarning(exception, "[{prefix}] Exception {ExceptionType} with message {Message} detected on attempt {retry} of {retries}", prefix, exception.GetType().Name, exception.Message, retry, retries);
                     }
                 );
         }

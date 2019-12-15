@@ -1,18 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.eShopOnContainers.WebMVC.Services;
 using Microsoft.eShopOnContainers.WebMVC.ViewModels;
-using Microsoft.AspNetCore.Authorization;
-using System.Net.Http;
-using Polly.CircuitBreaker;
-using WebMVC.Models;
+using System;
+using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.WebMVC.Controllers
 {
-    [Authorize]
+    [Authorize(AuthenticationSchemes = "OpenIdConnect")]
     public class OrderController : Controller
     {
         private IOrderingService _orderSvc;
@@ -27,9 +22,9 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
 
         public async Task<IActionResult> Create()
         {
+
             var user = _appUserParser.Parse(HttpContext.User);
-            var basket = await _basketSvc.GetBasket(user);
-            var order = _basketSvc.MapBasketToOrder(basket);
+            var order = await _basketSvc.GetOrderDraft(user.Id);
             var vm = _orderSvc.MapUserInfoIntoOrder(user, order);
             vm.CardExpirationShortFormat();
 
@@ -52,11 +47,12 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
                     return RedirectToAction("Index");
                 }
             }
-            catch(BrokenCircuitException)
+            catch (Exception ex)
             {
-                ModelState.AddModelError("Error", "It was not possible to create a new order, please try later on. (Business Msg Due to Circuit-Breaker)");
+                ModelState.AddModelError("Error", $"It was not possible to create a new order, please try later on ({ex.GetType().Name} - {ex.Message})");
             }
-            return View("Create",  model);
+
+            return View("Create", model);
         }
 
         public async Task<IActionResult> Cancel(string orderId)

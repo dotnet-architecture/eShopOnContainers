@@ -1,30 +1,22 @@
-﻿using System;
-
-namespace WebMVC.Infrastructure
+﻿namespace WebMVC.Infrastructure
 {
     public static class API
     {
+
+        public static class Purchase
+        {
+            public static string AddItemToBasket(string baseUri) => $"{baseUri}/basket/items";
+            public static string UpdateBasketItem(string baseUri) => $"{baseUri}/basket/items";
+
+            public static string GetOrderDraft(string baseUri, string basketId) => $"{baseUri}/order/draft/{basketId}";
+        }
+
         public static class Basket
         {
-            public static string GetBasket(string baseUri, string basketId)
-            {
-                return $"{baseUri}/{basketId}";
-            }
-
-            public static string UpdateBasket(string baseUri)
-            {
-                return baseUri;
-            }
-
-            public static string CheckoutBasket(string baseUri)
-            {
-                return $"{baseUri}/checkout";
-            }
-
-            public static string CleanBasket(string baseUri, string basketId)
-            {
-                return $"{baseUri}/{basketId}";
-            }
+            public static string GetBasket(string baseUri, string basketId) => $"{baseUri}/{basketId}";
+            public static string UpdateBasket(string baseUri) => baseUri;
+            public static string CheckoutBasket(string baseUri) => $"{baseUri}/checkout";
+            public static string CleanBasket(string baseUri, string basketId) => $"{baseUri}/{basketId}";
         }
 
         public static class Order
@@ -61,11 +53,20 @@ namespace WebMVC.Infrastructure
             {
                 var filterQs = "";
 
-                if (brand.HasValue || type.HasValue)
+                if (type.HasValue)
                 {
-                    var brandQs = (brand.HasValue) ? brand.Value.ToString() : "null";
-                    var typeQs = (type.HasValue) ? type.Value.ToString() : "null";
-                    filterQs = $"/type/{typeQs}/brand/{brandQs}";
+                    var brandQs = (brand.HasValue) ? brand.Value.ToString() : string.Empty;
+                    filterQs = $"/type/{type.Value}/brand/{brandQs}";
+
+                }
+                else if (brand.HasValue)
+                {
+                    var brandQs = (brand.HasValue) ? brand.Value.ToString() : string.Empty;
+                    filterQs = $"/type/all/brand/{brandQs}";
+                }
+                else
+                {
+                    filterQs = string.Empty;
                 }
 
                 return $"{baseUri}items{filterQs}?pageIndex={page}&pageSize={take}";
@@ -100,7 +101,7 @@ namespace WebMVC.Infrastructure
             public static string CreateOrUpdateUserLocation(string baseUri)
             {
                 return baseUri;
-            }           
+            }
         }
     }
 }

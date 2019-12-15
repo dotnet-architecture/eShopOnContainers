@@ -3,7 +3,7 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:5103/",
+      "applicationUrl": "http://localhost:58017/",
       "sslPort": 0
     }
   },
@@ -19,7 +19,7 @@
     "Microsoft.eShopOnContainers.Services.Basket.API": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "http://localhost:5000/swagger",
+      "launchUrl": "http://localhost:55103/",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

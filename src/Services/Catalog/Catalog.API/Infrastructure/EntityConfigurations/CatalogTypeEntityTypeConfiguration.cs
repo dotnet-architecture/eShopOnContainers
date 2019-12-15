@@ -14,7 +14,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure.Entity
             builder.HasKey(ci => ci.Id);
 
             builder.Property(ci => ci.Id)
-               .ForSqlServerUseSequenceHiLo("catalog_type_hilo")
+               .UseHiLo("catalog_type_hilo")
                .IsRequired();
 
             builder.Property(cb => cb.Type)

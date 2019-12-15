@@ -1,0 +1,29 @@
+trigger:
+  branches:
+    include:
+    - master
+    - dev
+  paths:
+    include:
+    - src/ApiGateways/*
+    - deploy/k8s/helm/apigwmm/*
+    - deploy/k8s/helm/apigwms/*
+    - deploy/k8s/helm/apigwwm/*
+    - deploy/k8s/helm/apigwws/*
+    exclude:
+    - src/ApiGateways/Mobile.Bff.Shopping/aggregator/*
+    - src/ApiGateways/Web.Bff.Shopping/aggregator/*
+jobs:
+- job: PublishCharts
+  condition: ne('$(Build.Reason)', 'PullRequest')
+  pool:
+    vmImage: 'ubuntu-16.04'
+  steps:
+  - task: CopyFiles@2
+    inputs:
+      sourceFolder: $(Build.SourcesDirectory)/deploy/k8s/helm
+      targetFolder: $(Build.ArtifactStagingDirectory)/deploy/k8s/helm
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathtoPublish: $(Build.ArtifactStagingDirectory)/deploy/k8s/helm
+      artifactName: helm

@@ -1,0 +1,25 @@
+pool:
+  vmImage: 'ubuntu-16.04'
+variables:
+    registryEndpoint: eshop-registry
+trigger:
+  branches:
+    include:
+    - master
+    - dev
+  paths:
+    include:
+    - deploy/k8s/helm/basket-data/*
+    - deploy/k8s/helm/keystore-data/*
+    - deploy/k8s/helm/nosql-data/*
+    - deploy/k8s/helm/rabbitmq/*
+    - deploy/k8s/helm/sql-data/*
+steps:
+- task: CopyFiles@2
+  inputs:
+    sourceFolder: $(Build.SourcesDirectory)/deploy/k8s/helm
+    targetFolder: $(Build.ArtifactStagingDirectory)/deploy/k8s/helm
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathtoPublish: $(Build.ArtifactStagingDirectory)/deploy/k8s/helm
+    artifactName: helm

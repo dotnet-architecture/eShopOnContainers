@@ -4,18 +4,18 @@
     using Microsoft.AspNetCore.Mvc;
     using System.IO;
 
-
-    public class PicController : Controller
+    [ApiController]
+    public class PicController : ControllerBase
     {
-        private readonly IHostingEnvironment _env;
-        public PicController(IHostingEnvironment env)
+        private readonly IWebHostEnvironment _env;
+        public PicController(IWebHostEnvironment env)
         {
             _env = env;
         }
 
         [HttpGet]
         [Route("api/v1/campaigns/{campaignId:int}/pic")]
-        public IActionResult GetImage(int campaignId)
+        public ActionResult GetImage(int campaignId)
         {
             var webRoot = _env.WebRootPath;
             var path = Path.Combine(webRoot, campaignId + ".png");

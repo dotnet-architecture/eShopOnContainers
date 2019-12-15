@@ -14,7 +14,11 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                 new ApiResource("orders", "Orders Service"),
                 new ApiResource("basket", "Basket Service"),
                 new ApiResource("marketing", "Marketing Service"),
-                new ApiResource("locations", "Locations Service")
+                new ApiResource("locations", "Locations Service"),
+                new ApiResource("mobileshoppingagg", "Mobile Shopping Aggregator"),
+                new ApiResource("webshoppingagg", "Web Shopping Aggregator"),
+                new ApiResource("orders.signalrhub", "Ordering Signalr Hub"),
+                new ApiResource("webhooks", "Webhooks registration Service"),
             };
         }
 
@@ -30,7 +34,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
         }
 
         // client want to access resources (aka scopes)
-        public static IEnumerable<Client> GetClients(Dictionary<string,string> clientsUrl)
+        public static IEnumerable<Client> GetClients(Dictionary<string, string> clientsUrl)
         {
             return new List<Client>
             {
@@ -52,8 +56,11 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                         "orders",
                         "basket",
                         "locations",
-                        "marketing"
-                    }
+                        "marketing",
+                        "webshoppingagg",
+                        "orders.signalrhub",
+                        "webhooks"
+                    },
                 },
                 new Client
                 {
@@ -69,7 +76,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                     RequireConsent = false,
                     RequirePkce = true,
                     PostLogoutRedirectUris = { $"{clientsUrl["Xamarin"]}/Account/Redirecting" },
-                    AllowedCorsOrigins = { "http://eshopxamarin" },
+                    //AllowedCorsOrigins = { "http://eshopxamarin" },
                     AllowedScopes = new List<string>
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
@@ -78,7 +85,9 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                         "orders",
                         "basket",
                         "locations",
-                        "marketing"
+                        "marketing",
+                        "mobileshoppingagg",
+                        "webhooks"
                     },
                     //Allow requesting refresh tokens for long lived API access
                     AllowOfflineAccess = true,
@@ -114,8 +123,45 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                         "orders",
                         "basket",
                         "locations",
-                        "marketing"
+                        "marketing",
+                        "webshoppingagg",
+                        "orders.signalrhub",
+                        "webhooks"
                     },
+                    AccessTokenLifetime = 60*60*2, // 2 hours
+                    IdentityTokenLifetime= 60*60*2 // 2 hours
+                },
+                new Client
+                {
+                    ClientId = "webhooksclient",
+                    ClientName = "Webhooks Client",
+                    ClientSecrets = new List<Secret>
+                    {
+                        new Secret("secret".Sha256())
+                    },
+                    ClientUri = $"{clientsUrl["WebhooksWeb"]}",                             // public uri of the client
+                    AllowedGrantTypes = GrantTypes.Hybrid,
+                    AllowAccessTokensViaBrowser = false,
+                    RequireConsent = false,
+                    AllowOfflineAccess = true,
+                    AlwaysIncludeUserClaimsInIdToken = true,
+                    RedirectUris = new List<string>
+                    {
+                        $"{clientsUrl["WebhooksWeb"]}/signin-oidc"
+                    },
+                    PostLogoutRedirectUris = new List<string>
+                    {
+                        $"{clientsUrl["WebhooksWeb"]}/signout-callback-oidc"
+                    },
+                    AllowedScopes = new List<string>
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServerConstants.StandardScopes.OfflineAccess,
+                        "webhooks"
+                    },
+                    AccessTokenLifetime = 60*60*2, // 2 hours
+                    IdentityTokenLifetime= 60*60*2 // 2 hours
                 },
                 new Client
                 {
@@ -146,7 +192,9 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                         "orders",
                         "basket",
                         "locations",
-                        "marketing"
+                        "marketing",
+                        "webshoppingagg",
+                        "webhooks"
                     },
                 },
                 new Client
@@ -156,7 +204,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
 
-                    RedirectUris = { $"{clientsUrl["LocationsApi"]}/swagger/o2c.html" },
+                    RedirectUris = { $"{clientsUrl["LocationsApi"]}/swagger/oauth2-redirect.html" },
                     PostLogoutRedirectUris = { $"{clientsUrl["LocationsApi"]}/swagger/" },
 
                     AllowedScopes =
@@ -171,7 +219,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
 
-                    RedirectUris = { $"{clientsUrl["MarketingApi"]}/swagger/o2c.html" },
+                    RedirectUris = { $"{clientsUrl["MarketingApi"]}/swagger/oauth2-redirect.html" },
                     PostLogoutRedirectUris = { $"{clientsUrl["MarketingApi"]}/swagger/" },
 
                     AllowedScopes =
@@ -186,7 +234,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
 
-                    RedirectUris = { $"{clientsUrl["BasketApi"]}/swagger/o2c.html" },
+                    RedirectUris = { $"{clientsUrl["BasketApi"]}/swagger/oauth2-redirect.html" },
                     PostLogoutRedirectUris = { $"{clientsUrl["BasketApi"]}/swagger/" },
 
                     AllowedScopes =
@@ -201,12 +249,58 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
 
-                    RedirectUris = { $"{clientsUrl["OrderingApi"]}/swagger/o2c.html" },
+                    RedirectUris = { $"{clientsUrl["OrderingApi"]}/swagger/oauth2-redirect.html" },
                     PostLogoutRedirectUris = { $"{clientsUrl["OrderingApi"]}/swagger/" },
 
                     AllowedScopes =
                     {
                         "orders"
+                    }
+                },
+                new Client
+                {
+                    ClientId = "mobileshoppingaggswaggerui",
+                    ClientName = "Mobile Shopping Aggregattor Swagger UI",
+                    AllowedGrantTypes = GrantTypes.Implicit,
+                    AllowAccessTokensViaBrowser = true,
+
+                    RedirectUris = { $"{clientsUrl["MobileShoppingAgg"]}/swagger/oauth2-redirect.html" },
+                    PostLogoutRedirectUris = { $"{clientsUrl["MobileShoppingAgg"]}/swagger/" },
+
+                    AllowedScopes =
+                    {
+                        "mobileshoppingagg"
+                    }
+                },
+                new Client
+                {
+                    ClientId = "webshoppingaggswaggerui",
+                    ClientName = "Web Shopping Aggregattor Swagger UI",
+                    AllowedGrantTypes = GrantTypes.Implicit,
+                    AllowAccessTokensViaBrowser = true,
+
+                    RedirectUris = { $"{clientsUrl["WebShoppingAgg"]}/swagger/oauth2-redirect.html" },
+                    PostLogoutRedirectUris = { $"{clientsUrl["WebShoppingAgg"]}/swagger/" },
+
+                    AllowedScopes =
+                    {
+                        "webshoppingagg",
+                        "basket"
+                    }
+                },
+                new Client
+                {
+                    ClientId = "webhooksswaggerui",
+                    ClientName = "WebHooks Service Swagger UI",
+                    AllowedGrantTypes = GrantTypes.Implicit,
+                    AllowAccessTokensViaBrowser = true,
+
+                    RedirectUris = { $"{clientsUrl["WebhooksApi"]}/swagger/oauth2-redirect.html" },
+                    PostLogoutRedirectUris = { $"{clientsUrl["WebhooksApi"]}/swagger/" },
+
+                    AllowedScopes =
+                    {
+                        "webhooks"
                     }
                 }
             };
