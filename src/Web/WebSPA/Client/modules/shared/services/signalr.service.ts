@@ -43,7 +43,6 @@ export class SignalrService {
     private register() {
         this._hubConnection = new HubConnectionBuilder()
             .withUrl(this.SignalrHubUrl + '/hub/notificationhub', {
-                transport: HttpTransportType.LongPolling,
                 accessTokenFactory: () => this.securityService.GetToken()
             })
             .configureLogging(LogLevel.Information)
