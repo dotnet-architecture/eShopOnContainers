@@ -55,54 +55,37 @@ env:
     - name: HealthChecks-UI__HealthChecks__4__Uri
       key: internalurls__ordering__hc
     - name: HealthChecks-UI__HealthChecks__5__Name
-      key: name__orderingbackground__hc
-    - name: HealthChecks-UI__HealthChecks__5__Uri
-      key: internalurls__orderingbackground__hc
-    - name: HealthChecks-UI__HealthChecks__6__Name
-      key: name__signalrhub__hc
-    - name: HealthChecks-UI__HealthChecks__6__Uri
-      key: internalurls__signalrhub__hc
-    - name: HealthChecks-UI__HealthChecks__7__Name
       key: name__basket__hc
-    - name: HealthChecks-UI__HealthChecks__7__Uri
+    - name: HealthChecks-UI__HealthChecks__5__Uri
       key: internalurls__basket__hc
-    - name: HealthChecks-UI__HealthChecks__8__Name
+    - name: HealthChecks-UI__HealthChecks__6__Name
       key: name__catalog__hc
-    - name: HealthChecks-UI__HealthChecks__8__Uri
+    - name: HealthChecks-UI__HealthChecks__6__Uri
       key: internalurls__catalog__hc
-    - name: HealthChecks-UI__HealthChecks__9__Name
+    - name: HealthChecks-UI__HealthChecks__7__Name
       key: name__identity__hc
-    - name: HealthChecks-UI__HealthChecks__9__Uri
+    - name: HealthChecks-UI__HealthChecks__7__Uri
       key: internalurls__identity__hc
-    - name: HealthChecks-UI__HealthChecks__10__Name
+    - name: HealthChecks-UI__HealthChecks__8__Name
       key: name__marketing__hc
-    - name: HealthChecks-UI__HealthChecks__10__Uri
+    - name: HealthChecks-UI__HealthChecks__8__Uri
       key: internalurls__marketing__hc
-    - name: HealthChecks-UI__HealthChecks__11__Name
+    - name: HealthChecks-UI__HealthChecks__9__Name
       key: name__locations__hc
-    - name: HealthChecks-UI__HealthChecks__11__Uri
+    - name: HealthChecks-UI__HealthChecks__9__Uri
       key: internalurls__locations__hc
-    - name: HealthChecks-UI__HealthChecks__12__Name
+    - name: HealthChecks-UI__HealthChecks__10__Name
       key: name__payment__hc
-    - name: HealthChecks-UI__HealthChecks__12__Uri
+    - name: HealthChecks-UI__HealthChecks__10__Uri
       key: internalurls__payment__hc
-
-    - name: HealthChecks-UI__HealthChecks__13__Name
-      key: name__apigwws__hc     
-    - name: HealthChecks-UI__HealthChecks__13__Uri
-      key: internalurls__apigwws__hc      
-    - name: HealthChecks-UI__HealthChecks__14__Name
-      key: name__apigwwm__hc      
-    - name: HealthChecks-UI__HealthChecks__14__Uri
-      key: internalurls__apigwwm__hc
-    - name: HealthChecks-UI__HealthChecks__15__Name
-      key: name__apigwms__hc      
-    - name: HealthChecks-UI__HealthChecks__15__Uri
-      key: internalurls__apigwms__hc
-    - name: HealthChecks-UI__HealthChecks__16__Name
-      key: name__apigwmm__hc      
-    - name: HealthChecks-UI__HealthChecks__16__Uri
-      key: internalurls__apigwmm__hc      
+    - name: HealthChecks-UI__HealthChecks__11__Name
+      key: name__signalrhub__hc
+    - name: HealthChecks-UI__HealthChecks__11__Uri
+      key: internalurls__signalrhub__hc
+    - name: HealthChecks-UI__HealthChecks__12__Name
+      key: name__orderingbackground__hc
+    - name: HealthChecks-UI__HealthChecks__12__Uri
+      key: internalurls__orderingbackground__hc
 
       # values define environment variables with a fixed value (no configmap involved) (name is name of var, and value is its value)
   values:

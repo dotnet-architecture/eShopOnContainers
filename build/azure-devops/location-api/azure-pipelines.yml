@@ -9,14 +9,14 @@ trigger:
     include:
     - src/BuildingBlocks/*
     - src/Services/Location/*
-    - k8s/helm/locations-api/*   
+    - deploy/k8s/helm/locations-api/*
 jobs:
 - template: ../buildimages.yaml
   parameters:
     services: locations.api
     registryEndpoint: $(registryEndpoint)
-    helmfrom: $(Build.SourcesDirectory)/k8s/helm
-    helmto: $(Build.ArtifactStagingDirectory)/k8s/helm    
+    helmfrom: $(Build.SourcesDirectory)/deploy/k8s/helm
+    helmto: $(Build.ArtifactStagingDirectory)/deploy/k8s/helm
 - template: ../multiarch.yaml
   parameters:
     image: locations.api

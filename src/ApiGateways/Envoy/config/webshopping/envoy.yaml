@@ -42,13 +42,20 @@ static_resources:
                 route:
                   auto_host_rewrite: true
                   prefix_rewrite: "/ordering-api/"
-                  cluster: ordering 
+                  cluster: ordering
               - name: "o-long"
                 match:
                   prefix: "/ordering-api/"
                 route:
                   auto_host_rewrite: true
-                  cluster: ordering                  
+                  cluster: ordering
+              - name: "h-long"
+                match:
+                  prefix: "/hub/notificationhub"
+                route:
+                  auto_host_rewrite: true
+                  cluster: signalr-hub
+                  timeout: 300s
               - name: "b-short"
                 match:
                   prefix: "/b/"
@@ -61,7 +68,7 @@ static_resources:
                   prefix: "/basket-api/"
                 route:
                   auto_host_rewrite: true
-                  cluster: basket                  
+                  cluster: basket
               - name: "agg"
                 match:
                   prefix: "/"
@@ -70,7 +77,7 @@ static_resources:
                   prefix_rewrite: "/"
                   cluster: shoppingagg
           http_filters:
-          - name: envoy.router      
+          - name: envoy.router
           access_log:
           - name: envoy.file_access_log
             filter:
@@ -80,15 +87,15 @@ static_resources:
                 time: "%START_TIME%"
                 protocol: "%PROTOCOL%"
                 duration: "%DURATION%"
-                request_method: "%REQ(:METHOD)%"  
-                request_host: "%REQ(HOST)%"  
-                path: "%REQ(X-ENVOY-ORIGINAL-PATH?:PATH)%" 
+                request_method: "%REQ(:METHOD)%"
+                request_host: "%REQ(HOST)%"
+                path: "%REQ(X-ENVOY-ORIGINAL-PATH?:PATH)%"
                 response_flags: "%RESPONSE_FLAGS%"
                 route_name: "%ROUTE_NAME%"
                 upstream_host: "%UPSTREAM_HOST%"
                 upstream_cluster: "%UPSTREAM_CLUSTER%"
                 upstream_local_address: "%UPSTREAM_LOCAL_ADDRESS%"
-              path: "/tmp/access.log"             
+              path: "/tmp/access.log"
   clusters:
   - name: shoppingagg
     connect_timeout: 0.25s
@@ -113,7 +120,7 @@ static_resources:
     hosts:
     - socket_address:
         address: basket-api
-        port_value: 80        
+        port_value: 80
   - name: ordering
     connect_timeout: 0.25s
     type: strict_dns
@@ -121,4 +128,12 @@ static_resources:
     hosts:
     - socket_address:
         address: ordering-api
+        port_value: 80
+  - name: signalr-hub
+    connect_timeout: 0.25s
+    type: strict_dns
+    lb_policy: round_robin
+    hosts:
+    - socket_address:
+        address: ordering-signalrhub
         port_value: 80
