@@ -15,6 +15,9 @@ metadata:
   annotations:
 {{ toYaml . | indent 4 }}
 {{- end }}
+{{- if and .Values.inf.tls.enabled .Values.inf.tls.issuer }}
+    cert-manager.io/issuer: {{ .Values.inf.tls.issuer }} 
+{{- end }}
 {{- if .Values.inf.mesh.enabled }} 
 {{- with .Values.ingress.mesh.annotations }}
 {{ toYaml . | indent 4 }}
@@ -25,12 +28,14 @@ spec:
   tls:
   {{- range .Values.ingress.tls }}
     - hosts:
-        - {{ .Values.inf.k8s.dns }}
+      {{- range .hosts }}
+        - {{ . }}
+      {{- end }}
       secretName: {{ .secretName }}
   {{- end }}
 {{- end }}
   rules:
-    {{- range .Values.ingress.hosts }}
+  {{- range .Values.ingress.hosts }}
     - host: {{ . }}
       http:
         paths:

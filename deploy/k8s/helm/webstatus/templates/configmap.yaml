@@ -4,7 +4,6 @@
 {{- $mvc := include "url-of" (list .Values.app.ingress.entries.mvc .) -}}
 {{- $mongo := include "mongo-name" . -}}
 
-
 apiVersion: v1
 kind: ConfigMap
 metadata:

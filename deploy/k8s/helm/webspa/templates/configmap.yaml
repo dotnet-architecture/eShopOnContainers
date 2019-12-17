@@ -4,7 +4,7 @@
 {{- $webmarketingapigw := include "url-of" (list .Values.app.ingress.entries.webmarketingapigw .) -}}
 {{- $spa := include "url-of" (list .Values.app.ingress.entries.spa .) -}}
 {{- $mongo := include "mongo-name" . -}}
-
+{{- $protocol := include "protocol" . -}}
 
 apiVersion: v1
 kind: ConfigMap
@@ -21,7 +21,7 @@ data:
   webspa__keystore: {{ .Values.inf.redis.keystore.constr }}
   internalurls__apigwws: http://{{ .Values.app.svc.webshoppingapigw }}
   internalurls__identity__hc: http://{{ .Values.app.svc.identity }}/hc
-  urls__apigwws: http://{{ $webshoppingapigw }}
-  urls__spa: http://{{ $spa }}
-  urls__IdentityUrl: http://{{ $identity }}
-  urls__apigwwm: http://{{ $webmarketingapigw }}
+  urls__apigwws: {{ $protocol }}://{{ $webshoppingapigw }}
+  urls__spa: {{ $protocol }}://{{ $spa }}
+  urls__IdentityUrl: {{ $protocol }}://{{ $identity }}
+  urls__apigwwm: {{ $protocol }}://{{ $webmarketingapigw }}
