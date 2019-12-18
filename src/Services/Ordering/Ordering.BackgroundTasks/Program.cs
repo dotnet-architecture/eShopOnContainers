@@ -1,28 +1,26 @@
 using Autofac.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Ordering.BackgroundTasks.Extensions;
-using Ordering.BackgroundTasks.Tasks;
 using Serilog;
 using System.IO;
-using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
 
 namespace Ordering.BackgroundTasks
 {
     public class Program
     {
-        public static readonly string Namespace = typeof(Program).Namespace;
-        public static readonly string AppName = Namespace;
+        public static readonly string AppName = typeof(Program).Assembly.GetName().Name;
 
         public static void Main(string[] args)
         {
             CreateHostBuilder(args).Run();
         }
 
-        public static IWebHost CreateHostBuilder(string[] args) =>
-           WebHost.CreateDefaultBuilder(args)
+        public static IHost CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .UseServiceProviderFactory(new AutofacServiceProviderFactory())
+                .ConfigureWebHostDefaults(webBuilder => webBuilder.UseStartup<Startup>())
                 .ConfigureAppConfiguration((host, builder) =>
                 {
                     builder.SetBasePath(Directory.GetCurrentDirectory());
@@ -32,7 +30,6 @@ namespace Ordering.BackgroundTasks
                     builder.AddCommandLine(args);
                 })
                 .ConfigureLogging((host, builder) => builder.UseSerilog(host.Configuration).AddSerilog())
-                .UseStartup<Startup>()
                 .Build();
     }
 }

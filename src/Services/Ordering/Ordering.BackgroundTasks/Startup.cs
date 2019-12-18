@@ -21,19 +21,13 @@
 
         public IConfiguration Configuration { get; }
 
-        public virtual IServiceProvider ConfigureServices(IServiceCollection services)
+        public virtual void ConfigureServices(IServiceCollection services)
         {
             services.AddCustomHealthCheck(this.Configuration)
                 .Configure<BackgroundTaskSettings>(this.Configuration)
                 .AddOptions()
                 .AddHostedService<GracePeriodManagerService>()
-                .AddEventBus(this.Configuration)
-                .AddAutofac(container => container.Populate(services));
-
-            var container = new ContainerBuilder();
-            container.Populate(services);
-
-            return new AutofacServiceProvider(container.Build());
+                .AddEventBus(this.Configuration);
         }
 
 
