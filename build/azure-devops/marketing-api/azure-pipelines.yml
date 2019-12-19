@@ -13,7 +13,7 @@ trigger:
 jobs:
 - template: ../buildimages.yaml
   parameters:
-    services: marketing.api
+    services: marketing-api
     registryEndpoint: $(registryEndpoint)
     helmfrom: $(Build.SourcesDirectory)/deploy/k8s/helm
     helmto: $(Build.ArtifactStagingDirectory)/deploy/k8s/helm
