@@ -2,6 +2,7 @@
 {{- $identity := include "url-of" (list .Values.app.ingress.entries.identity .) -}}
 {{- $webhooksweb := include "url-of" (list .Values.app.ingress.entries.webhooksweb .) -}}
 {{- $webhooks := include "url-of" (list .Values.app.ingress.entries.webhooks .) -}}
+{{- $protocol := include "protocol" . -}}
 
 apiVersion: v1
 kind: ConfigMap
@@ -13,7 +14,7 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 data:
-  urls__webhooks: http://{{ $webhooks }}
-  identity_e: http://{{ $identity }}
-  webhooksweb_e: http://{{ $webhooksweb }}
+  urls__webhooks: {{ $protocol }}://{{ $webhooks }}
+  identity_e: {{ $protocol }}://{{ $identity }}
+  webhooksweb_e: {{ $protocol }}://{{ $webhooksweb }}
   urls_webhooksweb: http://{{ .Values.app.svc.webhooksweb }}

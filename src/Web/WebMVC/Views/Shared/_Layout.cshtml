@@ -106,6 +106,7 @@
                         return "Authorization", getToken();
                     }
                 })
+                .withAutomaticReconnect()
                 .build(); 
             
             connection.start().then(function () {

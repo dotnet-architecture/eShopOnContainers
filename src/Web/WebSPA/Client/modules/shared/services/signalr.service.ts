@@ -1,7 +1,7 @@
 ﻿import { Injectable } from '@angular/core';
 import { SecurityService } from './security.service';
 import { ConfigurationService } from './configuration.service';
-import { HubConnection, HubConnectionBuilder, LogLevel, HttpTransportType } from '@aspnet/signalr';
+import { HubConnection, HubConnectionBuilder, LogLevel, HttpTransportType } from '@microsoft/signalr';
 import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
 
@@ -25,7 +25,7 @@ export class SignalrService {
                 this.SignalrHubUrl = this.configurationService.serverSettings.signalrHubUrl;
                 this.init();
             });
-        }            
+        }
     }
 
     public stop() {
@@ -36,8 +36,8 @@ export class SignalrService {
         if (this.securityService.IsAuthorized == true) {
             this.register();
             this.stablishConnection();
-            this.registerHandlers();            
-        }        
+            this.registerHandlers();
+        }
     }
 
     private register() {
@@ -46,6 +46,7 @@ export class SignalrService {
                 accessTokenFactory: () => this.securityService.GetToken()
             })
             .configureLogging(LogLevel.Information)
+            .withAutomaticReconnect()
             .build();
     }
 
@@ -61,6 +62,7 @@ export class SignalrService {
 
     private registerHandlers() {
         this._hubConnection.on('UpdatedOrderState', (msg) => {
+            console.log(`Order ${msg.orderId} updated to ${msg.status}`);
             this.toastr.success('Updated to status: ' + msg.status, 'Order Id: ' + msg.orderId);
             this.msgSignalrSource.next();
         });

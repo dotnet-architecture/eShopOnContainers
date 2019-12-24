@@ -9,14 +9,14 @@ trigger:
     include:
     - src/BuildingBlocks/*
     - src/Services/Catalog/*
-    - k8s/helm/catalog-api/*    
+    - deploy/k8s/helm/catalog-api/*
 jobs:
 - template: ../buildimages.yaml
   parameters:
-    services: catalog.api
+    services: catalog-api
     registryEndpoint: $(registryEndpoint)
-    helmfrom: $(Build.SourcesDirectory)/k8s/helm
-    helmto: $(Build.ArtifactStagingDirectory)/k8s/helm
+    helmfrom: $(Build.SourcesDirectory)/deploy/k8s/helm
+    helmto: $(Build.ArtifactStagingDirectory)/deploy/k8s/helm
 - template: ../multiarch.yaml
   parameters:
     image: catalog.api

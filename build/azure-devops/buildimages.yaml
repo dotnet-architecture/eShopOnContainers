@@ -13,16 +13,17 @@ jobs:
   - bash: docker-compose build ${{ parameters.services }}
     displayName: Create multiarch manifest
     env:
-      TAG: ${{ variables['Build.SourceBranchName'] }}    
+      TAG: ${{ variables['Build.SourceBranchName'] }}
 - job: BuildContainersForPR_Windows
-  condition: eq('${{ variables['Build.Reason'] }}', 'PullRequest')
+  condition: False
+  # condition: eq('${{ variables['Build.Reason'] }}', 'PullRequest')
   pool:
     vmImage: 'windows-2019'
   steps:
   - bash: docker-compose build ${{ parameters.services }}
     displayName: Create multiarch manifest
     env:
-      TAG: ${{ variables['Build.SourceBranchName'] }} 
+      TAG: ${{ variables['Build.SourceBranchName'] }}
       PLATFORM: win
       NODE_IMAGE: stefanscherer/node-windows:10
 - job: BuildLinux
@@ -51,7 +52,7 @@ jobs:
       qualifyImageNames: true
       projectName: ""
       dockerComposeFileArgs: |
-        TAG=${{ variables['Build.SourceBranchName'] }} 
+        TAG=${{ variables['Build.SourceBranchName'] }}
   - task: CopyFiles@2
     inputs:
       sourceFolder: ${{ parameters.helmfrom }}
@@ -61,7 +62,8 @@ jobs:
       pathtoPublish: ${{ parameters.helmto }}
       artifactName: helm
 - job: BuildWindows
-  condition: ne('${{ variables['Build.Reason'] }}', 'PullRequest')
+  condition: False
+  # condition: ne('${{ variables['Build.Reason'] }}', 'PullRequest')
   pool:
     vmImage: 'windows-2019'
   steps:
@@ -89,4 +91,4 @@ jobs:
       projectName: ""
       dockerComposeFileArgs: |
         TAG=${{ variables['Build.SourceBranchName'] }}
-        PLATFORM=win      
+        PLATFORM=win
