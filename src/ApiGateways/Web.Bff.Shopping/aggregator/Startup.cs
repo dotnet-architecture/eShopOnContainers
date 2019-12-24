@@ -180,6 +180,7 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator
             //register delegating handlers
             services.AddTransient<HttpClientAuthorizationDelegatingHandler>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddTransient<IIdentityService, IdentityService>();
 
             //register http services
 
@@ -197,7 +198,7 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator
             services.AddHttpClient<IOrderingService, OrderingService>()
                 .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
                 .AddDevspacesSupport();
-
+           
             return services;
         }
 

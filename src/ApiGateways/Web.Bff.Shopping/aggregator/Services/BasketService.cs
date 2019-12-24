@@ -7,6 +7,10 @@ using Grpc.Net.Client;
 using System.Linq;
 using GrpcBasket;
 using System.Net.Http;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Infrastructure;
+using System.Net.Http.Headers;
 
 namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Services
 {
@@ -15,12 +19,14 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Services
         private readonly UrlsConfig _urls;
         public readonly HttpClient _httpClient;
         private readonly ILogger<BasketService> _logger;
+        private readonly IIdentityService _identityService;
 
-        public BasketService(HttpClient httpClient, IOptions<UrlsConfig> config, ILogger<BasketService> logger)
+        public BasketService(HttpClient httpClient, IOptions<UrlsConfig> config, ILogger<BasketService> logger, IIdentityService identityService)
         {
             _urls = config.Value;
             _httpClient = httpClient;
             _logger = logger;
+            _identityService = identityService;
         }
 
 
@@ -44,9 +50,17 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Services
                 var client = new Basket.BasketClient(channel);
                 _logger.LogDebug("Grpc update basket currentBasket {@currentBasket}", currentBasket);
                 var request = MapToCustomerBasketRequest(currentBasket);
-                _logger.LogDebug("Grpc update basket request {@request}", request);
 
-                return await client.UpdateBasketAsync(request);
+                //Get token from httpcontext and create Authorization header
+                var token = _identityService.GetUserToken();
+                var headers = new Grpc.Core.Metadata
+                {
+                      { "Authorization", $"Bearer {token.Result}" }
+                };
+
+                //Add GRPC Metadata parameter containing authorization attribute to service call.
+                _logger.LogDebug("Grpc update basket request {@request}", request);
+                return await client.UpdateBasketAsync(request,headers);
             });
         }
 

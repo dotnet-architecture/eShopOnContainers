@@ -22,7 +22,7 @@
     <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="2.2.4" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="5.0.0-rc1" />
     <PackageReference Include="Google.Protobuf" Version="3.10.0-rc1" />
-    <PackageReference Include="Grpc.AspNetCore.Server" Version="0.2.23-pre2" />
+    <PackageReference Include="Grpc.AspNetCore.Server" Version="2.25.0" />
     <PackageReference Include="Grpc.Tools" Version="2.24.0-pre1" PrivateAssets="All" />   
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.8.0-beta3" />
     <PackageReference Include="Microsoft.ApplicationInsights.DependencyCollector" Version="2.11.0-beta2" />
