@@ -4,15 +4,11 @@ using Microsoft.eShopOnContainers.Services.Basket.API.Model;
 using Microsoft.Extensions.Logging;
 using System.Linq;
 using System.Threading.Tasks;
-using GrpcBasket;
 using Basket.API.IntegrationEvents.Events;
 using System;
 using Microsoft.eShopOnContainers.Services.Basket.API.Services;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
 using Microsoft.eShopOnContainers.Services.Basket.API;
-using Microsoft.AspNetCore.Http;
-using Grpc.AspNetCore.Server.Internal;
-using System.Security.Claims;
 
 namespace GrpcBasket
 {
