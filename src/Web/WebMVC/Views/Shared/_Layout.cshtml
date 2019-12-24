@@ -111,7 +111,6 @@
             
             connection.start().then(function () {
                 console.log('User Registered to Signalr Hub');
-                console.log('@settings.Value.SignalrHubUrl/hub/notificationhub');
                 cb(connection);
             });       
         }
@@ -126,7 +125,7 @@
 
             connection.on("UpdateBasketCount", (message) => {
                 //refresh the page for the latest count to get shown
-                    refreshOrderList();
+                     refreshPage();
             });
         }
 
@@ -135,8 +134,11 @@
         }
 
         function refreshOrderList() {
-            console.log('In refreshOrderList method');
-            clearTimeout(timerId);
+            refreshPage();
+        }
+
+        function refreshPage() {
+             clearTimeout(timerId);
             timerId = setTimeout(function () {
                 window.location.reload();
             }, 1000);
