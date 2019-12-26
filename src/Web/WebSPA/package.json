@@ -66,7 +66,7 @@
     "@types/protractor": "4.0.0",
     "@types/selenium-webdriver": "3.0.10",
     "codelyzer": "^5.0.0-beta.1",
-    "handlebars": "^4.1.2",
+    "handlebars": "^4.3.0",
     "eslint": "4.18.2",
     "jasmine-core": "^3.3.0",
     "jasmine-spec-reporter": "^4.2.1",
