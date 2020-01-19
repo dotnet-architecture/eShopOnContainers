@@ -12,6 +12,7 @@ using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using RabbitMQ.Client.Exceptions;
 using System;
+using System.Diagnostics;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
@@ -280,6 +281,10 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
                         else
                         {
                             var handler = scope.ResolveOptional(subscription.HandlerType);
+                            if (eventName.Equals("OrderStatusChangedToSubmittedIntegrationEvent") || eventName.Equals("UserCheckoutAcceptedIntegrationEvent"))
+                            {
+                                Debug.WriteLine("Here");
+                            }
                             if (handler == null) continue;
                             var eventType = _subsManager.GetEventTypeByName(eventName);
                             var integrationEvent = JsonConvert.DeserializeObject(message, eventType);

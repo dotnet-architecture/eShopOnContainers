@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Serilog;
 using System;
 using System.IO;
+using TenantACustomisations.Database;
 
 namespace Microsoft.eShopOnContainers.Services.TenantACustomisations
 {

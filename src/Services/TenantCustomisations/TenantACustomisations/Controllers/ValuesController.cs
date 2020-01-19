@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using TenantACustomisations.Database;
+using TenantACustomisations.ExternalServices;
 
 namespace TenantACustomisations.Controllers
 {
@@ -10,11 +13,21 @@ namespace TenantACustomisations.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
+
+        private readonly TenantAContext _context;
+
+        public ValuesController(TenantAContext context)
+        {
+            _context = context ?? throw new ArgumentNullException(nameof(context));
+        }
+
+
+
         // GET api/values
         [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
+        public async Task<ActionResult<IEnumerable<ShippingInformation>>> GetShippingInformation()
         {
-            return new string[] { "value1", "value2" };
+            return await _context.ShippingInformation.ToListAsync();
         }
 
         // GET api/values/5

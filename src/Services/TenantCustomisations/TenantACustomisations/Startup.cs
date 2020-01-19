@@ -35,6 +35,9 @@
     using global::TenantACustomisations.Infrastructure.Filters;
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
     using global::TenantACustomisations.IntegrationEvents.EventHandling;
+    using global::TenantACustomisations.IntegrationEvents.Events;
+    using global::TenantACustomisations.ExternalServices;
+    using global::TenantACustomisations.Database;
 
     public class Startup
     {
@@ -107,6 +110,11 @@
                });
 
             ConfigureEventBus(app);
+            using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+            {
+                var context = serviceScope.ServiceProvider.GetRequiredService<TenantAContext>();
+                context.Database.EnsureCreated();
+            }
         }
 
 
@@ -114,7 +122,9 @@
         {
             var eventBus = app.ApplicationServices.GetRequiredService<BuildingBlocks.EventBus.Abstractions.IEventBus>();
 
-            eventBus.Subscribe<CustomisationEvent, CustomisationEventHandler>();
+            //eventBus.Subscribe<UserCheckoutAcceptedIntegrationEvent, IIntegrationEventHandler<UserCheckoutAcceptedIntegrationEvent>>();
+            eventBus.Subscribe<OrderStatusChangedToSubmittedIntegrationEvent, OrderStatusChangedToSubmittedIntegrationEventHandler>();
+
         }
 
         protected virtual void ConfigureAuth(IApplicationBuilder app)
@@ -210,18 +220,8 @@
 
         public static IServiceCollection AddCustomDbContext(this IServiceCollection services, IConfiguration configuration)
         {
-            //services.AddEntityFrameworkSqlServer()
-            //       .AddDbContext<OrderingContext>(options =>
-            //       {
-            //           options.UseSqlServer(configuration["ConnectionString"],
-            //               sqlServerOptionsAction: sqlOptions =>
-            //               {
-            //                   sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
-            //                   sqlOptions.EnableRetryOnFailure(maxRetryCount: 10, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
-            //               });
-            //       },
-            //           ServiceLifetime.Scoped  //Showing explicitly that the DbContext is shared across the HTTP request scope (graph of objects started in the HTTP request)
-            //       );
+            services.AddDbContext<TenantAContext>(options =>
+                      options.UseSqlServer(configuration["ConnectionString"]));
 
             services.AddDbContext<IntegrationEventLogContext>(options =>
             {
@@ -276,7 +276,6 @@
                 sp => (DbConnection c) => new IntegrationEventLogService(c));
 
             //services.AddTransient<IOrderingIntegrationEventService, OrderingIntegrationEventService>();
-
             if (configuration.GetValue<bool>("AzureServiceBusEnabled"))
             {
                 services.AddSingleton<IServiceBusPersisterConnection>(sp =>
@@ -387,7 +386,7 @@
             }
 
             services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
-            services.AddTransient<CustomisationEventHandler>();
+            //services.AddTransient<TenantAUserCheckoutAcceptedIntegrationEventHandler>();
 
             return services;
         }

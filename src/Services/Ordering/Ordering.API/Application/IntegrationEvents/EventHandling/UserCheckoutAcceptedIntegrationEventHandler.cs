@@ -12,7 +12,7 @@ using System;
 
 namespace Ordering.API.Application.IntegrationEvents.EventHandling
 {
-    public class UserCheckoutAcceptedIntegrationEventHandler : AbstractIntegrationEventHandler<UserCheckoutAcceptedIntegrationEvent>, IIntegrationEventHandler<UserCheckoutAcceptedIntegrationEvent>
+    public class UserCheckoutAcceptedIntegrationEventHandler : IIntegrationEventHandler<UserCheckoutAcceptedIntegrationEvent>
     {
         private readonly IMediator _mediator;
         private readonly IEventBus _eventBus;
@@ -20,7 +20,7 @@ namespace Ordering.API.Application.IntegrationEvents.EventHandling
 
         public UserCheckoutAcceptedIntegrationEventHandler(
             IMediator mediator,
-            ILogger<UserCheckoutAcceptedIntegrationEventHandler> logger, IEventBus eventBus) : base(eventBus)
+            ILogger<UserCheckoutAcceptedIntegrationEventHandler> logger, IEventBus eventBus)
         {
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -42,9 +42,9 @@ namespace Ordering.API.Application.IntegrationEvents.EventHandling
             {
                 _logger.LogInformation("----- Handling integration event: {IntegrationEventId} at {AppName} - ({@IntegrationEvent})", @event.Id, Program.AppName, @event);
 
-                var customised = await CheckIfCustomised(@event);
-                if (!customised)
-                {
+                //var customised = await CheckIfCustomised(@event);
+                //if (!customised)
+                //{
                     var result = false;
 
                     if (@event.RequestId != Guid.Empty)
@@ -81,7 +81,7 @@ namespace Ordering.API.Application.IntegrationEvents.EventHandling
                     {
                         _logger.LogWarning("Invalid IntegrationEvent - RequestId is missing - {@IntegrationEvent}", @event);
                     }
-                }
+                //}
             }
         }
     }

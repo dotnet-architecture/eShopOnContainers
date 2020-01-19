@@ -68,6 +68,8 @@ services:
       - EventBusUserName=${ESHOP_SERVICE_BUS_USERNAME}
       - EventBusPassword=${ESHOP_SERVICE_BUS_PASSWORD}      
       - AzureServiceBusEnabled=False
+      - ConnectionString=${ESHOP_AZURE_CATALOG_DB:-Server=sql.data;Database=Microsoft.eShopOnContainers.Services.TenantADb;User Id=sa;Password=Pass@word}
+
     ports:
       - "5116:80"
 
