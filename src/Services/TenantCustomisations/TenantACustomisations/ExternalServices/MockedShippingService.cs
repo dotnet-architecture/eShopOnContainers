@@ -15,7 +15,7 @@ namespace TenantACustomisations.ExternalServices
             shippingInformation.ArrivalTime = DateTime.Today.AddDays(2);
             shippingInformation.FragilityLevel = Fragility.Medium;
             shippingInformation.PriorityLevel = Priority.High;
-            shippingInformation.OrderNumber = orderId;
+            shippingInformation.OrderNumber = orderId.ToString();
 
             return shippingInformation;
         }

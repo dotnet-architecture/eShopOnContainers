@@ -23,7 +23,7 @@ namespace TenantACustomisations.Database
             shippingInformation.FragilityLevel = Fragility.Medium;
             shippingInformation.PriorityLevel = Priority.High;
             shippingInformation.ShippingInformationId = 1;
-            shippingInformation.OrderNumber = 1;
+            shippingInformation.OrderNumber = "1";
             context.ShippingInformation.Add(shippingInformation);
 
             context.SaveChanges();
