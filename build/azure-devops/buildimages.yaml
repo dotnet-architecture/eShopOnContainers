@@ -11,7 +11,7 @@ jobs:
     vmImage: 'ubuntu-16.04'
   steps:
   - bash: docker-compose build ${{ parameters.services }}
-    displayName: Create multiarch manifest
+    displayName: Create multiarch manifest (BuildContainersForPR_Linux)
     env:
       TAG: ${{ variables['Build.SourceBranchName'] }}
 - job: BuildContainersForPR_Windows
@@ -21,7 +21,7 @@ jobs:
     vmImage: 'windows-2019'
   steps:
   - bash: docker-compose build ${{ parameters.services }}
-    displayName: Create multiarch manifest
+    displayName: Create multiarch manifest (BuildContainersForPR_Windows)
     env:
       TAG: ${{ variables['Build.SourceBranchName'] }}
       PLATFORM: win
@@ -32,7 +32,7 @@ jobs:
     vmImage: 'ubuntu-16.04'
   steps:
   - task: DockerCompose@0
-    displayName: Compose build ${{ parameters.services }}
+    displayName: Compose build ${{ parameters.services }} (BuildLinux)
     inputs:
       dockerComposeCommand: 'build ${{ parameters.services }}'
       containerregistrytype: Container Registry
@@ -68,7 +68,7 @@ jobs:
     vmImage: 'windows-2019'
   steps:
   - task: DockerCompose@0
-    displayName: Compose build ${{ parameters.services }}
+    displayName: Compose build ${{ parameters.services }} (BuildWindows)
     inputs:
       dockerComposeCommand: 'build ${{ parameters.services }}'
       containerregistrytype: Container Registry
