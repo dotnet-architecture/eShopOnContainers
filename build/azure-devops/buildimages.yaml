@@ -10,7 +10,7 @@ jobs:
   pool:
     vmImage: 'ubuntu-16.04'
   steps:
-  - bash: docker-compose --project-directory ./src build ${{ parameters.services }}
+  - bash: docker-compose -f src/docker-compose.yml build ${{ parameters.services }}
     displayName: Compose build ${{ parameters.services }}
     env:
       TAG: ${{ variables['Build.SourceBranchName'] }}
@@ -20,7 +20,7 @@ jobs:
   pool:
     vmImage: 'windows-2019'
   steps:
-  - bash: docker-compose --project-directory ./src build ${{ parameters.services }}
+  - bash: docker-compose f src/docker-compose.yml build ${{ parameters.services }}
     displayName: Compose build ${{ parameters.services }}
     env:
       TAG: ${{ variables['Build.SourceBranchName'] }}
