@@ -1,4 +1,4 @@
-ARG NODE_IMAGE=node:8.11
+ARG NODE_IMAGE=node:8.16
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1 AS base
 WORKDIR /app
 EXPOSE 80
@@ -7,9 +7,8 @@ FROM ${NODE_IMAGE} as node-build
 WORKDIR /web
 COPY Web/WebSPA/package.json .
 COPY Web/WebSPA/package-lock.json .
-RUN npm install
 COPY Web/WebSPA .
-RUN npm run build:prod
+RUN npm i npm@latest -g && npm update && npm install && npm run build:prod
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
 WORKDIR /src
