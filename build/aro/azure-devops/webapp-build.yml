@@ -11,14 +11,14 @@ jobs:
       command: restore
       projects: '**/$(ProjectName).csproj'
       feedsToUse: config
-      nugetConfigPath: NuGet.config
+      nugetConfigPath: src/NuGet.config
   - task: DotNetCoreCLI@2
     displayName: 'dotnet build'
     inputs:
       projects: '**/$(ProjectName).csproj'
       arguments: '--configuration Release'
       feedsToUse: config
-      nugetConfigPath: NuGet.config    
+      nugetConfigPath: src/NuGet.config    
   - task: DotNetCoreCLI@2
     displayName: 'dotnet publish'
     inputs:
@@ -29,5 +29,5 @@ jobs:
       zipAfterPublish: false
       modifyOutputPath: false
       feedsToUse: config
-      nugetConfigPath: NuGet.config
+      nugetConfigPath: src/NuGet.config
 
