@@ -12,5 +12,5 @@ trigger:
     - src/Services/Catalog/*
 jobs:
 - template: ../webapp-build.yml
-parameters:
-  ProjectName: Basket.API
+  parameters:
+    ProjectName: Basket.API
