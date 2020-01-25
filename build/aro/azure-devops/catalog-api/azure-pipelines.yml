@@ -1,3 +1,4 @@
+name: $(BuildDefinitionName)_$(SourceBranchName)_$(Date:MMddyy)$(Rev:.r)
 variables:
   ProjectName: Catalog.API
 trigger:

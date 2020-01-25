@@ -1,6 +1,5 @@
 parameters:
   ProjectName: ''
-name: $(BuildDefinitionName)_$(SourceBranchName)_$(Date:MMddyy)$(Rev:.r)
 jobs:
 - job: Restore_Build_Publish_Job
   pool: 
