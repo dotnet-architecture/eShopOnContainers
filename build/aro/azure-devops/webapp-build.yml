@@ -4,30 +4,30 @@ jobs:
 - job: Restore, Build, and Publish
   pool: 
     name: Hosted Ubuntu 1604
-steps:
-- task: DotNetCoreCLI@2
-  displayName: 'dotnet restore'
-  inputs:
-    command: restore
-    projects: '**/$(ProjectName).csproj'
-    feedsToUse: config
-    nugetConfigPath: NuGet.config
-- task: DotNetCoreCLI@2
-  displayName: 'dotnet build'
-  inputs:
-    projects: '**/$(ProjectName).csproj'
-    arguments: '--configuration Release'
-    feedsToUse: config
-    nugetConfigPath: NuGet.config    
-- task: DotNetCoreCLI@2
-  displayName: 'dotnet publish'
-  inputs:
-    command: publish
-    publishWebProjects: false
-    projects: '**/$(ProjectName).csproj'
-    arguments: '--configuration Release --output $(Build.ArtifactStagingDirectory)/$(ProjectName) /p:MicrosoftNETPlatformLibrary=Microsoft.NETCore.App'
-    zipAfterPublish: false
-    modifyOutputPath: false
-    feedsToUse: config
-    nugetConfigPath: NuGet.config
+  steps:
+  - task: DotNetCoreCLI@2
+    displayName: 'dotnet restore'
+    inputs:
+      command: restore
+      projects: '**/$(ProjectName).csproj'
+      feedsToUse: config
+      nugetConfigPath: NuGet.config
+  - task: DotNetCoreCLI@2
+    displayName: 'dotnet build'
+    inputs:
+      projects: '**/$(ProjectName).csproj'
+      arguments: '--configuration Release'
+      feedsToUse: config
+      nugetConfigPath: NuGet.config    
+  - task: DotNetCoreCLI@2
+    displayName: 'dotnet publish'
+    inputs:
+      command: publish
+      publishWebProjects: false
+      projects: '**/$(ProjectName).csproj'
+      arguments: '--configuration Release --output $(Build.ArtifactStagingDirectory)/$(ProjectName) /p:MicrosoftNETPlatformLibrary=Microsoft.NETCore.App'
+      zipAfterPublish: false
+      modifyOutputPath: false
+      feedsToUse: config
+      nugetConfigPath: NuGet.config
 
