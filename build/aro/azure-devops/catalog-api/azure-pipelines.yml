@@ -1,4 +1,3 @@
-name: 'Catalog-API-Build'
 variables:
   ProjectName: Catalog.API
 trigger:

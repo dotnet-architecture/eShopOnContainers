@@ -1,4 +1,3 @@
-name: 'Identity-API-Build'
 variables:
   ProjectName: Identity.API
 trigger:

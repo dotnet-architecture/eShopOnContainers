@@ -1,4 +1,3 @@
-name: 'Basket-API-Build'
 variables:
   ProjectName: Basket.API
 trigger:
