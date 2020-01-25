@@ -1,6 +1,6 @@
-name: 'Catalog-API-Build'
+name: 'Basket-API-Build'
 variables:
-  ProjectName: Catalog.API
+  ProjectName: Basket.API
 trigger:
   branches:
     include:
@@ -9,7 +9,7 @@ trigger:
   paths:
     include:
     - src/BuildingBlocks/*
-    - src/Services/Catalog/*
+    - src/Services/Basket/*
 jobs:
 - template: ../webapp-build.yml
   parameters:

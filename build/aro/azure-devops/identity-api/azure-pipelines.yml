@@ -1,6 +1,6 @@
-name: 'Catalog-API-Build'
+name: 'Identity-API-Build'
 variables:
-  ProjectName: Catalog.API
+  ProjectName: Identity.API
 trigger:
   branches:
     include:
