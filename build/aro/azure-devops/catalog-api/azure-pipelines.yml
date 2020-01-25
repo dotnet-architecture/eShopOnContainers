@@ -1,0 +1,16 @@
+name: 'Catalog-API-Build'
+variables:
+  ProjectName: Catalog.API
+  trigger:
+    branches:
+      include:
+      - master
+      - dev
+    paths:
+      include:
+      - src/BuildingBlocks/*
+      - src/Services/Catalog/*
+jobs:
+- template: ../webapp-build.yml
+parameters:
+  ProjectName: Basket.API
