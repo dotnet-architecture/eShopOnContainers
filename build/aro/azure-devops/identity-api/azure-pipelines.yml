@@ -1,4 +1,3 @@
-name: $(BuildDefinitionName)_$(SourceBranchName)_$(Date:MMddyy)$(Rev:.r)
 variables:
   ProjectName: Identity.API
 trigger:
