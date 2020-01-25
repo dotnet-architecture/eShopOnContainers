@@ -1,7 +1,7 @@
 parameters:
   ProjectName: ''
 jobs:
-- job: 'Restore, Build, and Publish'
+- job: Restore_Build_Publish
   pool: 
     name: 'Hosted Ubuntu 1604'
   steps:
