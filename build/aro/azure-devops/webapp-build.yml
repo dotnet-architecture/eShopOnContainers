@@ -36,4 +36,6 @@ jobs:
       modifyOutputPath: false
       feedsToUse: config
       nugetConfigPath: src/NuGet.config
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact: drop'
 
