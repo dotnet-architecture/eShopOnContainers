@@ -1,0 +1,47 @@
+parameters:
+  ProjectName: ''
+  OpenShiftProject: ''
+  AppName: ''
+jobs:
+- job: Container_Build
+  pool: 
+    name: 'Hosted Ubuntu 1604'
+  steps:
+  - task: redhat.openshift-vsts.oc-setup-task.oc-setup@2
+    displayName: 'oc-setup '
+    inputs:
+    openshiftService: 'OpenShift on ARO DEV'
+  - script: 'oc project $(OpenShiftProject)'
+    failOnStderr: true
+    displayName: 'Set Project Context'
+  - powershell: |
+      $pinfo = New-Object System.Diagnostics.ProcessStartInfo
+      $pinfo.FileName = "oc.exe"
+      $pinfo.RedirectStandardError = $true
+      $pinfo.RedirectStandardOutput = $true
+      $pinfo.UseShellExecute = $false
+      $pinfo.Arguments = "get buildConfig $(AppName)-build"
+      $p = New-Object System.Diagnostics.Process
+      $p.StartInfo = $pinfo
+      $p.Start() | Out-Null
+      $p.WaitForExit()
+      $stdout = $p.StandardOutput.ReadToEnd()
+      $stderr = $p.StandardError.ReadToEnd()
+      Write-Host "stdout: $stdout"
+      Write-Host "stderr: $stderr"
+      Write-Host "exit code: " + $p.ExitCode
+      $buildExists = $stdout.Contains("$(AppName)-build")
+      Write-Host "##vso[task.setvariable variable=BuildExists;]$buildExists"
+    displayName: 'Check for Existing Build'
+  - script: 'oc new-build --name=$(AppName)-build dotnet:3.1 --binary=true'
+    failOnStderr: true
+    displayName: 'Create OpenShift Build'
+    condition: and(succeeded(), eq(variables['BuildExists'], False))
+  - script: 'oc start-build $(AppName)-build --from-dir="$(Build.ArtifactStagingDirectory)/$(ProjectName)" --follow --wait'
+    failOnStderr: true
+    displayName: 'Start OpenShift Binary Build'
+    continueOnError: true
+
+
+
+

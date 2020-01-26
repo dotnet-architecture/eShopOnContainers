@@ -10,6 +10,6 @@ trigger:
     - src/BuildingBlocks/*
     - src/Services/Catalog/*
 jobs:
-- template: ../webapp-build.yml
+- template: ../webapp-build-artifacts.yml
   parameters:
     ProjectName: $(ProjectName)

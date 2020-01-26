@@ -1,5 +1,7 @@
 variables:
   ProjectName: Basket.API
+  OpenShiftProject: development
+  AppName: basketapi
 trigger:
   branches:
     include:
@@ -10,6 +12,11 @@ trigger:
     - src/BuildingBlocks/*
     - src/Services/Basket/*
 jobs:
-- template: ../webapp-build.yml
+- template: ../webapp-build-artifacts.yml
   parameters:
     ProjectName: $(ProjectName)
+- template: ../webapp-container-build.yml
+  parameters:
+    ProjectName: $(ProjectName)
+    OpenShiftProject: $(OpenShiftProject)
+    AppName: $(AppName)
