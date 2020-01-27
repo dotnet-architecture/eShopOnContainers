@@ -1,7 +1,7 @@
 variables:
   ProjectName: Basket.API
   OpenShiftProject: development
-  AppName: basket-api
+  AppName: basketapi
   OpenShiftServiceConnection: 'OpenShift on ARO'
 trigger:
   branches:
