@@ -2,7 +2,7 @@ parameters:
   ProjectName: ''
   OpenShiftProject: ''
   AppName: ''
-  OpenShiftServiceConnection: 'OpenShift on ARO'
+  OpenShiftServiceConnection: ''
 jobs:
 - job: Container_Build
   dependsOn: Restore_Build_Publish
