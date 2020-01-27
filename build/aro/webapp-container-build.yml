@@ -35,11 +35,14 @@ jobs:
       $buildExists = $stdout.Contains("$(AppName)-build")
       Write-Host "##vso[task.setvariable variable=BuildExists;]$buildExists"
     displayName: 'Check for Existing Build'
+  - task: DownloadPipelineArtifact@2
+    inputs:
+      artifact: drop
   - script: 'oc new-build --name=$(AppName)-build dotnet:3.1 --binary=true'
     failOnStderr: true
     displayName: 'Create OpenShift Build'
     condition: and(succeeded(), eq(variables['BuildExists'], False))
-  - script: 'oc start-build $(AppName)-build --from-dir="$(Build.ArtifactStagingDirectory)\$(ProjectName)" --follow --wait'
+  - script: 'oc start-build $(AppName)-build --from-dir="$(Build.ArtifactStagingDirectory)\drop\$(ProjectName)" --follow --wait'
     failOnStderr: true
     displayName: 'Start OpenShift Binary Build'
     continueOnError: true
