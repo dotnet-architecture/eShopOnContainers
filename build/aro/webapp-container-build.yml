@@ -22,7 +22,7 @@ jobs:
       $pinfo.RedirectStandardError = $true
       $pinfo.RedirectStandardOutput = $true
       $pinfo.UseShellExecute = $false
-      $pinfo.Arguments = "get buildConfig $(AppName)-build"
+      $pinfo.Arguments = "get buildConfig $(AppName)"
       $p = New-Object System.Diagnostics.Process
       $p.StartInfo = $pinfo
       $p.Start() | Out-Null
@@ -32,17 +32,17 @@ jobs:
       Write-Host "stdout: $stdout"
       Write-Host "stderr: $stderr"
       Write-Host "exit code: " + $p.ExitCode
-      $buildExists = $stdout.Contains("$(AppName)-build")
+      $buildExists = $stdout.Contains("$(AppName)")
       Write-Host "##vso[task.setvariable variable=BuildExists;]$buildExists"
     displayName: 'Check for Existing Build'
   - task: DownloadPipelineArtifact@2
     inputs:
       artifact: drop
-  - script: 'oc new-build --name=$(AppName)-build dotnet:3.1 --binary=true'
+  - script: 'oc new-build --name=$(AppName) dotnet:3.1 --binary=true'
     failOnStderr: true
     displayName: 'Create OpenShift Build'
     condition: and(succeeded(), eq(variables['BuildExists'], False))
-  - script: 'oc start-build $(AppName)-build --from-dir="$(Pipeline.Workspace)\$(ProjectName)" --follow --wait'
+  - script: 'oc start-build $(AppName) --from-dir="$(Pipeline.Workspace)\$(ProjectName)" --follow --wait'
     failOnStderr: true
     displayName: 'Start OpenShift Binary Build'
     continueOnError: true
