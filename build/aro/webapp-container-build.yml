@@ -4,6 +4,7 @@ parameters:
   AppName: ''
 jobs:
 - job: Container_Build
+  dependsOn: Restore_Build_Publish
   pool: 
     vmImage: 'windows-latest'
   steps:

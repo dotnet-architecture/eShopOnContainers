@@ -1,7 +1,7 @@
 parameters:
   ProjectName: ''
 jobs:
-- job: Restore_Build_Publish_Job
+- job: Restore_Build_Publish
   pool: 
     vmImage: 'ubuntu-16.04'
   steps:
