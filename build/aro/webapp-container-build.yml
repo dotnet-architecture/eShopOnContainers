@@ -5,7 +5,7 @@ parameters:
 jobs:
 - job: Container_Build
   pool: 
-    name: 'Hosted Ubuntu 1604'
+    vmImage: 'windows-latest'
   steps:
   - task: redhat.openshift-vsts.oc-setup-task.oc-setup@2
     displayName: 'oc-setup '
