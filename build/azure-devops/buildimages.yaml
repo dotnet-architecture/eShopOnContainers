@@ -10,8 +10,8 @@ jobs:
   pool:
     vmImage: 'ubuntu-16.04'
   steps:
-  - bash: docker-compose build ${{ parameters.services }}
-    displayName: Create multiarch manifest
+  - bash: docker-compose -f src/docker-compose.yml build ${{ parameters.services }}
+    displayName: Compose build ${{ parameters.services }}
     env:
       TAG: ${{ variables['Build.SourceBranchName'] }}
 - job: BuildContainersForPR_Windows
@@ -20,8 +20,8 @@ jobs:
   pool:
     vmImage: 'windows-2019'
   steps:
-  - bash: docker-compose build ${{ parameters.services }}
-    displayName: Create multiarch manifest
+  - bash: docker-compose f src/docker-compose.yml build ${{ parameters.services }}
+    displayName: Compose build ${{ parameters.services }}
     env:
       TAG: ${{ variables['Build.SourceBranchName'] }}
       PLATFORM: win
