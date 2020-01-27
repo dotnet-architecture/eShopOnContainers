@@ -10,7 +10,7 @@ jobs:
   - task: redhat.openshift-vsts.oc-setup-task.oc-setup@2
     displayName: 'oc-setup '
     inputs:
-    openshiftService: 'OpenShift on ARO DEV'
+      openshiftService: 'OpenShift on ARO DEV'
   - script: 'oc project $(OpenShiftProject)'
     failOnStderr: true
     displayName: 'Set Project Context'
