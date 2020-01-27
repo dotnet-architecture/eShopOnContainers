@@ -48,7 +48,7 @@ jobs:
       $pinfo.RedirectStandardError = $true
       $pinfo.RedirectStandardOutput = $true
       $pinfo.UseShellExecute = $false
-      $pinfo.Arguments = "oc start-build $(AppName) --from-dir='$(Pipeline.Workspace)\$(ProjectName)' --follow --wait"
+      $pinfo.Arguments = "start-build $(AppName) --from-dir='$(Pipeline.Workspace)\$(ProjectName)' --follow --wait"
       $p = New-Object System.Diagnostics.Process
       $p.StartInfo = $pinfo
       $p.Start() | Out-Null
