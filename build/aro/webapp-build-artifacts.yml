@@ -36,6 +36,10 @@ jobs:
       modifyOutputPath: true
       feedsToUse: config
       nugetConfigPath: src/NuGet.config
+  - task: PublishPipelineArtifact@1
+    inputs:
+      path: $(Build.ArtifactStagingDirectory)
+      artifact: drop
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifact: drop'
 
