@@ -42,7 +42,7 @@ jobs:
     failOnStderr: true
     displayName: 'Create OpenShift Build'
     condition: and(succeeded(), eq(variables['BuildExists'], False))
-  - script: 'oc start-build $(AppName)-build --from-dir="$(Pipeline.Workspace)\drop\$(ProjectName)" --follow --wait'
+  - script: 'oc start-build $(AppName)-build --from-dir="$(Pipeline.Workspace)\$(ProjectName)" --follow --wait'
     failOnStderr: true
     displayName: 'Start OpenShift Binary Build'
     continueOnError: true
