@@ -39,7 +39,7 @@ jobs:
     failOnStderr: true
     displayName: 'Create OpenShift Build'
     condition: and(succeeded(), eq(variables['BuildExists'], False))
-  - script: 'oc start-build $(AppName)-build --from-dir="$(Build.ArtifactStagingDirectory)/$(ProjectName)" --follow --wait'
+  - script: 'oc start-build $(AppName)-build --from-dir="$(Build.ArtifactStagingDirectory)\$(ProjectName)" --follow --wait'
     failOnStderr: true
     displayName: 'Start OpenShift Binary Build'
     continueOnError: true
