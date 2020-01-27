@@ -48,7 +48,7 @@ jobs:
       $pinfo.RedirectStandardError = $true
       $pinfo.RedirectStandardOutput = $true
       $pinfo.UseShellExecute = $false
-      $pinfo.Arguments = "start-build $(AppName) --from-dir='$(Pipeline.Workspace)\$(ProjectName)' --follow --wait"
+      $pinfo.Arguments = "start-build $(AppName) --from-dir='$(Pipeline.Workspace)\\$(ProjectName)' --follow --wait"
       $p = New-Object System.Diagnostics.Process
       $p.StartInfo = $pinfo
       $p.Start() | Out-Null
@@ -58,7 +58,10 @@ jobs:
       Write-Host "stdout: $stdout"
       Write-Host "stderr: $stderr"
       Write-Host "exit code: " + $p.ExitCode
+      $binaryBuildHasErrors = $p.ExitCode -ne 0
+      Write-Host "##vso[task.setvariable variable=BinaryBuildHasErrors;]$binaryBuildHasErrors"
     displayName: 'Start OpenShift Binary Build'
+    failOnStderr: variables['BinaryBuildHasErrors']
 
 
 
