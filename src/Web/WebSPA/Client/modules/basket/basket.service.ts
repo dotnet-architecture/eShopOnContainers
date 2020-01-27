@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Response } from '@angular/http';
+import { HttpResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 
 import { DataService } from '../shared/services/data.service';
@@ -12,7 +12,7 @@ import { ConfigurationService } from '../shared/services/configuration.service';
 import { StorageService } from '../shared/services/storage.service';
 
 import { Observable, Observer, Subject } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
+import { map, catchError, tap } from 'rxjs/operators';
 
 @Injectable()
 export class BasketService {
@@ -61,15 +61,16 @@ export class BasketService {
 
     setBasket(basket): Observable<boolean> {
         let url = this.purchaseUrl + '/api/v1/basket/';
+
         this.basket = basket;
-        return this.service.post(url, basket).pipe(map((response: any) => {
-            return true;
-        }));
+
+        return this.service.post(url, basket).pipe<boolean>(tap((response: any) => true));
     }
 
     setBasketCheckout(basketCheckout): Observable<boolean> {
         let url = this.basketUrl + '/b/api/v1/basket/checkout';
-        return this.service.postWithId(url, basketCheckout).pipe(map((response: any) => {
+
+        return this.service.postWithId(url, basketCheckout).pipe<boolean>(tap((response: any) => {
             this.basketEvents.orderCreated();
             return true;
         }));
@@ -77,10 +78,12 @@ export class BasketService {
 
     getBasket(): Observable<IBasket> {
         let url = this.basketUrl + '/b/api/v1/basket/' + this.basket.buyerId;
-        return this.service.get(url).pipe(map((response: any) => {
+
+        return this.service.get(url).pipe<IBasket>(tap((response: any) => {
             if (response.status === 204) {
                 return null;
             }
+
             return response;
         }));
     }
