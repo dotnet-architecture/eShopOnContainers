@@ -102,7 +102,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
 
         private async Task<Boolean> AllGoodsRFIDScanned(String orderId)
         {
-            var builder = new UriBuilder(tenantACustomisationsUrl + "api/OrderStatusChangedToSubmittedIntegrationEvents");
+            var builder = new UriBuilder(tenantACustomisationsUrl + "api/SavedEvents");
             builder.Port = -1;
             var query = HttpUtility.ParseQueryString(builder.Query);
             query["orderId"] = orderId;

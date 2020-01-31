@@ -10,6 +10,7 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events
             Id = Guid.NewGuid();
             CreationDate = DateTime.UtcNow;
             CheckForCustomisation = true;
+            TenantId = 1;
         }
 
         public IntegrationEvent(Boolean checkForCustomisation)
@@ -17,6 +18,7 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events
             Id = Guid.NewGuid();
             CreationDate = DateTime.UtcNow;
             CheckForCustomisation = checkForCustomisation;
+            TenantId = 1;
         }
 
         [JsonConstructor]
@@ -24,6 +26,7 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events
         {
             Id = id;
             CreationDate = createDate;
+            TenantId = 1;
         }
 
         [JsonProperty]
@@ -35,7 +38,8 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events
         [JsonProperty]
         public Boolean CheckForCustomisation { get; set; }
         
-        /*[JsonProperty]
-        public String TenantId { get; set; }*/
+        //TODO fix this somehow
+        [JsonProperty]
+        public int TenantId { get; set; }
     }
 }

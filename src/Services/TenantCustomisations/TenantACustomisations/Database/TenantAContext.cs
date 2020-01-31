@@ -18,7 +18,7 @@ namespace TenantACustomisations.Database
 
         public DbSet<ShippingInformation> ShippingInformation { get; set; }
 
-        public DbSet<OrderStatusChangedToSubmittedIntegrationEvent> OrderStatusChangedToSubmittedIntegrationEvent
+        public DbSet<SavedEvent> SavedEvent
         {
             get;
             set;

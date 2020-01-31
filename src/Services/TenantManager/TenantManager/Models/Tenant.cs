@@ -10,7 +10,7 @@ namespace TenantManager.Models
     {
         public String TenantName { get; set; }
         [Key]
-        public long TenantId { get; set; }
-        public ICollection<Customisation> Customisations { get; set; }
+        public int TenantId { get; set; }
+        public List<Customisation> Customisations { get; set; }
     }
 }

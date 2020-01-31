@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
+using System.Net.Mime;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
@@ -273,37 +274,44 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
             return channel;
         }
 
-        private async void SendEventToTenant(Object @event)
+        private async void SendEventToTenant(String content, String id, String eventName)
         {
-            string myJson = JsonConvert.SerializeObject(@event);
+            var temp = new SavedEvent();
+            temp.Content = content;
+            temp.SavedEventId = id;
+            temp.EventName = eventName;
+            string myJson = JsonConvert.SerializeObject(temp);
             using (var client = new HttpClient())
             {
                 try
                 {
                     //TODO replace URL with response from tenantmanager
                     var response = await client.PostAsync(
-                        tenantACustomisationUrl + "api/OrderStatusChangedToSubmittedIntegrationEvents",
+                        tenantACustomisationUrl + "api/SavedEvents",
                         new StringContent(myJson, Encoding.UTF8, "application/json"));
                     response.EnsureSuccessStatusCode();
-                    _logger.LogInformation("----- Event sent to tenant{@event} -----", @event);
+                    _logger.LogInformation("----- Event sent to tenant{@id} -----", id);
                 }
 
                 catch (Exception e)
                 {
-                    _logger.LogInformation("----- Exception{@e} -- Event{@event} -----", e, @event);
+                    _logger.LogInformation("----- Exception{@e} -- Event{@id} -----", e, @id);
                 }
             }
         }
 
-        private async Task<Boolean> IsEventCustomised(String eventName, String tenantId)
+        private async Task<Boolean> IsEventCustomised(String eventName, int tenantId)
         {
+            CustomisationInfo customisationInfo = new CustomisationInfo();
+            customisationInfo.EventName = eventName;
+            customisationInfo.TenantId = tenantId;
             Boolean isCustomised = false;
 
-            var builder = new UriBuilder(tenantManagerUrl + "api/Customisations");
+            var builder = new UriBuilder(tenantManagerUrl + "api/Customisations/IsCustomised");
             builder.Port = -1;
             var query = HttpUtility.ParseQueryString(builder.Query);
             query["eventName"] = eventName;
-            query["tenantId"] = tenantId;
+            query["tenantId"] = tenantId.ToString();
             builder.Query = query.ToString();
             string url = builder.ToString();
 
@@ -355,19 +363,12 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
                             if (handler == null) continue;
                             var eventType = _subsManager.GetEventTypeByName(eventName);
                             var integrationEvent = JsonConvert.DeserializeObject(message, eventType);
-                            //IsEventCustomised(eventName, integrationEvent.TenantId);
-                            if (eventName.Equals("OrderStatusChangedToSubmittedIntegrationEvent") &&
-                                integrationEvent is IntegrationEvent) //TODO replace with tenantmanager
+                            if (integrationEvent is IntegrationEvent evt &&  IsEventCustomised(eventName, evt.TenantId).Result) //TODO replace with tenantmanager
                             {
-                                //Casting
-                                IntegrationEvent evt = (IntegrationEvent) integrationEvent;
                                 //Checking if event should be sent to tenant, or handled normally
-                                //Can instead create an endpoint in the tenant manager that also handles all the events that a tenant wants to postpone
-                                //Additionally, an endpoint in the tenant manager is required, where the tenant 
-                                //Issue with the tenant knowing the id of the event
                                 if (evt.CheckForCustomisation)
                                 {
-                                    SendEventToTenant(integrationEvent);
+                                    SendEventToTenant(message, evt.Id.ToString(), eventName);
                                     break;
                                 }
                             }
@@ -387,4 +388,17 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
             }
         }
     }
+}
+
+class SavedEvent
+{
+    public string SavedEventId { get; set; }
+    public string Content { get; set; }
+    public String EventName { get; set; }
+}
+
+class CustomisationInfo
+{
+    public string EventName { get; set; }
+    public int TenantId { get; set; }
 }
