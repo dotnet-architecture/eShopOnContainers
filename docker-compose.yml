@@ -43,6 +43,14 @@ services:
     depends_on:
       - sql.data
 
+  tenantacustomisation:
+    image:  ${REGISTRY:-eshop}/tenantacustomisation:${PLATFORM:-linux}-${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/Services/TenantCustomisations/TenantACustomisations/Dockerfile
+    depends_on:
+      - sql.data
+
   catalog.api:
     image: ${REGISTRY:-eshop}/catalog.api:${PLATFORM:-linux}-${TAG:-latest}
     build:

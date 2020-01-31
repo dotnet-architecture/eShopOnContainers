@@ -10,6 +10,6 @@ namespace TenantManager.Models
     {
         public int MethodId { get; set; }
         public String MethodName { get; set; }
-        public ICollection<Customisation> Customisations { get; set; }
+        public List<Customisation> Customisations { get; set; }
     }
 }

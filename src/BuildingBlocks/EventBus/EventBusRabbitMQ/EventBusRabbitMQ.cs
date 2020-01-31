@@ -12,9 +12,15 @@ using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using RabbitMQ.Client.Exceptions;
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Net;
+using System.Net.Http;
+using System.Net.Mime;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
 {
@@ -27,15 +33,20 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
         private readonly IEventBusSubscriptionsManager _subsManager;
         private readonly ILifetimeScope _autofac;
         private readonly string AUTOFAC_SCOPE_NAME = "eshop_event_bus";
+        private static readonly String tenantACustomisationUrl = @"http://tenantacustomisation/";
+        private static readonly String tenantManagerUrl = @"http://tenantmanager/";
         private readonly int _retryCount;
+
 
         private IModel _consumerChannel;
         private string _queueName;
 
         public EventBusRabbitMQ(IRabbitMQPersistentConnection persistentConnection, ILogger<EventBusRabbitMQ> logger,
-            ILifetimeScope autofac, IEventBusSubscriptionsManager subsManager, string queueName = null, int retryCount = 5)
+            ILifetimeScope autofac, IEventBusSubscriptionsManager subsManager, string queueName = null,
+            int retryCount = 5)
         {
-            _persistentConnection = persistentConnection ?? throw new ArgumentNullException(nameof(persistentConnection));
+            _persistentConnection =
+                persistentConnection ?? throw new ArgumentNullException(nameof(persistentConnection));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _subsManager = subsManager ?? new InMemoryEventBusSubscriptionsManager();
             _queueName = queueName;
@@ -75,19 +86,22 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
 
             var policy = RetryPolicy.Handle<BrokerUnreachableException>()
                 .Or<SocketException>()
-                .WaitAndRetry(_retryCount, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)), (ex, time) =>
-                {
-                    _logger.LogWarning(ex, "Could not publish event: {EventId} after {Timeout}s ({ExceptionMessage})", @event.Id, $"{time.TotalSeconds:n1}", ex.Message);
-                });
+                .WaitAndRetry(_retryCount, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
+                    (ex, time) =>
+                    {
+                        _logger.LogWarning(ex,
+                            "Could not publish event: {EventId} after {Timeout}s ({ExceptionMessage})", @event.Id,
+                            $"{time.TotalSeconds:n1}", ex.Message);
+                    });
 
             var eventName = @event.GetType().Name;
 
-            _logger.LogTrace("Creating RabbitMQ channel to publish event: {EventId} ({EventName})", @event.Id, eventName);
+            _logger.LogWarning("Creating RabbitMQ channel to publish event: {EventId} ({EventName})", @event.Id,
+                eventName);
 
             using (var channel = _persistentConnection.CreateModel())
             {
-
-                _logger.LogTrace("Declaring RabbitMQ exchange to publish event: {EventId}", @event.Id);
+                _logger.LogWarning("Declaring RabbitMQ exchange to publish event: {EventId}", @event.Id);
 
                 channel.ExchangeDeclare(exchange: BROKER_NAME, type: "direct");
 
@@ -99,7 +113,7 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
                     var properties = channel.CreateBasicProperties();
                     properties.DeliveryMode = 2; // persistent
 
-                    _logger.LogTrace("Publishing event to RabbitMQ: {EventId}", @event.Id);
+                    _logger.LogWarning("Publishing event to RabbitMQ: {EventId}", @event.Id);
 
                     channel.BasicPublish(
                         exchange: BROKER_NAME,
@@ -114,7 +128,8 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
         public void SubscribeDynamic<TH>(string eventName)
             where TH : IDynamicIntegrationEventHandler
         {
-            _logger.LogInformation("Subscribing to dynamic event {EventName} with {EventHandler}", eventName, typeof(TH).GetGenericTypeName());
+            _logger.LogInformation("Subscribing to dynamic event {EventName} with {EventHandler}", eventName,
+                typeof(TH).GetGenericTypeName());
 
             DoInternalSubscription(eventName);
             _subsManager.AddDynamicSubscription<TH>(eventName);
@@ -128,7 +143,8 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
             var eventName = _subsManager.GetEventKey<T>();
             DoInternalSubscription(eventName);
 
-            _logger.LogInformation("Subscribing to event {EventName} with {EventHandler}", eventName, typeof(TH).GetGenericTypeName());
+            _logger.LogInformation("Subscribing to event {EventName} with {EventHandler}", eventName,
+                typeof(TH).GetGenericTypeName());
 
             _subsManager.AddSubscription<T, TH>();
             StartBasicConsume();
@@ -147,8 +163,8 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
                 using (var channel = _persistentConnection.CreateModel())
                 {
                     channel.QueueBind(queue: _queueName,
-                                      exchange: BROKER_NAME,
-                                      routingKey: eventName);
+                        exchange: BROKER_NAME,
+                        routingKey: eventName);
                 }
             }
         }
@@ -238,13 +254,13 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
             var channel = _persistentConnection.CreateModel();
 
             channel.ExchangeDeclare(exchange: BROKER_NAME,
-                                    type: "direct");
+                type: "direct");
 
             channel.QueueDeclare(queue: _queueName,
-                                 durable: true,
-                                 exclusive: false,
-                                 autoDelete: false,
-                                 arguments: null);
+                durable: true,
+                exclusive: false,
+                autoDelete: false,
+                arguments: null);
 
             channel.CallbackException += (sender, ea) =>
             {
@@ -258,9 +274,69 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
             return channel;
         }
 
+        private async void SendEventToTenant(String content, String id, String eventName)
+        {
+            var temp = new SavedEvent();
+            temp.Content = content;
+            temp.SavedEventId = id;
+            temp.EventName = eventName;
+            string myJson = JsonConvert.SerializeObject(temp);
+            using (var client = new HttpClient())
+            {
+                try
+                {
+                    //TODO replace URL with response from tenantmanager
+                    var response = await client.PostAsync(
+                        tenantACustomisationUrl + "api/SavedEvents",
+                        new StringContent(myJson, Encoding.UTF8, "application/json"));
+                    response.EnsureSuccessStatusCode();
+                    _logger.LogInformation("----- Event sent to tenant{@id} -----", id);
+                }
+
+                catch (Exception e)
+                {
+                    _logger.LogInformation("----- Exception{@e} -- Event{@id} -----", e, @id);
+                }
+            }
+        }
+
+        private async Task<Boolean> IsEventCustomised(String eventName, int tenantId)
+        {
+            CustomisationInfo customisationInfo = new CustomisationInfo();
+            customisationInfo.EventName = eventName;
+            customisationInfo.TenantId = tenantId;
+            Boolean isCustomised = false;
+
+            var builder = new UriBuilder(tenantManagerUrl + "api/Customisations/IsCustomised");
+            builder.Port = -1;
+            var query = HttpUtility.ParseQueryString(builder.Query);
+            query["eventName"] = eventName;
+            query["tenantId"] = tenantId.ToString();
+            builder.Query = query.ToString();
+            string url = builder.ToString();
+
+            using (var client = new HttpClient())
+            {
+                try
+                {
+                    var response = await client.GetAsync(
+                        url);
+                    response.EnsureSuccessStatusCode();
+                    isCustomised =
+                        JsonConvert.DeserializeObject<Boolean>(response.Content.ReadAsStringAsync().Result);
+                }
+                catch (Exception e)
+                {
+                    _logger.LogInformation("----- Exception{@e}", e);
+                }
+            }
+
+            return isCustomised;
+        }
+
         private async Task ProcessEvent(string eventName, string message)
         {
-            _logger.LogTrace("Processing RabbitMQ event: {EventName}", eventName);
+            _logger.LogWarning("Processing RabbitMQ event: {EventName}", eventName);
 
             if (_subsManager.HasSubscriptionsForEvent(eventName))
             {
@@ -271,7 +347,9 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
                     {
                         if (subscription.IsDynamic)
                         {
-                            var handler = scope.ResolveOptional(subscription.HandlerType) as IDynamicIntegrationEventHandler;
+                            //TODO check if it is required here aswell
+                            var handler =
+                                scope.ResolveOptional(subscription.HandlerType) as IDynamicIntegrationEventHandler;
                             if (handler == null) continue;
                             dynamic eventData = JObject.Parse(message);
 
@@ -281,13 +359,25 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
                         else
                         {
                             var handler = scope.ResolveOptional(subscription.HandlerType);
+
                             if (handler == null) continue;
                             var eventType = _subsManager.GetEventTypeByName(eventName);
                             var integrationEvent = JsonConvert.DeserializeObject(message, eventType);
+                            if (integrationEvent is IntegrationEvent evt &&  IsEventCustomised(eventName, evt.TenantId).Result) //TODO replace with tenantmanager
+                            {
+                                //Checking if event should be sent to tenant, or handled normally
+                                if (evt.CheckForCustomisation)
+                                {
+                                    SendEventToTenant(message, evt.Id.ToString(), eventName);
+                                    break;
+                                }
+                            }
+
                             var concreteType = typeof(IIntegrationEventHandler<>).MakeGenericType(eventType);
 
                             await Task.Yield();
-                            await (Task)concreteType.GetMethod("Handle").Invoke(handler, new object[] { integrationEvent });
+                            await (Task) concreteType.GetMethod("Handle")
+                                .Invoke(handler, new object[] {integrationEvent});
                         }
                     }
                 }
@@ -298,4 +388,17 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
             }
         }
     }
+}
+
+class SavedEvent
+{
+    public string SavedEventId { get; set; }
+    public string Content { get; set; }
+    public String EventName { get; set; }
+}
+
+class CustomisationInfo
+{
+    public string EventName { get; set; }
+    public int TenantId { get; set; }
 }

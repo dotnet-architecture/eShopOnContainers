@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using TenantManager.Models;
 
 namespace TenantManager.Database
@@ -17,28 +14,13 @@ namespace TenantManager.Database
                 return;
             }
 
-            var tenant1 = new Tenant() { TenantName = "Tekna" };
-            var tenant2 = new Tenant() { TenantName = "NITO" };
-            var tenant3 = new Tenant() { TenantName = "LO" };
+            var tenant1 = new Tenant { TenantName = "Tekna" };
+            context.Tenant.Add(tenant1);
+            
+            var method1 = new Method { MethodName = "OrderStatusChangedToSubmittedIntegrationEvent" };
+            var method2 = new Method { MethodName = "OrderStatusChangedToAwaitingValidationIntegrationEvent" };
 
-            var tenants = new Tenant[]
-            {
-                tenant1,
-                tenant2,
-                tenant3
-            };
-          
-            foreach(Tenant t in tenants)
-            {
-                context.Tenant.Add(t);
-            }
-
-            context.SaveChanges();
-
-            var method1 = new Method() { MethodName = "GetPrice" };
-            var method2 = new Method() { MethodName = "GetItem" };
-
-            var methods = new Method[]
+            var methods = new[]
             {
                 method1,
                 method2
@@ -48,14 +30,11 @@ namespace TenantManager.Database
             {
                 context.Method.Add(m);
             }
-
-            context.SaveChanges();
-
-            var customisations = new Customisation[]
+            
+            var customisations = new[]
             {
-                new Customisation(){Tenant=tenant1, Method=method1 },
-                new Customisation(){Tenant=tenant1, Method=method2},
-                new Customisation(){Tenant=tenant2, Method=method1 }
+                new Customisation {Tenant=tenant1, Method=method1 },
+                new Customisation {Tenant=tenant1, Method=method2}
             };
 
             foreach(Customisation c in customisations)

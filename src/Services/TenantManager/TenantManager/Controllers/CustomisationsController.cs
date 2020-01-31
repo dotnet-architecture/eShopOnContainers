@@ -41,6 +41,20 @@ namespace TenantManager.Controllers
 
             return customisation;
         }
+        
+        // GET: api/Customisations/5
+        [HttpGet("isCustomised")]
+        public async Task<ActionResult<Boolean>> IsCustomised(String eventName, int tenantId)
+        {
+            var customisation = await _context.Customisation.Include(c => c.Method).Include(c => c.Tenant).Where(c => c.Method.MethodName.Equals(eventName) && c.TenantId == tenantId).FirstOrDefaultAsync();
+
+            if (customisation == null)
+            {
+                return false;
+            }
+
+            return true;
+        }
 
         // PUT: api/Customisations/5
         [HttpPut("{id}")]

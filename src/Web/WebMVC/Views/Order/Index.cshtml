@@ -1,35 +1,63 @@
 @using Microsoft.eShopOnContainers.WebMVC.ViewModels
+@using Microsoft.eShopOnContainers.WebMVC.ViewModels.Customisation
 
 @model IEnumerable<Microsoft.eShopOnContainers.WebMVC.ViewModels.Order>
 
 @{
-     ViewData["Title"] = "My Orders";
-     var headerList= new List<Header>() {
+    ViewData["Title"] = "My Orders";
+    var headerList = new List<Header>() {
         new Header() { Controller = "Catalog", Text = "Back to catalog" },
         new Header() { Text = " / " },
         new Header() { Controller = "OrderManagement", Text = "Orders Management" } };
+    var shippingInfo = ViewData["ShippingInfo"] as List<ShippingInformation>;
+
 }
 
 <div class="esh-orders">
-    <partial name="_Header" model="headerList"/>
+    <partial name="_Header" model="headerList" />
 
     <div class="container">
         <article class="esh-orders-titles row">
-            <section class="esh-orders-title col-2">Order number</section>
-            <section class="esh-orders-title col-4">Date</section>
-            <section class="esh-orders-title col-2">Total</section>
-            <section class="esh-orders-title col-2">Status</section>
+            <section class="esh-orders-title col-1">Order number</section>
+            <section class="esh-orders-title col-2">Date</section>
+            <section class="esh-orders-title col-1">Total</section>
+            <section class="esh-orders-title col-1">Status</section>
+            <section class="esh-orders-title col-2">Shipping date</section>
+            <section class="esh-orders-title col-2">Estimated arrival date</section>
             <section class="esh-orders-title col-2"></section>
+
         </article>
         @if (Model != null && Model.Any())
         {
             foreach (var item in Model)
             {
                 <article class="esh-orders-items row">
-                    <section class="esh-orders-item col-2">@Html.DisplayFor(modelItem => item.OrderNumber)</section>
-                    <section class="esh-orders-item col-4">@Html.DisplayFor(modelItem => item.Date)</section>
-                    <section class="esh-orders-item col-2">$ @Html.DisplayFor(modelItem => item.Total)</section>
-                    <section class="esh-orders-item col-2">@Html.DisplayFor(modelItem => item.Status)</section>
+                    <section class="esh-orders-item col-1">@Html.DisplayFor(modelItem => item.OrderNumber)</section>
+                    <section class="esh-orders-item col-2">@item.Date.ToShortDateString()</section>
+                    <section class="esh-orders-item col-1">$ @Html.DisplayFor(modelItem => item.Total)</section>
+                    <section class="esh-orders-item col-1">@Html.DisplayFor(modelItem => item.Status)</section>
+                    <section class="esh-orders-item col-2">
+                        @for (var i = 0; i < shippingInfo.Count(); i++)
+                        {
+                            var si = shippingInfo[i];
+                            if (si.OrderNumber.Equals(item.OrderNumber))
+                            {
+                                @si.ShippingTime.ToShortDateString();
+                                break;
+                            }
+                        }
+                    </section>
+                    <section class="esh-orders-item col-2">
+                        @for (var i = 0; i < shippingInfo.Count(); i++)
+                        {
+                            var si = shippingInfo[i];
+                            if (si.OrderNumber.Equals(item.OrderNumber))
+                            {
+                                @si.ArrivalTime.ToShortDateString();
+                                break;
+                            }
+                        }
+                    </section>
                     <section class="esh-orders-item col-1">
                         <a class="esh-orders-link" asp-controller="Order" asp-action="Detail" asp-route-orderId="@item.OrderNumber">Detail</a>
                     </section>
