@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using TenantACustomisations.ExternalServices;
+using TenantACustomisations.IntegrationEvents.Events;
 
 namespace TenantACustomisations.Database
 {
@@ -16,6 +17,12 @@ namespace TenantACustomisations.Database
         }
 
         public DbSet<ShippingInformation> ShippingInformation { get; set; }
+
+        public DbSet<OrderStatusChangedToSubmittedIntegrationEvent> OrderStatusChangedToSubmittedIntegrationEvent
+        {
+            get;
+            set;
+        }
 
     }
     public class TenantAContextDesignFactory : IDesignTimeDbContextFactory<TenantAContext>

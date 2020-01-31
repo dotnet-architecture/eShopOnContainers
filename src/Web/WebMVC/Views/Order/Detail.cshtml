@@ -3,9 +3,12 @@
 @model Microsoft.eShopOnContainers.WebMVC.ViewModels.Order
 
 @{
-     ViewData["Title"] = "Order Detail";
-     var headerList= new List<Header>() {
-     new Header() { Controller = "Catalog", Text = "Back to catalog" } };
+    ViewData["Title"] = "Order Detail";
+    var headerList = new List<Header>()
+    {
+        new Header() {Controller = "Catalog", Text = "Back to catalog"}
+    };
+    var rfidScanned = ViewData["RFIDScanned"];
 }
 
 <div class="esh-orders_detail">
@@ -14,20 +17,22 @@
     <div class="container">
         <section class="esh-orders_detail-section">
             <article class="esh-orders_detail-titles row">
-                <section class="esh-orders_detail-title col-3">Order number</section>
-                <section class="esh-orders_detail-title col-3">Date</section>
-                <section class="esh-orders_detail-title col-3">Total</section>
-                <section class="esh-orders_detail-title col-3">Status</section>
+                <section class="esh-orders_detail-title col-2">Order number</section>
+                <section class="esh-orders_detail-title col-2">Date</section>
+                <section class="esh-orders_detail-title col-2">Total</section>
+                <section class="esh-orders_detail-title col-2">Status</section>
+                <section class="esh-orders_detail-title col-2">RFID Scanned</section>
             </article>
 
             <article class="esh-orders_detail-items row">
-                <section class="esh-orders_detail-item col-3">@Model.OrderNumber</section>
-                <section class="esh-orders_detail-item col-3">@Model.Date</section>
-                <section class="esh-orders_detail-item col-3">$@Model.Total</section>
-                <section class="esh-orders_detail-title col-3">@Model.Status</section>
+                <section class="esh-orders_detail-item col-2">$@Model.Total</section>
+                <section class="esh-orders_detail-item col-2">@Model.OrderNumber</section>
+                <section class="esh-orders_detail-item col-2">@Model.Date</section>
+                <section class="esh-orders_detail-title col-2">@Model.Status</section>
+                <section class="esh-orders_detail-title col-2">@rfidScanned</section>
             </article>
         </section>
-        
+
         <section class="esh-orders_detail-section">
             <article class="esh-orders_detail-titles row">
                 <section class="esh-orders_detail-title col-12">Description</section>

@@ -34,5 +34,8 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events
 
         [JsonProperty]
         public Boolean CheckForCustomisation { get; set; }
+        
+        /*[JsonProperty]
+        public String TenantId { get; set; }*/
     }
 }
