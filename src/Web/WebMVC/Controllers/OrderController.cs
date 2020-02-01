@@ -81,8 +81,11 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
         public async Task<IActionResult> Detail(string orderId)
         {
             var user = _appUserParser.Parse(HttpContext.User);
-            Boolean RFIDScanned = await AllGoodsRFIDScanned(orderId);
-            ViewData["RFIDScanned"] = RFIDScanned;
+            if (user.TenantId == 1)
+            {
+                Boolean RFIDScanned = await AllGoodsRFIDScanned(orderId);
+                ViewData["RFIDScanned"] = RFIDScanned;
+            }
 
             var order = await _orderSvc.GetOrder(user, orderId);
             return View(order);
@@ -91,11 +94,17 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
         public async Task<IActionResult> Index(Order item)
         {
             var user = _appUserParser.Parse(HttpContext.User);
-            var vm = await _orderSvc.GetMyOrders(user);
-            List<ShippingInformation> shippingInformation = GetShippingInfo(vm);
-            _logger.LogInformation("----- Shipping info{@ShippingInformation}", shippingInformation);
 
-            ViewData["ShippingInfo"] = shippingInformation;
+
+            var vm = await _orderSvc.GetMyOrders(user);
+
+            if (user.TenantId == 1)
+            {
+                List<ShippingInformation> shippingInformation = GetShippingInfo(vm);
+                _logger.LogInformation("----- Shipping info{@ShippingInformation}", shippingInformation);
+                ViewData["ShippingInfo"] = shippingInformation;
+            }
+
             return View(vm);
         }
 
@@ -108,7 +117,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
             query["orderId"] = orderId;
             builder.Query = query.ToString();
             string url = builder.ToString();
-            
+
             using (var client = new HttpClient())
             {
                 var response = await client.GetAsync(
@@ -148,7 +157,6 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e);
                     _logger.LogInformation("----- Exception{@e} -----", e);
                 }
             }
