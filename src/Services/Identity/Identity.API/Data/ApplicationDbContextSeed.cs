@@ -74,7 +74,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Data
                     "cardholdername", "cardnumber", "cardtype", "city", "country",
                     "email", "expiration", "lastname", "name", "phonenumber",
                     "username", "zipcode", "state", "street", "securitynumber",
-                    "normalizedemail", "normalizedusername", "password"
+                    "normalizedemail", "normalizedusername", "password", "tenantid"
                 };
                 csvheaders = GetHeaders(requiredHeaders, csvFileUsers);
             }
@@ -104,9 +104,15 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Data
             }
 
             string cardtypeString = column[Array.IndexOf(headers, "cardtype")].Trim('"').Trim();
+            string tenantIdString = column[Array.IndexOf(headers, "tenantid")].Trim('"').Trim();
             if (!int.TryParse(cardtypeString, out int cardtype))
             {
                 throw new Exception($"cardtype='{cardtypeString}' is not a number");
+            }
+            
+            if (!int.TryParse(tenantIdString, out int tenantId))
+            {
+                throw new Exception($"tenantid='{tenantIdString}' is not a number");
             }
 
             var user = new ApplicationUser
@@ -131,6 +137,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Data
                 NormalizedUserName = column[Array.IndexOf(headers, "normalizedusername")].Trim('"').Trim(),
                 SecurityStamp = Guid.NewGuid().ToString("D"),
                 PasswordHash = column[Array.IndexOf(headers, "password")].Trim('"').Trim(), // Note: This is the password
+                TenantId = tenantId
             };
 
             user.PasswordHash = _passwordHasher.HashPassword(user, user.PasswordHash);
@@ -162,13 +169,41 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Data
                 NormalizedEmail = "DEMOUSER@MICROSOFT.COM",
                 NormalizedUserName = "DEMOUSER@MICROSOFT.COM",
                 SecurityStamp = Guid.NewGuid().ToString("D"),
+                TenantId = 2
             };
+            
+            var user2 =
+                new ApplicationUser()
+                {
+                    CardHolderName = "Espen",
+                    CardNumber = "4012888888881882",
+                    CardType = 1,
+                    City = "Oslo",
+                    Country = "Norway",
+                    Email = "espent1004@gmail.com",
+                    Expiration = "12/22",
+                    Id = Guid.NewGuid().ToString(),
+                    LastName = "Nordli",
+                    Name = "Espen",
+                    PhoneNumber = "95791135",
+                    UserName = "espent1004@gmail.com",
+                    ZipCode = "0681",
+                    State = "Oslo",
+                    Street = "Treskeveien 28A",
+                    SecurityNumber = "535",
+                    NormalizedEmail = "ESPENT1004@GMAIL.COM",
+                    NormalizedUserName = "ESPENT1004@GMAIL.COM",
+                    SecurityStamp = Guid.NewGuid().ToString("D"),
+                    TenantId = 1
+                };
 
             user.PasswordHash = _passwordHasher.HashPassword(user, "Pass@word1");
+            user2.PasswordHash = _passwordHasher.HashPassword(user2, "passord");
 
             return new List<ApplicationUser>()
             {
-                user
+                user,
+                user2
             };
         }
 
