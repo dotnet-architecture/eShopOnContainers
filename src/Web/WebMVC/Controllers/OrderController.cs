@@ -95,7 +95,6 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
         {
             var user = _appUserParser.Parse(HttpContext.User);
 
-
             var vm = await _orderSvc.GetMyOrders(user);
 
             if (user.TenantId == 1)
