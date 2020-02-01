@@ -59,6 +59,9 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands
 
         [DataMember]
         public int CardTypeId { get; private set; }
+        
+        [DataMember]
+        public int TenantId { get; private set; }
 
         [DataMember]
         public IEnumerable<OrderItemDTO> OrderItems => _orderItems;
@@ -70,7 +73,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands
 
         public CreateOrderCommand(List<BasketItem> basketItems, string userId, string userName, string city, string street, string state, string country, string zipcode,
             string cardNumber, string cardHolderName, DateTime cardExpiration,
-            string cardSecurityNumber, int cardTypeId) : this()
+            string cardSecurityNumber, int cardTypeId, int tenantId) : this()
         {
             _orderItems = basketItems.ToOrderItemsDTO().ToList();
             UserId = userId;
@@ -86,6 +89,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands
             CardSecurityNumber = cardSecurityNumber;
             CardTypeId = cardTypeId;
             CardExpiration = cardExpiration;
+            TenantId = tenantId;
         }
 
 

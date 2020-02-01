@@ -17,13 +17,14 @@ namespace Ordering.Domain.Events
         public string CardNumber { get; }
         public string CardSecurityNumber { get; }
         public string CardHolderName { get; }
+        public int TenantId { get;  }
         public DateTime CardExpiration { get; }
         public Order Order { get; }
 
         public OrderStartedDomainEvent(Order order, string userId, string userName,
                                        int cardTypeId, string cardNumber, 
                                        string cardSecurityNumber, string cardHolderName, 
-                                       DateTime cardExpiration)
+                                       DateTime cardExpiration, int tenantId)
         {
             Order = order;
             UserId = userId;
@@ -33,6 +34,7 @@ namespace Ordering.Domain.Events
             CardSecurityNumber = cardSecurityNumber;
             CardHolderName = cardHolderName;
             CardExpiration = cardExpiration;
+            TenantId = tenantId;
         }
     }
 }

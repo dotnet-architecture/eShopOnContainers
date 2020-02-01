@@ -10,7 +10,6 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events
             Id = Guid.NewGuid();
             CreationDate = DateTime.UtcNow;
             CheckForCustomisation = true;
-            TenantId = 1;
         }
 
         public IntegrationEvent(Boolean checkForCustomisation)
@@ -18,7 +17,6 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events
             Id = Guid.NewGuid();
             CreationDate = DateTime.UtcNow;
             CheckForCustomisation = checkForCustomisation;
-            TenantId = 1;
         }
 
         [JsonConstructor]
@@ -26,7 +24,6 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events
         {
             Id = id;
             CreationDate = createDate;
-            TenantId = 1;
         }
 
         [JsonProperty]

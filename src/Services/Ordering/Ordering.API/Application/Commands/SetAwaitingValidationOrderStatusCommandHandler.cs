@@ -32,7 +32,7 @@ namespace Ordering.API.Application.Commands
                 return false;
             }
 
-            orderToUpdate.SetAwaitingValidationStatus();
+            orderToUpdate.SetAwaitingValidationStatus(command.TenantId);
             return await _orderRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
         }
     }

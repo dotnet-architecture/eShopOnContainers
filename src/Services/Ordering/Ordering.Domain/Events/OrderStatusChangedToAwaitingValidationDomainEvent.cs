@@ -12,12 +12,15 @@
     {
         public int OrderId { get; }
         public IEnumerable<OrderItem> OrderItems { get; }
+        public int TenantId { get; }
 
         public OrderStatusChangedToAwaitingValidationDomainEvent(int orderId,
-            IEnumerable<OrderItem> orderItems)
+            IEnumerable<OrderItem> orderItems,
+            int tenantId)
         {
             OrderId = orderId;
             OrderItems = orderItems;
+            TenantId = tenantId;
         }
     }
 }

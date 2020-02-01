@@ -39,7 +39,7 @@ namespace Ordering.API.Application.IntegrationEvents.EventHandling
             {
                 _logger.LogInformation("----- Handling integration event: {IntegrationEventId} at {AppName} - ({@IntegrationEvent})", @event.Id, Program.AppName, @event);
 
-                var command = new SetAwaitingValidationOrderStatusCommand(@event.OrderId);
+                var command = new SetAwaitingValidationOrderStatusCommand(@event.OrderId, @event.TenantId);
 
                 _logger.LogInformation(
                     "----- Sending command: {CommandName} - {IdProperty}: {CommandId} ({@Command})",
