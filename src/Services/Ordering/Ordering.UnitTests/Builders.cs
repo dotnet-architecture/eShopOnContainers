@@ -25,7 +25,8 @@ namespace UnitTest.Ordering
                 cardNumber:"12",
                 cardSecurityNumber:"123",
                 cardHolderName:"name",
-                cardExpiration:DateTime.UtcNow);
+                cardExpiration:DateTime.UtcNow,
+                1);
         }
 
         public OrderBuilder AddOne(

@@ -24,6 +24,9 @@ namespace Identity.API.Migrations
 
                     b.Property<int>("AccessFailedCount");
 
+                    b.Property<int>("TenantId")
+                        .IsRequired();
+
                     b.Property<string>("CardHolderName")
                         .IsRequired();
 

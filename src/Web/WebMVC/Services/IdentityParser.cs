@@ -33,7 +33,8 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
                     SecurityNumber = claims.Claims.FirstOrDefault(x => x.Type == "card_security_number")?.Value ?? "",
                     State = claims.Claims.FirstOrDefault(x => x.Type == "address_state")?.Value ?? "",
                     Street = claims.Claims.FirstOrDefault(x => x.Type == "address_street")?.Value ?? "",
-                    ZipCode = claims.Claims.FirstOrDefault(x => x.Type == "address_zip_code")?.Value ?? ""
+                    ZipCode = claims.Claims.FirstOrDefault(x => x.Type == "address_zip_code")?.Value ?? "",
+                    TenantId = int.Parse(claims.Claims.FirstOrDefault(x => x.Type == "tenant_id")?.Value ?? "0")
                 };
             }
             throw new ArgumentException(message: "The principal must be a ClaimsPrincipal", paramName: nameof(principal));

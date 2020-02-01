@@ -53,7 +53,8 @@ namespace Identity.API.Migrations
                     Street = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    ZipCode = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    ZipCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TenantId = table.Column<int>(type: "int", nullable: false),
                 },
                 constraints: table =>
                 {

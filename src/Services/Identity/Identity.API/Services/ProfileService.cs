@@ -106,6 +106,11 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Services
             if (!string.IsNullOrWhiteSpace(user.ZipCode))
                 claims.Add(new Claim("address_zip_code", user.ZipCode));
 
+            if (user.TenantId != 0)
+            {
+                claims.Add(new Claim("tenant_id", user.TenantId.ToString()));
+            }
+
             if (_userManager.SupportsUserEmail)
             {
                 claims.AddRange(new[]

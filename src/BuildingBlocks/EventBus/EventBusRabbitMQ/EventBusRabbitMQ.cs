@@ -363,10 +363,11 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
                             if (handler == null) continue;
                             var eventType = _subsManager.GetEventTypeByName(eventName);
                             var integrationEvent = JsonConvert.DeserializeObject(message, eventType);
-                            if (integrationEvent is IntegrationEvent evt &&  IsEventCustomised(eventName, evt.TenantId).Result) //TODO replace with tenantmanager
+                            IntegrationEvent evt = (IntegrationEvent) integrationEvent;
+                            if (IsEventCustomised(eventName, evt.TenantId).Result) //TODO fix tenantId part of request
                             {
                                 //Checking if event should be sent to tenant, or handled normally
-                                if (evt.CheckForCustomisation)
+                                if (evt.CheckForCustomisation && evt.TenantId == 1)//TODO use tenantId to choose the correct endpoint to send the event to
                                 {
                                     SendEventToTenant(message, evt.Id.ToString(), eventName);
                                     break;
@@ -374,10 +375,21 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
                             }
 
                             var concreteType = typeof(IIntegrationEventHandler<>).MakeGenericType(eventType);
-
-                            await Task.Yield();
-                            await (Task) concreteType.GetMethod("Handle")
-                                .Invoke(handler, new object[] {integrationEvent});
+                            var handlerName = handler.ToString();
+                            //Not tenant specific handler
+                            if (!handlerName.Contains(("TenantA")))
+                            {
+                                await Task.Yield();
+                                await (Task) concreteType.GetMethod("Handle")
+                                    .Invoke(handler, new object[] {integrationEvent});
+                            }
+                            //Tenant specific handler, and event belongs to that tenant
+                            else if (handlerName.Contains("TenantA") && evt.TenantId == 1)
+                            {
+                                await Task.Yield();
+                                await (Task) concreteType.GetMethod("Handle")
+                                    .Invoke(handler, new object[] {integrationEvent});
+                            }
                         }
                     }
                 }

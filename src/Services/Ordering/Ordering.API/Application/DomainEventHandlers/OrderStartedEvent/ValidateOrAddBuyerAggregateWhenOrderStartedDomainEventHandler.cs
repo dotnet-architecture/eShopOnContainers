@@ -59,6 +59,7 @@ namespace Ordering.API.Application.DomainEventHandlers.OrderStartedEvent
                 .SaveEntitiesAsync(cancellationToken);
 
             var orderStatusChangedTosubmittedIntegrationEvent = new OrderStatusChangedToSubmittedIntegrationEvent(orderStartedEvent.Order.Id, orderStartedEvent.Order.OrderStatus.Name, buyer.Name);
+            orderStatusChangedTosubmittedIntegrationEvent.TenantId = orderStartedEvent.TenantId;
             await _orderingIntegrationEventService.AddAndSaveEventAsync(orderStatusChangedTosubmittedIntegrationEvent);
 
             _logger.CreateLogger<ValidateOrAddBuyerAggregateWhenOrderStartedDomainEventHandler>()

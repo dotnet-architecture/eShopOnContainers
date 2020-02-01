@@ -12,10 +12,13 @@ namespace Ordering.API.Application.Commands
 
         [DataMember]
         public int OrderNumber { get; private set; }
+        [DataMember]
+        public int TenantId { get; private set; }
 
-        public SetAwaitingValidationOrderStatusCommand(int orderNumber)
+        public SetAwaitingValidationOrderStatusCommand(int orderNumber, int tenantId)
         {
             OrderNumber = orderNumber;
+            TenantId = tenantId;
         }
     }
 }

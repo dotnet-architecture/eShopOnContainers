@@ -29,6 +29,9 @@ namespace Identity.API.Migrations
                     b.Property<string>("CardHolderName")
                         .IsRequired();
 
+                    b.Property<int>("TenantId")
+                        .IsRequired();
+
                     b.Property<string>("CardNumber")
                         .IsRequired();
 

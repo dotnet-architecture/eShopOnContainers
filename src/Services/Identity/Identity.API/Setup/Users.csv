@@ -1,2 +1,3 @@
-CardHolderName,CardNumber,CardType,City,Country,Email,Expiration,LastName,Name,PhoneNumber,UserName,ZipCode,State,Street,SecurityNumber,NormalizedEmail,NormalizedUserName,Password
-DemoUser,4012888888881881,1,Redmond,U.S.,demouser@microsoft.com,12/20,DemoLastName,DemoUser,1234567890,demouser@microsoft.com,98052,WA,15703 NE 61st Ct,535,DEMOUSER@MICROSOFT.COM,DEMOUSER@MICROSOFT.COM,Pass@word1
+CardHolderName,CardNumber,CardType,City,Country,Email,Expiration,LastName,Name,PhoneNumber,UserName,ZipCode,State,Street,SecurityNumber,NormalizedEmail,NormalizedUserName,Password,TenantId
+DemoUser,4012888888881881,1,Redmond,U.S.,demouser@microsoft.com,12/20,DemoLastName,DemoUser,1234567890,demouser@microsoft.com,98052,WA,15703 NE 61st Ct,535,DEMOUSER@MICROSOFT.COM,DEMOUSER@MICROSOFT.COM,Pass@word1,1
+Espen Nordli,4012888888881882,1,Oslo,Norway,espent1004@gmail.com,12/20,Nordli,Espen,95791135,espent1004@gmail.com,0681,Oslo,Treskeveien 28A,535,ESPENT1004@GMAIL.COM,ESPENT1004@GMAIL.COM,Pass@word1,2

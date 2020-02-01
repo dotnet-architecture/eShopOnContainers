@@ -21,7 +21,10 @@
                 <section class="esh-orders_detail-title col-2">Date</section>
                 <section class="esh-orders_detail-title col-2">Total</section>
                 <section class="esh-orders_detail-title col-2">Status</section>
-                <section class="esh-orders_detail-title col-2">RFID Scanned</section>
+                @if (rfidScanned != null)
+                {
+                    <section class="esh-orders_detail-title col-2">RFID Scanned</section>
+                }
             </article>
 
             <article class="esh-orders_detail-items row">
@@ -29,7 +32,10 @@
                 <section class="esh-orders_detail-item col-2">@Model.OrderNumber</section>
                 <section class="esh-orders_detail-item col-2">@Model.Date</section>
                 <section class="esh-orders_detail-title col-2">@Model.Status</section>
-                <section class="esh-orders_detail-title col-2">@rfidScanned</section>
+                @if (rfidScanned != null)
+                {
+                    <section class="esh-orders_detail-title col-2">@rfidScanned</section>
+                }
             </article>
         </section>
 

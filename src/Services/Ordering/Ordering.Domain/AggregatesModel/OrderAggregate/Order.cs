@@ -52,7 +52,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
         }
 
         public Order(string userId, string userName, Address address, int cardTypeId, string cardNumber, string cardSecurityNumber,
-                string cardHolderName, DateTime cardExpiration, int? buyerId = null, int? paymentMethodId = null) : this()
+                string cardHolderName, DateTime cardExpiration, int tenantId, int? buyerId = null, int? paymentMethodId = null) : this()
         {
             _buyerId = buyerId;
             _paymentMethodId = paymentMethodId;
@@ -63,7 +63,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
             // Add the OrderStarterDomainEvent to the domain events collection 
             // to be raised/dispatched when comitting changes into the Database [ After DbContext.SaveChanges() ]
             AddOrderStartedDomainEvent(userId, userName, cardTypeId, cardNumber,
-                                       cardSecurityNumber, cardHolderName, cardExpiration);
+                                       cardSecurityNumber, cardHolderName, cardExpiration, tenantId);
         }
 
         // DDD Patterns comment
@@ -105,11 +105,11 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
             _buyerId = id;
         }
 
-        public void SetAwaitingValidationStatus()
+        public void SetAwaitingValidationStatus(int tenantId)
         {
             if (_orderStatusId == OrderStatus.Submitted.Id)
             {
-                AddDomainEvent(new OrderStatusChangedToAwaitingValidationDomainEvent(Id, _orderItems));
+                AddDomainEvent(new OrderStatusChangedToAwaitingValidationDomainEvent(Id, _orderItems, tenantId));
                 _orderStatusId = OrderStatus.AwaitingValidation.Id;
             }
         }
@@ -177,11 +177,11 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
         }
 
         private void AddOrderStartedDomainEvent(string userId, string userName, int cardTypeId, string cardNumber,
-                string cardSecurityNumber, string cardHolderName, DateTime cardExpiration)
+                string cardSecurityNumber, string cardHolderName, DateTime cardExpiration, int tenantId)
         {
             var orderStartedDomainEvent = new OrderStartedDomainEvent(this, userId, userName, cardTypeId,
                                                                       cardNumber, cardSecurityNumber,
-                                                                      cardHolderName, cardExpiration);
+                                                                      cardHolderName, cardExpiration, tenantId);
 
             this.AddDomainEvent(orderStartedDomainEvent);
         }

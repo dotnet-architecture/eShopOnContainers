@@ -1,4 +1,7 @@
-﻿namespace Ordering.API.Application.DomainEventHandlers.OrderGracePeriodConfirmed
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Http;
+
+namespace Ordering.API.Application.DomainEventHandlers.OrderGracePeriodConfirmed
 {
     using Domain.Events;
     using MediatR;
@@ -44,8 +47,13 @@
             var orderStockList = orderStatusChangedToAwaitingValidationDomainEvent.OrderItems
                 .Select(orderItem => new OrderStockItem(orderItem.ProductId, orderItem.GetUnits()));
 
+
+            
+
             var orderStatusChangedToAwaitingValidationIntegrationEvent = new OrderStatusChangedToAwaitingValidationIntegrationEvent(
                 order.Id, order.OrderStatus.Name, buyer.Name, orderStockList);
+            orderStatusChangedToAwaitingValidationIntegrationEvent.TenantId =
+                orderStatusChangedToAwaitingValidationDomainEvent.TenantId;
             await _orderingIntegrationEventService.AddAndSaveEventAsync(orderStatusChangedToAwaitingValidationIntegrationEvent);
         }
     }  
