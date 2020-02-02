@@ -33,8 +33,8 @@ namespace TenantManager.Database
             
             var customisations = new[]
             {
-                new Customisation {Tenant=tenant1, Method=method1 },
-                new Customisation {Tenant=tenant1, Method=method2}
+                new Customisation {Tenant=tenant1, Method=method1, CustomisationUrl = @"http://tenantacustomisation/api/savedevents"},
+                new Customisation {Tenant=tenant1, Method=method2, CustomisationUrl = @"http://tenantacustomisation/api/savedevents"}
             };
 
             foreach(Customisation c in customisations)

@@ -274,7 +274,7 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
             return channel;
         }
 
-        private async void SendEventToTenant(String content, String id, String eventName)
+        private async void SendEventToTenant(String content, String id, String eventName, String url)
         {
             var temp = new SavedEvent();
             temp.Content = content;
@@ -285,9 +285,8 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
             {
                 try
                 {
-                    //TODO replace URL with response from tenantmanager
                     var response = await client.PostAsync(
-                        tenantACustomisationUrl + "api/SavedEvents",
+                        url,
                         new StringContent(myJson, Encoding.UTF8, "application/json"));
                     response.EnsureSuccessStatusCode();
                     _logger.LogInformation("----- Event sent to tenant{@id} -----", id);
@@ -300,12 +299,12 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
             }
         }
 
-        private async Task<Boolean> IsEventCustomised(String eventName, int tenantId)
+        private async Task<String> GetCustomisation(String eventName, int tenantId)
         {
             CustomisationInfo customisationInfo = new CustomisationInfo();
             customisationInfo.EventName = eventName;
             customisationInfo.TenantId = tenantId;
-            Boolean isCustomised = false;
+            String customisationUrl = null;
 
             var builder = new UriBuilder(tenantManagerUrl + "api/Customisations/IsCustomised");
             builder.Port = -1;
@@ -322,8 +321,7 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
                     var response = await client.GetAsync(
                         url);
                     response.EnsureSuccessStatusCode();
-                    isCustomised =
-                        JsonConvert.DeserializeObject<Boolean>(response.Content.ReadAsStringAsync().Result);
+                    customisationUrl = response.Content.ReadAsStringAsync().Result;
                 }
                 catch (Exception e)
                 {
@@ -331,7 +329,7 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
                 }
             }
 
-            return isCustomised;
+            return customisationUrl;
         }
 
         private async Task ProcessEvent(string eventName, string message)
@@ -364,14 +362,13 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
                             var eventType = _subsManager.GetEventTypeByName(eventName);
                             var integrationEvent = JsonConvert.DeserializeObject(message, eventType);
                             IntegrationEvent evt = (IntegrationEvent) integrationEvent;
-                            if (IsEventCustomised(eventName, evt.TenantId).Result) //TODO fix tenantId part of request
+                            var customisationUrl = GetCustomisation(eventName, evt.TenantId).Result;
+                            if (evt.CheckForCustomisation && !String.IsNullOrEmpty(customisationUrl))
                             {
                                 //Checking if event should be sent to tenant, or handled normally
-                                if (evt.CheckForCustomisation && evt.TenantId == 1)//TODO use tenantId to choose the correct endpoint to send the event to
-                                {
-                                    SendEventToTenant(message, evt.Id.ToString(), eventName);
-                                    break;
-                                }
+                                SendEventToTenant(message, evt.Id.ToString(), eventName,
+                                    customisationUrl);
+                                break;
                             }
 
                             var concreteType = typeof(IIntegrationEventHandler<>).MakeGenericType(eventType);
