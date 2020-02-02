@@ -12,6 +12,7 @@ using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using RabbitMQ.Client.Exceptions;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
@@ -36,6 +37,7 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
         private static readonly String tenantACustomisationUrl = @"http://tenantacustomisation/";
         private static readonly String tenantManagerUrl = @"http://tenantmanager/";
         private readonly int _retryCount;
+        private readonly Dictionary<int, String> _tenantInfo; 
 
 
         private IModel _consumerChannel;
@@ -54,6 +56,9 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
             _autofac = autofac;
             _retryCount = retryCount;
             _subsManager.OnEventRemoved += SubsManager_OnEventRemoved;
+            _tenantInfo = new Dictionary<int, string>();
+            _tenantInfo.Add(1, "TenantA");
+            _tenantInfo.Add(2, "TenantB");
         }
 
         private void SubsManager_OnEventRemoved(object sender, string eventName)
@@ -377,14 +382,15 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
                             var concreteType = typeof(IIntegrationEventHandler<>).MakeGenericType(eventType);
                             var handlerName = handler.ToString();
                             //Not tenant specific handler
-                            if (!handlerName.Contains(("TenantA")))
+                            _tenantInfo.TryGetValue(evt.TenantId, out string tenantHandler);
+                            if(String.IsNullOrEmpty(tenantHandler) || !handlerName.Contains(tenantHandler))
                             {
                                 await Task.Yield();
                                 await (Task) concreteType.GetMethod("Handle")
                                     .Invoke(handler, new object[] {integrationEvent});
                             }
                             //Tenant specific handler, and event belongs to that tenant
-                            else if (handlerName.Contains("TenantA") && evt.TenantId == 1)
+                            else if (!String.IsNullOrEmpty(tenantHandler) && handlerName.Contains(tenantHandler))
                             {
                                 await Task.Yield();
                                 await (Task) concreteType.GetMethod("Handle")
