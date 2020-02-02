@@ -9,6 +9,7 @@ namespace TenantManager.Models
     public class Customisation
     {
         public int CustomisationId { get; set; }
+        public String CustomisationUrl { get; set; }
         
         //Foreign keys
         public int TenantId { get; set; }
