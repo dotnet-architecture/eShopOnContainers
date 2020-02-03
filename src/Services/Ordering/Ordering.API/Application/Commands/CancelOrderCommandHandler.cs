@@ -33,7 +33,7 @@ namespace Ordering.API.Application.Commands
             }
 
             orderToUpdate.SetCancelledStatus();
-            return await _orderRepository.UnitOfWork.SaveEntitiesAsync();
+            return await _orderRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
         }
     }
 

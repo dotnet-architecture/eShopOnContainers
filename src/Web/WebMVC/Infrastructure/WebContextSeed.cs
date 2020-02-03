@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.eShopOnContainers.WebMVC;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Serilog;
 using System;
 using System.IO;
 using System.IO.Compression;
@@ -13,9 +13,9 @@ namespace WebMVC.Infrastructure
 {
     public class WebContextSeed
     {
-        public static void Seed(IApplicationBuilder applicationBuilder, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public static void Seed(IApplicationBuilder applicationBuilder, IWebHostEnvironment env)
         {
-            var log = loggerFactory.CreateLogger<WebContextSeed>();
+            var log = Serilog.Log.Logger;
 
             var settings = (AppSettings)applicationBuilder
                 .ApplicationServices.GetRequiredService<IOptions<AppSettings>>().Value;
@@ -39,7 +39,7 @@ namespace WebMVC.Infrastructure
                 string overrideCssFile = Path.Combine(contentRootPath, "Setup", "override.css");
                 if (!File.Exists(overrideCssFile))
                 {
-                    log.LogError("Override css file '{FileName}' does not exists.", overrideCssFile);
+                    log.Error("Override css file '{FileName}' does not exists.", overrideCssFile);
                     return;
                 }
 
@@ -48,7 +48,7 @@ namespace WebMVC.Infrastructure
             }
             catch (Exception ex)
             {
-                log.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message);
+                log.Error(ex, "EXCEPTION ERROR: {Message}", ex.Message);
             }
         }
 
@@ -59,7 +59,7 @@ namespace WebMVC.Infrastructure
                 string imagesZipFile = Path.Combine(contentRootPath, "Setup", "images.zip");
                 if (!File.Exists(imagesZipFile))
                 {
-                    log.LogError("Zip file '{ZipFileName}' does not exists.", imagesZipFile);
+                    log.Error("Zip file '{ZipFileName}' does not exists.", imagesZipFile);
                     return;
                 }
 
@@ -81,14 +81,14 @@ namespace WebMVC.Infrastructure
                         }
                         else
                         {
-                            log.LogWarning("Skipped file '{FileName}' in zipfile '{ZipFileName}'", entry.Name, imagesZipFile);
+                            log.Warning("Skipped file '{FileName}' in zipfile '{ZipFileName}'", entry.Name, imagesZipFile);
                         }
                     }
                 }
             }
             catch ( Exception ex )
             {
-                log.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message);
+                log.Error(ex, "EXCEPTION ERROR: {Message}", ex.Message);
             }
         }
 

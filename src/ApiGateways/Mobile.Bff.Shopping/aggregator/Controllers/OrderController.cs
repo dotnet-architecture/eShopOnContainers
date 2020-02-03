@@ -13,12 +13,12 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Controllers
     public class OrderController : ControllerBase
     {
         private readonly IBasketService _basketService;
-        private readonly IOrderApiClient _orderClient;
+        private readonly IOrderingService _orderingService;
 
-        public OrderController(IBasketService basketService, IOrderApiClient orderClient)
+        public OrderController(IBasketService basketService, IOrderingService orderingService)
         {
             _basketService = basketService;
-            _orderClient = orderClient;
+            _orderingService = orderingService;
         }
 
         [Route("draft/{basketId}")]
@@ -32,14 +32,14 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Controllers
                 return BadRequest("Need a valid basketid");
             }
             // Get the basket data and build a order draft based on it
-            var basket = await _basketService.GetByIdAsync(basketId);
+            var basket = await _basketService.GetById(basketId);
 
             if (basket == null)
             {
                 return BadRequest($"No basket found for id {basketId}");
             }
 
-            return await _orderClient.GetOrderDraftFromBasketAsync(basket);
+            return await _orderingService.GetOrderDraftAsync(basket);
         }
     }
 }

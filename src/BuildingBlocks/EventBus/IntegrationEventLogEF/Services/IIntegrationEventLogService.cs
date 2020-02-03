@@ -1,4 +1,5 @@
-﻿using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
+﻿using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
@@ -9,8 +10,8 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF.Servi
 {
     public interface IIntegrationEventLogService
     {
-        Task<IEnumerable<IntegrationEventLogEntry>> RetrieveEventLogsPendingToPublishAsync();
-        Task SaveEventAsync(IntegrationEvent @event, DbTransaction transaction);
+        Task<IEnumerable<IntegrationEventLogEntry>> RetrieveEventLogsPendingToPublishAsync(Guid transactionId);
+        Task SaveEventAsync(IntegrationEvent @event, IDbContextTransaction transaction);
         Task MarkEventAsPublishedAsync(Guid eventId);
         Task MarkEventAsInProgressAsync(Guid eventId);
         Task MarkEventAsFailedAsync(Guid eventId);

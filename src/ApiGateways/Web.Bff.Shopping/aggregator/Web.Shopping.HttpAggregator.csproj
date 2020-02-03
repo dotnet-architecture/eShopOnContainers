@@ -1,10 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <AssemblyName>Web.Shopping.HttpAggregator</AssemblyName>
     <RootNamespace>Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator</RootNamespace>
     <DockerComposeProjectPath>..\..\..\docker-compose.dcproj</DockerComposeProjectPath>
+    <GenerateErrorForMissingTargetingPacks>false</GenerateErrorForMissingTargetingPacks>
+    <IsTransformWebConfigDisabled>true</IsTransformWebConfigDisabled>
+    <LangVersion>preview</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,18 +15,32 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AspNetCore.HealthChecks.Uris" Version="2.2.2" />
-    <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="2.2.3" />
-    <PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.0" />
+    <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="3.0.0" />
+    <PackageReference Include="AspNetCore.HealthChecks.Uris" Version="3.0.0" />
+    <PackageReference Include="Google.Protobuf" Version="3.11.2" />
+    <PackageReference Include="Grpc.AspNetCore.Server.ClientFactory" Version="2.25.0" />
+    <PackageReference Include="Grpc.Core" Version="2.25.0" />
+    <PackageReference Include="Grpc.Net.Client" Version="2.25.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.25.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.HealthChecks" Version="2.2.0" />
-    <PackageReference Include="Serilog.AspNetCore" Version="2.1.1" />
-    <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="3.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Http.Polly" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.0" />
+    <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="3.1.0" />
+    <PackageReference Include="Serilog.AspNetCore" Version="3.2.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="4.0.0-dev-00834" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.0.0-rc5" />
+    <!--<PackageReference Include="System.Net.Http.WinHttpHandler" Version="4.6.0-rc1.19456.4" />-->
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\BuildingBlocks\Devspaces.Support\Devspaces.Support.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Protobuf Include="..\..\..\Services\Basket\Basket.API\Proto\basket.proto" GrpcServices="Client" />
+    <Protobuf Include="..\..\..\Services\Catalog\Catalog.API\Proto\catalog.proto" GrpcServices="Client" />
+    <Protobuf Include="..\..\..\Services\Ordering\Ordering.API\Proto\ordering.proto" GrpcServices="Client" />
+  </ItemGroup>
+
 </Project>
+

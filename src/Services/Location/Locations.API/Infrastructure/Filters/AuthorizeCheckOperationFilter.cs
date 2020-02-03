@@ -1,6 +1,6 @@
 ﻿
 using Microsoft.AspNetCore.Authorization;
-using Swashbuckle.AspNetCore.Swagger;
+using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,23 +9,29 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API.Infrastructure.Filt
 {
     internal class AuthorizeCheckOperationFilter : IOperationFilter
     {
-        public void Apply(Operation operation, OperationFilterContext context)
+        public void Apply(OpenApiOperation operation, OperationFilterContext context)
         {
             // Check for authorize attribute
-            var hasAuthorize = context.ApiDescription.ControllerAttributes().OfType<AuthorizeAttribute>().Any() ||
-                               context.ApiDescription.ActionAttributes().OfType<AuthorizeAttribute>().Any();
+            var hasAuthorize = context.MethodInfo.DeclaringType.GetCustomAttributes(true).OfType<AuthorizeAttribute>().Any() ||
+                               context.MethodInfo.GetCustomAttributes(true).OfType<AuthorizeAttribute>().Any();
 
-            if (hasAuthorize)
+            if (!hasAuthorize) return;
+
+            operation.Responses.TryAdd("401", new OpenApiResponse() { Description = "Unauthorized" });
+            operation.Responses.TryAdd("403", new OpenApiResponse() { Description = "Forbidden" });
+
+            var oAuthScheme = new OpenApiSecurityScheme
             {
-                operation.Responses.Add("401", new Response { Description = "Unauthorized" });
-                operation.Responses.Add("403", new Response { Description = "Forbidden" });
+                Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "oauth2" }
+            };
 
-                operation.Security = new List<IDictionary<string, IEnumerable<string>>>();
-                operation.Security.Add(new Dictionary<string, IEnumerable<string>>
+            operation.Security = new List<OpenApiSecurityRequirement>
                 {
-                    { "oauth2", new [] { "locationsapi" } }
-                });
-            }
+                    new OpenApiSecurityRequirement
+                    {
+                        [ oAuthScheme ] = new [] { "locationsapi" }
+                    }
+                };
         }
     }
 }

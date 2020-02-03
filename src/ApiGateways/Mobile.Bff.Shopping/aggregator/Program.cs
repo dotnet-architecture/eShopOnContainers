@@ -1,20 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore;
+﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 using Serilog;
+using System.IO;
+using System.Net;
 
 namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator
 {
     public class Program
     {
+        private static IConfiguration _configuration;
+
         public static void Main(string[] args)
         {
+            _configuration = GetConfiguration();
+
             BuildWebHost(args).Run();
         }
 
@@ -40,5 +41,17 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator
                         .WriteTo.Console();
                 })
                 .Build();
+
+        private static IConfiguration GetConfiguration()
+        {
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddEnvironmentVariables();
+
+            var config = builder.Build();
+
+            return builder.Build();
+        }
     }
 }
