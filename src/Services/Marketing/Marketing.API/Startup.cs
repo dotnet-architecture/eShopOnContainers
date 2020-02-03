@@ -115,6 +115,8 @@
                         factory.Password = Configuration["EventBusPassword"];
                     }
 
+                    factory.VirtualHost = "customisation";
+
                     var retryCount = 5;
                     if (!string.IsNullOrEmpty(Configuration["EventBusRetryCount"]))
                     {

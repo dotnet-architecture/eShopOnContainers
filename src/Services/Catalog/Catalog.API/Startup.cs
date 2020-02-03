@@ -310,6 +310,8 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
                     {
                         factory.Password = configuration["EventBusPassword"];
                     }
+                    
+                    factory.VirtualHost = "customisation";
 
                     var retryCount = 5;
                     if (!string.IsNullOrEmpty(configuration["EventBusRetryCount"]))

@@ -120,14 +120,31 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
                         factory.Password = Configuration["EventBusPassword"];
                     }
 
+                    factory.VirtualHost = "customisation";
+
                     var retryCount = 5;
                     if (!string.IsNullOrEmpty(Configuration["EventBusRetryCount"]))
                     {
                         retryCount = int.Parse(Configuration["EventBusRetryCount"]);
                     }
 
+
+                    
+                    
                     return new DefaultRabbitMQPersistentConnection(factory, logger, retryCount);
+
                 });
+
+                services.AddSingleton<IMultiRabbitMQPersistentConnections>(sp =>
+                {
+                    IMultiRabbitMQPersistentConnections connections = new MultiRabbitMQPersistentConnections();
+                    connections.AddConnection(GenerateConnection("customisation", sp));
+                    connections.AddConnection(GenerateConnection("/", sp));
+
+                    return connections;
+                });
+
+
             }
 
             RegisterEventBus(services);
@@ -178,7 +195,39 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
 
             return new AutofacServiceProvider(container.Build());
         }
-    
+
+
+        private IRabbitMQPersistentConnection GenerateConnection(String vHost, IServiceProvider sp)
+        {
+            var logger = sp.GetRequiredService<ILogger<DefaultRabbitMQPersistentConnection>>();
+
+            var factory = new ConnectionFactory()
+            {
+                HostName = Configuration["EventBusConnection"],
+                DispatchConsumersAsync = true
+            };
+
+            if (!string.IsNullOrEmpty(Configuration["EventBusUserName"]))
+            {
+                factory.UserName = Configuration["EventBusUserName"];
+            }
+
+            if (!string.IsNullOrEmpty(Configuration["EventBusPassword"]))
+            {
+                factory.Password = Configuration["EventBusPassword"];
+            }
+
+            factory.VirtualHost = vHost;
+
+            var retryCount = 5;
+            if (!string.IsNullOrEmpty(Configuration["EventBusRetryCount"]))
+            {
+                retryCount = int.Parse(Configuration["EventBusRetryCount"]);
+            }
+            
+            return new DefaultRabbitMQPersistentConnection(factory, logger, retryCount);
+
+        }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
@@ -302,8 +351,20 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
                         retryCount = int.Parse(Configuration["EventBusRetryCount"]);
                     }
 
+
+                    var multiRabbitMqPersistentConnections = sp.GetRequiredService<IMultiRabbitMQPersistentConnections>();
+                    List<IEventBus> testing = new List<IEventBus>();
+                    
+                    multiRabbitMqPersistentConnections.GetConnections().ForEach(conn =>
+                    {
+                        testing.Add(new EventBusRabbitMQ(conn, logger, iLifetimeScope, eventBusSubcriptionsManager, subscriptionClientName, retryCount));
+                    });
+                    
+                    Console.WriteLine(testing);
+
                     return new EventBusRabbitMQ(rabbitMQPersistentConnection, logger, iLifetimeScope, eventBusSubcriptionsManager, subscriptionClientName, retryCount);
                 });
+                
             }
 
             services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
