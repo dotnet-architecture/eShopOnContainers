@@ -12,12 +12,8 @@ using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using RabbitMQ.Client.Exceptions;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Net;
 using System.Net.Http;
-using System.Net.Mime;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
@@ -130,34 +126,34 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
             }
         }
 
-        public void SubscribeDynamic<TH>(string eventName)
+        public void SubscribeDynamic<TH>(string eventName, String vHost)
             where TH : IDynamicIntegrationEventHandler
         {
             _logger.LogInformation("Subscribing to dynamic event {EventName} with {EventHandler}", eventName,
                 typeof(TH).GetGenericTypeName());
 
-            DoInternalSubscription(eventName);
-            _subsManager.AddDynamicSubscription<TH>(eventName);
+            DoInternalSubscription(eventName, vHost);
+            _subsManager.AddDynamicSubscription<TH>(eventName, vHost);
             StartBasicConsume();
         }
 
-        public void Subscribe<T, TH>()
+        public void Subscribe<T, TH>(String vHost)
             where T : IntegrationEvent
             where TH : IIntegrationEventHandler<T>
         {
             var eventName = _subsManager.GetEventKey<T>();
-            DoInternalSubscription(eventName);
+            DoInternalSubscription(eventName, vHost);
 
             _logger.LogInformation("Subscribing to event {EventName} with {EventHandler}", eventName,
                 typeof(TH).GetGenericTypeName());
 
-            _subsManager.AddSubscription<T, TH>();
+            _subsManager.AddSubscription<T, TH>(vHost);
             StartBasicConsume();
         }
 
-        private void DoInternalSubscription(string eventName)
+        private void DoInternalSubscription(string eventName, String vHost)
         {
-            var containsKey = _subsManager.HasSubscriptionsForEvent(eventName);
+            var containsKey = _subsManager.HasSubscriptionsForEvent(eventName, vHost);
             if (!containsKey)
             {
                 if (!_persistentConnection.IsConnected)
@@ -174,7 +170,7 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
             }
         }
 
-        public void Unsubscribe<T, TH>()
+        public void Unsubscribe<T, TH>(String vHost)
             where T : IntegrationEvent
             where TH : IIntegrationEventHandler<T>
         {
@@ -182,13 +178,13 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
 
             _logger.LogInformation("Unsubscribing from event {EventName}", eventName);
 
-            _subsManager.RemoveSubscription<T, TH>();
+            _subsManager.RemoveSubscription<T, TH>(vHost);
         }
 
-        public void UnsubscribeDynamic<TH>(string eventName)
+        public void UnsubscribeDynamic<TH>(string eventName, String vHost)
             where TH : IDynamicIntegrationEventHandler
         {
-            _subsManager.RemoveDynamicSubscription<TH>(eventName);
+            _subsManager.RemoveDynamicSubscription<TH>(eventName, vHost);
         }
 
         public void Dispose()

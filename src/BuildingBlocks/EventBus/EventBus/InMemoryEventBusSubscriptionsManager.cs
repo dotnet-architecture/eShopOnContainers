@@ -10,48 +10,52 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBus
     {
 
 
-        private readonly Dictionary<string, List<SubscriptionInfo>> _handlers;
+        //private readonly Dictionary<string, List<SubscriptionInfo>> _handlers;
+        private readonly Dictionary<CompositeHandler, List<SubscriptionInfo>> _handlers;
         private readonly List<Type> _eventTypes;
 
         public event EventHandler<string> OnEventRemoved;
 
         public InMemoryEventBusSubscriptionsManager()
         {
-            _handlers = new Dictionary<string, List<SubscriptionInfo>>();
+            //_handlers = new Dictionary<string, List<SubscriptionInfo>>();
+            _handlers = new Dictionary<CompositeHandler, List<SubscriptionInfo>>();
             _eventTypes = new List<Type>();
         }
 
         public bool IsEmpty => !_handlers.Keys.Any();
         public void Clear() => _handlers.Clear();
 
-        public void AddDynamicSubscription<TH>(string eventName)
+        public void AddDynamicSubscription<TH>(string eventName, String vHost)
             where TH : IDynamicIntegrationEventHandler
         {
-            DoAddSubscription(typeof(TH), eventName, isDynamic: true);
+            DoAddSubscription(typeof(TH), eventName, isDynamic: true, vHost);
         }
 
-        public void AddSubscription<T, TH>()
+        public void AddSubscription<T, TH>(String vHost)
             where T : IntegrationEvent
             where TH : IIntegrationEventHandler<T>
         {
             var eventName = GetEventKey<T>();
 
-            DoAddSubscription(typeof(TH), eventName, isDynamic: false);
-
+            DoAddSubscription(typeof(TH), eventName, isDynamic: false, vHost);
+            
             if (!_eventTypes.Contains(typeof(T)))
             {
                 _eventTypes.Add(typeof(T));
             }
         }
 
-        private void DoAddSubscription(Type handlerType, string eventName, bool isDynamic)
+        private void DoAddSubscription(Type handlerType, string eventName, bool isDynamic, String vHost)
         {
-            if (!HasSubscriptionsForEvent(eventName))
+            var compositeHandler = new CompositeHandler{TenantVHostName = vHost, EventName = eventName};
+
+            if (!HasSubscriptionsForEvent(eventName, vHost))
             {
-                _handlers.Add(eventName, new List<SubscriptionInfo>());
+                _handlers.Add(compositeHandler, new List<SubscriptionInfo>());
             }
 
-            if (_handlers[eventName].Any(s => s.HandlerType == handlerType))
+            if (_handlers[compositeHandler].Any(s => s.HandlerType == handlerType))
             {
                 throw new ArgumentException(
                     $"Handler Type {handlerType.Name} already registered for '{eventName}'", nameof(handlerType));
@@ -59,41 +63,43 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBus
 
             if (isDynamic)
             {
-                _handlers[eventName].Add(SubscriptionInfo.Dynamic(handlerType));
+                _handlers[compositeHandler].Add(SubscriptionInfo.Dynamic(handlerType));
             }
             else
             {
-                _handlers[eventName].Add(SubscriptionInfo.Typed(handlerType));
+                _handlers[compositeHandler].Add(SubscriptionInfo.Typed(handlerType));
             }
         }
 
 
-        public void RemoveDynamicSubscription<TH>(string eventName)
+        public void RemoveDynamicSubscription<TH>(string eventName, String vHost)
             where TH : IDynamicIntegrationEventHandler
         {
-            var handlerToRemove = FindDynamicSubscriptionToRemove<TH>(eventName);
-            DoRemoveHandler(eventName, handlerToRemove);
+            var handlerToRemove = FindDynamicSubscriptionToRemove<TH>(eventName, vHost);
+            DoRemoveHandler(eventName, handlerToRemove, vHost);
         }
 
 
-        public void RemoveSubscription<T, TH>()
+        public void RemoveSubscription<T, TH>(String vHost)
             where TH : IIntegrationEventHandler<T>
             where T : IntegrationEvent
         {
-            var handlerToRemove = FindSubscriptionToRemove<T, TH>();
+            var handlerToRemove = FindSubscriptionToRemove<T, TH>(vHost);
             var eventName = GetEventKey<T>();
-            DoRemoveHandler(eventName, handlerToRemove);
+            DoRemoveHandler(eventName, handlerToRemove, vHost);
         }
 
 
-        private void DoRemoveHandler(string eventName, SubscriptionInfo subsToRemove)
+        private void DoRemoveHandler(string eventName, SubscriptionInfo subsToRemove, String vHost)
         {
             if (subsToRemove != null)
             {
-                _handlers[eventName].Remove(subsToRemove);
-                if (!_handlers[eventName].Any())
+                
+                var compositeHandler = new CompositeHandler{EventName = eventName, TenantVHostName = vHost};
+                _handlers[compositeHandler].Remove(subsToRemove);
+                if (!_handlers[compositeHandler].Any())
                 {
-                    _handlers.Remove(eventName);
+                    _handlers.Remove(compositeHandler);
                     var eventType = _eventTypes.SingleOrDefault(e => e.Name == eventName);
                     if (eventType != null)
                     {
@@ -105,12 +111,12 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBus
             }
         }
 
-        public IEnumerable<SubscriptionInfo> GetHandlersForEvent<T>() where T : IntegrationEvent
+        public IEnumerable<SubscriptionInfo> GetHandlersForEvent<T>(String vHost) where T : IntegrationEvent
         {
             var key = GetEventKey<T>();
-            return GetHandlersForEvent(key);
+            return GetHandlersForEvent(key, vHost);
         }
-        public IEnumerable<SubscriptionInfo> GetHandlersForEvent(string eventName) => _handlers[eventName];
+        public IEnumerable<SubscriptionInfo> GetHandlersForEvent(string eventName, String vHost) => _handlers[new CompositeHandler{EventName = eventName, TenantVHostName = vHost}];
 
         private void RaiseOnEventRemoved(string eventName)
         {
@@ -119,38 +125,43 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBus
         }
 
 
-        private SubscriptionInfo FindDynamicSubscriptionToRemove<TH>(string eventName)
+        private SubscriptionInfo FindDynamicSubscriptionToRemove<TH>(string eventName, String vHost)
             where TH : IDynamicIntegrationEventHandler
         {
-            return DoFindSubscriptionToRemove(eventName, typeof(TH));
+            return DoFindSubscriptionToRemove(eventName, typeof(TH), vHost);
         }
 
 
-        private SubscriptionInfo FindSubscriptionToRemove<T, TH>()
+        private SubscriptionInfo FindSubscriptionToRemove<T, TH>(String vHost)
              where T : IntegrationEvent
              where TH : IIntegrationEventHandler<T>
         {
             var eventName = GetEventKey<T>();
-            return DoFindSubscriptionToRemove(eventName, typeof(TH));
+
+            return DoFindSubscriptionToRemove(eventName, typeof(TH), vHost);
         }
 
-        private SubscriptionInfo DoFindSubscriptionToRemove(string eventName, Type handlerType)
+        private SubscriptionInfo DoFindSubscriptionToRemove(string eventName, Type handlerType, String vHost)
         {
-            if (!HasSubscriptionsForEvent(eventName))
+            
+            if (!HasSubscriptionsForEvent(eventName, vHost))
             {
                 return null;
             }
+            
+            var compositeHandler = new CompositeHandler{EventName = eventName, TenantVHostName = vHost};
 
-            return _handlers[eventName].SingleOrDefault(s => s.HandlerType == handlerType);
+            return _handlers[compositeHandler].SingleOrDefault(s => s.HandlerType == handlerType);
 
         }
 
-        public bool HasSubscriptionsForEvent<T>() where T : IntegrationEvent
+        public bool HasSubscriptionsForEvent<T>(String vHost) where T : IntegrationEvent
         {
             var key = GetEventKey<T>();
-            return HasSubscriptionsForEvent(key);
+            
+            return HasSubscriptionsForEvent(key, vHost);
         }
-        public bool HasSubscriptionsForEvent(string eventName) => _handlers.ContainsKey(eventName);
+        public bool HasSubscriptionsForEvent(string eventName, String vHost) => _handlers.ContainsKey(new CompositeHandler{EventName = eventName, TenantVHostName = vHost});
 
         public Type GetEventTypeByName(string eventName) => _eventTypes.SingleOrDefault(t => t.Name == eventName);
 
@@ -159,4 +170,11 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBus
             return typeof(T).Name;
         }
     }
+}
+
+
+class CompositeHandler
+{
+    public String TenantVHostName { get; set; }
+    public String EventName { get; set; }
 }
