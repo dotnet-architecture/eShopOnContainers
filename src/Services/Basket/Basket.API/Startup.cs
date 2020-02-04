@@ -86,7 +86,8 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             });
 
 
-            if (Configuration.GetValue<bool>("AzureServiceBusEnabled"))
+
+/*            if (Configuration.GetValue<bool>("AzureServiceBusEnabled"))
             {
                 services.AddSingleton<IServiceBusPersisterConnection>(sp =>
                 {
@@ -97,8 +98,8 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
 
                     return new DefaultServiceBusPersisterConnection(serviceBusConnection, logger);
                 });
-            }
-            else
+            }*/
+/*            else
             {
                 services.AddSingleton<IRabbitMQPersistentConnection>(sp =>
                 {
@@ -120,7 +121,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
                         factory.Password = Configuration["EventBusPassword"];
                     }
 
-                    //factory.VirtualHost = "customisation";
+                    factory.VirtualHost = "TenantA";
 
                     var retryCount = 5;
                     if (!string.IsNullOrEmpty(Configuration["EventBusRetryCount"]))
@@ -133,7 +134,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
                     
                     return new DefaultRabbitMQPersistentConnection(factory, logger, retryCount);
 
-                });
+                });*/
 
                 services.AddSingleton<IMultiRabbitMQPersistentConnections>(sp =>
                 {
@@ -146,7 +147,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
                 });
 
 
-            }
+            //}
 
             RegisterEventBus(services);
 
@@ -324,7 +325,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
         {
             var subscriptionClientName = Configuration["SubscriptionClientName"];
 
-            if (Configuration.GetValue<bool>("AzureServiceBusEnabled"))
+            /*if (Configuration.GetValue<bool>("AzureServiceBusEnabled"))
             {
                 services.AddSingleton<IEventBus, EventBusServiceBus>(sp =>
                 {
@@ -338,7 +339,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
                 });
             }
             else
-            {
+            {*/
                 
                 services.AddSingleton<IMultiEventBus, MultiEventBusRabbitMQ>(sp =>
                 {
@@ -354,10 +355,14 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
                     }
                     List<IEventBus> eventBuses = new List<IEventBus>();
                     
-                    multiRabbitMqPersistentConnections.GetConnections().ForEach(conn =>
+                    eventBuses.Add(new EventBusRabbitMQ(multiRabbitMqPersistentConnections.GetConnections()[0], logger, iLifetimeScope, eventBusSubcriptionsManager, "TenantA", subscriptionClientName, retryCount));
+                    eventBuses.Add(new EventBusRabbitMQ(multiRabbitMqPersistentConnections.GetConnections()[1], logger, iLifetimeScope, eventBusSubcriptionsManager, "TenantB", subscriptionClientName, retryCount));
+
+                    
+                    /*multiRabbitMqPersistentConnections.GetConnections().ForEach(conn =>
                     {
                         eventBuses.Add(new EventBusRabbitMQ(conn, logger, iLifetimeScope, eventBusSubcriptionsManager, subscriptionClientName, retryCount));
-                    });
+                    });*/
                     
                     return new MultiEventBusRabbitMQ(eventBuses);
                 });
@@ -389,7 +394,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
                     return new EventBusRabbitMQ(rabbitMQPersistentConnection, logger, iLifetimeScope, eventBusSubcriptionsManager, subscriptionClientName, retryCount);
                 });*/
                 
-            }
+            //}
 
             services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
 

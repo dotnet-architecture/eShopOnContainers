@@ -177,4 +177,25 @@ class CompositeHandler
 {
     public String TenantVHostName { get; set; }
     public String EventName { get; set; }
+
+    protected bool Equals(CompositeHandler other)
+    {
+        return TenantVHostName == other.TenantVHostName && EventName == other.EventName;
+    }
+
+    public override bool Equals(object obj)
+    {
+        if (ReferenceEquals(null, obj)) return false;
+        if (ReferenceEquals(this, obj)) return true;
+        if (obj.GetType() != this.GetType()) return false;
+        return Equals((CompositeHandler) obj);
+    }
+
+    public override int GetHashCode()
+    {
+        unchecked
+        {
+            return ((TenantVHostName != null ? TenantVHostName.GetHashCode() : 0) * 397) ^ (EventName != null ? EventName.GetHashCode() : 0);
+        }
+    }
 }

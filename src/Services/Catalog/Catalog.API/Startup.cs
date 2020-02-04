@@ -311,7 +311,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
                         factory.Password = configuration["EventBusPassword"];
                     }
                     
-                    //factory.VirtualHost = "customisation";
+                    factory.VirtualHost = "TenantA";
 
                     var retryCount = 5;
                     if (!string.IsNullOrEmpty(configuration["EventBusRetryCount"]))
@@ -330,7 +330,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
         {
             var subscriptionClientName = configuration["SubscriptionClientName"];
 
-            if (configuration.GetValue<bool>("AzureServiceBusEnabled"))
+/*            if (configuration.GetValue<bool>("AzureServiceBusEnabled"))
             {
                 services.AddSingleton<IEventBus, EventBusServiceBus>(sp =>
                 {
@@ -344,7 +344,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
                 });
 
             }
-            else
+            else*/
             {
                 services.AddSingleton<IEventBus, EventBusRabbitMQ>(sp =>
                 {
@@ -359,7 +359,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
                         retryCount = int.Parse(configuration["EventBusRetryCount"]);
                     }
 
-                    return new EventBusRabbitMQ(rabbitMQPersistentConnection, logger, iLifetimeScope, eventBusSubcriptionsManager, subscriptionClientName, retryCount);
+                    return new EventBusRabbitMQ(rabbitMQPersistentConnection, logger, iLifetimeScope, eventBusSubcriptionsManager, "TenantA", subscriptionClientName, retryCount);
                 });
             }
 

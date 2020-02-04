@@ -94,7 +94,7 @@ namespace Ordering.SignalrHub
                         factory.Password = Configuration["EventBusPassword"];
                     }
                     
-                    //factory.VirtualHost = "customisation";
+                    factory.VirtualHost = "TenantA";
 
                     var retryCount = 5;
                     if (!string.IsNullOrEmpty(Configuration["EventBusRetryCount"]))
@@ -195,7 +195,7 @@ namespace Ordering.SignalrHub
         {
             var subscriptionClientName = Configuration["SubscriptionClientName"];
 
-            if (Configuration.GetValue<bool>("AzureServiceBusEnabled"))
+/*            if (Configuration.GetValue<bool>("AzureServiceBusEnabled"))
             {
                 services.AddSingleton<IEventBus, EventBusServiceBus>(sp =>
                 {
@@ -208,7 +208,7 @@ namespace Ordering.SignalrHub
                         eventBusSubcriptionsManager, subscriptionClientName, iLifetimeScope);
                 });
             }
-            else
+            else*/
             {
                 services.AddSingleton<IEventBus, EventBusRabbitMQ>(sp =>
                 {
@@ -223,7 +223,7 @@ namespace Ordering.SignalrHub
                         retryCount = int.Parse(Configuration["EventBusRetryCount"]);
                     }
 
-                    return new EventBusRabbitMQ(rabbitMQPersistentConnection, logger, iLifetimeScope, eventBusSubcriptionsManager, subscriptionClientName, retryCount);
+                    return new EventBusRabbitMQ(rabbitMQPersistentConnection, logger, iLifetimeScope, eventBusSubcriptionsManager, "TenantA", subscriptionClientName, retryCount);
                 });
             }
 

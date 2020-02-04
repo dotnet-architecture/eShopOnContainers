@@ -232,7 +232,7 @@ namespace Webhooks.API
         {
             var subscriptionClientName = configuration["SubscriptionClientName"];
 
-            if (configuration.GetValue<bool>("AzureServiceBusEnabled"))
+/*            if (configuration.GetValue<bool>("AzureServiceBusEnabled"))
             {
                 services.AddSingleton<IEventBus, EventBusServiceBus>(sp =>
                 {
@@ -246,7 +246,7 @@ namespace Webhooks.API
                 });
 
             }
-            else
+            else*/
             {
                 services.AddSingleton<IEventBus, EventBusRabbitMQ>(sp =>
                 {
@@ -261,7 +261,7 @@ namespace Webhooks.API
                         retryCount = int.Parse(configuration["EventBusRetryCount"]);
                     }
 
-                    return new EventBusRabbitMQ(rabbitMQPersistentConnection, logger, iLifetimeScope, eventBusSubcriptionsManager, subscriptionClientName, retryCount);
+                    return new EventBusRabbitMQ(rabbitMQPersistentConnection, logger, iLifetimeScope, eventBusSubcriptionsManager, "TenantA", subscriptionClientName, retryCount);
                 });
             }
 
@@ -336,7 +336,7 @@ namespace Webhooks.API
                         factory.Password = configuration["EventBusPassword"];
                     }
                     
-                    //factory.VirtualHost = "customisation";
+                    factory.VirtualHost = "TenantA";
 
                     var retryCount = 5;
                     if (!string.IsNullOrEmpty(configuration["EventBusRetryCount"]))

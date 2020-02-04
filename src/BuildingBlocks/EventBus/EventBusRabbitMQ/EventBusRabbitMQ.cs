@@ -33,14 +33,15 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
         private static readonly String tenantACustomisationUrl = @"http://tenantacustomisation/";
         private static readonly String tenantManagerUrl = @"http://tenantmanager/";
         private readonly int _retryCount;
-        private readonly Dictionary<int, String> _tenantInfo; 
+        private readonly Dictionary<int, String> _tenantInfo;
+        public String vHost { get; set; }
 
 
         private IModel _consumerChannel;
         private string _queueName;
 
         public EventBusRabbitMQ(IRabbitMQPersistentConnection persistentConnection, ILogger<EventBusRabbitMQ> logger,
-            ILifetimeScope autofac, IEventBusSubscriptionsManager subsManager, string queueName = null,
+            ILifetimeScope autofac, IEventBusSubscriptionsManager subsManager, String vhost, string queueName = null,
             int retryCount = 5)
         {
             _persistentConnection =
@@ -55,6 +56,7 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
             _tenantInfo = new Dictionary<int, string>();
             _tenantInfo.Add(1, "TenantA");
             _tenantInfo.Add(2, "TenantB");
+            vHost = vhost;
         }
 
         private void SubsManager_OnEventRemoved(object sender, string eventName)
@@ -126,23 +128,23 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
             }
         }
 
-        public void SubscribeDynamic<TH>(string eventName, String vHost)
+        public void SubscribeDynamic<TH>(string eventName)
             where TH : IDynamicIntegrationEventHandler
         {
             _logger.LogInformation("Subscribing to dynamic event {EventName} with {EventHandler}", eventName,
                 typeof(TH).GetGenericTypeName());
 
-            DoInternalSubscription(eventName, vHost);
+            DoInternalSubscription(eventName);
             _subsManager.AddDynamicSubscription<TH>(eventName, vHost);
             StartBasicConsume();
         }
 
-        public void Subscribe<T, TH>(String vHost)
+        public void Subscribe<T, TH>()
             where T : IntegrationEvent
             where TH : IIntegrationEventHandler<T>
         {
             var eventName = _subsManager.GetEventKey<T>();
-            DoInternalSubscription(eventName, vHost);
+            DoInternalSubscription(eventName);
 
             _logger.LogInformation("Subscribing to event {EventName} with {EventHandler}", eventName,
                 typeof(TH).GetGenericTypeName());
@@ -151,7 +153,7 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
             StartBasicConsume();
         }
 
-        private void DoInternalSubscription(string eventName, String vHost)
+        private void DoInternalSubscription(string eventName)
         {
             var containsKey = _subsManager.HasSubscriptionsForEvent(eventName, vHost);
             if (!containsKey)
@@ -170,7 +172,7 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
             }
         }
 
-        public void Unsubscribe<T, TH>(String vHost)
+        public void Unsubscribe<T, TH>()
             where T : IntegrationEvent
             where TH : IIntegrationEventHandler<T>
         {
@@ -181,7 +183,12 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
             _subsManager.RemoveSubscription<T, TH>(vHost);
         }
 
-        public void UnsubscribeDynamic<TH>(string eventName, String vHost)
+        public string GetVHost()
+        {
+            return vHost;
+        }
+
+        public void UnsubscribeDynamic<TH>(string eventName)
             where TH : IDynamicIntegrationEventHandler
         {
             _subsManager.RemoveDynamicSubscription<TH>(eventName, vHost);
@@ -337,11 +344,11 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
         {
             _logger.LogWarning("Processing RabbitMQ event: {EventName}", eventName);
 
-            if (_subsManager.HasSubscriptionsForEvent(eventName))
+            if (_subsManager.HasSubscriptionsForEvent(eventName, vHost))
             {
                 using (var scope = _autofac.BeginLifetimeScope(AUTOFAC_SCOPE_NAME))
                 {
-                    var subscriptions = _subsManager.GetHandlersForEvent(eventName);
+                    var subscriptions = _subsManager.GetHandlersForEvent(eventName, vHost);
                     foreach (var subscription in subscriptions)
                     {
                         if (subscription.IsDynamic)

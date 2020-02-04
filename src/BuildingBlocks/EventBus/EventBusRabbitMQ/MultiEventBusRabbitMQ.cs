@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
 
@@ -6,7 +7,6 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
 {
     public class MultiEventBusRabbitMQ : IMultiEventBus
     {
-
         private List<IEventBus> _eventBuses;
 
         public MultiEventBusRabbitMQ(List<IEventBus> eventBuses)
@@ -21,16 +21,20 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
 
         public void Publish(IntegrationEvent @event)
         {
+            //TODO
+            var actualEventBus = _eventBuses.Find(e => e.GetVHost().Equals("TenantA"));
 
-            throw new System.NotImplementedException();
+            if (actualEventBus == null)
+            {
+                throw new Exception();
+            }
+
+            actualEventBus.Publish(@event);
         }
 
         public void Subscribe<T, TH>() where T : IntegrationEvent where TH : IIntegrationEventHandler<T>
         {
-            _eventBuses.ForEach(e =>
-            {
-                e.Subscribe<T, TH>();
-            });
+            _eventBuses.ForEach(e => { e.Subscribe<T, TH>(); });
         }
     }
 }
