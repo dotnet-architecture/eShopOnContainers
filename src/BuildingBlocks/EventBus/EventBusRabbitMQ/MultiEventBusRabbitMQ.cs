@@ -8,10 +8,12 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
     public class MultiEventBusRabbitMQ : IMultiEventBus
     {
         private List<IEventBus> _eventBuses;
+        private Dictionary<int, String> _tenants;
 
-        public MultiEventBusRabbitMQ(List<IEventBus> eventBuses)
+        public MultiEventBusRabbitMQ(List<IEventBus> eventBuses, Dictionary<int, String> tenants)
         {
             _eventBuses = eventBuses;
+            _tenants = tenants;
         }
 
         public void AddEventBus(IEventBus eventBus)
@@ -21,13 +23,17 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
 
         public void Publish(IntegrationEvent @event)
         {
-            //TODO
-            var actualEventBus = _eventBuses.Find(e => e.GetVHost().Equals("TenantA"));
-
-            if (actualEventBus == null)
+            if (@event.TenantId == 0)//System wide event?
             {
-                throw new Exception();
+                _eventBuses.ForEach(eventBus =>
+                {
+                    eventBus.Publish(@event);
+                });
             }
+            
+            //TODO requires ALL events to have tenantId set!
+            _tenants.TryGetValue(@event.TenantId, out String tenantName);
+            var actualEventBus = _eventBuses.Find(e => e.GetVHost().Equals(tenantName));
 
             actualEventBus.Publish(@event);
         }

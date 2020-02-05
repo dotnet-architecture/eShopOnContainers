@@ -16,6 +16,7 @@ using Ordering.SignalrHub.IntegrationEvents.EventHandling;
 using Ordering.SignalrHub.IntegrationEvents.Events;
 using RabbitMQ.Client;
 using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -42,10 +43,10 @@ namespace Ordering.SignalrHub
                 {
                     options.AddPolicy("CorsPolicy",
                         builder => builder
-                        .AllowAnyMethod()
-                        .AllowAnyHeader()
-                        .SetIsOriginAllowed((host) => true)
-                        .AllowCredentials());
+                            .AllowAnyMethod()
+                            .AllowAnyHeader()
+                            .SetIsOriginAllowed((host) => true)
+                            .AllowCredentials());
                 });
 
             if (Configuration.GetValue<string>("IsClusterEnv") == bool.TrueString)
@@ -59,52 +60,14 @@ namespace Ordering.SignalrHub
                 services.AddSignalR();
             }
 
-            if (Configuration.GetValue<bool>("AzureServiceBusEnabled"))
+            services.AddSingleton<IMultiRabbitMQPersistentConnections>(sp =>
             {
-                services.AddSingleton<IServiceBusPersisterConnection>(sp =>
-                {
-                    var logger = sp.GetRequiredService<ILogger<DefaultServiceBusPersisterConnection>>();
+                IMultiRabbitMQPersistentConnections connections = new MultiRabbitMQPersistentConnections();
+                connections.AddConnection(GenerateConnection("TenantA", sp));
+                connections.AddConnection(GenerateConnection("TenantB", sp));
 
-                    var serviceBusConnectionString = Configuration["EventBusConnection"];
-                    var serviceBusConnection = new ServiceBusConnectionStringBuilder(serviceBusConnectionString);
-
-                    return new DefaultServiceBusPersisterConnection(serviceBusConnection, logger);
-                });
-            }
-            else
-            {
-                services.AddSingleton<IRabbitMQPersistentConnection>(sp =>
-                {
-                    var logger = sp.GetRequiredService<ILogger<DefaultRabbitMQPersistentConnection>>();
-
-
-                    var factory = new ConnectionFactory()
-                    {
-                        HostName = Configuration["EventBusConnection"],
-                        DispatchConsumersAsync = true
-                    };
-
-                    if (!string.IsNullOrEmpty(Configuration["EventBusUserName"]))
-                    {
-                        factory.UserName = Configuration["EventBusUserName"];
-                    }
-
-                    if (!string.IsNullOrEmpty(Configuration["EventBusPassword"]))
-                    {
-                        factory.Password = Configuration["EventBusPassword"];
-                    }
-                    
-                    factory.VirtualHost = "TenantA";
-
-                    var retryCount = 5;
-                    if (!string.IsNullOrEmpty(Configuration["EventBusRetryCount"]))
-                    {
-                        retryCount = int.Parse(Configuration["EventBusRetryCount"]);
-                    }
-
-                    return new DefaultRabbitMQPersistentConnection(factory, logger, retryCount);
-                });
-            }
+                return connections;
+            });
 
             ConfigureAuthService(services);
 
@@ -119,6 +82,38 @@ namespace Ordering.SignalrHub
 
             return new AutofacServiceProvider(container.Build());
         }
+
+        private IRabbitMQPersistentConnection GenerateConnection(String vHost, IServiceProvider sp)
+        {
+            var logger = sp.GetRequiredService<ILogger<DefaultRabbitMQPersistentConnection>>();
+
+            var factory = new ConnectionFactory()
+            {
+                HostName = Configuration["EventBusConnection"],
+                DispatchConsumersAsync = true
+            };
+
+            if (!string.IsNullOrEmpty(Configuration["EventBusUserName"]))
+            {
+                factory.UserName = Configuration["EventBusUserName"];
+            }
+
+            if (!string.IsNullOrEmpty(Configuration["EventBusPassword"]))
+            {
+                factory.Password = Configuration["EventBusPassword"];
+            }
+
+            factory.VirtualHost = vHost;
+
+            var retryCount = 5;
+            if (!string.IsNullOrEmpty(Configuration["EventBusRetryCount"]))
+            {
+                retryCount = int.Parse(Configuration["EventBusRetryCount"]);
+            }
+
+            return new DefaultRabbitMQPersistentConnection(factory, logger, retryCount);
+        }
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
@@ -161,14 +156,25 @@ namespace Ordering.SignalrHub
 
         private void ConfigureEventBus(IApplicationBuilder app)
         {
-            var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
+            var eventBus = app.ApplicationServices.GetRequiredService<IMultiEventBus>();
 
-            eventBus.Subscribe<OrderStatusChangedToAwaitingValidationIntegrationEvent, OrderStatusChangedToAwaitingValidationIntegrationEventHandler>();
-            eventBus.Subscribe<OrderStatusChangedToPaidIntegrationEvent, OrderStatusChangedToPaidIntegrationEventHandler>();
-            eventBus.Subscribe<OrderStatusChangedToStockConfirmedIntegrationEvent, OrderStatusChangedToStockConfirmedIntegrationEventHandler>();
-            eventBus.Subscribe<OrderStatusChangedToShippedIntegrationEvent, OrderStatusChangedToShippedIntegrationEventHandler>();
-            eventBus.Subscribe<OrderStatusChangedToCancelledIntegrationEvent, OrderStatusChangedToCancelledIntegrationEventHandler>();
-            eventBus.Subscribe<OrderStatusChangedToSubmittedIntegrationEvent, OrderStatusChangedToSubmittedIntegrationEventHandler>();
+            eventBus
+                .Subscribe<OrderStatusChangedToAwaitingValidationIntegrationEvent,
+                    OrderStatusChangedToAwaitingValidationIntegrationEventHandler>();
+            eventBus
+                .Subscribe<OrderStatusChangedToPaidIntegrationEvent, OrderStatusChangedToPaidIntegrationEventHandler>();
+            eventBus
+                .Subscribe<OrderStatusChangedToStockConfirmedIntegrationEvent,
+                    OrderStatusChangedToStockConfirmedIntegrationEventHandler>();
+            eventBus
+                .Subscribe<OrderStatusChangedToShippedIntegrationEvent,
+                    OrderStatusChangedToShippedIntegrationEventHandler>();
+            eventBus
+                .Subscribe<OrderStatusChangedToCancelledIntegrationEvent,
+                    OrderStatusChangedToCancelledIntegrationEventHandler>();
+            eventBus
+                .Subscribe<OrderStatusChangedToSubmittedIntegrationEvent,
+                    OrderStatusChangedToSubmittedIntegrationEventHandler>();
         }
 
         private void ConfigureAuthService(IServiceCollection services)
@@ -182,7 +188,6 @@ namespace Ordering.SignalrHub
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-
             }).AddJwtBearer(options =>
             {
                 options.Authority = identityUrl;
@@ -195,37 +200,33 @@ namespace Ordering.SignalrHub
         {
             var subscriptionClientName = Configuration["SubscriptionClientName"];
 
-/*            if (Configuration.GetValue<bool>("AzureServiceBusEnabled"))
+
+            services.AddSingleton<IMultiEventBus, MultiEventBusRabbitMQ>(sp =>
             {
-                services.AddSingleton<IEventBus, EventBusServiceBus>(sp =>
+                var multiRabbitMqPersistentConnections = sp.GetRequiredService<IMultiRabbitMQPersistentConnections>();
+                var iLifetimeScope = sp.GetRequiredService<ILifetimeScope>();
+                var logger = sp.GetRequiredService<ILogger<EventBusRabbitMQ>>();
+                var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
+
+                var retryCount = 5;
+                if (!string.IsNullOrEmpty(Configuration["EventBusRetryCount"]))
                 {
-                    var serviceBusPersisterConnection = sp.GetRequiredService<IServiceBusPersisterConnection>();
-                    var iLifetimeScope = sp.GetRequiredService<ILifetimeScope>();
-                    var logger = sp.GetRequiredService<ILogger<EventBusServiceBus>>();
-                    var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
+                    retryCount = int.Parse(Configuration["EventBusRetryCount"]);
+                }
 
-                    return new EventBusServiceBus(serviceBusPersisterConnection, logger,
-                        eventBusSubcriptionsManager, subscriptionClientName, iLifetimeScope);
-                });
-            }
-            else*/
-            {
-                services.AddSingleton<IEventBus, EventBusRabbitMQ>(sp =>
-                {
-                    var rabbitMQPersistentConnection = sp.GetRequiredService<IRabbitMQPersistentConnection>();
-                    var iLifetimeScope = sp.GetRequiredService<ILifetimeScope>();
-                    var logger = sp.GetRequiredService<ILogger<EventBusRabbitMQ>>();
-                    var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
+                List<IEventBus> eventBuses = new List<IEventBus>();
 
-                    var retryCount = 5;
-                    if (!string.IsNullOrEmpty(Configuration["EventBusRetryCount"]))
-                    {
-                        retryCount = int.Parse(Configuration["EventBusRetryCount"]);
-                    }
+                eventBuses.Add(new EventBusRabbitMQ(multiRabbitMqPersistentConnections.GetConnections()[0], logger,
+                    iLifetimeScope, eventBusSubcriptionsManager, "TenantA", subscriptionClientName, retryCount));
+                eventBuses.Add(new EventBusRabbitMQ(multiRabbitMqPersistentConnections.GetConnections()[1], logger,
+                    iLifetimeScope, eventBusSubcriptionsManager, "TenantB", subscriptionClientName, retryCount));
+                Dictionary<int, String> tenants = new Dictionary<int, string>();
+                tenants.Add(1, "TenantA");
+                tenants.Add(2, "TenantB");
 
-                    return new EventBusRabbitMQ(rabbitMQPersistentConnection, logger, iLifetimeScope, eventBusSubcriptionsManager, "TenantA", subscriptionClientName, retryCount);
-                });
-            }
+                return new MultiEventBusRabbitMQ(eventBuses, tenants);
+            });
+
 
             services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
         }
@@ -233,7 +234,8 @@ namespace Ordering.SignalrHub
 
     public static class CustomExtensionMethods
     {
-        public static IServiceCollection AddCustomHealthCheck(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddCustomHealthCheck(this IServiceCollection services,
+            IConfiguration configuration)
         {
             var hcBuilder = services.AddHealthChecks();
 
@@ -246,7 +248,7 @@ namespace Ordering.SignalrHub
                         configuration["EventBusConnection"],
                         topicName: "eshop_event_bus",
                         name: "signalr-servicebus-check",
-                        tags: new string[] { "servicebus" });
+                        tags: new string[] {"servicebus"});
             }
             else
             {
@@ -254,7 +256,7 @@ namespace Ordering.SignalrHub
                     .AddRabbitMQ(
                         $"amqp://{configuration["EventBusConnection"]}",
                         name: "signalr-rabbitmqbus-check",
-                        tags: new string[] { "rabbitmqbus" });
+                        tags: new string[] {"rabbitmqbus"});
             }
 
             return services;

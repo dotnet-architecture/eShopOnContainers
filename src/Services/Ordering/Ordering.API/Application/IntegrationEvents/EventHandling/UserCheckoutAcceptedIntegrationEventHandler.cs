@@ -15,12 +15,12 @@ namespace Ordering.API.Application.IntegrationEvents.EventHandling
     public class UserCheckoutAcceptedIntegrationEventHandler : IIntegrationEventHandler<UserCheckoutAcceptedIntegrationEvent>
     {
         private readonly IMediator _mediator;
-        private readonly IEventBus _eventBus;
+        private readonly IMultiEventBus _eventBus;
         private readonly ILogger<UserCheckoutAcceptedIntegrationEventHandler> _logger;
 
         public UserCheckoutAcceptedIntegrationEventHandler(
             IMediator mediator,
-            ILogger<UserCheckoutAcceptedIntegrationEventHandler> logger, IEventBus eventBus)
+            ILogger<UserCheckoutAcceptedIntegrationEventHandler> logger, IMultiEventBus eventBus)
         {
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));

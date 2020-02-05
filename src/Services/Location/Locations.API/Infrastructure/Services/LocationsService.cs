@@ -14,12 +14,12 @@
     public class LocationsService : ILocationsService
     {
         private readonly ILocationsRepository _locationsRepository;
-        private readonly IEventBus _eventBus;
+        private readonly IMultiEventBus _eventBus;
         private readonly ILogger<LocationsService> _logger;
 
         public LocationsService(
             ILocationsRepository locationsRepository,
-            IEventBus eventBus,
+            IMultiEventBus eventBus,
             ILogger<LocationsService> logger)
         {
             _locationsRepository = locationsRepository ?? throw new ArgumentNullException(nameof(locationsRepository));

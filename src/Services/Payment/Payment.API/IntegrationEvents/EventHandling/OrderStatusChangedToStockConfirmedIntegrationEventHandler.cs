@@ -11,12 +11,12 @@
     public class OrderStatusChangedToStockConfirmedIntegrationEventHandler :
         IIntegrationEventHandler<OrderStatusChangedToStockConfirmedIntegrationEvent>
     {
-        private readonly IEventBus _eventBus;
+        private readonly IMultiEventBus _eventBus;
         private readonly PaymentSettings _settings;
         private readonly ILogger<OrderStatusChangedToStockConfirmedIntegrationEventHandler> _logger;
 
         public OrderStatusChangedToStockConfirmedIntegrationEventHandler(
-            IEventBus eventBus,
+            IMultiEventBus eventBus,
             IOptionsSnapshot<PaymentSettings> settings,
             ILogger<OrderStatusChangedToStockConfirmedIntegrationEventHandler> logger)
         {

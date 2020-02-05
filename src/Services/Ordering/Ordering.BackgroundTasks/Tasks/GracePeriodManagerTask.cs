@@ -21,12 +21,12 @@ namespace Ordering.BackgroundTasks.Tasks
     {
         private readonly ILogger<GracePeriodManagerService> _logger;
         private readonly BackgroundTaskSettings _settings;
-        private readonly IEventBus _eventBus;
+        private readonly IMultiEventBus _eventBus;
         private static readonly String identityUrl = @"http://identity.api/";
 
         public GracePeriodManagerService(
             IOptions<BackgroundTaskSettings> settings,
-            IEventBus eventBus,
+            IMultiEventBus eventBus,
             ILogger<GracePeriodManagerService> logger)
         {
             _settings = settings?.Value ?? throw new ArgumentNullException(nameof(settings));
