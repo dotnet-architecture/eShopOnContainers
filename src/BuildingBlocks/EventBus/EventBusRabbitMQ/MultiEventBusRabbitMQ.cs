@@ -30,12 +30,15 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
                     eventBus.Publish(@event);
                 });
             }
-            
-            //TODO requires ALL events to have tenantId set!
-            _tenants.TryGetValue(@event.TenantId, out String tenantName);
-            var actualEventBus = _eventBuses.Find(e => e.GetVHost().Equals(tenantName));
+            else
+            {
+                //TODO requires ALL events to have tenantId set!
+                _tenants.TryGetValue(@event.TenantId, out String tenantName);
+                var actualEventBus = _eventBuses.Find(e => e.GetVHost().Equals(tenantName));
 
-            actualEventBus.Publish(@event);
+                actualEventBus.Publish(@event);
+            }
+
         }
 
         public void Subscribe<T, TH>() where T : IntegrationEvent where TH : IIntegrationEventHandler<T>
