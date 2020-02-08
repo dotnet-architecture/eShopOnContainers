@@ -114,11 +114,11 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
             }
         }
 
-        public void SetStockConfirmedStatus()
+        public void SetStockConfirmedStatus(int tenantId)
         {
             if (_orderStatusId == OrderStatus.AwaitingValidation.Id)
             {
-                AddDomainEvent(new OrderStatusChangedToStockConfirmedDomainEvent(Id));
+                AddDomainEvent(new OrderStatusChangedToStockConfirmedDomainEvent(Id).withTenantId(tenantId));
 
                 _orderStatusId = OrderStatus.StockConfirmed.Id;
                 _description = "All the items were confirmed with available stock.";

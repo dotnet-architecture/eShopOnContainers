@@ -1,4 +1,6 @@
-﻿namespace Payment.API.IntegrationEvents.EventHandling
+﻿using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Extensions;
+
+namespace Payment.API.IntegrationEvents.EventHandling
 {
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
@@ -50,6 +52,7 @@
                     orderPaymentIntegrationEvent = new OrderPaymentFailedIntegrationEvent(@event.OrderId);
                 }
 
+                orderPaymentIntegrationEvent.TenantId = @event.TenantId;
                 _logger.LogInformation("----- Publishing integration event: {IntegrationEventId} from {AppName} - ({@IntegrationEvent})", orderPaymentIntegrationEvent.Id, Program.AppName, orderPaymentIntegrationEvent);
 
                 _eventBus.Publish(orderPaymentIntegrationEvent);

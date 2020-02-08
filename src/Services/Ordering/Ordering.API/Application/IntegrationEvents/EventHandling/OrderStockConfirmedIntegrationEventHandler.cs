@@ -33,7 +33,7 @@
             {
                 _logger.LogInformation("----- Handling integration event: {IntegrationEventId} at {AppName} - ({@IntegrationEvent})", @event.Id, Program.AppName, @event);
 
-                var command = new SetStockConfirmedOrderStatusCommand(@event.OrderId);
+                var command = new SetStockConfirmedOrderStatusCommand(@event.OrderId, @event.TenantId);
 
                 _logger.LogInformation(
                     "----- Sending command: {CommandName} - {IdProperty}: {CommandId} ({@Command})",

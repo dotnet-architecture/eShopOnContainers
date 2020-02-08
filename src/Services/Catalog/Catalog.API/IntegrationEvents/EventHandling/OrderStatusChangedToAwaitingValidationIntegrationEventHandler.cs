@@ -49,6 +49,8 @@
                     ? (IntegrationEvent)new OrderStockRejectedIntegrationEvent(@event.OrderId, confirmedOrderStockItems)
                     : new OrderStockConfirmedIntegrationEvent(@event.OrderId);
 
+                confirmedIntegrationEvent.TenantId = @event.TenantId;
+
                 await _catalogIntegrationEventService.SaveEventAndCatalogContextChangesAsync(confirmedIntegrationEvent);
                 await _catalogIntegrationEventService.PublishThroughEventBusAsync(confirmedIntegrationEvent);
 

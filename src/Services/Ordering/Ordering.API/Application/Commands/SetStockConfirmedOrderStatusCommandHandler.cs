@@ -35,7 +35,7 @@ namespace Ordering.API.Application.Commands
                 return false;
             }
 
-            orderToUpdate.SetStockConfirmedStatus();
+            orderToUpdate.SetStockConfirmedStatus(command.TenantId);
             return await _orderRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
         }
     }
