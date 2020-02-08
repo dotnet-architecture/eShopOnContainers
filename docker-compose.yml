@@ -50,6 +50,12 @@ services:
       dockerfile: src/Services/TenantCustomisations/TenantACustomisations/Dockerfile
     depends_on:
       - sql.data
+  
+  tenantashippinginformation:
+    image:  ${REGISTRY:-eshop}/tenantashippinginformation:${PLATFORM:-linux}-${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/Services/TenantCustomisations/TenantAShippingInformation/Dockerfile
 
   catalog.api:
     image: ${REGISTRY:-eshop}/catalog.api:${PLATFORM:-linux}-${TAG:-latest}
