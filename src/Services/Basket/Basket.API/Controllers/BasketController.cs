@@ -21,14 +21,14 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
     {
         private readonly IBasketRepository _repository;
         private readonly IIdentityService _identityService;
-        private readonly IEventBus _eventBus;
+        private readonly IMultiEventBus _eventBus;
         private readonly ILogger<BasketController> _logger;
 
         public BasketController(
             ILogger<BasketController> logger,
             IBasketRepository repository,
             IIdentityService identityService,
-            IEventBus eventBus)
+            IMultiEventBus eventBus)
         {
             _logger = logger;
             _repository = repository;

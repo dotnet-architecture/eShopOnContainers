@@ -19,13 +19,13 @@ namespace Ordering.API.Application.IntegrationEvents
     public class OrderingIntegrationEventService : IOrderingIntegrationEventService
     {
         private readonly Func<DbConnection, IIntegrationEventLogService> _integrationEventLogServiceFactory;
-        private readonly IEventBus _eventBus;
+        private readonly IMultiEventBus _eventBus;
         private readonly OrderingContext _orderingContext;
         private readonly IntegrationEventLogContext _eventLogContext;
         private readonly IIntegrationEventLogService _eventLogService;
         private readonly ILogger<OrderingIntegrationEventService> _logger;
 
-        public OrderingIntegrationEventService(IEventBus eventBus,
+        public OrderingIntegrationEventService(IMultiEventBus eventBus,
             OrderingContext orderingContext,
             IntegrationEventLogContext eventLogContext,
             Func<DbConnection, IIntegrationEventLogService> integrationEventLogServiceFactory,

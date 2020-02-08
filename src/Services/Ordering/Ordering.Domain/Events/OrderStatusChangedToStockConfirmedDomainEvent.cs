@@ -9,8 +9,15 @@
         : INotification
     {
         public int OrderId { get; }
+        public int TenantId { get; set; }
 
         public OrderStatusChangedToStockConfirmedDomainEvent(int orderId)
             => OrderId = orderId;
+
+        public OrderStatusChangedToStockConfirmedDomainEvent withTenantId(int tenantId)
+        {
+            this.TenantId = tenantId;
+            return this;
+        }
     }
 }

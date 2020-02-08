@@ -1,4 +1,4 @@
-﻿namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus
+﻿/*namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus
 {
     using Autofac;
     using Microsoft.Azure.ServiceBus;
@@ -206,3 +206,4 @@
         }
     }
 }
+*/

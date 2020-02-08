@@ -1,4 +1,6 @@
-﻿namespace Payment.API.IntegrationEvents.EventHandling
+﻿using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Extensions;
+
+namespace Payment.API.IntegrationEvents.EventHandling
 {
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
@@ -11,12 +13,12 @@
     public class OrderStatusChangedToStockConfirmedIntegrationEventHandler :
         IIntegrationEventHandler<OrderStatusChangedToStockConfirmedIntegrationEvent>
     {
-        private readonly IEventBus _eventBus;
+        private readonly IMultiEventBus _eventBus;
         private readonly PaymentSettings _settings;
         private readonly ILogger<OrderStatusChangedToStockConfirmedIntegrationEventHandler> _logger;
 
         public OrderStatusChangedToStockConfirmedIntegrationEventHandler(
-            IEventBus eventBus,
+            IMultiEventBus eventBus,
             IOptionsSnapshot<PaymentSettings> settings,
             ILogger<OrderStatusChangedToStockConfirmedIntegrationEventHandler> logger)
         {
@@ -50,6 +52,7 @@
                     orderPaymentIntegrationEvent = new OrderPaymentFailedIntegrationEvent(@event.OrderId);
                 }
 
+                orderPaymentIntegrationEvent.TenantId = @event.TenantId;
                 _logger.LogInformation("----- Publishing integration event: {IntegrationEventId} from {AppName} - ({@IntegrationEvent})", orderPaymentIntegrationEvent.Id, Program.AppName, orderPaymentIntegrationEvent);
 
                 _eventBus.Publish(orderPaymentIntegrationEvent);

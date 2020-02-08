@@ -17,14 +17,14 @@ namespace Catalog.API.IntegrationEvents
     public class CatalogIntegrationEventService : ICatalogIntegrationEventService
     {
         private readonly Func<DbConnection, IIntegrationEventLogService> _integrationEventLogServiceFactory;
-        private readonly IEventBus _eventBus;
+        private readonly IMultiEventBus _eventBus;
         private readonly CatalogContext _catalogContext;
         private readonly IIntegrationEventLogService _eventLogService;
         private readonly ILogger<CatalogIntegrationEventService> _logger;
 
         public CatalogIntegrationEventService(
             ILogger<CatalogIntegrationEventService> logger,
-            IEventBus eventBus,
+            IMultiEventBus eventBus,
             CatalogContext catalogContext,
             Func<DbConnection, IIntegrationEventLogService> integrationEventLogServiceFactory)
         {

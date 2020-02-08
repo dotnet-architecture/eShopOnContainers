@@ -46,10 +46,7 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
 
             services
                 .AddCustomHealthCheck(Configuration)
-                .AddMvc(options =>
-                {
-                    options.Filters.Add(typeof(HttpGlobalExceptionFilter));
-                })
+                .AddMvc(options => { options.Filters.Add(typeof(HttpGlobalExceptionFilter)); })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddControllersAsServices();
 
@@ -57,49 +54,14 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
 
             services.Configure<LocationSettings>(Configuration);
 
-            if (Configuration.GetValue<bool>("AzureServiceBusEnabled"))
+            services.AddSingleton<IMultiRabbitMQPersistentConnections>(sp =>
             {
-                services.AddSingleton<IServiceBusPersisterConnection>(sp =>
-                {
-                    var logger = sp.GetRequiredService<ILogger<DefaultServiceBusPersisterConnection>>();
+                IMultiRabbitMQPersistentConnections connections = new MultiRabbitMQPersistentConnections();
+                connections.AddConnection(GenerateConnection("TenantA", sp));
+                connections.AddConnection(GenerateConnection("TenantB", sp));
 
-                    var serviceBusConnectionString = Configuration["EventBusConnection"];
-                    var serviceBusConnection = new ServiceBusConnectionStringBuilder(serviceBusConnectionString);
-
-                    return new DefaultServiceBusPersisterConnection(serviceBusConnection, logger);
-                });
-            }
-            else
-            {
-                services.AddSingleton<IRabbitMQPersistentConnection>(sp =>
-                {
-                    var logger = sp.GetRequiredService<ILogger<DefaultRabbitMQPersistentConnection>>();
-
-                    var factory = new ConnectionFactory()
-                    {
-                        HostName = Configuration["EventBusConnection"],
-                        DispatchConsumersAsync = true
-                    };
-
-                    if (!string.IsNullOrEmpty(Configuration["EventBusUserName"]))
-                    {
-                        factory.UserName = Configuration["EventBusUserName"];
-                    }
-
-                    if (!string.IsNullOrEmpty(Configuration["EventBusPassword"]))
-                    {
-                        factory.Password = Configuration["EventBusPassword"];
-                    }
-
-                    var retryCount = 5;
-                    if (!string.IsNullOrEmpty(Configuration["EventBusRetryCount"]))
-                    {
-                        retryCount = int.Parse(Configuration["EventBusRetryCount"]);
-                    }
-
-                    return new DefaultRabbitMQPersistentConnection(factory, logger, retryCount);
-                });
-            }            
+                return connections;
+            });
 
             RegisterEventBus(services);
 
@@ -123,22 +85,21 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
                     TokenUrl = $"{Configuration.GetValue<string>("IdentityUrlExternal")}/connect/token",
                     Scopes = new Dictionary<string, string>()
                     {
-                        { "locations", "Locations API" }
+                        {"locations", "Locations API"}
                     }
                 });
 
                 options.OperationFilter<AuthorizeCheckOperationFilter>();
-
             });
 
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy",
                     builder => builder
-                    .SetIsOriginAllowed((host) => true)
-                    .AllowAnyMethod()
-                    .AllowAnyHeader()
-                    .AllowCredentials());
+                        .SetIsOriginAllowed((host) => true)
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials());
             });
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -153,6 +114,38 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
             return new AutofacServiceProvider(container.Build());
         }
 
+        
+        private IRabbitMQPersistentConnection GenerateConnection(String vHost, IServiceProvider sp)
+        {
+            var logger = sp.GetRequiredService<ILogger<DefaultRabbitMQPersistentConnection>>();
+
+            var factory = new ConnectionFactory()
+            {
+                HostName = Configuration["EventBusConnection"],
+                DispatchConsumersAsync = true
+            };
+
+            if (!string.IsNullOrEmpty(Configuration["EventBusUserName"]))
+            {
+                factory.UserName = Configuration["EventBusUserName"];
+            }
+
+            if (!string.IsNullOrEmpty(Configuration["EventBusPassword"]))
+            {
+                factory.Password = Configuration["EventBusPassword"];
+            }
+
+            factory.VirtualHost = vHost;
+
+            var retryCount = 5;
+            if (!string.IsNullOrEmpty(Configuration["EventBusRetryCount"]))
+            {
+                retryCount = int.Parse(Configuration["EventBusRetryCount"]);
+            }
+
+            return new DefaultRabbitMQPersistentConnection(factory, logger, retryCount);
+        }
+        
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
@@ -183,12 +176,14 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
             app.UseMvcWithDefaultRoute();
 
             app.UseSwagger()
-              .UseSwaggerUI(c =>
-              {
-                  c.SwaggerEndpoint($"{ (!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty) }/swagger/v1/swagger.json", "Locations.API V1");
-                  c.OAuthClientId("locationsswaggerui");
-                  c.OAuthAppName("Locations Swagger UI");
-              });
+                .UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint(
+                        $"{(!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty)}/swagger/v1/swagger.json",
+                        "Locations.API V1");
+                    c.OAuthClientId("locationsswaggerui");
+                    c.OAuthAppName("Locations Swagger UI");
+                });
 
             LocationsContextSeed.SeedAsync(app, loggerFactory)
                 .Wait();
@@ -204,6 +199,7 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
                 // Enable K8s telemetry initializer
                 services.AddApplicationInsightsKubernetesEnricher();
             }
+
             if (orchestratorType?.ToUpper() == "SF")
             {
                 // Enable SF telemetry initializer
@@ -218,16 +214,16 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
             services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(options =>
-            {
-                options.Authority = Configuration.GetValue<string>("IdentityUrl");
-                options.Audience = "locations";
-                options.RequireHttpsMetadata = false;
-            });
+                {
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(options =>
+                {
+                    options.Authority = Configuration.GetValue<string>("IdentityUrl");
+                    options.Audience = "locations";
+                    options.RequireHttpsMetadata = false;
+                });
         }
 
         protected virtual void ConfigureAuth(IApplicationBuilder app)
@@ -244,37 +240,31 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
         {
             var subscriptionClientName = Configuration["SubscriptionClientName"];
 
-            if (Configuration.GetValue<bool>("AzureServiceBusEnabled"))
+            services.AddSingleton<IMultiEventBus, MultiEventBusRabbitMQ>(sp =>
             {
-                services.AddSingleton<IEventBus, EventBusServiceBus>(sp =>
+                var multiRabbitMqPersistentConnections = sp.GetRequiredService<IMultiRabbitMQPersistentConnections>();
+                var iLifetimeScope = sp.GetRequiredService<ILifetimeScope>();
+                var logger = sp.GetRequiredService<ILogger<EventBusRabbitMQ>>();
+                var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
+
+                var retryCount = 5;
+                if (!string.IsNullOrEmpty(Configuration["EventBusRetryCount"]))
                 {
-                    var serviceBusPersisterConnection = sp.GetRequiredService<IServiceBusPersisterConnection>();
-                    var iLifetimeScope = sp.GetRequiredService<ILifetimeScope>();
-                    var logger = sp.GetRequiredService<ILogger<EventBusServiceBus>>();
-                    var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
+                    retryCount = int.Parse(Configuration["EventBusRetryCount"]);
+                }
 
-                    return new EventBusServiceBus(serviceBusPersisterConnection, logger,
-                        eventBusSubcriptionsManager, subscriptionClientName, iLifetimeScope);
-                });
-            }
-            else
-            {
-                services.AddSingleton<IEventBus, EventBusRabbitMQ>(sp =>
-                {
-                    var rabbitMQPersistentConnection = sp.GetRequiredService<IRabbitMQPersistentConnection>();
-                    var iLifetimeScope = sp.GetRequiredService<ILifetimeScope>();
-                    var logger = sp.GetRequiredService<ILogger<EventBusRabbitMQ>>();
-                    var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
+                List<IEventBus> eventBuses = new List<IEventBus>();
 
-                    var retryCount = 5;
-                    if (!string.IsNullOrEmpty(Configuration["EventBusRetryCount"]))
-                    {
-                        retryCount = int.Parse(Configuration["EventBusRetryCount"]);
-                    }
+                eventBuses.Add(new EventBusRabbitMQ(multiRabbitMqPersistentConnections.GetConnections()[0], logger,
+                    iLifetimeScope, eventBusSubcriptionsManager, "TenantA", subscriptionClientName, retryCount));
+                eventBuses.Add(new EventBusRabbitMQ(multiRabbitMqPersistentConnections.GetConnections()[1], logger,
+                    iLifetimeScope, eventBusSubcriptionsManager, "TenantB", subscriptionClientName, retryCount));
+                Dictionary<int, String> tenants = new Dictionary<int, string>();
+                tenants.Add(1, "TenantA");
+                tenants.Add(2, "TenantB");
 
-                    return new EventBusRabbitMQ(rabbitMQPersistentConnection, logger, iLifetimeScope, eventBusSubcriptionsManager, subscriptionClientName, retryCount);
-                });
-            }
+                return new MultiEventBusRabbitMQ(eventBuses, tenants);
+            });
 
             services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
         }
@@ -282,7 +272,8 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
 
     public static class CustomExtensionMethods
     {
-        public static IServiceCollection AddCustomHealthCheck(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddCustomHealthCheck(this IServiceCollection services,
+            IConfiguration configuration)
         {
             var hcBuilder = services.AddHealthChecks();
 
@@ -292,7 +283,7 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
                 .AddMongoDb(
                     configuration["ConnectionString"],
                     name: "locations-mongodb-check",
-                    tags: new string[] { "mongodb" });
+                    tags: new string[] {"mongodb"});
 
             if (configuration.GetValue<bool>("AzureServiceBusEnabled"))
             {
@@ -301,7 +292,7 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
                         configuration["EventBusConnection"],
                         topicName: "eshop_event_bus",
                         name: "locations-servicebus-check",
-                        tags: new string[] { "servicebus" });
+                        tags: new string[] {"servicebus"});
             }
             else
             {
@@ -309,7 +300,7 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
                     .AddRabbitMQ(
                         $"amqp://{configuration["EventBusConnection"]}",
                         name: "locations-rabbitmqbus-check",
-                        tags: new string[] { "rabbitmqbus" });
+                        tags: new string[] {"rabbitmqbus"});
             }
 
             return services;

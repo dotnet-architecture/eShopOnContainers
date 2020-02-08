@@ -12,12 +12,8 @@ using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using RabbitMQ.Client.Exceptions;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Net;
 using System.Net.Http;
-using System.Net.Mime;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
@@ -37,14 +33,15 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
         private static readonly String tenantACustomisationUrl = @"http://tenantacustomisation/";
         private static readonly String tenantManagerUrl = @"http://tenantmanager/";
         private readonly int _retryCount;
-        private readonly Dictionary<int, String> _tenantInfo; 
+        private readonly Dictionary<int, String> _tenantInfo;
+        public String vHost { get; set; }
 
 
         private IModel _consumerChannel;
         private string _queueName;
 
         public EventBusRabbitMQ(IRabbitMQPersistentConnection persistentConnection, ILogger<EventBusRabbitMQ> logger,
-            ILifetimeScope autofac, IEventBusSubscriptionsManager subsManager, string queueName = null,
+            ILifetimeScope autofac, IEventBusSubscriptionsManager subsManager, String vhost, string queueName = null,
             int retryCount = 5)
         {
             _persistentConnection =
@@ -59,6 +56,7 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
             _tenantInfo = new Dictionary<int, string>();
             _tenantInfo.Add(1, "TenantA");
             _tenantInfo.Add(2, "TenantB");
+            vHost = vhost;
         }
 
         private void SubsManager_OnEventRemoved(object sender, string eventName)
@@ -137,7 +135,7 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
                 typeof(TH).GetGenericTypeName());
 
             DoInternalSubscription(eventName);
-            _subsManager.AddDynamicSubscription<TH>(eventName);
+            _subsManager.AddDynamicSubscription<TH>(eventName, vHost);
             StartBasicConsume();
         }
 
@@ -151,13 +149,13 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
             _logger.LogInformation("Subscribing to event {EventName} with {EventHandler}", eventName,
                 typeof(TH).GetGenericTypeName());
 
-            _subsManager.AddSubscription<T, TH>();
+            _subsManager.AddSubscription<T, TH>(vHost);
             StartBasicConsume();
         }
 
         private void DoInternalSubscription(string eventName)
         {
-            var containsKey = _subsManager.HasSubscriptionsForEvent(eventName);
+            var containsKey = _subsManager.HasSubscriptionsForEvent(eventName, vHost);
             if (!containsKey)
             {
                 if (!_persistentConnection.IsConnected)
@@ -182,13 +180,18 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
 
             _logger.LogInformation("Unsubscribing from event {EventName}", eventName);
 
-            _subsManager.RemoveSubscription<T, TH>();
+            _subsManager.RemoveSubscription<T, TH>(vHost);
+        }
+
+        public string GetVHost()
+        {
+            return vHost;
         }
 
         public void UnsubscribeDynamic<TH>(string eventName)
             where TH : IDynamicIntegrationEventHandler
         {
-            _subsManager.RemoveDynamicSubscription<TH>(eventName);
+            _subsManager.RemoveDynamicSubscription<TH>(eventName, vHost);
         }
 
         public void Dispose()
@@ -341,11 +344,11 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
         {
             _logger.LogWarning("Processing RabbitMQ event: {EventName}", eventName);
 
-            if (_subsManager.HasSubscriptionsForEvent(eventName))
+            if (_subsManager.HasSubscriptionsForEvent(eventName, vHost))
             {
                 using (var scope = _autofac.BeginLifetimeScope(AUTOFAC_SCOPE_NAME))
                 {
-                    var subscriptions = _subsManager.GetHandlersForEvent(eventName);
+                    var subscriptions = _subsManager.GetHandlersForEvent(eventName, vHost);
                     foreach (var subscription in subscriptions)
                     {
                         if (subscription.IsDynamic)
