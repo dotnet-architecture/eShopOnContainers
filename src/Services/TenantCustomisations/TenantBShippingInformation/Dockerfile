@@ -48,7 +48,7 @@ COPY test/ServicesTests/LoadTest/LoadTest.csproj test/ServicesTests/LoadTest/
 RUN dotnet restore eShopOnContainers-ServicesAndWebApps.sln
 
 COPY . .
-WORKDIR /src/src/Services/TenantCustomisations/TenantAShippingInformation 
+WORKDIR /src/src/Services/TenantCustomisations/TenantBShippingInformation 
 RUN dotnet publish --no-restore -c Release -o /app
 
 FROM build AS publish
@@ -56,4 +56,4 @@ FROM build AS publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
-ENTRYPOINT ["dotnet", "TenantAShippingInformation.dll"]
+ENTRYPOINT ["dotnet", "TenantBShippingInformation.dll"]

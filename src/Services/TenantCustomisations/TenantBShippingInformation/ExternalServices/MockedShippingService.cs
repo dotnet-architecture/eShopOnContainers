@@ -1,7 +1,7 @@
 ﻿using System;
-using TenantAShippingInformation.Models;
+using TenantBShippingInformation.Models;
 
-namespace TenantAShippingInformation.ExternalServices
+namespace TenantBShippingInformation.ExternalServices
 {
     public class MockedShippingService : IShippingService
     {

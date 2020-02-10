@@ -12,6 +12,7 @@
         new Header() {Controller = "OrderManagement", Text = "Orders Management"}
     };
     var shippingInfo = ViewData["ShippingInfo"] as List<ShippingInformation>;
+    var tenantId = (int)ViewData["TenantId"];
 }
 
 <div class="esh-orders">
@@ -23,10 +24,15 @@
             <section class="esh-orders-title col-2">Date</section>
             <section class="esh-orders-title col-1">Total</section>
             <section class="esh-orders-title col-1">Status</section>
-            @if (shippingInfo != null)
+            @if (shippingInfo != null && tenantId == 1)
             {
                 <section class="esh-orders-title col-2">Shipping date</section>
                 <section class="esh-orders-title col-2">Estimated arrival date</section>
+            }
+            @if (shippingInfo != null && tenantId == 2)
+            {
+                <section class="esh-orders-title col-2">Priority</section>
+                <section class="esh-orders-title col-2">Fragility</section>
             }
             <section class="esh-orders-title col-2"></section>
 
@@ -35,48 +41,73 @@
         {
             foreach (var item in Model)
             {
-                <article class="esh-orders-items row">
-                    <section class="esh-orders-item col-1">@Html.DisplayFor(modelItem => item.OrderNumber)</section>
-                    <section class="esh-orders-item col-2">@item.Date.ToShortDateString()</section>
-                    <section class="esh-orders-item col-1">$ @Html.DisplayFor(modelItem => item.Total)</section>
-                    <section class="esh-orders-item col-1">@Html.DisplayFor(modelItem => item.Status)</section>
-                    @if (shippingInfo != null)
+    <article class="esh-orders-items row">
+        <section class="esh-orders-item col-1">@Html.DisplayFor(modelItem => item.OrderNumber)</section>
+        <section class="esh-orders-item col-2">@item.Date.ToShortDateString()</section>
+        <section class="esh-orders-item col-1">$ @Html.DisplayFor(modelItem => item.Total)</section>
+        <section class="esh-orders-item col-1">@Html.DisplayFor(modelItem => item.Status)</section>
+        @if (shippingInfo != null && tenantId == 1)
+        {
+            <section class="esh-orders-item col-2">
+                @for (var i = 0; i < shippingInfo.Count(); i++)
+                {
+                    var si = shippingInfo[i];
+                    if (si.OrderNumber.Equals(item.OrderNumber))
                     {
-                        <section class="esh-orders-item col-2">
-                            @for (var i = 0; i < shippingInfo.Count(); i++)
-                            {
-                                var si = shippingInfo[i];
-                                if (si.OrderNumber.Equals(item.OrderNumber))
-                                {
-                                    @si.ShippingTime.ToShortDateString()
-                                    ;
-                                    break;
-                                }
-                            }
-                        </section>
-                        <section class="esh-orders-item col-2">
-                            @for (var i = 0; i < shippingInfo.Count(); i++)
-                            {
-                                var si = shippingInfo[i];
-                                if (si.OrderNumber.Equals(item.OrderNumber))
-                                {
-                                    @si.ArrivalTime.ToShortDateString()
-                                    ;
-                                    break;
-                                }
-                            }
-                        </section>
+                        @si.ShippingTime.ToShortDateString()
+                        ;
+                        break;
                     }
-                    <section class="esh-orders-item col-1">
-                        <a class="esh-orders-link" asp-controller="Order" asp-action="Detail" asp-route-orderId="@item.OrderNumber">Detail</a>
-                    </section>
-                    <section class="esh-orders-item col-1">
-                        @if (item.Status.ToLower() == "submitted")
-                        {
-                            <a class="esh-orders-link" asp-controller="Order" asp-action="cancel" asp-route-orderId="@item.OrderNumber">Cancel</a>
-                        }
-                    </section>
-                </article>
+                }
+            </section>
+            <section class="esh-orders-item col-2">
+                @for (var i = 0; i < shippingInfo.Count(); i++)
+                {
+                    var si = shippingInfo[i];
+                    if (si.OrderNumber.Equals(item.OrderNumber))
+                    {
+                        @si.ArrivalTime.ToShortDateString()
+                        ;
+                        break;
+                    }
+                }
+            </section>
+        }
+        @if (shippingInfo != null && tenantId == 2)
+        {
+            <section class="esh-orders-item col-2">
+                @for (var i = 0; i < shippingInfo.Count(); i++)
+                {
+                    var si = shippingInfo[i];
+                    if (si.OrderNumber.Equals(item.OrderNumber))
+                    {
+                        @si.PriorityLevel.ToString();
+                        break;
+                    }
+                }
+            </section>
+            <section class="esh-orders-item col-2">
+                @for (var i = 0; i < shippingInfo.Count(); i++)
+                {
+                    var si = shippingInfo[i];
+                    if (si.OrderNumber.Equals(item.OrderNumber))
+                    {
+                        @si.FragilityLevel.ToString();
+                        break;
+                    }
+                }
+            </section>
+        }
+        <section class="esh-orders-item col-1">
+            <a class="esh-orders-link" asp-controller="Order" asp-action="Detail" asp-route-orderId="@item.OrderNumber">Detail</a>
+        </section>
+        <section class="esh-orders-item col-1">
+            @if (item.Status.ToLower() == "submitted")
+            {
+                <a class="esh-orders-link" asp-controller="Order" asp-action="cancel" asp-route-orderId="@item.OrderNumber">Cancel</a>
+            }
+        </section>
+    </article>
             }
         }
     </div>

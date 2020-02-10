@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Linq;
-using TenantAShippingInformation.Models;
+using TenantBShippingInformation.Models;
 
-namespace TenantAShippingInformation.Database
+namespace TenantBShippingInformation.Database
 {
     public class DbInitializer
     {
-        public void Initialize(TenantAContext context)
+        public void Initialize(TenantBContext context)
         {
             context.Database.EnsureCreated();
 

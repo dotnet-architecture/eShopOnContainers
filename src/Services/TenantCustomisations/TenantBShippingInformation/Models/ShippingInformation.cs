@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TenantAShippingInformation.Models
+namespace TenantBShippingInformation.Models
 {
     public class ShippingInformation
     {

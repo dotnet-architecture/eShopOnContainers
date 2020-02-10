@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
-using TenantACustomisations.ExternalServices;
-using TenantACustomisations.IntegrationEvents.Events;
+using TenantAShippingInformation.Models;
 
-namespace TenantACustomisations.Database
+namespace TenantAShippingInformation.Database
 {
     public class TenantAContext : DbContext
     {
@@ -17,12 +12,7 @@ namespace TenantACustomisations.Database
         }
 
         public DbSet<ShippingInformation> ShippingInformation { get; set; }
-
-        public DbSet<SavedEvent> SavedEvent
-        {
-            get;
-            set;
-        }
+        
 
     }
     public class TenantAContextDesignFactory : IDesignTimeDbContextFactory<TenantAContext>
@@ -30,7 +20,7 @@ namespace TenantACustomisations.Database
         public TenantAContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<TenantAContext>()
-                            .UseSqlServer("Server=.;Initial Catalog=Microsoft.eShopOnContainers.Services.TenantADb;Integrated Security=true");
+                            .UseSqlServer("Server=.;Initial Catalog=Microsoft.eShopOnContainers.Services.TenantAShippingInformationDb;Integrated Security=true");
 
             return new TenantAContext(optionsBuilder.Options);
         }

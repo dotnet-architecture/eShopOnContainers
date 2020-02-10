@@ -23,6 +23,8 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
         private IBasketService _basketSvc;
         private readonly IIdentityParser<ApplicationUser> _appUserParser;
         private static String tenantACustomisationsUrl = @"http://tenantacustomisation/";
+        private static String tenantAShippingInformationUrl = @"http://tenantashippinginformation/";
+        private static String tenantBShippingInformationUrl = @"http://tenantbshippinginformation/";
         private readonly ILogger<OrderController> _logger;
 
 
@@ -99,11 +101,18 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
 
             if (user.TenantId == 1)
             {
-                List<ShippingInformation> shippingInformation = GetShippingInfo(vm);
+                List<ShippingInformation> shippingInformation = GetShippingInfo(vm, tenantAShippingInformationUrl);
+                _logger.LogInformation("----- Shipping info{@ShippingInformation}", shippingInformation);
+                ViewData["ShippingInfo"] = shippingInformation;
+            }
+            else if (user.TenantId == 2)
+            {
+                List<ShippingInformation> shippingInformation = GetShippingInfo(vm, tenantBShippingInformationUrl);
                 _logger.LogInformation("----- Shipping info{@ShippingInformation}", shippingInformation);
                 ViewData["ShippingInfo"] = shippingInformation;
             }
 
+            ViewData["TenantID"] = user.TenantId;
             return View(vm);
         }
 
@@ -130,13 +139,13 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
             }
         }
 
-        private List<ShippingInformation> GetShippingInfo(List<Order> orders)
+        private List<ShippingInformation> GetShippingInfo(List<Order> orders, String url)
         {
             List<ShippingInformation> shippingInformation = new List<ShippingInformation>();
             using (var client = new HttpClient(new HttpClientHandler
                 {AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate}))
             {
-                client.BaseAddress = new Uri(tenantACustomisationsUrl);
+                client.BaseAddress = new Uri(url);
                 try
                 {
                     HttpResponseMessage response = client.GetAsync("api/shippinginformations").Result;

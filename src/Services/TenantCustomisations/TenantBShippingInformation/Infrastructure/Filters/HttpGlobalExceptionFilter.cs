@@ -1,4 +1,4 @@
-﻿namespace TenantAShippingInformation.Infrastructure.Filters
+﻿namespace TenantBShippingInformation.Infrastructure.Filters
 {
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;

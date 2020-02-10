@@ -24,7 +24,6 @@ namespace TenantACustomisations.Controllers
 
         private List<Type> types = new List<Type>()
         {
-            typeof(OrderStatusChangedToSubmittedIntegrationEvent),
             typeof(OrderStatusChangedToAwaitingValidationIntegrationEvent)
         };
 
@@ -72,15 +71,6 @@ namespace TenantACustomisations.Controllers
                     if (evt.OrderId == Int32.Parse(orderId))
                     {
                         found = true;
-                    }
-                }
-                else if(e is OrderStatusChangedToSubmittedIntegrationEvent)
-                {
-                    OrderStatusChangedToSubmittedIntegrationEvent evt = (OrderStatusChangedToSubmittedIntegrationEvent)e;
-                    if (evt.OrderId == Int32.Parse(orderId))
-                    {
-                        found = true;
-
                     }
                 }
             });

@@ -1,6 +1,6 @@
 ﻿using Autofac;
 
-namespace TenantAShippingInformation.Infrastructure.AutofacModules
+namespace TenantBShippingInformation.Infrastructure.AutofacModules
 {
     public class MediatorModule : Autofac.Module
     {

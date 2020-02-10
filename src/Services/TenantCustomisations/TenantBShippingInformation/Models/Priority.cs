@@ -1,4 +1,4 @@
-﻿namespace TenantAShippingInformation.Models
+﻿namespace TenantBShippingInformation.Models
 {
     public enum Priority
     {

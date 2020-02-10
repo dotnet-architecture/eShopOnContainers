@@ -17,12 +17,10 @@ namespace TenantManager.Database
             var tenant1 = new Tenant { TenantName = "Tekna" };
             context.Tenant.Add(tenant1);
             
-            var method1 = new Method { MethodName = "OrderStatusChangedToSubmittedIntegrationEvent" };
             var method2 = new Method { MethodName = "OrderStatusChangedToAwaitingValidationIntegrationEvent" };
 
             var methods = new[]
             {
-                method1,
                 method2
             };
 
@@ -33,7 +31,6 @@ namespace TenantManager.Database
             
             var customisations = new[]
             {
-                new Customisation {Tenant=tenant1, Method=method1, CustomisationUrl = @"http://tenantacustomisation/api/savedevents"},
                 new Customisation {Tenant=tenant1, Method=method2, CustomisationUrl = @"http://tenantacustomisation/api/savedevents"}
             };
 

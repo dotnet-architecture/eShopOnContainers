@@ -1,9 +1,10 @@
 ﻿using Autofac;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
 using System.Reflection;
-using TenantAShippingInformation.IntegrationEvents.EventHandling;
+using TenantBShippingInformation.ExternalServices;
+using TenantBShippingInformation.IntegrationEvents.EventHandling;
 
-namespace TenantAShippingInformation.Infrastructure.AutofacModules
+namespace TenantBShippingInformation.Infrastructure.AutofacModules
 {
 
     public class ApplicationModule
@@ -20,9 +21,12 @@ namespace TenantAShippingInformation.Infrastructure.AutofacModules
 
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterAssemblyTypes(typeof(OrderStatusChangedToAwaitingValidationIntegrationEventHandler).GetTypeInfo().Assembly)
+            builder.RegisterAssemblyTypes(typeof(OrderStatusChangedToSubmittedIntegrationEventHandler).GetTypeInfo().Assembly)
                         .AsClosedTypesOf(typeof(IIntegrationEventHandler<>));
             
+            builder.RegisterType<MockedShippingService>()
+                .As<IShippingService>()
+                .InstancePerLifetimeScope();
         }
     }
 }

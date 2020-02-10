@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using TenantACustomisations.ExternalServices;
+using TenantAShippingInformation.Models;
 
-namespace TenantACustomisations.Database
+namespace TenantAShippingInformation.Database
 {
     public class DbInitializer
     {
@@ -27,7 +25,6 @@ namespace TenantACustomisations.Database
             context.ShippingInformation.Add(shippingInformation);
 
             context.SaveChanges();
-
 
         }
     }

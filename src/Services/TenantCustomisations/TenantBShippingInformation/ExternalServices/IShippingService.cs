@@ -1,6 +1,6 @@
-﻿using TenantAShippingInformation.Models;
+﻿using TenantBShippingInformation.Models;
 
-namespace TenantAShippingInformation.ExternalServices
+namespace TenantBShippingInformation.ExternalServices
 {
     public interface IShippingService
     {

@@ -27,8 +27,12 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
 using Swashbuckle.AspNetCore.Swagger;
+using TenantAShippingInformation.Database;
 using TenantAShippingInformation.Infrastructure.AutofacModules;
+using TenantAShippingInformation;
 using TenantAShippingInformation.Infrastructure.Filters;
+using TenantAShippingInformation.IntegrationEvents.EventHandling;
+using TenantAShippingInformation.IntegrationEvents.Events;
 
 namespace TenantAShippingInformation
 {
@@ -103,11 +107,11 @@ namespace TenantAShippingInformation
                });
 
             ConfigureEventBus(app);
-            //using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
-            //{
-            //    var context = serviceScope.ServiceProvider.GetRequiredService<TenantAContext>();
-            //    context.Database.EnsureCreated();
-            //}
+            using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+            {
+                var context = serviceScope.ServiceProvider.GetRequiredService<TenantAContext>();
+                context.Database.EnsureCreated();
+            }
         }
 
 
@@ -116,7 +120,7 @@ namespace TenantAShippingInformation
             var eventBus = app.ApplicationServices.GetRequiredService<Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions.IEventBus>();
 
             //eventBus.Subscribe<UserCheckoutAcceptedIntegrationEvent, IIntegrationEventHandler<UserCheckoutAcceptedIntegrationEvent>>();
-            //eventBus.Subscribe<OrderStatusChangedToSubmittedIntegrationEvent, OrderStatusChangedToSubmittedIntegrationEventHandler>();
+            eventBus.Subscribe<OrderStatusChangedToSubmittedIntegrationEvent, OrderStatusChangedToSubmittedIntegrationEventHandler>();
 
         }
 
@@ -213,8 +217,8 @@ namespace TenantAShippingInformation
 
         public static IServiceCollection AddCustomDbContext(this IServiceCollection services, IConfiguration configuration)
         {
-            //services.AddDbContext<TenantAContext>(options =>
-            //          options.UseSqlServer(configuration["ConnectionString"]));
+            services.AddDbContext<TenantAContext>(options =>
+                      options.UseSqlServer(configuration["ConnectionString"]));
 
             services.AddDbContext<IntegrationEventLogContext>(options =>
             {

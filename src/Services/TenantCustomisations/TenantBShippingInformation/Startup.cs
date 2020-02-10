@@ -1,43 +1,40 @@
-﻿namespace Microsoft.eShopOnContainers.Services.TenantACustomisations
-{
-    using AspNetCore.Http;
-    using Autofac;
-    using Autofac.Extensions.DependencyInjection;
-    using Microsoft.ApplicationInsights.Extensibility;
-    using Microsoft.ApplicationInsights.ServiceFabric;
-    using Microsoft.AspNetCore.Authentication.JwtBearer;
-    using Microsoft.AspNetCore.Builder;
-    using Microsoft.AspNetCore.Hosting;
-    using Microsoft.AspNetCore.Mvc;
-    using Microsoft.Azure.ServiceBus;
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.eShopOnContainers.BuildingBlocks.EventBus;
-    using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
-    using Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ;
-    using Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus;
-    using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF;
-    using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF.Services;
-    using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Logging;
-    using RabbitMQ.Client;
-    using Swashbuckle.AspNetCore.Swagger;
-    using System;
-    using System.Collections.Generic;
-    using System.Data.Common;
-    using System.IdentityModel.Tokens.Jwt;
-    using System.Reflection;
-    using HealthChecks.UI.Client;
-    using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-    using Microsoft.Extensions.Diagnostics.HealthChecks;
-    using Infrastructure.AutofacModules;
-    using Microsoft.eShopOnContainers.Services.TenantACustomisations.Infrastructure.Filters;
-    using global::TenantACustomisations.Infrastructure.Filters;
-    using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
-    using global::TenantACustomisations.IntegrationEvents.Events;
-    using global::TenantACustomisations.ExternalServices;
-    using global::TenantACustomisations.Database;
+﻿using System;
+using System.Collections.Generic;
+using System.Data.Common;
+using System.IdentityModel.Tokens.Jwt;
+using System.Reflection;
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
+using HealthChecks.UI.Client;
+using Microsoft.ApplicationInsights.Extensibility;
+using Microsoft.ApplicationInsights.ServiceFabric;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.ServiceBus;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.eShopOnContainers.BuildingBlocks.EventBus;
+using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
+using Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ;
+using Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus;
+using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF;
+using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF.Services;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Logging;
+using RabbitMQ.Client;
+using Swashbuckle.AspNetCore.Swagger;
+using TenantBShippingInformation.Infrastructure.AutofacModules;
+using TenantBShippingInformation.Infrastructure.Filters;
+using TenantBShippingInformation.Database;
+using TenantBShippingInformation.IntegrationEvents.Events;
+using TenantBShippingInformation.IntegrationEvents.EventHandling;
 
+namespace TenantBShippingInformation
+{
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -111,7 +108,7 @@
             ConfigureEventBus(app);
             using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {
-                var context = serviceScope.ServiceProvider.GetRequiredService<TenantAContext>();
+                var context = serviceScope.ServiceProvider.GetRequiredService<TenantBContext>();
                 context.Database.EnsureCreated();
             }
         }
@@ -119,10 +116,10 @@
 
         private void ConfigureEventBus(IApplicationBuilder app)
         {
-            var eventBus = app.ApplicationServices.GetRequiredService<BuildingBlocks.EventBus.Abstractions.IEventBus>();
+            var eventBus = app.ApplicationServices.GetRequiredService<Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions.IEventBus>();
 
             //eventBus.Subscribe<UserCheckoutAcceptedIntegrationEvent, IIntegrationEventHandler<UserCheckoutAcceptedIntegrationEvent>>();
-            //eventBus.Subscribe<OrderStatusChangedToSubmittedIntegrationEvent, OrderStatusChangedToSubmittedIntegrationEventHandler>();
+            eventBus.Subscribe<OrderStatusChangedToSubmittedIntegrationEvent, OrderStatusChangedToSubmittedIntegrationEventHandler>();
 
         }
 
@@ -219,7 +216,7 @@
 
         public static IServiceCollection AddCustomDbContext(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<TenantAContext>(options =>
+            services.AddDbContext<TenantBContext>(options =>
                       options.UseSqlServer(configuration["ConnectionString"]));
 
             services.AddDbContext<IntegrationEventLogContext>(options =>
@@ -310,7 +307,7 @@
                         factory.Password = configuration["EventBusPassword"];
                     }
 
-                    factory.VirtualHost = "TenantA";
+                    factory.VirtualHost = "TenantB";
 
                     var retryCount = 5;
                     if (!string.IsNullOrEmpty(configuration["EventBusRetryCount"]))
@@ -382,7 +379,7 @@
                         retryCount = int.Parse(configuration["EventBusRetryCount"]);
                     }
 
-                    return new EventBusRabbitMQ(rabbitMQPersistentConnection, logger, iLifetimeScope, eventBusSubcriptionsManager, "TenantA", subscriptionClientName, retryCount);
+                    return new EventBusRabbitMQ(rabbitMQPersistentConnection, logger, iLifetimeScope, eventBusSubcriptionsManager, "TenantB", subscriptionClientName, retryCount);
                 });
             }
 
