@@ -7,11 +7,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using TenantACustomisations.Database;
-using TenantACustomisations.ExternalServices;
-using TenantACustomisations.IntegrationEvents.Events;
+using TenantAShippingInformation.Database;
+using TenantAShippingInformation.ExternalServices;
+using TenantAShippingInformation.IntegrationEvents.Events;
+using TenantAShippingInformation.Models;
 
-namespace TenantACustomisations.IntegrationEvents.EventHandling
+namespace TenantAShippingInformation.IntegrationEvents.EventHandling
 {
     public class OrderStatusChangedToSubmittedIntegrationEventHandler :
         IIntegrationEventHandler<OrderStatusChangedToSubmittedIntegrationEvent>
@@ -31,14 +32,14 @@ namespace TenantACustomisations.IntegrationEvents.EventHandling
         {
             using (LogContext.PushProperty("IntegrationEventContext", $"{@event.Id}- TenantA"))
             {
-                _logger.LogInformation("----- Handling integration event: {IntegrationEventId} at TenantA - ({@IntegrationEvent})", @event.Id, @event);
-                _logger.LogInformation("Hello");
-                //TODO
-                Debug.WriteLine(@event);
-                ShippingInformation shippingInformation = _shippingService.CalculateShippingInformation(@event.OrderId);
-                _context.ShippingInformation.Add(shippingInformation);
-                _logger.LogInformation("----- Saving shipping information: {IntegrationEventId} at TenantA - ({@IntegrationEvent}) - {@ShippingInformation}", @event.Id, @event, shippingInformation);
-                _context.SaveChanges();
+                using (LogContext.PushProperty("IntegrationEventContext", $"{@event.Id}- TenantA"))
+                {
+                    _logger.LogInformation("----- Handling integration event: {IntegrationEventId} at TenantA - ({@IntegrationEvent})", @event.Id, @event);
+                    ShippingInformation shippingInformation = _shippingService.CalculateShippingInformation(@event.OrderId);
+                    _context.ShippingInformation.Add(shippingInformation);
+                    _logger.LogInformation("----- Saving shipping information: {IntegrationEventId} at TenantA - ({@IntegrationEvent}) - {@ShippingInformation}", @event.Id, @event, shippingInformation);
+                    _context.SaveChanges();
+                }
             }
         }
     }
