@@ -1,5 +1,8 @@
 variables:
   ProjectName: Identity.API
+  OpenShiftProject: development
+  AppName: identityapi
+  OpenShiftServiceConnection: 'OpenShift on ARO'
 trigger:
   branches:
     include:
