@@ -24,7 +24,7 @@ objects:
           deploymentconfig: ${APPLICATION_NAME}
       spec:
         containers:
-        - image: docker-registry.default.svc:5000/development${IMAGE_REGISTRY_PROJECT_NAME}/${APPLICATION_NAME}:latest
+        - image: docker-registry.default.svc:5000/${IMAGE_REGISTRY_PROJECT_NAME}/${APPLICATION_NAME}:latest
           imagePullPolicy: Always
           name: ${APPLICATION_NAME}
           ports:
@@ -47,7 +47,7 @@ objects:
           from:
             kind: ImageStreamTag
             name: ${APPLICATION_NAME}:latest
-            namespace: development
+            namespace: ${IMAGE_REGISTRY_PROJECT_NAME}
         type: ImageChange
 - apiVersion: v1
   kind: Service
