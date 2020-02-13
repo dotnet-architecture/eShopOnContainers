@@ -38,7 +38,8 @@ jobs:
       nugetConfigPath: src/NuGet.config
   - task: CopyFiles@2
     inputs:
-      sourceFolder: '$(Build.SourcesDirectory)/build/aro/openshift-app-build-template.yml'
+      sourceFolder: '$(Build.SourcesDirectory)/build/aro'
+      contents: 'openshift-app-build-template.yml'
       targetFolder: $(Build.ArtifactStagingDirectory)
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifact: drop'
