@@ -41,4 +41,4 @@ parameters:
   displayName: Template Name
   name: TEMPLATE_NAME
   required: true
-  value: webapp-build-config-template
+  value: app-build-template
