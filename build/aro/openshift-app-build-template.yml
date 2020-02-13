@@ -32,6 +32,16 @@ objects:
       type: Source
     successfulBuildsHistoryLimit: 5
     triggers: []
+- apiVersion: image.openshift.io/v1
+  kind: ImageStream
+  metadata:
+    labels:
+      build: ${APPLICATION_NAME}
+      template: ${TEMPLATE_NAME}
+    name: ${APPLICATION_NAME}
+  spec:
+    lookupPolicy:
+      local: false
 parameters:
 - description: The name for the application.
   displayName: Application Name
