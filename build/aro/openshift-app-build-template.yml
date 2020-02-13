@@ -1,0 +1,44 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+metadata:
+  name: ${TEMPLATE_NAME}
+objects:
+- apiVersion: build.openshift.io/v1
+  kind: BuildConfig
+  metadata:
+    labels:
+      build: ${APPLICATION_NAME}
+      template: ${TEMPLATE_NAME}
+    name: ${APPLICATION_NAME}
+  spec:
+    failedBuildsHistoryLimit: 5
+    nodeSelector: null
+    output:
+      to:
+        kind: ImageStreamTag
+        name: ${APPLICATION_NAME}:latest
+    postCommit: {}
+    resources: {}
+    runPolicy: Serial
+    source:
+      binary: {}
+      type: Binary
+    strategy:
+      sourceStrategy:
+        from:
+          kind: ImageStreamTag
+          name: dotnet:3.1
+          namespace: openshift
+      type: Source
+    successfulBuildsHistoryLimit: 5
+    triggers: []
+parameters:
+- description: The name for the application.
+  displayName: Application Name
+  name: APPLICATION_NAME
+  required: true
+- description: The template name.
+  displayName: Template Name
+  name: TEMPLATE_NAME
+  required: true
+  value: webapp-build-config-template

@@ -1,13 +1,14 @@
 apiVersion: template.openshift.io/v1
 kind: Template
 metadata:
-  name: 'api-template'
+  name: ${TEMPLATE_NAME}
 objects:
 - apiVersion: apps.openshift.io/v1
   kind: DeploymentConfig
   metadata:
     labels:
       app: ${APPLICATION_NAME}
+      template: ${TEMPLATE_NAME}
     name: ${APPLICATION_NAME}
   spec:
     replicas: 1
@@ -54,6 +55,7 @@ objects:
   metadata:
     labels:
       app: ${APPLICATION_NAME}
+      template: ${TEMPLATE_NAME}
     name: ${APPLICATION_NAME}
   spec:
     ports:
@@ -77,3 +79,8 @@ parameters:
   displayName: Image Registry Project Name
   name: IMAGE_REGISTRY_PROJECT_NAME
   required: true
+- description: The template name.
+  displayName: Template Name
+  name: TEMPLATE_NAME
+  required: true
+  value: webapp-template
