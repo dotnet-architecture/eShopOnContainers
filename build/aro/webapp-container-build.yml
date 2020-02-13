@@ -19,7 +19,7 @@ jobs:
   - task: DownloadPipelineArtifact@2
     inputs:
       artifact: drop
-  - script: 'oc process -f openshift-app-build-template.yml -p APPLICATION_NAME=$(AppName) | oc apply -f-'
+  - script: 'oc process -f ../openshift-app-build-template.yml -p APPLICATION_NAME=$(AppName) | oc apply -f-'
     failOnStderr: true
     displayName: 'Ensure OpenShift BuildConfig'
   - powershell: |
