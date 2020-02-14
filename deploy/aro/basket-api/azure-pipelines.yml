@@ -1,0 +1,3 @@
+stages:
+  - stage: test
+    dependsOn: test2
