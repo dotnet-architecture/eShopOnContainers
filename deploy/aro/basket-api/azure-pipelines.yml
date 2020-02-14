@@ -12,15 +12,11 @@ stages:
     variables:
       OpenShiftProject: development
     jobs:
-      - job: Configuration
+      - job: Configuration_Deployment
+        displayName: 'Configuration Deployment'
         pool: 
           vmImage: 'windows-latest'
         steps:
-        - task: DownloadPipelineArtifact@2
-          displayName: 'Download Artifacts'
-          inputs:
-            pipeline: BasketApiBuild
-            artifact: drop
         - task: redhat.openshift-vsts.oc-setup-task.oc-setup@2
           displayName: 'Setup Openshift CLI'
           inputs:
@@ -28,6 +24,6 @@ stages:
         - script: 'oc project $(OpenShiftProject)'
           failOnStderr: true
           displayName: 'Set OpenShift Project Context'
-        - script: 'oc process -f $(Pipeline.Workspace)/openshift-webapp-deploy-template.yml -p APPLICATION_NAME=$(AppName) -p IMAGE_REGISTRY_PROJECT_NAME=$(SourceImageRegistryProjectName) | oc apply -f-'
+        - script: 'oc process -f ./deploy/aro/openshift-webapp-deploy-template.yml -p APPLICATION_NAME=$(AppName) -p IMAGE_REGISTRY_PROJECT_NAME=$(SourceImageRegistryProjectName) | oc apply -f-'
           failOnStderr: true
           displayName: 'Ensure OpenShift DeploymentConfig and Service'
