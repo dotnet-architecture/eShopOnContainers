@@ -14,18 +14,18 @@ stages:
       - job: Configuration
         pool: 
           vmImage: 'windows-latest'
-          steps:
-          - task: DownloadPipelineArtifact@2
-            displayName: 'Download Artifacts'
-            inputs:
-              pipeline: BasketApiBuild
-          - task: redhat.openshift-vsts.oc-setup-task.oc-setup@2
-            displayName: 'Setup Openshift CLI'
-            inputs:
-              openshiftService: $(OpenShiftServiceConnection)
-          - script: 'oc project $(OpenShiftProject)'
-            failOnStderr: true
-            displayName: 'Set OpenShift Project Context'
-          - script: 'oc process -f $(Pipeline.Workspace)/openshift-webapp-deploy-template.yml -p APPLICATION_NAME=$(AppName) | oc apply -f-'
-            failOnStderr: true
-            displayName: 'Ensure OpenShift DeploymentConfig and Service'
+        steps:
+        - task: DownloadPipelineArtifact@2
+          displayName: 'Download Artifacts'
+          inputs:
+            pipeline: BasketApiBuild
+        - task: redhat.openshift-vsts.oc-setup-task.oc-setup@2
+          displayName: 'Setup Openshift CLI'
+          inputs:
+            openshiftService: $(OpenShiftServiceConnection)
+        - script: 'oc project $(OpenShiftProject)'
+          failOnStderr: true
+          displayName: 'Set OpenShift Project Context'
+        - script: 'oc process -f $(Pipeline.Workspace)/openshift-webapp-deploy-template.yml -p APPLICATION_NAME=$(AppName) | oc apply -f-'
+          failOnStderr: true
+          displayName: 'Ensure OpenShift DeploymentConfig and Service'
