@@ -16,6 +16,7 @@ stages:
           vmImage: 'windows-latest'
           steps:
           - task: DownloadPipelineArtifact@2
+            displayName: 'Download Artifacts'
             inputs:
               pipeline: BasketApiBuild
           - task: redhat.openshift-vsts.oc-setup-task.oc-setup@2
