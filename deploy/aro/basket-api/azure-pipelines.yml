@@ -7,13 +7,16 @@ resources:
     - pipeline: BasketApiBuild
       source: Basket-API-Build
 stages:
-  - stage: $(OpenShiftProject)
+  - stage: development
     displayName: Development
     jobs:
       - job: Configuration
         pool: 
           vmImage: 'windows-latest'
           steps:
+          - task: DownloadPipelineArtifact@2
+            inputs:
+              pipeline: BasketApiBuild
           - task: redhat.openshift-vsts.oc-setup-task.oc-setup@2
             displayName: 'oc-setup '
             inputs:
