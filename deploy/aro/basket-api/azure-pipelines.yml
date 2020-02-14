@@ -1,5 +1,4 @@
 variables:
-  OpenShiftProject: development
   AppName: basketapi
   OpenShiftServiceConnection: 'OpenShift on ARO'
 resources:
@@ -9,6 +8,8 @@ resources:
 stages:
   - stage: development
     displayName: Development
+    variables:
+      OpenShiftProject: development
     jobs:
       - job: Configuration
         pool: 
@@ -18,12 +19,12 @@ stages:
             inputs:
               pipeline: BasketApiBuild
           - task: redhat.openshift-vsts.oc-setup-task.oc-setup@2
-            displayName: 'oc-setup '
+            displayName: 'Setup Openshift CLI'
             inputs:
               openshiftService: $(OpenShiftServiceConnection)
           - script: 'oc project $(OpenShiftProject)'
             failOnStderr: true
-            displayName: 'Set Project Context'
+            displayName: 'Set OpenShift Project Context'
           - script: 'oc process -f $(Pipeline.Workspace)/openshift-webapp-deploy-template.yml -p APPLICATION_NAME=$(AppName) | oc apply -f-'
             failOnStderr: true
             displayName: 'Ensure OpenShift DeploymentConfig and Service'
