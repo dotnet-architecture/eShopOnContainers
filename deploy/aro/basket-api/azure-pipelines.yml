@@ -2,6 +2,15 @@ variables:
   AppName: basketapi
   OpenShiftServiceConnection: 'OpenShift on ARO'
   SourceImageRegistryProjectName: 'development'
+trigger:
+  branches:
+    include:
+    - master
+    - dev
+  paths:
+    include:
+    - deploy/aro/basket-api/*
+    - deploy/aro/openshift-templates/*
 resources:
   pipelines:
     - pipeline: BasketApiBuild

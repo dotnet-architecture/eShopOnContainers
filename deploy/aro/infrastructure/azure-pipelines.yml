@@ -1,5 +1,14 @@
 variables:
   OpenShiftServiceConnection: 'OpenShift on ARO'
+trigger:
+  branches:
+    include:
+    - master
+    - dev
+  paths:
+    include:
+    - deploy/aro/infrastructure/*
+    - deploy/aro/openshift-templates/infrastructure/*
 stages:
   - stage: development
     displayName: Development
@@ -31,9 +40,9 @@ stages:
           - script: 'oc project $(OpenShiftProject)'
             failOnStderr: true
             displayName: 'Set OpenShift Project Context'
-          - script: 'oc process -f ./deploy/aro/openshift-templates/secrets-deploy-template.yml  -p IDENTITY_DB_CONNECTION_SECRET=$(IdentityDbConnection) -p MARKETING_DB_CONNECTION_SECRET=$(MarketingDbConnection) -p ORDERING_DB_CONNECTION_SECRET=$(OrderingDbConnection) -p SQL_PASSWORD_SECRET=$(SqlPassword) -p WEBHOOKS_DB_CONNECTION_SECRET=$(WebhooksDbConnection) | oc apply -f-'
+          - script: 'oc process -f ./deploy/aro/openshift-templates/infrastructure/secrets-deploy-template.yml  -p IDENTITY_DB_CONNECTION_SECRET=$(IdentityDbConnection) -p MARKETING_DB_CONNECTION_SECRET=$(MarketingDbConnection) -p ORDERING_DB_CONNECTION_SECRET=$(OrderingDbConnection) -p SQL_PASSWORD_SECRET=$(SqlPassword) -p WEBHOOKS_DB_CONNECTION_SECRET=$(WebhooksDbConnection) | oc apply -f-'
             failOnStderr: true
             displayName: 'Secrets Deployment'
-          - script: 'oc process -f ./deploy/aro/openshift-templates/rabbitmq-image-deploy-template.yml -p APPLICATION_NAME=$(AppName) -p IMAGE_REGISTRY_PROJECT_NAME=$(SourceImageRegistryProjectName) | oc apply -f-'
+          - script: 'oc process -f ./deploy/aro/openshift-templates/infrastructure/rabbitmq-image-deploy-template.yml -p APPLICATION_NAME=$(AppName) -p IMAGE_REGISTRY_PROJECT_NAME=$(SourceImageRegistryProjectName) | oc apply -f-'
             failOnStderr: true
             displayName: 'RabbitMQ Deployment'
