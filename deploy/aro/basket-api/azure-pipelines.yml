@@ -24,6 +24,6 @@ stages:
         - script: 'oc project $(OpenShiftProject)'
           failOnStderr: true
           displayName: 'Set OpenShift Project Context'
-        - script: 'oc process -f ./deploy/aro/openshift-webapp-deploy-template.yml -p APPLICATION_NAME=$(AppName) -p IMAGE_REGISTRY_PROJECT_NAME=$(SourceImageRegistryProjectName) | oc apply -f-'
+        - script: 'oc process -f ./deploy/aro/openshift-templates/webapp-deploy-template.yml -p APPLICATION_NAME=$(AppName) -p IMAGE_REGISTRY_PROJECT_NAME=$(SourceImageRegistryProjectName) | oc apply -f-'
           failOnStderr: true
           displayName: 'Ensure OpenShift DeploymentConfig and Service'

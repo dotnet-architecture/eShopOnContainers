@@ -45,7 +45,7 @@ jobs:
   - task: CopyFiles@2
     displayName: 'Copy OpenShift Web App Deploy Template'
     inputs:
-      sourceFolder: '$(Build.SourcesDirectory)/deploy/aro'
+      sourceFolder: '$(Build.SourcesDirectory)/deploy/aro/openshift-templates'
       contents: 'openshift-webapp-deploy-template.yml'
       targetFolder: $(Build.ArtifactStagingDirectory)
   - task: PublishBuildArtifacts@1

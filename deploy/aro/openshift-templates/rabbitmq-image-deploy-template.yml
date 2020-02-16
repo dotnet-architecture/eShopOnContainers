@@ -1,0 +1,142 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+metadata:
+  name: ${TEMPLATE_NAME}
+objects:
+- apiVersion: apps.openshift.io/v1
+  kind: DeploymentConfig
+  metadata:
+    generation: 2
+    labels:
+      app: ${APPLICATION_NAME}
+      template: ${TEMPLATE_NAME}
+    name: ${APPLICATION_NAME}
+  spec:
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      app: ${APPLICATION_NAME}
+      deploymentconfig: ${APPLICATION_NAME}
+    strategy:
+      activeDeadlineSeconds: 21600
+      resources: {}
+      rollingParams:
+        intervalSeconds: 1
+        maxSurge: 25%
+        maxUnavailable: 25%
+        timeoutSeconds: 600
+        updatePeriodSeconds: 1
+      type: Rolling
+    template:
+      metadata:
+        labels:
+          app: ${APPLICATION_NAME}
+          deploymentconfig: ${APPLICATION_NAME}
+      spec:
+        containers:
+          - image: ${APPLICATION_NAME}:latest
+            imagePullPolicy: IfNotPresent
+            name: ${APPLICATION_NAME}
+            ports:
+              - containerPort: 5672
+                protocol: TCP
+              - containerPort: 15671
+                protocol: TCP
+              - containerPort: 15672
+                protocol: TCP
+              - containerPort: 25672
+                protocol: TCP
+              - containerPort: 4369
+                protocol: TCP
+              - containerPort: 5671
+                protocol: TCP
+            resources: {}
+            terminationMessagePath: /dev/termination-log
+            terminationMessagePolicy: File
+            volumeMounts:
+              - mountPath: /var/lib/rabbitmq
+                name: ${APPLICATION_NAME}-volume-1
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+          - emptyDir: {}
+            name: ${APPLICATION_NAME}-volume-1
+    triggers:
+      - type: ConfigChange
+      - imageChangeParams:
+          automatic: true
+          containerNames:
+            - ${APPLICATION_NAME}
+          from:
+            kind: ImageStreamTag
+            name: '${APPLICATION_NAME}:3-management-alpine'
+            namespace: ${IMAGE_REGISTRY_PROJECT_NAME}
+        type: ImageChange
+- apiVersion: v1
+  kind: Service
+  metadata:
+    labels:
+      app: ${APPLICATION_NAME}
+      template: ${TEMPLATE_NAME}
+    name: ${APPLICATION_NAME}
+  spec:
+    ports:
+    - name: 4369-tcp
+      port: 4369
+      protocol: TCP
+      targetPort: 4369
+    - name: 5671-tcp
+      port: 5671
+      protocol: TCP
+      targetPort: 5671
+    - name: 5672-tcp
+      port: 5672
+      protocol: TCP
+      targetPort: 5672
+    - name: 15671-tcp
+      port: 15671
+      protocol: TCP
+      targetPort: 15671
+    - name: 15672-tcp
+      port: 15672
+      protocol: TCP
+      targetPort: 15672
+    - name: 25672-tcp
+      port: 25672
+      protocol: TCP
+      targetPort: 25672
+    selector:
+      app: ${APPLICATION_NAME}
+      deploymentconfig: ${APPLICATION_NAME}
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: image.openshift.io/v1
+  kind: ImageStream
+  metadata:
+    labels:
+      app: ${APPLICATION_NAME}
+      template: ${TEMPLATE_NAME}
+    name: ${APPLICATION_NAME}
+  spec:
+    lookupPolicy:
+      local: false
+parameters:
+- description: The name for the application.
+  displayName: Application Name
+  name: APPLICATION_NAME
+  required: true
+  value: rabbitmq
+- description: The OpenShift project name that is hosting the image registry.
+  displayName: Image Registry Project Name
+  name: IMAGE_REGISTRY_PROJECT_NAME
+  required: true
+- description: The template name.
+  displayName: Template Name
+  name: TEMPLATE_NAME
+  required: true
+  value: rabbitmq-image-deploy-template
