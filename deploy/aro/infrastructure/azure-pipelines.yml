@@ -19,12 +19,12 @@ stages:
       - job: Infrastructure_Deployment
         displayName: 'Infrastructure Deployment'
         variables:
-          SqlHostName: mssql-server-linux.$(OpenShiftProject).svc
-          CatalogDbConnection: Server=$(SqlHostName);Database=Microsoft.eShopOnContainers.Services.CatalogDb;User Id=$(SqlUsername);Password=$(SqlPassword)
-          IdentityDbConnection: Server=$(SqlHostName);Database=Microsoft.eShopOnContainers.Service.IdentityDb;User Id=$(SqlUsername);Password=$(SqlPassword)
-          MarketingDbConnection: Server=$(SqlHostName);Database=Microsoft.eShopOnContainers.Services.MarketingDb;User Id=$(SqlUsername);Password=$(SqlPassword)
-          OrderingDbConnection: Server=$(SqlHostName);Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=$(SqlUsername);Password=$(SqlPassword)
-          WebhooksDbConnection: Server=$(SqlHostName);Database=Microsoft.eShopOnContainers.Services.WebhooksDb;User Id=$(SqlUsername);Password=$(SqlPassword)
+          SqlHostName: $[format('mssql-server-linux.{0}.svc', variables['OpenShiftProject'])]
+          CatalogDbConnection: $[format('Server={0};Database=Microsoft.eShopOnContainers.Services.CatalogDb;User Id={1};Password={2}', variables['SqlHostName'], variables['SqlUsername'], variables['SqlPassword'])]
+          IdentityDbConnection: $[format('Server={0};Database=Microsoft.eShopOnContainers.Services.IdentityDb;User Id={1};Password={2}', variables['SqlHostName'], variables['SqlUsername'], variables['SqlPassword'])]
+          MarketingDbConnection: $[format('Server={0};Database=Microsoft.eShopOnContainers.Services.MarketingDb;User Id={1};Password={2}', variables['SqlHostName'], variables['SqlUsername'], variables['SqlPassword'])]
+          OrderingDbConnection: $[format('Server={0};Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id={1};Password={2}', variables['SqlHostName'], variables['SqlUsername'], variables['SqlPassword'])]
+          WebhooksDbConnection: $[format('Server={0};Database=Microsoft.eShopOnContainers.Services.WebhooksDb;User Id={1};Password={2}', variables['SqlHostName'], variables['SqlUsername'], variables['SqlPassword'])]
         pool: 
           vmImage: 'windows-latest'
         steps:
