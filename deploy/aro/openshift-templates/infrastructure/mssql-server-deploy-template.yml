@@ -117,6 +117,15 @@ objects:
   spec:
     lookupPolicy:
       local: false
+    tags:
+    - annotations: null
+      from:
+        kind: DockerImage
+        name: 'mcr.microsoft.com/mssql/server:2017-latest-ubuntu'
+      importPolicy: {}
+      name: latest
+      referencePolicy:
+        type: Source
 parameters:
 - description: The name for the application.
   displayName: Application Name

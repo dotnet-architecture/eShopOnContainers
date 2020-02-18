@@ -123,6 +123,16 @@ objects:
   spec:
     lookupPolicy:
       local: false
+    tags:
+    - annotations:
+        openshift.io/imported-from: 'rabbitmq:3-management-alpine'
+      from:
+        kind: DockerImage
+        name: 'rabbitmq:3-management-alpine'
+      importPolicy: {}
+      name: 3-management-alpine
+      referencePolicy:
+        type: Source
 parameters:
 - description: The name for the application.
   displayName: Application Name

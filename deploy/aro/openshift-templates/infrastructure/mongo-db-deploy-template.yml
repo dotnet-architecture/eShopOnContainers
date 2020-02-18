@@ -96,6 +96,16 @@ objects:
   spec:
     lookupPolicy:
       local: false
+    tags:
+    - annotations:
+        openshift.io/imported-from: mongo
+      from:
+        kind: DockerImage
+        name: mongo
+      importPolicy: {}
+      name: latest
+      referencePolicy:
+        type: Source
 parameters:
 - description: The name for the application.
   displayName: Application Name
