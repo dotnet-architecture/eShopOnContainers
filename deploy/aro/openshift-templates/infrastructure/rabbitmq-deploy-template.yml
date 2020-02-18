@@ -34,7 +34,7 @@ objects:
           deploymentconfig: ${APPLICATION_NAME}
       spec:
         containers:
-          - image: ${APPLICATION_NAME}:latest
+          - image: ${APPLICATION_NAME}:3-management-alpine
             imagePullPolicy: IfNotPresent
             name: ${APPLICATION_NAME}
             ports:
@@ -113,8 +113,6 @@ objects:
       deploymentconfig: ${APPLICATION_NAME}
     sessionAffinity: None
     type: ClusterIP
-  status:
-    loadBalancer: {}
 - apiVersion: image.openshift.io/v1
   kind: ImageStream
   metadata:
@@ -139,4 +137,4 @@ parameters:
   displayName: Template Name
   name: TEMPLATE_NAME
   required: true
-  value: rabbitmq-image-deploy-template
+  value: rabbitmq-deploy-template

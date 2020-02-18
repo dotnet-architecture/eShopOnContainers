@@ -1,0 +1,134 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+metadata:
+  name: ${TEMPLATE_NAME}
+objects:
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    labels:
+      app: ${APPLICATION_NAME}
+      template: ${TEMPLATE_NAME}
+    name: sql-storage-claim
+  spec:
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: 1Gi
+- apiVersion: apps.openshift.io/v1
+  kind: DeploymentConfig
+  metadata:
+    labels:
+      app: ${APPLICATION_NAME}
+      template: ${TEMPLATE_NAME}
+    name: ${APPLICATION_NAME}
+  spec:
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      app: ${APPLICATION_NAME}
+      deploymentconfig: ${APPLICATION_NAME}
+    strategy:
+      activeDeadlineSeconds: 21600
+      resources: {}
+      rollingParams:
+        intervalSeconds: 1
+        maxSurge: 25%
+        maxUnavailable: 25%
+        timeoutSeconds: 600
+        updatePeriodSeconds: 1
+      type: Rolling
+    template:
+      metadata:
+        labels:
+          app: ${APPLICATION_NAME}
+          deploymentconfig: ${APPLICATION_NAME}
+      spec:
+        containers:
+          - env:
+              - name: ACCEPT_EULA
+                value: 'Y'
+              - name: SA_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    key: SA_PASSWORD
+                    name: sa-password-secret
+            envFrom:
+              - secretRef:
+                  name: sa-password-secret
+            image: mcr.microsoft.com/mssql/server:latest
+            imagePullPolicy: IfNotPresent
+            name: ${APPLICATION_NAME}
+            ports:
+              - containerPort: 1433
+                protocol: TCP
+            resources: {}
+            terminationMessagePath: /dev/termination-log
+            terminationMessagePolicy: File
+            volumeMounts:
+              - mountPath: /var/opt/mssql/
+                name: sql-volume-01
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+          - name: sql-volume-01
+            persistentVolumeClaim:
+              claimName: sql-storage-claim
+    triggers:
+    - type: ConfigChange
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+          - ${APPLICATION_NAME}
+        from:
+          kind: ImageStreamTag
+          name: '${APPLICATION_NAME}:latest'
+          namespace: ${IMAGE_REGISTRY_PROJECT_NAME}
+      type: ImageChange
+- apiVersion: v1
+  kind: Service
+  metadata:
+    labels:
+      app: ${APPLICATION_NAME}
+      template: ${TEMPLATE_NAME}
+    name: ${APPLICATION_NAME}
+  spec:
+    ports:
+      - name: 1433-tcp
+        port: 1433
+        protocol: TCP
+        targetPort: 1433
+    selector:
+      app: ${APPLICATION_NAME}
+      deploymentconfig: ${APPLICATION_NAME}
+    sessionAffinity: None
+    type: ClusterIP
+- apiVersion: image.openshift.io/v1
+  kind: ImageStream
+  metadata:
+    labels:
+      app: ${APPLICATION_NAME}
+      template: ${TEMPLATE_NAME}
+    name: ${APPLICATION_NAME}
+  spec:
+    lookupPolicy:
+      local: false
+parameters:
+- description: The name for the application.
+  displayName: Application Name
+  name: APPLICATION_NAME
+  required: true
+  value: mssql-server
+- description: The OpenShift project name that is hosting the image registry.
+  displayName: Image Registry Project Name
+  name: IMAGE_REGISTRY_PROJECT_NAME
+  required: true
+- description: The template name.
+  displayName: Template Name
+  name: TEMPLATE_NAME
+  required: true
+  value: mssql-server-deploy-template

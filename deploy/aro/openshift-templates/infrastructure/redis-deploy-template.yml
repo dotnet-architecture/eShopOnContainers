@@ -12,12 +12,20 @@ objects:
     name: ${APPLICATION_NAME}
   spec:
     replicas: 1
+    revisionHistoryLimit: 10
     selector:
       app: ${APPLICATION_NAME}
       deploymentconfig: ${APPLICATION_NAME}
     strategy:
+      activeDeadlineSeconds: 21600
+      resources: {}
+      rollingParams:
+        intervalSeconds: 1
+        maxSurge: 25%
+        maxUnavailable: 25%
+        timeoutSeconds: 600
+        updatePeriodSeconds: 1
       type: Rolling
-    revisionHistoryLimit: 2
     template:
       metadata:
         labels:
@@ -25,29 +33,35 @@ objects:
           deploymentconfig: ${APPLICATION_NAME}
       spec:
         containers:
-        - image: docker-registry.default.svc:5000/${IMAGE_REGISTRY_PROJECT_NAME}/${APPLICATION_NAME}:latest
-          imagePullPolicy: Always
-          name: ${APPLICATION_NAME}
-          ports:
-          - containerPort: 8080
-            protocol: TCP
-          resources: {}
-          terminationMessagePath: /dev/termination-log
-          terminationMessagePolicy: File
+          - image: ${APPLICATION_NAME}:latest
+            imagePullPolicy: IfNotPresent
+            name: ${APPLICATION_NAME}
+            ports:
+              - containerPort: 6379
+                protocol: TCP
+            resources: {}
+            terminationMessagePath: /dev/termination-log
+            terminationMessagePolicy: File
+            volumeMounts:
+              - mountPath: /data
+                name: ${APPLICATION_NAME}-volume-1
         dnsPolicy: ClusterFirst
         restartPolicy: Always
         schedulerName: default-scheduler
         securityContext: {}
         terminationGracePeriodSeconds: 30
+        volumes:
+          - emptyDir: {}
+            name: ${APPLICATION_NAME}-volume-1
     triggers:
       - type: ConfigChange
       - imageChangeParams:
-          automatic: true 
+          automatic: true
           containerNames:
             - ${APPLICATION_NAME}
           from:
             kind: ImageStreamTag
-            name: ${APPLICATION_NAME}:latest
+            name: '${APPLICATION_NAME}:alpine'
             namespace: ${IMAGE_REGISTRY_PROJECT_NAME}
         type: ImageChange
 - apiVersion: v1
@@ -59,22 +73,31 @@ objects:
     name: ${APPLICATION_NAME}
   spec:
     ports:
-    - name: 8080-tcp
-      port: 8080
-      protocol: TCP
-      targetPort: 8080
+      - name: 6379-tcp
+        port: 6379
+        protocol: TCP
+        targetPort: 6379
     selector:
       app: ${APPLICATION_NAME}
       deploymentconfig: ${APPLICATION_NAME}
     sessionAffinity: None
     type: ClusterIP
-  status:
-    loadBalancer: {}
+- apiVersion: image.openshift.io/v1
+  kind: ImageStream
+  metadata:
+    labels:
+      app: ${APPLICATION_NAME}
+      template: ${TEMPLATE_NAME}
+    name: ${APPLICATION_NAME}
+  spec:
+    lookupPolicy:
+      local: false
 parameters:
 - description: The name for the application.
   displayName: Application Name
   name: APPLICATION_NAME
   required: true
+  value: redis
 - description: The OpenShift project name that is hosting the image registry.
   displayName: Image Registry Project Name
   name: IMAGE_REGISTRY_PROJECT_NAME
@@ -83,4 +106,4 @@ parameters:
   displayName: Template Name
   name: TEMPLATE_NAME
   required: true
-  value: webapp-deploy-template
+  value: redis-deploy-template
