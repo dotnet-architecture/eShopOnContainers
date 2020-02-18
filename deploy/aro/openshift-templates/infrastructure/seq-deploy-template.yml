@@ -97,13 +97,15 @@ objects:
     lookupPolicy:
       local: false
     tags:
-      - from:
-          kind: DockerImage
-          name: 'datalust/${APPLICATION_NAME}:latest'
-        importPolicy: {}
-        name: latest
-        referencePolicy:
-          type: Source
+    - annotations:
+        openshift.io/imported-from: 'datalust/${APPLICATION_NAME}:latest'
+      from:
+        kind: DockerImage
+        name: 'datalust/${APPLICATION_NAME}:latest'
+      importPolicy: {}
+      name: latest
+      referencePolicy:
+        type: Source
 parameters:
 - description: The name for the application.
   displayName: Application Name
