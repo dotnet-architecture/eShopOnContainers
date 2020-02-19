@@ -20,8 +20,8 @@ stages:
       OpenShiftProject: development
       SourceImageRegistryProjectName: $(OpenShiftProject)
       EnvironmentName: dev
-      IdentityApiHostName: identityapi.$(OpenShiftProject).svc
-      RedisHostname: redis.$(OpenShiftProject).svc
+      IdentityApiHostName: identityapi.$(OpenShiftProject).svc.cluster.local
+      RedisHostname: redis.$(OpenShiftProject).svc.cluster.local
       IdentityPublicHostName: identity$(EnvironmentName)
       IdentityUrlExternal: https://$(IdentityPublicHostName)
       IdentityApiUrl: http://$(IdentityApiHostName):8080
