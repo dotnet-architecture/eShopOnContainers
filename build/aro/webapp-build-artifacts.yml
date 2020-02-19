@@ -39,14 +39,8 @@ jobs:
   - task: CopyFiles@2
     displayName: 'Copy OpenShift App Build Template'
     inputs:
-      sourceFolder: '$(Build.SourcesDirectory)/build/aro'
-      contents: 'openshift-app-build-template.yml'
-      targetFolder: $(Build.ArtifactStagingDirectory)
-  - task: CopyFiles@2
-    displayName: 'Copy OpenShift Web App Deploy Template'
-    inputs:
-      sourceFolder: '$(Build.SourcesDirectory)/deploy/aro/openshift-templates'
-      contents: 'openshift-webapp-deploy-template.yml'
+      sourceFolder: '$(Build.SourcesDirectory)/build/aro/openshift-templates'
+      contents: 'app-build-template.yml'
       targetFolder: $(Build.ArtifactStagingDirectory)
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifact: drop'
