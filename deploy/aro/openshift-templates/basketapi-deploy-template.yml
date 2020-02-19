@@ -76,10 +76,10 @@ objects:
       port: 8080
       protocol: TCP
       targetPort: 8080
-    - name: 5001-tcp
-      port: 5001
+    - name: 8081-tcp-grpc
+      port: 8081
       protocol: TCP
-      targetPort: 5001
+      targetPort: 8081
     selector:
       app: ${APPLICATION_NAME}
       deploymentconfig: ${APPLICATION_NAME}
