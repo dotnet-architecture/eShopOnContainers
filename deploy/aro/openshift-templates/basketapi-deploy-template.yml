@@ -34,6 +34,10 @@ objects:
                 value: ${REDIS_HOSTNAME}
               - name: EventBusConnection
                 value: ${RABBITMQ_HOSTNAME}
+              - name: PORT
+                value: 8080
+              - name: GRPC_PORT
+                value: 5001
             image: docker-registry.default.svc:5000/${IMAGE_REGISTRY_PROJECT_NAME}/${APPLICATION_NAME}:latest
             imagePullPolicy: Always
             name: ${APPLICATION_NAME}
@@ -72,6 +76,10 @@ objects:
       port: 8080
       protocol: TCP
       targetPort: 8080
+    - name: 5001-tcp
+      port: 5001
+      protocol: TCP
+      targetPort: 5001
     selector:
       app: ${APPLICATION_NAME}
       deploymentconfig: ${APPLICATION_NAME}
