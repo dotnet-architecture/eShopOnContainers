@@ -38,6 +38,8 @@ objects:
                 value: "8080"
               - name: GRPC_PORT
                 value: "8081"
+              - name: PATH_BASE
+                value: /basket-api
             image: docker-registry.default.svc:5000/${IMAGE_REGISTRY_PROJECT_NAME}/${APPLICATION_NAME}:latest
             imagePullPolicy: Always
             name: ${APPLICATION_NAME}
