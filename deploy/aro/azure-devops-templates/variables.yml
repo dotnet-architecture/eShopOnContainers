@@ -14,6 +14,7 @@ variables:
   CatalogApiUrl: http://$(CatalogApiHostName):8080
   CatalogApiUrlExternal: https://$(CatalogPublicHostName)
   CatalogApiHc: $(CatalogApiUrl)/hc
+  PicBaseUrl: $(CatalogApiUrlExternal)/api/v1/catalog/items/[0]/pic/
   LocationsApiHostName: locationsapi.$(OpenShiftProject).svc
   LocationsApiUrl: http://$(LocationsApiHostName):8080
   LocationsApiHc: $(LocationsApiUrl)/hc
