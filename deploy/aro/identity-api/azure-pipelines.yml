@@ -22,7 +22,7 @@ stages:
       EnvironmentName: dev
     jobs:
       - job: Configuration_Deployment
-        displayName: 'Configuration Deployment'
+        displayName: 'Basket API Deployment'
         variables:
         - template: ../azure-devops-templates/variables.yml
         pool: 
