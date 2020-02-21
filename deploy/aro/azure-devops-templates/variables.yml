@@ -1,0 +1,7 @@
+variables:
+  IdentityApiHostName: identityapi.$(OpenShiftProject).svc
+  RedisHostname: redis.$(OpenShiftProject).svc
+  RabbitMqHostname: rabbitmq.$(OpenShiftProject).svc
+  IdentityPublicHostName: identity$(EnvironmentName)
+  IdentityUrlExternal: https://$(IdentityPublicHostName)
+  IdentityApiUrl: http://$(IdentityApiHostName):8080

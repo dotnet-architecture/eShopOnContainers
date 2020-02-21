@@ -23,13 +23,9 @@ stages:
       IdentityPublicHostName: identity$(EnvironmentName)
     jobs:
       - job: BasketApiDeployment
-        variables:
-          IdentityApiHostName: identityapi.$(OpenShiftProject).svc
-          RedisHostname: redis.$(OpenShiftProject).svc
-          RabbitMqHostname: rabbitmq.$(OpenShiftProject).svc
-          IdentityUrlExternal: https://$(IdentityPublicHostName)
-          IdentityApiUrl: http://$(IdentityApiHostName):8080
         displayName: 'Basket API Deployment'
+        variables:
+        - template: ../azure-devops-templates/variables.yml
         pool: 
           vmImage: 'windows-latest'
         steps:
