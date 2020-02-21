@@ -36,12 +36,6 @@ jobs:
       modifyOutputPath: true
       feedsToUse: config
       nugetConfigPath: src/NuGet.config
-  - task: CopyFiles@2
-    displayName: 'Copy OpenShift App Build Template'
-    inputs:
-      sourceFolder: '$(Build.SourcesDirectory)/build/aro/openshift-templates'
-      contents: 'app-build-template.yml'
-      targetFolder: $(Build.ArtifactStagingDirectory)
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifact: drop'
 

@@ -20,16 +20,15 @@ stages:
       OpenShiftProject: development
       SourceImageRegistryProjectName: $(OpenShiftProject)
       EnvironmentName: dev
+      IdentityApiHostName: identityapi.$(OpenShiftProject).svc
+      RedisHostname: redis.$(OpenShiftProject).svc
+      RabbitMqHostname: rabbitmq.$(OpenShiftProject).svc
       IdentityPublicHostName: identity$(EnvironmentName)
+      IdentityUrlExternal: https://$(IdentityPublicHostName)
+      IdentityApiUrl: http://$(IdentityApiHostName):8080
     jobs:
-      - job: BasketApiDeployment
-        variables:
-          IdentityApiHostName: identityapi.$(OpenShiftProject).svc
-          RedisHostname: redis.$(OpenShiftProject).svc
-          RabbitMqHostname: rabbitmq.$(OpenShiftProject).svc
-          IdentityUrlExternal: https://$(IdentityPublicHostName)
-          IdentityApiUrl: http://$(IdentityApiHostName):8080
-        displayName: 'Basket API Deployment'
+      - job: Configuration_Deployment
+        displayName: 'Configuration Deployment'
         pool: 
           vmImage: 'windows-latest'
         steps:
@@ -40,6 +39,6 @@ stages:
         - script: 'oc project $(OpenShiftProject)'
           failOnStderr: true
           displayName: 'Set OpenShift Project Context'
-        - script: 'oc process -f ./deploy/aro/openshift-templates/basketapi-deploy-template.yml -p IMAGE_REGISTRY_PROJECT_NAME=$(SourceImageRegistryProjectName) -p IDENTITY_URL_EXTERNAL=$(IdentityUrlExternal) -p IDENTITY_URL=$(IdentityApiUrl) -p REDIS_HOSTNAME=$(RedisHostname) -p RABBITMQ_HOSTNAME=$(RabbitMqHostname) | oc apply -f-'
+        - script: 'oc process -f ./deploy/aro/openshift-templates/identityapi-deploy-template.yml -p IMAGE_REGISTRY_PROJECT_NAME=$(SourceImageRegistryProjectName) | oc apply -f-'
           failOnStderr: true
-          displayName: 'Ensure Basket API OpenShift DeploymentConfig and Service'
+          displayName: 'Ensure Identity API OpenShift DeploymentConfig and Service'

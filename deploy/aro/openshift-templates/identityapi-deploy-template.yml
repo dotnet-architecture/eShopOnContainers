@@ -26,27 +26,38 @@ objects:
       spec:
         containers:
           - env:
-              - name: IdentityUrlExternal
-                value: ${IDENTITY_URL_EXTERNAL}
-              - name: IdentityUrl
-                value: ${IDENTITY_URL}
+              - name: SpaClient
+                value: ${WEB_SPA_URL}
+              - name: XamarinCallback
+                value: 
+              - name: MvcClient
+                value: ${WEB_MVC_URL}
+              - name: LocationApiClient
+                value: ${LOCATION_API_URL}
+              - name: MarketingApiClient
+                value: ${MARKETING_API_URL}
+              - name: BasketApiClient
+                value: ${BASKET_API_URL}
+              - name: OrderingApiClient
+                value: ${ORDERING_API_URL}
+              - name: MobileShoppingAggClient
+                value: ${MOBILE_SHOPPING_AGGREGATOR_URL}
+              - name: WebShoppingAggClient
+                value: ${WEB_SHOPPING_AGGREGATOR_URL}
+              - name: WebhooksApiClient
+                value: ${WEBHOOKS_API_URL}
+              - name: WebhooksWebClient
+                value: ${WEBHOOKS_WEB_CLIENT_URL}
               - name: ConnectionString
-                value: ${REDIS_HOSTNAME}
-              - name: EventBusConnection
-                value: ${RABBITMQ_HOSTNAME}
-              - name: PORT
-                value: "8080"
-              - name: GRPC_PORT
-                value: "8081"
-              - name: PATH_BASE
-                value: /basket-api
+                valueFrom:
+                  secretKeyRef:
+                    key: ConnectionString
+                    name: identity-db-connection-secret
             image: docker-registry.default.svc:5000/${IMAGE_REGISTRY_PROJECT_NAME}/${APPLICATION_NAME}:latest
             imagePullPolicy: Always
             name: ${APPLICATION_NAME}
             ports:
             - containerPort: 8080
-              protocol: TCP
-            - containerPort: 8081
               protocol: TCP
             resources: {}
             terminationMessagePath: /dev/termination-log
@@ -80,10 +91,6 @@ objects:
       port: 8080
       protocol: TCP
       targetPort: 8080
-    - name: 8081-tcp-grpc
-      port: 8081
-      protocol: TCP
-      targetPort: 8081
     selector:
       app: ${APPLICATION_NAME}
       deploymentconfig: ${APPLICATION_NAME}
@@ -105,20 +112,44 @@ parameters:
   displayName: Template Name
   name: TEMPLATE_NAME
   required: true
-  value: basketapi-deploy-template
-- description: The external URL of the Identity endpoint
-  displayName: Identity URL External
-  name: IDENTITY_URL_EXTERNAL
+  value: identityapi-deploy-template
+- description: The cluster internal URL of the Web SPA endpoint
+  displayName: Web SPA URL
+  name: WEB_SPA_URL
   required: true
-- description: The cluster internal URL of the Identity endpoint
-  displayName: Identity URL
-  name: IDENTITY_URL
+- description: The cluster internal URL of the Web MVC endpoint
+  displayName: Web MVC URL
+  name: WEB_MVC_URL
   required: true
-- description: The hostname of the Redis service
-  displayName: Redis Hostname
-  name: REDIS_HOSTNAME
+- description: The cluster internal URL of the Location API endpoint
+  displayName: Location API URL
+  name: LOCATION_API_URL
   required: true
-- description: The hostname of the RabbitMQ service
-  displayName: RabbitMQ Hostname
-  name: RABBITMQ_HOSTNAME
+- description: The cluster internal URL of the Marketing API endpoint
+  displayName: Marketing API URL
+  name: MARKETING_API_URL
+  required: true
+- description: The cluster internal URL of the Basket API endpoint
+  displayName: Basket API URL
+  name: BASKET_API_URL
+  required: true
+- description: The cluster internal URL of the Ordering API endpoint
+  displayName: Ordering API URL
+  name: ORDERING_API_URL
+  required: true
+- description: The cluster internal URL of the Mobile Shopping Aggregator endpoint
+  displayName: Mobile Shopping Aggregator URL
+  name: MOBILE_SHOPPING_AGGREGATOR_URL
+  required: true
+- description: The cluster internal URL of the Web Shopping Aggregator endpoint
+  displayName: Web Shopping Aggregator URL
+  name: WEB_SHOPPING_AGGREGATOR_URL
+  required: true
+- description: The cluster internal URL of the Webhooks API endpoint
+  displayName: Webhooks API URL
+  name: WEBHOOKS_API_URL
+  required: true
+- description: The cluster internal URL of the Webhooks Client endpoint
+  displayName: Webhooks Client URL
+  name: WEBHOOKS_WEB_CLIENT_URL
   required: true
