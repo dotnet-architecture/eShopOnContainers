@@ -9,16 +9,12 @@ trigger:
     include:
     - deploy/aro/basket-api/*
     - deploy/aro/openshift-templates/*
-resources:
-  pipelines:
-    - pipeline: BasketApiBuild
-      source: Basket-API-Build
 stages:
   - stage: development
     displayName: Development
     variables:
       OpenShiftProject: development
-      SourceImageRegistryProjectName: $(OpenShiftProject)
+      SourceImageRegistryProjectName: development
       EnvironmentName: dev
       IdentityPublicHostName: identity$(EnvironmentName)
     jobs:

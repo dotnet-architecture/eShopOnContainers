@@ -1,37 +1,37 @@
 variables:
   RedisHostname: redis.$(OpenShiftProject).svc
   RabbitMqHostname: rabbitmq.$(OpenShiftProject).svc
-  SqlHostName: mssql-server-linux.$(OpenShiftProjectName).svc
+  SqlHostName: mssql-server-linux.$(OpenShiftProject).svc
   PublicHostName: eshop$(EnvironmentName)
   IdentityApiHostName: identityapi.$(OpenShiftProject).svc
   IdentityPublicHostName: identity$(EnvironmentName)
   IdentityUrlExternal: https://$(IdentityPublicHostName)
   IdentityApiUrl: http://$(IdentityApiHostName):8080
-  BasketApiHostName: basketapi.$(OpenShiftProjectName).svc
+  BasketApiHostName: basketapi.$(OpenShiftProject).svc
   BasketApiUrl: http://$(BasketApiHostName):8080
   BasketApiHc: $(BasketApiUrl)/hc
-  CatalogApiHostName: catalogapi.$(OpenShiftProjectName).svc
+  CatalogApiHostName: catalogapi.$(OpenShiftProject).svc
   CatalogApiUrl: http://$(CatalogApiHostName):8080
   CatalogApiUrlExternal: https://$(CatalogPublicHostName)
   CatalogApiHc: $(CatalogApiUrl)/hc
-  LocationsApiHostName: locationsapi.$(OpenShiftProjectName).svc
+  LocationsApiHostName: locationsapi.$(OpenShiftProject).svc
   LocationsApiUrl: http://$(LocationsApiHostName):8080
   LocationsApiHc: $(LocationsApiUrl)/hc
-  MarketingApiHostName: marketingapi.$(OpenShiftProjectName).svc
+  MarketingApiHostName: marketingapi.$(OpenShiftProject).svc
   MarketingApiUrl: http://$(MarketingApiHostName):8080
   MarketingApiHc: $(MarketingApiUrl)/hc
-  OrderingApiHostName: orderingapi.$(OpenShiftProjectName).svc
+  OrderingApiHostName: orderingapi.$(OpenShiftProject).svc
   OrderingApiUrl: http://$(OrderingApiHostName):8080
   OrderingApiHc: $(OrderingApiUrl)/hc
-  MobileShoppingAggregatorHostName: mobileshoppingaggregator.$(OpenShiftProjectName).svc
+  MobileShoppingAggregatorHostName: mobileshoppingaggregator.$(OpenShiftProject).svc
   MobileShoppingAggregatorUrl: http://$(MobileShoppingAggregatorHostName):8080
   MobileShoppingAggregatorHc: $(MobileShoppingAggregatorUrl)/hc
-  WebShoppingAggregatorHostName: webshoppingaggregator.$(OpenShiftProjectName).svc
+  WebShoppingAggregatorHostName: webshoppingaggregator.$(OpenShiftProject).svc
   WebShoppingAggregatorUrl: http://$(WebShoppingAggregatorHostName):8080
   WebShoppingAggregatorHc: $(WebShoppingAggregatorUrl)/hc
-  WebhooksApiHostName: webhooksapi.$(OpenShiftProjectName).svc
+  WebhooksApiHostName: webhooksapi.$(OpenShiftProject).svc
   WebhooksApiUrl: http://$(WebhooksApiHostName):8080
-  WebhooksWebClientHostName: webhookclient.$(OpenShiftProjectName).svc
+  WebhooksWebClientHostName: webhookclient.$(OpenShiftProject).svc
   WebhooksWebClientUrl: http://$(WebhooksWebClientHostName):8080
   WebSpaUrl: https://eshop-spa$(EnvironmentName)
   WebMvcUrl: https://$(PublicHostName)
