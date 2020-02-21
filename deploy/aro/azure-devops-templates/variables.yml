@@ -14,7 +14,6 @@ variables:
   CatalogApiUrl: http://$(CatalogApiHostName):8080
   CatalogApiUrlExternal: https://$(CatalogPublicHostName)
   CatalogApiHc: $(CatalogApiUrl)/hc
-  CatalogDbConnection: Server=$(SqlHostName);Database=Microsoft.eShopOnContainers.Services.CatalogDb;User Id=$(SqlUsername);Password=$(SqlPassword)
   LocationsApiHostName: locationsapi.$(OpenShiftProjectName).svc
   LocationsApiUrl: http://$(LocationsApiHostName):8080
   LocationsApiHc: $(LocationsApiUrl)/hc
@@ -32,7 +31,6 @@ variables:
   WebShoppingAggregatorHc: $(WebShoppingAggregatorUrl)/hc
   WebhooksApiHostName: webhooksapi.$(OpenShiftProjectName).svc
   WebhooksApiUrl: http://$(WebhooksApiHostName):8080
-  WebhooksDbConnection: Server=$(SqlHostName);Database=Microsoft.eShopOnContainers.Services.WebhooksDb;User Id=$(SqlUsername);Password=$(SqlPassword)
   WebhooksWebClientHostName: webhookclient.$(OpenShiftProjectName).svc
   WebhooksWebClientUrl: http://$(WebhooksWebClientHostName):8080
   WebSpaUrl: https://eshop-spa$(EnvironmentName)
