@@ -19,7 +19,7 @@ stages:
       - job: Infrastructure_Deployment
         displayName: 'Infrastructure Deployment'
         variables:
-          SqlHostName: mssql-server-linux.$(OpenShiftProject).svc
+          SqlHostName: mssql-server.$(OpenShiftProject).svc
           CatalogDbConnection: Server=$(SqlHostName);Database=Microsoft.eShopOnContainers.Services.CatalogDb;User Id=$(SqlUsername);Password=$(SqlPassword)
           IdentityDbConnection: Server=$(SqlHostName);Database=Microsoft.eShopOnContainers.Service.IdentityDb;User Id=$(SqlUsername);Password=$(SqlPassword)
           MarketingDbConnection: Server=$(SqlHostName);Database=Microsoft.eShopOnContainers.Services.MarketingDb;User Id=$(SqlUsername);Password=$(SqlPassword)
