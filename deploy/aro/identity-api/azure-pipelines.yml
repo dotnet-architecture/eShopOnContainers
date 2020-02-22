@@ -7,7 +7,7 @@ trigger:
     - dev
   paths:
     include:
-    - deploy/aro/basket-api/*
+    - deploy/aro/identity-api/*
     - deploy/aro/openshift-templates/*
 stages:
   - stage: development

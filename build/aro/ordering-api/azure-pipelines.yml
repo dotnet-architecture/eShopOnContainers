@@ -1,7 +1,7 @@
 variables:
-  ProjectName: Identity.API
+  ProjectName: Ordering.API
   OpenShiftProject: development
-  AppName: identityapi
+  AppName: orderingapi
   OpenShiftServiceConnection: 'OpenShift on ARO'
 trigger:
   branches:
@@ -11,7 +11,7 @@ trigger:
   paths:
     include:
     - src/BuildingBlocks/*
-    - src/Services/Identity/*
+    - src/Services/Ordering/*
 jobs:
 - template: ../webapp-build-artifacts.yml
   parameters:
