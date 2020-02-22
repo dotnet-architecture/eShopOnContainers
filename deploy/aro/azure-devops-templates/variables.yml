@@ -19,6 +19,7 @@ variables:
   LocationsApiHostName: locationsapi.$(OpenShiftProject).svc
   LocationsApiUrl: http://$(LocationsApiHostName):8080
   LocationsApiHc: $(LocationsApiUrl)/hc
+  LocationsDbName: LocationsDb
   CampaignDetailFunctionUri:
   MarketingApiHostName: marketingapi.$(OpenShiftProject).svc
   MarketingApiUrl: http://$(MarketingApiHostName):8080
