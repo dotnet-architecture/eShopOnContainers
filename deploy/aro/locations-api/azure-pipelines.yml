@@ -7,7 +7,7 @@ trigger:
     - dev
   paths:
     include:
-    - deploy/aro/basket-api/*
+    - deploy/aro/locations-api/*
     - deploy/aro/openshift-templates/*
 stages:
   - stage: development
@@ -15,8 +15,6 @@ stages:
     variables:
       OpenShiftProject: development
       SourceImageRegistryProjectName: development
-      EnvironmentName: dev
-      IdentityPublicHostName: identity$(EnvironmentName)
     jobs:
       - job: LocationsApiDeployment
         displayName: 'Locations API Deployment'

@@ -15,7 +15,6 @@ stages:
     variables:
       OpenShiftProject: development
       SourceImageRegistryProjectName: development
-      EnvironmentName: dev
     jobs:
       - job: MarketingApiDeployment
         displayName: 'Marketing API Deployment'
