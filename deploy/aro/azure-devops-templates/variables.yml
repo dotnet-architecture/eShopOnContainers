@@ -2,7 +2,7 @@ variables:
   RedisHostname: redis.$(OpenShiftProject).svc
   RabbitMqHostname: rabbitmq.$(OpenShiftProject).svc
   SqlHostName: mssql-server-linux.$(OpenShiftProject).svc
-  MongoConnectionString: mongodb://mongo.$(OpenShiftProjectName).svc
+  MongoConnectionString: mongodb://mongo.$(OpenShiftProject).svc
   PublicHostName: eshop$(EnvironmentName)
   IdentityApiHostName: identityapi.$(OpenShiftProject).svc
   IdentityPublicHostName: identity$(EnvironmentName)
