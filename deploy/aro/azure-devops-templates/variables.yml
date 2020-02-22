@@ -2,6 +2,7 @@ variables:
   RedisHostname: redis.$(OpenShiftProject).svc
   RabbitMqHostname: rabbitmq.$(OpenShiftProject).svc
   SqlHostName: mssql-server-linux.$(OpenShiftProject).svc
+  MongoConnectionString: mongodb://mongo.$(OpenShiftProjectName).svc
   PublicHostName: eshop$(EnvironmentName)
   IdentityApiHostName: identityapi.$(OpenShiftProject).svc
   IdentityPublicHostName: identity$(EnvironmentName)
@@ -18,9 +19,11 @@ variables:
   LocationsApiHostName: locationsapi.$(OpenShiftProject).svc
   LocationsApiUrl: http://$(LocationsApiHostName):8080
   LocationsApiHc: $(LocationsApiUrl)/hc
+  CampaignDetailFunctionUri:
   MarketingApiHostName: marketingapi.$(OpenShiftProject).svc
   MarketingApiUrl: http://$(MarketingApiHostName):8080
   MarketingApiHc: $(MarketingApiUrl)/hc
+  MarketingDbName: MarketingDb
   OrderingApiHostName: orderingapi.$(OpenShiftProject).svc
   OrderingApiUrl: http://$(OrderingApiHostName):8080
   OrderingApiHc: $(OrderingApiUrl)/hc
