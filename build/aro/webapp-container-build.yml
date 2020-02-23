@@ -12,14 +12,14 @@ jobs:
   - task: redhat.openshift-vsts.oc-setup-task.oc-setup@2
     displayName: 'oc-setup '
     inputs:
-      openshiftService: $(OpenShiftServiceConnection)
-  - script: 'oc project $(OpenShiftProject)'
+      openshiftService: ${{ parameters.OpenShiftServiceConnection }}
+  - script: 'oc project ${{ parameters.OpenShiftProject }}'
     failOnStderr: true
     displayName: 'Set Project Context'
   - task: DownloadPipelineArtifact@2
     inputs:
       artifact: drop
-  - script: 'oc process -f ./build/aro/openshift-templates/app-build-template.yml -p APPLICATION_NAME=$(AppName) | oc apply -f-'
+  - script: 'oc process -f ./build/aro/openshift-templates/app-build-template.yml -p APPLICATION_NAME=${{ parameters.AppName }} | oc apply -f-'
     failOnStderr: true
     displayName: 'Ensure OpenShift BuildConfig'
   - powershell: |
@@ -28,7 +28,7 @@ jobs:
       $pinfo.RedirectStandardError = $true
       $pinfo.RedirectStandardOutput = $true
       $pinfo.UseShellExecute = $false
-      $pinfo.Arguments = "start-build $(AppName) --from-dir=$(ProjectName) --follow --wait"
+      $pinfo.Arguments = "start-build ${{ parameters.AppName }} --from-dir=${{ parameters.ProjectName }} --follow --wait"
       $p = New-Object System.Diagnostics.Process
       $p.StartInfo = $pinfo
       $p.Start() | Out-Null
