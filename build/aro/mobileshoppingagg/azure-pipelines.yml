@@ -1,5 +1,6 @@
 variables:
   ProjectName: Mobile.Shopping.HttpAggregator
+  PublishOutputDirectory: aggregator
   OpenShiftProject: development
   AppName: mobileshoppingagg
   OpenShiftServiceConnection: 'OpenShift on ARO'
@@ -17,7 +18,7 @@ jobs:
     ProjectName: $(ProjectName)
 - template: ../webapp-container-build.yml
   parameters:
-    ProjectName: $(ProjectName)
+    ProjectName: $(PublishOutputDirectory)
     OpenShiftProject: $(OpenShiftProject)
     AppName: $(AppName)
     OpenShiftServiceConnection: $(OpenShiftServiceConnection)
