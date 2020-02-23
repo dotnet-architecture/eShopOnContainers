@@ -8,11 +8,14 @@ variables:
   IdentityPublicHostName: identity$(EnvironmentName)
   IdentityUrlExternal: https://$(IdentityPublicHostName)
   IdentityApiUrl: http://$(IdentityApiHostName):8080
+  IdentityApiHc: $(IdentityApiUrl)/hc
   BasketApiHostName: basketapi.$(OpenShiftProject).svc
   BasketApiUrl: http://$(BasketApiHostName):8080
+  BasketApiGrpcUrl: http://$(BasketApiHostName):8081
   BasketApiHc: $(BasketApiUrl)/hc
   CatalogApiHostName: catalogapi.$(OpenShiftProject).svc
   CatalogApiUrl: http://$(CatalogApiHostName):8080
+  CatalogApiGrpcUrl: http://$(CatalogApiHostName):8081
   CatalogApiUrlExternal: https://$(CatalogPublicHostName)
   CatalogApiHc: $(CatalogApiUrl)/hc
   PicBaseUrl: $(CatalogApiUrlExternal)/api/v1/catalog/items/[0]/pic/
@@ -27,7 +30,12 @@ variables:
   MarketingDbName: MarketingDb
   OrderingApiHostName: orderingapi.$(OpenShiftProject).svc
   OrderingApiUrl: http://$(OrderingApiHostName):8080
+  OrderingApiGrpcUrl: http://$(OrderingApiHostName):8081
   OrderingApiHc: $(OrderingApiUrl)/hc
+  PaymentApiHostName: paymentapi.$(OpenShiftProject).svc
+  PaymentApiUrl: http://$(PaymentApiHostName):8080
+  PaymentApiGrpcUrl: http://$(PaymentApiHostName):8081
+  PaymentApiHc: $(PaymentApiUrl)/hc
   MobileShoppingAggregatorHostName: mobileshoppingaggregator.$(OpenShiftProject).svc
   MobileShoppingAggregatorUrl: http://$(MobileShoppingAggregatorHostName):8080
   MobileShoppingAggregatorHc: $(MobileShoppingAggregatorUrl)/hc

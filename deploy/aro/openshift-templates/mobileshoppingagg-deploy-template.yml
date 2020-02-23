@@ -1,0 +1,178 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+metadata:
+  name: ${TEMPLATE_NAME}
+objects:
+- apiVersion: apps.openshift.io/v1
+  kind: DeploymentConfig
+  metadata:
+    labels:
+      app: ${APPLICATION_NAME}
+      template: ${TEMPLATE_NAME}
+    name: ${APPLICATION_NAME}
+  spec:
+    replicas: 1
+    selector:
+      app: ${APPLICATION_NAME}
+      deploymentconfig: ${APPLICATION_NAME}
+    strategy:
+      type: Rolling
+    revisionHistoryLimit: 2
+    template:
+      metadata:
+        labels:
+          app: ${APPLICATION_NAME}
+          deploymentconfig: ${APPLICATION_NAME}
+      spec:
+        containers:
+          - env:
+              - name: urls__basket
+                value: ${BASKET_API_URL}
+              - name: urls__catalog
+                value: ${CATALOG_API_URL}
+              - name: urls__orders
+                value: ${ORDERING_API_URL}
+              - name: urls__identity
+                value: ${IDENTITY_API_URL}
+              - name: urls__grpcBasket
+                value: ${BASKET_API_GRPC_URL}
+              - name: urls__grpcCatalog
+                value: ${CATALOG_API_GRPC_URL}
+              - name: urls__grpcOrdering
+                value: ${ORDERING_API_GRPC_URL}
+              - name: CatalogUrlHC
+                value: ${CATALOG_API_HC_URL}
+              - name: OrderingUrlHC
+                value: ${ORDERING_API_HC_URL}
+              - name: IdentityUrlHC
+                value: ${IDENTITY_API_HC_URL}
+              - name: BasketUrlHC
+                value: ${BASKET_API_HC_URL}
+              - name: MarketingUrlHC
+                value: ${MARKETING_API_HC_URL}
+              - name: PaymentUrlHC
+                value: ${PAYMENT_API_HC_URL}
+              - name: LocationUrlHC
+                value: ${LOCATION_API_HC_URL}
+              - name: IdentityUrlExternal
+                value: ${IDENTITY_URL_EXTERNAL}
+            image: docker-registry.default.svc:5000/${IMAGE_REGISTRY_PROJECT_NAME}/${APPLICATION_NAME}:latest
+            imagePullPolicy: Always
+            name: ${APPLICATION_NAME}
+            ports:
+            - containerPort: 8080
+              protocol: TCP
+            resources: {}
+            terminationMessagePath: /dev/termination-log
+            terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+    triggers:
+      - type: ConfigChange
+      - imageChangeParams:
+          automatic: true 
+          containerNames:
+            - ${APPLICATION_NAME}
+          from:
+            kind: ImageStreamTag
+            name: ${APPLICATION_NAME}:latest
+            namespace: ${IMAGE_REGISTRY_PROJECT_NAME}
+        type: ImageChange
+- apiVersion: v1
+  kind: Service
+  metadata:
+    labels:
+      app: ${APPLICATION_NAME}
+      template: ${TEMPLATE_NAME}
+    name: ${APPLICATION_NAME}
+  spec:
+    ports:
+    - name: 8080-tcp
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      app: ${APPLICATION_NAME}
+      deploymentconfig: ${APPLICATION_NAME}
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+parameters:
+- description: The name for the application.
+  displayName: Application Name
+  name: APPLICATION_NAME
+  required: true
+  value: mobileshoppingagg
+- description: The OpenShift project name that is hosting the image registry.
+  displayName: Image Registry Project Name
+  name: IMAGE_REGISTRY_PROJECT_NAME
+  required: true
+- description: The template name.
+  displayName: Template Name
+  name: TEMPLATE_NAME
+  required: true
+  value: mobileshoppingagg-deploy-template
+- description: The cluster internal URL of the Basket API endpoint
+  displayName: Basket API URL
+  name: BASKET_API_URL
+  required: true
+- description: The cluster internal URL of the Catalog API endpoint
+  displayName: Catalog API URL
+  name: CATALOG_API_URL
+  required: true
+- description: The cluster internal URL of the Ordering API endpoint
+  displayName: Ordering API URL
+  name: ORDERING_API_URL
+  required: true
+- description: The cluster internal URL of the Identity API endpoint
+  displayName: Identity API URL
+  name: IDENTITY_API_URL
+  required: true
+- description: The cluster internal URL of the GRPC Basket API endpoint
+  displayName: Basket API GROC URL
+  name: BASKET_API_GRPC_URL
+  required: true
+- description: The cluster internal URL of the GRPC Catalog API endpoint
+  displayName: Catalog API GRPC URL
+  name: CATALOG_API_GRPC_URL
+  required: true
+- description: The cluster internal URL of the GRPC Ordering API endpoint
+  displayName: Ordering API GRPC URL
+  name: ORDERING_API_GRPC_URL
+  required: true
+- description: The cluster internal URL of the Catalog API Health Check endpoint
+  displayName: Catalog API Health Check URL
+  name: CATALOG_API_HC_URL
+  required: true
+- description: The cluster internal URL of the Ordering API Health Check endpoint
+  displayName: Ordering API Health Check URL
+  name: ORDERING_API_HC_URL
+  required: true
+- description: The cluster internal URL of the Identity API Health Check endpoint
+  displayName: Identity API Health Check URL
+  name: IDENTITY_API_HC_URL
+  required: true
+- description: The cluster internal URL of the Basket API Health Check endpoint
+  displayName: Basket API Health Check URL
+  name: BASKET_API_HC_URL
+  required: true
+- description: The cluster internal URL of the Marketing API Health Check endpoint
+  displayName: Marketing API Health Check URL
+  name: MARKETING_API_HC_URL
+  required: true
+- description: The cluster internal URL of the Payment API Health Check endpoint
+  displayName: Payment API Health Check URL
+  name: PAYMENT_API_HC_URL
+  required: true
+- description: The cluster internal URL of the Location API Health Check endpoint
+  displayName: Location API Health Check URL
+  name: LOCATION_API_HC_URL
+  required: true
+- description: The external URL of the Identity endpoint
+  displayName: Identity URL External
+  name: IDENTITY_URL_EXTERNAL
+  required: true
