@@ -31,7 +31,7 @@ jobs:
       command: publish
       publishWebProjects: false
       projects: '**/$(ProjectName).csproj'
-      arguments: '--configuration Release --output $(Build.ArtifactStagingDirectory) /p:MicrosoftNETPlatformLibrary=Microsoft.NETCore.App'
+      arguments: '--configuration Release --output $(Build.ArtifactStagingDirectory)/$(ProjectName) /p:MicrosoftNETPlatformLibrary=Microsoft.NETCore.App'
       zipAfterPublish: false
       modifyOutputPath: true
       feedsToUse: config
