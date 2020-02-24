@@ -1,0 +1,24 @@
+variables:
+  ProjectName: Web.Shopping.HttpAggregator
+  PublishOutputDirectory: aggregator
+  OpenShiftProject: development
+  AppName: webshoppingagg
+  OpenShiftServiceConnection: 'OpenShift on ARO'
+trigger:
+  branches:
+    include:
+    - master
+    - dev
+  paths:
+    include:
+    - src/ApiGateways/Web.Bff.Shopping/*
+jobs:
+- template: ../webapp-build-artifacts.yml
+  parameters:
+    ProjectName: $(ProjectName)
+- template: ../webapp-container-build.yml
+  parameters:
+    ProjectName: $(PublishOutputDirectory)
+    OpenShiftProject: $(OpenShiftProject)
+    AppName: $(AppName)
+    OpenShiftServiceConnection: $(OpenShiftServiceConnection)
