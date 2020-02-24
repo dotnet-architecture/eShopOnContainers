@@ -1,7 +1,7 @@
 variables:
-  ProjectName: WebStatus
+  ProjectName: WebSPA
   OpenShiftProject: development
-  AppName: webstatus
+  AppName: webspa
   OpenShiftServiceConnection: 'OpenShift on ARO'
 trigger:
   branches:
@@ -10,8 +10,7 @@ trigger:
     - dev
   paths:
     include:
-    - src/BuildingBlocks/*
-    - src/Web/WebStatus/*
+    - src/Web/WebSPA/*
 jobs:
 - template: ../webapp-build-artifacts.yml
   parameters:
