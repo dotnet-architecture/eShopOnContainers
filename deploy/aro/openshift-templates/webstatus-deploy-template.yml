@@ -138,7 +138,55 @@ parameters:
   name: TEMPLATE_NAME
   required: true
   value: webstatus-deploy-template
-- description: The cluster internal URL of the Basket API endpoint
-  displayName: Basket API URL
-  name: BASKET_API_URL
+- description: The health check URL of the Web MVC service
+  displayName: Web MVC Health Check URL
+  name: WEB_MVC_HC_URL
+  required: true
+- description: The health check URL of the Web SPA service
+  displayName: Web SPA Health Check URL
+  name: WEB_SPA_HC_URL
+  required: true
+- description: The health check URL of the Web Shopping Aggregator service
+  displayName: Web Shopping Aggregator Health Check URL
+  name: WEB_SHOPPING_AGGREGATOR_HC_URL
+  required: true
+- description: The health check URL of the Mobile Shopping Aggregator service
+  displayName: Mobile Shopping Aggregator Health Check URL
+  name: MOBILE_SHOPPING_AGGREGATOR_HC_URL
+  required: true
+- description: The health check URL of the Ordering API service
+  displayName: Ordering API Health Check URL
+  name: ORDERING_API_HC_URL
+  required: true
+- description: The health check URL of the Basket API service
+  displayName: Basket API Health Check URL
+  name: BASKET_API_HC_URL
+  required: true
+- description: The health check URL of the Catalog API service
+  displayName: Catalog API Health Check URL
+  name: CATALOG_API_HC_URL
+  required: true
+- description: The health check URL of the Identity API service
+  displayName: Identity API Health Check URL
+  name: IDENTITY_API_HC_URL
+  required: true
+- description: The health check URL of the Marketing API service
+  displayName: Marketing API Health Check URL
+  name: MARKETING_API_HC_URL
+  required: true
+- description: The health check URL of the Locations API service
+  displayName: Locations API Health Check URL
+  name: LOCATIONS_API_HC_URL
+  required: true
+- description: The health check URL of the Payment API service
+  displayName: Payment API Health Check URL
+  name: PAYMENT_API_HC_URL
+  required: true
+- description: The health check URL of the Ordering SignalR Hub service
+  displayName: Ordering SignalR Hub Health Check URL
+  name: ORDERING_SIGNALR_HUB_HC_URL
+  required: true
+- description: The health check URL of the Ordering Background Tasks service
+  displayName: Ordering Background Tasks Health Check URL
+  name: ORDERING_BACKGROUND_TASKS_HC_URL
   required: true
