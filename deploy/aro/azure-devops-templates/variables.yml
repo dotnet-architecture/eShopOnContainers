@@ -56,3 +56,5 @@ variables:
   WebSpaHc: $(WebSpaUrl)/hc
   WebMvcUrl: https://$(PublicHostName)
   WebMvcHc: $(WebMvcUrl)/hc
+  WebShoppingApiGatewayHostName: webshoppingapigw.$(OpenShiftProject).svc
+  WebShoppingApiGatewayUrl: http://$(WebShoppingApiGatewayHostName):8080
