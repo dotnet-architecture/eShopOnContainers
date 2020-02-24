@@ -32,6 +32,12 @@ variables:
   OrderingApiUrl: http://$(OrderingApiHostName):8080
   OrderingApiGrpcUrl: http://$(OrderingApiHostName):8081
   OrderingApiHc: $(OrderingApiUrl)/hc
+  OrderingSignalRHubHostName: orderingsignalrhub.$(OpenShiftProject).svc
+  OrderingSignalRHubUrl: http://$(OrderingSignalRHubHostName):8080
+  OrderingSignalRHubHc: $(OrderingSignalRHubUrl)/hc
+  OrderingBackgroundTasksHostName: orderingbackgroundtasks.$(OpenShiftProject).svc
+  OrderingBackgroundTasksUrl: http://$(OrderingBackgroundTasksHostName):8080
+  OrderingBackgroundTasksHc: $(OrderingBackgroundTasksUrl)/hc
   PaymentApiHostName: paymentapi.$(OpenShiftProject).svc
   PaymentApiUrl: http://$(PaymentApiHostName):8080
   PaymentApiGrpcUrl: http://$(PaymentApiHostName):8081
@@ -47,4 +53,6 @@ variables:
   WebhooksWebClientHostName: webhookclient.$(OpenShiftProject).svc
   WebhooksWebClientUrl: http://$(WebhooksWebClientHostName):8080
   WebSpaUrl: https://eshop-spa$(EnvironmentName)
+  WebSpaHc: $(WebSpaUrl)/hc
   WebMvcUrl: https://$(PublicHostName)
+  WebMvcHc: $(WebMvcUrl)/hc

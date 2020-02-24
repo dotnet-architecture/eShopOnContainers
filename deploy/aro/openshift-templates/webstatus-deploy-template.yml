@@ -1,0 +1,144 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+metadata:
+  name: ${TEMPLATE_NAME}
+objects:
+- apiVersion: apps.openshift.io/v1
+  kind: DeploymentConfig
+  metadata:
+    labels:
+      app: ${APPLICATION_NAME}
+      template: ${TEMPLATE_NAME}
+    name: ${APPLICATION_NAME}
+  spec:
+    replicas: 1
+    selector:
+      app: ${APPLICATION_NAME}
+      deploymentconfig: ${APPLICATION_NAME}
+    strategy:
+      type: Rolling
+    revisionHistoryLimit: 2
+    template:
+      metadata:
+        labels:
+          app: ${APPLICATION_NAME}
+          deploymentconfig: ${APPLICATION_NAME}
+      spec:
+        containers:
+          - env:
+              - name: HealthChecksUI__HealthChecks__0__Name
+                value: WebMVC HTTP Check
+              - name: HealthChecksUI__HealthChecks__0__Uri
+                value: ${WEB_MVC_HC_URL}
+              - name: HealthChecksUI__HealthChecks__1__Name
+                value: WebSPA HTTP Check
+              - name: HealthChecksUI__HealthChecks__1__Uri
+                value: ${WEB_SPA_HC_URL}
+              - name: HealthChecksUI__HealthChecks__2__Name
+                value: Web Shopping Aggregator GW HTTP Check
+              - name: HealthChecksUI__HealthChecks__2__Uri
+                value: ${WEB_SHOPPING_AGGREGATOR_HC_URL}
+              - name: HealthChecksUI__HealthChecks__3__Name
+                value: Mobile Shopping Aggregator HTTP Check
+              - name: HealthChecksUI__HealthChecks__3__Uri
+                value: ${MOBILE_SHOPPING_AGGREGATOR_HC_URL}
+              - name: HealthChecksUI__HealthChecks__4__Name
+                value: Ordering HTTP Check
+              - name: HealthChecksUI__HealthChecks__4__Uri
+                value: ${ORDERING_API_HC_URL}
+              - name: HealthChecksUI__HealthChecks__5__Name
+                value: Basket HTTP Check
+              - name: HealthChecksUI__HealthChecks__5__Uri
+                value: ${BASKET_API_HC_URL}
+              - name: HealthChecksUI__HealthChecks__6__Name
+                value: Catalog HTTP Check
+              - name: HealthChecksUI__HealthChecks__6__Uri
+                value: ${CATALOG_API_HC_URL}
+              - name: HealthChecksUI__HealthChecks__7__Name
+                value: Identity HTTP Check
+              - name: HealthChecksUI__HealthChecks__7__Uri
+                value: ${IDENTITY_API_HC_URL}
+              - name: HealthChecksUI__HealthChecks__8__Name
+                value: Marketing HTTP Check
+              - name: HealthChecksUI__HealthChecks__8__Uri
+                value: ${MARKETING_API_HC_URL}
+              - name: HealthChecksUI__HealthChecks__9__Name
+                value: Locations HTTP Check
+              - name: HealthChecksUI__HealthChecks__9__Uri
+                value: ${LOCATIONS_API_HC_URL}
+              - name: HealthChecksUI__HealthChecks__10__Name
+                value: Payments HTTP Check
+              - name: HealthChecksUI__HealthChecks__10__Uri
+                value: ${PAYMENT_API_HC_URL}
+              - name: HealthChecksUI__HealthChecks__11__Name
+                value: Ordering SignalRHub HTTP Check
+              - name: HealthChecksUI__HealthChecks__11__Uri
+                value: ${ORDERING_SIGNALR_HUB_HC_URL}
+              - name: HealthChecksUI__HealthChecks__12__Name
+                value: Ordering HTTP Background Check
+              - name: HealthChecksUI__HealthChecks__12__Uri
+                value: ${ORDERING_BACKGROUND_TASKS_HC_URL}
+            image: docker-registry.default.svc:5000/${IMAGE_REGISTRY_PROJECT_NAME}/${APPLICATION_NAME}:latest
+            imagePullPolicy: Always
+            name: ${APPLICATION_NAME}
+            ports:
+            - containerPort: 8080
+              protocol: TCP
+            resources: {}
+            terminationMessagePath: /dev/termination-log
+            terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+    triggers:
+      - type: ConfigChange
+      - imageChangeParams:
+          automatic: true 
+          containerNames:
+            - ${APPLICATION_NAME}
+          from:
+            kind: ImageStreamTag
+            name: ${APPLICATION_NAME}:latest
+            namespace: ${IMAGE_REGISTRY_PROJECT_NAME}
+        type: ImageChange
+- apiVersion: v1
+  kind: Service
+  metadata:
+    labels:
+      app: ${APPLICATION_NAME}
+      template: ${TEMPLATE_NAME}
+    name: ${APPLICATION_NAME}
+  spec:
+    ports:
+    - name: 8080-tcp
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      app: ${APPLICATION_NAME}
+      deploymentconfig: ${APPLICATION_NAME}
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+parameters:
+- description: The name for the application.
+  displayName: Application Name
+  name: APPLICATION_NAME
+  required: true
+  value: webstatus
+- description: The OpenShift project name that is hosting the image registry.
+  displayName: Image Registry Project Name
+  name: IMAGE_REGISTRY_PROJECT_NAME
+  required: true
+- description: The template name.
+  displayName: Template Name
+  name: TEMPLATE_NAME
+  required: true
+  value: webstatus-deploy-template
+- description: The cluster internal URL of the Basket API endpoint
+  displayName: Basket API URL
+  name: BASKET_API_URL
+  required: true
