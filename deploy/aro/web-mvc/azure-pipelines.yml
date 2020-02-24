@@ -1,0 +1,36 @@
+variables:
+  OpenShiftServiceConnection: 'OpenShift on ARO'
+trigger:
+  branches:
+    include:
+    - master
+    - dev
+  paths:
+    include:
+    - deploy/aro/web-mvc/*
+    - deploy/aro/openshift-templates/*
+stages:
+  - stage: development
+    displayName: Development
+    variables:
+      OpenShiftProject: development
+      SourceImageRegistryProjectName: development
+      EnvironmentName: dev
+    jobs:
+      - job: WebMvcDeployment
+        displayName: 'Web MVC Deployment'
+        variables:
+        - template: ../azure-devops-templates/variables.yml
+        pool: 
+          vmImage: 'windows-latest'
+        steps:
+        - task: redhat.openshift-vsts.oc-setup-task.oc-setup@2
+          displayName: 'Setup Openshift CLI'
+          inputs:
+            openshiftService: $(OpenShiftServiceConnection)
+        - script: 'oc project $(OpenShiftProject)'
+          failOnStderr: true
+          displayName: 'Set OpenShift Project Context'
+        - script: 'oc process -f ./deploy/aro/openshift-templates/webmvc-deploy-template.yml -p IMAGE_REGISTRY_PROJECT_NAME=$(SourceImageRegistryProjectName) -p IDENTITY_API_URL=$(IdentityApiUrl) -p WEB_SHOPPING_API_GATEWAY_URL=$(WebShoppingApiGatewayUrl) -p MARKETING_API_URL=$(MarketingApiUrl) -p IDENTITY_API_HC_URL=$(IdentityApiHc) -p ORDERING_SIGNALR_HUB_URL=$(OrderingSignalRHubUrl) | oc apply -f-'
+          failOnStderr: true
+          displayName: 'Ensure Web SPA OpenShift DeploymentConfig and Service'
