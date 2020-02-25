@@ -1,0 +1,23 @@
+variables:
+  ProjectName: WebhookClient
+  OpenShiftProject: development
+  AppName: webhooksclient
+  OpenShiftServiceConnection: 'OpenShift on ARO'
+trigger:
+  branches:
+    include:
+    - master
+    - dev
+  paths:
+    include:
+    - src/Web/WebhookClient/*
+jobs:
+- template: ../webapp-build-artifacts.yml
+  parameters:
+    ProjectName: $(ProjectName)
+- template: ../webapp-container-build.yml
+  parameters:
+    ProjectName: $(ProjectName)
+    OpenShiftProject: $(OpenShiftProject)
+    AppName: $(AppName)
+    OpenShiftServiceConnection: $(OpenShiftServiceConnection)
