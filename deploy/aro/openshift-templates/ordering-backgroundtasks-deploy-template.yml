@@ -36,9 +36,9 @@ objects:
               - name: UseCustomizationData
                 value: true
               - name: CheckUpdateTime
-                value: 30000
+                value: "30000"
               - name: GracePeriodTime
-                value: 1
+                value: "1"
             image: docker-registry.default.svc:5000/${IMAGE_REGISTRY_PROJECT_NAME}/${APPLICATION_NAME}:latest
             imagePullPolicy: Always
             name: ${APPLICATION_NAME}
