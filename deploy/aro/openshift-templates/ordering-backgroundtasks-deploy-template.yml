@@ -34,7 +34,7 @@ objects:
               - name: EventBusConnection
                 value: ${RABBITMQ_HOSTNAME}
               - name: UseCustomizationData
-                value: true
+                value: "true"
               - name: CheckUpdateTime
                 value: "30000"
               - name: GracePeriodTime
