@@ -42,10 +42,10 @@ variables:
   PaymentApiUrl: http://$(PaymentApiHostName):8080
   PaymentApiGrpcUrl: http://$(PaymentApiHostName):8081
   PaymentApiHc: $(PaymentApiUrl)/hc
-  MobileShoppingAggregatorHostName: mobileshoppingaggregator.$(OpenShiftProject).svc
+  MobileShoppingAggregatorHostName: mobileshoppingagg.$(OpenShiftProject).svc
   MobileShoppingAggregatorUrl: http://$(MobileShoppingAggregatorHostName):8080
   MobileShoppingAggregatorHc: $(MobileShoppingAggregatorUrl)/hc
-  WebShoppingAggregatorHostName: webshoppingaggregator.$(OpenShiftProject).svc
+  WebShoppingAggregatorHostName: webshoppingagg.$(OpenShiftProject).svc
   WebShoppingAggregatorUrl: http://$(WebShoppingAggregatorHostName):8080
   WebShoppingAggregatorHc: $(WebShoppingAggregatorUrl)/hc
   WebhooksApiHostName: webhooksapi.$(OpenShiftProject).svc
