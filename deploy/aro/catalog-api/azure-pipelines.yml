@@ -15,7 +15,7 @@ stages:
     variables:
       OpenShiftProject: development
       SourceImageRegistryProjectName: development
-      EnvironmentName: dev
+      EnvironmentName: -dev.msftnbu.com
     jobs:
       - job: CatalogApiDeployment
         displayName: 'Catalog API Deployment'

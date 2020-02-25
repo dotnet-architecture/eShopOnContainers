@@ -15,7 +15,7 @@ stages:
     variables:
       OpenShiftProject: development
       SourceImageRegistryProjectName: development
-      EnvironmentName: dev
+      EnvironmentName: -dev.msftnbu.com
     jobs:
       - job: IdentityApiDeployment
         displayName: 'Identity API Deployment'
