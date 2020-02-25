@@ -52,6 +52,7 @@ variables:
   WebhooksApiUrl: http://$(WebhooksApiHostName):8080
   WebhooksWebClientHostName: webhookclient.$(OpenShiftProject).svc
   WebhooksWebClientUrl: http://$(WebhooksWebClientHostName):8080
+  WebhooksToken: 6168DB8D-DC58-4094-AF24-483278923590
   WebSpaUrl: https://eshop-spa$(EnvironmentName)
   WebSpaHc: $(WebSpaUrl)/hc
   WebMvcUrl: https://$(PublicHostName)

@@ -1,0 +1,36 @@
+variables:
+  OpenShiftServiceConnection: 'OpenShift on ARO'
+trigger:
+  branches:
+    include:
+    - master
+    - dev
+  paths:
+    include:
+    - deploy/aro/web-mvc/*
+    - deploy/aro/openshift-templates/*
+stages:
+  - stage: development
+    displayName: Development
+    variables:
+      OpenShiftProject: development
+      SourceImageRegistryProjectName: development
+      EnvironmentName: dev
+    jobs:
+      - job: WebhooksClientDeployment
+        displayName: 'Webhooks Client Deployment'
+        variables:
+        - template: ../azure-devops-templates/variables.yml
+        pool: 
+          vmImage: 'windows-latest'
+        steps:
+        - task: redhat.openshift-vsts.oc-setup-task.oc-setup@2
+          displayName: 'Setup Openshift CLI'
+          inputs:
+            openshiftService: $(OpenShiftServiceConnection)
+        - script: 'oc project $(OpenShiftProject)'
+          failOnStderr: true
+          displayName: 'Set OpenShift Project Context'
+        - script: 'oc process -f ./deploy/aro/openshift-templates/webhooks-client-deploy-template.yml -p IMAGE_REGISTRY_PROJECT_NAME=$(SourceImageRegistryProjectName) -p WEBHOOKS_TOKEN=$(WebhooksToken) -p IDENTITY_API_URL=$(IdentityApiUrl) -p WEBHOOKS_WEB_CLIENT_URL=$(WebhooksWebClientUrl) -p WEBHOOKS_API_URL=$(WebhooksApiUrl) | oc apply -f-'
+          failOnStderr: true
+          displayName: 'Ensure Webhooks Client OpenShift DeploymentConfig and Service'
