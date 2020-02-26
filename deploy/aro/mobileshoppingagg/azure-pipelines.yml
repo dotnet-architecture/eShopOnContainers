@@ -15,6 +15,7 @@ stages:
     variables:
       OpenShiftProject: development
       SourceImageRegistryProjectName: development
+      EnvironmentName: -dev.msftnbu.com
     jobs:
       - job: MobileShoppingAggregatorDeployment
         displayName: 'Mobile Shopping Aggregator Deployment'

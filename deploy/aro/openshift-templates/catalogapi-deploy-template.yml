@@ -92,6 +92,28 @@ objects:
     type: ClusterIP
   status:
     loadBalancer: {}
+- apiVersion: route.openshift.io/v1
+  kind: Route
+  metadata:
+    labels:
+      app: ${APPLICATION_NAME}
+      template: ${TEMPLATE_NAME}
+    name: catalog-public-route
+  spec:
+    host: ${CATALOG_PUBLIC_HOSTNAME}
+    tls:
+      caCertificate: |
+        ${CA_CERTIFICATE}
+      certificate: |
+        ${CERTIFICATE}
+      key: |
+        ${PRIVATE_KEY}
+      termination: edge
+    to:
+      kind: Service
+      name: ${APPLICATION_NAME}
+      weight: 100
+    wildcardPolicy: None
 parameters:
 - description: The name for the application.
   displayName: Application Name
@@ -114,4 +136,20 @@ parameters:
 - description: The hostname of the RabbitMQ service
   displayName: RabbitMQ Hostname
   name: RABBITMQ_HOSTNAME
+  required: true
+- description: The public hostname of the Catalog route
+  displayName: Catalog Public Hostname
+  name: CATALOG_PUBLIC_HOSTNAME
+  required: true
+- description: The CA Certificate thumbprint value
+  displayName: CA Certificate
+  name: CA_CERTIFICATE
+  required: true
+- description: The Certificate thumbprint value
+  displayName: Certificate
+  name: CERTIFICATE
+  required: true
+- description: The private key thumbprint value for the certificate
+  displayName: Private Key
+  name: PRIVATE_KEY
   required: true
