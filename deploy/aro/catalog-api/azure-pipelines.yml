@@ -24,6 +24,11 @@ stages:
         pool: 
           vmImage: 'windows-latest'
         steps:
+        - task: AzureKeyVault@1
+          displayName: 'Azure Key Vault: openshift-demo-vault'
+          inputs:
+            azureSubscription: 'Azure OpenShift Demo'
+            KeyVaultName: 'openshift-demo-vault'
         - task: redhat.openshift-vsts.oc-setup-task.oc-setup@2
           displayName: 'Setup Openshift CLI'
           inputs:
