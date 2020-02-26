@@ -104,12 +104,9 @@ objects:
     port:
       targetPort: 8080-tcp
     tls:
-      caCertificate: |
-        ${CA_CERTIFICATE}
-      certificate: |
-        ${CERTIFICATE}
-      key: |
-        ${PRIVATE_KEY}
+      caCertificate: ${CA_CERTIFICATE}
+      certificate: ${CERTIFICATE}
+      key: ${PRIVATE_KEY}
       termination: edge
     to:
       kind: Service
