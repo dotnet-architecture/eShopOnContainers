@@ -101,6 +101,8 @@ objects:
     name: catalog-public-route
   spec:
     host: ${CATALOG_PUBLIC_HOSTNAME}
+    port:
+      targetPort: 8080-tcp
     tls:
       caCertificate: |
         ${CA_CERTIFICATE}
