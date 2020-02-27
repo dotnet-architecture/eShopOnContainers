@@ -6,6 +6,8 @@ metadata:
   name: catalog-public-route
 spec:
   host: __CatalogPublicHostName__
+  port:
+    targetPort: 8080-tcp
   tls:
     caCertificate: |
       -----BEGIN CERTIFICATE-----
