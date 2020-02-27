@@ -18,9 +18,9 @@
 		},
         "tls": {
         "termination": "edge",
-        "key": "__PrivateKey2__",
-        "certificate": "__Certificate2__",
-        "caCertificate": "__CaCertificate2__"
+        "key": "__PrivateKey3__",
+        "certificate": "__Certificate3__",
+        "caCertificate": "__CaCertificate3__"
         }
     }
 }
