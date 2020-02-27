@@ -36,7 +36,7 @@ stages:
             filePattern: catalog-public-route.yml
         - task: CopyFiles@2
           inputs:
-            contents: ./deploy/aro/catalog-api/**
+            contents: deploy/aro/catalog-api/**
             targetFolder: $(Build.ArtifactStagingDirectory)
         - task: PublishBuildArtifacts@1
           displayName: 'Publish Artifact: drop'
