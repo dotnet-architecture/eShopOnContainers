@@ -92,6 +92,17 @@ objects:
   spec:
     lookupPolicy:
       local: false
+    tags:
+    - annotations:
+        openshift.io/imported-from: '${APPLICATION_NAME}:alpine'
+      from:
+        kind: DockerImage
+        name: '${APPLICATION_NAME}:alpine'
+      generation: 2
+      importPolicy: {}
+      name: alpine
+      referencePolicy:
+        type: Source
 parameters:
 - description: The name for the application.
   displayName: Application Name
