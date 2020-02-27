@@ -41,9 +41,12 @@ stages:
                     -p PIC_BASE_URL=$(PicBaseUrl) 
                     -p RABBITMQ_HOSTNAME=$(RabbitMqHostname) 
                     -p CATALOG_PUBLIC_HOSTNAME=$(CatalogPublicHostName) 
-                    -p CA_CERTIFICATE="$(CaCertificate2)" 
-                    -p CERTIFICATE="$(Certificate2)" 
-                    -p PRIVATE_KEY="$(PrivateKey2)" 
+                    -p CA_CERTIFICATE=| 
+                      $(CaCertificate2)
+                    -p CERTIFICATE=| 
+                      $(Certificate2)
+                    -p PRIVATE_KEY=| 
+                      $(PrivateKey2) 
                     | oc apply -f-'
           failOnStderr: true
           displayName: 'Ensure Catalog API OpenShift DeploymentConfig and Service'
