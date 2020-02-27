@@ -92,30 +92,6 @@ objects:
     type: ClusterIP
   status:
     loadBalancer: {}
-- apiVersion: route.openshift.io/v1
-  kind: Route
-  metadata:
-    labels:
-      app: ${APPLICATION_NAME}
-      template: ${TEMPLATE_NAME}
-    name: catalog-public-route
-  spec:
-    host: ${CATALOG_PUBLIC_HOSTNAME}
-    port:
-      targetPort: 8080-tcp
-    tls:
-      caCertificate: |
-        ${CA_CERTIFICATE}
-      certificate: |
-        ${CERTIFICATE}
-      key: |
-        ${PRIVATE_KEY}
-      termination: edge
-    to:
-      kind: Service
-      name: ${APPLICATION_NAME}
-      weight: 100
-    wildcardPolicy: None
 parameters:
 - description: The name for the application.
   displayName: Application Name
