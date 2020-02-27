@@ -3,21 +3,19 @@ kind: Route
 metadata:
   labels:
     app: catalogapi
-name: catalog-public-route
+  name: catalog-public-route
 spec:
-host: __CatalogPublicHostName__
-port:
-  targetPort: 8080-tcp
-tls:
-  caCertificate: |
-    __CaCertificate2__
-  certificate: |
-    __Certificate2__
-  key: |
-    __PrivateKey2__
-  termination: edge
-to:
-  kind: Service
-  name: catalogapi
-  weight: 100
-wildcardPolicy: None
+  host: __CatalogPublicHostName__
+  tls:
+    caCertificate: |
+      __CaCertificate2__
+    certificate: |
+      __Certificate2__
+    key: |
+      __PrivateKey2__
+    termination: edge
+  to:
+    kind: Service
+    name: catalogapi
+    weight: 100
+  wildcardPolicy: None
