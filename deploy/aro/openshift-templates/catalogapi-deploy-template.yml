@@ -119,15 +119,3 @@ parameters:
   displayName: Catalog Public Hostname
   name: CATALOG_PUBLIC_HOSTNAME
   required: true
-- description: The CA Certificate thumbprint value
-  displayName: CA Certificate
-  name: CA_CERTIFICATE
-  required: true
-- description: The Certificate thumbprint value
-  displayName: Certificate
-  name: CERTIFICATE
-  required: true
-- description: The private key thumbprint value for the certificate
-  displayName: Private Key
-  name: PRIVATE_KEY
-  required: true
