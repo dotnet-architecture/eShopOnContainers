@@ -33,10 +33,22 @@ stages:
           displayName: 'Replace tokens in catalog-public-route'
           inputs:
             sourcePath: ./deploy/aro/catalog-api
-            filePattern: catalog-public-route.yml
-        - task: CopyFiles@2
+            filePattern: catalog-public-route.json
+        - task: redhat.openshift-vsts.oc-setup-task.oc-setup@2
+          displayName: 'Setup Openshift CLI'
           inputs:
-            contents: deploy/aro/catalog-api/**
-            targetFolder: $(Build.ArtifactStagingDirectory)
-        - task: PublishBuildArtifacts@1
-          displayName: 'Publish Artifact: drop'
+            openshiftService: $(OpenShiftServiceConnection)
+        - script: 'oc project $(OpenShiftProject)'
+          failOnStderr: true
+          displayName: 'Set OpenShift Project Context'
+        - script: 'oc process -f ./deploy/aro/openshift-templates/catalogapi-deploy-template.yml 
+            -p IMAGE_REGISTRY_PROJECT_NAME=$(SourceImageRegistryProjectName) 
+            -p PIC_BASE_URL=$(PicBaseUrl) 
+            -p RABBITMQ_HOSTNAME=$(RabbitMqHostname) 
+            -p CATALOG_PUBLIC_HOSTNAME=$(CatalogPublicHostName) 
+            | oc apply -f-'
+          failOnStderr: true
+          displayName: 'Ensure Catalog API OpenShift DeploymentConfig and Service'
+        - script: 'oc apply -f ./deploy/aro/catalog-api/catalog-public-route.json'
+          failOnStderr: true
+          displayName: 'Ensure Catalog API Route'
