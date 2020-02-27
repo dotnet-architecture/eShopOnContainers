@@ -1,0 +1,26 @@
+{
+	"apiVersion": "route.openshift.io/v1",
+	"kind": "Route",
+	"metadata": {
+		"labels": {
+			"app": "webmvc"
+		},
+		"name": "webmvc-public-route"
+	},
+	"spec": {
+		"host": "__PublicHostName__",
+        "port": {
+            "targetPort": "8080-tcp"
+        },
+		"to": {
+			"kind": "Service",
+			"name": "webmvc"
+		},
+        "tls": {
+        "termination": "edge",
+        "key": "__PrivateKey3__",
+        "certificate": "__Certificate3__",
+        "caCertificate": "__CaCertificate3__"
+        }
+    }
+}

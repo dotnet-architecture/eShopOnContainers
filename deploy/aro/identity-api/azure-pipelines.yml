@@ -24,6 +24,16 @@ stages:
         pool: 
           vmImage: 'windows-latest'
         steps:
+        - task: AzureKeyVault@1
+          displayName: 'Azure Key Vault: openshift-demo-vault'
+          inputs:
+            azureSubscription: 'Azure OpenShift Demo'
+            KeyVaultName: 'openshift-demo-vault'
+        - task: colinsalmcorner.colinsalmcorner-buildtasks.replace-tokens-task.ReplaceTokens@1
+          displayName: 'Replace tokens in identity-public-route'
+          inputs:
+            sourcePath: ./deploy/aro/identity-api
+            filePattern: identity-public-route.json
         - task: redhat.openshift-vsts.oc-setup-task.oc-setup@2
           displayName: 'Setup Openshift CLI'
           inputs:
@@ -34,3 +44,6 @@ stages:
         - script: 'oc process -f ./deploy/aro/openshift-templates/identityapi-deploy-template.yml -p IMAGE_REGISTRY_PROJECT_NAME=$(SourceImageRegistryProjectName) -p WEB_SPA_URL=$(WebSpaUrl) -p WEB_MVC_URL=$(WebMvcUrl) -p LOCATION_API_URL=$(LocationsApiUrl) -p MARKETING_API_URL=$(MarketingApiUrl) -p BASKET_API_URL=$(BasketApiUrl) -p ORDERING_API_URL=$(OrderingApiUrl) -p MOBILE_SHOPPING_AGGREGATOR_URL=$(MobileShoppingAggregatorUrl) -p WEB_SHOPPING_AGGREGATOR_URL=$(WebShoppingAggregatorUrl) -p WEBHOOKS_API_URL=$(WebhooksApiUrl) -p WEBHOOKS_WEB_CLIENT_URL=$(WebhooksWebClientUrl) | oc apply -f-'
           failOnStderr: true
           displayName: 'Ensure Identity API OpenShift DeploymentConfig and Service'
+        - script: 'oc apply -f ./deploy/aro/identity-api/identity-public-route.json'
+          failOnStderr: true
+          displayName: 'Ensure Identity API Route'

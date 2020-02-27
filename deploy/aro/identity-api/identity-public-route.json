@@ -1,0 +1,26 @@
+{
+	"apiVersion": "route.openshift.io/v1",
+	"kind": "Route",
+	"metadata": {
+		"labels": {
+			"app": "identityapi"
+		},
+		"name": "identity-public-route"
+	},
+	"spec": {
+		"host": "__IdentityPublicHostName__",
+        "port": {
+            "targetPort": "8080-tcp"
+        },
+		"to": {
+			"kind": "Service",
+			"name": "identityapi"
+		},
+        "tls": {
+        "termination": "edge",
+        "key": "__PrivateKey3__",
+        "certificate": "__Certificate3__",
+        "caCertificate": "__CaCertificate3__"
+        }
+    }
+}
