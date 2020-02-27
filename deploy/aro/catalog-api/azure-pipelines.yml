@@ -29,6 +29,11 @@ stages:
           inputs:
             azureSubscription: 'Azure OpenShift Demo'
             KeyVaultName: 'openshift-demo-vault'
+        - task: colinsalmcorner.colinsalmcorner-buildtasks.replace-tokens-task.ReplaceTokens@1
+          displayName: 'Replace tokens in catalog-public-route'
+          inputs:
+            sourcePath: ./deploy/aro/catalog-api
+            filePattern: catalog-public-route.yml
         - task: redhat.openshift-vsts.oc-setup-task.oc-setup@2
           displayName: 'Setup Openshift CLI'
           inputs:
@@ -44,3 +49,6 @@ stages:
             | oc apply -f-'
           failOnStderr: true
           displayName: 'Ensure Catalog API OpenShift DeploymentConfig and Service'
+        - script: 'oc apply -f .deploy/aro/catalog-api/catalog-public-route.yml'
+          failOnStderr: true
+          displayName: 'Ensure Catalog API Route'
