@@ -100,7 +100,7 @@ parameters:
   displayName: Application Name
   name: APPLICATION_NAME
   required: true
-  value: mobilesmarketingapigw
+  value: mobilemarketingapigw
 - description: The OpenShift project name that is hosting the image registry.
   displayName: Image Registry Project Name
   name: IMAGE_REGISTRY_PROJECT_NAME
@@ -109,4 +109,4 @@ parameters:
   displayName: Template Name
   name: TEMPLATE_NAME
   required: true
-  value: mobilesmarketingapigw-deploy-template
+  value: mobilemarketingapigw-deploy-template
