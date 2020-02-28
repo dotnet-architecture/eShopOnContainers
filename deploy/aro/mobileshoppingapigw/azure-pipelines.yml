@@ -16,8 +16,8 @@ stages:
       SourceImageRegistryProjectName: development
       EnvironmentName: -dev.msftnbu.com
     jobs:
-      - job: MobileMarketingApiGatewayDeployment
-        displayName: 'Mobile Marketing API Gateway Deployment'
+      - job: MobileShoppingApiGatewayDeployment
+        displayName: 'Mobile Shopping API Gateway Deployment'
         variables:
         - template: ../azure-devops-templates/variables.yml
         pool: 
