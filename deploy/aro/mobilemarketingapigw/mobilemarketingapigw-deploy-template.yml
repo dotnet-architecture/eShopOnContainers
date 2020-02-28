@@ -70,7 +70,7 @@ objects:
     type: ClusterIP
   status:
     loadBalancer: {}
-  - apiVersion: image.openshift.io/v1
+- apiVersion: image.openshift.io/v1
   kind: ImageStream
   metadata:
     labels:
