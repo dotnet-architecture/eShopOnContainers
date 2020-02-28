@@ -1,0 +1,35 @@
+variables:
+  OpenShiftServiceConnection: 'OpenShift on ARO'
+trigger:
+  branches:
+    include:
+    - master
+    - dev
+  paths:
+    include:
+    - deploy/aro/mobileshoppingapigw/*
+stages:
+  - stage: development
+    displayName: Development
+    variables:
+      OpenShiftProject: development
+      SourceImageRegistryProjectName: development
+      EnvironmentName: -dev.msftnbu.com
+    jobs:
+      - job: MobileMarketingApiGatewayDeployment
+        displayName: 'Mobile Marketing API Gateway Deployment'
+        variables:
+        - template: ../azure-devops-templates/variables.yml
+        pool: 
+          vmImage: 'windows-latest'
+        steps:
+        - task: redhat.openshift-vsts.oc-setup-task.oc-setup@2
+          displayName: 'Setup Openshift CLI'
+          inputs:
+            openshiftService: $(OpenShiftServiceConnection)
+        - script: 'oc project $(OpenShiftProject)'
+          failOnStderr: true
+          displayName: 'Set OpenShift Project Context'
+        - script: 'oc process -f ./deploy/aro/mobileshoppingapigw/mobileshoppingapigw-deploy-template.yml -p IMAGE_REGISTRY_PROJECT_NAME=$(SourceImageRegistryProjectName) | oc apply -f-'
+          failOnStderr: true
+          displayName: 'Ensure Mobile Shopping API Gateway OpenShift DeploymentConfig and Service'

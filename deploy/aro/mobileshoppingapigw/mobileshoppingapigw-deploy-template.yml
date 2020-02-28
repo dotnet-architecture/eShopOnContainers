@@ -27,7 +27,7 @@ objects:
         containers:
           - env:
               - name: PATH_BASE
-                value: /mobilemarketingapigw
+                value: /mobileshoppingapigw
             image: docker-registry.default.svc:5000/${IMAGE_REGISTRY_PROJECT_NAME}/${APPLICATION_NAME}:latest
             imagePullPolicy: Always
             name: ${APPLICATION_NAME}
@@ -98,7 +98,7 @@ parameters:
   displayName: Application Name
   name: APPLICATION_NAME
   required: true
-  value: mobilemarketingapigw
+  value: mobileshoppingapigw
 - description: The OpenShift project name that is hosting the image registry.
   displayName: Image Registry Project Name
   name: IMAGE_REGISTRY_PROJECT_NAME
@@ -107,4 +107,4 @@ parameters:
   displayName: Template Name
   name: TEMPLATE_NAME
   required: true
-  value: mobilemarketingapigw-deploy-template
+  value: mobileshoppingapigw-deploy-template
