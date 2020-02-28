@@ -8,7 +8,6 @@ trigger:
   paths:
     include:
     - deploy/aro/ordering-api/*
-    - deploy/aro/openshift-templates/*
 stages:
   - stage: development
     displayName: Development
@@ -31,6 +30,6 @@ stages:
         - script: 'oc project $(OpenShiftProject)'
           failOnStderr: true
           displayName: 'Set OpenShift Project Context'
-        - script: 'oc process -f ./deploy/aro/openshift-templates/orderingapi-deploy-template.yml -p IMAGE_REGISTRY_PROJECT_NAME=$(SourceImageRegistryProjectName) -p RABBITMQ_HOSTNAME=$(RabbitMqHostname) -p IDENTITY_URL_EXTERNAL=$(IdentityUrlExternal) -p IDENTITY_URL=$(IdentityApiUrl) | oc apply -f-'
+        - script: 'oc process -f ./deploy/aro/ordering-api/orderingapi-deploy-template.yml -p IMAGE_REGISTRY_PROJECT_NAME=$(SourceImageRegistryProjectName) -p RABBITMQ_HOSTNAME=$(RabbitMqHostname) -p IDENTITY_URL_EXTERNAL=$(IdentityUrlExternal) -p IDENTITY_URL=$(IdentityApiUrl) | oc apply -f-'
           failOnStderr: true
           displayName: 'Ensure Ordering API OpenShift DeploymentConfig and Service'

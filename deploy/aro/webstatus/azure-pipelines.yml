@@ -8,7 +8,6 @@ trigger:
   paths:
     include:
     - deploy/aro/webstatus/*
-    - deploy/aro/openshift-templates/*
 stages:
   - stage: development
     displayName: Development
@@ -31,6 +30,6 @@ stages:
         - script: 'oc project $(OpenShiftProject)'
           failOnStderr: true
           displayName: 'Set OpenShift Project Context'
-        - script: 'oc process -f ./deploy/aro/openshift-templates/webstatus-deploy-template.yml -p IMAGE_REGISTRY_PROJECT_NAME=$(SourceImageRegistryProjectName) -p WEB_MVC_HC_URL=$(WebMvcHc) -p WEB_SPA_HC_URL=$(WebSpaHc) -p WEB_SHOPPING_AGGREGATOR_HC_URL=$(WebShoppingAggregatorHc) -p MOBILE_SHOPPING_AGGREGATOR_HC_URL=$(MobileShoppingAggregatorHc) -p ORDERING_API_HC_URL=$(OrderingApiHc) -p BASKET_API_HC_URL=$(BasketApiHc) -p CATALOG_API_HC_URL=$(CatalogApiHc) -p IDENTITY_API_HC_URL=$(IdentityApiHc) -p MARKETING_API_HC_URL=$(MarketingApiHc) -p LOCATIONS_API_HC_URL=$(LocationsApiHc) -p PAYMENT_API_HC_URL=$(PaymentApiHc) -p ORDERING_SIGNALR_HUB_HC_URL=$(OrderingSignalRHubHc) -p ORDERING_BACKGROUND_TASKS_HC_URL=$(OrderingBackgroundTasksHc) | oc apply -f-'
+        - script: 'oc process -f ./deploy/aro/webstatus/webstatus-deploy-template.yml -p IMAGE_REGISTRY_PROJECT_NAME=$(SourceImageRegistryProjectName) -p WEB_MVC_HC_URL=$(WebMvcHc) -p WEB_SPA_HC_URL=$(WebSpaHc) -p WEB_SHOPPING_AGGREGATOR_HC_URL=$(WebShoppingAggregatorHc) -p MOBILE_SHOPPING_AGGREGATOR_HC_URL=$(MobileShoppingAggregatorHc) -p ORDERING_API_HC_URL=$(OrderingApiHc) -p BASKET_API_HC_URL=$(BasketApiHc) -p CATALOG_API_HC_URL=$(CatalogApiHc) -p IDENTITY_API_HC_URL=$(IdentityApiHc) -p MARKETING_API_HC_URL=$(MarketingApiHc) -p LOCATIONS_API_HC_URL=$(LocationsApiHc) -p PAYMENT_API_HC_URL=$(PaymentApiHc) -p ORDERING_SIGNALR_HUB_HC_URL=$(OrderingSignalRHubHc) -p ORDERING_BACKGROUND_TASKS_HC_URL=$(OrderingBackgroundTasksHc) | oc apply -f-'
           failOnStderr: true
           displayName: 'Ensure Web Status OpenShift DeploymentConfig and Service'

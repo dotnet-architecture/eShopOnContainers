@@ -7,8 +7,7 @@ trigger:
     - dev
   paths:
     include:
-    - deploy/aro/web-mvc/*
-    - deploy/aro/openshift-templates/*
+    - deploy/aro/webhooks-client/*
 stages:
   - stage: development
     displayName: Development
@@ -31,6 +30,6 @@ stages:
         - script: 'oc project $(OpenShiftProject)'
           failOnStderr: true
           displayName: 'Set OpenShift Project Context'
-        - script: 'oc process -f ./deploy/aro/openshift-templates/webhooks-client-deploy-template.yml -p IMAGE_REGISTRY_PROJECT_NAME=$(SourceImageRegistryProjectName) -p WEBHOOKS_TOKEN=$(WebhooksToken) -p IDENTITY_API_URL=$(IdentityApiUrl) -p WEBHOOKS_WEB_CLIENT_URL=$(WebhooksWebClientUrl) -p WEBHOOKS_API_URL=$(WebhooksApiUrl) | oc apply -f-'
+        - script: 'oc process -f ./deploy/aro/webhooks-client/webhooks-client-deploy-template.yml -p IMAGE_REGISTRY_PROJECT_NAME=$(SourceImageRegistryProjectName) -p WEBHOOKS_TOKEN=$(WebhooksToken) -p IDENTITY_API_URL=$(IdentityApiUrl) -p WEBHOOKS_WEB_CLIENT_URL=$(WebhooksWebClientUrl) -p WEBHOOKS_API_URL=$(WebhooksApiUrl) | oc apply -f-'
           failOnStderr: true
           displayName: 'Ensure Webhooks Client OpenShift DeploymentConfig and Service'
