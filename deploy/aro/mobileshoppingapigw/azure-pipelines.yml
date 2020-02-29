@@ -23,6 +23,11 @@ stages:
         pool: 
           vmImage: 'windows-latest'
         steps:
+        - task: colinsalmcorner.colinsalmcorner-buildtasks.replace-tokens-task.ReplaceTokens@1
+          displayName: 'Replace tokens in envoy.yaml'
+          inputs:
+            sourcePath: ./deploy/aro/mobileshoppingapigw
+            filePattern: envoy.yaml
         - task: redhat.openshift-vsts.oc-setup-task.oc-setup@2
           displayName: 'Setup Openshift CLI'
           inputs:
