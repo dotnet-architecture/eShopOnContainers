@@ -34,6 +34,8 @@ objects:
             ports:
             - containerPort: 8080
               protocol: TCP
+            - containerPort: 8001
+              protocol: TCP
             resources: {}
             terminationMessagePath: /dev/termination-log
             terminationMessagePolicy: File
@@ -66,6 +68,10 @@ objects:
       port: 8080
       protocol: TCP
       targetPort: 8080
+    - name: 8001-tcp
+      port: 8001
+      protocol: TCP
+      targetPort: 8001
     selector:
       app: ${APPLICATION_NAME}
       deploymentconfig: ${APPLICATION_NAME}
