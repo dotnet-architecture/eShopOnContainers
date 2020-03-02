@@ -3,7 +3,7 @@ parameters:
   AppTitle: ''
 jobs:
 - job: ApiGatewayDeployment
-  displayName: '$(AppTitle) Deployment'
+  displayName: '${{ parameters.AppTitle }} Deployment'
   variables:
   - template: variables.yml
   pool: 
