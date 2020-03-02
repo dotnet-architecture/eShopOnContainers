@@ -24,7 +24,7 @@ stages:
           vmImage: 'windows-latest'
         steps:
         - task: colinsalmcorner.colinsalmcorner-buildtasks.replace-tokens-task.ReplaceTokens@1
-          displayName: 'Replace tokens in envoy.yaml'
+          displayName: 'Replace tokens in envoy.yml'
           inputs:
             sourcePath: ./deploy/aro/mobilemarketingapigw
             filePattern: envoy.yml
