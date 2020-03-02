@@ -16,7 +16,7 @@ stages:
       SourceImageRegistryProjectName: development
       EnvironmentName: -dev.msftnbu.com
     jobs:
-    - template: azure-devops-templates/api-gw-deploy.yml
+    - template: ../azure-devops-templates/api-gw-deploy.yml
       parameters:
         AppName: mobilemarketingapigw
         AppTitle: 'Mobile Marketing API Gateway'
