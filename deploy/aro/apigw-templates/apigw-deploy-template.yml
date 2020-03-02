@@ -129,4 +129,4 @@ parameters:
   displayName: Template Name
   name: TEMPLATE_NAME
   required: true
-  value: ${APPLICATION_NAME}-deploy-template
+  value: apigw-deploy-template
