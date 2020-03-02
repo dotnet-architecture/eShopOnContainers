@@ -39,7 +39,7 @@ objects:
             imagePullPolicy: Always
             name: ${APPLICATION_NAME}
             volumeMounts:
-            - name: envoy-volume
+            - name: config
               mountPath: /etc/envoy
             ports:
             - containerPort: 8080
@@ -50,7 +50,7 @@ objects:
             terminationMessagePath: /dev/termination-log
             terminationMessagePolicy: File
             volumes:
-            - name: envoy-volume
+            - name: config
               configMap:
                 name: mobilemarketingapigw-config-map
                 items:
