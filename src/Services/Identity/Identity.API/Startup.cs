@@ -76,9 +76,13 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API
             var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
 
             // Check to see if the Identity server is using https
-            var identityUrl = this.Configuration.GetValue<string>("IdentityUrl");
-            var identityUri = new Uri(identityUrl);
-            var isUsingHttps = identityUri.Scheme == Uri.UriSchemeHttps;
+            var isUsingHttps = false;
+            var identityUrlExternal = this.Configuration.GetValue<string>("IdentityUrlExternal");
+            if (!string.IsNullOrEmpty(identityUrlExternal))
+            {
+                var identityUri = new Uri(identityUrlExternal);
+                isUsingHttps = identityUri.Scheme == Uri.UriSchemeHttps;
+            }
 
             // Adds IdentityServer
             services.AddIdentityServer(x =>
@@ -89,7 +93,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API
                 // Need this if using https
                 if (isUsingHttps)
                 {
-                    x.PublicOrigin = identityUrl;
+                    x.PublicOrigin = identityUrlExternal;
                 }
             })
             .AddDevspacesIfNeeded(Configuration.GetValue("EnableDevspaces", false))

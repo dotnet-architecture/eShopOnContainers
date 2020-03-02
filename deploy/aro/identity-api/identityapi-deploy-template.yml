@@ -26,6 +26,8 @@ objects:
       spec:
         containers:
           - env:
+              - name: IdentityUrlExternal
+                value: ${IDENTITY_URL_EXTERNAL}
               - name: SpaClient
                 value: ${WEB_SPA_URL}
               - name: XamarinCallback
@@ -113,6 +115,10 @@ parameters:
   name: TEMPLATE_NAME
   required: true
   value: identityapi-deploy-template
+- description: The external URL of the Identity endpoint
+  displayName: Identity URL External
+  name: IDENTITY_URL_EXTERNAL
+  required: true
 - description: The cluster internal URL of the Web SPA endpoint
   displayName: Web SPA URL
   name: WEB_SPA_URL
