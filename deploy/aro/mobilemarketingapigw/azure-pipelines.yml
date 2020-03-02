@@ -27,7 +27,7 @@ stages:
           displayName: 'Replace tokens in envoy.yaml'
           inputs:
             sourcePath: ./deploy/aro/mobilemarketingapigw
-            filePattern: envoy.yaml
+            filePattern: envoy.yml
         - task: redhat.openshift-vsts.oc-setup-task.oc-setup@2
           displayName: 'Setup Openshift CLI'
           inputs:
