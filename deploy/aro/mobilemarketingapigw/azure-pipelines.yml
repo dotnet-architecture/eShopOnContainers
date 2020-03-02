@@ -35,8 +35,8 @@ stages:
         - script: 'oc project $(OpenShiftProject)'
           failOnStderr: true
           displayName: 'Set OpenShift Project Context'
-        - script: 'oc delete configmap mobilemarketingapigw'
-          failOnStderr: true
+        - script: 'oc delete configmap mobilemarketingapigw-config-map'
+          failOnStderr: false
           displayName: 'Delete Envoy ConfigMap'
         - script: 'oc create configmap mobilemarketingapigw-config-map --from-file=./deploy/aro/mobilemarketingapigw/envoy.yml'
           failOnStderr: true
