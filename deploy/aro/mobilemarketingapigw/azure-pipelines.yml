@@ -41,6 +41,6 @@ stages:
         - script: 'oc create configmap mobilemarketingapigw --from-file=./deploy/aro/mobilemarketingapigw/envoy.yml'
           failOnStderr: true
           displayName: 'Create Envoy ConfigMap'
-        - script: 'oc process -f ./deploy/aro/mobilemarketingapigw/mobilemarketingapigw-deploy-template.yml -p IMAGE_REGISTRY_PROJECT_NAME=$(SourceImageRegistryProjectName) | oc apply -f-'
+        - script: 'oc process -f ./deploy/aro/apigw-templates/apigw-deploy-template.yml -p APPLICATION_NAME=mobilemarketingapigw -p IMAGE_REGISTRY_PROJECT_NAME=$(SourceImageRegistryProjectName) | oc apply -f-'
           failOnStderr: true
           displayName: 'Ensure Mobile Marketing API Gateway OpenShift DeploymentConfig and Service'

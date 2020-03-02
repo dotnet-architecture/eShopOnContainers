@@ -24,10 +24,10 @@ stages:
           vmImage: 'windows-latest'
         steps:
         - task: colinsalmcorner.colinsalmcorner-buildtasks.replace-tokens-task.ReplaceTokens@1
-          displayName: 'Replace tokens in envoy.yaml'
+          displayName: 'Replace tokens in envoy.yml'
           inputs:
             sourcePath: ./deploy/aro/mobileshoppingapigw
-            filePattern: envoy.yaml
+            filePattern: envoy.yml
         - task: redhat.openshift-vsts.oc-setup-task.oc-setup@2
           displayName: 'Setup Openshift CLI'
           inputs:
@@ -35,6 +35,6 @@ stages:
         - script: 'oc project $(OpenShiftProject)'
           failOnStderr: true
           displayName: 'Set OpenShift Project Context'
-        - script: 'oc process -f ./deploy/aro/mobileshoppingapigw/mobileshoppingapigw-deploy-template.yml -p IMAGE_REGISTRY_PROJECT_NAME=$(SourceImageRegistryProjectName) | oc apply -f-'
+        - script: 'oc process -f ./deploy/aro/apigw-templates/apigw-deploy-template.yml -p APPLICATION_NAME=mobileshoppingapigw -p IMAGE_REGISTRY_PROJECT_NAME=$(SourceImageRegistryProjectName) | oc apply -f-'
           failOnStderr: true
           displayName: 'Ensure Mobile Shopping API Gateway OpenShift DeploymentConfig and Service'

@@ -24,13 +24,23 @@ objects:
           app: ${APPLICATION_NAME}
           deploymentconfig: ${APPLICATION_NAME}
       spec:
+        volumes:
+        - name: config
+          configMap:
+            name: ${APPLICATION_NAME}-config-map
+            items:
+            - key: envoy.yml
+              path: envoy.yml
         containers:
           - env:
               - name: PATH_BASE
-                value: /mobileshoppingapigw
+                value: /${APPLICATION_NAME}
             image: docker-registry.default.svc:5000/${IMAGE_REGISTRY_PROJECT_NAME}/${APPLICATION_NAME}:latest
             imagePullPolicy: Always
             name: ${APPLICATION_NAME}
+            volumeMounts:
+            - name: config
+              mountPath: /etc/envoy
             ports:
             - containerPort: 8080
               protocol: TCP
@@ -39,6 +49,13 @@ objects:
             resources: {}
             terminationMessagePath: /dev/termination-log
             terminationMessagePolicy: File
+            volumes:
+            - name: config
+              configMap:
+                name: ${APPLICATION_NAME}-config-map
+                items:
+                - key: envoy.yml
+                  path: envoy.yml
         dnsPolicy: ClusterFirst
         restartPolicy: Always
         schedulerName: default-scheduler
@@ -104,7 +121,6 @@ parameters:
   displayName: Application Name
   name: APPLICATION_NAME
   required: true
-  value: mobileshoppingapigw
 - description: The OpenShift project name that is hosting the image registry.
   displayName: Image Registry Project Name
   name: IMAGE_REGISTRY_PROJECT_NAME
@@ -113,4 +129,4 @@ parameters:
   displayName: Template Name
   name: TEMPLATE_NAME
   required: true
-  value: mobileshoppingapigw-deploy-template
+  value: ${APPLICATION_NAME}-deploy-template
