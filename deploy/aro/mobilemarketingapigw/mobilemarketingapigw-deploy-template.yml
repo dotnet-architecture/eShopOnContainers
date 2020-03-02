@@ -24,13 +24,23 @@ objects:
           app: ${APPLICATION_NAME}
           deploymentconfig: ${APPLICATION_NAME}
       spec:
+        volumes:
+        - name: config
+          configMap:
+            name: ${APPLICATION_NAME}-config-map
+            items:
+            - key: envoy.yml
+              path: envoy.yml
         containers:
           - env:
               - name: PATH_BASE
-                value: /mobilemarketingapigw
+                value: /${APPLICATION_NAME}
             image: docker-registry.default.svc:5000/${IMAGE_REGISTRY_PROJECT_NAME}/${APPLICATION_NAME}:latest
             imagePullPolicy: Always
             name: ${APPLICATION_NAME}
+            volumeMounts:
+            - name: envoy-volume
+              mountPath: /etc/envoy
             ports:
             - containerPort: 8080
               protocol: TCP
@@ -39,6 +49,13 @@ objects:
             resources: {}
             terminationMessagePath: /dev/termination-log
             terminationMessagePolicy: File
+            volumes:
+            - name: envoy-volume
+              configMap:
+                name: mobilemarketingapigw-config-map
+                items:
+                - key: envoy.yml
+                  path: envoy.yml
         dnsPolicy: ClusterFirst
         restartPolicy: Always
         schedulerName: default-scheduler

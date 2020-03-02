@@ -9,7 +9,7 @@ static_resources:
   - address:
       socket_address:
         address: 0.0.0.0
-        port_value: 80
+        port_value: 8080
     filter_chains:
     - filters:
       - name: envoy.http_connection_manager
@@ -37,7 +37,7 @@ static_resources:
                   auto_host_rewrite: true
                   cluster: marketing
           http_filters:
-          - name: envoy.router      
+          - name: envoy.router  
           access_log:
           - name: envoy.file_access_log
             filter:
@@ -54,22 +54,22 @@ static_resources:
                 route_name: "%ROUTE_NAME%"
                 upstream_host: "%UPSTREAM_HOST%"
                 upstream_cluster: "%UPSTREAM_CLUSTER%"
-                upstream_local_address: "%UPSTREAM_LOCAL_ADDRESS%"     
-              path: "/tmp/access.log"
+                upstream_local_address: "%UPSTREAM_LOCAL_ADDRESS%"    
+              path: "/tmp/access.log"                 
   clusters:
   - name: marketing
     connect_timeout: 0.25s
-    type: strict_dns
+    type: logical_dns
     lb_policy: round_robin
     hosts:
     - socket_address:
-        address: marketing-api
-        port_value: 80
+        address: marketingapi.__OpenShiftProject__.svc:8080
+        port_value: 8080
   - name: locations
     connect_timeout: 0.25s
-    type: strict_dns
+    type: logical_dns
     lb_policy: round_robin
     hosts:
     - socket_address:
-        address: locations-api
-        port_value: 80
+        address: locationsapi.__OpenShiftProject__.svc:8080
+        port_value: 8080

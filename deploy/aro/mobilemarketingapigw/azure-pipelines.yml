@@ -35,6 +35,9 @@ stages:
         - script: 'oc project $(OpenShiftProject)'
           failOnStderr: true
           displayName: 'Set OpenShift Project Context'
+        - script: 'oc create configmap mobilemarketingapigw --from-file=./deploy/aro/mobilemarketingapigw/envoy.yml'
+          failOnStderr: true
+          displayName: 'Add Envoy ConfigMap'
         - script: 'oc process -f ./deploy/aro/mobilemarketingapigw/mobilemarketingapigw-deploy-template.yml -p IMAGE_REGISTRY_PROJECT_NAME=$(SourceImageRegistryProjectName) | oc apply -f-'
           failOnStderr: true
           displayName: 'Ensure Mobile Marketing API Gateway OpenShift DeploymentConfig and Service'
