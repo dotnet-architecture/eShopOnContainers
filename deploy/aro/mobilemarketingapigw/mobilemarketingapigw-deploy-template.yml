@@ -52,7 +52,7 @@ objects:
             volumes:
             - name: config
               configMap:
-                name: mobilemarketingapigw-config-map
+                name: ${APPLICATION_NAME}-config-map
                 items:
                 - key: envoy.yml
                   path: envoy.yml
