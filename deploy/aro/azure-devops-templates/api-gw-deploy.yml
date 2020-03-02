@@ -23,6 +23,7 @@ jobs:
     displayName: 'Set OpenShift Project Context'
   - script: 'oc delete configmap ${{ parameters.AppName }}-config-map'
     failOnStderr: false
+    continueOnError: true
     displayName: 'Delete Envoy ConfigMap'
   - script: 'oc create configmap ${{ parameters.AppName }}-config-map --from-file=./deploy/aro/${{ parameters.AppName }}/envoy.yaml'
     failOnStderr: true
