@@ -27,7 +27,7 @@ objects:
         containers:
           - env:
               - name: IdentityUrl
-                value: ${IDENTITY_API_URL}
+                value: ${IDENTITY_URL_EXTERNAL}
               - name: PurchaseUrl
                 value: ${WEB_SHOPPING_API_GATEWAY_URL}
               - name: MarketingUrl
@@ -96,9 +96,9 @@ parameters:
   name: TEMPLATE_NAME
   required: true
   value: webmvc-deploy-template
-- description: The cluster internal URL of the Identity endpoint
-  displayName: Identity URL
-  name: IDENTITY_API_URL
+- description: The external URL of the Identity endpoint
+  displayName: Identity URL External
+  name: IDENTITY_URL_EXTERNAL
   required: true
 - description: The URL of the Web Shopping API Gateway endpoint
   displayName: Web Shopping API Gateway URL
