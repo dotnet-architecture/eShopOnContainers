@@ -75,11 +75,22 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API
             var connectionString = Configuration["ConnectionString"];
             var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
 
+            // Check to see if the Identity server is using https
+            var identityUrl = this.Configuration.GetValue<string>("IdentityUrl");
+            var identityUri = new Uri(identityUrl);
+            var isUsingHttps = identityUri.Scheme == Uri.UriSchemeHttps;
+
             // Adds IdentityServer
             services.AddIdentityServer(x =>
             {
                 x.IssuerUri = "null";
                 x.Authentication.CookieLifetime = TimeSpan.FromHours(2);
+
+                // Need this if using https
+                if (isUsingHttps)
+                {
+                    x.PublicOrigin = identityUrl;
+                }
             })
             .AddDevspacesIfNeeded(Configuration.GetValue("EnableDevspaces", false))
             .AddSigningCredential(Certificate.Get())
