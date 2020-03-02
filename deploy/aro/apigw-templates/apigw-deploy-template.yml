@@ -29,8 +29,8 @@ objects:
           configMap:
             name: ${APPLICATION_NAME}-config-map
             items:
-            - key: envoy.yml
-              path: envoy.yml
+            - key: envoy.yaml
+              path: envoy.yaml
         containers:
           - env:
               - name: PATH_BASE
@@ -54,8 +54,8 @@ objects:
               configMap:
                 name: ${APPLICATION_NAME}-config-map
                 items:
-                - key: envoy.yml
-                  path: envoy.yml
+                - key: envoy.yaml
+                  path: envoy.yaml
         dnsPolicy: ClusterFirst
         restartPolicy: Always
         schedulerName: default-scheduler
