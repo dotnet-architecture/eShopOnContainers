@@ -5,7 +5,7 @@ jobs:
 - job: ApiGatewayDeployment
   displayName: '$(AppTitle) Deployment'
   variables:
-  - template: ./deploy/aro/azure-devops-templates/variables.yml
+  - template: variables.yml
   pool: 
     vmImage: 'windows-latest'
   steps:
