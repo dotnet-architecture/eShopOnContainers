@@ -1,0 +1,32 @@
+parameters:
+  AppName: ''
+  AppTitle: ''
+jobs:
+- job: ApiGatewayDeployment
+  displayName: '$(AppTitle) Deployment'
+  variables:
+  - template: ./deploy/aro/azure-devops-templates/variables.yml
+  pool: 
+    vmImage: 'windows-latest'
+  steps:
+  - task: colinsalmcorner.colinsalmcorner-buildtasks.replace-tokens-task.ReplaceTokens@1
+    displayName: 'Replace tokens in envoy.yaml'
+    inputs:
+      sourcePath: ./deploy/aro/$(AppName)
+      filePattern: envoy.yaml
+  - task: redhat.openshift-vsts.oc-setup-task.oc-setup@2
+    displayName: 'Setup Openshift CLI'
+    inputs:
+      openshiftService: $(OpenShiftServiceConnection)
+  - script: 'oc project $(OpenShiftProject)'
+    failOnStderr: true
+    displayName: 'Set OpenShift Project Context'
+  - script: 'oc delete configmap $(AppName)-config-map'
+    failOnStderr: false
+    displayName: 'Delete Envoy ConfigMap'
+  - script: 'oc create configmap $(AppName)-config-map --from-file=./deploy/aro/$(AppName)/envoy.yaml'
+    failOnStderr: true
+    displayName: 'Create Envoy ConfigMap'
+  - script: 'oc process -f ./deploy/aro/apigw-templates/apigw-deploy-template.yml -p APPLICATION_NAME=$(AppName) -p IMAGE_REGISTRY_PROJECT_NAME=$(SourceImageRegistryProjectName) | oc apply -f-'
+    failOnStderr: true
+    displayName: 'Ensure $(AppTitle) OpenShift Application'

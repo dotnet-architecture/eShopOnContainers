@@ -16,25 +16,7 @@ stages:
       SourceImageRegistryProjectName: development
       EnvironmentName: -dev.msftnbu.com
     jobs:
-      - job: WebMarketingApiGatewayDeployment
-        displayName: 'Web Marketing API Gateway Deployment'
-        variables:
-        - template: ../azure-devops-templates/variables.yml
-        pool: 
-          vmImage: 'windows-latest'
-        steps:
-        - task: colinsalmcorner.colinsalmcorner-buildtasks.replace-tokens-task.ReplaceTokens@1
-          displayName: 'Replace tokens in envoy.yml'
-          inputs:
-            sourcePath: ./deploy/aro/webmarketingapigw
-            filePattern: envoy.yml
-        - task: redhat.openshift-vsts.oc-setup-task.oc-setup@2
-          displayName: 'Setup Openshift CLI'
-          inputs:
-            openshiftService: $(OpenShiftServiceConnection)
-        - script: 'oc project $(OpenShiftProject)'
-          failOnStderr: true
-          displayName: 'Set OpenShift Project Context'
-        - script: 'oc process -f ./deploy/aro/apigw-templates/apigw-deploy-template.yml -p APPLICATION_NAME=webmarketingapigw -p IMAGE_REGISTRY_PROJECT_NAME=$(SourceImageRegistryProjectName) | oc apply -f-'
-          failOnStderr: true
-          displayName: 'Ensure Web Marketing API Gateway OpenShift DeploymentConfig and Service'
+      - template: ./deploy/aro/azure-devops-templates/api-gw-deploy.yml
+        parameters:
+          AppName: webmarketingapigw
+          AppTitle: 'Web Marketing API Gateway'
