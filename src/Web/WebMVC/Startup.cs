@@ -200,11 +200,6 @@ namespace Microsoft.eShopOnContainers.WebMVC
             var callBackUrl = configuration.GetValue<string>("CallBackUrl");
             var sessionCookieLifetime = configuration.GetValue("SessionCookieLifetimeMinutes", 60);
 
-            var logger = loggerFactory.CreateLogger<Startup>();
-            logger.LogInformation($"UseLoadTest:  {useLoadTest}");
-            logger.LogInformation($"IdentityUrl:  {identityUrl}");
-            logger.LogInformation($"CallBackUrl:  {callBackUrl}");
-
             // Add Authentication services          
 
             services.AddAuthentication(options =>
