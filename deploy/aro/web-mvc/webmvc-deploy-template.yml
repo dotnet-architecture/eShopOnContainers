@@ -28,6 +28,8 @@ objects:
           - env:
               - name: IdentityUrl
                 value: ${IDENTITY_URL_EXTERNAL}
+              - name: CallbackUrl
+                value: ${WEB_MVC_URL}
               - name: PurchaseUrl
                 value: ${WEB_SHOPPING_API_GATEWAY_URL}
               - name: MarketingUrl
