@@ -59,6 +59,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
         {
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("sub");
 
+            // This is necessary for reverse-proxy load balancing in OpenShift
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedProto
