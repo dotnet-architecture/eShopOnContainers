@@ -102,6 +102,10 @@ parameters:
   displayName: Identity URL External
   name: IDENTITY_URL_EXTERNAL
   required: true
+- description: The public URL of the Web MVC endpoint
+  displayName: Web MVC URL
+  name: WEB_MVC_URL
+  required: true
 - description: The URL of the Web Shopping API Gateway endpoint
   displayName: Web Shopping API Gateway URL
   name: WEB_SHOPPING_API_GATEWAY_URL
