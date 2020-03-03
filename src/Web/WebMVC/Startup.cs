@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.eShopOnContainers.WebMVC.Services;
 using Microsoft.eShopOnContainers.WebMVC.ViewModels;
@@ -57,6 +58,12 @@ namespace Microsoft.eShopOnContainers.WebMVC
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("sub");
+
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedProto
+            });
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -192,6 +199,11 @@ namespace Microsoft.eShopOnContainers.WebMVC
             var identityUrl = configuration.GetValue<string>("IdentityUrl");
             var callBackUrl = configuration.GetValue<string>("CallBackUrl");
             var sessionCookieLifetime = configuration.GetValue("SessionCookieLifetimeMinutes", 60);
+
+            var logger = loggerFactory.CreateLogger<Startup>();
+            logger.LogInformation($"UseLoadTest:  {useLoadTest}");
+            logger.LogInformation($"IdentityUrl:  {identityUrl}");
+            logger.LogInformation($"CallBackUrl:  {callBackUrl}");
 
             // Add Authentication services          
 
