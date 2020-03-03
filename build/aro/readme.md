@@ -8,4 +8,4 @@ When connecting to OpenShift from Azure DevOps, there is a dependency on an Open
 
 For more information on ARO, please read the [ARO documentation](https://docs.openshift.com/aro/welcome/index.html).
 
-For more information about YAML builds read the [Azure DevOps documentation](https://docs.microsoft.com/azure/devops/pipelines/get-started-yaml?view=azure-devops).
+For more information about YAML pipelines read the [Azure DevOps documentation](https://docs.microsoft.com/azure/devops/pipelines/get-started-yaml?view=azure-devops).
