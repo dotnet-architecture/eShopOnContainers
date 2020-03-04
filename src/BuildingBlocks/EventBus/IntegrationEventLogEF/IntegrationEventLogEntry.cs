@@ -6,13 +6,15 @@ using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
 using System.Linq;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
+using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF.Services;
 
 namespace Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF
 {
     public class IntegrationEventLogEntry
     {
         private IntegrationEventLogEntry() { }
-        public IntegrationEventLogEntry(IntegrationEvent @event)
+        public IntegrationEventLogEntry(IntegrationEvent @event, Guid transactionId)
         {
             EventId = @event.Id;            
             CreationTime = @event.CreationDate;
@@ -20,6 +22,7 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF
             Content = JsonConvert.SerializeObject(@event);
             State = EventStateEnum.NotPublished;
             TimesSent = 0;
+            TransactionId = transactionId.ToString();
         }
         public Guid EventId { get; private set; }
         public string EventTypeName { get; private set; }
@@ -31,6 +34,7 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF
         public int TimesSent { get; set; }
         public DateTime CreationTime { get; private set; }
         public string Content { get; private set; }
+        public string TransactionId { get; private set; }
 
         public IntegrationEventLogEntry DeserializeJsonContent(Type type)
         {

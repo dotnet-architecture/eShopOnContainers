@@ -74,11 +74,11 @@
         <script src="~/js/site.js" asp-append-version="true"></script>
     </environment>
     <environment names="Staging,Production">
-        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"
                 asp-fallback-src="~/lib/jquery/jquery.min.js"
                 asp-fallback-test="window.jQuery">
         </script>
-        <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"
                 asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
                 asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal">
         </script>
@@ -102,11 +102,11 @@
         function stablishConnection(cb) {
             let connection = new signalR.HubConnectionBuilder()
                 .withUrl('@settings.Value.SignalrHubUrl/hub/notificationhub', {
-                    transport: signalR.HttpTransportType.LongPolling,
                     accessTokenFactory: () => {
                         return "Authorization", getToken();
                     }
                 })
+                .withAutomaticReconnect()
                 .build(); 
             
             connection.start().then(function () {

@@ -1,0 +1,130 @@
+version: '3.4'
+
+services:
+  sql-data-test:
+    image: mcr.microsoft.com/mssql/server:2017-latest 
+
+  nosql-data-test:
+    image: mongo
+
+  basket-data-test:
+    image: redis:alpine
+
+  rabbitmq-test:
+    image: rabbitmq:3-management-alpine
+
+  identity-api-test:
+    image: ${REGISTRY:-eshop}/identity-api-test:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: Services/Identity/Identity.API/Dockerfile
+    depends_on:
+      - sql-data-test
+
+  basket-api-functional-test:
+    image: ${REGISTRY:-eshop}/basket-api-test:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: Services/Basket/Basket.API/Dockerfile
+      target: functionaltest
+    depends_on:
+      - basket-data-test
+      - identity-api-test
+      - rabbitmq-test
+    volumes:
+      - ${BUILD_ARTIFACTSTAGINGDIRECTORY:-./tests-results/}:/tests
+
+  basket-api-unit-test:
+    image: ${REGISTRY:-eshop}/basket-api-unit-test:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: Services/Basket/Basket.API/Dockerfile
+      target: unittest
+    depends_on:
+      - basket-data-test
+      - identity-api-test
+      - rabbitmq-test
+    volumes:
+      - ${BUILD_ARTIFACTSTAGINGDIRECTORY:-./tests-results/}:/tests
+
+  catalog-api-functional-test:
+    image: ${REGISTRY:-eshop}/catalog-api-functional-test:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: Services/Catalog/Catalog.API/Dockerfile
+      target: functionaltest
+    depends_on:
+      - sql-data-test
+      - rabbitmq-test
+    volumes:
+      - ${BUILD_ARTIFACTSTAGINGDIRECTORY:-./tests-results/}:/tests
+
+  catalog-api-unit-test:
+    image: ${REGISTRY:-eshop}/catalog-api-unit-test:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: Services/Catalog/Catalog.API/Dockerfile
+      target: unittest
+    depends_on:
+      - sql-data-test
+      - rabbitmq-test
+    volumes:
+      - ${BUILD_ARTIFACTSTAGINGDIRECTORY:-./tests-results/}:/tests
+
+  ordering-api-functional-test:
+    image: ${REGISTRY:-eshop}/ordering-api-test:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: Services/Ordering/Ordering.API/Dockerfile
+      target: functionaltest
+    depends_on:
+      - sql-data-test
+      - rabbitmq-test
+    volumes:
+      - ${BUILD_ARTIFACTSTAGINGDIRECTORY:-./tests-results/}:/tests
+
+  ordering-api-unit-test:
+    image: ${REGISTRY:-eshop}/ordering-api-unit-test:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: Services/Ordering/Ordering.API/Dockerfile
+      target: unittest
+    depends_on:
+      - sql-data-test
+      - rabbitmq-test
+    volumes:
+      - ${BUILD_ARTIFACTSTAGINGDIRECTORY:-./tests-results/}:/tests
+
+  marketing-api-functional-test:
+    image: ${REGISTRY:-eshop}/marketing-api-test:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: Services/Marketing/Marketing.API/Dockerfile
+      target: functionaltest
+    depends_on:
+      - sql-data-test
+      - nosql-data-test
+      - identity-api-test
+      - rabbitmq-test
+    volumes:
+      - ${BUILD_ARTIFACTSTAGINGDIRECTORY:-./tests-results/}:/tests
+
+  payment-api-test:
+    image: ${REGISTRY:-eshop}/payment-api-test:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: Services/Payment/Payment.API/Dockerfile
+    depends_on:
+      - rabbitmq-test
+
+  locations-api-functional-test:
+    image: ${REGISTRY:-eshop}/locations-api-test:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: Services/Location/Locations.API/Dockerfile
+      target: functionaltest
+    depends_on:
+      - nosql-data-test
+      - rabbitmq-test
+    volumes:
+      - ${BUILD_ARTIFACTSTAGINGDIRECTORY:-./tests-results/}:/tests

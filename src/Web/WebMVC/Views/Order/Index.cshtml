@@ -3,14 +3,15 @@
 @model IEnumerable<Microsoft.eShopOnContainers.WebMVC.ViewModels.Order>
 
 @{
-    ViewData["Title"] = "My Orders";
+     ViewData["Title"] = "My Orders";
+     var headerList= new List<Header>() {
+        new Header() { Controller = "Catalog", Text = "Back to catalog" },
+        new Header() { Text = " / " },
+        new Header() { Controller = "OrderManagement", Text = "Orders Management" } };
 }
 
 <div class="esh-orders">
-    @Html.Partial("_Header", new List<Header>() {
-new Header() { Controller = "Catalog", Text = "Back to catalog" },
-new Header() { Text = " / " },
-new Header() { Controller = "OrderManagement", Text = "Orders Management" } })
+    <partial name="_Header" model="headerList"/>
 
     <div class="container">
         <article class="esh-orders-titles row">

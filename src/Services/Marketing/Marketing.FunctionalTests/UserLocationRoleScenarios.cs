@@ -8,6 +8,7 @@ using Xunit;
 
 namespace Marketing.FunctionalTests
 {
+    [Collection("Sequential")]
     public class UserLocationRoleScenarios
         : UserLocationRoleScenariosBase
     {
@@ -28,7 +29,7 @@ namespace Marketing.FunctionalTests
         [Fact]
         public async Task Post_add_new_user_location_rule_and_response_ok_status_code()
         {
-            var campaignId = 81;
+            var campaignId = 2;
 
             using (var server = CreateServer())
             {
@@ -44,7 +45,7 @@ namespace Marketing.FunctionalTests
         [Fact]
         public async Task Delete_delete_user_location_role_and_response_not_content_status_code()
         {
-            var campaignId = 81;
+            var campaignId = 2;
 
             using (var server = CreateServer())
             {

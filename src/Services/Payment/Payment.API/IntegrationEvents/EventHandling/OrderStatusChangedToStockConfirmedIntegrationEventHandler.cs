@@ -23,6 +23,8 @@
             _eventBus = eventBus;
             _settings = settings.Value;
             _logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
+
+            _logger.LogTrace("PaymentSettings: {@PaymentSettings}", _settings);
         }
 
         public async Task Handle(OrderStatusChangedToStockConfirmedIntegrationEvent @event)
@@ -39,9 +41,9 @@
                 // Instead of a real payment we just take the env. var to simulate the payment 
                 // The payment can be successful or it can fail
 
-                if (_settings.PaymentSucceded)
+                if (_settings.PaymentSucceeded)
                 {
-                    orderPaymentIntegrationEvent = new OrderPaymentSuccededIntegrationEvent(@event.OrderId);
+                    orderPaymentIntegrationEvent = new OrderPaymentSucceededIntegrationEvent(@event.OrderId);
                 }
                 else
                 {

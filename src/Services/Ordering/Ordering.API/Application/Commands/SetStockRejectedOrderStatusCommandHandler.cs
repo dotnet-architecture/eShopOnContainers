@@ -27,7 +27,7 @@ namespace Ordering.API.Application.Commands
         public async Task<bool> Handle(SetStockRejectedOrderStatusCommand command, CancellationToken cancellationToken)
         {
             // Simulate a work time for rejecting the stock
-            await Task.Delay(10000);
+            await Task.Delay(10000, cancellationToken);
 
             var orderToUpdate = await _orderRepository.GetAsync(command.OrderNumber);
             if(orderToUpdate == null)
@@ -37,7 +37,7 @@ namespace Ordering.API.Application.Commands
 
             orderToUpdate.SetCancelledStatusWhenStockIsRejected(command.OrderStockItems);
 
-            return await _orderRepository.UnitOfWork.SaveEntitiesAsync();
+            return await _orderRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
         }
     }
 

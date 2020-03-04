@@ -55,7 +55,7 @@ namespace UnitTest.Basket.Application
 
             //Assert
             Assert.Equal((actionResult.Result as OkObjectResult).StatusCode, (int)System.Net.HttpStatusCode.OK);
-            Assert.Equal(((CustomerBasket)actionResult.Value).BuyerId, fakeCustomerId);
+            Assert.Equal((((ObjectResult)actionResult.Result).Value as CustomerBasket).BuyerId, fakeCustomerId);
         }
 
         [Fact]
@@ -81,7 +81,7 @@ namespace UnitTest.Basket.Application
 
             //Assert
             Assert.Equal((actionResult.Result as OkObjectResult).StatusCode, (int)System.Net.HttpStatusCode.OK);
-            Assert.Equal(((CustomerBasket)actionResult.Value).BuyerId, fakeCustomerId);
+            Assert.Equal((((ObjectResult)actionResult.Result).Value as CustomerBasket).BuyerId, fakeCustomerId);
         }
 
         [Fact]
@@ -125,7 +125,11 @@ namespace UnitTest.Basket.Application
                 HttpContext = new DefaultHttpContext()
                 {
                     User = new ClaimsPrincipal(
-                        new ClaimsIdentity(new Claim[] { new Claim("unique_name", "testuser") }))
+                        new ClaimsIdentity(new Claim[] {
+                            new Claim("sub", "testuser"),
+                            new Claim("unique_name", "testuser"),
+                            new Claim(ClaimTypes.Name, "testuser")
+                             }))
                 }
             };
 

@@ -1,6 +1,7 @@
-﻿@{
+﻿@model Microsoft.eShopOnContainers.WebMVC.ViewModels.CatalogViewModels.IndexViewModel
+
+@{
     ViewData["Title"] = "Catalog";
-    @model Microsoft.eShopOnContainers.WebMVC.ViewModels.CatalogViewModels.IndexViewModel
 }
 <section class="esh-catalog-hero">
     <div class="container">
@@ -27,31 +28,31 @@
         <br />
         @if(ViewBag.BasketInoperativeMsg != null)
         {
-            <div class="alert alert-warning" role="alert">
-                &nbsp;@ViewBag.BasketInoperativeMsg
-            </div>
+        <div class="alert alert-warning" role="alert">
+            &nbsp;@ViewBag.BasketInoperativeMsg
+        </div>
         }
     </div>
 
     @if (Model.CatalogItems.Count() > 0)
     {
-        @Html.Partial("_pagination", Model.PaginationInfo)
+    <partial name="_pagination" for="PaginationInfo" />
 
-        <div class="esh-catalog-items row">
-            @foreach (var catalogItem in Model.CatalogItems)
+    <div class="esh-catalog-items row">
+        @foreach (var catalogItem in Model.CatalogItems)
             {
-                <div class="esh-catalog-item col-md-4">
-                    @Html.Partial("_product", catalogItem)
-                </div>
-            }
+        <div class="esh-catalog-item col-md-4">
+            <partial name="_product" model="catalogItem" />
         </div>
+            }
+    </div>
 
-        @Html.Partial("_pagination", Model.PaginationInfo)
+    <partial name="_pagination" for="PaginationInfo" />
     }
     else
     {
-        <div class="esh-catalog-items row">
-            THERE ARE NO RESULTS THAT MATCH YOUR SEARCH
-        </div>
+    <div class="esh-catalog-items row">
+        THERE ARE NO RESULTS THAT MATCH YOUR SEARCH
+    </div>
     }
 </div>

@@ -1,14 +1,10 @@
 ﻿using Basket.FunctionalTests.Base;
-using Microsoft.eShopOnContainers.Services.Basket.API;
+using Microsoft.eShopOnContainers.Services.Basket.API.Infrastructure.Repositories;
 using Microsoft.eShopOnContainers.Services.Basket.API.Model;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using Moq;
 using StackExchange.Redis;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -79,7 +75,7 @@ namespace Basket.FunctionalTests
                 {
                     Id = "basketId",
                     PictureUrl = "pictureurl",
-                    ProductId = "productId",
+                    ProductId = 1,
                     ProductName = "productName",
                     Quantity = 1,
                     UnitPrice = 1
