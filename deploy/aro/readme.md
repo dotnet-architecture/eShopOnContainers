@@ -10,7 +10,7 @@ Each subfolder in this folder corresponds to one of the eShopOnContainers micros
 
 Some of the microservices folders contain extra files, such as for exposing public routes.  These are not included in the OpenShift templates because they need to be tokenized in order to preserve the integrity of the certificate data used for the routes.
 
-In order to get secrets passed in to the pipelines, I have chosen to use an Azure Key Vault instance in conjunction with the [Azure DevOps Azure Key Vault task](https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/deploy/azure-key-vault?view=azure-devops) in order to bring in any secrets needed during the build as ephemeral environment variables.  The only secrets that I have chosen to store in Azure Key Vault are the SQL username/password and the certificate values required for the public routes.  The following are the envrionment variable names of the secrets:
+In order to get secrets passed in to the pipelines, I have chosen to use an Azure Key Vault instance in conjunction with the [Azure DevOps Azure Key Vault task](https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/deploy/azure-key-vault?view=azure-devops) in order to bring in any secrets needed during the build as ephemeral environment variables.  The only secrets that I have chosen to store in Azure Key Vault are the SQL username/password and the certificate values required for the public routes.  The following are the environment variable names of the secrets:
 
 - SqlUsername
 - SqlPassword
@@ -25,3 +25,5 @@ When connecting to OpenShift from Azure DevOps, there is a dependency on an Open
 For more information on ARO, please read the [ARO documentation](https://docs.openshift.com/aro/welcome/index.html).
 
 For more information about YAML pipelines read the [Azure DevOps documentation](https://docs.microsoft.com/azure/devops/pipelines/get-started-yaml?view=azure-devops.
+
+Here is a [video](https://youtu.be/NFKcEj-PKM4) explaining how all of this works with Azure DevOps and ARO :)
