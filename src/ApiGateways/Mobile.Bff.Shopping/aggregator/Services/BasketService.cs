@@ -41,9 +41,8 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Services
 
         public async Task UpdateAsync(BasketData currentBasket)
         {
-            await GrpcCallerService.CallService(_urls.GrpcBasket, async httpClient =>
+            await GrpcCallerService.CallService(_urls.GrpcBasket, async channel =>
             {
-                var channel = GrpcChannel.ForAddress(_urls.GrpcBasket);
                 var client = new Basket.BasketClient(channel);
                 _logger.LogDebug("Grpc update basket currentBasket {@currentBasket}", currentBasket);
                 var request = MapToCustomerBasketRequest(currentBasket);
