@@ -30,8 +30,12 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.SeedWork
             ValueObject other = (ValueObject)obj;
             IEnumerator<object> thisValues = GetAtomicValues().GetEnumerator();
             IEnumerator<object> otherValues = other.GetAtomicValues().GetEnumerator();
-            while (thisValues.MoveNext() && otherValues.MoveNext())
+            while (true)
             {
+                var thisValuesDone = !thisValues.MoveNext();
+                var otherValuesDone = !otherValues.MoveNext();
+                if (thisValuesDone || otherValuesDone) return thisValuesDone && otherValuesDone;
+
                 if (ReferenceEquals(thisValues.Current, null) ^ ReferenceEquals(otherValues.Current, null))
                 {
                     return false;
@@ -41,7 +45,6 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.SeedWork
                     return false;
                 }
             }
-            return !thisValues.MoveNext() && !otherValues.MoveNext();
         }
 
         public override int GetHashCode()
