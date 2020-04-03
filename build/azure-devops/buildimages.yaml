@@ -27,8 +27,7 @@ jobs:
       PLATFORM: win
       NODE_IMAGE: stefanscherer/node-windows:10
 - job: BuildLinux
-  condition: true
-  # condition: ne('${{ variables['Build.Reason'] }}', 'PullRequest')
+  condition: ne('${{ variables['Build.Reason'] }}', 'PullRequest')
   pool:
     vmImage: 'ubuntu-16.04'
   steps:
