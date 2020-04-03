@@ -13,7 +13,7 @@ jobs:
   - bash: docker-compose -f src/docker-compose.yml build ${{ parameters.services }}
     displayName: Compose build ${{ parameters.services }}
     env:
-      TAG: pr-test-${{ variables['Build.SourceBranchName'] }}
+      TAG: ${{ variables['Build.SourceBranchName'] }}
 - job: BuildContainersForPR_Windows
   condition: False
   # condition: eq('${{ variables['Build.Reason'] }}', 'PullRequest')
@@ -41,7 +41,7 @@ jobs:
       qualifyImageNames: true
       projectName: ""
       dockerComposeFileArgs: |
-        TAG=pr-test-${{ variables['Build.SourceBranchName'] }}
+        TAG=${{ variables['Build.SourceBranchName'] }}
   - task: DockerCompose@0
     displayName: Compose push ${{ parameters.images }}
     inputs:
@@ -52,7 +52,7 @@ jobs:
       qualifyImageNames: true
       projectName: ""
       dockerComposeFileArgs: |
-        TAG=pr-test-${{ variables['Build.SourceBranchName'] }}
+        TAG=${{ variables['Build.SourceBranchName'] }}
   - task: CopyFiles@2
     inputs:
       sourceFolder: ${{ parameters.helmfrom }}
