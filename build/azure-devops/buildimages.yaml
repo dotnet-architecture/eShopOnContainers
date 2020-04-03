@@ -13,7 +13,7 @@ jobs:
   - bash: docker-compose -f src/docker-compose.yml build ${{ parameters.services }}
     displayName: Compose build ${{ parameters.services }}
     env:
-      TAG: ${{ variables['Build.SourceBranchName'] }}
+      TAG: pr-test-${{ variables['Build.SourceBranchName'] }}
 - job: BuildContainersForPR_Windows
   condition: False
   # condition: eq('${{ variables['Build.Reason'] }}', 'PullRequest')
@@ -27,7 +27,8 @@ jobs:
       PLATFORM: win
       NODE_IMAGE: stefanscherer/node-windows:10
 - job: BuildLinux
-  condition: ne('${{ variables['Build.Reason'] }}', 'PullRequest')
+  condition: true
+  # condition: ne('${{ variables['Build.Reason'] }}', 'PullRequest')
   pool:
     vmImage: 'ubuntu-16.04'
   steps:
@@ -41,7 +42,7 @@ jobs:
       qualifyImageNames: true
       projectName: ""
       dockerComposeFileArgs: |
-        TAG=${{ variables['Build.SourceBranchName'] }}
+        TAG=pr-test-${{ variables['Build.SourceBranchName'] }}
   - task: DockerCompose@0
     displayName: Compose push ${{ parameters.images }}
     inputs:
@@ -52,7 +53,7 @@ jobs:
       qualifyImageNames: true
       projectName: ""
       dockerComposeFileArgs: |
-        TAG=${{ variables['Build.SourceBranchName'] }}
+        TAG=pr-test-${{ variables['Build.SourceBranchName'] }}
   - task: CopyFiles@2
     inputs:
       sourceFolder: ${{ parameters.helmfrom }}
