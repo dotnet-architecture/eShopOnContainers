@@ -66,7 +66,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
 
         private static IWebHost CreateHostBuilder(IConfiguration configuration, string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseConfiguration(configuration)
+                .ConfigureAppConfiguration(x => x.AddConfiguration(configuration))
                 .CaptureStartupErrors(false)
                 .ConfigureKestrel(options =>
                 {
