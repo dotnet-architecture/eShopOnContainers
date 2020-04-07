@@ -9,6 +9,9 @@ trigger:
     include:
     - src/BuildingBlocks/*
     - src/Web/WebMVC/*
+    - build/azure-devops/buildimages.yml
+    - build/azure-devops/multiarch.yml
+    - build/azure-devops/webmvc/*
     - deploy/k8s/helm/webmvc/*
 jobs:
 - template: ../buildimages.yaml

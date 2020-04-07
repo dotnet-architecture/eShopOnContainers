@@ -9,6 +9,9 @@ trigger:
     include:
     - src/BuildingBlocks/*
     - src/Services/Identity/*
+    - build/azure-devops/buildimages.yml
+    - build/azure-devops/multiarch.yml
+    - build/azure-devops/identity-api/*
     - deploy/k8s/helm/identity-api/*
 jobs:
 - template: ../buildimages.yaml

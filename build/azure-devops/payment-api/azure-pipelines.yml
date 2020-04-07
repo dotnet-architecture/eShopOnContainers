@@ -9,6 +9,9 @@ trigger:
     include:
     - src/BuildingBlocks/*
     - src/Services/Payment/*
+    - build/azure-devops/buildimages.yml
+    - build/azure-devops/multiarch.yml
+    - build/azure-devops/payment-api/*
     - deploy/k8s/helm/payment-api/*
 jobs:
 - template: ../buildimages.yaml
