@@ -57,8 +57,8 @@
 
             _orderRepository.Add(order);
 
-            return await _orderRepository.UnitOfWork
-                .SaveEntitiesAsync(cancellationToken);
+            await _orderRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
+            return true;
         }
     }
 

@@ -36,7 +36,8 @@ namespace Ordering.API.Application.Commands
             }
 
             orderToUpdate.SetStockConfirmedStatus();
-            return await _orderRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
+            await _orderRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
+            return true;
         }
     }
 

@@ -10,7 +10,7 @@ namespace Ordering.API.Application.Commands
 {
     // Regular CommandHandler
     public class SetStockRejectedOrderStatusCommandHandler : IRequestHandler<SetStockRejectedOrderStatusCommand, bool>
-    {        
+    {
         private readonly IOrderRepository _orderRepository;
 
         public SetStockRejectedOrderStatusCommandHandler(IOrderRepository orderRepository)
@@ -30,14 +30,15 @@ namespace Ordering.API.Application.Commands
             await Task.Delay(10000, cancellationToken);
 
             var orderToUpdate = await _orderRepository.GetAsync(command.OrderNumber);
-            if(orderToUpdate == null)
+            if (orderToUpdate == null)
             {
                 return false;
-            }            
+            }
 
             orderToUpdate.SetCancelledStatusWhenStockIsRejected(command.OrderStockItems);
 
-            return await _orderRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
+            await _orderRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
+            return true;
         }
     }
 
