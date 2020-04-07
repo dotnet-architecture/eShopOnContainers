@@ -77,10 +77,9 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API
                     });
 
                 })
+                .ConfigureAppConfiguration(x => x.AddConfiguration(configuration))
                 .UseStartup<Startup>()
-                .UseApplicationInsights()
                 .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseConfiguration(configuration)
                 .UseSerilog()
                 .Build();
 
