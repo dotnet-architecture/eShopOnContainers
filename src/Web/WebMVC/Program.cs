@@ -45,7 +45,6 @@ namespace Microsoft.eShopOnContainers.WebMVC
                 .CaptureStartupErrors(false)                
                 .ConfigureAppConfiguration(x => x.AddConfiguration(configuration))
                 .UseStartup<Startup>()
-                .UseApplicationInsights()
                 .UseSerilog()
                 .Build();
 
