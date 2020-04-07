@@ -9,6 +9,9 @@ trigger:
     include:
     - src/BuildingBlocks/*
     - src/Services/Location/*
+    - build/azure-devops/buildimages.yml
+    - build/azure-devops/multiarch.yml
+    - build/azure-devops/location-api/*
     - deploy/k8s/helm/locations-api/*
 jobs:
 - template: ../buildimages.yaml
