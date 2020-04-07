@@ -82,7 +82,6 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
 
                 })
                 .UseStartup<Startup>()
-                .UseApplicationInsights()
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseWebRoot("Pics")
                 .UseSerilog()

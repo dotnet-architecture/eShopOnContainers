@@ -66,7 +66,6 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
                     options.NotFilteredPaths.AddRange(new[] {"/hc","/liveness"});
                 })
                 .UseStartup<Startup>()
-                .UseApplicationInsights()
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseSerilog()
                 .Build();

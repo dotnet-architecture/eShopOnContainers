@@ -80,9 +80,9 @@ namespace Webhooks.API
 
             app.UseCors("CorsPolicy");
 
+            app.UseRouting();
             ConfigureAuth(app);
 
-            app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();
@@ -119,6 +119,7 @@ namespace Webhooks.API
             */
 
             app.UseAuthentication();
+            app.UseAuthorization();
         }
 
         protected virtual void ConfigureEventBus(IApplicationBuilder app)
