@@ -9,6 +9,9 @@ trigger:
     include:
     - src/BuildingBlocks/*
     - src/Services/Webhooks/*
+    - build/azure-devops/buildimages.yml
+    - build/azure-devops/multiarch.yml
+    - build/azure-devops/webhooks-api/*
     - deploy/k8s/helm/webhooks-api/*
 jobs:
 - template: ../buildimages.yaml

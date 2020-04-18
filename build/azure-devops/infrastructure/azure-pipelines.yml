@@ -9,6 +9,9 @@ trigger:
     - dev
   paths:
     include:
+    - build/azure-devops/buildimages.yml
+    - build/azure-devops/multiarch.yml
+    - build/azure-devops/infrastructure/*
     - deploy/k8s/helm/basket-data/*
     - deploy/k8s/helm/keystore-data/*
     - deploy/k8s/helm/nosql-data/*

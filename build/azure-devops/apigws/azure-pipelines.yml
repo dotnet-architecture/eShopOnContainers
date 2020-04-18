@@ -6,6 +6,9 @@ trigger:
   paths:
     include:
     - src/ApiGateways/*
+    - build/azure-devops/buildimages.yml
+    - build/azure-devops/multiarch.yml
+    - build/azure-devops/apigws/*
     - deploy/k8s/helm/apigwmm/*
     - deploy/k8s/helm/apigwms/*
     - deploy/k8s/helm/apigwwm/*
