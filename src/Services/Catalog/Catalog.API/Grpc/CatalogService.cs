@@ -103,7 +103,7 @@ namespace Catalog.API.Grpc
 
         private PaginatedItemsResponse MapToResponse(List<CatalogItem> items)
         {
-            return this.MapToResponse(items, items.Count(), 1, items.Count());
+            return this.MapToResponse(items, items.Count, 1, items.Count);
         }
 
         private PaginatedItemsResponse MapToResponse(List<CatalogItem> items, long count, int pageIndex, int pageSize)
