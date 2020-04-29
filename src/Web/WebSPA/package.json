@@ -46,7 +46,7 @@
     "file-loader": "2.0.0",
     "font-awesome": "4.7.0",
     "isomorphic-fetch": "2.2.1",
-    "jquery": "3.4.1",
+    "jquery": "3.5.0",
     "ngx-toastr": "10.1.0",
     "normalize.css": "8.0.0",
     "popper.js": "1.16.1",
