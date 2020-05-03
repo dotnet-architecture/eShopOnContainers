@@ -39,12 +39,18 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _subsManager = subsManager ?? new InMemoryEventBusSubscriptionsManager();
             _queueName = queueName;
-            _consumerChannel = CreateConsumerChannel();
             _autofac = autofac;
             _retryCount = retryCount;
-            _subsManager.OnEventRemoved += SubsManager_OnEventRemoved;
         }
 
+        public void Start()
+        {
+            _consumerChannel = CreateConsumerChannel();
+            _subsManager.OnEventRemoved += SubsManager_OnEventRemoved;
+
+            // There might be some messages already on the bus 
+            StartBasicConsume();
+        }
         private void SubsManager_OnEventRemoved(object sender, string eventName)
         {
             if (!_persistentConnection.IsConnected)

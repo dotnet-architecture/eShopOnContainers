@@ -35,6 +35,10 @@
             _autofac = autofac;
 
             RemoveDefaultRule();
+        }
+
+        public void Start()
+        {
             RegisterSubscriptionClientMessageHandler();
         }
 
