@@ -209,11 +209,11 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
                });
 
             app.UseRouting();
+            app.UseCors("CorsPolicy");
             ConfigureAuth(app);
 
             app.UseStaticFiles();
-
-            app.UseCors("CorsPolicy");
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapGrpcService<BasketService>();
