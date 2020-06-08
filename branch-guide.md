@@ -8,3 +8,5 @@ Following are the most important branches:
 Any other branch is considered temporary and could be deleted at any time. Do not do any PR to them!
 
 Thanks!
+
+Trigger push
