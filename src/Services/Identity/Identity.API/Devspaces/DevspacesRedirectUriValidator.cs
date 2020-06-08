@@ -17,13 +17,13 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Devspaces
         public Task<bool> IsPostLogoutRedirectUriValidAsync(string requestedUri, Client client)
         {
 
-            _logger.LogInformation($"Client {client.ClientName} used post logout uri {requestedUri}.");
+            _logger.LogInformation("Client {ClientName} used post logout uri {RequestedUri}.", client.ClientName, requestedUri);
             return Task.FromResult(true);
         }
 
         public Task<bool> IsRedirectUriValidAsync(string requestedUri, Client client)
         {
-            _logger.LogInformation($"Client {client.ClientName} used redirect uri {requestedUri}.");
+            _logger.LogInformation("Client {ClientName} used post logout uri {RequestedUri}.", client.ClientName, requestedUri);
             return Task.FromResult(true);
         }
 

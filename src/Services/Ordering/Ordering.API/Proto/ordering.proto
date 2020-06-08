@@ -1,0 +1,39 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "GrpcOrdering";
+
+package OrderingApi;
+
+service OrderingGrpc {
+	rpc CreateOrderDraftFromBasketData(CreateOrderDraftCommand) returns (OrderDraftDTO) {}
+}
+
+message CreateOrderDraftCommand {
+	string buyerId = 1;
+    repeated BasketItem items = 2;
+}
+
+
+message BasketItem {
+    string id = 1;
+    int32 productId = 2;
+    string productName = 3;
+    double unitPrice = 4;
+    double oldUnitPrice = 5;
+    int32 quantity = 6;
+    string pictureUrl = 7;
+}
+
+message OrderDraftDTO {
+    double total = 1;
+    repeated OrderItemDTO orderItems = 2;
+}
+message OrderItemDTO {
+    int32 productId = 1;
+    string productName = 2;
+    double unitPrice = 3;
+    double discount = 4;
+    int32 units = 5;
+    string pictureUrl = 6;
+}
+

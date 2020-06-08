@@ -41,7 +41,7 @@ namespace Webhooks.API.Services
             {
                 request.Headers.Add("X-eshop-whtoken", subs.Token);
             }
-            _logger.LogDebug($"Sending hook to {subs.DestUrl} of type {subs.Type.ToString()}");
+            _logger.LogDebug("Sending hook to {DestUrl} of type {Type}", subs.Type.ToString(), subs.Type.ToString());
             return client.SendAsync(request);
         }
 

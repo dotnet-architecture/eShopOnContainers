@@ -2,11 +2,12 @@
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 using Serilog;
 using System;
 using System.IO;
+using System.Net;
 
 namespace Microsoft.eShopOnContainers.Services.Basket.API
 {
@@ -45,12 +46,27 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
         private static IWebHost BuildWebHost(IConfiguration configuration, string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .CaptureStartupErrors(false)
-                .UseFailing(options =>
-                    options.ConfigPath = "/Failing")
+                .ConfigureKestrel(options =>
+                {
+                    var ports = GetDefinedPorts(configuration);
+                    options.Listen(IPAddress.Any, ports.httpPort, listenOptions =>
+                    {
+                        listenOptions.Protocols = HttpProtocols.Http1AndHttp2;
+                    });
+
+                    options.Listen(IPAddress.Any, ports.grpcPort, listenOptions =>
+                    {
+                        listenOptions.Protocols = HttpProtocols.Http2;
+                    });
+
+                })
+                .ConfigureAppConfiguration(x => x.AddConfiguration(configuration))
+                .UseFailing(options => {
+                    options.ConfigPath = "/Failing";
+                    options.NotFilteredPaths.AddRange(new[] {"/hc","/liveness"});
+                })
                 .UseStartup<Startup>()
-                .UseApplicationInsights()
                 .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseConfiguration(configuration)
                 .UseSerilog()
                 .Build();
 
@@ -87,6 +103,13 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             }
 
             return builder.Build();
+        }
+
+        private static (int httpPort, int grpcPort) GetDefinedPorts(IConfiguration config)
+        {
+            var grpcPort = config.GetValue("GRPC_PORT", 5001);
+            var port = config.GetValue("PORT", 80);
+            return (port, grpcPort);
         }
     }
 }

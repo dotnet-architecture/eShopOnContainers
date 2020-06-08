@@ -284,7 +284,8 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
 
                     AllowedScopes =
                     {
-                        "webshoppingagg"
+                        "webshoppingagg",
+                        "basket"
                     }
                 },
                 new Client

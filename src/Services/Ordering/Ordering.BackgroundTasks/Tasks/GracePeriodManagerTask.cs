@@ -3,8 +3,7 @@ using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Ordering.BackgroundTasks.Configuration;
-using Ordering.BackgroundTasks.IntegrationEvents;
+using Ordering.BackgroundTasks.Events;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -13,22 +12,17 @@ using System.Threading.Tasks;
 
 namespace Ordering.BackgroundTasks.Tasks
 {
-    public class GracePeriodManagerService
-         : BackgroundService
+    public class GracePeriodManagerService : BackgroundService
     {
         private readonly ILogger<GracePeriodManagerService> _logger;
         private readonly BackgroundTaskSettings _settings;
         private readonly IEventBus _eventBus;
 
-        public GracePeriodManagerService(
-            IOptions<BackgroundTaskSettings> settings,
-            IEventBus eventBus,
-            ILogger<GracePeriodManagerService> logger)
+        public GracePeriodManagerService(IOptions<BackgroundTaskSettings> settings, IEventBus eventBus, ILogger<GracePeriodManagerService> logger)
         {
             _settings = settings?.Value ?? throw new ArgumentNullException(nameof(settings));
             _eventBus = eventBus ?? throw new ArgumentNullException(nameof(eventBus));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -80,7 +74,7 @@ namespace Ordering.BackgroundTasks.Tasks
                         @"SELECT Id FROM [ordering].[orders] 
                             WHERE DATEDIFF(minute, [OrderDate], GETDATE()) >= @GracePeriodTime
                             AND [OrderStatusId] = 1",
-                        new { GracePeriodTime = _settings.GracePeriodTime });
+                        new { _settings.GracePeriodTime });
                 }
                 catch (SqlException exception)
                 {

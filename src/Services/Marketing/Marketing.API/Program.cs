@@ -55,11 +55,10 @@
         private static IWebHost BuildWebHost(IConfiguration configuration, string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .CaptureStartupErrors(false)
+                .ConfigureAppConfiguration(x => x.AddConfiguration(configuration))
                 .UseStartup<Startup>()
-                .UseApplicationInsights()
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseWebRoot("Pics")
-                .UseConfiguration(configuration)
                 .UseSerilog()
                 .Build();
 

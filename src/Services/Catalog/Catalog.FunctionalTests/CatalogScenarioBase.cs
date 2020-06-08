@@ -1,3 +1,5 @@
+using Autofac.Extensions.DependencyInjection;
+using Catalog.API.Extensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF;
@@ -5,6 +7,7 @@ using Microsoft.eShopOnContainers.Services.Catalog.API;
 using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.IO;
@@ -25,14 +28,16 @@ namespace Catalog.FunctionalTests
                 {
                     cb.AddJsonFile("appsettings.json", optional: false)
                     .AddEnvironmentVariables();
-                }).UseStartup<Startup>();
+                })
+                .UseStartup<Startup>();
+
 
             var testServer = new TestServer(hostBuilder);
 
             testServer.Host
                 .MigrateDbContext<CatalogContext>((context, services) =>
                 {
-                    var env = services.GetService<IHostingEnvironment>();
+                    var env = services.GetService<IWebHostEnvironment>();
                     var settings = services.GetService<IOptions<CatalogSettings>>();
                     var logger = services.GetService<ILogger<CatalogContextSeed>>();
 
