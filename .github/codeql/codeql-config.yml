@@ -2,4 +2,4 @@ name: "My CodeQL config"
 
 paths-ignore: 
   - '/node_modules/'
-  - 'src/Web/WebMVC/wwwroot/lib'
+  - '/src/Web/WebMVC/wwwroot/lib'
