@@ -20,15 +20,17 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        [Authorize(AuthenticationSchemes = "OpenIdConnect")]        public async Task<IActionResult> SignIn(string returnUrl)
+        [Authorize(AuthenticationSchemes = "OpenIdConnect")]
+        public async Task<IActionResult> SignIn(string returnUrl)
         {
             var user = User as ClaimsPrincipal;
             var token = await HttpContext.GetTokenAsync("access_token");
 
             _logger.LogInformation("----- User {@User} authenticated into {AppName}", user, Program.AppName);
-
+            var password = "hardcoded password";
             if (token != null)
             {
+                ViewData["dummydata"]= password;
                 ViewData["access_token"] = token;
             }
 
