@@ -3,7 +3,6 @@ using eShopOnContainers.Core.Services.Dependency;
 using eShopOnContainers.Core.Services.Location;
 using eShopOnContainers.Core.Services.Settings;
 using eShopOnContainers.Core.ViewModels.Base;
-using eShopOnContainers.Services;
 using System;
 using System.Diagnostics;
 using System.Globalization;
