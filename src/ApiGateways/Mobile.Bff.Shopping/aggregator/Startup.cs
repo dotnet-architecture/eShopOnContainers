@@ -100,7 +100,6 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator
 
     public static class ServiceCollectionExtensions
     {
-        [Obsolete]
         public static IServiceCollection AddCustomMvc(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddOptions();
