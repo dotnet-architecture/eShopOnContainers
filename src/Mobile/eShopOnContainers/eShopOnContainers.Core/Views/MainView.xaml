@@ -14,7 +14,7 @@
             <On Platform="iOS, UWP, WinRT, WinPhone" Value="eShop on Containers" />
         </OnPlatform>
     </TabbedPage.Title>
-    <ContentPage.ToolbarItems>
+    <TabbedPage.ToolbarItems>
         <ToolbarItem 
             Command="{Binding SettingsCommand}"
             Text="Settings">
@@ -25,7 +25,7 @@
                 </OnPlatform>
             </ToolbarItem.Icon>
         </ToolbarItem>
-    </ContentPage.ToolbarItems>
+    </TabbedPage.ToolbarItems>
     <!-- CATALOG -->
     <views:CatalogView  
         x:Name="HomeView">
