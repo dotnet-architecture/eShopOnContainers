@@ -2,12 +2,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.eShopOnContainers.WebMVC.Services;
 using Microsoft.eShopOnContainers.WebMVC.ViewModels;
-using Polly.CircuitBreaker;
+using System;
 using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.WebMVC.Controllers
 {
-    [Authorize]
+    [Authorize(AuthenticationSchemes = "OpenIdConnect")]
     public class OrderController : Controller
     {
         private IOrderingService _orderSvc;
@@ -47,9 +47,9 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
                     return RedirectToAction("Index");
                 }
             }
-            catch (BrokenCircuitException)
+            catch (Exception ex)
             {
-                ModelState.AddModelError("Error", "It was not possible to create a new order, please try later on. (Business Msg Due to Circuit-Breaker)");
+                ModelState.AddModelError("Error", $"It was not possible to create a new order, please try later on ({ex.GetType().Name} - {ex.Message})");
             }
 
             return View("Create", model);

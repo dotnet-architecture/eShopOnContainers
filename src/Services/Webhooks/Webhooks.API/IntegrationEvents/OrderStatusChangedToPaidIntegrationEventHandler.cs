@@ -24,7 +24,7 @@ namespace Webhooks.API.IntegrationEvents
         public async Task Handle(OrderStatusChangedToPaidIntegrationEvent @event)
         {
             var subscriptions = await _retriever.GetSubscriptionsOfType(WebhookType.OrderPaid);
-            _logger.LogInformation($"Received OrderStatusChangedToShippedIntegrationEvent and got {subscriptions.Count()} subscriptions to process");
+            _logger.LogInformation("Received OrderStatusChangedToShippedIntegrationEvent and got {SubscriptionsCount} subscriptions to process", subscriptions.Count());
             var whook = new WebhookData(WebhookType.OrderPaid, @event);
             await _sender.SendAll(subscriptions, whook);
         }

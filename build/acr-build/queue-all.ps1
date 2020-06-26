@@ -13,7 +13,7 @@ $services = @(
     @{ Name="eshopcatalog"; Image="eshop/catalog.api"; File="src/Services/Catalog/Catalog.API/Dockerfile" },
     @{ Name="eshopidentity"; Image="eshop/identity.api"; File="src/Services/Identity/Identity.API/Dockerfile" },
     @{ Name="eshopordering"; Image="eshop/ordering.api"; File="src/Services/Ordering/Ordering.API/Dockerfile" },
-    @{ Name="eshoporderingbg"; Image="eshop/ordering.backgroundtasks"; File="src/Services/Ordering/Ordering.BackgroundTasks/Dockerfile" },
+	@{ Name="eshoporderingbg"; Image="eshop/ordering.backgroundtasks"; File="src/Services/Ordering/Ordering.BackgroundTasks/Dockerfile" },
     @{ Name="eshopmarketing"; Image="eshop/marketing.api"; File="src/Services/Marketing/Marketing.API/Dockerfile" },
     @{ Name="eshopwebspa"; Image="eshop/webspa"; File="src/Web/WebSPA/Dockerfile" },
     @{ Name="eshopwebmvc"; Image="eshop/webmvc"; File="src/Web/WebMVC/Dockerfile" },

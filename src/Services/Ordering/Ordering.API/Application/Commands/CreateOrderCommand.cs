@@ -15,7 +15,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands
     // http://cqrs.nu/Faq
     // https://docs.spine3.org/motivation/immutability.html 
     // http://blog.gauffin.org/2012/06/griffin-container-introducing-command-support/
-    // https://msdn.microsoft.com/en-us/library/bb383979.aspx
+    // https://docs.microsoft.com/dotnet/csharp/programming-guide/classes-and-structs/how-to-implement-a-lightweight-class-with-auto-implemented-properties
 
     [DataContract]
     public class CreateOrderCommand

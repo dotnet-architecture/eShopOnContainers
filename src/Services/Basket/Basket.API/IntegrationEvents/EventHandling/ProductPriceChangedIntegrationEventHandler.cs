@@ -41,8 +41,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.IntegrationEvents.Even
 
         private async Task UpdatePriceInBasketItems(int productId, decimal newPrice, decimal oldPrice, CustomerBasket basket)
         {
-            string match = productId.ToString();
-            var itemsToUpdate = basket?.Items?.Where(x => x.ProductId == match).ToList();
+            var itemsToUpdate = basket?.Items?.Where(x => x.ProductId == productId).ToList();
 
             if (itemsToUpdate != null)
             {

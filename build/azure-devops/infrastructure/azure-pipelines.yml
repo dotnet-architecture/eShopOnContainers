@@ -9,17 +9,20 @@ trigger:
     - dev
   paths:
     include:
-    - k8s/helm/basket-data/*
-    - k8s/helm/keystore-data/*
-    - k8s/helm/nosql-data/*
-    - k8s/helm/rabbitmq/*
-    - k8s/helm/sql-data/*
+    - build/azure-devops/buildimages.yml
+    - build/azure-devops/multiarch.yml
+    - build/azure-devops/infrastructure/*
+    - deploy/k8s/helm/basket-data/*
+    - deploy/k8s/helm/keystore-data/*
+    - deploy/k8s/helm/nosql-data/*
+    - deploy/k8s/helm/rabbitmq/*
+    - deploy/k8s/helm/sql-data/*
 steps:
 - task: CopyFiles@2
   inputs:
-    sourceFolder: $(Build.SourcesDirectory)/k8s/helm    
-    targetFolder: $(Build.ArtifactStagingDirectory)/k8s/helm
+    sourceFolder: $(Build.SourcesDirectory)/deploy/k8s/helm
+    targetFolder: $(Build.ArtifactStagingDirectory)/deploy/k8s/helm
 - task: PublishBuildArtifacts@1
   inputs:
-    pathtoPublish: $(Build.ArtifactStagingDirectory)/k8s/helm
+    pathtoPublish: $(Build.ArtifactStagingDirectory)/deploy/k8s/helm
     artifactName: helm

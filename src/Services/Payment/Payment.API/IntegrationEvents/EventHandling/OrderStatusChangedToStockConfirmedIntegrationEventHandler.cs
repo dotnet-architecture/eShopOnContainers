@@ -41,9 +41,9 @@
                 // Instead of a real payment we just take the env. var to simulate the payment 
                 // The payment can be successful or it can fail
 
-                if (_settings.PaymentSucceded)
+                if (_settings.PaymentSucceeded)
                 {
-                    orderPaymentIntegrationEvent = new OrderPaymentSuccededIntegrationEvent(@event.OrderId);
+                    orderPaymentIntegrationEvent = new OrderPaymentSucceededIntegrationEvent(@event.OrderId);
                 }
                 else
                 {

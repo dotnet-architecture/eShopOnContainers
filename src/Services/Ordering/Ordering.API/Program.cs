@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF;
 using Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure;
 using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure;
@@ -10,6 +11,7 @@ using Microsoft.Extensions.Options;
 using Serilog;
 using System;
 using System.IO;
+using System.Net;
 
 namespace Microsoft.eShopOnContainers.Services.Ordering.API
 {
@@ -32,7 +34,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API
                 Log.Information("Applying migrations ({ApplicationContext})...", AppName);
                 host.MigrateDbContext<OrderingContext>((context, services) =>
                 {
-                    var env = services.GetService<IHostingEnvironment>();
+                    var env = services.GetService<IWebHostEnvironment>();
                     var settings = services.GetService<IOptions<OrderingSettings>>();
                     var logger = services.GetService<ILogger<OrderingContextSeed>>();
 
@@ -61,14 +63,27 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API
         private static IWebHost BuildWebHost(IConfiguration configuration, string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .CaptureStartupErrors(false)
+                .ConfigureKestrel(options =>
+                {
+                    var ports = GetDefinedPorts(configuration);
+                    options.Listen(IPAddress.Any, ports.httpPort, listenOptions =>
+                    {
+                        listenOptions.Protocols = HttpProtocols.Http1AndHttp2;
+                    });
+
+                    options.Listen(IPAddress.Any, ports.grpcPort, listenOptions =>
+                    {
+                        listenOptions.Protocols = HttpProtocols.Http2;
+                    });
+
+                })
+                .ConfigureAppConfiguration(x => x.AddConfiguration(configuration))
                 .UseStartup<Startup>()
-                .UseApplicationInsights()
                 .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseConfiguration(configuration)
                 .UseSerilog()
                 .Build();
 
-         private static Serilog.ILogger CreateSerilogLogger(IConfiguration configuration)
+        private static Serilog.ILogger CreateSerilogLogger(IConfiguration configuration)
         {
             var seqServerUrl = configuration["Serilog:SeqServerUrl"];
             var logstashUrl = configuration["Serilog:LogstashgUrl"];
@@ -101,6 +116,12 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API
             }
 
             return builder.Build();
+        }
+        private static (int httpPort, int grpcPort) GetDefinedPorts(IConfiguration config)
+        {
+            var grpcPort = config.GetValue("GRPC_PORT", 5001);
+            var port = config.GetValue("PORT", 80);
+            return (port, grpcPort);
         }
     }
 }

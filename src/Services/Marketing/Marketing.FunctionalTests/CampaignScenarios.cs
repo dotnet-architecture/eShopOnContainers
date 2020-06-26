@@ -9,6 +9,7 @@ using Xunit;
 
 namespace Marketing.FunctionalTests
 {
+    [Collection("Sequential")]
     public class CampaignScenarios
        : CampaignScenarioBase
     {
@@ -75,7 +76,7 @@ namespace Marketing.FunctionalTests
                 var campaignResponse = await server.CreateClient()
                     .PostAsync(Post.AddNewCampaign, content);
 
-                if (int.TryParse(campaignResponse.Headers.Location.Segments[4], out int id))
+                if (int.TryParse(campaignResponse.Headers.Location.Segments[3], out int id))
                 {
                     var response = await server.CreateClient()
                     .DeleteAsync(Delete.CampaignBy(id));
@@ -99,7 +100,7 @@ namespace Marketing.FunctionalTests
                 var campaignResponse = await server.CreateClient()
                     .PostAsync(Post.AddNewCampaign, content);
 
-                if (int.TryParse(campaignResponse.Headers.Location.Segments[4], out int id))
+                if (int.TryParse(campaignResponse.Headers.Location.Segments[3], out int id))
                 {
                     fakeCampaignDto.Description = "FakeCampaignUpdatedDescription";
                     content = new StringContent(JsonConvert.SerializeObject(fakeCampaignDto), Encoding.UTF8, "application/json");

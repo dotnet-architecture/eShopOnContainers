@@ -42,10 +42,9 @@ namespace Microsoft.eShopOnContainers.WebMVC
 
         private static IWebHost BuildWebHost(IConfiguration configuration, string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .CaptureStartupErrors(false)
+                .CaptureStartupErrors(false)                
+                .ConfigureAppConfiguration(x => x.AddConfiguration(configuration))
                 .UseStartup<Startup>()
-                .UseApplicationInsights()
-                .UseConfiguration(configuration)
                 .UseSerilog()
                 .Build();
 
@@ -53,15 +52,18 @@ namespace Microsoft.eShopOnContainers.WebMVC
         {
             var seqServerUrl = configuration["Serilog:SeqServerUrl"];
             var logstashUrl = configuration["Serilog:LogstashgUrl"];
-            return new LoggerConfiguration()
-                .MinimumLevel.Verbose()
+            var cfg = new LoggerConfiguration()
+                .ReadFrom.Configuration(configuration)
                 .Enrich.WithProperty("ApplicationContext", AppName)
                 .Enrich.FromLogContext()
-                .WriteTo.Console()
-                .WriteTo.Seq(string.IsNullOrWhiteSpace(seqServerUrl) ? "http://seq" : seqServerUrl)
-                .WriteTo.Http(string.IsNullOrWhiteSpace(logstashUrl) ? "http://logstash:8080" : logstashUrl)
-                .ReadFrom.Configuration(configuration)
-                .CreateLogger();
+                .WriteTo.Console();
+            if (!string.IsNullOrWhiteSpace(seqServerUrl)) {
+                cfg.WriteTo.Seq(seqServerUrl);
+            }
+            if (!string.IsNullOrWhiteSpace(logstashUrl)) {
+                cfg.WriteTo.Http(logstashUrl);
+            }
+            return cfg.CreateLogger();
         }
 
         private static IConfiguration GetConfiguration()
