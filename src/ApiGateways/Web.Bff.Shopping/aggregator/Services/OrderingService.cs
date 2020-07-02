@@ -13,12 +13,10 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Services
     {
         private readonly UrlsConfig _urls;
         private readonly ILogger<OrderingService> _logger;
-        public readonly HttpClient _httpClient;
 
-        public OrderingService(HttpClient httpClient, IOptions<UrlsConfig> config, ILogger<OrderingService> logger)
+        public OrderingService(IOptions<UrlsConfig> config, ILogger<OrderingService> logger)
         {
             _urls = config.Value;
-            _httpClient = httpClient;
             _logger = logger;
         }
 
