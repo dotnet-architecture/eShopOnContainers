@@ -4,7 +4,6 @@ using Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Services
@@ -12,13 +11,12 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Services
     public class BasketService : IBasketService
     {
         private readonly UrlsConfig _urls;
-        public readonly HttpClient _httpClient;
         private readonly ILogger<BasketService> _logger;
 
-        public BasketService(HttpClient httpClient, IOptions<UrlsConfig> config, ILogger<BasketService> logger)
+        public BasketService(IOptions<UrlsConfig> config, ILogger<BasketService> logger)
         {
             _urls = config.Value;
-            _httpClient = httpClient;
+
             _logger = logger;
         }
 
