@@ -1,14 +1,11 @@
-﻿using Grpc.Net.Client;
+﻿using GrpcOrdering;
 using Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Config;
 using Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using System;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using GrpcOrdering;
-using Grpc.Core;
 
 namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Services
 {

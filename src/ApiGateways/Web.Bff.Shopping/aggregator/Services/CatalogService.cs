@@ -1,15 +1,13 @@
-﻿using Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Config;
+﻿using CatalogApi;
+using Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Config;
 using Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using CatalogApi;
-using Grpc.Net.Client;
-using System;
 using static CatalogApi.Catalog;
-using System.Linq;
 
 namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Services
 {
