@@ -1,10 +1,11 @@
-﻿namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Filters
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.SwaggerGen;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Filters
 {
-    using Microsoft.AspNetCore.Authorization;
-    using Microsoft.OpenApi.Models;
-    using Swashbuckle.AspNetCore.SwaggerGen;
-    using System.Collections.Generic;
-    using System.Linq;
 
     namespace Basket.API.Infrastructure.Filters
     {
