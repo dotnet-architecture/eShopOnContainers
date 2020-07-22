@@ -87,6 +87,8 @@ You can download them and start reviewing these Guides/eBooks here:
 
 For more free e-Books check out [.NET Architecture center](https://dot.net/architecture). If you have an e-book feedback, let us know by creating a new issue here: <https://github.com/dotnet-architecture/ebooks/issues>
 
+If you are looking for a more hands-on experience where you build one of such service of your own then check out [Create and deploy a cloud-native ASP.NET Core microservice](https://docs.microsoft.com/en-us/learn/modules/microservices-aspnet-core/)
+
 ## Read further
 
 - [Explore the application](https://github.com/dotnet-architecture/eShopOnContainers/wiki/Explore-the-application)
