@@ -25,11 +25,13 @@ _**Dev** branch contains the latest **beta** code and their images are tagged wi
 
 ## Getting Started
 
-eShopOnContainers is provided in two flavors: Basic and Advanced.
+Are you new to **microservices** and **cloud-native concepts** ? Then checkout [Create and deploy a cloud-native ASP.NET Core microservice](https://docs.microsoft.com/en-us/learn/modules/microservices-aspnet-core/). It's an hour of content designed for beginners with hands-on exercise. It would be a good place to start before exploring more on `eShopOnContainers`.
+
+*eShopOnContainers* is provided in two flavors: Basic and Advanced.
 
 ### Basic scenario
 
-The basic scenario can be run locally using docker compose, and also deployed to a local Kubernetes cluster. Refer these Wiki pages to Get Started:
+The basic scenario can be run locally using docker-compose, and also deployed to a local Kubernetes cluster. Refer these Wiki pages to Get Started:
 
 - [CLI or Visual Studio Code](https://github.com/dotnet-architecture/eShopOnContainers/wiki/Windows-setup)
 - [Visual Studio (F5 experience)](https://github.com/dotnet-architecture/eShopOnContainers/wiki/Windows-setup#optional---use-visual-studio)
@@ -43,6 +45,7 @@ The Advanced scenario can be run only in a Kubernetes cluster. Currently this sc
 - [Deploy to AKS with a Service Mesh for resiliency](https://github.com/dotnet-architecture/eShopOnContainers/wiki/Deploy-to-Azure-Kubernetes-Service-(AKS))
 
 In the future more features will be implemented in the advanced scenario.
+
 
 ## IMPORTANT NOTES!
 
@@ -87,7 +90,6 @@ You can download them and start reviewing these Guides/eBooks here:
 
 For more free e-Books check out [.NET Architecture center](https://dot.net/architecture). If you have an e-book feedback, let us know by creating a new issue here: <https://github.com/dotnet-architecture/ebooks/issues>
 
-If you are looking for a more hands-on experience where you build one of such service of your own then check out [Create and deploy a cloud-native ASP.NET Core microservice](https://docs.microsoft.com/en-us/learn/modules/microservices-aspnet-core/)
 
 ## Read further
 
