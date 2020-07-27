@@ -1,0 +1,27 @@
+{{- $name := include "marketing-api.fullname" . -}}
+{{- $identity := include "url-of" (list .Values.app.ingress.entries.identity .) -}}
+{{- $webshoppingapigw := include "url-of" (list .Values.app.ingress.entries.webshoppingapigw .) -}}
+{{- $mongo := include "mongo-name" . -}}
+{{- $sqlsrv := include "sql-name" . -}}
+{{- $protocol := include "protocol" . -}}
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "cfg-{{ $name }}"
+  labels:
+    app: {{ template "marketing-api.name" . }}
+    chart: {{ template "marketing-api.chart" .}}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+data:
+  all__EventBusConnection: {{ .Values.inf.eventbus.constr }}
+  all__InstrumentationKey: "{{ .Values.inf.appinsights.key }}"
+  all__UseAzureServiceBus: "{{ .Values.inf.eventbus.useAzure }}"
+  all_EnableLoadTest: "{{ .Values.inf.misc.useLoadTest }}"
+  internalurls__IdentityUrl: http://{{ .Values.app.svc.identity }}
+  urls__IdentityUrl: {{ $protocol }}://{{ $identity }}
+  marketing__ConnectionString: Server={{ $sqlsrv }};Initial Catalog={{ .Values.inf.sql.marketing.db }};User Id={{ .Values.inf.sql.common.user }};Password={{ .Values.inf.sql.common.pwd }};
+  marketing__MongoConnectionString: mongodb://{{ $mongo }}
+  marketing__MongoDatabase: {{ .Values.inf.mongo.marketing.database }} 
+  marketing__PicBaseUrl: {{ $protocol }}://{{ $webshoppingapigw }}/c/api/v1/catalog/items/[0]/pic/
