@@ -21,11 +21,12 @@ Sample .NET Core reference application, powered by Microsoft, based on a simplif
 | Ordering API | [![Ordering API](https://msftdevtools.visualstudio.com/eShopOnContainers/_apis/build/status/microservices/ordering?branchName=dev)](https://msftdevtools.visualstudio.com/eShopOnContainers/_build/latest?definitionId=198&branchName=dev) | Webhooks Client | [![Webhooks demo client](https://msftdevtools.visualstudio.com/eShopOnContainers/_apis/build/status/microservices/webhooks-client?branchName=dev)](https://msftdevtools.visualstudio.com/eShopOnContainers/_build/latest?definitionId=208&branchName=dev) |
 | Payment API | [![Payment API](https://msftdevtools.visualstudio.com/eShopOnContainers/_apis/build/status/microservices/payment?branchName=dev)](https://msftdevtools.visualstudio.com/eShopOnContainers/_build/latest?definitionId=205&branchName=dev) | | |
 
-_**Dev** branch contains the latest **beta** code and their images are tagged with `:dev` in our [Docker Hub](https://hub.docker.com/u/eshop)_
+_**Dev** branch contains the latest **beta** code and their images are tagged with `:linux-dev` in our [Docker Hub](https://hub.docker.com/u/eshop)_
+
+## New to **microservices** and **cloud-native development** !! 
+Please take a look at this free course : [Create and deploy a cloud-native ASP.NET Core microservice](https://docs.microsoft.com/en-us/learn/modules/microservices-aspnet-core/). This MS Learn module will explain microservices concepts, cloud-native technologies, and reduce the friction in getting started with `eShopOnContainers`.
 
 ## Getting Started
-
-Are you new to **microservices** and **cloud-native concepts** ? Then checkout [Create and deploy a cloud-native ASP.NET Core microservice](https://docs.microsoft.com/en-us/learn/modules/microservices-aspnet-core/). It's an hour of content designed for beginners with hands-on exercise. It would be a good place to start before exploring more on `eShopOnContainers`.
 
 *eShopOnContainers* is provided in two flavors: Basic and Advanced.
 
