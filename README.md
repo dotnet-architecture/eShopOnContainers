@@ -29,7 +29,7 @@ eShopOnContainers is provided in two flavors: Basic and Advanced.
 
 ### Basic scenario
 
-The basic scenario can be run locally using docker compose, and also deployed to a local Kubernetes cluster. Refer these Wiki pages to Get Started:
+The basic scenario can be run locally using docker compose, and also deployed to a local Kubernetes cluster. Refer to these Wiki pages to Get Started:
 
 - [CLI or Visual Studio Code](https://github.com/dotnet-architecture/eShopOnContainers/wiki/Windows-setup)
 - [Visual Studio (F5 experience)](https://github.com/dotnet-architecture/eShopOnContainers/wiki/Windows-setup#optional---use-visual-studio)
