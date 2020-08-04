@@ -23,7 +23,7 @@ Sample .NET Core reference application, powered by Microsoft, based on a simplif
 
 _**Dev** branch contains the latest **beta** code and their images are tagged with `:linux-dev` in our [Docker Hub](https://hub.docker.com/u/eshop)_
 
-## New to **microservices** and **cloud-native development** !! 
+## Are you new to **microservices** and **cloud-native development**? 
 Please take a look at this free course : [Create and deploy a cloud-native ASP.NET Core microservice](https://docs.microsoft.com/en-us/learn/modules/microservices-aspnet-core/). This MS Learn module will explain microservices concepts, cloud-native technologies, and reduce the friction in getting started with `eShopOnContainers`.
 
 ## Getting Started
