@@ -7,7 +7,9 @@ using Microsoft.eShopOnContainers.Services.Basket.API.Model;
 using Microsoft.eShopOnContainers.Services.Basket.API.Services;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Linq;
 using System.Net;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
@@ -68,7 +70,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
                 return BadRequest();
             }
 
-            var userName = User.FindFirst(x => x.Type == "unique_name").Value;
+            var userName = this.HttpContext.User.FindFirst(x => x.Type == ClaimTypes.Name).Value;
 
             var eventMessage = new UserCheckoutAcceptedIntegrationEvent(userId, userName, basketCheckout.City, basketCheckout.Street,
                 basketCheckout.State, basketCheckout.Country, basketCheckout.ZipCode, basketCheckout.CardNumber, basketCheckout.CardHolderName,
@@ -79,8 +81,6 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
             // order creation process
             try
             {
-                _logger.LogInformation("----- Publishing integration event: {IntegrationEventId} from {AppName} - ({@IntegrationEvent})", eventMessage.Id, Program.AppName, eventMessage);
-
                 _eventBus.Publish(eventMessage);
             }
             catch (Exception ex)

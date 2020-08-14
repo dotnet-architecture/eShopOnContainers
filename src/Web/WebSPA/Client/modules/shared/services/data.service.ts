@@ -2,7 +2,7 @@
 import { HttpClient, HttpHeaders, HttpErrorResponse } from "@angular/common/http";
 
 import { Observable, throwError } from 'rxjs';
-import { retry, map, catchError } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
 
 import { SecurityService } from './security.service';
 import { Guid } from '../../../guid';
@@ -20,7 +20,7 @@ export class DataService {
         return this.http.get(url, options)
             .pipe(
                 // retry(3), // retry a failed request up to 3 times
-                map((res: Response) => {
+                tap((res: Response) => {
                     return res;
                 }),
                 catchError(this.handleError)
@@ -45,7 +45,7 @@ export class DataService {
 
         return this.http.post(url, data, options)
             .pipe(
-                map((res: Response) => {
+                tap((res: Response) => {
                     return res;
                 }),
                 catchError(this.handleError)
@@ -86,7 +86,7 @@ export class DataService {
        
         return this.http.put(url, data, options)
             .pipe(
-                map((res: Response) => {
+                tap((res: Response) => {
                     return res;
                 }),
                 catchError(this.handleError)
@@ -94,12 +94,12 @@ export class DataService {
     }
 
     private setHeaders(options: any, needId?: boolean){
-        if (needId && this.securityService) {            
+        if (needId && this.securityService) {
             options["headers"] = new HttpHeaders()
                 .append('authorization', 'Bearer ' + this.securityService.GetToken())
                 .append('x-requestid', Guid.newGuid());
         }
-        else if (this.securityService) {            
+        else if (this.securityService) {
             options["headers"] = new HttpHeaders()
                 .append('authorization', 'Bearer ' + this.securityService.GetToken());
         }

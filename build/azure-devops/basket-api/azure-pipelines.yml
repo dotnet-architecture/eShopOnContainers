@@ -9,14 +9,17 @@ trigger:
     include:
     - src/BuildingBlocks/*
     - src/Services/Basket/*
-    - k8s/helm/basket-api/*
+    - build/azure-devops/buildimages.yml
+    - build/azure-devops/multiarch.yml
+    - build/azure-devops/basket-api/*
+    - deploy/k8s/helm/basket-api/*
 jobs:
 - template: ../buildimages.yaml
   parameters:
-    services: basket.api
+    services: basket-api
     registryEndpoint: $(registryEndpoint)
-    helmfrom: $(Build.SourcesDirectory)/k8s/helm
-    helmto: $(Build.ArtifactStagingDirectory)/k8s/helm    
+    helmfrom: $(Build.SourcesDirectory)/deploy/k8s/helm
+    helmto: $(Build.ArtifactStagingDirectory)/deploy/k8s/helm
 - template: ../multiarch.yaml
   parameters:
     image: basket.api

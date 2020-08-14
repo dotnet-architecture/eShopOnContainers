@@ -2,7 +2,7 @@ import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { HttpModule, JsonpModule } from '@angular/http';
+import { HttpClientModule, HttpClientJsonpModule } from '@angular/common/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // Services
@@ -29,10 +29,10 @@ import { UppercasePipe } from './pipes/uppercase.pipe';
         FormsModule,
         ReactiveFormsModule,
         RouterModule,
-        NgbModule.forRoot(),
+        NgbModule,
         // No need to export as these modules don't expose any components/directive etc'
-        HttpModule,
-        JsonpModule
+        HttpClientModule,
+        HttpClientJsonpModule
     ],
     declarations: [
         Pager,
