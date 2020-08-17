@@ -1,0 +1,172 @@
+name: eshoponcontainers-servicesandwebapps
+services:
+
+- name: seq
+  image: datalust/seq:latest
+  bindings:
+  - port: 5340
+    containerPort: 80
+  env:
+  - name: ACCEPT_EULA
+    value: Y
+
+- name: sqldata
+  image: mcr.microsoft.com/mssql/server:2017-latest
+  bindings:
+  - port: 1433
+    containerPort: 1433
+  env:
+  - name: ACCEPT_EULA
+    value: Y
+  - name: SA_PASSWORD
+    value: Pass@word
+  volumes:
+    - source: eshop-sqldata
+      target: /var/opt/mssql
+
+- name: nosqldata
+  image: mongo
+  bindings:
+  - port: 27017
+    containerPort: 27017
+  volumes:
+    - source: eshop-nosqldata
+      target: /data/db
+
+- name: basketdata
+  image: redis:alpine
+  bindings:
+  - port: 6379
+    containerPort: 6379
+  volumes:
+    - source: eshop-basketdata
+      target: /data
+
+- name: rabbitmq
+  image: rabbitmq:3-management-alpine
+  bindings:
+  - name: http-binding    
+    port: 15672
+    containerPort: 15672
+  - name: amqp-binding
+    port: 5672
+    containerPort: 5672
+    
+- name: identity-api
+  project: Services/Identity/Identity.API/Identity.API.csproj
+  env:
+  - name: ASPNETCORE_ENVIRONMENT
+    value: Development
+  - name: ASPNETCORE_URLS
+    value: http://0.0.0.0:80
+  - name: SpaClient
+    value: http://host.docker.internal:5104/
+  - name: XamarinCallback
+    value: http://host.docker.internal:5105/xamarincallback
+  - name: ConnectionString
+    value: Server=localhost;Database=Microsoft.eShopOnContainers.Service.IdentityDb;User Id=sa;Password=Pass@word
+  - name: MvcClient
+    value: http://host.docker.internal:5100
+  - name: LocationApiClient
+    value: http://host.docker.internal:5109
+  - name: MarketingApiClient
+    value: http://host.docker.internal:5110
+  - name: BasketApiClient
+    value: http://host.docker.internal:5103
+  - name: OrderingApiClient
+    value: http://host.docker.internal:5102
+  - name: MobileShoppingAggClient
+    value: http://host.docker.internal:5120
+  - name: WebShoppingAggClient
+    value: http://host.docker.internal:5121
+  - name: WebhooksApiClient
+    value: http://host.docker.internal:5113
+  - name: WebhooksWebClient
+    value: http://host.docker.internal:5114
+  - name: UseCustomizationData
+    value: True
+  - name: ApplicationInsights__InstrumentationKey
+    value: 
+  - name: OrchestratorType
+    value:    
+  bindings:
+  - name: http-binding
+    port: 5105
+
+- name: catalog-api
+  project: Services/Catalog/Catalog.API/Catalog.API.csproj
+  env:
+  - name: ASPNETCORE_ENVIRONMENT
+    value: Development
+  - name: ConnectionString
+    value: Server=localhost;Database=Microsoft.eShopOnContainers.Services.CatalogDb;User Id=sa;Password=Pass@word
+  - name: PicBaseUrl
+    value: http://host.docker.internal:5202/c/api/v1/catalog/items/[0]/pic/
+  - name: EventBusConnection
+    value: localhost
+  - name: EventBusUserName
+    value: 
+  - name: EventBusPassword
+    value: 
+  - name: AzureStorageAccountName
+    value: 
+  - name: AzureStorageAccountKey
+    value: 
+  - name: UseCustomizationData
+    value: True
+  - name: AzureServiceBusEnabled
+    value: False
+  - name: AzureStorageEnabled
+    value: False
+  - name: ApplicationInsights__InstrumentationKey
+    value: 
+  - name: OrchestratorType
+    value:
+  - name: GRPC_PORT
+    value: 9101
+  - name: PORT
+    value: 80
+  - name: PATH_BASE
+    value: /catalog-api
+  bindings:
+  - name: http-port-80-binding
+    port: 5101
+
+
+- name: basket-api
+  project: Services/Basket/Basket.API/Basket.API.csproj
+  env:
+  - name: ASPNETCORE_ENVIRONMENT
+    value: Development
+  - name: ASPNETCORE_URLS
+    value: http://0.0.0.0:80
+  - name: ConnectionString
+    value: 127.0.0.1
+  - name: identityUrl
+    value: http://localhost:5105
+  - name: IdentityUrlExternal
+    value: http://localhost:5105
+  - name: EventBusConnection
+    value: localhost
+  - name: EventBusUserName
+    value: 
+  - name: EventBusPassword
+    value:   
+  - name: AzureServiceBusEnabled
+    value: False  
+  - name: ApplicationInsights__InstrumentationKey
+    value: 
+  - name: OrchestratorType
+    value:
+  - name: UseLoadTest
+    value: False
+  - name: GRPC_PORT
+    value: 9103
+  - name: PORT
+    value: 80
+  - name: PATH_BASE
+    value: /basket-api
+  bindings:
+  - name: http-port-80-binding
+    port: 5103    
+    protocol: http
