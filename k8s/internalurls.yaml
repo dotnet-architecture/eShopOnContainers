@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: internalurls
+  labels:
+    app: eshop  
+data:
+# Internal Services & healthchecks
+  basket: http://basket
+  basket__hc: http://basket/hc
+  catalog: http://catalog
+  catalog__hc: http://catalog/hc
+  identity: http://identity
+  identity__hc: http://identity/hc
+  ordering: http://ordering
+  ordering__hc: http://ordering/hc
+  ordering-background: http://ordering-background
+  ordering-background__hc: http://ordering-background/hc
+  marketing: http://marketing
+  marketing__hc: http://marketing/hc
+  locations: http://locations
+  locations__hc: http://locations/hc
+  payment__hc: http://payment/hc
+  mvc__hc: http://webmvc/hc
+  spa__hc: http://webspa/hc
+# Aggreggators
+  mobileshoppingagg: http://mobileshoppingagg
+  webshoppingagg: http://webshoppingagg
+# API GWs
+  apigwmm: http://ocelotapigw-mm
+  apigwms: http://ocelotapigw-ms
+  apigwwm: http://ocelotapigw-wm
+  apigwws: http://ocelotapigw-ws

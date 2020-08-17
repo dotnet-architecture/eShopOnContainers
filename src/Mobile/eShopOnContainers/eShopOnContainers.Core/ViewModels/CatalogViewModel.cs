@@ -1,15 +1,10 @@
-﻿using System.Threading.Tasks;
-using eShopOnContainers.ViewModels.Base;
-using System.Collections.ObjectModel;
-using Xamarin.Forms;
-using eShopOnContainers.Core.ViewModels.Base;
-using eShopOnContainers.Core.Models.Catalog;
+﻿using eShopOnContainers.Core.Models.Catalog;
 using eShopOnContainers.Core.Services.Catalog;
+using eShopOnContainers.Core.ViewModels.Base;
+using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using System.Windows.Input;
-using System.Linq;
-using eShopOnContainers.Core.Services.Basket;
-using eShopOnContainers.Core.Helpers;
-using eShopOnContainers.Core.Services.User;
+using Xamarin.Forms;
 
 namespace eShopOnContainers.Core.ViewModels
 {
@@ -20,19 +15,11 @@ namespace eShopOnContainers.Core.ViewModels
         private CatalogBrand _brand;
         private ObservableCollection<CatalogType> _types;
         private CatalogType _type;
-
-        private IBasketService _basketService;
         private ICatalogService _productsService;
-        private IUserService _userService;
 
-        public CatalogViewModel(
-            IBasketService basketService,
-            ICatalogService productsService,
-            IUserService userService)
+        public CatalogViewModel(ICatalogService productsService)
         {
-            _basketService = basketService;
             _productsService = productsService;
-            _userService = userService;
         }
 
         public ObservableCollection<CatalogItem> Products
@@ -91,9 +78,9 @@ namespace eShopOnContainers.Core.ViewModels
 
         public ICommand AddCatalogItemCommand => new Command<CatalogItem>(AddCatalogItem);
 
-        public ICommand FilterCommand => new Command(Filter);
+        public ICommand FilterCommand => new Command(async () => await FilterAsync());
 
-        public ICommand ClearFilterCommand => new Command(ClearFilter);
+		public ICommand ClearFilterCommand => new Command(async () => await ClearFilterAsync());
 
         public override async Task InitializeAsync(object navigationData)
         {
@@ -110,12 +97,12 @@ namespace eShopOnContainers.Core.ViewModels
         private void AddCatalogItem(CatalogItem catalogItem)
         {
             // Add new item to Basket
-            MessagingCenter.Send(this, MessengerKeys.AddProduct, catalogItem);
+            MessagingCenter.Send(this, MessageKeys.AddProduct, catalogItem);
         }
 
-        private async void Filter()
+        private async Task FilterAsync()
         {
-            if (Brand == null && Type == null)
+            if (Brand == null || Type == null)
             {
                 return;
             }
@@ -123,13 +110,13 @@ namespace eShopOnContainers.Core.ViewModels
             IsBusy = true;
 
             // Filter catalog products
-            MessagingCenter.Send(this, MessengerKeys.Filter);
+            MessagingCenter.Send(this, MessageKeys.Filter);
             Products = await _productsService.FilterAsync(Brand.Id, Type.Id);
 
             IsBusy = false;
         }
 
-        private async void ClearFilter()
+        private async Task ClearFilterAsync()
         {
             IsBusy = true;
 

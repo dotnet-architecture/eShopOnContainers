@@ -1,0 +1,31 @@
+@model CampaignItem
+
+@{
+    ViewData["Title"] = "Campaign details";
+
+    var headerList= new List<Header>() {
+        new Header() { Controller = "Catalog", Text = "Back to catalog" },
+        new Header() { Controller = "Campaigns", Text = "Back to Campaigns" } };
+}
+<section class="esh-campaigns-hero">
+    <div class="container">
+        <img class="esh-campaigns-title" src="~/images/main_banner_text.png" />
+    </div>
+</section>
+
+<partial name="_Header" model="headerList" />
+
+<div class="container">
+    <div class="card esh-campaigns-items">
+        <img class="card-img-top" src="@Model.PictureUri" alt="Card image cap">
+        <div class="card-body">
+            <h4 class="card-title">@Model.Name</h4>
+            <p class="card-text">@Model.Description</p>
+        </div>
+        <div class="card-footer">
+            <small class="text-muted">
+                From @Model.From.ToString("MMMM dd, yyyy") until @Model.To.ToString("MMMM dd, yyyy")
+            </small>
+        </div>
+    </div>
+</div>

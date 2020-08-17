@@ -78,4 +78,8 @@
             transition: color $animation-speed-default;
         }
     }
+
+    &-alert {
+        margin-top: 10px;
+    }
 }

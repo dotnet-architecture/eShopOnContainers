@@ -1,28 +1,28 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
             x:Class="eShopOnContainers.Core.Views.MainView"
             xmlns:views="clr-namespace:eShopOnContainers.Core.Views;assembly=eShopOnContainers.Core"
+			xmlns:viewModelBase="clr-namespace:eShopOnContainers.Core.ViewModels.Base;assembly=eShopOnContainers.Core"
             xmlns:controls="clr-namespace:eShopOnContainers.Core.Controls;assembly=eShopOnContainers.Core"
             BarBackgroundColor="{StaticResource DarkGreenColor}"
             BackgroundColor="{StaticResource BackgroundColor}"
-            BarTextColor="{StaticResource WhiteColor}">
+            BarTextColor="{StaticResource WhiteColor}"
+			viewModelBase:ViewModelLocator.AutoWireViewModel="true">
     <TabbedPage.Title>
-        <OnPlatform      
-            x:TypeArguments="x:String"
-            iOS="eShop on Containers"
-            WinPhone="eShop on Containers"/>
+        <OnPlatform x:TypeArguments="x:String">
+            <On Platform="iOS, UWP, WinRT, WinPhone" Value="eShop on Containers" />
+        </OnPlatform>
     </TabbedPage.Title>
     <ContentPage.ToolbarItems>
         <ToolbarItem 
             Command="{Binding SettingsCommand}"
             Text="Settings">
             <ToolbarItem.Icon>
-                <OnPlatform 
-                    x:TypeArguments="FileImageSource"
-                    WinPhone="Assets/app_settings.png"
-                    Android="app_settings"
-                    iOS="app_settings"/>
+                <OnPlatform x:TypeArguments="FileImageSource">
+                    <On Platform="iOS, Android" Value="app_settings" />
+                    <On Platform="UWP, WinRT, WinPhone" Value="Assets/app_settings.png" />
+                </OnPlatform>
             </ToolbarItem.Icon>
         </ToolbarItem>
     </ContentPage.ToolbarItems>
@@ -30,22 +30,20 @@
     <views:CatalogView  
         x:Name="HomeView">
         <views:CatalogView.Icon>
-            <OnPlatform        
-                x:TypeArguments="FileImageSource"
-                Android="menu_filter"
-                iOS="menu_filter"
-                WinPhone="Assets\menu_filter.png"/>
+            <OnPlatform x:TypeArguments="FileImageSource">
+                <On Platform="iOS, Android" Value="menu_filter" />
+                <On Platform="UWP, WinRT, WinPhone" Value="Assets\menu_filter.png" />
+            </OnPlatform>
         </views:CatalogView.Icon>
     </views:CatalogView>
     <!-- PROFILE -->
     <views:ProfileView
         x:Name="ProfileView">
         <views:ProfileView.Icon>
-            <OnPlatform        
-                x:TypeArguments="FileImageSource"
-                Android="menu_profile"
-                iOS="menu_profile"
-                WinPhone="Assets\menu_profile.png"/>
+            <OnPlatform x:TypeArguments="FileImageSource">
+                <On Platform="iOS, Android" Value="menu_profile" />
+                <On Platform="UWP, WinRT, WinPhone" Value="Assets\menu_profile.png" />
+            </OnPlatform>
         </views:ProfileView.Icon>
     </views:ProfileView>
     <!-- BASKET -->
@@ -54,11 +52,20 @@
         controls:CustomTabbedPage.BadgeText="{Binding BadgeCount}"
         controls:CustomTabbedPage.BadgeColor="{StaticResource LightGreenColor}">
         <views:BasketView.Icon>
-            <OnPlatform        
-                x:TypeArguments="FileImageSource"
-                Android="menu_cart"
-                iOS="menu_cart"
-                WinPhone="Assets\menu_cart.png"/>
+            <OnPlatform x:TypeArguments="FileImageSource">
+                <On Platform="iOS, Android" Value="menu_cart" />
+                <On Platform="UWP, WinRT, WinPhone" Value="Assets\menu_cart.png" />
+            </OnPlatform>
         </views:BasketView.Icon>
     </views:BasketView>
+    <!-- CAMPAIGNS -->
+    <views:CampaignView  
+        x:Name="CampaignView">
+        <views:CampaignView.Icon>
+            <OnPlatform x:TypeArguments="FileImageSource">
+                <On Platform="iOS, Android" Value="menu_campaigns" />
+                <On Platform="UWP, WinRT, WinPhone" Value="Assets\menu_campaigns.png" />
+            </OnPlatform>
+        </views:CampaignView.Icon>
+    </views:CampaignView>
 </TabbedPage>

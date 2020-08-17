@@ -1,0 +1,116 @@
+.esh-campaigns-hero {
+    background-image: url("../../images/main_banner.png");
+    background-size: cover;
+    height: 260px;
+    width: 100%;
+}
+
+.esh-campaigns-title {
+    position: relative;
+    top: 74.28571px;
+}
+
+    .esh-campaigns-label::before {
+        color: rgba(255, 255, 255, 0.5);
+        content: attr(data-title);
+        font-size: 0.65rem;
+        margin-top: 0.65rem;
+        margin-left: 0.5rem;
+        position: absolute;
+        text-transform: uppercase;
+        z-index: 1;
+    }
+
+    .esh-campaigns-label::after {
+        background-image: url("../../images/arrow-down.png");
+        height: 7px;
+        content: '';
+        position: absolute;
+        right: 1.5rem;
+        top: 2.5rem;
+        width: 10px;
+        z-index: 1;
+    }
+
+.esh-campaigns-items {
+    margin-top: 1rem;
+}
+
+.esh-campaigns-item {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    width: 33%;
+    display: inline-block;
+    float: none !important;
+}
+
+@media screen and (max-width: 1024px) {
+    .esh-campaigns-item {
+        width: 50%;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .esh-campaigns-item {
+        width: 100%;
+    }
+}
+
+.esh-campaigns-thumbnail {
+    max-width: 370px;
+    width: 100%;
+}
+
+.esh-campaigns-button {
+    background-color: #83D01B;
+    border: none;
+    color: #FFFFFF;
+    cursor: pointer;
+    font-size: 1rem;
+    height: 3rem;
+    margin-top: 1rem;
+    transition: all 0.35s;
+    width: 80%;
+}
+
+.esh-campaigns-card-footer-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.esh-campaigns-form-button {
+    background-color: #83D01B;
+    border: none;
+    color: #FFFFFF;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.35s;
+    width: 80%;
+    margin-top: -15px;
+}
+
+    .esh-campaigns-button.is-disabled {
+        opacity: .5;
+        pointer-events: none;
+    }
+
+    .esh-campaigns-button:hover {
+        background-color: #4a760f;
+        transition: all 0.35s;
+    }
+
+.esh-campaigns-name {
+    font-size: 1rem;
+    font-weight: 300;
+    margin-top: .5rem;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.esh-campaigns-description {
+    text-align: center;
+    font-weight: 300;
+    font-size: 14px;
+}
+

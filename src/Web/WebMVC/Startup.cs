@@ -1,56 +1,52 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Devspaces.Support;
+using HealthChecks.UI.Client;
+using Microsoft.ApplicationInsights.Extensibility;
+using Microsoft.ApplicationInsights.ServiceFabric;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.eShopOnContainers.WebMVC.Services;
+using Microsoft.eShopOnContainers.WebMVC.ViewModels;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
-using Microsoft.eShopOnContainers.WebMVC.ViewModels;
-using Microsoft.eShopOnContainers.WebMVC.Services;
+using Polly;
+using Polly.Extensions.Http;
+using StackExchange.Redis;
+using System;
 using System.IdentityModel.Tokens.Jwt;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.AspNetCore.Http;
-using System.Threading;
-using Microsoft.Extensions.Options;
+using System.Net.Http;
+using WebMVC.Infrastructure;
+using WebMVC.Infrastructure.Middlewares;
+using WebMVC.Services;
 
 namespace Microsoft.eShopOnContainers.WebMVC
 {
     public class Startup
     {
-        public Startup(IHostingEnvironment env)
+        public Startup(IConfiguration configuration)
         {
-            var builder = new ConfigurationBuilder()
-                      .SetBasePath(env.ContentRootPath)
-                      .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)  // Settings for the application
-                      .AddEnvironmentVariables();                                              // override settings with environment variables set in compose.   
-
-
-            if (env.IsDevelopment())
-            {
-                // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
-                builder.AddUserSecrets();
-            }
-
-            Configuration = builder.Build();
+            Configuration = configuration;
         }
 
-        public IConfigurationRoot Configuration { get; }
+        public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        // This method gets called by the runtime. Use this method to add services to the IoC container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
-            services.Configure<AppSettings>(Configuration);
-
-            // Add application services.
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
-            services.AddTransient<ICatalogService, CatalogService>(); 
-            services.AddTransient<IOrderingService, OrderingService>(); 
-            services.AddTransient<IBasketService, BasketService>();
-            services.AddTransient<IIdentityParser<ApplicationUser>, IdentityParser>();
+            services.AddAppInsight(Configuration)
+                    .AddHealthChecks(Configuration)
+                    .AddCustomMvc(Configuration)
+                    .AddDevspaces()
+                    .AddHttpClientServices(Configuration)
+                    //.AddHttpClientLogging(Configuration)  //Opt-in HttpClientLogging config
+                    .AddCustomAuthentication(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -58,60 +54,237 @@ namespace Microsoft.eShopOnContainers.WebMVC
         {
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
+            //loggerFactory.AddAzureWebAppDiagnostics();
+            //loggerFactory.AddApplicationInsights(app.ApplicationServices, LogLevel.Trace);
+
+            app.UseHealthChecks("/hc", new HealthCheckOptions()
+            {
+                Predicate = _ => true,
+                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+            });
 
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseBrowserLink();
             }
             else
             {
-                app.UseExceptionHandler("/Catalog/Error");
+                app.UseExceptionHandler("/Error");
+                app.UseHsts();
             }
 
-            app.UseStaticFiles();
-
-            app.UseCookieAuthentication(new CookieAuthenticationOptions
+            var pathBase = Configuration["PATH_BASE"];
+            if (!string.IsNullOrEmpty(pathBase))
             {
-                AuthenticationScheme = "Cookies",
-                AutomaticAuthenticate = true,
+                loggerFactory.CreateLogger<Startup>().LogDebug("Using PATH BASE '{PathBase}'", pathBase);
+                app.UsePathBase(pathBase);
+            }
+
+            app.UseHealthChecks("/liveness", new HealthCheckOptions
+            {
+                Predicate = r => r.Name.Contains("self")
             });
 
-            var identityUrl = Configuration.GetValue<string>("IdentityUrl");
-            var callBackUrl = Configuration.GetValue<string>("CallBackUrl");
-            var log = loggerFactory.CreateLogger("identity");
+            app.UseSession();
+            app.UseStaticFiles();
 
-            var oidcOptions = new OpenIdConnectOptions
+            if (Configuration.GetValue<bool>("UseLoadTest"))
             {
-                AuthenticationScheme = "oidc",
-                SignInScheme = "Cookies",
-                Authority = identityUrl.ToString(),
-                PostLogoutRedirectUri = callBackUrl.ToString(), 
-                ClientId = "mvc",
-                ClientSecret = "secret",
-                ResponseType = "code id_token", 
-                SaveTokens = true,
-                GetClaimsFromUserInfoEndpoint = true,
-                RequireHttpsMetadata = false, 
-            };
+                app.UseMiddleware<ByPassAuthMiddleware>();
+            }
 
-            oidcOptions.Scope.Clear();
-            oidcOptions.Scope.Add("openid");
-            oidcOptions.Scope.Add("profile");
-            oidcOptions.Scope.Add("orders");
-            oidcOptions.Scope.Add("basket");
+            app.UseAuthentication();
 
-            //Wait untill identity service is ready on compose. 
-            app.UseOpenIdConnectAuthentication(oidcOptions);
+            WebContextSeed.Seed(app, env, loggerFactory);
 
+            app.UseHttpsRedirection();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Catalog}/{action=Index}/{id?}");
+
+                routes.MapRoute(
+                    name: "defaultError",
+                    template: "{controller=Error}/{action=Error}");
             });
+        }
+    }
+
+    static class ServiceCollectionExtensions
+    {
+
+        public static IServiceCollection AddAppInsight(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddApplicationInsightsTelemetry(configuration);
+            var orchestratorType = configuration.GetValue<string>("OrchestratorType");
+
+            if (orchestratorType?.ToUpper() == "K8S")
+            {
+                // Enable K8s telemetry initializer
+                services.AddApplicationInsightsKubernetesEnricher();
+            }
+
+            if (orchestratorType?.ToUpper() == "SF")
+            {
+                // Enable SF telemetry initializer
+                services.AddSingleton<ITelemetryInitializer>((serviceProvider) =>
+                    new FabricTelemetryInitializer());
+            }
+
+            return services;
+        }
+
+        public static IServiceCollection AddHealthChecks(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddHealthChecks()
+                .AddCheck("self", () => HealthCheckResult.Healthy())
+                .AddUrlGroup(new Uri(configuration["PurchaseUrlHC"]), name: "purchaseapigw-check", tags: new string[] { "purchaseapigw" })
+                .AddUrlGroup(new Uri(configuration["MarketingUrlHC"]), name: "marketingapigw-check", tags: new string[] { "marketingapigw" })
+                .AddUrlGroup(new Uri(configuration["IdentityUrlHC"]), name: "identityapi-check", tags: new string[] { "identityapi" });                
+            
+            return services;
+        }
+
+        public static IServiceCollection AddCustomMvc(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddOptions();
+            services.Configure<AppSettings>(configuration);
+
+            services.AddMvc()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddSession();
+
+            if (configuration.GetValue<string>("IsClusterEnv") == bool.TrueString)
+            {
+                services.AddDataProtection(opts =>
+                {
+                    opts.ApplicationDiscriminator = "eshop.webmvc";
+                })
+                .PersistKeysToRedis(ConnectionMultiplexer.Connect(configuration["DPConnectionString"]), "DataProtection-Keys");
+            }
+            return services;
+        }
+
+        // Adds all Http client services (like Service-Agents) using resilient Http requests based on HttpClient factory and Polly's policies 
+        public static IServiceCollection AddHttpClientServices(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            //register delegating handlers
+            services.AddTransient<HttpClientAuthorizationDelegatingHandler>();
+            services.AddTransient<HttpClientRequestIdDelegatingHandler>();
+
+            //set 5 min as the lifetime for each HttpMessageHandler int the pool
+            services.AddHttpClient("extendedhandlerlifetime").SetHandlerLifetime(TimeSpan.FromMinutes(5)).AddDevspacesSupport();
+
+            //add http client services
+            services.AddHttpClient<IBasketService, BasketService>()
+                   .SetHandlerLifetime(TimeSpan.FromMinutes(5))  //Sample. Default lifetime is 2 minutes
+                   .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
+                   .AddPolicyHandler(GetRetryPolicy())
+                   .AddPolicyHandler(GetCircuitBreakerPolicy())
+                   .AddDevspacesSupport();
+
+            services.AddHttpClient<ICatalogService, CatalogService>()
+                   .AddPolicyHandler(GetRetryPolicy())
+                   .AddPolicyHandler(GetCircuitBreakerPolicy())
+                   .AddDevspacesSupport();
+
+            services.AddHttpClient<IOrderingService, OrderingService>()
+                 .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
+                 .AddHttpMessageHandler<HttpClientRequestIdDelegatingHandler>()
+                 .AddPolicyHandler(GetRetryPolicy())
+                 .AddPolicyHandler(GetCircuitBreakerPolicy())
+                 .AddDevspacesSupport();
+
+            services.AddHttpClient<ICampaignService, CampaignService>()
+                .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
+                .AddPolicyHandler(GetRetryPolicy())
+                .AddPolicyHandler(GetCircuitBreakerPolicy())
+                .AddDevspacesSupport();
+
+            services.AddHttpClient<ILocationService, LocationService>()
+               .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
+               .AddPolicyHandler(GetRetryPolicy())
+               .AddPolicyHandler(GetCircuitBreakerPolicy())
+               .AddDevspacesSupport();
+
+            //add custom application services
+            services.AddTransient<IIdentityParser<ApplicationUser>, IdentityParser>();
+
+            return services;
+        }
+
+        public static IServiceCollection AddHttpClientLogging(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddLogging(b =>
+            {
+                b.AddFilter((category, level) => true); // Spam the world with logs.
+
+                // Add console logger so we can see all the logging produced by the client by default.
+                b.AddConsole(c => c.IncludeScopes = true);
+
+                // Add console logger
+                b.AddDebug();
+            });
+
+            return services;
+        }
+
+        public static IServiceCollection AddCustomAuthentication(this IServiceCollection services, IConfiguration configuration)
+        {
+            var useLoadTest = configuration.GetValue<bool>("UseLoadTest");
+            var identityUrl = configuration.GetValue<string>("IdentityUrl");
+            var callBackUrl = configuration.GetValue<string>("CallBackUrl");
+            var sessionCookieLifetime = configuration.GetValue("SessionCookieLifetimeMinutes", 60);
+
+            // Add Authentication services          
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+            })
+            .AddCookie(setup=>setup.ExpireTimeSpan = TimeSpan.FromMinutes(sessionCookieLifetime))
+            .AddOpenIdConnect(options =>
+            {
+                options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.Authority = identityUrl.ToString();
+                options.SignedOutRedirectUri = callBackUrl.ToString();
+                options.ClientId = useLoadTest ? "mvctest" : "mvc";
+                options.ClientSecret = "secret";
+                options.ResponseType = useLoadTest ? "code id_token token" : "code id_token";
+                options.SaveTokens = true;
+                options.GetClaimsFromUserInfoEndpoint = true;
+                options.RequireHttpsMetadata = false;
+                options.Scope.Add("openid");
+                options.Scope.Add("profile");
+                options.Scope.Add("orders");
+                options.Scope.Add("basket");
+                options.Scope.Add("marketing");
+                options.Scope.Add("locations");
+                options.Scope.Add("webshoppingagg");
+                options.Scope.Add("orders.signalrhub");       
+            });
+
+            return services;
+        }
+
+        static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy()
+        {
+            return HttpPolicyExtensions
+              .HandleTransientHttpError()
+              .OrResult(msg => msg.StatusCode == System.Net.HttpStatusCode.NotFound)
+              .WaitAndRetryAsync(6, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
+
+        }
+        static IAsyncPolicy<HttpResponseMessage> GetCircuitBreakerPolicy()
+        {
+            return HttpPolicyExtensions
+                .HandleTransientHttpError()
+                .CircuitBreakerAsync(5, TimeSpan.FromSeconds(30));
         }
     }
 }

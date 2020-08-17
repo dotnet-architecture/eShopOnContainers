@@ -3,14 +3,22 @@
 @inject IIdentityParser<ApplicationUser> UserManager
 
 @{
-    ViewData["Title"] = "New Order";
+     ViewData["Title"] = "New Order";
+     var headerList= new List<Header>() {
+       new Header() { Controller = "Cart", Text = "Back to cart" } };
 }
 
-@Html.Partial("_Header", new Header() { Controller = "Cart", Text = "Back to cart" })
-
+<partial name="_Header" model="headerList"/>
 <div class="container">
-    <form method="post" asp-controller="Order" asp-action="Create">
+    <form method="post" asp-controller="Order" asp-action="Checkout">
         <section class="esh-orders_new-section">
+            <div class="row">
+                @foreach (var error in ViewData.ModelState.Values.SelectMany(err => err.Errors)) {
+                    <div class="alert alert-warning" role="alert">                    
+                        &nbsp;@error.ErrorMessage
+                    </div>
+                }
+            </div>
             <h4 class="esh-orders_new-title">Shipping address</h4>
             <div class="row">
                 <div class="col-md-6">
@@ -80,7 +88,7 @@
         @await Html.PartialAsync("_OrderItems")
 
         <section class="esh-orders_new-section">
-            <div class="form-group">
+            <div class="form-group row">
                 <div class="col-md-9">
                 </div>
                 <div class="col-md-2">

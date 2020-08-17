@@ -1,5 +1,9 @@
-import { Component, OnInit }                        from '@angular/core';
-import { OrdersService }                            from '../orders.service';
+import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+
+import { OrdersService } from '../orders.service';
+import { BasketService } from '../../basket/basket.service';
 import { IOrder }                                   from '../../shared/models/order.model';
 import { BasketWrapperService }                     from '../../shared/services/basket.wrapper.service';
 
@@ -12,12 +16,14 @@ import { Router }                                   from '@angular/router';
     templateUrl: './orders-new.component.html'
 })
 export class OrdersNewComponent implements OnInit {
-    private newOrderForm: FormGroup;  // new order form
-    private order: IOrder;
+    newOrderForm: FormGroup;  // new order form
+    isOrderProcessing: boolean;
+    errorReceived: boolean;
+    order: IOrder;
 
-    constructor(private service: OrdersService, fb: FormBuilder, private router: Router, private basketEvents: BasketWrapperService) {
-        // Obtener información del perfil de usuario.
-        this.order = service.mapBasketAndIdentityInfoNewOrder();
+    constructor(private orderService: OrdersService, private basketService: BasketService, fb: FormBuilder, private router: Router) {
+        // Obtain user profile information
+        this.order = orderService.mapOrderAndIdentityInfoNewOrder();
         this.newOrderForm = fb.group({
             'street': [this.order.street, Validators.required],
             'city': [this.order.city, Validators.required],
@@ -33,22 +39,28 @@ export class OrdersNewComponent implements OnInit {
     ngOnInit() {
     }
 
-    submitForm(value: any) {
+    submitForm(value: any) {        
         this.order.street = this.newOrderForm.controls['street'].value;
         this.order.city = this.newOrderForm.controls['city'].value;
         this.order.state = this.newOrderForm.controls['state'].value;
         this.order.country = this.newOrderForm.controls['country'].value;
         this.order.cardnumber = this.newOrderForm.controls['cardnumber'].value;
+        this.order.cardtypeid = 1;
         this.order.cardholdername = this.newOrderForm.controls['cardholdername'].value;
         this.order.cardexpiration = new Date(20 + this.newOrderForm.controls['expirationdate'].value.split('/')[1], this.newOrderForm.controls['expirationdate'].value.split('/')[0]);
         this.order.cardsecuritynumber = this.newOrderForm.controls['securitycode'].value;
-
-        this.service.postOrder(this.order).subscribe(res => {
-            // this will emit an observable. Basket service is subscribed to this observable, and will react deleting the basket for the current user. 
-            this.basketEvents.orderCreated();
-
-            this.router.navigate(['orders']);
-        });
+        let basketCheckout = this.basketService.mapBasketInfoCheckout(this.order);
+        this.basketService.setBasketCheckout(basketCheckout)
+            .pipe(catchError((errMessage) => {
+                this.errorReceived = true;
+                this.isOrderProcessing = false;
+                return Observable.throw(errMessage); 
+            }))
+            .subscribe(res => {
+                this.router.navigate(['orders']);
+            });
+        this.errorReceived = false;
+        this.isOrderProcessing = true;
     }
 }
 

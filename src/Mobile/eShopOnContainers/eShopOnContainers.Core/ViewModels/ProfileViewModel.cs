@@ -1,9 +1,9 @@
 ﻿using eShopOnContainers.Core.Extensions;
-using eShopOnContainers.Core.Helpers;
 using eShopOnContainers.Core.Models.Orders;
 using eShopOnContainers.Core.Models.User;
 using eShopOnContainers.Core.Services.Order;
-using eShopOnContainers.ViewModels.Base;
+using eShopOnContainers.Core.Services.Settings;
+using eShopOnContainers.Core.ViewModels.Base;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -13,12 +13,13 @@ namespace eShopOnContainers.Core.ViewModels
 {
     public class ProfileViewModel : ViewModelBase
     {
+        private readonly ISettingsService _settingsService;
+        private readonly IOrderService _orderService;
         private ObservableCollection<Order> _orders;
 
-        private IOrderService _orderService;
-
-        public ProfileViewModel(IOrderService orderService)
+        public ProfileViewModel(ISettingsService settingsService, IOrderService orderService)
         {
+            _settingsService = settingsService;
             _orderService = orderService;
         }
 
@@ -41,7 +42,7 @@ namespace eShopOnContainers.Core.ViewModels
             IsBusy = true;
 
             // Get orders
-            var authToken = Settings.AuthAccessToken;
+            var authToken = _settingsService.AuthAccessToken;
             var orders = await _orderService.GetOrdersAsync(authToken);
             Orders = orders.ToObservableCollection();
 

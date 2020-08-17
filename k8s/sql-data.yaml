@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: eshop
+    component: sql-data
+  name: sql-data
+spec:
+  ports:
+  - port: 1433
+  selector:
+    app: eshop
+    component: sql-data
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: sql-data
+spec:
+  template:
+    metadata:
+      labels:
+        app: eshop
+        component: sql-data
+    spec:
+      containers:
+      - name: sql-data
+        image: microsoft/mssql-server-linux:2017-latest
+        env:
+        - name: ACCEPT_EULA
+          value: "Y"
+        - name: MSSQL_PID
+          value: Developer
+        - name: MSSQL_SA_PASSWORD
+          value: Pass@word

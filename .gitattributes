@@ -2,6 +2,7 @@
 # Set default behavior to automatically normalize line endings.
 ###############################################################################
 * text=auto
+*.sh text eol=lf
 
 ###############################################################################
 # Set default behavior for command prompt diff.
@@ -61,3 +62,10 @@
 #*.PDF   diff=astextplain
 #*.rtf   diff=astextplain
 #*.RTF   diff=astextplain
+
+
+###############################################################################
+# Certificates are binary
+###############################################################################
+*.pfx binary
+

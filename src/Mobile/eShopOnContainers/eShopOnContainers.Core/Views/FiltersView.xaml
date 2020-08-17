@@ -1,9 +1,8 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <slideOverKit:SlideMenuView 
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:slideOverKit="clr-namespace:SlideOverKit"
-    xmlns:controls="clr-namespace:eShopOnContainers.Core.Controls;assembly=eShopOnContainers.Core"   
+    xmlns:slideOverKit="clr-namespace:SlideOverKit" 
     x:Class="eShopOnContainers.Core.Views.FiltersView"
     MenuOrientations="TopToBottom"
     BackgroundColor="{StaticResource BackgroundColor}"
@@ -13,7 +12,7 @@
     <ResourceDictionary>
 
       <Style x:Key="FilterPickerStyle"  
-             TargetType="{x:Type controls:BindablePicker}">
+             TargetType="{x:Type Picker}">
         <Setter Property="HeightRequest"
                 Value="48" />
         <Setter Property="BackgroundColor"
@@ -70,35 +69,33 @@
       <RowDefinition Height="Auto" />
     </Grid.RowDefinitions>
     <!-- BRAND -->
-    <controls:BindablePicker
+    <Picker
       Grid.Row="0"
       Title="BRAND" 
       ItemsSource="{Binding Brands}"
       SelectedItem="{Binding Brand, Mode=TwoWay}"
       Style="{StaticResource FilterPickerStyle}">
-      <controls:BindablePicker.HeightRequest>   
-        <OnPlatform 
-          x:TypeArguments="x:Double"       
-          Android="48"
-          iOS="48"
-          WinPhone="36"/>
-      </controls:BindablePicker.HeightRequest> 
-    </controls:BindablePicker>
+      <Picker.HeightRequest>   
+        <OnPlatform x:TypeArguments="x:Double">
+            <On Platform="iOS, Android" Value="48" />
+            <On Platform="UWP, WinRT, WinPhone" Value="36" />
+        </OnPlatform>
+      </Picker.HeightRequest> 
+    </Picker>
     <!-- TYPE -->
-    <controls:BindablePicker
+    <Picker
       Grid.Row="1"
       Title="TYPE"
       ItemsSource="{Binding Types}"
       SelectedItem="{Binding Type, Mode=TwoWay}"
       Style="{StaticResource FilterPickerStyle}">    
-      <controls:BindablePicker.HeightRequest>   
-        <OnPlatform 
-          x:TypeArguments="x:Double"       
-          Android="48"
-          iOS="48"
-          WinPhone="36"/>
-      </controls:BindablePicker.HeightRequest> 
-    </controls:BindablePicker>
+      <Picker.HeightRequest>   
+        <OnPlatform x:TypeArguments="x:Double">
+            <On Platform="iOS, Android" Value="48" />
+            <On Platform="UWP, WinRT, WinPhone" Value="36" />
+        </OnPlatform>
+      </Picker.HeightRequest> 
+    </Picker>
     <Button 
       Grid.Row="2"
       Text="Apply" 

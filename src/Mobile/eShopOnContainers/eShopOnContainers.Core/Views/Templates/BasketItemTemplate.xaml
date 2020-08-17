@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <ContentView
     xmlns="http://xamarin.com/schemas/2014/forms"     
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"  
@@ -71,11 +71,10 @@
         <Grid   
             BackgroundColor="{StaticResource BackgroundColor}">
             <Grid.Padding>
-                <OnPlatform         
-                    x:TypeArguments="Thickness"
-                    Android="0"
-                    iOS="0"
-                    WinPhone="12, 0"/>
+                <OnPlatform x:TypeArguments="Thickness">
+                    <On Platform="iOS, Android" Value="0" />
+                    <On Platform="UWP, WinRT, WinPhone" Value="12, 0" />
+                </OnPlatform>
             </Grid.Padding>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
@@ -83,6 +82,7 @@
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="1" />
             </Grid.RowDefinitions>
             <!-- IMAGE -->
@@ -131,10 +131,24 @@
                     Text="{Binding Total, StringFormat='${0:N}'}"
                     Style="{StaticResource OrderTotalStyle}"/>
             </Grid>
-            <Grid 
+            <Grid
                 Grid.Column="0"
                 Grid.ColumnSpan="2"
                 Grid.Row="1"
+                IsVisible="{Binding HasNewPrice}"
+                BackgroundColor="#F0AD4E">
+                <Label 
+                    HorizontalOptions="Fill"
+                    VerticalOptions="Fill"
+                    HorizontalTextAlignment="Center"
+                    VerticalTextAlignment="Center"
+                    HeightRequest="60"
+                    Text="{Binding OldUnitPrice, StringFormat='Note that the price of this article changed in our Catalog. The old price when you originally added it to the basket was $ {0:N2}'}" />
+            </Grid>
+            <Grid 
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                Grid.Row="2"
                 BackgroundColor="Gray"/>
         </Grid>
     </ContentView.Content>

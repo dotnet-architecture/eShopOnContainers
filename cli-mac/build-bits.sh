@@ -1,13 +1,25 @@
 #!/bin/sh
 
+# List of microservices here needs to be updated to include all the new microservices (Marketing, etc.)
+
 projectList=(
-    "../src/Services/Catalog/Catalog.API"
-    "../src/Services/Basket/Basket.API"
-    "../src/Services/Ordering/Ordering.API"
-    "../src/Services/Identity/Identity.API"
     "../src/Web/WebMVC"
     "../src/Web/WebSPA"
+    "../src/Services/Identity/Identity.API"
+    "../src/Services/Catalog/Catalog.API"
+    "../src/Services/Ordering/Ordering.API"
+    "../src/Services/Basket/Basket.API"
+    "../src/Services/Location/Locations.API"
+    "../src/Services/Marketing/Marketing.API"
+    "../src/Services/Payment/Payment.API"
+    "../src/Web/WebStatus"
 )
+
+
+pushd $(pwd)/../src/Web/WebSPA
+npm install
+npm rebuild node-sass
+popd 
 
 for project in "${projectList[@]}"
 do
@@ -15,10 +27,8 @@ do
     echo -e "\e[33m\tRemoving old publish output"
     pushd $(pwd)/$project
     rm -rf obj/Docker/publish
-    echo -e "\e[33m\tRestoring project"
-    dotnet restore
     echo -e "\e[33m\tBuilding and publishing projects"
-    dotnet publish -o obj/Docker/publish
+    dotnet publish -o obj/Docker/publish -c Release
     popd
 done
 
@@ -33,3 +43,5 @@ fi
 
 # No need to build the images, docker build or docker compose will
 # do that using the images and containers defined in the docker-compose.yml file.
+#
+#

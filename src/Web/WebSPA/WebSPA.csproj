@@ -1,38 +1,82 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
-    <DebugType>portable</DebugType>
-    <PreserveCompilationContext>true</PreserveCompilationContext>
-    <AssemblyName>WebSPA</AssemblyName>
-    <OutputType>Exe</OutputType>
-    <PackageId>eShopOnContainers.WebSPA</PackageId>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
     <UserSecretsId>aspnetcorespa-c23d27a4-eb88-4b18-9b77-2a93f3b15119</UserSecretsId>
-    <RuntimeFrameworkVersion>1.1.0</RuntimeFrameworkVersion>
-    <PackageTargetFallback>$(PackageTargetFallback);dotnet5.6;portable-net45+win8</PackageTargetFallback>
     <DockerComposeProjectPath>..\..\..\docker-compose.dcproj</DockerComposeProjectPath>
     <TypeScriptCompileOnSaveEnabled>false</TypeScriptCompileOnSaveEnabled>
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+    <GeneratedItemPatterns>wwwroot/dist/**</GeneratedItemPatterns>
+    <DefaultItemExcludes>$(DefaultItemExcludes);$(GeneratedItemPatterns)</DefaultItemExcludes>
+    <TypeScriptToolsVersion>2.9</TypeScriptToolsVersion>
   </PropertyGroup>
 
   <ItemGroup>
     <Compile Remove="node_modules\**\*;Client\**\*" />
+    <None Remove="Client\environments\environment.prod.ts" />
+    <None Remove="Client\environments\environment.ts" />
+    <None Remove="Client\guid.ts" />
+    <None Remove="Client\main.ts" />
+    <None Remove="Client\modules\app.component.ts" />
+    <None Remove="Client\modules\app.module.ts" />
+    <None Remove="Client\modules\app.routes.ts" />
+    <None Remove="Client\modules\app.service.ts" />
+    <None Remove="Client\modules\basket\basket-status\basket-status.component.ts" />
+    <None Remove="Client\modules\basket\basket.component.ts" />
+    <None Remove="Client\modules\basket\basket.module.ts" />
+    <None Remove="Client\modules\basket\basket.service.ts" />
+    <None Remove="Client\modules\campaigns\campaigns-detail\campaigns-detail.component.ts" />
+    <None Remove="Client\modules\campaigns\campaigns.component.ts" />
+    <None Remove="Client\modules\campaigns\campaigns.module.ts" />
+    <None Remove="Client\modules\campaigns\campaigns.service.ts" />
+    <None Remove="Client\modules\catalog\catalog.component.ts" />
+    <None Remove="Client\modules\catalog\catalog.module.ts" />
+    <None Remove="Client\modules\catalog\catalog.service.ts" />
+    <None Remove="Client\modules\orders\orders-detail\orders-detail.component.ts" />
+    <None Remove="Client\modules\orders\orders-new\orders-new.component.ts" />
+    <None Remove="Client\modules\orders\orders.component.ts" />
+    <None Remove="Client\modules\orders\orders.module.ts" />
+    <None Remove="Client\modules\orders\orders.service.ts" />
+    <None Remove="Client\modules\shared\components\header\header.ts" />
+    <None Remove="Client\modules\shared\components\identity\identity.ts" />
+    <None Remove="Client\modules\shared\components\page-not-found\page-not-found.component.spec.ts" />
+    <None Remove="Client\modules\shared\components\page-not-found\page-not-found.component.ts" />
+    <None Remove="Client\modules\shared\components\pager\pager.ts" />
+    <None Remove="Client\modules\shared\models\basket.model.ts" />
+    <None Remove="Client\modules\shared\models\basketCheckout.model.ts" />
+    <None Remove="Client\modules\shared\models\basketItem.model.ts" />
+    <None Remove="Client\modules\shared\models\campaign.model.ts" />
+    <None Remove="Client\modules\shared\models\campaignItem.model.ts" />
+    <None Remove="Client\modules\shared\models\catalog.model.ts" />
+    <None Remove="Client\modules\shared\models\catalogBrand.model.ts" />
+    <None Remove="Client\modules\shared\models\catalogItem.model.ts" />
+    <None Remove="Client\modules\shared\models\catalogType.model.ts" />
+    <None Remove="Client\modules\shared\models\configuration.model.ts" />
+    <None Remove="Client\modules\shared\models\identity.model.ts" />
+    <None Remove="Client\modules\shared\models\order-detail.model.ts" />
+    <None Remove="Client\modules\shared\models\order.model.ts" />
+    <None Remove="Client\modules\shared\models\orderItem.model.ts" />
+    <None Remove="Client\modules\shared\models\pager.model.ts" />
+    <None Remove="Client\modules\shared\pipes\uppercase.pipe.spec.ts" />
+    <None Remove="Client\modules\shared\pipes\uppercase.pipe.ts" />
+    <None Remove="Client\modules\shared\services\basket.wrapper.service.ts" />
+    <None Remove="Client\modules\shared\services\configuration.service.ts" />
+    <None Remove="Client\modules\shared\services\data.service.ts" />
+    <None Remove="Client\modules\shared\services\notification.service.ts" />
+    <None Remove="Client\modules\shared\services\security.service.ts" />
+    <None Remove="Client\modules\shared\services\signalr.service.ts" />
+    <None Remove="Client\modules\shared\services\storage.service.ts" />
+    <None Remove="Client\modules\shared\shared.module.ts" />
+    <None Remove="Client\polyfills.ts" />
+    <None Remove="Client\test.ts" />
+    <None Remove="Client\typings.d.ts" />
+    <Content Include="Setup\images.zip">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
     <Content Update="appsettings.json;">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
-    <Content Update="Client\**\*;">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Update="Views\**\*;">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Update="tsconfig.json;">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
     <Content Update="web.config;">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Update="config\**\*;">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
     <Content Update="wwwroot\**\*;">
@@ -41,47 +85,87 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="1.1.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="1.1.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="1.1.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="1.1.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Cors" Version="1.1.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Antiforgery" Version="1.1.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="1.1.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
-    <PackageReference Include="Webpack" Version="3.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.AngularServices" Version="1.0.0-beta-000014" />
-    <PackageReference Include="Microsoft.AspNetCore.Server.IISIntegration" Version="1.1.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="1.1.0" />
-    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="1.1.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="1.1.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="1.1.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="1.1.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="1.1.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="1.1.0" />
-    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="1.1.0" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="1.0.0-msbuild3-final">
-      <PrivateAssets>All</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="1.1.0" />
-    <PackageReference Include="Microsoft.Extensions.Options" Version="1.1.0" />
-  </ItemGroup>
-
-  <Target Name="PrepublishScript" BeforeTargets="PrepareForPublish">
-    <Exec Command="npm install" />
-    <Exec Command="npm run build:prod" />
-  </Target>
-
-  <ItemGroup>
-    <DotNetCliToolReference Include="Microsoft.DotNet.Watcher.Tools" Version="1.0.0-msbuild3-final" />
-    <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="1.0.0-msbuild3-final" />
-    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="1.0.0-msbuild3-final" />
+    <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="2.2.4" />
+    <PackageReference Include="AspNetCore.HealthChecks.Uris" Version="2.2.2" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.2.1" />
+    <PackageReference Include="Microsoft.ApplicationInsights.DependencyCollector" Version="2.6.1" />
+    <PackageReference Include="Microsoft.ApplicationInsights.Kubernetes" Version="1.0.2" />
+    <PackageReference Include="Microsoft.ApplicationInsights.ServiceFabric" Version="2.2.2" />
+    <PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.DataProtection.Redis" Version="2.2.0-preview2-35157" />
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.HealthChecks" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.AzureAppServices" Version="2.2.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="Serilog.AspNetCore" Version="2.1.1" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Dockerfile">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <Folder Include="wwwroot\assets\" />
   </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="Client\environments\environment.prod.ts" />
+    <TypeScriptCompile Include="Client\environments\environment.ts" />
+    <TypeScriptCompile Include="Client\guid.ts" />
+    <TypeScriptCompile Include="Client\main.ts" />
+    <TypeScriptCompile Include="Client\modules\app.component.ts" />
+    <TypeScriptCompile Include="Client\modules\app.module.ts" />
+    <TypeScriptCompile Include="Client\modules\app.routes.ts" />
+    <TypeScriptCompile Include="Client\modules\app.service.ts" />
+    <TypeScriptCompile Include="Client\modules\basket\basket-status\basket-status.component.ts" />
+    <TypeScriptCompile Include="Client\modules\basket\basket.component.ts" />
+    <TypeScriptCompile Include="Client\modules\basket\basket.module.ts" />
+    <TypeScriptCompile Include="Client\modules\basket\basket.service.ts" />
+    <TypeScriptCompile Include="Client\modules\campaigns\campaigns-detail\campaigns-detail.component.ts" />
+    <TypeScriptCompile Include="Client\modules\campaigns\campaigns.component.ts" />
+    <TypeScriptCompile Include="Client\modules\campaigns\campaigns.module.ts" />
+    <TypeScriptCompile Include="Client\modules\campaigns\campaigns.service.ts" />
+    <TypeScriptCompile Include="Client\modules\catalog\catalog.component.ts" />
+    <TypeScriptCompile Include="Client\modules\catalog\catalog.module.ts" />
+    <TypeScriptCompile Include="Client\modules\catalog\catalog.service.ts" />
+    <TypeScriptCompile Include="Client\modules\orders\orders-detail\orders-detail.component.ts" />
+    <TypeScriptCompile Include="Client\modules\orders\orders-new\orders-new.component.ts" />
+    <TypeScriptCompile Include="Client\modules\orders\orders.component.ts" />
+    <TypeScriptCompile Include="Client\modules\orders\orders.module.ts" />
+    <TypeScriptCompile Include="Client\modules\orders\orders.service.ts" />
+    <TypeScriptCompile Include="Client\modules\shared\components\header\header.ts" />
+    <TypeScriptCompile Include="Client\modules\shared\components\identity\identity.ts" />
+    <TypeScriptCompile Include="Client\modules\shared\components\page-not-found\page-not-found.component.spec.ts" />
+    <TypeScriptCompile Include="Client\modules\shared\components\page-not-found\page-not-found.component.ts" />
+    <TypeScriptCompile Include="Client\modules\shared\components\pager\pager.ts" />
+    <TypeScriptCompile Include="Client\modules\shared\models\basket.model.ts" />
+    <TypeScriptCompile Include="Client\modules\shared\models\basketCheckout.model.ts" />
+    <TypeScriptCompile Include="Client\modules\shared\models\basketItem.model.ts" />
+    <TypeScriptCompile Include="Client\modules\shared\models\campaign.model.ts" />
+    <TypeScriptCompile Include="Client\modules\shared\models\campaignItem.model.ts" />
+    <TypeScriptCompile Include="Client\modules\shared\models\catalog.model.ts" />
+    <TypeScriptCompile Include="Client\modules\shared\models\catalogBrand.model.ts" />
+    <TypeScriptCompile Include="Client\modules\shared\models\catalogItem.model.ts" />
+    <TypeScriptCompile Include="Client\modules\shared\models\catalogType.model.ts" />
+    <TypeScriptCompile Include="Client\modules\shared\models\configuration.model.ts" />
+    <TypeScriptCompile Include="Client\modules\shared\models\identity.model.ts" />
+    <TypeScriptCompile Include="Client\modules\shared\models\order-detail.model.ts" />
+    <TypeScriptCompile Include="Client\modules\shared\models\order.model.ts" />
+    <TypeScriptCompile Include="Client\modules\shared\models\orderItem.model.ts" />
+    <TypeScriptCompile Include="Client\modules\shared\models\pager.model.ts" />
+    <TypeScriptCompile Include="Client\modules\shared\pipes\uppercase.pipe.spec.ts" />
+    <TypeScriptCompile Include="Client\modules\shared\pipes\uppercase.pipe.ts" />
+    <TypeScriptCompile Include="Client\modules\shared\services\basket.wrapper.service.ts" />
+    <TypeScriptCompile Include="Client\modules\shared\services\configuration.service.ts" />
+    <TypeScriptCompile Include="Client\modules\shared\services\data.service.ts" />
+    <TypeScriptCompile Include="Client\modules\shared\services\notification.service.ts" />
+    <TypeScriptCompile Include="Client\modules\shared\services\security.service.ts" />
+    <TypeScriptCompile Include="Client\modules\shared\services\signalr.service.ts" />
+    <TypeScriptCompile Include="Client\modules\shared\services\storage.service.ts" />
+    <TypeScriptCompile Include="Client\modules\shared\shared.module.ts" />
+    <TypeScriptCompile Include="Client\polyfills.ts" />
+    <TypeScriptCompile Include="Client\test.ts" />
+    <TypeScriptCompile Include="Client\typings.d.ts" />
+  </ItemGroup>
+
+  <ProjectExtensions>
+    <VisualStudio><UserProperties package_1json__JSONSchema="http://json.schemastore.org/project-1.0.0-beta4" /></VisualStudio>
+  </ProjectExtensions>
 
 </Project>

@@ -1,16 +1,12 @@
-﻿// Copyright (c) Brock Allen & Dominick Baier. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
-
-
-using eShopOnContainers.Identity;
-using Identity.API.Services;
-using IdentityServer4.Quickstart.UI.Models;
+﻿
 using IdentityServer4.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.eShopOnContainers.Services.Identity.API.Models;
+using Microsoft.eShopOnContainers.Services.Identity.API.Services;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 
-namespace IdentityServer4.Quickstart.UI.Controllers
+namespace Microsoft.eShopOnContainers.Services.Identity.API.Controllers
 {
     public class HomeController : Controller
     {

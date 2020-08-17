@@ -1,24 +1,22 @@
-﻿using System;
-using SlideOverKit;
-using Xamarin.Forms;
+﻿using eShopOnContainers.Core.ViewModels;
 using eShopOnContainers.Core.ViewModels.Base;
-using eShopOnContainers.Core.ViewModels;
+using SlideOverKit;
+using System;
+using Xamarin.Forms;
 
 namespace eShopOnContainers.Core.Views
 {
     public partial class CatalogView : ContentPage, IMenuContainerPage
     {
-        private FiltersView _filterView;
+        private FiltersView _filterView = new FiltersView();
 
         public CatalogView()
         {
             InitializeComponent();
 
-            _filterView = new FiltersView();
-
             SlideMenu = _filterView;
 
-            MessagingCenter.Subscribe<CatalogViewModel>(this, MessengerKeys.Filter, (sender) =>
+            MessagingCenter.Subscribe<CatalogViewModel>(this, MessageKeys.Filter, (sender) =>
             {
                 Filter();
             });
@@ -41,7 +39,6 @@ namespace eShopOnContainers.Core.Views
             get;
             set;
         }
-
 
         protected override void OnBindingContextChanged()
         {

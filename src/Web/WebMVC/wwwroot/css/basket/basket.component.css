@@ -1,74 +1,79 @@
-.esh-basket {
-    min-height: 80vh;
+﻿.esh-basket {
+  min-height: 80vh;
 }
 
 .esh-basket-titles {
-    padding-bottom: 1rem;
-    padding-top: 2rem;
+  padding-bottom: 1rem;
+  padding-top: 2rem;
 }
 
 .esh-basket-titles--clean {
-    padding-bottom: 0;
-    padding-top: 0;
+  padding-bottom: 0;
+  padding-top: 0;
 }
 
 .esh-basket-title {
-    text-transform: uppercase;
+  text-transform: uppercase;
 }
 
 .esh-basket-items--border {
-    border-bottom: 1px solid #EEEEEE;
-    padding: .5rem 0;
+  border-bottom: 1px solid #EEEEEE;
+  padding: .5rem 0;
 }
 
-    .esh-basket-items--border:last-of-type {
-        border-color: transparent;
-    }
+.esh-basket-items--border:last-of-type {
+  border-color: transparent;
+}
+
+.esh-basket-items-margin-left1 {
+  margin-left: 1px;
+}
 
 .esh-basket-item {
-    font-size: 1rem;
-    font-weight: 300;
+  font-size: 1rem;
+  font-weight: 300;
 }
 
 .esh-basket-item--middle {
-    line-height: 8rem;
+  line-height: 8rem;
 }
 
 @media screen and (max-width: 1024px) {
-    .esh-basket-item--middle {
-        line-height: 1rem;
-    }
+  .esh-basket-item--middle {
+    line-height: 1rem;
+  }
 }
 
 .esh-basket-item--mark {
-    color: #00A69C;
+  color: #00A69C;
 }
 
 .esh-basket-image {
-    height: 8rem;
+  height: 8rem;
 }
 
 .esh-basket-input {
-    line-height: 1rem;
-    width: 100%;
+  line-height: 1rem;
+  width: 100%;
 }
 
 .esh-basket-checkout {
-    border: none;
-    border-radius: 0;
-    background-color: #83D01B;
-    color: #FFFFFF;
-    display: inline-block;
-    font-size: 1rem;
-    font-weight: 400;
-    margin-top: 1rem;
-    padding: 1rem 1.5rem;
-    text-align: center;
-    text-transform: uppercase;
-    transition: all 0.35s;
+  background-color: #83D01B;
+  border: 0;
+  border-radius: 0;
+  color: #FFFFFF;
+  display: inline-block;
+  font-size: 1rem;
+  font-weight: 400;
+  margin-top: 1rem;
+  padding: 1rem 1.5rem;
+  text-align: center;
+  text-transform: uppercase;
+  transition: all 0.35s;
 }
 
-    .esh-basket-checkout:hover {
-        background-color: #4a760f;
-        transition: all 0.35s;
-    }
+.esh-basket-checkout:hover {
+  background-color: #4a760f;
+  transition: all 0.35s;
+}
+

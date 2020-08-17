@@ -1,18 +1,23 @@
 ﻿using System.Reflection;
+using Windows.ApplicationModel.Activation;
 using Xunit.Runners.UI;
 
-namespace eShopOnContainers.TestRunner.Windows
+namespace UwpTestRunner
 {
     /// <summary>
     /// Provides application-specific behavior to supplement the default Application class.
     /// </summary>
     sealed partial class App : RunnerApplication
     {
+        protected override void OnLaunched(LaunchActivatedEventArgs e)
+        {
+            base.OnLaunched(e);
+            Xamarin.Forms.Forms.Init(e);
+        }
+
         protected override void OnInitializeRunner()
-        {    
-            // Otherwise you need to ensure that the test assemblies will 
-            // become part of the app bundle
-            AddTestAssembly(typeof(UnitTests.DummyTests).GetTypeInfo().Assembly);
+        {
+            AddTestAssembly(typeof(eShopOnContainers.UnitTests.CatalogViewModelTests).GetTypeInfo().Assembly);
         }
     }
 }

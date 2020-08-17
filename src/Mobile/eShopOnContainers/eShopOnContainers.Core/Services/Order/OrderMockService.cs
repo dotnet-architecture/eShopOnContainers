@@ -1,4 +1,5 @@
 ﻿using eShopOnContainers.Core.Extensions;
+using eShopOnContainers.Core.Models.Basket;
 using eShopOnContainers.Core.Models.Orders;
 using eShopOnContainers.Core.Models.User;
 using System;
@@ -46,39 +47,34 @@ namespace eShopOnContainers.Core.Services.Order
 
         private List<Models.Orders.Order> MockOrders = new List<Models.Orders.Order>()
         {
-            new Models.Orders.Order { OrderNumber = "1", SequenceNumber = 123, OrderDate = DateTime.Now, State = OrderState.Delivered, OrderItems = MockOrderItems, CardTypeId = MockPaymentInfo.CardType.Id, CardHolderName = MockPaymentInfo.CardHolderName, CardNumber = MockPaymentInfo.CardNumber, CardSecurityNumber = MockPaymentInfo.SecurityNumber, CardExpiration = new DateTime(MockPaymentInfo.ExpirationYear, MockPaymentInfo.ExpirationMonth, 1), ShippingCity = MockAdress.City, ShippingState = MockAdress.State, ShippingCountry = MockAdress.Country, ShippingStreet = MockAdress.Street, Total = 36.46M },
-            new Models.Orders.Order { OrderNumber = "2", SequenceNumber = 132, OrderDate = DateTime.Now, State = OrderState.Delivered, OrderItems = MockOrderItems, CardTypeId = MockPaymentInfo.CardType.Id, CardHolderName = MockPaymentInfo.CardHolderName, CardNumber = MockPaymentInfo.CardNumber, CardSecurityNumber = MockPaymentInfo.SecurityNumber, CardExpiration = new DateTime(MockPaymentInfo.ExpirationYear, MockPaymentInfo.ExpirationMonth, 1), ShippingCity = MockAdress.City, ShippingState = MockAdress.State, ShippingCountry = MockAdress.Country, ShippingStreet = MockAdress.Street, Total = 36.46M },
-            new Models.Orders.Order { OrderNumber = "3", SequenceNumber = 231, OrderDate = DateTime.Now, State = OrderState.Delivered, OrderItems = MockOrderItems, CardTypeId = MockPaymentInfo.CardType.Id, CardHolderName = MockPaymentInfo.CardHolderName, CardNumber = MockPaymentInfo.CardNumber, CardSecurityNumber = MockPaymentInfo.SecurityNumber, CardExpiration = new DateTime(MockPaymentInfo.ExpirationYear, MockPaymentInfo.ExpirationMonth, 1), ShippingCity = MockAdress.City, ShippingState = MockAdress.State, ShippingCountry = MockAdress.Country, ShippingStreet = MockAdress.Street, Total = 36.46M }
+            new Models.Orders.Order { OrderNumber = 1, SequenceNumber = 123, OrderDate = DateTime.Now, OrderStatus = OrderStatus.Submitted, OrderItems = MockOrderItems, CardTypeId = MockPaymentInfo.CardType.Id, CardHolderName = MockPaymentInfo.CardHolderName, CardNumber = MockPaymentInfo.CardNumber, CardSecurityNumber = MockPaymentInfo.SecurityNumber, CardExpiration = new DateTime(MockPaymentInfo.ExpirationYear, MockPaymentInfo.ExpirationMonth, 1), ShippingCity = MockAdress.City, ShippingState = MockAdress.State, ShippingCountry = MockAdress.Country, ShippingStreet = MockAdress.Street, Total = 36.46M },
+            new Models.Orders.Order { OrderNumber = 2, SequenceNumber = 132, OrderDate = DateTime.Now, OrderStatus = OrderStatus.Paid, OrderItems = MockOrderItems, CardTypeId = MockPaymentInfo.CardType.Id, CardHolderName = MockPaymentInfo.CardHolderName, CardNumber = MockPaymentInfo.CardNumber, CardSecurityNumber = MockPaymentInfo.SecurityNumber, CardExpiration = new DateTime(MockPaymentInfo.ExpirationYear, MockPaymentInfo.ExpirationMonth, 1), ShippingCity = MockAdress.City, ShippingState = MockAdress.State, ShippingCountry = MockAdress.Country, ShippingStreet = MockAdress.Street, Total = 36.46M },
+            new Models.Orders.Order { OrderNumber = 3, SequenceNumber = 231, OrderDate = DateTime.Now, OrderStatus = OrderStatus.Cancelled, OrderItems = MockOrderItems, CardTypeId = MockPaymentInfo.CardType.Id, CardHolderName = MockPaymentInfo.CardHolderName, CardNumber = MockPaymentInfo.CardNumber, CardSecurityNumber = MockPaymentInfo.SecurityNumber, CardExpiration = new DateTime(MockPaymentInfo.ExpirationYear, MockPaymentInfo.ExpirationMonth, 1), ShippingCity = MockAdress.City, ShippingState = MockAdress.State, ShippingCountry = MockAdress.Country, ShippingStreet = MockAdress.Street, Total = 36.46M },
+            new Models.Orders.Order { OrderNumber = 4, SequenceNumber = 131, OrderDate = DateTime.Now, OrderStatus = OrderStatus.Shipped, OrderItems = MockOrderItems, CardTypeId = MockPaymentInfo.CardType.Id, CardHolderName = MockPaymentInfo.CardHolderName, CardNumber = MockPaymentInfo.CardNumber, CardSecurityNumber = MockPaymentInfo.SecurityNumber, CardExpiration = new DateTime(MockPaymentInfo.ExpirationYear, MockPaymentInfo.ExpirationMonth, 1), ShippingCity = MockAdress.City, ShippingState = MockAdress.State, ShippingCountry = MockAdress.Country, ShippingStreet = MockAdress.Street, Total = 36.46M }
         };
 
         private static List<OrderItem> MockOrderItems = new List<OrderItem>()
         {
-            new OrderItem { OrderId = Guid.NewGuid(), ProductId = Common.Common.MockCatalogItemId01, Discount = 15, ProductName = ".NET Bot Blue Sweatshirt (M)", Quantity = 1, UnitPrice = 16.50M, PictureUrl = Device.OS != TargetPlatform.Windows ? "fake_product_01.png" : "Assets/fake_product_01.png" },
-            new OrderItem { OrderId = Guid.NewGuid(), ProductId = Common.Common.MockCatalogItemId03, Discount = 0, ProductName = ".NET Bot Black Sweatshirt (M)", Quantity = 2, UnitPrice = 19.95M, PictureUrl = Device.OS != TargetPlatform.Windows ? "fake_product_03.png" : "Assets/fake_product_03.png" }
+            new OrderItem { OrderId = Guid.NewGuid(), ProductId = Common.Common.MockCatalogItemId01, Discount = 15, ProductName = ".NET Bot Blue Sweatshirt (M)", Quantity = 1, UnitPrice = 16.50M, PictureUrl = Device.RuntimePlatform != Device.UWP ? "fake_product_01.png" : "Assets/fake_product_01.png" },
+            new OrderItem { OrderId = Guid.NewGuid(), ProductId = Common.Common.MockCatalogItemId03, Discount = 0, ProductName = ".NET Bot Black Sweatshirt (M)", Quantity = 2, UnitPrice = 19.95M, PictureUrl = Device.RuntimePlatform != Device.UWP ? "fake_product_03.png" : "Assets/fake_product_03.png" }
         };
 
-        private static List<CardType> MockCardTypes = new List<CardType>()
+        private static BasketCheckout MockBasketCheckout = new BasketCheckout()
         {
-            new CardType { Id = 1, Name = "Amex" },
-            new CardType { Id = 2, Name = "Visa" },
-            new CardType { Id = 3, Name = "MasterCard" },
+            CardExpiration = DateTime.UtcNow,
+            CardHolderName = "FakeCardHolderName",
+            CardNumber = "122333423224",
+            CardSecurityNumber = "1234",
+            CardTypeId = 1,
+            City = "FakeCity",
+            Country = "FakeCountry",
+            ZipCode = "FakeZipCode",
+            Street = "FakeStreet"
         };
-
-        public async Task CreateOrderAsync(Models.Orders.Order newOrder, string token)
-        {
-            await Task.Delay(500);
-
-            if (!string.IsNullOrEmpty(token))
-            {
-                newOrder.OrderNumber = string.Format("{0}", MockOrders.Count + 1);
-
-                MockOrders.Insert(0, newOrder);
-            }
-        }
 
         public async Task<ObservableCollection<Models.Orders.Order>> GetOrdersAsync(string token)
         {
-            await Task.Delay(500);
+            await Task.Delay(10);
 
             if (!string.IsNullOrEmpty(token))
             {
@@ -92,24 +88,33 @@ namespace eShopOnContainers.Core.Services.Order
 
         public async Task<Models.Orders.Order> GetOrderAsync(int orderId, string token)
         {
-            await Task.Delay(500);
+            await Task.Delay(10);
 
             if (!string.IsNullOrEmpty(token))
                 return MockOrders
-                    .FirstOrDefault(o => o.OrderNumber.Equals(orderId.ToString(), 
-                    StringComparison.CurrentCultureIgnoreCase));
+                    .FirstOrDefault(o => o.OrderNumber.Equals(orderId));
             else
                 return new Models.Orders.Order();
         }
 
-        public async Task<ObservableCollection<CardType>> GetCardTypesAsync(string token)
+        public async Task CreateOrderAsync(Models.Orders.Order newOrder, string token)
         {
-            await Task.Delay(500);
+            await Task.Delay(10);
 
             if (!string.IsNullOrEmpty(token))
-                return MockCardTypes.ToObservableCollection();
-            else
-                return new ObservableCollection<CardType>();
+            {
+                MockOrders.Add(newOrder);
+            }
+        }
+
+        public BasketCheckout MapOrderToBasket(Models.Orders.Order order)
+        {
+            return MockBasketCheckout;
+        }
+
+        public Task<bool> CancelOrderAsync(int orderId, string token)
+        {
+            return Task.FromResult(true);
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using eShopOnContainers.Core.Helpers;
-using eShopOnContainers.Core.ViewModels;
+﻿using eShopOnContainers.Core.ViewModels;
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -22,14 +21,16 @@ namespace eShopOnContainers.Core.Views
             this.Content = null;
             this.Content = content;
 
-            _animate = true;
-            await AnimateIn();
-
-            var vm = BindingContext as LoginViewModel;
-
-            if(vm != null)
+			var vm = BindingContext as LoginViewModel;
+            if (vm != null)
             {
                 vm.InvalidateMock();
+
+				if (!vm.IsMock)
+				{
+					_animate = true;
+					await AnimateIn();
+				}
             }
         }
 
@@ -40,7 +41,7 @@ namespace eShopOnContainers.Core.Views
 
         public async Task AnimateIn()
         {
-            if (Device.OS == TargetPlatform.Windows)
+			if (Device.RuntimePlatform == Device.UWP)
             {
                 return;
             }
@@ -54,14 +55,13 @@ namespace eShopOnContainers.Core.Views
             {
                 while (_animate)
                 {
-                    await uiElement.ScaleTo(1.05, duration, Easing.SinInOut);
-
-                    await Task.WhenAll(
-                        uiElement.FadeTo(1, duration, Easing.SinInOut),
-                        uiElement.LayoutTo(new Rectangle(new Point(0, 0), new Size(uiElement.Width, uiElement.Height))),
-                        uiElement.FadeTo(.9, duration, Easing.SinInOut),
-                        uiElement.ScaleTo(1.15, duration, Easing.SinInOut)
-                    );
+					await uiElement.ScaleTo(1.05, duration, Easing.SinInOut);
+					await Task.WhenAll(
+						uiElement.FadeTo(1, duration, Easing.SinInOut),
+						uiElement.LayoutTo(new Rectangle(new Point(0, 0), new Size(uiElement.Width, uiElement.Height))),
+						uiElement.FadeTo(.9, duration, Easing.SinInOut),
+						uiElement.ScaleTo(1.15, duration, Easing.SinInOut)
+					);
                 }
             }
             catch (Exception ex)

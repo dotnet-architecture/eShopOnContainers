@@ -1,0 +1,78 @@
+﻿@import '../variables';
+
+.esh-campaign {
+    $banner-height: 260px;
+
+    &-title {
+        position: relative;
+        top: $banner-height / 3.5;
+    }
+
+    &-items {
+        margin-top: 1rem;
+    }
+
+    &-item {
+        margin-bottom: 1.5rem;
+        text-align: center;
+        width: 33%;
+        display: inline-block;
+        float: none !important;
+
+        @media screen and (max-width: $media-screen-m) {
+            width: 50%;
+        }
+
+        @media screen and (max-width: $media-screen-s) {
+            width: 100%;
+        }
+    }
+
+    &-thumbnail {
+        max-width: 370px;
+        width: 100%;
+    }
+
+    &-button {
+        background-color: $color-secondary;
+        border: 0;
+        color: $color-foreground-brighter;
+        cursor: pointer;
+        font-size: $font-size-m;
+        height: 3rem;
+        margin-top: 1rem;
+        transition: all $animation-speed-default;
+        width: 80%;
+
+        &.is-disabled {
+            opacity: .5;
+            pointer-events: none;
+        }
+
+        &:hover {
+            background-color: $color-secondary-darker;
+            transition: all $animation-speed-default;
+        }
+    }
+
+    &-name {
+        font-size: $font-size-m;
+        font-weight: $font-weight-semilight;
+        margin-top: .5rem;
+        text-align: center;
+        text-transform: uppercase;
+    }
+
+    &-alert {
+        margin-top: 10px;
+    }
+}
+
+.esh-campaigns-card {
+
+    &-footer-text {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}

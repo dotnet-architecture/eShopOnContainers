@@ -1,14 +1,14 @@
-﻿using System;
+﻿using eShopOnContainers.Core.Behaviors;
+using eShopOnContainers.Windows.Effects;
+using System;
 using System.ComponentModel;
 using System.Diagnostics;
-using UI = Windows.UI;
-using Xaml = Windows.UI.Xaml;
-using Media = Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Controls;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.UWP;
-using Windows.UI.Xaml.Controls;
-using eShopOnContainers.Windows.Effects;
-using eShopOnContainers.Core.Effects;
+using Media = Windows.UI.Xaml.Media;
+using UI = Windows.UI;
+using Xaml = Windows.UI.Xaml;
 
 [assembly: ResolutionGroupName("eShopOnContainers")]
 [assembly: ExportEffect(typeof(EntryLineColorEffect), "EntryLineColorEffect")]
@@ -38,7 +38,7 @@ namespace eShopOnContainers.Windows.Effects
 
         protected override void OnElementPropertyChanged(PropertyChangedEventArgs args)
         {
-            if (args.PropertyName == LineColorEffect.LineColorProperty.PropertyName)
+            if (args.PropertyName == LineColorBehavior.LineColorProperty.PropertyName)
             {
                 UpdateLineColor();
             }
@@ -49,7 +49,7 @@ namespace eShopOnContainers.Windows.Effects
             if (control != null)
             {
                 control.BorderThickness = new Xaml.Thickness(0, 0, 0, 1);
-                var lineColor = XamarinFormColorToWindowsColor(LineColorEffect.GetLineColor(Element));
+                var lineColor = XamarinFormColorToWindowsColor(LineColorBehavior.GetLineColor(Element));
                 control.BorderBrush = new Media.SolidColorBrush(lineColor);
 
                 var style = Xaml.Application.Current.Resources["FormTextBoxStyle"] as Xaml.Style;

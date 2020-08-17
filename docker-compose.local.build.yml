@@ -1,9 +1,0 @@
-version: '2'
-
-services:
-  ci-build:
-    image: microsoft/aspnetcore-build-nightly:1.0-1.1
-    volumes:
-      - .:/src
-    working_dir: /src
-    command: /bin/bash -c "chmod -x ./cli-linux/build-bits-linux.sh && ./cli-linux/build-bits-linux.sh"

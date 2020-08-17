@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Polly.CircuitBreaker;
 
 namespace Microsoft.eShopOnContainers.WebMVC.ViewComponents
 {
@@ -13,18 +14,23 @@ namespace Microsoft.eShopOnContainers.WebMVC.ViewComponents
     {
         private readonly IBasketService _cartSvc;
 
-        public Cart(IBasketService cartSvc)
-        {
-            _cartSvc = cartSvc;
-        }
+        public Cart(IBasketService cartSvc) => _cartSvc = cartSvc;
 
         public async Task<IViewComponentResult> InvokeAsync(ApplicationUser user)
         {
-            var itemsInCart = await ItemsInCartAsync(user);
-            var vm = new CartComponentViewModel()
+            var vm = new CartComponentViewModel();
+            try
             {
-                ItemsCount = itemsInCart
-            };
+                var itemsInCart = await ItemsInCartAsync(user);
+                vm.ItemsCount = itemsInCart;
+                return View(vm);
+            }
+            catch (BrokenCircuitException)
+            {
+                // Catch error when Basket.api is in circuit-opened mode                 
+                ViewBag.IsBasketInoperative = true;
+            }
+
             return View(vm);
         }
         private async Task<int> ItemsInCartAsync(ApplicationUser user)

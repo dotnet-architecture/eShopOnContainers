@@ -1,11 +1,12 @@
-﻿using System.Threading.Tasks;
+﻿using eShopOnContainers.Core.Models.Token;
+using System.Threading.Tasks;
 
 namespace eShopOnContainers.Core.Services.Identity
 {
     public interface IIdentityService
     {
-        string CreateAuthorizeRequest();
+        string CreateAuthorizationRequest();
         string CreateLogoutRequest(string token);
-        string DecodeToken(string token);
+        Task<UserToken> GetTokenAsync(string code);
     }
 }

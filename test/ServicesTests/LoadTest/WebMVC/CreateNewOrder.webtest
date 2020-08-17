@@ -1,0 +1,204 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WebTest Name="CreateNewOrder" Id="f7d59638-c9f2-43e5-92b1-37e9437a37fa" Owner="" Priority="2147483647" Enabled="True" CssProjectStructure="" CssIteration="" Timeout="0" WorkItemIds="" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" Description="" CredentialUserName="" CredentialPassword="" PreAuthenticate="True" Proxy="default" StopOnError="False" RecordedResultFile="WebTest1.ba73b0af-8c31-4a1b-a4b0-ea5804c6a312.rec.webtestresult" ResultsLocale="">
+  <Items>
+    <Request Method="POST" Guid="b47fedf7-81a2-412a-b114-cf234d07c7e6" Version="1.1" Url="{{LocalTestSettings.MvcWebServer.url}}/Cart/AddToCart" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="{{LocalTestSettings.MvcWebServer.url}}/" ReportingName="" IgnoreHttpStatusCode="False">
+      <Headers>
+        <Header Name="Referer" Value="{{LocalTestSettings.MvcWebServer.url}}/" />
+        <Header Name="Authorization" Value="Email demouser@microsoft.com" />
+      </Headers>
+      <FormPostHttpBody>
+        <FormPostParameter Name="brand" Value="Azure" RecordedValue="Azure" CorrelationBinding="" UrlEncode="True" />
+        <FormPostParameter Name="brandId" Value="2" RecordedValue="2" CorrelationBinding="" UrlEncode="True" />
+        <FormPostParameter Name="type" Value="Mug" RecordedValue="Mug" CorrelationBinding="" UrlEncode="True" />
+        <FormPostParameter Name="typeId" Value="1" RecordedValue="1" CorrelationBinding="" UrlEncode="True" />
+        <FormPostParameter Name="description" Value=".NET Black &amp; White Mug" RecordedValue=".NET Black &amp; White Mug" CorrelationBinding="" UrlEncode="True" />
+        <FormPostParameter Name="id" Value="2" RecordedValue="2" CorrelationBinding="" UrlEncode="True" />
+        <FormPostParameter Name="name" Value=".NET Black &amp; White Mug" RecordedValue=".NET Black &amp; White Mug" CorrelationBinding="" UrlEncode="True" />
+        <FormPostParameter Name="pictureUri" Value="{{LocalTestSettings.CatalogApiServer.url}}/api/v1/catalog/items/2/pic/" RecordedValue="{{LocalTestSettings.CatalogApiServer.url}}/api/v1/catalog/items/2/pic/" CorrelationBinding="" UrlEncode="True" />
+        <FormPostParameter Name="price" Value="8.5" RecordedValue="8.5" CorrelationBinding="" UrlEncode="True" />
+      </FormPostHttpBody>
+    </Request>
+    <Request Method="GET" Guid="3c054e49-5dd7-4bcd-b459-d91707182e79" Version="1.1" Url="{{LocalTestSettings.MvcWebServer.url}}/Cart" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False">
+      <Headers>
+        <Header Name="Referer" Value="{{LocalTestSettings.MvcWebServer.url}}/" />
+        <Header Name="Authorization" Value="Email demouser@microsoft.com" />
+      </Headers>
+      <ExtractionRules>
+        <ExtractionRule Classname="Microsoft.VisualStudio.TestTools.WebTesting.Rules.ExtractHiddenFields, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" VariableName="1" DisplayName="Extract Hidden Fields" Description="Extract all hidden fields from the response and place them into the test context.">
+          <RuleParameters>
+            <RuleParameter Name="Required" Value="True" />
+            <RuleParameter Name="HtmlDecode" Value="True" />
+          </RuleParameters>
+        </ExtractionRule>
+      </ExtractionRules>
+      <CorrelationExtractionRules>
+        <ExtractionRule Classname="Microsoft.VisualStudio.TestTools.WebTesting.Rules.ExtractFormField, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" VariableName="FormPostParam10.quantities[0].Value" DisplayName="" Description="">
+          <RuleParameters>
+            <RuleParameter Name="Name" Value="quantities[0].Value" />
+            <RuleParameter Name="HtmlDecode" Value="True" />
+            <RuleParameter Name="Required" Value="False" />
+            <RuleParameter Name="Index" Value="0" />
+          </RuleParameters>
+        </ExtractionRule>
+        <ExtractionRule Classname="Microsoft.VisualStudio.TestTools.WebTesting.Rules.ExtractFormField, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" VariableName="FormPostParam11.action" DisplayName="" Description="">
+          <RuleParameters>
+            <RuleParameter Name="Name" Value="action" />
+            <RuleParameter Name="HtmlDecode" Value="True" />
+            <RuleParameter Name="Required" Value="False" />
+            <RuleParameter Name="Index" Value="0" />
+          </RuleParameters>
+        </ExtractionRule>
+      </CorrelationExtractionRules>
+    </Request>
+    <Request Method="POST" Guid="824868c7-c534-48be-9ee2-251b22415b3c" Version="1.1" Url="{{LocalTestSettings.MvcWebServer.url}}/Cart" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="{{LocalTestSettings.MvcWebServer.url}}/Order/Create" ReportingName="" IgnoreHttpStatusCode="False">
+      <Headers>
+        <Header Name="Referer" Value="{{LocalTestSettings.MvcWebServer.url}}/Cart" />
+        <Header Name="Authorization" Value="Email demouser@microsoft.com" />
+      </Headers>
+      <ExtractionRules>
+        <ExtractionRule Classname="Microsoft.VisualStudio.TestTools.WebTesting.Rules.ExtractHiddenFields, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" VariableName="1" DisplayName="Extract Hidden Fields" Description="Extract all hidden fields from the response and place them into the test context.">
+          <RuleParameters>
+            <RuleParameter Name="Required" Value="True" />
+            <RuleParameter Name="HtmlDecode" Value="True" />
+          </RuleParameters>
+        </ExtractionRule>
+      </ExtractionRules>
+      <CorrelationExtractionRules>
+        <ExtractionRule Classname="Microsoft.VisualStudio.TestTools.WebTesting.Rules.ExtractFormField, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" VariableName="FormPostParam1.Street" DisplayName="" Description="">
+          <RuleParameters>
+            <RuleParameter Name="Name" Value="Street" />
+            <RuleParameter Name="HtmlDecode" Value="True" />
+            <RuleParameter Name="Required" Value="False" />
+            <RuleParameter Name="Index" Value="0" />
+          </RuleParameters>
+        </ExtractionRule>
+        <ExtractionRule Classname="Microsoft.VisualStudio.TestTools.WebTesting.Rules.ExtractFormField, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" VariableName="FormPostParam2.City" DisplayName="" Description="">
+          <RuleParameters>
+            <RuleParameter Name="Name" Value="City" />
+            <RuleParameter Name="HtmlDecode" Value="True" />
+            <RuleParameter Name="Required" Value="False" />
+            <RuleParameter Name="Index" Value="0" />
+          </RuleParameters>
+        </ExtractionRule>
+        <ExtractionRule Classname="Microsoft.VisualStudio.TestTools.WebTesting.Rules.ExtractFormField, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" VariableName="FormPostParam3.State" DisplayName="" Description="">
+          <RuleParameters>
+            <RuleParameter Name="Name" Value="State" />
+            <RuleParameter Name="HtmlDecode" Value="True" />
+            <RuleParameter Name="Required" Value="False" />
+            <RuleParameter Name="Index" Value="0" />
+          </RuleParameters>
+        </ExtractionRule>
+        <ExtractionRule Classname="Microsoft.VisualStudio.TestTools.WebTesting.Rules.ExtractFormField, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" VariableName="FormPostParam4.Country" DisplayName="" Description="">
+          <RuleParameters>
+            <RuleParameter Name="Name" Value="Country" />
+            <RuleParameter Name="HtmlDecode" Value="True" />
+            <RuleParameter Name="Required" Value="False" />
+            <RuleParameter Name="Index" Value="0" />
+          </RuleParameters>
+        </ExtractionRule>
+        <ExtractionRule Classname="Microsoft.VisualStudio.TestTools.WebTesting.Rules.ExtractFormField, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" VariableName="FormPostParam5.CardNumber" DisplayName="" Description="">
+          <RuleParameters>
+            <RuleParameter Name="Name" Value="CardNumber" />
+            <RuleParameter Name="HtmlDecode" Value="True" />
+            <RuleParameter Name="Required" Value="False" />
+            <RuleParameter Name="Index" Value="0" />
+          </RuleParameters>
+        </ExtractionRule>
+        <ExtractionRule Classname="Microsoft.VisualStudio.TestTools.WebTesting.Rules.ExtractFormField, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" VariableName="FormPostParam6.CardHolderName" DisplayName="" Description="">
+          <RuleParameters>
+            <RuleParameter Name="Name" Value="CardHolderName" />
+            <RuleParameter Name="HtmlDecode" Value="True" />
+            <RuleParameter Name="Required" Value="False" />
+            <RuleParameter Name="Index" Value="0" />
+          </RuleParameters>
+        </ExtractionRule>
+        <ExtractionRule Classname="Microsoft.VisualStudio.TestTools.WebTesting.Rules.ExtractFormField, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" VariableName="FormPostParam7.CardExpirationShort" DisplayName="" Description="">
+          <RuleParameters>
+            <RuleParameter Name="Name" Value="CardExpirationShort" />
+            <RuleParameter Name="HtmlDecode" Value="True" />
+            <RuleParameter Name="Required" Value="False" />
+            <RuleParameter Name="Index" Value="0" />
+          </RuleParameters>
+        </ExtractionRule>
+        <ExtractionRule Classname="Microsoft.VisualStudio.TestTools.WebTesting.Rules.ExtractFormField, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" VariableName="FormPostParam8.CardSecurityNumber" DisplayName="" Description="">
+          <RuleParameters>
+            <RuleParameter Name="Name" Value="CardSecurityNumber" />
+            <RuleParameter Name="HtmlDecode" Value="True" />
+            <RuleParameter Name="Required" Value="False" />
+            <RuleParameter Name="Index" Value="0" />
+          </RuleParameters>
+        </ExtractionRule>
+        <ExtractionRule Classname="Microsoft.VisualStudio.TestTools.WebTesting.Rules.ExtractFormField, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" VariableName="FormPostParam9.action" DisplayName="" Description="">
+          <RuleParameters>
+            <RuleParameter Name="Name" Value="action" />
+            <RuleParameter Name="HtmlDecode" Value="True" />
+            <RuleParameter Name="Required" Value="False" />
+            <RuleParameter Name="Index" Value="0" />
+          </RuleParameters>
+        </ExtractionRule>
+      </CorrelationExtractionRules>
+      <FormPostHttpBody>
+        <FormPostParameter Name="quantities[0].Key" Value="20c8ed9d-25fa-4c04-b6d6-0ff919b766cc" RecordedValue="20c8ed9d-25fa-4c04-b6d6-0ff919b766cc" CorrelationBinding="" UrlEncode="True" />
+        <FormPostParameter Name="quantities[0].Value" Value="1" RecordedValue="1" CorrelationBinding="{{FormPostParam10.quantities[0].Value}}" UrlEncode="True" />
+        <FormPostParameter Name="action" Value="[ Checkout ]" RecordedValue="[ Checkout ]" CorrelationBinding="{{FormPostParam11.action}}" UrlEncode="True" />
+      </FormPostHttpBody>
+    </Request>
+    <Request Method="POST" Guid="37f6bc56-40fe-4b4b-8d32-700d0cadee04" Version="1.1" Url="{{LocalTestSettings.MvcWebServer.url}}/Order/Checkout" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="{{LocalTestSettings.MvcWebServer.url}}/Order" ReportingName="" IgnoreHttpStatusCode="False">
+      <Headers>
+        <Header Name="Referer" Value="{{LocalTestSettings.MvcWebServer.url}}/Order/Create" />
+        <Header Name="Authorization" Value="Email demouser@microsoft.com" />
+      </Headers>
+      <FormPostHttpBody>
+        <FormPostParameter Name="Street" Value="15703 NE 61st Ct" RecordedValue="15703 NE 61st Ct" CorrelationBinding="{{FormPostParam1.Street}}" UrlEncode="True" />
+        <FormPostParameter Name="City" Value="Redmond" RecordedValue="Redmond" CorrelationBinding="{{FormPostParam2.City}}" UrlEncode="True" />
+        <FormPostParameter Name="State" Value="WA" RecordedValue="WA" CorrelationBinding="{{FormPostParam3.State}}" UrlEncode="True" />
+        <FormPostParameter Name="Country" Value="U.S." RecordedValue="U.S." CorrelationBinding="{{FormPostParam4.Country}}" UrlEncode="True" />
+        <FormPostParameter Name="CardNumber" Value="4012888888881881" RecordedValue="4012888888881881" CorrelationBinding="{{FormPostParam5.CardNumber}}" UrlEncode="True" />
+        <FormPostParameter Name="CardHolderName" Value="DemoUser" RecordedValue="DemoUser" CorrelationBinding="{{FormPostParam6.CardHolderName}}" UrlEncode="True" />
+        <FormPostParameter Name="CardExpirationShort" Value="12/20" RecordedValue="12/20" CorrelationBinding="{{FormPostParam7.CardExpirationShort}}" UrlEncode="True" />
+        <FormPostParameter Name="CardSecurityNumber" Value="535" RecordedValue="535" CorrelationBinding="{{FormPostParam8.CardSecurityNumber}}" UrlEncode="True" />
+        <FormPostParameter Name="orderitems[0].PictureUrl" Value="{{LocalTestSettings.CatalogApiServer.url}}/api/v1/catalog/items/2/pic/" RecordedValue="{{LocalTestSettings.CatalogApiServer.url}}/api/v1/catalog/items/2/pic/" CorrelationBinding="" UrlEncode="True" />
+        <FormPostParameter Name="orderitems[0].ProductName" Value=".NET Black &amp; White Mug" RecordedValue=".NET Black &amp; White Mug" CorrelationBinding="" UrlEncode="True" />
+        <FormPostParameter Name="orderitems[0].UnitPrice" Value="8.5" RecordedValue="8.5" CorrelationBinding="" UrlEncode="True" />
+        <FormPostParameter Name="orderitems[0].Units" Value="1" RecordedValue="1" CorrelationBinding="" UrlEncode="True" />
+        <FormPostParameter Name="Total" Value="8.5" RecordedValue="8.5" CorrelationBinding="" UrlEncode="True" />
+        <FormPostParameter Name="action" Value="[ Place Order ]" RecordedValue="[ Place Order ]" CorrelationBinding="{{FormPostParam9.action}}" UrlEncode="True" />
+        <FormPostParameter Name="ZipCode" Value="98052" RecordedValue="98052" CorrelationBinding="" UrlEncode="True" />
+        <FormPostParameter Name="RequestId" Value="{{GenGuid}}" RecordedValue="{{GenGuid}}" CorrelationBinding="" UrlEncode="True" />
+        <FormPostParameter Name="CardTypeId" Value="1" RecordedValue="" CorrelationBinding="" UrlEncode="True" />
+      </FormPostHttpBody>
+    </Request>
+    <Request Method="GET" Guid="60e4b7e1-95fc-43a0-932d-d1d1a311b49f" Version="1.1" Url="{{LocalTestSettings.MvcWebServer.url}}/Order" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False">
+      <Headers>
+        <Header Name="Referer" Value="{{LocalTestSettings.MvcWebServer.url}}/Order/Create" />
+        <Header Name="Authorization" Value="Email demouser@microsoft.com" />
+      </Headers>
+    </Request>
+  </Items>
+  <DataSources>
+    <DataSource Name="LocalTestSettings" Provider="Microsoft.VisualStudio.TestTools.DataSource.XML" Connection="|DataDirectory|\..\app.config">
+      <Tables>
+        <DataSourceTable Name="MvcWebServer" SelectColumns="SelectAllColumns" AccessMethod="Sequential" />
+        <DataSourceTable Name="IdentityApiServer" SelectColumns="SelectAllColumns" AccessMethod="Sequential" />
+        <DataSourceTable Name="CatalogApiServer" SelectColumns="SelectAllColumns" AccessMethod="Sequential" />
+        <DataSourceTable Name="User" SelectColumns="SelectAllColumns" AccessMethod="Sequential" />
+        <DataSourceTable Name="ClientId" SelectColumns="SelectAllColumns" AccessMethod="Sequential" />
+      </Tables>
+    </DataSource>
+  </DataSources>
+  <ValidationRules>
+    <ValidationRule Classname="Microsoft.VisualStudio.TestTools.WebTesting.Rules.ValidationRuleResponseTimeGoal, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" DisplayName="Response Time Goal" Description="Validates that the response time for the request is less than or equal to the response time goal as specified on the request.  Response time goals of zero will be ignored." Level="Low" ExectuionOrder="AfterDependents">
+      <RuleParameters>
+        <RuleParameter Name="Tolerance" Value="0" />
+      </RuleParameters>
+    </ValidationRule>
+  </ValidationRules>
+  <WebTestPlugins>
+    <WebTestPlugin Classname="Microsoft.SystemCenter.Cloud.GsmPlugins.GuidGeneratorWebTestPlugin, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" DisplayName="Generate Guid" Description="Generates a new guid.">
+      <RuleParameters>
+        <RuleParameter Name="ContextParameterName" Value="GenGuid" />
+        <RuleParameter Name="OutputFormat" Value="" />
+      </RuleParameters>
+    </WebTestPlugin>
+  </WebTestPlugins>
+</WebTest>

@@ -1,8 +1,7 @@
 ﻿<ui:RunnerApplication
-    x:Class="eShopOnContainers.TestRunner.Windows.App"
+    x:Class="UwpTestRunner.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:eShopOnContainers.TestRunner.Windows" 
     xmlns:ui="using:Xunit.Runners.UI"
     RequestedTheme="Light">
 

@@ -1,8 +1,7 @@
 ﻿import { Injectable }                   from '@angular/core';
 import { Http, Response, Headers }      from '@angular/http';
-import 'rxjs/add/operator/map';
-import { Observable }                   from 'rxjs/Observable';
-import { Subject }                      from 'rxjs/Subject';
+import { Observable, Subject }          from 'rxjs';
+import { map }                          from 'rxjs/operators';
 import { Router }                       from '@angular/router';
 import { ActivatedRoute }               from '@angular/router';
 import { ConfigurationService }         from './configuration.service';
@@ -67,7 +66,7 @@ export class SecurityService {
                 this.storage.store('userData', data);
                 // emit observable
                 this.authenticationSource.next(true);
-                window.location.href = 'http://localhost:5104';
+                window.location.href = location.origin;
             },
             error => this.HandleError(error),
             () => {
@@ -80,9 +79,9 @@ export class SecurityService {
 
         let authorizationUrl = this.authorityUrl + '/connect/authorize';
         let client_id = 'js';
-        let redirect_uri = 'http://localhost:5104/';
+        let redirect_uri = location.origin + '/';
         let response_type = 'id_token token';
-        let scope = 'openid profile orders basket';
+        let scope = 'openid profile orders basket marketing locations webshoppingagg orders.signalrhub';
         let nonce = 'N' + Math.random() + '' + Date.now();
         let state = Date.now() + '' + Math.random();
 
@@ -152,7 +151,7 @@ export class SecurityService {
     public Logoff() {
         let authorizationUrl = this.authorityUrl + '/connect/endsession';
         let id_token_hint = this.storage.retrieve('authorizationDataIdToken');
-        let post_logout_redirect_uri = 'http://localhost:5104/';
+        let post_logout_redirect_uri = location.origin + '/';
 
         let url =
             authorizationUrl + '?' +
@@ -227,7 +226,7 @@ export class SecurityService {
         return this._http.get(this.authorityUrl + '/connect/userinfo', {
             headers: this.headers,
             body: ''
-        }).map(res => res.json());
+        }).pipe(map(res => res.json()));
     }
 
     private setHeaders() {

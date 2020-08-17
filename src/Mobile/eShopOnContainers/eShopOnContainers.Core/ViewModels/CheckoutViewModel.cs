@@ -1,18 +1,18 @@
-﻿using eShopOnContainers.Core.Models.Navigation;
-using eShopOnContainers.ViewModels.Base;
-using System.Windows.Input;
-using Xamarin.Forms;
-using System.Threading.Tasks;
+﻿using eShopOnContainers.Core.Models.Basket;
+using eShopOnContainers.Core.Models.Navigation;
 using eShopOnContainers.Core.Models.Orders;
-using System;
-using System.Collections.ObjectModel;
-using eShopOnContainers.Core.Models.Basket;
-using System.Collections.Generic;
+using eShopOnContainers.Core.Models.User;
 using eShopOnContainers.Core.Services.Basket;
 using eShopOnContainers.Core.Services.Order;
-using eShopOnContainers.Core.Helpers;
+using eShopOnContainers.Core.Services.Settings;
 using eShopOnContainers.Core.Services.User;
-using eShopOnContainers.Core.Models.User;
+using eShopOnContainers.Core.ViewModels.Base;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using Xamarin.Forms;
 
 namespace eShopOnContainers.Core.ViewModels
 {
@@ -20,17 +20,20 @@ namespace eShopOnContainers.Core.ViewModels
     {
         private ObservableCollection<BasketItem> _orderItems;
         private Order _order;
-        private Address _shippingAddress; 
+        private Address _shippingAddress;
 
+        private ISettingsService _settingsService;
         private IBasketService _basketService;
         private IOrderService _orderService;
         private IUserService _userService;
 
         public CheckoutViewModel(
+            ISettingsService settingsService,
             IBasketService basketService,
             IOrderService orderService,
             IUserService userService)
         {
+            _settingsService = settingsService;
             _basketService = basketService;
             _orderService = orderService;
             _userService = userService;
@@ -79,7 +82,7 @@ namespace eShopOnContainers.Core.ViewModels
 
                 OrderItems = orderItems;
 
-                var authToken = Settings.AuthAccessToken;       
+                var authToken = _settingsService.AuthAccessToken;
                 var userInfo = await _userService.GetUserInfoAsync(authToken);
 
                 // Create Shipping Address
@@ -90,7 +93,7 @@ namespace eShopOnContainers.Core.ViewModels
                     ZipCode = userInfo?.ZipCode,
                     State = userInfo?.State,
                     Country = userInfo?.Country,
-                    City = string.Empty
+                    City = userInfo?.Address
                 };
 
                 // Create Payment Info
@@ -98,7 +101,7 @@ namespace eShopOnContainers.Core.ViewModels
                 {
                     CardNumber = userInfo?.CardNumber,
                     CardHolderName = userInfo?.CardHolder,
-                    CardType = new CardType {  Id = 3, Name = "MasterCard" },
+                    CardType = new CardType { Id = 3, Name = "MasterCard" },
                     SecurityNumber = userInfo?.CardSecurityNumber
                 };
 
@@ -107,7 +110,7 @@ namespace eShopOnContainers.Core.ViewModels
                 {
                     BuyerId = userInfo.UserId,
                     OrderItems = CreateOrderItems(orderItems),
-                    State = OrderState.InProcess,
+                    OrderStatus = OrderStatus.Submitted,
                     OrderDate = DateTime.Now,
                     CardHolderName = paymentInfo.CardHolderName,
                     CardNumber = paymentInfo.CardNumber,
@@ -117,9 +120,20 @@ namespace eShopOnContainers.Core.ViewModels
                     ShippingState = _shippingAddress.State,
                     ShippingCountry = _shippingAddress.Country,
                     ShippingStreet = _shippingAddress.Street,
-                    ShippingCity = _shippingAddress.City,                  
+                    ShippingCity = _shippingAddress.City,
+                    ShippingZipCode = _shippingAddress.ZipCode,
                     Total = CalculateTotal(CreateOrderItems(orderItems))
                 };
+
+                if (_settingsService.UseMocks)
+                {
+                    // Get number of orders
+                    var orders = await _orderService.GetOrdersAsync(authToken);
+
+                    // Create the OrderNumber
+                    Order.OrderNumber = orders.Count + 1;
+                    RaisePropertyChanged(() => Order);
+                }
 
                 IsBusy = false;
             }
@@ -129,16 +143,24 @@ namespace eShopOnContainers.Core.ViewModels
         {
             try
             {
-                var authToken = Settings.AuthAccessToken;
+                var authToken = _settingsService.AuthAccessToken;
 
-                // Create new order
-                await _orderService.CreateOrderAsync(Order, authToken);
+                var basket = _orderService.MapOrderToBasket(Order);
+                basket.RequestId = Guid.NewGuid();
+
+                // Create basket checkout
+                await _basketService.CheckoutAsync(basket, authToken);
+
+                if (_settingsService.UseMocks)
+                {
+                    await _orderService.CreateOrderAsync(Order, authToken);
+                }
 
                 // Clean Basket
                 await _basketService.ClearBasketAsync(_shippingAddress.Id.ToString(), authToken);
 
                 // Reset Basket badge
-                var basketViewModel = ViewModelLocator.Instance.Resolve<BasketViewModel>();
+                var basketViewModel = ViewModelLocator.Resolve<BasketViewModel>();
                 basketViewModel.BadgeCount = 0;
 
                 // Navigate to Orders
@@ -146,7 +168,7 @@ namespace eShopOnContainers.Core.ViewModels
                 await NavigationService.RemoveLastFromBackStackAsync();
 
                 // Show Dialog
-                await DialogService.ShowAlertAsync("Order sent successfully!", string.Format("Order {0}", Order.OrderNumber), "Ok");
+                await DialogService.ShowAlertAsync("Order sent successfully!", "Checkout", "Ok");
                 await NavigationService.RemoveLastFromBackStackAsync();
             }
             catch
@@ -176,13 +198,13 @@ namespace eShopOnContainers.Core.ViewModels
             }
 
             return orderItems;
-        } 
+        }
 
         private decimal CalculateTotal(List<OrderItem> orderItems)
         {
             decimal total = 0;
 
-            foreach(var orderItem in orderItems)
+            foreach (var orderItem in orderItems)
             {
                 total += (orderItem.Quantity * orderItem.UnitPrice);
             }
