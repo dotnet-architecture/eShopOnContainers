@@ -59,7 +59,7 @@ Do you want to be up-to-date on .NET Architecture guidance and reference apps li
 
 ## Updated for .NET Core 3.1 (LTS)
 
-eShopOnContainers is updated to .NET Core 3.1  "wave" of technologies. Not just compilation but also new recommended code in EF Core, ASP.NET Core, and other new related versions and a several significant changes.
+eShopOnContainers is updated to .NET Core 3.1  "wave" of technologies. Not just compilation but also new recommended code in EF Core, ASP.NET Core, and other new related versions with several significant changes.
 
 **See more details in the [Release notes](https://github.com/dotnet-architecture/eShopOnContainers/wiki/Release-notes) wiki page**.
 
