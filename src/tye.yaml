@@ -30,7 +30,7 @@ services:
   - port: 27017
     containerPort: 27017
   volumes:
-    - source: eshop-nosqldata
+    - source: eshop-nosqldata-three
       target: /data/db
 
 - name: basketdata
@@ -60,29 +60,29 @@ services:
   - name: ASPNETCORE_URLS
     value: http://0.0.0.0:80
   - name: SpaClient
-    value: http://host.docker.internal:5104/
+    value: http://localhost:5104/
   - name: XamarinCallback
-    value: http://host.docker.internal:5105/xamarincallback
+    value: http://localhost:5105/xamarincallback
   - name: ConnectionString
     value: Server=localhost;Database=Microsoft.eShopOnContainers.Service.IdentityDb;User Id=sa;Password=Pass@word
   - name: MvcClient
-    value: http://host.docker.internal:5100
+    value: http://localhost:5100
   - name: LocationApiClient
-    value: http://host.docker.internal:5109
+    value: http://localhost:5109
   - name: MarketingApiClient
-    value: http://host.docker.internal:5110
+    value: http://localhost:5110
   - name: BasketApiClient
-    value: http://host.docker.internal:5103
+    value: http://localhost:5103
   - name: OrderingApiClient
-    value: http://host.docker.internal:5102
+    value: http://localhost:5102
   - name: MobileShoppingAggClient
-    value: http://host.docker.internal:5120
+    value: http://localhost:5120
   - name: WebShoppingAggClient
-    value: http://host.docker.internal:5121
+    value: http://localhost:5121
   - name: WebhooksApiClient
-    value: http://host.docker.internal:5113
+    value: http://localhost:5113
   - name: WebhooksWebClient
-    value: http://host.docker.internal:5114
+    value: http://localhost:5114
   - name: UseCustomizationData
     value: True
   - name: ApplicationInsights__InstrumentationKey
@@ -101,7 +101,7 @@ services:
   - name: ConnectionString
     value: Server=localhost;Database=Microsoft.eShopOnContainers.Services.CatalogDb;User Id=sa;Password=Pass@word
   - name: PicBaseUrl
-    value: http://host.docker.internal:5202/c/api/v1/catalog/items/[0]/pic/
+    value: http://localhost:5202/c/api/v1/catalog/items/[0]/pic/
   - name: EventBusConnection
     value: localhost
   - name: EventBusUserName
@@ -169,4 +169,534 @@ services:
   bindings:
   - name: http-port-80-binding
     port: 5103    
+    protocol: http
+
+
+- name: ordering-api
+  project: Services/Ordering/Ordering.API/Ordering.API.csproj
+  env:
+  - name: ASPNETCORE_ENVIRONMENT
+    value: Development
+  - name: ASPNETCORE_URLS
+    value: http://0.0.0.0:80
+  - name: ConnectionString
+    value: Server=localhost;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word
+  - name: identityUrl
+    value: http://localhost:5105
+  - name: IdentityUrlExternal
+    value: http://localhost:5105
+  - name: EventBusConnection
+    value: localhost
+  - name: EventBusUserName
+    value: 
+  - name: EventBusPassword
+    value:
+  - name: UseCustomizationData
+    value: True
+  - name: AzureServiceBusEnabled
+    value: False  
+  - name: CheckUpdateTime
+    value: 30000
+  - name: ApplicationInsights__InstrumentationKey
+    value: 
+  - name: OrchestratorType
+    value:
+  - name: UseLoadTest
+    value: False
+  - name: Serilog__MinimumLevel__Override__Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
+    value: Verbose
+  - name: Serilog__MinimumLevel__Override__ordering-api
+    value: Verbose
+  - name: GRPC_PORT
+    value: 9102
+  - name: PORT
+    value: 80
+  - name: PATH_BASE
+    value: /ordering-api
+  bindings:
+  - name: http-port-80-binding
+    port: 5102    
+    protocol: http
+
+
+- name: ordering-backgroundtasks
+  project: Services/Ordering/Ordering.BackgroundTasks/Ordering.BackgroundTasks.csproj
+  env:
+  - name: ASPNETCORE_ENVIRONMENT
+    value: Development
+  - name: ASPNETCORE_URLS
+    value: http://0.0.0.0:80
+  - name: ConnectionString
+    value: Server=localhost;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word
+  - name: identityUrl
+    value: http://localhost:5105
+  - name: IdentityUrlExternal
+    value: http://localhost:5105
+  - name: EventBusConnection
+    value: localhost
+  - name: EventBusUserName
+    value: 
+  - name: EventBusPassword
+    value:
+  - name: UseCustomizationData
+    value: True
+  - name: AzureServiceBusEnabled
+    value: False  
+  - name: CheckUpdateTime
+    value: 30000
+  - name: ApplicationInsights__InstrumentationKey
+    value: 
+  - name: OrchestratorType
+    value:
+  - name: UseLoadTest
+    value: False
+  - name: Serilog__MinimumLevel__Override__Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
+    value: Verbose  
+  bindings:
+  - name: http-port-80-binding
+    port: 5111    
+    protocol: http
+
+
+- name: marketing-api
+  project: Services/Marketing/Marketing.API/Marketing.API.csproj
+  env:
+  - name: ASPNETCORE_ENVIRONMENT
+    value: Development
+  - name: ASPNETCORE_URLS
+    value: http://0.0.0.0:80
+  - name: ConnectionString
+    value: Server=localhost;Database=Microsoft.eShopOnContainers.Services.MarketingDb;User Id=sa;Password=Pass@word
+  - name: MongoConnectionString
+    value: mongodb://localhost:27017
+  - name: MongoDatabase
+    value: MarketingDb
+  - name: identityUrl
+    value: http://localhost:5105
+  - name: IdentityUrlExternal
+    value: http://localhost:5105
+  - name: EventBusConnection
+    value: localhost
+  - name: EventBusUserName
+    value: 
+  - name: EventBusPassword
+    value:
+  - name: CampaignDetailFunctionUri
+    value: 
+  - name: PicBaseUrl
+    value: 
+  - name: AzureStorageAccountName
+    value: 
+  - name: AzureStorageAccountKey
+    value:   
+  - name: AzureServiceBusEnabled
+    value: False  
+  - name: AzureStorageEnabled
+    value: False
+  - name: ApplicationInsights__InstrumentationKey
+    value: 
+  - name: OrchestratorType
+    value:
+  - name: UseLoadTest
+    value: False  
+  - name: PATH_BASE
+    value: /marketing-api
+  bindings:
+  - name: http-port-80-binding
+    port: 5110    
+    protocol: http
+
+
+- name: payment-api
+  project: Services/Payment/Payment.API/Payment.API.csproj
+  env:
+  - name: ASPNETCORE_ENVIRONMENT
+    value: Development
+  - name: ASPNETCORE_URLS
+    value: http://0.0.0.0:80    
+  - name: EventBusConnection
+    value: localhost
+  - name: EventBusUserName
+    value: 
+  - name: EventBusPassword
+    value: 
+  - name: AzureServiceBusEnabled
+    value: False    
+  - name: ApplicationInsights__InstrumentationKey
+    value:
+  - name: OrchestratorType
+    value:
+  - name: Serilog__MinimumLevel__Override__payment-api.IntegrationEvents.EventHandling
+    value: Verbose
+  - name: Serilog__MinimumLevel__Override__Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
+    value: Verbose
+  bindings:
+  - name: http-port-80-binding
+    port: 5108    
+    protocol: http
+
+
+- name: locations-api
+  project: Services/Location/Locations.API/Locations.API.csproj
+  env:
+  - name: ASPNETCORE_ENVIRONMENT
+    value: Development
+  - name: ASPNETCORE_URLS
+    value: http://0.0.0.0:80
+  - name: ConnectionString
+    value: mongodb://localhost:27017
+  - name: Database
+    value: LocationsDb  
+  - name: identityUrl
+    value: http://localhost:5105
+  - name: IdentityUrlExternal
+    value: http://localhost:5105
+  - name: EventBusConnection
+    value: localhost
+  - name: EventBusUserName
+    value: 
+  - name: EventBusPassword
+    value:
+  - name: AzureServiceBusEnabled
+    value: False  
+  - name: ApplicationInsights__InstrumentationKey
+    value: 
+  - name: OrchestratorType
+    value:
+  - name: UseLoadTest
+    value: False  
+  - name: PATH_BASE
+    value: /locations-api
+  bindings:
+  - name: http-port-80-binding
+    port: 5109    
+    protocol: http
+
+
+- name: webhooks-api
+  project: Services/Webhooks/Webhooks.API/Webhooks.API.csproj
+  env:
+  - name: ASPNETCORE_ENVIRONMENT
+    value: Development
+  - name: ASPNETCORE_URLS
+    value: http://0.0.0.0:80
+  - name: ConnectionString
+    value: Server=localhost;Database=Microsoft.eShopOnContainers.Services.WebhooksDb;User Id=sa;Password=Pass@word  
+  - name: identityUrl
+    value: http://localhost:5105
+  - name: IdentityUrlExternal
+    value: http://localhost:5105
+  - name: EventBusConnection
+    value: localhost
+  - name: EventBusUserName
+    value: 
+  - name: EventBusPassword
+    value:
+  bindings:
+  - name: http-port-80-binding
+    port: 5113
+    protocol: http
+
+
+- name: mobileshoppingapigw
+  image: envoyproxy/envoy:v1.11.1
+  bindings:
+  - name: http-port-80-binding
+    port: 5200
+    containerPort: 80
+  - name: http-port-8001-binding
+    port: 15200
+    containerPort: 8001
+  volumes:
+    - source: ./ApiGateways/Envoy/config/mobileshopping
+      target: /etc/envoy
+
+
+- name: mobilemarketingapigw
+  image: envoyproxy/envoy:v1.11.1
+  bindings:
+  - name: http-port-80-binding
+    port: 5201
+    containerPort: 80
+  - name: http-port-8001-binding
+    port: 15201
+    containerPort: 8001
+  volumes:
+    - source: ./ApiGateways/Envoy/config/mobilemarketing
+      target: /etc/envoy
+
+- name: webshoppingapigw
+  image: envoyproxy/envoy:v1.11.1
+  bindings:
+  - name: http-port-80-binding
+    port: 5202
+    containerPort: 80
+  - name: http-port-8001-binding
+    port: 15202
+    containerPort: 8001
+  volumes:
+    - source: ./ApiGateways/Envoy/tye-config/webshopping
+      target: /etc/envoy
+
+- name: webmarketingapigw
+  image: envoyproxy/envoy:v1.11.1
+  bindings:
+  - name: http-port-80-binding
+    port: 5203
+    containerPort: 80
+  - name: http-port-8001-binding
+    port: 15203
+    containerPort: 8001
+  volumes:
+    - source: ./ApiGateways/Envoy/tye-config/webmarketing
+      target: /etc/envoy
+
+
+- name: mobileshoppingagg
+  project: ApiGateways/Mobile.Bff.Shopping/aggregator/Mobile.Shopping.HttpAggregator.csproj
+  env:
+  - name: ASPNETCORE_ENVIRONMENT
+    value: Development
+  - name: urls__basket
+    value: http://localhost:5103
+  - name: urls__catalog
+    value: http://localhost:5101
+  - name: urls__orders
+    value: http://localhost:5102
+  - name: urls__identity
+    value: http://localhost:5105
+  - name: urls__grpcBasket
+    value: http://localhost:9103
+  - name: urls__grpcCatalog
+    value: http://localhost:9101
+  - name: urls__grpcOrdering
+    value: http://localhost:9102
+  - name: CatalogUrlHC
+    value: http://localhost:5101/hc
+  - name: OrderingUrlHC
+    value: http://localhost:5102/hc
+  - name: IdentityUrlHC
+    value: http://localhost:5105/hc
+  - name: BasketUrlHC
+    value: http://localhost:5103/hc
+  - name: MarketingUrlHC
+    value: http://localhost:5110/hc
+  - name: PaymentUrlHC
+    value: http://localhost:5108/hc
+  - name: LocationUrlHC
+    value: http://localhost:5109/hc
+  - name: IdentityUrlExternal
+    value: http://localhost:5105
+  bindings:
+  - name: http-port-80-binding
+    port: 5120
+    protocol: http
+
+- name: webshoppingagg
+  project: ApiGateways/Web.Bff.Shopping/aggregator/Web.Shopping.HttpAggregator.csproj
+  env:
+  - name: ASPNETCORE_ENVIRONMENT
+    value: Development
+  - name: urls__basket
+    value: http://localhost:5103
+  - name: urls__catalog
+    value: http://localhost:5101
+  - name: urls__orders
+    value: http://localhost:5102
+  - name: urls__identity
+    value: http://localhost:5105
+  - name: urls__grpcBasket
+    value: http://localhost:9103
+  - name: urls__grpcCatalog
+    value: http://localhost:9101
+  - name: urls__grpcOrdering
+    value: http://localhost:9102
+  - name: CatalogUrlHC
+    value: http://localhost:5101/hc
+  - name: OrderingUrlHC
+    value: http://localhost:5102/hc
+  - name: IdentityUrlHC
+    value: http://localhost:5105/hc
+  - name: BasketUrlHC
+    value: http://localhost:5103/hc
+  - name: MarketingUrlHC
+    value: http://localhost:5110/hc
+  - name: PaymentUrlHC
+    value: http://localhost:5108/hc
+  - name: LocationUrlHC
+    value: http://localhost:5109/hc
+  - name: IdentityUrlExternal
+    value: http://localhost:5105
+  bindings:
+  - name: http-port-80-binding
+    port: 5121
+    protocol: http
+
+
+- name: ordering-signalrhub
+  project: Services/Ordering/Ordering.SignalrHub/Ordering.SignalrHub.csproj
+  env:
+  - name: ASPNETCORE_ENVIRONMENT
+    value: Development
+  - name: ASPNETCORE_URLS
+    value: http://0.0.0.0:80
+  - name: identityUrl
+    value: http://localhost:5105
+  - name: EventBusConnection
+    value: localhost
+  - name: EventBusUserName
+    value: 
+  - name: EventBusPassword
+    value: 
+  - name: AzureServiceBusEnabled
+    value: False
+  - name: ApplicationInsights__InstrumentationKey
+    value: 
+  - name: OrchestratorType
+    value:   
+  bindings:
+  - name: http-port-80-binding
+    port: 5112
+    protocol: http
+
+
+- name: webstatus
+  project: Web/WebStatus/WebStatus.csproj
+  env:
+  - name: ASPNETCORE_ENVIRONMENT
+    value: Development
+  - name: ASPNETCORE_URLS
+    value: http://0.0.0.0:80
+  - name: HealthChecksUI__HealthChecks__0__Name
+    value: WebMVC HTTP Check
+  - name: HealthChecksUI__HealthChecks__0__Uri
+    value: http://localhost:5100/hc
+  - name: HealthChecksUI__HealthChecks__1__Name
+    value: WebSPA HTTP Check
+  - name: HealthChecksUI__HealthChecks__1__Uri
+    value: http://localhost:5104/hc
+  - name: HealthChecksUI__HealthChecks__2__Name
+    value: Web Shopping Aggregator GW HTTP Check
+  - name: HealthChecksUI__HealthChecks__2__Uri
+    value: http://localhost:5121/hc
+  - name: HealthChecksUI__HealthChecks__3__Name
+    value: Mobile Shopping Aggregator HTTP Check
+  - name: HealthChecksUI__HealthChecks__3__Uri
+    value: http://localhost:5120/hc
+  - name: HealthChecksUI__HealthChecks__4__Name
+    value: Ordering HTTP Check
+  - name: HealthChecksUI__HealthChecks__4__Uri
+    value: http://localhost:5102/hc
+  - name: HealthChecksUI__HealthChecks__5__Name
+    value: Basket HTTP Check
+  - name: HealthChecksUI__HealthChecks__5__Uri
+    value: http://localhost:5103/hc
+  - name: HealthChecksUI__HealthChecks__6__Name
+    value: Catalog HTTP Check
+  - name: HealthChecksUI__HealthChecks__6__Uri
+    value: http://localhost:5101/hc
+  - name: HealthChecksUI__HealthChecks__7__Name
+    value: Identity HTTP Check
+  - name: HealthChecksUI__HealthChecks__7__Uri
+    value: http://localhost:5105/hc
+  - name: HealthChecksUI__HealthChecks__8__Name
+    value: Marketing HTTP Check
+  - name: HealthChecksUI__HealthChecks__8__Uri
+    value: http://localhost:5110/hc
+  - name: HealthChecksUI__HealthChecks__9__Name
+    value: Locations HTTP Check
+  - name: HealthChecksUI__HealthChecks__9__Uri
+    value: http://localhost:5109/hc
+  - name: HealthChecksUI__HealthChecks__10__Name
+    value: Payments HTTP Check
+  - name: HealthChecksUI__HealthChecks__10__Uri
+    value: http://localhost:5108/hc
+  - name: HealthChecksUI__HealthChecks__11__Name
+    value: Ordering SignalRHub HTTP Check
+  - name: HealthChecksUI__HealthChecks__11__Uri
+    value: http://localhost:5112/hc
+  - name: HealthChecksUI__HealthChecks__12__Name
+    value: Ordering HTTP Background Check
+  - name: HealthChecksUI__HealthChecks__12__Uri
+    value: http://localhost:5111/hc
+  - name: ApplicationInsights__InstrumentationKey
+    value: 
+  - name: OrchestratorType
+    value:
+  bindings:
+  - name: http-port-80-binding
+    port: 5107
+    protocol: http
+
+- name: webmvc
+  project: Web/WebMVC/WebMVC.csproj
+  env:
+  - name: ASPNETCORE_ENVIRONMENT
+    value: Development
+  - name: ASPNETCORE_URLS
+    value: http://0.0.0.0:80
+  - name: IdentityUrl
+    value: http://localhost:5105   
+  - name: PurchaseUrl
+    value: http://localhost:5202  
+  - name: CatalogUrl
+    value: http://localhost:5101
+  - name: BasketUrl
+    value: http://localhost:5103
+  - name: OrderingUrl
+    value: http://localhost:5102
+  - name: MarketingUrl
+    value: http://localhost:5203  
+  - name: CallBackUrl
+    value: http://localhost:5100/
+  - name: LocationsUrl
+    value: http://localhost:5109/
+  - name: IdentityUrlHC
+    value: http://localhost:5105/hc
+  - name: IsClusterEnv
+    value: False
+  - name: UseResilientHttp
+    value: True
+  - name: UseLoadTest
+    value: False
+  - name: UseCustomizationData
+    value: False
+  - name: ActivateCampaignDetailFunction
+    value: False
+  - name: HttpClientRetryCount
+    value: 8
+  - name: HttpClientExceptionsAllowedBeforeBreaking
+    value: 7
+  - name: SessionCookieLifetimeMinutes
+    value: 60
+  - name: ApplicationInsights__InstrumentationKey
+    value: 
+  - name: OrchestratorType
+    value:  
+  bindings:
+  - name: http-port-80-binding
+    port: 5100
+    protocol: http
+
+
+- name: webhooks-client
+  project: Web/WebhookClient/WebhookClient.csproj
+  env:
+  - name: ASPNETCORE_ENVIRONMENT
+    value: Development
+  - name: ASPNETCORE_URLS
+    value: http://0.0.0.0:80
+  - name: Token
+    value: 6168DB8D-DC58-4094-AF24-483278923590
+  - name: IdentityUrl
+    value: http://localhost:5105
+  - name: CallBackUrl
+    value: http://localhost:5114
+  - name: WebhooksUrl
+    value: http://localhost:5113
+  - name: SelfUrl
+    value: http://localhost:5114/
+  bindings:
+  - name: http-port-80-binding
+    port: 5114
     protocol: http
