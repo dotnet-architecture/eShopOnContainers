@@ -16,6 +16,7 @@ namespace FunctionalTests.Services.Basket
             if (Configuration["isTest"] == bool.TrueString.ToLowerInvariant())
             {
                 app.UseMiddleware<AutoAuthorizeMiddleware>();
+                app.UseAuthorization();
             }
             else
             {
