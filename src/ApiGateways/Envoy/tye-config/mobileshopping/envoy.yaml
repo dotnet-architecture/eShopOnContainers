@@ -28,7 +28,7 @@ static_resources:
                   prefix: "/c/"
                 route:
                   auto_host_rewrite: true
-                  prefix_rewrite: "/catalog-api/"
+                  prefix_rewrite: "/"
                   cluster: catalog
               - name: "c-long"
                 match:
@@ -41,7 +41,7 @@ static_resources:
                   prefix: "/o/"
                 route:
                   auto_host_rewrite: true
-                  prefix_rewrite: "/ordering-api/"
+                  prefix_rewrite: "/"
                   cluster: ordering
               - name: "o-long"
                 match:
@@ -61,7 +61,7 @@ static_resources:
                   prefix: "/b/"
                 route:
                   auto_host_rewrite: true
-                  prefix_rewrite: "/basket-api/"
+                  prefix_rewrite: "/"
                   cluster: basket
               - name: "b-long"
                 match:
@@ -103,37 +103,37 @@ static_resources:
     lb_policy: round_robin
     hosts:
     - socket_address:
-        address: webshoppingagg
-        port_value: 80
+        address: host.docker.internal
+        port_value: 5121
   - name: catalog
     connect_timeout: 0.25s
     type: strict_dns
     lb_policy: round_robin
     hosts:
     - socket_address:
-        address: catalog-api
-        port_value: 80
+        address: host.docker.internal
+        port_value: 5101
   - name: basket
     connect_timeout: 0.25s
     type: strict_dns
     lb_policy: round_robin
     hosts:
     - socket_address:
-        address: basket-api
-        port_value: 80
+        address: host.docker.internal
+        port_value: 5103
   - name: ordering
     connect_timeout: 0.25s
     type: strict_dns
     lb_policy: round_robin
     hosts:
     - socket_address:
-        address: ordering-api
-        port_value: 80
+        address: host.docker.internal
+        port_value: 5102
   - name: signalr-hub
     connect_timeout: 0.25s
     type: strict_dns
     lb_policy: round_robin
     hosts:
     - socket_address:
-        address: ordering-signalrhub
-        port_value: 80
+        address: host.docker.internal
+        port_value: 5112

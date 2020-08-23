@@ -1,15 +1,6 @@
 name: eshoponcontainers-servicesandwebapps
 services:
 
-- name: seq
-  image: datalust/seq:latest
-  bindings:
-  - port: 5340
-    containerPort: 80
-  env:
-  - name: ACCEPT_EULA
-    value: Y
-
 - name: sqldata
   image: mcr.microsoft.com/mssql/server:2017-latest
   bindings:
@@ -30,7 +21,7 @@ services:
   - port: 27017
     containerPort: 27017
   volumes:
-    - source: eshop-nosqldata-three
+    - source: eshop-nosqldata-four
       target: /data/db
 
 - name: basketdata
@@ -51,7 +42,16 @@ services:
   - name: amqp-binding
     port: 5672
     containerPort: 5672
-    
+
+- name: seq
+  image: datalust/seq:latest
+  bindings:
+  - port: 5340
+    containerPort: 80
+  env:
+  - name: ACCEPT_EULA
+    value: Y
+
 - name: identity-api
   project: Services/Identity/Identity.API/Identity.API.csproj
   env:
@@ -651,6 +651,8 @@ services:
     value: http://localhost:5100/
   - name: LocationsUrl
     value: http://localhost:5109/
+  - name: SignalrHubUrl
+    value: http://localhost:5202
   - name: IdentityUrlHC
     value: http://localhost:5105/hc
   - name: IsClusterEnv
@@ -678,6 +680,33 @@ services:
     port: 5100
     protocol: http
 
+- name: webspa
+  project: Web/WebSPA/WebSPA.csproj
+  env:
+  - name: ASPNETCORE_ENVIRONMENT
+    value: Development
+  - name: ASPNETCORE_URLS
+    value: http://0.0.0.0:80
+  - name: IdentityUrl
+    value: http://localhost:5105
+  - name: PurchaseUrl
+    value: http://localhost:5202
+  - name: MarketingUrl
+    value: http://localhost:5203
+  - name: IdentityUrlHC
+    value: http://localhost:5105/hc
+  - name: UseCustomizationData
+    value: True
+  - name: ApplicationInsights__InstrumentationKey
+    value: 
+  - name: OrchestratorType
+    value:
+  - name: SignalrHubUrl
+    value: http://localhost:5202
+  bindings:
+  - name: http-port-80-binding
+    port: 5104
+    protocol: http
 
 - name: webhooks-client
   project: Web/WebhookClient/WebhookClient.csproj

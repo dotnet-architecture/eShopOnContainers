@@ -28,16 +28,17 @@ static_resources:
                   prefix: "/m/"
                 route:
                   auto_host_rewrite: true
-                  prefix_rewrite: "/marketing-api/"
+                  prefix_rewrite: "/"
                   cluster: marketing
               - name: "m-long"
                 match:
                   prefix: "/marketing-api/"
                 route:
                   auto_host_rewrite: true
+                  prefix_rewrite: "/"
                   cluster: marketing
           http_filters:
-          - name: envoy.router  
+          - name: envoy.router      
           access_log:
           - name: envoy.file_access_log
             filter:
@@ -54,22 +55,22 @@ static_resources:
                 route_name: "%ROUTE_NAME%"
                 upstream_host: "%UPSTREAM_HOST%"
                 upstream_cluster: "%UPSTREAM_CLUSTER%"
-                upstream_local_address: "%UPSTREAM_LOCAL_ADDRESS%"    
-              path: "/tmp/access.log"                 
+                upstream_local_address: "%UPSTREAM_LOCAL_ADDRESS%"     
+              path: "/tmp/access.log"
   clusters:
   - name: marketing
     connect_timeout: 0.25s
-    type: logical_dns
+    type: strict_dns
     lb_policy: round_robin
     hosts:
     - socket_address:
-        address: marketing-api
-        port_value: 80
+        address: host.docker.internal
+        port_value: 5110 
   - name: locations
     connect_timeout: 0.25s
-    type: logical_dns
+    type: strict_dns
     lb_policy: round_robin
     hosts:
     - socket_address:
-        address: locations-api
+        address: host.docker.internal
         port_value: 80
