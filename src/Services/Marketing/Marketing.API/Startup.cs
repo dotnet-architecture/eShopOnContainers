@@ -11,9 +11,9 @@
     using BuildingBlocks.EventBusRabbitMQ;
     using BuildingBlocks.EventBusServiceBus;
     using EntityFrameworkCore;
-    using Extensions.Configuration;
-    using Extensions.DependencyInjection;
-    using Extensions.Logging;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
     using HealthChecks.UI.Client;
     using Infrastructure;
     using Infrastructure.Filters;

@@ -13,7 +13,7 @@ namespace Microsoft.eShopOnContainers.Services.Marketing.API.Controllers
     using EntityFrameworkCore;
     using Dto;
     using AspNetCore.Authorization;
-    using Extensions.Options;
+    using Microsoft.Extensions.Options;
     using Microsoft.eShopOnContainers.Services.Marketing.API.ViewModel;
     using Microsoft.AspNetCore.Http;
     using System.Net;
