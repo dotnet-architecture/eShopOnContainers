@@ -40,13 +40,16 @@ namespace Catalog.API.Extensions
                     }
                     else
                     {
+                        //var retry = Policy.Handle<SqlException>()
+                        //     .WaitAndRetry(new TimeSpan[]
+                        //     {
+                        //     TimeSpan.FromSeconds(3),
+                        //     TimeSpan.FromSeconds(5),
+                        //     TimeSpan.FromSeconds(8),
+                        //     });
+
                         var retry = Policy.Handle<SqlException>()
-                             .WaitAndRetry(new TimeSpan[]
-                             {
-                             TimeSpan.FromSeconds(3),
-                             TimeSpan.FromSeconds(5),
-                             TimeSpan.FromSeconds(8),
-                             });
+                             .WaitAndRetry(10, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
 
                         //if the sql server container is not created on run docker compose this
                         //migration can't fail for network related exception. The retry options for DbContext only 
