@@ -79,7 +79,6 @@ namespace FunctionalTests.Services.Ordering
                 int.TryParse(lastOrder.OrderNumber, out int id);
                 var orderDetails = await orderClient.GetStringAsync(OrderingScenariosBase.Get.OrderBy(id));
                 order = JsonConvert.DeserializeObject<Order>(orderDetails);
-                order.City = city;
 
                 if (IsOrderCreated(order, city))
                 {

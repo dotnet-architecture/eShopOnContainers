@@ -6,8 +6,8 @@ using Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands;
 using Microsoft.eShopOnContainers.Services.Ordering.API.Application.Queries;
 using Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure.Services;
 using Microsoft.Extensions.Logging;
-using Ordering.API.Application.Behaviors;
 using Ordering.API.Application.Commands;
+using Ordering.API.Application.ModelDTOs;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -41,9 +41,11 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Controllers
         [HttpPut]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> CancelOrderAsync([FromBody]CancelOrderCommand command, [FromHeader(Name = "x-requestid")] string requestId)
+        public async Task<IActionResult> CancelOrderAsync([FromBody]OrderDTO orderDto, [FromHeader(Name = "x-requestid")] string requestId)
         {
             bool commandResult = false;
+
+            CancelOrderCommand command = new CancelOrderCommand(orderDto.OrderNumber);
 
             if (Guid.TryParse(requestId, out Guid guid) && guid != Guid.Empty)
             {

@@ -7,6 +7,7 @@ using Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure.Services;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Ordering.API.Application.Commands;
+using Ordering.API.Application.ModelDTOs;
 using System;
 using System.Linq;
 using System.Threading;
@@ -39,7 +40,7 @@ namespace UnitTest.Ordering.Application
 
             //Act
             var orderController = new OrdersController(_mediatorMock.Object, _orderQueriesMock.Object, _identityServiceMock.Object, _loggerMock.Object);
-            var actionResult = await orderController.CancelOrderAsync(new CancelOrderCommand(1), Guid.NewGuid().ToString()) as OkResult;
+            var actionResult = await orderController.CancelOrderAsync(new OrderDTO(1), Guid.NewGuid().ToString()) as OkResult;
 
             //Assert
             Assert.Equal(actionResult.StatusCode, (int)System.Net.HttpStatusCode.OK);
@@ -55,7 +56,7 @@ namespace UnitTest.Ordering.Application
 
             //Act
             var orderController = new OrdersController(_mediatorMock.Object, _orderQueriesMock.Object, _identityServiceMock.Object, _loggerMock.Object);
-            var actionResult = await orderController.CancelOrderAsync(new CancelOrderCommand(1), String.Empty) as BadRequestResult;
+            var actionResult = await orderController.CancelOrderAsync(new OrderDTO(1), String.Empty) as BadRequestResult;
 
             //Assert
             Assert.Equal(actionResult.StatusCode, (int)System.Net.HttpStatusCode.BadRequest);
