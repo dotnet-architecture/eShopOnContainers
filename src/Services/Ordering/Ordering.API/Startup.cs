@@ -89,8 +89,6 @@
                 app.UsePathBase(pathBase);
             }
 
-            app.UseCors("CorsPolicy");
-
             app.UseSwagger()
                .UseSwaggerUI(c =>
                {
@@ -100,6 +98,7 @@
                });
 
             app.UseRouting();
+            app.UseCors("CorsPolicy");
             ConfigureAuth(app);
 
             app.UseEndpoints(endpoints =>

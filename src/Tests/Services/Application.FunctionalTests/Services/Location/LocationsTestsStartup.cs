@@ -19,6 +19,7 @@
             if (Configuration["isTest"] == bool.TrueString.ToLowerInvariant())
             {
                 app.UseMiddleware<LocationAuthorizeMiddleware>();
+                app.UseAuthorization();
             }
             else
             {

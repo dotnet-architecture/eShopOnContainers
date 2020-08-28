@@ -168,9 +168,8 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
                 app.UsePathBase(pathBase);
             }
 
-            app.UseCors("CorsPolicy");
-
             app.UseRouting();
+            app.UseCors("CorsPolicy");
             ConfigureAuth(app);
 
             app.UseEndpoints(endpoints =>
