@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.WebMVC.Controllers
 {
-    [Authorize(AuthenticationSchemes = "OpenIdConnect")]
+    [Authorize(AuthenticationSchemes = OpenIdConnectDefaults.AuthenticationScheme)]
     public class AccountController : Controller
     {
         private readonly ILogger<AccountController> _logger;
@@ -20,7 +20,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        [Authorize(AuthenticationSchemes = "OpenIdConnect")]
+        [Authorize(AuthenticationSchemes = OpenIdConnectDefaults.AuthenticationScheme)]
         public async Task<IActionResult> SignIn(string returnUrl)
         {
             var user = User as ClaimsPrincipal;
