@@ -34,11 +34,13 @@
     using System.Collections.Generic;
     using System.IdentityModel.Tokens.Jwt;
     using System.Reflection;
+    using System.Diagnostics;
 
     public class Startup
     {
         public Startup(IConfiguration configuration)
         {
+            Activity.DefaultIdFormat = ActivityIdFormat.W3C;
             Configuration = configuration;
         }
 

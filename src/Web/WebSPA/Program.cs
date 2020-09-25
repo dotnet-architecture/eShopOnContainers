@@ -4,6 +4,7 @@ using System.IO;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
 using Serilog;
+using System.Diagnostics;
 
 namespace eShopConContainers.WebSPA
 {
@@ -11,6 +12,7 @@ namespace eShopConContainers.WebSPA
     {
         public static void Main(string[] args)
         {
+            Activity.DefaultIdFormat = ActivityIdFormat.W3C;
             BuildWebHost(args).Run();
         }
 

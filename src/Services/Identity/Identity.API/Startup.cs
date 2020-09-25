@@ -20,6 +20,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using StackExchange.Redis;
 using System;
+using System.Diagnostics;
 using System.Reflection;
 
 namespace Microsoft.eShopOnContainers.Services.Identity.API
@@ -28,6 +29,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API
     {
         public Startup(IConfiguration configuration)
         {
+            Activity.DefaultIdFormat = ActivityIdFormat.W3C;
             Configuration = configuration;
         }
 

@@ -1,4 +1,8 @@
 name: eshoponcontainers-servicesandwebapps
+
+extensions:
+- name: zipkin
+
 services:
 
 - name: sqldata
@@ -11,27 +15,20 @@ services:
     value: Y
   - name: SA_PASSWORD
     value: Pass@word
-  volumes:
-    - source: eshop-sqldata
-      target: /var/opt/mssql
+  
 
 - name: nosqldata
   image: mongo
   bindings:
   - port: 27017
     containerPort: 27017
-  volumes:
-    - source: eshop-nosqldata-four
-      target: /data/db
+  
 
 - name: basketdata
   image: redis:alpine
   bindings:
   - port: 6379
-    containerPort: 6379
-  volumes:
-    - source: eshop-basketdata
-      target: /data
+    containerPort: 6379  
 
 - name: rabbitmq
   image: rabbitmq:3-management-alpine

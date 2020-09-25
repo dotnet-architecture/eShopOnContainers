@@ -36,6 +36,7 @@ using System.IO;
 using GrpcBasket;
 using Microsoft.AspNetCore.Http.Features;
 using Serilog;
+using System.Diagnostics;
 
 namespace Microsoft.eShopOnContainers.Services.Basket.API
 {
@@ -43,6 +44,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
     {
         public Startup(IConfiguration configuration)
         {
+            Activity.DefaultIdFormat = ActivityIdFormat.W3C;
             Configuration = configuration;
         }
 

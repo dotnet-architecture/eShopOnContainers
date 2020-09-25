@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Serilog;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 
@@ -22,6 +23,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API
 
         public static int Main(string[] args)
         {
+            Activity.DefaultIdFormat = ActivityIdFormat.W3C;
             var configuration = GetConfiguration();
 
             Log.Logger = CreateSerilogLogger(configuration);

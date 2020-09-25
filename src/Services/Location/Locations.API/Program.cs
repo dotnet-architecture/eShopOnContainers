@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Serilog;
 using System;
+using System.Diagnostics;
 using System.IO;
 
 namespace Microsoft.eShopOnContainers.Services.Locations.API
@@ -16,6 +17,7 @@ namespace Microsoft.eShopOnContainers.Services.Locations.API
 
         public static int Main(string[] args)
         {
+            Activity.DefaultIdFormat = ActivityIdFormat.W3C;
             var configuration = GetConfiguration();
 
             Log.Logger = CreateSerilogLogger(configuration);

@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Ordering.BackgroundTasks.Extensions;
 using Serilog;
+using System.Diagnostics;
 using System.IO;
 
 namespace Ordering.BackgroundTasks
@@ -14,6 +15,7 @@ namespace Ordering.BackgroundTasks
 
         public static void Main(string[] args)
         {
+            Activity.DefaultIdFormat = ActivityIdFormat.W3C;
             CreateHostBuilder(args).Run();
         }
 

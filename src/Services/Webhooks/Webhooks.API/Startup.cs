@@ -23,6 +23,7 @@ using RabbitMQ.Client;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
 using System.Threading;
@@ -38,6 +39,7 @@ namespace Webhooks.API
 
         public Startup(IConfiguration configuration)
         {
+            Activity.DefaultIdFormat = ActivityIdFormat.W3C;
             Configuration = configuration;
         }
 

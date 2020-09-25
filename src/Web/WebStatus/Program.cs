@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Serilog;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -17,6 +18,7 @@ namespace WebStatus
 
         public static int Main(string[] args)
         {
+            Activity.DefaultIdFormat = ActivityIdFormat.W3C;
             var configuration = GetConfiguration();
 
             Log.Logger = CreateSerilogLogger(configuration);
