@@ -22,7 +22,13 @@ static_resources:
             - name: eshop_backend
               domains:
               - "*"
+              # - "host.docker.internal"
               routes:
+              # - match:
+              #     prefix: "/"
+              #   redirect:
+              #     path_redirect: "/"
+              #     https_redirect: true
               - name: "c-short"
                 match:
                   prefix: "/c/"
@@ -99,6 +105,13 @@ static_resources:
                 upstream_cluster: "%UPSTREAM_CLUSTER%"
                 upstream_local_address: "%UPSTREAM_LOCAL_ADDRESS%"
               path: "/tmp/access.log"
+      tls_context:
+        common_tls_context:
+          tls_certificates:
+            - certificate_chain:
+                filename: "/https/docker-self-signed.pem"
+              private_key:
+                filename: "/https/docker-self-signed.key"
   clusters:
   - name: shoppingagg
     connect_timeout: 0.25s

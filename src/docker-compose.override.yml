@@ -57,8 +57,10 @@ services:
       - UseCustomizationData=True
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
       - OrchestratorType=${ORCHESTRATOR_TYPE}
+      - Serilog__MinimumLevel__Override__Microsoft=Warning
     ports:
-      - "5105:80"
+      - "80" # We need HTTP access for inter-service communications
+      - "5105:443"
 
   basket-api:
     environment:
@@ -336,7 +338,7 @@ services:
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
       - OrchestratorType=${ORCHESTRATOR_TYPE}
     ports:
-      - "5107:80"
+      - "5107:443"
 
   webspa:
     environment:
