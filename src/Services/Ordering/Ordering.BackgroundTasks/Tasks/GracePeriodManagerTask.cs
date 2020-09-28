@@ -72,7 +72,7 @@ namespace Ordering.BackgroundTasks.Tasks
                     conn.Open();
                     orderIds = conn.Query<int>(
                         @"SELECT Id FROM [ordering].[orders] 
-                            WHERE DATEDIFF(minute, [OrderDate], GETDATE()) >= @GracePeriodTime
+                            WHERE DATEDIFF(second, [OrderDate], GETDATE()) >= @GracePeriodTime
                             AND [OrderStatusId] = 1",
                         new { _settings.GracePeriodTime });
                 }

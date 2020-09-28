@@ -41,7 +41,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                 // JavaScript Client
                 new Client
                 {
-                    ClientId = "js",
+                    ClientId = "spa",
                     ClientName = "eShop SPA OpenId Client",
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,

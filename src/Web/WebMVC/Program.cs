@@ -52,18 +52,15 @@ namespace Microsoft.eShopOnContainers.WebMVC
         {
             var seqServerUrl = configuration["Serilog:SeqServerUrl"];
             var logstashUrl = configuration["Serilog:LogstashgUrl"];
-            var cfg = new LoggerConfiguration()
+            return new LoggerConfiguration()
                 .ReadFrom.Configuration(configuration)
                 .Enrich.WithProperty("ApplicationContext", AppName)
                 .Enrich.FromLogContext()
-                .WriteTo.Console();
-            if (!string.IsNullOrWhiteSpace(seqServerUrl)) {
-                cfg.WriteTo.Seq(seqServerUrl);
-            }
-            if (!string.IsNullOrWhiteSpace(logstashUrl)) {
-                cfg.WriteTo.Http(logstashUrl);
-            }
-            return cfg.CreateLogger();
+                .WriteTo.Console()
+                .WriteTo.Seq(string.IsNullOrWhiteSpace(seqServerUrl) ? "http://seq" : seqServerUrl)
+                .WriteTo.Http(string.IsNullOrWhiteSpace(logstashUrl) ? "http://logstash:8080" : logstashUrl)
+                .ReadFrom.Configuration(configuration)
+                .CreateLogger();
         }
 
         private static IConfiguration GetConfiguration()
