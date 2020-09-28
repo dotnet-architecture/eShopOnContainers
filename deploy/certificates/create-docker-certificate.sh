@@ -5,10 +5,10 @@ openssl req \
   -out docker-self-signed.pem \
   -keyout docker-self-signed.key \
   -newkey rsa:2048 -nodes -sha256 \
-  -subj '/CN=localhost' \
+  -subj '/CN=host.docker.internal' \
   -extensions EXT \
   -config <( \
-    printf "[dn]\nCN=localhost\n[req]\ndistinguished_name = dn\n[EXT]\nsubjectAltName='DNS.1:localhost,DNS.2:host.docker.internal'\nkeyUsage=digitalSignature\nextendedKeyUsage=serverAuth")
+    printf "[dn]\nCN=host.docker.internal\n[req]\ndistinguished_name = dn\n[EXT]\nsubjectAltName='DNS.1:host.docker.internal,DNS.2:localhost'\nkeyUsage=digitalSignature,keyCertSign\nextendedKeyUsage=serverAuth")
 
 echo "printing text version..."
 openssl x509 -in docker-self-signed.pem -text -noout > docker-self-signed.txt

@@ -1,5 +1,7 @@
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1 AS base
-WORKDIR /app
+WORKDIR /usr/local/share/ca-certificates
+COPY "certificates/docker-self-signed.crt" .
+RUN update-ca-certificates
 EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build

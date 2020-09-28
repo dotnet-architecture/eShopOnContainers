@@ -10,14 +10,6 @@ services:
     volumes:
       - ~/.aspnet/https:/https:ro
 
-  ordering-api:
-    environment:
-      - ASPNETCORE_URLS=https://+:443;http://+:80
-      - ASPNETCORE_Kestrel__Certificates__Default__Password=<secure-COMPLEX-and-SECRET-password>
-      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/docker-self-signed.pfx
-    volumes:
-      - ~/.aspnet/https:/https:ro
-
   webstatus:
     environment:
       - ASPNETCORE_URLS=https://+:443
@@ -28,7 +20,15 @@ services:
 
   webmvc:
     environment:
-      - ASPNETCORE_URLS=https://+:443
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=<secure-COMPLEX-and-SECRET-password>
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/docker-self-signed.pfx
+    volumes:
+      - ~/.aspnet/https:/https:ro
+
+  webspa:
+    environment:
+      - ASPNETCORE_URLS=https://+:443;http://+:80
       - ASPNETCORE_Kestrel__Certificates__Default__Password=<secure-COMPLEX-and-SECRET-password>
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/docker-self-signed.pfx
     volumes:

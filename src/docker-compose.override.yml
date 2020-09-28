@@ -46,10 +46,10 @@ services:
       - XamarinCallback=https://${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP}:5105/xamarincallback
       - ConnectionString=${ESHOP_AZURE_IDENTITY_DB:-Server=sqldata;Database=Microsoft.eShopOnContainers.Service.IdentityDb;User Id=sa;Password=Pass@word}
       - MvcClient=https://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5100
-      - LocationApiClient=https://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5109/locations-api
-      - MarketingApiClient=https://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5110/marketing-api
-      - BasketApiClient=https://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5103/basket-api
-      - OrderingApiClient=https://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5102/ordering-api
+      - LocationApiClient=https://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5202/locations-api
+      - MarketingApiClient=https://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5202/marketing-api
+      - BasketApiClient=https://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5202/basket-api
+      - OrderingApiClient=https://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5202/ordering-api
       - MobileShoppingAggClient=https://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5120
       - WebShoppingAggClient=https://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5121
       - WebhooksApiClient=https://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5113
