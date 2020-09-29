@@ -1,4 +1,4 @@
-# Dev certificates for Docker
+# Setup dev certificates deploying to Docker Desktop
 
 1. Create a self-signed certificate
 2. Install certificates
@@ -32,3 +32,9 @@ The above script:
 
 1. Copy the `src\docker-compose.certificates.sample.yaml` file as `src\docker-compose.certificates.yaml`
 2. Configure the password you assigned to the certificates in the settings `ASPNETCORE_Kestrel__Certificates__Default__Password`
+
+> **IMPORTANT**
+>
+> The `src\docker-compose.certificates.yaml` file is .gitignore'd to avoid pushing it to the repo with the certificate password.
+>
+> To avoid security risks, **DON'T FORCE PUSH the file**.
