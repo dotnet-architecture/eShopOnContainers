@@ -68,11 +68,10 @@ namespace Catalog.API.Grpc
             {
                 var items = await GetItemsByIdsAsync(request.Ids);
 
-                if (!items.Any())
-                {
-                    context.Status = new Status(StatusCode.NotFound, $"ids value invalid. Must be comma-separated list of numbers");
-                }
-                context.Status = new Status(StatusCode.OK, string.Empty);
+                context.Status = !items.Any() ?
+                    new Status(StatusCode.NotFound, $"ids value invalid. Must be comma-separated list of numbers") :
+                    new Status(StatusCode.OK, string.Empty);
+
                 return this.MapToResponse(items);
             }
 
@@ -104,7 +103,7 @@ namespace Catalog.API.Grpc
 
         private PaginatedItemsResponse MapToResponse(List<CatalogItem> items)
         {
-            return this.MapToResponse(items, items.Count(), 1, items.Count());
+            return this.MapToResponse(items, items.Count, 1, items.Count);
         }
 
         private PaginatedItemsResponse MapToResponse(List<CatalogItem> items, long count, int pageIndex, int pageSize)

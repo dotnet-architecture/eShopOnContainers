@@ -15,11 +15,12 @@ using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF.Services
 {
-    public class IntegrationEventLogService : IIntegrationEventLogService
+    public class IntegrationEventLogService : IIntegrationEventLogService,IDisposable
     {
         private readonly IntegrationEventLogContext _integrationEventLogContext;
         private readonly DbConnection _dbConnection;
         private readonly List<Type> _eventTypes;
+        private volatile bool disposedValue;
 
         public IntegrationEventLogService(DbConnection dbConnection)
         {
@@ -88,6 +89,26 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF.Servi
             _integrationEventLogContext.IntegrationEventLogs.Update(eventLogEntry);
 
             return _integrationEventLogContext.SaveChangesAsync();
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    _integrationEventLogContext?.Dispose();
+                }
+
+               
+                disposedValue = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }
