@@ -1,0 +1,27 @@
+name: eshoponcontainers-servicesandwebapps
+
+services:
+
+- name: webhooks-api
+  project: Webhooks.API.csproj
+  env:
+  - name: ASPNETCORE_ENVIRONMENT
+    value: Development
+  - name: ASPNETCORE_URLS
+    value: http://0.0.0.0:80
+  - name: ConnectionString
+    value: Server=localhost;Database=Microsoft.eShopOnContainers.Services.WebhooksDb;User Id=sa;Password=Pass@word  
+  - name: identityUrl
+    value: http://localhost:5105
+  - name: IdentityUrlExternal
+    value: http://localhost:5105
+  - name: EventBusConnection
+    value: localhost
+  - name: EventBusUserName
+    value: 
+  - name: EventBusPassword
+    value:
+  bindings:
+  - name: http-port-80-binding
+    port: 5113
+    protocol: http

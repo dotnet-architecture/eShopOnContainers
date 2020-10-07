@@ -1,0 +1,29 @@
+name: eshoponcontainers-servicesandwebapps
+
+services:
+
+- name: ordering-signalrhub
+  project: Ordering.SignalrHub.csproj
+  env:
+  - name: ASPNETCORE_ENVIRONMENT
+    value: Development
+  - name: ASPNETCORE_URLS
+    value: http://0.0.0.0:80
+  - name: identityUrl
+    value: http://localhost:5105
+  - name: EventBusConnection
+    value: localhost
+  - name: EventBusUserName
+    value: 
+  - name: EventBusPassword
+    value: 
+  - name: AzureServiceBusEnabled
+    value: False
+  - name: ApplicationInsights__InstrumentationKey
+    value: 
+  - name: OrchestratorType
+    value:   
+  bindings:
+  - name: http-port-80-binding
+    port: 5112
+    protocol: http

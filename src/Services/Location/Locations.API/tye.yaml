@@ -1,0 +1,39 @@
+name: eshoponcontainers-servicesandwebapps
+
+services:
+
+- name: locations-api
+  project: Locations.API.csproj
+  env:
+  - name: ASPNETCORE_ENVIRONMENT
+    value: Development
+  - name: ASPNETCORE_URLS
+    value: http://0.0.0.0:80
+  - name: ConnectionString
+    value: mongodb://localhost:27017
+  - name: Database
+    value: LocationsDb  
+  - name: identityUrl
+    value: http://localhost:5105
+  - name: IdentityUrlExternal
+    value: http://localhost:5105
+  - name: EventBusConnection
+    value: localhost
+  - name: EventBusUserName
+    value: 
+  - name: EventBusPassword
+    value:
+  - name: AzureServiceBusEnabled
+    value: False  
+  - name: ApplicationInsights__InstrumentationKey
+    value: 
+  - name: OrchestratorType
+    value:
+  - name: UseLoadTest
+    value: False  
+  - name: PATH_BASE
+    value: /locations-api
+  bindings:
+  - name: http-port-80-binding
+    port: 5109    
+    protocol: http

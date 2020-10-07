@@ -1,0 +1,25 @@
+name: eshoponcontainers-servicesandwebapps
+
+services:
+
+- name: webhooks-client
+  project: WebhookClient.csproj
+  env:
+  - name: ASPNETCORE_ENVIRONMENT
+    value: Development
+  - name: ASPNETCORE_URLS
+    value: http://0.0.0.0:80
+  - name: Token
+    value: 6168DB8D-DC58-4094-AF24-483278923590
+  - name: IdentityUrl
+    value: http://localhost:5105
+  - name: CallBackUrl
+    value: http://localhost:5114
+  - name: WebhooksUrl
+    value: http://localhost:5113
+  - name: SelfUrl
+    value: http://localhost:5114/
+  bindings:
+  - name: http-port-80-binding
+    port: 5114
+    protocol: http

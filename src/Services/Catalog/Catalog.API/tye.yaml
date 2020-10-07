@@ -1,0 +1,43 @@
+name: eshoponcontainers-servicesandwebapps
+
+services:
+
+- name: catalog-api
+  project: Catalog.API.csproj
+  env:
+  - name: ASPNETCORE_ENVIRONMENT
+    value: Development
+  - name: ConnectionString
+    value: Server=localhost;Database=Microsoft.eShopOnContainers.Services.CatalogDb;User Id=sa;Password=Pass@word
+  - name: PicBaseUrl
+    value: http://localhost:5202/c/api/v1/catalog/items/[0]/pic/
+  - name: EventBusConnection
+    value: localhost
+  - name: EventBusUserName
+    value: 
+  - name: EventBusPassword
+    value: 
+  - name: AzureStorageAccountName
+    value: 
+  - name: AzureStorageAccountKey
+    value: 
+  - name: UseCustomizationData
+    value: True
+  - name: AzureServiceBusEnabled
+    value: False
+  - name: AzureStorageEnabled
+    value: False
+  - name: ApplicationInsights__InstrumentationKey
+    value: 
+  - name: OrchestratorType
+    value:
+  - name: GRPC_PORT
+    value: 9101
+  - name: PORT
+    value: 80
+  - name: PATH_BASE
+    value: /catalog-api
+  bindings:
+  - protocol: http
+    name: http-port-80-binding
+    port: 5101

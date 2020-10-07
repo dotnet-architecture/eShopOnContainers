@@ -1,0 +1,55 @@
+name: eshoponcontainers-servicesandwebapps
+
+services:
+
+- name: webmvc
+  project: WebMVC.csproj
+  env:
+  - name: ASPNETCORE_ENVIRONMENT
+    value: Development
+  - name: ASPNETCORE_URLS
+    value: http://0.0.0.0:80
+  - name: IdentityUrl
+    value: http://localhost:5105   
+  - name: PurchaseUrl
+    value: http://localhost:5202  
+  - name: CatalogUrl
+    value: http://localhost:5101
+  - name: BasketUrl
+    value: http://localhost:5103
+  - name: OrderingUrl
+    value: http://localhost:5102
+  - name: MarketingUrl
+    value: http://localhost:5203  
+  - name: CallBackUrl
+    value: http://localhost:5100/
+  - name: LocationsUrl
+    value: http://localhost:5109/
+  - name: SignalrHubUrl
+    value: http://localhost:5202
+  - name: IdentityUrlHC
+    value: http://localhost:5105/hc
+  - name: IsClusterEnv
+    value: False
+  - name: UseResilientHttp
+    value: True
+  - name: UseLoadTest
+    value: False
+  - name: UseCustomizationData
+    value: False
+  - name: ActivateCampaignDetailFunction
+    value: False
+  - name: HttpClientRetryCount
+    value: 8
+  - name: HttpClientExceptionsAllowedBeforeBreaking
+    value: 7
+  - name: SessionCookieLifetimeMinutes
+    value: 60
+  - name: ApplicationInsights__InstrumentationKey
+    value: 
+  - name: OrchestratorType
+    value:  
+  bindings:
+  - name: http-port-80-binding
+    port: 5100
+    protocol: http

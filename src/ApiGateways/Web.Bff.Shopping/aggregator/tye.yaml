@@ -1,0 +1,43 @@
+name: eshoponcontainers-servicesandwebapps
+
+services:
+
+- name: webshoppingagg
+  project: Web.Shopping.HttpAggregator.csproj
+  env:
+  - name: ASPNETCORE_ENVIRONMENT
+    value: Development
+  - name: urls__basket
+    value: http://localhost:5103
+  - name: urls__catalog
+    value: http://localhost:5101
+  - name: urls__orders
+    value: http://localhost:5102
+  - name: urls__identity
+    value: http://localhost:5105
+  - name: urls__grpcBasket
+    value: http://localhost:9103
+  - name: urls__grpcCatalog
+    value: http://localhost:9101
+  - name: urls__grpcOrdering
+    value: http://localhost:9102
+  - name: CatalogUrlHC
+    value: http://localhost:5101/hc
+  - name: OrderingUrlHC
+    value: http://localhost:5102/hc
+  - name: IdentityUrlHC
+    value: http://localhost:5105/hc
+  - name: BasketUrlHC
+    value: http://localhost:5103/hc
+  - name: MarketingUrlHC
+    value: http://localhost:5110/hc
+  - name: PaymentUrlHC
+    value: http://localhost:5108/hc
+  - name: LocationUrlHC
+    value: http://localhost:5109/hc
+  - name: IdentityUrlExternal
+    value: http://localhost:5105
+  bindings:
+  - name: http-port-80-binding
+    port: 5121
+    protocol: http

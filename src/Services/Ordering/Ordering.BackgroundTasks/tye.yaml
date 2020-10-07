@@ -1,0 +1,41 @@
+name: eshoponcontainers-servicesandwebapps
+
+services:
+
+- name: ordering-backgroundtasks
+  project: Ordering.BackgroundTasks.csproj
+  env:
+  - name: ASPNETCORE_ENVIRONMENT
+    value: Development
+  - name: ASPNETCORE_URLS
+    value: http://0.0.0.0:80
+  - name: ConnectionString
+    value: Server=localhost;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word
+  - name: identityUrl
+    value: http://localhost:5105
+  - name: IdentityUrlExternal
+    value: http://localhost:5105
+  - name: EventBusConnection
+    value: localhost
+  - name: EventBusUserName
+    value: 
+  - name: EventBusPassword
+    value:
+  - name: UseCustomizationData
+    value: True
+  - name: AzureServiceBusEnabled
+    value: False  
+  - name: CheckUpdateTime
+    value: 30000
+  - name: ApplicationInsights__InstrumentationKey
+    value: 
+  - name: OrchestratorType
+    value:
+  - name: UseLoadTest
+    value: False
+  - name: Serilog__MinimumLevel__Override__Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
+    value: Verbose  
+  bindings:
+  - name: http-port-80-binding
+    port: 5111    
+    protocol: http

@@ -1,0 +1,31 @@
+name: eshoponcontainers-servicesandwebapps
+
+services:
+
+- name: webspa
+  project: WebSPA.csproj
+  env:
+  - name: ASPNETCORE_ENVIRONMENT
+    value: Development
+  - name: ASPNETCORE_URLS
+    value: http://0.0.0.0:80
+  - name: IdentityUrl
+    value: http://localhost:5105
+  - name: PurchaseUrl
+    value: http://localhost:5202
+  - name: MarketingUrl
+    value: http://localhost:5203
+  - name: IdentityUrlHC
+    value: http://localhost:5105/hc
+  - name: UseCustomizationData
+    value: True
+  - name: ApplicationInsights__InstrumentationKey
+    value: 
+  - name: OrchestratorType
+    value:
+  - name: SignalrHubUrl
+    value: http://localhost:5202
+  bindings:
+  - name: http-port-80-binding
+    port: 5104
+    protocol: http

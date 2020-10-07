@@ -1,0 +1,51 @@
+name: eshoponcontainers-servicesandwebapps
+
+services:
+
+- name: marketing-api
+  project: Marketing.API.csproj
+  env:
+  - name: ASPNETCORE_ENVIRONMENT
+    value: Development
+  - name: ASPNETCORE_URLS
+    value: http://0.0.0.0:80
+  - name: ConnectionString
+    value: Server=localhost;Database=Microsoft.eShopOnContainers.Services.MarketingDb;User Id=sa;Password=Pass@word
+  - name: MongoConnectionString
+    value: mongodb://localhost:27017
+  - name: MongoDatabase
+    value: MarketingDb
+  - name: identityUrl
+    value: http://localhost:5105
+  - name: IdentityUrlExternal
+    value: http://localhost:5105
+  - name: EventBusConnection
+    value: localhost
+  - name: EventBusUserName
+    value: 
+  - name: EventBusPassword
+    value:
+  - name: CampaignDetailFunctionUri
+    value: 
+  - name: PicBaseUrl
+    value: 
+  - name: AzureStorageAccountName
+    value: 
+  - name: AzureStorageAccountKey
+    value:   
+  - name: AzureServiceBusEnabled
+    value: False  
+  - name: AzureStorageEnabled
+    value: False
+  - name: ApplicationInsights__InstrumentationKey
+    value: 
+  - name: OrchestratorType
+    value:
+  - name: UseLoadTest
+    value: False  
+  - name: PATH_BASE
+    value: /marketing-api
+  bindings:
+  - name: http-port-80-binding
+    port: 5110    
+    protocol: http

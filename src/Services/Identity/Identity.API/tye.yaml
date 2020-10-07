@@ -1,0 +1,44 @@
+name: eshoponcontainers-servicesandwebapps
+
+services:
+
+- name: identity-api
+  project: Identity.API.csproj
+  env:
+  - name: ASPNETCORE_ENVIRONMENT
+    value: Development
+  - name: ASPNETCORE_URLS
+    value: http://0.0.0.0:80
+  - name: SpaClient
+    value: http://localhost:5104/
+  - name: XamarinCallback
+    value: http://localhost:5105/xamarincallback
+  - name: ConnectionString
+    value: Server=localhost;Database=Microsoft.eShopOnContainers.Service.IdentityDb;User Id=sa;Password=Pass@word
+  - name: MvcClient
+    value: http://localhost:5100
+  - name: LocationApiClient
+    value: http://localhost:5109
+  - name: MarketingApiClient
+    value: http://localhost:5110
+  - name: BasketApiClient
+    value: http://localhost:5103
+  - name: OrderingApiClient
+    value: http://localhost:5102
+  - name: MobileShoppingAggClient
+    value: http://localhost:5120
+  - name: WebShoppingAggClient
+    value: http://localhost:5121
+  - name: WebhooksApiClient
+    value: http://localhost:5113
+  - name: WebhooksWebClient
+    value: http://localhost:5114
+  - name: UseCustomizationData
+    value: True
+  - name: ApplicationInsights__InstrumentationKey
+    value: 
+  - name: OrchestratorType
+    value:    
+  bindings:
+  - name: http-binding
+    port: 5105

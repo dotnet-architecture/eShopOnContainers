@@ -1,0 +1,41 @@
+﻿name: eshoponcontainers-servicesandwebapps
+
+services:
+
+- name: basket-api
+  project: Basket.API.csproj
+  env:
+  - name: ASPNETCORE_ENVIRONMENT
+    value: Development
+  - name: ASPNETCORE_URLS
+    value: http://0.0.0.0:80
+  - name: ConnectionString
+    value: 127.0.0.1
+  - name: identityUrl
+    value: http://localhost:5105
+  - name: IdentityUrlExternal
+    value: http://localhost:5105
+  - name: EventBusConnection
+    value: localhost
+  - name: EventBusUserName
+    value: 
+  - name: EventBusPassword
+    value:   
+  - name: AzureServiceBusEnabled
+    value: False  
+  - name: ApplicationInsights__InstrumentationKey
+    value: 
+  - name: OrchestratorType
+    value:
+  - name: UseLoadTest
+    value: False
+  - name: GRPC_PORT
+    value: 9103
+  - name: PORT
+    value: 80
+  - name: PATH_BASE
+    value: /basket-api
+  bindings:
+  - name: http-port-80-binding
+    port: 5103    
+    protocol: http
