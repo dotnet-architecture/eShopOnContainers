@@ -14,6 +14,7 @@ version: '3.4'
 # docker-compose -f docker-compose.yml -f docker-compose.prod.yml up
 
 services:
+
   basket-api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
@@ -219,6 +220,13 @@ services:
       - UseLoadTest=${USE_LOADTEST:-False}
     ports:
       - "80"   # The API Gateway redirects and access through the internal port (80).
+
+#  sqldata:
+#    environment:
+#      - SA_PASSWORD=Pass@word
+#      - ACCEPT_EULA=Y
+#    ports:
+#      - "5433:1433"    # Important: In a production environment your should remove the external port
 
   nosqldata:
     ports:

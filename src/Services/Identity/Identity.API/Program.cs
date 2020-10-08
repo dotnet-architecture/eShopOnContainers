@@ -1,8 +1,11 @@
 ﻿using IdentityServer4.EntityFramework.DbContexts;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Azure.KeyVault;
+using Microsoft.Azure.Services.AppAuthentication;
 using Microsoft.eShopOnContainers.Services.Identity.API.Data;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.AzureKeyVault;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -77,15 +80,21 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API
         {
             var seqServerUrl = configuration["Serilog:SeqServerUrl"];
             var logstashUrl = configuration["Serilog:LogstashgUrl"];
-            return new LoggerConfiguration()
+            var cfg = new LoggerConfiguration()
                 .MinimumLevel.Verbose()
+                .ReadFrom.Configuration(configuration)
                 .Enrich.WithProperty("ApplicationContext", AppName)
                 .Enrich.FromLogContext()
-                .WriteTo.Console()
-                .WriteTo.Seq(string.IsNullOrWhiteSpace(seqServerUrl) ? "http://seq" : seqServerUrl)
-                .WriteTo.Http(string.IsNullOrWhiteSpace(logstashUrl) ? "http://localhost:8080" : logstashUrl)
-                .ReadFrom.Configuration(configuration)
-                .CreateLogger();
+                .WriteTo.Console();
+            if (!string.IsNullOrWhiteSpace(seqServerUrl))
+            {
+                cfg.WriteTo.Seq(seqServerUrl);
+            }
+            if (!string.IsNullOrWhiteSpace(logstashUrl))
+            {
+                cfg.WriteTo.Http(logstashUrl);
+            }
+            return cfg.CreateLogger();
         }
 
         private static IConfiguration GetConfiguration()
@@ -96,13 +105,13 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API
                 .AddEnvironmentVariables();
 
             var config = builder.Build();
-
-            if (config.GetValue<bool>("UseVault", false))
+            
+            string keyVaultEndpoint = config.GetValue<string>("KeyVaultEndpoint", null);
+            if (!string.IsNullOrEmpty(keyVaultEndpoint))
             {
-                builder.AddAzureKeyVault(
-                    $"https://{config["Vault:Name"]}.vault.azure.net/",
-                    config["Vault:ClientId"],
-                    config["Vault:ClientSecret"]);
+                var azureServiceTokenProvider = new AzureServiceTokenProvider();
+                var keyVaultClient = new KeyVaultClient(new KeyVaultClient.AuthenticationCallback(azureServiceTokenProvider.KeyVaultTokenCallback));
+                builder.AddAzureKeyVault(keyVaultEndpoint, keyVaultClient, new DefaultKeyVaultSecretManager());
             }
 
             return builder.Build();

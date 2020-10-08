@@ -13,6 +13,15 @@ services:
     ports:
       - "5340:80"
 
+  #sqldata:
+  #  environment:
+  #    - SA_PASSWORD=Pass@word
+  #    - ACCEPT_EULA=Y
+  #  ports:
+  #    - "5433:1433"
+  #  volumes:
+  #    - eshop-sqldata:/var/opt/mssql
+
   nosqldata:
     ports:
       - "27017:27017"
@@ -371,6 +380,8 @@ services:
     ports:
       - "5114:80"
 volumes:
+#  eshop-sqldata:
+#    external: false
   eshop-nosqldata:
     external: false
   eshop-basketdata:

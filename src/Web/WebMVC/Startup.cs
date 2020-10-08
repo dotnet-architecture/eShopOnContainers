@@ -44,7 +44,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
                 .AddHealthChecks(Configuration)
                 .AddCustomMvc(Configuration)
                 .AddDevspaces()
-                .AddHttpClientServices(Configuration);
+                .AddHttpClientServices();
 
             IdentityModelEventSource.ShowPII  = true;       // Caution! Do NOT use in production: https://aka.ms/IdentityModel/PII
             
@@ -146,7 +146,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
         }
 
         // Adds all Http client services
-        public static IServiceCollection AddHttpClientServices(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddHttpClientServices(this IServiceCollection services)
         {
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
@@ -184,7 +184,6 @@ namespace Microsoft.eShopOnContainers.WebMVC
 
             return services;
         }
-
 
         public static IServiceCollection AddCustomAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
