@@ -126,7 +126,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                         "marketing",
                         "webshoppingagg",
                         "orders.signalrhub",
-                        "webhooks"
+                        "locations"
                     },
                     AccessTokenLifetime = 60*60*2, // 2 hours
                     IdentityTokenLifetime= 60*60*2 // 2 hours
@@ -194,7 +194,8 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                         "locations",
                         "marketing",
                         "webshoppingagg",
-                        "webhooks"
+                        "orders.signalrhub",
+                        "locations"
                     },
                 },
                 new Client

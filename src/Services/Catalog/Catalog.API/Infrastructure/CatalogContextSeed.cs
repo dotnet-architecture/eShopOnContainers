@@ -1,8 +1,8 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure
 {
-    using Extensions.Logging;
     using global::Catalog.API.Extensions;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
     using Model;
     using Polly;

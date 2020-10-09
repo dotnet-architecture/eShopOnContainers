@@ -211,6 +211,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
                 options.SaveTokens = true;
                 options.GetClaimsFromUserInfoEndpoint = true;
                 options.RequireHttpsMetadata = false;
+                options.Scope.Add("offline_access");
                 options.Scope.Add("openid");
                 options.Scope.Add("profile");
                 options.Scope.Add("orders");

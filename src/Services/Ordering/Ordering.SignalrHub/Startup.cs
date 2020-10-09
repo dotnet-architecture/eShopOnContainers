@@ -67,7 +67,10 @@ namespace Ordering.SignalrHub
                     var logger = sp.GetRequiredService<ILogger<DefaultServiceBusPersisterConnection>>();
 
                     var serviceBusConnectionString = Configuration["EventBusConnection"];
-                    var serviceBusConnection = new ServiceBusConnectionStringBuilder(serviceBusConnectionString);
+                    var serviceBusConnection = new ServiceBusConnectionStringBuilder(serviceBusConnectionString)
+                    {
+                        EntityPath = Configuration["TopicName"]
+                    };
 
                     return new DefaultServiceBusPersisterConnection(serviceBusConnection, logger);
                 });
@@ -167,6 +170,7 @@ namespace Ordering.SignalrHub
             eventBus.Subscribe<OrderStatusChangedToShippedIntegrationEvent, OrderStatusChangedToShippedIntegrationEventHandler>();
             eventBus.Subscribe<OrderStatusChangedToCancelledIntegrationEvent, OrderStatusChangedToCancelledIntegrationEventHandler>();
             eventBus.Subscribe<OrderStatusChangedToSubmittedIntegrationEvent, OrderStatusChangedToSubmittedIntegrationEventHandler>();
+            eventBus.Subscribe<UploadingFailedIntegrationEvent, UploadingFailedIntegrationEventHandler>();
         }
 
         private void ConfigureAuthService(IServiceCollection services)
@@ -256,7 +260,7 @@ namespace Ordering.SignalrHub
                 hcBuilder
                     .AddAzureServiceBusTopic(
                         configuration["EventBusConnection"],
-                        topicName: "eshop_event_bus",
+                        topicName: configuration["TopicName"],
                         name: "signalr-servicebus-check",
                         tags: new string[] { "servicebus" });
             }

@@ -4,6 +4,7 @@ using Catalog.API.Grpc;
 using global::Catalog.API.Infrastructure.Filters;
 using global::Catalog.API.IntegrationEvents;
 using HealthChecks.UI.Client;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
@@ -11,7 +12,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.ServiceBus;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ;
@@ -19,6 +19,8 @@ using Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus;
 using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF;
 using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF.Services;
 using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
+using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure.AutofacModules;
+using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure.Services;
 using Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationEvents.EventHandling;
 using Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationEvents.Events;
 using Microsoft.Extensions.Configuration;
@@ -58,7 +60,8 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
 
             var container = new ContainerBuilder();
             container.Populate(services);
-
+            container.RegisterModule(new AppModule());
+            container.RegisterModule(new MediatorModule());
             return new AutofacServiceProvider(container.Build());
         }
 
@@ -153,14 +156,24 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
                     .AllowCredentials());
             });
 
+            if (configuration.GetValue<bool>("AzureStorageEnabled"))
+                services.AddSingleton<IStorage>(serviceProvider => {
+                    var blobStorage = new AzureStorage(serviceProvider.GetService<IMediator>(),
+                                                       serviceProvider.GetService<ILogger<AzureStorage>>(),
+                                                       serviceProvider.GetService<IIdentityService>(),
+                                                       serviceProvider.GetService<IEventBus>(),
+                                                       configuration);
+                    blobStorage.InitAsync().GetAwaiter().GetResult();
+                    return blobStorage;
+                });
+
             return services;
         }
 
         public static IServiceCollection AddCustomHealthCheck(this IServiceCollection services, IConfiguration configuration)
         {
-            var accountName = configuration.GetValue<string>("AzureStorageAccountName");
-            var accountKey = configuration.GetValue<string>("AzureStorageAccountKey");
-
+            var azureStorageConnectionString = configuration.GetValue<string>("AzureStorageConnectionString");
+            var AzureStorageContainerName = configuration.GetValue<string>("AzureStorageContainerName");
             var hcBuilder = services.AddHealthChecks();
 
             hcBuilder
@@ -170,11 +183,12 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
                     name: "CatalogDB-check",
                     tags: new string[] { "catalogdb" });
 
-            if (!string.IsNullOrEmpty(accountName) && !string.IsNullOrEmpty(accountKey))
+            if (!string.IsNullOrEmpty(azureStorageConnectionString))
             {
                 hcBuilder
                     .AddAzureBlobStorage(
-                        $"DefaultEndpointsProtocol=https;AccountName={accountName};AccountKey={accountKey};EndpointSuffix=core.windows.net",
+                        connectionString: azureStorageConnectionString,
+                        containerName: AzureStorageContainerName,
                         name: "catalog-storage-check",
                         tags: new string[] { "catalogstorage" });
             }
@@ -184,7 +198,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
                 hcBuilder
                     .AddAzureServiceBusTopic(
                         configuration["EventBusConnection"],
-                        topicName: "eshop_event_bus",
+                        topicName: configuration["TopicName"],
                         name: "catalog-servicebus-check",
                         tags: new string[] { "servicebus" });
             }
@@ -283,8 +297,10 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
                     var settings = sp.GetRequiredService<IOptions<CatalogSettings>>().Value;
                     var logger = sp.GetRequiredService<ILogger<DefaultServiceBusPersisterConnection>>();
 
-                    var serviceBusConnection = new ServiceBusConnectionStringBuilder(settings.EventBusConnection);
-
+                    var serviceBusConnection = new ServiceBusConnectionStringBuilder(settings.EventBusConnection)
+                    {
+                        EntityPath = configuration["TopicName"]
+                    };
                     return new DefaultServiceBusPersisterConnection(serviceBusConnection, logger);
                 });
             }

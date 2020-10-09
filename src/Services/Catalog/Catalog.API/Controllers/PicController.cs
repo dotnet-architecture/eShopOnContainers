@@ -1,7 +1,14 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Catalog.API.Model;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.eShopOnContainers.Services.Catalog.API.Extensions;
 using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
+using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure.Services;
+using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure.Validators;
+using Microsoft.Extensions.Options;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
@@ -15,12 +22,22 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
     {
         private readonly IWebHostEnvironment _env;
         private readonly CatalogContext _catalogContext;
+        private readonly IOptions<CatalogSettings> _options;
+        private readonly IPicService _picService;
+        private readonly IPicServicesHandler _picServicesHandler;
 
         public PicController(IWebHostEnvironment env,
-            CatalogContext catalogContext)
+                    CatalogContext catalogContext,
+                    IOptions<CatalogSettings> options,
+                    IPicService picService,
+                    IPicServicesHandler picServicesHandler)
         {
             _env = env;
+            _options = options;
+            _picService = picService;
             _catalogContext = catalogContext;
+            _picServicesHandler = picServicesHandler;
+            _picServicesHandler.Subscrib(_picService);
         }
 
         [HttpGet]
@@ -52,6 +69,18 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
             }
 
             return NotFound();
+        }
+
+        [HttpPost]
+        [Authorize]
+        [Route("api/v1/catalog/items/{catalogItemId:int}/pic")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        public ActionResult SaveImage(IFormFile imgfile, int catalogItemId)
+        {
+            var rule = new IsFileNotNull().And(new IsFileSizeSuitable(_options)).And(new IsFileExtntionSuitable()).And(new IsFileSignatureSuitable());
+            if (!rule.IsSatisfiedBy(imgfile)) return BadRequest("File size should less than 2Mb, Type should be [JPG, JPEG, PNG] and not empty.");
+            _picService.UploadFile(new Payload(imgfile, catalogItemId));
+            return Ok("The file went to storage.");
         }
 
         private string GetImageMimeTypeFromImageFileExtension(string extension)
@@ -92,5 +121,6 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
 
             return mimetype;
         }
+
     }
 }
