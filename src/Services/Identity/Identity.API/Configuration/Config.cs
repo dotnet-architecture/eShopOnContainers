@@ -13,6 +13,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
             {
                 new ApiResource("orders", "Orders Service"),
                 new ApiResource("basket", "Basket Service"),
+                new ApiResource("catalog", "Catalog Service"),
                 new ApiResource("marketing", "Marketing Service"),
                 new ApiResource("locations", "Locations Service"),
                 new ApiResource("mobileshoppingagg", "Mobile Shopping Aggregator"),
@@ -122,6 +123,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                         IdentityServerConstants.StandardScopes.OfflineAccess,
                         "orders",
                         "basket",
+                        "catalog",
                         "locations",
                         "marketing",
                         "webshoppingagg",
@@ -191,12 +193,28 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                         IdentityServerConstants.StandardScopes.OfflineAccess,
                         "orders",
                         "basket",
+                        "catalog",
                         "locations",
                         "marketing",
                         "webshoppingagg",
                         "orders.signalrhub",
                         "locations"
                     },
+                },
+                new Client
+                {
+                    ClientId = "catalogswaggerui",
+                    ClientName = "Catalog Swagger UI",
+                    AllowedGrantTypes = GrantTypes.Implicit,
+                    AllowAccessTokensViaBrowser = true,
+
+                    RedirectUris = { $"{clientsUrl["CatalogApi"]}/swagger/oauth2-redirect.html" },
+                    PostLogoutRedirectUris = { $"{clientsUrl["CatalogApi"]}/swagger/" },
+
+                    AllowedScopes =
+                    {
+                        "catalog"
+                    }
                 },
                 new Client
                 {

@@ -250,7 +250,7 @@ select::-ms-expand {
 
 .form-label {
     text-transform: uppercase;
-    font-weight: normal!important;
+    font-weight: normal !important;
     text-align: left;
     margin-bottom: 10px !important;
     color: #404040;
@@ -263,7 +263,7 @@ select::-ms-expand {
 }
 
 .form-input-small {
-    max-width: 100px!important;
+    max-width: 100px !important;
 }
 
 .form-select {
@@ -289,7 +289,7 @@ select::-ms-expand {
 
 .btn-login {
     border: 1px solid #00A69C;
-    height: 36px!important;
+    height: 36px !important;
     margin-right: 10px;
     margin-top: 10px;
     background-color: white;
@@ -297,11 +297,11 @@ select::-ms-expand {
     text-transform:uppercase;
     max-width: 140px;
     width: 140px;
-    padding-top:8px!important;
+    padding-top:8px !important;
 }
 
 .btn-login {
-    font-weight:normal!important;
+    font-weight:normal !important;
 }
 
     .btn-login::before {
@@ -530,8 +530,8 @@ form .col-md-4 {
         }
 
 .brand-header-back {
-    float: left!important;
-    margin-top: 20px!important;
+    float: left !important;
+    margin-top: 20px !important;
     text-transform: uppercase;
 }
 
@@ -572,7 +572,7 @@ form .col-md-4 {
 .cart-product-column {
     max-width: 120px;
     text-transform: uppercase;
-    vertical-align: middle!important;
+    vertical-align: middle !important;
 }
 
 .order-create-container .cart-product-column {
@@ -639,7 +639,7 @@ form .col-md-4 {
     }
 
 .cart-totals {
-    border-bottom:none!important;
+    border-bottom:none !important;
 }
 
 .input-validation-error {
@@ -660,7 +660,7 @@ form .col-md-4 {
 }
 
 .form-horizontal .form-group {
-    margin-right: 0px!important;
+    margin-right: 0px !important;
 }
 
 .form-control:focus {
@@ -740,7 +740,7 @@ form .col-md-4 {
 }
 
 .fr {
-    float:right!important;
+    float:right !important;
 }
 
 .down-arrow {
@@ -768,7 +768,7 @@ form .col-md-4 {
 }
 
 .login-user {
-    position: absolute!important;
+    position: absolute !important;
     top: 30px;
     right: 65px;
     cursor:pointer;
@@ -811,7 +811,7 @@ form .col-md-4 {
 }
 
 .es-header {
-    min-height: 80px!important;
+    min-height: 80px !important;
 }
 
 .es-pager-bottom {

@@ -38,6 +38,7 @@ services:
       - ConnectionString=${ESHOP_AZURE_IDENTITY_DB:-Server=sqldata;Database=Microsoft.eShopOnContainers.Service.IdentityDb;User Id=sa;Password=Pass@word}
       - MvcClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5100
       - LocationApiClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5109
+      - CatalogApiClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5101
       - MarketingApiClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5110
       - BasketApiClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5103
       - OrderingApiClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5102
@@ -77,6 +78,8 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionString=${ESHOP_AZURE_CATALOG_DB:-Server=sqldata;Database=Microsoft.eShopOnContainers.Services.CatalogDb;User Id=sa;Password=Pass@word}
       - PicBaseUrl=${ESHOP_STORAGE_CATALOG_URL}
+      - identityUrl=http://identity-api
+      - IdentityUrlExternal=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
       - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
       - TopicName=${ESHOP_SERVICE_BUS_TOPIC_NAME}
       - EventBusUserName=${ESHOP_SERVICE_BUS_USERNAME}

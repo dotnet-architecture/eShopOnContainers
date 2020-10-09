@@ -216,6 +216,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
                 options.Scope.Add("profile");
                 options.Scope.Add("orders");
                 options.Scope.Add("basket");
+                options.Scope.Add("catalog");
                 options.Scope.Add("marketing");
                 options.Scope.Add("locations");
                 options.Scope.Add("webshoppingagg");

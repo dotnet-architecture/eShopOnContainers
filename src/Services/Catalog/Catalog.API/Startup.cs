@@ -1,10 +1,12 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Catalog.API.Grpc;
+using Catalog.API.Infrastructure.Middlewares;
 using global::Catalog.API.Infrastructure.Filters;
 using global::Catalog.API.IntegrationEvents;
 using HealthChecks.UI.Client;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
@@ -31,7 +33,9 @@ using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using RabbitMQ.Client;
 using System;
+using System.Collections.Generic;
 using System.Data.Common;
+using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Reflection;
 
@@ -56,7 +60,8 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
                 .AddIntegrationServices(Configuration)
                 .AddEventBus(Configuration)
                 .AddSwagger(Configuration)
-                .AddCustomHealthCheck(Configuration);
+                .AddCustomHealthCheck(Configuration)
+                .AddAuthService(Configuration);
 
             var container = new ContainerBuilder();
             container.Populate(services);
@@ -84,10 +89,13 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
              .UseSwaggerUI(c =>
              {
                  c.SwaggerEndpoint($"{ (!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty) }/swagger/v1/swagger.json", "Catalog.API V1");
+                 c.OAuthClientId("catalogswaggerui");
+                 c.OAuthAppName("Catalog Swagger UI");
              });
-            
+
             app.UseRouting();
             app.UseCors("CorsPolicy");
+            ConfigureAuth(app);
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();
@@ -127,6 +135,16 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
             eventBus.Subscribe<OrderStatusChangedToAwaitingValidationIntegrationEvent, OrderStatusChangedToAwaitingValidationIntegrationEventHandler>();
             eventBus.Subscribe<OrderStatusChangedToPaidIntegrationEvent, OrderStatusChangedToPaidIntegrationEventHandler>();
         }
+
+        protected virtual void ConfigureAuth(IApplicationBuilder app)
+        {
+            if (Configuration.GetValue<bool>("UseLoadTest"))
+            {
+                app.UseMiddleware<ByPassAuthMiddleware>();
+            }
+            app.UseAuthentication();
+            app.UseAuthorization();
+        }
     }
 
     public static class CustomExtensionMethods
@@ -135,6 +153,28 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
         {
             services.AddApplicationInsightsTelemetry(configuration);
             services.AddApplicationInsightsKubernetesEnricher();
+
+            return services;
+        }
+
+        public static IServiceCollection AddAuthService(this IServiceCollection services, IConfiguration configuration)
+        {
+            // prevent from mapping "sub" claim to nameidentifier.
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("sub");
+
+            var identityUrl = configuration.GetValue<string>("IdentityUrl");
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
+            }).AddJwtBearer(options =>
+            {
+                options.Authority = identityUrl;
+                options.RequireHttpsMetadata = false;
+                options.Audience = "catalog";
+            });
 
             return services;
         }
@@ -277,6 +317,25 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
                     Version = "v1",
                     Description = "The Catalog Microservice HTTP API. This is a Data-Driven/CRUD microservice sample"
                 });
+
+                options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+                {
+                    Type = SecuritySchemeType.OAuth2,
+                    Flows = new OpenApiOAuthFlows()
+                    {
+                        Implicit = new OpenApiOAuthFlow()
+                        {
+                            AuthorizationUrl = new Uri($"{configuration.GetValue<string>("IdentityUrlExternal")}/connect/authorize"),
+                            TokenUrl = new Uri($"{configuration.GetValue<string>("IdentityUrlExternal")}/connect/token"),
+                            Scopes = new Dictionary<string, string>()
+                            {
+                                { "catalog", "Catalog API" }
+                            }
+                        }
+                    }
+                });
+
+                options.OperationFilter<AuthorizeCheckOperationFilter>();
             });
 
             return services;
