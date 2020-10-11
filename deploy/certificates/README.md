@@ -30,7 +30,7 @@ The above script:
 
 ### 3 - Configure some services to serve the certificates
 
-1. Copy the `src\docker-compose.certificates.sample.yaml` file as `src\docker-compose.certificates.yaml`
+1. Copy the `src\docker-compose.certificates.sample.yml` file as `src\docker-compose.certificates.yml`
 2. Configure the password you assigned to the certificates in the settings `ASPNETCORE_Kestrel__Certificates__Default__Password`
 
 > **IMPORTANT**
