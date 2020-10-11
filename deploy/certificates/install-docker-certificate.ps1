@@ -14,4 +14,4 @@ Copy-Item docker-self-signed.key $env:USERPROFILE\.aspnet\https -Force
 Copy-Item docker-self-signed.pfx $env:USERPROFILE\.aspnet\https -Force
 
 # Copy to src folder to register as a root CA in client containers
-Copy-Item docker-self-signed.pem ..\..\src\certificates  -Force
+Copy-Item docker-self-signed.pem ..\..\src\certificates\docker-self-signed.crt  -Force
