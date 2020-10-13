@@ -33,7 +33,7 @@ function Install-Chart  {
     }
     
     if ($chart -ne "eshop-common" -or $customRegistry)  {       # eshop-common is ignored when no secret must be deployed        
-        $command = "install $options --name=$appName-$chart $chart"
+        $command = "install $appName-$chart $chart $options"
         Write-Host "Helm Command: helm $command" -ForegroundColor Gray
         Invoke-Expression 'cmd /c "helm $command"'
     }
@@ -119,7 +119,7 @@ $gateways = ("apigwmm", "apigwms", "apigwwm", "apigwws")
 if ($deployInfrastructure) {
     foreach ($infra in $infras) {
         Write-Host "Installing infrastructure: $infra" -ForegroundColor Green
-        helm install --values app.yaml --values inf.yaml --values $ingressValuesFile --set app.name=$appName --set inf.k8s.dns=$dns --set "ingress.hosts={$dns}" --name="$appName-$infra" $infra     
+        helm install $appName-$infra $infra --values app.yaml --values inf.yaml --values $ingressValuesFile --set app.name=$appName --set inf.k8s.dns=$dns --set "ingress.hosts={$dns}"      
     }
 }
 else {
