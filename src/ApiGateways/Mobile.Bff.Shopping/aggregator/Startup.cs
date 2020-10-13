@@ -64,9 +64,6 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator
             {
                 app.UseDeveloperExceptionPage();
             }
-   
-
-            app.UseCors("CorsPolicy");
 
             app.UseSwagger().UseSwaggerUI(c =>
             {
@@ -79,6 +76,7 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator
             });
 
             app.UseRouting();
+            app.UseCors("CorsPolicy");
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>

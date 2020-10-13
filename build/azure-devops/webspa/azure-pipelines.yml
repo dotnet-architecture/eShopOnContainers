@@ -9,6 +9,9 @@ trigger:
     include:
     - src/BuildingBlocks/*
     - src/Web/WebSPA/*
+    - build/azure-devops/buildimages.yml
+    - build/azure-devops/multiarch.yml
+    - build/azure-devops/webspa/*
     - deploy/k8s/helm/webspa/*
 jobs:
 - template: ../buildimages.yaml

@@ -42,10 +42,9 @@ namespace Microsoft.eShopOnContainers.WebMVC
 
         private static IWebHost BuildWebHost(IConfiguration configuration, string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .CaptureStartupErrors(false)
+                .CaptureStartupErrors(false)                
+                .ConfigureAppConfiguration(x => x.AddConfiguration(configuration))
                 .UseStartup<Startup>()
-                .UseApplicationInsights()
-                .UseConfiguration(configuration)
                 .UseSerilog()
                 .Build();
 

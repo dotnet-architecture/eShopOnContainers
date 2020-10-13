@@ -89,9 +89,16 @@
                 app.UsePathBase(pathBase);
             }
 
-            app.UseCors("CorsPolicy");
+            app.UseSwagger()
+               .UseSwaggerUI(c =>
+               {
+                   c.SwaggerEndpoint($"{ (!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty) }/swagger/v1/swagger.json", "Ordering.API V1");
+                   c.OAuthClientId("orderingswaggerui");
+                   c.OAuthAppName("Ordering Swagger UI");
+               });
 
             app.UseRouting();
+            app.UseCors("CorsPolicy");
             ConfigureAuth(app);
 
             app.UseEndpoints(endpoints =>
@@ -123,14 +130,6 @@
                     Predicate = r => r.Name.Contains("self")
                 });
             });
-
-            app.UseSwagger()
-               .UseSwaggerUI(c =>
-               {
-                   c.SwaggerEndpoint($"{ (!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty) }/swagger/v1/swagger.json", "Ordering.API V1");
-                   c.OAuthClientId("orderingswaggerui");
-                   c.OAuthAppName("Ordering Swagger UI");
-               });
 
             ConfigureEventBus(app);
         }

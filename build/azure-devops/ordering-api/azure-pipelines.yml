@@ -9,6 +9,9 @@ trigger:
     include:
     - src/BuildingBlocks/*
     - src/Services/Ordering/*
+    - build/azure-devops/buildimages.yml
+    - build/azure-devops/multiarch.yml
+    - build/azure-devops/ordering-api/*
     - deploy/k8s/helm/ordering-api/*
     - deploy/k8s/helm/ordering-backgroundtasks/*
     - deploy/k8s/helm/ordering-signalrhub/*

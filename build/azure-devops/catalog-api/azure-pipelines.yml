@@ -9,6 +9,9 @@ trigger:
     include:
     - src/BuildingBlocks/*
     - src/Services/Catalog/*
+    - build/azure-devops/buildimages.yml
+    - build/azure-devops/multiarch.yml
+    - build/azure-devops/catalog-api/*
     - deploy/k8s/helm/catalog-api/*
 jobs:
 - template: ../buildimages.yaml

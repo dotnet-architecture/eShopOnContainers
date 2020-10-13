@@ -38,7 +38,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - ConnectionString=${ESHOP_AZURE_CATALOG_DB:-Server=sqldata;Database=Microsoft.eShopOnContainers.Services.CatalogDb;User Id=sa;Password=Pass@word}
-      - PicBaseUrl=${ESHOP_AZURE_STORAGE_CATALOG_URL:-http://localhost:5101/api/v1/catalog/items/[0]/pic/}   #Local: You need to open your local dev-machine firewall at range 5100-5110.
+      - PicBaseUrl=${ESHOP_STORAGE_CATALOG_URL}
       - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
       - EventBusUserName=${ESHOP_SERVICE_BUS_USERNAME}
       - EventBusPassword=${ESHOP_SERVICE_BUS_PASSWORD}
@@ -122,7 +122,7 @@ services:
       - identityUrl=http://identity-api              #Local: You need to open your local dev-machine firewall at range 5100-5110.
       - IdentityUrlExternal=http://${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP}:5105
       - CampaignDetailFunctionUri=${ESHOP_AZUREFUNC_CAMPAIGN_DETAILS_URI}
-      - PicBaseUrl=${ESHOP_AZURE_STORAGE_MARKETING_URL:-http://localhost:5110/api/v1/campaigns/[0]/pic/}
+      - PicBaseUrl=${ESHOP_STORAGE_MARKETING_URL}
       - AzureStorageAccountName=${ESHOP_AZURE_STORAGE_MARKETING_NAME}
       - AzureStorageAccountKey=${ESHOP_AZURE_STORAGE_MARKETING_KEY}
       - AzureServiceBusEnabled=False

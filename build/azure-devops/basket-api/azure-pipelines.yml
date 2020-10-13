@@ -9,6 +9,9 @@ trigger:
     include:
     - src/BuildingBlocks/*
     - src/Services/Basket/*
+    - build/azure-devops/buildimages.yml
+    - build/azure-devops/multiarch.yml
+    - build/azure-devops/basket-api/*
     - deploy/k8s/helm/basket-api/*
 jobs:
 - template: ../buildimages.yaml

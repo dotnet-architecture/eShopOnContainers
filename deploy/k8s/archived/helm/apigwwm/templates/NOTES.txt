@@ -1,0 +1,2 @@
+eShop API Gateway for Web Marketing services installed
+------------------------------------------------------

@@ -34,6 +34,7 @@ function Install-Chart  {
     
     if ($chart -ne "eshop-common" -or $customRegistry)  {       # eshop-common is ignored when no secret must be deployed        
         $command = "install $appName-$chart $chart $options"
+
         Write-Host "Helm Command: helm $command" -ForegroundColor Gray
         Invoke-Expression 'cmd /c "helm $command"'
     }
@@ -94,10 +95,16 @@ if ($useLocalk8s -and $sslEnabled) {
     exit 1
 }
 
-if ($clean) {
-    Write-Host "Cleaning previous helm releases..." -ForegroundColor Green
-    helm delete --purge $(helm ls -q eshop) 
-    Write-Host "Previous releases deleted" -ForegroundColor Green
+if ($clean) {    
+    $listOfReleases=$(helm ls --filter eshop -q)    
+    if ([string]::IsNullOrEmpty($listOfReleases)) {
+        Write-Host "No previous releases found!" -ForegroundColor Green
+	}else{
+        Write-Host "Previous releases found" -ForegroundColor Green
+        Write-Host "Cleaning previous helm releases..." -ForegroundColor Green
+        helm uninstall $listOfReleases
+        Write-Host "Previous releases deleted" -ForegroundColor Green
+	}        
 }
 
 $useCustomRegistry=$false
@@ -119,7 +126,8 @@ $gateways = ("apigwmm", "apigwms", "apigwwm", "apigwws")
 if ($deployInfrastructure) {
     foreach ($infra in $infras) {
         Write-Host "Installing infrastructure: $infra" -ForegroundColor Green
-        helm install $appName-$infra $infra --values app.yaml --values inf.yaml --values $ingressValuesFile --set app.name=$appName --set inf.k8s.dns=$dns --set "ingress.hosts={$dns}"      
+
+        helm install $appName-$infra $infra --values app.yaml --values inf.yaml --values $ingressValuesFile --set app.name=$appName --set inf.k8s.dns=$dns --set "ingress.hosts={$dns}"
     }
 }
 else {

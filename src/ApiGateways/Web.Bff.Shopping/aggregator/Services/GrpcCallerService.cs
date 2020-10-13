@@ -1,8 +1,8 @@
-﻿using System.Threading.Tasks;
-using System;
-using Grpc.Core;
-using Serilog;
+﻿using Grpc.Core;
 using Grpc.Net.Client;
+using Serilog;
+using System;
+using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Services
 {

@@ -201,7 +201,7 @@ if [[ $clean ]]; then
   if [[ -z $(helm ls -q --namespace $namespace) ]]; then
     echo "No previous releases found"
   else
-    helm delete --purge $(helm ls -q --namespace $namespace)
+    helm uninstall $(helm ls -q --namespace $namespace)
     echo "Previous releases deleted"
     waitsecs=10; while [ $waitsecs -gt 0 ]; do echo -ne "$waitsecs\033[0K\r"; sleep 1; : $((waitsecs--)); done
   fi
@@ -215,7 +215,7 @@ if [[ !$skip_infrastructure ]]; then
   for infra in "${infras[@]}"
   do
     echo "Installing infrastructure: $infra"
-    helm install --namespace $namespace --set "ingress.hosts={$dns}" --values app.yaml --values inf.yaml --values $ingress_values_file --set app.name=$app_name --set inf.k8s.dns=$dns --name="$app_name-$infra" $infra     
+    helm install "$app_name-$infra" --namespace $namespace --set "ingress.hosts={$dns}" --values app.yaml --values inf.yaml --values $ingress_values_file --set app.name=$app_name --set inf.k8s.dns=$dns $infra     
   done  
 fi
 
@@ -223,9 +223,9 @@ for chart in "${charts[@]}"
 do
     echo "Installing: $chart"
     if [[ $use_custom_registry ]]; then 
-      helm install --namespace $namespace --set "ingress.hosts={$dns}" --set inf.registry.server=$container_registry --set inf.registry.login=$docker_username --set inf.registry.pwd=$docker_password --set inf.registry.secretName=eshop-docker-scret --values app.yaml --values inf.yaml --values $ingress_values_file --set app.name=$app_name --set inf.k8s.dns=$dns --set image.tag=$image_tag --set image.pullPolicy=Always --name="$app_name-$chart" $chart 
+      helm install "$app_name-$chart" --namespace $namespace --set "ingress.hosts={$dns}" --set inf.registry.server=$container_registry --set inf.registry.login=$docker_username --set inf.registry.pwd=$docker_password --set inf.registry.secretName=eshop-docker-scret --values app.yaml --values inf.yaml --values $ingress_values_file --set app.name=$app_name --set inf.k8s.dns=$dns --set image.tag=$image_tag --set image.pullPolicy=Always $chart 
     elif [[ $chart != "eshop-common" ]]; then  # eshop-common is ignored when no secret must be deployed
-      helm install --namespace $namespace --set "ingress.hosts={$dns}" --values app.yaml --values inf.yaml --values $ingress_values_file --set app.name=$app_name --set inf.k8s.dns=$dns --set image.tag=$image_tag --set image.pullPolicy=Always --name="$app_name-$chart" $chart 
+      helm install "$app_name-$chart" --namespace $namespace --set "ingress.hosts={$dns}" --values app.yaml --values inf.yaml --values $ingress_values_file --set app.name=$app_name --set inf.k8s.dns=$dns --set image.tag=$image_tag --set image.pullPolicy=Always $chart 
     fi
 done
 

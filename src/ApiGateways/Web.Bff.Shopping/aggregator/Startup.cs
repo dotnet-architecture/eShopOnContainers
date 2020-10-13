@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Config;
 using Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Filters.Basket.API.Infrastructure.Filters;
 using Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Infrastructure;
@@ -64,9 +63,7 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator
             {
                 app.UseDeveloperExceptionPage();
             }
- 
-
-            app.UseCors("CorsPolicy");
+            
             app.UseHttpsRedirection();
 
             app.UseSwagger().UseSwaggerUI(c =>
@@ -80,6 +77,7 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator
             });
 
             app.UseRouting();
+            app.UseCors("CorsPolicy");
             app.UseAuthentication();
             app.UseAuthorization();
 

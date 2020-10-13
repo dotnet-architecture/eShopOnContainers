@@ -8,6 +8,9 @@ trigger:
   paths:
     include:
     - src/ApiGateways/Mobile.Bff.Shopping/aggregator/*
+    - build/azure-devops/buildimages.yml
+    - build/azure-devops/multiarch.yml
+    - build/azure-devops/mobile-shopping-agg/*
     - deploy/k8s/helm/mobileshoppingagg/*
 jobs:
 - template: ../buildimages.yaml

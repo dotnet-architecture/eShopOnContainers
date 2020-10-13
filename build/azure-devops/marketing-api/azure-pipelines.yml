@@ -9,6 +9,9 @@ trigger:
     include:
     - src/BuildingBlocks/*
     - src/Services/Marketing/*
+    - build/azure-devops/buildimages.yml
+    - build/azure-devops/multiarch.yml
+    - build/azure-devops/marketing-api/*
     - deploy/k8s/helm/marketing-api/*
 jobs:
 - template: ../buildimages.yaml

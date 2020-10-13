@@ -9,6 +9,9 @@ trigger:
     include:
     - src/BuildingBlocks/*
     - src/Web/WebStatus/*
+    - build/azure-devops/buildimages.yml
+    - build/azure-devops/multiarch.yml
+    - build/azure-devops/webstatus/*
     - deploy/k8s/helm/webstatus/*
 jobs:
 - template: ../buildimages.yaml

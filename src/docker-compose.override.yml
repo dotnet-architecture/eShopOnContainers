@@ -85,7 +85,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionString=${ESHOP_AZURE_CATALOG_DB:-Server=sqldata;Database=Microsoft.eShopOnContainers.Services.CatalogDb;User Id=sa;Password=Pass@word}
-      - PicBaseUrl=${ESHOP_AZURE_STORAGE_CATALOG_URL:-http://localhost:5202/c/api/v1/catalog/items/[0]/pic/}   #Local: You need to open your local dev-machine firewall at range 5100-5110.
+      - PicBaseUrl=${ESHOP_STORAGE_CATALOG_URL}
       - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
       - EventBusUserName=${ESHOP_SERVICE_BUS_USERNAME}
       - EventBusPassword=${ESHOP_SERVICE_BUS_PASSWORD}
@@ -160,7 +160,7 @@ services:
       - identityUrl=http://identity-api
       - IdentityUrlExternal=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
       - CampaignDetailFunctionUri=${ESHOP_AZUREFUNC_CAMPAIGN_DETAILS_URI}
-      - PicBaseUrl=${ESHOP_AZURE_STORAGE_MARKETING_URL:-http://localhost:5110/api/v1/campaigns/[0]/pic/}
+      - PicBaseUrl=${ESHOP_STORAGE_MARKETING_URL}
       - AzureStorageAccountName=${ESHOP_AZURE_STORAGE_MARKETING_NAME}
       - AzureStorageAccountKey=${ESHOP_AZURE_STORAGE_MARKETING_KEY}
       - AzureServiceBusEnabled=False
@@ -264,7 +264,7 @@ services:
       - MarketingUrlHC=http://marketing-api/hc
       - PaymentUrlHC=http://payment-api/hc
       - LocationUrlHC=http://locations-api/hc
-      - IdentityUrlExternal=http://10.0.75.1:5105
+      - IdentityUrlExternal=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
     ports:
       - "5120:80"
 
@@ -358,7 +358,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - PurchaseUrl=http://webshoppingapigw
-      - IdentityUrl=http://10.0.75.1:5105
+      - IdentityUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
       - MarketingUrl=http://webmarketingapigw
       - SignalrHubUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5202
       - IdentityUrlHC=http://identity-api/hc
@@ -373,8 +373,8 @@ services:
     environment:
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - Token=6168DB8D-DC58-4094-AF24-483278923590      # Webhooks are registered with this token (any value is valid) but the client won't check it
-      - IdentityUrl=http://10.0.75.1:5105
-      - CallBackUrl=http://localhost:5114
+      - IdentityUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
+      - CallBackUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5114
       - WebhooksUrl=http://webhooks-api
       - SelfUrl=http://webhooks-client/
     ports:

@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Response } from '@angular/http';
 
 import { DataService } from '../shared/services/data.service';
 import { ConfigurationService } from '../shared/services/configuration.service';
@@ -8,7 +7,7 @@ import { ICatalogBrand } from '../shared/models/catalogBrand.model';
 import { ICatalogType } from '../shared/models/catalogType.model';
 
 import { Observable } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 
 @Injectable()
 export class CatalogService {
@@ -36,29 +35,20 @@ export class CatalogService {
       
         url = url + '?pageIndex=' + pageIndex + '&pageSize=' + pageSize;
 
-        return this.service.get(url)
-            .pipe(
-                map((response: any) => {
-                    return response;
-                })
-            );
+        return this.service.get(url).pipe<ICatalog>(tap((response: any) => {
+            return response;
+        }));
     }
 
     getBrands(): Observable<ICatalogBrand[]> {
-        return this.service.get(this.brandUrl)
-            .pipe(
-                map((response: any) => {
-                    return response;
-                })
-            );
+        return this.service.get(this.brandUrl).pipe<ICatalogBrand[]>(tap((response: any) => {
+            return response;
+        }));
     }
 
     getTypes(): Observable<ICatalogType[]> {
-        return this.service.get(this.typesUrl)
-            .pipe(
-                map((response: any) => {
-                    return response;
-                })
-            );
+        return this.service.get(this.typesUrl).pipe<ICatalogType[]>(tap((response: any) => {
+            return response;
+        }));
     };
 }
