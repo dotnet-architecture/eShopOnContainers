@@ -63,7 +63,6 @@ namespace Ordering.API.Infrastructure.Middlewares
                     new Claim("name", "Test user"),
                     new Claim("nonce", Guid.NewGuid().ToString()),
                     new Claim("http://schemas.microsoft.com/identity/claims/identityprovider", "ByPassAuthMiddleware"),
-                    new Claim("nonce", Guid.NewGuid().ToString()),
                     new Claim("sub", "1234"),
                     new Claim("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname","User"),
                     new Claim("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname","Microsoft")}
