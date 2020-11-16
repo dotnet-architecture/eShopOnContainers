@@ -181,7 +181,7 @@
             string[] csvheaders;
             try
             {
-                string[] requiredHeaders = { "catalogtypename", "catalogbrandname", "description", "name", "price", "pictureFileName" };
+                string[] requiredHeaders = { "catalogtypename", "catalogbrandname", "description", "name", "price", "picturefilename" };
                 string[] optionalheaders = { "availablestock", "restockthreshold", "maxstockthreshold", "onreorder" };
                 csvheaders = GetHeaders(csvFileCatalogItems, requiredHeaders, optionalheaders );
             }
