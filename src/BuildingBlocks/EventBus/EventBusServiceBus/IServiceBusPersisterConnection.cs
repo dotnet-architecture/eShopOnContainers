@@ -5,8 +5,7 @@
 
     public interface IServiceBusPersisterConnection : IDisposable
     {
-        ServiceBusConnectionStringBuilder ServiceBusConnectionStringBuilder { get; }
-
-        ITopicClient CreateModel();
+        ITopicClient TopicClient { get; }
+        ISubscriptionClient SubscriptionClient { get; }
     }
 }

@@ -124,12 +124,11 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             {
                 services.AddSingleton<IServiceBusPersisterConnection>(sp =>
                 {
-                    var logger = sp.GetRequiredService<ILogger<DefaultServiceBusPersisterConnection>>();
-
                     var serviceBusConnectionString = Configuration["EventBusConnection"];
                     var serviceBusConnection = new ServiceBusConnectionStringBuilder(serviceBusConnectionString);
 
-                    return new DefaultServiceBusPersisterConnection(serviceBusConnection, logger);
+                    var subscriptionClientName = Configuration["SubscriptionClientName"];
+                    return new DefaultServiceBusPersisterConnection(serviceBusConnection, subscriptionClientName);
                 });
             }
             else
@@ -286,8 +285,6 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
 
         private void RegisterEventBus(IServiceCollection services)
         {
-            var subscriptionClientName = Configuration["SubscriptionClientName"];
-
             if (Configuration.GetValue<bool>("AzureServiceBusEnabled"))
             {
                 services.AddSingleton<IEventBus, EventBusServiceBus>(sp =>
@@ -298,13 +295,14 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
                     var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
 
                     return new EventBusServiceBus(serviceBusPersisterConnection, logger,
-                        eventBusSubcriptionsManager, subscriptionClientName, iLifetimeScope);
+                        eventBusSubcriptionsManager, iLifetimeScope);
                 });
             }
             else
             {
                 services.AddSingleton<IEventBus, EventBusRabbitMQ>(sp =>
                 {
+                    var subscriptionClientName = Configuration["SubscriptionClientName"];
                     var rabbitMQPersistentConnection = sp.GetRequiredService<IRabbitMQPersistentConnection>();
                     var iLifetimeScope = sp.GetRequiredService<ILifetimeScope>();
                     var logger = sp.GetRequiredService<ILogger<EventBusRabbitMQ>>();
