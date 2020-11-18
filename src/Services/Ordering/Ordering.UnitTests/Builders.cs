@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
+using Ordering.Domain.AggregatesModel.DTOs;
 
 namespace UnitTest.Ordering
 {
@@ -36,7 +37,16 @@ namespace UnitTest.Ordering
             string pictureUrl,
             int units = 1)
         {
-            order.AddOrderItem(productId, productName, unitPrice, discount, pictureUrl, units);
+            var orderItemDto = new OrderItemDto
+            {
+                ProductId = productId,
+                ProductName = productName,
+                UnitPrice = unitPrice,
+                Discount = discount,
+                PictureUrl = pictureUrl,
+                Units = units
+            };
+            order.AddOrderItem(orderItemDto);
             return this;
         }
 

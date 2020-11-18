@@ -2,6 +2,7 @@
 {
     using Domain.AggregatesModel.OrderAggregate;
     using global::Ordering.API.Application.Models;
+    using global::Ordering.Domain.AggregatesModel.DTOs;
     using MediatR;
     using Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure.Services;
     using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Idempotency;
@@ -34,7 +35,16 @@
             var orderItems = message.Items.Select(i => i.ToOrderItemDTO());
             foreach (var item in orderItems)
             {
-                order.AddOrderItem(item.ProductId, item.ProductName, item.UnitPrice, item.Discount, item.PictureUrl, item.Units);
+                var orderItemDto = new OrderItemDto
+                {
+                    ProductId = item.ProductId,
+                    ProductName = item.ProductName,
+                    UnitPrice = item.UnitPrice,
+                    Discount = item.Discount,
+                    PictureUrl = item.PictureUrl,
+                    Units = item.Units
+                };
+                order.AddOrderItem(orderItemDto);
             }
 
             return Task.FromResult(OrderDraftDTO.FromOrder(order));
