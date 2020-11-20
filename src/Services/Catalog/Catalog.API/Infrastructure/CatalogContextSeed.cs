@@ -234,7 +234,7 @@
                 Description = column[Array.IndexOf(headers, "description")].Trim('"').Trim(),
                 Name = column[Array.IndexOf(headers, "name")].Trim('"').Trim(),
                 Price = price,
-                PictureUri = column[Array.IndexOf(headers, "pictureuri")].Trim('"').Trim(),
+                PictureUri = column[Array.IndexOf(headers, "picturefilename")].Trim('"').Trim(),
             };
 
             int availableStockIndex = Array.IndexOf(headers, "availablestock");
