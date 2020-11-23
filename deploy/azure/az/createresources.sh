@@ -51,8 +51,8 @@ if [ ! -f "$1.json" ]; then
 	exit 1
 fi
 
-if [ ! -f "$2.parameters.json" ]; then
-	echo "$2.parameters.json doesn't exist"
+if [ ! -f "$1.parameters.json" ]; then
+	echo "$1.parameters.json doesn't exist"
 	exit 1
 fi
 
