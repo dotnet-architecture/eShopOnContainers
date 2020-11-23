@@ -181,7 +181,7 @@
             string[] csvheaders;
             try
             {
-                string[] requiredHeaders = { "catalogtypename", "catalogbrandname", "description", "name", "price", "pictureFileName" };
+                string[] requiredHeaders = { "catalogtypename", "catalogbrandname", "description", "name", "price", "picturefilename" };
                 string[] optionalheaders = { "availablestock", "restockthreshold", "maxstockthreshold", "onreorder" };
                 csvheaders = GetHeaders(csvFileCatalogItems, requiredHeaders, optionalheaders );
             }
@@ -234,7 +234,7 @@
                 Description = column[Array.IndexOf(headers, "description")].Trim('"').Trim(),
                 Name = column[Array.IndexOf(headers, "name")].Trim('"').Trim(),
                 Price = price,
-                PictureUri = column[Array.IndexOf(headers, "pictureuri")].Trim('"').Trim(),
+                PictureFileName = column[Array.IndexOf(headers, "picturefilename")].Trim('"').Trim(),
             };
 
             int availableStockIndex = Array.IndexOf(headers, "availablestock");
