@@ -1,7 +1,7 @@
 {{- $name := include "apigwws.fullname" . -}}
 {{- $cfgname := printf "%s-%s" "cfg" $name -}}
 {{- $envoycfgname := printf "%s-%s" "envoy" $name -}}
-apiVersion: apps/v1beta2
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ template "apigwws.fullname" . }}

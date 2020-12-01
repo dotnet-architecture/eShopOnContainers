@@ -1,5 +1,4 @@
 ﻿using CatalogApi;
-using Grpc.Net.Client;
 using Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Config;
 using Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Models;
 using Microsoft.Extensions.Options;

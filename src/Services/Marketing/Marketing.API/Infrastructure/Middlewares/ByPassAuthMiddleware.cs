@@ -60,10 +60,10 @@ namespace Microsoft.eShopOnContainers.Services.Marketing.API.Infrastructure.Midd
                     var user = new ClaimsIdentity(new[] {
                     new Claim("emails", currentUserId),
                     new Claim("name", "Test user"),
+                    new Claim("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name", "Test user"),
                     new Claim("nonce", Guid.NewGuid().ToString()),
-                    new Claim("ttp://schemas.microsoft.com/identity/claims/identityprovider", "ByPassAuthMiddleware"),
-                    new Claim("nonce", Guid.NewGuid().ToString()),
-                    new Claim("sub", "1234"),
+                    new Claim("http://schemas.microsoft.com/identity/claims/identityprovider", "ByPassAuthMiddleware"),
+                    new Claim("sub", currentUserId),
                     new Claim("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname","User"),
                     new Claim("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname","Microsoft")}
                     , "ByPassAuth");

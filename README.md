@@ -21,15 +21,18 @@ Sample .NET Core reference application, powered by Microsoft, based on a simplif
 | Ordering API | [![Ordering API](https://msftdevtools.visualstudio.com/eShopOnContainers/_apis/build/status/microservices/ordering?branchName=dev)](https://msftdevtools.visualstudio.com/eShopOnContainers/_build/latest?definitionId=198&branchName=dev) | Webhooks Client | [![Webhooks demo client](https://msftdevtools.visualstudio.com/eShopOnContainers/_apis/build/status/microservices/webhooks-client?branchName=dev)](https://msftdevtools.visualstudio.com/eShopOnContainers/_build/latest?definitionId=208&branchName=dev) |
 | Payment API | [![Payment API](https://msftdevtools.visualstudio.com/eShopOnContainers/_apis/build/status/microservices/payment?branchName=dev)](https://msftdevtools.visualstudio.com/eShopOnContainers/_build/latest?definitionId=205&branchName=dev) | | |
 
-_**Dev** branch contains the latest **beta** code and their images are tagged with `:dev` in our [Docker Hub](https://hub.docker.com/u/eshop)_
+_**Dev** branch contains the latest **beta** code and their images are tagged with `:linux-dev` in our [Docker Hub](https://hub.docker.com/u/eshop)_
+
+## Are you new to **microservices** and **cloud-native development**? 
+Take a look at the free course [Create and deploy a cloud-native ASP.NET Core microservice](https://docs.microsoft.com/en-us/learn/modules/microservices-aspnet-core/) on MS Learn.  This module explains microservices concepts, cloud-native technologies, and reduce the friction in getting started with `eShopOnContainers`.
 
 ## Getting Started
 
-eShopOnContainers is provided in two flavors: Basic and Advanced.
+*eShopOnContainers* is provided in two flavors: Basic and Advanced.
 
 ### Basic scenario
 
-The basic scenario can be run locally using docker compose, and also deployed to a local Kubernetes cluster. Refer these Wiki pages to Get Started:
+The basic scenario can be run locally using docker-compose, and also deployed to a local Kubernetes cluster. Refer to these Wiki pages to Get Started:
 
 - [CLI or Visual Studio Code](https://github.com/dotnet-architecture/eShopOnContainers/wiki/Windows-setup)
 - [Visual Studio (F5 experience)](https://github.com/dotnet-architecture/eShopOnContainers/wiki/Windows-setup#optional---use-visual-studio)
@@ -44,6 +47,7 @@ The Advanced scenario can be run only in a Kubernetes cluster. Currently this sc
 
 In the future more features will be implemented in the advanced scenario.
 
+
 ## IMPORTANT NOTES!
 
 **You can use either the latest version of Visual Studio or simply Docker CLI and .NET CLI for Windows, Mac and Linux**.
@@ -55,7 +59,7 @@ Do you want to be up-to-date on .NET Architecture guidance and reference apps li
 
 ## Updated for .NET Core 3.1 (LTS)
 
-eShopOnContainers is updated to .NET Core 3.1  "wave" of technologies. Not just compilation but also new recommended code in EF Core, ASP.NET Core, and other new related versions and a several significant changes.
+eShopOnContainers is updated to .NET Core 3.1  "wave" of technologies. Not just compilation but also new recommended code in EF Core, ASP.NET Core, and other new related versions with several significant changes.
 
 **See more details in the [Release notes](https://github.com/dotnet-architecture/eShopOnContainers/wiki/Release-notes) wiki page**.
 
@@ -82,10 +86,11 @@ You can download them and start reviewing these Guides/eBooks here:
 
 | Architecting & Developing | Containers Lifecycle & CI/CD | App patterns with Xamarin.Forms |
 | ------------ | ------------|  ------------|
-| [![](img/Microservices-cover-small.png)](https://aka.ms/microservicesebook) | [![](img/DevOps-Cover-small.png)](https://aka.ms/dockerlifecycleebook) | [![](img/xamarin-enterprise-patterns-ebook-cover-small.png)](https://aka.ms/xamarinpatternsebook) |
-| <sup> <a href='https://aka.ms/microservicesebook'>**Download .PDF**</a> </sup>  | <sup> <a href='https://aka.ms/dockerlifecycleebook'>**Download** </a>  </sup> | <sup> <a href='https://aka.ms/xamarinpatternsebook'>**Download**  </a>  </sup> |
+| [![](img/architecture-book-cover-large-we.png)](https://aka.ms/microservicesebook) | [![](img/devops-book-cover-large-we.png)](https://aka.ms/dockerlifecycleebook) | [![](img/xamarin-enterprise-patterns-ebook-cover-large-we.png)](https://aka.ms/xamarinpatternsebook) |
+| <sup> <a href='https://aka.ms/microservicesebook'>**Download PDF**</a> </sup>  | <sup> <a href='https://aka.ms/dockerlifecycleebook'>**Download PDF** </a>  </sup> | <sup> <a href='https://aka.ms/xamarinpatternsebook'>**Download PDF**  </a>  </sup> |
 
 For more free e-Books check out [.NET Architecture center](https://dot.net/architecture). If you have an e-book feedback, let us know by creating a new issue here: <https://github.com/dotnet-architecture/ebooks/issues>
+
 
 ## Read further
 

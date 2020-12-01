@@ -46,7 +46,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
                 string imageFileExtension = Path.GetExtension(item.PictureFileName);
                 string mimetype = GetImageMimeTypeFromImageFileExtension(imageFileExtension);
 
-                var buffer = System.IO.File.ReadAllBytes(path);
+                var buffer = await System.IO.File.ReadAllBytesAsync(path);
 
                 return File(buffer, mimetype);
             }
