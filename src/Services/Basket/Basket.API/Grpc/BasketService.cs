@@ -4,7 +4,6 @@ using Microsoft.eShopOnContainers.Services.Basket.API.Model;
 using Microsoft.Extensions.Logging;
 using System.Linq;
 using System.Threading.Tasks;
-using GrpcBasket;
 
 namespace GrpcBasket
 {
