@@ -149,7 +149,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Data
                 City = "Redmond",
                 Country = "U.S.",
                 Email = "demouser@microsoft.com",
-                Expiration = "12/20",
+                Expiration = "12/21",
                 Id = Guid.NewGuid().ToString(),
                 LastName = "DemoLastName",
                 Name = "DemoUser",
