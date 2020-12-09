@@ -25,7 +25,7 @@ _**Dev** branch contains the latest **beta** code and their images are tagged wi
 
 ## Getting Started
 
-You can run the below commands from the **/src/** directory and get started with the `eShopOnContainers` immediately. 
+Make sure you have [installed](https://docs.docker.com/docker-for-windows/install/) and [configured](https://github.com/dotnet-architecture/eShopOnContainers/wiki/Windows-setup#configure-docker) docker in your environment. After that, you can run the below commands from the **/src/** directory and get started with the `eShopOnContainers` immediately.
 
 ```powershell
 docker-compose build
@@ -40,7 +40,7 @@ Web MVC :  http://host.docker.internal:5100/
 Web SPA :  http://host.docker.internal:5104/
 ```
 
->!Note: In case if macOS, use `docker.for.mac.localhost` instead.
+>!Note: If you are running this application in macOS then use `docker.for.mac.localhost` as DNS name in `.env` file and the above URLs instead of `host.docker.internal`.
 
 Below are the other avenues to setup *eShopOnContainers*.
 
