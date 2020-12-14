@@ -1,4 +1,5 @@
 ﻿using Devspaces.Support;
+using GrpcBasket;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -14,6 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
@@ -46,7 +48,8 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator
             services.AddCustomMvc(Configuration)
                  .AddCustomAuthentication(Configuration)
                  .AddDevspaces()
-                 .AddHttpServices();
+                 .AddHttpServices()
+                 .AddGrpcServices();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -190,6 +193,19 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator
 
             services.AddHttpClient<IOrderingService, OrderingService>()
                    .AddDevspacesSupport();
+
+            return services;
+        }
+
+        public static IServiceCollection AddGrpcServices(this IServiceCollection services)
+        {
+            services.AddSingleton<Http2SupportGrpcInterceptor>();
+
+            services.AddGrpcClient<Basket.BasketClient>((services, options) =>
+            {
+                var basketApi = services.GetService<IOptions<UrlsConfig>>().Value.Basket;
+                options.Address = new Uri(basketApi);
+            }).AddInterceptor<Http2SupportGrpcInterceptor>();
 
             return services;
         }
