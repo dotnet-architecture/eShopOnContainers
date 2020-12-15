@@ -44,7 +44,7 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator
                 .AddUrlGroup(new Uri(Configuration["MarketingUrlHC"]), name: "marketingapi-check", tags: new string[] { "marketingapi" })
                 .AddUrlGroup(new Uri(Configuration["PaymentUrlHC"]), name: "paymentapi-check", tags: new string[] { "paymentapi" })
                 .AddUrlGroup(new Uri(Configuration["LocationUrlHC"]), name: "locationapi-check", tags: new string[] { "locationapi" });
-
+    
             services.AddCustomMvc(Configuration)
                 .AddCustomAuthentication(Configuration)
                 .AddDevspaces()
@@ -142,7 +142,7 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator
                     Version = "v1",
                     Description = "Shopping Aggregator for Web Clients"
                 });
-
+                
                 options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
                 {
                     Type = SecuritySchemeType.OAuth2,
@@ -184,10 +184,6 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator
 
             //register http services
 
-            services.AddHttpClient<IBasketService, BasketService>()
-                .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
-                .AddDevspacesSupport();
-
             services.AddHttpClient<ICatalogService, CatalogService>()
                 .AddDevspacesSupport();
 
@@ -204,13 +200,15 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator
 
         public static IServiceCollection AddGrpcServices(this IServiceCollection services)
         {
-            services.AddSingleton<Http2SupportGrpcInterceptor>();
+            services.AddSingleton<GrpcExceptionInterceptor>();
+
+            services.AddScoped<IBasketService, BasketService>();
 
             services.AddGrpcClient<Basket.BasketClient>((services, options) =>
             {
-                var basketApi = services.GetService<IOptions<UrlsConfig>>().Value.Basket;
+                var basketApi = services.GetRequiredService<IOptions<UrlsConfig>>().Value.GrpcBasket;
                 options.Address = new Uri(basketApi);
-            }).AddInterceptor<Http2SupportGrpcInterceptor>();
+            }).AddInterceptor<GrpcExceptionInterceptor>();
 
             return services;
         }

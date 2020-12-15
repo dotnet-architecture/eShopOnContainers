@@ -180,10 +180,6 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             //register http services
-            services
-                .AddHttpClient<IBasketService, BasketService>()
-                .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
-                .AddDevspacesSupport();
 
             services.AddHttpClient<ICatalogService, CatalogService>()
                    .AddDevspacesSupport();
@@ -199,13 +195,15 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator
 
         public static IServiceCollection AddGrpcServices(this IServiceCollection services)
         {
-            services.AddSingleton<Http2SupportGrpcInterceptor>();
+            services.AddSingleton<GrpcExceptionInterceptor>();
+
+            services.AddScoped<IBasketService, BasketService>();
 
             services.AddGrpcClient<Basket.BasketClient>((services, options) =>
             {
-                var basketApi = services.GetService<IOptions<UrlsConfig>>().Value.Basket;
+                var basketApi = services.GetRequiredService<IOptions<UrlsConfig>>().Value.GrpcBasket;
                 options.Address = new Uri(basketApi);
-            }).AddInterceptor<Http2SupportGrpcInterceptor>();
+            }).AddInterceptor<GrpcExceptionInterceptor>();
 
             return services;
         }
