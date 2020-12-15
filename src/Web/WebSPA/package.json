@@ -27,6 +27,7 @@
     "lint:ts": "tslint -c tslint.json Client/**/*.ts"
   },
   "dependencies": {
+    "@angular-devkit/schematics": "^11.0.4",
     "@angular/animations": "8.2.14",
     "@angular/common": "8.2.14",
     "@angular/compiler": "8.2.14",
@@ -50,15 +51,15 @@
     "ngx-toastr": "10.1.0",
     "normalize.css": "8.0.0",
     "popper.js": "1.16.1",
-    "rxjs": "~6.4.0",
-    "rxjs-compat": "~6.4.0",
+    "rxjs": "^6.5.2",
+    "rxjs-compat": "^6.5.2",
     "typedoc": "^0.19.2",
     "webpack-dev-server": "3.1.14",
     "zone.js": "~0.9.1"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "0.803.23",
-    "@angular/cli": "8.3.23",
+    "@angular-devkit/build-angular": "0.803.29",
+    "@angular/cli": "8.3.29",
     "@angular/compiler-cli": "8.2.14",
     "@angular/language-service": "8.2.14",
     "@types/core-js": "2.5.0",
@@ -67,6 +68,7 @@
     "@types/node": "^11.15.9",
     "@types/protractor": "4.0.0",
     "@types/selenium-webdriver": "3.0.10",
+    "tslib": "^1.10.0",
     "codelyzer": "^5.2.2",
     "eslint": "^6.8.0",
     "handlebars": "^4.7.6",
@@ -87,7 +89,7 @@
     "ts-node": "~7.0.1",
     "tslint": "^5.14.0",
     "typedoc": "^0.19.2",
-    "typescript": "3.4.5",
+    "typescript": "^3.7.5",
     "url-loader": "1.1.1",
     "webpack": "^4.42.1"
   }
