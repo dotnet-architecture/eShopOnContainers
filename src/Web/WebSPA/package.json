@@ -92,5 +92,9 @@
     "typescript": "3.6.4",
     "url-loader": "1.1.1",
     "webpack": "^4.42.1"
+  },
+  "peerDependencies": {
+    "typescript": "3.6.4",
+    "tslib": "1.10.0"
   }
 }
