@@ -1,6 +1,8 @@
 ﻿using Grpc.Core;
 using Grpc.Core.Interceptors;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Infrastructure
 {
@@ -18,9 +20,18 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Infrastructure
             ClientInterceptorContext<TRequest, TResponse> context,
             AsyncUnaryCallContinuation<TRequest, TResponse> continuation)
         {
+            var call = continuation(request, context);
+
+            return new AsyncUnaryCall<TResponse>(HandleResponse(call.ResponseAsync), call.ResponseHeadersAsync, call.GetStatus, call.GetTrailers, call.Dispose);
+        }
+
+        private async Task<TResponse> HandleResponse<TResponse>(Task<TResponse> t)
+        {
             try
             {
-                return continuation(request, context);
+                var response = await t;
+                _logger.LogDebug($"Response received: {response}");
+                return response;
             }
             catch (RpcException e)
             {
