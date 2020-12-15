@@ -4,7 +4,6 @@
     using global::Ordering.API.Application.Models;
     using MediatR;
     using Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure.Services;
-    using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Idempotency;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -42,10 +41,10 @@
     }
 
 
-    public class OrderDraftDTO
+    public record OrderDraftDTO
     {
-        public IEnumerable<OrderItemDTO> OrderItems { get; set; }
-        public decimal Total { get; set; }
+        public IEnumerable<OrderItemDTO> OrderItems { get; init; }
+        public decimal Total { get; init; }
 
         public static OrderDraftDTO FromOrder(Order order)
         {
