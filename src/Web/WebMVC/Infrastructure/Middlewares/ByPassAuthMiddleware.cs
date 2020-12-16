@@ -66,7 +66,7 @@ namespace WebMVC.Infrastructure.Middlewares
                     new Claim("http://schemas.microsoft.com/identity/claims/identityprovider", "ByPassAuthMiddleware"),                    
                     new Claim("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname","User"),
                     new Claim("sub", currentUserId),
-                    new Claim("card_expiration", "12/20"),
+                    new Claim("card_expiration", "12/21"),
                     new Claim("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname","Microsoft")}
                     , "ByPassAuth");
 
