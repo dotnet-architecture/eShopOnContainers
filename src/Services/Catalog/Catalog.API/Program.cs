@@ -1,4 +1,5 @@
-﻿using Catalog.API.Extensions;
+﻿using Autofac.Extensions.DependencyInjection;
+using Catalog.API.Extensions;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
@@ -11,7 +12,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Serilog;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 
 namespace Microsoft.eShopOnContainers.Services.Catalog.API
