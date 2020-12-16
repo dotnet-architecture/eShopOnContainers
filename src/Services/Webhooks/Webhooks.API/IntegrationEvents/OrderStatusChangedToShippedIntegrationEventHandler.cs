@@ -1,11 +1,9 @@
 ﻿using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
-using System;
-using System.Collections.Generic;
+using Microsoft.Extensions.Logging;
 using System.Linq;
 using System.Threading.Tasks;
 using Webhooks.API.Model;
 using Webhooks.API.Services;
-using Microsoft.Extensions.Logging;
 
 namespace Webhooks.API.IntegrationEvents
 {
