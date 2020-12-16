@@ -1,5 +1,6 @@
 ﻿using Devspaces.Support;
 using GrpcBasket;
+using GrpcOrdering;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -203,6 +204,12 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator
             {
                 var basketApi = services.GetRequiredService<IOptions<UrlsConfig>>().Value.GrpcBasket;
                 options.Address = new Uri(basketApi);
+            }).AddInterceptor<GrpcExceptionInterceptor>();
+
+            services.AddGrpcClient<OrderingGrpc.OrderingGrpcClient>((services, options) =>
+            {
+                var orderingApi = services.GetRequiredService<IOptions<UrlsConfig>>().Value.GrpcOrdering;
+                options.Address = new Uri(orderingApi);
             }).AddInterceptor<GrpcExceptionInterceptor>();
 
             return services;
