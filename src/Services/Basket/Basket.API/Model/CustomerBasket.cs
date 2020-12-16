@@ -2,9 +2,9 @@
 
 namespace Microsoft.eShopOnContainers.Services.Basket.API.Model
 {
-    public class CustomerBasket
+    public record CustomerBasket
     {
-        public string BuyerId { get; set; }
+        public string BuyerId { get; init; }
 
         public List<BasketItem> Items { get; set; } = new List<BasketItem>();
 

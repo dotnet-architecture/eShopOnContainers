@@ -1,55 +1,29 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
+using Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator;
 using Serilog;
-using System.IO;
 
-namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator
-{
-    public class Program
-    {
-        private static IConfiguration _configuration;
 
-        public static void Main(string[] args)
+BuildWebHost(args).Run();
+IWebHost BuildWebHost(string[] args) =>
+    WebHost
+        .CreateDefaultBuilder(args)
+        .ConfigureAppConfiguration(cb =>
         {
-            _configuration = GetConfiguration();
-
-            BuildWebHost(args).Run();
-        }
-
-        public static IWebHost BuildWebHost(string[] args) =>
-            WebHost
-                .CreateDefaultBuilder(args)
-                .ConfigureAppConfiguration(cb =>
-                {
-                    var sources = cb.Sources;
-                    sources.Insert(3, new Microsoft.Extensions.Configuration.Json.JsonConfigurationSource()
-                    {
-                        Optional = true,
-                        Path = "appsettings.localhost.json",
-                        ReloadOnChange = false
-                    });
-                })
-                .UseStartup<Startup>()
-                .UseSerilog((builderContext, config) =>
-                {
-                    config
-                        .MinimumLevel.Information()
-                        .Enrich.FromLogContext()
-                        .WriteTo.Console();
-                })
-                .Build();
-
-        private static IConfiguration GetConfiguration()
+            var sources = cb.Sources;
+            sources.Insert(3, new Microsoft.Extensions.Configuration.Json.JsonConfigurationSource()
+            {
+                Optional = true,
+                Path = "appsettings.localhost.json",
+                ReloadOnChange = false
+            });
+        })
+        .UseStartup<Startup>()
+        .UseSerilog((builderContext, config) =>
         {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddEnvironmentVariables();
-
-            var config = builder.Build();
-
-            return builder.Build();
-        }
-    }
-}
+            config
+                .MinimumLevel.Information()
+                .Enrich.FromLogContext()
+                .WriteTo.Console();
+        })
+        .Build();
