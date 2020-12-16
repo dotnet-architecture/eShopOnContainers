@@ -1,17 +1,14 @@
 ﻿namespace FunctionalTests.Services.Marketing
 {
-    using UserLocation = Microsoft.eShopOnContainers.Services.Locations.API.Model.UserLocation;
-    using LocationRequest = Microsoft.eShopOnContainers.Services.Locations.API.ViewModel.LocationRequest;
     using FunctionalTests.Services.Locations;
+    using Microsoft.eShopOnContainers.Services.Marketing.API.Dto;
     using Newtonsoft.Json;
-    using System;
+    using System.Collections.Generic;
     using System.Net.Http;
     using System.Text;
     using System.Threading.Tasks;
     using Xunit;
-    using System.Collections.Generic;
-    using Microsoft.eShopOnContainers.Services.Marketing.API.Dto;
-    using Microsoft.eShopOnContainers.Services.Catalog.API.ViewModel;
+    using LocationRequest = Microsoft.eShopOnContainers.Services.Locations.API.ViewModel.LocationRequest;
 
     public class MarketingScenarios : MarketingScenariosBase
     {
