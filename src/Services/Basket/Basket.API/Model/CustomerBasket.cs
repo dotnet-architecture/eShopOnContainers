@@ -6,7 +6,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Model
     {
         public string BuyerId { get; init; }
 
-        public List<BasketItem> Items { get; init; } = new List<BasketItem>();
+        public List<BasketItem> Items { get; set; } = new List<BasketItem>();
 
         public CustomerBasket()
         {
