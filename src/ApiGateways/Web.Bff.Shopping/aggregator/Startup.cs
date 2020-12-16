@@ -1,4 +1,5 @@
 ﻿using Devspaces.Support;
+using GrpcBasket;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -14,6 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
@@ -42,11 +44,12 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator
                 .AddUrlGroup(new Uri(Configuration["MarketingUrlHC"]), name: "marketingapi-check", tags: new string[] { "marketingapi" })
                 .AddUrlGroup(new Uri(Configuration["PaymentUrlHC"]), name: "paymentapi-check", tags: new string[] { "paymentapi" })
                 .AddUrlGroup(new Uri(Configuration["LocationUrlHC"]), name: "locationapi-check", tags: new string[] { "locationapi" });
-
+    
             services.AddCustomMvc(Configuration)
                 .AddCustomAuthentication(Configuration)
                 .AddDevspaces()
-                .AddApplicationServices();
+                .AddApplicationServices()
+                .AddGrpcServices();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -63,7 +66,7 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator
             {
                 app.UseDeveloperExceptionPage();
             }
-            
+
             app.UseHttpsRedirection();
 
             app.UseSwagger().UseSwaggerUI(c =>
@@ -139,7 +142,7 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator
                     Version = "v1",
                     Description = "Shopping Aggregator for Web Clients"
                 });
-
+                
                 options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
                 {
                     Type = SecuritySchemeType.OAuth2,
@@ -181,10 +184,6 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator
 
             //register http services
 
-            services.AddHttpClient<IBasketService, BasketService>()
-                .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
-                .AddDevspacesSupport();
-
             services.AddHttpClient<ICatalogService, CatalogService>()
                 .AddDevspacesSupport();
 
@@ -199,6 +198,19 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator
             return services;
         }
 
+        public static IServiceCollection AddGrpcServices(this IServiceCollection services)
+        {
+            services.AddSingleton<GrpcExceptionInterceptor>();
 
+            services.AddScoped<IBasketService, BasketService>();
+
+            services.AddGrpcClient<Basket.BasketClient>((services, options) =>
+            {
+                var basketApi = services.GetRequiredService<IOptions<UrlsConfig>>().Value.GrpcBasket;
+                options.Address = new Uri(basketApi);
+            }).AddInterceptor<GrpcExceptionInterceptor>();
+
+            return services;
+        }
     }
 }
