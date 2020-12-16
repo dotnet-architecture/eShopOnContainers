@@ -2,10 +2,10 @@
 
 namespace Microsoft.eShopOnContainers.Services.Identity.API.Models.AccountViewModels
 {
-    public class ForgotPasswordViewModel
+    public record ForgotPasswordViewModel
     {
         [Required]
         [EmailAddress]
-        public string Email { get; set; }
+        public string Email { get; init; }
     }
 }

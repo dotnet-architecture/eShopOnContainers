@@ -2,11 +2,11 @@
 
 namespace Microsoft.eShopOnContainers.Services.Identity.API.Models.ManageViewModels
 {
-    public class AddPhoneNumberViewModel
+    public record AddPhoneNumberViewModel
     {
         [Required]
         [Phone]
         [Display(Name = "Phone number")]
-        public string PhoneNumber { get; set; }
+        public string PhoneNumber { get; init; }
     }
 }
