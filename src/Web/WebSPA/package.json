@@ -38,7 +38,7 @@
     "@angular/platform-server": "9.1.12",
     "@angular/router": "9.1.12",
     "@microsoft/signalr": "3.0.1",
-    "@ng-bootstrap/ng-bootstrap": "5.2.1",
+    "@ng-bootstrap/ng-bootstrap": "^8.0.0",
     "@popperjs/core": "2.0.0",
     "acorn": "^6.4.1",
     "acorn-dynamic-import": "4.0.0",
