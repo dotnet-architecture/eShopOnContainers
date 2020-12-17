@@ -188,9 +188,6 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator
             services.AddHttpClient<IOrderApiClient, OrderApiClient>()
                    .AddDevspacesSupport();
 
-            services.AddHttpClient<IOrderingService, OrderingService>()
-                   .AddDevspacesSupport();
-
             return services;
         }
 
@@ -205,6 +202,8 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator
                 var basketApi = services.GetRequiredService<IOptions<UrlsConfig>>().Value.GrpcBasket;
                 options.Address = new Uri(basketApi);
             }).AddInterceptor<GrpcExceptionInterceptor>();
+
+            services.AddScoped<IOrderingService, OrderingService>();
 
             services.AddGrpcClient<OrderingGrpc.OrderingGrpcClient>((services, options) =>
             {
