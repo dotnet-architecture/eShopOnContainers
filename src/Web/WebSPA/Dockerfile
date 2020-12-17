@@ -1,4 +1,4 @@
-ARG NODE_IMAGE=node:10.13
+ARG NODE_IMAGE=node:12.0
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1 AS base
 WORKDIR /app
 EXPOSE 80
