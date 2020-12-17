@@ -1,9 +1,9 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Identity.API.Models.AccountViewModels
 {
-    public class LoggedOutViewModel
+    public record LoggedOutViewModel
     {
-        public string PostLogoutRedirectUri { get; set; }
-        public string ClientName { get; set; }
-        public string SignOutIframeUrl { get; set; }
+        public string PostLogoutRedirectUri { get; init; }
+        public string ClientName { get; init; }
+        public string SignOutIframeUrl { get; init; }
     }
 }
