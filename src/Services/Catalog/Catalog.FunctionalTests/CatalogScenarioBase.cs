@@ -1,4 +1,3 @@
-using Autofac.Extensions.DependencyInjection;
 using Catalog.API.Extensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
