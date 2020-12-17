@@ -21,7 +21,7 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Services
         public async Task<CatalogItem> GetCatalogItemAsync(int id)
         {
             var request = new CatalogItemRequest { Id = id };
-            _logger.LogInformation("grpc client created, request = {@request}", request);
+            _logger.LogInformation("grpc request {@request}", request);
             var response = await _client.GetItemByIdAsync(request);
             _logger.LogInformation("grpc response {@response}", response);
             return MapToCatalogItemResponse(response);
@@ -31,7 +31,7 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Services
         public async Task<IEnumerable<CatalogItem>> GetCatalogItemsAsync(IEnumerable<int> ids)
         {
             var request = new CatalogItemsRequest { Ids = string.Join(",", ids), PageIndex = 1, PageSize = 10 };
-            _logger.LogInformation("grpc client created, request = {@request}", request);
+            _logger.LogInformation("grpc request {@request}", request);
             var response = await _client.GetItemsByIdsAsync(request);
             _logger.LogInformation("grpc response {@response}", response);
             return response.Data.Select(this.MapToCatalogItemResponse);
