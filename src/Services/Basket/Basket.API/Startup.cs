@@ -4,6 +4,7 @@ using Basket.API.Infrastructure.Filters;
 using Basket.API.Infrastructure.Middlewares;
 using Basket.API.IntegrationEvents.EventHandling;
 using Basket.API.IntegrationEvents.Events;
+using GrpcBasket;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -33,9 +34,6 @@ using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.IO;
-using GrpcBasket;
-using Microsoft.AspNetCore.Http.Features;
-using Serilog;
 
 namespace Microsoft.eShopOnContainers.Services.Basket.API
 {

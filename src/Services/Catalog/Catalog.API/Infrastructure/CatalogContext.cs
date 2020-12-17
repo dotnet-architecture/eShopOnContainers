@@ -1,9 +1,9 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure
 {
-    using Microsoft.EntityFrameworkCore;
     using EntityConfigurations;
-    using Model;
+    using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Design;
+    using Model;
 
     public class CatalogContext : DbContext
     {
