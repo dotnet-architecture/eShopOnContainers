@@ -230,8 +230,7 @@
 
         public static IServiceCollection AddCustomDbContext(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddEntityFrameworkSqlServer()
-                   .AddDbContext<OrderingContext>(options =>
+            services.AddDbContext<OrderingContext>(options =>
                    {
                        options.UseSqlServer(configuration["ConnectionString"],
                            sqlServerOptionsAction: sqlOptions =>
