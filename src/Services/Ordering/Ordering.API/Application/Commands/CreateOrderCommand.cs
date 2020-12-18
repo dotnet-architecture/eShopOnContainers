@@ -89,19 +89,19 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands
         }
 
 
-        public class OrderItemDTO
+        public record OrderItemDTO
         {
-            public int ProductId { get; set; }
+            public int ProductId { get; init; }
 
-            public string ProductName { get; set; }
+            public string ProductName { get; init; }
 
-            public decimal UnitPrice { get; set; }
+            public decimal UnitPrice { get; init; }
 
-            public decimal Discount { get; set; }
+            public decimal Discount { get; init; }
 
-            public int Units { get; set; }
+            public int Units { get; init; }
 
-            public string PictureUrl { get; set; }
+            public string PictureUrl { get; init; }
         }
     }
 }
