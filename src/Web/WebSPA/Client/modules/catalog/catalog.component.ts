@@ -56,6 +56,9 @@ export class CatalogComponent implements OnInit {
 
     onFilterApplied(event: any) {
         event.preventDefault();
+        
+        this.brandSelected = this.brandSelected && this.brandSelected.toString() != "null" ? this.brandSelected : null;
+        this.typeSelected = this.typeSelected && this.typeSelected.toString() != "null" ? this.typeSelected : null;
         this.getCatalog(this.paginationInfo.itemsPage, this.paginationInfo.actualPage, this.brandSelected, this.typeSelected);
     }
 
@@ -82,6 +85,7 @@ export class CatalogComponent implements OnInit {
 
     getCatalog(pageSize: number, pageIndex: number, brand?: number, type?: number) {
         this.errorReceived = false;
+
         this.service.getCatalog(pageIndex, pageSize, brand, type)
             .pipe(catchError((err) => this.handleError(err)))
             .subscribe(catalog => {

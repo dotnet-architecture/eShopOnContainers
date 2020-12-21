@@ -29,7 +29,7 @@ export class Identity implements OnInit  {
             this.service.AuthorizedCallback();
         }
 
-        console.log('identity component, checking authorized' + this.service.IsAuthorized);
+        console.log('identity component, checking authorized ' + this.service.IsAuthorized);
         this.authenticated = this.service.IsAuthorized;
 
         if (this.authenticated) {

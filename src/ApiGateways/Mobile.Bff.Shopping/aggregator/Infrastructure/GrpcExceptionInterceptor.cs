@@ -1,7 +1,6 @@
 ﻿using Grpc.Core;
 using Grpc.Core.Interceptors;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Infrastructure
@@ -30,7 +29,6 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Infrastruct
             try
             {
                 var response = await t;
-                _logger.LogDebug($"Response received: {response}");
                 return response;
             }
             catch (RpcException e)

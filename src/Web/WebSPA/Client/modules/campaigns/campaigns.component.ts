@@ -22,14 +22,14 @@ export class CampaignsComponent implements OnInit {
 
     ngOnInit() {
         if (this.configurationService.isReady) {
+            this.isCampaignDetailFunctionEnabled = this.configurationService.serverSettings.activateCampaignDetailFunction;
             this.getCampaigns(9, 0)
         } else {
             this.configurationService.settingsLoaded$.subscribe(x => {
+                this.isCampaignDetailFunctionEnabled = this.configurationService.serverSettings.activateCampaignDetailFunction;
                 this.getCampaigns(9, 0);
             });
         }
-
-        this.isCampaignDetailFunctionEnabled = this.configurationService.serverSettings.activateCampaignDetailFunction;
     }    
 
     onPageChanged(value: any) {

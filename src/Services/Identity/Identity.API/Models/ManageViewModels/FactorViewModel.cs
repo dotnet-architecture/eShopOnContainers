@@ -1,7 +1,7 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Identity.API.Models.ManageViewModels
 {
-    public class FactorViewModel
+    public record FactorViewModel
     {
-        public string Purpose { get; set; }
+        public string Purpose { get; init; }
     }
 }
