@@ -175,13 +175,6 @@ namespace Microsoft.eShopOnContainers.WebMVC
                  .AddHttpMessageHandler<HttpClientRequestIdDelegatingHandler>()
                  .AddDevspacesSupport();
 
-            services.AddHttpClient<ICampaignService, CampaignService>()
-                .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
-                .AddDevspacesSupport();
-
-            services.AddHttpClient<ILocationService, LocationService>()
-               .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
-               .AddDevspacesSupport();
 
             //add custom application services
             services.AddTransient<IIdentityParser<ApplicationUser>, IdentityParser>();
