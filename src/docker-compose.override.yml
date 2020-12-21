@@ -259,12 +259,12 @@ services:
       - HealthChecksUI__HealthChecks__6__Uri=http://catalog-api/hc
       - HealthChecksUI__HealthChecks__7__Name=Identity HTTP Check
       - HealthChecksUI__HealthChecks__7__Uri=http://identity-api/hc
-      - HealthChecksUI__HealthChecks__10__Name=Payments HTTP Check
-      - HealthChecksUI__HealthChecks__10__Uri=http://payment-api/hc
-      - HealthChecksUI__HealthChecks__11__Name=Ordering SignalRHub HTTP Check
-      - HealthChecksUI__HealthChecks__11__Uri=http://ordering-signalrhub/hc
-      - HealthChecksUI__HealthChecks__12__Name=Ordering HTTP Background Check
-      - HealthChecksUI__HealthChecks__12__Uri=http://ordering-backgroundtasks/hc
+      - HealthChecksUI__HealthChecks__8__Name=Payments HTTP Check
+      - HealthChecksUI__HealthChecks__8__Uri=http://payment-api/hc
+      - HealthChecksUI__HealthChecks__9__Name=Ordering SignalRHub HTTP Check
+      - HealthChecksUI__HealthChecks__9__Uri=http://ordering-signalrhub/hc
+      - HealthChecksUI__HealthChecks__10__Name=Ordering HTTP Background Check
+      - HealthChecksUI__HealthChecks__10__Uri=http://ordering-backgroundtasks/hc
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
       - OrchestratorType=${ORCHESTRATOR_TYPE}
     ports:

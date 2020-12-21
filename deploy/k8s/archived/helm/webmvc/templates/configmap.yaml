@@ -19,7 +19,6 @@ data:
   all_EnableLoadTest: "{{ .Values.inf.misc.useLoadTest }}"
   webmvc__keystore: {{ .Values.inf.redis.keystore.constr }}
   internalurls__apigwws: http://{{ .Values.app.svc.webshoppingapigw }}
-  internalurls__apigwwm: http://{{ .Values.app.svc.webmarketingapigw }}
   internalurls__identity__hc: http://{{ .Values.app.svc.identity }}/hc
   urls__apigwws: {{ $protocol }}://{{ $webshoppingapigw }}
   urls__mvc: {{ $protocol }}://{{ $mvc }}

@@ -27,7 +27,6 @@ When using this file the following environments variables must be set:
 
 * `ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP` with the IP or DNS name of the docker host that runs the services (can use `localhost` if needed). 
 * `ESHOP_AZURE_STORAGE_CATALOG` with the URL of the Azure Storage that will host the catalog images
-* `ESHOP_AZURE_STORAGE_MARKETING` with the URL of the Azure Storage that will host the marketing campaign images
 
 You might wonder why an external image resource (storage) is needed when using `docker-compose.prod.yml` instead of `docker-compose.override.yml`. Answer to this is related to a limitation of Docker Compose file format. This is how we set the environment configuration of Catalog microservice in `docker-compose.override.yml`:
 

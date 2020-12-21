@@ -2,8 +2,6 @@
 {{- $sqlsrv := include "sql-name" . -}}
 {{- $mvc_url := include "url-of" (list .Values.app.ingress.entries.mvc  .) -}}
 {{- $spa_url := include "url-of" (list .Values.app.ingress.entries.spa .) -}}
-{{- $locations_url := include "url-of" (list .Values.app.ingress.entries.locations .) -}}
-{{- $marketing_url := include "url-of" (list .Values.app.ingress.entries.marketing .) -}}
 {{- $basket_url := include "url-of" (list .Values.app.ingress.entries.basket .) -}}
 {{- $ordering_url := include "url-of" (list .Values.app.ingress.entries.ordering .) -}}
 {{- $mobileshoppingagg := include "url-of" (list .Values.app.ingress.entries.mobileshoppingagg .) -}}
@@ -27,8 +25,6 @@ data:
   all__InstrumentationKey: "{{ .Values.inf.appinsights.key }}"
   mvc_e: http://{{ $mvc_url }}
   spa_e: http://{{ $spa_url }}
-  locations_e: http://{{ $locations_url }}
-  marketing_e: http://{{ $marketing_url }}
   basket_e: http://{{ $basket_url }}
   ordering_e: http://{{ $ordering_url }}
   mobileshoppingagg_e: http://{{ $mobileshoppingagg }}
