@@ -186,7 +186,7 @@ services:
       - webhooks-api
 
   webshoppingapigw:
-    image: envoyproxy/envoy:v1.11.1
+    image: envoyproxy/envoy:v1.14.4
 
   webmarketingapigw:
-    image: envoyproxy/envoy:v1.11.1
+    image: envoyproxy/envoy:v1.14.4

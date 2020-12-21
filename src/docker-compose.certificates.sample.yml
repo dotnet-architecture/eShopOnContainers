@@ -1,0 +1,39 @@
+version: '3.4'
+
+services:
+
+  identity-api:
+    environment:
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=<secure-COMPLEX-and-SECRET-password>
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/docker-self-signed.pfx
+    volumes:
+      - ~/.aspnet/https:/https:ro
+
+  webstatus:
+    environment:
+      - ASPNETCORE_URLS=https://+:443
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=<secure-COMPLEX-and-SECRET-password>
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/docker-self-signed.pfx
+    volumes:
+      - ~/.aspnet/https:/https:ro
+
+  webmvc:
+    environment:
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=<secure-COMPLEX-and-SECRET-password>
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/docker-self-signed.pfx
+    volumes:
+      - ~/.aspnet/https:/https:ro
+
+  webspa:
+    environment:
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=<secure-COMPLEX-and-SECRET-password>
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/docker-self-signed.pfx
+    volumes:
+      - ~/.aspnet/https:/https:ro
+
+  webshoppingapigw:
+    volumes:
+      - ~/.aspnet/https:/https:ro

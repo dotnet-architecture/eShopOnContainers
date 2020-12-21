@@ -41,32 +41,35 @@ services:
   identity-api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://0.0.0.0:80
-      - SpaClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5104
-      - XamarinCallback=http://${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP}:5105/xamarincallback
+      - ASPNETCORE_URLS=http://+:80
+      - SpaClient=https://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5104
+      - XamarinCallback=https://${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP}:5105/xamarincallback
       - ConnectionString=${ESHOP_AZURE_IDENTITY_DB:-Server=sqldata;Database=Microsoft.eShopOnContainers.Service.IdentityDb;User Id=sa;Password=Pass@word}
-      - MvcClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5100
-      - LocationApiClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5109
-      - MarketingApiClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5110
-      - BasketApiClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5103
-      - OrderingApiClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5102
-      - MobileShoppingAggClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5120
-      - WebShoppingAggClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5121
-      - WebhooksApiClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5113
-      - WebhooksWebClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5114
+      - MvcClient=https://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5100
+      - LocationApiClient=https://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5202/locations-api
+      - MarketingApiClient=https://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5202/marketing-api
+      - BasketApiClient=https://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5202/basket-api
+      - OrderingApiClient=https://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5202/ordering-api
+      - MobileShoppingAggClient=https://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5120
+      - WebShoppingAggClient=https://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5121
+      - WebhooksApiClient=https://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5113
+      - WebhooksWebClient=https://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5114
       - UseCustomizationData=True
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
       - OrchestratorType=${ORCHESTRATOR_TYPE}
+      - Serilog__MinimumLevel__Override__IdentityServer4=Verbose
+      - Serilog__MinimumLevel__Override__Microsoft=Warning
     ports:
-      - "5105:80"
+      - "80" # We need internal HTTP access for inter-service communications
+      - "5105:443"
 
   basket-api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - ASPNETCORE_URLS=http://+:80
       - ConnectionString=${ESHOP_AZURE_REDIS_BASKET_DB:-basketdata}
       - identityUrl=http://identity-api
-      - IdentityUrlExternal=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
+      - IdentityUrlExternal=https://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
       - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
       - EventBusUserName=${ESHOP_SERVICE_BUS_USERNAME}
       - EventBusPassword=${ESHOP_SERVICE_BUS_PASSWORD}
@@ -78,7 +81,8 @@ services:
       - GRPC_PORT=81
       - PORT=80
     ports:
-      - "5103:80"
+      - "80" # We need internal HTTP access for inter-service communications
+      - "5103:443"
       - "9103:81"
 
   catalog-api:
@@ -96,20 +100,22 @@ services:
       - AzureStorageEnabled=False
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
       - OrchestratorType=${ORCHESTRATOR_TYPE}
+      - Serilog__MinimumLevel__Override__Microsoft=Warning
       - GRPC_PORT=81
       - PORT=80
       - PATH_BASE=/catalog-api
     ports:
-      - "5101:80"
+      - "80" # We need internal HTTP access for inter-service communications
+      - "5101:443"
       - "9101:81"
 
   ordering-api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - ASPNETCORE_URLS=http://+:80
       - ConnectionString=${ESHOP_AZURE_ORDERING_DB:-Server=sqldata;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word}
       - identityUrl=http://identity-api
-      - IdentityUrlExternal=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
+      - IdentityUrlExternal=https://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
       - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
       - EventBusUserName=${ESHOP_SERVICE_BUS_USERNAME}
       - EventBusPassword=${ESHOP_SERVICE_BUS_PASSWORD}
@@ -125,13 +131,14 @@ services:
       - GRPC_PORT=81
       - PORT=80
     ports:
-      - "5102:80"
+      - "80" # We need internal HTTP access for inter-service communications
+      - "5102:443"
       - "9102:81"
 
   ordering-backgroundtasks:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - ASPNETCORE_URLS=http://+:80
       - ConnectionString=${ESHOP_AZURE_ORDERING_DB:-Server=sqldata;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word}
       - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
       - EventBusUserName=${ESHOP_SERVICE_BUS_USERNAME}
@@ -139,7 +146,7 @@ services:
       - UseCustomizationData=True
       - AzureServiceBusEnabled=False
       - CheckUpdateTime=30000
-      - GracePeriodTime=1
+      - GracePeriodTime=15
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
       - OrchestratorType=${ORCHESTRATOR_TYPE}
       - UseLoadTest=${USE_LOADTEST:-False}
@@ -170,12 +177,13 @@ services:
       - UseLoadTest=${USE_LOADTEST:-False}
       - PATH_BASE=/marketing-api
     ports:
-      - "5110:80"
+      - "80" # We need internal HTTP access for inter-service communications
+      - "5110:443"
 
   payment-api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - ASPNETCORE_URLS=http://+:80
       - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
       - EventBusUserName=${ESHOP_SERVICE_BUS_USERNAME}
       - EventBusPassword=${ESHOP_SERVICE_BUS_PASSWORD}
@@ -183,6 +191,7 @@ services:
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
       - OrchestratorType=${ORCHESTRATOR_TYPE}
       - Serilog__MinimumLevel__Override__payment-api.IntegrationEvents.EventHandling=Verbose
+      - Serilog__MinimumLevel__Override__Microsoft=Warning
       - Serilog__MinimumLevel__Override__Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ=Verbose
     ports:
       - "5108:80"
@@ -190,11 +199,11 @@ services:
   locations-api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - ASPNETCORE_URLS=http://+:80
       - ConnectionString=${ESHOP_AZURE_COSMOSDB:-mongodb://nosqldata}
       - Database=LocationsDb
       - identityUrl=http://identity-api
-      - IdentityUrlExternal=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
+      - IdentityUrlExternal=https://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
       - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
       - EventBusUserName=${ESHOP_SERVICE_BUS_USERNAME}
       - EventBusPassword=${ESHOP_SERVICE_BUS_PASSWORD}
@@ -237,7 +246,7 @@ services:
     volumes:
       - ./ApiGateways/Envoy/config/webshopping:/etc/envoy
     ports:
-    - "5202:80"
+    - "5202:443"
     - "15202:8001"
 
   webmarketingapigw:
@@ -264,7 +273,7 @@ services:
       - MarketingUrlHC=http://marketing-api/hc
       - PaymentUrlHC=http://payment-api/hc
       - LocationUrlHC=http://locations-api/hc
-      - IdentityUrlExternal=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
+      - IdentityUrlExternal=https://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
     ports:
       - "5120:80"
 
@@ -285,14 +294,15 @@ services:
       - MarketingUrlHC=http://marketing-api/hc
       - PaymentUrlHC=http://payment-api/hc
       - LocationUrlHC=http://locations-api/hc
-      - IdentityUrlExternal=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
+      - IdentityUrlExternal=https://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
     ports:
-      - "5121:80"
+      - "80" # We need internal HTTP access for inter-service communications
+      - "5121:443"
 
   ordering-signalrhub:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - ASPNETCORE_URLS=http://+:80
       - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
       - EventBusUserName=${ESHOP_SERVICE_BUS_USERNAME}
       - EventBusPassword=${ESHOP_SERVICE_BUS_PASSWORD}
@@ -336,42 +346,45 @@ services:
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
       - OrchestratorType=${ORCHESTRATOR_TYPE}
     ports:
-      - "5107:80"
+      - "5107:443"
 
   webspa:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://0.0.0.0:80
-      - IdentityUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
-      - PurchaseUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5202
-      - MarketingUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5203
+      - ASPNETCORE_URLS=http://+:80
+      - IdentityUrl=https://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
+      - PurchaseUrl=https://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5202
+      - MarketingUrl=https://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5203
       - IdentityUrlHC=http://identity-api/hc
       - UseCustomizationData=True
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
       - OrchestratorType=${ORCHESTRATOR_TYPE}
-      - SignalrHubUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5202
+      - SignalrHubUrl=https://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5202
     ports:
-      - "5104:80"
+      - "80" # We need internal HTTP access for healthchecks
+      - "5104:443"
 
   webmvc:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - ASPNETCORE_URLS=http://+:80
       - PurchaseUrl=http://webshoppingapigw
-      - IdentityUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
+      - IdentityUrl=https://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
       - MarketingUrl=http://webmarketingapigw
-      - SignalrHubUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5202
+      - SignalrHubUrl=https://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5202
       - IdentityUrlHC=http://identity-api/hc
       - UseCustomizationData=True
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
       - OrchestratorType=${ORCHESTRATOR_TYPE}
       - UseLoadTest=${USE_LOADTEST:-False}
+      - Serilog__MinimumLevel__Override__Microsoft=Warning
     ports:
-      - "5100:80"
+      - "80" # We need internal HTTP access for healthchecks
+      - "5100:443"
 
   webhooks-client:
     environment:
-      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - ASPNETCORE_URLS=http://+:80
       - Token=6168DB8D-DC58-4094-AF24-483278923590      # Webhooks are registered with this token (any value is valid) but the client won't check it
       - IdentityUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
       - CallBackUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5114
