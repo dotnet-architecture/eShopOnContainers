@@ -19,8 +19,7 @@ jobs:
   login:
     runs-on: ubuntu-latest
     steps:
-      -
-        name: Login to GitHub Container Registry
+      - name: Login to GitHub Container Registry
         uses: docker/login-action@v1
         with:
           registry: ${{ env.registryEndpoint }}
@@ -30,7 +29,6 @@ jobs:
     runs-on: ubuntu-16.04
     if: ${{ github.event_name == 'pull_request' }}
     steps:
-    - uses: actions/checkout@v2
     - name: Compose build ${{ env.services  }}
       run: docker-compose build -f src/docker-compose.yml ${{ env.services  }}
       shell: bash
@@ -42,7 +40,6 @@ jobs:
     if:  ${{ false }}
     # if: ${{ github.event_name == 'pull_request' }}
     steps:
-    - uses: actions/checkout@v2
     - name: Compose build ${{ env.services  }}
       run: docker-compose build -f src/docker-compose.yml ${{ env.services  }}
       shell: pwsh
@@ -55,8 +52,7 @@ jobs:
     runs-on: ubuntu-16.04
     if: ${{ github.event_name != 'pull_request' }}
     steps:
-    - uses: actions/checkout@v2
-      name: Compose build ${{ env.services  }}
+    - name: Compose build ${{ env.services  }}
       run: docker-compose build -f src/docker-compose.yml ${{ env.services  }}
       shell: bash
       env:
@@ -73,8 +69,7 @@ jobs:
     if:  ${{ false }}
     # if: ${{ github.event_name != 'pull_request' }}
     steps:
-    - uses: actions/checkout@v2
-      name: Compose build ${{ env.services  }}
+    - name: Compose build ${{ env.services  }}
       run: docker-compose build -f src/docker-compose.yml ${{ env.services  }}
       shell: pwsh
       env:
