@@ -53,7 +53,7 @@ jobs:
     if: ${{ github.event_name != 'pull_request' }}
     steps:
     - name: Compose build ${{ env.services  }}
-      run: docker-compose build -f src/docker-compose.yml ${{ env.services  }}
+      run: docker-compose build -f src/docker-compose.yml $env.services
       shell: bash
       env:
         TAG: ${{ env.branch }}
