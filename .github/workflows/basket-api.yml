@@ -16,15 +16,14 @@ env:
   image: basket.api
   branch: $(echo ${GITHUB_REF#refs/heads/})
 jobs:
-  login:
-    runs-on: ubuntu-latest
+  Login:
+    runs-on: ubuntu-16.04
     steps:
-      - name: Login to Container Registry
-        uses: docker/login-action@v1
-        with:
-          registry: https://hub.docker.com/repository/docker/borjasanes/eshoponcontainers
-          username: ${{ secrets.USERNAME }}
-          password: ${{ secrets.PASSWORD }}
+    - name: Login to GitHub Docker Registry
+      run: docker login ${{ env.registryEndpoint }} --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
+      env:
+        DOCKER_USERNAME: ${{ secrets.USERNAME }}
+        DOCKER_PASSWORD: ${{ secrets.PASSWORD }}
   BuildContainersForPR_Linux:
     runs-on: ubuntu-16.04
     if: ${{ github.event_name == 'pull_request' }}
