@@ -19,11 +19,8 @@ jobs:
   Login:
     runs-on: ubuntu-16.04
     steps:
-    - name: Login to GitHub Docker Registry
-      run: docker login ${{ env.registryEndpoint }} -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-      env:
-        DOCKER_USERNAME: ${{ secrets.USERNAME }}
-        DOCKER_PASSWORD: ${{ secrets.PASSWORD }}
+    - name: Login to docker registry
+      run: echo ${{ secrets.PASSWORD }} | docker login -u ${{ secrets.USERNAME }} --password-stdin
   BuildContainersForPR_Linux:
     runs-on: ubuntu-16.04
     if: ${{ github.event_name == 'pull_request' }}
