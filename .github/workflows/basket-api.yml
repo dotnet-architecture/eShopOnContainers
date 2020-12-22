@@ -1,0 +1,88 @@
+on:
+  push:
+    branches:
+    - master
+    - dev
+    paths:
+    - src/BuildingBlocks/*
+    - src/Services/Basket/*
+    - build/azure-devops/buildimages.yml
+    - build/azure-devops/multiarch.yml
+    - build/azure-devops/basket-api/*
+    - deploy/k8s/helm/basket-api/*
+env:
+  registryEndpoint: https://hub.docker.com/repository/docker/borjasanes/eshoponcontainers
+  services: basket-api
+  image: basket.api
+  branch: $(echo ${GITHUB_REF#refs/heads/})
+jobs:
+  login:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ${{ env.registryEndpoint }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+  BuildContainersForPR_Linux:
+    runs-on: ubuntu-16.04
+    if: ${{ github.event_name == 'pull_request' }}
+    steps:
+    - uses: actions/checkout@v2
+    - name: Compose build ${{ env.services  }}
+      run: docker-compose build -f src/docker-compose.yml ${{ env.services  }}
+      shell: bash
+      env:
+        TAG: ${{ env.branch }}
+        REGISTRY: ${{ env.registryEndpoint }}
+  BuildContainersForPR_Windows:
+    runs-on: windows-2019
+    if:  ${{ false }}
+    # if: ${{ github.event_name == 'pull_request' }}
+    steps:
+    - uses: actions/checkout@v2
+    - name: Compose build ${{ env.services  }}
+      run: docker-compose build -f src/docker-compose.yml ${{ env.services  }}
+      shell: pwsh
+      env:
+        TAG: ${{ env.branch }}
+        REGISTRY: ${{ env.registryEndpoint }}
+        PLATFORM: win
+        NODE_IMAGE: stefanscherer/node-windows:10
+  BuildLinux:
+    runs-on: ubuntu-16.04
+    if: ${{ github.event_name != 'pull_request' }}
+    steps:
+    - uses: actions/checkout@v2
+      name: Compose build ${{ env.services  }}
+      run: docker-compose build -f src/docker-compose.yml ${{ env.services  }}
+      shell: bash
+      env:
+        TAG: ${{ env.branch }}
+        REGISTRY: ${{ env.registryEndpoint }}
+    - name: Compose push ${{ env.image  }}
+      run: docker-compose push -f src/docker-compose.yml ${{ env.services }}'
+      shell: bash
+      env:
+        TAG: ${{ env.branch }}
+        REGISTRY: ${{ env.registryEndpoint }}
+  BuildWindows:
+    runs-on: windows-2019
+    if:  ${{ false }}
+    # if: ${{ github.event_name != 'pull_request' }}
+    steps:
+    - uses: actions/checkout@v2
+      name: Compose build ${{ env.services  }}
+      run: docker-compose build -f src/docker-compose.yml ${{ env.services  }}
+      shell: pwsh
+      env:
+        TAG: ${{ env.branch }}
+        REGISTRY: ${{ env.registryEndpoint }}
+    - name: Compose push ${{ env.image  }}
+      run: docker-compose push -f src/docker-compose.yml ${{ env.services }}'
+      shell: pwsh
+      env:
+        TAG: ${{ env.branch }}
+        REGISTRY: ${{ env.registryEndpoint }}
