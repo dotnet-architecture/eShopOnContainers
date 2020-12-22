@@ -1,0 +1,25 @@
+#Note: Azure DevOps template does not have an equivalent in GitHub Actions yet
+#Note: Azure DevOps template does not have an equivalent in GitHub Actions yet
+on:
+  push:
+    branches:
+    - master
+    - dev
+    paths:
+    - src/BuildingBlocks/*
+    - src/Web/WebhookClient/*
+    - build/azure-devops/buildimages.yml
+    - build/azure-devops/multiarch.yml
+    - build/azure-devops/webhooks-client/*
+    - deploy/k8s/helm/webhooks-web/*
+env:
+  registryEndpoint: eshop-registry
+jobs:
+  job_1_template:
+    # 'Note: Azure DevOps template does not have an equivalent in GitHub Actions yet'
+    steps:
+    - uses: actions/checkout@v2
+  job_2_template:
+    # 'Note: Azure DevOps template does not have an equivalent in GitHub Actions yet'
+    steps:
+    - uses: actions/checkout@v2

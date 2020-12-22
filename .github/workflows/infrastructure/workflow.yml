@@ -1,0 +1,27 @@
+on:
+  push:
+    branches:
+    - master
+    - dev
+    paths:
+    - build/azure-devops/buildimages.yml
+    - build/azure-devops/multiarch.yml
+    - build/azure-devops/infrastructure/*
+    - deploy/k8s/helm/basket-data/*
+    - deploy/k8s/helm/keystore-data/*
+    - deploy/k8s/helm/nosql-data/*
+    - deploy/k8s/helm/rabbitmq/*
+    - deploy/k8s/helm/sql-data/*
+env:
+  registryEndpoint: eshop-registry
+jobs:
+  build:
+    runs-on: ubuntu-16.04
+    steps:
+    - uses: actions/checkout@v2
+    - run: Copy '${{ github.workspace }}/deploy/k8s/helm/' '${{ github.workspace }}/deploy/k8s/helm'
+      shell: powershell
+    - uses: actions/upload-artifact@v2
+      with:
+        path: ${{ github.workspace }}/deploy/k8s/helm
+        name: helm
