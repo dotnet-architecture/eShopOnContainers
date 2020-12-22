@@ -1,9 +1,11 @@
+name: "apigws"
+
 on:
   push:
     branches:
     - master
     - dev
-    - feature/github-actions 
+    - feature/github-actions
     paths:
     - src/ApiGateways/*
     - .github/workflows/buildimages.yml
@@ -13,9 +15,6 @@ on:
     - deploy/k8s/helm/apigwms/*
     - deploy/k8s/helm/apigwwm/*
     - deploy/k8s/helm/apigwws/*
-    paths-ignore:
-    - src/ApiGateways/Mobile.Bff.Shopping/aggregator/*
-    - src/ApiGateways/Web.Bff.Shopping/aggregator/*
 jobs:
   PublishCharts:
     runs-on: ubuntu-16.04
