@@ -20,8 +20,7 @@ jobs:
     runs-on: ubuntu-16.04
     steps:
     - name: Login to docker registry
-      run: echo "username:${{ secrets.USERNAME }}"
-      shell: bash
+      run: echo $PASSWORD | docker login -u $USERNAME --password-stdin
   BuildContainersForPR_Linux:
     runs-on: ubuntu-16.04
     if: ${{ github.event_name == 'pull_request' }}
