@@ -1,3 +1,5 @@
+name: basket-api
+
 on:
   push:
     branches:
@@ -6,10 +8,7 @@ on:
     paths:
     - src/BuildingBlocks/*
     - src/Services/Basket/*
-    - build/azure-devops/buildimages.yml
-    - build/azure-devops/multiarch.yml
-    - build/azure-devops/basket-api/*
-    - deploy/k8s/helm/basket-api/*
+    - .github/workflows/basket-api.yml
 env:
   registryEndpoint: https://hub.docker.com/repository/docker/borjasanes/eshoponcontainers
   services: basket-api
