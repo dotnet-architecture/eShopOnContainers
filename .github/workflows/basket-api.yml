@@ -49,7 +49,7 @@ jobs:
         PLATFORM: win
         NODE_IMAGE: stefanscherer/node-windows:10
   BuildLinux:
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-latest
     if: ${{ github.event_name != 'pull_request' }}
     steps:
     - name: 'Checkout Github Action'
