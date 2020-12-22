@@ -20,7 +20,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - run: Copy '${{ github.workspace }}/deploy/k8s/helm/' '${{ github.workspace }}/deploy/k8s/helm'
-      shell: powershell
+      shell: pwsh
     - uses: actions/upload-artifact@v2
       with:
         path: ${{ github.workspace }}/deploy/k8s/helm
