@@ -5,6 +5,7 @@ on:
     branches:
     - master
     - dev
+    - feature/github-actions
     paths:
     - src/BuildingBlocks/*
     - src/Services/Basket/*
