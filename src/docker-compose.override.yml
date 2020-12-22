@@ -46,8 +46,6 @@ services:
       - XamarinCallback=http://${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP}:5105/xamarincallback
       - ConnectionString=${ESHOP_AZURE_IDENTITY_DB:-Server=sqldata;Database=Microsoft.eShopOnContainers.Service.IdentityDb;User Id=sa;Password=Pass@word}
       - MvcClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5100
-      - LocationApiClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5109
-      - MarketingApiClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5110
       - BasketApiClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5103
       - OrderingApiClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5102
       - MobileShoppingAggClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5120
@@ -147,31 +145,6 @@ services:
     ports:
       - "5111:80"
 
-  marketing-api:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://0.0.0.0:80
-      - ConnectionString=${ESHOP_AZURE_MARKETING_DB:-Server=sqldata;Database=Microsoft.eShopOnContainers.Services.MarketingDb;User Id=sa;Password=Pass@word}
-      - MongoConnectionString=${ESHOP_AZURE_COSMOSDB:-mongodb://nosqldata}
-      - MongoDatabase=MarketingDb
-      - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
-      - EventBusUserName=${ESHOP_SERVICE_BUS_USERNAME}
-      - EventBusPassword=${ESHOP_SERVICE_BUS_PASSWORD}
-      - identityUrl=http://identity-api
-      - IdentityUrlExternal=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
-      - CampaignDetailFunctionUri=${ESHOP_AZUREFUNC_CAMPAIGN_DETAILS_URI}
-      - PicBaseUrl=${ESHOP_STORAGE_MARKETING_URL}
-      - AzureStorageAccountName=${ESHOP_AZURE_STORAGE_MARKETING_NAME}
-      - AzureStorageAccountKey=${ESHOP_AZURE_STORAGE_MARKETING_KEY}
-      - AzureServiceBusEnabled=False
-      - AzureStorageEnabled=False
-      - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
-      - OrchestratorType=${ORCHESTRATOR_TYPE}
-      - UseLoadTest=${USE_LOADTEST:-False}
-      - PATH_BASE=/marketing-api
-    ports:
-      - "5110:80"
-
   payment-api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
@@ -186,25 +159,6 @@ services:
       - Serilog__MinimumLevel__Override__Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ=Verbose
     ports:
       - "5108:80"
-
-  locations-api:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://0.0.0.0:80
-      - ConnectionString=${ESHOP_AZURE_COSMOSDB:-mongodb://nosqldata}
-      - Database=LocationsDb
-      - identityUrl=http://identity-api
-      - IdentityUrlExternal=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
-      - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
-      - EventBusUserName=${ESHOP_SERVICE_BUS_USERNAME}
-      - EventBusPassword=${ESHOP_SERVICE_BUS_PASSWORD}
-      - AzureServiceBusEnabled=False
-      - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
-      - OrchestratorType=${ORCHESTRATOR_TYPE}
-      - UseLoadTest=${USE_LOADTEST:-False}
-      - PATH_BASE=/locations-api
-    ports:
-      - "5109:80"
 
   webhooks-api:
     environment:
@@ -221,17 +175,10 @@ services:
 
   mobileshoppingapigw:
     volumes:
-      - ./ApiGateways/Envoy/config/mobilemarketing:/etc/envoy
+      - ./ApiGateways/Envoy/config/mobileshopping:/etc/envoy
     ports:
     - "5200:80"
     - "15200:8001"
-
-  mobilemarketingapigw:
-    volumes:
-      - ./ApiGateways/Envoy/config/mobileshopping:/etc/envoy
-    ports:
-    - "5201:80"
-    - "15201:8001"
 
   webshoppingapigw:
     volumes:
@@ -239,13 +186,6 @@ services:
     ports:
     - "5202:80"
     - "15202:8001"
-
-  webmarketingapigw:
-    volumes:
-      - ./ApiGateways/Envoy/config/webmarketing:/etc/envoy
-    ports:
-    - "5203:80"
-    - "15203:8001"
 
   mobileshoppingagg:
     environment:
@@ -261,9 +201,7 @@ services:
       - OrderingUrlHC=http://ordering-api/hc
       - IdentityUrlHC=http://identity-api/hc
       - BasketUrlHC=http://basket-api/hc
-      - MarketingUrlHC=http://marketing-api/hc
       - PaymentUrlHC=http://payment-api/hc
-      - LocationUrlHC=http://locations-api/hc
       - IdentityUrlExternal=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
     ports:
       - "5120:80"
@@ -282,9 +220,7 @@ services:
       - OrderingUrlHC=http://ordering-api/hc
       - IdentityUrlHC=http://identity-api/hc
       - BasketUrlHC=http://basket-api/hc
-      - MarketingUrlHC=http://marketing-api/hc
       - PaymentUrlHC=http://payment-api/hc
-      - LocationUrlHC=http://locations-api/hc
       - IdentityUrlExternal=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
     ports:
       - "5121:80"
@@ -323,16 +259,12 @@ services:
       - HealthChecksUI__HealthChecks__6__Uri=http://catalog-api/hc
       - HealthChecksUI__HealthChecks__7__Name=Identity HTTP Check
       - HealthChecksUI__HealthChecks__7__Uri=http://identity-api/hc
-      - HealthChecksUI__HealthChecks__8__Name=Marketing HTTP Check
-      - HealthChecksUI__HealthChecks__8__Uri=http://marketing-api/hc
-      - HealthChecksUI__HealthChecks__9__Name=Locations HTTP Check
-      - HealthChecksUI__HealthChecks__9__Uri=http://locations-api/hc
-      - HealthChecksUI__HealthChecks__10__Name=Payments HTTP Check
-      - HealthChecksUI__HealthChecks__10__Uri=http://payment-api/hc
-      - HealthChecksUI__HealthChecks__11__Name=Ordering SignalRHub HTTP Check
-      - HealthChecksUI__HealthChecks__11__Uri=http://ordering-signalrhub/hc
-      - HealthChecksUI__HealthChecks__12__Name=Ordering HTTP Background Check
-      - HealthChecksUI__HealthChecks__12__Uri=http://ordering-backgroundtasks/hc
+      - HealthChecksUI__HealthChecks__8__Name=Payments HTTP Check
+      - HealthChecksUI__HealthChecks__8__Uri=http://payment-api/hc
+      - HealthChecksUI__HealthChecks__9__Name=Ordering SignalRHub HTTP Check
+      - HealthChecksUI__HealthChecks__9__Uri=http://ordering-signalrhub/hc
+      - HealthChecksUI__HealthChecks__10__Name=Ordering HTTP Background Check
+      - HealthChecksUI__HealthChecks__10__Uri=http://ordering-backgroundtasks/hc
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
       - OrchestratorType=${ORCHESTRATOR_TYPE}
     ports:
@@ -344,7 +276,6 @@ services:
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - IdentityUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
       - PurchaseUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5202
-      - MarketingUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5203
       - IdentityUrlHC=http://identity-api/hc
       - UseCustomizationData=True
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
@@ -359,7 +290,6 @@ services:
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - PurchaseUrl=http://webshoppingapigw
       - IdentityUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
-      - MarketingUrl=http://webmarketingapigw
       - SignalrHubUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5202
       - IdentityUrlHC=http://identity-api/hc
       - UseCustomizationData=True

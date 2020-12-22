@@ -175,13 +175,6 @@ namespace Microsoft.eShopOnContainers.WebMVC
                  .AddHttpMessageHandler<HttpClientRequestIdDelegatingHandler>()
                  .AddDevspacesSupport();
 
-            services.AddHttpClient<ICampaignService, CampaignService>()
-                .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
-                .AddDevspacesSupport();
-
-            services.AddHttpClient<ILocationService, LocationService>()
-               .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
-               .AddDevspacesSupport();
 
             //add custom application services
             services.AddTransient<IIdentityParser<ApplicationUser>, IdentityParser>();
@@ -220,8 +213,6 @@ namespace Microsoft.eShopOnContainers.WebMVC
                 options.Scope.Add("profile");
                 options.Scope.Add("orders");
                 options.Scope.Add("basket");
-                options.Scope.Add("marketing");
-                options.Scope.Add("locations");
                 options.Scope.Add("webshoppingagg");
                 options.Scope.Add("orders.signalrhub");
             });
