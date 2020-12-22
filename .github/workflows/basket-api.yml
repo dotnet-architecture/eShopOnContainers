@@ -19,10 +19,10 @@ jobs:
   login:
     runs-on: ubuntu-latest
     steps:
-      - name: Login to GitHub Container Registry
+      - name: Login to Container Registry
         uses: docker/login-action@v1
         with:
-          registry: ${{ env.registryEndpoint }}
+          registry: https://hub.docker.com/repository/docker/borjasanes/eshoponcontainers
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
   BuildContainersForPR_Linux:
