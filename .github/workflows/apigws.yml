@@ -8,9 +8,7 @@ on:
     - feature/github-actions
     paths:
     - src/ApiGateways/*
-    - .github/workflows/buildimages.yml
-    - .github/workflows/multiarch.yml
-    - .github/workflows/apigws/*
+    - .github/workflows/*
     - deploy/k8s/helm/apigwmm/*
     - deploy/k8s/helm/apigwms/*
     - deploy/k8s/helm/apigwwm/*
