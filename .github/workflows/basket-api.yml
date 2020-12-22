@@ -55,11 +55,11 @@ jobs:
     - name: 'Checkout Github Action'
       uses: actions/checkout@master
     - name: Login to Container Registry
-        uses: docker/login-action@v1
-        with:
-          registry: ${{ env.registryEndpoint }}
-          username: ${{ secrets.USERNAME }}
-          password: ${{ secrets.PASSWORD }}
+      uses: docker/login-action@v1
+      with:
+        registry: ${{ env.registryEndpoint }}
+        username: ${{ secrets.USERNAME }}
+        password: ${{ secrets.PASSWORD }}
     - name: Compose build ${{ env.services  }}
       run: docker-compose -f src/docker-compose.yml build ${{ env.services }}
       shell: bash
