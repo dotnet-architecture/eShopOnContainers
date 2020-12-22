@@ -16,11 +16,15 @@ env:
   image: basket.api
   branch: $(echo ${GITHUB_REF#refs/heads/})
 jobs:
-  Login:
-    runs-on: ubuntu-16.04
+  login:
+    runs-on: ubuntu-latest
     steps:
-    - name: Login to docker registry
-      run: echo $PASSWORD | docker login -u $USERNAME --password-stdin
+      - name: Login to Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ${{ env.registryEndpoint }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
   BuildContainersForPR_Linux:
     runs-on: ubuntu-16.04
     if: ${{ github.event_name == 'pull_request' }}
