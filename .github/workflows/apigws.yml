@@ -16,7 +16,7 @@ on:
 jobs:
   PublishCharts:
     runs-on: ubuntu-16.04
-    if: ne('${{ env.Build.Reason }}', 'PullRequest')
+    if: ne('${{ github.event_name }}', 'pull_request')
     steps:
     - uses: actions/checkout@v2
     - run: Copy '${{ github.workspace }}/deploy/k8s/helm/' '${{ github.workspace }}/deploy/k8s/helm'
