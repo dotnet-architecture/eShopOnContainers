@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-16.04
     steps:
     - name: Login to GitHub Docker Registry
-      run: docker login ${{ env.registryEndpoint }} --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
+      run: docker login ${{ env.registryEndpoint }} -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
       env:
         DOCKER_USERNAME: ${{ secrets.USERNAME }}
         DOCKER_PASSWORD: ${{ secrets.PASSWORD }}
