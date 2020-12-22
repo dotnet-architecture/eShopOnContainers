@@ -73,22 +73,7 @@
           "dependsOn": [
             "[concat('Microsoft.Sql/servers/', variables('sql_server_name'))]"
           ]
-        },
-        {
-          "type": "databases",
-          "name": "[parameters('sql_server').dbs.marketing]",
-          "apiVersion": "2014-04-01-preview",
-          "location": "[resourceGroup().location]",
-          "properties": {
-            "edition": "Standard",
-            "collation": "SQL_Latin1_General_CP1_CI_AS",
-            "maxSizeBytes": "1073741824",
-            "requestedServiceObjectiveName": "S1"
-          },
-          "dependsOn": [
-            "[concat('Microsoft.Sql/servers/', variables('sql_server_name'))]"
-          ]
-        },        
+        },      
         {
           "type": "firewallrules",
           "name": "AllowAllWindowsAzureIps",

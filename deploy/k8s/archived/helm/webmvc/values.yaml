@@ -44,8 +44,6 @@ env:
       key: urls__mvc
     - name: IdentityUrl
       key: urls__IdentityUrl
-    - name: MarketingUrl
-      key: internalurls__apigwwm
     - name: IdentityUrlHC
       key: internalurls__identity__hc      
     - name: SignalrHubUrl
