@@ -78,6 +78,7 @@ jobs:
     - name: Compose push ${{ env.image  }}
       run: |
         docker images
+        echo ${{ secrets.PASSWORD }} | sudo docker login -u ${{ secrets.USERNAME }} --password-stdin
         sudo -E docker-compose push ${{ env.services }}
       working-directory: ./src
       shell: bash
