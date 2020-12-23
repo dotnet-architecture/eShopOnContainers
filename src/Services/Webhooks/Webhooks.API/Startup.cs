@@ -112,13 +112,6 @@ namespace Webhooks.API
 
         protected virtual void ConfigureAuth(IApplicationBuilder app)
         {
-            /*
-            if (Configuration.GetValue<bool>("UseLoadTest"))
-            {
-                app.UseMiddleware<ByPassAuthMiddleware>();
-            }
-            */
-
             app.UseAuthentication();
             app.UseAuthorization();
         }
