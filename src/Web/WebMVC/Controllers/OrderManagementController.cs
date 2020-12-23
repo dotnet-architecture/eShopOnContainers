@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using WebMVC.Services.ModelDTOs;
 using Microsoft.eShopOnContainers.WebMVC.Services;
 using Microsoft.eShopOnContainers.WebMVC.ViewModels;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using System.Threading.Tasks;
+using WebMVC.Services.ModelDTOs;
 
 namespace WebMVC.Controllers
 {
@@ -37,7 +34,7 @@ namespace WebMVC.Controllers
             {
                 await _orderSvc.ShipOrder(orderId);
             }
-            
+
             return RedirectToAction("Index");
         }
     }

@@ -1,8 +1,6 @@
-﻿using HealthChecks.UI.Configuration;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace WebStatus.Controllers
 {
