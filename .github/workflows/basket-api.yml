@@ -60,9 +60,7 @@ jobs:
       shell: bash
 
     - name: Compose build ${{ env.SERVICES }}
-      run: |
-        sudo -E docker-compose build ${{ env.SERVICES }}
-        docker images
+      run: sudo -E docker-compose build ${{ env.SERVICES }}
       working-directory: ./src
       shell: bash
       env:
@@ -70,9 +68,7 @@ jobs:
         REGISTRY: ${{ env.REGISTRY_ENDPOINT }}
 
     - name: Compose push ${{ env.SERVICES }}
-      run: |
-        docker images
-        sudo -E docker-compose push ${{ env.SERVICES }}
+      run: sudo -E docker-compose push ${{ env.SERVICES }}
       working-directory: ./src
       shell: bash
       env:
