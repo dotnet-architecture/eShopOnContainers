@@ -64,7 +64,7 @@ jobs:
         password: ${{ secrets.PASSWORD }}
 
     - name: Docker environment
-      run: eval $(docker-machine env dev)
+      run: docker-machine env dev
       shell: bash
 
     - name: Compose build ${{ env.services  }}
