@@ -56,27 +56,28 @@ jobs:
 
     - name: Get branch name
       run: |
-        currentbranch=$(echo ${GITHUB_REF#refs/heads/})
-        echo $currentbranch
+        currentbranch=$(echo ${GITHUB_REF##*/})
+        echo "running on $currentbranch"
         echo "branch=$currentbranch" >> $GITHUB_ENV
+        printenv
       shell: bash
 
-    - name: Compose build ${{ env.services  }}
-      run: |
-        echo "A initial message"
-        sudo docker-compose -f src/docker-compose.yml build ${{ env.services }}
-        docker images
-      shell: bash
-      env:
-        TAG: ${{ env.branch }}
-        REGISTRY: ${{ env.registryEndpoint }}
+    # - name: Compose build ${{ env.services  }}
+    #   run: |
+    #     echo "A initial message"
+    #     sudo docker-compose -f src/docker-compose.yml build ${{ env.services }}
+    #     docker images
+    #   shell: bash
+    #   env:
+    #     TAG: ${{ env.branch }}
+    #     REGISTRY: ${{ env.registryEndpoint }}
 
-    - name: Compose push ${{ env.image  }}
-      run: sudo docker-compose -f src/docker-compose.yml push ${{ env.services }}
-      shell: bash
-      env:
-        TAG: ${{ env.branch }}
-        REGISTRY: ${{ env.registryEndpoint }}
+    # - name: Compose push ${{ env.image  }}
+    #   run: sudo docker-compose -f src/docker-compose.yml push ${{ env.services }}
+    #   shell: bash
+    #   env:
+    #     TAG: ${{ env.branch }}
+    #     REGISTRY: ${{ env.registryEndpoint }}
 
   BuildWindows:
     runs-on: windows-2019
