@@ -11,7 +11,7 @@ namespace Ordering.API.Application.Commands
     {
 
         [DataMember]
-        public int OrderNumber { get; private set; }
+        public int OrderNumber { get; set; }
         public CancelOrderCommand()
         {
 

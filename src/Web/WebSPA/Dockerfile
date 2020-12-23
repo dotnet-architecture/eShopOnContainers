@@ -1,5 +1,5 @@
 ARG NODE_IMAGE=node:12.0
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.1 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
 WORKDIR /app
 EXPOSE 80
 
@@ -10,7 +10,7 @@ COPY Web/WebSPA/package-lock.json .
 COPY Web/WebSPA .
 RUN npm i npm@latest -g && npm update && npm install && npm run build:prod
 
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
+FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
 
 # It's important to keep lines from here down to "COPY . ." identical in all Dockerfiles
