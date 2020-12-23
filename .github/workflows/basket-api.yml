@@ -67,7 +67,7 @@ jobs:
         echo "running on ${{ env.branch }}"
         echo "TAG: ${{ env.TAG }}"
         echo "REGISTRY: ${{ env.REGISTRY }}"
-        export TAG=${{ env.TAG }}
+        sudo export TAG=experimental
         sudo docker-compose build ${{ env.services }}
         docker images
       working-directory: ./src
