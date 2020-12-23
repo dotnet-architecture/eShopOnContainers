@@ -59,26 +59,30 @@ jobs:
         currentbranch=$(echo ${GITHUB_REF##*/})
         echo "running on $currentbranch"
         echo "branch=$currentbranch" >> $GITHUB_ENV
+        echo "TAG=$currentbranch" >> $GITHUB_ENV
       shell: bash
 
-    - name: Compose build ${{ env.services  }}
+    - name: Compose build ${{ env.services }}
       run: |
         echo "running on ${{ env.branch }}"
         echo "TAG: ${{ env.TAG }}"
         echo "REGISTRY: ${{ env.REGISTRY }}"
-        sudo docker-compose -f src/docker-compose.yml build ${{ env.services }}
+        pwd
+        ls
+        sudo docker-compose build ${{ env.services }}
         docker images
+      working-directory: ./src
+      shell: bash
+      env:
+      #   TAG: ${{ env.branch }}
+        REGISTRY: ${{ env.registryEndpoint }}
+
+    - name: Compose push ${{ env.image  }}
+      run: sudo docker-compose -f src/docker-compose.yml push ${{ env.services }}
       shell: bash
       env:
         TAG: ${{ env.branch }}
         REGISTRY: ${{ env.registryEndpoint }}
-
-    # - name: Compose push ${{ env.image  }}
-    #   run: sudo docker-compose -f src/docker-compose.yml push ${{ env.services }}
-    #   shell: bash
-    #   env:
-    #     TAG: ${{ env.branch }}
-    #     REGISTRY: ${{ env.registryEndpoint }}
 
   BuildWindows:
     runs-on: windows-2019
