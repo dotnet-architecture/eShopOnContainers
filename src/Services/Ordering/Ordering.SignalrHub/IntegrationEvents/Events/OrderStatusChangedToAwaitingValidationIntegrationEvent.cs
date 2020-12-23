@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Ordering.SignalrHub.IntegrationEvents
 {
-    public class OrderStatusChangedToAwaitingValidationIntegrationEvent : IntegrationEvent
+    public record OrderStatusChangedToAwaitingValidationIntegrationEvent : IntegrationEvent
     {
         public int OrderId { get; }
         public string OrderStatus { get; }

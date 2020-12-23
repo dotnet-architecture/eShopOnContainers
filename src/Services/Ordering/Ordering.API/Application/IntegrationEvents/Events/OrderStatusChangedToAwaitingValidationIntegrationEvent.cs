@@ -3,7 +3,7 @@
     using System.Collections.Generic;
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
 
-    public class OrderStatusChangedToAwaitingValidationIntegrationEvent : IntegrationEvent
+    public record OrderStatusChangedToAwaitingValidationIntegrationEvent : IntegrationEvent
     {
         public int OrderId { get; }
         public string OrderStatus { get; }
@@ -20,7 +20,7 @@
         }
     }
 
-    public class OrderStockItem
+    public record OrderStockItem
     {
         public int ProductId { get; }
         public int Units { get; }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Ordering.SignalrHub.IntegrationEvents.Events
 {
-    public class OrderStatusChangedToPaidIntegrationEvent : IntegrationEvent
+    public record OrderStatusChangedToPaidIntegrationEvent : IntegrationEvent
     {
         public int OrderId { get; }
         public string OrderStatus { get; }

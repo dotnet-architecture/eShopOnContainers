@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Ordering.API.Application.IntegrationEvents.Events
 {
-    public class OrderStatusChangedToCancelledIntegrationEvent : IntegrationEvent
+    public record OrderStatusChangedToCancelledIntegrationEvent : IntegrationEvent
     {
         public int OrderId { get; }
         public string OrderStatus { get; }
