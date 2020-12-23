@@ -16,7 +16,6 @@ metadata:
 data:
   all__InstrumentationKey: "{{ .Values.inf.appinsights.key }}"
   all__UseAzureServiceBus: "{{ .Values.inf.eventbus.useAzure }}"
-  all_EnableLoadTest: "{{ .Values.inf.misc.useLoadTest }}"
   webstatus__keystore: {{ .Values.inf.redis.keystore.constr }}
   name__mvc__hc: WebMVC HTTP Check
   internalurls__mvc__hc: http://{{ .Values.app.svc.mvc }}/hc

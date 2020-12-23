@@ -38,7 +38,6 @@ inf:
     dns:  ""                # k8s external  DNS. This value or ip value MUST BE PROVIDED
     local: false            # True when deploying on "local K8s" provided by Docker Desktop.
   misc:                     # inf.misc contains miscellaneous configuration related to infrastructure
-    useLoadTest: false      # If running under loading test or not
     useAzureStorage: false  # If catalog api uses azure storage or not
 #  registry:                # Uncomment "registry" to specify registry secret
 #    secretName:            # secretName is the name of the secret inside k8s   

@@ -18,7 +18,6 @@ using StackExchange.Redis;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using WebMVC.Infrastructure;
-using WebMVC.Infrastructure.Middlewares;
 using WebMVC.Services;
 
 namespace Microsoft.eShopOnContainers.WebMVC
@@ -72,11 +71,6 @@ namespace Microsoft.eShopOnContainers.WebMVC
 
             app.UseStaticFiles();
             app.UseSession();
-
-            if (Configuration.GetValue<bool>("UseLoadTest"))
-            {
-                app.UseMiddleware<ByPassAuthMiddleware>();
-            }
 
             WebContextSeed.Seed(app, env);
             
@@ -182,7 +176,6 @@ namespace Microsoft.eShopOnContainers.WebMVC
 
         public static IServiceCollection AddCustomAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
-            var useLoadTest = configuration.GetValue<bool>("UseLoadTest");
             var identityUrl = configuration.GetValue<string>("IdentityUrl");
             var callBackUrl = configuration.GetValue<string>("CallBackUrl");
             var sessionCookieLifetime = configuration.GetValue("SessionCookieLifetimeMinutes", 60);
@@ -200,9 +193,9 @@ namespace Microsoft.eShopOnContainers.WebMVC
                 options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.Authority = identityUrl.ToString();
                 options.SignedOutRedirectUri = callBackUrl.ToString();
-                options.ClientId = useLoadTest ? "mvctest" : "mvc";
+                options.ClientId = "mvc";
                 options.ClientSecret = "secret";
-                options.ResponseType = useLoadTest ? "code id_token token" : "code id_token";
+                options.ResponseType = "code id_token";
                 options.SaveTokens = true;
                 options.GetClaimsFromUserInfoEndpoint = true;
                 options.RequireHttpsMetadata = false;

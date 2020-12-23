@@ -32,8 +32,6 @@ env:
   configmap:
     - name: ApplicationInsights__InstrumentationKey
       key: all__InstrumentationKey
-    - name: UseLoadTest
-      key: all_EnableLoadTest
     - name: DPConnectionString
       key: webmvc__keystore
     - name: PurchaseUrl
