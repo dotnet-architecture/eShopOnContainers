@@ -73,9 +73,14 @@ jobs:
         REGISTRY: ${{ env.registryEndpoint }}
 
     - name: Compose push ${{ env.image  }}
-      run: sudo -E docker-compose push ${{ env.services }}
+      run: |
+        docker images
+        sudo -E docker-compose push ${{ env.services }}
       working-directory: ./src
       shell: bash
+      env:
+      #   TAG: ${{ env.branch }}
+        REGISTRY: ${{ env.registryEndpoint }}
 
   BuildWindows:
     runs-on: windows-2019
