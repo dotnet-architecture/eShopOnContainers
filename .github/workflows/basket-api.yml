@@ -47,15 +47,15 @@ jobs:
     - name: 'Checkout Github Action'
       uses: actions/checkout@master
 
-    # - name: Login to Container Registry
-    #   uses: docker/login-action@v1
-    #   with:
-    #     registry: 
-    #     username: ${{ secrets.USERNAME }}
-    #     password: ${{ secrets.PASSWORD }}
-    - name: Login to DockerHub Registry
-      run: echo ${{ secrets.PASSWORD }} | sudo docker login -u ${{ secrets.USERNAME }} --password-stdin
-      shell: bash
+    - name: Login to Container Registry
+      uses: docker/login-action@v1
+      with:
+        registry:
+        username: ${{ secrets.USERNAME }}
+        password: ${{ secrets.PASSWORD }}
+    # - name: Login to DockerHub Registry
+    #   run: echo ${{ secrets.PASSWORD }} | sudo docker login -u ${{ secrets.USERNAME }} --password-stdin
+    #   shell: bash
 
     - name: Get branch name
       run: |
@@ -78,7 +78,6 @@ jobs:
     - name: Compose push ${{ env.image  }}
       run: |
         docker images
-        echo ${{ secrets.PASSWORD }} | sudo docker login -u ${{ secrets.USERNAME }} --password-stdin
         sudo -E docker-compose push ${{ env.services }}
       working-directory: ./src
       shell: bash
