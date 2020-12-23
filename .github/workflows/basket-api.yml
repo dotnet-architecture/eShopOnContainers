@@ -11,33 +11,31 @@ on:
     - src/Services/Basket/*
     - .github/workflows/basket-api.yml
 env:
-  registryEndpoint: borjasanes
-  services: basket-api
-  image: basket.api
-  # branch: $(echo ${GITHUB_REF#refs/heads/})
+  REGISTRY_ENDPOINT: borjasanes
+  SERVICES: basket-api
 
 jobs:
   BuildContainersForPR_Linux:
     runs-on: ubuntu-16.04
     if: ${{ github.event_name == 'pull_request' }}
     steps:
-    - name: Compose build ${{ env.services  }}
-      run: docker-compose build -f src/docker-compose.yml ${{ env.services  }}
+    - name: Compose build ${{ env.SERVICES }}
+      run: docker-compose build -f src/docker-compose.yml ${{ env.SERVICES }}
       shell: bash
       env:
         TAG: ${{ env.branch }}
-        REGISTRY: ${{ env.registryEndpoint }}
+        REGISTRY: ${{ env.REGISTRY_ENDPOINT }}
   BuildContainersForPR_Windows:
     runs-on: windows-2019
     if:  ${{ false }}
     # if: ${{ github.event_name == 'pull_request' }}
     steps:
-    - name: Compose build ${{ env.services  }}
-      run: docker-compose build -f src/docker-compose.yml ${{ env.services  }}
+    - name: Compose build ${{ env.SERVICES  }}
+      run: docker-compose build -f src/docker-compose.yml ${{ env.SERVICES }}
       shell: pwsh
       env:
         TAG: ${{ env.branch }}
-        REGISTRY: ${{ env.registryEndpoint }}
+        REGISTRY: ${{ env.REGISTRY_ENDPOINT }}
         PLATFORM: win
         NODE_IMAGE: stefanscherer/node-windows:10
   BuildLinux:
@@ -53,52 +51,48 @@ jobs:
         registry:
         username: ${{ secrets.USERNAME }}
         password: ${{ secrets.PASSWORD }}
-    # - name: Login to DockerHub Registry
-    #   run: echo ${{ secrets.PASSWORD }} | sudo docker login -u ${{ secrets.USERNAME }} --password-stdin
-    #   shell: bash
 
-    - name: Get branch name
+    - name: Set branch name as env variable
       run: |
         currentbranch=$(echo ${GITHUB_REF##*/})
         echo "running on $currentbranch"
-        echo "branch=$currentbranch" >> $GITHUB_ENV
-        echo "TAG=$currentbranch" >> $GITHUB_ENV
+        echo "BRANCH=$currentbranch" >> $GITHUB_ENV
       shell: bash
 
-    - name: Compose build ${{ env.services }}
+    - name: Compose build ${{ env.SERVICES }}
       run: |
-        sudo -E docker-compose build ${{ env.services }}
+        sudo -E docker-compose build ${{ env.SERVICES }}
         docker images
       working-directory: ./src
       shell: bash
       env:
-      #   TAG: ${{ env.branch }}
-        REGISTRY: ${{ env.registryEndpoint }}
+        TAG: ${{ env.BRANCH }}
+        REGISTRY: ${{ env.REGISTRY_ENDPOINT }}
 
-    - name: Compose push ${{ env.image  }}
+    - name: Compose push ${{ env.SERVICES }}
       run: |
         docker images
-        sudo -E docker-compose push ${{ env.services }}
+        sudo -E docker-compose push ${{ env.SERVICES }}
       working-directory: ./src
       shell: bash
       env:
-      #   TAG: ${{ env.branch }}
-        REGISTRY: ${{ env.registryEndpoint }}
+        TAG: ${{ env.BRANCH }}
+        REGISTRY: ${{ env.REGISTRY_ENDPOINT }}
 
   BuildWindows:
     runs-on: windows-2019
     if:  ${{ false }}
     # if: ${{ github.event_name != 'pull_request' }}
     steps:
-    - name: Compose build ${{ env.services  }}
-      run: docker-compose build -f src/docker-compose.yml ${{ env.services  }}
+    - name: Compose build ${{ env.SERVICES }}
+      run: docker-compose build -f src/docker-compose.yml ${{ env.SERVICES }}
       shell: pwsh
       env:
-        TAG: ${{ env.branch }}
-        REGISTRY: ${{ env.registryEndpoint }}
-    - name: Compose push ${{ env.image  }}
-      run: docker-compose push -f src/docker-compose.yml ${{ env.services }}'
+        TAG: ${{ env.BRANCH }}
+        REGISTRY: ${{ env.REGISTRY_ENDPOINT }}
+    - name: Compose push ${{ env.SERVICES }}
+      run: docker-compose push -f src/docker-compose.yml ${{ env.SERVICES }}'
       shell: pwsh
       env:
-        TAG: ${{ env.branch }}
-        REGISTRY: ${{ env.registryEndpoint }}
+        TAG: ${{ env.BRANCH }}
+        REGISTRY: ${{ env.REGISTRY_ENDPOINT }}
