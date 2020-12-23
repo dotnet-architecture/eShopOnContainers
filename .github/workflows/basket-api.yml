@@ -67,8 +67,7 @@ jobs:
         echo "running on ${{ env.branch }}"
         echo "TAG: ${{ env.TAG }}"
         echo "REGISTRY: ${{ env.REGISTRY }}"
-        pwd
-        ls
+        export TAG=${{ env.TAG }}
         sudo docker-compose build ${{ env.services }}
         docker images
       working-directory: ./src
@@ -77,12 +76,12 @@ jobs:
       #   TAG: ${{ env.branch }}
         REGISTRY: ${{ env.registryEndpoint }}
 
-    - name: Compose push ${{ env.image  }}
-      run: sudo docker-compose -f src/docker-compose.yml push ${{ env.services }}
-      shell: bash
-      env:
-        TAG: ${{ env.branch }}
-        REGISTRY: ${{ env.registryEndpoint }}
+    # - name: Compose push ${{ env.image  }}
+    #   run: sudo docker-compose -f src/docker-compose.yml push ${{ env.services }}
+    #   shell: bash
+    #   env:
+    #     TAG: ${{ env.branch }}
+    #     REGISTRY: ${{ env.registryEndpoint }}
 
   BuildWindows:
     runs-on: windows-2019
