@@ -72,12 +72,10 @@ jobs:
       #   TAG: ${{ env.branch }}
         REGISTRY: ${{ env.registryEndpoint }}
 
-    # - name: Compose push ${{ env.image  }}
-    #   run: sudo docker-compose -f src/docker-compose.yml push ${{ env.services }}
-    #   shell: bash
-    #   env:
-    #     TAG: ${{ env.branch }}
-    #     REGISTRY: ${{ env.registryEndpoint }}
+    - name: Compose push ${{ env.image  }}
+      run: sudo -E docker-compose -f src/docker-compose.yml push ${{ env.services }}
+      working-directory: ./src
+      shell: bash
 
   BuildWindows:
     runs-on: windows-2019
