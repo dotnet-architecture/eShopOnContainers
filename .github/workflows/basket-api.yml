@@ -11,7 +11,7 @@ on:
     - src/Services/Basket/*
     - .github/workflows/basket-api.yml
 env:
-  registryEndpoint: hub.docker.com/repository/docker/borjasanes/eshoponcontainers
+  registryEndpoint: borjasanes/eshoponcontainers
   services: basket-api
   image: basket.api
   # branch: $(echo ${GITHUB_REF#refs/heads/})
