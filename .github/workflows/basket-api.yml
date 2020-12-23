@@ -63,12 +63,8 @@ jobs:
         username: ${{ secrets.USERNAME }}
         password: ${{ secrets.PASSWORD }}
 
-    - name: Docker environment
-      run: docker-machine env dev
-      shell: bash
-
     - name: Compose build ${{ env.services  }}
-      run: docker-compose -f src/docker-compose.yml build ${{ env.services }}
+      run: sudo docker-compose -f src/docker-compose.yml build ${{ env.services }}
       shell: bash
       env:
         TAG: ${{ env.branch }}
