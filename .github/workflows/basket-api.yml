@@ -64,8 +64,8 @@ jobs:
     - name: Compose build ${{ env.services  }}
       run: |
         echo "running on ${{ env.branch }}"
-        echo "Env variables:"
-        printenv
+        echo "TAG: ${{ env.TAG }}"
+        echo "REGISTRY: ${{ env.REGISTRY }}"
         sudo docker-compose -f src/docker-compose.yml build ${{ env.services }}
         docker images
       shell: bash
