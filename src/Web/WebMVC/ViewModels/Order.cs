@@ -5,21 +5,19 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 using WebMVC.Services.ModelDTOs;
 
 namespace Microsoft.eShopOnContainers.WebMVC.ViewModels
 {
     public class Order
     {
-        public string OrderNumber {get;set;}
+        public string OrderNumber { get; set; }
 
-        public DateTime Date {get;set;}
+        public DateTime Date { get; set; }
 
         public string Status { get; set; }
 
-        public decimal Total {get;set;}
+        public decimal Total { get; set; }
 
         public string Description { get; set; }
 

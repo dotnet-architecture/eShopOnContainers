@@ -1,9 +1,9 @@
 ﻿// For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
+using eShopOnContainers.WebSPA;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using eShopOnContainers.WebSPA;
 
 namespace eShopConContainers.WebSPA.Server.Controllers
 {
@@ -20,6 +20,6 @@ namespace eShopConContainers.WebSPA.Server.Controllers
         public IActionResult Configuration()
         {
             return Json(_settings.Value);
-        } 
+        }
     }
 }

@@ -48,7 +48,7 @@ namespace WebMVC.Controllers
 
             if (response.IsSuccessStatusCode)
             {
-                var str =  await response.Content.ReadAsStringAsync();
+                var str = await response.Content.ReadAsStringAsync();
 
                 return Ok(str);
             }

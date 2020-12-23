@@ -70,7 +70,7 @@ namespace eShopConContainers.WebSPA
             {
                 app.UseDeveloperExceptionPage();
             }
-            
+
             // Configure XSRF middleware, This pattern is for SPA style applications where XSRF token is added on Index page 
             // load and passed back token on every subsequent async request            
             // app.Use(async (context, next) =>

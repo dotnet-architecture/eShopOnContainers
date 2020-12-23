@@ -15,7 +15,7 @@
 
         public static class Post
         {
-            public static string AddNewuserLocationRule(int campaignId) 
+            public static string AddNewuserLocationRule(int campaignId)
                 => GetUserLocationRolesUrlBase(campaignId);
         }
 
