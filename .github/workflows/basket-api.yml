@@ -94,9 +94,9 @@ jobs:
     steps:
 
     - name: Login to Container Registry
-      uses: docker/login-action@v1
+      uses: azure/docker-login@v1
       with:
-        registry: ${{ env.REGISTRY_HOST }}
+        login-server: ${{ env.REGISTRY_HOST }}
         username: ${{ secrets.USERNAME }}
         password: ${{ secrets.PASSWORD }}
         
