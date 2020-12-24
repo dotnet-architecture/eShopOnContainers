@@ -107,7 +107,7 @@ jobs:
 
     - name: Compose build ${{ env.SERVICES }}
       run: docker-compose build ${{ env.SERVICES }}
-      working-directory: ./src
+      working-directory: src
       shell: pwsh
       env:
         TAG: ${{ env.BRANCH }}
@@ -115,7 +115,7 @@ jobs:
 
     - name: Compose push ${{ env.SERVICES }}
       run: docker-compose push ${{ env.SERVICES }}'
-      working-directory: ./src
+      working-directory: src
       shell: pwsh
       env:
         TAG: ${{ env.BRANCH }}
