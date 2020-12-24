@@ -56,6 +56,8 @@ jobs:
         PLATFORM: win
         NODE_IMAGE: stefanscherer/node-windows:10
   BuildLinux:
+    env:
+      DOCKER_CONFIG: $HOME/.docker
     runs-on: ubuntu-latest
     if: ${{ github.event_name != 'pull_request' }}
     steps:
@@ -76,26 +78,26 @@ jobs:
         echo "BRANCH=$currentbranch" >> $GITHUB_ENV
       shell: bash
 
-    - name: Compose build ${{ env.SERVICE }}
-      run: sudo -E docker-compose build ${{ env.SERVICE }}
-      working-directory: ./src
-      shell: bash
-      env:
-        TAG: ${{ env.BRANCH }}
-        REGISTRY: ${{ env.REGISTRY_ENDPOINT }}
+    # - name: Compose build ${{ env.SERVICE }}
+    #   run: sudo -E docker-compose build ${{ env.SERVICE }}
+    #   working-directory: ./src
+    #   shell: bash
+    #   env:
+    #     TAG: ${{ env.BRANCH }}
+    #     REGISTRY: ${{ env.REGISTRY_ENDPOINT }}
 
-    - name: Compose push ${{ env.SERVICE }}
-      run: sudo -E docker-compose push ${{ env.SERVICE }}
-      working-directory: ./src
-      shell: bash
-      env:
-        TAG: ${{ env.BRANCH }}
-        REGISTRY: ${{ env.REGISTRY_ENDPOINT }}
+    # - name: Compose push ${{ env.SERVICE }}
+    #   run: sudo -E docker-compose push ${{ env.SERVICE }}
+    #   working-directory: ./src
+    #   shell: bash
+    #   env:
+    #     TAG: ${{ env.BRANCH }}
+    #     REGISTRY: ${{ env.REGISTRY_ENDPOINT }}
 
     - name: Create multiarch manifest
       run: |
         mkdir -p ~/.docker
-        sudo -E sed '$ s/.$//' $DOCKER_CONFIG/config.json > ~/.docker/config.json
+        sed '$ s/.$//' $DOCKER_CONFIG/config.json > ~/.docker/config.json
         echo ',"experimental": "enabled" }' >> ~/.docker/config.json
         docker --config ~/.docker manifest create ${{ env.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:${{ env.BRANCH  }} ${{ env.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:linux-${{ env.BRANCH  }}
         docker --config ~/.docker manifest create ${{ env.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:latest ${{ env.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:linux-latest
