@@ -156,6 +156,7 @@ jobs:
         mkdir -p ~/.docker
         sed '$ s/.$//' $DOCKER_CONFIG/config.json > ~/.docker/config.json
         echo ',"experimental": "enabled" }' >> ~/.docker/config.json
+        docker images
         docker --config ~/.docker manifest create ${{ env.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:${{ env.BRANCH  }} ${{ env.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:linux-${{ env.BRANCH  }}
         docker --config ~/.docker manifest create ${{ env.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:latest ${{ env.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:linux-latest
         docker --config ~/.docker manifest push ${{ env.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:${{ env.BRANCH  }}
