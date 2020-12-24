@@ -17,7 +17,7 @@ on:
     - dev
 env:
   REGISTRY_ENDPOINT: borjasanes
-  REGISTRY_HOST: hub.docker.com
+  REGISTRY_HOST: registry.hub.docker.com
   SERVICES: basket-api
 
 jobs:
