@@ -99,6 +99,8 @@ jobs:
         cat $HOME/.docker/config.json
         echo "STEP 2"
         sed '$ s/.$//' $HOME/.docker/config.json > ~/.docker/config.json
+        echo "STEP 2.5"
+        cat ~/.docker/config.json
         echo "STEP 3"
         echo ', "experimental": "enabled" }' >> ~/.docker/config.json
         echo "STEP 4"
