@@ -92,6 +92,19 @@ jobs:
         TAG: ${{ env.BRANCH }}
         REGISTRY: ${{ env.REGISTRY_ENDPOINT }}
 
+    - name: Create multiarch manifest
+      run: |
+        mkdir -p ~/.docker
+        sed '$ s/.$//' $DOCKER_CONFIG/config.json > ~/.docker/config.json
+        echo ',"experimental": "enabled" }' >> ~/.docker/config.json
+        docker --config ~/.docker manifest create ${{ env.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:${{ env.BRANCH  }} ${{ env.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:linux-${{ env.BRANCH  }}
+        docker --config ~/.docker manifest create ${{ env.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:latest ${{ env.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:linux-latest
+        docker --config ~/.docker manifest push ${{ env.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:${{ env.BRANCH  }}
+        docker --config ~/.docker manifest push ${{ env.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:latest
+      shell: bash
+      env:
+        DOCKER_CONFIG: $HOME/.docker
+
   BuildWindows:
     runs-on: windows-2019
     if:  ${{ false }}
@@ -126,40 +139,6 @@ jobs:
       env:
         TAG: ${{ env.BRANCH }}
         REGISTRY: ${{ env.REGISTRY_ENDPOINT }}
-  
-  BuildMultiarch:
-    env:
-      DOCKER_CONFIG: $HOME/.docker
-    runs-on: ubuntu-latest
-    needs:
-    - BuildLinux
-    if: ${{ github.event_name != 'pull_request' }}
-    steps:
-    - uses: actions/checkout@v2
 
-    - name: Login to Container Registry
-      uses: docker/login-action@v1
-      with:
-        registry: ${{ env.REGISTRY_HOST }}
-        username: ${{ secrets.USERNAME }}
-        password: ${{ secrets.PASSWORD }}
-
-    - name: Set branch name as env variable
-      run: |
-        currentbranch=$(echo ${GITHUB_REF##*/})
-        echo "running on $currentbranch"
-        echo "BRANCH=$currentbranch" >> $GITHUB_ENV
-      shell: bash
-
-    - name: Create multiarch manifest
-      run: |
-        mkdir -p ~/.docker
-        sed '$ s/.$//' $DOCKER_CONFIG/config.json > ~/.docker/config.json
-        echo ',"experimental": "enabled" }' >> ~/.docker/config.json
-        docker images
-        docker --config ~/.docker manifest create ${{ env.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:${{ env.BRANCH  }} ${{ env.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:linux-${{ env.BRANCH  }}
-        docker --config ~/.docker manifest create ${{ env.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:latest ${{ env.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:linux-latest
-        docker --config ~/.docker manifest push ${{ env.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:${{ env.BRANCH  }}
-        docker --config ~/.docker manifest push ${{ env.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:latest
-      shell: bash
+    
                     
