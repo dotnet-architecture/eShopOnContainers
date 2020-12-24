@@ -102,7 +102,7 @@ jobs:
         
     - name: Set branch name as env variable
       shell: pwsh
-      run:  echo ("::set-env name=BRANCH::" + $env:GITHUB_REF.replace('refs/heads/', ''))
+      run: echo "BRANCH=$env:GITHUB_REF.replace('refs/heads/', '')" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 
     - name: Compose build ${{ env.SERVICES }}
       run: docker-compose build -f src/docker-compose.yml ${{ env.SERVICES }}
