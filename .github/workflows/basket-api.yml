@@ -96,6 +96,7 @@ jobs:
       run: |
         mkdir -p ~/.docker
         echo $HOME/.docker/config.json > ~/.docker/config.json
+        cat ~/.docker/config.json
         sed '$ s/.$//' ~/.docker/config.json
         echo ', "experimental": "enabled" }' >> ~/.docker/config.json
         cat ~/.docker/config.json
