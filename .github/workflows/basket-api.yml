@@ -54,7 +54,10 @@ jobs:
         REGISTRY: ${{ env.REGISTRY_ENDPOINT }}
         PLATFORM: win
         NODE_IMAGE: stefanscherer/node-windows:10
+  
   BuildLinux:
+    env:
+      DOCKER_CONFIG: $HOME/.docker
     runs-on: ubuntu-latest
     if: ${{ github.event_name != 'pull_request' }}
     steps:
@@ -91,6 +94,17 @@ jobs:
         TAG: ${{ env.BRANCH }}
         REGISTRY: ${{ env.REGISTRY_ENDPOINT }}
 
+    - name: Create multiarch manifest
+      run: |
+        mkdir -p ~/.docker
+        sed '$ s/.$//' $DOCKER_CONFIG/config.json > ~/.docker/config.json
+        echo ',"experimental": "enabled" }' >> ~/.docker/config.json
+        docker --config ~/.docker manifest create ${{ env.REGISTRY_ENDPOINT  }}/${{ env.SERVICES  }}:${{ env.BRANCH  }} ${{ env.REGISTRY_ENDPOINT  }}/${{ env.SERVICES  }}:linux-${{ env.BRANCH  }}
+        docker --config ~/.docker manifest create ${{ env.REGISTRY_ENDPOINT  }}/${{ env.SERVICES  }}:latest ${{ env.REGISTRY_ENDPOINT  }}/${{ env.SERVICES  }}:linux-latest
+        docker --config ~/.docker manifest push ${{ env.REGISTRY_ENDPOINT  }}/${{ env.SERVICES  }}:${{ env.BRANCH  }}
+        docker --config ~/.docker manifest push ${{ env.REGISTRY_ENDPOINT  }}/${{ env.SERVICES  }}:latest
+      shell: bash
+
   BuildWindows:
     runs-on: windows-2019
     if:  ${{ false }}
@@ -124,40 +138,4 @@ jobs:
       shell: pwsh
       env:
         TAG: ${{ env.BRANCH }}
-        REGISTRY: ${{ env.REGISTRY_ENDPOINT }}
-  
-  BuildMultiarch:
-    env:
-      DOCKER_CONFIG: $HOME/.docker
-    runs-on: ubuntu-latest
-    needs:
-    - BuildLinux
-    if: ${{ github.event_name != 'pull_request' }}
-    steps:
-    - uses: actions/checkout@v2
-
-    - name: Login to Container Registry
-      uses: docker/login-action@v1
-      with:
-        registry: ${{ env.REGISTRY_HOST }}
-        username: ${{ secrets.USERNAME }}
-        password: ${{ secrets.PASSWORD }}
-
-    - name: Set branch name as env variable
-      run: |
-        currentbranch=$(echo ${GITHUB_REF##*/})
-        echo "running on $currentbranch"
-        echo "BRANCH=$currentbranch" >> $GITHUB_ENV
-      shell: bash
-
-    - name: Create multiarch manifest
-      run: |
-        mkdir -p ~/.docker
-        sed '$ s/.$//' $DOCKER_CONFIG/config.json > ~/.docker/config.json
-        echo ',"experimental": "enabled" }' >> ~/.docker/config.json
-        docker --config ~/.docker manifest create ${{ env.REGISTRY_ENDPOINT  }}/${{ env.SERVICES  }}:${{ env.BRANCH  }} ${{ env.REGISTRY_ENDPOINT  }}/${{ env.SERVICES  }}:linux-${{ env.BRANCH  }}
-        docker --config ~/.docker manifest create ${{ env.REGISTRY_ENDPOINT  }}/${{ env.SERVICES  }}:latest ${{ env.REGISTRY_ENDPOINT  }}/${{ env.SERVICES  }}:linux-latest
-        docker --config ~/.docker manifest push ${{ env.REGISTRY_ENDPOINT  }}/${{ env.SERVICES  }}:${{ env.BRANCH  }}
-        docker --config ~/.docker manifest push ${{ env.REGISTRY_ENDPOINT  }}/${{ env.SERVICES  }}:latest
-      shell: bash
-                    
+        REGISTRY: ${{ env.REGISTRY_ENDPOINT }} 
