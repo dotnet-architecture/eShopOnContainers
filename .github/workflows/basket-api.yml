@@ -95,15 +95,13 @@ jobs:
     - name: Create multiarch manifest
       run: |
         mkdir -p ~/.docker
-        sed '$ s/.$//' $DOCKER_CONFIG/config.json > ~/.docker/config.json
+        sudo -E sed '$ s/.$//' $DOCKER_CONFIG/config.json > ~/.docker/config.json
         echo ',"experimental": "enabled" }' >> ~/.docker/config.json
         docker --config ~/.docker manifest create ${{ env.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:${{ env.BRANCH  }} ${{ env.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:linux-${{ env.BRANCH  }}
         docker --config ~/.docker manifest create ${{ env.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:latest ${{ env.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:linux-latest
         docker --config ~/.docker manifest push ${{ env.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:${{ env.BRANCH  }}
         docker --config ~/.docker manifest push ${{ env.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:latest
       shell: bash
-      env:
-        DOCKER_CONFIG: $HOME/.docker
 
   BuildWindows:
     runs-on: windows-2019
