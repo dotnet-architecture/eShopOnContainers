@@ -56,8 +56,6 @@ jobs:
         PLATFORM: win
         NODE_IMAGE: stefanscherer/node-windows:10
   BuildLinux:
-    env:
-      DOCKER_CONFIG: $HOME/.docker
     runs-on: ubuntu-latest
     if: ${{ github.event_name != 'pull_request' }}
     steps:
@@ -97,7 +95,7 @@ jobs:
     - name: Create multiarch manifest
       run: |
         mkdir -p ~/.docker
-        sed '$ s/.$//' $DOCKER_CONFIG/config.json > ~/.docker/config.json
+        sed '$ s/.$//' $HOME/.docker/config.json > ~/.docker/config.json
         echo ',"experimental": "enabled" }' >> ~/.docker/config.json
         docker --config ~/.docker manifest create ${{ env.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:${{ env.BRANCH  }} ${{ env.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:linux-${{ env.BRANCH  }}
         docker --config ~/.docker manifest create ${{ env.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:latest ${{ env.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:linux-latest
