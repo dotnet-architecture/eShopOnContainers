@@ -98,7 +98,7 @@ jobs:
         echo "PRINT 1"
         cat $HOME/.docker/config.json
         echo "STEP 2"
-        sed '$ s/.$//' $HOME/.docker/config.json > ~/.docker/config.json
+        sed '$ s/.$//' $HOME/.docker/config.json >> ~/.docker/config.json
         echo "STEP 2.5"
         cat ~/.docker/config.json
         echo "STEP 3"
