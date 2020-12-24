@@ -94,13 +94,7 @@ jobs:
 
     - name: Create multiarch manifest
       run: |
-        mkdir -p ~/.docker
-        cp $HOME/.docker/config.json ~/.docker/config-tmp.json
-        cat ~/.docker/config-tmp.json
-        sed '$ s/.$//' ~/.docker/config-tmp.json
-        echo ', "experimental": "enabled" }' >> ~/.docker/config-tmp.json
-        cat ~/.docker/config.json
-        cp ~/.docker/config-tmp.json $HOME/.docker/config.json 
+        echo '{"experimental": true}' | sudo tee -a /etc/docker/daemon.json
         docker --config ~/.docker manifest create ${{ env.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:${{ env.BRANCH  }} ${{ env.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:linux-${{ env.BRANCH  }}
         docker --config ~/.docker manifest create ${{ env.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:latest ${{ env.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:linux-latest
         docker --config ~/.docker manifest push ${{ env.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:${{ env.BRANCH  }}
