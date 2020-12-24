@@ -42,8 +42,12 @@ jobs:
     if:  ${{ false }}
     # if: ${{ github.event_name == 'pull_request' }}
     steps:
+    - name: 'Checkout Github Action'
+      uses: actions/checkout@master
+
     - name: Compose build ${{ env.SERVICES  }}
-      run: docker-compose -f src/docker-compose.yml build ${{ env.SERVICES }}
+      run: docker-compose build ${{ env.SERVICES }}
+      working-directory: ./src
       shell: pwsh
       env:
         TAG: ${{ env.branch }}
@@ -92,6 +96,8 @@ jobs:
     # if:  ${{ false }}
     if: ${{ github.event_name != 'pull_request' }}
     steps:
+    - name: 'Checkout Github Action'
+      uses: actions/checkout@master
 
     - name: Login to Container Registry
       uses: azure/docker-login@v1
@@ -105,7 +111,7 @@ jobs:
       run: echo "BRANCH=$($env:GITHUB_REF.replace('refs/heads/', ''))" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 
     - name: Compose build ${{ env.SERVICES }}
-      run: docker-compose -f src/docker-compose.yml build ${{ env.SERVICES }}
+      run: docker-compose build ${{ env.SERVICES }}
       working-directory: ./src
       shell: pwsh
       env:
@@ -113,7 +119,8 @@ jobs:
         REGISTRY: ${{ env.REGISTRY_ENDPOINT }}
 
     - name: Compose push ${{ env.SERVICES }}
-      run: docker-compose  -f src/docker-compose.yml push ${{ env.SERVICES }}'
+      run: docker-compose push ${{ env.SERVICES }}'
+      working-directory: ./src
       shell: pwsh
       env:
         TAG: ${{ env.BRANCH }}
