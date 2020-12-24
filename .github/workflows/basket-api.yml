@@ -95,6 +95,7 @@ jobs:
     - name: Create multiarch manifest
       run: |
         mkdir -p ~/.docker
+        cat $HOME/.docker/config.json
         sed '$ s/.$//' $HOME/.docker/config.json > ~/.docker/config.json
         echo ',"experimental": "enabled" }' >> ~/.docker/config.json
         docker --config ~/.docker manifest create ${{ env.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:${{ env.BRANCH  }} ${{ env.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:linux-${{ env.BRANCH  }}
