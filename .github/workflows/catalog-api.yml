@@ -1,4 +1,4 @@
-name: basket-api
+name: catalog-api
 
 on:
   push:
@@ -8,16 +8,16 @@ on:
 
     paths:
     - src/BuildingBlocks/*
-    - src/Services/Basket/*
-    - .github/workflows/basket-api.yml
+    - src/Services/Catalog/*
+    - .github/workflows/catalog-api.yml
   
   pull_request:
     branches:
     - main
     - dev
 env:
-  SERVICE: basket-api
-  IMAGE: basket.api
+  SERVICE: catalog-api
+  IMAGE: catalog.api
 
 jobs:
 
