@@ -97,13 +97,12 @@ jobs:
         mkdir -p ~/.docker
         echo "PRINT 1"
         cat $HOME/.docker/config.json
-        echo "END PRINT 1"
-        echo "PRINT 2"
+        echo "STEP 2"
         sed '$ s/.$//' $HOME/.docker/config.json > ~/.docker/config.json
-        echo "END PRINT 2"
-        echo "PRINT 3"
+        echo "STEP 3"
         echo ', "experimental": "enabled" }' >> ~/.docker/config.json
-        echo "END PRINT 3"
+        echo "STEP 4"
+        cat ~/.docker/config.json
         docker --config ~/.docker manifest create ${{ env.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:${{ env.BRANCH  }} ${{ env.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:linux-${{ env.BRANCH  }}
         docker --config ~/.docker manifest create ${{ env.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:latest ${{ env.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:linux-latest
         docker --config ~/.docker manifest push ${{ env.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:${{ env.BRANCH  }}
