@@ -76,28 +76,34 @@ jobs:
         echo "BRANCH=$currentbranch" >> $GITHUB_ENV
       shell: bash
 
-    - name: Compose build ${{ env.SERVICE }}
-      run: sudo -E docker-compose build ${{ env.SERVICE }}
-      working-directory: ./src
-      shell: bash
-      env:
-        TAG: ${{ env.BRANCH }}
-        REGISTRY: ${{ env.REGISTRY_ENDPOINT }}
+    # - name: Compose build ${{ env.SERVICE }}
+    #   run: sudo -E docker-compose build ${{ env.SERVICE }}
+    #   working-directory: ./src
+    #   shell: bash
+    #   env:
+    #     TAG: ${{ env.BRANCH }}
+    #     REGISTRY: ${{ env.REGISTRY_ENDPOINT }}
 
-    - name: Compose push ${{ env.SERVICE }}
-      run: sudo -E docker-compose push ${{ env.SERVICE }}
-      working-directory: ./src
-      shell: bash
-      env:
-        TAG: ${{ env.BRANCH }}
-        REGISTRY: ${{ env.REGISTRY_ENDPOINT }}
+    # - name: Compose push ${{ env.SERVICE }}
+    #   run: sudo -E docker-compose push ${{ env.SERVICE }}
+    #   working-directory: ./src
+    #   shell: bash
+    #   env:
+    #     TAG: ${{ env.BRANCH }}
+    #     REGISTRY: ${{ env.REGISTRY_ENDPOINT }}
 
     - name: Create multiarch manifest
       run: |
         mkdir -p ~/.docker
+        echo "PRINT 1"
         cat $HOME/.docker/config.json
+        echo "END PRINT 1"
+        echo "PRINT 2"
         sed '$ s/.$//' $HOME/.docker/config.json > ~/.docker/config.json
-        echo ',"experimental": "enabled" }' >> ~/.docker/config.json
+        echo "END PRINT 2"
+        echo "PRINT 3"
+        echo ', "experimental": "enabled" }' >> ~/.docker/config.json
+        echo "END PRINT 3"
         docker --config ~/.docker manifest create ${{ env.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:${{ env.BRANCH  }} ${{ env.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:linux-${{ env.BRANCH  }}
         docker --config ~/.docker manifest create ${{ env.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:latest ${{ env.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:linux-latest
         docker --config ~/.docker manifest push ${{ env.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:${{ env.BRANCH  }}
