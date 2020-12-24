@@ -94,7 +94,6 @@ jobs:
 
     - name: Create multiarch manifest
       run: |
-        mkdir -p ~/.docker
         sudo sed '$ s/.$//' ~/.docker/config.json
         echo ',"experimental": "enabled" }' >> ~/.docker/config.json
         sudo service docker restart
