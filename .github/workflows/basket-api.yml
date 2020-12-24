@@ -78,21 +78,21 @@ jobs:
         echo "BRANCH=$currentbranch" >> $GITHUB_ENV
       shell: bash
 
-    # - name: Compose build ${{ env.SERVICE }}
-    #   run: sudo -E docker-compose build ${{ env.SERVICE }}
-    #   working-directory: ./src
-    #   shell: bash
-    #   env:
-    #     TAG: ${{ env.BRANCH }}
-    #     REGISTRY: ${{ env.REGISTRY_ENDPOINT }}
+    - name: Compose build ${{ env.SERVICE }}
+      run: sudo -E docker-compose build ${{ env.SERVICE }}
+      working-directory: ./src
+      shell: bash
+      env:
+        TAG: ${{ env.BRANCH }}
+        REGISTRY: ${{ env.REGISTRY_ENDPOINT }}
 
-    # - name: Compose push ${{ env.SERVICE }}
-    #   run: sudo -E docker-compose push ${{ env.SERVICE }}
-    #   working-directory: ./src
-    #   shell: bash
-    #   env:
-    #     TAG: ${{ env.BRANCH }}
-    #     REGISTRY: ${{ env.REGISTRY_ENDPOINT }}
+    - name: Compose push ${{ env.SERVICE }}
+      run: sudo -E docker-compose push ${{ env.SERVICE }}
+      working-directory: ./src
+      shell: bash
+      env:
+        TAG: ${{ env.BRANCH }}
+        REGISTRY: ${{ env.REGISTRY_ENDPOINT }}
 
     - name: Create multiarch manifest
       run: |
