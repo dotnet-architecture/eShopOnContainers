@@ -46,15 +46,14 @@ jobs:
     - name: 'Checkout Github Action'
       uses: actions/checkout@master
 
-    - name: Compose build ${{ env.SERVICE  }}
+    - name: Compose build ${{ env.SERVICE }}
       run: docker-compose build ${{ env.SERVICE }}
       working-directory: ./src
       shell: pwsh
       env:
-        TAG: ${{ env.branch }}
+        TAG: ${{ env.BRANCH }}
         REGISTRY: ${{ env.REGISTRY_ENDPOINT }}
-        PLATFORM: win
-        NODE_IMAGE: stefanscherer/node-windows:10
+
   BuildLinux:
     runs-on: ubuntu-latest
     if: ${{ github.event_name != 'pull_request' }}
@@ -99,9 +98,7 @@ jobs:
         echo $'{\n  "experimental": "enabled"\n}' | sudo tee ~/.docker/config.json
         sudo service docker restart
         docker --config ~/.docker manifest create ${{ env.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:${{ env.BRANCH  }} ${{ env.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:linux-${{ env.BRANCH  }}
-        docker --config ~/.docker manifest create ${{ env.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:latest ${{ env.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:linux-latest
         docker --config ~/.docker manifest push ${{ env.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:${{ env.BRANCH  }}
-        docker --config ~/.docker manifest push ${{ env.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:latest
       shell: bash
 
   BuildWindows:
