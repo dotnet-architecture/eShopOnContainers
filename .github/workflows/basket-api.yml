@@ -127,6 +127,8 @@ jobs:
         REGISTRY: ${{ env.REGISTRY_ENDPOINT }}
   
   BuildMultiarch:
+    env:
+      DOCKER_CONFIG: $HOME/.docker
     runs-on: ubuntu-latest
     needs:
     - BuildLinux
