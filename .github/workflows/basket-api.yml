@@ -39,6 +39,7 @@ jobs:
         REGISTRY: ${{ env.REGISTRY_ENDPOINT }}
 
   BuildContainersForPR_Windows:
+
     runs-on: windows-2019
     if:  ${{ false }}
     # if: ${{ github.event_name == 'pull_request' }}
@@ -93,10 +94,11 @@ jobs:
 
     - name: Create multiarch manifest
       run: |
-        echo $'{\n  "experimental": true\n}' | sudo tee /etc/docker/daemon.json
         mkdir -p ~/.docker
-        echo $'{\n  "experimental": "enabled"\n}' | sudo tee ~/.docker/config.json
+        sudo sed '$ s/.$//' ~/.docker/config.json
+        echo ',"experimental": "enabled" }' >> ~/.docker/config.json
         sudo service docker restart
+        cat ~/.docker/config.json
         docker --config ~/.docker manifest create ${{ env.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:${{ env.BRANCH  }} ${{ env.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:linux-${{ env.BRANCH  }}
         docker --config ~/.docker manifest push ${{ env.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:${{ env.BRANCH  }}
       shell: bash
