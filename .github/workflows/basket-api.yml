@@ -16,21 +16,37 @@ on:
     - master
     - dev
 env:
-  REGISTRY_ENDPOINT: borjasanes
+  REGISTRY_ENDPOINT: eshop
   REGISTRY_HOST: docker.io
   SERVICES: basket-api
 
 jobs:
-  BuildContainersForPR_Linux:
-    runs-on: ubuntu-16.04
-    if: ${{ github.event_name == 'pull_request' }}
+
+  GetImageTag:
+    runs-on: ubuntu-latest
     steps:
+    - name: Set branch name as env variable
+      run: |
+        currentbranch=$(echo ${GITHUB_REF##*/})
+        echo "running on $currentbranch"
+        echo "BRANCH=$currentbranch" >> $GITHUB_ENV
+      shell: bash
+
+  BuildContainersForPR_Linux:
+    runs-on: ubuntu-latest
+    #if: ${{ github.event_name == 'pull_request' }}
+    steps:
+    - name: 'Checkout Github Action'
+      uses: actions/checkout@master
+      
     - name: Compose build ${{ env.SERVICES }}
-      run: docker-compose build -f src/docker-compose.yml ${{ env.SERVICES }}
+      run: sudo -E docker-compose build ${{ env.SERVICES }}
+      working-directory: ./src
       shell: bash
       env:
-        TAG: ${{ env.branch }}
+        TAG: ${{ env.BRANCH }}
         REGISTRY: ${{ env.REGISTRY_ENDPOINT }}
+
   BuildContainersForPR_Windows:
     runs-on: windows-2019
     if:  ${{ false }}
@@ -57,13 +73,6 @@ jobs:
         registry: ${{ env.REGISTRY_HOST }}
         username: ${{ secrets.USERNAME }}
         password: ${{ secrets.PASSWORD }}
-
-    - name: Set branch name as env variable
-      run: |
-        currentbranch=$(echo ${GITHUB_REF##*/})
-        echo "running on $currentbranch"
-        echo "BRANCH=$currentbranch" >> $GITHUB_ENV
-      shell: bash
 
     - name: Compose build ${{ env.SERVICES }}
       run: sudo -E docker-compose build ${{ env.SERVICES }}
