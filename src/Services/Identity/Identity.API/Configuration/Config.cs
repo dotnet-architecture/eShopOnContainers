@@ -13,8 +13,6 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
             {
                 new ApiResource("orders", "Orders Service"),
                 new ApiResource("basket", "Basket Service"),
-                new ApiResource("marketing", "Marketing Service"),
-                new ApiResource("locations", "Locations Service"),
                 new ApiResource("mobileshoppingagg", "Mobile Shopping Aggregator"),
                 new ApiResource("webshoppingagg", "Web Shopping Aggregator"),
                 new ApiResource("orders.signalrhub", "Ordering Signalr Hub"),
@@ -55,8 +53,6 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                         IdentityServerConstants.StandardScopes.Profile,
                         "orders",
                         "basket",
-                        "locations",
-                        "marketing",
                         "webshoppingagg",
                         "orders.signalrhub",
                         "webhooks"
@@ -84,8 +80,6 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                         IdentityServerConstants.StandardScopes.OfflineAccess,
                         "orders",
                         "basket",
-                        "locations",
-                        "marketing",
                         "mobileshoppingagg",
                         "webhooks"
                     },
@@ -122,8 +116,6 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                         IdentityServerConstants.StandardScopes.OfflineAccess,
                         "orders",
                         "basket",
-                        "locations",
-                        "marketing",
                         "webshoppingagg",
                         "orders.signalrhub",
                         "webhooks"
@@ -191,41 +183,9 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                         IdentityServerConstants.StandardScopes.OfflineAccess,
                         "orders",
                         "basket",
-                        "locations",
-                        "marketing",
                         "webshoppingagg",
                         "webhooks"
                     },
-                },
-                new Client
-                {
-                    ClientId = "locationsswaggerui",
-                    ClientName = "Locations Swagger UI",
-                    AllowedGrantTypes = GrantTypes.Implicit,
-                    AllowAccessTokensViaBrowser = true,
-
-                    RedirectUris = { $"{clientsUrl["LocationsApi"]}/swagger/oauth2-redirect.html" },
-                    PostLogoutRedirectUris = { $"{clientsUrl["LocationsApi"]}/swagger/" },
-
-                    AllowedScopes =
-                    {
-                        "locations"
-                    }
-                },
-                new Client
-                {
-                    ClientId = "marketingswaggerui",
-                    ClientName = "Marketing Swagger UI",
-                    AllowedGrantTypes = GrantTypes.Implicit,
-                    AllowAccessTokensViaBrowser = true,
-
-                    RedirectUris = { $"{clientsUrl["MarketingApi"]}/swagger/oauth2-redirect.html" },
-                    PostLogoutRedirectUris = { $"{clientsUrl["MarketingApi"]}/swagger/" },
-
-                    AllowedScopes =
-                    {
-                        "marketing"
-                    }
                 },
                 new Client
                 {

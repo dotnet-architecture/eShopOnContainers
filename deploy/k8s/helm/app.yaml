@@ -13,14 +13,10 @@ app:                                                    # app global settings
       spa: ""                                           # ingress entry for web spa
       status: webstatus                                 # ingress entry for web status
       webshoppingapigw: webshoppingapigw                # ingress entry for web shopping Agw
-      webmarketingapigw: webmarketingapigw              # ingress entry for web mkg Agw
-      mobilemarketingapigw: mobilemarketingapigw        # ingress entry for mobile mkg Agw
       mobileshoppingapigw: mobileshoppingapigw          # ingress entry for mobile shopping Agw
       webshoppingagg: webshoppingagg                    # ingress entry for web shopping aggregator
       mobileshoppingagg: mobileshoppingagg              # ingress entry for mobile shopping aggregator
       payment: payment-api                              # ingress entry for payment api
-      locations: locations-api                          # ingress entry for locations api
-      marketing: marketing-api                          # ingress entry for marketing api
       webhooks: webhooks-api                            # ingress entry for webhooks api
       webhooksweb: webhooks-web                         # ingress entry for webhooks web demo client
   svc:
@@ -34,13 +30,9 @@ app:                                                    # app global settings
       spa: webspa                                       # service name for web spa
       status: webstatus                                 # service name for web status
       webshoppingapigw: webshoppingapigw                # service name for web shopping Agw
-      webmarketingapigw: webmarketingapigw              # service name for web mkg Agw
-      mobilemarketingapigw: mobilemarketingapigw        # service name for mobile mkg Agw
       mobileshoppingapigw: mobileshoppingapigw          # service name for mobile shopping Agw
       webshoppingagg: webshoppingagg                    # service name for web shopping aggregator
       mobileshoppingagg: mobileshoppingagg              # service name for mobile shopping aggregator
       payment: payment-api                              # service name for payment api
-      locations: locations-api                          # service name for locations api
-      marketing: marketing-api                          # service name for marketing ap
       webhooks: webhooks-api                            # service name for webhooks api
       webhooksweb: webhooks-client                      # service name for webhooks web

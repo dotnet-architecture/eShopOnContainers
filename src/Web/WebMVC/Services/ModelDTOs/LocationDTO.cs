@@ -1,8 +1,8 @@
 ﻿namespace WebMVC.Services.ModelDTOs
 {
-    public class LocationDTO
+    public record LocationDTO
     {
-        public double Longitude { get; set; }
-        public double Latitude { get; set; }
+        public double Longitude { get; init; }
+        public double Latitude { get; init; }
     }
 }

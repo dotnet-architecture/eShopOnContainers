@@ -7,21 +7,17 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.eShopOnContainers.WebMVC.Services;
 using Microsoft.eShopOnContainers.WebMVC.ViewModels;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Logging;
 using StackExchange.Redis;
 using System;
 using System.IdentityModel.Tokens.Jwt;
-using System.Net.Http;
 using WebMVC.Infrastructure;
-using WebMVC.Infrastructure.Middlewares;
 using WebMVC.Services;
 
 namespace Microsoft.eShopOnContainers.WebMVC
@@ -75,11 +71,6 @@ namespace Microsoft.eShopOnContainers.WebMVC
 
             app.UseStaticFiles();
             app.UseSession();
-
-            if (Configuration.GetValue<bool>("UseLoadTest"))
-            {
-                app.UseMiddleware<ByPassAuthMiddleware>();
-            }
 
             WebContextSeed.Seed(app, env);
             
@@ -175,13 +166,6 @@ namespace Microsoft.eShopOnContainers.WebMVC
                  .AddHttpMessageHandler<HttpClientRequestIdDelegatingHandler>()
                  .AddDevspacesSupport();
 
-            services.AddHttpClient<ICampaignService, CampaignService>()
-                .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
-                .AddDevspacesSupport();
-
-            services.AddHttpClient<ILocationService, LocationService>()
-               .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
-               .AddDevspacesSupport();
 
             //add custom application services
             services.AddTransient<IIdentityParser<ApplicationUser>, IdentityParser>();
@@ -192,7 +176,6 @@ namespace Microsoft.eShopOnContainers.WebMVC
 
         public static IServiceCollection AddCustomAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
-            var useLoadTest = configuration.GetValue<bool>("UseLoadTest");
             var identityUrl = configuration.GetValue<string>("IdentityUrl");
             var callBackUrl = configuration.GetValue<string>("CallBackUrl");
             var sessionCookieLifetime = configuration.GetValue("SessionCookieLifetimeMinutes", 60);
@@ -210,9 +193,9 @@ namespace Microsoft.eShopOnContainers.WebMVC
                 options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.Authority = identityUrl.ToString();
                 options.SignedOutRedirectUri = callBackUrl.ToString();
-                options.ClientId = useLoadTest ? "mvctest" : "mvc";
+                options.ClientId = "mvc";
                 options.ClientSecret = "secret";
-                options.ResponseType = useLoadTest ? "code id_token token" : "code id_token";
+                options.ResponseType = "code id_token";
                 options.SaveTokens = true;
                 options.GetClaimsFromUserInfoEndpoint = true;
                 options.RequireHttpsMetadata = false;
@@ -220,8 +203,6 @@ namespace Microsoft.eShopOnContainers.WebMVC
                 options.Scope.Add("profile");
                 options.Scope.Add("orders");
                 options.Scope.Add("basket");
-                options.Scope.Add("marketing");
-                options.Scope.Add("locations");
                 options.Scope.Add("webshoppingagg");
                 options.Scope.Add("orders.signalrhub");
             });
