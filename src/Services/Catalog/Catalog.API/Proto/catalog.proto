@@ -10,6 +10,7 @@ package CatalogApi;
 message CatalogItemRequest {
 	int32 id = 1;
 }
+
 message CatalogItemsRequest {
 	string ids = 1;
 	int32 pageSize = 2;

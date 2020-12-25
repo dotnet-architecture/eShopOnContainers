@@ -36,6 +36,19 @@ static_resources:
                 route:
                   auto_host_rewrite: true
                   cluster: marketing
+              - name: "l-short"
+                match:
+                  prefix: "/l/"
+                route:
+                  auto_host_rewrite: true
+                  prefix_rewrite: "/locations-api/"
+                  cluster: locations
+              - name: "l-long"
+                match:
+                  prefix: "/locations-api/"
+                route:
+                  auto_host_rewrite: true
+                  cluster: locations
           http_filters:
           - name: envoy.router      
           access_log:

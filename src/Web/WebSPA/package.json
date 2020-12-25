@@ -52,6 +52,7 @@
     "popper.js": "1.16.1",
     "rxjs": "~6.4.0",
     "rxjs-compat": "~6.4.0",
+    "typedoc": "^0.19.2",
     "webpack-dev-server": "3.1.14",
     "zone.js": "~0.9.1"
   },
@@ -85,7 +86,7 @@
     "ts-helpers": "1.1.2",
     "ts-node": "~7.0.1",
     "tslint": "^5.14.0",
-    "typedoc": "^0.15.8",
+    "typedoc": "^0.19.2",
     "typescript": "3.4.5",
     "url-loader": "1.1.1",
     "webpack": "^4.42.1"

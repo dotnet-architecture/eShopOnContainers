@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.WebMVC.ViewModels.Annotations
 {
@@ -24,7 +21,8 @@ namespace Microsoft.eShopOnContainers.WebMVC.ViewModels.Annotations
                 DateTime d = new DateTime(year, month, 1);
 
                 return d > DateTime.UtcNow;
-            } else
+            }
+            else
             {
                 return false;
             }

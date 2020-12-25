@@ -1,6 +1,5 @@
 ﻿namespace FunctionalTests.Services.Locations
 {
-    using Microsoft.AspNetCore;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.TestHost;
     using Microsoft.Extensions.Configuration;

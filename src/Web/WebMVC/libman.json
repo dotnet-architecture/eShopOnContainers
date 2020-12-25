@@ -37,7 +37,7 @@
     },
     {
       "provider": "unpkg",
-      "library": "@microsoft/signalr@3.0.1",
+      "library": "@microsoft/signalr@latest",
       "destination": "wwwroot/lib/@microsoft/signalr/",
       "files": [
         "dist/browser/signalr.js",

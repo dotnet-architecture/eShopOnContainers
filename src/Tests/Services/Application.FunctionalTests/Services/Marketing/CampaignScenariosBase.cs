@@ -1,7 +1,5 @@
 ﻿namespace FunctionalTests.Services.Marketing
 {
-    using System;
-
     public class CampaignScenariosBase : MarketingScenariosBase
     {
         public static class Get

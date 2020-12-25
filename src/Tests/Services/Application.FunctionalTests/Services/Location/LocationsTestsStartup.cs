@@ -1,7 +1,6 @@
 ﻿namespace FunctionalTests.Services.Locations
 {
     using Microsoft.AspNetCore.Builder;
-    using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
     using Microsoft.eShopOnContainers.Services.Locations.API;
     using Microsoft.Extensions.Configuration;
@@ -19,6 +18,7 @@
             if (Configuration["isTest"] == bool.TrueString.ToLowerInvariant())
             {
                 app.UseMiddleware<LocationAuthorizeMiddleware>();
+                app.UseAuthorization();
             }
             else
             {

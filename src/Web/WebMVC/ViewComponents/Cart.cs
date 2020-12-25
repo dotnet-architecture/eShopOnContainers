@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.eShopOnContainers.WebMVC.Services;
 using Microsoft.eShopOnContainers.WebMVC.ViewModels;
 using Microsoft.eShopOnContainers.WebMVC.ViewModels.CartViewModels;
-using Microsoft.eShopOnContainers.WebMVC.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.WebMVC.ViewComponents
@@ -24,7 +21,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.ViewComponents
                 vm.ItemsCount = itemsInCart;
                 return View(vm);
             }
-            catch 
+            catch
             {
                 ViewBag.IsBasketInoperative = true;
             }

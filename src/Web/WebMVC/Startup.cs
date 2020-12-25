@@ -7,19 +7,16 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.eShopOnContainers.WebMVC.Services;
 using Microsoft.eShopOnContainers.WebMVC.ViewModels;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Logging;
 using StackExchange.Redis;
 using System;
 using System.IdentityModel.Tokens.Jwt;
-using System.Net.Http;
 using WebMVC.Infrastructure;
 using WebMVC.Infrastructure.Middlewares;
 using WebMVC.Services;
@@ -46,8 +43,8 @@ namespace Microsoft.eShopOnContainers.WebMVC
                 .AddDevspaces()
                 .AddHttpClientServices(Configuration);
 
-            IdentityModelEventSource.ShowPII  = true;       // Caution! Do NOT use in production: https://aka.ms/IdentityModel/PII
-            
+            IdentityModelEventSource.ShowPII = true;       // Caution! Do NOT use in production: https://aka.ms/IdentityModel/PII
+
             services.AddControllers();
 
             services.AddCustomAuthentication(Configuration);
@@ -83,8 +80,12 @@ namespace Microsoft.eShopOnContainers.WebMVC
 
             WebContextSeed.Seed(app, env);
 
+            // Fix samesite issue when running eShop from docker-compose locally as by default http protocol is being used
+            // Refer to https://github.com/dotnet-architecture/eShopOnContainers/issues/1391
+            app.UseCookiePolicy(new CookiePolicyOptions { MinimumSameSitePolicy = AspNetCore.Http.SameSiteMode.Lax });
+
             app.UseRouting();
-            
+
             app.UseAuthentication();
             app.UseAuthorization();
 

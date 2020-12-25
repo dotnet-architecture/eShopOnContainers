@@ -15,7 +15,7 @@ using Xunit;
 namespace FunctionalTests.Services.Ordering
 {
     public class OrderingScenarios : OrderingScenariosBase
-    {        
+    {
         [Fact]
         public async Task Cancel_basket_and_check_order_status_cancelled()
         {
@@ -69,7 +69,8 @@ namespace FunctionalTests.Services.Ordering
                 var ordersGetResponse = await orderClient.GetStringAsync(OrderingScenariosBase.Get.Orders);
                 var orders = JsonConvert.DeserializeObject<List<Order>>(ordersGetResponse);
 
-                if (orders == null || orders.Count == 0) {
+                if (orders == null || orders.Count == 0)
+                {
                     counter++;
                     await Task.Delay(100);
                     continue;
@@ -84,9 +85,9 @@ namespace FunctionalTests.Services.Ordering
                 if (IsOrderCreated(order, city))
                 {
                     break;
-                }                
-            }                
-            
+                }
+            }
+
             return order;
         }
 
@@ -117,7 +118,7 @@ namespace FunctionalTests.Services.Ordering
             var order = new OrderDTO()
             {
                 OrderNumber = orderId
-            };           
+            };
             return JsonConvert.SerializeObject(order);
         }
 
@@ -135,7 +136,7 @@ namespace FunctionalTests.Services.Ordering
                 CardExpiration = DateTime.Now.AddYears(1),
                 CardSecurityNumber = "123",
                 CardTypeId = 1,
-                Buyer = "Buyer",                
+                Buyer = "Buyer",
                 RequestId = Guid.NewGuid()
             };
 
@@ -143,4 +144,3 @@ namespace FunctionalTests.Services.Ordering
         }
     }
 }
- 

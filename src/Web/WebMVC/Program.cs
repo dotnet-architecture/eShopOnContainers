@@ -42,13 +42,13 @@ namespace Microsoft.eShopOnContainers.WebMVC
 
         private static IWebHost BuildWebHost(IConfiguration configuration, string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .CaptureStartupErrors(false)                
+                .CaptureStartupErrors(false)
                 .ConfigureAppConfiguration(x => x.AddConfiguration(configuration))
                 .UseStartup<Startup>()
                 .UseSerilog()
                 .Build();
 
-         private static Serilog.ILogger CreateSerilogLogger(IConfiguration configuration)
+        private static Serilog.ILogger CreateSerilogLogger(IConfiguration configuration)
         {
             var seqServerUrl = configuration["Serilog:SeqServerUrl"];
             var logstashUrl = configuration["Serilog:LogstashgUrl"];
@@ -57,10 +57,12 @@ namespace Microsoft.eShopOnContainers.WebMVC
                 .Enrich.WithProperty("ApplicationContext", AppName)
                 .Enrich.FromLogContext()
                 .WriteTo.Console();
-            if (!string.IsNullOrWhiteSpace(seqServerUrl)) {
+            if (!string.IsNullOrWhiteSpace(seqServerUrl))
+            {
                 cfg.WriteTo.Seq(seqServerUrl);
             }
-            if (!string.IsNullOrWhiteSpace(logstashUrl)) {
+            if (!string.IsNullOrWhiteSpace(logstashUrl))
+            {
                 cfg.WriteTo.Http(logstashUrl);
             }
             return cfg.CreateLogger();
