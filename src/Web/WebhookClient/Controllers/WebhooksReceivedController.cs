@@ -1,9 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebhookClient.Models;
@@ -19,7 +16,7 @@ namespace WebhookClient.Controllers
         private readonly Settings _settings;
         private readonly ILogger _logger;
         private readonly IHooksRepository _hooksRepository;
-        
+
         public WebhooksReceivedController(IOptions<Settings> settings, ILogger<WebhooksReceivedController> logger, IHooksRepository hooksRepository)
         {
             _settings = settings.Value;
