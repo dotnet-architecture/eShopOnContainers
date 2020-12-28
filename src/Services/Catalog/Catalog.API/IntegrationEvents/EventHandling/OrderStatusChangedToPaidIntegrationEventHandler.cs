@@ -7,7 +7,7 @@
     using Serilog.Context;
     using System.Threading.Tasks;
 
-    public class OrderStatusChangedToPaidIntegrationEventHandler : 
+    public class OrderStatusChangedToPaidIntegrationEventHandler :
         IIntegrationEventHandler<OrderStatusChangedToPaidIntegrationEvent>
     {
         private readonly CatalogContext _catalogContext;
