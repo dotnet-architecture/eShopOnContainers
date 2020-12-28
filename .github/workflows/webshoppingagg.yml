@@ -5,6 +5,7 @@ on:
     branches:
     - main
     - dev
+    - feature/github-actions
 
     paths:
     - src/ApiGateways/Web.Bff.Shopping/aggregator/*
