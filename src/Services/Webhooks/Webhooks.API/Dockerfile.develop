@@ -18,6 +18,6 @@ COPY ["NuGet.config", "NuGet.config"]
 RUN dotnet restore Services/Webhooks/Webhooks.API/Webhooks.API.csproj -nowarn:msb3202,nu1503
 COPY . .
 WORKDIR "/src/Services/Webhooks/Webhooks.API"
-RUN dotnet build  --no-restore -c $BUILD_CONFIGURATION
+RUN dotnet build -c $BUILD_CONFIGURATION
 
 ENTRYPOINT ["dotnet", "run", "--no-build", "--no-launch-profile", "-c", "$BUILD_CONFIGURATION", "--"]
