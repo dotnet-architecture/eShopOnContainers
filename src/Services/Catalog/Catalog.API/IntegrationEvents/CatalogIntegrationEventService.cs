@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Catalog.API.IntegrationEvents
 {
-    public class CatalogIntegrationEventService : ICatalogIntegrationEventService,IDisposable
+    public class CatalogIntegrationEventService : ICatalogIntegrationEventService, IDisposable
     {
         private readonly Func<DbConnection, IIntegrationEventLogService> _integrationEventLogServiceFactory;
         private readonly IEventBus _eventBus;
@@ -73,7 +73,7 @@ namespace Catalog.API.IntegrationEvents
                 {
                     (_eventLogService as IDisposable)?.Dispose();
                 }
-               
+
                 disposedValue = true;
             }
         }
