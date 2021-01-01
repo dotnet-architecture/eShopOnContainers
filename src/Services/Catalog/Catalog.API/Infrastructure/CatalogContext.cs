@@ -19,7 +19,7 @@
             builder.ApplyConfiguration(new CatalogBrandEntityTypeConfiguration());
             builder.ApplyConfiguration(new CatalogTypeEntityTypeConfiguration());
             builder.ApplyConfiguration(new CatalogItemEntityTypeConfiguration());
-        }     
+        }
     }
 
 
@@ -27,7 +27,7 @@
     {
         public CatalogContext CreateDbContext(string[] args)
         {
-            var optionsBuilder =  new DbContextOptionsBuilder<CatalogContext>()
+            var optionsBuilder = new DbContextOptionsBuilder<CatalogContext>()
                 .UseSqlServer("Server=.;Initial Catalog=Microsoft.eShopOnContainers.Services.CatalogDb;Integrated Security=true");
 
             return new CatalogContext(optionsBuilder.Options);
