@@ -15,15 +15,6 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Services
 
             var channel = GrpcChannel.ForAddress(urlGrpc);
 
-            /*
-            using var httpClientHandler = new HttpClientHandler
-            {
-                ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; }
-            };
-
-            */
-
-
             Log.Information("Creating grpc client base address urlGrpc ={@urlGrpc}, BaseAddress={@BaseAddress} ", urlGrpc, channel.Target);
 
             try
@@ -46,13 +37,6 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Services
         {
             AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
             AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2Support", true);
-
-            /*
-            using var httpClientHandler = new HttpClientHandler
-            {
-                ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; }
-            };
-            */
 
             var channel = GrpcChannel.ForAddress(urlGrpc);
 
