@@ -1,5 +1,5 @@
 <a href="https://dot.net/architecture">
-   <img src="/img/eshop_logo.png?raw=true" alt="eShop logo" title="eShopOnContainers" align="right" height="60" />
+   <img src="https://github.com/dotnet-architecture/eShopOnContainers/raw/dev/img/eshop_logo.png" alt="eShop logo" title="eShopOnContainers" align="right" height="60" />
 </a>
 
 # DISCLAIMER
@@ -10,6 +10,7 @@ This repo contains the following changes which are not published upstream.
 - Introduced a new folder src/cert to copy local self signed certificates to the docker images without which the `dotnet restore` command fails.
 - Plan to introduce the GraphQL aggregator API
 
+---
 
 # .NET Microservices Sample Reference Application
 
@@ -19,16 +20,16 @@ Sample .NET Core reference application, powered by Microsoft, based on a simplif
 
 ## Azure DevOps - Build Status
 
-| Image              | Status                                                                                                                                                                                                                                              | Image                        | Status                                                                                                                                                                                                                                                              |
-| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Api Gateway (base) | [![Api Gateways base image](https://msftdevtools.visualstudio.com/eShopOnContainers/_apis/build/status/microservices/apigws?branchName=dev)](https://msftdevtools.visualstudio.com/eShopOnContainers/_build/latest?definitionId=201&branchName=dev) | Shopping Aggregator (Web)    | [![Web Shopping Aggregator](https://msftdevtools.visualstudio.com/eShopOnContainers/_apis/build/status/microservices/web-shopping-agg?branchName=dev)](https://msftdevtools.visualstudio.com/eShopOnContainers/_build/latest?definitionId=206&branchName=dev)       |
-| Basket API         | [![Basket API](https://msftdevtools.visualstudio.com/eShopOnContainers/_apis/build/status/microservices/basket?branchName=dev)](https://msftdevtools.visualstudio.com/eShopOnContainers/_build/latest?definitionId=199&branchName=dev)              | Shopping Aggregator (Mobile) | [![Mobile Shopping Aggregator](https://msftdevtools.visualstudio.com/eShopOnContainers/_apis/build/status/microservices/mobile-shopping-agg?branchName=dev)](https://msftdevtools.visualstudio.com/eShopOnContainers/_build/latest?definitionId=204&branchName=dev) |
-| Catalog API        | [![Catalog API](https://msftdevtools.visualstudio.com/eShopOnContainers/_apis/build/status/microservices/catalog?branchName=dev)](https://msftdevtools.visualstudio.com/eShopOnContainers/_build/latest?definitionId=197&branchName=dev)            | Web Client (MVC)             | [![WebMVC Client](https://msftdevtools.visualstudio.com/eShopOnContainers/_apis/build/status/microservices/webmvc?branchName=dev)](https://msftdevtools.visualstudio.com/eShopOnContainers/_build/latest?definitionId=209&branchName=dev)                           |
-| Identity API       | [![Identity API](https://msftdevtools.visualstudio.com/eShopOnContainers/_apis/build/status/microservices/identity?branchName=dev)](https://msftdevtools.visualstudio.com/eShopOnContainers/_build/latest?definitionId=200&branchName=dev)          | Web Client (SPA)             | [![WebSPA Client](https://msftdevtools.visualstudio.com/eShopOnContainers/_apis/build/status/microservices/webspa?branchName=dev)](https://msftdevtools.visualstudio.com/eShopOnContainers/_build/latest?definitionId=210&branchName=dev)                           |
-| Location API       | [![Location API](https://msftdevtools.visualstudio.com/eShopOnContainers/_apis/build/status/microservices/location?branchName=dev)](https://msftdevtools.visualstudio.com/eShopOnContainers/_build/latest?definitionId=202&branchName=dev)          | Web Status (Health)          | [![Web Status](https://msftdevtools.visualstudio.com/eShopOnContainers/_apis/build/status/microservices/webstatus?branchName=dev)](https://msftdevtools.visualstudio.com/eShopOnContainers/_build/latest?definitionId=211&branchName=dev)                           |
-| Marketing API      | [![Marketing API](https://msftdevtools.visualstudio.com/eShopOnContainers/_apis/build/status/microservices/marketing?branchName=dev)](https://msftdevtools.visualstudio.com/eShopOnContainers/_build/latest?definitionId=203&branchName=dev)        | Webhooks API                 | [![Webhooks API](https://msftdevtools.visualstudio.com/eShopOnContainers/_apis/build/status/microservices/webhooks?branchName=dev)](https://msftdevtools.visualstudio.com/eShopOnContainers/_build/latest?definitionId=207&branchName=dev)                          |
-| Ordering API       | [![Ordering API](https://msftdevtools.visualstudio.com/eShopOnContainers/_apis/build/status/microservices/ordering?branchName=dev)](https://msftdevtools.visualstudio.com/eShopOnContainers/_build/latest?definitionId=198&branchName=dev)          | Webhooks Client              | [![Webhooks demo client](https://msftdevtools.visualstudio.com/eShopOnContainers/_apis/build/status/microservices/webhooks-client?branchName=dev)](https://msftdevtools.visualstudio.com/eShopOnContainers/_build/latest?definitionId=208&branchName=dev)           |
-| Payment API        | [![Payment API](https://msftdevtools.visualstudio.com/eShopOnContainers/_apis/build/status/microservices/payment?branchName=dev)](https://msftdevtools.visualstudio.com/eShopOnContainers/_build/latest?definitionId=205&branchName=dev)            |                              |                                                                                                                                                                                                                                                                     |
+| Image | Status | Image | Status |
+| ------------- | ------------- | ------------- | ------------- |
+| Api Gateway (base) |  [![Api Gateways base image](https://msftdevtools.visualstudio.com/eShopOnContainers/_apis/build/status/microservices/apigws?branchName=dev)](https://msftdevtools.visualstudio.com/eShopOnContainers/_build/latest?definitionId=201&branchName=dev) | Shopping Aggregator (Web) | [![Web Shopping Aggregator](https://msftdevtools.visualstudio.com/eShopOnContainers/_apis/build/status/microservices/web-shopping-agg?branchName=dev)](https://msftdevtools.visualstudio.com/eShopOnContainers/_build/latest?definitionId=206&branchName=dev) |
+| Basket API | [![Basket API](https://msftdevtools.visualstudio.com/eShopOnContainers/_apis/build/status/microservices/basket?branchName=dev)](https://msftdevtools.visualstudio.com/eShopOnContainers/_build/latest?definitionId=199&branchName=dev) | Shopping Aggregator (Mobile) | [![Mobile Shopping Aggregator](https://msftdevtools.visualstudio.com/eShopOnContainers/_apis/build/status/microservices/mobile-shopping-agg?branchName=dev)](https://msftdevtools.visualstudio.com/eShopOnContainers/_build/latest?definitionId=204&branchName=dev) |
+| Catalog API | [![Catalog API](https://msftdevtools.visualstudio.com/eShopOnContainers/_apis/build/status/microservices/catalog?branchName=dev)](https://msftdevtools.visualstudio.com/eShopOnContainers/_build/latest?definitionId=197&branchName=dev) | Web Client (MVC) | [![WebMVC Client](https://msftdevtools.visualstudio.com/eShopOnContainers/_apis/build/status/microservices/webmvc?branchName=dev)](https://msftdevtools.visualstudio.com/eShopOnContainers/_build/latest?definitionId=209&branchName=dev) |
+|Identity API | [![Identity API](https://msftdevtools.visualstudio.com/eShopOnContainers/_apis/build/status/microservices/identity?branchName=dev)](https://msftdevtools.visualstudio.com/eShopOnContainers/_build/latest?definitionId=200&branchName=dev) | Web Client (SPA) | [![WebSPA Client](https://msftdevtools.visualstudio.com/eShopOnContainers/_apis/build/status/microservices/webspa?branchName=dev)](https://msftdevtools.visualstudio.com/eShopOnContainers/_build/latest?definitionId=210&branchName=dev) |
+| Location API | [![Location API](https://msftdevtools.visualstudio.com/eShopOnContainers/_apis/build/status/microservices/location?branchName=dev)](https://msftdevtools.visualstudio.com/eShopOnContainers/_build/latest?definitionId=202&branchName=dev) | Web Status (Health) | [![Web Status](https://msftdevtools.visualstudio.com/eShopOnContainers/_apis/build/status/microservices/webstatus?branchName=dev)](https://msftdevtools.visualstudio.com/eShopOnContainers/_build/latest?definitionId=211&branchName=dev) |
+| Marketing API | [![Marketing API](https://msftdevtools.visualstudio.com/eShopOnContainers/_apis/build/status/microservices/marketing?branchName=dev)](https://msftdevtools.visualstudio.com/eShopOnContainers/_build/latest?definitionId=203&branchName=dev)  | Webhooks API | [![Webhooks API](https://msftdevtools.visualstudio.com/eShopOnContainers/_apis/build/status/microservices/webhooks?branchName=dev)](https://msftdevtools.visualstudio.com/eShopOnContainers/_build/latest?definitionId=207&branchName=dev)  |
+| Ordering API | [![Ordering API](https://msftdevtools.visualstudio.com/eShopOnContainers/_apis/build/status/microservices/ordering?branchName=dev)](https://msftdevtools.visualstudio.com/eShopOnContainers/_build/latest?definitionId=198&branchName=dev) | Webhooks Client | [![Webhooks demo client](https://msftdevtools.visualstudio.com/eShopOnContainers/_apis/build/status/microservices/webhooks-client?branchName=dev)](https://msftdevtools.visualstudio.com/eShopOnContainers/_build/latest?definitionId=208&branchName=dev) |
+| Payment API | [![Payment API](https://msftdevtools.visualstudio.com/eShopOnContainers/_apis/build/status/microservices/payment?branchName=dev)](https://msftdevtools.visualstudio.com/eShopOnContainers/_build/latest?definitionId=205&branchName=dev) | | |
 
 _**Dev** branch contains the latest **beta** code and their images are tagged with `:linux-dev` in our [Docker Hub](https://hub.docker.com/u/eshop)_
 
@@ -49,13 +50,14 @@ Web MVC :  http://host.docker.internal:5100/
 Web SPA :  http://host.docker.internal:5104/
 ```
 
-> Note: If you are running this application in macOS then use `docker.for.mac.localhost` as DNS name in `.env` file and the above URLs instead of `host.docker.internal`.
+>Note: If you are running this application in macOS then use `docker.for.mac.localhost` as DNS name in `.env` file and the above URLs instead of `host.docker.internal`.
 
-Below are the other avenues to setup _eShopOnContainers_.
+Below are the other avenues to setup *eShopOnContainers*.
 
 ### Basic scenario
 
 The basic scenario can be run locally using docker-compose, and also deployed to a local Kubernetes cluster. Refer to these Wiki pages to Get Started:
+
 
 - [Visual Studio (F5 experience)](https://github.com/dotnet-architecture/eShopOnContainers/wiki/Windows-setup#optional---use-visual-studio)
 - [Docker compose on windows](https://github.com/dotnet-architecture/eShopOnContainers/wiki/Windows-setup)
@@ -66,9 +68,10 @@ The basic scenario can be run locally using docker-compose, and also deployed to
 
 The Advanced scenario can be run only in a Kubernetes cluster. Currently this scenario is the same as a basic scenario with the following differences:
 
-- [Deploy to AKS with a Service Mesh for resiliency](<https://github.com/dotnet-architecture/eShopOnContainers/wiki/Deploy-to-Azure-Kubernetes-Service-(AKS)>)
+- [Deploy to AKS with a Service Mesh for resiliency](https://github.com/dotnet-architecture/eShopOnContainers/wiki/Deploy-to-Azure-Kubernetes-Service-(AKS))
 
 In the future more features will be implemented in the advanced scenario.
+
 
 ## IMPORTANT NOTES!
 
@@ -81,11 +84,11 @@ Do you want to be up-to-date on .NET Architecture guidance and reference apps li
 
 ## Updated for .NET Core 3.1 (LTS)
 
-eShopOnContainers is updated to .NET Core 3.1 "wave" of technologies. Not just compilation but also new recommended code in EF Core, ASP.NET Core, and other new related versions with several significant changes.
+eShopOnContainers is updated to .NET Core 3.1  "wave" of technologies. Not just compilation but also new recommended code in EF Core, ASP.NET Core, and other new related versions with several significant changes.
 
 **See more details in the [Release notes](https://github.com/dotnet-architecture/eShopOnContainers/wiki/Release-notes) wiki page**.
 
-> **PLEASE** Read our [branch guide](./branch-guide.md) to know about our branching policy
+>**PLEASE** Read our [branch guide](./branch-guide.md) to know about our branching policy
 >
 > ### DISCLAIMER
 >
@@ -106,16 +109,15 @@ You can find the related reference **Guide/eBook** focusing on **architecting an
 There are also additional eBooks focusing on Containers/Docker lifecycle (DevOps, CI/CD, etc.) with Microsoft Tools, already published plus an additional eBook focusing on Enterprise Apps Patterns with Xamarin.Forms.
 You can download them and start reviewing these Guides/eBooks here:
 
-| Architecting & Developing                                                          | Containers Lifecycle & CI/CD                                                     | App patterns with Xamarin.Forms                                                                      |
-| ---------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
-| [![](img/architecture-book-cover-large-we.png)](https://aka.ms/microservicesebook) | [![](img/devops-book-cover-large-we.png)](https://aka.ms/dockerlifecycleebook)   | [![](img/xamarin-enterprise-patterns-ebook-cover-large-we.png)](https://aka.ms/xamarinpatternsebook) |
-| <sup> <a href='https://aka.ms/microservicesebook'>**Download PDF**</a> </sup>      | <sup> <a href='https://aka.ms/dockerlifecycleebook'>**Download PDF** </a> </sup> | <sup> <a href='https://aka.ms/xamarinpatternsebook'>**Download PDF** </a> </sup>                     |
+| Architecting & Developing | Containers Lifecycle & CI/CD | App patterns with Xamarin.Forms |
+| ------------ | ------------|  ------------|
+| [![](img/architecture-book-cover-large-we.png)](https://aka.ms/microservicesebook) | [![](img/devops-book-cover-large-we.png)](https://aka.ms/dockerlifecycleebook) | [![](img/xamarin-enterprise-patterns-ebook-cover-large-we.png)](https://aka.ms/xamarinpatternsebook) |
+| <sup> <a href='https://aka.ms/microservicesebook'>**Download PDF**</a> </sup>  | <sup> <a href='https://aka.ms/dockerlifecycleebook'>**Download PDF** </a>  </sup> | <sup> <a href='https://aka.ms/xamarinpatternsebook'>**Download PDF**  </a>  </sup> |
 
 For more free e-Books check out [.NET Architecture center](https://dot.net/architecture). If you have an e-book feedback, let us know by creating a new issue here: <https://github.com/dotnet-architecture/ebooks/issues>
 
-## Are you new to **microservices** and **cloud-native development**?
-
-Take a look at the free course [Create and deploy a cloud-native ASP.NET Core microservice](https://docs.microsoft.com/en-us/learn/modules/microservices-aspnet-core/) on MS Learn. This module explains microservices concepts, cloud-native technologies, and reduce the friction in getting started with `eShopOnContainers`.
+## Are you new to **microservices** and **cloud-native development**? 
+Take a look at the free course [Create and deploy a cloud-native ASP.NET Core microservice](https://docs.microsoft.com/en-us/learn/modules/microservices-aspnet-core/) on MS Learn.  This module explains microservices concepts, cloud-native technologies, and reduce the friction in getting started with `eShopOnContainers`.
 
 ## Read further
 
