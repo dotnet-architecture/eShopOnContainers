@@ -277,3 +277,5 @@ pub/
 src/**/app.yaml
 src/**/inf.yaml
 
+# Ignores all local certificates
+src/cert/*.crt

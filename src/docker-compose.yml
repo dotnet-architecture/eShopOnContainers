@@ -1,12 +1,11 @@
-version: '3.4'
+version: "3.4"
 
 services:
-
   seq:
     image: datalust/seq:latest
 
   sqldata:
-    image: mcr.microsoft.com/mssql/server:2017-latest 
+    image: mcr.microsoft.com/mssql/server:2017-latest
 
   nosqldata:
     image: mongo
@@ -162,10 +161,10 @@ services:
       dockerfile: Web/WebSPA/Dockerfile
       args:
         NODE_IMAGE: ${NODE_IMAGE:-node:10.13}
-#    depends_on:
-#      - webshoppingagg
-#      - webshoppingapigw
-#      - webmarketingapigw
+  #    depends_on:
+  #      - webshoppingagg
+  #      - webshoppingapigw
+  #      - webmarketingapigw
 
   webmvc:
     image: ${REGISTRY:-eshop}/webmvc:${PLATFORM:-linux}-${TAG:-latest}
