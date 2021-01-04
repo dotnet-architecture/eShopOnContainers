@@ -27,7 +27,7 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Services
         {
             return await GrpcCallerService.CallService(_urls.GrpcBasket, async channel =>
             {
-                
+
                 var client = new Basket.BasketClient(channel);
                 _logger.LogDebug("grpc client created, request = {@id}", id);
                 var response = await client.GetBasketByIdAsync(new BasketRequest { Id = id });
