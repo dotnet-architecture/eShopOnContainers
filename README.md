@@ -2,16 +2,6 @@
    <img src="https://github.com/dotnet-architecture/eShopOnContainers/raw/dev/img/eshop_logo.png" alt="eShop logo" title="eShopOnContainers" align="right" height="60" />
 </a>
 
-# DISCLAIMER
-
-This repo contains the following changes which are not published upstream.
-
-- Change to .NET 5
-- Introduced a new folder src/cert to copy local self signed certificates to the docker images without which the `dotnet restore` command fails.
-- Plan to introduce the GraphQL aggregator API
-
----
-
 # .NET Microservices Sample Reference Application
 
 Sample .NET Core reference application, powered by Microsoft, based on a simplified microservices architecture and Docker containers.
