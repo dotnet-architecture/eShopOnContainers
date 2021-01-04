@@ -36,7 +36,7 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Services
         public async Task<IEnumerable<CatalogItem>> GetCatalogItemsAsync(IEnumerable<int> ids)
         {
 
-            return await GrpcCallerService.CallService(_urls.GrpcCatalog, async channel=>
+            return await GrpcCallerService.CallService(_urls.GrpcCatalog, async channel =>
             {
                 var client = new CatalogClient(channel);
                 var request = new CatalogItemsRequest { Ids = string.Join(",", ids), PageIndex = 1, PageSize = 10 };
