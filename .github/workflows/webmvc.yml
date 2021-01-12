@@ -37,23 +37,6 @@ jobs:
         TAG: ${{ env.BRANCH }}
         REGISTRY: ${{ secrets.REGISTRY_ENDPOINT }}
 
-  BuildContainersForPR_Windows:
-
-    runs-on: windows-2019
-    if:  ${{ false }}
-    # if: ${{ github.event_name == 'pull_request' }}
-    steps:
-    - name: 'Checkout Github Action'
-      uses: actions/checkout@master
-
-    - name: Compose build ${{ env.SERVICE }}
-      run: docker-compose build ${{ env.SERVICE }}
-      working-directory: ./src
-      shell: pwsh
-      env:
-        TAG: ${{ env.BRANCH }}
-        REGISTRY: ${{ secrets.REGISTRY_ENDPOINT }}
-
   BuildLinux:
     runs-on: ubuntu-latest
     if: ${{ github.event_name != 'pull_request' }}
@@ -105,38 +88,3 @@ jobs:
         docker --config ~/.docker manifest create ${{ secrets.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:${{ env.BRANCH  }} ${{ secrets.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:linux-${{ env.BRANCH  }}
         docker --config ~/.docker manifest push ${{ secrets.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:${{ env.BRANCH  }}
       shell: bash
-
-  BuildWindows:
-    runs-on: windows-2019
-    if:  ${{ false }}
-    # if: ${{ github.event_name != 'pull_request' }}
-    steps:
-    - name: 'Checkout Github Action'
-      uses: actions/checkout@master
-
-    - name: Login to Container Registry
-      uses: azure/docker-login@v1
-      with:
-        login-server: ${{ env.REGISTRY_HOST }}
-        username: ${{ secrets.USERNAME }}
-        password: ${{ secrets.PASSWORD }}
-        
-    - name: Set branch name as env variable
-      shell: pwsh
-      run: echo "BRANCH=$($env:GITHUB_REF.replace('refs/heads/', ''))" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
-
-    - name: Compose build ${{ env.SERVICE }}
-      run: docker-compose build ${{ env.SERVICE }}
-      working-directory: ./src
-      shell: pwsh
-      env:
-        TAG: ${{ env.BRANCH }}
-        REGISTRY: ${{ secrets.REGISTRY_ENDPOINT }}
-
-    - name: Compose push ${{ env.SERVICE }}
-      run: docker-compose push ${{ env.SERVICE }}'
-      working-directory: ./src
-      shell: pwsh
-      env:
-        TAG: ${{ env.BRANCH }}
-        REGISTRY: ${{ secrets.REGISTRY_ENDPOINT }}
