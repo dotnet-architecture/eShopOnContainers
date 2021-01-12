@@ -19,7 +19,6 @@
     <PackageReference Include="Microsoft.ApplicationInsights.Kubernetes" Version="1.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.HealthChecks" Version="1.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="3.0.0-alpha1-10670" PrivateAssets="All" />
     <PackageReference Include="Microsoft.Extensions.Logging.AzureAppServices" Version="3.1.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.5" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.0.0-rc5" />
