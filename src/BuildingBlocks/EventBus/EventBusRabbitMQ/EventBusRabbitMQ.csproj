@@ -12,7 +12,6 @@
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="Polly" Version="7.2.1" />
     <PackageReference Include="RabbitMQ.Client" Version="6.2.1" />
-    <PackageReference Include="System.ValueTuple" Version="4.6.0-preview1-26829-04" />
   </ItemGroup>
 
   <ItemGroup>
