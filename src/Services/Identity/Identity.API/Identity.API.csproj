@@ -19,11 +19,11 @@
     <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="5.0.1" />
     <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="5.0.1" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.1.0" />
-    <PackageReference Include="IdentityServer4.AspNetIdentity" Version="3.0.2" />
-    <PackageReference Include="IdentityServer4.EntityFramework.Storage" Version="3.0.2" />
-    <PackageReference Include="IdentityServer4.EntityFramework" Version="3.0.2" />
-    <PackageReference Include="IdentityServer4.Storage" Version="3.0.2" />
-    <PackageReference Include="IdentityServer4" Version="3.0.2" />
+    <PackageReference Include="IdentityServer4.AspNetIdentity" Version="3.1.4" />
+    <PackageReference Include="IdentityServer4.EntityFramework.Storage" Version="3.1.4" />
+    <PackageReference Include="IdentityServer4.EntityFramework" Version="3.1.4" />
+    <PackageReference Include="IdentityServer4.Storage" Version="3.1.4" />
+    <PackageReference Include="IdentityServer4" Version="3.1.4" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.16.0" />
     <PackageReference Include="Microsoft.ApplicationInsights.DependencyCollector" Version="2.16.0" />
     <PackageReference Include="Microsoft.ApplicationInsights.Kubernetes" Version="1.1.3" />
