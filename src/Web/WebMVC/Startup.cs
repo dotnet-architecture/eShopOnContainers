@@ -134,7 +134,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
                 {
                     opts.ApplicationDiscriminator = "eshop.webmvc";
                 })
-                .PersistKeysToRedis(ConnectionMultiplexer.Connect(configuration["DPConnectionString"]), "DataProtection-Keys");
+                .PersistKeysToStackExchangeRedis(ConnectionMultiplexer.Connect(configuration["DPConnectionString"]), "DataProtection-Keys");
             }
 
             return services;
