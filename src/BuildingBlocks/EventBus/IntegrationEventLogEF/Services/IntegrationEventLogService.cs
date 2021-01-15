@@ -1,12 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Storage;
-using Microsoft.eShopOnContainers.BuildingBlocks.EventBus;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
-using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
@@ -15,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF.Services
 {
-    public class IntegrationEventLogService : IIntegrationEventLogService,IDisposable
+    public class IntegrationEventLogService : IIntegrationEventLogService, IDisposable
     {
         private readonly IntegrationEventLogContext _integrationEventLogContext;
         private readonly DbConnection _dbConnection;
@@ -43,11 +38,12 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF.Servi
             var result = await _integrationEventLogContext.IntegrationEventLogs
                 .Where(e => e.TransactionId == tid && e.State == EventStateEnum.NotPublished).ToListAsync();
 
-            if(result != null && result.Any()){
+            if (result != null && result.Any())
+            {
                 return result.OrderBy(o => o.CreationTime)
-                    .Select(e => e.DeserializeJsonContent(_eventTypes.Find(t=> t.Name == e.EventTypeShortName)));
+                    .Select(e => e.DeserializeJsonContent(_eventTypes.Find(t => t.Name == e.EventTypeShortName)));
             }
-            
+
             return new List<IntegrationEventLogEntry>();
         }
 
@@ -83,7 +79,7 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF.Servi
             var eventLogEntry = _integrationEventLogContext.IntegrationEventLogs.Single(ie => ie.EventId == eventId);
             eventLogEntry.State = status;
 
-            if(status == EventStateEnum.InProgress)
+            if (status == EventStateEnum.InProgress)
                 eventLogEntry.TimesSent++;
 
             _integrationEventLogContext.IntegrationEventLogs.Update(eventLogEntry);
@@ -100,7 +96,7 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF.Servi
                     _integrationEventLogContext?.Dispose();
                 }
 
-               
+
                 disposedValue = true;
             }
         }
