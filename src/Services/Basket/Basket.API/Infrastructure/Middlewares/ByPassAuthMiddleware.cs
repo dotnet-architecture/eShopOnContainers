@@ -62,7 +62,7 @@ namespace Basket.API.Infrastructure.Middlewares
                     new Claim("name", "Test user"),
                     new Claim("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name", "Test user"),
                     new Claim("nonce", Guid.NewGuid().ToString()),
-                    new Claim("http://schemas.microsoft.com/identity/claims/identityprovider", "ByPassAuthMiddleware"),                  
+                    new Claim("http://schemas.microsoft.com/identity/claims/identityprovider", "ByPassAuthMiddleware"),
                     new Claim("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname","User"),
                     new Claim("sub", currentUserId),
                     new Claim("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname","Microsoft")}
