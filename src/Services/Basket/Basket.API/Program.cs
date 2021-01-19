@@ -61,9 +61,10 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
 
                 })
                 .ConfigureAppConfiguration(x => x.AddConfiguration(configuration))
-                .UseFailing(options => {
+                .UseFailing(options =>
+                {
                     options.ConfigPath = "/Failing";
-                    options.NotFilteredPaths.AddRange(new[] {"/hc","/liveness"});
+                    options.NotFilteredPaths.AddRange(new[] { "/hc", "/liveness" });
                 })
                 .UseStartup<Startup>()
                 .UseContentRoot(Directory.GetCurrentDirectory())
