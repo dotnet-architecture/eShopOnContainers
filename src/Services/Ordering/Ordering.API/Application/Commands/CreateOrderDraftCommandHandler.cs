@@ -4,7 +4,6 @@
     using global::Ordering.API.Application.Models;
     using MediatR;
     using Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure.Services;
-    using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Idempotency;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -21,7 +20,7 @@
         private readonly IMediator _mediator;
 
         // Using DI to inject infrastructure persistence Repositories
-        public CreateOrderDraftCommandHandler(IMediator mediator,  IIdentityService identityService)
+        public CreateOrderDraftCommandHandler(IMediator mediator, IIdentityService identityService)
         {
             _identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
@@ -42,10 +41,10 @@
     }
 
 
-    public class OrderDraftDTO
+    public record OrderDraftDTO
     {
-        public IEnumerable<OrderItemDTO> OrderItems { get; set; }
-        public decimal Total { get; set; }
+        public IEnumerable<OrderItemDTO> OrderItems { get; init; }
+        public decimal Total { get; init; }
 
         public static OrderDraftDTO FromOrder(Order order)
         {

@@ -1,6 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
-using System;
-using System.Collections.Generic;
 
 namespace Ordering.API.Infrastructure.Migrations
 {
@@ -11,7 +9,7 @@ namespace Ordering.API.Infrastructure.Migrations
             migrationBuilder.DropForeignKey(
                 name: "FK_orderItems_orders_OrderId",
                 schema: "ordering",
-                table: "orderItems");                       
+                table: "orderItems");
 
             migrationBuilder.AddColumn<string>(
                 name: "Name",

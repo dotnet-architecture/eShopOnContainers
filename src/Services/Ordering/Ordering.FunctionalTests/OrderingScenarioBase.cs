@@ -1,18 +1,15 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
-using System;
-using System.Collections.Generic;
+using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF;
+using Microsoft.eShopOnContainers.Services.Ordering.API;
+using Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure;
+using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System.IO;
 using System.Reflection;
-using System.Text;
-using Microsoft.Extensions.Configuration;
-using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.eShopOnContainers.Services.Ordering.API;
-using Microsoft.Extensions.Options;
-using Microsoft.Extensions.Logging;
-using Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure;
-using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF;
 
 namespace Ordering.FunctionalTests
 {
@@ -31,7 +28,7 @@ namespace Ordering.FunctionalTests
                     .AddEnvironmentVariables();
                 }).UseStartup<OrderingTestsStartup>();
 
-            var testServer =  new TestServer(hostBuilder);
+            var testServer = new TestServer(hostBuilder);
 
             testServer.Host
                 .MigrateDbContext<OrderingContext>((context, services) =>

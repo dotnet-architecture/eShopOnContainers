@@ -28,7 +28,7 @@
             _orderRepository = orderRepository ?? throw new ArgumentNullException(nameof(orderRepository));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _buyerRepository = buyerRepository;
-            _orderingIntegrationEventService = orderingIntegrationEventService;           
+            _orderingIntegrationEventService = orderingIntegrationEventService;
         }
 
         public async Task Handle(OrderStatusChangedToAwaitingValidationDomainEvent orderStatusChangedToAwaitingValidationDomainEvent, CancellationToken cancellationToken)
@@ -48,5 +48,5 @@
                 order.Id, order.OrderStatus.Name, buyer.Name, orderStockList);
             await _orderingIntegrationEventService.AddAndSaveEventAsync(orderStatusChangedToAwaitingValidationIntegrationEvent);
         }
-    }  
+    }
 }
