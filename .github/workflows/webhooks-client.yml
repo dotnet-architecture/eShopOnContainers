@@ -3,7 +3,6 @@ name: webhooks-client
 on:
   push:
     branches:
-    - main
     - dev
 
     paths:
@@ -13,7 +12,6 @@ on:
   
   pull_request:
     branches:
-    - main
     - dev
 env:
   SERVICE: webhooks-client
