@@ -23,11 +23,11 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Idempoten
         }
 
         public async Task CreateRequestForCommandAsync<T>(Guid id)
-        { 
+        {
             var exists = await ExistAsync(id);
 
-            var request = exists ? 
-                throw new OrderingDomainException($"Request with {id} already exists") : 
+            var request = exists ?
+                throw new OrderingDomainException($"Request with {id} already exists") :
                 new ClientRequest()
                 {
                     Id = id,

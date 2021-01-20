@@ -73,7 +73,7 @@ namespace Basket.FunctionalTests
 
         string BuildCheckout()
         {
-            var checkoutBasket = new 
+            var checkoutBasket = new
             {
                 City = "city",
                 Street = "street",

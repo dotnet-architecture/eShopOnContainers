@@ -44,7 +44,7 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator
                 .AddUrlGroup(new Uri(Configuration["BasketUrlHC"]), name: "basketapi-check", tags: new string[] { "basketapi" })
                 .AddUrlGroup(new Uri(Configuration["IdentityUrlHC"]), name: "identityapi-check", tags: new string[] { "identityapi" })
                 .AddUrlGroup(new Uri(Configuration["PaymentUrlHC"]), name: "paymentapi-check", tags: new string[] { "paymentapi" });
-    
+
             services.AddCustomMvc(Configuration)
                 .AddCustomAuthentication(Configuration)
                 .AddDevspaces()
@@ -142,7 +142,7 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator
                     Version = "v1",
                     Description = "Shopping Aggregator for Web Clients"
                 });
-                
+
                 options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
                 {
                     Type = SecuritySchemeType.OAuth2,

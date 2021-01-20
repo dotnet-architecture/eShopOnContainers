@@ -20,7 +20,7 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Config
         public class BasketOperations
         {
             public static string GetItemById(string id) => $"/api/v1/basket/{id}";
-            
+
             public static string UpdateBasket() => "/api/v1/basket";
         }
 

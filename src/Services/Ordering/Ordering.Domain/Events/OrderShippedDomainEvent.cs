@@ -9,7 +9,7 @@ namespace Ordering.Domain.Events
 
         public OrderShippedDomainEvent(Order order)
         {
-            Order = order;           
+            Order = order;
         }
     }
 }

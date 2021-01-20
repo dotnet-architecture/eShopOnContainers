@@ -18,7 +18,6 @@ using StackExchange.Redis;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using WebMVC.Infrastructure;
-using WebMVC.Services;
 
 namespace Microsoft.eShopOnContainers.WebMVC
 {
@@ -42,8 +41,8 @@ namespace Microsoft.eShopOnContainers.WebMVC
                 .AddDevspaces()
                 .AddHttpClientServices(Configuration);
 
-            IdentityModelEventSource.ShowPII  = true;       // Caution! Do NOT use in production: https://aka.ms/IdentityModel/PII
-            
+            IdentityModelEventSource.ShowPII = true;       // Caution! Do NOT use in production: https://aka.ms/IdentityModel/PII
+
             services.AddControllers();
 
             services.AddCustomAuthentication(Configuration);
@@ -73,13 +72,13 @@ namespace Microsoft.eShopOnContainers.WebMVC
             app.UseSession();
 
             WebContextSeed.Seed(app, env);
-            
+
             // Fix samesite issue when running eShop from docker-compose locally as by default http protocol is being used
             // Refer to https://github.com/dotnet-architecture/eShopOnContainers/issues/1391
-            app.UseCookiePolicy(new CookiePolicyOptions { MinimumSameSitePolicy = AspNetCore.Http.SameSiteMode.Lax });            
+            app.UseCookiePolicy(new CookiePolicyOptions { MinimumSameSitePolicy = AspNetCore.Http.SameSiteMode.Lax });
 
             app.UseRouting();
-            
+
             app.UseAuthentication();
             app.UseAuthorization();
 

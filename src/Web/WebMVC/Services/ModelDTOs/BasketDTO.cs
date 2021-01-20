@@ -22,7 +22,7 @@ namespace WebMVC.Services.ModelDTOs
 
         [Required]
         public DateTime CardExpiration { get; init; }
-        
+
         [Required]
         public string CardSecurityNumber { get; init; }
 
@@ -31,7 +31,7 @@ namespace WebMVC.Services.ModelDTOs
         public string Buyer { get; init; }
 
         [Required]
-        public Guid RequestId { get; init; }       
+        public Guid RequestId { get; init; }
     }
 }
 

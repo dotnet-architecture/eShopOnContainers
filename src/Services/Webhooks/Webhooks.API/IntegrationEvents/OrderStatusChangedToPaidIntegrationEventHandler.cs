@@ -1,11 +1,9 @@
 ﻿using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
-using System;
-using System.Collections.Generic;
+using Microsoft.Extensions.Logging;
 using System.Linq;
 using System.Threading.Tasks;
 using Webhooks.API.Model;
 using Webhooks.API.Services;
-using Microsoft.Extensions.Logging;
 
 namespace Webhooks.API.IntegrationEvents
 {
@@ -14,7 +12,7 @@ namespace Webhooks.API.IntegrationEvents
         private readonly IWebhooksRetriever _retriever;
         private readonly IWebhooksSender _sender;
         private readonly ILogger _logger;
-        public OrderStatusChangedToPaidIntegrationEventHandler(IWebhooksRetriever retriever, IWebhooksSender sender, ILogger<OrderStatusChangedToShippedIntegrationEventHandler> logger )
+        public OrderStatusChangedToPaidIntegrationEventHandler(IWebhooksRetriever retriever, IWebhooksSender sender, ILogger<OrderStatusChangedToShippedIntegrationEventHandler> logger)
         {
             _retriever = retriever;
             _sender = sender;

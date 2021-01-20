@@ -44,7 +44,7 @@ namespace Basket.API.Infrastructure.Middlewares
         private async Task ProcessConfigRequest(HttpContext context)
         {
             var enable = context.Request.Query.Keys.Any(k => k == "enable");
-            var disable = context.Request.Query.Keys.Any(k => k == "disable");            
+            var disable = context.Request.Query.Keys.Any(k => k == "disable");
 
             if (enable && disable)
             {
@@ -86,7 +86,7 @@ namespace Basket.API.Infrastructure.Middlewares
             }
 
             return _mustFail &&
-                (_options.EndpointPaths.Any(x => x == rpath) 
+                (_options.EndpointPaths.Any(x => x == rpath)
                 || _options.EndpointPaths.Count == 0);
         }
     }

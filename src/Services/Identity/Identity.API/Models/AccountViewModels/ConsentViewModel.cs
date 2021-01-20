@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using IdentityServer4.Models;
+using System.Collections.Generic;
 using System.Linq;
-using IdentityServer4.Models;
 
 namespace Microsoft.eShopOnContainers.Services.Identity.API.Models.AccountViewModels
 {

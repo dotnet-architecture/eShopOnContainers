@@ -20,7 +20,7 @@
         private readonly IOrderingIntegrationEventService _orderingIntegrationEventService;
 
         public OrderStatusChangedToStockConfirmedDomainEventHandler(
-            IOrderRepository orderRepository, 
+            IOrderRepository orderRepository,
             IBuyerRepository buyerRepository,
             ILoggerFactory logger,
             IOrderingIntegrationEventService orderingIntegrationEventService)
@@ -41,7 +41,7 @@
             var buyer = await _buyerRepository.FindByIdAsync(order.GetBuyerId.Value.ToString());
 
             var orderStatusChangedToStockConfirmedIntegrationEvent = new OrderStatusChangedToStockConfirmedIntegrationEvent(order.Id, order.OrderStatus.Name, buyer.Name);
-            await _orderingIntegrationEventService.AddAndSaveEventAsync(orderStatusChangedToStockConfirmedIntegrationEvent);            
+            await _orderingIntegrationEventService.AddAndSaveEventAsync(orderStatusChangedToStockConfirmedIntegrationEvent);
         }
-    }  
+    }
 }

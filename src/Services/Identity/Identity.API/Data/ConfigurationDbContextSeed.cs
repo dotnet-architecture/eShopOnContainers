@@ -4,7 +4,6 @@ using IdentityServer4.EntityFramework.Mappers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.eShopOnContainers.Services.Identity.API.Configuration;
 using Microsoft.Extensions.Configuration;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,9 +12,9 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Data
 {
     public class ConfigurationDbContextSeed
     {
-        public async Task SeedAsync(ConfigurationDbContext context,IConfiguration configuration)
+        public async Task SeedAsync(ConfigurationDbContext context, IConfiguration configuration)
         {
-           
+
             //callbacks urls from config:
             var clientUrls = new Dictionary<string, string>();
 

@@ -2,13 +2,11 @@
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Extensions;
 using Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands;
-using Microsoft.eShopOnContainers.Services.Ordering.API;
 using Microsoft.Extensions.Logging;
-using Ordering.API.Application.Behaviors;
 using Ordering.API.Application.IntegrationEvents.Events;
 using Serilog.Context;
-using System.Threading.Tasks;
 using System;
+using System.Threading.Tasks;
 
 namespace Ordering.API.Application.IntegrationEvents.EventHandling
 {
@@ -54,7 +52,7 @@ namespace Ordering.API.Application.IntegrationEvents.EventHandling
                         var requestCreateOrder = new IdentifiedCommand<CreateOrderCommand, bool>(createOrderCommand, @event.RequestId);
 
                         _logger.LogInformation(
-                            "----- Sending command: {CommandName} - {IdProperty}: {CommandId} ({@Command})", 
+                            "----- Sending command: {CommandName} - {IdProperty}: {CommandId} ({@Command})",
                             requestCreateOrder.GetGenericTypeName(),
                             nameof(requestCreateOrder.Id),
                             requestCreateOrder.Id,
