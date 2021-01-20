@@ -12,6 +12,7 @@ namespace Basket.API.Infrastructure.Middlewares
         private bool _mustFail;
         private readonly FailingOptions _options;
         private readonly ILogger _logger;
+
         public FailingMiddleware(RequestDelegate next, ILogger<FailingMiddleware> logger, FailingOptions options)
         {
             _next = next;
@@ -19,6 +20,7 @@ namespace Basket.API.Infrastructure.Middlewares
             _mustFail = false;
             _logger = logger;
         }
+
         public async Task Invoke(HttpContext context)
         {
             var path = context.Request.Path;

@@ -19,6 +19,7 @@ namespace Catalog.API.Grpc
         private readonly CatalogContext _catalogContext;
         private readonly CatalogSettings _settings;
         private readonly ILogger _logger;
+
         public CatalogService(CatalogContext dbContext, IOptions<CatalogSettings> settings, ILogger<CatalogService> logger)
         {
             _settings = settings.Value;
