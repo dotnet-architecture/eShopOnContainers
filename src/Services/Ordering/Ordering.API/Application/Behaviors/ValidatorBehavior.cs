@@ -1,11 +1,11 @@
 ﻿using FluentValidation;
 using MediatR;
+using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Extensions;
 using Microsoft.Extensions.Logging;
 using Ordering.Domain.Exceptions;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Extensions;
 
 namespace Ordering.API.Application.Behaviors
 {

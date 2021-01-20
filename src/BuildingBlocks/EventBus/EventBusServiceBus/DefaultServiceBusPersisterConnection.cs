@@ -4,7 +4,7 @@ using System;
 
 namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus
 {
-    public class DefaultServiceBusPersisterConnection :IServiceBusPersisterConnection
+    public class DefaultServiceBusPersisterConnection : IServiceBusPersisterConnection
     {
         private readonly ILogger<DefaultServiceBusPersisterConnection> _logger;
         private readonly ServiceBusConnectionStringBuilder _serviceBusConnectionStringBuilder;
@@ -16,8 +16,8 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus
             ILogger<DefaultServiceBusPersisterConnection> logger)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            
-            _serviceBusConnectionStringBuilder = serviceBusConnectionStringBuilder ?? 
+
+            _serviceBusConnectionStringBuilder = serviceBusConnectionStringBuilder ??
                 throw new ArgumentNullException(nameof(serviceBusConnectionStringBuilder));
             _topicClient = new TopicClient(_serviceBusConnectionStringBuilder, RetryPolicy.Default);
         }
@@ -26,7 +26,7 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus
 
         public ITopicClient CreateModel()
         {
-            if(_topicClient.IsClosedOrClosing)
+            if (_topicClient.IsClosedOrClosing)
             {
                 _topicClient = new TopicClient(_serviceBusConnectionStringBuilder, RetryPolicy.Default);
             }

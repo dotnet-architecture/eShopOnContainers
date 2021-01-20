@@ -7,7 +7,6 @@ using Microsoft.eShopOnContainers.Services.Basket.API.Model;
 using Microsoft.eShopOnContainers.Services.Basket.API.Services;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Linq;
 using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -47,7 +46,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
 
         [HttpPost]
         [ProducesResponseType(typeof(CustomerBasket), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult<CustomerBasket>> UpdateBasketAsync([FromBody]CustomerBasket value)
+        public async Task<ActionResult<CustomerBasket>> UpdateBasketAsync([FromBody] CustomerBasket value)
         {
             return Ok(await _repository.UpdateBasketAsync(value));
         }
@@ -56,7 +55,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers
         [HttpPost]
         [ProducesResponseType((int)HttpStatusCode.Accepted)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<ActionResult> CheckoutAsync([FromBody]BasketCheckout basketCheckout, [FromHeader(Name = "x-requestid")] string requestId)
+        public async Task<ActionResult> CheckoutAsync([FromBody] BasketCheckout basketCheckout, [FromHeader(Name = "x-requestid")] string requestId)
         {
             var userId = _identityService.GetUserIdentity();
 

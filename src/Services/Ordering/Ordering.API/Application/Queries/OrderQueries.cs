@@ -1,10 +1,10 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.Queries
 {
     using Dapper;
-    using System.Data.SqlClient;
-    using System.Threading.Tasks;
     using System;
     using System.Collections.Generic;
+    using System.Data.SqlClient;
+    using System.Threading.Tasks;
 
     public class OrderQueries
         : IOrderQueries

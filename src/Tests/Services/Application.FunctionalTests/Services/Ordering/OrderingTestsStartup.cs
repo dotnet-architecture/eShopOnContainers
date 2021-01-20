@@ -1,11 +1,7 @@
 ﻿using FunctionalTests.Middleware;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.eShopOnContainers.Services.Ordering.API;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace FunctionalTests.Services.Ordering
 {

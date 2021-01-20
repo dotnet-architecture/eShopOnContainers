@@ -1,17 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
 using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF;
 using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF.Services;
-using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF.Utilities;
-using Microsoft.eShopOnContainers.Services.Ordering.API;
 using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Data.Common;
-using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Ordering.API.Application.IntegrationEvents

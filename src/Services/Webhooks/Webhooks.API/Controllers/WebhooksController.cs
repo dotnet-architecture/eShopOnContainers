@@ -87,7 +87,7 @@ namespace Webhooks.API.Controllers
             else
             {
                 return StatusCode(418, "Grant url can't be validated");
-            }   
+            }
         }
 
         [Authorize]

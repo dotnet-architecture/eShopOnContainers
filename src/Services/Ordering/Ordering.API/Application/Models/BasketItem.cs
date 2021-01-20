@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Ordering.API.Application.Models
+﻿namespace Ordering.API.Application.Models
 {
     public class BasketItem
     {

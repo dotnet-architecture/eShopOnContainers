@@ -12,7 +12,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure.Autof
 {
 
     public class ApplicationModule
-        :Autofac.Module
+        : Autofac.Module
     {
 
         public string QueriesConnectionString { get; }
