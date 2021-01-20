@@ -1,22 +1,12 @@
-using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.IO.Compression;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure;
 using Microsoft.Extensions.Configuration;
+using System.IO;
 
 namespace Ordering.API.Infrastructure.Factories
 {
-        public class OrderingDbContextFactory : IDesignTimeDbContextFactory<OrderingContext>
+    public class OrderingDbContextFactory : IDesignTimeDbContextFactory<OrderingContext>
     {
         public OrderingContext CreateDbContext(string[] args)
         {

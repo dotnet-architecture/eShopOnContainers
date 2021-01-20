@@ -1,8 +1,6 @@
 ﻿using GrpcBasket;
-using Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Config;
 using Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Models;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using System.Linq;
 using System.Threading.Tasks;
 

@@ -6,7 +6,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Services
 {
     public class IdentityService : IIdentityService
     {
-        private IHttpContextAccessor _context; 
+        private IHttpContextAccessor _context;
 
         public IdentityService(IHttpContextAccessor context)
         {

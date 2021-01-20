@@ -1,5 +1,5 @@
-﻿using System;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+using System;
 
 namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events
 {

@@ -1,5 +1,4 @@
 ﻿using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
-using System.Collections.Generic;
 
 namespace Ordering.SignalrHub.IntegrationEvents
 {

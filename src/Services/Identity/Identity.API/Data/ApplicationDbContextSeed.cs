@@ -20,8 +20,8 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Data
     {
         private readonly IPasswordHasher<ApplicationUser> _passwordHasher = new PasswordHasher<ApplicationUser>();
 
-        public async Task SeedAsync(ApplicationDbContext context,IWebHostEnvironment env,
-            ILogger<ApplicationDbContextSeed> logger, IOptions<AppSettings> settings,int? retry = 0)
+        public async Task SeedAsync(ApplicationDbContext context, IWebHostEnvironment env,
+            ILogger<ApplicationDbContextSeed> logger, IOptions<AppSettings> settings, int? retry = 0)
         {
             int retryForAvaiability = retry.Value;
 
@@ -50,10 +50,10 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Data
                 if (retryForAvaiability < 10)
                 {
                     retryForAvaiability++;
-                    
+
                     logger.LogError(ex, "EXCEPTION ERROR while migrating {DbContextName}", nameof(ApplicationDbContext));
 
-                    await SeedAsync(context,env,logger,settings, retryForAvaiability);
+                    await SeedAsync(context, env, logger, settings, retryForAvaiability);
                 }
             }
         }
@@ -87,7 +87,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Data
 
             List<ApplicationUser> users = File.ReadAllLines(csvFileUsers)
                         .Skip(1) // skip header column
-                        .Select(row => Regex.Split(row, ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)") )
+                        .Select(row => Regex.Split(row, ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"))
                         .SelectTry(column => CreateApplicationUser(column, csvheaders))
                         .OnCaughtException(ex => { logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message); return null; })
                         .Where(x => x != null)

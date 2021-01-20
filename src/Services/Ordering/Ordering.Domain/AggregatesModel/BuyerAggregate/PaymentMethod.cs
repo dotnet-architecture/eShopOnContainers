@@ -36,7 +36,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.B
             _cardTypeId = cardTypeId;
         }
 
-        public bool IsEqualTo(int cardTypeId, string cardNumber,DateTime expiration)
+        public bool IsEqualTo(int cardTypeId, string cardNumber, DateTime expiration)
         {
             return _cardTypeId == cardTypeId
                 && _cardNumber == cardNumber

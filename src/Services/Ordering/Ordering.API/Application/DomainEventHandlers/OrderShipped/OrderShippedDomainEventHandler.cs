@@ -20,7 +20,7 @@ namespace Ordering.API.Application.DomainEventHandlers.OrderShipped
         private readonly ILoggerFactory _logger;
 
         public OrderShippedDomainEventHandler(
-            IOrderRepository orderRepository, 
+            IOrderRepository orderRepository,
             ILoggerFactory logger,
             IBuyerRepository buyerRepository,
             IOrderingIntegrationEventService orderingIntegrationEventService)

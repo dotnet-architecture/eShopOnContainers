@@ -10,7 +10,7 @@ namespace Ordering.API.Application.Commands
 {
     // Regular CommandHandler
     public class SetPaidOrderStatusCommandHandler : IRequestHandler<SetPaidOrderStatusCommand, bool>
-    {        
+    {
         private readonly IOrderRepository _orderRepository;
 
         public SetPaidOrderStatusCommandHandler(IOrderRepository orderRepository)
@@ -30,7 +30,7 @@ namespace Ordering.API.Application.Commands
             await Task.Delay(10000, cancellationToken);
 
             var orderToUpdate = await _orderRepository.GetAsync(command.OrderNumber);
-            if(orderToUpdate == null)
+            if (orderToUpdate == null)
             {
                 return false;
             }

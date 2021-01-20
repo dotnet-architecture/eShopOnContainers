@@ -10,7 +10,7 @@ namespace Ordering.API.Application.Commands
 {
     // Regular CommandHandler
     public class SetAwaitingValidationOrderStatusCommandHandler : IRequestHandler<SetAwaitingValidationOrderStatusCommand, bool>
-    {        
+    {
         private readonly IOrderRepository _orderRepository;
 
         public SetAwaitingValidationOrderStatusCommandHandler(IOrderRepository orderRepository)
@@ -27,7 +27,7 @@ namespace Ordering.API.Application.Commands
         public async Task<bool> Handle(SetAwaitingValidationOrderStatusCommand command, CancellationToken cancellationToken)
         {
             var orderToUpdate = await _orderRepository.GetAsync(command.OrderNumber);
-            if(orderToUpdate == null)
+            if (orderToUpdate == null)
             {
                 return false;
             }

@@ -14,7 +14,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Controllers
         private readonly IOptionsSnapshot<AppSettings> _settings;
         private readonly IRedirectService _redirectSvc;
 
-        public HomeController(IIdentityServerInteractionService interaction, IOptionsSnapshot<AppSettings> settings,IRedirectService redirectSvc)
+        public HomeController(IIdentityServerInteractionService interaction, IOptionsSnapshot<AppSettings> settings, IRedirectService redirectSvc)
         {
             _interaction = interaction;
             _settings = settings;

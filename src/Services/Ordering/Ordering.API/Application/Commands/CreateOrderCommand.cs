@@ -1,10 +1,9 @@
-﻿using System;
-using MediatR;
-using System.Collections.Generic;
-using System.Runtime.Serialization;
-using System.Collections;
+﻿using MediatR;
 using Ordering.API.Application.Models;
+using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 
 namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands
 {
