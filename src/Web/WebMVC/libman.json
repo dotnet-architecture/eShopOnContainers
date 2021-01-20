@@ -9,6 +9,7 @@
     {
       "provider": "unpkg",
       "library": "bootstrap@4.3.1",
+      "destination": "wwwroot/lib/bootstrap/",
       "files": [
         "dist/css/bootstrap.css",
         "dist/css/bootstrap.css.map",
@@ -16,8 +17,7 @@
         "dist/css/bootstrap.min.css.map",
         "dist/js/bootstrap.js",
         "dist/js/bootstrap.min.js"
-      ],
-      "destination": "wwwroot/lib/bootstrap/"
+      ]
     },
     {
       "library": "jquery-validation-unobtrusive@3.2.11",
@@ -37,12 +37,12 @@
     },
     {
       "provider": "unpkg",
-      "library": "@aspnet/signalr@1.1.2",
-      "files": [    
+      "library": "@microsoft/signalr@latest",
+      "destination": "wwwroot/lib/@microsoft/signalr/",
+      "files": [
         "dist/browser/signalr.js",
         "dist/browser/signalr.min.js"
-      ],
-      "destination": "wwwroot/lib/@aspnet/signalr/"
+      ]
     }
   ]
 }

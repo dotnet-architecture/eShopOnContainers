@@ -28,7 +28,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Infrastructure.Reposit
 
         public IEnumerable<string> GetUsers()
         {
-            var server = GetServer();          
+            var server = GetServer();
             var data = server.Keys();
 
             return data?.Select(k => k.ToString());

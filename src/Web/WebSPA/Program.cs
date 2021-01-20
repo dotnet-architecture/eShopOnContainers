@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using System.IO;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Serilog;
+using System.IO;
 
 namespace eShopConContainers.WebSPA
 {
@@ -29,7 +29,6 @@ namespace eShopConContainers.WebSPA
                     builder.AddDebug();
                     builder.AddAzureWebAppDiagnostics();
                 })
-                .UseApplicationInsights()
                 .UseSerilog((builderContext, config) =>
                 {
                     config
@@ -37,6 +36,6 @@ namespace eShopConContainers.WebSPA
                         .Enrich.FromLogContext()
                         .WriteTo.Console();
                 })
-                .Build();       
+                .Build();
     }
 }

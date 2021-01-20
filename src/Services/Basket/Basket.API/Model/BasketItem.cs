@@ -6,7 +6,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Model
     public class BasketItem : IValidatableObject
     {
         public string Id { get; set; }
-        public string ProductId { get; set; }
+        public int ProductId { get; set; }
         public string ProductName { get; set; }
         public decimal UnitPrice { get; set; }
         public decimal OldUnitPrice { get; set; }
@@ -18,7 +18,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Model
 
             if (Quantity < 1)
             {
-                results.Add(new ValidationResult("Invalid number of units", new []{ "Quantity" }));
+                results.Add(new ValidationResult("Invalid number of units", new[] { "Quantity" }));
             }
 
             return results;

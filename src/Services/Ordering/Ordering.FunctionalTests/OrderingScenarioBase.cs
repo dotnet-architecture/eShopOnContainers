@@ -36,7 +36,7 @@ namespace Ordering.FunctionalTests
             testServer.Host
                 .MigrateDbContext<OrderingContext>((context, services) =>
                 {
-                    var env = services.GetService<IHostingEnvironment>();
+                    var env = services.GetService<IWebHostEnvironment>();
                     var settings = services.GetService<IOptions<OrderingSettings>>();
                     var logger = services.GetService<ILogger<OrderingContextSeed>>();
 

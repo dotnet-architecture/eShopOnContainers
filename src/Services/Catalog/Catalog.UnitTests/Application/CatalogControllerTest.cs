@@ -1,90 +1,132 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.eShopOnContainers.WebMVC.Controllers;
-using Microsoft.eShopOnContainers.WebMVC.Services;
-using Microsoft.eShopOnContainers.WebMVC.ViewModels;
-using Microsoft.eShopOnContainers.WebMVC.ViewModels.CatalogViewModels;
+﻿using Catalog.API.IntegrationEvents;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.eShopOnContainers.Services.Catalog.API;
+using Microsoft.eShopOnContainers.Services.Catalog.API.Controllers;
+using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
+using Microsoft.eShopOnContainers.Services.Catalog.API.Model;
+using Microsoft.eShopOnContainers.Services.Catalog.API.ViewModel;
+using Microsoft.Extensions.Options;
 using Moq;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
-using CatalogModel = Microsoft.eShopOnContainers.WebMVC.ViewModels.Catalog;
 
 namespace UnitTest.Catalog.Application
 {
     public class CatalogControllerTest
     {
-        private readonly Mock<ICatalogService> _catalogServiceMock;
+        private readonly DbContextOptions<CatalogContext> _dbOptions;
 
         public CatalogControllerTest()
         {
-            _catalogServiceMock = new Mock<ICatalogService>();
+            _dbOptions = new DbContextOptionsBuilder<CatalogContext>()
+                .UseInMemoryDatabase(databaseName: "in-memory")
+                .Options;
+
+            using (var dbContext = new CatalogContext(_dbOptions))
+            {
+                dbContext.AddRange(GetFakeCatalog());
+                dbContext.SaveChanges();
+            }
         }
 
         [Fact]
         public async Task Get_catalog_items_success()
         {
             //Arrange
-            var fakeBrandFilterApplied = 1;
-            var fakeTypesFilterApplied = 2;
-            var fakePage = 2;
-            var fakeCatalog = GetFakeCatalog();
+            var brandFilterApplied = 1;
+            var typesFilterApplied = 2;
+            var pageSize = 4;
+            var pageIndex = 1;
 
-            var expectedNumberOfPages = 5;
-            var expectedTotalPages = 50;
-            var expectedCurrentPage = 2;
+            var expectedItemsInPage = 2;
+            var expectedTotalItems = 6;
 
-            _catalogServiceMock.Setup(x => x.GetCatalogItems
-            (
-                It.Is<int>(y => y == fakePage),
-                It.IsAny<int>(),
-                It.Is<int?>(y => y == fakeBrandFilterApplied),
-                It.Is<int?>(y => y == fakeTypesFilterApplied)
-             ))
-             .Returns(Task.FromResult(fakeCatalog));
+            var catalogContext = new CatalogContext(_dbOptions);
+            var catalogSettings = new TestCatalogSettings();
+
+            var integrationServicesMock = new Mock<ICatalogIntegrationEventService>();
 
             //Act
-            var orderController = new CatalogController(_catalogServiceMock.Object);
-            var actionResult = await orderController.Index(fakeBrandFilterApplied, fakeTypesFilterApplied, fakePage, null);
+            var orderController = new CatalogController(catalogContext, catalogSettings, integrationServicesMock.Object);
+            var actionResult = await orderController.ItemsByTypeIdAndBrandIdAsync(typesFilterApplied, brandFilterApplied, pageSize, pageIndex);
 
             //Assert
-            var viewResult = Assert.IsType<ViewResult>(actionResult);
-            var model = Assert.IsAssignableFrom<IndexViewModel>(viewResult.ViewData.Model);
-            Assert.Equal(model.PaginationInfo.TotalPages, expectedNumberOfPages);
-            Assert.Equal(model.PaginationInfo.TotalItems, expectedTotalPages);
-            Assert.Equal(model.PaginationInfo.ActualPage, expectedCurrentPage);
-            Assert.Empty(model.PaginationInfo.Next);
-            Assert.Empty(model.PaginationInfo.Previous);
-        }   
-        
-        private CatalogModel GetFakeCatalog()
+            Assert.IsType<ActionResult<PaginatedItemsViewModel<CatalogItem>>>(actionResult);
+            var page = Assert.IsAssignableFrom<PaginatedItemsViewModel<CatalogItem>>(actionResult.Value);
+            Assert.Equal(expectedTotalItems, page.Count);
+            Assert.Equal(pageIndex, page.PageIndex);
+            Assert.Equal(pageSize, page.PageSize);
+            Assert.Equal(expectedItemsInPage, page.Data.Count());
+        }
+
+        private List<CatalogItem> GetFakeCatalog()
         {
-            return new CatalogModel()
+            return new List<CatalogItem>()
             {
-                PageSize = 10,
-                Count = 50,
-                PageIndex = 2,
-                Data = new List<CatalogItem>()
+                new CatalogItem()
                 {
-                    new CatalogItem()
-                    {
-                        Id = 1,
-                        Name = "fakeItemA",
-                        CatalogTypeId = 1
-                    },
-                    new CatalogItem()
-                    {
-                        Id = 2,
-                        Name = "fakeItemB",
-                        CatalogTypeId = 1
-                    },
-                    new CatalogItem()
-                    {
-                        Id = 3,
-                        Name = "fakeItemC",
-                        CatalogTypeId = 1
-                    }
+                    Id = 1,
+                    Name = "fakeItemA",
+                    CatalogTypeId = 2,
+                    CatalogBrandId = 1,
+                    PictureFileName = "fakeItemA.png"
+                },
+                new CatalogItem()
+                {
+                    Id = 2,
+                    Name = "fakeItemB",
+                    CatalogTypeId = 2,
+                    CatalogBrandId = 1,
+                    PictureFileName = "fakeItemB.png"
+                },
+                new CatalogItem()
+                {
+                    Id = 3,
+                    Name = "fakeItemC",
+                    CatalogTypeId = 2,
+                    CatalogBrandId = 1,
+                    PictureFileName = "fakeItemC.png"
+                },
+                new CatalogItem()
+                {
+                    Id = 4,
+                    Name = "fakeItemD",
+                    CatalogTypeId = 2,
+                    CatalogBrandId = 1,
+                    PictureFileName = "fakeItemD.png"
+                },
+                new CatalogItem()
+                {
+                    Id = 5,
+                    Name = "fakeItemE",
+                    CatalogTypeId = 2,
+                    CatalogBrandId = 1,
+                    PictureFileName = "fakeItemE.png"
+                },
+                new CatalogItem()
+                {
+                    Id = 6,
+                    Name = "fakeItemF",
+                    CatalogTypeId = 2,
+                    CatalogBrandId = 1,
+                    PictureFileName = "fakeItemF.png"
                 }
             };
         }
     }
+
+    public class TestCatalogSettings : IOptionsSnapshot<CatalogSettings>
+    {
+        public CatalogSettings Value => new CatalogSettings
+        {
+            PicBaseUrl = "http://image-server.com/",
+            AzureStorageEnabled = true
+        };
+
+        public CatalogSettings Get(string name) => Value;
+    }
+
 }

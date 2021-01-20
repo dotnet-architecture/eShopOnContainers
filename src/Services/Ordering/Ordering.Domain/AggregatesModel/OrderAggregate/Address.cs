@@ -12,7 +12,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
         public String Country { get; private set; }
         public String ZipCode { get; private set; }
 
-        private Address() { }
+        public Address() { }
 
         public Address(string street, string city, string state, string country, string zipcode)
         {
@@ -23,7 +23,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
             ZipCode = zipcode;
         }
 
-        protected override IEnumerable<object> GetAtomicValues()
+        protected override IEnumerable<object> GetEqualityComponents()
         {
             // Using a yield return statement to return each element one at a time
             yield return Street;

@@ -37,6 +37,7 @@
   right: 0;
   top: 2.5rem;
   transition: height 0.35s;
+  z-index: 1;
 }
 
 .esh-identity:hover .esh-identity-drop {

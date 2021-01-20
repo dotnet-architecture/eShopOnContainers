@@ -9,14 +9,17 @@ trigger:
     include:
     - src/BuildingBlocks/*
     - src/Web/WebMVC/*
-    - k8s/helm/webmvc/*    
+    - build/azure-devops/buildimages.yml
+    - build/azure-devops/multiarch.yml
+    - build/azure-devops/webmvc/*
+    - deploy/k8s/helm/webmvc/*
 jobs:
 - template: ../buildimages.yaml
   parameters:
     services: webmvc
-    registryEndpoint: $(registryEndpoint) 
-    helmfrom: $(Build.SourcesDirectory)/k8s/helm
-    helmto: $(Build.ArtifactStagingDirectory)/k8s/helm          
+    registryEndpoint: $(registryEndpoint)
+    helmfrom: $(Build.SourcesDirectory)/deploy/k8s/helm
+    helmto: $(Build.ArtifactStagingDirectory)/deploy/k8s/helm
 - template: ../multiarch.yaml
   parameters:
     image: webmvc

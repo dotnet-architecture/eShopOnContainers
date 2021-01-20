@@ -13,10 +13,10 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
     [ApiController]
     public class PicController : ControllerBase
     {
-        private readonly IHostingEnvironment _env;
+        private readonly IWebHostEnvironment _env;
         private readonly CatalogContext _catalogContext;
 
-        public PicController(IHostingEnvironment env,
+        public PicController(IWebHostEnvironment env,
             CatalogContext catalogContext)
         {
             _env = env;
@@ -46,7 +46,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
                 string imageFileExtension = Path.GetExtension(item.PictureFileName);
                 string mimetype = GetImageMimeTypeFromImageFileExtension(imageFileExtension);
 
-                var buffer = System.IO.File.ReadAllBytes(path);
+                var buffer = await System.IO.File.ReadAllBytesAsync(path);
 
                 return File(buffer, mimetype);
             }

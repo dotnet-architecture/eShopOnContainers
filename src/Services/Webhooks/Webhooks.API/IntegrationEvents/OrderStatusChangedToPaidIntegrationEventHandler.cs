@@ -1,11 +1,9 @@
 ﻿using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
-using System;
-using System.Collections.Generic;
+using Microsoft.Extensions.Logging;
 using System.Linq;
 using System.Threading.Tasks;
 using Webhooks.API.Model;
 using Webhooks.API.Services;
-using Microsoft.Extensions.Logging;
 
 namespace Webhooks.API.IntegrationEvents
 {
@@ -24,7 +22,7 @@ namespace Webhooks.API.IntegrationEvents
         public async Task Handle(OrderStatusChangedToPaidIntegrationEvent @event)
         {
             var subscriptions = await _retriever.GetSubscriptionsOfType(WebhookType.OrderPaid);
-            _logger.LogInformation($"Received OrderStatusChangedToShippedIntegrationEvent and got {subscriptions.Count()} subscriptions to process");
+            _logger.LogInformation("Received OrderStatusChangedToShippedIntegrationEvent and got {SubscriptionsCount} subscriptions to process", subscriptions.Count());
             var whook = new WebhookData(WebhookType.OrderPaid, @event);
             await _sender.SendAll(subscriptions, whook);
         }

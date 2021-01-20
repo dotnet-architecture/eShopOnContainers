@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.WebMVC.ViewModels
 {
@@ -16,7 +15,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.ViewModels
 
         public decimal Total()
         {
-            return Math.Round(Items.Sum(x => x.UnitPrice * x.Quantity),2);
+            return Math.Round(Items.Sum(x => x.UnitPrice * x.Quantity), 2);
         }
     }
 }

@@ -9,16 +9,19 @@ trigger:
     include:
     - src/BuildingBlocks/*
     - src/Services/Ordering/*
-    - k8s/helm/ordering-api/*  
-    - k8s/helm/ordering-backgroundtasks/*
-    - k8s/helm/ordering-signalrhub/*
+    - build/azure-devops/buildimages.yml
+    - build/azure-devops/multiarch.yml
+    - build/azure-devops/ordering-api/*
+    - deploy/k8s/helm/ordering-api/*
+    - deploy/k8s/helm/ordering-backgroundtasks/*
+    - deploy/k8s/helm/ordering-signalrhub/*
 jobs:
 - template: ../buildimages.yaml
   parameters:
-    services: ordering.api
+    services: ordering-api
     registryEndpoint: $(registryEndpoint)
-    helmfrom: $(Build.SourcesDirectory)/k8s/helm
-    helmto: $(Build.ArtifactStagingDirectory)/k8s/helm    
+    helmfrom: $(Build.SourcesDirectory)/deploy/k8s/helm
+    helmto: $(Build.ArtifactStagingDirectory)/deploy/k8s/helm
 - template: ../multiarch.yaml
   parameters:
     image: ordering.api

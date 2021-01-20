@@ -26,9 +26,6 @@ bld/
 # Visual Studio 2015 cache/options directory
 .vs/
 
-# Dockerfile projects folder for restore-packages script
-csproj-files/
-
 # .js files created on build:
 src/Web/WebMVC/wwwroot/js/site*
 

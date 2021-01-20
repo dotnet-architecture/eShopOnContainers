@@ -46,8 +46,8 @@ namespace Ordering.SignalrHub
         private static IWebHost BuildWebHost(IConfiguration configuration, string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .CaptureStartupErrors(false)
+                .ConfigureAppConfiguration(x => x.AddConfiguration(configuration))
                 .UseStartup<Startup>()
-                .UseConfiguration(configuration)
                 .UseSerilog()
                 .Build();
 

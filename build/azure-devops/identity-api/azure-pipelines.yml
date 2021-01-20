@@ -9,14 +9,17 @@ trigger:
     include:
     - src/BuildingBlocks/*
     - src/Services/Identity/*
-    - k8s/helm/identity-api/*      
+    - build/azure-devops/buildimages.yml
+    - build/azure-devops/multiarch.yml
+    - build/azure-devops/identity-api/*
+    - deploy/k8s/helm/identity-api/*
 jobs:
 - template: ../buildimages.yaml
   parameters:
-    services: identity.api
+    services: identity-api
     registryEndpoint: $(registryEndpoint)
-    helmfrom: $(Build.SourcesDirectory)/k8s/helm
-    helmto: $(Build.ArtifactStagingDirectory)/k8s/helm    
+    helmfrom: $(Build.SourcesDirectory)/deploy/k8s/helm
+    helmto: $(Build.ArtifactStagingDirectory)/deploy/k8s/helm
 - template: ../multiarch.yaml
   parameters:
     image: identity.api

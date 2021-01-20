@@ -1,6 +1,5 @@
 ﻿namespace Microsoft.eShopOnContainers.WebMVC.Services
 {
-    using System.Collections.Generic;
     using System.Threading.Tasks;
     using ViewModels;
 

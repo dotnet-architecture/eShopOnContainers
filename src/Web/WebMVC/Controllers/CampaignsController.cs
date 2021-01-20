@@ -2,9 +2,10 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
 {
     using AspNetCore.Authorization;
     using AspNetCore.Mvc;
-    using global::WebMVC.Services.ModelDTOs;
     using global::WebMVC.Services;
+    using global::WebMVC.Services.ModelDTOs;
     using global::WebMVC.ViewModels;
+    using Microsoft.AspNetCore.Authentication.OpenIdConnect;
     using Microsoft.Extensions.Options;
     using Services;
     using System;
@@ -12,7 +13,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
     using ViewModels;
     using ViewModels.Pagination;
 
-    [Authorize]
+    [Authorize(AuthenticationSchemes = OpenIdConnectDefaults.AuthenticationScheme)]
     public class CampaignsController : Controller
     {
         private readonly ICampaignService _campaignService;
@@ -30,12 +31,12 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
         {
             var campaignList = await _campaignService.GetCampaigns(pageSize, page);
 
-            if(campaignList is null)
+            if (campaignList is null)
             {
                 return View();
             }
 
-            var totalPages = (int) Math.Ceiling((decimal) campaignList.Count / pageSize);
+            var totalPages = (int)Math.Ceiling((decimal)campaignList.Count / pageSize);
 
             var vm = new CampaignViewModel
             {

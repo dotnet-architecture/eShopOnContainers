@@ -1,0 +1,2 @@
+eShop WebStatus installed.
+--------------------------

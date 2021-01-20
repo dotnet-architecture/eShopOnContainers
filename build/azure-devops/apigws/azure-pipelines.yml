@@ -1,5 +1,3 @@
-variables:
-    registryEndpoint: eshop-registry
 trigger:
   branches:
     include:
@@ -8,22 +6,27 @@ trigger:
   paths:
     include:
     - src/ApiGateways/*
-    - k8s/helm/apigwmm/*
-    - k8s/helm/apigwms/*
-    - k8s/helm/apigwwm/*
-    - k8s/helm/apigwws/*
+    - build/azure-devops/buildimages.yml
+    - build/azure-devops/multiarch.yml
+    - build/azure-devops/apigws/*
+    - deploy/k8s/helm/apigwmm/*
+    - deploy/k8s/helm/apigwms/*
+    - deploy/k8s/helm/apigwwm/*
+    - deploy/k8s/helm/apigwws/*
     exclude:
     - src/ApiGateways/Mobile.Bff.Shopping/aggregator/*
     - src/ApiGateways/Web.Bff.Shopping/aggregator/*
 jobs:
-- template: ../buildimages.yaml
-  parameters:
-    services: mobileshoppingapigw mobilemarketingapigw webshoppingapigw webmarketingapigw
-    registryEndpoint: $(registryEndpoint)
-    helmfrom: $(Build.SourcesDirectory)/k8s/helm
-    helmto: $(Build.ArtifactStagingDirectory)/k8s/helm    
-- template: ../multiarch.yaml
-  parameters:
-    image: ocelotapigw
-    branch: $(Build.SourceBranchName)
-    registryEndpoint: $(registryEndpoint)
+- job: PublishCharts
+  condition: ne('$(Build.Reason)', 'PullRequest')
+  pool:
+    vmImage: 'ubuntu-16.04'
+  steps:
+  - task: CopyFiles@2
+    inputs:
+      sourceFolder: $(Build.SourcesDirectory)/deploy/k8s/helm
+      targetFolder: $(Build.ArtifactStagingDirectory)/deploy/k8s/helm
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathtoPublish: $(Build.ArtifactStagingDirectory)/deploy/k8s/helm
+      artifactName: helm

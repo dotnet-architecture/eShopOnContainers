@@ -1,7 +1,7 @@
-﻿import { Injectable }                   from '@angular/core';
-import { Http, Response, Headers }      from '@angular/http';
+﻿import { Injectable } from '@angular/core';
+
+import { HttpClient, HttpHeaders }      from '@angular/common/http';
 import { Observable, Subject }          from 'rxjs';
-import { map }                          from 'rxjs/operators';
 import { Router }                       from '@angular/router';
 import { ActivatedRoute }               from '@angular/router';
 import { ConfigurationService }         from './configuration.service';
@@ -11,14 +11,14 @@ import { StorageService }               from './storage.service';
 export class SecurityService {
 
     private actionUrl: string;
-    private headers: Headers;
+    private headers: HttpHeaders;
     private storage: StorageService;
     private authenticationSource = new Subject<boolean>();
     authenticationChallenge$ = this.authenticationSource.asObservable();
     private authorityUrl = '';
 
-    constructor(private _http: Http, private _router: Router, private route: ActivatedRoute, private _configurationService: ConfigurationService, private _storageService: StorageService) {
-        this.headers = new Headers();
+    constructor(private _http: HttpClient, private _router: Router, private route: ActivatedRoute, private _configurationService: ConfigurationService, private _storageService: StorageService) {
+        this.headers = new HttpHeaders();
         this.headers.append('Content-Type', 'application/json');
         this.headers.append('Accept', 'application/json');
         this.storage = _storageService;
@@ -50,6 +50,7 @@ export class SecurityService {
     }
 
     public UserData: any;
+
     public SetAuthorizationData(token: any, id_token: any) {
         if (this.storage.retrieve('authorizationData') !== '') {
             this.storage.store('authorizationData', '');
@@ -127,7 +128,6 @@ export class SecurityService {
                 id_token = result.id_token;
 
                 let dataIdToken: any = this.getDataFromToken(id_token);
-                console.log(dataIdToken);
 
                 // validate nonce
                 if (dataIdToken.nonce !== this.storage.retrieve('authNonce')) {
@@ -141,7 +141,6 @@ export class SecurityService {
                 }
             }
         }
-
 
         if (authResponseIsValid) {
             this.SetAuthorizationData(token, id_token);
@@ -196,8 +195,10 @@ export class SecurityService {
 
     private getDataFromToken(token: any) {
         let data = {};
+
         if (typeof token !== 'undefined') {
             let encoded = token.split('.')[1];
+            
             data = JSON.parse(this.urlBase64Decode(encoded));
         }
 
@@ -219,25 +220,30 @@ export class SecurityService {
     //}
 
     private getUserData = (): Observable<string[]> => {
-        this.setHeaders();
-        if (this.authorityUrl === '')
+        if (this.authorityUrl === '') {
             this.authorityUrl = this.storage.retrieve('IdentityUrl');
+        }
 
-        return this._http.get(this.authorityUrl + '/connect/userinfo', {
-            headers: this.headers,
-            body: ''
-        }).pipe(map(res => res.json()));
+        const options = this.setHeaders();
+
+        return this._http.get<string[]>(`${this.authorityUrl}/connect/userinfo`, options)
+            .pipe<string[]>((info: any) => info);
     }
 
-    private setHeaders() {
-        this.headers = new Headers();
-        this.headers.append('Content-Type', 'application/json');
-        this.headers.append('Accept', 'application/json');
+    private setHeaders(): any {
+        const httpOptions = {
+            headers: new HttpHeaders()
+        };
 
-        let token = this.GetToken();
+        httpOptions.headers = httpOptions.headers.set('Content-Type', 'application/json');
+        httpOptions.headers = httpOptions.headers.set('Accept', 'application/json');
+
+        const token = this.GetToken();
 
         if (token !== '') {
-            this.headers.append('Authorization', 'Bearer ' + token);
+            httpOptions.headers = httpOptions.headers.set('Authorization', `Bearer ${token}`);
         }
+
+        return httpOptions;
     }
 }

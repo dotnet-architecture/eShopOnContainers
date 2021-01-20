@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
 using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF.Services;
@@ -7,20 +6,20 @@ using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF.Utilities
 using Microsoft.eShopOnContainers.Services.Catalog.API;
 using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
 using Microsoft.Extensions.Logging;
-using Serilog.Context;
 using System;
 using System.Data.Common;
 using System.Threading.Tasks;
 
 namespace Catalog.API.IntegrationEvents
 {
-    public class CatalogIntegrationEventService : ICatalogIntegrationEventService
+    public class CatalogIntegrationEventService : ICatalogIntegrationEventService, IDisposable
     {
         private readonly Func<DbConnection, IIntegrationEventLogService> _integrationEventLogServiceFactory;
         private readonly IEventBus _eventBus;
         private readonly CatalogContext _catalogContext;
         private readonly IIntegrationEventLogService _eventLogService;
         private readonly ILogger<CatalogIntegrationEventService> _logger;
+        private volatile bool disposedValue;
 
         public CatalogIntegrationEventService(
             ILogger<CatalogIntegrationEventService> logger,
@@ -64,6 +63,25 @@ namespace Catalog.API.IntegrationEvents
                 await _catalogContext.SaveChangesAsync();
                 await _eventLogService.SaveEventAsync(evt, _catalogContext.Database.CurrentTransaction);
             });
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    (_eventLogService as IDisposable)?.Dispose();
+                }
+
+                disposedValue = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }

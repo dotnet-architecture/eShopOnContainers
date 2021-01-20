@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
 using Newtonsoft.Json;
-using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
-using System.Linq;
+using System;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Reflection;
+using System.Linq;
 
 namespace Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF
 {
@@ -14,7 +11,7 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF
         private IntegrationEventLogEntry() { }
         public IntegrationEventLogEntry(IntegrationEvent @event, Guid transactionId)
         {
-            EventId = @event.Id;            
+            EventId = @event.Id;
             CreationTime = @event.CreationDate;
             EventTypeName = @event.GetType().FullName;
             Content = JsonConvert.SerializeObject(@event);
@@ -22,7 +19,6 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF
             TimesSent = 0;
             TransactionId = transactionId.ToString();
         }
-
         public Guid EventId { get; private set; }
         public string EventTypeName { get; private set; }
         [NotMapped]

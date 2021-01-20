@@ -12,7 +12,10 @@ namespace Ordering.API.Application.Commands
 
         [DataMember]
         public int OrderNumber { get; private set; }
+        public CancelOrderCommand()
+        {
 
+        }
         public CancelOrderCommand(int orderNumber)
         {
             OrderNumber = orderNumber;

@@ -27,7 +27,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
         private readonly IMediator _mediator;
         private IDbContextTransaction _currentTransaction;
 
-        private OrderingContext(DbContextOptions<OrderingContext> options) : base(options) { }
+        public OrderingContext(DbContextOptions<OrderingContext> options) : base(options) { }
 
         public IDbContextTransaction GetCurrentTransaction() => _currentTransaction;
 
@@ -137,15 +137,16 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure
                 return Task.CompletedTask;
             }
 
+            public Task Publish(object notification, CancellationToken cancellationToken = default)
+            {
+                return Task.CompletedTask;
+            }
+
             public Task<TResponse> Send<TResponse>(IRequest<TResponse> request, CancellationToken cancellationToken = default(CancellationToken))
             {
                 return Task.FromResult<TResponse>(default(TResponse));
             }
 
-            public Task Send(IRequest request, CancellationToken cancellationToken = default(CancellationToken))
-            {
-                return Task.CompletedTask;
-            }
         }
     }
 }

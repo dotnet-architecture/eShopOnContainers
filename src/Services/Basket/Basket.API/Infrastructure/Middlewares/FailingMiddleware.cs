@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,12 +11,16 @@ namespace Basket.API.Infrastructure.Middlewares
         private readonly RequestDelegate _next;
         private bool _mustFail;
         private readonly FailingOptions _options;
-        public FailingMiddleware(RequestDelegate next, FailingOptions options)
+        private readonly ILogger _logger;
+
+        public FailingMiddleware(RequestDelegate next, ILogger<FailingMiddleware> logger, FailingOptions options)
         {
             _next = next;
             _options = options;
             _mustFail = false;
+            _logger = logger;
         }
+
         public async Task Invoke(HttpContext context)
         {
             var path = context.Request.Path;
@@ -27,6 +32,7 @@ namespace Basket.API.Infrastructure.Middlewares
 
             if (MustFail(context))
             {
+                _logger.LogInformation("Response for path {Path} will fail.", path);
                 context.Response.StatusCode = (int)System.Net.HttpStatusCode.InternalServerError;
                 context.Response.ContentType = "text/plain";
                 await context.Response.WriteAsync("Failed due to FailingMiddleware enabled.");
@@ -40,7 +46,7 @@ namespace Basket.API.Infrastructure.Middlewares
         private async Task ProcessConfigRequest(HttpContext context)
         {
             var enable = context.Request.Query.Keys.Any(k => k == "enable");
-            var disable = context.Request.Query.Keys.Any(k => k == "disable");            
+            var disable = context.Request.Query.Keys.Any(k => k == "disable");
 
             if (enable && disable)
             {
@@ -74,8 +80,15 @@ namespace Basket.API.Infrastructure.Middlewares
 
         private bool MustFail(HttpContext context)
         {
+            var rpath = context.Request.Path.Value;
+
+            if (_options.NotFilteredPaths.Any(p => p.Equals(rpath, StringComparison.InvariantCultureIgnoreCase)))
+            {
+                return false;
+            }
+
             return _mustFail &&
-                (_options.EndpointPaths.Any(x => x == context.Request.Path.Value) 
+                (_options.EndpointPaths.Any(x => x == rpath)
                 || _options.EndpointPaths.Count == 0);
         }
     }

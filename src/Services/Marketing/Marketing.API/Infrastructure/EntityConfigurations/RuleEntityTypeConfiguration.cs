@@ -14,7 +14,7 @@ namespace Microsoft.eShopOnContainers.Services.Marketing.API.Infrastructure.Enti
             builder.HasKey(r => r.Id);
 
             builder.Property(r => r.Id)
-               .ForSqlServerUseSequenceHiLo("rule_hilo")
+               .UseHiLo("rule_hilo")
                .IsRequired();
 
             builder.HasDiscriminator<int>("RuleTypeId")

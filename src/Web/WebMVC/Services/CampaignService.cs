@@ -21,7 +21,7 @@
             _httpClient = httpClient;
             _logger = logger;
 
-            _remoteServiceBaseUrl = $"{_settings.Value.MarketingUrl}/api/v1/m/campaigns/";
+            _remoteServiceBaseUrl = $"{_settings.Value.MarketingUrl}/m/api/v1/campaigns/";
         }
 
         public async Task<Campaign> GetCampaigns(int pageSize, int pageIndex)

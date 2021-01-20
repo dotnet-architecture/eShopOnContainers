@@ -102,11 +102,11 @@
         function stablishConnection(cb) {
             let connection = new signalR.HubConnectionBuilder()
                 .withUrl('@settings.Value.SignalrHubUrl/hub/notificationhub', {
-                    transport: signalR.HttpTransportType.LongPolling,
                     accessTokenFactory: () => {
                         return "Authorization", getToken();
                     }
                 })
+                .withAutomaticReconnect()
                 .build(); 
             
             connection.start().then(function () {

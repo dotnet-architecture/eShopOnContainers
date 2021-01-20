@@ -7,8 +7,8 @@
     [ApiController]
     public class PicController : ControllerBase
     {
-        private readonly IHostingEnvironment _env;
-        public PicController(IHostingEnvironment env)
+        private readonly IWebHostEnvironment _env;
+        public PicController(IWebHostEnvironment env)
         {
             _env = env;
         }

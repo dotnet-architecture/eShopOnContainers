@@ -1,0 +1,98 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Services\Location\**" />
+    <Compile Remove="Services\Marketing\**" />
+    <EmbeddedResource Remove="Services\Location\**" />
+    <EmbeddedResource Remove="Services\Marketing\**" />
+    <None Remove="Services\Location\**" />
+    <None Remove="Services\Marketing\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Services\Basket\appsettings.json" />
+    <None Remove="Setup\CatalogBrands.csv" />
+    <None Remove="Setup\CatalogItems.csv" />
+    <None Remove="Setup\CatalogItems.zip" />
+    <None Remove="Setup\CatalogTypes.csv" />
+    <None Remove="Services\Ordering\appsettings.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="Services\Location\LocationsScenariosBase.cs" />
+    <Compile Include="Services\Location\LocationsTestsStartup.cs" />
+    <Compile Include="Services\Marketing\CampaignScenariosBase.cs" />
+    <Compile Include="Services\Marketing\UserLocationRoleScenariosBase.cs" />
+    <Compile Include="Services\Marketing\MarketingScenarios.cs" />
+    <Compile Include="Services\Marketing\MarketingScenariosBase.cs" />
+    <Compile Include="Services\Marketing\MarketingTestsStartup.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Services\Basket\appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Services\Catalog\appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Setup\CatalogBrands.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Setup\CatalogItems.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Setup\CatalogItems.zip">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Setup\CatalogTypes.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Services\Location\appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Services\Marketing\appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Services\Ordering\appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.4.0" />
+    <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="3.1.0" />
+    <PackageReference Include="xunit" Version="2.4.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Services\Basket\Basket.API\Basket.API.csproj" />
+    <ProjectReference Include="..\..\..\Services\Catalog\Catalog.API\Catalog.API.csproj" />
+    <ProjectReference Include="..\..\..\Services\Location\Locations.API\Locations.API.csproj" />
+    <ProjectReference Include="..\..\..\Services\Marketing\Marketing.API\Marketing.API.csproj" />
+    <ProjectReference Include="..\..\..\Services\Ordering\Ordering.API\Ordering.API.csproj" />
+    <ProjectReference Include="..\..\..\Web\WebMVC\WebMVC.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Services\Locations\appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
+  </ItemGroup>
+
+</Project>

@@ -1,11 +1,11 @@
 ﻿namespace WebMVC.ViewModels
 {
-    using System.Collections.Generic;
     using Microsoft.eShopOnContainers.WebMVC.ViewModels;
     using Microsoft.eShopOnContainers.WebMVC.ViewModels.Pagination;
-    using WebMVC.ViewModels.Annotations;
     using Newtonsoft.Json;
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using WebMVC.ViewModels.Annotations;
 
     public class CampaignViewModel
     {

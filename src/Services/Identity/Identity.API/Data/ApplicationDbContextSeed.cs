@@ -20,7 +20,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Data
     {
         private readonly IPasswordHasher<ApplicationUser> _passwordHasher = new PasswordHasher<ApplicationUser>();
 
-        public async Task SeedAsync(ApplicationDbContext context,IHostingEnvironment env,
+        public async Task SeedAsync(ApplicationDbContext context,IWebHostEnvironment env,
             ILogger<ApplicationDbContextSeed> logger, IOptions<AppSettings> settings,int? retry = 0)
         {
             int retryForAvaiability = retry.Value;
@@ -149,7 +149,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Data
                 City = "Redmond",
                 Country = "U.S.",
                 Email = "demouser@microsoft.com",
-                Expiration = "12/20",
+                Expiration = "12/21",
                 Id = Guid.NewGuid().ToString(),
                 LastName = "DemoLastName",
                 Name = "DemoUser",

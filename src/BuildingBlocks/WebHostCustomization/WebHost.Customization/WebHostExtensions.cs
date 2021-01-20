@@ -3,7 +3,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Polly;
-using Polly.Retry;
 using System;
 using System.Data.SqlClient;
 
@@ -18,16 +17,14 @@ namespace Microsoft.AspNetCore.Hosting
             return orchestratorType?.ToUpper() == "K8S";
         }
 
-        public static IWebHost MigrateDbContext<TContext>(this IWebHost webHost, Action<TContext,IServiceProvider> seeder) where TContext : DbContext
+        public static IWebHost MigrateDbContext<TContext>(this IWebHost webHost, Action<TContext, IServiceProvider> seeder) where TContext : DbContext
         {
             var underK8s = webHost.IsInKubernetes();
 
             using (var scope = webHost.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
-
                 var logger = services.GetRequiredService<ILogger<TContext>>();
-
                 var context = services.GetService<TContext>();
 
                 try
@@ -40,13 +37,15 @@ namespace Microsoft.AspNetCore.Hosting
                     }
                     else
                     {
+                        var retries = 10;
                         var retry = Policy.Handle<SqlException>()
-                             .WaitAndRetry(new TimeSpan[]
-                             {
-                             TimeSpan.FromSeconds(3),
-                             TimeSpan.FromSeconds(5),
-                             TimeSpan.FromSeconds(8),
-                             });
+                            .WaitAndRetry(
+                                retryCount: retries,
+                                sleepDurationProvider: retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
+                                onRetry: (exception, timeSpan, retry, ctx) =>
+                                {
+                                    logger.LogWarning(exception, "[{prefix}] Exception {ExceptionType} with message {Message} detected on attempt {retry} of {retries}", nameof(TContext), exception.GetType().Name, exception.Message, retry, retries);
+                                });
 
                         //if the sql server container is not created on run docker compose this
                         //migration can't fail for network related exception. The retry options for DbContext only 
@@ -71,7 +70,7 @@ namespace Microsoft.AspNetCore.Hosting
         }
 
         private static void InvokeSeeder<TContext>(Action<TContext, IServiceProvider> seeder, TContext context, IServiceProvider services)
-            where TContext : DbContext  
+            where TContext : DbContext
         {
             context.Database.Migrate();
             seeder(context, services);
