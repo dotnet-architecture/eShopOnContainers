@@ -2,7 +2,7 @@
 
 namespace Ordering.SignalrHub.IntegrationEvents.Events
 {
-    public record OrderStatusChangedToStockConfirmedIntegrationEvent : IntegrationEvent
+    public class OrderStatusChangedToStockConfirmedIntegrationEvent : IntegrationEvent
     {
         public int OrderId { get; }
         public string OrderStatus { get; }

@@ -1,38 +1,54 @@
-﻿using GrpcBasket;
+﻿using Grpc.Net.Client;
+using GrpcBasket;
+using Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Config;
 using Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Models;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Services
 {
     public class BasketService : IBasketService
     {
-        private readonly Basket.BasketClient _basketClient;
+        private readonly HttpClient _httpClient;
+        private readonly UrlsConfig _urls;
         private readonly ILogger<BasketService> _logger;
 
-        public BasketService(Basket.BasketClient basketClient, ILogger<BasketService> logger)
+        public BasketService(HttpClient httpClient, IOptions<UrlsConfig> config, ILogger<BasketService> logger)
         {
-            _basketClient = basketClient;
+            _httpClient = httpClient;
+            _urls = config.Value;
             _logger = logger;
         }
 
         public async Task<BasketData> GetById(string id)
         {
-            _logger.LogDebug("grpc client created, request = {@id}", id);
-            var response = await _basketClient.GetBasketByIdAsync(new BasketRequest { Id = id });
-            _logger.LogDebug("grpc response {@response}", response);
+            return await GrpcCallerService.CallService(_urls.GrpcBasket, async channel =>
+            {
 
-            return MapToBasketData(response);
+                var client = new Basket.BasketClient(channel);
+                _logger.LogDebug("grpc client created, request = {@id}", id);
+                var response = await client.GetBasketByIdAsync(new BasketRequest { Id = id });
+                _logger.LogDebug("grpc response {@response}", response);
+
+                return MapToBasketData(response);
+            });
         }
 
         public async Task UpdateAsync(BasketData currentBasket)
         {
-            _logger.LogDebug("Grpc update basket currentBasket {@currentBasket}", currentBasket);
-            var request = MapToCustomerBasketRequest(currentBasket);
-            _logger.LogDebug("Grpc update basket request {@request}", request);
+            await GrpcCallerService.CallService(_urls.GrpcBasket, async httpClient =>
+            {
+                var channel = GrpcChannel.ForAddress(_urls.GrpcBasket);
+                var client = new Basket.BasketClient(channel);
+                _logger.LogDebug("Grpc update basket currentBasket {@currentBasket}", currentBasket);
+                var request = MapToCustomerBasketRequest(currentBasket);
+                _logger.LogDebug("Grpc update basket request {@request}", request);
 
-            await _basketClient.UpdateBasketAsync(request);
+                return await client.UpdateBasketAsync(request);
+            });
         }
 
         private BasketData MapToBasketData(CustomerBasketResponse customerBasketRequest)

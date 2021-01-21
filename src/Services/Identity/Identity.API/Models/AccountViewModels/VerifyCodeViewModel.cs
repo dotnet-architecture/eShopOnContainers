@@ -2,20 +2,20 @@
 
 namespace Microsoft.eShopOnContainers.Services.Identity.API.Models.AccountViewModels
 {
-    public record VerifyCodeViewModel
+    public class VerifyCodeViewModel
     {
         [Required]
-        public string Provider { get; init; }
+        public string Provider { get; set; }
 
         [Required]
-        public string Code { get; init; }
+        public string Code { get; set; }
 
-        public string ReturnUrl { get; init; }
+        public string ReturnUrl { get; set; }
 
         [Display(Name = "Remember this browser?")]
-        public bool RememberBrowser { get; init; }
+        public bool RememberBrowser { get; set; }
 
         [Display(Name = "Remember me?")]
-        public bool RememberMe { get; init; }
+        public bool RememberMe { get; set; }
     }
 }

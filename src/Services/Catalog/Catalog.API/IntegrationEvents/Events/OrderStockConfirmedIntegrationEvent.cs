@@ -2,7 +2,7 @@
 {
     using BuildingBlocks.EventBus.Events;
 
-    public record OrderStockConfirmedIntegrationEvent : IntegrationEvent
+    public class OrderStockConfirmedIntegrationEvent : IntegrationEvent
     {
         public int OrderId { get; }
 

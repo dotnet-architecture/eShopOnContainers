@@ -3,10 +3,10 @@ using System.Collections.Generic;
 
 namespace Microsoft.eShopOnContainers.Services.Identity.API.Models.ManageViewModels
 {
-    public record ConfigureTwoFactorViewModel
+    public class ConfigureTwoFactorViewModel
     {
-        public string SelectedProvider { get; init; }
+        public string SelectedProvider { get; set; }
 
-        public ICollection<SelectListItem> Providers { get; init; }
+        public ICollection<SelectListItem> Providers { get; set; }
     }
 }

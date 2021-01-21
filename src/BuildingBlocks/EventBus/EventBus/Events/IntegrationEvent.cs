@@ -3,7 +3,7 @@ using System;
 
 namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events
 {
-    public record IntegrationEvent
+    public class IntegrationEvent
     {
         public IntegrationEvent()
         {
@@ -19,9 +19,9 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events
         }
 
         [JsonProperty]
-        public Guid Id { get; private init; }
+        public Guid Id { get; private set; }
 
         [JsonProperty]
-        public DateTime CreationDate { get; private init; }
+        public DateTime CreationDate { get; private set; }
     }
 }

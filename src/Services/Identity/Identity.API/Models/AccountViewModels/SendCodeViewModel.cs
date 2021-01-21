@@ -3,14 +3,14 @@ using System.Collections.Generic;
 
 namespace Microsoft.eShopOnContainers.Services.Identity.API.Models.AccountViewModels
 {
-    public record SendCodeViewModel
+    public class SendCodeViewModel
     {
-        public string SelectedProvider { get; init; }
+        public string SelectedProvider { get; set; }
 
-        public ICollection<SelectListItem> Providers { get; init; }
+        public ICollection<SelectListItem> Providers { get; set; }
 
-        public string ReturnUrl { get; init; }
+        public string ReturnUrl { get; set; }
 
-        public bool RememberMe { get; init; }
+        public bool RememberMe { get; set; }
     }
 }

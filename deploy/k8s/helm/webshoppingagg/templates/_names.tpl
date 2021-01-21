@@ -50,11 +50,3 @@
 {{- .Values.image.repository -}}
 {{- end -}}
 {{- end -}}
-
-{{- define "protocol" -}}
-{{- if .Values.inf.tls.enabled -}}
-{{- printf "%s" "https" -}}
-{{- else -}}
-{{- printf "%s" "http" -}}
-{{- end -}}
-{{- end -}}

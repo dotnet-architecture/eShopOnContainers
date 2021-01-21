@@ -14,6 +14,8 @@
 		"BasketSubscriptionName": "Basket",
 		"CatalogSubscriptionName": "Catalog",
 		"OrderingSubscriptionName": "Ordering",
+		"LocationsSubscriptionName": "Locations",
+		"MarketingSubscriptionName": "Marketing",
 		"GracePeriodSubscriptionName": "GracePeriod",
 		"PaymentSubscriptionName": "Payment",
         "location": "[resourceGroup().location]",
@@ -116,6 +118,46 @@
 						{
                             "apiVersion": "[variables('sbVersion')]",
                             "name": "[variables('CatalogSubscriptionName')]",
+                            "type": "Subscriptions",
+                            "dependsOn": [
+                                "[variables('serviceBusTopicName')]"
+                            ],
+                            "properties": {
+								"lockDuration": "00:00:30",
+								"requiresSession": false,
+								"defaultMessageTimeToLive": "14.00:00:00",
+								"deadLetteringOnMessageExpiration": true,
+								"deadLetteringOnFilterEvaluationExceptions": true,
+								"maxDeliveryCount": 10,
+								"enableBatchedOperations": false,
+								"status": "Active",
+								"autoDeleteOnIdle": "10675199.02:48:05.4775807",
+								"entityAvailabilityStatus": "Available"
+							}
+                        },
+                        {
+                            "apiVersion": "[variables('sbVersion')]",
+                            "name": "[variables('LocationsSubscriptionName')]",
+                            "type": "Subscriptions",
+                            "dependsOn": [
+                                "[variables('serviceBusTopicName')]"
+                            ],
+                            "properties": {
+								"lockDuration": "00:00:30",
+								"requiresSession": false,
+								"defaultMessageTimeToLive": "14.00:00:00",
+								"deadLetteringOnMessageExpiration": true,
+								"deadLetteringOnFilterEvaluationExceptions": true,
+								"maxDeliveryCount": 10,
+								"enableBatchedOperations": false,
+								"status": "Active",
+								"autoDeleteOnIdle": "10675199.02:48:05.4775807",
+								"entityAvailabilityStatus": "Available"
+							}
+                        },
+                        {
+                            "apiVersion": "[variables('sbVersion')]",
+                            "name": "[variables('MarketingSubscriptionName')]",
                             "type": "Subscriptions",
                             "dependsOn": [
                                 "[variables('serviceBusTopicName')]"

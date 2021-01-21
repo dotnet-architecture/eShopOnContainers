@@ -1,0 +1,79 @@
+@model WebMVC.ViewModels.CampaignViewModel
+
+@{
+    ViewData["Title"] = "Campaigns";
+
+    var headerList= new List<Header>() {
+        new Header() { Controller = "Catalog", Text = "Back to catalog" } };
+}
+
+<section class="esh-campaigns-hero">
+    <div class="container">
+        <img class="esh-campaigns-title" src="~/images/main_banner_text.png" />
+    </div>
+</section>
+
+<partial name="_Header" model="headerList" />
+
+<div class="container">
+    <br />
+    <div class="row">
+
+        @if (!ViewData.ModelState.IsValid)
+        {
+        <div class="alert alert-warning">
+            @Html.ValidationSummary(false)
+        </div>
+        }
+
+        <div class="col-md-12">
+            <div class="esh-campaigns-items" style="font-weight: 300;">
+                UPDATE USER LOCATION
+            </div>
+            <br />
+            <form class="form-inline" asp-action="CreateNewUserLocation" method="post">
+                <label class="sr-only" for="longitudeInput">Name</label>
+
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroup-sizing-default">Lat</span>
+                    </div>
+                    <input type="text" class="form-control mb-2 mr-sm-2 mb-sm-0" id="latitudeInput" asp-for="Lat" placeholder="Latitude">
+                </div>
+
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroup-sizing-default">Lon</span>
+                    </div>
+                    <input type="text" class="form-control mb-2 mr-sm-2 mb-sm-0" id="longitudeInput" asp-for="Lon" placeholder="Longitude">
+                </div>
+
+                <div class="input-group mb-2 mr-sm-2 mb-sm-0 col-md-2">
+                    <input type="submit" value="Update" class="btn esh-campaigns-form-button" />
+                </div>
+            </form>
+        </div>
+    </div>
+    <br />
+    @if (Model != null && Model.CampaignItems !=null && Model.CampaignItems.Any())
+        {
+    <div class="card-group esh-campaigns-items row">
+        @foreach (var catalogItem in Model.CampaignItems)
+                {
+        <div class="esh-campaigns-item col-md-4">
+            <partial name="_campaign" model="catalogItem" />
+        </div>
+                }
+    </div>
+
+    <partial name="_pagination" for="PaginationInfo" />
+        }
+        else
+        {
+    <div class="esh-campaigns-items row">
+        THERE ARE NO CAMPAIGNS
+    </div>
+        }
+</div>
+
+

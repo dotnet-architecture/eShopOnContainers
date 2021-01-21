@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="eShopOnContainers.Core.Views.SettingsView"
+             xmlns:viewModelBase="clr-namespace:eShopOnContainers.Core.ViewModels.Base;assembly=eShopOnContainers.Core"
+             xmlns:controls="clr-namespace:eShopOnContainers.Core.Controls;assembly=eShopOnContainers.Core"
+             xmlns:converters="clr-namespace:eShopOnContainers.Core.Converters;assembly=eShopOnContainers.Core"
+             xmlns:animations="clr-namespace:eShopOnContainers.Core.Animations;assembly=eShopOnContainers.Core"
+             xmlns:triggers="clr-namespace:eShopOnContainers.Core.Triggers;assembly=eShopOnContainers.Core"
+             viewModelBase:ViewModelLocator.AutoWireViewModel="true"
+             Title="Settings">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:DoubleConverter x:Key="DoubleConverter" />
+            
+            <Style x:Key="SettingsStackLayoutStyle" TargetType="{x:Type StackLayout}">
+                <Setter Property="Margin" 
+                        Value="6" />
+            </Style>
+
+            <Style x:Key="SettingsTitleStyle" 
+               TargetType="{x:Type Label}">
+                <Setter Property="FontFamily"
+                        Value="{StaticResource MontserratRegular}" />
+                <Setter Property="FontSize" 
+                        Value="{StaticResource MediumSize}" />
+                <Setter Property="HorizontalOptions" 
+                        Value="Start" />
+                <Setter Property="VerticalOptions" 
+                        Value="Center" />
+                <Setter Property="Margin" 
+                        Value="12, 0" />
+                <Setter Property="TextColor" Value="{StaticResource GreenColor}" />
+            </Style>
+
+            <Style x:Key="SettingsDescriptionStyle" 
+                   TargetType="{x:Type Label}"
+                   BasedOn="{StaticResource SettingsTitleStyle}">
+                <Setter Property="FontSize" 
+                        Value="{StaticResource LittleSize}" />
+                <Setter Property="TextColor" Value="{StaticResource BlackColor}" />
+            </Style>
+
+            <Style x:Key="SettingsWarningMessageStyle" 
+                   TargetType="{x:Type Label}"
+                   BasedOn="{StaticResource SettingsTitleStyle}">
+                <Setter Property="FontSize" 
+                        Value="{StaticResource LittleSize}" />
+                <Setter Property="TextColor" Value="{StaticResource ErrorColor}" />
+            </Style>
+
+            <Style x:Key="SettingsToggleButtonStyle" 
+                   TargetType="{x:Type controls:ToggleButton}">
+                <Setter Property="HeightRequest" 
+                        Value="48" />
+                <Setter Property="WidthRequest" 
+                        Value="48" />
+                <Setter Property="VerticalOptions" 
+                        Value="Center" />
+                <Setter Property="HorizontalOptions" 
+                        Value="Center" />
+                <Setter Property="Margin" 
+                        Value="12,0" />
+                <Setter Property="Animate" 
+                        Value="True" />
+            </Style>
+
+            <Style x:Key="SettingsEntryStyle"
+                   TargetType="{x:Type Entry}"
+                   BasedOn="{StaticResource EntryStyle}">
+                <Setter Property="Margin"
+                        Value="12, 0" />
+            </Style>
+
+             <Style x:Key="SettingsUwpEntryStyle"
+                   TargetType="{x:Type Entry}"
+                   BasedOn="{StaticResource UwpEntryStyle}">
+                <Setter Property="Margin"
+                        Value="12, 0" />
+            </Style>
+            
+            <Style x:Key="HeaderLabelStyle" 
+               TargetType="{x:Type Label}">
+                <Setter Property="FontFamily"
+                        Value="{StaticResource MontserratRegular}" />
+                <Setter Property="FontSize"
+                        Value="{StaticResource LittleSize}" />
+                <Setter Property="TextColor"
+                        Value="{StaticResource GreenColor}" />
+                <Setter Property="HorizontalOptions"
+                        Value="Start" />
+                <Setter Property="Margin"
+                        Value="12,0" />
+            </Style>
+           
+            <animations:StoryBoard 
+                x:Key="MockServicesAnimation"    
+                Target="{x:Reference MockServices}">
+                <animations:FadeInAnimation 
+                    Direction="Up">
+                    <animations:FadeInAnimation.Duration>
+                        <OnPlatform x:TypeArguments="x:String">
+                            <On Platform="iOS" Value="0" />
+                            <On Platform="Android, UWP, WinRT, WinPhone" Value="500" />
+                        </OnPlatform>
+                    </animations:FadeInAnimation.Duration>
+                </animations:FadeInAnimation>
+            </animations:StoryBoard>
+            
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Triggers>
+        <EventTrigger 
+            Event="Appearing">
+            <triggers:BeginAnimation   
+                Animation="{StaticResource MockServicesAnimation}" />
+        </EventTrigger>
+    </ContentPage.Triggers>
+
+    <!-- SETTINGS -->
+    <Grid x:Name="MockServices" BackgroundColor="{StaticResource BackgroundColor}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <!-- MOCK SERVICES -->
+        <StackLayout                     
+            Style="{StaticResource SettingsStackLayoutStyle}">
+            <Label 
+                Text="{Binding TitleUseAzureServices}"
+                Style="{StaticResource SettingsTitleStyle}"/>
+            <Label
+                Text="{Binding DescriptionUseAzureServices}"
+                Style="{StaticResource SettingsDescriptionStyle}"/>
+        </StackLayout>
+        <!-- ON / OFF -->
+        <controls:ToggleButton 
+            Grid.Column="1" 
+            Checked="{Binding UseAzureServices, Mode=TwoWay}"
+            Command="{Binding ToggleMockServicesCommand}"
+            Style="{StaticResource SettingsToggleButtonStyle}">
+            <controls:ToggleButton.CheckedImage>
+                <OnPlatform x:TypeArguments="ImageSource">
+                    <On Platform="iOS" Value="switchOn.png" />
+                    <On Platform="Android" Value="switch_on.png" />
+                    <On Platform="UWP, WinRT, WinPhone" Value="Assets/switchOn.png" />
+                </OnPlatform>
+            </controls:ToggleButton.CheckedImage>
+            <controls:ToggleButton.UnCheckedImage>
+                <OnPlatform x:TypeArguments="ImageSource">
+                    <On Platform="iOS" Value="switchOff.png" />
+                    <On Platform="Android" Value="switch_off.png" />
+                    <On Platform="UWP, WinRT, WinPhone" Value="Assets/switchOff.png" />
+                </OnPlatform>
+            </controls:ToggleButton.UnCheckedImage>
+        </controls:ToggleButton>
+        <!-- ENDPOINT -->
+        <StackLayout
+            Grid.Row="1"
+            Grid.ColumnSpan="2"
+            Style="{StaticResource SettingsStackLayoutStyle}"
+            IsVisible="{Binding UseAzureServices}">
+            <Label
+                Text="Identity Url"
+                Style="{StaticResource HeaderLabelStyle}"/>
+            <Entry
+                Text="{Binding IdentityEndpoint, Mode=TwoWay}">
+                <Entry.Style>
+                    <OnPlatform x:TypeArguments="Style">
+                        <On Platform="iOS, Android" Value="{StaticResource SettingsEntryStyle}" />
+                        <On Platform="UWP, WinRT, WinPhone" Value="{StaticResource SettingsUwpEntryStyle}" />
+                    </OnPlatform>
+                </Entry.Style>
+            </Entry>
+
+            <Label
+                Text="Gateway Shopping Url"
+                Style="{StaticResource HeaderLabelStyle}"/>
+            <Entry
+                Text="{Binding GatewayShoppingEndpoint, Mode=TwoWay}">
+                <Entry.Style>
+                    <OnPlatform x:TypeArguments="Style">
+                        <On Platform="iOS, Android" Value="{StaticResource SettingsEntryStyle}" />
+                        <On Platform="UWP, WinRT, WinPhone" Value="{StaticResource SettingsUwpEntryStyle}" />
+                    </OnPlatform>
+                </Entry.Style>
+            </Entry>
+
+            <Label
+                Text="Gateway Marketing Url"
+                Style="{StaticResource HeaderLabelStyle}"/>
+            <Entry
+                Text="{Binding GatewayMarketingEndpoint, Mode=TwoWay}">
+                <Entry.Style>
+                    <OnPlatform x:TypeArguments="Style">
+                        <On Platform="iOS, Android" Value="{StaticResource SettingsEntryStyle}" />
+                        <On Platform="UWP, WinRT, WinPhone" Value="{StaticResource SettingsUwpEntryStyle}" />
+                    </OnPlatform>
+                </Entry.Style>
+            </Entry>
+        </StackLayout>
+        <!-- USE LOCATIONS -->
+        <StackLayout                       
+            Grid.Row="2"
+            IsVisible="{Binding UserIsLogged}"
+            Style="{StaticResource SettingsStackLayoutStyle}">
+            <Label 
+                Text="{Binding TitleUseFakeLocation}"
+                Style="{StaticResource SettingsTitleStyle}"/>
+            <Label
+                Text="{Binding DescriptionUseFakeLocation}"
+                Style="{StaticResource SettingsDescriptionStyle}"/>
+        </StackLayout>
+        <!-- ON / OFF -->
+        <controls:ToggleButton 
+            Grid.Column="1" 
+            Grid.Row="2"   
+            Checked="{Binding UseFakeLocation, Mode=TwoWay}"
+            Command="{Binding ToggleFakeLocationCommand}"
+            Style="{StaticResource SettingsToggleButtonStyle}"
+            IsVisible="{Binding UserIsLogged}">
+            <controls:ToggleButton.CheckedImage>
+                <OnPlatform x:TypeArguments="ImageSource">
+                    <On Platform="iOS" Value="switchOn.png" />
+                    <On Platform="Android" Value="switch_on.png" />
+                    <On Platform="UWP, WinRT, WinPhone" Value="Assets/switchOn.png" />
+                </OnPlatform>
+            </controls:ToggleButton.CheckedImage>
+            <controls:ToggleButton.UnCheckedImage>
+                <OnPlatform x:TypeArguments="ImageSource">
+                    <On Platform="iOS" Value="switchOff.png" />
+                    <On Platform="Android" Value="switch_off.png" />
+                    <On Platform="UWP, WinRT, WinPhone" Value="Assets/switchOff.png" />
+                </OnPlatform>
+            </controls:ToggleButton.UnCheckedImage>
+        </controls:ToggleButton>
+        <!-- FAKE LOCATIONS -->
+        <StackLayout
+            Grid.Row="3"
+            Grid.ColumnSpan="2"
+            Style="{StaticResource SettingsStackLayoutStyle}"
+            IsVisible="{Binding UseFakeLocation}">
+            <Label
+                Text="Latitude"
+                Style="{StaticResource HeaderLabelStyle}"/>
+            <Entry
+                Text="{Binding Latitude, Mode=TwoWay, Converter={StaticResource DoubleConverter}}"
+                Keyboard="Text">
+                <Entry.Style>
+                    <OnPlatform x:TypeArguments="Style">
+                        <On Platform="iOS, Android" Value="{StaticResource SettingsEntryStyle}" />
+                        <On Platform="UWP, WinRT, WinPhone" Value="{StaticResource SettingsUwpEntryStyle}" />
+                    </OnPlatform>
+                </Entry.Style>
+            </Entry>
+            <Label
+                Text="Longitude"
+                Style="{StaticResource HeaderLabelStyle}"/>
+            <Entry
+                Text="{Binding Longitude, Mode=TwoWay, Converter={StaticResource DoubleConverter}}"
+                Keyboard="Text">
+                <Entry.Style>
+                    <OnPlatform x:TypeArguments="Style">
+                        <On Platform="iOS, Android" Value="{StaticResource SettingsEntryStyle}" />
+                        <On Platform="UWP, WinRT, WinPhone" Value="{StaticResource SettingsUwpEntryStyle}" />
+                    </OnPlatform>
+                </Entry.Style>
+            </Entry>
+            <Button 
+                Command="{Binding ToggleSendLocationCommand}"
+                Text="Send Location"/>
+        </StackLayout>
+        <!-- ALLOW GPS LOCATION -->
+        <StackLayout                        
+            Grid.Row="4"
+            Style="{StaticResource SettingsStackLayoutStyle}"
+            IsVisible="{Binding UseFakeLocation, Converter={StaticResource InverseBoolConverter}}">
+            <Label 
+                Text="{Binding TitleAllowGpsLocation}"
+                Style="{StaticResource SettingsTitleStyle}"/>
+            <Label
+                Text="{Binding DescriptionAllowGpsLocation}"
+                Style="{StaticResource SettingsDescriptionStyle}"/>
+            <Label
+                Text="{Binding GpsWarningMessage}"
+                Style="{StaticResource SettingsWarningMessageStyle}"/>
+        </StackLayout>
+        <!-- ON / OFF -->
+        <controls:ToggleButton 
+            Grid.Column="1" 
+            Grid.Row="4" 
+            Checked="{Binding AllowGpsLocation, Mode=TwoWay}"
+            Command="{Binding ToggleAllowGpsLocationCommand}"
+            Style="{StaticResource SettingsToggleButtonStyle}"
+            IsVisible="{Binding UseFakeLocation, Converter={StaticResource InverseBoolConverter}}">
+            <controls:ToggleButton.CheckedImage>
+                <OnPlatform x:TypeArguments="ImageSource">
+                    <On Platform="iOS" Value="switchOn.png" />
+                    <On Platform="Android" Value="switch_on.png" />
+                    <On Platform="UWP, WinRT, WinPhone" Value="Assets/switchOn.png" />
+                </OnPlatform>
+            </controls:ToggleButton.CheckedImage>
+            <controls:ToggleButton.UnCheckedImage>
+                <OnPlatform x:TypeArguments="ImageSource">
+                    <On Platform="iOS" Value="switchOff.png" />
+                    <On Platform="Android" Value="switch_off.png" />
+                    <On Platform="UWP, WinRT, WinPhone" Value="Assets/switchOff.png" />
+                </OnPlatform>
+            </controls:ToggleButton.UnCheckedImage>
+        </controls:ToggleButton>
+    </Grid>
+</ContentPage>

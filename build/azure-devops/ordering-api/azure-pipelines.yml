@@ -1,0 +1,29 @@
+variables:
+    registryEndpoint: eshop-registry
+trigger:
+  branches:
+    include:
+    - master
+    - dev
+  paths:
+    include:
+    - src/BuildingBlocks/*
+    - src/Services/Ordering/*
+    - build/azure-devops/buildimages.yml
+    - build/azure-devops/multiarch.yml
+    - build/azure-devops/ordering-api/*
+    - deploy/k8s/helm/ordering-api/*
+    - deploy/k8s/helm/ordering-backgroundtasks/*
+    - deploy/k8s/helm/ordering-signalrhub/*
+jobs:
+- template: ../buildimages.yaml
+  parameters:
+    services: ordering-api
+    registryEndpoint: $(registryEndpoint)
+    helmfrom: $(Build.SourcesDirectory)/deploy/k8s/helm
+    helmto: $(Build.ArtifactStagingDirectory)/deploy/k8s/helm
+- template: ../multiarch.yaml
+  parameters:
+    image: ordering.api
+    branch: $(Build.SourceBranchName)
+    registryEndpoint: $(registryEndpoint)

@@ -6,7 +6,7 @@ using IdentityServer4.Models;
 
 namespace Microsoft.eShopOnContainers.Services.Identity.API.Models
 {
-    public record ErrorViewModel
+    public class ErrorViewModel
     {
         public ErrorMessage Error { get; set; }
     }

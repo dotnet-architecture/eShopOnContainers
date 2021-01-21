@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace UnitTest.Ordering.Application
 {
@@ -8,6 +10,7 @@ namespace UnitTest.Ordering.Application
     using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Idempotency;
     using Microsoft.Extensions.Logging;
     using Moq;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Xunit;
@@ -34,7 +37,7 @@ namespace UnitTest.Ordering.Application
             _requestManager.Setup(x => x.ExistAsync(It.IsAny<Guid>()))
                .Returns(Task.FromResult(false));
 
-            _mediator.Setup(x => x.Send(It.IsAny<IRequest<bool>>(), default(System.Threading.CancellationToken)))
+            _mediator.Setup(x => x.Send(It.IsAny<IRequest<bool>>(),default(System.Threading.CancellationToken)))
                .Returns(Task.FromResult(true));
 
             //Act

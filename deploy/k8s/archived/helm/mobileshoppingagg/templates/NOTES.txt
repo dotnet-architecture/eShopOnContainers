@@ -1,4 +1,4 @@
-eShop Mobile Shopping Aggregator is installed
+eShop Mobile Marketing Aggregator is installed
 ----------------------------------------------
 
 This API is not directly exposed outside cluster. If need to access it use:

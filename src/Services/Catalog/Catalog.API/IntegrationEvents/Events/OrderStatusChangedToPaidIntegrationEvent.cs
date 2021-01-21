@@ -3,7 +3,7 @@
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
     using System.Collections.Generic;
 
-    public record OrderStatusChangedToPaidIntegrationEvent : IntegrationEvent
+    public class OrderStatusChangedToPaidIntegrationEvent : IntegrationEvent
     {
         public int OrderId { get; }
         public IEnumerable<OrderStockItem> OrderStockItems { get; }

@@ -3,39 +3,39 @@ using System.Collections.Generic;
 
 namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.Queries
 {
-    public record Orderitem
+    public class Orderitem
     {
-        public string productname { get; init; }
-        public int units { get; init; }
-        public double unitprice { get; init; }
-        public string pictureurl { get; init; }
+        public string productname { get; set; }
+        public int units { get; set; }
+        public double unitprice { get; set; }
+        public string pictureurl { get; set; }
     }
 
-    public record Order
+    public class Order
     {
-        public int ordernumber { get; init; }
-        public DateTime date { get; init; }
-        public string status { get; init; }
-        public string description { get; init; }
-        public string street { get; init; }
-        public string city { get; init; }
-        public string zipcode { get; init; }
-        public string country { get; init; }
+        public int ordernumber { get; set; }
+        public DateTime date { get; set; }
+        public string status { get; set; }
+        public string description { get; set; }
+        public string street { get; set; }
+        public string city { get; set; }
+        public string zipcode { get; set; }
+        public string country { get; set; }
         public List<Orderitem> orderitems { get; set; }
         public decimal total { get; set; }
     }
 
-    public record OrderSummary
+    public class OrderSummary
     {
-        public int ordernumber { get; init; }
-        public DateTime date { get; init; }
-        public string status { get; init; }
-        public double total { get; init; }
+        public int ordernumber { get; set; }
+        public DateTime date { get; set; }
+        public string status { get; set; }
+        public double total { get; set; }
     }
 
-    public record CardType
+    public class CardType
     {
-        public int Id { get; init; }
-        public string Name { get; init; }
+        public int Id { get; set; }
+        public string Name { get; set; }
     }
 }

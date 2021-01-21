@@ -1,9 +1,9 @@
 ﻿namespace Ordering.API.Application.IntegrationEvents.Events
 {
-    using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
     using System.Collections.Generic;
+    using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
 
-    public record OrderStatusChangedToAwaitingValidationIntegrationEvent : IntegrationEvent
+    public class OrderStatusChangedToAwaitingValidationIntegrationEvent : IntegrationEvent
     {
         public int OrderId { get; }
         public string OrderStatus { get; }
@@ -20,7 +20,7 @@
         }
     }
 
-    public record OrderStockItem
+    public class OrderStockItem
     {
         public int ProductId { get; }
         public int Units { get; }

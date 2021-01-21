@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
-
-namespace Microsoft.eShopOnContainers.WebMVC.ViewModels
+﻿namespace Microsoft.eShopOnContainers.WebMVC.ViewModels
 {
-    public record Campaign
+    using System.Collections.Generic;
+
+    public class Campaign
     {
-        public int PageIndex { get; init; }
-        public int PageSize { get; init; }
-        public int Count { get; init; }
-        public List<CampaignItem> Data { get; init; }
+        public int PageIndex { get; set; }
+        public int PageSize { get; set; }
+        public int Count { get; set; }
+        public List<CampaignItem> Data { get; set; }
     }
 }

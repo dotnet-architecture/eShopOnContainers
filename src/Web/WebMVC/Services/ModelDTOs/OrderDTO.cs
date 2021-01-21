@@ -2,9 +2,9 @@
 
 namespace WebMVC.Services.ModelDTOs
 {
-    public record OrderDTO
+    public class OrderDTO
     {
         [Required]
-        public string OrderNumber { get; init; }
+        public string OrderNumber { get; set; }
     }
 }

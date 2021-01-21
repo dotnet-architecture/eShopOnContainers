@@ -128,6 +128,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage();
             }
             else
             {

@@ -2,13 +2,13 @@
 
 namespace Webhooks.API.IntegrationEvents
 {
-    public record ProductPriceChangedIntegrationEvent : IntegrationEvent
+    public class ProductPriceChangedIntegrationEvent : IntegrationEvent
     {
-        public int ProductId { get; private init; }
+        public int ProductId { get; private set; }
 
-        public decimal NewPrice { get; private init; }
+        public decimal NewPrice { get; private set; }
 
-        public decimal OldPrice { get; private init; }
+        public decimal OldPrice { get; private set; }
 
         public ProductPriceChangedIntegrationEvent(int productId, decimal newPrice, decimal oldPrice)
         {

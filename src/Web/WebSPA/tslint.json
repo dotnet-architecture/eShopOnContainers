@@ -49,9 +49,6 @@
             true,
             "check-space"
         ],
-        "deprecation": {
-          "severity": "warning"
-        },
         "indent": [
             true,
             "spaces"

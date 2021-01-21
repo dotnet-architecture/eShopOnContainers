@@ -1,10 +1,12 @@
-﻿using IdentityServer4.Models;
+﻿
+
 using System.Collections.Generic;
 using System.Linq;
+using IdentityServer4.Models;
 
 namespace Microsoft.eShopOnContainers.Services.Identity.API.Models.AccountViewModels
 {
-    public record ConsentViewModel : ConsentInputModel
+    public class ConsentViewModel : ConsentInputModel
     {
         public ConsentViewModel(ConsentInputModel model, string returnUrl, AuthorizationRequest request, Client client, Resources resources)
         {
@@ -22,16 +24,16 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Models.AccountViewMo
             ResourceScopes = resources.ApiResources.SelectMany(x => x.Scopes).Select(x => new ScopeViewModel(x, ScopesConsented.Contains(x.Name) || model == null)).ToArray();
         }
 
-        public string ClientName { get; init; }
-        public string ClientUrl { get; init; }
-        public string ClientLogoUrl { get; init; }
-        public bool AllowRememberConsent { get; init; }
+        public string ClientName { get; set; }
+        public string ClientUrl { get; set; }
+        public string ClientLogoUrl { get; set; }
+        public bool AllowRememberConsent { get; set; }
 
-        public IEnumerable<ScopeViewModel> IdentityScopes { get; init; }
-        public IEnumerable<ScopeViewModel> ResourceScopes { get; init; }
+        public IEnumerable<ScopeViewModel> IdentityScopes { get; set; }
+        public IEnumerable<ScopeViewModel> ResourceScopes { get; set; }
     }
 
-    public record ScopeViewModel
+    public class ScopeViewModel
     {
         public ScopeViewModel(Scope scope, bool check)
         {
@@ -53,11 +55,11 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Models.AccountViewMo
             Checked = check || identity.Required;
         }
 
-        public string Name { get; init; }
-        public string DisplayName { get; init; }
-        public string Description { get; init; }
-        public bool Emphasize { get; init; }
-        public bool Required { get; init; }
-        public bool Checked { get; init; }
+        public string Name { get; set; }
+        public string DisplayName { get; set; }
+        public string Description { get; set; }
+        public bool Emphasize { get; set; }
+        public bool Required { get; set; }
+        public bool Checked { get; set; }
     }
 }

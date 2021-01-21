@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="eShopOnContainers.Core.Views.OrderDetailView"
+			 xmlns:viewModelBase="clr-namespace:eShopOnContainers.Core.ViewModels.Base;assembly=eShopOnContainers.Core"
+             xmlns:templates="clr-namespace:eShopOnContainers.Core.Views.Templates;assembly=eShopOnContainers.Core"   
+             xmlns:animations="clr-namespace:eShopOnContainers.Core.Animations;assembly=eShopOnContainers.Core"
+             xmlns:triggers="clr-namespace:eShopOnContainers.Core.Triggers;assembly=eShopOnContainers.Core"
+			 viewModelBase:ViewModelLocator.AutoWireViewModel="true"
+             Title="{Binding Order.OrderNumber}">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+
+            <Style x:Key="OrderTitleStyle" 
+                   TargetType="{x:Type Label}">
+                <Setter Property="FontFamily"
+                        Value="{StaticResource MontserratRegular}" />
+                <Setter Property="FontSize"
+                        Value="{StaticResource MediumSize}" />
+                <Setter Property="TextColor"
+                        Value="Gray" />
+            </Style>
+
+            <Style x:Key="OrderContentStyle"    
+                   TargetType="{x:Type Label}"
+                   BasedOn="{StaticResource OrderTitleStyle}">
+                <Setter Property="TextColor"
+                        Value="Black" />
+            </Style>
+
+            <Style x:Key="ShippingAddressStyle"    
+                   TargetType="{x:Type Label}"
+                   BasedOn="{StaticResource OrderTitleStyle}">
+                <Setter Property="FontSize"
+                        Value="{StaticResource LargeSize}" />
+                <Setter Property="TextColor"
+                        Value="Black" />
+            </Style>
+
+            <Style x:Key="AddressStyle"    
+                   TargetType="{x:Type Label}"
+                   BasedOn="{StaticResource OrderTitleStyle}">
+                <Setter Property="FontSize"
+                        Value="{StaticResource LittleSize}" />
+                <Setter Property="TextColor"
+                        Value="Black" />
+            </Style>
+
+            <Style x:Key="OrderTotalStyle" 
+               TargetType="{x:Type Label}">
+                <Setter Property="FontFamily"
+                        Value="{StaticResource MontserratRegular}" />
+                <Setter Property="FontSize" 
+                        Value="{StaticResource LargerSize}" />
+                <Setter Property="HorizontalOptions" 
+                        Value="End" />
+            </Style>
+
+            <Style x:Key="CancelOrderButtonStyle" 
+                   TargetType="{x:Type Button}">
+                <Setter Property="TextColor"
+                        Value="{StaticResource WhiteColor}" />
+                <Setter Property="BackgroundColor"
+                        Value="{StaticResource LightGreenColor}" />
+
+            </Style>
+
+            <animations:StoryBoard 
+                x:Key="OrderInfoAnimation"    
+                Target="{x:Reference OrderInfo}">
+                <animations:FadeToAnimation 
+                    Opacity="1"
+                    Duration="500"
+                    Delay="100"/>
+            </animations:StoryBoard>
+
+            <animations:StoryBoard 
+                x:Key="ShippingAddressAnimation"    
+                Target="{x:Reference ShippingAddress}">
+                <animations:FadeToAnimation 
+                    Opacity="1"
+                    Duration="1000"
+                    Delay="200"/>
+            </animations:StoryBoard>
+
+            <animations:StoryBoard 
+                x:Key="OrderItemsAnimation"    
+                Target="{x:Reference OrderItems}">
+                <animations:FadeToAnimation 
+                    Opacity="1"
+                    Duration="1500"
+                    Delay="300"/>
+            </animations:StoryBoard>
+            
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Triggers>
+        <EventTrigger 
+            Event="Appearing">
+            <triggers:BeginAnimation   
+                Animation="{StaticResource OrderInfoAnimation}" />
+            <triggers:BeginAnimation   
+                Animation="{StaticResource ShippingAddressAnimation}" />
+            <triggers:BeginAnimation   
+                Animation="{StaticResource OrderItemsAnimation}" />
+        </EventTrigger>
+    </ContentPage.Triggers>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <StackLayout
+            HeightRequest="50"
+            Grid.Column="0"
+            Grid.Row="0"
+            IsVisible="{Binding IsSubmittedOrder}">
+            <Button
+                Command="{Binding ToggleCancelOrderCommand}"
+                Text="CANCEL ORDER"
+                Style="{StaticResource CancelOrderButtonStyle}">
+            </Button>
+        </StackLayout>
+        <ScrollView
+            Grid.Row="1">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <!-- ORDER INFO -->
+                <Grid 
+                x:Name="OrderInfo"
+                Opacity="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <StackLayout
+                        Grid.Column="0"
+                        Grid.Row="0"
+                        Margin="12">
+                        <Label 
+                        Text="ORDER NUMBER"
+                        Style="{StaticResource OrderTitleStyle}"/>
+                        <Label 
+                        Text="{Binding Order.OrderNumber, Converter={StaticResource ToUpperConverter}}"
+                        Style="{StaticResource OrderContentStyle}"/>
+                    </StackLayout>
+                    <StackLayout
+                    Grid.Column="0"
+                    Grid.Row="1" 
+                    Margin="12">
+                        <Label 
+                        Text="TOTAL"
+                        Style="{StaticResource OrderTitleStyle}"/>
+                        <Label 
+                        Text="{Binding Order.Total, StringFormat='${0:N}', Converter={StaticResource ToUpperConverter}}" 
+                        Style="{StaticResource OrderContentStyle}"/>
+                    </StackLayout>
+                    <StackLayout
+                    Grid.Column="1"
+                    Grid.Row="0"
+                    Margin="12">
+                        <Label 
+                        Text="DATE"
+                        Style="{StaticResource OrderTitleStyle}"/>
+                        <Label 
+                        Text="{Binding Order.OrderDate, Converter={StaticResource DatetimeConverter}}"
+                        Style="{StaticResource OrderContentStyle}"/>
+                    </StackLayout>
+                    <StackLayout
+                    Grid.Column="1"
+                    Grid.Row="1" 
+                    Margin="12">
+                        <Label 
+                        Text="STATUS"
+                        Style="{StaticResource OrderTitleStyle}"/>
+                        <Label 
+                        Text="{Binding OrderStatusText}"
+                        Style="{StaticResource OrderContentStyle}"/>
+                    </StackLayout>
+                </Grid>
+                <!-- SHIPPING ADDRESS -->
+            <Grid
+                x:Name="ShippingAddress"
+                Grid.Row="1"
+                Margin="12"
+                Opacity="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Label
+                    Grid.Row="0"
+                    Text="SHIPPING ADDRESS"
+                    Style="{StaticResource ShippingAddressStyle}"/>
+                <StackLayout
+                    Grid.Row="1">
+                    <Label
+                        Text="{Binding Order.ShippingStreet}"
+                        Style="{StaticResource AddressStyle}"/>
+                    <Label
+                        Text="{Binding Order.ShippingCity}"   
+                        Style="{StaticResource AddressStyle}"/>
+                    <Label
+                        Text="{Binding Order.ShippingState}"   
+                        Style="{StaticResource AddressStyle}"/>
+                    <Label
+                        Text="{Binding Order.ShippingCountry}"   
+                        Style="{StaticResource AddressStyle}"/>
+                </StackLayout>
+            </Grid>
+            <!-- ORDER ITEMS -->
+            <Grid            
+                x:Name="OrderItems"
+                Grid.Row="2"        
+                Opacity="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <ListView 
+                    Grid.Row="0"
+                    ItemsSource="{Binding Order.OrderItems}"       
+                    HasUnevenRows="True"
+                    SeparatorVisibility="None"
+                    CachingStrategy="RecycleElement">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <templates:OrderItemTemplate />
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <StackLayout
+                    Grid.Row="1"
+                    Margin="0,0,0,24">
+                    <Label 
+                        Grid.Row="0"
+                        Text="TOTAL"
+                        TextColor="{StaticResource BlackColor}"
+                        Style="{StaticResource OrderTotalStyle}"/>
+                    <Label 
+                        Grid.Row="1"                   
+                        Text="{Binding Order.Total, StringFormat='${0:N}'}"
+                        TextColor="{StaticResource GreenColor}"
+                        Style="{StaticResource OrderTotalStyle}"/>
+                </StackLayout>
+            </Grid>
+            <!-- INDICATOR -->
+            <ActivityIndicator
+                Grid.Row="0"
+                Grid.RowSpan="3"
+                Color="{StaticResource LightGreenColor}"
+                IsRunning="{Binding IsBusy}"  
+                IsVisible="{Binding IsBusy}"
+                VerticalOptions="Center"
+                HorizontalOptions="Center">
+                <ActivityIndicator.WidthRequest>
+                    <OnPlatform x:TypeArguments="x:Double">
+                        <On Platform="iOS, Android" Value="100" />
+                        <On Platform="UWP, WinRT, WinPhone" Value="400" />
+                    </OnPlatform>
+                </ActivityIndicator.WidthRequest>
+            </ActivityIndicator>
+        </Grid>
+    </ScrollView>
+    </Grid>
+</ContentPage>

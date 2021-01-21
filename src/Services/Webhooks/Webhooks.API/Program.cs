@@ -2,15 +2,20 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Webhooks.API;
 using Webhooks.API.Infrastructure;
 
-CreateWebHostBuilder(args).Build()
-    .MigrateDbContext<WebhooksContext>((_, __) => { })
-    .Run();
+namespace Webhooks.API
+{
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            CreateWebHostBuilder(args).Build()
+                .MigrateDbContext<WebhooksContext>((_,__) => { })
+                .Run();
+        }
 
-
-IWebHostBuilder CreateWebHostBuilder(string[] args) =>
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
                 .ConfigureAppConfiguration((builderContext, config) =>
@@ -24,3 +29,5 @@ IWebHostBuilder CreateWebHostBuilder(string[] args) =>
                     builder.AddDebug();
                     builder.AddAzureWebAppDiagnostics();
                 });
+    }
+}

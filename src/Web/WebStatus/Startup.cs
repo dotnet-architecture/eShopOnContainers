@@ -30,10 +30,7 @@ namespace WebStatus
             services.AddHealthChecks()
                 .AddCheck("self", () => HealthCheckResult.Healthy());
 
-            services
-                .AddHealthChecksUI()
-                .AddInMemoryStorage();
-
+            services.AddHealthChecksUI();
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
         }

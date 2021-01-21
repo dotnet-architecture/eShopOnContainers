@@ -19,8 +19,8 @@ using Ordering.SignalrHub.IntegrationEvents.EventHandling;
 using Ordering.SignalrHub.IntegrationEvents.Events;
 using RabbitMQ.Client;
 using System;
-using System.IdentityModel.Tokens.Jwt;
 using System.Threading.Tasks;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace Ordering.SignalrHub
 {

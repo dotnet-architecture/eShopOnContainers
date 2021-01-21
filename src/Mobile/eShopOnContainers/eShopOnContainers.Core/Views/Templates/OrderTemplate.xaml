@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView 
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+    x:Class="eShopOnContainers.Core.Views.Templates.OrderTemplate">
+    <ContentView.Resources>
+        <ResourceDictionary>
+
+            <Style x:Key="OrderTitleStyle" 
+               TargetType="{x:Type Label}">
+                <Setter Property="FontFamily"
+                        Value="{StaticResource MontserratRegular}" />
+                <Setter Property="FontSize"
+                        Value="{StaticResource MediumSize}" />
+                <Setter Property="TextColor"
+                        Value="Gray" />
+            </Style>
+
+            <Style x:Key="OrderContentStyle" 
+               TargetType="{x:Type Label}"
+                   BasedOn="{StaticResource OrderTitleStyle}">
+                <Setter Property="TextColor"
+                        Value="Black" />
+            </Style>
+
+        </ResourceDictionary>
+    </ContentView.Resources>
+    <ContentView.Content>
+        <Grid
+            BackgroundColor="{StaticResource BackgroundColor}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition Height="1" />
+            </Grid.RowDefinitions>
+            <StackLayout
+                Grid.Column="0"
+                Grid.Row="0"
+                Margin="12">
+                <Label 
+                    Text="ORDER NUMBER"
+                    Style="{StaticResource OrderTitleStyle}"/>
+                <Label 
+                    Text="{Binding OrderNumber, Converter={StaticResource ToUpperConverter}}"
+                    Style="{StaticResource OrderContentStyle}"/>
+            </StackLayout>
+            <StackLayout
+                Grid.Column="0"
+                Grid.Row="1" 
+                Margin="12">
+                <Label 
+                    Text="TOTAL"
+                    Style="{StaticResource OrderTitleStyle}"/>
+                <Label 
+                    Text="{Binding Total, StringFormat='${0:N}', Converter={StaticResource ToUpperConverter}}" 
+                    Style="{StaticResource OrderContentStyle}"/>
+            </StackLayout>
+            <StackLayout
+                Grid.Column="1"
+                Grid.Row="0"
+                Margin="12">
+                <Label 
+                    Text="DATE"
+                    Style="{StaticResource OrderTitleStyle}"/>
+                <Label 
+                    Text="{Binding OrderDate, Converter={StaticResource DatetimeConverter}}"
+                    Style="{StaticResource OrderContentStyle}"/>
+            </StackLayout>
+            <StackLayout
+                Grid.Column="1"
+                Grid.Row="1" 
+                Margin="12">
+                <Label 
+                    Text="STATUS"
+                    Style="{StaticResource OrderTitleStyle}"/>
+                <Label 
+                    Text="{Binding OrderStatus, Converter={StaticResource ToUpperConverter}}"
+                    Style="{StaticResource OrderContentStyle}"/>
+            </StackLayout>
+            <Grid 
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                Grid.Row="2"
+                BackgroundColor="Gray"/>
+        </Grid>
+    </ContentView.Content>
+</ContentView>

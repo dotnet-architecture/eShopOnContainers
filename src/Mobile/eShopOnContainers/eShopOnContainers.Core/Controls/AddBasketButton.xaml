@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentView
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+    xmlns:effects="clr-namespace:eShopOnContainers.Core.Effects"
+    x:Class="eShopOnContainers.Core.Controls.AddBasketButton">
+    <ContentView.Resources>
+        <ResourceDictionary>
+
+            <Style TargetType="BoxView" Class="Circle">
+                <Setter Property="BackgroundColor" Value="{ StaticResource AccentColor }" />
+                <Setter Property="WidthRequest" Value="34" />
+                <Setter Property="HeightRequest" Value="34" />
+                <Setter Property="HorizontalOptions" Value="Start" />
+                <Setter Property="effects:ThemeEffects.Circle" Value="True" />
+            </Style>
+            
+            <Style x:Key="AddBackgroundImageStyle" 
+               TargetType="{x:Type Image}">
+                <Setter Property="HorizontalOptions"
+                        Value="Center" />
+                <Setter Property="VerticalOptions"
+                        Value="Center" />
+                <Setter Property="HeightRequest"
+                        Value="128" />
+                <Setter Property="WidthRequest"
+                        Value="128" />
+            </Style>
+            
+            <Style x:Key="AddImageStyle" 
+               TargetType="{x:Type Image}">
+                <Setter Property="HorizontalOptions"
+                        Value="Center" />
+                <Setter Property="HeightRequest"
+                        Value="24" />
+                <Setter Property="WidthRequest"
+                        Value="24" />
+            </Style>
+
+        </ResourceDictionary>
+    </ContentView.Resources>
+    <ContentView.Content>
+        <Grid>
+            <!-- ANDROID -->
+            <Grid>
+                <Grid.IsVisible>
+                    <OnPlatform x:TypeArguments="x:Boolean">
+                        <On Platform="iOS, Android" Value="True" />
+                        <On Platform="UWP, WinRT, WinPhone" Value="False" />
+                    </OnPlatform>
+                </Grid.IsVisible>
+                <BoxView  
+                    BackgroundColor="{StaticResource LightGreenColor}"
+                    HeightRequest="48"
+                    WidthRequest="48"
+                    StyleClass="Circle">
+                </BoxView>
+                <Image 
+                    Aspect="AspectFit" 
+                    Source="product_add.png"
+                    Style="{StaticResource AddImageStyle}" />
+            </Grid>
+            <!-- IOS & UWP -->
+            <Grid>
+                <Grid.IsVisible>
+                    <OnPlatform x:TypeArguments="x:Boolean">
+                        <On Platform="iOS, Android" Value="False" />
+                        <On Platform="UWP, WinRT, WinPhone" Value="True" />
+                    </OnPlatform>
+                </Grid.IsVisible>
+                <Image
+                    Source="Assets\circle_button_background.png"
+                    Aspect="AspectFit"
+                    Style="{StaticResource AddBackgroundImageStyle}" />
+
+                <Image 
+                    Aspect="AspectFit" 
+                    Source="Assets\product_add.png"
+                    Style="{StaticResource AddImageStyle}"
+                    Margin="12" />
+            </Grid>
+        </Grid>
+    </ContentView.Content>
+</ContentView>

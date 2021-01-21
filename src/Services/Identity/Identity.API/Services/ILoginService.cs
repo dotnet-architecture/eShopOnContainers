@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 
 namespace Microsoft.eShopOnContainers.Services.Identity.API.Services
 {

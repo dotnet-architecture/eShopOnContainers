@@ -1,14 +1,17 @@
 ﻿namespace Ordering.API.Application.IntegrationEvents.EventHandling
 {
-    using Events;
-    using MediatR;
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Extensions;
-    using Microsoft.Extensions.Logging;
-    using Ordering.API.Application.Commands;
-    using Serilog.Context;
-    using System;
     using System.Threading.Tasks;
+    using Events;
+    using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
+    using MediatR;
+    using System;
+    using Ordering.API.Application.Commands;
+    using Microsoft.Extensions.Logging;
+    using Serilog.Context;
+    using Microsoft.eShopOnContainers.Services.Ordering.API;
+    using Ordering.API.Application.Behaviors;
 
     public class OrderStockConfirmedIntegrationEventHandler :
         IIntegrationEventHandler<OrderStockConfirmedIntegrationEvent>

@@ -3,6 +3,7 @@ using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
 using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF.Services;
 using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF.Utilities;
+using Microsoft.eShopOnContainers.Services.Catalog.API;
 using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
 using Microsoft.Extensions.Logging;
 using System;

@@ -1,0 +1,17 @@
+FROM mcr.microsoft.com/dotnet/core/sdk:3.0-buster
+ARG BUILD_CONFIGURATION=Debug
+ENV ASPNETCORE_ENVIRONMENT=Development
+ENV DOTNET_USE_POLLING_FILE_WATCHER=true
+EXPOSE 80
+
+WORKDIR /src
+COPY ["Services/Location/Locations.API/Locations.API.csproj", "Services/Location/Locations.API/"]
+COPY ["BuildingBlocks/EventBus/EventBus/EventBus.csproj", "BuildingBlocks/EventBus/EventBus/"]
+COPY ["BuildingBlocks/EventBus/EventBusRabbitMQ/EventBusRabbitMQ.csproj", "BuildingBlocks/EventBus/EventBusRabbitMQ/"]
+COPY ["BuildingBlocks/EventBus/EventBusServiceBus/EventBusServiceBus.csproj", "BuildingBlocks/EventBus/EventBusServiceBus/"]
+RUN dotnet restore Services/Location/Locations.API/Locations.API.csproj -nowarn:msb3202,nu1503
+COPY . .
+WORKDIR "/src/Services/Location/Locations.API"
+RUN dotnet build  --no-restore -c $BUILD_CONFIGURATION
+
+ENTRYPOINT ["dotnet", "run", "--no-build", "--no-launch-profile", "-c", "$BUILD_CONFIGURATION", "--"]

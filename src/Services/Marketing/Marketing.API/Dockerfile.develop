@@ -1,0 +1,18 @@
+FROM mcr.microsoft.com/dotnet/core/sdk:3.0-buster
+ARG BUILD_CONFIGURATION=Debug
+ENV ASPNETCORE_ENVIRONMENT=Development
+ENV DOTNET_USE_POLLING_FILE_WATCHER=true
+EXPOSE 80
+
+WORKDIR /src
+COPY [Services/Marketing/Marketing.API/Marketing.API.csproj", "Services/Marketing/Marketing.API/"]
+COPY [BuildingBlocks/EventBus/EventBus/EventBus.csproj", "BuildingBlocks/EventBus/EventBus/"]
+COPY [BuildingBlocks/EventBus/EventBusRabbitMQ/EventBusRabbitMQ.csproj", "BuildingBlocks/EventBus/EventBusRabbitMQ/"]
+COPY [BuildingBlocks/EventBus/EventBusServiceBus/EventBusServiceBus.csproj", "BuildingBlocks/EventBus/EventBusServiceBus/"]
+COPY [BuildingBlocks/WebHostCustomization/WebHost.Customization/WebHost.Customization.csproj", "BuildingBlocks/WebHostCustomization/WebHost.Customization/"]
+RUN dotnet restore Services/Marketing/Marketing.API/Marketing.API.csproj -nowarn:msb3202,nu1503
+COPY . .
+WORKDIR "/src/Services/Marketing/Marketing.API"
+RUN dotnet build  --no-restore -c $BUILD_CONFIGURATION
+
+ENTRYPOINT ["dotnet", "run", "--no-build", "--no-launch-profile", "-c", "$BUILD_CONFIGURATION", "--"]

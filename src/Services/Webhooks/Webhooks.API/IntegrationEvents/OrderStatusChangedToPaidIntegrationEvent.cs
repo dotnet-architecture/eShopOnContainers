@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Webhooks.API.IntegrationEvents
 {
-    public record OrderStatusChangedToPaidIntegrationEvent : IntegrationEvent
+    public class OrderStatusChangedToPaidIntegrationEvent : IntegrationEvent
     {
         public int OrderId { get; }
         public IEnumerable<OrderStockItem> OrderStockItems { get; }
@@ -16,7 +16,7 @@ namespace Webhooks.API.IntegrationEvents
         }
     }
 
-    public record OrderStockItem
+    public class OrderStockItem
     {
         public int ProductId { get; }
         public int Units { get; }

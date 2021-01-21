@@ -2,7 +2,7 @@
 {
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
 
-    public record OrderPaymentSucceededIntegrationEvent : IntegrationEvent
+    public class OrderPaymentSucceededIntegrationEvent : IntegrationEvent
     {
         public int OrderId { get; }
 

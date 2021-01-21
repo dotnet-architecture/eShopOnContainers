@@ -1,32 +1,48 @@
 ﻿using CatalogApi;
+using Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Config;
 using Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Models;
+using Microsoft.Extensions.Options;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
+using static CatalogApi.Catalog;
 
 namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Services
 {
     public class CatalogService : ICatalogService
     {
-        private readonly Catalog.CatalogClient _client;
+        private readonly HttpClient _httpClient;
+        private readonly UrlsConfig _urls;
 
-        public CatalogService(Catalog.CatalogClient client)
+        public CatalogService(HttpClient httpClient, IOptions<UrlsConfig> config)
         {
-            _client = client;
+            _httpClient = httpClient;
+            _urls = config.Value;
         }
 
         public async Task<CatalogItem> GetCatalogItemAsync(int id)
         {
-            var request = new CatalogItemRequest { Id = id };
-            var response = await _client.GetItemByIdAsync(request);
-            return MapToCatalogItemResponse(response);
+
+            return await GrpcCallerService.CallService(_urls.Catalog + UrlsConfig.CatalogOperations.GetItemById(id), async channel =>
+            {
+                var client = new CatalogClient(channel);
+                var request = new CatalogItemRequest { Id = id };
+                var response = await client.GetItemByIdAsync(request);
+                return MapToCatalogItemResponse(response);
+            });
         }
 
         public async Task<IEnumerable<CatalogItem>> GetCatalogItemsAsync(IEnumerable<int> ids)
         {
-            var request = new CatalogItemsRequest { Ids = string.Join(",", ids), PageIndex = 1, PageSize = 10 };
-            var response = await _client.GetItemsByIdsAsync(request);
-            return response.Data.Select(MapToCatalogItemResponse);
+
+            return await GrpcCallerService.CallService(_urls.GrpcCatalog, async channel =>
+            {
+                var client = new CatalogClient(channel);
+                var request = new CatalogItemsRequest { Ids = string.Join(",", ids), PageIndex = 1, PageSize = 10 };
+                var response = await client.GetItemsByIdsAsync(request);
+                return response.Data.Select(this.MapToCatalogItemResponse);
+            });
         }
 
         private CatalogItem MapToCatalogItemResponse(CatalogItemResponse catalogItemResponse)

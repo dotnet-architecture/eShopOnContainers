@@ -2,11 +2,11 @@
 
 namespace Webhooks.API.IntegrationEvents
 {
-    public record OrderStatusChangedToShippedIntegrationEvent : IntegrationEvent
+    public class OrderStatusChangedToShippedIntegrationEvent : IntegrationEvent
     {
-        public int OrderId { get; private init; }
-        public string OrderStatus { get; private init; }
-        public string BuyerName { get; private init; }
+        public int OrderId { get; private set; }
+        public string OrderStatus { get; private set; }
+        public string BuyerName { get; private set; }
 
         public OrderStatusChangedToShippedIntegrationEvent(int orderId, string orderStatus, string buyerName)
         {

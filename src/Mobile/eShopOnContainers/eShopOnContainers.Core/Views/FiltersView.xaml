@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<slideOverKit:SlideMenuView 
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:slideOverKit="clr-namespace:SlideOverKit" 
+    x:Class="eShopOnContainers.Core.Views.FiltersView"
+    MenuOrientations="TopToBottom"
+    BackgroundColor="{StaticResource BackgroundColor}"
+    HeightRequest="250"
+    IsFullScreen="True">
+  <slideOverKit:SlideMenuView.Resources>
+    <ResourceDictionary>
+
+      <Style x:Key="FilterPickerStyle"  
+             TargetType="{x:Type Picker}">
+        <Setter Property="HeightRequest"
+                Value="48" />
+        <Setter Property="BackgroundColor"
+                Value="Transparent" />
+        <Setter Property="HorizontalOptions"
+                Value="Fill" />
+        <Setter Property="VerticalOptions"
+                Value="Fill" />	
+        <Setter Property="Margin"                
+                Value="0, 2" />
+      </Style>
+             
+      <Style x:Key="FilterButtonStyle"  
+             TargetType="{x:Type Button}">
+        <Setter Property="FontFamily"
+                Value="{StaticResource MontserratRegular}" />
+        <Setter Property="TextColor"
+                Value="{StaticResource WhiteColor}" />
+        <Setter Property="BackgroundColor"
+                Value="{StaticResource LightGreenColor}" />
+        <Setter Property="HeightRequest"
+                Value="48" />
+        <Setter Property="BorderRadius"
+                Value="0" />
+        <Setter Property="BorderWidth"
+                Value="0" />
+        <Setter Property="HorizontalOptions"
+                Value="Fill" />
+        <Setter Property="VerticalOptions"
+                Value="Fill" />
+      </Style>
+
+      <Style
+        x:Key="ClearFilterButtonStyle"
+        TargetType="{x:Type Button}"
+        BasedOn="{StaticResource FilterButtonStyle}">
+        <Setter Property="TextColor"
+                Value="{StaticResource BlackColor}" />
+        <Setter Property="BackgroundColor"
+                Value="{StaticResource GrayColor}" />
+      </Style>
+          
+    </ResourceDictionary>
+  </slideOverKit:SlideMenuView.Resources>
+  <Grid    
+    Padding="0"            
+    ColumnSpacing="0"    
+    RowSpacing="0"
+    Margin="48, 24">
+    <Grid.RowDefinitions>      
+      <RowDefinition Height="60" />
+      <RowDefinition Height="60" /> 
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
+    <!-- BRAND -->
+    <Picker
+      Grid.Row="0"
+      Title="BRAND" 
+      ItemsSource="{Binding Brands}"
+      SelectedItem="{Binding Brand, Mode=TwoWay}"
+      Style="{StaticResource FilterPickerStyle}">
+      <Picker.HeightRequest>   
+        <OnPlatform x:TypeArguments="x:Double">
+            <On Platform="iOS, Android" Value="48" />
+            <On Platform="UWP, WinRT, WinPhone" Value="36" />
+        </OnPlatform>
+      </Picker.HeightRequest> 
+    </Picker>
+    <!-- TYPE -->
+    <Picker
+      Grid.Row="1"
+      Title="TYPE"
+      ItemsSource="{Binding Types}"
+      SelectedItem="{Binding Type, Mode=TwoWay}"
+      Style="{StaticResource FilterPickerStyle}">    
+      <Picker.HeightRequest>   
+        <OnPlatform x:TypeArguments="x:Double">
+            <On Platform="iOS, Android" Value="48" />
+            <On Platform="UWP, WinRT, WinPhone" Value="36" />
+        </OnPlatform>
+      </Picker.HeightRequest> 
+    </Picker>
+    <Button 
+      Grid.Row="2"
+      Text="Apply" 
+      Style="{StaticResource FilterButtonStyle}"
+      Command="{Binding FilterCommand}"/>   
+    <Button
+      Grid.Row="3"
+      Text="Clear"
+      IsVisible="{Binding IsFilter}"
+      Style="{StaticResource ClearFilterButtonStyle}"
+      Command="{Binding ClearFilterCommand}"/>
+</Grid>
+</slideOverKit:SlideMenuView>

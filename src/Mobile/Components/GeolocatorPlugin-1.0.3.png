@@ -1,0 +1,314 @@
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+        <meta charset="utf-8" />
+
+        <title></title>
+
+        <link rel="shortcut icon" href="//xamarin.com/favicon.ico?2" />
+        <meta name="viewport" content="width=1060" />
+
+        
+<link href="/cassette.axd/stylesheet/75304d341f2692195046382a03c9d77c7b7b1e36/resources/ui/global" type="text/css" rel="stylesheet"/>
+<link href="/cassette.axd/stylesheet/cf21e2a5d7749f53d57d1a2aad772bcaffa48f1e/threeoh" type="text/css" rel="stylesheet"/>
+
+
+        
+    </head>
+    <body>
+        
+            <noscript>
+                <iframe src="//www.googletagmanager.com/ns.html?id=GTM-57C4Z7"
+                        height="0" width="0" style="display:none;visibility:hidden"></iframe>
+            </noscript>
+            <script>
+                (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+                            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+                            '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+                })(window,document,'script','dataLayer','GTM-57C4Z7');</script>
+
+        <!--[if IE]><div id="ie" ><![endif]-->
+        <!--[if IE 9]><div id="ie9" ><![endif]-->
+        <!--[if IE 8]><div id="ie8" ><![endif]-->
+        <!--[if IE 7]><div id="ie7" ><![endif]-->
+        <!--[if IE 6]><div id="ie6" ><![endif]-->
+
+
+            <div id="top-container" class="covering-main-page">
+                <div id="global-header">
+                    <div class="global-bar">
+                        <div class="wrapper">
+                            <h1 class="xamarin logo">
+                                <a href="/">Xamarin</a>
+                            </h1>
+                            <div class="navigation">
+                                <a class="label">
+                                    <span class="menu">Menu</span>
+                                    <span class="close icon"></span>
+                                </a>
+                                <ul>
+                                    <li class="dropdown ">
+                                        <a data-toggle="dropdown" href="//xamarin.com/products">Products</a>
+                                        <script type="text/javascript">
+                                            var preloadProductsIcons = new Image(); preloadProductsIcons.src = "/resources/ui/images/structure/header/products-icons.svg";
+                                        </script>
+                                        <ul class="products-list" role="menu">
+                                            <li>
+                                                <ul>
+                                                    <li class="platfrom">
+                                                        <a href="https://xamarin.com/platform">
+                                                            Xamarin Platform
+                                                            <small>C# on iOS, Android, Mac &amp; Windows</small>
+                                                        </a>
+                                                    </li>
+                                                    <li class="test-cloud">
+                                                        <a href="https://xamarin.com/test-cloud">
+                                                            Xamarin Test Cloud
+                                                            <small>Find bugs before your users do</small>
+                                                        </a>
+                                                    </li>
+                                                    <li class="insights">
+                                                        <a href="https://xamarin.com/insights">
+                                                            Xamarin Insights
+                                                            <small>Improve your apps with real-time monitoring</small>
+                                                        </a>
+                                                    </li>
+                                                    <li class="university">
+                                                        <a href="https://xamarin.com/university">
+                                                            Xamarin University
+                                                            <small>Unlimited, live mobile development training</small>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li>
+                                                <ul>
+                                                    <li class="all"><a href="//xamarin.com/products">All Products</a></li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="https://xamarin.com/customers">Customers</a></li>
+                                    <li class=""><a href="https://store.xamarin.com/">Pricing</a></li>
+                                    <li class=""><a href="http://developer.xamarin.com">Developers</a></li>
+                                    <li class="dropdown ">
+                                        <a href="//xamarin.com/support">Support</a>
+                                        <ul role="menu">
+                                            <li><a href="//xamarin.com/support">Developer Support</a></li>
+                                            <li><a href="//xamarin.com/partners">Consulting Partners</a></li>
+                                            <li><a href="//xamarin.com/partners/services">Consulting Services</a></li>
+                                            <li><a href="//xamarin.com/contact-us">Contact Sales</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="hide-on-mobile dropdown ">
+                                        <a data-toggle="dropdown" href="//xamarin.com/resources">Resources</a>
+                                        <ul role="menu">
+                                            <li><a href="http://blog.xamarin.com">Blog</a></li>
+                                            <li><a href="//xamarin.com/faq">FAQ</a></li>
+                                            <li><a href="//xamarin.com/partners">Partners</a></li>
+                                            <li><a href="//xamarin.com/resources/webinars">Webinars</a></li>
+                                            <li><a href="//xamarin.com/about">About Xamarin</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="show-on-mobile"><a href="http://blog.xamarin.com">Blog</a></li>
+                                    <li class="show-on-mobile"><a href="//xamarin.com/about">About Xamarin</a></li>
+
+                                        <li class="user "><a href="/auth">Sign In</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="local-bar">
+                        <div class="wrapper">
+                            <div class="navigation">
+                                <ul>
+                                    <li><a href="https://xamarin.uservoice.com/forums/145075-xamarin-component-ideas" class="external">Suggest a Component</a></li>
+                                    <li><a href="/submit">Submit a Component</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+
+        <div id="container">
+
+            <div class="main-page">
+                <div class="main container">
+                    
+
+<div class="content">
+    <div class="bottom-gap centered">
+        <h1 class="dark-blue" style="font-size: 240px; line-height: normal; font-weight: 100; margin: 40px 0 0; letter-spacing: -0.035em;">Error</h1>
+        <h2>Oops, something unexpected happened.</h2>
+        <p class="muted">Check out the links above and below. Maybe they can help.</p>
+    </div>
+</div>
+
+                </div>
+            </div>
+        </div>
+
+<div id="global-footer">
+    <div class="wrapper width-10">
+        <a href="https://www.xamarin.com" class="hexagon"></a>
+        <div class="social-icons show-on-mobile">
+            <a class="facebook" href="https://facebook.com/xamarinhq">Facebook</a>
+            <a class="twitter" href="https://twitter.com/xamarinhq">Twitter</a>
+            <a class="github" href="https://github.com/xamarin">GitHub</a>
+        </div>
+
+        <div class="navigation hide-on-mobile">
+            <ul>
+                <li>
+                    Products
+                    <ul>
+                        <li><a href="https://www.xamarin.com/platform">Xamarin for Visual Studio</a></li>
+                        <li><a href="https://www.xamarin.com/test-cloud">Xamarin Test Cloud</a></li>
+                        <li><a href="https://www.xamarin.com/insights">Xamarin Insights</a></li>
+                        <li><a href="https://www.xamarin.com/university">Xamarin University</a></li>
+                        <li><a href="https://www.xamarin.com/studio">Xamarin Studio</a></li>
+                        <li><a href="https://www.xamarin.com/visual-studio">Visual Studio</a></li>
+                        <li><a href="https://www.xamarin.com/forms">Xamarin.Forms</a></li>
+                        <li><a href="https://www.xamarin.com/prebuilt-apps">Pre-built apps</a></li>
+                        <li><a href="https://www.xamarin.com/licensing">Mono Licensing</a></li>
+                    </ul>
+                </li>
+
+                <li>
+                    Company
+                    <ul>
+                        <li><a href="https://www.xamarin.com/about">About Us</a></li>
+                        <li><a href="https://www.xamarin.com/customers">Customers</a></li>
+                        <li><a href="https://www.xamarin.com/consulting-partners">Partners</a></li>
+                        <li><a href="https://blog.xamarin.com">Blog</a></li>
+                        <li><a href="https://www.xamarin.com/jobs">Jobs</a></li>
+                        <li><a href="https://www.xamarin.com/press">Press</a></li>
+                        <li><a href="https://store.xamarin.com">Pricing</a></li>
+                    </ul>
+                </li>
+
+                <li>
+                    Developer Center
+                    <ul>
+                        <li><a href="http://developer.xamarin.com">Get Started</a></li>
+                        <li><a href="http://developer.xamarin.com/guides">Guides</a></li>
+                        <li><a href="http://developer.xamarin.com/recipes">Recipes</a></li>
+                        <li><a href="http://iosapi.xamarin.com/">Xamarin.iOS APIs</a></li>
+                        <li><a href="http://androidapi.xamarin.com/">Xamarin.Android APIs</a></li>
+                        <li><a href="http://macapi.xamarin.com/">Xamarin.Mac APIs</a></li>
+                        <li><a href="https://forums.xamarin.com">Forums</a></li>
+                        <li><a href="http://planet.xamarin.com">Community Blogs</a></li>
+                        <li><a href="https://components.xamarin.com">Components</a></li>
+                        <li><a href="http://developer.xamarin.com/videos/">Videos</a></li>
+                    </ul>
+                </li>
+
+                <li>
+                    Connect
+                    <ul>
+                        <li><a href="https://www.xamarin.com/support">Developer Support</a></li>
+                        <li><a href="https://www.xamarin.com/resources">Resources</a></li>
+                        <li><a href="https://www.xamarin.com/consulting-partners/services">Consulting Services</a></li>
+                        <li><a href="https://www.xamarin.com/contact-us">Contact Sales</a></li>
+                        <li><a href="https://twitter.com/xamarinhq">Twitter</a></li>
+                        <li><a href="https://github.com/xamarin">GitHub</a></li>
+                        <li><a href="http://stackoverflow.com/questions/tagged/xamarin">Stack Overflow</a></li>
+                        <li><a href="https://www.facebook.com/xamarinhq">Facebook</a></li>
+                        <li><a href="https://plus.google.com/101300081691995092351/posts">Google+</a></li>
+                        <li><a href="https://www.youtube.com/user/XamarinVideos">YouTube</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <footer>
+        <div class="wrapper">
+            <div class="contact">
+                <a class="tel" href="tel:18559262746">+1 (855) 926-2746</a>
+                <a class="email" href="mailto:hello@xamarin.com">hello@xamarin.com</a>
+            </div>
+            <a class="microsoft-logo" href="https://www.microsoft.com"><img src="/resources/img/microsoft-logo-invert.svg" alt="Microsoft"></a>
+            <div class="legal">
+                <a href="https://www.xamarin.com/privacy">Privacy policy</a>
+                <span>&copy; <noscript>2016</noscript>
+                <script>document.write(new Date().getFullYear())</script> Xamarin Inc.</span>
+            </div>
+        </div>
+    </footer>
+</div>
+        <!--[if gte IE 6]></div><![endif]-->
+        <!--[if IE]></div><![endif]-->
+
+        <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+        <script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.js"></script>
+
+        
+<script src="/cassette.axd/script/1b27fd9cd2a430dbb6551fbbebf3ca11bfb1b5d6/resources/scripts/global" type="text/javascript"></script>
+
+
+        <!--[if (gte IE 6)&(lte IE 8)]>
+            <script type="text/javascript" src="~/resources/scripts/jquery-extra-selectors.js"></script>
+            <script type="text/javascript" src="~/resources/scripts/selectivizr.js"></script>
+        <![endif]-->
+
+        <script>
+            window.pre_authed_by_view=!1;
+        </script>
+
+        <!-- [User: Identity=, EmailAddress=no-email@not-xamarin.com, DisplayName=Anonymous, IsAdmin=False, IsLoggedIn=False] -->
+
+            <script>
+                var _gaq = _gaq || [];
+                _gaq.push(['_setAccount', 'UA-23759232-11']);
+                _gaq.push(['_trackPageview']);
+
+                (function() {
+                    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+                    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+                    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+                })();
+            </script>
+
+        <script type="text/javascript">
+            window.analytics || (window.analytics = []), window.analytics.methods = ["identify", "track", "trackLink", "trackForm", "trackClick", "trackSubmit", "page", "pageview", "ab", "alias", "ready", "group", "on", "once", "off"], window.analytics.factory = function (a) {
+                return function () {
+                    var t = Array.prototype.slice.call (arguments);
+                    return t.unshift (a), window.analytics.push (t), window.analytics;
+                };
+            };
+            for (var i = 0; i < window.analytics.methods.length; i++) {
+                var method = window.analytics.methods[i];
+                window.analytics [method] = window.analytics.factory (method);
+            }
+            window.analytics.load = function (a) {
+                var t = document.createElement("script");
+                t.type = "text/javascript", t.async = true, t.src = ("https:" === document.location.protocol ? "https://" : "http://") + "d2dq2ahtl5zl1z.cloudfront.net/analytics.js/v1/" + a + "/analytics.min.js";
+                var n = document.getElementsByTagName("script")[0];
+                n.parentNode.insertBefore (t, n);
+            };
+            var newRegistrant = false;
+            window.XamVisitor = window.XamVisitor || {};
+            window.analytics.load('7iordhccdt');
+            window.analytics.page('Component Store', "Component Store Page");
+
+            // TODO: Replace this with some AJAX stuff or something...
+            
+            XamVisitor.anonymous = true;
+            window.analytics.track ("Visited Component Store");
+            
+        </script>
+
+        
+    </body>
+</html>
