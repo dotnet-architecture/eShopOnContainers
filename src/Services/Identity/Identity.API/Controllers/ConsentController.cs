@@ -19,7 +19,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Controllers
         private readonly IResourceStore _resourceStore;
         private readonly IIdentityServerInteractionService _interaction;
 
-        
+
         public ConsentController(
             ILogger<ConsentController> logger,
             IIdentityServerInteractionService interaction,

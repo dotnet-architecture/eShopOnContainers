@@ -40,10 +40,6 @@ env:
       key: mvc_e
     - name: SpaClient
       key: spa_e
-    - name: LocationApiClient
-      key: locations_e
-    - name: MarketingApiClient
-      key: marketing_e
     - name: BasketApiClient
       key: basket_e
     - name: OrderingApiClient

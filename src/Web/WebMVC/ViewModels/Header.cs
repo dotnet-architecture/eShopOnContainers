@@ -1,8 +1,8 @@
 ﻿namespace Microsoft.eShopOnContainers.WebMVC.ViewModels
 {
-    public class Header
+    public record Header
     {
-        public string Controller { get; set; }
-        public string Text { get; set; }
+        public string Controller { get; init; }
+        public string Text { get; init; }
     }
 }

@@ -14,10 +14,8 @@ namespace UnitTest.Ordering.Application
     using global::Ordering.API.Application.Models;
     using MediatR;
     using Microsoft.Extensions.Logging;
-    using System.Collections;
     using System.Collections.Generic;
     using Xunit;
-    using static Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands.CreateOrderCommand;
 
     public class NewOrderRequestHandlerTest
     {
@@ -93,7 +91,7 @@ namespace UnitTest.Ordering.Application
                 cardExpiration: args != null && args.ContainsKey("cardExpiration") ? (DateTime)args["cardExpiration"] : DateTime.MinValue,
                 cardSecurityNumber: args != null && args.ContainsKey("cardSecurityNumber") ? (string)args["cardSecurityNumber"] : "123",
                 cardHolderName: args != null && args.ContainsKey("cardHolderName") ? (string)args["cardHolderName"] : "XXX",
-                cardTypeId: args != null && args.ContainsKey("cardTypeId") ? (int)args["cardTypeId"] : 0);               
+                cardTypeId: args != null && args.ContainsKey("cardTypeId") ? (int)args["cardTypeId"] : 0);
         }
     }
 }

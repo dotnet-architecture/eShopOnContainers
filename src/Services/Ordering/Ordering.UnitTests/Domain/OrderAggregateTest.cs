@@ -2,7 +2,6 @@
 using Ordering.Domain.Events;
 using Ordering.Domain.Exceptions;
 using System;
-using System.Linq;
 using UnitTest.Ordering;
 using Xunit;
 
@@ -100,8 +99,8 @@ public class OrderAggregateTest
     {
         var address = new AddressBuilder().Build();
         var order = new OrderBuilder(address)
-            .AddOne(1,"cup",10.0m,0,string.Empty)
-            .AddOne(1,"cup",10.0m,0,string.Empty)
+            .AddOne(1, "cup", 10.0m, 0, string.Empty)
+            .AddOne(1, "cup", 10.0m, 0, string.Empty)
             .Build();
 
         Assert.Equal(20.0m, order.GetTotal());
@@ -148,7 +147,7 @@ public class OrderAggregateTest
 
         //Act 
         var fakeOrder = new Order("1", "fakeName", new Address(street, city, state, country, zipcode), cardTypeId, cardNumber, cardSecurityNumber, cardHolderName, cardExpiration);
-        fakeOrder.AddDomainEvent(new OrderStartedDomainEvent(fakeOrder, "fakeName", "1", cardTypeId,cardNumber,cardSecurityNumber,cardHolderName,cardExpiration));
+        fakeOrder.AddDomainEvent(new OrderStartedDomainEvent(fakeOrder, "fakeName", "1", cardTypeId, cardNumber, cardSecurityNumber, cardHolderName, cardExpiration));
         //Assert
         Assert.Equal(fakeOrder.DomainEvents.Count, expectedResult);
     }

@@ -82,7 +82,7 @@ export class SecurityService {
         let client_id = 'js';
         let redirect_uri = location.origin + '/';
         let response_type = 'id_token token';
-        let scope = 'openid profile orders basket marketing locations webshoppingagg orders.signalrhub';
+        let scope = 'openid profile orders basket webshoppingagg orders.signalrhub';
         let nonce = 'N' + Math.random() + '' + Date.now();
         let state = Date.now() + '' + Math.random();
 

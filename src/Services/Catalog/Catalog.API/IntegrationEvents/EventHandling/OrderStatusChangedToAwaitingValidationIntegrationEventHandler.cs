@@ -11,7 +11,7 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    public class OrderStatusChangedToAwaitingValidationIntegrationEventHandler : 
+    public class OrderStatusChangedToAwaitingValidationIntegrationEventHandler :
         IIntegrationEventHandler<OrderStatusChangedToAwaitingValidationIntegrationEvent>
     {
         private readonly CatalogContext _catalogContext;

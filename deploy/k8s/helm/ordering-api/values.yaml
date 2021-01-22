@@ -41,8 +41,6 @@ env:
       key: all__EventBusConnection
     - name: AzureServiceBusEnabled
       key: all__UseAzureServiceBus
-    - name: UseLoadTest
-      key: ordering__EnableLoadTest
     - name: IdentityUrl
       key: urls__IdentityUrl
       # values define environment variables with a fixed value (no configmap involved) (name is name of var, and value is its value)

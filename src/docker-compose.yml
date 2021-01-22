@@ -6,7 +6,7 @@ services:
     image: datalust/seq:latest
 
   sqldata:
-    image: mcr.microsoft.com/mssql/server:2017-latest 
+    image: mcr.microsoft.com/mssql/server:2019-latest 
 
   nosqldata:
     image: mongo
@@ -62,32 +62,12 @@ services:
       - sqldata
       - rabbitmq
 
-  marketing-api:
-    image: ${REGISTRY:-eshop}/marketing.api:${PLATFORM:-linux}-${TAG:-latest}
-    build:
-      context: .
-      dockerfile: Services/Marketing/Marketing.API/Dockerfile
-    depends_on:
-      - sqldata
-      - nosqldata
-      - identity-api
-      - rabbitmq
-
   payment-api:
     image: ${REGISTRY:-eshop}/payment.api:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
       dockerfile: Services/Payment/Payment.API/Dockerfile
     depends_on:
-      - rabbitmq
-
-  locations-api:
-    image: ${REGISTRY:-eshop}/locations.api:${PLATFORM:-linux}-${TAG:-latest}
-    build:
-      context: .
-      dockerfile: Services/Location/Locations.API/Dockerfile
-    depends_on:
-      - nosqldata
       - rabbitmq
 
   webhooks-api:
@@ -101,9 +81,6 @@ services:
   mobileshoppingapigw:
     image: envoyproxy/envoy:v1.11.1
 
-  mobilemarketingapigw:
-    image: envoyproxy/envoy:v1.11.1
-
   mobileshoppingagg:
     image: ${REGISTRY:-eshop}/mobileshoppingagg:${PLATFORM:-linux}-${TAG:-latest}
     build:
@@ -115,7 +92,6 @@ services:
       - identity-api
       - rabbitmq
       - ordering-api
-      - marketing-api
       - catalog-api
       - basket-api
 
@@ -130,7 +106,6 @@ services:
       - identity-api
       - rabbitmq
       - ordering-api
-      - marketing-api
       - catalog-api
       - basket-api
 
@@ -145,7 +120,6 @@ services:
       - identity-api
       - rabbitmq
       - ordering-api
-      - marketing-api
       - catalog-api
       - basket-api
 
@@ -162,10 +136,9 @@ services:
       dockerfile: Web/WebSPA/Dockerfile
       args:
         NODE_IMAGE: ${NODE_IMAGE:-node:10.13}
-#    depends_on:
-#      - webshoppingagg
-#      - webshoppingapigw
-#      - webmarketingapigw
+    depends_on:
+      - webshoppingagg
+      - webshoppingapigw
 
   webmvc:
     image: ${REGISTRY:-eshop}/webmvc:${PLATFORM:-linux}-${TAG:-latest}
@@ -175,7 +148,6 @@ services:
     depends_on:
       - webshoppingagg
       - webshoppingapigw
-      - webmarketingapigw
 
   webhooks-client:
     image: ${REGISTRY:-eshop}/webhooks.client:${PLATFORM:-linux}-${TAG:-latest}
@@ -186,7 +158,4 @@ services:
       - webhooks-api
 
   webshoppingapigw:
-    image: envoyproxy/envoy:v1.11.1
-
-  webmarketingapigw:
     image: envoyproxy/envoy:v1.11.1

@@ -1,5 +1,4 @@
 ﻿using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
-using System;
 
 namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions
 {

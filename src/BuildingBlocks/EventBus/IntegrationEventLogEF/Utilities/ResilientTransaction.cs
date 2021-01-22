@@ -1,11 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
-using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
-using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF.Services;
 using System;
-using System.Collections.Generic;
-using System.Data.Common;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF.Utilities
@@ -16,8 +10,8 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF.Utili
         private ResilientTransaction(DbContext context) =>
             _context = context ?? throw new ArgumentNullException(nameof(context));
 
-        public static ResilientTransaction New (DbContext context) =>
-            new ResilientTransaction(context);        
+        public static ResilientTransaction New(DbContext context) =>
+            new ResilientTransaction(context);
 
         public async Task ExecuteAsync(Func<Task> action)
         {
