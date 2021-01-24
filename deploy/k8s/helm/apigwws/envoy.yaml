@@ -56,6 +56,9 @@ static_resources:
                   auto_host_rewrite: true
                   cluster: signalr-hub
                   timeout: 300s
+                  upgrade_configs:
+                    upgrade_type: "websocket"
+                    enabled: true
               - name: "b-short"
                 match:
                   prefix: "/b/"
