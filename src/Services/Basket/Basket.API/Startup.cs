@@ -1,9 +1,9 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Basket.API.Infrastructure.Filters;
-using Basket.API.Infrastructure.Middlewares;
 using Basket.API.IntegrationEvents.EventHandling;
 using Basket.API.IntegrationEvents.Events;
+using GrpcBasket;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -33,9 +33,6 @@ using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.IO;
-using GrpcBasket;
-using Microsoft.AspNetCore.Http.Features;
-using Serilog;
 
 namespace Microsoft.eShopOnContainers.Services.Basket.API
 {
@@ -213,7 +210,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             ConfigureAuth(app);
 
             app.UseStaticFiles();
-            
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapGrpcService<BasketService>();
@@ -255,31 +252,26 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
 
         private void ConfigureAuthService(IServiceCollection services)
         {
-             // prevent from mapping "sub" claim to nameidentifier.
-             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("sub");
+            // prevent from mapping "sub" claim to nameidentifier.
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("sub");
 
-             var identityUrl = Configuration.GetValue<string>("IdentityUrl");
+            var identityUrl = Configuration.GetValue<string>("IdentityUrl");
 
-             services.AddAuthentication(options =>
-             {
-                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 
-             }).AddJwtBearer(options =>
-             {
-                 options.Authority = identityUrl;
-                 options.RequireHttpsMetadata = false;
-                 options.Audience = "basket";
-             });
+            }).AddJwtBearer(options =>
+            {
+                options.Authority = identityUrl;
+                options.RequireHttpsMetadata = false;
+                options.Audience = "basket";
+            });
         }
 
         protected virtual void ConfigureAuth(IApplicationBuilder app)
         {
-            if (Configuration.GetValue<bool>("UseLoadTest"))
-            {
-                app.UseMiddleware<ByPassAuthMiddleware>();
-            }
-
             app.UseAuthentication();
             app.UseAuthorization();
         }

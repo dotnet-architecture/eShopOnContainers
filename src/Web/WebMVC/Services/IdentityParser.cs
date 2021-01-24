@@ -1,14 +1,12 @@
 ﻿using Microsoft.eShopOnContainers.WebMVC.ViewModels;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
-using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.WebMVC.Services
 {
-    public class IdentityParser:IIdentityParser<ApplicationUser>
+    public class IdentityParser : IIdentityParser<ApplicationUser>
     {
         public ApplicationUser Parse(IPrincipal principal)
         {

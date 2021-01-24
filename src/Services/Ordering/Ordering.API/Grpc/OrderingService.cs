@@ -1,15 +1,13 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Google.Protobuf.Collections;
+using Grpc.Core;
+using MediatR;
+using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Extensions;
 using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands;
-using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Extensions;
-using MediatR;
-using Grpc.Core;
-using AppCommand = Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands;
 using ApiModels = Ordering.API.Application.Models;
-using Google.Protobuf.Collections;
-using System.Collections.Generic;
+using AppCommand = Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands;
 
 namespace GrpcOrdering
 {

@@ -1,15 +1,14 @@
-﻿using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF;
 using Microsoft.eShopOnContainers.Services.Catalog.API;
 using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.IO;
 using System.Reflection;
-using Microsoft.Extensions.Configuration;
 
 namespace FunctionalTests.Services.Catalog
 {
@@ -28,7 +27,7 @@ namespace FunctionalTests.Services.Catalog
                     .AddEnvironmentVariables();
                 }).UseStartup<Startup>();
 
-            var testServer =  new TestServer(hostBuilder);
+            var testServer = new TestServer(hostBuilder);
 
             testServer.Host
                 .MigrateDbContext<CatalogContext>((context, services) =>

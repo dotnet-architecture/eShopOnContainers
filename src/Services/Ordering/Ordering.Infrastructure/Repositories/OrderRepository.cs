@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
 using Microsoft.eShopOnContainers.Services.Ordering.Domain.Seedwork;
-using Ordering.Domain.Exceptions;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -28,7 +27,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Repositor
 
         public Order Add(Order order)
         {
-            return  _context.Orders.Add(order).Entity;
+            return _context.Orders.Add(order).Entity;
 
         }
 

@@ -23,7 +23,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
         {
             _apiClient = httpClient;
             _settings = settings;
-            _logger =logger;
+            _logger = logger;
 
             _basketByPassUrl = $"{_settings.Value.PurchaseUrl}/b/api/v1/basket";
             _purchaseUrl = $"{_settings.Value.PurchaseUrl}/api/v1";
@@ -33,7 +33,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
         {
             var uri = API.Basket.GetBasket(_basketByPassUrl, user.Id);
             _logger.LogDebug("[GetBasket] -> Calling {Uri} to get the basket", uri);
-            var response = await _apiClient.GetAsync(uri);  
+            var response = await _apiClient.GetAsync(uri);
             _logger.LogDebug("[GetBasket] -> response code {StatusCode}", response.StatusCode);
             var responseString = await response.Content.ReadAsStringAsync();
             return string.IsNullOrEmpty(responseString) ?
@@ -97,7 +97,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
 
             var responseString = await _apiClient.GetStringAsync(uri);
 
-            var response =  JsonConvert.DeserializeObject<Order>(responseString);
+            var response = JsonConvert.DeserializeObject<Order>(responseString);
 
             return response;
         }

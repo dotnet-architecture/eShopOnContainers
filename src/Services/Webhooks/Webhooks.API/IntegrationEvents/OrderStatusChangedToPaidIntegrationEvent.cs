@@ -1,12 +1,9 @@
 ﻿using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Webhooks.API.IntegrationEvents
 {
-    public class OrderStatusChangedToPaidIntegrationEvent : IntegrationEvent
+    public record OrderStatusChangedToPaidIntegrationEvent : IntegrationEvent
     {
         public int OrderId { get; }
         public IEnumerable<OrderStockItem> OrderStockItems { get; }
@@ -19,7 +16,7 @@ namespace Webhooks.API.IntegrationEvents
         }
     }
 
-    public class OrderStockItem
+    public record OrderStockItem
     {
         public int ProductId { get; }
         public int Units { get; }

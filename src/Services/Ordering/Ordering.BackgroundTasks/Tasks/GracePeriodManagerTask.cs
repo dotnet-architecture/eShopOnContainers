@@ -41,8 +41,6 @@ namespace Ordering.BackgroundTasks.Tasks
             }
 
             _logger.LogDebug("GracePeriodManagerService background task is stopping.");
-
-            await Task.CompletedTask;
         }
 
         private void CheckConfirmedGracePeriodOrders()

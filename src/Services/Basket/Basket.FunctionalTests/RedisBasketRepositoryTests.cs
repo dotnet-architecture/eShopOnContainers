@@ -33,7 +33,7 @@ namespace Basket.FunctionalTests
                 Assert.Single(basket.Items);
             }
 
-            
+
         }
 
         [Fact]
@@ -58,7 +58,7 @@ namespace Basket.FunctionalTests
 
                 Assert.True(deleteResult);
                 Assert.Null(result);
-            }            
+            }
         }
 
         RedisBasketRepository BuildBasketRepository(ConnectionMultiplexer connMux)

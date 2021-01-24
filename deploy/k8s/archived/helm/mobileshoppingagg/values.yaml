@@ -49,12 +49,8 @@ env:
       key: internalurls__identity__hc
     - name: OrderingUrlHC
       key: internalurls__ordering__hc
-    - name: MarketingUrlHC
-      key: internalurls__marketing__hc
     - name: PaymentUrlHC
       key: internalurls__payment__hc
-    - name: LocationUrlHC
-      key: internalurls__location__hc
     - name: urls__grpcBasket
       key: internalurls__grpcBasket
     - name: urls__grpcCatalog

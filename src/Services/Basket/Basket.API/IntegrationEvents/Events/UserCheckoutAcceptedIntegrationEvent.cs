@@ -4,37 +4,37 @@ using System;
 
 namespace Basket.API.IntegrationEvents.Events
 {
-    public class UserCheckoutAcceptedIntegrationEvent : IntegrationEvent
+    public record UserCheckoutAcceptedIntegrationEvent : IntegrationEvent
     {
         public string UserId { get; }
 
         public string UserName { get; }
 
-        public int OrderNumber { get; set; }
+        public int OrderNumber { get; init; }
 
-        public string City { get; set; }
+        public string City { get; init; }
 
-        public string Street { get; set; }
+        public string Street { get; init; }
 
-        public string State { get; set; }
+        public string State { get; init; }
 
-        public string Country { get; set; }
+        public string Country { get; init; }
 
-        public string ZipCode { get; set; }
+        public string ZipCode { get; init; }
 
-        public string CardNumber { get; set; }
+        public string CardNumber { get; init; }
 
-        public string CardHolderName { get; set; }
+        public string CardHolderName { get; init; }
 
-        public DateTime CardExpiration { get; set; }
+        public DateTime CardExpiration { get; init; }
 
-        public string CardSecurityNumber { get; set; }
+        public string CardSecurityNumber { get; init; }
 
-        public int CardTypeId { get; set; }
+        public int CardTypeId { get; init; }
 
-        public string Buyer { get; set; }
+        public string Buyer { get; init; }
 
-        public Guid RequestId { get; set; }
+        public Guid RequestId { get; init; }
 
         public CustomerBasket Basket { get; }
 

@@ -10,7 +10,6 @@ import { SharedModule } from './shared/shared.module';
 import { CatalogModule } from './catalog/catalog.module';
 import { OrdersModule } from './orders/orders.module';
 import { BasketModule } from './basket/basket.module';
-import { CampaignsModule } from './campaigns/campaigns.module';
 import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
@@ -25,8 +24,7 @@ import { ToastrModule } from 'ngx-toastr';
         SharedModule.forRoot(),
         CatalogModule,
         OrdersModule,
-        BasketModule,
-        CampaignsModule
+        BasketModule
     ],
     providers: [
         AppService

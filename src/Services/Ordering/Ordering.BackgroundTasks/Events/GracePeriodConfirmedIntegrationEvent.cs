@@ -2,7 +2,7 @@
 {
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
 
-    public class GracePeriodConfirmedIntegrationEvent : IntegrationEvent
+    public record GracePeriodConfirmedIntegrationEvent : IntegrationEvent
     {
         public int OrderId { get; }
 
