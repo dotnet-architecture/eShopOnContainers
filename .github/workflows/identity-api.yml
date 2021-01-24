@@ -13,6 +13,11 @@ on:
   pull_request:
     branches:
     - dev
+
+    paths:
+    - src/BuildingBlocks/*
+    - src/Services/Identity/*
+    - .github/workflows/identity-api.yml
 env:
   SERVICE: identity-api
   IMAGE: identity.api

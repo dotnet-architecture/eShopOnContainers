@@ -13,6 +13,11 @@ on:
   pull_request:
     branches:
     - dev
+    
+    paths:
+    - src/BuildingBlocks/*
+    - src/Services/Webhooks/*
+    - .github/workflows/webhooks-api.yml
 env:
   SERVICE: webhooks-api
   IMAGE: webhooks.api
