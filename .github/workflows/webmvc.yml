@@ -13,6 +13,12 @@ on:
   pull_request:
     branches:
     - dev
+    paths:
+    
+    - src/BuildingBlocks/*
+    - src/Web/WebMVC/*
+    - .github/workflows/webmvc.yml
+
 env:
   SERVICE: webmvc
   IMAGE: webmvc
