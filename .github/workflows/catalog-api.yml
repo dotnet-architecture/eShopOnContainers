@@ -13,6 +13,11 @@ on:
   pull_request:
     branches:
     - dev
+    
+    paths:
+    - src/BuildingBlocks/*
+    - src/Services/Catalog/*
+    - .github/workflows/catalog-api.yml
 env:
   SERVICE: catalog-api
   IMAGE: catalog.api

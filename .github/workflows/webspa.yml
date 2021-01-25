@@ -13,6 +13,11 @@ on:
   pull_request:
     branches:
     - dev
+    
+    paths:
+    - src/BuildingBlocks/*
+    - src/Web/WebSPA/*
+    - .github/workflows/webspa.yml
 env:
   SERVICE: webspa
   IMAGE: webspa
