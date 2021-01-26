@@ -6,8 +6,8 @@ on:
     - dev
 
     paths:
-    - src/BuildingBlocks/*
-    - src/Web/WebhookClient/*
+    - src/BuildingBlocks/**
+    - src/Web/WebhookClient/**
     - .github/workflows/webhooks-client.yml
   
   pull_request:
@@ -15,8 +15,8 @@ on:
     - dev
 
     paths:
-    - src/BuildingBlocks/*
-    - src/Web/WebhookClient/*
+    - src/BuildingBlocks/**
+    - src/Web/WebhookClient/**
     - .github/workflows/webhooks-client.yml
 env:
   SERVICE: webhooks-client

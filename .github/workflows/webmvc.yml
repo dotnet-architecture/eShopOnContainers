@@ -6,8 +6,8 @@ on:
     - dev
 
     paths:
-    - src/BuildingBlocks/*
-    - src/Web/WebMVC/*
+    - src/BuildingBlocks/**
+    - src/Web/WebMVC/**
     - .github/workflows/webmvc.yml
   
   pull_request:
@@ -15,8 +15,8 @@ on:
     - dev
     paths:
     
-    - src/BuildingBlocks/*
-    - src/Web/WebMVC/*
+    - src/BuildingBlocks/**
+    - src/Web/WebMVC/**
     - .github/workflows/webmvc.yml
 
 env:
