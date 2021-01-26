@@ -6,8 +6,8 @@ on:
     - dev
 
     paths:
-    - src/BuildingBlocks/*
-    - src/Services/Basket/*
+    - src/BuildingBlocks/**
+    - src/Services/Basket/**
     - .github/workflows/basket-api.yml
   
   pull_request:
@@ -15,8 +15,8 @@ on:
     - dev
 
     paths:
-    - src/BuildingBlocks/*
-    - src/Services/Basket/*
+    - src/BuildingBlocks/**
+    - src/Services/Basket/**
     - .github/workflows/basket-api.yml
 env:
   SERVICE: basket-api

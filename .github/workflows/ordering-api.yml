@@ -6,8 +6,8 @@ on:
     - dev
 
     paths:
-    - src/BuildingBlocks/*
-    - src/Services/Ordering/*
+    - src/BuildingBlocks/**
+    - src/Services/Ordering/**
     - .github/workflows/ordering-api.yml
   
   pull_request:
@@ -15,8 +15,8 @@ on:
     - dev
 
     paths:
-    - src/BuildingBlocks/*
-    - src/Services/Ordering/*
+    - src/BuildingBlocks/**
+    - src/Services/Ordering/**
     - .github/workflows/ordering-api.yml
 env:
   SERVICE: ordering-api

@@ -6,8 +6,8 @@ on:
     - dev
 
     paths:
-    - src/BuildingBlocks/*
-    - src/Web/WebSPA/*
+    - src/BuildingBlocks/**
+    - src/Web/WebSPA/**
     - .github/workflows/webspa.yml
   
   pull_request:
@@ -15,8 +15,8 @@ on:
     - dev
     
     paths:
-    - src/BuildingBlocks/*
-    - src/Web/WebSPA/*
+    - src/BuildingBlocks/**
+    - src/Web/WebSPA/**
     - .github/workflows/webspa.yml
 env:
   SERVICE: webspa

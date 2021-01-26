@@ -6,8 +6,8 @@ on:
     - dev
 
     paths:
-    - src/BuildingBlocks/*
-    - src/Services/Identity/*
+    - src/BuildingBlocks/**
+    - src/Services/Identity/**
     - .github/workflows/identity-api.yml
   
   pull_request:
@@ -15,8 +15,8 @@ on:
     - dev
 
     paths:
-    - src/BuildingBlocks/*
-    - src/Services/Identity/*
+    - src/BuildingBlocks/**
+    - src/Services/Identity/**
     - .github/workflows/identity-api.yml
 env:
   SERVICE: identity-api
