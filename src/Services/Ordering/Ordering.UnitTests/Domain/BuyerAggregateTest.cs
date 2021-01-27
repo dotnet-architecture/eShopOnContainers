@@ -35,7 +35,7 @@ public class BuyerAggregateTest
 
     [Fact]
     public void add_payment_success()
-    {        
+    {
         //Arrange    
         var cardTypeId = 1;
         var alias = "fakeAlias";
@@ -83,7 +83,7 @@ public class BuyerAggregateTest
         var cardNumber = "124";
         var securityNumber = "1234";
         var cardHolderName = "FakeHolderNAme";
-        var expiration = DateTime.Now.AddYears(-1);        
+        var expiration = DateTime.Now.AddYears(-1);
 
         //Act - Assert
         Assert.Throws<OrderingDomainException>(() => new PaymentMethod(cardTypeId, alias, cardNumber, securityNumber, cardHolderName, expiration));

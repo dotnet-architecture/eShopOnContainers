@@ -2,11 +2,11 @@
 
 namespace Microsoft.eShopOnContainers.WebMVC.ViewModels
 {
-    public class Catalog
+    public record Catalog
     {
-        public int PageIndex { get; set; }
-        public int PageSize { get; set; }
-        public int Count { get; set; }
-        public List<CatalogItem> Data { get; set; }
+        public int PageIndex { get; init; }
+        public int PageSize { get; init; }
+        public int Count { get; init; }
+        public List<CatalogItem> Data { get; init; }
     }
 }

@@ -19,7 +19,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Services
                 splitKey = "signin-oidc";
             else
                 splitKey = "scope";
-            
+
             results = Regex.Split(result, splitKey);
             if (results.Length < 2)
                 return "";

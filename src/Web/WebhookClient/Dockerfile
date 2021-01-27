@@ -1,9 +1,9 @@
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.1 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
 WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
+FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
 
 # It's important to keep lines from here down to "COPY . ." identical in all Dockerfiles
@@ -25,10 +25,6 @@ COPY "Services/Catalog/Catalog.API/Catalog.API.csproj" "Services/Catalog/Catalog
 COPY "Services/Catalog/Catalog.FunctionalTests/Catalog.FunctionalTests.csproj" "Services/Catalog/Catalog.FunctionalTests/Catalog.FunctionalTests.csproj"
 COPY "Services/Catalog/Catalog.UnitTests/Catalog.UnitTests.csproj" "Services/Catalog/Catalog.UnitTests/Catalog.UnitTests.csproj"
 COPY "Services/Identity/Identity.API/Identity.API.csproj" "Services/Identity/Identity.API/Identity.API.csproj"
-COPY "Services/Location/Locations.API/Locations.API.csproj" "Services/Location/Locations.API/Locations.API.csproj"
-COPY "Services/Location/Locations.FunctionalTests/Locations.FunctionalTests.csproj" "Services/Location/Locations.FunctionalTests/Locations.FunctionalTests.csproj"
-COPY "Services/Marketing/Marketing.API/Marketing.API.csproj" "Services/Marketing/Marketing.API/Marketing.API.csproj"
-COPY "Services/Marketing/Marketing.FunctionalTests/Marketing.FunctionalTests.csproj" "Services/Marketing/Marketing.FunctionalTests/Marketing.FunctionalTests.csproj"
 COPY "Services/Ordering/Ordering.API/Ordering.API.csproj" "Services/Ordering/Ordering.API/Ordering.API.csproj"
 COPY "Services/Ordering/Ordering.BackgroundTasks/Ordering.BackgroundTasks.csproj" "Services/Ordering/Ordering.BackgroundTasks/Ordering.BackgroundTasks.csproj"
 COPY "Services/Ordering/Ordering.Domain/Ordering.Domain.csproj" "Services/Ordering/Ordering.Domain/Ordering.Domain.csproj"

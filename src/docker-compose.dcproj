@@ -3,7 +3,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>fea0c318-ffed-4d39-8781-265718ca43dd</ProjectGuid>
     <DockerLaunchBrowser>True</DockerLaunchBrowser>
-    <DockerServiceUrl>http://localhost:5100</DockerServiceUrl>
+    <DockerServiceUrl>http://host.docker.internal:5100</DockerServiceUrl>
     <DockerServiceName>webmvc</DockerServiceName>
     <DockerTargetOS>Linux</DockerTargetOS>
     <ProjectVersion>2.1</ProjectVersion>

@@ -1,9 +1,9 @@
 ﻿namespace WebMVC.Services.ModelDTOs
 {
-    public class OrderProcessAction
+    public record OrderProcessAction
     {
-        public string Code { get; private set; }
-        public string Name { get; private set; }
+        public string Code { get; }
+        public string Name { get; }
 
         public static OrderProcessAction Ship = new OrderProcessAction(nameof(Ship).ToLowerInvariant(), "Ship");
 

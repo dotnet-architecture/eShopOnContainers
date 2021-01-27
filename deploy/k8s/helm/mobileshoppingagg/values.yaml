@@ -49,18 +49,16 @@ env:
       key: internalurls__identity__hc
     - name: OrderingUrlHC
       key: internalurls__ordering__hc
-    - name: MarketingUrlHC
-      key: internalurls__marketing__hc
     - name: PaymentUrlHC
       key: internalurls__payment__hc
-    - name: LocationUrlHC
-      key: internalurls__location__hc
     - name: urls__grpcBasket
       key: internalurls__grpcBasket
     - name: urls__grpcCatalog
       key: internalurls__grpcCatalog
     - name: urls__grpcOrdering
       key: internalurls__grpcOrdering      
+    - name: IdentityUrlExternal
+      key: urls__IdentityUrlExternal
       # values define environment variables with a fixed value (no configmap involved) (name is name of var, and value is its value)
   values:
     - name: ASPNETCORE_ENVIRONMENT

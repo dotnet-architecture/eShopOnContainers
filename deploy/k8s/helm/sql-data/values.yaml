@@ -1,8 +1,8 @@
 replicaCount: 1
 
 image:
-  repository: microsoft/mssql-server-linux
-  tag: 2017-CU7
+  repository: mcr.microsoft.com/mssql/server
+  tag: 2019-latest
   pullPolicy: IfNotPresent
 
 service:

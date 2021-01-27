@@ -20,7 +20,7 @@
 
     public class OrderingContextSeed
     {
-        public  async Task SeedAsync(OrderingContext context, IWebHostEnvironment env,IOptions<OrderingSettings> settings, ILogger<OrderingContextSeed> logger)
+        public async Task SeedAsync(OrderingContext context, IWebHostEnvironment env, IOptions<OrderingSettings> settings, ILogger<OrderingContextSeed> logger)
         {
             var policy = CreatePolicy(logger, nameof(OrderingContextSeed));
 
@@ -174,8 +174,8 @@
             return csvheaders;
         }
 
-     
-        private AsyncRetryPolicy CreatePolicy( ILogger<OrderingContextSeed> logger, string prefix, int retries =3)
+
+        private AsyncRetryPolicy CreatePolicy(ILogger<OrderingContextSeed> logger, string prefix, int retries = 3)
         {
             return Policy.Handle<SqlException>().
                 WaitAndRetryAsync(

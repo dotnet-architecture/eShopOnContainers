@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Ordering.API.Application.Validations
 {
-    public class IdentifiedCommandValidator : AbstractValidator<IdentifiedCommand<CreateOrderCommand,bool>>
+    public class IdentifiedCommandValidator : AbstractValidator<IdentifiedCommand<CreateOrderCommand, bool>>
     {
         public IdentifiedCommandValidator(ILogger<IdentifiedCommandValidator> logger)
         {

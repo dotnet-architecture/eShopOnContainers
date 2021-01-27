@@ -9,7 +9,7 @@ namespace Webhooks.API.Model
 
         public string Payload { get; }
 
-        public string Type { get;  }
+        public string Type { get; }
 
         public WebhookData(WebhookType hookType, object data)
         {
