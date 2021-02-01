@@ -1,0 +1,51 @@
+on: [push]
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    
+    - uses: azure/docker-login@v1
+      with:
+        login-server: qrssredevcontainerregistryeshop.azurecr.io
+        username: ${{ secrets.acr_qrssredevcontainerregistryeshop_username }}
+        password: ${{ secrets.acr_qrssredevcontainerregistryeshop_password }}
+    
+    - name: Build and push image to ACR
+      id: build-image
+      run: |
+        docker build "$GITHUB_WORKSPACE/deploy/elk/elasticsearch" -f  "deploy/elk/elasticsearch/Dockerfile" -t qrssredevcontainerregistryeshop.azurecr.io/qrssredevakseshop:${{ github.sha }}
+        docker push qrssredevcontainerregistryeshop.azurecr.io/qrssredevakseshop:${{ github.sha }}
+    
+    - uses: azure/k8s-set-context@v1
+      with:
+         kubeconfig: ${{ secrets.aks_qrssredevakseshop_kubeConfig }}
+      id: login
+    
+    - name: Create namespace
+      run: |
+        namespacePresent=`kubectl get namespace | grep qrs-sre-dev-aks-eshopb3b2 | wc -l`
+        if [ $namespacePresent -eq 0 ]
+        then
+            echo `kubectl create namespace qrs-sre-dev-aks-eshopb3b2`
+        fi
+
+    - uses: azure/k8s-create-secret@v1
+      with:
+        namespace: qrs-sre-dev-aks-eshopb3b2
+        container-registry-url: qrssredevcontainerregistryeshop.azurecr.io
+        container-registry-username: ${{ secrets.acr_qrssredevcontainerregistryeshop_username }}
+        container-registry-password: ${{ secrets.acr_qrssredevcontainerregistryeshop_password }}
+        secret-name: qrssredevaksdockerauth
+       
+    - uses: azure/k8s-deploy@v1.2
+      with:
+        namespace: qrs-sre-dev-aks-eshopb3b2
+        manifests: |
+          manifests/deployment.yml
+          manifests/service.yml
+          manifests/ingress.yml
+        images: |
+          qrssredevcontainerregistryeshop.azurecr.io/qrssredevakseshop:${{ github.sha }}
+        imagepullsecrets: |
+          qrssredevaksdockerauth
