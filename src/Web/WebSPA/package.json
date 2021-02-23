@@ -36,6 +36,7 @@
     "@angular/platform-browser-dynamic": "8.2.14",
     "@angular/platform-server": "8.2.14",
     "@angular/router": "8.2.14",
+    "@microsoft/applicationinsights-web": "^2.5.11",
     "@microsoft/signalr": "3.0.1",
     "@ng-bootstrap/ng-bootstrap": "5.2.1",
     "@popperjs/core": "2.0.0",

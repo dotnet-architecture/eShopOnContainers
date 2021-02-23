@@ -6,6 +6,7 @@ import { SecurityService } from './shared/services/security.service';
 import { ConfigurationService } from './shared/services/configuration.service';
 import { SignalrService } from './shared/services/signalr.service';
 import { ToastrService } from 'ngx-toastr';
+import { ApplicationInsightsService } from './shared/services/appinsights.service'
 
 /*
  * App Component
@@ -25,6 +26,7 @@ export class AppComponent implements OnInit {
         private configurationService: ConfigurationService,
         private signalrService: SignalrService,
         private toastr: ToastrService,
+        private appInsights: ApplicationInsightsService,
         vcr: ViewContainerRef
     ) {
         // TODO: Set Taster Root (Overlay) container
@@ -38,7 +40,13 @@ export class AppComponent implements OnInit {
 
         //Get configuration from server environment variables:
         console.log('configuration');
-        this.configurationService.load();        
+        this.configurationService.load();
+       
+        console.log('appInsights');
+        this.configurationService.settingsLoaded$.subscribe(data => {
+            this.appInsights.load();
+        })
+        
     }
 
     public setTitle(newTitle: string) {

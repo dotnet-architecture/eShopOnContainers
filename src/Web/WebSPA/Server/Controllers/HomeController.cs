@@ -4,6 +4,7 @@ using eShopOnContainers.WebSPA;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using System;
 
 namespace eShopConContainers.WebSPA.Server.Controllers
 {
@@ -19,6 +20,7 @@ namespace eShopConContainers.WebSPA.Server.Controllers
         }
         public IActionResult Configuration()
         {
+            _settings.Value.InstrumentationKey = Environment.GetEnvironmentVariable("ApplicationInsights__InstrumentationKey");
             return Json(_settings.Value);
         }
     }

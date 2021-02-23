@@ -27,6 +27,7 @@ export class ConfigurationService {
             this.storageService.store('purchaseUrl', this.serverSettings.purchaseUrl);
             this.storageService.store('signalrHubUrl', this.serverSettings.signalrHubUrl);
             this.storageService.store('activateCampaignDetailFunction', this.serverSettings.activateCampaignDetailFunction);
+            this.storageService.store('instrumentationKey', this.serverSettings.instrumentationKey);
             this.isReady = true;
             this.settingsLoadedSource.next();
         });
