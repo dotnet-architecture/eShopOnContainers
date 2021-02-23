@@ -1,0 +1,17 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+    name: "qrssredevakseshop-965f"
+    labels:
+        app: "qrssredevakseshop-965f"
+    annotations:
+        kubernetes.io/ingress.class: addon-http-application-routing
+spec:
+    rules:
+        - host: qrs-sre-dev-aks-eshopb3b2-qrssredevakseshop-965f.c754af2a8611422a9a98.eastus.aksapp.io
+          http:
+            paths:
+            - path: /
+              backend:
+                serviceName: "qrssredevakseshop-965f"
+                servicePort: 80

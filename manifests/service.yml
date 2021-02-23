@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+    name: "qrssredevakseshop-965f"
+    labels:
+        app: "qrssredevakseshop-965f"
+spec:
+    type: ClusterIP
+    ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+      name: http
+    selector:
+        app: "qrssredevakseshop-965f"

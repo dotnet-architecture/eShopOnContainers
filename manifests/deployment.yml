@@ -1,0 +1,19 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: "qrssredevakseshop-965f"
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: "qrssredevakseshop-965f"
+  template:
+    metadata:
+      labels:
+        app: "qrssredevakseshop-965f"
+    spec:
+      containers:
+        - name: "qrssredevakseshop-965f"
+          image: "qrssredevcontainerregistryeshop.azurecr.io/qrssredevakseshop"
+          ports:
+          - containerPort: 80
