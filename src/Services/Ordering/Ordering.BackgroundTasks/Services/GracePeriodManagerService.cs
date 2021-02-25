@@ -10,7 +10,7 @@ using System.Data.SqlClient;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Ordering.BackgroundTasks.Tasks
+namespace Ordering.BackgroundTasks.Services
 {
     public class GracePeriodManagerService : BackgroundService
     {

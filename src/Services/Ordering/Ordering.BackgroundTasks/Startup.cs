@@ -7,7 +7,7 @@
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
     using Ordering.BackgroundTasks.Extensions;
-    using Ordering.BackgroundTasks.Tasks;
+    using Ordering.BackgroundTasks.Services;
 
     public class Startup
     {
