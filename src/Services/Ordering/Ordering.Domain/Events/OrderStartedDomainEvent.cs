@@ -1,8 +1,6 @@
 ﻿using MediatR;
 using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Ordering.Domain.Events
 {
@@ -21,8 +19,8 @@ namespace Ordering.Domain.Events
         public Order Order { get; }
 
         public OrderStartedDomainEvent(Order order, string userId, string userName,
-                                       int cardTypeId, string cardNumber, 
-                                       string cardSecurityNumber, string cardHolderName, 
+                                       int cardTypeId, string cardNumber,
+                                       string cardSecurityNumber, string cardHolderName,
                                        DateTime cardExpiration)
         {
             Order = order;

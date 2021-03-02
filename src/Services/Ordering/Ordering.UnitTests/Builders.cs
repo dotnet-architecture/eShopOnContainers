@@ -1,5 +1,5 @@
-﻿using System;
-using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
+﻿using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
+using System;
 
 namespace UnitTest.Ordering
 {
@@ -21,11 +21,11 @@ namespace UnitTest.Ordering
                 "userId",
                 "fakeName",
                 address,
-                cardTypeId:5,
-                cardNumber:"12",
-                cardSecurityNumber:"123",
-                cardHolderName:"name",
-                cardExpiration:DateTime.UtcNow);
+                cardTypeId: 5,
+                cardNumber: "12",
+                cardSecurityNumber: "123",
+                cardHolderName: "name",
+                cardExpiration: DateTime.UtcNow);
         }
 
         public OrderBuilder AddOne(

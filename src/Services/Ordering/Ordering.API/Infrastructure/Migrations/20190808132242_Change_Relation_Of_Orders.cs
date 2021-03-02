@@ -10,7 +10,7 @@ namespace Ordering.API.Infrastructure.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-           
+
         }
     }
 }

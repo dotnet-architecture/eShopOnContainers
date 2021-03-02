@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using CatalogApi;
+﻿using CatalogApi;
 using Grpc.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.eShopOnContainers.Services.Catalog.API;
 using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
 using Microsoft.eShopOnContainers.Services.Catalog.API.Model;
-using Microsoft.eShopOnContainers.Services.Catalog.API.ViewModel;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using static CatalogApi.Catalog;
 
 namespace Catalog.API.Grpc
@@ -20,6 +19,7 @@ namespace Catalog.API.Grpc
         private readonly CatalogContext _catalogContext;
         private readonly CatalogSettings _settings;
         private readonly ILogger _logger;
+
         public CatalogService(CatalogContext dbContext, IOptions<CatalogSettings> settings, ILogger<CatalogService> logger)
         {
             _settings = settings.Value;

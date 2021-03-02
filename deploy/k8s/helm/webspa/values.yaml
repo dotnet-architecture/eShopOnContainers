@@ -32,8 +32,6 @@ env:
   configmap:
     - name: ApplicationInsights__InstrumentationKey
       key: all__InstrumentationKey
-    - name: UseLoadTest
-      key: all_EnableLoadTest
     - name: DPConnectionString
       key: webspa__keystore
     - name: PurchaseUrl
@@ -42,8 +40,6 @@ env:
       key: urls__spa
     - name: IdentityUrl
       key: urls__IdentityUrl
-    - name: MarketingUrl
-      key: urls__apigwwm
     - name: IdentityUrlHC
       key: internalurls__identity__hc      
     - name: SignalrHubUrl

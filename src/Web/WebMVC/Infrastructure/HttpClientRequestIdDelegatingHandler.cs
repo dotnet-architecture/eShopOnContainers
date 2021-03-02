@@ -22,7 +22,7 @@ namespace WebMVC.Infrastructure
                     request.Headers.Add("x-requestid", Guid.NewGuid().ToString());
                 }
             }
-            
+
             return await base.SendAsync(request, cancellationToken);
         }
     }

@@ -35,7 +35,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Repositor
             else
             {
                 return buyer;
-            }           
+            }
         }
 
         public Buyer Update(Buyer buyer)

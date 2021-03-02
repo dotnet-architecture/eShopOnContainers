@@ -10,5 +10,5 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 data:
-  {{ (.Files.Glob "envoy.yaml").AsConfig | indent 2 }}
+{{ (.Files.Glob "envoy.yaml").AsConfig | indent 2 }}
 

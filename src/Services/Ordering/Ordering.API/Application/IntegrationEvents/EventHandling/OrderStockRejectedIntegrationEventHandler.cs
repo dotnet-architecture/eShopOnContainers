@@ -1,17 +1,14 @@
 ﻿namespace Ordering.API.Application.IntegrationEvents.EventHandling
 {
+    using Events;
+    using MediatR;
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Extensions;
-    using System.Threading.Tasks;
-    using Events;
-    using System.Linq;
-    using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
-    using MediatR;
-    using Ordering.API.Application.Commands;
     using Microsoft.Extensions.Logging;
+    using Ordering.API.Application.Commands;
     using Serilog.Context;
-    using Microsoft.eShopOnContainers.Services.Ordering.API;
-    using Ordering.API.Application.Behaviors;
+    using System.Linq;
+    using System.Threading.Tasks;
 
     public class OrderStockRejectedIntegrationEventHandler : IIntegrationEventHandler<OrderStockRejectedIntegrationEvent>
     {

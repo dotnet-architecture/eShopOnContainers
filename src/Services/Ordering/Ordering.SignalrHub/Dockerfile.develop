@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/core/sdk:3.0-buster
+FROM mcr.microsoft.com/dotnet/sdk:5.0.102-ca-patch-buster-slim
 ARG BUILD_CONFIGURATION=Debug
 ENV ASPNETCORE_ENVIRONMENT=Development
 ENV DOTNET_USE_POLLING_FILE_WATCHER=true
@@ -9,10 +9,11 @@ COPY ["src/BuildingBlocks/EventBus/EventBus/EventBus.csproj", "src/BuildingBlock
 COPY ["src/BuildingBlocks/EventBus/EventBusRabbitMQ/EventBusRabbitMQ.csproj", "src/BuildingBlocks/EventBus/EventBusRabbitMQ/"]
 COPY ["src/BuildingBlocks/EventBus/EventBusServiceBus/EventBusServiceBus.csproj", "src/BuildingBlocks/EventBus/EventBusServiceBus/"]
 COPY ["src/Services/Ordering/Ordering.SignalrHub/Ordering.SignalrHub.csproj", "src/Services/Ordering/Ordering.SignalrHub/"]
+COPY ["src/NuGet.config", "src/NuGet.config"]
 
 RUN dotnet restore src/Services/Ordering/Ordering.SignalrHub/Ordering.SignalrHub.csproj
 COPY . .
 WORKDIR /src/src/Services/Ordering/Ordering.SignalrHub
-RUN dotnet build --no-restore -c $BUILD_CONFIGURATION
+RUN dotnet build -c $BUILD_CONFIGURATION
 
 ENTRYPOINT ["dotnet", "run", "--no-build", "--no-launch-profile", "-c", "$BUILD_CONFIGURATION", "--"]

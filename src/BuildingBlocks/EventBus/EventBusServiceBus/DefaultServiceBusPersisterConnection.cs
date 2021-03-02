@@ -7,19 +7,19 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus
     {
         private readonly ServiceBusConnectionStringBuilder _serviceBusConnectionStringBuilder;
         private readonly string _subscriptionClientName;
-        private ITopicClient _topicClient;
         private SubscriptionClient _subscriptionClient;
+        private ITopicClient _topicClient;
 
         bool _disposed;
 
         public DefaultServiceBusPersisterConnection(ServiceBusConnectionStringBuilder serviceBusConnectionStringBuilder,
             string subscriptionClientName)
         {
-            _serviceBusConnectionStringBuilder = serviceBusConnectionStringBuilder ?? 
+            _serviceBusConnectionStringBuilder = serviceBusConnectionStringBuilder ??
                 throw new ArgumentNullException(nameof(serviceBusConnectionStringBuilder));
             _subscriptionClientName = subscriptionClientName;
-            _topicClient = new TopicClient(_serviceBusConnectionStringBuilder, RetryPolicy.Default);
             _subscriptionClient = new SubscriptionClient(_serviceBusConnectionStringBuilder, subscriptionClientName);
+            _topicClient = new TopicClient(_serviceBusConnectionStringBuilder, RetryPolicy.Default);
         }
 
         public ITopicClient TopicClient
@@ -30,7 +30,6 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus
                 {
                     _topicClient = new TopicClient(_serviceBusConnectionStringBuilder, RetryPolicy.Default);
                 }
-
                 return _topicClient;
             }
         }
@@ -43,9 +42,20 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus
                 {
                     _subscriptionClient = new SubscriptionClient(_serviceBusConnectionStringBuilder, _subscriptionClientName);
                 }
-
                 return _subscriptionClient;
             }
+        }
+
+        public ServiceBusConnectionStringBuilder ServiceBusConnectionStringBuilder => _serviceBusConnectionStringBuilder;
+
+        public ITopicClient CreateModel()
+        {
+            if (_topicClient.IsClosedOrClosing)
+            {
+                _topicClient = new TopicClient(_serviceBusConnectionStringBuilder, RetryPolicy.Default);
+            }
+
+            return _topicClient;
         }
 
         public void Dispose()
