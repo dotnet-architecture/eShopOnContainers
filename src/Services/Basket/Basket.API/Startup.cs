@@ -185,8 +185,9 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory, ConnectionMultiplexer connectionMultiplexer)
         {
+            OpenTelemetryExtensions.AddOpenTelemetry(connectionMultiplexer);
             //loggerFactory.AddAzureWebAppDiagnostics();
             //loggerFactory.AddApplicationInsights(app.ApplicationServices, LogLevel.Trace);
 

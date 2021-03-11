@@ -6,6 +6,10 @@ version: '3.4'
 # docker-compose -f docker-compose.yml -f docker-compose.override.yml -f docker-compose.opentelemetry.console.yml up
 
 services:
+  basket-api:
+    environment:
+      - OTEL_USE_EXPORTER=console
+
   webmvc:
     environment:
       - OTEL_USE_EXPORTER=console
