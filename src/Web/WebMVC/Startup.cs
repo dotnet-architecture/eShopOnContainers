@@ -36,6 +36,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
             services.AddControllersWithViews()
                 .Services
                 .AddAppInsight(Configuration)
+                .AddOpenTelemetry()
                 .AddHealthChecks(Configuration)
                 .AddCustomMvc(Configuration)
                 .AddDevspaces()

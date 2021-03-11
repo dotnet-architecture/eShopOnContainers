@@ -1,0 +1,11 @@
+version: '3.4'
+
+# The OpenTelemetry docker-compose file is used to configure OpenTelemetry for the services
+#
+# You need to start it with the following CLI command:
+# docker-compose -f docker-compose.yml -f docker-compose.override.yml -f docker-compose.opentelemetry.console.yml up
+
+services:
+  webmvc:
+    environment:
+      - OTEL_USE_EXPORTER=console
