@@ -43,6 +43,13 @@ static class OpenTelemetryExtensions
                     options.Headers = headers;
                 });
                 break;
+            case "zipkin":
+                tracerProviderBuilder.AddZipkinExporter(options =>
+                {
+                    var endpoint = Environment.GetEnvironmentVariable("OTEL_EXPORTER_ZIPKIN_ENDPOINT");
+                    options.Endpoint = new Uri(endpoint);
+                });
+                break;
             default:
                 tracerProviderBuilder.AddConsoleExporter();
                 break;
