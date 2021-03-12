@@ -27,6 +27,13 @@ static class OpenTelemetryExtensions
             // Configure exporter
             switch (exportType)
             {
+                case "jaeger":
+                    tracerProviderBuilder.AddJaegerExporter(options =>
+                    {
+                        var agentHost = Environment.GetEnvironmentVariable("OTEL_EXPORTER_JAEGER_AGENTHOST");
+                        options.AgentHost = agentHost;
+                    });
+                    break;
                 case "otlp":
                     tracerProviderBuilder.AddOtlpExporter(options =>
                     {
