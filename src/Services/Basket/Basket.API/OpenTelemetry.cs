@@ -9,7 +9,6 @@ static class OpenTelemetryExtensions
 {
     public static void AddOpenTelemetry(ConnectionMultiplexer connectionMultiplexer)
     {
-        if (connectionMultiplexer == null) throw new ArgumentException("!!!!conn is null!");
         var exportType = Environment.GetEnvironmentVariable("OTEL_USE_EXPORTER")?.ToLower();
         if (exportType == null)
         {
