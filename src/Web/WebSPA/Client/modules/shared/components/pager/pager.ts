@@ -25,8 +25,6 @@ export class Pager implements OnInit, OnChanges  {
 
     ngOnChanges() {
         if (this.model) {
-            this.model.items = (this.model.itemsPage > this.model.totalItems) ? this.model.totalItems : this.model.itemsPage;
-
             this.buttonStates.previousDisabled = (this.model.actualPage == 0);
             this.buttonStates.nextDisabled = (this.model.actualPage + 1 >= this.model.totalPages);
         }
