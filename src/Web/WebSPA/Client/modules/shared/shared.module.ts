@@ -12,6 +12,7 @@ import { SecurityService } from './services/security.service';
 import { ConfigurationService } from './services/configuration.service';
 import { StorageService } from './services/storage.service';
 import { SignalrService } from './services/signalr.service';
+import { ApplicationInsightsService } from './services/appinsights.service'
 
 // Components:
 import { Pager } from './components/pager/pager';
@@ -67,7 +68,8 @@ export class SharedModule {
                 SecurityService, 
                 ConfigurationService, 
                 StorageService,
-                SignalrService
+                SignalrService,
+                ApplicationInsightsService
             ]
         };
     }
