@@ -1,6 +1,16 @@
 name: ordering-api
 
 on:
+  workflow_dispatch:
+    # Inputs the workflow accepts.
+    inputs:
+      name:
+        # Friendly description to be shown in the UI instead of 'name'
+        description: 'exec name'
+        # Default value if no value is explicitly provided
+        default: 'default execution'
+        # Input has to be provided for the workflow to run
+        required: false
   push:
     branches:
     - dev
