@@ -1,0 +1,88 @@
+# This workflow will build a docker container, publish it to Azure Container Registry, and deploy it to Azure Kubernetes Service using a helm chart.
+#
+# To configure this workflow:
+#
+# 1. Set up the following secrets in your workspace: 
+#     a. REGISTRY_USERNAME with ACR username
+#     b. REGISTRY_PASSWORD with ACR Password
+#     c. AZURE_CREDENTIALS with the output of `az ad sp create-for-rbac --sdk-auth`
+#
+# 2. Change the values for the REGISTRY_NAME, CLUSTER_NAME, CLUSTER_RESOURCE_GROUP and NAMESPACE environment variables (below).
+
+on:
+  workflow_dispatch:
+    # Inputs the workflow accepts.
+    inputs:
+      name:
+        # Friendly description to be shown in the UI instead of 'name'
+        description: 'exec name'
+        # Default value if no value is explicitly provided
+        default: 'default execution'
+        # Input has to be provided for the workflow to run
+        required: false
+
+# Environment variables available to all jobs and steps in this workflow
+env:
+  REGISTRY_NAME: ${{ secrets.REGISTRY_NAME }}
+  CLUSTER_NAME: ${{ secrets.CLUSTER_NAME}}
+  CLUSTER_RESOURCE_GROUP: ${{ secrets.CLUSER_RG}}
+  REGISTRY_ENDPOINT: ${{ secrets.REGISTRY_ENDPOINT }}
+  NAMESPACE: default
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    
+    # Connect to Azure Container registry (ACR)
+    - uses: azure/docker-login@v1
+      with:
+        login-server: ${{ env.REGISTRY_NAME }}.azurecr.io
+        username: ${{ secrets.REGISTRY_USERNAME }} 
+        password: ${{ secrets.REGISTRY_PASSWORD }}
+    
+    # Container build and push to a Azure Container registry (ACR)
+    - run: |
+        docker-compose build . -t ${{ secrets.REGISTRY_ENDPOINT }}:linux-dev
+        docker-compose push ${{ secrets.REGISTRY_ENDPOINT }}:linux-dev
+    
+    # Set the target Azure Kubernetes Service (AKS) cluster. 
+    - uses: azure/aks-set-context@v1
+      with:
+        creds: '${{ secrets.AZURE_CREDENTIALS }}'
+        cluster-name: ${{ env.CLUSTER_NAME }}
+        resource-group: ${{ env.CLUSTER_RESOURCE_GROUP }}
+    
+    # Create namespace if doesn't exist
+    - run: |
+        kubectl create namespace ${{ env.NAMESPACE }} --dry-run -o json | kubectl apply -f -
+    
+    # Create imagepullsecret for Azure Container registry (ACR)
+    - uses: azure/k8s-create-secret@v1
+      with:
+        container-registry-url: ${{ env.REGISTRY_NAME }}.azurecr.io
+        container-registry-username: ${{ secrets.REGISTRY_USERNAME }}
+        container-registry-password: ${{ secrets.REGISTRY_PASSWORD }}
+        secret-name: ${{ env.REGISTRY_NAME }}-registry-connection
+        namespace: ${{ env.NAMESPACE }}
+
+    # Baking the helm chart to generate the manifests to deploy
+    - uses: azure/k8s-bake@v1
+      with:
+        renderEngine: 'helm2'
+        helmChart: './deploy/k8s/helm/' 
+        helm-version: 'latest' 
+      id: bake
+
+    # Deploy app to AKS
+    - uses: azure/k8s-deploy@v1
+      with:
+        manifests: ${{ steps.bake.outputs.manifestsBundle }}
+        images: |
+          ${{ secrets.REGISTRY_ENDPOINT }}:linux-dev
+        imagepullsecrets: |
+          ${{ env.REGISTRY_NAME }}-registry-connection
+        namespace: ${{ env.NAMESPACE }}
+        
+        
