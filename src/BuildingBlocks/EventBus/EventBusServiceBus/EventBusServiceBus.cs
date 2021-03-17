@@ -17,21 +17,16 @@
         private readonly IServiceBusPersisterConnection _serviceBusPersisterConnection;
         private readonly ILogger<EventBusServiceBus> _logger;
         private readonly IEventBusSubscriptionsManager _subsManager;
-        private readonly SubscriptionClient _subscriptionClient;
         private readonly ILifetimeScope _autofac;
         private readonly string AUTOFAC_SCOPE_NAME = "eshop_event_bus";
         private const string INTEGRATION_EVENT_SUFFIX = "IntegrationEvent";
 
         public EventBusServiceBus(IServiceBusPersisterConnection serviceBusPersisterConnection,
-            ILogger<EventBusServiceBus> logger, IEventBusSubscriptionsManager subsManager, string subscriptionClientName,
-            ILifetimeScope autofac)
+            ILogger<EventBusServiceBus> logger, IEventBusSubscriptionsManager subsManager, ILifetimeScope autofac)
         {
             _serviceBusPersisterConnection = serviceBusPersisterConnection;
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _subsManager = subsManager ?? new InMemoryEventBusSubscriptionsManager();
-
-            _subscriptionClient = new SubscriptionClient(serviceBusPersisterConnection.ServiceBusConnectionStringBuilder,
-                subscriptionClientName);
             _autofac = autofac;
 
             RemoveDefaultRule();
@@ -51,9 +46,7 @@
                 Label = eventName,
             };
 
-            var topicClient = _serviceBusPersisterConnection.CreateModel();
-
-            topicClient.SendAsync(message)
+            _serviceBusPersisterConnection.TopicClient.SendAsync(message)
                 .GetAwaiter()
                 .GetResult();
         }
@@ -77,7 +70,7 @@
             {
                 try
                 {
-                    _subscriptionClient.AddRuleAsync(new RuleDescription
+                    _serviceBusPersisterConnection.SubscriptionClient.AddRuleAsync(new RuleDescription
                     {
                         Filter = new CorrelationFilter { Label = eventName },
                         Name = eventName
@@ -102,10 +95,11 @@
 
             try
             {
-                _subscriptionClient
-                 .RemoveRuleAsync(eventName)
-                 .GetAwaiter()
-                 .GetResult();
+                _serviceBusPersisterConnection
+                    .SubscriptionClient
+                    .RemoveRuleAsync(eventName)
+                    .GetAwaiter()
+                    .GetResult();
             }
             catch (MessagingEntityNotFoundException)
             {
@@ -132,7 +126,7 @@
 
         private void RegisterSubscriptionClientMessageHandler()
         {
-            _subscriptionClient.RegisterMessageHandler(
+            _serviceBusPersisterConnection.SubscriptionClient.RegisterMessageHandler(
                 async (message, token) =>
                 {
                     var eventName = $"{message.Label}{INTEGRATION_EVENT_SUFFIX}";
@@ -141,7 +135,7 @@
                     // Complete the message so that it is not received again.
                     if (await ProcessEvent(eventName, messageData))
                     {
-                        await _subscriptionClient.CompleteAsync(message.SystemProperties.LockToken);
+                        await _serviceBusPersisterConnection.SubscriptionClient.CompleteAsync(message.SystemProperties.LockToken);
                     }
                 },
                 new MessageHandlerOptions(ExceptionReceivedHandler) { MaxConcurrentCalls = 10, AutoComplete = false });
@@ -194,10 +188,11 @@
         {
             try
             {
-                _subscriptionClient
-                 .RemoveRuleAsync(RuleDescription.DefaultRuleName)
-                 .GetAwaiter()
-                 .GetResult();
+                _serviceBusPersisterConnection
+                    .SubscriptionClient
+                    .RemoveRuleAsync(RuleDescription.DefaultRuleName)
+                    .GetAwaiter()
+                    .GetResult();
             }
             catch (MessagingEntityNotFoundException)
             {
