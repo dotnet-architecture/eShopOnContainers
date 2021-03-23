@@ -1,40 +1,31 @@
 ﻿using GrpcOrdering;
-using Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Config;
 using Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Models;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Services
 {
     public class OrderingService : IOrderingService
     {
-        private readonly UrlsConfig _urls;
+        private readonly OrderingGrpc.OrderingGrpcClient _orderingGrpcClient;
         private readonly ILogger<OrderingService> _logger;
-        public readonly HttpClient _httpClient;
 
-        public OrderingService(HttpClient httpClient, IOptions<UrlsConfig> config, ILogger<OrderingService> logger)
+        public OrderingService(OrderingGrpc.OrderingGrpcClient orderingGrpcClient, ILogger<OrderingService> logger)
         {
-            _urls = config.Value;
-            _httpClient = httpClient;
+            _orderingGrpcClient = orderingGrpcClient;
             _logger = logger;
         }
 
         public async Task<OrderData> GetOrderDraftAsync(BasketData basketData)
         {
-            return await GrpcCallerService.CallService(_urls.GrpcOrdering, async channel =>
-            {
-                var client = new OrderingGrpc.OrderingGrpcClient(channel);
-                _logger.LogDebug(" grpc client created, basketData={@basketData}", basketData);
+            _logger.LogDebug(" grpc client created, basketData={@basketData}", basketData);
 
-                var command = MapToOrderDraftCommand(basketData);
-                var response = await client.CreateOrderDraftFromBasketDataAsync(command);
-                _logger.LogDebug(" grpc response: {@response}", response);
+            var command = MapToOrderDraftCommand(basketData);
+            var response = await _orderingGrpcClient.CreateOrderDraftFromBasketDataAsync(command);
+            _logger.LogDebug(" grpc response: {@response}", response);
 
-                return MapToResponse(response, basketData);
-            });
+            return MapToResponse(response, basketData);
         }
 
         private OrderData MapToResponse(GrpcOrdering.OrderDraftDTO orderDraft, BasketData basketData)

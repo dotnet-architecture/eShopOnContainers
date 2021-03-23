@@ -2,7 +2,7 @@
 {
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
 
-    public class OrderStatusChangedToStockConfirmedIntegrationEvent : IntegrationEvent
+    public record OrderStatusChangedToStockConfirmedIntegrationEvent : IntegrationEvent
     {
         public int OrderId { get; }
 

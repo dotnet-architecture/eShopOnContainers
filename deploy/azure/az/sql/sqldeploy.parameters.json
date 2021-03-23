@@ -8,8 +8,7 @@
         "dbs": {
           "ordering": "orderingdb",
           "identity": "identitydb",
-          "catalog":  "catalogdb",
-          "marketing": "marketingdb"
+          "catalog":  "catalogdb"
         }
       }
     },

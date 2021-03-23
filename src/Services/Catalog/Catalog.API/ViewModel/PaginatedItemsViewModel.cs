@@ -15,10 +15,10 @@
 
         public PaginatedItemsViewModel(int pageIndex, int pageSize, long count, IEnumerable<TEntity> data)
         {
-            this.PageIndex = pageIndex;
-            this.PageSize = pageSize;
-            this.Count = count;
-            this.Data = data;
+            PageIndex = pageIndex;
+            PageSize = pageSize;
+            Count = count;
+            Data = data;
         }
     }
 }

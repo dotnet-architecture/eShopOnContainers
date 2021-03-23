@@ -82,26 +82,5 @@
                 return $"{baseUri}catalogTypes";
             }
         }
-
-        public static class Marketing
-        {
-            public static string GetAllCampaigns(string baseUri, int take, int page)
-            {
-                return $"{baseUri}user?pageSize={take}&pageIndex={page}";
-            }
-
-            public static string GetAllCampaignById(string baseUri, int id)
-            {
-                return $"{baseUri}{id}";
-            }
-        }
-
-        public static class Locations
-        {
-            public static string CreateOrUpdateUserLocation(string baseUri)
-            {
-                return baseUri;
-            }
-        }
     }
 }

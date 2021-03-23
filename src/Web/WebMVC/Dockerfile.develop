@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/core/sdk:3.0-buster
+FROM mcr.microsoft.com/dotnet/sdk:5.0.102-ca-patch-buster-slim
 ARG BUILD_CONFIGURATION=Debug
 ENV ASPNETCORE_ENVIRONMENT=Development
 ENV DOTNET_USE_POLLING_FILE_WATCHER=true
@@ -7,9 +7,11 @@ EXPOSE 80
 WORKDIR /src
 COPY ["Web/WebMVC/WebMVC.csproj", "Web/WebMVC/"]
 COPY ["BuildingBlocks/Devspaces.Support/Devspaces.Support.csproj", "BuildingBlocks/Devspaces.Support/"]
+COPY ["NuGet.config", "NuGet.config"]
+
 RUN dotnet restore "Web/WebMVC/WebMVC.csproj"
 COPY . .
 WORKDIR "/src/Web/WebMVC"
-RUN dotnet build --no-restore "WebMVC.csproj" -c $BUILD_CONFIGURATION
+RUN dotnet build "WebMVC.csproj" -c $BUILD_CONFIGURATION
 
 ENTRYPOINT ["dotnet", "run", "--no-build", "--no-launch-profile", "-c", "$BUILD_CONFIGURATION", "--"]

@@ -27,7 +27,7 @@ namespace FunctionalTests.Services.Catalog
                     .AddEnvironmentVariables();
                 }).UseStartup<Startup>();
 
-            var testServer =  new TestServer(hostBuilder);
+            var testServer = new TestServer(hostBuilder);
 
             testServer.Host
                 .MigrateDbContext<CatalogContext>((context, services) =>

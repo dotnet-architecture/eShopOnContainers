@@ -3,7 +3,7 @@
     using BuildingBlocks.EventBus.Events;
     using System.Collections.Generic;
 
-    public class OrderStockRejectedIntegrationEvent : IntegrationEvent
+    public record OrderStockRejectedIntegrationEvent : IntegrationEvent
     {
         public int OrderId { get; }
 
@@ -17,7 +17,7 @@
         }
     }
 
-    public class ConfirmedOrderStockItem
+    public record ConfirmedOrderStockItem
     {
         public int ProductId { get; }
         public bool HasStock { get; }

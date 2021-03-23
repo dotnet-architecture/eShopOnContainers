@@ -1,9 +1,9 @@
-﻿using System;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.eShopOnContainers.Services.Basket.API;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace Basket.FunctionalTests.Base
 {
@@ -20,7 +20,7 @@ namespace Basket.FunctionalTests.Base
             services.Configure<RouteOptions>(Configuration);
             return base.ConfigureServices(services);
         }
-        
+
         protected override void ConfigureAuth(IApplicationBuilder app)
         {
             if (Configuration["isTest"] == bool.TrueString.ToLowerInvariant())

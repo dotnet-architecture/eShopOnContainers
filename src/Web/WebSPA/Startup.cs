@@ -50,7 +50,7 @@ namespace eShopConContainers.WebSPA
                 {
                     opts.ApplicationDiscriminator = "eshop.webspa";
                 })
-                .PersistKeysToRedis(ConnectionMultiplexer.Connect(Configuration["DPConnectionString"]), "DataProtection-Keys");
+                .PersistKeysToStackExchangeRedis(ConnectionMultiplexer.Connect(Configuration["DPConnectionString"]), "DataProtection-Keys");
             }
 
             services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
@@ -70,7 +70,7 @@ namespace eShopConContainers.WebSPA
             {
                 app.UseDeveloperExceptionPage();
             }
-            
+
             // Configure XSRF middleware, This pattern is for SPA style applications where XSRF token is added on Index page 
             // load and passed back token on every subsequent async request            
             // app.Use(async (context, next) =>

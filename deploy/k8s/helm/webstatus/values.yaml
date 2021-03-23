@@ -67,24 +67,16 @@ env:
     - name: HealthChecks-UI__HealthChecks__7__Uri
       key: internalurls__identity__hc
     - name: HealthChecks-UI__HealthChecks__8__Name
-      key: name__marketing__hc
-    - name: HealthChecks-UI__HealthChecks__8__Uri
-      key: internalurls__marketing__hc
-    - name: HealthChecks-UI__HealthChecks__9__Name
-      key: name__locations__hc
-    - name: HealthChecks-UI__HealthChecks__9__Uri
-      key: internalurls__locations__hc
-    - name: HealthChecks-UI__HealthChecks__10__Name
       key: name__payment__hc
-    - name: HealthChecks-UI__HealthChecks__10__Uri
+    - name: HealthChecks-UI__HealthChecks__8__Uri
       key: internalurls__payment__hc
-    - name: HealthChecks-UI__HealthChecks__11__Name
+    - name: HealthChecks-UI__HealthChecks__9__Name
       key: name__signalrhub__hc
-    - name: HealthChecks-UI__HealthChecks__11__Uri
+    - name: HealthChecks-UI__HealthChecks__9__Uri
       key: internalurls__signalrhub__hc
-    - name: HealthChecks-UI__HealthChecks__12__Name
+    - name: HealthChecks-UI__HealthChecks__10__Name
       key: name__orderingbackground__hc
-    - name: HealthChecks-UI__HealthChecks__12__Uri
+    - name: HealthChecks-UI__HealthChecks__10__Uri
       key: internalurls__orderingbackground__hc
 
       # values define environment variables with a fixed value (no configmap involved) (name is name of var, and value is its value)

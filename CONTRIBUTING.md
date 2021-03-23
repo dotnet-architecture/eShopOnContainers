@@ -2,7 +2,7 @@
 
 This repo is a reference and learning resource and everyone is invited to contribute, however not all PRs will be accepted into the main branch (**`dev`**).
 
-There's a general development strategy that's driven by @CESARDELATORRE, who chooses, or defines criteria for choosing, the issues to include in the codebase, given a bunch of constraints and other guidelines.
+There's a general development strategy that's driven by @CESARDELATORRE/@nishanil, who chooses, or defines criteria for choosing, the issues to include in the codebase, given a bunch of constraints and other guidelines.
 
 However you can always get in touch with him, if you want to implement some general-interest feature in your repo and have it referenced from the [documentation](https://docs.microsoft.com/dotnet/standard/microservices-architecture/) or the [Microservices eBook](https://aka.ms/microservicesebook/).
 
@@ -47,15 +47,14 @@ All contributions must be submitted as a [Pull Request (PR)](https://help.github
 The main branches are **`dev`** and **`master`**:
 
 - **`dev`**: Contains the latest code **and it is the branch actively developed**.  
-**All PRs must be against `dev` branch to be considered**. This branch is developed using .NET Core 2.x
+**All PRs must be against `dev` branch to be considered**. This branch is developed using `.NET 5`
 
-- **`master`**: Synced from time to time from **`dev`**. It contains "stable" code.  
-(**Keep in mind "stable" does not mean PRODUCTION-READY!**)
+- **`main`**: Synced from time to time from **`dev`**. It contains "stable" code.This branch contains changes specific to `.NET Core 3.1` (**Keep in mind "stable" does not mean PRODUCTION-READY!**)
 
 - Any other branch is considered temporary and could be deleted at any time. Do not submit any PR to them!
 
 ## DISCLAIMER - This is not a PRODUCTION-READY TEMPLATE for microservices
-eShopOnContainers is a reference application to **showcase architectural patterns** for developing microservices applications on .NET Core. **IT IS NOT A PRODUCTION-READY TEMPLATE** to start real-world application. In fact, the application is in a **permanent beta state**, as it’s also used to test new potentially interesting technologies as they show up.
+eShopOnContainers is a reference application to **showcase architectural patterns** for developing microservices applications on .NET 5. **IT IS NOT A PRODUCTION-READY TEMPLATE** to start real-world application. In fact, the application is in a **permanent beta state**, as it’s also used to test new potentially interesting technologies as they show up.
 
 Since this is a learning resource, some design decisions have favored simplicity to convey a pattern, over production-grade robustness.
 

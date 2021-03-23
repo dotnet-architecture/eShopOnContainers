@@ -12,7 +12,7 @@ namespace Webhooks.API.IntegrationEvents
         private readonly IWebhooksRetriever _retriever;
         private readonly IWebhooksSender _sender;
         private readonly ILogger _logger;
-        public OrderStatusChangedToShippedIntegrationEventHandler(IWebhooksRetriever retriever, IWebhooksSender sender, ILogger<OrderStatusChangedToShippedIntegrationEventHandler> logger )
+        public OrderStatusChangedToShippedIntegrationEventHandler(IWebhooksRetriever retriever, IWebhooksSender sender, ILogger<OrderStatusChangedToShippedIntegrationEventHandler> logger)
         {
             _retriever = retriever;
             _sender = sender;

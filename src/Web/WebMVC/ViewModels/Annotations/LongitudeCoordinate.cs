@@ -16,7 +16,7 @@ namespace WebMVC.ViewModels.Annotations
                     ("Longitude must be between -180 and 180 degrees inclusive.");
             }
 
-            return ValidationResult.Success;            
+            return ValidationResult.Success;
         }
     }
 }

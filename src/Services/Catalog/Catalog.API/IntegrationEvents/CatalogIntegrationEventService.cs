@@ -3,7 +3,6 @@ using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
 using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF.Services;
 using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF.Utilities;
-using Microsoft.eShopOnContainers.Services.Catalog.API;
 using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
 using Microsoft.Extensions.Logging;
 using System;
@@ -12,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Catalog.API.IntegrationEvents
 {
-    public class CatalogIntegrationEventService : ICatalogIntegrationEventService,IDisposable
+    public class CatalogIntegrationEventService : ICatalogIntegrationEventService, IDisposable
     {
         private readonly Func<DbConnection, IIntegrationEventLogService> _integrationEventLogServiceFactory;
         private readonly IEventBus _eventBus;
@@ -73,7 +72,7 @@ namespace Catalog.API.IntegrationEvents
                 {
                     (_eventLogService as IDisposable)?.Dispose();
                 }
-               
+
                 disposedValue = true;
             }
         }

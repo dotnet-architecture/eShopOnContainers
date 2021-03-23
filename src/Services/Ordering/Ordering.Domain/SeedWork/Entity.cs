@@ -1,14 +1,14 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.Seedwork
 {
-    using System;
     using MediatR;
+    using System;
     using System.Collections.Generic;
 
     public abstract class Entity
     {
         int? _requestedHashCode;
-        int _Id;        
-        public virtual  int Id 
+        int _Id;
+        public virtual int Id
         {
             get
             {

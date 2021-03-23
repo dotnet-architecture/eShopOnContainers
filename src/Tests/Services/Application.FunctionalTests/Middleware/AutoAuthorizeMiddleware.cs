@@ -22,6 +22,7 @@ namespace FunctionalTests.Middleware
 
             identity.AddClaim(new Claim("sub", IDENTITY_ID));
             identity.AddClaim(new Claim("unique_name", IDENTITY_ID));
+            identity.AddClaim(new Claim(ClaimTypes.Name, IDENTITY_ID));
 
             httpContext.User.AddIdentity(identity);
             await _next.Invoke(httpContext);

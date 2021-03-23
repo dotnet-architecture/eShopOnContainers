@@ -6,7 +6,6 @@ using Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands;
 using Microsoft.eShopOnContainers.Services.Ordering.API.Application.Queries;
 using Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure.Services;
 using Microsoft.Extensions.Logging;
-using Ordering.API.Application.Behaviors;
 using Ordering.API.Application.Commands;
 using System;
 using System.Collections.Generic;
@@ -26,8 +25,8 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Controllers
         private readonly ILogger<OrdersController> _logger;
 
         public OrdersController(
-            IMediator mediator, 
-            IOrderQueries orderQueries, 
+            IMediator mediator,
+            IOrderQueries orderQueries,
             IIdentityService identityService,
             ILogger<OrdersController> logger)
         {
@@ -41,7 +40,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Controllers
         [HttpPut]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> CancelOrderAsync([FromBody]CancelOrderCommand command, [FromHeader(Name = "x-requestid")] string requestId)
+        public async Task<IActionResult> CancelOrderAsync([FromBody] CancelOrderCommand command, [FromHeader(Name = "x-requestid")] string requestId)
         {
             bool commandResult = false;
 
@@ -71,7 +70,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Controllers
         [HttpPut]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> ShipOrderAsync([FromBody]ShipOrderCommand command, [FromHeader(Name = "x-requestid")] string requestId)
+        public async Task<IActionResult> ShipOrderAsync([FromBody] ShipOrderCommand command, [FromHeader(Name = "x-requestid")] string requestId)
         {
             bool commandResult = false;
 
@@ -99,7 +98,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Controllers
 
         [Route("{orderId:int}")]
         [HttpGet]
-        [ProducesResponseType(typeof(Order),(int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(Order), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public async Task<ActionResult> GetOrderAsync(int orderId)
         {

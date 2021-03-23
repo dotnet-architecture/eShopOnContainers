@@ -43,8 +43,8 @@ namespace FunctionalTests.Services
                 var oldPrice = itemToModify.UnitPrice;
                 var newPrice = oldPrice + priceModification;
                 var pRes = await catalogClient.PutAsync(CatalogScenariosBase.Put.UpdateCatalogProduct, new StringContent(ChangePrice(itemToModify, newPrice, originalCatalogProducts), UTF8Encoding.UTF8, "application/json"));
-                                
-                var modifiedCatalogProducts = await GetCatalogAsync(catalogClient);               
+
+                var modifiedCatalogProducts = await GetCatalogAsync(catalogClient);
 
                 var itemUpdated = await GetUpdatedBasketItem(newPrice, itemToModify.ProductId, userId, basketClient);
 
@@ -71,7 +71,7 @@ namespace FunctionalTests.Services
             BasketItem itemUpdated = null;
 
             while (continueLoop && counter < 20)
-            {                
+            {
                 //get the basket and verify that the price of the modified product is updated
                 var basketGetResponse = await basketClient.GetAsync(BasketScenariosBase.Get.GetBasketByCustomer(userId));
                 var basketUpdated = JsonConvert.DeserializeObject<CustomerBasket>(await basketGetResponse.Content.ReadAsStringAsync());
@@ -92,7 +92,7 @@ namespace FunctionalTests.Services
             return itemUpdated;
         }
 
-        private async  Task<PaginatedItemsViewModel<CatalogItem>> GetCatalogAsync(HttpClient catalogClient)
+        private async Task<PaginatedItemsViewModel<CatalogItem>> GetCatalogAsync(HttpClient catalogClient)
         {
             var response = await catalogClient.GetAsync(CatalogScenariosBase.Get.Items);
             var items = await response.Content.ReadAsStringAsync();

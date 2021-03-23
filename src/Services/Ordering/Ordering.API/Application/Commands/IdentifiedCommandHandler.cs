@@ -2,9 +2,7 @@
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Extensions;
 using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Idempotency;
 using Microsoft.Extensions.Logging;
-using Ordering.API.Application.Behaviors;
 using Ordering.API.Application.Commands;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 

@@ -44,8 +44,6 @@ env:
       key: all__EventBusConnection
     - name: AzureServiceBusEnabled
       key: all__UseAzureServiceBus
-    - name: UseLoadTest
-      key: ordering__EnableLoadTest      
     - name: CheckUpdateTime
       key: graceperiodmanager__CheckUpdateTime
     - name: GracePeriodTime
