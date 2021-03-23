@@ -8,9 +8,9 @@ WORKDIR /web
 COPY Web/WebSPA/package.json .
 COPY Web/WebSPA/package-lock.json .
 COPY Web/WebSPA .
-RUN npm i npm@latest -g && npm update && npm install && npm run build:prod
+RUN npm i npm@6.14.11 -g && npm update && npm install && npm run build:prod
 
-FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:5.0.102-ca-patch-buster-slim AS build
 WORKDIR /src
 
 # It's important to keep lines from here down to "COPY . ." identical in all Dockerfiles

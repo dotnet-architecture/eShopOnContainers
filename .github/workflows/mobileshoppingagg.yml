@@ -6,12 +6,16 @@ on:
     - dev
 
     paths:
-    - src/ApiGateways/Mobile.Bff.Shopping/aggregator/*
+    - src/ApiGateways/Mobile.Bff.Shopping/aggregator/**
     - .github/workflows/mobileshoppingagg.yml
   
   pull_request:
     branches:
     - dev
+
+    paths:
+    - src/ApiGateways/Mobile.Bff.Shopping/aggregator/**
+    - .github/workflows/mobileshoppingagg.yml
 env:
   SERVICE: mobileshoppingagg
   IMAGE: mobileshoppingagg

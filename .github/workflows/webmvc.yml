@@ -6,13 +6,19 @@ on:
     - dev
 
     paths:
-    - src/BuildingBlocks/*
-    - src/Web/WebMVC/*
+    - src/BuildingBlocks/**
+    - src/Web/WebMVC/**
     - .github/workflows/webmvc.yml
   
   pull_request:
     branches:
     - dev
+    paths:
+    
+    - src/BuildingBlocks/**
+    - src/Web/WebMVC/**
+    - .github/workflows/webmvc.yml
+
 env:
   SERVICE: webmvc
   IMAGE: webmvc

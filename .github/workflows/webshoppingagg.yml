@@ -6,12 +6,16 @@ on:
     - dev
 
     paths:
-    - src/ApiGateways/Web.Bff.Shopping/aggregator/*
+    - src/ApiGateways/Web.Bff.Shopping/aggregator/**
     - .github/workflows/webshoppingagg.yml
   
   pull_request:
     branches:
     - dev
+
+    paths:
+    - src/ApiGateways/Web.Bff.Shopping/aggregator/**
+    - .github/workflows/webshoppingagg.yml
 env:
   SERVICE: webshoppingagg
   IMAGE: webshoppingagg

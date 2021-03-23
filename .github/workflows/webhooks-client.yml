@@ -6,13 +6,18 @@ on:
     - dev
 
     paths:
-    - src/BuildingBlocks/*
-    - src/Web/WebhookClient/*
+    - src/BuildingBlocks/**
+    - src/Web/WebhookClient/**
     - .github/workflows/webhooks-client.yml
   
   pull_request:
     branches:
     - dev
+
+    paths:
+    - src/BuildingBlocks/**
+    - src/Web/WebhookClient/**
+    - .github/workflows/webhooks-client.yml
 env:
   SERVICE: webhooks-client
   IMAGE: webhooks.client

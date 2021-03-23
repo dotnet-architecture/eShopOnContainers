@@ -6,13 +6,18 @@ on:
     - dev
 
     paths:
-    - src/BuildingBlocks/*
-    - src/Services/Ordering/*
+    - src/BuildingBlocks/**
+    - src/Services/Ordering/**
     - .github/workflows/ordering-backgroundtasks.yml
   
   pull_request:
     branches:
     - dev
+
+    paths:
+    - src/BuildingBlocks/**
+    - src/Services/Ordering/**
+    - .github/workflows/ordering-backgroundtasks.yml
 env:
   SERVICE: ordering-backgroundtasks
   IMAGE: ordering.backgroundtasks

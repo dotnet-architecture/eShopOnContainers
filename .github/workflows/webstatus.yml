@@ -6,13 +6,19 @@ on:
     - dev
 
     paths:
-    - src/BuildingBlocks/*
-    - src/Web/WebStatus/*
+    - src/BuildingBlocks/**
+    - src/Web/WebStatus/**
     - .github/workflows/webstatus.yml
   
   pull_request:
     branches:
     - dev
+
+    paths:
+    - src/BuildingBlocks/**
+    - src/Web/WebStatus/**
+    - .github/workflows/webstatus.yml
+
 env:
   SERVICE: webstatus
   IMAGE: webstatus
