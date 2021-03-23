@@ -56,7 +56,9 @@
     "tslib": "^2.0.0",
     "typedoc": "^0.19.2",
     "webpack-dev-server": "3.1.14",
-    "zone.js": "~0.10.2"
+    "zone.js": "~0.10.2",
+    "ssri": ">=8.0.1",
+    "is-svg": ">=4.2.2"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.1002.0",
