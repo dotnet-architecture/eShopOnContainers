@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--https://docs.microsoft.com/en-us/visualstudio/test/configure-unit-tests-by-using-a-dot-runsettings-file-->
+<RunSettings>
+  <!-- Configurations that affect the Test Framework -->
+  <RunConfiguration>
+
+    <!-- 0 = Use all Cores -->
+    <MaxCpuCount>0</MaxCpuCount>
+
+    <!-- Path relative to solution directory -->
+    <ResultsDirectory>.\TestResults</ResultsDirectory>
+
+    <!-- x86 or x64 - You can also change it from menu Test, Test Settings, Default Processor Architecture -->
+    <!--<TargetPlatform>x64</TargetPlatform>-->
+
+    <!-- Framework35 | [Framework40] | Framework45 -->
+    <!--<TargetFrameworkVersion>Framework45</TargetFrameworkVersion>-->
+
+    <!-- Path to Test Adapters -->
+    <!--<TestAdaptersPaths>.\</TestAdaptersPaths>-->
+
+    <!--TestSessionTimeout is only available with Visual Studio 2017 version 15.5 and higher -->
+    <!-- Specify timeout in milliseconds. A valid value should be greater than 0 -->
+    <TestSessionTimeout>30000000</TestSessionTimeout>
+  </RunConfiguration>
+
+  <!-- Configurations for data collectors -->
+  <!--<DataCollectionRunSettings>
+    <DataCollectors>
+      <DataCollector friendlyName="Code Coverage" uri="datacollector://Microsoft/CodeCoverage/2.0" assemblyQualifiedName="Microsoft.VisualStudio.Coverage.DynamicCoverageDataCollector, Microsoft.VisualStudio.TraceCollector, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+        <Configuration>
+          <CodeCoverage>
+            <ModulePaths>
+              <Exclude>
+                <ModulePath>.*CPPUnitTestFramework.*</ModulePath>
+              </Exclude>
+            </ModulePaths>-->
+
+
+  <!-- We recommend you do not change the following values: -->
+
+  <!--<UseVerifiableInstrumentation>True</UseVerifiableInstrumentation>
+            <AllowLowIntegrityProcesses>True</AllowLowIntegrityProcesses>
+            <CollectFromChildProcesses>True</CollectFromChildProcesses>
+            <CollectAspDotNet>False</CollectAspDotNet>
+
+          </CodeCoverage>
+        </Configuration>
+      </DataCollector>-->
+
+
+  <!--Video data collector is only available with Visual Studio 2017 version 15.5 and higher -->
+
+  <!--<DataCollector uri="datacollector://microsoft/VideoRecorder/1.0" assemblyQualifiedName="Microsoft.VisualStudio.TestTools.DataCollection.VideoRecorder.VideoRecorderDataCollector, Microsoft.VisualStudio.TestTools.DataCollection.VideoRecorder, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" friendlyName="Screen and Voice Recorder">
+      </DataCollector>
+
+    </DataCollectors>
+  </DataCollectionRunSettings>-->
+
+  <!-- Parameters used by tests at runtime -->
+  <TestRunParameters>
+
+    <!-- Common -->
+    <Parameter name="appSettings.browser" value="Chrome" /> <!--RemoteWebDriver-->
+    <Parameter name="appSettings.DriverCapabilities" value="CloudProvider" /> <!--Only used when browser is set to RemoteWebDriver-->
+    <Parameter name="appSettings.CrossBrowserEnvironment" value="ChromeWindows" /> <!--Only used when browser is set to RemoteWebDriver-->
+    <Parameter name="appSettings.EnablePerfDebugLogging" value="false" />
+    <Parameter name="appSettings.BuildNumber" value="" />
+    <Parameter name="appSettings.EnableEventFiringWebDriver" value="true" />
+    <Parameter name="appSettings.SimulateMobileBrowser" value="false" />
+    <Parameter name="appSettings.PathToChromeDriverDirectory" value="" />
+    <Parameter name="DriverCapabilities.browserstack.user" value="" />
+    <Parameter name="DriverCapabilities.browserstack.key" value="" />
+
+    <Parameter name="database.DbUser" value="" />
+    <Parameter name="database.DbPwd" value="" />
+    <Parameter name="chaosMonkey.Enabled" value="false" />
+
+    <!-- Dev -->
+    <Parameter name="appSettings.Env" value="dev" />
+
+    <!-- QA -->
+    <!-- <Parameter name="appSettings.Env" value="qa" />-->
+
+    <!-- UAT -->
+    <!-- <Parameter name="appSettings.Env" value="uat" /> -->
+
+    <!-- Perf -->
+    <!-- <Parameter name="appSettings.Env" value="perf" /> -->
+
+  </TestRunParameters>
+
+  <!-- Adapter Specific sections -->
+
+  <!-- MSTest adapter -->
+  <!--<MSTest>
+    <Parallelize>
+      <Workers>8</Workers>
+      <Scope>ClassLevel</Scope>
+    </Parallelize>
+    <MapInconclusiveToFailed>True</MapInconclusiveToFailed>
+    <CaptureTraceOutput>false</CaptureTraceOutput>
+    <DeleteDeploymentDirectoryAfterTestRunIsComplete>False</DeleteDeploymentDirectoryAfterTestRunIsComplete>
+    <DeploymentEnabled>False</DeploymentEnabled>
+    <AssemblyResolution>
+      <Directory Path="D:\myfolder\bin\" includeSubDirectories="false"/>
+    </AssemblyResolution>
+  </MSTest>-->
+
+</RunSettings>

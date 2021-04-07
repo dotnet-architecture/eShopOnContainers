@@ -1,0 +1,135 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net471</TargetFramework>
+    <Features>IOperation</Features>
+    <Features>flow-analysis</Features>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <DebugType>pdbonly</DebugType>
+    <AutoGenerateBindingRedirects>True</AutoGenerateBindingRedirects>
+    <NoWarn>1701;1702;SA0001;SA1652;NU5100</NoWarn>
+    <IsTestProject>true</IsTestProject>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <SpecFlowFeatureFiles Remove="Features\RandomWebOperations2.feature" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="stylecop.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <SpecFlowGeneratorPlugins Include="$(_BddCoreGeneratorPluginPath)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Bdd.Core.Generator.SpecFlowPlugin" Version="3.0.15-preview" />
+    <PackageReference Include="Bdd.Core.Web" Version="3.0.15-preview" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="NLog" Version="4.7.6" />
+    <PackageReference Include="NUnit" Version="3.12.0" />
+    <PackageReference Include="NUnit.ConsoleRunner" Version="3.11.1" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.17.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Ocaramba" Version="3.2.11" />
+    <PackageReference Include="Pickles" Version="2.21.0" />
+    <PackageReference Include="Selenium.Support" Version="3.141.0" />
+    <PackageReference Include="Selenium.WebDriver" Version="3.141.0" />
+    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="87.0.4280.8800" />
+    <PackageReference Include="Selenium.WebDriver.GeckoDriver" Version="0.28.0" />
+    <PackageReference Include="Selenium.WebDriver.GeckoDriver.Win64" Version="0.28.0" />
+    <PackageReference Include="Selenium.WebDriver.IEDriver" Version="3.150.1.2" />
+    <PackageReference Include="SpecFlow" Version="3.5.14" />
+    <PackageReference Include="SpecFlow.NUnit" Version="3.5.14" />
+    <PackageReference Include="SpecFlow.Tools.MsBuild.Generation" Version="3.5.14" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="System.Net.Http" Version="4.3.4" />
+    <PackageReference Include="System.Security.Cryptography.Algorithms" Version="4.3.1" />
+    <PackageReference Include="System.Security.Cryptography.Encoding" Version="4.3.0" />
+    <PackageReference Include="System.Security.Cryptography.Primitives" Version="4.3.0" />
+    <PackageReference Include="System.Security.Cryptography.X509Certificates" Version="4.3.2" />
+    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.3" />
+    <PackageReference Include="MSTest.TestAdapter" Version="2.1.2" />
+    <PackageReference Include="MSTest.TestFramework" Version="2.1.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+      <TransformOnBuild>true</TransformOnBuild>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Entities\" />
+    <Folder Include="Hooks\" />
+    <Folder Include="TestData\Before\" />
+    <Folder Include="TestData\After\" />
+    <Folder Include="TestData\Input\" />
+    <Folder Include="TestData\Output\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="EShopApplicationWebSolution.dev.runsettings">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Executors\**" />
+    <Compile Remove="Spex\**" />
+    <EmbeddedResource Remove="Executors\**" />
+    <EmbeddedResource Remove="Spex\**" />
+    <None Remove="Executors\**" />
+    <None Remove="Spex\**" />
+    <SpecFlowFeatureFiles Remove="Executors\**" />
+    <SpecFlowFeatureFiles Remove="Spex\**" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Executors\**" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Spex\**" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <ShowTrace>true</ShowTrace>
+    <OverwriteReadOnlyFiles>true</OverwriteReadOnlyFiles>
+    <ForceGeneration>true</ForceGeneration>
+    <VerboseOutput>true</VerboseOutput>
+  </PropertyGroup>
+
+  <!--<Import Project="%userprofile%\.nuget\packages\SpecFlow\2.4.0\tools\TechTalk.SpecFlow.tasks" Condition="Exists('%userprofile%\.nuget\packages\SpecFlow\2.4.0\tools\TechTalk.SpecFlow.tasks')" />
+  <Import Project="%userprofile%\.nuget\packages\SpecFlow\2.4.0\tools\TechTalk.SpecFlow.targets" Condition="Exists('%userprofile%\.nuget\packages\SpecFlow\2.4.0\tools\TechTalk.SpecFlow.targets')" />-->
+
+  <Target Name="AfterUpdateFeatureFilesInProject">
+    <ItemGroup>
+      <Compile Include="Features\**\*.feature.cs" />
+    </ItemGroup>
+  </Target>
+
+</Project>

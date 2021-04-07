@@ -1,0 +1,24 @@
+{ /*https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/Configuration.md*/
+  "settings": {
+    "indentation": {
+    },
+    "spacingRules": {
+    },
+    "readabilityRules": {
+    },
+    "orderingRules": {
+    },
+    "namingRules": {
+      "allowedHungarianPrefixes": [ "ui", "db", "js" ]
+    },
+    "maintainabilityRules": {
+    },
+    "layoutRules": {
+    },
+    "documentationRules": {
+      "companyName": "Microsoft",
+      "copyrightText": "   THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL\n   THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR\n   OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,\n   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR\n   OTHER DEALINGS IN THE SOFTWARE.",
+      "headerDecoration": "--------------------------------------------------------------------------------------------------------------------"
+    }
+  }
+}
