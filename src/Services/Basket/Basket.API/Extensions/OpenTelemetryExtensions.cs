@@ -1,28 +1,33 @@
 using Microsoft.Extensions.DependencyInjection;
+using OpenTelemetry;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
+using StackExchange.Redis;
 using System;
 
-static class OpenTelemetryExtensions
+namespace Basket.API.Extensions
 {
-    public static IServiceCollection AddOpenTelemetry(this IServiceCollection services)
+    static class OpenTelemetryExtensions
     {
-        var exportType = Environment.GetEnvironmentVariable("OTEL_USE_EXPORTER")?.ToLower();
-        if (exportType == null)
+        public static void AddOpenTelemetry(ConnectionMultiplexer connectionMultiplexer)
         {
-            return services;
-        }
+            var exportType = Environment.GetEnvironmentVariable("OTEL_USE_EXPORTER")?.ToLower();
+            if (exportType == null)
+            {
+                return;
+            }
 
-        return services.AddOpenTelemetryTracing((serviceProvider, tracerProviderBuilder) =>
-        {
+            var tracerProviderBuilder = Sdk.CreateTracerProviderBuilder();
+
             // Configure resource
             tracerProviderBuilder
-                .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService("WebMVC"));
+                .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService("Basket.API"));
 
             // Configure instrumentation
             tracerProviderBuilder
                 .AddAspNetCoreInstrumentation()
-                .AddHttpClientInstrumentation();
+                .AddHttpClientInstrumentation()
+                .AddRedisInstrumentation(connectionMultiplexer);
 
             // Configure exporter
             switch (exportType)
@@ -57,6 +62,8 @@ static class OpenTelemetryExtensions
                     tracerProviderBuilder.AddConsoleExporter();
                     break;
             }
-        });
+
+            tracerProviderBuilder.Build();
+        }
     }
 }

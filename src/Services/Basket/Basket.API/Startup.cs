@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Basket.API.Extensions;
 using Basket.API.Infrastructure.Filters;
 using Basket.API.IntegrationEvents.EventHandling;
 using Basket.API.IntegrationEvents.Events;
@@ -51,7 +52,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             services.AddGrpc(options =>
             {
                 options.EnableDetailedErrors = true;
-            });
+            });            
 
             RegisterAppInsights(services);
 
@@ -188,6 +189,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory, ConnectionMultiplexer connectionMultiplexer)
         {
             OpenTelemetryExtensions.AddOpenTelemetry(connectionMultiplexer);
+
             //loggerFactory.AddAzureWebAppDiagnostics();
             //loggerFactory.AddApplicationInsights(app.ApplicationServices, LogLevel.Trace);
 

@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
+using Payment.API.Extensions;
 using Payment.API.IntegrationEvents.EventHandling;
 using Payment.API.IntegrationEvents.Events;
 using RabbitMQ.Client;
@@ -31,6 +32,7 @@ namespace Payment.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            services.AddOpenTelemetry();
             services.AddCustomHealthCheck(Configuration);
             services.Configure<PaymentSettings>(Configuration);
 

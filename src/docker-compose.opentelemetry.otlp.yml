@@ -13,8 +13,14 @@ services:
       - ./OpenTelemetry/otel-collector-config.yaml:/etc/otel-collector-config.yaml
     ports:
       - "4317"        # OTLP gRPC receiver
-
+  
   basket-api:
+    environment:
+      - OTEL_USE_EXPORTER=otlp
+      - OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=${OTEL_EXPORTER_OTLP_TRACES_ENDPOINT:-http://otel-collector:4317}
+      - OTEL_EXPORTER_OTLP_HEADERS=${OTEL_EXPORTER_OTLP_HEADERS}
+  
+  catalog-api:
     environment:
       - OTEL_USE_EXPORTER=otlp
       - OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=${OTEL_EXPORTER_OTLP_TRACES_ENDPOINT:-http://otel-collector:4317}

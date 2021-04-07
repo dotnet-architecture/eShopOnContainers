@@ -13,6 +13,7 @@ using Microsoft.Extensions.Logging;
 using StackExchange.Redis;
 using System;
 using System.IO;
+using WebSPA.Extensions;
 using WebSPA.Infrastructure;
 
 namespace eShopConContainers.WebSPA
@@ -38,6 +39,7 @@ namespace eShopConContainers.WebSPA
         {
             RegisterAppInsights(services);
 
+            services.AddOpenTelemetry();
             services.AddHealthChecks()
                 .AddCheck("self", () => HealthCheckResult.Healthy())
                 .AddUrlGroup(new Uri(Configuration["IdentityUrlHC"]), name: "identityapi-check", tags: new string[] { "identityapi" });

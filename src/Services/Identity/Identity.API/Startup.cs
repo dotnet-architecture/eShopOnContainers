@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using HealthChecks.UI.Client;
+using Identity.API.Extensions;
 using IdentityServer4.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
@@ -37,6 +38,8 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             RegisterAppInsights(services);
+
+            services.AddOpenTelemetry();
 
             // Add framework services.
             services.AddDbContext<ApplicationDbContext>(options =>

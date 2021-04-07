@@ -11,12 +11,37 @@ services:
     ports:
       - "9411:9411"
 
+  identity-api:
+    environment:
+      - OTEL_USE_EXPORTER=zipkin
+      - OTEL_EXPORTER_ZIPKIN_ENDPOINT=${OTEL_EXPORTER_ZIPKIN_ENDPOINT:-http://zipkin:9411/api/v2/spans}
+          
   basket-api:
+    environment:
+      - OTEL_USE_EXPORTER=zipkin
+      - OTEL_EXPORTER_ZIPKIN_ENDPOINT=${OTEL_EXPORTER_ZIPKIN_ENDPOINT:-http://zipkin:9411/api/v2/spans}
+  
+  catalog-api:
+    environment:
+      - OTEL_USE_EXPORTER=zipkin
+      - OTEL_EXPORTER_ZIPKIN_ENDPOINT=${OTEL_EXPORTER_ZIPKIN_ENDPOINT:-http://zipkin:9411/api/v2/spans}
+  
+  ordering-api:
+    environment:
+      - OTEL_USE_EXPORTER=zipkin
+      - OTEL_EXPORTER_ZIPKIN_ENDPOINT=${OTEL_EXPORTER_ZIPKIN_ENDPOINT:-http://zipkin:9411/api/v2/spans}
+  
+  payment-api:
     environment:
       - OTEL_USE_EXPORTER=zipkin
       - OTEL_EXPORTER_ZIPKIN_ENDPOINT=${OTEL_EXPORTER_ZIPKIN_ENDPOINT:-http://zipkin:9411/api/v2/spans}
 
   webmvc:
+    environment:
+      - OTEL_USE_EXPORTER=zipkin
+      - OTEL_EXPORTER_ZIPKIN_ENDPOINT=${OTEL_EXPORTER_ZIPKIN_ENDPOINT:-http://zipkin:9411/api/v2/spans}
+  
+  webspa:
     environment:
       - OTEL_USE_EXPORTER=zipkin
       - OTEL_EXPORTER_ZIPKIN_ENDPOINT=${OTEL_EXPORTER_ZIPKIN_ENDPOINT:-http://zipkin:9411/api/v2/spans}

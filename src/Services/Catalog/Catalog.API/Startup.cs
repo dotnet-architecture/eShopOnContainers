@@ -31,6 +31,7 @@ using System;
 using System.Data.Common;
 using System.IO;
 using System.Reflection;
+using Catalog.API.Extensions;
 
 namespace Microsoft.eShopOnContainers.Services.Catalog.API
 {
@@ -53,7 +54,8 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
                 .AddIntegrationServices(Configuration)
                 .AddEventBus(Configuration)
                 .AddSwagger(Configuration)
-                .AddCustomHealthCheck(Configuration);
+                .AddCustomHealthCheck(Configuration)
+                .AddOpenTelemetry();
 
             var container = new ContainerBuilder();
             container.Populate(services);

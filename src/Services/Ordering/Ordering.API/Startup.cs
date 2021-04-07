@@ -36,7 +36,8 @@
     using System.Data.Common;
     using System.IdentityModel.Tokens.Jwt;
     using System.IO;
-    using System.Reflection;
+    using System.Reflection;    
+    using global::Ordering.API.Extensions;
 
     public class Startup
     {
@@ -49,12 +50,14 @@
 
         public virtual IServiceProvider ConfigureServices(IServiceCollection services)
         {
+
             services
                 .AddGrpc(options =>
                 {
                     options.EnableDetailedErrors = true;
                 })
                 .Services
+                .AddOpenTelemetry()
                 .AddApplicationInsights(Configuration)
                 .AddCustomMvc()
                 .AddHealthChecks(Configuration)
@@ -64,8 +67,8 @@
                 .AddCustomConfiguration(Configuration)
                 .AddEventBus(Configuration)
                 .AddCustomAuthentication(Configuration);
+            
             //configure autofac
-
             var container = new ContainerBuilder();
             container.Populate(services);
 

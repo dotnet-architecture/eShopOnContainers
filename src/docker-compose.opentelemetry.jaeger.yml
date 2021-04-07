@@ -17,13 +17,38 @@ services:
       - "14268:14268"
       - "14250:14250"
       - "9411:9411"
+  
+  identity-api:
+    environment:
+      - OTEL_USE_EXPORTER=jaeger
+      - OTEL_EXPORTER_JAEGER_AGENTHOST=${OTEL_EXPORTER_JAEGER_AGENTHOST:-jaeger-all-in-one}
 
   basket-api:
     environment:
       - OTEL_USE_EXPORTER=jaeger
       - OTEL_EXPORTER_JAEGER_AGENTHOST=${OTEL_EXPORTER_JAEGER_AGENTHOST:-jaeger-all-in-one}
-
+  
+  catalog-api:
+    environment:
+      - OTEL_USE_EXPORTER=jaeger
+      - OTEL_EXPORTER_JAEGER_AGENTHOST=${OTEL_EXPORTER_JAEGER_AGENTHOST:-jaeger-all-in-one}
+  
+  ordering-api:
+    environment:
+      - OTEL_USE_EXPORTER=jaeger
+      - OTEL_EXPORTER_JAEGER_AGENTHOST=${OTEL_EXPORTER_JAEGER_AGENTHOST:-jaeger-all-in-one}
+  
+  payment-api:
+    environment:
+      - OTEL_USE_EXPORTER=jaeger
+      - OTEL_EXPORTER_JAEGER_AGENTHOST=${OTEL_EXPORTER_JAEGER_AGENTHOST:-jaeger-all-in-one}    
+  
   webmvc:
+    environment:
+      - OTEL_USE_EXPORTER=jaeger
+      - OTEL_EXPORTER_JAEGER_AGENTHOST=${OTEL_EXPORTER_JAEGER_AGENTHOST:-jaeger-all-in-one}
+  
+  webspa:
     environment:
       - OTEL_USE_EXPORTER=jaeger
       - OTEL_EXPORTER_JAEGER_AGENTHOST=${OTEL_EXPORTER_JAEGER_AGENTHOST:-jaeger-all-in-one}
