@@ -24,7 +24,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.SeedWork
         
         public override bool Equals(object obj)
         {
-            if (!(obj is Enumeration otherValue))
+            if (obj is not Enumeration otherValue)
             {
                 return false;
             }
