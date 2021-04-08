@@ -12,7 +12,7 @@ Scenario: Verify that a registered user is able to login into EShop application
 	Then the user should be able to login to the application
 	
 @priority=2
-Scenario Outline: Verify that the user is unable to login to EShop Application if he is not registered already
+Scenario Outline: Verify that the user is unable to login to EShop Application if user is not registered already
 	Given the user is no registered to EShop application
 	When user launches EShop application
 	And user clicks on "Login" button 
