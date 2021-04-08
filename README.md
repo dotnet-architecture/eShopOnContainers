@@ -3,7 +3,6 @@
 </a>
 
 # .NET Microservices Sample Reference Application
-##test
 
 Sample .NET Core reference application, powered by Microsoft, based on a simplified microservices architecture and Docker containers.
 
