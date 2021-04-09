@@ -38,6 +38,8 @@
     using System.IO;
     using System.Reflection;    
     using global::Ordering.API.Extensions;
+    using OpenTelemetry.Customization;
+    using OpenTelemetry.Customization.Extensions;
 
     public class Startup
     {
@@ -56,8 +58,7 @@
                 {
                     options.EnableDetailedErrors = true;
                 })
-                .Services
-                .AddOpenTelemetry()
+                .Services                
                 .AddApplicationInsights(Configuration)
                 .AddCustomMvc()
                 .AddHealthChecks(Configuration)
@@ -67,7 +68,14 @@
                 .AddCustomConfiguration(Configuration)
                 .AddEventBus(Configuration)
                 .AddCustomAuthentication(Configuration);
-            
+
+            services.AddOpenTelemetry(new OpenTelemetryConfig()
+            {
+                ServiceName = "Ordering.API",
+                ExportType = Configuration.GetValue<string>("OTEL_USE_EXPORTER"),
+                ExportToolEndpoint = Configuration.GetValue<string>("OTEL_EXPORTER_TOOL_ENDPOINT")
+            });
+
             //configure autofac
             var container = new ContainerBuilder();
             container.Populate(services);

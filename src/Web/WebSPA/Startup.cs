@@ -10,10 +10,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using OpenTelemetry.Customization;
+using OpenTelemetry.Customization.Extensions;
 using StackExchange.Redis;
 using System;
 using System.IO;
-using WebSPA.Extensions;
 using WebSPA.Infrastructure;
 
 namespace eShopConContainers.WebSPA
@@ -39,7 +40,13 @@ namespace eShopConContainers.WebSPA
         {
             RegisterAppInsights(services);
 
-            services.AddOpenTelemetry();
+            services.AddOpenTelemetry(new OpenTelemetryConfig()
+            {
+                ServiceName = "WebSPA",
+                ExportType = Configuration.GetValue<string>("OTEL_USE_EXPORTER"),
+                ExportToolEndpoint = Configuration.GetValue<string>("OTEL_EXPORTER_TOOL_ENDPOINT")
+            });
+
             services.AddHealthChecks()
                 .AddCheck("self", () => HealthCheckResult.Healthy())
                 .AddUrlGroup(new Uri(Configuration["IdentityUrlHC"]), name: "identityapi-check", tags: new string[] { "identityapi" });

@@ -27,6 +27,7 @@
 		<Content Include="Setup\**\*;">
 			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 		</Content>
+		<Compile Remove="Extensions\OpenTelemetryExtensions.cs" />
 		<Content Remove="Setup\Catalogitems - Copy.zip" />
 		<None Remove="Setup\Catalogitems - Copy.zip" />
 		<Compile Include="IntegrationEvents\EventHandling\AnyFutureIntegrationEventHandler.cs.txt" />
@@ -66,26 +67,14 @@
 		<PackageReference Include="Serilog.Sinks.Seq" Version="4.1.0-dev-00166" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
 		<PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<PackageReference Include="OpenTelemetry" Version="1.0.1" />
-		<PackageReference Include="OpenTelemetry.Exporter.Console" Version="1.0.1" />
-		<PackageReference Include="OpenTelemetry.Exporter.Jaeger" Version="1.0.1" />
-		<PackageReference Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.0.1" />
-		<PackageReference Include="OpenTelemetry.Exporter.Zipkin" Version="1.0.1" />
-		<PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.0.0-rc2" />
-		<PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.0.0-rc2" />
-		<PackageReference Include="OpenTelemetry.Instrumentation.Http" Version="1.0.0-rc2" />
-		<PackageReference Include="OpenTelemetry.Instrumentation.GrpcNetClient" Version="1.0.0-rc2" />
-		<PackageReference Include="OpenTelemetry.Instrumentation.SqlClient" Version="1.0.0-rc2" />	
-	</ItemGroup>
+	</ItemGroup>	
 	
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\BuildingBlocks\EventBus\EventBusRabbitMQ\EventBusRabbitMQ.csproj" />
 		<ProjectReference Include="..\..\..\BuildingBlocks\EventBus\EventBusServiceBus\EventBusServiceBus.csproj" />
 		<ProjectReference Include="..\..\..\BuildingBlocks\EventBus\EventBus\EventBus.csproj" />
 		<ProjectReference Include="..\..\..\BuildingBlocks\EventBus\IntegrationEventLogEF\IntegrationEventLogEF.csproj" />
+		<ProjectReference Include="..\..\..\OpenTelemetry\OpenTelemetry.Customization.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

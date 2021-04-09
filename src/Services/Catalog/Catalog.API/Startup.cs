@@ -26,12 +26,13 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+using OpenTelemetry.Customization;
+using OpenTelemetry.Customization.Extensions;
 using RabbitMQ.Client;
 using System;
 using System.Data.Common;
 using System.IO;
 using System.Reflection;
-using Catalog.API.Extensions;
 
 namespace Microsoft.eShopOnContainers.Services.Catalog.API
 {
@@ -55,7 +56,10 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
                 .AddEventBus(Configuration)
                 .AddSwagger(Configuration)
                 .AddCustomHealthCheck(Configuration)
-                .AddOpenTelemetry();
+                .AddOpenTelemetry(new OpenTelemetryConfig() {  ServiceName= "Catalog.API", 
+                    ExportType= Configuration.GetValue<string>("OTEL_USE_EXPORTER"), 
+                    ExportToolEndpoint = Configuration.GetValue<string>("OTEL_EXPORTER_TOOL_ENDPOINT")
+                });
 
             var container = new ContainerBuilder();
             container.Populate(services);

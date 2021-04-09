@@ -1,7 +1,6 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using HealthChecks.UI.Client;
-using Identity.API.Extensions;
 using IdentityServer4.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
@@ -22,6 +21,8 @@ using Microsoft.Extensions.Logging;
 using StackExchange.Redis;
 using System;
 using System.Reflection;
+using OpenTelemetry.Customization;
+using OpenTelemetry.Customization.Extensions;
 
 namespace Microsoft.eShopOnContainers.Services.Identity.API
 {
@@ -39,7 +40,12 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API
         {
             RegisterAppInsights(services);
 
-            services.AddOpenTelemetry();
+            services.AddOpenTelemetry(new OpenTelemetryConfig()
+            {
+                ServiceName = "Identity.API",
+                ExportType = Configuration.GetValue<string>("OTEL_USE_EXPORTER"),
+                ExportToolEndpoint = Configuration.GetValue<string>("OTEL_EXPORTER_TOOL_ENDPOINT")
+            });
 
             // Add framework services.
             services.AddDbContext<ApplicationDbContext>(options =>

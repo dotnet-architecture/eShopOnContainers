@@ -14,6 +14,8 @@ namespace Payment.API.Extensions
         public static IServiceCollection AddOpenTelemetry(this IServiceCollection services)
         {
             var exportType = Environment.GetEnvironmentVariable("OTEL_USE_EXPORTER")?.ToLower();
+            var endpoint = Environment.GetEnvironmentVariable("OTEL_EXPORTER_TOOL_ENDPOINT")?.ToLower();
+
             if (exportType == null)
             {
                 return services;
@@ -35,16 +37,13 @@ namespace Payment.API.Extensions
                 {
                     case "jaeger":
                         tracerProviderBuilder.AddJaegerExporter(options =>
-                        {
-                            var agentHost = Environment.GetEnvironmentVariable("OTEL_EXPORTER_JAEGER_AGENTHOST");
-                            options.AgentHost = agentHost;
+                        {                            
+                            options.AgentHost = endpoint;
                         });
                         break;
                     case "otlp":
                         tracerProviderBuilder.AddOtlpExporter(options =>
-                        {
-                            var endpoint = Environment.GetEnvironmentVariable("OTEL_EXPORTER_OTLP_TRACES_ENDPOINT")
-                                ?? Environment.GetEnvironmentVariable("OTEL_EXPORTER_OTLP_ENDPOINT");
+                        {                            
                             options.Endpoint = new Uri(endpoint);
 
                             var headers = Environment.GetEnvironmentVariable("OTEL_EXPORTER_OTLP_TRACES_HEADERS")
@@ -54,8 +53,7 @@ namespace Payment.API.Extensions
                         break;
                     case "zipkin":
                         tracerProviderBuilder.AddZipkinExporter(options =>
-                        {
-                            var endpoint = Environment.GetEnvironmentVariable("OTEL_EXPORTER_ZIPKIN_ENDPOINT");
+                        {                            
                             options.Endpoint = new Uri(endpoint);
                         });
                         break;

@@ -16,6 +16,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Extensions\OpenTelemetryExtensions.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="5.0.1" />
 		<PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="5.0.1" />
 		<PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.1.0" />
@@ -51,21 +55,13 @@
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
 		<PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
 	</ItemGroup>
-
-	<ItemGroup>
-		<PackageReference Include="OpenTelemetry" Version="1.0.1" />
-		<PackageReference Include="OpenTelemetry.Exporter.Console" Version="1.0.1" />
-		<PackageReference Include="OpenTelemetry.Exporter.Jaeger" Version="1.0.1" />
-		<PackageReference Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.0.1" />
-		<PackageReference Include="OpenTelemetry.Exporter.Zipkin" Version="1.0.1" />
-		<PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.0.0-rc2" />
-		<PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.0.0-rc2" />
-		<PackageReference Include="OpenTelemetry.Instrumentation.Http" Version="1.0.0-rc2" />		
-		<PackageReference Include="OpenTelemetry.Instrumentation.SqlClient" Version="1.0.0-rc2" />
-	</ItemGroup>
 	
 	<ItemGroup>
 		<EmbeddedResource Include="Certificate\idsrv3test.pfx" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <ProjectReference Include="..\..\..\OpenTelemetry\OpenTelemetry.Customization.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

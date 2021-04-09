@@ -1,6 +1,5 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using Basket.API.Extensions;
 using Basket.API.Infrastructure.Filters;
 using Basket.API.IntegrationEvents.EventHandling;
 using Basket.API.IntegrationEvents.Events;
@@ -28,6 +27,8 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+using OpenTelemetry.Customization;
+using OpenTelemetry.Customization.Extensions;
 using RabbitMQ.Client;
 using StackExchange.Redis;
 using System;
@@ -187,8 +188,14 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory, ConnectionMultiplexer connectionMultiplexer)
-        {
-            OpenTelemetryExtensions.AddOpenTelemetry(connectionMultiplexer);
+        {            
+            
+            OpenTelemetryExtensions.AddOpenTelemetry(connectionMultiplexer,new OpenTelemetryConfig()
+            {
+                ServiceName = "Basket.API",
+                ExportType = Configuration.GetValue<string>("OTEL_USE_EXPORTER"),
+                ExportToolEndpoint = Configuration.GetValue<string>("OTEL_EXPORTER_TOOL_ENDPOINT")
+            });
 
             //loggerFactory.AddAzureWebAppDiagnostics();
             //loggerFactory.AddApplicationInsights(app.ApplicationServices, LogLevel.Trace);

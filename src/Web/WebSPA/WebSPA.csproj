@@ -14,7 +14,11 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<Compile Remove="Extensions\**" />
 		<Compile Remove="node_modules\**\*;Client\**\*" />
+		<Content Remove="Extensions\**" />
+		<EmbeddedResource Remove="Extensions\**" />
+		<None Remove="Extensions\**" />
 		<None Remove="Client\environments\environment.prod.ts" />
 		<None Remove="Client\environments\environment.ts" />
 		<None Remove="Client\guid.ts" />
@@ -113,6 +117,9 @@
 	</ItemGroup>
 	<ItemGroup>
 		<Folder Include="wwwroot\assets\" />
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\..\OpenTelemetry\OpenTelemetry.Customization.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -11,6 +11,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Extensions\OpenTelemetryExtensions.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="Setup\images.zip">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -61,6 +65,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\BuildingBlocks\Devspaces.Support\Devspaces.Support.csproj" />
+    <ProjectReference Include="..\..\OpenTelemetry\OpenTelemetry.Customization.csproj" />
   </ItemGroup>
 
 </Project>
