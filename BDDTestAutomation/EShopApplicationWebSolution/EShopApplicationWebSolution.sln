@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2041
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{AA8F9F19-F125-409C-A3B5-F4DA4A536A58}"
+	ProjectSection(SolutionItems) = preProject
+		EShopApplicationWebSolution.runsettings = EShopApplicationWebSolution.runsettings
+		azure-pipelines.yml = azure-pipelines.yml
+		Nuget.config = Nuget.config
+		stylecop.json = stylecop.json
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EShopApplicationWebSolution", "EShopApplicationWebSolution.csproj", "{9CBE4BA5-9295-4CA6-9991-30A4D578DC0A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9CBE4BA5-9295-4CA6-9991-30A4D578DC0A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CBE4BA5-9295-4CA6-9991-30A4D578DC0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CBE4BA5-9295-4CA6-9991-30A4D578DC0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CBE4BA5-9295-4CA6-9991-30A4D578DC0A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DC51F25F-3DC2-403B-8A2A-0B17FF5ABB3C}
+	EndGlobalSection
+EndGlobal

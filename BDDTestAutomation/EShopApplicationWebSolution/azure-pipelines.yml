@@ -1,0 +1,174 @@
+# ADD STEPS THAT RUN TESTS, CREATE A NUGET PACKAGE, DEPLOY, AND MORE: https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+# YAML SCHEMA: https://docs.microsoft.com/en-us/azure/devops/pipelines/yaml-schema?view=vsts&tabs=schema
+# PREDEFINED VARIABLES: https://docs.microsoft.com/en-us/azure/devops/pipelines/build/variables?view=vsts
+# HOSTED AGENT SOFTWARES: https://github.com/Microsoft/azure-pipelines-image-generation/blob/master/images/win/Vs2017-Server2016-Readme.md
+
+# UNCOMMENT THE BELOW LINE TO DISABLE CI BUILDS
+# trigger: none
+
+# WHEN USING VARIABLE-GROUPS (UNDER ARTIFACTS > LIBRARY), USE THE FOLLOWING FORMAT TO DEFINE THE VARIABLES
+#variables:
+#  - group: CloudCreds # NOTE: Create the Variable-Group under Pipelines > Library > Variable Group
+#  - name: appName
+#    value: 'Bdd.Core.Api.Sample'
+#  - name: appPath
+#    value: '$(System.DefaultWorkingDirectory)\$(appName)'
+#  - name: system.debug
+#    value: 'true'
+#  - name: solution
+#    value: '$(appPath)\$(appName).sln'
+#  - name: buildPlatform
+#    value: 'Any CPU'
+#  - name: buildConfiguration
+#    value: 'Release'
+#  - name: cloudTestUser
+#    value: $(CloudUser)
+#  - name: cloudTestKey
+#    value: $(CloudKey)
+
+variables:
+  appName: 'EShopApplicationWebSolution'
+  appPath: '$(System.DefaultWorkingDirectory)\$(appName)' # NOTE: Change this to appropriate path based on your folder structure
+  solution: '$(appPath)\$(appName).sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+  binFolder: '$(appPath)\bin\$(buildConfiguration)'
+  cloudTestUser: '$(CloudUser)' # NOTE: Set this Variable in the UI (Visual Designer > Variables [OR] Pipelines > Library > Variable Group > Variable)
+  cloudTestKey: '$(CloudKey)' # NOTE: Set this Variable in the UI and 'lock' it (Visual Designer > Variables [OR] Pipelines > Library > Variable Group > Variable > Lock icon)
+  Env: 'dev'
+
+# https://docs.microsoft.com/en-us/azure/devops/pipelines/process/phases?view=vsts&tabs=yaml
+jobs:
+
+- job: 'TestSetup'
+  timeoutInMinutes: 0
+  pool:
+    vmImage: 'windows-latest' # name: 'Hosted VS2017'
+  steps:
+  - script: echo 'Sample Test-Setup'
+
+- job: 'RunTests'
+  dependsOn: 'TestSetup'
+  timeoutInMinutes: 0
+  strategy: # https://docs.microsoft.com/en-us/azure/devops/pipelines/yaml-schema?view=vsts&tabs=schema#strategies
+    maxParallel: 3 #6
+    matrix:
+      EdgeWindows:
+        remotePlatform: 'EdgeWindows'
+      SafariMac:
+        remotePlatform: 'SafariMac'
+      ChromeAndroid:
+        remotePlatform: 'ChromeAndroid'
+#      SafariIPhone:
+#        remotePlatform: 'SafariIPhone'
+#      SafariIPad:
+#        remotePlatform: 'SafariIPad'
+#      IEWindows:
+#        remotePlatform: 'IEWindows'
+  pool:
+    vmImage: 'windows-latest' # name: 'Hosted VS2017'
+
+  steps:
+  - task: NuGetCommand@2
+    displayName: 'Authenticate with Azure DevOps NuGet'
+    inputs:
+      command: custom
+      arguments: sources update -Name "CD-Bdd.Core" -Username "vsts" -Password "$(System.AccessToken)" -StorePasswordInClearText -ConfigFile $(appPath)\Nuget.config
+
+  - script: dotnet restore $(solution) --configfile "$(appPath)\Nuget.config" # --no-cache
+    displayName: 'DOTNET RESTORE'
+
+  - script: 'for /r $(appPath) %%x in (*.csproj) do ("%userprofile%\.nuget\packages\SpecFlow\3.1.97\tools\specflow.exe" GenerateAll -p %%~x)'
+    displayName: SPECFLOW GENERATEALL
+    enabled:false
+
+  - script: dotnet build $(solution) --configuration $(buildConfiguration) --no-restore
+    displayName: 'DOTNET BUILD'
+
+  # https://docs.opensource.microsoft.com/tools/cg.html
+  # TPN: https://opensource.microsoft.com/tpn
+  - task: ms.vss-governance-buildtask.governance-build-task-component-detection.ComponentGovernanceComponentDetection@0
+    enabled: true
+    continueOnError: true
+    displayName: 'COMPONENT DETECTION'
+    inputs:
+      scanType: Register # LogOnly
+      snapshotForceEnabled: true
+      # ignoreDirectories:
+      # sourceScanPath:
+      # verbosity: Detailed # Normal, Quite
+
+  # https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/test/vstest?view=azure-devops
+  - task: VSTest@2
+    displayName: RUN TESTS
+    continueOnError: true
+    inputs:
+      platform: '$(buildPlatform)'
+      configuration: '$(buildConfiguration)'
+      testSelector: 'testAssemblies' # Options: testAssemblies, testPlan, testRun
+      testAssemblyVer2: '$(binFolder)\$(appName).dll'
+      runSettingsFile: '$(binFolder)\$(appName).$(Env).runsettings'
+      testFiltercriteria: '(TestCategory=api|TestCategory=ui)&TestCategory!=manual&TestCategory!=bddcore-wrapper'
+      runOnlyImpactedTests: false
+      runInParallel: false
+      pathtoCustomTestAdapters: '$(binFolder)'
+      diagnosticsEnabled: false # Optional
+      searchFolder: '$(binFolder)'
+      uiTests: true
+      publishRunAttachments: true
+      overrideTestrunParameters: -appSettings.browser Chrome -database.DbUser $(DbUser) -database.DbPwd $(DbPwd)
+      # overrideTestrunParameters: -appSettings.browser RemoteWebDriver -appSettings.CrossBrowserEnvironment $(remotePlatform) -DriverCapabilities.browserstack.user $(cloudTestUser) -DriverCapabilities.browserstack.key $(cloudTestKey) -database.DbUser $(DbUser) -database.DbPwd $(DbPwd)
+
+  # NOT USED: TO LOCALLY TRIGGER PARALLEL-TESTS ON CLOUD-BASED TESTING-PLATFORMS LIKE BROWSERSTACK/SAUCELABS/TESTINGBOT ETC.
+  # - script: '$(appPath)\muppet.cmd -config=$(buildConfiguration) -filter="(FullyQualifiedName~$(appName).Features)" -platforms="Edge.Windows;Safari.Mac;Chrome.Android" -user=$(cloudTestUser) -key=$(cloudTestKey)'
+  #  displayName: 'MUPPET TESTS'
+
+  - task: CopyFiles@2
+    displayName: Copy Output
+    inputs:
+      contents: '$(binFolder)\TestOutput\**\*.*'
+      targetFolder: $(Build.ArtifactStagingDirectory)
+      overWrite: true
+      flattenFolders: true
+
+  - task: PublishPipelineArtifact@1
+    displayName: Publish Output
+    inputs:
+      targetPath: $(Build.ArtifactStagingDirectory) # '$(Pipeline.Workspace)'
+      artifact: 'TestOutput_$(Build.BuildNumber)'
+
+   - task: PowerShell@2
+     enabled: false
+     displayName: Compress Output for Release-Pipeline
+     continueOnError: true
+     inputs:
+       targetType: 'inline' # Optional. Options: filePath, inline
+       script: 'Compress-Archive -Path "$(Build.ArtifactStagingDirectory)" -DestinationPath "$(System.DefaultWorkingDirectory)/TestOutput_$(Build.BuildNumber).zip" -Force' # Required when targetType == Inline
+       #arguments: # Optional
+       errorActionPreference: 'continue' # Optional. Options: stop, continue, silentlyContinue
+       ignoreLASTEXITCODE: true # Optional
+       #failOnStderr: false # Optional
+       #pwsh: false # Optional
+       #workingDirectory: # Optional
+
+   - task: PowerShell@2
+     enabled: false
+     displayName: Write Output for Release-Pipeline
+     continueOnError: true
+     inputs:
+       targetType: 'inline' # Optional. Options: filePath, inline
+       script: 'Write-host "##vso[task.uploadfile]$(System.DefaultWorkingDirectory)/TestOutput_$(Build.BuildNumber).zip"' # Required when targetType == Inline
+       #arguments: # Optional
+       errorActionPreference: 'continue' # Optional. Options: stop, continue, silentlyContinue
+       ignoreLASTEXITCODE: true # Optional
+       #failOnStderr: false # Optional
+       #pwsh: false # Optional
+       #workingDirectory: # Optional
+
+- job: 'TestTeardown'
+  dependsOn: 'RunTests'
+  timeoutInMinutes: 0
+  pool:
+    vmImage: 'windows-latest' # name: 'Hosted VS2017'
+  steps:
+  - script: echo 'Sample Test-Teardown'

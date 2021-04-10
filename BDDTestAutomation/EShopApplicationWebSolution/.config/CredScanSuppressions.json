@@ -1,0 +1,9 @@
+{
+    "tool": "Credential Scanner",
+    "suppressions": [
+      {
+        "hash": "gmZyNUtHUH3jZ90l4ao3YrrcK6frytGMZmtSjpEkzIc=",
+        "_justification": "Just a placeholder"
+      }
+    ]
+  }
