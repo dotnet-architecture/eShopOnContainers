@@ -61,92 +61,29 @@ namespace EShopApplicationWebSolution.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to http://www.bing.com.
+        ///   Looks up a localized string similar to xpath://button[contains(text(),&apos;{0}&apos;)].
         /// </summary>
-        internal static string Bing {
+        internal static string ButtonByText {
             get {
-                return ResourceManager.GetString("Bing", resourceCulture);
+                return ResourceManager.GetString("ButtonByText", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to xpath://*[@id=&apos;new-image&apos;].
+        ///   Looks up a localized string similar to xpath://div[contains(text(),&apos;{0}&apos;)].
         /// </summary>
-        internal static string browse {
+        internal static string DivLinks {
             get {
-                return ResourceManager.GetString("browse", resourceCulture);
+                return ResourceManager.GetString("DivLinks", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to xpath:/html/body/table/tbody/tr/td[1]/a[1].
+        ///   Looks up a localized string similar to xpath://*[@id=&apos;{0}&apos;].
         /// </summary>
-        internal static string ClickHereToTest {
+        internal static string Id {
             get {
-                return ResourceManager.GetString("ClickHereToTest", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to xpath://*[@id=&quot;main&quot;]/p[2]/a.
-        /// </summary>
-        internal static string download {
-            get {
-                return ResourceManager.GetString("download", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to https://unixpapa.com/js/testmouse.html.
-        /// </summary>
-        internal static string ElementClick {
-            get {
-                return ResourceManager.GetString("ElementClick", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to https://docs.microsoft.com/en-us/power-bi/sample-financial-download.
-        /// </summary>
-        internal static string FileDownload {
-            get {
-                return ResourceManager.GetString("FileDownload", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to https://ezgif.com/effects.
-        /// </summary>
-        internal static string FileUpload {
-            get {
-                return ResourceManager.GetString("FileUpload", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to http://www.google.com.
-        /// </summary>
-        internal static string Google {
-            get {
-                return ResourceManager.GetString("Google", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to xpath://*[@name=&apos;q&apos;].
-        /// </summary>
-        internal static string Query {
-            get {
-                return ResourceManager.GetString("Query", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to xpath://h1[contains(text(),&apos;Search Results&apos;)].
-        /// </summary>
-        internal static string SearchResults {
-            get {
-                return ResourceManager.GetString("SearchResults", resourceCulture);
+                return ResourceManager.GetString("Id", resourceCulture);
             }
         }
     }

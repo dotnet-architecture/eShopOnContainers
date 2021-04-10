@@ -38,7 +38,7 @@
     <PackageReference Include="Pickles" Version="2.21.0" />
     <PackageReference Include="Selenium.Support" Version="3.141.0" />
     <PackageReference Include="Selenium.WebDriver" Version="3.141.0" />
-    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="87.0.4280.8800" />
+    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="89.0.4389.2300" />
     <PackageReference Include="Selenium.WebDriver.GeckoDriver" Version="0.28.0" />
     <PackageReference Include="Selenium.WebDriver.GeckoDriver.Win64" Version="0.28.0" />
     <PackageReference Include="Selenium.WebDriver.IEDriver" Version="3.150.1.2" />
@@ -93,13 +93,15 @@
     <Folder Include="Hooks\" />
     <Folder Include="TestData\Before\" />
     <Folder Include="TestData\After\" />
-    <Folder Include="TestData\Input\" />
     <Folder Include="TestData\Output\" />
   </ItemGroup>
 
   <ItemGroup>
     <None Update="EShopApplicationWebSolution.dev.runsettings">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="TestData\Input\Credentials.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 

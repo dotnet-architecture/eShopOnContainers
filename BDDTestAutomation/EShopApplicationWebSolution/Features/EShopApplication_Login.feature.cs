@@ -38,7 +38,7 @@ namespace EShopApplicationWebSolution.Features
                 "testplan=",
                 "testsuite="};
         
-#line 1 "EShopApllication_Login.feature"
+#line 1 "EShopApplication_Login.feature"
 #line hidden
         
         [NUnit.Framework.OneTimeSetUpAttribute()]
@@ -89,16 +89,16 @@ namespace EShopApplicationWebSolution.Features
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Verify that a registered user is able to login into EShop application")]
+        [NUnit.Framework.DescriptionAttribute("Test")]
         [NUnit.Framework.CategoryAttribute("bvt")]
         [NUnit.Framework.CategoryAttribute("priority=1")]
-        public virtual void VerifyThatARegisteredUserIsAbleToLoginIntoEShopApplication()
+        public virtual void Test()
         {
             string[] tagsOfScenario = new string[] {
                     "bvt",
                     "priority=1"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Verify that a registered user is able to login into EShop application", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Test", null, tagsOfScenario, argumentsOfScenario);
 #line 6
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -120,49 +120,35 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 7
- testRunner.Given("the user is registered to EShop application", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 8
  testRunner.When("user launches EShop application", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
+#line 8
+ testRunner.And("user clicks on \"Login\" option", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
 #line 9
- testRunner.And("user clicks on \"Login\" button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("user enter Email and Password of \"User1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 10
- testRunner.And("user enters \"email\" and \"password\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("user click on \"LOG IN\" button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 11
- testRunner.When("user clicks on \"Log in\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 12
- testRunner.Then("the user should be able to login to the application", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("verify if \"User1\" is logged-in", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Verify that the user is unable to login to EShop Application if he is not registe" +
-            "red already")]
-        [NUnit.Framework.CategoryAttribute("bddcore-ex")]
-        [NUnit.Framework.CategoryAttribute("priority=2")]
-        [NUnit.Framework.TestCaseAttribute("user1", "password1", null)]
-        [NUnit.Framework.TestCaseAttribute("user2", "password2", null)]
-        [NUnit.Framework.TestCaseAttribute("user3", "password3", null)]
-        public virtual void VerifyThatTheUserIsUnableToLoginToEShopApplicationIfHeIsNotRegisteredAlready(string username, string password, string[] exampleTags)
+        [NUnit.Framework.DescriptionAttribute("Verify that a registered user is able to login into EShop application")]
+        [NUnit.Framework.CategoryAttribute("bvt")]
+        [NUnit.Framework.CategoryAttribute("priority=1")]
+        public virtual void VerifyThatARegisteredUserIsAbleToLoginIntoEShopApplication()
         {
-            string[] @__tags = new string[] {
-                    "priority=2"};
-            if ((exampleTags != null))
-            {
-                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
-            }
-            string[] tagsOfScenario = @__tags;
+            string[] tagsOfScenario = new string[] {
+                    "bvt",
+                    "priority=1"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            argumentsOfScenario.Add("username", username);
-            argumentsOfScenario.Add("password", password);
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Verify that the user is unable to login to EShop Application if he is not registe" +
-                    "red already", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Verify that a registered user is able to login into EShop application", null, tagsOfScenario, argumentsOfScenario);
 #line 15
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -184,7 +170,7 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 16
- testRunner.Given("the user is no registered to EShop application", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("\"user 1\" is registered to EShop application", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 17
  testRunner.When("user launches EShop application", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
@@ -199,6 +185,70 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.When("user clicks on \"Log in\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 21
+ testRunner.Then("the user should be able to login to the application", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Verify that the user is unable to login to EShop Application if user is not regis" +
+            "tered already")]
+        [NUnit.Framework.CategoryAttribute("bddcore-ex")]
+        [NUnit.Framework.CategoryAttribute("priority=2")]
+        [NUnit.Framework.TestCaseAttribute("user1", "password1", null)]
+        [NUnit.Framework.TestCaseAttribute("user2", "password2", null)]
+        [NUnit.Framework.TestCaseAttribute("user3", "password3", null)]
+        public virtual void VerifyThatTheUserIsUnableToLoginToEShopApplicationIfUserIsNotRegisteredAlready(string username, string password, string[] exampleTags)
+        {
+            string[] @__tags = new string[] {
+                    "priority=2"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            string[] tagsOfScenario = @__tags;
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("username", username);
+            argumentsOfScenario.Add("password", password);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Verify that the user is unable to login to EShop Application if user is not regis" +
+                    "tered already", null, tagsOfScenario, argumentsOfScenario);
+#line 24
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 25
+ testRunner.Given("the user is no registered to EShop application", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 26
+ testRunner.When("user launches EShop application", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 27
+ testRunner.And("user clicks on \"Login\" button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 28
+ testRunner.And("user enters \"email\" and \"password\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 29
+ testRunner.When("user clicks on \"Log in\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 30
  testRunner.Then("the user should not be able to login to the application", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -206,15 +256,15 @@ this.ScenarioInitialize(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Verify that the user is unable to login to EShop Application if he is not registe" +
-            "red already")]
+        [NUnit.Framework.DescriptionAttribute("Verify that the user is unable to login to EShop Application if user is not regis" +
+            "tered already")]
         [NUnit.Framework.CategoryAttribute("priority=2")]
         [NUnit.Framework.CategoryAttribute("bddcore-wrapper")]
-        public virtual void VerifyThatTheUserIsUnableToLoginToEShopApplicationIfHeIsNotRegisteredAlready()
+        public virtual void VerifyThatTheUserIsUnableToLoginToEShopApplicationIfUserIsNotRegisteredAlready()
         {
-            this.VerifyThatTheUserIsUnableToLoginToEShopApplicationIfHeIsNotRegisteredAlready("user1", "password1", null);
-            this.VerifyThatTheUserIsUnableToLoginToEShopApplicationIfHeIsNotRegisteredAlready("user2", "password2", null);
-            this.VerifyThatTheUserIsUnableToLoginToEShopApplicationIfHeIsNotRegisteredAlready("user3", "password3", null);
+            this.VerifyThatTheUserIsUnableToLoginToEShopApplicationIfUserIsNotRegisteredAlready("user1", "password1", null);
+            this.VerifyThatTheUserIsUnableToLoginToEShopApplicationIfUserIsNotRegisteredAlready("user2", "password2", null);
+            this.VerifyThatTheUserIsUnableToLoginToEShopApplicationIfUserIsNotRegisteredAlready("user3", "password3", null);
         }
     }
 }
