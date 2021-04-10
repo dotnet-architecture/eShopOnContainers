@@ -5,7 +5,6 @@ using System.Windows.Forms;
 namespace EShopApplicationWebSolution.StepDefinitions
 {
 
-
     using Bdd.Core.Entities;
     using Bdd.Core.Utils;
     using Bdd.Core.Web.Executors;
