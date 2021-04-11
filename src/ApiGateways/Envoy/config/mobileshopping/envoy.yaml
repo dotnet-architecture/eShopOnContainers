@@ -103,7 +103,7 @@ static_resources:
     lb_policy: round_robin
     hosts:
     - socket_address:
-        address: webshoppingagg
+        address: mobileshoppingagg
         port_value: 80
   - name: catalog
     connect_timeout: 0.25s
