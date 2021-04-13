@@ -12,6 +12,7 @@ Param(
     [parameter(Mandatory=$false)][string]$imageTag="latest",
     [parameter(Mandatory=$false)][bool]$useLocalk8s=$false,
     [parameter(Mandatory=$false)][bool]$useMesh=$false,
+    [parameter(Mandatory=$false)][bool]$enableTrace=$false,
     [parameter(Mandatory=$false)][string][ValidateSet('Always','IfNotPresent','Never', IgnoreCase=$false)]$imagePullPolicy="Always",
     [parameter(Mandatory=$false)][string][ValidateSet('prod','staging','none','custom', IgnoreCase=$false)]$sslSupport = "none",
     [parameter(Mandatory=$false)][string]$tlsSecretName = "eshop-tls-custom",
@@ -119,6 +120,7 @@ if (-not [string]::IsNullOrEmpty($registry)) {
 Write-Host "Begin eShopOnContainers installation using Helm" -ForegroundColor Green
 
 $infras = ("sql-data", "nosql-data", "rabbitmq", "keystore-data", "basket-data")
+$traceTools = ("zipkin")
 $charts = ("eshop-common", "basket-api","catalog-api", "identity-api", "mobileshoppingagg","ordering-api","ordering-backgroundtasks","ordering-signalrhub", "payment-api", "webmvc", "webshoppingagg", "webspa", "webstatus", "webhooks-api", "webhooks-web")
 $gateways = ("apigwms", "apigwws")
 
@@ -130,6 +132,16 @@ if ($deployInfrastructure) {
 }
 else {
     Write-Host "eShopOnContainers infrastructure (bbdd, redis, ...) charts aren't installed (-deployCharts is false)" -ForegroundColor Yellow
+}
+
+if ($enableTrace) {
+    Write-Host "Enabling traces : $traceTools" -ForegroundColor Green
+    #helm install "$appName-$traceTools" --values app.yaml --values inf.yaml --values $ingressValuesFile --set app.name=$appName --set inf.k8s.dns=$dns --set "ingress.hosts={$dns}" $traceTools    
+    Install-Chart $traceTools "-f app.yaml --values inf.yaml -f $ingressValuesFile -f $ingressMeshAnnotationsFile --set app.name=$appName --set inf.k8s.dns=$dns --set ingress.hosts={$dns} --set image.tag=latest --set image.pullPolicy=$imagePullPolicy --set inf.tls.enabled=$sslEnabled --set inf.mesh.enabled=$false --set inf.k8s.local=$useLocalk8s" $false
+    
+}
+else {
+     Write-Host "OpenTelemetry Trace is not enabled. Charts isn't installed (-enableTrace is false)" -ForegroundColor Yellow
 }
 
 if ($deployCharts) {

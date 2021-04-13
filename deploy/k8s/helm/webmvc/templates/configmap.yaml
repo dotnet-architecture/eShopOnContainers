@@ -3,6 +3,7 @@
 {{- $webshoppingapigw := include "url-of" (list .Values.app.ingress.entries.webshoppingapigw .) -}}
 {{- $mvc := include "url-of" (list .Values.app.ingress.entries.mvc .) -}}
 {{- $protocol := include "protocol" . -}}
+{{- $zipkin := include "url-of" (list .Values.app.ingress.entries.zipkin .) -}}
 
 apiVersion: v1
 kind: ConfigMap
@@ -22,3 +23,4 @@ data:
   urls__apigwws: {{ $protocol }}://{{ $webshoppingapigw }}
   urls__mvc: {{ $protocol }}://{{ $mvc }}
   urls__IdentityUrl: {{ $protocol }}://{{ $identity }}
+  urls__Otel__ExporterEndpoint: http://{{ .Values.app.svc.zipkin }}:9411/api/v2/spans
