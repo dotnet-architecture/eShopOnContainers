@@ -1,0 +1,26 @@
+replicaCount: 1
+clusterName: eshop-aks
+pathBase: /zipkin
+
+image:
+  repository: openzipkin/zipkin
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 9411
+
+
+ingress:
+  enabled: true
+  annotations: {}
+  tls: []
+
+resources: {}
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
