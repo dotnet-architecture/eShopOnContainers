@@ -16,7 +16,7 @@ env:
   CHART_ROOT: deploy/k8s/helm
 
 jobs:
-  DeployToK8s:
+  deploy-to-k8s:
     if: ${{ github.event_name == 'workflow_dispatch' || github.event_name == 'repository_dispatch' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
 
