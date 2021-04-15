@@ -21,6 +21,7 @@ on:
 env:
   SERVICE: basket-api
   IMAGE: basket.api
+  DOTNET_VERSION: 5.0.x
 
 jobs:
 
@@ -45,6 +46,20 @@ jobs:
     steps:
     - name: 'Checkout Github Action'
       uses: actions/checkout@master
+
+    - name: Setup dotnet
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+
+    - name: Build and run unit tests
+      run: |
+        dotnet restore "eShopOnContainers-ServicesAndWebApps.sln"
+        cd /src/Services/Catalog/Catalog.API
+        dotnet build --no-restore
+        cd -
+        cd src/Services/Catalog/Catalog.UnitTests
+        dotnet test
 
     - name: Enable experimental features for the Docker daemon and CLI
       run: |
