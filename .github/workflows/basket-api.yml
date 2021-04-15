@@ -32,7 +32,22 @@ jobs:
     steps:
     - name: 'Checkout Github Action'
       uses: actions/checkout@master
-      
+    
+    - name: Setup dotnet
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+
+    - name: Build and run unit tests
+      run: |
+        cd src
+        dotnet restore "eShopOnContainers-ServicesAndWebApps.sln"
+        cd Services/Basket/Basket.API
+        dotnet build --no-restore
+        cd -
+        cd Services/Basket/Basket.UnitTests
+        dotnet test
+
     - name: Compose build ${{ env.SERVICE }}
       run: sudo -E docker-compose build ${{ env.SERVICE }}
       working-directory: ./src
