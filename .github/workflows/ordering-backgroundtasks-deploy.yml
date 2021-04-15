@@ -14,7 +14,7 @@ env:
   chart: ordering-backgroundtasks
   namespace: eshop
   app-name: eshop
-  chart-root: deploy/k8s/helm
+  CHART_ROOT: deploy/k8s/helm
 
 jobs:
   DeployToK8s:
@@ -47,4 +47,4 @@ jobs:
           ./deploy-chart.sh -c ${{ env.chart }} --dns aks --aks-name ${{ secrets.CLUSTER_NAME }} --aks-rg ${{ secrets.RESOURCE_GROUP }} -r ${{ secrets.REGISTRY_HOST }} -t $TAG --namespace ${{ env.namespace }} --acr-connected
         env:
           TAG: ${{ env.BRANCH }}
-        working-directory: ${{ env.chart-root }}
+        working-directory: ${{ env.CHART_ROOT }}
