@@ -1,6 +1,7 @@
 name: basket-api
 
 on:
+  workflow_dispatch:
   push:
     branches:
     - dev
