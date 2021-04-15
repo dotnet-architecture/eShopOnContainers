@@ -41,9 +41,9 @@ jobs:
           echo "BRANCH=$currentbranch" >> $GITHUB_ENV
         shell: bash
       
-      - name: Deploy CHART
+      - name: Deploy chart
         run: |
-          ./deploy-CHART.sh -c ${{ env.CHART }} --dns aks --aks-name ${{ secrets.CLUSTER_NAME }} --aks-rg ${{ secrets.RESOURCE_GROUP }} -r ${{ secrets.REGISTRY_HOST }} -t $TAG --NAMESPACE ${{ env.NAMESPACE }} --acr-connected
+          ./deploy-chart.sh -c ${{ env.CHART }} --dns aks --aks-name ${{ secrets.CLUSTER_NAME }} --aks-rg ${{ secrets.RESOURCE_GROUP }} -r ${{ secrets.REGISTRY_HOST }} -t $TAG --NAMESPACE ${{ env.NAMESPACE }} --acr-connected
         env:
           TAG: ${{ env.BRANCH }}
         working-directory: ${{ env.CHART_ROOT }}
