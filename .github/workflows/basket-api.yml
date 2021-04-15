@@ -45,7 +45,7 @@ jobs:
     steps:
     - name: 'Checkout Github Action'
       uses: actions/checkout@master
-    
+
     - name: Enable experimental features for the Docker daemon and CLI
       run: |
           echo $'{\n  "experimental": true\n}' | sudo tee /etc/docker/daemon.json
