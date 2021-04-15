@@ -13,7 +13,6 @@ on:
 env:
   CHART: webspa
   NAMESPACE: eshop
-  app-name: eshop
   CHART_ROOT: deploy/k8s/helm
 
 jobs:
