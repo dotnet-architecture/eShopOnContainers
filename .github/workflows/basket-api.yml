@@ -46,7 +46,7 @@ jobs:
         dotnet build --no-restore
         cd -
         cd Services/Basket/Basket.UnitTests
-        dotnet test --no-build -v=normal
+        dotnet test -v=normal
 
     - name: Compose build ${{ env.SERVICE }}
       run: sudo -E docker-compose build ${{ env.SERVICE }}
@@ -76,7 +76,7 @@ jobs:
         dotnet build --no-restore
         cd -
         cd Services/Basket/Basket.UnitTests
-        dotnet test --no-build -v=normal
+        dotnet test -v=normal
 
     - name: Enable experimental features for the Docker daemon and CLI
       run: |
