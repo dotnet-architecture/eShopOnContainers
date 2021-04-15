@@ -43,7 +43,7 @@ jobs:
       
       - name: Deploy chart
         run: |
-          ./deploy-chart.sh -c ${{ env.CHART }} --dns aks --aks-name ${{ secrets.CLUSTER_NAME }} --aks-rg ${{ secrets.RESOURCE_GROUP }} -r ${{ secrets.REGISTRY_HOST }} -t $TAG --NAMESPACE ${{ env.NAMESPACE }} --acr-connected
+          ./deploy-chart.sh -c ${{ env.CHART }} --dns aks --aks-name ${{ secrets.CLUSTER_NAME }} --aks-rg ${{ secrets.RESOURCE_GROUP }} -r ${{ secrets.REGISTRY_HOST }} -t $TAG --namespace ${{ env.NAMESPACE }} --acr-connected
         env:
           TAG: ${{ env.BRANCH }}
         working-directory: ${{ env.CHART_ROOT }}
