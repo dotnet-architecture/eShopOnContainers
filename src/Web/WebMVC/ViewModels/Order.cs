@@ -61,7 +61,6 @@ namespace Microsoft.eShopOnContainers.WebMVC.ViewModels
 
         [Required]
         public Guid RequestId { get; set; }
-        public string CouponCode { get; internal set; }
 
         public void CardExpirationShortFormat()
         {

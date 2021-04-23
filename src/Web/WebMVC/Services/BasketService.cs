@@ -18,14 +18,12 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
         private readonly ILogger<BasketService> _logger;
         private readonly string _basketByPassUrl;
         private readonly string _purchaseUrl;
-        private ICouponService _couponSvc;
 
-        public BasketService(HttpClient httpClient, IOptions<AppSettings> settings, ILogger<BasketService> logger, ICouponService couponService)
+        public BasketService(HttpClient httpClient, IOptions<AppSettings> settings, ILogger<BasketService> logger)
         {
             _apiClient = httpClient;
             _settings = settings;
             _logger = logger;
-            _couponSvc = couponService;
 
             _basketByPassUrl = $"{_settings.Value.PurchaseUrl}/b/api/v1/basket";
             _purchaseUrl = $"{_settings.Value.PurchaseUrl}/api/v1";

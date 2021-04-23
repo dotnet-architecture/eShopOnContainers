@@ -13,7 +13,6 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
     {
         private IOrderingService _orderSvc;
         private IBasketService _basketSvc;
-        private ICouponService _couponSvc;
         private readonly IIdentityParser<ApplicationUser> _appUserParser;
         public OrderController(IOrderingService orderSvc, IBasketService basketSvc, IIdentityParser<ApplicationUser> appUserParser)
         {

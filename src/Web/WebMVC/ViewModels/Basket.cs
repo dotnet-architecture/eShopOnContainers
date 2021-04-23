@@ -15,7 +15,6 @@ namespace Microsoft.eShopOnContainers.WebMVC.ViewModels
 
         public decimal Total()
         {
-            // What is we apply the discount here
             return Math.Round(Items.Sum(x => x.UnitPrice * x.Quantity), 2);
         }
     }
