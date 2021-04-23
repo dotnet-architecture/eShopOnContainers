@@ -13,6 +13,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
     {
         private IOrderingService _orderSvc;
         private IBasketService _basketSvc;
+        private ICouponService _couponSvc;
         private readonly IIdentityParser<ApplicationUser> _appUserParser;
         public OrderController(IOrderingService orderSvc, IBasketService basketSvc, IIdentityParser<ApplicationUser> appUserParser)
         {
@@ -41,7 +42,6 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
                 {
                     var user = _appUserParser.Parse(HttpContext.User);
                     var basket = _orderSvc.MapOrderToBasket(model);
-
                     await _basketSvc.Checkout(basket);
 
                     //Redirect to historic list.

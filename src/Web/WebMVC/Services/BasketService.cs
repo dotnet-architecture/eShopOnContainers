@@ -18,12 +18,14 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
         private readonly ILogger<BasketService> _logger;
         private readonly string _basketByPassUrl;
         private readonly string _purchaseUrl;
+        private ICouponService _couponSvc;
 
-        public BasketService(HttpClient httpClient, IOptions<AppSettings> settings, ILogger<BasketService> logger)
+        public BasketService(HttpClient httpClient, IOptions<AppSettings> settings, ILogger<BasketService> logger, ICouponService couponService)
         {
             _apiClient = httpClient;
             _settings = settings;
             _logger = logger;
+            _couponSvc = couponService;
 
             _basketByPassUrl = $"{_settings.Value.PurchaseUrl}/b/api/v1/basket";
             _purchaseUrl = $"{_settings.Value.PurchaseUrl}/api/v1";
@@ -46,6 +48,33 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
             var uri = API.Basket.UpdateBasket(_basketByPassUrl);
 
             var basketContent = new StringContent(JsonConvert.SerializeObject(basket), System.Text.Encoding.UTF8, "application/json");
+
+            var response = await _apiClient.PostAsync(uri, basketContent);
+
+            response.EnsureSuccessStatusCode();
+
+            return basket;
+        }
+        public async Task<Basket> ApplyCoupon(Basket basket)
+        {
+            var uri = API.Basket.UpdateBasket(_basketByPassUrl);
+
+            var basketUpdate = new 
+            {
+                BuyerId = basket.BuyerId,
+                Items = basket.Items.Select(item => new
+                {
+                    Id = item.Id,
+                    ProductId = item.ProductId,
+                    ProductName = item.ProductName,
+                    UnitPrice = item.UnitPrice * (decimal)0.10,
+                    OldUnitPrice = item.UnitPrice,
+                    Quantity = item.Quantity,
+                    PictureUrl = item.PictureUrl
+                }).ToArray()
+            };
+
+            var basketContent = new StringContent(JsonConvert.SerializeObject(basketUpdate), System.Text.Encoding.UTF8, "application/json");
 
             var response = await _apiClient.PostAsync(uri, basketContent);
 
