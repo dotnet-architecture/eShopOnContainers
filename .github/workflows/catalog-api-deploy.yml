@@ -17,7 +17,8 @@ env:
 
 jobs:
   deploy-to-k8s:
-    if: ${{ github.event_name == 'workflow_dispatch' || github.event_name == 'repository_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    #if: ${{ github.event_name == 'workflow_dispatch' || github.event_name == 'repository_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    if: false
     runs-on: ubuntu-latest
 
     steps:
