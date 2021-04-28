@@ -2,15 +2,6 @@ name: basket-api
 
 on:
   workflow_dispatch:
-    # Inputs the workflow accepts.
-    inputs:
-      name:
-        # Friendly description to be shown in the UI instead of 'name'
-        description: 'exec name'
-        # Default value if no value is explicitly provided
-        default: 'default execution'
-        # Input has to be provided for the workflow to run
-        required: false
   push:
     branches:
     - dev
@@ -31,6 +22,7 @@ on:
 env:
   SERVICE: basket-api
   IMAGE: basket.api
+  DOTNET_VERSION: 5.0.x
 
 jobs:
 
@@ -40,7 +32,23 @@ jobs:
     steps:
     - name: 'Checkout Github Action'
       uses: actions/checkout@master
-      
+    
+    - name: Setup dotnet
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+
+    - name: Build and run unit tests
+      run: |
+        cd src
+        dotnet restore "eShopOnContainers-ServicesAndWebApps.sln"
+        cd Services/Basket/Basket.API
+        dotnet build --no-restore
+        cd -
+        cd Services/Basket/Basket.UnitTests
+        dotnet build --no-restore
+        dotnet test --no-build -v=normal
+
     - name: Compose build ${{ env.SERVICE }}
       run: sudo -E docker-compose build ${{ env.SERVICE }}
       working-directory: ./src
@@ -55,6 +63,22 @@ jobs:
     steps:
     - name: 'Checkout Github Action'
       uses: actions/checkout@master
+
+    - name: Setup dotnet
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+
+    - name: Build and run unit tests
+      run: |
+        cd src
+        dotnet restore "eShopOnContainers-ServicesAndWebApps.sln"
+        cd Services/Basket/Basket.API
+        dotnet build --no-restore
+        cd -
+        cd Services/Basket/Basket.UnitTests
+        dotnet build --no-restore
+        dotnet test --no-build -v=normal
 
     - name: Enable experimental features for the Docker daemon and CLI
       run: |
