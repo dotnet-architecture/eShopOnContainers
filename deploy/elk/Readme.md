@@ -71,7 +71,7 @@ output {
 		index=>"eshops-%{+xxxx.ww}"
 	}
 }
-```
+  ```
 
 For doing this you can connect via ssh to the vm and edit the file using the vi editor for example.
 When the file will be edited, check there are Inbound Port Rules created for the logstash service. You can do it going to Networking Menu on your ELK Virtual Machine Resource in Azure.
@@ -82,7 +82,7 @@ The only thing that remains is to connect to your vm vía browser. And check the
 
 ![](img/elk/bitnami_splash.png)
 
-You can get the password for accessing going to your virtual machine in azure and check the boot diagnostics, theres a message that shows to you which is your password.
+You can get the password for accessing going to your virtual machine in azure and check the boot diagnostics, there's a message that shows to you which is your password.
 
-When you have the user and password you can access to the kibana tool, and create the ```eshops-*``` index pattern that is well documented at the beggining of this documentation and then start to discover.
+When you have the user and password you can access to the kibana tool, and create the ```eshops-*``` index pattern that is well documented at the beginning of this documentation and then start to discover.
 ![](img/elk/)
