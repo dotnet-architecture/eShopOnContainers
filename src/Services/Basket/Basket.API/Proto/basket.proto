@@ -31,4 +31,5 @@ message BasketItemResponse {
 	double oldunitprice = 5;
 	int32 quantity = 6;
 	string pictureurl = 7;
+	bool isdiscounted = 8;
 }

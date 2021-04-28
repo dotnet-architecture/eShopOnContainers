@@ -7,5 +7,7 @@
         public int ProductId { get; set; }      // Catalog item id
 
         public int Quantity { get; set; }       // Quantity
+
+        public bool isDiscounted { get; set; }  // Discount applied
     }
 }

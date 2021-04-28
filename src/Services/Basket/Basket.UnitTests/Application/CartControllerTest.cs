@@ -17,6 +17,7 @@ namespace UnitTest.Basket.Application
         private readonly Mock<ICatalogService> _catalogServiceMock;
         private readonly Mock<IBasketService> _basketServiceMock;
         private readonly Mock<IIdentityParser<ApplicationUser>> _identityParserMock;
+        private readonly Mock<ICouponService> _couponServiceMock;
         private readonly Mock<HttpContext> _contextMock;
 
         public CartControllerTest()
@@ -24,6 +25,7 @@ namespace UnitTest.Basket.Application
             _catalogServiceMock = new Mock<ICatalogService>();
             _basketServiceMock = new Mock<IBasketService>();
             _identityParserMock = new Mock<IIdentityParser<ApplicationUser>>();
+            _couponServiceMock = new Mock<ICouponService>;
             _contextMock = new Mock<HttpContext>();
         }
 
@@ -33,6 +35,7 @@ namespace UnitTest.Basket.Application
             //Arrange
             var fakeBuyerId = "1";
             var action = string.Empty;
+            var couponCode = string.Empty;
             var fakeBasket = GetFakeBasket(fakeBuyerId);
             var fakeQuantities = new Dictionary<string, int>()
             {
@@ -47,9 +50,9 @@ namespace UnitTest.Basket.Application
                 .Returns(Task.FromResult(fakeBasket));
 
             //Act
-            var cartController = new CartController(_basketServiceMock.Object, _catalogServiceMock.Object, _identityParserMock.Object);
+            var cartController = new CartController(_basketServiceMock.Object, _catalogServiceMock.Object, _identityParserMock.Object, _couponServiceMock.Object);
             cartController.ControllerContext.HttpContext = _contextMock.Object;
-            var actionResult = await cartController.Index(fakeQuantities, action);
+            var actionResult = await cartController.Index(fakeQuantities, couponCode, action);
 
             //Assert
             var viewResult = Assert.IsType<ViewResult>(actionResult);
@@ -61,6 +64,7 @@ namespace UnitTest.Basket.Application
             //Arrange
             var fakeBuyerId = "1";
             var action = "[ Checkout ]";
+            var couponCode = string.Empty;
             var fakeBasket = GetFakeBasket(fakeBuyerId);
             var fakeQuantities = new Dictionary<string, int>()
             {
@@ -75,9 +79,9 @@ namespace UnitTest.Basket.Application
                 .Returns(Task.FromResult(fakeBasket));
 
             //Act
-            var orderController = new CartController(_basketServiceMock.Object, _catalogServiceMock.Object, _identityParserMock.Object);
+            var orderController = new CartController(_basketServiceMock.Object, _catalogServiceMock.Object, _identityParserMock.Object, _couponServiceMock.Object);
             orderController.ControllerContext.HttpContext = _contextMock.Object;
-            var actionResult = await orderController.Index(fakeQuantities, action);
+            var actionResult = await orderController.Index(fakeQuantities, couponCode, action);
 
             //Assert
             var redirectToActionResult = Assert.IsType<RedirectToActionResult>(actionResult);
@@ -95,7 +99,7 @@ namespace UnitTest.Basket.Application
                 .Returns(Task.FromResult(1));
 
             //Act
-            var orderController = new CartController(_basketServiceMock.Object, _catalogServiceMock.Object, _identityParserMock.Object);
+            var orderController = new CartController(_basketServiceMock.Object, _catalogServiceMock.Object, _identityParserMock.Object, _couponServiceMock.Object);
             orderController.ControllerContext.HttpContext = _contextMock.Object;
             var actionResult = await orderController.AddToCart(fakeCatalogItem);
 

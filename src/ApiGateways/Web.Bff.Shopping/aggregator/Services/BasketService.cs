@@ -60,7 +60,8 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Services
                         ProductId = item.Productid,
                         ProductName = item.Productname,
                         Quantity = item.Quantity,
-                        UnitPrice = (decimal)item.Unitprice
+                        UnitPrice = (decimal)item.Unitprice,
+                        isDiscounted = item.Isdiscounted
                     });
                 }
             });
@@ -92,7 +93,8 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Services
                         Productid = item.ProductId,
                         Productname = item.ProductName,
                         Quantity = item.Quantity,
-                        Unitprice = (double)item.UnitPrice
+                        Unitprice = (double)item.UnitPrice,
+                        Isdiscounted = item.isDiscounted
                     });
                 }
             });

@@ -160,6 +160,9 @@ namespace Microsoft.eShopOnContainers.WebMVC
             services.AddHttpClient<ICatalogService, CatalogService>()
                    .AddDevspacesSupport();
 
+            services.AddHttpClient<ICouponService, CouponService>()
+                 .AddDevspacesSupport();
+
             services.AddHttpClient<IOrderingService, OrderingService>()
                  .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
                  .AddHttpMessageHandler<HttpClientRequestIdDelegatingHandler>()

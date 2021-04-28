@@ -57,22 +57,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
         {
             var uri = API.Basket.UpdateBasket(_basketByPassUrl);
 
-            var basketUpdate = new 
-            {
-                BuyerId = basket.BuyerId,
-                Items = basket.Items.Select(item => new
-                {
-                    Id = item.Id,
-                    ProductId = item.ProductId,
-                    ProductName = item.ProductName,
-                    UnitPrice = item.UnitPrice * (decimal)0.10,
-                    OldUnitPrice = item.UnitPrice,
-                    Quantity = item.Quantity,
-                    PictureUrl = item.PictureUrl
-                }).ToArray()
-            };
-
-            var basketContent = new StringContent(JsonConvert.SerializeObject(basketUpdate), System.Text.Encoding.UTF8, "application/json");
+            var basketContent = new StringContent(JsonConvert.SerializeObject(basket), System.Text.Encoding.UTF8, "application/json");
 
             var response = await _apiClient.PostAsync(uri, basketContent);
 
@@ -137,7 +122,8 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
             {
                 CatalogItemId = productId,
                 BasketId = user.Id,
-                Quantity = 1
+                Quantity = 1,
+                isDiscounted = false
             };
 
             var basketContent = new StringContent(JsonConvert.SerializeObject(newItem), System.Text.Encoding.UTF8, "application/json");

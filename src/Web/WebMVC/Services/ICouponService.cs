@@ -8,6 +8,6 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
 {
     public interface ICouponService
     {
-        Basket Apply(Basket basket);
+        Task<Basket> Apply(Basket basket, string couponCode);
     }
 }
