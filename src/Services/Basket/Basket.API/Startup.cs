@@ -62,7 +62,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
 
                 }) // Added for functional tests
                 .AddApplicationPart(typeof(BasketController).Assembly)
-                .AddNewtonsoftJson();
+                .AddJsonOptions(options => options.JsonSerializerOptions.WriteIndented = true);
 
             services.AddSwaggerGen(options =>
             {

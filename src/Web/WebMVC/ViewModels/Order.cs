@@ -1,16 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.eShopOnContainers.WebMVC.ViewModels.Annotations;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 using WebMVC.Services.ModelDTOs;
 
 namespace Microsoft.eShopOnContainers.WebMVC.ViewModels
 {
     public class Order
-    {
+    { 
+        [JsonConverter(typeof(StringConverter))]
         public string OrderNumber { get; set; }
 
         public DateTime Date { get; set; }

@@ -1,9 +1,9 @@
 ﻿using Basket.FunctionalTests.Base;
 using Microsoft.eShopOnContainers.Services.Basket.API.Model;
-using Newtonsoft.Json;
 using System;
 using System.Net.Http;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -68,7 +68,7 @@ namespace Basket.FunctionalTests
                 Quantity = 1
             });
 
-            return JsonConvert.SerializeObject(order);
+            return JsonSerializer.Serialize(order);
         }
 
         string BuildCheckout()
@@ -89,7 +89,7 @@ namespace Basket.FunctionalTests
                 RequestId = Guid.NewGuid()
             };
 
-            return JsonConvert.SerializeObject(checkoutBasket);
+            return JsonSerializer.Serialize(checkoutBasket);
         }
     }
 }

@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.eShopOnContainers.WebMVC.Services;
 using Microsoft.eShopOnContainers.WebMVC.ViewModels;
-using Newtonsoft.Json;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Text.Json;
 
 namespace WebMVC.Controllers
 {
@@ -40,7 +40,7 @@ namespace WebMVC.Controllers
                 BasketId = _appUserParser.Parse(User).Id
             };
 
-            var content = new StringContent(JsonConvert.SerializeObject(payload), System.Text.Encoding.UTF8, "application/json");
+            var content = new StringContent(JsonSerializer.Serialize(payload), System.Text.Encoding.UTF8, "application/json");
 
 
             var response = await _client.CreateClient(nameof(IBasketService))
