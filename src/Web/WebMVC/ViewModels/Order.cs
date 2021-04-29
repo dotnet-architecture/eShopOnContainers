@@ -54,11 +54,8 @@ namespace Microsoft.eShopOnContainers.WebMVC.ViewModels
 
         public List<SelectListItem> ActionCodeSelectList =>
            GetActionCodesByCurrentState();
-
-        // See the property initializer syntax below. This
-        // initializes the compiler generated field for this
-        // auto-implemented property.
-        public List<OrderItem> OrderItems { get; } = new List<OrderItem>();
+                
+        public List<OrderItem> OrderItems { get; set; }
 
         [Required]
         public Guid RequestId { get; set; }
