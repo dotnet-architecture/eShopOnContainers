@@ -11,7 +11,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.ViewModels
 {
     public class Order
     { 
-        [JsonConverter(typeof(StringConverter))]
+        [JsonConverter(typeof(NumberToStringConverter))]
         public string OrderNumber { get; set; }
 
         public DateTime Date { get; set; }

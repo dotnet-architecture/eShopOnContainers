@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.WebMVC.ViewModels
 {
-    public class StringConverter : JsonConverter<string>
+    public class NumberToStringConverter : JsonConverter<string>
     {
         public override string Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
-        {                        
+        {
             if (reader.TokenType == JsonTokenType.Number)
             {
                 var numberValue = reader.GetInt32();
@@ -20,8 +20,10 @@ namespace Microsoft.eShopOnContainers.WebMVC.ViewModels
             {
                 return reader.GetString();
             }
-
-            throw new JsonException();
+            else
+            {
+                throw new JsonException();
+            }
         }
 
         public override void Write(Utf8JsonWriter writer, string value, JsonSerializerOptions options)
