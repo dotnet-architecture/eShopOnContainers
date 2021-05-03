@@ -1,10 +1,10 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
+using System.Text.Json.Serialization;
 
 namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events
 {
     public record IntegrationEvent
-    {
+    {        
         public IntegrationEvent()
         {
             Id = Guid.NewGuid();
@@ -18,10 +18,10 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events
             CreationDate = createDate;
         }
 
-        [JsonProperty]
+        [JsonInclude]
         public Guid Id { get; private init; }
 
-        [JsonProperty]
+        [JsonInclude]
         public DateTime CreationDate { get; private init; }
     }
 }

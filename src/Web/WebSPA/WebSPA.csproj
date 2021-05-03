@@ -94,8 +94,7 @@
     <PackageReference Include="Microsoft.ApplicationInsights.Kubernetes" Version="1.1.3" />
     <PackageReference Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" Version="5.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.HealthChecks" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.AzureAppServices" Version="5.0.2" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Logging.AzureAppServices" Version="5.0.2" />    
     <PackageReference Include="Serilog.AspNetCore" Version="3.4.0" />
     <PackageReference Include="Serilog.Sinks.Console" Version="4.0.0-dev-00834" />
   </ItemGroup>
