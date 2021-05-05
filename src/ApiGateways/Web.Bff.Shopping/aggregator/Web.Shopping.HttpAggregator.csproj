@@ -35,6 +35,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\BuildingBlocks\Devspaces.Support\Devspaces.Support.csproj" />
+    <ProjectReference Include="..\..\..\OpenTelemetry\OpenTelemetry.Customization.csproj" />
   </ItemGroup>
 
   <ItemGroup>

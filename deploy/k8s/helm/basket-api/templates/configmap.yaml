@@ -1,4 +1,5 @@
 {{- $name := include "basket-api.fullname" . -}}
+{{- $zipkin := include "url-of" (list .Values.app.ingress.entries.zipkin .) -}}
 
 apiVersion: v1
 kind: ConfigMap
@@ -15,3 +16,4 @@ data:
   all__EventBusConnection: {{ .Values.inf.eventbus.constr }}
   all__InstrumentationKey: "{{ .Values.inf.appinsights.key }}"
   all__UseAzureServiceBus: "{{ .Values.inf.eventbus.useAzure }}"
+  urls__Otel__ExporterEndpoint: http://{{ .Values.app.svc.zipkin }}:9411/api/v2/spans

@@ -40,7 +40,17 @@ services:
     environment:
       - OTEL_USE_EXPORTER=zipkin
       - OTEL_EXPORTER_TOOL_ENDPOINT=${OTEL_EXPORTER_TOOL_ENDPOINT:-http://zipkin:9411/api/v2/spans}
-      
+  
+  webshoppingagg:
+    environment:
+      - OTEL_USE_EXPORTER=zipkin
+      - OTEL_EXPORTER_TOOL_ENDPOINT=${OTEL_EXPORTER_TOOL_ENDPOINT:-http://zipkin:9411/api/v2/spans}
+  
+  mobileshoppingagg:
+    environment:
+      - OTEL_USE_EXPORTER=zipkin
+      - OTEL_EXPORTER_TOOL_ENDPOINT=${OTEL_EXPORTER_TOOL_ENDPOINT:-http://zipkin:9411/api/v2/spans}
+
   webmvc:
     environment:
       - OTEL_USE_EXPORTER=zipkin

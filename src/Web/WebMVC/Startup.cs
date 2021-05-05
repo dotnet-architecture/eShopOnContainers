@@ -44,6 +44,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
                 .AddDevspaces()
                 .AddHttpClientServices(Configuration);
 
+            // Add Telemetry
             services.AddOpenTelemetry(new OpenTelemetryConfig()
             {
                 ServiceName = "WebMVC",

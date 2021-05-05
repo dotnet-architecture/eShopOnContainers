@@ -3,6 +3,7 @@
 {{- $webhooksweb := include "url-of" (list .Values.app.ingress.entries.webhooksweb .) -}}
 {{- $webhooks := include "url-of" (list .Values.app.ingress.entries.webhooks .) -}}
 {{- $protocol := include "protocol" . -}}
+{{- $zipkin := include "url-of" (list .Values.app.ingress.entries.zipkin .) -}}
 
 apiVersion: v1
 kind: ConfigMap
@@ -18,3 +19,4 @@ data:
   identity_e: {{ $protocol }}://{{ $identity }}
   webhooksweb_e: {{ $protocol }}://{{ $webhooksweb }}
   urls_webhooksweb: http://{{ .Values.app.svc.webhooksweb }}
+  urls__Otel__ExporterEndpoint: http://{{ .Values.app.svc.zipkin }}:9411/api/v2/spans

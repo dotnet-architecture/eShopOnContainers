@@ -53,7 +53,15 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             services.AddGrpc(options =>
             {
                 options.EnableDetailedErrors = true;
-            });            
+            });
+
+            // Add Telemetry
+            services.AddOpenTelemetry(new OpenTelemetryConfig()
+            {
+                ServiceName = "Basket.API",
+                ExportType = Configuration.GetValue<string>("OTEL_USE_EXPORTER"),
+                ExportToolEndpoint = Configuration.GetValue<string>("OTEL_EXPORTER_TOOL_ENDPOINT")
+            });
 
             RegisterAppInsights(services);
 
@@ -188,15 +196,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory, ConnectionMultiplexer connectionMultiplexer)
-        {            
-            
-            OpenTelemetryExtensions.AddOpenTelemetry(connectionMultiplexer,new OpenTelemetryConfig()
-            {
-                ServiceName = "Basket.API",
-                ExportType = Configuration.GetValue<string>("OTEL_USE_EXPORTER"),
-                ExportToolEndpoint = Configuration.GetValue<string>("OTEL_EXPORTER_TOOL_ENDPOINT")
-            });
-
+        {                                   
             //loggerFactory.AddAzureWebAppDiagnostics();
             //loggerFactory.AddApplicationInsights(app.ApplicationServices, LogLevel.Trace);
 
