@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.eShopOnContainers.Services.Basket.API;
 using Microsoft.Extensions.Configuration;
+using Azure.Identity;
 using Serilog;
 using System;
 using System.IO;
@@ -89,9 +90,7 @@ IConfiguration GetConfiguration()
     if (config.GetValue<bool>("UseVault", false))
     {
         builder.AddAzureKeyVault(
-            $"https://{config["Vault:Name"]}.vault.azure.net/",
-            config["Vault:ClientId"],
-            config["Vault:ClientSecret"]);
+            new Uri($"https://{config["Vault:Name"]}.vault.azure.net/"),new DefaultAzureCredential());
     }
 
     return builder.Build();

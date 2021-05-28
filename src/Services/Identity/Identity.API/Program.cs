@@ -11,6 +11,7 @@ using Microsoft.Extensions.Options;
 using Serilog;
 using System;
 using System.IO;
+using Azure.Identity;
 
 string Namespace = typeof(Startup).Namespace;
 string AppName = Namespace.Substring(Namespace.LastIndexOf('.', Namespace.LastIndexOf('.') - 1) + 1);
@@ -93,10 +94,7 @@ IConfiguration GetConfiguration()
 
     if (config.GetValue<bool>("UseVault", false))
     {
-        builder.AddAzureKeyVault(
-            $"https://{config["Vault:Name"]}.vault.azure.net/",
-            config["Vault:ClientId"],
-            config["Vault:ClientSecret"]);
+        builder.AddAzureKeyVault(new Uri("<Vault URI>"), new DefaultAzureCredential());
     }
 
     return builder.Build();
