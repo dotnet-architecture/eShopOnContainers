@@ -71,7 +71,7 @@ IConfiguration GetConfiguration()
 
     if (config.GetValue<bool>("UseVault", false))
     {
-        builder.AddAzureKeyVault(new Uri("<Vault URI>"), new DefaultAzureCredential());
+        builder.AddAzureKeyVault(new Uri($"https://{config["Vault:Name"]}.vault.azure.net/"),new DefaultAzureCredential());
     }
 
     return builder.Build();
