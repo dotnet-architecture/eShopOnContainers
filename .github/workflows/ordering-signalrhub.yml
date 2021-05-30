@@ -67,6 +67,6 @@ jobs:
       with:
         context: ./src/Services/Ordering/Ordering.SignalrHub
         version: latest
-        file: Dockerfile
+        file: ./src/Services/Ordering/Ordering.SignalrHub/Dockerfile
         push: true
         tags: ghcr.io/variableclass/ordering.signalrhub:latest
