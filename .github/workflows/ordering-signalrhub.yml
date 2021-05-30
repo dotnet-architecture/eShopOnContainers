@@ -65,7 +65,7 @@ jobs:
     - name: Pushing Image to Github Container Registry
       uses: docker/build-push-action@v2
       with:
-        context: ./src/Services/Ordering/Ordering.SignalrHub
+        context: ./src
         version: latest
         file: ./src/Services/Ordering/Ordering.SignalrHub/Dockerfile
         push: true
