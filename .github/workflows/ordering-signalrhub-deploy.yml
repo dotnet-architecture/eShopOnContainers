@@ -16,9 +16,8 @@ env:
   CHART_ROOT: deploy/k8s/helm
 
 jobs:
-  deploy-to-k8s:
-    #if: ${{ github.event_name == 'workflow_dispatch' || github.event_name == 'repository_dispatch' || github.event.workflow_run.conclusion == 'success' }}
-    if: false
+  deploy-to-aci:
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event_name == 'repository_dispatch' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
 
     steps:
@@ -28,23 +27,14 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - uses: azure/aks-set-context@v1
-        name: Set AKS context
+      - name: 'Deploy to Azure Container Instances'
+        uses: 'azure/aci-deploy@v1'
         with:
-          creds: '${{ secrets.AZURE_CREDENTIALS }}'
-          cluster-name: ${{ secrets.CLUSTER_NAME }}
-          resource-group: ${{ secrets.RESOURCE_GROUP }}
-      
-      - name: Set branch name as env variable
-        run: |
-          currentbranch=$(echo ${GITHUB_REF##*/})
-          echo "running on $currentbranch"
-          echo "BRANCH=$currentbranch" >> $GITHUB_ENV
-        shell: bash
-      
-      - name: Deploy Chart
-        run: |
-          ./deploy-chart.sh -c ${{ env.CHART }} --dns aks --aks-name ${{ secrets.CLUSTER_NAME }} --aks-rg ${{ secrets.RESOURCE_GROUP }} -r ${{ secrets.REGISTRY_HOST }} -t $TAG --namespace ${{ env.NAMESPACE }} --acr-connected
-        env:
-          TAG: ${{ env.BRANCH }}
-        working-directory: ${{ env.CHART_ROOT }}
+          resource-group: aci-test-rg
+          dns-name-label: aci-test-rg${{ github.run_number }}
+          image: ${{ secrets.REGISTRY_LOGIN_SERVER }}/variableclass/ordering.signalrhub:latest
+          registry-login-server: ghcr.io
+          registry-username: ${{ github.repository_owner }}
+          registry-password: ${{ secrets.GITHUB_TOKEN }}
+          name: aci-ordering.signalrhub-test
+          location: 'west us'
