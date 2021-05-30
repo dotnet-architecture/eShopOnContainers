@@ -11,27 +11,8 @@ services:
   nosqldata:
     image: mongo:windowsservercore
 
-  basket.data:
-    image: redis:nanoserver
-
   rabbitmq:
     image: spring2/rabbitmq
-
-  identity-api:
-    build:
-      args:
-        NODE_IMAGE: stefanscherer/node-windows:10
-
-  webspa:
-    build:
-      args:
-        NODE_IMAGE: stefanscherer/node-windows:10
-
-  webmvc:
-    build:
-      args:
-        NODE_IMAGE: stefanscherer/node-windows:10
-
 
 networks:
   default:

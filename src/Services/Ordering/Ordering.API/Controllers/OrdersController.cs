@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 namespace Microsoft.eShopOnContainers.Services.Ordering.API.Controllers
 {
     [Route("api/v1/[controller]")]
-    [Authorize]
+    //[Authorize]
     [ApiController]
     public class OrdersController : ControllerBase
     {
@@ -120,8 +120,8 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Controllers
         [ProducesResponseType(typeof(IEnumerable<OrderSummary>), (int)HttpStatusCode.OK)]
         public async Task<ActionResult<IEnumerable<OrderSummary>>> GetOrdersAsync()
         {
-            var userid = _identityService.GetUserIdentity();
-            var orders = await _orderQueries.GetOrdersFromUserAsync(Guid.Parse(userid));
+            var userId = _identityService.GetUserIdentity();
+            var orders = await _orderQueries.GetOrdersFromUserAsync(Guid.Parse(userId));
 
             return Ok(orders);
         }
