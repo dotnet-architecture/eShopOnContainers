@@ -31,10 +31,9 @@ jobs:
         uses: 'azure/aci-deploy@v1'
         with:
           resource-group: aci-test-rg
-          dns-name-label: aci-test-rg${{ github.run_number }}
+          dns-name-label: aci-ordering-signalrhub-test
           image: ghcr.io/variableclass/ordering.signalrhub:latest
           registry-login-server: ghcr.io
           registry-username: ${{ github.repository_owner }}
           registry-password: ${{ secrets.GITHUB_TOKEN }}
           name: aci-ordering-signalrhub-test
-          location: 'west us'
