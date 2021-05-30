@@ -32,7 +32,7 @@ jobs:
         with:
           resource-group: aci-test-rg
           dns-name-label: aci-test-rg${{ github.run_number }}
-          image: ghcr.io/variableclass/ordering.signalrhub:latest
+          image: ghcr.io/variableclass/ordering.api:latest
           registry-login-server: ghcr.io
           registry-username: ${{ github.repository_owner }}
           registry-password: ${{ secrets.GITHUB_TOKEN }}
