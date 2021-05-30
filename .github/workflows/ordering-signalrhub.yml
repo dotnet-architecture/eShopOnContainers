@@ -69,4 +69,4 @@ jobs:
         version: latest
         file: Dockerfile
         push: true
-        tags: ghcr.io/${{ github.repository }}:latest
+        tags: ghcr.io/variableclass/ordering.signalrhub:latest
