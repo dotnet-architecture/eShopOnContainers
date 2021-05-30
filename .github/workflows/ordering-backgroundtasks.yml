@@ -67,6 +67,6 @@ jobs:
       with:
         context: ./src/Services/Ordering/Ordering.BackgroundTasks
         version: latest
-        file: Dockerfile
+        file: ./src/Services/Ordering/Ordering.BackgroundTasks/Dockerfile
         push: true
         tags: ghcr.io/variableclass/ordering.backgroundtasks:latest

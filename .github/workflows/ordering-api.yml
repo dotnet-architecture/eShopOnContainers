@@ -101,6 +101,6 @@ jobs:
       with:
         context: ./src/Services/Ordering/Ordering.API
         version: latest
-        file: Dockerfile
+        file: ./src/Services/Ordering/Ordering.API/Dockerfile
         push: true
         tags: ghcr.io/variableclass/ordering.api:latest
