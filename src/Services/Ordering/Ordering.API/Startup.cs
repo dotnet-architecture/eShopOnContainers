@@ -62,8 +62,8 @@
                 .AddCustomSwagger(Configuration)
                 .AddCustomIntegrations(Configuration)
                 .AddCustomConfiguration(Configuration)
-                .AddEventBus(Configuration)
-                .AddCustomAuthentication(Configuration);
+                .AddEventBus(Configuration);
+
             //configure autofac
 
             var container = new ContainerBuilder();
@@ -148,8 +148,8 @@
 
         protected virtual void ConfigureAuth(IApplicationBuilder app)
         {
-            app.UseAuthentication();
-            app.UseAuthorization();
+            // app.UseAuthentication();
+            // app.UseAuthorization();
         }
     }
 
@@ -260,22 +260,22 @@
                     Version = "v1",
                     Description = "The Ordering Service HTTP API"
                 });
-                options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
-                {
-                    Type = SecuritySchemeType.OAuth2,
-                    Flows = new OpenApiOAuthFlows()
-                    {
-                        Implicit = new OpenApiOAuthFlow()
-                        {
-                            AuthorizationUrl = new Uri($"{configuration.GetValue<string>("IdentityUrlExternal")}/connect/authorize"),
-                            TokenUrl = new Uri($"{configuration.GetValue<string>("IdentityUrlExternal")}/connect/token"),
-                            Scopes = new Dictionary<string, string>()
-                            {
-                                { "orders", "Ordering API" }
-                            }
-                        }
-                    }
-                });
+                // options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+                // {
+                //     Type = SecuritySchemeType.OAuth2,
+                //     Flows = new OpenApiOAuthFlows()
+                //     {
+                //         Implicit = new OpenApiOAuthFlow()
+                //         {
+                //             AuthorizationUrl = new Uri($"{configuration.GetValue<string>("IdentityUrlExternal")}/connect/authorize"),
+                //             TokenUrl = new Uri($"{configuration.GetValue<string>("IdentityUrlExternal")}/connect/token"),
+                //             Scopes = new Dictionary<string, string>()
+                //             {
+                //                 { "orders", "Ordering API" }
+                //             }
+                //         }
+                //     }
+                // });
 
                 options.OperationFilter<AuthorizeCheckOperationFilter>();
             });
