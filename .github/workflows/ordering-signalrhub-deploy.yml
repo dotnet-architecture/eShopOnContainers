@@ -37,4 +37,4 @@ jobs:
           registry-username: ${{ github.repository_owner }}
           registry-password: ${{ secrets.GITHUB_TOKEN }}
           name: aci-ordering-signalrhub-test
-          location: 'west eu'
+          location: norwayeast

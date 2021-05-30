@@ -37,3 +37,4 @@ jobs:
           registry-username: ${{ github.repository_owner }}
           registry-password: ${{ secrets.GITHUB_TOKEN }}
           name: aci-ordering-api-test
+          location: norwayeast
