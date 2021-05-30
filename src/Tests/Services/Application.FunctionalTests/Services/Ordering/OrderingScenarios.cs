@@ -1,7 +1,4 @@
 ﻿using FunctionalTests.Extensions;
-using FunctionalTests.Services.Basket;
-using Microsoft.eShopOnContainers.Services.Basket.API.Model;
-using Microsoft.eShopOnContainers.WebMVC.ViewModels;
 using System;
 using System.Text.Json;
 using System.Collections.Generic;
@@ -9,7 +6,6 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using WebMVC.Services.ModelDTOs;
 using Xunit;
 
 namespace FunctionalTests.Services.Ordering
