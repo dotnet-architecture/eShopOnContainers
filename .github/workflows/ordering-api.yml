@@ -92,9 +92,9 @@ jobs:
     - name: Login to Container Registry
       uses: docker/login-action@v1
       with:
-        registry: ${{ secrets.REGISTRY_HOST }}
-        username: ${{ secrets.USERNAME }}
-        password: ${{ secrets.PASSWORD }}
+        registry: ghcr.io
+        username: ${{ github.repository_owner }}
+        password: ${{ secrets.GITHUB_REGISTRY_TOKEN }}
 
     - name: Set branch name as env variable
       run: |
