@@ -95,7 +95,7 @@ jobs:
         registry: ghcr.io
         username: ${{ github.repository_owner }}
         password: ${{ secrets.GITHUB_TOKEN }}
-        
+
     - name: Pushing Image to Github Container Registry
       uses: docker/build-push-action@v2
       with:
@@ -103,4 +103,4 @@ jobs:
         version: latest
         file: Dockerfile
         push: true
-        tags: ghcr.io/${{ github.repository }}:latest
+        tags: ghcr.io/variableclass/ordering.api:latest
