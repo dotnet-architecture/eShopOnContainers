@@ -36,5 +36,5 @@ jobs:
           registry-login-server: ghcr.io
           registry-username: ${{ github.repository_owner }}
           registry-password: ${{ secrets.GITHUB_TOKEN }}
-          name: aci-ordering.backgroundtasks-test
+          name: aci-ordering-backgroundtasks-test
           location: 'west us'

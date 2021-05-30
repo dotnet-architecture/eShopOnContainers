@@ -36,5 +36,5 @@ jobs:
           registry-login-server: ghcr.io
           registry-username: ${{ github.repository_owner }}
           registry-password: ${{ secrets.GITHUB_TOKEN }}
-          name: aci-ordering.signalrhub-test
+          name: aci-ordering-signalrhub-test
           location: 'west us'
