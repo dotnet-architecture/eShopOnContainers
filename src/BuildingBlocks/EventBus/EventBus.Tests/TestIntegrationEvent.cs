@@ -5,7 +5,7 @@ using System.Text;
 
 namespace EventBus.Tests
 {
-    public class TestIntegrationEvent : IntegrationEvent
+    public record TestIntegrationEvent : IntegrationEvent
     {
     }
 }
