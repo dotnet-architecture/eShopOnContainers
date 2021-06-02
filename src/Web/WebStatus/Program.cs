@@ -9,6 +9,7 @@ using System.Linq;
 using System.Reflection;
 using WebStatus;
 using Azure.Identity;
+using Azure.Core;
 
 var configuration = GetConfiguration();
 
@@ -71,7 +72,11 @@ IConfiguration GetConfiguration()
 
     if (config.GetValue<bool>("UseVault", false))
     {
-        builder.AddAzureKeyVault(new Uri($"https://{config["Vault:Name"]}.vault.azure.net/"), new DefaultAzureCredential());
+        TokenCredential credential = new ClientSecretCredential(
+            config["Vault:TenantId"],
+            config["Vault:ClientId"],
+            config["Vault:ClientSecret"]);
+        builder.AddAzureKeyVault(new Uri($"https://{config["Vault:Name"]}.vault.azure.net/"), credential);
     }
 
     return builder.Build();
