@@ -1,12 +1,12 @@
 ﻿using Microsoft.eShopOnContainers.WebMVC.ViewModels;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using WebMVC.Infrastructure;
 using WebMVC.Services.ModelDTOs;
+using System.Text.Json;
 
 namespace Microsoft.eShopOnContainers.WebMVC.Services
 {
@@ -31,7 +31,10 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
 
             var responseString = await _httpClient.GetStringAsync(uri);
 
-            var response = JsonConvert.DeserializeObject<Order>(responseString);
+            var response = JsonSerializer.Deserialize<Order>(responseString, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
 
             return response;
         }
@@ -42,7 +45,10 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
 
             var responseString = await _httpClient.GetStringAsync(uri);
 
-            var response = JsonConvert.DeserializeObject<List<Order>>(responseString);
+            var response = JsonSerializer.Deserialize<List<Order>>(responseString, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
 
             return response;
         }
@@ -57,7 +63,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
             };
 
             var uri = API.Order.CancelOrder(_remoteServiceBaseUrl);
-            var orderContent = new StringContent(JsonConvert.SerializeObject(order), System.Text.Encoding.UTF8, "application/json");
+            var orderContent = new StringContent(JsonSerializer.Serialize(order), System.Text.Encoding.UTF8, "application/json");
 
             var response = await _httpClient.PutAsync(uri, orderContent);
 
@@ -77,7 +83,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
             };
 
             var uri = API.Order.ShipOrder(_remoteServiceBaseUrl);
-            var orderContent = new StringContent(JsonConvert.SerializeObject(order), System.Text.Encoding.UTF8, "application/json");
+            var orderContent = new StringContent(JsonSerializer.Serialize(order), System.Text.Encoding.UTF8, "application/json");
 
             var response = await _httpClient.PutAsync(uri, orderContent);
 

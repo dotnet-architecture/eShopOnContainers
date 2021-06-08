@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using WebhookClient.Models;
+using System.Text.Json;
 
 namespace WebhookClient.Services
 {
@@ -22,7 +22,10 @@ namespace WebhookClient.Services
             var client = _httpClientFactory.CreateClient("GrantClient");
             var response = await client.GetAsync(_settings.WebhooksUrl + "/api/v1/webhooks");
             var json = await response.Content.ReadAsStringAsync();
-            var subscriptions = JsonConvert.DeserializeObject<IEnumerable<WebhookResponse>>(json);
+            var subscriptions = JsonSerializer.Deserialize<IEnumerable<WebhookResponse>>(json, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
             return subscriptions;
         }
     }

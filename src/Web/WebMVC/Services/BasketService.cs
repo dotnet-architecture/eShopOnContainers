@@ -1,13 +1,13 @@
 ﻿using Microsoft.eShopOnContainers.WebMVC.ViewModels;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using WebMVC.Infrastructure;
 using WebMVC.Services.ModelDTOs;
+using System.Text.Json;
 
 namespace Microsoft.eShopOnContainers.WebMVC.Services
 {
@@ -38,14 +38,17 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
             var responseString = await response.Content.ReadAsStringAsync();
             return string.IsNullOrEmpty(responseString) ?
                 new Basket() { BuyerId = user.Id } :
-                JsonConvert.DeserializeObject<Basket>(responseString);
+                JsonSerializer.Deserialize<Basket>(responseString, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                });
         }
 
         public async Task<Basket> UpdateBasket(Basket basket)
         {
             var uri = API.Basket.UpdateBasket(_basketByPassUrl);
 
-            var basketContent = new StringContent(JsonConvert.SerializeObject(basket), System.Text.Encoding.UTF8, "application/json");
+            var basketContent = new StringContent(JsonSerializer.Serialize(basket), System.Text.Encoding.UTF8, "application/json");
 
             var response = await _apiClient.PostAsync(uri, basketContent);
 
@@ -57,8 +60,8 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
         public async Task Checkout(BasketDTO basket)
         {
             var uri = API.Basket.CheckoutBasket(_basketByPassUrl);
-            var basketContent = new StringContent(JsonConvert.SerializeObject(basket), System.Text.Encoding.UTF8, "application/json");
-
+            var basketContent = new StringContent(JsonSerializer.Serialize(basket), System.Text.Encoding.UTF8, "application/json");
+            
             _logger.LogInformation("Uri chechout {uri}", uri);
 
             var response = await _apiClient.PostAsync(uri, basketContent);
@@ -80,7 +83,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
                 }).ToArray()
             };
 
-            var basketContent = new StringContent(JsonConvert.SerializeObject(basketUpdate), System.Text.Encoding.UTF8, "application/json");
+            var basketContent = new StringContent(JsonSerializer.Serialize(basketUpdate), System.Text.Encoding.UTF8, "application/json");
 
             var response = await _apiClient.PutAsync(uri, basketContent);
 
@@ -88,7 +91,10 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
 
             var jsonResponse = await response.Content.ReadAsStringAsync();
 
-            return JsonConvert.DeserializeObject<Basket>(jsonResponse);
+            return JsonSerializer.Deserialize<Basket>(jsonResponse, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
         }
 
         public async Task<Order> GetOrderDraft(string basketId)
@@ -97,7 +103,10 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
 
             var responseString = await _apiClient.GetStringAsync(uri);
 
-            var response = JsonConvert.DeserializeObject<Order>(responseString);
+            var response = JsonSerializer.Deserialize<Order>(responseString, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
 
             return response;
         }
@@ -113,7 +122,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
                 Quantity = 1
             };
 
-            var basketContent = new StringContent(JsonConvert.SerializeObject(newItem), System.Text.Encoding.UTF8, "application/json");
+            var basketContent = new StringContent(JsonSerializer.Serialize(newItem), System.Text.Encoding.UTF8, "application/json");
 
             var response = await _apiClient.PostAsync(uri, basketContent);
         }

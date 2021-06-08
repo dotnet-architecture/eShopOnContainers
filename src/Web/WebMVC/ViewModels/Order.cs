@@ -1,16 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.eShopOnContainers.WebMVC.ViewModels.Annotations;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 using WebMVC.Services.ModelDTOs;
 
 namespace Microsoft.eShopOnContainers.WebMVC.ViewModels
 {
     public class Order
-    {
+    { 
+        [JsonConverter(typeof(NumberToStringConverter))]
         public string OrderNumber { get; set; }
 
         public DateTime Date { get; set; }
@@ -53,11 +54,8 @@ namespace Microsoft.eShopOnContainers.WebMVC.ViewModels
 
         public List<SelectListItem> ActionCodeSelectList =>
            GetActionCodesByCurrentState();
-
-        // See the property initializer syntax below. This
-        // initializes the compiler generated field for this
-        // auto-implemented property.
-        public List<OrderItem> OrderItems { get; } = new List<OrderItem>();
+                
+        public List<OrderItem> OrderItems { get; set; }
 
         [Required]
         public Guid RequestId { get; set; }

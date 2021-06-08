@@ -1,6 +1,7 @@
 name: catalog-api
 
 on:
+  workflow_dispatch:
   push:
     branches:
     - dev
@@ -21,6 +22,7 @@ on:
 env:
   SERVICE: catalog-api
   IMAGE: catalog.api
+  DOTNET_VERSION: 5.0.x
 
 jobs:
 
@@ -30,6 +32,22 @@ jobs:
     steps:
     - name: 'Checkout Github Action'
       uses: actions/checkout@master
+
+    - name: Setup dotnet
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+
+    - name: Build and run unit tests
+      run: |
+        cd src
+        dotnet restore "eShopOnContainers-ServicesAndWebApps.sln"
+        cd Services/Catalog/Catalog.API
+        dotnet build --no-restore
+        cd -
+        cd Services/Catalog/Catalog.UnitTests
+        dotnet build --no-restore
+        dotnet test --no-build -v=normal
       
     - name: Compose build ${{ env.SERVICE }}
       run: sudo -E docker-compose build ${{ env.SERVICE }}
@@ -45,6 +63,22 @@ jobs:
     steps:
     - name: 'Checkout Github Action'
       uses: actions/checkout@master
+
+    - name: Setup dotnet
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+
+    - name: Build and run unit tests
+      run: |
+        cd src
+        dotnet restore "eShopOnContainers-ServicesAndWebApps.sln"
+        cd Services/Catalog/Catalog.API
+        dotnet build --no-restore
+        cd -
+        cd Services/Catalog/Catalog.UnitTests
+        dotnet build --no-restore
+        dotnet test --no-build -v=normal
 
     - name: Enable experimental features for the Docker daemon and CLI
       run: |

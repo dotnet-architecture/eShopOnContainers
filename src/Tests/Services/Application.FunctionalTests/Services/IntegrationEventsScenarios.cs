@@ -3,12 +3,12 @@ using FunctionalTests.Services.Catalog;
 using Microsoft.eShopOnContainers.Services.Basket.API.Model;
 using Microsoft.eShopOnContainers.Services.Catalog.API.Model;
 using Microsoft.eShopOnContainers.Services.Catalog.API.ViewModel;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -35,7 +35,7 @@ namespace FunctionalTests.Services
                 var basket = ComposeBasket(userId, originalCatalogProducts.Data.Take(3));
                 var res = await basketClient.PostAsync(
                     BasketScenariosBase.Post.CreateBasket,
-                    new StringContent(JsonConvert.SerializeObject(basket), UTF8Encoding.UTF8, "application/json")
+                    new StringContent(JsonSerializer.Serialize(basket), UTF8Encoding.UTF8, "application/json")
                     );
 
                 // WHEN the price of one product is modified in the catalog
@@ -74,7 +74,10 @@ namespace FunctionalTests.Services
             {
                 //get the basket and verify that the price of the modified product is updated
                 var basketGetResponse = await basketClient.GetAsync(BasketScenariosBase.Get.GetBasketByCustomer(userId));
-                var basketUpdated = JsonConvert.DeserializeObject<CustomerBasket>(await basketGetResponse.Content.ReadAsStringAsync());
+                var basketUpdated = JsonSerializer.Deserialize<CustomerBasket>(await basketGetResponse.Content.ReadAsStringAsync(), new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                });
 
                 itemUpdated = basketUpdated.Items.Single(pr => pr.ProductId == productId);
 
@@ -96,14 +99,17 @@ namespace FunctionalTests.Services
         {
             var response = await catalogClient.GetAsync(CatalogScenariosBase.Get.Items);
             var items = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<PaginatedItemsViewModel<CatalogItem>>(items);
+            return JsonSerializer.Deserialize<PaginatedItemsViewModel<CatalogItem>>(items, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
         }
 
         private string ChangePrice(BasketItem itemToModify, decimal newPrice, PaginatedItemsViewModel<CatalogItem> catalogProducts)
         {
             var catalogProduct = catalogProducts.Data.Single(pr => pr.Id == itemToModify.ProductId);
             catalogProduct.Price = newPrice;
-            return JsonConvert.SerializeObject(catalogProduct);
+            return JsonSerializer.Serialize(catalogProduct);
         }
 
         private CustomerBasket ComposeBasket(string customerId, IEnumerable<CatalogItem> items)
