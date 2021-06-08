@@ -19,6 +19,8 @@
     <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="5.0.1" />
     <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="5.0.1" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.1.0" />
+    <PackageReference Include="Azure.Extensions.AspNetCore.Configuration.Secrets" Version="1.2.1" />
+    <PackageReference Include="Azure.Identity" Version="1.4.0" />
     <PackageReference Include="IdentityServer4.AspNetIdentity" Version="3.1.4" />
     <PackageReference Include="IdentityServer4.EntityFramework.Storage" Version="3.1.4" />
     <PackageReference Include="IdentityServer4.EntityFramework" Version="3.1.4" />
@@ -38,7 +40,6 @@
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="5.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.2" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.AzureKeyVault" Version="3.1.11" />
     <PackageReference Include="Microsoft.Extensions.Logging.AzureAppServices" Version="5.0.2" />
     <PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="2.1.113" />
     <PackageReference Include="Polly" Version="7.2.1" />
