@@ -1,7 +1,8 @@
-﻿namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus
+﻿using Azure.Messaging.ServiceBus;
+using Azure.Messaging.ServiceBus.Administration;
+namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus
 {
     using Autofac;
-    using Microsoft.Azure.ServiceBus;
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBus;
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
@@ -17,16 +18,20 @@
         private readonly ILogger<EventBusServiceBus> _logger;
         private readonly IEventBusSubscriptionsManager _subsManager;
         private readonly ILifetimeScope _autofac;
+        private readonly string _topicName;
+        private readonly string _subscriptionName;
         private readonly string AUTOFAC_SCOPE_NAME = "eshop_event_bus";
         private const string INTEGRATION_EVENT_SUFFIX = "IntegrationEvent";
 
         public EventBusServiceBus(IServiceBusPersisterConnection serviceBusPersisterConnection,
-            ILogger<EventBusServiceBus> logger, IEventBusSubscriptionsManager subsManager, ILifetimeScope autofac)
+            ILogger<EventBusServiceBus> logger, IEventBusSubscriptionsManager subsManager, ILifetimeScope autofac, string topicName, string subscriptionName)
         {
             _serviceBusPersisterConnection = serviceBusPersisterConnection;
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _subsManager = subsManager ?? new InMemoryEventBusSubscriptionsManager();
             _autofac = autofac;
+            _topicName = topicName;
+            _subscriptionName = subscriptionName;
 
             RemoveDefaultRule();
             RegisterSubscriptionClientMessageHandler();
@@ -38,14 +43,14 @@
             var jsonMessage = JsonSerializer.Serialize(@event);
             var body = Encoding.UTF8.GetBytes(jsonMessage);
 
-            var message = new Message
+            var message = new ServiceBusMessage
             {
                 MessageId = Guid.NewGuid().ToString(),
-                Body = body,
-                Label = eventName,
+                Body = new BinaryData(body),
+                Subject = eventName,
             };
 
-            _serviceBusPersisterConnection.TopicClient.SendAsync(message)
+            _serviceBusPersisterConnection.TopicClient.CreateSender(_topicName).SendMessageAsync(message)
                 .GetAwaiter()
                 .GetResult();
         }
@@ -69,9 +74,9 @@
             {
                 try
                 {
-                    _serviceBusPersisterConnection.SubscriptionClient.AddRuleAsync(new RuleDescription
+                    _serviceBusPersisterConnection.SubscriptionClient.CreateRuleAsync(_topicName, _subscriptionName, new CreateRuleOptions
                     {
-                        Filter = new CorrelationFilter { Label = eventName },
+                        Filter = new CorrelationRuleFilter() { Subject = eventName },
                         Name = eventName
                     }).GetAwaiter().GetResult();
                 }
@@ -96,11 +101,11 @@
             {
                 _serviceBusPersisterConnection
                     .SubscriptionClient
-                    .RemoveRuleAsync(eventName)
+                    .DeleteRuleAsync(_topicName, _subscriptionName, eventName)
                     .GetAwaiter()
                     .GetResult();
             }
-            catch (MessagingEntityNotFoundException)
+            catch (ServiceBusException ex) when (ex.Reason == ServiceBusFailureReason.MessagingEntityNotFound)
             {
                 _logger.LogWarning("The messaging entity {eventName} Could not be found.", eventName);
             }
@@ -125,25 +130,28 @@
 
         private void RegisterSubscriptionClientMessageHandler()
         {
-            _serviceBusPersisterConnection.SubscriptionClient.RegisterMessageHandler(
-                async (message, token) =>
+            ServiceBusProcessorOptions options = new ServiceBusProcessorOptions { MaxConcurrentCalls = 10, AutoCompleteMessages = false };
+            ServiceBusProcessor processor = _serviceBusPersisterConnection.TopicClient.CreateProcessor(_topicName, options);
+            processor.ProcessMessageAsync +=
+                async (args) =>
                 {
-                    var eventName = $"{message.Label}{INTEGRATION_EVENT_SUFFIX}";
-                    var messageData = Encoding.UTF8.GetString(message.Body);
+                    var eventName = $"{args.Message.Subject}{INTEGRATION_EVENT_SUFFIX}";
+                    var messageData = Encoding.UTF8.GetString(args.Message.Body);
 
                     // Complete the message so that it is not received again.
                     if (await ProcessEvent(eventName, messageData))
                     {
-                        await _serviceBusPersisterConnection.SubscriptionClient.CompleteAsync(message.SystemProperties.LockToken);
+                        await args.CompleteMessageAsync(args.Message);
                     }
-                },
-                new MessageHandlerOptions(ExceptionReceivedHandler) { MaxConcurrentCalls = 10, AutoComplete = false });
+                };
+
+            processor.ProcessErrorAsync += ErrorHandler;
         }
 
-        private Task ExceptionReceivedHandler(ExceptionReceivedEventArgs exceptionReceivedEventArgs)
+        private Task ErrorHandler(ProcessErrorEventArgs exceptionReceivedEventArgs)
         {
             var ex = exceptionReceivedEventArgs.Exception;
-            var context = exceptionReceivedEventArgs.ExceptionReceivedContext;
+            var context = exceptionReceivedEventArgs.ErrorSource;
 
             _logger.LogError(ex, "ERROR handling message: {ExceptionMessage} - Context: {@ExceptionContext}", ex.Message, context);
 
@@ -190,13 +198,13 @@
             {
                 _serviceBusPersisterConnection
                     .SubscriptionClient
-                    .RemoveRuleAsync(RuleDescription.DefaultRuleName)
+                    .DeleteRuleAsync(_topicName, _subscriptionName, RuleProperties.DefaultRuleName)
                     .GetAwaiter()
                     .GetResult();
             }
-            catch (MessagingEntityNotFoundException)
+            catch (ServiceBusException ex) when (ex.Reason == ServiceBusFailureReason.MessagingEntityNotFound)
             {
-                _logger.LogWarning("The messaging entity {DefaultRuleName} Could not be found.", RuleDescription.DefaultRuleName);
+                _logger.LogWarning("The messaging entity {DefaultRuleName} Could not be found.", RuleProperties.DefaultRuleName);
             }
         }
     }
