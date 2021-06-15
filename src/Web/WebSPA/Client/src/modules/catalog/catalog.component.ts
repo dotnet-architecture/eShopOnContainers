@@ -56,6 +56,10 @@ export class CatalogComponent implements OnInit {
 
     onFilterApplied(event: any) {
         event.preventDefault();
+        
+        this.brandSelected = this.brandSelected && this.brandSelected.toString() != "null" ? this.brandSelected : null;
+        this.typeSelected = this.typeSelected && this.typeSelected.toString() != "null" ? this.typeSelected : null;
+        this.paginationInfo.actualPage = 0;
         this.getCatalog(this.paginationInfo.itemsPage, this.paginationInfo.actualPage, this.brandSelected, this.typeSelected);
     }
 
