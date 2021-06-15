@@ -4,7 +4,6 @@ using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using Microsoft.Azure.ServiceBus;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ;
@@ -65,11 +64,10 @@ namespace Ordering.SignalrHub
                 services.AddSingleton<IServiceBusPersisterConnection>(sp =>
                 {
                     var serviceBusConnectionString = Configuration["EventBusConnection"];
-                    var serviceBusConnection = new ServiceBusConnectionStringBuilder(serviceBusConnectionString);
 
                     var subscriptionClientName = Configuration["SubscriptionClientName"];
 
-                    return new DefaultServiceBusPersisterConnection(serviceBusConnection, subscriptionClientName);
+                    return new DefaultServiceBusPersisterConnection(serviceBusConnectionString);
                 });
             }
             else
@@ -213,9 +211,11 @@ namespace Ordering.SignalrHub
                     var iLifetimeScope = sp.GetRequiredService<ILifetimeScope>();
                     var logger = sp.GetRequiredService<ILogger<EventBusServiceBus>>();
                     var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
+                    string topicName = "topicName";
+                    string subscriptionName = "subscriptionName";
 
                     return new EventBusServiceBus(serviceBusPersisterConnection, logger,
-                        eventBusSubcriptionsManager, iLifetimeScope);
+                        eventBusSubcriptionsManager, iLifetimeScope, topicName, subscriptionName);
                 });
             }
             else

@@ -1,5 +1,4 @@
 ﻿using Autofac;
-using Microsoft.Azure.ServiceBus;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ;
@@ -54,9 +53,8 @@ namespace Ordering.BackgroundTasks.Extensions
                 services.AddSingleton<IServiceBusPersisterConnection>(sp =>
                 {
                     var serviceBusConnectionString = configuration["EventBusConnection"];
-                    var serviceBusConnection = new ServiceBusConnectionStringBuilder(serviceBusConnectionString);
 
-                    return new DefaultServiceBusPersisterConnection(serviceBusConnection, subscriptionClientName);
+                    return new DefaultServiceBusPersisterConnection(serviceBusConnectionString);
                 });
 
                 services.AddSingleton<IEventBus, EventBusServiceBus>(sp =>
@@ -65,8 +63,10 @@ namespace Ordering.BackgroundTasks.Extensions
                     var iLifetimeScope = sp.GetRequiredService<ILifetimeScope>();
                     var logger = sp.GetRequiredService<ILogger<EventBusServiceBus>>();
                     var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
+                    string topicName = "topicName";
+                    string subscriptionName = "subscriptionName";
 
-                    return new EventBusServiceBus(serviceBusPersisterConnection, logger, eventBusSubcriptionsManager, iLifetimeScope);
+                    return new EventBusServiceBus(serviceBusPersisterConnection, logger, eventBusSubcriptionsManager, iLifetimeScope, topicName, subscriptionName);
                 });
             }
             else
