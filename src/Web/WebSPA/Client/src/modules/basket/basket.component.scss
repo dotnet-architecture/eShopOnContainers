@@ -1,0 +1,125 @@
+@import 'src/styles/variables';
+
+@mixin margin-left($distance) {
+    margin-left: $distance;
+}
+
+.esh-basket {
+
+    &-item {
+        background-color: $color-brightest;
+        margin-bottom: 1.5rem;
+    }
+
+    &-delete {
+        align-items: center;
+        cursor: pointer;
+        display: flex;
+        height: 2rem;
+        justify-content: center;
+        position: absolute;
+        right: .5rem;
+        top: .5rem;
+        transition: all $animation-speed-fast;
+        width: 2rem;
+        z-index: 20;
+
+        &:hover {
+            transform: scale(1.2);
+        }
+    }
+
+    &-delete-svg {
+        height: auto;
+        width: 1.5rem;
+    }
+
+    &-buttons {
+        width: 5rem;
+    }
+
+    &-button {
+        align-items: center;
+        background: transparent;
+        border: 0;
+        cursor: pointer;
+        display: flex;
+        height: 1.5rem;
+        justify-content: center;
+        padding: 0;
+        transition: all $animation-speed-fast;
+        width: 1.5rem;
+        z-index: 20;
+
+        &.is-disabled {
+            cursor: default;
+            opacity: .3;
+        }
+    }
+
+    &-button-svg {
+        height: auto;
+        width: 1.5rem;
+    }
+
+    &-thumbnail-wrapper {
+        background-color: #dbdede;
+        height: 0;
+        overflow: hidden;
+        padding-top: 100%;
+        position: relative;
+    }
+
+    &-thumbnail {
+        height: 100%;
+        left: 50%;
+        position: absolute;
+        top: 50%;
+        transform: translate(-50%,-50%);
+        width: auto;
+    }
+
+    &-title {
+        font-size: $font-size-m;
+        line-height: 3rem;
+        padding: 0 1rem;
+        text-transform: uppercase;
+    }
+
+    &-description {
+        min-height: 3rem;
+        padding: 0 1rem;
+    }
+
+    &-quantity {
+        line-height: 1.5rem;
+        text-align: center;
+        width: 2rem;
+    }
+
+    &-price {
+        color: $color-primary;
+        width: 4rem;
+    }
+
+    &-checkout {
+        background-color: $color-brightest;
+    }
+
+    &-coupon {
+        width: 7rem;
+    }
+
+    &-checkout-title {
+        font-weight: $font-weight-semibold;
+        text-align: center;
+    }
+
+    &-input {
+        line-height: 1rem;
+        width: 100%;
+    }
+}
+
+
+

@@ -1,0 +1,53 @@
+﻿@import 'src/styles/variables';
+
+.esh-campaign_detail {
+    min-height: 80vh;
+    margin-top: 1rem;
+
+    &-section {
+        padding: 1rem 0;
+
+        &--right {
+            text-align: right;
+        }
+    }
+
+    &-titles {
+        padding-bottom: 1rem;
+        padding-top: 2rem;
+    }
+
+    &-title {
+        text-transform: uppercase;
+    }
+
+    &-items {
+        &--border {
+            border-bottom: $border-light solid $color-secondary-brighter;
+            padding: .5rem 0;
+
+            &:last-of-type {
+                border-color: transparent;
+            }
+        }
+    }
+
+    $item-height: 8rem;
+
+    &-item {
+        font-size: $font-size-m;
+        font-weight: $font-weight-semilight;
+
+        &--middle {
+            line-height: $item-height;
+        }
+
+        &--mark {
+            color: $color-secondary;
+        }
+    }
+
+    &-image {
+        height: $item-height;
+    }
+}

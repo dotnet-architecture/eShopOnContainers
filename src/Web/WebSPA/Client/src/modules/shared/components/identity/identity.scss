@@ -1,0 +1,52 @@
+@import 'src/styles/variables';
+
+.esh-identity {
+    position: relative;
+
+    &-section {
+        width: 100%;
+    }
+
+    &-name {
+        font-size: $font-size-s;
+        display: inline-block;
+
+        &--upper {
+            text-transform: uppercase;
+        }
+    }
+
+    &-image {
+        height: auto;
+        width: 1.5rem;
+    }
+
+    &-drop {
+        background: $color-brightest;
+        height: 0;
+        min-width: 10rem;
+        overflow: hidden;
+        position: absolute;
+        right: 0;
+        top: 2.5rem;
+        transition: height $animation-speed-default;
+    }
+
+    &:hover &-drop {
+        height: 5rem;
+    }
+
+    &-item {
+        color: $color-primary;
+        cursor: pointer;
+        font-size: $font-size-s;
+        line-height: 2.5rem;
+        padding: 0 1rem;
+        transition: all $animation-speed-default;
+
+        &:hover {
+            background-color: $color-secondary-brightest;
+            color: $color-secondary;
+        }
+    }
+}
