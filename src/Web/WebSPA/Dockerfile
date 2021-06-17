@@ -1,10 +1,11 @@
 #See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim AS base
+ARG NODE_IMAGE=node:12.0
+FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
 WORKDIR /app
 EXPOSE 80
 
-FROM node as node-build
+FROM ${NODE_IMAGE} as node-build
 WORKDIR /web/src
 COPY Web/WebSPA/Client/package.json .
 COPY Web/WebSPA/Client/package-lock.json .
@@ -12,7 +13,7 @@ RUN npm install
 COPY Web/WebSPA/Client .
 RUN npm run build:prod
 
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
+FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
 
 # Create this "restore-solution" section by running ./Create-DockerfileSolutionRestore.ps1, to optimize build cache reuse
