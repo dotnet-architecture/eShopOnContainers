@@ -9,6 +9,7 @@ FROM ${NODE_IMAGE} as node-build
 WORKDIR /web/src
 COPY Web/WebSPA/Client/package.json .
 COPY Web/WebSPA/Client/package-lock.json .
+RUN npm install -g npm@6
 RUN npm install
 COPY Web/WebSPA/Client .
 RUN npm run build:prod
