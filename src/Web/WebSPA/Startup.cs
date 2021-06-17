@@ -82,7 +82,6 @@ namespace eShopConContainers.WebSPA
                 app.UseDeveloperExceptionPage();
             }
 
-
             // Here we add Angular default Antiforgery cookie name on first load. https://angular.io/guide/http#security-xsrf-protection
             // This cookie will be read by Angular app and its value will be sent back to the application as the header configured in .AddAntiforgery()
             app.Use(next => context =>
