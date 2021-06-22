@@ -1,20 +1,23 @@
+#See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
+
 ARG NODE_IMAGE=node:12.0
 FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
 WORKDIR /app
 EXPOSE 80
 
 FROM ${NODE_IMAGE} as node-build
-WORKDIR /web
-COPY Web/WebSPA/package.json .
-COPY Web/WebSPA/package-lock.json .
-COPY Web/WebSPA .
-RUN npm i npm@6.14.11 -g && npm update && npm install && npm run build:prod
+WORKDIR /web/src
+COPY Web/WebSPA/Client/package.json .
+COPY Web/WebSPA/Client/package-lock.json .
+RUN npm install -g npm@6
+RUN npm install
+COPY Web/WebSPA/Client .
+RUN npm run build:prod
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
 
-# It's important to keep lines from here down to "COPY . ." identical in all Dockerfiles
-# to take advantage of Docker's build cache, to speed up local container builds
+# Create this "restore-solution" section by running ./Create-DockerfileSolutionRestore.ps1, to optimize build cache reuse
 COPY "eShopOnContainers-ServicesAndWebApps.sln" "eShopOnContainers-ServicesAndWebApps.sln"
 
 COPY "ApiGateways/Mobile.Bff.Shopping/aggregator/Mobile.Shopping.HttpAggregator.csproj" "ApiGateways/Mobile.Bff.Shopping/aggregator/Mobile.Shopping.HttpAggregator.csproj"

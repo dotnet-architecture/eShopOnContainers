@@ -1,0 +1,189 @@
+@import 'src/styles/variables';
+
+.esh-catalog {
+    $banner-height: 260px;
+
+    &-title {
+        position: relative;
+        top: $banner-height / 3.5;
+    }
+ 
+    $filter-height: 65px;
+
+    &-filters {
+        height: $filter-height;
+    }
+
+    &-filters-wrapper {
+        padding-bottom: .5rem;
+        padding-top: .5rem;
+    }
+
+    &-filter-wrapper {
+        margin-right: .5rem;
+        position: relative;
+
+        &:after {
+            border-bottom: 1px solid $color-secondary;
+            border-right: 1px solid $color-secondary;
+            bottom: 1rem;
+            content: '';
+            height: .5rem;
+            pointer-events: none;
+            position: absolute;
+            right: .9rem;
+            transform: rotate(45deg);
+            width: .5rem;
+            z-index: 1;
+        }
+    }
+
+    &-filter {
+        appearance: none;
+        background-color: transparent;
+        border: solid 3px $color-secondary;
+        border-radius: 0;
+        cursor: pointer;
+        margin-right: 1rem;
+        min-width: 140px;
+        outline-color: $color-secondary;
+        padding-left: .5rem;
+        padding-right: 2rem;
+
+        option {
+            appearance: none;
+            border: unset;
+
+            &:hover {
+                background-color: $color-primary;
+                color: $color-brightest;
+                cursor: pointer;
+            }
+
+            &:active {
+                background-color: $color-primary;
+                color: $color-brightest;
+            }
+
+            &:focus {
+                background-color: $color-primary;
+                color: $color-brightest;
+            }
+
+            &:current {
+                background-color: $color-primary;
+                color: $color-brightest;
+            }
+
+            &:selected {
+                background-color: $color-primary;
+                color: $color-brightest;
+            }
+        }
+    }
+
+    &-label {
+        display: inline-block;
+        font-size: $font-size-m;
+        margin-bottom: 0;
+        position: relative;
+        z-index: 0;
+
+        // &:before {
+        //     color: $color-primary;
+        //     content: attr(data-title);
+        //     font-size: $font-size-s;
+        //     left: .7rem;
+        //     top: .2rem;
+        //     position: absolute;
+        //     text-transform: uppercase;
+        //     z-index: 1;
+        // }
+    }
+
+    &-items {
+        margin-top: 1rem;
+    }
+
+    &-item {
+        cursor: pointer;
+        margin-bottom: 1.5rem;
+        width: 100%;
+
+        &:hover {
+            background-color: $color-brightest;
+
+            .esh-catalog-thumbnail-icon {
+                opacity: 1;
+            }
+        }
+
+        &.is-disabled {
+            background-color: unset;
+            cursor: default;
+
+            .esh-catalog-thumbnail-icon {
+                display: none !important;
+            }
+        }
+    }
+
+    &-thumbnail-wrapper {
+        background-color: #dbdede;
+        height: 0;
+        overflow: hidden;
+        padding-top: 100%;
+        position: relative;
+    }
+
+    &-thumbnail-icon {
+        background-color: $color-primary;
+        border-radius: 50%;
+        height: 3.5rem;
+        left: 50%;
+        opacity: 0;
+        position: absolute;
+        top: 50%;
+        transform: translate(-50%,-50%);
+        width: 3.5rem;
+        z-index: 20;
+        transition: all $animation-speed-default;
+    }
+
+    &-thumbnail-icon-svg {
+        height: auto;
+        width: 1.5rem;
+    }
+
+    &-thumbnail {
+        height: 100%;
+        left: 50%;
+        position: absolute;
+        top: 50%;
+        transform: translate(-50%,-50%);
+        width: auto;
+        z-index: 10;
+    }
+
+    &-details {
+        height: 4rem;
+    }
+
+    &-name {
+        font-size: $font-size-m;
+        text-transform: uppercase;
+    }
+
+    &-price {
+        color: $color-primary;
+        font-size: $font-size-m;
+
+        &::before {
+            content: '$';
+        }
+    }
+
+    &-alert {
+        margin-top: 10px;
+    }
+}

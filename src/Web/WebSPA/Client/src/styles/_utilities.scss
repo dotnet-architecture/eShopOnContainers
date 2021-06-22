@@ -1,0 +1,69 @@
+.u {
+  &-text {
+    &-uppercase {
+      text-transform: uppercase;
+    }
+  }
+
+  &-cursor {
+    &-pointer {
+      cursor: pointer;
+    }
+  }
+
+  &-mb {
+    &-4 {
+      margin-bottom: 4rem;
+    }
+
+    &-5 {
+      margin-bottom: 5rem;
+    }
+  }
+
+  &-width {
+    &-100 {
+      width: 100%;
+    }
+
+    &-65 {
+      width: 65%;
+    }
+
+    &-50 {
+      width: 50%;
+    }
+  }
+
+  &-minwidth {
+    &-unset {
+      min-width: unset !important;
+    }
+  }
+
+  &-maxwidth {
+    &-unset {
+      max-width: unset !important;
+    }
+  }
+
+  &-background {
+    &-brightest {
+      background-color: $color-brightest;
+    }
+  }
+
+  &-text{
+    &-sm {
+      font-size: $font-size-s;
+    }
+
+    &-lg {
+      font-size: $font-size-l;
+    }
+
+    &-xl {
+      font-size: $font-size-xl;
+    }
+  }
+}

@@ -1,0 +1,11 @@
+<a class="esh-basketstatus pt-2 pb-2"
+   [ngClass]="{'is-disabled': badge < 1}"
+   [routerLink]="['basket']">
+
+    <div class="esh-basketstatus-image ml-4 mr-1">
+        <img src="assets/images/cart.svg" />
+    </div>
+    <div class="esh-basketstatus-badge">
+        {{badge}}
+    </div>
+</a>
