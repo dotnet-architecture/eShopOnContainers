@@ -6,6 +6,12 @@
 
 Sample .NET Core reference application, powered by Microsoft, based on a simplified microservices architecture and Docker containers.
 
+## SPA Application (Angular)
+
+![](img/eshop-spa-app-home.png)
+
+## MVC application (ASP.NET Core)
+
 ![](img/eshop-webmvc-app-screenshot.png)
 
 ## Build Status (GitHub Actions)

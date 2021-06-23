@@ -1,0 +1,37 @@
+<div class="esh-orders">
+    <div class="container">
+        <h1 class="mb-4 mt-5">[ Order List ]</h1>
+        <div class="esh-orders-alert alert" role="alert" [hidden]="!errorReceived">
+            Error requesting order list, please try later on
+        </div>
+
+        <div class="esh-orders-wrapper">
+            <article class="esh-orders-titles row">
+                <section class="col-1"></section>
+                <section class="col-3">Date</section>
+                <section class="col-2">Total</section>
+                <section class="col-2">Status</section>
+                <section class="col-2"></section>
+                <section class="col-2"></section>
+            </article>
+    
+            <article class="esh-orders-item divider row"
+                     *ngFor="let order of orders">
+                <section class="col-1">{{order.ordernumber}}</section>
+                <section class="col-3">{{order.date | date:'short'}}</section>
+                <section class="col-2">${{order.total}}</section>
+                <section class="col-2">{{order.status}}</section>
+                <section class="col-2">
+                    <a *ngIf="order.status.toLowerCase() === 'submitted'" (click)="cancelOrder(order.ordernumber)" class="esh-orders-link u-cursor-pointer">Cancel</a>
+                </section>
+                <section class="col-2">
+                    <a class="esh-orders-link" routerLink="/orders/{{order.ordernumber}}">Details</a>
+                </section>
+            </article>
+    
+            <aside class="d-flex justify-content-end mt-5 pr-5">
+                <a class="btn btn-secondary" routerLink="/catalog">Continue Shopping</a>
+            </aside>
+        </div>
+    </div>
+</div>

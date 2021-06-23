@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 63.1 (92452) - https://sketch.com -->
+    <title>icons/24/Refresh</title>
+    <desc>Created with Sketch.</desc>
+    <g id="icons/24/Refresh" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M21,3 L21,10 L14,10 L14,8 L17.7456385,8.0003222 C17.3833964,7.4810585 16.9514594,7.01156053 16.4619012,6.60607298 C15.2154325,5.57365753 13.6531485,5 12,5 C8.13400675,5 5,8.13400675 5,12 C5,15.8659932 8.13400675,19 12,19 C15.7854517,19 18.8690987,15.9952166 18.995941,12.2406498 L19,12 L21,12 C21,16.9705627 16.9705627,21 12,21 C7.02943725,21 3,16.9705627 3,12 C3,7.02943725 7.02943725,3 12,3 C14.1233039,3 16.1356858,3.73892971 17.7376636,5.0658035 C18.2011353,5.44968423 18.6244033,5.87826412 19.0013172,6.34434544 L19,3 L21,3 Z" id="Combined-Shape" fill="#292929"></path>
+    </g>
+</svg>

@@ -1,0 +1,47 @@
+// Colors
+$color-primary: #f66f61;
+
+$color-secondary: #292929;
+$color-secondary-bright: #81828d;
+$color-secondary-brighter: #979797;
+$color-secondary-brightest: #f3f4f3;
+
+$color-darkest: #000;
+$color-brightest: #fff;
+
+
+// Animations
+$animation-speed-default: .35s;
+$animation-speed-slow: .5s;
+$animation-speed-fast: .15s;
+
+// Fonts
+$font-weight-light: 200;
+$font-weight-semilight: 300;
+$font-weight-normal: 400;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+
+$font-size-xs: .75rem;    // 12px
+$font-size-s: .875rem;    // 14px
+$font-size-m: 1rem;      // 16px
+$font-size-l: 1.125rem;   // 18px
+$font-size-xl: 1.25rem;   // 20px
+$font-size-xxl: 1.5625rem;   // 25px
+
+// Medias
+$media-screen-xxs: 360px;
+$media-screen-xs: 640px;
+$media-screen-s: 768px;
+$media-screen-m: 1024px;
+$media-screen-l: 1280px;
+$media-screen-xl: 1440px;
+$media-screen-xxl: 1680px;
+$media-screen-xxxl: 1920px;
+
+// Borders
+$border-light: 1px;
+
+// Images
+$image_path: '/assets/images/';
+$image-arrow_down: '#{$image_path}arrow-down.png';

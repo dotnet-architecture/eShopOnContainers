@@ -1,0 +1,76 @@
+@import 'src/styles/variables';
+
+:host {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+}
+
+.esh-app {
+
+    &-header {
+        background: url('/assets/images/header.jpg') center -2.7rem no-repeat, linear-gradient(90deg, #5F6571 0%, #5F6571 35%, #CFC6BF 65%, #CFC6BF 100%);
+        background-size: 94rem, auto;
+        height: 13rem;
+        padding-top: 2.25rem;
+        position: relative;
+        transition: all $animation-speed-default;
+
+        &--expanded {
+            background-position: center top;
+            background-size: 87rem, auto;
+            height: 29rem;
+
+            .esh-app-header-promo {
+                opacity: 1;
+            }
+        }
+    }
+
+    &-header-brand {
+        height: auto;
+        width: 92px;
+    }
+
+    &-header-promo {
+        bottom: 3.5rem;
+        opacity: 0;
+        position: absolute;
+        text-align: center;
+        transition: all $animation-speed-default;
+        width: 100%;
+    }
+
+    &-header-promo-title {
+        display: block;
+        color: rgba($color-brightest, .3);
+        font-size: 5rem;
+        line-height: 5rem;
+        word-wrap: none;
+
+        @media screen and (min-width: $media-screen-s) {
+            font-size: 9rem;
+            line-height: 9rem;
+        }
+    }
+
+    &-header-promo-subtitle {
+        display: block;
+        color: $color-brightest;
+        font-size: $font-size-xxl;
+    }
+
+    &-footer {
+        background-color: $color-secondary-bright;
+        color: $color-brightest;
+        font-size: $font-size-m;
+        display: flex;
+        height: 7rem;
+        margin-top: auto;
+
+        &-brand {
+            height: auto;
+            width: 104px;
+        }
+    }
+}
