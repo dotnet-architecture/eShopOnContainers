@@ -31,7 +31,7 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus
             }
         }
 
-        public ServiceBusAdministrationClient SubscriptionClient
+        public ServiceBusAdministrationClient AdministrationClient
         {
             get
             {

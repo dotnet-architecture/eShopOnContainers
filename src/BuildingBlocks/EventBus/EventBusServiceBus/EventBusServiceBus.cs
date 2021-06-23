@@ -1,17 +1,16 @@
 ﻿using Azure.Messaging.ServiceBus;
 using Azure.Messaging.ServiceBus.Administration;
+using Autofac;
+using Microsoft.eShopOnContainers.BuildingBlocks.EventBus;
+using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
+using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Text;
+using System.Text.Json;
+using System.Threading.Tasks;
 namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus
 {
-    using Autofac;
-    using Microsoft.eShopOnContainers.BuildingBlocks.EventBus;
-    using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
-    using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
-    using Microsoft.Extensions.Logging;   
-    using System;
-    using System.Text;
-    using System.Text.Json;
-    using System.Threading.Tasks;
-
     public class EventBusServiceBus : IEventBus
     {
         private readonly IServiceBusPersisterConnection _serviceBusPersisterConnection;
@@ -20,6 +19,8 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus
         private readonly ILifetimeScope _autofac;
         private readonly string _topicName;
         private readonly string _subscriptionName;
+        private ServiceBusSender _sender;
+        private ServiceBusProcessor processor;
         private readonly string AUTOFAC_SCOPE_NAME = "eshop_event_bus";
         private const string INTEGRATION_EVENT_SUFFIX = "IntegrationEvent";
 
@@ -32,6 +33,7 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus
             _autofac = autofac;
             _topicName = topicName;
             _subscriptionName = subscriptionName;
+            _sender = _serviceBusPersisterConnection.TopicClient.CreateSender(_topicName);
 
             RemoveDefaultRule();
             RegisterSubscriptionClientMessageHandler();
@@ -40,17 +42,15 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus
         public void Publish(IntegrationEvent @event)
         {
             var eventName = @event.GetType().Name.Replace(INTEGRATION_EVENT_SUFFIX, "");
-            var jsonMessage = JsonSerializer.Serialize(@event);
-            var body = Encoding.UTF8.GetBytes(jsonMessage);
 
             var message = new ServiceBusMessage
             {
                 MessageId = Guid.NewGuid().ToString(),
-                Body = new BinaryData(body),
+                Body = new BinaryData(@event),
                 Subject = eventName,
             };
 
-            _serviceBusPersisterConnection.TopicClient.CreateSender(_topicName).SendMessageAsync(message)
+            _sender.SendMessageAsync(message)
                 .GetAwaiter()
                 .GetResult();
         }
@@ -74,7 +74,7 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus
             {
                 try
                 {
-                    _serviceBusPersisterConnection.SubscriptionClient.CreateRuleAsync(_topicName, _subscriptionName, new CreateRuleOptions
+                    _serviceBusPersisterConnection.AdministrationClient.CreateRuleAsync(_topicName, _subscriptionName, new CreateRuleOptions
                     {
                         Filter = new CorrelationRuleFilter() { Subject = eventName },
                         Name = eventName
@@ -100,7 +100,7 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus
             try
             {
                 _serviceBusPersisterConnection
-                    .SubscriptionClient
+                    .AdministrationClient
                     .DeleteRuleAsync(_topicName, _subscriptionName, eventName)
                     .GetAwaiter()
                     .GetResult();
@@ -126,17 +126,18 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus
         public void Dispose()
         {
             _subsManager.Clear();
+            this.processor.CloseAsync();
         }
 
         private void RegisterSubscriptionClientMessageHandler()
         {
             ServiceBusProcessorOptions options = new ServiceBusProcessorOptions { MaxConcurrentCalls = 10, AutoCompleteMessages = false };
-            ServiceBusProcessor processor = _serviceBusPersisterConnection.TopicClient.CreateProcessor(_topicName, options);
+            this.processor = _serviceBusPersisterConnection.TopicClient.CreateProcessor(_topicName, options);
             processor.ProcessMessageAsync +=
                 async (args) =>
                 {
                     var eventName = $"{args.Message.Subject}{INTEGRATION_EVENT_SUFFIX}";
-                    var messageData = Encoding.UTF8.GetString(args.Message.Body);
+                    string messageData = args.Message.Body.ToString();
 
                     // Complete the message so that it is not received again.
                     if (await ProcessEvent(eventName, messageData))
@@ -146,6 +147,7 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus
                 };
 
             processor.ProcessErrorAsync += ErrorHandler;
+            processor.StartProcessingAsync();
         }
 
         private Task ErrorHandler(ProcessErrorEventArgs exceptionReceivedEventArgs)
@@ -197,7 +199,7 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus
             try
             {
                 _serviceBusPersisterConnection
-                    .SubscriptionClient
+                    .AdministrationClient
                     .DeleteRuleAsync(_topicName, _subscriptionName, RuleProperties.DefaultRuleName)
                     .GetAwaiter()
                     .GetResult();
