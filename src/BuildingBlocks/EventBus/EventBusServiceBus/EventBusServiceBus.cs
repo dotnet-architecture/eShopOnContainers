@@ -37,6 +37,7 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus
 
             RemoveDefaultRule();
             RegisterSubscriptionClientMessageHandlerAsync().GetAwaiter().GetResult();
+            Dispose();
         }
 
         public void Publish(IntegrationEvent @event)
