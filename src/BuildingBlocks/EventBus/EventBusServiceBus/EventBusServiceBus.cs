@@ -20,7 +20,7 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus
         private readonly string _topicName;
         private readonly string _subscriptionName;
         private ServiceBusSender _sender;
-        private ServiceBusProcessor processor;
+        private ServiceBusProcessor _processor;
         private readonly string AUTOFAC_SCOPE_NAME = "eshop_event_bus";
         private const string INTEGRATION_EVENT_SUFFIX = "IntegrationEvent";
 
@@ -36,7 +36,7 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus
             _sender = _serviceBusPersisterConnection.TopicClient.CreateSender(_topicName);
 
             RemoveDefaultRule();
-            RegisterSubscriptionClientMessageHandler();
+            RegisterSubscriptionClientMessageHandlerAsync().GetAwaiter().GetResult();
         }
 
         public void Publish(IntegrationEvent @event)
@@ -126,14 +126,14 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus
         public void Dispose()
         {
             _subsManager.Clear();
-            this.processor.CloseAsync();
+            this._processor.CloseAsync().GetAwaiter().GetResult();
         }
 
-        private void RegisterSubscriptionClientMessageHandler()
+        private async Task RegisterSubscriptionClientMessageHandlerAsync()
         {
             ServiceBusProcessorOptions options = new ServiceBusProcessorOptions { MaxConcurrentCalls = 10, AutoCompleteMessages = false };
-            this.processor = _serviceBusPersisterConnection.TopicClient.CreateProcessor(_topicName, options);
-            processor.ProcessMessageAsync +=
+            this._processor = _serviceBusPersisterConnection.TopicClient.CreateProcessor(_topicName, options);
+            this._processor.ProcessMessageAsync +=
                 async (args) =>
                 {
                     var eventName = $"{args.Message.Subject}{INTEGRATION_EVENT_SUFFIX}";
@@ -146,14 +146,14 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus
                     }
                 };
 
-            processor.ProcessErrorAsync += ErrorHandler;
-            processor.StartProcessingAsync();
+            this._processor.ProcessErrorAsync += ErrorHandler;
+            await this._processor.StartProcessingAsync();
         }
 
-        private Task ErrorHandler(ProcessErrorEventArgs exceptionReceivedEventArgs)
+        private Task ErrorHandler(ProcessErrorEventArgs args)
         {
-            var ex = exceptionReceivedEventArgs.Exception;
-            var context = exceptionReceivedEventArgs.ErrorSource;
+            var ex = args.Exception;
+            var context = args.ErrorSource;
 
             _logger.LogError(ex, "ERROR handling message: {ExceptionMessage} - Context: {@ExceptionContext}", ex.Message, context);
 

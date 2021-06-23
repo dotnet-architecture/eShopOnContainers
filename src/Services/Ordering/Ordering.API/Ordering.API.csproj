@@ -69,11 +69,6 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="Azure.Messaging.ServiceBus">
-      <HintPath>C:\Users\v-wenjyu\.nuget\packages\azure.messaging.servicebus\7.1.2\lib\netstandard2.0\Azure.Messaging.ServiceBus.dll</HintPath>
-    </Reference>
-  </ItemGroup>
 
   <ItemGroup>
     <None Update="Setup\*">
