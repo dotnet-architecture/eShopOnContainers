@@ -55,6 +55,7 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus
             if (_disposed) return;
 
             _disposed = true;
+            _topicClient.DisposeAsync().GetAwaiter().GetResult();
         }
     }
 }

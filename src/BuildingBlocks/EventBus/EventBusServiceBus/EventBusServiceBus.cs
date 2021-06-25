@@ -11,7 +11,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus
 {
-    public class EventBusServiceBus : IEventBus
+    public class EventBusServiceBus : IEventBus, IDisposable
     {
         private readonly IServiceBusPersisterConnection _serviceBusPersisterConnection;
         private readonly ILogger<EventBusServiceBus> _logger;
@@ -20,7 +20,7 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus
         private readonly string _topicName;
         private readonly string _subscriptionName;
         private ServiceBusSender _sender;
-        private static ServiceBusProcessor _processor;
+        private ServiceBusProcessor _processor;
         private readonly string AUTOFAC_SCOPE_NAME = "eshop_event_bus";
         private const string INTEGRATION_EVENT_SUFFIX = "IntegrationEvent";
 
@@ -129,11 +129,6 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus
         {
             _subsManager.Clear();
             _processor.CloseAsync().GetAwaiter().GetResult();
-        }
-
-        public static ServiceBusProcessor DeliverProcessor()
-        {
-            return _processor;
         }
 
         private async Task RegisterSubscriptionClientMessageHandlerAsync()

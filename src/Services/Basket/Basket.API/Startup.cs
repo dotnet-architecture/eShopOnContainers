@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Azure.Messaging.ServiceBus;
 using Basket.API.Infrastructure.Filters;
 using Basket.API.IntegrationEvents.EventHandling;
 using Basket.API.IntegrationEvents.Events;
@@ -122,7 +123,6 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
                 {
                     var serviceBusConnectionString = Configuration["EventBusConnection"];
 
-                    var subscriptionClientName = Configuration["SubscriptionClientName"];
                     return new DefaultServiceBusPersisterConnection(serviceBusConnectionString);
                 });
             }
@@ -283,8 +283,9 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
                     var iLifetimeScope = sp.GetRequiredService<ILifetimeScope>();
                     var logger = sp.GetRequiredService<ILogger<EventBusServiceBus>>();
                     var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
-                    string topicName = "topicName";
-                    string subscriptionName = "subscriptionName";
+                    var serviceBusConnectionString = Configuration["EventBusConnection"];
+                    string topicName = ServiceBusConnectionStringProperties.Parse(serviceBusConnectionString).EntityPath;
+                    string subscriptionName = Configuration["SubscriptionClientName"];
 
                     return new EventBusServiceBus(serviceBusPersisterConnection, logger,
                         eventBusSubcriptionsManager, iLifetimeScope, topicName, subscriptionName);
