@@ -19,5 +19,7 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions
         void Unsubscribe<T, TH>()
             where TH : IIntegrationEventHandler<T>
             where T : IntegrationEvent;
+
+        void Dispose();
     }
 }

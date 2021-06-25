@@ -20,7 +20,7 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus
         private readonly string _topicName;
         private readonly string _subscriptionName;
         private ServiceBusSender _sender;
-        private ServiceBusProcessor _processor;
+        private static ServiceBusProcessor _processor;
         private readonly string AUTOFAC_SCOPE_NAME = "eshop_event_bus";
         private const string INTEGRATION_EVENT_SUFFIX = "IntegrationEvent";
 
@@ -34,6 +34,8 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus
             _topicName = topicName;
             _subscriptionName = subscriptionName;
             _sender = _serviceBusPersisterConnection.TopicClient.CreateSender(_topicName);
+            ServiceBusProcessorOptions options = new ServiceBusProcessorOptions { MaxConcurrentCalls = 10, AutoCompleteMessages = false };
+            _processor = _serviceBusPersisterConnection.TopicClient.CreateProcessor(_topicName, options);
 
             RemoveDefaultRule();
             RegisterSubscriptionClientMessageHandlerAsync().GetAwaiter().GetResult();
@@ -126,14 +128,17 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus
         public void Dispose()
         {
             _subsManager.Clear();
-            this._processor.CloseAsync().GetAwaiter().GetResult();
+            _processor.CloseAsync().GetAwaiter().GetResult();
+        }
+
+        public static ServiceBusProcessor DeliverProcessor()
+        {
+            return _processor;
         }
 
         private async Task RegisterSubscriptionClientMessageHandlerAsync()
         {
-            ServiceBusProcessorOptions options = new ServiceBusProcessorOptions { MaxConcurrentCalls = 10, AutoCompleteMessages = false };
-            this._processor = _serviceBusPersisterConnection.TopicClient.CreateProcessor(_topicName, options);
-            this._processor.ProcessMessageAsync +=
+            _processor.ProcessMessageAsync +=
                 async (args) =>
                 {
                     var eventName = $"{args.Message.Subject}{INTEGRATION_EVENT_SUFFIX}";
@@ -146,8 +151,8 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus
                     }
                 };
 
-            this._processor.ProcessErrorAsync += ErrorHandler;
-            await this._processor.StartProcessingAsync();
+            _processor.ProcessErrorAsync += ErrorHandler;
+            await _processor.StartProcessingAsync();
         }
 
         private Task ErrorHandler(ProcessErrorEventArgs args)

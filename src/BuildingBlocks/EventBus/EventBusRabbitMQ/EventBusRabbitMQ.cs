@@ -4,6 +4,7 @@ using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Extensions;
 using Microsoft.Extensions.Logging;
+using Azure.Messaging.ServiceBus;
 using Polly;
 using Polly.Retry;
 using RabbitMQ.Client;
@@ -27,6 +28,7 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
         private readonly IEventBusSubscriptionsManager _subsManager;
         private readonly ILifetimeScope _autofac;
         private readonly int _retryCount;
+        private readonly ServiceBusProcessor _processor;
 
         private IModel _consumerChannel;
         private string _queueName;
@@ -42,6 +44,7 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
             _autofac = autofac;
             _retryCount = retryCount;
             _subsManager.OnEventRemoved += SubsManager_OnEventRemoved;
+            this._processor = EventBusServiceBus.EventBusServiceBus.DeliverProcessor();
         }
 
         private void SubsManager_OnEventRemoved(object sender, string eventName)
@@ -178,6 +181,7 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
             }
 
             _subsManager.Clear();
+            _processor.CloseAsync().GetAwaiter().GetResult();
         }
 
         private void StartBasicConsume()
