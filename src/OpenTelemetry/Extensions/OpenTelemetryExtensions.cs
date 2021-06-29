@@ -17,7 +17,8 @@ namespace OpenTelemetry.Customization.Extensions
             }
 
             return services.AddOpenTelemetryTracing((serviceProvider, tracerProviderBuilder) =>
-            {
+            {                   
+
                 // Configure resource
                 tracerProviderBuilder
                     .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(openTelemetryConfig.ServiceName));
@@ -61,57 +62,59 @@ namespace OpenTelemetry.Customization.Extensions
             });
         }
 
-        public static void AddOpenTelemetry(ConnectionMultiplexer connectionMultiplexer, OpenTelemetryConfig openTelemetryConfig)
+        public static IServiceCollection AddOpenTelemetry(this IServiceCollection services, ConnectionMultiplexer connectionMultiplexer, OpenTelemetryConfig openTelemetryConfig)
         {            
 
             if (openTelemetryConfig == null || openTelemetryConfig.ExportType == null)
             {
-                return;
+                return services;
             }
 
-            var tracerProviderBuilder = Sdk.CreateTracerProviderBuilder();
+            return services.AddOpenTelemetryTracing((serviceProvider, tracerProviderBuilder) =>
+            {                   
 
-            // Configure resource
-            tracerProviderBuilder
-                .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(openTelemetryConfig.ServiceName));
+                // Configure resource
+                tracerProviderBuilder
+                    .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(openTelemetryConfig.ServiceName));
 
-            // Configure instrumentation
-            tracerProviderBuilder
-                .AddAspNetCoreInstrumentation()
-                .AddHttpClientInstrumentation()
-                .AddRedisInstrumentation(connectionMultiplexer);
+                // Configure instrumentation
+                tracerProviderBuilder
+                    .AddAspNetCoreInstrumentation()
+                    .AddHttpClientInstrumentation()
+                    .AddGrpcClientInstrumentation()
+                    .AddRedisInstrumentation(connectionMultiplexer);
 
-            // Configure exporter
-            switch (openTelemetryConfig.ExportType)
-            {
-                case "jaeger":
-                    tracerProviderBuilder.AddJaegerExporter(options =>
-                    {
-                        options.AgentHost = openTelemetryConfig.ExportToolEndpoint;
-                    });
-                    break;
-                case "otlp":
-                    tracerProviderBuilder.AddOtlpExporter(options =>
-                    {
-                        options.Endpoint = new Uri(openTelemetryConfig.ExportToolEndpoint);
+                // Configure exporter
+                switch (openTelemetryConfig.ExportType)
+                {
+                    case "jaeger":
+                        tracerProviderBuilder.AddJaegerExporter(options =>
+                        {
+                            options.AgentHost = openTelemetryConfig.ExportToolEndpoint;
+                        });
+                        break;
+                    case "otlp":
+                        tracerProviderBuilder.AddOtlpExporter(options =>
+                        {
+                            options.Endpoint = new Uri(openTelemetryConfig.ExportToolEndpoint);
 
-                        var headers = Environment.GetEnvironmentVariable("OTEL_EXPORTER_OTLP_TRACES_HEADERS")
-                            ?? Environment.GetEnvironmentVariable("OTEL_EXPORTER_OTLP_HEADERS");
-                        options.Headers = headers;
-                    });
-                    break;
-                case "zipkin":
-                    tracerProviderBuilder.AddZipkinExporter(options =>
-                    {
-                        options.Endpoint = new Uri(openTelemetryConfig.ExportToolEndpoint);
-                    });
-                    break;
-                default:
-                    tracerProviderBuilder.AddConsoleExporter();
-                    break;
-            }
-
-            tracerProviderBuilder.Build();
+                            var headers = Environment.GetEnvironmentVariable("OTEL_EXPORTER_OTLP_TRACES_HEADERS")
+                                ?? Environment.GetEnvironmentVariable("OTEL_EXPORTER_OTLP_HEADERS");
+                            options.Headers = headers;
+                        });
+                        break;
+                    case "zipkin":
+                        tracerProviderBuilder.AddZipkinExporter(options =>
+                        {
+                            options.Endpoint = new Uri(openTelemetryConfig.ExportToolEndpoint);
+                        });
+                        break;
+                    default:
+                        tracerProviderBuilder.AddConsoleExporter();
+                        break;
+                }
+            });
+            
         }
     }
 }

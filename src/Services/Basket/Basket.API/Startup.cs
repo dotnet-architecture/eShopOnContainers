@@ -38,11 +38,16 @@ using System.IO;
 
 namespace Microsoft.eShopOnContainers.Services.Basket.API
 {
+    
     public class Startup
     {
+
+        private ConnectionMultiplexer _connectionMultiplexer;
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            
         }
 
         public IConfiguration Configuration { get; }
@@ -53,15 +58,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             services.AddGrpc(options =>
             {
                 options.EnableDetailedErrors = true;
-            });
-
-            // Add Telemetry
-            services.AddOpenTelemetry(new OpenTelemetryConfig()
-            {
-                ServiceName = "Basket.API",
-                ExportType = Configuration.GetValue<string>("OTEL_USE_EXPORTER"),
-                ExportToolEndpoint = Configuration.GetValue<string>("OTEL_EXPORTER_TOOL_ENDPOINT")
-            });
+            });            
 
             RegisterAppInsights(services);
 
@@ -115,7 +112,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             //but given that there is a delay on resolving the ip address
             //and then creating the connection it seems reasonable to move
             //that cost to startup instead of having the first request pay the
-            //penalty.
+            //penalty.            
             services.AddSingleton<ConnectionMultiplexer>(sp =>
             {
                 var settings = sp.GetRequiredService<IOptions<BasketSettings>>().Value;
@@ -123,7 +120,17 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
 
                 configuration.ResolveDns = true;
 
-                return ConnectionMultiplexer.Connect(configuration);
+                _connectionMultiplexer = ConnectionMultiplexer.Connect(configuration);
+                
+                return _connectionMultiplexer;
+            });
+
+            // Add Telemetry
+            services.AddOpenTelemetry(this._connectionMultiplexer,new OpenTelemetryConfig()
+            {
+                ServiceName = "Basket.API",
+                ExportType = Configuration.GetValue<string>("OTEL_USE_EXPORTER"),
+                ExportToolEndpoint = Configuration.GetValue<string>("OTEL_EXPORTER_TOOL_ENDPOINT")
             });
 
 
