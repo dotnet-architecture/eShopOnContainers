@@ -1,0 +1,45 @@
+@import 'src/styles/variables';
+
+.esh-orders_detail {
+
+    &-titles {
+        color: $color-secondary-bright;
+        font-size: $font-size-l;
+        font-weight: $font-weight-semilight;
+        margin-bottom: 1.5rem;
+        text-transform: uppercase;
+    }
+
+    &-title {
+        color: $color-secondary-bright;
+        font-size: $font-size-l;
+        font-weight: $font-weight-semilight;
+        text-transform: uppercase;
+    }
+
+    &-items {
+        font-size: $font-size-m;
+        font-weight: $font-weight-normal;
+    }
+
+    &-thumbnail-container {
+        width: 10rem;
+    }
+
+    &-thumbnail-wrapper {
+        background-color: #dbdede;
+        height: 0;
+        overflow: hidden;
+        padding-top: 100%;
+        position: relative;
+    }
+
+    &-thumbnail {
+        height: 100%;
+        left: 50%;
+        position: absolute;
+        top: 50%;
+        transform: translate(-50%,-50%);
+        width: auto;
+    }
+}

@@ -16,10 +16,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Remove="Extensions\OpenTelemetryExtensions.cs" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="5.0.1" />
 		<PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="5.0.1" />
 		<PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.1.0" />

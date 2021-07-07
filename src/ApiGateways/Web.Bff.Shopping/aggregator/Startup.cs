@@ -140,7 +140,7 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator
             services.Configure<UrlsConfig>(configuration.GetSection("urls"));
 
             services.AddControllers()
-                .AddNewtonsoftJson();
+                    .AddJsonOptions(options => options.JsonSerializerOptions.WriteIndented = true);
 
             services.AddSwaggerGen(options =>
             {

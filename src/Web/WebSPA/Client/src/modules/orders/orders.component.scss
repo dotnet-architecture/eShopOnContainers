@@ -1,0 +1,39 @@
+@import 'src/styles/variables';
+
+.esh-orders {
+
+    &-wrapper {
+        background-color: $color-brightest;
+        padding-bottom: 4rem;
+        padding-top: 4rem;
+    }
+
+    &-titles {
+        color: $color-secondary-bright;
+        font-size: $font-size-l;
+        font-weight: $font-weight-semilight;
+        margin-bottom: 1rem;
+        padding-left: 5rem;
+        text-transform: uppercase;
+    }
+
+    &-item {
+        $height: 6rem;
+        font-size: $font-size-m;
+        font-weight: $font-weight-normal;
+        height: $height;
+        line-height: $height;
+        padding-left: 5rem;
+        position: relative;
+    }
+
+    &-link {
+        color: $color-primary;
+        text-decoration: none;
+        transition: color $animation-speed-default;
+
+        &:hover {
+            color: $color-secondary;
+        }
+    }
+}

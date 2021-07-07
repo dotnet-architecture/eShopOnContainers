@@ -2,12 +2,11 @@
 using Microsoft.eShopOnContainers.WebMVC.ViewModels;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using WebMVC.Infrastructure;
+using System.Text.Json;
 
 namespace Microsoft.eShopOnContainers.WebMVC.Services
 {
@@ -34,7 +33,10 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
 
             var responseString = await _httpClient.GetStringAsync(uri);
 
-            var catalog = JsonConvert.DeserializeObject<Catalog>(responseString);
+            var catalog = JsonSerializer.Deserialize<Catalog>(responseString, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
 
             return catalog;
         }
@@ -48,15 +50,15 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
             var items = new List<SelectListItem>();
 
             items.Add(new SelectListItem() { Value = null, Text = "All", Selected = true });
+            
+            using var brands = JsonDocument.Parse(responseString);
 
-            var brands = JArray.Parse(responseString);
-
-            foreach (var brand in brands.Children<JObject>())
+            foreach (JsonElement brand  in brands.RootElement.EnumerateArray())
             {
                 items.Add(new SelectListItem()
                 {
-                    Value = brand.Value<string>("id"),
-                    Text = brand.Value<string>("brand")
+                    Value = brand.GetProperty("id").ToString(),
+                    Text = brand.GetProperty("brand").ToString()
                 });
             }
 
@@ -71,14 +73,15 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
 
             var items = new List<SelectListItem>();
             items.Add(new SelectListItem() { Value = null, Text = "All", Selected = true });
+            
+            using var catalogTypes = JsonDocument.Parse(responseString);
 
-            var brands = JArray.Parse(responseString);
-            foreach (var brand in brands.Children<JObject>())
+            foreach (JsonElement catalogType in catalogTypes.RootElement.EnumerateArray())
             {
                 items.Add(new SelectListItem()
                 {
-                    Value = brand.Value<string>("id"),
-                    Text = brand.Value<string>("type")
+                    Value = catalogType.GetProperty("id").ToString(),
+                    Text = catalogType.GetProperty("type").ToString()
                 });
             }
 

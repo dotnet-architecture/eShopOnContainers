@@ -1,10 +1,10 @@
 ﻿using Microsoft.eShopOnContainers.Services.Basket.API.Model;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using StackExchange.Redis;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Text.Json;
 
 namespace Microsoft.eShopOnContainers.Services.Basket.API.Infrastructure.Repositories
 {
@@ -43,12 +43,15 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Infrastructure.Reposit
                 return null;
             }
 
-            return JsonConvert.DeserializeObject<CustomerBasket>(data);
+            return JsonSerializer.Deserialize<CustomerBasket>(data, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
         }
 
         public async Task<CustomerBasket> UpdateBasketAsync(CustomerBasket basket)
         {
-            var created = await _database.StringSetAsync(basket.BuyerId, JsonConvert.SerializeObject(basket));
+            var created = await _database.StringSetAsync(basket.BuyerId, JsonSerializer.Serialize(basket));
 
             if (!created)
             {

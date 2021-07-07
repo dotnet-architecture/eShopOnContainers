@@ -5,11 +5,10 @@
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBus;
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
     using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
-    using Microsoft.Extensions.Logging;
-    using Newtonsoft.Json;
-    using Newtonsoft.Json.Linq;
+    using Microsoft.Extensions.Logging;   
     using System;
     using System.Text;
+    using System.Text.Json;
     using System.Threading.Tasks;
 
     public class EventBusServiceBus : IEventBus
@@ -36,7 +35,7 @@
         public void Publish(IntegrationEvent @event)
         {
             var eventName = @event.GetType().Name.Replace(INTEGRATION_EVENT_SUFFIX, "");
-            var jsonMessage = JsonConvert.SerializeObject(@event);
+            var jsonMessage = JsonSerializer.Serialize(@event);
             var body = Encoding.UTF8.GetBytes(jsonMessage);
 
             var message = new Message
@@ -165,7 +164,8 @@
                         {
                             var handler = scope.ResolveOptional(subscription.HandlerType) as IDynamicIntegrationEventHandler;
                             if (handler == null) continue;
-                            dynamic eventData = JObject.Parse(message);
+                            
+                            using dynamic eventData = JsonDocument.Parse(message);
                             await handler.Handle(eventData);
                         }
                         else
@@ -173,7 +173,7 @@
                             var handler = scope.ResolveOptional(subscription.HandlerType);
                             if (handler == null) continue;
                             var eventType = _subsManager.GetEventTypeByName(eventName);
-                            var integrationEvent = JsonConvert.DeserializeObject(message, eventType);
+                            var integrationEvent = JsonSerializer.Deserialize(message, eventType);
                             var concreteType = typeof(IIntegrationEventHandler<>).MakeGenericType(eventType);
                             await (Task)concreteType.GetMethod("Handle").Invoke(handler, new object[] { integrationEvent });
                         }
