@@ -1,0 +1,165 @@
+/* You can add global styles to this file, and also import other style files */
+@import 'variables';
+@import './bootstrap-overrides';
+@import '~bootstrap/scss/bootstrap';
+@import 'button';
+@import 'form';
+@import '~ngx-toastr/toastr-bs4-alert.scss';
+@import 'toastr';
+@import 'utilities';
+
+@font-face {
+    font-family: 'Oswald';
+    src: url('../assets/fonts/Oswald-Medium.eot');
+    src: url('../assets/fonts/Oswald-Medium.eot?#iefix') format('embedded-opentype'),
+        url('../assets/fonts/Oswald-Medium.woff2') format('woff2'),
+        url('../assets/fonts/Oswald-Medium.woff') format('woff'),
+        url('../assets/fonts/Oswald-Medium.ttf') format('truetype'),
+        url('../assets/fonts/Oswald-Medium.svg#Oswald-Medium') format('svg');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Oswald';
+    src: url('../assets/fonts/Oswald-ExtraLight.eot');
+    src: url('../assets/fonts/Oswald-ExtraLight.eot?#iefix') format('embedded-opentype'),
+        url('../assets/fonts/Oswald-ExtraLight.woff2') format('woff2'),
+        url('../assets/fonts/Oswald-ExtraLight.woff') format('woff'),
+        url('../assets/fonts/Oswald-ExtraLight.ttf') format('truetype'),
+        url('../assets/fonts/Oswald-ExtraLight.svg#Oswald-ExtraLight') format('svg');
+    font-weight: 200;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Oswald';
+    src: url('../assets/fonts/Oswald-Regular.eot');
+    src: url('../assets/fonts/Oswald-Regular.eot?#iefix') format('embedded-opentype'),
+        url('../assets/fonts/Oswald-Regular.woff2') format('woff2'),
+        url('../assets/fonts/Oswald-Regular.woff') format('woff'),
+        url('../assets/fonts/Oswald-Regular.ttf') format('truetype'),
+        url('../assets/fonts/Oswald-Regular.svg#Oswald-Regular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Oswald';
+    src: url('../assets/fonts/Oswald-Bold.eot');
+    src: url('../assets/fonts/Oswald-Bold.eot?#iefix') format('embedded-opentype'),
+        url('../assets/fonts/Oswald-Bold.woff2') format('woff2'),
+        url('../assets/fonts/Oswald-Bold.woff') format('woff'),
+        url('../assets/fonts/Oswald-Bold.ttf') format('truetype'),
+        url('../assets/fonts/Oswald-Bold.svg#Oswald-Bold') format('svg');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Oswald';
+    src: url('../assets/fonts/Oswald-Light.eot');
+    src: url('../assets/fonts/Oswald-Light.eot?#iefix') format('embedded-opentype'),
+        url('../assets/fonts/Oswald-Light.woff2') format('woff2'),
+        url('../assets/fonts/Oswald-Light.woff') format('woff'),
+        url('../assets/fonts/Oswald-Light.ttf') format('truetype'),
+        url('../assets/fonts/Oswald-Light.svg#Oswald-Light') format('svg');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Oswald';
+    src: url('../assets/fonts/Oswald-SemiBold.eot');
+    src: url('../assets/fonts/Oswald-SemiBold.eot?#iefix') format('embedded-opentype'),
+        url('../assets/fonts/Oswald-SemiBold.woff2') format('woff2'),
+        url('../assets/fonts/Oswald-SemiBold.woff') format('woff'),
+        url('../assets/fonts/Oswald-SemiBold.ttf') format('truetype'),
+        url('../assets/fonts/Oswald-SemiBold.svg#Oswald-SemiBold') format('svg');
+    font-weight: 600;
+    font-style: normal;
+}
+
+html,
+body {
+    background-color: $color-secondary-brightest;
+    font-family: Oswald, sans-serif;
+    font-size: 16px;
+    font-weight: $font-weight-normal;
+    height: 100%;
+    z-index: 10;
+}
+
+::selection { 
+    background: rgba($color-primary, .75);
+}
+
+*,
+*::after,
+*::before {
+    box-sizing: border-box;
+}
+
+.preloading {
+    color: $color-primary;
+    display: block;
+    font-size: $font-size-xl;
+    left: 50%;
+    position: fixed;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+select::-ms-expand {
+    display: none;
+}
+
+@media screen and (min-width: 992px) {
+    .form-input {
+        max-width: 360px;
+        width: 360px;
+    }
+}
+
+.form-input {
+    border-radius: 0;
+    height: 45px;
+    padding: 10px;
+}
+
+.form-input-small {
+    max-width: 100px !important;
+}
+
+.form-input-medium {
+    width: 150px !important;
+}
+
+.alert {
+    background-color: $color-secondary;
+    border: 0;
+    border-radius: 0;
+    color: $color-primary;
+    font-size: $font-size-xl;
+}
+
+.divider {
+    border-top: 3px solid $color-secondary-brightest;
+
+    &--bottom {
+        border-top: 0;
+        border-bottom: 3px solid $color-secondary-brightest;
+    }
+}
+
+h1 {
+    font-size: $font-size-xxl;
+    font-weight: $font-weight-normal;
+    text-transform: uppercase;
+}
+
+h2 {
+    font-size: $font-size-xl;
+    font-weight: $font-weight-normal;
+    text-transform: uppercase;
+}

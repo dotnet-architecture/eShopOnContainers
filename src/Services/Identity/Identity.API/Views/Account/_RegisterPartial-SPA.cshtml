@@ -1,0 +1,100 @@
+﻿@model Microsoft.eShopOnContainers.Services.Identity.API.Models.AccountViewModels.RegisterViewModel
+
+<div class="container">
+    <h1 class="mb-4 mt-5">[ New Account ]</h1>
+    <form asp-controller="Account" asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-register">
+        <h4 class="order-create-section-title">Information</h4>
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="row">
+            <div class="form-group col-sm-6">
+                <label asp-for="User.Name" class="control-label form-label">Name</label>
+                <input asp-for="User.Name" class="form-control form-input" />
+                <span asp-validation-for="User.Name" class="text-danger" />
+            </div>
+            <div class="form-group col-sm-6">
+                <label asp-for="User.LastName" class="control-label form-label">Last Name</label>
+                <input asp-for="User.LastName" class="form-control form-input" />
+                <span asp-validation-for="User.LastName" class="text-danger" />
+            </div>
+            <div class="form-group col-sm-6">
+                <label asp-for="User.Street" class="control-label form-label">Address</label>
+                <input asp-for="User.Street" class="form-control form-input" />
+                <span asp-validation-for="User.Street" class="text-danger" />
+            </div>
+            <div class="form-group col-sm-6">
+                <label asp-for="User.City" class="control-label form-label"></label>
+                <input asp-for="User.City" class="form-control form-input" />
+                <span asp-validation-for="User.City" class="text-danger" />
+            </div>
+            <div class="form-group col-sm-6">
+                <label asp-for="User.State" class="control-label form-label"></label>
+                <input asp-for="User.State" class="form-control form-input" />
+                <span asp-validation-for="User.State" class="text-danger" />
+            </div>
+            <div class="form-group col-sm-6">
+                <label asp-for="User.Country" class="control-label form-label"></label>
+                <input asp-for="User.Country" class="form-control form-input" />
+                <span asp-validation-for="User.Country" class="text-danger" />
+            </div>
+            <div class="form-group col-sm-6">
+                <label asp-for="User.ZipCode" class="control-label form-label">Postcode</label>
+                <input asp-for="User.ZipCode" class="form-control form-input" />
+                <span asp-validation-for="User.ZipCode" class="text-danger" />
+            </div>
+            <div class="form-group col-sm-6">
+                <label asp-for="User.PhoneNumber" class="control-label form-label">Phone Number</label>
+                <input asp-for="User.PhoneNumber" class="form-control form-input" />
+                <span asp-validation-for="User.PhoneNumber" class="text-danger" />
+            </div>
+        </div>
+            <div class="mt-4">
+                <h4 class="order-create-section-title">Credit Card</h4>
+            </div>
+        <div class="row">
+            <div class="form-group col-sm-6">
+                <label asp-for="User.CardNumber" class="control-label form-label">Card Number</label>
+                <input asp-for="User.CardNumber" class="form-control form-input" />
+                <span asp-validation-for="User.CardNumber" class="text-danger" />
+            </div>
+            <div class="form-group col-sm-6">
+                <label asp-for="User.CardHolderName" class="control-label form-label">Cardholder Name</label>
+                <input asp-for="User.CardHolderName" class="form-control form-input" />
+                <span asp-validation-for="User.CardHolderName" class="text-danger" />
+            </div>
+            <div class="form-group col-sm-3">
+                <label asp-for="User.Expiration" class="control-label form-label">Expiration Date</label>
+                <input asp-for="User.Expiration" placeholder="MM/YY" class="form-control form-input form-input-small" />
+                <span asp-validation-for="User.Expiration" class="text-danger" />
+            </div>
+            <div class="form-group col-sm-3">
+                <label asp-for="User.SecurityNumber" class="control-label form-label">Security Code</label>
+                <input asp-for="User.SecurityNumber" class="form-control form-input form-input-small" />
+                <span asp-validation-for="User.SecurityNumber" class="text-danger" />
+            </div>
+        </div>
+        <br /><br />
+        <div class="row">
+            <div class="form-group col-sm-6">
+                <label asp-for="Email" class="control-label form-label"></label>
+                <input asp-for="Email" class="form-control form-input" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group col-sm-offset-6"></div>
+            <div class="form-group col-sm-6">
+                <label asp-for="Password" class="control-label form-label"></label>
+                <input asp-for="Password" class="form-control form-input" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group col-sm-6">
+                <label asp-for="ConfirmPassword" class="control-label form-label"></label>
+                <input asp-for="ConfirmPassword" class="form-control form-input" />
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+            </div>
+        <br /><br />
+        <div class="d-flex mt-3 justify-content-end">
+            <button type="submit" class="btn btn-primary">Register</button>
+        </div>
+        <br /><br />
+    </form>
+</div>

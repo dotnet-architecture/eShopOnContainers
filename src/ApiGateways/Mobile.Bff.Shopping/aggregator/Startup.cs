@@ -22,6 +22,8 @@ using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using OpenTelemetry.Customization.Extensions;
+using OpenTelemetry.Customization;
 
 namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator
 {
@@ -50,6 +52,14 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator
                  .AddDevspaces()
                  .AddHttpServices()
                  .AddGrpcServices();
+
+            // Add Telemetry
+            services.AddOpenTelemetry(new OpenTelemetryConfig()
+            {
+                ServiceName = "mobileshoppingagg",
+                ExportType = Configuration.GetValue<string>("OTEL_USE_EXPORTER"),
+                ExportToolEndpoint = Configuration.GetValue<string>("OTEL_EXPORTER_TOOL_ENDPOINT")
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -107,7 +117,7 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator
             services.Configure<UrlsConfig>(configuration.GetSection("urls"));
 
             services.AddControllers()
-                .AddNewtonsoftJson();
+                    .AddJsonOptions(options => options.JsonSerializerOptions.WriteIndented = true);
 
             services.AddSwaggerGen(options =>
             {

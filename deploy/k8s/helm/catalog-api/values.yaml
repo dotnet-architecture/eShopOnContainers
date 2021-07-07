@@ -38,6 +38,8 @@ env:
       key: all__EventBusConnection
     - name: AzureServiceBusEnabled
       key: all__UseAzureServiceBus
+    - name: OTEL_EXPORTER_TOOL_ENDPOINT
+      key: urls__Otel__ExporterEndpoint
       # values define environment variables with a fixed value (no configmap involved) (name is name of var, and value is its value)
   values:
     - name: ASPNETCORE_ENVIRONMENT
@@ -48,6 +50,8 @@ env:
       value: "80"
     - name: GRPC_PORT
       value: "81"
+    - name: OTEL_USE_EXPORTER
+      value: 'zipkin'
 probes:
   liveness:
     path: /liveness

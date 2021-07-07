@@ -1,0 +1,47 @@
+<div class="esh-orders_detail">
+    <div class="container">
+        <h1 class="mb-4 mt-5">[ Order List Detail ]</h1>
+        <div class="u-background-brightest p-5">
+            <article class="esh-orders_detail-titles row">
+                <section class="col-3">Order number</section>
+                <section class="col-3">Date</section>
+                <section class="col-3">Total</section>
+                <section class="col-3">Status</section>
+            </article>
+
+            <article class="esh-orders_detail-items row">
+                <section class="col-3">{{order.ordernumber}}</section>
+                <section class="col-3">{{order.date | date:'short'}}</section>
+                <section class="col-3">$ {{order.total}}</section>
+                <section class="col-3">{{order.status}}</section>
+            </article>
+
+            <h2 class="esh-orders_detail-title mt-5">Shipping address</h2>
+            <div class="u-mb-5">{{order.street}} {{order.city}} {{order.country}}</div>
+
+            <article class="esh-orders_detail-items divider divider--bottom d-flex align-items-center pb-3 mt-3 u-text-sm"
+                     *ngFor="let item of order.orderitems">
+                <div class="esh-orders_detail-thumbnail-container">
+                    <div class="esh-orders_detail-thumbnail-wrapper">
+                        <img class="esh-orders_detail-thumbnail" src="{{item.pictureurl}}">
+                    </div>
+                </div>
+                <div class="row w-100 ml-3">
+                    <div class="col-6">{{item.productname}}</div>
+                    <div class="col-2">$ {{item.unitprice | number:'.2-2'}}</div>
+                    <div class="col-2">{{item.units}}</div>
+                    <div class="col-2 text-right">${{(item.units * item.unitprice) | number:'.2-2'}}</div>
+                </div>
+            </article>
+
+            <div class="d-flex align-items-center justify-content-end mt-4 mb-4 text-uppercase u-text-xl">
+                <div>Total</div>
+                <div class="ml-3">${{order.total | number:'.2-2'}}</div>
+            </div>
+
+            <aside class="d-flex justify-content-end mt-5">
+                <a class="btn btn-secondary" routerLink="/orders">Back to list</a>
+            </aside>
+        </div>
+    </div>
+</div>

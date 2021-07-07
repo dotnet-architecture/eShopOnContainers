@@ -10,10 +10,10 @@ function Check-Admin {
   $currentUser.IsInRole([Security.Principal.WindowsBuiltinRole]::Administrator)
 }
 function Add-InboundRule {
-  New-NetFirewallRule -DisplayName $InboundDisplayName -Confirm -Description "$Name Inbound Rule for port range 5100-5150" -LocalAddress Any -LocalPort 5100-5150 -Protocol tcp -RemoteAddress Any -RemotePort Any -Direction Inbound
+  New-NetFirewallRule -DisplayName $InboundDisplayName -Confirm -Description "$Name Inbound Rule for port range 5100-5205" -LocalAddress Any -LocalPort 5100-5205 -Protocol tcp -RemoteAddress Any -RemotePort Any -Direction Inbound
 }
 function Add-OutboundRule {
-  New-NetFirewallRule -DisplayName $OutboundDisplayName -Confirm -Description "$Name Outbound Rule for port range 5100-5150" -LocalAddress Any -LocalPort 5100-5150 -Protocol tcp -RemoteAddress Any -RemotePort Any -Direction Outbound
+  New-NetFirewallRule -DisplayName $OutboundDisplayName -Confirm -Description "$Name Outbound Rule for port range 5100-5205" -LocalAddress Any -LocalPort 5100-5205 -Protocol tcp -RemoteAddress Any -RemotePort Any -Direction Outbound
 }
 
 if ((Check-Admin) -eq $false) {

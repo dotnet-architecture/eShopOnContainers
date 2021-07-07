@@ -18,6 +18,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using OpenTelemetry.Customization;
+using OpenTelemetry.Customization.Extensions;
 using RabbitMQ.Client;
 using System;
 using System.Collections.Generic;
@@ -43,6 +45,13 @@ namespace Webhooks.API
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            services.AddOpenTelemetry(new OpenTelemetryConfig()
+            {
+                ServiceName = "Webhooks.API",
+                ExportType = Configuration.GetValue<string>("OTEL_USE_EXPORTER"),
+                ExportToolEndpoint = Configuration.GetValue<string>("OTEL_EXPORTER_TOOL_ENDPOINT")
+            });
+
             services
                 .AddAppInsight(Configuration)
                 .AddCustomRouting(Configuration)

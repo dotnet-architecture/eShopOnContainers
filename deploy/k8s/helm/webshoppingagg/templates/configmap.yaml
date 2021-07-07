@@ -1,6 +1,7 @@
 {{- $name := include "webshoppingagg.fullname" . -}}
 {{- $identity := include "url-of" (list .Values.app.ingress.entries.identity .) -}}
 {{- $protocol := include "protocol" . -}}
+{{- $zipkin := include "url-of" (list .Values.app.ingress.entries.zipkin .) -}}
 
 apiVersion: v1
 kind: ConfigMap
@@ -27,3 +28,4 @@ data:
   internalurls__grpcCatalog: "http://{{ .Values.app.svc.catalog }}:{{ .Values.service.grpcPort }}"
   internalurls__grpcOrdering: "http://{{ .Values.app.svc.ordering }}:{{ .Values.service.grpcPort }}"
   urls__IdentityUrlExternal: {{ $protocol }}://{{ $identity }}
+  urls__Otel__ExporterEndpoint: http://{{ .Values.app.svc.zipkin }}:9411/api/v2/spans

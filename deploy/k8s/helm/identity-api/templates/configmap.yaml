@@ -9,6 +9,7 @@
 {{- $xamarincallback := include "url-of" (list "xamarincallback" .) -}}
 {{- $webhooks_url := include "url-of" (list .Values.app.ingress.entries.webhooks .) -}}
 {{- $webhooksweb_url := include "url-of" (list .Values.app.ingress.entries.webhooksweb .) -}}
+{{- $zipkin := include "url-of" (list .Values.app.ingress.entries.zipkin .) -}}
 
 apiVersion: v1
 kind: ConfigMap
@@ -33,3 +34,4 @@ data:
   webhooksapi_e:  http://{{ $webhooks_url }}
   webhooksweb_e: http://{{ $webhooksweb_url }}
   enableDevspaces: "{{ .Values.enableDevspaces }}"
+  urls__Otel__ExporterEndpoint: http://{{ .Values.app.svc.zipkin }}:9411/api/v2/spans

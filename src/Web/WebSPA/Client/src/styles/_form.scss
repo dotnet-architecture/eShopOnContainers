@@ -1,0 +1,26 @@
+.form {
+  &-control {
+    border-width: 2px;
+    border-color: $color-secondary;
+    font-size: $font-size-m;
+    font-weight: $font-weight-semilight;
+
+    &:hover {
+      border-color: $color-secondary-brighter;
+    }
+
+    &:focus {
+      border-color: $color-primary;
+      box-shadow: unset;
+    }
+
+    &:visited {
+      text-decoration: unset;
+    }
+  }
+}
+
+label {
+  font-size: $font-size-s;
+  margin-bottom: 0.2rem;
+}

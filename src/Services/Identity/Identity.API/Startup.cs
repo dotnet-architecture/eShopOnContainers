@@ -21,6 +21,8 @@ using Microsoft.Extensions.Logging;
 using StackExchange.Redis;
 using System;
 using System.Reflection;
+using OpenTelemetry.Customization;
+using OpenTelemetry.Customization.Extensions;
 
 namespace Microsoft.eShopOnContainers.Services.Identity.API
 {
@@ -37,6 +39,13 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             RegisterAppInsights(services);
+
+            services.AddOpenTelemetry(new OpenTelemetryConfig()
+            {
+                ServiceName = "Identity.API",
+                ExportType = Configuration.GetValue<string>("OTEL_USE_EXPORTER"),
+                ExportToolEndpoint = Configuration.GetValue<string>("OTEL_EXPORTER_TOOL_ENDPOINT")
+            });
 
             // Add framework services.
             services.AddDbContext<ApplicationDbContext>(options =>

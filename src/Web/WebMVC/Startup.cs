@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.eShopOnContainers.WebMVC.Extensions;
 using Microsoft.eShopOnContainers.WebMVC.Services;
 using Microsoft.eShopOnContainers.WebMVC.ViewModels;
 using Microsoft.Extensions.Configuration;
@@ -14,6 +15,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Logging;
+using OpenTelemetry.Customization;
+using OpenTelemetry.Customization.Extensions;
 using StackExchange.Redis;
 using System;
 using System.IdentityModel.Tokens.Jwt;
@@ -35,12 +38,19 @@ namespace Microsoft.eShopOnContainers.WebMVC
         {
             services.AddControllersWithViews()
                 .Services
-                .AddAppInsight(Configuration)
-                .AddOpenTelemetry()
+                .AddAppInsight(Configuration)                
                 .AddHealthChecks(Configuration)
                 .AddCustomMvc(Configuration)
                 .AddDevspaces()
                 .AddHttpClientServices(Configuration);
+
+            // Add Telemetry
+            services.AddOpenTelemetry(new OpenTelemetryConfig()
+            {
+                ServiceName = "WebMVC",
+                ExportType = Configuration.GetValue<string>("OTEL_USE_EXPORTER"),
+                ExportToolEndpoint = Configuration.GetValue<string>("OTEL_EXPORTER_TOOL_ENDPOINT")
+            });
 
             IdentityModelEventSource.ShowPII = true;       // Caution! Do NOT use in production: https://aka.ms/IdentityModel/PII
 

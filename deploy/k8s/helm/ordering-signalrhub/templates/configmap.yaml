@@ -1,5 +1,6 @@
 {{- $name := include "ordering-signalrhub.fullname" . -}}
 {{- $identity := include "url-of" (list .Values.app.ingress.entries.identity .) -}}
+{{- $zipkin := include "url-of" (list .Values.app.ingress.entries.zipkin .) -}}
 
 apiVersion: v1
 kind: ConfigMap
@@ -16,3 +17,4 @@ data:
   all__UseAzureServiceBus: "{{ .Values.inf.eventbus.useAzure }}"
   signalr__StoreConnectionString: {{ .Values.inf.redis.keystore.constr }}
   urls__IdentityUrl: http://identity-api
+  urls__Otel__ExporterEndpoint: http://{{ .Values.app.svc.zipkin }}:9411/api/v2/spans

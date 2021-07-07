@@ -19,6 +19,7 @@ app:                                                    # app global settings
       payment: payment-api                              # ingress entry for payment api
       webhooks: webhooks-api                            # ingress entry for webhooks api
       webhooksweb: webhooks-web                         # ingress entry for webhooks web demo client
+      zipkin: zipkin                                    # ingress entry for the Zipkin tracing tool.
   svc:
       basket: basket-api                                # service name for basket api
       catalog: catalog-api                              # service name for catalog api
@@ -36,3 +37,4 @@ app:                                                    # app global settings
       payment: payment-api                              # service name for payment api
       webhooks: webhooks-api                            # service name for webhooks api
       webhooksweb: webhooks-client                      # service name for webhooks web
+      zipkin: zipkin                                    # service name for Zipkin

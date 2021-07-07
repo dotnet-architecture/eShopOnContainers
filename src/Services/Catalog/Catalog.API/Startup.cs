@@ -26,6 +26,8 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+using OpenTelemetry.Customization;
+using OpenTelemetry.Customization.Extensions;
 using RabbitMQ.Client;
 using System;
 using System.Data.Common;
@@ -53,7 +55,11 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
                 .AddIntegrationServices(Configuration)
                 .AddEventBus(Configuration)
                 .AddSwagger(Configuration)
-                .AddCustomHealthCheck(Configuration);
+                .AddCustomHealthCheck(Configuration)
+                .AddOpenTelemetry(new OpenTelemetryConfig() {  ServiceName= "Catalog.API", 
+                    ExportType= Configuration.GetValue<string>("OTEL_USE_EXPORTER"), 
+                    ExportToolEndpoint = Configuration.GetValue<string>("OTEL_EXPORTER_TOOL_ENDPOINT")
+                });
 
             var container = new ContainerBuilder();
             container.Populate(services);
@@ -140,7 +146,8 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
             services.AddControllers(options =>
             {
                 options.Filters.Add(typeof(HttpGlobalExceptionFilter));
-            }).AddNewtonsoftJson();
+            })
+            .AddJsonOptions(options => options.JsonSerializerOptions.WriteIndented = true);
 
             services.AddCors(options =>
             {

@@ -1,10 +1,10 @@
 ﻿using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Webhooks.API.Model;
 
@@ -23,7 +23,7 @@ namespace Webhooks.API.Services
         public async Task SendAll(IEnumerable<WebhookSubscription> receivers, WebhookData data)
         {
             var client = _httpClientFactory.CreateClient();
-            var json = JsonConvert.SerializeObject(data);
+            var json = JsonSerializer.Serialize(data);
             var tasks = receivers.Select(r => OnSendData(r, json, client));
             await Task.WhenAll(tasks.ToArray());
         }

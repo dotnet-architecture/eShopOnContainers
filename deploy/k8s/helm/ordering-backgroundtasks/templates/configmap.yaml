@@ -1,6 +1,7 @@
 {{- $name := include "ordering-backgroundtasks.fullname" . -}}
 {{- $sqlsrv := include "sql-name" . -}}
 {{- $cfgname :=  printf "cfg-%s" $name | trunc 63  }}
+{{- $zipkin := include "url-of" (list .Values.app.ingress.entries.zipkin .) -}}
 
 apiVersion: v1
 kind: ConfigMap
@@ -19,3 +20,4 @@ data:
   all__UseAzureServiceBus: "{{ .Values.inf.eventbus.useAzure }}"
   graceperiodmanager__CheckUpdateTime: "{{ .Values.cfg.checkUpdateTime }}"
   graceperiodmanager__GracePeriodTime: "{{ .Values.cfg.gracePeriodTime }}"
+  urls__Otel__ExporterEndpoint: http://{{ .Values.app.svc.zipkin }}:9411/api/v2/spans

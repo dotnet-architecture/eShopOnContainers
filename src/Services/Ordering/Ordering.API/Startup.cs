@@ -36,7 +36,10 @@
     using System.Data.Common;
     using System.IdentityModel.Tokens.Jwt;
     using System.IO;
-    using System.Reflection;
+    using System.Reflection;    
+    using global::Ordering.API.Extensions;
+    using OpenTelemetry.Customization;
+    using OpenTelemetry.Customization.Extensions;
 
     public class Startup
     {
@@ -49,12 +52,13 @@
 
         public virtual IServiceProvider ConfigureServices(IServiceCollection services)
         {
+
             services
                 .AddGrpc(options =>
                 {
                     options.EnableDetailedErrors = true;
                 })
-                .Services
+                .Services                
                 .AddApplicationInsights(Configuration)
                 .AddCustomMvc()
                 .AddHealthChecks(Configuration)
@@ -64,8 +68,15 @@
                 .AddCustomConfiguration(Configuration)
                 .AddEventBus(Configuration)
                 .AddCustomAuthentication(Configuration);
-            //configure autofac
 
+            services.AddOpenTelemetry(new OpenTelemetryConfig()
+            {
+                ServiceName = "Ordering.API",
+                ExportType = Configuration.GetValue<string>("OTEL_USE_EXPORTER"),
+                ExportToolEndpoint = Configuration.GetValue<string>("OTEL_EXPORTER_TOOL_ENDPOINT")
+            });
+
+            //configure autofac
             var container = new ContainerBuilder();
             container.Populate(services);
 
@@ -172,9 +183,8 @@
                 })
                 // Added for functional tests
                 .AddApplicationPart(typeof(OrdersController).Assembly)
-                .AddNewtonsoftJson()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
-            ;
+                .AddJsonOptions(options => options.JsonSerializerOptions.WriteIndented = true)
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
             services.AddCors(options =>
             {

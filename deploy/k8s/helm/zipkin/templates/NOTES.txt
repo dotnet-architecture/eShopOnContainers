@@ -1,0 +1,2 @@
+eShop trace tool Zipkin installed.
+-----------------------
