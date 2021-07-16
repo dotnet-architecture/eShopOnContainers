@@ -213,7 +213,9 @@ namespace Ordering.SignalrHub
                     var logger = sp.GetRequiredService<ILogger<EventBusServiceBus>>();
                     var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
                     var serviceBusConnectionString = Configuration["EventBusConnection"];
-                    string topicName = ServiceBusConnectionStringProperties.Parse(serviceBusConnectionString).EntityPath;
+                    string fullyQualifiedNamespace = ServiceBusConnectionStringProperties.Parse(serviceBusConnectionString).FullyQualifiedNamespace;
+                    string[] fulNamespaceArray = fullyQualifiedNamespace.Split('.');
+                    string topicName = fulNamespaceArray[0];
                     string subscriptionName = Configuration["SubscriptionClientName"];
 
                     return new EventBusServiceBus(serviceBusPersisterConnection, logger,

@@ -65,7 +65,9 @@ namespace Ordering.BackgroundTasks.Extensions
                     var logger = sp.GetRequiredService<ILogger<EventBusServiceBus>>();
                     var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
                     var serviceBusConnectionString = configuration["EventBusConnection"];
-                    string topicName = ServiceBusConnectionStringProperties.Parse(serviceBusConnectionString).EntityPath;
+                    string fullyQualifiedNamespace = ServiceBusConnectionStringProperties.Parse(serviceBusConnectionString).FullyQualifiedNamespace;
+                    string[] fulNamespaceArray = fullyQualifiedNamespace.Split('.');
+                    string topicName = fulNamespaceArray[0];
                     string subscriptionName = configuration["SubscriptionClientName"];
 
                     return new EventBusServiceBus(serviceBusPersisterConnection, logger, eventBusSubcriptionsManager, iLifetimeScope, topicName, subscriptionName);
