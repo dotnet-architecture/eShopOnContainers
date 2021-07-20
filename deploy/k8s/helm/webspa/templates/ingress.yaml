@@ -1,5 +1,7 @@
 {{- if .Values.ingress.enabled -}}
 {{- $ingressPath := include "pathBase" . -}}
+{{- $serviceName := $.Values.app.svc.spa -}}
+
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -38,8 +40,11 @@ spec:
       http:
         paths:
           - path: {{ $ingressPath }}
+            pathType: Prefix            
             backend:
-              serviceName: {{ $.Values.app.svc.spa }}
-              servicePort: http
+              service:
+                name: {{ $serviceName }}
+                port:
+                  number: 80
   {{- end }}
 {{- end }}

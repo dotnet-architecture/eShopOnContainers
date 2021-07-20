@@ -25,9 +25,13 @@ spec:
   rules:
   - http:
       paths:
-      - backend:
-          serviceName: {{ $serviceName }}
-          servicePort: http
-        path: {{ $ingressPath }}
+      - path: {{ $ingressPath }}
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ $serviceName }}
+            port:
+              number: 80     
+        
 {{- end -}}
 {{- end -}}
