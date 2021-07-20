@@ -130,9 +130,7 @@ namespace Payment.API
                     var logger = sp.GetRequiredService<ILogger<EventBusServiceBus>>();
                     var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
                     var serviceBusConnectionString = Configuration["EventBusConnection"];
-                    string fullyQualifiedNamespace = ServiceBusConnectionStringProperties.Parse(serviceBusConnectionString).FullyQualifiedNamespace;
-                    string[] fulNamespaceArray = fullyQualifiedNamespace.Split('.');
-                    string topicName = fulNamespaceArray[0];
+                    string topicName = ServiceBusConnectionStringProperties.Parse(serviceBusConnectionString).EntityPath;
                     string subscriptionName = Configuration["SubscriptionClientName"];
 
                     return new EventBusServiceBus(serviceBusPersisterConnection, logger,
