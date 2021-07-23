@@ -7,8 +7,8 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus
     public class DefaultServiceBusPersisterConnection : IServiceBusPersisterConnection
     {
         private readonly string _serviceBusConnectionString;
-        private ServiceBusAdministrationClient _subscriptionClient;
         private ServiceBusClient _topicClient;
+        private ServiceBusAdministrationClient _subscriptionClient;
 
         bool _disposed;
 
@@ -38,7 +38,6 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus
                 return _subscriptionClient;
             }
         }
-
 
         public ServiceBusClient CreateModel()
         {

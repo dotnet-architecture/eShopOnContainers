@@ -283,12 +283,10 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
                     var iLifetimeScope = sp.GetRequiredService<ILifetimeScope>();
                     var logger = sp.GetRequiredService<ILogger<EventBusServiceBus>>();
                     var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
-                    var serviceBusConnectionString = Configuration["EventBusConnection"];
-                    string topicName = ServiceBusConnectionStringProperties.Parse(serviceBusConnectionString).EntityPath;
                     string subscriptionName = Configuration["SubscriptionClientName"];
 
                     return new EventBusServiceBus(serviceBusPersisterConnection, logger,
-                        eventBusSubcriptionsManager, iLifetimeScope, topicName, subscriptionName);
+                        eventBusSubcriptionsManager, iLifetimeScope, subscriptionName);
                 });
             }
             else

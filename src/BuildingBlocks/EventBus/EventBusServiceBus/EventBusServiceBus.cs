@@ -6,7 +6,6 @@ using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus
@@ -17,7 +16,7 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus
         private readonly ILogger<EventBusServiceBus> _logger;
         private readonly IEventBusSubscriptionsManager _subsManager;
         private readonly ILifetimeScope _autofac;
-        private readonly string _topicName;
+        private readonly string _topicName = "eshop_event_bus";
         private readonly string _subscriptionName;
         private ServiceBusSender _sender;
         private ServiceBusProcessor _processor;
@@ -25,20 +24,18 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus
         private const string INTEGRATION_EVENT_SUFFIX = "IntegrationEvent";
 
         public EventBusServiceBus(IServiceBusPersisterConnection serviceBusPersisterConnection,
-            ILogger<EventBusServiceBus> logger, IEventBusSubscriptionsManager subsManager, ILifetimeScope autofac, string topicName, string subscriptionName)
+            ILogger<EventBusServiceBus> logger, IEventBusSubscriptionsManager subsManager, ILifetimeScope autofac, string subscriptionClientName)
         {
             _serviceBusPersisterConnection = serviceBusPersisterConnection;
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _subsManager = subsManager ?? new InMemoryEventBusSubscriptionsManager();
             _autofac = autofac;
-            _topicName = topicName;
-            _subscriptionName = subscriptionName;
+            _subscriptionName = subscriptionClientName;
             _sender = _serviceBusPersisterConnection.TopicClient.CreateSender(_topicName);
             ServiceBusProcessorOptions options = new ServiceBusProcessorOptions { MaxConcurrentCalls = 10, AutoCompleteMessages = false };
             _processor = _serviceBusPersisterConnection.TopicClient.CreateProcessor(_topicName, options);
 
             RemoveDefaultRule();
-            RegisterSubscriptionClientMessageHandlerAsync().GetAwaiter().GetResult();
         }
 
         public void Publish(IntegrationEvent @event)
@@ -125,12 +122,6 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus
             _subsManager.RemoveDynamicSubscription<TH>(eventName);
         }
 
-        public void Dispose()
-        {
-            _subsManager.Clear();
-            _processor.CloseAsync().GetAwaiter().GetResult();
-        }
-
         private async Task RegisterSubscriptionClientMessageHandlerAsync()
         {
             _processor.ProcessMessageAsync +=
@@ -148,6 +139,12 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus
 
             _processor.ProcessErrorAsync += ErrorHandler;
             await _processor.StartProcessingAsync();
+        }
+
+        public void Dispose()
+        {
+            _subsManager.Clear();
+            _processor.CloseAsync().GetAwaiter().GetResult();
         }
 
         private Task ErrorHandler(ProcessErrorEventArgs args)
