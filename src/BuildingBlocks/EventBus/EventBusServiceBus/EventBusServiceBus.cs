@@ -35,7 +35,7 @@
         public void Publish(IntegrationEvent @event)
         {
             var eventName = @event.GetType().Name.Replace(INTEGRATION_EVENT_SUFFIX, "");
-            var jsonMessage = JsonSerializer.Serialize(@event);
+            var jsonMessage = JsonSerializer.Serialize(@event, @event.GetType());
             var body = Encoding.UTF8.GetBytes(jsonMessage);
 
             var message = new Message
