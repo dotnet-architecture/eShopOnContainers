@@ -1,8 +1,8 @@
-FROM mcr.microsoft.com/dotnet/nightly/aspnet:6.0 AS base
+FROM mcr.microsoft.com/dotnet/nightly/aspnet:6.0.0-preview.6 AS base
 WORKDIR /app
 EXPOSE 80
 
-FROM mcr.microsoft.com/dotnet/nightly/sdk:6.0 AS build
+FROM mcr.microsoft.com/dotnet/nightly/sdk:6.0.0-preview.6 AS build
 WORKDIR /src
 
 # It's important to keep lines from here down to "COPY . ." identical in all Dockerfiles
