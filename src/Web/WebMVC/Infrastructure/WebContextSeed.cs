@@ -32,7 +32,7 @@ namespace WebMVC.Infrastructure
             }
         }
 
-        static void GetPreconfiguredCSS(string contentRootPath, string webroot, ILogger log)
+        static void GetPreconfiguredCSS(string contentRootPath, string webroot, Serilog.ILogger log)
         {
             try
             {
@@ -52,7 +52,7 @@ namespace WebMVC.Infrastructure
             }
         }
 
-        static void GetPreconfiguredImages(string contentRootPath, string webroot, ILogger log)
+        static void GetPreconfiguredImages(string contentRootPath, string webroot, Serilog.ILogger log)
         {
             try
             {
