@@ -14,7 +14,7 @@ RUN npm install
 COPY Web/WebSPA/Client .
 RUN npm run build:prod
 
-FROM mcr.microsoft.com/dotnet/nightly/sdk:6.0.0-preview.6 AS build
+FROM mcr.microsoft.com/dotnet/nightly/sdk:6.0.100-preview.6 AS build
 WORKDIR /src
 
 # Create this "restore-solution" section by running ./Create-DockerfileSolutionRestore.ps1, to optimize build cache reuse
