@@ -64,7 +64,7 @@ IWebHost BuildWebHost(IConfiguration configuration, string[] args) =>
         .UseSerilog()
         .Build();
 
-ILogger CreateSerilogLogger(IConfiguration configuration)
+Serilog.ILogger CreateSerilogLogger(IConfiguration configuration)
 {
     var seqServerUrl = configuration["Serilog:SeqServerUrl"];
     var logstashUrl = configuration["Serilog:LogstashgUrl"];
