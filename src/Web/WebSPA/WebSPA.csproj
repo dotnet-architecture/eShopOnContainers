@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <UserSecretsId>aspnetcorespa-c23d27a4-eb88-4b18-9b77-2a93f3b15119</UserSecretsId>
     <TypeScriptCompileOnSaveEnabled>false</TypeScriptCompileOnSaveEnabled>
     <IsTransformWebConfigDisabled>true</IsTransformWebConfigDisabled>

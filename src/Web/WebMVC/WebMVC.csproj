@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <UserSecretsId>aspnet-Microsoft.eShopOnContainers-946ae052-8305-4a99-965b-ec8636ddbae3</UserSecretsId>
     <DockerComposeProjectPath>..\..\..\docker-compose.dcproj</DockerComposeProjectPath>
     <TypeScriptToolsVersion>3.0</TypeScriptToolsVersion>
