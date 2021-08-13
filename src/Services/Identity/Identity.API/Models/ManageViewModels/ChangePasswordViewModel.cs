@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Microsoft.eShopOnContainers.Services.Identity.API.Models.ManageViewModels
+﻿namespace Microsoft.eShopOnContainers.Services.Identity.API.Models.ManageViewModels
 {
     public record ChangePasswordViewModel
     {

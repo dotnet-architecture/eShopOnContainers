@@ -1,12 +1,8 @@
-﻿using IdentityServer4.Models;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace Microsoft.eShopOnContainers.Services.Identity.API.Models.AccountViewModels
+﻿namespace Microsoft.eShopOnContainers.Services.Identity.API.Models.AccountViewModels
 {
     public record ConsentViewModel : ConsentInputModel
     {
-        public ConsentViewModel(ConsentInputModel model, string returnUrl, AuthorizationRequest request, Client client, Resources resources)
+        public ConsentViewModel(ConsentInputModel model, string returnUrl, AuthorizationRequest request, IdentityServer4.Models.Client client, Resources resources)
         {
             RememberConsent = model?.RememberConsent ?? true;
             ScopesConsented = model?.ScopesConsented ?? Enumerable.Empty<string>();
@@ -43,7 +39,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Models.AccountViewMo
             Checked = check || scope.Required;
         }
 
-        public ScopeViewModel(IdentityResource identity, bool check)
+        public ScopeViewModel(IdentityServer4.Models.IdentityResource identity, bool check)
         {
             Name = identity.Name;
             DisplayName = identity.DisplayName;

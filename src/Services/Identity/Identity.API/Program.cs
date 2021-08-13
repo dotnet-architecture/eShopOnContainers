@@ -1,20 +1,4 @@
-﻿using IdentityServer4.EntityFramework.DbContexts;
-using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.eShopOnContainers.Services.Identity.API;
-using Microsoft.eShopOnContainers.Services.Identity.API.Data;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using Serilog;
-using System;
-using System.IO;
-using Azure.Identity;
-using Azure.Core;
-
-string Namespace = typeof(Startup).Namespace;
+﻿string Namespace = typeof(Startup).Namespace;
 string AppName = Namespace.Substring(Namespace.LastIndexOf('.', Namespace.LastIndexOf('.') - 1) + 1);
 
 var configuration = GetConfiguration();

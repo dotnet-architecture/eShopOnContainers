@@ -1,6 +1,4 @@
-﻿using System.Text.RegularExpressions;
-
-namespace Microsoft.eShopOnContainers.Services.Identity.API.Services
+﻿namespace Microsoft.eShopOnContainers.Services.Identity.API.Services
 {
     public class RedirectService : IRedirectService
     {
