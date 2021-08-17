@@ -8880,7 +8880,7 @@
   "resolved" "https://registry.npmjs.org/resolve/-/resolve-1.8.1.tgz"
   "version" "1.8.1"
   dependencies:
-    "path-parse" "^1.0.5"
+    "path-parse" "^1.0.7"
 
 "resolve@^1.10.0":
   "integrity" "sha512-wENBPt4ySzg4ybFQW2TT1zMQucPK95HSh/nq2CFTZVOGut2+pQvSsgtda4d26YrYcr067wjbmzOG8byDPBX63A=="
@@ -8888,7 +8888,7 @@
   "version" "1.20.0"
   dependencies:
     "is-core-module" "^2.2.0"
-    "path-parse" "^1.0.6"
+    "path-parse" "^1.0.7"
 
 "restore-cursor@^1.0.1":
   "integrity" "sha1-NGYfRohjJ/7SmRR5FSJS35LapUE="
