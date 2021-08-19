@@ -19,7 +19,7 @@
     "Microsoft.eShopOnContainers.Services.Basket.API": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "http://localhost:55103/",
+      "launchUrl": "http://localhost:5103/",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
