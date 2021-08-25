@@ -22,7 +22,7 @@
     <PackageReference Include="Grpc.Core" Version="2.34.0" />
     <PackageReference Include="Grpc.Net.ClientFactory" Version="2.34.0" />
     <PackageReference Include="Grpc.Tools" Version="2.34.0" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.9" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.HealthChecks" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="5.0.2" />
     <PackageReference Include="Serilog.AspNetCore" Version="3.4.0" />
