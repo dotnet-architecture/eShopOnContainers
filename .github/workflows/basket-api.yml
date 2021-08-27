@@ -32,6 +32,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
     - uses: ./.github/workflows/composite/build
+      name: Build
       with:
         service: ${{ env.SERVICE }}
         registry_endpoint: ${{ secrets.REGISTRY_ENDPOINT }}
@@ -43,6 +44,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
     - uses: ./.github/workflows/composite/build-push
+      name: Build and push
       with:
         service: ${{ env.SERVICE }}
         registry_host: ${{ secrets.REGISTRY_HOST }}
