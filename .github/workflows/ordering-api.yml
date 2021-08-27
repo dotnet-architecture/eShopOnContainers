@@ -23,6 +23,8 @@ env:
   SERVICE: ordering-api
   IMAGE: ordering.api
   DOTNET_VERSION: 5.0.x
+  PROJECT_PATH: Services/Ordering/Ordering.API
+  TESTS_PATH: Services/Ordering/Ordering.UnitTests
 
 jobs:
 
@@ -30,97 +32,27 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'pull_request' }}
     steps:
-    - name: 'Checkout Github Action'
-      uses: actions/checkout@master
-    
-    - name: Setup dotnet
-      uses: actions/setup-dotnet@v1
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - uses: ./.github/workflows/composite/build-test
       with:
-        dotnet-version: ${{ env.DOTNET_VERSION }}
-
-    - name: Build and run unit tests
-      run: |
-        cd src
-        dotnet restore "eShopOnContainers-ServicesAndWebApps.sln"
-        cd Services/Ordering/Ordering.API
-        dotnet build --no-restore
-        cd -
-        cd Services/Ordering/Ordering.UnitTests
-        dotnet build --no-restore
-        dotnet test --no-build -v=normal
-      
-    - name: Compose build ${{ env.SERVICE }}
-      run: sudo -E docker-compose build ${{ env.SERVICE }}
-      working-directory: ./src
-      shell: bash
-      env:
-        TAG: ${{ env.BRANCH }}
-        REGISTRY: ${{ secrets.REGISTRY_ENDPOINT }}
+        service: ${{ env.SERVICE }}
+        registry_endpoint: ${{ secrets.REGISTRY_ENDPOINT }}
+        dotnet_version: ${{ env.DOTNET_VERSION }}
+        project_path: ${{ env.PROJECT_PATH }}
+        tests_path: ${{ env.TESTS_PATH }}
 
   BuildLinux:
     runs-on: ubuntu-latest
     if: ${{ github.event_name != 'pull_request' }}
     steps:
-    - name: 'Checkout Github Action'
-      uses: actions/checkout@master
-  
-    - name: Setup dotnet
-      uses: actions/setup-dotnet@v1
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - uses: ./.github/workflows/composite/build-push
       with:
-        dotnet-version: ${{ env.DOTNET_VERSION }}
-
-    - name: Build and run unit tests
-      run: |
-        cd src
-        dotnet restore "eShopOnContainers-ServicesAndWebApps.sln"
-        cd Services/Ordering/Ordering.API
-        dotnet build --no-restore
-        cd -
-        cd Services/Ordering/Ordering.UnitTests
-        dotnet build --no-restore
-        dotnet test --no-build -v=normal
-
-    - name: Enable experimental features for the Docker daemon and CLI
-      run: |
-          echo $'{\n  "experimental": true\n}' | sudo tee /etc/docker/daemon.json
-          mkdir -p ~/.docker
-          echo $'{\n  "experimental": "enabled"\n}' | sudo tee ~/.docker/config.json
-          sudo service docker restart
-          docker version -f '{{.Client.Experimental}}'
-          docker version -f '{{.Server.Experimental}}'
-
-    - name: Login to Container Registry
-      uses: docker/login-action@v1
-      with:
-        registry: ${{ secrets.REGISTRY_HOST }}
-        username: ${{ secrets.USERNAME }}
-        password: ${{ secrets.PASSWORD }}
-
-    - name: Set branch name as env variable
-      run: |
-        currentbranch=$(echo ${GITHUB_REF##*/})
-        echo "running on $currentbranch"
-        echo "BRANCH=$currentbranch" >> $GITHUB_ENV
-      shell: bash
-
-    - name: Compose build ${{ env.SERVICE }}
-      run: sudo -E docker-compose build ${{ env.SERVICE }}
-      working-directory: ./src
-      shell: bash
-      env:
-        TAG: ${{ env.BRANCH }}
-        REGISTRY: ${{ secrets.REGISTRY_ENDPOINT }}
-
-    - name: Compose push ${{ env.SERVICE }}
-      run: sudo -E docker-compose push ${{ env.SERVICE }}
-      working-directory: ./src
-      shell: bash
-      env:
-        TAG: ${{ env.BRANCH }}
-        REGISTRY: ${{ secrets.REGISTRY_ENDPOINT }}
-
-    - name: Create multiarch manifest
-      run: |
-        docker --config ~/.docker manifest create ${{ secrets.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:${{ env.BRANCH  }} ${{ secrets.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:linux-${{ env.BRANCH  }}
-        docker --config ~/.docker manifest push ${{ secrets.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:${{ env.BRANCH  }}
-      shell: bash
+        service: ${{ env.SERVICE }}
+        registry_host: ${{ secrets.REGISTRY_HOST }}
+        registry_endpoint: ${{ secrets.REGISTRY_ENDPOINT }}
+        image_name: ${{ env.IMAGE }}
+        registry_username: ${{ secrets.USERNAME }}
+        registry_password: ${{ secrets.PASSWORD }}
