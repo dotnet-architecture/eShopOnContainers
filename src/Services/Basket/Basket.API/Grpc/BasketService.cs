@@ -1,4 +1,5 @@
 ﻿namespace GrpcBasket;
+
 public class BasketService : Basket.BasketBase
 {
     private readonly IBasketRepository _repository;
