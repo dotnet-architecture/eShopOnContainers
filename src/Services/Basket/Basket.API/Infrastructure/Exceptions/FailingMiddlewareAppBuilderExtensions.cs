@@ -6,6 +6,7 @@ public static class FailingMiddlewareAppBuilderExtensions
     {
         return UseFailingMiddleware(builder, null);
     }
+
     public static IApplicationBuilder UseFailingMiddleware(this IApplicationBuilder builder, Action<FailingOptions> action)
     {
         var options = new FailingOptions();

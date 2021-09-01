@@ -1,4 +1,5 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Basket.API.Infrastructure.Repositories;
+namespace Microsoft.eShopOnContainers.Services.Basket.API.Infrastructure.Repositories;
+
 public class RedisBasketRepository : IBasketRepository
 {
     private readonly ILogger<RedisBasketRepository> _logger;

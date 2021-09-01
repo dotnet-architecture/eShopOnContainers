@@ -10,8 +10,7 @@ public class AuthorizationHeaderParameterOperationFilter : IOperationFilter
 
         if (isAuthorized && !allowAnonymous)
         {
-            if (operation.Parameters == null)
-                operation.Parameters = new List<OpenApiParameter>();
+            operation.Parameters ??= new List<OpenApiParameter>();
 
 
             operation.Parameters.Add(new OpenApiParameter

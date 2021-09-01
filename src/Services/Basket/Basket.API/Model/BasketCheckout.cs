@@ -1,4 +1,5 @@
-﻿namespace Basket.API.Model;
+namespace Basket.API.Model;
+
 public class BasketCheckout
 {
     public string City { get; set; }
