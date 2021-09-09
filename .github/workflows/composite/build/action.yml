@@ -1,0 +1,21 @@
+name: "Build for PRe"
+description: "Builds a docker image without pushing"
+
+inputs:
+  service:
+    description: "Service to build"
+    required: true
+  registry_endpoint:
+    description: "Image registry repo e.g. myacr.azureacr.io/eshop"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+  - name: Compose build ${{ inputs.service }}
+    shell: bash
+    run: sudo -E docker-compose build ${{ inputs.service }}
+    working-directory: ./src
+    env:
+      TAG: ${{ env.BRANCH }}
+      REGISTRY: ${{ inputs.registry_endpoint }}

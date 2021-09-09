@@ -1,6 +1,7 @@
 name: payment-api
 
 on:
+  workflow_dispatch:
   push:
     branches:
     - dev
@@ -28,65 +29,24 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'pull_request' }}
     steps:
-    - name: 'Checkout Github Action'
-      uses: actions/checkout@master
-      
-    - name: Compose build ${{ env.SERVICE }}
-      run: sudo -E docker-compose build ${{ env.SERVICE }}
-      working-directory: ./src
-      shell: bash
-      env:
-        TAG: ${{ env.BRANCH }}
-        REGISTRY: ${{ secrets.REGISTRY_ENDPOINT }}
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - uses: ./.github/workflows/composite/build
+      with:
+        service: ${{ env.SERVICE }}
+        registry_endpoint: ${{ secrets.REGISTRY_ENDPOINT }}
 
   BuildLinux:
     runs-on: ubuntu-latest
     if: ${{ github.event_name != 'pull_request' }}
     steps:
-    - name: 'Checkout Github Action'
-      uses: actions/checkout@master
-
-    - name: Enable experimental features for the Docker daemon and CLI
-      run: |
-          echo $'{\n  "experimental": true\n}' | sudo tee /etc/docker/daemon.json
-          mkdir -p ~/.docker
-          echo $'{\n  "experimental": "enabled"\n}' | sudo tee ~/.docker/config.json
-          sudo service docker restart
-          docker version -f '{{.Client.Experimental}}'
-          docker version -f '{{.Server.Experimental}}'
-
-    - name: Login to Container Registry
-      uses: docker/login-action@v1
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - uses: ./.github/workflows/composite/build-push
       with:
-        registry: ${{ secrets.REGISTRY_HOST }}
-        username: ${{ secrets.USERNAME }}
-        password: ${{ secrets.PASSWORD }}
-
-    - name: Set branch name as env variable
-      run: |
-        currentbranch=$(echo ${GITHUB_REF##*/})
-        echo "running on $currentbranch"
-        echo "BRANCH=$currentbranch" >> $GITHUB_ENV
-      shell: bash
-
-    - name: Compose build ${{ env.SERVICE }}
-      run: sudo -E docker-compose build ${{ env.SERVICE }}
-      working-directory: ./src
-      shell: bash
-      env:
-        TAG: ${{ env.BRANCH }}
-        REGISTRY: ${{ secrets.REGISTRY_ENDPOINT }}
-
-    - name: Compose push ${{ env.SERVICE }}
-      run: sudo -E docker-compose push ${{ env.SERVICE }}
-      working-directory: ./src
-      shell: bash
-      env:
-        TAG: ${{ env.BRANCH }}
-        REGISTRY: ${{ secrets.REGISTRY_ENDPOINT }}
-
-    - name: Create multiarch manifest
-      run: |
-        docker --config ~/.docker manifest create ${{ secrets.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:${{ env.BRANCH  }} ${{ secrets.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:linux-${{ env.BRANCH  }}
-        docker --config ~/.docker manifest push ${{ secrets.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:${{ env.BRANCH  }}
-      shell: bash
+        service: ${{ env.SERVICE }}
+        registry_host: ${{ secrets.REGISTRY_HOST }}
+        registry_endpoint: ${{ secrets.REGISTRY_ENDPOINT }}
+        image_name: ${{ env.IMAGE }}
+        registry_username: ${{ secrets.USERNAME }}
+        registry_password: ${{ secrets.PASSWORD }}
