@@ -304,10 +304,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
             var baseUri = _settings.PicBaseUrl;
             var azureStorageEnabled = _settings.AzureStorageEnabled;
 
-            foreach (var item in items)
-            {
-                item.FillProductUrl(baseUri, azureStorageEnabled: azureStorageEnabled);
-            }
+            items.ForEach(item => { item.FillProductUrl(baseUri, azureStorageEnabled: azureStorageEnabled); });
 
             return items;
         }
