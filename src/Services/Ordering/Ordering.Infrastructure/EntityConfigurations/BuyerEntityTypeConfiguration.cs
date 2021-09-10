@@ -5,16 +5,11 @@ using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure;
 
 namespace Ordering.Infrastructure.EntityConfigurations
 {
-    class BuyerEntityTypeConfiguration
-        : IEntityTypeConfiguration<Buyer>
+    class BuyerEntityTypeConfiguration : BaseConfiguration<Buyer>
     {
-        public void Configure(EntityTypeBuilder<Buyer> buyerConfiguration)
+        public override void Configure(EntityTypeBuilder<Buyer> buyerConfiguration)
         {
             buyerConfiguration.ToTable("buyers", OrderingContext.DEFAULT_SCHEMA);
-
-            buyerConfiguration.HasKey(b => b.Id);
-
-            buyerConfiguration.Ignore(b => b.DomainEvents);
 
             buyerConfiguration.Property(b => b.Id)
                 .UseHiLo("buyerseq", OrderingContext.DEFAULT_SCHEMA);
@@ -36,6 +31,8 @@ namespace Ordering.Infrastructure.EntityConfigurations
             var navigation = buyerConfiguration.Metadata.FindNavigation(nameof(Buyer.PaymentMethods));
 
             navigation.SetPropertyAccessMode(PropertyAccessMode.Field);
+
+            base.Configure(buyerConfiguration);
         }
     }
 }

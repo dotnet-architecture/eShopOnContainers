@@ -6,16 +6,11 @@ using System;
 
 namespace Ordering.Infrastructure.EntityConfigurations
 {
-    class PaymentMethodEntityTypeConfiguration
-        : IEntityTypeConfiguration<PaymentMethod>
+    class PaymentMethodEntityTypeConfiguration : BaseConfiguration<PaymentMethod>
     {
-        public void Configure(EntityTypeBuilder<PaymentMethod> paymentConfiguration)
+        public override void Configure(EntityTypeBuilder<PaymentMethod> paymentConfiguration)
         {
             paymentConfiguration.ToTable("paymentmethods", OrderingContext.DEFAULT_SCHEMA);
-
-            paymentConfiguration.HasKey(b => b.Id);
-
-            paymentConfiguration.Ignore(b => b.DomainEvents);
 
             paymentConfiguration.Property(b => b.Id)
                 .UseHiLo("paymentseq", OrderingContext.DEFAULT_SCHEMA);
@@ -60,6 +55,8 @@ namespace Ordering.Infrastructure.EntityConfigurations
             paymentConfiguration.HasOne(p => p.CardType)
                 .WithMany()
                 .HasForeignKey("_cardTypeId");
+
+            base.Configure(paymentConfiguration);
         }
     }
 }
