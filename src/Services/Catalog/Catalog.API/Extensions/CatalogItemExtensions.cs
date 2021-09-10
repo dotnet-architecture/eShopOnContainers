@@ -6,9 +6,12 @@
         {
             if (item != null)
             {
-                item.PictureUri = azureStorageEnabled
-                   ? picBaseUrl + item.PictureFileName
-                   : picBaseUrl.Replace("[0]", item.Id.ToString());
+                // https://www.linkedin.com/feed/update/urn:li:activity:6841055191211491328/
+                item.PictureUri = azureStorageEnabled switch
+                {
+                    true => picBaseUrl + item.PictureFileName,
+                    _ => picBaseUrl.Replace("[0]", item.Id.ToString())
+                };
             }
         }
     }
