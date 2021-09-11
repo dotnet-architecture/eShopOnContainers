@@ -277,6 +277,25 @@
                     }
                 });
 
+                /*
+                 * resource: https://twitter.com/CoderBora/status/1436392448356495362
+                 *  Swagger => Authorization: Bearer {token} : DO YOU WANT TO WRITE "Bearer" to the Value each time?
+
+                    AddSecurityDefinition=>{ in Swagger
+                    
+                    Type = SecuritySchemeType Choose "Http" instead of "ApiKey". Avoid typing "Bearer" instead of token
+                 * 
+                 */
+                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description = @"JWT Authorization header using the Bearer scheme. Example: \'Authorization: Bearer {token}\'",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "Bearer"
+                });
+
+
                 options.OperationFilter<AuthorizeCheckOperationFilter>();
             });
 
