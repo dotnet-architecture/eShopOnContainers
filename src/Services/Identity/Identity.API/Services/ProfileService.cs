@@ -21,6 +21,8 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Services
             _userManager = userManager;
         }
 
+        //New Method ArgumentNullException.ThrowIfNull (obj) Added to .NET 6
+        //https://davidshergilashvili.space/2021/09/08/new-method-argumentnullexception-throwifnull-obj-added-to-net-6/
         async public Task GetProfileDataAsync(ProfileDataRequestContext context)
         {
             var subject = context.Subject ?? throw new ArgumentNullException(nameof(context.Subject));
