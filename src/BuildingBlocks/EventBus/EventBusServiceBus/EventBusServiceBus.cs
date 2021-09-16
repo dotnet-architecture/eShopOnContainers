@@ -8,6 +8,8 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Text;
+
 namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus
 {
     public class EventBusServiceBus : IEventBus, IDisposable
