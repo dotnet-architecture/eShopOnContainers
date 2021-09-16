@@ -1,0 +1,54 @@
+name: "Deploy Helm to AKS"
+description: "Deploys a helm chart to AKS"
+
+inputs:
+  azure_credentials:
+    description: "Credentials to connect to AKS"
+    required: true
+  cluster_name:
+    description: "Name of AKS cluster"
+    required: true
+  resource_group:
+    description: "Resource group of AKS cluster"
+    required: true
+  registry_host:
+    description: "Image registry host e.g. myacr.azureacr.io"
+    required: true
+  chart:
+    description: "Chart name"
+    required: true
+  chart_root:
+    description: "Root folder of chart"
+    required: true
+  namespace:
+    description: "Namespace to deploy to"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+  - uses: azure/login@v1
+    with:
+      creds: ${{ inputs.azure_credentials }}
+
+  - uses: azure/aks-set-context@v1
+    name: Set AKS context
+    with:
+      creds: '${{ inputs.azure_credentials }}'
+      cluster-name: ${{ inputs.cluster_name }}
+      resource-group: ${{ inputs.resource_group }}
+  
+  - name: Set branch name as env variable
+    shell: bash
+    run: |
+      currentbranch=$(echo ${GITHUB_REF##*/})
+      echo "running on $currentbranch"
+      echo "BRANCH=$currentbranch" >> $GITHUB_ENV
+  
+  - name: Deploy Chart
+    shell: bash
+    run: |
+      ./deploy-chart.sh -c ${{ inputs.chart }} --dns aks --aks-name ${{ inputs.clusteR_name }} --aks-rg ${{ inputs.resource_group }} -r ${{ inputs.registry_host }} -t $TAG --namespace ${{ inputs.namespace }} --acr-connected
+    env:
+      TAG: ${{ env.BRANCH }}
+    working-directory: ${{ inputs.chart_root }}

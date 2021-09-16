@@ -41,11 +41,13 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus
         public void Publish(IntegrationEvent @event)
         {
             var eventName = @event.GetType().Name.Replace(INTEGRATION_EVENT_SUFFIX, "");
+            var jsonMessage = JsonSerializer.Serialize(@event, @event.GetType());
+            var body = Encoding.UTF8.GetBytes(jsonMessage);
 
             var message = new ServiceBusMessage
             {
                 MessageId = Guid.NewGuid().ToString(),
-                Body = new BinaryData(@event),
+                Body = new BinaryData(body),
                 Subject = eventName,
             };
 
