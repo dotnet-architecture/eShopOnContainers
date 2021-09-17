@@ -1,10 +1,22 @@
 name: Deploy ordering-backgroundtasks
 
 on:
+
   workflow_dispatch:
+    # Inputs the workflow accepts.
+    inputs:
+      name:
+        # Friendly description to be shown in the UI instead of 'name'
+        description: 'execution name'
+        # Default value if no value is explicitly provided
+        default: 'Manual End to End Deployment'
+        # Input has to be provided for the workflow to run
+        required: false
+        
   repository_dispatch:
     types:
     - deploy
+    
   workflow_run:
     workflows: ["ordering-backgroundtasks"]
     branches: [dev]
