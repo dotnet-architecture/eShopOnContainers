@@ -1,4 +1,3 @@
-```terraform
 variable "subscription_id" { # Must have - Pass in using -var "subscription_id="
   type = string
   description = "contains the subscription_id for service principal"
