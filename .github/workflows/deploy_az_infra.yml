@@ -1,4 +1,3 @@
-```terraform
 name: Azure Services Deploy
 
 on:
