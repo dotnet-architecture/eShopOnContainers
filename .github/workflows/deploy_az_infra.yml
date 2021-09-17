@@ -1,0 +1,46 @@
+```terraform
+name: Azure Services Deploy
+
+on:
+
+  workflow_dispatch:
+    # Inputs the workflow accepts.
+    inputs:
+      name:
+        # Friendly description to be shown in the UI instead of 'name'
+        description: 'execution name'
+        # Default value if no value is explicitly provided
+        default: 'Manual End to End Deployment'
+        # Input has to be provided for the workflow to run
+        required: false
+
+
+defaults:
+  run:
+    working-directory:
+      ./deploy/azure/terraform/deploy_env    # Make sure this is the correct location for your main.tf file
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+
+    env:
+      ARM_CLIENT_ID: ${{secrets.TF_ARM_CLIENT_ID}}
+      ARM_CLIENT_SECRET: ${{secrets.TF_ARM_CLIENT_SECRET}}
+      ARM_SUBSCRIPTION_ID: ${{secrets.TF_ARM_SUBSCRIPTION_ID}}
+      ARM_TENANT_ID: ${{secrets.TF_ARM_TENANT_ID}}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Plan
+        run: terraform plan -var "client_id=${{secrets.TF_ARM_CLIENT_ID}}" -var "client_secret=${{secrets.TF_ARM_CLIENT_SECRET}}" -var "tenant_id=${{secrets.TF_ARM_TENANT_ID}}" -var "subscription_id=${{secrets.TF_ARM_SUBSCRIPTION_ID}}"
+
+      - name: Terraform Apply
+        run: terraform apply -var "client_id=${{secrets.TF_ARM_CLIENT_ID}}" -var "client_secret=${{secrets.TF_ARM_CLIENT_SECRET}}" -var "tenant_id=${{secrets.TF_ARM_TENANT_ID}}" -var "subscription_id=${{secrets.TF_ARM_SUBSCRIPTION_ID}}" -auto-approve
