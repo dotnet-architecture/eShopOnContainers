@@ -1,26 +1,28 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
+﻿using IdentityServer4.Models;
+
+namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
 {
     public class Config
     {
         // ApiResources define the apis in your system
-        public static IEnumerable<IdentityServer4.Models.ApiResource> GetApis()
+        public static IEnumerable<ApiResource> GetApis()
         {            
-            return new List<IdentityServer4.Models.ApiResource>
+            return new List<ApiResource>
             {
-                new IdentityServer4.Models.ApiResource("orders", "Orders Service"),
-                new IdentityServer4.Models.ApiResource("basket", "Basket Service"),
-                new IdentityServer4.Models.ApiResource("mobileshoppingagg", "Mobile Shopping Aggregator"),
-                new IdentityServer4.Models.ApiResource("webshoppingagg", "Web Shopping Aggregator"),
-                new IdentityServer4.Models.ApiResource("orders.signalrhub", "Ordering Signalr Hub"),
-                new IdentityServer4.Models.ApiResource("webhooks", "Webhooks registration Service"),
+                new ApiResource("orders", "Orders Service"),
+                new ApiResource("basket", "Basket Service"),
+                new ApiResource("mobileshoppingagg", "Mobile Shopping Aggregator"),
+                new ApiResource("webshoppingagg", "Web Shopping Aggregator"),
+                new ApiResource("orders.signalrhub", "Ordering Signalr Hub"),
+                new ApiResource("webhooks", "Webhooks registration Service"),
             };
         }
 
         // Identity resources are data like user ID, name, or email address of a user
         // see: http://docs.identityserver.io/en/release/configuration/resources.html
-        public static IEnumerable<IdentityServer4.Models.IdentityResource> GetResources()
+        public static IEnumerable<IdentityResource> GetResources()
         {
-            return new List<IdentityServer4.Models.IdentityResource>
+            return new List<IdentityResource>
             {
                 new IdentityResources.OpenId(),
                 new IdentityResources.Profile()
@@ -28,12 +30,12 @@
         }
 
         // client want to access resources (aka scopes)
-        public static IEnumerable<IdentityServer4.Models.Client> GetClients(Dictionary<string, string> clientsUrl)
+        public static IEnumerable<Client> GetClients(Dictionary<string, string> clientsUrl)
         {
-            return new List<IdentityServer4.Models.Client>
+            return new List<Client>
             {
                 // JavaScript Client
-                new IdentityServer4.Models.Client
+                new Client
                 {
                     ClientId = "js",
                     ClientName = "eShop SPA OpenId Client",
@@ -54,7 +56,7 @@
                         "webhooks"
                     },
                 },
-                new IdentityServer4.Models.Client
+                new Client
                 {
                     ClientId = "xamarin",
                     ClientName = "eShop Xamarin OpenId Client",
@@ -62,7 +64,7 @@
                     //Used to retrieve the access token on the back channel.
                     ClientSecrets =
                     {                        
-                        new IdentityServer4.Models.Secret("secret".Sha256())
+                        new Secret("secret".Sha256())
                     },
                     RedirectUris = { clientsUrl["Xamarin"] },
                     RequireConsent = false,
@@ -83,14 +85,14 @@
                     AllowOfflineAccess = true,
                     AllowAccessTokensViaBrowser = true
                 },
-                new IdentityServer4.Models.Client
+                new Client
                 {
                     ClientId = "mvc",
                     ClientName = "MVC Client",
-                    ClientSecrets = new List<IdentityServer4.Models.Secret>
+                    ClientSecrets = new List<Secret>
                     {
                         
-                        new IdentityServer4.Models.Secret("secret".Sha256())
+                        new Secret("secret".Sha256())
                     },
                     ClientUri = $"{clientsUrl["Mvc"]}",                             // public uri of the client
                     AllowedGrantTypes = GrantTypes.Hybrid,
@@ -120,13 +122,13 @@
                     AccessTokenLifetime = 60*60*2, // 2 hours
                     IdentityTokenLifetime= 60*60*2 // 2 hours
                 },
-                new IdentityServer4.Models.Client
+                new Client
                 {
                     ClientId = "webhooksclient",
                     ClientName = "Webhooks Client",
-                    ClientSecrets = new List<IdentityServer4.Models.Secret>
+                    ClientSecrets = new List<Secret>
                     {
-                        new IdentityServer4.Models.Secret("secret".Sha256())
+                        new Secret("secret".Sha256())
                     },
                     ClientUri = $"{clientsUrl["WebhooksWeb"]}",                             // public uri of the client
                     AllowedGrantTypes = GrantTypes.Hybrid,
@@ -152,13 +154,13 @@
                     AccessTokenLifetime = 60*60*2, // 2 hours
                     IdentityTokenLifetime= 60*60*2 // 2 hours
                 },
-                new IdentityServer4.Models.Client
+                new Client
                 {
                     ClientId = "mvctest",
                     ClientName = "MVC Client Test",
-                    ClientSecrets = new List<IdentityServer4.Models.Secret>
+                    ClientSecrets = new List<Secret>
                     {
-                        new IdentityServer4.Models.Secret("secret".Sha256())
+                        new Secret("secret".Sha256())
                     },
                     ClientUri = $"{clientsUrl["Mvc"]}",                             // public uri of the client
                     AllowedGrantTypes = GrantTypes.Hybrid,
@@ -184,7 +186,7 @@
                         "webhooks"
                     },
                 },
-                new IdentityServer4.Models.Client
+                new Client
                 {
                     ClientId = "basketswaggerui",
                     ClientName = "Basket Swagger UI",
@@ -199,7 +201,7 @@
                         "basket"
                     }
                 },
-                new IdentityServer4.Models.Client
+                new Client
                 {
                     ClientId = "orderingswaggerui",
                     ClientName = "Ordering Swagger UI",
@@ -214,7 +216,7 @@
                         "orders"
                     }
                 },
-                new IdentityServer4.Models.Client
+                new Client
                 {
                     ClientId = "mobileshoppingaggswaggerui",
                     ClientName = "Mobile Shopping Aggregattor Swagger UI",
@@ -229,7 +231,7 @@
                         "mobileshoppingagg"
                     }
                 },
-                new IdentityServer4.Models.Client
+                new Client
                 {
                     ClientId = "webshoppingaggswaggerui",
                     ClientName = "Web Shopping Aggregattor Swagger UI",
@@ -245,7 +247,7 @@
                         "basket"
                     }
                 },
-                new IdentityServer4.Models.Client
+                new Client
                 {
                     ClientId = "webhooksswaggerui",
                     ClientName = "WebHooks Service Swagger UI",

@@ -1,4 +1,6 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Identity.API
+﻿using Microsoft.AspNetCore.DataProtection;
+
+namespace Microsoft.eShopOnContainers.Services.Identity.API
 {
     public class Startup
     {

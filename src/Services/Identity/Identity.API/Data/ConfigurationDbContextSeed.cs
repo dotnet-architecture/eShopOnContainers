@@ -1,4 +1,6 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Identity.API.Data
+﻿using IdentityServer4.EntityFramework.Entities;
+
+namespace Microsoft.eShopOnContainers.Services.Identity.API.Data
 {
     public class ConfigurationDbContextSeed
     {
