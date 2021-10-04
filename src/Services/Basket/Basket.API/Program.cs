@@ -1,18 +1,4 @@
-﻿using Basket.API.Infrastructure.Middlewares;
-using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Server.Kestrel.Core;
-using Microsoft.eShopOnContainers.Services.Basket.API;
-using Microsoft.Extensions.Configuration;
-using Azure.Identity;
-using Serilog;
-using System;
-using System.IO;
-using System.Net;
-using Azure.Core;
-
-var configuration = GetConfiguration();
+﻿var configuration = GetConfiguration();
 
 Log.Logger = CreateSerilogLogger(configuration);
 

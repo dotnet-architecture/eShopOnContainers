@@ -1,18 +1,4 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.eShopOnContainers.Services.Identity.API.Extensions;
-using Microsoft.eShopOnContainers.Services.Identity.API.Models;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.IO.Compression;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-
-namespace Microsoft.eShopOnContainers.Services.Identity.API.Data
+﻿namespace Microsoft.eShopOnContainers.Services.Identity.API.Data
 {
 
 
@@ -58,7 +44,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Data
             }
         }
 
-        private IEnumerable<ApplicationUser> GetUsersFromFile(string contentRootPath, ILogger logger)
+        private IEnumerable<ApplicationUser> GetUsersFromFile(string contentRootPath, Microsoft.Extensions.Logging.ILogger logger)
         {
             string csvFileUsers = Path.Combine(contentRootPath, "Setup", "Users.csv");
 
@@ -192,7 +178,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Data
             return csvheaders;
         }
 
-        static void GetPreconfiguredImages(string contentRootPath, string webroot, ILogger logger)
+        static void GetPreconfiguredImages(string contentRootPath, string webroot, Microsoft.Extensions.Logging.ILogger logger)
         {
             try
             {
