@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Catalog.API.Infrastructure.Exceptions
+﻿namespace Catalog.API.Infrastructure.Exceptions
 {
     /// <summary>
     /// Exception type for app exceptions

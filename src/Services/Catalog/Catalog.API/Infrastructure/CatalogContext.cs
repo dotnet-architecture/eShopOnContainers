@@ -1,10 +1,7 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure
-{
-    using EntityConfigurations;
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.EntityFrameworkCore.Design;
-    using Model;
+﻿using Microsoft.eShopOnContainers.Services.Catalog.API.Model;
 
+namespace Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure
+{   
     public class CatalogContext : DbContext
     {
         public CatalogContext(DbContextOptions<CatalogContext> options) : base(options)

@@ -1,13 +1,4 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Polly;
-using System;
-using System.Data.SqlClient;
-
-namespace Catalog.API.Extensions
+﻿namespace Catalog.API.Extensions
 {
     public static class WebHostExtensions
     {

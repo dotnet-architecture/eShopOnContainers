@@ -1,22 +1,7 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure
-{
-    using Extensions.Logging;
-    using global::Catalog.API.Extensions;
-    using Microsoft.AspNetCore.Hosting;
-    using Microsoft.Extensions.Options;
-    using Model;
-    using Polly;
-    using Polly.Retry;
-    using System;
-    using System.Collections.Generic;
-    using System.Data.SqlClient;
-    using System.Globalization;
-    using System.IO;
-    using System.IO.Compression;
-    using System.Linq;
-    using System.Text.RegularExpressions;
-    using System.Threading.Tasks;
+﻿using Microsoft.eShopOnContainers.Services.Catalog.API.Model;
 
+namespace Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure
+{    
     public class CatalogContextSeed
     {
         public async Task SeedAsync(CatalogContext context, IWebHostEnvironment env, IOptions<CatalogSettings> settings, ILogger<CatalogContextSeed> logger)

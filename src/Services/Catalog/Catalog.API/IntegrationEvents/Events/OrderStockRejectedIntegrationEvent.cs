@@ -1,8 +1,5 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationEvents.Events
-{
-    using BuildingBlocks.EventBus.Events;
-    using System.Collections.Generic;
-
+{    
     public record OrderStockRejectedIntegrationEvent : IntegrationEvent
     {
         public int OrderId { get; }

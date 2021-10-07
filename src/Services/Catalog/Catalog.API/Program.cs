@@ -1,21 +1,5 @@
-﻿using Catalog.API.Extensions;
-using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Server.Kestrel.Core;
-using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF;
+﻿
 using Microsoft.eShopOnContainers.Services.Catalog.API;
-using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using Serilog;
-using System;
-using System.IO;
-using System.Net;
-using Azure.Identity;
-using Azure.Core;
 
 var configuration = GetConfiguration();
 
@@ -33,9 +17,7 @@ try
         var settings = services.GetService<IOptions<CatalogSettings>>();
         var logger = services.GetService<ILogger<CatalogContextSeed>>();
 
-        new CatalogContextSeed()
-                                            .SeedAsync(context, env, settings, logger)
-                                            .Wait();
+        new CatalogContextSeed().SeedAsync(context, env, settings, logger).Wait();
     })
     .MigrateDbContext<IntegrationEventLogContext>((_, __) => { });
 
