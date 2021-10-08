@@ -221,8 +221,7 @@
         public static IServiceCollection AddSwagger(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddSwaggerGen(options =>
-            {
-                options.DescribeAllEnumsAsStrings();
+            {                
                 options.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Title = "eShopOnContainers - Catalog HTTP API",
