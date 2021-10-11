@@ -1,4 +1,4 @@
-﻿using Microsoft.eShopOnContainers.Services.Ordering.Ordering.Domain.Events;
+﻿using Microsoft.eShopOnContainers.Services.Ordering.Domain.Events;
 
 namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
 
