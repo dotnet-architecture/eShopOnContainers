@@ -35,9 +35,10 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus
             _subscriptionName = subscriptionClientName;
             _sender = _serviceBusPersisterConnection.TopicClient.CreateSender(_topicName);
             ServiceBusProcessorOptions options = new ServiceBusProcessorOptions { MaxConcurrentCalls = 10, AutoCompleteMessages = false };
-            _processor = _serviceBusPersisterConnection.TopicClient.CreateProcessor(_topicName, options);
+            _processor = _serviceBusPersisterConnection.TopicClient.CreateProcessor(_topicName, _subscriptionName, options);
 
             RemoveDefaultRule();
+            RegisterSubscriptionClientMessageHandlerAsync().GetAwaiter().GetResult();
         }
 
         public void Publish(IntegrationEvent @event)

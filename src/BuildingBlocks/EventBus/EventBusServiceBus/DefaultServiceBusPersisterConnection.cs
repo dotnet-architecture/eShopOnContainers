@@ -35,6 +35,7 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus
         {
             get
             {
+                _subscriptionClient = new ServiceBusAdministrationClient("Endpoint=sb://eshopsbahsjtib3he5fg.servicebus.windows.net/;SharedAccessKeyName=Root;SharedAccessKey=2PJt+7/85C1gN6Xx+Cjn+UprCmDvwjJ9hDZ42GQRYLE=;EntityPath=eshop_event_bus");
                 return _subscriptionClient;
             }
         }
