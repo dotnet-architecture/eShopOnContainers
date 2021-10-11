@@ -1,8 +1,7 @@
-﻿namespace Catalog.API.IntegrationEvents
+﻿namespace Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationEvents;
+
+public interface ICatalogIntegrationEventService
 {
-    public interface ICatalogIntegrationEventService
-    {
-        Task SaveEventAndCatalogContextChangesAsync(IntegrationEvent evt);
-        Task PublishThroughEventBusAsync(IntegrationEvent evt);
-    }
+    Task SaveEventAndCatalogContextChangesAsync(IntegrationEvent evt);
+    Task PublishThroughEventBusAsync(IntegrationEvent evt);
 }

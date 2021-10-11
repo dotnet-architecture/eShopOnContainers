@@ -1,11 +1,10 @@
-﻿namespace Catalog.API.Infrastructure.ActionResults
+﻿namespace Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure.ActionResults;
+
+public class InternalServerErrorObjectResult : ObjectResult
 {
-    public class InternalServerErrorObjectResult : ObjectResult
+    public InternalServerErrorObjectResult(object error)
+        : base(error)
     {
-        public InternalServerErrorObjectResult(object error)
-            : base(error)
-        {
-            StatusCode = StatusCodes.Status500InternalServerError;
-        }
+        StatusCode = StatusCodes.Status500InternalServerError;
     }
 }
