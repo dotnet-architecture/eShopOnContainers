@@ -215,8 +215,7 @@ static class CustomExtensionsMethods
     public static IServiceCollection AddCustomSwagger(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddSwaggerGen(options =>
-        {
-            options.DescribeAllEnumsAsStrings();
+        {            
             options.SwaggerDoc("v1", new OpenApiInfo
             {
                 Title = "eShopOnContainers - Ordering HTTP API",
