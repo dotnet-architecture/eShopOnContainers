@@ -1,6 +1,8 @@
 ﻿using Microsoft.eShopOnContainers.Services.Ordering.Domain.Seedwork;
 using Ordering.Domain.Exceptions;
+using System.Runtime.CompilerServices;
 
+[assembly: InternalsVisibleToAttribute("Ordering.UnitTests")]
 namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate
 {
     public class OrderItem
@@ -19,7 +21,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.O
 
         protected OrderItem() { }
 
-        public OrderItem(int productId, string productName, decimal unitPrice, decimal discount, string PictureUrl, int units = 1)
+        internal OrderItem(int productId, string productName, decimal unitPrice, decimal discount, string PictureUrl, int units = 1)
         {
             if (units <= 0)
             {
