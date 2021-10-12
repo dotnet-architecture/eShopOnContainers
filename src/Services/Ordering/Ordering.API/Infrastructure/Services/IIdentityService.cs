@@ -1,9 +1,9 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure.Services
-{
-    public interface IIdentityService
-    {
-        string GetUserIdentity();
+﻿namespace Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure.Services;
 
-        string GetUserName();
-    }
+public interface IIdentityService
+{
+    string GetUserIdentity();
+
+    string GetUserName();
 }
+

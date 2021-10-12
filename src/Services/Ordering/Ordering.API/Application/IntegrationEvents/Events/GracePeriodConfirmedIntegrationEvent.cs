@@ -1,12 +1,10 @@
-﻿namespace Ordering.API.Application.IntegrationEvents.Events
+﻿namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.IntegrationEvents.Events;    
+
+public record GracePeriodConfirmedIntegrationEvent : IntegrationEvent
 {
-    using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
+    public int OrderId { get; }
 
-    public record GracePeriodConfirmedIntegrationEvent : IntegrationEvent
-    {
-        public int OrderId { get; }
-
-        public GracePeriodConfirmedIntegrationEvent(int orderId) =>
-            OrderId = orderId;
-    }
+    public GracePeriodConfirmedIntegrationEvent(int orderId) =>
+        OrderId = orderId;
 }
+

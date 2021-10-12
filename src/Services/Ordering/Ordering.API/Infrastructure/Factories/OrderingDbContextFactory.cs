@@ -1,10 +1,4 @@
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Design;
-using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure;
-using Microsoft.Extensions.Configuration;
-using System.IO;
-
-namespace Ordering.API.Infrastructure.Factories
+namespace Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure.Factories
 {
     public class OrderingDbContextFactory : IDesignTimeDbContextFactory<OrderingContext>
     {
