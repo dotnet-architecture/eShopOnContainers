@@ -1,11 +1,4 @@
-﻿using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-using Webhooks.API;
-using Webhooks.API.Infrastructure;
-
-CreateWebHostBuilder(args).Build()
+﻿CreateWebHostBuilder(args).Build()
     .MigrateDbContext<WebhooksContext>((_, __) => { })
     .Run();
 
