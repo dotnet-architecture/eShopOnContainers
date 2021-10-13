@@ -1,18 +1,13 @@
-﻿using System.Collections.Generic;
+﻿namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Models;
 
-namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Models
+public class UpdateBasketItemsRequest
 {
+    public string BasketId { get; set; }
 
-    public class UpdateBasketItemsRequest
+    public ICollection<UpdateBasketItemData> Updates { get; set; }
+
+    public UpdateBasketItemsRequest()
     {
-        public string BasketId { get; set; }
-
-        public ICollection<UpdateBasketItemData> Updates { get; set; }
-
-        public UpdateBasketItemsRequest()
-        {
-            Updates = new List<UpdateBasketItemData>();
-        }
+        Updates = new List<UpdateBasketItemData>();
     }
-
 }
