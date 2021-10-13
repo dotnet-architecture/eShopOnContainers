@@ -2,12 +2,13 @@
 using static CatalogApi.Catalog;
 
 namespace Microsoft.eShopOnContainers.Services.Catalog.API.Grpc;
+using Microsoft.Extensions.Logging;
 
 public class CatalogService : CatalogBase
 {
     private readonly CatalogContext _catalogContext;
     private readonly CatalogSettings _settings;
-    private readonly Microsoft.Extensions.Logging.ILogger _logger;
+    private readonly ILogger _logger;
     
     public CatalogService(CatalogContext dbContext, IOptions<CatalogSettings> settings, ILogger<CatalogService> logger)
     {
