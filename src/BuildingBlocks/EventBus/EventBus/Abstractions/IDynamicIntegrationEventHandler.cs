@@ -1,9 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
 
-namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions
+public interface IDynamicIntegrationEventHandler
 {
-    public interface IDynamicIntegrationEventHandler
-    {
-        Task Handle(dynamic eventData);
-    }
+    Task Handle(dynamic eventData);
 }
