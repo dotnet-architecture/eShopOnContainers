@@ -1,10 +1,4 @@
-﻿using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator;
-using Serilog;
-
-
-BuildWebHost(args).Run();
+﻿BuildWebHost(args).Run();
 IWebHost BuildWebHost(string[] args) =>
     WebHost
         .CreateDefaultBuilder(args)
