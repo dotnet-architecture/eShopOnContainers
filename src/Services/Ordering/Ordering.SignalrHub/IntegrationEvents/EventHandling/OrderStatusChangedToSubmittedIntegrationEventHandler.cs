@@ -1,4 +1,5 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Ordering.SignalrHub.IntegrationEvents.EventHandling;
+namespace Microsoft.eShopOnContainers.Services.Ordering.SignalrHub.IntegrationEvents.EventHandling;
+
 public class OrderStatusChangedToSubmittedIntegrationEventHandler :
     IIntegrationEventHandler<OrderStatusChangedToSubmittedIntegrationEvent>
 {
