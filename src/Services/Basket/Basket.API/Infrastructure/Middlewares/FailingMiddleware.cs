@@ -1,4 +1,5 @@
 ﻿namespace Basket.API.Infrastructure.Middlewares;
+
 using Microsoft.Extensions.Logging;
 
 public class FailingMiddleware

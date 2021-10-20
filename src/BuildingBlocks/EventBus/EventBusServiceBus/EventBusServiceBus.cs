@@ -139,7 +139,7 @@ public class EventBusServiceBus : IEventBus
         return Task.CompletedTask;
     }
 
-    private async Task<bool> ProcessEvent(string eventName, string message)
+    private async Task<bool> ProcessEventAsync(string eventName, string message)
     {
         var processed = false;
         if (_subsManager.HasSubscriptionsForEvent(eventName))

@@ -15,7 +15,7 @@ public partial class InMemoryEventBusSubscriptionsManager : IEventBusSubscriptio
         _eventTypes = new List<Type>();
     }
 
-    public bool IsEmpty => !_handlers.Keys.Any();
+    public bool IsEmpty => _handlers is { Count: 0 };
     public void Clear() => _handlers.Clear();
 
     public void AddDynamicSubscription<TH>(string eventName)

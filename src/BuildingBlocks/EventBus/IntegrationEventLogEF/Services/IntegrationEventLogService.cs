@@ -5,7 +5,7 @@ public class IntegrationEventLogService : IIntegrationEventLogService, IDisposab
     private readonly IntegrationEventLogContext _integrationEventLogContext;
     private readonly DbConnection _dbConnection;
     private readonly List<Type> _eventTypes;
-    private volatile bool disposedValue;
+    private volatile bool _disposedValue;
 
     public IntegrationEventLogService(DbConnection dbConnection)
     {
@@ -79,7 +79,7 @@ public class IntegrationEventLogService : IIntegrationEventLogService, IDisposab
 
     protected virtual void Dispose(bool disposing)
     {
-        if (!disposedValue)
+        if (!_disposedValue)
         {
             if (disposing)
             {
@@ -87,7 +87,7 @@ public class IntegrationEventLogService : IIntegrationEventLogService, IDisposab
             }
 
 
-            disposedValue = true;
+            _disposedValue = true;
         }
     }
 

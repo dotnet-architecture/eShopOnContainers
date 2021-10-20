@@ -44,6 +44,9 @@ public class DefaultRabbitMQPersistentConnection
 
         try
         {
+            _connection.ConnectionShutdown -= OnConnectionShutdown;
+            _connection.CallbackException -= OnCallbackException;
+            _connection.ConnectionBlocked -= OnConnectionBlocked;
             _connection.Dispose();
         }
         catch (IOException ex)

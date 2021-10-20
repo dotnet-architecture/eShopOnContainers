@@ -6,8 +6,7 @@ public class ResilientTransaction
     private ResilientTransaction(DbContext context) =>
         _context = context ?? throw new ArgumentNullException(nameof(context));
 
-    public static ResilientTransaction New(DbContext context) =>
-        new ResilientTransaction(context);
+    public static ResilientTransaction New(DbContext context) => new(context);
 
     public async Task ExecuteAsync(Func<Task> action)
     {

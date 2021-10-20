@@ -15,7 +15,7 @@ public class OrderApiClient : IOrderApiClient
 
     public async Task<OrderData> GetOrderDraftFromBasketAsync(BasketData basket)
     {
-        var url = _urls.Orders + UrlsConfig.OrdersOperations.GetOrderDraft();
+        var url = $"{_urls.Orders}{UrlsConfig.OrdersOperations.GetOrderDraft()}";
         var content = new StringContent(JsonSerializer.Serialize(basket), System.Text.Encoding.UTF8, "application/json");
         var response = await _apiClient.PostAsync(url, content);
 
