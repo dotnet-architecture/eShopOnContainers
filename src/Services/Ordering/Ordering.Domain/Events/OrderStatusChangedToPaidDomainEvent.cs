@@ -1,4 +1,5 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.Events;    
+namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.Events;
+  
 /// <summary>
 /// Event used when the order is paid
 /// </summary>
