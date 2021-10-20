@@ -1,23 +1,18 @@
-﻿namespace Ordering.Domain.Events
+namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.Events;
+  
+/// <summary>
+/// Event used when the order is paid
+/// </summary>
+public class OrderStatusChangedToPaidDomainEvent
+    : INotification
 {
-    using MediatR;
-    using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
-    using System.Collections.Generic;
+    public int OrderId { get; }
+    public IEnumerable<OrderItem> OrderItems { get; }
 
-    /// <summary>
-    /// Event used when the order is paid
-    /// </summary>
-    public class OrderStatusChangedToPaidDomainEvent
-        : INotification
+    public OrderStatusChangedToPaidDomainEvent(int orderId,
+        IEnumerable<OrderItem> orderItems)
     {
-        public int OrderId { get; }
-        public IEnumerable<OrderItem> OrderItems { get; }
-
-        public OrderStatusChangedToPaidDomainEvent(int orderId,
-            IEnumerable<OrderItem> orderItems)
-        {
-            OrderId = orderId;
-            OrderItems = orderItems;
-        }
+        OrderId = orderId;
+        OrderItems = orderItems;
     }
 }

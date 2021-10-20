@@ -1,13 +1,15 @@
 ﻿namespace Basket.API.Infrastructure.Middlewares;
 
+using Microsoft.Extensions.Logging;
+
 public class FailingMiddleware
 {
     private readonly RequestDelegate _next;
     private bool _mustFail;
     private readonly FailingOptions _options;
-    private readonly Microsoft.Extensions.Logging.ILogger _logger;
+    private readonly ILogger _logger;
 
-    public FailingMiddleware(RequestDelegate next, Microsoft.Extensions.Logging.ILogger<FailingMiddleware> logger, FailingOptions options)
+    public FailingMiddleware(RequestDelegate next, ILogger<FailingMiddleware> logger, FailingOptions options)
     {
         _next = next;
         _options = options;

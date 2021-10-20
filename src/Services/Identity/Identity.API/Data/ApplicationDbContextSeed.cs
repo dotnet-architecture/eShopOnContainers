@@ -1,7 +1,6 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Identity.API.Data
 {
-
-
+    using Microsoft.Extensions.Logging;
     public class ApplicationDbContextSeed
     {
         private readonly IPasswordHasher<ApplicationUser> _passwordHasher = new PasswordHasher<ApplicationUser>();
@@ -44,7 +43,7 @@
             }
         }
 
-        private IEnumerable<ApplicationUser> GetUsersFromFile(string contentRootPath, Microsoft.Extensions.Logging.ILogger logger)
+        private IEnumerable<ApplicationUser> GetUsersFromFile(string contentRootPath, ILogger logger)
         {
             string csvFileUsers = Path.Combine(contentRootPath, "Setup", "Users.csv");
 
@@ -178,7 +177,7 @@
             return csvheaders;
         }
 
-        static void GetPreconfiguredImages(string contentRootPath, string webroot, Microsoft.Extensions.Logging.ILogger logger)
+        static void GetPreconfiguredImages(string contentRootPath, string webroot, ILogger logger)
         {
             try
             {

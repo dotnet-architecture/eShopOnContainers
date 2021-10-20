@@ -1,12 +1,4 @@
-﻿using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Serilog;
-using System;
-using System.IO;
-using Ordering.SignalrHub;
-
-var configuration = GetConfiguration();
+﻿var configuration = GetConfiguration();
 
 Log.Logger = CreateSerilogLogger(configuration);
 

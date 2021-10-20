@@ -1,8 +1,10 @@
 namespace Microsoft.eShopOnContainers.Services.Identity.API.Devspaces
 {
+    using Microsoft.Extensions.Logging;
+
     public class DevspacesRedirectUriValidator : IRedirectUriValidator
     {
-        private readonly Microsoft.Extensions.Logging.ILogger _logger;
+        private readonly ILogger _logger;
         public DevspacesRedirectUriValidator(ILogger<DevspacesRedirectUriValidator> logger)
         {
             _logger = logger;

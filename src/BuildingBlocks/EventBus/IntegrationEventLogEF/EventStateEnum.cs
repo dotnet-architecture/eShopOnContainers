@@ -1,10 +1,10 @@
-﻿namespace Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF
+﻿namespace Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF;
+
+public enum EventStateEnum
 {
-    public enum EventStateEnum
-    {
-        NotPublished = 0,
-        InProgress = 1,
-        Published = 2,
-        PublishedFailed = 3
-    }
+    NotPublished = 0,
+    InProgress = 1,
+    Published = 2,
+    PublishedFailed = 3
 }
+

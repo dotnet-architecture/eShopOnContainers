@@ -1,12 +1,7 @@
-﻿using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
-using System;
-using System.Threading.Tasks;
+﻿namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.IntegrationEvents;
 
-namespace Ordering.API.Application.IntegrationEvents
+public interface IOrderingIntegrationEventService
 {
-    public interface IOrderingIntegrationEventService
-    {
-        Task PublishEventsThroughEventBusAsync(Guid transactionId);
-        Task AddAndSaveEventAsync(IntegrationEvent evt);
-    }
+    Task PublishEventsThroughEventBusAsync(Guid transactionId);
+    Task AddAndSaveEventAsync(IntegrationEvent evt);
 }

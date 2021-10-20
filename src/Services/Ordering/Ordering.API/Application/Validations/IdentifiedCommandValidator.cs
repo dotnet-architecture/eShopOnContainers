@@ -1,16 +1,11 @@
-﻿using FluentValidation;
-using Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands;
-using Microsoft.Extensions.Logging;
+﻿namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.Validations;
 
-namespace Ordering.API.Application.Validations
+public class IdentifiedCommandValidator : AbstractValidator<IdentifiedCommand<CreateOrderCommand, bool>>
 {
-    public class IdentifiedCommandValidator : AbstractValidator<IdentifiedCommand<CreateOrderCommand, bool>>
+    public IdentifiedCommandValidator(ILogger<IdentifiedCommandValidator> logger)
     {
-        public IdentifiedCommandValidator(ILogger<IdentifiedCommandValidator> logger)
-        {
-            RuleFor(command => command.Id).NotEmpty();
+        RuleFor(command => command.Id).NotEmpty();
 
-            logger.LogTrace("----- INSTANCE CREATED - {ClassName}", GetType().Name);
-        }
+        logger.LogTrace("----- INSTANCE CREATED - {ClassName}", GetType().Name);
     }
 }

@@ -1,15 +1,11 @@
-﻿using RabbitMQ.Client;
-using System;
+﻿namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ;
 
-namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
+public interface IRabbitMQPersistentConnection
+    : IDisposable
 {
-    public interface IRabbitMQPersistentConnection
-        : IDisposable
-    {
-        bool IsConnected { get; }
+    bool IsConnected { get; }
 
-        bool TryConnect();
+    bool TryConnect();
 
-        IModel CreateModel();
-    }
+    IModel CreateModel();
 }

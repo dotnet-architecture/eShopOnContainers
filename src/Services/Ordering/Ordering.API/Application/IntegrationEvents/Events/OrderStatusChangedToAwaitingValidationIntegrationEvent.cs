@@ -1,34 +1,30 @@
-﻿namespace Ordering.API.Application.IntegrationEvents.Events
+﻿namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.IntegrationEvents.Events;
+  
+public record OrderStatusChangedToAwaitingValidationIntegrationEvent : IntegrationEvent
 {
-    using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
-    using System.Collections.Generic;
+    public int OrderId { get; }
+    public string OrderStatus { get; }
+    public string BuyerName { get; }
+    public IEnumerable<OrderStockItem> OrderStockItems { get; }
 
-    public record OrderStatusChangedToAwaitingValidationIntegrationEvent : IntegrationEvent
+    public OrderStatusChangedToAwaitingValidationIntegrationEvent(int orderId, string orderStatus, string buyerName,
+        IEnumerable<OrderStockItem> orderStockItems)
     {
-        public int OrderId { get; }
-        public string OrderStatus { get; }
-        public string BuyerName { get; }
-        public IEnumerable<OrderStockItem> OrderStockItems { get; }
-
-        public OrderStatusChangedToAwaitingValidationIntegrationEvent(int orderId, string orderStatus, string buyerName,
-            IEnumerable<OrderStockItem> orderStockItems)
-        {
-            OrderId = orderId;
-            OrderStockItems = orderStockItems;
-            OrderStatus = orderStatus;
-            BuyerName = buyerName;
-        }
+        OrderId = orderId;
+        OrderStockItems = orderStockItems;
+        OrderStatus = orderStatus;
+        BuyerName = buyerName;
     }
+}
 
-    public record OrderStockItem
+public record OrderStockItem
+{
+    public int ProductId { get; }
+    public int Units { get; }
+
+    public OrderStockItem(int productId, int units)
     {
-        public int ProductId { get; }
-        public int Units { get; }
-
-        public OrderStockItem(int productId, int units)
-        {
-            ProductId = productId;
-            Units = units;
-        }
+        ProductId = productId;
+        Units = units;
     }
 }
