@@ -6,8 +6,4 @@ public class UpdateBasketItemData
 
     public int NewQty { get; set; }
 
-    public UpdateBasketItemData()
-    {
-        NewQty = 0;
-    }
 }

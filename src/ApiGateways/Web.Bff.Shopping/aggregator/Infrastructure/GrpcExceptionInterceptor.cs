@@ -19,11 +19,11 @@ public class GrpcExceptionInterceptor : Interceptor
         return new AsyncUnaryCall<TResponse>(HandleResponse(call.ResponseAsync), call.ResponseHeadersAsync, call.GetStatus, call.GetTrailers, call.Dispose);
     }
 
-    private async Task<TResponse> HandleResponse<TResponse>(Task<TResponse> t)
+    private async Task<TResponse> HandleResponse<TResponse>(Task<TResponse> task)
     {
         try
         {
-            var response = await t;
+            var response = await task;
             return response;
         }
         catch (RpcException e)

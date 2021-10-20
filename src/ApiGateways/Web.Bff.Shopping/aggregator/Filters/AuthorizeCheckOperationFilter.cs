@@ -24,7 +24,7 @@
             {
                 new OpenApiSecurityRequirement
                 {
-                    [ oAuthScheme ] = new [] { "Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator" }
+                    [ oAuthScheme ] = new[] { "Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator" }
                 }
             };
             }

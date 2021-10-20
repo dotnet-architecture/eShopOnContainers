@@ -15,12 +15,12 @@ public class HttpClientAuthorizationDelegatingHandler
         var authorizationHeader = _httpContextAccessor.HttpContext
             .Request.Headers["Authorization"];
 
-        if (!string.IsNullOrEmpty(authorizationHeader))
+        if (!string.IsNullOrWhitespace(authorizationHeader))
         {
             request.Headers.Add("Authorization", new List<string>() { authorizationHeader });
         }
 
-        var token = await GetToken();
+        var token = await GetTokenAsync();
 
         if (token != null)
         {
@@ -30,11 +30,11 @@ public class HttpClientAuthorizationDelegatingHandler
         return await base.SendAsync(request, cancellationToken);
     }
 
-    async Task<string> GetToken()
+    Task<string> GetTokenAsync()
     {
         const string ACCESS_TOKEN = "access_token";
 
-        return await _httpContextAccessor.HttpContext
+        return _httpContextAccessor.HttpContext
             .GetTokenAsync(ACCESS_TOKEN);
     }
 }

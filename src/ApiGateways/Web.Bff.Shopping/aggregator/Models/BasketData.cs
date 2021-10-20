@@ -4,7 +4,7 @@ public class BasketData
 {
     public string BuyerId { get; set; }
 
-    public List<BasketDataItem> Items { get; set; } = new List<BasketDataItem>();
+    public List<BasketDataItem> Items { get; set; } = new();
 
     public BasketData()
     {
