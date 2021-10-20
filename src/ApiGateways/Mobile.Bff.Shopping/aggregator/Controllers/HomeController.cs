@@ -3,7 +3,7 @@
 [Route("")]
 public class HomeController : Controller
 {
-    [HttpGet()]
+    [HttpGet]
     public IActionResult Index()
     {
         return new RedirectResult("~/swagger");

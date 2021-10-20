@@ -7,6 +7,7 @@ public class OrderController : ControllerBase
 {
     private readonly IBasketService _basketService;
     private readonly IOrderingService _orderingService;
+
     public OrderController(IBasketService basketService, IOrderingService orderingService)
     {
         _basketService = basketService;
@@ -19,12 +20,12 @@ public class OrderController : ControllerBase
     [ProducesResponseType(typeof(OrderData), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<OrderData>> GetOrderDraftAsync(string basketId)
     {
-        if (string.IsNullOrEmpty(basketId))
+        if (string.IsNullOrWhitespace(basketId))
         {
             return BadRequest("Need a valid basketid");
         }
         // Get the basket data and build a order draft based on it
-        var basket = await _basketService.GetById(basketId);
+        var basket = await _basketService.GetByIdAsync(basketId);
 
         if (basket == null)
         {

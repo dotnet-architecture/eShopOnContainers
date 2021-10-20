@@ -38,5 +38,5 @@ public class OrderData
 
     public string Buyer { get; set; }
 
-    public List<OrderItemData> OrderItems { get; } = new List<OrderItemData>();
+    public List<OrderItemData> OrderItems { get; } = new();
 }

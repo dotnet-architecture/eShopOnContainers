@@ -1,4 +1,4 @@
-﻿BuildWebHost(args).Run();
+await ﻿BuildWebHost(args).RunAsync();
 IWebHost BuildWebHost(string[] args) =>
     WebHost
         .CreateDefaultBuilder(args)
