@@ -1,4 +1,3 @@
-﻿
 namespace Microsoft.eShopOnContainers.Services.Ordering.API;
 
 public class Startup
