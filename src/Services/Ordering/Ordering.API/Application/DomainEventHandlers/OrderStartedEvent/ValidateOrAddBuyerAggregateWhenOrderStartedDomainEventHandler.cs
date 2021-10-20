@@ -54,8 +54,8 @@ namespace Ordering.API.Application.DomainEventHandlers.OrderStartedEvent
                 _buyerRepository.Update(buyer) :
                 _buyerRepository.Add(buyer);
 
-            await _buyerRepository.UnitOfWork
-                .SaveEntitiesAsync(cancellationToken);
+            //await _buyerRepository.UnitOfWork
+            //    .SaveEntitiesAsync(cancellationToken);
 
             var orderStatusChangedTosubmittedIntegrationEvent = new OrderStatusChangedToSubmittedIntegrationEvent(orderStartedEvent.Order.Id, orderStartedEvent.Order.OrderStatus.Name, buyer.Name);
             await _orderingIntegrationEventService.AddAndSaveEventAsync(orderStatusChangedTosubmittedIntegrationEvent);
