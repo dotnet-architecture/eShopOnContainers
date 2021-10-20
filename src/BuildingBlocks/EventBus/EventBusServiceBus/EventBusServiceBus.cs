@@ -121,15 +121,15 @@ public class EventBusServiceBus : IEventBus
                 var messageData = Encoding.UTF8.GetString(message.Body);
 
                 // Complete the message so that it is not received again.
-                if (await ProcessEvent(eventName, messageData))
+                if (await ProcessEventAsync(eventName, messageData))
                 {
                     await _serviceBusPersisterConnection.SubscriptionClient.CompleteAsync(message.SystemProperties.LockToken);
                 }
             },
-            new MessageHandlerOptions(ExceptionReceivedHandler) { MaxConcurrentCalls = 10, AutoComplete = false });
+            new MessageHandlerOptions(ExceptionReceivedHandlerAsync) { MaxConcurrentCalls = 10, AutoComplete = false });
     }
 
-    private Task ExceptionReceivedHandler(ExceptionReceivedEventArgs exceptionReceivedEventArgs)
+    private Task ExceptionReceivedHandlerAsync(ExceptionReceivedEventArgs exceptionReceivedEventArgs)
     {
         var ex = exceptionReceivedEventArgs.Exception;
         var context = exceptionReceivedEventArgs.ExceptionReceivedContext;
