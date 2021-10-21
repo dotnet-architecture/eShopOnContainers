@@ -125,11 +125,7 @@ public class BasketController : ControllerBase
         //item.PictureUri = 
 
         // Step 2: Get current basket status
-<<<<<<< HEAD
         var currentBasket = (await _basket.GetByIdAsync(data.BasketId)) ?? new BasketData(data.BasketId);
-=======
-        var currentBasket = (await _basket.GetById(data.BasketId)) ?? new BasketData(data.BasketId);
->>>>>>> upstream/migration/net-6
         // Step 3: Merge current status with new product
         currentBasket.Items.Add(new BasketDataItem()
         {
