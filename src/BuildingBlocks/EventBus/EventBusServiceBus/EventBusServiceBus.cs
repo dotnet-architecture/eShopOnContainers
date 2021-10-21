@@ -121,7 +121,7 @@ public class EventBusServiceBus : IEventBus
                 var messageData = Encoding.UTF8.GetString(message.Body);
 
                 // Complete the message so that it is not received again.
-                if (await ProcessEvent(eventName, messageData))
+                if (await ProcessEventAsync(eventName, messageData))
                 {
                     await _serviceBusPersisterConnection.SubscriptionClient.CompleteAsync(message.SystemProperties.LockToken);
                 }
