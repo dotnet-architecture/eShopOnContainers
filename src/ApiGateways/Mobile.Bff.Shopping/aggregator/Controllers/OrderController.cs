@@ -25,7 +25,7 @@ public class OrderController : ControllerBase
             return BadRequest("Need a valid basketid");
         }
         // Get the basket data and build a order draft based on it
-        var basket = await _basketService.GetById(basketId);
+        var basket = await _basketService.GetByIdAsync(basketId);
 
         if (basket == null)
         {
