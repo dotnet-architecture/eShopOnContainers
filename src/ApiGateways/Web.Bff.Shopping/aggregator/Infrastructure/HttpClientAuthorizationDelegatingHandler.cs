@@ -15,7 +15,7 @@ public class HttpClientAuthorizationDelegatingHandler
         var authorizationHeader = _httpContextAccessor.HttpContext
             .Request.Headers["Authorization"];
 
-        if (!string.IsNullOrWhitespace(authorizationHeader))
+        if (!string.IsNullOrWhiteSpace(authorizationHeader))
         {
             request.Headers.Add("Authorization", new List<string>() { authorizationHeader });
         }

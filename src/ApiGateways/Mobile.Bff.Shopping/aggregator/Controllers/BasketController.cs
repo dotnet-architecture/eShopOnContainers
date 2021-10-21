@@ -26,8 +26,7 @@ public class BasketController : ControllerBase
         }
 
         // Retrieve the current basket
-        var basket = await _basket.GetById(data.BuyerId) ?? new BasketData(data.BuyerId);
-
+        var basket = await _basket.GetByIdAsync(data.BuyerId) ?? new BasketData(data.BuyerId);
         var catalogItems = await _catalog.GetCatalogItemsAsync(data.Items.Select(x => x.ProductId));
         // group by product id to avoid duplicates
         var itemsCalculated = data
@@ -84,7 +83,7 @@ public class BasketController : ControllerBase
         }
 
         // Retrieve the current basket
-        var currentBasket = await _basket.GetById(data.BasketId);
+        var currentBasket = await _basket.GetByIdAsync(data.BasketId);
         if (currentBasket == null)
         {
             return BadRequest($"Basket with id {data.BasketId} not found.");
@@ -126,7 +125,7 @@ public class BasketController : ControllerBase
         //item.PictureUri = 
 
         // Step 2: Get current basket status
-        var currentBasket = (await _basket.GetById(data.BasketId)) ?? new BasketData(data.BasketId);
+        var currentBasket = (await _basket.GetByIdAsync(data.BasketId)) ?? new BasketData(data.BasketId);
         // Step 3: Merge current status with new product
         currentBasket.Items.Add(new BasketDataItem()
         {
