@@ -101,17 +101,11 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             services.Configure<BasketSettings>(Configuration);
 
             //By connecting here we are making sure that our service
-            //cannot start until redis is ready. This might slow down startup,
-            //but given that there is a delay on resolving the ip address
-            //and then creating the connection it seems reasonable to move
-            //that cost to startup instead of having the first request pay the
-            //penalty.
+            //cannot start until redis is ready.
             services.AddSingleton<ConnectionMultiplexer>(sp =>
             {
                 var settings = sp.GetRequiredService<IOptions<BasketSettings>>().Value;
                 var configuration = ConfigurationOptions.Parse(settings.ConnectionString, true);
-
-                configuration.ResolveDns = true;
 
                 return ConnectionMultiplexer.Connect(configuration);
             });
