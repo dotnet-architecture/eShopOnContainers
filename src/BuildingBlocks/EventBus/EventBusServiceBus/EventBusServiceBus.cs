@@ -126,10 +126,10 @@ public class EventBusServiceBus : IEventBus
                     await _serviceBusPersisterConnection.SubscriptionClient.CompleteAsync(message.SystemProperties.LockToken);
                 }
             },
-            new MessageHandlerOptions(ExceptionReceivedHandler) { MaxConcurrentCalls = 10, AutoComplete = false });
+            new MessageHandlerOptions(ExceptionReceivedHandlerAsync) { MaxConcurrentCalls = 10, AutoComplete = false });
     }
 
-    private Task ExceptionReceivedHandler(ExceptionReceivedEventArgs exceptionReceivedEventArgs)
+    private Task ExceptionReceivedHandlerAsync(ExceptionReceivedEventArgs exceptionReceivedEventArgs)
     {
         var ex = exceptionReceivedEventArgs.Exception;
         var context = exceptionReceivedEventArgs.ExceptionReceivedContext;
