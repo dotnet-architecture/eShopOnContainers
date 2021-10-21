@@ -1,8 +1,7 @@
-﻿namespace Microsoft.eShopOnContainers.WebMVC.ViewModels.CartViewModels
+﻿namespace Microsoft.eShopOnContainers.WebMVC.ViewModels.CartViewModels;
+
+public class CartComponentViewModel
 {
-    public class CartComponentViewModel
-    {
-        public int ItemsCount { get; set; }
-        public string Disabled => (ItemsCount == 0) ? "is-disabled" : "";
-    }
+    public int ItemsCount { get; set; }
+    public string Disabled => (ItemsCount == 0) ? "is-disabled" : "";
 }
