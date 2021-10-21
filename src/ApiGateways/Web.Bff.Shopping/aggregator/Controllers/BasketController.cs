@@ -124,7 +124,7 @@ public class BasketController : ControllerBase
         //item.PictureUri = 
 
         // Step 2: Get current basket status
-        var currentBasket = (await _basket.GetById(data.BasketId)) ?? new BasketData(data.BasketId);
+        var currentBasket = (await _basket.GetByIdAsync(data.BasketId)) ?? new BasketData(data.BasketId);
         // Step 3: Search if exist product into basket
         var product = currentBasket.Items.SingleOrDefault(i => i.ProductId == item.Id);
         if (product != null)

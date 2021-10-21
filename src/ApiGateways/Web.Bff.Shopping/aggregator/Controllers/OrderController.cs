@@ -20,7 +20,7 @@ public class OrderController : ControllerBase
     [ProducesResponseType(typeof(OrderData), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<OrderData>> GetOrderDraftAsync(string basketId)
     {
-        if (string.IsNullOrWhitespace(basketId))
+        if (string.IsNullOrWhiteSpace(basketId))
         {
             return BadRequest("Need a valid basketid");
         }
