@@ -1,8 +1,4 @@
-﻿using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
-using WebhookClient;
-
-CreateWebHostBuilder(args).Build().Run();
+﻿CreateWebHostBuilder(args).Build().Run();
 
 
 IWebHostBuilder CreateWebHostBuilder(string[] args) =>
