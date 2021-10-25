@@ -1,12 +1,4 @@
-﻿using eShopConContainers.WebSPA;
-using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-using Serilog;
-using System.IO;
-
-BuildWebHost(args).Run();
+﻿await BuildWebHost(args).RunAsync();
 
 IWebHost BuildWebHost(string[] args) =>
     WebHost.CreateDefaultBuilder(args)

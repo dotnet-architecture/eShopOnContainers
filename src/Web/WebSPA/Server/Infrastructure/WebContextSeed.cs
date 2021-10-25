@@ -1,77 +1,67 @@
-﻿using eShopOnContainers.WebSPA;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.DependencyInjection;
+﻿namespace WebSPA.Infrastructure;
+
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using System;
-using System.IO;
-using System.IO.Compression;
-using System.Linq;
 
-namespace WebSPA.Infrastructure
+public class WebContextSeed
 {
-    public class WebContextSeed
+    public static void Seed(IApplicationBuilder applicationBuilder, IWebHostEnvironment env, ILoggerFactory loggerFactory)
     {
-        public static void Seed(IApplicationBuilder applicationBuilder, IWebHostEnvironment env, ILoggerFactory loggerFactory)
+        var log = loggerFactory.CreateLogger<WebContextSeed>();
+
+        var settings = applicationBuilder
+            .ApplicationServices.GetRequiredService<IOptions<AppSettings>>().Value;
+
+        var useCustomizationData = settings.UseCustomizationData;
+        var contentRootPath = env.ContentRootPath;
+        var webroot = env.WebRootPath;
+
+        if (useCustomizationData)
         {
-            var log = loggerFactory.CreateLogger<WebContextSeed>();
-
-            var settings = applicationBuilder
-                .ApplicationServices.GetRequiredService<IOptions<AppSettings>>().Value;
-
-            var useCustomizationData = settings.UseCustomizationData;
-            var contentRootPath = env.ContentRootPath;
-            var webroot = env.WebRootPath;
-
-            if (useCustomizationData)
-            {
-                GetPreconfiguredImages(contentRootPath, webroot, log);
-            }
+            GetPreconfiguredImages(contentRootPath, webroot, log);
         }
+    }
 
-        static void GetPreconfiguredImages(string contentRootPath, string webroot, ILogger log)
+    static void GetPreconfiguredImages(string contentRootPath, string webroot, ILogger log)
+    {
+        try
         {
-            try
+            string imagesZipFile = Path.Combine(contentRootPath, "Setup", "images.zip");
+            if (!File.Exists(imagesZipFile))
             {
-                string imagesZipFile = Path.Combine(contentRootPath, "Setup", "images.zip");
-                if (!File.Exists(imagesZipFile))
-                {
-                    log.LogError("Zip file '{ZipFileName}' does not exists.", imagesZipFile);
-                    return;
-                }
+                log.LogError("Zip file '{ZipFileName}' does not exists.", imagesZipFile);
+                return;
+            }
 
-                string imagePath = Path.Combine(webroot, "assets", "images");
-                if (!Directory.Exists(imagePath))
-                {
-                    Directory.CreateDirectory(imagePath);
-                }
-                string[] imageFiles = Directory.GetFiles(imagePath).Select(file => Path.GetFileName(file)).ToArray();
+            string imagePath = Path.Combine(webroot, "assets", "images");
+            if (!Directory.Exists(imagePath))
+            {
+                Directory.CreateDirectory(imagePath);
+            }
+            string[] imageFiles = Directory.GetFiles(imagePath).Select(file => Path.GetFileName(file)).ToArray();
 
-                using (ZipArchive zip = ZipFile.Open(imagesZipFile, ZipArchiveMode.Read))
+            using (ZipArchive zip = ZipFile.Open(imagesZipFile, ZipArchiveMode.Read))
+            {
+                foreach (ZipArchiveEntry entry in zip.Entries)
                 {
-                    foreach (ZipArchiveEntry entry in zip.Entries)
+                    if (!imageFiles.Contains(entry.Name))
                     {
-                        if (!imageFiles.Contains(entry.Name))
+                        string destinationFilename = Path.Combine(imagePath, entry.Name);
+                        if (File.Exists(destinationFilename))
                         {
-                            string destinationFilename = Path.Combine(imagePath, entry.Name);
-                            if (File.Exists(destinationFilename))
-                            {
-                                File.Delete(destinationFilename);
-                            }
-                            entry.ExtractToFile(destinationFilename);
+                            File.Delete(destinationFilename);
                         }
-                        else
-                        {
-                            log.LogWarning("Skipped file '{FileName}' in zipfile '{ZipFileName}'", entry.Name, imagesZipFile);
-                        }
+                        entry.ExtractToFile(destinationFilename);
+                    }
+                    else
+                    {
+                        log.LogWarning("Skipped file '{FileName}' in zipfile '{ZipFileName}'", entry.Name, imagesZipFile);
                     }
                 }
             }
-            catch (Exception ex)
-            {
-                log.LogError(ex, "ERROR in GetPreconfiguredImages: {Message}", ex.Message);
-            }
+        }
+        catch (Exception ex)
+        {
+            log.LogError(ex, "ERROR in GetPreconfiguredImages: {Message}", ex.Message);
         }
     }
 }
