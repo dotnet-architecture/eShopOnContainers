@@ -9082,8 +9082,8 @@ typescript@>=2.8.3:
   resolved "https://registry.npmjs.org/typescript/-/typescript-3.8.3.tgz"
 
 ua-parser-js@^0.7.28:
-  version "0.7.28"
-  resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.28.tgz#8ba04e653f35ce210239c64661685bf9121dec31"
+  version "0.7.30"
+  resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.30.tgz#4cf5170e8b55ac553fe8b38df3a82f0669671f0b"
 
 uglify-js@^3.1.4:
   version "3.6.0"
