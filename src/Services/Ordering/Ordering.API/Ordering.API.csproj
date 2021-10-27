@@ -70,6 +70,7 @@
 	<PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="6.2.1" />
   </ItemGroup>
 
+
   <ItemGroup>
     <None Update="Setup\*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

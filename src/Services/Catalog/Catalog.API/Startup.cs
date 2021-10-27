@@ -1,4 +1,4 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Catalog.API;
+namespace Microsoft.eShopOnContainers.Services.Catalog.API;
 
 public class Startup
 {
@@ -221,7 +221,7 @@ public static class CustomExtensionMethods
     public static IServiceCollection AddSwagger(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddSwaggerGen(options =>
-        {                
+        {            
             options.SwaggerDoc("v1", new OpenApiInfo
             {
                 Title = "eShopOnContainers - Catalog HTTP API",
@@ -246,10 +246,9 @@ public static class CustomExtensionMethods
             services.AddSingleton<IServiceBusPersisterConnection>(sp =>
             {
                 var settings = sp.GetRequiredService<IOptions<CatalogSettings>>().Value;
-                var serviceBusConnection = new ServiceBusConnectionStringBuilder(settings.EventBusConnection);
-                var subscriptionClientName = configuration["SubscriptionClientName"];
+                var serviceBusConnection = settings.EventBusConnection;
 
-                return new DefaultServiceBusPersisterConnection(serviceBusConnection, subscriptionClientName);
+                return new DefaultServiceBusPersisterConnection(serviceBusConnection);
             });
         }
         else
@@ -298,9 +297,10 @@ public static class CustomExtensionMethods
                 var iLifetimeScope = sp.GetRequiredService<ILifetimeScope>();
                 var logger = sp.GetRequiredService<ILogger<EventBusServiceBus>>();
                 var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
+                string subscriptionName = configuration["SubscriptionClientName"];
 
                 return new EventBusServiceBus(serviceBusPersisterConnection, logger,
-                    eventBusSubcriptionsManager, iLifetimeScope);
+                    eventBusSubcriptionsManager, iLifetimeScope, subscriptionName);
             });
 
         }

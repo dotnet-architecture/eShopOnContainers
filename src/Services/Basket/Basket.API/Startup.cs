@@ -1,5 +1,4 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Basket.API;
-
+namespace Microsoft.eShopOnContainers.Services.Basket.API;
 public class Startup
 {
     public Startup(IConfiguration configuration)
@@ -29,7 +28,7 @@ public class Startup
             .AddJsonOptions(options => options.JsonSerializerOptions.WriteIndented = true);
 
         services.AddSwaggerGen(options =>
-        {                
+        {            
             options.SwaggerDoc("v1", new OpenApiInfo
             {
                 Title = "eShopOnContainers - Basket HTTP API",
@@ -85,10 +84,8 @@ public class Startup
             services.AddSingleton<IServiceBusPersisterConnection>(sp =>
             {
                 var serviceBusConnectionString = Configuration["EventBusConnection"];
-                var serviceBusConnection = new ServiceBusConnectionStringBuilder(serviceBusConnectionString);
 
-                var subscriptionClientName = Configuration["SubscriptionClientName"];
-                return new DefaultServiceBusPersisterConnection(serviceBusConnection, subscriptionClientName);
+                return new DefaultServiceBusPersisterConnection(serviceBusConnectionString);
             });
         }
         else
@@ -248,9 +245,10 @@ public class Startup
                 var iLifetimeScope = sp.GetRequiredService<ILifetimeScope>();
                 var logger = sp.GetRequiredService<ILogger<EventBusServiceBus>>();
                 var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
+                string subscriptionName = Configuration["SubscriptionClientName"];
 
                 return new EventBusServiceBus(serviceBusPersisterConnection, logger,
-                    eventBusSubcriptionsManager, iLifetimeScope);
+                    eventBusSubcriptionsManager, iLifetimeScope, subscriptionName);
             });
         }
         else

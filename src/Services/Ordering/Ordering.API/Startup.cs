@@ -258,10 +258,10 @@ static class CustomExtensionsMethods
             services.AddSingleton<IServiceBusPersisterConnection>(sp =>
             {
                 var serviceBusConnectionString = configuration["EventBusConnection"];
-                var serviceBusConnection = new ServiceBusConnectionStringBuilder(serviceBusConnectionString);
+
                 var subscriptionClientName = configuration["SubscriptionClientName"];
 
-                return new DefaultServiceBusPersisterConnection(serviceBusConnection, subscriptionClientName);
+                return new DefaultServiceBusPersisterConnection(serviceBusConnectionString);
             });
         }
         else
@@ -335,9 +335,10 @@ static class CustomExtensionsMethods
                 var iLifetimeScope = sp.GetRequiredService<ILifetimeScope>();
                 var logger = sp.GetRequiredService<ILogger<EventBusServiceBus>>();
                 var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
+                string subscriptionName = configuration["SubscriptionClientName"];
 
                 return new EventBusServiceBus(serviceBusPersisterConnection, logger,
-                    eventBusSubcriptionsManager, iLifetimeScope);
+                    eventBusSubcriptionsManager, iLifetimeScope, subscriptionName);
             });
         }
         else

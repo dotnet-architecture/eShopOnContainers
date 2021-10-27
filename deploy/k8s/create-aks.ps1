@@ -30,7 +30,7 @@ Write-Host "Creating AKS $resourceGroupName/$serviceName" -ForegroundColor Yello
 az aks create --resource-group=$resourceGroupName --name=$serviceName --dns-name-prefix=$dnsNamePrefix --generate-ssh-keys --node-count=$nodeCount --node-vm-size=$nodeVMSize --vm-set-type $vmSetType
 
 if ($enableHttpApplicationAddon) {
-    Write-Host "Enabling Http Applciation Routing in AKS $serviceName" -ForegroundColor Yellow
+    Write-Host "Enabling Http Application Routing in AKS $serviceName" -ForegroundColor Yellow
     az aks enable-addons --resource-group $resourceGroupName --name $serviceName --addons http_application_routing
 }
 

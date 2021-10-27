@@ -1,4 +1,4 @@
-﻿namespace Microsoft.eShopOnContainers.Payment.API;
+namespace Microsoft.eShopOnContainers.Payment.API;
 
 public class Startup
 {
@@ -22,10 +22,9 @@ public class Startup
             services.AddSingleton<IServiceBusPersisterConnection>(sp =>
             {
                 var serviceBusConnectionString = Configuration["EventBusConnection"];
-                var serviceBusConnection = new ServiceBusConnectionStringBuilder(serviceBusConnectionString);
                 var subscriptionClientName = Configuration["SubscriptionClientName"];
 
-                return new DefaultServiceBusPersisterConnection(serviceBusConnection, subscriptionClientName);
+                return new DefaultServiceBusPersisterConnection(serviceBusConnectionString);
             });
         }
         else
@@ -111,9 +110,10 @@ public class Startup
                 var iLifetimeScope = sp.GetRequiredService<ILifetimeScope>();
                 var logger = sp.GetRequiredService<ILogger<EventBusServiceBus>>();
                 var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
+                string subscriptionName = Configuration["SubscriptionClientName"];
 
                 return new EventBusServiceBus(serviceBusPersisterConnection, logger,
-                    eventBusSubcriptionsManager, iLifetimeScope);
+                    eventBusSubcriptionsManager, iLifetimeScope, subscriptionName);
             });
         }
         else
