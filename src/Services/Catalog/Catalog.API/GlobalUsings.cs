@@ -51,7 +51,7 @@ global using System;
 global using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure.Filters;
 global using HealthChecks.UI.Client;
 global using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-global using Microsoft.Azure.ServiceBus;
+global using Azure.Messaging.ServiceBus;
 global using Microsoft.eShopOnContainers.BuildingBlocks.EventBus;
 global using Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ;
 global using Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus;

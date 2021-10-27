@@ -24,7 +24,7 @@ global using Microsoft.AspNetCore.Mvc.Filters;
 global using Microsoft.AspNetCore.Mvc;
 global using Microsoft.AspNetCore.Server.Kestrel.Core;
 global using Microsoft.AspNetCore;
-global using Microsoft.Azure.ServiceBus;
+global using Azure.Messaging.ServiceBus;
 global using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
 global using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
 global using Microsoft.eShopOnContainers.BuildingBlocks.EventBus;

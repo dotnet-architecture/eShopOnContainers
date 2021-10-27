@@ -8,7 +8,7 @@ global using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 global using Microsoft.AspNetCore.Hosting;
 global using Microsoft.AspNetCore.SignalR;
 global using Microsoft.AspNetCore;
-global using Microsoft.Azure.ServiceBus;
+global using Azure.Messaging.ServiceBus;
 global using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
 global using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
 global using Microsoft.eShopOnContainers.BuildingBlocks.EventBus;
