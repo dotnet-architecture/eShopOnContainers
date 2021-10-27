@@ -43,6 +43,10 @@ Parameters:
     The Docker username used to logon to the custom registry, supplied using the -r parameter.
   --use-local-k8s
     Deploy to a locally installed Kubernetes (default: false).
+  --use-mesh
+    Use Linkerd as service mesh
+  --image-pull-policy <policy>
+    Image Pull Policy: Always, IfNotPresent, Never (default: Always)
 
 It is assumed that the Kubernetes cluster has been granted access to the container registry.
 If using AKS and ACR see link for more info: 
@@ -72,6 +76,9 @@ push_images=''
 skip_infrastructure=''
 use_local_k8s=''
 namespace='eshop'
+use_mesh='false'
+ingressMeshAnnotationsFile='ingress_values_linkerd.yaml'
+imagePullPolicy='Always'
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -107,11 +114,20 @@ while [[ $# -gt 0 ]]; do
       use_local_k8s='yes'; shift ;;
     --namespace )
       namespace="$2"; shift 2;;
+    --use-mesh )
+      use_mesh='true'; shift ;;
+    --image-pull-policy )
+      imagePullPolicy="$2"; shift 2;;
     *)
       echo "Unknown option $1"
       usage; exit 2 ;;
   esac
 done
+
+if [[ $imagePullPolicy != "Always" && $imagePullPolicy != "Never" && $imagePullPolicy != "IfNotPresent" ]]; then
+  echo "--image-pull-policy needs to be a valid value: Always, IfNotPresent, Never"
+  usage; exit 2;
+fi
 
 if [[ $build_solution ]]; then
   echo "#################### Building $app_name solution ####################"
@@ -201,7 +217,7 @@ if [[ $clean ]]; then
   if [[ -z $(helm ls -q --namespace $namespace) ]]; then
     echo "No previous releases found"
   else
-    helm uninstall $(helm ls -q --namespace $namespace)
+    helm --namespace $namespace uninstall $(helm ls -q --namespace $namespace)
     echo "Previous releases deleted"
     waitsecs=10; while [ $waitsecs -gt 0 ]; do echo -ne "$waitsecs\033[0K\r"; sleep 1; : $((waitsecs--)); done
   fi
@@ -209,24 +225,31 @@ fi
 
 echo "#################### Begin $app_name installation using Helm ####################"
 infras=(sql-data nosql-data rabbitmq keystore-data basket-data)
-charts=(eshop-common apigwms apigwws basket-api catalog-api identity-api mobileshoppingagg ordering-api ordering-backgroundtasks ordering-signalrhub payment-api webmvc webshoppingagg webspa webstatus webhooks-api webhooks-web)
+charts=(eshop-common basket-api catalog-api identity-api mobileshoppingagg ordering-api ordering-backgroundtasks ordering-signalrhub payment-api webmvc webshoppingagg webspa webstatus webhooks-api webhooks-web)
+gateways=(apigwms apigwws)
 
 if [[ !$skip_infrastructure ]]; then
   for infra in "${infras[@]}"
   do
     echo "Installing infrastructure: $infra"
-    helm install "$app_name-$infra" --namespace $namespace --set "ingress.hosts={$dns}" --values app.yaml --values inf.yaml --values $ingress_values_file --set app.name=$app_name --set inf.k8s.dns=$dns $infra     
+    helm install "$app_name-$infra" --namespace $namespace --set "ingress.hosts={$dns}" --values app.yaml --values inf.yaml --values $ingress_values_file --values $ingressMeshAnnotationsFile --set app.name=$app_name --set inf.k8s.dns=$dns $infra --set inf.mesh.enabled=$use_mesh     
   done  
 fi
 
 for chart in "${charts[@]}"
 do
     echo "Installing: $chart"
-    if [[ $use_custom_registry ]]; then 
-      helm install "$app_name-$chart" --namespace $namespace --set "ingress.hosts={$dns}" --set inf.registry.server=$container_registry --set inf.registry.login=$docker_username --set inf.registry.pwd=$docker_password --set inf.registry.secretName=eshop-docker-scret --values app.yaml --values inf.yaml --values $ingress_values_file --set app.name=$app_name --set inf.k8s.dns=$dns --set image.tag=$image_tag --set image.pullPolicy=Always $chart 
-    elif [[ $chart != "eshop-common" ]]; then  # eshop-common is ignored when no secret must be deployed
-      helm install "$app_name-$chart" --namespace $namespace --set "ingress.hosts={$dns}" --values app.yaml --values inf.yaml --values $ingress_values_file --set app.name=$app_name --set inf.k8s.dns=$dns --set image.tag=$image_tag --set image.pullPolicy=Always $chart 
+    if [[ $use_custom_registry ]]; then       
+      helm install "$app_name-$chart" --namespace $namespace --set "ingress.hosts={$dns}" --set inf.registry.server=$container_registry --set inf.registry.login=$docker_username --set inf.registry.pwd=$docker_password --set inf.registry.secretName=eshop-docker-scret --values app.yaml --values inf.yaml --values $ingress_values_file --values $ingressMeshAnnotationsFile  --set app.name=$app_name --set inf.k8s.dns=$dns --set image.tag=$image_tag --set image.pullPolicy=$imagePullPolicy $chart --set inf.mesh.enabled=$use_mesh
+    elif [[ $chart != "eshop-common" ]]; then  # eshop-common is ignored when no secret must be deployed      
+      helm install "$app_name-$chart" --namespace $namespace --set "ingress.hosts={$dns}" --values app.yaml --values inf.yaml --values $ingress_values_file --values $ingressMeshAnnotationsFile --set app.name=$app_name --set inf.k8s.dns=$dns --set image.tag=$image_tag --set image.pullPolicy=$imagePullPolicy $chart --set inf.mesh.enabled=$use_mesh
     fi
+done
+
+for gw in "${gateways[@]}"
+do
+    echo "Installing gateway: $gw"
+    helm install "$app_name-$gw" --namespace $namespace --set "ingress.hosts={$dns}" --values app.yaml --values inf.yaml --values $ingress_values_file --set app.name=$app_name --set inf.k8s.dns=$dns --set image.pullPolicy=$imagePullPolicy $gw 
 done
 
 echo "FINISHED: Helm charts installed."
