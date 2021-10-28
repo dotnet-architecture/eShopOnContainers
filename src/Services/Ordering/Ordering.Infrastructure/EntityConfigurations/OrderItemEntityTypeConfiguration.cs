@@ -5,16 +5,11 @@ using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure;
 
 namespace Ordering.Infrastructure.EntityConfigurations
 {
-    class OrderItemEntityTypeConfiguration
-        : IEntityTypeConfiguration<OrderItem>
+    class OrderItemEntityTypeConfiguration : BaseConfiguration<OrderItem>
     {
-        public void Configure(EntityTypeBuilder<OrderItem> orderItemConfiguration)
+        public override void Configure(EntityTypeBuilder<OrderItem> orderItemConfiguration)
         {
             orderItemConfiguration.ToTable("orderItems", OrderingContext.DEFAULT_SCHEMA);
-
-            orderItemConfiguration.HasKey(o => o.Id);
-
-            orderItemConfiguration.Ignore(b => b.DomainEvents);
 
             orderItemConfiguration.Property(o => o.Id)
                 .UseHiLo("orderitemseq");
@@ -54,6 +49,8 @@ namespace Ordering.Infrastructure.EntityConfigurations
                 .UsePropertyAccessMode(PropertyAccessMode.Field)
                 .HasColumnName("PictureUrl")
                 .IsRequired(false);
+
+            base.Configure(orderItemConfiguration);
         }
     }
 }

@@ -7,15 +7,11 @@ using System;
 
 namespace Ordering.Infrastructure.EntityConfigurations
 {
-    class OrderEntityTypeConfiguration : IEntityTypeConfiguration<Order>
+    class OrderEntityTypeConfiguration : BaseConfiguration<Order>
     {
-        public void Configure(EntityTypeBuilder<Order> orderConfiguration)
+        public override void Configure(EntityTypeBuilder<Order> orderConfiguration)
         {
             orderConfiguration.ToTable("orders", OrderingContext.DEFAULT_SCHEMA);
-
-            orderConfiguration.HasKey(o => o.Id);
-
-            orderConfiguration.Ignore(b => b.DomainEvents);
 
             orderConfiguration.Property(o => o.Id)
                 .UseHiLo("orderseq", OrderingContext.DEFAULT_SCHEMA);
@@ -81,6 +77,9 @@ namespace Ordering.Infrastructure.EntityConfigurations
                 .WithMany()
                 // .HasForeignKey("OrderStatusId");
                 .HasForeignKey("_orderStatusId");
+
+
+            base.Configure(orderConfiguration);
         }
     }
 }

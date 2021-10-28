@@ -9,10 +9,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Devspaces
     public class DevspacesRedirectUriValidator : IRedirectUriValidator
     {
         private readonly ILogger _logger;
-        public DevspacesRedirectUriValidator(ILogger<DevspacesRedirectUriValidator> logger)
-        {
-            _logger = logger;
-        }
+        public DevspacesRedirectUriValidator(ILogger<DevspacesRedirectUriValidator> logger) => (_logger) = (logger);
 
         public Task<bool> IsPostLogoutRedirectUriValidAsync(string requestedUri, Client client)
         {
