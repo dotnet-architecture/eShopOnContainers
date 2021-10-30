@@ -1,4 +1,6 @@
-apiVersion: autoscaling/v1
+{{- $name := include "webspa.fullname" . -}}
+{{- $cfgname := printf "%s-%s" "cfg" $name -}}
+apiVersion: autoscaling/v2beta2
 kind: HorizontalPodAutoscaler
 metadata:
   name: {{ template "webspa.fullname" . }}
