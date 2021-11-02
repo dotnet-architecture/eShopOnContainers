@@ -1,7 +1,7 @@
 #See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
 ARG NODE_IMAGE=node:12.0
-FROM mcr.microsoft.com/dotnet/nightly/aspnet:6.0.0-preview.7 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:6.0.0-rc.2 AS base
 WORKDIR /app
 EXPOSE 80
 
