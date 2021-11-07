@@ -9,6 +9,7 @@ global using Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationEvents;
 global using Grpc.Core;
 global using Microsoft.AspNetCore.Hosting;
 global using Microsoft.AspNetCore.Http;
+global using Microsoft.AspNetCore.Builder;
 global using Microsoft.AspNetCore.Mvc.Filters;
 global using Microsoft.AspNetCore.Mvc;
 global using Microsoft.AspNetCore.Server.Kestrel.Core;
