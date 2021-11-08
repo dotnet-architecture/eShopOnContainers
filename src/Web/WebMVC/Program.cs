@@ -61,7 +61,7 @@ IConfiguration GetConfiguration()
 }
 
 
-public class Program
+public partial class Program
 {
     private static readonly string _namespace = typeof(Startup).Namespace;
     public static readonly string AppName = _namespace.Substring(_namespace.LastIndexOf('.', _namespace.LastIndexOf('.') - 1) + 1);
