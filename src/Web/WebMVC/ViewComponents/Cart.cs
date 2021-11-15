@@ -1,37 +1,30 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.eShopOnContainers.WebMVC.Services;
-using Microsoft.eShopOnContainers.WebMVC.ViewModels;
-using Microsoft.eShopOnContainers.WebMVC.ViewModels.CartViewModels;
-using System.Threading.Tasks;
+﻿namespace Microsoft.eShopOnContainers.WebMVC.ViewComponents;
 
-namespace Microsoft.eShopOnContainers.WebMVC.ViewComponents
+public class Cart : ViewComponent
 {
-    public class Cart : ViewComponent
+    private readonly IBasketService _cartSvc;
+
+    public Cart(IBasketService cartSvc) => _cartSvc = cartSvc;
+
+    public async Task<IViewComponentResult> InvokeAsync(ApplicationUser user)
     {
-        private readonly IBasketService _cartSvc;
-
-        public Cart(IBasketService cartSvc) => _cartSvc = cartSvc;
-
-        public async Task<IViewComponentResult> InvokeAsync(ApplicationUser user)
+        var vm = new CartComponentViewModel();
+        try
         {
-            var vm = new CartComponentViewModel();
-            try
-            {
-                var itemsInCart = await ItemsInCartAsync(user);
-                vm.ItemsCount = itemsInCart;
-                return View(vm);
-            }
-            catch
-            {
-                ViewBag.IsBasketInoperative = true;
-            }
-
+            var itemsInCart = await ItemsInCartAsync(user);
+            vm.ItemsCount = itemsInCart;
             return View(vm);
         }
-        private async Task<int> ItemsInCartAsync(ApplicationUser user)
+        catch
         {
-            var basket = await _cartSvc.GetBasket(user);
-            return basket.Items.Count;
+            ViewBag.IsBasketInoperative = true;
         }
+
+        return View(vm);
+    }
+    private async Task<int> ItemsInCartAsync(ApplicationUser user)
+    {
+        var basket = await _cartSvc.GetBasket(user);
+        return basket.Items.Count;
     }
 }

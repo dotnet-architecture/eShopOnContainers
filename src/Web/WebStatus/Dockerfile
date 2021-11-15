@@ -1,8 +1,8 @@
-FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app
 EXPOSE 80
 
-FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 
 # It's important to keep lines from here down to "COPY . ." identical in all Dockerfiles
@@ -44,10 +44,10 @@ COPY "docker-compose.dcproj" "docker-compose.dcproj"
 
 COPY "NuGet.config" "NuGet.config"
 
-RUN dotnet restore "eShopOnContainers-ServicesAndWebApps.sln"
+# RUN dotnet restore "eShopOnContainers-ServicesAndWebApps.sln"
 COPY . .
 WORKDIR /src/Web/WebStatus
-RUN dotnet publish --no-restore -c Release -o /app
+RUN dotnet publish -c Release -o /app
 
 FROM build AS publish
 

@@ -1,12 +1,7 @@
-﻿using Azure.Messaging.ServiceBus;
-using Azure.Messaging.ServiceBus.Administration;
-namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus
-{
-    using System;
+namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus;
 
-    public interface IServiceBusPersisterConnection : IDisposable
-    {
-        ServiceBusClient TopicClient { get; }
-        ServiceBusAdministrationClient AdministrationClient { get; }
-    }
+public interface IServiceBusPersisterConnection : IDisposable
+{
+    ServiceBusClient TopicClient { get; }
+    ServiceBusAdministrationClient AdministrationClient { get; }
 }

@@ -1,12 +1,4 @@
-﻿
-using IdentityServer4.Services;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.eShopOnContainers.Services.Identity.API.Models;
-using Microsoft.eShopOnContainers.Services.Identity.API.Services;
-using Microsoft.Extensions.Options;
-using System.Threading.Tasks;
-
-namespace Microsoft.eShopOnContainers.Services.Identity.API.Controllers
+﻿namespace Microsoft.eShopOnContainers.Services.Identity.API.Controllers
 {
     public class HomeController : Controller
     {

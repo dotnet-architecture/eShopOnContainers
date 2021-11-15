@@ -1,7 +1,6 @@
-﻿namespace Webhooks.API.Services
+﻿namespace Webhooks.API.Services;
+
+public interface IIdentityService
 {
-    public interface IIdentityService
-    {
-        string GetUserIdentity();
-    }
+    string GetUserIdentity();
 }

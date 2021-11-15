@@ -1,8 +1,5 @@
-﻿using System;
+﻿namespace Webhooks.API.Exceptions;
 
-namespace Webhooks.API.Exceptions
+public class WebhooksDomainException : Exception
 {
-    public class WebhooksDomainException : Exception
-    {
-    }
 }

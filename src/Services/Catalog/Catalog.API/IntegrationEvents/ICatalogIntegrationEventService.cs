@@ -1,11 +1,7 @@
-﻿using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
-using System.Threading.Tasks;
+﻿namespace Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationEvents;
 
-namespace Catalog.API.IntegrationEvents
+public interface ICatalogIntegrationEventService
 {
-    public interface ICatalogIntegrationEventService
-    {
-        Task SaveEventAndCatalogContextChangesAsync(IntegrationEvent evt);
-        Task PublishThroughEventBusAsync(IntegrationEvent evt);
-    }
+    Task SaveEventAndCatalogContextChangesAsync(IntegrationEvent evt);
+    Task PublishThroughEventBusAsync(IntegrationEvent evt);
 }

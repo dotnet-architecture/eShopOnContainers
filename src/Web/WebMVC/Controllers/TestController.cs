@@ -1,61 +1,52 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.eShopOnContainers.WebMVC.Services;
-using Microsoft.eShopOnContainers.WebMVC.ViewModels;
-using System.Net.Http;
-using System.Threading.Tasks;
-using System.Text.Json;
+﻿namespace WebMVC.Controllers;
 
-namespace WebMVC.Controllers
+class TestPayload
 {
-    class TestPayload
+    public int CatalogItemId { get; set; }
+
+    public string BasketId { get; set; }
+
+    public int Quantity { get; set; }
+}
+
+[Authorize]
+public class TestController : Controller
+{
+    private readonly IHttpClientFactory _client;
+    private readonly IIdentityParser<ApplicationUser> _appUserParser;
+
+    public TestController(IHttpClientFactory client, IIdentityParser<ApplicationUser> identityParser)
     {
-        public int CatalogItemId { get; set; }
-
-        public string BasketId { get; set; }
-
-        public int Quantity { get; set; }
+        _client = client;
+        _appUserParser = identityParser;
     }
 
-    [Authorize]
-    public class TestController : Controller
+    public async Task<IActionResult> Ocelot()
     {
-        private readonly IHttpClientFactory _client;
-        private readonly IIdentityParser<ApplicationUser> _appUserParser;
+        var url = "http://apigw/shopping/api/v1/basket/items";
 
-        public TestController(IHttpClientFactory client, IIdentityParser<ApplicationUser> identityParser)
+        var payload = new TestPayload()
         {
-            _client = client;
-            _appUserParser = identityParser;
+            CatalogItemId = 1,
+            Quantity = 1,
+            BasketId = _appUserParser.Parse(User).Id
+        };
+
+        var content = new StringContent(JsonSerializer.Serialize(payload), System.Text.Encoding.UTF8, "application/json");
+
+
+        var response = await _client.CreateClient(nameof(IBasketService))
+            .PostAsync(url, content);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var str = await response.Content.ReadAsStringAsync();
+
+            return Ok(str);
         }
-
-        public async Task<IActionResult> Ocelot()
+        else
         {
-            var url = "http://apigw/shopping/api/v1/basket/items";
-
-            var payload = new TestPayload()
-            {
-                CatalogItemId = 1,
-                Quantity = 1,
-                BasketId = _appUserParser.Parse(User).Id
-            };
-
-            var content = new StringContent(JsonSerializer.Serialize(payload), System.Text.Encoding.UTF8, "application/json");
-
-
-            var response = await _client.CreateClient(nameof(IBasketService))
-                .PostAsync(url, content);
-
-            if (response.IsSuccessStatusCode)
-            {
-                var str = await response.Content.ReadAsStringAsync();
-
-                return Ok(str);
-            }
-            else
-            {
-                return Ok(new { response.StatusCode, response.ReasonPhrase });
-            }
+            return Ok(new { response.StatusCode, response.ReasonPhrase });
         }
     }
 }

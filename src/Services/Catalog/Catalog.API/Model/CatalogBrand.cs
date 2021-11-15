@@ -1,9 +1,8 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Catalog.API.Model
-{
-    public class CatalogBrand
-    {
-        public int Id { get; set; }
+﻿namespace Microsoft.eShopOnContainers.Services.Catalog.API.Model;
 
-        public string Brand { get; set; }
-    }
+public class CatalogBrand
+{
+    public int Id { get; set; }
+
+    public string Brand { get; set; }
 }

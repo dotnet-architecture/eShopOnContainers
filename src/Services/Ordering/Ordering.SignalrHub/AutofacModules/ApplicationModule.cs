@@ -1,26 +1,20 @@
-﻿using Autofac;
-using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
-using Ordering.SignalrHub.IntegrationEvents;
-using System.Reflection;
+﻿namespace Microsoft.eShopOnContainers.Services.Ordering.SignalrHub.AutofacModules;
 
-namespace Ordering.SignalrHub.AutofacModules
+public class ApplicationModule
+    : Autofac.Module
 {
-    public class ApplicationModule
-        : Autofac.Module
+
+    public string QueriesConnectionString { get; }
+
+    public ApplicationModule()
+    {
+    }
+
+    protected override void Load(ContainerBuilder builder)
     {
 
-        public string QueriesConnectionString { get; }
+        builder.RegisterAssemblyTypes(typeof(OrderStatusChangedToAwaitingValidationIntegrationEvent).GetTypeInfo().Assembly)
+            .AsClosedTypesOf(typeof(IIntegrationEventHandler<>));
 
-        public ApplicationModule()
-        {
-        }
-
-        protected override void Load(ContainerBuilder builder)
-        {
-
-            builder.RegisterAssemblyTypes(typeof(OrderStatusChangedToAwaitingValidationIntegrationEvent).GetTypeInfo().Assembly)
-                .AsClosedTypesOf(typeof(IIntegrationEventHandler<>));
-
-        }
     }
 }

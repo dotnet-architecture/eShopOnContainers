@@ -1,14 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Controllers;
 
-namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Controllers
+[Route("")]
+public class HomeController : Controller
 {
-    [Route("")]
-    public class HomeController : Controller
+    [HttpGet]
+    public IActionResult Index()
     {
-        [HttpGet()]
-        public IActionResult Index()
-        {
-            return new RedirectResult("~/swagger");
-        }
+        return new RedirectResult("~/swagger");
     }
 }
