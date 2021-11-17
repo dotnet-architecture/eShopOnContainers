@@ -134,7 +134,7 @@
                 City = "Redmond",
                 Country = "U.S.",
                 Email = "demouser@microsoft.com",
-                Expiration = "12/21",
+                Expiration = "12/25",
                 Id = Guid.NewGuid().ToString(),
                 LastName = "DemoLastName",
                 Name = "DemoUser",
