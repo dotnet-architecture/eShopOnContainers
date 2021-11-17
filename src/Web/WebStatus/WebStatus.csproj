@@ -3,8 +3,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <AssetTargetFallback>$(AssetTargetFallback);portable-net45+win8+wp8+wpa81;</AssetTargetFallback>
     <DockerComposeProjectPath>..\..\..\docker-compose.dcproj</DockerComposeProjectPath>
-    <IsTransformWebConfigDisabled>true</IsTransformWebConfigDisabled>
-    <LangVersion>preview</LangVersion>
+    <IsTransformWebConfigDisabled>true</IsTransformWebConfigDisabled>    
   </PropertyGroup>
 
   <ItemGroup>
