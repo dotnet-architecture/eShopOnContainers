@@ -8,7 +8,7 @@ metadata:
 spec:
   acme:
     server: {{ .Values.server }}
-    email: not@used.com
+    email: ernie.liu@outlook.com
     privateKeySecretRef:
       name: {{ .Values.issuerSecretName }}
     solvers:

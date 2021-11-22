@@ -16,5 +16,5 @@ if ($aksName -and $aksRg) {
 }
 
 Write-Host "Installing cert-manager on current cluster"
-
+#1.5.4
 kubectl apply  --validate=false -f https://github.com/jetstack/cert-manager/releases/download/v0.11.0/cert-manager.yaml --validate=false

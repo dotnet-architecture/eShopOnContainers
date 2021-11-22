@@ -9,3 +9,5 @@ metadata:
 data:
   proxy-buffer-size: "128k"
   proxy-buffers: "4 256k"
+  large-client-header-buffers: "4 16k"
+##https://stackoverflow.com/questions/59274805/kubernetes-nginx-ingress-request-header-or-cookie-too-large  

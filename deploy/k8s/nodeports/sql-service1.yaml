@@ -1,0 +1,12 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: sql-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: sql-data
+  ports:
+    - protocol: TCP
+      port: 1433
+      targetPort: 1433
