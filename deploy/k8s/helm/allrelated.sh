@@ -80,6 +80,7 @@ kubectl apply -f local-svc.yaml
 #.\deploy-all.ps1 -externalDns eshop.anniedesign.xyz -aksName eShop -aksRg DL-LEARNING-RG -imageTag linux-dev -useMesh $false
 
 # enable tls-support 
+# https://github.com/dotnet-architecture/eShopOnContainers/wiki/AKS-TLS
 # cd D:\temp\microservice\eShopOnContainers\deploy\k8s
 #run .\enable-tls.ps1
 # rename values-staging.yaml(values-prod.yaml) to values.yaml() and ingressClass to nginx
@@ -113,6 +114,9 @@ kubectl apply -f sql-service1.yaml
 ##uninstall
 
 helm uninstall $(helm ls --filter eshop -q) --dry-run
+
+#azure devops pipeline
+# https://github.com/dotnet-architecture/eShopOnContainers/tree/main/build/azure-devops
 
 
 
