@@ -1,0 +1,27 @@
+variables:
+    registryEndpoint: eshop-registry
+trigger:
+  branches:
+    include:
+    - master
+    - dev
+  paths:
+    include:
+    - src/BuildingBlocks/*
+    - src/Services/Payment/*
+    - build/azure-devops/buildimages.yml
+    - build/azure-devops/multiarch.yml
+    - build/azure-devops/payment-api/*
+    - deploy/k8s/helm/payment-api/*
+jobs:
+- template: ../buildimages.yaml
+  parameters:
+    services: payment-api
+    registryEndpoint: $(registryEndpoint)
+    helmfrom: $(Build.SourcesDirectory)/deploy/k8s/helm
+    helmto: $(Build.ArtifactStagingDirectory)/deploy/k8s/helm
+- template: ../multiarch.yaml
+  parameters:
+    image: payment.api
+    branch: $(Build.SourceBranchName)
+    registryEndpoint: $(registryEndpoint)
