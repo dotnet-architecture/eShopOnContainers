@@ -17,7 +17,7 @@ jobs:
     displayName: Docker Login
     inputs:
       command: login
-      containerregistrytype: 'Container Registry'
+      # containerregistrytype: 'Container Registry'
       #dockerRegistryEndpoint: ${{ parameters.registryEndpoint }}
       containerRegistry: heigooRegistry
       # Disabled windows deploy
