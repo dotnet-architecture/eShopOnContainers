@@ -3,8 +3,6 @@ variables:
 trigger:
   branches:
     include:
-    - master
-    - dev
     - local
   paths:
     include:
