@@ -11,7 +11,7 @@ jobs:
     # - BuildWindows
     - BuildLinux  
   pool: 
-    vmImage: 'Ubuntu 16.04'
+    vmImage: 'Ubuntu 18.04'
   steps:
   - task: Docker@1
     displayName: Docker Login
