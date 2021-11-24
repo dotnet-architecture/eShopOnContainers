@@ -1,11 +1,11 @@
 variables:
-    registryEndpoint: eshop-registry
+    registryEndpoint: heigoo.azurecr.io
 trigger:
   branches:
     include:
     - master
     - dev
-    - eShopLocal
+    - local
   paths:
     include:
     - src/BuildingBlocks/*
