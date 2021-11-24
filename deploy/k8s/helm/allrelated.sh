@@ -214,3 +214,31 @@ az acr login --name $ACR_NAME
 
 echo "Completed AKS Setup"
 date
+#######################
+# Post the following JSON payload to the endpoint, sending a valid Basic Access Token
+# https://dev.azure.com/{organization}/{project}/_apis/serviceendpoint/endpoints?api-version=5.1-preview.2
+
+{
+    "authorization": {
+        "scheme": "ServicePrincipal",
+        "parameters": {
+            "loginServer": "<ACRSERVER>.azurecr.io",
+            "servicePrincipalId": "<APPLICATIONid OF SPN>",
+            "tenantId": "<TENANTID>",
+            "serviceprincipalkey": "<SPN kEY>"
+        }
+    },
+    "description": "",
+    "name": "Name of Connection",
+    "type": "dockerregistry",
+    "url": "https://<ACRSERVER>.azurecr.io",
+    "isShared": false,
+    "owner": "library",
+    "data": {
+        "registryId": "/subscriptions/<SUBSCRIPTIONID>/resourceGroups/<RESOURCEGROUP>/providers/Microsoft.ContainerRegistry/registries/<ACRSERVER>",
+        "registrytype": "ACR",
+        "spnObjectId": "",
+        "subscriptionId": "<SUBSCRIPTIONID>",
+        "subscriptionName": "<SUBSCRIPTIONNAME>"
+    }
+}
