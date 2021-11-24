@@ -1,8 +1,8 @@
 parameters:
   image: ''
   branch: ''
-  registry: 'eshop'
-  registryEndpoint: ''
+  registry: 'heigoo'
+  registryEndpoint: 'heigooRegistry'
 
 jobs:
 - job: manifest
