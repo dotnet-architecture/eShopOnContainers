@@ -18,7 +18,7 @@ jobs:
     inputs:
       command: login
       containerregistrytype: 'Container Registry'
-      # dockerRegistryEndpoint: ${{ parameters.registryEndpoint }}
+      dockerRegistryEndpoint: ${{ parameters.registryEndpoint }}
       containerRegistry: ${{ parameters.registryEndpoint }}
       # Disabled windows deploy
       # docker --config ~/.docker manifest create ${{ parameters.registry }}/${{ parameters.image }}:${{ parameters.branch }} ${{ parameters.registry }}/${{ parameters.image }}:linux-${{ parameters.branch }} ${{ parameters.registry }}/${{ parameters.image }}:win-${{ parameters.branch }}
