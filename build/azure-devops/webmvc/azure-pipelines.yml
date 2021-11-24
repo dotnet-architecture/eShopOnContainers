@@ -5,7 +5,7 @@ trigger:
     include:
     - master
     - dev
-    - eShopLocal
+    - local
   paths:
     include:
     - src/BuildingBlocks/*
