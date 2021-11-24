@@ -15,12 +15,12 @@ trigger:
     - build/azure-devops/webspa/*
     - deploy/k8s/helm/webspa/*
 jobs:
-- template: ../buildimages.yaml
-  parameters:
-    services: webspa
-    registryEndpoint: $(registryEndpoint)
-    helmfrom: $(Build.SourcesDirectory)/deploy/k8s/helm
-    helmto: $(Build.ArtifactStagingDirectory)/deploy/k8s/helm
+# - template: ../buildimages.yaml
+#   parameters:
+#     services: webspa
+#     registryEndpoint: $(registryEndpoint)
+#     helmfrom: $(Build.SourcesDirectory)/deploy/k8s/helm
+#     helmto: $(Build.ArtifactStagingDirectory)/deploy/k8s/helm
 - template: ../multiarch.yaml
   parameters:
     image: webspa
