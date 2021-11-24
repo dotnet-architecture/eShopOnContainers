@@ -19,7 +19,7 @@ jobs:
       command: login
       # containerregistrytype: 'Container Registry'
       #dockerRegistryEndpoint: ${{ parameters.registryEndpoint }}
-      containerRegistry: heigooRegistry
+      containerRegistry: 'heigooRegistry'
       #arguments: --secret username=7a304605-08fa-47e2-adea-49d529dcabc4,password=7a304605-08fa-47e2-adea-49d529dcabc4/kv59J2RHiknv-v_uLzQIj37_zHjvX4QgZ
       # Disabled windows deploy
       # docker --config ~/.docker manifest create ${{ parameters.registry }}/${{ parameters.image }}:${{ parameters.branch }} ${{ parameters.registry }}/${{ parameters.image }}:linux-${{ parameters.branch }} ${{ parameters.registry }}/${{ parameters.image }}:win-${{ parameters.branch }}
