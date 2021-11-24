@@ -1,5 +1,5 @@
 variables:
-    registryEndpoint: heigoo.azurecr.io
+    registryEndpoint: heigooRegistry
 trigger:
   branches:
     include:
