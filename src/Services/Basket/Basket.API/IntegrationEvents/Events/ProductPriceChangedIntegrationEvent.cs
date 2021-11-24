@@ -1,13 +1,10 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Basket.API.IntegrationEvents.Events;
 
-// Integration Events notes: 
-// An Event is "something that has happened in the past", therefore its name has to be   
-// An Integration Event is an event that can cause side effects to other microsrvices, Bounded-Contexts or external systems.
+// Integration Events notes:
+// An Event is "something that has happened in the past", therefore its name has to be
+// An Integration Event is an event that can cause side effects to other microservices, Bounded-Contexts or external systems.
 public record ProductPriceChangedIntegrationEvent : IntegrationEvent
 {
-    // Integration Events notes: 
-    // An Event is “something that has happened in the past”, therefore its name has to be past tense
-    // An Integration Event is an event that can cause side effects to other microsrvices, Bounded-Contexts or external systems.
     public int ProductId { get; private init; }
 
     public decimal NewPrice { get; private init; }
@@ -21,4 +18,3 @@ public record ProductPriceChangedIntegrationEvent : IntegrationEvent
         OldPrice = oldPrice;
     }
 }
-
