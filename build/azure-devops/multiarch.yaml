@@ -18,8 +18,7 @@ jobs:
     inputs:
       command: login
       containerregistrytype: 'Container Registry'
-      dockerRegistryEndpoint: ${{ parameters.registryEndpoint }}
-      azureContainerRegistry: ${{ parameters.registryEndpoint }}
+      #dockerRegistryEndpoint: ${{ parameters.registryEndpoint }}
       containerRegistry: ${{ parameters.registryEndpoint }}
       #arguments: --secret username=7a304605-08fa-47e2-adea-49d529dcabc4,password=7a304605-08fa-47e2-adea-49d529dcabc4/kv59J2RHiknv-v_uLzQIj37_zHjvX4QgZ
       # Disabled windows deploy
