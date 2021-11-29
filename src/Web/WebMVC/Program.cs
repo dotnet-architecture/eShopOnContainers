@@ -33,7 +33,7 @@ IWebHost BuildWebHost(IConfiguration configuration, string[] args) =>
 Serilog.ILogger CreateSerilogLogger(IConfiguration configuration)
 {
     var seqServerUrl = configuration["Serilog:SeqServerUrl"];
-    var logstashUrl = configuration["Serilog:LogstashgUrl"];
+    var logstashUrl = configuration["Serilog:LogstashUrl"];
     var cfg = new LoggerConfiguration()
         .ReadFrom.Configuration(configuration)
         .Enrich.WithProperty("ApplicationContext", Program.AppName)

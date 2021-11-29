@@ -127,7 +127,7 @@ namespace Ordering.BackgroundTasks.Extensions
         public static ILoggingBuilder UseSerilog(this ILoggingBuilder builder, IConfiguration configuration)
         {
             var seqServerUrl = configuration["Serilog:SeqServerUrl"];
-            var logstashUrl = configuration["Serilog:LogstashgUrl"];
+            var logstashUrl = configuration["Serilog:LogstashUrl"];
 
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Verbose()
