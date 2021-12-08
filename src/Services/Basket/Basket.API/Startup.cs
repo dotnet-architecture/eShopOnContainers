@@ -73,8 +73,6 @@ public class Startup
             var settings = sp.GetRequiredService<IOptions<BasketSettings>>().Value;
             var configuration = ConfigurationOptions.Parse(settings.ConnectionString, true);
 
-            configuration.ResolveDns = true;
-
             return ConnectionMultiplexer.Connect(configuration);
         });
 
