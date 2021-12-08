@@ -1,9 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿namespace WebMVC.Controllers;
 
-namespace WebMVC.Controllers
+public class ErrorController : Controller
 {
-    public class ErrorController : Controller
-    {
-        public IActionResult Error() => View();
-    }
+    public IActionResult Error() => View();
 }

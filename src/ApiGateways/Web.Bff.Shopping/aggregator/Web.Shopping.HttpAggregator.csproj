@@ -1,13 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <AssemblyName>Web.Shopping.HttpAggregator</AssemblyName>
     <RootNamespace>Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator</RootNamespace>
     <DockerComposeProjectPath>..\..\..\docker-compose.dcproj</DockerComposeProjectPath>
     <GenerateErrorForMissingTargetingPacks>false</GenerateErrorForMissingTargetingPacks>
-    <IsTransformWebConfigDisabled>true</IsTransformWebConfigDisabled>
-    <LangVersion>preview</LangVersion>
+    <IsTransformWebConfigDisabled>true</IsTransformWebConfigDisabled>    
   </PropertyGroup>
 
   <ItemGroup>
@@ -29,7 +28,6 @@
     <PackageReference Include="Serilog.AspNetCore" Version="3.4.0" />
     <PackageReference Include="Serilog.Sinks.Console" Version="4.0.0-dev-00834" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
-    <!--<PackageReference Include="System.Net.Http.WinHttpHandler" Version="4.6.0-rc1.19456.4" />-->
   </ItemGroup>
 
   <ItemGroup>

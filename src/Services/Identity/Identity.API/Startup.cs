@@ -1,26 +1,4 @@
-﻿using Autofac;
-using Autofac.Extensions.DependencyInjection;
-using HealthChecks.UI.Client;
-using IdentityServer4.Services;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.DataProtection;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.eShopOnContainers.Services.Identity.API.Certificates;
-using Microsoft.eShopOnContainers.Services.Identity.API.Data;
-using Microsoft.eShopOnContainers.Services.Identity.API.Devspaces;
-using Microsoft.eShopOnContainers.Services.Identity.API.Models;
-using Microsoft.eShopOnContainers.Services.Identity.API.Services;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using StackExchange.Redis;
-using System;
-using System.Reflection;
+﻿using Microsoft.AspNetCore.DataProtection;
 
 namespace Microsoft.eShopOnContainers.Services.Identity.API
 {
@@ -112,7 +90,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API
             services.AddRazorPages();
 
             var container = new ContainerBuilder();
-            container.Populate(services);
+            container.Populate(services);   
 
             return new AutofacServiceProvider(container.Build());
         }
@@ -132,12 +110,12 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-            }
+            }            
 
             var pathBase = Configuration["PATH_BASE"];
             if (!string.IsNullOrEmpty(pathBase))
             {
-                loggerFactory.CreateLogger<Startup>().LogDebug("Using PATH BASE '{pathBase}'", pathBase);
+                //loggerFactory.CreateLogger<Startup>().LogDebug("Using PATH BASE '{pathBase}'", pathBase);
                 app.UsePathBase(pathBase);
             }
 
@@ -159,6 +137,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API
             // To avoid this problem, the policy of cookies shold be in Lax mode.
             app.UseCookiePolicy(new CookiePolicyOptions { MinimumSameSitePolicy = AspNetCore.Http.SameSiteMode.Lax });
             app.UseRouting();
+                        
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();

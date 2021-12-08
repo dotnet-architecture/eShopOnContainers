@@ -1,16 +1,4 @@
-﻿using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-using Payment.API;
-using Serilog;
-using System;
-using System.IO;
-using Azure.Identity;
-using Azure.Core;
-
-var configuration = GetConfiguration();
+﻿var configuration = GetConfiguration();
 
 Log.Logger = CreateSerilogLogger(configuration);
 
@@ -80,7 +68,7 @@ IConfiguration GetConfiguration()
     return builder.Build();
 }
 
-public class Program
+public partial class Program
 {
     public static string Namespace = typeof(Startup).Namespace;
     public static string AppName = Namespace.Substring(Namespace.LastIndexOf('.', Namespace.LastIndexOf('.') - 1) + 1);

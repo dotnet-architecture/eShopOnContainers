@@ -1,6 +1,4 @@
-﻿using IdentityServer4;
-using IdentityServer4.Models;
-using System.Collections.Generic;
+﻿using IdentityServer4.Models;
 
 namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
 {
@@ -8,7 +6,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
     {
         // ApiResources define the apis in your system
         public static IEnumerable<ApiResource> GetApis()
-        {
+        {            
             return new List<ApiResource>
             {
                 new ApiResource("orders", "Orders Service"),
@@ -65,7 +63,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                     AllowedGrantTypes = GrantTypes.Hybrid,                    
                     //Used to retrieve the access token on the back channel.
                     ClientSecrets =
-                    {
+                    {                        
                         new Secret("secret".Sha256())
                     },
                     RedirectUris = { clientsUrl["Xamarin"] },
@@ -93,6 +91,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                     ClientName = "MVC Client",
                     ClientSecrets = new List<Secret>
                     {
+                        
                         new Secret("secret".Sha256())
                     },
                     ClientUri = $"{clientsUrl["Mvc"]}",                             // public uri of the client

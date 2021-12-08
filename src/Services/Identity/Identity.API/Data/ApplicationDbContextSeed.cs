@@ -1,21 +1,6 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.eShopOnContainers.Services.Identity.API.Extensions;
-using Microsoft.eShopOnContainers.Services.Identity.API.Models;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.IO.Compression;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-
-namespace Microsoft.eShopOnContainers.Services.Identity.API.Data
+﻿namespace Microsoft.eShopOnContainers.Services.Identity.API.Data
 {
-
-
+    using Microsoft.Extensions.Logging;
     public class ApplicationDbContextSeed
     {
         private readonly IPasswordHasher<ApplicationUser> _passwordHasher = new PasswordHasher<ApplicationUser>();
@@ -149,7 +134,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Data
                 City = "Redmond",
                 Country = "U.S.",
                 Email = "demouser@microsoft.com",
-                Expiration = "12/21",
+                Expiration = "12/25",
                 Id = Guid.NewGuid().ToString(),
                 LastName = "DemoLastName",
                 Name = "DemoUser",

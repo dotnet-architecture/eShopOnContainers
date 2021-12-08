@@ -1,9 +1,9 @@
-﻿namespace Basket.API.Infrastructure.Filters
-{
-    public class JsonErrorResponse
-    {
-        public string[] Messages { get; set; }
+﻿namespace Basket.API.Infrastructure.Filters;
 
-        public object DeveloperMessage { get; set; }
-    }
+public class JsonErrorResponse
+{
+    public string[] Messages { get; set; }
+
+    public object DeveloperMessage { get; set; }
 }
+

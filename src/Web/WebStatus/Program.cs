@@ -1,17 +1,4 @@
-﻿using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Serilog;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using WebStatus;
-using Azure.Identity;
-using Azure.Core;
-
-var configuration = GetConfiguration();
+﻿var configuration = GetConfiguration();
 
 Log.Logger = CreateSerilogLogger(configuration);
 
@@ -116,7 +103,7 @@ void LogPackagesVersionInfo()
     Log.Logger.ForContext("PackageVersions", string.Join("\n", versionList)).Information("Package versions ({ApplicationContext})", Program.AppName);
 }
 
-public class Program
+public partial class Program
 {
     private static readonly string _namespace = typeof(Startup).Namespace;
     public static readonly string AppName = _namespace;

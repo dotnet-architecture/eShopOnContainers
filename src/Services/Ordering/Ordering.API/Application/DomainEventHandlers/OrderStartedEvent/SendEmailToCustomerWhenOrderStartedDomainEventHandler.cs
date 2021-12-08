@@ -1,16 +1,15 @@
-﻿namespace Ordering.API.Application.DomainEventHandlers.OrderStartedEvent
+﻿namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.DomainEventHandlers.OrderStartedEvent;
+
+public class SendEmailToCustomerWhenOrderStartedDomainEventHandler
+//: IAsyncNotificationHandler<OrderStartedDomainEvent>
 {
-    public class SendEmailToCustomerWhenOrderStartedDomainEventHandler
-    //: IAsyncNotificationHandler<OrderStartedDomainEvent>
+    public SendEmailToCustomerWhenOrderStartedDomainEventHandler()
     {
-        public SendEmailToCustomerWhenOrderStartedDomainEventHandler()
-        {
 
-        }
-
-        //public async Task Handle(OrderStartedDomainEvent orderNotification)
-        //{
-        //    //TBD - Send email logic
-        //}
     }
+
+    //public async Task Handle(OrderStartedDomainEvent orderNotification)
+    //{
+    //    //TBD - Send email logic
+    //}
 }

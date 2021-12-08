@@ -1,7 +1,6 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.Seedwork
+﻿namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.Seedwork;
+
+public interface IRepository<T> where T : IAggregateRoot
 {
-    public interface IRepository<T> where T : IAggregateRoot
-    {
-        IUnitOfWork UnitOfWork { get; }
-    }
+    IUnitOfWork UnitOfWork { get; }
 }

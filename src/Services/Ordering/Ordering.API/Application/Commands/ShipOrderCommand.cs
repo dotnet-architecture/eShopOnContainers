@@ -1,17 +1,13 @@
-﻿using MediatR;
-using System.Runtime.Serialization;
+﻿namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands;
 
-namespace Ordering.API.Application.Commands
+public class ShipOrderCommand : IRequest<bool>
 {
-    public class ShipOrderCommand : IRequest<bool>
+
+    [DataMember]
+    public int OrderNumber { get; private set; }
+
+    public ShipOrderCommand(int orderNumber)
     {
-
-        [DataMember]
-        public int OrderNumber { get; private set; }
-
-        public ShipOrderCommand(int orderNumber)
-        {
-            OrderNumber = orderNumber;
-        }
+        OrderNumber = orderNumber;
     }
 }
