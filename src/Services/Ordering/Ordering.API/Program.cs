@@ -119,7 +119,7 @@ IConfiguration GetConfiguration()
     return (port, grpcPort);
 }
 
-public class Program
+public partial class Program
 {
 
     public static string Namespace = typeof(Startup).Namespace;

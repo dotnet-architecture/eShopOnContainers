@@ -44,5 +44,8 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.SeedWork
         {
             return this.MemberwiseClone() as ValueObject;
         }
+
+        public static bool operator ==(ValueObject one, ValueObject two) { return one?.Equals(two) ?? false; }
+        public static bool operator !=(ValueObject one, ValueObject two) { return !(one?.Equals(two) ?? false); }
     }
 }

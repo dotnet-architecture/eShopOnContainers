@@ -52,4 +52,8 @@
     <ProjectReference Include="..\..\BuildingBlocks\Devspaces.Support\Devspaces.Support.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\js\" />
+  </ItemGroup>
+
 </Project>

@@ -116,7 +116,7 @@ void LogPackagesVersionInfo()
     Log.Logger.ForContext("PackageVersions", string.Join("\n", versionList)).Information("Package versions ({ApplicationContext})", Program.AppName);
 }
 
-public class Program
+public partial class Program
 {
     private static readonly string _namespace = typeof(Startup).Namespace;
     public static readonly string AppName = _namespace;
