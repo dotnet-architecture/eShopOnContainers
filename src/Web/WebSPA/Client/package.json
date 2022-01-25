@@ -57,7 +57,7 @@
     "ssri": ">=8.0.1",
     "tslib": "^2.0.0",
     "typedoc": "^0.19.2",
-    "webpack-dev-server": "3.1.14",
+    "webpack-dev-server": "3.11.3",
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
