@@ -125,7 +125,7 @@ public class Startup
 
             // the root of the angular app. (Where the package.json lives)
             spa.Options.SourcePath = "Client";
-
+            spa.Options.StartupTimeout = new TimeSpan(0, 15, 0);
             if (env.IsDevelopment())
             { 
 

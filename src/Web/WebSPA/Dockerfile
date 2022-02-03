@@ -3,6 +3,12 @@
 ARG NODE_IMAGE=node:12.0
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app
+RUN apt-get update
+RUN apt-get -y install curl gnupg
+RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
+RUN apt-get -y install nodejs
+RUN npm install
+RUN npm -v
 EXPOSE 80
 
 FROM ${NODE_IMAGE} as node-build

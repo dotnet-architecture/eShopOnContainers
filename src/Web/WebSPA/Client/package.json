@@ -19,7 +19,7 @@
     "ng": "ng",
     "rimraf": "rimraf",
     "clean": "npm cache clean && npm run rimraf -- node_modules doc typings coverage wwwroot",
-    "start": "ng serve",
+    "start": "echo Starting... && ng serve",
     "build:dev": "ng build",
     "build:dev:watch": "npm run build:dev && ng build --watch",
     "build:prod": "ng build --prod --aot --extract-css",
