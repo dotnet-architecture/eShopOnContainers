@@ -6,6 +6,9 @@ metadata:
   labels:
     app.kubernetes.io/name: ingress-nginx
     app.kubernetes.io/part-of: ingress-nginx
+    app.kubernetes.io/instance: ingress-nginx
+    app.kubernetes.io/version: 1.1.1
+    app.kubernetes.io/component: controller
 spec:
   externalTrafficPolicy: Local
   type: LoadBalancer
@@ -15,7 +18,13 @@ spec:
   ports:
     - name: http
       port: 80
+      protocol: TCP
       targetPort: http
     - name: https
       port: 443
       targetPort: https
+      protocol: TCP
+  selector:
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/instance: ingress-nginx
+    app.kubernetes.io/component: controller
