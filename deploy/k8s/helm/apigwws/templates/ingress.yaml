@@ -38,7 +38,7 @@ spec:
     - host: {{ . }}
       http:
         paths:
-          - path: {{ $ingressPath }}
+          - path: {{ $ingressPath }}(/|$)(.*)
             pathType: Prefix
             backend:
               service:
