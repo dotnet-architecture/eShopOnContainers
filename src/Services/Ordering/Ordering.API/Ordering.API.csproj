@@ -45,7 +45,7 @@
     <PackageReference Include="Azure.Identity" Version="1.4.0" />
     <PackageReference Include="Dapper" Version="2.0.78" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="9.3.0" />
-    <PackageReference Include="Google.Protobuf" Version="3.14.0" />
+    <PackageReference Include="Google.Protobuf" Version="3.15.0" />
     <PackageReference Include="Grpc.AspNetCore.Server" Version="2.34.0" />
     <PackageReference Include="Grpc.Tools" Version="2.34.0" PrivateAssets="All" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
