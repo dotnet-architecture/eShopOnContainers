@@ -79,7 +79,6 @@ public class CreateOrderCommand
         CardExpiration = cardExpiration;
         CardSecurityNumber = cardSecurityNumber;
         CardTypeId = cardTypeId;
-        CardExpiration = cardExpiration;
     }
 
 
