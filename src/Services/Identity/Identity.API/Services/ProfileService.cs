@@ -13,7 +13,7 @@
         {
             var subject = context.Subject ?? throw new ArgumentNullException(nameof(context.Subject));
 
-            var subjectId = subject.Claims.Where(x => x.Type == "sub").FirstOrDefault().Value;
+            var subjectId = subject.Claims.Where(x => x.Type == "sub").FirstOrDefault()?.Value;
 
             var user = await _userManager.FindByIdAsync(subjectId);
             if (user == null)
@@ -27,7 +27,7 @@
         {
             var subject = context.Subject ?? throw new ArgumentNullException(nameof(context.Subject));
 
-            var subjectId = subject.Claims.Where(x => x.Type == "sub").FirstOrDefault().Value;
+            var subjectId = subject.Claims.Where(x => x.Type == "sub").FirstOrDefault()?.Value;
             var user = await _userManager.FindByIdAsync(subjectId);
 
             context.IsActive = false;
