@@ -4,7 +4,7 @@ pathBase: /mobileshoppingapigw
 
 image:
   repository: envoyproxy/envoy
-  tag: v1.11.1
+  tag: v1.21.0
 
 service:
   type: ClusterIP
@@ -14,8 +14,9 @@ service:
 ingress:
   enabled: true
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: "/"
-    ingress.kubernetes.io/rewrite-target: "/"
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/use-regex: "true"
   tls: []
 
 resources: {}
