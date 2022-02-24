@@ -45,6 +45,7 @@
     <PackageReference Include="Serilog.AspNetCore" Version="4.1.0" />
     <PackageReference Include="Serilog.Sinks.Console" Version="4.0.0-dev-00834" />
     <PackageReference Include="Serilog.Sinks.Seq" Version="5.0.1" />
+	<PackageReference Include="Microsoft.TypeScript.MSBuild" Version="4.5.3" />
   </ItemGroup>
   
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
