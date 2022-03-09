@@ -203,7 +203,7 @@ public class CatalogContextSeed
         string catalogBrandName = column[Array.IndexOf(headers, "catalogbrandname")].Trim('"').Trim();
         if (!catalogBrandIdLookup.ContainsKey(catalogBrandName))
         {
-            throw new Exception($"type={catalogTypeName} does not exist in catalogTypes");
+            throw new Exception($"type={catalogBrandName} does not exist in catalogTypes");
         }
 
         string priceString = column[Array.IndexOf(headers, "price")].Trim('"').Trim();
