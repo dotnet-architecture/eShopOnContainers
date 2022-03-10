@@ -8678,10 +8678,10 @@
   "resolved" "https://registry.npmjs.org/safer-buffer/-/safer-buffer-2.1.2.tgz"
   "version" "2.1.2"
 
-"sass-lint@1.13.1":
-  "integrity" "sha512-DSyah8/MyjzW2BWYmQWekYEKir44BpLqrCFsgs9iaWiVTcwZfwXHF586hh3D1n+/9ihUNMfd8iHAyb9KkGgs7Q=="
-  "resolved" "https://registry.npmjs.org/sass-lint/-/sass-lint-1.13.1.tgz"
-  "version" "1.13.1"
+"sass-lint@1.12.1":
+  "integrity" "sha1-Yw9pwhaqIGuCMvsqqQe98zNrbYM="
+  "resolved" "https://registry.npmjs.org/sass-lint/-/sass-lint-1.12.1.tgz"
+  "version" "1.12.1"
   dependencies:
     "commander" "^2.8.1"
     "eslint" "^2.7.0"
