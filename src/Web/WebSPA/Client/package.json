@@ -86,7 +86,7 @@
     "npm-watch": "0.5.0",
     "protractor": "~7.0.0",
     "rxjs-tslint": "^0.1.8",
-    "sass-lint": "1.13.1",
+    "sass-lint": "^1.13.1",
     "ts-helpers": "1.1.2",
     "ts-node": "~7.0.1",
     "tslint": "~6.1.0",
