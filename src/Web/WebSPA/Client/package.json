@@ -47,7 +47,7 @@
     "file-loader": "2.0.0",
     "font-awesome": "4.7.0",
     "is-svg": ">=4.2.2",
-    "isomorphic-fetch": "2.2.1",
+    "isomorphic-fetch": "3.0.0",
     "jquery": "3.5.0",
     "ngx-toastr": "^13.2.0",
     "normalize.css": "8.0.0",
@@ -57,7 +57,7 @@
     "ssri": ">=8.0.1",
     "tslib": "^2.0.0",
     "typedoc": "0.22.11",
-    "webpack-dev-server": "4.6.0",
+    "webpack-dev-server": "4.7.4",
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
