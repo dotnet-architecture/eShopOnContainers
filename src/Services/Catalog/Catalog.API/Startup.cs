@@ -222,11 +222,26 @@ public static class CustomExtensionMethods
     {
         services.AddSwaggerGen(options =>
         {            
+            var basePath = AppDomain.CurrentDomain.BaseDirectory;
+            var fileName = typeof(Program).GetTypeInfo().Assembly.GetName().Name + ".xml";
+            var xmlComments = Path.Combine(basePath, fileName);
+            options.IncludeXmlComments(xmlComments);
             options.SwaggerDoc("v1", new OpenApiInfo
             {
                 Title = "eShopOnContainers - Catalog HTTP API",
                 Version = "v1",
-                Description = "The Catalog Microservice HTTP API. This is a Data-Driven/CRUD microservice sample"
+                Description = "The Catalog Microservice HTTP API. This is a Data-Driven/CRUD microservice sample",
+                TermsOfService = new Uri("https://microsoft.com/terms"),
+                Contact = new OpenApiContact
+                {
+                    Name = "Microsoft Contact",
+                    Url = new Uri("https://microsoft.com/contact")
+                },
+                License = new OpenApiLicense
+                {
+                    Name = "Microsoft License",
+                    Url = new Uri("https://microsoft.com/license")
+                }
             });
         });
 

@@ -214,12 +214,27 @@ static class CustomExtensionsMethods
     public static IServiceCollection AddCustomSwagger(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddSwaggerGen(options =>
-        {            
+        {          
+            var basePath = AppDomain.CurrentDomain.BaseDirectory;
+            var fileName = typeof(Program).GetTypeInfo().Assembly.GetName().Name + ".xml";
+            var xmlComments = Path.Combine(basePath, fileName);
+            options.IncludeXmlComments(xmlComments);  
             options.SwaggerDoc("v1", new OpenApiInfo
             {
                 Title = "eShopOnContainers - Ordering HTTP API",
                 Version = "v1",
-                Description = "The Ordering Service HTTP API"
+                Description = "The Ordering Service HTTP API",
+                TermsOfService = new Uri("https://microsoft.com/terms"),
+                Contact = new OpenApiContact
+                {
+                    Name = "Microsoft Contact",
+                    Url = new Uri("https://microsoft.com/")
+                },
+                License = new OpenApiLicense
+                {
+                    Name = "Microsoft License",
+                    Url = new Uri("https://microsoft.com/")
+                }
             });
             options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
             {
