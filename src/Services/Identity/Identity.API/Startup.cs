@@ -109,7 +109,6 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API
                         Name = "Microsoft License",
                         Url = new Uri("https://microsoft.com/")
                     }
-                });
             });
 
             var container = new ContainerBuilder();

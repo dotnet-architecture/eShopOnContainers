@@ -242,7 +242,6 @@ public static class CustomExtensionMethods
                     Name = "Microsoft License",
                     Url = new Uri("https://microsoft.com/license")
                 }
-            });
         });
 
         return services;

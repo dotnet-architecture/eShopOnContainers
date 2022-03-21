@@ -139,7 +139,7 @@ static class CustomExtensionMethods
     {
         services.AddSwaggerGen(options =>
         {            
-             var basePath = AppDomain.CurrentDomain.BaseDirectory;
+            var basePath = AppDomain.CurrentDomain.BaseDirectory;
             var fileName = typeof(Startup).GetTypeInfo().Assembly.GetName().Name + ".xml";
             var xmlComments = Path.Combine(basePath, fileName);
             options.IncludeXmlComments(xmlComments);
