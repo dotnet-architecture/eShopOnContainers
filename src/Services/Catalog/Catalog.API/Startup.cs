@@ -223,7 +223,7 @@ public static class CustomExtensionMethods
         services.AddSwaggerGen(options =>
         {            
             var basePath = AppDomain.CurrentDomain.BaseDirectory;
-            var fileName = typeof(Program).GetTypeInfo().Assembly.GetName().Name + ".xml";
+            var fileName = typeof(Startup).GetTypeInfo().Assembly.GetName().Name + ".xml";
             var xmlComments = Path.Combine(basePath, fileName);
             options.IncludeXmlComments(xmlComments);
             options.SwaggerDoc("v1", new OpenApiInfo
