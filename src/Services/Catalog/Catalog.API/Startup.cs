@@ -242,10 +242,9 @@ public static class CustomExtensionMethods
                     Name = "Microsoft License",
                     Url = new Uri("https://microsoft.com/license")
                 }
+            });
         });
-
         return services;
-
     }
 
     public static IServiceCollection AddIntegrationServices(this IServiceCollection services, IConfiguration configuration)

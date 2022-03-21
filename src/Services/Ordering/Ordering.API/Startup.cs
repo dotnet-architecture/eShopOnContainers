@@ -236,6 +236,7 @@ static class CustomExtensionsMethods
                     Url = new Uri("https://microsoft.com/")
                 }
             });
+            
             options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
             {
                 Type = SecuritySchemeType.OAuth2,
