@@ -112,7 +112,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API
                         Url = new Uri("https://microsoft.com/")
                     }
                 });
-            }
+            });
             var container = new ContainerBuilder();
             container.Populate(services);   
 
