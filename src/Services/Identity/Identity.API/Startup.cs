@@ -89,28 +89,30 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API
             services.AddControllersWithViews();
             services.AddRazorPages();
 
-            var basePath = AppDomain.CurrentDomain.BaseDirectory;
-            var fileName = typeof(Startup).GetTypeInfo().Assembly.GetName().Name + ".xml";
-            var xmlComments = Path.Combine(basePath, fileName);
-            options.IncludeXmlComments(xmlComments);
-            options.SwaggerDoc("v1", new OpenApiInfo
-            {
-                Title = "Microsoft - Identity HTTP API",
-                Version = "v1",
-                Description = "The Identity Service HTTP API",
-                TermsOfService = new Uri("https://microsoft.com/"),
-                Contact = new OpenApiContact
+            services.AddSwaggerGen(options =>
+            {          
+                var basePath = AppDomain.CurrentDomain.BaseDirectory;
+                var fileName = typeof(Startup).GetTypeInfo().Assembly.GetName().Name + ".xml";
+                var xmlComments = Path.Combine(basePath, fileName);
+                options.IncludeXmlComments(xmlComments);  
+                options.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Name = "Microsoft Contact",
-                    Url = new Uri("https://microsoft.com/")
-                },
-                License = new OpenApiLicense
-                {
-                    Name = "Microsoft License",
-                    Url = new Uri("https://microsoft.com/")
-                }
-            });
-
+                     Title = "Microsoft - Identity HTTP API",
+                    Version = "v1",
+                    Description = "The Identity Service HTTP API",
+                    TermsOfService = new Uri("https://microsoft.com/"),
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Microsoft Contact",
+                        Url = new Uri("https://microsoft.com/")
+                    },
+                    License = new OpenApiLicense
+                    {
+                        Name = "Microsoft License",
+                        Url = new Uri("https://microsoft.com/")
+                    }
+                });
+            }
             var container = new ContainerBuilder();
             container.Populate(services);   
 
