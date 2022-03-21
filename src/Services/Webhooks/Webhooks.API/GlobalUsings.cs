@@ -50,5 +50,5 @@ global using Webhooks.API.Services;
 global using Webhooks.API;
 global using System.Reflection;
 global using Microsoft.OpenApi.Models;
-global using System.IO.Path;
+global using System.IO;
 
