@@ -11,45 +11,43 @@ public class IntegrationEventsScenarios
         decimal priceModification = 0.15M;
         string userId = "JohnId";
 
-        using (var catalogServer = new CatalogScenariosBase().CreateServer())
-        using (var basketServer = new BasketScenariosBase().CreateServer())
+        using var catalogServer = new CatalogScenariosBase().CreateServer();
+        using var basketServer = new BasketScenariosBase().CreateServer();
+        var catalogClient = catalogServer.CreateClient();
+        var basketClient = basketServer.CreateClient();
+
+        // GIVEN a product catalog list                           
+        var originalCatalogProducts = await GetCatalogAsync(catalogClient);
+
+        // AND a user basket filled with products   
+        var basket = ComposeBasket(userId, originalCatalogProducts.Data.Take(3));
+        var res = await basketClient.PostAsync(
+            BasketScenariosBase.Post.CreateBasket,
+            new StringContent(JsonSerializer.Serialize(basket), UTF8Encoding.UTF8, "application/json")
+            );
+
+        // WHEN the price of one product is modified in the catalog
+        var itemToModify = basket.Items[2];
+        var oldPrice = itemToModify.UnitPrice;
+        var newPrice = oldPrice + priceModification;
+        var pRes = await catalogClient.PutAsync(CatalogScenariosBase.Put.UpdateCatalogProduct, new StringContent(ChangePrice(itemToModify, newPrice, originalCatalogProducts), UTF8Encoding.UTF8, "application/json"));
+
+        var modifiedCatalogProducts = await GetCatalogAsync(catalogClient);
+
+        var itemUpdated = await GetUpdatedBasketItem(newPrice, itemToModify.ProductId, userId, basketClient);
+
+        if (itemUpdated == null)
         {
-            var catalogClient = catalogServer.CreateClient();
-            var basketClient = basketServer.CreateClient();
+            Assert.False(true, $"The basket service has not been updated.");
+        }
+        else
+        {
+            //THEN the product price changes in the catalog 
+            Assert.Equal(newPrice, modifiedCatalogProducts.Data.Single(it => it.Id == itemToModify.ProductId).Price);
 
-            // GIVEN a product catalog list                           
-            var originalCatalogProducts = await GetCatalogAsync(catalogClient);
-
-            // AND a user basket filled with products   
-            var basket = ComposeBasket(userId, originalCatalogProducts.Data.Take(3));
-            var res = await basketClient.PostAsync(
-                BasketScenariosBase.Post.CreateBasket,
-                new StringContent(JsonSerializer.Serialize(basket), UTF8Encoding.UTF8, "application/json")
-                );
-
-            // WHEN the price of one product is modified in the catalog
-            var itemToModify = basket.Items[2];
-            var oldPrice = itemToModify.UnitPrice;
-            var newPrice = oldPrice + priceModification;
-            var pRes = await catalogClient.PutAsync(CatalogScenariosBase.Put.UpdateCatalogProduct, new StringContent(ChangePrice(itemToModify, newPrice, originalCatalogProducts), UTF8Encoding.UTF8, "application/json"));
-
-            var modifiedCatalogProducts = await GetCatalogAsync(catalogClient);
-
-            var itemUpdated = await GetUpdatedBasketItem(newPrice, itemToModify.ProductId, userId, basketClient);
-
-            if (itemUpdated == null)
-            {
-                Assert.False(true, $"The basket service has not been updated.");
-            }
-            else
-            {
-                //THEN the product price changes in the catalog 
-                Assert.Equal(newPrice, modifiedCatalogProducts.Data.Single(it => it.Id == itemToModify.ProductId).Price);
-
-                // AND the products in the basket reflects the changed priced and the original price
-                Assert.Equal(newPrice, itemUpdated.UnitPrice);
-                Assert.Equal(oldPrice, itemUpdated.OldUnitPrice);
-            }
+            // AND the products in the basket reflects the changed priced and the original price
+            Assert.Equal(newPrice, itemUpdated.UnitPrice);
+            Assert.Equal(oldPrice, itemUpdated.OldUnitPrice);
         }
     }
 

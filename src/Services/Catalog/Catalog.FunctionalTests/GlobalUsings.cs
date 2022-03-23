@@ -1,7 +1,7 @@
-﻿global using Catalog.API.Extensions;
-global using Microsoft.AspNetCore.Hosting;
+﻿global using Microsoft.AspNetCore.Hosting;
 global using Microsoft.AspNetCore.TestHost;
 global using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF;
+global using Microsoft.eShopOnContainers.Services.Catalog.API.Extensions;
 global using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
 global using Microsoft.eShopOnContainers.Services.Catalog.API;
 global using Microsoft.Extensions.Configuration;

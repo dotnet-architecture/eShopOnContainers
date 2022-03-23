@@ -5,35 +5,33 @@ public class OrderingScenarios : OrderingScenariosBase
     [Fact]
     public async Task Cancel_basket_and_check_order_status_cancelled()
     {
-        using (var orderServer = new OrderingScenariosBase().CreateServer())
-        using (var basketServer = new BasketScenariosBase().CreateServer())
-        {
-            // Expected data
-            var cityExpected = $"city-{Guid.NewGuid()}";
-            var orderStatusExpected = "cancelled";
+        using var orderServer = new OrderingScenariosBase().CreateServer();
+        using var basketServer = new BasketScenariosBase().CreateServer();
+        // Expected data
+        var cityExpected = $"city-{Guid.NewGuid()}";
+        var orderStatusExpected = "cancelled";
 
-            var basketClient = basketServer.CreateIdempotentClient();
-            var orderClient = orderServer.CreateIdempotentClient();
+        var basketClient = basketServer.CreateIdempotentClient();
+        var orderClient = orderServer.CreateIdempotentClient();
 
-            // GIVEN a basket is created 
-            var contentBasket = new StringContent(BuildBasket(), UTF8Encoding.UTF8, "application/json");
-            await basketClient.PostAsync(BasketScenariosBase.Post.CreateBasket, contentBasket);
+        // GIVEN a basket is created 
+        var contentBasket = new StringContent(BuildBasket(), UTF8Encoding.UTF8, "application/json");
+        await basketClient.PostAsync(BasketScenariosBase.Post.CreateBasket, contentBasket);
 
-            // AND basket checkout is sent
-            await basketClient.PostAsync(BasketScenariosBase.Post.CheckoutOrder, new StringContent(BuildCheckout(cityExpected), UTF8Encoding.UTF8, "application/json"));
+        // AND basket checkout is sent
+        await basketClient.PostAsync(BasketScenariosBase.Post.CheckoutOrder, new StringContent(BuildCheckout(cityExpected), UTF8Encoding.UTF8, "application/json"));
 
-            // WHEN Order is created in Ordering.api
-            var newOrder = await TryGetNewOrderCreated(cityExpected, orderClient);
+        // WHEN Order is created in Ordering.api
+        var newOrder = await TryGetNewOrderCreated(cityExpected, orderClient);
 
-            // AND Order is cancelled in Ordering.api
-            await orderClient.PutAsync(OrderingScenariosBase.Put.CancelOrder, new StringContent(BuildCancelOrder(newOrder.OrderNumber), UTF8Encoding.UTF8, "application/json"));
+        // AND Order is cancelled in Ordering.api
+        await orderClient.PutAsync(OrderingScenariosBase.Put.CancelOrder, new StringContent(BuildCancelOrder(newOrder.OrderNumber), UTF8Encoding.UTF8, "application/json"));
 
-            // AND the requested order is retrieved
-            var order = await TryGetOrder(newOrder.OrderNumber, orderClient);
+        // AND the requested order is retrieved
+        var order = await TryGetOrder(newOrder.OrderNumber, orderClient);
 
-            // THEN check status
-            Assert.Equal(orderStatusExpected, order.Status);
-        }
+        // THEN check status
+        Assert.Equal(orderStatusExpected, order.Status);
     }
 
     async Task<Order> TryGetOrder(string orderNumber, HttpClient orderClient)

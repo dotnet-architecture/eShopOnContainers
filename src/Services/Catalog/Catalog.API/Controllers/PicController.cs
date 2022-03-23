@@ -47,40 +47,18 @@ public class PicController : ControllerBase
 
     private string GetImageMimeTypeFromImageFileExtension(string extension)
     {
-        string mimetype;
-
-        switch (extension)
+        string mimetype = extension switch
         {
-            case ".png":
-                mimetype = "image/png";
-                break;
-            case ".gif":
-                mimetype = "image/gif";
-                break;
-            case ".jpg":
-            case ".jpeg":
-                mimetype = "image/jpeg";
-                break;
-            case ".bmp":
-                mimetype = "image/bmp";
-                break;
-            case ".tiff":
-                mimetype = "image/tiff";
-                break;
-            case ".wmf":
-                mimetype = "image/wmf";
-                break;
-            case ".jp2":
-                mimetype = "image/jp2";
-                break;
-            case ".svg":
-                mimetype = "image/svg+xml";
-                break;
-            default:
-                mimetype = "application/octet-stream";
-                break;
-        }
-
+            ".png" => "image/png",
+            ".gif" => "image/gif",
+            ".jpg" or ".jpeg" => "image/jpeg",
+            ".bmp" => "image/bmp",
+            ".tiff" => "image/tiff",
+            ".wmf" => "image/wmf",
+            ".jp2" => "image/jp2",
+            ".svg" => "image/svg+xml",
+            _ => "application/octet-stream",
+        };
         return mimetype;
     }
 }

@@ -56,23 +56,21 @@ public class WebContextSeed
             string imagePath = Path.Combine(webroot, "images");
             string[] imageFiles = Directory.GetFiles(imagePath).Select(file => Path.GetFileName(file)).ToArray();
 
-            using (ZipArchive zip = ZipFile.Open(imagesZipFile, ZipArchiveMode.Read))
+            using ZipArchive zip = ZipFile.Open(imagesZipFile, ZipArchiveMode.Read);
+            foreach (ZipArchiveEntry entry in zip.Entries)
             {
-                foreach (ZipArchiveEntry entry in zip.Entries)
+                if (imageFiles.Contains(entry.Name))
                 {
-                    if (imageFiles.Contains(entry.Name))
+                    string destinationFilename = Path.Combine(imagePath, entry.Name);
+                    if (File.Exists(destinationFilename))
                     {
-                        string destinationFilename = Path.Combine(imagePath, entry.Name);
-                        if (File.Exists(destinationFilename))
-                        {
-                            File.Delete(destinationFilename);
-                        }
-                        entry.ExtractToFile(destinationFilename);
+                        File.Delete(destinationFilename);
                     }
-                    else
-                    {
-                        log.Warning("Skipped file '{FileName}' in zipfile '{ZipFileName}'", entry.Name, imagesZipFile);
-                    }
+                    entry.ExtractToFile(destinationFilename);
+                }
+                else
+                {
+                    log.Warning("Skipped file '{FileName}' in zipfile '{ZipFileName}'", entry.Name, imagesZipFile);
                 }
             }
         }

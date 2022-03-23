@@ -35,7 +35,7 @@ public class TransactionBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequ
             {
                 Guid transactionId;
 
-                using (var transaction = await _dbContext.BeginTransactionAsync())
+                using var transaction = await _dbContext.BeginTransactionAsync();
                 using (LogContext.PushProperty("TransactionContext", transaction.TransactionId))
                 {
                     _logger.LogInformation("----- Begin transaction {TransactionId} for {CommandName} ({@Command})", transaction.TransactionId, typeName, request);
