@@ -10,23 +10,23 @@
     "@angular-devkit/core" "11.2.14"
     "rxjs" "6.6.3"
 
-"@angular-devkit/architect@0.1102.18":
-  "integrity" "sha512-W561li5FM4LWuKPUA5fZxJqBRfOuqE3UL/HXSD8ivDErtyVE70oLF3bjPRW1S5UFeNPfaK+EAeoMss1DXz9DnQ=="
-  "resolved" "https://registry.npmjs.org/@angular-devkit/architect/-/architect-0.1102.18.tgz"
-  "version" "0.1102.18"
+"@angular-devkit/architect@0.1102.19":
+  "integrity" "sha512-5Opv6H+XyCkuQvQ1jsxw416YqMDPX3dVonMarFGBPLBe8YEXLRTJ60dvmuLsLpWk6ccTd3XiNT7WEJy4ctDc2Q=="
+  "resolved" "https://registry.npmjs.org/@angular-devkit/architect/-/architect-0.1102.19.tgz"
+  "version" "0.1102.19"
   dependencies:
-    "@angular-devkit/core" "11.2.18"
+    "@angular-devkit/core" "11.2.19"
     "rxjs" "6.6.3"
 
 "@angular-devkit/build-angular@~0.1102.14":
-  "integrity" "sha512-RsLen4BSq94y69mEk3Y+VQeWu2O6yHYcJsyV0+7FohRDVQVDHH4zjmSOsJNQzOb+naTWg6+NYRaNSAUHsTpPHw=="
-  "resolved" "https://registry.npmjs.org/@angular-devkit/build-angular/-/build-angular-0.1102.18.tgz"
-  "version" "0.1102.18"
+  "integrity" "sha512-frI8UyujPB5WV7l9uecH8Ev73TWTV7xEHrwYIKryD/mVmqeg64ILi4/ATPHm1qGFjAH27WWHtzL2vnik5wBlNg=="
+  "resolved" "https://registry.npmjs.org/@angular-devkit/build-angular/-/build-angular-0.1102.19.tgz"
+  "version" "0.1102.19"
   dependencies:
-    "@angular-devkit/architect" "0.1102.18"
-    "@angular-devkit/build-optimizer" "0.1102.18"
-    "@angular-devkit/build-webpack" "0.1102.18"
-    "@angular-devkit/core" "11.2.18"
+    "@angular-devkit/architect" "0.1102.19"
+    "@angular-devkit/build-optimizer" "0.1102.19"
+    "@angular-devkit/build-webpack" "0.1102.19"
+    "@angular-devkit/core" "11.2.19"
     "@babel/core" "7.12.10"
     "@babel/generator" "7.12.11"
     "@babel/plugin-transform-async-to-generator" "7.12.1"
@@ -36,7 +36,7 @@
     "@babel/template" "7.12.7"
     "@discoveryjs/json-ext" "0.5.2"
     "@jsdevtools/coverage-istanbul-loader" "3.0.5"
-    "@ngtools/webpack" "11.2.18"
+    "@ngtools/webpack" "11.2.19"
     "ansi-colors" "4.1.1"
     "autoprefixer" "10.2.4"
     "babel-loader" "8.2.2"
@@ -97,10 +97,10 @@
     "webpack-subresource-integrity" "1.5.2"
     "worker-plugin" "5.0.0"
 
-"@angular-devkit/build-optimizer@0.1102.18":
-  "integrity" "sha512-bZ+Ma31Bkcm3Bp7RL08ltGD9k+m5qe6JpQgN9oKjfc0WwB5ldux7mgE1lz6OfxCaY5wsnLRCl1SdKWJDkyAz3A=="
-  "resolved" "https://registry.npmjs.org/@angular-devkit/build-optimizer/-/build-optimizer-0.1102.18.tgz"
-  "version" "0.1102.18"
+"@angular-devkit/build-optimizer@0.1102.19":
+  "integrity" "sha512-3665mNFwOCqD2HR6Kjrwqh+Jh72h3F7AB88p/oWBvH0GolFCz8JnbwUZJkzTtOsKUw5ZC1Z6b/nbUkCJemxFug=="
+  "resolved" "https://registry.npmjs.org/@angular-devkit/build-optimizer/-/build-optimizer-0.1102.19.tgz"
+  "version" "0.1102.19"
   dependencies:
     "loader-utils" "2.0.0"
     "source-map" "0.7.3"
@@ -108,13 +108,13 @@
     "typescript" "4.1.5"
     "webpack-sources" "2.2.0"
 
-"@angular-devkit/build-webpack@0.1102.18":
-  "integrity" "sha512-a/n4BoIb3A7imMupkvCA1bJRoP5zs9vuwAT2xmCM8QikE+mUURotz/PqBycuUCFVquG7bmj7qowSSp99z3RKGQ=="
-  "resolved" "https://registry.npmjs.org/@angular-devkit/build-webpack/-/build-webpack-0.1102.18.tgz"
-  "version" "0.1102.18"
+"@angular-devkit/build-webpack@0.1102.19":
+  "integrity" "sha512-IhN/eeaA2bA1daLTU7YDztxvaS9Hj2J2t889fBYn5xNnM3Z2QqwyncOoj0F0Cumx6tuFtwRSvaKm7+xbbCoJQA=="
+  "resolved" "https://registry.npmjs.org/@angular-devkit/build-webpack/-/build-webpack-0.1102.19.tgz"
+  "version" "0.1102.19"
   dependencies:
-    "@angular-devkit/architect" "0.1102.18"
-    "@angular-devkit/core" "11.2.18"
+    "@angular-devkit/architect" "0.1102.19"
+    "@angular-devkit/core" "11.2.19"
     "rxjs" "6.6.3"
 
 "@angular-devkit/core@11.2.14":
@@ -128,10 +128,10 @@
     "rxjs" "6.6.3"
     "source-map" "0.7.3"
 
-"@angular-devkit/core@11.2.18":
-  "integrity" "sha512-w7llSJfLg9/+Qb7kvFIZeUomt2kopt1Ujh6nsm/JGEoZWB6Ay63gtuj/IU/0i96Hw4UWkk6Oe7wKSKuDNMIO/w=="
-  "resolved" "https://registry.npmjs.org/@angular-devkit/core/-/core-11.2.18.tgz"
-  "version" "11.2.18"
+"@angular-devkit/core@11.2.19":
+  "integrity" "sha512-kvS0QXDYDatLyf0NYv2sahPYD7kya4g5GpQAV1ddjjLmEVeZssHt+Xfk2tzrkzYzqRMiyspx3HPPrrOnMUAFhQ=="
+  "resolved" "https://registry.npmjs.org/@angular-devkit/core/-/core-11.2.19.tgz"
+  "version" "11.2.19"
   dependencies:
     "ajv" "6.12.6"
     "fast-json-stable-stringify" "2.1.0"
@@ -1173,12 +1173,12 @@
   dependencies:
     "tslib" "^2.0.0"
 
-"@ngtools/webpack@11.2.18":
-  "integrity" "sha512-5CsCQRc11g7sGGQzelnfrS7zQFVt9Ps7SiajJhUqI2hyNptdItzbc9TVyNMIy4cHIAT+j7kVwqdBSRhiylZcCw=="
-  "resolved" "https://registry.npmjs.org/@ngtools/webpack/-/webpack-11.2.18.tgz"
-  "version" "11.2.18"
+"@ngtools/webpack@11.2.19":
+  "integrity" "sha512-HwLHA6ZrLSk7VHm5Bv3a8ljM6uU8+/670u2fKfMFwM4UQ42+yTFihwfFKLWQIcawBOlVCaUosr6o1xmeSquAqA=="
+  "resolved" "https://registry.npmjs.org/@ngtools/webpack/-/webpack-11.2.19.tgz"
+  "version" "11.2.19"
   dependencies:
-    "@angular-devkit/core" "11.2.18"
+    "@angular-devkit/core" "11.2.19"
     "enhanced-resolve" "5.7.0"
     "webpack-sources" "2.2.0"
 
@@ -1820,9 +1820,9 @@
     "string-width" "^2.0.0"
 
 "ansi-colors@^3.0.0":
-  "integrity" "sha512-VVjWpkfaphxUBFarydrQ3n26zX5nIK7hcbT3/ielrvwDDyBBjuh2vuSw1P9zkPq0cfqvdw7lkYHnu+OLSfIBsg=="
-  "resolved" "https://registry.npmjs.org/ansi-colors/-/ansi-colors-3.0.5.tgz"
-  "version" "3.0.5"
+  "integrity" "sha512-hHUXGagefjN2iRrID63xckIvotOXOojhQKWIPUZ4mNUZ9nLZW+7FMNoE1lOkEhNWYsx/7ysGIuJYCiMAA9FnrA=="
+  "resolved" "https://registry.npmjs.org/ansi-colors/-/ansi-colors-3.2.4.tgz"
+  "version" "3.2.4"
 
 "ansi-colors@4.1.1":
   "integrity" "sha512-JoX0apGbHaUJBNl6yF+p6JAFYZ666/hhCGKN5t9QFjbJQKUU/g8MNbFDbvfrgKXvI1QpZplPOnwIo99lX/AAmA=="
@@ -1847,14 +1847,14 @@
   "version" "2.1.1"
 
 "ansi-regex@^3.0.0":
-  "integrity" "sha1-7QMXwyIGT3lGbAKWa922Bas32Zg="
-  "resolved" "https://registry.npmjs.org/ansi-regex/-/ansi-regex-3.0.0.tgz"
-  "version" "3.0.0"
+  "integrity" "sha512-+O9Jct8wf++lXxxFc4hc8LsjaSq0HFzzL7cVsw8pRDIPdjKD2mT4ytDZlLuSBZ4cLKZFXIrMGO7DbQCtMJJMKw=="
+  "resolved" "https://registry.npmjs.org/ansi-regex/-/ansi-regex-3.0.1.tgz"
+  "version" "3.0.1"
 
 "ansi-regex@^4.1.0":
-  "integrity" "sha512-1apePfXM1UOSqw0o9IiFAovVz9M5S1Dg+4TrDwfMewQ6p/rmMueb7tWZjQ1rx4Loy1ArBggoqGpfqqdI4rondg=="
-  "resolved" "https://registry.npmjs.org/ansi-regex/-/ansi-regex-4.1.0.tgz"
-  "version" "4.1.0"
+  "integrity" "sha512-ILlv4k/3f6vfQ4OoP2AGvirOktlQ98ZEL1k9FaQjxa3L1abBgbuTDAdPOpvbGncC0BTVQrl+OM8xZGK6tWXt7g=="
+  "resolved" "https://registry.npmjs.org/ansi-regex/-/ansi-regex-4.1.1.tgz"
+  "version" "4.1.1"
 
 "ansi-regex@^5.0.0":
   "integrity" "sha512-quJQXlTSUGL2LH9SUXo8VwsY4soanhgo6LNSm84E1LBcE8s3O0wpdiRzyR9z/ZZJMlMWv37qOOb9pdJlMUEKFQ=="
@@ -3462,9 +3462,9 @@
     "ms" "2.1.2"
 
 "debug@^4.1.1":
-  "integrity" "sha512-/zxw5+vh1Tfv+4Qn7a5nsbcJKPaSvCDhojn6FEl9vupwK2VCSDtEiEtqr8DFtzYFOdz63LBkxec7DYuc2jon6Q=="
-  "resolved" "https://registry.npmjs.org/debug/-/debug-4.3.3.tgz"
-  "version" "4.3.3"
+  "integrity" "sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ=="
+  "resolved" "https://registry.npmjs.org/debug/-/debug-4.3.4.tgz"
+  "version" "4.3.4"
   dependencies:
     "ms" "2.1.2"
 
@@ -6385,17 +6385,7 @@
   "resolved" "https://registry.npmjs.org/mime/-/mime-1.6.0.tgz"
   "version" "1.6.0"
 
-"mime@^2.0.3":
-  "integrity" "sha512-OEUllcVoydBHGN1z84yfQDimn58pZNNNXgZlHXSboxMlFvgI6MXSWpWKpFRra7H1HxpVhHTkrghfRW49k6yjeg=="
-  "resolved" "https://registry.npmjs.org/mime/-/mime-2.3.1.tgz"
-  "version" "2.3.1"
-
-"mime@^2.4.4":
-  "integrity" "sha512-tqkh47FzKeCPD2PUiPB6pkbMzsCasjxAfC62/Wap5qrUWcb+sFasXUC5I3gYM5iBM8v/Qpn4UK0x+j0iHyFPDg=="
-  "resolved" "https://registry.npmjs.org/mime/-/mime-2.5.2.tgz"
-  "version" "2.5.2"
-
-"mime@^2.5.2":
+"mime@^2.0.3", "mime@^2.4.4", "mime@^2.5.2":
   "integrity" "sha512-USPkMeET31rOMiarsBNIHZKLGgvKc/LrjofAnBlOttf5ajRvqiRA8QsenbcooctK6d6Ts6aqZXBA+XbkKthiQg=="
   "resolved" "https://registry.npmjs.org/mime/-/mime-2.6.0.tgz"
   "version" "2.6.0"
@@ -6437,9 +6427,9 @@
     "brace-expansion" "^1.1.7"
 
 "minimist@^1.2.0", "minimist@^1.2.5", "minimist@1.2.5":
-  "integrity" "sha512-FM9nNUYrRBAELZQT3xeZQ7fmMOBg6nWNmJKTcgsJeaLstP/UODVpGsr5OhXhhXg6f+qtJ8uiZ+PUxkDWcgIXLw=="
-  "resolved" "https://registry.npmjs.org/minimist/-/minimist-1.2.5.tgz"
-  "version" "1.2.5"
+  "integrity" "sha512-Jsjnk4bw3YJqYzbdyBiNsPWHPfO++UGG749Cxs6peCu5Xg4nrena6OVxOYxrQTqww0Jmwt+Ref8rggumkTLz9Q=="
+  "resolved" "https://registry.npmjs.org/minimist/-/minimist-1.2.6.tgz"
+  "version" "1.2.6"
 
 "minipass-collect@^1.0.2":
   "integrity" "sha512-6T6lH0H8OG9kITm/Jm6tdooIbogG9e0tLgpY6mphXSm/A9u8Nq1ryBG+Qspiub9LjWlBPsPS3tWQ/Botq4FdxA=="
@@ -6669,15 +6659,10 @@
   dependencies:
     "whatwg-url" "^5.0.0"
 
-"node-forge@^0.10.0":
-  "integrity" "sha512-Fcvtbb+zBcZXbTTVwqGA5W+MKBj56UjVRevvchv5XrcyXbmNdesfZL37nlcWOfpgHhgmxApw3tQbTr4CqNmX4w=="
-  "resolved" "https://registry.npmjs.org/node-forge/-/node-forge-1.2.1.tgz"
-  "version" "1.2.1"
-
-"node-forge@^1.2.0":
-  "integrity" "sha512-Fcvtbb+zBcZXbTTVwqGA5W+MKBj56UjVRevvchv5XrcyXbmNdesfZL37nlcWOfpgHhgmxApw3tQbTr4CqNmX4w=="
-  "resolved" "https://registry.npmjs.org/node-forge/-/node-forge-1.2.1.tgz"
-  "version" "1.2.1"
+"node-forge@^1.3.1":
+  "integrity" "sha512-dPEtOeMvF9VMcYV/1Wb8CPoVAXtp6MKMlcbAt4ddqmGqUJ6fQZFXkNZNkNlfevtNkGtaSoXf/vNNNSvgrdXwtA=="
+  "resolved" "https://registry.npmjs.org/node-forge/-/node-forge-1.3.1.tgz"
+  "version" "1.3.1"
 
 "node-gyp@^7.1.0":
   "integrity" "sha512-CbpcIo7C3eMu3dL1c3d0xw449fHIGALIJsRP4DDPHpyiW8vcriNY7ubh9TE4zEKfSxscY7PjeFnshE7h75ynjQ=="
@@ -8516,14 +8501,14 @@
   "resolved" "https://registry.npmjs.org/selfsigned/-/selfsigned-1.10.14.tgz"
   "version" "1.10.14"
   dependencies:
-    "node-forge" "^0.10.0"
+    "node-forge" "^1.3.1"
 
 "selfsigned@^2.0.0":
   "integrity" "sha512-cUdFiCbKoa1mZ6osuJs2uDHrs0k0oprsKveFiiaBKCNq3SYyb5gs2HxhQyDNLCmL51ZZThqi4YNDpCK6GOP1iQ=="
   "resolved" "https://registry.npmjs.org/selfsigned/-/selfsigned-2.0.0.tgz"
   "version" "2.0.0"
   dependencies:
-    "node-forge" "^1.2.0"
+    "node-forge" "^1.3.1"
 
 "semver-diff@^2.0.0":
   "integrity" "sha1-S7uEN8jTfksM8aaP1ybsbWRdbTY="
