@@ -158,4 +158,7 @@ services:
       - webhooks-api
 
   webshoppingapigw:
-    image: envoyproxy/envoy:v1.11.1
+    image: ${REGISTRY:-eshop}/webshoppingapigw:${PLATFORM:-linux}-${TAG:-latest}
+    build:
+      context: .
+      dockerfile: ApiGateways/Yarp/WebShoppingAPIGateway/Dockerfile

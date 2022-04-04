@@ -10,6 +10,7 @@ WORKDIR /src
 # to take advantage of Docker's build cache, to speed up local container builds
 COPY "eShopOnContainers-ServicesAndWebApps.sln" "eShopOnContainers-ServicesAndWebApps.sln"
 
+COPY "ApiGateways/Yarp/WebShoppingAPIGateway/WebShoppingAPIGateway.csproj" "ApiGateways/Yarp/WebShoppingAPIGateway/WebShoppingAPIGateway.csproj"
 COPY "ApiGateways/Mobile.Bff.Shopping/aggregator/Mobile.Shopping.HttpAggregator.csproj" "ApiGateways/Mobile.Bff.Shopping/aggregator/Mobile.Shopping.HttpAggregator.csproj"
 COPY "ApiGateways/Web.Bff.Shopping/aggregator/Web.Shopping.HttpAggregator.csproj" "ApiGateways/Web.Bff.Shopping/aggregator/Web.Shopping.HttpAggregator.csproj"
 COPY "BuildingBlocks/Devspaces.Support/Devspaces.Support.csproj" "BuildingBlocks/Devspaces.Support/Devspaces.Support.csproj"
