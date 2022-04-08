@@ -8,6 +8,11 @@
     <IsTransformWebConfigDisabled>true</IsTransformWebConfigDisabled>    
   </PropertyGroup>
 
+	<PropertyGroup>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<NoWarn>$(NoWarn);1591</NoWarn>
+	</PropertyGroup>
+  
   <ItemGroup>
     <Content Include="Setup\**\*;">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>

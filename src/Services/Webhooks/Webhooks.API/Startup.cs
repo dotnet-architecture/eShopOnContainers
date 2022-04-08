@@ -139,11 +139,26 @@ static class CustomExtensionMethods
     {
         services.AddSwaggerGen(options =>
         {            
+            var basePath = AppDomain.CurrentDomain.BaseDirectory;
+            var fileName = typeof(Startup).GetTypeInfo().Assembly.GetName().Name + ".xml";
+            var xmlComments = Path.Combine(basePath, fileName);
+            options.IncludeXmlComments(xmlComments);
             options.SwaggerDoc("v1", new OpenApiInfo
             {
                 Title = "eShopOnContainers - Webhooks HTTP API",
                 Version = "v1",
-                Description = "The Webhooks Microservice HTTP API. This is a simple webhooks CRUD registration entrypoint"
+                Description = "The Webhooks Microservice HTTP API. This is a simple webhooks CRUD registration entrypoint",
+                TermsOfService = new Uri("https://microsoft.com/"),
+                Contact = new OpenApiContact
+                {
+                    Name = "Microsoft Contact",
+                    Url = new Uri("https://microsoft.com/")
+                },
+                License = new OpenApiLicense
+                {
+                    Name = "Microsoft License",
+                    Url = new Uri("https://microsoft.com/")
+                }
             });
 
             options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
