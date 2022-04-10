@@ -1,4 +1,6 @@
-﻿namespace Ordering.FunctionalTests;
+﻿using FunctionalTests.Middleware;
+
+namespace Ordering.FunctionalTests;
 
 public class OrderingTestsStartup : Startup
 {

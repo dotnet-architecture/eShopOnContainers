@@ -1,4 +1,4 @@
-﻿
+﻿using FunctionalTests.Middleware;
 
 namespace Basket.FunctionalTests.Base
 {

@@ -1,6 +1,6 @@
 ﻿namespace FunctionalTests.Middleware;
 
-class AutoAuthorizeMiddleware
+public class AutoAuthorizeMiddleware
 {
     public const string IDENTITY_ID = "9e3163b9-1ae6-4652-9dc6-7898ab7b7a00";
 

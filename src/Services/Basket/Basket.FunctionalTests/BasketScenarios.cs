@@ -1,4 +1,6 @@
-﻿namespace Basket.FunctionalTests;
+﻿using FunctionalTests.Middleware;
+
+namespace Basket.FunctionalTests;
 
 public class BasketScenarios
     : BasketScenarioBase

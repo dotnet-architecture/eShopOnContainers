@@ -29,6 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Tests\Services\Application.FunctionalTests\Application.FunctionalTests.csproj" />
     <ProjectReference Include="..\Basket.API\Basket.API.csproj" />
   </ItemGroup>
 </Project>

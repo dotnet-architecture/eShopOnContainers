@@ -28,6 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Tests\Services\Application.FunctionalTests\Application.FunctionalTests.csproj" />
     <ProjectReference Include="..\..\..\Web\WebMVC\WebMVC.csproj" />
     <ProjectReference Include="..\Ordering.API\Ordering.API.csproj" />
     <ProjectReference Include="..\Ordering.Domain\Ordering.Domain.csproj" />
