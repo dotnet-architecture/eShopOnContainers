@@ -20,7 +20,7 @@ services:
     ports:
       - "5433:1433"
     volumes:
-      - eshop-sqldata:/var/opt/mssql
+      - eshop-sqldata:/var/opt/mssql/data
 
   nosqldata:
     ports:

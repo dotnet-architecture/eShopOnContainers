@@ -17,7 +17,6 @@
   <ItemGroup>
     <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="5.0.3" />
     <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="5.0.1" />
-    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.2.0-preview.1" />
     <PackageReference Include="IdentityServer4.AspNetIdentity" Version="3.1.4" />
     <PackageReference Include="IdentityServer4.EntityFramework.Storage" Version="3.1.4" />
     <PackageReference Include="IdentityServer4.EntityFramework" Version="3.1.4" />

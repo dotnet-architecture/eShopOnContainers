@@ -1,7 +1,5 @@
 ﻿global using Azure.Core;
 global using Azure.Identity;
-global using Autofac.Extensions.DependencyInjection;
-global using Autofac;
 global using Microsoft.eShopOnContainers.Services.Catalog.API.Extensions;
 global using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure.ActionResults;
 global using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure.Exceptions;

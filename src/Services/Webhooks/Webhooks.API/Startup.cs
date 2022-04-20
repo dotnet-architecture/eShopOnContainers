@@ -9,7 +9,7 @@ public class Startup
     }
 
 
-    public IServiceProvider ConfigureServices(IServiceCollection services)
+    public void ConfigureServices(IServiceCollection services)
     {
         services
             .AddAppInsight(Configuration)
@@ -27,10 +27,6 @@ public class Startup
             .AddTransient<IGrantUrlTesterService, GrantUrlTesterService>()
             .AddTransient<IWebhooksRetriever, WebhooksRetriever>()
             .AddTransient<IWebhooksSender, WebhooksSender>();
-
-        var container = new ContainerBuilder();
-        container.Populate(services);
-        return new AutofacServiceProvider(container.Build());
     }
 
     public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
@@ -175,13 +171,13 @@ static class CustomExtensionMethods
                 services.AddSingleton<IEventBus, EventBusServiceBus>(sp =>
                 {
                     var serviceBusPersisterConnection = sp.GetRequiredService<IServiceBusPersisterConnection>();
-                    var iLifetimeScope = sp.GetRequiredService<ILifetimeScope>();
+                    var serviceScopeFactory = sp.GetRequiredService<IServiceScopeFactory>();
                     var logger = sp.GetRequiredService<ILogger<EventBusServiceBus>>();
                     var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
                     string subscriptionName = configuration["SubscriptionClientName"];
 
                     return new EventBusServiceBus(serviceBusPersisterConnection, logger,
-                        eventBusSubcriptionsManager, iLifetimeScope, subscriptionName);
+                        eventBusSubcriptionsManager, serviceScopeFactory, subscriptionName);
                 });
 
             }
@@ -191,7 +187,7 @@ static class CustomExtensionMethods
                 {
                     var subscriptionClientName = configuration["SubscriptionClientName"];
                     var rabbitMQPersistentConnection = sp.GetRequiredService<IRabbitMQPersistentConnection>();
-                    var iLifetimeScope = sp.GetRequiredService<ILifetimeScope>();
+                    var serviceScopeFactory = sp.GetRequiredService<IServiceScopeFactory>();
                     var logger = sp.GetRequiredService<ILogger<EventBusRabbitMQ>>();
                     var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
 
@@ -201,7 +197,7 @@ static class CustomExtensionMethods
                         retryCount = int.Parse(configuration["EventBusRetryCount"]);
                     }
 
-                    return new EventBusRabbitMQ(rabbitMQPersistentConnection, logger, iLifetimeScope, eventBusSubcriptionsManager, subscriptionClientName, retryCount);
+                    return new EventBusRabbitMQ(rabbitMQPersistentConnection, logger, serviceScopeFactory, eventBusSubcriptionsManager, subscriptionClientName, retryCount);
                 });
             }
 

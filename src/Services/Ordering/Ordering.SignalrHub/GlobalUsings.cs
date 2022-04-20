@@ -1,6 +1,4 @@
-﻿global using Autofac.Extensions.DependencyInjection;
-global using Autofac;
-global using HealthChecks.UI.Client;
+﻿global using HealthChecks.UI.Client;
 global using Microsoft.AspNetCore.Authentication.JwtBearer;
 global using Microsoft.AspNetCore.Authorization;
 global using Microsoft.AspNetCore.Builder;
@@ -20,7 +18,6 @@ global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.Diagnostics.HealthChecks;
 global using Microsoft.Extensions.Logging;
-global using Microsoft.eShopOnContainers.Services.Ordering.SignalrHub.AutofacModules;
 global using Microsoft.eShopOnContainers.Services.Ordering.SignalrHub.IntegrationEvents.EventHandling;
 global using Microsoft.eShopOnContainers.Services.Ordering.SignalrHub.IntegrationEvents.Events;
 global using Microsoft.eShopOnContainers.Services.Ordering.SignalrHub.IntegrationEvents;

@@ -36,7 +36,7 @@ public class OrderingService : IOrderingService
         var uri = API.Order.GetAllMyOrders(_remoteServiceBaseUrl);
 
         var responseString = await _httpClient.GetStringAsync(uri);
-
+        
         var response = JsonSerializer.Deserialize<List<Order>>(responseString, new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = true

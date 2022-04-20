@@ -6,7 +6,7 @@ global using System.Linq;
 global using System.Text.Json.Serialization;
 global using System.Threading.Tasks;
 global using System;
-global using Autofac;
+global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.eShopOnContainers.BuildingBlocks.EventBus;
 global using Microsoft.Extensions.Logging;
 global using System.Text;

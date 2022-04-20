@@ -3,26 +3,24 @@
 public class EventBusRabbitMQ : IEventBus, IDisposable
 {
     const string BROKER_NAME = "eshop_event_bus";
-    const string AUTOFAC_SCOPE_NAME = "eshop_event_bus";
-
     private readonly IRabbitMQPersistentConnection _persistentConnection;
     private readonly ILogger<EventBusRabbitMQ> _logger;
     private readonly IEventBusSubscriptionsManager _subsManager;
-    private readonly ILifetimeScope _autofac;
+    private readonly IServiceScopeFactory _serviceScopeFactory;
     private readonly int _retryCount;
 
     private IModel _consumerChannel;
     private string _queueName;
 
     public EventBusRabbitMQ(IRabbitMQPersistentConnection persistentConnection, ILogger<EventBusRabbitMQ> logger,
-        ILifetimeScope autofac, IEventBusSubscriptionsManager subsManager, string queueName = null, int retryCount = 5)
+        IServiceScopeFactory serviceScopeFactory, IEventBusSubscriptionsManager subsManager, string queueName = null, int retryCount = 5)
     {
         _persistentConnection = persistentConnection ?? throw new ArgumentNullException(nameof(persistentConnection));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _subsManager = subsManager ?? new InMemoryEventBusSubscriptionsManager();
         _queueName = queueName;
         _consumerChannel = CreateConsumerChannel();
-        _autofac = autofac;
+        _serviceScopeFactory = serviceScopeFactory;
         _retryCount = retryCount;
         _subsManager.OnEventRemoved += SubsManager_OnEventRemoved;
     }
@@ -244,14 +242,14 @@ public class EventBusRabbitMQ : IEventBus, IDisposable
 
         if (_subsManager.HasSubscriptionsForEvent(eventName))
         {
-            using (var scope = _autofac.BeginLifetimeScope(AUTOFAC_SCOPE_NAME))
+            using (var scope = _serviceScopeFactory.CreateScope())
             {
                 var subscriptions = _subsManager.GetHandlersForEvent(eventName);
                 foreach (var subscription in subscriptions)
                 {
                     if (subscription.IsDynamic)
                     {
-                        var handler = scope.ResolveOptional(subscription.HandlerType) as IDynamicIntegrationEventHandler;
+                        var handler = scope.ServiceProvider.GetService(subscription.HandlerType) as IDynamicIntegrationEventHandler;
                         if (handler == null) continue;
                         using dynamic eventData = JsonDocument.Parse(message);                            
                         await Task.Yield();
@@ -259,7 +257,7 @@ public class EventBusRabbitMQ : IEventBus, IDisposable
                     }
                     else
                     {
-                        var handler = scope.ResolveOptional(subscription.HandlerType);
+                        var handler = scope.ServiceProvider.GetService(subscription.HandlerType);
                         if (handler == null) continue;
                         var eventType = _subsManager.GetEventTypeByName(eventName);
                         var integrationEvent = JsonSerializer.Deserialize(message, eventType, new JsonSerializerOptions() { PropertyNameCaseInsensitive= true});                            

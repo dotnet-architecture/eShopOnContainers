@@ -1,7 +1,5 @@
 ﻿global using ApiModels = Microsoft.eShopOnContainers.Services.Ordering.API.Application.Models;
 global using AppCommand = Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands;
-global using Autofac.Extensions.DependencyInjection;
-global using Autofac;
 global using Azure.Core;
 global using Azure.Identity;
 global using Dapper;
@@ -36,7 +34,6 @@ global using Microsoft.eShopOnContainers.Services.Ordering.API.Application.Comma
 global using Microsoft.eShopOnContainers.Services.Ordering.API.Application.DomainEventHandlers.OrderStartedEvent;
 global using Microsoft.eShopOnContainers.Services.Ordering.API.Application.DomainEventHandlers.OrderStockConfirmed;
 global using Microsoft.eShopOnContainers.Services.Ordering.API.Application.IntegrationEvents.EventHandling;
-global using Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure.AutofacModules;
 global using Microsoft.eShopOnContainers.Services.Ordering.API.Application.IntegrationEvents.Events;
 global using Microsoft.eShopOnContainers.Services.Ordering.API.Application.IntegrationEvents;
 global using Microsoft.eShopOnContainers.Services.Ordering.API.Application.Models;

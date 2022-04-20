@@ -1,7 +1,5 @@
 global using Microsoft.eShopOnContainers.Services.Identity.API.Extensions;
 global using System.IO.Compression;
-global using Autofac.Extensions.DependencyInjection;
-global using Autofac;
 global using Azure.Core;
 global using Azure.Identity;
 global using HealthChecks.UI.Client;
