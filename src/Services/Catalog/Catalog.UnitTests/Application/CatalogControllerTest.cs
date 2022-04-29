@@ -25,11 +25,9 @@ public class CatalogControllerTest
             .UseInMemoryDatabase(databaseName: "in-memory")
             .Options;
 
-        using (var dbContext = new CatalogContext(_dbOptions))
-        {
-            dbContext.AddRange(GetFakeCatalog());
-            dbContext.SaveChanges();
-        }
+        using var dbContext = new CatalogContext(_dbOptions);
+        dbContext.AddRange(GetFakeCatalog());
+        dbContext.SaveChanges();
     }
 
     [Fact]
@@ -66,7 +64,7 @@ public class CatalogControllerTest
     {
         return new List<CatalogItem>()
         {
-            new CatalogItem()
+            new()
             {
                 Id = 1,
                 Name = "fakeItemA",
@@ -74,7 +72,7 @@ public class CatalogControllerTest
                 CatalogBrandId = 1,
                 PictureFileName = "fakeItemA.png"
             },
-            new CatalogItem()
+            new()
             {
                 Id = 2,
                 Name = "fakeItemB",
@@ -82,7 +80,7 @@ public class CatalogControllerTest
                 CatalogBrandId = 1,
                 PictureFileName = "fakeItemB.png"
             },
-            new CatalogItem()
+            new()
             {
                 Id = 3,
                 Name = "fakeItemC",
@@ -90,7 +88,7 @@ public class CatalogControllerTest
                 CatalogBrandId = 1,
                 PictureFileName = "fakeItemC.png"
             },
-            new CatalogItem()
+            new()
             {
                 Id = 4,
                 Name = "fakeItemD",
@@ -98,7 +96,7 @@ public class CatalogControllerTest
                 CatalogBrandId = 1,
                 PictureFileName = "fakeItemD.png"
             },
-            new CatalogItem()
+            new()
             {
                 Id = 5,
                 Name = "fakeItemE",
@@ -106,7 +104,7 @@ public class CatalogControllerTest
                 CatalogBrandId = 1,
                 PictureFileName = "fakeItemE.png"
             },
-            new CatalogItem()
+            new()
             {
                 Id = 6,
                 Name = "fakeItemF",
@@ -120,7 +118,7 @@ public class CatalogControllerTest
 
 public class TestCatalogSettings : IOptionsSnapshot<CatalogSettings>
 {
-    public CatalogSettings Value => new CatalogSettings
+    public CatalogSettings Value => new()
     {
         PicBaseUrl = "http://image-server.com/",
         AzureStorageEnabled = true
