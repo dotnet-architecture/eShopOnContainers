@@ -118,12 +118,12 @@ public class OrderingContextDesignFactory : IDesignTimeDbContextFactory<Ordering
 
     class NoMediator : IMediator
     {
-        public IAsyncEnumerable<TResponse> CreateStream<TResponse>(IStreamRequest<TResponse> request, CancellationToken cancellationToken = default)
+        public IAsyncEnumerable<TResponse>? CreateStream<TResponse>(IStreamRequest<TResponse> request, CancellationToken cancellationToken = default)
         {
             return default(IAsyncEnumerable<TResponse>);
         }
 
-        public IAsyncEnumerable<object?> CreateStream(object request, CancellationToken cancellationToken = default)
+        public IAsyncEnumerable<object?>? CreateStream(object request, CancellationToken cancellationToken = default)
         {
             return default(IAsyncEnumerable<object?>);
         }
