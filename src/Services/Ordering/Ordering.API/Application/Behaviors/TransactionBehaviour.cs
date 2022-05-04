@@ -2,7 +2,7 @@
 
 using Microsoft.Extensions.Logging;
 
-public class TransactionBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+public class TransactionBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : IRequest<TResponse>
 {
     private readonly ILogger<TransactionBehaviour<TRequest, TResponse>> _logger;
     private readonly OrderingContext _dbContext;
