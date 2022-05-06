@@ -5,13 +5,7 @@ public class OrderRepository
 {
     private readonly OrderingContext _context;
 
-    public IUnitOfWork UnitOfWork
-    {
-        get
-        {
-            return _context;
-        }
-    }
+    public IUnitOfWork UnitOfWork => _context;
 
     public OrderRepository(OrderingContext context)
     {
