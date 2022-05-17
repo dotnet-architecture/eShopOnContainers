@@ -16,7 +16,7 @@
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.16.0" />
     <PackageReference Include="Microsoft.ApplicationInsights.DependencyCollector" Version="2.16.0" />
     <PackageReference Include="Microsoft.ApplicationInsights.Kubernetes" Version="1.1.3" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.9" />
     <PackageReference Include="Microsoft.AspNetCore.HealthChecks" Version="1.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.AzureAppServices" Version="5.0.2" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.8" />
