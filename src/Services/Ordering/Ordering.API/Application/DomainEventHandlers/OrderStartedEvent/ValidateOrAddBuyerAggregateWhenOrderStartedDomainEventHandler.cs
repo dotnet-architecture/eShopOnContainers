@@ -46,8 +46,8 @@ public class ValidateOrAddBuyerAggregateWhenOrderStartedDomainEventHandler
         await _buyerRepository.UnitOfWork
             .SaveEntitiesAsync(cancellationToken);
 
-        var orderStatusChangedTosubmittedIntegrationEvent = new OrderStatusChangedToSubmittedIntegrationEvent(orderStartedEvent.Order.Id, orderStartedEvent.Order.OrderStatus.Name, buyer.Name);
-        await _orderingIntegrationEventService.AddAndSaveEventAsync(orderStatusChangedTosubmittedIntegrationEvent);
+        var orderStatusChangedToSubmittedIntegrationEvent = new OrderStatusChangedToSubmittedIntegrationEvent(orderStartedEvent.Order.Id, orderStartedEvent.Order.OrderStatus.Name, buyer.Name);
+        await _orderingIntegrationEventService.AddAndSaveEventAsync(orderStatusChangedToSubmittedIntegrationEvent);
         _logger.CreateLogger<ValidateOrAddBuyerAggregateWhenOrderStartedDomainEventHandler>()
             .LogTrace("Buyer {BuyerId} and related payment method were validated or updated for orderId: {OrderId}.",
                 buyerUpdated.Id, orderStartedEvent.Order.Id);
