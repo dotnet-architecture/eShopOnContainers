@@ -1,36 +1,28 @@
-﻿using Microsoft.AspNetCore.SignalR;
-using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
-using Microsoft.Extensions.Logging;
-using Serilog.Context;
-using System;
-using System.Threading.Tasks;
+﻿namespace Microsoft.eShopOnContainers.Services.Ordering.SignalrHub.IntegrationEvents;
 
-namespace Ordering.SignalrHub.IntegrationEvents
+public class OrderStatusChangedToAwaitingValidationIntegrationEventHandler : IIntegrationEventHandler<OrderStatusChangedToAwaitingValidationIntegrationEvent>
 {
-    public class OrderStatusChangedToAwaitingValidationIntegrationEventHandler : IIntegrationEventHandler<OrderStatusChangedToAwaitingValidationIntegrationEvent>
+    private readonly IHubContext<NotificationsHub> _hubContext;
+    private readonly ILogger<OrderStatusChangedToAwaitingValidationIntegrationEventHandler> _logger;
+
+    public OrderStatusChangedToAwaitingValidationIntegrationEventHandler(
+        IHubContext<NotificationsHub> hubContext,
+        ILogger<OrderStatusChangedToAwaitingValidationIntegrationEventHandler> logger)
     {
-        private readonly IHubContext<NotificationsHub> _hubContext;
-        private readonly ILogger<OrderStatusChangedToAwaitingValidationIntegrationEventHandler> _logger;
+        _hubContext = hubContext ?? throw new ArgumentNullException(nameof(hubContext));
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+    }
 
-        public OrderStatusChangedToAwaitingValidationIntegrationEventHandler(
-            IHubContext<NotificationsHub> hubContext,
-            ILogger<OrderStatusChangedToAwaitingValidationIntegrationEventHandler> logger)
+
+    public async Task Handle(OrderStatusChangedToAwaitingValidationIntegrationEvent @event)
+    {
+        using (LogContext.PushProperty("IntegrationEventContext", $"{@event.Id}-{Program.AppName}"))
         {
-            _hubContext = hubContext ?? throw new ArgumentNullException(nameof(hubContext));
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        }
+            _logger.LogInformation("----- Handling integration event: {IntegrationEventId} at {AppName} - ({@IntegrationEvent})", @event.Id, Program.AppName, @event);
 
-
-        public async Task Handle(OrderStatusChangedToAwaitingValidationIntegrationEvent @event)
-        {
-            using (LogContext.PushProperty("IntegrationEventContext", $"{@event.Id}-{Program.AppName}"))
-            {
-                _logger.LogInformation("----- Handling integration event: {IntegrationEventId} at {AppName} - ({@IntegrationEvent})", @event.Id, Program.AppName, @event);
-
-                await _hubContext.Clients
-                    .Group(@event.BuyerName)
-                    .SendAsync("UpdatedOrderState", new { OrderId = @event.OrderId, Status = @event.OrderStatus });
-            }
+            await _hubContext.Clients
+                .Group(@event.BuyerName)
+                .SendAsync("UpdatedOrderState", new { OrderId = @event.OrderId, Status = @event.OrderStatus });
         }
     }
 }

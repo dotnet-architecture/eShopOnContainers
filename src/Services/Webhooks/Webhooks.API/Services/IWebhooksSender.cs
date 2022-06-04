@@ -1,11 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Webhooks.API.Model;
+﻿namespace Webhooks.API.Services;
 
-namespace Webhooks.API.Services
+public interface IWebhooksSender
 {
-    public interface IWebhooksSender
-    {
-        Task SendAll(IEnumerable<WebhookSubscription> receivers, WebhookData data);
-    }
+    Task SendAll(IEnumerable<WebhookSubscription> receivers, WebhookData data);
 }

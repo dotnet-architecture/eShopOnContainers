@@ -1,7 +1,7 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Basket.API
+﻿namespace Microsoft.eShopOnContainers.Services.Basket.API;
+
+public class BasketSettings
 {
-    public class BasketSettings
-    {
-        public string ConnectionString { get; set; }
-    }
+    public string ConnectionString { get; set; }
 }
+

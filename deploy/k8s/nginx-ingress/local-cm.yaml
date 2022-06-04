@@ -4,7 +4,7 @@ metadata:
   labels:
     app.kubernetes.io/name: ingress-nginx
     app.kubernetes.io/part-of: ingress-nginx
-  name: nginx-configuration
+  name: ingress-nginx-controller
   namespace: ingress-nginx
 data:
   proxy-buffer-size: "128k"

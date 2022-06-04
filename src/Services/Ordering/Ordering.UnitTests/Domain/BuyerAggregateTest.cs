@@ -1,9 +1,4 @@
-﻿using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.BuyerAggregate;
-using Ordering.Domain.Exceptions;
-using System;
-using Xunit;
-
-public class BuyerAggregateTest
+﻿public class BuyerAggregateTest
 {
     public BuyerAggregateTest()
     { }

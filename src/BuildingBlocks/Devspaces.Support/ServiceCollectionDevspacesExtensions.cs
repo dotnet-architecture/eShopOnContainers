@@ -1,13 +1,10 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿namespace Devspaces.Support;
 
-namespace Devspaces.Support
+public static class ServiceCollectionDevspacesExtensions
 {
-    public static class ServiceCollectionDevspacesExtensions
+    public static IServiceCollection AddDevspaces(this IServiceCollection services)
     {
-        public static IServiceCollection AddDevspaces(this IServiceCollection services)
-        {
-            services.AddTransient<DevspacesMessageHandler>();
-            return services;
-        }
+        services.AddTransient<DevspacesMessageHandler>();
+        return services;
     }
 }

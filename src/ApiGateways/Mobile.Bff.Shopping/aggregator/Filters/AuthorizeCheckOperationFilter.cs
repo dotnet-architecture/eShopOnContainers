@@ -1,12 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.OpenApi.Models;
-using Swashbuckle.AspNetCore.SwaggerGen;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Filters
+﻿namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Filters
 {
-
     namespace Basket.API.Infrastructure.Filters
     {
         public class AuthorizeCheckOperationFilter : IOperationFilter
@@ -29,7 +22,7 @@ namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator.Filters
 
                 operation.Security = new List<OpenApiSecurityRequirement>
                 {
-                    new OpenApiSecurityRequirement
+                    new()
                     {
                         [ oAuthScheme ] = new [] { "Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator" }
                     }

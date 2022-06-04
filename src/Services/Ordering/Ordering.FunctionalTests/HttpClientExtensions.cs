@@ -1,16 +1,11 @@
-﻿using Microsoft.AspNetCore.TestHost;
-using System;
-using System.Net.Http;
+﻿namespace Ordering.FunctionalTests;
 
-namespace Ordering.FunctionalTests
+static class HttpClientExtensions
 {
-    static class HttpClientExtensions
+    public static HttpClient CreateIdempotentClient(this TestServer server)
     {
-        public static HttpClient CreateIdempotentClient(this TestServer server)
-        {
-            var client = server.CreateClient();
-            client.DefaultRequestHeaders.Add("x-requestid", Guid.NewGuid().ToString());
-            return client;
-        }
+        var client = server.CreateClient();
+        client.DefaultRequestHeaders.Add("x-requestid", Guid.NewGuid().ToString());
+        return client;
     }
 }

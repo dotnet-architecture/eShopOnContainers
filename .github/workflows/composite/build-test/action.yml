@@ -1,0 +1,47 @@
+name: "Build for PRe"
+description: "Builds a docker image without pushing"
+
+inputs:
+  service:
+    description: "Service to build"
+    required: true
+  registry_endpoint:
+    description: "Image registry repo e.g. myacr.azureacr.io/eshop"
+    required: true
+  dotnet_version:
+    description: "Version of dotnet to use for testing"
+    required: true
+  project_path:
+    description: "Path to project to test e.g. Services/Catalog/Catalog.API"
+    required: true
+  tests_path:
+    description: "Path to test project e.g. Services/Catalog/Catalog.UnitTests"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+  - name: Setup dotnet
+    uses: actions/setup-dotnet@v1
+    with:
+      dotnet-version: ${{ inputs.dotnet_version }}
+
+  - name: Build and run unit tests
+    shell: bash
+    run: |
+      cd src
+      dotnet restore "eShopOnContainers-ServicesAndWebApps.sln"
+      cd ${{ inputs.project_path }}
+      dotnet build --no-restore
+      cd -
+      cd ${{ inputs.tests_path }}
+      dotnet build --no-restore
+      dotnet test --no-build -v=normal
+
+  - name: Compose build ${{ inputs.service }}
+    shell: bash
+    run: sudo -E docker-compose build ${{ inputs.service }}
+    working-directory: ./src
+    env:
+      TAG: ${{ env.BRANCH }}
+      REGISTRY: ${{ inputs.registry_endpoint }}

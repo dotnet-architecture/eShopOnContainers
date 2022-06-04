@@ -1,18 +1,4 @@
-﻿using Basket.API.Infrastructure.Middlewares;
-using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Server.Kestrel.Core;
-using Microsoft.eShopOnContainers.Services.Basket.API;
-using Microsoft.Extensions.Configuration;
-using Azure.Identity;
-using Serilog;
-using System;
-using System.IO;
-using System.Net;
-using Azure.Core;
-
-var configuration = GetConfiguration();
+﻿var configuration = GetConfiguration();
 
 Log.Logger = CreateSerilogLogger(configuration);
 
@@ -64,7 +50,7 @@ IWebHost BuildWebHost(IConfiguration configuration, string[] args) =>
         .UseSerilog()
         .Build();
 
-ILogger CreateSerilogLogger(IConfiguration configuration)
+Serilog.ILogger CreateSerilogLogger(IConfiguration configuration)
 {
     var seqServerUrl = configuration["Serilog:SeqServerUrl"];
     var logstashUrl = configuration["Serilog:LogstashgUrl"];
@@ -107,7 +93,7 @@ IConfiguration GetConfiguration()
     return (port, grpcPort);
 }
 
-public class Program
+public partial class Program
 {
 
     public static string Namespace = typeof(Startup).Namespace;

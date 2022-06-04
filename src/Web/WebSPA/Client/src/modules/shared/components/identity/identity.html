@@ -1,0 +1,32 @@
+<div class="esh-identity">
+    <section class="esh-identity-section"
+             *ngIf="!authenticated">
+        <div class="u-cursor-pointer pt-2 pb-2" (click)="login()">
+
+            <div class="esh-identity-name d-flex align-items-center">LOGIN 
+                <img class="esh-identity-image ml-2" src="assets/images/user.svg">
+            </div>
+        </div>
+    </section>
+
+    <section class="esh-identity-section u-cursor-pointer pt-2 pb-2"
+         *ngIf="authenticated">
+
+        <div class="esh-identity-name">{{userName}}</div>
+        <img class="esh-identity-image ml-2" src="assets/images/user.svg">
+    </section>
+
+    <section class="esh-identity-drop"
+             *ngIf="authenticated">
+
+        <div class="esh-identity-item"
+             [routerLink]="['orders']">
+            <div class="esh-identity-name">My orders</div>
+        </div>
+
+        <div class="esh-identity-item"
+             (click)="logoutClicked($event)">
+            <div class="esh-identity-name">Log Out</div>
+        </div>
+    </section>
+</div>

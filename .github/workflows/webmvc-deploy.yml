@@ -28,23 +28,12 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - uses: azure/aks-set-context@v1
-        name: Set AKS context
+      - uses: ./.github/workflows/composite/deploy-helm
         with:
-          creds: '${{ secrets.AZURE_CREDENTIALS }}'
-          cluster-name: ${{ secrets.CLUSTER_NAME }}
-          resource-group: ${{ secrets.RESOURCE_GROUP }}
-      
-      - name: Set branch name as env variable
-        run: |
-          currentbranch=$(echo ${GITHUB_REF##*/})
-          echo "running on $currentbranch"
-          echo "BRANCH=$currentbranch" >> $GITHUB_ENV
-        shell: bash
-      
-      - name: Deploy Chart
-        run: |
-          ./deploy-chart.sh -c ${{ env.CHART }} --dns aks --aks-name ${{ secrets.CLUSTER_NAME }} --aks-rg ${{ secrets.RESOURCE_GROUP }} -r ${{ secrets.REGISTRY_HOST }} -t $TAG --namespace ${{ env.NAMESPACE }} --acr-connected
-        env:
-          TAG: ${{ env.BRANCH }}
-        working-directory: ${{ env.CHART_ROOT }}
+          azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
+          cluster_name: ${{ secrets.CLUSTER_NAME }}
+          resource_group: ${{ secrets.RESOURCE_GROUP }}
+          registry_host: ${{ secrets.REGISTRY_HOST }}
+          chart: ${{ env.CHART }}
+          chart_root: ${{ env.CHART_ROOT }}
+          namespace: ${{ env.NAMESPACE }}

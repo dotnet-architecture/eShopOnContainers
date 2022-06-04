@@ -1,18 +1,15 @@
-﻿using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
+﻿namespace Microsoft.eShopOnContainers.Services.Ordering.SignalrHub.IntegrationEvents.Events;
 
-namespace Ordering.SignalrHub.IntegrationEvents.Events
+public record OrderStatusChangedToSubmittedIntegrationEvent : IntegrationEvent
 {
-    public record OrderStatusChangedToSubmittedIntegrationEvent : IntegrationEvent
-    {
-        public int OrderId { get; }
-        public string OrderStatus { get; }
-        public string BuyerName { get; }
+    public int OrderId { get; }
+    public string OrderStatus { get; }
+    public string BuyerName { get; }
 
-        public OrderStatusChangedToSubmittedIntegrationEvent(int orderId, string orderStatus, string buyerName)
-        {
-            OrderId = orderId;
-            OrderStatus = orderStatus;
-            BuyerName = buyerName;
-        }
+    public OrderStatusChangedToSubmittedIntegrationEvent(int orderId, string orderStatus, string buyerName)
+    {
+        OrderId = orderId;
+        OrderStatus = orderStatus;
+        BuyerName = buyerName;
     }
 }

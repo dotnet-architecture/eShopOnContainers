@@ -1,18 +1,15 @@
-﻿namespace Ordering.API.Application.IntegrationEvents.Events
+﻿namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.IntegrationEvents.Events;
+
+public record OrderStatusChangedToStockConfirmedIntegrationEvent : IntegrationEvent
 {
-    using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
+    public int OrderId { get; }
+    public string OrderStatus { get; }
+    public string BuyerName { get; }
 
-    public record OrderStatusChangedToStockConfirmedIntegrationEvent : IntegrationEvent
+    public OrderStatusChangedToStockConfirmedIntegrationEvent(int orderId, string orderStatus, string buyerName)
     {
-        public int OrderId { get; }
-        public string OrderStatus { get; }
-        public string BuyerName { get; }
-
-        public OrderStatusChangedToStockConfirmedIntegrationEvent(int orderId, string orderStatus, string buyerName)
-        {
-            OrderId = orderId;
-            OrderStatus = orderStatus;
-            BuyerName = buyerName;
-        }
+        OrderId = orderId;
+        OrderStatus = orderStatus;
+        BuyerName = buyerName;
     }
 }

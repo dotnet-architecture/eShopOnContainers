@@ -1,35 +1,27 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Routing;
-using Microsoft.eShopOnContainers.Services.Ordering.API;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using System;
+﻿namespace Ordering.FunctionalTests;
 
-namespace Ordering.FunctionalTests
+public class OrderingTestsStartup : Startup
 {
-    public class OrderingTestsStartup : Startup
+    public OrderingTestsStartup(IConfiguration env) : base(env)
     {
-        public OrderingTestsStartup(IConfiguration env) : base(env)
-        {
-        }
+    }
 
-        public override IServiceProvider ConfigureServices(IServiceCollection services)
+    public override IServiceProvider ConfigureServices(IServiceCollection services)
+    {
+        // Added to avoid the Authorize data annotation in test environment. 
+        // Property "SuppressCheckForUnhandledSecurityMetadata" in appsettings.json
+        services.Configure<RouteOptions>(Configuration);
+        return base.ConfigureServices(services);
+    }
+    protected override void ConfigureAuth(IApplicationBuilder app)
+    {
+        if (Configuration["isTest"] == bool.TrueString.ToLowerInvariant())
         {
-            // Added to avoid the Authorize data annotation in test environment. 
-            // Property "SuppressCheckForUnhandledSecurityMetadata" in appsettings.json
-            services.Configure<RouteOptions>(Configuration);
-            return base.ConfigureServices(services);
+            app.UseMiddleware<AutoAuthorizeMiddleware>();
         }
-        protected override void ConfigureAuth(IApplicationBuilder app)
+        else
         {
-            if (Configuration["isTest"] == bool.TrueString.ToLowerInvariant())
-            {
-                app.UseMiddleware<AutoAuthorizeMiddleware>();
-            }
-            else
-            {
-                base.ConfigureAuth(app);
-            }
+            base.ConfigureAuth(app);
         }
     }
 }

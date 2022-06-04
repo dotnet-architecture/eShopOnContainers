@@ -1,0 +1,54 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Content-Security-Policy" content="script-src 'unsafe-inline'; script-src-elem 'unsafe-inline'">
+    <title>eShopOnContainers - Identity</title>
+    <link rel="icon" type="image/x-icon" href="~/favicon.ico" />
+    <link rel="shortcut icon" type="image/x-icon" href="~/favicon.ico" />
+    <environment names="Development">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/css/site-spa.css" />
+    </environment>
+    <environment names="Staging,Production">
+        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+        <link rel="stylesheet" href="~/css/site-spa.min.css" asp-append-version="true" />
+    </environment>
+</head>
+<body>
+    <div class="es-header">
+        <div class="container">
+            <article class="d-flex align-content-center justify-content-between">
+                <section>
+                    <a asp-controller="home" asp-action="ReturnToOriginalApplication" asp-route-returnUrl="@ViewData["ReturnUrl"]">
+                        <img class="es-header-brand" src="~/images/logo_color.svg">
+                    </a>
+                </section>
+            </article>
+        </div>
+    </div>
+
+    <div class="content">
+        @RenderBody()
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <article class="d-flex w-100 h-100 justify-content-between align-items-center">
+                <section>
+                    <img class="footer-brand" src="~/images/logo.svg">
+                </section>
+                <section> © e-Shoponcontainers. All rights reserved </section>
+            </article>
+        </div>
+    </footer>
+
+
+    <script src="~/lib/jquery/jquery.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>
