@@ -1,15 +1,4 @@
-﻿using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-using Payment.API;
-using Serilog;
-using System;
-using System.IO;
-
-
-var configuration = GetConfiguration();
+﻿var configuration = GetConfiguration();
 
 Log.Logger = CreateSerilogLogger(configuration);
 
@@ -69,16 +58,17 @@ IConfiguration GetConfiguration()
 
     if (config.GetValue<bool>("UseVault", false))
     {
-        builder.AddAzureKeyVault(
-            $"https://{config["Vault:Name"]}.vault.azure.net/",
+        TokenCredential credential = new ClientSecretCredential(
+            config["Vault:TenantId"],
             config["Vault:ClientId"],
             config["Vault:ClientSecret"]);
+        builder.AddAzureKeyVault(new Uri($"https://{config["Vault:Name"]}.vault.azure.net/"), credential);
     }
 
     return builder.Build();
 }
 
-public class Program
+public partial class Program
 {
     public static string Namespace = typeof(Startup).Namespace;
     public static string AppName = Namespace.Substring(Namespace.LastIndexOf('.', Namespace.LastIndexOf('.') - 1) + 1);

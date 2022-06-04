@@ -1,8 +1,5 @@
-﻿using MediatR;
-using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
-using System;
-
-namespace Ordering.Domain.Events
+﻿
+namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.Events
 {
     /// <summary>
     /// Event used when an order is created

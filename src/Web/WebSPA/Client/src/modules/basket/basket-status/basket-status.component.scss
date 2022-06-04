@@ -1,0 +1,39 @@
+@import 'src/styles/variables';
+
+.esh-basketstatus {
+    cursor: pointer;
+    display: inline-block;
+    float: right;
+    position: relative;
+    transition: all $animation-speed-default;
+
+    &.is-disabled {
+        opacity: .5;
+        pointer-events: none;
+    }
+
+    &-image {
+        height: auto;
+        width: 1.5rem;
+    }
+
+    &-badge {
+        background-color: $color-primary;
+        border-radius: 50%;
+        bottom: 0;
+        color: $color-brightest;
+        display: block;
+        font-size: $font-size-xs;
+        line-height: 1.2rem;
+        height: 1.2rem;
+        right: 0;
+        position: absolute;
+        text-align: center;
+        transition: all $animation-speed-fast;
+        width: 1.2rem;
+    }
+
+    &:hover &-badge {
+        transform: scale(1.2) rotate(20deg);
+    }
+}

@@ -1,9 +1,6 @@
-﻿using System.Security.Principal;
+﻿namespace Microsoft.eShopOnContainers.WebMVC.Services;
 
-namespace Microsoft.eShopOnContainers.WebMVC.Services
+public interface IIdentityParser<T>
 {
-    public interface IIdentityParser<T>
-    {
-        T Parse(IPrincipal principal);
-    }
+    T Parse(IPrincipal principal);
 }

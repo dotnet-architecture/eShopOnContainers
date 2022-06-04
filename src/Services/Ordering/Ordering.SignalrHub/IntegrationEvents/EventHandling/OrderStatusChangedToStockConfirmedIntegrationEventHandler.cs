@@ -1,38 +1,29 @@
-﻿using Microsoft.AspNetCore.SignalR;
-using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
-using Microsoft.Extensions.Logging;
-using Ordering.SignalrHub.IntegrationEvents.Events;
-using Serilog.Context;
-using System;
-using System.Threading.Tasks;
+﻿namespace Microsoft.eShopOnContainers.Services.Ordering.SignalrHub.IntegrationEvents.EventHandling;
 
-namespace Ordering.SignalrHub.IntegrationEvents.EventHandling
+public class OrderStatusChangedToStockConfirmedIntegrationEventHandler :
+    IIntegrationEventHandler<OrderStatusChangedToStockConfirmedIntegrationEvent>
 {
-    public class OrderStatusChangedToStockConfirmedIntegrationEventHandler :
-        IIntegrationEventHandler<OrderStatusChangedToStockConfirmedIntegrationEvent>
+    private readonly IHubContext<NotificationsHub> _hubContext;
+    private readonly ILogger<OrderStatusChangedToStockConfirmedIntegrationEventHandler> _logger;
+
+    public OrderStatusChangedToStockConfirmedIntegrationEventHandler(
+        IHubContext<NotificationsHub> hubContext,
+        ILogger<OrderStatusChangedToStockConfirmedIntegrationEventHandler> logger)
     {
-        private readonly IHubContext<NotificationsHub> _hubContext;
-        private readonly ILogger<OrderStatusChangedToStockConfirmedIntegrationEventHandler> _logger;
+        _hubContext = hubContext ?? throw new ArgumentNullException(nameof(hubContext));
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+    }
 
-        public OrderStatusChangedToStockConfirmedIntegrationEventHandler(
-            IHubContext<NotificationsHub> hubContext,
-            ILogger<OrderStatusChangedToStockConfirmedIntegrationEventHandler> logger)
+
+    public async Task Handle(OrderStatusChangedToStockConfirmedIntegrationEvent @event)
+    {
+        using (LogContext.PushProperty("IntegrationEventContext", $"{@event.Id}-{Program.AppName}"))
         {
-            _hubContext = hubContext ?? throw new ArgumentNullException(nameof(hubContext));
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        }
+            _logger.LogInformation("----- Handling integration event: {IntegrationEventId} at {AppName} - ({@IntegrationEvent})", @event.Id, Program.AppName, @event);
 
-
-        public async Task Handle(OrderStatusChangedToStockConfirmedIntegrationEvent @event)
-        {
-            using (LogContext.PushProperty("IntegrationEventContext", $"{@event.Id}-{Program.AppName}"))
-            {
-                _logger.LogInformation("----- Handling integration event: {IntegrationEventId} at {AppName} - ({@IntegrationEvent})", @event.Id, Program.AppName, @event);
-
-                await _hubContext.Clients
-                    .Group(@event.BuyerName)
-                    .SendAsync("UpdatedOrderState", new { OrderId = @event.OrderId, Status = @event.OrderStatus });
-            }
+            await _hubContext.Clients
+                .Group(@event.BuyerName)
+                .SendAsync("UpdatedOrderState", new { OrderId = @event.OrderId, Status = @event.OrderStatus });
         }
     }
 }

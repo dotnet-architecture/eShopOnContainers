@@ -1,10 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.OpenApi.Models;
-using Swashbuckle.AspNetCore.SwaggerGen;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Filters
+﻿namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Filters
 {
     namespace Basket.API.Infrastructure.Filters
     {
@@ -14,7 +8,7 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Filters
             {
                 // Check for authorize attribute
                 var hasAuthorize = context.MethodInfo.DeclaringType.GetCustomAttributes(true).OfType<AuthorizeAttribute>().Any() ||
-                                   context.MethodInfo.GetCustomAttributes(true).OfType<AuthorizeAttribute>().Any();
+                                    context.MethodInfo.GetCustomAttributes(true).OfType<AuthorizeAttribute>().Any();
 
                 if (!hasAuthorize) return;
 
@@ -27,13 +21,14 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Filters
                 };
 
                 operation.Security = new List<OpenApiSecurityRequirement>
+            {
+                new()
                 {
-                    new OpenApiSecurityRequirement
-                    {
-                        [ oAuthScheme ] = new [] { "Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator" }
-                    }
-                };
+                    [ oAuthScheme ] = new[] { "Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator" }
+                }
+            };
             }
         }
     }
+
 }

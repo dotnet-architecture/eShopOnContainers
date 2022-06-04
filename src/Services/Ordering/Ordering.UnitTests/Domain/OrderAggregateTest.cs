@@ -1,10 +1,6 @@
-﻿using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
-using Ordering.Domain.Events;
-using Ordering.Domain.Exceptions;
-using System;
-using UnitTest.Ordering;
-using Xunit;
+﻿namespace Ordering.UnitTests.Domain;
 
+using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
 public class OrderAggregateTest
 {
     public OrderAggregateTest()

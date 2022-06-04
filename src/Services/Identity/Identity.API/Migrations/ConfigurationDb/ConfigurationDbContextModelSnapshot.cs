@@ -15,16 +15,16 @@ namespace Identity.API.Migrations.ConfigurationDb
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .UseIdentityColumns()
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.2");
+                .HasAnnotation("ProductVersion", "6.0.0")
+                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ApiResource", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("AllowedAccessTokenSigningAlgorithms")
                         .HasMaxLength(100)
@@ -66,7 +66,7 @@ namespace Identity.API.Migrations.ConfigurationDb
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("ApiResources");
+                    b.ToTable("ApiResources", (string)null);
                 });
 
             modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ApiResourceClaim", b =>
@@ -74,7 +74,7 @@ namespace Identity.API.Migrations.ConfigurationDb
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("ApiResourceId")
                         .HasColumnType("int");
@@ -96,7 +96,7 @@ namespace Identity.API.Migrations.ConfigurationDb
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("ApiResourceId")
                         .HasColumnType("int");
@@ -123,7 +123,7 @@ namespace Identity.API.Migrations.ConfigurationDb
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("ApiResourceId")
                         .HasColumnType("int");
@@ -214,7 +214,7 @@ namespace Identity.API.Migrations.ConfigurationDb
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("ApiScopes");
+                    b.ToTable("ApiScopes", (string)null);
                 });
 
             modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ApiScopeClaim", b =>
@@ -222,7 +222,7 @@ namespace Identity.API.Migrations.ConfigurationDb
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("ScopeId")
                         .HasColumnType("int");
@@ -236,7 +236,7 @@ namespace Identity.API.Migrations.ConfigurationDb
 
                     b.HasIndex("ScopeId");
 
-                    b.ToTable("ApiScopeClaims");
+                    b.ToTable("ApiScopeClaims", (string)null);
                 });
 
             modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ApiScopeProperty", b =>
@@ -244,7 +244,7 @@ namespace Identity.API.Migrations.ConfigurationDb
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Key")
                         .IsRequired()
@@ -271,7 +271,7 @@ namespace Identity.API.Migrations.ConfigurationDb
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("AbsoluteRefreshTokenLifetime")
                         .HasColumnType("int");
@@ -421,7 +421,7 @@ namespace Identity.API.Migrations.ConfigurationDb
                     b.HasIndex("ClientId")
                         .IsUnique();
 
-                    b.ToTable("Clients");
+                    b.ToTable("Clients", (string)null);
                 });
 
             modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ClientClaim", b =>
@@ -429,7 +429,7 @@ namespace Identity.API.Migrations.ConfigurationDb
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("ClientId")
                         .HasColumnType("int");
@@ -448,7 +448,7 @@ namespace Identity.API.Migrations.ConfigurationDb
 
                     b.HasIndex("ClientId");
 
-                    b.ToTable("ClientClaims");
+                    b.ToTable("ClientClaims", (string)null);
                 });
 
             modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ClientCorsOrigin", b =>
@@ -456,7 +456,7 @@ namespace Identity.API.Migrations.ConfigurationDb
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("ClientId")
                         .HasColumnType("int");
@@ -470,7 +470,7 @@ namespace Identity.API.Migrations.ConfigurationDb
 
                     b.HasIndex("ClientId");
 
-                    b.ToTable("ClientCorsOrigins");
+                    b.ToTable("ClientCorsOrigins", (string)null);
                 });
 
             modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ClientGrantType", b =>
@@ -478,7 +478,7 @@ namespace Identity.API.Migrations.ConfigurationDb
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("ClientId")
                         .HasColumnType("int");
@@ -492,7 +492,7 @@ namespace Identity.API.Migrations.ConfigurationDb
 
                     b.HasIndex("ClientId");
 
-                    b.ToTable("ClientGrantTypes");
+                    b.ToTable("ClientGrantTypes", (string)null);
                 });
 
             modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ClientIdPRestriction", b =>
@@ -500,7 +500,7 @@ namespace Identity.API.Migrations.ConfigurationDb
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("ClientId")
                         .HasColumnType("int");
@@ -514,7 +514,7 @@ namespace Identity.API.Migrations.ConfigurationDb
 
                     b.HasIndex("ClientId");
 
-                    b.ToTable("ClientIdPRestrictions");
+                    b.ToTable("ClientIdPRestrictions", (string)null);
                 });
 
             modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ClientPostLogoutRedirectUri", b =>
@@ -522,7 +522,7 @@ namespace Identity.API.Migrations.ConfigurationDb
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("ClientId")
                         .HasColumnType("int");
@@ -536,7 +536,7 @@ namespace Identity.API.Migrations.ConfigurationDb
 
                     b.HasIndex("ClientId");
 
-                    b.ToTable("ClientPostLogoutRedirectUris");
+                    b.ToTable("ClientPostLogoutRedirectUris", (string)null);
                 });
 
             modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ClientProperty", b =>
@@ -544,7 +544,7 @@ namespace Identity.API.Migrations.ConfigurationDb
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("ClientId")
                         .HasColumnType("int");
@@ -563,7 +563,7 @@ namespace Identity.API.Migrations.ConfigurationDb
 
                     b.HasIndex("ClientId");
 
-                    b.ToTable("ClientProperties");
+                    b.ToTable("ClientProperties", (string)null);
                 });
 
             modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ClientRedirectUri", b =>
@@ -571,7 +571,7 @@ namespace Identity.API.Migrations.ConfigurationDb
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("ClientId")
                         .HasColumnType("int");
@@ -585,7 +585,7 @@ namespace Identity.API.Migrations.ConfigurationDb
 
                     b.HasIndex("ClientId");
 
-                    b.ToTable("ClientRedirectUris");
+                    b.ToTable("ClientRedirectUris", (string)null);
                 });
 
             modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ClientScope", b =>
@@ -593,7 +593,7 @@ namespace Identity.API.Migrations.ConfigurationDb
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("ClientId")
                         .HasColumnType("int");
@@ -607,7 +607,7 @@ namespace Identity.API.Migrations.ConfigurationDb
 
                     b.HasIndex("ClientId");
 
-                    b.ToTable("ClientScopes");
+                    b.ToTable("ClientScopes", (string)null);
                 });
 
             modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ClientSecret", b =>
@@ -615,7 +615,7 @@ namespace Identity.API.Migrations.ConfigurationDb
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("ClientId")
                         .HasColumnType("int");
@@ -644,7 +644,7 @@ namespace Identity.API.Migrations.ConfigurationDb
 
                     b.HasIndex("ClientId");
 
-                    b.ToTable("ClientSecrets");
+                    b.ToTable("ClientSecrets", (string)null);
                 });
 
             modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.IdentityResource", b =>
@@ -652,7 +652,7 @@ namespace Identity.API.Migrations.ConfigurationDb
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
@@ -693,7 +693,7 @@ namespace Identity.API.Migrations.ConfigurationDb
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("IdentityResources");
+                    b.ToTable("IdentityResources", (string)null);
                 });
 
             modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.IdentityResourceClaim", b =>
@@ -723,7 +723,7 @@ namespace Identity.API.Migrations.ConfigurationDb
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("IdentityResourceId")
                         .HasColumnType("int");

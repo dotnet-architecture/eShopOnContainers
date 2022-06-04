@@ -1,23 +1,4 @@
-﻿using IdentityModel;
-using IdentityServer4;
-using IdentityServer4.Models;
-using IdentityServer4.Services;
-using IdentityServer4.Stores;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.eShopOnContainers.Services.Identity.API.Models;
-using Microsoft.eShopOnContainers.Services.Identity.API.Models.AccountViewModels;
-using Microsoft.eShopOnContainers.Services.Identity.API.Services;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-
-namespace Microsoft.eShopOnContainers.Services.Identity.API.Controllers
+﻿namespace Microsoft.eShopOnContainers.Services.Identity.API.Controllers
 {
     /// <summary>
     /// This sample controller implements a typical login/logout/provision workflow for local accounts.

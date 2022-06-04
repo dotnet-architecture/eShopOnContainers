@@ -1,15 +1,4 @@
-﻿using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Serilog;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using WebStatus;
-
-var configuration = GetConfiguration();
+﻿var configuration = GetConfiguration();
 
 Log.Logger = CreateSerilogLogger(configuration);
 
@@ -70,10 +59,11 @@ IConfiguration GetConfiguration()
 
     if (config.GetValue<bool>("UseVault", false))
     {
-        builder.AddAzureKeyVault(
-            $"https://{config["Vault:Name"]}.vault.azure.net/",
+        TokenCredential credential = new ClientSecretCredential(
+            config["Vault:TenantId"],
             config["Vault:ClientId"],
             config["Vault:ClientSecret"]);
+        builder.AddAzureKeyVault(new Uri($"https://{config["Vault:Name"]}.vault.azure.net/"), credential);
     }
 
     return builder.Build();
@@ -113,7 +103,7 @@ void LogPackagesVersionInfo()
     Log.Logger.ForContext("PackageVersions", string.Join("\n", versionList)).Information("Package versions ({ApplicationContext})", Program.AppName);
 }
 
-public class Program
+public partial class Program
 {
     private static readonly string _namespace = typeof(Startup).Namespace;
     public static readonly string AppName = _namespace;

@@ -1,0 +1,47 @@
+﻿@model Microsoft.eShopOnContainers.Services.Identity.API.Models.AccountViewModels.LoginViewModel
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <section>
+                <form asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-login">
+                    <input type="hidden" asp-for="ReturnUrl" />
+                    <h4 class="text-left mb-4">ARE YOU REGISTERED?</h4>
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Email" class="control-label form-label"></label>
+                        <input asp-for="Email" class="form-control form-input w-100" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Password" class="control-label form-label"></label>
+                        <input asp-for="Password" class="form-control form-input w-100" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="checkbox">
+                            <label asp-for="RememberMe">
+                                <input asp-for="RememberMe" class="mr-1" />
+                                @Html.DisplayNameFor(m => m.RememberMe)
+                            </label>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">LOG IN</button>
+                    </div>
+                    <div class="form-login-register-link text-center mt-3">
+                        <a class="text-link" asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]">Register as a new user?</a>
+                    </div>
+                    
+                </form>
+                <div class="form-login-details">
+                    <div>
+                        Note that for demo purposes you don't need to register and can login with these credentials:
+                    </div>
+                    <div>
+                        User: <strong>demouser@microsoft.com</strong> Password: <strong>Pass@word1</strong>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>

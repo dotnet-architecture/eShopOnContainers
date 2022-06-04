@@ -1,13 +1,10 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿namespace Devspaces.Support;
 
-namespace Devspaces.Support
+public static class HttpClientBuilderDevspacesExtensions
 {
-    public static class HttpClientBuilderDevspacesExtensions
+    public static IHttpClientBuilder AddDevspacesSupport(this IHttpClientBuilder builder)
     {
-        public static IHttpClientBuilder AddDevspacesSupport(this IHttpClientBuilder builder)
-        {
-            builder.AddHttpMessageHandler<DevspacesMessageHandler>();
-            return builder;
-        }
+        builder.AddHttpMessageHandler<DevspacesMessageHandler>();
+        return builder;
     }
 }

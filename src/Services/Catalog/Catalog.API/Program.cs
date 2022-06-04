@@ -1,21 +1,4 @@
-﻿using Catalog.API.Extensions;
-using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Server.Kestrel.Core;
-using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF;
-using Microsoft.eShopOnContainers.Services.Catalog.API;
-using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using Serilog;
-using System;
-using System.IO;
-using System.Net;
-
-var configuration = GetConfiguration();
+﻿var configuration = GetConfiguration();
 
 Log.Logger = CreateSerilogLogger(configuration);
 
@@ -31,9 +14,7 @@ try
         var settings = services.GetService<IOptions<CatalogSettings>>();
         var logger = services.GetService<ILogger<CatalogContextSeed>>();
 
-        new CatalogContextSeed()
-                                            .SeedAsync(context, env, settings, logger)
-                                            .Wait();
+        new CatalogContextSeed().SeedAsync(context, env, settings, logger).Wait();
     })
     .MigrateDbContext<IntegrationEventLogContext>((_, __) => { });
 
@@ -108,16 +89,17 @@ IConfiguration GetConfiguration()
 
     if (config.GetValue<bool>("UseVault", false))
     {
-        builder.AddAzureKeyVault(
-            $"https://{config["Vault:Name"]}.vault.azure.net/",
+        TokenCredential credential = new ClientSecretCredential(
+            config["Vault:TenantId"],
             config["Vault:ClientId"],
             config["Vault:ClientSecret"]);
+        //builder.AddAzureKeyVault(new Uri($"https://{config["Vault:Name"]}.vault.azure.net/"), credential);        
     }
 
     return builder.Build();
 }
 
-public static class Program
+public partial class Program
 {
     public static string Namespace = typeof(Startup).Namespace;
     public static string AppName = Namespace.Substring(Namespace.LastIndexOf('.', Namespace.LastIndexOf('.') - 1) + 1);

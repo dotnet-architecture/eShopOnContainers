@@ -1,17 +1,13 @@
-﻿using Microsoft.eShopOnContainers.WebMVC.ViewModels;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using WebMVC.Services.ModelDTOs;
+﻿namespace Microsoft.eShopOnContainers.WebMVC.Services;
 
-namespace Microsoft.eShopOnContainers.WebMVC.Services
+using Microsoft.eShopOnContainers.WebMVC.ViewModels;
+
+public interface IBasketService
 {
-    public interface IBasketService
-    {
-        Task<Basket> GetBasket(ApplicationUser user);
-        Task AddItemToBasket(ApplicationUser user, int productId);
-        Task<Basket> UpdateBasket(Basket basket);
-        Task Checkout(BasketDTO basket);
-        Task<Basket> SetQuantities(ApplicationUser user, Dictionary<string, int> quantities);
-        Task<Order> GetOrderDraft(string basketId);
-    }
+    Task<Basket> GetBasket(ApplicationUser user);
+    Task AddItemToBasket(ApplicationUser user, int productId);
+    Task<Basket> UpdateBasket(Basket basket);
+    Task Checkout(BasketDTO basket);
+    Task<Basket> SetQuantities(ApplicationUser user, Dictionary<string, int> quantities);
+    Task<Order> GetOrderDraft(string basketId);
 }

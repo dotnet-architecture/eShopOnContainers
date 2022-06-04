@@ -26,6 +26,10 @@ spec:
         linkerd.io/inject: enabled
       {{- end }}           
     spec:
+      securityContext:
+          runAsUser: 2000
+          runAsGroup: 3000
+          fsGroup: 2000    
       {{ if .Values.inf.registry -}}
       imagePullSecrets:
       - name: {{ .Values.inf.registry.secretName }}
@@ -87,7 +91,7 @@ spec:
           {{- end }}
           ports:
             - name: http
-              containerPort: 80
+              containerPort: 8080
               protocol: TCP
             - name: admin
               containerPort: 8001

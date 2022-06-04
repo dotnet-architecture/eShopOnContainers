@@ -1,12 +1,4 @@
-﻿using IdentityServer4.EntityFramework.DbContexts;
-using IdentityServer4.EntityFramework.Entities;
-using IdentityServer4.EntityFramework.Mappers;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.eShopOnContainers.Services.Identity.API.Configuration;
-using Microsoft.Extensions.Configuration;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using IdentityServer4.EntityFramework.Entities;
 
 namespace Microsoft.eShopOnContainers.Services.Identity.API.Data
 {

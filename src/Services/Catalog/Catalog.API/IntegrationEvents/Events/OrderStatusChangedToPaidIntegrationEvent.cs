@@ -1,18 +1,14 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationEvents.Events
+﻿namespace Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationEvents.Events;
+
+public record OrderStatusChangedToPaidIntegrationEvent : IntegrationEvent
 {
-    using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
-    using System.Collections.Generic;
+    public int OrderId { get; }
+    public IEnumerable<OrderStockItem> OrderStockItems { get; }
 
-    public record OrderStatusChangedToPaidIntegrationEvent : IntegrationEvent
+    public OrderStatusChangedToPaidIntegrationEvent(int orderId,
+        IEnumerable<OrderStockItem> orderStockItems)
     {
-        public int OrderId { get; }
-        public IEnumerable<OrderStockItem> OrderStockItems { get; }
-
-        public OrderStatusChangedToPaidIntegrationEvent(int orderId,
-            IEnumerable<OrderStockItem> orderStockItems)
-        {
-            OrderId = orderId;
-            OrderStockItems = orderStockItems;
-        }
+        OrderId = orderId;
+        OrderStockItems = orderStockItems;
     }
 }

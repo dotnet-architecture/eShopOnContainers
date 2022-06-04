@@ -1,23 +1,17 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿namespace Webhooks.API.Model;
 
-namespace Webhooks.API.Model
+public class WebhookData
 {
-    public class WebhookData
+    public DateTime When { get; }
+
+    public string Payload { get; }
+
+    public string Type { get; }
+
+    public WebhookData(WebhookType hookType, object data)
     {
-        public DateTime When { get; }
-
-        public string Payload { get; }
-
-        public string Type { get; }
-
-        public WebhookData(WebhookType hookType, object data)
-        {
-            When = DateTime.UtcNow;
-            Type = hookType.ToString();
-            Payload = JsonConvert.SerializeObject(data);
-        }
-
-
+        When = DateTime.UtcNow;
+        Type = hookType.ToString();
+        Payload = JsonSerializer.Serialize(data);
     }
 }

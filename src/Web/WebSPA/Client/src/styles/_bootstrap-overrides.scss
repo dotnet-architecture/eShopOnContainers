@@ -1,0 +1,14 @@
+@import 'variables';
+
+$primary: $color-primary;
+$secondary: $color-secondary;
+$warning: $color-primary;
+
+//button
+$btn-border-radius: 0;
+$btn-white-space: nowrap;
+
+//form
+$input-border-radius: 0;
+$input-box-shadow: none;
+$input-border-color: $color-secondary;

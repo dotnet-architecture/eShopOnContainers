@@ -1,0 +1,72 @@
+<div class="esh-basket">
+    <div class="container">
+        <h1 class="mb-4 mt-5">[ Shopping Bag ]</h1>
+        <div *ngFor="let errorMessage of errorMessages">
+            <div class="esh-basket-items-margin-left1 row">
+                <div class="alert alert-warning" role="alert">&nbsp;{{errorMessage}}</div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-6 col-md-8 col-lg-9">
+                <div class="esh-basket-items row">
+                    <div *ngFor="let item of basket?.items" class="col-12 col-md-6 col-lg-4">
+                        <article class="esh-basket-item">
+                            <div class="esh-basket-thumbnail-wrapper">
+                                <div class="esh-basket-delete" (click)="deleteItem(item.id)">
+                                    <img class="esh-basket-delete-svg" src="assets/images/delete.svg" />
+                                </div>
+                                <img class="esh-basket-thumbnail" src="{{item.pictureUrl}}"/>
+                            </div>
+                            <div class="esh-basket-title">{{item.productName}}</div>
+                            <div class="esh-basket-description divider d-flex align-items-center justify-content-between">
+                                <div class="">$ {{item.unitPrice | number:'.2-2'}}</div>
+                                <div class="esh-basket-buttons d-flex justify-content-center">
+                                    <button 
+                                        [ngClass]="{'esh-basket-button': true, 'is-disabled': item.quantity === 1}" 
+                                        (click)="itemQuantityChanged(item, item.quantity-1)">
+                                            <img 
+                                            class="esh-basket-button-svg" 
+                                            src="assets/images/minus.svg" />
+                                    </button>
+                                    <div class="esh-basket-quantity">{{item.quantity}}</div>
+                                    <button 
+                                        class="esh-basket-button" 
+                                        (click)="itemQuantityChanged(item, item.quantity+1)">
+                                            <img 
+                                            class="esh-basket-button-svg" 
+                                            src="assets/images/plus.svg" />
+                                    </button>
+                                </div>
+                                <div class="esh-basket-price text-right">$ {{(item.unitPrice * item.quantity) | number:'.2-2'}}</div>
+                            </div>
+                            <div class="" *ngIf="item.oldUnitPrice > 0">
+                                &nbsp;Note that the price of this article changed in our Catalog. The old price when you originally added it to the basket was $ {{item.oldUnitPrice}}
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3">
+                <div class="esh-basket-checkout p-4">
+                    <h2 class="esh-basket-checkout-title">Your shopping bag</h2>
+                    <div class="mb-3 u-text-sm">({{basket?.items ? basket?.items.length : 0}} items)</div>
+
+                    <div class="d-flex justify-content-between align-items-center font-weight-bolder">
+                        <div>TOTAL</div>
+                        <div>${{totalPrice | number:'.2-2'}}</div>
+                    </div>
+                </div>
+
+                <div class="divider u-background-brightest p-4">
+                    <div>
+                        <button class="btn btn-primary u-width-100 u-minwidth-unset" (click)="checkOut($event)">Checkout</button>
+                    </div>
+                </div>
+                <div class="p-4">
+                    <a class="btn btn-secondary u-width-100 u-minwidth-unset" routerLink="/catalog">Continue Shopping</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
