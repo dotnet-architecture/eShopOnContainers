@@ -1,3 +1,5 @@
+using Microsoft.IdentityModel.Tokens;
+
 namespace Webhooks.API;
 public class Startup
 {
@@ -305,7 +307,11 @@ static class CustomExtensionMethods
         {
             options.Authority = identityUrl;
             options.RequireHttpsMetadata = false;
-            options.Audience = "webhooks";
+            //options.Audience = "webhooks";
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateAudience = false
+            };
         });
 
         return services;

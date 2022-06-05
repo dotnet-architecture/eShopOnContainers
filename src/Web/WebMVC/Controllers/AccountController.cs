@@ -1,6 +1,6 @@
 ﻿namespace Microsoft.eShopOnContainers.WebMVC.Controllers;
 
-[Authorize(AuthenticationSchemes = OpenIdConnectDefaults.AuthenticationScheme)]
+[Authorize]
 public class AccountController : Controller
 {
     private readonly ILogger<AccountController> _logger;
@@ -10,7 +10,7 @@ public class AccountController : Controller
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
-    [Authorize(AuthenticationSchemes = OpenIdConnectDefaults.AuthenticationScheme)]
+    [Authorize]
     public async Task<IActionResult> SignIn(string returnUrl)
     {
         var user = User as ClaimsPrincipal;

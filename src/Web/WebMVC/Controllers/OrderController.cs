@@ -2,7 +2,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers;
 
 using Microsoft.eShopOnContainers.WebMVC.ViewModels;
 
-[Authorize(AuthenticationSchemes = OpenIdConnectDefaults.AuthenticationScheme)]
+[Authorize]
 public class OrderController : Controller
 {
     private IOrderingService _orderSvc;

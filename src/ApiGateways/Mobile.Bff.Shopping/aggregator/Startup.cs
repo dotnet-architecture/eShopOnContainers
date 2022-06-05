@@ -1,4 +1,6 @@
-﻿namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator;
+﻿using Microsoft.IdentityModel.Tokens;
+
+namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator;
 
 public class Startup
 {
@@ -142,7 +144,11 @@ public static class ServiceCollectionExtensions
         {
             options.Authority = identityUrl;
             options.RequireHttpsMetadata = false;
-            options.Audience = "mobileshoppingagg";
+            //options.Audience = "mobileshoppingagg";
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateAudience = false
+            };
         });
 
         return services;

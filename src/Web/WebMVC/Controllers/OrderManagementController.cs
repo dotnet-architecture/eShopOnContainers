@@ -1,6 +1,6 @@
 ﻿namespace WebMVC.Controllers;
 
-[Authorize(AuthenticationSchemes = OpenIdConnectDefaults.AuthenticationScheme)]
+[Authorize]
 public class OrderManagementController : Controller
 {
     private IOrderingService _orderSvc;

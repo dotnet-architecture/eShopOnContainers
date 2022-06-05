@@ -1,3 +1,5 @@
+using Microsoft.IdentityModel.Tokens;
+
 namespace Microsoft.eShopOnContainers.Services.Basket.API;
 public class Startup
 {
@@ -223,7 +225,11 @@ public class Startup
         {
             options.Authority = identityUrl;
             options.RequireHttpsMetadata = false;
-            options.Audience = "basket";
+            //options.Audience = "basket";
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateAudience = false
+            };
         });
     }
 

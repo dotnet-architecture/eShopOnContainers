@@ -1,4 +1,6 @@
-﻿namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator;
+﻿using Microsoft.IdentityModel.Tokens;
+
+namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator;
 
 public class Startup
 {
@@ -93,7 +95,11 @@ public static class ServiceCollectionExtensions
         {
             options.Authority = identityUrl;
             options.RequireHttpsMetadata = false;
-            options.Audience = "webshoppingagg";
+            //options.Audience = "webshoppingagg";
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateAudience = false
+            };
         });
 
         return services;

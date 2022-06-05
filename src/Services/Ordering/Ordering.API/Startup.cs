@@ -1,3 +1,5 @@
+using Microsoft.IdentityModel.Tokens;
+
 namespace Microsoft.eShopOnContainers.Services.Ordering.API;
 
 public class Startup
@@ -382,7 +384,11 @@ static class CustomExtensionsMethods
         {
             options.Authority = identityUrl;
             options.RequireHttpsMetadata = false;
-            options.Audience = "orders";
+            //options.Audience = "orders";
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateAudience = false
+            };
         });
 
         return services;
