@@ -1,9 +1,11 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
+#nullable disable
+
 namespace Identity.API.Migrations.PersistedGrantDb
 {
-    public partial class InitialPersistedGrantMigration : Migration
+    public partial class InitialPersistedGrantDbMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

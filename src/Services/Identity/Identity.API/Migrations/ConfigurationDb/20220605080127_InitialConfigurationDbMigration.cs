@@ -1,9 +1,11 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
+#nullable disable
+
 namespace Identity.API.Migrations.ConfigurationDb
 {
-    public partial class InitialConfigurationMigration : Migration
+    public partial class InitialConfigurationDbMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
