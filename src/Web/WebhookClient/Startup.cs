@@ -21,8 +21,7 @@ public class Startup
             .AddCustomAuthentication(Configuration)
             .AddTransient<IWebhooksClient, WebhooksClient>()
             .AddSingleton<IHooksRepository, InMemoryHooksRepository>()
-            .AddMvc()
-            .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+            .AddMvc();
 
         services.AddControllers();
     }

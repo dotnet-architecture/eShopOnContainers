@@ -22,8 +22,6 @@ global using Microsoft.Extensions.Diagnostics.HealthChecks;
 global using Microsoft.Extensions.Logging;
 global using Microsoft.eShopOnContainers.Services.Ordering.SignalrHub.AutofacModules;
 global using Microsoft.eShopOnContainers.Services.Ordering.SignalrHub.IntegrationEvents.EventHandling;
-global using Microsoft.eShopOnContainers.Services.Ordering.SignalrHub.IntegrationEvents.Events;
-global using Microsoft.eShopOnContainers.Services.Ordering.SignalrHub.IntegrationEvents;
 global using Microsoft.eShopOnContainers.Services.Ordering.SignalrHub;
 global using RabbitMQ.Client;
 global using Serilog.Context;
