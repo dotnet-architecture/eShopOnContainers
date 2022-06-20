@@ -27,5 +27,9 @@
         public string Name { get; set; }
         [Required]
         public string LastName { get; set; }
+        [Required]
+        public string JobTitle { get; set; }
+
+        public string Company { get; set; }
     }
 }

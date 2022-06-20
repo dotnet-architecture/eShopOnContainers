@@ -116,6 +116,8 @@
                 NormalizedUserName = column[Array.IndexOf(headers, "normalizedusername")].Trim('"').Trim(),
                 SecurityStamp = Guid.NewGuid().ToString("D"),
                 PasswordHash = column[Array.IndexOf(headers, "password")].Trim('"').Trim(), // Note: This is the password
+                Company = "BLCompany",
+                JobTitle = "CTO",
             };
 
             user.PasswordHash = _passwordHasher.HashPassword(user, user.PasswordHash);
@@ -147,6 +149,8 @@
                 NormalizedEmail = "DEMOUSER@MICROSOFT.COM",
                 NormalizedUserName = "DEMOUSER@MICROSOFT.COM",
                 SecurityStamp = Guid.NewGuid().ToString("D"),
+                Company = "demoCompany",
+                JobTitle =  "jobDemo",
             };
 
             user.PasswordHash = _passwordHasher.HashPassword(user, "Pass@word1");

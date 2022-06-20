@@ -37,6 +37,10 @@
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Configuration.AzureKeyVault" Version="3.1.18" />
     <PackageReference Include="Microsoft.Extensions.Logging.AzureAppServices" Version="6.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.11.1" />
@@ -50,7 +54,7 @@
     <PackageReference Include="Serilog.Sinks.Seq" Version="5.0.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.1" />
     <PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="6.2.1" />
-	  <PackageReference Include="System.Data.SqlClient" version="4.8.2"/>
+	  <PackageReference Include="System.Data.SqlClient" version="4.8.2" />
     <PackageReference Include="Azure.Extensions.AspNetCore.Configuration.Secrets" Version="1.2.1" />
     <PackageReference Include="Azure.Identity" Version="1.4.0" />
   </ItemGroup>

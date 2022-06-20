@@ -257,7 +257,9 @@
                     State = model.User.State,
                     ZipCode = model.User.ZipCode,
                     PhoneNumber = model.User.PhoneNumber,
-                    SecurityNumber = model.User.SecurityNumber
+                    SecurityNumber = model.User.SecurityNumber,
+                    JobTitle = model.User.JobTitle,
+                    Company =  model.User.Company,
                 };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Errors.Count() > 0)
