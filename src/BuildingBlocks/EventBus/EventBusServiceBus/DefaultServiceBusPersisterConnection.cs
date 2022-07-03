@@ -27,13 +27,8 @@ public class DefaultServiceBusPersisterConnection : IServiceBusPersisterConnecti
         }
     }
 
-    public ServiceBusAdministrationClient AdministrationClient
-    {
-        get
-        {
-            return _subscriptionClient;
-        }
-    }
+    public ServiceBusAdministrationClient AdministrationClient => 
+        _subscriptionClient;
 
     public ServiceBusClient CreateModel()
     {
@@ -45,11 +40,11 @@ public class DefaultServiceBusPersisterConnection : IServiceBusPersisterConnecti
         return _topicClient;
     }
 
-    public void Dispose()
+    public async ValueTask DisposeAsync()
     {
         if (_disposed) return;
 
         _disposed = true;
-        _topicClient.DisposeAsync().GetAwaiter().GetResult();
+        await _topicClient.DisposeAsync();
     }
 }

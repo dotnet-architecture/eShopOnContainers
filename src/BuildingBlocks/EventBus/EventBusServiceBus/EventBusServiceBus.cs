@@ -1,6 +1,6 @@
 namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus;
 
-public class EventBusServiceBus : IEventBus, IDisposable
+public class EventBusServiceBus : IEventBus, IAsyncDisposable
 {
     private readonly IServiceBusPersisterConnection _serviceBusPersisterConnection;
     private readonly ILogger<EventBusServiceBus> _logger;
@@ -8,8 +8,8 @@ public class EventBusServiceBus : IEventBus, IDisposable
     private readonly ILifetimeScope _autofac;
     private readonly string _topicName = "eshop_event_bus";
     private readonly string _subscriptionName;
-    private ServiceBusSender _sender;
-    private ServiceBusProcessor _processor;
+    private readonly ServiceBusSender _sender;
+    private readonly ServiceBusProcessor _processor;
     private readonly string AUTOFAC_SCOPE_NAME = "eshop_event_bus";
     private const string INTEGRATION_EVENT_SUFFIX = "IntegrationEvent";
 
@@ -134,12 +134,6 @@ public class EventBusServiceBus : IEventBus, IDisposable
         await _processor.StartProcessingAsync();
     }
 
-    public void Dispose()
-    {
-        _subsManager.Clear();
-        _processor.CloseAsync().GetAwaiter().GetResult();
-    }
-
     private Task ErrorHandler(ProcessErrorEventArgs args)
     {
         var ex = args.Exception;
@@ -173,7 +167,7 @@ public class EventBusServiceBus : IEventBus, IDisposable
                     var eventType = _subsManager.GetEventTypeByName(eventName);
                     var integrationEvent = JsonSerializer.Deserialize(message, eventType);
                     var concreteType = typeof(IIntegrationEventHandler<>).MakeGenericType(eventType);
-                    await (Task)concreteType.GetMethod("Handle").Invoke(handler, new object[] { integrationEvent });
+                    await (Task)concreteType.GetMethod("Handle").Invoke(handler, new[] { integrationEvent });
                 }
             }
         }
@@ -195,5 +189,11 @@ public class EventBusServiceBus : IEventBus, IDisposable
         {
             _logger.LogWarning("The messaging entity {DefaultRuleName} Could not be found.", RuleProperties.DefaultRuleName);
         }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        _subsManager.Clear();
+        await _processor.CloseAsync();
     }
 }
