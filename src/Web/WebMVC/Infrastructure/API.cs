@@ -45,6 +45,14 @@ public static class API
         {
             return $"{baseUri}/ship";
         }
+        public static string CompleteOrder(string baseUri)
+        {
+            return $"{baseUri}/completed";
+
+            ///o/api/v1/orders/complated
+        }
+
+
     }
 
     public static class Catalog

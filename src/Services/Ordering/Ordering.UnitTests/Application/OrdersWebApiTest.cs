@@ -131,4 +131,20 @@ public class OrdersWebApiTest
         //Assert
         Assert.Equal((actionResult.Result as OkObjectResult).StatusCode, (int)System.Net.HttpStatusCode.OK);
     }
+
+    [Fact]
+    public async Task Completed_order_status_requestId_change()
+    {
+        //Arrange
+        _mediatorMock.Setup(x => x.Send(It.IsAny<SetCompletedOrderStatusCommand>(), default(CancellationToken)))
+            .Returns(Task.FromResult(true));
+
+        //Act
+        var orderController = new OrdersController(_mediatorMock.Object, _orderQueriesMock.Object, _identityServiceMock.Object, _loggerMock.Object);
+        var actionResult = await orderController.CompletedOrderAsync(new SetCompletedOrderStatusCommand(22),Guid.NewGuid().ToString()) as OkResult;
+
+        //Assert
+        Assert.Equal(actionResult.StatusCode, (int)System.Net.HttpStatusCode.OK);
+
+    }
 }
