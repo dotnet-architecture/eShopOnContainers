@@ -65,6 +65,13 @@ public class OrderController : Controller
         var order = await _orderSvc.GetOrder(user, orderId);
         return View(order);
     }
+    [HttpPost]
+    public async Task Completed(string orderId)
+    {
+        
+        await _orderSvc.CompleteOrder(orderId);        
+
+    }
 
     public async Task<IActionResult> Index(Order item)
     {

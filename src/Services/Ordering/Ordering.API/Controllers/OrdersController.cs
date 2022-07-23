@@ -140,4 +140,29 @@ public class OrdersController : ControllerBase
 
         return await _mediator.Send(createOrderDraftCommand);
     }
+
+
+    [Route("completed")]
+    [HttpPut]
+    [ProducesResponseType((int)HttpStatusCode.OK)]
+    [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+    public async Task<IActionResult> CompletedOrderAsync([FromBody] SetCompletedOrderStatusCommand setCompletedOrderStatusCommand, [FromHeader(Name = "x-requestid")] string requestId)
+    {
+        bool commandResult = false;
+        _logger.LogInformation(
+           "----- Sending command: {CommandName} - {IdProperty}: {CommandId} ({@Command})",
+           setCompletedOrderStatusCommand.GetGenericTypeName(),
+           nameof(setCompletedOrderStatusCommand.OrderNumber),
+           setCompletedOrderStatusCommand.OrderNumber,
+           setCompletedOrderStatusCommand);
+        commandResult = await _mediator.Send(setCompletedOrderStatusCommand);
+        if (!commandResult)
+        {
+            return BadRequest();
+        }
+
+
+        return Ok();
+
+    }
 }

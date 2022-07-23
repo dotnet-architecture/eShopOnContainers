@@ -132,6 +132,16 @@ public class Order
             _description = "The payment was performed at a simulated \"American Bank checking bank account ending on XX35071\"";
         }
     }
+    public void SetCompletedStatus()
+    {
+        if (_orderStatusId == OrderStatus.Paid.Id)
+        {
+            AddDomainEvent(new OrderStatusChangedToCompletedDomainEvent(Id, OrderItems));
+
+            _orderStatusId = OrderStatus.Complete.Id;
+            _description = "completed \"Yurt içi cargo ending on XX35071\"";
+        }
+    }
 
     public void SetShippedStatus()
     {

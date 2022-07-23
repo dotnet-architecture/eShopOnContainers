@@ -10,4 +10,5 @@ public class IdentifiedCommand<T, R> : IRequest<R>
         Command = command;
         Id = id;
     }
+
 }

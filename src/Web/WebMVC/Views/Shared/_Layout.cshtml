@@ -94,11 +94,12 @@
     <script type="text/javascript">
         if ('@User.Identity.IsAuthenticated' === 'True') {
             var timerId;
-
-            stablishConnection((conn) => registerNotificationHandlers(conn));                                  
+            console.log("registerNotificationHandlers geldim.");
+            stablishConnection((conn) => registerNotificationHandlers(conn));
         }
 
         function stablishConnection(cb) {
+            console.log("stablishConnection geldim.");
             let connection = new signalR.HubConnectionBuilder()
                 .withUrl('@settings.Value.SignalrHubUrl/hub/notificationhub', {
                     accessTokenFactory: () => {
@@ -106,16 +107,20 @@
                     }
                 })
                 .withAutomaticReconnect()
-                .build(); 
-            
-            connection.start().then(function () {
+                .build();
+
+            connection.start().then(function() {
                 console.log('User Registered to Signalr Hub');
                 cb(connection);
-            });       
+            });
         }
 
         function registerNotificationHandlers(connection) {
+            console.log("UpdatedOrderState geldim.");
+
             connection.on("UpdatedOrderState", (message) => {
+                console.log(message);
+
                 toastr.success('Updated to status: ' + message.status, 'Order Id: ' + message.orderId);
                 if (window.location.pathname.split("/").pop() === 'Order') {
                     refreshOrderList();
@@ -129,10 +134,25 @@
 
         function refreshOrderList() {
             clearTimeout(timerId);
-            timerId = setTimeout(function () {
+            timerId = setTimeout(function() {
                 window.location.reload();
             }, 1000);
         }
+
+
+        $("#completed").click(function() {
+            var orderId = $(this).data("order-id");
+            var url = "@Url.Action("Completed","Order")";
+            console.log(url);
+            $.post(url,
+                {
+                    orderId
+                }
+              
+                //function(data, status) {
+                //    console.log("Data: " + data + "\nStatus: " + status);
+                //});
+        });
     </script>
 </body>
 </html>
