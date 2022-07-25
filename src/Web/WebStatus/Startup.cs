@@ -13,8 +13,8 @@ public class Startup
     public void ConfigureServices(IServiceCollection services)
     {
         RegisterAppInsights(services);
-
-        services.AddControllers();
+        
+        services.AddMvc();
 
         services.AddOptions();
         services.AddHealthChecks()
@@ -23,9 +23,6 @@ public class Startup
         services
             .AddHealthChecksUI()
             .AddInMemoryStorage();
-
-        services.AddMvc()
-            .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

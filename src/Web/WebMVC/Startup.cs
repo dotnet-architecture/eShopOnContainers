@@ -22,8 +22,6 @@ public class Startup
 
         IdentityModelEventSource.ShowPII = true;       // Caution! Do NOT use in production: https://aka.ms/IdentityModel/PII
 
-        services.AddControllers();
-
         services.AddCustomAuthentication(Configuration);
     }
 
