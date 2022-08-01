@@ -72,7 +72,7 @@ public class OrderingContext : DbContext, IUnitOfWork
         try
         {
             await SaveChangesAsync();
-            transaction.Commit();
+            await transaction.CommitAsync();
         }
         catch
         {
@@ -128,7 +128,7 @@ public class OrderingContextDesignFactory : IDesignTimeDbContextFactory<Ordering
             return default(IAsyncEnumerable<object?>);
         }
 
-        public Task Publish<TNotification>(TNotification notification, CancellationToken cancellationToken = default(CancellationToken)) where TNotification : INotification
+        public Task Publish<TNotification>(TNotification notification, CancellationToken cancellationToken = default) where TNotification : INotification
         {
             return Task.CompletedTask;
         }
@@ -138,7 +138,7 @@ public class OrderingContextDesignFactory : IDesignTimeDbContextFactory<Ordering
             return Task.CompletedTask;
         }
 
-        public Task<TResponse> Send<TResponse>(IRequest<TResponse> request, CancellationToken cancellationToken = default(CancellationToken))
+        public Task<TResponse> Send<TResponse>(IRequest<TResponse> request, CancellationToken cancellationToken = default)
         {
             return Task.FromResult<TResponse>(default(TResponse));
         }
