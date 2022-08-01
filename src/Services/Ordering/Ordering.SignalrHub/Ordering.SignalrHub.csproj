@@ -7,11 +7,7 @@
     <IsTransformWebConfigDisabled>true</IsTransformWebConfigDisabled>    
   </PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\" />
-  </ItemGroup>
-
-  <ItemGroup>
+	<ItemGroup>
 	  <PackageReference Include="AspNetCore.HealthChecks.AzureServiceBus" Version="5.1.1" />
 	  <PackageReference Include="AspNetCore.HealthChecks.Rabbitmq" Version="5.0.1" />
 	  <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="5.0.1" />

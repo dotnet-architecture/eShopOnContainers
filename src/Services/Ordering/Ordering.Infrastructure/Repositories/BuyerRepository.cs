@@ -19,10 +19,8 @@ public class BuyerRepository
                 .Add(buyer)
                 .Entity;
         }
-        else
-        {
-            return buyer;
-        }
+
+        return buyer;
     }
 
     public Buyer Update(Buyer buyer)
