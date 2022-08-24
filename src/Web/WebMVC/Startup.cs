@@ -1,5 +1,8 @@
 ﻿namespace Microsoft.eShopOnContainers.WebMVC;
 
+using OpenTelemetry.Trace;
+using OpenTelemetry.Resources;
+
 public class Startup
 {
     public Startup(IConfiguration configuration)
@@ -12,6 +15,19 @@ public class Startup
     // This method gets called by the runtime. Use this method to add services to the IoC container.
     public void ConfigureServices(IServiceCollection services)
     {
+        services.AddOpenTelemetryTracing( builder => builder
+            .SetResourceBuilder( 
+                ResourceBuilder.CreateDefault()
+                    .AddService(Configuration.GetValue<string>("Otlp:ServiceName"))
+            )
+            .AddHttpClientInstrumentation()
+            .AddAspNetCoreInstrumentation()
+            .AddOtlpExporter( otlpOptions => {
+                var url = Configuration.GetValue<string>("Otlp:Endpoint");
+                otlpOptions.Endpoint = new Uri( url );
+            })
+        );
+
         services.AddControllersWithViews()
             .Services
             .AddAppInsight(Configuration)

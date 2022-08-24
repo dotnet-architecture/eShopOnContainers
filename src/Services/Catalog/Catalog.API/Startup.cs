@@ -1,5 +1,8 @@
 namespace Microsoft.eShopOnContainers.Services.Catalog.API;
 
+using OpenTelemetry.Trace;
+using OpenTelemetry.Resources;
+
 public class Startup
 {
     public Startup(IConfiguration configuration)
@@ -11,6 +14,19 @@ public class Startup
 
     public IServiceProvider ConfigureServices(IServiceCollection services)
     {
+        services.AddOpenTelemetryTracing( builder => builder
+            .SetResourceBuilder( 
+                ResourceBuilder.CreateDefault()
+                    .AddService(Configuration.GetValue<string>("Otlp:ServiceName"))
+            )
+            .AddHttpClientInstrumentation()
+            .AddAspNetCoreInstrumentation()
+            .AddOtlpExporter( otlpOptions => {
+                var url = Configuration.GetValue<string>("Otlp:Endpoint");
+                otlpOptions.Endpoint = new Uri( url );
+            })
+        );
+
         services.AddAppInsight(Configuration)
             .AddGrpc().Services
             .AddCustomMVC(Configuration)
