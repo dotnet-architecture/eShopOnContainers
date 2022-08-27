@@ -81,8 +81,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API
                         //Configuring Connection Resiliency: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency 
                         sqlOptions.EnableRetryOnFailure(maxRetryCount: 15, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
                     });
-            })
-            .Services.AddTransient<IProfileService, ProfileService>();
+            });
 
             //services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             services.AddControllers();
