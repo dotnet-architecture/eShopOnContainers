@@ -11,6 +11,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Data
             var clientUrls = new Dictionary<string, string>();
 
             clientUrls.Add("Mvc", configuration.GetValue<string>("MvcClient"));
+            clientUrls.Add("UI", configuration.GetValue<string>("UIClient"));
             clientUrls.Add("Spa", configuration.GetValue<string>("SpaClient"));
             clientUrls.Add("Xamarin", configuration.GetValue<string>("XamarinCallback"));
             clientUrls.Add("BasketApi", configuration.GetValue<string>("BasketApiClient"));

@@ -46,6 +46,7 @@ services:
       - XamarinCallback=http://${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP}:5105/xamarincallback
       - ConnectionString=${ESHOP_AZURE_IDENTITY_DB:-Server=sqldata;Database=Microsoft.eShopOnContainers.Service.IdentityDb;User Id=sa;Password=Pass@word}
       - MvcClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5100
+      - UIClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5300
       - BasketApiClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5103
       - OrderingApiClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5102
       - MobileShoppingAggClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5120
@@ -298,6 +299,21 @@ services:
       - UseLoadTest=${USE_LOADTEST:-False}
     ports:
       - "5100:80"
+
+  webui:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - PurchaseUrl=http://webshoppingapigw
+      - IdentityUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
+      - SignalrHubUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5202
+      - IdentityUrlHC=http://identity-api/hc
+      - UseCustomizationData=True
+      - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
+      - OrchestratorType=${ORCHESTRATOR_TYPE}
+      - UseLoadTest=${USE_LOADTEST:-False}
+    ports:
+      - "5300:80"
 
   webhooks-client:
     environment:

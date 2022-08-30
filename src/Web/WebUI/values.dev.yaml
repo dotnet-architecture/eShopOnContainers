@@ -1,0 +1,3 @@
+inf:
+  k8s:
+    dns: $(spacePrefix)identity-api$(hostSuffix)

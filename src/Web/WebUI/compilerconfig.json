@@ -1,0 +1,42 @@
+﻿[
+  {
+    "outputFile": "wwwroot/css/orders/orders.component.css",
+    "inputFile": "wwwroot/css/orders/orders.component.scss"
+  },
+  {
+    "outputFile": "wwwroot/css/orders/orders-new/orders-new.component.css",
+    "inputFile": "wwwroot/css/orders/orders-new/orders-new.component.scss"
+  },
+  {
+    "outputFile": "wwwroot/css/orders/orders-detail/orders-detail.component.css",
+    "inputFile": "wwwroot/css/orders/orders-detail/orders-detail.component.scss"
+  },
+  {
+    "outputFile": "wwwroot/css/catalog/catalog.component.css",
+    "inputFile": "wwwroot/css/catalog/catalog.component.scss"
+  },
+  {
+    "outputFile": "wwwroot/css/basket/basket.component.css",
+    "inputFile": "wwwroot/css/basket/basket.component.scss"
+  },
+  {
+    "outputFile": "wwwroot/css/basket/basket-status/basket-status.component.css",
+    "inputFile": "wwwroot/css/basket/basket-status/basket-status.component.scss"
+  },
+  {
+    "outputFile": "wwwroot/css/shared/components/header/header.css",
+    "inputFile": "wwwroot/css/shared/components/header/header.scss"
+  },
+  {
+    "outputFile": "wwwroot/css/shared/components/identity/identity.css",
+    "inputFile": "wwwroot/css/shared/components/identity/identity.scss"
+  },
+  {
+    "outputFile": "wwwroot/css/shared/components/pager/pager.css",
+    "inputFile": "wwwroot/css/shared/components/pager/pager.scss"
+  },
+  {
+    "outputFile": "wwwroot/css/app.component.css",
+    "inputFile": "wwwroot/css/app.component.scss"
+  }
+]

@@ -1,0 +1,75 @@
+﻿.esh-orders {
+  min-height: 80vh;
+  overflow-x: hidden;
+}
+
+.esh-orders-header {
+  background-color: #00A69C;
+  height: 4rem;
+}
+
+.esh-orders-back {
+  color: rgba(255, 255, 255, 0.4);
+  line-height: 4rem;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color 0.35s;
+}
+
+.esh-orders-back:hover {
+  color: #FFFFFF;
+  transition: color 0.35s;
+}
+
+.esh-orders-titles {
+  padding-bottom: 1rem;
+  padding-top: 2rem;
+}
+
+.esh-orders-title {
+  text-transform: uppercase;
+}
+
+.esh-orders-items {
+  height: 2rem;
+  line-height: 2rem;
+  position: relative;
+}
+
+.esh-orders-items:nth-of-type(2n + 1):before {
+  background-color: #EEEEFF;
+  content: '';
+  height: 100%;
+  left: 0;
+  margin-left: -100vw;
+  position: absolute;
+  top: 0;
+  width: 200vw;
+  z-index: -1;
+}
+
+.esh-orders-item {
+  font-weight: 300;
+}
+
+.esh-orders-item--hover {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.esh-orders-items:hover .esh-orders-item--hover {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.esh-orders-link {
+  color: #83D01B;
+  text-decoration: none;
+  transition: color 0.35s;
+}
+
+.esh-orders-link:hover {
+  color: #75b918;
+  transition: color 0.35s;
+}
+

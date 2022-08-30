@@ -149,6 +149,15 @@ services:
       - webshoppingagg
       - webshoppingapigw
 
+  webui:
+    image: ${REGISTRY:-eshop}/webui:${PLATFORM:-linux}-${TAG:-latest}
+    build:
+      context: .
+      dockerfile: Web/WebUI/Dockerfile
+    depends_on:
+      - webshoppingagg
+      - webshoppingapigw
+
   webhooks-client:
     image: ${REGISTRY:-eshop}/webhooks.client:${PLATFORM:-linux}-${TAG:-latest}
     build:

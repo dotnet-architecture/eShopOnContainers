@@ -1,0 +1,56 @@
+@import '../../../variables';
+
+.esh-identity {
+    line-height: 3rem;
+    position: relative;
+    text-align: right;
+
+    &-section {
+        display: inline-block;
+        width: 100%;
+    }
+
+    &-name {
+        display: inline-block;
+
+        &--upper {
+            text-transform: uppercase;
+        }
+
+        @media screen and (max-width: $media-screen-s) {
+            font-size: $font-size-s;
+        }
+    }
+
+    &-image {
+        display: inline-block;
+    }
+
+    &-drop {
+        background: $color-background-brighter;
+        height: 10px;
+        width: 10rem;
+        overflow: hidden;
+        padding: .5rem;
+        position: absolute;
+        right: 0;
+        top: 2.5rem;
+        transition: height $animation-speed-default;
+    }
+
+    &:hover &-drop {
+        border: $border-light solid $color-foreground-bright;
+        height: 10rem;
+        transition: height $animation-speed-default;
+    }
+
+    &-item {
+        cursor: pointer;
+        transition: color $animation-speed-default;
+
+        &:hover {
+            color: $color-secondary-dark;
+            transition: color $animation-speed-default;
+        }
+    }
+}

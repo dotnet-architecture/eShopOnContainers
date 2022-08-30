@@ -1,0 +1,138 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Microsoft.eShopOnContainers.WebMVC</title>
+
+    <environment names="Development">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/css/app.css" />
+        <link rel="stylesheet" href="~/css/app.component.css" />
+        <link rel="stylesheet" href="~/css/shared/components/header/header.css" />
+        <link rel="stylesheet" href="~/css/shared/components/identity/identity.css" />
+        <link rel="stylesheet" href="~/css/shared/components/pager/pager.css" />
+        <link rel="stylesheet" href="~/css/basket/basket.component.css" />
+        <link rel="stylesheet" href="~/css/basket/basket-status/basket-status.component.css" />
+        <link rel="stylesheet" href="~/css/catalog/catalog.component.css" />
+        <link rel="stylesheet" href="~/css/orders/orders.component.css" />
+        <link rel="stylesheet" href="~/css/orders/orders-detail/orders-detail.component.css" />
+        <link rel="stylesheet" href="~/css/orders/orders-new/orders-new.component.css" />
+        <link rel="stylesheet" href="~/css/override.css" type="text/css" />
+        <link rel="stylesheet" href="~/css/site.min.css" type="text/css" />
+
+    </environment>
+    <environment names="Staging,Production">
+        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/css/override.css" type="text/css" />
+    </environment>
+</head>
+<body>
+    <header class="esh-app-header">
+        <div class="container">
+            <article class="row">
+
+                <section class="col-lg-7 col-md-6 col-12">
+                    <a class="navbar-brand" routerLink="catalog">
+                        <a asp-area="" asp-controller="Catalog" asp-action="Index">
+                            <img src="~/images/brand.png" />
+                        </a>
+                    </a>
+                </section>
+
+                @await Html.PartialAsync("_LoginPartial")
+            </article>
+        </div>
+    </header>
+
+    @RenderBody()
+
+
+    <footer class="esh-app-footer">
+        <div class="container">
+            <article class="row">
+
+                <section class="col-sm-6">
+                    <img class="esh-app-footer-brand" src="~/images/brand_dark.png" />
+                </section>
+
+                <section class="col-sm-6">
+                    <img class="esh-app-footer-text hidden-xs" src="~/images/main_footer_text.png" width="335" height="26" alt="footer text image" />
+                </section>
+
+            </article>
+        </div>
+    </footer>
+
+    <environment names="Development">
+        <script src="~/lib/jquery/jquery.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"
+                asp-fallback-src="~/lib/jquery/jquery.min.js"
+                asp-fallback-test="window.jQuery">
+        </script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"
+                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal">
+        </script>
+        <script src="~/js/site.min.js" asp-append-version="true"></script>
+    </environment>
+
+    @RenderSection("scripts", required: false)
+
+
+    @using Microsoft.AspNetCore.Authentication;
+    @using Microsoft.Extensions.Options
+    @inject IOptions<AppSettings> settings
+
+    <script type="text/javascript">
+        if ('@User.Identity.IsAuthenticated' === 'True') {
+            var timerId;
+
+            stablishConnection((conn) => registerNotificationHandlers(conn));                                  
+        }
+
+        function stablishConnection(cb) {
+            let connection = new signalR.HubConnectionBuilder()
+                .withUrl('@settings.Value.SignalrHubUrl/hub/notificationhub', {
+                    accessTokenFactory: () => {
+                        return "Authorization", getToken();
+                    }
+                })
+                .withAutomaticReconnect()
+                .build(); 
+            
+            connection.start().then(function () {
+                console.log('User Registered to Signalr Hub');
+                cb(connection);
+            });       
+        }
+
+        function registerNotificationHandlers(connection) {
+            connection.on("UpdatedOrderState", (message) => {
+                toastr.success('Updated to status: ' + message.status, 'Order Id: ' + message.orderId);
+                if (window.location.pathname.split("/").pop() === 'Order') {
+                    refreshOrderList();
+                }
+            });
+        }
+
+        function getToken() {
+            return '@Context.GetTokenAsync("access_token").Result';
+        }
+
+        function refreshOrderList() {
+            clearTimeout(timerId);
+            timerId = setTimeout(function () {
+                window.location.reload();
+            }, 1000);
+        }
+    </script>
+</body>
+</html>

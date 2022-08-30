@@ -87,11 +87,48 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                 },
                 new Client
                 {
+                    ClientId = "ui",
+                    ClientName = "UI Client",
+                    ClientSecrets = new List<Secret>
+                    {
+                        
+                        new Secret("secret".Sha256())
+                    },
+                    ClientUri = $"{clientsUrl["UI"]}",                             // public uri of the client
+                    AllowedGrantTypes = GrantTypes.Hybrid,
+                    AllowAccessTokensViaBrowser = false,
+                    RequireConsent = false,
+                    AllowOfflineAccess = true,
+                    AlwaysIncludeUserClaimsInIdToken = true,
+                    RedirectUris = new List<string>
+                    {
+                        $"{clientsUrl["UI"]}/signin-oidc"
+                    },
+                    PostLogoutRedirectUris = new List<string>
+                    {
+                        $"{clientsUrl["UI"]}/signout-callback-oidc"
+                    },
+                    AllowedScopes = new List<string>
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServerConstants.StandardScopes.OfflineAccess,
+                        "orders",
+                        "basket",
+                        "webshoppingagg",
+                        "orders.signalrhub",
+                        "webhooks"
+                    },
+                    AccessTokenLifetime = 60*60*2, // 2 hours
+                    IdentityTokenLifetime= 60*60*2 // 2 hours
+                },
+                new Client
+                {
                     ClientId = "mvc",
                     ClientName = "MVC Client",
                     ClientSecrets = new List<Secret>
                     {
-                        
+
                         new Secret("secret".Sha256())
                     },
                     ClientUri = $"{clientsUrl["Mvc"]}",                             // public uri of the client

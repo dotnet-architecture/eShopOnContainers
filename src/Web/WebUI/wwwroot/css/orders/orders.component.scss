@@ -1,0 +1,81 @@
+@import '../variables';
+
+.esh-orders {
+    min-height: 80vh;
+    overflow-x: hidden;
+
+    $header-height: 4rem;
+
+    &-header {
+        background-color: #00A69C;
+        height: $header-height;
+    }
+
+    &-back {
+        color: rgba($color-foreground-brighter, .4);
+        line-height: $header-height;
+        text-decoration: none;
+        text-transform: uppercase;
+        transition: color $animation-speed-default;
+
+        &:hover {
+            color: $color-foreground-brighter;
+            transition: color $animation-speed-default;
+        }
+    }
+
+    &-titles {
+        padding-bottom: 1rem;
+        padding-top: 2rem;
+    }
+
+    &-title {
+        text-transform: uppercase;
+    }
+
+    &-items {
+        $height: 2rem;
+        height: $height;
+        line-height: $height;
+        position: relative;
+
+        &:nth-of-type(2n + 1) {
+            &:before {
+                background-color: $color-background-bright;
+                content: '';
+                height: 100%;
+                left: 0;
+                margin-left: -100vw;
+                position: absolute;
+                top: 0;
+                width: 200vw;
+                z-index: -1;
+            }
+        }
+    }
+
+    &-item {
+        font-weight: $font-weight-semilight;
+
+        &--hover {
+            opacity: 0;
+            pointer-events: none;
+        }
+    }
+
+    &-items:hover &-item--hover {
+        opacity: 1;
+        pointer-events: all;
+    }
+
+    &-link {
+        color: $color-secondary;
+        text-decoration: none;
+        transition: color $animation-speed-default;
+
+        &:hover {
+            color: $color-secondary-dark;
+            transition: color $animation-speed-default;
+        }
+    }
+}

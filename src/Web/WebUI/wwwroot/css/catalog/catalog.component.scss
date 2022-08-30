@@ -1,0 +1,155 @@
+@import '../variables';
+
+.esh-catalog {
+    $banner-height: 260px;
+
+    &-hero {
+        background-image: url($image-main_banner);
+        background-size: cover;
+        height: $banner-height;
+        width: 100%;
+    }
+
+    &-title {
+        position: relative;
+        top: $banner-height / 3.5;
+    }
+
+    $filter-height: 65px;
+
+    &-filters {
+        background-color: $color-brand;
+        height: $filter-height;
+    }
+
+    $filter-padding: .5rem;
+
+    &-filter {
+        -webkit-appearance: none;
+        background-color: transparent;
+        border-color: $color-brand-bright;
+        color: $color-foreground-brighter;
+        cursor: pointer;
+        margin-right: 1rem;
+        margin-top: .5rem;
+        min-width: 140px;
+        outline-color: $color-secondary;
+        padding-bottom: 0;
+        padding-left: $filter-padding;
+        padding-right: $filter-padding;
+        padding-top: $filter-padding * 3;
+
+        option {
+            background-color: $color-brand;
+        }
+    }
+
+    &-label {
+        display: inline-block;
+        position: relative;
+        z-index: 0;
+
+        &::before {
+            color: rgba($color-foreground-brighter, .5);
+            content: attr(data-title);
+            font-size: $font-size-xs;
+            margin-left: $filter-padding;
+            margin-top: $font-size-xs;
+            position: absolute;
+            text-transform: uppercase;
+            z-index: 1;
+        }
+
+        &::after {
+            background-image: url($image-arrow_down);
+            content: '';
+            height: 7px; //png height
+            position: absolute;
+            right: $filter-padding * 3;
+            top: $filter-padding * 5;
+            width: 10px; //png width
+            z-index: 1;
+        }
+    }
+
+    &-send {
+        background-color: $color-secondary;
+        color: $color-foreground-brighter;
+        cursor: pointer;
+        font-size: $font-size-m;
+        margin-top: -$filter-padding * 3;
+        padding: $filter-padding;
+        transition: all $animation-speed-default;
+        margin-bottom: -6px;
+
+        &:hover {
+            background-color: $color-secondary-darker;
+            transition: all $animation-speed-default;
+        }
+    }
+
+    &-items {
+        margin-top: 1rem;
+    }
+
+    &-item {
+        margin-bottom: 1.5rem;
+        text-align: center;
+        width: 33%;
+        display: inline-block;
+        float: none !important;
+
+        @media screen and (max-width: $media-screen-m) {
+            width: 50%;
+        }
+
+        @media screen and (max-width: $media-screen-s) {
+            width: 100%;
+        }
+    }
+
+    &-thumbnail {
+        max-width: 370px;
+        width: 100%;
+    }
+
+    &-button {
+        background-color: $color-secondary;
+        border: 0;
+        color: $color-foreground-brighter;
+        cursor: pointer;
+        font-size: $font-size-m;
+        height: 3rem;
+        margin-top: 1rem;
+        transition: all $animation-speed-default;
+        width: 80%;
+
+        &.is-disabled {
+            opacity: .5;
+            pointer-events: none;
+        }
+
+        &:hover {
+            background-color: $color-secondary-darker;
+            transition: all $animation-speed-default;
+        }
+    }
+
+    &-name {
+        font-size: $font-size-m;
+        font-weight: $font-weight-semilight;
+        margin-top: .5rem;
+        text-align: center;
+        text-transform: uppercase;
+    }
+
+    &-price {
+        font-size: 28px;
+        font-weight: 900;
+        text-align: center;
+
+        &::before {
+            content: '$';
+        }
+    }
+}

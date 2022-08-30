@@ -1,0 +1,19 @@
+@using Microsoft.eShopOnContainers.WebUI.Services
+@using Microsoft.eShopOnContainers.WebUI.ViewModels
+
+@model Microsoft.eShopOnContainers.WebUI.ViewModels.Basket
+@inject IIdentityParser<ApplicationUser> UserManager
+
+@{
+     ViewData["Title"] = "My Cart";
+     var headerList = new List<Header>() {
+          new Header() { Controller = "Catalog", Text = "Back to catalog" }};
+}
+
+<form method="post" id="cartForm">
+    <div class="esh-basket">
+        <partial name="_Header" model="headerList"/>
+
+        @await Component.InvokeAsync("CartList", new { user = UserManager.Parse(User) })
+    </div>
+</form>

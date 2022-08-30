@@ -1,0 +1,65 @@
+// Colors
+$color-brand: #00A69C;
+$color-brand-dark: darken($color-brand, 10%);
+$color-brand-darker: darken($color-brand, 20%);
+$color-brand-bright: lighten($color-brand, 10%);
+$color-brand-brighter: lighten($color-brand, 20%);
+
+$color-secondary: #83D01B;
+$color-secondary-dark: darken($color-secondary, 5%);
+$color-secondary-darker: darken($color-secondary, 20%);
+$color-secondary-bright: lighten($color-secondary, 10%);
+$color-secondary-brighter: lighten($color-secondary, 20%);
+
+$color-warning: #ff0000;
+$color-warning-dark: darken($color-warning, 5%);
+$color-warning-darker: darken($color-warning, 20%);
+$color-warning-bright: lighten($color-warning, 10%);
+$color-warning-brighter: lighten($color-warning, 20%);
+
+
+$color-background-dark: #333333;
+$color-background-darker: #000000;
+$color-background-bright: #EEEEFF;
+$color-background-brighter: #FFFFFF;
+
+$color-foreground-dark: #333333;
+$color-foreground-darker: #000000;
+$color-foreground-bright: #EEEEEE;
+$color-foreground-brighter: #FFFFFF;
+
+// Animations
+$animation-speed-default: .35s;
+$animation-speed-slow: .5s;
+$animation-speed-fast: .15s;
+
+// Fonts
+$font-weight-light: 200;
+$font-weight-semilight: 300;
+$font-weight-normal: 400;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+
+$font-size-xs: .65rem;    // 10.4px
+$font-size-s: .85rem;    // 13.6px
+$font-size-m: 1rem;      // 16px
+$font-size-l: 1.25rem;   // 20px
+$font-size-xl: 1.5rem;   // 24px
+
+// Medias
+$media-screen-xxs: 360px;
+$media-screen-xs: 640px;
+$media-screen-s: 768px;
+$media-screen-m: 1024px;
+$media-screen-l: 1280px;
+$media-screen-xl: 1440px;
+$media-screen-xxl: 1680px;
+$media-screen-xxxl: 1920px;
+
+// Borders
+$border-light: 1px;
+
+// Images
+$image_path: '../../images/';
+$image-main_banner: '#{$image_path}main_banner.png';
+$image-arrow_down: '#{$image_path}arrow-down.png';
