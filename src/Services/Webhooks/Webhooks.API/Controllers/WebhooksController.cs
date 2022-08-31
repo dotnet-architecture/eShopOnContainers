@@ -69,8 +69,10 @@ public class WebhooksController : ControllerBase
             await _dbContext.SaveChangesAsync();
             return CreatedAtAction("GetByUserAndId", new { id = subscription.Id }, subscription);
         }
-
-        return StatusCode(418, "Grant url can't be validated");
+        else
+        {
+            return StatusCode(418, "Grant url can't be validated");        
+        }
     }
 
     [Authorize]
