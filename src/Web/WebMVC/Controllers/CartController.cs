@@ -14,20 +14,8 @@ public class CartController : Controller
         _appUserParser = appUserParser;
     }
 
-    public async Task<IActionResult> Index()
+    public IActionResult Index()
     {
-        try
-        {
-            var user = _appUserParser.Parse(HttpContext.User);
-            var vm = await _basketSvc.GetBasket(user);
-
-            return View(vm);
-        }
-        catch (Exception ex)
-        {
-            HandleException(ex);
-        }
-
         return View();
     }
 
