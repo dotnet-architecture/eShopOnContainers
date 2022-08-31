@@ -71,7 +71,7 @@ public class WebhooksController : ControllerBase
         }
         else
         {
-            return StatusCode(418, "Grant url can't be validated");        
+            return StatusCode(418, "Grant url can't be validated");
         }
     }
 
