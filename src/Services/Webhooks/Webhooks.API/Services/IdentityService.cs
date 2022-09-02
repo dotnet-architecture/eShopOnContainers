@@ -2,7 +2,7 @@
 
 public class IdentityService : IIdentityService
 {
-    private IHttpContextAccessor _context;
+    private readonly IHttpContextAccessor _context;
 
     public IdentityService(IHttpContextAccessor context)
     {

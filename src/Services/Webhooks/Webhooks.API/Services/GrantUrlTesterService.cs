@@ -45,6 +45,6 @@ class GrantUrlTesterService : IGrantUrlTesterService
 
         return firstUrl.Scheme == secondUrl.Scheme &&
             firstUrl.Port == secondUrl.Port &&
-            firstUrl.Host == firstUrl.Host;
+            firstUrl.Host == secondUrl.Host;
     }
 }
