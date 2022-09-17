@@ -2,18 +2,18 @@
 
 public class HttpGlobalExceptionFilter : IExceptionFilter
 {
-    private readonly IWebHostEnvironment env;
-    private readonly ILogger<HttpGlobalExceptionFilter> logger;
+    private readonly IWebHostEnvironment _env;
+    private readonly ILogger<HttpGlobalExceptionFilter> _logger;
 
     public HttpGlobalExceptionFilter(IWebHostEnvironment env, ILogger<HttpGlobalExceptionFilter> logger)
     {
-        this.env = env;
-        this.logger = logger;
+        _env = env;
+        _logger = logger;
     }
 
     public void OnException(ExceptionContext context)
     {
-        logger.LogError(new EventId(context.Exception.HResult),
+        _logger.LogError(new EventId(context.Exception.HResult),
             context.Exception,
             context.Exception.Message);
 
@@ -26,7 +26,7 @@ public class HttpGlobalExceptionFilter : IExceptionFilter
                 Detail = "Please refer to the errors property for additional details."
             };
 
-            problemDetails.Errors.Add("DomainValidations", new string[] { context.Exception.Message.ToString() });
+            problemDetails.Errors.Add("DomainValidations", new [] { context.Exception.Message });
 
             context.Result = new BadRequestObjectResult(problemDetails);
             context.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
@@ -35,12 +35,12 @@ public class HttpGlobalExceptionFilter : IExceptionFilter
         {
             var json = new JsonErrorResponse
             {
-                Messages = new[] { "An error ocurred." }
+                Messages = new[] { "An error occurred." }
             };
 
-            if (env.IsDevelopment())
+            if (_env.IsDevelopment())
             {
-                json.DeveloperMeesage = context.Exception;
+                json.DeveloperMessage = context.Exception;
             }
 
             context.Result = new InternalServerErrorObjectResult(json);
@@ -53,6 +53,6 @@ public class HttpGlobalExceptionFilter : IExceptionFilter
     {
         public string[] Messages { get; set; }
 
-        public object DeveloperMeesage { get; set; }
+        public object DeveloperMessage { get; set; }
     }
 }
