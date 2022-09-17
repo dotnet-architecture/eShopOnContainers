@@ -2,6 +2,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { BasketComponent } from './basket/basket.component';
 import { CatalogComponent } from './catalog/catalog.component';
+import { CatalogItemDetailComponent } from './catalog/catalog-item-detail/catalog-item-detail.component';
 import { OrdersComponent } from './orders/orders.component';
 import { OrdersDetailComponent } from './orders/orders-detail/orders-detail.component';
 import { OrdersNewComponent } from './orders/orders-new/orders-new.component';
@@ -10,6 +11,7 @@ export const routes: Routes = [
     { path: '', redirectTo: 'catalog', pathMatch: 'full' },
     { path: 'basket', component: BasketComponent },
     { path: 'catalog', component: CatalogComponent },
+    { path: 'catalog/items/:id', component: CatalogItemDetailComponent },
     { path: 'orders', component: OrdersComponent },
     { path: 'orders/:id', component: OrdersDetailComponent },
     { path: 'order', component: OrdersNewComponent },
