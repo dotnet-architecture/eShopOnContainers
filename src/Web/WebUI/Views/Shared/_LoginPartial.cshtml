@@ -7,44 +7,122 @@
 @*@if (Context.User.Identity.IsAuthenticated)*@
 @if (User.FindFirst(x => x.Type == "preferred_username") != null)
 {
-    <section class="col-lg-4 col-md-5 col-xs-12">
-        <div class="esh-identity">
-            <form asp-area="" asp-controller="Account" asp-action="SignOut" method="post" id="logoutForm" class="navbar-right">
-                <section class="esh-identity-section">
+    <div class="header-action">
+        <form asp-area="" asp-controller="Account" asp-action="SignOut" method="post" id="logoutForm" class="navbar-right">
+            <div class="block-userlink">
+                <div class="block-userlink esh-identity-section">
+                    <a class="icon-link" asp-area="" asp-controller="Account" asp-action="Profile">
+                        <i class="flaticon-user"></i>
+                        <span class="text">
+                            <span class="sub esh-identity-name">@User.FindFirst(x => x.Type == "preferred_username").Value </span>
 
-                    <div class="esh-identity-name">@User.FindFirst(x => x.Type == "preferred_username").Value</div>
-                    <img class="esh-identity-image" src="~/images/arrow-down.png">
-                </section>
+                            <a class="icon-link"
+                           asp-controller="Order"
+                           asp-action="Index">
 
-                <section class="esh-identity-drop">
+                                <div class="esh-identity-name esh-identity-name--upper">My orders</div>
+                                <img class="esh-identity-image" src="~/images/my_orders.png">
+                            </a>
 
-                    <a class="esh-identity-item"
-                       asp-controller="Order"
-                       asp-action="Index">
+                            <a class="icon-link"
+                           href="javascript:document.getElementById('logoutForm').submit()">
 
-                        <div class="esh-identity-name esh-identity-name--upper">My orders</div>
-                        <img class="esh-identity-image" src="~/images/my_orders.png">
+                                <div class="esh-identity-name esh-identity-name--upper">Log Out</div>
+                                <img class="esh-identity-image" src="~/images/logout.png">
+                            </a>
+                        </span>
                     </a>
 
-                    <a class="esh-identity-item"
-                       href="javascript:document.getElementById('logoutForm').submit()">
 
-                        <div class="esh-identity-name esh-identity-name--upper">Log Out</div>
-                        <img class="esh-identity-image" src="~/images/logout.png">
-                    </a>
-                </section>
-            </form>
-        </div>
-    </section>
 
-    <section class="col-lg-1 col-xs-12">
+                </div>
+            </div>
+
+        </form>
+        @await Component.InvokeAsync("Favs", new { user = UserManager.Parse(User) })
         @await Component.InvokeAsync("Cart", new { user = UserManager.Parse(User) })
-    </section>
+
+    </div>
+
 
 }
 else
 {
-    <section class="col-lg-4 col-md-5 col-xs-12">
+
+    <div class="header-action">
+        <div class="block-userlink">
+            <a class="icon-link" asp-area="" asp-controller="Account" asp-action="SignIn" class="esh-identity-name esh-identity-name--upper">
+
+                <i class="flaticon-user"></i>
+                <span class="text">
+                    <span class="sub">Login </span>
+                </span>
+            </a>
+        </div>
+        <div class="block-wishlist action">
+            <a class="icon-link" href="wishlist.html">
+                <i class="flaticon-heart"></i>
+                <span class="count">0</span>
+                <span class="text">
+                    <span class="sub">Favorite</span>
+                    My Wishlist
+                </span>
+            </a>
+        </div>
+        <div class="block-cart action">
+            <a class="icon-link" href="cart.html">
+                <i class="flaticon-shopping-bag"></i>
+                <span class="count">1</span>
+                <span class="text">
+                    <span class="sub">Your Cart:</span>
+                    0.00
+                </span>
+            </a>
+            <div class="cart">
+                <div class="cart__mini">
+                    <ul>
+                        <li>
+                            <div class="cart__title">
+                                <h4>Your Cart</h4>
+                                <span>(1 Item in Cart)</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="cart__item d-flex justify-content-between align-items-center">
+                                <div class="cart__inner d-flex">
+                                    <div class="cart__thumb">
+                                        <a href="product-details.html">
+                                            <img src="assets/img/cart/20.jpg" alt="">
+                                        </a>
+                                    </div>
+                                    <div class="cart__details">
+                                        <h6><a href="product-details.html"> Samsung C49J89: £875, Debenhams Plus  </a></h6>
+                                        <div class="cart__price">
+                                            <span>$255.00</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="cart__del">
+                                    <a href="#"><i class="fal fa-times"></i></a>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="cart__sub d-flex justify-content-between align-items-center">
+                                <h6>Subtotal</h6>
+                                <span class="cart__sub-total">$255.00</span>
+                            </div>
+                        </li>
+                        <li>
+                            <a href="cart.html" class="wc-cart mb-10">View cart</a>
+                            <a href="checkout.html" class="wc-checkout">Checkout</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*<section class="col-lg-4 col-md-5 col-xs-12">
         <div class="esh-identity">
             <section class="esh-identity-section">
                 <div class="esh-identity-item">
@@ -59,5 +137,5 @@ else
 
     <section class="col-lg-1 col-xs-12">
 
-    </section>
+    </section>*@
 }

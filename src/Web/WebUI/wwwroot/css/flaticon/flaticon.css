@@ -1,0 +1,41 @@
+@charset "UTF-8";
+@font-face {
+  font-family: "flaticon";
+  src: url("./flaticon.ttf?845a83d3775f78f799f148d44e25858f") format("truetype"), url("./flaticon.woff?845a83d3775f78f799f148d44e25858f") format("woff"), url("./flaticon.woff2?845a83d3775f78f799f148d44e25858f") format("woff2"), url("./flaticon.eot?845a83d3775f78f799f148d44e25858f#iefix") format("embedded-opentype"), url("./flaticon.svg?845a83d3775f78f799f148d44e25858f#flaticon") format("svg");
+}
+
+i[class^="flaticon-"]:before, i[class*=" flaticon-"]:before {
+  font-family: flaticon !important;
+  font-style: normal;
+  font-weight: normal !important;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.flaticon-user:before {
+  content: "";
+}
+
+.flaticon-heart:before {
+  content: "";
+}
+
+.flaticon-shopping-bag:before {
+  content: "";
+}
+
+.flaticon-apple-black-logo:before {
+  content: "";
+}
+
+.flaticon-playstore:before {
+  content: "";
+}
+
+.flaticon-24-hours-support:before {
+  content: "";
+}
+/*# sourceMappingURL=flaticon.css.map */

@@ -1,0 +1,64 @@
+﻿@model CatalogItem
+
+
+<form asp-controller="Cart" asp-action="AddToCart">
+
+    @*<img class="esh-catalog-thumbnail" src="@Model.PictureUri" />
+    <input class="esh-catalog-button @((!User.Identity.IsAuthenticated) ? "is-disabled" : "")" type="submit" value="[ ADD TO CART ]" />
+
+    <div class="esh-catalog-name">
+    <span>@Model.Name</span>
+    </div>
+    <div class="esh-catalog-price">
+    <span>@Model.Price.ToString("N2")</span>
+    </div>*@
+    <input type="hidden" asp-for="@Model.Id" name="id" />
+
+    <div class="product__item product__item-d">
+        <div class="product__thumb fix">
+            <div class="product-image w-img">
+                <a href="product-details.html">
+                    <img src="@Model.PictureUri" alt="product">
+                </a>
+            </div>
+            <div class="product-action">
+                <a href="#" class="icon-box icon-box-1" data-bs-toggle="modal" data-bs-target="#productModalId">
+                    <i class="fal fa-eye"></i>
+                    <i class="fal fa-eye"></i>
+                </a>
+                <a href="#" class="icon-box icon-box-1">
+                    <i class="fal fa-heart"></i>
+                    <i class="fal fa-heart"></i>
+                </a>
+                <a href="#" class="icon-box icon-box-1">
+                    <i class="fal fa-layer-group"></i>
+                    <i class="fal fa-layer-group"></i>
+                </a>
+            </div>
+        </div>
+        <div class="product__content-3">
+            <h6><a href="product-details.html">@Model.Name</a></h6>
+            <div class="rating mb-5">
+                <ul>
+                    <li><a href="#"><i class="fal fa-star"></i></a></li>
+                    <li><a href="#"><i class="fal fa-star"></i></a></li>
+                    <li><a href="#"><i class="fal fa-star"></i></a></li>
+                    <li><a href="#"><i class="fal fa-star"></i></a></li>
+                    <li><a href="#"><i class="fal fa-star"></i></a></li>
+                </ul>
+                <span>@Model.Id review(s)</span>
+            </div>
+            <div class="price mb-10">
+                <span>@Model.Price.ToString("N2")</span>
+            </div>
+        </div>
+        <div class="product__add-cart-s text-center">
+            <button type="submit" class="cart-btn d-flex mb-10 align-items-center justify-content-center w-100 @((!User.Identity.IsAuthenticated) ? "is-disabled" : "")">
+                Add to Cart
+            </button>
+            <button type="button" class="wc-checkout d-flex align-items-center justify-content-center w-100" data-bs-toggle="modal" data-bs-target="#productModalId">
+                Quick View
+            </button>
+        </div>
+    </div>
+</form>

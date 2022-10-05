@@ -1,0 +1,39 @@
+#loading{
+	background-color: #fff;
+	height: 100%;
+	width: 100%;
+	position: fixed;
+	z-index: 9999999999;
+	margin-top: 0px;
+	top: 0px;
+}
+#loading-center{
+	width: 100%;
+	height: 100%;
+	position: relative;
+}
+#loading-center-absolute {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+
+.cart-container {
+    width: 900px;
+    margin: auto;
+}
+  
+#cart {
+    width: 150px;
+    display:inline-block;
+}
+  
+.product {
+    width: 60px;
+    position: absolute;
+    left: 50%;
+    opacity: 0;
+    transform: scale(2);
+}

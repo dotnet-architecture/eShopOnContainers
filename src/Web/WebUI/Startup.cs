@@ -61,7 +61,7 @@ public class Startup
 
         app.UseEndpoints(endpoints =>
         {
-            endpoints.MapControllerRoute("default", "{controller=Catalog}/{action=Index}/{id?}");
+            endpoints.MapControllerRoute("default", "{controller=Product}/{action=Index}/{id?}");
             endpoints.MapControllerRoute("defaultError", "{controller=Error}/{action=Error}");
             endpoints.MapControllers();
             endpoints.MapHealthChecks("/liveness", new HealthCheckOptions

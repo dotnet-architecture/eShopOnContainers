@@ -1,0 +1,49 @@
+$flaticon-font: "flaticon";
+
+@font-face {
+    font-family: $flaticon-font;
+    src: url("./flaticon.ttf?845a83d3775f78f799f148d44e25858f") format("truetype"),
+url("./flaticon.woff?845a83d3775f78f799f148d44e25858f") format("woff"),
+url("./flaticon.woff2?845a83d3775f78f799f148d44e25858f") format("woff2"),
+url("./flaticon.eot?845a83d3775f78f799f148d44e25858f#iefix") format("embedded-opentype"),
+url("./flaticon.svg?845a83d3775f78f799f148d44e25858f#flaticon") format("svg");
+}
+
+i[class^="flaticon-"]:before, i[class*=" flaticon-"]:before {
+    font-family: flaticon !important;
+    font-style: normal;
+    font-weight: normal !important;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+$flaticon-map: (
+    "user": "\f101",
+    "heart": "\f102",
+    "shopping-bag": "\f103",
+    "apple-black-logo": "\f104",
+    "playstore": "\f105",
+    "24-hours-support": "\f106",
+);
+
+.flaticon-user:before {
+    content: map-get($flaticon-map, "user");
+}
+.flaticon-heart:before {
+    content: map-get($flaticon-map, "heart");
+}
+.flaticon-shopping-bag:before {
+    content: map-get($flaticon-map, "shopping-bag");
+}
+.flaticon-apple-black-logo:before {
+    content: map-get($flaticon-map, "apple-black-logo");
+}
+.flaticon-playstore:before {
+    content: map-get($flaticon-map, "playstore");
+}
+.flaticon-24-hours-support:before {
+    content: map-get($flaticon-map, "24-hours-support");
+}
