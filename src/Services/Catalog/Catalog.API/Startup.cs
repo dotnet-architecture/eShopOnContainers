@@ -224,7 +224,7 @@ public static class CustomExtensionMethods
         {            
             options.SwaggerDoc("v1", new OpenApiInfo
             {
-                Title = "eShopOnContainers - Catalog HTTP API",
+                Title = "Hemmez - Catalog HTTP API",
                 Version = "v1",
                 Description = "The Catalog Microservice HTTP API. This is a Data-Driven/CRUD microservice sample"
             });

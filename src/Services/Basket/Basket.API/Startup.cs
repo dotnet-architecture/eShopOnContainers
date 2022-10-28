@@ -31,7 +31,7 @@ public class Startup
         {            
             options.SwaggerDoc("v1", new OpenApiInfo
             {
-                Title = "eShopOnContainers - Basket HTTP API",
+                Title = "Hemmez - Basket HTTP API",
                 Version = "v1",
                 Description = "The Basket Service HTTP API"
             });
