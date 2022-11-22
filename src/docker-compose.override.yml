@@ -181,11 +181,18 @@ services:
     - "15200:8001"
 
   webshoppingapigw:
-    volumes:
-      - ./ApiGateways/Envoy/config/webshopping:/etc/envoy
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - IdentityUrl=http://identity-api   
+      - CatalogUrlHC=http://catalog-api/hc
+      - OrderingUrlHC=http://ordering-api/hc
+      - IdentityUrlHC=http://identity-api/hc             
+      - BasketUrlHC=http://basket-api/hc
+      - PaymentUrlHC=http://payment-api/hc
+      - IdentityUrlExternal=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
     ports:
-    - "5202:80"
-    - "15202:8001"
+      - "5202:80"
+      - "15202:8001"
 
   mobileshoppingagg:
     environment:

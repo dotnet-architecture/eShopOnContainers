@@ -53,7 +53,8 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "WebSPA:build"
+            "browserTarget": "WebSPA:build",
+            "proxyConfig": "src/proxy.conf.json"
           },
           "configurations": {
             "production": {

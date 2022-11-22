@@ -35,7 +35,15 @@ public class Startup
             })
             .PersistKeysToStackExchangeRedis(ConnectionMultiplexer.Connect(Configuration["DPConnectionString"]), "DataProtection-Keys");
         }
-
+        services.AddCors(options =>
+        {
+            options.AddPolicy("customPolicy", builder =>
+            {
+                builder.AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+            });
+        });
         // Add Antiforgery services and configure the header name that angular will use by default.
         services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
 
@@ -102,6 +110,7 @@ public class Startup
             app.UseSpaStaticFiles();
         }
         app.UseRouting();
+        app.UseCors("customPolicy");
         app.UseEndpoints(endpoints =>
         {
             endpoints.MapDefaultControllerRoute();
