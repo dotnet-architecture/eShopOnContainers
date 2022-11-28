@@ -382,6 +382,10 @@ static class CustomExtensionsMethods
             options.Authority = identityUrl;
             options.RequireHttpsMetadata = false;
             options.Audience = "orders";
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateAudience = false
+            };
         });
 
         return services;

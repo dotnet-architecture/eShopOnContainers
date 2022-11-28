@@ -1,9 +1,11 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
+#nullable disable
+
 namespace Identity.API.Migrations.ConfigurationDb
 {
-    public partial class InitialMigration : Migration
+    public partial class Configuration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -17,6 +19,9 @@ namespace Identity.API.Migrations.ConfigurationDb
                     Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     DisplayName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
+                    AllowedAccessTokenSigningAlgorithms = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    ShowInDiscoveryDocument = table.Column<bool>(type: "bit", nullable: false),
+                    RequireResourceIndicator = table.Column<bool>(type: "bit", nullable: false),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Updated = table.Column<DateTime>(type: "datetime2", nullable: true),
                     LastAccessed = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -25,6 +30,29 @@ namespace Identity.API.Migrations.ConfigurationDb
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ApiResources", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ApiScopes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Enabled = table.Column<bool>(type: "bit", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    DisplayName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
+                    Required = table.Column<bool>(type: "bit", nullable: false),
+                    Emphasize = table.Column<bool>(type: "bit", nullable: false),
+                    ShowInDiscoveryDocument = table.Column<bool>(type: "bit", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Updated = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastAccessed = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    NonEditable = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ApiScopes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -46,6 +74,7 @@ namespace Identity.API.Migrations.ConfigurationDb
                     AlwaysIncludeUserClaimsInIdToken = table.Column<bool>(type: "bit", nullable: false),
                     RequirePkce = table.Column<bool>(type: "bit", nullable: false),
                     AllowPlainTextPkce = table.Column<bool>(type: "bit", nullable: false),
+                    RequireRequestObject = table.Column<bool>(type: "bit", nullable: false),
                     AllowAccessTokensViaBrowser = table.Column<bool>(type: "bit", nullable: false),
                     FrontChannelLogoutUri = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true),
                     FrontChannelLogoutSessionRequired = table.Column<bool>(type: "bit", nullable: false),
@@ -53,6 +82,7 @@ namespace Identity.API.Migrations.ConfigurationDb
                     BackChannelLogoutSessionRequired = table.Column<bool>(type: "bit", nullable: false),
                     AllowOfflineAccess = table.Column<bool>(type: "bit", nullable: false),
                     IdentityTokenLifetime = table.Column<int>(type: "int", nullable: false),
+                    AllowedIdentityTokenSigningAlgorithms = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     AccessTokenLifetime = table.Column<int>(type: "int", nullable: false),
                     AuthorizationCodeLifetime = table.Column<int>(type: "int", nullable: false),
                     ConsentLifetime = table.Column<int>(type: "int", nullable: true),
@@ -67,17 +97,41 @@ namespace Identity.API.Migrations.ConfigurationDb
                     AlwaysSendClientClaims = table.Column<bool>(type: "bit", nullable: false),
                     ClientClaimsPrefix = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     PairWiseSubjectSalt = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Updated = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    LastAccessed = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UserSsoLifetime = table.Column<int>(type: "int", nullable: true),
                     UserCodeType = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     DeviceCodeLifetime = table.Column<int>(type: "int", nullable: false),
+                    CibaLifetime = table.Column<int>(type: "int", nullable: true),
+                    PollingInterval = table.Column<int>(type: "int", nullable: true),
+                    CoordinateLifetimeWithUserSession = table.Column<bool>(type: "bit", nullable: true),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Updated = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastAccessed = table.Column<DateTime>(type: "datetime2", nullable: true),
                     NonEditable = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Clients", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "IdentityProviders",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Scheme = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    DisplayName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    Enabled = table.Column<bool>(type: "bit", nullable: false),
+                    Type = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    Properties = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Updated = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastAccessed = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    NonEditable = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_IdentityProviders", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -103,7 +157,7 @@ namespace Identity.API.Migrations.ConfigurationDb
                 });
 
             migrationBuilder.CreateTable(
-                name: "ApiClaims",
+                name: "ApiResourceClaims",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -113,9 +167,9 @@ namespace Identity.API.Migrations.ConfigurationDb
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ApiClaims", x => x.Id);
+                    table.PrimaryKey("PK_ApiResourceClaims", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ApiClaims_ApiResources_ApiResourceId",
+                        name: "FK_ApiResourceClaims_ApiResources_ApiResourceId",
                         column: x => x.ApiResourceId,
                         principalTable: "ApiResources",
                         principalColumn: "Id",
@@ -123,7 +177,7 @@ namespace Identity.API.Migrations.ConfigurationDb
                 });
 
             migrationBuilder.CreateTable(
-                name: "ApiProperties",
+                name: "ApiResourceProperties",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -134,9 +188,9 @@ namespace Identity.API.Migrations.ConfigurationDb
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ApiProperties", x => x.Id);
+                    table.PrimaryKey("PK_ApiResourceProperties", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ApiProperties_ApiResources_ApiResourceId",
+                        name: "FK_ApiResourceProperties_ApiResources_ApiResourceId",
                         column: x => x.ApiResourceId,
                         principalTable: "ApiResources",
                         principalColumn: "Id",
@@ -144,24 +198,19 @@ namespace Identity.API.Migrations.ConfigurationDb
                 });
 
             migrationBuilder.CreateTable(
-                name: "ApiScopes",
+                name: "ApiResourceScopes",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    DisplayName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
-                    Required = table.Column<bool>(type: "bit", nullable: false),
-                    Emphasize = table.Column<bool>(type: "bit", nullable: false),
-                    ShowInDiscoveryDocument = table.Column<bool>(type: "bit", nullable: false),
+                    Scope = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     ApiResourceId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ApiScopes", x => x.Id);
+                    table.PrimaryKey("PK_ApiResourceScopes", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ApiScopes_ApiResources_ApiResourceId",
+                        name: "FK_ApiResourceScopes_ApiResources_ApiResourceId",
                         column: x => x.ApiResourceId,
                         principalTable: "ApiResources",
                         principalColumn: "Id",
@@ -169,7 +218,7 @@ namespace Identity.API.Migrations.ConfigurationDb
                 });
 
             migrationBuilder.CreateTable(
-                name: "ApiSecrets",
+                name: "ApiResourceSecrets",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -183,11 +232,52 @@ namespace Identity.API.Migrations.ConfigurationDb
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ApiSecrets", x => x.Id);
+                    table.PrimaryKey("PK_ApiResourceSecrets", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ApiSecrets_ApiResources_ApiResourceId",
+                        name: "FK_ApiResourceSecrets_ApiResources_ApiResourceId",
                         column: x => x.ApiResourceId,
                         principalTable: "ApiResources",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ApiScopeClaims",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ScopeId = table.Column<int>(type: "int", nullable: false),
+                    Type = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ApiScopeClaims", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ApiScopeClaims_ApiScopes_ScopeId",
+                        column: x => x.ScopeId,
+                        principalTable: "ApiScopes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ApiScopeProperties",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ScopeId = table.Column<int>(type: "int", nullable: false),
+                    Key = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
+                    Value = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ApiScopeProperties", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ApiScopeProperties_ApiScopes_ScopeId",
+                        column: x => x.ScopeId,
+                        principalTable: "ApiScopes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -279,7 +369,7 @@ namespace Identity.API.Migrations.ConfigurationDb
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    PostLogoutRedirectUri = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: false),
+                    PostLogoutRedirectUri = table.Column<string>(type: "nvarchar(400)", maxLength: 400, nullable: false),
                     ClientId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -320,7 +410,7 @@ namespace Identity.API.Migrations.ConfigurationDb
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    RedirectUri = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: false),
+                    RedirectUri = table.Column<string>(type: "nvarchar(400)", maxLength: 400, nullable: false),
                     ClientId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -379,7 +469,7 @@ namespace Identity.API.Migrations.ConfigurationDb
                 });
 
             migrationBuilder.CreateTable(
-                name: "IdentityClaims",
+                name: "IdentityResourceClaims",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -389,9 +479,9 @@ namespace Identity.API.Migrations.ConfigurationDb
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_IdentityClaims", x => x.Id);
+                    table.PrimaryKey("PK_IdentityResourceClaims", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_IdentityClaims_IdentityResources_IdentityResourceId",
+                        name: "FK_IdentityResourceClaims_IdentityResources_IdentityResourceId",
                         column: x => x.IdentityResourceId,
                         principalTable: "IdentityResources",
                         principalColumn: "Id",
@@ -399,7 +489,7 @@ namespace Identity.API.Migrations.ConfigurationDb
                 });
 
             migrationBuilder.CreateTable(
-                name: "IdentityProperties",
+                name: "IdentityResourceProperties",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -410,44 +500,26 @@ namespace Identity.API.Migrations.ConfigurationDb
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_IdentityProperties", x => x.Id);
+                    table.PrimaryKey("PK_IdentityResourceProperties", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_IdentityProperties_IdentityResources_IdentityResourceId",
+                        name: "FK_IdentityResourceProperties_IdentityResources_IdentityResourceId",
                         column: x => x.IdentityResourceId,
                         principalTable: "IdentityResources",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "ApiScopeClaims",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ApiScopeId = table.Column<int>(type: "int", nullable: false),
-                    Type = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ApiScopeClaims", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ApiScopeClaims_ApiScopes_ApiScopeId",
-                        column: x => x.ApiScopeId,
-                        principalTable: "ApiScopes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
+            migrationBuilder.CreateIndex(
+                name: "IX_ApiResourceClaims_ApiResourceId_Type",
+                table: "ApiResourceClaims",
+                columns: new[] { "ApiResourceId", "Type" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_ApiClaims_ApiResourceId",
-                table: "ApiClaims",
-                column: "ApiResourceId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ApiProperties_ApiResourceId",
-                table: "ApiProperties",
-                column: "ApiResourceId");
+                name: "IX_ApiResourceProperties_ApiResourceId_Key",
+                table: "ApiResourceProperties",
+                columns: new[] { "ApiResourceId", "Key" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_ApiResources_Name",
@@ -456,14 +528,27 @@ namespace Identity.API.Migrations.ConfigurationDb
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_ApiScopeClaims_ApiScopeId",
-                table: "ApiScopeClaims",
-                column: "ApiScopeId");
+                name: "IX_ApiResourceScopes_ApiResourceId_Scope",
+                table: "ApiResourceScopes",
+                columns: new[] { "ApiResourceId", "Scope" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_ApiScopes_ApiResourceId",
-                table: "ApiScopes",
+                name: "IX_ApiResourceSecrets_ApiResourceId",
+                table: "ApiResourceSecrets",
                 column: "ApiResourceId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ApiScopeClaims_ScopeId_Type",
+                table: "ApiScopeClaims",
+                columns: new[] { "ScopeId", "Type" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ApiScopeProperties_ScopeId_Key",
+                table: "ApiScopeProperties",
+                columns: new[] { "ScopeId", "Key" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_ApiScopes_Name",
@@ -472,44 +557,46 @@ namespace Identity.API.Migrations.ConfigurationDb
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_ApiSecrets_ApiResourceId",
-                table: "ApiSecrets",
-                column: "ApiResourceId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ClientClaims_ClientId",
+                name: "IX_ClientClaims_ClientId_Type_Value",
                 table: "ClientClaims",
-                column: "ClientId");
+                columns: new[] { "ClientId", "Type", "Value" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_ClientCorsOrigins_ClientId",
+                name: "IX_ClientCorsOrigins_ClientId_Origin",
                 table: "ClientCorsOrigins",
-                column: "ClientId");
+                columns: new[] { "ClientId", "Origin" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_ClientGrantTypes_ClientId",
+                name: "IX_ClientGrantTypes_ClientId_GrantType",
                 table: "ClientGrantTypes",
-                column: "ClientId");
+                columns: new[] { "ClientId", "GrantType" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_ClientIdPRestrictions_ClientId",
+                name: "IX_ClientIdPRestrictions_ClientId_Provider",
                 table: "ClientIdPRestrictions",
-                column: "ClientId");
+                columns: new[] { "ClientId", "Provider" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_ClientPostLogoutRedirectUris_ClientId",
+                name: "IX_ClientPostLogoutRedirectUris_ClientId_PostLogoutRedirectUri",
                 table: "ClientPostLogoutRedirectUris",
-                column: "ClientId");
+                columns: new[] { "ClientId", "PostLogoutRedirectUri" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_ClientProperties_ClientId",
+                name: "IX_ClientProperties_ClientId_Key",
                 table: "ClientProperties",
-                column: "ClientId");
+                columns: new[] { "ClientId", "Key" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_ClientRedirectUris_ClientId",
+                name: "IX_ClientRedirectUris_ClientId_RedirectUri",
                 table: "ClientRedirectUris",
-                column: "ClientId");
+                columns: new[] { "ClientId", "RedirectUri" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Clients_ClientId",
@@ -518,9 +605,10 @@ namespace Identity.API.Migrations.ConfigurationDb
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_ClientScopes_ClientId",
+                name: "IX_ClientScopes_ClientId_Scope",
                 table: "ClientScopes",
-                column: "ClientId");
+                columns: new[] { "ClientId", "Scope" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_ClientSecrets_ClientId",
@@ -528,14 +616,22 @@ namespace Identity.API.Migrations.ConfigurationDb
                 column: "ClientId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_IdentityClaims_IdentityResourceId",
-                table: "IdentityClaims",
-                column: "IdentityResourceId");
+                name: "IX_IdentityProviders_Scheme",
+                table: "IdentityProviders",
+                column: "Scheme",
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_IdentityProperties_IdentityResourceId",
-                table: "IdentityProperties",
-                column: "IdentityResourceId");
+                name: "IX_IdentityResourceClaims_IdentityResourceId_Type",
+                table: "IdentityResourceClaims",
+                columns: new[] { "IdentityResourceId", "Type" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_IdentityResourceProperties_IdentityResourceId_Key",
+                table: "IdentityResourceProperties",
+                columns: new[] { "IdentityResourceId", "Key" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_IdentityResources_Name",
@@ -547,16 +643,22 @@ namespace Identity.API.Migrations.ConfigurationDb
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ApiClaims");
+                name: "ApiResourceClaims");
 
             migrationBuilder.DropTable(
-                name: "ApiProperties");
+                name: "ApiResourceProperties");
+
+            migrationBuilder.DropTable(
+                name: "ApiResourceScopes");
+
+            migrationBuilder.DropTable(
+                name: "ApiResourceSecrets");
 
             migrationBuilder.DropTable(
                 name: "ApiScopeClaims");
 
             migrationBuilder.DropTable(
-                name: "ApiSecrets");
+                name: "ApiScopeProperties");
 
             migrationBuilder.DropTable(
                 name: "ClientClaims");
@@ -586,10 +688,16 @@ namespace Identity.API.Migrations.ConfigurationDb
                 name: "ClientSecrets");
 
             migrationBuilder.DropTable(
-                name: "IdentityClaims");
+                name: "IdentityProviders");
 
             migrationBuilder.DropTable(
-                name: "IdentityProperties");
+                name: "IdentityResourceClaims");
+
+            migrationBuilder.DropTable(
+                name: "IdentityResourceProperties");
+
+            migrationBuilder.DropTable(
+                name: "ApiResources");
 
             migrationBuilder.DropTable(
                 name: "ApiScopes");
@@ -599,9 +707,6 @@ namespace Identity.API.Migrations.ConfigurationDb
 
             migrationBuilder.DropTable(
                 name: "IdentityResources");
-
-            migrationBuilder.DropTable(
-                name: "ApiResources");
         }
     }
 }

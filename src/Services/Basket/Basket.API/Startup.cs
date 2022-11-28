@@ -224,6 +224,10 @@ public class Startup
             options.Authority = identityUrl;
             options.RequireHttpsMetadata = false;
             options.Audience = "basket";
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateAudience = false
+            };
         });
     }
 

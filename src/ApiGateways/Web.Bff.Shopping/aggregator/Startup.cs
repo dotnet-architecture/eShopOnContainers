@@ -94,6 +94,10 @@ public static class ServiceCollectionExtensions
             options.Authority = identityUrl;
             options.RequireHttpsMetadata = false;
             options.Audience = "webshoppingagg";
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateAudience = false
+            };
         });
 
         return services;

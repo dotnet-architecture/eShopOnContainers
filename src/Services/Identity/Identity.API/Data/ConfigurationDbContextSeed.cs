@@ -1,4 +1,4 @@
-﻿using IdentityServer4.EntityFramework.Entities;
+﻿using Duende.IdentityServer.EntityFramework.Entities;
 
 namespace Microsoft.eShopOnContainers.Services.Identity.API.Data
 {
@@ -64,6 +64,16 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Data
                 foreach (var api in Config.GetApis())
                 {
                     context.ApiResources.Add(api.ToEntity());
+                }
+
+                await context.SaveChangesAsync();
+            }
+
+            if (!context.ApiScopes.Any())
+            {
+                foreach (var apiScope in Config.GetApiScopes())
+                {
+                    context.ApiScopes.Add(apiScope.ToEntity());
                 }
 
                 await context.SaveChangesAsync();

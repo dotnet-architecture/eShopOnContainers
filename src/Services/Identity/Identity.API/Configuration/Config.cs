@@ -1,4 +1,4 @@
-﻿using IdentityServer4.Models;
+﻿using Duende.IdentityServer.Models;
 
 namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
 {
@@ -6,7 +6,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
     {
         // ApiResources define the apis in your system
         public static IEnumerable<ApiResource> GetApis()
-        {            
+        {
             return new List<ApiResource>
             {
                 new ApiResource("orders", "Orders Service"),
@@ -15,6 +15,21 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                 new ApiResource("webshoppingagg", "Web Shopping Aggregator"),
                 new ApiResource("orders.signalrhub", "Ordering Signalr Hub"),
                 new ApiResource("webhooks", "Webhooks registration Service"),
+            };
+        }
+
+        // ApiScope is used to protect the API 
+        //The effect is the same as that of API resources in IdentityServer 3.x
+        public static IEnumerable<ApiScope> GetApiScopes()
+        {
+            return new List<ApiScope>
+            {
+                new ApiScope("orders", "Orders Service"),
+                new ApiScope("basket", "Basket Service"),
+                new ApiScope("mobileshoppingagg", "Mobile Shopping Aggregator"),
+                new ApiScope("webshoppingagg", "Web Shopping Aggregator"),
+                new ApiScope("orders.signalrhub", "Ordering Signalr Hub"),
+                new ApiScope("webhooks", "Webhooks registration Service"),
             };
         }
 
@@ -63,7 +78,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                     AllowedGrantTypes = GrantTypes.Hybrid,                    
                     //Used to retrieve the access token on the back channel.
                     ClientSecrets =
-                    {                        
+                    {
                         new Secret("secret".Sha256())
                     },
                     RedirectUris = { clientsUrl["Xamarin"] },
@@ -91,7 +106,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                     ClientName = "MVC Client",
                     ClientSecrets = new List<Secret>
                     {
-                        
+
                         new Secret("secret".Sha256())
                     },
                     ClientUri = $"{clientsUrl["Mvc"]}",                             // public uri of the client
@@ -100,6 +115,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                     RequireConsent = false,
                     AllowOfflineAccess = true,
                     AlwaysIncludeUserClaimsInIdToken = true,
+                    RequirePkce = false,
                     RedirectUris = new List<string>
                     {
                         $"{clientsUrl["Mvc"]}/signin-oidc"

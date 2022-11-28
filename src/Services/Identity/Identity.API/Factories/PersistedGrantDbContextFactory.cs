@@ -15,7 +15,7 @@
 
             optionsBuilder.UseSqlServer(config["ConnectionString"], sqlServerOptionsAction: o => o.MigrationsAssembly("Identity.API"));
 
-            return new PersistedGrantDbContext(optionsBuilder.Options, operationOptions);
+            return new PersistedGrantDbContext(optionsBuilder.Options);
         }
     }
 }

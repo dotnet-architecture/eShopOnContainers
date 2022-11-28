@@ -143,6 +143,10 @@ public static class ServiceCollectionExtensions
             options.Authority = identityUrl;
             options.RequireHttpsMetadata = false;
             options.Audience = "mobileshoppingagg";
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateAudience = false
+            };
         });
 
         return services;

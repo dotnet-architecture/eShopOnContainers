@@ -10,14 +10,14 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Devspaces
             _logger = logger;
         }
 
-        public Task<bool> IsPostLogoutRedirectUriValidAsync(string requestedUri, IdentityServer4.Models.Client client)
+        public Task<bool> IsPostLogoutRedirectUriValidAsync(string requestedUri, Duende.IdentityServer.Models.Client client)
         {
 
             _logger.LogInformation("Client {ClientName} used post logout uri {RequestedUri}.", client.ClientName, requestedUri);
             return Task.FromResult(true);
         }
 
-        public Task<bool> IsRedirectUriValidAsync(string requestedUri, IdentityServer4.Models.Client client)
+        public Task<bool> IsRedirectUriValidAsync(string requestedUri, Duende.IdentityServer.Models.Client client)
         {
             _logger.LogInformation("Client {ClientName} used post logout uri {RequestedUri}.", client.ClientName, requestedUri);
             return Task.FromResult(true);

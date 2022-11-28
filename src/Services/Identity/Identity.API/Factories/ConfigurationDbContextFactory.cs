@@ -15,7 +15,7 @@
 
             optionsBuilder.UseSqlServer(config["ConnectionString"], sqlServerOptionsAction: o => o.MigrationsAssembly("Identity.API"));
 
-            return new ConfigurationDbContext(optionsBuilder.Options, storeOptions);
+            return new ConfigurationDbContext(optionsBuilder.Options);
         }
     }
 }
