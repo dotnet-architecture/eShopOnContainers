@@ -9,12 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="Setup\**\*;">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="6.0.2" />
     <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="6.0.5" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />
@@ -31,11 +25,14 @@
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.HealthChecks" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.HealthChecks" Version="1.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.0" />
+	  <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="7.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="7.0.0" />
+
+	  <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.AzureKeyVault" Version="3.1.24" />
     <PackageReference Include="Microsoft.Extensions.Logging.AzureAppServices" Version="7.0.0" />
@@ -55,18 +52,25 @@
     <PackageReference Include="Azure.Identity" Version="1.9.0-beta.1" />
   </ItemGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Include="Certificate\idsrv3test.pfx" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="Setup\*">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
 	<ItemGroup>
-		<Folder Include="Extensions\" />
+	  <None Include="Views\Account\AccessDenied.cshtml" />
+	  <None Include="Views\Account\LoggedOut.cshtml" />
+	  <None Include="Views\Account\Login.cshtml" />
+	  <None Include="Views\Account\Logout.cshtml" />
+	  <None Include="Views\Consent\Index.cshtml" />
+	  <None Include="Views\Device\Success.cshtml" />
+	  <None Include="Views\Device\UserCodeCapture.cshtml" />
+	  <None Include="Views\Device\UserCodeConfirmation.cshtml" />
+	  <None Include="Views\Diagnostics\Index.cshtml" />
+	  <None Include="Views\Grants\Index.cshtml" />
+	  <None Include="Views\Home\Index.cshtml" />
+	  <None Include="Views\Shared\Error.cshtml" />
+	  <None Include="Views\Shared\Redirect.cshtml" />
+	  <None Include="Views\Shared\_Layout.cshtml" />
+	  <None Include="Views\Shared\_ScopeListItem.cshtml" />
+	  <None Include="Views\Shared\_ValidationSummary.cshtml" />
+	  <None Include="Views\_ViewImports.cshtml" />
+	  <None Include="Views\_ViewStart.cshtml" />
 	</ItemGroup>
 	<ProjectExtensions>
 		<VisualStudio>

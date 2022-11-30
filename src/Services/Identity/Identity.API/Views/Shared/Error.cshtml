@@ -1,12 +1,13 @@
-﻿@model Microsoft.eShopOnContainers.Services.Identity.API.Models.ErrorViewModel
+@model ErrorViewModel
 
 @{
     var error = Model?.Error?.Error;
+    var errorDescription = Model?.Error?.ErrorDescription;
     var request_id = Model?.Error?.RequestId;
 }
 
 <div class="error-page">
-    <div class="page-header">
+    <div class="lead">
         <h1>Error</h1>
     </div>
 
@@ -22,6 +23,11 @@
                             : @error
                         </em>
                     </strong>
+
+                    if (errorDescription != null)
+                    {
+                        <div>@errorDescription</div>
+                    }
                 }
             </div>
 

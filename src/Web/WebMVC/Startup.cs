@@ -171,7 +171,7 @@ static class ServiceCollectionExtensions
             options.SignedOutRedirectUri = callBackUrl.ToString();
             options.ClientId = "mvc";
             options.ClientSecret = "secret";
-            options.ResponseType = "code id_token";
+            options.ResponseType = "code";
             options.SaveTokens = true;
             options.GetClaimsFromUserInfoEndpoint = true;
             options.RequireHttpsMetadata = false;

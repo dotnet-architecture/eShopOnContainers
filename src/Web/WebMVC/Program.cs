@@ -45,7 +45,7 @@ Serilog.ILogger CreateSerilogLogger(IConfiguration configuration)
     }
     if (!string.IsNullOrWhiteSpace(logstashUrl))
     {
-        cfg.WriteTo.Http(logstashUrl);
+        cfg.WriteTo.Http(logstashUrl,null);
     }
     return cfg.CreateLogger();
 }

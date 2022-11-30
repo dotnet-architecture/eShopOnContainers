@@ -1,0 +1,23 @@
+@model string
+
+<div class="page-device-code">
+    <div class="lead">
+        <h1>User Code</h1>
+        <p>Please enter the code displayed on your device.</p>
+    </div>
+
+    <partial name="_ValidationSummary" />
+
+    <div class="row">
+        <div class="col-sm-6">
+            <form asp-action="UserCodeCapture">
+                <div class="form-group">
+                    <label for="userCode">User Code:</label>
+                    <input class="form-control" for="userCode" name="userCode" autofocus />
+                </div>
+
+                <button class="btn btn-primary" name="button">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>

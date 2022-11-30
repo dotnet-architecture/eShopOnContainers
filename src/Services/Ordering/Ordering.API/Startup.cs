@@ -390,4 +390,16 @@ static class CustomExtensionsMethods
 
         return services;
     }
+    public static IServiceCollection AddCustomAuthorization(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddAuthorization(options =>
+        {
+            options.AddPolicy("ApiScope", policy =>
+            {
+                policy.RequireAuthenticatedUser();
+                policy.RequireClaim("scope", "ordering");
+            });
+        });
+        return services;
+    }
 }
