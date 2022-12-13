@@ -1,3 +1,6 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+
 namespace Microsoft.eShopOnContainers.Services.Ordering.API;
 
 public class Startup
@@ -22,10 +25,11 @@ public class Startup
             .AddHealthChecks(Configuration)
             .AddCustomDbContext(Configuration)
             .AddCustomSwagger(Configuration)
+            .AddCustomAuthentication(Configuration)
+            .AddCustomAuthorization(Configuration)
             .AddCustomIntegrations(Configuration)
             .AddCustomConfiguration(Configuration)
-            .AddEventBus(Configuration)
-            .AddCustomAuthentication(Configuration);
+            .AddEventBus(Configuration);
         //configure autofac
 
         var container = new ContainerBuilder();
@@ -372,20 +376,12 @@ static class CustomExtensionsMethods
 
         var identityUrl = configuration.GetValue<string>("IdentityUrl");
 
-        services.AddAuthentication(options =>
-        {
-            options.DefaultAuthenticateScheme = AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme;
-            options.DefaultChallengeScheme = AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme;
-
-        }).AddJwtBearer(options =>
+        services.AddAuthentication("Bearer").AddJwtBearer(options =>
         {
             options.Authority = identityUrl;
             options.RequireHttpsMetadata = false;
             options.Audience = "orders";
-            options.TokenValidationParameters = new TokenValidationParameters
-            {
-                ValidateAudience = false
-            };
+            options.TokenValidationParameters.ValidateAudience = false;
         });
 
         return services;
@@ -397,7 +393,7 @@ static class CustomExtensionsMethods
             options.AddPolicy("ApiScope", policy =>
             {
                 policy.RequireAuthenticatedUser();
-                policy.RequireClaim("scope", "ordering");
+                policy.RequireClaim("scope", "orders");
             });
         });
         return services;

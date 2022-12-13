@@ -1,3 +1,6 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+
 namespace Microsoft.eShopOnContainers.Services.Basket.API;
 public class Startup
 {
@@ -214,20 +217,20 @@ public class Startup
 
         var identityUrl = Configuration.GetValue<string>("IdentityUrl");
 
-        services.AddAuthentication(options =>
-        {
-            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-
-        }).AddJwtBearer(options =>
+        services.AddAuthentication("Bearer").AddJwtBearer(options =>
         {
             options.Authority = identityUrl;
             options.RequireHttpsMetadata = false;
             options.Audience = "basket";
-            options.TokenValidationParameters = new TokenValidationParameters
+            options.TokenValidationParameters.ValidateAudience = false;
+        });
+        services.AddAuthorization(options =>
+        {
+            options.AddPolicy("ApiScope", policy =>
             {
-                ValidateAudience = false
-            };
+                policy.RequireAuthenticatedUser();
+                policy.RequireClaim("scope", "basket");
+            });
         });
     }
 

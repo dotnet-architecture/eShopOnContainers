@@ -164,7 +164,7 @@ static class ServiceCollectionExtensions
             options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
         })
         .AddCookie(setup => setup.ExpireTimeSpan = TimeSpan.FromMinutes(sessionCookieLifetime))
-        .AddOpenIdConnect(options =>
+        .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>
         {
             options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             options.Authority = identityUrl.ToString();
@@ -181,6 +181,7 @@ static class ServiceCollectionExtensions
             options.Scope.Add("basket");
             options.Scope.Add("webshoppingagg");
             options.Scope.Add("orders.signalrhub");
+            options.Scope.Add("webhooks");
         });
 
         return services;

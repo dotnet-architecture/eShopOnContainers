@@ -1,3 +1,6 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+
 namespace Microsoft.eShopOnContainers.Services.Ordering.SignalrHub;
 
 public class Startup
@@ -151,16 +154,12 @@ public class Startup
 
         var identityUrl = Configuration.GetValue<string>("IdentityUrl");
 
-        services.AddAuthentication(options =>
-        {
-            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-
-        }).AddJwtBearer(options =>
+        services.AddAuthentication("Bearer").AddJwtBearer(options =>
         {
             options.Authority = identityUrl;
             options.RequireHttpsMetadata = false;
             options.Audience = "orders.signalrhub";
+            options.TokenValidationParameters.ValidateAudience = false;
             options.Events = new JwtBearerEvents
             {
                 OnMessageReceived = context =>
@@ -175,6 +174,14 @@ public class Startup
                     return Task.CompletedTask;
                 }
             };
+        });
+        services.AddAuthorization(options =>
+        {
+            options.AddPolicy("ApiScope", policy =>
+            {
+                policy.RequireAuthenticatedUser();
+                policy.RequireClaim("scope", "orders.signalrhub");
+            });
         });
     }
 

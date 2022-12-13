@@ -1,4 +1,7 @@
-﻿namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+
+namespace Microsoft.eShopOnContainers.Mobile.Shopping.HttpAggregator;
 
 public class Startup
 {
@@ -149,6 +152,18 @@ public static class ServiceCollectionExtensions
             };
         });
 
+        return services;
+    }
+    public static IServiceCollection AddCustomAuthorization(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddAuthorization(options =>
+        {
+            options.AddPolicy("ApiScope", policy =>
+            {
+                policy.RequireAuthenticatedUser();
+                policy.RequireClaim("scope", "mobileshoppingagg");
+            });
+        });
         return services;
     }
 
