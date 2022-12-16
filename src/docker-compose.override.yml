@@ -173,6 +173,23 @@ services:
     ports:
       - "5113:80"
 
+  coupon-api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
+      - EventBusUserName=${ESHOP_SERVICE_BUS_USERNAME}
+      - EventBusPassword=${ESHOP_SERVICE_BUS_PASSWORD}
+      - AzureServiceBusEnabled=False
+      - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
+      - OrchestratorType=${ORCHESTRATOR_TYPE}
+      - PORT=80
+      - PATH_BASE=/catalog-api
+      - ConnectionString=mongodb://nosqldata:27017
+    ports:
+      - "5106:80"
+      - "9106:81"
+
   mobileshoppingapigw:
     volumes:
       - ./ApiGateways/Envoy/config/mobileshopping:/etc/envoy
@@ -265,6 +282,8 @@ services:
       - HealthChecksUI__HealthChecks__9__Uri=http://ordering-signalrhub/hc
       - HealthChecksUI__HealthChecks__10__Name=Ordering HTTP Background Check
       - HealthChecksUI__HealthChecks__10__Uri=http://ordering-backgroundtasks/hc
+      - HealthChecksUI__HealthChecks__11__Name=Coupon HTTP Check
+      - HealthChecksUI__HealthChecks__11__Uri=http://coupon-api/hc
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
       - OrchestratorType=${ORCHESTRATOR_TYPE}
     ports:
@@ -272,7 +291,7 @@ services:
 
   webspa:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - IdentityUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
       - PurchaseUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5202

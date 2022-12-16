@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "Microsoft.eShopOnContainers.Services.Coupon.API": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "http://localhost:55106/",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}

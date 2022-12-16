@@ -171,6 +171,20 @@ services:
     ports:
       - "80"   # The API Gateway redirects and access through the internal port (80).
 
+  coupon-api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
+      - EventBusUserName=${ESHOP_SERVICE_BUS_USERNAME}
+      - EventBusPassword=${ESHOP_SERVICE_BUS_PASSWORD}
+      - AzureServiceBusEnabled=False
+      - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
+      - OrchestratorType=${ORCHESTRATOR_TYPE}
+      - ConnectionString=mongodb://nosqldata:27017
+    ports:
+      - "80"   # The API Gateway redirects and access through the internal port (80).
+
   sqldata:
     environment:
       - SA_PASSWORD=Pass@word

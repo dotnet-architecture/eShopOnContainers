@@ -78,6 +78,15 @@ services:
     depends_on:
       - sqldata
 
+  coupon-api:
+    image: ${REGISTRY:-eshop}/coupon.api:${PLATFORM:-linux}-${TAG:-latest}
+    build:
+      context: .
+      dockerfile: Services/Coupon/Coupon.API/Dockerfile
+    depends_on:
+      - nosqldata
+      - rabbitmq
+
   mobileshoppingapigw:
     image: envoyproxy/envoy:v1.11.1
 
