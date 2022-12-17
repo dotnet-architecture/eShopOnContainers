@@ -1,4 +1,6 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.IntegrationEvents.EventHandling;
+﻿using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
+
+namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.IntegrationEvents.EventHandling;
 
 public class UserCheckoutAcceptedIntegrationEventHandler : IIntegrationEventHandler<UserCheckoutAcceptedIntegrationEvent>
 {
@@ -34,10 +36,11 @@ public class UserCheckoutAcceptedIntegrationEventHandler : IIntegrationEventHand
             {
                 using (LogContext.PushProperty("IdentifiedCommandId", @event.RequestId))
                 {
-                    var createOrderCommand = new CreateOrderCommand(@event.Basket.Items, @event.UserId, @event.UserName, @event.City, @event.Street,
+                    var createOrderCommand = new CreateOrderCommand(
+                        @event.Basket.Items, @event.UserId, @event.UserName, @event.City, @event.Street,
                         @event.State, @event.Country, @event.ZipCode,
-                        @event.CardNumber, @event.CardHolderName, @event.CardExpiration,
-                        @event.CardSecurityNumber, @event.CardTypeId);
+                    @event.CardNumber, @event.CardHolderName, @event.CardExpiration,
+                    @event.CardSecurityNumber, @event.CardTypeId, @event.CodeDiscount, @event.Discount);
 
                     var requestCreateOrder = new IdentifiedCommand<CreateOrderCommand, bool>(createOrderCommand, @event.RequestId);
 

@@ -58,9 +58,24 @@ public class BasketController : ControllerBase
 
         var userName = this.HttpContext.User.FindFirst(x => x.Type == ClaimTypes.Name).Value;
 
-        var eventMessage = new UserCheckoutAcceptedIntegrationEvent(userId, userName, basketCheckout.City, basketCheckout.Street,
-            basketCheckout.State, basketCheckout.Country, basketCheckout.ZipCode, basketCheckout.CardNumber, basketCheckout.CardHolderName,
-            basketCheckout.CardExpiration, basketCheckout.CardSecurityNumber, basketCheckout.CardTypeId, basketCheckout.Buyer, basketCheckout.RequestId, basket);
+        var eventMessage = new UserCheckoutAcceptedIntegrationEvent(
+            userId, 
+            userName, 
+            basketCheckout.City,
+            basketCheckout.Street,
+            basketCheckout.State, 
+            basketCheckout.Country, 
+            basketCheckout.ZipCode,
+            basketCheckout.CardNumber, 
+            basketCheckout.CardHolderName,
+            basketCheckout.CardExpiration,
+            basketCheckout.CardSecurityNumber, 
+            basketCheckout.CardTypeId,
+            basketCheckout.Buyer,
+            basketCheckout.RequestId, 
+            basket,
+            basketCheckout.Coupon,
+            basketCheckout.Discount);
 
         // Once basket is checkout, sends an integration event to
         // ordering.api to convert basket to order and proceeds with

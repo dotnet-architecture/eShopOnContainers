@@ -51,6 +51,10 @@ class OrderEntityTypeConfiguration : IEntityTypeConfiguration<Order>
 
         orderConfiguration.Property<string>("Description").IsRequired(false);
 
+        orderConfiguration
+         .Property(e => e.DiscountCode)
+         .HasMaxLength(50);
+
         var navigation = orderConfiguration.Metadata.FindNavigation(nameof(Order.OrderItems));
 
         // DDD Patterns comment:

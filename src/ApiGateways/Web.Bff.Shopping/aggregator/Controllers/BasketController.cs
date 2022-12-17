@@ -1,4 +1,6 @@
-﻿namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Controllers;
+﻿using Newtonsoft.Json;
+
+namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Controllers;
 
 [Route("api/v1/[controller]")]
 [Authorize]
@@ -7,11 +9,13 @@ public class BasketController : ControllerBase
 {
     private readonly ICatalogService _catalog;
     private readonly IBasketService _basket;
+    private readonly ICouponService _coupon;
 
-    public BasketController(ICatalogService catalogService, IBasketService basketService)
+    public BasketController(ICatalogService catalogService, IBasketService basketService, ICouponService couponService)
     {
         _catalog = catalogService;
         _basket = basketService;
+        _coupon = couponService;
     }
 
     [HttpPost]
@@ -150,5 +154,25 @@ public class BasketController : ControllerBase
         await _basket.UpdateAsync(currentBasket);
 
         return Ok();
+    }
+
+    [HttpGet]
+    [Route("coupon/{code}")]
+    [ProducesResponseType((int)HttpStatusCode.NotFound)]
+    [ProducesResponseType(typeof(CouponData), (int)HttpStatusCode.OK)]
+    public async Task<ActionResult<CouponData>> CheckCouponAsync(string code)
+    {
+        var response = await _coupon.CheckCouponByCodeNumberAsync(code);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            return NotFound();
+        }
+
+        var couponResponse = await response.Content.ReadAsStringAsync();
+
+        var data = JsonConvert.DeserializeObject<CouponData>(couponResponse);
+
+        return Ok(data);
     }
 }

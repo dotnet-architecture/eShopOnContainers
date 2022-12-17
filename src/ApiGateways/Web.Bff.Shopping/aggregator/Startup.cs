@@ -1,4 +1,6 @@
-﻿namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator;
+﻿using Microsoft.Extensions.DependencyInjection;
+
+namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator;
 
 public class Startup
 {
@@ -12,13 +14,20 @@ public class Startup
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
-        services.AddHealthChecks()
+        var healthCheckBuilder = services.AddHealthChecks()
             .AddCheck("self", () => HealthCheckResult.Healthy())
             .AddUrlGroup(new Uri(Configuration["CatalogUrlHC"]), name: "catalogapi-check", tags: new string[] { "catalogapi" })
             .AddUrlGroup(new Uri(Configuration["OrderingUrlHC"]), name: "orderingapi-check", tags: new string[] { "orderingapi" })
             .AddUrlGroup(new Uri(Configuration["BasketUrlHC"]), name: "basketapi-check", tags: new string[] { "basketapi" })
             .AddUrlGroup(new Uri(Configuration["IdentityUrlHC"]), name: "identityapi-check", tags: new string[] { "identityapi" })
             .AddUrlGroup(new Uri(Configuration["PaymentUrlHC"]), name: "paymentapi-check", tags: new string[] { "paymentapi" });
+
+        // HC dependency is configured this way to save one build step on ACR
+        var couponHealthEndpoint = Configuration["CouponUrlHC"];
+        if (!string.IsNullOrWhiteSpace(couponHealthEndpoint))
+        {
+            healthCheckBuilder.AddUrlGroup(new Uri(couponHealthEndpoint), name: "couponapi-check", tags: new string[] { "couponapi" });
+        }
 
         services.AddCustomMvc(Configuration)
             .AddCustomAuthentication(Configuration)
@@ -162,6 +171,9 @@ public static class ServiceCollectionExtensions
         services.AddHttpClient<IOrderApiClient, OrderApiClient>()
             .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
             .AddDevspacesSupport();
+
+        services.AddHttpClient<ICouponService, CouponService>()
+    .       AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>();
 
         return services;
     }

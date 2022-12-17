@@ -19,7 +19,10 @@ public record Order
     public string zipcode { get; init; }
     public string country { get; init; }
     public List<Orderitem> orderitems { get; set; }
+    public decimal subtotal { get; set; }
     public decimal total { get; set; }
+    public string coupon { get; set; }
+    public decimal discount { get; set; }
 }
 
 public record OrderSummary

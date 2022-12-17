@@ -21,6 +21,8 @@ public class OrderQueries
                     o.Address_City as city, o.Address_Country as country, o.Address_State as state, o.Address_Street as street, o.Address_ZipCode as zipcode,
                     os.Name as status, 
                     oi.ProductName as productname, oi.Units as units, oi.UnitPrice as unitprice, oi.PictureUrl as pictureurl
+                    o.DiscountCode as coupon
+                    o.Discount as discount,
                     FROM ordering.Orders o
                     LEFT JOIN ordering.Orderitems oi ON o.Id = oi.orderid 
                     LEFT JOIN ordering.orderstatus os on o.OrderStatusId = os.Id
@@ -39,14 +41,27 @@ public class OrderQueries
         using var connection = new SqlConnection(_connectionString);
         connection.Open();
 
-        return await connection.QueryAsync<OrderSummary>(@"SELECT o.[Id] as ordernumber,o.[OrderDate] as [date],os.[Name] as [status], SUM(oi.units*oi.unitprice) as total
-                    FROM [ordering].[Orders] o
-                    LEFT JOIN[ordering].[orderitems] oi ON  o.Id = oi.orderid 
-                    LEFT JOIN[ordering].[orderstatus] os on o.OrderStatusId = os.Id                     
-                    LEFT JOIN[ordering].[buyers] ob on o.BuyerId = ob.Id
-                    WHERE ob.IdentityGuid = @userId
-                    GROUP BY o.[Id], o.[OrderDate], os.[Name] 
-                    ORDER BY o.[Id]", new { userId });
+        return await connection.QueryAsync<OrderSummary>(@"
+                    with OrderTotal as (
+                        select 
+                            OrderId, 
+                            sum(Units * UnitPrice) subtotal
+                        from ordering.orderitems
+                        group by OrderId)
+                    select
+                        o.Id ordernumber,
+                        o.OrderDate date,
+                        os.Name status,
+                        case
+                            when ot.subtotal > isnull(o.Discount, 0) 
+                                then ot.subtotal - isnull(o.Discount, 0)
+                            else 0
+                        end total
+                    from ordering.orders o
+                    join OrderTotal ot on ot.OrderId = o.Id
+                    join ordering.orderstatus os on os.Id = o.OrderStatusId
+                    join ordering.buyers b on b.Id = o.BuyerId", 
+                    new { userId });
     }
 
     public async Task<IEnumerable<CardType>> GetCardTypesAsync()
@@ -70,6 +85,9 @@ public class OrderQueries
             zipcode = result[0].zipcode,
             country = result[0].country,
             orderitems = new List<Orderitem>(),
+            subtotal = 0,
+            coupon = result[0].coupon,
+            discount = result[0].discount ?? 0m,
             total = 0
         };
 
@@ -83,9 +101,13 @@ public class OrderQueries
                 pictureurl = item.pictureurl
             };
 
-            order.total += item.units * item.unitprice;
+            order.subtotal += item.units * item.unitprice;
             order.orderitems.Add(orderitem);
         }
+
+        order.total = order.discount < order.subtotal
+              ? order.subtotal - order.discount
+              : 0;
 
         return order;
     }

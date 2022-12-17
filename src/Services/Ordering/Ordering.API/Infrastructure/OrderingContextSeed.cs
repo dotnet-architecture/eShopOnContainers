@@ -132,6 +132,7 @@ public class OrderingContextSeed
             OrderStatus.Submitted,
             OrderStatus.AwaitingValidation,
             OrderStatus.StockConfirmed,
+            OrderStatus.AwaitingCouponValidation,
             OrderStatus.Paid,
             OrderStatus.Shipped,
             OrderStatus.Cancelled

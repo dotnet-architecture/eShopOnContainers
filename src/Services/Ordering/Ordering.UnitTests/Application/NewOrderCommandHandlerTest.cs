@@ -60,11 +60,11 @@ public class NewOrderRequestHandlerTest
 
     private Order FakeOrder()
     {
-        return new Order("1", "fakeName", new Address("street", "city", "state", "country", "zipcode"), 1, "12", "111", "fakeName", DateTime.Now.AddYears(1));
+        return new Order("1", "fakeName", new Address("street", "city", "state", "country", "zipcode"), 1, "12", "111", "fakeName", DateTime.Now.AddYears(1), "", 0);
     }
 
     private CreateOrderCommand FakeOrderRequestWithBuyer(Dictionary<string, object> args = null)
-    {
+    {        
         return new CreateOrderCommand(
             new List<BasketItem>(),
             userId: args != null && args.ContainsKey("userId") ? (string)args["userId"] : null,
@@ -78,6 +78,8 @@ public class NewOrderRequestHandlerTest
             cardExpiration: args != null && args.ContainsKey("cardExpiration") ? (DateTime)args["cardExpiration"] : DateTime.MinValue,
             cardSecurityNumber: args != null && args.ContainsKey("cardSecurityNumber") ? (string)args["cardSecurityNumber"] : "123",
             cardHolderName: args != null && args.ContainsKey("cardHolderName") ? (string)args["cardHolderName"] : "XXX",
-            cardTypeId: args != null && args.ContainsKey("cardTypeId") ? (int)args["cardTypeId"] : 0);
+            cardTypeId: args != null && args.ContainsKey("cardTypeId") ? (int)args["cardTypeId"] : 0,
+            codeDiscount: args != null && args.ContainsKey("codeDiscount") ? (string)args["codeDiscount"] : "",
+            discount: args != null && args.ContainsKey("discount") ? (int)args["discount"] : 0);
     }
 }

@@ -1,3 +1,6 @@
+using Ordering.SignalrHub.IntegrationEvents.EventHandling;
+using Ordering.SignalrHub.IntegrationEvents.Events;
+
 namespace Microsoft.eShopOnContainers.Services.Ordering.SignalrHub;
 
 public class Startup
@@ -142,6 +145,7 @@ public class Startup
         eventBus.Subscribe<OrderStatusChangedToShippedIntegrationEvent, OrderStatusChangedToShippedIntegrationEventHandler>();
         eventBus.Subscribe<OrderStatusChangedToCancelledIntegrationEvent, OrderStatusChangedToCancelledIntegrationEventHandler>();
         eventBus.Subscribe<OrderStatusChangedToSubmittedIntegrationEvent, OrderStatusChangedToSubmittedIntegrationEventHandler>();
+        eventBus.Subscribe<OrderStatusChangedToAwaitingCouponValidationIntegrationEvent, OrderStatusChangedToAwaitingCouponValidationIntegrationEventHandler>();
     }
 
     private void ConfigureAuthService(IServiceCollection services)
