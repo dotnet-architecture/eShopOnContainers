@@ -48,6 +48,7 @@ services:
       - MvcClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5100
       - BasketApiClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5103
       - OrderingApiClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5102
+      - CouponApiClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5106
       - MobileShoppingAggClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5120
       - WebShoppingAggClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5121
       - WebhooksApiClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5113
@@ -180,9 +181,13 @@ services:
       - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
       - EventBusUserName=${ESHOP_SERVICE_BUS_USERNAME}
       - EventBusPassword=${ESHOP_SERVICE_BUS_PASSWORD}
+      - UseCustomizationData=True
       - AzureServiceBusEnabled=False
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
       - OrchestratorType=${ORCHESTRATOR_TYPE}
+      - IdentityUrl=http://identity-api
+      - IdentityUrlExternal=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
+      - UseLoadTest=${USE_LOADTEST:-False}
       - PORT=80
       - PATH_BASE=/catalog-api
       - ConnectionString=mongodb://nosqldata:27017
@@ -210,6 +215,7 @@ services:
       - urls__basket=http://basket-api
       - urls__catalog=http://catalog-api
       - urls__orders=http://ordering-api
+      - urls__coupon=http://coupon-api
       - urls__identity=http://identity-api
       - urls__grpcBasket=http://basket-api:81
       - urls__grpcCatalog=http://catalog-api:81
@@ -229,6 +235,7 @@ services:
       - urls__basket=http://basket-api
       - urls__catalog=http://catalog-api
       - urls__orders=http://ordering-api
+      - urls__coupon=http://coupon-api
       - urls__identity=http://identity-api
       - urls__grpcBasket=http://basket-api:81
       - urls__grpcCatalog=http://catalog-api:81

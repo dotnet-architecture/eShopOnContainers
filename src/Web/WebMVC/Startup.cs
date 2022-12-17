@@ -181,6 +181,7 @@ static class ServiceCollectionExtensions
             options.Scope.Add("basket");
             options.Scope.Add("webshoppingagg");
             options.Scope.Add("orders.signalrhub");
+            options.Scope.Add("coupon");
         });
 
         return services;

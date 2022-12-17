@@ -62,6 +62,7 @@ services:
       - MvcClient=http://${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP}:5100              #Local: You need to open your local dev-machine firewall at range 5100-5110.
       - BasketApiClient=http://${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP}:5103
       - OrderingApiClient=http://${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP}:5102
+      - CouponApiClient=http://${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP}:5106
       - MobileShoppingAggClient=http://${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP}:5120
       - WebShoppingAggClient=http://${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP}:5121
       - UseCustomizationData=True
@@ -151,6 +152,7 @@ services:
       - BasketUrl=http://basket-api/hc
       - IdentityUrl=http://identity-api/hc
       - PaymentUrl=http://payment-api/hc
+      - CouponUrl=http://coupon-api/hc
       - mvc=http://webmvc/hc
       - spa=http://webspa/hc
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
@@ -182,6 +184,9 @@ services:
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
       - OrchestratorType=${ORCHESTRATOR_TYPE}
       - ConnectionString=mongodb://nosqldata:27017
+      - identityUrl=http://identity-api              #Local: You need to open your local dev-machine firewall at range 5100-5110.
+      - IdentityUrlExternal=http://${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP}:5105
+      - UseLoadTest=${USE_LOADTEST:-False}
     ports:
       - "80"   # The API Gateway redirects and access through the internal port (80).
 
@@ -231,6 +236,7 @@ services:
       - urls__basket=http://basket-api
       - urls__catalog=http://catalog-api
       - urls__orders=http://ordering-api
+      - urls__coupon=http://coupon-api
       - urls__identity=http://identity-api              #Local: You need to open your local dev-machine firewall at range 5100-5110.
     ports:
       - "80"   # Important: In a production environment your should remove the external port (5120) kept here for microservice debugging purposes.
@@ -242,6 +248,7 @@ services:
       - urls__basket=http://basket-api
       - urls__catalog=http://catalog-api
       - urls__orders=http://ordering-api
+      - urls__coupon=http://coupon-api
       - urls__identity=http://identity-api              #Local: You need to open your local dev-machine firewall at range 5100-5110.
     ports:
       - "80"   # Important: In a production environment your should remove the external port (5121) kept here for microservice debugging purposes.
