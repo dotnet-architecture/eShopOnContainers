@@ -84,9 +84,41 @@
                 </div>
             </article>
 
+            <div class="d-flex align-items-center justify-content-end mt-4 mb-4 text-uppercase">
+                <div>Subtotal</div>
+                <div class="ml-3">${{order.total | number:'.2-2'}}</div>
+            </div>
+
+            <div class="d-flex flex-nowrap justify-content-between align-items-center mb-3 mt-3">
+                <div>
+                    <div *ngIf="!coupon">
+                        <div class="u-text-uppercase">Have a discount code?</div>
+                        <div class="d-flex flex-nowrap justify-content-between align-items-center mt-1">
+                            <input #discountcode
+                                   class="esh-orders_new-coupon mr-2 form-control"
+                                   type="text"
+                                   placeholder="Coupon number"
+                                   (keydown)="keyDownValidationCoupon($event, discountcode.value)">
+                            <button type="button"
+                                    (click)="checkValidationCoupon(discountcode.value)"
+                                    class="btn btn-secondary u-minwidth-unset">
+                                Apply
+                            </button>
+                        </div>
+                        <div class="mt-1" *ngIf="couponValidationMessage">{{couponValidationMessage}}</div>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center justify-content-end text-uppercase">
+                    <div *ngIf="coupon?.code">{{coupon?.code}}</div>
+                    <div>
+                        <div class="text-right ml-3" *ngIf="coupon?.discount">-${{coupon?.discount | number:'.2-2'}}</div>
+                    </div>
+                </div>
+            </div>
+
             <div class="divider d-flex align-items-center justify-content-end mb-4 pt-4 text-uppercase u-text-xl">
                 <div>Total</div>
-                <div class="ml-3">${{ order.total | number:'.2-2'}}</div>
+                <div class="ml-3">${{ (coupon?.discount ? ((order.total - coupon?.discount) < 0 ? 0 : (order.total - coupon?.discount)) : order.total) | number:'.2-2'}}</div>
             </div>
 
             <div class="esh-orders_new-buttons d-flex justify-content-end align-items-center">

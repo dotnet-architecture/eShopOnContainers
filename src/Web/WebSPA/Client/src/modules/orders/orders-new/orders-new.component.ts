@@ -7,6 +7,8 @@ import { BasketService } from '../../basket/basket.service';
 import { IOrder }                                   from '../../shared/models/order.model';
 import { BasketWrapperService }                     from '../../shared/services/basket.wrapper.service';
 
+import { ICoupon } from '../../shared/models/coupon.model';
+
 import { FormGroup, FormBuilder, Validators  }      from '@angular/forms';
 import { Router }                                   from '@angular/router';
 
@@ -20,6 +22,9 @@ export class OrdersNewComponent implements OnInit {
     isOrderProcessing: boolean;
     errorReceived: boolean;
     order: IOrder;
+    coupon: ICoupon;
+    discountCode: string;
+    couponValidationMessage: string;
 
     constructor(private orderService: OrdersService, private basketService: BasketService, fb: FormBuilder, private router: Router) {
         // Obtain user profile information
@@ -39,6 +44,23 @@ export class OrdersNewComponent implements OnInit {
     ngOnInit() {
     }
 
+    keyDownValidationCoupon(event: KeyboardEvent, discountCode: string) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            this.checkValidationCoupon(discountCode);
+        }
+    }
+
+    checkValidationCoupon(discountCode: string) {
+        this.couponValidationMessage = null;
+        this.coupon = null;
+        this.orderService
+            .checkValidationCoupon(discountCode)
+            .subscribe(
+                coupon => this.coupon = coupon,
+                error => this.couponValidationMessage = 'The coupon is not valid or it\'s been redeemed already!');
+    }
+
     submitForm(value: any) {
         this.order.street = this.newOrderForm.controls['street'].value;
         this.order.city = this.newOrderForm.controls['city'].value;
@@ -49,6 +71,14 @@ export class OrdersNewComponent implements OnInit {
         this.order.cardholdername = this.newOrderForm.controls['cardholdername'].value;
         this.order.cardexpiration = new Date(20 + this.newOrderForm.controls['expirationdate'].value.split('/')[1], this.newOrderForm.controls['expirationdate'].value.split('/')[0]);
         this.order.cardsecuritynumber = this.newOrderForm.controls['securitycode'].value;
+
+        if (this.coupon) {
+            console.log(`Coupon: ${this.coupon.code} (${this.coupon.discount})`);
+
+            this.order.coupon = this.coupon.code;
+            this.order.discount = this.coupon.discount;
+        }
+
         let basketCheckout = this.basketService.mapBasketInfoCheckout(this.order);
         this.basketService.setBasketCheckout(basketCheckout)
             .pipe(catchError((errMessage) => {
