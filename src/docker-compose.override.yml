@@ -189,7 +189,7 @@ services:
       - IdentityUrlExternal=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
       - UseLoadTest=${USE_LOADTEST:-False}
       - PORT=80
-      - PATH_BASE=/catalog-api
+      - PATH_BASE=/coupon-api
       - ConnectionString=mongodb://nosqldata:27017
     ports:
       - "5106:80"
@@ -222,6 +222,7 @@ services:
       - urls__grpcOrdering=http://ordering-api:81
       - CatalogUrlHC=http://catalog-api/hc
       - OrderingUrlHC=http://ordering-api/hc
+      - CouponUrlHC=http://coupon-api/hc
       - IdentityUrlHC=http://identity-api/hc
       - BasketUrlHC=http://basket-api/hc
       - PaymentUrlHC=http://payment-api/hc
@@ -242,6 +243,7 @@ services:
       - urls__grpcOrdering=http://ordering-api:81
       - CatalogUrlHC=http://catalog-api/hc
       - OrderingUrlHC=http://ordering-api/hc
+      - CouponUrlHC=http://coupon-api/hc
       - IdentityUrlHC=http://identity-api/hc
       - BasketUrlHC=http://basket-api/hc
       - PaymentUrlHC=http://payment-api/hc

@@ -119,6 +119,7 @@ services:
       - IdentityUrlHC=http://identity-api/hc     #Local: Use ${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP}, if using external IP or DNS name from browser.
       - BasketUrlHC=http://basket-api/hc
       - PaymentUrlHC=http://payment-api/hc
+      - CouponUrlHC=http://coupon-api/hc
       - UseCustomizationData=True
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
       - OrchestratorType=${ORCHESTRATOR_TYPE}
@@ -136,6 +137,7 @@ services:
       - IdentityUrlHC=http://identity-api/hc     #Local: Use ${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP}, if using external IP or DNS name from browser.
       - BasketUrlHC=http://basket-api/hc
       - PaymentUrlHC=http://payment-api/hc
+      - CouponUrlHC=http://coupon-api/hc
       - UseCustomizationData=True
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
       - OrchestratorType=${ORCHESTRATOR_TYPE}
