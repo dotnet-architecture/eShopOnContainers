@@ -55,6 +55,9 @@ public class CreateOrderCommand
     public int CardTypeId { get; private set; }
 
     [DataMember]
+    public string CouponCode { get; private set; }
+
+    [DataMember]
     public IEnumerable<OrderItemDTO> OrderItems => _orderItems;
 
     public CreateOrderCommand()
@@ -64,7 +67,7 @@ public class CreateOrderCommand
 
     public CreateOrderCommand(List<BasketItem> basketItems, string userId, string userName, string city, string street, string state, string country, string zipcode,
         string cardNumber, string cardHolderName, DateTime cardExpiration,
-        string cardSecurityNumber, int cardTypeId) : this()
+        string cardSecurityNumber, int cardTypeId, string couponCode = null) : this()
     {
         _orderItems = basketItems.ToOrderItemsDTO().ToList();
         UserId = userId;
@@ -79,6 +82,7 @@ public class CreateOrderCommand
         CardExpiration = cardExpiration;
         CardSecurityNumber = cardSecurityNumber;
         CardTypeId = cardTypeId;
+        CouponCode = couponCode;
     }
 
 

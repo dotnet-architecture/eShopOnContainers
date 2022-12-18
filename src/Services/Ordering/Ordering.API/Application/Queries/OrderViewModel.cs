@@ -20,6 +20,8 @@ public record Order
     public string country { get; init; }
     public List<Orderitem> orderitems { get; set; }
     public decimal total { get; set; }
+    public decimal discount { get; set; }
+    public string couponcode { get; set; }
 }
 
 public record OrderSummary

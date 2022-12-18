@@ -12,4 +12,6 @@ export interface IOrderDetail {
     country: number;
     total: number;
     orderitems: IOrderItem[];
+    couponcode: string;
+    discount: number;
 }

@@ -6,11 +6,19 @@ namespace Ordering.API.Infrastructure.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AddColumn<string>(
+                name: "CouponCode",
+                schema: "ordering",
+                table: "orders",
+                nullable: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-
+            migrationBuilder.DropColumn(
+                name: "CouponCode",
+                schema: "ordering",
+                table: "orders");
         }
     }
 }

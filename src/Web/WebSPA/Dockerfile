@@ -3,6 +3,13 @@
 ARG NODE_IMAGE=node:12.0
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app
+RUN apt-get update
+RUN apt-get -y install curl gnupg
+RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
+RUN apt-get -y install nodejs
+RUN npm install
+RUN npm -v
+RUN npm install -g @angular/cli@11.2.14
 EXPOSE 80
 
 FROM ${NODE_IMAGE} as node-build
@@ -60,6 +67,13 @@ RUN dotnet restore "eShopOnContainers-ServicesAndWebApps.sln"
 COPY . .
 COPY --from=node-build /web/wwwroot /src/Web/WebSPA/wwwroot/
 WORKDIR /src/Web/WebSPA
+RUN apt-get update
+RUN apt-get -y install curl gnupg
+RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
+RUN apt-get -y install nodejs
+RUN npm install
+RUN npm -v
+RUN npm install -g @angular/cli@11.2.14
 RUN dotnet publish --no-restore -c Release -o /app
 
 FROM build AS publish

@@ -23,6 +23,8 @@
     <Protobuf Include="Proto\ordering.proto" GrpcServices="Server" Generator="MSBuild:Compile" />
     <Content Include="Proto\ordering.proto" />
     <None Remove="@(Protobuf)" />
+    <None Remove="Application\IntegrationEvents\EventHandling\OrderCouponConfirmedIntegrationEventHandler.cs~RF159e4744.TMP" />
+    <None Remove="Application\IntegrationEvents\EventHandling\UserCheckoutAcceptedIntegrationEventHandler.cs~RFaf93a3b.TMP" />
   </ItemGroup>
 
   <ItemGroup>
@@ -44,6 +46,8 @@
     <PackageReference Include="Azure.Extensions.AspNetCore.Configuration.Secrets" Version="1.2.1" />
     <PackageReference Include="Azure.Identity" Version="1.4.0" />
     <PackageReference Include="Dapper" Version="2.0.78" />
+    <PackageReference Include="FluentMigrator" Version="3.3.2" />
+    <PackageReference Include="FluentMigrator.Runner.SqlServer" Version="3.3.2" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="9.3.0" />
     <PackageReference Include="Google.Protobuf" Version="3.15.0" />
     <PackageReference Include="Grpc.AspNetCore.Server" Version="2.34.0" />
@@ -56,6 +60,10 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.HealthChecks" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.HealthChecks" Version="1.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Logging.AzureAppServices" Version="6.0.0" />
     <PackageReference Include="Microsoft.NETCore.Platforms" Version="6.0.0" />
     <PackageReference Include="Polly" Version="7.2.1" />

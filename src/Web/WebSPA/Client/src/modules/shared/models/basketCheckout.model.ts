@@ -13,4 +13,5 @@
     buyer: string;
     ordernumber: string;
     total: number;
+    couponCode: string;
 }

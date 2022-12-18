@@ -9,6 +9,8 @@ import { BasketWrapperService }                     from '../../shared/services/
 
 import { FormGroup, FormBuilder, Validators  }      from '@angular/forms';
 import { Router }                                   from '@angular/router';
+import { ICoupon }                                  from '../../shared/models/coupon.model';
+import { DataService } from '../../shared/services/data.service';
 
 @Component({
     selector: 'esh-orders_new .esh-orders_new .mb-5',
@@ -20,6 +22,7 @@ export class OrdersNewComponent implements OnInit {
     isOrderProcessing: boolean;
     errorReceived: boolean;
     order: IOrder;
+    coupon: ICoupon;
 
     constructor(private orderService: OrdersService, private basketService: BasketService, fb: FormBuilder, private router: Router) {
         // Obtain user profile information
@@ -39,6 +42,13 @@ export class OrdersNewComponent implements OnInit {
     ngOnInit() {
     }
 
+    checkValidationCoupon(value: string)
+    {
+        this.coupon = <ICoupon>{};
+        this.coupon.code = value;
+        this.coupon.discount = +value.split('-')[1];
+    }
+
     submitForm(value: any) {
         this.order.street = this.newOrderForm.controls['street'].value;
         this.order.city = this.newOrderForm.controls['city'].value;
@@ -50,6 +60,9 @@ export class OrdersNewComponent implements OnInit {
         this.order.cardexpiration = new Date(20 + this.newOrderForm.controls['expirationdate'].value.split('/')[1], this.newOrderForm.controls['expirationdate'].value.split('/')[0]);
         this.order.cardsecuritynumber = this.newOrderForm.controls['securitycode'].value;
         let basketCheckout = this.basketService.mapBasketInfoCheckout(this.order);
+        if (this.coupon) {
+            basketCheckout.couponCode = this.coupon.code;
+        }
         this.basketService.setBasketCheckout(basketCheckout)
             .pipe(catchError((errMessage) => {
                 this.errorReceived = true;

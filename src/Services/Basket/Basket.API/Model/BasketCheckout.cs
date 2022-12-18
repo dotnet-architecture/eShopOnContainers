@@ -25,4 +25,6 @@ public class BasketCheckout
     public string Buyer { get; set; }
 
     public Guid RequestId { get; set; }
+
+    public string CouponCode { get; set; }
 }

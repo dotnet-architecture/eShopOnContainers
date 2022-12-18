@@ -32,10 +32,12 @@ public record UserCheckoutAcceptedIntegrationEvent : IntegrationEvent
 
     public CustomerBasket Basket { get; }
 
+    public string CouponCode { get; set; }
+
     public UserCheckoutAcceptedIntegrationEvent(string userId, string userName, string city, string street,
         string state, string country, string zipCode, string cardNumber, string cardHolderName,
         DateTime cardExpiration, string cardSecurityNumber, int cardTypeId, string buyer, Guid requestId,
-        CustomerBasket basket)
+        CustomerBasket basket, string couponCode = null)
     {
         UserId = userId;
         City = city;
@@ -52,6 +54,7 @@ public record UserCheckoutAcceptedIntegrationEvent : IntegrationEvent
         Basket = basket;
         RequestId = requestId;
         UserName = userName;
+        CouponCode = couponCode;
     }
 
 }
