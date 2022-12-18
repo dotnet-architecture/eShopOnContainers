@@ -34,7 +34,8 @@ namespace Coupon.API
                 .AddEventBus(Configuration)
                 .AddCustomAuthentication(Configuration)
                 .AddCustomAuthorization()
-                .AddSwagger(Configuration);
+                .AddSwagger(Configuration)
+                .AddCustomHealthCheck(Configuration);
 
             services.AddTransient<IIntegrationEventHandler<OrderStatusChangedToAwaitingCouponValidationIntegrationEvent>, OrderStatusChangedToAwaitingCouponValidationIntegrationEventHandler>();
             services.AddTransient<IIntegrationEventHandler<OrderStatusChangedToCancelledIntegrationEvent>, OrderStatusChangedToCancelledIntegrationEventHandler>();
@@ -68,7 +69,15 @@ namespace Coupon.API
                 .UseEndpoints(endpoints =>
                 {
                     endpoints.MapControllers();
-                    // Add the endpoints.MapHealthChecks code
+                    endpoints.MapHealthChecks("/hc", new HealthCheckOptions
+                    {
+                        Predicate = _ => true,
+                        ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                    });
+                    endpoints.MapHealthChecks("/liveness", new HealthCheckOptions
+                    {
+                        Predicate = r => r.Name.Contains("self")
+                    });
                 });
 
             ConfigureEventBus(app);

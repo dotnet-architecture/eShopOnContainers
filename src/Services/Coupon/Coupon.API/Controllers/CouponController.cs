@@ -23,6 +23,22 @@
             _mapper = mapper;
         }
 
-        // Add the GetCouponByCodeAsync method
+        [HttpGet("{code}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<CouponDto>> GetCouponByCodeAsync(string code)
+        {
+            var coupon = await _couponRepository.FindCouponByCodeAsync(code);
+
+            if (coupon is null || coupon.Consumed)
+            {
+                return NotFound();
+            }
+
+            var couponDto = _mapper.Translate(coupon);
+
+            return couponDto;
+        }
     }
 }
