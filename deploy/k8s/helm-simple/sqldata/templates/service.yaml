@@ -1,0 +1,13 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: sqldata
+  labels:
+    app: eshop
+    service: sqldata
+spec:
+  ports:
+    - port: 1433
+      protocol: TCP
+  selector:
+    service: sqldata

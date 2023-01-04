@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ordering-signalrhub
+  labels:
+    app: eshop
+    service: signalr
+spec:
+  ports:
+    - port: 80
+      protocol: TCP
+      name: http
+  selector:
+    service: signalr

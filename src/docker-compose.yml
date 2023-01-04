@@ -35,6 +35,20 @@ services:
       - identity-api
       - rabbitmq
 
+  coupon-api:
+    image: ${REGISTRY:-eshop}/coupon.api:${PLATFORM:-linux}-${TAG:-latest}
+    build:
+      context: .
+      dockerfile: Services/Coupon/Coupon.API/Dockerfile
+    depends_on:
+      - nosqldata
+      - sqldata
+      - identity-api
+      - rabbitmq
+      - ordering-api
+      - catalog-api
+      - basket-api
+
   catalog-api:
     image: ${REGISTRY:-eshop}/catalog.api:${PLATFORM:-linux}-${TAG:-latest}
     build:

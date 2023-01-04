@@ -1,0 +1,30 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: sqldata
+  labels:
+    app: eshop
+    service: sqldata
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: sqldata
+  template:
+    metadata:
+      labels:
+        app: eshop
+        service: sqldata
+    spec:
+      containers:
+        - name: sqldata
+          image: mcr.microsoft.com/mssql/server:2017-latest
+          ports:
+            - name: sqlserver
+              containerPort: 1433
+              protocol: TCP
+          env:
+            - name: SA_PASSWORD
+              value: Pass@word
+            - name: ACCEPT_EULA
+              value: "Y"

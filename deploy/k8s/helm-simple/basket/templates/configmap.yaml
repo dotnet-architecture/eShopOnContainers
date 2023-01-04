@@ -1,0 +1,16 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: basket-cm
+  labels:
+    app: eshop
+    service: basket
+data:
+  ASPNETCORE_ENVIRONMENT: Development
+  AzureServiceBusEnabled: "False"
+  ConnectionString: basketdata
+  EventBusConnection: rabbitmq
+  identityUrl: http://identity-api
+  IdentityUrlExternal: http://{{ .Values.aksLB }}/identity
+  OrchestratorType: K8S
+  PATH_BASE: /basket-api

@@ -1,0 +1,19 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: catalog-cm
+  labels:
+    app: eshop
+    service: catalog
+data:
+  ASPNETCORE_ENVIRONMENT: Development
+  AzureServiceBusEnabled: "False"
+  AzureStorageEnabled: "False"
+  ConnectionString: Server=sqldata;Database=Microsoft.eShopOnContainers.Services.CatalogDb;User Id=sa;Password=Pass@word
+  EventBusConnection: rabbitmq
+  GRPC_PORT: "81"
+  OrchestratorType: K8S
+  PATH_BASE: /catalog-api
+  PicBaseUrl: http://{{ .Values.aksLB }}/apigateway/c/api/v1/catalog/items/[0]/pic/
+  PORT: "80"
+  UseCustomizationData: "False"

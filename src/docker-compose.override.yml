@@ -58,6 +58,31 @@ services:
     ports:
       - "5105:80"
 
+  coupon-api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - ConnectionString=${ESHOP_AZURE_COUPON_DB:-mongodb://nosqldata}
+      - identityUrl=http://identity-api
+      - IdentityUrlExternal=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
+      - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
+      - EventBusUserName=${ESHOP_SERVICE_BUS_USERNAME}
+      - EventBusPassword=${ESHOP_SERVICE_BUS_PASSWORD}
+      - UseCustomizationData=True
+      - AzureServiceBusEnabled=False
+      - CheckUpdateTime=30000
+      - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
+      - OrchestratorType=${ORCHESTRATOR_TYPE}
+      - UseLoadTest=${USE_LOADTEST:-False}
+      - Serilog__MinimumLevel__Override__Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ=Verbose
+      - Serilog__MinimumLevel__Override__ordering-api=Verbose
+      - PATH_BASE=/coupon-api
+      - GRPC_PORT=81
+      - PORT=80
+    ports:
+      - "5106:80"
+      - "9106:81"
+
   basket-api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development

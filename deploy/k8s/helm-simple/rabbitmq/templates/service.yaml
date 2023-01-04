@@ -1,0 +1,14 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: rabbitmq
+  labels:
+    app: eshop
+    service: rabbitmq
+spec:
+  ports:
+    - port: 5672
+      protocol: TCP
+      name: rabbitmq
+  selector:
+    service: rabbitmq

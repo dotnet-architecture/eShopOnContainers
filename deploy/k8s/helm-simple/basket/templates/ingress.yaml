@@ -1,0 +1,20 @@
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: basket
+  labels:
+    app: eshop
+    service: basket
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+spec:
+  rules:
+    - http:
+        paths:
+        - path: /basket-api
+          pathType: Prefix
+          backend:
+            service:
+              name: basket-api
+              port:
+                number: 80          

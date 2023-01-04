@@ -1,0 +1,14 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: webstatus
+  labels:
+    app: eshop
+    service: webstatus
+spec:
+  ports:
+    - port: 80
+      protocol: TCP
+      name: http
+  selector:
+    service: webstatus

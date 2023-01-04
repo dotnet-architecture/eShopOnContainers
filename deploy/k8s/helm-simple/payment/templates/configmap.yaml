@@ -1,0 +1,16 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: payment-cm
+  labels:
+    app: eshop
+    service: payment
+data:
+  ASPNETCORE_ENVIRONMENT: Development
+  ASPNETCORE_URLS: http://0.0.0.0:80
+  AzureServiceBusEnabled: "False"
+  EventBusConnection: rabbitmq
+  MaxOrderTotal: "100"
+  OrchestratorType: K8S
+  Serilog__MinimumLevel__Override__Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ: Verbose
+  Serilog__MinimumLevel__Override__payment-api.IntegrationEvents.EventHandling: "Verbose"

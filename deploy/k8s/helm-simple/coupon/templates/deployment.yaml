@@ -1,0 +1,43 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: coupon
+  labels:
+    app: eshop
+    service: coupon
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: coupon
+  template:
+    metadata:
+      labels:
+        app: eshop
+        service: coupon
+    spec:
+      containers:
+        - name: coupon-api
+          image: {{ .Values.registry }}/coupon.api:linux-net6-initial
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+              protocol: TCP
+            - containerPort: 81
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              port: 80
+              path: /liveness
+            initialDelaySeconds: 10
+            periodSeconds: 15
+          readinessProbe:
+            httpGet:
+              port: 80
+              path: /hc
+            initialDelaySeconds: 90
+            periodSeconds: 60
+            timeoutSeconds: 5
+          envFrom:
+            - configMapRef:
+                name: coupon-cm

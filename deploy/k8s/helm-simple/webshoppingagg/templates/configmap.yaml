@@ -1,0 +1,25 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: webshoppingagg-cm
+  labels:
+    app: eshop
+    service: webshoppingagg
+data:
+  ASPNETCORE_ENVIRONMENT: Development
+  BasketUrlHC: http://basket-api/hc
+  CatalogUrlHC: http://catalog-api/hc
+  CouponUrlHC: http://coupon-api/hc
+  IdentityUrlExternal: http://{{ .Values.aksLB }}/identity
+  IdentityUrlHC: http://identity-api/hc
+  OrderingUrlHC: http://ordering-api/hc
+  PATH_BASE: /webshoppingagg
+  PaymentUrlHC: http://payment-api/hc
+  urls__basket: http://basket-api
+  urls__catalog: http://catalog-api
+  urls__coupon: http://coupon-api
+  urls__grpcBasket: http://basket-api:81
+  urls__grpcCatalog: http://catalog-api:81
+  urls__grpcOrdering: http://ordering-api:81
+  urls__identity: http://identity-api
+  urls__orders: http://ordering-api

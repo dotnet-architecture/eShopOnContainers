@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ordering-backgroundtasks
+  labels:
+    app: eshop
+    service: backgroundtasks
+spec:
+  ports:
+    - port: 80
+      protocol: TCP
+      name: http
+  selector:
+    service: backgroundtasks

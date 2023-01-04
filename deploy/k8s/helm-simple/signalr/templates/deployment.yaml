@@ -1,0 +1,42 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: signalr
+  labels:
+    app: eshop
+    service: signalr
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: signalr
+  template:
+    metadata:
+      labels:
+        app: eshop
+        service: signalr
+    spec:
+      containers:
+        - name: ordering-signalrhub
+          image: {{ .Values.registry }}/ordering.signalrhub:linux-net6-initial
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              port: 80
+              path: /liveness
+            initialDelaySeconds: 10
+            periodSeconds: 15
+          readinessProbe:
+            httpGet:
+              port: 80
+              path: /hc
+            initialDelaySeconds: 90
+            periodSeconds: 60
+            timeoutSeconds: 5
+          envFrom:
+            - configMapRef:
+                name: signalr-cm

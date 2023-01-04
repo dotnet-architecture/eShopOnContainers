@@ -1,0 +1,28 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: seq
+  labels:
+    app: eshop
+    service: seq
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: seq
+  template:
+    metadata:
+      labels:
+        app: eshop
+        service: seq
+    spec:
+      containers:
+      - name: seq
+        image: datalust/seq:latest
+        ports:
+          - name: http
+            containerPort: 80
+            protocol: TCP
+        env:
+          - name: ACCEPT_EULA
+            value: "Y"

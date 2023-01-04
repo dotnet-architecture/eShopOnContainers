@@ -1,0 +1,13 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: nosqldata
+  labels:
+    app: eshop
+    service: nosqldata
+spec:
+  ports:
+    - port: 27017
+      protocol: TCP
+  selector:
+    service: nosqldata

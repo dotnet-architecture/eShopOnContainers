@@ -1,0 +1,45 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: basket
+  labels:
+    app: eshop
+    service: basket
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: basket
+  template:
+    metadata:
+      labels:
+        app: eshop
+        service: basket
+    spec:
+      containers:
+        - name: basket-api
+          image: {{ .Values.registry }}/basket.api:linux-net6-initial
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+            - name: grpc
+              containerPort: 81
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              port: 80
+              path: /liveness
+            initialDelaySeconds: 10
+            periodSeconds: 15
+          readinessProbe:
+            httpGet:
+              port: 80
+              path: /hc
+            initialDelaySeconds: 90
+            periodSeconds: 60
+            timeoutSeconds: 5
+          envFrom:
+            - configMapRef:
+                name: basket-cm

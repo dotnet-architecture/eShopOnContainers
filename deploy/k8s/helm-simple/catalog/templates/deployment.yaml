@@ -1,0 +1,43 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: catalog
+  labels:
+    app: eshop
+    service: catalog
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: catalog
+  template:
+    metadata:
+      labels:
+        app: eshop
+        service: catalog
+    spec:
+      containers:
+        - name: catalog-api
+          image: {{ .Values.registry }}/catalog.api:linux-net6-initial
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+              protocol: TCP
+            - containerPort: 81
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              port: 80
+              path: /liveness
+            initialDelaySeconds: 10
+            periodSeconds: 15
+          readinessProbe:
+            httpGet:
+              port: 80
+              path: /hc
+            initialDelaySeconds: 90
+            periodSeconds: 60
+            timeoutSeconds: 5
+          envFrom:
+            - configMapRef:
+                name: catalog-cm

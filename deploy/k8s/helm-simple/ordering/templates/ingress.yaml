@@ -1,0 +1,20 @@
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: ordering
+  labels:
+    app: eshop
+    service: ordering
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+spec:
+  rules:
+    - http:
+        paths:
+        - path: /ordering-api
+          pathType: Prefix
+          backend:
+            service:
+              name: ordering-api
+              port:
+                number: 80

@@ -1,0 +1,42 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: identity
+  labels:
+    app: eshop
+    service: identity
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: identity
+  template:
+    metadata:
+      labels:
+        app: eshop
+        service: identity
+    spec:
+      containers:
+        - name: identity-api
+          image: {{ .Values.registry }}/identity.api:linux-net6-initial
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              port: 80
+              path: /liveness
+            initialDelaySeconds: 10
+            periodSeconds: 15
+          readinessProbe:
+            httpGet:
+              port: 80
+              path: /hc
+            initialDelaySeconds: 90
+            periodSeconds: 60
+            timeoutSeconds: 5
+          envFrom:
+            - configMapRef:
+                name: identity-cm

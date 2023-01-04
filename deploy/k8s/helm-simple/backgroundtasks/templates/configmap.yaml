@@ -1,0 +1,18 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: backgroundtasks-cm
+  labels:
+    app: eshop
+    service: backgroundtasks
+data:
+  OrchestratorType: K8S
+  ASPNETCORE_ENVIRONMENT: Development
+  ASPNETCORE_URLS: http://0.0.0.0:80
+  EventBusConnection: rabbitmq
+  AzureServiceBusEnabled: "False"
+  ConnectionString: Server=sqldata;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word
+  UseCustomizationData: "True"
+  CheckUpdateTime: "15000"
+  GracePeriodTime: "15"
+  Serilog__MinimumLevel__Override__Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ: Verbose

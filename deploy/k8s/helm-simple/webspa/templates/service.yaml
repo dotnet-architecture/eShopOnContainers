@@ -1,0 +1,15 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: webspa
+  labels:
+    app: eshop
+    service: webspa
+spec:
+  ports:
+    - port: 80
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    service: webspa

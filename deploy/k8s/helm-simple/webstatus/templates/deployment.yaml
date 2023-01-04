@@ -1,0 +1,29 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: webstatus
+  labels:
+    app: eshop
+    service: webstatus
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: webstatus
+  template:
+    metadata:
+      labels:
+        app: eshop
+        service: webstatus
+    spec:
+      containers:
+        - name: webstatus
+          image: {{ .Values.registry }}/webstatus:linux-net6-initial
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: webstatus-cm

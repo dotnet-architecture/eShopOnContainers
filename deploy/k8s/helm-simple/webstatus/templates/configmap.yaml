@@ -1,0 +1,32 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: webstatus-cm
+  labels:
+    app: eshop
+    service: webstatus
+data:
+  ASPNETCORE_ENVIRONMENT: Development
+  ASPNETCORE_URLS: http://0.0.0.0:80
+  HealthChecksUI__HealthChecks__0__Name: WebSPA HTTP Check
+  HealthChecksUI__HealthChecks__0__Uri: http://webspa/hc
+  HealthChecksUI__HealthChecks__1__Name: Web Shopping Aggregator GW HTTP Check
+  HealthChecksUI__HealthChecks__1__Uri: http://webshoppingagg/hc
+  HealthChecksUI__HealthChecks__2__Name: Ordering HTTP Check
+  HealthChecksUI__HealthChecks__2__Uri: http://ordering-api/hc
+  HealthChecksUI__HealthChecks__3__Name: Basket HTTP Check
+  HealthChecksUI__HealthChecks__3__Uri: http://basket-api/hc
+  HealthChecksUI__HealthChecks__4__Name: Catalog HTTP Check
+  HealthChecksUI__HealthChecks__4__Uri: http://catalog-api/hc
+  HealthChecksUI__HealthChecks__5__Name: Identity HTTP Check
+  HealthChecksUI__HealthChecks__5__Uri: http://identity-api/hc
+  HealthChecksUI__HealthChecks__6__Name: Payments HTTP Check
+  HealthChecksUI__HealthChecks__6__Uri: http://payment-api/hc
+  HealthChecksUI__HealthChecks__7__Name: Ordering SignalRHub HTTP Check
+  HealthChecksUI__HealthChecks__7__Uri: http://ordering-signalrhub/hc
+  HealthChecksUI__HealthChecks__8__Name: Ordering HTTP Background Check
+  HealthChecksUI__HealthChecks__8__Uri: http://ordering-backgroundtasks/hc
+  HealthChecksUI__HealthChecks__9__Name: Coupon HTTP Check
+  HealthChecksUI__HealthChecks__9__Uri: http://coupon-api/hc
+  OrchestratorType: K8S
+  PATH_BASE: /webstatus

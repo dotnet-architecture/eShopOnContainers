@@ -1,0 +1,13 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: identity-api
+  labels:
+    app: eshop
+    service: identity
+spec:
+  ports:
+    - port: 80
+      protocol: TCP
+  selector:
+    service: identity

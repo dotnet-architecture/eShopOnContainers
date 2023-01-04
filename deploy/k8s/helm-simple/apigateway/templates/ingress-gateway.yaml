@@ -1,0 +1,144 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-gw-c
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /catalog-api/$2
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+  labels:
+    app: eshop
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /apigateway/c(/|$)(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: catalog-api
+            port:
+              number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-gw-b
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /basket-api/$2
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+  labels:
+    app: eshop
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /apigateway/b(/|$)(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: basket-api
+            port:
+              number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-gw-o
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /ordering-api/$2
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+  labels:
+    app: eshop
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /apigateway/o(/|$)(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: ordering-api
+            port:
+              number: 80   
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-gw-cp
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /coupon-api/$2
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+  labels:
+    app: eshop
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /apigateway/cp(/|$)(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: coupon-api
+            port:
+              number: 80   
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-gw-agg
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /webshoppingagg/$2
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+  labels:
+    app: eshop
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /apigateway(/|$)(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: webshoppingagg
+            port:
+              number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-gw-signalr
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /hub/notificationhub/$2
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+    nginx.org/websocket-services: "ordering-signalrhub"
+  labels:
+    app: eshop
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /apigateway/hub/notificationhub(/|$)(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: ordering-signalrhub
+            port:
+              number: 80

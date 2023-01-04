@@ -1,0 +1,28 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: rabbitmq
+  labels:
+    app: eshop
+    service: rabbitmq
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: rabbitmq
+  template:
+    metadata:
+      labels:
+        app: eshop
+        service: rabbitmq
+    spec:
+      containers:
+        - name: rabbitmq
+          image: rabbitmq:3-management-alpine
+          ports:
+            - name: rabbitmq
+              containerPort: 5672
+              protocol: TCP
+            - name: management
+              containerPort: 15672
+              protocol: TCP

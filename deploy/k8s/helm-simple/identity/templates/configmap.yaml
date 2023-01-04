@@ -1,0 +1,21 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: identity-cm
+  labels:
+    app: eshop
+    service: identity
+data:
+  ASPNETCORE_ENVIRONMENT: Development
+  ASPNETCORE_URLS: http://0.0.0.0:80
+  BasketApiClient: http://{{ .Values.aksLB }}/basket-api
+  ConnectionString: Server=sqldata;Database=Microsoft.eShopOnContainers.Service.IdentityDb;User Id=sa;Password=Pass@word
+  CouponApiClient: http://{{ .Values.aksLB }}/coupon-api
+  DPConnectionString: basketdata
+  IsClusterEnv: "True"
+  OrchestratorType: K8S
+  OrderingApiClient: http://{{ .Values.aksLB }}/ordering-api
+  PATH_BASE: /identity
+  SpaClient: http://{{ .Values.aksLB }}
+  UseCustomizationData: "True"
+  WebShoppingAggClient: http://{{ .Values.aksLB }}/webshoppingagg

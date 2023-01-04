@@ -1,0 +1,17 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: signalr-cm
+  labels:
+    app: eshop
+    service: signalr
+data:
+  ASPNETCORE_ENVIRONMENT: Development
+  ASPNETCORE_URLS: http://0.0.0.0:80
+  AzureServiceBusEnabled: "False"
+  EventBusConnection: rabbitmq
+  identityUrl: http://identity-api
+  IsClusterEnv: "True"
+  OrchestratorType: K8S
+  PATH_BASE: /ordering-signalrhub
+  SignalrStoreConnectionString: basketdata

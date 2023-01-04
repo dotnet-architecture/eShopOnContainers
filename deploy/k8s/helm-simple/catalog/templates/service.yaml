@@ -1,0 +1,17 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: catalog-api
+  labels:
+    app: eshop
+    service: catalog
+spec:
+  ports:
+    - port: 80
+      protocol: TCP
+      name: http
+    - port: 81
+      protocol: TCP
+      name: grpc
+  selector:
+    service: catalog
