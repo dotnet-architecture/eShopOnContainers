@@ -1,0 +1,21 @@
+{{- $name := include "coupon-api.fullname" . -}}
+{{- $mongo := include "mongo-name" . -}}
+{{- $webshoppingapigw := include "url-of" (list .Values.app.ingress.entries.webshoppingapigw .) -}}
+{{- $protocol := include "protocol" . -}}
+
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: "cfg-{{ $name }}"
+  labels:
+    app: {{ template "coupon-api.name" . }}
+    chart: {{ template "coupon-api.chart" .}}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+data:
+  coupon__MongoDatabase: "CouponDb"
+  coupon__ConnectionString: mongodb://nosql-data
+  urls__IdentityUrl: http://{{ .Values.app.svc.identity }}
+  all__EventBusConnection: {{ .Values.inf.eventbus.constr }}
+  all__InstrumentationKey: "{{ .Values.inf.appinsights.key }}"
+  all__UseAzureServiceBus: "{{ .Values.inf.eventbus.useAzure }}"

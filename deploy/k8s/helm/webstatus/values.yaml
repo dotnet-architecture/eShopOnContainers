@@ -13,13 +13,10 @@ service:
 
 ingress:
   enabled: true
-  annotations: {
-
-  }
+  annotations: {}
   tls: []
 
 resources: {}
-
 
 nodeSelector: {}
 
@@ -78,10 +75,14 @@ env:
       key: name__orderingbackground__hc
     - name: HealthChecks-UI__HealthChecks__10__Uri
       key: internalurls__orderingbackground__hc
+    - name: HealthChecks-UI__HealthChecks__11__Name
+      key: name__coupon__hc
+    - name: HealthChecks-UI__HealthChecks__11__Uri
+      key: internalurls__coupon__hc
 
       # values define environment variables with a fixed value (no configmap involved) (name is name of var, and value is its value)
   values:
     - name: ASPNETCORE_ENVIRONMENT
       value: Development
     - name: OrchestratorType
-      value: 'K8S'
+      value: "K8S"

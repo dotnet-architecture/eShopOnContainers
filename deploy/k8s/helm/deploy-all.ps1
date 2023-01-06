@@ -1,27 +1,27 @@
 Param(
-    [parameter(Mandatory=$false)][string]$registry,
-    [parameter(Mandatory=$false)][string]$dockerUser,
-    [parameter(Mandatory=$false)][string]$dockerPassword,
-    [parameter(Mandatory=$false)][string]$externalDns,
-    [parameter(Mandatory=$false)][string]$appName="eshop",
-    [parameter(Mandatory=$false)][bool]$deployInfrastructure=$true,
-    [parameter(Mandatory=$false)][bool]$deployCharts=$true,
-    [parameter(Mandatory=$false)][bool]$clean=$true,
-    [parameter(Mandatory=$false)][string]$aksName="",
-    [parameter(Mandatory=$false)][string]$aksRg="",
-    [parameter(Mandatory=$false)][string]$imageTag="latest",
-    [parameter(Mandatory=$false)][bool]$useLocalk8s=$false,
-    [parameter(Mandatory=$false)][bool]$useMesh=$false,
-    [parameter(Mandatory=$false)][string][ValidateSet('Always','IfNotPresent','Never', IgnoreCase=$false)]$imagePullPolicy="Always",
-    [parameter(Mandatory=$false)][string][ValidateSet('prod','staging','none','custom', IgnoreCase=$false)]$sslSupport = "none",
-    [parameter(Mandatory=$false)][string]$tlsSecretName = "eshop-tls-custom",
-    [parameter(Mandatory=$false)][string]$chartsToDeploy="*",
-    [parameter(Mandatory=$false)][string]$ingressMeshAnnotationsFile="ingress_values_linkerd.yaml"
-    )
+    [parameter(Mandatory = $false)][string]$registry,
+    [parameter(Mandatory = $false)][string]$dockerUser,
+    [parameter(Mandatory = $false)][string]$dockerPassword,
+    [parameter(Mandatory = $false)][string]$externalDns,
+    [parameter(Mandatory = $false)][string]$appName = "eshop",
+    [parameter(Mandatory = $false)][bool]$deployInfrastructure = $true,
+    [parameter(Mandatory = $false)][bool]$deployCharts = $true,
+    [parameter(Mandatory = $false)][bool]$clean = $true,
+    [parameter(Mandatory = $false)][string]$aksName = "",
+    [parameter(Mandatory = $false)][string]$aksRg = "",
+    [parameter(Mandatory = $false)][string]$imageTag = "latest",
+    [parameter(Mandatory = $false)][bool]$useLocalk8s = $false,
+    [parameter(Mandatory = $false)][bool]$useMesh = $false,
+    [parameter(Mandatory = $false)][string][ValidateSet('Always', 'IfNotPresent', 'Never', IgnoreCase = $false)]$imagePullPolicy = "Always",
+    [parameter(Mandatory = $false)][string][ValidateSet('prod', 'staging', 'none', 'custom', IgnoreCase = $false)]$sslSupport = "none",
+    [parameter(Mandatory = $false)][string]$tlsSecretName = "eshop-tls-custom",
+    [parameter(Mandatory = $false)][string]$chartsToDeploy = "*",
+    [parameter(Mandatory = $false)][string]$ingressMeshAnnotationsFile = "ingress_values_linkerd.yaml"
+)
 
-function Install-Chart  {
-    Param([string]$chart,[string]$initialOptions, [bool]$customRegistry)
-    $options=$initialOptions
+function Install-Chart {
+    Param([string]$chart, [string]$initialOptions, [bool]$customRegistry)
+    $options = $initialOptions
     if ($sslEnabled) {
         $options = "$options --set ingress.tls[0].secretName=$tlsSecretName --set ingress.tls[0].hosts={$dns}" 
         if ($sslSupport -ne "custom") {
@@ -32,7 +32,8 @@ function Install-Chart  {
         $options = "$options --set inf.registry.server=$registry --set inf.registry.login=$dockerUser --set inf.registry.pwd=$dockerPassword --set inf.registry.secretName=eshop-docker-scret"
     }
     
-    if ($chart -ne "eshop-common" -or $customRegistry)  {       # eshop-common is ignored when no secret must be deployed        
+    if ($chart -ne "eshop-common" -or $customRegistry) {
+        # eshop-common is ignored when no secret must be deployed        
         $command = "install $appName-$chart $options $chart"
         Write-Host "Helm Command: helm $command" -ForegroundColor Gray
         Invoke-Expression 'cmd /c "helm $command"'
@@ -40,32 +41,32 @@ function Install-Chart  {
 }
 
 $dns = $externalDns
-$sslEnabled=$false
-$sslIssuer=""
+$sslEnabled = $false
+$sslIssuer = ""
 
 if ($sslSupport -eq "staging") {
-    $sslEnabled=$true
-    $tlsSecretName="eshop-letsencrypt-staging"
-    $sslIssuer="letsencrypt-staging"
+    $sslEnabled = $true
+    $tlsSecretName = "eshop-letsencrypt-staging"
+    $sslIssuer = "letsencrypt-staging"
 }
 elseif ($sslSupport -eq "prod") {
-    $sslEnabled=$true
-    $tlsSecretName="eshop-letsencrypt-prod"
-    $sslIssuer="letsencrypt-prod"
+    $sslEnabled = $true
+    $tlsSecretName = "eshop-letsencrypt-prod"
+    $sslIssuer = "letsencrypt-prod"
 }
 elseif ($sslSupport -eq "custom") {
-    $sslEnabled=$true
+    $sslEnabled = $true
 }
 
-$ingressValuesFile="ingress_values.yaml"
+$ingressValuesFile = "ingress_values.yaml"
 
 if ($useLocalk8s -eq $true) {
-    $ingressValuesFile="ingress_values_dockerk8s.yaml"
-    $dns="localhost"
+    $ingressValuesFile = "ingress_values_dockerk8s.yaml"
+    $dns = "localhost"
 }
 
 if ($externalDns -eq "aks") {
-    if  ([string]::IsNullOrEmpty($aksName) -or [string]::IsNullOrEmpty($aksRg)) {
+    if ([string]::IsNullOrEmpty($aksName) -or [string]::IsNullOrEmpty($aksRg)) {
         Write-Host "Error: When using -dns aks, MUST set -aksName and -aksRg too." -ForegroundColor Red
         exit 1
     }
@@ -95,21 +96,22 @@ if ($useLocalk8s -and $sslEnabled) {
 }
 
 if ($clean) {    
-    $listOfReleases=$(helm ls --filter eshop -q)    
+    $listOfReleases = $(helm ls --filter eshop -q)    
     if ([string]::IsNullOrEmpty($listOfReleases)) {
         Write-Host "No previous releases found!" -ForegroundColor Green
-	}else{
+    }
+    else {
         Write-Host "Previous releases found" -ForegroundColor Green
         Write-Host "Cleaning previous helm releases..." -ForegroundColor Green
         helm uninstall $listOfReleases
         Write-Host "Previous releases deleted" -ForegroundColor Green
-	}        
+    }        
 }
 
-$useCustomRegistry=$false
+$useCustomRegistry = $false
 
 if (-not [string]::IsNullOrEmpty($registry)) {
-    $useCustomRegistry=$true
+    $useCustomRegistry = $true
     if ([string]::IsNullOrEmpty($dockerUser) -or [string]::IsNullOrEmpty($dockerPassword)) {
         Write-Host "Error: Must use -dockerUser AND -dockerPassword if specifying custom registry" -ForegroundColor Red
         exit 1
@@ -119,7 +121,7 @@ if (-not [string]::IsNullOrEmpty($registry)) {
 Write-Host "Begin eShopOnContainers installation using Helm" -ForegroundColor Green
 
 $infras = ("sql-data", "nosql-data", "rabbitmq", "keystore-data", "basket-data")
-$charts = ("eshop-common", "basket-api","catalog-api", "identity-api", "mobileshoppingagg","ordering-api","ordering-backgroundtasks","ordering-signalrhub", "payment-api", "webmvc", "webshoppingagg", "webspa", "webstatus", "webhooks-api", "webhooks-web")
+$charts = ("eshop-common", "basket-api", "catalog-api", "coupon-api", "identity-api", "mobileshoppingagg", "ordering-api", "ordering-backgroundtasks", "ordering-signalrhub", "payment-api", "webmvc", "webshoppingagg", "webspa", "webstatus", "webhooks-api", "webhooks-web")
 $gateways = ("apigwms", "apigwws")
 
 if ($deployInfrastructure) {

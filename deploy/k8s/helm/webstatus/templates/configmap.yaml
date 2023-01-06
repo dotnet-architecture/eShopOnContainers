@@ -43,3 +43,5 @@ data:
   internalurls__payment__hc: http://{{ .Values.app.svc.payment }}/hc
   name__signalrhub__hc: Ordering SignalR Hub HTTP Check
   internalurls__signalrhub__hc: http://{{ .Values.app.svc.orderingsignalrhub }}/hc
+  name__coupon__hc: Coupon HTTP Check
+  internalurls__coupon__hc: http://{{ .Values.app.svc.coupon }}/hc
