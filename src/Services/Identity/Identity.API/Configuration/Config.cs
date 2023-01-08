@@ -6,7 +6,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
     {
         // ApiResources define the apis in your system
         public static IEnumerable<ApiResource> GetApis()
-        {            
+        {
             return new List<ApiResource>
             {
                 new ApiResource("orders", "Orders Service"),
@@ -15,6 +15,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                 new ApiResource("webshoppingagg", "Web Shopping Aggregator"),
                 new ApiResource("orders.signalrhub", "Ordering Signalr Hub"),
                 new ApiResource("webhooks", "Webhooks registration Service"),
+                new ApiResource("coupon", "Coupon Service"),
             };
         }
 
@@ -53,7 +54,8 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                         "basket",
                         "webshoppingagg",
                         "orders.signalrhub",
-                        "webhooks"
+                        "webhooks",
+                        "coupon"
                     },
                 },
                 new Client
@@ -63,7 +65,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                     AllowedGrantTypes = GrantTypes.Hybrid,                    
                     //Used to retrieve the access token on the back channel.
                     ClientSecrets =
-                    {                        
+                    {
                         new Secret("secret".Sha256())
                     },
                     RedirectUris = { clientsUrl["Xamarin"] },
@@ -79,7 +81,8 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                         "orders",
                         "basket",
                         "mobileshoppingagg",
-                        "webhooks"
+                        "webhooks",
+                        "coupon"
                     },
                     //Allow requesting refresh tokens for long lived API access
                     AllowOfflineAccess = true,
@@ -91,7 +94,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                     ClientName = "MVC Client",
                     ClientSecrets = new List<Secret>
                     {
-                        
+
                         new Secret("secret".Sha256())
                     },
                     ClientUri = $"{clientsUrl["Mvc"]}",                             // public uri of the client
@@ -117,7 +120,8 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                         "basket",
                         "webshoppingagg",
                         "orders.signalrhub",
-                        "webhooks"
+                        "webhooks",
+                        "coupon"
                     },
                     AccessTokenLifetime = 60*60*2, // 2 hours
                     IdentityTokenLifetime= 60*60*2 // 2 hours
@@ -183,7 +187,8 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                         "orders",
                         "basket",
                         "webshoppingagg",
-                        "webhooks"
+                        "webhooks",
+                        "coupon"
                     },
                 },
                 new Client
