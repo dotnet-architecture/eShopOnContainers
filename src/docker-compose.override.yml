@@ -100,7 +100,28 @@ services:
     ports:
       - "5101:80"
       - "9101:81"
-
+  
+  coupon-api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionString=mongodb://nosqldata
+      - CouponMongoDatabase=CouponDb
+      - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
+      - EventBusUserName=${ESHOP_SERVICE_BUS_USERNAME}
+      - EventBusPassword=${ESHOP_SERVICE_BUS_PASSWORD}
+      - AzureStorageAccountName=${ESHOP_AZURE_STORAGE_CATALOG_NAME}
+      - AzureStorageAccountKey=${ESHOP_AZURE_STORAGE_CATALOG_KEY}
+      - UseCustomizationData=True
+      - AzureServiceBusEnabled=False
+      - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
+      - OrchestratorType=${ORCHESTRATOR_TYPE}
+      - GRPC_PORT=81
+      - PORT=80
+      - PATH_BASE=/coupon-api
+    ports:
+      - "5110:80"
+      - "9110:81"
+  
   ordering-api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
@@ -177,27 +198,29 @@ services:
     volumes:
       - ./ApiGateways/Envoy/config/mobileshopping:/etc/envoy
     ports:
-    - "5200:80"
-    - "15200:8001"
+      - "5200:80"
+      - "15200:8001"
 
   webshoppingapigw:
     volumes:
       - ./ApiGateways/Envoy/config/webshopping:/etc/envoy
     ports:
-    - "5202:80"
-    - "15202:8001"
+      - "5202:80"
+      - "15202:8001"
 
   mobileshoppingagg:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - urls__basket=http://basket-api
       - urls__catalog=http://catalog-api
+      - urls__coupon=http://coupon-api
       - urls__orders=http://ordering-api
       - urls__identity=http://identity-api
       - urls__grpcBasket=http://basket-api:81
       - urls__grpcCatalog=http://catalog-api:81
       - urls__grpcOrdering=http://ordering-api:81
       - CatalogUrlHC=http://catalog-api/hc
+      - CouponUrlHC=http://coupon-api/hc
       - OrderingUrlHC=http://ordering-api/hc
       - IdentityUrlHC=http://identity-api/hc
       - BasketUrlHC=http://basket-api/hc
@@ -211,12 +234,14 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - urls__basket=http://basket-api
       - urls__catalog=http://catalog-api
+      - urls__coupon=http://coupon-api
       - urls__orders=http://ordering-api
       - urls__identity=http://identity-api
       - urls__grpcBasket=http://basket-api:81
       - urls__grpcCatalog=http://catalog-api:81
       - urls__grpcOrdering=http://ordering-api:81
       - CatalogUrlHC=http://catalog-api/hc
+      - CouponUrlHC=http://coupon-api/hc
       - OrderingUrlHC=http://ordering-api/hc
       - IdentityUrlHC=http://identity-api/hc
       - BasketUrlHC=http://basket-api/hc
@@ -257,14 +282,16 @@ services:
       - HealthChecksUI__HealthChecks__5__Uri=http://basket-api/hc
       - HealthChecksUI__HealthChecks__6__Name=Catalog HTTP Check
       - HealthChecksUI__HealthChecks__6__Uri=http://catalog-api/hc
-      - HealthChecksUI__HealthChecks__7__Name=Identity HTTP Check
-      - HealthChecksUI__HealthChecks__7__Uri=http://identity-api/hc
-      - HealthChecksUI__HealthChecks__8__Name=Payments HTTP Check
-      - HealthChecksUI__HealthChecks__8__Uri=http://payment-api/hc
-      - HealthChecksUI__HealthChecks__9__Name=Ordering SignalRHub HTTP Check
-      - HealthChecksUI__HealthChecks__9__Uri=http://ordering-signalrhub/hc
-      - HealthChecksUI__HealthChecks__10__Name=Ordering HTTP Background Check
-      - HealthChecksUI__HealthChecks__10__Uri=http://ordering-backgroundtasks/hc
+      - HealthChecksUI__HealthChecks__7__Name=Coupon HTTP Check
+      - HealthChecksUI__HealthChecks__7__Uri=http://coupon-api/hc
+      - HealthChecksUI__HealthChecks__8__Name=Identity HTTP Check
+      - HealthChecksUI__HealthChecks__8__Uri=http://identity-api/hc
+      - HealthChecksUI__HealthChecks__9__Name=Payments HTTP Check
+      - HealthChecksUI__HealthChecks__9__Uri=http://payment-api/hc
+      - HealthChecksUI__HealthChecks__10__Name=Ordering SignalRHub HTTP Check
+      - HealthChecksUI__HealthChecks__10__Uri=http://ordering-signalrhub/hc
+      - HealthChecksUI__HealthChecks__11__Name=Ordering HTTP Background Check
+      - HealthChecksUI__HealthChecks__11__Uri=http://ordering-backgroundtasks/hc
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
       - OrchestratorType=${ORCHESTRATOR_TYPE}
     ports:

@@ -1,6 +1,7 @@
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app
 EXPOSE 80
+EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
@@ -48,12 +49,20 @@ COPY "NuGet.config" "NuGet.config"
 RUN dotnet restore "eShopOnContainers-ServicesAndWebApps.sln"
 
 COPY . .
-WORKDIR /src/ApiGateways/Web.Bff.Shopping/aggregator
+WORKDIR /src/Services/Coupon/Coupon.API
 RUN dotnet publish --no-restore -c Release -o /app
+
+#FROM build as unittest
+#WORKDIR /src/Services/Catalog/Catalog.UnitTests
+#
+#FROM build as functionaltest
+#WORKDIR /src/Services/Catalog/Catalog.FunctionalTests
 
 FROM build AS publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
-ENTRYPOINT ["dotnet", "Web.Shopping.HttpAggregator.dll"]
+#COPY --from=build /src/Services/Catalog/Catalog.API/Proto /app/Proto
+COPY --from=build /src/Services/Coupon/Coupon.API/eshop.pfx .
+ENTRYPOINT ["dotnet", "Coupon.API.dll"]

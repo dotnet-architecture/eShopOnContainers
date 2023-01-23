@@ -43,6 +43,16 @@ services:
     depends_on:
       - sqldata
       - rabbitmq
+        
+  coupon-api:
+    image: ${REGISTRY:-eshop}/coupon.api:${PLATFORM:-linux}-${TAG:-latest}
+    build:
+      context: .
+      dockerfile: Services/Coupon/Coupon.API/Dockerfile
+    depends_on:
+      - sqldata
+      - nosqldata
+      - rabbitmq      
 
   ordering-api:
     image: ${REGISTRY:-eshop}/ordering.api:${PLATFORM:-linux}-${TAG:-latest}
