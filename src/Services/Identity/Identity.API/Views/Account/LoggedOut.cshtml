@@ -1,6 +1,11 @@
-﻿@model Microsoft.eShopOnContainers.Services.Identity.API.Models.AccountViewModels.LoggedOutViewModel
+@model LoggedOutViewModel
 
-<div class="container page-header">
+@{ 
+    // set this so the layout rendering sees an anonymous user
+    ViewData["signed-out"] = true;
+}
+
+<div class="logged-out-page">
     <h1>
         Logout
         <small>You are now logged out</small>
@@ -9,13 +14,21 @@
     @if (Model.PostLogoutRedirectUri != null)
     {
         <div>
-            Click <a href="@Model.PostLogoutRedirectUri">here</a> to return to the
+            Click <a class="PostLogoutRedirectUri" href="@Model.PostLogoutRedirectUri">here</a> to return to the
             <span>@Model.ClientName</span> application.
         </div>
     }
 
     @if (Model.SignOutIframeUrl != null)
     {
-        <iframe style="display:none" width="0" height="0" class="signout" src="@Model.SignOutIframeUrl"></iframe>
+        <iframe width="0" height="0" class="signout" src="@Model.SignOutIframeUrl"></iframe>
     }
 </div>
+
+@section scripts
+{
+    @if (Model.AutomaticRedirectAfterSignOut)
+    {
+        <script src="~/js/signout-redirect.js"></script>
+    }
+}

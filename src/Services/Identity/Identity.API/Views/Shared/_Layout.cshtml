@@ -1,56 +1,48 @@
 ﻿<!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="Content-Security-Policy" content="script-src 'unsafe-inline'; script-src-elem 'unsafe-inline'">
-    <title>eShopOnContainers Identity</title>
-    <link rel="icon" type="image/x-icon" href="~/favicon.ico" />
-    <link rel="shortcut icon" type="image/x-icon" href="~/favicon.ico" />
-    <environment names="Development">
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-        <link rel="stylesheet" href="~/css/site.css" />
-    </environment>
-    <environment names="Staging,Production">
-        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
-              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
-              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
-        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
-    </environment>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
+
+    <title>eShopOnContainers - Identity</title>
+
+    <link rel="icon" type="image/x-icon" href="favicon.png">
+    <link rel="shortcut icon" type="image/x-icon" href="~/favicon.png" />
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
-    <div class="navbar navbar-inverse fixed-top es-header">
+
+    <div class="es-header">
         <div class="container">
-            <div class="row">
-                <div class="navbar-header col-sm-6 col-xs-8">
-                    <a asp-controller="home" asp-action="ReturnToOriginalApplication" asp-route-returnUrl="@ViewData["ReturnUrl"]">
-                        <div class="navbar-brand"></div>
-                    </a>
-                </div>
-            </div>
+            <article class="d-flex align-content-center justify-content-between">
+                <section>
+                    <img class="es-header-brand" src="~/images/logo_color.svg">
+                </section>
+            </article>
         </div>
     </div>
 
-    <div>
+    <div class="content">
         @RenderBody()
-        <br /><br />
-        <footer>
-            <div class="container">
-                <div class="row">
-                    <div class="col-sm-6">
-                        <br><div class="brand"></div>
-                    </div>
-                    <div class="col-sm-6">
-                        <img class="text hidden-xs" src="~/images/main_footer_text.PNG" width="335" height="26" alt="footer text image" />
-                    </div>
-                </div>
-            </div>
-        </footer>
     </div>
 
+    <footer class="footer">
+        <div class="container">
+            <article class="d-flex w-100 h-100 justify-content-between align-items-center">
+                <section>
+                    <img class="footer-brand" src="~/images/logo.svg">
+                </section>
+                <section> © eShopOnContainers. All rights reserved </section>
+            </article>
+        </div>
+    </footer>
 
-    <script src="~/lib/jquery/jquery.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="~/lib/jquery/dist/jquery.slim.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
     @RenderSection("scripts", required: false)
 </body>
 </html>

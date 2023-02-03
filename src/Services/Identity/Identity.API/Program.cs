@@ -1,71 +1,75 @@
-﻿string Namespace = typeof(Startup).Namespace;
-string AppName = Namespace.Substring(Namespace.LastIndexOf('.', Namespace.LastIndexOf('.') - 1) + 1);
+﻿var appName = "Identity.API";
+var builder = WebApplication.CreateBuilder();
 
-var configuration = GetConfiguration();
+builder.AddCustomConfiguration();
+builder.AddCustomSerilog();
+builder.AddCustomMvc();
+builder.AddCustomDatabase();
+builder.AddCustomIdentity();
+builder.AddCustomIdentityServer();
+builder.AddCustomAuthentication();
+builder.AddCustomHealthChecks();
+builder.AddCustomApplicationServices();
 
-Log.Logger = CreateSerilogLogger(configuration);
+var app = builder.Build();
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+}
 
+var pathBase = builder.Configuration["PATH_BASE"];
+if (!string.IsNullOrEmpty(pathBase))
+{
+    app.UsePathBase(pathBase);
+}
+app.UseStaticFiles();
+
+// This cookie policy fixes login issues with Chrome 80+ using HHTP
+app.UseCookiePolicy(new CookiePolicyOptions { MinimumSameSitePolicy = SameSiteMode.Lax });
+
+app.UseRouting();
+
+app.UseIdentityServer();
+
+
+app.UseAuthorization();
+
+app.MapDefaultControllerRoute();
+
+app.MapHealthChecks("/hc", new HealthCheckOptions()
+{
+    Predicate = _ => true,
+    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+});
+app.MapHealthChecks("/liveness", new HealthCheckOptions
+{
+    Predicate = r => r.Name.Contains("self")
+});
 try
 {
-    Log.Information("Configuring web host ({ApplicationContext})...", AppName);
-    var host = BuildWebHost(configuration, args);
+    app.Logger.LogInformation("Seeding database ({ApplicationName})...", appName);
 
-    Log.Information("Applying migrations ({ApplicationContext})...", AppName);
-    host.MigrateDbContext<PersistedGrantDbContext>((_, __) => { })
-        .MigrateDbContext<ApplicationDbContext>((context, services) =>
-        {
-            var env = services.GetService<IWebHostEnvironment>();
-            var logger = services.GetService<ILogger<ApplicationDbContextSeed>>();
-            var settings = services.GetService<IOptions<AppSettings>>();
+    // Apply database migration automatically. Note that this approach is not
+    // recommended for production scenarios. Consider generating SQL scripts from
+    // migrations instead.
+    using (var scope = app.Services.CreateScope())
+    {
+        await SeedData.EnsureSeedData(scope, app.Configuration, app.Logger);
+    }
 
-            new ApplicationDbContextSeed()
-                .SeedAsync(context, env, logger, settings)
-                .Wait();
-        })
-        .MigrateDbContext<ConfigurationDbContext>((context, services) =>
-        {
-            new ConfigurationDbContextSeed()
-                .SeedAsync(context, configuration)
-                .Wait();
-        });
-
-    Log.Information("Starting web host ({ApplicationContext})...", AppName);
-    host.Run();
+    app.Logger.LogInformation("Starting web host ({ApplicationName})...", appName);
+    app.Run();
 
     return 0;
 }
 catch (Exception ex)
 {
-    Log.Fatal(ex, "Program terminated unexpectedly ({ApplicationContext})!", AppName);
+    app.Logger.LogCritical(ex, "Host terminated unexpectedly ({ApplicationName})...", appName);
     return 1;
 }
 finally
 {
-    Log.CloseAndFlush();
-}
-
-IWebHost BuildWebHost(IConfiguration configuration, string[] args) =>
-    WebHost.CreateDefaultBuilder(args)
-        .CaptureStartupErrors(false)
-        .ConfigureAppConfiguration(x => x.AddConfiguration(configuration))
-        .UseStartup<Startup>()
-        .UseContentRoot(Directory.GetCurrentDirectory())
-        .UseSerilog()
-        .Build();
-
-Serilog.ILogger CreateSerilogLogger(IConfiguration configuration)
-{
-    var seqServerUrl = configuration["Serilog:SeqServerUrl"];
-    var logstashUrl = configuration["Serilog:LogstashgUrl"];
-    return new LoggerConfiguration()
-        .MinimumLevel.Verbose()
-        .Enrich.WithProperty("ApplicationContext", AppName)
-        .Enrich.FromLogContext()
-        .WriteTo.Console()
-        .WriteTo.Seq(string.IsNullOrWhiteSpace(seqServerUrl) ? "http://seq" : seqServerUrl)
-        .WriteTo.Http(string.IsNullOrWhiteSpace(logstashUrl) ? "http://localhost:8080" : logstashUrl)
-        .ReadFrom.Configuration(configuration)
-        .CreateLogger();
+    Serilog.Log.CloseAndFlush();
 }
 
 IConfiguration GetConfiguration()

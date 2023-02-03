@@ -1,6 +1,6 @@
 ﻿namespace Microsoft.eShopOnContainers.WebMVC.Controllers;
 
-[Authorize(AuthenticationSchemes = OpenIdConnectDefaults.AuthenticationScheme)]
+[Authorize]
 public class AccountController : Controller
 {
     private readonly ILogger<AccountController> _logger;

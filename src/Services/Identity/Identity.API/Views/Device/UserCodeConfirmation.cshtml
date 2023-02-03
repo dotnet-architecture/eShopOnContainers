@@ -1,0 +1,108 @@
+@model DeviceAuthorizationViewModel
+
+<div class="page-device-confirmation">
+    <div class="lead">
+        @if (Model.ClientLogoUrl != null)
+        {
+            <div class="client-logo"><img src="@Model.ClientLogoUrl"></div>
+        }
+        <h1>
+            @Model.ClientName
+            <small class="text-muted">is requesting your permission</small>
+        </h1>
+        @if (Model.ConfirmUserCode)
+        {
+            <p>Please confirm that the authorization request quotes the code: <strong>@Model.UserCode</strong>.</p>
+        }
+        <p>Uncheck the permissions you do not wish to grant.</p>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-8">
+            <partial name="_ValidationSummary" />
+        </div>
+    </div>
+
+    <form asp-action="Callback">
+        <input asp-for="UserCode" type="hidden" value="@Model.UserCode" />
+        <div class="row">
+            <div class="col-sm-8">
+                @if (Model.IdentityScopes.Any())
+                {
+                    <div class="form-group">
+                        <div class="card">
+                            <div class="card-header">
+                                <span class="glyphicon glyphicon-user"></span>
+                                Personal Information
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                @foreach (var scope in Model.IdentityScopes)
+                                {
+                                    <partial name="_ScopeListItem" model="@scope" />
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                }
+
+                @if (Model.ApiScopes.Any())
+                {
+                    <div class="form-group">
+                        <div class="card">
+                            <div class="card-header">
+                                <span class="glyphicon glyphicon-tasks"></span>
+                                Application Access
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                @foreach (var scope in Model.ApiScopes)
+                                {
+                                    <partial name="_ScopeListItem" model="scope" />
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                }
+
+                <div class="form-group">
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="glyphicon glyphicon-tasks"></span>
+                            Description
+                        </div>
+                        <div class="card-body">
+                            <input class="form-control" placeholder="Description or name of device" asp-for="Description" autofocus>
+                        </div>
+                    </div>
+                </div>
+
+                @if (Model.AllowRememberConsent)
+                {
+                    <div class="form-group">
+                        <div class="form-check">
+                            <input class="form-check-input" asp-for="RememberConsent">
+                            <label class="form-check-label" asp-for="RememberConsent">
+                                <strong>Remember My Decision</strong>
+                            </label>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-4">
+                <button name="button" value="yes" class="btn btn-primary" autofocus>Yes, Allow</button>
+                <button name="button" value="no" class="btn btn-secondary">No, Do Not Allow</button>
+            </div>
+            <div class="col-sm-4 col-lg-auto">
+                @if (Model.ClientUrl != null)
+                {
+                    <a class="btn btn-outline-info" href="@Model.ClientUrl">
+                        <span class="glyphicon glyphicon-info-sign"></span>
+                        <strong>@Model.ClientName</strong>
+                    </a>
+                }
+            </div>
+        </div>
+    </form>
+</div>

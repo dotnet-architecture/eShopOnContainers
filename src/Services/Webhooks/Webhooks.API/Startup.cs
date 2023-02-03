@@ -1,3 +1,6 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+
 namespace Webhooks.API;
 public class Startup
 {
@@ -303,8 +306,23 @@ internal static class CustomExtensionMethods
             options.Authority = identityUrl;
             options.RequireHttpsMetadata = false;
             options.Audience = "webhooks";
+            options.TokenValidationParameters.ValidateAudience = false;
         });
 
+        return services;
+    }
+
+
+    public static IServiceCollection AddCustomAuthorization(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddAuthorization(options =>
+        {
+            options.AddPolicy("ApiScope", policy =>
+            {
+                policy.RequireAuthenticatedUser();
+                policy.RequireClaim("scope", "webhooks");
+            });
+        });
         return services;
     }
 }

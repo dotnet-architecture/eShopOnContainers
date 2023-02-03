@@ -48,3 +48,4 @@ global using Webhooks.API.IntegrationEvents;
 global using Webhooks.API.Model;
 global using Webhooks.API.Services;
 global using Webhooks.API;
+global using Microsoft.IdentityModel.Tokens;

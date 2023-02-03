@@ -1,28 +1,58 @@
-﻿@model Microsoft.eShopOnContainers.Services.Identity.API.Models.AccountViewModels.LoginViewModel
+@model LoginViewModel
 
-@{
-    ViewData["Title"] = "Log in";
+<div class="login-page">
 
-    var requestQuery = ViewContext.HttpContext.Request.Query;
+    <partial name="_ValidationSummary" />
 
-    requestQuery.TryGetValue("ReturnUrl", out var returnUrl);
+    <div class="container">
+        <div class="row top-buffer">
 
-    string partialView;
+            @if (Model.EnableLocalLogin)
+            {
+                <div class="col"></div>
+                <div class="col-sm-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>Login</h2>
+                        </div>
 
-    if (returnUrl[0].Contains("client_id=js"))
-    {
-        Layout = "_Layout-SPA";
-        partialView = "_LoginPartial-SPA.cshtml";
-    }
-    else
-    {
-        partialView = "_LoginPartial-MVC.cshtml";
-    }
+                        <div class="card-body">
+                            <form asp-route="Login">
+                                <input type="hidden" asp-for="ReturnUrl" />
 
-}
+                                <div class="form-group">
+                                    <label asp-for="Username"></label>
+                                    <input class="form-control" placeholder="Username" asp-for="Username" autofocus>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Password"></label>
+                                    <input type="password" class="form-control" placeholder="Password" asp-for="Password" autocomplete="off">
+                                </div>
+                                @if (Model.AllowRememberLogin)
+                                {
+                                    <div class="form-group">
+                                        <div class="form-check">
+                                            <input class="form-check-input" asp-for="RememberLogin">
+                                            <label class="form-check-label" asp-for="RememberLogin">
+                                                Remember My Login
+                                            </label>
+                                        </div>
+                                    </div>
+                                }
 
-<partial name=@partialView model=@Model />
+                                <div>
+                                    <p>The default users are alice/bob, password: Pass123$</p>
+                                </div>
 
-@section Scripts {
-    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
-}
+                                <button class="btn btn-primary" name="button" value="login">Login</button>
+                                <button class="btn btn-secondary" name="button" value="cancel">Cancel</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col"></div>
+            }
+
+        </div>
+    </div>
+</div>

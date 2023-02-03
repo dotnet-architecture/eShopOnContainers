@@ -22,7 +22,7 @@ on:
 env:
   SERVICE: ordering-api
   IMAGE: ordering.api
-  DOTNET_VERSION: 6.0.x
+  DOTNET_VERSION: 7.0.x
   PROJECT_PATH: Services/Ordering/Ordering.API
   TESTS_PATH: Services/Ordering/Ordering.UnitTests
 
