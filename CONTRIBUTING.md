@@ -47,7 +47,7 @@ All contributions must be submitted as a [Pull Request (PR)](https://help.github
 The main branches are **`dev`** and **`master`**:
 
 - **`dev`**: Contains the latest code **and it is the branch actively developed**.  
-**All PRs must be against `dev` branch to be considered**. This branch is developed using `.NET 5`
+**All PRs must be against `dev` branch to be considered**. This branch is developed using `.NET 7`
 
 - **`main`**: Synced from time to time from **`dev`**. It contains "stable" code.This branch contains changes specific to `.NET Core 3.1` (**Keep in mind "stable" does not mean PRODUCTION-READY!**)
 
