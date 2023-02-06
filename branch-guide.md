@@ -2,7 +2,8 @@
 
 Following are the most important branches:
 
-- `dev`: Contains the latest code **and it is the branch actively developed**. Note that **all PRs must be against the `dev` branch to be considered**. This branch is developed using `.NET 6`
+- `dev`: Contains the latest code **and it is the branch actively developed**. Note that **all PRs must be against the `dev` branch to be considered**. This branch is developed using `.NET 7`
+- `release/net-6`: Contains the code changes specific to the `.NET 6`
 - `release/net-5`: Contains the code changes specific to the `.NET 5`
 - `release/net-3.1.1`: Contains the code changes specific to the `.NET 3.1`
 
