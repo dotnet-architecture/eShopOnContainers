@@ -135,7 +135,9 @@ public class Startup
         });
         services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         services.AddTransient<IBasketRepository, RedisBasketRepository>();
-        services.AddTransient<IIdentityService, IdentityService>();
+        // HACK: no auth 
+        // services.AddTransient<IIdentityService, IdentityService>();
+        services.AddTransient<IIdentityService, IdentityServiceFake>();
 
         services.AddOptions();
 

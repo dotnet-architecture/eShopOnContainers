@@ -250,7 +250,9 @@ static class CustomExtensionsMethods
     public static IServiceCollection AddCustomIntegrations(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-        services.AddTransient<IIdentityService, IdentityService>();
+        // HACK: no auth 
+        // services.AddTransient<IIdentityService, IdentityService>();
+        services.AddTransient<IIdentityService, IdentityServiceFake>();
         services.AddTransient<Func<DbConnection, IIntegrationEventLogService>>(
             sp => (DbConnection c) => new IntegrationEventLogService(c));
 
