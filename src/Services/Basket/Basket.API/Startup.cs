@@ -57,6 +57,7 @@ public class Startup
             });
 
             options.OperationFilter<AuthorizeCheckOperationFilter>();
+            options.OperationFilter<AddUserIdHeaderFilter>();
         });
 
         ConfigureAuthService(services);
@@ -290,5 +291,21 @@ public class Startup
 
         eventBus.Subscribe<ProductPriceChangedIntegrationEvent, ProductPriceChangedIntegrationEventHandler>();
         eventBus.Subscribe<OrderStartedIntegrationEvent, OrderStartedIntegrationEventHandler>();
+    }
+    
+    // HACK: no auth
+    private class AddUserIdHeaderFilter : IOperationFilter
+    {
+        public void Apply(OpenApiOperation operation, OperationFilterContext context)
+        {
+            operation.Parameters ??= new List<OpenApiParameter>();
+            
+            operation.Parameters.Add(new OpenApiParameter
+            {
+                Name = "user-id",
+                In = ParameterLocation.Header,
+                Required = false
+            });
+        }
     }
 }

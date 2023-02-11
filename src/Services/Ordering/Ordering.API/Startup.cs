@@ -242,6 +242,7 @@ static class CustomExtensionsMethods
             });
 
             options.OperationFilter<AuthorizeCheckOperationFilter>();
+            options.OperationFilter<AddUserIdHeaderFilter>();
         });
 
         return services;
@@ -399,5 +400,21 @@ static class CustomExtensionsMethods
             });
         });
         return services;
+    }
+    
+    // HACK: no auth
+    private class AddUserIdHeaderFilter : IOperationFilter
+    {
+        public void Apply(OpenApiOperation operation, OperationFilterContext context)
+        {
+            operation.Parameters ??= new List<OpenApiParameter>();
+            
+            operation.Parameters.Add(new OpenApiParameter
+            {
+                Name = "user-id",
+                In = ParameterLocation.Header,
+                Required = false
+            });
+        }
     }
 }
