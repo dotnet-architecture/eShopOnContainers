@@ -242,6 +242,7 @@ static class CustomExtensionsMethods
             });
 
             options.OperationFilter<AuthorizeCheckOperationFilter>();
+            options.OperationFilter<AddUserIdHeaderFilter>();
         });
 
         return services;
@@ -250,7 +251,9 @@ static class CustomExtensionsMethods
     public static IServiceCollection AddCustomIntegrations(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-        services.AddTransient<IIdentityService, IdentityService>();
+        // HACK: no auth 
+        // services.AddTransient<IIdentityService, IdentityService>();
+        services.AddTransient<IIdentityService, IdentityServiceFake>();
         services.AddTransient<Func<DbConnection, IIntegrationEventLogService>>(
             sp => (DbConnection c) => new IntegrationEventLogService(c));
 
@@ -397,5 +400,21 @@ static class CustomExtensionsMethods
             });
         });
         return services;
+    }
+    
+    // HACK: no auth
+    private class AddUserIdHeaderFilter : IOperationFilter
+    {
+        public void Apply(OpenApiOperation operation, OperationFilterContext context)
+        {
+            operation.Parameters ??= new List<OpenApiParameter>();
+            
+            operation.Parameters.Add(new OpenApiParameter
+            {
+                Name = "user-id",
+                In = ParameterLocation.Header,
+                Required = false
+            });
+        }
     }
 }

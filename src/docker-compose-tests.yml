@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
   sql-data-test:
-    image: mcr.microsoft.com/mssql/server:2019-latest 
+    image: mcr.microsoft.com/azure-sql-edge:latest
 
   nosql-data-test:
     image: mongo

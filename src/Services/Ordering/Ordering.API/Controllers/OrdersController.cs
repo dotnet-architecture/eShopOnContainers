@@ -6,7 +6,7 @@ using Microsoft.eShopOnContainers.Services.Ordering.API.Application.Queries;
 using Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure.Services;
 
 [Route("api/v1/[controller]")]
-[Authorize]
+// [Authorize]
 [ApiController]
 public class OrdersController : ControllerBase
 {
