@@ -1,6 +1,6 @@
 namespace EventBusKafka;
 
-public class IKafkaPersistentConnection
+public interface IKafkaPersistentConnection : IDisposable
 {
     
 }

@@ -10,4 +10,15 @@
       <ProjectReference Include="..\EventBus\EventBus.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Confluent.Kafka" Version="2.0.2" />
+      <PackageReference Include="Polly" Version="7.2.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="Microsoft.Extensions.Logging.Abstractions">
+        <HintPath>..\..\..\..\..\..\.nuget\packages\microsoft.extensions.logging.abstractions\7.0.0\lib\net7.0\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
 </Project>
