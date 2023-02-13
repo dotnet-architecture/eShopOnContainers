@@ -2,12 +2,17 @@ namespace EventBusKafka;
 
 public class EventBusKafka : IEventBus, IDisposable
 {
-    const string BROKER_NAME = "eshop_event_bus";
+    // for now use single topic and event names as keys for messages
+    // such that they always land in same partition and we have ordering guarantee
+    // then the consumers have to ignore events they are not subscribed to
+    // alternatively could have multiple topics (associated with event name)
+    private readonly string _topicName = "eshop_event_bus";
 
     private readonly IKafkaPersistentConnection _persistentConnection;
     private readonly ILogger<EventBusKafka> _logger;
     private readonly IEventBusSubscriptionsManager _subsManager;
     private readonly int _retryCount;
+    private const string INTEGRATION_EVENT_SUFFIX = "IntegrationEvent";
     
     
     // Object that will be registered as singleton to each service on startup,
@@ -23,7 +28,15 @@ public class EventBusKafka : IEventBus, IDisposable
     
     public void Publish(IntegrationEvent @event)
     {
-        throw new NotImplementedException();
+        var eventName = @event.GetType().Name.Replace(INTEGRATION_EVENT_SUFFIX, "");
+        var jsonMessage = JsonSerializer.Serialize(@event, @event.GetType());
+        
+        // map Integration event to kafka message
+        // event name something like OrderPaymentSucceededIntegrationEvent
+        var message = new Message<string, string> { Key = eventName, Value = jsonMessage };
+        IProducer<string, string> kafkaHandle = 
+            new DependentProducerBuilder<string, string>(_persistentConnection.Handle).Build();
+        kafkaHandle.ProduceAsync(_topicName, message);
     }
 
     public void Subscribe<T, TH>() where T : IntegrationEvent where TH : IIntegrationEventHandler<T>
