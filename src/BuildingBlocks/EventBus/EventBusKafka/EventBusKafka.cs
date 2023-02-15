@@ -34,14 +34,19 @@ public class EventBusKafka : IEventBus, IDisposable
         // map Integration event to kafka message
         // event name something like OrderPaymentSucceededIntegrationEvent
         var message = new Message<string, string> { Key = eventName, Value = jsonMessage };
-        IProducer<string, string> kafkaHandle = 
+        var kafkaHandle = 
             new DependentProducerBuilder<string, string>(_persistentConnection.Handle).Build();
         kafkaHandle.ProduceAsync(_topicName, message);
     }
 
     public void Subscribe<T, TH>() where T : IntegrationEvent where TH : IIntegrationEventHandler<T>
     {
-        throw new NotImplementedException();
+        var eventName = _subsManager.GetEventKey<T>();
+        // DoInternalSubscription(eventName);
+
+        _logger.LogInformation("Subscribing to event {EventName} with {EventHandler}", eventName, typeof(TH).GetGenericTypeName());
+
+        _subsManager.AddSubscription<T, TH>();
     }
 
     public void SubscribeDynamic<TH>(string eventName) where TH : IDynamicIntegrationEventHandler

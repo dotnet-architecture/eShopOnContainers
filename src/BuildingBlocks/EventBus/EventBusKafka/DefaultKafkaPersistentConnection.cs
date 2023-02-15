@@ -14,13 +14,18 @@ public class DefaultKafkaPersistentConnection
     : IKafkaPersistentConnection
 {
 
+    private readonly ILogger<DefaultKafkaPersistentConnection> _logger;
     IProducer<byte[], byte[]> _kafkaProducer;
 
-    public DefaultKafkaPersistentConnection(String brokerList)
+    public DefaultKafkaPersistentConnection(String brokerList,
+        ILogger<DefaultKafkaPersistentConnection> logger)
     {
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         // TODO: fix configuration passing for producer
         // for now just assume we give  "localhost:9092" as argument
         var conf = new ProducerConfig { BootstrapServers = brokerList };
+        
+        // TODO maybe we need to retry this? -> as it could fail
         _kafkaProducer = new ProducerBuilder<byte[], byte[]>(conf).Build();
     }
 

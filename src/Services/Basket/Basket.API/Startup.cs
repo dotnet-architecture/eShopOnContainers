@@ -1,3 +1,4 @@
+using EventBusKafka;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 
@@ -88,6 +89,16 @@ public class Startup
                 var serviceBusConnectionString = Configuration["EventBusConnection"];
 
                 return new DefaultServiceBusPersisterConnection(serviceBusConnectionString);
+            });
+        }
+        else if (Configuration.GetValue<bool>("KafkaEnabled"))
+        {
+            services.AddSingleton<IKafkaPersistentConnection>(sp =>
+            {
+                var logger = sp.GetRequiredService<ILogger<DefaultKafkaPersistentConnection>>();
+
+                // TODO add retry, better config passing here
+                return new DefaultKafkaPersistentConnection("localhost:9092",logger);
             });
         }
         else
@@ -257,6 +268,20 @@ public class Startup
 
                 return new EventBusServiceBus(serviceBusPersisterConnection, logger,
                     eventBusSubscriptionsManager, iLifetimeScope, subscriptionName);
+            });
+        }
+        else if (Configuration.GetValue<bool>("KafkaEnabled"))
+        {
+            services.AddSingleton<IEventBus, EventBusKafka.EventBusKafka>(sp =>
+            {
+                var kafkaPersistentConnection = sp.GetRequiredService<IKafkaPersistentConnection>();
+                var logger = sp.GetRequiredService<ILogger<EventBusKafka.EventBusKafka>>();
+                var eventBusSubscriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
+                string subscriptionName = Configuration["SubscriptionClientName"];
+
+                // TODO fix namespace -> global using
+                return new global::EventBusKafka.EventBusKafka(kafkaPersistentConnection, logger,
+                    eventBusSubscriptionsManager, 5);
             });
         }
         else
