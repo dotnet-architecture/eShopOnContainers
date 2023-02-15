@@ -34,6 +34,9 @@ public class EventBusKafka : IEventBus, IDisposable
         var message = new Message<string, string> { Key = eventName, Value = jsonMessage };
         var kafkaHandle = 
             new DependentProducerBuilder<string, string>(_persistentConnection.Handle).Build();
+        
+        Console.WriteLine($"Publishing event: {eventName}\n Content: {Utils.CalculateMd5Hash(jsonMessage)}");
+        
         kafkaHandle.ProduceAsync(TopicName, message);
     }
 

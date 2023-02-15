@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using Autofac;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -14,16 +15,15 @@ public class KafkaConsumerBackgroundService : BackgroundService
     private const string AutofacScopeName = "eshop_event_bus";
     private const string TopicName = "eshop_event_bus";
 
-    
-    public KafkaConsumerBackgroundService(IConfiguration config, 
+    public KafkaConsumerBackgroundService(IConfiguration configuration, 
         IEventBusSubscriptionsManager subsManager, 
         ILifetimeScope autofac,
         ILogger<KafkaConsumerBackgroundService> logger) 
     {
         var consumerConfig = new ConsumerConfig();
-        config.GetSection("Kafka:ConsumerSettings").Bind(consumerConfig);
-        
+        configuration.GetSection("Kafka:ConsumerSettings").Bind(consumerConfig);
         _kafkaConsumer = new ConsumerBuilder<string, string>(consumerConfig).Build();
+        
         _subsManager = subsManager;
         _autofac = autofac;
         _logger = logger;
@@ -45,7 +45,10 @@ public class KafkaConsumerBackgroundService : BackgroundService
                 var consumeResult = _kafkaConsumer.Consume(cancellationToken);
 
                 var eventName = consumeResult.Message.Key;
+                var messageContent = consumeResult.Message.Value;
                 
+                Console.WriteLine($"Consumed event: {eventName}\n Content: {Utils.CalculateMd5Hash(messageContent)}");
+
                 if (!_subsManager.HasSubscriptionsForEvent(eventName))
                 {
                     _logger.LogWarning("No subscription for Kafka event: {EventName}", eventName);
@@ -71,7 +74,7 @@ public class KafkaConsumerBackgroundService : BackgroundService
                     var handler = scope.ResolveOptional(subscription.HandlerType);
                     if (handler == null) continue;
                     var eventType = _subsManager.GetEventTypeByName(eventName);
-                    var integrationEvent = JsonSerializer.Deserialize(consumeResult.Message.Value, 
+                    var integrationEvent = JsonSerializer.Deserialize(messageContent, 
                         eventType, 
                         new JsonSerializerOptions
                         {
