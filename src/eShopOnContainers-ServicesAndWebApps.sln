@@ -53,6 +53,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventBus", "BuildingBlocks\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventBusRabbitMQ", "BuildingBlocks\EventBus\EventBusRabbitMQ\EventBusRabbitMQ.csproj", "{8088F3FC-6787-45FA-A924-816EC81CBFAC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventBusKafka", "BuildingBlocks\EventBus\EventBusKafka\EventBusKafka.csproj", "{230B3FC1-6971-43C4-A75E-867F5F24B607}"
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegrationEventLogEF", "BuildingBlocks\EventBus\IntegrationEventLogEF\IntegrationEventLogEF.csproj", "{9EE28E45-1533-472B-8267-56C48855BA0E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebStatus", "Web\WebStatus\WebStatus.csproj", "{C0A7918D-B4F2-4E7F-8DE2-1E5279EF079F}"
@@ -123,8 +125,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{373D8AA1-36BE-49EC-89F0-6CB736666285}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventBus.Tests", "BuildingBlocks\EventBus\EventBus.Tests\EventBus.Tests.csproj", "{95D735BE-2899-4495-BE3F-2600E93B4E3C}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventBusKafka", "BuildingBlocks\EventBus\EventBusKafka\EventBusKafka.csproj", "{230B3FC1-6971-43C4-A75E-867F5F24B607}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
