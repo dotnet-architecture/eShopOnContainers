@@ -1,4 +1,4 @@
-namespace EventBusKafka;
+namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusKafka;
 
 public class EventBusKafka : IEventBus, IDisposable
 {
@@ -6,29 +6,27 @@ public class EventBusKafka : IEventBus, IDisposable
     // such that they always land in same partition and we have ordering guarantee
     // then the consumers have to ignore events they are not subscribed to
     // alternatively could have multiple topics (associated with event name)
-    private readonly string _topicName = "eshop_event_bus";
+    private const string TopicName = "eshop_event_bus";
 
     private readonly IKafkaPersistentConnection _persistentConnection;
     private readonly ILogger<EventBusKafka> _logger;
     private readonly IEventBusSubscriptionsManager _subsManager;
-    private readonly int _retryCount;
-    private const string INTEGRATION_EVENT_SUFFIX = "IntegrationEvent";
+    private const string IntegrationEventSuffix = "IntegrationEvent";
     
     
     // Object that will be registered as singleton to each service on startup,
     // which will be used to publish and subscribe to events.
     public EventBusKafka(IKafkaPersistentConnection persistentConnection,
-        ILogger<EventBusKafka> logger, IEventBusSubscriptionsManager subsManager, int retryCount = 5)
+        ILogger<EventBusKafka> logger, IEventBusSubscriptionsManager subsManager)
     {
         _persistentConnection = persistentConnection ?? throw new ArgumentNullException(nameof(persistentConnection));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        _subsManager = subsManager ?? new InMemoryEventBusSubscriptionsManager();
-        _retryCount = retryCount;
+        _subsManager = subsManager;
     }
     
     public void Publish(IntegrationEvent @event)
     {
-        var eventName = @event.GetType().Name.Replace(INTEGRATION_EVENT_SUFFIX, "");
+        var eventName = @event.GetType().Name.Replace(IntegrationEventSuffix, "");
         var jsonMessage = JsonSerializer.Serialize(@event, @event.GetType());
         
         // map Integration event to kafka message
@@ -36,7 +34,7 @@ public class EventBusKafka : IEventBus, IDisposable
         var message = new Message<string, string> { Key = eventName, Value = jsonMessage };
         var kafkaHandle = 
             new DependentProducerBuilder<string, string>(_persistentConnection.Handle).Build();
-        kafkaHandle.ProduceAsync(_topicName, message);
+        kafkaHandle.ProduceAsync(TopicName, message);
     }
 
     public void Subscribe<T, TH>() where T : IntegrationEvent where TH : IIntegrationEventHandler<T>

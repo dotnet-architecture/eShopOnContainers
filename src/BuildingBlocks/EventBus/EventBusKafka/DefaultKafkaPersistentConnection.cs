@@ -1,5 +1,6 @@
-namespace EventBusKafka;
+using Microsoft.Extensions.Configuration;
 
+namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusKafka;
 
 /// <summary>
 /// Class for making sure we do not open new producer context (expensive)
@@ -13,20 +14,13 @@ namespace EventBusKafka;
 public class DefaultKafkaPersistentConnection
     : IKafkaPersistentConnection
 {
+    private readonly IProducer<byte[], byte[]> _kafkaProducer;
 
-    private readonly ILogger<DefaultKafkaPersistentConnection> _logger;
-    IProducer<byte[], byte[]> _kafkaProducer;
-
-    public DefaultKafkaPersistentConnection(String brokerList,
-        ILogger<DefaultKafkaPersistentConnection> logger)
+    public DefaultKafkaPersistentConnection(IConfiguration configuration)
     {
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        // TODO: fix configuration passing for producer
-        // for now just assume we give  "localhost:9092" as argument
-        var conf = new ProducerConfig { BootstrapServers = brokerList };
-        
-        // TODO maybe we need to retry this? -> as it could fail
-        _kafkaProducer = new ProducerBuilder<byte[], byte[]>(conf).Build();
+        var producerConfig = new ProducerConfig();
+        configuration.GetSection("Kafka:ProducerSettings").Bind(producerConfig);
+        _kafkaProducer = new ProducerBuilder<byte[], byte[]>(producerConfig).Build();
     }
 
     public Handle Handle => _kafkaProducer.Handle;

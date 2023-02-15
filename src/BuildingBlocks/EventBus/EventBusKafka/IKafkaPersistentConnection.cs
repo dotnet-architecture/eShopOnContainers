@@ -1,4 +1,5 @@
-namespace EventBusKafka;
+namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusKafka;
+
 
 public interface IKafkaPersistentConnection : IDisposable
 {
