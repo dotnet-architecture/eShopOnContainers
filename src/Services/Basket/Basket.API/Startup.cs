@@ -1,6 +1,3 @@
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-
 namespace Microsoft.eShopOnContainers.Services.Basket.API;
 public class Startup
 {
@@ -89,6 +86,10 @@ public class Startup
 
                 return new DefaultServiceBusPersisterConnection(serviceBusConnectionString);
             });
+        }
+        else if (Configuration.GetValue<bool>("KafkaEnabled"))
+        {
+            services.AddSingleton<IKafkaPersistentConnection, DefaultKafkaPersistentConnection>();
         }
         else
         {
@@ -253,11 +254,16 @@ public class Startup
                 var iLifetimeScope = sp.GetRequiredService<ILifetimeScope>();
                 var logger = sp.GetRequiredService<ILogger<EventBusServiceBus>>();
                 var eventBusSubscriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
-                string subscriptionName = Configuration["SubscriptionClientName"];
+                var subscriptionName = Configuration["SubscriptionClientName"];
 
                 return new EventBusServiceBus(serviceBusPersisterConnection, logger,
                     eventBusSubscriptionsManager, iLifetimeScope, subscriptionName);
             });
+        }
+        else if (Configuration.GetValue<bool>("KafkaEnabled"))
+        {
+            services.AddHostedService<KafkaConsumerBackgroundService>();
+            services.AddSingleton<IEventBus, EventBusKafka>();
         }
         else
         {

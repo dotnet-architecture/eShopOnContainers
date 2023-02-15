@@ -1,0 +1,14 @@
+global using Polly;
+global using Polly.Retry;
+global using System;
+global using System.IO;
+global using System.Net.Sockets;
+global using Microsoft.eShopOnContainers.BuildingBlocks.EventBus;
+global using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
+global using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
+global using Microsoft.Extensions.Logging;
+global using Confluent.Kafka;
+global using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Extensions;
+global using System.Text;
+global using System.Threading.Tasks;
+global using System.Text.Json;

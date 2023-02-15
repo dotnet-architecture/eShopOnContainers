@@ -16,6 +16,14 @@ services:
 
   rabbitmq:
     image: rabbitmq:3-management-alpine
+    
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.3.0
+
+  broker:
+    image: confluentinc/cp-kafka:7.3.0
+    depends_on:
+      - zookeeper  
 
   identity-api:
     image: ${REGISTRY:-eshop}/identity.api:${PLATFORM:-linux}-${TAG:-latest}
@@ -34,6 +42,7 @@ services:
       - basketdata
       - identity-api
       - rabbitmq
+      - broker
 
   catalog-api:
     image: ${REGISTRY:-eshop}/catalog.api:${PLATFORM:-linux}-${TAG:-latest}
