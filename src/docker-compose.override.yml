@@ -57,6 +57,7 @@ services:
       # To learn about configuring Kafka for access across networks see
       # https://www.confluent.io/blog/kafka-client-cannot-connect-to-broker-on-aws-on-docker-etc/
       - "9092:9092"
+      - "29092:29092"
       
   identity-api:
     environment:
