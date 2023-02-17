@@ -13,6 +13,7 @@ inf:
       user: sa              # SQL user
       pwd: Pass@word        # SQL pwd
       pid: Developer
+      TrustServerCertificate: true
     catalog:                # inf.sql.catalog: settings for the catalog-api sql (user, pwd, db)
       db: CatalogDb         # Catalog API SQL db name
     ordering:               # inf.sql.ordering: settings for the ordering-api sql (user, pwd, db)
