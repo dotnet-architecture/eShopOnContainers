@@ -11,7 +11,7 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 data:
-  ordering__ConnectionString: Server={{ $sqlsrv }};Initial Catalog={{ .Values.inf.sql.ordering.db }};User Id={{ .Values.inf.sql.common.user }};Password={{ .Values.inf.sql.common.pwd }};
+  ordering__ConnectionString: Server={{ $sqlsrv }};Initial Catalog={{ .Values.inf.sql.ordering.db }};User Id={{ .Values.inf.sql.common.user }};Password={{ .Values.inf.sql.common.pwd }};TrustServerCertificate={{ .Values.inf.sql.common.TrustServerCertificate }};
   urls__IdentityUrl: http://{{ .Values.app.svc.identity }}
   all__EventBusConnection: {{ .Values.inf.eventbus.constr }}
   all__InstrumentationKey: "{{ .Values.inf.appinsights.key }}"
