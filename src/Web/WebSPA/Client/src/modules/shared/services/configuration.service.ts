@@ -9,7 +9,7 @@ import { Observable, Subject } from 'rxjs';
 export class ConfigurationService {
     serverSettings: IConfiguration;
     // observable that is fired when settings are loaded from server
-    private settingsLoadedSource = new Subject();
+    private settingsLoadedSource = new Subject<void>();
     settingsLoaded$ = this.settingsLoadedSource.asObservable();
     isReady: boolean = false;
 

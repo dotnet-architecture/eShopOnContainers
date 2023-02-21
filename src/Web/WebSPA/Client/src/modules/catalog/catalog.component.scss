@@ -5,7 +5,7 @@
 
     &-title {
         position: relative;
-        top: $banner-height / 3.5;
+        top: calc($banner-height / 3.5);
     }
  
     $filter-height: 65px;

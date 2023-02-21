@@ -15,4 +15,4 @@ export const routes: Routes = [
     { path: 'order', component: OrdersNewComponent },
 ];
 
-export const routing = RouterModule.forRoot(routes, {});
+export const routing = RouterModule.forRoot(routes, { });

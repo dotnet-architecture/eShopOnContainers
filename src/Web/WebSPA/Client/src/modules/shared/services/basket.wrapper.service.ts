@@ -17,7 +17,7 @@ export class BasketWrapperService {
     private addItemToBasketSource = new Subject<IBasketItem>();
     addItemToBasket$ = this.addItemToBasketSource.asObservable();
 
-    private orderCreatedSource = new Subject();
+    private orderCreatedSource = new Subject<void>();
     orderCreated$ = this.orderCreatedSource.asObservable();
 
     addItemToBasket(item: ICatalogItem) {
