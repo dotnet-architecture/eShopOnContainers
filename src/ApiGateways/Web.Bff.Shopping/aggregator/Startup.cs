@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-
-namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator;
+﻿namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator;
 
 public class Startup
 {

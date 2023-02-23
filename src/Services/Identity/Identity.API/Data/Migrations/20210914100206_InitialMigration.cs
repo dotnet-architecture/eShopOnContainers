@@ -1,7 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
-
-namespace Microsoft.eShopOnContainers.Services.Identity.API.Data.Migrations
+﻿namespace Microsoft.eShopOnContainers.Services.Identity.API.Data.Migrations
 {
     public partial class InitialMigration : Migration
     {

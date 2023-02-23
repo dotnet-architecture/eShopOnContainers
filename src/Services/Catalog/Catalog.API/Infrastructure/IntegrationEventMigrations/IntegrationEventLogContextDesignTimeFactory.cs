@@ -1,8 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Design;
-using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF;
-
-namespace Catalog.API.Infrastructure.IntegrationEventMigrations
+﻿namespace Catalog.API.Infrastructure.IntegrationEventMigrations
 {
     public class IntegrationEventLogContextDesignTimeFactory : IDesignTimeDbContextFactory<IntegrationEventLogContext>
     {

@@ -1,6 +1,3 @@
-using System.Threading.Tasks;
-using System;
-
 namespace Microsoft.eShopOnContainers.Services.Identity.API;
 
 public class SeedData

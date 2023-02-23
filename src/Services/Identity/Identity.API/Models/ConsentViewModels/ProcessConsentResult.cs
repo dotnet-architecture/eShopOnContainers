@@ -1,6 +1,4 @@
-﻿using Duende.IdentityServer.Models;
-
-namespace Microsoft.eShopOnContainers.Services.Identity.API.Models.ConsentViewModels
+﻿namespace Microsoft.eShopOnContainers.Services.Identity.API.Models.ConsentViewModels
 {
     public class ProcessConsentResult
     {
