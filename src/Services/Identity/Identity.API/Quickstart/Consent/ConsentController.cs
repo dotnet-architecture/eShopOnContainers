@@ -84,7 +84,7 @@ public class ConsentController : Controller
         var result = new ProcessConsentResult();
 
         // validate return url is still valid
-        var request = await _interaction.GetAuthorizationContextAsync(model.ReturnUrl);
+        var request = await _interaction.GetAuthorizationContextAsync(model?.ReturnUrl);
         if (request == null) return result;
 
         ConsentResponse grantedConsent = null;
