@@ -5,7 +5,7 @@ public class WebContextSeed
 {
     public static void Seed(IApplicationBuilder applicationBuilder, IWebHostEnvironment env)
     {
-        var log = Serilog.Log.Logger;
+        var log = Log.Logger;
 
         var settings = (AppSettings)applicationBuilder
             .ApplicationServices.GetRequiredService<IOptions<AppSettings>>().Value;

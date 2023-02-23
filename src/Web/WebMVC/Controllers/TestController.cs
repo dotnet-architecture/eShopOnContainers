@@ -32,7 +32,7 @@ public class TestController : Controller
             BasketId = _appUserParser.Parse(User).Id
         };
 
-        var content = new StringContent(JsonSerializer.Serialize(payload), System.Text.Encoding.UTF8, "application/json");
+        var content = new StringContent(JsonSerializer.Serialize(payload), Encoding.UTF8, "application/json");
 
 
         var response = await _client.CreateClient(nameof(IBasketService))
