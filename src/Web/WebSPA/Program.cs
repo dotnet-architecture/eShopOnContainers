@@ -62,8 +62,7 @@ app.Use(next => context =>
 {
     string path = context.Request.Path.Value;
 
-    if (
-        string.Equals(path, "/", StringComparison.OrdinalIgnoreCase) ||
+    if (string.Equals(path, "/", StringComparison.OrdinalIgnoreCase) ||
         string.Equals(path, "/index.html", StringComparison.OrdinalIgnoreCase))
     {
         // The request token has to be sent as a JavaScript-readable cookie, 
@@ -110,7 +109,7 @@ app.MapHealthChecks("/hc", new HealthCheckOptions()
     ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
 });
 
-// Handles all still unnatended (by any other middleware) requests by returning the default page of the SPA (wwwroot/index.html).
+// Handles all still unattended (by any other middleware) requests by returning the default page of the SPA (wwwroot/index.html).
 app.UseSpa(spa =>
 {
     // To learn more about options for serving an Angular SPA from ASP.NET Core,
@@ -121,7 +120,6 @@ app.UseSpa(spa =>
 
     if (app.Environment.IsDevelopment())
     {
-
         // use the SpaServices extension method for angular, that will make the application to run "ng serve" for us, when in development.
         spa.UseAngularCliServer(npmScript: "start");
     }
