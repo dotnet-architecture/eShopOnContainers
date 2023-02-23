@@ -61,7 +61,7 @@ public static class API
             }
             else if (brand.HasValue)
             {
-                var brandQs = (brand.HasValue) ? brand.Value.ToString() : string.Empty;
+                var brandQs = brand.Value.ToString();
                 filterQs = $"/type/all/brand/{brandQs}";
             }
             else
