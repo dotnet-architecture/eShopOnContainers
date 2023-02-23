@@ -17,7 +17,6 @@ public class Startup
             .AddCustomDbContext(Configuration)
             .AddSwagger(Configuration)
             .AddCustomHealthCheck(Configuration)
-            .AddDevspaces()
             .AddHttpClientServices(Configuration)
             .AddIntegrationServices(Configuration)
             .AddEventBus(Configuration)
@@ -233,8 +232,7 @@ internal static class CustomExtensionMethods
         services.AddHttpClient("extendedhandlerlifetime").SetHandlerLifetime(Timeout.InfiniteTimeSpan);
         //add http client services
         services.AddHttpClient("GrantClient")
-                .SetHandlerLifetime(TimeSpan.FromMinutes(5))
-                .AddDevspacesSupport();
+                .SetHandlerLifetime(TimeSpan.FromMinutes(5));
         return services;
     }
 

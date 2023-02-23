@@ -22,7 +22,6 @@ public class Startup
 
         services.AddCustomMvc(Configuration)
                 .AddCustomAuthentication(Configuration)
-                .AddDevspaces()
                 .AddHttpServices()
                 .AddGrpcServices();
     }
@@ -172,8 +171,7 @@ public static class ServiceCollectionExtensions
 
         //register http services
 
-        services.AddHttpClient<IOrderApiClient, OrderApiClient>()
-                .AddDevspacesSupport();
+        services.AddHttpClient<IOrderApiClient, OrderApiClient>();
 
         return services;
     }

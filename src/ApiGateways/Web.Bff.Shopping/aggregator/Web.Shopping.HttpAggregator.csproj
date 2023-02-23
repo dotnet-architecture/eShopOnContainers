@@ -32,10 +32,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\BuildingBlocks\Devspaces.Support\Devspaces.Support.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Protobuf Include="..\..\..\Services\Basket\Basket.API\Proto\basket.proto" GrpcServices="Client" />
     <Protobuf Include="..\..\..\Services\Catalog\Catalog.API\Proto\catalog.proto" GrpcServices="Client" />
     <Protobuf Include="..\..\..\Services\Ordering\Ordering.API\Proto\ordering.proto" GrpcServices="Client" />
