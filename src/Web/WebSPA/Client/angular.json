@@ -109,7 +109,6 @@
       }
     }
   },
-  "defaultProject": "WebSPA",
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "app",
