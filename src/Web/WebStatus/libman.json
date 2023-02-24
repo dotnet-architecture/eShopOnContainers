@@ -3,10 +3,6 @@
   "defaultProvider": "cdnjs",
   "libraries": [
     {
-      "library": "jquery@3.6.3",
-      "destination": "wwwroot/lib/jquery/"
-    },
-    {
       "provider": "unpkg",
       "library": "bootstrap@5.2.3",
       "files": [
