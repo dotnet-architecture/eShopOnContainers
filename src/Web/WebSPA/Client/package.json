@@ -22,7 +22,7 @@
     "start": "ng serve",
     "build:dev": "ng build",
     "build:dev:watch": "npm run build:dev && ng build --watch",
-    "build:prod": "ng build --configuration production --aot --extract-css",
+    "build:prod": "ng build --configuration production --aot",
     "lint:sass": "sass-lint -c .sass-lint.yml Client/**/*.scss --verbose",
     "lint:ts": "tslint -c tslint.json Client/**/*.ts"
   },
