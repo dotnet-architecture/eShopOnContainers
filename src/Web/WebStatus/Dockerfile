@@ -41,6 +41,7 @@ COPY "Web/WebStatus/WebStatus.csproj" "Web/WebStatus/WebStatus.csproj"
 
 COPY "docker-compose.dcproj" "docker-compose.dcproj"
 
+COPY "Directory.Packages.props" "Directory.Packages.props"
 COPY "NuGet.config" "NuGet.config"
 
 # RUN dotnet restore "eShopOnContainers-ServicesAndWebApps.sln"
