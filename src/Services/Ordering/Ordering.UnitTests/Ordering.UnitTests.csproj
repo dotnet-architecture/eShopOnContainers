@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <GenerateErrorForMissingTargetingPacks>false</GenerateErrorForMissingTargetingPacks>
+    <IsPublishable>false</IsPublishable>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 

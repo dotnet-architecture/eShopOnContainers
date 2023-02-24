@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
+    <IsPublishable>false</IsPublishable>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
