@@ -177,22 +177,12 @@
   dependencies:
     tslib "^2.3.0"
 
-"@angular/compiler@9.0.0":
-  version "9.0.0"
-  resolved "https://registry.npmjs.org/@angular/compiler/-/compiler-9.0.0.tgz"
-  integrity sha512-ctjwuntPfZZT2mNj2NDIVu51t9cvbhl/16epc5xEwyzyDt76pX9UgwvY+MbXrf/C/FWwdtmNtfP698BKI+9leQ==
-
 "@angular/core@^15.0.0", "@angular/core@>=10.0.0-0", "@angular/core@15.2.0":
   version "15.2.0"
   resolved "https://registry.npmjs.org/@angular/core/-/core-15.2.0.tgz"
   integrity sha512-UNHNcW3NqzMbG5gMjzXhb4xHrJcZq8rFdLwTLntB0oo2I/WxQFVlxz28nrW+Y09DbJf02MCASBLxD9If/6eT3g==
   dependencies:
     tslib "^2.3.0"
-
-"@angular/core@9.0.0":
-  version "9.0.0"
-  resolved "https://registry.npmjs.org/@angular/core/-/core-9.0.0.tgz"
-  integrity sha512-6Pxgsrf0qF9iFFqmIcWmjJGkkCaCm6V5QNnxMy2KloO3SDq6QuMVRbN9RtC8Urmo25LP+eZ6ZgYqFYpdD8Hd9w==
 
 "@angular/forms@^15.0.0", "@angular/forms@15.2.0":
   version "15.2.0"
@@ -2864,8 +2854,8 @@ codelyzer@^6.0.2:
   resolved "https://registry.npmjs.org/codelyzer/-/codelyzer-6.0.2.tgz"
   integrity sha512-v3+E0Ucu2xWJMOJ2fA/q9pDT/hlxHftHGPUay1/1cTgyPV5JTHFdO9hqo837Sx2s9vKBMTt5gO+lhF95PO6J+g==
   dependencies:
-    "@angular/compiler" "9.0.0"
-    "@angular/core" "9.0.0"
+    "@angular/compiler" "15.2.0"
+    "@angular/core" "15.2.0"
     app-root-path "^3.0.0"
     aria-query "^3.0.0"
     axobject-query "2.0.2"
@@ -9150,7 +9140,7 @@ yn@^2.0.0:
   resolved "https://registry.npmjs.org/yn/-/yn-2.0.0.tgz"
   integrity sha1-5a2ryKz0CPY4X8dklWhMiOavaJo=
 
-zone.js@~0.10.2, zone.js@~0.10.3:
+zone.js@~0.10.3:
   version "0.10.3"
   resolved "https://registry.npmjs.org/zone.js/-/zone.js-0.10.3.tgz"
   integrity sha512-LXVLVEq0NNOqK/fLJo3d0kfzd4sxwn2/h67/02pjCjfKDxgx1i9QqpvtHD8CrBnSSwMw5+dy11O7FRX5mkO7Cg==
