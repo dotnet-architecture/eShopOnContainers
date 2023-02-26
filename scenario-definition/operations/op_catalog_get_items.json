@@ -1,0 +1,12 @@
+{
+  "id": "catalog-get-items",
+  "type": "http",
+  "httpMethod": "get",
+  "queryParameters": [
+    {
+      "key": "pageSize",
+      "value": 3
+    }
+  ],  
+  "url": "http://localhost:5101/catalog-api/api/v1/Catalog/items"
+}

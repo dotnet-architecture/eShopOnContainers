@@ -1,0 +1,39 @@
+{
+  "id": "basket-add-item",
+  "type": "http",
+  "httpMethod": "post",
+  "arguments": [
+    {
+      "name": "items",
+      "required": true,
+      "type": "object"
+    },
+   {
+      "name": "buyerId",
+      "required": true,
+      "type": "guid"
+    },    
+  ],
+  "dynamicVariables": [
+    {
+      "name": "basket-item-id",
+      "type": "unsignedInt"
+    }
+  ]
+  "payload": {
+    "type": "json",
+    "content": {
+      "buyerId": "{{buyerId}}",
+      "items": [
+          "id": "1",
+          "productId": "{{items}}",
+          "productName": "string",
+          "unitPrice": 0,
+          "oldUnitPrice": 0,
+          "quantity": 0,
+          "pictureUrl": ""
+      ]
+    }
+  },
+  "url": "http://localhost:5101/catalog-api/api/v1/Basket"
+}

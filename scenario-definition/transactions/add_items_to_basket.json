@@ -1,0 +1,18 @@
+transaction:
+{
+  "id": "add-items-to-basket",
+    "operations": [
+    {
+      operationRefId: "catalog-get-items",
+      id: "op-1",
+    },
+    {
+      operationRefId: "op-id-2",
+      id: "second-op-in-this-transaction",
+      arguments: [ 
+	userId, 
+	@first-op-in-this-transaction.response.id
+      ]
+    }
+  ]
+}

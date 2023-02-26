@@ -1,0 +1,61 @@
+{
+  "id": "catalog-add-item",
+  "type": "http",
+  "httpMethod": "post",
+  "dynamicVariables": [
+    {
+      "name": "item-name",
+      "type": "string"
+    },
+    {
+      "name": "item-description",
+      "type": "string"
+    },
+    {
+      "name": "price",
+      "type": "unsignedInt"
+    },
+    {
+      "name": "brand-name",
+      "type": "string"
+    },
+    {
+      "name": "available-stock",
+      "type": "unsignedInt"
+    },
+    {
+      "name": "restock-threshold",
+      "type": "unsignedInt"
+    },
+    {
+      "name": "max-stock-threshold",
+      "type": "unsignedInt"
+    }     
+  ]     
+  "payload": {
+    "type": "json",
+    "content": {
+      "id": 0,
+      "name": "{{item-name}}",
+      "description": "{{item-description}}",
+      "price": "{{price}}",
+      "pictureFileName": "",
+      "pictureUri": "",
+      "catalogTypeId": 1,
+      "catalogType": {
+        "id": 0,
+        "type": ""
+      },
+      "catalogBrandId": 1,
+      "catalogBrand": {
+        "id": 1,
+        "brand": "{{brand-name}}"
+      },
+      "availableStock": "{{available-stock}}",
+      "restockThreshold": "{{restock-threshold}}",
+      "maxStockThreshold": "{{max-stock-threshold}}",
+      "onReorder": true
+    }
+  },
+  "url": "http://localhost:5101/catalog-api/api/v1/Catalog/items"
+}
