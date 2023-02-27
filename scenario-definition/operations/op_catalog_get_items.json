@@ -7,6 +7,23 @@
       "key": "pageSize",
       "value": 3
     }
-  ],  
+  ],
+  "returnValues": [
+    {
+      "key": "item-1",
+      "value": "@@response.payload.data[0]@@",
+      "type": "object"
+    },
+    {
+      "key": "item-2",
+      "value": "@@response.payload.data[1]@@",
+      "type": "object"
+    },
+    {
+      "key": "item-3",
+      "value": "@@response.payload.data[2]@@",
+      "type": "object"
+    }    
+  ]
   "url": "http://localhost:5101/catalog-api/api/v1/Catalog/items"
 }

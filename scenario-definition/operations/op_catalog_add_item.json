@@ -2,6 +2,10 @@
   "id": "catalog-add-item",
   "type": "http",
   "httpMethod": "post",
+  "arguments": [
+    "name": "product-id",
+    "type": "unsignedInt"
+  ]
   "dynamicVariables": [
     {
       "name": "item-name",
@@ -35,7 +39,7 @@
   "payload": {
     "type": "json",
     "content": {
-      "id": 0,
+      "id": "{{product-id}}",
       "name": "{{item-name}}",
       "description": "{{item-description}}",
       "price": "{{price}}",

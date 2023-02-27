@@ -1,17 +1,64 @@
-transaction:
+"transaction":
 {
   "id": "add-items-to-basket",
-    "operations": [
+  "arguments": [
     {
-      operationRefId: "catalog-get-items",
-      id: "op-1",
+      "name": "user-id",
+      "type": "guid"
+    }
+  ],
+  "operations": [
+    {
+      "operationRefId": "catalog-get-items",
+      "id": "op-1",
     },
     {
-      operationRefId: "op-id-2",
-      id: "second-op-in-this-transaction",
-      arguments: [ 
-	userId, 
-	@first-op-in-this-transaction.response.id
+      "operationRefId": "basket-add-item",
+      "id": "op-2",
+      "providedValues": [
+        {
+	  "key": "buyerId",
+          "value": "{{user-id}}"
+        },
+        {
+          "key": "item-1",
+          "value":
+          {
+            "id": "1",
+            "productId": "@@op-1.response[0].id@@",
+            "productName": "@@op-1.response[0].name@@",
+            "unitPrice": "@@op-1.response[0].price@@",
+            "oldUnitPrice": "@@op-1.response[0].price@@",
+            "quantity": "@@op-1.response[0].availablestock@@",
+            "pictureUrl": ""
+          },
+        },
+        {
+          "key": "item-2",
+          "value": 
+          {
+            "id": "2",
+            "productId": "@@op-1.response[1].id@@",
+            "productName": "@@op-1.response[1].name@@",
+            "unitPrice": "@@op-1.response[1].price@@",
+            "oldUnitPrice": "@@op-1.response[1].price@@",
+            "quantity": "@@op-1.response[1].availablestock@@",
+            "pictureUrl": ""
+          },
+        },
+        {
+          "key": "item-3",
+          "value":         
+          {
+            "id": "3",
+            "productId": "@@op-1.response[2].id@@",
+            "productName": "@@op-1.response[2].name@@",
+            "unitPrice": "@@op-1.response[2].price@@",
+            "oldUnitPrice": "@@op-1.response[2].price@@",
+            "quantity": "@@op-1.response[2].availablestock@@",
+            "pictureUrl": ""
+          }
+        }
       ]
     }
   ]

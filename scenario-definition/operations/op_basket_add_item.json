@@ -3,35 +3,35 @@
   "type": "http",
   "httpMethod": "post",
   "arguments": [
-    {
-      "name": "items",
-      "required": true,
-      "type": "object"
-    },
    {
       "name": "buyerId",
       "required": true,
       "type": "guid"
-    },    
-  ],
-  "dynamicVariables": [
+    },
     {
-      "name": "basket-item-id",
-      "type": "unsignedInt"
+      "name": "item-1",
+      "required": true,
+      "type": "object"
+    },
+    {
+      "name": "item-2",
+      "required": true,
+      "type": "object"
+    },
+    {
+      "name": "item-3",
+      "required": true,
+      "type": "object"
     }
-  ]
-  "payload": {
+  ],
+  "requestPayload": {
     "type": "json",
     "content": {
       "buyerId": "{{buyerId}}",
       "items": [
-          "id": "1",
-          "productId": "{{items}}",
-          "productName": "string",
-          "unitPrice": 0,
-          "oldUnitPrice": 0,
-          "quantity": 0,
-          "pictureUrl": ""
+        "{{item-1}}",
+        "{{item-2}}",
+        "{{item-3}}"
       ]
     }
   },

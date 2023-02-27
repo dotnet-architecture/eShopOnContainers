@@ -1,0 +1,19 @@
+{
+  "id": "catalog-update-price",
+  "type": "http",
+  "httpMethod": "put",
+  "arguments": [
+    {
+      "name": "item-1",
+      "required": true,
+      "type": "object"
+    }
+  ],
+  "payload": {
+    "type": "json",
+    "content": {
+      "{{item-1}}"
+    }
+  },
+  "url": "http://localhost:5101/catalog-api/api/v1/Catalog/items"
+}
