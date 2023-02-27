@@ -1,0 +1,43 @@
+"scenario":
+{
+  "id": "scenario-id",
+  "variables": [
+    {
+      "id": "userIds",
+      "type": "guid",
+      "count": 10000
+    },
+    {
+      "id": "productIds",
+      "type": "unsignedInt",
+      "count": 1000
+    }
+  ],
+  "transactions": [
+    { 
+      "id": "add-items-to-basket", 
+      "arguments":[
+	{ 
+	  "name": "userId", 
+	  "value": "userIds",
+	  "distribution": "zipfian"
+	}
+      ]
+    },
+    { 
+      "id": "update-catalog-item-price", 
+      "arguments":[
+	{ 
+	  "name": "userId", 
+	  "value": "userIds",
+	  "distribution": "uniform"
+	},
+	{ 
+	  "name": "productId", 
+	  "value": "productIds",
+	  "distribution": "zipfian"
+	}
+      ]
+    }
+  ]	
+}

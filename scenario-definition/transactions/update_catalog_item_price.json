@@ -1,0 +1,41 @@
+"transaction":
+{
+  "id": "update-catalog-item-price",
+  "dynamicVariables": [
+    {
+      "name": "new-price",
+      "type": "unsignedInt"
+    }
+  ],
+  "operations": [
+    {
+      "operationRefId": "catalog-get-items",
+      "id": "op-1",
+    },
+    {
+      "operationRefId": "catalog-update-price",
+      "id": "op-2",
+      "providedValues": [
+        {
+          "key": "item-1",
+          "value":
+          {
+            "id": "@@op-1.response.data[0].id@@"
+            "name": "@@op-1.response.data[0].name@@"
+            "description": "@@op-1.response.data[0].description@@"
+            "price": "{{new-price}}"
+            "pictureFileName": "@@op-1.response.data[0].pictureFileName@@"
+            "pictureUri": "@@op-1.response.data[0].pictureUri@@"
+            "catalogTypeId": "@@op-1.response.data[0].catalogTypeId@@"
+            "catalogType": "@@op-1.response.data[0].catalogType@@"
+            "catalogBrandId": "@@op-1.response.data[0].catalogBrandId@@"
+            "catalogBrand": "@@op-1.response.data[0].catalogBrand@@"
+            "availableStock": "@@op-1.response.data[0].availableStock@@"
+            "restockThreshold": "@@op-1.response.data[0].restockThreshold@@"
+            "maxStockThreshold": "@@op-1.response.data[0].maxStockThreshold@@"
+            "onReorder": "@@op-1.response.data[0].onReorder@@"
+          }
+        ]
+      }
+    ]
+  }
