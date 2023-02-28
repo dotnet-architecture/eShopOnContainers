@@ -11,19 +11,79 @@
   "returnValues": [
     {
       "key": "item-1",
-      "value": "@@response.payload.data[0]@@",
+      "value": "response.payload.data[0]",
       "type": "object"
+    },
+    {
+      "key": "item-1-id",
+      "value": "response.payload.data[0].id",
+      "type": "string"
+    },
+    {
+      "key": "item-1-name",
+      "value": "response.payload.data[0].name",
+      "type": "string"
+    },
+    {
+      "key": "item-1-price",
+      "value": "response.payload.data[0].price",
+      "type": "unsignedInt"
+    },
+    {
+      "key": "item-1-avialable-stock",
+      "value": "response.payload.data[0].availablestock",
+      "type": "unsignedInt"
     },
     {
       "key": "item-2",
-      "value": "@@response.payload.data[1]@@",
+      "value": "response.payload.data[1]",
       "type": "object"
     },
     {
+      "key": "item-2-id",
+      "value": "response.payload.data[1].id",
+      "type": "string"
+    },
+    {
+      "key": "item-2-name",
+      "value": "response.payload.data[1].name",
+      "type": "string"
+    },
+    {
+      "key": "item-2-price",
+      "value": "response.payload.data[1].price",
+      "type": "unsignedInt"
+    },
+    {
+      "key": "item-2-avialable-stock",
+      "value": "response.payload.data[1].availablestock",
+      "type": "unsignedInt"
+    },
+    {
       "key": "item-3",
-      "value": "@@response.payload.data[2]@@",
+      "value": "response.payload.data[2]",
       "type": "object"
-    }    
+    }
+    {
+      "key": "item-3-id",
+      "value": "response.payload.data[2].id",
+      "type": "string"
+    },
+    {
+      "key": "item-3-name",
+      "value": "response.payload.data[2].name",
+      "type": "string"
+    },
+    {
+      "key": "item-3-price",
+      "value": "response.payload.data[2].price",
+      "type": "unsignedInt"
+    },
+    {
+      "key": "item-3-avialable-stock",
+      "value": "response.payload.data[2].availablestock",
+      "type": "unsignedInt"
+    },
   ]
   "url": "http://localhost:5101/catalog-api/api/v1/Catalog/items"
 }

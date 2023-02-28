@@ -5,7 +5,55 @@
     {
       "name": "user-id",
       "type": "guid"
-    }
+    },
+    {
+      "name": "item-1-id",
+      "type": "string"
+    },
+    {
+      "name": "item-1-name",
+      "type": "string"
+    },
+    {
+      "name": "item-1-price",
+      "type": "unsignedInt"
+    },
+    {
+      "name": "item-1-available-stock",
+      "type": "unsignedInt"
+    },
+    {
+      "name": "item-2-id",
+      "type": "string"
+    },
+    {
+      "name": "item-2-name",
+      "type": "string"
+    },
+    {
+      "name": "item-2-price",
+      "type": "unsignedInt"
+    },
+    {
+      "name": "item-2-available-stock",
+      "type": "unsignedInt"
+    },
+    {
+      "name": "item-3-id",
+      "type": "string"
+    },
+    {
+      "name": "item-3-name",
+      "type": "string"
+    },
+    {
+      "name": "item-3-price",
+      "type": "unsignedInt"
+    },
+    {
+      "name": "item-3-available-stock",
+      "type": "unsignedInt"
+    },
   ],
   "operations": [
     {
@@ -25,37 +73,37 @@
           "value":
           {
             "id": "1",
-            "productId": "@@op-1.response[0].id@@",
-            "productName": "@@op-1.response[0].name@@",
-            "unitPrice": "@@op-1.response[0].price@@",
-            "oldUnitPrice": "@@op-1.response[0].price@@",
-            "quantity": "@@op-1.response[0].availablestock@@",
+            "productId": "{{item-1-id}}",
+            "productName": "{{item-1-name}}",
+            "unitPrice": "{{item-1-price}}",
+            "oldUnitPrice": "{{item-1-price}}",
+            "quantity": "{{item-1-available-stock}}",
             "pictureUrl": ""
           },
         },
         {
           "key": "item-2",
-          "value": 
+          "value":
           {
             "id": "2",
-            "productId": "@@op-1.response[1].id@@",
-            "productName": "@@op-1.response[1].name@@",
-            "unitPrice": "@@op-1.response[1].price@@",
-            "oldUnitPrice": "@@op-1.response[1].price@@",
-            "quantity": "@@op-1.response[1].availablestock@@",
+            "productId": "{{item-2-id}}",
+            "productName": "{{item-2-name}}",
+            "unitPrice": "{{item-2-price}}",
+            "oldUnitPrice": "{{item-2-price}}",
+            "quantity": "{{item-2-available-stock}}",
             "pictureUrl": ""
           },
         },
         {
           "key": "item-3",
-          "value":         
+          "value":
           {
             "id": "3",
-            "productId": "@@op-1.response[2].id@@",
-            "productName": "@@op-1.response[2].name@@",
-            "unitPrice": "@@op-1.response[2].price@@",
-            "oldUnitPrice": "@@op-1.response[2].price@@",
-            "quantity": "@@op-1.response[2].availablestock@@",
+            "productId": "{{item-3-id}}",
+            "productName": "{{item-3-name}}",
+            "unitPrice": "{{item-3-price}}",
+            "oldUnitPrice": "{{item-3-price}}",
+            "quantity": "{{item-3-available-stock}}",
             "pictureUrl": ""
           }
         }
