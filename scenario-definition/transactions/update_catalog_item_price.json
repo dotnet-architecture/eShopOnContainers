@@ -20,20 +20,20 @@
           "key": "item-1",
           "value":
           {
-            "id": "@@op-1.response.data[0].id@@"
-            "name": "@@op-1.response.data[0].name@@"
-            "description": "@@op-1.response.data[0].description@@"
-            "price": "{{new-price}}"
-            "pictureFileName": "@@op-1.response.data[0].pictureFileName@@"
-            "pictureUri": "@@op-1.response.data[0].pictureUri@@"
-            "catalogTypeId": "@@op-1.response.data[0].catalogTypeId@@"
-            "catalogType": "@@op-1.response.data[0].catalogType@@"
-            "catalogBrandId": "@@op-1.response.data[0].catalogBrandId@@"
-            "catalogBrand": "@@op-1.response.data[0].catalogBrand@@"
-            "availableStock": "@@op-1.response.data[0].availableStock@@"
-            "restockThreshold": "@@op-1.response.data[0].restockThreshold@@"
-            "maxStockThreshold": "@@op-1.response.data[0].maxStockThreshold@@"
-            "onReorder": "@@op-1.response.data[0].onReorder@@"
+            "id": "{{item-1-id}}",
+            "name": "{{item-1-name}}",
+            "description": "{{item-1-description}}",
+            "price": "{{new-price}}",
+            "pictureFileName": "{{item-1-picture-file-name}}",
+            "pictureUri": "{{item-1-picture-uri}}",
+            "catalogTypeId": "{{item-1-catalog-type-id}}",
+            "catalogType": "{{item-1-catalog-type}}",
+            "catalogBrandId": "{{item-1-catalog-brand-id}}",
+            "catalogBrand": "{{item-1-catalog-brand}}}",
+            "availableStock": "{{item-1-avialable-stock}}",
+            "restockThreshold": "{{item-1-restock-threshold}}",
+            "maxStockThreshold": "{{item-1-max-stock-threshold}}",
+            "onReorder": "{{item-1-on-reorder}}"
           }
         ]
       }

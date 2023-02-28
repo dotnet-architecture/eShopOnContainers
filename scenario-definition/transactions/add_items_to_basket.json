@@ -5,55 +5,7 @@
     {
       "name": "user-id",
       "type": "guid"
-    },
-    {
-      "name": "item-1-id",
-      "type": "string"
-    },
-    {
-      "name": "item-1-name",
-      "type": "string"
-    },
-    {
-      "name": "item-1-price",
-      "type": "unsignedInt"
-    },
-    {
-      "name": "item-1-available-stock",
-      "type": "unsignedInt"
-    },
-    {
-      "name": "item-2-id",
-      "type": "string"
-    },
-    {
-      "name": "item-2-name",
-      "type": "string"
-    },
-    {
-      "name": "item-2-price",
-      "type": "unsignedInt"
-    },
-    {
-      "name": "item-2-available-stock",
-      "type": "unsignedInt"
-    },
-    {
-      "name": "item-3-id",
-      "type": "string"
-    },
-    {
-      "name": "item-3-name",
-      "type": "string"
-    },
-    {
-      "name": "item-3-price",
-      "type": "unsignedInt"
-    },
-    {
-      "name": "item-3-available-stock",
-      "type": "unsignedInt"
-    },
+    }
   ],
   "operations": [
     {
