@@ -1,4 +1,3 @@
-"transaction":
 {
   "id": "add-items-to-basket",
   "arguments": [
@@ -10,7 +9,7 @@
   "operations": [
     {
       "operationRefId": "catalog-get-items",
-      "id": "op-1",
+      "id": "op-1"
     },
     {
       "operationRefId": "basket-add-item",
@@ -31,7 +30,7 @@
             "oldUnitPrice": "{{item-1-price}}",
             "quantity": "{{item-1-available-stock}}",
             "pictureUrl": ""
-          },
+          }
         },
         {
           "key": "item-2",
@@ -44,7 +43,7 @@
             "oldUnitPrice": "{{item-2-price}}",
             "quantity": "{{item-2-available-stock}}",
             "pictureUrl": ""
-          },
+          }
         },
         {
           "key": "item-3",

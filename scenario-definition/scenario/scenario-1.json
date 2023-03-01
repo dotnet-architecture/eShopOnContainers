@@ -22,7 +22,8 @@
 	  "value": "userIds",
 	  "distribution": "zipfian"
 	}
-      ]
+      ],
+      "amount": 10000
     },
     { 
       "id": "update-catalog-item-price", 
@@ -37,7 +38,8 @@
 	  "value": "productIds",
 	  "distribution": "zipfian"
 	}
-      ]
+      ],
+      "amount": 1000
     }
   ]	
 }

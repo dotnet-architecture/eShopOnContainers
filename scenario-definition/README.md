@@ -39,3 +39,9 @@ Workload configuration:
 - distribution between different transactions
 - how many concurrent transactions
 - how many total transactions to be executed
+
+## Realistic Scenario Description for eShop
+
+Run multiple benchmarks / experiments with varying factor.
+
+Customer buys items
