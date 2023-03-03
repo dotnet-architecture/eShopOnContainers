@@ -7,7 +7,7 @@ import { BasketService } from '../../basket/basket.service';
 import { IOrder }                                   from '../../shared/models/order.model';
 import { BasketWrapperService }                     from '../../shared/services/basket.wrapper.service';
 
-import { FormGroup, FormBuilder, Validators  }      from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder, Validators  }      from '@angular/forms';
 import { Router }                                   from '@angular/router';
 
 @Component({
@@ -16,12 +16,12 @@ import { Router }                                   from '@angular/router';
     templateUrl: './orders-new.component.html'
 })
 export class OrdersNewComponent implements OnInit {
-    newOrderForm: FormGroup;  // new order form
+    newOrderForm: UntypedFormGroup;  // new order form
     isOrderProcessing: boolean;
     errorReceived: boolean;
     order: IOrder;
 
-    constructor(private orderService: OrdersService, private basketService: BasketService, fb: FormBuilder, private router: Router) {
+    constructor(private orderService: OrdersService, private basketService: BasketService, fb: UntypedFormBuilder, private router: Router) {
         // Obtain user profile information
         this.order = orderService.mapOrderAndIdentityInfoNewOrder();
         this.newOrderForm = fb.group({
