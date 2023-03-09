@@ -17,7 +17,6 @@ public class Startup
             .AddAppInsight(Configuration)
             .AddHealthChecks(Configuration)
             .AddCustomMvc(Configuration)
-            .AddDevspaces()
             .AddHttpClientServices(Configuration);
 
         IdentityModelEventSource.ShowPII = true;       // Caution! Do NOT use in production: https://aka.ms/IdentityModel/PII
@@ -126,21 +125,18 @@ static class ServiceCollectionExtensions
         services.AddTransient<HttpClientRequestIdDelegatingHandler>();
 
         //set 5 min as the lifetime for each HttpMessageHandler int the pool
-        services.AddHttpClient("extendedhandlerlifetime").SetHandlerLifetime(TimeSpan.FromMinutes(5)).AddDevspacesSupport();
+        services.AddHttpClient("extendedhandlerlifetime").SetHandlerLifetime(TimeSpan.FromMinutes(5));
 
         //add http client services
         services.AddHttpClient<IBasketService, BasketService>()
                 .SetHandlerLifetime(TimeSpan.FromMinutes(5))  //Sample. Default lifetime is 2 minutes
-                .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
-                .AddDevspacesSupport();
+                .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>();
 
-        services.AddHttpClient<ICatalogService, CatalogService>()
-                .AddDevspacesSupport();
+        services.AddHttpClient<ICatalogService, CatalogService>();
 
         services.AddHttpClient<IOrderingService, OrderingService>()
                 .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
-                .AddHttpMessageHandler<HttpClientRequestIdDelegatingHandler>()
-                .AddDevspacesSupport();
+                .AddHttpMessageHandler<HttpClientRequestIdDelegatingHandler>();
 
 
         //add custom application services
