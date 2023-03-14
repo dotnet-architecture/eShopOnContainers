@@ -1,6 +1,4 @@
-﻿using Duende.IdentityServer.Models;
-
-namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
+﻿namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
 {
     public class Config
     {

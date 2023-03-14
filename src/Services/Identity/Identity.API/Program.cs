@@ -1,6 +1,15 @@
 ﻿var appName = "Identity.API";
 var builder = WebApplication.CreateBuilder();
 
+if (builder.Configuration.GetValue<bool>("UseVault", false))
+{
+    TokenCredential credential = new ClientSecretCredential(
+        builder.Configuration["Vault:TenantId"],
+        builder.Configuration["Vault:ClientId"],
+        builder.Configuration["Vault:ClientSecret"]);
+    builder.Configuration.AddAzureKeyVault(new Uri($"https://{builder.Configuration["Vault:Name"]}.vault.azure.net/"), credential);
+}
+
 builder.AddCustomConfiguration();
 builder.AddCustomSerilog();
 builder.AddCustomMvc();
@@ -70,25 +79,4 @@ catch (Exception ex)
 finally
 {
     Serilog.Log.CloseAndFlush();
-}
-
-IConfiguration GetConfiguration()
-{
-    var builder = new ConfigurationBuilder()
-        .SetBasePath(Directory.GetCurrentDirectory())
-        .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-        .AddEnvironmentVariables();
-
-    var config = builder.Build();
-
-    if (config.GetValue<bool>("UseVault", false))
-    {
-        TokenCredential credential = new ClientSecretCredential(
-            config["Vault:TenantId"],
-            config["Vault:ClientId"],
-            config["Vault:ClientSecret"]);
-        builder.AddAzureKeyVault(new Uri($"https://{config["Vault:Name"]}.vault.azure.net/"), credential);
-    }
-
-    return builder.Build();
 }

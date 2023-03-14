@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Microsoft.eShopOnContainers.Services.Identity.API.Models.ConsentViewModels
+﻿namespace Microsoft.eShopOnContainers.Services.Identity.API.Models.ConsentViewModels
 {
     public class ConsentInputModel
     {

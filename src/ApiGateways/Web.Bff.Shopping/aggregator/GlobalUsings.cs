@@ -1,11 +1,9 @@
 ﻿global using CatalogApi;
-global using Devspaces.Support;
 global using Grpc.Core.Interceptors;
 global using Grpc.Core;
 global using GrpcBasket;
 global using GrpcOrdering;
 global using HealthChecks.UI.Client;
-global using Microsoft.AspNetCore.Authentication.JwtBearer;
 global using Microsoft.AspNetCore.Authentication;
 global using Microsoft.AspNetCore.Authorization;
 global using Microsoft.AspNetCore.Builder;

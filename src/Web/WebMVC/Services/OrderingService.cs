@@ -55,7 +55,7 @@ public class OrderingService : IOrderingService
         };
 
         var uri = API.Order.CancelOrder(_remoteServiceBaseUrl);
-        var orderContent = new StringContent(JsonSerializer.Serialize(order), System.Text.Encoding.UTF8, "application/json");
+        var orderContent = new StringContent(JsonSerializer.Serialize(order), Encoding.UTF8, "application/json");
 
         var response = await _httpClient.PutAsync(uri, orderContent);
 
@@ -75,7 +75,7 @@ public class OrderingService : IOrderingService
         };
 
         var uri = API.Order.ShipOrder(_remoteServiceBaseUrl);
-        var orderContent = new StringContent(JsonSerializer.Serialize(order), System.Text.Encoding.UTF8, "application/json");
+        var orderContent = new StringContent(JsonSerializer.Serialize(order), Encoding.UTF8, "application/json");
 
         var response = await _httpClient.PutAsync(uri, orderContent);
 

@@ -2,8 +2,8 @@
 
 public class ProductPriceChangedIntegrationEventHandler : IIntegrationEventHandler<ProductPriceChangedIntegrationEvent>
 {
-    public async Task Handle(ProductPriceChangedIntegrationEvent @event)
+    public Task Handle(ProductPriceChangedIntegrationEvent @event)
     {
-        int i = 0;
+        return Task.CompletedTask;
     }
 }

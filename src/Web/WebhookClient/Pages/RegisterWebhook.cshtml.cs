@@ -1,13 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Options;
-using System.Net;
-using System.Net.Http;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Net.Http.Formatting;
-using System.Threading.Tasks;
-using WebhookClient.Models;
-using System.Text.Json;
 
 namespace WebhookClient.Pages
 {

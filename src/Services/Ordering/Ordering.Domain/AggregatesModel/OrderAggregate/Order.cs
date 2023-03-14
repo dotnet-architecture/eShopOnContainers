@@ -1,6 +1,4 @@
-﻿using Microsoft.eShopOnContainers.Services.Ordering.Domain.Events;
-
-namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
+﻿namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
 
 public class Order
     : Entity, IAggregateRoot

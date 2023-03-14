@@ -74,15 +74,6 @@ public class CatalogService : CatalogBase
             .Take(request.PageSize)
             .ToListAsync();
 
-        /* The "awesome" fix for testing Devspaces */
-
-        /*
-        foreach (var pr in itemsOnPage) {
-            pr.Name = "Awesome " + pr.Name;
-        }
-
-        */
-
         itemsOnPage = ChangeUriPlaceholder(itemsOnPage);
 
         var model = this.MapToResponse(itemsOnPage, totalItems, request.PageIndex, request.PageSize);

@@ -11,7 +11,6 @@ COPY ["BuildingBlocks/EventBus/EventBusRabbitMQ/EventBusRabbitMQ.csproj", "Build
 COPY ["BuildingBlocks/EventBus/EventBusServiceBus/EventBusServiceBus.csproj", "BuildingBlocks/EventBus/EventBusServiceBus/"]
 COPY ["BuildingBlocks/EventBus/IntegrationEventLogEF/IntegrationEventLogEF.csproj", "BuildingBlocks/EventBus/IntegrationEventLogEF/"]
 COPY ["BuildingBlocks/WebHostCustomization/WebHost.Customization/WebHost.Customization.csproj", "BuildingBlocks/WebHostCustomization/WebHost.Customization/"]
-COPY ["BuildingBlocks/Devspaces.Support/Devspaces.Support.csproj", "BuildingBlocks/Devspaces.Support/"]
 COPY ["Services/Webhooks/Webhooks.API/Webhooks.API.csproj", "Services/Webhooks/Webhooks.API/"]
 COPY ["NuGet.config", "NuGet.config"]
 

@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-
-namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator;
+﻿namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator;
 
 public class Startup
 {
@@ -26,7 +23,6 @@ public class Startup
         services.AddCustomMvc(Configuration)
             .AddCustomAuthentication(Configuration)
             //.AddCustomAuthorization(Configuration)
-            .AddDevspaces()
             .AddApplicationServices()
             .AddGrpcServices();
     }
@@ -162,8 +158,7 @@ public static class ServiceCollectionExtensions
         //register http services
 
         services.AddHttpClient<IOrderApiClient, OrderApiClient>()
-            .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
-            .AddDevspacesSupport();
+            .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>();
 
         return services;
     }

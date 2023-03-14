@@ -39,7 +39,7 @@ public class BasketService : IBasketService
     {
         var uri = API.Basket.UpdateBasket(_basketByPassUrl);
 
-        var basketContent = new StringContent(JsonSerializer.Serialize(basket), System.Text.Encoding.UTF8, "application/json");
+        var basketContent = new StringContent(JsonSerializer.Serialize(basket), Encoding.UTF8, "application/json");
 
         var response = await _apiClient.PostAsync(uri, basketContent);
 
@@ -51,7 +51,7 @@ public class BasketService : IBasketService
     public async Task Checkout(BasketDTO basket)
     {
         var uri = API.Basket.CheckoutBasket(_basketByPassUrl);
-        var basketContent = new StringContent(JsonSerializer.Serialize(basket), System.Text.Encoding.UTF8, "application/json");
+        var basketContent = new StringContent(JsonSerializer.Serialize(basket), Encoding.UTF8, "application/json");
             
         _logger.LogInformation("Uri chechout {uri}", uri);
 
@@ -74,7 +74,7 @@ public class BasketService : IBasketService
             }).ToArray()
         };
 
-        var basketContent = new StringContent(JsonSerializer.Serialize(basketUpdate), System.Text.Encoding.UTF8, "application/json");
+        var basketContent = new StringContent(JsonSerializer.Serialize(basketUpdate), Encoding.UTF8, "application/json");
 
         var response = await _apiClient.PutAsync(uri, basketContent);
 
@@ -113,7 +113,7 @@ public class BasketService : IBasketService
             Quantity = 1
         };
 
-        var basketContent = new StringContent(JsonSerializer.Serialize(newItem), System.Text.Encoding.UTF8, "application/json");
+        var basketContent = new StringContent(JsonSerializer.Serialize(newItem), Encoding.UTF8, "application/json");
 
         var response = await _apiClient.PostAsync(uri, basketContent);
     }
