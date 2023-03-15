@@ -27,6 +27,7 @@ global using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
 global using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
 global using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Extensions;
 global using Microsoft.eShopOnContainers.BuildingBlocks.EventBus;
+global using Microsoft.eShopOnContainers.BuildingBlocks.EventBusKafka;
 global using Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ;
 global using Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus;
 global using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF.Services;

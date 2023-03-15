@@ -1,3 +1,5 @@
+using Microsoft.eShopOnContainers.BuildingBlocks.EventBusKafka;
+
 namespace Microsoft.eShopOnContainers.Services.Catalog.API;
 
 public class Startup
@@ -154,6 +156,10 @@ public static class CustomExtensionMethods
                     name: "catalog-servicebus-check",
                     tags: new string[] { "servicebus" });
         }
+        else if (configuration.GetValue<bool>("KafkaEnabled"))
+        {
+            // TODO: might want to add health check
+        }
         else
         {
             hcBuilder
@@ -175,7 +181,7 @@ public static class CustomExtensionMethods
                                     sqlServerOptionsAction: sqlOptions =>
                                     {
                                         sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
-                                        //Configuring Connection Resiliency: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency 
+                                        //Configuring Connection Resiliency: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency
                                         sqlOptions.EnableRetryOnFailure(maxRetryCount: 15, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
                                     });
         });
@@ -186,7 +192,7 @@ public static class CustomExtensionMethods
                                     sqlServerOptionsAction: sqlOptions =>
                                     {
                                         sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
-                                        //Configuring Connection Resiliency: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency 
+                                        //Configuring Connection Resiliency: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency
                                         sqlOptions.EnableRetryOnFailure(maxRetryCount: 15, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
                                     });
         });
@@ -221,7 +227,7 @@ public static class CustomExtensionMethods
     public static IServiceCollection AddSwagger(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddSwaggerGen(options =>
-        {            
+        {
             options.SwaggerDoc("v1", new OpenApiInfo
             {
                 Title = "eShopOnContainers - Catalog HTTP API",
@@ -250,6 +256,10 @@ public static class CustomExtensionMethods
 
                 return new DefaultServiceBusPersisterConnection(serviceBusConnection);
             });
+        }
+        else if (configuration.GetValue<bool>("KafkaEnabled"))
+        {
+            services.AddSingleton<IKafkaPersistentConnection, DefaultKafkaPersistentConnection>();
         }
         else
         {
@@ -303,6 +313,11 @@ public static class CustomExtensionMethods
                     eventBusSubcriptionsManager, iLifetimeScope, subscriptionName);
             });
 
+        }
+        else if (configuration.GetValue<bool>("KafkaEnabled"))
+        {
+            services.AddHostedService<KafkaConsumerBackgroundService>();
+            services.AddSingleton<IEventBus, EventBusKafka>();
         }
         else
         {

@@ -26,7 +26,7 @@ public class EventBusKafka : IEventBus, IDisposable
     
     public void Publish(IntegrationEvent @event)
     {
-        var eventName = @event.GetType().Name.Replace(IntegrationEventSuffix, "");
+        var eventName = @event.GetType().Name;
         var jsonMessage = JsonSerializer.Serialize(@event, @event.GetType());
         
         // map Integration event to kafka message
@@ -47,7 +47,12 @@ public class EventBusKafka : IEventBus, IDisposable
 
         _logger.LogInformation("Subscribing to event {EventName} with {EventHandler}", eventName, typeof(TH).GetGenericTypeName());
 
-        _subsManager.AddSubscription<T, TH>();
+        try {
+            _subsManager.AddSubscription<T, TH>();
+        } catch (Exception e)
+        {
+            Console.WriteLine($"Failed to add subscription {eventName}, because: {e.Message}");
+        }
     }
 
     public void SubscribeDynamic<TH>(string eventName) where TH : IDynamicIntegrationEventHandler

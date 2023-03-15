@@ -19,6 +19,7 @@ global using Microsoft.EntityFrameworkCore.Design;
 global using Microsoft.EntityFrameworkCore.Metadata.Builders;
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
+global using Microsoft.eShopOnContainers.BuildingBlocks.EventBusKafka;
 global using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
 global using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF.Services;
 global using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF.Utilities;

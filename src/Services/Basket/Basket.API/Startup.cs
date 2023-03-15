@@ -262,6 +262,7 @@ public class Startup
         }
         else if (Configuration.GetValue<bool>("KafkaEnabled"))
         {
+            services.AddHostedService<KafkaAdminBackgroundService>();
             services.AddHostedService<KafkaConsumerBackgroundService>();
             services.AddSingleton<IEventBus, EventBusKafka>();
         }

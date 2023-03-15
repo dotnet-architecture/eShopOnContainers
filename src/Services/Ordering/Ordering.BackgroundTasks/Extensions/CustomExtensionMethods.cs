@@ -2,6 +2,7 @@
 using Azure.Messaging.ServiceBus;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
+using Microsoft.eShopOnContainers.BuildingBlocks.EventBusKafka;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus;
 using Microsoft.Extensions.Configuration;
@@ -33,6 +34,10 @@ namespace Ordering.BackgroundTasks.Extensions
                         topicName: "eshop_event_bus",
                         name: "orderingtask-servicebus-check",
                         tags: new string[] { "servicebus" });
+            }
+            else if (configuration.GetValue<bool>("KafkaEnabled"))
+            {
+                // TODO: might want to add health check
             }
             else
             {
@@ -68,6 +73,12 @@ namespace Ordering.BackgroundTasks.Extensions
 
                     return new EventBusServiceBus(serviceBusPersisterConnection, logger, eventBusSubcriptionsManager, iLifetimeScope, subscriptionName);
                 });
+            }
+            else if (configuration.GetValue<bool>("KafkaEnabled"))
+            {
+                services.AddSingleton<IKafkaPersistentConnection, DefaultKafkaPersistentConnection>();
+                services.AddHostedService<KafkaConsumerBackgroundService>();
+                services.AddSingleton<IEventBus, EventBusKafka>();
             }
             else
             {

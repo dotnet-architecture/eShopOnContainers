@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.eShopOnContainers.BuildingBlocks.EventBusKafka;
 
 namespace Microsoft.eShopOnContainers.Services.Ordering.API;
 
@@ -174,6 +175,10 @@ static class CustomExtensionsMethods
                     name: "ordering-servicebus-check",
                     tags: new string[] { "servicebus" });
         }
+        else if (configuration.GetValue<bool>("KafkaEnabled"))
+        {
+            // TODO: might want to add health check
+        }
         else
         {
             hcBuilder
@@ -206,7 +211,7 @@ static class CustomExtensionsMethods
                                     sqlServerOptionsAction: sqlOptions =>
                                     {
                                         sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
-                                        //Configuring Connection Resiliency: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency 
+                                        //Configuring Connection Resiliency: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency
                                         sqlOptions.EnableRetryOnFailure(maxRetryCount: 15, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
                                     });
         });
@@ -217,7 +222,7 @@ static class CustomExtensionsMethods
     public static IServiceCollection AddCustomSwagger(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddSwaggerGen(options =>
-        {            
+        {
             options.SwaggerDoc("v1", new OpenApiInfo
             {
                 Title = "eShopOnContainers - Ordering HTTP API",
@@ -251,7 +256,7 @@ static class CustomExtensionsMethods
     public static IServiceCollection AddCustomIntegrations(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-        // HACK: no auth 
+        // HACK: no auth
         // services.AddTransient<IIdentityService, IdentityService>();
         services.AddTransient<IIdentityService, IdentityServiceFake>();
         services.AddTransient<Func<DbConnection, IIntegrationEventLogService>>(
@@ -269,6 +274,10 @@ static class CustomExtensionsMethods
 
                 return new DefaultServiceBusPersisterConnection(serviceBusConnectionString);
             });
+        }
+        else if (configuration.GetValue<bool>("KafkaEnabled"))
+        {
+            services.AddSingleton<IKafkaPersistentConnection, DefaultKafkaPersistentConnection>();
         }
         else
         {
@@ -347,6 +356,11 @@ static class CustomExtensionsMethods
                     eventBusSubcriptionsManager, iLifetimeScope, subscriptionName);
             });
         }
+        else if (configuration.GetValue<bool>("KafkaEnabled"))
+        {
+            services.AddHostedService<KafkaConsumerBackgroundService>();
+            services.AddSingleton<IEventBus, EventBusKafka>();
+        }
         else
         {
             services.AddSingleton<IEventBus, EventBusRabbitMQ>(sp =>
@@ -401,14 +415,14 @@ static class CustomExtensionsMethods
         });
         return services;
     }
-    
+
     // HACK: no auth
     private class AddUserIdHeaderFilter : IOperationFilter
     {
         public void Apply(OpenApiOperation operation, OperationFilterContext context)
         {
             operation.Parameters ??= new List<OpenApiParameter>();
-            
+
             operation.Parameters.Add(new OpenApiParameter
             {
                 Name = "user-id",

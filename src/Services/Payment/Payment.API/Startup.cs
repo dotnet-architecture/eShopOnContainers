@@ -1,3 +1,5 @@
+using Microsoft.eShopOnContainers.BuildingBlocks.EventBusKafka;
+
 namespace Microsoft.eShopOnContainers.Payment.API;
 
 public class Startup
@@ -26,6 +28,10 @@ public class Startup
 
                 return new DefaultServiceBusPersisterConnection(serviceBusConnectionString);
             });
+        }
+        else if (Configuration.GetValue<bool>("KafkaEnabled"))
+        {
+            services.AddSingleton<IKafkaPersistentConnection, DefaultKafkaPersistentConnection>();
         }
         else
         {
@@ -116,6 +122,11 @@ public class Startup
                     eventBusSubcriptionsManager, iLifetimeScope, subscriptionName);
             });
         }
+        else if (Configuration.GetValue<bool>("KafkaEnabled"))
+        {
+            services.AddHostedService<KafkaConsumerBackgroundService>();
+            services.AddSingleton<IEventBus, EventBusKafka>();
+        }
         else
         {
             services.AddSingleton<IEventBus, EventBusRabbitMQ>(sp =>
@@ -163,6 +174,10 @@ public static class CustomExtensionMethods
                     topicName: "eshop_event_bus",
                     name: "payment-servicebus-check",
                     tags: new string[] { "servicebus" });
+        }
+        else if (configuration.GetValue<bool>("KafkaEnabled"))
+        {
+            // TODO: might want to add healthcheck topic
         }
         else
         {

@@ -52,6 +52,7 @@ services:
     depends_on:
       - sqldata
       - rabbitmq
+      - broker
 
   ordering-api:
     image: ${REGISTRY:-eshop}/ordering.api:${PLATFORM:-linux}-${TAG:-latest}
@@ -61,6 +62,7 @@ services:
     depends_on:
       - sqldata
       - rabbitmq
+      - broker
 
   ordering-backgroundtasks:
     image: ${REGISTRY:-eshop}/ordering.backgroundtasks:${PLATFORM:-linux}-${TAG:-latest}
@@ -70,6 +72,7 @@ services:
     depends_on:
       - sqldata
       - rabbitmq
+      - broker
 
   payment-api:
     image: ${REGISTRY:-eshop}/payment.api:${PLATFORM:-linux}-${TAG:-latest}
@@ -78,6 +81,7 @@ services:
       dockerfile: Services/Payment/Payment.API/Dockerfile
     depends_on:
       - rabbitmq
+      - broker
 
 #  webhooks-api:
 #    image: ${REGISTRY:-eshop}/webhooks.api:${PLATFORM:-linux}-${TAG:-latest}

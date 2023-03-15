@@ -2,8 +2,6 @@
 
 public partial class InMemoryEventBusSubscriptionsManager : IEventBusSubscriptionsManager
 {
-
-
     private readonly Dictionary<string, List<SubscriptionInfo>> _handlers;
     private readonly List<Type> _eventTypes;
 
@@ -17,7 +15,7 @@ public partial class InMemoryEventBusSubscriptionsManager : IEventBusSubscriptio
 
     public bool IsEmpty => _handlers is { Count: 0 };
     public void Clear() => _handlers.Clear();
-
+    
     public void AddDynamicSubscription<TH>(string eventName)
         where TH : IDynamicIntegrationEventHandler
     {
@@ -30,11 +28,16 @@ public partial class InMemoryEventBusSubscriptionsManager : IEventBusSubscriptio
     {
         var eventName = GetEventKey<T>();
 
+        Console.WriteLine($"Adding Handler: {typeof(TH)} for Event: {eventName}");
         DoAddSubscription(typeof(TH), eventName, isDynamic: false);
 
         if (!_eventTypes.Contains(typeof(T)))
         {
             _eventTypes.Add(typeof(T));
+        }
+
+        foreach (var h in _handlers) {
+            Console.WriteLine($"Handler has Subscription for: {h.Key}");
         }
     }
 
