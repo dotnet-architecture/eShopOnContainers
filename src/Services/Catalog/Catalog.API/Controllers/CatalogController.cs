@@ -216,13 +216,19 @@ public class CatalogController : ControllerBase
         }
 
         var oldPrice = catalogItem.Price;
+        var oldStock = catalogItem.AvailableStock;
         var raiseProductPriceChangedEvent = oldPrice != productToUpdate.Price;
+        var raiseProductStockChangedEvent = oldStock != productToUpdate.AvailableStock;
 
         // Update current product
         catalogItem = productToUpdate;
         _catalogContext.CatalogItems.Update(catalogItem);
 
-        if (raiseProductPriceChangedEvent) // Save product's data and publish integration event through the Event Bus if price has changed
+        if (!raiseProductPriceChangedEvent && !raiseProductStockChangedEvent)// Just save the updated product because the Product's Price hasn't changed.
+        {
+            await _catalogContext.SaveChangesAsync();
+        }
+        else if (raiseProductPriceChangedEvent) // Save product's data and publish integration event through the Event Bus if price has changed
         {
             //Create Integration Event to be published through the Event Bus
             var priceChangedEvent = new ProductPriceChangedIntegrationEvent(catalogItem.Id, productToUpdate.Price, oldPrice);
@@ -233,10 +239,19 @@ public class CatalogController : ControllerBase
             // Publish through the Event Bus and mark the saved event as published
             await _catalogIntegrationEventService.PublishThroughEventBusAsync(priceChangedEvent);
         }
-        else // Just save the updated product because the Product's Price hasn't changed.
+        else if (raiseProductStockChangedEvent)
         {
-            await _catalogContext.SaveChangesAsync();
+            // Create Integration Event to be published through the Event Bus
+            var stockChangedEvent = new ProductStockChangedIntegrationEvent(catalogItem.Id, productToUpdate.AvailableStock, oldStock);
+
+            // Achieving atomicity between original Catalog database operation and the IntegrationEventLog thanks to a local transaction
+            await _catalogIntegrationEventService.SaveEventAndCatalogContextChangesAsync(stockChangedEvent);
+
+            // Publish through the Event Bus and mark the saved event as published
+            await _catalogIntegrationEventService.PublishThroughEventBusAsync(stockChangedEvent);
+
         }
+      
 
         return CreatedAtAction(nameof(ItemByIdAsync), new { id = productToUpdate.Id }, null);
     }
@@ -261,6 +276,26 @@ public class CatalogController : ControllerBase
 
         await _catalogContext.SaveChangesAsync();
 
+        // publish CatalogItemCreatedIntegrationEvent
+        var productCreatedEvent = new ProductCreatedIntegrationEvent()
+        {
+            AvailableStock = item.AvailableStock,
+            CatalogBrand = item.CatalogBrand,
+            CatalogBrandId = item.CatalogBrandId,
+            CatalogType = item.CatalogType,
+            CatalogTypeId = item.CatalogTypeId,
+            Description = item.Description,
+            Id = item.Id,
+            MaxStockThreshold = item.MaxStockThreshold,
+            Name = item.Name,
+            OnReorder = item.OnReorder
+        };
+        // Achieving atomicity between original Catalog database operation and the IntegrationEventLog thanks to a local transaction
+        await _catalogIntegrationEventService.SaveEventAndCatalogContextChangesAsync(productCreatedEvent);
+
+        // Publish through the Event Bus and mark the saved event as published
+        await _catalogIntegrationEventService.PublishThroughEventBusAsync(productCreatedEvent);
+
         return CreatedAtAction(nameof(ItemByIdAsync), new { id = item.Id }, null);
     }
 
@@ -281,6 +316,13 @@ public class CatalogController : ControllerBase
         _catalogContext.CatalogItems.Remove(product);
 
         await _catalogContext.SaveChangesAsync();
+
+        var productDeletedEvent = new ProductDeletedIntegrationEvent(product.Id);
+        // Achieving atomicity between original Catalog database operation and the IntegrationEventLog thanks to a local transaction
+        await _catalogIntegrationEventService.SaveEventAndCatalogContextChangesAsync(productDeletedEvent);
+
+        // Publish through the Event Bus and mark the saved event as published
+        await _catalogIntegrationEventService.PublishThroughEventBusAsync(productDeletedEvent);
 
         return NoContent();
     }
