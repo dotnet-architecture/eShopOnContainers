@@ -6,7 +6,7 @@ services:
     image: datalust/seq:latest
 
   sqldata:
-    image: mcr.microsoft.com/azure-sql-edge:latest
+    image: mcr.microsoft.com/azure-sql-edge:1.0.5
   
   nosqldata:
     image: mongo

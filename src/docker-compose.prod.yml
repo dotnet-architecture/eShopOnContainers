@@ -173,7 +173,7 @@ services:
 
   sqldata:
     environment:
-      - SA_PASSWORD=Pass@word
+      - MSSQL_SA_PASSWORD=Pass@word
       - ACCEPT_EULA=Y
     ports:
       - "5433:1433"    # Important: In a production environment your should remove the external port
