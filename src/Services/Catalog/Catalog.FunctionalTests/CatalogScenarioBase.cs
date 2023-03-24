@@ -13,8 +13,7 @@ public class CatalogScenariosBase
             {
                 cb.AddJsonFile("appsettings.json", optional: false)
                 .AddEnvironmentVariables();
-            })
-            .UseStartup<Startup>();
+            });
 
 
         var testServer = new TestServer(hostBuilder);
