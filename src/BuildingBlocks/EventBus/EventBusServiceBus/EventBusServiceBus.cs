@@ -151,7 +151,7 @@ public class EventBusServiceBus : IEventBus, IAsyncDisposable
         var processed = false;
         if (_subsManager.HasSubscriptionsForEvent(eventName))
         {
-            var scope = _serviceProvider.CreateScope();
+            await using var scope = _serviceProvider.CreateAsyncScope();
             var subscriptions = _subsManager.GetHandlersForEvent(eventName);
             foreach (var subscription in subscriptions)
             {
