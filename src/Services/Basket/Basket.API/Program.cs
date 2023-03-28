@@ -41,10 +41,7 @@ builder.Services.AddSwaggerGen(options => {
             Implicit = new OpenApiOAuthFlow() {
                 AuthorizationUrl = new Uri($"{builder.Configuration.GetValue<string>("IdentityUrlExternal")}/connect/authorize"),
                 TokenUrl = new Uri($"{builder.Configuration.GetValue<string>("IdentityUrlExternal")}/connect/token"),
-                Scopes = new Dictionary<string, string>()
-                {
-                            { "basket", "Basket API" }
-                        }
+                Scopes = new Dictionary<string, string>() { { "basket", "Basket API" } }
             }
         }
     });
