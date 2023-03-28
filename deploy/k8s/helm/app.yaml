@@ -5,6 +5,7 @@ app:                                                    # app global settings
   name: "my-eshop"                                      # Override for custom app name
   ingress:                                              # ingress related settings
     entries:
+      seq: seq                                          # ingress entry for seq
       basket: basket-api                                # ingress entry for basket api
       catalog: catalog-api                              # ingress entry for catalog api
       ordering: ordering-api                            # ingress entry for ordering api
@@ -20,6 +21,7 @@ app:                                                    # app global settings
       webhooks: webhooks-api                            # ingress entry for webhooks api
       webhooksweb: webhooks-web                         # ingress entry for webhooks web demo client
   svc:
+      seq: seq                                          # service name for seq
       basket: basket-api                                # service name for basket api
       catalog: catalog-api                              # service name for catalog api
       ordering: ordering-api                            # service name for ordering api

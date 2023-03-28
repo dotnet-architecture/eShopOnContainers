@@ -1,0 +1,14 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: seq
+  labels:
+    app: eshop
+    service: seq
+spec:
+  ports:
+    - port: 80
+      protocol: TCP
+      name: http
+  selector:
+    service: seq
