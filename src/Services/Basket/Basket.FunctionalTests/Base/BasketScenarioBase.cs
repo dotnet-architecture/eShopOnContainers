@@ -15,7 +15,7 @@ public class BasketScenarioBase
             {
                 cb.AddJsonFile("appsettings.json", optional: false)
                 .AddEnvironmentVariables();
-            }).UseStartup<BasketTestsStartup>();
+            });
 
         return new TestServer(hostBuilder);
     }
