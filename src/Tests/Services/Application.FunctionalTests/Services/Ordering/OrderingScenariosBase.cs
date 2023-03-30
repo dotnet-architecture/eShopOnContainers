@@ -13,7 +13,7 @@ public class OrderingScenariosBase
             {
                 cb.AddJsonFile("Services/Ordering/appsettings.json", optional: false)
                 .AddEnvironmentVariables();
-            }).UseStartup<OrderingTestsStartup>();
+            });
 
         var testServer = new TestServer(hostBuilder);
 
