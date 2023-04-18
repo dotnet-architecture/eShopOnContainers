@@ -1,0 +1,17 @@
+﻿global using Autofac.Extensions.DependencyInjection;
+global using Microsoft.AspNetCore.Hosting;
+global using Microsoft.Extensions.Configuration;
+global using Microsoft.Extensions.Hosting;
+global using Ordering.BackgroundTasks.Extensions;
+global using Serilog;
+global using System.IO;
+global using HealthChecks.UI.Client;
+global using Microsoft.AspNetCore.Builder;
+global using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+global using Microsoft.Extensions.Configuration;
+global using Microsoft.Extensions.DependencyInjection;
+global using Microsoft.Extensions.Logging;
+global using Ordering.BackgroundTasks.Extensions;
+global using Ordering.BackgroundTasks.Services;
+global using System;
+global using Ordering.BackgroundTasks;
