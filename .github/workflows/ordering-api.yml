@@ -33,7 +33,7 @@ jobs:
     if: ${{ github.event_name == 'pull_request' }}
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     - uses: ./.github/workflows/composite/build-test
       with:
         service: ${{ env.SERVICE }}
@@ -47,7 +47,7 @@ jobs:
     if: ${{ github.event_name != 'pull_request' }}
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     - uses: ./.github/workflows/composite/build-push
       with:
         service: ${{ env.SERVICE }}
