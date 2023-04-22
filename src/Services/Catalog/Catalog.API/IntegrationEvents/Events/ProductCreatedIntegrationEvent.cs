@@ -2,7 +2,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationEvents.Eve
 
 public record ProductCreatedIntegrationEvent : IntegrationEvent
 {
-    public int Id { get; set; }
+    public int ProductId { get; set; }
 
     public string Name { get; set; }
 

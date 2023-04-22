@@ -264,11 +264,13 @@ public class CatalogController : ControllerBase
     {
         var item = new CatalogItem
         {
+            Id = product.Id,
             CatalogBrandId = product.CatalogBrandId,
             CatalogTypeId = product.CatalogTypeId,
             Description = product.Description,
             Name = product.Name,
             PictureFileName = product.PictureFileName,
+            AvailableStock = product.AvailableStock,
             Price = product.Price
         };
 
@@ -285,7 +287,7 @@ public class CatalogController : ControllerBase
             CatalogType = item.CatalogType,
             CatalogTypeId = item.CatalogTypeId,
             Description = item.Description,
-            Id = item.Id,
+            ProductId = item.Id,
             MaxStockThreshold = item.MaxStockThreshold,
             Name = item.Name,
             OnReorder = item.OnReorder

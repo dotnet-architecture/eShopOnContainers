@@ -39,6 +39,15 @@ public class OrderStatusChangedToPaidDomainEventHandler
             buyer.Name,
             orderStockList);
 
+        foreach (var orderStockItem in orderStockList)
+        {
+            var productBoughtEvent = new ProductBoughtIntegrationEvent(
+                orderStockItem.ProductId,
+                orderStockItem.Units
+            );
+            await _orderingIntegrationEventService.AddAndSaveEventAsync(productBoughtEvent);
+        }
+
         await _orderingIntegrationEventService.AddAndSaveEventAsync(orderStatusChangedToPaidIntegrationEvent);
     }
 }
