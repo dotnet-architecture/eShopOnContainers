@@ -1,8 +1,10 @@
-var appName = "Ordering.API";
+﻿var appName = "Ordering.API";
 var builder = WebApplication.CreateBuilder(args);
-builder.WebHost.ConfigureAppConfiguration(cb => {
+builder.WebHost.ConfigureAppConfiguration(cb =>
+{
     var sources = cb.Sources;
-    sources.Insert(3, new Microsoft.Extensions.Configuration.Json.JsonConfigurationSource() {
+    sources.Insert(3, new Microsoft.Extensions.Configuration.Json.JsonConfigurationSource()
+    {
         Optional = true,
         Path = "appsettings.localhost.json",
         ReloadOnChange = false
@@ -22,14 +24,17 @@ builder.Services.AddCustomMvc(builder.Configuration)
     .AddApplicationServices()
     .AddGrpcServices();
 var app = builder.Build();
-if (app.Environment.IsDevelopment()) {
+if (app.Environment.IsDevelopment())
+{
     app.UseDeveloperExceptionPage();
 }
-else {
+else
+{
     app.UseExceptionHandler("/Home/Error");
 }
 var pathBase = builder.Configuration["PATH_BASE"];
-if (!string.IsNullOrEmpty(pathBase)) {
+if (!string.IsNullOrEmpty(pathBase))
+{
     app.UsePathBase(pathBase);
 }
 
@@ -51,32 +56,36 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapDefaultControllerRoute();
-    app.MapControllers();
-    app.MapHealthChecks("/hc", new HealthCheckOptions() {
-        Predicate = _ => true,
-        ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-    });
-    app.MapHealthChecks("/liveness", new HealthCheckOptions {
-        Predicate = r => r.Name.Contains("self")
-    });
+app.MapControllers();
+app.MapHealthChecks("/hc", new HealthCheckOptions()
+{
+    Predicate = _ => true,
+    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+});
+app.MapHealthChecks("/liveness", new HealthCheckOptions
+{
+    Predicate = r => r.Name.Contains("self")
+});
 
-try {
- 
+try
+{
     Log.Information("Starts Web Application ({ApplicationContext})...", Program.AppName);
     await app.RunAsync();
 
     return 0;
 }
-catch (Exception ex) {
+catch (Exception ex)
+{
     Log.Fatal(ex, "Program terminated unexpectedly ({ApplicationContext})!", Program.AppName);
     return 1;
 }
-finally {
+finally
+{
     Log.CloseAndFlush();
 }
 
-
-Serilog.ILogger CreateSerilogLogger(IConfiguration configuration) {
+Serilog.ILogger CreateSerilogLogger(IConfiguration configuration)
+{
     var seqServerUrl = configuration["Serilog:SeqServerUrl"];
     var logstashUrl = configuration["Serilog:LogstashgUrl"];
     return new LoggerConfiguration()
@@ -89,7 +98,8 @@ Serilog.ILogger CreateSerilogLogger(IConfiguration configuration) {
         .ReadFrom.Configuration(configuration)
         .CreateLogger();
 }
-public partial class Program {
+public partial class Program
+{
 
     public static string Namespace = typeof(Program).Assembly.GetName().Name;
     public static string AppName = Namespace.Substring(Namespace.LastIndexOf('.', Namespace.LastIndexOf('.') - 1) + 1);
