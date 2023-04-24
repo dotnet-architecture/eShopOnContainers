@@ -32,12 +32,4 @@
     <ProjectReference Include="..\..\..\BuildingBlocks\EventBus\EventBusServiceBus\EventBusServiceBus.csproj" />
     <ProjectReference Include="..\..\..\BuildingBlocks\EventBus\EventBus\EventBus.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <EditorConfigFiles Remove="C:\Tarun\github\erjain\dotnet-architecture\eShopOnContainers\src\Services\Ordering\Ordering.BackgroundTasks\.editorconfig" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="C:\Tarun\github\erjain\dotnet-architecture\eShopOnContainers\src\Services\Ordering\Ordering.BackgroundTasks\.editorconfig" />
-  </ItemGroup>
 </Project>

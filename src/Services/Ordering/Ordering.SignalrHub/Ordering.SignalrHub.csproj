@@ -37,8 +37,4 @@
     <ProjectReference Include="..\..\..\BuildingBlocks\EventBus\EventBus\EventBus.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Include=".editorconfig" />
-  </ItemGroup>
-
 </Project>

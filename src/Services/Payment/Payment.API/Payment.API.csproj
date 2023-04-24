@@ -35,8 +35,4 @@
     <ProjectReference Include="..\..\..\BuildingBlocks\EventBus\IntegrationEventLogEF\IntegrationEventLogEF.csproj" />
   </ItemGroup>
 
-    <ItemGroup>
-    <None Include="C:\Tarun\github\erjain\dotnet-architecture\eShopOnContainers\src\Services\Payment\Payment.API\.editorconfig" />
-  </ItemGroup>
-
 </Project>
