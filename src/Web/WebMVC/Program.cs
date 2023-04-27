@@ -61,7 +61,7 @@ await app.RunAsync();
 Serilog.ILogger CreateSerilogLogger(IConfiguration configuration)
 {
     var seqServerUrl = configuration["Serilog:SeqServerUrl"];
-    var logstashUrl = configuration["Serilog:LogstashgUrl"];
+    var logstashUrl = configuration["Serilog:LogstashUrl"];
     var cfg = new LoggerConfiguration()
         .ReadFrom.Configuration(configuration)
         .Enrich.WithProperty("ApplicationContext", AppName)

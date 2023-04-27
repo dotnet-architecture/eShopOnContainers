@@ -64,7 +64,7 @@ catch (Exception exception)
 Serilog.ILogger CreateLogger(IConfiguration configuration)
 {
     var seqServerUrl = configuration["Serilog:SeqServerUrl"];
-    var logstashUrl = configuration["Serilog:LogstashgUrl"];
+    var logstashUrl = configuration["Serilog:LogstashUrl"];
     return new LoggerConfiguration()
         .MinimumLevel.Verbose()
         .Enrich.WithProperty("ApplicationContext", Program.AppName)

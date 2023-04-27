@@ -15,7 +15,7 @@ public static class ProgramExtensions
     public static void AddCustomSerilog(this WebApplicationBuilder builder)
     {
         var seqServerUrl = builder.Configuration["SeqServerUrl"];
-        var logstashUrl = builder.Configuration["LogstashgUrl"];
+        var logstashUrl = builder.Configuration["LogstashUrl"];
 
         Log.Logger = new LoggerConfiguration()
             .MinimumLevel.Verbose()
