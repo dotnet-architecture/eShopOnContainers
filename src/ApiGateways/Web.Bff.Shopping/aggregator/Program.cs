@@ -1,15 +1,6 @@
-﻿var appName = "Ordering.API";
+﻿var appName = "Web.Shopping.HttpAggregator";
 var builder = WebApplication.CreateBuilder(args);
-builder.WebHost.ConfigureAppConfiguration(cb =>
-{
-    var sources = cb.Sources;
-    sources.Insert(3, new Microsoft.Extensions.Configuration.Json.JsonConfigurationSource()
-    {
-        Optional = true,
-        Path = "appsettings.localhost.json",
-        ReloadOnChange = false
-    });
-});
+
 builder.Host.UseSerilog(CreateSerilogLogger(builder.Configuration));
 builder.Services.AddHealthChecks()
     .AddCheck("self", () => HealthCheckResult.Healthy())
@@ -20,7 +11,6 @@ builder.Services.AddHealthChecks()
     .AddUrlGroup(new Uri(builder.Configuration["PaymentUrlHC"]), name: "paymentapi-check", tags: new string[] { "paymentapi" });
 builder.Services.AddCustomMvc(builder.Configuration)
     .AddCustomAuthentication(builder.Configuration)
-    //.AddCustomAuthorization(Configuration)
     .AddApplicationServices()
     .AddGrpcServices();
 var app = builder.Build();
@@ -93,8 +83,6 @@ Serilog.ILogger CreateSerilogLogger(IConfiguration configuration)
         .Enrich.WithProperty("ApplicationContext", Program.AppName)
         .Enrich.FromLogContext()
         .WriteTo.Console()
-        //.WriteTo.Seq(string.IsNullOrWhiteSpace(seqServerUrl) ? "http://seq" : seqServerUrl)
-        //.WriteTo.Http(string.IsNullOrWhiteSpace(logstashUrl) ? "http://logstash:8080" : logstashUrl, null)
         .ReadFrom.Configuration(configuration)
         .CreateLogger();
 }
@@ -136,15 +124,12 @@ public static class ServiceCollectionExtensions
 
         services.AddSwaggerGen(options =>
         {
-            //options.DescribeAllEnumsAsStrings();
-
             options.SwaggerDoc("v1", new OpenApiInfo
             {
                 Title = "Shopping Aggregator for Web Clients",
                 Version = "v1",
                 Description = "Shopping Aggregator for Web Clients"
             });
-
             options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
             {
                 Type = SecuritySchemeType.OAuth2,
@@ -154,7 +139,6 @@ public static class ServiceCollectionExtensions
                     {
                         AuthorizationUrl = new Uri($"{configuration.GetValue<string>("IdentityUrlExternal")}/connect/authorize"),
                         TokenUrl = new Uri($"{configuration.GetValue<string>("IdentityUrlExternal")}/connect/token"),
-
                         Scopes = new Dictionary<string, string>()
                         {
                             { "webshoppingagg", "Shopping Aggregator for Web Clients" }
@@ -165,7 +149,6 @@ public static class ServiceCollectionExtensions
 
             options.OperationFilter<AuthorizeCheckOperationFilter>();
         });
-
         services.AddCors(options =>
         {
             options.AddPolicy("CorsPolicy",
