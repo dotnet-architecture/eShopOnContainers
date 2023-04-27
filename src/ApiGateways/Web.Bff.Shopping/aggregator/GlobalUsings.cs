@@ -38,3 +38,4 @@ global using System.Threading.Tasks;
 global using System.Threading;
 global using System;
 global using Microsoft.IdentityModel.Tokens;
+global using Serilog.Context;
