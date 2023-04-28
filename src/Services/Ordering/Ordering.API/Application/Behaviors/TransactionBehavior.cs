@@ -2,15 +2,15 @@
 
 using Microsoft.Extensions.Logging;
 
-public class TransactionBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : IRequest<TResponse>
+public class TransactionBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : IRequest<TResponse>
 {
-    private readonly ILogger<TransactionBehaviour<TRequest, TResponse>> _logger;
+    private readonly ILogger<TransactionBehavior<TRequest, TResponse>> _logger;
     private readonly OrderingContext _dbContext;
     private readonly IOrderingIntegrationEventService _orderingIntegrationEventService;
 
-    public TransactionBehaviour(OrderingContext dbContext,
+    public TransactionBehavior(OrderingContext dbContext,
         IOrderingIntegrationEventService orderingIntegrationEventService,
-        ILogger<TransactionBehaviour<TRequest, TResponse>> logger)
+        ILogger<TransactionBehavior<TRequest, TResponse>> logger)
     {
         _dbContext = dbContext ?? throw new ArgumentException(nameof(OrderingContext));
         _orderingIntegrationEventService = orderingIntegrationEventService ?? throw new ArgumentException(nameof(orderingIntegrationEventService));

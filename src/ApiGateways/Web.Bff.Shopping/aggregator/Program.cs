@@ -1,5 +1,4 @@
-﻿var appName = "Web.Shopping.HttpAggregator";
-var builder = WebApplication.CreateBuilder(args);
+﻿var builder = WebApplication.CreateBuilder(args);
 
 builder.Host.UseSerilog(CreateSerilogLogger(builder.Configuration));
 builder.Services.AddHealthChecks()
@@ -197,7 +196,7 @@ public static class ServiceCollectionExtensions
 
         services.AddScoped<IOrderingService, OrderingService>();
 
-        services.AddGrpcClient<OrderingGrpc.OrderingGrpcClient>((services, options) =>
+        services.AddGrpcClient<GrpcOrdering.OrderingGrpc.OrderingGrpcClient>((services, options) =>
         {
             var orderingApi = services.GetRequiredService<IOptions<UrlsConfig>>().Value.GrpcOrdering;
             options.Address = new Uri(orderingApi);

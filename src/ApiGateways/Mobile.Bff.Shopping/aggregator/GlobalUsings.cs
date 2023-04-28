@@ -2,7 +2,6 @@
 global using Grpc.Core.Interceptors;
 global using Grpc.Core;
 global using GrpcBasket;
-global using GrpcOrdering;
 global using HealthChecks.UI.Client;
 global using Microsoft.AspNetCore.Authentication.JwtBearer;
 global using Microsoft.AspNetCore.Authentication;

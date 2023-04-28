@@ -1,4 +1,4 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.DomainEventHandlers.OrderStartedEvent;
+﻿namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.DomainEventHandlers;
 
 public class SendEmailToCustomerWhenOrderStartedDomainEventHandler
 //: IAsyncNotificationHandler<OrderStartedDomainEvent>

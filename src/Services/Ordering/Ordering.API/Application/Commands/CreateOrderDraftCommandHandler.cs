@@ -1,6 +1,6 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands;
 
-using static Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands.CreateOrderCommand;
+using Microsoft.eShopOnContainers.Services.Ordering.API.Extensions;
 using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
 
 // Regular CommandHandler
@@ -42,5 +42,19 @@ public record OrderDraftDTO
             Total = order.GetTotal()
         };
     }
+}
 
+public record OrderItemDTO
+{
+    public int ProductId { get; init; }
+
+    public string ProductName { get; init; }
+
+    public decimal UnitPrice { get; init; }
+
+    public decimal Discount { get; init; }
+
+    public int Units { get; init; }
+
+    public string PictureUrl { get; init; }
 }

@@ -1,6 +1,7 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.Models;
+﻿namespace Microsoft.eShopOnContainers.Services.Ordering.API.Extensions;
 
 using System.Collections.Generic;
+using Microsoft.eShopOnContainers.Services.Ordering.API.Application.Models;
 using static Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands.CreateOrderCommand;
 
 public static class BasketItemExtensions

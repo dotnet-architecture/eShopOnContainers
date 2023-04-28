@@ -1,5 +1,4 @@
-﻿var appName = "Ordering.SignalrHub";
-var builder = WebApplication.CreateBuilder(new WebApplicationOptions
+﻿var builder = WebApplication.CreateBuilder(new WebApplicationOptions
 {
     Args = args,
     ApplicationName = typeof(Program).Assembly.FullName,

@@ -1,4 +1,4 @@
-﻿namespace Ordering.API.Application.IntegrationEvents.EventHandling;
+﻿namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.IntegrationEvents.EventHandling;
 
 public class OrderStockConfirmedIntegrationEventHandler :
     IIntegrationEventHandler<OrderStockConfirmedIntegrationEvent>

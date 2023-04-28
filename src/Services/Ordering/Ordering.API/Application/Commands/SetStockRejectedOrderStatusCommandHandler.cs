@@ -35,9 +35,9 @@ public class SetStockRejectedOrderStatusCommandHandler : IRequestHandler<SetStoc
 
 
 // Use for Idempotency in Command process
-public class SetStockRejectedOrderStatusIdenfifiedCommandHandler : IdentifiedCommandHandler<SetStockRejectedOrderStatusCommand, bool>
+public class SetStockRejectedOrderStatusIdentifiedCommandHandler : IdentifiedCommandHandler<SetStockRejectedOrderStatusCommand, bool>
 {
-    public SetStockRejectedOrderStatusIdenfifiedCommandHandler(
+    public SetStockRejectedOrderStatusIdentifiedCommandHandler(
         IMediator mediator,
         IRequestManager requestManager,
         ILogger<IdentifiedCommandHandler<SetStockRejectedOrderStatusCommand, bool>> logger)
