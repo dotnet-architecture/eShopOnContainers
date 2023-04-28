@@ -1,9 +1,4 @@
-﻿using Autofac.Core;
-using Microsoft.Azure.Amqp.Framing;
-using Microsoft.Extensions.Configuration;
-
-var appName = "Basket.API";
-var builder = WebApplication.CreateBuilder(new WebApplicationOptions
+﻿var builder = WebApplication.CreateBuilder(new WebApplicationOptions
 {
     Args = args,
     ApplicationName = typeof(Program).Assembly.FullName,
@@ -63,6 +58,7 @@ JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("sub");
 
 var identityUrl = builder.Configuration.GetValue<string>("IdentityUrl");
 
+/*
 builder.Services.AddAuthentication("Bearer").AddJwtBearer(options =>
 {
     options.Authority = identityUrl;
@@ -78,6 +74,7 @@ builder.Services.AddAuthorization(options =>
         policy.RequireClaim("scope", "basket");
     });
 });
+*/
 
 builder.Services.AddCustomHealthCheck(builder.Configuration);
 
@@ -164,7 +161,6 @@ builder.WebHost.UseKestrel(options =>
     });
 
 });
-builder.WebHost.CaptureStartupErrors(false);
 builder.Host.UseSerilog(CreateSerilogLogger(builder.Configuration));
 builder.WebHost.UseFailing(options =>
 {
@@ -172,6 +168,7 @@ builder.WebHost.UseFailing(options =>
     options.NotFilteredPaths.AddRange(new[] { "/hc", "/liveness" });
 });
 var app = builder.Build();
+app.MapGet("hello", () => "hello");
 
 if (app.Environment.IsDevelopment())
 {
@@ -196,12 +193,18 @@ app.UseSwagger()
                 setup.OAuthAppName("Basket Swagger UI");
             });
 
+app.Use(del => ctx =>
+{
+    ctx.Response.StatusCode = 200;
+    ctx.Response.WriteAsync("hello");
+    return Task.CompletedTask;
+    //return del(ctx);
+});
 app.UseRouting();
 app.UseCors("CorsPolicy");
-app.UseAuthentication();
-app.UseAuthorization();
+//app.UseAuthentication();
+//app.UseAuthorization();
 app.UseStaticFiles();
-
 
 app.MapGrpcService<BasketService>();
 app.MapDefaultControllerRoute();
@@ -271,6 +274,7 @@ Serilog.ILogger CreateSerilogLogger(IConfiguration configuration)
     var port = config.GetValue("PORT", 80);
     return (port, grpcPort);
 }
+
 void ConfigureEventBus(IApplicationBuilder app)
 {
     var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
@@ -278,18 +282,15 @@ void ConfigureEventBus(IApplicationBuilder app)
     eventBus.Subscribe<ProductPriceChangedIntegrationEvent, ProductPriceChangedIntegrationEventHandler>();
     eventBus.Subscribe<OrderStartedIntegrationEvent, OrderStartedIntegrationEventHandler>();
 }
+
 public partial class Program
 {
-
-    public static string Namespace = typeof(Program).Assembly.GetName().Name;
+    private static string Namespace = typeof(Program).Assembly.GetName().Name;
     public static string AppName = Namespace.Substring(Namespace.LastIndexOf('.', Namespace.LastIndexOf('.') - 1) + 1);
 }
 
-
 public static class CustomExtensionMethods
 {
-
-
     public static IServiceCollection RegisterEventBus(this IServiceCollection services, IConfiguration configuration)
     {
         if (configuration.GetValue<bool>("AzureServiceBusEnabled"))

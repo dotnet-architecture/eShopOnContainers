@@ -53,7 +53,7 @@ public class BasketService : IBasketService
         var uri = API.Basket.CheckoutBasket(_basketByPassUrl);
         var basketContent = new StringContent(JsonSerializer.Serialize(basket), Encoding.UTF8, "application/json");
 
-        _logger.LogInformation("Uri chechout {uri}", uri);
+        _logger.LogInformation("Uri checkout {uri}", uri);
 
         var response = await _apiClient.PostAsync(uri, basketContent);
 

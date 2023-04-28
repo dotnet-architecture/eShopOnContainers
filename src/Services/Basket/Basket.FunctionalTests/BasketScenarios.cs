@@ -1,15 +1,43 @@
-﻿namespace Basket.FunctionalTests;
+﻿using System.Linq;
+using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.Extensions.Hosting;
 
-public class BasketScenarios
-    : BasketScenarioBase
+namespace Basket.FunctionalTests;
+
+public class TestWebApplicationFactory<TProgram> : WebApplicationFactory<TProgram> where TProgram : class
 {
+    protected override void ConfigureWebHost(IWebHostBuilder builder)
+    {
+        base.ConfigureWebHost(builder);
+        builder.Configure(app =>
+        {
+            app.UseMiddleware<AutoAuthorizeMiddleware>();
+        });
+    }
+
+    protected override IHost CreateHost(IHostBuilder builder)
+    {
+        return base.CreateHost(builder);
+    }
+}
+
+public class BasketScenarios : BasketScenarioBase, IClassFixture<TestWebApplicationFactory<Program>>
+{
+    private readonly TestWebApplicationFactory<Program> _factory;
+    private readonly HttpClient _httpClient;
+
+    public BasketScenarios(TestWebApplicationFactory<Program> factory)
+    {
+        _factory = factory;
+        _httpClient = _factory.CreateClient();
+    }
+
     [Fact]
     public async Task Post_basket_and_response_ok_status_code()
     {
-        using var server = CreateServer();
         var content = new StringContent(BuildBasket(), UTF8Encoding.UTF8, "application/json");
-        var response = await server.CreateClient()
-            .PostAsync(Post.Basket, content);
+        var uri = "/api/v1/basket/";
+        var response = await _httpClient.PostAsync(uri, content);
 
         response.EnsureSuccessStatusCode();
     }
@@ -17,25 +45,25 @@ public class BasketScenarios
     [Fact]
     public async Task Get_basket_and_response_ok_status_code()
     {
-        using var server = CreateServer();
-        var response = await server.CreateClient()
+        var response = await _httpClient
             .GetAsync(Get.GetBasket(1));
-
         response.EnsureSuccessStatusCode();
     }
 
     [Fact]
     public async Task Send_Checkout_basket_and_response_ok_status_code()
     {
-        using var server = CreateServer();
         var contentBasket = new StringContent(BuildBasket(), UTF8Encoding.UTF8, "application/json");
 
-        await server.CreateClient()
+        await _httpClient
             .PostAsync(Post.Basket, contentBasket);
 
-        var contentCheckout = new StringContent(BuildCheckout(), UTF8Encoding.UTF8, "application/json");
+        var contentCheckout = new StringContent(BuildCheckout(), UTF8Encoding.UTF8, "application/json")
+        {
+             Headers = { { "x-requestid", Guid.NewGuid().ToString() } }
+        };
 
-        var response = await server.CreateIdempotentClient()
+        var response = await _httpClient
             .PostAsync(Post.CheckoutOrder, contentCheckout);
 
         response.EnsureSuccessStatusCode();

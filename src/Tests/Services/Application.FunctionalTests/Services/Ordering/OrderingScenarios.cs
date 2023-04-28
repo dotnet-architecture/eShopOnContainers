@@ -11,21 +11,32 @@ public class OrderingScenarios : OrderingScenariosBase
         var cityExpected = $"city-{Guid.NewGuid()}";
         var orderStatusExpected = "cancelled";
 
-        var basketClient = basketServer.CreateIdempotentClient();
-        var orderClient = orderServer.CreateIdempotentClient();
+        var basketClient = basketServer.CreateClient();
+        var orderClient = orderServer.CreateClient();
 
         // GIVEN a basket is created 
-        var contentBasket = new StringContent(BuildBasket(), UTF8Encoding.UTF8, "application/json");
+        var contentBasket = new StringContent(BuildBasket(), UTF8Encoding.UTF8, "application/json")
+        {
+            Headers = { { "x-requestid", Guid.NewGuid().ToString() } }
+        };
         await basketClient.PostAsync(BasketScenariosBase.Post.CreateBasket, contentBasket);
 
         // AND basket checkout is sent
-        await basketClient.PostAsync(BasketScenariosBase.Post.CheckoutOrder, new StringContent(BuildCheckout(cityExpected), UTF8Encoding.UTF8, "application/json"));
+        await basketClient.PostAsync(
+            BasketScenariosBase.Post.CheckoutOrder,
+            new StringContent(BuildCheckout(cityExpected), UTF8Encoding.UTF8, "application/json")
+            {
+                Headers = { { "x-requestid", Guid.NewGuid().ToString() } }
+            });
 
         // WHEN Order is created in Ordering.api
         var newOrder = await TryGetNewOrderCreated(cityExpected, orderClient);
 
         // AND Order is cancelled in Ordering.api
-        await orderClient.PutAsync(OrderingScenariosBase.Put.CancelOrder, new StringContent(BuildCancelOrder(newOrder.OrderNumber), UTF8Encoding.UTF8, "application/json"));
+        await orderClient.PutAsync(OrderingScenariosBase.Put.CancelOrder, new StringContent(BuildCancelOrder(newOrder.OrderNumber), UTF8Encoding.UTF8, "application/json")
+        {
+            Headers = { { "x-requestid", Guid.NewGuid().ToString() } }
+        });
 
         // AND the requested order is retrieved
         var order = await TryGetOrder(newOrder.OrderNumber, orderClient);
