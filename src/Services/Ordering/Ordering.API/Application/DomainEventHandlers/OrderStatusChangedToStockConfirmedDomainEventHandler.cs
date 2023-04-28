@@ -1,4 +1,4 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.DomainEventHandlers.OrderStockConfirmed;
+﻿namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.DomainEventHandlers;
 
 public class OrderStatusChangedToStockConfirmedDomainEventHandler
                 : INotificationHandler<OrderStatusChangedToStockConfirmedDomainEvent>

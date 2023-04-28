@@ -29,7 +29,7 @@ public class OrdersWebApiTest
         var actionResult = await orderController.CancelOrderAsync(new CancelOrderCommand(1), Guid.NewGuid().ToString()) as OkResult;
 
         //Assert
-        Assert.Equal(actionResult.StatusCode, (int)System.Net.HttpStatusCode.OK);
+        Assert.Equal((int)System.Net.HttpStatusCode.OK, actionResult.StatusCode);
 
     }
 
@@ -45,7 +45,7 @@ public class OrdersWebApiTest
         var actionResult = await orderController.CancelOrderAsync(new CancelOrderCommand(1), String.Empty) as BadRequestResult;
 
         //Assert
-        Assert.Equal(actionResult.StatusCode, (int)System.Net.HttpStatusCode.BadRequest);
+        Assert.Equal((int)System.Net.HttpStatusCode.BadRequest, actionResult.StatusCode);
     }
 
     [Fact]
@@ -60,7 +60,7 @@ public class OrdersWebApiTest
         var actionResult = await orderController.ShipOrderAsync(new ShipOrderCommand(1), Guid.NewGuid().ToString()) as OkResult;
 
         //Assert
-        Assert.Equal(actionResult.StatusCode, (int)System.Net.HttpStatusCode.OK);
+        Assert.Equal((int)System.Net.HttpStatusCode.OK, actionResult.StatusCode);
 
     }
 
@@ -76,7 +76,7 @@ public class OrdersWebApiTest
         var actionResult = await orderController.ShipOrderAsync(new ShipOrderCommand(1), String.Empty) as BadRequestResult;
 
         //Assert
-        Assert.Equal(actionResult.StatusCode, (int)System.Net.HttpStatusCode.BadRequest);
+        Assert.Equal((int)System.Net.HttpStatusCode.BadRequest, actionResult.StatusCode);
     }
 
     [Fact]

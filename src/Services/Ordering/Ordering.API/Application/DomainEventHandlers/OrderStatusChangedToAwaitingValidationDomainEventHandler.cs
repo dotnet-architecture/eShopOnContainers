@@ -1,4 +1,4 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.DomainEventHandlers.OrderGracePeriodConfirmed;
+﻿namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.DomainEventHandlers;
 
 public class OrderStatusChangedToAwaitingValidationDomainEventHandler
                 : INotificationHandler<OrderStatusChangedToAwaitingValidationDomainEvent>

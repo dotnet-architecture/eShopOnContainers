@@ -198,7 +198,7 @@ public static class ServiceCollectionExtensions
 
         services.AddScoped<IOrderingService, OrderingService>();
 
-        services.AddGrpcClient<OrderingGrpc.OrderingGrpcClient>((services, options) =>
+        services.AddGrpcClient<GrpcOrdering.OrderingGrpc.OrderingGrpcClient>((services, options) =>
         {
             var orderingApi = services.GetRequiredService<IOptions<UrlsConfig>>().Value.GrpcOrdering;
             options.Address = new Uri(orderingApi);

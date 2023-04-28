@@ -1,4 +1,9 @@
-﻿namespace GrpcOrdering;
+﻿using GrpcOrdering;
+
+using OrderDraftDTO = GrpcOrdering.OrderDraftDTO;
+using CreateOrderDraftCommand = GrpcOrdering.CreateOrderDraftCommand;
+using BasketItem = GrpcOrdering.BasketItem;
+using OrderItemDTO = GrpcOrdering.OrderItemDTO;
 
 public class OrderingService : OrderingGrpc.OrderingGrpcBase
 {
@@ -24,7 +29,6 @@ public class OrderingService : OrderingGrpc.OrderingGrpcBase
         var command = new AppCommand.CreateOrderDraftCommand(
                         createOrderDraftCommand.BuyerId,
                         this.MapBasketItems(createOrderDraftCommand.Items));
-
 
         var data = await _mediator.Send(command);
 

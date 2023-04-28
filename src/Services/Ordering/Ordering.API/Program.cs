@@ -1,15 +1,5 @@
-﻿using Autofac.Core;
-using Microsoft.Azure.Amqp.Framing;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
+﻿var builder = WebApplication.CreateBuilder(args);
 
-var appName = "Ordering.API";
-var builder = WebApplication.CreateBuilder(new WebApplicationOptions
-{
-    Args = args,
-    ApplicationName = typeof(Program).Assembly.FullName,
-    ContentRootPath = Directory.GetCurrentDirectory()
-});
 if (builder.Configuration.GetValue<bool>("UseVault", false))
 {
     TokenCredential credential = new ClientSecretCredential(
@@ -18,24 +8,22 @@ if (builder.Configuration.GetValue<bool>("UseVault", false))
         builder.Configuration["Vault:ClientSecret"]);
     builder.Configuration.AddAzureKeyVault(new Uri($"https://{builder.Configuration["Vault:Name"]}.vault.azure.net/"), credential);
 }
-builder.Configuration.SetBasePath(Directory.GetCurrentDirectory());
-builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
-builder.Configuration.AddEnvironmentVariables();
+
 builder.WebHost.ConfigureKestrel(options =>
 {
-    var ports = GetDefinedPorts(builder.Configuration);
-    options.Listen(IPAddress.Any, ports.httpPort, listenOptions =>
+    var httpPort = builder.Configuration.GetValue("PORT", 80);
+    options.Listen(IPAddress.Any, httpPort, listenOptions =>
     {
         listenOptions.Protocols = HttpProtocols.Http1AndHttp2;
     });
 
-    options.Listen(IPAddress.Any, ports.grpcPort, listenOptions =>
+    var grpcPort = builder.Configuration.GetValue("GRPC_PORT", 5001);
+    options.Listen(IPAddress.Any, grpcPort, listenOptions =>
     {
         listenOptions.Protocols = HttpProtocols.Http2;
     });
-
 });
-builder.WebHost.CaptureStartupErrors(false);
+
 builder.Host.UseSerilog(CreateSerilogLogger(builder.Configuration));
 builder.Services
     .AddGrpc(options =>
@@ -58,8 +46,81 @@ builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 // Register your own things directly with Autofac here. Don't
 // call builder.Populate(), that happens in AutofacServiceProviderFactory
 // for you.
-builder.Host.ConfigureContainer<ContainerBuilder>(conbuilder => conbuilder.RegisterModule(new MediatorModule()));
-builder.Host.ConfigureContainer<ContainerBuilder>(conbuilder => conbuilder.RegisterModule(new ApplicationModule(builder.Configuration["ConnectionString"])));
+
+var services = builder.Services;
+
+        services.AddMediatR(cfg =>
+        {
+            cfg.RegisterServicesFromAssemblyContaining(typeof(Program));
+            
+            cfg.AddOpenBehavior(typeof(LoggingBehavior<,>));
+            cfg.AddOpenBehavior(typeof(ValidatorBehavior<,>));
+            cfg.AddOpenBehavior(typeof(TransactionBehavior<,>));
+        });
+
+/*
+        // Register all the command handlers.
+        services.AddSingleton<IRequestHandler<CancelOrderCommand, bool>, CancelOrderCommandHandler>();
+        services.AddSingleton<IRequestHandler<IdentifiedCommand<CancelOrderCommand, bool>, bool>, CancelOrderIdentifiedCommandHandler>();
+
+        services.AddSingleton<IRequestHandler<CreateOrderCommand, bool>, CreateOrderCommandHandler>();
+        services.AddSingleton<IRequestHandler<IdentifiedCommand<CreateOrderCommand, bool>, bool>, CreateOrderIdentifiedCommandHandler>();
+
+        services.AddSingleton<IRequestHandler<CreateOrderDraftCommand, OrderDraftDTO>, CreateOrderDraftCommandHandler>();
+
+        services.AddSingleton<IRequestHandler<IdentifiedCommand<SetAwaitingValidationOrderStatusCommand, bool>, bool>, SetAwaitingValidationIdentifiedOrderStatusCommandHandler>();
+        services.AddSingleton<IRequestHandler<SetAwaitingValidationOrderStatusCommand, bool>, SetAwaitingValidationOrderStatusCommandHandler>();
+
+        services.AddSingleton<IRequestHandler<IdentifiedCommand<SetPaidOrderStatusCommand, bool>, bool>, SetPaidIdentifiedOrderStatusCommandHandler>();
+        services.AddSingleton<IRequestHandler<SetPaidOrderStatusCommand, bool>, SetPaidOrderStatusCommandHandler>();
+
+        services.AddSingleton<IRequestHandler<IdentifiedCommand<SetStockConfirmedOrderStatusCommand, bool>, bool>, SetStockConfirmedOrderStatusIdentifiedCommandHandler>();
+        services.AddSingleton<IRequestHandler<SetStockConfirmedOrderStatusCommand, bool>, SetStockConfirmedOrderStatusCommandHandler>();
+
+        services.AddSingleton<IRequestHandler<IdentifiedCommand<SetStockRejectedOrderStatusCommand, bool>, bool>, SetStockRejectedOrderStatusIdentifiedCommandHandler>();
+        services.AddSingleton<IRequestHandler<SetStockRejectedOrderStatusCommand, bool>, SetStockRejectedOrderStatusCommandHandler>();
+
+        services.AddSingleton<IRequestHandler<IdentifiedCommand<ShipOrderCommand, bool>, bool>, ShipOrderIdentifiedCommandHandler>();
+        services.AddSingleton<IRequestHandler<ShipOrderCommand, bool>, ShipOrderCommandHandler>();
+
+        // Register the DomainEventHandler classes (they implement INotificationHandler<>) in assembly holding the Domain Events
+        services.AddSingleton<INotificationHandler<OrderCancelledDomainEvent>, OrderCancelledDomainEventHandler>();
+        services.AddSingleton<INotificationHandler<OrderShippedDomainEvent>, OrderShippedDomainEventHandler>();
+        services.AddSingleton<INotificationHandler<OrderStatusChangedToAwaitingValidationDomainEvent>, OrderStatusChangedToAwaitingValidationDomainEventHandler>();
+        services.AddSingleton<INotificationHandler<OrderStatusChangedToPaidDomainEvent>, OrderStatusChangedToPaidDomainEventHandler>();
+        services.AddSingleton<INotificationHandler<OrderStatusChangedToStockConfirmedDomainEvent>, OrderStatusChangedToStockConfirmedDomainEventHandler>();
+        services.AddSingleton<INotificationHandler<BuyerAndPaymentMethodVerifiedDomainEvent>, UpdateOrderWhenBuyerAndPaymentMethodVerifiedDomainEventHandler>();
+        services.AddSingleton<INotificationHandler<OrderStartedDomainEvent>, ValidateOrAddBuyerAggregateWhenOrderStartedDomainEventHandler>();
+*/
+
+        // Register the command validators for the validator behavior (validators based on FluentValidation library)
+        services.AddSingleton<IValidator<CancelOrderCommand>, CancelOrderCommandValidator>();
+        services.AddSingleton<IValidator<CreateOrderCommand>, CreateOrderCommandValidator>();
+        services.AddSingleton<IValidator<IdentifiedCommand<CreateOrderCommand, bool>>, IdentifiedCommandValidator>();
+        services.AddSingleton<IValidator<ShipOrderCommand>, ShipOrderCommandValidator>();
+
+/*
+        // Build the MediatR pipeline
+        services.AddSingleton(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
+        services.AddSingleton(typeof(IPipelineBehavior<,>), typeof(ValidatorBehavior<,>));
+        services.AddSingleton(typeof(IPipelineBehavior<,>), typeof(TransactionBehavior<,>));
+*/
+
+var queriesConnectionString = builder.Configuration["ConnectionString"];
+
+services.AddScoped<IOrderQueries>(sp => new OrderQueries(queriesConnectionString));
+services.AddScoped<IBuyerRepository, BuyerRepository>();
+services.AddScoped<IOrderRepository, OrderRepository>();
+services.AddScoped<IRequestManager, RequestManager>();
+
+// Add integration event handlers.
+services.AddSingleton<IIntegrationEventHandler<GracePeriodConfirmedIntegrationEvent>, GracePeriodConfirmedIntegrationEventHandler>();
+services.AddSingleton<IIntegrationEventHandler<OrderPaymentFailedIntegrationEvent>, OrderPaymentFailedIntegrationEventHandler>();
+services.AddSingleton<IIntegrationEventHandler<OrderPaymentSucceededIntegrationEvent>, OrderPaymentSucceededIntegrationEventHandler>();
+services.AddSingleton<IIntegrationEventHandler<OrderStockConfirmedIntegrationEvent>, OrderStockConfirmedIntegrationEventHandler>();
+services.AddSingleton<IIntegrationEventHandler<OrderStockRejectedIntegrationEvent>, OrderStockRejectedIntegrationEventHandler>();
+services.AddSingleton<IIntegrationEventHandler<UserCheckoutAcceptedIntegrationEvent>, UserCheckoutAcceptedIntegrationEventHandler>();
+
 var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
@@ -166,18 +227,13 @@ Serilog.ILogger CreateSerilogLogger(IConfiguration configuration)
         .ReadFrom.Configuration(configuration)
         .CreateLogger();
 }
-(int httpPort, int grpcPort) GetDefinedPorts(IConfiguration config)
-{
-    var grpcPort = config.GetValue("GRPC_PORT", 5001);
-    var port = config.GetValue("PORT", 80);
-    return (port, grpcPort);
-}
+
 public partial class Program
 {
-
-    public static string Namespace = typeof(Program).Assembly.GetName().Name;
+    private static string Namespace = typeof(Program).Assembly.GetName().Name;
     public static string AppName = Namespace.Substring(Namespace.LastIndexOf('.', Namespace.LastIndexOf('.') - 1) + 1);
 }
+
 static class CustomExtensionsMethods
 {
     public static IServiceCollection AddApplicationInsights(this IServiceCollection services, IConfiguration configuration)
@@ -393,11 +449,10 @@ static class CustomExtensionsMethods
             {
                 var serviceBusPersisterConnection = sp.GetRequiredService<IServiceBusPersisterConnection>();
                 var logger = sp.GetRequiredService<ILogger<EventBusServiceBus>>();
-                var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
+                var eventBusSubscriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
                 string subscriptionName = configuration["SubscriptionClientName"];
 
-                return new EventBusServiceBus(serviceBusPersisterConnection, logger,
-                    eventBusSubcriptionsManager, sp, subscriptionName);
+                return new EventBusServiceBus(serviceBusPersisterConnection, logger, eventBusSubscriptionsManager, sp, subscriptionName);
             });
         }
         else
@@ -407,15 +462,14 @@ static class CustomExtensionsMethods
                 var subscriptionClientName = configuration["SubscriptionClientName"];
                 var rabbitMQPersistentConnection = sp.GetRequiredService<IRabbitMQPersistentConnection>();
                 var logger = sp.GetRequiredService<ILogger<EventBusRabbitMQ>>();
-                var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
+                var eventBusSubscriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
 
-                var retryCount = 5;
-                if (!string.IsNullOrEmpty(configuration["EventBusRetryCount"]))
+                if (!int.TryParse(configuration["EventBusRetryCount"], out var retryCount))
                 {
-                    retryCount = int.Parse(configuration["EventBusRetryCount"]);
+                    retryCount = 5;
                 }
 
-                return new EventBusRabbitMQ(rabbitMQPersistentConnection, logger, sp, eventBusSubcriptionsManager, subscriptionClientName, retryCount);
+                return new EventBusRabbitMQ(rabbitMQPersistentConnection, logger, sp, eventBusSubscriptionsManager, subscriptionClientName, retryCount);
             });
         }
 

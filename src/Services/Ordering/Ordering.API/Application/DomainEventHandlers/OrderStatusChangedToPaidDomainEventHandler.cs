@@ -1,4 +1,4 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.DomainEventHandlers.OrderPaid;
+﻿namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.DomainEventHandlers;
 
 public class OrderStatusChangedToPaidDomainEventHandler
                 : INotificationHandler<OrderStatusChangedToPaidDomainEvent>
@@ -10,10 +10,10 @@ public class OrderStatusChangedToPaidDomainEventHandler
 
 
     public OrderStatusChangedToPaidDomainEventHandler(
-        IOrderRepository orderRepository, ILoggerFactory logger,
+        IOrderRepository orderRepository,
+        ILoggerFactory logger,
         IBuyerRepository buyerRepository,
-        IOrderingIntegrationEventService orderingIntegrationEventService
-        )
+        IOrderingIntegrationEventService orderingIntegrationEventService)
     {
         _orderRepository = orderRepository ?? throw new ArgumentNullException(nameof(orderRepository));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -24,7 +24,7 @@ public class OrderStatusChangedToPaidDomainEventHandler
     public async Task Handle(OrderStatusChangedToPaidDomainEvent orderStatusChangedToPaidDomainEvent, CancellationToken cancellationToken)
     {
         _logger.CreateLogger<OrderStatusChangedToPaidDomainEventHandler>()
-            .LogTrace("Order with Id: {OrderId} has been successfully updated to status {Status} ({Id})",
+            .LogInformation("Order with Id: {OrderId} has been successfully updated to status {Status} ({Id})",
                 orderStatusChangedToPaidDomainEvent.OrderId, nameof(OrderStatus.Paid), OrderStatus.Paid.Id);
 
         var order = await _orderRepository.GetAsync(orderStatusChangedToPaidDomainEvent.OrderId);

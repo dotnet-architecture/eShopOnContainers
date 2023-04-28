@@ -27,7 +27,7 @@ public class IdentifiedCommandHandlerTest
             .Returns(Task.FromResult(true));
 
         //Act
-        var handler = new IdentifiedCommandHandler<CreateOrderCommand, bool>(_mediator.Object, _requestManager.Object, _loggerMock.Object);
+        var handler = new CreateOrderIdentifiedCommandHandler(_mediator.Object, _requestManager.Object, _loggerMock.Object);
         var cltToken = new System.Threading.CancellationToken();
         var result = await handler.Handle(fakeOrderCmd, cltToken);
 
@@ -50,7 +50,7 @@ public class IdentifiedCommandHandlerTest
             .Returns(Task.FromResult(true));
 
         //Act
-        var handler = new IdentifiedCommandHandler<CreateOrderCommand, bool>(_mediator.Object, _requestManager.Object, _loggerMock.Object);
+        var handler = new CreateOrderIdentifiedCommandHandler(_mediator.Object, _requestManager.Object, _loggerMock.Object);
         var cltToken = new System.Threading.CancellationToken();
         var result = await handler.Handle(fakeOrderCmd, cltToken);
 

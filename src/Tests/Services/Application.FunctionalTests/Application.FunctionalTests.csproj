@@ -20,12 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Services\Basket\appsettings.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Services\Catalog\appsettings.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Setup\CatalogBrands.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

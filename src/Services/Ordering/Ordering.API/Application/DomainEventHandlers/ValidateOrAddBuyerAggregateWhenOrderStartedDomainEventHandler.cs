@@ -1,4 +1,4 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.DomainEventHandlers.OrderStartedEvent;
+﻿namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.DomainEventHandlers;
 
 public class ValidateOrAddBuyerAggregateWhenOrderStartedDomainEventHandler
                     : INotificationHandler<OrderStartedDomainEvent>
@@ -22,9 +22,9 @@ public class ValidateOrAddBuyerAggregateWhenOrderStartedDomainEventHandler
 
     public async Task Handle(OrderStartedDomainEvent orderStartedEvent, CancellationToken cancellationToken)
     {
-        var cardTypeId = (orderStartedEvent.CardTypeId != 0) ? orderStartedEvent.CardTypeId : 1;
+        var cardTypeId = orderStartedEvent.CardTypeId != 0 ? orderStartedEvent.CardTypeId : 1;
         var buyer = await _buyerRepository.FindAsync(orderStartedEvent.UserId);
-        bool buyerOriginallyExisted = (buyer == null) ? false : true;
+        var buyerOriginallyExisted = buyer == null ? false : true;
 
         if (!buyerOriginallyExisted)
         {
