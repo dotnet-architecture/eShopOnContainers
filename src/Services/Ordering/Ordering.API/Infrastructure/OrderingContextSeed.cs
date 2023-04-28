@@ -144,7 +144,7 @@ public class OrderingContextSeed
 
         if (csvheaders.Count() != requiredHeaders.Count())
         {
-            throw new Exception($"requiredHeader count '{ requiredHeaders.Count()}' is different then read header '{csvheaders.Count()}'");
+            throw new Exception($"requiredHeader count '{requiredHeaders.Count()}' is different then read header '{csvheaders.Count()}'");
         }
 
         foreach (var requiredHeader in requiredHeaders)

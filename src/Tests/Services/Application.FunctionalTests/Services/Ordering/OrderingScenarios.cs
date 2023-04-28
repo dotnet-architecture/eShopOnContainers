@@ -73,7 +73,7 @@ public class OrderingScenarios : OrderingScenariosBase
             {
                 PropertyNameCaseInsensitive = true
             });
-                
+
             order.City = city;
 
             if (IsOrderCreated(order, city))

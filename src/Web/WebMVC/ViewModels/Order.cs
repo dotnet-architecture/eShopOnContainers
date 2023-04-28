@@ -1,7 +1,7 @@
 ﻿namespace Microsoft.eShopOnContainers.WebMVC.ViewModels;
 
 public class Order
-{ 
+{
     [JsonConverter(typeof(NumberToStringConverter))]
     public string OrderNumber { get; set; }
 
@@ -45,7 +45,7 @@ public class Order
 
     public List<SelectListItem> ActionCodeSelectList =>
         GetActionCodesByCurrentState();
-                
+
     public List<OrderItem> OrderItems { get; set; }
 
     [Required]

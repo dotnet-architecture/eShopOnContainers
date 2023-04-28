@@ -1,5 +1,5 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationEvents.EventHandling;
-    
+
 public class OrderStatusChangedToAwaitingValidationIntegrationEventHandler :
     IIntegrationEventHandler<OrderStatusChangedToAwaitingValidationIntegrationEvent>
 {
