@@ -14,5 +14,5 @@ public class HomeController : Controller
     public IActionResult Configuration()
     {
         return Json(_settings.Value);
-    } 
+    }
 }

@@ -80,7 +80,7 @@ public class EventBusRabbitMQ : IEventBus, IDisposable
             var properties = channel.CreateBasicProperties();
             properties.DeliveryMode = 2; // persistent
 
-                _logger.LogTrace("Publishing event to RabbitMQ: {EventId}", @event.Id);
+            _logger.LogTrace("Publishing event to RabbitMQ: {EventId}", @event.Id);
 
             channel.BasicPublish(
                 exchange: BROKER_NAME,
@@ -123,7 +123,7 @@ public class EventBusRabbitMQ : IEventBus, IDisposable
             {
                 _persistentConnection.TryConnect();
             }
- 
+
             _consumerChannel.QueueBind(queue: _queueName,
                                 exchange: BROKER_NAME,
                                 routingKey: eventName);

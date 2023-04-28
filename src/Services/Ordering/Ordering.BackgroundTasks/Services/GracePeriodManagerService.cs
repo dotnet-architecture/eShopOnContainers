@@ -36,10 +36,12 @@ namespace Ordering.BackgroundTasks.Services
                 _logger.LogDebug("GracePeriodManagerService background task is doing background work.");
 
                 CheckConfirmedGracePeriodOrders();
-                try {
+                try
+                {
                     await Task.Delay(_settings.CheckUpdateTime, stoppingToken);
                 }
-                catch (TaskCanceledException exception) {
+                catch (TaskCanceledException exception)
+                {
                     _logger.LogCritical(exception, "TaskCanceledException Error", exception.Message);
                 }
             }

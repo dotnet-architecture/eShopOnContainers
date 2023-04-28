@@ -9,7 +9,7 @@ public static class ProgramExtensions
     public static void AddCustomConfiguration(this WebApplicationBuilder builder)
     {
         builder.Configuration.AddConfiguration(GetConfiguration()).Build();
-        
+
     }
 
     public static void AddCustomSerilog(this WebApplicationBuilder builder)

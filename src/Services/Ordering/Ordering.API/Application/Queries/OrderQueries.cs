@@ -1,5 +1,5 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.Queries;
-    
+
 public class OrderQueries
     : IOrderQueries
 {

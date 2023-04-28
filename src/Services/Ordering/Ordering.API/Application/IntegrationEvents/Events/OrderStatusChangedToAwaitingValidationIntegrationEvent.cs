@@ -1,5 +1,5 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.IntegrationEvents.Events;
-  
+
 public record OrderStatusChangedToAwaitingValidationIntegrationEvent : IntegrationEvent
 {
     public int OrderId { get; }

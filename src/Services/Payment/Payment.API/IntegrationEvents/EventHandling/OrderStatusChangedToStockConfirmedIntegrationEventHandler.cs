@@ -1,5 +1,5 @@
 ﻿namespace Microsoft.eShopOnContainers.Payment.API.IntegrationEvents.EventHandling;
-    
+
 public class OrderStatusChangedToStockConfirmedIntegrationEventHandler :
     IIntegrationEventHandler<OrderStatusChangedToStockConfirmedIntegrationEvent>
 {
