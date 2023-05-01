@@ -1,35 +1,12 @@
-﻿using System.Linq;
-using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.Extensions.Hosting;
+﻿namespace Basket.FunctionalTests;
 
-namespace Basket.FunctionalTests;
-
-public class TestWebApplicationFactory<TProgram> : WebApplicationFactory<TProgram> where TProgram : class
+public class BasketScenarios : BasketScenarioBase
 {
-    protected override void ConfigureWebHost(IWebHostBuilder builder)
-    {
-        base.ConfigureWebHost(builder);
-        builder.Configure(app =>
-        {
-            app.UseMiddleware<AutoAuthorizeMiddleware>();
-        });
-    }
-
-    protected override IHost CreateHost(IHostBuilder builder)
-    {
-        return base.CreateHost(builder);
-    }
-}
-
-public class BasketScenarios : BasketScenarioBase, IClassFixture<TestWebApplicationFactory<Program>>
-{
-    private readonly TestWebApplicationFactory<Program> _factory;
     private readonly HttpClient _httpClient;
 
-    public BasketScenarios(TestWebApplicationFactory<Program> factory)
+    public BasketScenarios()
     {
-        _factory = factory;
-        _httpClient = _factory.CreateClient();
+        _httpClient = CreateClient();
     }
 
     [Fact]

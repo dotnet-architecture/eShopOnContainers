@@ -1,6 +1,9 @@
-﻿namespace Basket.FunctionalTests.Base;
+﻿using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.Extensions.Hosting;
 
-public class BasketScenarioBase
+namespace Basket.FunctionalTests.Base;
+
+public class BasketScenarioBase : WebApplicationFactory<Program>
 {
     private const string ApiUrlBase = "api/v1/basket";
 
@@ -32,5 +35,35 @@ public class BasketScenarioBase
     {
         public static string Basket = $"{ApiUrlBase}/";
         public static string CheckoutOrder = $"{ApiUrlBase}/checkout";
+    }
+
+    protected override IHost CreateHost(IHostBuilder builder)
+    {
+        builder.ConfigureServices(services =>
+        {
+            services.AddSingleton<IStartupFilter, AuthStartupFilter>();
+        });
+
+        builder.ConfigureAppConfiguration(c =>
+        {
+            var directory = Path.GetDirectoryName(typeof(BasketScenarioBase).Assembly.Location)!;
+
+            c.AddJsonFile(Path.Combine(directory, "appsettings.json"), optional: false);
+        });
+
+        return base.CreateHost(builder);
+    }
+
+    private class AuthStartupFilter : IStartupFilter
+    {
+        public Action<IApplicationBuilder> Configure(Action<IApplicationBuilder> next)
+        {
+            return app =>
+            {
+                app.UseMiddleware<AutoAuthorizeMiddleware>();
+
+                next(app);
+            };
+        }
     }
 }

@@ -1,32 +1,21 @@
-﻿var builder = WebApplication.CreateBuilder(new WebApplicationOptions
-{
-    Args = args,
-    ApplicationName = typeof(Program).Assembly.FullName,
-    ContentRootPath = Directory.GetCurrentDirectory()
-});
-if (builder.Configuration.GetValue<bool>("UseVault", false))
-{
-    TokenCredential credential = new ClientSecretCredential(
-           builder.Configuration["Vault:TenantId"],
-        builder.Configuration["Vault:ClientId"],
-        builder.Configuration["Vault:ClientSecret"]);
-    builder.Configuration.AddAzureKeyVault(new Uri($"https://{builder.Configuration["Vault:Name"]}.vault.azure.net/"), credential);
-}
+﻿var builder = WebApplication.CreateBuilder(args);
+
+builder.Configuration.AddKeyVault();
 
 builder.Services.AddGrpc(options =>
 {
     options.EnableDetailedErrors = true;
 });
+
 builder.Services.AddApplicationInsightsTelemetry(builder.Configuration);
 builder.Services.AddApplicationInsightsKubernetesEnricher();
+
 builder.Services.AddControllers(options =>
 {
     options.Filters.Add(typeof(HttpGlobalExceptionFilter));
     options.Filters.Add(typeof(ValidateModelStateFilter));
+});
 
-}) // Added for functional tests
-            .AddApplicationPart(typeof(BasketController).Assembly)
-            .AddJsonOptions(options => options.JsonSerializerOptions.WriteIndented = true);
 builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo
@@ -43,8 +32,8 @@ builder.Services.AddSwaggerGen(options =>
         {
             Implicit = new OpenApiOAuthFlow()
             {
-                AuthorizationUrl = new Uri($"{builder.Configuration.GetValue<string>("IdentityUrlExternal")}/connect/authorize"),
-                TokenUrl = new Uri($"{builder.Configuration.GetValue<string>("IdentityUrlExternal")}/connect/token"),
+                AuthorizationUrl = new Uri($"{builder.Configuration["IdentityUrlExternal"]}/connect/authorize"),
+                TokenUrl = new Uri($"{builder.Configuration["IdentityUrlExternal"]}/connect/token"),
                 Scopes = new Dictionary<string, string>() { { "basket", "Basket API" } }
             }
         }
@@ -56,16 +45,16 @@ builder.Services.AddSwaggerGen(options =>
 // prevent from mapping "sub" claim to nameidentifier.
 JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("sub");
 
-var identityUrl = builder.Configuration.GetValue<string>("IdentityUrl");
+var identityUrl = builder.Configuration["IdentityUrl"];
 
-/*
-builder.Services.AddAuthentication("Bearer").AddJwtBearer(options =>
+builder.Services.AddAuthentication().AddJwtBearer(options =>
 {
     options.Authority = identityUrl;
     options.RequireHttpsMetadata = false;
     options.Audience = "basket";
     options.TokenValidationParameters.ValidateAudience = false;
 });
+
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("ApiScope", policy =>
@@ -74,79 +63,20 @@ builder.Services.AddAuthorization(options =>
         policy.RequireClaim("scope", "basket");
     });
 });
-*/
 
 builder.Services.AddCustomHealthCheck(builder.Configuration);
 
 builder.Services.Configure<BasketSettings>(builder.Configuration);
 
-builder.Services.AddSingleton<ConnectionMultiplexer>(sp =>
-{
-    var settings = sp.GetRequiredService<IOptions<BasketSettings>>().Value;
-    var configuration = ConfigurationOptions.Parse(settings.ConnectionString, true);
+builder.Services.AddRedis();
 
-    return ConnectionMultiplexer.Connect(configuration);
-});
+builder.Services.AddEventBus(builder.Configuration);
 
+builder.Services.AddHttpContextAccessor();
 
-if (builder.Configuration.GetValue<bool>("AzureServiceBusEnabled"))
-{
-    builder.Services.AddSingleton<IServiceBusPersisterConnection>(sp =>
-    {
-        var serviceBusConnectionString = builder.Configuration["EventBusConnection"];
-
-        return new DefaultServiceBusPersisterConnection(serviceBusConnectionString);
-    });
-}
-else
-{
-    builder.Services.AddSingleton<IRabbitMQPersistentConnection>(sp =>
-    {
-        var logger = sp.GetRequiredService<ILogger<DefaultRabbitMQPersistentConnection>>();
-
-        var factory = new ConnectionFactory()
-        {
-            HostName = builder.Configuration["EventBusConnection"],
-            DispatchConsumersAsync = true
-        };
-
-        if (!string.IsNullOrEmpty(builder.Configuration["EventBusUserName"]))
-        {
-            factory.UserName = builder.Configuration["EventBusUserName"];
-        }
-
-        if (!string.IsNullOrEmpty(builder.Configuration["EventBusPassword"]))
-        {
-            factory.Password = builder.Configuration["EventBusPassword"];
-        }
-
-        var retryCount = 5;
-        if (!string.IsNullOrEmpty(builder.Configuration["EventBusRetryCount"]))
-        {
-            retryCount = int.Parse(builder.Configuration["EventBusRetryCount"]);
-        }
-
-        return new DefaultRabbitMQPersistentConnection(factory, logger, retryCount);
-    });
-}
-builder.Services.RegisterEventBus(builder.Configuration);
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("CorsPolicy",
-        builder => builder
-        .SetIsOriginAllowed((host) => true)
-        .AllowAnyMethod()
-        .AllowAnyHeader()
-        .AllowCredentials());
-});
-builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddTransient<IBasketRepository, RedisBasketRepository>();
 builder.Services.AddTransient<IIdentityService, IdentityService>();
 
-builder.Services.AddOptions();
-builder.Configuration.SetBasePath(Directory.GetCurrentDirectory());
-builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
-builder.Configuration.AddEnvironmentVariables();
 builder.WebHost.UseKestrel(options =>
 {
     var ports = GetDefinedPorts(builder.Configuration);
@@ -159,22 +89,19 @@ builder.WebHost.UseKestrel(options =>
     {
         listenOptions.Protocols = HttpProtocols.Http2;
     });
-
 });
+
 builder.Host.UseSerilog(CreateSerilogLogger(builder.Configuration));
 builder.WebHost.UseFailing(options =>
 {
     options.ConfigPath = "/Failing";
     options.NotFilteredPaths.AddRange(new[] { "/hc", "/liveness" });
 });
+
 var app = builder.Build();
 app.MapGet("hello", () => "hello");
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseDeveloperExceptionPage();
-}
-else
+if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
 }
@@ -185,30 +112,18 @@ if (!string.IsNullOrEmpty(pathBase))
     app.UsePathBase(pathBase);
 }
 
-app.UseSwagger()
-            .UseSwaggerUI(setup =>
-            {
-                setup.SwaggerEndpoint($"{(!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty)}/swagger/v1/swagger.json", "Basket.API V1");
-                setup.OAuthClientId("basketswaggerui");
-                setup.OAuthAppName("Basket Swagger UI");
-            });
+app.UseSwagger();
 
-app.Use(del => ctx =>
+app.UseSwaggerUI(setup =>
 {
-    ctx.Response.StatusCode = 200;
-    ctx.Response.WriteAsync("hello");
-    return Task.CompletedTask;
-    //return del(ctx);
+    setup.SwaggerEndpoint($"{(!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty)}/swagger/v1/swagger.json", "Basket.API V1");
+    setup.OAuthClientId("basketswaggerui");
+    setup.OAuthAppName("Basket Swagger UI");
 });
-app.UseRouting();
-app.UseCors("CorsPolicy");
-//app.UseAuthentication();
-//app.UseAuthorization();
-app.UseStaticFiles();
 
 app.MapGrpcService<BasketService>();
-app.MapDefaultControllerRoute();
 app.MapControllers();
+
 app.MapGet("/_proto/", async ctx =>
 {
     ctx.Response.ContentType = "text/plain";
@@ -223,16 +138,20 @@ app.MapGet("/_proto/", async ctx =>
         }
     }
 });
+
 app.MapHealthChecks("/hc", new HealthCheckOptions()
 {
     Predicate = _ => true,
     ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
 });
+
 app.MapHealthChecks("/liveness", new HealthCheckOptions
 {
     Predicate = r => r.Name.Contains("self")
 });
+
 ConfigureEventBus(app);
+
 try
 {
     Log.Information("Configuring web host ({ApplicationContext})...", Program.AppName);
@@ -287,48 +206,4 @@ public partial class Program
 {
     private static string Namespace = typeof(Program).Assembly.GetName().Name;
     public static string AppName = Namespace.Substring(Namespace.LastIndexOf('.', Namespace.LastIndexOf('.') - 1) + 1);
-}
-
-public static class CustomExtensionMethods
-{
-    public static IServiceCollection RegisterEventBus(this IServiceCollection services, IConfiguration configuration)
-    {
-        if (configuration.GetValue<bool>("AzureServiceBusEnabled"))
-        {
-            services.AddSingleton<IEventBus, EventBusServiceBus>(sp =>
-            {
-                var serviceBusPersisterConnection = sp.GetRequiredService<IServiceBusPersisterConnection>();
-                var logger = sp.GetRequiredService<ILogger<EventBusServiceBus>>();
-                var eventBusSubscriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
-                string subscriptionName = configuration["SubscriptionClientName"];
-
-                return new EventBusServiceBus(serviceBusPersisterConnection, logger,
-                    eventBusSubscriptionsManager, sp, subscriptionName);
-            });
-        }
-        else
-        {
-            services.AddSingleton<IEventBus, EventBusRabbitMQ>(sp =>
-            {
-                var subscriptionClientName = configuration["SubscriptionClientName"];
-                var rabbitMQPersistentConnection = sp.GetRequiredService<IRabbitMQPersistentConnection>();
-                var logger = sp.GetRequiredService<ILogger<EventBusRabbitMQ>>();
-                var eventBusSubscriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
-
-                var retryCount = 5;
-                if (!string.IsNullOrEmpty(configuration["EventBusRetryCount"]))
-                {
-                    retryCount = int.Parse(configuration["EventBusRetryCount"]);
-                }
-
-                return new EventBusRabbitMQ(rabbitMQPersistentConnection, logger, sp, eventBusSubscriptionsManager, subscriptionClientName, retryCount);
-            });
-        }
-
-        services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
-
-        services.AddTransient<ProductPriceChangedIntegrationEventHandler>();
-        services.AddTransient<OrderStartedIntegrationEventHandler>();
-        return services;
-    }
 }
