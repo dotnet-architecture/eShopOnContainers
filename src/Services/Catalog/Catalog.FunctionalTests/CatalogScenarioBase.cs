@@ -1,24 +1,12 @@
+﻿using Microsoft.AspNetCore.Mvc.Testing;
+
 namespace Catalog.FunctionalTests;
 
-public class CatalogScenariosBase
+public class CatalogScenariosBase : WebApplicationFactory<Program>
 {
     public TestServer CreateServer()
     {
-        var path = Assembly.GetAssembly(typeof(CatalogScenariosBase))
-            .Location;
-
-        var hostBuilder = new WebHostBuilder()
-            .UseContentRoot(Path.GetDirectoryName(path))
-            .ConfigureAppConfiguration(cb =>
-            {
-                cb.AddJsonFile("appsettings.json", optional: false)
-                .AddEnvironmentVariables();
-            });
-
-
-        var testServer = new TestServer(hostBuilder);
-
-        testServer.Host
+        Services
             .MigrateDbContext<CatalogContext>((context, services) =>
             {
                 var env = services.GetService<IWebHostEnvironment>();
@@ -31,7 +19,19 @@ public class CatalogScenariosBase
             })
             .MigrateDbContext<IntegrationEventLogContext>((_, __) => { });
 
-        return testServer;
+        return Server;
+    }
+
+    protected override IHost CreateHost(IHostBuilder builder)
+    {
+        builder.ConfigureAppConfiguration(c =>
+        {
+            var directory = Path.GetDirectoryName(typeof(CatalogScenariosBase).Assembly.Location)!;
+
+            c.AddJsonFile(Path.Combine(directory, "appsettings.json"), optional: false);
+        });
+
+        return base.CreateHost(builder);
     }
 
     public static class Get
