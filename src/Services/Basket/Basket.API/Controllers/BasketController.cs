@@ -1,7 +1,7 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Basket.API.Controllers;
 
 [Route("api/v1/[controller]")]
-//[Authorize]
+[Authorize]
 [ApiController]
 public class BasketController : ControllerBase
 {
@@ -56,7 +56,7 @@ public class BasketController : ControllerBase
             return BadRequest();
         }
 
-        var userName = this.HttpContext.User.FindFirst(x => x.Type == ClaimTypes.Name).Value;
+        var userName = User.FindFirst(x => x.Type == ClaimTypes.Name).Value;
 
         var eventMessage = new UserCheckoutAcceptedIntegrationEvent(userId, userName, basketCheckout.City, basketCheckout.Street,
             basketCheckout.State, basketCheckout.Country, basketCheckout.ZipCode, basketCheckout.CardNumber, basketCheckout.CardHolderName,

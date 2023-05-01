@@ -8,12 +8,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Content Update="web.config">
-			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-		</Content>
-	</ItemGroup>
-
-	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" />
 		<PackageReference Include="System.IdentityModel.Tokens.Jwt" />
 		<PackageReference Include="AspNetCore.HealthChecks.AzureServiceBus" />
