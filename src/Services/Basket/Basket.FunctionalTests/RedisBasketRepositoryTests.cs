@@ -21,8 +21,6 @@ namespace Basket.FunctionalTests
 
             Assert.NotNull(basket);
             Assert.Single(basket.Items);
-
-
         }
 
         [Fact]
