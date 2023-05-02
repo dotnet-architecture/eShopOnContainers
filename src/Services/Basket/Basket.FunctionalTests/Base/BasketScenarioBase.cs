@@ -6,6 +6,12 @@ namespace Basket.FunctionalTests.Base;
 public class BasketScenarioBase : WebApplicationFactory<Program>
 {
     private const string ApiUrlBase = "api/v1/basket";
+
+    public TestServer CreateServer()
+    {
+        return Server;
+    }
+
     public static class Get
     {
         public static string GetBasket(int id)
