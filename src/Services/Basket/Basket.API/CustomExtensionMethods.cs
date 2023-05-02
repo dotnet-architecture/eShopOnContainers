@@ -2,18 +2,13 @@
 
 public static class CustomExtensionMethods
 {
-    public static IServiceCollection AddRedis(this IServiceCollection services)
+    public static IServiceCollection AddRedis(this IServiceCollection services, IConfiguration configuration)
     {
-        // {
-        //  "ConnectionString": "..."
-        // }
-
         return services.AddSingleton(sp =>
         {
-            var settings = sp.GetRequiredService<IOptions<BasketSettings>>().Value;
-            var configuration = ConfigurationOptions.Parse(settings.ConnectionString, true);
+            var redisConfig = ConfigurationOptions.Parse(configuration.GetConnectionString("redis"), true);
 
-            return ConnectionMultiplexer.Connect(configuration);
+            return ConnectionMultiplexer.Connect(redisConfig);
         });
     }
 }

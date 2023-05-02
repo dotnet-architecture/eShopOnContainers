@@ -21,9 +21,7 @@ builder.WebHost.UseFailing(options =>
     options.NotFilteredPaths.AddRange(new[] { "/hc", "/liveness" });
 });
 
-builder.Services.Configure<BasketSettings>(builder.Configuration);
-
-builder.Services.AddRedis();
+builder.Services.AddRedis(builder.Configuration);
 
 builder.Services.AddTransient<ProductPriceChangedIntegrationEventHandler>();
 builder.Services.AddTransient<OrderStartedIntegrationEventHandler>();
@@ -33,7 +31,7 @@ builder.Services.AddTransient<IIdentityService, IdentityService>();
 
 var app = builder.Build();
 
-app.MapGet("hello", () => "hello");
+app.MapGet("/", () => Results.Redirect("/swagger"));
 
 app.UseServiceDefaults();
 
