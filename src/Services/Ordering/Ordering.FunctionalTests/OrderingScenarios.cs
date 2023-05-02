@@ -1,7 +1,6 @@
 ﻿using System.Net;
 using System.Text;
 using System.Text.Json;
-using WebMVC.Services.ModelDTOs;
 using Xunit;
 
 namespace Ordering.FunctionalTests
@@ -16,6 +15,7 @@ namespace Ordering.FunctionalTests
             var response = await server.CreateClient()
                 .GetAsync(Get.Orders);
 
+            var s = await response.Content.ReadAsStringAsync();
             response.EnsureSuccessStatusCode();
         }
 
@@ -49,7 +49,7 @@ namespace Ordering.FunctionalTests
 
         string BuildOrder()
         {
-            var order = new OrderDTO()
+            var order = new
             {
                 OrderNumber = "-1"
             };

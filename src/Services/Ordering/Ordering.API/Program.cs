@@ -331,7 +331,7 @@ static class CustomExtensionsMethods
 
     public static IServiceCollection AddCustomSwagger(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddSwaggerGen(options =>
+        return services.AddSwaggerGen(options =>
         {
             options.SwaggerDoc("v1", new OpenApiInfo
             {
@@ -339,6 +339,9 @@ static class CustomExtensionsMethods
                 Version = "v1",
                 Description = "The Ordering Service HTTP API"
             });
+
+            var identityUrl = configuration["IdentityUrlExternal"];
+
             options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
             {
                 Type = SecuritySchemeType.OAuth2,
@@ -346,8 +349,8 @@ static class CustomExtensionsMethods
                 {
                     Implicit = new OpenApiOAuthFlow()
                     {
-                        AuthorizationUrl = new Uri($"{configuration.GetValue<string>("IdentityUrlExternal")}/connect/authorize"),
-                        TokenUrl = new Uri($"{configuration.GetValue<string>("IdentityUrlExternal")}/connect/token"),
+                        AuthorizationUrl = new Uri($"{identityUrl}/connect/authorize"),
+                        TokenUrl = new Uri($"{identityUrl}/connect/token"),
                         Scopes = new Dictionary<string, string>()
                         {
                             { "orders", "Ordering API" }
@@ -355,9 +358,9 @@ static class CustomExtensionsMethods
                     }
                 }
             });
+
             options.OperationFilter<AuthorizeCheckOperationFilter>();
         });
-        return services;
     }
 
     public static IServiceCollection AddCustomIntegrations(this IServiceCollection services, IConfiguration configuration)
