@@ -2,9 +2,7 @@
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Configuration.AddKeyVault();
-
-builder.Services.AddApplicationInsights(builder.Configuration);
+builder.AddServiceDefaults();
 
 builder.Services.AddGrpc(options =>
 {
@@ -17,23 +15,11 @@ builder.Services.AddControllers(options =>
     options.Filters.Add(typeof(ValidateModelStateFilter));
 });
 
-builder.Services.AddDefaultOpenApi(builder.Configuration);
-
-builder.Services.AddDefaultAuthentication(builder.Configuration);
-
-builder.Services.AddDefaultHealthChecks(builder.Configuration);
-
-builder.Host.UseDefaultSerilog(builder.Configuration, AppName);
-
-builder.WebHost.UseDefaultPorts(builder.Configuration);
-
 builder.WebHost.UseFailing(options =>
 {
     options.ConfigPath = "/Failing";
     options.NotFilteredPaths.AddRange(new[] { "/hc", "/liveness" });
 });
-
-builder.Services.AddEventBus(builder.Configuration);
 
 builder.Services.Configure<BasketSettings>(builder.Configuration);
 
@@ -49,23 +35,10 @@ var app = builder.Build();
 
 app.MapGet("hello", () => "hello");
 
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Home/Error");
-}
-
-var pathBase = app.Configuration["PATH_BASE"];
-if (!string.IsNullOrEmpty(pathBase))
-{
-    app.UsePathBase(pathBase);
-}
-
-app.UseDefaultOpenApi(builder.Configuration);
+app.UseServiceDefaults();
 
 app.MapGrpcService<BasketService>();
 app.MapControllers();
-
-app.MapDefaultHealthChecks();
 
 var eventBus = app.Services.GetRequiredService<IEventBus>();
 

@@ -58,6 +58,11 @@ public static class CommonExtensions
 
     public static WebApplication UseServiceDefaults(this WebApplication app)
     {
+        if (!app.Environment.IsDevelopment())
+        {
+            app.UseExceptionHandler("/Home/Error");
+        }
+
         var pathBase = app.Configuration["PATH_BASE"];
 
         if (!string.IsNullOrEmpty(pathBase))
