@@ -1,6 +1,7 @@
-﻿CreateWebHostBuilder(args).Build()
-    .MigrateDbContext<WebhooksContext>((_, __) => { })
-    .Run();
+﻿// TODO: Don't do this twice...
+var host = CreateWebHostBuilder(args).Build();
+host.Services.MigrateDbContext<WebhooksContext>((_, __) => { });
+host.Run();
 
 
 IWebHostBuilder CreateWebHostBuilder(string[] args) =>

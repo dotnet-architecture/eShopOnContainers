@@ -1,24 +1,35 @@
-﻿namespace FunctionalTests.Services.Basket;
+﻿using FunctionalTests.Middleware;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.Extensions.Hosting;
 
-public class BasketScenariosBase
+namespace FunctionalTests.Services.Basket;
+
+public class BasketScenariosBase : WebApplicationFactory<BasketProgram>
 {
     private const string ApiUrlBase = "api/v1/basket";
 
-
     public TestServer CreateServer()
     {
-        var path = Assembly.GetAssembly(typeof(BasketScenariosBase))
-            .Location;
+        return Server;
+    }
 
-        var hostBuilder = new WebHostBuilder()
-            .UseContentRoot(Path.GetDirectoryName(path))
-            .ConfigureAppConfiguration(cb =>
-            {
-                cb.AddJsonFile("Services/Basket/appsettings.json", optional: false)
-                .AddEnvironmentVariables();
-            });
 
-        return new TestServer(hostBuilder);
+    protected override IHost CreateHost(IHostBuilder builder)
+    {
+        builder.ConfigureServices(servies =>
+        {
+            servies.AddSingleton<IStartupFilter, AuthStartupFilter>();
+        });
+
+        builder.ConfigureAppConfiguration(c =>
+        {
+            var directory = Path.GetDirectoryName(typeof(BasketScenariosBase).Assembly.Location)!;
+
+            c.AddJsonFile(Path.Combine(directory, "Services/Basket/appsettings.json"), optional: false);
+        });
+
+        return base.CreateHost(builder);
     }
 
     public static class Get
@@ -38,5 +49,18 @@ public class BasketScenariosBase
     {
         public static string CreateBasket = $"{ApiUrlBase}/";
         public static string CheckoutOrder = $"{ApiUrlBase}/checkout";
+    }
+
+    private class AuthStartupFilter : IStartupFilter
+    {
+        public Action<IApplicationBuilder> Configure(Action<IApplicationBuilder> next)
+        {
+            return app =>
+            {
+                app.UseMiddleware<AutoAuthorizeMiddleware>();
+
+                next(app);
+            };
+        }
     }
 }

@@ -26,3 +26,8 @@ global using Microsoft.eShopOnContainers.Services.Ordering.API;
 global using Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure;
 global using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure;
 global using FunctionalTests.Services.Catalog;
+
+// This is a bit of a hack, since we need to differentiate each of these app's program
+global using BasketProgram = Microsoft.eShopOnContainers.Services.Basket.API.BasketSettings;
+global using CatalogProgram = Microsoft.eShopOnContainers.Services.Catalog.API.CatalogSettings;
+global using OrderingProgram = Microsoft.eShopOnContainers.Services.Ordering.API.OrderingSettings;

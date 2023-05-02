@@ -1,23 +1,15 @@
-﻿namespace FunctionalTests.Services.Ordering;
+﻿using FunctionalTests.Middleware;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.Extensions.Hosting;
 
-public class OrderingScenariosBase
+namespace FunctionalTests.Services.Ordering;
+
+public class OrderingScenariosBase : WebApplicationFactory<OrderingProgram>
 {
     public TestServer CreateServer()
     {
-        var path = Assembly.GetAssembly(typeof(OrderingScenariosBase))
-            .Location;
-
-        var hostBuilder = new WebHostBuilder()
-            .UseContentRoot(Path.GetDirectoryName(path))
-            .ConfigureAppConfiguration(cb =>
-            {
-                cb.AddJsonFile("Services/Ordering/appsettings.json", optional: false)
-                .AddEnvironmentVariables();
-            });
-
-        var testServer = new TestServer(hostBuilder);
-
-        testServer.Host
+        Services
             .MigrateDbContext<OrderingContext>((context, services) =>
             {
                 var env = services.GetService<IWebHostEnvironment>();
@@ -30,7 +22,24 @@ public class OrderingScenariosBase
             })
             .MigrateDbContext<IntegrationEventLogContext>((_, __) => { });
 
-        return testServer;
+        return Server;
+    }
+
+    protected override IHost CreateHost(IHostBuilder builder)
+    {
+        builder.ConfigureServices(servies =>
+        {
+            servies.AddSingleton<IStartupFilter, AuthStartupFilter>();
+        });
+
+        builder.ConfigureAppConfiguration(c =>
+        {
+            var directory = Path.GetDirectoryName(typeof(OrderingScenariosBase).Assembly.Location)!;
+
+            c.AddJsonFile(Path.Combine(directory, "Services/Ordering/appsettings.json"), optional: false);
+        });
+
+        return base.CreateHost(builder);
     }
 
     public static class Get
@@ -58,6 +67,19 @@ public class OrderingScenariosBase
         public static string OrderBy(int id)
         {
             return $"api/v1/orders/{id}";
+        }
+    }
+
+    private class AuthStartupFilter : IStartupFilter
+    {
+        public Action<IApplicationBuilder> Configure(Action<IApplicationBuilder> next)
+        {
+            return app =>
+            {
+                app.UseMiddleware<AutoAuthorizeMiddleware>();
+
+                next(app);
+            };
         }
     }
 }

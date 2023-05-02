@@ -1,37 +1,39 @@
 ﻿namespace FunctionalTests.Services.Catalog;
-using Microsoft.eShopOnContainers.Services.Catalog.API;
 
-public class CatalogScenariosBase
+using FunctionalTests.Services.Ordering;
+using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.eShopOnContainers.Services.Catalog.API;
+using Microsoft.Extensions.Hosting;
+
+public class CatalogScenariosBase : WebApplicationFactory<CatalogProgram>
 {
     public TestServer CreateServer()
     {
-        var path = Assembly.GetAssembly(typeof(CatalogScenariosBase))
-            .Location;
+        Services.MigrateDbContext<CatalogContext>((context, services) =>
+        {
+            var env = services.GetService<IWebHostEnvironment>();
+            var settings = services.GetService<IOptions<CatalogSettings>>();
+            var logger = services.GetService<ILogger<CatalogContextSeed>>();
 
-        var hostBuilder = new WebHostBuilder()
-            .UseContentRoot(Path.GetDirectoryName(path))
-            .ConfigureAppConfiguration(cb =>
-            {
-                cb.AddJsonFile("Services/Catalog/appsettings.json", optional: false)
-                .AddEnvironmentVariables();
-            });
+            new CatalogContextSeed()
+            .SeedAsync(context, env, settings, logger)
+            .Wait();
+        })
+        .MigrateDbContext<IntegrationEventLogContext>((_, __) => { });
 
-        var testServer = new TestServer(hostBuilder);
+        return Server;
+    }
 
-        testServer.Host
-            .MigrateDbContext<CatalogContext>((context, services) =>
-            {
-                var env = services.GetService<IWebHostEnvironment>();
-                var settings = services.GetService<IOptions<CatalogSettings>>();
-                var logger = services.GetService<ILogger<CatalogContextSeed>>();
+    protected override IHost CreateHost(IHostBuilder builder)
+    {
+        builder.ConfigureAppConfiguration(c =>
+        {
+            var directory = Path.GetDirectoryName(typeof(CatalogScenariosBase).Assembly.Location)!;
 
-                new CatalogContextSeed()
-                .SeedAsync(context, env, settings, logger)
-                .Wait();
-            })
-            .MigrateDbContext<IntegrationEventLogContext>((_, __) => { });
+            c.AddJsonFile(Path.Combine(directory, "Services/Catalog/appsettings.json"), optional: false);
+        });
 
-        return testServer;
+        return base.CreateHost(builder);
     }
 
     public static class Get
