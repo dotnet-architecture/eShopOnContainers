@@ -15,12 +15,6 @@ builder.Services.AddControllers(options =>
     options.Filters.Add(typeof(ValidateModelStateFilter));
 });
 
-builder.WebHost.UseFailing(options =>
-{
-    options.ConfigPath = "/Failing";
-    options.NotFilteredPaths.AddRange(new[] { "/hc", "/liveness" });
-});
-
 builder.Services.AddRedis(builder.Configuration);
 
 builder.Services.AddTransient<ProductPriceChangedIntegrationEventHandler>();
