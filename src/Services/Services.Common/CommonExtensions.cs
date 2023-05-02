@@ -150,13 +150,29 @@ public static class CommonExtensions
 
     public static IServiceCollection AddDefaultAuthentication(this IServiceCollection services, IConfiguration configuration)
     {
+        // {
+        //   "Identity": {
+        //     "Url": "http://identity",
+        //     "Audience": "basket",
+        //     "Scope": "basket"
+        //    }
+        // }
+
+        var identitySection = configuration.GetSection("Identity");
+
+        if (identitySection is null)
+        {
+            // No identity section, so no authentication
+            return services;
+        }
+
         // prevent from mapping "sub" claim to nameidentifier.
         JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("sub");
 
         services.AddAuthentication().AddJwtBearer(options =>
         {
-            var identityUrl = configuration.GetRequiredValue("IdentityUrl");
-            var audience = configuration.GetRequiredValue("Audience");
+            var identityUrl = identitySection.GetRequiredValue("Url");
+            var audience = identitySection.GetRequiredValue("Audience");
 
             options.Authority = identityUrl;
             options.RequireHttpsMetadata = false;
@@ -166,7 +182,7 @@ public static class CommonExtensions
 
         services.AddAuthorization(options =>
         {
-            var scope = configuration.GetRequiredValue("Scope");
+            var scope = identitySection.GetRequiredValue("Scope");
 
             options.AddPolicy("ApiScope", policy =>
             {
