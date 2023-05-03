@@ -82,6 +82,18 @@ public static class CommonExtensions
         app.UseSwagger();
         app.UseSwaggerUI(setup =>
         {
+            /// {
+            ///   "OpenApi": {
+            ///     "Endpoint: {
+            ///         "Name": 
+            ///     },
+            ///     "Auth": {
+            ///         "ClientId": ..,
+            ///         "AppName": ..
+            ///     }
+            ///   }
+            /// }
+
             var pathBase = configuration["PATH_BASE"];
             var openApiSection = configuration.GetRequiredSection("OpenApi");
             var authSection = openApiSection.GetRequiredSection("Auth");
@@ -104,31 +116,42 @@ public static class CommonExtensions
 
             /// {
             ///   "OpenApi": {
-            ///     "Endpoint: {
-            ///         "Name": 
-            ///     },
             ///     "Document": {
             ///         "Title": ..
             ///         "Version": ..
             ///         "Description": ..
-            ///     },
-            ///     "Auth": {
-            ///         "ClientId": ..,
-            ///         "AppName": ..
             ///     }
             ///   }
             /// }
+            var document = openApi.GetRequiredSection("Document");
 
-            var version = openApi.GetRequiredValue("Version") ?? "v1";
+            var version = document.GetRequiredValue("Version") ?? "v1";
 
             options.SwaggerDoc(version, new OpenApiInfo
             {
-                Title = openApi.GetRequiredValue("Title"),
+                Title = document.GetRequiredValue("Title"),
                 Version = version,
-                Description = openApi.GetRequiredValue("Description")
+                Description = document.GetRequiredValue("Description")
             });
 
-            var identityUrlExternal = configuration.GetRequiredValue("IdentityUrlExternal");
+            var identitySection = configuration.GetSection("Identity");
+
+            if (identitySection is null)
+            {
+                // No identity section, so no authentication open api definition
+                return;
+            }
+
+            // {
+            //   "Identity": {
+            //     "ExternalUrl": "http://identity",
+            //     "Scopes": {
+            //         "basket": "Basket API"
+            //      }
+            //    }
+            // }
+
+            var identityUrlExternal = identitySection.GetRequiredValue("ExternalUrl");
             var scopes = openApi.GetRequiredSection("Scopes").AsEnumerable().ToDictionary(p => p.Key, p => p.Value);
 
             options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
@@ -140,7 +163,7 @@ public static class CommonExtensions
                     {
                         AuthorizationUrl = new Uri($"{identityUrlExternal}/connect/authorize"),
                         TokenUrl = new Uri($"{identityUrlExternal}/connect/token"),
-                        Scopes = openApi.GetRequiredSection("Scopes").AsEnumerable().ToDictionary(p => p.Key, p => p.Value),
+                        Scopes = scopes,
                     }
                 }
             });
@@ -258,7 +281,7 @@ public static class CommonExtensions
         // {
         //   "EventBus": {
         //     "ProviderName": "ServiceBus | RabbitMQ",
-        //     "ConnectionString": "Endpoint=sb://eshop-eventbus.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=..."
+        //     "ConnectionString": "..."
         //   }
         // }
 
@@ -293,7 +316,7 @@ public static class CommonExtensions
         // {
         //   "EventBus": {
         //     "ProviderName": "ServiceBus",
-        //     "ConnectionString": "Endpoint=sb://eshop-eventbus.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=..."
+        //     "ConnectionString": "..."
         //     "SubscriptionClientName": "eshop_event_bus"
         //   }
         // }
