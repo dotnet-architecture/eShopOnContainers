@@ -24,14 +24,14 @@ var app = builder.Build();
 
 app.UseServiceDefaults();
 
-app.MapDefaultControllerRoute();
-app.MapControllers();
-
 app.UseFileServer(new FileServerOptions
 {
     FileProvider = new PhysicalFileProvider(Path.Combine(app.Environment.ContentRootPath, "Pics")),
     RequestPath = "/pics"
 });
+
+app.MapDefaultControllerRoute();
+app.MapControllers();
 
 app.MapGrpcService<CatalogService>();
 
