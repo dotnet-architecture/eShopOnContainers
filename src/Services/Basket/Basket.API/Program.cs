@@ -39,22 +39,18 @@ eventBus.Subscribe<OrderStartedIntegrationEvent, OrderStartedIntegrationEventHan
 
 try
 {
-    Log.Information("Configuring web host ({ApplicationContext})...", AppName);
+    app.Logger.LogInformation("Configuring web host ({ApplicationContext})...", AppName);
 
 
-    Log.Information("Starting web host ({ApplicationContext})...", AppName);
+    app.Logger.LogInformation("Starting web host ({ApplicationContext})...", AppName);
     await app.RunAsync();
 
     return 0;
 }
 catch (Exception ex)
 {
-    Log.Fatal(ex, "Program terminated unexpectedly ({ApplicationContext})!", AppName);
+    app.Logger.LogCritical(ex, "Program terminated unexpectedly ({ApplicationContext})!", AppName);
     return 1;
-}
-finally
-{
-    Log.CloseAndFlush();
 }
 
 public partial class Program
