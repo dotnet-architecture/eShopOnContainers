@@ -12,9 +12,9 @@ builder.Services.AddControllers(options =>
 
 builder.Services.AddGrpc();
 
-builder.Services.AddCustomDbContext(builder.Configuration);
-builder.Services.AddCustomOptions(builder.Configuration);
-builder.Services.AddCustomHealthCheck(builder.Configuration);
+builder.Services.AddDbContexts(builder.Configuration);
+builder.Services.AddApplicationOptions(builder.Configuration);
+builder.Services.AddHealthChecks(builder.Configuration);
 builder.Services.AddIntegrationServices();
 
 builder.Services.AddTransient<OrderStatusChangedToAwaitingValidationIntegrationEventHandler>();
