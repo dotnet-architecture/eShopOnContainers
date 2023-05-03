@@ -10,7 +10,6 @@ public class BasketScenarios :
         var content = new StringContent(BuildBasket(), UTF8Encoding.UTF8, "application/json");
         var uri = "/api/v1/basket/";
         var response = await server.CreateClient().PostAsync(uri, content);
-
         response.EnsureSuccessStatusCode();
     }
 
