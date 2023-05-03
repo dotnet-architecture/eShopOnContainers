@@ -32,7 +32,6 @@ app.UseFileServer(new FileServerOptions
 
 app.MapGet("/", () => Results.Redirect("/swagger"));
 
-app.MapDefaultControllerRoute();
 app.MapControllers();
 
 app.MapGrpcService<CatalogService>();
