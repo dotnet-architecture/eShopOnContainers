@@ -4,11 +4,14 @@
     {
         var hcBuilder = services.AddHealthChecks();
 
-        hcBuilder
-            .AddSqlServer(
-                configuration.GetConnectionString("Application"),
-                name: "CatalogDB-check",
-                tags: new string[] { "catalogdb" });
+        if (configuration.GetConnectionString("CatalogDB") is string connectionString)
+        {
+            hcBuilder
+                .AddSqlServer(
+                    connectionString,
+                    name: "CatalogDB-check",
+                    tags: new string[] { "catalogdb" });
+        }
 
         var accountName = configuration["AzureStorageAccountName"];
         var accountKey = configuration["AzureStorageAccountKey"];
@@ -30,7 +33,9 @@
         services.AddEntityFrameworkSqlServer()
             .AddDbContext<CatalogContext>(options =>
             {
-                options.UseSqlServer(configuration["ConnectionString"],
+                var connectionString = configuration.GetRequiredConnectionString("CatalogDB");
+
+                options.UseSqlServer(connectionString,
                                     sqlServerOptionsAction: sqlOptions =>
                                     {
                                         sqlOptions.MigrationsAssembly(typeof(Program).GetTypeInfo().Assembly.GetName().Name);
@@ -41,7 +46,9 @@
 
         services.AddDbContext<IntegrationEventLogContext>(options =>
         {
-            options.UseSqlServer(configuration["ConnectionString"],
+            var connectionString = configuration.GetRequiredConnectionString("CatalogDB");
+
+            options.UseSqlServer(connectionString,
                                     sqlServerOptionsAction: sqlOptions =>
                                     {
                                         sqlOptions.MigrationsAssembly(typeof(Program).GetTypeInfo().Assembly.GetName().Name);
@@ -86,4 +93,7 @@
 
         return services;
     }
+
+    private static string GetRequiredConnectionString(this IConfiguration configuration, string name) =>
+    configuration.GetConnectionString(name) ?? throw new InvalidOperationException($"Configuration missing value for: {(configuration is IConfigurationSection s ? s.Path + ":ConnectionStrings:" + name : "ConnectionStrings:" + name)}");
 }
