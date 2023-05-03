@@ -45,7 +45,6 @@
     <PackageReference Include="AspNetCore.HealthChecks.Rabbitmq" />
     <PackageReference Include="AspNetCore.HealthChecks.SqlServer" />
     <PackageReference Include="AspNetCore.HealthChecks.UI.Client" />
-    <PackageReference Include="Autofac.Extensions.DependencyInjection" />
     <PackageReference Include="Google.Protobuf" />
     <PackageReference Include="Grpc.AspNetCore.Server" />
     <PackageReference Include="Grpc.Tools" PrivateAssets="All" />
