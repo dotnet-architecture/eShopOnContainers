@@ -30,6 +30,8 @@ app.UseFileServer(new FileServerOptions
     RequestPath = "/pics"
 });
 
+app.MapGet("/", () => Results.Redirect("/swagger"));
+
 app.MapDefaultControllerRoute();
 app.MapControllers();
 
