@@ -2,7 +2,7 @@
 
 public static class CustomExtensionMethods
 {
-    public static IServiceCollection AddCustomHealthCheck(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddHealthChecks(this IServiceCollection services, IConfiguration configuration)
     {
         var hcBuilder = services.AddHealthChecks();
 
@@ -30,11 +30,11 @@ public static class CustomExtensionMethods
         return services;
     }
 
-    public static IServiceCollection AddCustomDbContext(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddDbContexts(this IServiceCollection services, IConfiguration configuration)
     {
-        void ConfigureSqlOptions(SqlServerDbContextOptionsBuilder sqlOptions)
+        static void ConfigureSqlOptions(SqlServerDbContextOptionsBuilder sqlOptions)
         {
-            sqlOptions.MigrationsAssembly(typeof(Program).FullName);
+            sqlOptions.MigrationsAssembly(typeof(Program).Assembly.FullName);
 
             // Configuring Connection Resiliency: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency 
 
@@ -59,7 +59,7 @@ public static class CustomExtensionMethods
         return services;
     }
 
-    public static IServiceCollection AddCustomOptions(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddApplicationOptions(this IServiceCollection services, IConfiguration configuration)
     {
         services.Configure<CatalogSettings>(configuration);
 
