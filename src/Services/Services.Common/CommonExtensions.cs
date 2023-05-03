@@ -1,5 +1,6 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Net;
+using Autofac.Core;
 using Azure.Identity;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Builder;
@@ -79,6 +80,13 @@ public static class CommonExtensions
 
     public static IApplicationBuilder UseDefaultOpenApi(this IApplicationBuilder app, IConfiguration configuration)
     {
+        var openApiSection = configuration.GetRequiredSection("OpenApi");
+
+        if (!openApiSection.Exists())
+        {
+            return app;
+        }
+
         app.UseSwagger();
         app.UseSwaggerUI(setup =>
         {
@@ -95,7 +103,6 @@ public static class CommonExtensions
             /// }
 
             var pathBase = configuration["PATH_BASE"];
-            var openApiSection = configuration.GetRequiredSection("OpenApi");
             var authSection = openApiSection.GetSection("Auth");
             var endpointSection = openApiSection.GetRequiredSection("Endpoint");
 
@@ -113,11 +120,17 @@ public static class CommonExtensions
         return app;
     }
 
-    public static IServiceCollection AddDefaultOpenApi(this IServiceCollection services, IConfiguration configuration) =>
-        services.AddSwaggerGen(options =>
-        {
-            var openApi = configuration.GetRequiredSection("OpenApi");
+    public static IServiceCollection AddDefaultOpenApi(this IServiceCollection services, IConfiguration configuration)
+    {
+        var openApi = configuration.GetRequiredSection("OpenApi");
 
+        if (!openApi.Exists())
+        {
+            return services;
+        }
+
+        return services.AddSwaggerGen(options =>
+        {
             /// {
             ///   "OpenApi": {
             ///     "Document": {
@@ -174,6 +187,7 @@ public static class CommonExtensions
 
             options.OperationFilter<AuthorizeCheckOperationFilter>();
         });
+    }
 
     public static IServiceCollection AddDefaultAuthentication(this IServiceCollection services, IConfiguration configuration)
     {
@@ -243,27 +257,29 @@ public static class CommonExtensions
 
     public static ConfigurationManager AddKeyVault(this ConfigurationManager configuration)
     {
-        if (configuration.GetValue("UseVault", false))
+        // {
+        //   "Vault": {
+        //     "Name": "myvault",
+        //     "TenantId": "mytenantid",
+        //     "ClientId": "myclientid",
+        //    }
+        // }
+
+        var vaultSection = configuration.GetSection("Vault");
+
+        if (!vaultSection.Exists())
         {
-            // {
-            //   "Vault": {
-            //     "Name": "myvault",
-            //     "TenantId": "mytenantid",
-            //     "ClientId": "myclientid",
-            //    }
-            // }
-
-            var vaultSection = configuration.GetRequiredSection("Vault");
-
-            var credential = new ClientSecretCredential(
-                vaultSection.GetRequiredValue("TenantId"),
-                vaultSection.GetRequiredValue("ClientId"),
-                vaultSection.GetRequiredValue("ClientSecret"));
-
-            var name = vaultSection.GetRequiredValue("Name");
-
-            configuration.AddAzureKeyVault(new Uri($"https://{name}.vault.azure.net/"), credential);
+            return configuration;
         }
+
+        var credential = new ClientSecretCredential(
+            vaultSection.GetRequiredValue("TenantId"),
+            vaultSection.GetRequiredValue("ClientId"),
+            vaultSection.GetRequiredValue("ClientSecret"));
+
+        var name = vaultSection.GetRequiredValue("Name");
+
+        configuration.AddAzureKeyVault(new Uri($"https://{name}.vault.azure.net/"), credential);
 
         return configuration;
     }
