@@ -96,14 +96,18 @@ public static class CommonExtensions
 
             var pathBase = configuration["PATH_BASE"];
             var openApiSection = configuration.GetRequiredSection("OpenApi");
-            var authSection = openApiSection.GetRequiredSection("Auth");
+            var authSection = openApiSection.GetSection("Auth");
             var endpointSection = openApiSection.GetRequiredSection("Endpoint");
 
             var swaggerUrl = endpointSection["Url"] ?? $"{(!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty)}/swagger/v1/swagger.json";
 
             setup.SwaggerEndpoint(swaggerUrl, endpointSection.GetRequiredValue("Name"));
-            setup.OAuthClientId(authSection.GetRequiredValue("ClientId"));
-            setup.OAuthAppName(authSection.GetRequiredValue("AppName"));
+
+            if (authSection.Exists())
+            {
+                setup.OAuthClientId(authSection.GetRequiredValue("ClientId"));
+                setup.OAuthAppName(authSection.GetRequiredValue("AppName"));
+            }
         });
 
         return app;
@@ -136,7 +140,7 @@ public static class CommonExtensions
 
             var identitySection = configuration.GetSection("Identity");
 
-            if (identitySection is null)
+            if (!identitySection.Exists())
             {
                 // No identity section, so no authentication open api definition
                 return;
@@ -152,7 +156,7 @@ public static class CommonExtensions
             // }
 
             var identityUrlExternal = identitySection.GetRequiredValue("ExternalUrl");
-            var scopes = openApi.GetRequiredSection("Scopes").AsEnumerable().ToDictionary(p => p.Key, p => p.Value);
+            var scopes = identitySection.GetRequiredSection("Scopes").AsEnumerable().ToDictionary(p => p.Key, p => p.Value);
 
             options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
             {
@@ -183,7 +187,7 @@ public static class CommonExtensions
 
         var identitySection = configuration.GetSection("Identity");
 
-        if (identitySection is null)
+        if (!identitySection.Exists())
         {
             // No identity section, so no authentication
             return services;
@@ -266,6 +270,14 @@ public static class CommonExtensions
 
     public static IServiceCollection AddApplicationInsights(this IServiceCollection services, IConfiguration configuration)
     {
+        var appInsightsSection = configuration.GetSection("ApplicationInsights");
+
+        // No instrumentation key, so no application insights
+        if (string.IsNullOrEmpty(appInsightsSection["InstrumentationKey"]))
+        {
+            return services;
+        }
+
         services.AddApplicationInsightsTelemetry(configuration);
         services.AddApplicationInsightsKubernetesEnricher();
         return services;
@@ -288,7 +300,7 @@ public static class CommonExtensions
         var eventBusSection = configuration.GetRequiredSection("EventBus");
         var eventBusConnectionString = eventBusSection.GetRequiredValue("ConnectionString");
 
-        return eventBusSection.GetRequiredValue("ProviderName").ToLowerInvariant() switch
+        return eventBusSection["ProviderName"]?.ToLowerInvariant() switch
         {
             "servicebus" => hcBuilder.AddAzureServiceBusTopic(
                     eventBusConnectionString,
@@ -438,5 +450,5 @@ public static class CommonExtensions
     }
 
     private static string GetRequiredValue(this IConfiguration configuration, string name) =>
-        configuration[name] ?? throw new InvalidOperationException($"Configuration missing value for: {(configuration is IConfigurationSection s ? s.Key + ":" + name : name)}");
+        configuration[name] ?? throw new InvalidOperationException($"Configuration missing value for: {(configuration is IConfigurationSection s ? s.Path + ":" + name : name)}");
 }
