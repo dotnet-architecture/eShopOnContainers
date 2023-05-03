@@ -1,4 +1,6 @@
-﻿public static class CustomExtensionMethods
+﻿using Microsoft.EntityFrameworkCore.Infrastructure;
+
+public static class CustomExtensionMethods
 {
     public static IServiceCollection AddCustomHealthCheck(this IServiceCollection services, IConfiguration configuration)
     {
@@ -30,31 +32,28 @@
 
     public static IServiceCollection AddCustomDbContext(this IServiceCollection services, IConfiguration configuration)
     {
+        void ConfigureSqlOptions(SqlServerDbContextOptionsBuilder sqlOptions)
+        {
+            sqlOptions.MigrationsAssembly(typeof(Program).FullName);
+
+            // Configuring Connection Resiliency: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency 
+
+            sqlOptions.EnableRetryOnFailure(maxRetryCount: 15, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
+        };
+
         services.AddEntityFrameworkSqlServer()
             .AddDbContext<CatalogContext>(options =>
             {
                 var connectionString = configuration.GetRequiredConnectionString("CatalogDB");
 
-                options.UseSqlServer(connectionString,
-                                    sqlServerOptionsAction: sqlOptions =>
-                                    {
-                                        sqlOptions.MigrationsAssembly(typeof(Program).GetTypeInfo().Assembly.GetName().Name);
-                                        //Configuring Connection Resiliency: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency 
-                                        sqlOptions.EnableRetryOnFailure(maxRetryCount: 15, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
-                                    });
+                options.UseSqlServer(connectionString, ConfigureSqlOptions);
             });
 
         services.AddDbContext<IntegrationEventLogContext>(options =>
         {
             var connectionString = configuration.GetRequiredConnectionString("CatalogDB");
 
-            options.UseSqlServer(connectionString,
-                                    sqlServerOptionsAction: sqlOptions =>
-                                    {
-                                        sqlOptions.MigrationsAssembly(typeof(Program).GetTypeInfo().Assembly.GetName().Name);
-                                        //Configuring Connection Resiliency: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency 
-                                        sqlOptions.EnableRetryOnFailure(maxRetryCount: 15, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
-                                    });
+            options.UseSqlServer(connectionString, ConfigureSqlOptions);
         });
 
         return services;
@@ -63,6 +62,8 @@
     public static IServiceCollection AddCustomOptions(this IServiceCollection services, IConfiguration configuration)
     {
         services.Configure<CatalogSettings>(configuration);
+
+        // TODO: Move to the new problem details middleware
         services.Configure<ApiBehaviorOptions>(options =>
         {
             options.InvalidModelStateResponseFactory = context =>
@@ -95,5 +96,5 @@
     }
 
     private static string GetRequiredConnectionString(this IConfiguration configuration, string name) =>
-    configuration.GetConnectionString(name) ?? throw new InvalidOperationException($"Configuration missing value for: {(configuration is IConfigurationSection s ? s.Path + ":ConnectionStrings:" + name : "ConnectionStrings:" + name)}");
+        configuration.GetConnectionString(name) ?? throw new InvalidOperationException($"Configuration missing value for: {(configuration is IConfigurationSection s ? s.Path + ":ConnectionStrings:" + name : "ConnectionStrings:" + name)}");
 }
