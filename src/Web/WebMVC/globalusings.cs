@@ -26,7 +26,6 @@ global using Microsoft.Extensions.Hosting;
 global using Microsoft.Extensions.Logging;
 global using Microsoft.Extensions.Options;
 global using Microsoft.IdentityModel.Logging;
-global using Serilog;
 global using StackExchange.Redis;
 global using System.Collections.Generic;
 global using System.ComponentModel.DataAnnotations;

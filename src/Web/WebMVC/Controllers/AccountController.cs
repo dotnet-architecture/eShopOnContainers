@@ -16,7 +16,7 @@ public class AccountController : Controller
         var user = User as ClaimsPrincipal;
         var token = await HttpContext.GetTokenAsync("access_token");
 
-        _logger.LogInformation("----- User {@User} authenticated into {AppName}", user, Program.AppName);
+        _logger.LogInformation("----- User {@User} authenticated", user);
 
         if (token != null)
         {

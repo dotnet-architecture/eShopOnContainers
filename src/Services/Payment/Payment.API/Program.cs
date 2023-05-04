@@ -1,9 +1,4 @@
-﻿var builder = WebApplication.CreateBuilder(new WebApplicationOptions
-{
-    Args = args,
-    ApplicationName = typeof(Program).Assembly.FullName,
-    ContentRootPath = Directory.GetCurrentDirectory()
-});
+﻿var builder = WebApplication.CreateBuilder(args);
 if (builder.Configuration.GetValue<bool>("UseVault", false))
 {
     TokenCredential credential = new ClientSecretCredential(
@@ -16,7 +11,6 @@ builder.Configuration.SetBasePath(Directory.GetCurrentDirectory());
 builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 builder.Configuration.AddEnvironmentVariables();
 builder.WebHost.CaptureStartupErrors(false);
-builder.Host.UseSerilog(CreateSerilogLogger(builder.Configuration));
 builder.Services
     .AddCustomHealthCheck(builder.Configuration);
 builder.Services.Configure<PaymentSettings>(builder.Configuration);
@@ -88,22 +82,8 @@ app.MapHealthChecks("/liveness", new HealthCheckOptions
 {
     Predicate = r => r.Name.Contains("self")
 });
-try
-{
-    Log.Information("Starting web host ({ApplicationContext})...", Program.AppName);
-    await app.RunAsync();
 
-    return 0;
-}
-catch (Exception ex)
-{
-    Log.Fatal(ex, "Program terminated unexpectedly ({ApplicationContext})!", Program.AppName);
-    return 1;
-}
-finally
-{
-    Log.CloseAndFlush();
-}
+await app.RunAsync();
 
 void RegisterEventBus(IServiceCollection services)
 {
@@ -147,21 +127,6 @@ void ConfigureEventBus(IApplicationBuilder app)
 {
     var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
     eventBus.Subscribe<OrderStatusChangedToStockConfirmedIntegrationEvent, OrderStatusChangedToStockConfirmedIntegrationEventHandler>();
-}
-
-Serilog.ILogger CreateSerilogLogger(IConfiguration configuration)
-{
-    var seqServerUrl = configuration["Serilog:SeqServerUrl"];
-    var logstashUrl = configuration["Serilog:LogstashgUrl"];
-    return new LoggerConfiguration()
-        .MinimumLevel.Verbose()
-        .Enrich.WithProperty("ApplicationContext", Program.AppName)
-        .Enrich.FromLogContext()
-        .WriteTo.Console()
-        .WriteTo.Seq(string.IsNullOrWhiteSpace(seqServerUrl) ? "http://seq" : seqServerUrl)
-        .WriteTo.Http(string.IsNullOrWhiteSpace(logstashUrl) ? "http://logstash:8080" : logstashUrl, null)
-        .ReadFrom.Configuration(configuration)
-        .CreateLogger();
 }
 
 public partial class Program

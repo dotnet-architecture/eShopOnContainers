@@ -8,7 +8,6 @@ AddHttpClientServices(builder);
 AddCustomAuthentication(builder);
 
 builder.WebHost.CaptureStartupErrors(false);
-builder.Host.UseSerilog(CreateSerilogLogger(builder.Configuration));
 
 var app = builder.Build();
 
@@ -57,26 +56,6 @@ app.MapHealthChecks("/hc", new HealthCheckOptions()
 });
 
 await app.RunAsync();
-
-Serilog.ILogger CreateSerilogLogger(IConfiguration configuration)
-{
-    var seqServerUrl = configuration["Serilog:SeqServerUrl"];
-    var logstashUrl = configuration["Serilog:LogstashgUrl"];
-    var cfg = new LoggerConfiguration()
-        .ReadFrom.Configuration(configuration)
-        .Enrich.WithProperty("ApplicationContext", AppName)
-        .Enrich.FromLogContext()
-        .WriteTo.Console();
-    if (!string.IsNullOrWhiteSpace(seqServerUrl))
-    {
-        cfg.WriteTo.Seq(seqServerUrl);
-    }
-    if (!string.IsNullOrWhiteSpace(logstashUrl))
-    {
-        cfg.WriteTo.Http(logstashUrl, null);
-    }
-    return cfg.CreateLogger();
-}
 
 static void AddApplicationInsights(WebApplicationBuilder builder)
 {

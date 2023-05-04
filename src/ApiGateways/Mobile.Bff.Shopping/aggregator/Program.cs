@@ -1,4 +1,4 @@
-await BuildWebHost(args).RunAsync();
+﻿await BuildWebHost(args).RunAsync();
 IWebHost BuildWebHost(string[] args) =>
     WebHost
         .CreateDefaultBuilder(args)
@@ -13,11 +13,4 @@ IWebHost BuildWebHost(string[] args) =>
             });
         })
         .UseStartup<Startup>()
-        .UseSerilog((builderContext, config) =>
-        {
-            config
-                .MinimumLevel.Information()
-                .Enrich.FromLogContext()
-                .WriteTo.Console();
-        })
         .Build();

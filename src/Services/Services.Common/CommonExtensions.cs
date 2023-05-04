@@ -16,7 +16,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using RabbitMQ.Client;
-using Serilog;
 
 namespace Services.Common;
 
@@ -32,11 +31,6 @@ public static class CommonExtensions
 
         // Default health checks assume the event bus and self health checks
         builder.Services.AddDefaultHealthChecks(builder.Configuration);
-
-        // Configure the default logging for this application
-        // builder.Host.UseDefaultSerilog(builder.Configuration, builder.Environment.ApplicationName);
-
-        // Customizations for this application
 
         // Add the event bus
         builder.Services.AddEventBus(builder.Configuration);
@@ -386,36 +380,6 @@ public static class CommonExtensions
 
         services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
         return services;
-    }
-
-    public static void UseDefaultSerilog(this IHostBuilder builder, IConfiguration configuration, string name)
-    {
-        builder.UseSerilog(CreateSerilogLogger(configuration));
-
-        Serilog.ILogger CreateSerilogLogger(IConfiguration configuration)
-        {
-            var seqServerUrl = configuration["Serilog:SeqServerUrl"];
-            var logstashUrl = configuration["Serilog:LogstashgUrl"];
-
-            var loggingConfiguration = new LoggerConfiguration()
-                .MinimumLevel.Verbose()
-                .Enrich.WithProperty("ApplicationContext", name)
-                .Enrich.FromLogContext()
-                .WriteTo.Console()
-                .ReadFrom.Configuration(configuration);
-
-            if (!string.IsNullOrEmpty(seqServerUrl))
-            {
-                loggingConfiguration.WriteTo.Seq(seqServerUrl);
-            }
-
-            if (!string.IsNullOrEmpty(logstashUrl))
-            {
-                loggingConfiguration.WriteTo.Http(logstashUrl, null);
-            }
-
-            return loggingConfiguration.CreateLogger();
-        }
     }
 
     public static void MapDefaultHealthChecks(this IEndpointRouteBuilder routes)

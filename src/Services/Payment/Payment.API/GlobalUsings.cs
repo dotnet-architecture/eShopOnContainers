@@ -20,8 +20,6 @@ global using Microsoft.Extensions.Logging;
 global using Microsoft.eShopOnContainers.Payment.API.IntegrationEvents.EventHandling;
 global using Microsoft.eShopOnContainers.Payment.API;
 global using RabbitMQ.Client;
-global using Serilog.Context;
-global using Serilog;
 global using System.Threading.Tasks;
 global using System;
 global using System.IO;

@@ -25,7 +25,6 @@ global using Microsoft.Extensions.Hosting;
 global using Microsoft.Extensions.Logging;
 global using Microsoft.Extensions.Options;
 global using Microsoft.OpenApi.Models;
-global using Serilog;
 global using Swashbuckle.AspNetCore.SwaggerGen;
 global using System.Collections.Generic;
 global using System.IdentityModel.Tokens.Jwt;

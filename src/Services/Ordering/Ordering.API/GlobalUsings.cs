@@ -64,8 +64,6 @@ global using Microsoft.OpenApi.Models;
 global using Polly.Retry;
 global using Polly;
 global using RabbitMQ.Client;
-global using Serilog.Context;
-global using Serilog;
 global using Swashbuckle.AspNetCore.SwaggerGen;
 global using System.Collections.Generic;
 global using System.Data.Common;

@@ -24,14 +24,10 @@ builder.WebHost.ConfigureKestrel(options =>
     });
 });
 
-builder.Host.UseSerilog(CreateSerilogLogger(builder.Configuration));
+builder.Services.AddGrpc(options => options.EnableDetailedErrors = true);
+builder.Services.AddApplicationInsightsTelemetry(builder.Configuration);
+builder.Services.AddApplicationInsightsKubernetesEnricher();
 builder.Services
-    .AddGrpc(options =>
-    {
-        options.EnableDetailedErrors = true;
-    })
-    .Services
-    .AddApplicationInsights(builder.Configuration)
     .AddCustomMvc()
     .AddHealthChecks(builder.Configuration)
     .AddCustomDbContext(builder.Configuration)
@@ -57,41 +53,6 @@ var services = builder.Services;
             cfg.AddOpenBehavior(typeof(ValidatorBehavior<,>));
             cfg.AddOpenBehavior(typeof(TransactionBehavior<,>));
         });
-
-/*
-        // Register all the command handlers.
-        services.AddSingleton<IRequestHandler<CancelOrderCommand, bool>, CancelOrderCommandHandler>();
-        services.AddSingleton<IRequestHandler<IdentifiedCommand<CancelOrderCommand, bool>, bool>, CancelOrderIdentifiedCommandHandler>();
-
-        services.AddSingleton<IRequestHandler<CreateOrderCommand, bool>, CreateOrderCommandHandler>();
-        services.AddSingleton<IRequestHandler<IdentifiedCommand<CreateOrderCommand, bool>, bool>, CreateOrderIdentifiedCommandHandler>();
-
-        services.AddSingleton<IRequestHandler<CreateOrderDraftCommand, OrderDraftDTO>, CreateOrderDraftCommandHandler>();
-
-        services.AddSingleton<IRequestHandler<IdentifiedCommand<SetAwaitingValidationOrderStatusCommand, bool>, bool>, SetAwaitingValidationIdentifiedOrderStatusCommandHandler>();
-        services.AddSingleton<IRequestHandler<SetAwaitingValidationOrderStatusCommand, bool>, SetAwaitingValidationOrderStatusCommandHandler>();
-
-        services.AddSingleton<IRequestHandler<IdentifiedCommand<SetPaidOrderStatusCommand, bool>, bool>, SetPaidIdentifiedOrderStatusCommandHandler>();
-        services.AddSingleton<IRequestHandler<SetPaidOrderStatusCommand, bool>, SetPaidOrderStatusCommandHandler>();
-
-        services.AddSingleton<IRequestHandler<IdentifiedCommand<SetStockConfirmedOrderStatusCommand, bool>, bool>, SetStockConfirmedOrderStatusIdentifiedCommandHandler>();
-        services.AddSingleton<IRequestHandler<SetStockConfirmedOrderStatusCommand, bool>, SetStockConfirmedOrderStatusCommandHandler>();
-
-        services.AddSingleton<IRequestHandler<IdentifiedCommand<SetStockRejectedOrderStatusCommand, bool>, bool>, SetStockRejectedOrderStatusIdentifiedCommandHandler>();
-        services.AddSingleton<IRequestHandler<SetStockRejectedOrderStatusCommand, bool>, SetStockRejectedOrderStatusCommandHandler>();
-
-        services.AddSingleton<IRequestHandler<IdentifiedCommand<ShipOrderCommand, bool>, bool>, ShipOrderIdentifiedCommandHandler>();
-        services.AddSingleton<IRequestHandler<ShipOrderCommand, bool>, ShipOrderCommandHandler>();
-
-        // Register the DomainEventHandler classes (they implement INotificationHandler<>) in assembly holding the Domain Events
-        services.AddSingleton<INotificationHandler<OrderCancelledDomainEvent>, OrderCancelledDomainEventHandler>();
-        services.AddSingleton<INotificationHandler<OrderShippedDomainEvent>, OrderShippedDomainEventHandler>();
-        services.AddSingleton<INotificationHandler<OrderStatusChangedToAwaitingValidationDomainEvent>, OrderStatusChangedToAwaitingValidationDomainEventHandler>();
-        services.AddSingleton<INotificationHandler<OrderStatusChangedToPaidDomainEvent>, OrderStatusChangedToPaidDomainEventHandler>();
-        services.AddSingleton<INotificationHandler<OrderStatusChangedToStockConfirmedDomainEvent>, OrderStatusChangedToStockConfirmedDomainEventHandler>();
-        services.AddSingleton<INotificationHandler<BuyerAndPaymentMethodVerifiedDomainEvent>, UpdateOrderWhenBuyerAndPaymentMethodVerifiedDomainEventHandler>();
-        services.AddSingleton<INotificationHandler<OrderStartedDomainEvent>, ValidateOrAddBuyerAggregateWhenOrderStartedDomainEventHandler>();
-*/
 
         // Register the command validators for the validator behavior (validators based on FluentValidation library)
         services.AddSingleton<IValidator<CancelOrderCommand>, CancelOrderCommandValidator>();
@@ -135,13 +96,12 @@ if (!string.IsNullOrEmpty(pathBase))
 {
     app.UsePathBase(pathBase);
 }
-app.UseSwagger()
-           .UseSwaggerUI(c =>
-           {
-               c.SwaggerEndpoint($"{(!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty)}/swagger/v1/swagger.json", "Ordering.API V1");
-               c.OAuthClientId("orderingswaggerui");
-               c.OAuthAppName("Ordering Swagger UI");
-           });
+app.UseSwagger().UseSwaggerUI(c =>
+{
+   c.SwaggerEndpoint($"{(!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty)}/swagger/v1/swagger.json", "Ordering.API V1");
+   c.OAuthClientId("orderingswaggerui");
+   c.OAuthAppName("Ordering Swagger UI");
+});
 
 app.UseRouting();
 app.UseCors("CorsPolicy");
@@ -174,10 +134,9 @@ app.MapHealthChecks("/liveness", new HealthCheckOptions
     Predicate = r => r.Name.Contains("self")
 });
 ConfigureEventBus(app);
-try
+
+using (var scope = app.Services.CreateScope())
 {
-    Log.Information("Applying migrations ({ApplicationContext})...", Program.AppName);
-    using var scope = app.Services.CreateScope();
     var context = scope.ServiceProvider.GetRequiredService<OrderingContext>();
     var env = app.Services.GetService<IWebHostEnvironment>();
     var settings = app.Services.GetService<IOptions<OrderingSettings>>();
@@ -187,21 +146,10 @@ try
     await new OrderingContextSeed().SeedAsync(context, env, settings, logger);
     var integEventContext = scope.ServiceProvider.GetRequiredService<IntegrationEventLogContext>();
     await integEventContext.Database.MigrateAsync();
+}
 
-    Log.Information("Starting web host ({ApplicationContext})...", Program.AppName);
-    await app.RunAsync();
+await app.RunAsync();
 
-    return 0;
-}
-catch (Exception ex)
-{
-    Log.Fatal(ex, "Program terminated unexpectedly ({ApplicationContext})!", Program.AppName);
-    return 1;
-}
-finally
-{
-    Log.CloseAndFlush();
-}
 void ConfigureEventBus(IApplicationBuilder app)
 {
     var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
@@ -213,37 +161,9 @@ void ConfigureEventBus(IApplicationBuilder app)
     eventBus.Subscribe<OrderPaymentFailedIntegrationEvent, IIntegrationEventHandler<OrderPaymentFailedIntegrationEvent>>();
     eventBus.Subscribe<OrderPaymentSucceededIntegrationEvent, IIntegrationEventHandler<OrderPaymentSucceededIntegrationEvent>>();
 }
-Serilog.ILogger CreateSerilogLogger(IConfiguration configuration)
-{
-    var seqServerUrl = configuration["Serilog:SeqServerUrl"];
-    var logstashUrl = configuration["Serilog:LogstashgUrl"];
-    return new LoggerConfiguration()
-        .MinimumLevel.Verbose()
-        .Enrich.WithProperty("ApplicationContext", Program.AppName)
-        .Enrich.FromLogContext()
-        .WriteTo.Console()
-        .WriteTo.Seq(string.IsNullOrWhiteSpace(seqServerUrl) ? "http://seq" : seqServerUrl)
-        .WriteTo.Http(string.IsNullOrWhiteSpace(logstashUrl) ? "http://logstash:8080" : logstashUrl, null)
-        .ReadFrom.Configuration(configuration)
-        .CreateLogger();
-}
-
-public partial class Program
-{
-    private static string Namespace = typeof(Program).Assembly.GetName().Name;
-    public static string AppName = Namespace.Substring(Namespace.LastIndexOf('.', Namespace.LastIndexOf('.') - 1) + 1);
-}
 
 static class CustomExtensionsMethods
 {
-    public static IServiceCollection AddApplicationInsights(this IServiceCollection services, IConfiguration configuration)
-    {
-        services.AddApplicationInsightsTelemetry(configuration);
-        services.AddApplicationInsightsKubernetesEnricher();
-
-        return services;
-    }
-
     public static IServiceCollection AddCustomMvc(this IServiceCollection services)
     {
         // Add framework services.

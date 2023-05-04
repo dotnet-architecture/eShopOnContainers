@@ -24,15 +24,15 @@ public class UserCheckoutAcceptedIntegrationEventHandler : IIntegrationEventHand
     /// <returns></returns>
     public async Task Handle(UserCheckoutAcceptedIntegrationEvent @event)
     {
-        using (LogContext.PushProperty("IntegrationEventContext", @event.Id))
+        using (_logger.BeginScope(new List<KeyValuePair<string, object>> { new ("IntegrationEventContext", @event.Id) }))
         {
-            _logger.LogInformation("----- Handling integration event: {IntegrationEventId} at {AppName} - ({@IntegrationEvent})", @event.Id, Program.AppName, @event);
+            _logger.LogInformation("----- Handling integration event: {IntegrationEventId} - ({@IntegrationEvent})", @event.Id, @event);
 
             var result = false;
 
             if (@event.RequestId != Guid.Empty)
             {
-                using (LogContext.PushProperty("IdentifiedCommandId", @event.RequestId))
+                using (_logger.BeginScope(new List<KeyValuePair<string, object>> { new ("IdentifiedCommandId", @event.RequestId) }))
                 {
                     var createOrderCommand = new CreateOrderCommand(@event.Basket.Items, @event.UserId, @event.UserName, @event.City, @event.Street,
                         @event.State, @event.Country, @event.ZipCode,

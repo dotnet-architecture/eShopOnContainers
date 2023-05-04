@@ -23,12 +23,6 @@
 	  <PackageReference Include="Microsoft.AspNetCore.SignalR.StackExchangeRedis" />
 	  <PackageReference Include="Microsoft.Extensions.Logging.AzureAppServices" />
 	  <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" />
-	  <PackageReference Include="Serilog.AspNetCore" />
-	  <PackageReference Include="Serilog.Enrichers.Environment" />
-	  <PackageReference Include="Serilog.Settings.Configuration" />
-	  <PackageReference Include="Serilog.Sinks.Console" />
-	  <PackageReference Include="Serilog.Sinks.Http" />
-	  <PackageReference Include="Serilog.Sinks.Seq" />
   </ItemGroup>
 
   <ItemGroup>

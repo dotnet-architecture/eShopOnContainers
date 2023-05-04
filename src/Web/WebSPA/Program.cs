@@ -37,16 +37,6 @@ builder.Services.AddSpaStaticFiles(configuration =>
 
 builder.Logging.AddConfiguration(builder.Configuration.GetSection("Logging"));
 builder.Logging.AddAzureWebAppDiagnostics();
-builder.Host.UseSerilog((builderContext, config) =>
-{
-    config
-        .MinimumLevel.Information()
-        .Enrich.FromLogContext()
-        .WriteTo.Seq("http://seq")
-        .ReadFrom.Configuration(builderContext.Configuration)
-        .WriteTo.Console();
-})
-.UseConsoleLifetime();
 
 var app = builder.Build();
 

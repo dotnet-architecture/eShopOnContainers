@@ -14,9 +14,9 @@ public class OrderStockRejectedIntegrationEventHandler : IIntegrationEventHandle
 
     public async Task Handle(OrderStockRejectedIntegrationEvent @event)
     {
-        using (LogContext.PushProperty("IntegrationEventContext", @event.Id))
+        using (_logger.BeginScope(new List<KeyValuePair<string, object>> { new ("IntegrationEventContext", @event.Id) }))
         {
-            _logger.LogInformation("----- Handling integration event: {IntegrationEventId} at {AppName} - ({@IntegrationEvent})", @event.Id, Program.AppName, @event);
+            _logger.LogInformation("----- Handling integration event: {IntegrationEventId} - ({@IntegrationEvent})", @event.Id, @event);
 
             var orderStockRejectedItems = @event.OrderStockItems
                 .FindAll(c => !c.HasStock)
