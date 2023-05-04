@@ -27,23 +27,7 @@ var app = builder.Build();
 
 try
 {
-    app.Logger.LogInformation("Running health checks...");
-
-    // Do a health check on startup, this will throw an exception if any of the checks fail
-    var report = await app.Services.GetRequiredService<HealthCheckService>().CheckHealthAsync();
-
-    if (report.Status == HealthStatus.Unhealthy)
-    {
-        app.Logger.LogCritical("Health checks failed!");
-        foreach (var entry in report.Entries)
-        {
-            if (entry.Value.Status == HealthStatus.Unhealthy)
-            {
-                app.Logger.LogCritical("{Check}: {Status}", entry.Key, entry.Value.Status);
-            }
-        }
-        return 1;
-    }
+    await app.CheckHealthAsync();
 
     app.UseServiceDefaults();
 

@@ -66,6 +66,30 @@ public static class CommonExtensions
         return app;
     }
 
+    public static async Task<bool> CheckHealthAsync(this WebApplication app)
+    {
+        app.Logger.LogInformation("Running health checks...");
+
+        // Do a health check on startup, this will throw an exception if any of the checks fail
+        var report = await app.Services.GetRequiredService<HealthCheckService>().CheckHealthAsync();
+
+        if (report.Status == HealthStatus.Unhealthy)
+        {
+            app.Logger.LogCritical("Health checks failed!");
+            foreach (var entry in report.Entries)
+            {
+                if (entry.Value.Status == HealthStatus.Unhealthy)
+                {
+                    app.Logger.LogCritical("{Check}: {Status}", entry.Key, entry.Value.Status);
+                }
+            }
+
+            return false;
+        }
+
+        return true;
+    }
+
     public static IApplicationBuilder UseDefaultOpenApi(this IApplicationBuilder app, IConfiguration configuration)
     {
         var openApiSection = configuration.GetSection("OpenApi");
