@@ -1,6 +1,4 @@
-﻿using Services.Common;
-
-var builder = WebApplication.CreateBuilder(args);
+﻿var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
 
@@ -25,9 +23,9 @@ builder.Services.AddTransient<IIdentityService, IdentityService>();
 
 var app = builder.Build();
 
-app.MapGet("/", () => Results.Redirect("/swagger"));
-
 app.UseServiceDefaults();
+
+app.MapGet("/", () => Results.Redirect("/swagger"));
 
 app.MapGrpcService<BasketService>();
 app.MapControllers();
@@ -39,10 +37,6 @@ eventBus.Subscribe<OrderStartedIntegrationEvent, OrderStartedIntegrationEventHan
 
 try
 {
-    app.Logger.LogInformation("Configuring web host ({ApplicationContext})...", AppName);
-
-
-    app.Logger.LogInformation("Starting web host ({ApplicationContext})...", AppName);
     await app.RunAsync();
 
     return 0;
