@@ -21,7 +21,7 @@ public class OrdersWebApiTest
     public async Task Cancel_order_with_requestId_success()
     {
         //Arrange
-        _mediatorMock.Setup(x => x.Send(It.IsAny<IdentifiedCommand<CancelOrderCommand, bool>>(), default(CancellationToken)))
+        _mediatorMock.Setup(x => x.Send(It.IsAny<IdentifiedCommand<CancelOrderCommand, bool>>(), default))
             .Returns(Task.FromResult(true));
 
         //Act
@@ -37,7 +37,7 @@ public class OrdersWebApiTest
     public async Task Cancel_order_bad_request()
     {
         //Arrange
-        _mediatorMock.Setup(x => x.Send(It.IsAny<IdentifiedCommand<CancelOrderCommand, bool>>(), default(CancellationToken)))
+        _mediatorMock.Setup(x => x.Send(It.IsAny<IdentifiedCommand<CancelOrderCommand, bool>>(), default))
             .Returns(Task.FromResult(true));
 
         //Act
@@ -52,7 +52,7 @@ public class OrdersWebApiTest
     public async Task Ship_order_with_requestId_success()
     {
         //Arrange
-        _mediatorMock.Setup(x => x.Send(It.IsAny<IdentifiedCommand<ShipOrderCommand, bool>>(), default(System.Threading.CancellationToken)))
+        _mediatorMock.Setup(x => x.Send(It.IsAny<IdentifiedCommand<ShipOrderCommand, bool>>(), default))
             .Returns(Task.FromResult(true));
 
         //Act
@@ -68,7 +68,7 @@ public class OrdersWebApiTest
     public async Task Ship_order_bad_request()
     {
         //Arrange
-        _mediatorMock.Setup(x => x.Send(It.IsAny<IdentifiedCommand<CreateOrderCommand, bool>>(), default(System.Threading.CancellationToken)))
+        _mediatorMock.Setup(x => x.Send(It.IsAny<IdentifiedCommand<CreateOrderCommand, bool>>(), default))
             .Returns(Task.FromResult(true));
 
         //Act

@@ -98,7 +98,7 @@ public abstract class IdentifiedCommandHandler<T, R> : IRequestHandler<Identifie
             }
             catch
             {
-                return default(R);
+                return default;
             }
         }
     }
