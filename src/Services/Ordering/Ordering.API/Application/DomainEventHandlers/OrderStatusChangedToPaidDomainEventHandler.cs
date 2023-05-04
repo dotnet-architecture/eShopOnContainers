@@ -1,17 +1,15 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.DomainEventHandlers;
 
-public class OrderStatusChangedToPaidDomainEventHandler
-                : INotificationHandler<OrderStatusChangedToPaidDomainEvent>
+public class OrderStatusChangedToPaidDomainEventHandler : INotificationHandler<OrderStatusChangedToPaidDomainEvent>
 {
     private readonly IOrderRepository _orderRepository;
-    private readonly ILoggerFactory _logger;
+    private readonly ILogger _logger;
     private readonly IBuyerRepository _buyerRepository;
     private readonly IOrderingIntegrationEventService _orderingIntegrationEventService;
 
-
     public OrderStatusChangedToPaidDomainEventHandler(
         IOrderRepository orderRepository,
-        ILoggerFactory logger,
+        ILogger<OrderStatusChangedToPaidDomainEventHandler> logger,
         IBuyerRepository buyerRepository,
         IOrderingIntegrationEventService orderingIntegrationEventService)
     {
@@ -21,24 +19,22 @@ public class OrderStatusChangedToPaidDomainEventHandler
         _orderingIntegrationEventService = orderingIntegrationEventService ?? throw new ArgumentNullException(nameof(orderingIntegrationEventService));
     }
 
-    public async Task Handle(OrderStatusChangedToPaidDomainEvent orderStatusChangedToPaidDomainEvent, CancellationToken cancellationToken)
+    public async Task Handle(OrderStatusChangedToPaidDomainEvent domainEvent, CancellationToken cancellationToken)
     {
-        _logger.CreateLogger<OrderStatusChangedToPaidDomainEventHandler>()
-            .LogInformation("Order with Id: {OrderId} has been successfully updated to status {Status} ({Id})",
-                orderStatusChangedToPaidDomainEvent.OrderId, nameof(OrderStatus.Paid), OrderStatus.Paid.Id);
+        OrderingApiTrace.LogOrderStatusUpdated(_logger, domainEvent.OrderId, nameof(OrderStatus.Paid), OrderStatus.Paid.Id);
 
-        var order = await _orderRepository.GetAsync(orderStatusChangedToPaidDomainEvent.OrderId);
+        var order = await _orderRepository.GetAsync(domainEvent.OrderId);
         var buyer = await _buyerRepository.FindByIdAsync(order.GetBuyerId.Value.ToString());
 
-        var orderStockList = orderStatusChangedToPaidDomainEvent.OrderItems
+        var orderStockList = domainEvent.OrderItems
             .Select(orderItem => new OrderStockItem(orderItem.ProductId, orderItem.GetUnits()));
 
-        var orderStatusChangedToPaidIntegrationEvent = new OrderStatusChangedToPaidIntegrationEvent(
-            orderStatusChangedToPaidDomainEvent.OrderId,
+        var integrationEvent = new OrderStatusChangedToPaidIntegrationEvent(
+            domainEvent.OrderId,
             order.OrderStatus.Name,
             buyer.Name,
             orderStockList);
 
-        await _orderingIntegrationEventService.AddAndSaveEventAsync(orderStatusChangedToPaidIntegrationEvent);
+        await _orderingIntegrationEventService.AddAndSaveEventAsync(integrationEvent);
     }
 }

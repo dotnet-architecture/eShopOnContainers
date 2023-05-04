@@ -5,13 +5,13 @@ public class OrderStatusChangedToStockConfirmedDomainEventHandler
 {
     private readonly IOrderRepository _orderRepository;
     private readonly IBuyerRepository _buyerRepository;
-    private readonly ILoggerFactory _logger;
+    private readonly ILogger _logger;
     private readonly IOrderingIntegrationEventService _orderingIntegrationEventService;
 
     public OrderStatusChangedToStockConfirmedDomainEventHandler(
         IOrderRepository orderRepository,
         IBuyerRepository buyerRepository,
-        ILoggerFactory logger,
+        ILogger<OrderStatusChangedToStockConfirmedDomainEventHandler> logger,
         IOrderingIntegrationEventService orderingIntegrationEventService)
     {
         _orderRepository = orderRepository ?? throw new ArgumentNullException(nameof(orderRepository));
@@ -20,16 +20,14 @@ public class OrderStatusChangedToStockConfirmedDomainEventHandler
         _orderingIntegrationEventService = orderingIntegrationEventService;
     }
 
-    public async Task Handle(OrderStatusChangedToStockConfirmedDomainEvent orderStatusChangedToStockConfirmedDomainEvent, CancellationToken cancellationToken)
+    public async Task Handle(OrderStatusChangedToStockConfirmedDomainEvent domainEvent, CancellationToken cancellationToken)
     {
-        _logger.CreateLogger<OrderStatusChangedToStockConfirmedDomainEventHandler>()
-            .LogTrace("Order with Id: {OrderId} has been successfully updated to status {Status} ({Id})",
-                orderStatusChangedToStockConfirmedDomainEvent.OrderId, nameof(OrderStatus.StockConfirmed), OrderStatus.StockConfirmed.Id);
+        OrderingApiTrace.LogOrderStatusUpdated(_logger, domainEvent.OrderId, nameof(OrderStatus.StockConfirmed), OrderStatus.StockConfirmed.Id);
 
-        var order = await _orderRepository.GetAsync(orderStatusChangedToStockConfirmedDomainEvent.OrderId);
+        var order = await _orderRepository.GetAsync(domainEvent.OrderId);
         var buyer = await _buyerRepository.FindByIdAsync(order.GetBuyerId.Value.ToString());
 
-        var orderStatusChangedToStockConfirmedIntegrationEvent = new OrderStatusChangedToStockConfirmedIntegrationEvent(order.Id, order.OrderStatus.Name, buyer.Name);
-        await _orderingIntegrationEventService.AddAndSaveEventAsync(orderStatusChangedToStockConfirmedIntegrationEvent);
+        var integrationEvent = new OrderStatusChangedToStockConfirmedIntegrationEvent(order.Id, order.OrderStatus.Name, buyer.Name);
+        await _orderingIntegrationEventService.AddAndSaveEventAsync(integrationEvent);
     }
 }

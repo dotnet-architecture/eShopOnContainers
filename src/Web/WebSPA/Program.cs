@@ -61,14 +61,13 @@ app.Use(next => context =>
 });
 
 // Seed Data
-var loggerFactory = app.Services.GetRequiredService<ILoggerFactory>();
-WebContextSeed.Seed(app, app.Environment, loggerFactory);
+WebContextSeed.Seed(app, app.Environment, app.Services.GetRequiredService<ILogger<WebContextSeed>>());
 
 var pathBase = app.Configuration["PATH_BASE"];
 
 if (!string.IsNullOrEmpty(pathBase))
 {
-    loggerFactory.CreateLogger<Program>().LogDebug("Using PATH_BASE '{PathBase}'", pathBase);
+    app.Services.GetRequiredService<ILogger<WebContextSeed>>().LogDebug("Using PATH_BASE '{PathBase}'", pathBase);
     app.UsePathBase(pathBase);
 }
 

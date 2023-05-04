@@ -4,12 +4,13 @@ public class OrderStatusChangedToAwaitingValidationDomainEventHandler
                 : INotificationHandler<OrderStatusChangedToAwaitingValidationDomainEvent>
 {
     private readonly IOrderRepository _orderRepository;
-    private readonly ILoggerFactory _logger;
+    private readonly ILogger _logger;
     private readonly IBuyerRepository _buyerRepository;
     private readonly IOrderingIntegrationEventService _orderingIntegrationEventService;
 
     public OrderStatusChangedToAwaitingValidationDomainEventHandler(
-        IOrderRepository orderRepository, ILoggerFactory logger,
+        IOrderRepository orderRepository,
+        ILogger<OrderStatusChangedToAwaitingValidationDomainEventHandler> logger,
         IBuyerRepository buyerRepository,
         IOrderingIntegrationEventService orderingIntegrationEventService)
     {
@@ -19,21 +20,17 @@ public class OrderStatusChangedToAwaitingValidationDomainEventHandler
         _orderingIntegrationEventService = orderingIntegrationEventService;
     }
 
-    public async Task Handle(OrderStatusChangedToAwaitingValidationDomainEvent orderStatusChangedToAwaitingValidationDomainEvent, CancellationToken cancellationToken)
+    public async Task Handle(OrderStatusChangedToAwaitingValidationDomainEvent domainEvent, CancellationToken cancellationToken)
     {
-        _logger.CreateLogger<OrderStatusChangedToAwaitingValidationDomainEvent>()
-            .LogTrace("Order with Id: {OrderId} has been successfully updated to status {Status} ({Id})",
-                orderStatusChangedToAwaitingValidationDomainEvent.OrderId, nameof(OrderStatus.AwaitingValidation), OrderStatus.AwaitingValidation.Id);
+        OrderingApiTrace.LogOrderStatusUpdated(_logger, domainEvent.OrderId, nameof(OrderStatus.AwaitingValidation), OrderStatus.AwaitingValidation.Id);
 
-        var order = await _orderRepository.GetAsync(orderStatusChangedToAwaitingValidationDomainEvent.OrderId);
-
+        var order = await _orderRepository.GetAsync(domainEvent.OrderId);
         var buyer = await _buyerRepository.FindByIdAsync(order.GetBuyerId.Value.ToString());
 
-        var orderStockList = orderStatusChangedToAwaitingValidationDomainEvent.OrderItems
+        var orderStockList = domainEvent.OrderItems
             .Select(orderItem => new OrderStockItem(orderItem.ProductId, orderItem.GetUnits()));
 
-        var orderStatusChangedToAwaitingValidationIntegrationEvent = new OrderStatusChangedToAwaitingValidationIntegrationEvent(
-            order.Id, order.OrderStatus.Name, buyer.Name, orderStockList);
-        await _orderingIntegrationEventService.AddAndSaveEventAsync(orderStatusChangedToAwaitingValidationIntegrationEvent);
+        var integrationEvent = new OrderStatusChangedToAwaitingValidationIntegrationEvent(order.Id, order.OrderStatus.Name, buyer.Name, orderStockList);
+        await _orderingIntegrationEventService.AddAndSaveEventAsync(integrationEvent);
     }
 }

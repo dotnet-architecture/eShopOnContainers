@@ -3,53 +3,48 @@
 public class ValidateOrAddBuyerAggregateWhenOrderStartedDomainEventHandler
                     : INotificationHandler<OrderStartedDomainEvent>
 {
-    private readonly ILoggerFactory _logger;
+    private readonly ILogger _logger;
     private readonly IBuyerRepository _buyerRepository;
-    private readonly IIdentityService _identityService;
     private readonly IOrderingIntegrationEventService _orderingIntegrationEventService;
 
     public ValidateOrAddBuyerAggregateWhenOrderStartedDomainEventHandler(
-        ILoggerFactory logger,
+        ILogger<ValidateOrAddBuyerAggregateWhenOrderStartedDomainEventHandler> logger,
         IBuyerRepository buyerRepository,
-        IIdentityService identityService,
         IOrderingIntegrationEventService orderingIntegrationEventService)
     {
         _buyerRepository = buyerRepository ?? throw new ArgumentNullException(nameof(buyerRepository));
-        _identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
         _orderingIntegrationEventService = orderingIntegrationEventService ?? throw new ArgumentNullException(nameof(orderingIntegrationEventService));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
-    public async Task Handle(OrderStartedDomainEvent orderStartedEvent, CancellationToken cancellationToken)
+    public async Task Handle(OrderStartedDomainEvent domainEvent, CancellationToken cancellationToken)
     {
-        var cardTypeId = orderStartedEvent.CardTypeId != 0 ? orderStartedEvent.CardTypeId : 1;
-        var buyer = await _buyerRepository.FindAsync(orderStartedEvent.UserId);
-        var buyerOriginallyExisted = buyer == null ? false : true;
+        var cardTypeId = domainEvent.CardTypeId != 0 ? domainEvent.CardTypeId : 1;
+        var buyer = await _buyerRepository.FindAsync(domainEvent.UserId);
+        var buyerExisted = buyer is not null;
 
-        if (!buyerOriginallyExisted)
+        if (!buyerExisted)
         {
-            buyer = new Buyer(orderStartedEvent.UserId, orderStartedEvent.UserName);
+            buyer = new Buyer(domainEvent.UserId, domainEvent.UserName);
         }
 
         buyer.VerifyOrAddPaymentMethod(cardTypeId,
                                         $"Payment Method on {DateTime.UtcNow}",
-                                        orderStartedEvent.CardNumber,
-                                        orderStartedEvent.CardSecurityNumber,
-                                        orderStartedEvent.CardHolderName,
-                                        orderStartedEvent.CardExpiration,
-                                        orderStartedEvent.Order.Id);
+                                        domainEvent.CardNumber,
+                                        domainEvent.CardSecurityNumber,
+                                        domainEvent.CardHolderName,
+                                        domainEvent.CardExpiration,
+                                        domainEvent.Order.Id);
 
-        var buyerUpdated = buyerOriginallyExisted ?
+        var buyerUpdated = buyerExisted ?
             _buyerRepository.Update(buyer) :
             _buyerRepository.Add(buyer);
 
         await _buyerRepository.UnitOfWork
             .SaveEntitiesAsync(cancellationToken);
 
-        var orderStatusChangedToSubmittedIntegrationEvent = new OrderStatusChangedToSubmittedIntegrationEvent(orderStartedEvent.Order.Id, orderStartedEvent.Order.OrderStatus.Name, buyer.Name);
-        await _orderingIntegrationEventService.AddAndSaveEventAsync(orderStatusChangedToSubmittedIntegrationEvent);
-        _logger.CreateLogger<ValidateOrAddBuyerAggregateWhenOrderStartedDomainEventHandler>()
-            .LogTrace("Buyer {BuyerId} and related payment method were validated or updated for orderId: {OrderId}.",
-                buyerUpdated.Id, orderStartedEvent.Order.Id);
+        var integrationEvent = new OrderStatusChangedToSubmittedIntegrationEvent(domainEvent.Order.Id, domainEvent.Order.OrderStatus.Name, buyer.Name);
+        await _orderingIntegrationEventService.AddAndSaveEventAsync(integrationEvent);
+        OrderingApiTrace.LogOrderBuyerAndPaymentValidatedOrUpdated(_logger, buyerUpdated.Id, domainEvent.Order.Id);
     }
 }

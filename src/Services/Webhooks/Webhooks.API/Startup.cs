@@ -8,7 +8,6 @@ public class Startup
         Configuration = configuration;
     }
 
-
     public IServiceProvider ConfigureServices(IServiceCollection services)
     {
         services
@@ -29,13 +28,13 @@ public class Startup
         return services.BuildServiceProvider();
     }
 
-    public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
+    public void Configure(IApplicationBuilder app, ILogger<Startup> logger)
     {
         var pathBase = Configuration["PATH_BASE"];
 
         if (!string.IsNullOrEmpty(pathBase))
         {
-            loggerFactory.CreateLogger("init").LogDebug("Using PATH BASE '{PathBase}'", pathBase);
+            logger.LogDebug("Using PATH BASE '{PathBase}'", pathBase);
             app.UsePathBase(pathBase);
         }
 

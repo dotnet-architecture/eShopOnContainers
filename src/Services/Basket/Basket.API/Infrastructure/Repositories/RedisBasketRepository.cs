@@ -1,4 +1,4 @@
-namespace Microsoft.eShopOnContainers.Services.Basket.API.Infrastructure.Repositories;
+﻿namespace Microsoft.eShopOnContainers.Services.Basket.API.Infrastructure.Repositories;
 
 public class RedisBasketRepository : IBasketRepository
 {
@@ -6,9 +6,9 @@ public class RedisBasketRepository : IBasketRepository
     private readonly ConnectionMultiplexer _redis;
     private readonly IDatabase _database;
 
-    public RedisBasketRepository(ILoggerFactory loggerFactory, ConnectionMultiplexer redis)
+    public RedisBasketRepository(ILogger<RedisBasketRepository> logger, ConnectionMultiplexer redis)
     {
-        _logger = loggerFactory.CreateLogger<RedisBasketRepository>();
+        _logger = logger;
         _redis = redis;
         _database = redis.GetDatabase();
     }

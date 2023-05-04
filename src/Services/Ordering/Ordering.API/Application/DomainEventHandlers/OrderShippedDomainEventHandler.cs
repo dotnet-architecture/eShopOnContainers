@@ -6,11 +6,11 @@ public class OrderShippedDomainEventHandler
     private readonly IOrderRepository _orderRepository;
     private readonly IBuyerRepository _buyerRepository;
     private readonly IOrderingIntegrationEventService _orderingIntegrationEventService;
-    private readonly ILoggerFactory _logger;
+    private readonly ILogger _logger;
 
     public OrderShippedDomainEventHandler(
         IOrderRepository orderRepository,
-        ILoggerFactory logger,
+        ILogger<OrderShippedDomainEventHandler> logger,
         IBuyerRepository buyerRepository,
         IOrderingIntegrationEventService orderingIntegrationEventService)
     {
@@ -20,16 +20,14 @@ public class OrderShippedDomainEventHandler
         _orderingIntegrationEventService = orderingIntegrationEventService;
     }
 
-    public async Task Handle(OrderShippedDomainEvent orderShippedDomainEvent, CancellationToken cancellationToken)
+    public async Task Handle(OrderShippedDomainEvent domainEvent, CancellationToken cancellationToken)
     {
-        _logger.CreateLogger<OrderShippedDomainEvent>()
-            .LogTrace("Order with Id: {OrderId} has been successfully updated to status {Status} ({Id})",
-                orderShippedDomainEvent.Order.Id, nameof(OrderStatus.Shipped), OrderStatus.Shipped.Id);
+        OrderingApiTrace.LogOrderStatusUpdated(_logger, domainEvent.Order.Id, nameof(OrderStatus.Shipped), OrderStatus.Shipped.Id);
 
-        var order = await _orderRepository.GetAsync(orderShippedDomainEvent.Order.Id);
+        var order = await _orderRepository.GetAsync(domainEvent.Order.Id);
         var buyer = await _buyerRepository.FindByIdAsync(order.GetBuyerId.Value.ToString());
 
-        var orderStatusChangedToShippedIntegrationEvent = new OrderStatusChangedToShippedIntegrationEvent(order.Id, order.OrderStatus.Name, buyer.Name);
-        await _orderingIntegrationEventService.AddAndSaveEventAsync(orderStatusChangedToShippedIntegrationEvent);
+        var integrationEvent = new OrderStatusChangedToShippedIntegrationEvent(order.Id, order.OrderStatus.Name, buyer.Name);
+        await _orderingIntegrationEventService.AddAndSaveEventAsync(integrationEvent);
     }
 }

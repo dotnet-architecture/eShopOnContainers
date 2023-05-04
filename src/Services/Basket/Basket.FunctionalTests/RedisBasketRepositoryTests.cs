@@ -1,5 +1,7 @@
 ﻿
 
+using Microsoft.Extensions.Logging.Abstractions;
+
 namespace Basket.FunctionalTests
 {
     public class RedisBasketRepositoryTests
@@ -48,8 +50,8 @@ namespace Basket.FunctionalTests
 
         RedisBasketRepository BuildBasketRepository(ConnectionMultiplexer connMux)
         {
-            var loggerFactory = new LoggerFactory();
-            return new RedisBasketRepository(loggerFactory, connMux);
+            var logger = NullLoggerFactory.Instance.CreateLogger<RedisBasketRepository>();
+            return new RedisBasketRepository(logger, connMux);
         }
 
         List<BasketItem> BuildBasketItems()
