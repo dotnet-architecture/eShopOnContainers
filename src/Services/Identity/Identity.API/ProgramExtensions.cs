@@ -41,7 +41,7 @@ public static class ProgramExtensions
 
     public static void AddCustomDatabase(this WebApplicationBuilder builder) =>
     builder.Services.AddDbContext<ApplicationDbContext>(
-        options => options.UseSqlServer(builder.Configuration["ConnectionString"]));
+        options => options.UseSqlServer(builder.Configuration.GetConnectionString("IdentityDb")));
 
     public static void AddCustomIdentity(this WebApplicationBuilder builder)
     {
@@ -82,7 +82,7 @@ public static class ProgramExtensions
     {
         builder.Services.AddHealthChecks()
                 .AddCheck("self", () => HealthCheckResult.Healthy())
-                .AddSqlServer(builder.Configuration["ConnectionString"],
+                .AddSqlServer(builder.Configuration.GetConnectionString("IdentityDb"),
                     name: "IdentityDB-check",
                     tags: new string[] { "IdentityDB" });
     }

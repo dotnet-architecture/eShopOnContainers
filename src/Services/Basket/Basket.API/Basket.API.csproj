@@ -2,6 +2,7 @@
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <DockerComposeProjectPath>..\..\..\..\docker-compose.dcproj</DockerComposeProjectPath>
+    <UserSecretsId>2964ec8e-0d48-4541-b305-94cab537f867</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
