@@ -142,6 +142,7 @@ internal static class CustomExtensionMethods
                 Description = "The Webhooks Microservice HTTP API. This is a simple webhooks CRUD registration entrypoint"
             });
 
+            var identityUrl = configuration.GetSection("Identity").GetValue<string>("ExternalUrl");
             options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
             {
                 Type = SecuritySchemeType.OAuth2,
@@ -149,8 +150,8 @@ internal static class CustomExtensionMethods
                 {
                     Implicit = new OpenApiOAuthFlow()
                     {
-                        AuthorizationUrl = new Uri($"{configuration.GetValue<string>("IdentityUrlExternal")}/connect/authorize"),
-                        TokenUrl = new Uri($"{configuration.GetValue<string>("IdentityUrlExternal")}/connect/token"),
+                        AuthorizationUrl = new Uri($"{identityUrl}/connect/authorize"),
+                        TokenUrl = new Uri($"{identityUrl}/connect/token"),
                         Scopes = new Dictionary<string, string>()
                         {
                             {  "webhooks", "Webhooks API" }

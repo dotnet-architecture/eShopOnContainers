@@ -96,6 +96,7 @@ public static class ServiceCollectionExtensions
                 Version = "v1",
                 Description = "Shopping Aggregator for Web Clients"
             });
+            var identityUrl = configuration.GetSection("Identity").GetValue<string>("ExternalUrl");
             options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
             {
                 Type = SecuritySchemeType.OAuth2,
@@ -103,8 +104,8 @@ public static class ServiceCollectionExtensions
                 {
                     Implicit = new OpenApiOAuthFlow()
                     {
-                        AuthorizationUrl = new Uri($"{configuration.GetValue<string>("IdentityUrlExternal")}/connect/authorize"),
-                        TokenUrl = new Uri($"{configuration.GetValue<string>("IdentityUrlExternal")}/connect/token"),
+                        AuthorizationUrl = new Uri($"{identityUrl}/connect/authorize"),
+                        TokenUrl = new Uri($"{identityUrl}/connect/token"),
                         Scopes = new Dictionary<string, string>()
                         {
                             { "webshoppingagg", "Shopping Aggregator for Web Clients" }

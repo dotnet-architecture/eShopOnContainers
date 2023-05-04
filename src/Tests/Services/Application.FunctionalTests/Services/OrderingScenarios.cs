@@ -1,12 +1,15 @@
-﻿namespace FunctionalTests.Services.Ordering;
+﻿using Basket.FunctionalTests.Base;
+using Ordering.FunctionalTests;
 
-public class OrderingScenarios : OrderingScenariosBase
+namespace FunctionalTests.Services.Ordering;
+
+public class OrderingScenarios
 {
     [Fact]
     public async Task Cancel_basket_and_check_order_status_cancelled()
     {
-        using var orderServer = new OrderingScenariosBase().CreateServer();
-        using var basketServer = new BasketScenariosBase().CreateServer();
+        using var orderServer = new OrderingScenarioBase().CreateServer();
+        using var basketServer = new BasketScenarioBase().CreateServer();
         // Expected data
         var cityExpected = $"city-{Guid.NewGuid()}";
         var orderStatusExpected = "cancelled";
@@ -19,11 +22,11 @@ public class OrderingScenarios : OrderingScenariosBase
         {
             Headers = { { "x-requestid", Guid.NewGuid().ToString() } }
         };
-        await basketClient.PostAsync(BasketScenariosBase.Post.CreateBasket, contentBasket);
+        await basketClient.PostAsync(BasketScenarioBase.Post.Basket, contentBasket);
 
         // AND basket checkout is sent
         await basketClient.PostAsync(
-            BasketScenariosBase.Post.CheckoutOrder,
+            BasketScenarioBase.Post.CheckoutOrder,
             new StringContent(BuildCheckout(cityExpected), UTF8Encoding.UTF8, "application/json")
             {
                 Headers = { { "x-requestid", Guid.NewGuid().ToString() } }
@@ -31,9 +34,10 @@ public class OrderingScenarios : OrderingScenariosBase
 
         // WHEN Order is created in Ordering.api
         var newOrder = await TryGetNewOrderCreated(cityExpected, orderClient);
+        Assert.NotNull(newOrder);
 
         // AND Order is cancelled in Ordering.api
-        await orderClient.PutAsync(OrderingScenariosBase.Put.CancelOrder, new StringContent(BuildCancelOrder(newOrder.OrderNumber), UTF8Encoding.UTF8, "application/json")
+        await orderClient.PutAsync(OrderingScenarioBase.Put.CancelOrder, new StringContent(BuildCancelOrder(newOrder.OrderNumber), UTF8Encoding.UTF8, "application/json")
         {
             Headers = { { "x-requestid", Guid.NewGuid().ToString() } }
         });
@@ -47,7 +51,7 @@ public class OrderingScenarios : OrderingScenariosBase
 
     async Task<Order> TryGetOrder(string orderNumber, HttpClient orderClient)
     {
-        var ordersGetResponse = await orderClient.GetStringAsync(OrderingScenariosBase.Get.Orders);
+        var ordersGetResponse = await orderClient.GetStringAsync(OrderingScenarioBase.Get.Orders);
         var orders = JsonSerializer.Deserialize<List<Order>>(ordersGetResponse, new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = true
@@ -64,7 +68,7 @@ public class OrderingScenarios : OrderingScenariosBase
         while (counter < 20)
         {
             //get the orders and verify that the new order has been created
-            var ordersGetResponse = await orderClient.GetStringAsync(OrderingScenariosBase.Get.Orders);
+            var ordersGetResponse = await orderClient.GetStringAsync(OrderingScenarioBase.Get.Orders);
             var orders = JsonSerializer.Deserialize<List<Order>>(ordersGetResponse, new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true
@@ -79,7 +83,7 @@ public class OrderingScenarios : OrderingScenariosBase
 
             var lastOrder = orders.OrderByDescending(o => o.Date).First();
             int.TryParse(lastOrder.OrderNumber, out int id);
-            var orderDetails = await orderClient.GetStringAsync(OrderingScenariosBase.Get.OrderBy(id));
+            var orderDetails = await orderClient.GetStringAsync(OrderingScenarioBase.Get.OrderBy(id));
             order = JsonSerializer.Deserialize<Order>(orderDetails, new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true

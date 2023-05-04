@@ -19,6 +19,11 @@ public class BasketScenarioBase
         {
             return $"{ApiUrlBase}/{id}";
         }
+
+        public static string GetBasketByCustomer(string customerId)
+        {
+            return $"{ApiUrlBase}/{customerId}";
+        }
     }
 
     public static class Post

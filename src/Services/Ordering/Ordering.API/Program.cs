@@ -255,7 +255,7 @@ static class CustomExtensionsMethods
                 Description = "The Ordering Service HTTP API"
             });
 
-            var identityUrl = configuration["IdentityUrlExternal"];
+            var identityUrl = configuration.GetSection("Identity")["ExternalUrl"];
 
             options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
             {

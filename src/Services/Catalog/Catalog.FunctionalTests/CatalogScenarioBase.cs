@@ -83,4 +83,9 @@ public class CatalogScenariosBase
             return $"?pageIndex={pageIndex}&pageSize={pageCount}";
         }
     }
+
+    public static class Put
+    {
+        public static string UpdateCatalogProduct = "api/v1/catalog/items";
+    }
 }
