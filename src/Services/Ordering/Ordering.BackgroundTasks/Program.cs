@@ -34,9 +34,3 @@ app.MapHealthChecks("/liveness", new HealthCheckOptions
 });
 
 await app.RunAsync();
-
-public partial class Program
-{
-    public static string Namespace = typeof(Program).Assembly.GetName().Name;
-    public static string AppName = Namespace.Substring(Namespace.LastIndexOf('.', Namespace.LastIndexOf('.') - 1) + 1);
-}

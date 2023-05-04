@@ -129,11 +129,6 @@ void ConfigureEventBus(IApplicationBuilder app)
     eventBus.Subscribe<OrderStatusChangedToStockConfirmedIntegrationEvent, OrderStatusChangedToStockConfirmedIntegrationEventHandler>();
 }
 
-public partial class Program
-{
-    public static string Namespace = typeof(Program).Assembly.GetName().Name;
-    public static string AppName = Namespace.Substring(Namespace.LastIndexOf('.', Namespace.LastIndexOf('.') - 1) + 1);
-}
 public static class CustomExtensionMethods
 {
     public static IServiceCollection AddCustomHealthCheck(this IServiceCollection services, IConfiguration configuration)

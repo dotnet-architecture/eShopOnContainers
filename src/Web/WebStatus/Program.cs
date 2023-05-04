@@ -52,9 +52,3 @@ app.MapHealthChecks("/liveness", new HealthCheckOptions
 });
 
 await app.RunAsync();
-
-public partial class Program
-{
-    private static readonly string _namespace = typeof(Program).Assembly.GetName().Name;
-    public static readonly string AppName = _namespace;
-}

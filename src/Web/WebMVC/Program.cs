@@ -149,8 +149,3 @@ static void AddCustomAuthentication(WebApplicationBuilder builder)
         options.Scope.Add("webhooks");
     });
 }
-
-public partial class Program
-{
-    public static readonly string AppName = typeof(Program).Assembly.GetName().Name;
-}
