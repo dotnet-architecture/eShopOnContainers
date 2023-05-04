@@ -36,7 +36,7 @@ namespace Ordering.BackgroundTasks.Extensions
             else
             {
                 hcBuilder.AddRabbitMQ(
-                        $"amqp://{configuration["EventBusConnection"]}",
+                        configuration["EventBusConnection"],
                         name: "orderingtask-rabbitmqbus-check",
                         tags: new string[] { "rabbitmqbus" });
             }
@@ -75,19 +75,9 @@ namespace Ordering.BackgroundTasks.Extensions
 
                     var factory = new ConnectionFactory()
                     {
-                        HostName = configuration["EventBusConnection"],
+                        Uri = new System.Uri(configuration["EventBusConnection"]),
                         DispatchConsumersAsync = true
                     };
-
-                    if (!string.IsNullOrEmpty(configuration["EventBusUserName"]))
-                    {
-                        factory.UserName = configuration["EventBusUserName"];
-                    }
-
-                    if (!string.IsNullOrEmpty(configuration["EventBusPassword"]))
-                    {
-                        factory.Password = configuration["EventBusPassword"];
-                    }
 
                     var retryCount = 5;
 

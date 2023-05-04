@@ -37,21 +37,12 @@ else
     builder.Services.AddSingleton<IRabbitMQPersistentConnection>(sp =>
     {
         var logger = sp.GetRequiredService<ILogger<DefaultRabbitMQPersistentConnection>>();
+        
         var factory = new ConnectionFactory()
         {
-            HostName = builder.Configuration["EventBusConnection"],
+            Uri = new System.Uri(builder.Configuration["EventBusConnection"]),
             DispatchConsumersAsync = true
         };
-
-        if (!string.IsNullOrEmpty(builder.Configuration["EventBusUserName"]))
-        {
-            factory.UserName = builder.Configuration["EventBusUserName"];
-        }
-
-        if (!string.IsNullOrEmpty(builder.Configuration["EventBusPassword"]))
-        {
-            factory.Password = builder.Configuration["EventBusPassword"];
-        }
 
         var retryCount = 5;
         if (!string.IsNullOrEmpty(builder.Configuration["EventBusRetryCount"]))
@@ -212,7 +203,7 @@ public static class CustomExtensionMethods
         {
             hcBuilder
                 .AddRabbitMQ(
-                    $"amqp://{configuration["EventBusConnection"]}",
+                    configuration["EventBusConnection"],
                     name: "payment-rabbitmqbus-check",
                     tags: new string[] { "rabbitmqbus" });
         }

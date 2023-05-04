@@ -187,7 +187,7 @@ public static class CustomExtensionMethods {
         else {
             hcBuilder
                 .AddRabbitMQ(
-                    $"amqp://{configuration["EventBusConnection"]}",
+                    configuration["EventBusConnection"],
                     name: "catalog-rabbitmqbus-check",
                     tags: new string[] { "rabbitmqbus" });
         }
@@ -269,18 +269,11 @@ public static class CustomExtensionMethods {
                 var settings = sp.GetRequiredService<IOptions<CatalogSettings>>().Value;
                 var logger = sp.GetRequiredService<ILogger<DefaultRabbitMQPersistentConnection>>();
 
-                var factory = new ConnectionFactory() {
-                    HostName = configuration["EventBusConnection"],
+                var factory = new ConnectionFactory()
+                {
+                    Uri = new System.Uri(configuration["EventBusConnection"]),
                     DispatchConsumersAsync = true
                 };
-
-                if (!string.IsNullOrEmpty(configuration["EventBusUserName"])) {
-                    factory.UserName = configuration["EventBusUserName"];
-                }
-
-                if (!string.IsNullOrEmpty(configuration["EventBusPassword"])) {
-                    factory.Password = configuration["EventBusPassword"];
-                }
 
                 var retryCount = 5;
                 if (!string.IsNullOrEmpty(configuration["EventBusRetryCount"])) {

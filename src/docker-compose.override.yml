@@ -65,7 +65,7 @@ services:
       - ConnectionString=${ESHOP_AZURE_REDIS_BASKET_DB:-basketdata}
       - identityUrl=http://identity-api
       - IdentityUrlExternal=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
-      - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
+      - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-amqp://rabbitmq}
       - EventBusUserName=${ESHOP_SERVICE_BUS_USERNAME}
       - EventBusPassword=${ESHOP_SERVICE_BUS_PASSWORD}
       - AzureServiceBusEnabled=False
@@ -84,7 +84,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionString=${ESHOP_AZURE_CATALOG_DB:-Server=sqldata;Database=Microsoft.eShopOnContainers.Services.CatalogDb;User Id=sa;Password=Pass@word;Encrypt=False;TrustServerCertificate=true}
       - PicBaseUrl=${ESHOP_STORAGE_CATALOG_URL}
-      - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
+      - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-amqp://rabbitmq}
       - EventBusUserName=${ESHOP_SERVICE_BUS_USERNAME}
       - EventBusPassword=${ESHOP_SERVICE_BUS_PASSWORD}
       - AzureStorageAccountName=${ESHOP_AZURE_STORAGE_CATALOG_NAME}
@@ -108,7 +108,7 @@ services:
       - ConnectionString=${ESHOP_AZURE_ORDERING_DB:-Server=sqldata;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word;Encrypt=False;TrustServerCertificate=true}
       - identityUrl=http://identity-api
       - IdentityUrlExternal=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
-      - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
+      - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-amqp://rabbitmq}
       - EventBusUserName=${ESHOP_SERVICE_BUS_USERNAME}
       - EventBusPassword=${ESHOP_SERVICE_BUS_PASSWORD}
       - UseCustomizationData=True
@@ -131,7 +131,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - ConnectionString=${ESHOP_AZURE_ORDERING_DB:-Server=sqldata;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word;Encrypt=False;TrustServerCertificate=true}
-      - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
+      - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-amqp://rabbitmq}
       - EventBusUserName=${ESHOP_SERVICE_BUS_USERNAME}
       - EventBusPassword=${ESHOP_SERVICE_BUS_PASSWORD}
       - UseCustomizationData=True
@@ -149,7 +149,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
-      - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
+      - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-amqp://rabbitmq}
       - EventBusUserName=${ESHOP_SERVICE_BUS_USERNAME}
       - EventBusPassword=${ESHOP_SERVICE_BUS_PASSWORD}
       - AzureServiceBusEnabled=False
@@ -165,7 +165,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - ConnectionString=${ESHOP_AZURE_WEBHOOKS_DB:-Server=sqldata;Database=Microsoft.eShopOnContainers.Services.WebhooksDb;User Id=sa;Password=Pass@word;Encrypt=False;TrustServerCertificate=true}
-      - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
+      - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-amqp://rabbitmq}
       - EventBusUserName=${ESHOP_SERVICE_BUS_USERNAME}
       - EventBusPassword=${ESHOP_SERVICE_BUS_PASSWORD}
       - IdentityUrl=http://identity-api
@@ -229,7 +229,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
-      - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
+      - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-amqp://rabbitmq}
       - EventBusUserName=${ESHOP_SERVICE_BUS_USERNAME}
       - EventBusPassword=${ESHOP_SERVICE_BUS_PASSWORD}
       - AzureServiceBusEnabled=False
