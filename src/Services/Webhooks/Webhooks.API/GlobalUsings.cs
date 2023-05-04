@@ -1,6 +1,4 @@
-﻿global using Autofac.Extensions.DependencyInjection;
-global using Autofac;
-global using HealthChecks.UI.Client;
+﻿global using HealthChecks.UI.Client;
 global using Microsoft.AspNetCore.Authentication.JwtBearer;
 global using Microsoft.AspNetCore.Authorization;
 global using Microsoft.AspNetCore.Builder;

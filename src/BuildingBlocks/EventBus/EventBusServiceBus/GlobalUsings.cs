@@ -2,7 +2,6 @@
 global using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Events;
 global using System.Threading.Tasks;
 global using System;
-global using Autofac;
 global using Microsoft.eShopOnContainers.BuildingBlocks.EventBus;
 global using Microsoft.Extensions.Logging;
 global using System.Text;

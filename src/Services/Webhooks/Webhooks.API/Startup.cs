@@ -1,4 +1,4 @@
-namespace Webhooks.API;
+﻿namespace Webhooks.API;
 public class Startup
 {
     public IConfiguration Configuration { get; }
@@ -26,10 +26,7 @@ public class Startup
             .AddTransient<IGrantUrlTesterService, GrantUrlTesterService>()
             .AddTransient<IWebhooksRetriever, WebhooksRetriever>()
             .AddTransient<IWebhooksSender, WebhooksSender>();
-
-        var container = new ContainerBuilder();
-        container.Populate(services);
-        return new AutofacServiceProvider(container.Build());
+        return services.BuildServiceProvider();
     }
 
     public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)

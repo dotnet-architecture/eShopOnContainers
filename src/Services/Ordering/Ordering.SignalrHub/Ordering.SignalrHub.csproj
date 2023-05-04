@@ -11,7 +11,6 @@
 	  <PackageReference Include="AspNetCore.HealthChecks.AzureServiceBus" />
 	  <PackageReference Include="AspNetCore.HealthChecks.Rabbitmq" />
 	  <PackageReference Include="AspNetCore.HealthChecks.UI.Client" />
-	  <PackageReference Include="Autofac.Extensions.DependencyInjection" />
 	  <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" />
 	  <PackageReference Include="Microsoft.ApplicationInsights.DependencyCollector" />
 	  <PackageReference Include="Microsoft.ApplicationInsights.Kubernetes" />

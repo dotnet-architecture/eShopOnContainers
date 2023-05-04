@@ -28,8 +28,7 @@ public class IdentifiedCommandHandlerTest
 
         //Act
         var handler = new CreateOrderIdentifiedCommandHandler(_mediator.Object, _requestManager.Object, _loggerMock.Object);
-        var cltToken = new System.Threading.CancellationToken();
-        var result = await handler.Handle(fakeOrderCmd, cltToken);
+        var result = await handler.Handle(fakeOrderCmd, CancellationToken.None);
 
         //Assert
         Assert.True(result);

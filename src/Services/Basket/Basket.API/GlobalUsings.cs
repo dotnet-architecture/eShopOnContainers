@@ -6,7 +6,6 @@ global using System.Net;
 global using System.Security.Claims;
 global using System.Text.Json;
 global using System.Threading.Tasks;
-global using Autofac;
 global using Basket.API.Infrastructure.ActionResults;
 global using Basket.API.Infrastructure.Exceptions;
 global using Basket.API.Infrastructure.Filters;

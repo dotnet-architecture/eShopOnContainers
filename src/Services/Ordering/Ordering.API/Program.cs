@@ -38,11 +38,6 @@ builder.Services
     .AddCustomConfiguration(builder.Configuration)
     .AddEventBus(builder.Configuration);
 
-builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
-// Register your own things directly with Autofac here. Don't
-// call builder.Populate(), that happens in AutofacServiceProviderFactory
-// for you.
-
 var services = builder.Services;
 
         services.AddMediatR(cfg =>
