@@ -10,9 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Protobuf Include="Proto\basket.proto" GrpcServices="Server" Generator="MSBuild:Compile" />
-    <Content Include="@(Protobuf)" />
-    <None Remove="@(Protobuf)" />
+    <Protobuf Include="Proto\basket.proto" GrpcServices="Server" />
   </ItemGroup>
 
   <ItemGroup>
