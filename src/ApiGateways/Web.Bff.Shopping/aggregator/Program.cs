@@ -1,6 +1,6 @@
 ﻿var builder = WebApplication.CreateBuilder(args);
 
-builder.Host.UseSerilog(CreateSerilogLogger(builder.Configuration));
+builder.Logging.AddConsole();
 builder.Services.AddHealthChecks()
     .AddCheck("self", () => HealthCheckResult.Healthy())
     .AddUrlGroup(new Uri(builder.Configuration["CatalogUrlHC"]), name: "catalogapi-check", tags: new string[] { "catalogapi" })
@@ -21,6 +21,7 @@ else
 {
     app.UseExceptionHandler("/Home/Error");
 }
+
 var pathBase = builder.Configuration["PATH_BASE"];
 if (!string.IsNullOrEmpty(pathBase))
 {
@@ -56,41 +57,7 @@ app.MapHealthChecks("/liveness", new HealthCheckOptions
     Predicate = r => r.Name.Contains("self")
 });
 
-try
-{
-    Log.Information("Starts Web Application ({ApplicationContext})...", Program.AppName);
-    await app.RunAsync();
-
-    return 0;
-}
-catch (Exception ex)
-{
-    Log.Fatal(ex, "Program terminated unexpectedly ({ApplicationContext})!", Program.AppName);
-    return 1;
-}
-finally
-{
-    Log.CloseAndFlush();
-}
-
-Serilog.ILogger CreateSerilogLogger(IConfiguration configuration)
-{
-    var seqServerUrl = configuration["Serilog:SeqServerUrl"];
-    var logstashUrl = configuration["Serilog:LogstashgUrl"];
-    return new LoggerConfiguration()
-        .MinimumLevel.Verbose()
-        .Enrich.WithProperty("ApplicationContext", Program.AppName)
-        .Enrich.FromLogContext()
-        .WriteTo.Console()
-        .ReadFrom.Configuration(configuration)
-        .CreateLogger();
-}
-public partial class Program
-{
-
-    public static string Namespace = typeof(Program).Assembly.GetName().Name;
-    public static string AppName = Namespace.Substring(Namespace.LastIndexOf('.', Namespace.LastIndexOf('.') - 1) + 1);
-}
+await app.RunAsync();
 
 public static class ServiceCollectionExtensions
 {
