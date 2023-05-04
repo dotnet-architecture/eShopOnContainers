@@ -17,7 +17,7 @@ public class ProductPriceChangedIntegrationEventHandler : IIntegrationEventHandl
     {
         using (LogContext.PushProperty("IntegrationEventContext", $"{@event.Id}"))
         {
-            _logger.LogInformation("----- Handling integration event: {IntegrationEventId} at {AppName} - ({@IntegrationEvent})", @event.Id, @event);
+            _logger.LogInformation("----- Handling integration event: {IntegrationEventId} - ({@IntegrationEvent})", @event.Id, @event);
 
             var userIds = _repository.GetUsers();
 

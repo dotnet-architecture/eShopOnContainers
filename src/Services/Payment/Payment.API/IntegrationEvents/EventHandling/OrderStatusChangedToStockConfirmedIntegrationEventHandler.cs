@@ -21,7 +21,7 @@ public class OrderStatusChangedToStockConfirmedIntegrationEventHandler :
 
     public async Task Handle(OrderStatusChangedToStockConfirmedIntegrationEvent @event)
     {
-        using (LogContext.PushProperty("IntegrationEventContext", $"{@event.Id}-{Program.AppName}"))
+        using (LogContext.PushProperty("IntegrationEventContext", @event.Id))
         {
             _logger.LogInformation("----- Handling integration event: {IntegrationEventId} at {AppName} - ({@IntegrationEvent})", @event.Id, Program.AppName, @event);
 

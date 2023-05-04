@@ -38,6 +38,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <InternalsVisibleTo Include="Catalog.FunctionalTests"/>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" />
     <PackageReference Include="Azure.Identity" />
     <PackageReference Include="AspNetCore.HealthChecks.AzureServiceBus" />

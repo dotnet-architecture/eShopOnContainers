@@ -2,36 +2,45 @@
 
 namespace Catalog.FunctionalTests;
 
-public class CatalogScenariosBase : WebApplicationFactory<Program>
+public class CatalogScenariosBase 
 {
     public TestServer CreateServer()
     {
-        Services
-            .MigrateDbContext<CatalogContext>((context, services) =>
-            {
-                var env = services.GetService<IWebHostEnvironment>();
-                var settings = services.GetService<IOptions<CatalogSettings>>();
-                var logger = services.GetService<ILogger<CatalogContextSeed>>();
-
-                new CatalogContextSeed()
-                .SeedAsync(context, env, settings, logger)
-                .Wait();
-            })
-            .MigrateDbContext<IntegrationEventLogContext>((_, __) => { });
-
-        return Server;
+        var factory = new CatalogApplication();
+        return factory.CreateServer();
     }
 
-    protected override IHost CreateHost(IHostBuilder builder)
+    private class CatalogApplication : WebApplicationFactory<Program>
     {
-        builder.ConfigureAppConfiguration(c =>
+        public TestServer CreateServer()
         {
-            var directory = Path.GetDirectoryName(typeof(CatalogScenariosBase).Assembly.Location)!;
+            Services
+                .MigrateDbContext<CatalogContext>((context, services) =>
+                {
+                    var env = services.GetService<IWebHostEnvironment>();
+                    var settings = services.GetService<IOptions<CatalogSettings>>();
+                    var logger = services.GetService<ILogger<CatalogContextSeed>>();
 
-            c.AddJsonFile(Path.Combine(directory, "appsettings.json"), optional: false);
-        });
+                    new CatalogContextSeed()
+                    .SeedAsync(context, env, settings, logger)
+                    .Wait();
+                })
+                .MigrateDbContext<IntegrationEventLogContext>((_, __) => { });
 
-        return base.CreateHost(builder);
+            return Server;
+        }
+
+        protected override IHost CreateHost(IHostBuilder builder)
+        {
+            builder.ConfigureAppConfiguration(c =>
+            {
+                var directory = Path.GetDirectoryName(typeof(CatalogScenariosBase).Assembly.Location)!;
+
+                c.AddJsonFile(Path.Combine(directory, "appsettings.json"), optional: false);
+            });
+
+            return base.CreateHost(builder);
+        }
     }
 
     public static class Get

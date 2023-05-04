@@ -9,7 +9,7 @@ public class BasketScenarioBase
 
     public TestServer CreateServer()
     {
-        var factory = new BasketApplicaton();
+        var factory = new BasketApplication();
         return factory.Server;
     }
 
@@ -27,7 +27,7 @@ public class BasketScenarioBase
         public static string CheckoutOrder = $"{ApiUrlBase}/checkout";
     }
 
-    private class BasketApplicaton : WebApplicationFactory<Program>
+    private class BasketApplication : WebApplicationFactory<Program>
     {
         protected override IHost CreateHost(IHostBuilder builder)
         {

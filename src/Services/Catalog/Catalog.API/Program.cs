@@ -41,11 +41,8 @@ var eventBus = app.Services.GetRequiredService<IEventBus>();
 eventBus.Subscribe<OrderStatusChangedToAwaitingValidationIntegrationEvent, OrderStatusChangedToAwaitingValidationIntegrationEventHandler>();
 eventBus.Subscribe<OrderStatusChangedToPaidIntegrationEvent, OrderStatusChangedToPaidIntegrationEventHandler>();
 
-try
+using (var scope = app.Services.CreateScope())
 {
-    app.Logger.LogInformation("Configuring web host ({ApplicationContext})...", AppName);
-
-    using var scope = app.Services.CreateScope();
     var context = scope.ServiceProvider.GetRequiredService<CatalogContext>();
     var settings = app.Services.GetService<IOptions<CatalogSettings>>();
     var logger = app.Services.GetService<ILogger<CatalogContextSeed>>();
@@ -54,19 +51,6 @@ try
     await new CatalogContextSeed().SeedAsync(context, app.Environment, settings, logger);
     var integEventContext = scope.ServiceProvider.GetRequiredService<IntegrationEventLogContext>();
     await integEventContext.Database.MigrateAsync();
-    app.Logger.LogInformation("Starting web host ({ApplicationName})...", AppName);
-    await app.RunAsync();
-
-    return 0;
-}
-catch (Exception ex)
-{
-    app.Logger.LogCritical(ex, "Program terminated unexpectedly ({ApplicationContext})!", AppName);
-    return 1;
 }
 
-public partial class Program
-{
-    public static string Namespace = typeof(Program).Assembly.GetName().Name;
-    public static string AppName = Namespace.Substring(Namespace.LastIndexOf('.', Namespace.LastIndexOf('.') - 1) + 1);
-}
+await app.RunAsync();
