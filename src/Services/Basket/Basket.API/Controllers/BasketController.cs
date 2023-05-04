@@ -71,7 +71,7 @@ public class BasketController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "ERROR Publishing integration event: {IntegrationEventId} from {AppName}", eventMessage.Id, Program.AppName);
+            _logger.LogError(ex, "ERROR Publishing integration event: {IntegrationEventId}", eventMessage.Id);
 
             throw;
         }

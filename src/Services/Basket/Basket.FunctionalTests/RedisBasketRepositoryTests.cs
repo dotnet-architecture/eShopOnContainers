@@ -9,7 +9,8 @@ namespace Basket.FunctionalTests
         [Fact]
         public async Task UpdateBasket_return_and_add_basket()
         {
-            var redis = Services.GetRequiredService<ConnectionMultiplexer>();
+            var server = CreateServer();
+            var redis = server.Services.GetRequiredService<ConnectionMultiplexer>();
 
             var redisBasketRepository = BuildBasketRepository(redis);
 
@@ -26,7 +27,8 @@ namespace Basket.FunctionalTests
         [Fact]
         public async Task Delete_Basket_return_null()
         {
-            var redis = Services.GetRequiredService<ConnectionMultiplexer>();
+            var server = CreateServer();
+            var redis = server.Services.GetRequiredService<ConnectionMultiplexer>();
 
             var redisBasketRepository = BuildBasketRepository(redis);
 

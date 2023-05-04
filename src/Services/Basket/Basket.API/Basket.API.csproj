@@ -18,4 +18,8 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Services.Common\Services.Common.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Basket.FunctionalTests" />
+  </ItemGroup>
 </Project>

@@ -63,12 +63,6 @@ try
 }
 catch (Exception ex)
 {
-    app.Logger.LogCritical(ex, "Program terminated unexpectedly ({ApplicationContext})!", AppName);
+    app.Logger.LogCritical(ex, "Program terminated unexpectedly");
     return 1;
-}
-
-public partial class Program
-{
-    private static string Namespace = typeof(Program).Assembly.GetName().Name;
-    public static string AppName = Namespace.Substring(Namespace.LastIndexOf('.', Namespace.LastIndexOf('.') - 1) + 1);
 }

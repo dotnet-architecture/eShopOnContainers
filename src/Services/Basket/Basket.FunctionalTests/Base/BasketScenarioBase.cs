@@ -3,13 +3,14 @@ using Microsoft.Extensions.Hosting;
 
 namespace Basket.FunctionalTests.Base;
 
-public class BasketScenarioBase : WebApplicationFactory<Program>
+public class BasketScenarioBase
 {
     private const string ApiUrlBase = "api/v1/basket";
 
     public TestServer CreateServer()
     {
-        return Server;
+        var factory = new BasketApplicaton();
+        return factory.Server;
     }
 
     public static class Get
@@ -26,33 +27,36 @@ public class BasketScenarioBase : WebApplicationFactory<Program>
         public static string CheckoutOrder = $"{ApiUrlBase}/checkout";
     }
 
-    protected override IHost CreateHost(IHostBuilder builder)
+    private class BasketApplicaton : WebApplicationFactory<Program>
     {
-        builder.ConfigureServices(services =>
+        protected override IHost CreateHost(IHostBuilder builder)
         {
-            services.AddSingleton<IStartupFilter, AuthStartupFilter>();
-        });
-
-        builder.ConfigureAppConfiguration(c =>
-        {
-            var directory = Path.GetDirectoryName(typeof(BasketScenarioBase).Assembly.Location)!;
-
-            c.AddJsonFile(Path.Combine(directory, "appsettings.json"), optional: false);
-        });
-
-        return base.CreateHost(builder);
-    }
-
-    private class AuthStartupFilter : IStartupFilter
-    {
-        public Action<IApplicationBuilder> Configure(Action<IApplicationBuilder> next)
-        {
-            return app =>
+            builder.ConfigureServices(services =>
             {
-                app.UseMiddleware<AutoAuthorizeMiddleware>();
+                services.AddSingleton<IStartupFilter, AuthStartupFilter>();
+            });
 
-                next(app);
-            };
+            builder.ConfigureAppConfiguration(c =>
+            {
+                var directory = Path.GetDirectoryName(typeof(BasketScenarioBase).Assembly.Location)!;
+
+                c.AddJsonFile(Path.Combine(directory, "appsettings.json"), optional: false);
+            });
+
+            return base.CreateHost(builder);
+        }
+
+        private class AuthStartupFilter : IStartupFilter
+        {
+            public Action<IApplicationBuilder> Configure(Action<IApplicationBuilder> next)
+            {
+                return app =>
+                {
+                    app.UseMiddleware<AutoAuthorizeMiddleware>();
+
+                    next(app);
+                };
+            }
         }
     }
 }
