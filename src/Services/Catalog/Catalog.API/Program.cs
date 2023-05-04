@@ -7,7 +7,7 @@ builder.AddServiceDefaults();
 builder.Services.AddGrpc();
 builder.Services.AddControllers();
 
-// Applcation specific services
+// Application specific services
 builder.Services.AddDbContexts(builder.Configuration);
 builder.Services.AddApplicationOptions(builder.Configuration);
 builder.Services.AddHealthChecks(builder.Configuration);
@@ -17,6 +17,11 @@ builder.Services.AddTransient<OrderStatusChangedToAwaitingValidationIntegrationE
 builder.Services.AddTransient<OrderStatusChangedToPaidIntegrationEventHandler>();
 
 var app = builder.Build();
+
+if (!await app.CheckHealthAsync())
+{
+    return;
+}
 
 app.UseServiceDefaults();
 
