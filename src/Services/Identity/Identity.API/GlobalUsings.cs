@@ -1,4 +1,4 @@
-global using Azure.Core;
+﻿global using Azure.Core;
 global using Azure.Identity;
 global using HealthChecks.UI.Client;
 global using IdentityModel;
@@ -41,7 +41,6 @@ global using System.Collections.Generic;
 global using System.ComponentModel.DataAnnotations;
 global using System.Data.SqlClient;
 global using System.IdentityModel.Tokens.Jwt;
-global using System.IO;
 global using System.Linq;
 global using System.Security.Claims;
 global using System.Text.RegularExpressions;

@@ -1,5 +1,4 @@
-﻿var appName = "Identity.API";
-var builder = WebApplication.CreateBuilder();
+﻿var builder = WebApplication.CreateBuilder(args);
 
 if (builder.Configuration.GetValue<bool>("UseVault", false))
 {
@@ -10,21 +9,43 @@ if (builder.Configuration.GetValue<bool>("UseVault", false))
     builder.Configuration.AddAzureKeyVault(new Uri($"https://{builder.Configuration["Vault:Name"]}.vault.azure.net/"), credential);
 }
 
-builder.AddCustomConfiguration();
-builder.AddCustomSerilog();
-builder.AddCustomMvc();
-builder.AddCustomDatabase();
-builder.AddCustomIdentity();
-builder.AddCustomIdentityServer();
-builder.AddCustomAuthentication();
-builder.AddCustomHealthChecks();
-builder.AddCustomApplicationServices();
+builder.Services.AddControllersWithViews();
+builder.Services.AddControllers();
+builder.Services.AddRazorPages();
+
+builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("IdentityDb")));
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+        .AddEntityFrameworkStores<ApplicationDbContext>()
+        .AddDefaultTokenProviders();
+
+builder.Services.AddIdentityServer(options =>
+{
+    options.IssuerUri = "null";
+    options.Authentication.CookieLifetime = TimeSpan.FromHours(2);
+
+    options.Events.RaiseErrorEvents = true;
+    options.Events.RaiseInformationEvents = true;
+    options.Events.RaiseFailureEvents = true;
+    options.Events.RaiseSuccessEvents = true;
+})
+.AddInMemoryIdentityResources(Config.GetResources())
+.AddInMemoryApiScopes(Config.GetApiScopes())
+.AddInMemoryApiResources(Config.GetApis())
+.AddInMemoryClients(Config.GetClients(builder.Configuration))
+.AddAspNetIdentity<ApplicationUser>()
+.AddDeveloperSigningCredential(); // Not recommended for production - you need to store your key material somewhere secure
+
+builder.Services.AddAuthentication();
+builder.Services.AddHealthChecks()
+        .AddCheck("self", () => HealthCheckResult.Healthy())
+        .AddSqlServer(builder.Configuration.GetConnectionString("IdentityDb"),
+            name: "IdentityDB-check",
+            tags: new string[] { "IdentityDB" });
+builder.Services.AddTransient<IProfileService, ProfileService>();
+builder.Services.AddTransient<ILoginService<ApplicationUser>, EFLoginService>();
+builder.Services.AddTransient<IRedirectService, RedirectService>();
 
 var app = builder.Build();
-if (app.Environment.IsDevelopment())
-{
-    app.UseDeveloperExceptionPage();
-}
 
 var pathBase = builder.Configuration["PATH_BASE"];
 if (!string.IsNullOrEmpty(pathBase))
@@ -35,16 +56,11 @@ app.UseStaticFiles();
 
 // This cookie policy fixes login issues with Chrome 80+ using HHTP
 app.UseCookiePolicy(new CookiePolicyOptions { MinimumSameSitePolicy = SameSiteMode.Lax });
-
 app.UseRouting();
-
 app.UseIdentityServer();
-
-
 app.UseAuthorization();
 
 app.MapDefaultControllerRoute();
-
 app.MapHealthChecks("/hc", new HealthCheckOptions()
 {
     Predicate = _ => true,
@@ -54,29 +70,13 @@ app.MapHealthChecks("/liveness", new HealthCheckOptions
 {
     Predicate = r => r.Name.Contains("self")
 });
-try
-{
-    app.Logger.LogInformation("Seeding database ({ApplicationName})...", appName);
 
-    // Apply database migration automatically. Note that this approach is not
-    // recommended for production scenarios. Consider generating SQL scripts from
-    // migrations instead.
-    using (var scope = app.Services.CreateScope())
-    {
-        await SeedData.EnsureSeedData(scope, app.Configuration, app.Logger);
-    }
-
-    app.Logger.LogInformation("Starting web host ({ApplicationName})...", appName);
-    app.Run();
-
-    return 0;
-}
-catch (Exception ex)
+// Apply database migration automatically. Note that this approach is not
+// recommended for production scenarios. Consider generating SQL scripts from
+// migrations instead.
+using (var scope = app.Services.CreateScope())
 {
-    app.Logger.LogCritical(ex, "Host terminated unexpectedly ({ApplicationName})...", appName);
-    return 1;
+    await SeedData.EnsureSeedData(scope, app.Configuration, app.Logger);
 }
-finally
-{
-    Serilog.Log.CloseAndFlush();
-}
+
+await app.RunAsync();
