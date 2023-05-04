@@ -1,13 +1,10 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
-using System.Net;
-using Autofac.Core;
 using Azure.Identity;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Routing;
-using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ;
@@ -37,10 +34,7 @@ public static class CommonExtensions
         builder.Services.AddDefaultHealthChecks(builder.Configuration);
 
         // Configure the default logging for this application
-        builder.Host.UseDefaultSerilog(builder.Configuration, builder.Environment.ApplicationName);
-
-        // Configure the default ports for this service (http and grpc ports read from configuration)
-        builder.WebHost.UseDefaultPorts(builder.Configuration);
+        // builder.Host.UseDefaultSerilog(builder.Configuration, builder.Environment.ApplicationName);
 
         // Customizations for this application
 
@@ -80,7 +74,7 @@ public static class CommonExtensions
 
     public static IApplicationBuilder UseDefaultOpenApi(this IApplicationBuilder app, IConfiguration configuration)
     {
-        var openApiSection = configuration.GetRequiredSection("OpenApi");
+        var openApiSection = configuration.GetSection("OpenApi");
 
         if (!openApiSection.Exists())
         {
@@ -122,7 +116,7 @@ public static class CommonExtensions
 
     public static IServiceCollection AddDefaultOpenApi(this IServiceCollection services, IConfiguration configuration)
     {
-        var openApi = configuration.GetRequiredSection("OpenApi");
+        var openApi = configuration.GetSection("OpenApi");
 
         if (!openApi.Exists())
         {
@@ -169,7 +163,7 @@ public static class CommonExtensions
             // }
 
             var identityUrlExternal = identitySection.GetRequiredValue("ExternalUrl");
-            var scopes = identitySection.GetRequiredSection("Scopes").AsEnumerable().ToDictionary(p => p.Key, p => p.Value);
+            var scopes = identitySection.GetRequiredSection("Scopes").GetChildren().ToDictionary(p => p.Key, p => p.Value);
 
             options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
             {
@@ -194,8 +188,7 @@ public static class CommonExtensions
         // {
         //   "Identity": {
         //     "Url": "http://identity",
-        //     "Audience": "basket",
-        //     "Scope": "basket"
+        //     "Audience": "basket"
         //    }
         // }
 
@@ -221,38 +214,7 @@ public static class CommonExtensions
             options.TokenValidationParameters.ValidateAudience = false;
         });
 
-        services.AddAuthorization(options =>
-        {
-            var scope = identitySection.GetRequiredValue("Scope");
-
-            options.AddPolicy("ApiScope", policy =>
-            {
-                policy.RequireAuthenticatedUser();
-                policy.RequireClaim("scope", scope);
-            });
-        });
-
         return services;
-    }
-
-    public static IWebHostBuilder UseDefaultPorts(this IWebHostBuilder builder, IConfiguration configuration)
-    {
-        builder.UseKestrel(options =>
-        {
-            var (httpPort, grpcPort) = GetDefinedPorts(configuration);
-
-            options.Listen(IPAddress.Any, httpPort, listenOptions =>
-            {
-                listenOptions.Protocols = HttpProtocols.Http1AndHttp2;
-            });
-
-            options.Listen(IPAddress.Any, grpcPort, listenOptions =>
-            {
-                listenOptions.Protocols = HttpProtocols.Http2;
-            });
-        });
-
-        return builder;
     }
 
     public static ConfigurationManager AddKeyVault(this ConfigurationManager configuration)
@@ -432,15 +394,25 @@ public static class CommonExtensions
         {
             var seqServerUrl = configuration["Serilog:SeqServerUrl"];
             var logstashUrl = configuration["Serilog:LogstashgUrl"];
-            return new LoggerConfiguration()
+
+            var loggingConfiguration = new LoggerConfiguration()
                 .MinimumLevel.Verbose()
                 .Enrich.WithProperty("ApplicationContext", name)
                 .Enrich.FromLogContext()
                 .WriteTo.Console()
-                .WriteTo.Seq(string.IsNullOrWhiteSpace(seqServerUrl) ? "http://seq" : seqServerUrl)
-                .WriteTo.Http(string.IsNullOrWhiteSpace(logstashUrl) ? "http://logstash:8080" : logstashUrl, null)
-                .ReadFrom.Configuration(configuration)
-                .CreateLogger();
+                .ReadFrom.Configuration(configuration);
+
+            if (!string.IsNullOrEmpty(seqServerUrl))
+            {
+                loggingConfiguration.WriteTo.Seq(seqServerUrl);
+            }
+
+            if (!string.IsNullOrEmpty(logstashUrl))
+            {
+                loggingConfiguration.WriteTo.Http(logstashUrl, null);
+            }
+
+            return loggingConfiguration.CreateLogger();
         }
     }
 
@@ -456,13 +428,6 @@ public static class CommonExtensions
         {
             Predicate = r => r.Name.Contains("self")
         });
-    }
-
-    static (int httpPort, int grpcPort) GetDefinedPorts(IConfiguration config)
-    {
-        var grpcPort = config.GetValue("GRPC_PORT", 5001);
-        var port = config.GetValue("PORT", 80);
-        return (port, grpcPort);
     }
 
     private static string GetRequiredValue(this IConfiguration configuration, string name) =>
