@@ -1,4 +1,4 @@
-namespace WebhookClient;
+﻿namespace WebhookClient;
 
 public class Startup
 {
@@ -36,15 +36,12 @@ public class Startup
             app.UsePathBase(pathBase);
         }
 
-        if (env.IsDevelopment())
-        {
-            app.UseDeveloperExceptionPage();
-        }
-        else
+        if (!env.IsDevelopment())
         {
             app.UseExceptionHandler("/Error");
             // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
         }
+
         app.Map("/check", capp =>
         {
             capp.Run(async (context) =>
@@ -97,7 +94,6 @@ static class ServiceExtensions
 {
     public static IServiceCollection AddConfiguration(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddOptions();
         services.Configure<Settings>(configuration);
         return services;
     }

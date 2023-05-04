@@ -85,19 +85,17 @@ builder.Services.AddSingleton<IIntegrationEventHandler<OrderStatusChangedToStock
 builder.Services.AddSingleton<IIntegrationEventHandler<OrderStatusChangedToSubmittedIntegrationEvent>, OrderStatusChangedToSubmittedIntegrationEventHandler>();
 
 var app = builder.Build();
-if (app.Environment.IsDevelopment())
-{
-    app.UseDeveloperExceptionPage();
-}
-else
+if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
 }
+
 var pathBase = builder.Configuration["PATH_BASE"];
 if (!string.IsNullOrEmpty(pathBase))
 {
     app.UsePathBase(pathBase);
 }
+
 app.UseRouting();
 app.UseCors("CorsPolicy");
 app.UseAuthentication();

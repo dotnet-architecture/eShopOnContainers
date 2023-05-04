@@ -12,7 +12,6 @@ builder.WebHost.CaptureStartupErrors(false);
 builder.Services.AddApplicationInsightsTelemetry(builder.Configuration);
 builder.Services.AddApplicationInsightsKubernetesEnricher();
 builder.Services.AddMvc();
-builder.Services.AddOptions();
 builder.Services.AddHealthChecks()
     .AddCheck("self", () => HealthCheckResult.Healthy());
 builder.Services
@@ -21,11 +20,7 @@ builder.Services
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseDeveloperExceptionPage();
-}
-else
+if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
 }

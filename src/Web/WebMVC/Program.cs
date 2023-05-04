@@ -12,11 +12,7 @@ builder.WebHost.CaptureStartupErrors(false);
 var app = builder.Build();
 
 JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("sub");
-if (app.Environment.IsDevelopment())
-{
-    app.UseDeveloperExceptionPage();
-}
-else
+if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
 }
@@ -72,8 +68,7 @@ static void AddHealthChecks(WebApplicationBuilder builder)
 
 static void AddCustomMvc(WebApplicationBuilder builder)
 {
-    builder.Services.AddOptions()
-        .Configure<AppSettings>(builder.Configuration)
+    builder.Services.Configure<AppSettings>(builder.Configuration)
         .AddSession()
         .AddDistributedMemoryCache();
 

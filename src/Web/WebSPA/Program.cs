@@ -40,11 +40,6 @@ builder.Logging.AddAzureWebAppDiagnostics();
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseDeveloperExceptionPage();
-}
-
 // Here we add Angular default Anti-forgery cookie name on first load. https://angular.io/guide/http#security-xsrf-protection
 // This cookie will be read by Angular app and its value will be sent back to the application as the header configured in .AddAntiforgery()
 var antiForgery = app.Services.GetRequiredService<IAntiforgery>();

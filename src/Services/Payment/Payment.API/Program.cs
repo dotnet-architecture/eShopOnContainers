@@ -57,19 +57,17 @@ else
 }
 RegisterEventBus(builder.Services);
 var app = builder.Build();
-if (app.Environment.IsDevelopment())
-{
-    app.UseDeveloperExceptionPage();
-}
-else
+if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
 }
+
 var pathBase = app.Configuration["PATH_BASE"];
 if (!string.IsNullOrEmpty(pathBase))
 {
     app.UsePathBase(pathBase);
 }
+
 ConfigureEventBus(app);
 
 app.UseRouting();

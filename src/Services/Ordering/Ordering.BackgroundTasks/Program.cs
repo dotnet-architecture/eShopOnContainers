@@ -9,18 +9,14 @@ builder.Configuration.AddJsonFile($"appsettings.{builder.Environment.Environment
 builder.Configuration.AddEnvironmentVariables();
 builder.Services.AddCustomHealthCheck(builder.Configuration)
                 .Configure<BackgroundTaskSettings>(builder.Configuration)
-                .AddOptions()
                 .AddHostedService<GracePeriodManagerService>()
                 .AddEventBus(builder.Configuration);
 var app = builder.Build();
-if (app.Environment.IsDevelopment())
-{
-    app.UseDeveloperExceptionPage();
-}
-else
+if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
 }
+
 app.UseRouting();
 
 app.MapHealthChecks("/hc", new HealthCheckOptions()

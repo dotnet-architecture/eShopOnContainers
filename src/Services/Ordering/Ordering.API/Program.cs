@@ -40,27 +40,20 @@ builder.Services
 
 var services = builder.Services;
 
-        services.AddMediatR(cfg =>
-        {
-            cfg.RegisterServicesFromAssemblyContaining(typeof(Program));
-            
-            cfg.AddOpenBehavior(typeof(LoggingBehavior<,>));
-            cfg.AddOpenBehavior(typeof(ValidatorBehavior<,>));
-            cfg.AddOpenBehavior(typeof(TransactionBehavior<,>));
-        });
+services.AddMediatR(cfg =>
+{
+    cfg.RegisterServicesFromAssemblyContaining(typeof(Program));
+    
+    cfg.AddOpenBehavior(typeof(LoggingBehavior<,>));
+    cfg.AddOpenBehavior(typeof(ValidatorBehavior<,>));
+    cfg.AddOpenBehavior(typeof(TransactionBehavior<,>));
+});
 
-        // Register the command validators for the validator behavior (validators based on FluentValidation library)
-        services.AddSingleton<IValidator<CancelOrderCommand>, CancelOrderCommandValidator>();
-        services.AddSingleton<IValidator<CreateOrderCommand>, CreateOrderCommandValidator>();
-        services.AddSingleton<IValidator<IdentifiedCommand<CreateOrderCommand, bool>>, IdentifiedCommandValidator>();
-        services.AddSingleton<IValidator<ShipOrderCommand>, ShipOrderCommandValidator>();
-
-/*
-        // Build the MediatR pipeline
-        services.AddSingleton(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
-        services.AddSingleton(typeof(IPipelineBehavior<,>), typeof(ValidatorBehavior<,>));
-        services.AddSingleton(typeof(IPipelineBehavior<,>), typeof(TransactionBehavior<,>));
-*/
+// Register the command validators for the validator behavior (validators based on FluentValidation library)
+services.AddSingleton<IValidator<CancelOrderCommand>, CancelOrderCommandValidator>();
+services.AddSingleton<IValidator<CreateOrderCommand>, CreateOrderCommandValidator>();
+services.AddSingleton<IValidator<IdentifiedCommand<CreateOrderCommand, bool>>, IdentifiedCommandValidator>();
+services.AddSingleton<IValidator<ShipOrderCommand>, ShipOrderCommandValidator>();
 
 var queriesConnectionString = builder.Configuration["ConnectionString"];
 
@@ -78,19 +71,17 @@ services.AddSingleton<IIntegrationEventHandler<OrderStockRejectedIntegrationEven
 services.AddSingleton<IIntegrationEventHandler<UserCheckoutAcceptedIntegrationEvent>, UserCheckoutAcceptedIntegrationEventHandler>();
 
 var app = builder.Build();
-if (app.Environment.IsDevelopment())
-{
-    app.UseDeveloperExceptionPage();
-}
-else
+if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
 }
+
 var pathBase = app.Configuration["PATH_BASE"];
 if (!string.IsNullOrEmpty(pathBase))
 {
     app.UsePathBase(pathBase);
 }
+
 app.UseSwagger().UseSwaggerUI(c =>
 {
    c.SwaggerEndpoint($"{(!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty)}/swagger/v1/swagger.json", "Ordering.API V1");
@@ -336,7 +327,6 @@ static class CustomExtensionsMethods
 
     public static IServiceCollection AddCustomConfiguration(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddOptions();
         services.Configure<OrderingSettings>(configuration);
         services.Configure<ApiBehaviorOptions>(options =>
         {

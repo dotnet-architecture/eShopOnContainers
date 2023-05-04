@@ -1,6 +1,5 @@
 ﻿var builder = WebApplication.CreateBuilder(args);
 
-builder.Logging.AddConsole();
 builder.Services.AddHealthChecks()
     .AddCheck("self", () => HealthCheckResult.Healthy())
     .AddUrlGroup(new Uri(builder.Configuration["CatalogUrlHC"]), name: "catalogapi-check", tags: new string[] { "catalogapi" })
@@ -13,11 +12,7 @@ builder.Services.AddCustomMvc(builder.Configuration)
     .AddApplicationServices()
     .AddGrpcServices();
 var app = builder.Build();
-if (app.Environment.IsDevelopment())
-{
-    app.UseDeveloperExceptionPage();
-}
-else
+if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
 }
@@ -82,7 +77,6 @@ public static class ServiceCollectionExtensions
     }
     public static IServiceCollection AddCustomMvc(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddOptions();
         services.Configure<UrlsConfig>(configuration.GetSection("urls"));
 
         services.AddControllers()
