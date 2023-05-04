@@ -18,7 +18,10 @@ var app = builder.Build();
 
 try
 {
-    await app.CheckHealthAsync();
+    if (!await app.CheckHealthAsync())
+    {
+        return 1;
+    }
 
     app.UseServiceDefaults();
 
