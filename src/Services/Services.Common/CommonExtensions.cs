@@ -283,13 +283,13 @@ public static class CommonExtensions
             "servicebus" => hcBuilder.AddAzureServiceBusTopic(
                     eventBusConnectionString,
                     topicName: "eshop_event_bus",
-                    name: "servicebus-check",
-                    tags: new string[] { "servicebus" }),
+                    name: "servicebus",
+                    tags: new string[] { "ready" }),
 
             _ => hcBuilder.AddRabbitMQ(
                     $"amqp://{eventBusConnectionString}",
-                    name: "rabbitmqbus-check",
-                    tags: new string[] { "rabbitmqbus" })
+                    name: "rabbitmq",
+                    tags: new string[] { "ready" })
         };
     }
 

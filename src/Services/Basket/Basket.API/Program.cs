@@ -1,4 +1,6 @@
-﻿var builder = WebApplication.CreateBuilder(args);
+﻿using Microsoft.Extensions.Diagnostics.HealthChecks;
+
+var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
 
@@ -23,20 +25,38 @@ builder.Services.AddTransient<IIdentityService, IdentityService>();
 
 var app = builder.Build();
 
-app.UseServiceDefaults();
-
-app.MapGet("/", () => Results.Redirect("/swagger"));
-
-app.MapGrpcService<BasketService>();
-app.MapControllers();
-
-var eventBus = app.Services.GetRequiredService<IEventBus>();
-
-eventBus.Subscribe<ProductPriceChangedIntegrationEvent, ProductPriceChangedIntegrationEventHandler>();
-eventBus.Subscribe<OrderStartedIntegrationEvent, OrderStartedIntegrationEventHandler>();
-
 try
 {
+    app.Logger.LogInformation("Running health checks...");
+
+    // Do a health check on startup, this will throw an exception if any of the checks fail
+    var report = await app.Services.GetRequiredService<HealthCheckService>().CheckHealthAsync();
+
+    if (report.Status == HealthStatus.Unhealthy)
+    {
+        app.Logger.LogCritical("Health checks failed!");
+        foreach (var entry in report.Entries)
+        {
+            if (entry.Value.Status == HealthStatus.Unhealthy)
+            {
+                app.Logger.LogCritical("{Check}: {Status}", entry.Key, entry.Value.Status);
+            }
+        }
+        return 1;
+    }
+
+    app.UseServiceDefaults();
+
+    app.MapGet("/", () => Results.Redirect("/swagger"));
+
+    app.MapGrpcService<BasketService>();
+    app.MapControllers();
+
+    var eventBus = app.Services.GetRequiredService<IEventBus>();
+
+    eventBus.Subscribe<ProductPriceChangedIntegrationEvent, ProductPriceChangedIntegrationEventHandler>();
+    eventBus.Subscribe<OrderStartedIntegrationEvent, OrderStartedIntegrationEventHandler>();
+
     await app.RunAsync();
 
     return 0;
