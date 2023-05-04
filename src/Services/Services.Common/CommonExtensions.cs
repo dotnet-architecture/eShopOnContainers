@@ -271,12 +271,12 @@ public static class CommonExtensions
         // {
         //   "EventBus": {
         //     "ProviderName": "ServiceBus | RabbitMQ",
-        //     "ConnectionString": "..."
+
         //   }
         // }
 
         var eventBusSection = configuration.GetRequiredSection("EventBus");
-        var eventBusConnectionString = eventBusSection.GetRequiredValue("ConnectionString");
+        var eventBusConnectionString = configuration.GetRequiredConnectionString("EventBus");
 
         return eventBusSection["ProviderName"]?.ToLowerInvariant() switch
         {
@@ -295,10 +295,14 @@ public static class CommonExtensions
 
     public static IServiceCollection AddEventBus(this IServiceCollection services, IConfiguration configuration)
     {
+        //  {
+        //    "ConnectionStrings": {
+        //      "EventBus": "..."
+        //    },
+
         // {
         //   "EventBus": {
         //     "ProviderName": "ServiceBus | RabbitMQ",
-        //     "ConnectionString": "...",
         //     ...
         //   }
         // }
@@ -306,7 +310,6 @@ public static class CommonExtensions
         // {
         //   "EventBus": {
         //     "ProviderName": "ServiceBus",
-        //     "ConnectionString": "..."
         //     "SubscriptionClientName": "eshop_event_bus"
         //   }
         // }
@@ -314,7 +317,6 @@ public static class CommonExtensions
         // {
         //   "EventBus": {
         //     "ProviderName": "RabbitMQ",
-        //     "ConnectionString": "...",
         //     "SubscriptionClientName": "...",
         //     "UserName": "...",
         //     "Password": "...",
@@ -327,7 +329,7 @@ public static class CommonExtensions
         {
             services.AddSingleton<IServiceBusPersisterConnection>(sp =>
             {
-                var serviceBusConnectionString = eventBusSection.GetRequiredValue("ConnectionString");
+                var serviceBusConnectionString = configuration.GetRequiredConnectionString("EventBus");
 
                 return new DefaultServiceBusPersisterConnection(serviceBusConnectionString);
             });
@@ -351,7 +353,7 @@ public static class CommonExtensions
 
                 var factory = new ConnectionFactory()
                 {
-                    HostName = eventBusSection.GetRequiredValue("ConnectionString"),
+                    HostName = configuration.GetRequiredConnectionString("EventBus"),
                     DispatchConsumersAsync = true
                 };
 
@@ -432,4 +434,7 @@ public static class CommonExtensions
 
     private static string GetRequiredValue(this IConfiguration configuration, string name) =>
         configuration[name] ?? throw new InvalidOperationException($"Configuration missing value for: {(configuration is IConfigurationSection s ? s.Path + ":" + name : name)}");
+
+    private static string GetRequiredConnectionString(this IConfiguration configuration, string name) =>
+        configuration.GetConnectionString(name) ?? throw new InvalidOperationException($"Configuration missing value for: {(configuration is IConfigurationSection s ? s.Path + ":ConnectionStrings:" + name : "ConnectionStrings:" + name)}");
 }
