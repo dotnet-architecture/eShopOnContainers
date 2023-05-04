@@ -1,19 +1,10 @@
-﻿using Microsoft.Extensions.Diagnostics.HealthChecks;
-
-var builder = WebApplication.CreateBuilder(args);
+﻿var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
 
-builder.Services.AddGrpc(options =>
-{
-    options.EnableDetailedErrors = true;
-});
-
-builder.Services.AddControllers(options =>
-{
-    options.Filters.Add(typeof(HttpGlobalExceptionFilter));
-    options.Filters.Add(typeof(ValidateModelStateFilter));
-});
+builder.Services.AddGrpc();
+builder.Services.AddControllers();
+builder.Services.AddProblemDetails();
 
 builder.Services.AddRedis(builder.Configuration);
 
