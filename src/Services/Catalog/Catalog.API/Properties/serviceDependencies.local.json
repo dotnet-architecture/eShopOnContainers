@@ -1,0 +1,23 @@
+{
+  "dependencies": {
+    "rabbitmq1": {
+      "containerPorts": "5672:5672,15672:15672",
+      "secretStore": "LocalSecretsFile",
+      "containerName": "rabbitmq",
+      "containerImage": "rabbitmq:3-management-alpine",
+      "type": "rabbitmq.container",
+      "connectionId": "ConnectionStrings:EventBus",
+      "dynamicId": null
+    },
+    "mssql1": {
+      "serviceConnectorResourceId": "",
+      "containerPorts": "1434:1433",
+      "secretStore": "LocalSecretsFile",
+      "containerName": "catalog-mssql",
+      "containerImage": "mcr.microsoft.com/mssql/server:2019-latest",
+      "type": "mssql.container",
+      "connectionId": "ConnectionStrings:CatalogDB",
+      "dynamicId": null
+    }
+  }
+}

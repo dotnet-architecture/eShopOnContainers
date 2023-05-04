@@ -4,14 +4,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
 
-builder.Services.AddControllers(options =>
-{
-    options.Filters.Add(typeof(HttpGlobalExceptionFilter));
-})
-.AddJsonOptions(options => options.JsonSerializerOptions.WriteIndented = true);
-
 builder.Services.AddGrpc();
+builder.Services.AddControllers();
 
+// Applcation specific services
 builder.Services.AddDbContexts(builder.Configuration);
 builder.Services.AddApplicationOptions(builder.Configuration);
 builder.Services.AddHealthChecks(builder.Configuration);
@@ -33,7 +29,6 @@ app.UseFileServer(new FileServerOptions
 app.MapGet("/", () => Results.Redirect("/swagger"));
 
 app.MapControllers();
-
 app.MapGrpcService<CatalogService>();
 
 var eventBus = app.Services.GetRequiredService<IEventBus>();

@@ -38,7 +38,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <InternalsVisibleTo Include="Catalog.FunctionalTests"/>
+    <InternalsVisibleTo Include="Catalog.FunctionalTests" />
   </ItemGroup>
 
   <ItemGroup>

@@ -12,7 +12,7 @@ public static class CustomExtensionMethods
                 .AddSqlServer(
                     connectionString,
                     name: "CatalogDB-check",
-                    tags: new string[] { "catalogdb" });
+                    tags: new string[] { "live", "ready" });
         }
 
         var accountName = configuration["AzureStorageAccountName"];
@@ -24,7 +24,7 @@ public static class CustomExtensionMethods
                 .AddAzureBlobStorage(
                     $"DefaultEndpointsProtocol=https;AccountName={accountName};AccountKey={accountKey};EndpointSuffix=core.windows.net",
                     name: "catalog-storage-check",
-                    tags: new string[] { "catalogstorage" });
+                    tags: new string[] { "live", "ready" });
         }
 
         return services;
@@ -41,13 +41,12 @@ public static class CustomExtensionMethods
             sqlOptions.EnableRetryOnFailure(maxRetryCount: 15, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
         };
 
-        services.AddEntityFrameworkSqlServer()
-            .AddDbContext<CatalogContext>(options =>
-            {
-                var connectionString = configuration.GetRequiredConnectionString("CatalogDB");
+        services.AddDbContext<CatalogContext>(options =>
+        {
+            var connectionString = configuration.GetRequiredConnectionString("CatalogDB");
 
-                options.UseSqlServer(connectionString, ConfigureSqlOptions);
-            });
+            options.UseSqlServer(connectionString, ConfigureSqlOptions);
+        });
 
         services.AddDbContext<IntegrationEventLogContext>(options =>
         {
