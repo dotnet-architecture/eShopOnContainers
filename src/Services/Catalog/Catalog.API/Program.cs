@@ -8,9 +8,9 @@ builder.Services.AddGrpc();
 builder.Services.AddControllers();
 
 // Application specific services
+builder.Services.AddHealthChecks(builder.Configuration);
 builder.Services.AddDbContexts(builder.Configuration);
 builder.Services.AddApplicationOptions(builder.Configuration);
-builder.Services.AddHealthChecks(builder.Configuration);
 builder.Services.AddIntegrationServices();
 
 builder.Services.AddTransient<OrderStatusChangedToAwaitingValidationIntegrationEventHandler>();

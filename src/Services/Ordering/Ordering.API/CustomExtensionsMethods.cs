@@ -39,7 +39,7 @@ static class CustomExtensionsMethods
         return services;
     }
 
-    public static IServiceCollection AddCustomIntegrations(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddIntegrationServices(this IServiceCollection services)
     {
         services.AddTransient<IIdentityService, IdentityService>();
         services.AddTransient<Func<DbConnection, IIntegrationEventLogService>>(
@@ -50,7 +50,7 @@ static class CustomExtensionsMethods
         return services;
     }
 
-    public static IServiceCollection AddCustomConfiguration(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddApplicationOptions(this IServiceCollection services, IConfiguration configuration)
     {
         services.Configure<OrderingSettings>(configuration);
         services.Configure<ApiBehaviorOptions>(options =>

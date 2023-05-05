@@ -9,8 +9,8 @@ builder.Services.AddControllers();
 
 builder.Services.AddHealthChecks(builder.Configuration);
 builder.Services.AddDbContexts(builder.Configuration);
-builder.Services.AddCustomIntegrations(builder.Configuration);
-builder.Services.AddCustomConfiguration(builder.Configuration);
+builder.Services.AddApplicationOptions(builder.Configuration);
+builder.Services.AddIntegrationServices();
 
 var services = builder.Services;
 
