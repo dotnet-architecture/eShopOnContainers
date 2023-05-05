@@ -30,6 +30,7 @@ namespace Ordering.FunctionalTests
             var response = await server.CreateClient()
                 .PutAsync(Put.CancelOrder, content);
 
+            var s = await response.Content.ReadAsStringAsync();
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
 
