@@ -289,23 +289,21 @@ public static class CommonExtensions
         // {
         //   "EventBus": {
         //     "ProviderName": "ServiceBus | RabbitMQ",
-
         //   }
         // }
 
         var eventBusSection = configuration.GetRequiredSection("EventBus");
-        var eventBusConnectionString = configuration.GetRequiredConnectionString("EventBus");
 
         return eventBusSection["ProviderName"]?.ToLowerInvariant() switch
         {
             "servicebus" => hcBuilder.AddAzureServiceBusTopic(
-                    eventBusConnectionString,
-                    topicName: "eshop_event_bus",
+                    _ => configuration.GetRequiredConnectionString("EventBus"),
+                    _ => "eshop_event_bus",
                     name: "servicebus",
                     tags: new string[] { "ready" }),
 
             _ => hcBuilder.AddRabbitMQ(
-                    $"amqp://{eventBusConnectionString}",
+                    _ => $"amqp://{configuration.GetRequiredConnectionString("EventBus")}",
                     name: "rabbitmq",
                     tags: new string[] { "ready" })
         };
