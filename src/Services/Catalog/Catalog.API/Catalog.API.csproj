@@ -22,9 +22,6 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
     <None Include="IntegrationEvents\EventHandling\AnyFutureIntegrationEventHandler.cs.txt" />
-    <Content Update="web.config">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
   </ItemGroup>
 
   <ItemGroup>
