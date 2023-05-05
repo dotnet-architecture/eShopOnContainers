@@ -51,13 +51,13 @@ public class WebContextSeed
                 }
                 else
                 {
-                    logger.LogWarning("Skipped file '{FileName}' in zipfile '{ZipFileName}'", entry.Name, imagesZipFile);
+                    logger.LogWarning("Skipped file '{FileName}' in zip file '{ZipFileName}'", entry.Name, imagesZipFile);
                 }
             }
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "ERROR in GetPreconfiguredImages: {Message}", ex.Message);
+            logger.LogError(ex, "Error getting preconfigured images");
         }
     }
 }

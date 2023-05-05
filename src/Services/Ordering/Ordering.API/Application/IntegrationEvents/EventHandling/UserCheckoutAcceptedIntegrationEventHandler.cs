@@ -26,7 +26,7 @@ public class UserCheckoutAcceptedIntegrationEventHandler : IIntegrationEventHand
     {
         using (_logger.BeginScope(new List<KeyValuePair<string, object>> { new ("IntegrationEventContext", @event.Id) }))
         {
-            _logger.LogInformation("----- Handling integration event: {IntegrationEventId} - ({@IntegrationEvent})", @event.Id, @event);
+            _logger.LogInformation("Handling integration event: {IntegrationEventId} - ({@IntegrationEvent})", @event.Id, @event);
 
             var result = false;
 
@@ -42,7 +42,7 @@ public class UserCheckoutAcceptedIntegrationEventHandler : IIntegrationEventHand
                     var requestCreateOrder = new IdentifiedCommand<CreateOrderCommand, bool>(createOrderCommand, @event.RequestId);
 
                     _logger.LogInformation(
-                        "----- Sending command: {CommandName} - {IdProperty}: {CommandId} ({@Command})",
+                        "Sending command: {CommandName} - {IdProperty}: {CommandId} ({@Command})",
                         requestCreateOrder.GetGenericTypeName(),
                         nameof(requestCreateOrder.Id),
                         requestCreateOrder.Id,
@@ -52,7 +52,7 @@ public class UserCheckoutAcceptedIntegrationEventHandler : IIntegrationEventHand
 
                     if (result)
                     {
-                        _logger.LogInformation("----- CreateOrderCommand suceeded - RequestId: {RequestId}", @event.RequestId);
+                        _logger.LogInformation("CreateOrderCommand suceeded - RequestId: {RequestId}", @event.RequestId);
                     }
                     else
                     {

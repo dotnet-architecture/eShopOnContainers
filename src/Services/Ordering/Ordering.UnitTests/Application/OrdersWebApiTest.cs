@@ -42,7 +42,7 @@ public class OrdersWebApiTest
 
         //Act
         var orderController = new OrdersController(_mediatorMock.Object, _orderQueriesMock.Object, _identityServiceMock.Object, _loggerMock.Object);
-        var actionResult = await orderController.CancelOrderAsync(new CancelOrderCommand(1), String.Empty) as BadRequestResult;
+        var actionResult = await orderController.CancelOrderAsync(new CancelOrderCommand(1), string.Empty) as BadRequestResult;
 
         //Assert
         Assert.Equal((int)System.Net.HttpStatusCode.BadRequest, actionResult.StatusCode);
@@ -73,7 +73,7 @@ public class OrdersWebApiTest
 
         //Act
         var orderController = new OrdersController(_mediatorMock.Object, _orderQueriesMock.Object, _identityServiceMock.Object, _loggerMock.Object);
-        var actionResult = await orderController.ShipOrderAsync(new ShipOrderCommand(1), String.Empty) as BadRequestResult;
+        var actionResult = await orderController.ShipOrderAsync(new ShipOrderCommand(1), string.Empty) as BadRequestResult;
 
         //Assert
         Assert.Equal((int)System.Net.HttpStatusCode.BadRequest, actionResult.StatusCode);

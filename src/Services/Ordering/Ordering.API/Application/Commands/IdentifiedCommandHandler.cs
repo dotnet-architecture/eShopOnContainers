@@ -77,7 +77,7 @@ public abstract class IdentifiedCommandHandler<T, R> : IRequestHandler<Identifie
                 }
 
                 _logger.LogInformation(
-                    "----- Sending command: {CommandName} - {IdProperty}: {CommandId} ({@Command})",
+                    "Sending command: {CommandName} - {IdProperty}: {CommandId} ({@Command})",
                     commandName,
                     idProperty,
                     commandId,
@@ -87,7 +87,7 @@ public abstract class IdentifiedCommandHandler<T, R> : IRequestHandler<Identifie
                 var result = await _mediator.Send(command, cancellationToken);
 
                 _logger.LogInformation(
-                    "----- Command result: {@Result} - {CommandName} - {IdProperty}: {CommandId} ({@Command})",
+                    "Command result: {@Result} - {CommandName} - {IdProperty}: {CommandId} ({@Command})",
                     result,
                     commandName,
                     idProperty,

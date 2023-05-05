@@ -17,7 +17,7 @@ public class OrderStartedIntegrationEventHandler : IIntegrationEventHandler<Orde
     {
         using (_logger.BeginScope(new List<KeyValuePair<string, object>> { new ("IntegrationEventContext", @event.Id) }))
         {
-            _logger.LogInformation("----- Handling integration event: {IntegrationEventId} - ({@IntegrationEvent})", @event.Id, @event);
+            _logger.LogInformation("Handling integration event: {IntegrationEventId} - ({@IntegrationEvent})", @event.Id, @event);
 
             await _repository.DeleteBasketAsync(@event.UserId.ToString());
         }

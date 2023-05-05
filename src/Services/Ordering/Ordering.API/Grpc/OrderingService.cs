@@ -20,7 +20,7 @@ public class OrderingService : OrderingGrpc.OrderingGrpcBase
     {
         _logger.LogInformation("Begin grpc call from method {Method} for ordering get order draft {CreateOrderDraftCommand}", context.Method, createOrderDraftCommand);
         _logger.LogTrace(
-            "----- Sending command: {CommandName} - {IdProperty}: {CommandId} ({@Command})",
+            "Sending command: {CommandName} - {IdProperty}: {CommandId} ({@Command})",
             createOrderDraftCommand.GetGenericTypeName(),
             nameof(createOrderDraftCommand.BuyerId),
             createOrderDraftCommand.BuyerId,

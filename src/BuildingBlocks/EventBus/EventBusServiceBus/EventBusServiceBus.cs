@@ -140,7 +140,7 @@ public class EventBusServiceBus : IEventBus, IAsyncDisposable
         var ex = args.Exception;
         var context = args.ErrorSource;
 
-        _logger.LogError(ex, "ERROR handling message: {ExceptionMessage} - Context: {@ExceptionContext}", ex.Message, context);
+        _logger.LogError(ex, "Error handling message - Context: {@ExceptionContext}", context);
 
         return Task.CompletedTask;
     }
