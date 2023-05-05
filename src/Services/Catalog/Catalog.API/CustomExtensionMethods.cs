@@ -7,7 +7,7 @@ public static class CustomExtensionMethods
         var hcBuilder = services.AddHealthChecks();
 
         hcBuilder
-            .AddSqlServer(_ => configuration.GetConnectionString("CatalogDB"),
+            .AddSqlServer(_ => configuration.GetRequiredConnectionString("CatalogDB"),
                 name: "CatalogDB-check",
                 tags: new string[] { "live", "ready" });
 
@@ -89,7 +89,4 @@ public static class CustomExtensionMethods
 
         return services;
     }
-
-    private static string GetRequiredConnectionString(this IConfiguration configuration, string name) =>
-        configuration.GetConnectionString(name) ?? throw new InvalidOperationException($"Configuration missing value for: {(configuration is IConfigurationSection s ? s.Path + ":ConnectionStrings:" + name : "ConnectionStrings:" + name)}");
 }

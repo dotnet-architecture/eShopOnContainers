@@ -52,6 +52,7 @@ global using Microsoft.Extensions.Logging;
 global using Microsoft.Extensions.Options;
 global using Polly;
 global using Polly.Retry;
+global using Services.Common;
 global using Swashbuckle.AspNetCore.SwaggerGen;
 global using AppCommand = Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands;
 global using ApiModels = Microsoft.eShopOnContainers.Services.Ordering.API.Application.Models;

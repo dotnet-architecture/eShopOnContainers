@@ -73,7 +73,4 @@ static class CustomExtensionsMethods
 
         return services;
     }
-
-    private static string GetRequiredConnectionString(this IConfiguration configuration, string name) =>
-        configuration.GetConnectionString(name) ?? throw new InvalidOperationException($"Configuration missing value for: {(configuration is IConfigurationSection s ? s.Path + ":ConnectionStrings:" + name : "ConnectionStrings:" + name)}");
 }
