@@ -29,7 +29,6 @@ app.UseServiceDefaults();
 app.MapGet("/", () => Results.Redirect("/swagger"));
 app.MapControllers();
 
-
 var eventBus = app.Services.GetRequiredService<IEventBus>();
 
 eventBus.Subscribe<ProductPriceChangedIntegrationEvent, ProductPriceChangedIntegrationEventHandler>();

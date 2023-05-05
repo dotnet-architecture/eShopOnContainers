@@ -38,10 +38,8 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" />
     <PackageReference Include="Microsoft.Extensions.Logging.AzureAppServices" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" />
-    <PackageReference Include="Microsoft.Web.LibraryManager.Build" />
     <PackageReference Include="Polly" />
     <PackageReference Include="Swashbuckle.AspNetCore" />
-    <PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" />
     <PackageReference Include="System.Data.SqlClient" />
     <PackageReference Include="Azure.Extensions.AspNetCore.Configuration.Secrets" />
     <PackageReference Include="Azure.Identity" />
