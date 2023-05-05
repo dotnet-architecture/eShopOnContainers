@@ -6,6 +6,7 @@ builder.Services.AddGrpc();
 builder.Services.AddControllers();
 builder.Services.AddProblemDetails();
 
+builder.Services.AddHealthChecks(builder.Configuration);
 builder.Services.AddRedis(builder.Configuration);
 
 builder.Services.AddTransient<ProductPriceChangedIntegrationEventHandler>();
