@@ -6,14 +6,10 @@ public static class CustomExtensionMethods
     {
         var hcBuilder = services.AddHealthChecks();
 
-        if (configuration.GetConnectionString("CatalogDB") is string connectionString)
-        {
-            hcBuilder
-                .AddSqlServer(
-                    connectionString,
-                    name: "CatalogDB-check",
-                    tags: new string[] { "live", "ready" });
-        }
+        hcBuilder
+            .AddSqlServer(_ => configuration.GetConnectionString("CatalogDB"),
+                name: "CatalogDB-check",
+                tags: new string[] { "live", "ready" });
 
         var accountName = configuration["AzureStorageAccountName"];
         var accountKey = configuration["AzureStorageAccountKey"];

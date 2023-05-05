@@ -41,6 +41,7 @@ var eventBus = app.Services.GetRequiredService<IEventBus>();
 eventBus.Subscribe<OrderStatusChangedToAwaitingValidationIntegrationEvent, OrderStatusChangedToAwaitingValidationIntegrationEventHandler>();
 eventBus.Subscribe<OrderStatusChangedToPaidIntegrationEvent, OrderStatusChangedToPaidIntegrationEventHandler>();
 
+// REVIEW: This is done fore development east but shouldn't be here in production
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<CatalogContext>();
