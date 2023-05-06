@@ -10,7 +10,7 @@ static class CustomExtensionsMethods
             .AddSqlServer(_ =>
                 configuration.GetRequiredConnectionString("OrderingDB"),
                 name: "OrderingDB-check",
-                tags: new string[] { "live", "ready" });
+                tags: new string[] { "ready" });
 
         return services;
     }

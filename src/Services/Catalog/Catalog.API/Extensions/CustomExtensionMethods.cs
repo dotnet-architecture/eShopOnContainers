@@ -9,7 +9,7 @@ public static class CustomExtensionMethods
         hcBuilder
             .AddSqlServer(_ => configuration.GetRequiredConnectionString("CatalogDB"),
                 name: "CatalogDB-check",
-                tags: new string[] { "live", "ready" });
+                tags: new string[] { "ready" });
 
         var accountName = configuration["AzureStorageAccountName"];
         var accountKey = configuration["AzureStorageAccountKey"];
@@ -20,7 +20,7 @@ public static class CustomExtensionMethods
                 .AddAzureBlobStorage(
                     $"DefaultEndpointsProtocol=https;AccountName={accountName};AccountKey={accountKey};EndpointSuffix=core.windows.net",
                     name: "catalog-storage-check",
-                    tags: new string[] { "live", "ready" });
+                    tags: new string[] { "ready" });
         }
 
         return services;

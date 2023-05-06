@@ -1,5 +1,4 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Basket.API;
-
+﻿
 public static class CustomExtensionMethods
 {
     public static IServiceCollection AddHealthChecks(this IServiceCollection services, IConfiguration configuration)

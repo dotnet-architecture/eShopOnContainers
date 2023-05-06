@@ -25,7 +25,7 @@
             .AddSqlServer(_ =>
                 configuration.GetRequiredConnectionString("WebHooksDb"),
                 name: "WebhooksApiDb-check",
-                tags: new string[] { "ready", "live" });
+                tags: new string[] { "ready" });
 
         return services;
     }
