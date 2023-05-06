@@ -347,7 +347,7 @@ public static class CommonExtensions
 
         var eventBusSection = configuration.GetSection("EventBus");
 
-        if (eventBusSection.Exists())
+        if (!eventBusSection.Exists())
         {
             return services;
         }
