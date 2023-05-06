@@ -23,11 +23,6 @@ builder.Services.AddSingleton<IIntegrationEventHandler<OrderStatusChangedToSubmi
 
 var app = builder.Build();
 
-if (!await app.CheckHealthAsync())
-{
-    return;
-}
-
 app.UseServiceDefaults();
 
 app.UseCors("CorsPolicy");

@@ -40,11 +40,6 @@ builder.Services.AddTransient<IRedirectService, RedirectService>();
 
 var app = builder.Build();
 
-if (!await app.CheckHealthAsync())
-{
-    return;
-}
-
 app.UseServiceDefaults();
 
 app.UseStaticFiles();

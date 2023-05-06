@@ -57,6 +57,16 @@ public static class CommonExtensions
         if (!string.IsNullOrEmpty(pathBase))
         {
             app.UsePathBase(pathBase);
+            app.UseRouting();
+
+            var identitySection = app.Configuration.GetSection("Identity");
+
+            if (identitySection.Exists())
+            {
+                // We have to add the auth middleware to the pipeline here
+                app.UseAuthentication();
+                app.UseAuthorization();
+            }
         }
 
         app.UseDefaultOpenApi(app.Configuration);

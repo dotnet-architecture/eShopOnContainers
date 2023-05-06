@@ -8,11 +8,6 @@ builder.Services.AddTransient<OrderStatusChangedToStockConfirmedIntegrationEvent
 
 var app = builder.Build();
 
-if (!await app.CheckHealthAsync())
-{
-    return;
-}
-
 app.UseServiceDefaults();
 
 var eventBus = app.Services.GetRequiredService<IEventBus>();

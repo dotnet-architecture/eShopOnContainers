@@ -19,11 +19,6 @@ builder.Services.AddTransient<OrderStatusChangedToPaidIntegrationEventHandler>()
 
 var app = builder.Build();
 
-if (!await app.CheckHealthAsync())
-{
-    return;
-}
-
 app.UseServiceDefaults();
 
 app.MapGet("/", () => Results.Redirect("/swagger"));

@@ -22,21 +22,16 @@ builder.Services.Configure<UrlsConfig>(builder.Configuration.GetSection("urls"))
 
 var app = builder.Build();
 
-if (!await app.CheckHealthAsync())
-{
-    return;
-}
-
 app.UseServiceDefaults();
 
 app.UseHttpsRedirection();
 
-app.UseCors("CorsPolicy");
+app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapGet("/", () => Results.Redirect("/swagger"));
 
-app.MapControllers();
+app.MapControllers().RequireCors("CorsPolicy");
 
 await app.RunAsync();
