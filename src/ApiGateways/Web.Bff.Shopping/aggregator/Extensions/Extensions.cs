@@ -1,4 +1,4 @@
-﻿public static class ServiceCollectionExtensions
+﻿internal static class Extensions
 {
     public static IServiceCollection AddHealthChecks(this IServiceCollection services, IConfiguration configuration)
     {
@@ -17,7 +17,6 @@
         services.AddTransient<HttpClientAuthorizationDelegatingHandler>();
 
         // Register http services
-
         services.AddHttpClient<IOrderApiClient, OrderApiClient>()
             .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>();
 

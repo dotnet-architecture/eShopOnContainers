@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-public static class CustomExtensionMethods
+internal static class Extensions
 {
     public static IServiceCollection AddSignalR(this IServiceCollection services, IConfiguration configuration)
     {
         if (configuration.GetConnectionString("redis") is string redisConnection)
         {
-            // Add a redis health check
+            // TODO: Add a redis health check
             services.AddSignalR().AddStackExchangeRedis(redisConnection);
         }
         else

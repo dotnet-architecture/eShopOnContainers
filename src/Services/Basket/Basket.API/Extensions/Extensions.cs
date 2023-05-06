@@ -1,5 +1,4 @@
-﻿
-public static class CustomExtensionMethods
+﻿public static class Extensions
 {
     public static IServiceCollection AddHealthChecks(this IServiceCollection services, IConfiguration configuration)
     {

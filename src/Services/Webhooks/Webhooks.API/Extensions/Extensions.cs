@@ -1,4 +1,4 @@
-﻿internal static class CustomExtensionMethods
+﻿internal static class Extensions
 {
     public static IServiceCollection AddDbContexts(this IServiceCollection services, IConfiguration configuration)
     {

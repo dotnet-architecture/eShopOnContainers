@@ -1,16 +1,27 @@
 ﻿using Microsoft.EntityFrameworkCore.Infrastructure;
 
-static class CustomExtensionsMethods
+public static class Extensions
 {
     public static IServiceCollection AddHealthChecks(this IServiceCollection services, IConfiguration configuration)
     {
         var hcBuilder = services.AddHealthChecks();
 
         hcBuilder
-            .AddSqlServer(_ =>
-                configuration.GetRequiredConnectionString("OrderingDB"),
-                name: "OrderingDB-check",
+            .AddSqlServer(_ => configuration.GetRequiredConnectionString("CatalogDB"),
+                name: "CatalogDB-check",
                 tags: new string[] { "ready" });
+
+        var accountName = configuration["AzureStorageAccountName"];
+        var accountKey = configuration["AzureStorageAccountKey"];
+
+        if (!string.IsNullOrEmpty(accountName) && !string.IsNullOrEmpty(accountKey))
+        {
+            hcBuilder
+                .AddAzureBlobStorage(
+                    $"DefaultEndpointsProtocol=https;AccountName={accountName};AccountKey={accountKey};EndpointSuffix=core.windows.net",
+                    name: "catalog-storage-check",
+                    tags: new string[] { "ready" });
+        }
 
         return services;
     }
@@ -26,33 +37,28 @@ static class CustomExtensionsMethods
             sqlOptions.EnableRetryOnFailure(maxRetryCount: 15, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
         };
 
-        services.AddDbContext<OrderingContext>(options =>
+        services.AddDbContext<CatalogContext>(options =>
         {
-            options.UseSqlServer(configuration.GetRequiredConnectionString("OrderingDB"), ConfigureSqlOptions);
+            var connectionString = configuration.GetRequiredConnectionString("CatalogDB");
+
+            options.UseSqlServer(connectionString, ConfigureSqlOptions);
         });
 
         services.AddDbContext<IntegrationEventLogContext>(options =>
         {
-            options.UseSqlServer(configuration.GetRequiredConnectionString("OrderingDB"), ConfigureSqlOptions);
+            var connectionString = configuration.GetRequiredConnectionString("CatalogDB");
+
+            options.UseSqlServer(connectionString, ConfigureSqlOptions);
         });
-
-        return services;
-    }
-
-    public static IServiceCollection AddIntegrationServices(this IServiceCollection services)
-    {
-        services.AddTransient<IIdentityService, IdentityService>();
-        services.AddTransient<Func<DbConnection, IIntegrationEventLogService>>(
-            sp => (DbConnection c) => new IntegrationEventLogService(c));
-
-        services.AddTransient<IOrderingIntegrationEventService, OrderingIntegrationEventService>();
 
         return services;
     }
 
     public static IServiceCollection AddApplicationOptions(this IServiceCollection services, IConfiguration configuration)
     {
-        services.Configure<OrderingSettings>(configuration);
+        services.Configure<CatalogSettings>(configuration);
+
+        // TODO: Move to the new problem details middleware
         services.Configure<ApiBehaviorOptions>(options =>
         {
             options.InvalidModelStateResponseFactory = context =>
@@ -70,6 +76,16 @@ static class CustomExtensionsMethods
                 };
             };
         });
+
+        return services;
+    }
+
+    public static IServiceCollection AddIntegrationServices(this IServiceCollection services)
+    {
+        services.AddTransient<Func<DbConnection, IIntegrationEventLogService>>(
+            sp => (DbConnection c) => new IntegrationEventLogService(c));
+
+        services.AddTransient<ICatalogIntegrationEventService, CatalogIntegrationEventService>();
 
         return services;
     }
