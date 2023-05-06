@@ -31,15 +31,14 @@ public class PicController : ControllerBase
 
         if (item != null)
         {
-            var webRoot = _env.WebRootPath;
-            var path = Path.Combine(webRoot, item.PictureFileName);
+            var path = Path.Combine(_env.ContentRootPath, "Pics", item.PictureFileName);
 
             string imageFileExtension = Path.GetExtension(item.PictureFileName);
             string mimetype = GetImageMimeTypeFromImageFileExtension(imageFileExtension);
 
             var buffer = await System.IO.File.ReadAllBytesAsync(path);
 
-            return File(buffer, mimetype);
+            return PhysicalFile(path, mimetype);
         }
 
         return NotFound();

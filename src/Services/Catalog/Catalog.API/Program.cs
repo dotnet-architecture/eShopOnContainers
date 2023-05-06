@@ -23,12 +23,6 @@ if (!await app.CheckHealthAsync())
 
 app.UseServiceDefaults();
 
-app.UseFileServer(new FileServerOptions
-{
-    FileProvider = new PhysicalFileProvider(Path.Combine(app.Environment.ContentRootPath, "Pics")),
-    RequestPath = "/pics"
-});
-
 app.MapGet("/", () => Results.Redirect("/swagger"));
 
 app.MapControllers();
