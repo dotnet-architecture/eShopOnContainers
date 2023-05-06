@@ -1,4 +1,4 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Basket.API.Infrastructure.Repositories;
+﻿namespace Basket.API.Repositories;
 
 public class RedisBasketRepository : IBasketRepository
 {
