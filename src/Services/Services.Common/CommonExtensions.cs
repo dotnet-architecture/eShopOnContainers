@@ -292,7 +292,12 @@ public static class CommonExtensions
         //   }
         // }
 
-        var eventBusSection = configuration.GetRequiredSection("EventBus");
+        var eventBusSection = configuration.GetSection("EventBus");
+
+        if (!eventBusSection.Exists())
+        {
+            return hcBuilder;
+        }
 
         return eventBusSection["ProviderName"]?.ToLowerInvariant() switch
         {
@@ -340,7 +345,13 @@ public static class CommonExtensions
         //   }
         // }
 
-        var eventBusSection = configuration.GetRequiredSection("EventBus");
+        var eventBusSection = configuration.GetSection("EventBus");
+
+        if (eventBusSection.Exists())
+        {
+            return services;
+        }
+
         if (string.Equals(eventBusSection["ProviderName"], "ServiceBus", StringComparison.OrdinalIgnoreCase))
         {
             services.AddSingleton<IServiceBusPersisterConnection>(sp =>
