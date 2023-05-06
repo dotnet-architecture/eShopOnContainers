@@ -3,9 +3,9 @@
     "Identity.API": {
       "commandName": "Project",
       "launchBrowser": true,
-      "applicationUrl": "http://localhost:5225",
+      "applicationUrl": "http://localhost:5223",
       "environmentVariables": {
-        "BasketApiClient": "http://localhost:5222",
+        "BasketApiClient": "http://localhost:5221",
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     }

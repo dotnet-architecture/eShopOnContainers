@@ -3,7 +3,7 @@
     "Ordering.API": {
       "commandName": "Project",
       "launchBrowser": true,
-      "applicationUrl": "http://localhost:5228/",
+      "applicationUrl": "http://localhost:5224/",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

@@ -1,29 +1,16 @@
 {
-  "iisSettings": {
-    "windowsAuthentication": false,
-    "anonymousAuthentication": true,
-    "iisExpress": {
-      "applicationUrl": "http://localhost:57425/",
-      "sslPort": 0
-    }
-  },
   "profiles": {
-    "IIS Express": {
-      "commandName": "IISExpress",
-      "launchBrowser": true,
-      "launchUrl": "api/values",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
-    },
-    "PurchaseForMvc": {
+    "Web.Shopping.HttpAggregator": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "api/values",
+      "applicationUrl": "http://localhost:61632/",
       "environmentVariables": {
+        "CatalogUrlHC": "http://localhost:5222/hc",
+        "OrderingUrlHC": "http://localhost:5224/hc",
+        "BasketUrlHC": "http://localhost:5221/hc",
+        "IdentityUrlHC": "http://localhost:5223/hc",
         "ASPNETCORE_ENVIRONMENT": "Development"
-      },
-      "applicationUrl": "http://localhost:61632/"
+      }
     }
   }
 }
