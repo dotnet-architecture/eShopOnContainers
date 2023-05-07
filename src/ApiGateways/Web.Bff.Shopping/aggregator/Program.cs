@@ -2,6 +2,7 @@
 
 builder.AddServiceDefaults();
 
+builder.Services.AddReverseProxy(builder.Configuration);
 builder.Services.AddControllers();
 
 builder.Services.AddHealthChecks(builder.Configuration);
@@ -33,5 +34,6 @@ app.UseAuthorization();
 app.MapGet("/", () => Results.Redirect("/swagger"));
 
 app.MapControllers().RequireCors("CorsPolicy");
+app.MapReverseProxy();
 
 await app.RunAsync();

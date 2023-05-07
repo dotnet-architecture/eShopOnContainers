@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Yarp.ReverseProxy" />
     <PackageReference Include="AspNetCore.HealthChecks.Uris" />
     <PackageReference Include="Google.Protobuf" />
     <PackageReference Include="Grpc.AspNetCore.Server.ClientFactory" />
