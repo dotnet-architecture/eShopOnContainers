@@ -3,12 +3,8 @@
     "Web.Shopping.HttpAggregator": {
       "commandName": "Project",
       "launchBrowser": true,
-      "applicationUrl": "http://localhost:61632/",
+      "applicationUrl": "http://localhost:5229/",
       "environmentVariables": {
-        "CatalogUrlHC": "http://localhost:5222/hc",
-        "OrderingUrlHC": "http://localhost:5224/hc",
-        "BasketUrlHC": "http://localhost:5221/hc",
-        "IdentityUrlHC": "http://localhost:5223/hc",
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     }
