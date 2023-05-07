@@ -3,7 +3,6 @@
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
     <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageVersion Include="AspNetCore.HealthChecks.AzureServiceBus" Version="6.1.0" />
     <PackageVersion Include="AspNetCore.HealthChecks.AzureStorage" Version="6.1.2" />
@@ -88,5 +87,6 @@
     <PackageVersion Include="System.Reflection.TypeExtensions" Version="4.7.0" />
     <PackageVersion Include="xunit" Version="2.4.2" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="2.4.5" />
+    <PackageVersion Include="Yarp.ReverseProxy" Version="2.0.0" />
   </ItemGroup>
 </Project>
