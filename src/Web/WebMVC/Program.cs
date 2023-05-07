@@ -63,7 +63,7 @@ static void AddHealthChecks(WebApplicationBuilder builder)
 {
     builder.Services.AddHealthChecks()
         .AddCheck("self", () => HealthCheckResult.Healthy())
-        .AddUrlGroup(new Uri(builder.Configuration["IdentityUrlHC"]), name: "identityapi-check", tags: new string[] { "identityapi" });
+        .AddUrlGroup(_ => new Uri(builder.Configuration["IdentityUrlHC"]), name: "identityapi-check", tags: new string[] { "identityapi" });
 }
 
 static void AddCustomMvc(WebApplicationBuilder builder)
@@ -85,7 +85,7 @@ static void AddCustomMvc(WebApplicationBuilder builder)
 // Adds all Http client services
 static void AddHttpClientServices(WebApplicationBuilder builder)
 {
-    builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+    builder.Services.AddHttpContextAccessor();
 
     //register delegating handlers
     builder.Services.AddTransient<HttpClientAuthorizationDelegatingHandler>()
@@ -116,7 +116,7 @@ static void AddCustomAuthentication(WebApplicationBuilder builder)
     var callBackUrl = builder.Configuration.GetValue<string>("CallBackUrl");
     var sessionCookieLifetime = builder.Configuration.GetValue("SessionCookieLifetimeMinutes", 60);
 
-    // Add Authentication services          
+    // Add Authentication services
 
     builder.Services.AddAuthentication(options =>
     {
