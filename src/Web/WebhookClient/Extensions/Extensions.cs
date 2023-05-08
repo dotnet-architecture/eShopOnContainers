@@ -35,9 +35,7 @@ internal static class Extensions
 
     public static IServiceCollection AddHttpClientServices(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         services.AddTransient<HttpClientAuthorizationDelegatingHandler>();
-        services.AddHttpClient("extendedhandlerlifetime").SetHandlerLifetime(Timeout.InfiniteTimeSpan);
 
         //add http client services
         services.AddHttpClient("GrantClient")
