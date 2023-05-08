@@ -12,9 +12,7 @@ internal static class Extensions
 
     public static void AddApplicationSevices(this IServiceCollection services, IConfiguration configuration)
     {
-        services.Configure<AppSettings>(configuration)
-                .AddSession()
-                .AddDistributedMemoryCache();
+        services.Configure<AppSettings>(configuration);
 
         if (configuration["DPConnectionString"] is string redisConnection)
         {
