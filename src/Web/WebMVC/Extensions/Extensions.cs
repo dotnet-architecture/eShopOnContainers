@@ -29,7 +29,7 @@ internal static class Extensions
     {
         // Register delegating handlers
         services.AddTransient<HttpClientAuthorizationDelegatingHandler>()
-            .AddTransient<HttpClientRequestIdDelegatingHandler>();
+                .AddTransient<HttpClientRequestIdDelegatingHandler>();
 
         // Add http client services
         services.AddHttpClient<IBasketService, BasketService>()
@@ -42,8 +42,7 @@ internal static class Extensions
                 .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
                 .AddHttpMessageHandler<HttpClientRequestIdDelegatingHandler>();
 
-
-        //add custom application services
+        // Add custom application services
         services.AddTransient<IIdentityParser<ApplicationUser>, IdentityParser>();
     }
 
