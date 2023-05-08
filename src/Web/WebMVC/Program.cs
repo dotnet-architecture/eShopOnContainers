@@ -20,6 +20,11 @@ app.UseSession();
 // Refer to https://github.com/dotnet-architecture/eShopOnContainers/issues/1391
 app.UseCookiePolicy(new CookiePolicyOptions { MinimumSameSitePolicy = SameSiteMode.Lax });
 
+app.UseRouting();
+
+app.UseAuthentication();
+app.UseAuthorization();
+
 app.MapControllerRoute("default", "{controller=Catalog}/{action=Index}/{id?}");
 app.MapControllerRoute("defaultError", "{controller=Error}/{action=Error}");
 app.MapControllers();
