@@ -36,8 +36,6 @@ public class PicController : ControllerBase
             string imageFileExtension = Path.GetExtension(item.PictureFileName);
             string mimetype = GetImageMimeTypeFromImageFileExtension(imageFileExtension);
 
-            var buffer = await System.IO.File.ReadAllBytesAsync(path);
-
             return PhysicalFile(path, mimetype);
         }
 
