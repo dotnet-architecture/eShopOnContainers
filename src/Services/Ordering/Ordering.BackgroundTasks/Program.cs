@@ -8,11 +8,6 @@ builder.Services.AddHostedService<GracePeriodManagerService>();
 
 var app = builder.Build();
 
-if (!await app.CheckHealthAsync())
-{
-    return;
-}
-
 app.UseServiceDefaults();
 
 await app.RunAsync();
