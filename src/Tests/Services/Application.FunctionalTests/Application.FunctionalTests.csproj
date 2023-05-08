@@ -11,28 +11,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Setup\CatalogBrands.csv" />
-    <None Remove="Setup\CatalogItems.csv" />
-    <None Remove="Setup\CatalogItems.zip" />
-    <None Remove="Setup\CatalogTypes.csv" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="Setup\CatalogBrands.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Setup\CatalogItems.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Setup\CatalogItems.zip">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Setup\CatalogTypes.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" />
     <PackageReference Include="Microsoft.AspNetCore.TestHost" />
