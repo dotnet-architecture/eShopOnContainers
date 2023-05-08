@@ -2,7 +2,7 @@
 
 public class SeedData
 {
-    public static async Task EnsureSeedData(IServiceScope scope, IConfiguration configuration, Microsoft.Extensions.Logging.ILogger logger)
+    public static async Task EnsureSeedData(IServiceScope scope, IConfiguration configuration, ILogger logger)
     {
         var retryPolicy = CreateRetryPolicy(configuration, logger);
         var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
