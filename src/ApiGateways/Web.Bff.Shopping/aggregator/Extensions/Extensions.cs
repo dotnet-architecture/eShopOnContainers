@@ -1,51 +1,10 @@
-﻿using Yarp.ReverseProxy.Configuration;
-using Yarp.ReverseProxy.Transforms;
+﻿using Yarp.ReverseProxy.Transforms;
 
 internal static class Extensions
 {
     public static IServiceCollection AddReverseProxy(this IServiceCollection services, IConfiguration configuration)
     {
-        // REVIEW: We could load the routes and clusters from configuration instead of code
-        // using YARP's default schema, it's slightly more verbose but also reloable.
-        var s = new List<(string, string, string, bool)>();
-        foreach (var c in configuration.GetRequiredSection("Routes").GetChildren())
-        {
-            s.Add((c["0"], c["1"], c["2"], c.GetValue("3", false)));
-        }
-
-        var routes = new List<RouteConfig>();
-        var clusters = new Dictionary<string, ClusterConfig>();
-        var urls = configuration.GetRequiredSection("Urls");
-
-        foreach (var (routeId, prefix, clusterId, rewritePrefix) in s)
-        {
-            var destination = urls.GetRequiredValue(clusterId);
-
-            routes.Add(new()
-            {
-                RouteId = routeId,
-                ClusterId = clusterId,
-                Match = new()
-                {
-                    Path = $"/{prefix}/{{**catch-all}}"
-                },
-                Metadata = rewritePrefix ? new Dictionary<string, string>()
-                {
-                    ["prefix"] = prefix
-                } : null
-            });
-
-            clusters[clusterId] = new()
-            {
-                ClusterId = clusterId,
-                Destinations = new Dictionary<string, DestinationConfig>()
-                {
-                    { clusterId, new DestinationConfig() { Address = destination } }
-                }
-            };
-        }
-
-        services.AddReverseProxy().LoadFromMemory(routes, clusters.Values.ToList())
+        services.AddReverseProxy().LoadFromConfig(configuration.GetRequiredSection("ReverseProxy"))
                 .AddTransforms(builder =>
                 {
                     if (builder.Route?.Metadata?["prefix"] is string prefix)
