@@ -47,7 +47,7 @@ builder.Services
     .AddCustomMvc()
     .AddHealthChecks(builder.Configuration)
     .AddCustomDbContext(builder.Configuration)
-    .AddCustomSwagger(builder.Configuration)    
+    .AddCustomSwagger(builder.Configuration)
     .AddCustomAuthentication(builder.Configuration)
     .AddCustomAuthorization(builder.Configuration)
     .AddCustomIntegrations(builder.Configuration)

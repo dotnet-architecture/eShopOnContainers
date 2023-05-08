@@ -10,7 +10,7 @@ public class BasketService : IBasketService
         _basketClient = basketClient;
         _logger = logger;
     }
-    
+
     public async Task<BasketData> GetByIdAsync(string id)
     {
         _logger.LogDebug("grpc client created, request = {@id}", id);

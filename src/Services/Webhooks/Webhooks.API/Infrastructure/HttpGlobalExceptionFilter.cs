@@ -26,7 +26,7 @@ public class HttpGlobalExceptionFilter : IExceptionFilter
                 Detail = "Please refer to the errors property for additional details."
             };
 
-            problemDetails.Errors.Add("DomainValidations", new [] { context.Exception.Message });
+            problemDetails.Errors.Add("DomainValidations", new[] { context.Exception.Message });
 
             context.Result = new BadRequestObjectResult(problemDetails);
             context.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;

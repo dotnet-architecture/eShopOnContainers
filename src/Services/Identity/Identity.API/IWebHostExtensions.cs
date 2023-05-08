@@ -56,7 +56,7 @@ namespace Microsoft.AspNetCore.Hosting
                 }
             }
 
-        return webHost;
+            return webHost;
         }
 
         private static void InvokeSeeder<TContext>(Action<TContext, IServiceProvider> seeder, TContext context, IServiceProvider services)
