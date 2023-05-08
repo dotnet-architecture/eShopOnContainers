@@ -2,6 +2,7 @@
 
 builder.AddServiceDefaults();
 
+builder.Services.AddHttpForwarder();
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddHealthChecks(builder.Configuration);
@@ -28,6 +29,7 @@ app.UseAuthorization();
 app.MapControllerRoute("default", "{controller=Catalog}/{action=Index}/{id?}");
 app.MapControllerRoute("defaultError", "{controller=Error}/{action=Error}");
 app.MapControllers();
+app.MapForwardSignalR();
 
 WebContextSeed.Seed(app, app.Environment);
 

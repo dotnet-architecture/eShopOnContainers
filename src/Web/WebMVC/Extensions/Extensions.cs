@@ -1,5 +1,7 @@
 ﻿// Fix samesite issue when running eShop from docker-compose locally as by default http protocol is being used
 // Refer to https://github.com/dotnet-architecture/eShopOnContainers/issues/1391
+using Yarp.ReverseProxy.Forwarder;
+
 internal static class Extensions
 {
     public static void AddHealthChecks(this IServiceCollection services, IConfiguration configuration)
@@ -81,5 +83,28 @@ internal static class Extensions
             options.Scope.Add("orders.signalrhub");
             options.Scope.Add("webhooks");
         });
+    }
+
+    public static IEndpointConventionBuilder MapForwardSignalR(this WebApplication app)
+    {
+        // Forward the SignalR traffic to the bff
+        var destination = app.Configuration.GetRequiredValue("PurchaseUrl");
+        var authTransformer = new BffAuthTransfomer();
+        var requestConfig = new ForwarderRequestConfig();
+
+        return app.MapForwarder("/hub/notificationhub/{**any}", destination, requestConfig, authTransformer);
+    }
+
+    private sealed class BffAuthTransfomer : HttpTransformer
+    {
+        public override async ValueTask TransformRequestAsync(HttpContext httpContext, HttpRequestMessage proxyRequest, string destinationPrefix, CancellationToken cancellationToken)
+        {
+            // Set the access token as a bearer token for the outgoing request
+            var accessToken = await httpContext.GetTokenAsync("access_token");
+
+            proxyRequest.Headers.Authorization = new("Bearer", accessToken);
+
+            await base.TransformRequestAsync(httpContext, proxyRequest, destinationPrefix, cancellationToken);
+        }
     }
 }
