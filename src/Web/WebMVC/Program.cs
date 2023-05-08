@@ -6,7 +6,7 @@ builder.Services.AddHttpForwarder();
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddHealthChecks(builder.Configuration);
-builder.Services.AddApplicationSevices(builder.Configuration);
+builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.AddAuthenticationServices(builder.Configuration);
 builder.Services.AddHttpClientServices();
 

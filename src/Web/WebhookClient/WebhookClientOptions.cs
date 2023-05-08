@@ -1,6 +1,6 @@
 ﻿namespace WebhookClient;
 
-public class Settings
+public class WebhookClientOptions
 {
     public string Token { get; set; }
     public string IdentityUrl { get; set; }

@@ -10,7 +10,7 @@ internal static class Extensions
             .AddUrlGroup(_ => new Uri(configuration["IdentityUrlHC"]), name: "identityapi-check", tags: new string[] { "identityapi" });
     }
 
-    public static void AddApplicationSevices(this IServiceCollection services, IConfiguration configuration)
+    public static void AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.Configure<AppSettings>(configuration);
 
@@ -86,13 +86,13 @@ internal static class Extensions
     {
         // Forward the SignalR traffic to the bff
         var destination = app.Configuration.GetRequiredValue("PurchaseUrl");
-        var authTransformer = new BffAuthTransfomer();
+        var authTransformer = new BffAuthTransformer();
         var requestConfig = new ForwarderRequestConfig();
 
         return app.MapForwarder("/hub/notificationhub/{**any}", destination, requestConfig, authTransformer);
     }
 
-    private sealed class BffAuthTransfomer : HttpTransformer
+    private sealed class BffAuthTransformer : HttpTransformer
     {
         public override async ValueTask TransformRequestAsync(HttpContext httpContext, HttpRequestMessage proxyRequest, string destinationPrefix, CancellationToken cancellationToken)
         {

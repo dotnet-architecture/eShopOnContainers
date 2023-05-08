@@ -4,14 +4,13 @@
 [Route("webhook-received")]
 public class WebhooksReceivedController : Controller
 {
-
-    private readonly Settings _settings;
+    private readonly WebhookClientOptions _options;
     private readonly ILogger _logger;
     private readonly IHooksRepository _hooksRepository;
 
-    public WebhooksReceivedController(IOptions<Settings> settings, ILogger<WebhooksReceivedController> logger, IHooksRepository hooksRepository)
+    public WebhooksReceivedController(IOptions<WebhookClientOptions> options, ILogger<WebhooksReceivedController> logger, IHooksRepository hooksRepository)
     {
-        _settings = settings.Value;
+        _options = options.Value;
         _logger = logger;
         _hooksRepository = hooksRepository;
     }
@@ -22,9 +21,9 @@ public class WebhooksReceivedController : Controller
         var header = Request.Headers[HeaderNames.WebHookCheckHeader];
         var token = header.FirstOrDefault();
 
-        _logger.LogInformation("Received hook with token {Token}. My token is {MyToken}. Token validation is set to {ValidateToken}", token, _settings.Token, _settings.ValidateToken);
+        _logger.LogInformation("Received hook with token {Token}. My token is {MyToken}. Token validation is set to {ValidateToken}", token, _options.Token, _options.ValidateToken);
 
-        if (!_settings.ValidateToken || _settings.Token == token)
+        if (!_options.ValidateToken || _options.Token == token)
         {
             _logger.LogInformation("Received hook is going to be processed");
             var newHook = new WebHookReceived()
