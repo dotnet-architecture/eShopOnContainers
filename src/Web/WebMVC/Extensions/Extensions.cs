@@ -102,7 +102,10 @@ internal static class Extensions
             // Set the access token as a bearer token for the outgoing request
             var accessToken = await httpContext.GetTokenAsync("access_token");
 
-            proxyRequest.Headers.Authorization = new("Bearer", accessToken);
+            if (accessToken is not null)
+            {
+                proxyRequest.Headers.Authorization = new("Bearer", accessToken);
+            }
 
             await base.TransformRequestAsync(httpContext, proxyRequest, destinationPrefix, cancellationToken);
         }
