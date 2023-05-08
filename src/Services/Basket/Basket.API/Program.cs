@@ -19,8 +19,6 @@ var app = builder.Build();
 
 app.UseServiceDefaults();
 
-app.MapGet("/", () => Results.Redirect("/swagger"));
-
 app.MapGrpcService<BasketService>();
 app.MapControllers();
 

@@ -32,8 +32,6 @@ app.UseCors("CorsPolicy");
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapGet("/", () => Results.Redirect("/swagger"));
-
 app.MapControllers();
 app.MapReverseProxy();
 

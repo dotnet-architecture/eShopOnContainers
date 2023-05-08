@@ -18,8 +18,7 @@ var app = builder.Build();
 
 app.UseServiceDefaults();
 
-app.MapGet("/", () => Results.Redirect("/swagger"));
-
+app.MapPicApi();
 app.MapControllers();
 app.MapGrpcService<CatalogService>();
 

@@ -4,6 +4,7 @@ using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
@@ -100,7 +101,7 @@ public static class CommonExtensions
         return true;
     }
 
-    public static IApplicationBuilder UseDefaultOpenApi(this IApplicationBuilder app, IConfiguration configuration)
+    public static IApplicationBuilder UseDefaultOpenApi(this WebApplication app, IConfiguration configuration)
     {
         var openApiSection = configuration.GetSection("OpenApi");
 
@@ -139,6 +140,9 @@ public static class CommonExtensions
             }
         });
 
+        // Add a redirect from the root of the app to the swagger endpoint
+        app.MapGet("/", () => Results.Redirect("/swagger")).ExcludeFromDescription();
+
         return app;
     }
 
@@ -150,6 +154,8 @@ public static class CommonExtensions
         {
             return services;
         }
+
+        services.AddEndpointsApiExplorer();
 
         return services.AddSwaggerGen(options =>
         {

@@ -49,6 +49,7 @@
     <PackageVersion Include="Microsoft.AspNetCore.Identity.UI" Version="7.0.3" />
     <PackageVersion Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="7.0.3" />
     <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="7.0.3" />
+    <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="7.0.5" />
     <PackageVersion Include="Microsoft.AspNetCore.SignalR.StackExchangeRedis" Version="7.0.3" />
     <PackageVersion Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="7.0.3" />
     <PackageVersion Include="Microsoft.AspNetCore.TestHost" Version="7.0.3" />
