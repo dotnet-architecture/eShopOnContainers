@@ -5,20 +5,13 @@ internal static class Extensions
 {
     public static IServiceCollection AddReverseProxy(this IServiceCollection services, IConfiguration configuration)
     {
-        // REVIEW: This should come from configuration
-        var s = new (string, string, string, bool)[]
+        // REVIEW: We could load the routes and clusters from configuration instead of code
+        // using YARP's default schema, it's slightly more verbose but also reloable.
+        var s = new List<(string, string, string, bool)>();
+        foreach (var c in configuration.GetRequiredSection("Routes").GetChildren())
         {
-            ("c-short", "c", "catalog", true),
-            ("c-long", "catalog-api", "catalog", true),
-
-            ("b-short", "b", "basket", true),
-            ("b-long", "basket-api", "basket", true),
-
-            ("o-short", "o", "orders", true)  ,
-            ("o-long", "ordering-api", "orders", true),
-
-            ("h-long", "hub/notificationhub", "signalr", false)
-        };
+            s.Add((c["0"], c["1"], c["2"], c.GetValue("3", false)));
+        }
 
         var routes = new List<RouteConfig>();
         var clusters = new Dictionary<string, ClusterConfig>();
