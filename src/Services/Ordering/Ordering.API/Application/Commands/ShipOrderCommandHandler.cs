@@ -43,6 +43,6 @@ public class ShipOrderIdentifiedCommandHandler : IdentifiedCommandHandler<ShipOr
 
     protected override bool CreateResultForDuplicateRequest()
     {
-        return true;                // Ignore duplicate requests for processing order.
+        return true; // Ignore duplicate requests for processing order.
     }
 }

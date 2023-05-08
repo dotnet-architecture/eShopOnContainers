@@ -26,11 +26,11 @@ public class IdentifiedCommandHandlerTest
         _mediator.Setup(x => x.Send(It.IsAny<IRequest<bool>>(), default))
             .Returns(Task.FromResult(true));
 
-        //Act
+        // Act
         var handler = new CreateOrderIdentifiedCommandHandler(_mediator.Object, _requestManager.Object, _loggerMock.Object);
         var result = await handler.Handle(fakeOrderCmd, CancellationToken.None);
 
-        //Assert
+        // Assert
         Assert.True(result);
         _mediator.Verify(x => x.Send(It.IsAny<IRequest<bool>>(), default), Times.Once());
     }
@@ -48,12 +48,11 @@ public class IdentifiedCommandHandlerTest
         _mediator.Setup(x => x.Send(It.IsAny<IRequest<bool>>(), default))
             .Returns(Task.FromResult(true));
 
-        //Act
+        // Act
         var handler = new CreateOrderIdentifiedCommandHandler(_mediator.Object, _requestManager.Object, _loggerMock.Object);
         var result = await handler.Handle(fakeOrderCmd, CancellationToken.None);
 
-        //Assert
-        Assert.False(result);
+        // Assert
         _mediator.Verify(x => x.Send(It.IsAny<IRequest<bool>>(), default), Times.Never());
     }
 

@@ -67,6 +67,6 @@ public class CreateOrderIdentifiedCommandHandler : IdentifiedCommandHandler<Crea
 
     protected override bool CreateResultForDuplicateRequest()
     {
-        return true;                // Ignore duplicate requests for creating order.
+        return true; // Ignore duplicate requests for creating order.
     }
 }
