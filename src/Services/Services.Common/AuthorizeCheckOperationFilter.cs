@@ -6,9 +6,11 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 namespace Services.Common;
 internal class AuthorizeCheckOperationFilter : IOperationFilter
 {
+    private readonly IConfiguration _configuration;
+
     public AuthorizeCheckOperationFilter(IConfiguration configuration)
     {
-
+        _configuration = configuration;
     }
 
     public void Apply(OpenApiOperation operation, OperationFilterContext context)
@@ -27,11 +29,14 @@ internal class AuthorizeCheckOperationFilter : IOperationFilter
             Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "oauth2" }
         };
 
+        var identitySection = _configuration.GetSection("Identity");
+        var scopes = identitySection.GetRequiredSection("Scopes").GetChildren().Select(r => r.Key).ToArray();
+
         operation.Security = new List<OpenApiSecurityRequirement>
             {
                 new()
                 {
-                    [ oAuthScheme ] = new [] { "basketapi" }
+                    [ oAuthScheme ] = scopes
                 }
             };
     }
