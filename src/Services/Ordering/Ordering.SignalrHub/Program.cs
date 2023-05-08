@@ -2,16 +2,6 @@
 
 builder.AddServiceDefaults();
 
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("CorsPolicy",
-        builder => builder
-        .AllowAnyMethod()
-        .AllowAnyHeader()
-        .SetIsOriginAllowed((host) => true)
-        .AllowCredentials());
-});
-
 builder.Services.AddSignalR(builder.Configuration);
 
 builder.Services.AddSingleton<IIntegrationEventHandler<OrderStatusChangedToAwaitingValidationIntegrationEvent>, OrderStatusChangedToAwaitingValidationIntegrationEventHandler>();
@@ -24,10 +14,6 @@ builder.Services.AddSingleton<IIntegrationEventHandler<OrderStatusChangedToSubmi
 var app = builder.Build();
 
 app.UseServiceDefaults();
-
-app.UseCors("CorsPolicy");
-app.UseAuthentication();
-app.UseAuthorization();
 
 app.MapHub<NotificationsHub>("/hub/notificationhub");
 
