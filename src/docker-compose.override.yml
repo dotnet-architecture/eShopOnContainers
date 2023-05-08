@@ -213,6 +213,10 @@ services:
       - urls__grpcBasket=http://basket-api:81
       - urls__grpcCatalog=http://catalog-api:81
       - urls__grpcOrdering=http://ordering-api:81
+      - ReverseProxy__Clusters__basket__Destinations__destination0__Address=http://basket-api
+      - ReverseProxy__Clusters__catalog__Destinations__destination0__Address=http://catalog-api
+      - ReverseProxy__Clusters__orders__Destinations__destination0__Address=http://ordering-api
+      - ReverseProxy__Clusters__signalr__Destinations__destination0__Address=http://ordering-signalrhub
       - CatalogUrlHC=http://catalog-api/hc
       - OrderingUrlHC=http://ordering-api/hc
       - IdentityUrlHC=http://identity-api/hc
@@ -286,9 +290,9 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
-      - PurchaseUrl=http://webshoppingapigw
+      - PurchaseUrl=http://webshoppingagg
       - IdentityUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
-      - SignalrHubUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5202
+      - SignalrHubUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5121
       - IdentityUrlHC=http://identity-api/hc
       - UseCustomizationData=True
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}

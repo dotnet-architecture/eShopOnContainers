@@ -147,7 +147,6 @@ services:
       dockerfile: Web/WebMVC/Dockerfile
     depends_on:
       - webshoppingagg
-      - webshoppingapigw
 
   webhooks-client:
     image: ${REGISTRY:-eshop}/webhooks.client:${PLATFORM:-linux}-${TAG:-latest}
