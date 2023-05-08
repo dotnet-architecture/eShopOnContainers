@@ -14,16 +14,16 @@ public class OrderingScenarioBase
 
         protected override IHost CreateHost(IHostBuilder builder)
         {
-            builder.ConfigureServices(servies =>
+            builder.ConfigureServices(services =>
             {
-                servies.AddSingleton<IStartupFilter, AuthStartupFilter>();
+                services.AddSingleton<IStartupFilter, AuthStartupFilter>();
             });
 
             builder.ConfigureAppConfiguration(c =>
             {
                 var directory = Path.GetDirectoryName(typeof(OrderingScenarioBase).Assembly.Location)!;
 
-                c.AddJsonFile(Path.Combine(directory, "appsettings.json"), optional: false);
+                c.AddJsonFile(Path.Combine(directory, "appsettings.Ordering.json"), optional: false);
             });
 
             return base.CreateHost(builder);

@@ -5,7 +5,7 @@ builder.AddServiceDefaults();
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("IdentityDb")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("IdentityDB")));
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
         .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -30,7 +30,7 @@ builder.Services.AddIdentityServer(options =>
 
 builder.Services.AddHealthChecks()
         .AddSqlServer(_ =>
-            builder.Configuration.GetRequiredConnectionString("IdentityDb"),
+            builder.Configuration.GetRequiredConnectionString("IdentityDB"),
             name: "IdentityDB-check",
             tags: new string[] { "IdentityDB" });
 

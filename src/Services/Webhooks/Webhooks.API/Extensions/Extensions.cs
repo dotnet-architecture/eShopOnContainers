@@ -4,7 +4,7 @@
     {
         services.AddDbContext<WebhooksContext>(options =>
         {
-            options.UseSqlServer(configuration.GetRequiredConnectionString("WebHooksDb"),
+            options.UseSqlServer(configuration.GetRequiredConnectionString("WebHooksDB"),
                                 sqlServerOptionsAction: sqlOptions =>
                                 {
                                     sqlOptions.MigrationsAssembly(typeof(Program).Assembly.FullName);
@@ -23,7 +23,7 @@
 
         hcBuilder
             .AddSqlServer(_ =>
-                configuration.GetRequiredConnectionString("WebHooksDb"),
+                configuration.GetRequiredConnectionString("WebHooksDB"),
                 name: "WebhooksApiDb-check",
                 tags: new string[] { "ready" });
 

@@ -7,7 +7,7 @@ public static class CustomExtensionMethods
         var hcBuilder = services.AddHealthChecks();
 
         hcBuilder.AddSqlServer(_ =>
-                configuration.GetRequiredConnectionString("OrderingDb"),
+                configuration.GetRequiredConnectionString("OrderingDB"),
                 name: "OrderingTaskDB-check",
                 tags: new string[] { "live", "ready" });
 
@@ -19,7 +19,7 @@ public static class CustomExtensionMethods
         return services.Configure<BackgroundTaskSettings>(configuration)
                 .Configure<BackgroundTaskSettings>(o =>
         {
-            o.ConnectionString = configuration.GetRequiredConnectionString("OrderingDb");
+            o.ConnectionString = configuration.GetRequiredConnectionString("OrderingDB");
         });
     }
 }

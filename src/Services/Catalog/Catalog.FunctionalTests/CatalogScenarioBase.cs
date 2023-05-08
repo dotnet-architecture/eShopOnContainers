@@ -1,15 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc.Testing;
+﻿using System;
+using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace Catalog.FunctionalTests;
 
 public class CatalogScenariosBase 
 {
-    public TestServer CreateServer()
-    {
-        var factory = new CatalogApplication();
-        return factory.Server;
-    }
-
     private class CatalogApplication : WebApplicationFactory<Program>
     {
         protected override IHost CreateHost(IHostBuilder builder)
@@ -18,11 +13,17 @@ public class CatalogScenariosBase
             {
                 var directory = Path.GetDirectoryName(typeof(CatalogScenariosBase).Assembly.Location)!;
 
-                c.AddJsonFile(Path.Combine(directory, "appsettings.json"), optional: false);
+                c.AddJsonFile(Path.Combine(directory, "appsettings.Catalog.json"), optional: false);
             });
 
             return base.CreateHost(builder);
         }
+    }
+
+    public TestServer CreateServer()
+    {
+        var factory = new CatalogApplication();
+        return factory.Server;
     }
 
     public static class Get

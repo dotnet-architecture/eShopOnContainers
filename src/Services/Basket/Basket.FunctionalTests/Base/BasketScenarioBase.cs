@@ -45,7 +45,7 @@ public class BasketScenarioBase
             {
                 var directory = Path.GetDirectoryName(typeof(BasketScenarioBase).Assembly.Location)!;
 
-                c.AddJsonFile(Path.Combine(directory, "appsettings.json"), optional: false);
+                c.AddJsonFile(Path.Combine(directory, "appsettings.Basket.json"), optional: false);
             });
 
             return base.CreateHost(builder);
