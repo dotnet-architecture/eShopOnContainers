@@ -1,6 +1,4 @@
-﻿using Yarp.ReverseProxy.Transforms;
-
-internal static class Extensions
+﻿internal static class Extensions
 {
     public static IServiceCollection AddReverseProxy(this IServiceCollection services, IConfiguration configuration)
     {
