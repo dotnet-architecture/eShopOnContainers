@@ -2,21 +2,21 @@
 // Refer to https://github.com/dotnet-architecture/eShopOnContainers/issues/1391
 internal static class Extensions
 {
-    public static void AddHealthChecks(this WebApplicationBuilder builder)
+    public static void AddHealthChecks(this IServiceCollection services, IConfiguration configuration)
     {
-        builder.Services.AddHealthChecks()
-            .AddUrlGroup(_ => new Uri(builder.Configuration["IdentityUrlHC"]), name: "identityapi-check", tags: new string[] { "identityapi" });
+        services.AddHealthChecks()
+            .AddUrlGroup(_ => new Uri(configuration["IdentityUrlHC"]), name: "identityapi-check", tags: new string[] { "identityapi" });
     }
 
-    public static void AddApplicationSevices(this WebApplicationBuilder builder)
+    public static void AddApplicationSevices(this IServiceCollection services, IConfiguration configuration)
     {
-        builder.Services.Configure<AppSettings>(builder.Configuration)
-            .AddSession()
-            .AddDistributedMemoryCache();
+        services.Configure<AppSettings>(configuration)
+                .AddSession()
+                .AddDistributedMemoryCache();
 
-        if (builder.Configuration["DPConnectionString"] is string redisConnection)
+        if (configuration["DPConnectionString"] is string redisConnection)
         {
-            builder.Services.AddDataProtection(opts =>
+            services.AddDataProtection(opts =>
             {
                 opts.ApplicationDiscriminator = "eshop.webmvc";
             })
@@ -25,39 +25,38 @@ internal static class Extensions
     }
 
     // Adds all Http client services
-    public static void AddHttpClientServices(this WebApplicationBuilder builder)
+    public static void AddHttpClientServices(this IServiceCollection services)
     {
         // Register delegating handlers
-        builder.Services.AddTransient<HttpClientAuthorizationDelegatingHandler>()
+        services.AddTransient<HttpClientAuthorizationDelegatingHandler>()
             .AddTransient<HttpClientRequestIdDelegatingHandler>();
 
         // Add http client services
-        builder.Services.AddHttpClient<IBasketService, BasketService>()
+        services.AddHttpClient<IBasketService, BasketService>()
                 .SetHandlerLifetime(TimeSpan.FromMinutes(5))  //Sample. Default lifetime is 2 minutes
                 .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>();
 
-        builder.Services.AddHttpClient<ICatalogService, CatalogService>();
+        services.AddHttpClient<ICatalogService, CatalogService>();
 
-        builder.Services.AddHttpClient<IOrderingService, OrderingService>()
+        services.AddHttpClient<IOrderingService, OrderingService>()
                 .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
                 .AddHttpMessageHandler<HttpClientRequestIdDelegatingHandler>();
 
 
         //add custom application services
-        builder.Services.AddTransient<IIdentityParser<ApplicationUser>, IdentityParser>();
+        services.AddTransient<IIdentityParser<ApplicationUser>, IdentityParser>();
     }
 
-    public static void AddAuthenticationServices(this WebApplicationBuilder builder)
+    public static void AddAuthenticationServices(this IServiceCollection services, IConfiguration configuration)
     {
         JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("sub");
 
-        var identityUrl = builder.Configuration.GetRequiredValue("IdentityUrl");
-        var callBackUrl = builder.Configuration.GetRequiredValue("CallBackUrl");
-        var sessionCookieLifetime = builder.Configuration.GetValue("SessionCookieLifetimeMinutes", 60);
+        var identityUrl = configuration.GetRequiredValue("IdentityUrl");
+        var callBackUrl = configuration.GetRequiredValue("CallBackUrl");
+        var sessionCookieLifetime = configuration.GetValue("SessionCookieLifetimeMinutes", 60);
 
         // Add Authentication services
-
-        builder.Services.AddAuthentication(options =>
+        services.AddAuthentication(options =>
         {
             options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
