@@ -2,7 +2,7 @@
   "profiles": {
     "Ordering.SignalrHub": {
       "commandName": "Project",
-      "launchBrowser": true,
+      "launchBrowser": false,
       "applicationUrl": "http://localhost:5225/",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
