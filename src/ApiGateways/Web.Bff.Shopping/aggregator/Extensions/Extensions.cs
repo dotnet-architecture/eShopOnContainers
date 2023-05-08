@@ -4,14 +4,7 @@ internal static class Extensions
 {
     public static IServiceCollection AddReverseProxy(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddReverseProxy().LoadFromConfig(configuration.GetRequiredSection("ReverseProxy"))
-                .AddTransforms(builder =>
-                {
-                    if (builder.Route?.Metadata?["prefix"] is string prefix)
-                    {
-                        builder.AddPathRemovePrefix($"/{prefix}");
-                    }
-                });
+        services.AddReverseProxy().LoadFromConfig(configuration.GetRequiredSection("ReverseProxy"));
 
         return services;
     }
