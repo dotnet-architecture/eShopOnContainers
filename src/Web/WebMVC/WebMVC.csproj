@@ -24,6 +24,7 @@
     <PackageReference Include="BuildBundlerMinifier" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" />
     <PackageReference Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" />
+    <PackageReference Include="Microsoft.Web.LibraryManager.Build" />
     <PackageReference Include="Yarp.ReverseProxy" />
   </ItemGroup>
 
