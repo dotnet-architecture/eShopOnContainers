@@ -6,25 +6,25 @@ internal static class Extensions
     public static IServiceCollection AddReverseProxy(this IServiceCollection services, IConfiguration configuration)
     {
         // REVIEW: This should come from configuration
-        var s = new (string, string, string)[]
+        var s = new (string, string, string, bool)[]
         {
-            ("c-short", "c", "catalog"),
-            ("c-long", "catalog-api", "catalog"),
+            ("c-short", "c", "catalog", true),
+            ("c-long", "catalog-api", "catalog", true),
 
-            ("b-short", "b", "basket"),
-            ("b-long", "basket-api", "basket"),
+            ("b-short", "b", "basket", true),
+            ("b-long", "basket-api", "basket", true),
 
-            ("o-short", "o", "orders"),
-            ("o-long", "ordering-api", "orders"),
+            ("o-short", "o", "orders", true)  ,
+            ("o-long", "ordering-api", "orders", true),
 
-            ("h-long", "hub/notificationhub", "signalr")
+            ("h-long", "hub/notificationhub", "signalr", false)
         };
 
         var routes = new List<RouteConfig>();
         var clusters = new Dictionary<string, ClusterConfig>();
         var urls = configuration.GetRequiredSection("Urls");
 
-        foreach (var (routeId, prefix, clusterId) in s)
+        foreach (var (routeId, prefix, clusterId, rewritePrefix) in s)
         {
             var destination = urls.GetRequiredValue(clusterId);
 
@@ -36,10 +36,10 @@ internal static class Extensions
                 {
                     Path = $"/{prefix}/{{**catch-all}}"
                 },
-                Metadata = new Dictionary<string, string>()
+                Metadata = rewritePrefix ? new Dictionary<string, string>()
                 {
                     ["prefix"] = prefix
-                }
+                } : null
             });
 
             clusters[clusterId] = new()

@@ -27,13 +27,13 @@ app.UseServiceDefaults();
 
 app.UseHttpsRedirection();
 
-app.UseCors();
+app.UseCors("CorsPolicy");
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapGet("/", () => Results.Redirect("/swagger"));
 
-app.MapControllers().RequireCors("CorsPolicy");
+app.MapControllers();
 app.MapReverseProxy();
 
 await app.RunAsync();
