@@ -18,8 +18,7 @@ public class WebhooksReceivedController : Controller
     [HttpPost]
     public async Task<IActionResult> NewWebhook(WebhookData hook)
     {
-        var header = Request.Headers[HeaderNames.WebHookCheckHeader];
-        var token = header.FirstOrDefault();
+        string token = Request.Headers[HeaderNames.WebHookCheckHeader];
 
         _logger.LogInformation("Received hook with token {Token}. My token is {MyToken}. Token validation is set to {ValidateToken}", token, _options.Token, _options.ValidateToken);
 

@@ -1,4 +1,8 @@
-﻿namespace WebMVC.Infrastructure;
+﻿using System.Net.Http.Headers;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http;
+
+namespace Services.Common;
 
 public class HttpClientAuthorizationDelegatingHandler
     : DelegatingHandler
@@ -12,11 +16,14 @@ public class HttpClientAuthorizationDelegatingHandler
 
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
-        var accessToken = await _httpContextAccessor.HttpContext.GetTokenAsync("access_token");
-
-        if (accessToken is not null)
+        if (_httpContextAccessor.HttpContext is HttpContext context)
         {
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+            var accessToken = await context.GetTokenAsync("access_token");
+
+            if (accessToken is not null)
+            {
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+            }
         }
 
         return await base.SendAsync(request, cancellationToken);
