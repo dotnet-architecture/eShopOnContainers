@@ -22,7 +22,7 @@ public record OrderStockItem
     public int ProductId { get; }
     public int Units { get; }
 
-    public decimal Price;
+    public decimal Price { get; }
 
     public OrderStockItem(int productId, int units, decimal price = Decimal.Zero)
     {
