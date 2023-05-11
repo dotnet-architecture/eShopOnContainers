@@ -31,7 +31,7 @@ public class OrderStatusChangedToPaidDomainEventHandler
         var buyer = await _buyerRepository.FindByIdAsync(order.GetBuyerId.Value.ToString());
 
         var orderStockList = orderStatusChangedToPaidDomainEvent.OrderItems
-            .Select(orderItem => new OrderStockItem(orderItem.ProductId, orderItem.GetUnits()));
+            .Select(orderItem => new OrderStockItem(orderItem.ProductId, orderItem.GetUnits(), orderItem.GetUnitPrice()));
 
         var orderStatusChangedToPaidIntegrationEvent = new OrderStatusChangedToPaidIntegrationEvent(
             orderStatusChangedToPaidDomainEvent.OrderId,
@@ -43,7 +43,8 @@ public class OrderStatusChangedToPaidDomainEventHandler
         {
             var productBoughtEvent = new ProductBoughtIntegrationEvent(
                 orderStockItem.ProductId,
-                orderStockItem.Units
+                orderStockItem.Units,
+                orderStockItem.Price
             );
             await _orderingIntegrationEventService.AddAndSaveEventAsync(productBoughtEvent);
         }
