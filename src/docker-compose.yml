@@ -14,16 +14,16 @@ services:
   basketdata:
     image: redis:alpine
 
-  rabbitmq:
-    image: rabbitmq:3-management-alpine
+  # rabbitmq:
+  #   image: rabbitmq:3-management-alpine
     
-  zookeeper:
-    image: confluentinc/cp-zookeeper:7.3.0
+  # zookeeper:
+  #   image: confluentinc/cp-zookeeper:7.3.0
 
-  broker:
-    image: confluentinc/cp-kafka:7.3.0
-    depends_on:
-      - zookeeper  
+  # broker:
+  #   image: confluentinc/cp-kafka:7.3.0
+  #   depends_on:
+  #     - zookeeper  
 
   identity-api:
     image: ${REGISTRY:-eshop}/identity.api:${PLATFORM:-linux}-${TAG:-latest}
@@ -41,8 +41,6 @@ services:
     depends_on:
       - basketdata
       - identity-api
-      - rabbitmq
-      - broker
 
   catalog-api:
     image: ${REGISTRY:-eshop}/catalog.api:${PLATFORM:-linux}-${TAG:-latest}
@@ -51,8 +49,6 @@ services:
       dockerfile: Services/Catalog/Catalog.API/Dockerfile
     depends_on:
       - sqldata
-      - rabbitmq
-      - broker
 
   ordering-api:
     image: ${REGISTRY:-eshop}/ordering.api:${PLATFORM:-linux}-${TAG:-latest}
@@ -61,8 +57,6 @@ services:
       dockerfile: Services/Ordering/Ordering.API/Dockerfile
     depends_on:
       - sqldata
-      - rabbitmq
-      - broker
 
   ordering-backgroundtasks:
     image: ${REGISTRY:-eshop}/ordering.backgroundtasks:${PLATFORM:-linux}-${TAG:-latest}
@@ -71,17 +65,12 @@ services:
       dockerfile: Services/Ordering/Ordering.BackgroundTasks/Dockerfile
     depends_on:
       - sqldata
-      - rabbitmq
-      - broker
 
   payment-api:
     image: ${REGISTRY:-eshop}/payment.api:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
       dockerfile: Services/Payment/Payment.API/Dockerfile
-    depends_on:
-      - rabbitmq
-      - broker
 
 #  webhooks-api:
 #    image: ${REGISTRY:-eshop}/webhooks.api:${PLATFORM:-linux}-${TAG:-latest}
